@@ -1,0 +1,17 @@
+machine:
+  xcode:
+    version: 7.2
+dependencies:
+  pre:
+    - brew install carthage
+    - carthage bootstrap --platform tvos
+  cache_directories:
+    - Carthage
+test:
+  override:
+    - xctool
+      -reporter pretty
+      -reporter junit:$CIRCLE_TEST_REPORTS/xcode/results.xml
+      -reporter plain:$CIRCLE_ARTIFACTS/xctool.log
+      -destination 'platform=tvOS Simulator,OS=9.1,name=Apple TV 1080p'
+      -scheme kickstartertv
