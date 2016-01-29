@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder.AppleTV.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
+        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PlaylistViewController" customModule="kickstartertv" customModuleProvider="target">
+            <connections>
+                <outlet property="backgroundImageView" destination="AZm-Oy-4ha" id="tET-Xg-tyf"/>
+                <outlet property="categoryLabel" destination="QGd-fR-1kV" id="4VH-Fz-3YA"/>
+                <outlet property="playlistLabel" destination="0tT-Kc-wbv" id="dnu-EW-cz4"/>
+                <outlet property="projectLabel" destination="vaz-WJ-O0a" id="Jr5-6a-5GI"/>
+                <outlet property="view" destination="iN0-l3-epB" id="Eym-vH-oyN"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="AZm-Oy-4ha" userLabel="Background image">
+                    <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
+                </imageView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kJ8-7P-Wrx" userLabel="Overlay">
+                    <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
+                    <color key="backgroundColor" red="0.011764705882352941" green="0.035294117647058823" blue="0.14117647058823529" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
+                </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Documentary" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QGd-fR-1kV" userLabel="Category">
+                    <rect key="frame" x="118" y="80" width="178" height="35"/>
+                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                    <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="notLocalizable" value="YES"/>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="clearIBValue" value="YES"/>
+                    </userDefinedRuntimeAttributes>
+                </label>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RHn-2V-Ie0">
+                    <rect key="frame" x="80" y="424" width="8" height="40"/>
+                    <color key="backgroundColor" red="0.16862745100000001" green="0.87058823529999996" blue="0.45098039220000002" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="8" id="anU-lU-iyu"/>
+                        <constraint firstAttribute="height" constant="40" id="dfK-ba-dR5"/>
+                    </constraints>
+                </view>
+                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="Bjo-8Y-CfL">
+                    <rect key="frame" x="118" y="448" width="900" height="184"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Project of the day" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0tT-Kc-wbv" userLabel="Playlist">
+                            <rect key="frame" x="0.0" y="0.0" width="900" height="37"/>
+                            <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
+                            <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="string" keyPath="localizedKey" value="project_of_the_day"/>
+                            </userDefinedRuntimeAttributes>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="VERSUS VIDEO GAMES IV: The Metal Tribute To Video Game Music" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="vaz-WJ-O0a" userLabel="Project">
+                            <rect key="frame" x="0.0" y="49" width="900" height="135"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="900" id="3CY-id-X0y"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
+                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="boolean" keyPath="notLocalizable" value="YES"/>
+                                <userDefinedRuntimeAttribute type="boolean" keyPath="clearIBValue" value="YES"/>
+                            </userDefinedRuntimeAttributes>
+                        </label>
+                    </subviews>
+                </stackView>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="QGd-fR-1kV" firstAttribute="leading" secondItem="0tT-Kc-wbv" secondAttribute="leading" id="28d-pL-z0y"/>
+                <constraint firstItem="kJ8-7P-Wrx" firstAttribute="top" secondItem="AZm-Oy-4ha" secondAttribute="top" id="B9y-SA-ee8"/>
+                <constraint firstItem="RHn-2V-Ie0" firstAttribute="bottom" secondItem="vaz-WJ-O0a" secondAttribute="firstBaseline" id="C2W-8x-mMN"/>
+                <constraint firstItem="RHn-2V-Ie0" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="80" id="DBy-bd-vJH"/>
+                <constraint firstItem="QGd-fR-1kV" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="80" id="DXE-Ku-bXn"/>
+                <constraint firstItem="kJ8-7P-Wrx" firstAttribute="leading" secondItem="AZm-Oy-4ha" secondAttribute="leading" id="JDn-ZD-RLM"/>
+                <constraint firstAttribute="bottom" secondItem="AZm-Oy-4ha" secondAttribute="bottom" id="KFa-T0-res"/>
+                <constraint firstItem="kJ8-7P-Wrx" firstAttribute="trailing" secondItem="AZm-Oy-4ha" secondAttribute="trailing" id="Lsp-q6-MbC"/>
+                <constraint firstAttribute="trailing" secondItem="AZm-Oy-4ha" secondAttribute="trailing" id="OD5-k5-oxx"/>
+                <constraint firstItem="kJ8-7P-Wrx" firstAttribute="bottom" secondItem="AZm-Oy-4ha" secondAttribute="bottom" id="QRj-As-V61"/>
+                <constraint firstItem="Bjo-8Y-CfL" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="a8C-Bk-LJ7"/>
+                <constraint firstItem="AZm-Oy-4ha" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="bxj-RS-1b9"/>
+                <constraint firstItem="AZm-Oy-4ha" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="ebR-mk-3yZ"/>
+                <constraint firstItem="Bjo-8Y-CfL" firstAttribute="leading" secondItem="RHn-2V-Ie0" secondAttribute="trailing" constant="30" id="nfB-c6-zM7"/>
+            </constraints>
+        </view>
+    </objects>
+</document>
