@@ -1,5 +1,5 @@
 #!/bin/sh
 
 if ! cmp -s Cartfile.resolved Carthage/Cartfile.resolved; then
-  bin/bootstrap
+  bin/carthage-bootstrap
 fi

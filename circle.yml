@@ -3,7 +3,7 @@ machine:
     version: 7.2
 dependencies:
   override:
-    - bin/bootstrap-if-needed
+    - bin/carthage-bootstrap-if-needed
   cache_directories:
     - Carthage
 test:
