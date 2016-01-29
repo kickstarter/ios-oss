@@ -1,0 +1,4 @@
+#!/bin/sh
+
+carthage bootstrap --platform tvos
+cp Cartfile.resolved Carthage

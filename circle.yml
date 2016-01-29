@@ -2,9 +2,8 @@ machine:
   xcode:
     version: 7.2
 dependencies:
-  pre:
-    - brew install carthage
-    - carthage bootstrap --platform tvos
+  override:
+    - bin/bootstrap-if-needed
   cache_directories:
     - Carthage
 test:
