@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder.AppleTV.XIB" version="3.0" toolsVersion="9060" systemVersion="15B42" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" multipleTouchEnabled="YES" contentMode="center" id="Rz2-K0-ksD" customClass="ProjectRewardCell" customModule="kickstartertv" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="580" height="320"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="580" height="320"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="DhS-Om-8oX" userLabel="Stack">
+                        <rect key="frame" x="32" y="32" width="516" height="256"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="$1 or more" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pVG-dX-xHW" userLabel="Minimum">
+                                <rect key="frame" x="0.0" y="0.0" width="516" height="46"/>
+                                <animations/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="41 backers" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uP1-Xt-S9Q" userLabel="Backers">
+                                <rect key="frame" x="0.0" y="66" width="516" height="28"/>
+                                <animations/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="250" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ALG-lz-zL0" userLabel="Reward">
+                                <rect key="frame" x="0.0" y="114" width="516" height="142"/>
+                                <animations/>
+                                <string key="text">PART OF THE STORY
+Your name on the longest hand-typed thank-you note ever. The note will be composed on </string>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <animations/>
+                    </stackView>
+                </subviews>
+                <animations/>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            </view>
+            <animations/>
+            <color key="backgroundColor" red="0.90196078430000004" green="0.90196078430000004" blue="0.90196078430000004" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="DhS-Om-8oX" secondAttribute="trailing" constant="32" id="I6C-NF-Z9z"/>
+                <constraint firstAttribute="bottom" secondItem="DhS-Om-8oX" secondAttribute="bottom" constant="32" id="Wdk-dP-HGl"/>
+                <constraint firstItem="DhS-Om-8oX" firstAttribute="leading" secondItem="Rz2-K0-ksD" secondAttribute="leading" constant="32" id="ZnM-Bj-bd1"/>
+                <constraint firstItem="DhS-Om-8oX" firstAttribute="top" secondItem="Rz2-K0-ksD" secondAttribute="top" constant="32" id="v2x-xG-Oon"/>
+            </constraints>
+            <connections>
+                <outlet property="backersCountLabel" destination="uP1-Xt-S9Q" id="1Ub-Tx-nz0"/>
+                <outlet property="minimumLabel" destination="pVG-dX-xHW" id="jc6-Gb-Jhp"/>
+                <outlet property="rewardLabel" destination="ALG-lz-zL0" id="mIZ-wD-7yE"/>
+            </connections>
+            <point key="canvasLocation" x="544" y="559"/>
+        </collectionViewCell>
+    </objects>
+</document>
