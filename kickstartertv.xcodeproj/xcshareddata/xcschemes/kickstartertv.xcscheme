@@ -20,6 +20,20 @@
                ReferencedContainer = "container:kickstartertv.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "NO"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "A7E06C941C5A6EB300EBDCC2"
+               BuildableName = "kickstartertvUITests.xctest"
+               BlueprintName = "kickstartertvUITests"
+               ReferencedContainer = "container:kickstartertv.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -35,16 +49,6 @@
                BlueprintIdentifier = "A7E06C891C5A6EB300EBDCC2"
                BuildableName = "kickstartertvTests.xctest"
                BlueprintName = "kickstartertvTests"
-               ReferencedContainer = "container:kickstartertv.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "A7E06C941C5A6EB300EBDCC2"
-               BuildableName = "kickstartertvUITests.xctest"
-               BlueprintName = "kickstartertvUITests"
                ReferencedContainer = "container:kickstartertv.xcodeproj">
             </BuildableReference>
          </TestableReference>

@@ -132,6 +132,14 @@
 		A7E070051C5C45F400EBDCC2 /* Models.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7E06FE71C5C459500EBDCC2 /* Models.framework */; };
 		A7E070061C5C45F400EBDCC2 /* Prelude.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7E06FF01C5C459900EBDCC2 /* Prelude.framework */; };
 		A7E070071C5C45F400EBDCC2 /* ReactiveExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7E06FF91C5C459F00EBDCC2 /* ReactiveExtensions.framework */; };
+		A7E0701F1C5C662000EBDCC2 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7E06E1C1C5C068300EBDCC2 /* Alamofire.framework */; };
+		A7E070201C5C662000EBDCC2 /* AlamofireImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7E06E1D1C5C068300EBDCC2 /* AlamofireImage.framework */; };
+		A7E070211C5C662000EBDCC2 /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7E06E231C5C068300EBDCC2 /* ReactiveCocoa.framework */; };
+		A7E070221C5C662000EBDCC2 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7E06E251C5C068300EBDCC2 /* Result.framework */; };
+		A7E070271C5C665100EBDCC2 /* KsApi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7E06FDE1C5C458F00EBDCC2 /* KsApi.framework */; };
+		A7E070281C5C665100EBDCC2 /* Models.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7E06FE71C5C459500EBDCC2 /* Models.framework */; };
+		A7E070291C5C665100EBDCC2 /* Prelude.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7E06FF01C5C459900EBDCC2 /* Prelude.framework */; };
+		A7E0702A1C5C665100EBDCC2 /* ReactiveExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7E06FF91C5C459F00EBDCC2 /* ReactiveExtensions.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -419,6 +427,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A7E070271C5C665100EBDCC2 /* KsApi.framework in Frameworks */,
+				A7E070281C5C665100EBDCC2 /* Models.framework in Frameworks */,
+				A7E070291C5C665100EBDCC2 /* Prelude.framework in Frameworks */,
+				A7E0702A1C5C665100EBDCC2 /* ReactiveExtensions.framework in Frameworks */,
+				A7E0701F1C5C662000EBDCC2 /* Alamofire.framework in Frameworks */,
+				A7E070201C5C662000EBDCC2 /* AlamofireImage.framework in Frameworks */,
+				A7E070211C5C662000EBDCC2 /* ReactiveCocoa.framework in Frameworks */,
+				A7E070221C5C662000EBDCC2 /* Result.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1292,6 +1308,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/tvOS",
+				);
 				INFOPLIST_FILE = kickstartertvTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstartertvTests;
@@ -1304,6 +1324,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/tvOS",
+				);
 				INFOPLIST_FILE = kickstartertvTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstartertvTests;
