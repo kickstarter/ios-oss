@@ -1,6 +1,10 @@
 machine:
   xcode:
     version: 7.2
+checkout:
+  post:
+    - git submodule sync
+    - git submodule update --init
 dependencies:
   override:
     - bin/carthage-bootstrap-if-needed
