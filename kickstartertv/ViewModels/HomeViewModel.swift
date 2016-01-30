@@ -100,16 +100,18 @@ final class HomeViewModel : HomeViewModelType, HomeViewModelInputs, HomeViewMode
       self.isActive
     ])
 
-    // A signal that emits when the playlist has been playing for a little while
+    // A signal that emits when the playlist has been focused for a little while
     let hasFocusedPlaylistForWhile = self.focusedPlaylist
       .debounce(6.0, onScheduler: env.debounceScheduler)
       .filterWhenLatestFrom(videoIsPlaying, satisfies: id)
 
     // Control the interface importance by a few controls.
-    self.interfaceImportance = hasFocusedPlaylistForWhile.mapConst(false)
-      .mergeWith(self.focusedPlaylist.mapConst(true))
-      .mergeWith(self.pauseVideoClickSignal.mapConst(true))
-      .mergeWith(self.playVideoClickSignal.mapConst(false))
+    self.interfaceImportance = Signal.merge([
+        hasFocusedPlaylistForWhile.mapConst(false),
+        self.focusedPlaylist.mapConst(true),
+        self.pauseVideoClickSignal.mapConst(true),
+        self.playVideoClickSignal.mapConst(false)
+      ])
       .skipRepeats()
   }
 
