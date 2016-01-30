@@ -7,9 +7,6 @@
 [submodule "Carthage/Checkouts/Curry"]
 	path = Carthage/Checkouts/Curry
 	url = https://github.com/thoughtbot/Curry.git
-[submodule "Carthage/Checkouts/Kickstarter-Prelude"]
-	path = Carthage/Checkouts/Kickstarter-Prelude
-	url = git@github.com:kickstarter/Kickstarter-Prelude.git
 [submodule "Carthage/Checkouts/AlamofireImage"]
 	path = Carthage/Checkouts/AlamofireImage
 	url = https://github.com/Alamofire/AlamofireImage.git
@@ -19,12 +16,15 @@
 [submodule "Carthage/Checkouts/ReactiveCocoa"]
 	path = Carthage/Checkouts/ReactiveCocoa
 	url = https://github.com/ReactiveCocoa/ReactiveCocoa.git
-[submodule "Carthage/Checkouts/Kickstarter-Models"]
-	path = Carthage/Checkouts/Kickstarter-Models
+[submodule "Library/Kickstarter-Prelude"]
+	path = Library/Kickstarter-Prelude
+	url = git@github.com:kickstarter/Kickstarter-Prelude.git
+[submodule "Library/Kickstarter-Models"]
+	path = Library/Kickstarter-Models
 	url = git@github.com:kickstarter/Kickstarter-Models.git
-[submodule "Carthage/Checkouts/Kickstarter-ReactiveExtensions"]
-	path = Carthage/Checkouts/Kickstarter-ReactiveExtensions
+[submodule "Library/Kickstarter-ReactiveExtensions"]
+	path = Library/Kickstarter-ReactiveExtensions
 	url = git@github.com:kickstarter/Kickstarter-ReactiveExtensions.git
-[submodule "Carthage/Checkouts/Kickstarter-KsApi"]
-	path = Carthage/Checkouts/Kickstarter-KsApi
+[submodule "Library/Kickstarter-KsApi"]
+	path = Library/Kickstarter-KsApi
 	url = git@github.com:kickstarter/Kickstarter-KsApi

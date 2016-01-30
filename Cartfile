@@ -1,7 +1,2 @@
 github "ReactiveCocoa/ReactiveCocoa" "v4.0.0-RC.2"
 github "Alamofire/AlamofireImage" == 2.3.0
-
-git "git@github.com:kickstarter/Kickstarter-Prelude.git" == 1.0.0
-git "git@github.com:kickstarter/Kickstarter-ReactiveExtensions.git" == 1.0.1
-git "git@github.com:kickstarter/Kickstarter-Models.git" == 1.0.0
-git "git@github.com:kickstarter/Kickstarter-KsApi" == 1.0.0

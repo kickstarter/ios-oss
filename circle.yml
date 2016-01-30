@@ -1,11 +1,21 @@
 machine:
   xcode:
     version: 7.2
+checkout:
+  post:
+    - git submodule sync
+    - git submodule update --init
+    - ./Library/Kickstarter-KsApi/bin/carthage-bootstrap-if-needed
+    - ./Library/Kickstarter-Models/bin/carthage-bootstrap-if-needed
+    - ./Library/Kickstarter-ReactiveExtensions/bin/carthage-bootstrap-if-needed
 dependencies:
   override:
     - bin/carthage-bootstrap-if-needed
   cache_directories:
     - Carthage
+    - ./Library/Kickstarter-KsApi/Carthage
+    - ./Library/Kickstarter-Models/Carthage
+    - ./Library/Kickstarter-ReactiveExtensions/Carthage
 test:
   override:
     - xctool
