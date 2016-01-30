@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A72153921C5D62E800127699 /* HomeViewModelInputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72153911C5D62E800127699 /* HomeViewModelInputs.swift */; };
+		A72153941C5D630300127699 /* HomeViewModelOutputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72153931C5D630300127699 /* HomeViewModelOutputs.swift */; };
 		A7E06C7D1C5A6EB300EBDCC2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E06C7C1C5A6EB300EBDCC2 /* AppDelegate.swift */; };
 		A7E06C7F1C5A6EB300EBDCC2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E06C7E1C5A6EB300EBDCC2 /* ViewController.swift */; };
 		A7E06C821C5A6EB300EBDCC2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7E06C801C5A6EB300EBDCC2 /* Main.storyboard */; };
@@ -280,6 +282,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		A72153911C5D62E800127699 /* HomeViewModelInputs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewModelInputs.swift; sourceTree = "<group>"; };
+		A72153931C5D630300127699 /* HomeViewModelOutputs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewModelOutputs.swift; sourceTree = "<group>"; };
 		A7E06C791C5A6EB300EBDCC2 /* kickstartertv.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = kickstartertv.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7E06C7C1C5A6EB300EBDCC2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A7E06C7E1C5A6EB300EBDCC2 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -458,6 +462,29 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A721538E1C5D62C700127699 /* errors */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = errors;
+			sourceTree = "<group>";
+		};
+		A721538F1C5D62C700127699 /* inputs */ = {
+			isa = PBXGroup;
+			children = (
+				A72153911C5D62E800127699 /* HomeViewModelInputs.swift */,
+			);
+			path = inputs;
+			sourceTree = "<group>";
+		};
+		A72153901C5D62C700127699 /* outputs */ = {
+			isa = PBXGroup;
+			children = (
+				A72153931C5D630300127699 /* HomeViewModelOutputs.swift */,
+			);
+			path = outputs;
+			sourceTree = "<group>";
+		};
 		A7E06C701C5A6EB300EBDCC2 = {
 			isa = PBXGroup;
 			children = (
@@ -577,6 +604,9 @@
 		A7E06CB41C5BFB3800EBDCC2 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				A721538E1C5D62C700127699 /* errors */,
+				A721538F1C5D62C700127699 /* inputs */,
+				A72153901C5D62C700127699 /* outputs */,
 				A7E06CB51C5BFB3800EBDCC2 /* EmptyViewModel.swift */,
 				A7E06CB61C5BFB3800EBDCC2 /* HomePlaylistViewModel.swift */,
 				A7E06CB71C5BFB3800EBDCC2 /* HomeViewModel.swift */,
@@ -1083,6 +1113,7 @@
 				A7E06D1E1C5BFB3800EBDCC2 /* ProjectRecommendationsCell.swift in Sources */,
 				A7E06D351C5BFB3800EBDCC2 /* SearchViewController.swift in Sources */,
 				A7E06D851C5C00CC00EBDCC2 /* MVVMDataSource.swift in Sources */,
+				A72153921C5D62E800127699 /* HomeViewModelInputs.swift in Sources */,
 				A7E06D8D1C5C00CC00EBDCC2 /* UIViewController-DefaultNib.swift in Sources */,
 				A7E06D141C5BFB3800EBDCC2 /* DiscoveryProjectCell.swift in Sources */,
 				A7E06D891C5C00CC00EBDCC2 /* UICollectionView-Extensions.swift in Sources */,
@@ -1117,6 +1148,7 @@
 				A7E06D461C5BFB3800EBDCC2 /* UILabel+SimpleHTML.swift in Sources */,
 				A7E06D2C1C5BFB3800EBDCC2 /* PlaylistTrayViewController.swift in Sources */,
 				A7E06D7F1C5C00CC00EBDCC2 /* CurrentUser.swift in Sources */,
+				A72153941C5D630300127699 /* HomeViewModelOutputs.swift in Sources */,
 				A7E06CFE1C5BFB3800EBDCC2 /* DiscoveryProjectData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -2,50 +2,7 @@ import ReactiveCocoa
 import Result
 import KsApi
 import Models
-
-protocol HomeViewModelInputs {
-  /// Call when the view becomes/resigns active state, e.g. viewDidAppear, viewWillDisappear
-  func isActive(active: Bool)
-
-  /// Call when a playlist row is focused in the UI.
-  func focusedPlaylist(playlist: Playlist)
-
-  /// Call when the currently playing video has ended.
-  func videoEnded()
-
-  /// Call when a playlist is hard-clicked
-  func clickedPlaylist(playlist: Playlist)
-
-  /// Call when the play button is clicked and the video is currently in paused state.
-  func playVideoClick()
-
-  /// Call when the play button is clicked and the video is currently in playing state.
-  func pauseVideoClick()
-}
-
-protocol HomeViewModelOutputs {
-  /// Emits when the view becomes/resigns active state
-  var isActive: Signal<Bool, NoError> { get }
-
-  /// Emits an array of playlists that the user can browse from the home  menu
-  var playlists: SignalProducer<[HomePlaylistViewModel], NoError> { get }
-
-  /// Emits the playlist name, project name and video URL for the playlist that is beginning now.
-  var nowPlayingInfo: Signal<(projectName: String, videoUrl: NSURL), NoError> { get }
-
-  /// Emits a boolean to determine whether or not the overlayed UI should be displayed
-  var overlayIsVisible: Signal<Bool, NoError> { get }
-
-  /// Emits a project view model that should be opened fullscreen
-  var selectProject: Signal<Project, NoError> { get }
-
-  /// Emits a true/false value that indicates how important any overlayed interface is at this
-  /// moment. One can use this to dim the UI if useful.
-  var interfaceImportance: Signal<Bool, NoError> { get }
-
-  /// Emits a boolean that determines if the video should be playing or not.
-  var videoIsPlaying: Signal<Bool, NoError> { get }
-}
+import Prelude
 
 protocol HomeViewModelType {
   var inputs: HomeViewModelInputs { get }
@@ -53,7 +10,10 @@ protocol HomeViewModelType {
 }
 
 /// A lightweight reference to a "now playing" playlist and project.
-private typealias NowPlaying = (playlist: Playlist, project: Project)
+private struct NowPlaying {
+  let playlist: Playlist
+  let project: Project
+}
 
 final class HomeViewModel : HomeViewModelType, HomeViewModelInputs, HomeViewModelOutputs {
 
@@ -87,16 +47,15 @@ final class HomeViewModel : HomeViewModelType, HomeViewModelInputs, HomeViewMode
     pauseVideoClickObserver.sendNext(())
   }
 
-  var inputs: HomeViewModelInputs { return self }
-
   // MARK: Outputs
   let (isActive, isActiveObserver) = Signal<Bool, NoError>.pipe()
   let playlists: SignalProducer<[HomePlaylistViewModel], NoError>
   let nowPlayingInfo: Signal<(projectName: String, videoUrl: NSURL), NoError>
-  let (overlayIsVisible, overlayIsVisibleObserver) = Signal<Bool, NoError>.pipe()
   let selectProject: Signal<Project, NoError>
-  let (interfaceImportance, interfaceImportanceObserver) = Signal<Bool, NoError>.pipe()
-  let (videoIsPlaying, videoIsPlayingObserver) = Signal<Bool, NoError>.pipe()
+  let interfaceImportance: Signal<Bool, NoError>
+  let videoIsPlaying: Signal<Bool, NoError>
+
+  var inputs: HomeViewModelInputs { return self }
   var outputs: HomeViewModelOutputs { return self }
 
   init(env: Environment = AppEnvironment.current) {
@@ -114,12 +73,12 @@ final class HomeViewModel : HomeViewModelType, HomeViewModelInputs, HomeViewMode
       .replayLazily(1)
 
     // Derive the playlist and project that is now playing
-    let nowPlaying: Signal<NowPlaying, NoError> = focusedPlaylist
+    let nowPlaying = focusedPlaylist
       .debounce(1.0, onScheduler: env.debounceScheduler)
       .skipRepeats(==)
       .switchMap { playlist in
         apiService.fetchProject(playlist.discoveryParams)
-          .map { (playlist, $0) }
+          .map { NowPlaying(playlist: playlist, project: $0) }
           .demoteErrors()
       }
 
@@ -134,33 +93,24 @@ final class HomeViewModel : HomeViewModelType, HomeViewModelInputs, HomeViewMode
       }
       .map { nowPlaying, _ in nowPlaying.project }
 
-    Signal.merge([
-        // UI is important the moment a playlist is focused or the video is paused
-        self.focusedPlaylist.mapConst(true),
-        self.pauseVideoClickSignal.mapConst(true),
-        // UI is un-important the moment the video is played
-        self.playVideoClickSignal.mapConst(false)
-      ])
-      .observe(self.interfaceImportanceObserver)
+    self.videoIsPlaying = Signal.merge([
+      self.playVideoClickSignal.mapConst(true),
+      self.pauseVideoClickSignal.mapConst(false),
+      nowPlaying.mapConst(true),
+      self.isActive
+    ])
 
-    // After a video is playing for awhile we can make the UI un-important
-    self.focusedPlaylist
-      .mapConst(false)
-      .debounce(6.0, onScheduler: QueueScheduler.mainQueueScheduler)
-      .withLatestFrom(videoIsPlaying)
-      .filter { _, isPlaying in isPlaying }
-      .map { importance, _ in importance }
-      .observe(self.interfaceImportanceObserver)
+    // A signal that emits when the playlist has been playing for a little while
+    let hasFocusedPlaylistForWhile = self.focusedPlaylist
+      .debounce(6.0, onScheduler: env.debounceScheduler)
+      .filterWhenLatestFrom(videoIsPlaying, satisfies: id)
 
-    Signal.merge([
-        self.playVideoClickSignal.mapConst(true),
-        self.pauseVideoClickSignal.mapConst(false),
-        nowPlaying.mapConst(true),
-        self.isActive
-      ])
-      .observeNext { [weak self] in
-        self?.videoIsPlayingObserver.sendNext($0)
-    }
+    // Control the interface importance by a few controls.
+    self.interfaceImportance = hasFocusedPlaylistForWhile.mapConst(false)
+      .mergeWith(self.focusedPlaylist.mapConst(true))
+      .mergeWith(self.pauseVideoClickSignal.mapConst(true))
+      .mergeWith(self.playVideoClickSignal.mapConst(false))
+      .skipRepeats()
   }
 
   /// Safely extracts project name and video URL from a project

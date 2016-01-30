@@ -72,4 +72,38 @@ final class HomeViewModelTests : XCTestCase {
         "Clicking on the playing playlist should select the project.")
     }
   }
+
+  func testInterfaceImportance() {
+    let scheduler = TestScheduler()
+    withEnvironment(apiService: MockService(), debounceScheduler: scheduler) {
+
+      let viewModel = HomeViewModel()
+
+      let videoIsPlayingTest = TestObserver<Bool, NoError>()
+      viewModel.outputs.videoIsPlaying.observe(videoIsPlayingTest.observer)
+
+      let interfaceImportanceTest = TestObserver<Bool, NoError>()
+      viewModel.outputs.interfaceImportance.observe(interfaceImportanceTest.observer)
+
+      viewModel.outputs.playlists.start()
+      viewModel.inputs.focusedPlaylist(.Featured)
+
+      scheduler.advanceByInterval(1.5)
+      XCTAssertTrue(videoIsPlayingTest.nextValues.last!, "Video begins playing after a few moments.")
+      XCTAssertTrue(interfaceImportanceTest.nextValues.last!, "Interface remains important immediately " +
+        "video begins playing.")
+
+      scheduler.advanceByInterval(5.0)
+      XCTAssertFalse(interfaceImportanceTest.nextValues.last!, "After some time passes the interface " +
+        "becomes less important.")
+
+      viewModel.inputs.pauseVideoClick()
+      XCTAssertTrue(interfaceImportanceTest.nextValues.last!, "Interface becomes important immediately " +
+        "upon pausing the video.")
+
+      viewModel.inputs.playVideoClick()
+      XCTAssertFalse(interfaceImportanceTest.nextValues.last!, "Interface becomes not important " +
+        "immediately upon playing the video.")
+    }
+  }
 }
