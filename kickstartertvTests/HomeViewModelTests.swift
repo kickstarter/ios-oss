@@ -6,6 +6,10 @@ import Models
 
 final class HomeViewModelTests : XCTestCase {
 
+  /**
+   Tests the mechanics of focusing and clicking on playlists in order to guarantee that the currently
+   playing video is properly debounced and that clicking a playlist selects the correct project.
+   */
   func testFocusingAndSelectingPlaylists() {
     let scheduler = TestScheduler()
     withEnvironment(apiService: MockService(), debounceScheduler: scheduler) {
