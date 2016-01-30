@@ -11,54 +11,54 @@ protocol HomeViewModelType {
 
 /// A lightweight reference to a "now playing" playlist and project.
 private struct NowPlaying {
-  let playlist: Playlist
-  let project: Project
+  private let playlist: Playlist
+  private let project: Project
 }
 
-final class HomeViewModel : HomeViewModelType, HomeViewModelInputs, HomeViewModelOutputs {
+internal final class HomeViewModel : HomeViewModelType, HomeViewModelInputs, HomeViewModelOutputs {
 
   // MARK: Inputs
-  func isActive(active: Bool) {
+  internal func isActive(active: Bool) {
     isActiveObserver.sendNext(active)
   }
 
   private let (focusedPlaylist, focusedPlaylistObserver) = Signal<Playlist, NoError>.pipe()
-  func focusedPlaylist(playlist: Playlist) {
+  internal func focusedPlaylist(playlist: Playlist) {
     focusedPlaylistObserver.sendNext(playlist)
   }
 
   private let (startNextVideo, startNextVideoObserver) = Signal<Void, NoError>.pipe()
-  func videoEnded() {
+  internal func videoEnded() {
     startNextVideoObserver.sendNext(())
   }
 
   private let (clickedPlaylist, clickedPlaylistObserver) = Signal<Playlist, NoError>.pipe()
-  func clickedPlaylist(playlist: Playlist) {
+  internal func clickedPlaylist(playlist: Playlist) {
     clickedPlaylistObserver.sendNext(playlist)
   }
 
   private let (playVideoClickSignal, playVideoClickObserver) = Signal<(), NoError>.pipe()
-  func playVideoClick() {
+  internal func playVideoClick() {
     playVideoClickObserver.sendNext(())
   }
 
   private let (pauseVideoClickSignal, pauseVideoClickObserver) = Signal<(), NoError>.pipe()
-  func pauseVideoClick() {
+  internal func pauseVideoClick() {
     pauseVideoClickObserver.sendNext(())
   }
 
   // MARK: Outputs
-  let (isActive, isActiveObserver) = Signal<Bool, NoError>.pipe()
-  let playlists: SignalProducer<[HomePlaylistViewModel], NoError>
-  let nowPlayingInfo: Signal<(projectName: String, videoUrl: NSURL), NoError>
-  let selectProject: Signal<Project, NoError>
-  let interfaceImportance: Signal<Bool, NoError>
-  let videoIsPlaying: Signal<Bool, NoError>
+  internal let (isActive, isActiveObserver) = Signal<Bool, NoError>.pipe()
+  internal let playlists: SignalProducer<[HomePlaylistViewModel], NoError>
+  internal let nowPlayingInfo: Signal<(projectName: String, videoUrl: NSURL), NoError>
+  internal let selectProject: Signal<Project, NoError>
+  internal let interfaceImportance: Signal<Bool, NoError>
+  internal let videoIsPlaying: Signal<Bool, NoError>
 
-  var inputs: HomeViewModelInputs { return self }
-  var outputs: HomeViewModelOutputs { return self }
+  internal var inputs: HomeViewModelInputs { return self }
+  internal var outputs: HomeViewModelOutputs { return self }
 
-  init(env: Environment = AppEnvironment.current) {
+  internal init(env: Environment = AppEnvironment.current) {
     let apiService = env.apiService
 
     // Grab a playlist for every category
