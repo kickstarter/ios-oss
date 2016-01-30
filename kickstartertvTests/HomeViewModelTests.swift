@@ -44,7 +44,7 @@ final class HomeViewModelTests : XCTestCase {
       XCTAssert(!nowPlayingTest.didEmitValue, "Focusing a playlist doesn't play it immediately")
       scheduler.advanceByInterval(0.5)
       XCTAssert(!nowPlayingTest.didEmitValue, "After a little bit of time the playlist should still not play")
-      scheduler.advanceByInterval(0.55)
+      scheduler.advanceByInterval(0.7)
       XCTAssert(nowPlayingTest.didEmitValue, "After waiting enough time the playlist should play.")
 
       viewModel.inputs.clickedPlaylist(playlist)
@@ -64,7 +64,7 @@ final class HomeViewModelTests : XCTestCase {
       XCTAssertEqual(1, selectProjectTest.nextValues.count, "Clicking this playlist before it has begun " +
         "playing shoudl not select the project.")
 
-      scheduler.advanceByInterval(0.55)
+      scheduler.advanceByInterval(0.7)
       XCTAssertEqual(2, nowPlayingTest.nextValues.count, "Waiting enough time the playlist should play.")
 
       viewModel.inputs.clickedPlaylist(otherPlaylist)
