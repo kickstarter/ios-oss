@@ -5,6 +5,7 @@ checkout:
   post:
     - git submodule sync
     - git submodule update --init
+    - find ./Library -maxdepth 2 -name "Cartfile" -exec sh -c 'carthage bootstrap "${0%/*}" --platform tvos' {} \;
 dependencies:
   override:
     - bin/carthage-bootstrap-if-needed
