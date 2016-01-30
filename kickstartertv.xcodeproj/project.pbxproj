@@ -140,6 +140,11 @@
 		A7E070281C5C665100EBDCC2 /* Models.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7E06FE71C5C459500EBDCC2 /* Models.framework */; };
 		A7E070291C5C665100EBDCC2 /* Prelude.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7E06FF01C5C459900EBDCC2 /* Prelude.framework */; };
 		A7E0702A1C5C665100EBDCC2 /* ReactiveExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7E06FF91C5C459F00EBDCC2 /* ReactiveExtensions.framework */; };
+		A7E070501C5D3CF000EBDCC2 /* categories.json in Resources */ = {isa = PBXBuildFile; fileRef = A7E0704D1C5D3CF000EBDCC2 /* categories.json */; };
+		A7E070511C5D3CF000EBDCC2 /* discover.json in Resources */ = {isa = PBXBuildFile; fileRef = A7E0704E1C5D3CF000EBDCC2 /* discover.json */; };
+		A7E070521C5D3CF000EBDCC2 /* project.json in Resources */ = {isa = PBXBuildFile; fileRef = A7E0704F1C5D3CF000EBDCC2 /* project.json */; };
+		A7E070581C5D40BD00EBDCC2 /* HomeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E070571C5D40BD00EBDCC2 /* HomeViewModelTests.swift */; };
+		A7E0705A1C5D427000EBDCC2 /* TestObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E070591C5D427000EBDCC2 /* TestObserver.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -405,6 +410,11 @@
 		A7E06FE11C5C459500EBDCC2 /* Models.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Models.xcodeproj; path = "Kickstarter-Models/Models.xcodeproj"; sourceTree = "<group>"; };
 		A7E06FEA1C5C459900EBDCC2 /* Prelude.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Prelude.xcodeproj; path = "Kickstarter-Prelude/Prelude.xcodeproj"; sourceTree = "<group>"; };
 		A7E06FF31C5C459F00EBDCC2 /* ReactiveExtensions.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactiveExtensions.xcodeproj; path = "Kickstarter-ReactiveExtensions/ReactiveExtensions.xcodeproj"; sourceTree = "<group>"; };
+		A7E0704D1C5D3CF000EBDCC2 /* categories.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = categories.json; sourceTree = "<group>"; };
+		A7E0704E1C5D3CF000EBDCC2 /* discover.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = discover.json; sourceTree = "<group>"; };
+		A7E0704F1C5D3CF000EBDCC2 /* project.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = project.json; sourceTree = "<group>"; };
+		A7E070571C5D40BD00EBDCC2 /* HomeViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewModelTests.swift; sourceTree = "<group>"; };
+		A7E070591C5D427000EBDCC2 /* TestObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestObserver.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -473,22 +483,25 @@
 		A7E06C7B1C5A6EB300EBDCC2 /* kickstartertv */ = {
 			isa = PBXGroup;
 			children = (
+				A7E0704D1C5D3CF000EBDCC2 /* categories.json */,
+				A7E0704E1C5D3CF000EBDCC2 /* discover.json */,
+				A7E0704F1C5D3CF000EBDCC2 /* project.json */,
 				A7E06C7C1C5A6EB300EBDCC2 /* AppDelegate.swift */,
 				A7E06DBD1C5C03CA00EBDCC2 /* AVPlayerView.swift */,
 				A7E06DBE1C5C03CA00EBDCC2 /* GradientView.swift */,
 				A7E06DBF1C5C03CA00EBDCC2 /* UIGestureRecognizer-Extensions.swift */,
 				A7E06DC01C5C03CA00EBDCC2 /* UIPress-Extensions.swift */,
 				A7E06C7E1C5A6EB300EBDCC2 /* ViewController.swift */,
-				A7E06C801C5A6EB300EBDCC2 /* Main.storyboard */,
 				A7E06C831C5A6EB300EBDCC2 /* Assets.xcassets */,
 				A7E06CA71C5BFB3800EBDCC2 /* DataSources */,
 				A7E06CAE1C5BFB3800EBDCC2 /* Fonts */,
+				A7E06CF11C5BFB3800EBDCC2 /* Lib */,
+				A7E06CC11C5BFB3800EBDCC2 /* Locales */,
+				A7E06C801C5A6EB300EBDCC2 /* Main.storyboard */,
 				A7E06CB01C5BFB3800EBDCC2 /* Models */,
 				A7E06CB21C5BFB3800EBDCC2 /* Supporting Files */,
 				A7E06CB41C5BFB3800EBDCC2 /* ViewModels */,
-				A7E06CC11C5BFB3800EBDCC2 /* Locales */,
 				A7E06CC71C5BFB3800EBDCC2 /* Views */,
-				A7E06CF11C5BFB3800EBDCC2 /* Lib */,
 			);
 			path = kickstartertv;
 			sourceTree = "<group>";
@@ -510,6 +523,7 @@
 				A7E06DD11C5C04D100EBDCC2 /* UILabel+LocalizedKeyTests.swift */,
 				A7E06DC91C5C04D100EBDCC2 /* UILabel+SimpleHTMLTests.swift */,
 				A7E06DC51C5C04D100EBDCC2 /* TestHelpers */,
+				A7E070571C5D40BD00EBDCC2 /* HomeViewModelTests.swift */,
 			);
 			path = kickstartertvTests;
 			sourceTree = "<group>";
@@ -718,6 +732,7 @@
 			isa = PBXGroup;
 			children = (
 				A7E06DC61C5C04D100EBDCC2 /* XCTestCase+AppEnvironment.swift */,
+				A7E070591C5D427000EBDCC2 /* TestObserver.swift */,
 			);
 			path = TestHelpers;
 			sourceTree = "<group>";
@@ -963,12 +978,14 @@
 				A7E06D2D1C5BFB3800EBDCC2 /* PlaylistTrayViewController.xib in Resources */,
 				A7E06D291C5BFB3800EBDCC2 /* LoginViewController.xib in Resources */,
 				A7E06D341C5BFB3800EBDCC2 /* ProjectViewController.xib in Resources */,
+				A7E070521C5D3CF000EBDCC2 /* project.json in Resources */,
 				A7E06D231C5BFB3800EBDCC2 /* ProjectRewardsCollectionViewCell.xib in Resources */,
 				A7E06D151C5BFB3800EBDCC2 /* DiscoveryProjectCell.xib in Resources */,
 				A7E06D271C5BFB3800EBDCC2 /* HomeViewController.xib in Resources */,
 				A7E06D131C5BFB3800EBDCC2 /* Localizable.strings in Resources */,
 				A7E06D041C5BFB3800EBDCC2 /* ionicons.ttf in Resources */,
 				A7E06C841C5A6EB300EBDCC2 /* Assets.xcassets in Resources */,
+				A7E070511C5D3CF000EBDCC2 /* discover.json in Resources */,
 				A7E06C821C5A6EB300EBDCC2 /* Main.storyboard in Resources */,
 				A7E06D211C5BFB3800EBDCC2 /* ProjectRewardCell.xib in Resources */,
 				A7E06D171C5BFB3800EBDCC2 /* HomePlaylistCell.xib in Resources */,
@@ -981,6 +998,7 @@
 				A7E06D251C5BFB3800EBDCC2 /* ProjectShelfCell.xib in Resources */,
 				A7E06D311C5BFB3800EBDCC2 /* ProfileViewController.xib in Resources */,
 				A7E06D1F1C5BFB3800EBDCC2 /* ProjectRecommendationsCell.xib in Resources */,
+				A7E070501C5D3CF000EBDCC2 /* categories.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1116,10 +1134,12 @@
 				A7E06DD91C5C04D100EBDCC2 /* LanguageTests.swift in Sources */,
 				A7E06C8F1C5A6EB300EBDCC2 /* kickstartertvTests.swift in Sources */,
 				A7E06DD31C5C04D100EBDCC2 /* FormatTests.swift in Sources */,
+				A7E070581C5D40BD00EBDCC2 /* HomeViewModelTests.swift in Sources */,
 				A7E06DDB1C5C04D100EBDCC2 /* String+SimpleHTMLTests.swift in Sources */,
 				A7E06DD51C5C04D100EBDCC2 /* UILabel+SimpleHTMLTests.swift in Sources */,
 				A7E06DDA1C5C04D100EBDCC2 /* LocalizedStringTests.swift in Sources */,
 				A7E06DD61C5C04D100EBDCC2 /* EnvironmentTests.swift in Sources */,
+				A7E0705A1C5D427000EBDCC2 /* TestObserver.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,5 +1,6 @@
 import Foundation
 import KsApi
+import ReactiveCocoa
 
 /**
  A global stack that captures the current state of global objects that the app wants access to.
@@ -49,7 +50,8 @@ struct AppEnvironment {
     locale: NSLocale = AppEnvironment.current.locale,
     timeZone: NSTimeZone = AppEnvironment.current.timeZone,
     countryCode: String = AppEnvironment.current.countryCode,
-    launchedCountries: LaunchedCountries = AppEnvironment.current.launchedCountries) {
+    launchedCountries: LaunchedCountries = AppEnvironment.current.launchedCountries,
+    debounceScheduler: DateSchedulerType = QueueScheduler.mainQueueScheduler) {
 
       stack.append(
         Environment(
@@ -59,7 +61,8 @@ struct AppEnvironment {
           locale: locale,
           timeZone: timeZone,
           countryCode: countryCode,
-          launchedCountries: launchedCountries
+          launchedCountries: launchedCountries,
+          debounceScheduler: debounceScheduler
         )
       )
   }

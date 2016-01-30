@@ -2,13 +2,14 @@ import XCTest
 @testable import kickstartertv
 import KsApi
 import Models
+import ReactiveCocoa
 
 extension XCTestCase {
 
   /**
    Pushes an environment onto the stack, executes a closure, and then pops the environment from the stack.
   */
-  func withEnvironment(env: Environment, @noescape body:  () -> ()) {
+  func withEnvironment(env: Environment, @noescape body: () -> ()) {
     AppEnvironment.pushEnvironment(env)
     body()
     AppEnvironment.popEnvironment()
@@ -25,6 +26,7 @@ extension XCTestCase {
     timeZone: NSTimeZone = AppEnvironment.current.timeZone,
     countryCode: String = AppEnvironment.current.countryCode,
     launchedCountries: LaunchedCountries = AppEnvironment.current.launchedCountries,
+    debounceScheduler: DateSchedulerType = QueueScheduler.mainQueueScheduler,
     @noescape body: () -> ()) {
 
       withEnvironment(
@@ -35,7 +37,8 @@ extension XCTestCase {
           locale: locale,
           timeZone: timeZone,
           countryCode: countryCode,
-          launchedCountries: launchedCountries
+          launchedCountries: launchedCountries,
+          debounceScheduler: debounceScheduler
         ),
         body: body
       )

@@ -1,0 +1,401 @@
+{
+    "creator": {
+        "slug": "nichtlustig",
+        "is_friend": false,
+        "name": "Joscha Sauer",
+        "id": 128210338,
+        "urls": {
+            "api": {
+                "user": "https://***REMOVED***/v1/users/128210338?signature=1451168881.c796c2fed25f7afb6efc832ce3262e30424c7fb0"
+            },
+            "web": {
+                "user": "https://www.kickstarter.com/profile/nichtlustig"
+            }
+        },
+        "avatar": {
+            "medium": "https://ksr-ugc.imgix.net/avatars/1415115/profil.original.jpg?v=1447027238&w=160&h=160&fit=crop&auto=format&q=92&s=dee42249a2a127bd5b6aeb48163f164d",
+            "small": "https://ksr-ugc.imgix.net/avatars/1415115/profil.original.jpg?v=1447027238&w=80&h=80&fit=crop&auto=format&q=92&s=b4da4fc92cc47f8a8fb6040bc2e9c9ca",
+            "thumb": "https://ksr-ugc.imgix.net/avatars/1415115/profil.original.jpg?v=1447027238&w=40&h=40&fit=crop&auto=format&q=92&s=624f04a87b19dde5ac2635ad3f778182"
+        }
+    },
+    "friends": [
+
+    ],
+    "created_at": 1430205284,
+    "id": 557145741,
+    "usd_pledged": "243966.9613248855",
+    "country": "DE",
+    "currency": "EUR",
+    "category": {
+        "slug": "film & video/animation",
+        "color": 16734574,
+        "position": 2,
+        "parent_id": 11,
+        "name": "Animation",
+        "id": 29,
+        "urls": {
+            "web": {
+                "discover": "http://www.kickstarter.com/discover/categories/film%20&%20video/animation"
+            }
+        }
+    },
+    "state": "live",
+    "profile": {
+        "text_color": null,
+        "blurb": null,
+        "link_background_color": null,
+        "background_color": null,
+        "name": null,
+        "feature_image_attributes": {
+            "image_urls": {
+                "baseball_card": "https://ksr-ugc.imgix.net/projects/1827899/photo-original.png?v=1450970958&w=1536&h=1152&fit=crop&auto=format&q=92&s=b781f0715062e30ed7fedd9e5448428d",
+                "default": "https://ksr-ugc.imgix.net/projects/1827899/photo-original.png?v=1450970958&w=1536&h=1152&fit=crop&auto=format&q=92&s=b781f0715062e30ed7fedd9e5448428d"
+            }
+        },
+        "link_text": null,
+        "state": "inactive",
+        "id": 1867473,
+        "link_text_color": null,
+        "project_id": 1867473,
+        "state_changed_at": 1430205284,
+        "background_image_opacity": 0.8,
+        "link_url": null,
+        "should_show_feature_image": true,
+        "show_feature_image": false
+    },
+    "slug": "nichtlustig-die-serie",
+    "currency_trailing_code": false,
+    "location": {
+        "slug": "frankfurt-brandenburg-de",
+        "is_root": false,
+        "country": "DE",
+        "displayable_name": "Frankfurt, Germany",
+        "short_name": "Frankfurt, Germany",
+        "name": "Frankfurt",
+        "type": "Town",
+        "state": "Brandenburg",
+        "id": 518763,
+        "urls": {
+            "api": {
+                "nearby_projects": "https://***REMOVED***/v1/discover?signature=1451134927.08167f14ba9d6892467b22e35f3964fc00b089ab&woe_id=518763"
+            },
+            "web": {
+                "location": "https://www.kickstarter.com/locations/frankfurt-brandenburg-de",
+                "discover": "https://www.kickstarter.com/discover/places/frankfurt-brandenburg-de"
+            }
+        }
+    },
+    "spotlight": false,
+    "photo": {
+        "full": "https://ksr-ugc.imgix.net/projects/1827899/photo-original.png?v=1450970958&w=560&h=420&fit=crop&auto=format&q=92&s=594264c94916124ea220b7127d1466bf",
+        "ed": "https://ksr-ugc.imgix.net/projects/1827899/photo-original.png?v=1450970958&w=338&h=250&fit=crop&auto=format&q=92&s=c73d42211568de0cf9ceae718f14c491",
+        "little": "https://ksr-ugc.imgix.net/projects/1827899/photo-original.png?v=1450970958&w=200&h=150&fit=crop&auto=format&q=92&s=c2ca5c297d16a24de02c1af068abcb81",
+        "small": "https://ksr-ugc.imgix.net/projects/1827899/photo-original.png?v=1450970958&w=160&h=120&fit=crop&auto=format&q=92&s=a9b249297d5f113ebf220ed3cf9a36a5",
+        "med": "https://ksr-ugc.imgix.net/projects/1827899/photo-original.png?v=1450970958&w=266&h=200&fit=crop&auto=format&q=92&s=04549703ce466eb7c8f14ea8b75bb3ec",
+        "thumb": "https://ksr-ugc.imgix.net/projects/1827899/photo-original.png?v=1450970958&w=40&h=30&fit=crop&auto=format&q=92&s=575f073a4f77fa17fe6669f02b4153d2",
+        "1536x1152": "https://ksr-ugc.imgix.net/projects/1827899/photo-original.png?v=1450970958&w=1536&h=1152&fit=crop&auto=format&q=92&s=b781f0715062e30ed7fedd9e5448428d",
+        "1024x768": "https://ksr-ugc.imgix.net/projects/1827899/photo-original.png?v=1450970958&w=1024&h=768&fit=crop&auto=format&q=92&s=784631f5c3eca2da83fcaf887eb37bdc",
+        "key": "projects/1827899/photo-original.png"
+    },
+    "goal": 110000,
+    "state_changed_at": 1448209184,
+    "currency_symbol": "€",
+    "comments_count": 195,
+    "is_backing": false,
+    "updates_count": 17,
+    "name": "NICHTLUSTIG - die Serie!",
+    "blurb": "Zeitreisende Enten! Riesentintenfisch! Lemminge! Yetis! Tod! Pudel! Eine ganze Trickfilmserie!",
+    "video": {
+        "status": "successful",
+        "frame": "https://d15chbti7ht62o.cloudfront.net/projects/1827899/video-612035-h264_high.jpg?2015",
+        "webm": "https://ksr-video.imgix.net/projects/1827899/video-612035-webm.webm",
+        "base": "https://ksr-video.imgix.net/projects/1827899/video-612035-h264_base.mp4",
+        "high": "https://ksr-video.imgix.net/projects/1827899/video-612035-h264_high.mp4",
+        "id": 612035,
+        "height": 360,
+        "width": 640
+    },
+    "backers_count": 8316,
+    "updated_at": 1450975742,
+    "disable_communication": false,
+    "is_starred": false,
+    "static_usd_rate": "1.06471327",
+    "pledged": 229138.65,
+    "urls": {
+        "api": {
+            "project": "https://***REMOVED***/v1/projects/557145741?signature=1451168881.2639881fdf3eae48cec9f935266df9a8ffdd485f",
+            "message_creator": "https://***REMOVED***/v1/projects/557145741/messages?signature=1451168881.3e9f859e531502a98f0243ed96fa22ca9cfb727e",
+            "updates": "https://***REMOVED***/v1/projects/557145741/updates?signature=1451168881.8861a5ac635addf73d402980a9834fca112f8de5",
+            "star": "https://***REMOVED***/v1/projects/557145741/star?signature=1451168881.7134bc5691337b430e495e3402146bd5bc5bbc22",
+            "comments": "https://***REMOVED***/v1/projects/557145741/comments?signature=1451168881.e074f37f4b55089afb02aa6e9af6ca115fe19308"
+        },
+        "web": {
+            "project": "https://www.kickstarter.com/projects/nichtlustig/nichtlustig-die-serie",
+            "message_creator": "https://www.kickstarter.com/projects/nichtlustig/nichtlustig-die-serie/messages/new?message%5Bto%5D=nichtlustig",
+            "rewards": "https://www.kickstarter.com/projects/nichtlustig/nichtlustig-die-serie/rewards",
+            "project_short": "https://www.kickstarter.com/projects/nichtlustig/nichtlustig-die-serie",
+            "updates": "https://www.kickstarter.com/projects/nichtlustig/nichtlustig-die-serie/posts"
+        }
+    },
+    "rewards": [
+        {
+            "reward": "Keine Belohnung",
+            "id": 0,
+            "minimum": 1
+        },
+        {
+            "reward": "ZEITREISENDE ENTEN!\r\n\r\nDie komplette erste Folge JETZT SOFORT auf Kickstarter anschauen! \r\n( im Nur-für-Unterstützer-Update #1 )\r\nSpäter natürlich auch als Download.",
+            "estimated_delivery_on": 1451606400,
+            "updated_at": 1451078130,
+            "shipping_enabled": false,
+            "id": 3972482,
+            "project_id": 557145741,
+            "urls": {
+                "api": {
+                    "reward": "https://***REMOVED***/v1/projects/557145741/rewards/3972482?signature=1451168881.5d0301f103fa95ae5d08af3db47dadc3a62fe8b0"
+                }
+            },
+            "backers_count": 389,
+            "minimum": 1,
+            "description": "ZEITREISENDE ENTEN!\r\n\r\nDie komplette erste Folge JETZT SOFORT auf Kickstarter anschauen! \r\n( im Nur-für-Unterstützer-Update #1 )\r\nSpäter natürlich auch als Download."
+        },
+        {
+            "reward": "OCTOZILLA!\r\n\r\nVon wegen, es kommt nicht auf die Größe an. Sobald die zweite Folge fertig ist, kannst Du sie runterladen und den Riesentintenfisch angucken, so oft Du magst.\r\n\r\nAusserdem bekommst Du:\r\n• die Folge „Zeitreisende Enten“ zum sofort Anschauen und später als Download",
+            "estimated_delivery_on": 1451606400,
+            "updated_at": 1451050192,
+            "shipping_enabled": false,
+            "id": 3978589,
+            "project_id": 557145741,
+            "urls": {
+                "api": {
+                    "reward": "https://***REMOVED***/v1/projects/557145741/rewards/3978589?signature=1451168881.dd709526c3e12624d6db006381d6fb08157bf683"
+                }
+            },
+            "backers_count": 903,
+            "minimum": 2,
+            "description": "OCTOZILLA!\r\n\r\nVon wegen, es kommt nicht auf die Größe an. Sobald die zweite Folge fertig ist, kannst Du sie runterladen und den Riesentintenfisch angucken, so oft Du magst.\r\n\r\nAusserdem bekommst Du:\r\n• die Folge „Zeitreisende Enten“ zum sofort Anschauen und später als Download"
+        },
+        {
+            "reward": "ALLE Folgen! \r\nUnd EXTRAS!\r\n\r\nDie volle Ladung NICHTLUSTIG! \r\nDu bekommst ALLE über Kickstarter finanzierten NICHTLUSTIG-Folgen als Download. Ausserdem jede Menge Extras wie rausgeschnittene Szenen, animierte Storyboards und Audio-Kommentare...\r\n\r\nAusserdem bekommst Du: \r\n• die Folge „Zeitreisende Enten“ zum sofort Anschauen",
+            "estimated_delivery_on": 1464739200,
+            "updated_at": 1451081684,
+            "shipping_enabled": false,
+            "id": 3978595,
+            "project_id": 557145741,
+            "urls": {
+                "api": {
+                    "reward": "https://***REMOVED***/v1/projects/557145741/rewards/3978595?signature=1451168881.335d1b59e6a537edecf9713a52bcd5d380f8612c"
+                }
+            },
+            "backers_count": 3792,
+            "minimum": 10,
+            "description": "ALLE Folgen! \r\nUnd EXTRAS!\r\n\r\nDie volle Ladung NICHTLUSTIG! \r\nDu bekommst ALLE über Kickstarter finanzierten NICHTLUSTIG-Folgen als Download. Ausserdem jede Menge Extras wie rausgeschnittene Szenen, animierte Storyboards und Audio-Kommentare...\r\n\r\nAusserdem bekommst Du: \r\n• die Folge „Zeitreisende Enten“ zum sofort Anschauen"
+        },
+        {
+            "reward": "DVD - Kickstarter-Special-Edition!\r\n\r\nFernseher an und ab auf die Couch! Eine exklusive DVD mit allen Folgen und Extras. \r\nKickstarter-Special-Edition!\r\n\r\nAusserdem bekommst Du:\r\n• ALLE Folgen & Extras als Download\r\n• Dankeschön-Nennung auf NICHTLUSTIG\r\n• die Folge „Zeitreisende Enten“ zum sofort Anschauen",
+            "estimated_delivery_on": 1472688000,
+            "updated_at": 1451081478,
+            "shipping_enabled": true,
+            "id": 3978596,
+            "shipping_preference": "unrestricted",
+            "project_id": 557145741,
+            "shipping_summary": "Weltweiter Versand",
+            "urls": {
+                "api": {
+                    "reward": "https://***REMOVED***/v1/projects/557145741/rewards/3978596?signature=1451168881.70fb86c2b4e98c48560040107ca18f08716debdf"
+                }
+            },
+            "backers_count": 1863,
+            "minimum": 30,
+            "description": "DVD - Kickstarter-Special-Edition!\r\n\r\nFernseher an und ab auf die Couch! Eine exklusive DVD mit allen Folgen und Extras. \r\nKickstarter-Special-Edition!\r\n\r\nAusserdem bekommst Du:\r\n• ALLE Folgen & Extras als Download\r\n• Dankeschön-Nennung auf NICHTLUSTIG\r\n• die Folge „Zeitreisende Enten“ zum sofort Anschauen"
+        },
+        {
+            "reward": "Unterstützer-SHIRT!\r\n\r\nEndlich nicht mehr nackig sein! Mit dem kuschelig weichen NICHTLUSTIG-Kickstarter-Unterstützer-Shirt. \r\nWahlweise in schwarz oder weiss, als T-Shirt oder Girlie-Shirt und in allen Größen. \r\n\r\nAusserdem bekommst Du:\r\n• ALLE Folgen & Extras als Download \r\n• DVD - Kickstarter-Special-Edition\r\n• Dankeschön-Nennung auf NICHTLUSTIG\r\n• die Folge „Zeitreisende Enten“ zum sofort Anschauen",
+            "estimated_delivery_on": 1454284800,
+            "updated_at": 1451081478,
+            "shipping_enabled": true,
+            "id": 3978601,
+            "shipping_preference": "unrestricted",
+            "project_id": 557145741,
+            "shipping_summary": "Weltweiter Versand",
+            "urls": {
+                "api": {
+                    "reward": "https://***REMOVED***/v1/projects/557145741/rewards/3978601?signature=1451168881.b985d4463d4501975dbb87115d9eec7c8f560382"
+                }
+            },
+            "backers_count": 829,
+            "minimum": 50,
+            "description": "Unterstützer-SHIRT!\r\n\r\nEndlich nicht mehr nackig sein! Mit dem kuschelig weichen NICHTLUSTIG-Kickstarter-Unterstützer-Shirt. \r\nWahlweise in schwarz oder weiss, als T-Shirt oder Girlie-Shirt und in allen Größen. \r\n\r\nAusserdem bekommst Du:\r\n• ALLE Folgen & Extras als Download \r\n• DVD - Kickstarter-Special-Edition\r\n• Dankeschön-Nennung auf NICHTLUSTIG\r\n• die Folge „Zeitreisende Enten“ zum sofort Anschauen"
+        },
+        {
+            "reward": "Signiertes POSTER!\r\n\r\nEin exklusives Riesenposter für \"Zeitreisende Enten\" oder \"Octozilla\"- signiert von Joscha Sauer! Mit Widmung! Und Liebe! Wird gerollt geliefert.\r\n\r\nAusserdem bekommst Du: \r\n• ALLE Folgen & Extras als Download \r\n• Unterstützer-Shirt\r\n• DVD - Kickstarter-Special-Edition\r\n• Dankeschön-Nennung auf NICHTLUSTIG\r\n• die Folge „Zeitreisende Enten“ zum sofort Anschauen",
+            "estimated_delivery_on": 1454284800,
+            "updated_at": 1451052856,
+            "shipping_enabled": true,
+            "id": 3978608,
+            "shipping_preference": "unrestricted",
+            "project_id": 557145741,
+            "shipping_summary": "Weltweiter Versand",
+            "urls": {
+                "api": {
+                    "reward": "https://***REMOVED***/v1/projects/557145741/rewards/3978608?signature=1451168881.980f7c815326851fe1ce4e8d3999ea9924149a79"
+                }
+            },
+            "backers_count": 265,
+            "minimum": 100,
+            "description": "Signiertes POSTER!\r\n\r\nEin exklusives Riesenposter für \"Zeitreisende Enten\" oder \"Octozilla\"- signiert von Joscha Sauer! Mit Widmung! Und Liebe! Wird gerollt geliefert.\r\n\r\nAusserdem bekommst Du: \r\n• ALLE Folgen & Extras als Download \r\n• Unterstützer-Shirt\r\n• DVD - Kickstarter-Special-Edition\r\n• Dankeschön-Nennung auf NICHTLUSTIG\r\n• die Folge „Zeitreisende Enten“ zum sofort Anschauen"
+        },
+        {
+            "reward": "Limitiertes und signiertes ARTBOOK!\r\n\r\nEin limitiertes Hardcover-Buch mit all den wunderschönen Entwürfen, Storyboards, Model Sheets, Hintergründen, usw. aus der NICHTLUSTIG-Trickfilmproduktion. Signiert von Joscha Sauer und vielen Künstlern, die daran mitgearbeitet haben!\r\n\r\nAusserdem bekommst Du: \r\n• ALLE Folgen & Extras als Download \r\n• signiertes Poster\r\n• Unterstützer-Shirt \r\n• DVD - Kickstarter-Special-Edition \r\n• Dankeschön-Nennung auf NICHTLUSTIG\r\n• die Folge „Zeitreisende Enten“ zum sofort Anschauen",
+            "estimated_delivery_on": 1472688000,
+            "updated_at": 1451052856,
+            "shipping_enabled": true,
+            "id": 3978602,
+            "shipping_preference": "unrestricted",
+            "project_id": 557145741,
+            "shipping_summary": "Weltweiter Versand",
+            "urls": {
+                "api": {
+                    "reward": "https://***REMOVED***/v1/projects/557145741/rewards/3978602?signature=1451168881.45daee315e58d66efd8cf97d1b8ba27202348fe1"
+                }
+            },
+            "backers_count": 196,
+            "minimum": 200,
+            "description": "Limitiertes und signiertes ARTBOOK!\r\n\r\nEin limitiertes Hardcover-Buch mit all den wunderschönen Entwürfen, Storyboards, Model Sheets, Hintergründen, usw. aus der NICHTLUSTIG-Trickfilmproduktion. Signiert von Joscha Sauer und vielen Künstlern, die daran mitgearbeitet haben!\r\n\r\nAusserdem bekommst Du: \r\n• ALLE Folgen & Extras als Download \r\n• signiertes Poster\r\n• Unterstützer-Shirt \r\n• DVD - Kickstarter-Special-Edition \r\n• Dankeschön-Nennung auf NICHTLUSTIG\r\n• die Folge „Zeitreisende Enten“ zum sofort Anschauen"
+        },
+        {
+            "reward": "UNSTERBLICHKEIT! Naja, ein bisschen.\r\n\r\nDu wirst im Abspann verewigt und damit offizieller Co-Produzent der NICHTLUSTIG-Serie! Herzlichen Glückwunsch! Kündige Deinen Job! Zieh nach Hollywood! Du bist Produzent!\r\n\r\nAusserdem bekommst Du: \r\n• ALLE Folgen & Extras als Download \r\n• limitiertes Artbook\r\n• signiertes Poster\r\n• Unterstützer-Shirt \r\n• DVD - Kickstarter-Special-Edition \r\n• Dankeschön-Nennung auf NICHTLUSTIG\r\n• die Folge „Zeitreisende Enten“ zum sofort Anschauen",
+            "estimated_delivery_on": 1451606400,
+            "updated_at": 1450222261,
+            "shipping_enabled": true,
+            "id": 3978609,
+            "shipping_preference": "unrestricted",
+            "project_id": 557145741,
+            "shipping_summary": "Weltweiter Versand",
+            "urls": {
+                "api": {
+                    "reward": "https://***REMOVED***/v1/projects/557145741/rewards/3978609?signature=1451168881.719b4cbeb48c7aa762f4d01efce626edae5d3f31"
+                }
+            },
+            "backers_count": 15,
+            "minimum": 500,
+            "description": "UNSTERBLICHKEIT! Naja, ein bisschen.\r\n\r\nDu wirst im Abspann verewigt und damit offizieller Co-Produzent der NICHTLUSTIG-Serie! Herzlichen Glückwunsch! Kündige Deinen Job! Zieh nach Hollywood! Du bist Produzent!\r\n\r\nAusserdem bekommst Du: \r\n• ALLE Folgen & Extras als Download \r\n• limitiertes Artbook\r\n• signiertes Poster\r\n• Unterstützer-Shirt \r\n• DVD - Kickstarter-Special-Edition \r\n• Dankeschön-Nennung auf NICHTLUSTIG\r\n• die Folge „Zeitreisende Enten“ zum sofort Anschauen"
+        },
+        {
+            "reward": "DU in einer NICHTLUSTIG-Folge!\r\n\r\nFoto her! Dann wirst Du von uns in eine NICHTLUSTIG-Folge gezeichnet. Die so individualisierte Folge bekommst Du dann als Download und kannst Dich selbst in einer NICHTLUSTIG-Folge sehen.\r\n\r\nAusserdem bekommst Du: \r\n• ALLE Folgen & Extras als Download \r\n• Originalzeichnung von Joscha Sauer\r\n• Produzenten-Credit im Abspann\r\n• limitiertes ART-BOOK\r\n• signiertes POSTER \r\n• Unterstützer-SHIRT \r\n• DVD - Kickstarter-Special-Edition \r\n• Dankeschön-Nennung auf NICHTLUSTIG\r\n• die Folge „Zeitreisende Enten“ zum sofort Anschauen",
+            "estimated_delivery_on": 1456790400,
+            "updated_at": 1450177781,
+            "shipping_enabled": true,
+            "id": 3978612,
+            "shipping_preference": "unrestricted",
+            "project_id": 557145741,
+            "shipping_summary": "Weltweiter Versand",
+            "urls": {
+                "api": {
+                    "reward": "https://***REMOVED***/v1/projects/557145741/rewards/3978612?signature=1451168881.554646d337abff221c4ac2d7f4e25ae7cf950026"
+                }
+            },
+            "backers_count": 7,
+            "minimum": 1000,
+            "description": "DU in einer NICHTLUSTIG-Folge!\r\n\r\nFoto her! Dann wirst Du von uns in eine NICHTLUSTIG-Folge gezeichnet. Die so individualisierte Folge bekommst Du dann als Download und kannst Dich selbst in einer NICHTLUSTIG-Folge sehen.\r\n\r\nAusserdem bekommst Du: \r\n• ALLE Folgen & Extras als Download \r\n• Originalzeichnung von Joscha Sauer\r\n• Produzenten-Credit im Abspann\r\n• limitiertes ART-BOOK\r\n• signiertes POSTER \r\n• Unterstützer-SHIRT \r\n• DVD - Kickstarter-Special-Edition \r\n• Dankeschön-Nennung auf NICHTLUSTIG\r\n• die Folge „Zeitreisende Enten“ zum sofort Anschauen"
+        },
+        {
+            "reward": "Kolorierte ORIGINALZEICHNUNG!\r\nMit Making-of-Video!\r\n\r\nSchau Joscha Sauer dabei zu, wie er Dir Dein Wunschmotiv zeichnet und koloriert! \r\nUnd dann zuschickt. Wobei das der weniger interessante Teil ist.\r\n\r\nAusserdem bekommst Du: \r\n• ALLE Folgen & Extras als Download \r\n• Produzenten-Credit im Abspann\r\n• limitiertes Artbook\r\n• signiertes Poster\r\n• Unterstützer-Shirt \r\n• DVD - Kickstarter-Special-Edition \r\n• Dankeschön-Nennung auf NICHTLUSTIG\r\n• die Folge „Zeitreisende Enten“ zum sofort Anschauen",
+            "estimated_delivery_on": 1456790400,
+            "updated_at": 1448923022,
+            "shipping_enabled": true,
+            "id": 3978610,
+            "shipping_preference": "unrestricted",
+            "project_id": 557145741,
+            "shipping_summary": "Weltweiter Versand",
+            "urls": {
+                "api": {
+                    "reward": "https://***REMOVED***/v1/projects/557145741/rewards/3978610?signature=1451168881.0b946c7ef0cf64d33b9fb3a1360b4d08b9a27c2c"
+                }
+            },
+            "backers_count": 1,
+            "minimum": 2000,
+            "description": "Kolorierte ORIGINALZEICHNUNG!\r\nMit Making-of-Video!\r\n\r\nSchau Joscha Sauer dabei zu, wie er Dir Dein Wunschmotiv zeichnet und koloriert! \r\nUnd dann zuschickt. Wobei das der weniger interessante Teil ist.\r\n\r\nAusserdem bekommst Du: \r\n• ALLE Folgen & Extras als Download \r\n• Produzenten-Credit im Abspann\r\n• limitiertes Artbook\r\n• signiertes Poster\r\n• Unterstützer-Shirt \r\n• DVD - Kickstarter-Special-Edition \r\n• Dankeschön-Nennung auf NICHTLUSTIG\r\n• die Folge „Zeitreisende Enten“ zum sofort Anschauen"
+        },
+        {
+            "reward": "PRIVATVORFÜHRUNG! Und Popcorn!\r\n\r\nWir kommen mit fertigen und unfertigen neuen Trickfilmfolgen bei Euch vorbei, bringen Popcorn mit und beantworten nach der Vorführung Eure Fragen. \r\n\"Wir\" sind Joscha Sauer, Zeichner, Autor, Sprecher und Regisseur, und Haiko Hörnig, Autor, Sprecher und Storyboard-Artist. \r\nIhr könnt entscheiden, wohin wir kommen sollen. In Eure Uni, in Euer Kino oder zu Euch nach Hause. Dann machen wir mit Euch einen Termin aus und stehen frisch geduscht und gut gelaunt bei Euch auf der Matte. Mit Popcorn.\r\n\r\nAusserdem bekommst Du: \r\n• ALLE Folgen & Extras als Download\r\n• DU in einer NICHTLUSTIG-Folge\r\n• Originalzeichnung von Joscha Sauer\r\n• Produzenten-Credit im Abspann\r\n• limitiertes Artbook\r\n• signiertes Poster \r\n• Unterstützer-Shirt \r\n• DVD - Kickstarter-Special-Edition \r\n• Dankeschön-Nennung auf NICHTLUSTIG\r\n• die Folge „Zeitreisende Enten“ zum sofort Anschauen",
+            "estimated_delivery_on": 1456790400,
+            "updated_at": 1448167249,
+            "shipping_enabled": true,
+            "id": 4400626,
+            "shipping_preference": "unrestricted",
+            "project_id": 557145741,
+            "shipping_summary": "Weltweiter Versand",
+            "urls": {
+                "api": {
+                    "reward": "https://***REMOVED***/v1/projects/557145741/rewards/4400626?signature=1451168881.c168b795cb3e0d475875a8f51616040486c4bdb7"
+                }
+            },
+            "backers_count": 0,
+            "minimum": 5000,
+            "description": "PRIVATVORFÜHRUNG! Und Popcorn!\r\n\r\nWir kommen mit fertigen und unfertigen neuen Trickfilmfolgen bei Euch vorbei, bringen Popcorn mit und beantworten nach der Vorführung Eure Fragen. \r\n\"Wir\" sind Joscha Sauer, Zeichner, Autor, Sprecher und Regisseur, und Haiko Hörnig, Autor, Sprecher und Storyboard-Artist. \r\nIhr könnt entscheiden, wohin wir kommen sollen. In Eure Uni, in Euer Kino oder zu Euch nach Hause. Dann machen wir mit Euch einen Termin aus und stehen frisch geduscht und gut gelaunt bei Euch auf der Matte. Mit Popcorn.\r\n\r\nAusserdem bekommst Du: \r\n• ALLE Folgen & Extras als Download\r\n• DU in einer NICHTLUSTIG-Folge\r\n• Originalzeichnung von Joscha Sauer\r\n• Produzenten-Credit im Abspann\r\n• limitiertes Artbook\r\n• signiertes Poster \r\n• Unterstützer-Shirt \r\n• DVD - Kickstarter-Special-Edition \r\n• Dankeschön-Nennung auf NICHTLUSTIG\r\n• die Folge „Zeitreisende Enten“ zum sofort Anschauen"
+        },
+        {
+            "reward": "KÖNIG DER FOLGE, der Erste\r\n\r\nAm Ende der Folge \"Zeitreisende Enten\" wird Dein Foto mit einer Krone und der Bildunterschrift \"König der Folge\" eingeblendet.\r\nJede Folge hat nur EINEN König! \r\nUnd Du bist der König DIESER Folge. Oder die Königin. Oder beides.\r\n\r\nAusserdem bekommst Du: \r\n• ALLE Folgen & Extras als Download \r\n• DU in einer NICHTLUSTIG-Folge \r\n• Originalzeichnung von Joscha Sauer \r\n• Produzenten-Credit im Abspann \r\n• limitiertes Artbook \r\n• signiertes Poster \r\n• Unterstützer-Shirt \r\n• DVD - Kickstarter-Special-Edition \r\n• Dankeschön-Nennung auf NICHTLUSTIG\r\n• die Folge „Zeitreisende Enten“ zum sofort Anschauen",
+            "limit": 1,
+            "estimated_delivery_on": 1451606400,
+            "updated_at": 1448167249,
+            "shipping_enabled": true,
+            "id": 4624025,
+            "shipping_preference": "unrestricted",
+            "project_id": 557145741,
+            "shipping_summary": "Weltweiter Versand",
+            "urls": {
+                "api": {
+                    "reward": "https://***REMOVED***/v1/projects/557145741/rewards/4624025?signature=1451168881.b9d706bddb08ebd02a860637cbaad6dc402b2c0b"
+                }
+            },
+            "remaining": 1,
+            "backers_count": 0,
+            "minimum": 7000,
+            "description": "KÖNIG DER FOLGE, der Erste\r\n\r\nAm Ende der Folge \"Zeitreisende Enten\" wird Dein Foto mit einer Krone und der Bildunterschrift \"König der Folge\" eingeblendet.\r\nJede Folge hat nur EINEN König! \r\nUnd Du bist der König DIESER Folge. Oder die Königin. Oder beides.\r\n\r\nAusserdem bekommst Du: \r\n• ALLE Folgen & Extras als Download \r\n• DU in einer NICHTLUSTIG-Folge \r\n• Originalzeichnung von Joscha Sauer \r\n• Produzenten-Credit im Abspann \r\n• limitiertes Artbook \r\n• signiertes Poster \r\n• Unterstützer-Shirt \r\n• DVD - Kickstarter-Special-Edition \r\n• Dankeschön-Nennung auf NICHTLUSTIG\r\n• die Folge „Zeitreisende Enten“ zum sofort Anschauen"
+        },
+        {
+            "reward": "KÖNIG DER FOLGE, der Zweite\r\n\r\nAm Ende der Folge \"Octozilla\" wird Dein Foto mit einer Krone und der Bildunterschrift \"König der Folge\" eingeblendet.\r\nJede Folge hat nur EINEN König! \r\nUnd Du bist der König DIESER Folge. Oder die Königin. Oder beides.\r\n\r\nAusserdem bekommst Du: \r\n• ALLE Folgen & Extras als Download \r\n• DU in einer NICHTLUSTIG-Folge \r\n• Originalzeichnung von Joscha Sauer \r\n• Produzenten-Credit im Abspann \r\n• limitiertes Artbook \r\n• signiertes Poster \r\n• Unterstützer-Shirt \r\n• DVD - Kickstarter-Special-Edition \r\n• Dankeschön-Nennung auf NICHTLUSTIG\r\n• die Folge „Zeitreisende Enten“ zum sofort Anschauen",
+            "limit": 1,
+            "estimated_delivery_on": 1456790400,
+            "updated_at": 1448167249,
+            "shipping_enabled": true,
+            "id": 4624034,
+            "shipping_preference": "unrestricted",
+            "project_id": 557145741,
+            "shipping_summary": "Weltweiter Versand",
+            "urls": {
+                "api": {
+                    "reward": "https://***REMOVED***/v1/projects/557145741/rewards/4624034?signature=1451168881.d16f9064d873bf6ba7b55379563de6c5ee258914"
+                }
+            },
+            "remaining": 1,
+            "backers_count": 0,
+            "minimum": 7000,
+            "description": "KÖNIG DER FOLGE, der Zweite\r\n\r\nAm Ende der Folge \"Octozilla\" wird Dein Foto mit einer Krone und der Bildunterschrift \"König der Folge\" eingeblendet.\r\nJede Folge hat nur EINEN König! \r\nUnd Du bist der König DIESER Folge. Oder die Königin. Oder beides.\r\n\r\nAusserdem bekommst Du: \r\n• ALLE Folgen & Extras als Download \r\n• DU in einer NICHTLUSTIG-Folge \r\n• Originalzeichnung von Joscha Sauer \r\n• Produzenten-Credit im Abspann \r\n• limitiertes Artbook \r\n• signiertes Poster \r\n• Unterstützer-Shirt \r\n• DVD - Kickstarter-Special-Edition \r\n• Dankeschön-Nennung auf NICHTLUSTIG\r\n• die Folge „Zeitreisende Enten“ zum sofort Anschauen"
+        },
+        {
+            "reward": "KÖNIG DER FOLGE, der Dritte\r\n\r\nAm Ende der Folge \"Countdown aus dem All\" wird Dein Foto mit einer Krone und der Bildunterschrift \"König der Folge\" eingeblendet.\r\nJede Folge hat nur EINEN König! \r\nUnd Du bist der König DIESER Folge. Oder die Königin. Oder beides.\r\n\r\nAusserdem bekommst Du: \r\n• ALLE Folgen & Extras als Download \r\n• DU in einer NICHTLUSTIG-Folge \r\n• Originalzeichnung von Joscha Sauer \r\n• Produzenten-Credit im Abspann \r\n• limitiertes Artbook \r\n• signiertes Poster \r\n• Unterstützer-Shirt \r\n• DVD - Kickstarter-Special-Edition \r\n• Dankeschön-Nennung auf NICHTLUSTIG\r\n• die Folge „Zeitreisende Enten“ zum sofort Anschauen",
+            "limit": 1,
+            "estimated_delivery_on": 1470009600,
+            "updated_at": 1448167249,
+            "shipping_enabled": true,
+            "id": 4624035,
+            "shipping_preference": "unrestricted",
+            "project_id": 557145741,
+            "shipping_summary": "Weltweiter Versand",
+            "urls": {
+                "api": {
+                    "reward": "https://***REMOVED***/v1/projects/557145741/rewards/4624035?signature=1451168881.6f75da1cbf21a5f90115c3e26de48e946404ce22"
+                }
+            },
+            "remaining": 1,
+            "backers_count": 0,
+            "minimum": 7000,
+            "description": "KÖNIG DER FOLGE, der Dritte\r\n\r\nAm Ende der Folge \"Countdown aus dem All\" wird Dein Foto mit einer Krone und der Bildunterschrift \"König der Folge\" eingeblendet.\r\nJede Folge hat nur EINEN König! \r\nUnd Du bist der König DIESER Folge. Oder die Königin. Oder beides.\r\n\r\nAusserdem bekommst Du: \r\n• ALLE Folgen & Extras als Download \r\n• DU in einer NICHTLUSTIG-Folge \r\n• Originalzeichnung von Joscha Sauer \r\n• Produzenten-Credit im Abspann \r\n• limitiertes Artbook \r\n• signiertes Poster \r\n• Unterstützer-Shirt \r\n• DVD - Kickstarter-Special-Edition \r\n• Dankeschön-Nennung auf NICHTLUSTIG\r\n• die Folge „Zeitreisende Enten“ zum sofort Anschauen"
+        }
+    ],
+    "deadline": 1452189600,
+    "launched_at": 1448209184
+}
