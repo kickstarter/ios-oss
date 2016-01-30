@@ -5,9 +5,9 @@ checkout:
   post:
     - git submodule sync
     - git submodule update --init
-    - ./Library/Kickstarter-KsApi/bin/carthage-bootstrap
-    - ./Library/Kickstarter-Models/bin/carthage-bootstrap
-    - ./Library/Kickstarter-ReactiveExtensions/bin/carthage-bootstrap
+    - ./Library/Kickstarter-KsApi/bin/carthage-bootstrap-if-needed
+    - ./Library/Kickstarter-Models/bin/carthage-bootstrap-if-needed
+    - ./Library/Kickstarter-ReactiveExtensions/bin/carthage-bootstrap-if-needed
 dependencies:
   override:
     - bin/carthage-bootstrap-if-needed
