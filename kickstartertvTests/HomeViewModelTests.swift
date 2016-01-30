@@ -41,14 +41,14 @@ final class HomeViewModelTests : XCTestCase {
 
       viewModel.inputs.focusedPlaylist(playlist)
 
-      XCTAssert(!nowPlayingTest.didEmitValue, "Focusing a playlist doesn't play it immediately")
+      XCTAssertFalse(nowPlayingTest.didEmitValue, "Focusing a playlist doesn't play it immediately")
       scheduler.advanceByInterval(0.5)
-      XCTAssert(!nowPlayingTest.didEmitValue, "After a little bit of time the playlist should still not play")
-      scheduler.advanceByInterval(0.7)
-      XCTAssert(nowPlayingTest.didEmitValue, "After waiting enough time the playlist should play.")
+      XCTAssertFalse(nowPlayingTest.didEmitValue, "After a little bit of time the playlist should still not play")
+      scheduler.advanceByInterval(1.0)
+      XCTAssertTrue(nowPlayingTest.didEmitValue, "After waiting enough time the playlist should play.")
 
       viewModel.inputs.clickedPlaylist(playlist)
-      XCTAssert(selectProjectTest.didEmitValue, "Clicking the playlist should select a project.")
+      XCTAssertTrue(selectProjectTest.didEmitValue, "Clicking the playlist should select a project.")
       XCTAssertEqual(nowPlayingTest.nextValues.last?.projectName, selectProjectTest.nextValues.last?.name,
         "Clicking the playlist should select the project that was currently playing.")
 
@@ -62,9 +62,9 @@ final class HomeViewModelTests : XCTestCase {
 
       viewModel.inputs.clickedPlaylist(otherPlaylist)
       XCTAssertEqual(1, selectProjectTest.nextValues.count, "Clicking this playlist before it has begun " +
-        "playing shoudl not select the project.")
+        "playing should not select the project.")
 
-      scheduler.advanceByInterval(0.7)
+      scheduler.advanceByInterval(2.0)
       XCTAssertEqual(2, nowPlayingTest.nextValues.count, "Waiting enough time the playlist should play.")
 
       viewModel.inputs.clickedPlaylist(otherPlaylist)
@@ -93,7 +93,7 @@ final class HomeViewModelTests : XCTestCase {
       XCTAssertTrue(interfaceImportanceTest.nextValues.last!, "Interface remains important immediately " +
         "video begins playing.")
 
-      scheduler.advanceByInterval(5.0)
+      scheduler.advanceByInterval(6.0)
       XCTAssertFalse(interfaceImportanceTest.nextValues.last!, "After some time passes the interface " +
         "becomes less important.")
 
