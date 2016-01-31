@@ -1,6 +1,6 @@
 import ReactiveCocoa
 
-protocol HomeViewModelInputs {
+internal protocol HomeViewModelInputs {
   /// Call when the view becomes/resigns active state, e.g. viewDidAppear, viewWillDisappear
   func isActive(active: Bool)
 

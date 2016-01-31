@@ -1,15 +1,18 @@
 import ReactiveCocoa
 import Models
 
-protocol HomeViewModelOutputs {
+internal protocol HomeViewModelOutputs {
   /// Emits when the view becomes/resigns active state
   var isActive: Signal<Bool, NoError> { get }
 
   /// Emits an array of playlists that the user can browse from the home  menu
   var playlists: SignalProducer<[HomePlaylistViewModel], NoError> { get }
 
-  /// Emits the playlist name, project name and video URL for the playlist that is beginning now.
-  var nowPlayingInfo: Signal<(projectName: String, videoUrl: NSURL), NoError> { get }
+  /// Emits the video URL for the project that is currently playing
+  var nowPlayingVideoUrl: SignalProducer<NSURL?, NoError> { get }
+
+  /// Emits the name of the project that is currently playing.
+  var nowPlayingProjectName: SignalProducer<String?, NoError> { get }
 
   /// Emits a project view model that should be opened fullscreen
   var selectProject: Signal<Project, NoError> { get }

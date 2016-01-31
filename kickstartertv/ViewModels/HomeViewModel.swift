@@ -50,7 +50,8 @@ internal final class HomeViewModel : HomeViewModelType, HomeViewModelInputs, Hom
   // MARK: Outputs
   internal let (isActive, isActiveObserver) = Signal<Bool, NoError>.pipe()
   internal let playlists: SignalProducer<[HomePlaylistViewModel], NoError>
-  internal let nowPlayingInfo: Signal<(projectName: String, videoUrl: NSURL), NoError>
+  internal let nowPlayingVideoUrl: SignalProducer<NSURL?, NoError>
+  internal let nowPlayingProjectName: SignalProducer<String?, NoError>
   internal let selectProject: Signal<Project, NoError>
   internal let interfaceImportance: Signal<Bool, NoError>
   internal let videoIsPlaying: Signal<Bool, NoError>
@@ -82,9 +83,15 @@ internal final class HomeViewModel : HomeViewModelType, HomeViewModelInputs, Hom
           .demoteErrors()
       }
 
-    self.nowPlayingInfo = nowPlaying
-      .map { $0.project }
-      .flatMap(HomeViewModel.nowPlayingInfo)
+    self.nowPlayingProjectName = SignalProducer(signal: nowPlaying)
+      .map { $0.project.name }
+      .wrapInOptional()
+      .beginsWith(value: nil)
+
+    self.nowPlayingVideoUrl = SignalProducer(signal: nowPlaying)
+      .flatMap { $0.project.video?.high }
+      .map(NSURL.init)
+      .beginsWith(value: nil)
 
     self.selectProject = nowPlaying
       .takePairWhen(clickedPlaylist)

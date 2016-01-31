@@ -2,18 +2,18 @@ import UIKit
 import AVKit
 import Models
 
-final class HomeViewController: MVVMViewController {
-  @IBOutlet weak var overlayView: UIView!
-  @IBOutlet weak var videoPlayerView: AVPlayerView!
-  @IBOutlet weak var collectionView: UICollectionView!
-  @IBOutlet weak var nowPlayingProjectNameLabel: UILabel!
-  @IBOutlet weak var nowPlaylistStackView: UIStackView!
-  @IBOutlet weak var iconsLabel: UILabel!
+internal final class HomeViewController: MVVMViewController {
+  @IBOutlet private weak var overlayView: UIView!
+  @IBOutlet private weak var videoPlayerView: AVPlayerView!
+  @IBOutlet private weak var collectionView: UICollectionView!
+  @IBOutlet private weak var nowPlayingProjectNameLabel: UILabel!
+  @IBOutlet private weak var nowPlaylistStackView: UIStackView!
+  @IBOutlet private weak var iconsLabel: UILabel!
 
-  let viewModel: HomeViewModelType = HomeViewModel()
-  var dataSource = HomePlaylistsDataSource()
+  private let viewModel: HomeViewModelType = HomeViewModel()
+  private var dataSource = HomePlaylistsDataSource()
 
-  lazy var player: AVPlayer = {
+  private lazy var player: AVPlayer = {
     let player = AVPlayer()
     NSNotificationCenter.defaultCenter().addObserver(
       self,
@@ -25,7 +25,7 @@ final class HomeViewController: MVVMViewController {
     return player
   }()
 
-  required init?(coder aDecoder: NSCoder) {
+  internal required init?(coder aDecoder: NSCoder) {
     super.init(nibName: HomeViewController.defaultNib, bundle: nil)
   }
 
@@ -33,15 +33,13 @@ final class HomeViewController: MVVMViewController {
     NSNotificationCenter.defaultCenter().removeObserver(self)
   }
 
-  override func viewDidLoad() {
+  internal override func viewDidLoad() {
     super.viewDidLoad()
 
     self.iconsLabel.text = "\u{f215} \u{f210}"
 
     self.videoPlayerView.playerLayer?.player = self.player
     self.videoPlayerView.playerLayer?.videoGravity = AVLayerVideoGravityResizeAspectFill
-
-    self.nowPlaylistStackView.alpha = 0.0
 
     collectionView.superview!.layer.mask = { gradientLayer in
       gradientLayer.frame = collectionView.superview!.bounds
@@ -66,61 +64,41 @@ final class HomeViewController: MVVMViewController {
     }
   }
 
-  override func viewWillAppear(animated: Bool) {
+  internal override func viewWillAppear(animated: Bool) {
     super.viewWillAppear(animated)
     viewModel.inputs.isActive(true)
   }
 
-  override func viewWillDisappear(animated: Bool) {
+  internal override func viewWillDisappear(animated: Bool) {
     super.viewWillDisappear(animated)
     viewModel.inputs.isActive(false)
   }
 
-  override func bindViewModel() {
+  internal override func bindViewModel() {
     super.bindViewModel()
 
-    viewModel.outputs.playlists
+    self.viewModel.outputs.playlists
       .observeForUI()
       .startWithNext { [weak self] data in
         self?.dataSource.load(data)
         self?.collectionView.reloadData()
     }
 
-    viewModel.outputs.nowPlayingInfo
-      .map { $0.videoUrl }
+    self.viewModel.outputs.nowPlayingVideoUrl
       .observeForUI()
-      .observeNext { [weak self] url in
-        let item = AVPlayerItem(URL: url)
-        self?.player.replaceCurrentItemWithPlayerItem(item)
-    }
+      .startWithNext(self.playVideo)
 
-    viewModel.outputs.isActive.filter { $0 }.take(1)
-      .observeNext { [weak self] _ in
-        self?.nowPlaylistStackView.alpha = 0.0
-    }
-
-    viewModel.outputs.nowPlayingInfo
-      .map { $0.projectName }
+    self.viewModel.outputs.nowPlayingProjectName
       .observeForUI()
-      .observeNext { [weak self] name in
-        UIView.animateWithDuration(0.3, animations: {
-            self?.nowPlaylistStackView.alpha = 0.0
-        }, completion: { _ in
-          self?.nowPlayingProjectNameLabel.text = name
-          UIView.animateWithDuration(0.3) {
-            self?.nowPlaylistStackView.alpha = 1.0
-          }
-        })
-    }
+      .startWithNext(self.swapNowPlayingInfo)
 
-    viewModel.outputs.selectProject
+    self.viewModel.outputs.selectProject
       .observeForUI()
       .observeNext { [weak self] project in
         self?.presentProject(project)
     }
 
     self.viewModel.outputs.interfaceImportance
-      .skipRepeats()
       .observeForUI()
       .observeNext { [weak self] important in
         UIView.animateWithDuration(important ? 0.2 : 0.5) {
@@ -139,16 +117,31 @@ final class HomeViewController: MVVMViewController {
     }
   }
 
-  override func pressesEnded(presses: Set<UIPress>, withEvent event: UIPressesEvent?) {
-    super.pressesEnded(presses, withEvent: event)
-
-    if let press = presses.first where press.type == .PlayPause && self.view.window != nil {
-      if player.rate == 1.0 {
-        self.viewModel.inputs.pauseVideoClick()
-      } else {
-        self.viewModel.inputs.playVideoClick()
-      }
+  private func playVideo(url: NSURL?) {
+    guard let url = url else {
+      self.player.replaceCurrentItemWithPlayerItem(nil)
+      return
     }
+
+    let item = AVPlayerItem(URL: url)
+    self.player.replaceCurrentItemWithPlayerItem(item)
+  }
+
+  private func swapNowPlayingInfo(projectName: String?) {
+
+    guard let projectName = projectName else {
+      self.nowPlaylistStackView.alpha = 0.0
+      return
+    }
+
+    UIView.animateWithDuration(0.3, animations: {
+      self.nowPlaylistStackView.alpha = 0.0
+      }, completion: { _ in
+        self.nowPlayingProjectNameLabel.text = projectName
+        UIView.animateWithDuration(0.3) {
+          self.nowPlaylistStackView.alpha = 1.0
+        }
+    })
   }
 
   private func playerFinishedPlaying(notification: NSNotification) {
@@ -159,10 +152,22 @@ final class HomeViewController: MVVMViewController {
     let controller = PlaylistViewController(initialPlaylist: Playlist.Popular, currentProject: project)
     presentViewController(controller, animated: true, completion: nil)
   }
+
+  internal override func pressesEnded(presses: Set<UIPress>, withEvent event: UIPressesEvent?) {
+    super.pressesEnded(presses, withEvent: event)
+
+    if let press = presses.first where press.type == .PlayPause && self.view.window != nil {
+      if player.rate == 1.0 {
+        self.viewModel.inputs.pauseVideoClick()
+      } else {
+        self.viewModel.inputs.playVideoClick()
+      }
+    }
+  }
 }
 
-extension HomeViewController {
-  func collectionView(collectionView: UICollectionView, didUpdateFocusInContext context: UICollectionViewFocusUpdateContext, withAnimationCoordinator coordinator: UIFocusAnimationCoordinator) {
+internal extension HomeViewController {
+  internal func collectionView(collectionView: UICollectionView, didUpdateFocusInContext context: UICollectionViewFocusUpdateContext, withAnimationCoordinator coordinator: UIFocusAnimationCoordinator) {
 
     guard let indexPath = context.nextFocusedIndexPath else { return }
 
@@ -171,7 +176,7 @@ extension HomeViewController {
     }
   }
 
-  func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+  internal func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
     if let viewModel = dataSource[indexPath] as? HomePlaylistViewModel {
       self.viewModel.inputs.clickedPlaylist(viewModel.playlist)
     }
