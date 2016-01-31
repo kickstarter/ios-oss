@@ -3,6 +3,7 @@ import XCTest
 import ReactiveCocoa
 import KsApi
 import Models
+import Prelude
 
 internal final class PlaylistViewModelTests : XCTestCase {
   let service = MockService()
@@ -27,7 +28,7 @@ internal final class PlaylistViewModelTests : XCTestCase {
 
       XCTAssertEqual(projectNameTest.lastValue, project.name, "Should emit a project immediately.")
       XCTAssertEqual(categoryNameTest.lastValue, project.category.name, "Should emit a category immediately.")
-      XCTAssertNotNil(backgroundImageTest.lastValue!, "Should emit a background image")
+      XCTAssertNotNil(flatten(backgroundImageTest.lastValue), "Should emit a background image")
     }
   }
 
@@ -40,7 +41,7 @@ internal final class PlaylistViewModelTests : XCTestCase {
       viewModel.outputs.backgroundImage.start(backgroundImageTest.observer)
 
       XCTAssertEqual(1, backgroundImageTest.nextValues.count, "Should emit a nil background image")
-      XCTAssertNil(backgroundImageTest.lastValue!, "Should emit a nil background image")
+      XCTAssertNil(flatten(backgroundImageTest.lastValue), "Should emit a nil background image")
       XCTAssertFalse(backgroundImageTest.didComplete)
     }
   }
@@ -60,7 +61,7 @@ internal final class PlaylistViewModelTests : XCTestCase {
       scheduler.advanceByInterval(6.0)
 
       XCTAssertEqual(1, backgroundImageTest.nextValues.count, "Should emit a nil background image")
-      XCTAssertNil(backgroundImageTest.lastValue!, "Should emit a nil background image")
+      XCTAssertNil(flatten(backgroundImageTest.lastValue), "Should emit a nil background image")
       XCTAssertFalse(backgroundImageTest.didComplete)
     }
   }
@@ -77,10 +78,10 @@ internal final class PlaylistViewModelTests : XCTestCase {
 
       XCTAssertFalse(backgroundImageTest.didEmitValue, "Should not have emitted a background image yet.")
 
-      scheduler.advanceByInterval(6.0)
+      scheduler.advanceByInterval(8.0)
 
-      XCTAssertEqual(1, backgroundImageTest.nextValues.count, "Should emit a nil background image")
-      XCTAssertNil(backgroundImageTest.lastValue!, "Should emit a nil background image")
+      XCTAssertEqual(1, backgroundImageTest.nextValues.count, "Should have emitted a background image.")
+      XCTAssertNil(flatten(backgroundImageTest.lastValue), "Should emit a nil background image")
       XCTAssertFalse(backgroundImageTest.didComplete)
 
       scheduler.run()
