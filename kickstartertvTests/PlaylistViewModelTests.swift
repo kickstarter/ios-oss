@@ -6,14 +6,24 @@ import Models
 import Prelude
 
 internal final class PlaylistViewModelTests : XCTestCase {
-  let service = MockService()
   let playlist = Playlist.Featured
   lazy var project: Project = {
     return MockService().fetchProject(DiscoveryParams()).first()!.value!
   }()
 
+  override func setUp() {
+    AppEnvironment.pushEnvironment(
+      apiService: MockService(),
+      assetImageGeneratorType: MockSuccessAssetImageGenerator.self
+    )
+  }
+
+  override func tearDown() {
+    AppEnvironment.popEnvironment()
+  }
+
   func testInitialLoad() {
-    withEnvironment(apiService: service, assetImageGeneratorType: MockSuccessAssetImageGenerator.self) {
+    withEnvironment(assetImageGeneratorType: MockSuccessAssetImageGenerator.self) {
 
       let viewModel = PlaylistViewModel(initialPlaylist: playlist, currentProject: project)
 
@@ -33,7 +43,7 @@ internal final class PlaylistViewModelTests : XCTestCase {
   }
 
   func testBackgroundImageFailure() {
-    withEnvironment(apiService: service, assetImageGeneratorType: MockFailureAssetImageGenerator.self) {
+    withEnvironment(assetImageGeneratorType: MockFailureAssetImageGenerator.self) {
 
       let viewModel = PlaylistViewModel(initialPlaylist: playlist, currentProject: project)
 
@@ -49,7 +59,7 @@ internal final class PlaylistViewModelTests : XCTestCase {
   func testBackgroundImageNeverCompleting() {
     let scheduler = TestScheduler()
 
-    withEnvironment(apiService: service, debounceScheduler: scheduler, assetImageGeneratorType: MockNeverFinishingAssetImageGenerator.self) {
+    withEnvironment(debounceScheduler: scheduler, assetImageGeneratorType: MockNeverFinishingAssetImageGenerator.self) {
 
       let viewModel = PlaylistViewModel(initialPlaylist: playlist, currentProject: project)
 
@@ -69,7 +79,7 @@ internal final class PlaylistViewModelTests : XCTestCase {
   func testLongRunningBackgroundImage() {
     let scheduler = TestScheduler()
 
-    withEnvironment(apiService: service, debounceScheduler: scheduler, assetImageGeneratorType: MockLongRunningAssetImageGenerator.self) {
+    withEnvironment(debounceScheduler: scheduler, assetImageGeneratorType: MockLongRunningAssetImageGenerator.self) {
 
       let viewModel = PlaylistViewModel(initialPlaylist: playlist, currentProject: project)
 
@@ -92,21 +102,18 @@ internal final class PlaylistViewModelTests : XCTestCase {
   }
 
   func testSwiping() {
-    withEnvironment(apiService: service) {
+    let viewModel = PlaylistViewModel(initialPlaylist: playlist, currentProject: project)
 
-      let viewModel = PlaylistViewModel(initialPlaylist: playlist, currentProject: project)
+    let projectNameTest = TestObserver<String, NoError>()
+    viewModel.outputs.projectName.start(projectNameTest.observer)
 
-      let projectNameTest = TestObserver<String, NoError>()
-      viewModel.outputs.projectName.start(projectNameTest.observer)
+    viewModel.inputs.swipeEnded(translation: CGPoint(x: 100.0, y: 0.0))
+    XCTAssertEqual(1, projectNameTest.nextValues.count)
 
-      viewModel.inputs.swipeEnded(translation: CGPoint(x: 100.0, y: 0.0))
-      XCTAssertEqual(1, projectNameTest.nextValues.count)
+    viewModel.inputs.swipeEnded(translation: CGPoint(x: 2_000.0, y: 0.0))
+    XCTAssertEqual(2, projectNameTest.nextValues.count)
 
-      viewModel.inputs.swipeEnded(translation: CGPoint(x: 2_000.0, y: 0.0))
-      XCTAssertEqual(2, projectNameTest.nextValues.count)
-
-      viewModel.inputs.swipeEnded(translation: CGPoint(x: -2_000.0, y: 0.0))
-      XCTAssertEqual(3, projectNameTest.nextValues.count)
-    }
+    viewModel.inputs.swipeEnded(translation: CGPoint(x: -2_000.0, y: 0.0))
+    XCTAssertEqual(3, projectNameTest.nextValues.count)
   }
 }
