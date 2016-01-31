@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A700BB351C5EA32600E861BD /* AssetImageGeneratorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A700BB341C5EA32600E861BD /* AssetImageGeneratorType.swift */; };
+		A710F6711C5EA72900F62731 /* MockAssetImageGenerators.swift in Sources */ = {isa = PBXBuildFile; fileRef = A710F6701C5EA72900F62731 /* MockAssetImageGenerators.swift */; };
 		A72153921C5D62E800127699 /* HomeViewModelInputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72153911C5D62E800127699 /* HomeViewModelInputs.swift */; };
 		A72153941C5D630300127699 /* HomeViewModelOutputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72153931C5D630300127699 /* HomeViewModelOutputs.swift */; };
 		A7700DA61C5E9A8E00D1F638 /* PlaylistViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7700DA51C5E9A8E00D1F638 /* PlaylistViewModelTests.swift */; };
@@ -295,6 +297,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		A700BB341C5EA32600E861BD /* AssetImageGeneratorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetImageGeneratorType.swift; sourceTree = "<group>"; };
+		A710F6701C5EA72900F62731 /* MockAssetImageGenerators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockAssetImageGenerators.swift; sourceTree = "<group>"; };
 		A72153911C5D62E800127699 /* HomeViewModelInputs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewModelInputs.swift; sourceTree = "<group>"; };
 		A72153931C5D630300127699 /* HomeViewModelOutputs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewModelOutputs.swift; sourceTree = "<group>"; };
 		A7700DA51C5E9A8E00D1F638 /* PlaylistViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaylistViewModelTests.swift; sourceTree = "<group>"; };
@@ -735,6 +739,7 @@
 				A7E06CFB1C5BFB3800EBDCC2 /* UILabel+IBClear.swift */,
 				A7E06CFC1C5BFB3800EBDCC2 /* UILabel+LocalizedKey.swift */,
 				A7E06CFD1C5BFB3800EBDCC2 /* UILabel+SimpleHTML.swift */,
+				A700BB341C5EA32600E861BD /* AssetImageGeneratorType.swift */,
 			);
 			path = Lib;
 			sourceTree = "<group>";
@@ -788,6 +793,7 @@
 			children = (
 				A7E06DC61C5C04D100EBDCC2 /* XCTestCase+AppEnvironment.swift */,
 				A7E070591C5D427000EBDCC2 /* TestObserver.swift */,
+				A710F6701C5EA72900F62731 /* MockAssetImageGenerators.swift */,
 			);
 			path = TestHelpers;
 			sourceTree = "<group>";
@@ -1138,6 +1144,7 @@
 				A7E06D001C5BFB3800EBDCC2 /* PlaylistTrayDataSource.swift in Sources */,
 				A7E06D441C5BFB3800EBDCC2 /* UILabel+IBClear.swift in Sources */,
 				A7E06D3B1C5BFB3800EBDCC2 /* AppEnvironment.swift in Sources */,
+				A700BB351C5EA32600E861BD /* AssetImageGeneratorType.swift in Sources */,
 				A7E06D1A1C5BFB3800EBDCC2 /* ProjectCell.swift in Sources */,
 				A7E06DC41C5C03CA00EBDCC2 /* UIPress-Extensions.swift in Sources */,
 				A7E06D1E1C5BFB3800EBDCC2 /* ProjectRecommendationsCell.swift in Sources */,
@@ -1204,6 +1211,7 @@
 				A7E06DDA1C5C04D100EBDCC2 /* LocalizedStringTests.swift in Sources */,
 				A7E06DD61C5C04D100EBDCC2 /* EnvironmentTests.swift in Sources */,
 				A7E0705A1C5D427000EBDCC2 /* TestObserver.swift in Sources */,
+				A710F6711C5EA72900F62731 /* MockAssetImageGenerators.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

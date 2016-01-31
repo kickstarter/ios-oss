@@ -5,20 +5,107 @@ import KsApi
 import Models
 
 internal final class PlaylistViewModelTests : XCTestCase {
+  let service = MockService()
+  let playlist = Playlist.Featured
+  lazy var project: Project = {
+    return MockService().fetchProject(DiscoveryParams()).first()!.value!
+  }()
 
   func testInitialLoad() {
-    let service = MockService()
-    let playlist = Playlist.Featured
-    let currentProject = service.fetchProject(DiscoveryParams()).first()!.value!
+    withEnvironment(apiService: service, assetImageGeneratorType: MockSuccessAssetImageGenerator.self) {
 
-    withEnvironment(apiService: service) {
+      let viewModel = PlaylistViewModel(initialPlaylist: playlist, currentProject: project)
 
-      let viewModel = PlaylistViewModel(initialPlaylist: playlist, currentProject: currentProject)
+      let projectNameTest = TestObserver<String, NoError>()
+      viewModel.outputs.projectName.start(projectNameTest.observer)
 
       let categoryNameTest = TestObserver<String, NoError>()
       viewModel.outputs.categoryName.start(categoryNameTest.observer)
 
-      XCTAssertEqual(categoryNameTest.lastValue, currentProject.category.name, "Should emit a category immediately.")
+      let backgroundImageTest = TestObserver<UIImage?, NoError>()
+      viewModel.outputs.backgroundImage.start(backgroundImageTest.observer)
+
+      XCTAssertEqual(projectNameTest.lastValue, project.name, "Should emit a project immediately.")
+      XCTAssertEqual(categoryNameTest.lastValue, project.category.name, "Should emit a category immediately.")
+      XCTAssertNotNil(backgroundImageTest.lastValue!, "Should emit a background image")
+    }
+  }
+
+  func testBackgroundImageFailure() {
+    withEnvironment(apiService: service, assetImageGeneratorType: MockFailureAssetImageGenerator.self) {
+
+      let viewModel = PlaylistViewModel(initialPlaylist: playlist, currentProject: project)
+
+      let backgroundImageTest = TestObserver<UIImage?, NoError>()
+      viewModel.outputs.backgroundImage.start(backgroundImageTest.observer)
+
+      XCTAssertEqual(1, backgroundImageTest.nextValues.count, "Should emit a nil background image")
+      XCTAssertNil(backgroundImageTest.lastValue!, "Should emit a nil background image")
+      XCTAssertFalse(backgroundImageTest.didComplete)
+    }
+  }
+
+  func testBackgroundImageNeverCompleting() {
+    let scheduler = TestScheduler()
+
+    withEnvironment(apiService: service, debounceScheduler: scheduler, assetImageGeneratorType: MockNeverFinishingAssetImageGenerator.self) {
+
+      let viewModel = PlaylistViewModel(initialPlaylist: playlist, currentProject: project)
+
+      let backgroundImageTest = TestObserver<UIImage?, NoError>()
+      viewModel.outputs.backgroundImage.start(backgroundImageTest.observer)
+
+      XCTAssertFalse(backgroundImageTest.didEmitValue, "Should not have emitted a background image yet.")
+
+      scheduler.advanceByInterval(6.0)
+
+      XCTAssertEqual(1, backgroundImageTest.nextValues.count, "Should emit a nil background image")
+      XCTAssertNil(backgroundImageTest.lastValue!, "Should emit a nil background image")
+      XCTAssertFalse(backgroundImageTest.didComplete)
+    }
+  }
+
+  func testLongRunningBackgroundImage() {
+    let scheduler = TestScheduler()
+
+    withEnvironment(apiService: service, debounceScheduler: scheduler, assetImageGeneratorType: MockLongRunningAssetImageGenerator.self) {
+
+      let viewModel = PlaylistViewModel(initialPlaylist: playlist, currentProject: project)
+
+      let backgroundImageTest = TestObserver<UIImage?, NoError>()
+      viewModel.outputs.backgroundImage.start(backgroundImageTest.observer)
+
+      XCTAssertFalse(backgroundImageTest.didEmitValue, "Should not have emitted a background image yet.")
+
+      scheduler.advanceByInterval(6.0)
+
+      XCTAssertEqual(1, backgroundImageTest.nextValues.count, "Should emit a nil background image")
+      XCTAssertNil(backgroundImageTest.lastValue!, "Should emit a nil background image")
+      XCTAssertFalse(backgroundImageTest.didComplete)
+
+      scheduler.run()
+
+      XCTAssertEqual(1, backgroundImageTest.nextValues.count, "Should not have emitted any more values.")
+      XCTAssertFalse(backgroundImageTest.didComplete)
+    }
+  }
+
+  func testSwiping() {
+    withEnvironment(apiService: service) {
+
+      let viewModel = PlaylistViewModel(initialPlaylist: playlist, currentProject: project)
+
+      let projectNameTest = TestObserver<String, NoError>()
+      viewModel.outputs.projectName.start(projectNameTest.observer)
+
+      viewModel.inputs.swipeEnded(translation: CGPoint(x: 100.0, y: 0.0))
+      XCTAssertEqual(1, projectNameTest.nextValues.count)
+
+      viewModel.inputs.swipeEnded(translation: CGPoint(x: 2_000.0, y: 0.0))
+      XCTAssertEqual(2, projectNameTest.nextValues.count)
+
+      viewModel.inputs.swipeEnded(translation: CGPoint(x: -2_000.0, y: 0.0))
+      XCTAssertEqual(3, projectNameTest.nextValues.count)
     }
   }
 }

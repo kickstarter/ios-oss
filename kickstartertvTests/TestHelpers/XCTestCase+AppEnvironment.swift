@@ -3,6 +3,7 @@ import XCTest
 import KsApi
 import Models
 import ReactiveCocoa
+import AVKit
 
 extension XCTestCase {
 
@@ -27,6 +28,7 @@ extension XCTestCase {
     countryCode: String = AppEnvironment.current.countryCode,
     launchedCountries: LaunchedCountries = AppEnvironment.current.launchedCountries,
     debounceScheduler: DateSchedulerType = AppEnvironment.current.debounceScheduler,
+    assetImageGeneratorType: AssetImageGeneratorType.Type = AppEnvironment.current.assetImageGeneratorType,
     @noescape body: () -> ()) {
 
       withEnvironment(
@@ -38,7 +40,8 @@ extension XCTestCase {
           timeZone: timeZone,
           countryCode: countryCode,
           launchedCountries: launchedCountries,
-          debounceScheduler: debounceScheduler
+          debounceScheduler: debounceScheduler,
+          assetImageGeneratorType: assetImageGeneratorType
         ),
         body: body
       )

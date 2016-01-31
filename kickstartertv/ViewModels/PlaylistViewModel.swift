@@ -4,6 +4,7 @@ import Models
 import ReactiveCocoa
 import Result
 import AVKit
+import Prelude
 
 internal protocol PlaylistViewModelType {
   var inputs: PlaylistViewModelInputs { get }
@@ -38,6 +39,8 @@ internal final class PlaylistViewModel : ViewModelType, PlaylistViewModelType, P
   internal init(initialPlaylist: Playlist, currentProject: Project, env: Environment = AppEnvironment.current) {
     let apiService = env.apiService
 
+    print(env.assetImageGeneratorType)
+
     self.project = SignalProducer(signal: next.mergeWith(previous))
       .map { _ in Int(arc4random_uniform(100_000)) }
       .map { seed in DiscoveryParams(staffPicks: true, hasVideo: true, state: .Live, seed: seed) }
@@ -50,24 +53,42 @@ internal final class PlaylistViewModel : ViewModelType, PlaylistViewModelType, P
     self.backgroundImage = self.project
       .flatMap { $0.video?.high }
       .flatMap(NSURL.init)
-      .switchMap(PlaylistViewModel.imageFromVideoUrl)
+      .map(AVAsset.init)
+      .map { a in env.assetImageGeneratorType.init(asset: a) }
+      .switchMap { g in PlaylistViewModel.stillImage(generator: g) }
   }
 
-  private static func imageFromVideoUrl(url: NSURL) -> SignalProducer<UIImage?, NoError> {
-    let asset = AVURLAsset(URL: url)
-    let generator = AVAssetImageGenerator(asset: asset)
+  /**
+   Extracts a still image from a an asset generator. If the extraction takes too long we will emit `nil`.
+
+   - parameter generator: An asset generator to use for the extracting.
+   - parameter scheduler: (optional) A scheduler to perform the timeout.
+
+   - returns: A signal producer that emits an image if the extraction can be made and `nil` otherwise.
+   */
+  private static func stillImage(generator generator: AssetImageGeneratorType,
+    scheduler: DateSchedulerType = AppEnvironment.current.debounceScheduler) -> SignalProducer<UIImage?, NoError> {
+      
     let requestedTime = CMTimeMakeWithSeconds(30.0, 1)
     let requestedTimeValue = NSValue(CMTime: requestedTime)
 
-    return SignalProducer { observer, disposable in
+    let image = SignalProducer<UIImage?, NoError> { observer, disposable in
       generator.generateCGImagesAsynchronouslyForTimes([requestedTimeValue]) { (time, image, actualTime, result, error) -> Void in
+
+        guard !disposable.disposed else { return }
+
         if let image = image {
           observer.sendNext(UIImage(CGImage: image))
           observer.sendCompleted()
         } else {
+          observer.sendNext(nil)
           observer.sendCompleted()
         }
       }
     }
+
+    return image.promoteErrors(SomeError.self)
+      .timeoutWithError(SomeError(), afterInterval: 5.0, onScheduler: scheduler)
+      .flatMapError { _ in SignalProducer(value: nil) }
   }
 }
