@@ -26,7 +26,7 @@ extension XCTestCase {
     timeZone: NSTimeZone = AppEnvironment.current.timeZone,
     countryCode: String = AppEnvironment.current.countryCode,
     launchedCountries: LaunchedCountries = AppEnvironment.current.launchedCountries,
-    debounceScheduler: DateSchedulerType = QueueScheduler.mainQueueScheduler,
+    debounceScheduler: DateSchedulerType = AppEnvironment.current.debounceScheduler,
     @noescape body: () -> ()) {
 
       withEnvironment(
