@@ -1,10 +1,11 @@
 import KsApi
 import Models
 import ReactiveCocoa
+import AVKit
 
 /**
  A collection of **all** global variables and singletons that the app wants access to.
-*/
+ */
 struct Environment {
   let apiService: ServiceType
   let currentUser: CurrentUserType
@@ -14,6 +15,7 @@ struct Environment {
   let countryCode: String
   let launchedCountries: LaunchedCountries
   let debounceScheduler: DateSchedulerType
+  let mainBundle: NSBundleType
 
   init(
     apiService: ServiceType = Service.shared,
@@ -23,7 +25,8 @@ struct Environment {
     timeZone: NSTimeZone = .localTimeZone(),
     countryCode: String = "US",
     launchedCountries: LaunchedCountries = .init(),
-    debounceScheduler: DateSchedulerType = QueueScheduler.mainQueueScheduler) {
+    debounceScheduler: DateSchedulerType = QueueScheduler.mainQueueScheduler,
+    mainBundle: NSBundleType = LanguageDoubler()) {
 
       self.apiService = apiService
       self.currentUser = currentUser
@@ -33,6 +36,7 @@ struct Environment {
       self.countryCode = countryCode
       self.launchedCountries = launchedCountries
       self.debounceScheduler = debounceScheduler
+      self.mainBundle = mainBundle
   }
 }
 

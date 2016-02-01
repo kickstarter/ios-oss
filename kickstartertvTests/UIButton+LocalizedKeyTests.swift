@@ -3,18 +3,26 @@ import XCTest
 
 final class UIButtonLocalizedKeyTests : XCTestCase {
 
+  override func setUp() {
+    AppEnvironment.pushEnvironment(mainBundle: MockBundle())
+  }
+
+  override func tearDown() {
+    AppEnvironment.popEnvironment()
+  }
+
   func testNormalLocalizedKey() {
     let button = UIButton()
 
     withEnvironment(language: .en) {
-      button.normalLocalizedKey = "project_of_the_day"
-      XCTAssertEqual(button.titleForState(.Normal), "Project of the day")
+      button.normalLocalizedKey = "hello"
+      XCTAssertEqual(button.titleForState(.Normal), "world")
       XCTAssertEqual(button.normalLocalizedKey, "")
     }
 
     withEnvironment(language: .de) {
-      button.normalLocalizedKey = "project_of_the_day"
-      XCTAssertEqual(button.titleForState(.Normal), "Projekt des Tages")
+      button.normalLocalizedKey = "hello"
+      XCTAssertEqual(button.titleForState(.Normal), "de_world")
       XCTAssertEqual(button.normalLocalizedKey, "")
     }
   }
@@ -23,14 +31,14 @@ final class UIButtonLocalizedKeyTests : XCTestCase {
     let button = UIButton()
 
     withEnvironment(language: .en) {
-      button.selectedLocalizedKey = "project_of_the_day"
-      XCTAssertEqual(button.titleForState(.Selected), "Project of the day")
+      button.selectedLocalizedKey = "hello"
+      XCTAssertEqual(button.titleForState(.Selected), "world")
       XCTAssertEqual(button.selectedLocalizedKey, "")
     }
 
     withEnvironment(language: .de) {
-      button.selectedLocalizedKey = "project_of_the_day"
-      XCTAssertEqual(button.titleForState(.Selected), "Projekt des Tages")
+      button.selectedLocalizedKey = "hello"
+      XCTAssertEqual(button.titleForState(.Selected), "de_world")
       XCTAssertEqual(button.selectedLocalizedKey, "")
     }
   }
@@ -39,14 +47,14 @@ final class UIButtonLocalizedKeyTests : XCTestCase {
     let button = UIButton()
 
     withEnvironment(language: .en) {
-      button.disabledLocalizedKey = "project_of_the_day"
-      XCTAssertEqual(button.titleForState(.Disabled), "Project of the day")
+      button.disabledLocalizedKey = "hello"
+      XCTAssertEqual(button.titleForState(.Disabled), "world")
       XCTAssertEqual(button.disabledLocalizedKey, "")
     }
 
     withEnvironment(language: .de) {
-      button.disabledLocalizedKey = "project_of_the_day"
-      XCTAssertEqual(button.titleForState(.Disabled), "Projekt des Tages")
+      button.disabledLocalizedKey = "hello"
+      XCTAssertEqual(button.titleForState(.Disabled), "de_world")
       XCTAssertEqual(button.disabledLocalizedKey, "")
     }
   }

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A713E3381C5ED12D00197498 /* NSBundleType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A713E3371C5ED12D00197498 /* NSBundleType.swift */; };
+		A713E33E1C5ED14F00197498 /* MockBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A713E33D1C5ED14F00197498 /* MockBundle.swift */; };
 		A7E06C7D1C5A6EB300EBDCC2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E06C7C1C5A6EB300EBDCC2 /* AppDelegate.swift */; };
 		A7E06C7F1C5A6EB300EBDCC2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E06C7E1C5A6EB300EBDCC2 /* ViewController.swift */; };
 		A7E06C821C5A6EB300EBDCC2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7E06C801C5A6EB300EBDCC2 /* Main.storyboard */; };
@@ -280,6 +282,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		A713E3371C5ED12D00197498 /* NSBundleType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSBundleType.swift; sourceTree = "<group>"; };
+		A713E33D1C5ED14F00197498 /* MockBundle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockBundle.swift; sourceTree = "<group>"; };
 		A7E06C791C5A6EB300EBDCC2 /* kickstartertv.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = kickstartertv.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7E06C7C1C5A6EB300EBDCC2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A7E06C7E1C5A6EB300EBDCC2 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -680,6 +684,7 @@
 				A7E06CFB1C5BFB3800EBDCC2 /* UILabel+IBClear.swift */,
 				A7E06CFC1C5BFB3800EBDCC2 /* UILabel+LocalizedKey.swift */,
 				A7E06CFD1C5BFB3800EBDCC2 /* UILabel+SimpleHTML.swift */,
+				A713E3371C5ED12D00197498 /* NSBundleType.swift */,
 			);
 			path = Lib;
 			sourceTree = "<group>";
@@ -733,6 +738,7 @@
 			children = (
 				A7E06DC61C5C04D100EBDCC2 /* XCTestCase+AppEnvironment.swift */,
 				A7E070591C5D427000EBDCC2 /* TestObserver.swift */,
+				A713E33D1C5ED14F00197498 /* MockBundle.swift */,
 			);
 			path = TestHelpers;
 			sourceTree = "<group>";
@@ -1089,6 +1095,7 @@
 				A7E06D091C5BFB3800EBDCC2 /* HomeViewModel.swift in Sources */,
 				A7E06D841C5C00CC00EBDCC2 /* MVVMCollectionViewController.swift in Sources */,
 				A7E06D451C5BFB3800EBDCC2 /* UILabel+LocalizedKey.swift in Sources */,
+				A713E3381C5ED12D00197498 /* NSBundleType.swift in Sources */,
 				A7E06D881C5C00CC00EBDCC2 /* SimpleViewModel.swift in Sources */,
 				A7E06D391C5BFB3800EBDCC2 /* ProjectTrayTransitionAnimator.swift in Sources */,
 				A7E06D401C5BFB3800EBDCC2 /* LocalizedString.swift in Sources */,
@@ -1132,6 +1139,7 @@
 				A7E06DD41C5C04D100EBDCC2 /* AppEnvironmentTests.swift in Sources */,
 				A7E06DD81C5C04D100EBDCC2 /* UILabel+IBClearTests.swift in Sources */,
 				A7E06DD91C5C04D100EBDCC2 /* LanguageTests.swift in Sources */,
+				A713E33E1C5ED14F00197498 /* MockBundle.swift in Sources */,
 				A7E06C8F1C5A6EB300EBDCC2 /* kickstartertvTests.swift in Sources */,
 				A7E06DD31C5C04D100EBDCC2 /* FormatTests.swift in Sources */,
 				A7E070581C5D40BD00EBDCC2 /* HomeViewModelTests.swift in Sources */,

@@ -51,7 +51,8 @@ struct AppEnvironment {
     timeZone: NSTimeZone = AppEnvironment.current.timeZone,
     countryCode: String = AppEnvironment.current.countryCode,
     launchedCountries: LaunchedCountries = AppEnvironment.current.launchedCountries,
-    debounceScheduler: DateSchedulerType = AppEnvironment.current.debounceScheduler) {
+    debounceScheduler: DateSchedulerType = AppEnvironment.current.debounceScheduler,
+    mainBundle: NSBundleType = AppEnvironment.current.mainBundle) {
 
       stack.append(
         Environment(
@@ -62,7 +63,8 @@ struct AppEnvironment {
           timeZone: timeZone,
           countryCode: countryCode,
           launchedCountries: launchedCountries,
-          debounceScheduler: debounceScheduler
+          debounceScheduler: debounceScheduler,
+          mainBundle: mainBundle
         )
       )
   }
@@ -79,7 +81,8 @@ struct AppEnvironment {
     timeZone: NSTimeZone = AppEnvironment.current.timeZone,
     countryCode: String = AppEnvironment.current.countryCode,
     launchedCountries: LaunchedCountries = AppEnvironment.current.launchedCountries,
-    debounceScheduler: DateSchedulerType = AppEnvironment.current.debounceScheduler) {
+    debounceScheduler: DateSchedulerType = AppEnvironment.current.debounceScheduler,
+    mainBundle: NSBundleType = AppEnvironment.current.mainBundle) {
 
       replaceCurrentEnvironment(
         Environment(
@@ -90,7 +93,8 @@ struct AppEnvironment {
           timeZone: timeZone,
           countryCode: countryCode,
           launchedCountries: launchedCountries,
-          debounceScheduler: debounceScheduler
+          debounceScheduler: debounceScheduler,
+          mainBundle: mainBundle
         )
       )
   }

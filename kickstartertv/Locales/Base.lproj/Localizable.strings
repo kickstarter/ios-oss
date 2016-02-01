@@ -5,9 +5,3 @@
 "remind_me" = "Remind me";
 "project.rewards_section_title" = "Rewards";
 "by_creator" = "by <b>%{creator_name}</b>";
-
-"test_count.zero" = "zero";
-"test_count.one" = "one";
-"test_count.two" = "two";
-"test_count.few" = "%{the_count} few";
-"test_count.many" = "%{the_count} many";

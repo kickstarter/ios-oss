@@ -27,6 +27,7 @@ extension XCTestCase {
     countryCode: String = AppEnvironment.current.countryCode,
     launchedCountries: LaunchedCountries = AppEnvironment.current.launchedCountries,
     debounceScheduler: DateSchedulerType = AppEnvironment.current.debounceScheduler,
+    mainBundle: NSBundleType = AppEnvironment.current.mainBundle,
     @noescape body: () -> ()) {
 
       withEnvironment(
@@ -38,7 +39,8 @@ extension XCTestCase {
           timeZone: timeZone,
           countryCode: countryCode,
           launchedCountries: launchedCountries,
-          debounceScheduler: debounceScheduler
+          debounceScheduler: debounceScheduler,
+          mainBundle: mainBundle
         ),
         body: body
       )

@@ -4,16 +4,19 @@ import XCTest
 class LocalizedStringTests : XCTestCase {
 
   func testLocalizingInGerman() {
-    withEnvironment(language: .de) {
-      XCTAssertEqual(localizedString(key: "project_of_the_day"), "Projekt des Tages")
-      XCTAssertEqual(localizedString(key: "missing_key", defaultValue: "Hello"), "Hello")
-      XCTAssertEqual(localizedString(key: "missing_key"), "")
-      XCTAssertEqual(localizedString(key: "by_creator", substitutions: ["creator_name": "Brandon"]), "von <b>Brandon</b>")
+    withEnvironment(language: .de, mainBundle: MockBundle()) {
+      XCTAssertEqual("de_world", localizedString(key: "hello"))
+      XCTAssertEqual("Hello", localizedString(key: "hello_", defaultValue: "Hello"))
+      XCTAssertEqual("", localizedString(key: "hello_"))
+      XCTAssertEqual("de_hello A B", localizedString(key: "hello_format", substitutions: ["a": "A", "b": "B"]))
+
+      XCTAssertEqual("", localizedString(key: "echo"), "When key/value are equal we should "
+        + "return an empty string")
     }
   }
 
   func testLocalizedStringWithCount() {
-    withEnvironment(language: .en) {
+    withEnvironment(language: .en, mainBundle: MockBundle()) {
       XCTAssertEqual(localizedString(key: "test_count", count: 0), "zero")
       XCTAssertEqual(localizedString(key: "test_count", count: 1), "one")
       XCTAssertEqual(localizedString(key: "test_count", count: 2), "two")
