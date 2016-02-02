@@ -40,7 +40,6 @@ final class HomeViewModelTests : XCTestCase {
         return
       }
 
-      print(nowPlayingTest.nextValues)
       XCTAssertTrue(nowPlayingTest.nextValues == [nil], "The now play signal should emit immediately to " +
         "indicate that nothing is currently playing.")
 
