@@ -1,0 +1,4099 @@
+{
+    "categories": [
+        {
+            "slug": "art",
+            "color": 16760235,
+            "position": 1,
+            "projects_count": 266,
+            "name": "Kunst",
+            "id": 1,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/art"
+                }
+            }
+        },
+        {
+            "slug": "comics/anthologies",
+            "color": 16776056,
+            "position": 1,
+            "projects_count": 9,
+            "parent_id": 3,
+            "name": "Anthologien",
+            "parent": {
+                "slug": "comics",
+                "color": 16776056,
+                "position": 2,
+                "name": "Comics",
+                "id": 3,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/comics"
+                    }
+                }
+            },
+            "id": 249,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/comics/anthologies"
+                }
+            }
+        },
+        {
+            "slug": "dance/performances",
+            "color": 10917369,
+            "position": 1,
+            "projects_count": 19,
+            "parent_id": 6,
+            "name": "Performances",
+            "parent": {
+                "slug": "dance",
+                "color": 10917369,
+                "position": 4,
+                "name": "Tanz",
+                "id": 6,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/dance"
+                    }
+                }
+            },
+            "id": 254,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/dance/performances"
+                }
+            }
+        },
+        {
+            "slug": "design/architecture",
+            "color": 2577151,
+            "position": 1,
+            "projects_count": 19,
+            "parent_id": 7,
+            "name": "Architektur",
+            "parent": {
+                "slug": "design",
+                "color": 2577151,
+                "position": 5,
+                "name": "Design",
+                "id": 7,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/design"
+                    }
+                }
+            },
+            "id": 258,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/design/architecture"
+                }
+            }
+        },
+        {
+            "slug": "fashion/accessories",
+            "color": 16752598,
+            "position": 1,
+            "projects_count": 58,
+            "parent_id": 9,
+            "name": "Zubehör",
+            "parent": {
+                "slug": "fashion",
+                "color": 16752598,
+                "position": 6,
+                "name": "Mode",
+                "id": 9,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/fashion"
+                    }
+                }
+            },
+            "id": 262,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/fashion/accessories"
+                }
+            }
+        },
+        {
+            "slug": "games/gaming hardware",
+            "color": 51627,
+            "position": 1,
+            "projects_count": 2,
+            "parent_id": 12,
+            "name": "Hardware für Videospiele",
+            "parent": {
+                "slug": "games",
+                "color": 51627,
+                "position": 9,
+                "name": "Spiele",
+                "id": 12,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/games"
+                    }
+                }
+            },
+            "id": 270,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/games/gaming%20hardware"
+                }
+            }
+        },
+        {
+            "slug": "photography/animals",
+            "color": 58341,
+            "position": 1,
+            "projects_count": 2,
+            "parent_id": 15,
+            "name": "Tiere",
+            "parent": {
+                "slug": "photography",
+                "color": 58341,
+                "position": 12,
+                "name": "Fotografie",
+                "id": 15,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/photography"
+                    }
+                }
+            },
+            "id": 275,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/photography/animals"
+                }
+            }
+        },
+        {
+            "slug": "theater/experimental",
+            "color": 16743775,
+            "position": 1,
+            "projects_count": 7,
+            "parent_id": 17,
+            "name": "Experimentalfilme",
+            "parent": {
+                "slug": "theater",
+                "color": 16743775,
+                "position": 15,
+                "name": "Theater",
+                "id": 17,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/theater"
+                    }
+                }
+            },
+            "id": 281,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/theater/experimental"
+                }
+            }
+        },
+        {
+            "slug": "art/ceramics",
+            "color": 16760235,
+            "position": 1,
+            "projects_count": 4,
+            "parent_id": 1,
+            "name": "Keramik",
+            "parent": {
+                "slug": "art",
+                "color": 16760235,
+                "position": 1,
+                "name": "Kunst",
+                "id": 1,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/art"
+                    }
+                }
+            },
+            "id": 287,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/art/ceramics"
+                }
+            }
+        },
+        {
+            "slug": "film & video/action",
+            "color": 16734574,
+            "position": 1,
+            "projects_count": 16,
+            "parent_id": 11,
+            "name": "Action",
+            "parent": {
+                "slug": "film & video",
+                "color": 16734574,
+                "position": 7,
+                "name": "Film und Video",
+                "id": 11,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/film%20&%20video"
+                    }
+                }
+            },
+            "id": 291,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/film%20&%20video/action"
+                }
+            }
+        },
+        {
+            "slug": "food/bacon",
+            "color": 16725570,
+            "position": 1,
+            "projects_count": 0,
+            "parent_id": 10,
+            "name": "Speck",
+            "parent": {
+                "slug": "food",
+                "color": 16725570,
+                "position": 8,
+                "name": "Essen/Trinken",
+                "id": 10,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/food"
+                    }
+                }
+            },
+            "id": 304,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/food/bacon"
+                }
+            }
+        },
+        {
+            "slug": "music/blues",
+            "color": 10878931,
+            "position": 1,
+            "projects_count": 4,
+            "parent_id": 14,
+            "name": "Blues",
+            "parent": {
+                "slug": "music",
+                "color": 10878931,
+                "position": 11,
+                "name": "Musik",
+                "id": 14,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/music"
+                    }
+                }
+            },
+            "id": 316,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/music/blues"
+                }
+            }
+        },
+        {
+            "slug": "publishing/academic",
+            "color": 14867664,
+            "position": 1,
+            "projects_count": 21,
+            "parent_id": 18,
+            "name": "Bildung",
+            "parent": {
+                "slug": "publishing",
+                "color": 14867664,
+                "position": 13,
+                "name": "Publishing",
+                "id": 18,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/publishing"
+                    }
+                }
+            },
+            "id": 323,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/publishing/academic"
+                }
+            }
+        },
+        {
+            "slug": "technology/3d printing",
+            "color": 6526716,
+            "position": 1,
+            "projects_count": 8,
+            "parent_id": 16,
+            "name": "3D-Druck",
+            "parent": {
+                "slug": "technology",
+                "color": 6526716,
+                "position": 14,
+                "name": "Technologie",
+                "id": 16,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/technology"
+                    }
+                }
+            },
+            "id": 331,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/technology/3d%20printing"
+                }
+            }
+        },
+        {
+            "slug": "crafts/candles",
+            "color": 16744876,
+            "position": 1,
+            "projects_count": 8,
+            "parent_id": 26,
+            "name": "Kerzen",
+            "parent": {
+                "slug": "crafts",
+                "color": 16744876,
+                "position": 3,
+                "name": "Kunsthandwerk",
+                "id": 26,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/crafts"
+                    }
+                }
+            },
+            "id": 343,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/crafts/candles"
+                }
+            }
+        },
+        {
+            "slug": "journalism/audio",
+            "color": 1228010,
+            "position": 1,
+            "projects_count": 7,
+            "parent_id": 13,
+            "name": "Audio",
+            "parent": {
+                "slug": "journalism",
+                "color": 1228010,
+                "position": 10,
+                "name": "Journalismus",
+                "id": 13,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/journalism"
+                    }
+                }
+            },
+            "id": 357,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/journalism/audio"
+                }
+            }
+        },
+        {
+            "slug": "comics",
+            "color": 16776056,
+            "position": 2,
+            "projects_count": 87,
+            "name": "Comics",
+            "id": 3,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/comics"
+                }
+            }
+        },
+        {
+            "slug": "art/conceptual art",
+            "color": 16760235,
+            "position": 2,
+            "projects_count": 16,
+            "parent_id": 1,
+            "name": "Konzeptkunst",
+            "parent": {
+                "slug": "art",
+                "color": 16760235,
+                "position": 1,
+                "name": "Kunst",
+                "id": 1,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/art"
+                    }
+                }
+            },
+            "id": 20,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/art/conceptual%20art"
+                }
+            }
+        },
+        {
+            "slug": "film & video/animation",
+            "color": 16734574,
+            "position": 2,
+            "projects_count": 21,
+            "parent_id": 11,
+            "name": "Animation",
+            "parent": {
+                "slug": "film & video",
+                "color": 16734574,
+                "position": 7,
+                "name": "Film und Video",
+                "id": 11,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/film%20&%20video"
+                    }
+                }
+            },
+            "id": 29,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/film%20&%20video/animation"
+                }
+            }
+        },
+        {
+            "slug": "comics/comic books",
+            "color": 16776056,
+            "position": 2,
+            "projects_count": 33,
+            "parent_id": 3,
+            "name": "Comic-Bücher",
+            "parent": {
+                "slug": "comics",
+                "color": 16776056,
+                "position": 2,
+                "name": "Comics",
+                "id": 3,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/comics"
+                    }
+                }
+            },
+            "id": 250,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/comics/comic%20books"
+                }
+            }
+        },
+        {
+            "slug": "dance/residencies",
+            "color": 10917369,
+            "position": 2,
+            "projects_count": 2,
+            "parent_id": 6,
+            "name": "Stipendien",
+            "parent": {
+                "slug": "dance",
+                "color": 10917369,
+                "position": 4,
+                "name": "Tanz",
+                "id": 6,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/dance"
+                    }
+                }
+            },
+            "id": 255,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/dance/residencies"
+                }
+            }
+        },
+        {
+            "slug": "design/civic design",
+            "color": 2577151,
+            "position": 2,
+            "projects_count": 2,
+            "parent_id": 7,
+            "name": "Kommunale Gestaltung",
+            "parent": {
+                "slug": "design",
+                "color": 2577151,
+                "position": 5,
+                "name": "Design",
+                "id": 7,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/design"
+                    }
+                }
+            },
+            "id": 259,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/design/civic%20design"
+                }
+            }
+        },
+        {
+            "slug": "fashion/apparel",
+            "color": 16752598,
+            "position": 2,
+            "projects_count": 174,
+            "parent_id": 9,
+            "name": "Kleidung",
+            "parent": {
+                "slug": "fashion",
+                "color": 16752598,
+                "position": 6,
+                "name": "Mode",
+                "id": 9,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/fashion"
+                    }
+                }
+            },
+            "id": 263,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/fashion/apparel"
+                }
+            }
+        },
+        {
+            "slug": "games/live games",
+            "color": 51627,
+            "position": 2,
+            "projects_count": 20,
+            "parent_id": 12,
+            "name": "Live-Spiele",
+            "parent": {
+                "slug": "games",
+                "color": 51627,
+                "position": 9,
+                "name": "Spiele",
+                "id": 12,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/games"
+                    }
+                }
+            },
+            "id": 271,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/games/live%20games"
+                }
+            }
+        },
+        {
+            "slug": "photography/fine art",
+            "color": 58341,
+            "position": 2,
+            "projects_count": 14,
+            "parent_id": 15,
+            "name": "Bildende Kunst",
+            "parent": {
+                "slug": "photography",
+                "color": 58341,
+                "position": 12,
+                "name": "Fotografie",
+                "id": 15,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/photography"
+                    }
+                }
+            },
+            "id": 276,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/photography/fine%20art"
+                }
+            }
+        },
+        {
+            "slug": "theater/festivals",
+            "color": 16743775,
+            "position": 2,
+            "projects_count": 5,
+            "parent_id": 17,
+            "name": "Festivals",
+            "parent": {
+                "slug": "theater",
+                "color": 16743775,
+                "position": 15,
+                "name": "Theater",
+                "id": 17,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/theater"
+                    }
+                }
+            },
+            "id": 282,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/theater/festivals"
+                }
+            }
+        },
+        {
+            "slug": "food/community gardens",
+            "color": 16725570,
+            "position": 2,
+            "projects_count": 10,
+            "parent_id": 10,
+            "name": "Gemeinschaftsgärten",
+            "parent": {
+                "slug": "food",
+                "color": 16725570,
+                "position": 8,
+                "name": "Essen/Trinken",
+                "id": 10,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/food"
+                    }
+                }
+            },
+            "id": 305,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/food/community%20gardens"
+                }
+            }
+        },
+        {
+            "slug": "music/chiptune",
+            "color": 10878931,
+            "position": 2,
+            "projects_count": 0,
+            "parent_id": 14,
+            "name": "Chiptune",
+            "parent": {
+                "slug": "music",
+                "color": 10878931,
+                "position": 11,
+                "name": "Musik",
+                "id": 14,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/music"
+                    }
+                }
+            },
+            "id": 317,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/music/chiptune"
+                }
+            }
+        },
+        {
+            "slug": "publishing/anthologies",
+            "color": 14867664,
+            "position": 2,
+            "projects_count": 9,
+            "parent_id": 18,
+            "name": "Anthologien",
+            "parent": {
+                "slug": "publishing",
+                "color": 14867664,
+                "position": 13,
+                "name": "Publishing",
+                "id": 18,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/publishing"
+                    }
+                }
+            },
+            "id": 324,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/publishing/anthologies"
+                }
+            }
+        },
+        {
+            "slug": "technology/apps",
+            "color": 6526716,
+            "position": 2,
+            "projects_count": 138,
+            "parent_id": 16,
+            "name": "Apps",
+            "parent": {
+                "slug": "technology",
+                "color": 6526716,
+                "position": 14,
+                "name": "Technologie",
+                "id": 16,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/technology"
+                    }
+                }
+            },
+            "id": 332,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/technology/apps"
+                }
+            }
+        },
+        {
+            "slug": "crafts/crochet",
+            "color": 16744876,
+            "position": 2,
+            "projects_count": 3,
+            "parent_id": 26,
+            "name": "Häkeln",
+            "parent": {
+                "slug": "crafts",
+                "color": 16744876,
+                "position": 3,
+                "name": "Kunsthandwerk",
+                "id": 26,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/crafts"
+                    }
+                }
+            },
+            "id": 344,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/crafts/crochet"
+                }
+            }
+        },
+        {
+            "slug": "journalism/photo",
+            "color": 1228010,
+            "position": 2,
+            "projects_count": 4,
+            "parent_id": 13,
+            "name": "Fotos",
+            "parent": {
+                "slug": "journalism",
+                "color": 1228010,
+                "position": 10,
+                "name": "Journalismus",
+                "id": 13,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/journalism"
+                    }
+                }
+            },
+            "id": 358,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/journalism/photo"
+                }
+            }
+        },
+        {
+            "slug": "art/digital art",
+            "color": 16760235,
+            "position": 3,
+            "projects_count": 11,
+            "parent_id": 1,
+            "name": "Digitale Kunst",
+            "parent": {
+                "slug": "art",
+                "color": 16760235,
+                "position": 1,
+                "name": "Kunst",
+                "id": 1,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/art"
+                    }
+                }
+            },
+            "id": 21,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/art/digital%20art"
+                }
+            }
+        },
+        {
+            "slug": "crafts",
+            "color": 16744876,
+            "position": 3,
+            "projects_count": 137,
+            "name": "Kunsthandwerk",
+            "id": 26,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/crafts"
+                }
+            }
+        },
+        {
+            "slug": "design/graphic design",
+            "color": 2577151,
+            "position": 3,
+            "projects_count": 18,
+            "parent_id": 7,
+            "name": "Grafikdesign",
+            "parent": {
+                "slug": "design",
+                "color": 2577151,
+                "position": 5,
+                "name": "Design",
+                "id": 7,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/design"
+                    }
+                }
+            },
+            "id": 27,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/design/graphic%20design"
+                }
+            }
+        },
+        {
+            "slug": "music/classical music",
+            "color": 10878931,
+            "position": 3,
+            "projects_count": 30,
+            "parent_id": 14,
+            "name": "Klassische Musik",
+            "parent": {
+                "slug": "music",
+                "color": 10878931,
+                "position": 11,
+                "name": "Musik",
+                "id": 14,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/music"
+                    }
+                }
+            },
+            "id": 36,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/music/classical%20music"
+                }
+            }
+        },
+        {
+            "slug": "publishing/art books",
+            "color": 14867664,
+            "position": 3,
+            "projects_count": 24,
+            "parent_id": 18,
+            "name": "Kunstbände",
+            "parent": {
+                "slug": "publishing",
+                "color": 14867664,
+                "position": 13,
+                "name": "Publishing",
+                "id": 18,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/publishing"
+                    }
+                }
+            },
+            "id": 45,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/publishing/art%20books"
+                }
+            }
+        },
+        {
+            "slug": "comics/events",
+            "color": 16776056,
+            "position": 3,
+            "projects_count": 1,
+            "parent_id": 3,
+            "name": "Veranstaltungen",
+            "parent": {
+                "slug": "comics",
+                "color": 16776056,
+                "position": 2,
+                "name": "Comics",
+                "id": 3,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/comics"
+                    }
+                }
+            },
+            "id": 251,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/comics/events"
+                }
+            }
+        },
+        {
+            "slug": "dance/spaces",
+            "color": 10917369,
+            "position": 3,
+            "projects_count": 3,
+            "parent_id": 6,
+            "name": "Räume",
+            "parent": {
+                "slug": "dance",
+                "color": 10917369,
+                "position": 4,
+                "name": "Tanz",
+                "id": 6,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/dance"
+                    }
+                }
+            },
+            "id": 256,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/dance/spaces"
+                }
+            }
+        },
+        {
+            "slug": "fashion/childrenswear",
+            "color": 16752598,
+            "position": 3,
+            "projects_count": 9,
+            "parent_id": 9,
+            "name": "Kinderbekleidung",
+            "parent": {
+                "slug": "fashion",
+                "color": 16752598,
+                "position": 6,
+                "name": "Mode",
+                "id": 9,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/fashion"
+                    }
+                }
+            },
+            "id": 264,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/fashion/childrenswear"
+                }
+            }
+        },
+        {
+            "slug": "games/mobile games",
+            "color": 51627,
+            "position": 3,
+            "projects_count": 33,
+            "parent_id": 12,
+            "name": "Handyspiele",
+            "parent": {
+                "slug": "games",
+                "color": 51627,
+                "position": 9,
+                "name": "Spiele",
+                "id": 12,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/games"
+                    }
+                }
+            },
+            "id": 272,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/games/mobile%20games"
+                }
+            }
+        },
+        {
+            "slug": "photography/nature",
+            "color": 58341,
+            "position": 3,
+            "projects_count": 9,
+            "parent_id": 15,
+            "name": "Natur",
+            "parent": {
+                "slug": "photography",
+                "color": 58341,
+                "position": 12,
+                "name": "Fotografie",
+                "id": 15,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/photography"
+                    }
+                }
+            },
+            "id": 277,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/photography/nature"
+                }
+            }
+        },
+        {
+            "slug": "theater/immersive",
+            "color": 16743775,
+            "position": 3,
+            "projects_count": 0,
+            "parent_id": 17,
+            "name": "Immersives Theater",
+            "parent": {
+                "slug": "theater",
+                "color": 16743775,
+                "position": 15,
+                "name": "Theater",
+                "id": 17,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/theater"
+                    }
+                }
+            },
+            "id": 283,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/theater/immersive"
+                }
+            }
+        },
+        {
+            "slug": "film & video/comedy",
+            "color": 16734574,
+            "position": 3,
+            "projects_count": 32,
+            "parent_id": 11,
+            "name": "Comedy",
+            "parent": {
+                "slug": "film & video",
+                "color": 16734574,
+                "position": 7,
+                "name": "Film und Video",
+                "id": 11,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/film%20&%20video"
+                    }
+                }
+            },
+            "id": 292,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/film%20&%20video/comedy"
+                }
+            }
+        },
+        {
+            "slug": "food/cookbooks",
+            "color": 16725570,
+            "position": 3,
+            "projects_count": 15,
+            "parent_id": 10,
+            "name": "Kochbücher",
+            "parent": {
+                "slug": "food",
+                "color": 16725570,
+                "position": 8,
+                "name": "Essen/Trinken",
+                "id": 10,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/food"
+                    }
+                }
+            },
+            "id": 306,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/food/cookbooks"
+                }
+            }
+        },
+        {
+            "slug": "technology/camera equipment",
+            "color": 6526716,
+            "position": 3,
+            "projects_count": 10,
+            "parent_id": 16,
+            "name": "Kameraausrüstung",
+            "parent": {
+                "slug": "technology",
+                "color": 6526716,
+                "position": 14,
+                "name": "Technologie",
+                "id": 16,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/technology"
+                    }
+                }
+            },
+            "id": 333,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/technology/camera%20equipment"
+                }
+            }
+        },
+        {
+            "slug": "crafts/diy",
+            "color": 16744876,
+            "position": 3,
+            "projects_count": 31,
+            "parent_id": 26,
+            "name": "Heimwerken",
+            "parent": {
+                "slug": "crafts",
+                "color": 16744876,
+                "position": 3,
+                "name": "Kunsthandwerk",
+                "id": 26,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/crafts"
+                    }
+                }
+            },
+            "id": 345,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/crafts/diy"
+                }
+            }
+        },
+        {
+            "slug": "journalism/print",
+            "color": 1228010,
+            "position": 3,
+            "projects_count": 20,
+            "parent_id": 13,
+            "name": "Druck",
+            "parent": {
+                "slug": "journalism",
+                "color": 1228010,
+                "position": 10,
+                "name": "Journalismus",
+                "id": 13,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/journalism"
+                    }
+                }
+            },
+            "id": 359,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/journalism/print"
+                }
+            }
+        },
+        {
+            "slug": "dance",
+            "color": 10917369,
+            "position": 4,
+            "projects_count": 34,
+            "name": "Tanz",
+            "id": 6,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/dance"
+                }
+            }
+        },
+        {
+            "slug": "art/illustration",
+            "color": 16760235,
+            "position": 4,
+            "projects_count": 33,
+            "parent_id": 1,
+            "name": "Illustration",
+            "parent": {
+                "slug": "art",
+                "color": 16760235,
+                "position": 1,
+                "name": "Kunst",
+                "id": 1,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/art"
+                    }
+                }
+            },
+            "id": 22,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/art/illustration"
+                }
+            }
+        },
+        {
+            "slug": "film & video/documentary",
+            "color": 16734574,
+            "position": 4,
+            "projects_count": 139,
+            "parent_id": 11,
+            "name": "Dokumentarfilm",
+            "parent": {
+                "slug": "film & video",
+                "color": 16734574,
+                "position": 7,
+                "name": "Film und Video",
+                "id": 11,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/film%20&%20video"
+                    }
+                }
+            },
+            "id": 30,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/film%20&%20video/documentary"
+                }
+            }
+        },
+        {
+            "slug": "music/country & folk",
+            "color": 10878931,
+            "position": 4,
+            "projects_count": 19,
+            "parent_id": 14,
+            "name": "Country und Folk",
+            "parent": {
+                "slug": "music",
+                "color": 10878931,
+                "position": 11,
+                "name": "Musik",
+                "id": 14,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/music"
+                    }
+                }
+            },
+            "id": 37,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/music/country%20&%20folk"
+                }
+            }
+        },
+        {
+            "slug": "comics/graphic novels",
+            "color": 16776056,
+            "position": 4,
+            "projects_count": 26,
+            "parent_id": 3,
+            "name": "Comic-Romane",
+            "parent": {
+                "slug": "comics",
+                "color": 16776056,
+                "position": 2,
+                "name": "Comics",
+                "id": 3,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/comics"
+                    }
+                }
+            },
+            "id": 252,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/comics/graphic%20novels"
+                }
+            }
+        },
+        {
+            "slug": "dance/workshops",
+            "color": 10917369,
+            "position": 4,
+            "projects_count": 1,
+            "parent_id": 6,
+            "name": "Workshops",
+            "parent": {
+                "slug": "dance",
+                "color": 10917369,
+                "position": 4,
+                "name": "Tanz",
+                "id": 6,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/dance"
+                    }
+                }
+            },
+            "id": 257,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/dance/workshops"
+                }
+            }
+        },
+        {
+            "slug": "design/interactive design",
+            "color": 2577151,
+            "position": 4,
+            "projects_count": 11,
+            "parent_id": 7,
+            "name": "Interaktives Design",
+            "parent": {
+                "slug": "design",
+                "color": 2577151,
+                "position": 5,
+                "name": "Design",
+                "id": 7,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/design"
+                    }
+                }
+            },
+            "id": 260,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/design/interactive%20design"
+                }
+            }
+        },
+        {
+            "slug": "fashion/couture",
+            "color": 16752598,
+            "position": 4,
+            "projects_count": 3,
+            "parent_id": 9,
+            "name": "Schneiderkunst",
+            "parent": {
+                "slug": "fashion",
+                "color": 16752598,
+                "position": 6,
+                "name": "Mode",
+                "id": 9,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/fashion"
+                    }
+                }
+            },
+            "id": 265,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/fashion/couture"
+                }
+            }
+        },
+        {
+            "slug": "games/playing cards",
+            "color": 51627,
+            "position": 4,
+            "projects_count": 36,
+            "parent_id": 12,
+            "name": "Spielkarten",
+            "parent": {
+                "slug": "games",
+                "color": 51627,
+                "position": 9,
+                "name": "Spiele",
+                "id": 12,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/games"
+                    }
+                }
+            },
+            "id": 273,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/games/playing%20cards"
+                }
+            }
+        },
+        {
+            "slug": "photography/people",
+            "color": 58341,
+            "position": 4,
+            "projects_count": 25,
+            "parent_id": 15,
+            "name": "Menschen",
+            "parent": {
+                "slug": "photography",
+                "color": 58341,
+                "position": 12,
+                "name": "Fotografie",
+                "id": 15,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/photography"
+                    }
+                }
+            },
+            "id": 278,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/photography/people"
+                }
+            }
+        },
+        {
+            "slug": "theater/musical",
+            "color": 16743775,
+            "position": 4,
+            "projects_count": 21,
+            "parent_id": 17,
+            "name": "Musicals",
+            "parent": {
+                "slug": "theater",
+                "color": 16743775,
+                "position": 15,
+                "name": "Theater",
+                "id": 17,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/theater"
+                    }
+                }
+            },
+            "id": 284,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/theater/musical"
+                }
+            }
+        },
+        {
+            "slug": "food/drinks",
+            "color": 16725570,
+            "position": 4,
+            "projects_count": 49,
+            "parent_id": 10,
+            "name": "Getränke",
+            "parent": {
+                "slug": "food",
+                "color": 16725570,
+                "position": 8,
+                "name": "Essen/Trinken",
+                "id": 10,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/food"
+                    }
+                }
+            },
+            "id": 307,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/food/drinks"
+                }
+            }
+        },
+        {
+            "slug": "publishing/calendars",
+            "color": 14867664,
+            "position": 4,
+            "projects_count": 2,
+            "parent_id": 18,
+            "name": "Kalender",
+            "parent": {
+                "slug": "publishing",
+                "color": 14867664,
+                "position": 13,
+                "name": "Publishing",
+                "id": 18,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/publishing"
+                    }
+                }
+            },
+            "id": 325,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/publishing/calendars"
+                }
+            }
+        },
+        {
+            "slug": "technology/diy electronics",
+            "color": 6526716,
+            "position": 4,
+            "projects_count": 14,
+            "parent_id": 16,
+            "name": "Elektronikbausätze",
+            "parent": {
+                "slug": "technology",
+                "color": 6526716,
+                "position": 14,
+                "name": "Technologie",
+                "id": 16,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/technology"
+                    }
+                }
+            },
+            "id": 334,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/technology/diy%20electronics"
+                }
+            }
+        },
+        {
+            "slug": "crafts/embroidery",
+            "color": 16744876,
+            "position": 4,
+            "projects_count": 0,
+            "parent_id": 26,
+            "name": "Stickerei",
+            "parent": {
+                "slug": "crafts",
+                "color": 16744876,
+                "position": 3,
+                "name": "Kunsthandwerk",
+                "id": 26,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/crafts"
+                    }
+                }
+            },
+            "id": 346,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/crafts/embroidery"
+                }
+            }
+        },
+        {
+            "slug": "journalism/video",
+            "color": 1228010,
+            "position": 4,
+            "projects_count": 14,
+            "parent_id": 13,
+            "name": "Video",
+            "parent": {
+                "slug": "journalism",
+                "color": 1228010,
+                "position": 10,
+                "name": "Journalismus",
+                "id": 13,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/journalism"
+                    }
+                }
+            },
+            "id": 360,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/journalism/video"
+                }
+            }
+        },
+        {
+            "slug": "design",
+            "color": 2577151,
+            "position": 5,
+            "projects_count": 438,
+            "name": "Design",
+            "id": 7,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/design"
+                }
+            }
+        },
+        {
+            "slug": "design/product design",
+            "color": 2577151,
+            "position": 5,
+            "projects_count": 328,
+            "parent_id": 7,
+            "name": "Produktdesign",
+            "parent": {
+                "slug": "design",
+                "color": 2577151,
+                "position": 5,
+                "name": "Design",
+                "id": 7,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/design"
+                    }
+                }
+            },
+            "id": 28,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/design/product%20design"
+                }
+            }
+        },
+        {
+            "slug": "music/electronic music",
+            "color": 10878931,
+            "position": 5,
+            "projects_count": 27,
+            "parent_id": 14,
+            "name": "Elektronische Musik",
+            "parent": {
+                "slug": "music",
+                "color": 10878931,
+                "position": 11,
+                "name": "Musik",
+                "id": 14,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/music"
+                    }
+                }
+            },
+            "id": 38,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/music/electronic%20music"
+                }
+            }
+        },
+        {
+            "slug": "publishing/children's books",
+            "color": 14867664,
+            "position": 5,
+            "projects_count": 74,
+            "parent_id": 18,
+            "name": "Kinderbücher",
+            "parent": {
+                "slug": "publishing",
+                "color": 14867664,
+                "position": 13,
+                "name": "Publishing",
+                "id": 18,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/publishing"
+                    }
+                }
+            },
+            "id": 46,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/publishing/children's%20books"
+                }
+            }
+        },
+        {
+            "slug": "comics/webcomics",
+            "color": 16776056,
+            "position": 5,
+            "projects_count": 7,
+            "parent_id": 3,
+            "name": "Webcomics",
+            "parent": {
+                "slug": "comics",
+                "color": 16776056,
+                "position": 2,
+                "name": "Comics",
+                "id": 3,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/comics"
+                    }
+                }
+            },
+            "id": 253,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/comics/webcomics"
+                }
+            }
+        },
+        {
+            "slug": "fashion/footwear",
+            "color": 16752598,
+            "position": 5,
+            "projects_count": 22,
+            "parent_id": 9,
+            "name": "Schuhe",
+            "parent": {
+                "slug": "fashion",
+                "color": 16752598,
+                "position": 6,
+                "name": "Mode",
+                "id": 9,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/fashion"
+                    }
+                }
+            },
+            "id": 266,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/fashion/footwear"
+                }
+            }
+        },
+        {
+            "slug": "games/puzzles",
+            "color": 51627,
+            "position": 5,
+            "projects_count": 0,
+            "parent_id": 12,
+            "name": "Puzzles",
+            "parent": {
+                "slug": "games",
+                "color": 51627,
+                "position": 9,
+                "name": "Spiele",
+                "id": 12,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/games"
+                    }
+                }
+            },
+            "id": 274,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/games/puzzles"
+                }
+            }
+        },
+        {
+            "slug": "photography/photobooks",
+            "color": 58341,
+            "position": 5,
+            "projects_count": 26,
+            "parent_id": 15,
+            "name": "Fotobücher",
+            "parent": {
+                "slug": "photography",
+                "color": 58341,
+                "position": 12,
+                "name": "Fotografie",
+                "id": 15,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/photography"
+                    }
+                }
+            },
+            "id": 280,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/photography/photobooks"
+                }
+            }
+        },
+        {
+            "slug": "theater/plays",
+            "color": 16743775,
+            "position": 5,
+            "projects_count": 16,
+            "parent_id": 17,
+            "name": "Theaterstücke",
+            "parent": {
+                "slug": "theater",
+                "color": 16743775,
+                "position": 15,
+                "name": "Theater",
+                "id": 17,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/theater"
+                    }
+                }
+            },
+            "id": 285,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/theater/plays"
+                }
+            }
+        },
+        {
+            "slug": "art/installations",
+            "color": 16760235,
+            "position": 5,
+            "projects_count": 6,
+            "parent_id": 1,
+            "name": "Installationen",
+            "parent": {
+                "slug": "art",
+                "color": 16760235,
+                "position": 1,
+                "name": "Kunst",
+                "id": 1,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/art"
+                    }
+                }
+            },
+            "id": 288,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/art/installations"
+                }
+            }
+        },
+        {
+            "slug": "film & video/drama",
+            "color": 16734574,
+            "position": 5,
+            "projects_count": 49,
+            "parent_id": 11,
+            "name": "Schauspiel",
+            "parent": {
+                "slug": "film & video",
+                "color": 16734574,
+                "position": 7,
+                "name": "Film und Video",
+                "id": 11,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/film%20&%20video"
+                    }
+                }
+            },
+            "id": 293,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/film%20&%20video/drama"
+                }
+            }
+        },
+        {
+            "slug": "food/events",
+            "color": 16725570,
+            "position": 5,
+            "projects_count": 6,
+            "parent_id": 10,
+            "name": "Veranstaltungen",
+            "parent": {
+                "slug": "food",
+                "color": 16725570,
+                "position": 8,
+                "name": "Essen/Trinken",
+                "id": 10,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/food"
+                    }
+                }
+            },
+            "id": 308,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/food/events"
+                }
+            }
+        },
+        {
+            "slug": "technology/fabrication tools",
+            "color": 6526716,
+            "position": 5,
+            "projects_count": 6,
+            "parent_id": 16,
+            "name": "Werkzeug",
+            "parent": {
+                "slug": "technology",
+                "color": 6526716,
+                "position": 14,
+                "name": "Technologie",
+                "id": 16,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/technology"
+                    }
+                }
+            },
+            "id": 335,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/technology/fabrication%20tools"
+                }
+            }
+        },
+        {
+            "slug": "crafts/glass",
+            "color": 16744876,
+            "position": 5,
+            "projects_count": 3,
+            "parent_id": 26,
+            "name": "Glas",
+            "parent": {
+                "slug": "crafts",
+                "color": 16744876,
+                "position": 3,
+                "name": "Kunsthandwerk",
+                "id": 26,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/crafts"
+                    }
+                }
+            },
+            "id": 347,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/crafts/glass"
+                }
+            }
+        },
+        {
+            "slug": "journalism/web",
+            "color": 1228010,
+            "position": 5,
+            "projects_count": 25,
+            "parent_id": 13,
+            "name": "Web",
+            "parent": {
+                "slug": "journalism",
+                "color": 1228010,
+                "position": 10,
+                "name": "Journalismus",
+                "id": 13,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/journalism"
+                    }
+                }
+            },
+            "id": 361,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/journalism/web"
+                }
+            }
+        },
+        {
+            "slug": "fashion",
+            "color": 16752598,
+            "position": 6,
+            "projects_count": 362,
+            "name": "Mode",
+            "id": 9,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/fashion"
+                }
+            }
+        },
+        {
+            "slug": "games/tabletop games",
+            "color": 51627,
+            "position": 6,
+            "projects_count": 104,
+            "parent_id": 12,
+            "name": "Tabletopspiele",
+            "parent": {
+                "slug": "games",
+                "color": 51627,
+                "position": 9,
+                "name": "Spiele",
+                "id": 12,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/games"
+                    }
+                }
+            },
+            "id": 34,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/games/tabletop%20games"
+                }
+            }
+        },
+        {
+            "slug": "publishing/fiction",
+            "color": 14867664,
+            "position": 6,
+            "projects_count": 98,
+            "parent_id": 18,
+            "name": "Belletristik",
+            "parent": {
+                "slug": "publishing",
+                "color": 14867664,
+                "position": 13,
+                "name": "Publishing",
+                "id": 18,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/publishing"
+                    }
+                }
+            },
+            "id": 47,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/publishing/fiction"
+                }
+            }
+        },
+        {
+            "slug": "art/mixed media",
+            "color": 16760235,
+            "position": 6,
+            "projects_count": 21,
+            "parent_id": 1,
+            "name": "Mixed Media",
+            "parent": {
+                "slug": "art",
+                "color": 16760235,
+                "position": 1,
+                "name": "Kunst",
+                "id": 1,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/art"
+                    }
+                }
+            },
+            "id": 54,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/art/mixed%20media"
+                }
+            }
+        },
+        {
+            "slug": "design/typography",
+            "color": 2577151,
+            "position": 6,
+            "projects_count": 0,
+            "parent_id": 7,
+            "name": "Typografie",
+            "parent": {
+                "slug": "design",
+                "color": 2577151,
+                "position": 5,
+                "name": "Design",
+                "id": 7,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/design"
+                    }
+                }
+            },
+            "id": 261,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/design/typography"
+                }
+            }
+        },
+        {
+            "slug": "fashion/jewelry",
+            "color": 16752598,
+            "position": 6,
+            "projects_count": 18,
+            "parent_id": 9,
+            "name": "Schmuck",
+            "parent": {
+                "slug": "fashion",
+                "color": 16752598,
+                "position": 6,
+                "name": "Mode",
+                "id": 9,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/fashion"
+                    }
+                }
+            },
+            "id": 267,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/fashion/jewelry"
+                }
+            }
+        },
+        {
+            "slug": "photography/places",
+            "color": 58341,
+            "position": 6,
+            "projects_count": 4,
+            "parent_id": 15,
+            "name": "Orte",
+            "parent": {
+                "slug": "photography",
+                "color": 58341,
+                "position": 12,
+                "name": "Fotografie",
+                "id": 15,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/photography"
+                    }
+                }
+            },
+            "id": 279,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/photography/places"
+                }
+            }
+        },
+        {
+            "slug": "theater/spaces",
+            "color": 16743775,
+            "position": 6,
+            "projects_count": 5,
+            "parent_id": 17,
+            "name": "Räume",
+            "parent": {
+                "slug": "theater",
+                "color": 16743775,
+                "position": 15,
+                "name": "Theater",
+                "id": 17,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/theater"
+                    }
+                }
+            },
+            "id": 286,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/theater/spaces"
+                }
+            }
+        },
+        {
+            "slug": "film & video/experimental",
+            "color": 16734574,
+            "position": 6,
+            "projects_count": 10,
+            "parent_id": 11,
+            "name": "Experimentalfilme",
+            "parent": {
+                "slug": "film & video",
+                "color": 16734574,
+                "position": 7,
+                "name": "Film und Video",
+                "id": 11,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/film%20&%20video"
+                    }
+                }
+            },
+            "id": 294,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/film%20&%20video/experimental"
+                }
+            }
+        },
+        {
+            "slug": "food/farmer's markets",
+            "color": 16725570,
+            "position": 6,
+            "projects_count": 10,
+            "parent_id": 10,
+            "name": "Wochenmärkte",
+            "parent": {
+                "slug": "food",
+                "color": 16725570,
+                "position": 8,
+                "name": "Essen/Trinken",
+                "id": 10,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/food"
+                    }
+                }
+            },
+            "id": 310,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/food/farmer's%20markets"
+                }
+            }
+        },
+        {
+            "slug": "music/faith",
+            "color": 10878931,
+            "position": 6,
+            "projects_count": 14,
+            "parent_id": 14,
+            "name": "Geistliche Musik",
+            "parent": {
+                "slug": "music",
+                "color": 10878931,
+                "position": 11,
+                "name": "Musik",
+                "id": 14,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/music"
+                    }
+                }
+            },
+            "id": 318,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/music/faith"
+                }
+            }
+        },
+        {
+            "slug": "technology/flight",
+            "color": 6526716,
+            "position": 6,
+            "projects_count": 9,
+            "parent_id": 16,
+            "name": "Flug",
+            "parent": {
+                "slug": "technology",
+                "color": 6526716,
+                "position": 14,
+                "name": "Technologie",
+                "id": 16,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/technology"
+                    }
+                }
+            },
+            "id": 336,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/technology/flight"
+                }
+            }
+        },
+        {
+            "slug": "crafts/knitting",
+            "color": 16744876,
+            "position": 6,
+            "projects_count": 2,
+            "parent_id": 26,
+            "name": "Stricken",
+            "parent": {
+                "slug": "crafts",
+                "color": 16744876,
+                "position": 3,
+                "name": "Kunsthandwerk",
+                "id": 26,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/crafts"
+                    }
+                }
+            },
+            "id": 348,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/crafts/knitting"
+                }
+            }
+        },
+        {
+            "slug": "film & video",
+            "color": 16734574,
+            "position": 7,
+            "projects_count": 557,
+            "name": "Film und Video",
+            "id": 11,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/film%20&%20video"
+                }
+            }
+        },
+        {
+            "slug": "art/painting",
+            "color": 16760235,
+            "position": 7,
+            "projects_count": 34,
+            "parent_id": 1,
+            "name": "Malerei",
+            "parent": {
+                "slug": "art",
+                "color": 16760235,
+                "position": 1,
+                "name": "Kunst",
+                "id": 1,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/art"
+                    }
+                }
+            },
+            "id": 23,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/art/painting"
+                }
+            }
+        },
+        {
+            "slug": "games/video games",
+            "color": 51627,
+            "position": 7,
+            "projects_count": 122,
+            "parent_id": 12,
+            "name": "Videospiele",
+            "parent": {
+                "slug": "games",
+                "color": 51627,
+                "position": 9,
+                "name": "Spiele",
+                "id": 12,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/games"
+                    }
+                }
+            },
+            "id": 35,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/games/video%20games"
+                }
+            }
+        },
+        {
+            "slug": "music/hip-hop",
+            "color": 10878931,
+            "position": 7,
+            "projects_count": 66,
+            "parent_id": 14,
+            "name": "Hip-Hop",
+            "parent": {
+                "slug": "music",
+                "color": 10878931,
+                "position": 11,
+                "name": "Musik",
+                "id": 14,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/music"
+                    }
+                }
+            },
+            "id": 39,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/music/hip-hop"
+                }
+            }
+        },
+        {
+            "slug": "fashion/pet fashion",
+            "color": 16752598,
+            "position": 7,
+            "projects_count": 2,
+            "parent_id": 9,
+            "name": "Tiermode",
+            "parent": {
+                "slug": "fashion",
+                "color": 16752598,
+                "position": 6,
+                "name": "Mode",
+                "id": 9,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/fashion"
+                    }
+                }
+            },
+            "id": 268,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/fashion/pet%20fashion"
+                }
+            }
+        },
+        {
+            "slug": "food/farms",
+            "color": 16725570,
+            "position": 7,
+            "projects_count": 35,
+            "parent_id": 10,
+            "name": "Bauernhöfe",
+            "parent": {
+                "slug": "food",
+                "color": 16725570,
+                "position": 8,
+                "name": "Essen/Trinken",
+                "id": 10,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/food"
+                    }
+                }
+            },
+            "id": 309,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/food/farms"
+                }
+            }
+        },
+        {
+            "slug": "publishing/literary journals",
+            "color": 14867664,
+            "position": 7,
+            "projects_count": 3,
+            "parent_id": 18,
+            "name": "Literaturzeitschriften",
+            "parent": {
+                "slug": "publishing",
+                "color": 14867664,
+                "position": 13,
+                "name": "Publishing",
+                "id": 18,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/publishing"
+                    }
+                }
+            },
+            "id": 326,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/publishing/literary%20journals"
+                }
+            }
+        },
+        {
+            "slug": "film & video/family",
+            "color": 16734574,
+            "position": 7,
+            "projects_count": 3,
+            "parent_id": 11,
+            "name": "Familie",
+            "parent": {
+                "slug": "film & video",
+                "color": 16734574,
+                "position": 7,
+                "name": "Film und Video",
+                "id": 11,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/film%20&%20video"
+                    }
+                }
+            },
+            "id": 330,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/film%20&%20video/family"
+                }
+            }
+        },
+        {
+            "slug": "technology/gadgets",
+            "color": 6526716,
+            "position": 7,
+            "projects_count": 68,
+            "parent_id": 16,
+            "name": "Gadgets",
+            "parent": {
+                "slug": "technology",
+                "color": 6526716,
+                "position": 14,
+                "name": "Technologie",
+                "id": 16,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/technology"
+                    }
+                }
+            },
+            "id": 337,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/technology/gadgets"
+                }
+            }
+        },
+        {
+            "slug": "crafts/letterpress",
+            "color": 16744876,
+            "position": 7,
+            "projects_count": 1,
+            "parent_id": 26,
+            "name": "Buchdruck",
+            "parent": {
+                "slug": "crafts",
+                "color": 16744876,
+                "position": 3,
+                "name": "Kunsthandwerk",
+                "id": 26,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/crafts"
+                    }
+                }
+            },
+            "id": 349,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/crafts/letterpress"
+                }
+            }
+        },
+        {
+            "slug": "food",
+            "color": 16725570,
+            "position": 8,
+            "projects_count": 367,
+            "name": "Essen/Trinken",
+            "id": 10,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/food"
+                }
+            }
+        },
+        {
+            "slug": "art/performance art",
+            "color": 16760235,
+            "position": 8,
+            "projects_count": 7,
+            "parent_id": 1,
+            "name": "Aktionskunst",
+            "parent": {
+                "slug": "art",
+                "color": 16760235,
+                "position": 1,
+                "name": "Kunst",
+                "id": 1,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/art"
+                    }
+                }
+            },
+            "id": 24,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/art/performance%20art"
+                }
+            }
+        },
+        {
+            "slug": "music/indie rock",
+            "color": 10878931,
+            "position": 8,
+            "projects_count": 26,
+            "parent_id": 14,
+            "name": "Indie-Rock",
+            "parent": {
+                "slug": "music",
+                "color": 10878931,
+                "position": 11,
+                "name": "Musik",
+                "id": 14,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/music"
+                    }
+                }
+            },
+            "id": 40,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/music/indie%20rock"
+                }
+            }
+        },
+        {
+            "slug": "publishing/nonfiction",
+            "color": 14867664,
+            "position": 8,
+            "projects_count": 76,
+            "parent_id": 18,
+            "name": "Sachliteratur",
+            "parent": {
+                "slug": "publishing",
+                "color": 14867664,
+                "position": 13,
+                "name": "Publishing",
+                "id": 18,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/publishing"
+                    }
+                }
+            },
+            "id": 48,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/publishing/nonfiction"
+                }
+            }
+        },
+        {
+            "slug": "technology/hardware",
+            "color": 6526716,
+            "position": 8,
+            "projects_count": 60,
+            "parent_id": 16,
+            "name": "Hardware",
+            "parent": {
+                "slug": "technology",
+                "color": 6526716,
+                "position": 14,
+                "name": "Technologie",
+                "id": 16,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/technology"
+                    }
+                }
+            },
+            "id": 52,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/technology/hardware"
+                }
+            }
+        },
+        {
+            "slug": "fashion/ready-to-wear",
+            "color": 16752598,
+            "position": 8,
+            "projects_count": 22,
+            "parent_id": 9,
+            "name": "Ready-to-wear",
+            "parent": {
+                "slug": "fashion",
+                "color": 16752598,
+                "position": 6,
+                "name": "Mode",
+                "id": 9,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/fashion"
+                    }
+                }
+            },
+            "id": 269,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/fashion/ready-to-wear"
+                }
+            }
+        },
+        {
+            "slug": "film & video/fantasy",
+            "color": 16734574,
+            "position": 8,
+            "projects_count": 4,
+            "parent_id": 11,
+            "name": "Fantasy",
+            "parent": {
+                "slug": "film & video",
+                "color": 16734574,
+                "position": 7,
+                "name": "Film und Video",
+                "id": 11,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/film%20&%20video"
+                    }
+                }
+            },
+            "id": 296,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/film%20&%20video/fantasy"
+                }
+            }
+        },
+        {
+            "slug": "food/food trucks",
+            "color": 16725570,
+            "position": 8,
+            "projects_count": 27,
+            "parent_id": 10,
+            "name": "Imbisswagen",
+            "parent": {
+                "slug": "food",
+                "color": 16725570,
+                "position": 8,
+                "name": "Essen/Trinken",
+                "id": 10,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/food"
+                    }
+                }
+            },
+            "id": 311,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/food/food%20trucks"
+                }
+            }
+        },
+        {
+            "slug": "crafts/pottery",
+            "color": 16744876,
+            "position": 8,
+            "projects_count": 0,
+            "parent_id": 26,
+            "name": "Töpferei",
+            "parent": {
+                "slug": "crafts",
+                "color": 16744876,
+                "position": 3,
+                "name": "Kunsthandwerk",
+                "id": 26,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/crafts"
+                    }
+                }
+            },
+            "id": 350,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/crafts/pottery"
+                }
+            }
+        },
+        {
+            "slug": "games",
+            "color": 51627,
+            "position": 9,
+            "projects_count": 350,
+            "name": "Spiele",
+            "id": 12,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/games"
+                }
+            }
+        },
+        {
+            "slug": "music/jazz",
+            "color": 10878931,
+            "position": 9,
+            "projects_count": 34,
+            "parent_id": 14,
+            "name": "Jazz",
+            "parent": {
+                "slug": "music",
+                "color": 10878931,
+                "position": 11,
+                "name": "Musik",
+                "id": 14,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/music"
+                    }
+                }
+            },
+            "id": 41,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/music/jazz"
+                }
+            }
+        },
+        {
+            "slug": "publishing/periodicals",
+            "color": 14867664,
+            "position": 9,
+            "projects_count": 9,
+            "parent_id": 18,
+            "name": "Zeitschriften",
+            "parent": {
+                "slug": "publishing",
+                "color": 14867664,
+                "position": 13,
+                "name": "Publishing",
+                "id": 18,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/publishing"
+                    }
+                }
+            },
+            "id": 49,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/publishing/periodicals"
+                }
+            }
+        },
+        {
+            "slug": "art/public art",
+            "color": 16760235,
+            "position": 9,
+            "projects_count": 22,
+            "parent_id": 1,
+            "name": "Kunst im öffentlichen Raum",
+            "parent": {
+                "slug": "art",
+                "color": 16760235,
+                "position": 1,
+                "name": "Kunst",
+                "id": 1,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/art"
+                    }
+                }
+            },
+            "id": 53,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/art/public%20art"
+                }
+            }
+        },
+        {
+            "slug": "film & video/festivals",
+            "color": 16734574,
+            "position": 9,
+            "projects_count": 7,
+            "parent_id": 11,
+            "name": "Festivals",
+            "parent": {
+                "slug": "film & video",
+                "color": 16734574,
+                "position": 7,
+                "name": "Film und Video",
+                "id": 11,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/film%20&%20video"
+                    }
+                }
+            },
+            "id": 295,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/film%20&%20video/festivals"
+                }
+            }
+        },
+        {
+            "slug": "food/restaurants",
+            "color": 16725570,
+            "position": 9,
+            "projects_count": 63,
+            "parent_id": 10,
+            "name": "Restaurants",
+            "parent": {
+                "slug": "food",
+                "color": 16725570,
+                "position": 8,
+                "name": "Essen/Trinken",
+                "id": 10,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/food"
+                    }
+                }
+            },
+            "id": 312,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/food/restaurants"
+                }
+            }
+        },
+        {
+            "slug": "crafts/printing",
+            "color": 16744876,
+            "position": 9,
+            "projects_count": 3,
+            "parent_id": 26,
+            "name": "Druckwesen",
+            "parent": {
+                "slug": "crafts",
+                "color": 16744876,
+                "position": 3,
+                "name": "Kunsthandwerk",
+                "id": 26,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/crafts"
+                    }
+                }
+            },
+            "id": 351,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/crafts/printing"
+                }
+            }
+        },
+        {
+            "slug": "technology/makerspaces",
+            "color": 6526716,
+            "position": 9,
+            "projects_count": 4,
+            "parent_id": 16,
+            "name": "Hackerspaces",
+            "parent": {
+                "slug": "technology",
+                "color": 6526716,
+                "position": 14,
+                "name": "Technologie",
+                "id": 16,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/technology"
+                    }
+                }
+            },
+            "id": 362,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/technology/makerspaces"
+                }
+            }
+        },
+        {
+            "slug": "journalism",
+            "color": 1228010,
+            "position": 10,
+            "projects_count": 85,
+            "name": "Journalismus",
+            "id": 13,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/journalism"
+                }
+            }
+        },
+        {
+            "slug": "art/sculpture",
+            "color": 16760235,
+            "position": 10,
+            "projects_count": 11,
+            "parent_id": 1,
+            "name": "Bildhauerei",
+            "parent": {
+                "slug": "art",
+                "color": 16760235,
+                "position": 1,
+                "name": "Kunst",
+                "id": 1,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/art"
+                    }
+                }
+            },
+            "id": 25,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/art/sculpture"
+                }
+            }
+        },
+        {
+            "slug": "publishing/poetry",
+            "color": 14867664,
+            "position": 10,
+            "projects_count": 14,
+            "parent_id": 18,
+            "name": "Dichtung",
+            "parent": {
+                "slug": "publishing",
+                "color": 14867664,
+                "position": 13,
+                "name": "Publishing",
+                "id": 18,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/publishing"
+                    }
+                }
+            },
+            "id": 50,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/publishing/poetry"
+                }
+            }
+        },
+        {
+            "slug": "film & video/horror",
+            "color": 16734574,
+            "position": 10,
+            "projects_count": 19,
+            "parent_id": 11,
+            "name": "Horror",
+            "parent": {
+                "slug": "film & video",
+                "color": 16734574,
+                "position": 7,
+                "name": "Film und Video",
+                "id": 11,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/film%20&%20video"
+                    }
+                }
+            },
+            "id": 297,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/film%20&%20video/horror"
+                }
+            }
+        },
+        {
+            "slug": "food/small batch",
+            "color": 16725570,
+            "position": 10,
+            "projects_count": 26,
+            "parent_id": 10,
+            "name": "Kleinserie",
+            "parent": {
+                "slug": "food",
+                "color": 16725570,
+                "position": 8,
+                "name": "Essen/Trinken",
+                "id": 10,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/food"
+                    }
+                }
+            },
+            "id": 313,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/food/small%20batch"
+                }
+            }
+        },
+        {
+            "slug": "music/kids",
+            "color": 10878931,
+            "position": 10,
+            "projects_count": 4,
+            "parent_id": 14,
+            "name": "Kindermusik",
+            "parent": {
+                "slug": "music",
+                "color": 10878931,
+                "position": 11,
+                "name": "Musik",
+                "id": 14,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/music"
+                    }
+                }
+            },
+            "id": 319,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/music/kids"
+                }
+            }
+        },
+        {
+            "slug": "technology/robots",
+            "color": 6526716,
+            "position": 10,
+            "projects_count": 10,
+            "parent_id": 16,
+            "name": "Roboter",
+            "parent": {
+                "slug": "technology",
+                "color": 6526716,
+                "position": 14,
+                "name": "Technologie",
+                "id": 16,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/technology"
+                    }
+                }
+            },
+            "id": 338,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/technology/robots"
+                }
+            }
+        },
+        {
+            "slug": "crafts/quilts",
+            "color": 16744876,
+            "position": 10,
+            "projects_count": 0,
+            "parent_id": 26,
+            "name": "Quilts",
+            "parent": {
+                "slug": "crafts",
+                "color": 16744876,
+                "position": 3,
+                "name": "Kunsthandwerk",
+                "id": 26,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/crafts"
+                    }
+                }
+            },
+            "id": 352,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/crafts/quilts"
+                }
+            }
+        },
+        {
+            "slug": "music",
+            "color": 10878931,
+            "position": 11,
+            "projects_count": 516,
+            "name": "Musik",
+            "id": 14,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/music"
+                }
+            }
+        },
+        {
+            "slug": "technology/software",
+            "color": 6526716,
+            "position": 11,
+            "projects_count": 44,
+            "parent_id": 16,
+            "name": "Software",
+            "parent": {
+                "slug": "technology",
+                "color": 6526716,
+                "position": 14,
+                "name": "Technologie",
+                "id": 16,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/technology"
+                    }
+                }
+            },
+            "id": 51,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/technology/software"
+                }
+            }
+        },
+        {
+            "slug": "publishing/radio & podcasts",
+            "color": 14867664,
+            "position": 11,
+            "projects_count": 12,
+            "parent_id": 18,
+            "name": "Radio und Podcasts",
+            "parent": {
+                "slug": "publishing",
+                "color": 14867664,
+                "position": 13,
+                "name": "Publishing",
+                "id": 18,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/publishing"
+                    }
+                }
+            },
+            "id": 239,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/publishing/radio%20&%20podcasts"
+                }
+            }
+        },
+        {
+            "slug": "art/textiles",
+            "color": 16760235,
+            "position": 11,
+            "projects_count": 6,
+            "parent_id": 1,
+            "name": "Textilien",
+            "parent": {
+                "slug": "art",
+                "color": 16760235,
+                "position": 1,
+                "name": "Kunst",
+                "id": 1,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/art"
+                    }
+                }
+            },
+            "id": 289,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/art/textiles"
+                }
+            }
+        },
+        {
+            "slug": "film & video/movie theaters",
+            "color": 16734574,
+            "position": 11,
+            "projects_count": 4,
+            "parent_id": 11,
+            "name": "Kino",
+            "parent": {
+                "slug": "film & video",
+                "color": 16734574,
+                "position": 7,
+                "name": "Film und Video",
+                "id": 11,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/film%20&%20video"
+                    }
+                }
+            },
+            "id": 298,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/film%20&%20video/movie%20theaters"
+                }
+            }
+        },
+        {
+            "slug": "food/spaces",
+            "color": 16725570,
+            "position": 11,
+            "projects_count": 6,
+            "parent_id": 10,
+            "name": "Räume",
+            "parent": {
+                "slug": "food",
+                "color": 16725570,
+                "position": 8,
+                "name": "Essen/Trinken",
+                "id": 10,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/food"
+                    }
+                }
+            },
+            "id": 314,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/food/spaces"
+                }
+            }
+        },
+        {
+            "slug": "music/latin",
+            "color": 10878931,
+            "position": 11,
+            "projects_count": 0,
+            "parent_id": 14,
+            "name": "Lateinamerikanische Musik",
+            "parent": {
+                "slug": "music",
+                "color": 10878931,
+                "position": 11,
+                "name": "Musik",
+                "id": 14,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/music"
+                    }
+                }
+            },
+            "id": 320,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/music/latin"
+                }
+            }
+        },
+        {
+            "slug": "crafts/stationery",
+            "color": 16744876,
+            "position": 11,
+            "projects_count": 2,
+            "parent_id": 26,
+            "name": "Bürobedarf",
+            "parent": {
+                "slug": "crafts",
+                "color": 16744876,
+                "position": 3,
+                "name": "Kunsthandwerk",
+                "id": 26,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/crafts"
+                    }
+                }
+            },
+            "id": 353,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/crafts/stationery"
+                }
+            }
+        },
+        {
+            "slug": "photography",
+            "color": 58341,
+            "position": 12,
+            "projects_count": 102,
+            "name": "Fotografie",
+            "id": 15,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/photography"
+                }
+            }
+        },
+        {
+            "slug": "music/metal",
+            "color": 10878931,
+            "position": 12,
+            "projects_count": 9,
+            "parent_id": 14,
+            "name": "Metal",
+            "parent": {
+                "slug": "music",
+                "color": 10878931,
+                "position": 11,
+                "name": "Musik",
+                "id": 14,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/music"
+                    }
+                }
+            },
+            "id": 241,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/music/metal"
+                }
+            }
+        },
+        {
+            "slug": "art/video art",
+            "color": 16760235,
+            "position": 12,
+            "projects_count": 6,
+            "parent_id": 1,
+            "name": "Videokunst",
+            "parent": {
+                "slug": "art",
+                "color": 16760235,
+                "position": 1,
+                "name": "Kunst",
+                "id": 1,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/art"
+                    }
+                }
+            },
+            "id": 290,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/art/video%20art"
+                }
+            }
+        },
+        {
+            "slug": "film & video/music videos",
+            "color": 16734574,
+            "position": 12,
+            "projects_count": 10,
+            "parent_id": 11,
+            "name": "Musikvideos",
+            "parent": {
+                "slug": "film & video",
+                "color": 16734574,
+                "position": 7,
+                "name": "Film und Video",
+                "id": 11,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/film%20&%20video"
+                    }
+                }
+            },
+            "id": 299,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/film%20&%20video/music%20videos"
+                }
+            }
+        },
+        {
+            "slug": "food/vegan",
+            "color": 16725570,
+            "position": 12,
+            "projects_count": 14,
+            "parent_id": 10,
+            "name": "Vegan",
+            "parent": {
+                "slug": "food",
+                "color": 16725570,
+                "position": 8,
+                "name": "Essen/Trinken",
+                "id": 10,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/food"
+                    }
+                }
+            },
+            "id": 315,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/food/vegan"
+                }
+            }
+        },
+        {
+            "slug": "publishing/translations",
+            "color": 14867664,
+            "position": 12,
+            "projects_count": 5,
+            "parent_id": 18,
+            "name": "Übersetzungen",
+            "parent": {
+                "slug": "publishing",
+                "color": 14867664,
+                "position": 13,
+                "name": "Publishing",
+                "id": 18,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/publishing"
+                    }
+                }
+            },
+            "id": 327,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/publishing/translations"
+                }
+            }
+        },
+        {
+            "slug": "technology/sound",
+            "color": 6526716,
+            "position": 12,
+            "projects_count": 12,
+            "parent_id": 16,
+            "name": "Klang",
+            "parent": {
+                "slug": "technology",
+                "color": 6526716,
+                "position": 14,
+                "name": "Technologie",
+                "id": 16,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/technology"
+                    }
+                }
+            },
+            "id": 339,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/technology/sound"
+                }
+            }
+        },
+        {
+            "slug": "crafts/taxidermy",
+            "color": 16744876,
+            "position": 12,
+            "projects_count": 0,
+            "parent_id": 26,
+            "name": "Taxidermie",
+            "parent": {
+                "slug": "crafts",
+                "color": 16744876,
+                "position": 3,
+                "name": "Kunsthandwerk",
+                "id": 26,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/crafts"
+                    }
+                }
+            },
+            "id": 354,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/crafts/taxidermy"
+                }
+            }
+        },
+        {
+            "slug": "publishing",
+            "color": 14867664,
+            "position": 13,
+            "projects_count": 473,
+            "name": "Publishing",
+            "id": 18,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/publishing"
+                }
+            }
+        },
+        {
+            "slug": "film & video/narrative film",
+            "color": 16734574,
+            "position": 13,
+            "projects_count": 23,
+            "parent_id": 11,
+            "name": "Erzählfilme",
+            "parent": {
+                "slug": "film & video",
+                "color": 16734574,
+                "position": 7,
+                "name": "Film und Video",
+                "id": 11,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/film%20&%20video"
+                    }
+                }
+            },
+            "id": 31,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/film%20&%20video/narrative%20film"
+                }
+            }
+        },
+        {
+            "slug": "music/pop",
+            "color": 10878931,
+            "position": 13,
+            "projects_count": 25,
+            "parent_id": 14,
+            "name": "Pop",
+            "parent": {
+                "slug": "music",
+                "color": 10878931,
+                "position": 11,
+                "name": "Musik",
+                "id": 14,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/music"
+                    }
+                }
+            },
+            "id": 42,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/music/pop"
+                }
+            }
+        },
+        {
+            "slug": "publishing/young adult",
+            "color": 14867664,
+            "position": 13,
+            "projects_count": 20,
+            "parent_id": 18,
+            "name": "Jugendliteratur",
+            "parent": {
+                "slug": "publishing",
+                "color": 14867664,
+                "position": 13,
+                "name": "Publishing",
+                "id": 18,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/publishing"
+                    }
+                }
+            },
+            "id": 328,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/publishing/young%20adult"
+                }
+            }
+        },
+        {
+            "slug": "technology/space exploration",
+            "color": 6526716,
+            "position": 13,
+            "projects_count": 3,
+            "parent_id": 16,
+            "name": "Weltraumforschung",
+            "parent": {
+                "slug": "technology",
+                "color": 6526716,
+                "position": 14,
+                "name": "Technologie",
+                "id": 16,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/technology"
+                    }
+                }
+            },
+            "id": 340,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/technology/space%20exploration"
+                }
+            }
+        },
+        {
+            "slug": "crafts/weaving",
+            "color": 16744876,
+            "position": 13,
+            "projects_count": 2,
+            "parent_id": 26,
+            "name": "Webarbeiten",
+            "parent": {
+                "slug": "crafts",
+                "color": 16744876,
+                "position": 3,
+                "name": "Kunsthandwerk",
+                "id": 26,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/crafts"
+                    }
+                }
+            },
+            "id": 355,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/crafts/weaving"
+                }
+            }
+        },
+        {
+            "slug": "technology",
+            "color": 6526716,
+            "position": 14,
+            "projects_count": 612,
+            "name": "Technologie",
+            "id": 16,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/technology"
+                }
+            }
+        },
+        {
+            "slug": "film & video/romance",
+            "color": 16734574,
+            "position": 14,
+            "projects_count": 6,
+            "parent_id": 11,
+            "name": "Romantik",
+            "parent": {
+                "slug": "film & video",
+                "color": 16734574,
+                "position": 7,
+                "name": "Film und Video",
+                "id": 11,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/film%20&%20video"
+                    }
+                }
+            },
+            "id": 300,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/film%20&%20video/romance"
+                }
+            }
+        },
+        {
+            "slug": "music/punk",
+            "color": 10878931,
+            "position": 14,
+            "projects_count": 2,
+            "parent_id": 14,
+            "name": "Punk",
+            "parent": {
+                "slug": "music",
+                "color": 10878931,
+                "position": 11,
+                "name": "Musik",
+                "id": 14,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/music"
+                    }
+                }
+            },
+            "id": 321,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/music/punk"
+                }
+            }
+        },
+        {
+            "slug": "publishing/zines",
+            "color": 14867664,
+            "position": 14,
+            "projects_count": 5,
+            "parent_id": 18,
+            "name": "Elektronische Journale",
+            "parent": {
+                "slug": "publishing",
+                "color": 14867664,
+                "position": 13,
+                "name": "Publishing",
+                "id": 18,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/publishing"
+                    }
+                }
+            },
+            "id": 329,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/publishing/zines"
+                }
+            }
+        },
+        {
+            "slug": "technology/wearables",
+            "color": 6526716,
+            "position": 14,
+            "projects_count": 21,
+            "parent_id": 16,
+            "name": "Wearables",
+            "parent": {
+                "slug": "technology",
+                "color": 6526716,
+                "position": 14,
+                "name": "Technologie",
+                "id": 16,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/technology"
+                    }
+                }
+            },
+            "id": 341,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/technology/wearables"
+                }
+            }
+        },
+        {
+            "slug": "crafts/woodworking",
+            "color": 16744876,
+            "position": 14,
+            "projects_count": 18,
+            "parent_id": 26,
+            "name": "Holzarbeit",
+            "parent": {
+                "slug": "crafts",
+                "color": 16744876,
+                "position": 3,
+                "name": "Kunsthandwerk",
+                "id": 26,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/crafts"
+                    }
+                }
+            },
+            "id": 356,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/crafts/woodworking"
+                }
+            }
+        },
+        {
+            "slug": "theater",
+            "color": 16743775,
+            "position": 15,
+            "projects_count": 66,
+            "name": "Theater",
+            "id": 17,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/theater"
+                }
+            }
+        },
+        {
+            "slug": "film & video/science fiction",
+            "color": 16734574,
+            "position": 15,
+            "projects_count": 9,
+            "parent_id": 11,
+            "name": "Science Fiction",
+            "parent": {
+                "slug": "film & video",
+                "color": 16734574,
+                "position": 7,
+                "name": "Film und Video",
+                "id": 11,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/film%20&%20video"
+                    }
+                }
+            },
+            "id": 301,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/film%20&%20video/science%20fiction"
+                }
+            }
+        },
+        {
+            "slug": "music/r&b",
+            "color": 10878931,
+            "position": 15,
+            "projects_count": 12,
+            "parent_id": 14,
+            "name": "R&B",
+            "parent": {
+                "slug": "music",
+                "color": 10878931,
+                "position": 11,
+                "name": "Musik",
+                "id": 14,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/music"
+                    }
+                }
+            },
+            "id": 322,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/music/r&b"
+                }
+            }
+        },
+        {
+            "slug": "technology/web",
+            "color": 6526716,
+            "position": 15,
+            "projects_count": 78,
+            "parent_id": 16,
+            "name": "Web",
+            "parent": {
+                "slug": "technology",
+                "color": 6526716,
+                "position": 14,
+                "name": "Technologie",
+                "id": 16,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/technology"
+                    }
+                }
+            },
+            "id": 342,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/technology/web"
+                }
+            }
+        },
+        {
+            "slug": "film & video/shorts",
+            "color": 16734574,
+            "position": 16,
+            "projects_count": 67,
+            "parent_id": 11,
+            "name": "Kurzfilme",
+            "parent": {
+                "slug": "film & video",
+                "color": 16734574,
+                "position": 7,
+                "name": "Film und Video",
+                "id": 11,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/film%20&%20video"
+                    }
+                }
+            },
+            "id": 32,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/film%20&%20video/shorts"
+                }
+            }
+        },
+        {
+            "slug": "music/rock",
+            "color": 10878931,
+            "position": 16,
+            "projects_count": 36,
+            "parent_id": 14,
+            "name": "Rock",
+            "parent": {
+                "slug": "music",
+                "color": 10878931,
+                "position": 11,
+                "name": "Musik",
+                "id": 14,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/music"
+                    }
+                }
+            },
+            "id": 43,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/music/rock"
+                }
+            }
+        },
+        {
+            "slug": "music/world music",
+            "color": 10878931,
+            "position": 17,
+            "projects_count": 19,
+            "parent_id": 14,
+            "name": "Weltliche Musik",
+            "parent": {
+                "slug": "music",
+                "color": 10878931,
+                "position": 11,
+                "name": "Musik",
+                "id": 14,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/music"
+                    }
+                }
+            },
+            "id": 44,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/music/world%20music"
+                }
+            }
+        },
+        {
+            "slug": "film & video/television",
+            "color": 16734574,
+            "position": 17,
+            "projects_count": 17,
+            "parent_id": 11,
+            "name": "Fernsehen",
+            "parent": {
+                "slug": "film & video",
+                "color": 16734574,
+                "position": 7,
+                "name": "Film und Video",
+                "id": 11,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/film%20&%20video"
+                    }
+                }
+            },
+            "id": 303,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/film%20&%20video/television"
+                }
+            }
+        },
+        {
+            "slug": "film & video/thrillers",
+            "color": 16734574,
+            "position": 18,
+            "projects_count": 13,
+            "parent_id": 11,
+            "name": "Thriller",
+            "parent": {
+                "slug": "film & video",
+                "color": 16734574,
+                "position": 7,
+                "name": "Film und Video",
+                "id": 11,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/film%20&%20video"
+                    }
+                }
+            },
+            "id": 302,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/film%20&%20video/thrillers"
+                }
+            }
+        },
+        {
+            "slug": "film & video/webseries",
+            "color": 16734574,
+            "position": 19,
+            "projects_count": 45,
+            "parent_id": 11,
+            "name": "Webserien",
+            "parent": {
+                "slug": "film & video",
+                "color": 16734574,
+                "position": 7,
+                "name": "Film und Video",
+                "id": 11,
+                "urls": {
+                    "web": {
+                        "discover": "http://www.kickstarter.com/discover/categories/film%20&%20video"
+                    }
+                }
+            },
+            "id": 33,
+            "urls": {
+                "web": {
+                    "discover": "http://www.kickstarter.com/discover/categories/film%20&%20video/webseries"
+                }
+            }
+        }
+    ]
+}

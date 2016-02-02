@@ -110,10 +110,11 @@ final class HomeViewModel : HomeViewModelType, HomeViewModelInputs, HomeViewMode
       .beginsWith(values: [Playlist.Featured, Playlist.Recommended])
       .map(HomePlaylistViewModel.init)
       .collect()
+      .replayLazily(1)
 
     // Derive the playlist and project that is now playing
     let nowPlaying: Signal<NowPlaying, NoError> = focusedPlaylist
-      .debounce(1.0, onScheduler: QueueScheduler.mainQueueScheduler)
+      .debounce(1.0, onScheduler: env.debounceScheduler)
       .skipRepeats(==)
       .switchMap { playlist in
         apiService.fetchProject(playlist.discoveryParams)
