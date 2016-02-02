@@ -2,6 +2,9 @@ import AVKit
 @testable import kickstartertv
 import ReactiveCocoa
 
+/**
+ *  An asset generator that immediately completes successfully with a blank image.
+ */
 internal struct MockSuccessAssetImageGenerator : AssetImageGeneratorType {
   init(asset: AVAsset) {
   }
@@ -16,6 +19,9 @@ internal struct MockSuccessAssetImageGenerator : AssetImageGeneratorType {
   }
 }
 
+/**
+ *  An asset generator that immediately fails.
+ */
 internal struct MockFailureAssetImageGenerator : AssetImageGeneratorType {
   init(asset: AVAsset) {
   }
@@ -25,6 +31,9 @@ internal struct MockFailureAssetImageGenerator : AssetImageGeneratorType {
   }
 }
 
+/**
+ *  An asset generator that never completes.
+ */
 internal struct MockNeverFinishingAssetImageGenerator : AssetImageGeneratorType {
   init(asset: AVAsset) {
   }
@@ -33,6 +42,9 @@ internal struct MockNeverFinishingAssetImageGenerator : AssetImageGeneratorType 
   }
 }
 
+/**
+ *  An asset generate that comlpetes successfully after 10 seconds.
+ */
 internal struct MockLongRunningAssetImageGenerator : AssetImageGeneratorType {
   init(asset: AVAsset) {
   }
