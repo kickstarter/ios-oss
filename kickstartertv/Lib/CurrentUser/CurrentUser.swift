@@ -1,5 +1,6 @@
 import Foundation
 import ReactiveCocoa
+import Result
 import Models
 import KsApi
 import ReactiveExtensions

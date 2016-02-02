@@ -1,6 +1,7 @@
 import Models
 import KsApi
 import ReactiveCocoa
+import Result
 import ReactiveExtensions
 
 protocol _PlaylistInputs {

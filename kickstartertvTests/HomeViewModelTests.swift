@@ -2,6 +2,7 @@ import XCTest
 @testable import kickstartertv
 import KsApi
 import ReactiveCocoa
+import Result
 import Models
 
 final class HomeViewModelTests : XCTestCase {

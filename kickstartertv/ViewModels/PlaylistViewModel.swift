@@ -2,6 +2,7 @@ import Darwin
 import KsApi
 import Models
 import ReactiveCocoa
+import Result
 
 protocol PlaylistViewModelInputs {
   /// Call when a pan gesture ends with the distance the gesture traveled

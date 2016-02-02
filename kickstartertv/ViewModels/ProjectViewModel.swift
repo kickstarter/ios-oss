@@ -2,6 +2,7 @@ import Foundation
 import Models
 import KsApi
 import ReactiveCocoa
+import Result
 import ReactiveExtensions
 import Prelude
 

@@ -2,6 +2,7 @@ import UIKit
 import Models
 import AVKit
 import ReactiveCocoa
+import Result
 
 class PlaylistViewController: MVVMViewController {
   @IBOutlet weak var categoryLabel: UILabel!
