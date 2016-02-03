@@ -3,76 +3,92 @@ import KsApi
 import Models
 import ReactiveCocoa
 import Result
+import AVKit
+import Prelude
 
-protocol PlaylistViewModelInputs {
-  /// Call when a pan gesture ends with the distance the gesture traveled
-  func swipeEnded(translation: CGPoint)
-
-  /// Call when we should advance to the next playlist item.
-  func nextPlaylistItem()
-
-  /// Call when we should go to the previous playlist item.
-  func previousPlaylistItem()
-
-  /// Call with a boolean value when a transition begins/ends between two projects.
-  func projectIsTransitioning(transitioning: Bool)
-
-  /// Call when the playlist should change
-  func changePlaylist(playlist: Playlist)
-}
-
-protocol PlaylistViewModelOutputs {
-  /// Emits when a new project should be transitioned too
-  var project: SignalProducer<Project, NoError> { get }
-}
-
-protocol PlaylistViewModelType {
+internal protocol PlaylistViewModelType {
   var inputs: PlaylistViewModelInputs { get }
   var outputs: PlaylistViewModelOutputs { get }
 }
 
-final class PlaylistViewModel : ViewModelType, PlaylistViewModelType, PlaylistViewModelInputs, PlaylistViewModelOutputs {
+internal final class PlaylistViewModel : ViewModelType, PlaylistViewModelType, PlaylistViewModelInputs, PlaylistViewModelOutputs {
   typealias Model = Playlist
 
-  // Inputs
-  func swipeEnded(translation: CGPoint) {
+  // MARK: Inputs
+
+  private let (next, nextObserver) = Signal<(), NoError>.pipe()
+  private let (previous, previousObserver) = Signal<(), NoError>.pipe()
+  internal func swipeEnded(translation translation: CGPoint) {
     if translation.x < -1_100.0 {
       self.nextObserver.sendNext(())
     } else if translation.x > 1_100.0 {
       self.previousObserver.sendNext(())
     }
   }
-  private let (next, nextObserver) = Signal<(), NoError>.pipe()
-  func nextPlaylistItem() {
-    self.nextObserver.sendNext(())
-  }
-  private let (previous, previousObserver) = Signal<(), NoError>.pipe()
-  func previousPlaylistItem() {
-    self.previousObserver.sendNext(())
-  }
-  private let (projectIsTransitioning, projectIsTransitioningObserver) = Signal<Bool, NoError>.pipe()
-  func projectIsTransitioning(transitioning: Bool) {
-    self.projectIsTransitioningObserver.sendNext(transitioning)
-  }
-  private let (playlist, playlistObserver) = Signal<Playlist, NoError>.pipe()
-  func changePlaylist(playlist: Playlist) {
-    self.playlistObserver.sendNext(playlist)
-  }
-  var inputs: PlaylistViewModelInputs { return self }
 
-  // Outputs
-  let (project, projectObserver) = SignalProducer<Project, NoError>.buffer(1)
-  var outputs: PlaylistViewModelOutputs { return self }
+  // MARK: Outputs
 
-  init(initialPlaylist: Playlist, currentProject: Project, env: Environment = AppEnvironment.current) {
+  internal let project: SignalProducer<Project, NoError>
+  internal let categoryName: SignalProducer<String, NoError>
+  internal let projectName: SignalProducer<String, NoError>
+  internal let backgroundImage: SignalProducer<UIImage?, NoError>
+
+  internal var inputs: PlaylistViewModelInputs { return self }
+  internal var outputs: PlaylistViewModelOutputs { return self }
+
+  internal init(initialPlaylist: Playlist, currentProject: Project, env: Environment = AppEnvironment.current) {
     let apiService = env.apiService
 
-    self.projectObserver.sendNext(currentProject)
-    next.mergeWith(previous)
+    print(env.assetImageGeneratorType)
+
+    self.project = SignalProducer(signal: next.mergeWith(previous))
       .map { _ in Int(arc4random_uniform(100_000)) }
-      .switchMap { seed in
-        return apiService.fetchProject(DiscoveryParams(staffPicks: true, hasVideo: true, state: .Live, seed: seed))
-          .demoteErrors() }
-      .observe(self.projectObserver)
+      .map { seed in DiscoveryParams(staffPicks: true, hasVideo: true, state: .Live, seed: seed) }
+      .switchMap { params in apiService.fetchProject(params).demoteErrors() }
+      .beginsWith(value: currentProject)
+
+    self.categoryName = self.project.map { $0.category.name }
+    self.projectName = self.project.map { $0.name }
+
+    self.backgroundImage = self.project
+      .flatMap { $0.video?.high }
+      .flatMap(NSURL.init)
+      .map(AVAsset.init)
+      .map { a in env.assetImageGeneratorType.init(asset: a) }
+      .switchMap { g in PlaylistViewModel.stillImage(generator: g) }
+  }
+
+  /**
+   Extracts a still image from a an asset generator. If the extraction takes too long we will emit `nil`.
+
+   - parameter generator: An asset generator to use for the extracting.
+   - parameter scheduler: (optional) A scheduler to perform the timeout.
+
+   - returns: A signal producer that emits an image if the extraction can be made and `nil` otherwise.
+   */
+  private static func stillImage(generator generator: AssetImageGeneratorType,
+    scheduler: DateSchedulerType = AppEnvironment.current.debounceScheduler) -> SignalProducer<UIImage?, NoError> {
+      
+    let requestedTime = CMTimeMakeWithSeconds(30.0, 1)
+    let requestedTimeValue = NSValue(CMTime: requestedTime)
+
+    let image = SignalProducer<UIImage?, NoError> { observer, disposable in
+      generator.generateCGImagesAsynchronouslyForTimes([requestedTimeValue]) { (time, image, actualTime, result, error) -> Void in
+
+        guard !disposable.disposed else { return }
+
+        if let image = image {
+          observer.sendNext(UIImage(CGImage: image))
+          observer.sendCompleted()
+        } else {
+          observer.sendNext(nil)
+          observer.sendCompleted()
+        }
+      }
+    }
+
+    return image.promoteErrors(SomeError.self)
+      .timeoutWithError(SomeError(), afterInterval: 5.0, onScheduler: scheduler)
+      .flatMapError { _ in SignalProducer(value: nil) }
   }
 }

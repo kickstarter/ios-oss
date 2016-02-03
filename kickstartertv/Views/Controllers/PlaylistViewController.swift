@@ -4,44 +4,46 @@ import AVKit
 import ReactiveCocoa
 import Result
 
-class PlaylistViewController: MVVMViewController {
-  @IBOutlet weak var categoryLabel: UILabel!
-  @IBOutlet weak var playlistLabel: UILabel!
-  @IBOutlet weak var projectLabel: UILabel!
-  @IBOutlet weak var backgroundImageView: UIImageView!
+internal final class PlaylistViewController: MVVMViewController {
+  @IBOutlet private weak var categoryLabel: UILabel!
+  @IBOutlet private weak var playlistLabel: UILabel!
+  @IBOutlet private weak var projectLabel: UILabel!
+  @IBOutlet private weak var backgroundImageView: UIImageView!
 
-  let viewModel: PlaylistViewModelType
-  let project: Project
+  private let viewModel: PlaylistViewModelType
+  private let project: Project
 
-  init (initialPlaylist: Playlist, currentProject: Project) {
+  internal init (initialPlaylist: Playlist, currentProject: Project) {
     self.viewModel = PlaylistViewModel(initialPlaylist: initialPlaylist, currentProject: currentProject)
     self.project = currentProject
     super.init(nibName: PlaylistViewController.defaultNib, bundle: nil)
   }
 
-  required init?(coder aDecoder: NSCoder) {
+  internal required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
 
-  override func viewDidLoad() {
+  internal override func viewDidLoad() {
     super.viewDidLoad()
 
     self.view.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: "pan:"))
   }
   
-  override func bindViewModel() {
+  internal override func bindViewModel() {
 
-    self.viewModel.outputs.project
+    self.viewModel.outputs.categoryName
       .observeForUI()
-      .startWithNext { [weak self] project in
-        self?.categoryLabel.text = project.category.name
-        self?.projectLabel.text = project.name
+      .startWithNext { [weak self] name in
+        self?.categoryLabel.text = name
     }
 
-    self.viewModel.outputs.project
-      .flatMap { $0.video?.high }
-      .flatMap(NSURL.init)
-      .switchMap(imageFromVideoUrl)
+    self.viewModel.outputs.projectName
+      .observeForUI()
+      .startWithNext { [weak self] name in
+        self?.projectLabel.text = name
+    }
+
+    self.viewModel.outputs.backgroundImage
       .observeForUI()
       .startWithNext { [weak self] image in
         self?.crossFadeBackgroundImage(image)
@@ -73,7 +75,7 @@ class PlaylistViewController: MVVMViewController {
     }
   }
 
-  override func pressesBegan(presses: Set<UIPress>, withEvent event: UIPressesEvent?) {
+  internal override func pressesBegan(presses: Set<UIPress>, withEvent event: UIPressesEvent?) {
     super.pressesBegan(presses, withEvent: event)
 
     if let press = presses.first where press.type == .Select {
@@ -82,9 +84,10 @@ class PlaylistViewController: MVVMViewController {
     }
   }
 
-  func pan(recognizer: UIPanGestureRecognizer) {
+  internal func pan(recognizer: UIPanGestureRecognizer) {
     if recognizer.state == .Ended {
-      self.viewModel.inputs.swipeEnded(recognizer.translationInView(self.view))
+      let translation = recognizer.translationInView(self.view)
+      self.viewModel.inputs.swipeEnded(translation: translation)
     }
   }
 }

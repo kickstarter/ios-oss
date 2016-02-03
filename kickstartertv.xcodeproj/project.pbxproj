@@ -7,6 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A700BB351C5EA32600E861BD /* AssetImageGeneratorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A700BB341C5EA32600E861BD /* AssetImageGeneratorType.swift */; };
+		A710F6711C5EA72900F62731 /* MockAssetImageGenerators.swift in Sources */ = {isa = PBXBuildFile; fileRef = A710F6701C5EA72900F62731 /* MockAssetImageGenerators.swift */; };
+		A72153921C5D62E800127699 /* HomeViewModelInputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72153911C5D62E800127699 /* HomeViewModelInputs.swift */; };
+		A72153941C5D630300127699 /* HomeViewModelOutputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72153931C5D630300127699 /* HomeViewModelOutputs.swift */; };
+		A7700DA61C5E9A8E00D1F638 /* PlaylistViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7700DA51C5E9A8E00D1F638 /* PlaylistViewModelTests.swift */; };
+		A7D596CB1C5D75260047CB3E /* ProjectViewModelInputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D596CA1C5D75260047CB3E /* ProjectViewModelInputs.swift */; };
+		A7D596D11C5D755F0047CB3E /* ProjectViewModelOutputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D596D01C5D755F0047CB3E /* ProjectViewModelOutputs.swift */; };
+		A7D596D31C5D75B80047CB3E /* ProjectViewModelErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D596D21C5D75B80047CB3E /* ProjectViewModelErrors.swift */; };
+		A7DB15191C5E91E300AB6E5A /* PlaylistViewModelInputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DB15181C5E91E300AB6E5A /* PlaylistViewModelInputs.swift */; };
+		A7DB151B1C5E91F900AB6E5A /* PlaylistViewModelOutputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DB151A1C5E91F900AB6E5A /* PlaylistViewModelOutputs.swift */; };
 		A7E06C7D1C5A6EB300EBDCC2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E06C7C1C5A6EB300EBDCC2 /* AppDelegate.swift */; };
 		A7E06C7F1C5A6EB300EBDCC2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E06C7E1C5A6EB300EBDCC2 /* ViewController.swift */; };
 		A7E06C821C5A6EB300EBDCC2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7E06C801C5A6EB300EBDCC2 /* Main.storyboard */; };
@@ -148,6 +158,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		A7700DAB1C5E9CAF00D1F638 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A7E06FF31C5C459F00EBDCC2 /* ReactiveExtensions.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = A7983B871C2AFB1C003A1ABE;
+			remoteInfo = ReactiveExtensionsTests;
+		};
 		A7E06C8B1C5A6EB300EBDCC2 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A7E06C711C5A6EB300EBDCC2 /* Project object */;
@@ -280,6 +297,16 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		A700BB341C5EA32600E861BD /* AssetImageGeneratorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetImageGeneratorType.swift; sourceTree = "<group>"; };
+		A710F6701C5EA72900F62731 /* MockAssetImageGenerators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockAssetImageGenerators.swift; sourceTree = "<group>"; };
+		A72153911C5D62E800127699 /* HomeViewModelInputs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewModelInputs.swift; sourceTree = "<group>"; };
+		A72153931C5D630300127699 /* HomeViewModelOutputs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewModelOutputs.swift; sourceTree = "<group>"; };
+		A7700DA51C5E9A8E00D1F638 /* PlaylistViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaylistViewModelTests.swift; sourceTree = "<group>"; };
+		A7D596CA1C5D75260047CB3E /* ProjectViewModelInputs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectViewModelInputs.swift; sourceTree = "<group>"; };
+		A7D596D01C5D755F0047CB3E /* ProjectViewModelOutputs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectViewModelOutputs.swift; sourceTree = "<group>"; };
+		A7D596D21C5D75B80047CB3E /* ProjectViewModelErrors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectViewModelErrors.swift; sourceTree = "<group>"; };
+		A7DB15181C5E91E300AB6E5A /* PlaylistViewModelInputs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaylistViewModelInputs.swift; sourceTree = "<group>"; };
+		A7DB151A1C5E91F900AB6E5A /* PlaylistViewModelOutputs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaylistViewModelOutputs.swift; sourceTree = "<group>"; };
 		A7E06C791C5A6EB300EBDCC2 /* kickstartertv.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = kickstartertv.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7E06C7C1C5A6EB300EBDCC2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A7E06C7E1C5A6EB300EBDCC2 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -458,6 +485,34 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A721538E1C5D62C700127699 /* errors */ = {
+			isa = PBXGroup;
+			children = (
+				A7D596D21C5D75B80047CB3E /* ProjectViewModelErrors.swift */,
+			);
+			path = errors;
+			sourceTree = "<group>";
+		};
+		A721538F1C5D62C700127699 /* inputs */ = {
+			isa = PBXGroup;
+			children = (
+				A72153911C5D62E800127699 /* HomeViewModelInputs.swift */,
+				A7D596CA1C5D75260047CB3E /* ProjectViewModelInputs.swift */,
+				A7DB15181C5E91E300AB6E5A /* PlaylistViewModelInputs.swift */,
+			);
+			path = inputs;
+			sourceTree = "<group>";
+		};
+		A72153901C5D62C700127699 /* outputs */ = {
+			isa = PBXGroup;
+			children = (
+				A72153931C5D630300127699 /* HomeViewModelOutputs.swift */,
+				A7D596D01C5D755F0047CB3E /* ProjectViewModelOutputs.swift */,
+				A7DB151A1C5E91F900AB6E5A /* PlaylistViewModelOutputs.swift */,
+			);
+			path = outputs;
+			sourceTree = "<group>";
+		};
 		A7E06C701C5A6EB300EBDCC2 = {
 			isa = PBXGroup;
 			children = (
@@ -524,6 +579,7 @@
 				A7E06DC91C5C04D100EBDCC2 /* UILabel+SimpleHTMLTests.swift */,
 				A7E06DC51C5C04D100EBDCC2 /* TestHelpers */,
 				A7E070571C5D40BD00EBDCC2 /* HomeViewModelTests.swift */,
+				A7700DA51C5E9A8E00D1F638 /* PlaylistViewModelTests.swift */,
 			);
 			path = kickstartertvTests;
 			sourceTree = "<group>";
@@ -577,6 +633,9 @@
 		A7E06CB41C5BFB3800EBDCC2 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				A721538E1C5D62C700127699 /* errors */,
+				A721538F1C5D62C700127699 /* inputs */,
+				A72153901C5D62C700127699 /* outputs */,
 				A7E06CB51C5BFB3800EBDCC2 /* EmptyViewModel.swift */,
 				A7E06CB61C5BFB3800EBDCC2 /* HomePlaylistViewModel.swift */,
 				A7E06CB71C5BFB3800EBDCC2 /* HomeViewModel.swift */,
@@ -680,6 +739,7 @@
 				A7E06CFB1C5BFB3800EBDCC2 /* UILabel+IBClear.swift */,
 				A7E06CFC1C5BFB3800EBDCC2 /* UILabel+LocalizedKey.swift */,
 				A7E06CFD1C5BFB3800EBDCC2 /* UILabel+SimpleHTML.swift */,
+				A700BB341C5EA32600E861BD /* AssetImageGeneratorType.swift */,
 			);
 			path = Lib;
 			sourceTree = "<group>";
@@ -733,6 +793,7 @@
 			children = (
 				A7E06DC61C5C04D100EBDCC2 /* XCTestCase+AppEnvironment.swift */,
 				A7E070591C5D427000EBDCC2 /* TestObserver.swift */,
+				A710F6701C5EA72900F62731 /* MockAssetImageGenerators.swift */,
 			);
 			path = TestHelpers;
 			sourceTree = "<group>";
@@ -822,6 +883,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				A7700DAC1C5E9CAF00D1F638 /* PBXTargetDependency */,
 				A7E06C8C1C5A6EB300EBDCC2 /* PBXTargetDependency */,
 			);
 			name = kickstartertvTests;
@@ -1065,6 +1127,10 @@
 				A7E06D241C5BFB3800EBDCC2 /* ProjectShelfCell.swift in Sources */,
 				A7E06D801C5C00CC00EBDCC2 /* KeyValueStoreType.swift in Sources */,
 				A7E06D3A1C5BFB3800EBDCC2 /* ProjectVideoTransitionAnimator.swift in Sources */,
+				A7D596D31C5D75B80047CB3E /* ProjectViewModelErrors.swift in Sources */,
+				A7D596D11C5D755F0047CB3E /* ProjectViewModelOutputs.swift in Sources */,
+				A7D596CB1C5D75260047CB3E /* ProjectViewModelInputs.swift in Sources */,
+				A7DB151B1C5E91F900AB6E5A /* PlaylistViewModelOutputs.swift in Sources */,
 				A7E06D8E1C5C00CC00EBDCC2 /* ViewModel.swift in Sources */,
 				A7E06D871C5C00CC00EBDCC2 /* SimpleDataSource.swift in Sources */,
 				A7E06D071C5BFB3800EBDCC2 /* EmptyViewModel.swift in Sources */,
@@ -1078,11 +1144,13 @@
 				A7E06D001C5BFB3800EBDCC2 /* PlaylistTrayDataSource.swift in Sources */,
 				A7E06D441C5BFB3800EBDCC2 /* UILabel+IBClear.swift in Sources */,
 				A7E06D3B1C5BFB3800EBDCC2 /* AppEnvironment.swift in Sources */,
+				A700BB351C5EA32600E861BD /* AssetImageGeneratorType.swift in Sources */,
 				A7E06D1A1C5BFB3800EBDCC2 /* ProjectCell.swift in Sources */,
 				A7E06DC41C5C03CA00EBDCC2 /* UIPress-Extensions.swift in Sources */,
 				A7E06D1E1C5BFB3800EBDCC2 /* ProjectRecommendationsCell.swift in Sources */,
 				A7E06D351C5BFB3800EBDCC2 /* SearchViewController.swift in Sources */,
 				A7E06D851C5C00CC00EBDCC2 /* MVVMDataSource.swift in Sources */,
+				A72153921C5D62E800127699 /* HomeViewModelInputs.swift in Sources */,
 				A7E06D8D1C5C00CC00EBDCC2 /* UIViewController-DefaultNib.swift in Sources */,
 				A7E06D141C5BFB3800EBDCC2 /* DiscoveryProjectCell.swift in Sources */,
 				A7E06D891C5C00CC00EBDCC2 /* UICollectionView-Extensions.swift in Sources */,
@@ -1097,6 +1165,7 @@
 				A7E06D221C5BFB3800EBDCC2 /* ProjectRewardsCollectionViewCell.swift in Sources */,
 				A7E06D321C5BFB3800EBDCC2 /* ProjectPlayerViewController.swift in Sources */,
 				A7E06D0F1C5BFB3800EBDCC2 /* ProfileViewModel.swift in Sources */,
+				A7DB15191C5E91E300AB6E5A /* PlaylistViewModelInputs.swift in Sources */,
 				A7E06D121C5BFB3800EBDCC2 /* SearchViewModel.swift in Sources */,
 				A7E06D811C5C00CC00EBDCC2 /* MultiKeyValueStore.swift in Sources */,
 				A7E06D411C5BFB3800EBDCC2 /* String+SimpleHTML.swift in Sources */,
@@ -1117,6 +1186,7 @@
 				A7E06D461C5BFB3800EBDCC2 /* UILabel+SimpleHTML.swift in Sources */,
 				A7E06D2C1C5BFB3800EBDCC2 /* PlaylistTrayViewController.swift in Sources */,
 				A7E06D7F1C5C00CC00EBDCC2 /* CurrentUser.swift in Sources */,
+				A72153941C5D630300127699 /* HomeViewModelOutputs.swift in Sources */,
 				A7E06CFE1C5BFB3800EBDCC2 /* DiscoveryProjectData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1133,6 +1203,7 @@
 				A7E06DD81C5C04D100EBDCC2 /* UILabel+IBClearTests.swift in Sources */,
 				A7E06DD91C5C04D100EBDCC2 /* LanguageTests.swift in Sources */,
 				A7E06C8F1C5A6EB300EBDCC2 /* kickstartertvTests.swift in Sources */,
+				A7700DA61C5E9A8E00D1F638 /* PlaylistViewModelTests.swift in Sources */,
 				A7E06DD31C5C04D100EBDCC2 /* FormatTests.swift in Sources */,
 				A7E070581C5D40BD00EBDCC2 /* HomeViewModelTests.swift in Sources */,
 				A7E06DDB1C5C04D100EBDCC2 /* String+SimpleHTMLTests.swift in Sources */,
@@ -1140,6 +1211,7 @@
 				A7E06DDA1C5C04D100EBDCC2 /* LocalizedStringTests.swift in Sources */,
 				A7E06DD61C5C04D100EBDCC2 /* EnvironmentTests.swift in Sources */,
 				A7E0705A1C5D427000EBDCC2 /* TestObserver.swift in Sources */,
+				A710F6711C5EA72900F62731 /* MockAssetImageGenerators.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1154,6 +1226,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		A7700DAC1C5E9CAF00D1F638 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = ReactiveExtensionsTests;
+			targetProxy = A7700DAB1C5E9CAF00D1F638 /* PBXContainerItemProxy */;
+		};
 		A7E06C8C1C5A6EB300EBDCC2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = A7E06C781C5A6EB300EBDCC2 /* kickstartertv */;
