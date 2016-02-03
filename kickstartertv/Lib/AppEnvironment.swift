@@ -1,6 +1,7 @@
 import Foundation
 import KsApi
 import ReactiveCocoa
+import AVKit
 
 /**
  A global stack that captures the current state of global objects that the app wants access to.
@@ -52,7 +53,8 @@ struct AppEnvironment {
     countryCode: String = AppEnvironment.current.countryCode,
     launchedCountries: LaunchedCountries = AppEnvironment.current.launchedCountries,
     debounceScheduler: DateSchedulerType = AppEnvironment.current.debounceScheduler,
-    mainBundle: NSBundleType = AppEnvironment.current.mainBundle) {
+    mainBundle: NSBundleType = AppEnvironment.current.mainBundle,
+    assetImageGeneratorType: AssetImageGeneratorType.Type = AppEnvironment.current.assetImageGeneratorType) {
 
       stack.append(
         Environment(
@@ -64,7 +66,8 @@ struct AppEnvironment {
           countryCode: countryCode,
           launchedCountries: launchedCountries,
           debounceScheduler: debounceScheduler,
-          mainBundle: mainBundle
+          mainBundle: mainBundle,
+          assetImageGeneratorType: assetImageGeneratorType
         )
       )
   }
@@ -82,7 +85,8 @@ struct AppEnvironment {
     countryCode: String = AppEnvironment.current.countryCode,
     launchedCountries: LaunchedCountries = AppEnvironment.current.launchedCountries,
     debounceScheduler: DateSchedulerType = AppEnvironment.current.debounceScheduler,
-    mainBundle: NSBundleType = AppEnvironment.current.mainBundle) {
+    mainBundle: NSBundleType = AppEnvironment.current.mainBundle,
+    assetImageGeneratorType: AssetImageGeneratorType.Type = AppEnvironment.current.assetImageGeneratorType) {
 
       replaceCurrentEnvironment(
         Environment(
@@ -94,7 +98,8 @@ struct AppEnvironment {
           countryCode: countryCode,
           launchedCountries: launchedCountries,
           debounceScheduler: debounceScheduler,
-          mainBundle: mainBundle
+          mainBundle: mainBundle,
+          assetImageGeneratorType: assetImageGeneratorType
         )
       )
   }

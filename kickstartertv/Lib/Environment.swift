@@ -16,6 +16,7 @@ struct Environment {
   let launchedCountries: LaunchedCountries
   let debounceScheduler: DateSchedulerType
   let mainBundle: NSBundleType
+  let assetImageGeneratorType: AssetImageGeneratorType.Type
 
   init(
     apiService: ServiceType = Service.shared,
@@ -26,7 +27,8 @@ struct Environment {
     countryCode: String = "US",
     launchedCountries: LaunchedCountries = .init(),
     debounceScheduler: DateSchedulerType = QueueScheduler.mainQueueScheduler,
-    mainBundle: NSBundleType = LanguageDoubler()) {
+    mainBundle: NSBundleType = LanguageDoubler(),
+    assetImageGeneratorType: AssetImageGeneratorType.Type = AVAssetImageGenerator.self) {
 
       self.apiService = apiService
       self.currentUser = currentUser
@@ -37,6 +39,7 @@ struct Environment {
       self.launchedCountries = launchedCountries
       self.debounceScheduler = debounceScheduler
       self.mainBundle = mainBundle
+      self.assetImageGeneratorType = assetImageGeneratorType
   }
 }
 
