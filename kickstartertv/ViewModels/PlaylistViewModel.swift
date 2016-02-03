@@ -39,8 +39,6 @@ internal final class PlaylistViewModel : ViewModelType, PlaylistViewModelType, P
   internal init(initialPlaylist: Playlist, currentProject: Project, env: Environment = AppEnvironment.current) {
     let apiService = env.apiService
 
-    print(env.assetImageGeneratorType)
-
     self.project = SignalProducer(signal: next.mergeWith(previous))
       .map { _ in Int(arc4random_uniform(100_000)) }
       .map { seed in DiscoveryParams(staffPicks: true, hasVideo: true, state: .Live, seed: seed) }
@@ -55,7 +53,7 @@ internal final class PlaylistViewModel : ViewModelType, PlaylistViewModelType, P
       .flatMap(NSURL.init)
       .map(AVAsset.init)
       .map { a in env.assetImageGeneratorType.init(asset: a) }
-      .switchMap { g in PlaylistViewModel.stillImage(generator: g) }
+      .switchMap { PlaylistViewModel.stillImage(generator: $0) }
   }
 
   /**
@@ -78,7 +76,7 @@ internal final class PlaylistViewModel : ViewModelType, PlaylistViewModelType, P
         guard !disposable.disposed else { return }
 
         if let image = image {
-          observer.sendNext(UIImage(CGImage: image))
+          observer.sendNext(blackAndWhite(image))
           observer.sendCompleted()
         } else {
           observer.sendNext(nil)
@@ -90,5 +88,20 @@ internal final class PlaylistViewModel : ViewModelType, PlaylistViewModelType, P
     return image.promoteErrors(SomeError.self)
       .timeoutWithError(SomeError(), afterInterval: 5.0, onScheduler: scheduler)
       .flatMapError { _ in SignalProducer(value: nil) }
+  }
+
+  /**
+   Applies a black-and-white filter to an image.
+
+   - parameter image: Any CGImage.
+
+   - returns: A black-and-white UIImage. If the fitler fails, this function will return `nil`.
+   */
+  private static func blackAndWhite(image: CGImage) -> UIImage? {
+
+    let params = [kCIInputImageKey: CIImage(CGImage: image)]
+    return CIFilter(name: "CIPhotoEffectMono", withInputParameters: params)
+      .flatMap { $0.outputImage }
+      .map { UIImage(CIImage: $0) }
   }
 }

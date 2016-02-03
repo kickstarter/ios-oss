@@ -46,7 +46,7 @@ final class ProjectViewController: MVVMViewController {
       // first layout pass of the cell will be too small, but it will correct itself on a second
       // layout pass. Too big and the collection view will crash! Abandon all hope, ye who
       // change this value.
-      layout.estimatedItemSize = CGSize(width: 1920.0, height: 300.0)
+      layout.estimatedItemSize = CGSize(width: 1920.0, height: 200.0)
     }
 
     self.view.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: "pan:"))
@@ -83,14 +83,6 @@ final class ProjectViewController: MVVMViewController {
         self?.dataSource.loadRecommendations(recommendations)
         self?.collectionView?.reloadData()
     }
-
-    self.viewModel.outputs.saveAlert
-      .observeForUI()
-      .observeNext { [weak self] in self?.showRemindMeAlert() }
-
-    self.viewModel.errors.savingRequiresLogin
-      .observeForUI()
-      .observeNext { [weak self] in self?.showLoginAlert() }
 
     self.viewModel.outputs.openPlaylistsExplorer
       .observeForUI()
@@ -232,7 +224,6 @@ extension ProjectViewController : UICollectionViewDelegate {
 
 extension ProjectViewController : ProjectShelfCellDelegate {
   func projectShelfTappedSave(cell: ProjectShelfCell) {
-    viewModel.inputs.saveClick()
   }
 
   func projectShelfClickedMore(cell: ProjectShelfCell) {

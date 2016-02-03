@@ -56,25 +56,6 @@ internal final class PlaylistViewController: MVVMViewController {
     }, completion: nil)
   }
 
-  private func imageFromVideoUrl(url: NSURL) -> SignalProducer<UIImage?, NoError> {
-
-    let asset = AVURLAsset(URL: url)
-    let generator = AVAssetImageGenerator(asset: asset)
-    let requestedTime = CMTimeMakeWithSeconds(30.0, 1)
-    let requestedTimeValue = NSValue(CMTime: requestedTime)
-
-    return SignalProducer { observer, disposable in
-      generator.generateCGImagesAsynchronouslyForTimes([requestedTimeValue]) { (time, image, actualTime, result, error) -> Void in
-        if let image = image {
-          observer.sendNext(UIImage(CGImage: image))
-        } else {
-          observer.sendNext(nil)
-        }
-        observer.sendCompleted()
-      }
-    }
-  }
-
   internal override func pressesBegan(presses: Set<UIPress>, withEvent event: UIPressesEvent?) {
     super.pressesBegan(presses, withEvent: event)
 

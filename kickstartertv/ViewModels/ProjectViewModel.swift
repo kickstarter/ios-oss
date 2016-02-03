@@ -19,11 +19,6 @@ internal final class ProjectViewModel : ProjectViewModelType, ProjectViewModelIn
     isActiveObserver.sendNext(active)
   }
 
-  private let saveObserver: Observer<(), NoError>
-  internal func saveClick() {
-    saveObserver.sendNext(())
-  }
-
   private let (morePlaylistsClickSignal, morePlaylistsClickObserver) = Signal<(), NoError>.pipe()
   internal func morePlaylistsClick() {
     morePlaylistsClickObserver.sendNext(())
@@ -46,15 +41,11 @@ internal final class ProjectViewModel : ProjectViewModelType, ProjectViewModelIn
   // MARK: Outputs
   internal let project: SignalProducer<Project, NoError>
   internal let recommendations: SignalProducer<[Project], NoError>
-  internal let (saveAlert, saveAlertObserver) = Signal<(), NoError>.pipe()
   internal let videoURL: SignalProducer<NSURL, NoError>
   internal let openPlaylistsExplorer: Signal<Playlist, NoError>
   internal let videoTimelineProgress: Signal<CGFloat, NoError>
   internal let (interfaceImportance, interfaceImportanceObserver) = Signal<Bool, NoError>.pipe()
   internal let (videoIsPlaying, videoIsPlayingObserver) = Signal<Bool, NoError>.pipe()
-
-  // MARK: Errors
-  internal let savingRequiresLogin: Signal<(), NoError>
 
   internal var inputs: ProjectViewModelInputs { return self }
   internal var outputs: ProjectViewModelOutputs { return self }
@@ -62,46 +53,21 @@ internal final class ProjectViewModel : ProjectViewModelType, ProjectViewModelIn
 
   internal init(project initialProject: Project, env: Environment = AppEnvironment.current) {
     let apiService = env.apiService
-    let currentUser = env.currentUser
 
-    let (saveSignal, saveObserver) = Signal<(), NoError>.pipe()
-    self.saveObserver = saveObserver
-
-    let (savingRequiresLoginSignal, savingRequiresLoginObserver) = Signal<(), NoError>.pipe()
-    savingRequiresLogin = savingRequiresLoginSignal
-
-    let apiProject = apiService.fetchProject(initialProject)
+    self.project = apiService.fetchProject(initialProject)
       .demoteErrors()
       .beginsWith(value: initialProject)
       .replayLazily(1)
 
-    self.videoURL = apiProject
+    self.videoURL = self.project
       .flatMap { $0.video?.high }
       .flatMap { NSURL(string: $0) }
       .skipRepeats(==)
 
-    let loggedInUserOnSave = currentUser.producer.takeWhen(saveSignal)
-      .filter(isNotNil)
-
-    let loggedOutUserOnSave = currentUser.producer.takeWhen(saveSignal)
-      .filter(isNil)
-    loggedOutUserOnSave.ignoreValues().start(savingRequiresLoginObserver)
-
-    let toggledStar = apiProject.takeWhen(loggedInUserOnSave)
-      .flatMap { p in apiService.toggleStar(p).demoteErrors() }
-      .replayLazily(0)
-
-    toggledStar
-      .filter { p in !p.endsIn48Hours }
-      .filter { p in p.isStarred ?? false }
-      .ignoreValues()
-      .start(saveAlertObserver)
-
-    self.project = apiProject.mergeWith(toggledStar)
-
-    self.recommendations = apiService.fetchProjects(DiscoveryParams(similarTo: initialProject))
+    self.recommendations = apiService.fetchProjects(
+        DiscoveryParams(similarTo: initialProject, hasVideo: true)
+      )
       .demoteErrors()
-      .replayLazily(1)
 
     self.openPlaylistsExplorer = self.morePlaylistsClickSignal
       .map { Playlist.Featured }

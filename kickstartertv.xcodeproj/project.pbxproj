@@ -9,14 +9,22 @@
 /* Begin PBXBuildFile section */
 		A700BB351C5EA32600E861BD /* AssetImageGeneratorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A700BB341C5EA32600E861BD /* AssetImageGeneratorType.swift */; };
 		A710F6711C5EA72900F62731 /* MockAssetImageGenerators.swift in Sources */ = {isa = PBXBuildFile; fileRef = A710F6701C5EA72900F62731 /* MockAssetImageGenerators.swift */; };
+		A713E3381C5ED12D00197498 /* NSBundleType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A713E3371C5ED12D00197498 /* NSBundleType.swift */; };
+		A713E33E1C5ED14F00197498 /* MockBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A713E33D1C5ED14F00197498 /* MockBundle.swift */; };
+		A71A78591C619A5200EF5C22 /* KsApi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7E06FDE1C5C458F00EBDCC2 /* KsApi.framework */; };
+		A71A785A1C619A5200EF5C22 /* KsApi.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A7E06FDE1C5C458F00EBDCC2 /* KsApi.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A71A785D1C619A5200EF5C22 /* Models.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7E06FE71C5C459500EBDCC2 /* Models.framework */; };
+		A71A785E1C619A5200EF5C22 /* Models.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A7E06FE71C5C459500EBDCC2 /* Models.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A71A78611C619A5200EF5C22 /* Prelude.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7E06FF01C5C459900EBDCC2 /* Prelude.framework */; };
+		A71A78621C619A5200EF5C22 /* Prelude.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A7E06FF01C5C459900EBDCC2 /* Prelude.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A71A78651C619A5200EF5C22 /* ReactiveExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7E06FF91C5C459F00EBDCC2 /* ReactiveExtensions.framework */; };
+		A71A78661C619A5200EF5C22 /* ReactiveExtensions.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A7E06FF91C5C459F00EBDCC2 /* ReactiveExtensions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A72153921C5D62E800127699 /* HomeViewModelInputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72153911C5D62E800127699 /* HomeViewModelInputs.swift */; };
 		A72153941C5D630300127699 /* HomeViewModelOutputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72153931C5D630300127699 /* HomeViewModelOutputs.swift */; };
 		A7700DA61C5E9A8E00D1F638 /* PlaylistViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7700DA51C5E9A8E00D1F638 /* PlaylistViewModelTests.swift */; };
 		A7D596CB1C5D75260047CB3E /* ProjectViewModelInputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D596CA1C5D75260047CB3E /* ProjectViewModelInputs.swift */; };
 		A7D596D11C5D755F0047CB3E /* ProjectViewModelOutputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D596D01C5D755F0047CB3E /* ProjectViewModelOutputs.swift */; };
 		A7D596D31C5D75B80047CB3E /* ProjectViewModelErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D596D21C5D75B80047CB3E /* ProjectViewModelErrors.swift */; };
-		A713E3381C5ED12D00197498 /* NSBundleType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A713E3371C5ED12D00197498 /* NSBundleType.swift */; };
-		A713E33E1C5ED14F00197498 /* MockBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A713E33D1C5ED14F00197498 /* MockBundle.swift */; };
 		A7DB15191C5E91E300AB6E5A /* PlaylistViewModelInputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DB15181C5E91E300AB6E5A /* PlaylistViewModelInputs.swift */; };
 		A7DB151B1C5E91F900AB6E5A /* PlaylistViewModelOutputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DB151A1C5E91F900AB6E5A /* PlaylistViewModelOutputs.swift */; };
 		A7E06C7D1C5A6EB300EBDCC2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E06C7C1C5A6EB300EBDCC2 /* AppDelegate.swift */; };
@@ -160,6 +168,34 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		A71A785B1C619A5200EF5C22 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A7E06FD81C5C458F00EBDCC2 /* KsApi.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = CA43C5F81BB358F200C180DA;
+			remoteInfo = "KsApi-tvOS";
+		};
+		A71A785F1C619A5200EF5C22 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A7E06FE11C5C459500EBDCC2 /* Models.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = CA43C5561BB3083900C180DA;
+			remoteInfo = "Models-tvOS";
+		};
+		A71A78631C619A5200EF5C22 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A7E06FEA1C5C459900EBDCC2 /* Prelude.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = CA0923F71BB6291900C9EC88;
+			remoteInfo = Prelude;
+		};
+		A71A78671C619A5200EF5C22 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A7E06FF31C5C459F00EBDCC2 /* ReactiveExtensions.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = CA43C6621BB35FCF00C180DA;
+			remoteInfo = ReactiveExtensions;
+		};
 		A7700DAB1C5E9CAF00D1F638 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A7E06FF31C5C459F00EBDCC2 /* ReactiveExtensions.xcodeproj */;
@@ -290,7 +326,11 @@
 			files = (
 				A7E06E271C5C068300EBDCC2 /* Alamofire.framework in Embed Frameworks */,
 				A7E06E351C5C068400EBDCC2 /* ReactiveCocoa.framework in Embed Frameworks */,
+				A71A78621C619A5200EF5C22 /* Prelude.framework in Embed Frameworks */,
+				A71A78661C619A5200EF5C22 /* ReactiveExtensions.framework in Embed Frameworks */,
+				A71A785E1C619A5200EF5C22 /* Models.framework in Embed Frameworks */,
 				A7E06E291C5C068400EBDCC2 /* AlamofireImage.framework in Embed Frameworks */,
+				A71A785A1C619A5200EF5C22 /* KsApi.framework in Embed Frameworks */,
 				A7E06E391C5C068400EBDCC2 /* Result.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -301,14 +341,14 @@
 /* Begin PBXFileReference section */
 		A700BB341C5EA32600E861BD /* AssetImageGeneratorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetImageGeneratorType.swift; sourceTree = "<group>"; };
 		A710F6701C5EA72900F62731 /* MockAssetImageGenerators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockAssetImageGenerators.swift; sourceTree = "<group>"; };
+		A713E3371C5ED12D00197498 /* NSBundleType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSBundleType.swift; sourceTree = "<group>"; };
+		A713E33D1C5ED14F00197498 /* MockBundle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockBundle.swift; sourceTree = "<group>"; };
 		A72153911C5D62E800127699 /* HomeViewModelInputs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewModelInputs.swift; sourceTree = "<group>"; };
 		A72153931C5D630300127699 /* HomeViewModelOutputs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewModelOutputs.swift; sourceTree = "<group>"; };
 		A7700DA51C5E9A8E00D1F638 /* PlaylistViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaylistViewModelTests.swift; sourceTree = "<group>"; };
 		A7D596CA1C5D75260047CB3E /* ProjectViewModelInputs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectViewModelInputs.swift; sourceTree = "<group>"; };
 		A7D596D01C5D755F0047CB3E /* ProjectViewModelOutputs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectViewModelOutputs.swift; sourceTree = "<group>"; };
 		A7D596D21C5D75B80047CB3E /* ProjectViewModelErrors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectViewModelErrors.swift; sourceTree = "<group>"; };
-		A713E3371C5ED12D00197498 /* NSBundleType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSBundleType.swift; sourceTree = "<group>"; };
-		A713E33D1C5ED14F00197498 /* MockBundle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockBundle.swift; sourceTree = "<group>"; };
 		A7DB15181C5E91E300AB6E5A /* PlaylistViewModelInputs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaylistViewModelInputs.swift; sourceTree = "<group>"; };
 		A7DB151A1C5E91F900AB6E5A /* PlaylistViewModelOutputs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaylistViewModelOutputs.swift; sourceTree = "<group>"; };
 		A7E06C791C5A6EB300EBDCC2 /* kickstartertv.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = kickstartertv.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -455,12 +495,16 @@
 			files = (
 				A7E070041C5C45F400EBDCC2 /* KsApi.framework in Frameworks */,
 				A7E070051C5C45F400EBDCC2 /* Models.framework in Frameworks */,
+				A71A785D1C619A5200EF5C22 /* Models.framework in Frameworks */,
 				A7E070061C5C45F400EBDCC2 /* Prelude.framework in Frameworks */,
 				A7E070071C5C45F400EBDCC2 /* ReactiveExtensions.framework in Frameworks */,
+				A71A78591C619A5200EF5C22 /* KsApi.framework in Frameworks */,
+				A71A78611C619A5200EF5C22 /* Prelude.framework in Frameworks */,
 				A7E06E261C5C068300EBDCC2 /* Alamofire.framework in Frameworks */,
 				A7E06E341C5C068400EBDCC2 /* ReactiveCocoa.framework in Frameworks */,
 				A7E06E281C5C068400EBDCC2 /* AlamofireImage.framework in Frameworks */,
 				A7E06E381C5C068400EBDCC2 /* Result.framework in Frameworks */,
+				A71A78651C619A5200EF5C22 /* ReactiveExtensions.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -872,6 +916,10 @@
 				A7E06FFF1C5C45DB00EBDCC2 /* PBXTargetDependency */,
 				A7E070011C5C45DB00EBDCC2 /* PBXTargetDependency */,
 				A7E070031C5C45DB00EBDCC2 /* PBXTargetDependency */,
+				A71A785C1C619A5200EF5C22 /* PBXTargetDependency */,
+				A71A78601C619A5200EF5C22 /* PBXTargetDependency */,
+				A71A78641C619A5200EF5C22 /* PBXTargetDependency */,
+				A71A78681C619A5200EF5C22 /* PBXTargetDependency */,
 			);
 			name = kickstartertv;
 			productName = kickstartertv;
@@ -1234,6 +1282,26 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		A71A785C1C619A5200EF5C22 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "KsApi-tvOS";
+			targetProxy = A71A785B1C619A5200EF5C22 /* PBXContainerItemProxy */;
+		};
+		A71A78601C619A5200EF5C22 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Models-tvOS";
+			targetProxy = A71A785F1C619A5200EF5C22 /* PBXContainerItemProxy */;
+		};
+		A71A78641C619A5200EF5C22 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Prelude;
+			targetProxy = A71A78631C619A5200EF5C22 /* PBXContainerItemProxy */;
+		};
+		A71A78681C619A5200EF5C22 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = ReactiveExtensions;
+			targetProxy = A71A78671C619A5200EF5C22 /* PBXContainerItemProxy */;
+		};
 		A7700DAC1C5E9CAF00D1F638 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = ReactiveExtensionsTests;
@@ -1382,6 +1450,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Brandon Williams (BDS93JBCMZ)";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/tvOS",
@@ -1398,6 +1468,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Brandon Williams (BDS93JBCMZ)";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/tvOS",

@@ -4,9 +4,6 @@ internal protocol ProjectViewModelInputs {
   /// Call when the controller gains/resigns active state.
   func isActive(active: Bool)
 
-  /// Call when the save button is clicked
-  func saveClick()
-
   /// Call when the more playlists button is clicked
   func morePlaylistsClick()
 

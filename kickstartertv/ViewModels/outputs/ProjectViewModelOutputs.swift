@@ -9,9 +9,6 @@ internal protocol ProjectViewModelOutputs {
   /// Emits an array of recommendations
   var recommendations: SignalProducer<[Project], NoError> { get }
 
-  /// Emits when we should show a successful save alert.
-  var saveAlert: Signal<(), NoError> { get }
-
   /// Emits the most current video URL for the project.
   var videoURL: SignalProducer<NSURL, NoError> { get }
 
