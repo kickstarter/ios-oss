@@ -101,3 +101,4 @@ internal final class ProjectViewModel : ProjectViewModelType, ProjectViewModelIn
     return clamp(0.0, 1.0)(offset.y / (size.height - window.height))
   }
 }
+

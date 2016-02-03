@@ -44,6 +44,7 @@ internal final class PlaylistViewModel : ViewModelType, PlaylistViewModelType, P
       .map { seed in DiscoveryParams(staffPicks: true, hasVideo: true, state: .Live, seed: seed) }
       .switchMap { params in apiService.fetchProject(params).demoteErrors() }
       .beginsWith(value: currentProject)
+      .replayLazily(1)
 
     self.categoryName = self.project.map { $0.category.name }
     self.projectName = self.project.map { $0.name }
