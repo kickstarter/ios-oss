@@ -27,7 +27,7 @@ struct Environment {
     countryCode: String = "US",
     launchedCountries: LaunchedCountries = .init(),
     debounceScheduler: DateSchedulerType = QueueScheduler.mainQueueScheduler,
-    mainBundle: NSBundleType = LanguageDoubler(),
+    mainBundle: NSBundleType = NSBundle.mainBundle(),
     assetImageGeneratorType: AssetImageGeneratorType.Type = AVAssetImageGenerator.self) {
 
       self.apiService = apiService
