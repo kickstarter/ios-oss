@@ -28,6 +28,7 @@ extension XCTestCase {
     countryCode: String = AppEnvironment.current.countryCode,
     launchedCountries: LaunchedCountries = AppEnvironment.current.launchedCountries,
     debounceScheduler: DateSchedulerType = AppEnvironment.current.debounceScheduler,
+    mainBundle: NSBundleType = AppEnvironment.current.mainBundle,
     assetImageGeneratorType: AssetImageGeneratorType.Type = AppEnvironment.current.assetImageGeneratorType,
     @noescape body: () -> ()) {
 
@@ -41,6 +42,7 @@ extension XCTestCase {
           countryCode: countryCode,
           launchedCountries: launchedCountries,
           debounceScheduler: debounceScheduler,
+          mainBundle: mainBundle,
           assetImageGeneratorType: assetImageGeneratorType
         ),
         body: body

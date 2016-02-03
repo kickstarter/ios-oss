@@ -21,10 +21,15 @@ func localizedString(key key: String, defaultValue: String = "", count: Int? = n
     .coalesceWith(key)
 
   let lprojName = lprojFileNameForLanguage(env.language)
-  let localized = NSBundle.mainBundle().pathForResource(lprojName, ofType: "lproj")
-    .flatMap { NSBundle(path: $0) }
+  let localized = env.mainBundle.pathForResource(lprojName, ofType: "lproj")
+    .flatMap { env.mainBundle.dynamicType.create(path: $0) }
     .flatMap { $0.localizedStringForKey(augmentedKey, value: nil, table: nil) }
-    .optionalFilter { $0.caseInsensitiveCompare(key) != .OrderedSame }
+    .optionalFilter {
+      // NB: `localizedStringForKey` has the annoying habit of returning the key when the key doesn't exist.
+      // We filter those out and hope that we never use a value that is equal to its key.
+      $0.caseInsensitiveCompare(key) != .OrderedSame
+    }
+    .optionalFilter { $0 != "" }
     .coalesceWith(defaultValue)
 
   return substitute(localized, with: substitutions)

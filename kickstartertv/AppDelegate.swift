@@ -10,10 +10,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       apiService: Service(
         serverConfig: ServerConfig.production,
         oauthToken: OauthToken(token: "6b02b5b59bfdf8111cdc97784b828f33b2b45dc4"),
-        language: Language.de.rawValue
+        language: Language.en.rawValue
       ),
-      language: .de,
-      locale: NSLocale(localeIdentifier: "de")
+      language: .en,
+      locale: NSLocale(localeIdentifier: "en")
     )
 
 //    AppEnvironment.pushEnvironment(

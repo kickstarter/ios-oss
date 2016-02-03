@@ -15,6 +15,8 @@
 		A7D596CB1C5D75260047CB3E /* ProjectViewModelInputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D596CA1C5D75260047CB3E /* ProjectViewModelInputs.swift */; };
 		A7D596D11C5D755F0047CB3E /* ProjectViewModelOutputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D596D01C5D755F0047CB3E /* ProjectViewModelOutputs.swift */; };
 		A7D596D31C5D75B80047CB3E /* ProjectViewModelErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D596D21C5D75B80047CB3E /* ProjectViewModelErrors.swift */; };
+		A713E3381C5ED12D00197498 /* NSBundleType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A713E3371C5ED12D00197498 /* NSBundleType.swift */; };
+		A713E33E1C5ED14F00197498 /* MockBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A713E33D1C5ED14F00197498 /* MockBundle.swift */; };
 		A7DB15191C5E91E300AB6E5A /* PlaylistViewModelInputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DB15181C5E91E300AB6E5A /* PlaylistViewModelInputs.swift */; };
 		A7DB151B1C5E91F900AB6E5A /* PlaylistViewModelOutputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DB151A1C5E91F900AB6E5A /* PlaylistViewModelOutputs.swift */; };
 		A7E06C7D1C5A6EB300EBDCC2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E06C7C1C5A6EB300EBDCC2 /* AppDelegate.swift */; };
@@ -305,6 +307,8 @@
 		A7D596CA1C5D75260047CB3E /* ProjectViewModelInputs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectViewModelInputs.swift; sourceTree = "<group>"; };
 		A7D596D01C5D755F0047CB3E /* ProjectViewModelOutputs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectViewModelOutputs.swift; sourceTree = "<group>"; };
 		A7D596D21C5D75B80047CB3E /* ProjectViewModelErrors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectViewModelErrors.swift; sourceTree = "<group>"; };
+		A713E3371C5ED12D00197498 /* NSBundleType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSBundleType.swift; sourceTree = "<group>"; };
+		A713E33D1C5ED14F00197498 /* MockBundle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockBundle.swift; sourceTree = "<group>"; };
 		A7DB15181C5E91E300AB6E5A /* PlaylistViewModelInputs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaylistViewModelInputs.swift; sourceTree = "<group>"; };
 		A7DB151A1C5E91F900AB6E5A /* PlaylistViewModelOutputs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaylistViewModelOutputs.swift; sourceTree = "<group>"; };
 		A7E06C791C5A6EB300EBDCC2 /* kickstartertv.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = kickstartertv.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -739,6 +743,7 @@
 				A7E06CFB1C5BFB3800EBDCC2 /* UILabel+IBClear.swift */,
 				A7E06CFC1C5BFB3800EBDCC2 /* UILabel+LocalizedKey.swift */,
 				A7E06CFD1C5BFB3800EBDCC2 /* UILabel+SimpleHTML.swift */,
+				A713E3371C5ED12D00197498 /* NSBundleType.swift */,
 				A700BB341C5EA32600E861BD /* AssetImageGeneratorType.swift */,
 			);
 			path = Lib;
@@ -793,6 +798,7 @@
 			children = (
 				A7E06DC61C5C04D100EBDCC2 /* XCTestCase+AppEnvironment.swift */,
 				A7E070591C5D427000EBDCC2 /* TestObserver.swift */,
+				A713E33D1C5ED14F00197498 /* MockBundle.swift */,
 				A710F6701C5EA72900F62731 /* MockAssetImageGenerators.swift */,
 			);
 			path = TestHelpers;
@@ -1157,6 +1163,7 @@
 				A7E06D091C5BFB3800EBDCC2 /* HomeViewModel.swift in Sources */,
 				A7E06D841C5C00CC00EBDCC2 /* MVVMCollectionViewController.swift in Sources */,
 				A7E06D451C5BFB3800EBDCC2 /* UILabel+LocalizedKey.swift in Sources */,
+				A713E3381C5ED12D00197498 /* NSBundleType.swift in Sources */,
 				A7E06D881C5C00CC00EBDCC2 /* SimpleViewModel.swift in Sources */,
 				A7E06D391C5BFB3800EBDCC2 /* ProjectTrayTransitionAnimator.swift in Sources */,
 				A7E06D401C5BFB3800EBDCC2 /* LocalizedString.swift in Sources */,
@@ -1202,6 +1209,7 @@
 				A7E06DD41C5C04D100EBDCC2 /* AppEnvironmentTests.swift in Sources */,
 				A7E06DD81C5C04D100EBDCC2 /* UILabel+IBClearTests.swift in Sources */,
 				A7E06DD91C5C04D100EBDCC2 /* LanguageTests.swift in Sources */,
+				A713E33E1C5ED14F00197498 /* MockBundle.swift in Sources */,
 				A7E06C8F1C5A6EB300EBDCC2 /* kickstartertvTests.swift in Sources */,
 				A7700DA61C5E9A8E00D1F638 /* PlaylistViewModelTests.swift in Sources */,
 				A7E06DD31C5C04D100EBDCC2 /* FormatTests.swift in Sources */,

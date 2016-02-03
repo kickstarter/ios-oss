@@ -53,6 +53,7 @@ struct AppEnvironment {
     countryCode: String = AppEnvironment.current.countryCode,
     launchedCountries: LaunchedCountries = AppEnvironment.current.launchedCountries,
     debounceScheduler: DateSchedulerType = AppEnvironment.current.debounceScheduler,
+    mainBundle: NSBundleType = AppEnvironment.current.mainBundle,
     assetImageGeneratorType: AssetImageGeneratorType.Type = AppEnvironment.current.assetImageGeneratorType) {
 
       stack.append(
@@ -65,6 +66,7 @@ struct AppEnvironment {
           countryCode: countryCode,
           launchedCountries: launchedCountries,
           debounceScheduler: debounceScheduler,
+          mainBundle: mainBundle,
           assetImageGeneratorType: assetImageGeneratorType
         )
       )
@@ -83,6 +85,7 @@ struct AppEnvironment {
     countryCode: String = AppEnvironment.current.countryCode,
     launchedCountries: LaunchedCountries = AppEnvironment.current.launchedCountries,
     debounceScheduler: DateSchedulerType = AppEnvironment.current.debounceScheduler,
+    mainBundle: NSBundleType = AppEnvironment.current.mainBundle,
     assetImageGeneratorType: AssetImageGeneratorType.Type = AppEnvironment.current.assetImageGeneratorType) {
 
       replaceCurrentEnvironment(
@@ -95,6 +98,7 @@ struct AppEnvironment {
           countryCode: countryCode,
           launchedCountries: launchedCountries,
           debounceScheduler: debounceScheduler,
+          mainBundle: mainBundle,
           assetImageGeneratorType: assetImageGeneratorType
         )
       )

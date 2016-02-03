@@ -5,7 +5,7 @@ import AVKit
 
 /**
  A collection of **all** global variables and singletons that the app wants access to.
-*/
+ */
 struct Environment {
   let apiService: ServiceType
   let currentUser: CurrentUserType
@@ -15,6 +15,7 @@ struct Environment {
   let countryCode: String
   let launchedCountries: LaunchedCountries
   let debounceScheduler: DateSchedulerType
+  let mainBundle: NSBundleType
   let assetImageGeneratorType: AssetImageGeneratorType.Type
 
   init(
@@ -26,6 +27,7 @@ struct Environment {
     countryCode: String = "US",
     launchedCountries: LaunchedCountries = .init(),
     debounceScheduler: DateSchedulerType = QueueScheduler.mainQueueScheduler,
+    mainBundle: NSBundleType = LanguageDoubler(),
     assetImageGeneratorType: AssetImageGeneratorType.Type = AVAssetImageGenerator.self) {
 
       self.apiService = apiService
@@ -36,6 +38,7 @@ struct Environment {
       self.countryCode = countryCode
       self.launchedCountries = launchedCountries
       self.debounceScheduler = debounceScheduler
+      self.mainBundle = mainBundle
       self.assetImageGeneratorType = assetImageGeneratorType
   }
 }
