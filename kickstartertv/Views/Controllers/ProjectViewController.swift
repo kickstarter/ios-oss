@@ -46,7 +46,7 @@ final class ProjectViewController: MVVMViewController {
       // first layout pass of the cell will be too small, but it will correct itself on a second
       // layout pass. Too big and the collection view will crash! Abandon all hope, ye who
       // change this value.
-      layout.estimatedItemSize = CGSize(width: 1920.0, height: 200.0)
+      layout.estimatedItemSize = CGSize(width: 1920.0, height: 300.0)
     }
 
     self.view.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: "pan:"))
@@ -141,7 +141,7 @@ final class ProjectViewController: MVVMViewController {
       height: endSize.height
     )
 
-    self.videoPlayerView.frame = lerp(beginFrame, endFrame)(clamp(0.0, 1.0)(progress * 2.0))
+    self.videoPlayerView.frame = (progress * 2.0) |> clamp(0.0, 1.0) |> lerp(beginFrame, endFrame)
   }
 
   private func showRemindMeAlert() {
