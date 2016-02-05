@@ -1,0 +1,5 @@
+#!/bin/sh
+
+git submodule update --init --recursive
+git submodule foreach \
+  'test -x bin/carthage-bootstrap-if-needed && bin/carthage-bootstrap-if-needed; exit 0'

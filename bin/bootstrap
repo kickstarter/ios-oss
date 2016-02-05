@@ -1,0 +1,4 @@
+#!/bin/sh
+
+bin/submodule-bootstrap
+bin/carthage-bootstrap-if-needed
