@@ -39,7 +39,7 @@ internal final class PlaylistViewModelTests : XCTestCase {
 
       XCTAssertEqual(projectNameTest.lastValue, project.name, "Should emit a project immediately.")
       XCTAssertEqual(categoryNameTest.lastValue, project.category.name, "Should emit a category immediately.")
-      XCTAssertNotNil(flatten(backgroundImageTest.lastValue), "Should emit a background image")
+      XCTAssertNotNil(flattenOptional(backgroundImageTest.lastValue), "Should emit a background image")
     }
   }
 
@@ -52,7 +52,7 @@ internal final class PlaylistViewModelTests : XCTestCase {
       viewModel.outputs.backgroundImage.start(backgroundImageTest.observer)
 
       XCTAssertEqual(1, backgroundImageTest.nextValues.count, "Should emit a nil background image")
-      XCTAssertNil(flatten(backgroundImageTest.lastValue), "Should emit a nil background image")
+      XCTAssertNil(flattenOptional(backgroundImageTest.lastValue), "Should emit a nil background image")
       XCTAssertFalse(backgroundImageTest.didComplete)
     }
   }
@@ -72,7 +72,7 @@ internal final class PlaylistViewModelTests : XCTestCase {
       scheduler.advanceByInterval(6.0)
 
       XCTAssertEqual(1, backgroundImageTest.nextValues.count, "Should emit a nil background image")
-      XCTAssertNil(flatten(backgroundImageTest.lastValue), "Should emit a nil background image")
+      XCTAssertNil(flattenOptional(backgroundImageTest.lastValue), "Should emit a nil background image")
       XCTAssertFalse(backgroundImageTest.didComplete)
     }
   }
