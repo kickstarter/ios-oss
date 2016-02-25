@@ -92,7 +92,7 @@ internal final class PlaylistViewModelTests : XCTestCase {
       scheduler.advanceByInterval(8.0)
 
       XCTAssertEqual(1, backgroundImageTest.nextValues.count, "Should have emitted a background image.")
-      XCTAssertNil(flatten(backgroundImageTest.lastValue), "Should emit a nil background image")
+      XCTAssertNil(flattenOptional(backgroundImageTest.lastValue), "Should emit a nil background image")
       XCTAssertFalse(backgroundImageTest.didComplete)
 
       scheduler.run()
