@@ -1,5 +1,5 @@
 import XCTest
-@testable import kickstartertv
+@testable import Kickstarter_tvOS
 
 final class AppEnvironmentTests : XCTestCase {
 

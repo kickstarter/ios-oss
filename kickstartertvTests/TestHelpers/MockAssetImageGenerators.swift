@@ -1,5 +1,5 @@
 import AVKit
-@testable import kickstartertv
+@testable import Kickstarter_tvOS
 import ReactiveCocoa
 
 /**

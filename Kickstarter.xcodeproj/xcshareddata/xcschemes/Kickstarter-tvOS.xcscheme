@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "A7E06C781C5A6EB300EBDCC2"
-               BuildableName = "kickstartertv.app"
-               BlueprintName = "kickstartertv"
+               BuildableName = "Kickstarter-tvOS.app"
+               BlueprintName = "Kickstarter-tvOS"
                ReferencedContainer = "container:Kickstarter.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -29,8 +29,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "A7E06C891C5A6EB300EBDCC2"
-               BuildableName = "kickstartertvTests.xctest"
-               BlueprintName = "kickstartertvTests"
+               BuildableName = "Kickstarter-tvOSTests.xctest"
+               BlueprintName = "Kickstarter-tvOSTests"
                ReferencedContainer = "container:Kickstarter.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -43,8 +43,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "A7E06C941C5A6EB300EBDCC2"
-               BuildableName = "kickstartertvUITests.xctest"
-               BlueprintName = "kickstartertvUITests"
+               BuildableName = "Kickstarter-tvOSUITests.xctest"
+               BlueprintName = "Kickstarter-tvOSUITests"
                ReferencedContainer = "container:Kickstarter.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -62,8 +62,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "A7E06C891C5A6EB300EBDCC2"
-               BuildableName = "kickstartertvTests.xctest"
-               BlueprintName = "kickstartertvTests"
+               BuildableName = "Kickstarter-tvOSTests.xctest"
+               BlueprintName = "Kickstarter-tvOSTests"
                ReferencedContainer = "container:Kickstarter.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -72,8 +72,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "A7E06C941C5A6EB300EBDCC2"
-               BuildableName = "kickstartertvUITests.xctest"
-               BlueprintName = "kickstartertvUITests"
+               BuildableName = "Kickstarter-tvOSUITests.xctest"
+               BlueprintName = "Kickstarter-tvOSUITests"
                ReferencedContainer = "container:Kickstarter.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -82,8 +82,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A7E06C781C5A6EB300EBDCC2"
-            BuildableName = "kickstartertv.app"
-            BlueprintName = "kickstartertv"
+            BuildableName = "Kickstarter-tvOS.app"
+            BlueprintName = "Kickstarter-tvOS"
             ReferencedContainer = "container:Kickstarter.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -105,8 +105,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A7E06C781C5A6EB300EBDCC2"
-            BuildableName = "kickstartertv.app"
-            BlueprintName = "kickstartertv"
+            BuildableName = "Kickstarter-tvOS.app"
+            BlueprintName = "Kickstarter-tvOS"
             ReferencedContainer = "container:Kickstarter.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -123,8 +123,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A7E06C781C5A6EB300EBDCC2"
-            BuildableName = "kickstartertv.app"
-            BlueprintName = "kickstartertv"
+            BuildableName = "Kickstarter-tvOS.app"
+            BlueprintName = "Kickstarter-tvOS"
             ReferencedContainer = "container:Kickstarter.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

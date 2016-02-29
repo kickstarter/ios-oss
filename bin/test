@@ -4,7 +4,7 @@ set -o pipefail
 
 xcodebuild \
   -destination 'platform=tvOS Simulator,OS=9.1,name=Apple TV 1080p' \
-  -scheme kickstartertv \
+  -scheme Kickstarter-tvOS \
   clean build test \
   | tee $CIRCLE_ARTIFACTS/xcode_raw.log \
   | xcpretty

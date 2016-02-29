@@ -1,4 +1,4 @@
-import kickstartertv
+import Kickstarter_tvOS
 import Prelude
 
 private let stores = [
