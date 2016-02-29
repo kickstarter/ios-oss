@@ -5,17 +5,17 @@ checkout:
   post:
     - git submodule sync
     - git submodule update --init
-    - ./Frameworks/Kickstarter-KsApi/bin/carthage-bootstrap-if-needed
-    - ./Frameworks/Kickstarter-Models/bin/carthage-bootstrap-if-needed
-    - ./Frameworks/Kickstarter-ReactiveExtensions/bin/carthage-bootstrap-if-needed
+    - ./Frameworks/KsApi/bin/carthage-bootstrap-if-needed
+    - ./Frameworks/Models/bin/carthage-bootstrap-if-needed
+    - ./Frameworks/ReactiveExtensions/bin/carthage-bootstrap-if-needed
 dependencies:
   override:
     - bin/carthage-bootstrap-if-needed
   cache_directories:
     - Carthage
-    - ./Frameworks/Kickstarter-KsApi/Carthage
-    - ./Frameworks/Kickstarter-Models/Carthage
-    - ./Frameworks/Kickstarter-ReactiveExtensions/Carthage
+    - ./Frameworks/KsApi/Carthage
+    - ./Frameworks/Models/Carthage
+    - ./Frameworks/ReactiveExtensions/Carthage
 test:
   override:
     - bin/test
