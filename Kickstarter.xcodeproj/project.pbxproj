@@ -40,6 +40,22 @@
 		A7D1F98D1C850C34000D41D5 /* UILabel+LocalizedKeyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D1F97A1C850C34000D41D5 /* UILabel+LocalizedKeyTests.swift */; };
 		A7D1F98E1C850C34000D41D5 /* UILabel+SimpleHTMLTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D1F97B1C850C34000D41D5 /* UILabel+SimpleHTMLTests.swift */; };
 		A7D1F9931C850CB2000D41D5 /* KickstarterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D1F9911C850CB2000D41D5 /* KickstarterTests.swift */; };
+		A7D1F99C1C850D62000D41D5 /* KsApi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7D1F8EC1C84FB55000D41D5 /* KsApi.framework */; };
+		A7D1F99D1C850D62000D41D5 /* Models.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7D1F8FB1C84FB5A000D41D5 /* Models.framework */; };
+		A7D1F99E1C850D62000D41D5 /* Prelude.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7D1F90A1C84FB5F000D41D5 /* Prelude.framework */; };
+		A7D1F99F1C850D62000D41D5 /* ReactiveExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7D1F9191C84FB64000D41D5 /* ReactiveExtensions.framework */; };
+		A7D1F9A41C850D6F000D41D5 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7D1F9A01C850D6F000D41D5 /* Alamofire.framework */; };
+		A7D1F9A51C850D6F000D41D5 /* AlamofireImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7D1F9A11C850D6F000D41D5 /* AlamofireImage.framework */; };
+		A7D1F9A61C850D6F000D41D5 /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7D1F9A21C850D6F000D41D5 /* ReactiveCocoa.framework */; };
+		A7D1F9A71C850D6F000D41D5 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7D1F9A31C850D6F000D41D5 /* Result.framework */; };
+		A7D1F9AD1C850D89000D41D5 /* Alamofire.framework.dSYM in carthage dsym */ = {isa = PBXBuildFile; fileRef = A7D1F9A91C850D89000D41D5 /* Alamofire.framework.dSYM */; };
+		A7D1F9AE1C850D89000D41D5 /* AlamofireImage.framework.dSYM in carthage dsym */ = {isa = PBXBuildFile; fileRef = A7D1F9AA1C850D89000D41D5 /* AlamofireImage.framework.dSYM */; };
+		A7D1F9AF1C850D89000D41D5 /* ReactiveCocoa.framework.dSYM in carthage dsym */ = {isa = PBXBuildFile; fileRef = A7D1F9AB1C850D89000D41D5 /* ReactiveCocoa.framework.dSYM */; };
+		A7D1F9B01C850D89000D41D5 /* Result.framework.dSYM in carthage dsym */ = {isa = PBXBuildFile; fileRef = A7D1F9AC1C850D89000D41D5 /* Result.framework.dSYM */; };
+		A7D1F9B31C850DDE000D41D5 /* KsApi.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A7D1F8EC1C84FB55000D41D5 /* KsApi.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A7D1F9B71C850DDE000D41D5 /* Models.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A7D1F8FB1C84FB5A000D41D5 /* Models.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A7D1F9BB1C850DDE000D41D5 /* Prelude.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A7D1F90A1C84FB5F000D41D5 /* Prelude.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A7D1F9BF1C850DDE000D41D5 /* ReactiveExtensions.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A7D1F9191C84FB64000D41D5 /* ReactiveExtensions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A7D596CB1C5D75260047CB3E /* ProjectViewModelInputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D596CA1C5D75260047CB3E /* ProjectViewModelInputs.swift */; };
 		A7D596D11C5D755F0047CB3E /* ProjectViewModelOutputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D596D01C5D755F0047CB3E /* ProjectViewModelOutputs.swift */; };
 		A7D596D31C5D75B80047CB3E /* ProjectViewModelErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D596D21C5D75B80047CB3E /* ProjectViewModelErrors.swift */; };
@@ -308,6 +324,62 @@
 			remoteGlobalIDString = A7D1F9441C850B7C000D41D5;
 			remoteInfo = Kickstarter;
 		};
+		A7D1F9941C850D5B000D41D5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A7D1F8E41C84FB55000D41D5 /* KsApi.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = A7FD096E1C83E74F00332CCB;
+			remoteInfo = "KsApi-iOS";
+		};
+		A7D1F9961C850D5B000D41D5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A7D1F8F31C84FB5A000D41D5 /* Models.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = A7FD078E1C81CBF600332CCB;
+			remoteInfo = "Models-iOS";
+		};
+		A7D1F9981C850D5B000D41D5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A7D1F9021C84FB5F000D41D5 /* Prelude.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = A7FD084C1C81E1DA00332CCB;
+			remoteInfo = "Prelude-iOS";
+		};
+		A7D1F99A1C850D5B000D41D5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A7D1F9111C84FB64000D41D5 /* ReactiveExtensions.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = A7FD08861C81EDBD00332CCB;
+			remoteInfo = "ReactiveExtensions-iOS";
+		};
+		A7D1F9B41C850DDE000D41D5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A7D1F8E41C84FB55000D41D5 /* KsApi.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = A7FD096E1C83E74F00332CCB;
+			remoteInfo = "KsApi-iOS";
+		};
+		A7D1F9B81C850DDE000D41D5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A7D1F8F31C84FB5A000D41D5 /* Models.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = A7FD078E1C81CBF600332CCB;
+			remoteInfo = "Models-iOS";
+		};
+		A7D1F9BC1C850DDE000D41D5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A7D1F9021C84FB5F000D41D5 /* Prelude.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = A7FD084C1C81E1DA00332CCB;
+			remoteInfo = "Prelude-iOS";
+		};
+		A7D1F9C01C850DDE000D41D5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A7D1F9111C84FB64000D41D5 /* ReactiveExtensions.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = A7FD08861C81EDBD00332CCB;
+			remoteInfo = "ReactiveExtensions-iOS";
+		};
 		A7E06C8B1C5A6EB300EBDCC2 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A7E06C711C5A6EB300EBDCC2 /* Project object */;
@@ -318,6 +390,34 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		A7D1F9A81C850D78000D41D5 /* carthage dsym */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 16;
+			files = (
+				A7D1F9AD1C850D89000D41D5 /* Alamofire.framework.dSYM in carthage dsym */,
+				A7D1F9AE1C850D89000D41D5 /* AlamofireImage.framework.dSYM in carthage dsym */,
+				A7D1F9AF1C850D89000D41D5 /* ReactiveCocoa.framework.dSYM in carthage dsym */,
+				A7D1F9B01C850D89000D41D5 /* Result.framework.dSYM in carthage dsym */,
+			);
+			name = "carthage dsym";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A7D1F9C21C850DDE000D41D5 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				A7D1F9B71C850DDE000D41D5 /* Models.framework in Embed Frameworks */,
+				A7D1F9BB1C850DDE000D41D5 /* Prelude.framework in Embed Frameworks */,
+				A7D1F9B31C850DDE000D41D5 /* KsApi.framework in Embed Frameworks */,
+				A7D1F9BF1C850DDE000D41D5 /* ReactiveExtensions.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A7E06DA71C5C018900EBDCC2 /* carthage copy dsym */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -387,6 +487,14 @@
 		A7D1F97B1C850C34000D41D5 /* UILabel+SimpleHTMLTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UILabel+SimpleHTMLTests.swift"; sourceTree = "<group>"; };
 		A7D1F9901C850CB2000D41D5 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A7D1F9911C850CB2000D41D5 /* KickstarterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KickstarterTests.swift; sourceTree = "<group>"; };
+		A7D1F9A01C850D6F000D41D5 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
+		A7D1F9A11C850D6F000D41D5 /* AlamofireImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AlamofireImage.framework; path = Carthage/Build/iOS/AlamofireImage.framework; sourceTree = "<group>"; };
+		A7D1F9A21C850D6F000D41D5 /* ReactiveCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveCocoa.framework; path = Carthage/Build/iOS/ReactiveCocoa.framework; sourceTree = "<group>"; };
+		A7D1F9A31C850D6F000D41D5 /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = Carthage/Build/iOS/Result.framework; sourceTree = "<group>"; };
+		A7D1F9A91C850D89000D41D5 /* Alamofire.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = Alamofire.framework.dSYM; path = Carthage/Build/iOS/Alamofire.framework.dSYM; sourceTree = "<group>"; };
+		A7D1F9AA1C850D89000D41D5 /* AlamofireImage.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = AlamofireImage.framework.dSYM; path = Carthage/Build/iOS/AlamofireImage.framework.dSYM; sourceTree = "<group>"; };
+		A7D1F9AB1C850D89000D41D5 /* ReactiveCocoa.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = ReactiveCocoa.framework.dSYM; path = Carthage/Build/iOS/ReactiveCocoa.framework.dSYM; sourceTree = "<group>"; };
+		A7D1F9AC1C850D89000D41D5 /* Result.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = Result.framework.dSYM; path = Carthage/Build/iOS/Result.framework.dSYM; sourceTree = "<group>"; };
 		A7D596CA1C5D75260047CB3E /* ProjectViewModelInputs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectViewModelInputs.swift; sourceTree = "<group>"; };
 		A7D596D01C5D755F0047CB3E /* ProjectViewModelOutputs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectViewModelOutputs.swift; sourceTree = "<group>"; };
 		A7D596D21C5D75B80047CB3E /* ProjectViewModelErrors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectViewModelErrors.swift; sourceTree = "<group>"; };
@@ -510,6 +618,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A7D1F99C1C850D62000D41D5 /* KsApi.framework in Frameworks */,
+				A7D1F99D1C850D62000D41D5 /* Models.framework in Frameworks */,
+				A7D1F99E1C850D62000D41D5 /* Prelude.framework in Frameworks */,
+				A7D1F99F1C850D62000D41D5 /* ReactiveExtensions.framework in Frameworks */,
+				A7D1F9A41C850D6F000D41D5 /* Alamofire.framework in Frameworks */,
+				A7D1F9A51C850D6F000D41D5 /* AlamofireImage.framework in Frameworks */,
+				A7D1F9A61C850D6F000D41D5 /* ReactiveCocoa.framework in Frameworks */,
+				A7D1F9A71C850D6F000D41D5 /* Result.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -604,6 +720,14 @@
 		A7424F421C84F43300FDC1E4 /* iOS */ = {
 			isa = PBXGroup;
 			children = (
+				A7D1F9A91C850D89000D41D5 /* Alamofire.framework.dSYM */,
+				A7D1F9AA1C850D89000D41D5 /* AlamofireImage.framework.dSYM */,
+				A7D1F9AB1C850D89000D41D5 /* ReactiveCocoa.framework.dSYM */,
+				A7D1F9AC1C850D89000D41D5 /* Result.framework.dSYM */,
+				A7D1F9A01C850D6F000D41D5 /* Alamofire.framework */,
+				A7D1F9A11C850D6F000D41D5 /* AlamofireImage.framework */,
+				A7D1F9A21C850D6F000D41D5 /* ReactiveCocoa.framework */,
+				A7D1F9A31C850D6F000D41D5 /* Result.framework */,
 			);
 			name = iOS;
 			sourceTree = "<group>";
@@ -960,10 +1084,21 @@
 				A7D1F9411C850B7C000D41D5 /* Sources */,
 				A7D1F9421C850B7C000D41D5 /* Frameworks */,
 				A7D1F9431C850B7C000D41D5 /* Resources */,
+				A7D1F9A81C850D78000D41D5 /* carthage dsym */,
+				A7D1F9B11C850D8F000D41D5 /* carthage copy-frameworks */,
+				A7D1F9C21C850DDE000D41D5 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				A7D1F9951C850D5B000D41D5 /* PBXTargetDependency */,
+				A7D1F9971C850D5B000D41D5 /* PBXTargetDependency */,
+				A7D1F9991C850D5B000D41D5 /* PBXTargetDependency */,
+				A7D1F99B1C850D5B000D41D5 /* PBXTargetDependency */,
+				A7D1F9B51C850DDE000D41D5 /* PBXTargetDependency */,
+				A7D1F9B91C850DDE000D41D5 /* PBXTargetDependency */,
+				A7D1F9BD1C850DDE000D41D5 /* PBXTargetDependency */,
+				A7D1F9C11C850DDE000D41D5 /* PBXTargetDependency */,
 			);
 			name = "Kickstarter-iOS";
 			productName = Kickstarter;
@@ -1272,6 +1407,24 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		A7D1F9B11C850D8F000D41D5 /* carthage copy-frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/ReactiveCocoa.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Result.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Alamofire.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/AlamofireImage.framework",
+			);
+			name = "carthage copy-frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
+		};
 		A7E06D8F1C5C010A00EBDCC2 /* carthage copy-frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1453,6 +1606,46 @@
 			target = A7D1F9441C850B7C000D41D5 /* Kickstarter-iOS */;
 			targetProxy = A7D1F95B1C850B7C000D41D5 /* PBXContainerItemProxy */;
 		};
+		A7D1F9951C850D5B000D41D5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "KsApi-iOS";
+			targetProxy = A7D1F9941C850D5B000D41D5 /* PBXContainerItemProxy */;
+		};
+		A7D1F9971C850D5B000D41D5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Models-iOS";
+			targetProxy = A7D1F9961C850D5B000D41D5 /* PBXContainerItemProxy */;
+		};
+		A7D1F9991C850D5B000D41D5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Prelude-iOS";
+			targetProxy = A7D1F9981C850D5B000D41D5 /* PBXContainerItemProxy */;
+		};
+		A7D1F99B1C850D5B000D41D5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "ReactiveExtensions-iOS";
+			targetProxy = A7D1F99A1C850D5B000D41D5 /* PBXContainerItemProxy */;
+		};
+		A7D1F9B51C850DDE000D41D5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "KsApi-iOS";
+			targetProxy = A7D1F9B41C850DDE000D41D5 /* PBXContainerItemProxy */;
+		};
+		A7D1F9B91C850DDE000D41D5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Models-iOS";
+			targetProxy = A7D1F9B81C850DDE000D41D5 /* PBXContainerItemProxy */;
+		};
+		A7D1F9BD1C850DDE000D41D5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Prelude-iOS";
+			targetProxy = A7D1F9BC1C850DDE000D41D5 /* PBXContainerItemProxy */;
+		};
+		A7D1F9C11C850DDE000D41D5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "ReactiveExtensions-iOS";
+			targetProxy = A7D1F9C01C850DDE000D41D5 /* PBXContainerItemProxy */;
+		};
 		A7E06C8C1C5A6EB300EBDCC2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = A7E06C781C5A6EB300EBDCC2 /* Kickstarter-tvOS */;
@@ -1504,6 +1697,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = Kickstarter/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1518,6 +1716,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = Kickstarter/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
