@@ -10,3 +10,15 @@
 [submodule "Carthage/Checkouts/ReactiveCocoa"]
 	path = Carthage/Checkouts/ReactiveCocoa
 	url = https://github.com/ReactiveCocoa/ReactiveCocoa.git
+[submodule "Frameworks/ReactiveExtensions"]
+	path = Frameworks/ReactiveExtensions
+	url = https://github.com/kickstarter/Kickstarter-ReactiveExtensions.git
+[submodule "Frameworks/Models"]
+	path = Frameworks/Models
+	url = https://github.com/kickstarter/Kickstarter-Models.git
+[submodule "Frameworks/KsApi"]
+	path = Frameworks/KsApi
+	url = https://github.com/kickstarter/Kickstarter-KsApi.git
+[submodule "Frameworks/Prelude"]
+	path = Frameworks/Prelude
+	url = https://github.com/kickstarter/Kickstarter-Prelude
