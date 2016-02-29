@@ -108,13 +108,15 @@ internal final class PlaylistViewModelTests : XCTestCase {
     let projectNameTest = TestObserver<String, NoError>()
     viewModel.outputs.projectName.start(projectNameTest.observer)
 
+    XCTAssertEqual(1, projectNameTest.nextValues.count, "A project is emitted immediately.")
+
     viewModel.inputs.swipeEnded(translation: CGPoint(x: 100.0, y: 0.0))
-    XCTAssertEqual(1, projectNameTest.nextValues.count)
+    XCTAssertEqual(1, projectNameTest.nextValues.count, "A new project should not be emitted.")
 
     viewModel.inputs.swipeEnded(translation: CGPoint(x: 2_000.0, y: 0.0))
-    XCTAssertEqual(2, projectNameTest.nextValues.count)
+    XCTAssertEqual(2, projectNameTest.nextValues.count, "A new project should be emitted.")
 
     viewModel.inputs.swipeEnded(translation: CGPoint(x: -2_000.0, y: 0.0))
-    XCTAssertEqual(3, projectNameTest.nextValues.count)
+    XCTAssertEqual(3, projectNameTest.nextValues.count, "A new project should be emitted.")
   }
 }
