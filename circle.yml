@@ -18,4 +18,5 @@ dependencies:
     - ./Frameworks/ReactiveExtensions/Carthage
 test:
   override:
-    - bin/test
+    - bin/test iOS
+    - bin/test tvOS

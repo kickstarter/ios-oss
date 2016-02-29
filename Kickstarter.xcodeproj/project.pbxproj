@@ -776,7 +776,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		A7D1F9461C850B7C000D41D5 /* Kickstarter */ = {
+		A7D1F9461C850B7C000D41D5 /* Kickstarter-iOS */ = {
 			isa = PBXGroup;
 			children = (
 				A7D1F9551C850B7C000D41D5 /* Info.plist */,
@@ -788,7 +788,7 @@
 				A7D1F94D1C850B7C000D41D5 /* Main.storyboard */,
 				A7D1F98F1C850CB2000D41D5 /* Tests */,
 			);
-			path = Kickstarter;
+			path = "Kickstarter-iOS";
 			sourceTree = "<group>";
 		};
 		A7D1F9671C850C34000D41D5 /* Tests */ = {
@@ -838,8 +838,8 @@
 			isa = PBXGroup;
 			children = (
 				A7E06DBC1C5C027800EBDCC2 /* Frameworks */,
-				A7D1F9461C850B7C000D41D5 /* Kickstarter */,
-				A7E06C7B1C5A6EB300EBDCC2 /* kickstartertv */,
+				A7D1F9461C850B7C000D41D5 /* Kickstarter-iOS */,
+				A7E06C7B1C5A6EB300EBDCC2 /* Kickstarter-tvOS */,
 				A7E06C7A1C5A6EB300EBDCC2 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -855,7 +855,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		A7E06C7B1C5A6EB300EBDCC2 /* kickstartertv */ = {
+		A7E06C7B1C5A6EB300EBDCC2 /* Kickstarter-tvOS */ = {
 			isa = PBXGroup;
 			children = (
 				A7E0704D1C5D3CF000EBDCC2 /* categories.json */,
@@ -879,7 +879,7 @@
 				A7E06CB41C5BFB3800EBDCC2 /* ViewModels */,
 				A7E06CC71C5BFB3800EBDCC2 /* Views */,
 			);
-			path = kickstartertv;
+			path = "Kickstarter-tvOS";
 			sourceTree = "<group>";
 		};
 		A7E06CA71C5BFB3800EBDCC2 /* DataSources */ = {
@@ -1702,7 +1702,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
-				INFOPLIST_FILE = Kickstarter/Info.plist;
+				INFOPLIST_FILE = "Kickstarter-iOS/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Kickstarter;
@@ -1721,7 +1721,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
-				INFOPLIST_FILE = Kickstarter/Info.plist;
+				INFOPLIST_FILE = "Kickstarter-iOS/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Kickstarter;
@@ -1735,7 +1735,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				INFOPLIST_FILE = Kickstarter/Tests/Info.plist;
+				INFOPLIST_FILE = "Kickstarter-iOS/Tests/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.KickstarterTests;
@@ -1750,7 +1750,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				INFOPLIST_FILE = Kickstarter/Tests/Info.plist;
+				INFOPLIST_FILE = "Kickstarter-iOS/Tests/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.KickstarterTests;
@@ -1856,7 +1856,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/tvOS",
 				);
-				INFOPLIST_FILE = "$(SRCROOT)/kickstartertv/Supporting Files/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Kickstarter-tvOS/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstartertv;
 				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)_tvOS";
@@ -1874,7 +1874,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/tvOS",
 				);
-				INFOPLIST_FILE = "$(SRCROOT)/kickstartertv/Supporting Files/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Kickstarter-tvOS/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstartertv;
 				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)_tvOS";
@@ -1889,7 +1889,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/tvOS",
 				);
-				INFOPLIST_FILE = kickstartertv/Tests/Info.plist;
+				INFOPLIST_FILE = "Kickstarter-tvOS/Tests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstartertvTests;
 				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)_tvOSTests";
@@ -1905,7 +1905,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/tvOS",
 				);
-				INFOPLIST_FILE = kickstartertv/Tests/Info.plist;
+				INFOPLIST_FILE = "Kickstarter-tvOS/Tests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstartertvTests;
 				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)_tvOSTests";
