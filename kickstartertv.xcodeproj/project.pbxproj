@@ -11,14 +11,6 @@
 		A710F6711C5EA72900F62731 /* MockAssetImageGenerators.swift in Sources */ = {isa = PBXBuildFile; fileRef = A710F6701C5EA72900F62731 /* MockAssetImageGenerators.swift */; };
 		A713E3381C5ED12D00197498 /* NSBundleType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A713E3371C5ED12D00197498 /* NSBundleType.swift */; };
 		A713E33E1C5ED14F00197498 /* MockBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A713E33D1C5ED14F00197498 /* MockBundle.swift */; };
-		A71A78591C619A5200EF5C22 /* KsApi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7E06FDE1C5C458F00EBDCC2 /* KsApi.framework */; };
-		A71A785A1C619A5200EF5C22 /* KsApi.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A7E06FDE1C5C458F00EBDCC2 /* KsApi.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		A71A785D1C619A5200EF5C22 /* Models.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7E06FE71C5C459500EBDCC2 /* Models.framework */; };
-		A71A785E1C619A5200EF5C22 /* Models.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A7E06FE71C5C459500EBDCC2 /* Models.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		A71A78611C619A5200EF5C22 /* Prelude.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7E06FF01C5C459900EBDCC2 /* Prelude.framework */; };
-		A71A78621C619A5200EF5C22 /* Prelude.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A7E06FF01C5C459900EBDCC2 /* Prelude.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		A71A78651C619A5200EF5C22 /* ReactiveExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7E06FF91C5C459F00EBDCC2 /* ReactiveExtensions.framework */; };
-		A71A78661C619A5200EF5C22 /* ReactiveExtensions.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A7E06FF91C5C459F00EBDCC2 /* ReactiveExtensions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A72153921C5D62E800127699 /* HomeViewModelInputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72153911C5D62E800127699 /* HomeViewModelInputs.swift */; };
 		A72153941C5D630300127699 /* HomeViewModelOutputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72153931C5D630300127699 /* HomeViewModelOutputs.swift */; };
 		A7700DA61C5E9A8E00D1F638 /* PlaylistViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7700DA51C5E9A8E00D1F638 /* PlaylistViewModelTests.swift */; };
@@ -147,18 +139,10 @@
 		A7E06E351C5C068400EBDCC2 /* ReactiveCocoa.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A7E06E231C5C068300EBDCC2 /* ReactiveCocoa.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A7E06E381C5C068400EBDCC2 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7E06E251C5C068300EBDCC2 /* Result.framework */; };
 		A7E06E391C5C068400EBDCC2 /* Result.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A7E06E251C5C068300EBDCC2 /* Result.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		A7E070041C5C45F400EBDCC2 /* KsApi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7E06FDE1C5C458F00EBDCC2 /* KsApi.framework */; };
-		A7E070051C5C45F400EBDCC2 /* Models.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7E06FE71C5C459500EBDCC2 /* Models.framework */; };
-		A7E070061C5C45F400EBDCC2 /* Prelude.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7E06FF01C5C459900EBDCC2 /* Prelude.framework */; };
-		A7E070071C5C45F400EBDCC2 /* ReactiveExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7E06FF91C5C459F00EBDCC2 /* ReactiveExtensions.framework */; };
 		A7E0701F1C5C662000EBDCC2 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7E06E1C1C5C068300EBDCC2 /* Alamofire.framework */; };
 		A7E070201C5C662000EBDCC2 /* AlamofireImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7E06E1D1C5C068300EBDCC2 /* AlamofireImage.framework */; };
 		A7E070211C5C662000EBDCC2 /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7E06E231C5C068300EBDCC2 /* ReactiveCocoa.framework */; };
 		A7E070221C5C662000EBDCC2 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7E06E251C5C068300EBDCC2 /* Result.framework */; };
-		A7E070271C5C665100EBDCC2 /* KsApi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7E06FDE1C5C458F00EBDCC2 /* KsApi.framework */; };
-		A7E070281C5C665100EBDCC2 /* Models.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7E06FE71C5C459500EBDCC2 /* Models.framework */; };
-		A7E070291C5C665100EBDCC2 /* Prelude.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7E06FF01C5C459900EBDCC2 /* Prelude.framework */; };
-		A7E0702A1C5C665100EBDCC2 /* ReactiveExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7E06FF91C5C459F00EBDCC2 /* ReactiveExtensions.framework */; };
 		A7E070501C5D3CF000EBDCC2 /* categories.json in Resources */ = {isa = PBXBuildFile; fileRef = A7E0704D1C5D3CF000EBDCC2 /* categories.json */; };
 		A7E070511C5D3CF000EBDCC2 /* discover.json in Resources */ = {isa = PBXBuildFile; fileRef = A7E0704E1C5D3CF000EBDCC2 /* discover.json */; };
 		A7E070521C5D3CF000EBDCC2 /* project.json in Resources */ = {isa = PBXBuildFile; fileRef = A7E0704F1C5D3CF000EBDCC2 /* project.json */; };
@@ -167,41 +151,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		A71A785B1C619A5200EF5C22 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A7E06FD81C5C458F00EBDCC2 /* KsApi.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = CA43C5F81BB358F200C180DA;
-			remoteInfo = "KsApi-tvOS";
-		};
-		A71A785F1C619A5200EF5C22 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A7E06FE11C5C459500EBDCC2 /* Models.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = CA43C5561BB3083900C180DA;
-			remoteInfo = "Models-tvOS";
-		};
-		A71A78631C619A5200EF5C22 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A7E06FEA1C5C459900EBDCC2 /* Prelude.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = CA0923F71BB6291900C9EC88;
-			remoteInfo = Prelude;
-		};
-		A71A78671C619A5200EF5C22 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A7E06FF31C5C459F00EBDCC2 /* ReactiveExtensions.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = CA43C6621BB35FCF00C180DA;
-			remoteInfo = ReactiveExtensions;
-		};
-		A7700DAB1C5E9CAF00D1F638 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A7E06FF31C5C459F00EBDCC2 /* ReactiveExtensions.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = A7983B871C2AFB1C003A1ABE;
-			remoteInfo = ReactiveExtensionsTests;
-		};
 		A7E06C8B1C5A6EB300EBDCC2 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A7E06C711C5A6EB300EBDCC2 /* Project object */;
@@ -215,104 +164,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = A7E06C781C5A6EB300EBDCC2;
 			remoteInfo = kickstartertv;
-		};
-		A7E06FDD1C5C458F00EBDCC2 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A7E06FD81C5C458F00EBDCC2 /* KsApi.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = CA43C5F91BB358F200C180DA;
-			remoteInfo = "KsApi-tvOS";
-		};
-		A7E06FDF1C5C458F00EBDCC2 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A7E06FD81C5C458F00EBDCC2 /* KsApi.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = A753B5691C2EED9800FDB616;
-			remoteInfo = KsApiTests;
-		};
-		A7E06FE61C5C459500EBDCC2 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A7E06FE11C5C459500EBDCC2 /* Models.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = CA43C5571BB3083900C180DA;
-			remoteInfo = "Models-tvOS";
-		};
-		A7E06FE81C5C459500EBDCC2 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A7E06FE11C5C459500EBDCC2 /* Models.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = A753B5441C2EDC1D00FDB616;
-			remoteInfo = "Models-tvOSTests";
-		};
-		A7E06FEF1C5C459900EBDCC2 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A7E06FEA1C5C459900EBDCC2 /* Prelude.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = CA0923F81BB6291900C9EC88;
-			remoteInfo = Prelude;
-		};
-		A7E06FF11C5C459900EBDCC2 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A7E06FEA1C5C459900EBDCC2 /* Prelude.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = CA0924021BB6291900C9EC88;
-			remoteInfo = PreludeTests;
-		};
-		A7E06FF81C5C459F00EBDCC2 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A7E06FF31C5C459F00EBDCC2 /* ReactiveExtensions.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = CA43C6631BB35FCF00C180DA;
-			remoteInfo = ReactiveExtensions;
-		};
-		A7E06FFA1C5C459F00EBDCC2 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A7E06FF31C5C459F00EBDCC2 /* ReactiveExtensions.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = A7983B881C2AFB1C003A1ABE;
-			remoteInfo = ReactiveExtensionsTests;
-		};
-		A7E06FFC1C5C45DB00EBDCC2 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A7E06FD81C5C458F00EBDCC2 /* KsApi.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = CA43C5F81BB358F200C180DA;
-			remoteInfo = "KsApi-tvOS";
-		};
-		A7E06FFE1C5C45DB00EBDCC2 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A7E06FE11C5C459500EBDCC2 /* Models.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = CA43C5561BB3083900C180DA;
-			remoteInfo = "Models-tvOS";
-		};
-		A7E070001C5C45DB00EBDCC2 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A7E06FEA1C5C459900EBDCC2 /* Prelude.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = CA0923F71BB6291900C9EC88;
-			remoteInfo = Prelude;
-		};
-		A7E070021C5C45DB00EBDCC2 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A7E06FF31C5C459F00EBDCC2 /* ReactiveExtensions.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = CA43C6621BB35FCF00C180DA;
-			remoteInfo = ReactiveExtensions;
-		};
-		A7FD0A921C84F18D00332CCB /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A7E06FD81C5C458F00EBDCC2 /* KsApi.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = A7FD099D1C83E74F00332CCB;
-			remoteInfo = "KsApi-iOS";
-		};
-		A7FD0A941C84F18D00332CCB /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A7E06FD81C5C458F00EBDCC2 /* KsApi.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = A7FD09D21C83E8E900332CCB;
-			remoteInfo = "KsApi-iOSTests";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -339,11 +190,7 @@
 			files = (
 				A7E06E271C5C068300EBDCC2 /* Alamofire.framework in Embed Frameworks */,
 				A7E06E351C5C068400EBDCC2 /* ReactiveCocoa.framework in Embed Frameworks */,
-				A71A78621C619A5200EF5C22 /* Prelude.framework in Embed Frameworks */,
-				A71A78661C619A5200EF5C22 /* ReactiveExtensions.framework in Embed Frameworks */,
-				A71A785E1C619A5200EF5C22 /* Models.framework in Embed Frameworks */,
 				A7E06E291C5C068400EBDCC2 /* AlamofireImage.framework in Embed Frameworks */,
-				A71A785A1C619A5200EF5C22 /* KsApi.framework in Embed Frameworks */,
 				A7E06E391C5C068400EBDCC2 /* Result.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -489,10 +336,6 @@
 		A7E06E1D1C5C068300EBDCC2 /* AlamofireImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AlamofireImage.framework; path = Carthage/Build/tvOS/AlamofireImage.framework; sourceTree = "<group>"; };
 		A7E06E231C5C068300EBDCC2 /* ReactiveCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveCocoa.framework; path = Carthage/Build/tvOS/ReactiveCocoa.framework; sourceTree = "<group>"; };
 		A7E06E251C5C068300EBDCC2 /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = Carthage/Build/tvOS/Result.framework; sourceTree = "<group>"; };
-		A7E06FD81C5C458F00EBDCC2 /* KsApi.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = KsApi.xcodeproj; path = "Kickstarter-KsApi/KsApi.xcodeproj"; sourceTree = "<group>"; };
-		A7E06FE11C5C459500EBDCC2 /* Models.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Models.xcodeproj; path = "Kickstarter-Models/Models.xcodeproj"; sourceTree = "<group>"; };
-		A7E06FEA1C5C459900EBDCC2 /* Prelude.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Prelude.xcodeproj; path = "Kickstarter-Prelude/Prelude.xcodeproj"; sourceTree = "<group>"; };
-		A7E06FF31C5C459F00EBDCC2 /* ReactiveExtensions.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactiveExtensions.xcodeproj; path = "Kickstarter-ReactiveExtensions/ReactiveExtensions.xcodeproj"; sourceTree = "<group>"; };
 		A7E0704D1C5D3CF000EBDCC2 /* categories.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = categories.json; sourceTree = "<group>"; };
 		A7E0704E1C5D3CF000EBDCC2 /* discover.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = discover.json; sourceTree = "<group>"; };
 		A7E0704F1C5D3CF000EBDCC2 /* project.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = project.json; sourceTree = "<group>"; };
@@ -505,18 +348,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A7E070041C5C45F400EBDCC2 /* KsApi.framework in Frameworks */,
-				A7E070051C5C45F400EBDCC2 /* Models.framework in Frameworks */,
-				A71A785D1C619A5200EF5C22 /* Models.framework in Frameworks */,
-				A7E070061C5C45F400EBDCC2 /* Prelude.framework in Frameworks */,
-				A7E070071C5C45F400EBDCC2 /* ReactiveExtensions.framework in Frameworks */,
-				A71A78591C619A5200EF5C22 /* KsApi.framework in Frameworks */,
-				A71A78611C619A5200EF5C22 /* Prelude.framework in Frameworks */,
 				A7E06E261C5C068300EBDCC2 /* Alamofire.framework in Frameworks */,
 				A7E06E341C5C068400EBDCC2 /* ReactiveCocoa.framework in Frameworks */,
 				A7E06E281C5C068400EBDCC2 /* AlamofireImage.framework in Frameworks */,
 				A7E06E381C5C068400EBDCC2 /* Result.framework in Frameworks */,
-				A71A78651C619A5200EF5C22 /* ReactiveExtensions.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -524,10 +359,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A7E070271C5C665100EBDCC2 /* KsApi.framework in Frameworks */,
-				A7E070281C5C665100EBDCC2 /* Models.framework in Frameworks */,
-				A7E070291C5C665100EBDCC2 /* Prelude.framework in Frameworks */,
-				A7E0702A1C5C665100EBDCC2 /* ReactiveExtensions.framework in Frameworks */,
 				A7E0701F1C5C662000EBDCC2 /* Alamofire.framework in Frameworks */,
 				A7E070201C5C662000EBDCC2 /* AlamofireImage.framework in Frameworks */,
 				A7E070211C5C662000EBDCC2 /* ReactiveCocoa.framework in Frameworks */,
@@ -573,6 +404,37 @@
 			path = outputs;
 			sourceTree = "<group>";
 		};
+		A7424F0D1C84F40E00FDC1E4 /* Embedded */ = {
+			isa = PBXGroup;
+			children = (
+				A7424F421C84F43300FDC1E4 /* iOS */,
+				A7424F411C84F41600FDC1E4 /* tvOS */,
+			);
+			name = Embedded;
+			sourceTree = "<group>";
+		};
+		A7424F411C84F41600FDC1E4 /* tvOS */ = {
+			isa = PBXGroup;
+			children = (
+				A7E06DA81C5C019D00EBDCC2 /* Alamofire.framework.dSYM */,
+				A7E06DA91C5C019D00EBDCC2 /* AlamofireImage.framework.dSYM */,
+				A7E06DAF1C5C019D00EBDCC2 /* ReactiveCocoa.framework.dSYM */,
+				A7E06DB11C5C019D00EBDCC2 /* Result.framework.dSYM */,
+				A7E06E1C1C5C068300EBDCC2 /* Alamofire.framework */,
+				A7E06E1D1C5C068300EBDCC2 /* AlamofireImage.framework */,
+				A7E06E231C5C068300EBDCC2 /* ReactiveCocoa.framework */,
+				A7E06E251C5C068300EBDCC2 /* Result.framework */,
+			);
+			name = tvOS;
+			sourceTree = "<group>";
+		};
+		A7424F421C84F43300FDC1E4 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
 		A7E06C701C5A6EB300EBDCC2 = {
 			isa = PBXGroup;
 			children = (
@@ -580,7 +442,6 @@
 				A7E06C7B1C5A6EB300EBDCC2 /* kickstartertv */,
 				A7E06C8D1C5A6EB300EBDCC2 /* kickstartertvTests */,
 				A7E06C981C5A6EB300EBDCC2 /* kickstartertvUITests */,
-				A7E06E581C5C458300EBDCC2 /* Library */,
 				A7E06C7A1C5A6EB300EBDCC2 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -836,14 +697,7 @@
 		A7E06DBC1C5C027800EBDCC2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				A7E06DA81C5C019D00EBDCC2 /* Alamofire.framework.dSYM */,
-				A7E06DA91C5C019D00EBDCC2 /* AlamofireImage.framework.dSYM */,
-				A7E06DAF1C5C019D00EBDCC2 /* ReactiveCocoa.framework.dSYM */,
-				A7E06DB11C5C019D00EBDCC2 /* Result.framework.dSYM */,
-				A7E06E1C1C5C068300EBDCC2 /* Alamofire.framework */,
-				A7E06E1D1C5C068300EBDCC2 /* AlamofireImage.framework */,
-				A7E06E231C5C068300EBDCC2 /* ReactiveCocoa.framework */,
-				A7E06E251C5C068300EBDCC2 /* Result.framework */,
+				A7424F0D1C84F40E00FDC1E4 /* Embedded */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -857,55 +711,6 @@
 				A710F6701C5EA72900F62731 /* MockAssetImageGenerators.swift */,
 			);
 			path = TestHelpers;
-			sourceTree = "<group>";
-		};
-		A7E06E581C5C458300EBDCC2 /* Library */ = {
-			isa = PBXGroup;
-			children = (
-				A7E06FD81C5C458F00EBDCC2 /* KsApi.xcodeproj */,
-				A7E06FE11C5C459500EBDCC2 /* Models.xcodeproj */,
-				A7E06FEA1C5C459900EBDCC2 /* Prelude.xcodeproj */,
-				A7E06FF31C5C459F00EBDCC2 /* ReactiveExtensions.xcodeproj */,
-			);
-			path = Library;
-			sourceTree = "<group>";
-		};
-		A7E06FD91C5C458F00EBDCC2 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				A7FD0A931C84F18D00332CCB /* KsApi.framework */,
-				A7FD0A951C84F18D00332CCB /* KsApi-iOSTests.xctest */,
-				A7E06FDE1C5C458F00EBDCC2 /* KsApi.framework */,
-				A7E06FE01C5C458F00EBDCC2 /* KsApiTests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		A7E06FE21C5C459500EBDCC2 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				A7E06FE71C5C459500EBDCC2 /* Models.framework */,
-				A7E06FE91C5C459500EBDCC2 /* Models-tvOSTests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		A7E06FEB1C5C459900EBDCC2 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				A7E06FF01C5C459900EBDCC2 /* Prelude.framework */,
-				A7E06FF21C5C459900EBDCC2 /* PreludeTests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		A7E06FF41C5C459F00EBDCC2 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				A7E06FF91C5C459F00EBDCC2 /* ReactiveExtensions.framework */,
-				A7E06FFB1C5C459F00EBDCC2 /* ReactiveExtensionsTests.xctest */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -925,14 +730,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				A7E06FFD1C5C45DB00EBDCC2 /* PBXTargetDependency */,
-				A7E06FFF1C5C45DB00EBDCC2 /* PBXTargetDependency */,
-				A7E070011C5C45DB00EBDCC2 /* PBXTargetDependency */,
-				A7E070031C5C45DB00EBDCC2 /* PBXTargetDependency */,
-				A71A785C1C619A5200EF5C22 /* PBXTargetDependency */,
-				A71A78601C619A5200EF5C22 /* PBXTargetDependency */,
-				A71A78641C619A5200EF5C22 /* PBXTargetDependency */,
-				A71A78681C619A5200EF5C22 /* PBXTargetDependency */,
 			);
 			name = kickstartertv;
 			productName = kickstartertv;
@@ -950,7 +747,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				A7700DAC1C5E9CAF00D1F638 /* PBXTargetDependency */,
 				A7E06C8C1C5A6EB300EBDCC2 /* PBXTargetDependency */,
 			);
 			name = kickstartertvTests;
@@ -1013,24 +809,6 @@
 			mainGroup = A7E06C701C5A6EB300EBDCC2;
 			productRefGroup = A7E06C7A1C5A6EB300EBDCC2 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = A7E06FD91C5C458F00EBDCC2 /* Products */;
-					ProjectRef = A7E06FD81C5C458F00EBDCC2 /* KsApi.xcodeproj */;
-				},
-				{
-					ProductGroup = A7E06FE21C5C459500EBDCC2 /* Products */;
-					ProjectRef = A7E06FE11C5C459500EBDCC2 /* Models.xcodeproj */;
-				},
-				{
-					ProductGroup = A7E06FEB1C5C459900EBDCC2 /* Products */;
-					ProjectRef = A7E06FEA1C5C459900EBDCC2 /* Prelude.xcodeproj */;
-				},
-				{
-					ProductGroup = A7E06FF41C5C459F00EBDCC2 /* Products */;
-					ProjectRef = A7E06FF31C5C459F00EBDCC2 /* ReactiveExtensions.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				A7E06C781C5A6EB300EBDCC2 /* kickstartertv */,
@@ -1039,79 +817,6 @@
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		A7E06FDE1C5C458F00EBDCC2 /* KsApi.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = KsApi.framework;
-			remoteRef = A7E06FDD1C5C458F00EBDCC2 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		A7E06FE01C5C458F00EBDCC2 /* KsApiTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "KsApi-tvOSTests.xctest";
-			remoteRef = A7E06FDF1C5C458F00EBDCC2 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		A7E06FE71C5C459500EBDCC2 /* Models.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = Models.framework;
-			remoteRef = A7E06FE61C5C459500EBDCC2 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		A7E06FE91C5C459500EBDCC2 /* Models-tvOSTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "Models-tvOSTests.xctest";
-			remoteRef = A7E06FE81C5C459500EBDCC2 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		A7E06FF01C5C459900EBDCC2 /* Prelude.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = Prelude.framework;
-			remoteRef = A7E06FEF1C5C459900EBDCC2 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		A7E06FF21C5C459900EBDCC2 /* PreludeTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = PreludeTests.xctest;
-			remoteRef = A7E06FF11C5C459900EBDCC2 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		A7E06FF91C5C459F00EBDCC2 /* ReactiveExtensions.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = ReactiveExtensions.framework;
-			remoteRef = A7E06FF81C5C459F00EBDCC2 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		A7E06FFB1C5C459F00EBDCC2 /* ReactiveExtensionsTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = ReactiveExtensionsTests.xctest;
-			remoteRef = A7E06FFA1C5C459F00EBDCC2 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		A7FD0A931C84F18D00332CCB /* KsApi.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = KsApi.framework;
-			remoteRef = A7FD0A921C84F18D00332CCB /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		A7FD0A951C84F18D00332CCB /* KsApi-iOSTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "KsApi-iOSTests.xctest";
-			remoteRef = A7FD0A941C84F18D00332CCB /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		A7E06C771C5A6EB300EBDCC2 /* Resources */ = {
@@ -1308,31 +1013,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		A71A785C1C619A5200EF5C22 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "KsApi-tvOS";
-			targetProxy = A71A785B1C619A5200EF5C22 /* PBXContainerItemProxy */;
-		};
-		A71A78601C619A5200EF5C22 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "Models-tvOS";
-			targetProxy = A71A785F1C619A5200EF5C22 /* PBXContainerItemProxy */;
-		};
-		A71A78641C619A5200EF5C22 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = Prelude;
-			targetProxy = A71A78631C619A5200EF5C22 /* PBXContainerItemProxy */;
-		};
-		A71A78681C619A5200EF5C22 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = ReactiveExtensions;
-			targetProxy = A71A78671C619A5200EF5C22 /* PBXContainerItemProxy */;
-		};
-		A7700DAC1C5E9CAF00D1F638 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = ReactiveExtensionsTests;
-			targetProxy = A7700DAB1C5E9CAF00D1F638 /* PBXContainerItemProxy */;
-		};
 		A7E06C8C1C5A6EB300EBDCC2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = A7E06C781C5A6EB300EBDCC2 /* kickstartertv */;
@@ -1342,26 +1022,6 @@
 			isa = PBXTargetDependency;
 			target = A7E06C781C5A6EB300EBDCC2 /* kickstartertv */;
 			targetProxy = A7E06C961C5A6EB300EBDCC2 /* PBXContainerItemProxy */;
-		};
-		A7E06FFD1C5C45DB00EBDCC2 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "KsApi-tvOS";
-			targetProxy = A7E06FFC1C5C45DB00EBDCC2 /* PBXContainerItemProxy */;
-		};
-		A7E06FFF1C5C45DB00EBDCC2 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "Models-tvOS";
-			targetProxy = A7E06FFE1C5C45DB00EBDCC2 /* PBXContainerItemProxy */;
-		};
-		A7E070011C5C45DB00EBDCC2 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = Prelude;
-			targetProxy = A7E070001C5C45DB00EBDCC2 /* PBXContainerItemProxy */;
-		};
-		A7E070031C5C45DB00EBDCC2 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = ReactiveExtensions;
-			targetProxy = A7E070021C5C45DB00EBDCC2 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
