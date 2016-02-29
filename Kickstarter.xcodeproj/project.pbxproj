@@ -28,7 +28,6 @@
 		A7E06C821C5A6EB300EBDCC2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7E06C801C5A6EB300EBDCC2 /* Main.storyboard */; };
 		A7E06C841C5A6EB300EBDCC2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A7E06C831C5A6EB300EBDCC2 /* Assets.xcassets */; };
 		A7E06C8F1C5A6EB300EBDCC2 /* kickstartertvTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E06C8E1C5A6EB300EBDCC2 /* kickstartertvTests.swift */; };
-		A7E06C9A1C5A6EB300EBDCC2 /* kickstartertvUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E06C991C5A6EB300EBDCC2 /* kickstartertvUITests.swift */; };
 		A7E06CFE1C5BFB3800EBDCC2 /* DiscoveryProjectData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E06CA81C5BFB3800EBDCC2 /* DiscoveryProjectData.swift */; };
 		A7E06CFF1C5BFB3800EBDCC2 /* HomePlaylistsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E06CA91C5BFB3800EBDCC2 /* HomePlaylistsDataSource.swift */; };
 		A7E06D001C5BFB3800EBDCC2 /* PlaylistTrayDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E06CAA1C5BFB3800EBDCC2 /* PlaylistTrayDataSource.swift */; };
@@ -302,13 +301,6 @@
 			remoteGlobalIDString = A7E06C781C5A6EB300EBDCC2;
 			remoteInfo = kickstartertv;
 		};
-		A7E06C961C5A6EB300EBDCC2 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A7E06C711C5A6EB300EBDCC2 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = A7E06C781C5A6EB300EBDCC2;
-			remoteInfo = kickstartertv;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -359,15 +351,14 @@
 		A7D596D21C5D75B80047CB3E /* ProjectViewModelErrors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectViewModelErrors.swift; sourceTree = "<group>"; };
 		A7DB15181C5E91E300AB6E5A /* PlaylistViewModelInputs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaylistViewModelInputs.swift; sourceTree = "<group>"; };
 		A7DB151A1C5E91F900AB6E5A /* PlaylistViewModelOutputs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaylistViewModelOutputs.swift; sourceTree = "<group>"; };
-		A7E06C791C5A6EB300EBDCC2 /* Kickstarter-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Kickstarter-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A7E06C791C5A6EB300EBDCC2 /* Kickstarter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kickstarter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7E06C7C1C5A6EB300EBDCC2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A7E06C7E1C5A6EB300EBDCC2 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		A7E06C811C5A6EB300EBDCC2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A7E06C831C5A6EB300EBDCC2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		A7E06C8A1C5A6EB300EBDCC2 /* Kickstarter-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Kickstarter-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A7E06C8A1C5A6EB300EBDCC2 /* Kickstarter.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Kickstarter.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7E06C8E1C5A6EB300EBDCC2 /* kickstartertvTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = kickstartertvTests.swift; sourceTree = "<group>"; };
 		A7E06C901C5A6EB300EBDCC2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		A7E06C951C5A6EB300EBDCC2 /* Kickstarter-tvOSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Kickstarter-tvOSUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7E06C991C5A6EB300EBDCC2 /* kickstartertvUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = kickstartertvUITests.swift; sourceTree = "<group>"; };
 		A7E06C9B1C5A6EB300EBDCC2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A7E06CA81C5BFB3800EBDCC2 /* DiscoveryProjectData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryProjectData.swift; sourceTree = "<group>"; };
@@ -518,13 +509,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		A7E06C921C5A6EB300EBDCC2 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -645,9 +629,8 @@
 		A7E06C7A1C5A6EB300EBDCC2 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A7E06C791C5A6EB300EBDCC2 /* Kickstarter-tvOS.app */,
-				A7E06C8A1C5A6EB300EBDCC2 /* Kickstarter-tvOSTests.xctest */,
-				A7E06C951C5A6EB300EBDCC2 /* Kickstarter-tvOSUITests.xctest */,
+				A7E06C791C5A6EB300EBDCC2 /* Kickstarter.app */,
+				A7E06C8A1C5A6EB300EBDCC2 /* Kickstarter.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -937,7 +920,7 @@
 			);
 			name = "Kickstarter-tvOS";
 			productName = kickstartertv;
-			productReference = A7E06C791C5A6EB300EBDCC2 /* Kickstarter-tvOS.app */;
+			productReference = A7E06C791C5A6EB300EBDCC2 /* Kickstarter.app */;
 			productType = "com.apple.product-type.application";
 		};
 		A7E06C891C5A6EB300EBDCC2 /* Kickstarter-tvOSTests */ = {
@@ -955,26 +938,8 @@
 			);
 			name = "Kickstarter-tvOSTests";
 			productName = kickstartertvTests;
-			productReference = A7E06C8A1C5A6EB300EBDCC2 /* Kickstarter-tvOSTests.xctest */;
+			productReference = A7E06C8A1C5A6EB300EBDCC2 /* Kickstarter.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		A7E06C941C5A6EB300EBDCC2 /* Kickstarter-tvOSUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = A7E06CA41C5A6EB300EBDCC2 /* Build configuration list for PBXNativeTarget "Kickstarter-tvOSUITests" */;
-			buildPhases = (
-				A7E06C911C5A6EB300EBDCC2 /* Sources */,
-				A7E06C921C5A6EB300EBDCC2 /* Frameworks */,
-				A7E06C931C5A6EB300EBDCC2 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				A7E06C971C5A6EB300EBDCC2 /* PBXTargetDependency */,
-			);
-			name = "Kickstarter-tvOSUITests";
-			productName = kickstartertvUITests;
-			productReference = A7E06C951C5A6EB300EBDCC2 /* Kickstarter-tvOSUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
 
@@ -990,10 +955,6 @@
 						CreatedOnToolsVersion = 7.2;
 					};
 					A7E06C891C5A6EB300EBDCC2 = {
-						CreatedOnToolsVersion = 7.2;
-						TestTargetID = A7E06C781C5A6EB300EBDCC2;
-					};
-					A7E06C941C5A6EB300EBDCC2 = {
 						CreatedOnToolsVersion = 7.2;
 						TestTargetID = A7E06C781C5A6EB300EBDCC2;
 					};
@@ -1035,7 +996,6 @@
 			targets = (
 				A7E06C781C5A6EB300EBDCC2 /* Kickstarter-tvOS */,
 				A7E06C891C5A6EB300EBDCC2 /* Kickstarter-tvOSTests */,
-				A7E06C941C5A6EB300EBDCC2 /* Kickstarter-tvOSUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -1194,13 +1154,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		A7E06C931C5A6EB300EBDCC2 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
@@ -1339,14 +1292,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		A7E06C911C5A6EB300EBDCC2 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				A7E06C9A1C5A6EB300EBDCC2 /* kickstartertvUITests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -1374,11 +1319,6 @@
 			isa = PBXTargetDependency;
 			target = A7E06C781C5A6EB300EBDCC2 /* Kickstarter-tvOS */;
 			targetProxy = A7E06C8B1C5A6EB300EBDCC2 /* PBXContainerItemProxy */;
-		};
-		A7E06C971C5A6EB300EBDCC2 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = A7E06C781C5A6EB300EBDCC2 /* Kickstarter-tvOS */;
-			targetProxy = A7E06C961C5A6EB300EBDCC2 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1442,6 +1382,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = Kickstarter;
 				SDKROOT = appletvos;
 				STRIP_BITCODE_FROM_COPIED_FILES = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1480,6 +1421,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = Kickstarter;
 				SDKROOT = appletvos;
 				STRIP_BITCODE_FROM_COPIED_FILES = NO;
 				TARGETED_DEVICE_FAMILY = 3;
@@ -1502,7 +1444,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/kickstartertv/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstartertv;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)_tvOS";
 			};
 			name = Debug;
 		};
@@ -1520,7 +1462,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/kickstartertv/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstartertv;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)_tvOS";
 			};
 			name = Release;
 		};
@@ -1535,8 +1477,8 @@
 				INFOPLIST_FILE = kickstartertvTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstartertvTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/kickstartertv.app/kickstartertv";
+				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)_tvOSTests";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/$(EXECUTABLE_NAME).app/$(PRODUCT_NAME)";
 			};
 			name = Debug;
 		};
@@ -1551,32 +1493,8 @@
 				INFOPLIST_FILE = kickstartertvTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstartertvTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/kickstartertv.app/kickstartertv";
-			};
-			name = Release;
-		};
-		A7E06CA51C5A6EB300EBDCC2 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				INFOPLIST_FILE = kickstartertvUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstartertvUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_TARGET_NAME = kickstartertv;
-				USES_XCTRUNNER = YES;
-			};
-			name = Debug;
-		};
-		A7E06CA61C5A6EB300EBDCC2 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				INFOPLIST_FILE = kickstartertvUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstartertvUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_TARGET_NAME = kickstartertv;
-				USES_XCTRUNNER = YES;
+				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)_tvOSTests";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/$(EXECUTABLE_NAME).app/$(PRODUCT_NAME)";
 			};
 			name = Release;
 		};
@@ -1606,15 +1524,6 @@
 			buildConfigurations = (
 				A7E06CA21C5A6EB300EBDCC2 /* Debug */,
 				A7E06CA31C5A6EB300EBDCC2 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		A7E06CA41C5A6EB300EBDCC2 /* Build configuration list for PBXNativeTarget "Kickstarter-tvOSUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				A7E06CA51C5A6EB300EBDCC2 /* Debug */,
-				A7E06CA61C5A6EB300EBDCC2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
