@@ -17,11 +17,25 @@
                BlueprintIdentifier = "A7E06C781C5A6EB300EBDCC2"
                BuildableName = "kickstartertv.app"
                BlueprintName = "kickstartertv"
-               ReferencedContainer = "container:kickstartertv.xcodeproj">
+               ReferencedContainer = "container:Kickstarter.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
-            buildForTesting = "NO"
+            buildForTesting = "YES"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "A7E06C891C5A6EB300EBDCC2"
+               BuildableName = "kickstartertvTests.xctest"
+               BlueprintName = "kickstartertvTests"
+               ReferencedContainer = "container:Kickstarter.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
             buildForRunning = "NO"
             buildForProfiling = "NO"
             buildForArchiving = "NO"
@@ -31,7 +45,7 @@
                BlueprintIdentifier = "A7E06C941C5A6EB300EBDCC2"
                BuildableName = "kickstartertvUITests.xctest"
                BlueprintName = "kickstartertvUITests"
-               ReferencedContainer = "container:kickstartertv.xcodeproj">
+               ReferencedContainer = "container:Kickstarter.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -50,7 +64,17 @@
                BlueprintIdentifier = "A7E06C891C5A6EB300EBDCC2"
                BuildableName = "kickstartertvTests.xctest"
                BlueprintName = "kickstartertvTests"
-               ReferencedContainer = "container:kickstartertv.xcodeproj">
+               ReferencedContainer = "container:Kickstarter.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "A7E06C941C5A6EB300EBDCC2"
+               BuildableName = "kickstartertvUITests.xctest"
+               BlueprintName = "kickstartertvUITests"
+               ReferencedContainer = "container:Kickstarter.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -60,7 +84,7 @@
             BlueprintIdentifier = "A7E06C781C5A6EB300EBDCC2"
             BuildableName = "kickstartertv.app"
             BlueprintName = "kickstartertv"
-            ReferencedContainer = "container:kickstartertv.xcodeproj">
+            ReferencedContainer = "container:Kickstarter.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -83,7 +107,7 @@
             BlueprintIdentifier = "A7E06C781C5A6EB300EBDCC2"
             BuildableName = "kickstartertv.app"
             BlueprintName = "kickstartertv"
-            ReferencedContainer = "container:kickstartertv.xcodeproj">
+            ReferencedContainer = "container:Kickstarter.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -95,16 +119,15 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A7E06C781C5A6EB300EBDCC2"
             BuildableName = "kickstartertv.app"
             BlueprintName = "kickstartertv"
-            ReferencedContainer = "container:kickstartertv.xcodeproj">
+            ReferencedContainer = "container:Kickstarter.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
