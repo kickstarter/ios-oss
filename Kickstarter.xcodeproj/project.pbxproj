@@ -21,7 +21,6 @@
 		A7D1F94F1C850B7C000D41D5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7D1F94D1C850B7C000D41D5 /* Main.storyboard */; };
 		A7D1F9511C850B7C000D41D5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A7D1F9501C850B7C000D41D5 /* Assets.xcassets */; };
 		A7D1F9541C850B7C000D41D5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7D1F9521C850B7C000D41D5 /* LaunchScreen.storyboard */; };
-		A7D1F95F1C850B7C000D41D5 /* KickstarterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D1F95E1C850B7C000D41D5 /* KickstarterTests.swift */; };
 		A7D1F97C1C850C34000D41D5 /* AppEnvironmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D1F9681C850C34000D41D5 /* AppEnvironmentTests.swift */; };
 		A7D1F97D1C850C34000D41D5 /* EnvironmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D1F9691C850C34000D41D5 /* EnvironmentTests.swift */; };
 		A7D1F97E1C850C34000D41D5 /* FormatTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D1F96A1C850C34000D41D5 /* FormatTests.swift */; };
@@ -40,6 +39,7 @@
 		A7D1F98C1C850C34000D41D5 /* UILabel+IBClearTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D1F9791C850C34000D41D5 /* UILabel+IBClearTests.swift */; };
 		A7D1F98D1C850C34000D41D5 /* UILabel+LocalizedKeyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D1F97A1C850C34000D41D5 /* UILabel+LocalizedKeyTests.swift */; };
 		A7D1F98E1C850C34000D41D5 /* UILabel+SimpleHTMLTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D1F97B1C850C34000D41D5 /* UILabel+SimpleHTMLTests.swift */; };
+		A7D1F9931C850CB2000D41D5 /* KickstarterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D1F9911C850CB2000D41D5 /* KickstarterTests.swift */; };
 		A7D596CB1C5D75260047CB3E /* ProjectViewModelInputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D596CA1C5D75260047CB3E /* ProjectViewModelInputs.swift */; };
 		A7D596D11C5D755F0047CB3E /* ProjectViewModelOutputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D596D01C5D755F0047CB3E /* ProjectViewModelOutputs.swift */; };
 		A7D596D31C5D75B80047CB3E /* ProjectViewModelErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D596D21C5D75B80047CB3E /* ProjectViewModelErrors.swift */; };
@@ -357,7 +357,7 @@
 		A7D1F8F31C84FB5A000D41D5 /* Models.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Models.xcodeproj; path = Frameworks/Models/Models.xcodeproj; sourceTree = "<group>"; };
 		A7D1F9021C84FB5F000D41D5 /* Prelude.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Prelude.xcodeproj; path = Frameworks/Prelude/Prelude.xcodeproj; sourceTree = "<group>"; };
 		A7D1F9111C84FB64000D41D5 /* ReactiveExtensions.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactiveExtensions.xcodeproj; path = Frameworks/ReactiveExtensions/ReactiveExtensions.xcodeproj; sourceTree = "<group>"; };
-		A7D1F9451C850B7C000D41D5 /* Kickstarter-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Kickstarter-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A7D1F9451C850B7C000D41D5 /* Kickstarter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kickstarter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7D1F9471C850B7C000D41D5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A7D1F9491C850B7C000D41D5 /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
 		A7D1F94B1C850B7C000D41D5 /* SecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondViewController.swift; sourceTree = "<group>"; };
@@ -366,8 +366,6 @@
 		A7D1F9531C850B7C000D41D5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A7D1F9551C850B7C000D41D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A7D1F95A1C850B7C000D41D5 /* Kickstarter-iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Kickstarter-iOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		A7D1F95E1C850B7C000D41D5 /* KickstarterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KickstarterTests.swift; sourceTree = "<group>"; };
-		A7D1F9601C850B7C000D41D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A7D1F9681C850C34000D41D5 /* AppEnvironmentTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppEnvironmentTests.swift; sourceTree = "<group>"; };
 		A7D1F9691C850C34000D41D5 /* EnvironmentTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnvironmentTests.swift; sourceTree = "<group>"; };
 		A7D1F96A1C850C34000D41D5 /* FormatTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormatTests.swift; sourceTree = "<group>"; };
@@ -387,6 +385,8 @@
 		A7D1F9791C850C34000D41D5 /* UILabel+IBClearTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UILabel+IBClearTests.swift"; sourceTree = "<group>"; };
 		A7D1F97A1C850C34000D41D5 /* UILabel+LocalizedKeyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UILabel+LocalizedKeyTests.swift"; sourceTree = "<group>"; };
 		A7D1F97B1C850C34000D41D5 /* UILabel+SimpleHTMLTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UILabel+SimpleHTMLTests.swift"; sourceTree = "<group>"; };
+		A7D1F9901C850CB2000D41D5 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A7D1F9911C850CB2000D41D5 /* KickstarterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KickstarterTests.swift; sourceTree = "<group>"; };
 		A7D596CA1C5D75260047CB3E /* ProjectViewModelInputs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectViewModelInputs.swift; sourceTree = "<group>"; };
 		A7D596D01C5D755F0047CB3E /* ProjectViewModelOutputs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectViewModelOutputs.swift; sourceTree = "<group>"; };
 		A7D596D21C5D75B80047CB3E /* ProjectViewModelErrors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectViewModelErrors.swift; sourceTree = "<group>"; };
@@ -655,24 +655,16 @@
 		A7D1F9461C850B7C000D41D5 /* Kickstarter */ = {
 			isa = PBXGroup;
 			children = (
+				A7D1F9551C850B7C000D41D5 /* Info.plist */,
 				A7D1F9471C850B7C000D41D5 /* AppDelegate.swift */,
 				A7D1F9491C850B7C000D41D5 /* FirstViewController.swift */,
 				A7D1F94B1C850B7C000D41D5 /* SecondViewController.swift */,
-				A7D1F94D1C850B7C000D41D5 /* Main.storyboard */,
 				A7D1F9501C850B7C000D41D5 /* Assets.xcassets */,
 				A7D1F9521C850B7C000D41D5 /* LaunchScreen.storyboard */,
-				A7D1F9551C850B7C000D41D5 /* Info.plist */,
+				A7D1F94D1C850B7C000D41D5 /* Main.storyboard */,
+				A7D1F98F1C850CB2000D41D5 /* Tests */,
 			);
 			path = Kickstarter;
-			sourceTree = "<group>";
-		};
-		A7D1F95D1C850B7C000D41D5 /* KickstarterTests */ = {
-			isa = PBXGroup;
-			children = (
-				A7D1F95E1C850B7C000D41D5 /* KickstarterTests.swift */,
-				A7D1F9601C850B7C000D41D5 /* Info.plist */,
-			);
-			path = KickstarterTests;
 			sourceTree = "<group>";
 		};
 		A7D1F9671C850C34000D41D5 /* Tests */ = {
@@ -709,12 +701,20 @@
 			path = TestHelpers;
 			sourceTree = "<group>";
 		};
+		A7D1F98F1C850CB2000D41D5 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				A7D1F9901C850CB2000D41D5 /* Info.plist */,
+				A7D1F9911C850CB2000D41D5 /* KickstarterTests.swift */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
 		A7E06C701C5A6EB300EBDCC2 = {
 			isa = PBXGroup;
 			children = (
 				A7E06DBC1C5C027800EBDCC2 /* Frameworks */,
 				A7D1F9461C850B7C000D41D5 /* Kickstarter */,
-				A7D1F95D1C850B7C000D41D5 /* KickstarterTests */,
 				A7E06C7B1C5A6EB300EBDCC2 /* kickstartertv */,
 				A7E06C7A1C5A6EB300EBDCC2 /* Products */,
 			);
@@ -725,7 +725,7 @@
 			children = (
 				A7E06C791C5A6EB300EBDCC2 /* Kickstarter.app */,
 				A7E06C8A1C5A6EB300EBDCC2 /* Kickstarter.xctest */,
-				A7D1F9451C850B7C000D41D5 /* Kickstarter-iOS.app */,
+				A7D1F9451C850B7C000D41D5 /* Kickstarter.app */,
 				A7D1F95A1C850B7C000D41D5 /* Kickstarter-iOSTests.xctest */,
 			);
 			name = Products;
@@ -967,7 +967,7 @@
 			);
 			name = "Kickstarter-iOS";
 			productName = Kickstarter;
-			productReference = A7D1F9451C850B7C000D41D5 /* Kickstarter-iOS.app */;
+			productReference = A7D1F9451C850B7C000D41D5 /* Kickstarter.app */;
 			productType = "com.apple.product-type.application";
 		};
 		A7D1F9591C850B7C000D41D5 /* Kickstarter-iOSTests */ = {
@@ -1307,7 +1307,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A7D1F95F1C850B7C000D41D5 /* KickstarterTests.swift in Sources */,
+				A7D1F9931C850CB2000D41D5 /* KickstarterTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1508,7 +1508,6 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Kickstarter;
-				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1523,7 +1522,6 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Kickstarter;
-				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1534,7 +1532,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				INFOPLIST_FILE = KickstarterTests/Info.plist;
+				INFOPLIST_FILE = Kickstarter/Tests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.KickstarterTests;
@@ -1549,7 +1547,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				INFOPLIST_FILE = KickstarterTests/Info.plist;
+				INFOPLIST_FILE = Kickstarter/Tests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.KickstarterTests;
