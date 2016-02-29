@@ -56,6 +56,10 @@
 		A7D1F9B71C850DDE000D41D5 /* Models.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A7D1F8FB1C84FB5A000D41D5 /* Models.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A7D1F9BB1C850DDE000D41D5 /* Prelude.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A7D1F90A1C84FB5F000D41D5 /* Prelude.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A7D1F9BF1C850DDE000D41D5 /* ReactiveExtensions.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A7D1F9191C84FB64000D41D5 /* ReactiveExtensions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A7D1F9C41C851213000D41D5 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7D1F9A01C850D6F000D41D5 /* Alamofire.framework */; };
+		A7D1F9C51C851213000D41D5 /* AlamofireImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7D1F9A11C850D6F000D41D5 /* AlamofireImage.framework */; };
+		A7D1F9C61C851213000D41D5 /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7D1F9A21C850D6F000D41D5 /* ReactiveCocoa.framework */; };
+		A7D1F9C71C851213000D41D5 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7D1F9A31C850D6F000D41D5 /* Result.framework */; };
 		A7D596CB1C5D75260047CB3E /* ProjectViewModelInputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D596CA1C5D75260047CB3E /* ProjectViewModelInputs.swift */; };
 		A7D596D11C5D755F0047CB3E /* ProjectViewModelOutputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D596D01C5D755F0047CB3E /* ProjectViewModelOutputs.swift */; };
 		A7D596D31C5D75B80047CB3E /* ProjectViewModelErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D596D21C5D75B80047CB3E /* ProjectViewModelErrors.swift */; };
@@ -633,6 +637,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A7D1F9C41C851213000D41D5 /* Alamofire.framework in Frameworks */,
+				A7D1F9C51C851213000D41D5 /* AlamofireImage.framework in Frameworks */,
+				A7D1F9C61C851213000D41D5 /* ReactiveCocoa.framework in Frameworks */,
+				A7D1F9C71C851213000D41D5 /* Result.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1112,6 +1120,7 @@
 				A7D1F9561C850B7C000D41D5 /* Sources */,
 				A7D1F9571C850B7C000D41D5 /* Frameworks */,
 				A7D1F9581C850B7C000D41D5 /* Resources */,
+				A7D1F9C81C851269000D41D5 /* carthage copy-frameworks */,
 			);
 			buildRules = (
 			);
@@ -1425,6 +1434,24 @@
 			shellPath = /bin/sh;
 			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
 		};
+		A7D1F9C81C851269000D41D5 /* carthage copy-frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/ReactiveCocoa.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Result.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Alamofire.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/AlamofireImage.framework",
+			);
+			name = "carthage copy-frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
+		};
 		A7E06D8F1C5C010A00EBDCC2 /* carthage copy-frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1705,7 +1732,8 @@
 				INFOPLIST_FILE = "Kickstarter-iOS/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.Kickstarter;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstarter;
+				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)_iOS";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1724,7 +1752,8 @@
 				INFOPLIST_FILE = "Kickstarter-iOS/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.Kickstarter;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstarter;
+				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)_iOS";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1735,6 +1764,10 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = "Kickstarter-iOS/Tests/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1750,6 +1783,10 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = "Kickstarter-iOS/Tests/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
