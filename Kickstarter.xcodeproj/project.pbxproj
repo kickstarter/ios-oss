@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		A72153921C5D62E800127699 /* HomeViewModelInputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72153911C5D62E800127699 /* HomeViewModelInputs.swift */; };
 		A72153941C5D630300127699 /* HomeViewModelOutputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72153931C5D630300127699 /* HomeViewModelOutputs.swift */; };
+		A751A51F1C85EC0B009C5DEA /* DiscoveryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A751A51E1C85EC0B009C5DEA /* DiscoveryViewController.swift */; };
 		A7C7259A1C85D36D005A016B /* AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C725781C85D36D005A016B /* AppEnvironment.swift */; };
 		A7C7259B1C85D36D005A016B /* AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C725781C85D36D005A016B /* AppEnvironment.swift */; };
 		A7C7259C1C85D36D005A016B /* AssetImageGeneratorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C725791C85D36D005A016B /* AssetImageGeneratorType.swift */; };
@@ -78,8 +79,6 @@
 		A7D1F92A1C84FB7D000D41D5 /* Prelude.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7D1F90E1C84FB5F000D41D5 /* Prelude.framework */; };
 		A7D1F92B1C84FB7D000D41D5 /* ReactiveExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7D1F91D1C84FB64000D41D5 /* ReactiveExtensions.framework */; };
 		A7D1F9481C850B7C000D41D5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D1F9471C850B7C000D41D5 /* AppDelegate.swift */; };
-		A7D1F94A1C850B7C000D41D5 /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D1F9491C850B7C000D41D5 /* FirstViewController.swift */; };
-		A7D1F94C1C850B7C000D41D5 /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D1F94B1C850B7C000D41D5 /* SecondViewController.swift */; };
 		A7D1F94F1C850B7C000D41D5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7D1F94D1C850B7C000D41D5 /* Main.storyboard */; };
 		A7D1F9511C850B7C000D41D5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A7D1F9501C850B7C000D41D5 /* Assets.xcassets */; };
 		A7D1F9541C850B7C000D41D5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7D1F9521C850B7C000D41D5 /* LaunchScreen.storyboard */; };
@@ -210,6 +209,8 @@
 		A7E070501C5D3CF000EBDCC2 /* categories.json in Resources */ = {isa = PBXBuildFile; fileRef = A7E0704D1C5D3CF000EBDCC2 /* categories.json */; };
 		A7E070511C5D3CF000EBDCC2 /* discover.json in Resources */ = {isa = PBXBuildFile; fileRef = A7E0704E1C5D3CF000EBDCC2 /* discover.json */; };
 		A7E070521C5D3CF000EBDCC2 /* project.json in Resources */ = {isa = PBXBuildFile; fileRef = A7E0704F1C5D3CF000EBDCC2 /* project.json */; };
+		A7F761751C85FA40005405ED /* ActivityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F761741C85FA40005405ED /* ActivityViewController.swift */; };
+		A7F761771C85FACB005405ED /* LoginToutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F761761C85FACB005405ED /* LoginToutViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -487,6 +488,7 @@
 /* Begin PBXFileReference section */
 		A72153911C5D62E800127699 /* HomeViewModelInputs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewModelInputs.swift; sourceTree = "<group>"; };
 		A72153931C5D630300127699 /* HomeViewModelOutputs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewModelOutputs.swift; sourceTree = "<group>"; };
+		A751A51E1C85EC0B009C5DEA /* DiscoveryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryViewController.swift; sourceTree = "<group>"; };
 		A7C725781C85D36D005A016B /* AppEnvironment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppEnvironment.swift; sourceTree = "<group>"; };
 		A7C725791C85D36D005A016B /* AssetImageGeneratorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetImageGeneratorType.swift; sourceTree = "<group>"; };
 		A7C7257A1C85D36D005A016B /* AVPlayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AVPlayerView.swift; sourceTree = "<group>"; };
@@ -525,8 +527,6 @@
 		A7D1F9111C84FB64000D41D5 /* ReactiveExtensions.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactiveExtensions.xcodeproj; path = Frameworks/ReactiveExtensions/ReactiveExtensions.xcodeproj; sourceTree = "<group>"; };
 		A7D1F9451C850B7C000D41D5 /* Kickstarter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kickstarter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7D1F9471C850B7C000D41D5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		A7D1F9491C850B7C000D41D5 /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
-		A7D1F94B1C850B7C000D41D5 /* SecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondViewController.swift; sourceTree = "<group>"; };
 		A7D1F94E1C850B7C000D41D5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A7D1F9501C850B7C000D41D5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A7D1F9531C850B7C000D41D5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -647,6 +647,8 @@
 		A7E0704D1C5D3CF000EBDCC2 /* categories.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = categories.json; sourceTree = "<group>"; };
 		A7E0704E1C5D3CF000EBDCC2 /* discover.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = discover.json; sourceTree = "<group>"; };
 		A7E0704F1C5D3CF000EBDCC2 /* project.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = project.json; sourceTree = "<group>"; };
+		A7F761741C85FA40005405ED /* ActivityViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityViewController.swift; sourceTree = "<group>"; };
+		A7F761761C85FACB005405ED /* LoginToutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginToutViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -772,6 +774,39 @@
 			name = iOS;
 			sourceTree = "<group>";
 		};
+		A751A51A1C85EAD8009C5DEA /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		A751A51B1C85EAD8009C5DEA /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				A751A51C1C85EAD8009C5DEA /* Cells */,
+				A751A51D1C85EAD8009C5DEA /* Controllers */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		A751A51C1C85EAD8009C5DEA /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		A751A51D1C85EAD8009C5DEA /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				A7F761741C85FA40005405ED /* ActivityViewController.swift */,
+				A751A51E1C85EC0B009C5DEA /* DiscoveryViewController.swift */,
+				A7F761761C85FACB005405ED /* LoginToutViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
 		A7C725771C85D36D005A016B /* Library */ = {
 			isa = PBXGroup;
 			children = (
@@ -876,12 +911,12 @@
 			children = (
 				A7D1F9551C850B7C000D41D5 /* Info.plist */,
 				A7D1F9471C850B7C000D41D5 /* AppDelegate.swift */,
-				A7D1F9491C850B7C000D41D5 /* FirstViewController.swift */,
-				A7D1F94B1C850B7C000D41D5 /* SecondViewController.swift */,
 				A7D1F9501C850B7C000D41D5 /* Assets.xcassets */,
 				A7D1F9521C850B7C000D41D5 /* LaunchScreen.storyboard */,
 				A7D1F94D1C850B7C000D41D5 /* Main.storyboard */,
 				A7D1F98F1C850CB2000D41D5 /* Tests */,
+				A751A51A1C85EAD8009C5DEA /* ViewModels */,
+				A751A51B1C85EAD8009C5DEA /* Views */,
 			);
 			path = "Kickstarter-iOS";
 			sourceTree = "<group>";
@@ -1514,7 +1549,6 @@
 				A7C725AA1C85D36D005A016B /* GradientView.swift in Sources */,
 				A7C725CA1C85D36D005A016B /* String+SimpleHTML.swift in Sources */,
 				A7C7259C1C85D36D005A016B /* AssetImageGeneratorType.swift in Sources */,
-				A7D1F94C1C850B7C000D41D5 /* SecondViewController.swift in Sources */,
 				A7C725B01C85D36D005A016B /* LocalizedString.swift in Sources */,
 				A7C725D01C85D36D005A016B /* UIGestureRecognizer-Extensions.swift in Sources */,
 				A7C725CE1C85D36D005A016B /* UIButton+LocalizedKey.swift in Sources */,
@@ -1528,15 +1562,17 @@
 				A7C725BC1C85D36D005A016B /* UICollectionView-Extensions.swift in Sources */,
 				A7C725BA1C85D36D005A016B /* SimpleViewModel.swift in Sources */,
 				A7C725AE1C85D36D005A016B /* LaunchedCountries.swift in Sources */,
+				A7F761751C85FA40005405ED /* ActivityViewController.swift in Sources */,
+				A751A51F1C85EC0B009C5DEA /* DiscoveryViewController.swift in Sources */,
 				A7C725B41C85D36D005A016B /* MVVMDataSource.swift in Sources */,
 				A7C725D41C85D36D005A016B /* UILabel+LocalizedKey.swift in Sources */,
 				A7C725AC1C85D36D005A016B /* Language.swift in Sources */,
 				A7C725A01C85D36D005A016B /* CurrentUser.swift in Sources */,
 				A7C725B61C85D36D005A016B /* MVVMViewController.swift in Sources */,
 				A7C725C41C85D36D005A016B /* UIViewController-DefaultNib.swift in Sources */,
-				A7D1F94A1C850B7C000D41D5 /* FirstViewController.swift in Sources */,
 				A7C725CC1C85D36D005A016B /* Strings.swift in Sources */,
 				A7C725B81C85D36D005A016B /* SimpleDataSource.swift in Sources */,
+				A7F761771C85FACB005405ED /* LoginToutViewController.swift in Sources */,
 				A7C725C21C85D36D005A016B /* UIView-DefaultReusableId.swift in Sources */,
 				A7C725A21C85D36D005A016B /* KeyValueStoreType.swift in Sources */,
 				A7C725C81C85D36D005A016B /* NSBundleType.swift in Sources */,
