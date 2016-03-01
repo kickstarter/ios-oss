@@ -1,11 +1,7 @@
-import UIKit
-import Models
-import ReactiveCocoa
-import ReactiveExtensions
-import KsApi
+import AVFoundation
+import struct Models.Project
 import Prelude
-import AVKit
-import AlamofireImage
+import UIKit
 
 final class ProjectViewController: MVVMViewController {
   @IBOutlet weak var collectionView: UICollectionView!

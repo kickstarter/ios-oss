@@ -1,7 +1,7 @@
-import Foundation
-import KsApi
-import ReactiveCocoa
-import AVKit
+import class Foundation.NSLocale
+import class Foundation.NSTimeZone
+import protocol KsApi.ServiceType
+import protocol ReactiveCocoa.DateSchedulerType
 
 /**
  A global stack that captures the current state of global objects that the app wants access to.

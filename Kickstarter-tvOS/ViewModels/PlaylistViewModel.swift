@@ -1,10 +1,14 @@
-import Darwin
-import KsApi
-import Models
-import ReactiveCocoa
-import Result
-import AVKit
-import Prelude
+import class AVFoundation.AVAsset
+import func AVFoundation.CMTimeMakeWithSeconds
+import func Darwin.arc4random_uniform
+import UIKit
+import struct KsApi.DiscoveryParams
+import struct Models.Project
+import struct Prelude.SomeError
+import class ReactiveCocoa.Signal
+import struct ReactiveCocoa.SignalProducer
+import protocol ReactiveCocoa.DateSchedulerType
+import enum Result.NoError
 
 internal protocol PlaylistViewModelType {
   var inputs: PlaylistViewModelInputs { get }

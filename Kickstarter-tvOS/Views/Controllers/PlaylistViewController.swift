@@ -1,8 +1,6 @@
+import AVFoundation
+import struct Models.Project
 import UIKit
-import Models
-import AVKit
-import ReactiveCocoa
-import Result
 
 internal final class PlaylistViewController: MVVMViewController {
   @IBOutlet private weak var categoryLabel: UILabel!

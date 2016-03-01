@@ -1,4 +1,4 @@
-import AVKit
+import AVFoundation
 @testable import Kickstarter_tvOS
 import ReactiveCocoa
 

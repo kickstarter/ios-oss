@@ -1,4 +1,4 @@
-import AVKit
+import AVFoundation
 
 internal protocol AssetImageGeneratorType {
 

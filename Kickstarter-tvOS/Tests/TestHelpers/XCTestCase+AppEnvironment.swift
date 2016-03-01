@@ -1,9 +1,10 @@
 import XCTest
 @testable import Kickstarter_tvOS
-import KsApi
-import Models
-import ReactiveCocoa
-import AVKit
+import AVFoundation
+import class Foundation.NSLocale
+import class Foundation.NSTimeZone
+import protocol KsApi.ServiceType
+import protocol ReactiveCocoa.DateSchedulerType
 
 extension XCTestCase {
 

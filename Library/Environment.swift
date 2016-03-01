@@ -1,7 +1,11 @@
-import KsApi
-import Models
-import ReactiveCocoa
-import AVKit
+import AVFoundation
+import class Foundation.NSBundle
+import class Foundation.NSLocale
+import class Foundation.NSTimeZone
+import struct KsApi.Service
+import protocol KsApi.ServiceType
+import protocol ReactiveCocoa.DateSchedulerType
+import class ReactiveCocoa.QueueScheduler
 
 /**
  A collection of **all** global variables and singletons that the app wants access to.

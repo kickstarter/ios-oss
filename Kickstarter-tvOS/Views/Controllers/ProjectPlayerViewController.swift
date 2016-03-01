@@ -1,6 +1,6 @@
-import UIKit
-import Models
-import AVKit
+import class UIKit.NSCoder
+import class AVKit.AVPlayerViewController
+import class AVFoundation.AVPlayer
 
 final class ProjectPlayerViewController: MVVMViewController {
 

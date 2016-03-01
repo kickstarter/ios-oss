@@ -1,5 +1,5 @@
 import UIKit
-import AVKit
+import AVFoundation
 
 class ProjectVideoTransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning {
   let player: AVPlayer
