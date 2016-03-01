@@ -784,14 +784,12 @@
 				A7C725781C85D36D005A016B /* AppEnvironment.swift */,
 				A7C725791C85D36D005A016B /* AssetImageGeneratorType.swift */,
 				A7C7257A1C85D36D005A016B /* AVPlayerView.swift */,
-				A7C7257B1C85D36D005A016B /* CurrentUser */,
 				A7C7257F1C85D36D005A016B /* Environment.swift */,
 				A7C725801C85D36D005A016B /* Format.swift */,
 				A7C725811C85D36D005A016B /* GradientView.swift */,
 				A7C725821C85D36D005A016B /* Language.swift */,
 				A7C725831C85D36D005A016B /* LaunchedCountries.swift */,
 				A7C725841C85D36D005A016B /* LocalizedString.swift */,
-				A7C725851C85D36D005A016B /* MVVM */,
 				A7C725911C85D36D005A016B /* NSBundleType.swift */,
 				A7C725921C85D36D005A016B /* String+SimpleHTML.swift */,
 				A7C725931C85D36D005A016B /* Strings.swift */,
@@ -801,6 +799,8 @@
 				A7C725971C85D36D005A016B /* UILabel+LocalizedKey.swift */,
 				A7C725981C85D36D005A016B /* UILabel+SimpleHTML.swift */,
 				A7C725991C85D36D005A016B /* UIPress-Extensions.swift */,
+				A7C7257B1C85D36D005A016B /* CurrentUser */,
+				A7C725851C85D36D005A016B /* MVVM */,
 			);
 			path = Library;
 			sourceTree = "<group>";
