@@ -1960,6 +1960,7 @@
 				A7D1F9631C850B7C000D41D5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		A7D1F9641C850B7C000D41D5 /* Build configuration list for PBXNativeTarget "Kickstarter-iOSTests" */ = {
 			isa = XCConfigurationList;
@@ -1968,6 +1969,7 @@
 				A7D1F9661C850B7C000D41D5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		A7E06C741C5A6EB300EBDCC2 /* Build configuration list for PBXProject "Kickstarter" */ = {
 			isa = XCConfigurationList;
