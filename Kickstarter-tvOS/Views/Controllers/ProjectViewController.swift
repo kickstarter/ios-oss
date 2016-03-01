@@ -2,6 +2,8 @@ import AVFoundation
 import struct Models.Project
 import Prelude
 import UIKit
+import class Library.MVVMViewController
+import class Library.AVPlayerView
 
 final class ProjectViewController: MVVMViewController {
   @IBOutlet weak var collectionView: UICollectionView!

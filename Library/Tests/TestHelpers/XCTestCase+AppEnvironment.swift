@@ -1,17 +1,10 @@
 import XCTest
-@testable import Kickstarter_tvOS
+@testable import Library
 import AVFoundation
 import class Foundation.NSLocale
 import class Foundation.NSTimeZone
 import protocol KsApi.ServiceType
 import protocol ReactiveCocoa.DateSchedulerType
-import struct Library.Environment
-import struct Library.AppEnvironment
-import protocol Library.CurrentUserType
-import enum Library.Language
-import struct Library.LaunchedCountries
-import protocol Library.NSBundleType
-import protocol Library.AssetImageGeneratorType
 
 extension XCTestCase {
 

@@ -9,6 +9,10 @@ import class ReactiveCocoa.Signal
 import struct ReactiveCocoa.SignalProducer
 import protocol ReactiveCocoa.DateSchedulerType
 import enum Result.NoError
+import protocol Library.ViewModelType
+import struct Library.Environment
+import struct Library.AppEnvironment
+import protocol Library.AssetImageGeneratorType
 
 internal protocol PlaylistViewModelType {
   var inputs: PlaylistViewModelInputs { get }

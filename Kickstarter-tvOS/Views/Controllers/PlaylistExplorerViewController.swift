@@ -1,5 +1,8 @@
 import UIKit
 import Models
+import class Library.MVVMViewController
+import class Library.SimpleDataSource
+import class Library.SimpleViewModel
 
 protocol PlaylistExplorerDelegate: class {
   func playlistExplorerWantsToClose(controller: PlaylistExplorerViewController)

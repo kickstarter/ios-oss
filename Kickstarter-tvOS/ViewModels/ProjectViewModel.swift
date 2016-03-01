@@ -5,6 +5,8 @@ import ReactiveCocoa
 import Result
 import ReactiveExtensions
 import Prelude
+import struct Library.Environment
+import struct Library.AppEnvironment
 
 internal protocol ProjectViewModelType {
   var inputs: ProjectViewModelInputs { get }

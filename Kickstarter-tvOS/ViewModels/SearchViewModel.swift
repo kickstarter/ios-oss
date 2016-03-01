@@ -2,6 +2,8 @@ import Models
 import KsApi
 import ReactiveCocoa
 import Result
+import struct Library.Environment
+import struct Library.AppEnvironment
 
 protocol SearchViewModelInputs {
   func updateQuery(query: String)

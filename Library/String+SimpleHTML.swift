@@ -1,8 +1,8 @@
 import Foundation
 import UIKit
 
-extension String {
-  typealias Attributes = [String:AnyObject]
+public extension String {
+  public typealias Attributes = [String:AnyObject]
 
   /**
    Interprets `self` as an HTML string to produce an attributed string.
@@ -16,7 +16,7 @@ extension String {
    - returns: The attributed string, or `nil` if something goes wrong with interpreting the string
    as html.
    */
-  func simpleHtmlAttributedString(
+  public func simpleHtmlAttributedString(
     base base: Attributes,
     bold optionalBold: Attributes? = nil,
     italic optionalItalic: Attributes? = nil) -> NSAttributedString? {
@@ -74,7 +74,7 @@ extension String {
    - returns: The attributed string, or `nil` if something goes wrong with interpreting the string
    as html.
    */
-  func simpleHtmlAttributedString(
+  public func simpleHtmlAttributedString(
     font font: UIFont,
     bold optionalBold: UIFont? = nil,
     italic optionalItalic: UIFont? = nil) -> NSAttributedString? {

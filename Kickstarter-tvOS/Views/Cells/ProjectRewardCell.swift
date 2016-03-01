@@ -1,5 +1,8 @@
 import Models
 import ReactiveCocoa
+import protocol Library.ViewModeledCellType
+import class Library.SimpleViewModel
+import enum Library.Format
 
 class ProjectRewardCell: UICollectionViewCell, ViewModeledCellType {
   @IBOutlet weak var minimumLabel: UILabel!

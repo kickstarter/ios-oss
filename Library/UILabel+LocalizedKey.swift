@@ -1,6 +1,6 @@
 import UIKit
 
-extension UILabel {
+public extension UILabel {
   /**
    Replaces `text` of the label with a localized string.
    
@@ -8,7 +8,7 @@ extension UILabel {
    recognized, then the label's `text` is left unchanged.
   */
   @IBInspectable
-  var localizedKey: String {
+  public var localizedKey: String {
     set (key) {
       self.text = localizedString(key: key, defaultValue: self.text ?? "")
     }
@@ -21,7 +21,7 @@ extension UILabel {
    A property to denote that the label is not localizable. This is mostly used as an indicator in IB that the label is not meant to be localized so to avoid confusion.
   */
   @IBInspectable
-  var notLocalizable: Bool {
+  public var notLocalizable: Bool {
     set {}
     get { return false }
   }

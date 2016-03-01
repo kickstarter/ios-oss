@@ -3,6 +3,8 @@ import ReactiveCocoa
 import Models
 import AlamofireImage
 import Prelude
+import protocol Library.ViewModeledCellType
+import class Library.SimpleViewModel
 
 class ProjectCell: UICollectionViewCell, ViewModeledCellType {
   let viewModel = MutableProperty<SimpleViewModel<Project>?>(nil)

@@ -3,6 +3,8 @@ import KsApi
 import ReactiveCocoa
 import Result
 import ReactiveExtensions
+import struct Library.Environment
+import struct Library.AppEnvironment
 
 protocol _PlaylistInputs {
   func nextItem()

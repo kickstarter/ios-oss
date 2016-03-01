@@ -1,11 +1,11 @@
 import UIKit
 
-extension UIButton {
+public extension UIButton {
   /**
    The key to use for the localized button title in its normal state.
   */
   @IBInspectable
-  var normalLocalizedKey: String {
+  public var normalLocalizedKey: String {
     set(key) {
       self.setTitle(localizedString(key: key, defaultValue: self.titleForState(.Normal) ?? ""),
         forState: .Normal)
@@ -19,7 +19,7 @@ extension UIButton {
    The key to use for the localized button title in its selected state.
    */
   @IBInspectable
-  var selectedLocalizedKey: String {
+  public var selectedLocalizedKey: String {
     set(key) {
       self.setTitle(localizedString(key: key, defaultValue: self.titleForState(.Selected) ?? ""),
         forState: .Selected)
@@ -33,7 +33,7 @@ extension UIButton {
    The key to use for the localized button title in its disabled state.
    */
   @IBInspectable
-  var disabledLocalizedKey: String {
+  public var disabledLocalizedKey: String {
     set(key) {
       self.setTitle(localizedString(key: key, defaultValue: self.titleForState(.Disabled) ?? ""),
         forState: .Disabled)

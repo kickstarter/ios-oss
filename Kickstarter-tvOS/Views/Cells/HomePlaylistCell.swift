@@ -1,5 +1,6 @@
 import UIKit
 import ReactiveCocoa
+import protocol Library.ViewModeledCellType
 
 final class HomePlaylistCell: UICollectionViewCell, ViewModeledCellType {
 

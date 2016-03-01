@@ -1,6 +1,7 @@
 import UIKit
 import ReactiveCocoa
 import Models
+import Library
 
 class ProjectMoreInfoCell: UICollectionViewCell, ViewModeledCellType {
   @IBOutlet weak var creatorLabel: UILabel!

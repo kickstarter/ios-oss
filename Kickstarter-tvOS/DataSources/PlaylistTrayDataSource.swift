@@ -1,4 +1,5 @@
 import Prelude
+import class Library.MVVMDataSource
 
 final class PlaylistTrayDataSource : MVVMDataSource {
 

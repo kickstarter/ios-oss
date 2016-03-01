@@ -3,6 +3,8 @@ import ReactiveCocoa
 import Result
 import ReactiveExtensions
 import KsApi
+import struct Library.Environment
+import struct Library.AppEnvironment
 
 protocol ProfileViewModelInputs {
   func logoutPressed()

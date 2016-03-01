@@ -1,0 +1,21 @@
+#!/bin/sh
+
+set -o pipefail
+
+if [ $# -eq 0 ]; then
+    echo "Please specify a target, i.e. iOS or tvOS."
+  exit 1
+fi
+
+if [ "$1" == "iOS" ]; then
+  DESTINATION='platform=iOS Simulator,OS=9.2,name=iPhone 6'
+else
+  DESTINATION='platform=tvOS Simulator,OS=9.1,name=Apple TV 1080p'
+fi
+
+xcodebuild \
+  -destination "$DESTINATION" \
+  -scheme Library-$1 \
+  clean build test \
+  | tee $CIRCLE_ARTIFACTS/xcode_raw.log \
+  | xcpretty

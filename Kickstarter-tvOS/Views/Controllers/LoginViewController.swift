@@ -1,6 +1,7 @@
 import UIKit
 import ReactiveCocoa
 import ReactiveExtensions
+import class Library.MVVMViewController
 
 final class LoginViewController: MVVMViewController {
 

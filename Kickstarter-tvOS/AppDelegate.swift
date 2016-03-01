@@ -1,5 +1,7 @@
 import UIKit
 import KsApi
+import struct Library.AppEnvironment
+import enum Library.Language
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {

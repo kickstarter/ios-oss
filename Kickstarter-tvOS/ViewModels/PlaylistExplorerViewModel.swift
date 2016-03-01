@@ -3,14 +3,9 @@ import ReactiveCocoa
 import Result
 import KsApi
 import Models
-
-//extension SignalType {
-//  func toSignalProducer() -> SignalProducer<Value, Error> {
-//    return SignalProducer { (sink, compositeDisposable) in
-//      compositeDisposable.addDisposable(self.observe(sink))
-//    }
-//  }
-//}
+import struct Library.Environment
+import struct Library.AppEnvironment
+import protocol Library.ViewModelType
 
 protocol PlaylistExplorerViewModelInputs {
   /// Call when a playlist is focsed.

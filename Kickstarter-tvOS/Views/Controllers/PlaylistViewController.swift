@@ -1,6 +1,7 @@
 import AVFoundation
 import struct Models.Project
 import UIKit
+import class Library.MVVMViewController
 
 internal final class PlaylistViewController: MVVMViewController {
   @IBOutlet private weak var categoryLabel: UILabel!

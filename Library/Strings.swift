@@ -1,11 +1,11 @@
 /// Make this file computer generated from Localizable.strings
 
-enum Strings {
+public enum Strings {
 
   /**
    "Project of the day"
   */
-  static func project_of_the_day() -> String {
+  public static func project_of_the_day() -> String {
     return localizedString(key: "project_of_the_day", defaultValue: "Project of the day")
   }
 
@@ -15,7 +15,7 @@ enum Strings {
    - parameters:
      - creator_name:
   */
-  static func by_creator(creator_name creator_name: String) -> String {
+  public static func by_creator(creator_name creator_name: String) -> String {
     return localizedString(key: "by_creator", defaultValue: "by <b>%{creator_name}</b>", substitutions: ["creator_name": creator_name])
   }
 }

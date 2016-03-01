@@ -1,5 +1,8 @@
 import UIKit
-import Models
+import struct Models.Project
+import struct Models.Reward
+import class Library.MVVMDataSource
+import class Library.SimpleViewModel
 
 final class ProjectViewDataSource : MVVMDataSource {
 

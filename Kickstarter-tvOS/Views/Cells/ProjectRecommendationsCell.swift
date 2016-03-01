@@ -1,6 +1,9 @@
 import UIKit
 import Models
 import ReactiveCocoa
+import protocol Library.ViewModeledCellType
+import class Library.SimpleViewModel
+import class Library.SimpleDataSource
 
 protocol ProjectRecommendationsCellDelegate: class {
   func projectRecommendations(cell: ProjectRecommendationsCell, didSelect project: Project)

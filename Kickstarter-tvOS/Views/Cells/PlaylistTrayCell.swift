@@ -1,6 +1,9 @@
 import UIKit
 import Models
 import ReactiveCocoa
+import class Library.SimpleDataSource
+import class Library.SimpleViewModel
+import protocol Library.ViewModeledCellType
 
 protocol PlaylistTrayCellDelegate: class {
   func playlistTrayCell(cell: PlaylistTrayCell, didSelectedProject project: Project, inPlaylist playlist: Playlist)
