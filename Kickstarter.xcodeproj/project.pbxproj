@@ -73,8 +73,6 @@
 		A7C725D71C85D36D005A016B /* UILabel+SimpleHTML.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C725981C85D36D005A016B /* UILabel+SimpleHTML.swift */; };
 		A7C725D81C85D36D005A016B /* UIPress-Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C725991C85D36D005A016B /* UIPress-Extensions.swift */; };
 		A7C725D91C85D36D005A016B /* UIPress-Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C725991C85D36D005A016B /* UIPress-Extensions.swift */; };
-		A7C725DD1C85D419005A016B /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7C725DC1C85D419005A016B /* AVKit.framework */; };
-		A7C725E21C85D4A2005A016B /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7C725E11C85D4A2005A016B /* AVFoundation.framework */; };
 		A7D1F9281C84FB7D000D41D5 /* KsApi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7D1F8F01C84FB55000D41D5 /* KsApi.framework */; };
 		A7D1F9291C84FB7D000D41D5 /* Models.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7D1F8FF1C84FB5A000D41D5 /* Models.framework */; };
 		A7D1F92A1C84FB7D000D41D5 /* Prelude.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7D1F90E1C84FB5F000D41D5 /* Prelude.framework */; };
@@ -521,8 +519,6 @@
 		A7C725971C85D36D005A016B /* UILabel+LocalizedKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UILabel+LocalizedKey.swift"; sourceTree = "<group>"; };
 		A7C725981C85D36D005A016B /* UILabel+SimpleHTML.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UILabel+SimpleHTML.swift"; sourceTree = "<group>"; };
 		A7C725991C85D36D005A016B /* UIPress-Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIPress-Extensions.swift"; sourceTree = "<group>"; };
-		A7C725DC1C85D419005A016B /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.2.sdk/System/Library/Frameworks/AVKit.framework; sourceTree = DEVELOPER_DIR; };
-		A7C725E11C85D4A2005A016B /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.2.sdk/System/Library/Frameworks/AVFoundation.framework; sourceTree = DEVELOPER_DIR; };
 		A7D1F8E41C84FB55000D41D5 /* KsApi.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = KsApi.xcodeproj; path = Frameworks/KsApi/KsApi.xcodeproj; sourceTree = "<group>"; };
 		A7D1F8F31C84FB5A000D41D5 /* Models.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Models.xcodeproj; path = Frameworks/Models/Models.xcodeproj; sourceTree = "<group>"; };
 		A7D1F9021C84FB5F000D41D5 /* Prelude.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Prelude.xcodeproj; path = Frameworks/Prelude/Prelude.xcodeproj; sourceTree = "<group>"; };
@@ -658,8 +654,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A7C725E21C85D4A2005A016B /* AVFoundation.framework in Frameworks */,
-				A7C725DD1C85D419005A016B /* AVKit.framework in Frameworks */,
 				A7D1F99C1C850D62000D41D5 /* KsApi.framework in Frameworks */,
 				A7D1F99D1C850D62000D41D5 /* Models.framework in Frameworks */,
 				A7D1F99E1C850D62000D41D5 /* Prelude.framework in Frameworks */,
@@ -831,31 +825,6 @@
 				A7C725901C85D36D005A016B /* ViewModel.swift */,
 			);
 			path = MVVM;
-			sourceTree = "<group>";
-		};
-		A7C725DE1C85D41E005A016B /* Linked */ = {
-			isa = PBXGroup;
-			children = (
-				A7C725DF1C85D424005A016B /* iOS */,
-				A7C725E01C85D42B005A016B /* tvOS */,
-			);
-			name = Linked;
-			sourceTree = "<group>";
-		};
-		A7C725DF1C85D424005A016B /* iOS */ = {
-			isa = PBXGroup;
-			children = (
-				A7C725E11C85D4A2005A016B /* AVFoundation.framework */,
-				A7C725DC1C85D419005A016B /* AVKit.framework */,
-			);
-			name = iOS;
-			sourceTree = "<group>";
-		};
-		A7C725E01C85D42B005A016B /* tvOS */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = tvOS;
 			sourceTree = "<group>";
 		};
 		A7D1F8E51C84FB55000D41D5 /* Products */ = {
@@ -1141,7 +1110,6 @@
 				A7D1F9021C84FB5F000D41D5 /* Prelude.xcodeproj */,
 				A7D1F9111C84FB64000D41D5 /* ReactiveExtensions.xcodeproj */,
 				A7424F0D1C84F40E00FDC1E4 /* Embedded */,
-				A7C725DE1C85D41E005A016B /* Linked */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
