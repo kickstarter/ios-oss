@@ -7,4 +7,4 @@ Kickstarter. On your TV.
 
 ## Getting Started
 
-Run `script/bootstrap` to install dependencies.
+Run `bin/bootstrap` to install dependencies.
