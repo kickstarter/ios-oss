@@ -13,7 +13,8 @@ import Prelude
  - returns: The localized string. If the key does not exist the `defaultValue` will be returned,
  and if that is not specified an empty string will be returned.
  */
-func localizedString(key key: String, defaultValue: String = "", count: Int? = nil, substitutions: [String:String] = [:], env: Environment = AppEnvironment.current) -> String {
+public func localizedString(key key: String, defaultValue: String = "", count: Int? = nil,
+substitutions: [String:String] = [:], env: Environment = AppEnvironment.current) -> String {
 
   // When a `count` is provided we need to augment the key with a pluralization suffix.
   let augmentedKey = count

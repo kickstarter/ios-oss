@@ -1,7 +1,7 @@
 import Foundation
 import Models
 
-enum Format {
+public enum Format {
   // Number formatter for whole numbers.
   private static let wholeNumberFormatter: NSNumberFormatter = {
     let formatter = NSNumberFormatter()
@@ -31,7 +31,7 @@ enum Format {
   /**
    Formats an int into a string.
   */
-  static func wholeNumber(x: Int, env: Environment = AppEnvironment.current) -> String {
+  public static func wholeNumber(x: Int, env: Environment = AppEnvironment.current) -> String {
     Format.wholeNumberFormatter.locale = env.locale
     return Format.wholeNumberFormatter.stringFromNumber(x)!
   }
@@ -41,7 +41,7 @@ enum Format {
 
    - parameter percentage: An int where 100 corresponds to 100%.
    */
-  static func percentage(percentage: Int, env: Environment = AppEnvironment.current) -> String {
+  public static func percentage(percentage: Int, env: Environment = AppEnvironment.current) -> String {
     Format.percentageFormatter.locale = env.locale
 
     return Format.percentageFormatter.stringFromNumber(Float(percentage) / 100.0)!
@@ -55,7 +55,7 @@ enum Format {
      - country: The country that currency is in.
      - env: (optional) An environment to use for locality.
   */
-  static func currency(amount: Int, country: Project.Country, env: Environment = AppEnvironment.current) -> String {
+  public static func currency(amount: Int, country: Project.Country, env: Environment = AppEnvironment.current) -> String {
 
     Format.currencyFormatter.locale = env.locale
     Format.currencyFormatter.maximumFractionDigits = 0
@@ -85,7 +85,7 @@ enum Format {
      - timeStyle: (optional) The style to format the time.
      - env: (optional) An environment to use for locality and time zones.
   */
-  static func date(secondsInUTC seconds: NSTimeInterval, dateStyle: NSDateFormatterStyle = .MediumStyle, timeStyle: NSDateFormatterStyle = .MediumStyle, env: Environment = AppEnvironment.current) -> String {
+  public static func date(secondsInUTC seconds: NSTimeInterval, dateStyle: NSDateFormatterStyle = .MediumStyle, timeStyle: NSDateFormatterStyle = .MediumStyle, env: Environment = AppEnvironment.current) -> String {
 
     Format.dateFormatter.timeZone = env.timeZone
     Format.dateFormatter.locale = env.locale

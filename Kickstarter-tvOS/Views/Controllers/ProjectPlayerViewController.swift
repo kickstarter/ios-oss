@@ -1,6 +1,7 @@
 import class UIKit.NSCoder
 import class AVKit.AVPlayerViewController
 import class AVFoundation.AVPlayer
+import class Library.MVVMViewController
 
 final class ProjectPlayerViewController: MVVMViewController {
 

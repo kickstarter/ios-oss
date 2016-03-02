@@ -1,5 +1,6 @@
 import UIKit
 import Models
+import class Library.MVVMViewController
 
 protocol PlaylistTrayDelegate : class {
   func playlistTrayWantsToClose(controller: PlaylistTrayViewController)

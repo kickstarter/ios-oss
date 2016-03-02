@@ -1,7 +1,7 @@
 /**
  Supported languages.
 */
-enum Language : String {
+public enum Language : String {
   case en
   case es
   case fr
@@ -9,7 +9,7 @@ enum Language : String {
 }
 
 extension Language : Equatable {}
-func == (lhs: Language, rhs: Language) -> Bool {
+public func == (lhs: Language, rhs: Language) -> Bool {
   switch (lhs, rhs) {
   case (.en, .en), (.es, .es), (.fr, .fr), (.de, .de):
     return true

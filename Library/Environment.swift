@@ -10,19 +10,19 @@ import class ReactiveCocoa.QueueScheduler
 /**
  A collection of **all** global variables and singletons that the app wants access to.
  */
-struct Environment {
-  let apiService: ServiceType
-  let currentUser: CurrentUserType
-  let language: Language
-  let locale: NSLocale
-  let timeZone: NSTimeZone
-  let countryCode: String
-  let launchedCountries: LaunchedCountries
-  let debounceScheduler: DateSchedulerType
-  let mainBundle: NSBundleType
-  let assetImageGeneratorType: AssetImageGeneratorType.Type
+public struct Environment {
+  public let apiService: ServiceType
+  public let currentUser: CurrentUserType
+  public let language: Language
+  public let locale: NSLocale
+  public let timeZone: NSTimeZone
+  public let countryCode: String
+  public let launchedCountries: LaunchedCountries
+  public let debounceScheduler: DateSchedulerType
+  public let mainBundle: NSBundleType
+  public let assetImageGeneratorType: AssetImageGeneratorType.Type
 
-  init(
+  public init(
     apiService: ServiceType = Service.shared,
     currentUser: CurrentUserType = CurrentUser.shared,
     language: Language = .en,
@@ -49,11 +49,11 @@ struct Environment {
 
 extension Environment : CustomStringConvertible, CustomDebugStringConvertible {
 
-  var description: String {
+  public var description: String {
     return "(apiService: \(self.apiService), currentUser: \(self.currentUser), language: \(language), locale: \(self.locale.localeIdentifier), timeZone: \(self.timeZone), countryCode: \(self.countryCode), launchedCountries: \(self.launchedCountries))"
   }
 
-  var debugDescription: String {
+  public var debugDescription: String {
     return self.description
   }
 }

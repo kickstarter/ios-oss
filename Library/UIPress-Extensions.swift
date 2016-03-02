@@ -1,6 +1,6 @@
 import UIKit
 
-extension UIPressPhase {
+public extension UIPressPhase {
   public var isStartingPhase: Bool {
     return self == .Began
   }

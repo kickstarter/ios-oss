@@ -1,6 +1,8 @@
 import AVFoundation
 @testable import Kickstarter_tvOS
 import ReactiveCocoa
+import protocol Library.AssetImageGeneratorType
+import struct Library.AppEnvironment
 
 /**
  *  An asset generator that immediately completes successfully with a blank image.

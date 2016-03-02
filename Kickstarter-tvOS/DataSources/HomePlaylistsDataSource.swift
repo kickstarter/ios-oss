@@ -1,5 +1,6 @@
 import Models
 import KsApi
+import class Library.MVVMDataSource
 
 final class HomePlaylistsDataSource : MVVMDataSource {
 

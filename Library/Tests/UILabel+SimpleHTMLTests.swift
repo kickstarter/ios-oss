@@ -1,5 +1,5 @@
 import XCTest
-@testable import Kickstarter_tvOS
+@testable import Library
 
 final class UILabelSimpleHTMLTests : XCTestCase {
 

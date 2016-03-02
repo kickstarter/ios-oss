@@ -1,8 +1,8 @@
 import Foundation
 import UIKit
 
-extension UILabel {
-  func setHTML(html: String) {
+public extension UILabel {
+  public func setHTML(html: String) {
     // Capture a few properties of the label so that they can be restored after setting the attributed text.
     let textColor = self.textColor
     let textAlignment = self.textAlignment

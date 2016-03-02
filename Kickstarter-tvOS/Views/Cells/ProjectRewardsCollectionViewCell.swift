@@ -1,6 +1,9 @@
 import UIKit
 import ReactiveCocoa
 import Models
+import protocol Library.ViewModeledCellType
+import class Library.SimpleViewModel
+import class Library.SimpleDataSource
 
 class ProjectRewardsCollectionViewCell: UICollectionViewCell, ViewModeledCellType {
   @IBOutlet weak var collectionView: UICollectionView!

@@ -1,6 +1,7 @@
 import KsApi
 import ReactiveCocoa
 import Models
+import protocol Library.ViewModelType
 
 protocol HomePlaylistViewModelOutputs {
   var title: String { get }

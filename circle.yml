@@ -20,3 +20,5 @@ test:
   override:
     - bin/test iOS
     - bin/test tvOS
+    - bin/test-library iOS
+    - bin/test-library tvOS

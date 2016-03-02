@@ -1,3 +1,5 @@
+import protocol Library.ViewModelType
+
 final class EmptyViewModel : ViewModelType {
   typealias Model = Void
 

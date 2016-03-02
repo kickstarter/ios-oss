@@ -2,6 +2,8 @@ import UIKit
 import Models
 import AlamofireImage
 import ReactiveCocoa
+import protocol Library.ViewModeledCellType
+import class Library.SimpleViewModel
 
 final class DiscoveryProjectCell: UICollectionViewCell, ViewModeledCellType {
 

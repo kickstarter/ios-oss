@@ -1,12 +1,12 @@
 import class UIKit.UIView
 import AVFoundation
 
-class AVPlayerView: UIView {
-  override class func layerClass() -> AnyClass {
+public final class AVPlayerView: UIView {
+  public override class func layerClass() -> AnyClass {
     return AVPlayerLayer.self
   }
 
-  var playerLayer: AVPlayerLayer? {
+  public var playerLayer: AVPlayerLayer? {
     return self.layer as? AVPlayerLayer
   }
 }

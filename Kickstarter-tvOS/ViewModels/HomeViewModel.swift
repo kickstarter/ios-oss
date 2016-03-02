@@ -3,6 +3,8 @@ import Result
 import KsApi
 import Models
 import Prelude
+import struct Library.Environment
+import struct Library.AppEnvironment
 
 protocol HomeViewModelType {
   var inputs: HomeViewModelInputs { get }

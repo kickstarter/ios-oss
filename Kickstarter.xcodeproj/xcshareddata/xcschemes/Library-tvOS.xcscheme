@@ -14,9 +14,23 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "A7D1F9441C850B7C000D41D5"
-               BuildableName = "Kickstarter.app"
-               BlueprintName = "Kickstarter-iOS"
+               BlueprintIdentifier = "A75511AA1C8647D9005355CF"
+               BuildableName = "Library.framework"
+               BlueprintName = "Library-tvOS"
+               ReferencedContainer = "container:Kickstarter.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "A75511E61C865321005355CF"
+               BuildableName = "Library-tvOSTests.xctest"
+               BlueprintName = "Library-tvOSTests"
                ReferencedContainer = "container:Kickstarter.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -33,9 +47,9 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "A7D1F9591C850B7C000D41D5"
-               BuildableName = "Kickstarter-iOSTests.xctest"
-               BlueprintName = "Kickstarter-iOSTests"
+               BlueprintIdentifier = "A75511E61C865321005355CF"
+               BuildableName = "Library-tvOSTests.xctest"
+               BlueprintName = "Library-tvOSTests"
                ReferencedContainer = "container:Kickstarter.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -43,9 +57,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "A7D1F9441C850B7C000D41D5"
-            BuildableName = "Kickstarter.app"
-            BlueprintName = "Kickstarter-iOS"
+            BlueprintIdentifier = "A75511AA1C8647D9005355CF"
+            BuildableName = "Library.framework"
+            BlueprintName = "Library-tvOS"
             ReferencedContainer = "container:Kickstarter.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -62,16 +76,15 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "A7D1F9441C850B7C000D41D5"
-            BuildableName = "Kickstarter.app"
-            BlueprintName = "Kickstarter-iOS"
+            BlueprintIdentifier = "A75511AA1C8647D9005355CF"
+            BuildableName = "Library.framework"
+            BlueprintName = "Library-tvOS"
             ReferencedContainer = "container:Kickstarter.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -81,16 +94,15 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "A7D1F9441C850B7C000D41D5"
-            BuildableName = "Kickstarter.app"
-            BlueprintName = "Kickstarter-iOS"
+            BlueprintIdentifier = "A75511AA1C8647D9005355CF"
+            BuildableName = "Library.framework"
+            BlueprintName = "Library-tvOS"
             ReferencedContainer = "container:Kickstarter.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

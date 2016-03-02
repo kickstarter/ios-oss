@@ -5,6 +5,8 @@ import Result
 import KsApi
 import Models
 import Prelude
+import struct Library.Environment
+import struct Library.AppEnvironment
 
 internal final class PlaylistViewModelTests : XCTestCase {
   let playlist = Playlist.Featured

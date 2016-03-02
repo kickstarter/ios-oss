@@ -1,6 +1,6 @@
 import UIKit
 
-extension UIGestureRecognizerState {
+public extension UIGestureRecognizerState {
   public var isStartingState: Bool {
     return self == .Began
   }

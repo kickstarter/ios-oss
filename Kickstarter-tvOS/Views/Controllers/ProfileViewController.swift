@@ -2,6 +2,7 @@ import UIKit
 import ReactiveCocoa
 import ReactiveExtensions
 import AlamofireImage
+import class Library.MVVMViewController
 
 final class ProfileViewController: MVVMViewController {
   @IBOutlet private weak var avatarImageView: UIImageView?

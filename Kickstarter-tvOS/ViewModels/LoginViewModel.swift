@@ -2,6 +2,8 @@ import ReactiveCocoa
 import Result
 import KsApi
 import Models
+import struct Library.Environment
+import struct Library.AppEnvironment
 
 protocol LoginViewModelInputs {
   var email: MutableProperty<String?> { get }

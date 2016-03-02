@@ -1,6 +1,5 @@
-import Kickstarter_tvOS
+@testable import Library
 import Prelude
-import protocol Library.NSBundleType
 
 private let stores = [
   "Base": [

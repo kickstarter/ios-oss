@@ -1,6 +1,6 @@
 import AVFoundation
 
-internal protocol AssetImageGeneratorType {
+public protocol AssetImageGeneratorType {
 
   init(asset: AVAsset)
 

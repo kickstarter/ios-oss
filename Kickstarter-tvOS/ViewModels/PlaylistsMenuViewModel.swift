@@ -2,6 +2,9 @@ import KsApi
 import ReactiveCocoa
 import Result
 import Models
+import struct Library.AppEnvironment
+import struct Library.Environment
+import protocol Library.ViewModelType
 
 protocol PlaylistsMenuViewModelInputs {
   func selectProject(project: Project)

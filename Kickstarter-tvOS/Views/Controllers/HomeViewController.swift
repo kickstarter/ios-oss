@@ -1,6 +1,8 @@
 import UIKit
 import AVFoundation
 import struct Models.Project
+import class Library.MVVMViewController
+import class Library.AVPlayerView
 
 internal final class HomeViewController: MVVMViewController {
   @IBOutlet private weak var overlayView: UIView!

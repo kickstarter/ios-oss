@@ -6,7 +6,7 @@ import protocol ReactiveCocoa.DateSchedulerType
 /**
  A global stack that captures the current state of global objects that the app wants access to.
 */
-struct AppEnvironment {
+public struct AppEnvironment {
   /**
    A global stack of environments.
   */
@@ -15,28 +15,28 @@ struct AppEnvironment {
   /**
    The most recent environment on the stack.
   */
-  static var current: Environment! {
+  public static var current: Environment! {
     return stack.last
   }
 
   /**
    Push a new environment onto the stack.
   */
-  static func pushEnvironment(env: Environment) {
+  public static func pushEnvironment(env: Environment) {
     stack.append(env)
   }
 
   /**
    Pop an environment off the stack.
   */
-  static func popEnvironment() -> Environment? {
+  public static func popEnvironment() -> Environment? {
     return stack.popLast()
   }
 
   /**
    Replace the current environment with a new environment.
   */
-  static func replaceCurrentEnvironment(env: Environment) {
+  public static func replaceCurrentEnvironment(env: Environment) {
     popEnvironment()
     pushEnvironment(env)
   }
@@ -44,7 +44,7 @@ struct AppEnvironment {
   /**
    Pushes a new environment onto the stack that changes only a subset of the current global dependencies.
   */
-  static func pushEnvironment(
+  public static func pushEnvironment(
     apiService apiService: ServiceType = AppEnvironment.current.apiService,
     currentUser: CurrentUserType = AppEnvironment.current.currentUser,
     language: Language = AppEnvironment.current.language,
@@ -76,7 +76,7 @@ struct AppEnvironment {
    Replaces the current environment onto the stack with an environment that changes only a subset
    of current global dependencies.
   */
-  static func replaceCurrentEnvironment(
+  public static func replaceCurrentEnvironment(
     apiService apiService: ServiceType = AppEnvironment.current.apiService,
     currentUser: CurrentUserType = AppEnvironment.current.currentUser,
     language: Language = AppEnvironment.current.language,

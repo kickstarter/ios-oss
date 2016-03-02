@@ -1,6 +1,7 @@
 import UIKit
 import Models
 import AlamofireImage
+import class Library.MVVMCollectionViewController
 
 class SearchViewController: MVVMCollectionViewController {
   let viewModel: SearchViewModel

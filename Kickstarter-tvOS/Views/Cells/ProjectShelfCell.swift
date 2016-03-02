@@ -3,6 +3,9 @@ import Models
 import Prelude
 import ReactiveCocoa
 import AlamofireImage
+import protocol Library.ViewModeledCellType
+import class Library.SimpleViewModel
+import enum Library.Format
 
 protocol ProjectShelfCellDelegate: class {
   func projectShelfTappedSave(cell: ProjectShelfCell)
