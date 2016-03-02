@@ -54,7 +54,8 @@ public struct AppEnvironment {
     launchedCountries: LaunchedCountries = AppEnvironment.current.launchedCountries,
     debounceScheduler: DateSchedulerType = AppEnvironment.current.debounceScheduler,
     mainBundle: NSBundleType = AppEnvironment.current.mainBundle,
-    assetImageGeneratorType: AssetImageGeneratorType.Type = AppEnvironment.current.assetImageGeneratorType) {
+    assetImageGeneratorType: AssetImageGeneratorType.Type = AppEnvironment.current.assetImageGeneratorType,
+    hockeyManager: HockeyManagerType = AppEnvironment.current.hockeyManager) {
 
       stack.append(
         Environment(
@@ -67,7 +68,8 @@ public struct AppEnvironment {
           launchedCountries: launchedCountries,
           debounceScheduler: debounceScheduler,
           mainBundle: mainBundle,
-          assetImageGeneratorType: assetImageGeneratorType
+          assetImageGeneratorType: assetImageGeneratorType,
+          hockeyManager: hockeyManager
         )
       )
   }
@@ -86,7 +88,8 @@ public struct AppEnvironment {
     launchedCountries: LaunchedCountries = AppEnvironment.current.launchedCountries,
     debounceScheduler: DateSchedulerType = AppEnvironment.current.debounceScheduler,
     mainBundle: NSBundleType = AppEnvironment.current.mainBundle,
-    assetImageGeneratorType: AssetImageGeneratorType.Type = AppEnvironment.current.assetImageGeneratorType) {
+    assetImageGeneratorType: AssetImageGeneratorType.Type = AppEnvironment.current.assetImageGeneratorType,
+    hockeyManager: HockeyManagerType = AppEnvironment.current.hockeyManager) {
 
       replaceCurrentEnvironment(
         Environment(
@@ -99,7 +102,8 @@ public struct AppEnvironment {
           launchedCountries: launchedCountries,
           debounceScheduler: debounceScheduler,
           mainBundle: mainBundle,
-          assetImageGeneratorType: assetImageGeneratorType
+          assetImageGeneratorType: assetImageGeneratorType,
+          hockeyManager: hockeyManager
         )
       )
   }

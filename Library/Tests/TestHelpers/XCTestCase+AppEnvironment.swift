@@ -31,6 +31,7 @@ extension XCTestCase {
     debounceScheduler: DateSchedulerType = AppEnvironment.current.debounceScheduler,
     mainBundle: NSBundleType = AppEnvironment.current.mainBundle,
     assetImageGeneratorType: AssetImageGeneratorType.Type = AppEnvironment.current.assetImageGeneratorType,
+    hockeyManager: HockeyManagerType = AppEnvironment.current.hockeyManager,
     @noescape body: () -> ()) {
 
       withEnvironment(
