@@ -10,6 +10,7 @@ checkout:
     - ./Frameworks/ReactiveExtensions/bin/carthage-bootstrap-if-needed
 dependencies:
   override:
+    - bin/bootstrap-configs
     - bin/bootstrap-carthage-if-needed
   cache_directories:
     - Carthage
