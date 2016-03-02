@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "A7C795CC1C873BD50081977F"
-               BuildableName = "Kickstarter-tvOS-Framework.framework"
+               BuildableName = "Kickstarter_Framework.framework"
                BlueprintName = "Kickstarter-tvOS-Framework"
                ReferencedContainer = "container:Kickstarter.xcodeproj">
             </BuildableReference>
@@ -46,7 +46,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A7C795CC1C873BD50081977F"
-            BuildableName = "Kickstarter-tvOS-Framework.framework"
+            BuildableName = "Kickstarter_Framework.framework"
             BlueprintName = "Kickstarter-tvOS-Framework"
             ReferencedContainer = "container:Kickstarter.xcodeproj">
          </BuildableReference>
@@ -64,7 +64,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A7C795CC1C873BD50081977F"
-            BuildableName = "Kickstarter-tvOS-Framework.framework"
+            BuildableName = "Kickstarter_Framework.framework"
             BlueprintName = "Kickstarter-tvOS-Framework"
             ReferencedContainer = "container:Kickstarter.xcodeproj">
          </BuildableReference>

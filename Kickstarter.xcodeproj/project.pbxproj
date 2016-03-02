@@ -3225,6 +3225,7 @@
 				A7C795A81C873A870081977F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		A7C795D61C873BD50081977F /* Build configuration list for PBXNativeTarget "Kickstarter-tvOS-Framework" */ = {
 			isa = XCConfigurationList;
@@ -3233,6 +3234,7 @@
 				A7C795D81C873BD50081977F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		A7D1F9611C850B7C000D41D5 /* Build configuration list for PBXNativeTarget "Kickstarter-iOS" */ = {
 			isa = XCConfigurationList;
