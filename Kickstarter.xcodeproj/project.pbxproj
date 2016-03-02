@@ -363,26 +363,12 @@
 			remoteGlobalIDString = A755113B1C8642B3005355CF;
 			remoteInfo = "Library-iOS";
 		};
-		A7C795A31C873A870081977F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A7E06C711C5A6EB300EBDCC2 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = A7C7959D1C873A870081977F;
-			remoteInfo = "Kickstarter-iOS-Framework";
-		};
 		A7C795B61C873AD10081977F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A7E06C711C5A6EB300EBDCC2 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = A755113B1C8642B3005355CF;
 			remoteInfo = "Library-iOS";
-		};
-		A7C795D21C873BD50081977F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A7E06C711C5A6EB300EBDCC2 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = A7C795CC1C873BD50081977F;
-			remoteInfo = "Kickstarter-tvOS-Framework";
 		};
 		A7C795D91C873BE60081977F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1695,7 +1681,6 @@
 				A7D1F9B91C850DDE000D41D5 /* PBXTargetDependency */,
 				A7D1F9BD1C850DDE000D41D5 /* PBXTargetDependency */,
 				A7D1F9C11C850DDE000D41D5 /* PBXTargetDependency */,
-				A7C795A41C873A870081977F /* PBXTargetDependency */,
 			);
 			name = "Kickstarter-iOS";
 			productName = Kickstarter;
@@ -1740,7 +1725,6 @@
 				A7D1F9231C84FB74000D41D5 /* PBXTargetDependency */,
 				A7D1F9251C84FB74000D41D5 /* PBXTargetDependency */,
 				A7D1F9271C84FB74000D41D5 /* PBXTargetDependency */,
-				A7C795D31C873BD50081977F /* PBXTargetDependency */,
 			);
 			name = "Kickstarter-tvOS";
 			productName = kickstartertv;
@@ -2525,20 +2509,10 @@
 			target = A755113B1C8642B3005355CF /* Library-iOS */;
 			targetProxy = A75511E81C865321005355CF /* PBXContainerItemProxy */;
 		};
-		A7C795A41C873A870081977F /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = A7C7959D1C873A870081977F /* Kickstarter-iOS-Framework */;
-			targetProxy = A7C795A31C873A870081977F /* PBXContainerItemProxy */;
-		};
 		A7C795B71C873AD10081977F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = A755113B1C8642B3005355CF /* Library-iOS */;
 			targetProxy = A7C795B61C873AD10081977F /* PBXContainerItemProxy */;
-		};
-		A7C795D31C873BD50081977F /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = A7C795CC1C873BD50081977F /* Kickstarter-tvOS-Framework */;
-			targetProxy = A7C795D21C873BD50081977F /* PBXContainerItemProxy */;
 		};
 		A7C795DA1C873BE60081977F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
