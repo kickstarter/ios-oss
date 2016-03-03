@@ -47,6 +47,7 @@ extension XCTestCase {
           debounceScheduler: debounceScheduler,
           mainBundle: mainBundle,
           assetImageGeneratorType: assetImageGeneratorType,
+          hockeyManager: hockeyManager,
           koala: koala
         ),
         body: body

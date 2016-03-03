@@ -58,8 +58,10 @@ internal final class PlaylistViewModel : ViewModelType, PlaylistViewModelType, P
     self.projectName = self.project.map { $0.name }
 
     self.backgroundImage = self.project
-      .flatMap { $0.video?.high }
-      .flatMap(NSURL.init)
+      .map { $0.video?.high }
+      .ignoreNil()
+      .map { NSURL(string: $0) }
+      .ignoreNil()
       .map(AVAsset.init)
       .map { a in env.assetImageGeneratorType.init(asset: a) }
       .switchMap { PlaylistViewModel.stillImage(generator: $0) }

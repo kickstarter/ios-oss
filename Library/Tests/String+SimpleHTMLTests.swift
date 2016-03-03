@@ -91,4 +91,15 @@ final class String_SimpleHTMLTests : XCTestCase {
       XCTAssertEqual(false, "Couldn't find font in attributed string")
     }
   }
+
+  func test_htmlStripped_WithSimpleHtml() {
+    let html = "<b>Hello</b> <i>Brandon</i>, how are you?"
+    XCTAssertEqual("Hello Brandon, how are you?", html.htmlStripped())
+  }
+
+  func test_htmlStripped_WithParagraphTags() {
+    let html = "<b>Hello</b> <i>Brandon</i>,<p>how are you?</p>"
+    XCTAssertEqual("Hello Brandon,\nhow are you?", html.htmlStripped())
+    XCTAssertEqual("Hello Brandon,\nhow are you?\n", html.htmlStripped(trimWhitespace: false))
+  }
 }

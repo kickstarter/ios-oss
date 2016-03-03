@@ -14,14 +14,14 @@ class ProjectMoreInfoCell: UICollectionViewCell, ViewModeledCellType {
   @IBOutlet weak var toGoLabel: UILabel!
   @IBOutlet weak var backersCountLabel: UILabel!
 
-  let viewModel = MutableProperty<SimpleViewModel<Project>?>(nil)
+  let viewModelProperty = MutableProperty<SimpleViewModel<Project>?>(nil)
 
   override func awakeFromNib() {
     super.awakeFromNib()
   }
 
   override func bindViewModel() {
-    let project = self.viewModel.producer.flatMap { $0?.model }
+    let project = self.viewModel.map { $0.model }
 
     project.map { $0.creator.name }
       .skipRepeats()

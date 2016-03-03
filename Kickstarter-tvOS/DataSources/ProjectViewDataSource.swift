@@ -48,13 +48,13 @@ final class ProjectViewDataSource : MVVMDataSource {
 
     switch (cell, viewModel) {
     case let (cell as ProjectShelfCell, viewModel as SimpleViewModel<Project>):
-      cell.viewModel.value = viewModel
+      cell.viewModelProperty.value = viewModel
     case let (cell as ProjectMoreInfoCell, viewModel as SimpleViewModel<Project>):
-      cell.viewModel.value = viewModel
+      cell.viewModelProperty.value = viewModel
     case let (cell as ProjectRewardsCollectionViewCell, viewModel as SimpleViewModel<[Reward]>):
-      cell.viewModel.value = viewModel
+      cell.viewModelProperty.value = viewModel
     case let (cell as ProjectRecommendationsCell, viewModel as SimpleViewModel<[Project]>):
-      cell.viewModel.value = viewModel
+      cell.viewModelProperty.value = viewModel
     default:
       print("[MVVMDataSource] Potential error in \(self.dynamicType).configureCell : unhandled case of combo (\(cell.dynamicType), \(viewModel.dynamicType)). ")
     }

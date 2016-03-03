@@ -1,6 +1,6 @@
 import XCTest
 @testable import Kickstarter_tvOS
-import KsApi
+@testable import KsApi
 import ReactiveCocoa
 import Result
 import Models

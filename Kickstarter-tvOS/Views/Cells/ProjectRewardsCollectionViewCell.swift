@@ -8,7 +8,7 @@ import class Library.SimpleDataSource
 class ProjectRewardsCollectionViewCell: UICollectionViewCell, ViewModeledCellType {
   @IBOutlet weak var collectionView: UICollectionView!
 
-  let viewModel = MutableProperty<SimpleViewModel<[Reward]>?>(nil)
+  let viewModelProperty = MutableProperty<SimpleViewModel<[Reward]>?>(nil)
   let dataSource = SimpleDataSource<ProjectRewardCell, Reward>()
 
   override func awakeFromNib() {
@@ -23,9 +23,11 @@ class ProjectRewardsCollectionViewCell: UICollectionViewCell, ViewModeledCellTyp
   }
 
   override func bindViewModel() {
-    viewModel.producer.ignoreNil().map { $0.model }.startWithNext { [weak self] rewards in
-      self?.dataSource.reload(rewards)
-      self?.collectionView.reloadData()
+    self.viewModel.map { $0.model }
+      .observeForUI()
+      .startWithNext { [weak self] rewards in
+        self?.dataSource.reload(rewards)
+        self?.collectionView.reloadData()
     }
   }
 }
