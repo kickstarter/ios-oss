@@ -105,7 +105,6 @@
 		A75511E11C8648DB005355CF /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7E06E251C5C068300EBDCC2 /* Result.framework */; };
 		A75511E41C864CEA005355CF /* KsApi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7D1F8EC1C84FB55000D41D5 /* KsApi.framework */; };
 		A75511E51C864CF0005355CF /* KsApi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7D1F8EC1C84FB55000D41D5 /* KsApi.framework */; };
-		A75511EA1C865321005355CF /* LaunchedCountriesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A755118D1C8645A0005355CF /* LaunchedCountriesTests.swift */; };
 		A75511EB1C865321005355CF /* FormatTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A755118B1C8645A0005355CF /* FormatTests.swift */; };
 		A75511EC1C865321005355CF /* XCTestCase+AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75511A31C86460B005355CF /* XCTestCase+AppEnvironment.swift */; };
 		A75511ED1C865321005355CF /* LanguageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A755118C1C8645A0005355CF /* LanguageTests.swift */; };
@@ -147,10 +146,11 @@
 		A7B694771C87F19D00C49A4F /* ReactiveExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7D1F9191C84FB64000D41D5 /* ReactiveExtensions.framework */; };
 		A7B694781C87F1D700C49A4F /* ReactiveExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7D1F91D1C84FB64000D41D5 /* ReactiveExtensions.framework */; };
 		A7B694791C87F1F100C49A4F /* Library.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75511DA1C8647D9005355CF /* Library.framework */; };
-		A7B6947A1C87F22400C49A4F /* Library.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75511DA1C8647D9005355CF /* Library.framework */; };
 		A7B6947B1C87F22400C49A4F /* Models.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7D1F8FF1C84FB5A000D41D5 /* Models.framework */; };
 		A7B6947C1C87F22400C49A4F /* Prelude.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7D1F90E1C84FB5F000D41D5 /* Prelude.framework */; };
 		A7B6947D1C87F22400C49A4F /* ReactiveExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7D1F91D1C84FB64000D41D5 /* ReactiveExtensions.framework */; };
+		A7B6947E1C87F50300C49A4F /* LaunchedCountriesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A755118D1C8645A0005355CF /* LaunchedCountriesTests.swift */; };
+		A7B694811C87F52900C49A4F /* Library.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75511DA1C8647D9005355CF /* Library.framework */; };
 		A7C795B21C873AC90081977F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D1F9471C850B7C000D41D5 /* AppDelegate.swift */; };
 		A7C795B31C873AC90081977F /* ActivityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F761741C85FA40005405ED /* ActivityViewController.swift */; };
 		A7C795B41C873AC90081977F /* DiscoveryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A751A51E1C85EC0B009C5DEA /* DiscoveryViewController.swift */; };
@@ -395,7 +395,7 @@
 			remoteGlobalIDString = A75511AA1C8647D9005355CF;
 			remoteInfo = "Library-tvOS";
 		};
-		A7B694721C87EDEB00C49A4F /* PBXContainerItemProxy */ = {
+		A7B6947F1C87F51900C49A4F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A7E06C711C5A6EB300EBDCC2 /* Project object */;
 			proxyType = 1;
@@ -981,7 +981,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A7B6947A1C87F22400C49A4F /* Library.framework in Frameworks */,
+				A7B694811C87F52900C49A4F /* Library.framework in Frameworks */,
 				A7B6947B1C87F22400C49A4F /* Models.framework in Frameworks */,
 				A7B6947C1C87F22400C49A4F /* Prelude.framework in Frameworks */,
 				A7B6947D1C87F22400C49A4F /* ReactiveExtensions.framework in Frameworks */,
@@ -1721,7 +1721,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				A7B694731C87EDEB00C49A4F /* PBXTargetDependency */,
+				A7B694801C87F51900C49A4F /* PBXTargetDependency */,
 			);
 			name = "Library-tvOSTests";
 			productName = "Library-iOSTests";
@@ -2445,7 +2445,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A75511EA1C865321005355CF /* LaunchedCountriesTests.swift in Sources */,
+				A7B6947E1C87F50300C49A4F /* LaunchedCountriesTests.swift in Sources */,
 				A75511EB1C865321005355CF /* FormatTests.swift in Sources */,
 				A75511EC1C865321005355CF /* XCTestCase+AppEnvironment.swift in Sources */,
 				A75511ED1C865321005355CF /* LanguageTests.swift in Sources */,
@@ -2649,10 +2649,10 @@
 			target = A75511AA1C8647D9005355CF /* Library-tvOS */;
 			targetProxy = A7B694221C879F4B00C49A4F /* PBXContainerItemProxy */;
 		};
-		A7B694731C87EDEB00C49A4F /* PBXTargetDependency */ = {
+		A7B694801C87F51900C49A4F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = A75511AA1C8647D9005355CF /* Library-tvOS */;
-			targetProxy = A7B694721C87EDEB00C49A4F /* PBXContainerItemProxy */;
+			targetProxy = A7B6947F1C87F51900C49A4F /* PBXContainerItemProxy */;
 		};
 		A7C795B71C873AD10081977F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -2886,9 +2886,8 @@
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Kickstarter-tvOS/Supporting Files/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.Library-iOS";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.Library-tvOS";
 				PRODUCT_NAME = Library;
 				SDKROOT = appletvos;
 				SKIP_INSTALL = YES;
@@ -2914,9 +2913,8 @@
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Kickstarter-tvOS/Supporting Files/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.Library-iOS";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.Library-tvOS";
 				PRODUCT_NAME = Library;
 				SDKROOT = appletvos;
 				SKIP_INSTALL = YES;
@@ -2932,14 +2930,12 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
 					"$(PROJECT_DIR)/Carthage/Build/tvOS",
 					"$(PROJECT_DIR)/Frameworks/HockeySDK/tvOS/HockeySDK.embeddedframework",
 				);
 				INFOPLIST_FILE = "Kickstarter-tvOS/Tests/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.Library-iOSTests";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.Library-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 			};
@@ -2951,14 +2947,12 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
 					"$(PROJECT_DIR)/Carthage/Build/tvOS",
 					"$(PROJECT_DIR)/Frameworks/HockeySDK/tvOS/HockeySDK.embeddedframework",
 				);
 				INFOPLIST_FILE = "Kickstarter-tvOS/Tests/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.Library-iOSTests";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.Library-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 			};
@@ -3032,7 +3026,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/tvOS",
-					"$(PROJECT_DIR)/Frameworks/HockeySDK/iOS",
 					"$(PROJECT_DIR)/Frameworks/HockeySDK/tvOS/HockeySDK.embeddedframework",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Kickstarter-tvOS/Supporting Files/Info.plist";
@@ -3057,7 +3050,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/tvOS",
-					"$(PROJECT_DIR)/Frameworks/HockeySDK/iOS",
 					"$(PROJECT_DIR)/Frameworks/HockeySDK/tvOS/HockeySDK.embeddedframework",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Kickstarter-tvOS/Supporting Files/Info.plist";
