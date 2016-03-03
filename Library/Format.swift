@@ -1,5 +1,9 @@
-import Foundation
-import Models
+import class Foundation.NSDate
+import class Foundation.NSDateFormatter
+import enum Foundation.NSDateFormatterStyle
+import class Foundation.NSNumberFormatter
+import struct Foundation.NSTimeInterval
+import struct Models.Project
 
 public enum Format {
   // Number formatter for whole numbers.

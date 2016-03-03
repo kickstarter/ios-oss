@@ -1,5 +1,4 @@
-import UIKit
-import Foundation
+import class UIKit.UIViewController
 
 public extension UIViewController {
   static var defaultNib: String {

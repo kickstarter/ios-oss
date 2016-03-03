@@ -1,4 +1,7 @@
-import UIKit
+import class UIKit.UICollectionView
+import class UIKit.UICollectionViewCell
+import class UIKit.UITableView
+import class UIKit.UITableViewCell
 
 /// Represents the simplest form of a data source: one that is homogenous with respect to cell views
 /// and uses `SimpleViewModel` for its data.

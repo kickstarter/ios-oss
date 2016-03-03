@@ -1,4 +1,4 @@
-import Foundation
+import class Foundation.NSBundle
 
 public protocol NSBundleType {
   func pathForResource(name: String?, ofType ext: String?) -> String?

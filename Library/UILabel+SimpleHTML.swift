@@ -1,5 +1,4 @@
-import Foundation
-import UIKit
+import class UIKit.UILabel
 
 public extension UILabel {
   public func setHTML(html: String) {

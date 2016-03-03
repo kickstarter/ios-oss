@@ -1,4 +1,4 @@
-import Models
+import struct Models.Project
 
 public struct LaunchedCountries {
   public let countries: [Project.Country]

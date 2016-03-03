@@ -1,4 +1,10 @@
-import UIKit
+import class Foundation.NSNumber
+import class UIKit.CAGradientLayer
+import struct UIKit.CGPoint
+import var UIKit.CGPointZero
+import class UIKit.UIColor
+import class UIKit.UIView
+
 
 public class GradientView: UIView {
 

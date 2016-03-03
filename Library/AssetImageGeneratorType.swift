@@ -1,3 +1,4 @@
+import class Foundation.NSValue
 import AVFoundation
 
 public protocol AssetImageGeneratorType {

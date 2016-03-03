@@ -1,4 +1,4 @@
-import UIKit
+import enum UIKit.UIGestureRecognizerState
 
 public extension UIGestureRecognizerState {
   public var isStartingState: Bool {

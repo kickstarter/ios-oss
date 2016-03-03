@@ -1,4 +1,5 @@
-import Foundation
+import class Foundation.NSUserDefaults
+import class Foundation.NSUbiquitousKeyValueStore
 
 protocol KeyValueStoreType {
   func setObject(object: AnyObject?, forKey key: String)

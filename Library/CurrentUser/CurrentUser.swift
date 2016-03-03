@@ -1,8 +1,9 @@
-import Foundation
-import ReactiveCocoa
-import Result
-import Models
-import KsApi
+import struct Models.User
+import class ReactiveCocoa.Signal
+import struct ReactiveCocoa.SignalProducer
+import enum Result.NoError
+import struct KsApi.Service
+import protocol KsApi.ServiceType
 import ReactiveExtensions
 
 public protocol CurrentUserType {
@@ -41,7 +42,7 @@ public struct CurrentUser : CurrentUserType {
       .startWithNext(self.persistToStorage)
 
     self.refreshSignal
-      .switchMap { _ in apiService.fetchUserSelf().demoteErrors() }
+      .flatMap(.Latest) { _ in apiService.fetchUserSelf().demoteErrors() }
       .wrapInOptional()
       .observe(self.userObserver)
 
