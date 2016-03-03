@@ -625,6 +625,62 @@
 			remoteGlobalIDString = A7E06C781C5A6EB300EBDCC2;
 			remoteInfo = kickstartertv;
 		};
+		A7E315801C8882D1000DD85A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A7D1F8E41C84FB55000D41D5 /* KsApi.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = A7FD096E1C83E74F00332CCB;
+			remoteInfo = "KsApi-iOS";
+		};
+		A7E315821C8882D1000DD85A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A7D1F8F31C84FB5A000D41D5 /* Models.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = A7FD078E1C81CBF600332CCB;
+			remoteInfo = "Models-iOS";
+		};
+		A7E315841C8882D1000DD85A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A7D1F9021C84FB5F000D41D5 /* Prelude.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = A7FD084C1C81E1DA00332CCB;
+			remoteInfo = "Prelude-iOS";
+		};
+		A7E315861C8882D1000DD85A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A7D1F9111C84FB64000D41D5 /* ReactiveExtensions.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = A7FD08861C81EDBD00332CCB;
+			remoteInfo = "ReactiveExtensions-iOS";
+		};
+		A7E315901C8882EA000DD85A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A7D1F8E41C84FB55000D41D5 /* KsApi.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = CA43C5F81BB358F200C180DA;
+			remoteInfo = "KsApi-tvOS";
+		};
+		A7E315921C8882EA000DD85A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A7D1F8F31C84FB5A000D41D5 /* Models.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = CA43C5561BB3083900C180DA;
+			remoteInfo = "Models-tvOS";
+		};
+		A7E315941C8882EA000DD85A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A7D1F9021C84FB5F000D41D5 /* Prelude.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = CA0923F71BB6291900C9EC88;
+			remoteInfo = "Prelude-tvOS";
+		};
+		A7E315961C8882EA000DD85A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A7D1F9111C84FB64000D41D5 /* ReactiveExtensions.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = CA43C6621BB35FCF00C180DA;
+			remoteInfo = "ReactiveExtensions-tvOS";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -1662,6 +1718,10 @@
 			buildRules = (
 			);
 			dependencies = (
+				A7E315811C8882D1000DD85A /* PBXTargetDependency */,
+				A7E315831C8882D1000DD85A /* PBXTargetDependency */,
+				A7E315851C8882D1000DD85A /* PBXTargetDependency */,
+				A7E315871C8882D1000DD85A /* PBXTargetDependency */,
 			);
 			name = "Library-iOS";
 			productName = "Library-iOS";
@@ -1701,6 +1761,10 @@
 			buildRules = (
 			);
 			dependencies = (
+				A7E315911C8882EA000DD85A /* PBXTargetDependency */,
+				A7E315931C8882EA000DD85A /* PBXTargetDependency */,
+				A7E315951C8882EA000DD85A /* PBXTargetDependency */,
+				A7E315971C8882EA000DD85A /* PBXTargetDependency */,
 			);
 			name = "Library-tvOS";
 			productName = "Library-iOS";
@@ -2727,6 +2791,46 @@
 			isa = PBXTargetDependency;
 			target = A7E06C781C5A6EB300EBDCC2 /* Kickstarter-tvOS */;
 			targetProxy = A7E06C8B1C5A6EB300EBDCC2 /* PBXContainerItemProxy */;
+		};
+		A7E315811C8882D1000DD85A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "KsApi-iOS";
+			targetProxy = A7E315801C8882D1000DD85A /* PBXContainerItemProxy */;
+		};
+		A7E315831C8882D1000DD85A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Models-iOS";
+			targetProxy = A7E315821C8882D1000DD85A /* PBXContainerItemProxy */;
+		};
+		A7E315851C8882D1000DD85A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Prelude-iOS";
+			targetProxy = A7E315841C8882D1000DD85A /* PBXContainerItemProxy */;
+		};
+		A7E315871C8882D1000DD85A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "ReactiveExtensions-iOS";
+			targetProxy = A7E315861C8882D1000DD85A /* PBXContainerItemProxy */;
+		};
+		A7E315911C8882EA000DD85A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "KsApi-tvOS";
+			targetProxy = A7E315901C8882EA000DD85A /* PBXContainerItemProxy */;
+		};
+		A7E315931C8882EA000DD85A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Models-tvOS";
+			targetProxy = A7E315921C8882EA000DD85A /* PBXContainerItemProxy */;
+		};
+		A7E315951C8882EA000DD85A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Prelude-tvOS";
+			targetProxy = A7E315941C8882EA000DD85A /* PBXContainerItemProxy */;
+		};
+		A7E315971C8882EA000DD85A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "ReactiveExtensions-tvOS";
+			targetProxy = A7E315961C8882EA000DD85A /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
