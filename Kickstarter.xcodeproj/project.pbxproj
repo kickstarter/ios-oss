@@ -142,6 +142,14 @@
 		A7B694371C87A08500C49A4F /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7B694271C87A04C00C49A4F /* HockeySDK.framework */; };
 		A7B694381C87A08600C49A4F /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7B694271C87A04C00C49A4F /* HockeySDK.framework */; };
 		A7B694391C87A08B00C49A4F /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7B694301C87A07100C49A4F /* HockeySDK.framework */; };
+		A7B694621C87ECFE00C49A4F /* AlamofireImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7D1F9A11C850D6F000D41D5 /* AlamofireImage.framework */; };
+		A7B6946B1C87ECFE00C49A4F /* AlamofireImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7D1F9A11C850D6F000D41D5 /* AlamofireImage.framework */; };
+		A7B6946C1C87ED0100C49A4F /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7D1F9A01C850D6F000D41D5 /* Alamofire.framework */; };
+		A7B6946D1C87ED0100C49A4F /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7D1F9A01C850D6F000D41D5 /* Alamofire.framework */; };
+		A7B6946E1C87ED0A00C49A4F /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7E06E1C1C5C068300EBDCC2 /* Alamofire.framework */; };
+		A7B6946F1C87ED0A00C49A4F /* AlamofireImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7E06E1D1C5C068300EBDCC2 /* AlamofireImage.framework */; };
+		A7B694701C87ED0B00C49A4F /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7E06E1C1C5C068300EBDCC2 /* Alamofire.framework */; };
+		A7B694711C87ED0B00C49A4F /* AlamofireImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7E06E1D1C5C068300EBDCC2 /* AlamofireImage.framework */; };
 		A7C795B21C873AC90081977F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D1F9471C850B7C000D41D5 /* AppDelegate.swift */; };
 		A7C795B31C873AC90081977F /* ActivityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F761741C85FA40005405ED /* ActivityViewController.swift */; };
 		A7C795B41C873AC90081977F /* DiscoveryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A751A51E1C85EC0B009C5DEA /* DiscoveryViewController.swift */; };
@@ -159,8 +167,6 @@
 		A7C795C31C873AFE0081977F /* AlamofireImage.framework.dSYM in carthage dsym */ = {isa = PBXBuildFile; fileRef = A7D1F9AA1C850D89000D41D5 /* AlamofireImage.framework.dSYM */; };
 		A7C795C41C873AFE0081977F /* ReactiveCocoa.framework.dSYM in carthage dsym */ = {isa = PBXBuildFile; fileRef = A7D1F9AB1C850D89000D41D5 /* ReactiveCocoa.framework.dSYM */; };
 		A7C795C51C873AFE0081977F /* Result.framework.dSYM in carthage dsym */ = {isa = PBXBuildFile; fileRef = A7D1F9AC1C850D89000D41D5 /* Result.framework.dSYM */; };
-		A7C795D41C873BD50081977F /* Kickstarter_Framework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7C795CD1C873BD50081977F /* Kickstarter_Framework.framework */; };
-		A7C795D51C873BD50081977F /* Kickstarter_Framework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A7C795CD1C873BD50081977F /* Kickstarter_Framework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A7C795DB1C873C160081977F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E06C7C1C5A6EB300EBDCC2 /* AppDelegate.swift */; };
 		A7C795DC1C873C160081977F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E06C7E1C5A6EB300EBDCC2 /* ViewController.swift */; };
 		A7C795DD1C873C160081977F /* DiscoveryProjectData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E06CA81C5BFB3800EBDCC2 /* DiscoveryProjectData.swift */; };
@@ -374,13 +380,6 @@
 			remoteGlobalIDString = A75511AA1C8647D9005355CF;
 			remoteInfo = "Library-tvOS";
 		};
-		A75511E81C865321005355CF /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A7E06C711C5A6EB300EBDCC2 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = A755113B1C8642B3005355CF;
-			remoteInfo = "Library-iOS";
-		};
 		A7B694101C87942600C49A4F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A7E06C711C5A6EB300EBDCC2 /* Project object */;
@@ -389,6 +388,13 @@
 			remoteInfo = "Library-iOS";
 		};
 		A7B694221C879F4B00C49A4F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A7E06C711C5A6EB300EBDCC2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A75511AA1C8647D9005355CF;
+			remoteInfo = "Library-tvOS";
+		};
+		A7B694721C87EDEB00C49A4F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A7E06C711C5A6EB300EBDCC2 /* Project object */;
 			proxyType = 1;
@@ -725,7 +731,6 @@
 			files = (
 				A7E06E271C5C068300EBDCC2 /* Alamofire.framework in Embed Frameworks */,
 				A7E06E351C5C068400EBDCC2 /* ReactiveCocoa.framework in Embed Frameworks */,
-				A7C795D51C873BD50081977F /* Kickstarter_Framework.framework in Embed Frameworks */,
 				A7E06E291C5C068400EBDCC2 /* AlamofireImage.framework in Embed Frameworks */,
 				A7E06E391C5C068400EBDCC2 /* Result.framework in Embed Frameworks */,
 			);
@@ -935,10 +940,12 @@
 			files = (
 				A75511E41C864CEA005355CF /* KsApi.framework in Frameworks */,
 				A755117B1C8642E6005355CF /* Models.framework in Frameworks */,
+				A7B6946B1C87ECFE00C49A4F /* AlamofireImage.framework in Frameworks */,
 				A7B6942C1C87A05200C49A4F /* HockeySDK.framework in Frameworks */,
 				A755117C1C8642E7005355CF /* Prelude.framework in Frameworks */,
 				A755117D1C8642F2005355CF /* ReactiveCocoa.framework in Frameworks */,
 				A755117E1C8642F2005355CF /* Result.framework in Frameworks */,
+				A7B6946D1C87ED0100C49A4F /* Alamofire.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -947,6 +954,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				A7B694371C87A08500C49A4F /* HockeySDK.framework in Frameworks */,
+				A7B6946C1C87ED0100C49A4F /* Alamofire.framework in Frameworks */,
+				A7B694621C87ECFE00C49A4F /* AlamofireImage.framework in Frameworks */,
 				A75511461C8642B3005355CF /* Library.framework in Frameworks */,
 				A75511851C8644CC005355CF /* ReactiveCocoa.framework in Frameworks */,
 				A75511861C8644CC005355CF /* Result.framework in Frameworks */,
@@ -961,8 +970,10 @@
 				A75511DE1C8648D7005355CF /* Models.framework in Frameworks */,
 				A7B694351C87A07900C49A4F /* HockeySDK.framework in Frameworks */,
 				A75511DF1C8648D7005355CF /* Prelude.framework in Frameworks */,
+				A7B6946E1C87ED0A00C49A4F /* Alamofire.framework in Frameworks */,
 				A75511E01C8648DB005355CF /* ReactiveCocoa.framework in Frameworks */,
 				A75511E11C8648DB005355CF /* Result.framework in Frameworks */,
+				A7B6946F1C87ED0A00C49A4F /* AlamofireImage.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -973,6 +984,8 @@
 				A7B694361C87A07B00C49A4F /* HockeySDK.framework in Frameworks */,
 				A75511F91C865321005355CF /* Library.framework in Frameworks */,
 				A75512031C8653C0005355CF /* ReactiveCocoa.framework in Frameworks */,
+				A7B694711C87ED0B00C49A4F /* AlamofireImage.framework in Frameworks */,
+				A7B694701C87ED0B00C49A4F /* Alamofire.framework in Frameworks */,
 				A75512041C8653C0005355CF /* Result.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1054,7 +1067,6 @@
 				A7E06E281C5C068400EBDCC2 /* AlamofireImage.framework in Frameworks */,
 				A7E06E381C5C068400EBDCC2 /* Result.framework in Frameworks */,
 				A7B694331C87A07700C49A4F /* HockeySDK.framework in Frameworks */,
-				A7C795D41C873BD50081977F /* Kickstarter_Framework.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1707,7 +1719,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				A75511E71C865321005355CF /* PBXTargetDependency */,
+				A7B694731C87EDEB00C49A4F /* PBXTargetDependency */,
 			);
 			name = "Library-tvOSTests";
 			productName = "Library-iOSTests";
@@ -2625,11 +2637,6 @@
 			target = A75511AA1C8647D9005355CF /* Library-tvOS */;
 			targetProxy = A75511E21C864974005355CF /* PBXContainerItemProxy */;
 		};
-		A75511E71C865321005355CF /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = A755113B1C8642B3005355CF /* Library-iOS */;
-			targetProxy = A75511E81C865321005355CF /* PBXContainerItemProxy */;
-		};
 		A7B694111C87942600C49A4F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = A755113B1C8642B3005355CF /* Library-iOS */;
@@ -2639,6 +2646,11 @@
 			isa = PBXTargetDependency;
 			target = A75511AA1C8647D9005355CF /* Library-tvOS */;
 			targetProxy = A7B694221C879F4B00C49A4F /* PBXContainerItemProxy */;
+		};
+		A7B694731C87EDEB00C49A4F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A75511AA1C8647D9005355CF /* Library-tvOS */;
+			targetProxy = A7B694721C87EDEB00C49A4F /* PBXContainerItemProxy */;
 		};
 		A7C795B71C873AD10081977F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -3273,7 +3285,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/tvOS",
-					"$(PROJECT_DIR)/Frameworks/HockeySDK/iOS/HockeySDK.embeddedframework",
 					"$(PROJECT_DIR)/Frameworks/HockeySDK/tvOS/HockeySDK.embeddedframework",
 				);
 				INFOPLIST_FILE = "Kickstarter-tvOS/Tests/Info.plist";
@@ -3291,7 +3302,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/tvOS",
-					"$(PROJECT_DIR)/Frameworks/HockeySDK/iOS/HockeySDK.embeddedframework",
 					"$(PROJECT_DIR)/Frameworks/HockeySDK/tvOS/HockeySDK.embeddedframework",
 				);
 				INFOPLIST_FILE = "Kickstarter-tvOS/Tests/Info.plist";

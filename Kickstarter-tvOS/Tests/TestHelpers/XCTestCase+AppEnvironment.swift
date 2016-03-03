@@ -3,6 +3,7 @@ import XCTest
 import AVFoundation
 import class Foundation.NSLocale
 import class Foundation.NSTimeZone
+import protocol Library.HockeyManagerType
 import protocol KsApi.ServiceType
 import protocol ReactiveCocoa.DateSchedulerType
 import struct Library.Environment
