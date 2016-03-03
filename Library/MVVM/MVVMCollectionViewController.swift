@@ -1,4 +1,6 @@
-import UIKit
+import func Foundation.dispatch_async
+import func Foundation.dispatch_get_main_queue
+import class UIKit.UICollectionViewController
 
 /// A UICollectionViewController base class that interfaces nicely with
 /// cells of the type MVVMCollectionViewCell.

@@ -1,4 +1,5 @@
-import UIKit
+import class UIKit.UICollectionView
+import class UIKit.UINib
 
 public extension UICollectionView {
   func registerCellClass(cellClass: AnyClass) {

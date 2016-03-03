@@ -2,6 +2,7 @@ import AVFoundation
 import class Foundation.NSBundle
 import class Foundation.NSLocale
 import class Foundation.NSTimeZone
+import class HockeySDK.BITHockeyManager
 import struct KsApi.Service
 import protocol KsApi.ServiceType
 import protocol ReactiveCocoa.DateSchedulerType
@@ -21,6 +22,7 @@ public struct Environment {
   public let debounceScheduler: DateSchedulerType
   public let mainBundle: NSBundleType
   public let assetImageGeneratorType: AssetImageGeneratorType.Type
+  public let hockeyManager: HockeyManagerType
 
   public init(
     apiService: ServiceType = Service.shared,
@@ -32,7 +34,8 @@ public struct Environment {
     launchedCountries: LaunchedCountries = .init(),
     debounceScheduler: DateSchedulerType = QueueScheduler.mainQueueScheduler,
     mainBundle: NSBundleType = NSBundle.mainBundle(),
-    assetImageGeneratorType: AssetImageGeneratorType.Type = AVAssetImageGenerator.self) {
+    assetImageGeneratorType: AssetImageGeneratorType.Type = AVAssetImageGenerator.self,
+    hockeyManager: HockeyManagerType = BITHockeyManager.sharedHockeyManager()) {
 
       self.apiService = apiService
       self.currentUser = currentUser
@@ -44,6 +47,7 @@ public struct Environment {
       self.debounceScheduler = debounceScheduler
       self.mainBundle = mainBundle
       self.assetImageGeneratorType = assetImageGeneratorType
+      self.hockeyManager = hockeyManager
   }
 }
 

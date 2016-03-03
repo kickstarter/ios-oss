@@ -1,4 +1,4 @@
-import UIKit
+import class UIKit.UIButton
 
 public extension UIButton {
   /**

@@ -1,4 +1,4 @@
-import UIKit
+import class UIKit.UILabel
 
 public extension UILabel {
   /**

@@ -1,4 +1,4 @@
-import UIKit
+import class UIKit.UICollectionViewCell
 
 extension UICollectionViewCell {
   public override func awakeFromNib() {

@@ -1,5 +1,6 @@
-import ReactiveCocoa
-import Prelude
+import class ReactiveCocoa.MutableProperty
+import protocol Prelude.OptionalType
+import struct Prelude.Unit
 
 /// View models that are used with cells (e.g. table/collection views) should conform to this protocol
 /// so that MVVMDataSource can guarantee that the data fed to it matches what cells expect.
