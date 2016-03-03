@@ -1,24 +1,9 @@
-[submodule "Carthage/Checkouts/Alamofire"]
-	path = Carthage/Checkouts/Alamofire
-	url = https://github.com/Alamofire/Alamofire.git
-[submodule "Carthage/Checkouts/AlamofireImage"]
-	path = Carthage/Checkouts/AlamofireImage
-	url = https://github.com/Alamofire/AlamofireImage.git
-[submodule "Carthage/Checkouts/Result"]
-	path = Carthage/Checkouts/Result
-	url = https://github.com/antitypical/Result.git
-[submodule "Carthage/Checkouts/ReactiveCocoa"]
-	path = Carthage/Checkouts/ReactiveCocoa
-	url = https://github.com/ReactiveCocoa/ReactiveCocoa.git
 [submodule "Frameworks/Prelude"]
 	path = Frameworks/Prelude
 	url = git@github.com:kickstarter/Kickstarter-Prelude
-[submodule "Frameworks/Models"]
-	path = Frameworks/Models
-	url = git@github.com:kickstarter/Kickstarter-Models.git
-[submodule "Frameworks/ReactiveExtensions"]
-	path = Frameworks/ReactiveExtensions
-	url = git@github.com:kickstarter/Kickstarter-ReactiveExtensions.git
 [submodule "Frameworks/KsApi"]
 	path = Frameworks/KsApi
 	url = git@github.com:kickstarter/Kickstarter-KsApi.git
+[submodule "Frameworks/AlamofireImage"]
+	path = Frameworks/AlamofireImage
+	url = git://github.com/Alamofire/AlamofireImage.git

@@ -2,4 +2,3 @@
 
 bin/bootstrap-configs
 bin/bootstrap-submodules
-bin/bootstrap-carthage-if-needed
