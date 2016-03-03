@@ -354,6 +354,15 @@
 		A7E070501C5D3CF000EBDCC2 /* categories.json in Resources */ = {isa = PBXBuildFile; fileRef = A7E0704D1C5D3CF000EBDCC2 /* categories.json */; };
 		A7E070511C5D3CF000EBDCC2 /* discover.json in Resources */ = {isa = PBXBuildFile; fileRef = A7E0704E1C5D3CF000EBDCC2 /* discover.json */; };
 		A7E070521C5D3CF000EBDCC2 /* project.json in Resources */ = {isa = PBXBuildFile; fileRef = A7E0704F1C5D3CF000EBDCC2 /* project.json */; };
+		A7E315991C888587000DD85A /* ReactiveCocoa.framework.dSYM in carthage dsym */ = {isa = PBXBuildFile; fileRef = A7E06DAF1C5C019D00EBDCC2 /* ReactiveCocoa.framework.dSYM */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		A7E3159A1C888587000DD85A /* Result.framework.dSYM in carthage dsym */ = {isa = PBXBuildFile; fileRef = A7E06DB11C5C019D00EBDCC2 /* Result.framework.dSYM */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		A7E3159C1C8885A3000DD85A /* ReactiveCocoa.framework.dSYM in carthage dsym */ = {isa = PBXBuildFile; fileRef = A7D1F9AB1C850D89000D41D5 /* ReactiveCocoa.framework.dSYM */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		A7E3159D1C8885A3000DD85A /* Result.framework.dSYM in carthage dsym */ = {isa = PBXBuildFile; fileRef = A7D1F9AC1C850D89000D41D5 /* Result.framework.dSYM */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		A7E3159E1C8885E7000DD85A /* KsApi.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A7D1F8F01C84FB55000D41D5 /* KsApi.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A7E3159F1C8885E7000DD85A /* Models.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A7D1F8FF1C84FB5A000D41D5 /* Models.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A7E315A01C8885E7000DD85A /* Prelude.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A7D1F90E1C84FB5F000D41D5 /* Prelude.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A7E315A11C8885E7000DD85A /* ReactiveExtensions.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A7D1F91D1C84FB64000D41D5 /* ReactiveExtensions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A7E315A21C8885EF000DD85A /* Library.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A75511DA1C8647D9005355CF /* Library.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A7F761751C85FA40005405ED /* ActivityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F761741C85FA40005405ED /* ActivityViewController.swift */; };
 		A7F761771C85FACB005405ED /* LoginToutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F761761C85FACB005405ED /* LoginToutViewController.swift */; };
 /* End PBXBuildFile section */
@@ -789,12 +798,41 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				A7E315A21C8885EF000DD85A /* Library.framework in Embed Frameworks */,
+				A7E3159E1C8885E7000DD85A /* KsApi.framework in Embed Frameworks */,
+				A7E3159F1C8885E7000DD85A /* Models.framework in Embed Frameworks */,
+				A7E315A01C8885E7000DD85A /* Prelude.framework in Embed Frameworks */,
+				A7E315A11C8885E7000DD85A /* ReactiveExtensions.framework in Embed Frameworks */,
 				A7E06E271C5C068300EBDCC2 /* Alamofire.framework in Embed Frameworks */,
 				A7E06E351C5C068400EBDCC2 /* ReactiveCocoa.framework in Embed Frameworks */,
 				A7E06E291C5C068400EBDCC2 /* AlamofireImage.framework in Embed Frameworks */,
 				A7E06E391C5C068400EBDCC2 /* Result.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A7E315981C888579000DD85A /* carthage dsym */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 16;
+			files = (
+				A7E315991C888587000DD85A /* ReactiveCocoa.framework.dSYM in carthage dsym */,
+				A7E3159A1C888587000DD85A /* Result.framework.dSYM in carthage dsym */,
+			);
+			name = "carthage dsym";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A7E3159B1C888598000DD85A /* carthage dsym */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 16;
+			files = (
+				A7E3159C1C8885A3000DD85A /* ReactiveCocoa.framework.dSYM in carthage dsym */,
+				A7E3159D1C8885A3000DD85A /* Result.framework.dSYM in carthage dsym */,
+			);
+			name = "carthage dsym";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -1736,6 +1774,7 @@
 				A75511421C8642B3005355CF /* Frameworks */,
 				A75511431C8642B3005355CF /* Resources */,
 				A75511871C864526005355CF /* carthage copy-frameworks */,
+				A7E3159B1C888598000DD85A /* carthage dsym */,
 			);
 			buildRules = (
 			);
@@ -1779,6 +1818,7 @@
 				A75511F81C865321005355CF /* Frameworks */,
 				A75511FC1C865321005355CF /* Resources */,
 				A75511FD1C865321005355CF /* carthage copy-frameworks */,
+				A7E315981C888579000DD85A /* carthage dsym */,
 			);
 			buildRules = (
 			);
