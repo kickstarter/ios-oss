@@ -42,7 +42,7 @@ public struct CurrentUser : CurrentUserType {
       .startWithNext(self.persistToStorage)
 
     self.refreshSignal
-      .flatMap(.Latest) { _ in apiService.fetchUserSelf().demoteErrors() }
+      .switchMap { _ in apiService.fetchUserSelf().demoteErrors() }
       .wrapInOptional()
       .observe(self.userObserver)
 
