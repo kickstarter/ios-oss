@@ -1,8 +1,6 @@
 import UIKit
-import HockeySDK
 import protocol Library.HockeyManagerType
 import struct Library.AppEnvironment
-import Prelude
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {

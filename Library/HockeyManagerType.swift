@@ -1,4 +1,4 @@
-import HockeySDK
+import class HockeySDK.BITHockeyManager
 
 /**
  *  A type that can act like a HockeySDK manager without necessarily interfacing with Hockey.
