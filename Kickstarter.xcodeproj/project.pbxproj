@@ -119,7 +119,6 @@
 		A75511F51C865321005355CF /* EnvironmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A755118A1C8645A0005355CF /* EnvironmentTests.swift */; };
 		A75511F61C865321005355CF /* UIButton+LocalizedKeyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75511901C8645A0005355CF /* UIButton+LocalizedKeyTests.swift */; };
 		A75511F71C865321005355CF /* TestObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75511A21C86460B005355CF /* TestObserver.swift */; };
-		A75511F91C865321005355CF /* Library.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A755113C1C8642B3005355CF /* Library.framework */; };
 		A75512031C8653C0005355CF /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7E06E231C5C068300EBDCC2 /* ReactiveCocoa.framework */; };
 		A75512041C8653C0005355CF /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7E06E251C5C068300EBDCC2 /* Result.framework */; };
 		A7B693E61C8772A100C49A4F /* Library.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A755113C1C8642B3005355CF /* Library.framework */; };
@@ -142,14 +141,16 @@
 		A7B694371C87A08500C49A4F /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7B694271C87A04C00C49A4F /* HockeySDK.framework */; };
 		A7B694381C87A08600C49A4F /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7B694271C87A04C00C49A4F /* HockeySDK.framework */; };
 		A7B694391C87A08B00C49A4F /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7B694301C87A07100C49A4F /* HockeySDK.framework */; };
-		A7B694621C87ECFE00C49A4F /* AlamofireImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7D1F9A11C850D6F000D41D5 /* AlamofireImage.framework */; };
-		A7B6946B1C87ECFE00C49A4F /* AlamofireImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7D1F9A11C850D6F000D41D5 /* AlamofireImage.framework */; };
-		A7B6946C1C87ED0100C49A4F /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7D1F9A01C850D6F000D41D5 /* Alamofire.framework */; };
-		A7B6946D1C87ED0100C49A4F /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7D1F9A01C850D6F000D41D5 /* Alamofire.framework */; };
-		A7B6946E1C87ED0A00C49A4F /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7E06E1C1C5C068300EBDCC2 /* Alamofire.framework */; };
-		A7B6946F1C87ED0A00C49A4F /* AlamofireImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7E06E1D1C5C068300EBDCC2 /* AlamofireImage.framework */; };
-		A7B694701C87ED0B00C49A4F /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7E06E1C1C5C068300EBDCC2 /* Alamofire.framework */; };
-		A7B694711C87ED0B00C49A4F /* AlamofireImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7E06E1D1C5C068300EBDCC2 /* AlamofireImage.framework */; };
+		A7B694741C87F13000C49A4F /* ReactiveExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7D1F9191C84FB64000D41D5 /* ReactiveExtensions.framework */; };
+		A7B694751C87F19D00C49A4F /* Models.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7D1F8FB1C84FB5A000D41D5 /* Models.framework */; };
+		A7B694761C87F19D00C49A4F /* Prelude.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7D1F90A1C84FB5F000D41D5 /* Prelude.framework */; };
+		A7B694771C87F19D00C49A4F /* ReactiveExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7D1F9191C84FB64000D41D5 /* ReactiveExtensions.framework */; };
+		A7B694781C87F1D700C49A4F /* ReactiveExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7D1F91D1C84FB64000D41D5 /* ReactiveExtensions.framework */; };
+		A7B694791C87F1F100C49A4F /* Library.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75511DA1C8647D9005355CF /* Library.framework */; };
+		A7B6947A1C87F22400C49A4F /* Library.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75511DA1C8647D9005355CF /* Library.framework */; };
+		A7B6947B1C87F22400C49A4F /* Models.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7D1F8FF1C84FB5A000D41D5 /* Models.framework */; };
+		A7B6947C1C87F22400C49A4F /* Prelude.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7D1F90E1C84FB5F000D41D5 /* Prelude.framework */; };
+		A7B6947D1C87F22400C49A4F /* ReactiveExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7D1F91D1C84FB64000D41D5 /* ReactiveExtensions.framework */; };
 		A7C795B21C873AC90081977F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D1F9471C850B7C000D41D5 /* AppDelegate.swift */; };
 		A7C795B31C873AC90081977F /* ActivityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F761741C85FA40005405ED /* ActivityViewController.swift */; };
 		A7C795B41C873AC90081977F /* DiscoveryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A751A51E1C85EC0B009C5DEA /* DiscoveryViewController.swift */; };
@@ -938,14 +939,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A7B694741C87F13000C49A4F /* ReactiveExtensions.framework in Frameworks */,
 				A75511E41C864CEA005355CF /* KsApi.framework in Frameworks */,
 				A755117B1C8642E6005355CF /* Models.framework in Frameworks */,
-				A7B6946B1C87ECFE00C49A4F /* AlamofireImage.framework in Frameworks */,
 				A7B6942C1C87A05200C49A4F /* HockeySDK.framework in Frameworks */,
 				A755117C1C8642E7005355CF /* Prelude.framework in Frameworks */,
 				A755117D1C8642F2005355CF /* ReactiveCocoa.framework in Frameworks */,
 				A755117E1C8642F2005355CF /* Result.framework in Frameworks */,
-				A7B6946D1C87ED0100C49A4F /* Alamofire.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -953,9 +953,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A7B694751C87F19D00C49A4F /* Models.framework in Frameworks */,
+				A7B694761C87F19D00C49A4F /* Prelude.framework in Frameworks */,
+				A7B694771C87F19D00C49A4F /* ReactiveExtensions.framework in Frameworks */,
 				A7B694371C87A08500C49A4F /* HockeySDK.framework in Frameworks */,
-				A7B6946C1C87ED0100C49A4F /* Alamofire.framework in Frameworks */,
-				A7B694621C87ECFE00C49A4F /* AlamofireImage.framework in Frameworks */,
 				A75511461C8642B3005355CF /* Library.framework in Frameworks */,
 				A75511851C8644CC005355CF /* ReactiveCocoa.framework in Frameworks */,
 				A75511861C8644CC005355CF /* Result.framework in Frameworks */,
@@ -966,14 +967,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A7B694781C87F1D700C49A4F /* ReactiveExtensions.framework in Frameworks */,
 				A75511E51C864CF0005355CF /* KsApi.framework in Frameworks */,
 				A75511DE1C8648D7005355CF /* Models.framework in Frameworks */,
 				A7B694351C87A07900C49A4F /* HockeySDK.framework in Frameworks */,
 				A75511DF1C8648D7005355CF /* Prelude.framework in Frameworks */,
-				A7B6946E1C87ED0A00C49A4F /* Alamofire.framework in Frameworks */,
 				A75511E01C8648DB005355CF /* ReactiveCocoa.framework in Frameworks */,
 				A75511E11C8648DB005355CF /* Result.framework in Frameworks */,
-				A7B6946F1C87ED0A00C49A4F /* AlamofireImage.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -981,11 +981,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A7B6947A1C87F22400C49A4F /* Library.framework in Frameworks */,
+				A7B6947B1C87F22400C49A4F /* Models.framework in Frameworks */,
+				A7B6947C1C87F22400C49A4F /* Prelude.framework in Frameworks */,
+				A7B6947D1C87F22400C49A4F /* ReactiveExtensions.framework in Frameworks */,
 				A7B694361C87A07B00C49A4F /* HockeySDK.framework in Frameworks */,
-				A75511F91C865321005355CF /* Library.framework in Frameworks */,
 				A75512031C8653C0005355CF /* ReactiveCocoa.framework in Frameworks */,
-				A7B694711C87ED0B00C49A4F /* AlamofireImage.framework in Frameworks */,
-				A7B694701C87ED0B00C49A4F /* Alamofire.framework in Frameworks */,
 				A75512041C8653C0005355CF /* Result.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1058,6 +1059,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A7B694791C87F1F100C49A4F /* Library.framework in Frameworks */,
 				A7D1F9281C84FB7D000D41D5 /* KsApi.framework in Frameworks */,
 				A7D1F9291C84FB7D000D41D5 /* Models.framework in Frameworks */,
 				A7D1F92A1C84FB7D000D41D5 /* Prelude.framework in Frameworks */,
