@@ -46,7 +46,7 @@ public class StyledLabel: UILabel {
         case .TextSecondary:
           color = UIColor.textSecondary()
         case .TextWhite:
-          color = KSColor.White.color
+          color = KSColor.White
         case .CaptionPrimary:
           size = Size.Caption.rawValue
         case .CaptionPrimaryMedium:
@@ -68,7 +68,7 @@ public class StyledLabel: UILabel {
           color = UIColor.textSecondary()
           size = Size.Body.rawValue
         case .BodyWhite:
-          color = KSColor.White.color
+          color = KSColor.White
           size = Size.Body.rawValue
         case .SubheadPrimary:
           size = Size.Subhead.rawValue

@@ -20,8 +20,8 @@ public class FacebookButton: UIButton {
 
   func onCreate() {
     self.titleLabel?.font = UIFont.systemFontOfSize(14.0, weight: UIFontWeightRegular)
-    self.setTitleColor(KSColor.White.color, forState: UIControlState.Normal)
-    self.backgroundColor = SocialColor.FacebookBlue.color
+    self.setTitleColor(KSColor.White, forState: UIControlState.Normal)
+    self.backgroundColor = SocialColor.FacebookBlue
     self.layer.cornerRadius = 6
   }
 }
