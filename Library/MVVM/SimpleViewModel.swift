@@ -1,5 +1,5 @@
 public protocol SimpleViewModelOutputs {
-  typealias Model
+  associatedtype Model
   var model: Model { get }
 }
 

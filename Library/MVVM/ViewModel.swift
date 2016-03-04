@@ -7,13 +7,13 @@ import struct Prelude.Unit
 /// View models that are used with cells (e.g. table/collection views) should conform to this protocol
 /// so that MVVMDataSource can guarantee that the data fed to it matches what cells expect.
 public protocol ViewModelType {
-  typealias Model
+  associatedtype Model
 }
 
 /// Cells (e.g. table/collection cells) that bind to a view model should conform to this protocol so that
 /// MVVMDataSource can guarantee that the data fed to it matches what cells expect.
 public protocol ViewModeledCellType {
-  typealias ViewModel: ViewModelType
+  associatedtype ViewModel: ViewModelType
   var viewModelProperty: MutableProperty<ViewModel?> { get }
 }
 
@@ -32,5 +32,5 @@ extension Unit : ViewModelType {
 
 /// Optionals of view models can trivially be made into view models.
 extension Prelude.OptionalType where Wrapped: ViewModelType {
-  typealias Model = Wrapped
+  public typealias Model = Wrapped
 }

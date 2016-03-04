@@ -1,6 +1,6 @@
 import class UIKit.UIColor
 import struct CoreGraphics.CGFloat
-import func CoreGraphics./
+import CoreGraphics
 import func Darwin.round
 
 extension UIColor {
