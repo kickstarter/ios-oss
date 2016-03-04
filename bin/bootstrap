@@ -1,4 +1,0 @@
-#!/bin/sh
-
-bin/bootstrap-configs
-bin/bootstrap-submodules
