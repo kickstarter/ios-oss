@@ -30,10 +30,10 @@ test-all:
 	PLATFORM=tvOS TARGET=Library $(MAKE) test
 
 test: build
-	$(XCODEBUILD) test $(BUILD_FLAGS) $(PIPE)
+	$(XCODEBUILD) test $(BUILD_FLAGS) $(XCPRETTY)
 
 clean:
-	$(XCODEBUILD) clean $(BUILD_FLAGS) $(PIPE)
+	$(XCODEBUILD) clean $(BUILD_FLAGS) $(XCPRETTY)
 
 dependencies: submodules configs
 
