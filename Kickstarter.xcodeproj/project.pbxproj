@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		01BDFFB21C87AAD0002E8D34 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 01BDFFB01C87AAD0002E8D34 /* Login.storyboard */; };
+		01BDFFB71C889223002E8D34 /* StyledLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BDFFB61C889223002E8D34 /* StyledLabel.swift */; };
+		01BDFFB91C88A090002E8D34 /* UIColor+KS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BDFFB81C88A090002E8D34 /* UIColor+KS.swift */; };
+		01BDFFBC1C88DDA8002E8D34 /* BorderButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BDFFBB1C88DDA8002E8D34 /* BorderButton.swift */; };
+		01BDFFBE1C88F006002E8D34 /* FacebookButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BDFFBD1C88F006002E8D34 /* FacebookButton.swift */; };
 		A72153921C5D62E800127699 /* HomeViewModelInputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72153911C5D62E800127699 /* HomeViewModelInputs.swift */; };
 		A72153941C5D630300127699 /* HomeViewModelOutputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72153931C5D630300127699 /* HomeViewModelOutputs.swift */; };
 		A751A51F1C85EC0B009C5DEA /* DiscoveryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A751A51E1C85EC0B009C5DEA /* DiscoveryViewController.swift */; };
@@ -703,6 +708,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		01BDFFB11C87AAD0002E8D34 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Login.storyboard; sourceTree = "<group>"; };
+		01BDFFB61C889223002E8D34 /* StyledLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyledLabel.swift; sourceTree = "<group>"; };
+		01BDFFB81C88A090002E8D34 /* UIColor+KS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+KS.swift"; sourceTree = "<group>"; };
+		01BDFFBB1C88DDA8002E8D34 /* BorderButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BorderButton.swift; sourceTree = "<group>"; };
+		01BDFFBD1C88F006002E8D34 /* FacebookButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookButton.swift; sourceTree = "<group>"; };
 		A72153911C5D62E800127699 /* HomeViewModelInputs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewModelInputs.swift; sourceTree = "<group>"; };
 		A72153931C5D630300127699 /* HomeViewModelOutputs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewModelOutputs.swift; sourceTree = "<group>"; };
 		A751A51E1C85EC0B009C5DEA /* DiscoveryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryViewController.swift; sourceTree = "<group>"; };
@@ -1159,7 +1169,9 @@
 				A7C725781C85D36D005A016B /* AppEnvironment.swift */,
 				A7C725791C85D36D005A016B /* AssetImageGeneratorType.swift */,
 				A7C7257A1C85D36D005A016B /* AVPlayerView.swift */,
+				01BDFFBB1C88DDA8002E8D34 /* BorderButton.swift */,
 				A7C7257F1C85D36D005A016B /* Environment.swift */,
+				01BDFFBD1C88F006002E8D34 /* FacebookButton.swift */,
 				A7C725801C85D36D005A016B /* Format.swift */,
 				A7C725811C85D36D005A016B /* GradientView.swift */,
 				A7C725821C85D36D005A016B /* Language.swift */,
@@ -1168,7 +1180,9 @@
 				A7C725911C85D36D005A016B /* NSBundleType.swift */,
 				A7C725921C85D36D005A016B /* String+SimpleHTML.swift */,
 				A7C725931C85D36D005A016B /* Strings.swift */,
+				01BDFFB61C889223002E8D34 /* StyledLabel.swift */,
 				A7C725941C85D36D005A016B /* UIButton+LocalizedKey.swift */,
+				01BDFFB81C88A090002E8D34 /* UIColor+KS.swift */,
 				A7C725951C85D36D005A016B /* UIGestureRecognizer-Extensions.swift */,
 				A7C725961C85D36D005A016B /* UILabel+IBClear.swift */,
 				A7C725971C85D36D005A016B /* UILabel+LocalizedKey.swift */,
@@ -1261,6 +1275,7 @@
 				A7D1F9501C850B7C000D41D5 /* Assets.xcassets */,
 				A7D1F9521C850B7C000D41D5 /* LaunchScreen.storyboard */,
 				A7D1F94D1C850B7C000D41D5 /* Main.storyboard */,
+				01BDFFB01C87AAD0002E8D34 /* Login.storyboard */,
 				A7D1F98F1C850CB2000D41D5 /* Tests */,
 				A751A51A1C85EAD8009C5DEA /* ViewModels */,
 				A751A51B1C85EAD8009C5DEA /* Views */,
@@ -1997,6 +2012,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				01BDFFB21C87AAD0002E8D34 /* Login.storyboard in Resources */,
 				A7D1F9541C850B7C000D41D5 /* LaunchScreen.storyboard in Resources */,
 				A7D1F9511C850B7C000D41D5 /* Assets.xcassets in Resources */,
 				A7D1F94F1C850B7C000D41D5 /* Main.storyboard in Resources */,
@@ -2219,11 +2235,13 @@
 				A755115F1C8642C3005355CF /* Format.swift in Sources */,
 				A75511601C8642C3005355CF /* GradientView.swift in Sources */,
 				A75511611C8642C3005355CF /* Language.swift in Sources */,
+				01BDFFB91C88A090002E8D34 /* UIColor+KS.swift in Sources */,
 				A75511621C8642C3005355CF /* LaunchedCountries.swift in Sources */,
 				A75511631C8642C3005355CF /* LocalizedString.swift in Sources */,
 				A75511641C8642C3005355CF /* NSBundleType.swift in Sources */,
 				A75511651C8642C3005355CF /* String+SimpleHTML.swift in Sources */,
 				A75511661C8642C3005355CF /* Strings.swift in Sources */,
+				01BDFFBC1C88DDA8002E8D34 /* BorderButton.swift in Sources */,
 				A75511671C8642C3005355CF /* UIButton+LocalizedKey.swift in Sources */,
 				A75511681C8642C3005355CF /* UIGestureRecognizer-Extensions.swift in Sources */,
 				A75511691C8642C3005355CF /* UILabel+IBClear.swift in Sources */,
@@ -2231,6 +2249,7 @@
 				A755116B1C8642C3005355CF /* UILabel+SimpleHTML.swift in Sources */,
 				A755116C1C8642C3005355CF /* UIPress-Extensions.swift in Sources */,
 				A755116D1C8642C3005355CF /* CurrentUser.swift in Sources */,
+				01BDFFBE1C88F006002E8D34 /* FacebookButton.swift in Sources */,
 				A755116E1C8642C3005355CF /* KeyValueStoreType.swift in Sources */,
 				A755116F1C8642C3005355CF /* MultiKeyValueStore.swift in Sources */,
 				A75511701C8642C3005355CF /* MVVMCollectionViewController.swift in Sources */,
@@ -2238,6 +2257,7 @@
 				A75511721C8642C3005355CF /* MVVMViewController.swift in Sources */,
 				A75511731C8642C3005355CF /* SimpleDataSource.swift in Sources */,
 				A75511741C8642C3005355CF /* SimpleViewModel.swift in Sources */,
+				01BDFFB71C889223002E8D34 /* StyledLabel.swift in Sources */,
 				A75511751C8642C3005355CF /* UICollectionView-Extensions.swift in Sources */,
 				A75511761C8642C3005355CF /* UICollectionViewCell-Extensions.swift in Sources */,
 				A75511771C8642C3005355CF /* UITableView-Extensions.swift in Sources */,
@@ -2592,6 +2612,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		01BDFFB01C87AAD0002E8D34 /* Login.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				01BDFFB11C87AAD0002E8D34 /* Base */,
+			);
+			name = Login.storyboard;
+			sourceTree = "<group>";
+		};
 		A7D1F94D1C850B7C000D41D5 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -2922,7 +2950,7 @@
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = "Kickstarter-iOS/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstarter;
 				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)_iOS";
@@ -2942,7 +2970,7 @@
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = "Kickstarter-iOS/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstarter;
 				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)_iOS";

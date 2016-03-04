@@ -1,82 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="49e-Tb-3d3">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="OyO-rp-Px7">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
-        <!--Discovery-->
-        <scene sceneID="u6r-hs-L5e">
-            <objects>
-                <collectionViewController id="aQp-ES-7ou" customClass="DiscoveryViewController" customModule="Kickstarter_iOS" customModuleProvider="target" sceneMemberID="viewController">
-                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="FA1-IX-eXg">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="fvd-0D-yhO">
-                            <size key="itemSize" width="50" height="50"/>
-                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                        </collectionViewFlowLayout>
-                        <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="4Vn-Gi-dRV">
-                                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                    <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                </view>
-                            </collectionViewCell>
-                        </cells>
-                        <connections>
-                            <outlet property="dataSource" destination="aQp-ES-7ou" id="i0e-ST-qfe"/>
-                            <outlet property="delegate" destination="aQp-ES-7ou" id="40x-dH-NsJ"/>
-                        </connections>
-                    </collectionView>
-                    <tabBarItem key="tabBarItem" title="Discovery" id="DbG-Xt-CFX"/>
-                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
-                </collectionViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Xur-ng-R67" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="807" y="-715"/>
-        </scene>
-        <!--Activity-->
-        <scene sceneID="bWb-BD-QhT">
-            <objects>
-                <collectionViewController id="pSq-Av-arT" customClass="ActivityViewController" customModule="Kickstarter_iOS" customModuleProvider="target" sceneMemberID="viewController">
-                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="7ep-7Y-rch">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="1vC-Nk-1F8">
-                            <size key="itemSize" width="50" height="50"/>
-                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                        </collectionViewFlowLayout>
-                        <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="VDW-fy-Dt3">
-                                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                    <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                </view>
-                            </collectionViewCell>
-                        </cells>
-                        <connections>
-                            <outlet property="dataSource" destination="pSq-Av-arT" id="BEo-aw-3td"/>
-                            <outlet property="delegate" destination="pSq-Av-arT" id="4JL-H4-x1h"/>
-                        </connections>
-                    </collectionView>
-                    <tabBarItem key="tabBarItem" title="Activity" id="Tg0-oT-ro8"/>
-                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
-                </collectionViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="yHc-m1-B5T" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="807" y="0.0"/>
-        </scene>
         <!--Login Tout View Controller-->
         <scene sceneID="ocl-U6-5M0">
             <objects>
@@ -88,7 +17,128 @@
                     <view key="view" contentMode="scaleToFill" id="vPL-WX-Xrs">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tcm-YK-ZfH" customClass="BorderButton" customModule="Library">
+                                <rect key="frame" x="32" y="419" width="536" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="IVh-ao-BJi"/>
+                                </constraints>
+                                <state key="normal" title="Sign up with Email"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="normalLocalizedKey" value="signup.button.email"/>
+                                </userDefinedRuntimeAttributes>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="We'll never post anything without your permission." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="npz-Cl-wqX" customClass="StyledLabel" customModule="Library">
+                                <rect key="frame" x="158" y="310" width="285" height="15"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="style" value="CaptionSecondary"/>
+                                </userDefinedRuntimeAttributes>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DI6-Zp-Yoj" customClass="FacebookButton" customModule="Library">
+                                <rect key="frame" x="32" y="254" width="536" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="wYA-Q6-Bw3"/>
+                                </constraints>
+                                <state key="normal" title="Log in with Facebook"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="normalLocalizedKey" value="login_tout.buttons.log_in_with_facebook"/>
+                                </userDefinedRuntimeAttributes>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="By signing up, you agree to our terms of use, privacy policy, and cookie policy." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g7I-37-ZAd" customClass="StyledLabel" customModule="Library">
+                                <rect key="frame" x="32" y="517" width="536" height="14"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="300" id="589-z3-RHe"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="localizedKey" value="login_tout.disclaimer.by_signing_up_you_agree_to_terms"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="style" value="CaptionSecondary"/>
+                                </userDefinedRuntimeAttributes>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="589-z3-RHe"/>
+                                    </mask>
+                                </variation>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ytH-Nw-2z0" customClass="BorderButton" customModule="Library">
+                                <rect key="frame" x="32" y="354" width="536" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="rmm-8H-xbE"/>
+                                </constraints>
+                                <state key="normal" title="Log in with Email"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="normalLocalizedKey" value="login.buttons.log_in_email"/>
+                                </userDefinedRuntimeAttributes>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="g7I-37-ZAd" secondAttribute="trailing" constant="130" id="1l1-7i-3hL"/>
+                            <constraint firstItem="tcm-YK-ZfH" firstAttribute="top" secondItem="ytH-Nw-2z0" secondAttribute="bottom" constant="21" id="1uZ-Kj-Mse"/>
+                            <constraint firstItem="npz-Cl-wqX" firstAttribute="centerX" secondItem="vPL-WX-Xrs" secondAttribute="centerX" id="4e2-Mr-QzL"/>
+                            <constraint firstItem="tcm-YK-ZfH" firstAttribute="leading" secondItem="vPL-WX-Xrs" secondAttribute="leadingMargin" constant="12" id="60d-AC-DMa"/>
+                            <constraint firstItem="npz-Cl-wqX" firstAttribute="top" secondItem="DI6-Zp-Yoj" secondAttribute="bottom" constant="12" id="7s4-jQ-2ET"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="ytH-Nw-2z0" secondAttribute="trailing" constant="12" id="A4P-e7-CtI"/>
+                            <constraint firstItem="tcm-YK-ZfH" firstAttribute="top" secondItem="ytH-Nw-2z0" secondAttribute="bottom" constant="11" id="AGx-eT-zHN"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="tcm-YK-ZfH" secondAttribute="trailing" constant="12" id="DJ6-PV-4HC"/>
+                            <constraint firstItem="DI6-Zp-Yoj" firstAttribute="leading" secondItem="ytH-Nw-2z0" secondAttribute="leading" id="DvQ-ML-zBM"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="DI6-Zp-Yoj" secondAttribute="trailing" constant="30" id="E5k-zw-OSW"/>
+                            <constraint firstItem="ytH-Nw-2z0" firstAttribute="trailing" secondItem="tcm-YK-ZfH" secondAttribute="trailing" id="Eet-Is-YlL"/>
+                            <constraint firstItem="g7I-37-ZAd" firstAttribute="top" secondItem="tcm-YK-ZfH" secondAttribute="bottom" constant="40" id="FFo-9m-EMK"/>
+                            <constraint firstItem="g7I-37-ZAd" firstAttribute="leading" secondItem="vPL-WX-Xrs" secondAttribute="leadingMargin" constant="30" id="HLv-fU-Rfg"/>
+                            <constraint firstItem="tcm-YK-ZfH" firstAttribute="bottom" secondItem="g7I-37-ZAd" secondAttribute="bottom" id="Hkf-tq-MH4"/>
+                            <constraint firstItem="ytH-Nw-2z0" firstAttribute="leading" secondItem="tcm-YK-ZfH" secondAttribute="leading" id="JV2-X7-3H5"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="g7I-37-ZAd" secondAttribute="trailing" constant="30" id="JyC-P1-WnN"/>
+                            <constraint firstItem="ytH-Nw-2z0" firstAttribute="leading" secondItem="tcm-YK-ZfH" secondAttribute="leading" id="L0L-D7-LoV"/>
+                            <constraint firstItem="DI6-Zp-Yoj" firstAttribute="top" secondItem="mxz-L2-flg" secondAttribute="bottom" constant="190" id="LK4-hS-4E1"/>
+                            <constraint firstItem="g7I-37-ZAd" firstAttribute="centerX" secondItem="vPL-WX-Xrs" secondAttribute="centerX" id="Leu-fN-cDC"/>
+                            <constraint firstAttribute="leadingMargin" secondItem="tcm-YK-ZfH" secondAttribute="leading" id="N90-qa-qi1"/>
+                            <constraint firstItem="LQa-Lt-HvU" firstAttribute="top" secondItem="g7I-37-ZAd" secondAttribute="bottom" constant="20" id="PHD-iV-Y0v"/>
+                            <constraint firstItem="DI6-Zp-Yoj" firstAttribute="trailing" secondItem="ytH-Nw-2z0" secondAttribute="trailing" id="TRf-wm-4Z8"/>
+                            <constraint firstItem="DI6-Zp-Yoj" firstAttribute="leading" secondItem="ytH-Nw-2z0" secondAttribute="leading" id="U07-Hz-lU5"/>
+                            <constraint firstItem="ytH-Nw-2z0" firstAttribute="trailing" secondItem="tcm-YK-ZfH" secondAttribute="trailing" id="XVf-fF-tMM"/>
+                            <constraint firstItem="tcm-YK-ZfH" firstAttribute="top" secondItem="ytH-Nw-2z0" secondAttribute="bottom" constant="21" id="Zp8-sv-wEJ"/>
+                            <constraint firstItem="g7I-37-ZAd" firstAttribute="trailing" secondItem="tcm-YK-ZfH" secondAttribute="trailing" id="bwc-pH-ju7"/>
+                            <constraint firstItem="tcm-YK-ZfH" firstAttribute="leading" secondItem="vPL-WX-Xrs" secondAttribute="leadingMargin" constant="12" id="cLt-Dk-xh8"/>
+                            <constraint firstItem="DI6-Zp-Yoj" firstAttribute="trailing" secondItem="ytH-Nw-2z0" secondAttribute="trailing" id="cTi-Jx-3bU"/>
+                            <constraint firstItem="g7I-37-ZAd" firstAttribute="leading" secondItem="tcm-YK-ZfH" secondAttribute="leading" id="f1N-uE-tie"/>
+                            <constraint firstItem="ytH-Nw-2z0" firstAttribute="top" secondItem="npz-Cl-wqX" secondAttribute="bottom" constant="30" id="khg-MP-hn4"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="tcm-YK-ZfH" secondAttribute="trailing" constant="12" id="pyB-cF-Odg"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="tcm-YK-ZfH" secondAttribute="trailing" constant="12" id="sn7-Sg-ttB"/>
+                            <constraint firstItem="g7I-37-ZAd" firstAttribute="leading" secondItem="vPL-WX-Xrs" secondAttribute="leadingMargin" constant="130" id="tGh-ll-UPT"/>
+                            <constraint firstAttribute="leadingMargin" secondItem="ytH-Nw-2z0" secondAttribute="leading" constant="-12" id="tlL-sr-ZU7"/>
+                            <constraint firstItem="ytH-Nw-2z0" firstAttribute="top" secondItem="npz-Cl-wqX" secondAttribute="bottom" constant="30" id="ycq-vB-r6Q"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="E5k-zw-OSW"/>
+                                <exclude reference="U07-Hz-lU5"/>
+                                <exclude reference="cTi-Jx-3bU"/>
+                                <exclude reference="A4P-e7-CtI"/>
+                                <exclude reference="L0L-D7-LoV"/>
+                                <exclude reference="XVf-fF-tMM"/>
+                                <exclude reference="khg-MP-hn4"/>
+                                <exclude reference="tlL-sr-ZU7"/>
+                                <exclude reference="1uZ-Kj-Mse"/>
+                                <exclude reference="60d-AC-DMa"/>
+                                <exclude reference="AGx-eT-zHN"/>
+                                <exclude reference="DJ6-PV-4HC"/>
+                                <exclude reference="Hkf-tq-MH4"/>
+                                <exclude reference="N90-qa-qi1"/>
+                                <exclude reference="sn7-Sg-ttB"/>
+                                <exclude reference="1l1-7i-3hL"/>
+                                <exclude reference="FFo-9m-EMK"/>
+                                <exclude reference="HLv-fU-Rfg"/>
+                                <exclude reference="JyC-P1-WnN"/>
+                                <exclude reference="Leu-fN-cDC"/>
+                                <exclude reference="tGh-ll-UPT"/>
+                            </mask>
+                        </variation>
                     </view>
                     <navigationItem key="navigationItem" id="DYJ-0X-X7H"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
@@ -97,32 +147,13 @@
             </objects>
             <point key="canvasLocation" x="1619" y="736"/>
         </scene>
-        <!--Tab Bar Controller-->
-        <scene sceneID="yl2-sM-qoP">
-            <objects>
-                <tabBarController id="49e-Tb-3d3" sceneMemberID="viewController">
-                    <nil key="simulatedBottomBarMetrics"/>
-                    <tabBar key="tabBar" contentMode="scaleToFill" id="W28-zg-YXA">
-                        <rect key="frame" x="0.0" y="975" width="768" height="49"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    </tabBar>
-                    <connections>
-                        <segue destination="aQp-ES-7ou" kind="relationship" relationship="viewControllers" id="feq-fm-wMt"/>
-                        <segue destination="pSq-Av-arT" kind="relationship" relationship="viewControllers" id="N81-ip-xbf"/>
-                        <segue destination="OyO-rp-Px7" kind="relationship" relationship="viewControllers" id="uUV-U0-Sr6"/>
-                    </connections>
-                </tabBarController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="HuB-VB-40B" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="0.0" y="0.0"/>
-        </scene>
         <!--Login-->
         <scene sceneID="mfV-8d-OMM">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="OyO-rp-Px7" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Login" id="9MK-Ma-x87"/>
                     <toolbarItems/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="MhB-p0-2fa">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>

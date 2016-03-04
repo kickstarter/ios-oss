@@ -1,6 +1,6 @@
 import UIKit
 
-enum KSColor {
+public enum KSColor {
   case Black
   case Blue
   case BlueDark
@@ -44,7 +44,7 @@ enum KSColor {
   }
 }
 
-enum CategoryColor {
+public enum CategoryColor {
   case Art
   case ArtSecondary
   case Comics
@@ -112,7 +112,7 @@ enum CategoryColor {
   }
 }
 
-enum SocialColor {
+public enum SocialColor {
   case FacebookBlue
   case TwitterBlue
 
@@ -125,35 +125,35 @@ enum SocialColor {
 }
 
 public extension UIColor {
-  func textPrimary() -> UIColor {
-    return .Black.color
+  class func textPrimary() -> UIColor {
+    return KSColor.Black.color
   }
 
-  func textSecondary() -> UIColor {
-    return .GrayDark.color
+  class func textSecondary() -> UIColor {
+    return KSColor.GrayDark.color
   }
 
-  func textSecondaryLight() -> UIColor {
-    return .GrayLight.color
+  class func textSecondaryLight() -> UIColor {
+    return KSColor.GrayLight.color
   }
 
-  func accent() -> UIColor {
-    return .Green.color
+  class func accent() -> UIColor {
+    return KSColor.Green.color
   }
 
-  func windowBackground() -> UIColor {
-    return .White.color
+  class func windowBackground() -> UIColor {
+    return KSColor.White.color
   }
 
-  func discoveryPrimary() -> UIColor {
-    return .BlueDark.color
+  class func discoveryPrimary() -> UIColor {
+    return KSColor.BlueDark.color
   }
 
-  func discoverySecondary() -> UIColor {
-    return .Black.color
+  class func discoverySecondary() -> UIColor {
+    return KSColor.Black.color
   }
 
-  func discoveryBackground() -> UIColor {
-    return .GrayLight.color
+  class func discoveryBackground() -> UIColor {
+    return KSColor.GrayLight.color
   }
 }
