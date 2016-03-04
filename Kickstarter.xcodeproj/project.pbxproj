@@ -12,6 +12,7 @@
 		01BDFFB91C88A090002E8D34 /* UIColor+KS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BDFFB81C88A090002E8D34 /* UIColor+KS.swift */; };
 		01BDFFBC1C88DDA8002E8D34 /* BorderButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BDFFBB1C88DDA8002E8D34 /* BorderButton.swift */; };
 		01BDFFBE1C88F006002E8D34 /* FacebookButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BDFFBD1C88F006002E8D34 /* FacebookButton.swift */; };
+		01BDFFBF1C891497002E8D34 /* FacebookButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BDFFBD1C88F006002E8D34 /* FacebookButton.swift */; };
 		A72153921C5D62E800127699 /* HomeViewModelInputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72153911C5D62E800127699 /* HomeViewModelInputs.swift */; };
 		A72153941C5D630300127699 /* HomeViewModelOutputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72153931C5D630300127699 /* HomeViewModelOutputs.swift */; };
 		A751A51F1C85EC0B009C5DEA /* DiscoveryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A751A51E1C85EC0B009C5DEA /* DiscoveryViewController.swift */; };
@@ -2307,6 +2308,7 @@
 				A75511B81C8647D9005355CF /* UIButton+LocalizedKey.swift in Sources */,
 				A75511B91C8647D9005355CF /* UIGestureRecognizer-Extensions.swift in Sources */,
 				A75511BA1C8647D9005355CF /* UILabel+IBClear.swift in Sources */,
+				01BDFFBF1C891497002E8D34 /* FacebookButton.swift in Sources */,
 				A75511BB1C8647D9005355CF /* UILabel+LocalizedKey.swift in Sources */,
 				A75511BC1C8647D9005355CF /* UILabel+SimpleHTML.swift in Sources */,
 				A75511BD1C8647D9005355CF /* UIPress-Extensions.swift in Sources */,

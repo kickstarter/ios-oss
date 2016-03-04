@@ -1,5 +1,11 @@
 import UIKit
 
+public struct _Color {
+  public static let Black = UIColor.redColor()
+
+
+}
+
 public enum KSColor {
   case Black
   case Blue
