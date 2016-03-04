@@ -1,5 +1,11 @@
-import Foundation
-import UIKit
+import class Foundation.NSIndexPath
+import class Foundation.NSObject
+import protocol UIKit.UICollectionViewDataSource
+import protocol UIKit.UITableViewDataSource
+import class UIKit.UICollectionViewCell
+import class UIKit.UITableViewCell
+import class UIKit.UICollectionView
+import class UIKit.UITableView
 
 public class MVVMDataSource : NSObject, UICollectionViewDataSource, UITableViewDataSource {
   private var data = [[(viewModel: AnyObject, reusableId: String)]]()

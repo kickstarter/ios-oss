@@ -1,4 +1,5 @@
-import UIKit
+import class UIKit.UITableView
+import class UIKit.UINib
 
 public extension UITableView {
   func registerCellClass(cellClass: AnyClass) {
@@ -11,6 +12,7 @@ public extension UITableView {
       .componentsSeparatedByString(".")
       .dropFirst()
       .joinWithSeparator(".")
+
     registerNib(UINib(nibName: classNameWithoutModule, bundle: nil), forCellReuseIdentifier: classNameWithoutModule)
   }
 }

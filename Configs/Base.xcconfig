@@ -1,0 +1,4 @@
+FRAMEWORK_SEARCH_PATHS[sdk=iphone*] = $(PROJECT_DIR)/Frameworks/HockeySDK/iOS/HockeySDK.embeddedframework
+FRAMEWORK_SEARCH_PATHS[sdk=appletv*] = $(PROJECT_DIR)/Frameworks/HockeySDK/tvOS/HockeySDK.embeddedframework
+
+APPLICATION_EXTENSION_API_ONLY = YES

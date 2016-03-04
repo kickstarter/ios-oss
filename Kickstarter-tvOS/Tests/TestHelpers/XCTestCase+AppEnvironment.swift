@@ -3,6 +3,7 @@ import XCTest
 import AVFoundation
 import class Foundation.NSLocale
 import class Foundation.NSTimeZone
+import protocol Library.HockeyManagerType
 import protocol KsApi.ServiceType
 import protocol ReactiveCocoa.DateSchedulerType
 import struct Library.Environment
@@ -38,6 +39,7 @@ extension XCTestCase {
     debounceScheduler: DateSchedulerType = AppEnvironment.current.debounceScheduler,
     mainBundle: NSBundleType = AppEnvironment.current.mainBundle,
     assetImageGeneratorType: AssetImageGeneratorType.Type = AppEnvironment.current.assetImageGeneratorType,
+    hockeyManager: HockeyManagerType = AppEnvironment.current.hockeyManager,
     @noescape body: () -> ()) {
 
       withEnvironment(
@@ -51,7 +53,8 @@ extension XCTestCase {
           launchedCountries: launchedCountries,
           debounceScheduler: debounceScheduler,
           mainBundle: mainBundle,
-          assetImageGeneratorType: assetImageGeneratorType
+          assetImageGeneratorType: assetImageGeneratorType,
+          hockeyManager: hockeyManager
         ),
         body: body
       )

@@ -1,4 +1,5 @@
-import Foundation
+import class Foundation.NSUserDefaults
+import class Foundation.NSUbiquitousKeyValueStore
 
 struct MultiKeyValueStore : KeyValueStoreType {
   let stores: [KeyValueStoreType] = [NSUbiquitousKeyValueStore.defaultStore(), NSUserDefaults.standardUserDefaults()]

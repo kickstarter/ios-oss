@@ -1,5 +1,4 @@
-import UIKit
-import Foundation
+import class UIKit.UIView
 
 public extension UIView {
   static var defaultReusableId: String {

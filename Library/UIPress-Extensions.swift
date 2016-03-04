@@ -1,4 +1,4 @@
-import UIKit
+import enum UIKit.UIPressPhase
 
 public extension UIPressPhase {
   public var isStartingPhase: Bool {

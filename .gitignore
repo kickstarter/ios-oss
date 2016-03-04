@@ -64,3 +64,6 @@ Carthage/Cartfile.resolved
 
 fastlane/report.xml
 fastlane/screenshots
+
+# Ignore config files
+*/Configs/*.config

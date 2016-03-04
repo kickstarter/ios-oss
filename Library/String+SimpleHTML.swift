@@ -1,5 +1,11 @@
-import Foundation
-import UIKit
+import class Foundation.NSAttributedString
+import class Foundation.NSMutableAttributedString
+import func Foundation.NSMakeRange
+import var Foundation.NSUTF8StringEncoding
+import class UIKit.UIFont
+import var UIKit.NSFontAttributeName
+import var UIKit.NSDocumentTypeDocumentAttribute
+import var UIKit.NSHTMLTextDocumentType
 
 public extension String {
   public typealias Attributes = [String:AnyObject]
