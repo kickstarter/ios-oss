@@ -3,20 +3,11 @@ machine:
     version: 7.2
 checkout:
   post:
-    - git submodule sync
-    - git submodule update --init
-    - ./Frameworks/KsApi/bin/carthage-bootstrap-if-needed
-    - ./Frameworks/Models/bin/carthage-bootstrap-if-needed
-    - ./Frameworks/ReactiveExtensions/bin/carthage-bootstrap-if-needed
+    - git submodule sync --recursive
+    - git submodule update --init --recursive
 dependencies:
   override:
     - bin/bootstrap-configs
-    - bin/bootstrap-carthage-if-needed
-  cache_directories:
-    - Carthage
-    - ./Frameworks/KsApi/Carthage
-    - ./Frameworks/Models/Carthage
-    - ./Frameworks/ReactiveExtensions/Carthage
 test:
   override:
     - bin/test iOS
