@@ -7,4 +7,6 @@ Kickstarter. On your TV.
 
 ## Getting Started
 
-Run `bin/bootstrap` to install dependencies.
+Run `make dependencies` to install dependencies.
+
+Run `make test-all` to build and run tests on all platforms.

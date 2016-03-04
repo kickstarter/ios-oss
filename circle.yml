@@ -1,16 +1,9 @@
 machine:
   xcode:
     version: 7.2
-checkout:
-  post:
-    - git submodule sync --recursive
-    - git submodule update --init --recursive
-dependencies:
-  override:
-    - bin/bootstrap-configs
 test:
   override:
-    - bin/test iOS
-    - bin/test tvOS
-    - bin/test-library iOS
-    - bin/test-library tvOS
+    - PLATFORM=iOS make test
+    - PLATFORM=tvOS make test
+    - PLATFORM=iOS TARGET=Library make test
+    - PLATFORM=tvOS TARGET=Library make test
