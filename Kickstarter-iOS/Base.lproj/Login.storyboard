@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="OyO-rp-Px7">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Login Tout View Controller-->
@@ -16,14 +17,50 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jdo-kp-Vdk">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="UHD-eb-qXC">
+                                <rect key="frame" x="40" y="177" width="520" height="246"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Akk-mG-zch" userLabel="ContentView">
-                                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="1tl-3X-f58">
+                                        <rect key="frame" x="0.0" y="0.0" width="520" height="71"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DI6-Zp-Yoj" customClass="FacebookButton" customModule="Library">
+                                                <rect key="frame" x="0.0" y="0.0" width="520" height="44"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="300" id="j2Y-9T-Wkx"/>
+                                                    <constraint firstAttribute="height" constant="44" id="wYA-Q6-Bw3"/>
+                                                </constraints>
+                                                <state key="normal" title="Log in with Facebook"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="normalLocalizedKey" value="login_tout.buttons.log_in_with_facebook"/>
+                                                </userDefinedRuntimeAttributes>
+                                                <variation key="default">
+                                                    <mask key="constraints">
+                                                        <exclude reference="j2Y-9T-Wkx"/>
+                                                    </mask>
+                                                </variation>
+                                                <variation key="heightClass=compact">
+                                                    <mask key="constraints">
+                                                        <include reference="j2Y-9T-Wkx"/>
+                                                    </mask>
+                                                </variation>
+                                            </button>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="We'll never post anything without your permission." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="npz-Cl-wqX" customClass="StyledLabel" customModule="Library">
+                                                <rect key="frame" x="0.0" y="56" width="520" height="15"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                <nil key="highlightedColor"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="style" value="CaptionSecondary"/>
+                                                </userDefinedRuntimeAttributes>
+                                            </label>
+                                        </subviews>
+                                        <variation key="heightClass=compact" alignment="center"/>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="eRD-uK-yiP">
+                                        <rect key="frame" x="0.0" y="101" width="520" height="100"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tcm-YK-ZfH" customClass="BorderButton" customModule="Library">
-                                                <rect key="frame" x="30" y="315" width="540" height="44"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="520" height="44"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="44" id="IVh-ao-BJi"/>
                                                 </constraints>
@@ -32,45 +69,8 @@
                                                     <userDefinedRuntimeAttribute type="string" keyPath="normalLocalizedKey" value="signup.button.email"/>
                                                 </userDefinedRuntimeAttributes>
                                             </button>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="We'll never post anything without your permission." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="npz-Cl-wqX" customClass="StyledLabel" customModule="Library">
-                                                <rect key="frame" x="30" y="206" width="540" height="15"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                                <nil key="highlightedColor"/>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="style" value="CaptionSecondary"/>
-                                                </userDefinedRuntimeAttributes>
-                                            </label>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DI6-Zp-Yoj" customClass="FacebookButton" customModule="Library">
-                                                <rect key="frame" x="30" y="150" width="540" height="44"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="44" id="wYA-Q6-Bw3"/>
-                                                </constraints>
-                                                <state key="normal" title="Log in with Facebook"/>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="normalLocalizedKey" value="login_tout.buttons.log_in_with_facebook"/>
-                                                </userDefinedRuntimeAttributes>
-                                            </button>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="By signing up, you agree to our terms of use, privacy policy, and cookie policy." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g7I-37-ZAd" customClass="StyledLabel" customModule="Library">
-                                                <rect key="frame" x="30" y="371" width="540" height="15"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="300" id="589-z3-RHe"/>
-                                                </constraints>
-                                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                                <nil key="highlightedColor"/>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="localizedKey" value="login_tout.disclaimer.by_signing_up_you_agree_to_terms"/>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="style" value="CaptionSecondary"/>
-                                                </userDefinedRuntimeAttributes>
-                                                <variation key="default">
-                                                    <mask key="constraints">
-                                                        <exclude reference="589-z3-RHe"/>
-                                                    </mask>
-                                                </variation>
-                                            </label>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ytH-Nw-2z0" customClass="BorderButton" customModule="Library">
-                                                <rect key="frame" x="30" y="250" width="540" height="44"/>
+                                                <rect key="frame" x="0.0" y="56" width="520" height="44"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="44" id="rmm-8H-xbE"/>
                                                 </constraints>
@@ -80,66 +80,53 @@
                                                 </userDefinedRuntimeAttributes>
                                             </button>
                                         </subviews>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <variation key="heightClass=compact" axis="horizontal"/>
+                                    </stackView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="By signing up, you agree to our terms of use, privacy policy, and cookie policy." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g7I-37-ZAd" customClass="StyledLabel" customModule="Library">
+                                        <rect key="frame" x="0.0" y="231" width="520" height="15"/>
                                         <constraints>
-                                            <constraint firstItem="g7I-37-ZAd" firstAttribute="top" secondItem="tcm-YK-ZfH" secondAttribute="bottom" constant="12" id="4gF-QI-a2e"/>
-                                            <constraint firstItem="ytH-Nw-2z0" firstAttribute="top" secondItem="npz-Cl-wqX" secondAttribute="bottom" constant="29" id="5dQ-jM-BJH"/>
-                                            <constraint firstAttribute="trailing" secondItem="g7I-37-ZAd" secondAttribute="trailing" constant="30" id="HuY-zm-KVs"/>
-                                            <constraint firstItem="tcm-YK-ZfH" firstAttribute="trailing" secondItem="g7I-37-ZAd" secondAttribute="trailing" id="KZS-nC-kmF"/>
-                                            <constraint firstItem="npz-Cl-wqX" firstAttribute="top" secondItem="DI6-Zp-Yoj" secondAttribute="bottom" constant="12" id="RtI-Ym-ZeX"/>
-                                            <constraint firstItem="DI6-Zp-Yoj" firstAttribute="trailing" secondItem="ytH-Nw-2z0" secondAttribute="trailing" id="T15-Mx-RhD"/>
-                                            <constraint firstItem="npz-Cl-wqX" firstAttribute="leading" secondItem="ytH-Nw-2z0" secondAttribute="leading" id="TE3-JY-lq6"/>
-                                            <constraint firstItem="npz-Cl-wqX" firstAttribute="trailing" secondItem="ytH-Nw-2z0" secondAttribute="trailing" id="UIq-l0-0cp"/>
-                                            <constraint firstItem="g7I-37-ZAd" firstAttribute="top" secondItem="tcm-YK-ZfH" secondAttribute="bottom" constant="54" id="aBU-Sc-KKa"/>
-                                            <constraint firstItem="ytH-Nw-2z0" firstAttribute="leading" secondItem="tcm-YK-ZfH" secondAttribute="leading" id="ask-qy-VSI"/>
-                                            <constraint firstItem="ytH-Nw-2z0" firstAttribute="trailing" secondItem="tcm-YK-ZfH" secondAttribute="trailing" id="azU-B7-izz"/>
-                                            <constraint firstAttribute="bottom" secondItem="g7I-37-ZAd" secondAttribute="bottom" constant="80" id="h79-et-7s5"/>
-                                            <constraint firstItem="tcm-YK-ZfH" firstAttribute="top" secondItem="ytH-Nw-2z0" secondAttribute="bottom" constant="21" id="jGP-K4-6j5"/>
-                                            <constraint firstItem="DI6-Zp-Yoj" firstAttribute="leading" secondItem="ytH-Nw-2z0" secondAttribute="leading" id="rfK-UI-H9x"/>
-                                            <constraint firstItem="DI6-Zp-Yoj" firstAttribute="top" secondItem="Akk-mG-zch" secondAttribute="top" constant="150" id="v2V-uh-8li"/>
-                                            <constraint firstItem="tcm-YK-ZfH" firstAttribute="leading" secondItem="g7I-37-ZAd" secondAttribute="leading" id="wqv-Wp-X8n"/>
-                                            <constraint firstItem="g7I-37-ZAd" firstAttribute="leading" secondItem="Akk-mG-zch" secondAttribute="leading" constant="30" id="zut-UD-XH6"/>
+                                            <constraint firstAttribute="width" constant="300" id="589-z3-RHe"/>
                                         </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="localizedKey" value="login_tout.disclaimer.by_signing_up_you_agree_to_terms"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="style" value="CaptionSecondary"/>
+                                        </userDefinedRuntimeAttributes>
                                         <variation key="default">
                                             <mask key="constraints">
-                                                <exclude reference="aBU-Sc-KKa"/>
-                                                <exclude reference="h79-et-7s5"/>
+                                                <exclude reference="589-z3-RHe"/>
                                             </mask>
                                         </variation>
-                                    </view>
+                                    </label>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstItem="Akk-mG-zch" firstAttribute="top" secondItem="jdo-kp-Vdk" secondAttribute="top" id="0fk-X1-3kz"/>
-                                    <constraint firstAttribute="trailing" secondItem="Akk-mG-zch" secondAttribute="trailing" id="HVY-ml-rTN"/>
-                                    <constraint firstAttribute="trailing" secondItem="Akk-mG-zch" secondAttribute="trailing" id="OQI-X2-Sm2"/>
-                                    <constraint firstItem="Akk-mG-zch" firstAttribute="leading" secondItem="jdo-kp-Vdk" secondAttribute="leading" id="Pe2-2z-s8g"/>
-                                    <constraint firstAttribute="bottom" secondItem="Akk-mG-zch" secondAttribute="bottom" id="V4c-lU-oEq"/>
-                                    <constraint firstAttribute="bottom" secondItem="Akk-mG-zch" secondAttribute="bottom" id="aSQ-sA-1Mb"/>
-                                    <constraint firstItem="Akk-mG-zch" firstAttribute="top" secondItem="jdo-kp-Vdk" secondAttribute="top" id="k2z-ti-zIs"/>
+                                    <constraint firstItem="1tl-3X-f58" firstAttribute="leading" secondItem="UHD-eb-qXC" secondAttribute="leading" id="6pg-Ko-Rhr"/>
+                                    <constraint firstAttribute="trailing" secondItem="1tl-3X-f58" secondAttribute="trailing" id="GAp-R7-lck"/>
+                                    <constraint firstItem="1tl-3X-f58" firstAttribute="top" secondItem="UHD-eb-qXC" secondAttribute="top" id="Ot9-kQ-O7V"/>
+                                    <constraint firstItem="1tl-3X-f58" firstAttribute="leading" secondItem="UHD-eb-qXC" secondAttribute="leading" id="wb7-8R-AQI"/>
                                 </constraints>
                                 <variation key="default">
                                     <mask key="constraints">
-                                        <exclude reference="0fk-X1-3kz"/>
-                                        <exclude reference="HVY-ml-rTN"/>
-                                        <exclude reference="aSQ-sA-1Mb"/>
+                                        <exclude reference="6pg-Ko-Rhr"/>
+                                        <exclude reference="GAp-R7-lck"/>
                                     </mask>
                                 </variation>
-                            </scrollView>
+                            </stackView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="jdo-kp-Vdk" firstAttribute="leading" secondItem="vPL-WX-Xrs" secondAttribute="leading" id="3hs-gI-Z5S"/>
-                            <constraint firstItem="jdo-kp-Vdk" firstAttribute="centerY" secondItem="vPL-WX-Xrs" secondAttribute="centerY" id="8vV-1O-rYZ"/>
-                            <constraint firstAttribute="trailing" secondItem="jdo-kp-Vdk" secondAttribute="trailing" id="CHI-H6-M2O"/>
-                            <constraint firstItem="jdo-kp-Vdk" firstAttribute="top" secondItem="mxz-L2-flg" secondAttribute="bottom" id="L46-fg-IHE"/>
-                            <constraint firstItem="jdo-kp-Vdk" firstAttribute="centerX" secondItem="vPL-WX-Xrs" secondAttribute="centerX" id="adq-A4-qIG"/>
-                            <constraint firstItem="Akk-mG-zch" firstAttribute="width" secondItem="vPL-WX-Xrs" secondAttribute="width" id="rOb-1m-dQg"/>
-                            <constraint firstAttribute="bottom" secondItem="jdo-kp-Vdk" secondAttribute="bottom" id="rvA-hj-EMv"/>
-                            <constraint firstItem="Akk-mG-zch" firstAttribute="height" secondItem="vPL-WX-Xrs" secondAttribute="height" id="zg3-w9-2dk"/>
+                            <constraint firstItem="UHD-eb-qXC" firstAttribute="leading" secondItem="vPL-WX-Xrs" secondAttribute="leadingMargin" constant="20" id="0gu-zO-kEL"/>
+                            <constraint firstItem="UHD-eb-qXC" firstAttribute="width" secondItem="vPL-WX-Xrs" secondAttribute="width" id="cOe-IK-hhc"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="UHD-eb-qXC" secondAttribute="trailing" constant="20" id="e9a-9x-0vN"/>
+                            <constraint firstItem="UHD-eb-qXC" firstAttribute="centerY" secondItem="vPL-WX-Xrs" secondAttribute="centerY" id="eSr-iP-iVZ"/>
+                            <constraint firstItem="UHD-eb-qXC" firstAttribute="centerX" secondItem="vPL-WX-Xrs" secondAttribute="centerX" id="w6f-V1-7vI"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
-                                <exclude reference="L46-fg-IHE"/>
+                                <exclude reference="cOe-IK-hhc"/>
+                                <exclude reference="w6f-V1-7vI"/>
                             </mask>
                         </variation>
                     </view>
