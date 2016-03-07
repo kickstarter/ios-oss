@@ -1,7 +1,7 @@
 import class Library.MVVMCollectionViewController
 import UIKit
 
-final internal class ActivitiesViewController: MVVMCollectionViewController {
+internal final class ActivitiesViewController: MVVMCollectionViewController {
   let viewModel: ActivitiesViewModelType = ActivitiesViewModel()
   let dataSource = ActivitiesDataSource()
 

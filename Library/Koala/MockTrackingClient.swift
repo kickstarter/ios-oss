@@ -1,4 +1,4 @@
-internal class MockTrackingClient: TrackingClientType {
+internal final class MockTrackingClient: TrackingClientType {
   internal var tracks: [(event: String, properties: [String:AnyObject])] = []
 
   func track(event event: String, properties: [String : AnyObject]) {

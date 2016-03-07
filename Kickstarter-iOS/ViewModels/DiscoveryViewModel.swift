@@ -14,7 +14,7 @@ internal protocol DiscoveryViewModelType {
   var outputs: DiscoveryViewModelOutputs { get }
 }
 
-internal class DiscoveryViewModel: ViewModelType, DiscoveryViewModelType, DiscoveryViewModelOutputs {
+internal final class DiscoveryViewModel: ViewModelType, DiscoveryViewModelType, DiscoveryViewModelOutputs {
   typealias Model = ()
 
   internal let projects: SignalProducer<[Project], NoError>

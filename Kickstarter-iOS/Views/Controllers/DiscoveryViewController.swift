@@ -3,7 +3,7 @@ import struct Library.Environment
 import struct Library.AppEnvironment
 import UIKit
 
-final internal class DiscoveryViewController: MVVMCollectionViewController {
+internal final class DiscoveryViewController: MVVMCollectionViewController {
   let viewModel: DiscoveryViewModelType = DiscoveryViewModel()
   let dataSource = DiscoveryProjectsDataSource()
 

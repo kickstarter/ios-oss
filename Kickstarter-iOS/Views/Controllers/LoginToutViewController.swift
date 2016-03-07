@@ -1,4 +1,4 @@
 import class Library.MVVMViewController
 
-final internal class LoginToutViewController: MVVMViewController {
+internal final class LoginToutViewController: MVVMViewController {
 }

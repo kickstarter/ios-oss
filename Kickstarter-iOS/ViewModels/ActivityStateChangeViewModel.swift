@@ -11,7 +11,7 @@ internal protocol ActivityStateChangeViewModelOutputs {
   var pledgedSubtitle: String { get }
 }
 
-internal class ActivityStateChangeViewModel: ViewModelType, ActivityStateChangeViewModelOutputs {
+internal final class ActivityStateChangeViewModel: ViewModelType, ActivityStateChangeViewModelOutputs {
   internal typealias Model = Activity
   private let activity: Activity
 

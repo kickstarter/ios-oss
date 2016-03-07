@@ -4,7 +4,7 @@ import class Foundation.NSDate
 import class UIKit.UIDevice
 import class UIKit.UIScreen
 
-public class Koala {
+public final class Koala {
   private let client: TrackingClientType
 
   public init(client: TrackingClientType = KoalaTrackingClient()) {

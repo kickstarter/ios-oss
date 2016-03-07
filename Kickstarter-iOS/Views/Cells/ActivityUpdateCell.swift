@@ -8,7 +8,7 @@ import ReactiveExtensions
 import ReactiveCocoa
 import struct Models.Activity
 
-internal class ActivityUpdateCell: UICollectionViewCell, ViewModeledCellType {
+internal final class ActivityUpdateCell: UICollectionViewCell, ViewModeledCellType {
   internal let viewModelProperty = MutableProperty<ActivityUpdateViewModel?>(nil)
 
   @IBOutlet weak var projectImageView: UIImageView!
