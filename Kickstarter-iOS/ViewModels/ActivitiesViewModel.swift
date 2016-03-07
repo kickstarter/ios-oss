@@ -14,7 +14,7 @@ internal protocol ActivitiesViewModelType {
   var outputs: ActivitiesViewModelOutputs { get }
 }
 
-internal struct ActivitiesViewModel: ViewModelType, ActivitiesViewModelType, ActivitiesViewModelOutputs {
+internal final class ActivitiesViewModel: ViewModelType, ActivitiesViewModelType, ActivitiesViewModelOutputs {
   typealias Model = Activity
 
   internal let activities: SignalProducer<[Activity], NoError>
