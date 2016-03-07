@@ -178,6 +178,8 @@
 		A77519141C8CADFE0022F175 /* ActivitiesViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A77519131C8CADFE0022F175 /* ActivitiesViewModelTests.swift */; };
 		A77519221C8CB0360022F175 /* UIImageView+IBCircleAvatarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A77519211C8CB0360022F175 /* UIImageView+IBCircleAvatarTests.swift */; };
 		A77519231C8CB11B0022F175 /* UIImageView+IBCircleAvatarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A77519211C8CB0360022F175 /* UIImageView+IBCircleAvatarTests.swift */; };
+		A7A542551C8E461E00273B58 /* ReactiveExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 807572351C88DD8B00E7DA8A /* ReactiveExtensions.framework */; };
+		A7A542581C8E463400273B58 /* ReactiveExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 807572391C88DD8B00E7DA8A /* ReactiveExtensions.framework */; };
 		A7B693E61C8772A100C49A4F /* Library.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A755113C1C8642B3005355CF /* Library.framework */; };
 		A7B693E71C8772CE00C49A4F /* Library.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A755113C1C8642B3005355CF /* Library.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A7B693F51C8778A900C49A4F /* hockeyapp.config in Resources */ = {isa = PBXBuildFile; fileRef = A7B693F41C8778A900C49A4F /* hockeyapp.config */; };
@@ -829,6 +831,20 @@
 			remoteGlobalIDString = A75511AA1C8647D9005355CF;
 			remoteInfo = "Library-tvOS";
 		};
+		A7A542301C8E461400273B58 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8075722D1C88DD8A00E7DA8A /* ReactiveExtensions.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = A7FD08861C81EDBD00332CCB;
+			remoteInfo = "ReactiveExtensions-iOS";
+		};
+		A7A542561C8E462A00273B58 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8075722D1C88DD8A00E7DA8A /* ReactiveExtensions.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = CA43C6621BB35FCF00C180DA;
+			remoteInfo = "ReactiveExtensions-tvOS";
+		};
 		A7B694101C87942600C49A4F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A7E06C711C5A6EB300EBDCC2 /* Project object */;
@@ -1257,6 +1273,7 @@
 				A75511E41C864CEA005355CF /* KsApi.framework in Frameworks */,
 				A7B6942C1C87A05200C49A4F /* HockeySDK.framework in Frameworks */,
 				A755117C1C8642E7005355CF /* Prelude.framework in Frameworks */,
+				A7A542551C8E461E00273B58 /* ReactiveExtensions.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1274,9 +1291,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				80FE733A1C88F3D400BE0137 /* HockeySDK.framework in Frameworks */,
 				A75511E51C864CF0005355CF /* KsApi.framework in Frameworks */,
 				A75511DF1C8648D7005355CF /* Prelude.framework in Frameworks */,
-				80FE733A1C88F3D400BE0137 /* HockeySDK.framework in Frameworks */,
+				A7A542581C8E463400273B58 /* ReactiveExtensions.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2064,6 +2082,7 @@
 			dependencies = (
 				A7E315811C8882D1000DD85A /* PBXTargetDependency */,
 				A7E315851C8882D1000DD85A /* PBXTargetDependency */,
+				A7A542311C8E461400273B58 /* PBXTargetDependency */,
 			);
 			name = "Library-iOS";
 			productName = "Library-iOS";
@@ -2102,6 +2121,7 @@
 			dependencies = (
 				A7E315911C8882EA000DD85A /* PBXTargetDependency */,
 				A7E315951C8882EA000DD85A /* PBXTargetDependency */,
+				A7A542571C8E462A00273B58 /* PBXTargetDependency */,
 			);
 			name = "Library-tvOS";
 			productName = "Library-iOS";
@@ -3306,6 +3326,16 @@
 			isa = PBXTargetDependency;
 			target = A75511AA1C8647D9005355CF /* Library-tvOS */;
 			targetProxy = A75511E21C864974005355CF /* PBXContainerItemProxy */;
+		};
+		A7A542311C8E461400273B58 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "ReactiveExtensions-iOS";
+			targetProxy = A7A542301C8E461400273B58 /* PBXContainerItemProxy */;
+		};
+		A7A542571C8E462A00273B58 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "ReactiveExtensions-tvOS";
+			targetProxy = A7A542561C8E462A00273B58 /* PBXContainerItemProxy */;
 		};
 		A7B694111C87942600C49A4F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
