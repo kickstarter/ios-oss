@@ -9,8 +9,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
 
     turnOnHockeyApp()
+    AppEnvironment.current.koala.trackAppOpen()
 
     return true
+  }
+
+  func applicationWillEnterForeground(application: UIApplication) {
+    AppEnvironment.current.koala.trackAppOpen()
+  }
+
+  func applicationDidEnterBackground(application: UIApplication) {
+    AppEnvironment.current.koala.trackAppClose()
   }
 
   private func turnOnHockeyApp() {

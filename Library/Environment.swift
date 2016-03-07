@@ -23,6 +23,7 @@ public struct Environment {
   public let mainBundle: NSBundleType
   public let assetImageGeneratorType: AssetImageGeneratorType.Type
   public let hockeyManager: HockeyManagerType
+  public let koala: Koala
 
   public init(
     apiService: ServiceType = Service.shared,
@@ -35,7 +36,8 @@ public struct Environment {
     debounceScheduler: DateSchedulerType = QueueScheduler.mainQueueScheduler,
     mainBundle: NSBundleType = NSBundle.mainBundle(),
     assetImageGeneratorType: AssetImageGeneratorType.Type = AVAssetImageGenerator.self,
-    hockeyManager: HockeyManagerType = BITHockeyManager.sharedHockeyManager()) {
+    hockeyManager: HockeyManagerType = BITHockeyManager.sharedHockeyManager(),
+    koala: Koala = Koala(client: KoalaTrackingClient(endpoint: .Production))) {
 
       self.apiService = apiService
       self.currentUser = currentUser
@@ -48,6 +50,7 @@ public struct Environment {
       self.mainBundle = mainBundle
       self.assetImageGeneratorType = assetImageGeneratorType
       self.hockeyManager = hockeyManager
+      self.koala = koala
   }
 }
 

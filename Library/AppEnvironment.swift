@@ -55,7 +55,8 @@ public struct AppEnvironment {
     debounceScheduler: DateSchedulerType = AppEnvironment.current.debounceScheduler,
     mainBundle: NSBundleType = AppEnvironment.current.mainBundle,
     assetImageGeneratorType: AssetImageGeneratorType.Type = AppEnvironment.current.assetImageGeneratorType,
-    hockeyManager: HockeyManagerType = AppEnvironment.current.hockeyManager) {
+    hockeyManager: HockeyManagerType = AppEnvironment.current.hockeyManager,
+    koala: Koala = AppEnvironment.current.koala) {
 
       stack.append(
         Environment(
@@ -69,7 +70,8 @@ public struct AppEnvironment {
           debounceScheduler: debounceScheduler,
           mainBundle: mainBundle,
           assetImageGeneratorType: assetImageGeneratorType,
-          hockeyManager: hockeyManager
+          hockeyManager: hockeyManager,
+          koala: koala
         )
       )
   }
@@ -89,7 +91,8 @@ public struct AppEnvironment {
     debounceScheduler: DateSchedulerType = AppEnvironment.current.debounceScheduler,
     mainBundle: NSBundleType = AppEnvironment.current.mainBundle,
     assetImageGeneratorType: AssetImageGeneratorType.Type = AppEnvironment.current.assetImageGeneratorType,
-    hockeyManager: HockeyManagerType = AppEnvironment.current.hockeyManager) {
+    hockeyManager: HockeyManagerType = AppEnvironment.current.hockeyManager,
+    koala: Koala = AppEnvironment.current.koala) {
 
       replaceCurrentEnvironment(
         Environment(
@@ -103,7 +106,8 @@ public struct AppEnvironment {
           debounceScheduler: debounceScheduler,
           mainBundle: mainBundle,
           assetImageGeneratorType: assetImageGeneratorType,
-          hockeyManager: hockeyManager
+          hockeyManager: hockeyManager,
+          koala: koala
         )
       )
   }

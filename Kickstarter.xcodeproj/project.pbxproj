@@ -43,6 +43,15 @@
 		80FE733C1C88F4CA00BE0137 /* AlamofireImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 807571F91C88B8E200E7DA8A /* AlamofireImage.framework */; };
 		A72153921C5D62E800127699 /* HomeViewModelInputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72153911C5D62E800127699 /* HomeViewModelInputs.swift */; };
 		A72153941C5D630300127699 /* HomeViewModelOutputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72153931C5D630300127699 /* HomeViewModelOutputs.swift */; };
+		A721DF621C8CF503000CB97C /* TrackingClientType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A721DF611C8CF503000CB97C /* TrackingClientType.swift */; };
+		A721DF631C8CF503000CB97C /* TrackingClientType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A721DF611C8CF503000CB97C /* TrackingClientType.swift */; };
+		A721DF651C8CF5A3000CB97C /* KoalaTrackingClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A721DF641C8CF5A3000CB97C /* KoalaTrackingClient.swift */; };
+		A721DF661C8CF5A3000CB97C /* KoalaTrackingClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A721DF641C8CF5A3000CB97C /* KoalaTrackingClient.swift */; };
+		A721DF681C8CFAEB000CB97C /* Koala.swift in Sources */ = {isa = PBXBuildFile; fileRef = A721DF671C8CFAEB000CB97C /* Koala.swift */; };
+		A721DF691C8CFAEB000CB97C /* Koala.swift in Sources */ = {isa = PBXBuildFile; fileRef = A721DF671C8CFAEB000CB97C /* Koala.swift */; };
+		A721DF6B1C8CFAF6000CB97C /* MockTrackingClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A721DF6A1C8CFAF6000CB97C /* MockTrackingClient.swift */; };
+		A721DF6C1C8CFAF6000CB97C /* MockTrackingClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A721DF6A1C8CFAF6000CB97C /* MockTrackingClient.swift */; };
+		A721DF801C8D1F3C000CB97C /* koala-endpoint.config in Resources */ = {isa = PBXBuildFile; fileRef = A721DF7F1C8D1F3C000CB97C /* koala-endpoint.config */; };
 		A751A51F1C85EC0B009C5DEA /* DiscoveryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A751A51E1C85EC0B009C5DEA /* DiscoveryViewController.swift */; };
 		A75511461C8642B3005355CF /* Library.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A755113C1C8642B3005355CF /* Library.framework */; };
 		A755115B1C8642C3005355CF /* AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C725781C85D36D005A016B /* AppEnvironment.swift */; };
@@ -1017,6 +1026,11 @@
 		80FE73171C88F30700BE0137 /* Result.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Result.xcodeproj; path = Frameworks/KsApi/Frameworks/ReactiveExtensions/Frameworks/ReactiveCocoa/Carthage/Checkouts/Result/Result.xcodeproj; sourceTree = "<group>"; };
 		A72153911C5D62E800127699 /* HomeViewModelInputs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewModelInputs.swift; sourceTree = "<group>"; };
 		A72153931C5D630300127699 /* HomeViewModelOutputs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewModelOutputs.swift; sourceTree = "<group>"; };
+		A721DF611C8CF503000CB97C /* TrackingClientType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackingClientType.swift; sourceTree = "<group>"; };
+		A721DF641C8CF5A3000CB97C /* KoalaTrackingClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KoalaTrackingClient.swift; sourceTree = "<group>"; };
+		A721DF671C8CFAEB000CB97C /* Koala.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Koala.swift; sourceTree = "<group>"; };
+		A721DF6A1C8CFAF6000CB97C /* MockTrackingClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockTrackingClient.swift; sourceTree = "<group>"; };
+		A721DF7F1C8D1F3C000CB97C /* koala-endpoint.config */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "koala-endpoint.config"; sourceTree = "<group>"; };
 		A751A51E1C85EC0B009C5DEA /* DiscoveryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryViewController.swift; sourceTree = "<group>"; };
 		A755113C1C8642B3005355CF /* Library.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Library.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A75511451C8642B3005355CF /* Library-iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Library-iOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1451,6 +1465,17 @@
 			path = outputs;
 			sourceTree = "<group>";
 		};
+		A721DF3D1C8CF4F6000CB97C /* Koala */ = {
+			isa = PBXGroup;
+			children = (
+				A721DF671C8CFAEB000CB97C /* Koala.swift */,
+				A721DF641C8CF5A3000CB97C /* KoalaTrackingClient.swift */,
+				A721DF6A1C8CFAF6000CB97C /* MockTrackingClient.swift */,
+				A721DF611C8CF503000CB97C /* TrackingClientType.swift */,
+			);
+			path = Koala;
+			sourceTree = "<group>";
+		};
 		A7424F0D1C84F40E00FDC1E4 /* Embedded */ = {
 			isa = PBXGroup;
 			children = (
@@ -1542,6 +1567,7 @@
 			isa = PBXGroup;
 			children = (
 				A7B693F41C8778A900C49A4F /* hockeyapp.config */,
+				A721DF7F1C8D1F3C000CB97C /* koala-endpoint.config */,
 			);
 			path = Configs;
 			sourceTree = "<group>";
@@ -1605,6 +1631,7 @@
 				A7C725981C85D36D005A016B /* UILabel+SimpleHTML.swift */,
 				A7C725991C85D36D005A016B /* UIPress-Extensions.swift */,
 				A7C7257B1C85D36D005A016B /* CurrentUser */,
+				A721DF3D1C8CF4F6000CB97C /* Koala */,
 				A7C725851C85D36D005A016B /* MVVM */,
 				A75511881C8645A0005355CF /* Tests */,
 			);
@@ -2714,6 +2741,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A7D1F9541C850B7C000D41D5 /* LaunchScreen.storyboard in Resources */,
+				A721DF801C8D1F3C000CB97C /* koala-endpoint.config in Resources */,
 				A7D1F9511C850B7C000D41D5 /* Assets.xcassets in Resources */,
 				A7D1F94F1C850B7C000D41D5 /* Main.storyboard in Resources */,
 				A7B693F51C8778A900C49A4F /* hockeyapp.config in Resources */,
@@ -2792,6 +2820,7 @@
 			files = (
 				A755115B1C8642C3005355CF /* AppEnvironment.swift in Sources */,
 				A755115C1C8642C3005355CF /* AssetImageGeneratorType.swift in Sources */,
+				A721DF6B1C8CFAF6000CB97C /* MockTrackingClient.swift in Sources */,
 				A755115D1C8642C3005355CF /* AVPlayerView.swift in Sources */,
 				A755115E1C8642C3005355CF /* Environment.swift in Sources */,
 				A755115F1C8642C3005355CF /* Format.swift in Sources */,
@@ -2807,6 +2836,7 @@
 				A75511691C8642C3005355CF /* UILabel+IBClear.swift in Sources */,
 				A755116A1C8642C3005355CF /* UILabel+LocalizedKey.swift in Sources */,
 				A755116B1C8642C3005355CF /* UILabel+SimpleHTML.swift in Sources */,
+				A721DF621C8CF503000CB97C /* TrackingClientType.swift in Sources */,
 				A755116C1C8642C3005355CF /* UIPress-Extensions.swift in Sources */,
 				A755116D1C8642C3005355CF /* CurrentUser.swift in Sources */,
 				A755116E1C8642C3005355CF /* KeyValueStoreType.swift in Sources */,
@@ -2818,10 +2848,12 @@
 				A75511741C8642C3005355CF /* SimpleViewModel.swift in Sources */,
 				A75511751C8642C3005355CF /* UICollectionView-Extensions.swift in Sources */,
 				A75511761C8642C3005355CF /* UICollectionViewCell-Extensions.swift in Sources */,
+				A721DF651C8CF5A3000CB97C /* KoalaTrackingClient.swift in Sources */,
 				A75511771C8642C3005355CF /* UITableView-Extensions.swift in Sources */,
 				A75511781C8642C3005355CF /* UIView-DefaultReusableId.swift in Sources */,
 				A75511791C8642C3005355CF /* UIViewController-DefaultNib.swift in Sources */,
 				A7B693FF1C8789C100C49A4F /* HockeyManagerType.swift in Sources */,
+				A721DF681C8CFAEB000CB97C /* Koala.swift in Sources */,
 				A755117A1C8642C3005355CF /* ViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2853,6 +2885,7 @@
 			files = (
 				A75511AC1C8647D9005355CF /* AppEnvironment.swift in Sources */,
 				A75511AD1C8647D9005355CF /* AssetImageGeneratorType.swift in Sources */,
+				A721DF6C1C8CFAF6000CB97C /* MockTrackingClient.swift in Sources */,
 				A75511AE1C8647D9005355CF /* AVPlayerView.swift in Sources */,
 				A75511AF1C8647D9005355CF /* Environment.swift in Sources */,
 				A75511B01C8647D9005355CF /* Format.swift in Sources */,
@@ -2868,6 +2901,7 @@
 				A75511BA1C8647D9005355CF /* UILabel+IBClear.swift in Sources */,
 				A75511BB1C8647D9005355CF /* UILabel+LocalizedKey.swift in Sources */,
 				A75511BC1C8647D9005355CF /* UILabel+SimpleHTML.swift in Sources */,
+				A721DF631C8CF503000CB97C /* TrackingClientType.swift in Sources */,
 				A75511BD1C8647D9005355CF /* UIPress-Extensions.swift in Sources */,
 				A75511BE1C8647D9005355CF /* CurrentUser.swift in Sources */,
 				A75511BF1C8647D9005355CF /* KeyValueStoreType.swift in Sources */,
@@ -2879,10 +2913,12 @@
 				A75511C51C8647D9005355CF /* SimpleViewModel.swift in Sources */,
 				A75511C61C8647D9005355CF /* UICollectionView-Extensions.swift in Sources */,
 				A75511C71C8647D9005355CF /* UICollectionViewCell-Extensions.swift in Sources */,
+				A721DF661C8CF5A3000CB97C /* KoalaTrackingClient.swift in Sources */,
 				A75511C81C8647D9005355CF /* UITableView-Extensions.swift in Sources */,
 				A75511C91C8647D9005355CF /* UIView-DefaultReusableId.swift in Sources */,
 				A75511CA1C8647D9005355CF /* UIViewController-DefaultNib.swift in Sources */,
 				A7B694001C8789C100C49A4F /* HockeyManagerType.swift in Sources */,
+				A721DF691C8CFAEB000CB97C /* Koala.swift in Sources */,
 				A75511CB1C8647D9005355CF /* ViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
