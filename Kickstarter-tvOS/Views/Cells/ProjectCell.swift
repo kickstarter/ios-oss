@@ -7,7 +7,7 @@ import protocol Library.ViewModeledCellType
 import class Library.SimpleViewModel
 
 class ProjectCell: UICollectionViewCell, ViewModeledCellType {
-  let viewModel = MutableProperty<SimpleViewModel<Project>?>(nil)
+  let viewModelProperty = MutableProperty<SimpleViewModel<Project>?>(nil)
 
   @IBOutlet weak var imageView: UIImageView!
   @IBOutlet weak var projectNameLabel: UILabel!
@@ -17,11 +17,11 @@ class ProjectCell: UICollectionViewCell, ViewModeledCellType {
   @IBOutlet weak var focusedInfoView: UIView!
 
   override func bindViewModel() {
-    let project = viewModel.producer.map { $0?.model }.ignoreNil()
+    let project = self.viewModel.map { $0.model }
 
     project
-      .map { $0.photo.full }
-      .flatMap(NSURL.init)
+      .map { NSURL(string: $0.photo.full) }
+      .ignoreNil()
       .skipRepeats()
       .on(next: { [weak self] _ in self?.imageView.image = nil })
       .observeForUI()

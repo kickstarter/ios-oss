@@ -5,8 +5,8 @@ import var UIKit.CGPointZero
 import class UIKit.UIColor
 import class UIKit.UIView
 
-
-public class GradientView: UIView {
+@IBDesignable
+public final class GradientView: UIView {
 
   public override class func layerClass() -> AnyClass {
     return CAGradientLayer.self
@@ -39,15 +39,19 @@ public class GradientView: UIView {
   @IBInspectable public var startColor: UIColor?
   @IBInspectable public var endColor: UIColor?
 
-
   public override func awakeFromNib() {
     super.awakeFromNib()
-    backgroundColor = UIColor.clearColor()
+    setGradient([(startColor, 0.0), (endColor, 1.0)])
+  }
 
+  public override func prepareForInterfaceBuilder() {
+    super.prepareForInterfaceBuilder()
     setGradient([(startColor, 0.0), (endColor, 1.0)])
   }
 
   public func setGradient(points: [(color: UIColor?, location: Float)]) -> Void {
+    backgroundColor = UIColor.clearColor()
+
     self.gradientLayer?.colors = points.map { point in
       point.color?.CGColor ?? UIColor.clearColor().CGColor
     }

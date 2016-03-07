@@ -1,4 +1,6 @@
 import class ReactiveCocoa.MutableProperty
+import struct ReactiveCocoa.SignalProducer
+import enum Result.NoError
 import protocol Prelude.OptionalType
 import struct Prelude.Unit
 
@@ -12,7 +14,15 @@ public protocol ViewModelType {
 /// MVVMDataSource can guarantee that the data fed to it matches what cells expect.
 public protocol ViewModeledCellType {
   typealias ViewModel: ViewModelType
-  var viewModel: MutableProperty<ViewModel?> { get }
+  var viewModelProperty: MutableProperty<ViewModel?> { get }
+}
+
+public extension ViewModeledCellType {
+  /// A producer of view model signals. Automatically ignores the `nil` view model that 
+  /// is initially emitted.
+  public var viewModel: SignalProducer<ViewModel, NoError> {
+    return self.viewModelProperty.producer.ignoreNil()
+  }
 }
 
 /// `Unit` can trivially be made into a view model type.

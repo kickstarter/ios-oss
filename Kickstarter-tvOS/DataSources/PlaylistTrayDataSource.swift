@@ -17,7 +17,7 @@ final class PlaylistTrayDataSource : MVVMDataSource {
 
     if let cell = cell as? PlaylistTrayCell,
       viewModel = viewModel as? PlaylistsMenuViewModel {
-        cell.viewModel.value = viewModel
+        cell.viewModelProperty.value = viewModel
     }
   }
 }

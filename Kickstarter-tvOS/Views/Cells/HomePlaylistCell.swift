@@ -17,7 +17,7 @@ final class HomePlaylistCell: UICollectionViewCell, ViewModeledCellType {
 
   static let unfocusedFont = UIFont.preferredFontForTextStyle(UIFontTextStyleBody)
 
-  let viewModel = MutableProperty<HomePlaylistViewModel?>(nil)
+  let viewModelProperty = MutableProperty<HomePlaylistViewModel?>(nil)
 
   override func awakeFromNib() {
     super.awakeFromNib()
@@ -25,7 +25,9 @@ final class HomePlaylistCell: UICollectionViewCell, ViewModeledCellType {
   }
 
   override func bindViewModel() {
-    titleLabel.rac_text <~ viewModel.producer.map { $0?.outputs.title }
+    super.bindViewModel()
+    
+    titleLabel.rac_text <~ self.viewModel.map { $0.outputs.title }
   }
 
   override func didUpdateFocusInContext(context: UIFocusUpdateContext, withAnimationCoordinator coordinator: UIFocusAnimationCoordinator) {
