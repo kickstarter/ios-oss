@@ -3,6 +3,28 @@ import UIKit.UIFont
 
 @IBDesignable
 public class BorderButton: UIButton {
+
+  @IBInspectable
+  public var color:UIColor = KSColor.White {
+    didSet {
+      self.backgroundColor = color
+    }
+  }
+
+  @IBInspectable
+  public var borderColor:UIColor = KSColor.GrayDark {
+    didSet {
+      self.layer.borderColor = borderColor.CGColor
+    }
+  }
+
+  @IBInspectable
+  public var titleColor:UIColor = KSColor.Black {
+    didSet {
+      self.setTitleColor(titleColor, forState: UIControlState.Normal)
+    }
+  }
+
   required public init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
     onCreate()
@@ -20,10 +42,10 @@ public class BorderButton: UIButton {
 
   func onCreate() {
     self.titleLabel?.font = UIFont.systemFontOfSize(14.0, weight: UIFontWeightRegular)
-    self.setTitleColor(KSColor.Black, forState: UIControlState.Normal)
-    self.backgroundColor = KSColor.White
     self.layer.cornerRadius = 6
-    self.layer.borderColor = KSColor.GrayDark.CGColor
     self.layer.borderWidth = 0.8
+    self.setTitleColor(titleColor, forState: UIControlState.Normal)
+    self.backgroundColor = color
+    self.layer.borderColor = borderColor.CGColor
   }
 }
