@@ -2,14 +2,14 @@ import UIKit.UILabel
 
 @IBDesignable
 public class StyledLabel: UILabel {
-  private var _styleFontText: FontText = FontText.Body
-  private var _styleColor: Color = Color.TextDefault
-  private var _styleWeight: Weight = Weight.Default
+  private var _fontTextStyle: FontText = FontText.Body
+  private var _colorStyle: Color = Color.TextDefault
+  private var _weightStyle: Weight = Weight.Default
 
   @IBInspectable
   public var fontTextStyle: String {
     get {
-      return _styleFontText.rawValue
+      return _fontTextStyle.rawValue
     }
 
     set {
@@ -17,7 +17,7 @@ public class StyledLabel: UILabel {
         assertionFailure("Couldn't find Styles.FontText value. Make sure you typed correct name in IB.")
         return
       }
-      _styleFontText = fontStyle
+      _fontTextStyle = fontStyle
       updateStyle()
     }
   }
@@ -25,7 +25,7 @@ public class StyledLabel: UILabel {
   @IBInspectable
   public var colorStyle: String {
     get {
-      return _styleColor.rawValue
+      return _colorStyle.rawValue
     }
 
     set {
@@ -33,7 +33,7 @@ public class StyledLabel: UILabel {
         assertionFailure("Couldn't find Styles.Color value. Make sure you typed correct name in IB.")
         return
       }
-      _styleColor = colorStyle
+      _colorStyle = colorStyle
       updateStyle()
     }
   }
@@ -41,7 +41,7 @@ public class StyledLabel: UILabel {
   @IBInspectable
   public var weightStyle: String {
     get {
-      return _styleWeight.rawValue
+      return _weightStyle.rawValue
     }
 
     set {
@@ -49,7 +49,7 @@ public class StyledLabel: UILabel {
         assertionFailure("Couldn't find Styles.Weight value. Make sure you typed correct name in IB.")
         return
       }
-      _styleWeight = weightStyle
+      _weightStyle = weightStyle
       updateStyle()
     }
   }
@@ -70,10 +70,10 @@ public class StyledLabel: UILabel {
   }
 
   func updateStyle() {
-    self.textColor = _styleColor.toUIColor()
-    self.font = _styleFontText.toUIFont()
+    self.textColor = _colorStyle.toUIColor()
+    self.font = _fontTextStyle.toUIFont()
 
-    if _styleWeight == .Medium {
+    if _weightStyle == .Medium {
       self.font = UIFont(descriptor: self.font.fontDescriptor().fontDescriptorByAddingAttributes([UIFontWeightTrait: UIFontWeightMedium]), size: 0.0)
     }
   }
