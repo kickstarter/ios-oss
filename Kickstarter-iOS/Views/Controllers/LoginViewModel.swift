@@ -1,9 +1,11 @@
-import ReactiveCocoa
-import Result
+import ReactiveExtensions
 import KsApi
-import Models
+import class ReactiveCocoa.Signal
+import class ReactiveCocoa.MutableProperty
+import func ReactiveCocoa.<~
 import struct Library.Environment
 import struct Library.AppEnvironment
+import enum Result.NoError
 
 protocol LoginViewModelInputs {
   var email: MutableProperty<String?> { get }
@@ -12,8 +14,8 @@ protocol LoginViewModelInputs {
 }
 
 protocol LoginViewModelOutputs {
-  var isValid: MutableProperty<Bool> { get }
-  var loggedIn: Signal<(), NoError> { get }
+  var isFormValid: MutableProperty<Bool> { get }
+  var logInSuccess: Signal<(), NoError> { get }
 }
 
 protocol LoginViewModelErrors {
@@ -44,8 +46,8 @@ internal final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, L
   }
 
   // MARK: Outputs
-  let isValid = MutableProperty(false)
-  let loggedIn: Signal<(), NoError>
+  let isFormValid = MutableProperty(false)
+  let logInSuccess: Signal<(), NoError>
 
   // MARK: Errors
   let invalidLogin: Signal<String, NoError>
@@ -57,33 +59,31 @@ internal final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, L
     let currentUser = env.currentUser
 
     let (loggedInSignal, loggedInObserver) = Signal<(), NoError>.pipe()
-    loggedIn = loggedInSignal
+    logInSuccess = loggedInSignal
 
-    let (errors, errorsObserver) = Signal<ErrorEnvelope, NoError>.pipe()
+    let (loginErrors, loginErrorsObserver) = Signal<ErrorEnvelope, NoError>.pipe()
 
-    invalidLogin = errors
+    invalidLogin = loginErrors
       .filter { $0.ksrCode == .InvalidXauthLogin }
       .map { $0.errorMessages.first }
       .ignoreNil()
 
-    tfaChallenge = errors
+    tfaChallenge = loginErrors
       .filter { $0.ksrCode == .TfaRequired }
       .ignoreValues()
 
-    genericError = errors
+    genericError = loginErrors
       .filter { $0.ksrCode != .InvalidXauthLogin && $0.ksrCode != .TfaRequired }
       .ignoreValues()
 
-    let emailAndPassword = email.producer
-      .ignoreNil()
+    let emailAndPassword = email.producer.ignoreNil()
       .combineLatestWith(password.producer.ignoreNil())
       .map { ep in (email: ep.0, password: ep.1) }
 
-    isValid <~ emailAndPassword.map(isValid)
+    isFormValid <~ emailAndPassword.map(isValid)
 
     emailAndPassword.takeWhen(loginButtonPressedSignal)
-      .filter(isValid)
-      .flatMap { ep in apiService.login(ep).demoteErrors(errorsObserver) }
+      .flatMap { ep in apiService.login(ep).demoteErrors(loginErrorsObserver) }
       .start { event in
         switch event {
         case let .Next(envelope):

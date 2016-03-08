@@ -1,5 +1,6 @@
 import func Foundation.NSLocalizedString
-import class ReactiveExtensions.UITextField
+import ReactiveExtensions
+import class UIKit.UITextField
 import class UIKit.UIButton
 import class UIKit.UIAlertAction
 import class UIKit.UIAlertController
@@ -18,23 +19,42 @@ internal final class LoginViewController: MVVMViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    self.title = NSLocalizedString("Log in", comment: "")
   }
 
   override func bindViewModel() {
     self.viewModel.inputs.email <~ emailTextField.rac_text
     self.viewModel.inputs.password <~ passwordTextField.rac_text
-    self.loginButton.rac_enabled <~ viewModel.outputs.isValid
+    self.loginButton.rac_enabled <~ self.viewModel.outputs.isFormValid
+
+    self.viewModel.outputs.isFormValid.producer
+      .observeForUI()
+      .startWithNext { [weak self] isValid in
+        self?.loginButton.alpha = isValid ? 1.0 : 0.5
+    }
+
+    self.viewModel.outputs.logInSuccess
+      .observeForUI()
+      .observeNext { [weak self] _ in
+        self?.onLoginSuccess()
+    }
 
     self.viewModel.errors.invalidLogin
+      .observeForUI()
       .observeNext { [weak self] message in
         self?.presentError(message)
     }
 
-    viewModel.errors.genericError
+    self.viewModel.errors.genericError
+      .observeForUI()
       .map { NSLocalizedString("Unable to login.", comment: "") }
       .observeNext { [weak self] message in
         self?.presentError(message)
     }
+  }
+
+  private func onLoginSuccess() {
+    self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
   }
 
   private func presentError(message: String) {

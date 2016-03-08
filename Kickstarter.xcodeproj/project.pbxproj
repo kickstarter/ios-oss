@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		018F1F831C8E182200643DAA /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018F1F821C8E182200643DAA /* LoginViewController.swift */; };
+		018F1F841C8E182200643DAA /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018F1F821C8E182200643DAA /* LoginViewController.swift */; };
+		018F1FA91C8E1A8200643DAA /* LoginToutViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018F1FA81C8E1A8200643DAA /* LoginToutViewModel.swift */; };
+		018F1FAA1C8E1A8200643DAA /* LoginToutViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018F1FA81C8E1A8200643DAA /* LoginToutViewModel.swift */; };
+		019502021C8E3EF700F31304 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019502011C8E3EF700F31304 /* LoginViewModel.swift */; };
+		019502031C8E3EF700F31304 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019502011C8E3EF700F31304 /* LoginViewModel.swift */; };
 		01BDFFB21C87AAD0002E8D34 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 01BDFFB01C87AAD0002E8D34 /* Login.storyboard */; };
 		01BDFFB71C889223002E8D34 /* StyledLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BDFFB61C889223002E8D34 /* StyledLabel.swift */; };
 		01BDFFB91C88A090002E8D34 /* UIColor+KS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BDFFB81C88A090002E8D34 /* UIColor+KS.swift */; };
@@ -1012,6 +1018,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		018F1F821C8E182200643DAA /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		018F1FA81C8E1A8200643DAA /* LoginToutViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginToutViewModel.swift; path = "Kickstarter-iOS/Views/Controllers/LoginToutViewModel.swift"; sourceTree = SOURCE_ROOT; };
+		019502011C8E3EF700F31304 /* LoginViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginViewModel.swift; path = "Kickstarter-iOS/Views/Controllers/LoginViewModel.swift"; sourceTree = SOURCE_ROOT; };
 		01BDFFB11C87AAD0002E8D34 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Login.storyboard; sourceTree = "<group>"; };
 		01BDFFB61C889223002E8D34 /* StyledLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyledLabel.swift; sourceTree = "<group>"; };
 		01BDFFB81C88A090002E8D34 /* UIColor+KS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+KS.swift"; sourceTree = "<group>"; };
@@ -1490,6 +1499,8 @@
 		A751A51A1C85EAD8009C5DEA /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				018F1FA81C8E1A8200643DAA /* LoginToutViewModel.swift */,
+				019502011C8E3EF700F31304 /* LoginViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -1516,6 +1527,7 @@
 				A7F761741C85FA40005405ED /* ActivityViewController.swift */,
 				A751A51E1C85EC0B009C5DEA /* DiscoveryViewController.swift */,
 				A7F761761C85FACB005405ED /* LoginToutViewController.swift */,
+				018F1F821C8E182200643DAA /* LoginViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -2934,10 +2946,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				018F1FAA1C8E1A8200643DAA /* LoginToutViewModel.swift in Sources */,
 				A7C795B21C873AC90081977F /* AppDelegate.swift in Sources */,
 				A7C795B31C873AC90081977F /* ActivityViewController.swift in Sources */,
 				A7C795B41C873AC90081977F /* DiscoveryViewController.swift in Sources */,
+				018F1F841C8E182200643DAA /* LoginViewController.swift in Sources */,
 				A7C795B51C873AC90081977F /* LoginToutViewController.swift in Sources */,
+				019502031C8E3EF700F31304 /* LoginViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3002,10 +3017,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				018F1FA91C8E1A8200643DAA /* LoginToutViewModel.swift in Sources */,
 				A7D1F9481C850B7C000D41D5 /* AppDelegate.swift in Sources */,
 				A7F761751C85FA40005405ED /* ActivityViewController.swift in Sources */,
 				A751A51F1C85EC0B009C5DEA /* DiscoveryViewController.swift in Sources */,
+				018F1F831C8E182200643DAA /* LoginViewController.swift in Sources */,
 				A7F761771C85FACB005405ED /* LoginToutViewController.swift in Sources */,
+				019502021C8E3EF700F31304 /* LoginViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
