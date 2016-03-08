@@ -18,7 +18,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="UHD-eb-qXC">
-                                <rect key="frame" x="40" y="177" width="520" height="246"/>
+                                <rect key="frame" x="40" y="177" width="520" height="245"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="1tl-3X-f58">
                                         <rect key="frame" x="0.0" y="0.0" width="520" height="71"/>
@@ -79,7 +79,7 @@
                                                     <userDefinedRuntimeAttribute type="string" keyPath="normalLocalizedKey" value="login.buttons.log_in_email"/>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
-                                                    <segue destination="i0D-IP-SOl" kind="show" id="gkV-Ch-hMc"/>
+                                                    <action selector="loginButtonPressed:" destination="jyD-hR-XbB" eventType="touchUpInside" id="Qn0-HB-XVr"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -135,15 +135,20 @@
                     </view>
                     <navigationItem key="navigationItem" id="DYJ-0X-X7H"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="facebookButton" destination="DI6-Zp-Yoj" id="SWX-Nk-0mf"/>
+                        <outlet property="loginButton" destination="ytH-Nw-2z0" id="r8r-7A-7dc"/>
+                        <outlet property="signupButton" destination="tcm-YK-ZfH" id="YIc-cL-bs1"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="On0-Xs-e35" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1619" y="736"/>
         </scene>
-        <!--View Controller-->
+        <!--Login View Controller-->
         <scene sceneID="Aqv-6T-RPB">
             <objects>
-                <viewController id="i0D-IP-SOl" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LoginViewController" id="i0D-IP-SOl" customClass="LoginViewController" customModule="Kickstarter_iOS" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="frH-WO-TYb"/>
                         <viewControllerLayoutGuide type="bottom" id="NlS-Xy-Gop"/>
@@ -191,11 +196,14 @@
                                                 <color key="value" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="loginButtonPressed:" destination="i0D-IP-SOl" eventType="touchUpInside" id="Cfc-Od-DKl"/>
+                                        </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Forgot password?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lYb-lD-nuf" customClass="StyledLabel" customModule="Library">
                                         <rect key="frame" x="0.0" y="192" width="520" height="18"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="string" keyPath="style" value="Body"/>
@@ -223,6 +231,11 @@
                             </mask>
                         </variation>
                     </view>
+                    <connections>
+                        <outlet property="emailTextField" destination="rfF-KC-Vmh" id="fUb-r3-jVV"/>
+                        <outlet property="loginButton" destination="yb8-7t-B6f" id="n4M-hv-4ZU"/>
+                        <outlet property="passwordTextField" destination="A3g-DY-QEE" id="mia-c7-Dw0"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FQx-n3-9wT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
