@@ -1,3 +1,7 @@
+/**
+ *  Default styles.
+ */
+
 import UIKit
 
 enum FontText: String {
