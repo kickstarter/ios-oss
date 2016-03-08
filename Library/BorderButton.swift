@@ -15,7 +15,6 @@ public class BorderButton: UIButton {
     get {
       return _color.rawValue
     }
-
     set {
       guard let colorValue = Color(rawValue: newValue) else {
         assertionFailure("Couldn't find Styles.Color value. Make sure you typed correct name in IB.")
@@ -31,7 +30,6 @@ public class BorderButton: UIButton {
     get {
       return _borderColor.rawValue
     }
-
     set {
       guard let colorValue = Color(rawValue: newValue) else {
         assertionFailure("Couldn't find Styles.Color value. Make sure you typed correct name in IB.")
@@ -47,7 +45,6 @@ public class BorderButton: UIButton {
     get {
       return _titleColorNormal.rawValue
     }
-
     set {
       guard let colorValue = Color(rawValue: newValue) else {
         assertionFailure("Couldn't find Styles.Color value. Make sure you typed correct name in IB.")
@@ -63,7 +60,6 @@ public class BorderButton: UIButton {
     get {
       return _titleColorHighlighted.rawValue
     }
-
     set {
       guard let colorValue = Color(rawValue: newValue) else {
         assertionFailure("Couldn't find Styles.Color value. Make sure you typed correct name in IB.")
@@ -79,7 +75,6 @@ public class BorderButton: UIButton {
     get {
       return _titleFontTextStyle.rawValue
     }
-
     set {
       guard let fontStyle = FontText(rawValue: newValue) else {
         assertionFailure("Couldn't find Styles.FontText value. Make sure you typed correct name in IB.")
@@ -95,7 +90,6 @@ public class BorderButton: UIButton {
     get {
       return _titleWeightStyle.rawValue
     }
-
     set {
       guard let weightStyle = Weight(rawValue: newValue) else {
         assertionFailure("Couldn't find Styles.Weight value. Make sure you typed correct name in IB.")

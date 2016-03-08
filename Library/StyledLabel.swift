@@ -11,7 +11,6 @@ public class StyledLabel: UILabel {
     get {
       return _fontTextStyle.rawValue
     }
-
     set {
       guard let fontStyle = FontText(rawValue: newValue) else {
         assertionFailure("Couldn't find Styles.FontText value. Make sure you typed correct name in IB.")
@@ -27,7 +26,6 @@ public class StyledLabel: UILabel {
     get {
       return _colorStyle.rawValue
     }
-
     set {
       guard let colorStyle = Color(rawValue: newValue) else {
         assertionFailure("Couldn't find Styles.Color value. Make sure you typed correct name in IB.")
@@ -43,7 +41,6 @@ public class StyledLabel: UILabel {
     get {
       return _weightStyle.rawValue
     }
-
     set {
       guard let weightStyle = Weight(rawValue: newValue) else {
         assertionFailure("Couldn't find Styles.Weight value. Make sure you typed correct name in IB.")
