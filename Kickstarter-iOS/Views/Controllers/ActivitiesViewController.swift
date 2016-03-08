@@ -11,7 +11,7 @@ internal final class ActivitiesViewController: MVVMCollectionViewController {
     self.collectionView?.dataSource = dataSource
 
     if let layout = self.collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
-      layout.estimatedItemSize = CGSize(width: 375.0, height: 300.0)
+      layout.estimatedItemSize = CGSize(width: 375.0, height: 100.0)
     }
   }
 

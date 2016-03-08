@@ -24,10 +24,14 @@ internal final class DiscoveryViewModel: ViewModelType, DiscoveryViewModelType, 
 
   internal init(env: Environment = AppEnvironment.current) {
     let service = env.apiService
+    let koala = env.koala
 
     self.projects = service.fetchProjects(DiscoveryParams(includePOTD: true))
       .demoteErrors()
       .map { $0.distincts() }
       .replayLazily(1)
+
+
+    koala.trackDiscovery()
   }
 }
