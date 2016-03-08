@@ -5,6 +5,7 @@ import struct KsApi.DiscoveryParams
 import struct ReactiveCocoa.SignalProducer
 import struct Models.Project
 import enum Result.NoError
+import Prelude
 
 internal protocol DiscoveryViewModelOutputs {
   var projects: SignalProducer<[Project], NoError> { get }
@@ -26,6 +27,7 @@ internal final class DiscoveryViewModel: ViewModelType, DiscoveryViewModelType, 
 
     self.projects = service.fetchProjects(DiscoveryParams(includePOTD: true))
       .demoteErrors()
+      .map { $0.distincts() }
       .replayLazily(1)
   }
 }
