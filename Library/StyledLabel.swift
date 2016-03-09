@@ -2,21 +2,17 @@ import UIKit.UILabel
 
 @IBDesignable
 public class StyledLabel: UILabel {
-  private var _fontTextStyle: FontText = FontText.Body
-  private var _colorStyle: Color = Color.TextDefault
+  private var _fontTextStyle: FontText? = FontText.Body
+  private var _colorStyle: Color? = Color.TextDefault
   private var _weightStyle: Weight = Weight.Default
 
   @IBInspectable
   public var fontTextStyle: String {
     get {
-      return _fontTextStyle.rawValue
+      return _fontTextStyle?.rawValue ?? ""
     }
     set {
-      guard let fontStyle = FontText(rawValue: newValue) else {
-        assertionFailure("Couldn't find Styles.FontText value. Make sure you typed correct name in IB.")
-        return
-      }
-      _fontTextStyle = fontStyle
+      _fontTextStyle = FontText(rawValue: newValue)
       updateStyle()
     }
   }
@@ -24,14 +20,10 @@ public class StyledLabel: UILabel {
   @IBInspectable
   public var colorStyle: String {
     get {
-      return _colorStyle.rawValue
+      return _colorStyle?.rawValue ?? ""
     }
     set {
-      guard let colorStyle = Color(rawValue: newValue) else {
-        assertionFailure("Couldn't find Styles.Color value. Make sure you typed correct name in IB.")
-        return
-      }
-      _colorStyle = colorStyle
+      _colorStyle = Color(rawValue: newValue)
       updateStyle()
     }
   }
@@ -42,11 +34,7 @@ public class StyledLabel: UILabel {
       return _weightStyle.rawValue
     }
     set {
-      guard let weightStyle = Weight(rawValue: newValue) else {
-        assertionFailure("Couldn't find Styles.Weight value. Make sure you typed correct name in IB.")
-        return
-      }
-      _weightStyle = weightStyle
+      _weightStyle = Weight(rawValue: newValue) ?? .Default
       updateStyle()
     }
   }
@@ -67,11 +55,17 @@ public class StyledLabel: UILabel {
   }
 
   func updateStyle() {
-    self.textColor = _colorStyle.toUIColor()
-    self.font = _fontTextStyle.toUIFont()
+    self.textColor = _colorStyle?.toUIColor() ?? Color.Error.toUIColor()
 
-    if _weightStyle == .Medium {
-      self.font = UIFont(descriptor: self.font.fontDescriptor().fontDescriptorByAddingAttributes([UIFontWeightTrait: UIFontWeightMedium]), size: 0.0)
+    switch (_fontTextStyle, _weightStyle) {
+    case let (font?, .Default):
+      self.font = font.toUIFont()
+    case let (font?, .Medium):
+      let descriptor = font.toUIFont().fontDescriptor()
+      let mediumDescriptor = descriptor.fontDescriptorWithSymbolicTraits(.TraitBold)
+      self.font = UIFont(descriptor: mediumDescriptor, size: 0.0)
+    case (_, _):
+      self.font = UIFont(name: "Marker Felt", size: 15.0)
     }
   }
 }

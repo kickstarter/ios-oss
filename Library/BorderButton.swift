@@ -3,24 +3,20 @@ import UIKit.UIFont
 
 @IBDesignable
 public class BorderButton: UIButton {
-  private var _color: Color = .White
-  private var _borderColor: Color = .GrayDark
-  private var _titleColorNormal: Color = .Black
-  private var _titleColorHighlighted: Color = .GrayLight
-  private var _titleFontTextStyle: FontText = .Body
+  private var _color: Color? = .White
+  private var _borderColor: Color? = .GrayDark
+  private var _titleColorNormal: Color? = .Black
+  private var _titleColorHighlighted: Color? = .GrayLight
+  private var _titleFontTextStyle: FontText? = .Body
   private var _titleWeightStyle: Weight = .Default
 
   @IBInspectable
   public var color: String {
     get {
-      return _color.rawValue
+      return _color?.rawValue ?? ""
     }
     set {
-      guard let colorValue = Color(rawValue: newValue) else {
-        assertionFailure("Couldn't find Styles.Color value. Make sure you typed correct name in IB.")
-        return
-      }
-      _color = colorValue
+      _color = Color(rawValue: newValue)
       updateStyle()
     }
   }
@@ -28,14 +24,10 @@ public class BorderButton: UIButton {
   @IBInspectable
   public var borderColor: String {
     get {
-      return _borderColor.rawValue
+      return _borderColor?.rawValue ?? ""
     }
     set {
-      guard let colorValue = Color(rawValue: newValue) else {
-        assertionFailure("Couldn't find Styles.Color value. Make sure you typed correct name in IB.")
-        return
-      }
-      _borderColor = colorValue
+      _borderColor = Color(rawValue: newValue)
       updateStyle()
     }
   }
@@ -43,14 +35,10 @@ public class BorderButton: UIButton {
   @IBInspectable
   public var titleColorNormal: String {
     get {
-      return _titleColorNormal.rawValue
+      return _titleColorNormal?.rawValue ?? ""
     }
     set {
-      guard let colorValue = Color(rawValue: newValue) else {
-        assertionFailure("Couldn't find Styles.Color value. Make sure you typed correct name in IB.")
-        return
-      }
-      _titleColorNormal = colorValue
+      _titleColorNormal = Color(rawValue: newValue)
       updateStyle()
     }
   }
@@ -58,14 +46,10 @@ public class BorderButton: UIButton {
   @IBInspectable
   public var titleColorHighlighted: String {
     get {
-      return _titleColorHighlighted.rawValue
+      return _titleColorHighlighted?.rawValue ?? ""
     }
     set {
-      guard let colorValue = Color(rawValue: newValue) else {
-        assertionFailure("Couldn't find Styles.Color value. Make sure you typed correct name in IB.")
-        return
-      }
-      _titleColorHighlighted = colorValue
+      _titleColorHighlighted = Color(rawValue: newValue)
       updateStyle()
     }
   }
@@ -73,14 +57,10 @@ public class BorderButton: UIButton {
   @IBInspectable
   public var titleFontTextStyle: String {
     get {
-      return _titleFontTextStyle.rawValue
+      return _titleFontTextStyle?.rawValue ?? ""
     }
     set {
-      guard let fontStyle = FontText(rawValue: newValue) else {
-        assertionFailure("Couldn't find Styles.FontText value. Make sure you typed correct name in IB.")
-        return
-      }
-      _titleFontTextStyle = fontStyle
+      _titleFontTextStyle = FontText(rawValue: newValue)
       updateStyle()
     }
   }
@@ -91,11 +71,7 @@ public class BorderButton: UIButton {
       return _titleWeightStyle.rawValue
     }
     set {
-      guard let weightStyle = Weight(rawValue: newValue) else {
-        assertionFailure("Couldn't find Styles.Weight value. Make sure you typed correct name in IB.")
-        return
-      }
-      _titleWeightStyle = weightStyle
+      _titleWeightStyle = Weight(rawValue: newValue) ?? .Default
       updateStyle()
     }
   }
@@ -116,18 +92,28 @@ public class BorderButton: UIButton {
   }
 
   func updateStyle() {
-    self.titleLabel?.font = _titleFontTextStyle.toUIFont()
-
-    if _titleWeightStyle == .Medium {
-      self.titleLabel?.font = UIFont(descriptor: _titleFontTextStyle.toUIFont().fontDescriptor().fontDescriptorByAddingAttributes([UIFontWeightTrait: UIFontWeightMedium]), size: 0.0)
+    self.backgroundColor = _color?.toUIColor() ?? Color.Error.toUIColor()
+    self.layer.borderColor = _borderColor?.toUIColor().CGColor ?? Color.Error.toUIColor().CGColor
+    self.setTitleColor(_titleColorNormal?.toUIColor() ?? Color.Error.toUIColor(), forState: UIControlState.Normal)
+    if let validHighlight = _titleColorHighlighted {
+      self.setTitleColor(validHighlight.toUIColor(), forState: UIControlState.Highlighted)
+    } else {
+      self.setTitleColor(Color.Error.toUIColor(), forState: UIControlState.Normal)
     }
 
-    self.layer.cornerRadius = 6
+    switch (_titleFontTextStyle, _titleWeightStyle) {
+    case let (font?, .Default):
+      self.titleLabel?.font = font.toUIFont()
+    case let (font?, .Medium):
+      let descriptor = font.toUIFont().fontDescriptor()
+      let mediumDescriptor = descriptor.fontDescriptorWithSymbolicTraits(.TraitBold)
+      self.titleLabel?.font = UIFont(descriptor: mediumDescriptor, size: 0.0)
+    case (_, _):
+      self.titleLabel?.font = UIFont(name: "Marker Felt", size: 15.0)
+    }
+
+    self.layer.cornerRadius = 6.0
     self.layer.borderWidth = 0.8
-    self.setTitleColor(_titleColorNormal.toUIColor(), forState: UIControlState.Normal)
-    self.setTitleColor(_titleColorHighlighted.toUIColor(), forState: UIControlState.Highlighted)
-    self.backgroundColor = _color.toUIColor()
-    self.layer.borderColor = _borderColor.toUIColor().CGColor
   }
 }
 
