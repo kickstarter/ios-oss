@@ -7,8 +7,8 @@ public final class BorderButton: UIButton {
   private var _borderColor: Color? = .GrayDark
   private var _titleColorNormal: Color? = .Black
   private var _titleColorHighlighted: Color? = .GrayLight
-  private var _titleFontTextStyle: FontText? = .Body
-  private var _titleWeightStyle: Weight = .Default
+  private var _titleFontText: FontText? = .Body
+  private var _titleWeight: Weight = .Default
 
   @IBInspectable
   public var color: String {
@@ -55,23 +55,23 @@ public final class BorderButton: UIButton {
   }
 
   @IBInspectable
-  public var titleFontTextStyle: String {
+  public var titleFontText: String {
     get {
-      return _titleFontTextStyle?.rawValue ?? ""
+      return _titleFontText?.rawValue ?? ""
     }
     set {
-      _titleFontTextStyle = FontText(rawValue: newValue)
+      _titleFontText = FontText(rawValue: newValue)
       updateStyle()
     }
   }
 
   @IBInspectable
-  public var titleWeightStyle: String {
+  public var titleWeight: String {
     get {
-      return _titleWeightStyle.rawValue
+      return _titleWeight.rawValue
     }
     set {
-      _titleWeightStyle = Weight(rawValue: newValue) ?? .Default
+      _titleWeight = Weight(rawValue: newValue) ?? .Default
       updateStyle()
     }
   }
@@ -96,7 +96,7 @@ public final class BorderButton: UIButton {
       self.setTitleColor(.redColor(), forState: UIControlState.Normal)
     }
 
-    switch (_titleFontTextStyle, _titleWeightStyle) {
+    switch (_titleFontText, _titleWeight) {
     case let (font?, .Default):
       self.titleLabel?.font = font.toUIFont()
     case let (font?, .Medium):
