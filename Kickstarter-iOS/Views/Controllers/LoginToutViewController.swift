@@ -1,12 +1,10 @@
-import UIKit
+import UIKit.UIButton
 import class Library.MVVMViewController
-import class Library.FacebookButton
-import class Library.BorderButton
 
 internal final class LoginToutViewController: MVVMViewController {
-  @IBOutlet private weak var facebookButton: FacebookButton!
-  @IBOutlet private weak var signupButton: BorderButton!
-  @IBOutlet private weak var loginButton: BorderButton!
+  @IBOutlet private weak var facebookButton: UIButton!
+  @IBOutlet private weak var signupButton: UIButton!
+  @IBOutlet private weak var loginButton: UIButton!
 
   let viewModel: LoginToutViewModelType = LoginToutViewModel()
 
