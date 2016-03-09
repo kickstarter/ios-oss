@@ -1,8 +1,5 @@
-/**
- *  Default styles.
- */
-
-import UIKit
+import UIKit.UIColor
+import UIKit.UIFont
 
 enum FontText: String {
   case Headline
@@ -25,7 +22,6 @@ enum Color: String {
   case BlueLight
   case BlueRoyal
   case Clear
-  case Error
   case Green
   case GreenLight
   case Gray
@@ -108,8 +104,7 @@ extension Color {
     case .BlueDark:       return .hex(0x081245)
     case .BlueLight:      return .hex(0xe8f6ff)
     case .BlueRoyal:      return .hex(0x00a0ff)
-    case .Clear:          return UIColor.clearColor()
-    case .Error:          return .hex(0xff0000)
+    case .Clear:          return .clearColor()
     case .Green:          return .hex(0x2bde73)
     case .GreenLight:     return .hex(0xdef7e0)
     case .Gray:           return .hex(0xd9d9de)

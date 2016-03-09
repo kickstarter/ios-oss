@@ -1,40 +1,40 @@
 import UIKit.UILabel
 
 @IBDesignable
-public class StyledLabel: UILabel {
-  private var _fontTextStyle: FontText? = FontText.Body
-  private var _colorStyle: Color? = Color.TextDefault
-  private var _weightStyle: Weight = Weight.Default
+public final class StyledLabel: UILabel {
+  private var _fontText: FontText? = .Body
+  private var _color: Color? = .TextDefault
+  private var _weight: Weight = .Default
 
   @IBInspectable
-  public var fontTextStyle: String {
+  public var fontText: String {
     get {
-      return _fontTextStyle?.rawValue ?? ""
+      return _fontText?.rawValue ?? ""
     }
     set {
-      _fontTextStyle = FontText(rawValue: newValue)
+      _fontText = FontText(rawValue: newValue)
       updateStyle()
     }
   }
 
   @IBInspectable
-  public var colorStyle: String {
+  public var color: String {
     get {
-      return _colorStyle?.rawValue ?? ""
+      return _color?.rawValue ?? ""
     }
     set {
-      _colorStyle = Color(rawValue: newValue)
+      _color = Color(rawValue: newValue)
       updateStyle()
     }
   }
 
   @IBInspectable
-  public var weightStyle: String {
+  public var weight: String {
     get {
-      return _weightStyle.rawValue
+      return _weight.rawValue
     }
     set {
-      _weightStyle = Weight(rawValue: newValue) ?? .Default
+      _weight = Weight(rawValue: newValue) ?? .Default
       updateStyle()
     }
   }
@@ -49,15 +49,10 @@ public class StyledLabel: UILabel {
     updateStyle()
   }
 
-  override public func prepareForInterfaceBuilder() {
-    super.prepareForInterfaceBuilder()
-    updateStyle()
-  }
-
   func updateStyle() {
-    self.textColor = _colorStyle?.toUIColor() ?? Color.Error.toUIColor()
+    self.textColor = _color?.toUIColor() ?? .redColor()
 
-    switch (_fontTextStyle, _weightStyle) {
+    switch (_fontText, _weight) {
     case let (font?, .Default):
       self.font = font.toUIFont()
     case let (font?, .Medium):

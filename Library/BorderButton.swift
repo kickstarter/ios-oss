@@ -2,7 +2,7 @@ import UIKit.UIButton
 import UIKit.UIFont
 
 @IBDesignable
-public class BorderButton: UIButton {
+public final class BorderButton: UIButton {
   private var _color: Color? = .White
   private var _borderColor: Color? = .GrayDark
   private var _titleColorNormal: Color? = .Black
@@ -86,19 +86,14 @@ public class BorderButton: UIButton {
     updateStyle()
   }
 
-  override public func prepareForInterfaceBuilder() {
-    super.prepareForInterfaceBuilder()
-    updateStyle()
-  }
-
   func updateStyle() {
-    self.backgroundColor = _color?.toUIColor() ?? Color.Error.toUIColor()
-    self.layer.borderColor = _borderColor?.toUIColor().CGColor ?? Color.Error.toUIColor().CGColor
-    self.setTitleColor(_titleColorNormal?.toUIColor() ?? Color.Error.toUIColor(), forState: UIControlState.Normal)
+    self.backgroundColor = _color?.toUIColor() ?? .redColor()
+    self.layer.borderColor = _borderColor?.toUIColor().CGColor ?? UIColor.redColor().CGColor
+    self.setTitleColor(_titleColorNormal?.toUIColor() ?? .redColor(), forState: UIControlState.Normal)
     if let validHighlight = _titleColorHighlighted {
       self.setTitleColor(validHighlight.toUIColor(), forState: UIControlState.Highlighted)
     } else {
-      self.setTitleColor(Color.Error.toUIColor(), forState: UIControlState.Normal)
+      self.setTitleColor(.redColor(), forState: UIControlState.Normal)
     }
 
     switch (_titleFontTextStyle, _titleWeightStyle) {
@@ -113,7 +108,7 @@ public class BorderButton: UIButton {
     }
 
     self.layer.cornerRadius = 6.0
-    self.layer.borderWidth = 0.8
+    self.layer.borderWidth = 1.0
   }
 }
 
