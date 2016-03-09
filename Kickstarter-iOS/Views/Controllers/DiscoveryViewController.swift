@@ -11,7 +11,6 @@ internal final class DiscoveryViewController: MVVMCollectionViewController {
     super.viewDidLoad()
 
     self.collectionView?.dataSource = dataSource
-    AppEnvironment.current.koala.trackDiscovery()
 
     if let layout = self.collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
       layout.estimatedItemSize = CGSize(width: self.view.bounds.width - 32.0, height: 300.0)
@@ -27,5 +26,9 @@ internal final class DiscoveryViewController: MVVMCollectionViewController {
         self?.dataSource.loadData(projects)
         self?.collectionView?.reloadData()
     }
+  }
+
+  override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    super.prepareForSegue(segue, sender: sender)
   }
 }

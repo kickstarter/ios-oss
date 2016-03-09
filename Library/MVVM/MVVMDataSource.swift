@@ -7,6 +7,12 @@ import class UIKit.UITableViewCell
 import class UIKit.UICollectionView
 import class UIKit.UITableView
 
+public protocol CellType {
+  static var defaultReusableId: String { get }
+}
+extension UICollectionViewCell: CellType {}
+extension UITableViewCell: CellType {}
+
 public class MVVMDataSource : NSObject, UICollectionViewDataSource, UITableViewDataSource {
   private var data = [[(viewModel: AnyObject, reusableId: String)]]()
 
@@ -35,7 +41,7 @@ public class MVVMDataSource : NSObject, UICollectionViewDataSource, UITableViewD
 
   /// Add a row of data to a section.
   public final func appendRowData <
-    Cell: UICollectionViewCell,
+    Cell: CellType,
     ViewModel: AnyObject
     where
     Cell: ViewModeledCellType,
@@ -49,7 +55,7 @@ public class MVVMDataSource : NSObject, UICollectionViewDataSource, UITableViewD
 
   /// Add a homogenous section of data.
   public final func appendSectionData <
-    Cell: UICollectionViewCell,
+    Cell: CellType,
     ViewModel: AnyObject
     where
     Cell: ViewModeledCellType,
@@ -64,7 +70,7 @@ public class MVVMDataSource : NSObject, UICollectionViewDataSource, UITableViewD
 
   /// Replace the entirety of a section with homogenous data.
   public final func setData <
-    Cell: UICollectionViewCell,
+    Cell: CellType,
     ViewModel: AnyObject
     where
     Cell: ViewModeledCellType,
