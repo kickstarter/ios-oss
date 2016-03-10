@@ -44,21 +44,21 @@
             </objects>
             <point key="canvasLocation" x="0.0" y="0.0"/>
         </scene>
-        <!--Activity-->
+        <!--ActivitiesViewController-->
         <scene sceneID="7Qa-72-YCD">
             <objects>
-                <viewControllerPlaceholder storyboardName="Activity" id="vn9-w7-g8t" sceneMemberID="viewController">
+                <viewControllerPlaceholder storyboardName="Activity" referencedIdentifier="ActivitiesViewController" id="vn9-w7-g8t" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Item" id="Onl-El-De9"/>
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pPq-LP-kkp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="673.5" y="-134"/>
+            <point key="canvasLocation" x="723.5" y="-134"/>
         </scene>
         <!--DiscoveryViewController-->
         <scene sceneID="dqZ-PK-r8S">
             <objects>
                 <viewControllerPlaceholder storyboardIdentifier="DiscoveryViewController" storyboardName="Discovery" referencedIdentifier="DiscoveryViewController" id="aB0-Y1-uoU" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="O5y-A6-DA7"/>
+                    <tabBarItem key="tabBarItem" title="Discovery" id="O5y-A6-DA7"/>
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0tp-N8-bum" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

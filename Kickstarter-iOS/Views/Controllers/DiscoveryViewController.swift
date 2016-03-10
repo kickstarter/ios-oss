@@ -1,20 +1,22 @@
-import class Library.MVVMCollectionViewController
+import class UIKit.UITableView
+import class UIKit.UIView
+import class UIKit.NSIndexPath
+import struct UIKit.CGFloat
+import struct UIKit.CGRect
+import struct UIKit.UIEdgeInsets
+import func UIKit.-
+import var UIKit.UITableViewAutomaticDimension
+import class Library.MVVMTableViewController
 import struct Library.Environment
 import struct Library.AppEnvironment
-import UIKit
 
-internal final class DiscoveryViewController: MVVMCollectionViewController {
+internal final class DiscoveryViewController: MVVMTableViewController {
   let viewModel: DiscoveryViewModelType = DiscoveryViewModel()
   let dataSource = DiscoveryProjectsDataSource()
 
   override func viewDidLoad() {
     super.viewDidLoad()
-
-    self.collectionView?.dataSource = dataSource
-
-    if let layout = self.collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
-      layout.estimatedItemSize = CGSize(width: self.view.bounds.width - 32.0, height: 300.0)
-    }
+    self.tableView.dataSource = dataSource
   }
 
   override func bindViewModel() {
@@ -24,11 +26,21 @@ internal final class DiscoveryViewController: MVVMCollectionViewController {
       .observeForUI()
       .startWithNext { [weak self] projects in
         self?.dataSource.loadData(projects)
-        self?.collectionView?.reloadData()
+        self?.tableView.reloadData()
     }
   }
 
-  override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-    super.prepareForSegue(segue, sender: sender)
+  override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    return 32.0
+  }
+
+  override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    let view = UIView()
+    view.backgroundColor = .clearColor()
+    return view
+  }
+
+  override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    return UITableViewAutomaticDimension
   }
 }

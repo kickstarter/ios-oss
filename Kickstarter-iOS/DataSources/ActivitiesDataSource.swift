@@ -1,7 +1,7 @@
 import class Library.MVVMDataSource
 import struct Models.Activity
-import class UIKit.UICollectionView
-import class UIKit.UICollectionViewCell
+import class UIKit.UITableView
+import class UIKit.UITableViewCell
 
 internal final class ActivitiesDataSource: MVVMDataSource {
 
@@ -12,28 +12,24 @@ internal final class ActivitiesDataSource: MVVMDataSource {
     activities.forEach { activity in
       switch activity.category {
       case .Backing:
-        self.appendRowData(
-          ActivityFriendBackingViewModel(activity: activity),
-          cellClass: ActivityFriendBackingCell.self,
-          toSection: 0
+        self.appendSectionData(
+          [ActivityFriendBackingViewModel(activity: activity)],
+          cellClass: ActivityFriendBackingCell.self
         )
       case .Update:
-        self.appendRowData(
-          ActivityUpdateViewModel(activity: activity),
-          cellClass: ActivityUpdateCell.self,
-          toSection: 0
+        self.appendSectionData(
+          [ActivityUpdateViewModel(activity: activity)],
+          cellClass: ActivityUpdateCell.self
         )
       case .Follow:
-        self.appendRowData(
-          ActivityFriendFollowViewModel(activity: activity),
-          cellClass: ActivityFriendFollowCell.self,
-          toSection: 0
+        self.appendSectionData(
+          [ActivityFriendFollowViewModel(activity: activity)],
+          cellClass: ActivityFriendFollowCell.self
         )
       case .Success:
-        self.appendRowData(
-          ActivityStateChangeViewModel(activity: activity),
-          cellClass: ActivityStateChangeCell.self,
-          toSection: 0
+        self.appendSectionData(
+          [ActivityStateChangeViewModel(activity: activity)],
+          cellClass: ActivityStateChangeCell.self
         )
       default:
         assertionFailure("Unsupported activity")
@@ -41,7 +37,7 @@ internal final class ActivitiesDataSource: MVVMDataSource {
     }
   }
 
-  override func configureCell(collectionCell cell: UICollectionViewCell, withViewModel viewModel: AnyObject) {
+  override func configureCell(tableCell cell: UITableViewCell, withViewModel viewModel: AnyObject) {
 
     switch (cell, viewModel) {
     case let (cell as ActivityUpdateCell, viewModel as ActivityUpdateViewModel):

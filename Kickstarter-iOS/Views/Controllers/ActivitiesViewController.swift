@@ -1,18 +1,16 @@
-import class Library.MVVMCollectionViewController
+import class Library.MVVMTableViewController
+import var UIKit.UITableViewAutomaticDimension
+import class UIKit.NSIndexPath
+import class UIKit.UITableView
 import UIKit
 
-internal final class ActivitiesViewController: MVVMCollectionViewController {
+internal final class ActivitiesViewController: MVVMTableViewController {
   let viewModel: ActivitiesViewModelType = ActivitiesViewModel()
   let dataSource = ActivitiesDataSource()
 
   override func viewDidLoad() {
     super.viewDidLoad()
-
-    self.collectionView?.dataSource = dataSource
-
-    if let layout = self.collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
-      layout.estimatedItemSize = CGSize(width: 375.0, height: 100.0)
-    }
+    self.tableView.dataSource = dataSource
   }
 
   override func bindViewModel() {
@@ -22,7 +20,21 @@ internal final class ActivitiesViewController: MVVMCollectionViewController {
       .observeForUI()
       .startWithNext { [weak self] activities in
         self?.dataSource.loadData(activities)
-        self?.collectionView?.reloadData()
+        self?.tableView.reloadData()
     }
+  }
+
+  override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    return 32.0
+  }
+
+  override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    let view = UIView()
+    view.backgroundColor = .clearColor()
+    return view
+  }
+
+  override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    return UITableViewAutomaticDimension
   }
 }
