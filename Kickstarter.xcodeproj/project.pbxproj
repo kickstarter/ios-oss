@@ -7,6 +7,20 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0151AEB31C8F6FE90067F1BE /* StyledLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0151AEB01C8F6FD80067F1BE /* StyledLabel.swift */; };
+		0151AEB41C8F6FEC0067F1BE /* StyledLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0151AEB01C8F6FD80067F1BE /* StyledLabel.swift */; };
+		0151AEB51C8F6FFE0067F1BE /* Styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0151AEAD1C8F61870067F1BE /* Styles.swift */; };
+		0151AEB61C8F70000067F1BE /* Styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0151AEAD1C8F61870067F1BE /* Styles.swift */; };
+		0151AEB71C8F700B0067F1BE /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0151AE871C8F60370067F1BE /* UIColor.swift */; };
+		0151AEB81C8F700C0067F1BE /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0151AE871C8F60370067F1BE /* UIColor.swift */; };
+		0151AEBA1C8F811C0067F1BE /* BorderButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0151AEB91C8F811C0067F1BE /* BorderButton.swift */; };
+		0151AEBB1C8F811C0067F1BE /* BorderButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0151AEB91C8F811C0067F1BE /* BorderButton.swift */; };
+		01EFBC891C91FB770094EEC2 /* UIColorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01EFBC881C91FB770094EEC2 /* UIColorTests.swift */; };
+		01EFBCAF1C92036E0094EEC2 /* StyledLabelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01EFBCAE1C92036E0094EEC2 /* StyledLabelTests.swift */; };
+		01EFBCB01C92036E0094EEC2 /* StyledLabelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01EFBCAE1C92036E0094EEC2 /* StyledLabelTests.swift */; };
+		01EFBCB11C9203750094EEC2 /* UIColorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01EFBC881C91FB770094EEC2 /* UIColorTests.swift */; };
+		01EFBCB31C920A7E0094EEC2 /* BorderButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01EFBCB21C920A7E0094EEC2 /* BorderButtonTests.swift */; };
+		01EFBCB41C920A7E0094EEC2 /* BorderButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01EFBCB21C920A7E0094EEC2 /* BorderButtonTests.swift */; };
 		807572781C88DE1900E7DA8A /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 807572111C88DD7900E7DA8A /* Alamofire.framework */; };
 		807572791C88DE1900E7DA8A /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 807572111C88DD7900E7DA8A /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8075727C1C88DE1900E7DA8A /* AlamofireImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 807571F91C88B8E200E7DA8A /* AlamofireImage.framework */; };
@@ -1068,6 +1082,13 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0151AE871C8F60370067F1BE /* UIColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
+		0151AEAD1C8F61870067F1BE /* Styles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Styles.swift; sourceTree = "<group>"; };
+		0151AEB01C8F6FD80067F1BE /* StyledLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyledLabel.swift; sourceTree = "<group>"; };
+		0151AEB91C8F811C0067F1BE /* BorderButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BorderButton.swift; sourceTree = "<group>"; };
+		01EFBC881C91FB770094EEC2 /* UIColorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorTests.swift; sourceTree = "<group>"; };
+		01EFBCAE1C92036E0094EEC2 /* StyledLabelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyledLabelTests.swift; sourceTree = "<group>"; };
+		01EFBCB21C920A7E0094EEC2 /* BorderButtonTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BorderButtonTests.swift; sourceTree = "<group>"; };
 		802800571C88F64D00141235 /* Base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Base.xcconfig; path = Configs/Base.xcconfig; sourceTree = "<group>"; };
 		807571ED1C88B8E200E7DA8A /* AlamofireImage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AlamofireImage.xcodeproj; path = Frameworks/AlamofireImage/AlamofireImage.xcodeproj; sourceTree = "<group>"; };
 		807572061C88DD7900E7DA8A /* Alamofire.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Alamofire.xcodeproj; path = Frameworks/KsApi/Frameworks/Alamofire/Alamofire.xcodeproj; sourceTree = "<group>"; };
@@ -1614,6 +1635,7 @@
 			isa = PBXGroup;
 			children = (
 				A75511891C8645A0005355CF /* AppEnvironmentTests.swift */,
+				01EFBCB21C920A7E0094EEC2 /* BorderButtonTests.swift */,
 				A755118A1C8645A0005355CF /* EnvironmentTests.swift */,
 				A755118B1C8645A0005355CF /* FormatTests.swift */,
 				A755118C1C8645A0005355CF /* LanguageTests.swift */,
@@ -1621,10 +1643,12 @@
 				A755118E1C8645A0005355CF /* LocalizedStringTests.swift */,
 				A755118F1C8645A0005355CF /* String+SimpleHTMLTests.swift */,
 				A75511901C8645A0005355CF /* UIButton+LocalizedKeyTests.swift */,
+				01EFBC881C91FB770094EEC2 /* UIColorTests.swift */,
 				A77519211C8CB0360022F175 /* UIImageView+IBCircleAvatarTests.swift */,
 				A75511911C8645A0005355CF /* UILabel+IBClearTests.swift */,
 				A75511921C8645A0005355CF /* UILabel+LocalizedKeyTests.swift */,
 				A75511931C8645A0005355CF /* UILabel+SimpleHTMLTests.swift */,
+				01EFBCAE1C92036E0094EEC2 /* StyledLabelTests.swift */,
 				A755119F1C86460B005355CF /* TestHelpers */,
 			);
 			path = Tests;
@@ -1700,6 +1724,7 @@
 				A7C725781C85D36D005A016B /* AppEnvironment.swift */,
 				A7C725791C85D36D005A016B /* AssetImageGeneratorType.swift */,
 				A7C7257A1C85D36D005A016B /* AVPlayerView.swift */,
+				0151AEB91C8F811C0067F1BE /* BorderButton.swift */,
 				A7C7257F1C85D36D005A016B /* Environment.swift */,
 				A7C725801C85D36D005A016B /* Format.swift */,
 				A7C725811C85D36D005A016B /* GradientView.swift */,
@@ -1710,7 +1735,10 @@
 				A7C725911C85D36D005A016B /* NSBundleType.swift */,
 				A7C725921C85D36D005A016B /* String+SimpleHTML.swift */,
 				A7C725931C85D36D005A016B /* Strings.swift */,
+				0151AEB01C8F6FD80067F1BE /* StyledLabel.swift */,
+				0151AEAD1C8F61870067F1BE /* Styles.swift */,
 				A7C725941C85D36D005A016B /* UIButton+LocalizedKey.swift */,
+				0151AE871C8F60370067F1BE /* UIColor.swift */,
 				A7C725951C85D36D005A016B /* UIGestureRecognizer-Extensions.swift */,
 				A77518D61C8BE97D0022F175 /* UIImageView+IBCircleAvatar.swift */,
 				A7C725961C85D36D005A016B /* UILabel+IBClear.swift */,
@@ -2918,6 +2946,8 @@
 				A75511611C8642C3005355CF /* Language.swift in Sources */,
 				A75511621C8642C3005355CF /* LaunchedCountries.swift in Sources */,
 				A75511631C8642C3005355CF /* LocalizedString.swift in Sources */,
+				0151AEB31C8F6FE90067F1BE /* StyledLabel.swift in Sources */,
+				0151AEB51C8F6FFE0067F1BE /* Styles.swift in Sources */,
 				A75511641C8642C3005355CF /* NSBundleType.swift in Sources */,
 				A75511651C8642C3005355CF /* String+SimpleHTML.swift in Sources */,
 				A77518D71C8BE97D0022F175 /* UIImageView+IBCircleAvatar.swift in Sources */,
@@ -2935,6 +2965,7 @@
 				A75511701C8642C3005355CF /* MVVMCollectionViewController.swift in Sources */,
 				A75511711C8642C3005355CF /* MVVMDataSource.swift in Sources */,
 				A75511721C8642C3005355CF /* MVVMViewController.swift in Sources */,
+				0151AEB71C8F700B0067F1BE /* UIColor.swift in Sources */,
 				A75511731C8642C3005355CF /* SimpleDataSource.swift in Sources */,
 				A75511741C8642C3005355CF /* SimpleViewModel.swift in Sources */,
 				A75511751C8642C3005355CF /* UICollectionView-Extensions.swift in Sources */,
@@ -2946,6 +2977,7 @@
 				A7B693FF1C8789C100C49A4F /* HockeyManagerType.swift in Sources */,
 				A721DF681C8CFAEB000CB97C /* Koala.swift in Sources */,
 				A755117A1C8642C3005355CF /* ViewModel.swift in Sources */,
+				0151AEBA1C8F811C0067F1BE /* BorderButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2955,6 +2987,7 @@
 			files = (
 				A75511981C8645A0005355CF /* LaunchedCountriesTests.swift in Sources */,
 				A75511961C8645A0005355CF /* FormatTests.swift in Sources */,
+				01EFBCAF1C92036E0094EEC2 /* StyledLabelTests.swift in Sources */,
 				A75511A71C86460B005355CF /* XCTestCase+AppEnvironment.swift in Sources */,
 				A75511971C8645A0005355CF /* LanguageTests.swift in Sources */,
 				A755119C1C8645A0005355CF /* UILabel+IBClearTests.swift in Sources */,
@@ -2966,6 +2999,8 @@
 				A77519221C8CB0360022F175 /* UIImageView+IBCircleAvatarTests.swift in Sources */,
 				A75511991C8645A0005355CF /* LocalizedStringTests.swift in Sources */,
 				A75511951C8645A0005355CF /* EnvironmentTests.swift in Sources */,
+				01EFBC891C91FB770094EEC2 /* UIColorTests.swift in Sources */,
+				01EFBCB31C920A7E0094EEC2 /* BorderButtonTests.swift in Sources */,
 				A755119B1C8645A0005355CF /* UIButton+LocalizedKeyTests.swift in Sources */,
 				A75511A61C86460B005355CF /* TestObserver.swift in Sources */,
 			);
@@ -2985,6 +3020,8 @@
 				A75511B21C8647D9005355CF /* Language.swift in Sources */,
 				A75511B31C8647D9005355CF /* LaunchedCountries.swift in Sources */,
 				A75511B41C8647D9005355CF /* LocalizedString.swift in Sources */,
+				0151AEB41C8F6FEC0067F1BE /* StyledLabel.swift in Sources */,
+				0151AEB61C8F70000067F1BE /* Styles.swift in Sources */,
 				A75511B51C8647D9005355CF /* NSBundleType.swift in Sources */,
 				A75511B61C8647D9005355CF /* String+SimpleHTML.swift in Sources */,
 				A77518D81C8BE97D0022F175 /* UIImageView+IBCircleAvatar.swift in Sources */,
@@ -3002,6 +3039,7 @@
 				A75511C11C8647D9005355CF /* MVVMCollectionViewController.swift in Sources */,
 				A75511C21C8647D9005355CF /* MVVMDataSource.swift in Sources */,
 				A75511C31C8647D9005355CF /* MVVMViewController.swift in Sources */,
+				0151AEB81C8F700C0067F1BE /* UIColor.swift in Sources */,
 				A75511C41C8647D9005355CF /* SimpleDataSource.swift in Sources */,
 				A75511C51C8647D9005355CF /* SimpleViewModel.swift in Sources */,
 				A75511C61C8647D9005355CF /* UICollectionView-Extensions.swift in Sources */,
@@ -3013,6 +3051,7 @@
 				A7B694001C8789C100C49A4F /* HockeyManagerType.swift in Sources */,
 				A721DF691C8CFAEB000CB97C /* Koala.swift in Sources */,
 				A75511CB1C8647D9005355CF /* ViewModel.swift in Sources */,
+				0151AEBB1C8F811C0067F1BE /* BorderButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3029,10 +3068,13 @@
 				A75511F01C865321005355CF /* UILabel+LocalizedKeyTests.swift in Sources */,
 				A75511F11C865321005355CF /* MockBundle.swift in Sources */,
 				A75511F21C865321005355CF /* UILabel+SimpleHTMLTests.swift in Sources */,
+				01EFBCB01C92036E0094EEC2 /* StyledLabelTests.swift in Sources */,
 				A75511F31C865321005355CF /* AppEnvironmentTests.swift in Sources */,
 				A77519231C8CB11B0022F175 /* UIImageView+IBCircleAvatarTests.swift in Sources */,
 				A75511F41C865321005355CF /* LocalizedStringTests.swift in Sources */,
 				A75511F51C865321005355CF /* EnvironmentTests.swift in Sources */,
+				01EFBCB11C9203750094EEC2 /* UIColorTests.swift in Sources */,
+				01EFBCB41C920A7E0094EEC2 /* BorderButtonTests.swift in Sources */,
 				A75511F61C865321005355CF /* UIButton+LocalizedKeyTests.swift in Sources */,
 				A75511F71C865321005355CF /* TestObserver.swift in Sources */,
 			);

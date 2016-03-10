@@ -86,7 +86,7 @@ public final class BorderButton: UIButton {
     updateStyle()
   }
 
-  func updateStyle() {
+  private func updateStyle() {
     self.backgroundColor = _color?.toUIColor() ?? .redColor()
     self.layer.borderColor = _borderColor?.toUIColor().CGColor ?? UIColor.redColor().CGColor
     self.setTitleColor(_titleColorNormal?.toUIColor() ?? .redColor(), forState: UIControlState.Normal)

@@ -49,7 +49,7 @@ public final class StyledLabel: UILabel {
     updateStyle()
   }
 
-  func updateStyle() {
+  private func updateStyle() {
     self.textColor = _color?.toUIColor() ?? .redColor()
 
     switch (_fontText, _weight) {
