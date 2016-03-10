@@ -13,7 +13,7 @@ class ProjectRecommendationsCell: UICollectionViewCell, ViewModeledCellType {
   @IBOutlet weak var collectionView: UICollectionView!
   weak var delegate: ProjectRecommendationsCellDelegate? = nil
 
-  let viewModel = MutableProperty<SimpleViewModel<[Project]>?>(nil)
+  let viewModelProperty = MutableProperty<SimpleViewModel<[Project]>?>(nil)
   private let dataSource = SimpleDataSource<ProjectCell, Project>()
 
   override func awakeFromNib() {
@@ -29,7 +29,8 @@ class ProjectRecommendationsCell: UICollectionViewCell, ViewModeledCellType {
 
   override func bindViewModel() {
 
-    viewModel.producer.ignoreNil().map { $0.model }
+    self.viewModel.map { $0.model }
+      .observeForUI()
       .startWithNext { [weak self] projects in
         self?.dataSource.reload(projects)
     }

@@ -20,7 +20,7 @@ extension BITHockeyManager: HockeyManagerType {
 /**
  * A fake HockeySDK manager, useful for testing.
  */
-internal class MockHockeyManager: HockeyManagerType {
+internal final class MockHockeyManager: HockeyManagerType {
   internal var configuredAppIdentifier: String? = nil
   internal var managerStarted = false
 

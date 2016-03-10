@@ -21,7 +21,7 @@ final class ProjectShelfCell: UICollectionViewCell, ViewModeledCellType {
   @IBOutlet weak var percentageLabel: UILabel!
   @IBOutlet weak var downArrowLabel: UILabel!
 
-  let viewModel = MutableProperty<SimpleViewModel<Project>?>(nil)
+  let viewModelProperty = MutableProperty<SimpleViewModel<Project>?>(nil)
   weak var delegate: ProjectShelfCellDelegate?
 
   override func awakeFromNib() {
@@ -30,7 +30,7 @@ final class ProjectShelfCell: UICollectionViewCell, ViewModeledCellType {
   }
 
   override func bindViewModel() {
-    let project = self.viewModel.producer.ignoreNil().map { $0.model }.observeForUI()
+    let project = self.viewModel.map { $0.model }.observeForUI()
 
     self.projectNameLabel.rac_text <~ project.map { $0.name }
     self.categoryLabel.rac_text <~ project.map { $0.category.name }

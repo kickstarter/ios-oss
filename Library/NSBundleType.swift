@@ -31,7 +31,7 @@ public struct LanguageDoubler: NSBundleType {
   }
 }
 
-public class DoublerBundle: NSBundle {
+public final class DoublerBundle: NSBundle {
   public override func localizedStringForKey(key: String, value: String?, table tableName: String?) -> String {
 
     let s = super.localizedStringForKey(key, value: value, table: tableName)

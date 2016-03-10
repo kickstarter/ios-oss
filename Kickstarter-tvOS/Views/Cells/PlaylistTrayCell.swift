@@ -17,7 +17,7 @@ class PlaylistTrayCell: UICollectionViewCell, ViewModeledCellType {
   @IBOutlet weak var countLabel: UILabel!
   @IBOutlet weak var projectsCollectionView: UICollectionView!
 
-  let viewModel = MutableProperty<PlaylistsMenuViewModel?>(nil)
+  let viewModelProperty = MutableProperty<PlaylistsMenuViewModel?>(nil)
   let dataSource = SimpleDataSource<ProjectCell, Project>()
 
   override func awakeFromNib() {
@@ -39,24 +39,22 @@ class PlaylistTrayCell: UICollectionViewCell, ViewModeledCellType {
   }
 
   override func bindViewModel() {
-    let playlistViewModel = viewModel.producer.ignoreNil()
+    super.bindViewModel()
 
-    playlistViewModel.map { $0.outputs.title }
+    self.viewModel.map { $0.outputs.title }
       .observeForUI()
       .startWithNext { [weak self] title in
         self?.titleLabel.text = title
     }
 
-    playlistViewModel.switchMap { $0.outputs.projects }
+    self.viewModel.switchMap { $0.outputs.projects }
       .observeForUI()
       .startWithNext { [weak self] projects in
         self?.dataSource.reload(projects)
         self?.projectsCollectionView.reloadData()
     }
 
-
-
-    playlistViewModel.switchMap { $0.outputs.selectedProjectAndPlaylist }
+    self.viewModel.switchMap { $0.outputs.selectedProjectAndPlaylist }
       .observeForUI()
       .startWithNext { [weak self] (project, playlist) in
         guard let cell = self else { return }
@@ -69,7 +67,7 @@ class PlaylistTrayCell: UICollectionViewCell, ViewModeledCellType {
 extension PlaylistTrayCell : UICollectionViewDelegate {
   func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
     if let projectViewModel = self.dataSource[indexPath] as? SimpleViewModel<Project> {
-      self.viewModel.value?.inputs.selectProject(projectViewModel.model)
+      self.viewModelProperty.value?.inputs.selectProject(projectViewModel.model)
     }
   }
 

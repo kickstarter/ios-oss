@@ -32,6 +32,7 @@ extension XCTestCase {
     mainBundle: NSBundleType = AppEnvironment.current.mainBundle,
     assetImageGeneratorType: AssetImageGeneratorType.Type = AppEnvironment.current.assetImageGeneratorType,
     hockeyManager: HockeyManagerType = AppEnvironment.current.hockeyManager,
+    koala: Koala = AppEnvironment.current.koala,
     @noescape body: () -> ()) {
 
       withEnvironment(
@@ -45,7 +46,9 @@ extension XCTestCase {
           launchedCountries: launchedCountries,
           debounceScheduler: debounceScheduler,
           mainBundle: mainBundle,
-          assetImageGeneratorType: assetImageGeneratorType
+          assetImageGeneratorType: assetImageGeneratorType,
+          hockeyManager: hockeyManager,
+          koala: koala
         ),
         body: body
       )

@@ -5,7 +5,9 @@ import var Foundation.NSUTF8StringEncoding
 import class UIKit.UIFont
 import var UIKit.NSFontAttributeName
 import var UIKit.NSDocumentTypeDocumentAttribute
+import var UIKit.NSCharacterEncodingDocumentAttribute
 import var UIKit.NSHTMLTextDocumentType
+import class Foundation.NSCharacterSet
 
 public extension String {
   public typealias Attributes = [String:AnyObject]
@@ -40,11 +42,12 @@ public extension String {
 
       guard let data = self.dataUsingEncoding(NSUTF8StringEncoding) else { return nil }
 
-      let string: NSMutableAttributedString
-      let options = [NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType]
-      do {
-        string = try NSMutableAttributedString(data: data, options: options, documentAttributes: nil)
-      } catch {
+      let options: [String:AnyObject] = [
+        NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType,
+        NSCharacterEncodingDocumentAttribute: NSUTF8StringEncoding
+      ]
+      guard let string = try? NSMutableAttributedString(data: data, options: options, documentAttributes: nil)
+      else {
         return nil
       }
 
@@ -90,5 +93,31 @@ public extension String {
         bold: optionalBold.flatMap { [NSFontAttributeName: $0] },
         italic: optionalItalic.flatMap { [NSFontAttributeName: $0] }
       )
+  }
+
+  /**
+   Removes all HTML from `self`.
+
+   - parameter trimWhitespace: If `true`, then all whitespace will be trimmed from the stripped string. 
+                               Defaults to `true`.
+
+   - returns: A string with all HTML stripped.
+   */
+  public func htmlStripped(trimWhitespace trimWhitespace: Bool = true) -> String? {
+
+    guard let data = self.dataUsingEncoding(NSUTF8StringEncoding) else { return nil }
+
+    let options: [String:AnyObject] = [
+      NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType,
+      NSCharacterEncodingDocumentAttribute: NSUTF8StringEncoding
+    ]
+
+    let string = try? NSAttributedString(data: data, options: options, documentAttributes: nil)
+    let result = string?.string
+
+    if trimWhitespace {
+      return result?.stringByTrimmingCharactersInSet(.whitespaceAndNewlineCharacterSet())
+    }
+    return result
   }
 }

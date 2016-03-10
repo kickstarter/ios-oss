@@ -11,7 +11,7 @@ final class DiscoveryProjectCell: UICollectionViewCell, ViewModeledCellType {
   @IBOutlet private weak var projectNameLabel: UILabel!
   @IBOutlet private weak var creatorLabel: UILabel!
 
-  let viewModel = MutableProperty<SimpleViewModel<Project>?>(nil)
+  let viewModelProperty = MutableProperty<SimpleViewModel<Project>?>(nil)
 
   override func awakeFromNib() {
     super.awakeFromNib()
@@ -19,17 +19,20 @@ final class DiscoveryProjectCell: UICollectionViewCell, ViewModeledCellType {
   }
 
   override func bindViewModel() {
+    super.bindViewModel()
 
-    let project = viewModel.producer.ignoreNil().map { $0.model }
+    let project = self.viewModel.map { $0.model }
 
     projectNameLabel.rac_text <~ project.map { $0.name }
     creatorLabel.rac_text <~ project.map { $0.creator.name }
 
-    project.flatMap { NSURL(string: $0.photo.full) }
+    project.map { NSURL(string: $0.photo.full) }
+      .observeForUI()
       .on(next: { [weak self] _ in
-        self?.projectImageView.image = nil
         self?.projectImageView.af_cancelImageRequest()
+        self?.projectImageView.image = nil
       })
+      .ignoreNil()
       .startWithNext { [weak self] url in
         self?.projectImageView.af_setImageWithURL(url, imageTransition: .CrossDissolve(0.3))
     }

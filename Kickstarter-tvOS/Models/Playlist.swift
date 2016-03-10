@@ -64,7 +64,8 @@ final class _Playlist : _PlaylistInputs, _PlaylistOutputs {
         self.projects = env.projects
         self.currentItem.value = 0
       })
-      .flatMap { env in env.projects.first }
+      .map { env in env.projects.first }
+      .ignoreNil()
   }
 
   var discoveryParams: DiscoveryParams {

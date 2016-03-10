@@ -62,6 +62,7 @@ internal final class HomeViewModel : HomeViewModelType, HomeViewModelInputs, Hom
   internal var outputs: HomeViewModelOutputs { return self }
 
   internal init(env: Environment = AppEnvironment.current) {
+    let scheduler = env.debounceScheduler
     let apiService = env.apiService
 
     // Grab a playlist for every category
@@ -77,7 +78,7 @@ internal final class HomeViewModel : HomeViewModelType, HomeViewModelInputs, Hom
 
     // Derive the playlist and project that is now playing
     let nowPlaying = focusedPlaylist
-      .debounce(1.0, onScheduler: env.debounceScheduler)
+      .debounce(1.0, onScheduler: scheduler)
       .skipRepeats(==)
       .switchMap { playlist in
         apiService.fetchProject(playlist.discoveryParams)
@@ -91,8 +92,9 @@ internal final class HomeViewModel : HomeViewModelType, HomeViewModelInputs, Hom
       .beginsWith(value: nil)
 
     self.nowPlayingVideoUrl = SignalProducer(signal: nowPlaying)
-      .flatMap { $0.project.video?.high }
-      .map(NSURL.init)
+      .map { $0.project.video?.high }
+      .ignoreNil()
+      .map { NSURL(string: $0) }
       .beginsWith(value: nil)
 
     self.selectProject = nowPlaying
@@ -111,7 +113,7 @@ internal final class HomeViewModel : HomeViewModelType, HomeViewModelInputs, Hom
 
     // A signal that emits when the playlist has been focused for a little while
     let hasFocusedPlaylistForWhile = self.focusedPlaylist
-      .debounce(6.0, onScheduler: env.debounceScheduler)
+      .debounce(6.0, onScheduler: scheduler)
       .filterWhenLatestFrom(videoIsPlaying, satisfies: id)
 
     // Control the interface importance by a few controls.

@@ -9,8 +9,7 @@ class ProjectRewardCell: UICollectionViewCell, ViewModeledCellType {
   @IBOutlet weak var backersCountLabel: UILabel!
   @IBOutlet weak var rewardLabel: UILabel!
 
-  typealias ViewModel = SimpleViewModel<Reward>
-  let viewModel = MutableProperty<SimpleViewModel<Reward>?>(nil)
+  let viewModelProperty = MutableProperty<SimpleViewModel<Reward>?>(nil)
 
   override func awakeFromNib() {
     super.awakeFromNib()
@@ -18,7 +17,7 @@ class ProjectRewardCell: UICollectionViewCell, ViewModeledCellType {
   }
 
   override func bindViewModel() {
-    let reward = self.viewModel.producer.ignoreNil().map { $0.model }
+    let reward = self.viewModel.map { $0.model }
 
     minimumLabel.rac_text <~ reward.map { Format.currency($0.minimum, country: Project.Country.US) }
       .map { "\($0) or more" }

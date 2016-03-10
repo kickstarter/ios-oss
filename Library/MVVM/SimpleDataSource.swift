@@ -27,7 +27,7 @@ public final class SimpleDataSource <
     if let
       cell = cell as? Cell,
       viewModel = viewModel as? Cell.ViewModel {
-        cell.viewModel.value = viewModel
+        cell.viewModelProperty.value = viewModel
     }
   }
 
@@ -35,7 +35,7 @@ public final class SimpleDataSource <
     if let
       cell = cell as? Cell,
       viewModel = viewModel as? Cell.ViewModel {
-        cell.viewModel.value = viewModel
+        cell.viewModelProperty.value = viewModel
     }
   }
 }

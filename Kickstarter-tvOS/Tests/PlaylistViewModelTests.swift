@@ -2,7 +2,7 @@ import XCTest
 @testable import Kickstarter_tvOS
 import ReactiveCocoa
 import Result
-import KsApi
+@testable import KsApi
 import Models
 import Prelude
 import struct Library.Environment

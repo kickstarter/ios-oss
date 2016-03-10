@@ -62,8 +62,10 @@ internal final class ProjectViewModel : ProjectViewModelType, ProjectViewModelIn
       .replayLazily(1)
 
     self.videoURL = self.project
-      .flatMap { $0.video?.high }
-      .flatMap { NSURL(string: $0) }
+      .map { $0.video?.high }
+      .ignoreNil()
+      .map { NSURL(string: $0) }
+      .ignoreNil()
       .skipRepeats(==)
 
     self.recommendations = apiService.fetchProjects(
