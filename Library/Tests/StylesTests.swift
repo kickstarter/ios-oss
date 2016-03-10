@@ -24,6 +24,20 @@ final class StylesTests: XCTestCase {
 
     XCTAssertNotNil(headline)
     XCTAssertNil(head, "Not valid name")
+
+    let headlineFont = UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)
+    XCTAssertEqual(FontText.Headline.toUIFont(), headlineFont)
+
+    let captionFont = UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1)
+    XCTAssertNotEqual(FontText.Headline.toUIFont(), captionFont)
+  }
+
+  func testWeight() {
+    let def = Weight(rawValue: "Default")
+    let bad = Weight(rawValue: "Med")
+
+    XCTAssertNotNil(def)
+    XCTAssertNil(bad, "Not valid name")
   }
 
   func testColor() {
