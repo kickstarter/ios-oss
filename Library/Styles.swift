@@ -96,7 +96,7 @@ extension FontText {
   }
 }
 
-extension Color {
+extension Color: Equatable {
   func toUIColor() -> UIColor {
     switch self {
     case .Black:          return .hex(0x000000)
@@ -124,7 +124,7 @@ extension Color {
   }
 }
 
-extension Color.Category {
+extension Color.Category: Equatable {
   func toUIColor() -> UIColor {
     switch self {
     case .Art:                  return .hex(0xffbdab)
@@ -161,7 +161,7 @@ extension Color.Category {
   }
 }
 
-extension Color.Social {
+extension Color.Social: Equatable {
   func toUIColor() -> UIColor {
     switch self {
     case .FacebookBlue: return .hex(0x3b5998)
