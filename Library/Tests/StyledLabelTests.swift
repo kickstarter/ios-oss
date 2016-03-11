@@ -2,15 +2,18 @@ import XCTest
 @testable import Library
 
 final class StyledLabelTests: XCTestCase {
-  let label = StyledLabel()
 
   func testDefaultStyle() {
+    let label = StyledLabel()
+
     XCTAssertEqual("Body", label.fontStyle)
     XCTAssertEqual("TextDefault", label.color)
     XCTAssertEqual("Default", label.weight)
   }
 
   func testValidStyles() {
+    let label = StyledLabel()
+
     label.fontStyle = "Headline"
     XCTAssertNotNil(label.fontStyle)
     XCTAssertEqual(FontStyle.Headline.toUIFont(), label.font)
@@ -24,6 +27,8 @@ final class StyledLabelTests: XCTestCase {
   }
 
   func testInvalidStyles() {
+    let label = StyledLabel()
+    
     label.color = "Blu"
     XCTAssertEqual("", label.color)
     XCTAssertEqual(Color.mismatchedColor, label.textColor)

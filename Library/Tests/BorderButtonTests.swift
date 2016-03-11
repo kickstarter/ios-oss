@@ -2,9 +2,10 @@ import XCTest
 @testable import Library
 
 final class BorderButtonTests: XCTestCase {
-  let button = BorderButton()
 
   func testDefaultStyle() {
+    let button = BorderButton()
+
     XCTAssertEqual("White", button.color)
     XCTAssertEqual("GrayDark", button.borderColor)
     XCTAssertEqual("Black", button.titleColorNormal)
@@ -14,24 +15,21 @@ final class BorderButtonTests: XCTestCase {
   }
 
   func testValidStyles() {
+    let button = BorderButton()
+
     button.color = "Green"
-    XCTAssertNotNil(button.color)
     XCTAssertEqual(Color.Green.toUIColor(), button.backgroundColor)
 
     button.borderColor = "Mint"
-    XCTAssertNotNil(button.borderColor)
-    XCTAssertEqual(button.layer.borderColor, Color.Mint.toUIColor().CGColor)
+    XCTAssertEqual(Color.Mint.toUIColor(), button.layer.borderColor)
 
     button.titleColorNormal = "White"
-    XCTAssertNotNil(button.titleColorNormal)
     XCTAssertEqual(Color.White.toUIColor(), button.titleColorForState(.Normal))
 
     button.titleColorHighlighted = "GrayDark"
-    XCTAssertNotNil(button.titleColorHighlighted)
     XCTAssertEqual(Color.GrayDark.toUIColor(), button.titleColorForState(.Highlighted))
 
     button.titleFontStyle = "Headline"
-    XCTAssertNotNil(button.titleFontStyle)
     XCTAssertEqual(FontStyle.Headline.toUIFont(), button.titleLabel?.font)
 
     button.titleWeight = "Medium"
@@ -39,6 +37,8 @@ final class BorderButtonTests: XCTestCase {
   }
 
   func testInvalidStyles() {
+    let button = BorderButton()
+    
     button.color = ""
     XCTAssertEqual(Color.mismatchedColor, button.backgroundColor)
 
@@ -47,7 +47,6 @@ final class BorderButtonTests: XCTestCase {
     XCTAssertEqual(Color.mismatchedColor, button.backgroundColor)
 
     button.borderColor = "Blood"
-    XCTAssertNotNil(button.borderColor)
     XCTAssertEqual(Color.mismatchedColor.CGColor, button.layer.borderColor)
 
     button.titleColorNormal = "Blu"
