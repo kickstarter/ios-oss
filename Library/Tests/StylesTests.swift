@@ -34,9 +34,6 @@ final class StylesTests: XCTestCase {
 
     let black = UIColor(red:0.0, green:0.0, blue:0.0, alpha:1.0)
     XCTAssertEqual(Color.Black.toUIColor(), black)
-
-    let blue = UIColor(red:0.0, green:0.63, blue:1.0, alpha:1.0)
-    XCTAssertEqual(Color.Blue.toUIColor(), blue)
   }
 
   func testColorCategory() {
@@ -46,11 +43,12 @@ final class StylesTests: XCTestCase {
     XCTAssertNotNil(comics)
     XCTAssertNil(dancey)
 
-    let filmColor = UIColor(red:1.0, green:0.35, blue:0.43, alpha:1.0)
-    XCTAssertEqual(Color.Category.Film.toUIColor(), filmColor)
-
-    let gamesColor = UIColor(red:0.0, green:0.79, blue:0.67, alpha:1.0)
-    XCTAssertEqual(Color.Category.Games.toUIColor(), gamesColor)
+    let filmColor = Color.Category.Film.toUIColor()
+    var r: CGFloat = 0, g: CGFloat = 0, b: CGFloat = 0, a: CGFloat = 0
+    filmColor.getRed(&r, green: &g, blue: &b, alpha: &a)
+    XCTAssertEqualWithAccuracy(1.0, r, accuracy: 0.01)
+    XCTAssertEqualWithAccuracy(0.35, g, accuracy: 0.01)
+    XCTAssertEqualWithAccuracy(0.43, b, accuracy: 0.01)
   }
 
   func testColorSocial() {
@@ -60,10 +58,11 @@ final class StylesTests: XCTestCase {
     XCTAssertNotNil(facebook)
     XCTAssertNil(twitter)
 
-    let facebookBlue = UIColor(red:0.23, green:0.35, blue:0.6, alpha:1.0)
-    XCTAssertEqual(Color.Social.FacebookBlue.toUIColor(), facebookBlue)
-
-    let twitterBlue = UIColor(red:0.0, green:0.67, blue:0.93, alpha:1.0)
-    XCTAssertEqual(Color.Social.TwitterBlue.toUIColor(), twitterBlue)
+    let facebookBlue = Color.Social.FacebookBlue.toUIColor()
+    var r: CGFloat = 0, g: CGFloat = 0, b: CGFloat = 0, a: CGFloat = 0
+    facebookBlue.getRed(&r, green: &g, blue: &b, alpha: &a)
+    XCTAssertEqualWithAccuracy(0.23, r, accuracy: 0.01)
+    XCTAssertEqualWithAccuracy(0.35, g, accuracy: 0.01)
+    XCTAssertEqualWithAccuracy(0.6, b, accuracy: 0.01)
   }
 }
