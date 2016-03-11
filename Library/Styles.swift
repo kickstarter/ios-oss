@@ -42,6 +42,12 @@ public enum Color: String {
   case White
   case Yellow
 
+  public static let allColors: [Color] = [
+    .Black, .Blue, .BlueDark, .BlueLight, .BlueRoyal, .Clear, .Green, .GreenLight, .Gray, .GrayBlack,
+    .GrayDark, .GrayLight, .GrayMedium, .OffWhite, .Mint, .Pink, .TextDefault, .TextDarkGray,
+    .TextLightGray, .White, .Yellow
+  ]
+
   public enum Category: String {
     case Art
     case ArtSecondary
@@ -73,11 +79,23 @@ public enum Color: String {
     case TechnologySecondary
     case Theater
     case TheaterSecondary
+
+    public static let allColors: [Color.Category] = [
+      .Art, .ArtSecondary, .Comics, .ComicsSecondary, .Crafts, .CraftsSecondary,
+      .Dance, .DanceSecondary, .Design, .DesignSecondary, .Fashion, .FashionSecondary,
+      .Film, .FilmSecondary, .Food, .FoodSecondary, .Games, .GamesSecondary,
+      .Journalism, .JournalismSecondary, .Music, .MusicSecondary, .Photography, .PhotographySecondary,
+      .Publishing, .PublishingSecondary, .Technology, .TechnologySecondary, .Theater, .TheaterSecondary
+    ]
   }
 
   public enum Social:String {
     case FacebookBlue
     case TwitterBlue
+
+    public static let allColors: [Color.Social] = [
+      .TwitterBlue, .FacebookBlue
+    ]
   }
 }
 
