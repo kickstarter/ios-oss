@@ -1,7 +1,7 @@
 import UIKit.UIColor
 import UIKit.UIFont
 
-enum FontStyle: String {
+public enum FontStyle: String {
   case Headline
   case Subhead
   case Body
@@ -10,12 +10,12 @@ enum FontStyle: String {
   case Caption2
 }
 
-enum Weight: String {
+public enum Weight: String {
   case Default
   case Medium
 }
 
-enum Color: String {
+public enum Color: String {
   case Black
   case Blue
   case BlueDark
@@ -38,7 +38,7 @@ enum Color: String {
   case White
   case Yellow
 
-  enum Category: String {
+  public enum Category: String {
     case Art
     case ArtSecondary
     case Comics
@@ -71,14 +71,14 @@ enum Color: String {
     case TheaterSecondary
   }
 
-  enum Social:String {
+  public enum Social:String {
     case FacebookBlue
     case TwitterBlue
   }
 }
 
-extension FontStyle {
-  func toUIFont() -> UIFont {
+public extension FontStyle {
+  public func toUIFont() -> UIFont {
     switch self {
     case .Headline:
       return UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)
@@ -96,14 +96,14 @@ extension FontStyle {
   }
 
   #if os(iOS)
-  static let mismatchedFont = UIFont(name: "Marker Felt", size: 15.0)
+  internal static let mismatchedFont = UIFont(name: "Marker Felt", size: 15.0)
   #else
-  static let mismatchedFont = UIFont(name: "Courier New", size: 15.0)
+  internal static let mismatchedFont = UIFont(name: "Courier New", size: 15.0)
   #endif
 }
 
-extension Color {
-  func toUIColor() -> UIColor {
+public extension Color {
+  public func toUIColor() -> UIColor {
     switch self {
     case .Black:          return .hex(0x000000)
     case .Blue:           return .hex(0x00a0ff)
@@ -130,14 +130,14 @@ extension Color {
   }
 
   #if TARGET_OS_TV
-  static let mismatchedColor = UIColor.redColor()
+  internal static let mismatchedColor = UIColor.redColor()
   #else
-  static let mismatchedColor = UIColor.redColor()
+  internal static let mismatchedColor = UIColor.redColor()
   #endif
 }
 
-extension Color.Category {
-  func toUIColor() -> UIColor {
+public extension Color.Category {
+  public func toUIColor() -> UIColor {
     switch self {
     case .Art:                  return .hex(0xffbdab)
     case .ArtSecondary:         return .hex(0xf7aa94)
@@ -173,8 +173,8 @@ extension Color.Category {
   }
 }
 
-extension Color.Social {
-  func toUIColor() -> UIColor {
+public extension Color.Social {
+  public func toUIColor() -> UIColor {
     switch self {
     case .FacebookBlue: return .hex(0x3b5998)
     case .TwitterBlue:  return .hex(0x00aced)
