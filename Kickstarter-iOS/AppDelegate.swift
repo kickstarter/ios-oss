@@ -6,7 +6,6 @@ import protocol Library.HockeyManagerType
 import struct Library.AppEnvironment
 import struct KsApi.Service
 import struct KsApi.ServerConfig
-import struct KsApi.OauthToken
 import enum Library.Language
 import class Foundation.NSLocale
 import class Foundation.NSObject
