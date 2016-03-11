@@ -2,21 +2,6 @@ import XCTest
 @testable import Library
 
 final class StylesTests: XCTestCase {
-  func testEquality() {
-    XCTAssertEqual(FontStyle.Headline, FontStyle.Headline)
-    XCTAssertEqual(Weight.Default, Weight.Default)
-    XCTAssertEqual(Color.Black, Color.Black)
-    XCTAssertEqual(Color.Category.Art, Color.Category.Art)
-    XCTAssertEqual(Color.Social.FacebookBlue, Color.Social.FacebookBlue)
-  }
-
-  func testInequality() {
-    XCTAssertNotEqual(FontStyle.Headline, FontStyle.Body)
-    XCTAssertNotEqual(Weight.Default, Weight.Medium)
-    XCTAssertNotEqual(Color.Black, Color.Blue)
-    XCTAssertNotEqual(Color.Category.Art, Color.Category.Theater)
-    XCTAssertNotEqual(Color.Social.FacebookBlue, Color.Social.TwitterBlue)
-  }
 
   func testFontStyle() {
     let headline = FontStyle(rawValue: "Headline")

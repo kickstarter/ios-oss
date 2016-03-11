@@ -5,35 +5,35 @@ final class StyledLabelTests: XCTestCase {
   let label = StyledLabel()
 
   func testDefaultStyle() {
-    XCTAssertEqual(label.fontStyle, "Body")
-    XCTAssertEqual(label.color, "TextDefault")
-    XCTAssertEqual(label.weight, "Default")
+    XCTAssertEqual("Body", label.fontStyle)
+    XCTAssertEqual("TextDefault", label.color)
+    XCTAssertEqual("Default", label.weight)
   }
 
   func testValidStyles() {
     label.fontStyle = "Headline"
     XCTAssertNotNil(label.fontStyle)
-    XCTAssertEqual(label.font, FontStyle.Headline.toUIFont())
+    XCTAssertEqual(FontStyle.Headline.toUIFont(), label.font)
 
     label.color = "Blue"
     XCTAssertNotNil(label.color)
-    XCTAssertEqual(label.textColor, Color.Blue.toUIColor())
+    XCTAssertEqual(Color.Blue.toUIColor(), label.textColor)
 
     label.weight = "Medium"
-    XCTAssertEqual(label.weight, "Medium")
+    XCTAssertEqual("Medium", label.weight)
   }
 
   func testInvalidStyles() {
     label.color = "Blu"
-    XCTAssertEqual(label.color, "")
-    XCTAssertEqual(label.textColor, Color.mismatchedColor)
+    XCTAssertEqual("", label.color)
+    XCTAssertEqual(Color.mismatchedColor, label.textColor)
 
     label.weight = "Med"
-    XCTAssertEqual(label.weight, "Default")
-    XCTAssertEqual(label.font, FontStyle.Body.toUIFont())
+    XCTAssertEqual("Default", label.weight)
+    XCTAssertEqual(FontStyle.Body.toUIFont(), label.font)
 
     label.fontStyle = "Head"
-    XCTAssertEqual(label.fontStyle, "")
-    XCTAssertEqual(label.font, FontStyle.mismatchedFont)
+    XCTAssertEqual("", label.fontStyle)
+    XCTAssertEqual(FontStyle.mismatchedFont, label.font)
   }
 }
