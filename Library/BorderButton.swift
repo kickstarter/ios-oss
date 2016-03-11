@@ -87,13 +87,13 @@ public final class BorderButton: UIButton {
   }
 
   private func updateStyle() {
-    self.backgroundColor = _color?.toUIColor() ?? .redColor()
-    self.layer.borderColor = _borderColor?.toUIColor().CGColor ?? UIColor.redColor().CGColor
-    self.setTitleColor(_titleColorNormal?.toUIColor() ?? .redColor(), forState: UIControlState.Normal)
+    self.backgroundColor = _color?.toUIColor() ?? Color.mismatchedColor
+    self.layer.borderColor = _borderColor?.toUIColor().CGColor ?? Color.mismatchedColor.CGColor
+    self.setTitleColor(_titleColorNormal?.toUIColor() ?? Color.mismatchedColor, forState: UIControlState.Normal)
     if let validHighlight = _titleColorHighlighted {
       self.setTitleColor(validHighlight.toUIColor(), forState: UIControlState.Highlighted)
     } else {
-      self.setTitleColor(.redColor(), forState: UIControlState.Normal)
+      self.setTitleColor(Color.mismatchedColor, forState: UIControlState.Normal)
     }
 
     switch (_titleFontStyle, _titleWeight) {
@@ -104,7 +104,7 @@ public final class BorderButton: UIButton {
       let mediumDescriptor = descriptor.fontDescriptorWithSymbolicTraits(.TraitBold)
       self.titleLabel?.font = UIFont(descriptor: mediumDescriptor, size: 0.0)
     case (_, _):
-      self.titleLabel?.font = UIFont(name: "Marker Felt", size: 15.0)
+      self.titleLabel?.font = FontStyle.mismatchedFont
     }
 
     self.layer.cornerRadius = 6.0

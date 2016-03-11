@@ -50,7 +50,7 @@ public final class StyledLabel: UILabel {
   }
 
   private func updateStyle() {
-    self.textColor = _color?.toUIColor() ?? .redColor()
+    self.textColor = _color?.toUIColor() ?? Color.mismatchedColor
 
     switch (_fontStyle, _weight) {
     case let (font?, .Default):
@@ -60,7 +60,7 @@ public final class StyledLabel: UILabel {
       let mediumDescriptor = descriptor.fontDescriptorWithSymbolicTraits(.TraitBold)
       self.font = UIFont(descriptor: mediumDescriptor, size: 0.0)
     case (_, _):
-      self.font = UIFont(name: "Marker Felt", size: 15.0)
+      self.font = FontStyle.mismatchedFont
     }
   }
 }

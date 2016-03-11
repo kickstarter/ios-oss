@@ -94,6 +94,12 @@ extension FontStyle {
       return UIFont.preferredFontForTextStyle(UIFontTextStyleCaption2)
     }
   }
+
+  #if TARGET_OS_TV
+  static let mismatchedFont = UIFont(name: "Courier New", size: 15.0)
+  #else
+  static let mismatchedFont = UIFont(name: "Marker Felt", size: 15.0)
+  #endif
 }
 
 extension Color: Equatable {
@@ -122,6 +128,12 @@ extension Color: Equatable {
     case .Yellow:         return .hex(0xffffc9)
     }
   }
+
+  #if TARGET_OS_TV
+  static let mismatchedColor = UIColor.redColor()
+  #else
+  static let mismatchedColor = UIColor.redColor()
+  #endif
 }
 
 extension Color.Category: Equatable {

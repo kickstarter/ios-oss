@@ -40,23 +40,23 @@ final class BorderButtonTests: XCTestCase {
 
   func testInvalidStyles() {
     button.color = ""
-    XCTAssertEqual(button.backgroundColor, UIColor.redColor())
+    XCTAssertEqual(button.backgroundColor, Color.mismatchedColor)
 
     button.color = "Turnt"
     XCTAssertEqual(button.color, "")
-    XCTAssertEqual(button.backgroundColor, UIColor.redColor())
+    XCTAssertEqual(button.backgroundColor, Color.mismatchedColor)
 
     button.borderColor = "Blood"
     XCTAssertNotNil(button.borderColor)
-    XCTAssertTrue(CGColorEqualToColor(button.layer.borderColor, UIColor.redColor().CGColor))
+    XCTAssertTrue(CGColorEqualToColor(button.layer.borderColor, Color.mismatchedColor.CGColor))
 
     button.titleColorNormal = "Blu"
     XCTAssertNotNil(button.titleColorNormal)
-    XCTAssertEqual(button.titleColorForState(.Normal), UIColor.redColor())
+    XCTAssertEqual(button.titleColorForState(.Normal), Color.mismatchedColor)
 
     button.titleColorHighlighted = "Pinky"
     XCTAssertNotNil(button.titleColorHighlighted)
-    XCTAssertEqual(button.titleColorForState(.Normal), UIColor.redColor())
+    XCTAssertEqual(button.titleColorForState(.Normal), Color.mismatchedColor)
 
     button.titleWeight = "Med"
     XCTAssertEqual(button.titleWeight, "Default")
@@ -64,7 +64,7 @@ final class BorderButtonTests: XCTestCase {
 
     button.titleFontStyle = "Head"
     XCTAssertEqual(button.titleFontStyle, "")
-    XCTAssertEqual(button.titleLabel?.font, UIFont(name: "Marker Felt", size: 15.0))
+    XCTAssertEqual(button.titleLabel?.font, FontStyle.mismatchedFont)
   }
 }
 

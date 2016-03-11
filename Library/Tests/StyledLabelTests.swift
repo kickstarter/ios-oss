@@ -26,7 +26,7 @@ final class StyledLabelTests: XCTestCase {
   func testInvalidStyles() {
     label.color = "Blu"
     XCTAssertEqual(label.color, "")
-    XCTAssertEqual(label.textColor, UIColor.redColor())
+    XCTAssertEqual(label.textColor, Color.mismatchedColor)
 
     label.weight = "Med"
     XCTAssertEqual(label.weight, "Default")
