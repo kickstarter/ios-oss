@@ -2,12 +2,16 @@ import UIKit.UIColor
 import UIKit.UIFont
 
 public enum FontStyle: String {
-  case Headline
-  case Subhead
   case Body
-  case Footnote
+  case Callout
   case Caption1
   case Caption2
+  case Footnote
+  case Headline
+  case Subhead
+  case Title1
+  case Title2
+  case Title3
 }
 
 public enum Weight: String {
@@ -80,18 +84,26 @@ public enum Color: String {
 public extension FontStyle {
   public func toUIFont() -> UIFont {
     switch self {
-    case .Headline:
-      return UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)
-    case .Subhead:
-      return UIFont.preferredFontForTextStyle(UIFontTextStyleSubheadline)
     case .Body:
-      return UIFont.preferredFontForTextStyle(UIFontTextStyleBody)
-    case .Footnote:
-      return UIFont.preferredFontForTextStyle(UIFontTextStyleFootnote)
+      return .preferredFontForTextStyle(UIFontTextStyleBody)
+    case .Callout:
+      return .preferredFontForTextStyle(UIFontTextStyleCallout)
     case .Caption1:
-      return UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1)
+      return .preferredFontForTextStyle(UIFontTextStyleCaption1)
     case .Caption2:
-      return UIFont.preferredFontForTextStyle(UIFontTextStyleCaption2)
+      return .preferredFontForTextStyle(UIFontTextStyleCaption2)
+    case .Footnote:
+      return .preferredFontForTextStyle(UIFontTextStyleFootnote)
+    case .Headline:
+      return .preferredFontForTextStyle(UIFontTextStyleHeadline)
+    case .Subhead:
+      return .preferredFontForTextStyle(UIFontTextStyleSubheadline)
+    case .Title1:
+      return .preferredFontForTextStyle(UIFontTextStyleTitle1)
+    case .Title2:
+      return .preferredFontForTextStyle(UIFontTextStyleTitle2)
+    case .Title3:
+      return .preferredFontForTextStyle(UIFontTextStyleTitle3)
     }
   }
 
