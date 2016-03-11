@@ -5,6 +5,7 @@ import struct Library.AppEnvironment
 import struct ReactiveCocoa.SignalProducer
 import enum Result.NoError
 import class Foundation.NSURL
+import class Foundation.NSCharacterSet
 import func Library.localizedString
 import enum Library.Format
 
@@ -37,15 +38,22 @@ internal final class ActivityUpdateViewModel: ViewModelType, ActivityUpdateViewM
   }()
   internal lazy var timestamp: String = ""
   internal lazy var body: String = {
-    let string = self.activity.update?.body.htmlStripped() ?? ""
-    let length = min(string.characters.count, 300)
-    let endIndex = string.startIndex.advancedBy(length)
-    return string.substringToIndex(endIndex)
+    ActivityUpdateViewModel.truncateBody(self.activity.update?.body ?? "")
   }()
 
   internal var outputs: ActivityUpdateViewModelOutputs { return self }
 
   internal init(activity: Activity, env: Environment = AppEnvironment.current) {
     self.activity = activity
+  }
+
+  private static func truncateBody(body: String) -> String {
+
+    let maxLength = 300
+    let string = body.htmlStripped()?.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()) ?? ""
+    let length = min(string.characters.count, maxLength)
+    let endIndex = string.startIndex.advancedBy(length)
+    let suffix = string.characters.count > maxLength ? "..." : ""
+    return string.substringToIndex(endIndex) + suffix
   }
 }
