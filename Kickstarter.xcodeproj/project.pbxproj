@@ -177,6 +177,9 @@
 		A75CBDE81C8A26F800758C55 /* AppDelegateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75CBDE61C8A26F800758C55 /* AppDelegateViewModel.swift */; };
 		A761275E1C93052400EDCCB9 /* CGColorRef.swift in Sources */ = {isa = PBXBuildFile; fileRef = A761275D1C93052400EDCCB9 /* CGColorRef.swift */; };
 		A761275F1C93052400EDCCB9 /* CGColorRef.swift in Sources */ = {isa = PBXBuildFile; fileRef = A761275D1C93052400EDCCB9 /* CGColorRef.swift */; };
+		A76127C01C93100C00EDCCB9 /* Library.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A755113C1C8642B3005355CF /* Library.framework */; };
+		A76127C11C93104300EDCCB9 /* AlamofireImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 807571F91C88B8E200E7DA8A /* AlamofireImage.framework */; };
+		A76127C21C93104700EDCCB9 /* Prelude.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7D1F90A1C84FB5F000D41D5 /* Prelude.framework */; };
 		A762EFF21C8CC663005581A4 /* ActivityFriendFollowCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A762EFF11C8CC663005581A4 /* ActivityFriendFollowCell.swift */; };
 		A762EFF31C8CC663005581A4 /* ActivityFriendFollowCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A762EFF11C8CC663005581A4 /* ActivityFriendFollowCell.swift */; };
 		A762F0181C8CC672005581A4 /* ActivityFriendFollowViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A762F0171C8CC672005581A4 /* ActivityFriendFollowViewModel.swift */; };
@@ -214,7 +217,6 @@
 		A7B694341C87A07800C49A4F /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7B694301C87A07100C49A4F /* HockeySDK.framework */; };
 		A7B694361C87A07B00C49A4F /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7B694301C87A07100C49A4F /* HockeySDK.framework */; };
 		A7B694371C87A08500C49A4F /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7B694271C87A04C00C49A4F /* HockeySDK.framework */; };
-		A7B694381C87A08600C49A4F /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7B694271C87A04C00C49A4F /* HockeySDK.framework */; };
 		A7B694391C87A08B00C49A4F /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7B694301C87A07100C49A4F /* HockeySDK.framework */; };
 		A7B694761C87F19D00C49A4F /* Prelude.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7D1F90A1C84FB5F000D41D5 /* Prelude.framework */; };
 		A7B694791C87F1F100C49A4F /* Library.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75511DA1C8647D9005355CF /* Library.framework */; };
@@ -225,9 +227,6 @@
 		A7C795B31C873AC90081977F /* ActivitiesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F761741C85FA40005405ED /* ActivitiesViewController.swift */; };
 		A7C795B41C873AC90081977F /* DiscoveryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A751A51E1C85EC0B009C5DEA /* DiscoveryViewController.swift */; };
 		A7C795B51C873AC90081977F /* LoginToutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F761761C85FACB005405ED /* LoginToutViewController.swift */; };
-		A7C795B81C873ADF0081977F /* Library.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A755113C1C8642B3005355CF /* Library.framework */; };
-		A7C795B91C873ADF0081977F /* KsApi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7D1F8EC1C84FB55000D41D5 /* KsApi.framework */; };
-		A7C795BB1C873ADF0081977F /* Prelude.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7D1F90A1C84FB5F000D41D5 /* Prelude.framework */; };
 		A7C795DB1C873C160081977F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E06C7C1C5A6EB300EBDCC2 /* AppDelegate.swift */; };
 		A7C795DC1C873C160081977F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E06C7E1C5A6EB300EBDCC2 /* ViewController.swift */; };
 		A7C795DD1C873C160081977F /* DiscoveryProjectData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E06CA81C5BFB3800EBDCC2 /* DiscoveryProjectData.swift */; };
@@ -849,6 +848,13 @@
 			remoteGlobalIDString = A75511AA1C8647D9005355CF;
 			remoteInfo = "Library-tvOS";
 		};
+		A76127BE1C93100800EDCCB9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A7E06C711C5A6EB300EBDCC2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A755113B1C8642B3005355CF;
+			remoteInfo = "Library-iOS";
+		};
 		A7A542301C8E461400273B58 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 8075722D1C88DD8A00E7DA8A /* ReactiveExtensions.xcodeproj */;
@@ -883,13 +889,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = A75511AA1C8647D9005355CF;
 			remoteInfo = "Library-tvOS";
-		};
-		A7C795B61C873AD10081977F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A7E06C711C5A6EB300EBDCC2 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = A755113B1C8642B3005355CF;
-			remoteInfo = "Library-iOS";
 		};
 		A7C795D91C873BE60081977F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1339,10 +1338,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A7C795B81C873ADF0081977F /* Library.framework in Frameworks */,
-				A7C795B91C873ADF0081977F /* KsApi.framework in Frameworks */,
-				A7C795BB1C873ADF0081977F /* Prelude.framework in Frameworks */,
-				A7B694381C87A08600C49A4F /* HockeySDK.framework in Frameworks */,
+				A76127C21C93104700EDCCB9 /* Prelude.framework in Frameworks */,
+				A76127C11C93104300EDCCB9 /* AlamofireImage.framework in Frameworks */,
+				A76127C01C93100C00EDCCB9 /* Library.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2194,7 +2192,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				A7C795B71C873AD10081977F /* PBXTargetDependency */,
+				A76127BF1C93100800EDCCB9 /* PBXTargetDependency */,
 			);
 			name = "Kickstarter-iOS-Framework";
 			productName = "Kickstarter-iOS-Framework";
@@ -3381,6 +3379,11 @@
 			target = A75511AA1C8647D9005355CF /* Library-tvOS */;
 			targetProxy = A75511E21C864974005355CF /* PBXContainerItemProxy */;
 		};
+		A76127BF1C93100800EDCCB9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A755113B1C8642B3005355CF /* Library-iOS */;
+			targetProxy = A76127BE1C93100800EDCCB9 /* PBXContainerItemProxy */;
+		};
 		A7A542311C8E461400273B58 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "ReactiveExtensions-iOS";
@@ -3405,11 +3408,6 @@
 			isa = PBXTargetDependency;
 			target = A75511AA1C8647D9005355CF /* Library-tvOS */;
 			targetProxy = A7B6947F1C87F51900C49A4F /* PBXContainerItemProxy */;
-		};
-		A7C795B71C873AD10081977F /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = A755113B1C8642B3005355CF /* Library-iOS */;
-			targetProxy = A7C795B61C873AD10081977F /* PBXContainerItemProxy */;
 		};
 		A7C795DA1C873BE60081977F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
