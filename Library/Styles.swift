@@ -1,7 +1,7 @@
 import UIKit.UIColor
 import UIKit.UIFont
 
-enum FontText: String {
+enum FontStyle: String {
   case Headline
   case Subhead
   case Body
@@ -77,7 +77,7 @@ enum Color: String {
   }
 }
 
-extension FontText {
+extension FontStyle {
   func toUIFont() -> UIFont {
     switch self {
     case .Headline:

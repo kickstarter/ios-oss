@@ -2,17 +2,17 @@ import UIKit.UILabel
 
 @IBDesignable
 public final class StyledLabel: UILabel {
-  private var _fontText: FontText? = .Body
+  private var _fontStyle: FontStyle? = .Body
   private var _color: Color? = .TextDefault
   private var _weight: Weight = .Default
 
   @IBInspectable
-  public var fontText: String {
+  public var fontStyle: String {
     get {
-      return _fontText?.rawValue ?? ""
+      return _fontStyle?.rawValue ?? ""
     }
     set {
-      _fontText = FontText(rawValue: newValue)
+      _fontStyle = FontStyle(rawValue: newValue)
       updateStyle()
     }
   }
@@ -52,7 +52,7 @@ public final class StyledLabel: UILabel {
   private func updateStyle() {
     self.textColor = _color?.toUIColor() ?? .redColor()
 
-    switch (_fontText, _weight) {
+    switch (_fontStyle, _weight) {
     case let (font?, .Default):
       self.font = font.toUIFont()
     case let (font?, .Medium):

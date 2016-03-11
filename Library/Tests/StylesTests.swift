@@ -3,7 +3,7 @@ import XCTest
 
 final class StylesTests: XCTestCase {
   func testEquality() {
-    XCTAssertEqual(FontText.Headline, FontText.Headline)
+    XCTAssertEqual(FontStyle.Headline, FontStyle.Headline)
     XCTAssertEqual(Weight.Default, Weight.Default)
     XCTAssertEqual(Color.Black, Color.Black)
     XCTAssertEqual(Color.Category.Art, Color.Category.Art)
@@ -11,25 +11,25 @@ final class StylesTests: XCTestCase {
   }
 
   func testInequality() {
-    XCTAssertNotEqual(FontText.Headline, FontText.Body)
+    XCTAssertNotEqual(FontStyle.Headline, FontStyle.Body)
     XCTAssertNotEqual(Weight.Default, Weight.Medium)
     XCTAssertNotEqual(Color.Black, Color.Blue)
     XCTAssertNotEqual(Color.Category.Art, Color.Category.Theater)
     XCTAssertNotEqual(Color.Social.FacebookBlue, Color.Social.TwitterBlue)
   }
 
-  func testFontText() {
-    let headline = FontText(rawValue: "Headline")
-    let head = FontText(rawValue: "Head")
+  func testFontStyle() {
+    let headline = FontStyle(rawValue: "Headline")
+    let head = FontStyle(rawValue: "Head")
 
     XCTAssertNotNil(headline)
     XCTAssertNil(head, "Not valid name")
 
     let headlineFont = UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)
-    XCTAssertEqual(FontText.Headline.toUIFont(), headlineFont)
+    XCTAssertEqual(FontStyle.Headline.toUIFont(), headlineFont)
 
     let captionFont = UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1)
-    XCTAssertNotEqual(FontText.Headline.toUIFont(), captionFont)
+    XCTAssertNotEqual(FontStyle.Headline.toUIFont(), captionFont)
   }
 
   func testWeight() {

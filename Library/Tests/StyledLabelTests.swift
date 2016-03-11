@@ -5,15 +5,15 @@ final class StyledLabelTests: XCTestCase {
   let label = StyledLabel()
 
   func testDefaultStyle() {
-    XCTAssertEqual(label.fontText, "Body")
+    XCTAssertEqual(label.fontStyle, "Body")
     XCTAssertEqual(label.color, "TextDefault")
     XCTAssertEqual(label.weight, "Default")
   }
 
   func testValidStyles() {
-    label.fontText = "Headline"
-    XCTAssertNotNil(label.fontText)
-    XCTAssertEqual(label.font, FontText.Headline.toUIFont())
+    label.fontStyle = "Headline"
+    XCTAssertNotNil(label.fontStyle)
+    XCTAssertEqual(label.font, FontStyle.Headline.toUIFont())
 
     label.color = "Blue"
     XCTAssertNotNil(label.color)
@@ -30,10 +30,10 @@ final class StyledLabelTests: XCTestCase {
 
     label.weight = "Med"
     XCTAssertEqual(label.weight, "Default")
-    XCTAssertEqual(label.font, FontText.Body.toUIFont())
+    XCTAssertEqual(label.font, FontStyle.Body.toUIFont())
 
-    label.fontText = "Head"
-    XCTAssertEqual(label.fontText, "")
-    XCTAssertEqual(label.font, UIFont(name: "Marker Felt", size: 15.0))
+    label.fontStyle = "Head"
+    XCTAssertEqual(label.fontStyle, "")
+    XCTAssertEqual(label.font, FontStyle.mismatchedFont)
   }
 }

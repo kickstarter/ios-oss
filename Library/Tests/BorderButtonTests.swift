@@ -9,7 +9,7 @@ final class BorderButtonTests: XCTestCase {
     XCTAssertEqual(button.borderColor, "GrayDark")
     XCTAssertEqual(button.titleColorNormal, "Black")
     XCTAssertEqual(button.titleColorHighlighted, "GrayLight")
-    XCTAssertEqual(button.titleFontText, "Body")
+    XCTAssertEqual(button.titleFontStyle, "Body")
     XCTAssertEqual(button.titleWeight, "Default")
   }
 
@@ -30,9 +30,9 @@ final class BorderButtonTests: XCTestCase {
     XCTAssertNotNil(button.titleColorHighlighted)
     XCTAssertEqual(button.titleColorForState(.Highlighted), Color.GrayDark.toUIColor())
 
-    button.titleFontText = "Headline"
-    XCTAssertNotNil(button.titleFontText)
-    XCTAssertEqual(button.titleLabel?.font, FontText.Headline.toUIFont())
+    button.titleFontStyle = "Headline"
+    XCTAssertNotNil(button.titleFontStyle)
+    XCTAssertEqual(button.titleLabel?.font, FontStyle.Headline.toUIFont())
 
     button.titleWeight = "Medium"
     XCTAssertEqual(button.titleWeight, "Medium")
@@ -60,10 +60,10 @@ final class BorderButtonTests: XCTestCase {
 
     button.titleWeight = "Med"
     XCTAssertEqual(button.titleWeight, "Default")
-    XCTAssertEqual(button.titleLabel?.font, FontText.Body.toUIFont())
+    XCTAssertEqual(button.titleLabel?.font, FontStyle.Body.toUIFont())
 
-    button.titleFontText = "Head"
-    XCTAssertEqual(button.titleFontText, "")
+    button.titleFontStyle = "Head"
+    XCTAssertEqual(button.titleFontStyle, "")
     XCTAssertEqual(button.titleLabel?.font, UIFont(name: "Marker Felt", size: 15.0))
   }
 }
