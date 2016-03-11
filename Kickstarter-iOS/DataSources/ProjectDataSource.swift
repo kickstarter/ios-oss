@@ -1,4 +1,4 @@
-import class UIKit.UICollectionViewCell
+import class UIKit.UITableViewCell
 import class Library.MVVMDataSource
 
 internal final class ProjectDataSource: MVVMDataSource {
@@ -33,7 +33,7 @@ internal final class ProjectDataSource: MVVMDataSource {
     )
   }
 
-  override func configureCell(collectionCell cell: UICollectionViewCell, withViewModel viewModel: AnyObject) {
+  override func configureCell(tableCell cell: UITableViewCell, withViewModel viewModel: AnyObject) {
 
     switch (cell, viewModel) {
     case let (cell as ProjectMainCell, viewModel as ProjectMainViewModel):

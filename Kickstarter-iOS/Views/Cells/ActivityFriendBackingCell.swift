@@ -1,11 +1,11 @@
-import class UIKit.UICollectionViewCell
+import class UIKit.UITableViewCell
 import class UIKit.UILabel
 import class UIKit.UIImageView
 import protocol Library.ViewModeledCellType
 import class ReactiveCocoa.MutableProperty
 import func ReactiveCocoa.<~
 
-internal final class ActivityFriendBackingCell: UICollectionViewCell, ViewModeledCellType {
+internal final class ActivityFriendBackingCell: UITableViewCell, ViewModeledCellType {
   let viewModelProperty = MutableProperty<ActivityFriendBackingViewModel?>(nil)
 
   @IBOutlet internal weak var friendImageView: UIImageView!

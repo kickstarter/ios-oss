@@ -1,6 +1,6 @@
 import class UIKit.UIImage
 import class UIKit.UIColor
-import class UIKit.UICollectionViewCell
+import class UIKit.UITableViewCell
 import class UIKit.UIImageView
 import class UIKit.UILabel
 import protocol Library.ViewModeledCellType
@@ -14,12 +14,11 @@ import var CoreImage.kCIInputIntensityKey
 import class CoreImage.CIFilter
 import class CoreImage.CIColor
 
-internal final class ActivityStateChangeCell: UICollectionViewCell, ViewModeledCellType {
+internal final class ActivityStateChangeCell: UITableViewCell, ViewModeledCellType {
   internal let viewModelProperty = MutableProperty<ActivityStateChangeViewModel?>(nil)
 
   @IBOutlet internal weak var projectImageView: UIImageView!
   @IBOutlet internal weak var projectNameLabel: UILabel!
-  @IBOutlet internal weak var fundedTitleLabel: UILabel!
   @IBOutlet internal weak var fundedSubtitleLabel: UILabel!
   @IBOutlet internal weak var pledgedTitleLabel: UILabel!
   @IBOutlet internal weak var pledgedSubtitleLabel: UILabel!
