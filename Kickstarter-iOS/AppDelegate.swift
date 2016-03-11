@@ -21,7 +21,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     AppEnvironment.pushEnvironment(
       apiService: Service(
         serverConfig: ServerConfig.production,
-        oauthToken: OauthToken(token: "6b02b5b59bfdf8111cdc97784b828f33b2b45dc4"),
         language: Language.en.rawValue
       ),
       language: .en,

@@ -53,6 +53,7 @@ internal final class LoginViewController: MVVMViewController {
   }
 
   private func onLoginSuccess() {
+    self.dismissViewControllerAnimated(false, completion: nil)
     self.navigationController?.tabBarController?.selectedIndex = 0
   }
 
