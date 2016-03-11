@@ -21,7 +21,7 @@ final class BorderButtonTests: XCTestCase {
     XCTAssertEqual(Color.Green.toUIColor(), button.backgroundColor)
 
     button.borderColor = "Mint"
-    XCTAssertEqual(Color.Mint.toUIColor(), button.layer.borderColor)
+    XCTAssertEqual(Color.Mint.toUIColor().CGColor, button.layer.borderColor)
 
     button.titleColorNormal = "White"
     XCTAssertEqual(Color.White.toUIColor(), button.titleColorForState(.Normal))
