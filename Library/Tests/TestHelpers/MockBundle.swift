@@ -10,7 +10,8 @@ private let stores = [
     "test_count.many": "%{the_count} many",
     "hello": "world",
     "echo": "echo",
-    "hello_format": "hello %{a} %{b}"
+    "hello_format": "hello %{a} %{b}",
+    "placeholder_password": "password",
   ],
   "de": [
     "test_count.zero": "de_zero",
@@ -21,6 +22,9 @@ private let stores = [
     "hello": "de_world",
     "echo": "echo",
     "hello_format": "de_hello %{a} %{b}"
+  ],
+  "es": [
+    "placeholder_password": "el secreto"
   ]
 ]
 

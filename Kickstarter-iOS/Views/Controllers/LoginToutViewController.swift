@@ -34,7 +34,9 @@ internal final class LoginToutViewController: MVVMViewController, MFMailComposeV
   override func viewDidLoad() {
     super.viewDidLoad()
 
-   let helpButton = UIBarButtonItem.help(self, selector: "showHelp")
+    self.view.backgroundColor = Color.OffWhite.toUIColor()
+
+    let helpButton = UIBarButtonItem.help(self, selector: "showHelp")
     self.navigationItem.rightBarButtonItem? = helpButton
 
     if (self.loginIntent != .LoginTab) {
