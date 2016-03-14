@@ -1,9 +1,10 @@
 import func Foundation.NSLocalizedString
-import ReactiveExtensions
 import class UIKit.UITextField
 import class UIKit.UIButton
 import class UIKit.UIAlertAction
 import class UIKit.UIAlertController
+import class UIKit.UITapGestureRecognizer
+import ReactiveExtensions
 import class ReactiveCocoa.MutableProperty
 import func ReactiveCocoa.<~
 import class Library.MVVMViewController
@@ -27,6 +28,25 @@ internal final class LoginViewController: MVVMViewController {
     self.viewModel.inputs.email <~ emailTextField.rac_text
     self.viewModel.inputs.password <~ passwordTextField.rac_text
     self.loginButton.rac_enabled <~ self.viewModel.outputs.isFormValid
+
+    self.emailTextField.rac_signalForControlEvents(UIControlEvents.EditingDidEndOnExit)
+      .subscribeNext { [weak self] _ in
+        self?.passwordTextField.becomeFirstResponder()
+    }
+
+    self.passwordTextField.rac_signalForControlEvents(UIControlEvents.EditingDidEndOnExit)
+      .subscribeNext { [weak self] _ in
+        if let button = self?.loginButton {
+          if (button.enabled) {
+          self?.viewModel.inputs.loginButtonPressed()
+        } else {
+          self?.resignFirstResponder()
+        }
+      }
+    }
+
+    let tap = UITapGestureRecognizer(target: self, action: "dismissKeyboard")
+    self.view.addGestureRecognizer(tap)
 
     self.viewModel.outputs.isFormValid.producer
       .observeForUI()
@@ -54,6 +74,15 @@ internal final class LoginViewController: MVVMViewController {
     }
   }
 
+  @IBAction
+  internal func loginButtonPressed(sender: UIButton) {
+    self.viewModel.inputs.loginButtonPressed()
+  }
+
+  internal func dismissKeyboard() {
+    self.view.endEditing(true)
+  }
+
   private func onLoginSuccess() {
     self.navigationController?.tabBarController?.selectedIndex = 0
     self.navigationController?.popToRootViewControllerAnimated(false)
@@ -67,10 +96,5 @@ internal final class LoginViewController: MVVMViewController {
     )
     alertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .Cancel, handler: nil))
     self.presentViewController(alertController, animated: true, completion: nil)
-  }
-
-  @IBAction
-  internal func loginButtonPressed(sender: UIButton) {
-    self.viewModel.inputs.loginButtonPressed()
   }
 }
