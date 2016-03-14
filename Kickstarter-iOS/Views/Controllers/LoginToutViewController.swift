@@ -29,21 +29,11 @@ internal final class LoginToutViewController: MVVMViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-   let helpButton = UIBarButtonItem(
-    title: localizedString(key: "general.navigation.buttons.help", defaultValue: "Help"),
-    style: .Plain,
-    target: self,
-    action: "showHelp")
-    helpButton.tintColor = Color.Green.toUIColor()
+   let helpButton = UIBarButtonItem.help(self, selector: "showHelp")
     self.navigationItem.rightBarButtonItem? = helpButton
 
     if (self.loginIntent != .LoginTab) {
-      let closeButton = UIBarButtonItem(
-        title: localizedString(key: "general.navigation.buttons.close", defaultValue: "Close"),
-        style: .Plain,
-        target: self,
-        action: "closeButtonPressed")
-      closeButton.tintColor = Color.Green.toUIColor()
+      let closeButton = UIBarButtonItem.close(self, selector: "closeButtonPressed")
       self.navigationItem.leftBarButtonItem? = closeButton
     }
   }
