@@ -35,6 +35,7 @@
                                                     <userDefinedRuntimeAttribute type="string" keyPath="_titleColorNormal" value="White"/>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="_color" value="Blue"/>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="_borderColor" value="Clear"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="_titleFontStyle" value="Body"/>
                                                 </userDefinedRuntimeAttributes>
                                                 <variation key="default">
                                                     <mask key="constraints">
@@ -221,7 +222,7 @@
                                             <action selector="loginButtonPressed:" destination="i0D-IP-SOl" eventType="touchUpInside" id="9dd-xa-a5S"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qIi-a3-8Mq" customClass="BorderButton" customModule="Library">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qIi-a3-8Mq" customClass="BorderButton" customModule="Library">
                                         <rect key="frame" x="202" y="192" width="116" height="44"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="n2W-Lf-bmI"/>

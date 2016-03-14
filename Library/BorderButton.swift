@@ -106,6 +106,8 @@ public final class BorderButton: UIButton {
 
     self.layer.cornerRadius = DefaultCornerRadius
     self.layer.borderWidth = DefaultBorderWidth
+
+    self.titleLabel?.textAlignment = .Center
   }
 
   public override init(frame: CGRect) {
@@ -113,6 +115,8 @@ public final class BorderButton: UIButton {
 
     self.layer.cornerRadius = DefaultCornerRadius
     self.layer.borderWidth = DefaultBorderWidth
+
+    self.titleLabel?.textAlignment = .Center
   }
 
 }
