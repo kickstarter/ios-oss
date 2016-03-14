@@ -138,7 +138,9 @@
                             </mask>
                         </variation>
                     </view>
-                    <navigationItem key="navigationItem" id="DYJ-0X-X7H"/>
+                    <navigationItem key="navigationItem" id="gR4-vH-q2u">
+                        <barButtonItem key="rightBarButtonItem" title="Help" style="plain" id="Rwn-Zp-Mhs"/>
+                    </navigationItem>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="helpButton" destination="RUt-ea-H2e" id="3Uh-Ol-5W8"/>

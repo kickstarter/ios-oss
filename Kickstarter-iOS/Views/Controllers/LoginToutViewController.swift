@@ -1,10 +1,12 @@
 import class UIKit.UIButton
 import class UIKit.UIAlertController
 import class UIKit.UIAlertAction
+import class UIKit.UIBarButtonItem
 import class Library.BorderButton
 import class Library.MVVMViewController
 import enum Library.HelpType
 import func Library.localizedString
+import enum Library.Color
 import class SafariServices.SFSafariViewController
 
 internal final class LoginToutViewController: MVVMViewController {
@@ -16,6 +18,14 @@ internal final class LoginToutViewController: MVVMViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+
+   let helpButton = UIBarButtonItem(
+    title: localizedString(key: "general.navigation.buttons.help", defaultValue: "Help"),
+    style: .Plain,
+    target: self,
+    action: "showHelp")
+    helpButton.tintColor = Color.Green.toUIColor()
+    self.navigationItem.rightBarButtonItem? = helpButton
   }
 
   override func bindViewModel() {
@@ -46,13 +56,21 @@ internal final class LoginToutViewController: MVVMViewController {
   }
 
   @IBAction func helpButtonPressed(sender: UIButton) {
+    showHelp()
+  }
+
+  internal func showHelp() {
     let helpAlert = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
-    let _ = HelpType.allValues.map { h in
+    HelpType.allValues.forEach { h in
       helpAlert.addAction(UIAlertAction(title: h.title(),
         style: .Default,
         handler: { [weak self] (UIAlertAction) -> Void in
-          let svc = SFSafariViewController.help(h)
-          self?.presentViewController(svc, animated: true, completion: nil)
+          switch h {
+          case .Contact: break
+          default:
+            let svc = SFSafariViewController.help(h)
+            self?.presentViewController(svc, animated: true, completion: nil)
+          }
         }))
     }
     helpAlert.addAction(UIAlertAction(title: localizedString(key: "login_tout.help_sheet.cancel",
