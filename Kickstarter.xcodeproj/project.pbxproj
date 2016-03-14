@@ -27,6 +27,8 @@
 		01A7A4981C96668B0036E553 /* SFSafariViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A7A4961C96668B0036E553 /* SFSafariViewController.swift */; };
 		01A7A4BD1C967CEE0036E553 /* Help.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A7A4BC1C967CEE0036E553 /* Help.swift */; };
 		01A7A4BE1C967CEE0036E553 /* Help.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A7A4BC1C967CEE0036E553 /* Help.swift */; };
+		01A7A4C01C9690220036E553 /* UITextField+LocalizedKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A7A4BF1C9690220036E553 /* UITextField+LocalizedKey.swift */; };
+		01A7A4C11C9690220036E553 /* UITextField+LocalizedKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A7A4BF1C9690220036E553 /* UITextField+LocalizedKey.swift */; };
 		01BDFFB21C87AAD0002E8D34 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 01BDFFB01C87AAD0002E8D34 /* Login.storyboard */; };
 		01EA879B1C9335C5004E738B /* LoginToutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F761761C85FACB005405ED /* LoginToutViewController.swift */; };
 		01EFBC891C91FB770094EEC2 /* UIColorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01EFBC881C91FB770094EEC2 /* UIColorTests.swift */; };
@@ -1132,6 +1134,7 @@
 		01A1DC4C1C965C7D005761A8 /* UIAlertController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIAlertController.swift; sourceTree = "<group>"; };
 		01A7A4961C96668B0036E553 /* SFSafariViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SFSafariViewController.swift; sourceTree = "<group>"; };
 		01A7A4BC1C967CEE0036E553 /* Help.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Help.swift; sourceTree = "<group>"; };
+		01A7A4BF1C9690220036E553 /* UITextField+LocalizedKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITextField+LocalizedKey.swift"; sourceTree = "<group>"; };
 		01BDFFB11C87AAD0002E8D34 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Login.storyboard; sourceTree = "<group>"; };
 		01EFBC881C91FB770094EEC2 /* UIColorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorTests.swift; sourceTree = "<group>"; };
 		01EFBCAE1C92036E0094EEC2 /* StyledLabelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyledLabelTests.swift; sourceTree = "<group>"; };
@@ -1821,6 +1824,7 @@
 				A7C725971C85D36D005A016B /* UILabel+LocalizedKey.swift */,
 				A7C725981C85D36D005A016B /* UILabel+SimpleHTML.swift */,
 				A7C725991C85D36D005A016B /* UIPress-Extensions.swift */,
+				01A7A4BF1C9690220036E553 /* UITextField+LocalizedKey.swift */,
 				A7C7257B1C85D36D005A016B /* CurrentUser */,
 				A721DF3D1C8CF4F6000CB97C /* Koala */,
 				A7C725851C85D36D005A016B /* MVVM */,
@@ -3053,6 +3057,7 @@
 				A755116F1C8642C3005355CF /* MultiKeyValueStore.swift in Sources */,
 				A75511701C8642C3005355CF /* MVVMCollectionViewController.swift in Sources */,
 				A75511711C8642C3005355CF /* MVVMDataSource.swift in Sources */,
+				01A7A4C01C9690220036E553 /* UITextField+LocalizedKey.swift in Sources */,
 				A75511721C8642C3005355CF /* MVVMViewController.swift in Sources */,
 				01A7A4971C96668B0036E553 /* SFSafariViewController.swift in Sources */,
 				0151AEB71C8F700B0067F1BE /* UIColor.swift in Sources */,
@@ -3132,6 +3137,7 @@
 				A75511C01C8647D9005355CF /* MultiKeyValueStore.swift in Sources */,
 				A75511C11C8647D9005355CF /* MVVMCollectionViewController.swift in Sources */,
 				A75511C21C8647D9005355CF /* MVVMDataSource.swift in Sources */,
+				01A7A4C11C9690220036E553 /* UITextField+LocalizedKey.swift in Sources */,
 				A75511C31C8647D9005355CF /* MVVMViewController.swift in Sources */,
 				01A7A4981C96668B0036E553 /* SFSafariViewController.swift in Sources */,
 				0151AEB81C8F700C0067F1BE /* UIColor.swift in Sources */,
