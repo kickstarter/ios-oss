@@ -126,9 +126,9 @@ public extension FontStyle {
   }
 
   #if os(iOS)
-  internal static let mismatchedFont = UIFont(name: "Marker Felt", size: 15.0)
+  internal static let mismatchedFont = UIFont(name: "Marker Felt", size: 15.0) ?? UIFont.systemFontOfSize(15.0)
   #else
-  internal static let mismatchedFont = UIFont(name: "Courier New", size: 15.0)
+  internal static let mismatchedFont = UIFont(name: "Courier New", size: 15.0) ?? UIFont.systemFontOfSize(15.0)
   #endif
 }
 

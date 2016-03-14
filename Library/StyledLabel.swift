@@ -1,66 +1,55 @@
-import UIKit.UILabel
+import class UIKit.UILabel
+import class UIKit.UIFont
 
 @IBDesignable
 public final class StyledLabel: UILabel {
-  private var _fontStyle: FontStyle? = .Body
-  private var _color: Color? = .TextDefault
-  private var _weight: Weight = .Default
-
-  @IBInspectable
-  public var fontStyle: String {
-    get {
-      return _fontStyle?.rawValue ?? ""
-    }
-    set {
-      _fontStyle = FontStyle(rawValue: newValue)
-      updateStyle()
+  public var fontStyle: FontStyle? = .Body {
+    didSet {
+      self.font = self.computedFont
     }
   }
 
-  @IBInspectable
-  public var color: String {
-    get {
-      return _color?.rawValue ?? ""
-    }
-    set {
-      _color = Color(rawValue: newValue)
-      updateStyle()
+  public var weight: Weight? = .Default {
+    didSet {
+      self.font = self.computedFont
     }
   }
 
-  @IBInspectable
-  public var weight: String {
-    get {
-      return _weight.rawValue
-    }
-    set {
-      _weight = Weight(rawValue: newValue) ?? .Default
-      updateStyle()
+  public var color: Color? = .TextDefault {
+    didSet {
+      self.textColor = color?.toUIColor() ?? Color.mismatchedColor
     }
   }
 
-  public required init?(coder aDecoder: NSCoder) {
-    super.init(coder: aDecoder)
-    updateStyle()
+  @IBInspectable public var _fontStyle: String = FontStyle.Body.rawValue {
+    didSet {
+      self.fontStyle = FontStyle(rawValue: _fontStyle)
+    }
   }
 
-  public override init(frame: CGRect) {
-    super.init(frame: frame)
-    updateStyle()
+  @IBInspectable public var _weight: String = Weight.Default.rawValue {
+    didSet {
+      self.weight = Weight(rawValue: _weight)
+    }
   }
 
-  private func updateStyle() {
-    self.textColor = _color?.toUIColor() ?? Color.mismatchedColor
+  @IBInspectable public var _color: String = Color.TextDefault.rawValue {
+    didSet {
+      self.color = Color(rawValue: _color)
+    }
+  }
 
-    switch (_fontStyle, _weight) {
-    case let (font?, .Default):
-      self.font = font.toUIFont()
-    case let (font?, .Medium):
+  // Computes a font from the component of font style and weight.
+  private var computedFont: UIFont {
+    switch (fontStyle, weight) {
+    case let (font?, .Default?):
+      return font.toUIFont()
+    case let (font?, .Medium?):
       let descriptor = font.toUIFont().fontDescriptor()
       let mediumDescriptor = descriptor.fontDescriptorWithSymbolicTraits(.TraitBold)
-      self.font = UIFont(descriptor: mediumDescriptor, size: 0.0)
+      return UIFont(descriptor: mediumDescriptor, size: 0.0)
     case (_, _):
-      self.font = FontStyle.mismatchedFont
+      return FontStyle.mismatchedFont
     }
   }
 }
