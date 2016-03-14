@@ -6,63 +6,62 @@ final class BorderButtonTests: XCTestCase {
   func testDefaultStyle() {
     let button = BorderButton()
 
-    XCTAssertEqual("White", button.color)
-    XCTAssertEqual("GrayDark", button.borderColor)
-    XCTAssertEqual("Black", button.titleColorNormal)
-    XCTAssertEqual("GrayLight", button.titleColorHighlighted)
-    XCTAssertEqual("Body", button.titleFontStyle)
-    XCTAssertEqual("Default", button.titleWeight)
+    XCTAssertEqual("White", button._color)
+    XCTAssertEqual("Black", button._borderColor)
+    XCTAssertEqual("TextDefault", button._titleColorNormal)
+    XCTAssertEqual("TextLightGray", button._titleColorHighlighted)
+    XCTAssertEqual("Body", button._titleFontStyle)
+    XCTAssertEqual("Default", button._titleWeight)
   }
 
   func testValidStyles() {
     let button = BorderButton()
 
-    button.color = "Green"
+    button._color = "Green"
     XCTAssertEqual(Color.Green.toUIColor(), button.backgroundColor)
 
-    button.borderColor = "Mint"
+    button._borderColor = "Mint"
     XCTAssertEqual(Color.Mint.toUIColor().CGColor, button.layer.borderColor)
 
-    button.titleColorNormal = "White"
+    button._titleColorNormal = "White"
     XCTAssertEqual(Color.White.toUIColor(), button.titleColorForState(.Normal))
 
-    button.titleColorHighlighted = "GrayDark"
+    button._titleColorHighlighted = "GrayDark"
     XCTAssertEqual(Color.GrayDark.toUIColor(), button.titleColorForState(.Highlighted))
 
-    button.titleFontStyle = "Headline"
+    button._titleFontStyle = "Headline"
     XCTAssertEqual(FontStyle.Headline.toUIFont(), button.titleLabel?.font)
 
-    button.titleWeight = "Medium"
-    XCTAssertEqual("Medium", button.titleWeight)
+    button._titleWeight = "Medium"
+    XCTAssertEqual("Medium", button.titleWeight?.rawValue)
   }
 
   func testInvalidStyles() {
     let button = BorderButton()
     
-    button.color = ""
+    button._color = ""
     XCTAssertEqual(Color.mismatchedColor, button.backgroundColor)
 
-    button.color = "Turnt"
-    XCTAssertEqual(button.color, "")
+    button._color = "Turnt"
+    XCTAssertNil(button.color?.rawValue)
     XCTAssertEqual(Color.mismatchedColor, button.backgroundColor)
 
-    button.borderColor = "Blood"
+    button._borderColor = "Blood"
     XCTAssertEqual(Color.mismatchedColor.CGColor, button.layer.borderColor)
 
-    button.titleColorNormal = "Blu"
-    XCTAssertNotNil(button.titleColorNormal)
+    button._titleColorNormal = "Blu"
+    XCTAssertNil(button.titleColorNormal)
     XCTAssertEqual(Color.mismatchedColor, button.titleColorForState(.Normal))
 
-    button.titleColorHighlighted = "Pinky"
-    XCTAssertNotNil(button.titleColorHighlighted)
+    button._titleColorHighlighted = "Pinky"
+    XCTAssertNil(button.titleColorHighlighted)
     XCTAssertEqual(Color.mismatchedColor, button.titleColorForState(.Normal))
 
-    button.titleWeight = "Med"
-    XCTAssertEqual(button.titleWeight, "Default")
-    XCTAssertEqual(FontStyle.Body.toUIFont(), button.titleLabel?.font)
+    button._titleWeight = "Med"
+    XCTAssertNil(button.titleWeight?.rawValue)
 
-    button.titleFontStyle = "Head"
-    XCTAssertEqual(button.titleFontStyle, "")
+    button._titleFontStyle = "Head"
+    XCTAssertNil(button.titleFontStyle?.rawValue)
     XCTAssertEqual(FontStyle.mismatchedFont, button.titleLabel?.font)
   }
 }

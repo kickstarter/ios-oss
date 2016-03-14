@@ -2,12 +2,16 @@ import UIKit.UIColor
 import UIKit.UIFont
 
 public enum FontStyle: String {
-  case Headline
-  case Subhead
   case Body
-  case Footnote
+  case Callout
   case Caption1
   case Caption2
+  case Footnote
+  case Headline
+  case Subhead
+  case Title1
+  case Title2
+  case Title3
 }
 
 public enum Weight: String {
@@ -37,6 +41,12 @@ public enum Color: String {
   case TextLightGray
   case White
   case Yellow
+
+  public static let allColors: [Color] = [
+    .Black, .Blue, .BlueDark, .BlueLight, .BlueRoyal, .Clear, .Green, .GreenLight, .Gray, .GrayBlack,
+    .GrayDark, .GrayLight, .GrayMedium, .OffWhite, .Mint, .Pink, .TextDefault, .TextDarkGray,
+    .TextLightGray, .White, .Yellow
+  ]
 
   public enum Category: String {
     case Art
@@ -69,36 +79,56 @@ public enum Color: String {
     case TechnologySecondary
     case Theater
     case TheaterSecondary
+
+    public static let allColors: [Color.Category] = [
+      .Art, .ArtSecondary, .Comics, .ComicsSecondary, .Crafts, .CraftsSecondary,
+      .Dance, .DanceSecondary, .Design, .DesignSecondary, .Fashion, .FashionSecondary,
+      .Film, .FilmSecondary, .Food, .FoodSecondary, .Games, .GamesSecondary,
+      .Journalism, .JournalismSecondary, .Music, .MusicSecondary, .Photography, .PhotographySecondary,
+      .Publishing, .PublishingSecondary, .Technology, .TechnologySecondary, .Theater, .TheaterSecondary
+    ]
   }
 
   public enum Social:String {
     case FacebookBlue
     case TwitterBlue
+
+    public static let allColors: [Color.Social] = [
+      .TwitterBlue, .FacebookBlue
+    ]
   }
 }
 
 public extension FontStyle {
   public func toUIFont() -> UIFont {
     switch self {
-    case .Headline:
-      return UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)
-    case .Subhead:
-      return UIFont.preferredFontForTextStyle(UIFontTextStyleSubheadline)
     case .Body:
-      return UIFont.preferredFontForTextStyle(UIFontTextStyleBody)
-    case .Footnote:
-      return UIFont.preferredFontForTextStyle(UIFontTextStyleFootnote)
+      return .preferredFontForTextStyle(UIFontTextStyleBody)
+    case .Callout:
+      return .preferredFontForTextStyle(UIFontTextStyleCallout)
     case .Caption1:
-      return UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1)
+      return .preferredFontForTextStyle(UIFontTextStyleCaption1)
     case .Caption2:
-      return UIFont.preferredFontForTextStyle(UIFontTextStyleCaption2)
+      return .preferredFontForTextStyle(UIFontTextStyleCaption2)
+    case .Footnote:
+      return .preferredFontForTextStyle(UIFontTextStyleFootnote)
+    case .Headline:
+      return .preferredFontForTextStyle(UIFontTextStyleHeadline)
+    case .Subhead:
+      return .preferredFontForTextStyle(UIFontTextStyleSubheadline)
+    case .Title1:
+      return .preferredFontForTextStyle(UIFontTextStyleTitle1)
+    case .Title2:
+      return .preferredFontForTextStyle(UIFontTextStyleTitle2)
+    case .Title3:
+      return .preferredFontForTextStyle(UIFontTextStyleTitle3)
     }
   }
 
   #if os(iOS)
-  internal static let mismatchedFont = UIFont(name: "Marker Felt", size: 15.0)
+  internal static let mismatchedFont = UIFont(name: "Marker Felt", size: 15.0) ?? UIFont.systemFontOfSize(15.0)
   #else
-  internal static let mismatchedFont = UIFont(name: "Courier New", size: 15.0)
+  internal static let mismatchedFont = UIFont(name: "Courier New", size: 15.0) ?? UIFont.systemFontOfSize(15.0)
   #endif
 }
 

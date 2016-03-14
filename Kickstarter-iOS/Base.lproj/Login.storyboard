@@ -32,9 +32,9 @@
                                                 <state key="normal" title="Log in with Facebook"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="normalLocalizedKey" value="login_tout.buttons.log_in_with_facebook"/>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="titleColorNormal" value="White"/>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="color" value="Blue"/>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="borderColor" value="Clear"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="_titleColorNormal" value="White"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="_color" value="Blue"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="_borderColor" value="Clear"/>
                                                 </userDefinedRuntimeAttributes>
                                                 <variation key="default">
                                                     <mask key="constraints">
@@ -53,9 +53,9 @@
                                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                                 <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="fontStyle" value="Caption2"/>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="color" value="GrayDark"/>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="localizedKey" value="login_tout.disclaimer.we_never_post_anything_without_permission"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Caption2"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="_color" value="GrayDark"/>
                                                 </userDefinedRuntimeAttributes>
                                             </label>
                                         </subviews>
@@ -72,6 +72,11 @@
                                                 <state key="normal" title="Log in with Email"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="normalLocalizedKey" value="login.buttons.log_in_email"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="_color" value="White"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="_borderColor" value="GrayDark"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="_titleColorNormal" value="Black"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="_titleColorHighlighted" value="GrayDark"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="_titleFontStyle" value="Body"/>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
                                                     <action selector="loginButtonPressed:" destination="jyD-hR-XbB" eventType="touchUpInside" id="946-dn-Y7w"/>
@@ -85,6 +90,11 @@
                                                 <state key="normal" title="Sign up with Email"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="normalLocalizedKey" value="signup.button.email"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="_color" value="White"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="_borderColor" value="GrayDark"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="_titleColorNormal" value="Black"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="_titleColorHighlighted" value="GrayDark"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="_titleFontStyle" value="Body"/>
                                                 </userDefinedRuntimeAttributes>
                                             </button>
                                         </subviews>
@@ -97,12 +107,12 @@
                                         </constraints>
                                         <state key="normal" title="By signing up, you agree to our terms of use, privacy policy, and cookie policy."/>
                                         <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="titleFontStyle" value="Caption2"/>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="titleColorNormal" value="GrayDark"/>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="titleColorHighlighted" value="GrayDark"/>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="borderColor" value="Clear"/>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="color" value="Clear"/>
                                             <userDefinedRuntimeAttribute type="string" keyPath="normalLocalizedKey" value="login_tout.disclaimer.by_signing_up_you_agree_to_terms"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="_color" value="Clear"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="_borderColor" value="Clear"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="_titleColorNormal" value="GrayDark"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="_titleColorHighlighted" value="GrayLight"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="_titleFontStyle" value="Caption2"/>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
                                             <action selector="helpButtonPressed:" destination="jyD-hR-XbB" eventType="touchUpInside" id="cWW-Ie-BYF"/>
@@ -139,8 +149,8 @@
                         </variation>
                     </view>
                     <navigationItem key="navigationItem" id="gR4-vH-q2u">
-                        <barButtonItem key="leftBarButtonItem" enabled="NO" style="plain" id="vxe-O8-0J0"/>
-                        <barButtonItem key="rightBarButtonItem" title="Help" style="plain" id="Rwn-Zp-Mhs"/>
+                        <barButtonItem key="leftBarButtonItem" enabled="NO" id="vxe-O8-0J0"/>
+                        <barButtonItem key="rightBarButtonItem" title="Help" id="Rwn-Zp-Mhs"/>
                     </navigationItem>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
@@ -201,25 +211,29 @@
                                         <state key="normal" title="Log in"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="string" keyPath="normalLocalizedKey" value="login.buttons.log_in"/>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="color" value="Green"/>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="titleColorNormal" value="White"/>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="borderColor" value="Clear"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="_color" value="Green"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="_borderColor" value="Clear"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="_titleColorNormal" value="White"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="_titleColorHighlighted" value="White"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="_titleFontStyle" value="Body"/>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
                                             <action selector="loginButtonPressed:" destination="i0D-IP-SOl" eventType="touchUpInside" id="9dd-xa-a5S"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qIi-a3-8Mq" customClass="BorderButton" customModule="Library">
-                                        <rect key="frame" x="195" y="192" width="130" height="44"/>
+                                        <rect key="frame" x="202" y="192" width="116" height="44"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="n2W-Lf-bmI"/>
                                         </constraints>
                                         <state key="normal" title="Forgot password?"/>
                                         <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="color" value="Clear"/>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="borderColor" value="Clear"/>
                                             <userDefinedRuntimeAttribute type="string" keyPath="normalLocalizedKey" value="ogin.buttons.forgot_password"/>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="titleColorHighlighted" value="GrayDark"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="_color" value="Clear"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="_borderColor" value="Clear"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="_titleColorNormal" value="Black"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="_titleColorHighlighted" value="GrayDark"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="_titleFontStyle" value="Subhead"/>
                                         </userDefinedRuntimeAttributes>
                                     </button>
                                 </subviews>

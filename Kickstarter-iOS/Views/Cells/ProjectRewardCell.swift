@@ -1,7 +1,7 @@
-import class UIKit.UICollectionViewCell
+import class UIKit.UITableViewCell
 import protocol Library.ViewModeledCellType
 import class ReactiveCocoa.MutableProperty
 
-internal final class ProjectRewardCell: UICollectionViewCell, ViewModeledCellType {
+internal final class ProjectRewardCell: UITableViewCell, ViewModeledCellType {
   internal let viewModelProperty = MutableProperty<ProjectRewardViewModel?>(nil)
 }

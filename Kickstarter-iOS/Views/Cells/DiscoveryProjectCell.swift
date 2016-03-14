@@ -1,4 +1,4 @@
-import class UIKit.UICollectionViewCell
+import class UIKit.UITableViewCell
 import class UIKit.UILabel
 import protocol Library.ViewModeledCellType
 import class ReactiveCocoa.MutableProperty
@@ -8,7 +8,7 @@ import enum Result.NoError
 import ReactiveExtensions
 import AlamofireImage
 
-internal final class DiscoveryProjectCell: UICollectionViewCell, ViewModeledCellType {
+internal final class DiscoveryProjectCell: UITableViewCell, ViewModeledCellType {
   let viewModelProperty = MutableProperty<DiscoveryProjectViewModel?>(nil)
 
   @IBOutlet weak var projectImageView: UIImageView!

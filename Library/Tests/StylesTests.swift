@@ -65,4 +65,13 @@ final class StylesTests: XCTestCase {
     XCTAssertEqualWithAccuracy(0.35, g, accuracy: 0.01)
     XCTAssertEqualWithAccuracy(0.6, b, accuracy: 0.01)
   }
+
+  func testAllColors() {
+    XCTAssertEqual(21, Color.allColors.count,
+      "If this test fails it means some colors were added/removed. Please update the count if that happens")
+    XCTAssertEqual(30, Color.Category.allColors.count,
+      "If this test fails it means some colors were added/removed. Please update the count if that happens")
+    XCTAssertEqual(2, Color.Social.allColors.count,
+      "If this test fails it means some colors were added/removed. Please update the count if that happens")
+  }
 }
