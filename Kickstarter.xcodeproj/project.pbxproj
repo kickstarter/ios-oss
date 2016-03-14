@@ -21,6 +21,12 @@
 		018F1FAA1C8E1A8200643DAA /* LoginToutViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018F1FA81C8E1A8200643DAA /* LoginToutViewModel.swift */; };
 		019502021C8E3EF700F31304 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019502011C8E3EF700F31304 /* LoginViewModel.swift */; };
 		019502031C8E3EF700F31304 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019502011C8E3EF700F31304 /* LoginViewModel.swift */; };
+		01A1DC4D1C965C7D005761A8 /* UIAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A1DC4C1C965C7D005761A8 /* UIAlertController.swift */; };
+		01A1DC4E1C965C7D005761A8 /* UIAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A1DC4C1C965C7D005761A8 /* UIAlertController.swift */; };
+		01A7A4971C96668B0036E553 /* SFSafariViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A7A4961C96668B0036E553 /* SFSafariViewController.swift */; };
+		01A7A4981C96668B0036E553 /* SFSafariViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A7A4961C96668B0036E553 /* SFSafariViewController.swift */; };
+		01A7A4BD1C967CEE0036E553 /* Help.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A7A4BC1C967CEE0036E553 /* Help.swift */; };
+		01A7A4BE1C967CEE0036E553 /* Help.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A7A4BC1C967CEE0036E553 /* Help.swift */; };
 		01BDFFB21C87AAD0002E8D34 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 01BDFFB01C87AAD0002E8D34 /* Login.storyboard */; };
 		01EA879B1C9335C5004E738B /* LoginToutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F761761C85FACB005405ED /* LoginToutViewController.swift */; };
 		01EFBC891C91FB770094EEC2 /* UIColorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01EFBC881C91FB770094EEC2 /* UIColorTests.swift */; };
@@ -1123,6 +1129,9 @@
 		018F1F821C8E182200643DAA /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		018F1FA81C8E1A8200643DAA /* LoginToutViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginToutViewModel.swift; path = ../Views/Controllers/LoginToutViewModel.swift; sourceTree = "<group>"; };
 		019502011C8E3EF700F31304 /* LoginViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginViewModel.swift; path = ../Views/Controllers/LoginViewModel.swift; sourceTree = "<group>"; };
+		01A1DC4C1C965C7D005761A8 /* UIAlertController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIAlertController.swift; sourceTree = "<group>"; };
+		01A7A4961C96668B0036E553 /* SFSafariViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SFSafariViewController.swift; sourceTree = "<group>"; };
+		01A7A4BC1C967CEE0036E553 /* Help.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Help.swift; sourceTree = "<group>"; };
 		01BDFFB11C87AAD0002E8D34 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Login.storyboard; sourceTree = "<group>"; };
 		01EFBC881C91FB770094EEC2 /* UIColorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorTests.swift; sourceTree = "<group>"; };
 		01EFBCAE1C92036E0094EEC2 /* StyledLabelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyledLabelTests.swift; sourceTree = "<group>"; };
@@ -1798,10 +1807,13 @@
 				A7C725831C85D36D005A016B /* LaunchedCountries.swift */,
 				A7C725841C85D36D005A016B /* LocalizedString.swift */,
 				A7C725911C85D36D005A016B /* NSBundleType.swift */,
+				01A7A4961C96668B0036E553 /* SFSafariViewController.swift */,
 				A7C725921C85D36D005A016B /* String+SimpleHTML.swift */,
 				A7C725931C85D36D005A016B /* Strings.swift */,
 				0151AEB01C8F6FD80067F1BE /* StyledLabel.swift */,
 				0151AEAD1C8F61870067F1BE /* Styles.swift */,
+				01A7A4BC1C967CEE0036E553 /* Help.swift */,
+				01A1DC4C1C965C7D005761A8 /* UIAlertController.swift */,
 				A7C725941C85D36D005A016B /* UIButton+LocalizedKey.swift */,
 				0151AE871C8F60370067F1BE /* UIColor.swift */,
 				A7C725951C85D36D005A016B /* UIGestureRecognizer-Extensions.swift */,
@@ -3032,6 +3044,7 @@
 				A75511681C8642C3005355CF /* UIGestureRecognizer-Extensions.swift in Sources */,
 				A75511691C8642C3005355CF /* UILabel+IBClear.swift in Sources */,
 				A755116A1C8642C3005355CF /* UILabel+LocalizedKey.swift in Sources */,
+				01A7A4BD1C967CEE0036E553 /* Help.swift in Sources */,
 				A755116B1C8642C3005355CF /* UILabel+SimpleHTML.swift in Sources */,
 				A721DF621C8CF503000CB97C /* TrackingClientType.swift in Sources */,
 				A755116C1C8642C3005355CF /* UIPress-Extensions.swift in Sources */,
@@ -3041,7 +3054,9 @@
 				A75511701C8642C3005355CF /* MVVMCollectionViewController.swift in Sources */,
 				A75511711C8642C3005355CF /* MVVMDataSource.swift in Sources */,
 				A75511721C8642C3005355CF /* MVVMViewController.swift in Sources */,
+				01A7A4971C96668B0036E553 /* SFSafariViewController.swift in Sources */,
 				0151AEB71C8F700B0067F1BE /* UIColor.swift in Sources */,
+				01A1DC4D1C965C7D005761A8 /* UIAlertController.swift in Sources */,
 				A75511731C8642C3005355CF /* SimpleDataSource.swift in Sources */,
 				A75511741C8642C3005355CF /* SimpleViewModel.swift in Sources */,
 				A75511751C8642C3005355CF /* UICollectionView-Extensions.swift in Sources */,
@@ -3108,6 +3123,7 @@
 				A75511B91C8647D9005355CF /* UIGestureRecognizer-Extensions.swift in Sources */,
 				A75511BA1C8647D9005355CF /* UILabel+IBClear.swift in Sources */,
 				A75511BB1C8647D9005355CF /* UILabel+LocalizedKey.swift in Sources */,
+				01A7A4BE1C967CEE0036E553 /* Help.swift in Sources */,
 				A75511BC1C8647D9005355CF /* UILabel+SimpleHTML.swift in Sources */,
 				A721DF631C8CF503000CB97C /* TrackingClientType.swift in Sources */,
 				A75511BD1C8647D9005355CF /* UIPress-Extensions.swift in Sources */,
@@ -3117,7 +3133,9 @@
 				A75511C11C8647D9005355CF /* MVVMCollectionViewController.swift in Sources */,
 				A75511C21C8647D9005355CF /* MVVMDataSource.swift in Sources */,
 				A75511C31C8647D9005355CF /* MVVMViewController.swift in Sources */,
+				01A7A4981C96668B0036E553 /* SFSafariViewController.swift in Sources */,
 				0151AEB81C8F700C0067F1BE /* UIColor.swift in Sources */,
+				01A1DC4E1C965C7D005761A8 /* UIAlertController.swift in Sources */,
 				A75511C41C8647D9005355CF /* SimpleDataSource.swift in Sources */,
 				A75511C51C8647D9005355CF /* SimpleViewModel.swift in Sources */,
 				A75511C61C8647D9005355CF /* UICollectionView-Extensions.swift in Sources */,
