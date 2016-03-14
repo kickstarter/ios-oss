@@ -12,6 +12,7 @@ private let stores = [
     "echo": "echo",
     "hello_format": "hello %{a} %{b}",
     "placeholder_password": "password",
+    "login_tout.help_sheet.contact": "Mock Contact"
   ],
   "de": [
     "test_count.zero": "de_zero",
@@ -24,7 +25,8 @@ private let stores = [
     "hello_format": "de_hello %{a} %{b}"
   ],
   "es": [
-    "placeholder_password": "el secreto"
+    "placeholder_password": "el secreto",
+    "login_tout.help_sheet.contact": "Contacto"
   ]
 ]
 

@@ -19,6 +19,8 @@
 		0176E1601C974B09009CA092 /* MFMailComposeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0176E15F1C974B09009CA092 /* MFMailComposeViewController.swift */; };
 		0176E19B1C976703009CA092 /* UITextfield+LocalizedKeyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0176E19A1C976703009CA092 /* UITextfield+LocalizedKeyTests.swift */; };
 		0176E19C1C976703009CA092 /* UITextfield+LocalizedKeyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0176E19A1C976703009CA092 /* UITextfield+LocalizedKeyTests.swift */; };
+		0176E1C11C976A9E009CA092 /* HelpTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0176E1C01C976A9E009CA092 /* HelpTests.swift */; };
+		0176E1C21C976A9E009CA092 /* HelpTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0176E1C01C976A9E009CA092 /* HelpTests.swift */; };
 		018F1F831C8E182200643DAA /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018F1F821C8E182200643DAA /* LoginViewController.swift */; };
 		018F1F841C8E182200643DAA /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018F1F821C8E182200643DAA /* LoginViewController.swift */; };
 		018F1FA91C8E1A8200643DAA /* LoginToutViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018F1FA81C8E1A8200643DAA /* LoginToutViewModel.swift */; };
@@ -1139,6 +1141,7 @@
 		0176E13A1C9742FD009CA092 /* UIBarButtonItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIBarButtonItem.swift; sourceTree = "<group>"; };
 		0176E15F1C974B09009CA092 /* MFMailComposeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MFMailComposeViewController.swift; sourceTree = "<group>"; };
 		0176E19A1C976703009CA092 /* UITextfield+LocalizedKeyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITextfield+LocalizedKeyTests.swift"; sourceTree = "<group>"; };
+		0176E1C01C976A9E009CA092 /* HelpTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpTests.swift; sourceTree = "<group>"; };
 		018F1F821C8E182200643DAA /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		018F1FA81C8E1A8200643DAA /* LoginToutViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginToutViewModel.swift; path = ../Views/Controllers/LoginToutViewModel.swift; sourceTree = "<group>"; };
 		019502011C8E3EF700F31304 /* LoginViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginViewModel.swift; path = ../Views/Controllers/LoginViewModel.swift; sourceTree = "<group>"; };
@@ -1725,6 +1728,7 @@
 				01EFBCB21C920A7E0094EEC2 /* BorderButtonTests.swift */,
 				A755118A1C8645A0005355CF /* EnvironmentTests.swift */,
 				A755118B1C8645A0005355CF /* FormatTests.swift */,
+				0176E1C01C976A9E009CA092 /* HelpTests.swift */,
 				A755118C1C8645A0005355CF /* LanguageTests.swift */,
 				A755118D1C8645A0005355CF /* LaunchedCountriesTests.swift */,
 				A755118E1C8645A0005355CF /* LocalizedStringTests.swift */,
@@ -3113,6 +3117,7 @@
 				A755119A1C8645A0005355CF /* String+SimpleHTMLTests.swift in Sources */,
 				A755119D1C8645A0005355CF /* UILabel+LocalizedKeyTests.swift in Sources */,
 				A75511A51C86460B005355CF /* MockBundle.swift in Sources */,
+				0176E1C11C976A9E009CA092 /* HelpTests.swift in Sources */,
 				A755119E1C8645A0005355CF /* UILabel+SimpleHTMLTests.swift in Sources */,
 				A75511941C8645A0005355CF /* AppEnvironmentTests.swift in Sources */,
 				0176E19B1C976703009CA092 /* UITextfield+LocalizedKeyTests.swift in Sources */,
@@ -3196,6 +3201,7 @@
 				A75511F01C865321005355CF /* UILabel+LocalizedKeyTests.swift in Sources */,
 				A75511F11C865321005355CF /* MockBundle.swift in Sources */,
 				A75511F21C865321005355CF /* UILabel+SimpleHTMLTests.swift in Sources */,
+				0176E1C21C976A9E009CA092 /* HelpTests.swift in Sources */,
 				01EFBCB01C92036E0094EEC2 /* StyledLabelTests.swift in Sources */,
 				A75511F31C865321005355CF /* AppEnvironmentTests.swift in Sources */,
 				0176E19C1C976703009CA092 /* UITextfield+LocalizedKeyTests.swift in Sources */,
