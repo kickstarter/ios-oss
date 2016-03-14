@@ -7,12 +7,14 @@ import class UIKit.UIAlertController
 import class ReactiveCocoa.MutableProperty
 import func ReactiveCocoa.<~
 import class Library.MVVMViewController
+import class Library.BorderButton
 
 internal final class LoginViewController: MVVMViewController {
 
   @IBOutlet private weak var emailTextField: UITextField!
   @IBOutlet private weak var passwordTextField: UITextField!
-  @IBOutlet private weak var loginButton: UIButton!
+  @IBOutlet weak var loginButton: BorderButton!
+  @IBOutlet weak var forgotPasswordButton: BorderButton!
 
   let viewModel: LoginViewModelType = LoginViewModel()
 

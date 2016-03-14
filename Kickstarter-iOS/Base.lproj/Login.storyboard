@@ -18,10 +18,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="UHD-eb-qXC">
-                                <rect key="frame" x="40" y="178.5" width="520" height="243"/>
+                                <rect key="frame" x="40" y="163" width="520" height="274"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="1tl-3X-f58">
-                                        <rect key="frame" x="0.0" y="0.0" width="520" height="69.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="520" height="70"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DI6-Zp-Yoj" customClass="BorderButton" customModule="Library">
                                                 <rect key="frame" x="0.0" y="0.0" width="520" height="44"/>
@@ -48,66 +48,66 @@
                                                 </variation>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="We'll never post anything without your permission." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="npz-Cl-wqX" customClass="StyledLabel" customModule="Library">
-                                                <rect key="frame" x="0.0" y="56" width="520" height="13.5"/>
+                                                <rect key="frame" x="0.0" y="56" width="520" height="14"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="fontStyle" value="Caption2"/>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="color" value="GrayDark"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="localizedKey" value="login_tout.disclaimer.we_never_post_anything_without_permission"/>
                                                 </userDefinedRuntimeAttributes>
                                             </label>
                                         </subviews>
                                         <variation key="heightClass=compact" alignment="center"/>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="eRD-uK-yiP">
-                                        <rect key="frame" x="0.0" y="99.5" width="520" height="100"/>
+                                        <rect key="frame" x="0.0" y="100" width="520" height="100"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tcm-YK-ZfH" customClass="BorderButton" customModule="Library">
                                                 <rect key="frame" x="0.0" y="0.0" width="520" height="44"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="44" id="IVh-ao-BJi"/>
                                                 </constraints>
-                                                <state key="normal" title="Sign up with Email"/>
+                                                <state key="normal" title="Log in with Email"/>
                                                 <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="normalLocalizedKey" value="signup.button.email"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="normalLocalizedKey" value="login.buttons.log_in_email"/>
                                                 </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="loginButtonPressed:" destination="jyD-hR-XbB" eventType="touchUpInside" id="946-dn-Y7w"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ytH-Nw-2z0" customClass="BorderButton" customModule="Library">
                                                 <rect key="frame" x="0.0" y="56" width="520" height="44"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="44" id="rmm-8H-xbE"/>
                                                 </constraints>
-                                                <state key="normal" title="Log in with Email"/>
+                                                <state key="normal" title="Sign up with Email"/>
                                                 <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="normalLocalizedKey" value="login.buttons.log_in_email"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="normalLocalizedKey" value="signup.button.email"/>
                                                 </userDefinedRuntimeAttributes>
-                                                <connections>
-                                                    <action selector="loginButtonPressed:" destination="jyD-hR-XbB" eventType="touchUpInside" id="Qn0-HB-XVr"/>
-                                                </connections>
                                             </button>
                                         </subviews>
                                         <variation key="heightClass=compact" axis="horizontal"/>
                                     </stackView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="By signing up, you agree to our terms of use, privacy policy, and cookie policy." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g7I-37-ZAd" customClass="StyledLabel" customModule="Library">
-                                        <rect key="frame" x="0.0" y="229.5" width="520" height="13.5"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RUt-ea-H2e" customClass="BorderButton" customModule="Library">
+                                        <rect key="frame" x="0.0" y="230" width="520" height="44"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="300" id="589-z3-RHe"/>
+                                            <constraint firstAttribute="height" constant="44" id="QDd-D3-De3"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                        <nil key="highlightedColor"/>
+                                        <state key="normal" title="By signing up, you agree to our terms of use, privacy policy, and cookie policy."/>
                                         <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="localizedKey" value="login_tout.disclaimer.by_signing_up_you_agree_to_terms"/>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="fontStyle" value="Caption2"/>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="color" value="GrayDark"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="titleFontStyle" value="Caption2"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="titleColorNormal" value="GrayDark"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="titleColorHighlighted" value="GrayDark"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="borderColor" value="Clear"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="color" value="Clear"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="normalLocalizedKey" value="login_tout.disclaimer.by_signing_up_you_agree_to_terms"/>
                                         </userDefinedRuntimeAttributes>
-                                        <variation key="default">
-                                            <mask key="constraints">
-                                                <exclude reference="589-z3-RHe"/>
-                                            </mask>
-                                        </variation>
-                                    </label>
+                                        <connections>
+                                            <action selector="helpButtonPressed:" destination="jyD-hR-XbB" eventType="touchUpInside" id="cWW-Ie-BYF"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="1tl-3X-f58" firstAttribute="leading" secondItem="UHD-eb-qXC" secondAttribute="leading" id="6pg-Ko-Rhr"/>
@@ -141,9 +141,9 @@
                     <navigationItem key="navigationItem" id="DYJ-0X-X7H"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="facebookButton" destination="DI6-Zp-Yoj" id="SWX-Nk-0mf"/>
-                        <outlet property="loginButton" destination="ytH-Nw-2z0" id="r8r-7A-7dc"/>
-                        <outlet property="signupButton" destination="tcm-YK-ZfH" id="YIc-cL-bs1"/>
+                        <outlet property="helpButton" destination="RUt-ea-H2e" id="3Uh-Ol-5W8"/>
+                        <outlet property="loginButton" destination="tcm-YK-ZfH" id="uHI-9Q-v14"/>
+                        <outlet property="signupButton" destination="ytH-Nw-2z0" id="kt8-oh-pu8"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="On0-Xs-e35" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -162,8 +162,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="WAW-aN-vGd">
-                                <rect key="frame" x="40" y="194" width="520" height="213"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="WAW-aN-vGd">
+                                <rect key="frame" x="40" y="182" width="520" height="236"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="jR7-vI-cDW">
                                         <rect key="frame" x="0.0" y="0.0" width="520" height="88"/>
@@ -197,20 +197,25 @@
                                             <userDefinedRuntimeAttribute type="string" keyPath="borderColor" value="Clear"/>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
-                                            <action selector="loginButtonPressed:" destination="i0D-IP-SOl" eventType="touchUpInside" id="Cfc-Od-DKl"/>
+                                            <action selector="loginButtonPressed:" destination="i0D-IP-SOl" eventType="touchUpInside" id="9dd-xa-a5S"/>
                                         </connections>
                                     </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Forgot password?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lYb-lD-nuf">
-                                        <rect key="frame" x="0.0" y="192" width="520" height="21"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qIi-a3-8Mq" customClass="BorderButton" customModule="Library">
+                                        <rect key="frame" x="195" y="192" width="130" height="44"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="44" id="n2W-Lf-bmI"/>
+                                        </constraints>
+                                        <state key="normal" title="Forgot password?"/>
                                         <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="localizedKey" value="login.buttons.forgot_password"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="color" value="Clear"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="borderColor" value="Clear"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="normalLocalizedKey" value="ogin.buttons.forgot_password"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="titleColorHighlighted" value="GrayDark"/>
                                         </userDefinedRuntimeAttributes>
-                                    </label>
+                                    </button>
                                 </subviews>
                                 <constraints>
+                                    <constraint firstItem="yb8-7t-B6f" firstAttribute="width" secondItem="jR7-vI-cDW" secondAttribute="width" id="17m-b7-wVU"/>
                                     <constraint firstItem="jR7-vI-cDW" firstAttribute="width" secondItem="WAW-aN-vGd" secondAttribute="width" id="3XD-Sd-owH"/>
                                 </constraints>
                             </stackView>
@@ -232,7 +237,8 @@
                     </view>
                     <connections>
                         <outlet property="emailTextField" destination="rfF-KC-Vmh" id="fUb-r3-jVV"/>
-                        <outlet property="loginButton" destination="yb8-7t-B6f" id="n4M-hv-4ZU"/>
+                        <outlet property="forgotPasswordButton" destination="qIi-a3-8Mq" id="T8R-cb-QbL"/>
+                        <outlet property="loginButton" destination="yb8-7t-B6f" id="YV7-rz-Jjv"/>
                         <outlet property="passwordTextField" destination="A3g-DY-QEE" id="mia-c7-Dw0"/>
                     </connections>
                 </viewController>

@@ -1,10 +1,11 @@
 import UIKit.UIButton
+import class Library.BorderButton
 import class Library.MVVMViewController
 
 internal final class LoginToutViewController: MVVMViewController {
-  @IBOutlet private weak var facebookButton: UIButton!
-  @IBOutlet private weak var signupButton: UIButton!
-  @IBOutlet private weak var loginButton: UIButton!
+  @IBOutlet weak var loginButton: BorderButton!
+  @IBOutlet weak var signupButton: BorderButton!
+  @IBOutlet weak var helpButton: BorderButton!
 
   let viewModel: LoginToutViewModelType = LoginToutViewModel()
 
@@ -39,4 +40,9 @@ internal final class LoginToutViewController: MVVMViewController {
   internal func loginButtonPressed(sender: UIButton) {
     self.viewModel.inputs.loginButtonPressed()
   }
+
+  @IBAction func helpButtonPressed(sender: UIButton) {
+
+  }
+
 }
