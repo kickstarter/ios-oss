@@ -88,12 +88,7 @@ internal final class LoginViewController: MVVMViewController {
   }
 
   private func presentError(message: String) {
-    let alertController = UIAlertController(
-      title: NSLocalizedString("Oops, something went wrong!", comment: ""),
-      message: message,
-      preferredStyle: .Alert
-    )
-    alertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .Cancel, handler: nil))
+    let alertController = UIAlertController.genericError(message)
     self.presentViewController(alertController, animated: true, completion: nil)
   }
 }
