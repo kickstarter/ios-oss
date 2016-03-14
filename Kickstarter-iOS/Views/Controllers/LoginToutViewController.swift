@@ -1,7 +1,12 @@
+import class Foundation.NSError
 import class UIKit.UIButton
 import class UIKit.UIAlertController
 import class UIKit.UIAlertAction
 import class UIKit.UIBarButtonItem
+import protocol UIKit.UINavigationControllerDelegate
+import class MessageUI.MFMailComposeViewController
+import protocol MessageUI.MFMailComposeViewControllerDelegate
+import struct MessageUI.MFMailComposeResult
 import class Library.BorderButton
 import class Library.MVVMViewController
 import enum Library.HelpType
@@ -18,7 +23,7 @@ internal enum LoginIntent {
   case StarProject
 }
 
-internal final class LoginToutViewController: MVVMViewController {
+internal final class LoginToutViewController: MVVMViewController, MFMailComposeViewControllerDelegate {
   @IBOutlet weak var loginButton: BorderButton!
   @IBOutlet weak var signupButton: BorderButton!
   @IBOutlet weak var helpButton: BorderButton!
@@ -76,7 +81,12 @@ internal final class LoginToutViewController: MVVMViewController {
         style: .Default,
         handler: { [weak self] (UIAlertAction) -> Void in
           switch h {
-          case .Contact: break
+          case .Contact:
+            let mcvc = MFMailComposeViewController.support()
+            if let sself = self {
+            mcvc.mailComposeDelegate = sself
+            }
+            self?.presentViewController(mcvc, animated: true, completion: nil)
           default:
             let svc = SFSafariViewController.help(h)
             self?.presentViewController(svc, animated: true, completion: nil)
@@ -92,6 +102,10 @@ internal final class LoginToutViewController: MVVMViewController {
   }
 
   internal func closeButtonPressed() {
+    self.dismissViewControllerAnimated(true, completion: nil)
+  }
+
+  @objc internal func mailComposeController(controller: MFMailComposeViewController, didFinishWithResult result: MFMailComposeResult, error: NSError?) {
     self.dismissViewControllerAnimated(true, completion: nil)
   }
 }

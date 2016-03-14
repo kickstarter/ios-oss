@@ -16,6 +16,7 @@
 		0151AEBA1C8F811C0067F1BE /* BorderButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0151AEB91C8F811C0067F1BE /* BorderButton.swift */; };
 		0151AEBB1C8F811C0067F1BE /* BorderButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0151AEB91C8F811C0067F1BE /* BorderButton.swift */; };
 		0176E13B1C9742FD009CA092 /* UIBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0176E13A1C9742FD009CA092 /* UIBarButtonItem.swift */; };
+		0176E1601C974B09009CA092 /* MFMailComposeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0176E15F1C974B09009CA092 /* MFMailComposeViewController.swift */; };
 		018F1F831C8E182200643DAA /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018F1F821C8E182200643DAA /* LoginViewController.swift */; };
 		018F1F841C8E182200643DAA /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018F1F821C8E182200643DAA /* LoginViewController.swift */; };
 		018F1FA91C8E1A8200643DAA /* LoginToutViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018F1FA81C8E1A8200643DAA /* LoginToutViewModel.swift */; };
@@ -1130,6 +1131,7 @@
 		0151AEB01C8F6FD80067F1BE /* StyledLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyledLabel.swift; sourceTree = "<group>"; };
 		0151AEB91C8F811C0067F1BE /* BorderButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BorderButton.swift; sourceTree = "<group>"; };
 		0176E13A1C9742FD009CA092 /* UIBarButtonItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIBarButtonItem.swift; sourceTree = "<group>"; };
+		0176E15F1C974B09009CA092 /* MFMailComposeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MFMailComposeViewController.swift; sourceTree = "<group>"; };
 		018F1F821C8E182200643DAA /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		018F1FA81C8E1A8200643DAA /* LoginToutViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginToutViewModel.swift; path = ../Views/Controllers/LoginToutViewModel.swift; sourceTree = "<group>"; };
 		019502011C8E3EF700F31304 /* LoginViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginViewModel.swift; path = ../Views/Controllers/LoginViewModel.swift; sourceTree = "<group>"; };
@@ -1811,6 +1813,7 @@
 				A7C725821C85D36D005A016B /* Language.swift */,
 				A7C725831C85D36D005A016B /* LaunchedCountries.swift */,
 				A7C725841C85D36D005A016B /* LocalizedString.swift */,
+				0176E15F1C974B09009CA092 /* MFMailComposeViewController.swift */,
 				A7C725911C85D36D005A016B /* NSBundleType.swift */,
 				01A7A4961C96668B0036E553 /* SFSafariViewController.swift */,
 				A7C725921C85D36D005A016B /* String+SimpleHTML.swift */,
@@ -3036,6 +3039,7 @@
 				A721DF6B1C8CFAF6000CB97C /* MockTrackingClient.swift in Sources */,
 				A755115D1C8642C3005355CF /* AVPlayerView.swift in Sources */,
 				A755115E1C8642C3005355CF /* Environment.swift in Sources */,
+				0176E1601C974B09009CA092 /* MFMailComposeViewController.swift in Sources */,
 				A755115F1C8642C3005355CF /* Format.swift in Sources */,
 				A75511601C8642C3005355CF /* GradientView.swift in Sources */,
 				A75511611C8642C3005355CF /* Language.swift in Sources */,
