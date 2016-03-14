@@ -139,6 +139,7 @@
                         </variation>
                     </view>
                     <navigationItem key="navigationItem" id="gR4-vH-q2u">
+                        <barButtonItem key="leftBarButtonItem" enabled="NO" style="plain" id="vxe-O8-0J0"/>
                         <barButtonItem key="rightBarButtonItem" title="Help" style="plain" id="Rwn-Zp-Mhs"/>
                     </navigationItem>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
@@ -208,8 +209,8 @@
                                             <action selector="loginButtonPressed:" destination="i0D-IP-SOl" eventType="touchUpInside" id="9dd-xa-a5S"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qIi-a3-8Mq" customClass="BorderButton" customModule="Library">
-                                        <rect key="frame" x="199" y="192" width="123" height="44"/>
+                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qIi-a3-8Mq" customClass="BorderButton" customModule="Library">
+                                        <rect key="frame" x="195" y="192" width="130" height="44"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="n2W-Lf-bmI"/>
                                         </constraints>

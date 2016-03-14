@@ -9,12 +9,22 @@ import func Library.localizedString
 import enum Library.Color
 import class SafariServices.SFSafariViewController
 
+internal enum LoginIntent {
+  case BackProject
+  case FavoriteCategory
+  case Generic
+  case LoginTab
+  case MessageCreator
+  case StarProject
+}
+
 internal final class LoginToutViewController: MVVMViewController {
   @IBOutlet weak var loginButton: BorderButton!
   @IBOutlet weak var signupButton: BorderButton!
   @IBOutlet weak var helpButton: BorderButton!
 
   let viewModel: LoginToutViewModelType = LoginToutViewModel()
+  internal var loginIntent: LoginIntent = .LoginTab
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -26,6 +36,16 @@ internal final class LoginToutViewController: MVVMViewController {
     action: "showHelp")
     helpButton.tintColor = Color.Green.toUIColor()
     self.navigationItem.rightBarButtonItem? = helpButton
+
+    if (self.loginIntent != .LoginTab) {
+      let closeButton = UIBarButtonItem(
+        title: localizedString(key: "general.navigation.buttons.close", defaultValue: "Close"),
+        style: .Plain,
+        target: self,
+        action: "closeButtonPressed")
+      closeButton.tintColor = Color.Green.toUIColor()
+      self.navigationItem.leftBarButtonItem? = closeButton
+    }
   }
 
   override func bindViewModel() {
@@ -79,5 +99,9 @@ internal final class LoginToutViewController: MVVMViewController {
       handler: nil))
 
     self.presentViewController(helpAlert, animated: true, completion: nil)
+  }
+
+  internal func closeButtonPressed() {
+    self.dismissViewControllerAnimated(true, completion: nil)
   }
 }

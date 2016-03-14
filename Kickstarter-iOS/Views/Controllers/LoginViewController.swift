@@ -11,7 +11,6 @@ import class Library.MVVMViewController
 import class Library.BorderButton
 
 internal final class LoginViewController: MVVMViewController {
-
   @IBOutlet private weak var emailTextField: UITextField!
   @IBOutlet private weak var passwordTextField: UITextField!
   @IBOutlet weak var loginButton: BorderButton!
