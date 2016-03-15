@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0127FC2B1C985DDE00E335C6 /* LoginIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0127FC2A1C985DDE00E335C6 /* LoginIntent.swift */; };
+		0127FC2C1C985DDE00E335C6 /* LoginIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0127FC2A1C985DDE00E335C6 /* LoginIntent.swift */; };
 		0151AEB31C8F6FE90067F1BE /* StyledLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0151AEB01C8F6FD80067F1BE /* StyledLabel.swift */; };
 		0151AEB41C8F6FEC0067F1BE /* StyledLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0151AEB01C8F6FD80067F1BE /* StyledLabel.swift */; };
 		0151AEB51C8F6FFE0067F1BE /* Styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0151AEAD1C8F61870067F1BE /* Styles.swift */; };
@@ -1134,6 +1136,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0127FC2A1C985DDE00E335C6 /* LoginIntent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginIntent.swift; sourceTree = "<group>"; };
 		0151AE871C8F60370067F1BE /* UIColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		0151AEAD1C8F61870067F1BE /* Styles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Styles.swift; sourceTree = "<group>"; };
 		0151AEB01C8F6FD80067F1BE /* StyledLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyledLabel.swift; sourceTree = "<group>"; };
@@ -1827,6 +1830,7 @@
 				A7C725821C85D36D005A016B /* Language.swift */,
 				A7C725831C85D36D005A016B /* LaunchedCountries.swift */,
 				A7C725841C85D36D005A016B /* LocalizedString.swift */,
+				0127FC2A1C985DDE00E335C6 /* LoginIntent.swift */,
 				0176E15F1C974B09009CA092 /* MFMailComposeViewController.swift */,
 				A7C725911C85D36D005A016B /* NSBundleType.swift */,
 				01A7A4961C96668B0036E553 /* SFSafariViewController.swift */,
@@ -3067,6 +3071,7 @@
 				A76126AD1C90C94000EDCCB9 /* MVVMDataSource.swift in Sources */,
 				A75511631C8642C3005355CF /* LocalizedString.swift in Sources */,
 				0151AEB31C8F6FE90067F1BE /* StyledLabel.swift in Sources */,
+				0127FC2B1C985DDE00E335C6 /* LoginIntent.swift in Sources */,
 				0151AEB51C8F6FFE0067F1BE /* Styles.swift in Sources */,
 				A76126AB1C90C94000EDCCB9 /* MVVMCollectionViewController.swift in Sources */,
 				A7FC8C061C8F1DEA00C3B49B /* CircleAvatarImageView.swift in Sources */,
@@ -3175,6 +3180,7 @@
 				A75511BF1C8647D9005355CF /* KeyValueStoreType.swift in Sources */,
 				A75511C01C8647D9005355CF /* MultiKeyValueStore.swift in Sources */,
 				01A7A4C11C9690220036E553 /* UITextField+LocalizedKey.swift in Sources */,
+				0127FC2C1C985DDE00E335C6 /* LoginIntent.swift in Sources */,
 				01A7A4981C96668B0036E553 /* SFSafariViewController.swift in Sources */,
 				0151AEB81C8F700C0067F1BE /* UIColor.swift in Sources */,
 				01A1DC4E1C965C7D005761A8 /* UIAlertController.swift in Sources */,

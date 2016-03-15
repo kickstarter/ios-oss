@@ -4,8 +4,10 @@ import class ReactiveCocoa.Signal
 import enum Result.NoError
 import struct Library.Environment
 import struct Library.AppEnvironment
+import enum Library.LoginIntent
 
 internal protocol LoginToutViewModelInputs {
+  func loginIntent(intent: String)
   func facebookButtonPressed()
   func loginButtonPressed()
   func signupButtonPressed()
@@ -28,6 +30,10 @@ internal final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMo
   internal var outputs: LoginToutViewModelOutputs { return self }
 
   // MARK: Inputs
+  private let (loginIntentSignal, loginIntentObserver) = Signal<(String), NoError>.pipe()
+  internal func loginIntent(intent: String) {
+    loginIntentObserver.sendNext(intent)
+  }
   private let (facebookButtonPressedSignal, facebookButtonPressedObserver) = Signal<(), NoError>.pipe()
   internal func facebookButtonPressed() {
     facebookButtonPressedObserver.sendNext(())
@@ -48,5 +54,10 @@ internal final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMo
   internal init(env: Environment = AppEnvironment.current) {
     startLogin = loginButtonPressedSignal
     startSignup = signupButtonPressedSignal
+
+    let koala = env.koala
+    loginIntentSignal.observeNext { intent in
+      koala.trackLoginTout(intent)
+    }
   }
 }

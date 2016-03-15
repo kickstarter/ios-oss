@@ -7,21 +7,14 @@ import protocol UIKit.UINavigationControllerDelegate
 import class MessageUI.MFMailComposeViewController
 import protocol MessageUI.MFMailComposeViewControllerDelegate
 import struct MessageUI.MFMailComposeResult
+import func ReactiveCocoa.<~
 import class Library.BorderButton
 import class Library.MVVMViewController
 import enum Library.HelpType
 import func Library.localizedString
 import enum Library.Color
+import enum Library.LoginIntent
 import class SafariServices.SFSafariViewController
-
-internal enum LoginIntent {
-  case BackProject
-  case FavoriteCategory
-  case Generic
-  case LoginTab
-  case MessageCreator
-  case StarProject
-}
 
 internal final class LoginToutViewController: MVVMViewController, MFMailComposeViewControllerDelegate {
   @IBOutlet weak var loginButton: BorderButton!
@@ -43,6 +36,11 @@ internal final class LoginToutViewController: MVVMViewController, MFMailComposeV
       let closeButton = UIBarButtonItem.close(self, selector: "closeButtonPressed")
       self.navigationItem.leftBarButtonItem? = closeButton
     }
+  }
+
+  override func viewDidAppear(animated: Bool) {
+    super.viewDidAppear(animated)
+    self.viewModel.inputs.loginIntent(self.loginIntent.trackingString())
   }
 
   override func bindViewModel() {

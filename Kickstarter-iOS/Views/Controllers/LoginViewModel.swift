@@ -57,6 +57,7 @@ internal final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, L
   init(env: Environment = AppEnvironment.current) {
     let apiService = env.apiService
     let currentUser = env.currentUser
+    let koala = env.koala
 
     let (loggedInSignal, loggedInObserver) = Signal<(), NoError>.pipe()
     logInSuccess = loggedInSignal
@@ -88,11 +89,14 @@ internal final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, L
         switch event {
         case let .Next(envelope):
           currentUser.login(envelope.user, accessToken: envelope.accessToken)
+          koala.trackLoginSuccess()
           loggedInObserver.sendNext(())
         default:
           print("")
         }
     }
+
+    loginErrors.observeNext { _ in koala.trackLoginError() }
   }
 
   private func isValid(email: String, password: String) -> Bool {

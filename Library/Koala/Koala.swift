@@ -26,6 +26,20 @@ public final class Koala {
     self.track(event: "Discovery List View")
   }
 
+  // MARK: Session events
+
+  public func trackLoginTout(intent: String) {
+    self.track(event: "Application Login or Signup", properties: ["intent": intent])
+  }
+
+  public func trackLoginSuccess() {
+    self.track(event: "Login")
+  }
+
+  public func trackLoginError() {
+    self.track(event: "Errored User Login")
+  }
+
   // Private tracking method that merges in default properties.
   private func track(event event: String, properties: [String:AnyObject] = [:]) {
     self.client.track(
