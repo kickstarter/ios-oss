@@ -14,9 +14,7 @@ public extension SFSafariViewController {
       path = "about"
     case .Cookie:
       path = "cookies"
-//    case .FAQ:
-//      path = "/help/faq/kickstarter+basics?ref=faq_nav#TheKickApp"
-    case .Contact: ()
+    default: ()
     }
 
     let url = ServerConfig.production.webBaseUrl.URLByAppendingPathComponent(path)

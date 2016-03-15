@@ -12,14 +12,14 @@ final class UITextFieldLocalizedKeyTests : XCTestCase {
 
     withEnvironment(language: .en) {
       tf.localizedKey = "placeholder_password"
-      XCTAssertEqual(tf.placeholder, "password")
-      XCTAssertEqual(tf.localizedKey, "")
+      XCTAssertEqual("password", tf.placeholder)
+      XCTAssertEqual("", tf.localizedKey)
     }
 
     withEnvironment(language: .es) {
       tf.localizedKey = "placeholder_password"
-      XCTAssertEqual(tf.placeholder, "el secreto")
-      XCTAssertEqual(tf.localizedKey, "")
+      XCTAssertEqual("el secreto", tf.placeholder)
+      XCTAssertEqual("", tf.localizedKey)
     }
   }
 }

@@ -16,7 +16,6 @@ public enum Strings {
      - creator_name:
   */
   public static func by_creator(creator_name creator_name: String) -> String {
-
     return localizedString(key: "by_creator", defaultValue: "by <b>%{creator_name}</b>", substitutions: ["creator_name": creator_name])
   }
 }

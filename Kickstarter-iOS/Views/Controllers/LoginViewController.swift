@@ -13,12 +13,12 @@ import enum Library.Color
 import func Library.localizedString
 
 internal final class LoginViewController: MVVMViewController {
-  @IBOutlet private weak var emailTextField: UITextField!
-  @IBOutlet private weak var passwordTextField: UITextField!
+  @IBOutlet weak var emailTextField: UITextField!
+  @IBOutlet weak var passwordTextField: UITextField!
   @IBOutlet weak var loginButton: BorderButton!
   @IBOutlet weak var forgotPasswordButton: BorderButton!
 
-  let viewModel: LoginViewModelType = LoginViewModel()
+  internal let viewModel: LoginViewModelType = LoginViewModel()
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -85,7 +85,7 @@ internal final class LoginViewController: MVVMViewController {
 
     self.viewModel.errors.genericError
       .observeForUI()
-      .map { NSLocalizedString("Unable to login.", comment: "") }
+      .map { localizedString(key: "login.errors.unable_to_log_in", defaultValue: "Unable to log in.") }
       .observeNext { [weak self] message in
         self?.presentError(message)
     }

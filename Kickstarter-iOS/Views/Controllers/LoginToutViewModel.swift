@@ -48,8 +48,8 @@ internal final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMo
   }
 
   // MARK: Outputs
-  var startLogin: Signal<(), NoError>
-  var startSignup: Signal<(), NoError>
+  internal var startLogin: Signal<(), NoError>
+  internal var startSignup: Signal<(), NoError>
 
   internal init(env: Environment = AppEnvironment.current) {
     startLogin = loginButtonPressedSignal

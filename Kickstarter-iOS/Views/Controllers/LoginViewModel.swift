@@ -7,18 +7,18 @@ import struct Library.Environment
 import struct Library.AppEnvironment
 import enum Result.NoError
 
-protocol LoginViewModelInputs {
+internal protocol LoginViewModelInputs {
   var email: MutableProperty<String?> { get }
   var password: MutableProperty<String?> { get }
   func loginButtonPressed()
 }
 
-protocol LoginViewModelOutputs {
+internal protocol LoginViewModelOutputs {
   var isFormValid: MutableProperty<Bool> { get }
   var logInSuccess: Signal<(), NoError> { get }
 }
 
-protocol LoginViewModelErrors {
+internal protocol LoginViewModelErrors {
   var invalidLogin: Signal<String, NoError> { get }
   var genericError: Signal<(), NoError> { get }
   var tfaChallenge: Signal<(), NoError> { get }
@@ -38,23 +38,23 @@ internal final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, L
   internal var errors: LoginViewModelErrors { return self }
 
   // MARK: Inputs
-  let email = MutableProperty<String?>(nil)
-  let password = MutableProperty<String?>(nil)
+  internal let email = MutableProperty<String?>(nil)
+  internal let password = MutableProperty<String?>(nil)
   private var (loginButtonPressedSignal, loginButtonPressedObserver) = Signal<(), NoError>.pipe()
-  func loginButtonPressed() {
+  internal func loginButtonPressed() {
     loginButtonPressedObserver.sendNext(())
   }
 
   // MARK: Outputs
-  let isFormValid = MutableProperty(false)
-  let logInSuccess: Signal<(), NoError>
+  internal let isFormValid = MutableProperty(false)
+  internal let logInSuccess: Signal<(), NoError>
 
   // MARK: Errors
-  let invalidLogin: Signal<String, NoError>
-  let genericError: Signal<(), NoError>
-  let tfaChallenge: Signal<(), NoError>
+  internal let invalidLogin: Signal<String, NoError>
+  internal let genericError: Signal<(), NoError>
+  internal let tfaChallenge: Signal<(), NoError>
 
-  init(env: Environment = AppEnvironment.current) {
+  internal init(env: Environment = AppEnvironment.current) {
     let apiService = env.apiService
     let currentUser = env.currentUser
     let koala = env.koala

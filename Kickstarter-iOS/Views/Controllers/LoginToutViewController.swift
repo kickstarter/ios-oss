@@ -21,7 +21,7 @@ internal final class LoginToutViewController: MVVMViewController, MFMailComposeV
   @IBOutlet weak var signupButton: BorderButton!
   @IBOutlet weak var helpButton: BorderButton!
 
-  let viewModel: LoginToutViewModelType = LoginToutViewModel()
+  internal let viewModel: LoginToutViewModelType = LoginToutViewModel()
   internal var loginIntent: LoginIntent = .LoginTab
 
   override func viewDidLoad() {
@@ -56,15 +56,6 @@ internal final class LoginToutViewController: MVVMViewController, MFMailComposeV
     }
   }
 
-  func startLoginViewController() {
-    let loginVC = self.storyboard?.instantiateViewControllerWithIdentifier("LoginViewController") as! LoginViewController
-    self.navigationController?.pushViewController(loginVC, animated: true)
-  }
-
-  func startSignupViewController() {
-
-  }
-
   @IBAction
   internal func loginButtonPressed(sender: UIButton) {
     self.viewModel.inputs.loginButtonPressed()
@@ -83,9 +74,7 @@ internal final class LoginToutViewController: MVVMViewController, MFMailComposeV
           switch h {
           case .Contact:
             let mcvc = MFMailComposeViewController.support()
-            if let sself = self {
-            mcvc.mailComposeDelegate = sself
-            }
+            mcvc.mailComposeDelegate = self
             self?.presentViewController(mcvc, animated: true, completion: nil)
           default:
             let svc = SFSafariViewController.help(h)
@@ -107,5 +96,14 @@ internal final class LoginToutViewController: MVVMViewController, MFMailComposeV
 
   @objc internal func mailComposeController(controller: MFMailComposeViewController, didFinishWithResult result: MFMailComposeResult, error: NSError?) {
     self.dismissViewControllerAnimated(true, completion: nil)
+  }
+
+  private func startLoginViewController() {
+    let loginVC = self.storyboard?.instantiateViewControllerWithIdentifier("LoginViewController") as! LoginViewController
+    self.navigationController?.pushViewController(loginVC, animated: true)
+  }
+
+  private func startSignupViewController() {
+
   }
 }
