@@ -74,7 +74,7 @@
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="normalLocalizedKey" value="login.buttons.log_in_email"/>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="_color" value="White"/>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="_borderColor" value="GrayDark"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="_borderColor" value="Gray"/>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="_titleColorNormal" value="Black"/>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="_titleColorHighlighted" value="GrayDark"/>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="_titleFontStyle" value="Body"/>
@@ -92,7 +92,7 @@
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="normalLocalizedKey" value="signup.button.email"/>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="_color" value="White"/>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="_borderColor" value="GrayDark"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="_borderColor" value="Gray"/>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="_titleColorNormal" value="Black"/>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="_titleColorHighlighted" value="GrayDark"/>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="_titleFontStyle" value="Body"/>
@@ -106,6 +106,7 @@
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="QDd-D3-De3"/>
                                         </constraints>
+                                        <inset key="contentEdgeInsets" minX="0.0" minY="-10" maxX="0.0" maxY="0.0"/>
                                         <state key="normal" title="By signing up, you agree to our terms of use, privacy policy, and cookie policy."/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="string" keyPath="normalLocalizedKey" value="login_tout.disclaimer.by_signing_up_you_agree_to_terms"/>
@@ -176,14 +177,15 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="WAW-aN-vGd">
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="WAW-aN-vGd">
                                 <rect key="frame" x="40" y="182" width="520" height="236"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="jR7-vI-cDW">
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="jR7-vI-cDW">
                                         <rect key="frame" x="0.0" y="0.0" width="520" height="88"/>
                                         <subviews>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email address" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="rfF-KC-Vmh">
                                                 <rect key="frame" x="0.0" y="0.0" width="520" height="44"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" returnKeyType="next"/>
                                                 <userDefinedRuntimeAttributes>
@@ -192,6 +194,7 @@
                                             </textField>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="A3g-DY-QEE">
                                                 <rect key="frame" x="0.0" y="44" width="520" height="44"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" secureTextEntry="YES"/>
                                                 <userDefinedRuntimeAttributes>
@@ -222,7 +225,7 @@
                                             <action selector="loginButtonPressed:" destination="i0D-IP-SOl" eventType="touchUpInside" id="9dd-xa-a5S"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qIi-a3-8Mq" customClass="BorderButton" customModule="Library">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="qIi-a3-8Mq" customClass="BorderButton" customModule="Library">
                                         <rect key="frame" x="202" y="192" width="116" height="44"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="n2W-Lf-bmI"/>
@@ -232,8 +235,8 @@
                                             <userDefinedRuntimeAttribute type="string" keyPath="normalLocalizedKey" value="ogin.buttons.forgot_password"/>
                                             <userDefinedRuntimeAttribute type="string" keyPath="_color" value="Clear"/>
                                             <userDefinedRuntimeAttribute type="string" keyPath="_borderColor" value="Clear"/>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="_titleColorNormal" value="Black"/>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="_titleColorHighlighted" value="GrayDark"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="_titleColorNormal" value="GrayDark"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="_titleColorHighlighted" value="Black"/>
                                             <userDefinedRuntimeAttribute type="string" keyPath="_titleFontStyle" value="Subhead"/>
                                         </userDefinedRuntimeAttributes>
                                     </button>

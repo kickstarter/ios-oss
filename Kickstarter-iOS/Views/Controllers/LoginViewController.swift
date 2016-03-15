@@ -9,6 +9,8 @@ import class ReactiveCocoa.MutableProperty
 import func ReactiveCocoa.<~
 import class Library.MVVMViewController
 import class Library.BorderButton
+import enum Library.Color
+import func Library.localizedString
 
 internal final class LoginViewController: MVVMViewController {
   @IBOutlet private weak var emailTextField: UITextField!
@@ -20,7 +22,23 @@ internal final class LoginViewController: MVVMViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    self.title = NSLocalizedString("Log in", comment: "")
+    self.title = localizedString(key: "login.navbar.title", defaultValue: "Log in")
+    self.view.backgroundColor = Color.OffWhite.toUIColor()
+
+    emailTextField.borderStyle = .None
+    passwordTextField.borderStyle = .None
+    emailTextField.layer.borderColor = Color.Gray.toUIColor().CGColor
+    passwordTextField.layer.borderColor = Color.Gray.toUIColor().CGColor
+    emailTextField.layer.borderWidth = 1.0
+    passwordTextField.layer.borderWidth = 1.0
+
+    let spacer: UIView = UIView(frame: CGRectMake(0, 0, 10, 0))
+    emailTextField.leftView = spacer
+    emailTextField.leftViewMode = UITextFieldViewMode.Always;
+
+    let spacer2: UIView = UIView(frame: CGRectMake(0, 0, 10, 0))
+    passwordTextField.leftView = spacer2
+    passwordTextField.leftViewMode = UITextFieldViewMode.Always;
   }
 
   override func bindViewModel() {
