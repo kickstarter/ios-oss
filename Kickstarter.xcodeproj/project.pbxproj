@@ -7,9 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0127FC2B1C985DDE00E335C6 /* LoginIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0127FC2A1C985DDE00E335C6 /* LoginIntent.swift */; };
-		0127FC2C1C985DDE00E335C6 /* LoginIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0127FC2A1C985DDE00E335C6 /* LoginIntent.swift */; };
-		0127FC501C98A4C200E335C6 /* SFSafariViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A7A4961C96668B0036E553 /* SFSafariViewController.swift */; };
+		0127FC531C98C0F900E335C6 /* HelpType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0127FC521C98C0F900E335C6 /* HelpType.swift */; };
+		0127FC541C98C0F900E335C6 /* HelpType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0127FC521C98C0F900E335C6 /* HelpType.swift */; };
+		0127FC561C98C10400E335C6 /* LoginIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0127FC551C98C10400E335C6 /* LoginIntent.swift */; };
+		0127FC571C98C10400E335C6 /* LoginIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0127FC551C98C10400E335C6 /* LoginIntent.swift */; };
+		0127FC591C98C10D00E335C6 /* MFMailComposeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0127FC581C98C10D00E335C6 /* MFMailComposeViewController.swift */; };
+		0127FC5A1C98C10D00E335C6 /* MFMailComposeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0127FC581C98C10D00E335C6 /* MFMailComposeViewController.swift */; };
+		0127FC5C1C98C11500E335C6 /* SFSafariViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0127FC5B1C98C11500E335C6 /* SFSafariViewController.swift */; };
+		0127FC5D1C98C11500E335C6 /* SFSafariViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0127FC5B1C98C11500E335C6 /* SFSafariViewController.swift */; };
 		0151AEB31C8F6FE90067F1BE /* StyledLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0151AEB01C8F6FD80067F1BE /* StyledLabel.swift */; };
 		0151AEB41C8F6FEC0067F1BE /* StyledLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0151AEB01C8F6FD80067F1BE /* StyledLabel.swift */; };
 		0151AEB51C8F6FFE0067F1BE /* Styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0151AEAD1C8F61870067F1BE /* Styles.swift */; };
@@ -19,11 +24,8 @@
 		0151AEBA1C8F811C0067F1BE /* BorderButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0151AEB91C8F811C0067F1BE /* BorderButton.swift */; };
 		0151AEBB1C8F811C0067F1BE /* BorderButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0151AEB91C8F811C0067F1BE /* BorderButton.swift */; };
 		0176E13B1C9742FD009CA092 /* UIBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0176E13A1C9742FD009CA092 /* UIBarButtonItem.swift */; };
-		0176E1601C974B09009CA092 /* MFMailComposeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0176E15F1C974B09009CA092 /* MFMailComposeViewController.swift */; };
 		0176E19B1C976703009CA092 /* UITextfield+LocalizedKeyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0176E19A1C976703009CA092 /* UITextfield+LocalizedKeyTests.swift */; };
 		0176E19C1C976703009CA092 /* UITextfield+LocalizedKeyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0176E19A1C976703009CA092 /* UITextfield+LocalizedKeyTests.swift */; };
-		0176E1C11C976A9E009CA092 /* HelpTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0176E1C01C976A9E009CA092 /* HelpTests.swift */; };
-		0176E1C21C976A9E009CA092 /* HelpTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0176E1C01C976A9E009CA092 /* HelpTests.swift */; };
 		018F1F831C8E182200643DAA /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018F1F821C8E182200643DAA /* LoginViewController.swift */; };
 		018F1F841C8E182200643DAA /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018F1F821C8E182200643DAA /* LoginViewController.swift */; };
 		018F1FA91C8E1A8200643DAA /* LoginToutViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018F1FA81C8E1A8200643DAA /* LoginToutViewModel.swift */; };
@@ -32,9 +34,6 @@
 		019502031C8E3EF700F31304 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019502011C8E3EF700F31304 /* LoginViewModel.swift */; };
 		01A1DC4D1C965C7D005761A8 /* UIAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A1DC4C1C965C7D005761A8 /* UIAlertController.swift */; };
 		01A1DC4E1C965C7D005761A8 /* UIAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A1DC4C1C965C7D005761A8 /* UIAlertController.swift */; };
-		01A7A4971C96668B0036E553 /* SFSafariViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A7A4961C96668B0036E553 /* SFSafariViewController.swift */; };
-		01A7A4BD1C967CEE0036E553 /* Help.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A7A4BC1C967CEE0036E553 /* Help.swift */; };
-		01A7A4BE1C967CEE0036E553 /* Help.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A7A4BC1C967CEE0036E553 /* Help.swift */; };
 		01A7A4C01C9690220036E553 /* UITextField+LocalizedKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A7A4BF1C9690220036E553 /* UITextField+LocalizedKey.swift */; };
 		01A7A4C11C9690220036E553 /* UITextField+LocalizedKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A7A4BF1C9690220036E553 /* UITextField+LocalizedKey.swift */; };
 		01BDFFB21C87AAD0002E8D34 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 01BDFFB01C87AAD0002E8D34 /* Login.storyboard */; };
@@ -1136,21 +1135,20 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		0127FC2A1C985DDE00E335C6 /* LoginIntent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginIntent.swift; sourceTree = "<group>"; };
+		0127FC521C98C0F900E335C6 /* HelpType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HelpType.swift; path = Library/HelpType.swift; sourceTree = "<group>"; };
+		0127FC551C98C10400E335C6 /* LoginIntent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginIntent.swift; path = Library/LoginIntent.swift; sourceTree = "<group>"; };
+		0127FC581C98C10D00E335C6 /* MFMailComposeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MFMailComposeViewController.swift; path = Library/MFMailComposeViewController.swift; sourceTree = "<group>"; };
+		0127FC5B1C98C11500E335C6 /* SFSafariViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SFSafariViewController.swift; path = Library/SFSafariViewController.swift; sourceTree = "<group>"; };
 		0151AE871C8F60370067F1BE /* UIColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		0151AEAD1C8F61870067F1BE /* Styles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Styles.swift; sourceTree = "<group>"; };
 		0151AEB01C8F6FD80067F1BE /* StyledLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyledLabel.swift; sourceTree = "<group>"; };
 		0151AEB91C8F811C0067F1BE /* BorderButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BorderButton.swift; sourceTree = "<group>"; };
 		0176E13A1C9742FD009CA092 /* UIBarButtonItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIBarButtonItem.swift; sourceTree = "<group>"; };
-		0176E15F1C974B09009CA092 /* MFMailComposeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MFMailComposeViewController.swift; sourceTree = "<group>"; };
 		0176E19A1C976703009CA092 /* UITextfield+LocalizedKeyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITextfield+LocalizedKeyTests.swift"; sourceTree = "<group>"; };
-		0176E1C01C976A9E009CA092 /* HelpTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpTests.swift; sourceTree = "<group>"; };
 		018F1F821C8E182200643DAA /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		018F1FA81C8E1A8200643DAA /* LoginToutViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginToutViewModel.swift; path = ../Views/Controllers/LoginToutViewModel.swift; sourceTree = "<group>"; };
 		019502011C8E3EF700F31304 /* LoginViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginViewModel.swift; path = ../Views/Controllers/LoginViewModel.swift; sourceTree = "<group>"; };
 		01A1DC4C1C965C7D005761A8 /* UIAlertController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIAlertController.swift; sourceTree = "<group>"; };
-		01A7A4961C96668B0036E553 /* SFSafariViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SFSafariViewController.swift; sourceTree = "<group>"; };
-		01A7A4BC1C967CEE0036E553 /* Help.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Help.swift; sourceTree = "<group>"; };
 		01A7A4BF1C9690220036E553 /* UITextField+LocalizedKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITextField+LocalizedKey.swift"; sourceTree = "<group>"; };
 		01BDFFB11C87AAD0002E8D34 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Login.storyboard; sourceTree = "<group>"; };
 		01EFBC881C91FB770094EEC2 /* UIColorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorTests.swift; sourceTree = "<group>"; };
@@ -1492,6 +1490,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0127FC511C98BFD000E335C6 /* Library */ = {
+			isa = PBXGroup;
+			children = (
+				0127FC521C98C0F900E335C6 /* HelpType.swift */,
+				0127FC551C98C10400E335C6 /* LoginIntent.swift */,
+				0127FC581C98C10D00E335C6 /* MFMailComposeViewController.swift */,
+				0127FC5B1C98C11500E335C6 /* SFSafariViewController.swift */,
+			);
+			name = Library;
+			sourceTree = "<group>";
+		};
+		0127FC5E1C98C25300E335C6 /* Library */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Library;
+			sourceTree = "<group>";
+		};
 		802800561C88F62500141235 /* Configs */ = {
 			isa = PBXGroup;
 			children = (
@@ -1731,7 +1747,6 @@
 				01EFBCB21C920A7E0094EEC2 /* BorderButtonTests.swift */,
 				A755118A1C8645A0005355CF /* EnvironmentTests.swift */,
 				A755118B1C8645A0005355CF /* FormatTests.swift */,
-				0176E1C01C976A9E009CA092 /* HelpTests.swift */,
 				A755118C1C8645A0005355CF /* LanguageTests.swift */,
 				A755118D1C8645A0005355CF /* LaunchedCountriesTests.swift */,
 				A755118E1C8645A0005355CF /* LocalizedStringTests.swift */,
@@ -1826,15 +1841,11 @@
 				A7C7257F1C85D36D005A016B /* Environment.swift */,
 				A7C725801C85D36D005A016B /* Format.swift */,
 				A7C725811C85D36D005A016B /* GradientView.swift */,
-				01A7A4BC1C967CEE0036E553 /* Help.swift */,
 				A7B693FE1C8789C100C49A4F /* HockeyManagerType.swift */,
 				A7C725821C85D36D005A016B /* Language.swift */,
 				A7C725831C85D36D005A016B /* LaunchedCountries.swift */,
 				A7C725841C85D36D005A016B /* LocalizedString.swift */,
-				0127FC2A1C985DDE00E335C6 /* LoginIntent.swift */,
-				0176E15F1C974B09009CA092 /* MFMailComposeViewController.swift */,
 				A7C725911C85D36D005A016B /* NSBundleType.swift */,
-				01A7A4961C96668B0036E553 /* SFSafariViewController.swift */,
 				A7C725921C85D36D005A016B /* String+SimpleHTML.swift */,
 				A7C725931C85D36D005A016B /* Strings.swift */,
 				0151AEB01C8F6FD80067F1BE /* StyledLabel.swift */,
@@ -1923,6 +1934,7 @@
 				A7D1F94D1C850B7C000D41D5 /* Main.storyboard */,
 				01BDFFB01C87AAD0002E8D34 /* Login.storyboard */,
 				A7FC8C261C8F2DCF00C3B49B /* Project.storyboard */,
+				0127FC511C98BFD000E335C6 /* Library */,
 				A7D1F98F1C850CB2000D41D5 /* Tests */,
 				A751A51A1C85EAD8009C5DEA /* ViewModels */,
 				A751A51B1C85EAD8009C5DEA /* Views */,
@@ -1958,6 +1970,7 @@
 			children = (
 				A7D1F9901C850CB2000D41D5 /* Info.plist */,
 				A7D1F9911C850CB2000D41D5 /* KickstarterTests.swift */,
+				0127FC5E1C98C25300E335C6 /* Library */,
 				A775190E1C8CADC80022F175 /* ViewModels */,
 			);
 			path = Tests;
@@ -3059,7 +3072,6 @@
 				A721DF6B1C8CFAF6000CB97C /* MockTrackingClient.swift in Sources */,
 				A755115D1C8642C3005355CF /* AVPlayerView.swift in Sources */,
 				A755115E1C8642C3005355CF /* Environment.swift in Sources */,
-				0176E1601C974B09009CA092 /* MFMailComposeViewController.swift in Sources */,
 				A755115F1C8642C3005355CF /* Format.swift in Sources */,
 				A76126B31C90C94000EDCCB9 /* SimpleDataSource.swift in Sources */,
 				A76126BD1C90C94000EDCCB9 /* UITableViewCell-Extensions.swift in Sources */,
@@ -3071,7 +3083,6 @@
 				A76126AD1C90C94000EDCCB9 /* MVVMDataSource.swift in Sources */,
 				A75511631C8642C3005355CF /* LocalizedString.swift in Sources */,
 				0151AEB31C8F6FE90067F1BE /* StyledLabel.swift in Sources */,
-				0127FC2B1C985DDE00E335C6 /* LoginIntent.swift in Sources */,
 				0151AEB51C8F6FFE0067F1BE /* Styles.swift in Sources */,
 				A76126AB1C90C94000EDCCB9 /* MVVMCollectionViewController.swift in Sources */,
 				A7FC8C061C8F1DEA00C3B49B /* CircleAvatarImageView.swift in Sources */,
@@ -3086,7 +3097,6 @@
 				A76126BF1C90C94000EDCCB9 /* UIView-DefaultReusableId.swift in Sources */,
 				A75511691C8642C3005355CF /* UILabel+IBClear.swift in Sources */,
 				A755116A1C8642C3005355CF /* UILabel+LocalizedKey.swift in Sources */,
-				01A7A4BD1C967CEE0036E553 /* Help.swift in Sources */,
 				A755116B1C8642C3005355CF /* UILabel+SimpleHTML.swift in Sources */,
 				A721DF621C8CF503000CB97C /* TrackingClientType.swift in Sources */,
 				A76126C31C90C94000EDCCB9 /* ViewModel.swift in Sources */,
@@ -3095,7 +3105,6 @@
 				A755116E1C8642C3005355CF /* KeyValueStoreType.swift in Sources */,
 				A755116F1C8642C3005355CF /* MultiKeyValueStore.swift in Sources */,
 				01A7A4C01C9690220036E553 /* UITextField+LocalizedKey.swift in Sources */,
-				01A7A4971C96668B0036E553 /* SFSafariViewController.swift in Sources */,
 				0151AEB71C8F700B0067F1BE /* UIColor.swift in Sources */,
 				01A1DC4D1C965C7D005761A8 /* UIAlertController.swift in Sources */,
 				0176E13B1C9742FD009CA092 /* UIBarButtonItem.swift in Sources */,
@@ -3122,7 +3131,6 @@
 				A755119A1C8645A0005355CF /* String+SimpleHTMLTests.swift in Sources */,
 				A755119D1C8645A0005355CF /* UILabel+LocalizedKeyTests.swift in Sources */,
 				A75511A51C86460B005355CF /* MockBundle.swift in Sources */,
-				0176E1C11C976A9E009CA092 /* HelpTests.swift in Sources */,
 				A755119E1C8645A0005355CF /* UILabel+SimpleHTMLTests.swift in Sources */,
 				A75511941C8645A0005355CF /* AppEnvironmentTests.swift in Sources */,
 				0176E19B1C976703009CA092 /* UITextfield+LocalizedKeyTests.swift in Sources */,
@@ -3148,7 +3156,6 @@
 				A75511AF1C8647D9005355CF /* Environment.swift in Sources */,
 				A75511B01C8647D9005355CF /* Format.swift in Sources */,
 				A76126B41C90C94000EDCCB9 /* SimpleDataSource.swift in Sources */,
-				0127FC501C98A4C200E335C6 /* SFSafariViewController.swift in Sources */,
 				A76126BE1C90C94000EDCCB9 /* UITableViewCell-Extensions.swift in Sources */,
 				A75511B11C8647D9005355CF /* GradientView.swift in Sources */,
 				A76126C21C90C94000EDCCB9 /* UIViewController-DefaultNib.swift in Sources */,
@@ -3172,7 +3179,6 @@
 				A76126C01C90C94000EDCCB9 /* UIView-DefaultReusableId.swift in Sources */,
 				A75511BA1C8647D9005355CF /* UILabel+IBClear.swift in Sources */,
 				A75511BB1C8647D9005355CF /* UILabel+LocalizedKey.swift in Sources */,
-				01A7A4BE1C967CEE0036E553 /* Help.swift in Sources */,
 				A75511BC1C8647D9005355CF /* UILabel+SimpleHTML.swift in Sources */,
 				A721DF631C8CF503000CB97C /* TrackingClientType.swift in Sources */,
 				A76126C41C90C94000EDCCB9 /* ViewModel.swift in Sources */,
@@ -3181,7 +3187,6 @@
 				A75511BF1C8647D9005355CF /* KeyValueStoreType.swift in Sources */,
 				A75511C01C8647D9005355CF /* MultiKeyValueStore.swift in Sources */,
 				01A7A4C11C9690220036E553 /* UITextField+LocalizedKey.swift in Sources */,
-				0127FC2C1C985DDE00E335C6 /* LoginIntent.swift in Sources */,
 				0151AEB81C8F700C0067F1BE /* UIColor.swift in Sources */,
 				01A1DC4E1C965C7D005761A8 /* UIAlertController.swift in Sources */,
 				A76126B61C90C94000EDCCB9 /* SimpleViewModel.swift in Sources */,
@@ -3207,7 +3212,6 @@
 				A75511F01C865321005355CF /* UILabel+LocalizedKeyTests.swift in Sources */,
 				A75511F11C865321005355CF /* MockBundle.swift in Sources */,
 				A75511F21C865321005355CF /* UILabel+SimpleHTMLTests.swift in Sources */,
-				0176E1C21C976A9E009CA092 /* HelpTests.swift in Sources */,
 				01EFBCB01C92036E0094EEC2 /* StyledLabelTests.swift in Sources */,
 				A75511F31C865321005355CF /* AppEnvironmentTests.swift in Sources */,
 				0176E19C1C976703009CA092 /* UITextfield+LocalizedKeyTests.swift in Sources */,
@@ -3231,6 +3235,8 @@
 				A762F0191C8CC672005581A4 /* ActivityFriendFollowViewModel.swift in Sources */,
 				A7FC8C551C8F447D00C3B49B /* ProjectSubpagesViewModel.swift in Sources */,
 				A7E315C61C88AAA8000DD85A /* DiscoveryProjectsDataSource.swift in Sources */,
+				0127FC5D1C98C11500E335C6 /* SFSafariViewController.swift in Sources */,
+				0127FC541C98C0F900E335C6 /* HelpType.swift in Sources */,
 				A762EFF31C8CC663005581A4 /* ActivityFriendFollowCell.swift in Sources */,
 				A7E315B41C88A8A2000DD85A /* DiscoveryViewModel.swift in Sources */,
 				A731719A1C8EA20300AC07C5 /* ProjectDataSource.swift in Sources */,
@@ -3242,11 +3248,13 @@
 				A7C795B21C873AC90081977F /* AppDelegate.swift in Sources */,
 				A7C795B31C873AC90081977F /* ActivitiesViewController.swift in Sources */,
 				A7FC8C521C8F442D00C3B49B /* ProjectRewardCell.swift in Sources */,
+				0127FC571C98C10400E335C6 /* LoginIntent.swift in Sources */,
 				A77519011C8C97510022F175 /* ActivityFriendBackingViewModel.swift in Sources */,
 				A77518FE1C8C8ADA0022F175 /* ActivityUpdateViewModel.swift in Sources */,
 				A7FC8C4F1C8F43E400C3B49B /* ProjectRewardViewModel.swift in Sources */,
 				A762F01D1C8CD2B3005581A4 /* ActivityStateChangeCell.swift in Sources */,
 				A75CBDE81C8A26F800758C55 /* AppDelegateViewModel.swift in Sources */,
+				0127FC5A1C98C10D00E335C6 /* MFMailComposeViewController.swift in Sources */,
 				A7C795B41C873AC90081977F /* DiscoveryViewController.swift in Sources */,
 				018F1F841C8E182200643DAA /* LoginViewController.swift in Sources */,
 				A7C795B51C873AC90081977F /* LoginToutViewController.swift in Sources */,
@@ -3322,6 +3330,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0127FC5C1C98C11500E335C6 /* SFSafariViewController.swift in Sources */,
 				01EA879B1C9335C5004E738B /* LoginToutViewController.swift in Sources */,
 				018F1FA91C8E1A8200643DAA /* LoginToutViewModel.swift in Sources */,
 				A7285C9B1C8E8DCF00D83297 /* ProjectViewController.swift in Sources */,
@@ -3330,12 +3339,15 @@
 				A7E315C51C88AAA8000DD85A /* DiscoveryProjectsDataSource.swift in Sources */,
 				A762EFF21C8CC663005581A4 /* ActivityFriendFollowCell.swift in Sources */,
 				A7E315B31C88A8A2000DD85A /* DiscoveryViewModel.swift in Sources */,
+				0127FC561C98C10400E335C6 /* LoginIntent.swift in Sources */,
 				A73171991C8EA20300AC07C5 /* ProjectDataSource.swift in Sources */,
 				A7E315CB1C88AC91000DD85A /* DiscoveryProjectCell.swift in Sources */,
 				A75AB2221C8A85D1002FC3E6 /* ActivityUpdateCell.swift in Sources */,
 				A7FC8C571C8F449500C3B49B /* ProjectSubpagesCell.swift in Sources */,
 				A7285CC11C8E8DDB00D83297 /* ProjectViewModel.swift in Sources */,
 				A7285CC41C8E915B00D83297 /* ProjectMainCell.swift in Sources */,
+				0127FC591C98C10D00E335C6 /* MFMailComposeViewController.swift in Sources */,
+				0127FC531C98C0F900E335C6 /* HelpType.swift in Sources */,
 				A7D1F9481C850B7C000D41D5 /* AppDelegate.swift in Sources */,
 				A7F761751C85FA40005405ED /* ActivitiesViewController.swift in Sources */,
 				A7FC8C511C8F442D00C3B49B /* ProjectRewardCell.swift in Sources */,

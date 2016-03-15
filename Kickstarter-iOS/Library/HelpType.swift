@@ -1,3 +1,4 @@
+import func Library.localizedString
 /**
  Used with UIAlertController or by SFSafariViewController
  */
@@ -11,10 +12,8 @@ public enum HelpType {
   public static let allValues: [HelpType] = [
     .HowItWorks, .Contact, .Terms, .Privacy, .Cookie
   ]
-}
 
-public extension HelpType {
-  public func title() -> String {
+  public var title: String {
     switch self {
     case .Contact:
     return localizedString(key: "login_tout.help_sheet.contact", defaultValue: "Contact")

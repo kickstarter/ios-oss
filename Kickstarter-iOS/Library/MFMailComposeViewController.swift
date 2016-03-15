@@ -1,6 +1,7 @@
 import class MessageUI.MFMailComposeViewController
 import class Foundation.NSBundle
 import class UIKit.UIDevice
+import func Library.localizedString
 
 public extension MFMailComposeViewController {
   public static func support() -> MFMailComposeViewController {

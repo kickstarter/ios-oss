@@ -10,10 +10,8 @@ import struct MessageUI.MFMailComposeResult
 import func ReactiveCocoa.<~
 import class Library.BorderButton
 import class Library.MVVMViewController
-import enum Library.HelpType
 import func Library.localizedString
 import enum Library.Color
-import enum Library.LoginIntent
 import class SafariServices.SFSafariViewController
 
 internal final class LoginToutViewController: MVVMViewController, MFMailComposeViewControllerDelegate {

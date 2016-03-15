@@ -4,8 +4,6 @@ import class ReactiveCocoa.Signal
 import enum Result.NoError
 import struct Library.Environment
 import struct Library.AppEnvironment
-import enum Library.LoginIntent
-import enum Library.HelpType
 
 internal protocol LoginToutViewModelInputs {
   func loginIntent(intent: String)
@@ -72,7 +70,7 @@ internal final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMo
     self.startLogin = self.loginButtonPressedSignal
     self.startSignup = self.signupButtonPressedSignal
     self.showHelpActionSheet = self.helpButtonPressedSignal.map { _ in
-      return HelpType.allValues.map { (title: $0.title(), $0) }
+      return HelpType.allValues.map { (title: $0.title, $0) }
     }
     self.showHelp = self.helpTypeButtonPressedSignal
 
