@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0127FC2B1C985DDE00E335C6 /* LoginIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0127FC2A1C985DDE00E335C6 /* LoginIntent.swift */; };
 		0127FC2C1C985DDE00E335C6 /* LoginIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0127FC2A1C985DDE00E335C6 /* LoginIntent.swift */; };
+		0127FC501C98A4C200E335C6 /* SFSafariViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A7A4961C96668B0036E553 /* SFSafariViewController.swift */; };
 		0151AEB31C8F6FE90067F1BE /* StyledLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0151AEB01C8F6FD80067F1BE /* StyledLabel.swift */; };
 		0151AEB41C8F6FEC0067F1BE /* StyledLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0151AEB01C8F6FD80067F1BE /* StyledLabel.swift */; };
 		0151AEB51C8F6FFE0067F1BE /* Styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0151AEAD1C8F61870067F1BE /* Styles.swift */; };
@@ -32,7 +33,6 @@
 		01A1DC4D1C965C7D005761A8 /* UIAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A1DC4C1C965C7D005761A8 /* UIAlertController.swift */; };
 		01A1DC4E1C965C7D005761A8 /* UIAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A1DC4C1C965C7D005761A8 /* UIAlertController.swift */; };
 		01A7A4971C96668B0036E553 /* SFSafariViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A7A4961C96668B0036E553 /* SFSafariViewController.swift */; };
-		01A7A4981C96668B0036E553 /* SFSafariViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A7A4961C96668B0036E553 /* SFSafariViewController.swift */; };
 		01A7A4BD1C967CEE0036E553 /* Help.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A7A4BC1C967CEE0036E553 /* Help.swift */; };
 		01A7A4BE1C967CEE0036E553 /* Help.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A7A4BC1C967CEE0036E553 /* Help.swift */; };
 		01A7A4C01C9690220036E553 /* UITextField+LocalizedKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A7A4BF1C9690220036E553 /* UITextField+LocalizedKey.swift */; };
@@ -1826,6 +1826,7 @@
 				A7C7257F1C85D36D005A016B /* Environment.swift */,
 				A7C725801C85D36D005A016B /* Format.swift */,
 				A7C725811C85D36D005A016B /* GradientView.swift */,
+				01A7A4BC1C967CEE0036E553 /* Help.swift */,
 				A7B693FE1C8789C100C49A4F /* HockeyManagerType.swift */,
 				A7C725821C85D36D005A016B /* Language.swift */,
 				A7C725831C85D36D005A016B /* LaunchedCountries.swift */,
@@ -1838,7 +1839,6 @@
 				A7C725931C85D36D005A016B /* Strings.swift */,
 				0151AEB01C8F6FD80067F1BE /* StyledLabel.swift */,
 				0151AEAD1C8F61870067F1BE /* Styles.swift */,
-				01A7A4BC1C967CEE0036E553 /* Help.swift */,
 				01A1DC4C1C965C7D005761A8 /* UIAlertController.swift */,
 				0176E13A1C9742FD009CA092 /* UIBarButtonItem.swift */,
 				A7C725941C85D36D005A016B /* UIButton+LocalizedKey.swift */,
@@ -3148,6 +3148,7 @@
 				A75511AF1C8647D9005355CF /* Environment.swift in Sources */,
 				A75511B01C8647D9005355CF /* Format.swift in Sources */,
 				A76126B41C90C94000EDCCB9 /* SimpleDataSource.swift in Sources */,
+				0127FC501C98A4C200E335C6 /* SFSafariViewController.swift in Sources */,
 				A76126BE1C90C94000EDCCB9 /* UITableViewCell-Extensions.swift in Sources */,
 				A75511B11C8647D9005355CF /* GradientView.swift in Sources */,
 				A76126C21C90C94000EDCCB9 /* UIViewController-DefaultNib.swift in Sources */,
@@ -3181,7 +3182,6 @@
 				A75511C01C8647D9005355CF /* MultiKeyValueStore.swift in Sources */,
 				01A7A4C11C9690220036E553 /* UITextField+LocalizedKey.swift in Sources */,
 				0127FC2C1C985DDE00E335C6 /* LoginIntent.swift in Sources */,
-				01A7A4981C96668B0036E553 /* SFSafariViewController.swift in Sources */,
 				0151AEB81C8F700C0067F1BE /* UIColor.swift in Sources */,
 				01A1DC4E1C965C7D005761A8 /* UIAlertController.swift in Sources */,
 				A76126B61C90C94000EDCCB9 /* SimpleViewModel.swift in Sources */,

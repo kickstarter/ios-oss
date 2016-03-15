@@ -19,6 +19,6 @@ public extension SFSafariViewController {
 
     let url = ServerConfig.production.webBaseUrl.URLByAppendingPathComponent(path)
 
-    return SFSafariViewController(URL: url, entersReaderIfAvailable: true)
+    return SFSafariViewController(URL: url)
   }
 }

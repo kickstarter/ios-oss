@@ -19,16 +19,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   let viewModel: AppDelegateViewModelType = AppDelegateViewModel()
 
   override init() {
-    let userToken = CurrentUser.shared.accessToken
-    var serviceToken: OauthToken? = nil
-    if let token = userToken {
-      serviceToken = OauthToken.init(token: token)
-    }
-
+    let token = CurrentUser.shared.accessToken.map(OauthToken.init)
+  
     AppEnvironment.pushEnvironment(
       apiService: Service(
         serverConfig: ServerConfig.production,
-        oauthToken: serviceToken,
+        oauthToken: token,
         language: Language.en.rawValue
       ),
       language: .en,

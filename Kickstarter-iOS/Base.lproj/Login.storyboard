@@ -101,7 +101,7 @@
                                         </subviews>
                                         <variation key="heightClass=compact" axis="horizontal"/>
                                     </stackView>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="RUt-ea-H2e" customClass="BorderButton" customModule="Library">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="RUt-ea-H2e" customClass="BorderButton" customModule="Library">
                                         <rect key="frame" x="0.0" y="230" width="520" height="44"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="QDd-D3-De3"/>
@@ -113,11 +113,11 @@
                                             <userDefinedRuntimeAttribute type="string" keyPath="_color" value="Clear"/>
                                             <userDefinedRuntimeAttribute type="string" keyPath="_borderColor" value="Clear"/>
                                             <userDefinedRuntimeAttribute type="string" keyPath="_titleColorNormal" value="GrayDark"/>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="_titleColorHighlighted" value="GrayLight"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="_titleColorHighlighted" value="Gray"/>
                                             <userDefinedRuntimeAttribute type="string" keyPath="_titleFontStyle" value="Caption2"/>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
-                                            <action selector="helpButtonPressed:" destination="jyD-hR-XbB" eventType="touchUpInside" id="cWW-Ie-BYF"/>
+                                            <action selector="helpButtonPressed" destination="jyD-hR-XbB" eventType="touchUpInside" id="eQW-8O-b3i"/>
                                         </connections>
                                     </button>
                                 </subviews>

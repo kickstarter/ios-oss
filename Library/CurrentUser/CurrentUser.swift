@@ -37,8 +37,9 @@ public struct CurrentUser : CurrentUserType {
   private init(apiService: ServiceType) {
     self.apiService = apiService
 
+    self.userObserver.sendNext(reviveFromStorage())
+
     self.userSignal
-      .skip(1)
       .startWithNext(self.persistToStorage)
 
     self.refreshSignal
@@ -46,7 +47,6 @@ public struct CurrentUser : CurrentUserType {
       .wrapInOptional()
       .observe(self.userObserver)
 
-    self.userObserver.sendNext(reviveFromStorage())
   }
 
   public func login(user: User, accessToken: String) -> Void {
