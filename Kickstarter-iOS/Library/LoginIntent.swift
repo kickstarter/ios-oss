@@ -6,10 +6,8 @@ public enum LoginIntent {
   case LoginTab
   case MessageCreator
   case StarProject
-}
 
-public extension LoginIntent {
-  public func trackingString() -> String {
+  public var trackingString: String {
     switch self {
     case .Activity:         return "activity"
     case .BackProject:      return "pledge"

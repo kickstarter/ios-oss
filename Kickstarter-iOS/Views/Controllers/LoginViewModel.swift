@@ -5,6 +5,7 @@ import class ReactiveCocoa.MutableProperty
 import func ReactiveCocoa.<~
 import struct Library.Environment
 import struct Library.AppEnvironment
+import func Library.localizedString
 import enum Result.NoError
 
 internal protocol LoginViewModelInputs {
@@ -86,10 +87,12 @@ internal final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, L
     tfaChallenge = loginErrors
       .filter { $0.ksrCode == .TfaRequired }
       .ignoreValues()
+      .map { _ in localizedString(key: "two_factor.error.message", defaultValue: "The code provided does not match.") }
 
     genericError = loginErrors
       .filter { $0.ksrCode != .InvalidXauthLogin && $0.ksrCode != .TfaRequired }
       .ignoreValues()
+      .map { _ in localizedString(key: "login.errors.unable_to_log_in", defaultValue: "Unable to log in.") }
 
     let emailAndPassword = email.producer.ignoreNil()
       .combineLatestWith(password.producer.ignoreNil())
@@ -105,8 +108,7 @@ internal final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, L
           currentUser.login(envelope.user, accessToken: envelope.accessToken)
           koala.trackLoginSuccess()
           loggedInObserver.sendNext(())
-        default:
-          print("")
+        default:()
         }
     }
 

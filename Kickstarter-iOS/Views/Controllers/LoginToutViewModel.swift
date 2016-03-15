@@ -6,7 +6,8 @@ import struct Library.Environment
 import struct Library.AppEnvironment
 
 internal protocol LoginToutViewModelInputs {
-  func loginIntent(intent: String)
+  func viewDidAppear()
+  func loginIntent(intent: LoginIntent)
   func facebookButtonPressed()
   func loginButtonPressed()
   func signupButtonPressed()
@@ -17,7 +18,7 @@ internal protocol LoginToutViewModelInputs {
 internal protocol LoginToutViewModelOutputs {
   var startLogin: Signal<(), NoError> { get }
   var startSignup: Signal<(), NoError> { get }
-  var showHelpActionSheet: Signal<[(title: String, data: HelpType)], NoError> { get }
+  var showHelpActionSheet: Signal<[(title: String, helpType: HelpType)], NoError> { get }
   var showHelp: Signal<HelpType, NoError> { get }
 }
 
@@ -33,8 +34,12 @@ internal final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMo
   internal var outputs: LoginToutViewModelOutputs { return self }
 
   // MARK: Inputs
-  private let (loginIntentSignal, loginIntentObserver) = Signal<(String), NoError>.pipe()
-  internal func loginIntent(intent: String) {
+  private var (viewDidAppearSignal, viewDidAppearObserver) = Signal<(), NoError>.pipe()
+  func viewDidAppear() {
+    viewDidAppearObserver.sendNext(())
+  }
+  private let (loginIntentSignal, loginIntentObserver) = Signal<(LoginIntent), NoError>.pipe()
+  internal func loginIntent(intent: LoginIntent) {
     loginIntentObserver.sendNext(intent)
   }
   private let (facebookButtonPressedSignal, facebookButtonPressedObserver) = Signal<(), NoError>.pipe()
@@ -61,7 +66,7 @@ internal final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMo
   // MARK: Outputs
   internal let startLogin: Signal<(), NoError>
   internal let startSignup: Signal<(), NoError>
-  internal let showHelpActionSheet: Signal<[(title: String, data: HelpType)], NoError>
+  internal let showHelpActionSheet: Signal<[(title: String, helpType: HelpType)], NoError>
   internal let showHelp: Signal<HelpType, NoError>
 
   internal init(env: Environment = AppEnvironment.current) {
@@ -74,6 +79,10 @@ internal final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMo
     }
     self.showHelp = self.helpTypeButtonPressedSignal
 
-    loginIntentSignal.observeNext(koala.trackLoginTout)
+    loginIntentSignal
+      .takeWhen(viewDidAppearSignal)
+      .observeNext { intent in
+        koala.trackLoginTout(intent.trackingString)
+    }
   }
 }

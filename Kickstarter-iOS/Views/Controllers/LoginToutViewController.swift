@@ -25,18 +25,19 @@ internal final class LoginToutViewController: MVVMViewController, MFMailComposeV
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.view.backgroundColor = Color.OffWhite.toUIColor()
+    self.viewModel.inputs.loginIntent(self.loginIntent)
 
-    self.navigationItem.rightBarButtonItem = .help(self, selector: "helpButtonPressed")
-
-    if (self.loginIntent != .LoginTab) {
+    if let _ = self.presentingViewController {
       self.navigationItem.leftBarButtonItem = .close(self, selector: "closeButtonPressed")
     }
+    self.navigationItem.rightBarButtonItem = .help(self, selector: "helpButtonPressed")
+
+    self.view.backgroundColor = Color.OffWhite.toUIColor()
   }
 
   override func viewDidAppear(animated: Bool) {
     super.viewDidAppear(animated)
-    self.viewModel.inputs.loginIntent(self.loginIntent.trackingString())
+    self.viewModel.inputs.viewDidAppear()
   }
 
   override func bindViewModel() {
@@ -75,17 +76,14 @@ internal final class LoginToutViewController: MVVMViewController, MFMailComposeV
     self.viewModel.inputs.helpButtonPressed()
   }
 
-  internal func showHelp(actions: [(title: String, data: HelpType)]) {
+  internal func showHelp(actions: [(title: String, helpType: HelpType)]) {
     let helpAlert = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
 
-    // TODO: which do you like better? map+forEach or just forEach?
-    actions
-      .map { action in
-        return UIAlertAction(title: action.title, style: .Default, handler: { [weak self] _ in
-          self?.viewModel.inputs.helpTypeButtonPressed(action.data)
-          })
-      }
-      .forEach(helpAlert.addAction)
+    actions.forEach { action in
+      helpAlert.addAction(UIAlertAction(title: action.title, style: .Default, handler: { [weak self] _ in
+        self?.viewModel.inputs.helpTypeButtonPressed(action.helpType)
+      }))
+    }
 
     helpAlert.addAction(UIAlertAction(title: localizedString(key: "login_tout.help_sheet.cancel",
       defaultValue: "Cancel"),
