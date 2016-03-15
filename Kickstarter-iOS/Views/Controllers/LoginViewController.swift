@@ -39,31 +39,38 @@ internal final class LoginViewController: MVVMViewController {
     let spacer2: UIView = UIView(frame: CGRectMake(0, 0, 10, 0))
     passwordTextField.leftView = spacer2
     passwordTextField.leftViewMode = UITextFieldViewMode.Always;
+
+    let tap = UITapGestureRecognizer(target: self, action: "dismissKeyboard")
+    self.view.addGestureRecognizer(tap)
   }
 
   override func bindViewModel() {
     self.viewModel.inputs.email <~ emailTextField.rac_text
     self.viewModel.inputs.password <~ passwordTextField.rac_text
-    self.loginButton.rac_enabled <~ self.viewModel.outputs.isFormValid
 
     self.emailTextField.rac_signalForControlEvents(UIControlEvents.EditingDidEndOnExit)
       .subscribeNext { [weak self] _ in
-        self?.passwordTextField.becomeFirstResponder()
+        self?.viewModel.inputs.emailTextFieldDoneEditing()
     }
 
     self.passwordTextField.rac_signalForControlEvents(UIControlEvents.EditingDidEndOnExit)
       .subscribeNext { [weak self] _ in
-        if let button = self?.loginButton {
-          if (button.enabled) {
-          self?.viewModel.inputs.loginButtonPressed()
-        } else {
-          self?.resignFirstResponder()
-        }
-      }
+        self?.viewModel.inputs.passwordTextFieldDoneEditing()
     }
 
-    let tap = UITapGestureRecognizer(target: self, action: "dismissKeyboard")
-    self.view.addGestureRecognizer(tap)
+    self.loginButton.rac_enabled <~ self.viewModel.outputs.isFormValid
+
+    self.viewModel.outputs.passwordTextFieldBecomeFirstResponder
+      .observeForUI()
+      .observeNext { [weak self] _ in
+        self?.passwordTextField.becomeFirstResponder()
+    }
+
+    self.viewModel.outputs.dismissKeyboard
+      .observeForUI()
+      .observeNext { [weak self] visible in
+        self?.resignFirstResponder()
+    }
 
     self.viewModel.outputs.isFormValid.producer
       .observeForUI()

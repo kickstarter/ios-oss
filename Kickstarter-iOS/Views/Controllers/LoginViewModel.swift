@@ -11,11 +11,15 @@ internal protocol LoginViewModelInputs {
   var email: MutableProperty<String?> { get }
   var password: MutableProperty<String?> { get }
   func loginButtonPressed()
+  func emailTextFieldDoneEditing()
+  func passwordTextFieldDoneEditing()
 }
 
 internal protocol LoginViewModelOutputs {
   var isFormValid: MutableProperty<Bool> { get }
   var logInSuccess: Signal<(), NoError> { get }
+  var dismissKeyboard: Signal<(), NoError> { get }
+  var passwordTextFieldBecomeFirstResponder: Signal<(), NoError> { get }
 }
 
 internal protocol LoginViewModelErrors {
@@ -44,10 +48,20 @@ internal final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, L
   internal func loginButtonPressed() {
     loginButtonPressedObserver.sendNext(())
   }
+  private let (emailTextFieldDoneEditingSignal, emailTextFieldDoneEditingObserver) = Signal<(), NoError>.pipe()
+  internal func emailTextFieldDoneEditing() {
+    emailTextFieldDoneEditingObserver.sendNext(())
+  }
+  private let (passwordTextFieldDoneEditingSignal, passwordTextFieldDoneEditingObserver) = Signal<(), NoError>.pipe()
+  internal func passwordTextFieldDoneEditing() {
+    passwordTextFieldDoneEditingObserver.sendNext(())
+  }
 
   // MARK: Outputs
   internal let isFormValid = MutableProperty(false)
   internal let logInSuccess: Signal<(), NoError>
+  internal let dismissKeyboard: Signal<(), NoError>
+  internal let passwordTextFieldBecomeFirstResponder: Signal<(), NoError>
 
   // MARK: Errors
   internal let invalidLogin: Signal<String, NoError>
@@ -81,7 +95,7 @@ internal final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, L
       .combineLatestWith(password.producer.ignoreNil())
       .map { ep in (email: ep.0, password: ep.1) }
 
-    isFormValid <~ emailAndPassword.map(isValid)
+    isFormValid <~ emailAndPassword.map(LoginViewModel.isValid)
 
     emailAndPassword.takeWhen(loginButtonPressedSignal)
       .flatMap { ep in apiService.login(ep).demoteErrors(loginErrorsObserver) }
@@ -97,9 +111,12 @@ internal final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, L
     }
 
     loginErrors.observeNext { _ in koala.trackLoginError() }
+
+    self.dismissKeyboard = passwordTextFieldDoneEditingSignal
+    self.passwordTextFieldBecomeFirstResponder = emailTextFieldDoneEditingSignal
   }
 
-  private func isValid(email: String, password: String) -> Bool {
+  private static func isValid(email: String, password: String) -> Bool {
     return email.characters.count > 5 && password.characters.count >= 6
   }
 }

@@ -29,12 +29,10 @@ internal final class LoginToutViewController: MVVMViewController, MFMailComposeV
 
     self.view.backgroundColor = Color.OffWhite.toUIColor()
 
-    let helpButton = UIBarButtonItem.help(self, selector: "showHelp")
-    self.navigationItem.rightBarButtonItem? = helpButton
+    self.navigationItem.rightBarButtonItem = .help(self, selector: "helpButtonPressed")
 
     if (self.loginIntent != .LoginTab) {
-      let closeButton = UIBarButtonItem.close(self, selector: "closeButtonPressed")
-      self.navigationItem.leftBarButtonItem? = closeButton
+      self.navigationItem.leftBarButtonItem = .close(self, selector: "closeButtonPressed")
     }
   }
 
@@ -44,6 +42,8 @@ internal final class LoginToutViewController: MVVMViewController, MFMailComposeV
   }
 
   override func bindViewModel() {
+    super.bindViewModel()
+
     self.viewModel.outputs.startLogin
       .observeForUI()
       .observeNext { [weak self] _ in
@@ -54,6 +54,18 @@ internal final class LoginToutViewController: MVVMViewController, MFMailComposeV
       .observeNext { [weak self] _ in
         self?.startSignupViewController()
     }
+
+    self.viewModel.outputs.showHelpActionSheet
+      .observeForUI()
+      .observeNext { [weak self] actions in
+        self?.showHelp(actions)
+    }
+
+    self.viewModel.outputs.showHelp
+      .observeForUI()
+      .observeNext { [weak self] helpType in
+        self?.showHelpType(helpType)
+    }
   }
 
   @IBAction
@@ -61,33 +73,41 @@ internal final class LoginToutViewController: MVVMViewController, MFMailComposeV
     self.viewModel.inputs.loginButtonPressed()
   }
 
-  @IBAction func helpButtonPressed(sender: UIButton) {
-    showHelp()
+  @IBAction func helpButtonPressed() {
+    self.viewModel.inputs.helpButtonPressed()
   }
 
-  internal func showHelp() {
+  internal func showHelp(actions: [(title: String, data: HelpType)]) {
     let helpAlert = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
-    HelpType.allValues.forEach { h in
-      helpAlert.addAction(UIAlertAction(title: h.title(),
-        style: .Default,
-        handler: { [weak self] (UIAlertAction) -> Void in
-          switch h {
-          case .Contact:
-            let mcvc = MFMailComposeViewController.support()
-            mcvc.mailComposeDelegate = self
-            self?.presentViewController(mcvc, animated: true, completion: nil)
-          default:
-            let svc = SFSafariViewController.help(h)
-            self?.presentViewController(svc, animated: true, completion: nil)
-          }
-        }))
-    }
+
+    // TODO: which do you like better? map+forEach or just forEach?
+    actions
+      .map { action in
+        return UIAlertAction(title: action.title, style: .Default, handler: { [weak self] _ in
+          self?.viewModel.inputs.helpTypeButtonPressed(action.data)
+          })
+      }
+      .forEach(helpAlert.addAction)
+
     helpAlert.addAction(UIAlertAction(title: localizedString(key: "login_tout.help_sheet.cancel",
       defaultValue: "Cancel"),
       style: .Cancel,
-      handler: nil))
+      handler: nil)
+    )
 
     self.presentViewController(helpAlert, animated: true, completion: nil)
+  }
+
+  private func showHelpType(helpType: HelpType) {
+    switch helpType {
+    case .Contact:
+      let mcvc = MFMailComposeViewController.support()
+      mcvc.mailComposeDelegate = self
+      self.presentViewController(mcvc, animated: true, completion: nil)
+    default:
+      let svc = SFSafariViewController.help(helpType)
+      self.presentViewController(svc, animated: true, completion: nil)
+    }
   }
 
   internal func closeButtonPressed() {

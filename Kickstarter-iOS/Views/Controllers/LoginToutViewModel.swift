@@ -5,17 +5,22 @@ import enum Result.NoError
 import struct Library.Environment
 import struct Library.AppEnvironment
 import enum Library.LoginIntent
+import enum Library.HelpType
 
 internal protocol LoginToutViewModelInputs {
   func loginIntent(intent: String)
   func facebookButtonPressed()
   func loginButtonPressed()
   func signupButtonPressed()
+  func helpButtonPressed()
+  func helpTypeButtonPressed(helpType: HelpType)
 }
 
 internal protocol LoginToutViewModelOutputs {
   var startLogin: Signal<(), NoError> { get }
   var startSignup: Signal<(), NoError> { get }
+  var showHelpActionSheet: Signal<[(title: String, data: HelpType)], NoError> { get }
+  var showHelp: Signal<HelpType, NoError> { get }
 }
 
 internal protocol LoginToutViewModelType {
@@ -46,18 +51,31 @@ internal final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMo
   internal func signupButtonPressed() {
     signupButtonPressedObserver.sendNext(())
   }
+  private let (helpButtonPressedSignal, helpButtonPressedObserver) = Signal<(), NoError>.pipe()
+  internal func helpButtonPressed() {
+    helpButtonPressedObserver.sendNext(())
+  }
+  private let (helpTypeButtonPressedSignal, helpTypeButtonPressedObserver) = Signal<HelpType, NoError>.pipe()
+  internal func helpTypeButtonPressed(helpType: HelpType) {
+    helpTypeButtonPressedObserver.sendNext(helpType)
+  }
 
   // MARK: Outputs
-  internal var startLogin: Signal<(), NoError>
-  internal var startSignup: Signal<(), NoError>
+  internal let startLogin: Signal<(), NoError>
+  internal let startSignup: Signal<(), NoError>
+  internal let showHelpActionSheet: Signal<[(title: String, data: HelpType)], NoError>
+  internal let showHelp: Signal<HelpType, NoError>
 
   internal init(env: Environment = AppEnvironment.current) {
-    startLogin = loginButtonPressedSignal
-    startSignup = signupButtonPressedSignal
-
     let koala = env.koala
-    loginIntentSignal.observeNext { intent in
-      koala.trackLoginTout(intent)
+
+    self.startLogin = self.loginButtonPressedSignal
+    self.startSignup = self.signupButtonPressedSignal
+    self.showHelpActionSheet = self.helpButtonPressedSignal.map { _ in
+      return HelpType.allValues.map { (title: $0.title(), $0) }
     }
+    self.showHelp = self.helpTypeButtonPressedSignal
+
+    loginIntentSignal.observeNext(koala.trackLoginTout)
   }
 }
