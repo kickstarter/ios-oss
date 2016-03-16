@@ -6,19 +6,30 @@ import struct Library.Environment
 import struct Library.AppEnvironment
 
 internal protocol LoginToutViewModelInputs {
+  /// Call when the view controller's viewDidAppear() method is called
   func viewDidAppear()
+  /// Call to set the reason the user is attempting to log in
   func loginIntent(intent: LoginIntent)
+  /// Call when Facebook login button is pressed
   func facebookButtonPressed()
+  /// Call when login button is pressed
   func loginButtonPressed()
+  /// Call when sign up button is pressed
   func signupButtonPressed()
+  /// Call when the help button is pressed
   func helpButtonPressed()
+  /// Call when a help sheet button is pressed
   func helpTypeButtonPressed(helpType: HelpType)
 }
 
 internal protocol LoginToutViewModelOutputs {
+  /// Emits when Login view should be shown
   var startLogin: Signal<(), NoError> { get }
+  /// Emits when Signup view should be shown
   var startSignup: Signal<(), NoError> { get }
+  /// Emits when the help actionsheet should be shown with an array of tuples containing the button title and help type
   var showHelpActionSheet: Signal<[(title: String, helpType: HelpType)], NoError> { get }
+  /// Emits a HelpType value when a button on the help actionsheet is pressed
   var showHelp: Signal<HelpType, NoError> { get }
 }
 
@@ -36,7 +47,7 @@ internal final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMo
   // MARK: Inputs
   private var (viewDidAppearSignal, viewDidAppearObserver) = Signal<(), NoError>.pipe()
   func viewDidAppear() {
-    viewDidAppearObserver.sendNext(())
+    viewDidAppearObserver.sendNext()
   }
   private let (loginIntentSignal, loginIntentObserver) = Signal<(LoginIntent), NoError>.pipe()
   internal func loginIntent(intent: LoginIntent) {
@@ -44,19 +55,19 @@ internal final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMo
   }
   private let (facebookButtonPressedSignal, facebookButtonPressedObserver) = Signal<(), NoError>.pipe()
   internal func facebookButtonPressed() {
-    facebookButtonPressedObserver.sendNext(())
+    facebookButtonPressedObserver.sendNext()
   }
   private let (loginButtonPressedSignal, loginButtonPressedObserver) = Signal<(), NoError>.pipe()
   internal func loginButtonPressed() {
-    loginButtonPressedObserver.sendNext(())
+    loginButtonPressedObserver.sendNext()
   }
   private let (signupButtonPressedSignal, signupButtonPressedObserver) = Signal<(), NoError>.pipe()
   internal func signupButtonPressed() {
-    signupButtonPressedObserver.sendNext(())
+    signupButtonPressedObserver.sendNext()
   }
   private let (helpButtonPressedSignal, helpButtonPressedObserver) = Signal<(), NoError>.pipe()
   internal func helpButtonPressed() {
-    helpButtonPressedObserver.sendNext(())
+    helpButtonPressedObserver.sendNext()
   }
   private let (helpTypeButtonPressedSignal, helpTypeButtonPressedObserver) = Signal<HelpType, NoError>.pipe()
   internal func helpTypeButtonPressed(helpType: HelpType) {
@@ -81,8 +92,7 @@ internal final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMo
 
     loginIntentSignal
       .takeWhen(viewDidAppearSignal)
-      .observeNext { intent in
-        koala.trackLoginTout(intent.trackingString)
-    }
+      .map { $0.trackingString }
+      .observeNext(koala.trackLoginTout)
   }
 }

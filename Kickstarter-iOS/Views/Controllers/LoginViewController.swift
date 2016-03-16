@@ -13,10 +13,10 @@ import enum Library.Color
 import func Library.localizedString
 
 internal final class LoginViewController: MVVMViewController {
-  @IBOutlet weak var emailTextField: UITextField!
-  @IBOutlet weak var passwordTextField: UITextField!
-  @IBOutlet weak var loginButton: BorderButton!
-  @IBOutlet weak var forgotPasswordButton: BorderButton!
+  @IBOutlet internal weak var emailTextField: UITextField!
+  @IBOutlet internal weak var passwordTextField: UITextField!
+  @IBOutlet internal weak var loginButton: BorderButton!
+  @IBOutlet internal weak var forgotPasswordButton: BorderButton!
 
   internal let viewModel: LoginViewModelType = LoginViewModel()
 
@@ -69,7 +69,7 @@ internal final class LoginViewController: MVVMViewController {
     self.viewModel.outputs.dismissKeyboard
       .observeForUI()
       .observeNext { [weak self] visible in
-        self?.resignFirstResponder()
+        self?.dismissKeyboard()
     }
 
     self.viewModel.outputs.isFormValid.producer

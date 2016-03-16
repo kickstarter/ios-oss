@@ -9,23 +9,35 @@ import func Library.localizedString
 import enum Result.NoError
 
 internal protocol LoginViewModelInputs {
+  /// String value of email textfield text
   var email: MutableProperty<String?> { get }
+  /// String value of password textfield text
   var password: MutableProperty<String?> { get }
+  /// Call when login button is pressed
   func loginButtonPressed()
+  /// Call when email textfield keyboard returns
   func emailTextFieldDoneEditing()
+  /// Call when password textfield keyboard returns
   func passwordTextFieldDoneEditing()
 }
 
 internal protocol LoginViewModelOutputs {
+  /// Bool value whether form is valid
   var isFormValid: MutableProperty<Bool> { get }
+  /// Emits when a login request is successful
   var logInSuccess: Signal<(), NoError> { get }
+  /// Emits when to dismiss a textfield keyboard
   var dismissKeyboard: Signal<(), NoError> { get }
+  /// Emits when the password textfield should become the first responder
   var passwordTextFieldBecomeFirstResponder: Signal<(), NoError> { get }
 }
 
 internal protocol LoginViewModelErrors {
+  /// Emits an error String when a login request has failed
   var invalidLogin: Signal<String, NoError> { get }
+  /// Emits when a generic login error has occurred
   var genericError: Signal<(), NoError> { get }
+  /// Emits when a tfa request has failed
   var tfaChallenge: Signal<(), NoError> { get }
 }
 
@@ -86,12 +98,10 @@ internal final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, L
 
     tfaChallenge = loginErrors
       .filter { $0.ksrCode == .TfaRequired }
-      .ignoreValues()
       .map { _ in localizedString(key: "two_factor.error.message", defaultValue: "The code provided does not match.") }
 
     genericError = loginErrors
       .filter { $0.ksrCode != .InvalidXauthLogin && $0.ksrCode != .TfaRequired }
-      .ignoreValues()
       .map { _ in localizedString(key: "login.errors.unable_to_log_in", defaultValue: "Unable to log in.") }
 
     let emailAndPassword = email.producer.ignoreNil()

@@ -3,20 +3,16 @@ import XCTest
 
 final class UITextFieldLocalizedKeyTests : XCTestCase {
 
-  override func setUp() {
-    AppEnvironment.pushEnvironment(mainBundle: MockBundle())
-  }
-
   func testLocalizedKey() {
     let tf = UITextField()
 
-    withEnvironment(language: .en) {
+    withEnvironment(mainBundle: MockBundle(), language: .en) {
       tf.localizedKey = "placeholder_password"
       XCTAssertEqual("password", tf.placeholder)
       XCTAssertEqual("", tf.localizedKey)
     }
 
-    withEnvironment(language: .es) {
+    withEnvironment(mainBundle: MockBundle(), language: .es) {
       tf.localizedKey = "placeholder_password"
       XCTAssertEqual("el secreto", tf.placeholder)
       XCTAssertEqual("", tf.localizedKey)

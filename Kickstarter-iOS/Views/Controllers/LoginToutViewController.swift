@@ -13,11 +13,12 @@ import class Library.MVVMViewController
 import func Library.localizedString
 import enum Library.Color
 import class SafariServices.SFSafariViewController
+import struct KsApi.ServerConfig
 
 internal final class LoginToutViewController: MVVMViewController, MFMailComposeViewControllerDelegate {
-  @IBOutlet weak var loginButton: BorderButton!
-  @IBOutlet weak var signupButton: BorderButton!
-  @IBOutlet weak var helpButton: BorderButton!
+  @IBOutlet internal weak var loginButton: BorderButton!
+  @IBOutlet internal weak var signupButton: BorderButton!
+  @IBOutlet internal weak var helpButton: BorderButton!
 
   internal let viewModel: LoginToutViewModelType = LoginToutViewModel()
   internal var loginIntent: LoginIntent = .LoginTab
@@ -101,7 +102,7 @@ internal final class LoginToutViewController: MVVMViewController, MFMailComposeV
       mcvc.mailComposeDelegate = self
       self.presentViewController(mcvc, animated: true, completion: nil)
     default:
-      let svc = SFSafariViewController.help(helpType)
+      let svc = SFSafariViewController.help(helpType, baseURL: ServerConfig.production.webBaseUrl)
       self.presentViewController(svc, animated: true, completion: nil)
     }
   }

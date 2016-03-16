@@ -1,10 +1,9 @@
 import class SafariServices.SFSafariViewController
 import class Foundation.NSURL
-import struct KsApi.ServerConfig
 
 public extension SFSafariViewController {
-  public static func help(helptype: HelpType) -> SFSafariViewController {
-    var path = ""
+  public static func help(helptype: HelpType, baseURL: NSURL) -> SFSafariViewController {
+    let path: String
     switch helptype {
     case .Terms:
       path = "terms-of-use"
@@ -14,10 +13,11 @@ public extension SFSafariViewController {
       path = "about"
     case .Cookie:
       path = "cookies"
-    default: ()
+    default:
+      path = ""
     }
 
-    let url = ServerConfig.production.webBaseUrl.URLByAppendingPathComponent(path)
+    let url = baseURL.URLByAppendingPathComponent(path)
 
     return SFSafariViewController(URL: url)
   }

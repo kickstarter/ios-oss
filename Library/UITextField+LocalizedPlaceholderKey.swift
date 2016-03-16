@@ -8,7 +8,7 @@ public extension UITextField {
    recognized, then the textfield's `placeholder` is left unchanged.
    */
   @IBInspectable
-  public var localizedKey: String {
+  public var localizedPlaceholderKey: String {
     set (key) {
       self.placeholder = localizedString(key: key, defaultValue: self.placeholder ?? "")
     }

@@ -24,8 +24,8 @@
 		0151AEBA1C8F811C0067F1BE /* BorderButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0151AEB91C8F811C0067F1BE /* BorderButton.swift */; };
 		0151AEBB1C8F811C0067F1BE /* BorderButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0151AEB91C8F811C0067F1BE /* BorderButton.swift */; };
 		0176E13B1C9742FD009CA092 /* UIBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0176E13A1C9742FD009CA092 /* UIBarButtonItem.swift */; };
-		0176E19B1C976703009CA092 /* UITextfield+LocalizedKeyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0176E19A1C976703009CA092 /* UITextfield+LocalizedKeyTests.swift */; };
-		0176E19C1C976703009CA092 /* UITextfield+LocalizedKeyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0176E19A1C976703009CA092 /* UITextfield+LocalizedKeyTests.swift */; };
+		0176E19B1C976703009CA092 /* UITextfield+LocalizedPlaceholderKeyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0176E19A1C976703009CA092 /* UITextfield+LocalizedPlaceholderKeyTests.swift */; };
+		0176E19C1C976703009CA092 /* UITextfield+LocalizedPlaceholderKeyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0176E19A1C976703009CA092 /* UITextfield+LocalizedPlaceholderKeyTests.swift */; };
 		018F1F831C8E182200643DAA /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018F1F821C8E182200643DAA /* LoginViewController.swift */; };
 		018F1F841C8E182200643DAA /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018F1F821C8E182200643DAA /* LoginViewController.swift */; };
 		018F1FA91C8E1A8200643DAA /* LoginToutViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018F1FA81C8E1A8200643DAA /* LoginToutViewModel.swift */; };
@@ -34,8 +34,8 @@
 		019502031C8E3EF700F31304 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019502011C8E3EF700F31304 /* LoginViewModel.swift */; };
 		01A1DC4D1C965C7D005761A8 /* UIAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A1DC4C1C965C7D005761A8 /* UIAlertController.swift */; };
 		01A1DC4E1C965C7D005761A8 /* UIAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A1DC4C1C965C7D005761A8 /* UIAlertController.swift */; };
-		01A7A4C01C9690220036E553 /* UITextField+LocalizedKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A7A4BF1C9690220036E553 /* UITextField+LocalizedKey.swift */; };
-		01A7A4C11C9690220036E553 /* UITextField+LocalizedKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A7A4BF1C9690220036E553 /* UITextField+LocalizedKey.swift */; };
+		01A7A4C01C9690220036E553 /* UITextField+LocalizedPlaceholderKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A7A4BF1C9690220036E553 /* UITextField+LocalizedPlaceholderKey.swift */; };
+		01A7A4C11C9690220036E553 /* UITextField+LocalizedPlaceholderKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A7A4BF1C9690220036E553 /* UITextField+LocalizedPlaceholderKey.swift */; };
 		01BDFFB21C87AAD0002E8D34 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 01BDFFB01C87AAD0002E8D34 /* Login.storyboard */; };
 		01EA879B1C9335C5004E738B /* LoginToutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F761761C85FACB005405ED /* LoginToutViewController.swift */; };
 		01EFBC891C91FB770094EEC2 /* UIColorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01EFBC881C91FB770094EEC2 /* UIColorTests.swift */; };
@@ -1144,12 +1144,12 @@
 		0151AEB01C8F6FD80067F1BE /* StyledLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyledLabel.swift; sourceTree = "<group>"; };
 		0151AEB91C8F811C0067F1BE /* BorderButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BorderButton.swift; sourceTree = "<group>"; };
 		0176E13A1C9742FD009CA092 /* UIBarButtonItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIBarButtonItem.swift; sourceTree = "<group>"; };
-		0176E19A1C976703009CA092 /* UITextfield+LocalizedKeyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITextfield+LocalizedKeyTests.swift"; sourceTree = "<group>"; };
+		0176E19A1C976703009CA092 /* UITextfield+LocalizedPlaceholderKeyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITextfield+LocalizedPlaceholderKeyTests.swift"; sourceTree = "<group>"; };
 		018F1F821C8E182200643DAA /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		018F1FA81C8E1A8200643DAA /* LoginToutViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginToutViewModel.swift; path = ../Views/Controllers/LoginToutViewModel.swift; sourceTree = "<group>"; };
 		019502011C8E3EF700F31304 /* LoginViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginViewModel.swift; path = ../Views/Controllers/LoginViewModel.swift; sourceTree = "<group>"; };
 		01A1DC4C1C965C7D005761A8 /* UIAlertController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIAlertController.swift; sourceTree = "<group>"; };
-		01A7A4BF1C9690220036E553 /* UITextField+LocalizedKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITextField+LocalizedKey.swift"; sourceTree = "<group>"; };
+		01A7A4BF1C9690220036E553 /* UITextField+LocalizedPlaceholderKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITextField+LocalizedPlaceholderKey.swift"; sourceTree = "<group>"; };
 		01BDFFB11C87AAD0002E8D34 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Login.storyboard; sourceTree = "<group>"; };
 		01EFBC881C91FB770094EEC2 /* UIColorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorTests.swift; sourceTree = "<group>"; };
 		01EFBCAE1C92036E0094EEC2 /* StyledLabelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyledLabelTests.swift; sourceTree = "<group>"; };
@@ -1759,7 +1759,7 @@
 				A75511911C8645A0005355CF /* UILabel+IBClearTests.swift */,
 				A75511921C8645A0005355CF /* UILabel+LocalizedKeyTests.swift */,
 				A75511931C8645A0005355CF /* UILabel+SimpleHTMLTests.swift */,
-				0176E19A1C976703009CA092 /* UITextfield+LocalizedKeyTests.swift */,
+				0176E19A1C976703009CA092 /* UITextfield+LocalizedPlaceholderKeyTests.swift */,
 				A755119F1C86460B005355CF /* TestHelpers */,
 			);
 			path = Tests;
@@ -1859,7 +1859,7 @@
 				A7C725971C85D36D005A016B /* UILabel+LocalizedKey.swift */,
 				A7C725981C85D36D005A016B /* UILabel+SimpleHTML.swift */,
 				A7C725991C85D36D005A016B /* UIPress-Extensions.swift */,
-				01A7A4BF1C9690220036E553 /* UITextField+LocalizedKey.swift */,
+				01A7A4BF1C9690220036E553 /* UITextField+LocalizedPlaceholderKey.swift */,
 				A7C7257B1C85D36D005A016B /* CurrentUser */,
 				A721DF3D1C8CF4F6000CB97C /* Koala */,
 				A7C725851C85D36D005A016B /* MVVM */,
@@ -3104,7 +3104,7 @@
 				A755116D1C8642C3005355CF /* CurrentUser.swift in Sources */,
 				A755116E1C8642C3005355CF /* KeyValueStoreType.swift in Sources */,
 				A755116F1C8642C3005355CF /* MultiKeyValueStore.swift in Sources */,
-				01A7A4C01C9690220036E553 /* UITextField+LocalizedKey.swift in Sources */,
+				01A7A4C01C9690220036E553 /* UITextField+LocalizedPlaceholderKey.swift in Sources */,
 				0151AEB71C8F700B0067F1BE /* UIColor.swift in Sources */,
 				01A1DC4D1C965C7D005761A8 /* UIAlertController.swift in Sources */,
 				0176E13B1C9742FD009CA092 /* UIBarButtonItem.swift in Sources */,
@@ -3133,7 +3133,7 @@
 				A75511A51C86460B005355CF /* MockBundle.swift in Sources */,
 				A755119E1C8645A0005355CF /* UILabel+SimpleHTMLTests.swift in Sources */,
 				A75511941C8645A0005355CF /* AppEnvironmentTests.swift in Sources */,
-				0176E19B1C976703009CA092 /* UITextfield+LocalizedKeyTests.swift in Sources */,
+				0176E19B1C976703009CA092 /* UITextfield+LocalizedPlaceholderKeyTests.swift in Sources */,
 				A77519221C8CB0360022F175 /* CircleAvatarImageViewTests.swift in Sources */,
 				A75511991C8645A0005355CF /* LocalizedStringTests.swift in Sources */,
 				A75511951C8645A0005355CF /* EnvironmentTests.swift in Sources */,
@@ -3186,7 +3186,7 @@
 				A75511BE1C8647D9005355CF /* CurrentUser.swift in Sources */,
 				A75511BF1C8647D9005355CF /* KeyValueStoreType.swift in Sources */,
 				A75511C01C8647D9005355CF /* MultiKeyValueStore.swift in Sources */,
-				01A7A4C11C9690220036E553 /* UITextField+LocalizedKey.swift in Sources */,
+				01A7A4C11C9690220036E553 /* UITextField+LocalizedPlaceholderKey.swift in Sources */,
 				0151AEB81C8F700C0067F1BE /* UIColor.swift in Sources */,
 				01A1DC4E1C965C7D005761A8 /* UIAlertController.swift in Sources */,
 				A76126B61C90C94000EDCCB9 /* SimpleViewModel.swift in Sources */,
@@ -3214,7 +3214,7 @@
 				A75511F21C865321005355CF /* UILabel+SimpleHTMLTests.swift in Sources */,
 				01EFBCB01C92036E0094EEC2 /* StyledLabelTests.swift in Sources */,
 				A75511F31C865321005355CF /* AppEnvironmentTests.swift in Sources */,
-				0176E19C1C976703009CA092 /* UITextfield+LocalizedKeyTests.swift in Sources */,
+				0176E19C1C976703009CA092 /* UITextfield+LocalizedPlaceholderKeyTests.swift in Sources */,
 				A77519231C8CB11B0022F175 /* CircleAvatarImageViewTests.swift in Sources */,
 				A75511F41C865321005355CF /* LocalizedStringTests.swift in Sources */,
 				A75511F51C865321005355CF /* EnvironmentTests.swift in Sources */,
