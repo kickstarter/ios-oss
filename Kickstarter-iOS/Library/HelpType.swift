@@ -1,7 +1,8 @@
-import func Library.localizedString
 /**
  Used with UIAlertController or by SFSafariViewController
  */
+import func Library.localizedString
+
 public enum HelpType {
   case Contact
   case Cookie
