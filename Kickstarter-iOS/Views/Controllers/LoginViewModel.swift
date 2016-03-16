@@ -74,9 +74,6 @@ internal final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, L
     let currentUser = env.currentUser
     let koala = env.koala
 
-    let (loggedInSignal, loggedInObserver) = Signal<(), NoError>.pipe()
-    logInSuccess = loggedInSignal
-
     let (loginErrors, loginErrorsObserver) = Signal<ErrorEnvelope, NoError>.pipe()
 
     invalidLogin = loginErrors
@@ -94,22 +91,20 @@ internal final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, L
       .ignoreValues()
       .map { _ in localizedString(key: "login.errors.unable_to_log_in", defaultValue: "Unable to log in.") }
 
-    let emailAndPassword = email.producer.ignoreNil()
-      .combineLatestWith(password.producer.ignoreNil())
+    let emailAndPassword = email.signal.ignoreNil()
+      .combineLatestWith(password.signal.ignoreNil())
       .map { ep in (email: ep.0, password: ep.1) }
 
     isFormValid <~ emailAndPassword.map(LoginViewModel.isValid)
 
-    emailAndPassword.takeWhen(loginButtonPressedSignal)
-      .flatMap { ep in apiService.login(ep).demoteErrors(loginErrorsObserver) }
-      .start { event in
-        switch event {
-        case let .Next(envelope):
-          currentUser.login(envelope.user, accessToken: envelope.accessToken)
-          koala.trackLoginSuccess()
-          loggedInObserver.sendNext(())
-        default:()
-        }
+    let login = emailAndPassword.takeWhen(loginButtonPressedSignal)
+      .switchMap { ep in apiService.login(ep).demoteErrors(loginErrorsObserver) }
+
+    self.logInSuccess = login.ignoreValues()
+
+    login.observeNext { envelope in
+      currentUser.login(envelope.user, accessToken: envelope.accessToken)
+      koala.trackLoginSuccess()
     }
 
     loginErrors.observeNext { _ in koala.trackLoginError() }
