@@ -76,7 +76,7 @@ internal final class PlaylistViewModel : ViewModelType, PlaylistViewModelType, P
    - returns: A signal producer that emits an image if the extraction can be made and `nil` otherwise.
    */
   private static func stillImage(generator generator: AssetImageGeneratorType,
-    scheduler: DateSchedulerType = AppEnvironment.current.debounceScheduler) -> SignalProducer<UIImage?, NoError> {
+    scheduler: DateSchedulerType = AppEnvironment.current.scheduler) -> SignalProducer<UIImage?, NoError> {
       
     let requestedTime = CMTimeMakeWithSeconds(30.0, 1)
     let requestedTimeValue = NSValue(CMTime: requestedTime)

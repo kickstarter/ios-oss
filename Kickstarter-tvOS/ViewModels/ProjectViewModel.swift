@@ -89,7 +89,7 @@ internal final class ProjectViewModel : ProjectViewModelType, ProjectViewModelIn
 
     self.interfaceImportance
       .filter { $0 }
-      .debounce(4.0, onScheduler: env.debounceScheduler)
+      .debounce(4.0, onScheduler: env.scheduler)
       .filterWhenLatestFrom(self.scrollData, satisfies: { $0.offset.y == 0.0 })
       .filterWhenLatestFrom(self.videoIsPlaying, satisfies: { $0 })
       .mapConst(false)

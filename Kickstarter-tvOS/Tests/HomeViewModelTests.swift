@@ -14,7 +14,7 @@ final class HomeViewModelTests : XCTestCase {
    */
   func testFocusingAndSelectingPlaylists() {
     let scheduler = TestScheduler()
-    withEnvironment(apiService: MockService(), debounceScheduler: scheduler) {
+    withEnvironment(apiService: MockService(), scheduler: scheduler) {
 
       let viewModel = HomeViewModel()
 
@@ -81,7 +81,7 @@ final class HomeViewModelTests : XCTestCase {
 
   func testInterfaceImportance() {
     let scheduler = TestScheduler()
-    withEnvironment(apiService: MockService(), debounceScheduler: scheduler) {
+    withEnvironment(apiService: MockService(), scheduler: scheduler) {
 
       let viewModel = HomeViewModel()
 

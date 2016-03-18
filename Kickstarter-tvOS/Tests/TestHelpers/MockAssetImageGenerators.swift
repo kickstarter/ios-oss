@@ -53,7 +53,7 @@ internal struct MockLongRunningAssetImageGenerator : AssetImageGeneratorType {
 
   func generateCGImagesAsynchronouslyForTimes(requestedTimes: [NSValue], completionHandler handler: AVAssetImageGeneratorCompletionHandler) {
 
-    let scheduler = AppEnvironment.current.debounceScheduler
+    let scheduler = AppEnvironment.current.scheduler
 
     scheduler.scheduleAfter(NSDate().dateByAddingTimeInterval(10.0)) {
       UIGraphicsBeginImageContext(CGSize(width: 1.0, height: 1.0))

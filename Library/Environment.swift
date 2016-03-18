@@ -13,51 +13,67 @@ import class ReactiveCocoa.QueueScheduler
  */
 public struct Environment {
   public let apiService: ServiceType
-  public let currentUser: CurrentUserType
-  public let language: Language
-  public let locale: NSLocale
-  public let timeZone: NSTimeZone
-  public let countryCode: String
-  public let launchedCountries: LaunchedCountries
-  public let debounceScheduler: DateSchedulerType
-  public let mainBundle: NSBundleType
   public let assetImageGeneratorType: AssetImageGeneratorType.Type
+  public let countryCode: String
+  public let currentUser: CurrentUserType
   public let hockeyManager: HockeyManagerType
   public let koala: Koala
+  public let language: Language
+  public let launchedCountries: LaunchedCountries
+  public let locale: NSLocale
+  public let mainBundle: NSBundleType
+  public let scheduler: DateSchedulerType
+  public let timeZone: NSTimeZone
 
   public init(
     apiService: ServiceType = Service.shared,
-    currentUser: CurrentUserType = CurrentUser.shared,
-    language: Language = .en,
-    locale: NSLocale = .currentLocale(),
-    timeZone: NSTimeZone = .localTimeZone(),
-    countryCode: String = "US",
-    launchedCountries: LaunchedCountries = .init(),
-    debounceScheduler: DateSchedulerType = QueueScheduler.mainQueueScheduler,
-    mainBundle: NSBundleType = NSBundle.mainBundle(),
     assetImageGeneratorType: AssetImageGeneratorType.Type = AVAssetImageGenerator.self,
+    countryCode: String = "US",
+    currentUser: CurrentUserType = CurrentUser.shared,
     hockeyManager: HockeyManagerType = BITHockeyManager.sharedHockeyManager(),
-    koala: Koala = Koala(client: KoalaTrackingClient(endpoint: .Production))) {
+    koala: Koala = Koala(client: KoalaTrackingClient(endpoint: .Production)),
+    language: Language = .en,
+    launchedCountries: LaunchedCountries = .init(),
+    locale: NSLocale = .currentLocale(),
+    mainBundle: NSBundleType = NSBundle.mainBundle(),
+    scheduler: DateSchedulerType = QueueScheduler.mainQueueScheduler,
+    timeZone: NSTimeZone = .localTimeZone()) {
 
       self.apiService = apiService
-      self.currentUser = currentUser
-      self.language = language
-      self.locale = locale
-      self.timeZone = timeZone
-      self.countryCode = countryCode
-      self.launchedCountries = launchedCountries
-      self.debounceScheduler = debounceScheduler
-      self.mainBundle = mainBundle
       self.assetImageGeneratorType = assetImageGeneratorType
+      self.countryCode = countryCode
+      self.currentUser = currentUser
       self.hockeyManager = hockeyManager
       self.koala = koala
+      self.language = language
+      self.launchedCountries = launchedCountries
+      self.locale = locale
+      self.mainBundle = mainBundle
+      self.scheduler = scheduler
+      self.timeZone = timeZone
+  }
+
+  private var allGlobals: [Any] {
+    return [
+      self.apiService,
+      self.assetImageGeneratorType,
+      self.countryCode,
+      self.currentUser,
+      self.hockeyManager,
+      self.koala,
+      self.language,
+      self.launchedCountries,
+      self.locale,
+      self.mainBundle,
+      self.scheduler,
+      self.timeZone
+    ]
   }
 }
 
 extension Environment : CustomStringConvertible, CustomDebugStringConvertible {
-
   public var description: String {
-    return "(apiService: \(self.apiService), currentUser: \(self.currentUser), language: \(language), locale: \(self.locale.localeIdentifier), timeZone: \(self.timeZone), countryCode: \(self.countryCode), launchedCountries: \(self.launchedCountries))"
+    return self.allGlobals.map { "\($0.dynamicType)" }.reduce("", combine: +)
   }
 
   public var debugDescription: String {

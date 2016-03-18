@@ -62,7 +62,7 @@ internal final class PlaylistViewModelTests : XCTestCase {
   func testBackgroundImageNeverCompleting() {
     let scheduler = TestScheduler()
 
-    withEnvironment(debounceScheduler: scheduler, assetImageGeneratorType: MockNeverFinishingAssetImageGenerator.self) {
+    withEnvironment(scheduler: scheduler, assetImageGeneratorType: MockNeverFinishingAssetImageGenerator.self) {
 
       let viewModel = PlaylistViewModel(initialPlaylist: playlist, currentProject: project)
 
@@ -82,7 +82,7 @@ internal final class PlaylistViewModelTests : XCTestCase {
   func testLongRunningBackgroundImage() {
     let scheduler = TestScheduler()
 
-    withEnvironment(debounceScheduler: scheduler, assetImageGeneratorType: MockLongRunningAssetImageGenerator.self) {
+    withEnvironment(scheduler: scheduler, assetImageGeneratorType: MockLongRunningAssetImageGenerator.self) {
 
       let viewModel = PlaylistViewModel(initialPlaylist: playlist, currentProject: project)
 
