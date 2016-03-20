@@ -7,6 +7,8 @@ import Models
 import Prelude
 import struct Library.Environment
 import struct Library.AppEnvironment
+@testable import KsApi_TestHelpers
+@testable import ReactiveExtensions_TestHelpers
 
 internal final class PlaylistViewModelTests : XCTestCase {
   let playlist = Playlist.Featured
@@ -53,7 +55,7 @@ internal final class PlaylistViewModelTests : XCTestCase {
       let backgroundImageTest = TestObserver<UIImage?, NoError>()
       viewModel.outputs.backgroundImage.start(backgroundImageTest.observer)
 
-      XCTAssertEqual(1, backgroundImageTest.nextValues.count, "Should emit a nil background image")
+      XCTAssertEqual(1, backgroundImageTest.values.count, "Should emit a nil background image")
       XCTAssertNil(flattenOptional(backgroundImageTest.lastValue), "Should emit a nil background image")
       XCTAssertFalse(backgroundImageTest.didComplete)
     }
@@ -73,7 +75,7 @@ internal final class PlaylistViewModelTests : XCTestCase {
 
       scheduler.advanceByInterval(6.0)
 
-      XCTAssertEqual(1, backgroundImageTest.nextValues.count, "Should emit a nil background image")
+      XCTAssertEqual(1, backgroundImageTest.values.count, "Should emit a nil background image")
       XCTAssertNil(flattenOptional(backgroundImageTest.lastValue), "Should emit a nil background image")
       XCTAssertFalse(backgroundImageTest.didComplete)
     }
@@ -93,13 +95,13 @@ internal final class PlaylistViewModelTests : XCTestCase {
 
       scheduler.advanceByInterval(8.0)
 
-      XCTAssertEqual(1, backgroundImageTest.nextValues.count, "Should have emitted a background image.")
+      XCTAssertEqual(1, backgroundImageTest.values.count, "Should have emitted a background image.")
       XCTAssertNil(flattenOptional(backgroundImageTest.lastValue), "Should emit a nil background image")
       XCTAssertFalse(backgroundImageTest.didComplete)
 
       scheduler.run()
 
-      XCTAssertEqual(1, backgroundImageTest.nextValues.count, "Should not have emitted any more values.")
+      XCTAssertEqual(1, backgroundImageTest.values.count, "Should not have emitted any more values.")
       XCTAssertFalse(backgroundImageTest.didComplete)
     }
   }
@@ -110,15 +112,15 @@ internal final class PlaylistViewModelTests : XCTestCase {
     let projectNameTest = TestObserver<String, NoError>()
     viewModel.outputs.projectName.start(projectNameTest.observer)
 
-    XCTAssertEqual(1, projectNameTest.nextValues.count, "A project is emitted immediately.")
+    XCTAssertEqual(1, projectNameTest.values.count, "A project is emitted immediately.")
 
     viewModel.inputs.swipeEnded(translation: CGPoint(x: 100.0, y: 0.0))
-    XCTAssertEqual(1, projectNameTest.nextValues.count, "A new project should not be emitted.")
+    XCTAssertEqual(1, projectNameTest.values.count, "A new project should not be emitted.")
 
     viewModel.inputs.swipeEnded(translation: CGPoint(x: 2_000.0, y: 0.0))
-    XCTAssertEqual(2, projectNameTest.nextValues.count, "A new project should be emitted.")
+    XCTAssertEqual(2, projectNameTest.values.count, "A new project should be emitted.")
 
     viewModel.inputs.swipeEnded(translation: CGPoint(x: -2_000.0, y: 0.0))
-    XCTAssertEqual(3, projectNameTest.nextValues.count, "A new project should be emitted.")
+    XCTAssertEqual(3, projectNameTest.values.count, "A new project should be emitted.")
   }
 }
