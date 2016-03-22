@@ -1,5 +1,4 @@
-import class UIKit.UIImageView
-import func UIKit./
+import UIKit
 import class Foundation.NSCoder
 
 @IBDesignable

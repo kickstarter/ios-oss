@@ -41,7 +41,7 @@ class PlaylistExplorerViewController: MVVMViewController {
 
     self.projectsCollectionView.contentInset = UIEdgeInsetsMake(0.0, 80.0, 0.0, 80.0)
 
-    let tap = UITapGestureRecognizer(target: self, action: "tap:")
+    let tap = UITapGestureRecognizer(target: self, action: #selector(PlaylistExplorerViewController.tap(_:)))
     tap.allowedPressTypes = [UIPressType.Menu.rawValue]
     self.view.addGestureRecognizer(tap)
   }
@@ -79,7 +79,7 @@ class PlaylistExplorerViewController: MVVMViewController {
     }
   }
 
-  func tap(recognizer: UITapGestureRecognizer) {
+  @objc internal func tap(recognizer: UITapGestureRecognizer) {
     self.viewModel.inputs.menuButtonPressed()
   }
 

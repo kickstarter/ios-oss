@@ -19,7 +19,7 @@ internal final class HomeViewController: MVVMViewController {
     let player = AVPlayer()
     NSNotificationCenter.defaultCenter().addObserver(
       self,
-      selector: Selector("playerFinishedPlaying:"),
+      selector: #selector(HomeViewController.playerFinishedPlaying(_:)),
       name: AVPlayerItemDidPlayToEndTimeNotification,
       object: player
     )
@@ -146,7 +146,7 @@ internal final class HomeViewController: MVVMViewController {
     })
   }
 
-  private func playerFinishedPlaying(notification: NSNotification) {
+  @objc private func playerFinishedPlaying(notification: NSNotification) {
     viewModel.inputs.videoEnded()
   }
 

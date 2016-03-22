@@ -3,8 +3,7 @@ import class UIKit.UIImageView
 import class UIKit.UILabel
 import class UIKit.UIButton
 import protocol Library.ViewModeledCellType
-import class ReactiveCocoa.MutableProperty
-import func ReactiveCocoa.<~
+import ReactiveCocoa
 
 internal final class ActivityFriendFollowCell: UITableViewCell, ViewModeledCellType {
   internal let viewModelProperty = MutableProperty<ActivityFriendFollowViewModel?>(nil)

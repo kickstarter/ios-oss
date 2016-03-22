@@ -25,7 +25,7 @@ internal final class PlaylistViewController: MVVMViewController {
   internal override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.view.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: "pan:"))
+    self.view.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(PlaylistViewController.pan(_:))))
   }
   
   internal override func bindViewModel() {
@@ -64,7 +64,7 @@ internal final class PlaylistViewController: MVVMViewController {
     }
   }
 
-  internal func pan(recognizer: UIPanGestureRecognizer) {
+  @objc internal func pan(recognizer: UIPanGestureRecognizer) {
     if recognizer.state == .Ended {
       let translation = recognizer.translationInView(self.view)
       self.viewModel.inputs.swipeEnded(translation: translation)

@@ -140,7 +140,7 @@ public class MVVMDataSource : NSObject, UICollectionViewDataSource, UITableViewD
   /// MARK: Private
 
   private func padDataForSection(section: Int) {
-    for var i = self.data.count; i <= section; i++ {
+    (self.data.count...section).forEach { _ in
       self.data.append([])
     }
   }

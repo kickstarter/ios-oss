@@ -4,8 +4,7 @@ import class UIKit.UITableViewCell
 import class UIKit.UIImageView
 import class UIKit.UILabel
 import protocol Library.ViewModeledCellType
-import class ReactiveCocoa.MutableProperty
-import func ReactiveCocoa.<~
+import ReactiveCocoa
 import AlamofireImage
 import class CoreImage.CIImage
 import var CoreImage.kCIInputImageKey

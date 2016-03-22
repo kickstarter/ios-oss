@@ -5,6 +5,8 @@ import ReactiveCocoa
 import Result
 import Models
 import Prelude
+@testable import KsApi_TestHelpers
+@testable import ReactiveExtensions_TestHelpers
 
 final class HomeViewModelTests : XCTestCase {
 
@@ -14,7 +16,7 @@ final class HomeViewModelTests : XCTestCase {
    */
   func testFocusingAndSelectingPlaylists() {
     let scheduler = TestScheduler()
-    withEnvironment(apiService: MockService(), debounceScheduler: scheduler) {
+    withEnvironment(apiService: MockService(), scheduler: scheduler) {
 
       let viewModel = HomeViewModel()
 
@@ -32,56 +34,56 @@ final class HomeViewModelTests : XCTestCase {
       viewModel.inputs.isActive(true)
 
       guard let
-        playlist = playlistsTest.nextValues.first?.first?.playlist,
-        otherPlaylist = playlistsTest.nextValues.first?.last?.playlist
+        playlist = playlistsTest.values.first?.first?.playlist,
+        otherPlaylist = playlistsTest.values.first?.last?.playlist
       where playlist != otherPlaylist
       else {
         XCTAssert(false, "We should have gotten at least 2 different playlists back.")
         return
       }
 
-      XCTAssertTrue(nowPlayingTest.nextValues == [nil], "The now play signal should emit immediately to " +
+      XCTAssertTrue(nowPlayingTest.values == [nil], "The now play signal should emit immediately to " +
         "indicate that nothing is currently playing.")
 
       viewModel.inputs.focusedPlaylist(playlist)
 
-      XCTAssertEqual(1, nowPlayingTest.nextValues.count, "Focusing a playlist doesn't play it immediately")
+      XCTAssertEqual(1, nowPlayingTest.values.count, "Focusing a playlist doesn't play it immediately")
       scheduler.advanceByInterval(0.5)
-      XCTAssertEqual(1, nowPlayingTest.nextValues.count, "After a little bit of time the playlist should still not play")
+      XCTAssertEqual(1, nowPlayingTest.values.count, "After a little bit of time the playlist should still not play")
       scheduler.advanceByInterval(1.0)
-      XCTAssertEqual(2, nowPlayingTest.nextValues.count, "After waiting enough time the playlist should play.")
+      XCTAssertEqual(2, nowPlayingTest.values.count, "After waiting enough time the playlist should play.")
 
       let nowPlayingProjectName = nowPlayingTest.lastValue!
 
       viewModel.inputs.clickedPlaylist(playlist)
       XCTAssertTrue(selectProjectTest.didEmitValue, "Clicking the playlist should select a project.")
-      XCTAssertEqual(nowPlayingProjectName, selectProjectTest.nextValues.last?.name,
+      XCTAssertEqual(nowPlayingProjectName, selectProjectTest.values.last?.name,
         "Clicking the playlist should select the project that was currently playing.")
 
       viewModel.inputs.focusedPlaylist(otherPlaylist)
-      XCTAssertEqual(2, nowPlayingTest.nextValues.count, "Focusing another playlist shouldn't play it " +
+      XCTAssertEqual(2, nowPlayingTest.values.count, "Focusing another playlist shouldn't play it " +
         "immediately")
 
       scheduler.advanceByInterval(0.5)
-      XCTAssertEqual(2, nowPlayingTest.nextValues.count, "After a little bit of time the playlist should " +
+      XCTAssertEqual(2, nowPlayingTest.values.count, "After a little bit of time the playlist should " +
         "still not play.")
 
       viewModel.inputs.clickedPlaylist(otherPlaylist)
-      XCTAssertEqual(1, selectProjectTest.nextValues.count, "Clicking this playlist before it has begun " +
+      XCTAssertEqual(1, selectProjectTest.values.count, "Clicking this playlist before it has begun " +
         "playing should not select the project.")
 
       scheduler.advanceByInterval(2.0)
-      XCTAssertEqual(3, nowPlayingTest.nextValues.count, "Waiting enough time the playlist should play.")
+      XCTAssertEqual(3, nowPlayingTest.values.count, "Waiting enough time the playlist should play.")
 
       viewModel.inputs.clickedPlaylist(otherPlaylist)
-      XCTAssertEqual(nowPlayingTest.nextValues.last!, selectProjectTest.nextValues.last?.name,
+      XCTAssertEqual(nowPlayingTest.values.last!, selectProjectTest.values.last?.name,
         "Clicking on the playing playlist should select the project.")
     }
   }
 
   func testInterfaceImportance() {
     let scheduler = TestScheduler()
-    withEnvironment(apiService: MockService(), debounceScheduler: scheduler) {
+    withEnvironment(apiService: MockService(), scheduler: scheduler) {
 
       let viewModel = HomeViewModel()
 
@@ -95,20 +97,20 @@ final class HomeViewModelTests : XCTestCase {
       viewModel.inputs.focusedPlaylist(.Featured)
 
       scheduler.advanceByInterval(1.5)
-      XCTAssertTrue(videoIsPlayingTest.nextValues.last!, "Video begins playing after a few moments.")
-      XCTAssertTrue(interfaceImportanceTest.nextValues.last!, "Interface remains important immediately " +
+      XCTAssertTrue(videoIsPlayingTest.values.last!, "Video begins playing after a few moments.")
+      XCTAssertTrue(interfaceImportanceTest.values.last!, "Interface remains important immediately " +
         "video begins playing.")
 
       scheduler.advanceByInterval(6.0)
-      XCTAssertFalse(interfaceImportanceTest.nextValues.last!, "After some time passes the interface " +
+      XCTAssertFalse(interfaceImportanceTest.values.last!, "After some time passes the interface " +
         "becomes less important.")
 
       viewModel.inputs.pauseVideoClick()
-      XCTAssertTrue(interfaceImportanceTest.nextValues.last!, "Interface becomes important immediately " +
+      XCTAssertTrue(interfaceImportanceTest.values.last!, "Interface becomes important immediately " +
         "upon pausing the video.")
 
       viewModel.inputs.playVideoClick()
-      XCTAssertFalse(interfaceImportanceTest.nextValues.last!, "Interface becomes not important " +
+      XCTAssertFalse(interfaceImportanceTest.values.last!, "Interface becomes not important " +
         "immediately upon playing the video.")
     }
   }

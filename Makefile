@@ -6,10 +6,10 @@ TARGET ?= Kickstarter
 PLATFORM ?= iOS
 
 ifeq ($(PLATFORM),iOS)
-	DESTINATION ?= 'platform=iOS Simulator,OS=9.2,name=iPhone 6'
+	DESTINATION ?= 'platform=iOS Simulator,name=iPhone 6'
 endif
 ifeq ($(PLATFORM),tvOS)
-	DESTINATION ?= 'platform=tvOS Simulator,OS=9.1,name=Apple TV 1080p'
+	DESTINATION ?= 'platform=tvOS Simulator,name=Apple TV 1080p'
 endif
 
 XCPRETTY :=

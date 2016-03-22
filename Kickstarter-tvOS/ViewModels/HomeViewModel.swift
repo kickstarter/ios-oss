@@ -62,7 +62,7 @@ internal final class HomeViewModel : HomeViewModelType, HomeViewModelInputs, Hom
   internal var outputs: HomeViewModelOutputs { return self }
 
   internal init(env: Environment = AppEnvironment.current) {
-    let scheduler = env.debounceScheduler
+    let scheduler = env.scheduler
     let apiService = env.apiService
 
     // Grab a playlist for every category
