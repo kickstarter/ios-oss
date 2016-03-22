@@ -47,7 +47,7 @@ final class ProjectViewController: MVVMViewController {
       layout.estimatedItemSize = CGSize(width: 1920.0, height: 300.0)
     }
 
-    self.view.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: "pan:"))
+    self.view.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(ProjectViewController.pan(_:))))
   }
 
   override func viewWillAppear(animated: Bool) {
@@ -115,7 +115,7 @@ final class ProjectViewController: MVVMViewController {
     }
   }
 
-  func pan(recognizer: UIPanGestureRecognizer) {
+  @objc internal func pan(recognizer: UIPanGestureRecognizer) {
     self.viewModel.inputs.remoteInteraction()
   }
 

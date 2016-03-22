@@ -4,7 +4,6 @@ import class UIKit.NSIndexPath
 import struct UIKit.CGFloat
 import struct UIKit.CGRect
 import struct UIKit.UIEdgeInsets
-import func UIKit.-
 import var UIKit.UITableViewAutomaticDimension
 import class Library.MVVMTableViewController
 import struct Library.Environment

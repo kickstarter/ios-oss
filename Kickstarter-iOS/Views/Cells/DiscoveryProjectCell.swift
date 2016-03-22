@@ -1,9 +1,7 @@
 import class UIKit.UITableViewCell
 import class UIKit.UILabel
 import protocol Library.ViewModeledCellType
-import class ReactiveCocoa.MutableProperty
-import func ReactiveCocoa.<~
-import struct ReactiveCocoa.SignalProducer
+import ReactiveCocoa
 import enum Result.NoError
 import ReactiveExtensions
 import AlamofireImage

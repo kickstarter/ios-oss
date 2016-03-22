@@ -2,8 +2,7 @@ import class UIKit.UITableViewCell
 import class UIKit.UILabel
 import class UIKit.UIImageView
 import protocol Library.ViewModeledCellType
-import class ReactiveCocoa.MutableProperty
-import func ReactiveCocoa.<~
+import ReactiveCocoa
 
 internal final class ActivityFriendBackingCell: UITableViewCell, ViewModeledCellType {
   let viewModelProperty = MutableProperty<ActivityFriendBackingViewModel?>(nil)
