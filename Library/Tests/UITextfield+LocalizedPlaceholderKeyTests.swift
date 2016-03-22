@@ -7,15 +7,15 @@ final class UITextFieldLocalizedKeyTests : XCTestCase {
     let tf = UITextField()
 
     withEnvironment(mainBundle: MockBundle(), language: .en) {
-      tf.localizedKey = "placeholder_password"
+      tf.localizedPlaceholderKey = "placeholder_password"
       XCTAssertEqual("password", tf.placeholder)
-      XCTAssertEqual("", tf.localizedKey)
+      XCTAssertEqual("", tf.localizedPlaceholderKey)
     }
 
     withEnvironment(mainBundle: MockBundle(), language: .es) {
-      tf.localizedKey = "placeholder_password"
+      tf.localizedPlaceholderKey = "placeholder_password"
       XCTAssertEqual("el secreto", tf.placeholder)
-      XCTAssertEqual("", tf.localizedKey)
+      XCTAssertEqual("", tf.localizedPlaceholderKey)
     }
   }
 }

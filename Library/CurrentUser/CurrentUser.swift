@@ -34,7 +34,7 @@ public struct CurrentUser : CurrentUserType {
   private let (userSignal, userObserver) = SignalProducer<User?, NoError>.buffer(1)
   private let (refreshSignal, refreshObserver) = Signal<(), NoError>.pipe()
 
-  private init(apiService: ServiceType) {
+  public init(apiService: ServiceType) {
     self.apiService = apiService
 
     self.userObserver.sendNext(reviveFromStorage())
