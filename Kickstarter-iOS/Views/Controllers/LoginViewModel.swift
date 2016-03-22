@@ -1,8 +1,6 @@
-import ReactiveExtensions
 import KsApi
-import class ReactiveCocoa.Signal
-import class ReactiveCocoa.MutableProperty
-import func ReactiveCocoa.<~
+import ReactiveCocoa
+import ReactiveExtensions
 import struct Library.Environment
 import struct Library.AppEnvironment
 import func Library.localizedString
@@ -108,7 +106,7 @@ internal final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, L
     isFormValid <~ emailAndPassword.map(LoginViewModel.isValid)
 
     let login = emailAndPassword.takeWhen(loginButtonPressedSignal)
-      .switchMap { ep in apiService.login(ep).demoteErrors(loginErrorsObserver) }
+      .switchMap { ep in apiService.login(email: ep.0, password: ep.1).demoteErrors(loginErrorsObserver) }
 
     self.logInSuccess = login.ignoreValues()
 

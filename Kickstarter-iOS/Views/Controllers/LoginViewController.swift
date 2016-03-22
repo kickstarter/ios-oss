@@ -1,12 +1,11 @@
+import ReactiveExtensions
+import ReactiveCocoa
 import func Foundation.NSLocalizedString
 import class UIKit.UITextField
 import class UIKit.UIButton
 import class UIKit.UIAlertAction
 import class UIKit.UIAlertController
 import class UIKit.UITapGestureRecognizer
-import ReactiveExtensions
-import class ReactiveCocoa.MutableProperty
-import func ReactiveCocoa.<~
 import class Library.MVVMViewController
 import class Library.BorderButton
 import enum Library.Color
@@ -40,7 +39,7 @@ internal final class LoginViewController: MVVMViewController {
     passwordTextField.leftView = spacer2
     passwordTextField.leftViewMode = UITextFieldViewMode.Always;
 
-    let tap = UITapGestureRecognizer(target: self, action: "dismissKeyboard")
+    let tap = UITapGestureRecognizer(target: self, action: #selector(LoginViewController.dismissKeyboard))
     self.view.addGestureRecognizer(tap)
   }
 

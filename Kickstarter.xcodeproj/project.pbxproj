@@ -19,10 +19,10 @@
 		0151AEB41C8F6FEC0067F1BE /* StyledLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0151AEB01C8F6FD80067F1BE /* StyledLabel.swift */; };
 		0151AEB51C8F6FFE0067F1BE /* Styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0151AEAD1C8F61870067F1BE /* Styles.swift */; };
 		0151AEB61C8F70000067F1BE /* Styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0151AEAD1C8F61870067F1BE /* Styles.swift */; };
-		0151AEB71C8F700B0067F1BE /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0151AE871C8F60370067F1BE /* UIColor.swift */; };
 		0151AEB81C8F700C0067F1BE /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0151AE871C8F60370067F1BE /* UIColor.swift */; };
 		0151AEBA1C8F811C0067F1BE /* BorderButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0151AEB91C8F811C0067F1BE /* BorderButton.swift */; };
 		0151AEBB1C8F811C0067F1BE /* BorderButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0151AEB91C8F811C0067F1BE /* BorderButton.swift */; };
+		0154A93B1CA1A17800DB9BA4 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0151AE871C8F60370067F1BE /* UIColor.swift */; };
 		0176E13B1C9742FD009CA092 /* UIBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0176E13A1C9742FD009CA092 /* UIBarButtonItem.swift */; };
 		0176E19B1C976703009CA092 /* UITextfield+LocalizedPlaceholderKeyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0176E19A1C976703009CA092 /* UITextfield+LocalizedPlaceholderKeyTests.swift */; };
 		0176E19C1C976703009CA092 /* UITextfield+LocalizedPlaceholderKeyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0176E19A1C976703009CA092 /* UITextfield+LocalizedPlaceholderKeyTests.swift */; };
@@ -236,7 +236,7 @@
 		A782BAC11C9F5F4C007B13C8 /* KsApi_TestHelpers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A782BA9A1C9F5EBA007B13C8 /* KsApi_TestHelpers.framework */; };
 		A782BAC21C9F5F4C007B13C8 /* Models_TestHelpers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A782BAA21C9F5EBA007B13C8 /* Models_TestHelpers.framework */; };
 		A782BAC31C9F5F4C007B13C8 /* ReactiveExtensions_TestHelpers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A782BAB01C9F5EBA007B13C8 /* ReactiveExtensions_TestHelpers.framework */; };
-		A782BACA1C9F5FBC007B13C8 /* KsApi-TestHelpers-tvOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A782BA9C1C9F5EBA007B13C8 /* KsApi-TestHelpers-tvOS.framework */; };
+		A782BACA1C9F5FBC007B13C8 /* KsApi_TestHelpers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A782BA9C1C9F5EBA007B13C8 /* KsApi_TestHelpers.framework */; };
 		A782BACB1C9F5FBC007B13C8 /* Models_TestHelpers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A782BAA41C9F5EBA007B13C8 /* Models_TestHelpers.framework */; };
 		A782BACC1C9F5FBC007B13C8 /* ReactiveExtensions_TestHelpers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A782BAB21C9F5EBA007B13C8 /* ReactiveExtensions_TestHelpers.framework */; };
 		A782BAED1C9F6145007B13C8 /* KsApi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7D1F8F01C84FB55000D41D5 /* KsApi.framework */; };
@@ -1578,7 +1578,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A782BAED1C9F6145007B13C8 /* KsApi.framework in Frameworks */,
-				A782BACA1C9F5FBC007B13C8 /* KsApi-TestHelpers-tvOS.framework in Frameworks */,
+				A782BACA1C9F5FBC007B13C8 /* KsApi_TestHelpers.framework in Frameworks */,
 				A782BACB1C9F5FBC007B13C8 /* Models_TestHelpers.framework in Frameworks */,
 				A782BACC1C9F5FBC007B13C8 /* ReactiveExtensions_TestHelpers.framework in Frameworks */,
 				A7B694211C879F4000C49A4F /* Library.framework in Frameworks */,
@@ -2008,7 +2008,7 @@
 				A7D1F8F01C84FB55000D41D5 /* KsApi.framework */,
 				A7D1F8F21C84FB55000D41D5 /* KsApi-tvOSTests.xctest */,
 				A782BA9A1C9F5EBA007B13C8 /* KsApi_TestHelpers.framework */,
-				A782BA9C1C9F5EBA007B13C8 /* KsApi-TestHelpers-tvOS.framework */,
+				A782BA9C1C9F5EBA007B13C8 /* KsApi_TestHelpers.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2991,10 +2991,10 @@
 			remoteRef = A782BA991C9F5EBA007B13C8 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		A782BA9C1C9F5EBA007B13C8 /* KsApi-TestHelpers-tvOS.framework */ = {
+		A782BA9C1C9F5EBA007B13C8 /* KsApi_TestHelpers.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
-			path = "KsApi-TestHelpers-tvOS.framework";
+			path = KsApi_TestHelpers.framework;
 			remoteRef = A782BA9B1C9F5EBA007B13C8 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -3218,6 +3218,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0154A93B1CA1A17800DB9BA4 /* UIColor.swift in Sources */,
 				A755115B1C8642C3005355CF /* AppEnvironment.swift in Sources */,
 				A755115C1C8642C3005355CF /* AssetImageGeneratorType.swift in Sources */,
 				A721DF6B1C8CFAF6000CB97C /* MockTrackingClient.swift in Sources */,
@@ -3256,10 +3257,8 @@
 				A755116E1C8642C3005355CF /* KeyValueStoreType.swift in Sources */,
 				A755116F1C8642C3005355CF /* MultiKeyValueStore.swift in Sources */,
 				01A7A4C01C9690220036E553 /* UITextField+LocalizedPlaceholderKey.swift in Sources */,
-				0151AEB71C8F700B0067F1BE /* UIColor.swift in Sources */,
 				01A1DC4D1C965C7D005761A8 /* UIAlertController.swift in Sources */,
 				0176E13B1C9742FD009CA092 /* UIBarButtonItem.swift in Sources */,
-				0151AEB71C8F700B0067F1BE /* UIColor.swift in Sources */,
 				A76126B51C90C94000EDCCB9 /* SimpleViewModel.swift in Sources */,
 				A721DF651C8CF5A3000CB97C /* KoalaTrackingClient.swift in Sources */,
 				A76126BB1C90C94000EDCCB9 /* UITableView-Extensions.swift in Sources */,

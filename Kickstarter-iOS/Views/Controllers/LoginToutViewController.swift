@@ -1,3 +1,4 @@
+import ReactiveCocoa
 import class Foundation.NSError
 import class UIKit.UIButton
 import class UIKit.UIAlertController
@@ -7,7 +8,6 @@ import protocol UIKit.UINavigationControllerDelegate
 import class MessageUI.MFMailComposeViewController
 import protocol MessageUI.MFMailComposeViewControllerDelegate
 import struct MessageUI.MFMailComposeResult
-import func ReactiveCocoa.<~
 import class Library.BorderButton
 import class Library.MVVMViewController
 import func Library.localizedString
@@ -29,9 +29,9 @@ internal final class LoginToutViewController: MVVMViewController, MFMailComposeV
     self.viewModel.inputs.loginIntent(self.loginIntent)
 
     if let _ = self.presentingViewController {
-      self.navigationItem.leftBarButtonItem = .close(self, selector: "closeButtonPressed")
+      self.navigationItem.leftBarButtonItem = .close(self, selector: #selector(LoginToutViewController.closeButtonPressed))
     }
-    self.navigationItem.rightBarButtonItem = .help(self, selector: "helpButtonPressed")
+    self.navigationItem.rightBarButtonItem = .help(self, selector: #selector(LoginToutViewController.helpButtonPressed))
 
     self.view.backgroundColor = Color.OffWhite.toUIColor()
   }
