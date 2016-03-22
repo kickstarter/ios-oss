@@ -19,7 +19,6 @@
 		0151AEB41C8F6FEC0067F1BE /* StyledLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0151AEB01C8F6FD80067F1BE /* StyledLabel.swift */; };
 		0151AEB51C8F6FFE0067F1BE /* Styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0151AEAD1C8F61870067F1BE /* Styles.swift */; };
 		0151AEB61C8F70000067F1BE /* Styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0151AEAD1C8F61870067F1BE /* Styles.swift */; };
-		0151AEB81C8F700C0067F1BE /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0151AE871C8F60370067F1BE /* UIColor.swift */; };
 		0151AEBA1C8F811C0067F1BE /* BorderButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0151AEB91C8F811C0067F1BE /* BorderButton.swift */; };
 		0151AEBB1C8F811C0067F1BE /* BorderButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0151AEB91C8F811C0067F1BE /* BorderButton.swift */; };
 		0154A93B1CA1A17800DB9BA4 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0151AE871C8F60370067F1BE /* UIColor.swift */; };
@@ -37,6 +36,7 @@
 		01A1DC4E1C965C7D005761A8 /* UIAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A1DC4C1C965C7D005761A8 /* UIAlertController.swift */; };
 		01A7A4C01C9690220036E553 /* UITextField+LocalizedPlaceholderKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A7A4BF1C9690220036E553 /* UITextField+LocalizedPlaceholderKey.swift */; };
 		01A7A4C11C9690220036E553 /* UITextField+LocalizedPlaceholderKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A7A4BF1C9690220036E553 /* UITextField+LocalizedPlaceholderKey.swift */; };
+		01B6ABBE1CA1E01E003DB4C8 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0151AE871C8F60370067F1BE /* UIColor.swift */; };
 		01BDFFB21C87AAD0002E8D34 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 01BDFFB01C87AAD0002E8D34 /* Login.storyboard */; };
 		01EA879B1C9335C5004E738B /* LoginToutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F761761C85FACB005405ED /* LoginToutViewController.swift */; };
 		01EFBC891C91FB770094EEC2 /* UIColorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01EFBC881C91FB770094EEC2 /* UIColorTests.swift */; };
@@ -3302,6 +3302,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				01B6ABBE1CA1E01E003DB4C8 /* UIColor.swift in Sources */,
 				A75511AC1C8647D9005355CF /* AppEnvironment.swift in Sources */,
 				A75511AD1C8647D9005355CF /* AssetImageGeneratorType.swift in Sources */,
 				A721DF6C1C8CFAF6000CB97C /* MockTrackingClient.swift in Sources */,
@@ -3340,9 +3341,7 @@
 				A75511BF1C8647D9005355CF /* KeyValueStoreType.swift in Sources */,
 				A75511C01C8647D9005355CF /* MultiKeyValueStore.swift in Sources */,
 				01A7A4C11C9690220036E553 /* UITextField+LocalizedPlaceholderKey.swift in Sources */,
-				0151AEB81C8F700C0067F1BE /* UIColor.swift in Sources */,
 				01A1DC4E1C965C7D005761A8 /* UIAlertController.swift in Sources */,
-				0151AEB81C8F700C0067F1BE /* UIColor.swift in Sources */,
 				A76126B61C90C94000EDCCB9 /* SimpleViewModel.swift in Sources */,
 				A721DF661C8CF5A3000CB97C /* KoalaTrackingClient.swift in Sources */,
 				A76126BC1C90C94000EDCCB9 /* UITableView-Extensions.swift in Sources */,
