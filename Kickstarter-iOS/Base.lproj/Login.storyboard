@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="OyO-rp-Px7">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <scenes>
+        <!--Login Tout View Controller-->
+        <scene sceneID="ocl-U6-5M0">
+            <objects>
+                <viewController id="jyD-hR-XbB" customClass="LoginToutViewController" customModule="Kickstarter_iOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="mxz-L2-flg"/>
+                        <viewControllerLayoutGuide type="bottom" id="LQa-Lt-HvU"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="vPL-WX-Xrs">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="UHD-eb-qXC">
+                                <rect key="frame" x="40" y="163" width="520" height="274"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="1tl-3X-f58">
+                                        <rect key="frame" x="0.0" y="0.0" width="520" height="70"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DI6-Zp-Yoj" customClass="BorderButton" customModule="Library">
+                                                <rect key="frame" x="0.0" y="0.0" width="520" height="44"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="300" id="j2Y-9T-Wkx"/>
+                                                    <constraint firstAttribute="height" constant="44" id="wYA-Q6-Bw3"/>
+                                                </constraints>
+                                                <state key="normal" title="Log in with Facebook"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="normalLocalizedKey" value="login_tout.buttons.log_in_with_facebook"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="_titleColorNormal" value="White"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="_color" value="Blue"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="_borderColor" value="Clear"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="_titleFontStyle" value="Body"/>
+                                                </userDefinedRuntimeAttributes>
+                                                <variation key="default">
+                                                    <mask key="constraints">
+                                                        <exclude reference="j2Y-9T-Wkx"/>
+                                                    </mask>
+                                                </variation>
+                                                <variation key="heightClass=compact">
+                                                    <mask key="constraints">
+                                                        <include reference="j2Y-9T-Wkx"/>
+                                                    </mask>
+                                                </variation>
+                                            </button>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="We'll never post anything without your permission." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="npz-Cl-wqX" customClass="StyledLabel" customModule="Library">
+                                                <rect key="frame" x="0.0" y="56" width="520" height="14"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                <nil key="highlightedColor"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="localizedKey" value="login_tout.disclaimer.we_never_post_anything_without_permission"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Caption2"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="_color" value="GrayDark"/>
+                                                </userDefinedRuntimeAttributes>
+                                            </label>
+                                        </subviews>
+                                        <variation key="heightClass=compact" alignment="center"/>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="eRD-uK-yiP">
+                                        <rect key="frame" x="0.0" y="100" width="520" height="100"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tcm-YK-ZfH" customClass="BorderButton" customModule="Library">
+                                                <rect key="frame" x="0.0" y="0.0" width="520" height="44"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="44" id="IVh-ao-BJi"/>
+                                                </constraints>
+                                                <state key="normal" title="Log in with Email"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="normalLocalizedKey" value="login.buttons.log_in_email"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="_color" value="White"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="_borderColor" value="Gray"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="_titleColorNormal" value="Black"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="_titleColorHighlighted" value="GrayDark"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="_titleFontStyle" value="Body"/>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="loginButtonPressed:" destination="jyD-hR-XbB" eventType="touchUpInside" id="946-dn-Y7w"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ytH-Nw-2z0" customClass="BorderButton" customModule="Library">
+                                                <rect key="frame" x="0.0" y="56" width="520" height="44"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="44" id="rmm-8H-xbE"/>
+                                                </constraints>
+                                                <state key="normal" title="Sign up with Email"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="normalLocalizedKey" value="signup.button.email"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="_color" value="White"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="_borderColor" value="Gray"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="_titleColorNormal" value="Black"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="_titleColorHighlighted" value="GrayDark"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="_titleFontStyle" value="Body"/>
+                                                </userDefinedRuntimeAttributes>
+                                            </button>
+                                        </subviews>
+                                        <variation key="heightClass=compact" axis="horizontal"/>
+                                    </stackView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="RUt-ea-H2e" customClass="BorderButton" customModule="Library">
+                                        <rect key="frame" x="0.0" y="230" width="520" height="44"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="44" id="QDd-D3-De3"/>
+                                        </constraints>
+                                        <inset key="contentEdgeInsets" minX="0.0" minY="-10" maxX="0.0" maxY="0.0"/>
+                                        <state key="normal" title="By signing up, you agree to our terms of use, privacy policy, and cookie policy."/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="normalLocalizedKey" value="login_tout.disclaimer.by_signing_up_you_agree_to_terms"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="_color" value="Clear"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="_borderColor" value="Clear"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="_titleColorNormal" value="GrayDark"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="_titleColorHighlighted" value="Gray"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="_titleFontStyle" value="Caption2"/>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="helpButtonPressed" destination="jyD-hR-XbB" eventType="touchUpInside" id="eQW-8O-b3i"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="1tl-3X-f58" firstAttribute="leading" secondItem="UHD-eb-qXC" secondAttribute="leading" id="6pg-Ko-Rhr"/>
+                                    <constraint firstAttribute="trailing" secondItem="1tl-3X-f58" secondAttribute="trailing" id="GAp-R7-lck"/>
+                                    <constraint firstItem="1tl-3X-f58" firstAttribute="top" secondItem="UHD-eb-qXC" secondAttribute="top" id="Ot9-kQ-O7V"/>
+                                    <constraint firstItem="1tl-3X-f58" firstAttribute="leading" secondItem="UHD-eb-qXC" secondAttribute="leading" id="wb7-8R-AQI"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="6pg-Ko-Rhr"/>
+                                        <exclude reference="GAp-R7-lck"/>
+                                    </mask>
+                                </variation>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="UHD-eb-qXC" firstAttribute="leading" secondItem="vPL-WX-Xrs" secondAttribute="leadingMargin" constant="20" id="0gu-zO-kEL"/>
+                            <constraint firstItem="UHD-eb-qXC" firstAttribute="width" secondItem="vPL-WX-Xrs" secondAttribute="width" id="cOe-IK-hhc"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="UHD-eb-qXC" secondAttribute="trailing" constant="20" id="e9a-9x-0vN"/>
+                            <constraint firstItem="UHD-eb-qXC" firstAttribute="centerY" secondItem="vPL-WX-Xrs" secondAttribute="centerY" id="eSr-iP-iVZ"/>
+                            <constraint firstItem="UHD-eb-qXC" firstAttribute="centerX" secondItem="vPL-WX-Xrs" secondAttribute="centerX" id="w6f-V1-7vI"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="cOe-IK-hhc"/>
+                                <exclude reference="w6f-V1-7vI"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <navigationItem key="navigationItem" id="gR4-vH-q2u">
+                        <barButtonItem key="leftBarButtonItem" enabled="NO" id="vxe-O8-0J0"/>
+                        <barButtonItem key="rightBarButtonItem" title="Help" id="Rwn-Zp-Mhs"/>
+                    </navigationItem>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="helpButton" destination="RUt-ea-H2e" id="3Uh-Ol-5W8"/>
+                        <outlet property="loginButton" destination="tcm-YK-ZfH" id="uHI-9Q-v14"/>
+                        <outlet property="signupButton" destination="ytH-Nw-2z0" id="kt8-oh-pu8"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="On0-Xs-e35" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1619" y="736"/>
+        </scene>
+        <!--Login View Controller-->
+        <scene sceneID="Aqv-6T-RPB">
+            <objects>
+                <viewController storyboardIdentifier="LoginViewController" id="i0D-IP-SOl" customClass="LoginViewController" customModule="Kickstarter_iOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="frH-WO-TYb"/>
+                        <viewControllerLayoutGuide type="bottom" id="NlS-Xy-Gop"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="bKW-b9-tc9">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="WAW-aN-vGd">
+                                <rect key="frame" x="40" y="182" width="520" height="236"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="jR7-vI-cDW">
+                                        <rect key="frame" x="0.0" y="0.0" width="520" height="88"/>
+                                        <subviews>
+                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email address" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="rfF-KC-Vmh">
+                                                <rect key="frame" x="0.0" y="0.0" width="520" height="44"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" returnKeyType="next"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="localizedPlaceholderKey" value="login.placeholder_email"/>
+                                                </userDefinedRuntimeAttributes>
+                                            </textField>
+                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="A3g-DY-QEE">
+                                                <rect key="frame" x="0.0" y="44" width="520" height="44"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" secureTextEntry="YES"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="localizedPlaceholderKey" value="login.placeholder_password"/>
+                                                </userDefinedRuntimeAttributes>
+                                            </textField>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="88" id="QhV-61-DWr"/>
+                                        </constraints>
+                                    </stackView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yb8-7t-B6f" customClass="BorderButton" customModule="Library">
+                                        <rect key="frame" x="0.0" y="118" width="520" height="44"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="44" id="6KD-JO-cTJ"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                        <state key="normal" title="Log in"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="normalLocalizedKey" value="login.buttons.log_in"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="_color" value="Green"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="_borderColor" value="Clear"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="_titleColorNormal" value="White"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="_titleColorHighlighted" value="White"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="_titleFontStyle" value="Body"/>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="loginButtonPressed:" destination="i0D-IP-SOl" eventType="touchUpInside" id="9dd-xa-a5S"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="qIi-a3-8Mq" customClass="BorderButton" customModule="Library">
+                                        <rect key="frame" x="202" y="192" width="116" height="44"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="44" id="n2W-Lf-bmI"/>
+                                        </constraints>
+                                        <state key="normal" title="Forgot password?"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="normalLocalizedKey" value="ogin.buttons.forgot_password"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="_color" value="Clear"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="_borderColor" value="Clear"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="_titleColorNormal" value="GrayDark"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="_titleColorHighlighted" value="Black"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="_titleFontStyle" value="Subhead"/>
+                                        </userDefinedRuntimeAttributes>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="yb8-7t-B6f" firstAttribute="width" secondItem="jR7-vI-cDW" secondAttribute="width" id="17m-b7-wVU"/>
+                                    <constraint firstItem="jR7-vI-cDW" firstAttribute="width" secondItem="WAW-aN-vGd" secondAttribute="width" id="3XD-Sd-owH"/>
+                                </constraints>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="WAW-aN-vGd" firstAttribute="centerY" secondItem="bKW-b9-tc9" secondAttribute="centerY" id="4wv-yf-aw9"/>
+                            <constraint firstItem="WAW-aN-vGd" firstAttribute="width" secondItem="bKW-b9-tc9" secondAttribute="width" id="C6p-30-zWt"/>
+                            <constraint firstItem="WAW-aN-vGd" firstAttribute="leading" secondItem="bKW-b9-tc9" secondAttribute="leadingMargin" constant="20" id="QBt-6Y-XjL"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="WAW-aN-vGd" secondAttribute="trailing" constant="20" id="U0q-oZ-Vvk"/>
+                            <constraint firstItem="WAW-aN-vGd" firstAttribute="centerX" secondItem="bKW-b9-tc9" secondAttribute="centerX" id="ZCV-so-w22"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="C6p-30-zWt"/>
+                                <exclude reference="ZCV-so-w22"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <connections>
+                        <outlet property="emailTextField" destination="rfF-KC-Vmh" id="fUb-r3-jVV"/>
+                        <outlet property="forgotPasswordButton" destination="qIi-a3-8Mq" id="T8R-cb-QbL"/>
+                        <outlet property="loginButton" destination="yb8-7t-B6f" id="YV7-rz-Jjv"/>
+                        <outlet property="passwordTextField" destination="A3g-DY-QEE" id="mia-c7-Dw0"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="FQx-n3-9wT" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2311" y="736"/>
+        </scene>
+        <!--Login-->
+        <scene sceneID="mfV-8d-OMM">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="OyO-rp-Px7" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Login" id="9MK-Ma-x87"/>
+                    <toolbarItems/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="MhB-p0-2fa">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="jyD-hR-XbB" kind="relationship" relationship="rootViewController" id="UcX-4m-0Uh"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8gX-sf-zDj" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="807" y="736"/>
+        </scene>
+    </scenes>
+</document>

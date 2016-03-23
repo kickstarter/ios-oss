@@ -8,6 +8,7 @@ import struct KsApi.Service
 import struct KsApi.ServerConfig
 import struct KsApi.OauthToken
 import enum Library.Language
+import struct Library.CurrentUser
 import class Foundation.NSLocale
 import class Foundation.NSObject
 
@@ -18,10 +19,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   let viewModel: AppDelegateViewModelType = AppDelegateViewModel()
 
   override init() {
+    let token = CurrentUser.shared.accessToken.map(OauthToken.init)
+  
     AppEnvironment.pushEnvironment(
       apiService: Service(
         serverConfig: ServerConfig.production,
-        oauthToken: OauthToken(token: "6b02b5b59bfdf8111cdc97784b828f33b2b45dc4"),
+        oauthToken: token,
         language: Language.en.rawValue
       ),
       language: .en,

@@ -13,12 +13,17 @@ internal final class ActivitiesViewController: MVVMTableViewController {
     self.tableView.dataSource = dataSource
   }
 
+  internal override func viewDidAppear(animated: Bool) {
+    super.viewDidAppear(animated)
+    self.viewModel.inputs.viewDidAppear()
+  }
+
   override func bindViewModel() {
     super.bindViewModel()
 
     self.viewModel.outputs.activities
       .observeForUI()
-      .startWithNext { [weak self] activities in
+      .observeNext { [weak self] activities in
         self?.dataSource.loadData(activities)
         self?.tableView.reloadData()
     }

@@ -4,26 +4,6 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
     </dependencies>
     <scenes>
-        <!--Login-->
-        <scene sceneID="ocl-U6-5M0">
-            <objects>
-                <viewController id="jyD-hR-XbB" customClass="LoginToutViewController" customModule="Kickstarter_Framework" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="mxz-L2-flg"/>
-                        <viewControllerLayoutGuide type="bottom" id="LQa-Lt-HvU"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="vPL-WX-Xrs">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                    <tabBarItem key="tabBarItem" title="Login" id="9MK-Ma-x87"/>
-                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="On0-Xs-e35" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="851" y="418"/>
-        </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="yl2-sM-qoP">
             <objects>
@@ -37,12 +17,22 @@
                     <connections>
                         <segue destination="aB0-Y1-uoU" kind="relationship" relationship="viewControllers" id="feq-fm-wMt"/>
                         <segue destination="vn9-w7-g8t" kind="relationship" relationship="viewControllers" id="N81-ip-xbf"/>
-                        <segue destination="jyD-hR-XbB" kind="relationship" relationship="viewControllers" id="uUV-U0-Sr6"/>
+                        <segue destination="jCg-3v-Wa0" kind="relationship" relationship="viewControllers" id="uUV-U0-Sr6"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HuB-VB-40B" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="0.0" y="0.0"/>
+        </scene>
+        <!--Login-->
+        <scene sceneID="C9S-tv-RiC">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Login" id="jCg-3v-Wa0" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Item" id="SRV-Ge-f9Y"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="HHW-9c-3qJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="807" y="736"/>
         </scene>
         <!--ActivitiesViewController-->
         <scene sceneID="7Qa-72-YCD">

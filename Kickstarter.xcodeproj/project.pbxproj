@@ -7,14 +7,39 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0127FC531C98C0F900E335C6 /* HelpType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0127FC521C98C0F900E335C6 /* HelpType.swift */; };
+		0127FC541C98C0F900E335C6 /* HelpType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0127FC521C98C0F900E335C6 /* HelpType.swift */; };
+		0127FC561C98C10400E335C6 /* LoginIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0127FC551C98C10400E335C6 /* LoginIntent.swift */; };
+		0127FC571C98C10400E335C6 /* LoginIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0127FC551C98C10400E335C6 /* LoginIntent.swift */; };
+		0127FC591C98C10D00E335C6 /* MFMailComposeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0127FC581C98C10D00E335C6 /* MFMailComposeViewController.swift */; };
+		0127FC5A1C98C10D00E335C6 /* MFMailComposeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0127FC581C98C10D00E335C6 /* MFMailComposeViewController.swift */; };
+		0127FC5C1C98C11500E335C6 /* SFSafariViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0127FC5B1C98C11500E335C6 /* SFSafariViewController.swift */; };
+		0127FC5D1C98C11500E335C6 /* SFSafariViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0127FC5B1C98C11500E335C6 /* SFSafariViewController.swift */; };
 		0151AEB31C8F6FE90067F1BE /* StyledLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0151AEB01C8F6FD80067F1BE /* StyledLabel.swift */; };
 		0151AEB41C8F6FEC0067F1BE /* StyledLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0151AEB01C8F6FD80067F1BE /* StyledLabel.swift */; };
 		0151AEB51C8F6FFE0067F1BE /* Styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0151AEAD1C8F61870067F1BE /* Styles.swift */; };
 		0151AEB61C8F70000067F1BE /* Styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0151AEAD1C8F61870067F1BE /* Styles.swift */; };
-		0151AEB71C8F700B0067F1BE /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0151AE871C8F60370067F1BE /* UIColor.swift */; };
-		0151AEB81C8F700C0067F1BE /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0151AE871C8F60370067F1BE /* UIColor.swift */; };
 		0151AEBA1C8F811C0067F1BE /* BorderButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0151AEB91C8F811C0067F1BE /* BorderButton.swift */; };
 		0151AEBB1C8F811C0067F1BE /* BorderButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0151AEB91C8F811C0067F1BE /* BorderButton.swift */; };
+		0154A93B1CA1A17800DB9BA4 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0151AE871C8F60370067F1BE /* UIColor.swift */; };
+		0154A93E1CA1AF3400DB9BA4 /* LoginViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0154A93C1CA1AF2A00DB9BA4 /* LoginViewModelTests.swift */; };
+		0176E13B1C9742FD009CA092 /* UIBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0176E13A1C9742FD009CA092 /* UIBarButtonItem.swift */; };
+		0176E19B1C976703009CA092 /* UITextfield+LocalizedPlaceholderKeyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0176E19A1C976703009CA092 /* UITextfield+LocalizedPlaceholderKeyTests.swift */; };
+		0176E19C1C976703009CA092 /* UITextfield+LocalizedPlaceholderKeyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0176E19A1C976703009CA092 /* UITextfield+LocalizedPlaceholderKeyTests.swift */; };
+		018F1F831C8E182200643DAA /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018F1F821C8E182200643DAA /* LoginViewController.swift */; };
+		018F1F841C8E182200643DAA /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018F1F821C8E182200643DAA /* LoginViewController.swift */; };
+		018F1FA91C8E1A8200643DAA /* LoginToutViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018F1FA81C8E1A8200643DAA /* LoginToutViewModel.swift */; };
+		018F1FAA1C8E1A8200643DAA /* LoginToutViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018F1FA81C8E1A8200643DAA /* LoginToutViewModel.swift */; };
+		019502021C8E3EF700F31304 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019502011C8E3EF700F31304 /* LoginViewModel.swift */; };
+		019502031C8E3EF700F31304 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019502011C8E3EF700F31304 /* LoginViewModel.swift */; };
+		01A1DC4D1C965C7D005761A8 /* UIAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A1DC4C1C965C7D005761A8 /* UIAlertController.swift */; };
+		01A1DC4E1C965C7D005761A8 /* UIAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A1DC4C1C965C7D005761A8 /* UIAlertController.swift */; };
+		01A7A4C01C9690220036E553 /* UITextField+LocalizedPlaceholderKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A7A4BF1C9690220036E553 /* UITextField+LocalizedPlaceholderKey.swift */; };
+		01A7A4C11C9690220036E553 /* UITextField+LocalizedPlaceholderKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A7A4BF1C9690220036E553 /* UITextField+LocalizedPlaceholderKey.swift */; };
+		01B6ABBE1CA1E01E003DB4C8 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0151AE871C8F60370067F1BE /* UIColor.swift */; };
+		01B6ABE61CA2F233003DB4C8 /* LoginToutViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B6ABE51CA2F233003DB4C8 /* LoginToutViewModelTests.swift */; };
+		01BDFFB21C87AAD0002E8D34 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 01BDFFB01C87AAD0002E8D34 /* Login.storyboard */; };
+		01EA879B1C9335C5004E738B /* LoginToutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F761761C85FACB005405ED /* LoginToutViewController.swift */; };
 		01EFBC891C91FB770094EEC2 /* UIColorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01EFBC881C91FB770094EEC2 /* UIColorTests.swift */; };
 		01EFBCAF1C92036E0094EEC2 /* StyledLabelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01EFBCAE1C92036E0094EEC2 /* StyledLabelTests.swift */; };
 		01EFBCB01C92036E0094EEC2 /* StyledLabelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01EFBCAE1C92036E0094EEC2 /* StyledLabelTests.swift */; };
@@ -213,7 +238,7 @@
 		A782BAC11C9F5F4C007B13C8 /* KsApi_TestHelpers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A782BA9A1C9F5EBA007B13C8 /* KsApi_TestHelpers.framework */; };
 		A782BAC21C9F5F4C007B13C8 /* Models_TestHelpers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A782BAA21C9F5EBA007B13C8 /* Models_TestHelpers.framework */; };
 		A782BAC31C9F5F4C007B13C8 /* ReactiveExtensions_TestHelpers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A782BAB01C9F5EBA007B13C8 /* ReactiveExtensions_TestHelpers.framework */; };
-		A782BACA1C9F5FBC007B13C8 /* KsApi-TestHelpers-tvOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A782BA9C1C9F5EBA007B13C8 /* KsApi-TestHelpers-tvOS.framework */; };
+		A782BACA1C9F5FBC007B13C8 /* KsApi_TestHelpers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A782BA9C1C9F5EBA007B13C8 /* KsApi_TestHelpers.framework */; };
 		A782BACB1C9F5FBC007B13C8 /* Models_TestHelpers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A782BAA41C9F5EBA007B13C8 /* Models_TestHelpers.framework */; };
 		A782BACC1C9F5FBC007B13C8 /* ReactiveExtensions_TestHelpers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A782BAB21C9F5EBA007B13C8 /* ReactiveExtensions_TestHelpers.framework */; };
 		A782BAED1C9F6145007B13C8 /* KsApi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7D1F8F01C84FB55000D41D5 /* KsApi.framework */; };
@@ -398,7 +423,6 @@
 		A7E315CB1C88AC91000DD85A /* DiscoveryProjectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E315CA1C88AC91000DD85A /* DiscoveryProjectCell.swift */; };
 		A7E315CC1C88AC91000DD85A /* DiscoveryProjectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E315CA1C88AC91000DD85A /* DiscoveryProjectCell.swift */; };
 		A7F761751C85FA40005405ED /* ActivitiesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F761741C85FA40005405ED /* ActivitiesViewController.swift */; };
-		A7F761771C85FACB005405ED /* LoginToutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F761761C85FACB005405ED /* LoginToutViewController.swift */; };
 		A7FC8C061C8F1DEA00C3B49B /* CircleAvatarImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FC8C051C8F1DEA00C3B49B /* CircleAvatarImageView.swift */; };
 		A7FC8C071C8F1DEA00C3B49B /* CircleAvatarImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FC8C051C8F1DEA00C3B49B /* CircleAvatarImageView.swift */; };
 		A7FC8C0A1C8F2CF600C3B49B /* Activity.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7FC8C081C8F2CF600C3B49B /* Activity.storyboard */; };
@@ -1208,10 +1232,24 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0127FC521C98C0F900E335C6 /* HelpType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HelpType.swift; path = Library/HelpType.swift; sourceTree = "<group>"; };
+		0127FC551C98C10400E335C6 /* LoginIntent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginIntent.swift; path = Library/LoginIntent.swift; sourceTree = "<group>"; };
+		0127FC581C98C10D00E335C6 /* MFMailComposeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MFMailComposeViewController.swift; path = Library/MFMailComposeViewController.swift; sourceTree = "<group>"; };
+		0127FC5B1C98C11500E335C6 /* SFSafariViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SFSafariViewController.swift; path = Library/SFSafariViewController.swift; sourceTree = "<group>"; };
 		0151AE871C8F60370067F1BE /* UIColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		0151AEAD1C8F61870067F1BE /* Styles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Styles.swift; sourceTree = "<group>"; };
 		0151AEB01C8F6FD80067F1BE /* StyledLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyledLabel.swift; sourceTree = "<group>"; };
 		0151AEB91C8F811C0067F1BE /* BorderButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BorderButton.swift; sourceTree = "<group>"; };
+		0154A93C1CA1AF2A00DB9BA4 /* LoginViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewModelTests.swift; sourceTree = "<group>"; };
+		0176E13A1C9742FD009CA092 /* UIBarButtonItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIBarButtonItem.swift; sourceTree = "<group>"; };
+		0176E19A1C976703009CA092 /* UITextfield+LocalizedPlaceholderKeyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITextfield+LocalizedPlaceholderKeyTests.swift"; sourceTree = "<group>"; };
+		018F1F821C8E182200643DAA /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		018F1FA81C8E1A8200643DAA /* LoginToutViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginToutViewModel.swift; path = ../Views/Controllers/LoginToutViewModel.swift; sourceTree = "<group>"; };
+		019502011C8E3EF700F31304 /* LoginViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginViewModel.swift; path = ../Views/Controllers/LoginViewModel.swift; sourceTree = "<group>"; };
+		01A1DC4C1C965C7D005761A8 /* UIAlertController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIAlertController.swift; sourceTree = "<group>"; };
+		01A7A4BF1C9690220036E553 /* UITextField+LocalizedPlaceholderKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITextField+LocalizedPlaceholderKey.swift"; sourceTree = "<group>"; };
+		01B6ABE51CA2F233003DB4C8 /* LoginToutViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginToutViewModelTests.swift; sourceTree = "<group>"; };
+		01BDFFB11C87AAD0002E8D34 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Login.storyboard; sourceTree = "<group>"; };
 		01EFBC881C91FB770094EEC2 /* UIColorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorTests.swift; sourceTree = "<group>"; };
 		01EFBCAE1C92036E0094EEC2 /* StyledLabelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyledLabelTests.swift; sourceTree = "<group>"; };
 		01EFBCB21C920A7E0094EEC2 /* BorderButtonTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BorderButtonTests.swift; sourceTree = "<group>"; };
@@ -1544,7 +1582,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A782BAED1C9F6145007B13C8 /* KsApi.framework in Frameworks */,
-				A782BACA1C9F5FBC007B13C8 /* KsApi-TestHelpers-tvOS.framework in Frameworks */,
+				A782BACA1C9F5FBC007B13C8 /* KsApi_TestHelpers.framework in Frameworks */,
 				A782BACB1C9F5FBC007B13C8 /* Models_TestHelpers.framework in Frameworks */,
 				A782BACC1C9F5FBC007B13C8 /* ReactiveExtensions_TestHelpers.framework in Frameworks */,
 				A7B694211C879F4000C49A4F /* Library.framework in Frameworks */,
@@ -1555,6 +1593,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0127FC511C98BFD000E335C6 /* Library */ = {
+			isa = PBXGroup;
+			children = (
+				0127FC521C98C0F900E335C6 /* HelpType.swift */,
+				0127FC551C98C10400E335C6 /* LoginIntent.swift */,
+				0127FC581C98C10D00E335C6 /* MFMailComposeViewController.swift */,
+				0127FC5B1C98C11500E335C6 /* SFSafariViewController.swift */,
+			);
+			name = Library;
+			sourceTree = "<group>";
+		};
+		0127FC5E1C98C25300E335C6 /* Library */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Library;
+			sourceTree = "<group>";
+		};
 		802800561C88F62500141235 /* Configs */ = {
 			isa = PBXGroup;
 			children = (
@@ -1737,6 +1793,8 @@
 		A751A51A1C85EAD8009C5DEA /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				018F1FA81C8E1A8200643DAA /* LoginToutViewModel.swift */,
+				019502011C8E3EF700F31304 /* LoginViewModel.swift */,
 				A75AB1E01C8A8255002FC3E6 /* ActivitiesViewModel.swift */,
 				A77518FF1C8C97510022F175 /* ActivityFriendBackingViewModel.swift */,
 				A762F0171C8CC672005581A4 /* ActivityFriendFollowViewModel.swift */,
@@ -1783,6 +1841,7 @@
 				A7F761741C85FA40005405ED /* ActivitiesViewController.swift */,
 				A751A51E1C85EC0B009C5DEA /* DiscoveryViewController.swift */,
 				A7F761761C85FACB005405ED /* LoginToutViewController.swift */,
+				018F1F821C8E182200643DAA /* LoginViewController.swift */,
 				A7285C9A1C8E8DCF00D83297 /* ProjectViewController.swift */,
 			);
 			path = Controllers;
@@ -1807,6 +1866,7 @@
 				A75511911C8645A0005355CF /* UILabel+IBClearTests.swift */,
 				A75511921C8645A0005355CF /* UILabel+LocalizedKeyTests.swift */,
 				A75511931C8645A0005355CF /* UILabel+SimpleHTMLTests.swift */,
+				0176E19A1C976703009CA092 /* UITextfield+LocalizedPlaceholderKeyTests.swift */,
 				A755119F1C86460B005355CF /* TestHelpers */,
 			);
 			path = Tests;
@@ -1827,6 +1887,8 @@
 			children = (
 				A775190F1C8CADC80022F175 /* AppDelegateViewModelTests.swift */,
 				A77519131C8CADFE0022F175 /* ActivitiesViewModelTests.swift */,
+				0154A93C1CA1AF2A00DB9BA4 /* LoginViewModelTests.swift */,
+				01B6ABE51CA2F233003DB4C8 /* LoginToutViewModelTests.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -1896,6 +1958,8 @@
 				A7C725931C85D36D005A016B /* Strings.swift */,
 				0151AEB01C8F6FD80067F1BE /* StyledLabel.swift */,
 				0151AEAD1C8F61870067F1BE /* Styles.swift */,
+				01A1DC4C1C965C7D005761A8 /* UIAlertController.swift */,
+				0176E13A1C9742FD009CA092 /* UIBarButtonItem.swift */,
 				A7C725941C85D36D005A016B /* UIButton+LocalizedKey.swift */,
 				0151AE871C8F60370067F1BE /* UIColor.swift */,
 				A7C725951C85D36D005A016B /* UIGestureRecognizer-Extensions.swift */,
@@ -1903,6 +1967,7 @@
 				A7C725971C85D36D005A016B /* UILabel+LocalizedKey.swift */,
 				A7C725981C85D36D005A016B /* UILabel+SimpleHTML.swift */,
 				A7C725991C85D36D005A016B /* UIPress-Extensions.swift */,
+				01A7A4BF1C9690220036E553 /* UITextField+LocalizedPlaceholderKey.swift */,
 				A7C7257B1C85D36D005A016B /* CurrentUser */,
 				A721DF3D1C8CF4F6000CB97C /* Koala */,
 				A7C725851C85D36D005A016B /* MVVM */,
@@ -1949,7 +2014,7 @@
 				A7D1F8F01C84FB55000D41D5 /* KsApi.framework */,
 				A7D1F8F21C84FB55000D41D5 /* KsApi-tvOSTests.xctest */,
 				A782BA9A1C9F5EBA007B13C8 /* KsApi_TestHelpers.framework */,
-				A782BA9C1C9F5EBA007B13C8 /* KsApi-TestHelpers-tvOS.framework */,
+				A782BA9C1C9F5EBA007B13C8 /* KsApi_TestHelpers.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1977,7 +2042,9 @@
 				A7FC8C0C1C8F2D6300C3B49B /* Discovery.storyboard */,
 				A7D1F9521C850B7C000D41D5 /* LaunchScreen.storyboard */,
 				A7D1F94D1C850B7C000D41D5 /* Main.storyboard */,
+				01BDFFB01C87AAD0002E8D34 /* Login.storyboard */,
 				A7FC8C261C8F2DCF00C3B49B /* Project.storyboard */,
+				0127FC511C98BFD000E335C6 /* Library */,
 				A7D1F98F1C850CB2000D41D5 /* Tests */,
 				A751A51A1C85EAD8009C5DEA /* ViewModels */,
 				A751A51B1C85EAD8009C5DEA /* Views */,
@@ -2011,6 +2078,7 @@
 			children = (
 				A7D1F9901C850CB2000D41D5 /* Info.plist */,
 				A7D1F9911C850CB2000D41D5 /* KickstarterTests.swift */,
+				0127FC5E1C98C25300E335C6 /* Library */,
 				A775190E1C8CADC80022F175 /* ViewModels */,
 			);
 			path = Tests;
@@ -2929,10 +2997,10 @@
 			remoteRef = A782BA991C9F5EBA007B13C8 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		A782BA9C1C9F5EBA007B13C8 /* KsApi-TestHelpers-tvOS.framework */ = {
+		A782BA9C1C9F5EBA007B13C8 /* KsApi_TestHelpers.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
-			path = "KsApi-TestHelpers-tvOS.framework";
+			path = KsApi_TestHelpers.framework;
 			remoteRef = A782BA9B1C9F5EBA007B13C8 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -3074,6 +3142,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				01BDFFB21C87AAD0002E8D34 /* Login.storyboard in Resources */,
 				A7D1F9541C850B7C000D41D5 /* LaunchScreen.storyboard in Resources */,
 				A721DF801C8D1F3C000CB97C /* koala-endpoint.config in Resources */,
 				A7D1F9511C850B7C000D41D5 /* Assets.xcassets in Resources */,
@@ -3155,6 +3224,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0154A93B1CA1A17800DB9BA4 /* UIColor.swift in Sources */,
 				A755115B1C8642C3005355CF /* AppEnvironment.swift in Sources */,
 				A755115C1C8642C3005355CF /* AssetImageGeneratorType.swift in Sources */,
 				A721DF6B1C8CFAF6000CB97C /* MockTrackingClient.swift in Sources */,
@@ -3192,7 +3262,9 @@
 				A755116D1C8642C3005355CF /* CurrentUser.swift in Sources */,
 				A755116E1C8642C3005355CF /* KeyValueStoreType.swift in Sources */,
 				A755116F1C8642C3005355CF /* MultiKeyValueStore.swift in Sources */,
-				0151AEB71C8F700B0067F1BE /* UIColor.swift in Sources */,
+				01A7A4C01C9690220036E553 /* UITextField+LocalizedPlaceholderKey.swift in Sources */,
+				01A1DC4D1C965C7D005761A8 /* UIAlertController.swift in Sources */,
+				0176E13B1C9742FD009CA092 /* UIBarButtonItem.swift in Sources */,
 				A76126B51C90C94000EDCCB9 /* SimpleViewModel.swift in Sources */,
 				A721DF651C8CF5A3000CB97C /* KoalaTrackingClient.swift in Sources */,
 				A76126BB1C90C94000EDCCB9 /* UITableView-Extensions.swift in Sources */,
@@ -3218,6 +3290,7 @@
 				A75511A51C86460B005355CF /* MockBundle.swift in Sources */,
 				A755119E1C8645A0005355CF /* UILabel+SimpleHTMLTests.swift in Sources */,
 				A75511941C8645A0005355CF /* AppEnvironmentTests.swift in Sources */,
+				0176E19B1C976703009CA092 /* UITextfield+LocalizedPlaceholderKeyTests.swift in Sources */,
 				A77519221C8CB0360022F175 /* CircleAvatarImageViewTests.swift in Sources */,
 				A75511991C8645A0005355CF /* LocalizedStringTests.swift in Sources */,
 				A75511951C8645A0005355CF /* EnvironmentTests.swift in Sources */,
@@ -3232,6 +3305,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				01B6ABBE1CA1E01E003DB4C8 /* UIColor.swift in Sources */,
 				A75511AC1C8647D9005355CF /* AppEnvironment.swift in Sources */,
 				A75511AD1C8647D9005355CF /* AssetImageGeneratorType.swift in Sources */,
 				A721DF6C1C8CFAF6000CB97C /* MockTrackingClient.swift in Sources */,
@@ -3269,7 +3343,8 @@
 				A75511BE1C8647D9005355CF /* CurrentUser.swift in Sources */,
 				A75511BF1C8647D9005355CF /* KeyValueStoreType.swift in Sources */,
 				A75511C01C8647D9005355CF /* MultiKeyValueStore.swift in Sources */,
-				0151AEB81C8F700C0067F1BE /* UIColor.swift in Sources */,
+				01A7A4C11C9690220036E553 /* UITextField+LocalizedPlaceholderKey.swift in Sources */,
+				01A1DC4E1C965C7D005761A8 /* UIAlertController.swift in Sources */,
 				A76126B61C90C94000EDCCB9 /* SimpleViewModel.swift in Sources */,
 				A721DF661C8CF5A3000CB97C /* KoalaTrackingClient.swift in Sources */,
 				A76126BC1C90C94000EDCCB9 /* UITableView-Extensions.swift in Sources */,
@@ -3295,6 +3370,7 @@
 				A75511F21C865321005355CF /* UILabel+SimpleHTMLTests.swift in Sources */,
 				01EFBCB01C92036E0094EEC2 /* StyledLabelTests.swift in Sources */,
 				A75511F31C865321005355CF /* AppEnvironmentTests.swift in Sources */,
+				0176E19C1C976703009CA092 /* UITextfield+LocalizedPlaceholderKeyTests.swift in Sources */,
 				A77519231C8CB11B0022F175 /* CircleAvatarImageViewTests.swift in Sources */,
 				A75511F41C865321005355CF /* LocalizedStringTests.swift in Sources */,
 				A75511F51C865321005355CF /* EnvironmentTests.swift in Sources */,
@@ -3309,10 +3385,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				018F1FAA1C8E1A8200643DAA /* LoginToutViewModel.swift in Sources */,
 				A7285C9C1C8E8DCF00D83297 /* ProjectViewController.swift in Sources */,
 				A762F0191C8CC672005581A4 /* ActivityFriendFollowViewModel.swift in Sources */,
 				A7FC8C551C8F447D00C3B49B /* ProjectSubpagesViewModel.swift in Sources */,
 				A7E315C61C88AAA8000DD85A /* DiscoveryProjectsDataSource.swift in Sources */,
+				0127FC5D1C98C11500E335C6 /* SFSafariViewController.swift in Sources */,
+				0127FC541C98C0F900E335C6 /* HelpType.swift in Sources */,
 				A762EFF31C8CC663005581A4 /* ActivityFriendFollowCell.swift in Sources */,
 				A7E315B41C88A8A2000DD85A /* DiscoveryViewModel.swift in Sources */,
 				A731719A1C8EA20300AC07C5 /* ProjectDataSource.swift in Sources */,
@@ -3324,12 +3403,17 @@
 				A7C795B21C873AC90081977F /* AppDelegate.swift in Sources */,
 				A7C795B31C873AC90081977F /* ActivitiesViewController.swift in Sources */,
 				A7FC8C521C8F442D00C3B49B /* ProjectRewardCell.swift in Sources */,
+				0127FC571C98C10400E335C6 /* LoginIntent.swift in Sources */,
 				A77519011C8C97510022F175 /* ActivityFriendBackingViewModel.swift in Sources */,
 				A77518FE1C8C8ADA0022F175 /* ActivityUpdateViewModel.swift in Sources */,
 				A7FC8C4F1C8F43E400C3B49B /* ProjectRewardViewModel.swift in Sources */,
 				A762F01D1C8CD2B3005581A4 /* ActivityStateChangeCell.swift in Sources */,
 				A75CBDE81C8A26F800758C55 /* AppDelegateViewModel.swift in Sources */,
+				0127FC5A1C98C10D00E335C6 /* MFMailComposeViewController.swift in Sources */,
 				A7C795B41C873AC90081977F /* DiscoveryViewController.swift in Sources */,
+				018F1F841C8E182200643DAA /* LoginViewController.swift in Sources */,
+				A7C795B51C873AC90081977F /* LoginToutViewController.swift in Sources */,
+				019502031C8E3EF700F31304 /* LoginViewModel.swift in Sources */,
 				A75AB2261C8B407F002FC3E6 /* ActivityFriendBackingCell.swift in Sources */,
 				A75AB1FA1C8A84B5002FC3E6 /* ActivitiesDataSource.swift in Sources */,
 				A762F0201C8CD2C0005581A4 /* ActivityStateChangeViewModel.swift in Sources */,
@@ -3401,18 +3485,24 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0127FC5C1C98C11500E335C6 /* SFSafariViewController.swift in Sources */,
+				01EA879B1C9335C5004E738B /* LoginToutViewController.swift in Sources */,
+				018F1FA91C8E1A8200643DAA /* LoginToutViewModel.swift in Sources */,
 				A7285C9B1C8E8DCF00D83297 /* ProjectViewController.swift in Sources */,
 				A762F0181C8CC672005581A4 /* ActivityFriendFollowViewModel.swift in Sources */,
 				A7FC8C541C8F447D00C3B49B /* ProjectSubpagesViewModel.swift in Sources */,
 				A7E315C51C88AAA8000DD85A /* DiscoveryProjectsDataSource.swift in Sources */,
 				A762EFF21C8CC663005581A4 /* ActivityFriendFollowCell.swift in Sources */,
 				A7E315B31C88A8A2000DD85A /* DiscoveryViewModel.swift in Sources */,
+				0127FC561C98C10400E335C6 /* LoginIntent.swift in Sources */,
 				A73171991C8EA20300AC07C5 /* ProjectDataSource.swift in Sources */,
 				A7E315CB1C88AC91000DD85A /* DiscoveryProjectCell.swift in Sources */,
 				A75AB2221C8A85D1002FC3E6 /* ActivityUpdateCell.swift in Sources */,
 				A7FC8C571C8F449500C3B49B /* ProjectSubpagesCell.swift in Sources */,
 				A7285CC11C8E8DDB00D83297 /* ProjectViewModel.swift in Sources */,
 				A7285CC41C8E915B00D83297 /* ProjectMainCell.swift in Sources */,
+				0127FC591C98C10D00E335C6 /* MFMailComposeViewController.swift in Sources */,
+				0127FC531C98C0F900E335C6 /* HelpType.swift in Sources */,
 				A7D1F9481C850B7C000D41D5 /* AppDelegate.swift in Sources */,
 				A7F761751C85FA40005405ED /* ActivitiesViewController.swift in Sources */,
 				A7FC8C511C8F442D00C3B49B /* ProjectRewardCell.swift in Sources */,
@@ -3422,12 +3512,13 @@
 				A762F01C1C8CD2B3005581A4 /* ActivityStateChangeCell.swift in Sources */,
 				A75CBDE71C8A26F800758C55 /* AppDelegateViewModel.swift in Sources */,
 				A751A51F1C85EC0B009C5DEA /* DiscoveryViewController.swift in Sources */,
+				018F1F831C8E182200643DAA /* LoginViewController.swift in Sources */,
+				019502021C8E3EF700F31304 /* LoginViewModel.swift in Sources */,
 				A75AB2251C8B407F002FC3E6 /* ActivityFriendBackingCell.swift in Sources */,
 				A75AB1F91C8A84B5002FC3E6 /* ActivitiesDataSource.swift in Sources */,
 				A762F01F1C8CD2C0005581A4 /* ActivityStateChangeViewModel.swift in Sources */,
 				A7E315C81C88ABAC000DD85A /* DiscoveryProjectViewModel.swift in Sources */,
 				A73171BF1C8EA27400AC07C5 /* ProjectMainViewModel.swift in Sources */,
-				A7F761771C85FACB005405ED /* LoginToutViewController.swift in Sources */,
 				A75AB1E11C8A8255002FC3E6 /* ActivitiesViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3436,6 +3527,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				01B6ABE61CA2F233003DB4C8 /* LoginToutViewModelTests.swift in Sources */,
+				0154A93E1CA1AF3400DB9BA4 /* LoginViewModelTests.swift in Sources */,
 				A77519121C8CADE20022F175 /* AppDelegateViewModelTests.swift in Sources */,
 				A77519141C8CADFE0022F175 /* ActivitiesViewModelTests.swift in Sources */,
 				A7D1F9931C850CB2000D41D5 /* KickstarterTests.swift in Sources */,
@@ -3744,6 +3837,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		01BDFFB01C87AAD0002E8D34 /* Login.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				01BDFFB11C87AAD0002E8D34 /* Base */,
+			);
+			name = Login.storyboard;
+			sourceTree = "<group>";
+		};
 		A7D1F94D1C850B7C000D41D5 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
