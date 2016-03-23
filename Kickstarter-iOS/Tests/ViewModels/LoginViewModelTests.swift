@@ -54,7 +54,7 @@ final class LoginViewModelTests: XCTestCase {
     let tfaChallenge = TestObserver<(), NoError>()
     vm.errors.tfaChallenge.observe(tfaChallenge.observer)
 
-    currentUserPresent.assertValues([false], "Current user is not valid")
+    currentUserPresent.assertValues([false], "No user is currently logged in")
 
     isFormValid.assertValues([false], "Form is not valid")
 
@@ -71,7 +71,7 @@ final class LoginViewModelTests: XCTestCase {
     dismissKeyboard.assertValueCount(1, "Keyboard is dismissed")
 
     vm.inputs.loginButtonPressed()
-    currentUserPresent.assertValues([false, true], "Current user is valid")
+    currentUserPresent.assertValues([false, true], "A user is currently logged in")
     loginSuccess.assertValueCount(1, "Login is successful")
     XCTAssertEqual(["Login"], trackingClient.events, "Koala login is tracked")
 
