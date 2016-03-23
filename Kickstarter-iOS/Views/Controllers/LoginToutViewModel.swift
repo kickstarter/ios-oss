@@ -91,8 +91,9 @@ internal final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMo
     self.showHelp = self.helpTypeButtonPressedSignal
 
     loginIntentSignal
-      .takeWhen(viewDidAppearSignal)
-      .map { $0.trackingString }
+      .combineLatestWith(viewDidAppearSignal)
+      .take(1)
+      .map { intent, _ in intent.trackingString }
       .observeNext(koala.trackLoginTout)
   }
 }
