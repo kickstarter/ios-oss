@@ -75,24 +75,27 @@ internal final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMo
   var errors: TwoFactorViewModelErrors { return self }
 
   internal init(env: Environment = AppEnvironment.current) {
+    let apiService = env.apiService
+    let koala = env.koala
 
     let hasInput = emailAndPasswordSignal.ignoreValues()
       .mergeWith(facebookTokenSignal.ignoreValues())
 
     isFormValid = combineLatest(hasInput, codeSignal)
       .map { _, code in code.characters.count == 6 }
-      .mergeWith(viewWillAppearSignal.map { _ in false })
+      .mergeWith(viewWillAppearSignal.mapConst(false))
       .skipRepeats()
 
     loginSuccess = combineLatest(emailAndPasswordSignal, codeSignal)
       .takeWhen(submitPressedSignal)
-      .switchMap { ep, code in env.apiService.login(email: ep.email, password: ep.password, code: code).demoteErrors() }
+      .switchMap { ep, code in apiService.login(email: ep.email, password: ep.password, code: code).demoteErrors() }
       .ignoreValues()
-
 
     isLoading = .empty
 
     codeMismatch = .empty
     generic = .empty
+
+    viewWillAppearSignal.observeNext { _ in koala.trackTfa() }
   }
 }

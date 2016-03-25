@@ -24,6 +24,18 @@ final class TwoFactorViewModelTests: XCTestCase {
     AppEnvironment.popEnvironment()
   }
 
+  func testKoala_viewEvents() {
+    let trackingClient = MockTrackingClient()
+    let koala = Koala(client: trackingClient)
+
+    withEnvironment(koala: koala) {
+      let vm = TwoFactorViewModel()
+      vm.inputs.viewWillAppear()
+
+      XCTAssertEqual(["Two-factor Authentication Confirm View"], trackingClient.events)
+    }
+  }
+
   func testFormIsValid_forEmailPasswordFlow() {
     let isFormValid = TestObserver<Bool, NoError>()
     vm.outputs.isFormValid.observe(isFormValid.observer)

@@ -34,9 +34,9 @@ internal protocol LoginViewModelErrors {
   /// Emits an error String when a login request has failed
   var invalidLogin: Signal<String, NoError> { get }
   /// Emits when a generic login error has occurred
-  var genericError: Signal<(), NoError> { get }
+  var genericError: Signal<String, NoError> { get }
   /// Emits when a tfa request has failed
-  var tfaChallenge: Signal<(), NoError> { get }
+  var tfaChallenge: Signal<String, NoError> { get }
 }
 
 internal protocol LoginViewModelType {
@@ -76,8 +76,8 @@ internal final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, L
 
   // MARK: Errors
   internal let invalidLogin: Signal<String, NoError>
-  internal let genericError: Signal<(), NoError>
-  internal let tfaChallenge: Signal<(), NoError>
+  internal let genericError: Signal<String, NoError>
+  internal let tfaChallenge: Signal<String, NoError>
 
   internal init(env: Environment = AppEnvironment.current) {
     let apiService = env.apiService

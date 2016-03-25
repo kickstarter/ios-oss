@@ -91,7 +91,6 @@ internal final class LoginViewController: MVVMViewController {
 
     self.viewModel.errors.genericError
       .observeForUI()
-      .map { localizedString(key: "login.errors.unable_to_log_in", defaultValue: "Unable to log in.") }
       .observeNext { [weak self] message in
         self?.presentError(message)
     }

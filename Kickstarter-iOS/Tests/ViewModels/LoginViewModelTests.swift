@@ -48,10 +48,10 @@ final class LoginViewModelTests: XCTestCase {
     let invalidLogin = TestObserver<String, NoError>()
     vm.errors.invalidLogin.observe(invalidLogin.observer)
 
-    let genericError = TestObserver<(), NoError>()
+    let genericError = TestObserver<String, NoError>()
     vm.errors.genericError.observe(genericError.observer)
 
-    let tfaChallenge = TestObserver<(), NoError>()
+    let tfaChallenge = TestObserver<String, NoError>()
     vm.errors.tfaChallenge.observe(tfaChallenge.observer)
 
     currentUserPresent.assertValues([false], "No user is currently logged in")
