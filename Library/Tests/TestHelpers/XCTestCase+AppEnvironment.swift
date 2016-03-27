@@ -10,7 +10,7 @@ extension XCTestCase {
 
   /**
    Pushes an environment onto the stack, executes a closure, and then pops the environment from the stack.
-  */
+   */
   func withEnvironment(env: Environment, @noescape body: () -> ()) {
     AppEnvironment.pushEnvironment(env)
     body()
@@ -22,35 +22,39 @@ extension XCTestCase {
    */
   func withEnvironment(
     apiService apiService: ServiceType = AppEnvironment.current.apiService,
-    currentUser: CurrentUserType = AppEnvironment.current.currentUser,
-    language: Language = AppEnvironment.current.language,
-    locale: NSLocale = AppEnvironment.current.locale,
-    timeZone: NSTimeZone = AppEnvironment.current.timeZone,
-    countryCode: String = AppEnvironment.current.countryCode,
-    launchedCountries: LaunchedCountries = AppEnvironment.current.launchedCountries,
-    scheduler: DateSchedulerType = AppEnvironment.current.scheduler,
-    mainBundle: NSBundleType = AppEnvironment.current.mainBundle,
-    assetImageGeneratorType: AssetImageGeneratorType.Type = AppEnvironment.current.assetImageGeneratorType,
-    hockeyManager: HockeyManagerType = AppEnvironment.current.hockeyManager,
-    koala: Koala = AppEnvironment.current.koala,
-    @noescape body: () -> ()) {
+               apiThrottleInterval: NSTimeInterval = AppEnvironment.current.apiThrottleInterval,
+               assetImageGeneratorType: AssetImageGeneratorType.Type = AppEnvironment.current.assetImageGeneratorType,
+               countryCode: String = AppEnvironment.current.countryCode,
+               currentUser: CurrentUserType = AppEnvironment.current.currentUser,
+               debounceInterval: NSTimeInterval = AppEnvironment.current.debounceInterval,
+               hockeyManager: HockeyManagerType = AppEnvironment.current.hockeyManager,
+               koala: Koala = AppEnvironment.current.koala,
+               language: Language = AppEnvironment.current.language,
+               launchedCountries: LaunchedCountries = AppEnvironment.current.launchedCountries,
+               locale: NSLocale = AppEnvironment.current.locale,
+               mainBundle: NSBundleType = AppEnvironment.current.mainBundle,
+               scheduler: DateSchedulerType = AppEnvironment.current.scheduler,
+               timeZone: NSTimeZone = AppEnvironment.current.timeZone,
+               @noescape body: () -> ()) {
 
-      withEnvironment(
-        Environment(
-          apiService: apiService,
-          currentUser: currentUser,
-          language: language,
-          locale: locale,
-          timeZone: timeZone,
-          countryCode: countryCode,
-          launchedCountries: launchedCountries,
-          scheduler: scheduler,
-          mainBundle: mainBundle,
-          assetImageGeneratorType: assetImageGeneratorType,
-          hockeyManager: hockeyManager,
-          koala: koala
-        ),
-        body: body
-      )
+    withEnvironment(
+      Environment(
+        apiService: apiService,
+        apiThrottleInterval: apiThrottleInterval,
+        assetImageGeneratorType: assetImageGeneratorType,
+        countryCode: countryCode,
+        currentUser: currentUser,
+        debounceInterval: debounceInterval,
+        hockeyManager: hockeyManager,
+        koala: koala,
+        language: language,
+        launchedCountries: launchedCountries,
+        locale: locale,
+        mainBundle: mainBundle,
+        scheduler: scheduler,
+        timeZone: timeZone
+      ),
+      body: body
+    )
   }
 }

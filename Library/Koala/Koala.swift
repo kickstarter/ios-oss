@@ -26,8 +26,6 @@ public final class Koala {
     self.track(event: "Discovery List View")
   }
 
-  // MARK: Session events
-
   public func trackLoginTout(intent: String) {
     self.track(event: "Application Login or Signup", properties: ["intent": intent])
   }
@@ -38,6 +36,26 @@ public final class Koala {
 
   public func trackLoginError() {
     self.track(event: "Errored User Login")
+  }
+
+  /**
+   Call once when the search view is initially shown.
+   */
+  public func trackProjectSearchView() {
+    self.track(event: "Discover Search")
+  }
+
+  /**
+   Call when projects have been obtained from a search.
+   */
+  public func trackSearchResults(query query: String, pageCount: Int) {
+    let properties: [String:AnyObject] = ["search_term": query, "page_count": pageCount]
+
+    if pageCount == 1 {
+      self.track(event: "Discover Search Results", properties: properties)
+    } else {
+      self.track(event: "Discover Search Results Load More", properties: properties)
+    }
   }
 
   // Private tracking method that merges in default properties.
