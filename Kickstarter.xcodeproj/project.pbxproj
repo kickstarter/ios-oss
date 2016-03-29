@@ -85,7 +85,6 @@
 		9D39C0471C9B5662004E0943 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D39C0461C9B5662004E0943 /* SearchViewModel.swift */; };
 		9DE6C0571C9B5C7700FCC7B1 /* SearchViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DE6C0561C9B5C7700FCC7B1 /* SearchViewModelTests.swift */; };
 		9DE6C07B1C9B5C8600FCC7B1 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D39C0461C9B5662004E0943 /* SearchViewModel.swift */; };
-		9DE6C0891C9B5FCA00FCC7B1 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		9DE6C08B1C9B67C500FCC7B1 /* discover.json in Resources */ = {isa = PBXBuildFile; fileRef = A7E0704E1C5D3CF000EBDCC2 /* discover.json */; };
 		9DE6C08C1C9B67C500FCC7B1 /* discover.json in Resources */ = {isa = PBXBuildFile; fileRef = A7E0704E1C5D3CF000EBDCC2 /* discover.json */; };
 		A72153921C5D62E800127699 /* HomeViewModelInputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72153911C5D62E800127699 /* HomeViewModelInputs.swift */; };
@@ -3547,7 +3546,6 @@
 				A7D1F9931C850CB2000D41D5 /* KickstarterTests.swift in Sources */,
 				A7B6940F1C87927700C49A4F /* XCTestCase+AppEnvironment.swift in Sources */,
 				9DE6C0571C9B5C7700FCC7B1 /* SearchViewModelTests.swift in Sources */,
-				9DE6C0891C9B5FCA00FCC7B1 /* (null) in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
