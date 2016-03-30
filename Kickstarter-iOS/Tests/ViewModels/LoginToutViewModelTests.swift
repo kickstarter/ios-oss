@@ -66,9 +66,7 @@ final class LoginToutViewModelTests: XCTestCase {
     let vm: LoginToutViewModelType = LoginToutViewModel()
 
     let showHelpActionSheet = TestObserver<[HelpType], NoError>()
-    vm.outputs.showHelpActionSheet
-      .map { actions in actions.map { title, helpType in helpType} }
-      .observe(showHelpActionSheet.observer)
+    vm.outputs.showHelpActionSheet.observe(showHelpActionSheet.observer)
 
     vm.inputs.helpButtonPressed()
 
@@ -83,7 +81,7 @@ final class LoginToutViewModelTests: XCTestCase {
 
     vm.inputs.helpTypeButtonPressed(HelpType.Contact)
 
-    showHelp.assertValue(HelpType.Contact, "Show help emitted with type .Contact")
+    showHelp.assertValues([HelpType.Contact], "Show help emitted with type .Contact")
 
     vm.inputs.helpTypeButtonPressed(HelpType.Cookie)
 

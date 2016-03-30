@@ -77,12 +77,12 @@ internal final class LoginToutViewController: MVVMViewController, MFMailComposeV
     self.viewModel.inputs.helpButtonPressed()
   }
 
-  internal func showHelp(actions: [(title: String, helpType: HelpType)]) {
+  internal func showHelp(helpTypes: [HelpType]) {
     let helpAlert = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
 
-    actions.forEach { action in
-      helpAlert.addAction(UIAlertAction(title: action.title, style: .Default, handler: { [weak self] _ in
-        self?.viewModel.inputs.helpTypeButtonPressed(action.helpType)
+    helpTypes.forEach { helpType in
+      helpAlert.addAction(UIAlertAction(title: helpType.title, style: .Default, handler: { [weak self] _ in
+        self?.viewModel.inputs.helpTypeButtonPressed(helpType)
       }))
     }
 
