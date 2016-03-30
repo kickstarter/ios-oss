@@ -81,21 +81,62 @@ internal final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMo
     let hasInput = emailAndPasswordSignal.ignoreValues()
       .mergeWith(facebookTokenSignal.ignoreValues())
 
+    let (loginSuccessSignal, loginSuccessObserver) = Signal<(), NoError>.pipe()
+    loginSuccess = loginSuccessSignal
+
+    let (isLoadingSignal, isLoadingObserver) = Signal<Bool, NoError>.pipe()
+    isLoading = isLoadingSignal
+
+    codeMismatch = .empty
+    generic = .empty
+
+    resendPressedSignal
+      .mergeWith(submitPressedSignal)
+      .observeNext { isLoadingObserver.sendNext(true) }
+
     isFormValid = combineLatest(hasInput, codeSignal)
       .map { _, code in code.characters.count == 6 }
       .mergeWith(viewWillAppearSignal.mapConst(false))
       .skipRepeats()
 
-    loginSuccess = combineLatest(emailAndPasswordSignal, codeSignal)
+    emailAndPasswordSignal
+      .combineLatestWith(codeSignal)
       .takeWhen(submitPressedSignal)
-      .switchMap { ep, code in apiService.login(email: ep.email, password: ep.password, code: code).demoteErrors() }
+      .switchMap { ep, code in apiService.login(email: ep.email,
+        password: ep.password, code: code).demoteErrors() }
       .ignoreValues()
+      .observeNext { _ in
+        loginSuccessObserver.sendNext()
+        isLoadingObserver.sendNext(false)
+    }
 
-    isLoading = .empty
+    facebookTokenSignal
+      .combineLatestWith(codeSignal)
+      .takeWhen(submitPressedSignal)
+      .switchMap { token, code in apiService.login(facebookAccessToken: token, code: code).demoteErrors() }
+      .ignoreValues()
+      .observeNext { _ in
+        loginSuccessObserver.sendNext()
+        isLoadingObserver.sendNext(false)
+    }
 
-    codeMismatch = .empty
-    generic = .empty
+    emailAndPasswordSignal
+      .takeWhen(resendPressedSignal)
+      .observeNext { email, password in
+        apiService.login(email: email, password: password, code: nil)
+        isLoadingObserver.sendNext(false)
+        koala.trackTwoFactorResendCode()
+    }
+
+    facebookTokenSignal
+      .takeWhen(resendPressedSignal)
+      .observeNext { token in
+        apiService.login(facebookAccessToken: token, code: nil)
+        isLoadingObserver.sendNext(false)
+        koala.trackTwoFactorResendCode()
+    }
 
     viewWillAppearSignal.observeNext { _ in koala.trackTfa() }
+    loginSuccess.observeNext { _ in koala.trackLoginSuccess() }
   }
 }

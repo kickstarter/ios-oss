@@ -44,6 +44,10 @@ public final class Koala {
     self.track(event: "Errored User Login")
   }
 
+  public func trackTwoFactorResendCode() {
+    self.track(event: "Two-factor Authentication Resend Code")
+  }
+
   // Private tracking method that merges in default properties.
   private func track(event event: String, properties: [String:AnyObject] = [:]) {
     self.client.track(

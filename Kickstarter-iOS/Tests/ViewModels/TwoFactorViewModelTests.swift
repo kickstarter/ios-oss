@@ -8,12 +8,15 @@ import Result
 
 final class TwoFactorViewModelTests: XCTestCase {
   let apiService = MockService()
+  let trackingClient = MockTrackingClient()
   var vm: TwoFactorViewModelType!
 
   override func setUp() {
     super.setUp()
 
-    AppEnvironment.pushEnvironment(apiService: apiService)
+    let koala = Koala(client: trackingClient)
+
+    AppEnvironment.pushEnvironment(apiService: apiService, koala: koala)
 
     vm = TwoFactorViewModel()
   }
@@ -25,15 +28,9 @@ final class TwoFactorViewModelTests: XCTestCase {
   }
 
   func testKoala_viewEvents() {
-    let trackingClient = MockTrackingClient()
-    let koala = Koala(client: trackingClient)
+    vm.inputs.viewWillAppear()
 
-    withEnvironment(koala: koala) {
-      let vm = TwoFactorViewModel()
-      vm.inputs.viewWillAppear()
-
-      XCTAssertEqual(["Two-factor Authentication Confirm View"], trackingClient.events)
-    }
+    XCTAssertEqual(["Two-factor Authentication Confirm View"], trackingClient.events)
   }
 
   func testFormIsValid_forEmailPasswordFlow() {
@@ -100,6 +97,8 @@ final class TwoFactorViewModelTests: XCTestCase {
 
     isLoading.assertValues([true, false])
     loginSuccess.assertValueCount(1)
+
+    XCTAssertEqual(["Two-factor Authentication Confirm View", "Login"], trackingClient.events)
   }
 
   func testLogin_withFacebookFlow() {
@@ -117,6 +116,8 @@ final class TwoFactorViewModelTests: XCTestCase {
 
     isLoading.assertValues([true, false])
     loginSuccess.assertValueCount(1)
+
+    XCTAssertEqual(["Two-factor Authentication Confirm View", "Login"], trackingClient.events)
   }
 
   func testResend_withEmailPasswordFlow() {
@@ -128,6 +129,8 @@ final class TwoFactorViewModelTests: XCTestCase {
     vm.inputs.resendPressed()
 
     isLoading.assertValues([true, false])
+
+    XCTAssertEqual(["Two-factor Authentication Confirm View", "Two-factor Authentication Resend Code"], trackingClient.events)
   }
 
   func testResend_withFacebookFlow() {
@@ -139,6 +142,8 @@ final class TwoFactorViewModelTests: XCTestCase {
     vm.inputs.resendPressed()
 
     isLoading.assertValues([true, false])
+
+    XCTAssertEqual(["Two-factor Authentication Confirm View", "Two-factor Authentication Resend Code"], trackingClient.events)
   }
 }
 
