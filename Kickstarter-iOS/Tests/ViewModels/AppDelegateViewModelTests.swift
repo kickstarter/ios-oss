@@ -15,6 +15,7 @@ final class AppDelegateViewModelTests: XCTestCase {
 
       viewModel.inputs.applicationDidFinishLaunching(launchOptions: [:])
       XCTAssertTrue(hockeyManager.managerStarted, "Manager should start when the app launches.")
+      XCTAssertTrue(hockeyManager.isAutoSendingReports, "Manager sends crash reports automatically.")
     }
   }
 
