@@ -1,9 +1,70 @@
 machine:
   xcode:
     version: 7.3
+dependencies:
+  pre:
+    - security list-keychains
+    - security find-identity -p codesigning
+    - instruments -s devices
+    - xcodebuild -showsdks
 test:
   override:
     - PLATFORM=iOS make test
     - PLATFORM=tvOS make test
     - PLATFORM=iOS TARGET=Library make test
     - PLATFORM=tvOS TARGET=Library make test
+deployment:
+  ios_beta:
+    branch: beta-dist
+    commands:
+      - agvtool new-version -all $(($(date +%s)/100))
+      - >
+        gym
+        --output_name               "KickBeta"
+        --export_method             "enterprise"
+        --provisioning_profile_path "circleci-beta-dist.mobileprovision"
+        --codesigning_identity      "iPhone Distribution: Kickstarter of New York"
+        --scheme                    "Kickstarter-iOS"
+        --configuration             "Hockey"
+      - >
+        ipa distribute:hockeyapp
+        --token                     "$HOCKEY_APP_TOKEN"
+        --identifier                "***REMOVED***"
+        --file                      "KickBeta.ipa"
+        --dsym                      "KickBeta.app.dSYM.zip"
+        --notes                     "CircleCI build $CIRCLE_BUILD_NUM"
+        --commit-sha                "$CIRCLE_SHA1"
+        --build-server-url          "$CIRCLE_BUILD_URL"
+        --repository-url            "$CIRCLE_REPOSITORY_URL"
+      - >
+        ipa distribute:s3
+        --file                      "KickBeta.ipa"
+        --dsym                      "KickBeta.app.dSYM.zip"
+        --bucket                    "ios-ksr-builds"
+        --path                      "{CFBundleVersion}/"
+  ios_itc:
+    branch: itunes-dist
+    commands:
+      - agvtool new-version -all $(($(date +%s)/100))
+      - >
+        gym
+        --output_name               "Kickstarter"
+        --provisioning_profile_path "circleci-itunes-dist.mobileprovision"
+        --codesigning_identity      "iPhone Distribution: Kickstarter, Inc. (48YBP49Y5N)"
+        --scheme                    "Kickstarter-iOS"
+        --configuration             "Release"
+      - >
+        ipa distribute:hockeyapp
+        --token                     "$HOCKEY_APP_TOKEN"
+        --identifier                "***REMOVED***"
+        --file                      "Kickstarter.ipa"
+        --dsym                      "Kickstarter.app.dSYM.zip"
+        --notes                     "CircleCI build $CIRCLE_BUILD_NUM"
+        --commit-sha                "$CIRCLE_SHA1"
+        --build-server-url          "$CIRCLE_BUILD_URL"
+        --repository-url            "$CIRCLE_REPOSITORY_URL"
+      - >
+        ipa distribute:itunesconnect
+        --file      "Kickstarter.ipa"
+        --apple-id  "596961532"
+        --warnings

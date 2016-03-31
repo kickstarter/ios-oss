@@ -60,5 +60,6 @@ internal final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegate
 
     hockeyManager.configureWithIdentifier(identifier)
     hockeyManager.startManager()
+    hockeyManager.autoSendReports()
   }
 }
