@@ -93,13 +93,12 @@ internal final class ResetPasswordViewModel: ResetPasswordViewModelType, ResetPa
         .demoteErrors()
         .mapConst(email) }
 
-    resetSuccess.observeNext { _ in koala.trackResetPasswordSuccess() }
-
     generic = .empty
 
     returnToLogin = confirmResetButtonPressedSignal
 
     viewWillAppearSignal.observeNext { _ in koala.trackResetPassword() }
+    resetSuccess.observeNext { _ in koala.trackResetPasswordSuccess() }
   }
   
 }

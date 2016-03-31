@@ -7,9 +7,9 @@ import XCTest
 @testable import Library
 
 final class ResetPasswordViewModelTests: XCTestCase {
-  var vm: ResetPasswordViewModelType!
   let apiService = MockService()
   let trackingClient = MockTrackingClient()
+  var vm: ResetPasswordViewModelType!
 
   override func setUp() {
     super.setUp()
@@ -36,6 +36,8 @@ final class ResetPasswordViewModelTests: XCTestCase {
   func testFormIsValid() {
     let formIsValid = TestObserver<Bool, NoError>()
     vm.outputs.formIsValid.observe(formIsValid.observer)
+
+    formIsValid.assertDidNotEmitValue("Form is valid did not emit any values")
 
     vm.inputs.viewWillAppear()
 
@@ -66,6 +68,7 @@ final class ResetPasswordViewModelTests: XCTestCase {
     let returnToLogin = TestObserver<(), NoError>()
     vm.outputs.returnToLogin.observe(returnToLogin.observer)
 
+    vm.inputs.viewWillAppear()
     vm.inputs.confirmResetButtonPressed()
 
     returnToLogin.assertValueCount(1)
