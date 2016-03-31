@@ -18,7 +18,6 @@ final class LoginToutViewModelTests: XCTestCase {
     AppEnvironment.pushEnvironment(koala: koala)
 
     vm = LoginToutViewModel()
-
   }
 
   override func tearDown() {
@@ -49,6 +48,7 @@ final class LoginToutViewModelTests: XCTestCase {
     let startLogin = TestObserver<(), NoError>()
     vm.outputs.startLogin.observe(startLogin.observer)
 
+    vm.inputs.viewDidAppear()
     vm.inputs.loginButtonPressed()
 
     startLogin.assertValueCount(1)
@@ -58,6 +58,7 @@ final class LoginToutViewModelTests: XCTestCase {
     let startSignup = TestObserver<(), NoError>()
     vm.outputs.startSignup.observe(startSignup.observer)
 
+    vm.inputs.viewDidAppear()
     vm.inputs.signupButtonPressed()
 
     startSignup.assertValueCount(1)
@@ -67,6 +68,7 @@ final class LoginToutViewModelTests: XCTestCase {
     let showHelpActionSheet = TestObserver<[HelpType], NoError>()
     vm.outputs.showHelpActionSheet.observe(showHelpActionSheet.observer)
 
+    vm.inputs.viewDidAppear()
     vm.inputs.helpButtonPressed()
 
     showHelpActionSheet.assertValues([HelpType.allValues])
@@ -76,6 +78,7 @@ final class LoginToutViewModelTests: XCTestCase {
     let showHelp = TestObserver<HelpType, NoError>()
     vm.outputs.showHelp.observe(showHelp.observer)
 
+    vm.inputs.viewDidAppear()
     vm.inputs.helpTypeButtonPressed(HelpType.Contact)
 
     showHelp.assertValues([HelpType.Contact], "Show help emitted with type .Contact")
