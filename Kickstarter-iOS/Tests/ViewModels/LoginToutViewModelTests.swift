@@ -7,42 +7,45 @@ import XCTest
 @testable import Library
 
 final class LoginToutViewModelTests: XCTestCase {
+  let trackingClient = MockTrackingClient()
+  var vm: LoginToutViewModelType!
 
-  func testKoala_whenLoginIntentBeforeViewAppears() {
-    let trackingClient = MockTrackingClient()
+  override func setUp() {
+    super.setUp()
+
     let koala = Koala(client: trackingClient)
 
-    withEnvironment(koala: koala) {
-      let vm: LoginToutViewModelType = LoginToutViewModel()
+    AppEnvironment.pushEnvironment(koala: koala)
 
-      vm.inputs.loginIntent(LoginIntent.Activity)
-      vm.inputs.viewDidAppear()
+    vm = LoginToutViewModel()
 
-      XCTAssertEqual(["Application Login or Signup"], trackingClient.events)
+  }
 
-      vm.inputs.viewDidAppear()
+  override func tearDown() {
+    super.tearDown()
 
-      XCTAssertEqual(["Application Login or Signup"], trackingClient.events)
-    }
+    AppEnvironment.popEnvironment()
+  }
+
+  func testKoala_whenLoginIntentBeforeViewAppears() {
+    vm.inputs.loginIntent(LoginIntent.Activity)
+    vm.inputs.viewDidAppear()
+
+    XCTAssertEqual(["Application Login or Signup"], trackingClient.events)
+
+    vm.inputs.viewDidAppear()
+
+    XCTAssertEqual(["Application Login or Signup"], trackingClient.events)
   }
 
   func testKoala_whenViewAppearsBeforeLoginIntent() {
-    let trackingClient = MockTrackingClient()
-    let koala = Koala(client: trackingClient)
+    vm.inputs.viewDidAppear()
+    vm.inputs.loginIntent(LoginIntent.Activity)
 
-    withEnvironment(koala: koala) {
-      let vm: LoginToutViewModelType = LoginToutViewModel()
-
-      vm.inputs.viewDidAppear()
-      vm.inputs.loginIntent(LoginIntent.Activity)
-
-      XCTAssertEqual(["Application Login or Signup"], trackingClient.events)
-    }
+    XCTAssertEqual(["Application Login or Signup"], trackingClient.events)
   }
 
   func testStartLogin() {
-    let vm: LoginToutViewModelType = LoginToutViewModel()
-
     let startLogin = TestObserver<(), NoError>()
     vm.outputs.startLogin.observe(startLogin.observer)
 
@@ -52,8 +55,6 @@ final class LoginToutViewModelTests: XCTestCase {
   }
 
   func testStartSignup() {
-    let vm: LoginToutViewModelType = LoginToutViewModel()
-
     let startSignup = TestObserver<(), NoError>()
     vm.outputs.startSignup.observe(startSignup.observer)
 
@@ -63,8 +64,6 @@ final class LoginToutViewModelTests: XCTestCase {
   }
 
   func testShowHelpSheet() {
-    let vm: LoginToutViewModelType = LoginToutViewModel()
-
     let showHelpActionSheet = TestObserver<[HelpType], NoError>()
     vm.outputs.showHelpActionSheet.observe(showHelpActionSheet.observer)
 
@@ -74,8 +73,6 @@ final class LoginToutViewModelTests: XCTestCase {
   }
 
   func testShowHelpType() {
-    let vm: LoginToutViewModelType = LoginToutViewModel()
-
     let showHelp = TestObserver<HelpType, NoError>()
     vm.outputs.showHelp.observe(showHelp.observer)
 
