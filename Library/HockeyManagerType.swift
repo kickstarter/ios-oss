@@ -7,13 +7,16 @@ public protocol HockeyManagerType {
   func configureWithIdentifier(appIdentifier: String!)
   func startManager()
   func appIdentifier() -> String?
+  func autoSendReports()
 }
 
 extension BITHockeyManager: HockeyManagerType {
+  public func autoSendReports() {
+    self.crashManager.crashManagerStatus = .AutoSend
+  }
+
   public func appIdentifier() -> String? {
-    return AppEnvironment.current.mainBundle
-      .pathForResource("hockeyapp", ofType: "config")
-      .flatMap { file in try? String(contentsOfFile: file) }
+    return "***REMOVED***"
   }
 }
 
@@ -23,6 +26,11 @@ extension BITHockeyManager: HockeyManagerType {
 internal final class MockHockeyManager: HockeyManagerType {
   internal var configuredAppIdentifier: String? = nil
   internal var managerStarted = false
+  internal var isAutoSendingReports = false
+
+  func autoSendReports() {
+    self.isAutoSendingReports = true
+  }
 
   internal func configureWithIdentifier(appIdentifier: String!) {
     self.configuredAppIdentifier = appIdentifier

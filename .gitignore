@@ -28,6 +28,7 @@ xcuserdata
 ## Obj-C/Swift specific
 *.hmap
 *.ipa
+*.app.dSYM.zip
 
 ## Playgrounds
 timeline.xctimeline

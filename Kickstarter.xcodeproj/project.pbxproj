@@ -82,6 +82,11 @@
 		80FE73371C88F34600BE0137 /* Result.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 80FE732B1C88F30700BE0137 /* Result.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		80FE733A1C88F3D400BE0137 /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7B694301C87A07100C49A4F /* HockeySDK.framework */; };
 		80FE733C1C88F4CA00BE0137 /* AlamofireImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 807571F91C88B8E200E7DA8A /* AlamofireImage.framework */; };
+		9D39C0471C9B5662004E0943 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D39C0461C9B5662004E0943 /* SearchViewModel.swift */; };
+		9DE6C0571C9B5C7700FCC7B1 /* SearchViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DE6C0561C9B5C7700FCC7B1 /* SearchViewModelTests.swift */; };
+		9DE6C07B1C9B5C8600FCC7B1 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D39C0461C9B5662004E0943 /* SearchViewModel.swift */; };
+		9DE6C08B1C9B67C500FCC7B1 /* discover.json in Resources */ = {isa = PBXBuildFile; fileRef = A7E0704E1C5D3CF000EBDCC2 /* discover.json */; };
+		9DE6C08C1C9B67C500FCC7B1 /* discover.json in Resources */ = {isa = PBXBuildFile; fileRef = A7E0704E1C5D3CF000EBDCC2 /* discover.json */; };
 		A72153921C5D62E800127699 /* HomeViewModelInputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72153911C5D62E800127699 /* HomeViewModelInputs.swift */; };
 		A72153941C5D630300127699 /* HomeViewModelOutputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72153931C5D630300127699 /* HomeViewModelOutputs.swift */; };
 		A721DF621C8CF503000CB97C /* TrackingClientType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A721DF611C8CF503000CB97C /* TrackingClientType.swift */; };
@@ -103,6 +108,7 @@
 		A731719A1C8EA20300AC07C5 /* ProjectDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73171981C8EA20300AC07C5 /* ProjectDataSource.swift */; };
 		A73171BF1C8EA27400AC07C5 /* ProjectMainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73171BE1C8EA27400AC07C5 /* ProjectMainViewModel.swift */; };
 		A73171C01C8EA27400AC07C5 /* ProjectMainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73171BE1C8EA27400AC07C5 /* ProjectMainViewModel.swift */; };
+		A745D1411CAAB48F00C12802 /* LoginToutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F761761C85FACB005405ED /* LoginToutViewController.swift */; };
 		A751A51F1C85EC0B009C5DEA /* DiscoveryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A751A51E1C85EC0B009C5DEA /* DiscoveryViewController.swift */; };
 		A75511461C8642B3005355CF /* Library.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A755113C1C8642B3005355CF /* Library.framework */; };
 		A755115B1C8642C3005355CF /* AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C725781C85D36D005A016B /* AppEnvironment.swift */; };
@@ -246,7 +252,6 @@
 		A7A542581C8E463400273B58 /* ReactiveExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 807572391C88DD8B00E7DA8A /* ReactiveExtensions.framework */; };
 		A7B693E61C8772A100C49A4F /* Library.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A755113C1C8642B3005355CF /* Library.framework */; };
 		A7B693E71C8772CE00C49A4F /* Library.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A755113C1C8642B3005355CF /* Library.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		A7B693F51C8778A900C49A4F /* hockeyapp.config in Resources */ = {isa = PBXBuildFile; fileRef = A7B693F41C8778A900C49A4F /* hockeyapp.config */; };
 		A7B693FF1C8789C100C49A4F /* HockeyManagerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B693FE1C8789C100C49A4F /* HockeyManagerType.swift */; };
 		A7B694001C8789C100C49A4F /* HockeyManagerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B693FE1C8789C100C49A4F /* HockeyManagerType.swift */; };
 		A7B6940F1C87927700C49A4F /* XCTestCase+AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75511A31C86460B005355CF /* XCTestCase+AppEnvironment.swift */; };
@@ -269,7 +274,6 @@
 		A7C795B21C873AC90081977F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D1F9471C850B7C000D41D5 /* AppDelegate.swift */; };
 		A7C795B31C873AC90081977F /* ActivitiesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F761741C85FA40005405ED /* ActivitiesViewController.swift */; };
 		A7C795B41C873AC90081977F /* DiscoveryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A751A51E1C85EC0B009C5DEA /* DiscoveryViewController.swift */; };
-		A7C795B51C873AC90081977F /* LoginToutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F761761C85FACB005405ED /* LoginToutViewController.swift */; };
 		A7C795DB1C873C160081977F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E06C7C1C5A6EB300EBDCC2 /* AppDelegate.swift */; };
 		A7C795DC1C873C160081977F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E06C7E1C5A6EB300EBDCC2 /* ViewController.swift */; };
 		A7C795DD1C873C160081977F /* DiscoveryProjectData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E06CA81C5BFB3800EBDCC2 /* DiscoveryProjectData.swift */; };
@@ -1263,6 +1267,8 @@
 		807572541C88DDCC00E7DA8A /* Curry.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Curry.xcodeproj; path = Frameworks/KsApi/Frameworks/Models/Frameworks/Argo/Carthage/Checkouts/Curry/Curry.xcodeproj; sourceTree = "<group>"; };
 		807572631C88DDDF00E7DA8A /* ReactiveCocoa.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactiveCocoa.xcodeproj; path = Frameworks/KsApi/Frameworks/ReactiveExtensions/Frameworks/ReactiveCocoa/ReactiveCocoa.xcodeproj; sourceTree = "<group>"; };
 		80FE73171C88F30700BE0137 /* Result.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Result.xcodeproj; path = Frameworks/KsApi/Frameworks/ReactiveExtensions/Frameworks/ReactiveCocoa/Carthage/Checkouts/Result/Result.xcodeproj; sourceTree = "<group>"; };
+		9D39C0461C9B5662004E0943 /* SearchViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
+		9DE6C0561C9B5C7700FCC7B1 /* SearchViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewModelTests.swift; sourceTree = "<group>"; };
 		A72153911C5D62E800127699 /* HomeViewModelInputs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewModelInputs.swift; sourceTree = "<group>"; };
 		A72153931C5D630300127699 /* HomeViewModelOutputs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewModelOutputs.swift; sourceTree = "<group>"; };
 		A721DF611C8CF503000CB97C /* TrackingClientType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackingClientType.swift; sourceTree = "<group>"; };
@@ -1321,7 +1327,6 @@
 		A775190F1C8CADC80022F175 /* AppDelegateViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegateViewModelTests.swift; sourceTree = "<group>"; };
 		A77519131C8CADFE0022F175 /* ActivitiesViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivitiesViewModelTests.swift; sourceTree = "<group>"; };
 		A77519211C8CB0360022F175 /* CircleAvatarImageViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleAvatarImageViewTests.swift; sourceTree = "<group>"; };
-		A7B693F41C8778A900C49A4F /* hockeyapp.config */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = hockeyapp.config; sourceTree = "<group>"; };
 		A7B693FE1C8789C100C49A4F /* HockeyManagerType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HockeyManagerType.swift; sourceTree = "<group>"; };
 		A7B694271C87A04C00C49A4F /* HockeySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = HockeySDK.framework; sourceTree = "<group>"; };
 		A7B694291C87A04C00C49A4F /* HockeySDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = HockeySDKResources.bundle; sourceTree = "<group>"; };
@@ -1354,7 +1359,7 @@
 		A7C7961F1C873CD90081977F /* Kickstarter-tvOS.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = "Kickstarter-tvOS.playground"; sourceTree = "<group>"; };
 		A7D1F8E41C84FB55000D41D5 /* KsApi.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = KsApi.xcodeproj; path = Frameworks/KsApi/KsApi.xcodeproj; sourceTree = "<group>"; };
 		A7D1F9021C84FB5F000D41D5 /* Prelude.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Prelude.xcodeproj; path = Frameworks/Prelude/Prelude.xcodeproj; sourceTree = "<group>"; };
-		A7D1F9451C850B7C000D41D5 /* Kickstarter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kickstarter.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A7D1F9451C850B7C000D41D5 /* KickDebug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KickDebug.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7D1F9471C850B7C000D41D5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A7D1F94E1C850B7C000D41D5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A7D1F9501C850B7C000D41D5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -1807,6 +1812,7 @@
 				A7FC8C4D1C8F43E400C3B49B /* ProjectRewardViewModel.swift */,
 				A7FC8C531C8F447D00C3B49B /* ProjectSubpagesViewModel.swift */,
 				A7285CC01C8E8DDB00D83297 /* ProjectViewModel.swift */,
+				9D39C0461C9B5662004E0943 /* SearchViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -1889,6 +1895,7 @@
 				A77519131C8CADFE0022F175 /* ActivitiesViewModelTests.swift */,
 				0154A93C1CA1AF2A00DB9BA4 /* LoginViewModelTests.swift */,
 				01B6ABE51CA2F233003DB4C8 /* LoginToutViewModelTests.swift */,
+				9DE6C0561C9B5C7700FCC7B1 /* SearchViewModelTests.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -1896,7 +1903,6 @@
 		A7B693F31C8778A900C49A4F /* Configs */ = {
 			isa = PBXGroup;
 			children = (
-				A7B693F41C8778A900C49A4F /* hockeyapp.config */,
 				A721DF7F1C8D1F3C000CB97C /* koala-endpoint.config */,
 			);
 			path = Configs;
@@ -2103,7 +2109,7 @@
 			children = (
 				A7E06C791C5A6EB300EBDCC2 /* Kickstarter.app */,
 				A7E06C8A1C5A6EB300EBDCC2 /* Kickstarter.xctest */,
-				A7D1F9451C850B7C000D41D5 /* Kickstarter.app */,
+				A7D1F9451C850B7C000D41D5 /* KickDebug.app */,
 				A7D1F95A1C850B7C000D41D5 /* Kickstarter-iOSTests.xctest */,
 				A755113C1C8642B3005355CF /* Library.framework */,
 				A75511451C8642B3005355CF /* Library-iOSTests.xctest */,
@@ -2473,7 +2479,7 @@
 			);
 			name = "Kickstarter-iOS";
 			productName = Kickstarter;
-			productReference = A7D1F9451C850B7C000D41D5 /* Kickstarter.app */;
+			productReference = A7D1F9451C850B7C000D41D5 /* KickDebug.app */;
 			productType = "com.apple.product-type.application";
 		};
 		A7D1F9591C850B7C000D41D5 /* Kickstarter-iOSTests */ = {
@@ -2557,7 +2563,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0720;
-				LastUpgradeCheck = 0720;
+				LastUpgradeCheck = 0730;
 				ORGANIZATIONNAME = Kickstarter;
 				TargetAttributes = {
 					A755113B1C8642B3005355CF = {
@@ -3145,11 +3151,11 @@
 				01BDFFB21C87AAD0002E8D34 /* Login.storyboard in Resources */,
 				A7D1F9541C850B7C000D41D5 /* LaunchScreen.storyboard in Resources */,
 				A721DF801C8D1F3C000CB97C /* koala-endpoint.config in Resources */,
+				9DE6C08B1C9B67C500FCC7B1 /* discover.json in Resources */,
 				A7D1F9511C850B7C000D41D5 /* Assets.xcassets in Resources */,
 				A7FC8C0E1C8F2D6300C3B49B /* Discovery.storyboard in Resources */,
 				A7D1F94F1C850B7C000D41D5 /* Main.storyboard in Resources */,
 				A7FC8C0A1C8F2CF600C3B49B /* Activity.storyboard in Resources */,
-				A7B693F51C8778A900C49A4F /* hockeyapp.config in Resources */,
 				A7B6942D1C87A05D00C49A4F /* HockeySDKResources.bundle in Resources */,
 				A7FC8C281C8F2DCF00C3B49B /* Project.storyboard in Resources */,
 			);
@@ -3159,6 +3165,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9DE6C08C1C9B67C500FCC7B1 /* discover.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3407,19 +3414,19 @@
 				A77519011C8C97510022F175 /* ActivityFriendBackingViewModel.swift in Sources */,
 				A77518FE1C8C8ADA0022F175 /* ActivityUpdateViewModel.swift in Sources */,
 				A7FC8C4F1C8F43E400C3B49B /* ProjectRewardViewModel.swift in Sources */,
+				9DE6C07B1C9B5C8600FCC7B1 /* SearchViewModel.swift in Sources */,
 				A762F01D1C8CD2B3005581A4 /* ActivityStateChangeCell.swift in Sources */,
 				A75CBDE81C8A26F800758C55 /* AppDelegateViewModel.swift in Sources */,
 				0127FC5A1C98C10D00E335C6 /* MFMailComposeViewController.swift in Sources */,
 				A7C795B41C873AC90081977F /* DiscoveryViewController.swift in Sources */,
 				018F1F841C8E182200643DAA /* LoginViewController.swift in Sources */,
-				A7C795B51C873AC90081977F /* LoginToutViewController.swift in Sources */,
+				A745D1411CAAB48F00C12802 /* LoginToutViewController.swift in Sources */,
 				019502031C8E3EF700F31304 /* LoginViewModel.swift in Sources */,
 				A75AB2261C8B407F002FC3E6 /* ActivityFriendBackingCell.swift in Sources */,
 				A75AB1FA1C8A84B5002FC3E6 /* ActivitiesDataSource.swift in Sources */,
 				A762F0201C8CD2C0005581A4 /* ActivityStateChangeViewModel.swift in Sources */,
 				A7E315C91C88ABAC000DD85A /* DiscoveryProjectViewModel.swift in Sources */,
 				A73171C01C8EA27400AC07C5 /* ProjectMainViewModel.swift in Sources */,
-				A7C795B51C873AC90081977F /* LoginToutViewController.swift in Sources */,
 				A75AB1E21C8A8255002FC3E6 /* ActivitiesViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3509,6 +3516,7 @@
 				A77519001C8C97510022F175 /* ActivityFriendBackingViewModel.swift in Sources */,
 				A77518FD1C8C8ADA0022F175 /* ActivityUpdateViewModel.swift in Sources */,
 				A7FC8C4E1C8F43E400C3B49B /* ProjectRewardViewModel.swift in Sources */,
+				9D39C0471C9B5662004E0943 /* SearchViewModel.swift in Sources */,
 				A762F01C1C8CD2B3005581A4 /* ActivityStateChangeCell.swift in Sources */,
 				A75CBDE71C8A26F800758C55 /* AppDelegateViewModel.swift in Sources */,
 				A751A51F1C85EC0B009C5DEA /* DiscoveryViewController.swift in Sources */,
@@ -3533,6 +3541,7 @@
 				A77519141C8CADFE0022F175 /* ActivitiesViewModelTests.swift in Sources */,
 				A7D1F9931C850CB2000D41D5 /* KickstarterTests.swift in Sources */,
 				A7B6940F1C87927700C49A4F /* XCTestCase+AppEnvironment.swift in Sources */,
+				9DE6C0571C9B5C7700FCC7B1 /* SearchViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3907,6 +3916,222 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		A745D1D41CAAD0A400C12802 /* Hockey */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 802800571C88F64D00141235 /* Base.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				"FRAMEWORK_SEARCH_PATHS[sdk=appletv*]" = (
+					"$(SYMROOT)/Release$(EFFECTIVE_PLATFORM_NAME)",
+					"$(PROJECT_DIR)/Frameworks/HockeySDK/tvOS/HockeySDK.embeddedframework",
+				);
+				"FRAMEWORK_SEARCH_PATHS[sdk=iphone*]" = (
+					"$(SYMROOT)/Release$(EFFECTIVE_PLATFORM_NAME)",
+					"$(PROJECT_DIR)/Frameworks/HockeySDK/iOS/HockeySDK.embeddedframework",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = Kickstarter;
+				SDKROOT = appletvos;
+				STRIP_BITCODE_FROM_COPIED_FILES = NO;
+				STRIP_STYLE = debugging;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Hockey;
+		};
+		A745D1D51CAAD0A400C12802 /* Hockey */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "app-icon-beta";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				DEFINES_MODULE = YES;
+				INFOPLIST_FILE = "Kickstarter-iOS/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstarter.beta;
+				PRODUCT_MODULE_NAME = Kickstarter_iOS;
+				PRODUCT_NAME = KickBeta;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Hockey;
+		};
+		A745D1D61CAAD0A400C12802 /* Hockey */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = NO;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				INFOPLIST_FILE = "Kickstarter-iOS/Tests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.KickstarterTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/KickBeta.app/KickBeta";
+			};
+			name = Hockey;
+		};
+		A745D1D71CAAD0A400C12802 /* Hockey */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Kickstarter-iOS/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.Library-iOS";
+				PRODUCT_NAME = Library;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Hockey;
+		};
+		A745D1D81CAAD0A400C12802 /* Hockey */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				INFOPLIST_FILE = "Kickstarter-iOS/Tests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.Library-iOSTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Hockey;
+		};
+		A745D1D91CAAD0A400C12802 /* Hockey */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Kickstarter-iOS/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.Kickstarter-iOS-Framework";
+				PRODUCT_NAME = Kickstarter_Framework;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Hockey;
+		};
+		A745D1DA1CAAD0A400C12802 /* Hockey */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				DEFINES_MODULE = YES;
+				INFOPLIST_FILE = "$(SRCROOT)/Kickstarter-tvOS/Supporting Files/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstartertv;
+				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)_tvOS";
+			};
+			name = Hockey;
+		};
+		A745D1DB1CAAD0A400C12802 /* Hockey */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = NO;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = "Kickstarter-tvOS/Tests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstartertvTests;
+				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)_tvOSTests";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/$(EXECUTABLE_NAME).app/$(PRODUCT_NAME)";
+			};
+			name = Hockey;
+		};
+		A745D1DC1CAAD0A400C12802 /* Hockey */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "$(SRCROOT)/Kickstarter-tvOS/Supporting Files/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.Library-tvOS";
+				PRODUCT_NAME = Library;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Hockey;
+		};
+		A745D1DD1CAAD0A400C12802 /* Hockey */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				INFOPLIST_FILE = "Kickstarter-tvOS/Tests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.Library-tvOSTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+			};
+			name = Hockey;
+		};
+		A745D1DE1CAAD0A400C12802 /* Hockey */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "$(SRCROOT)/Kickstarter-tvOS/Supporting Files/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.Kickstarter-tvOS-Framework";
+				PRODUCT_NAME = Kickstarter_Framework;
+				SKIP_INSTALL = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Hockey;
+		};
 		A755114D1C8642B3005355CF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -3916,7 +4141,6 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = "Kickstarter-iOS/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -3938,7 +4162,6 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = "Kickstarter-iOS/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -3988,11 +4211,6 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Frameworks/HockeySDK/tvOS/HockeySDK.embeddedframework",
-				);
 				INFOPLIST_FILE = "$(SRCROOT)/Kickstarter-tvOS/Supporting Files/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -4014,11 +4232,6 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Frameworks/HockeySDK/tvOS/HockeySDK.embeddedframework",
-				);
 				INFOPLIST_FILE = "$(SRCROOT)/Kickstarter-tvOS/Supporting Files/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -4145,11 +4358,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "app-icon-debug";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEFINES_MODULE = YES;
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = "Kickstarter-iOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstarter;
-				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)_iOS";
+				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstarter.debug;
+				PRODUCT_MODULE_NAME = Kickstarter_iOS;
+				PRODUCT_NAME = KickDebug;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -4158,13 +4371,13 @@
 		A7D1F9631C850B7C000D41D5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = "app-icon-release";
+				ASSETCATALOG_COMPILER_APPICON_NAME = "app-icon";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				DEFINES_MODULE = YES;
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = "Kickstarter-iOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstarter;
-				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)_iOS";
+				PRODUCT_MODULE_NAME = Kickstarter_iOS;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -4181,7 +4394,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.KickstarterTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Kickstarter.app/Kickstarter";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/KickDebug.app/KickDebug";
 			};
 			name = Debug;
 		};
@@ -4220,6 +4433,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -4243,6 +4457,8 @@
 				PRODUCT_NAME = Kickstarter;
 				SDKROOT = appletvos;
 				STRIP_BITCODE_FROM_COPIED_FILES = NO;
+				STRIP_INSTALLED_PRODUCT = NO;
+				STRIP_STYLE = debugging;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 9.0;
@@ -4267,9 +4483,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -4286,6 +4500,7 @@
 				PRODUCT_NAME = Kickstarter;
 				SDKROOT = appletvos;
 				STRIP_BITCODE_FROM_COPIED_FILES = NO;
+				STRIP_STYLE = debugging;
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 9.0;
 				VALIDATE_PRODUCT = YES;
@@ -4298,11 +4513,6 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				DEFINES_MODULE = YES;
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Frameworks/HockeySDK/tvOS/HockeySDK.embeddedframework",
-				);
 				INFOPLIST_FILE = "$(SRCROOT)/Kickstarter-tvOS/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstartertv;
@@ -4316,11 +4526,6 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				DEFINES_MODULE = YES;
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Frameworks/HockeySDK/tvOS/HockeySDK.embeddedframework",
-				);
 				INFOPLIST_FILE = "$(SRCROOT)/Kickstarter-tvOS/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstartertv;
@@ -4362,6 +4567,7 @@
 			buildConfigurations = (
 				A755114D1C8642B3005355CF /* Debug */,
 				A755114E1C8642B3005355CF /* Release */,
+				A745D1D71CAAD0A400C12802 /* Hockey */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -4371,6 +4577,7 @@
 			buildConfigurations = (
 				A755114F1C8642B3005355CF /* Debug */,
 				A75511501C8642B3005355CF /* Release */,
+				A745D1D81CAAD0A400C12802 /* Hockey */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -4380,6 +4587,7 @@
 			buildConfigurations = (
 				A75511D81C8647D9005355CF /* Debug */,
 				A75511D91C8647D9005355CF /* Release */,
+				A745D1DC1CAAD0A400C12802 /* Hockey */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -4389,6 +4597,7 @@
 			buildConfigurations = (
 				A75511FF1C865321005355CF /* Debug */,
 				A75512001C865321005355CF /* Release */,
+				A745D1DD1CAAD0A400C12802 /* Hockey */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -4398,6 +4607,7 @@
 			buildConfigurations = (
 				A7C795A71C873A870081977F /* Debug */,
 				A7C795A81C873A870081977F /* Release */,
+				A745D1D91CAAD0A400C12802 /* Hockey */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -4407,6 +4617,7 @@
 			buildConfigurations = (
 				A7C795D71C873BD50081977F /* Debug */,
 				A7C795D81C873BD50081977F /* Release */,
+				A745D1DE1CAAD0A400C12802 /* Hockey */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -4416,6 +4627,7 @@
 			buildConfigurations = (
 				A7D1F9621C850B7C000D41D5 /* Debug */,
 				A7D1F9631C850B7C000D41D5 /* Release */,
+				A745D1D51CAAD0A400C12802 /* Hockey */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -4425,6 +4637,7 @@
 			buildConfigurations = (
 				A7D1F9651C850B7C000D41D5 /* Debug */,
 				A7D1F9661C850B7C000D41D5 /* Release */,
+				A745D1D61CAAD0A400C12802 /* Hockey */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -4434,6 +4647,7 @@
 			buildConfigurations = (
 				A7E06C9C1C5A6EB300EBDCC2 /* Debug */,
 				A7E06C9D1C5A6EB300EBDCC2 /* Release */,
+				A745D1D41CAAD0A400C12802 /* Hockey */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -4443,6 +4657,7 @@
 			buildConfigurations = (
 				A7E06C9F1C5A6EB300EBDCC2 /* Debug */,
 				A7E06CA01C5A6EB300EBDCC2 /* Release */,
+				A745D1DA1CAAD0A400C12802 /* Hockey */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -4452,6 +4667,7 @@
 			buildConfigurations = (
 				A7E06CA21C5A6EB300EBDCC2 /* Debug */,
 				A7E06CA31C5A6EB300EBDCC2 /* Release */,
+				A745D1DB1CAAD0A400C12802 /* Hockey */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
