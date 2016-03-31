@@ -115,12 +115,12 @@ final class SearchViewModelTests: XCTestCase {
       vm.inputs.searchTextChanged("")
 
       hasProjects.assertValues([true, false, true], "Brings back popular projets immediately.")
-      //projects.assertLastValue(popularProjects, "Brings back popular projects immediately.")
+      projects.assertLastValue(popularProjects, "Brings back popular projects immediately.")
 
       scheduler.advanceByInterval(10.0)
 
       hasProjects.assertValues([true, false, true], "Doesn't search for projects after time enough time passes.")
-      //projects.assertLastValue(popularProjects, "Brings back popular projects immediately.")
+      projects.assertLastValue(popularProjects, "Brings back popular projects immediately.")
 
       XCTAssertEqual(["Discover Search"], trackingClient.events)
     }
