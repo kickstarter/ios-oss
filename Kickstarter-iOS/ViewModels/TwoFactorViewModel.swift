@@ -6,7 +6,7 @@ import Library
 
 internal protocol TwoFactorViewModelInputs {
   func viewWillAppear()
-  func email(email: String, andPassword password: String)
+  func email(email: String, password: String)
   func facebookToken(token: String)
   func code(code: String)
   func resendPressed()
@@ -39,7 +39,7 @@ internal final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMo
   }
 
   private let (emailAndPasswordSignal, emailAndPasswordObserver) = Signal<(email: String, password: String), NoError>.pipe()
-  func email(email: String, andPassword password: String) {
+  func email(email: String, password: String) {
     emailAndPasswordObserver.sendNext((email, password))
   }
 
@@ -87,17 +87,17 @@ internal final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMo
     let (isLoadingSignal, isLoadingObserver) = Signal<Bool, NoError>.pipe()
     isLoading = isLoadingSignal
 
+    isFormValid = combineLatest(hasInput, codeSignal)
+      .map { _, code in code.characters.count == 6 }
+      .mergeWith(viewWillAppearSignal.mapConst(false))
+      .skipRepeats()
+
     codeMismatch = .empty
     generic = .empty
 
     resendPressedSignal
       .mergeWith(submitPressedSignal)
       .observeNext { isLoadingObserver.sendNext(true) }
-
-    isFormValid = combineLatest(hasInput, codeSignal)
-      .map { _, code in code.characters.count == 6 }
-      .mergeWith(viewWillAppearSignal.mapConst(false))
-      .skipRepeats()
 
     emailAndPasswordSignal
       .combineLatestWith(codeSignal)

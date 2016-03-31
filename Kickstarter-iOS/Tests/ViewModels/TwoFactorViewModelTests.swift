@@ -41,7 +41,7 @@ final class TwoFactorViewModelTests: XCTestCase {
 
     isFormValid.assertValues([false])
 
-    vm.inputs.email("gina@kickstarter.com", andPassword: "blah")
+    vm.inputs.email("gina@kickstarter.com", password: "blah")
 
     isFormValid.assertValues([false])
 
@@ -83,7 +83,7 @@ final class TwoFactorViewModelTests: XCTestCase {
     isFormValid.assertValues([false, true, false])
   }
 
-  func testLogin_withEmalPasswordFlow() {
+  func testLogin_withEmailPasswordFlow() {
     let isLoading = TestObserver<Bool, NoError>()
     vm.outputs.isLoading.observe(isLoading.observer)
 
@@ -91,7 +91,7 @@ final class TwoFactorViewModelTests: XCTestCase {
     vm.outputs.loginSuccess.observe(loginSuccess.observer)
 
     vm.inputs.viewWillAppear()
-    vm.inputs.email("gina@kickstarter.com", andPassword: "lkjkl")
+    vm.inputs.email("gina@kickstarter.com", password: "lkjkl")
     vm.inputs.code("454545")
     vm.inputs.submitPressed()
 
@@ -125,7 +125,7 @@ final class TwoFactorViewModelTests: XCTestCase {
     vm.outputs.isLoading.observe(isLoading.observer)
 
     vm.inputs.viewWillAppear()
-    vm.inputs.email("gina@kickstarter.com", andPassword: "lkjkl")
+    vm.inputs.email("gina@kickstarter.com", password: "lkjkl")
     vm.inputs.resendPressed()
 
     isLoading.assertValues([true, false])
@@ -146,20 +146,3 @@ final class TwoFactorViewModelTests: XCTestCase {
     XCTAssertEqual(["Two-factor Authentication Confirm View", "Two-factor Authentication Resend Code"], trackingClient.events)
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
