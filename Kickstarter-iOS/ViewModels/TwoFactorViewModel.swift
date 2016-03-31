@@ -125,7 +125,7 @@ internal final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMo
       .observeNext { email, password in
         apiService.login(email: email, password: password, code: nil)
         isLoadingObserver.sendNext(false)
-        koala.trackTwoFactorResendCode()
+        koala.trackTfaResendCode()
     }
 
     facebookTokenSignal
@@ -133,7 +133,7 @@ internal final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMo
       .observeNext { token in
         apiService.login(facebookAccessToken: token, code: nil)
         isLoadingObserver.sendNext(false)
-        koala.trackTwoFactorResendCode()
+        koala.trackTfaResendCode()
     }
 
     viewWillAppearSignal.observeNext { _ in koala.trackTfa() }

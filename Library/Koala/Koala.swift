@@ -30,10 +30,6 @@ public final class Koala {
     self.track(event: "Application Login or Signup", properties: ["intent": intent])
   }
 
-  public func trackTfa() {
-    self.track(event: "Two-factor Authentication Confirm View")
-  }
-
   public func trackLoginSuccess() {
     self.track(event: "Login")
   }
@@ -42,7 +38,11 @@ public final class Koala {
     self.track(event: "Errored User Login")
   }
 
-  public func trackTwoFactorResendCode() {
+  public func trackTfa() {
+    self.track(event: "Two-factor Authentication Confirm View")
+  }
+
+  public func trackTfaResendCode() {
     self.track(event: "Two-factor Authentication Resend Code")
   }
 
