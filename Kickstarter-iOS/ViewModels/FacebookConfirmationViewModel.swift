@@ -1,6 +1,7 @@
-import ReactiveCocoa
-import Result
 import KsApi
+import ReactiveCocoa
+import ReactiveExtensions
+import Result
 import Library
 
 internal protocol FacebookConfirmationViewModelInputs {
@@ -81,32 +82,32 @@ internal final class FacebookConfirmationViewModel: FacebookConfirmationViewMode
   internal init(env: Environment = AppEnvironment.current) {
     let apiService = env.apiService
     let koala = env.koala
-    let initialNewsletterState = false
+
+    let (accountCreationFailSignal, accountCreationFailObserver) = Signal<ErrorEnvelope, NoError>.pipe()
+    accountCreationFail = accountCreationFailSignal
+      .map { envelope in envelope.errorMessages.first ??
+        localizedString(key: "signup.error.something_wrong", defaultValue: "Something went wrong.")
+      }
 
     displayEmail = emailSignal.takeWhen(viewWillAppearSignal)
 
     sendNewsletters = sendNewslettersToggledSignal
-      .mergeWith(viewWillAppearSignal.mapConst(initialNewsletterState))
+      .mergeWith(viewWillAppearSignal.mapConst(true))
 
-    newAccountSuccess = combineLatest(facebookTokenSignal, sendNewslettersToggledSignal)
+    newAccountSuccess = combineLatest(facebookTokenSignal, sendNewsletters)
       .takeWhen(createAccountButtonSignal)
       .switchMap { token, newsletter in
-        apiService.signup(facebookAccessToken: token, sendNewsletters: newsletter).demoteErrors() }
+        apiService.signup(facebookAccessToken: token, sendNewsletters: newsletter)
+          .demoteErrors(pipeErrorsTo: accountCreationFailObserver)
+      }
       .ignoreValues()
 
     showLogin = loginButtonPressedSignal
-
-    accountCreationFail = .empty
 
     viewWillAppearSignal.observeNext { _ in koala.trackFacebookConfirmation() }
 
     newAccountSuccess.observeNext { _ in koala.trackSignupSuccess() }
 
-    sendNewslettersToggledSignal
-      .skip(1)
-      .observeNext { send in
-      koala.trackSignupNewsletterToggle(send) }
-
-    sendNewslettersToggledObserver.sendNext(initialNewsletterState)
+    sendNewslettersToggledSignal.observeNext(koala.trackSignupNewsletterToggle)
   }
 }

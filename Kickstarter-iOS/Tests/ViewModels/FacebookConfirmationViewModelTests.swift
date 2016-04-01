@@ -52,20 +52,20 @@ final class FacebookConfirmationViewModelTests: XCTestCase {
 
     vm.inputs.viewWillAppear()
 
-    sendNewsletters.assertValues([false], "Newsletter toggle is off")
+    sendNewsletters.assertValues([true], "Newsletter toggle is off")
     XCTAssertEqual(["Facebook Confirm"], trackingClient.events, "Newsletter toggle is not tracked on intital state")
-
-    vm.inputs.sendNewslettersToggled(true)
-
-    sendNewsletters.assertValues([false, true], "Newsletter toggle is on")
-    XCTAssertEqual(["Facebook Confirm", "Signup Newsletter Toggle"], trackingClient.events, "Newsletter toggle is tracked")
-    XCTAssertEqual(true, trackingClient.properties.last!["send_newsletters"] as? Bool)
 
     vm.inputs.sendNewslettersToggled(false)
 
-    sendNewsletters.assertValues([false, true, false], "Newsletter toggle is off")
-    XCTAssertEqual(["Facebook Confirm", "Signup Newsletter Toggle", "Signup Newsletter Toggle"], trackingClient.events, "Newsletter toggle is tracked")
+    sendNewsletters.assertValues([true, false], "Newsletter toggle is on")
+    XCTAssertEqual(["Facebook Confirm", "Signup Newsletter Toggle"], trackingClient.events, "Newsletter toggle is tracked")
     XCTAssertEqual(false, trackingClient.properties.last!["send_newsletters"] as? Bool)
+
+    vm.inputs.sendNewslettersToggled(true)
+
+    sendNewsletters.assertValues([true, false, true], "Newsletter toggle is off")
+    XCTAssertEqual(["Facebook Confirm", "Signup Newsletter Toggle", "Signup Newsletter Toggle"], trackingClient.events, "Newsletter toggle is tracked")
+    XCTAssertEqual(true, trackingClient.properties.last!["send_newsletters"] as? Bool)
 
     // todo: test German double-opt-in
   }
