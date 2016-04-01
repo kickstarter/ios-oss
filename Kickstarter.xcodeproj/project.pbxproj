@@ -40,12 +40,11 @@
 		01B6ABE61CA2F233003DB4C8 /* LoginToutViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B6ABE51CA2F233003DB4C8 /* LoginToutViewModelTests.swift */; };
 		01B6AC311CA49972003DB4C8 /* TwoFactorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B6AC301CA49972003DB4C8 /* TwoFactorViewModel.swift */; };
 		01B6AC321CA49972003DB4C8 /* TwoFactorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B6AC301CA49972003DB4C8 /* TwoFactorViewModel.swift */; };
-		01BDFFB21C87AAD0002E8D34 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 01BDFFB01C87AAD0002E8D34 /* Login.storyboard */; };
-		01BF20D31CA49E3800184A38 /* TwoFactorViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BF20D21CA49E3800184A38 /* TwoFactorViewModelTests.swift */; };
 		01BC58111CAD765B000289E8 /* FacebookConfirmationViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BC58101CAD765B000289E8 /* FacebookConfirmationViewModelTests.swift */; };
 		01BC58361CAD7A98000289E8 /* FacebookConfirmationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BC58351CAD7A98000289E8 /* FacebookConfirmationViewModel.swift */; };
 		01BC58371CAD7A98000289E8 /* FacebookConfirmationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BC58351CAD7A98000289E8 /* FacebookConfirmationViewModel.swift */; };
 		01BDFFB21C87AAD0002E8D34 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 01BDFFB01C87AAD0002E8D34 /* Login.storyboard */; };
+		01BF20D31CA49E3800184A38 /* TwoFactorViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BF20D21CA49E3800184A38 /* TwoFactorViewModelTests.swift */; };
 		01BF210B1CA5D6D100184A38 /* ResetPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BF210A1CA5D6D100184A38 /* ResetPasswordViewModel.swift */; };
 		01BF210C1CA5D6D100184A38 /* ResetPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BF210A1CA5D6D100184A38 /* ResetPasswordViewModel.swift */; };
 		01BF21311CA5E81C00184A38 /* ResetPasswordViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BF21301CA5E81C00184A38 /* ResetPasswordViewModelTests.swift */; };
@@ -1268,11 +1267,10 @@
 		01A7A4BF1C9690220036E553 /* UITextField+LocalizedPlaceholderKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITextField+LocalizedPlaceholderKey.swift"; sourceTree = "<group>"; };
 		01B6ABE51CA2F233003DB4C8 /* LoginToutViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginToutViewModelTests.swift; sourceTree = "<group>"; };
 		01B6AC301CA49972003DB4C8 /* TwoFactorViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwoFactorViewModel.swift; sourceTree = "<group>"; };
-		01BDFFB11C87AAD0002E8D34 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Login.storyboard; sourceTree = "<group>"; };
-		01BF20D21CA49E3800184A38 /* TwoFactorViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwoFactorViewModelTests.swift; sourceTree = "<group>"; };
 		01BC58101CAD765B000289E8 /* FacebookConfirmationViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookConfirmationViewModelTests.swift; sourceTree = "<group>"; };
 		01BC58351CAD7A98000289E8 /* FacebookConfirmationViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookConfirmationViewModel.swift; sourceTree = "<group>"; };
 		01BDFFB11C87AAD0002E8D34 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Login.storyboard; sourceTree = "<group>"; };
+		01BF20D21CA49E3800184A38 /* TwoFactorViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwoFactorViewModelTests.swift; sourceTree = "<group>"; };
 		01BF210A1CA5D6D100184A38 /* ResetPasswordViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResetPasswordViewModel.swift; sourceTree = "<group>"; };
 		01BF21301CA5E81C00184A38 /* ResetPasswordViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResetPasswordViewModelTests.swift; sourceTree = "<group>"; };
 		01EFBC881C91FB770094EEC2 /* UIColorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorTests.swift; sourceTree = "<group>"; };
@@ -1986,6 +1984,7 @@
 				A7C725801C85D36D005A016B /* Format.swift */,
 				A7C725811C85D36D005A016B /* GradientView.swift */,
 				A7B693FE1C8789C100C49A4F /* HockeyManagerType.swift */,
+				A76078091CAEE0A6001B39D0 /* IsValidEmail.swift */,
 				A7C725821C85D36D005A016B /* Language.swift */,
 				A7C725831C85D36D005A016B /* LaunchedCountries.swift */,
 				A7C725841C85D36D005A016B /* LocalizedString.swift */,
@@ -2008,7 +2007,6 @@
 				A721DF3D1C8CF4F6000CB97C /* Koala */,
 				A7C725851C85D36D005A016B /* MVVM */,
 				A75511881C8645A0005355CF /* Tests */,
-				A76078091CAEE0A6001B39D0 /* IsValidEmail.swift */,
 			);
 			path = Library;
 			sourceTree = "<group>";
