@@ -27,8 +27,8 @@ internal protocol LoginToutViewModelOutputs {
   var startLogin: Signal<(), NoError> { get }
   /// Emits when Signup view should be shown
   var startSignup: Signal<(), NoError> { get }
-  /// Emits when the help actionsheet should be shown with an array of tuples containing the button title and help type
-  var showHelpActionSheet: Signal<[(title: String, helpType: HelpType)], NoError> { get }
+  /// Emits when the help actionsheet should be shown with an array of HelpType values
+  var showHelpActionSheet: Signal<[HelpType], NoError> { get }
   /// Emits a HelpType value when a button on the help actionsheet is pressed
   var showHelp: Signal<HelpType, NoError> { get }
 }
@@ -77,7 +77,7 @@ internal final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMo
   // MARK: Outputs
   internal let startLogin: Signal<(), NoError>
   internal let startSignup: Signal<(), NoError>
-  internal let showHelpActionSheet: Signal<[(title: String, helpType: HelpType)], NoError>
+  internal let showHelpActionSheet: Signal<[HelpType], NoError>
   internal let showHelp: Signal<HelpType, NoError>
 
   internal init(env: Environment = AppEnvironment.current) {
@@ -85,9 +85,7 @@ internal final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMo
 
     self.startLogin = self.loginButtonPressedSignal
     self.startSignup = self.signupButtonPressedSignal
-    self.showHelpActionSheet = self.helpButtonPressedSignal.map { _ in
-      return HelpType.allValues.map { (title: $0.title, $0) }
-    }
+    self.showHelpActionSheet = self.helpButtonPressedSignal.mapConst(HelpType.allValues)
     self.showHelp = self.helpTypeButtonPressedSignal
 
     loginIntentSignal
