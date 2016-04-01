@@ -38,6 +38,18 @@ public final class Koala {
     self.track(event: "Errored User Login")
   }
 
+  public func trackResetPassword() {
+    self.track(event: "Forgot Password View")
+  }
+
+  public func trackResetPasswordSuccess() {
+    self.track(event: "Forgot Password Requested")
+  }
+
+  public func trackResetPasswordError() {
+    self.track(event: "Forgot Password Errored")
+  }
+
   public func trackSignupSuccess() {
     self.track(event: "New User")
   }

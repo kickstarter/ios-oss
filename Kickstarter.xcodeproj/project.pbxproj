@@ -42,6 +42,9 @@
 		01BC58361CAD7A98000289E8 /* FacebookConfirmationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BC58351CAD7A98000289E8 /* FacebookConfirmationViewModel.swift */; };
 		01BC58371CAD7A98000289E8 /* FacebookConfirmationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BC58351CAD7A98000289E8 /* FacebookConfirmationViewModel.swift */; };
 		01BDFFB21C87AAD0002E8D34 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 01BDFFB01C87AAD0002E8D34 /* Login.storyboard */; };
+		01BF210B1CA5D6D100184A38 /* ResetPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BF210A1CA5D6D100184A38 /* ResetPasswordViewModel.swift */; };
+		01BF210C1CA5D6D100184A38 /* ResetPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BF210A1CA5D6D100184A38 /* ResetPasswordViewModel.swift */; };
+		01BF21311CA5E81C00184A38 /* ResetPasswordViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BF21301CA5E81C00184A38 /* ResetPasswordViewModelTests.swift */; };
 		01EA879B1C9335C5004E738B /* LoginToutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F761761C85FACB005405ED /* LoginToutViewController.swift */; };
 		01EFBC891C91FB770094EEC2 /* UIColorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01EFBC881C91FB770094EEC2 /* UIColorTests.swift */; };
 		01EFBCAF1C92036E0094EEC2 /* StyledLabelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01EFBCAE1C92036E0094EEC2 /* StyledLabelTests.swift */; };
@@ -1263,6 +1266,8 @@
 		01BC58101CAD765B000289E8 /* FacebookConfirmationViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookConfirmationViewModelTests.swift; sourceTree = "<group>"; };
 		01BC58351CAD7A98000289E8 /* FacebookConfirmationViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookConfirmationViewModel.swift; sourceTree = "<group>"; };
 		01BDFFB11C87AAD0002E8D34 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Login.storyboard; sourceTree = "<group>"; };
+		01BF210A1CA5D6D100184A38 /* ResetPasswordViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResetPasswordViewModel.swift; sourceTree = "<group>"; };
+		01BF21301CA5E81C00184A38 /* ResetPasswordViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResetPasswordViewModelTests.swift; sourceTree = "<group>"; };
 		01EFBC881C91FB770094EEC2 /* UIColorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorTests.swift; sourceTree = "<group>"; };
 		01EFBCAE1C92036E0094EEC2 /* StyledLabelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyledLabelTests.swift; sourceTree = "<group>"; };
 		01EFBCB21C920A7E0094EEC2 /* BorderButtonTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BorderButtonTests.swift; sourceTree = "<group>"; };
@@ -1819,6 +1824,7 @@
 				A75CBDE61C8A26F800758C55 /* AppDelegateViewModel.swift */,
 				A7E315C71C88ABAC000DD85A /* DiscoveryProjectViewModel.swift */,
 				A7E315B21C88A8A2000DD85A /* DiscoveryViewModel.swift */,
+				01BF210A1CA5D6D100184A38 /* ResetPasswordViewModel.swift */,
 				01BC58351CAD7A98000289E8 /* FacebookConfirmationViewModel.swift */,
 				A73171BE1C8EA27400AC07C5 /* ProjectMainViewModel.swift */,
 				A7FC8C4D1C8F43E400C3B49B /* ProjectRewardViewModel.swift */,
@@ -1908,6 +1914,7 @@
 				A77519131C8CADFE0022F175 /* ActivitiesViewModelTests.swift */,
 				0154A93C1CA1AF2A00DB9BA4 /* LoginViewModelTests.swift */,
 				01B6ABE51CA2F233003DB4C8 /* LoginToutViewModelTests.swift */,
+				01BF21301CA5E81C00184A38 /* ResetPasswordViewModelTests.swift */,
 				9DE6C0561C9B5C7700FCC7B1 /* SearchViewModelTests.swift */,
 				01BC58101CAD765B000289E8 /* FacebookConfirmationViewModelTests.swift */,
 			);
@@ -3434,6 +3441,7 @@
 				A77518FE1C8C8ADA0022F175 /* ActivityUpdateViewModel.swift in Sources */,
 				01BC58371CAD7A98000289E8 /* FacebookConfirmationViewModel.swift in Sources */,
 				A7FC8C4F1C8F43E400C3B49B /* ProjectRewardViewModel.swift in Sources */,
+				01BF210C1CA5D6D100184A38 /* ResetPasswordViewModel.swift in Sources */,
 				9DE6C07B1C9B5C8600FCC7B1 /* SearchViewModel.swift in Sources */,
 				A762F01D1C8CD2B3005581A4 /* ActivityStateChangeCell.swift in Sources */,
 				A75CBDE81C8A26F800758C55 /* AppDelegateViewModel.swift in Sources */,
@@ -3537,6 +3545,7 @@
 				A77519001C8C97510022F175 /* ActivityFriendBackingViewModel.swift in Sources */,
 				A77518FD1C8C8ADA0022F175 /* ActivityUpdateViewModel.swift in Sources */,
 				A7FC8C4E1C8F43E400C3B49B /* ProjectRewardViewModel.swift in Sources */,
+				01BF210B1CA5D6D100184A38 /* ResetPasswordViewModel.swift in Sources */,
 				9D39C0471C9B5662004E0943 /* SearchViewModel.swift in Sources */,
 				A762F01C1C8CD2B3005581A4 /* ActivityStateChangeCell.swift in Sources */,
 				A75CBDE71C8A26F800758C55 /* AppDelegateViewModel.swift in Sources */,
@@ -3559,6 +3568,7 @@
 				01B6ABE61CA2F233003DB4C8 /* LoginToutViewModelTests.swift in Sources */,
 				0154A93E1CA1AF3400DB9BA4 /* LoginViewModelTests.swift in Sources */,
 				A77519121C8CADE20022F175 /* AppDelegateViewModelTests.swift in Sources */,
+				01BF21311CA5E81C00184A38 /* ResetPasswordViewModelTests.swift in Sources */,
 				A77519141C8CADFE0022F175 /* ActivitiesViewModelTests.swift in Sources */,
 				A7D1F9931C850CB2000D41D5 /* KickstarterTests.swift in Sources */,
 				01BC58111CAD765B000289E8 /* FacebookConfirmationViewModelTests.swift in Sources */,
