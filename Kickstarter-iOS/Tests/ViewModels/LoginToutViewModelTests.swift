@@ -89,14 +89,17 @@ final class LoginToutViewModelTests: XCTestCase {
 
     vm.inputs.helpTypeButtonPressed(HelpType.HowItWorks)
 
-    showHelp.assertValues([HelpType.Contact, HelpType.Cookie, HelpType.HowItWorks], "Show help emitted with type .HowItWorks")
+    showHelp.assertValues([HelpType.Contact, HelpType.Cookie, HelpType.HowItWorks],
+                          "Show help emitted with type .HowItWorks")
 
     vm.inputs.helpTypeButtonPressed(HelpType.Privacy)
 
-    showHelp.assertValues([HelpType.Contact, HelpType.Cookie, HelpType.HowItWorks, HelpType.Privacy], "Show help emitted with type .Privacy")
+    showHelp.assertValues([HelpType.Contact, HelpType.Cookie, HelpType.HowItWorks, HelpType.Privacy],
+                          "Show help emitted with type .Privacy")
 
     vm.inputs.helpTypeButtonPressed(HelpType.Terms)
 
-    showHelp.assertValues([HelpType.Contact, HelpType.Cookie, HelpType.HowItWorks, HelpType.Privacy, HelpType.Terms], "Show help emitted with type .Terms")
+    showHelp.assertValues([HelpType.Contact, HelpType.Cookie, HelpType.HowItWorks, HelpType.Privacy,
+      HelpType.Terms], "Show help emitted with type .Terms")
   }
 }

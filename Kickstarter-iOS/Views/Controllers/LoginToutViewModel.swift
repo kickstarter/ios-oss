@@ -85,9 +85,7 @@ internal final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMo
 
     self.startLogin = self.loginButtonPressedSignal
     self.startSignup = self.signupButtonPressedSignal
-    self.showHelpActionSheet = self.helpButtonPressedSignal.map { _ in
-      return HelpType.allValues
-    }
+    self.showHelpActionSheet = self.helpButtonPressedSignal.mapConst(HelpType.allValues)
     self.showHelp = self.helpTypeButtonPressedSignal
 
     loginIntentSignal
