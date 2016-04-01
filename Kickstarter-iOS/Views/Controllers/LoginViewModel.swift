@@ -109,7 +109,6 @@ internal final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, L
       .switchMap { ep in apiService.login(email: ep.0, password: ep.1, code:nil)
         .demoteErrors(pipeErrorsTo: loginErrorsObserver) }
 
-
     self.logInSuccess = login.ignoreValues()
 
     login.observeNext { envelope in
