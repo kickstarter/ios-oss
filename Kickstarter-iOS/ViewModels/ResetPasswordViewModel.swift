@@ -26,7 +26,7 @@ internal protocol ResetPasswordViewModelOutputs {
 
 internal protocol ResetPasswordViewModelErrors {
   /// Emits error message String on generic error
-  var generic: Signal<String, NoError> { get }
+  var resetFail: Signal<String, NoError> { get }
 }
 
 internal protocol ResetPasswordViewModelType {
@@ -75,12 +75,18 @@ internal final class ResetPasswordViewModel: ResetPasswordViewModelType, ResetPa
 
   // MARK: ResetPasswordViewModelErrors
 
-  internal let generic: Signal<String, NoError>
+  internal let resetFail: Signal<String, NoError>
 
   // MARK: Constructor
   internal init(env: Environment = AppEnvironment.current) {
     let apiService = env.apiService
     let koala = env.koala
+
+    let (resetFailSignal, resetFailObserver) = Signal<ErrorEnvelope, NoError>.pipe()
+    resetFail = resetFailSignal.map { envelope in envelope.errorMessages.first ??
+      localizedString(key: "forgot_password.error",
+        defaultValue: "Sorry, we don’t know that email address. Try again?")
+    }
 
     formIsValid = emailSignal
       .map { email in email.characters.count > 3 }
@@ -90,10 +96,8 @@ internal final class ResetPasswordViewModel: ResetPasswordViewModelType, ResetPa
     resetSuccess = emailSignal
       .takeWhen(resetButtonPressedSignal)
       .switchMap { email in apiService.resetPassword(email: email)
-        .demoteErrors()
+        .demoteErrors(pipeErrorsTo: resetFailObserver)
         .mapConst(email) }
-
-    generic = .empty
 
     returnToLogin = confirmResetButtonPressedSignal
 
