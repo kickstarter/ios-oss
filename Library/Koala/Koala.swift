@@ -26,8 +26,6 @@ public final class Koala {
     self.track(event: "Discovery List View")
   }
 
-  // MARK: Session events
-
   public func trackLoginTout(intent: String) {
     self.track(event: "Application Login or Signup", properties: ["intent": intent])
   }
@@ -50,6 +48,38 @@ public final class Koala {
 
   public func trackResetPasswordError() {
     self.track(event: "Forgot Password Errored")
+  }
+
+  public func trackSignupSuccess() {
+    self.track(event: "New User")
+  }
+
+  public func trackSignupNewsletterToggle(sendNewsletters: Bool) {
+    self.track(event: "Signup Newsletter Toggle", properties: ["send_newsletters": sendNewsletters])
+  }
+
+  public func trackFacebookConfirmation() {
+    self.track(event: "Facebook Confirm")
+  }
+
+  /**
+   Call once when the search view is initially shown.
+   */
+  public func trackProjectSearchView() {
+    self.track(event: "Discover Search")
+  }
+
+  /**
+   Call when projects have been obtained from a search.
+   */
+  public func trackSearchResults(query query: String, pageCount: Int) {
+    let properties: [String:AnyObject] = ["search_term": query, "page_count": pageCount]
+
+    if pageCount == 1 {
+      self.track(event: "Discover Search Results", properties: properties)
+    } else {
+      self.track(event: "Discover Search Results Load More", properties: properties)
+    }
   }
 
   // Private tracking method that merges in default properties.

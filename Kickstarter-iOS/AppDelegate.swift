@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
   override init() {
     let token = CurrentUser.shared.accessToken.map(OauthToken.init)
-  
+
     AppEnvironment.pushEnvironment(
       apiService: Service(
         serverConfig: ServerConfig.production,
@@ -31,18 +31,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       locale: NSLocale(localeIdentifier: "en")
     )
 
-//    AppEnvironment.pushEnvironment(
-//      apiService: MockService(),
-//      countryCode: "US"
-//    )
+    //    AppEnvironment.pushEnvironment(
+    //      apiService: MockService(),
+    //      countryCode: "US"
+    //    )
   }
 
   func application(application: UIApplication,
-    didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+                   didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
 
-      viewModel.inputs.applicationDidFinishLaunching(launchOptions: launchOptions)
+    viewModel.inputs.applicationDidFinishLaunching(launchOptions: launchOptions)
 
-      return true
+    return true
   }
 
   func applicationWillEnterForeground(application: UIApplication) {

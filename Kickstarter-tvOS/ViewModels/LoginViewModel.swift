@@ -62,7 +62,7 @@ final class LoginViewModel : LoginViewModelInputs, LoginViewModelOutputs, LoginV
 
     emailAndPassword.takeWhen(loginPress)
       .filter(isValid)
-      .flatMap { ep in apiService.login(email: ep.0, password: ep.1).demoteErrors(errorsObserver) }
+      .flatMap { ep in apiService.login(email: ep.0, password: ep.1, code: nil).demoteErrors(pipeErrorsTo: errorsObserver) }
       .start { event in
         switch event {
         case let .Next(envelope):

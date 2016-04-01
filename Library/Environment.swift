@@ -13,9 +13,11 @@ import class ReactiveCocoa.QueueScheduler
  */
 public struct Environment {
   public let apiService: ServiceType
+  public let apiThrottleInterval: NSTimeInterval
   public let assetImageGeneratorType: AssetImageGeneratorType.Type
   public let countryCode: String
   public let currentUser: CurrentUserType
+  public let debounceInterval: NSTimeInterval
   public let hockeyManager: HockeyManagerType
   public let koala: Koala
   public let language: Language
@@ -27,9 +29,11 @@ public struct Environment {
 
   public init(
     apiService: ServiceType = Service.shared,
+    apiThrottleInterval: NSTimeInterval = 0.0,
     assetImageGeneratorType: AssetImageGeneratorType.Type = AVAssetImageGenerator.self,
     countryCode: String = "US",
     currentUser: CurrentUserType = CurrentUser.shared,
+    debounceInterval: NSTimeInterval = 0.3,
     hockeyManager: HockeyManagerType = BITHockeyManager.sharedHockeyManager(),
     koala: Koala = Koala(client: KoalaTrackingClient(endpoint: .Production)),
     language: Language = .en,
@@ -39,26 +43,30 @@ public struct Environment {
     scheduler: DateSchedulerType = QueueScheduler.mainQueueScheduler,
     timeZone: NSTimeZone = .localTimeZone()) {
 
-      self.apiService = apiService
-      self.assetImageGeneratorType = assetImageGeneratorType
-      self.countryCode = countryCode
-      self.currentUser = currentUser
-      self.hockeyManager = hockeyManager
-      self.koala = koala
-      self.language = language
-      self.launchedCountries = launchedCountries
-      self.locale = locale
-      self.mainBundle = mainBundle
-      self.scheduler = scheduler
-      self.timeZone = timeZone
+    self.apiService = apiService
+    self.apiThrottleInterval = apiThrottleInterval
+    self.assetImageGeneratorType = assetImageGeneratorType
+    self.countryCode = countryCode
+    self.currentUser = currentUser
+    self.debounceInterval = debounceInterval
+    self.hockeyManager = hockeyManager
+    self.koala = koala
+    self.language = language
+    self.launchedCountries = launchedCountries
+    self.locale = locale
+    self.mainBundle = mainBundle
+    self.scheduler = scheduler
+    self.timeZone = timeZone
   }
 
   private var allGlobals: [Any] {
     return [
       self.apiService,
+      self.apiThrottleInterval,
       self.assetImageGeneratorType,
       self.countryCode,
       self.currentUser,
+      self.debounceInterval,
       self.hockeyManager,
       self.koala,
       self.language,

@@ -4,6 +4,9 @@ BUILD_FLAGS = -scheme $(SCHEME) -destination $(DESTINATION)
 SCHEME ?= $(TARGET)-$(PLATFORM)
 TARGET ?= Kickstarter
 PLATFORM ?= iOS
+RELEASE ?= beta
+BRANCH ?= master
+DIST_BRANCH = $(RELEASE)-dist
 
 ifeq ($(PLATFORM),iOS)
 	DESTINATION ?= 'platform=iOS Simulator,name=iPhone 6'
@@ -47,4 +50,21 @@ $(configs):
 
 configs: $(configs)
 
-.PHONY: test-all test clean dependencies submodules
+deploy:
+	@if test "$(RELEASE)" != "beta" && test "$(RELEASE)" != "itunes"; \
+	then \
+		echo "RELEASE must be 'beta' or 'itunes'."; \
+		exit 1; \
+	fi
+	@if test "$(RELEASE)" = "itunes" && test "$(BRANCH)" != "master"; \
+	then \
+		echo "BRANCH must be 'master' for iTunes releases."; \
+		exit 1; \
+	fi
+
+	git fetch origin
+	git branch -f $(DIST_BRANCH) origin/$(BRANCH)
+	git push -f origin $(DIST_BRANCH)
+	git branch -d $(DIST_BRANCH)
+
+.PHONY: test-all test clean dependencies submodules deploy
