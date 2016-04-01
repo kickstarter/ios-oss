@@ -192,6 +192,10 @@
 		A75AB2261C8B407F002FC3E6 /* ActivityFriendBackingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75AB2241C8B407F002FC3E6 /* ActivityFriendBackingCell.swift */; };
 		A75CBDE71C8A26F800758C55 /* AppDelegateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75CBDE61C8A26F800758C55 /* AppDelegateViewModel.swift */; };
 		A75CBDE81C8A26F800758C55 /* AppDelegateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75CBDE61C8A26F800758C55 /* AppDelegateViewModel.swift */; };
+		A760780A1CAEE0A6001B39D0 /* IsValidEmail.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76078091CAEE0A6001B39D0 /* IsValidEmail.swift */; };
+		A760780B1CAEE0A6001B39D0 /* IsValidEmail.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76078091CAEE0A6001B39D0 /* IsValidEmail.swift */; };
+		A76078301CAEE0DD001B39D0 /* IsValidEmailTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A760782F1CAEE0DD001B39D0 /* IsValidEmailTests.swift */; };
+		A76078311CAEE0DD001B39D0 /* IsValidEmailTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A760782F1CAEE0DD001B39D0 /* IsValidEmailTests.swift */; };
 		A76126AB1C90C94000EDCCB9 /* MVVMCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A761269E1C90C94000EDCCB9 /* MVVMCollectionViewController.swift */; };
 		A76126AC1C90C94000EDCCB9 /* MVVMCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A761269E1C90C94000EDCCB9 /* MVVMCollectionViewController.swift */; };
 		A76126AD1C90C94000EDCCB9 /* MVVMDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A761269F1C90C94000EDCCB9 /* MVVMDataSource.swift */; };
@@ -1304,6 +1308,8 @@
 		A75AB2211C8A85D1002FC3E6 /* ActivityUpdateCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityUpdateCell.swift; sourceTree = "<group>"; };
 		A75AB2241C8B407F002FC3E6 /* ActivityFriendBackingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityFriendBackingCell.swift; sourceTree = "<group>"; };
 		A75CBDE61C8A26F800758C55 /* AppDelegateViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegateViewModel.swift; sourceTree = "<group>"; };
+		A76078091CAEE0A6001B39D0 /* IsValidEmail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IsValidEmail.swift; sourceTree = "<group>"; };
+		A760782F1CAEE0DD001B39D0 /* IsValidEmailTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IsValidEmailTests.swift; sourceTree = "<group>"; };
 		A761269E1C90C94000EDCCB9 /* MVVMCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MVVMCollectionViewController.swift; sourceTree = "<group>"; };
 		A761269F1C90C94000EDCCB9 /* MVVMDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MVVMDataSource.swift; sourceTree = "<group>"; };
 		A76126A01C90C94000EDCCB9 /* MVVMTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MVVMTableViewController.swift; sourceTree = "<group>"; };
@@ -1874,6 +1880,7 @@
 				A75511931C8645A0005355CF /* UILabel+SimpleHTMLTests.swift */,
 				0176E19A1C976703009CA092 /* UITextfield+LocalizedPlaceholderKeyTests.swift */,
 				A755119F1C86460B005355CF /* TestHelpers */,
+				A760782F1CAEE0DD001B39D0 /* IsValidEmailTests.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -1978,6 +1985,7 @@
 				A721DF3D1C8CF4F6000CB97C /* Koala */,
 				A7C725851C85D36D005A016B /* MVVM */,
 				A75511881C8645A0005355CF /* Tests */,
+				A76078091CAEE0A6001B39D0 /* IsValidEmail.swift */,
 			);
 			path = Library;
 			sourceTree = "<group>";
@@ -3232,6 +3240,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0154A93B1CA1A17800DB9BA4 /* UIColor.swift in Sources */,
+				A760780A1CAEE0A6001B39D0 /* IsValidEmail.swift in Sources */,
 				A755115B1C8642C3005355CF /* AppEnvironment.swift in Sources */,
 				A755115C1C8642C3005355CF /* AssetImageGeneratorType.swift in Sources */,
 				A721DF6B1C8CFAF6000CB97C /* MockTrackingClient.swift in Sources */,
@@ -3302,6 +3311,7 @@
 				A75511991C8645A0005355CF /* LocalizedStringTests.swift in Sources */,
 				A75511951C8645A0005355CF /* EnvironmentTests.swift in Sources */,
 				01EFBC891C91FB770094EEC2 /* UIColorTests.swift in Sources */,
+				A76078301CAEE0DD001B39D0 /* IsValidEmailTests.swift in Sources */,
 				01EFBCB31C920A7E0094EEC2 /* BorderButtonTests.swift in Sources */,
 				A755119B1C8645A0005355CF /* UIButton+LocalizedKeyTests.swift in Sources */,
 				01EFBCB61C921EA20094EEC2 /* StylesTests.swift in Sources */,
@@ -3327,6 +3337,7 @@
 				A75511B31C8647D9005355CF /* LaunchedCountries.swift in Sources */,
 				A76126B81C90C94000EDCCB9 /* UICollectionView-Extensions.swift in Sources */,
 				A76126AE1C90C94000EDCCB9 /* MVVMDataSource.swift in Sources */,
+				A760780B1CAEE0A6001B39D0 /* IsValidEmail.swift in Sources */,
 				A75511B41C8647D9005355CF /* LocalizedString.swift in Sources */,
 				0151AEB41C8F6FEC0067F1BE /* StyledLabel.swift in Sources */,
 				0151AEB61C8F70000067F1BE /* Styles.swift in Sources */,
@@ -3382,6 +3393,7 @@
 				A75511F41C865321005355CF /* LocalizedStringTests.swift in Sources */,
 				A75511F51C865321005355CF /* EnvironmentTests.swift in Sources */,
 				01EFBCB11C9203750094EEC2 /* UIColorTests.swift in Sources */,
+				A76078311CAEE0DD001B39D0 /* IsValidEmailTests.swift in Sources */,
 				01EFBCB41C920A7E0094EEC2 /* BorderButtonTests.swift in Sources */,
 				A75511F61C865321005355CF /* UIButton+LocalizedKeyTests.swift in Sources */,
 				01EFBCB71C921EA20094EEC2 /* StylesTests.swift in Sources */,
