@@ -88,16 +88,19 @@ internal final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, L
 
     invalidLogin = loginErrors
       .filter { $0.ksrCode == .InvalidXauthLogin }
-      .map { $0.errorMessages.first }
+      .map { $0.errorMessages.first ??
+        localizedString(key: "login.errors.does_not_match", defaultValue: "Login does not match any of our records.") }
       .ignoreNil()
 
     tfaChallenge = loginErrors
       .filter { $0.ksrCode == .TfaRequired }
-      .map { _ in localizedString(key: "two_factor.error.message", defaultValue: "The code provided does not match.") }
+      .map { $0.errorMessages.first ??
+        localizedString(key: "two_factor.error.message", defaultValue: "The code provided does not match.") }
 
     genericError = loginErrors
       .filter { $0.ksrCode != .InvalidXauthLogin && $0.ksrCode != .TfaRequired }
-      .map { _ in localizedString(key: "login.errors.unable_to_log_in", defaultValue: "Unable to log in.") }
+      .map { $0.errorMessages.first ??
+        localizedString(key: "login.errors.unable_to_log_in", defaultValue: "Unable to log in.") }
 
     let emailAndPassword = email.signal.ignoreNil()
       .combineLatestWith(password.signal.ignoreNil())
