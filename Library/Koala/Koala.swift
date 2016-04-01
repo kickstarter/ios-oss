@@ -38,6 +38,30 @@ public final class Koala {
     self.track(event: "Errored User Login")
   }
 
+  public func trackResetPassword() {
+    self.track(event: "Forgot Password View")
+  }
+
+  public func trackResetPasswordSuccess() {
+    self.track(event: "Forgot Password Requested")
+  }
+
+  public func trackResetPasswordError() {
+    self.track(event: "Forgot Password Errored")
+  }
+
+  public func trackSignupSuccess() {
+    self.track(event: "New User")
+  }
+
+  public func trackSignupNewsletterToggle(sendNewsletters: Bool) {
+    self.track(event: "Signup Newsletter Toggle", properties: ["send_newsletters": sendNewsletters])
+  }
+
+  public func trackFacebookConfirmation() {
+    self.track(event: "Facebook Confirm")
+  }
+
   /**
    Call once when the search view is initially shown.
    */

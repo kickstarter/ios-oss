@@ -106,7 +106,8 @@ internal final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, L
     isFormValid <~ emailAndPassword.map(LoginViewModel.isValid)
 
     let login = emailAndPassword.takeWhen(loginButtonPressedSignal)
-      .switchMap { ep in apiService.login(email: ep.0, password: ep.1, code: nil).demoteErrors(pipeErrorsTo:loginErrorsObserver) }
+      .switchMap { ep in apiService.login(email: ep.0, password: ep.1, code: nil)
+        .demoteErrors(pipeErrorsTo:loginErrorsObserver) }
 
     self.logInSuccess = login.ignoreValues()
 

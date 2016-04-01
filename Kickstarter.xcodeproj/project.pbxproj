@@ -38,7 +38,13 @@
 		01A7A4C11C9690220036E553 /* UITextField+LocalizedPlaceholderKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A7A4BF1C9690220036E553 /* UITextField+LocalizedPlaceholderKey.swift */; };
 		01B6ABBE1CA1E01E003DB4C8 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0151AE871C8F60370067F1BE /* UIColor.swift */; };
 		01B6ABE61CA2F233003DB4C8 /* LoginToutViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B6ABE51CA2F233003DB4C8 /* LoginToutViewModelTests.swift */; };
+		01BC58111CAD765B000289E8 /* FacebookConfirmationViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BC58101CAD765B000289E8 /* FacebookConfirmationViewModelTests.swift */; };
+		01BC58361CAD7A98000289E8 /* FacebookConfirmationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BC58351CAD7A98000289E8 /* FacebookConfirmationViewModel.swift */; };
+		01BC58371CAD7A98000289E8 /* FacebookConfirmationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BC58351CAD7A98000289E8 /* FacebookConfirmationViewModel.swift */; };
 		01BDFFB21C87AAD0002E8D34 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 01BDFFB01C87AAD0002E8D34 /* Login.storyboard */; };
+		01BF210B1CA5D6D100184A38 /* ResetPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BF210A1CA5D6D100184A38 /* ResetPasswordViewModel.swift */; };
+		01BF210C1CA5D6D100184A38 /* ResetPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BF210A1CA5D6D100184A38 /* ResetPasswordViewModel.swift */; };
+		01BF21311CA5E81C00184A38 /* ResetPasswordViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BF21301CA5E81C00184A38 /* ResetPasswordViewModelTests.swift */; };
 		01EA879B1C9335C5004E738B /* LoginToutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F761761C85FACB005405ED /* LoginToutViewController.swift */; };
 		01EFBC891C91FB770094EEC2 /* UIColorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01EFBC881C91FB770094EEC2 /* UIColorTests.swift */; };
 		01EFBCAF1C92036E0094EEC2 /* StyledLabelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01EFBCAE1C92036E0094EEC2 /* StyledLabelTests.swift */; };
@@ -192,6 +198,10 @@
 		A75AB2261C8B407F002FC3E6 /* ActivityFriendBackingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75AB2241C8B407F002FC3E6 /* ActivityFriendBackingCell.swift */; };
 		A75CBDE71C8A26F800758C55 /* AppDelegateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75CBDE61C8A26F800758C55 /* AppDelegateViewModel.swift */; };
 		A75CBDE81C8A26F800758C55 /* AppDelegateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75CBDE61C8A26F800758C55 /* AppDelegateViewModel.swift */; };
+		A760780A1CAEE0A6001B39D0 /* IsValidEmail.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76078091CAEE0A6001B39D0 /* IsValidEmail.swift */; };
+		A760780B1CAEE0A6001B39D0 /* IsValidEmail.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76078091CAEE0A6001B39D0 /* IsValidEmail.swift */; };
+		A76078301CAEE0DD001B39D0 /* IsValidEmailTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A760782F1CAEE0DD001B39D0 /* IsValidEmailTests.swift */; };
+		A76078311CAEE0DD001B39D0 /* IsValidEmailTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A760782F1CAEE0DD001B39D0 /* IsValidEmailTests.swift */; };
 		A76126AB1C90C94000EDCCB9 /* MVVMCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A761269E1C90C94000EDCCB9 /* MVVMCollectionViewController.swift */; };
 		A76126AC1C90C94000EDCCB9 /* MVVMCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A761269E1C90C94000EDCCB9 /* MVVMCollectionViewController.swift */; };
 		A76126AD1C90C94000EDCCB9 /* MVVMDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A761269F1C90C94000EDCCB9 /* MVVMDataSource.swift */; };
@@ -1253,7 +1263,11 @@
 		01A1DC4C1C965C7D005761A8 /* UIAlertController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIAlertController.swift; sourceTree = "<group>"; };
 		01A7A4BF1C9690220036E553 /* UITextField+LocalizedPlaceholderKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITextField+LocalizedPlaceholderKey.swift"; sourceTree = "<group>"; };
 		01B6ABE51CA2F233003DB4C8 /* LoginToutViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginToutViewModelTests.swift; sourceTree = "<group>"; };
+		01BC58101CAD765B000289E8 /* FacebookConfirmationViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookConfirmationViewModelTests.swift; sourceTree = "<group>"; };
+		01BC58351CAD7A98000289E8 /* FacebookConfirmationViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookConfirmationViewModel.swift; sourceTree = "<group>"; };
 		01BDFFB11C87AAD0002E8D34 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Login.storyboard; sourceTree = "<group>"; };
+		01BF210A1CA5D6D100184A38 /* ResetPasswordViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResetPasswordViewModel.swift; sourceTree = "<group>"; };
+		01BF21301CA5E81C00184A38 /* ResetPasswordViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResetPasswordViewModelTests.swift; sourceTree = "<group>"; };
 		01EFBC881C91FB770094EEC2 /* UIColorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorTests.swift; sourceTree = "<group>"; };
 		01EFBCAE1C92036E0094EEC2 /* StyledLabelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyledLabelTests.swift; sourceTree = "<group>"; };
 		01EFBCB21C920A7E0094EEC2 /* BorderButtonTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BorderButtonTests.swift; sourceTree = "<group>"; };
@@ -1304,6 +1318,8 @@
 		A75AB2211C8A85D1002FC3E6 /* ActivityUpdateCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityUpdateCell.swift; sourceTree = "<group>"; };
 		A75AB2241C8B407F002FC3E6 /* ActivityFriendBackingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityFriendBackingCell.swift; sourceTree = "<group>"; };
 		A75CBDE61C8A26F800758C55 /* AppDelegateViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegateViewModel.swift; sourceTree = "<group>"; };
+		A76078091CAEE0A6001B39D0 /* IsValidEmail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IsValidEmail.swift; sourceTree = "<group>"; };
+		A760782F1CAEE0DD001B39D0 /* IsValidEmailTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IsValidEmailTests.swift; sourceTree = "<group>"; };
 		A761269E1C90C94000EDCCB9 /* MVVMCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MVVMCollectionViewController.swift; sourceTree = "<group>"; };
 		A761269F1C90C94000EDCCB9 /* MVVMDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MVVMDataSource.swift; sourceTree = "<group>"; };
 		A76126A01C90C94000EDCCB9 /* MVVMTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MVVMTableViewController.swift; sourceTree = "<group>"; };
@@ -1808,6 +1824,8 @@
 				A75CBDE61C8A26F800758C55 /* AppDelegateViewModel.swift */,
 				A7E315C71C88ABAC000DD85A /* DiscoveryProjectViewModel.swift */,
 				A7E315B21C88A8A2000DD85A /* DiscoveryViewModel.swift */,
+				01BF210A1CA5D6D100184A38 /* ResetPasswordViewModel.swift */,
+				01BC58351CAD7A98000289E8 /* FacebookConfirmationViewModel.swift */,
 				A73171BE1C8EA27400AC07C5 /* ProjectMainViewModel.swift */,
 				A7FC8C4D1C8F43E400C3B49B /* ProjectRewardViewModel.swift */,
 				A7FC8C531C8F447D00C3B49B /* ProjectSubpagesViewModel.swift */,
@@ -1874,6 +1892,7 @@
 				A75511931C8645A0005355CF /* UILabel+SimpleHTMLTests.swift */,
 				0176E19A1C976703009CA092 /* UITextfield+LocalizedPlaceholderKeyTests.swift */,
 				A755119F1C86460B005355CF /* TestHelpers */,
+				A760782F1CAEE0DD001B39D0 /* IsValidEmailTests.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -1895,7 +1914,9 @@
 				A77519131C8CADFE0022F175 /* ActivitiesViewModelTests.swift */,
 				0154A93C1CA1AF2A00DB9BA4 /* LoginViewModelTests.swift */,
 				01B6ABE51CA2F233003DB4C8 /* LoginToutViewModelTests.swift */,
+				01BF21301CA5E81C00184A38 /* ResetPasswordViewModelTests.swift */,
 				9DE6C0561C9B5C7700FCC7B1 /* SearchViewModelTests.swift */,
+				01BC58101CAD765B000289E8 /* FacebookConfirmationViewModelTests.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -1978,6 +1999,7 @@
 				A721DF3D1C8CF4F6000CB97C /* Koala */,
 				A7C725851C85D36D005A016B /* MVVM */,
 				A75511881C8645A0005355CF /* Tests */,
+				A76078091CAEE0A6001B39D0 /* IsValidEmail.swift */,
 			);
 			path = Library;
 			sourceTree = "<group>";
@@ -3232,6 +3254,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0154A93B1CA1A17800DB9BA4 /* UIColor.swift in Sources */,
+				A760780A1CAEE0A6001B39D0 /* IsValidEmail.swift in Sources */,
 				A755115B1C8642C3005355CF /* AppEnvironment.swift in Sources */,
 				A755115C1C8642C3005355CF /* AssetImageGeneratorType.swift in Sources */,
 				A721DF6B1C8CFAF6000CB97C /* MockTrackingClient.swift in Sources */,
@@ -3302,6 +3325,7 @@
 				A75511991C8645A0005355CF /* LocalizedStringTests.swift in Sources */,
 				A75511951C8645A0005355CF /* EnvironmentTests.swift in Sources */,
 				01EFBC891C91FB770094EEC2 /* UIColorTests.swift in Sources */,
+				A76078301CAEE0DD001B39D0 /* IsValidEmailTests.swift in Sources */,
 				01EFBCB31C920A7E0094EEC2 /* BorderButtonTests.swift in Sources */,
 				A755119B1C8645A0005355CF /* UIButton+LocalizedKeyTests.swift in Sources */,
 				01EFBCB61C921EA20094EEC2 /* StylesTests.swift in Sources */,
@@ -3327,6 +3351,7 @@
 				A75511B31C8647D9005355CF /* LaunchedCountries.swift in Sources */,
 				A76126B81C90C94000EDCCB9 /* UICollectionView-Extensions.swift in Sources */,
 				A76126AE1C90C94000EDCCB9 /* MVVMDataSource.swift in Sources */,
+				A760780B1CAEE0A6001B39D0 /* IsValidEmail.swift in Sources */,
 				A75511B41C8647D9005355CF /* LocalizedString.swift in Sources */,
 				0151AEB41C8F6FEC0067F1BE /* StyledLabel.swift in Sources */,
 				0151AEB61C8F70000067F1BE /* Styles.swift in Sources */,
@@ -3382,6 +3407,7 @@
 				A75511F41C865321005355CF /* LocalizedStringTests.swift in Sources */,
 				A75511F51C865321005355CF /* EnvironmentTests.swift in Sources */,
 				01EFBCB11C9203750094EEC2 /* UIColorTests.swift in Sources */,
+				A76078311CAEE0DD001B39D0 /* IsValidEmailTests.swift in Sources */,
 				01EFBCB41C920A7E0094EEC2 /* BorderButtonTests.swift in Sources */,
 				A75511F61C865321005355CF /* UIButton+LocalizedKeyTests.swift in Sources */,
 				01EFBCB71C921EA20094EEC2 /* StylesTests.swift in Sources */,
@@ -3413,7 +3439,9 @@
 				0127FC571C98C10400E335C6 /* LoginIntent.swift in Sources */,
 				A77519011C8C97510022F175 /* ActivityFriendBackingViewModel.swift in Sources */,
 				A77518FE1C8C8ADA0022F175 /* ActivityUpdateViewModel.swift in Sources */,
+				01BC58371CAD7A98000289E8 /* FacebookConfirmationViewModel.swift in Sources */,
 				A7FC8C4F1C8F43E400C3B49B /* ProjectRewardViewModel.swift in Sources */,
+				01BF210C1CA5D6D100184A38 /* ResetPasswordViewModel.swift in Sources */,
 				9DE6C07B1C9B5C8600FCC7B1 /* SearchViewModel.swift in Sources */,
 				A762F01D1C8CD2B3005581A4 /* ActivityStateChangeCell.swift in Sources */,
 				A75CBDE81C8A26F800758C55 /* AppDelegateViewModel.swift in Sources */,
@@ -3513,9 +3541,11 @@
 				A7D1F9481C850B7C000D41D5 /* AppDelegate.swift in Sources */,
 				A7F761751C85FA40005405ED /* ActivitiesViewController.swift in Sources */,
 				A7FC8C511C8F442D00C3B49B /* ProjectRewardCell.swift in Sources */,
+				01BC58361CAD7A98000289E8 /* FacebookConfirmationViewModel.swift in Sources */,
 				A77519001C8C97510022F175 /* ActivityFriendBackingViewModel.swift in Sources */,
 				A77518FD1C8C8ADA0022F175 /* ActivityUpdateViewModel.swift in Sources */,
 				A7FC8C4E1C8F43E400C3B49B /* ProjectRewardViewModel.swift in Sources */,
+				01BF210B1CA5D6D100184A38 /* ResetPasswordViewModel.swift in Sources */,
 				9D39C0471C9B5662004E0943 /* SearchViewModel.swift in Sources */,
 				A762F01C1C8CD2B3005581A4 /* ActivityStateChangeCell.swift in Sources */,
 				A75CBDE71C8A26F800758C55 /* AppDelegateViewModel.swift in Sources */,
@@ -3538,8 +3568,10 @@
 				01B6ABE61CA2F233003DB4C8 /* LoginToutViewModelTests.swift in Sources */,
 				0154A93E1CA1AF3400DB9BA4 /* LoginViewModelTests.swift in Sources */,
 				A77519121C8CADE20022F175 /* AppDelegateViewModelTests.swift in Sources */,
+				01BF21311CA5E81C00184A38 /* ResetPasswordViewModelTests.swift in Sources */,
 				A77519141C8CADFE0022F175 /* ActivitiesViewModelTests.swift in Sources */,
 				A7D1F9931C850CB2000D41D5 /* KickstarterTests.swift in Sources */,
+				01BC58111CAD765B000289E8 /* FacebookConfirmationViewModelTests.swift in Sources */,
 				A7B6940F1C87927700C49A4F /* XCTestCase+AppEnvironment.swift in Sources */,
 				9DE6C0571C9B5C7700FCC7B1 /* SearchViewModelTests.swift in Sources */,
 			);
