@@ -62,6 +62,14 @@ public final class Koala {
     self.track(event: "Facebook Confirm")
   }
 
+  public func trackTfa() {
+    self.track(event: "Two-factor Authentication Confirm View")
+  }
+
+  public func trackTfaResendCode() {
+    self.track(event: "Two-factor Authentication Resend Code")
+  }
+
   /**
    Call once when the search view is initially shown.
    */

@@ -34,9 +34,9 @@ internal protocol LoginViewModelErrors {
   /// Emits an error String when a login request has failed
   var invalidLogin: Signal<String, NoError> { get }
   /// Emits when a generic login error has occurred
-  var genericError: Signal<(), NoError> { get }
+  var genericError: Signal<String, NoError> { get }
   /// Emits when a tfa request has failed
-  var tfaChallenge: Signal<(), NoError> { get }
+  var tfaChallenge: Signal<String, NoError> { get }
 }
 
 internal protocol LoginViewModelType {
@@ -76,8 +76,8 @@ internal final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, L
 
   // MARK: Errors
   internal let invalidLogin: Signal<String, NoError>
-  internal let genericError: Signal<(), NoError>
-  internal let tfaChallenge: Signal<(), NoError>
+  internal let genericError: Signal<String, NoError>
+  internal let tfaChallenge: Signal<String, NoError>
 
   internal init(env: Environment = AppEnvironment.current) {
     let apiService = env.apiService
@@ -88,16 +88,19 @@ internal final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, L
 
     invalidLogin = loginErrors
       .filter { $0.ksrCode == .InvalidXauthLogin }
-      .map { $0.errorMessages.first }
+      .map { $0.errorMessages.first ??
+        localizedString(key: "login.errors.does_not_match", defaultValue: "Login does not match any of our records.") }
       .ignoreNil()
 
     tfaChallenge = loginErrors
       .filter { $0.ksrCode == .TfaRequired }
-      .map { _ in localizedString(key: "two_factor.error.message", defaultValue: "The code provided does not match.") }
+      .map { $0.errorMessages.first ??
+        localizedString(key: "two_factor.error.message", defaultValue: "The code provided does not match.") }
 
     genericError = loginErrors
       .filter { $0.ksrCode != .InvalidXauthLogin && $0.ksrCode != .TfaRequired }
-      .map { _ in localizedString(key: "login.errors.unable_to_log_in", defaultValue: "Unable to log in.") }
+      .map { $0.errorMessages.first ??
+        localizedString(key: "login.errors.unable_to_log_in", defaultValue: "Unable to log in.") }
 
     let emailAndPassword = email.signal.ignoreNil()
       .combineLatestWith(password.signal.ignoreNil())
@@ -106,8 +109,8 @@ internal final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, L
     isFormValid <~ emailAndPassword.map(LoginViewModel.isValid)
 
     let login = emailAndPassword.takeWhen(loginButtonPressedSignal)
-      .switchMap { ep in apiService.login(email: ep.0, password: ep.1, code: nil)
-        .demoteErrors(pipeErrorsTo:loginErrorsObserver) }
+      .switchMap { ep in apiService.login(email: ep.0, password: ep.1, code:nil)
+        .demoteErrors(pipeErrorsTo: loginErrorsObserver) }
 
     self.logInSuccess = login.ignoreValues()
 
