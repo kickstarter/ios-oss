@@ -115,14 +115,16 @@ internal final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMo
       .takeWhen(resendPressedSignal)
       .switchMap { email, password in
         login(email: email, password: password, apiService: apiService, loading: isLoadingObserver)
-          .demoteErrors()
+          .materialize()
+          .filter { $0.error != nil }
     }
 
     let facebookResend = facebookTokenSignal
       .takeWhen(resendPressedSignal)
       .switchMap { token in
         login(facebookAccessToken: token, apiService: apiService, loading: isLoadingObserver)
-          .demoteErrors()
+          .materialize()
+          .filter { $0.error != nil }
     }
 
     loginSuccess = Signal.merge([emailPasswordLogin, facebookLogin]).ignoreValues()
