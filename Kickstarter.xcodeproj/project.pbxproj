@@ -1819,8 +1819,6 @@
 		A751A51A1C85EAD8009C5DEA /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				018F1FA81C8E1A8200643DAA /* LoginToutViewModel.swift */,
-				019502011C8E3EF700F31304 /* LoginViewModel.swift */,
 				A75AB1E01C8A8255002FC3E6 /* ActivitiesViewModel.swift */,
 				A77518FF1C8C97510022F175 /* ActivityFriendBackingViewModel.swift */,
 				A762F0171C8CC672005581A4 /* ActivityFriendFollowViewModel.swift */,
@@ -1829,14 +1827,16 @@
 				A75CBDE61C8A26F800758C55 /* AppDelegateViewModel.swift */,
 				A7E315C71C88ABAC000DD85A /* DiscoveryProjectViewModel.swift */,
 				A7E315B21C88A8A2000DD85A /* DiscoveryViewModel.swift */,
-				01BF210A1CA5D6D100184A38 /* ResetPasswordViewModel.swift */,
 				01BC58351CAD7A98000289E8 /* FacebookConfirmationViewModel.swift */,
+				018F1FA81C8E1A8200643DAA /* LoginToutViewModel.swift */,
+				019502011C8E3EF700F31304 /* LoginViewModel.swift */,
 				A73171BE1C8EA27400AC07C5 /* ProjectMainViewModel.swift */,
 				A7FC8C4D1C8F43E400C3B49B /* ProjectRewardViewModel.swift */,
 				A7FC8C531C8F447D00C3B49B /* ProjectSubpagesViewModel.swift */,
 				A7285CC01C8E8DDB00D83297 /* ProjectViewModel.swift */,
-				01B6AC301CA49972003DB4C8 /* TwoFactorViewModel.swift */,
+				01BF210A1CA5D6D100184A38 /* ResetPasswordViewModel.swift */,
 				9D39C0461C9B5662004E0943 /* SearchViewModel.swift */,
+				01B6AC301CA49972003DB4C8 /* TwoFactorViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";

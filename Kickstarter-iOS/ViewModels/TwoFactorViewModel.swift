@@ -36,53 +36,53 @@ internal final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMo
 
   // MARK: TwoFactorViewModelType
 
-  var inputs: TwoFactorViewModelInputs { return self }
-  var outputs: TwoFactorViewModelOutputs { return self }
-  var errors: TwoFactorViewModelErrors { return self }
+  internal var inputs: TwoFactorViewModelInputs { return self }
+  internal var outputs: TwoFactorViewModelOutputs { return self }
+  internal var errors: TwoFactorViewModelErrors { return self }
 
   // MARK: TwoFactorViewModelInputs
 
   private let (viewWillAppearSignal, viewWillAppearObserver) = Signal<(), NoError>.pipe()
-  func viewWillAppear() {
+  internal func viewWillAppear() {
     viewWillAppearObserver.sendNext()
   }
 
   private let (emailAndPasswordSignal, emailAndPasswordObserver) = Signal<(email: String, password: String), NoError>.pipe()
-  func email(email: String, password: String) {
+  internal func email(email: String, password: String) {
     emailAndPasswordObserver.sendNext((email, password))
   }
 
   private let (facebookTokenSignal, facebookTokenObserver) = Signal<String, NoError>.pipe()
-  func facebookToken(token: String) {
+  internal func facebookToken(token: String) {
     facebookTokenObserver.sendNext(token)
   }
 
   private let (codeSignal, codeObserver) = Signal<String, NoError>.pipe()
-  func code(code: String) {
+  internal func code(code: String) {
     codeObserver.sendNext(code)
   }
 
   private let (resendPressedSignal, resendPressedObserver) = Signal<(), NoError>.pipe()
-  func resendPressed() {
+  internal func resendPressed() {
     resendPressedObserver.sendNext()
   }
 
   private let (submitPressedSignal, submitPressedObserver) = Signal<(), NoError>.pipe()
-  func submitPressed() {
+  internal func submitPressed() {
     submitPressedObserver.sendNext()
   }
 
   // MARK: TwoFactorViewModelOutputs
 
-  let isFormValid: Signal<Bool, NoError>
-  let isLoading: Signal<Bool, NoError>
-  let loginSuccess: Signal<(), NoError>
-  let resendSuccess: Signal<(), NoError>
+  internal let isFormValid: Signal<Bool, NoError>
+  internal let isLoading: Signal<Bool, NoError>
+  internal let loginSuccess: Signal<(), NoError>
+  internal let resendSuccess: Signal<(), NoError>
 
   // MARK: TwoFactorViewModelErrors
 
-  var codeMismatch: Signal<String, NoError>
-  var genericFail: Signal<String, NoError>
+  internal let codeMismatch: Signal<String, NoError>
+  internal let genericFail: Signal<String, NoError>
 
   internal init(env: Environment = AppEnvironment.current) {
     let apiService = env.apiService
