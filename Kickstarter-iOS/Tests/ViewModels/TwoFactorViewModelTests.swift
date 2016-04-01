@@ -124,11 +124,16 @@ final class TwoFactorViewModelTests: XCTestCase {
     let isLoading = TestObserver<Bool, NoError>()
     vm.outputs.isLoading.observe(isLoading.observer)
 
+    let resendSuccess = TestObserver<(), NoError>()
+    vm.outputs.resendSuccess.observe(resendSuccess.observer)
+
     vm.inputs.viewWillAppear()
     vm.inputs.email("gina@kickstarter.com", password: "lkjkl")
     vm.inputs.resendPressed()
 
     isLoading.assertValues([true, false])
+
+    resendSuccess.assertValueCount(1, "Code resent successfully")
 
     XCTAssertEqual(["Two-factor Authentication Confirm View", "Two-factor Authentication Resend Code"], trackingClient.events)
   }
@@ -137,11 +142,16 @@ final class TwoFactorViewModelTests: XCTestCase {
     let isLoading = TestObserver<Bool, NoError>()
     vm.outputs.isLoading.observe(isLoading.observer)
 
+    let resendSuccess = TestObserver<(), NoError>()
+    vm.outputs.resendSuccess.observe(resendSuccess.observer)
+
     vm.inputs.viewWillAppear()
     vm.inputs.facebookToken("293jhapiapdoi")
     vm.inputs.resendPressed()
 
     isLoading.assertValues([true, false])
+
+    resendSuccess.assertValueCount(1, "Code resent successfully")
 
     XCTAssertEqual(["Two-factor Authentication Confirm View", "Two-factor Authentication Resend Code"], trackingClient.events)
   }

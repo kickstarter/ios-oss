@@ -17,11 +17,12 @@ internal protocol TwoFactorViewModelOutputs {
   var isFormValid: Signal<Bool, NoError> { get }
   var isLoading: Signal<Bool, NoError> { get }
   var loginSuccess: Signal<(), NoError> { get }
+  var resendSuccess: Signal<(), NoError> { get }
 }
 
 internal protocol TwoFactorViewModelErrors {
-  var codeMismatch: Signal<(), NoError> { get }
-  var generic: Signal<(), NoError> { get }
+  var codeMismatch: Signal<String, NoError> { get }
+  var genericFail: Signal<String, NoError> { get }
 }
 
 internal protocol TwoFactorViewModelType {
@@ -32,6 +33,14 @@ internal protocol TwoFactorViewModelType {
 
 internal final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewModelInputs,
   TwoFactorViewModelOutputs, TwoFactorViewModelErrors {
+
+  // MARK: TwoFactorViewModelType
+
+  var inputs: TwoFactorViewModelInputs { return self }
+  var outputs: TwoFactorViewModelOutputs { return self }
+  var errors: TwoFactorViewModelErrors { return self }
+
+  // MARK: TwoFactorViewModelInputs
 
   private let (viewWillAppearSignal, viewWillAppearObserver) = Signal<(), NoError>.pipe()
   func viewWillAppear() {
@@ -63,16 +72,17 @@ internal final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMo
     submitPressedObserver.sendNext()
   }
 
+  // MARK: TwoFactorViewModelOutputs
+
   let isFormValid: Signal<Bool, NoError>
   let isLoading: Signal<Bool, NoError>
   let loginSuccess: Signal<(), NoError>
+  let resendSuccess: Signal<(), NoError>
 
-  var codeMismatch: Signal<(), NoError>
-  var generic: Signal<(), NoError>
+  // MARK: TwoFactorViewModelErrors
 
-  var inputs: TwoFactorViewModelInputs { return self }
-  var outputs: TwoFactorViewModelOutputs { return self }
-  var errors: TwoFactorViewModelErrors { return self }
+  var codeMismatch: Signal<String, NoError>
+  var genericFail: Signal<String, NoError>
 
   internal init(env: Environment = AppEnvironment.current) {
     let apiService = env.apiService
@@ -81,62 +91,98 @@ internal final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMo
     let hasInput = emailAndPasswordSignal.ignoreValues()
       .mergeWith(facebookTokenSignal.ignoreValues())
 
-    let (loginSuccessSignal, loginSuccessObserver) = Signal<(), NoError>.pipe()
-    loginSuccess = loginSuccessSignal
-
     let (isLoadingSignal, isLoadingObserver) = Signal<Bool, NoError>.pipe()
+
+    let (tfaErrorSignal, tfaErrorObserver) = Signal<ErrorEnvelope, NoError>.pipe()
+
+    let emailPasswordLogin = emailAndPasswordSignal
+      .combineLatestWith(codeSignal)
+      .takeWhen(submitPressedSignal)
+      .switchMap { ep, code in
+        login(email: ep.email, password: ep.password, code: code, apiService: apiService, loading: isLoadingObserver)
+          .demoteErrors(pipeErrorsTo: tfaErrorObserver)
+      }
+
+    let facebookLogin = facebookTokenSignal
+      .combineLatestWith(codeSignal)
+      .takeWhen(submitPressedSignal)
+      .switchMap { token, code in
+        login(facebookAccessToken: token, code: code, apiService: apiService, loading: isLoadingObserver)
+          .demoteErrors(pipeErrorsTo: tfaErrorObserver)
+      }
+
+    let emailPasswordResend = emailAndPasswordSignal
+      .takeWhen(resendPressedSignal)
+      .switchMap { email, password in
+        login(email: email, password: password, apiService: apiService, loading: isLoadingObserver)
+          .demoteErrors()
+    }
+
+    let facebookResend = facebookTokenSignal
+      .takeWhen(resendPressedSignal)
+      .switchMap { token in
+        login(facebookAccessToken: token, apiService: apiService, loading: isLoadingObserver)
+          .demoteErrors()
+    }
+
+    loginSuccess = Signal.merge([emailPasswordLogin, facebookLogin]).ignoreValues()
+
+    resendSuccess = Signal.merge([emailPasswordResend, facebookResend]).ignoreValues()
+
     isLoading = isLoadingSignal
 
-    isFormValid = combineLatest(hasInput, codeSignal)
+    isFormValid = combineLatest(hasInput.take(1), codeSignal)
       .map { _, code in code.characters.count == 6 }
       .mergeWith(viewWillAppearSignal.mapConst(false))
       .skipRepeats()
 
-    codeMismatch = .empty
-    generic = .empty
+    codeMismatch = tfaErrorSignal
+      .filter { $0.ksrCode == .TfaFailed }
+      .map { $0.errorMessages.first ??
+        localizedString(key: "two_factor.error.message", defaultValue: "The code provided does not match.")
+      }
 
-    resendPressedSignal
-      .mergeWith(submitPressedSignal)
-      .observeNext { isLoadingObserver.sendNext(true) }
-
-    emailAndPasswordSignal
-      .combineLatestWith(codeSignal)
-      .takeWhen(submitPressedSignal)
-      .switchMap { ep, code in apiService.login(email: ep.email,
-        password: ep.password, code: code).demoteErrors() }
-      .ignoreValues()
-      .observeNext { _ in
-        loginSuccessObserver.sendNext()
-        isLoadingObserver.sendNext(false)
-    }
-
-    facebookTokenSignal
-      .combineLatestWith(codeSignal)
-      .takeWhen(submitPressedSignal)
-      .switchMap { token, code in apiService.login(facebookAccessToken: token, code: code).demoteErrors() }
-      .ignoreValues()
-      .observeNext { _ in
-        loginSuccessObserver.sendNext()
-        isLoadingObserver.sendNext(false)
-    }
-
-    emailAndPasswordSignal
-      .takeWhen(resendPressedSignal)
-      .observeNext { email, password in
-        apiService.login(email: email, password: password, code: nil)
-        isLoadingObserver.sendNext(false)
-        koala.trackTfaResendCode()
-    }
-
-    facebookTokenSignal
-      .takeWhen(resendPressedSignal)
-      .observeNext { token in
-        apiService.login(facebookAccessToken: token, code: nil)
-        isLoadingObserver.sendNext(false)
-        koala.trackTfaResendCode()
+    genericFail = tfaErrorSignal
+      .filter { $0.ksrCode != .TfaFailed }
+      .map { $0.errorMessages.first ??
+        localizedString(key: "login.errors.unable_to_log_in", defaultValue: "Unable to log in.")
     }
 
     viewWillAppearSignal.observeNext { _ in koala.trackTfa() }
     loginSuccess.observeNext { _ in koala.trackLoginSuccess() }
+    resendPressedSignal.observeNext { _ in koala.trackTfaResendCode() }
   }
+}
+
+private func login(email email: String? = nil,
+                         password: String? = nil,
+                         facebookAccessToken: String? = nil,
+                         code: String? = nil,
+                         apiService: ServiceType,
+                         loading: Observer<Bool, NoError>) -> SignalProducer<AccessTokenEnvelope, ErrorEnvelope> {
+
+
+  let emailPasswordLogin: SignalProducer<AccessTokenEnvelope, ErrorEnvelope>
+  let facebookLogin: SignalProducer<AccessTokenEnvelope, ErrorEnvelope>
+
+  if let email = email, password = password {
+    emailPasswordLogin = apiService.login(email: email, password: password, code: code)
+    facebookLogin = .empty
+  } else if let facebookAccessToken = facebookAccessToken {
+    emailPasswordLogin = .empty
+    facebookLogin = apiService.login(facebookAccessToken: facebookAccessToken, code: code)
+  } else {
+    emailPasswordLogin = .empty
+    facebookLogin = .empty
+  }
+
+  return emailPasswordLogin.mergeWith(facebookLogin)
+    .on(
+      started: {
+        loading.sendNext(true)
+      },
+      terminated: {
+        loading.sendNext(false)
+      }
+  )
 }
