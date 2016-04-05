@@ -76,6 +76,19 @@ internal final class LoginViewController: MVVMViewController {
       .observeNext { [weak self] message in
         self?.presentViewController(UIAlertController.genericError(message), animated: true, completion: nil)
     }
+
+    self.viewModel.errors.tfaChallenge
+      .observeForUI()
+      .observeNext { [weak self] (email, password) in
+        self?.startTwoFactorViewController(email, password: password)
+      }
+  }
+
+  private func startTwoFactorViewController(email: String, password: String) {
+    let tfaVC = self.storyboard?.instantiateViewControllerWithIdentifier("TwoFactorViewController")
+      as! TwoFactorViewController
+    tfaVC.emailAndPassword = (email, password)
+    self.navigationController?.pushViewController(tfaVC, animated: true)
   }
 
   @IBAction

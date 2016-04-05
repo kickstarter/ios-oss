@@ -17,10 +17,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="UHD-eb-qXC">
+                            <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="UHD-eb-qXC">
                                 <rect key="frame" x="40" y="163" width="520" height="274"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="1tl-3X-f58">
+                                    <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="1tl-3X-f58">
                                         <rect key="frame" x="0.0" y="0.0" width="520" height="70"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DI6-Zp-Yoj" customClass="BorderButton" customModule="Library">
@@ -48,7 +48,7 @@
                                                     </mask>
                                                 </variation>
                                             </button>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="We'll never post anything without your permission." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="npz-Cl-wqX" customClass="StyledLabel" customModule="Library">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="We'll never post anything without your permission." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="npz-Cl-wqX" customClass="StyledLabel" customModule="Library">
                                                 <rect key="frame" x="0.0" y="56" width="520" height="14"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
@@ -58,11 +58,16 @@
                                                     <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Caption2"/>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="_color" value="GrayDark"/>
                                                 </userDefinedRuntimeAttributes>
+                                                <variation key="heightClass=compact" misplaced="YES">
+                                                    <rect key="frame" x="128" y="56" width="265" height="14"/>
+                                                </variation>
                                             </label>
                                         </subviews>
-                                        <variation key="heightClass=compact" alignment="center"/>
+                                        <variation key="heightClass=compact" alignment="center" misplaced="YES">
+                                            <rect key="frame" x="0.0" y="0.0" width="520" height="70"/>
+                                        </variation>
                                     </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="eRD-uK-yiP">
+                                    <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" distribution="fillEqually" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="eRD-uK-yiP">
                                         <rect key="frame" x="0.0" y="100" width="520" height="100"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tcm-YK-ZfH" customClass="BorderButton" customModule="Library">
@@ -99,9 +104,11 @@
                                                 </userDefinedRuntimeAttributes>
                                             </button>
                                         </subviews>
-                                        <variation key="heightClass=compact" axis="horizontal"/>
+                                        <variation key="heightClass=compact" axis="horizontal" misplaced="YES">
+                                            <rect key="frame" x="0.0" y="100" width="520" height="44"/>
+                                        </variation>
                                     </stackView>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="RUt-ea-H2e" customClass="BorderButton" customModule="Library">
+                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="RUt-ea-H2e" customClass="BorderButton" customModule="Library">
                                         <rect key="frame" x="0.0" y="230" width="520" height="44"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="QDd-D3-De3"/>
@@ -116,6 +123,9 @@
                                             <userDefinedRuntimeAttribute type="string" keyPath="_titleColorHighlighted" value="Gray"/>
                                             <userDefinedRuntimeAttribute type="string" keyPath="_titleFontStyle" value="Caption2"/>
                                         </userDefinedRuntimeAttributes>
+                                        <variation key="heightClass=compact" misplaced="YES">
+                                            <rect key="frame" x="0.0" y="174" width="520" height="44"/>
+                                        </variation>
                                         <connections>
                                             <action selector="helpButtonPressed" destination="jyD-hR-XbB" eventType="touchUpInside" id="eQW-8O-b3i"/>
                                         </connections>
@@ -132,6 +142,9 @@
                                         <exclude reference="6pg-Ko-Rhr"/>
                                         <exclude reference="GAp-R7-lck"/>
                                     </mask>
+                                </variation>
+                                <variation key="heightClass=compact" misplaced="YES">
+                                    <rect key="frame" x="40" y="2" width="520" height="218"/>
                                 </variation>
                             </stackView>
                         </subviews>
@@ -233,8 +246,8 @@
                                             <action selector="loginButtonPressed:" destination="i0D-IP-SOl" eventType="touchUpInside" id="9dd-xa-a5S"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="qIi-a3-8Mq" customClass="BorderButton" customModule="Library">
-                                        <rect key="frame" x="202" y="192" width="116" height="44"/>
+                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="qIi-a3-8Mq" customClass="BorderButton" customModule="Library">
+                                        <rect key="frame" x="199" y="192" width="123" height="44"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="n2W-Lf-bmI"/>
                                         </constraints>
@@ -247,6 +260,9 @@
                                             <userDefinedRuntimeAttribute type="string" keyPath="_titleColorHighlighted" value="Black"/>
                                             <userDefinedRuntimeAttribute type="string" keyPath="_titleFontStyle" value="Subhead"/>
                                         </userDefinedRuntimeAttributes>
+                                        <variation key="heightClass=compact" misplaced="YES">
+                                            <rect key="frame" x="202" y="192" width="116" height="44"/>
+                                        </variation>
                                     </button>
                                 </subviews>
                                 <constraints>
@@ -280,6 +296,123 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FQx-n3-9wT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2311" y="736"/>
+        </scene>
+        <!--Two Factor View Controller-->
+        <scene sceneID="oc3-Rh-1xA">
+            <objects>
+                <viewController storyboardIdentifier="TwoFactorViewController" id="fYd-5w-f3D" customClass="TwoFactorViewController" customModule="Kickstarter_iOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="1wG-fQ-0nY"/>
+                        <viewControllerLayoutGuide type="bottom" id="ZBA-gO-pFt"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="oI0-hg-gv6">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" distribution="fillProportionally" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="MIO-8w-HoH">
+                                <rect key="frame" x="40" y="224" width="520" height="164"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please enter your verification code to continue." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="etR-It-9BB" customClass="StyledLabel" customModule="Library">
+                                        <rect key="frame" x="0.0" y="0.0" width="520" height="16"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="_color" value="GrayDark"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Footnote"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="localizedKey" value="two_factor.message"/>
+                                        </userDefinedRuntimeAttributes>
+                                    </label>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter code" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Ry2-ty-hPc">
+                                        <rect key="frame" x="0.0" y="46" width="520" height="44"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="44" id="9SF-5i-2kF"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="numberPad" returnKeyType="done"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="localizedPlaceholderKey" value="two_factor.code_placeholder"/>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="codeEditingChanged:" destination="fYd-5w-f3D" eventType="editingChanged" id="mp2-Y3-uHP"/>
+                                        </connections>
+                                    </textField>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="H8L-sY-JU4">
+                                        <rect key="frame" x="0.0" y="120" width="520" height="44"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YIP-PW-ZCs" customClass="BorderButton" customModule="Library">
+                                                <rect key="frame" x="0.0" y="0.0" width="252" height="44"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="44" id="cmo-KL-zAe"/>
+                                                </constraints>
+                                                <state key="normal" title="Resend"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="_color" value="White"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="_borderColor" value="Gray"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="_titleColorNormal" value="Black"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="_titleColorHighlighted" value="GrayDark"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="_titleFontStyle" value="Body"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="normalLocalizedKey" value="two_factor.buttons.resend"/>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="resendButtonPressed:" destination="fYd-5w-f3D" eventType="touchUpInside" id="UTd-vT-X6f"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KIR-of-ges" customClass="BorderButton" customModule="Library">
+                                                <rect key="frame" x="268" y="0.0" width="252" height="44"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="44" id="Ov1-oZ-Nt5"/>
+                                                </constraints>
+                                                <state key="normal" title="Submit"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="_color" value="Green"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="_borderColor" value="Clear"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="_titleColorNormal" value="White"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="_titleColorHighlighted" value="White"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="_titleFontStyle" value="Body"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="normalLocalizedKey" value="two_factor.buttons.submit"/>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="submitButtonPressed:" destination="fYd-5w-f3D" eventType="touchUpInside" id="IAC-u8-73S"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstAttribute="height" secondItem="KIR-of-ges" secondAttribute="height" constant="44" id="9RK-Rv-twJ"/>
+                                        </constraints>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="9RK-Rv-twJ"/>
+                                            </mask>
+                                        </variation>
+                                    </stackView>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="MIO-8w-HoH" secondAttribute="trailing" constant="20" id="KgS-Wx-9LC"/>
+                            <constraint firstItem="MIO-8w-HoH" firstAttribute="leading" secondItem="oI0-hg-gv6" secondAttribute="leadingMargin" constant="20" id="ZHK-lC-Ld7"/>
+                            <constraint firstItem="MIO-8w-HoH" firstAttribute="centerY" secondItem="oI0-hg-gv6" secondAttribute="centerY" id="a38-it-gbx"/>
+                            <constraint firstItem="MIO-8w-HoH" firstAttribute="width" secondItem="oI0-hg-gv6" secondAttribute="width" id="fGL-l6-Iv0"/>
+                            <constraint firstItem="MIO-8w-HoH" firstAttribute="centerX" secondItem="oI0-hg-gv6" secondAttribute="centerX" id="pvO-Mg-A5t"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="fGL-l6-Iv0"/>
+                                <exclude reference="pvO-Mg-A5t"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <connections>
+                        <outlet property="codeTextField" destination="Ry2-ty-hPc" id="QLg-Zr-kFe"/>
+                        <outlet property="resendButton" destination="YIP-PW-ZCs" id="zhu-c7-m9G"/>
+                        <outlet property="submitButton" destination="KIR-of-ges" id="7F8-Rx-a4r"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Hhb-7l-v8u" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2932" y="736"/>
         </scene>
         <!--Login-->
         <scene sceneID="mfV-8d-OMM">

@@ -49,7 +49,7 @@ internal protocol LoginViewModelErrors {
   var presentError: Signal<String, NoError> { get }
 
   /// Emits when TFA is required for login.
-  var tfaChallenge: Signal<(), NoError> { get }
+  var tfaChallenge: Signal<(String, String), NoError> { get }
 }
 
 internal protocol LoginViewModelType {
@@ -58,7 +58,8 @@ internal protocol LoginViewModelType {
   var errors: LoginViewModelErrors { get }
 }
 
-internal final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, LoginViewModelOutputs, LoginViewModelErrors {
+internal final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, LoginViewModelOutputs,
+  LoginViewModelErrors {
 
   // MARK: LoginViewModelType
   internal var inputs: LoginViewModelInputs { return self }
@@ -104,16 +105,17 @@ internal final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, L
 
   // MARK: Errors
   internal let presentError: Signal<String, NoError>
-  internal let tfaChallenge: Signal<(), NoError>
+  internal let tfaChallenge: Signal<(String, String), NoError>
 
   internal init(env: Environment = AppEnvironment.current) {
-    let apiService = env.apiService
-    let koala = env.koala
-
     let (loginErrors, loginErrorsObserver) = Signal<ErrorEnvelope, NoError>.pipe()
 
     let emailAndPassword = self.email.signal.ignoreNil()
       .combineLatestWith(self.password.signal.ignoreNil())
+
+    let tfaError = loginErrors
+      .filter { $0.ksrCode == .TfaFailed }
+      .ignoreValues()
 
     self.isFormValid = self.viewWillAppearProperty.signal.mapConst(false).take(1)
       .mergeWith(emailAndPassword.map(isValid))
@@ -121,7 +123,7 @@ internal final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, L
     self.logIntoEnvironment = emailAndPassword
         .takeWhen(self.loginButtonPressedProperty.signal)
         .switchMap { ep in
-          apiService.login(email: ep.0, password: ep.1, code: nil)
+          AppEnvironment.current.apiService.login(email: ep.0, password: ep.1, code: nil)
             .demoteErrors(pipeErrorsTo: loginErrorsObserver)
     }
 
@@ -131,21 +133,20 @@ internal final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, L
     self.passwordTextFieldBecomeFirstResponder = self.emailTextFieldDoneEditingProperty.signal
 
     self.presentError = loginErrors
-      .filter { $0.ksrCode != .TfaRequired }
+      .filter { $0.ksrCode != .TfaFailed && $0.ksrCode != .TfaRequired }
       .map { env in
         env.errorMessages.first ??
           localizedString(key: "login.errors.unable_to_log_in", defaultValue: "Unable to log in.")
     }
 
-    self.tfaChallenge = loginErrors
-      .filter { $0.ksrCode == .TfaRequired }
-      .ignoreValues()
+    self.tfaChallenge = emailAndPassword
+      .takeWhen(tfaError)
 
     self.logIntoEnvironment
-      .observeNext { _ in koala.trackLoginSuccess() }
+      .observeNext { _ in AppEnvironment.current.koala.trackLoginSuccess() }
 
     loginErrors
-      .observeNext { _ in koala.trackLoginError() }
+      .observeNext { _ in AppEnvironment.current.koala.trackLoginError() }
   }
 }
 
