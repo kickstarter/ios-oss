@@ -31,7 +31,6 @@ internal final class DiscoveryViewModel: ViewModelType, DiscoveryViewModelType, 
       .map { $0.distincts() }
       .replayLazily(1)
 
-
     koala.trackDiscovery()
   }
 }
