@@ -76,6 +76,38 @@ public final class Koala {
     self.track(event: "Two-factor Authentication Resend Code")
   }
 
+  public func trackLoadNewerProjectComments() {
+    self.track(event: "Project Comment Load New")
+  }
+
+  public func trackLoadNewerUpdateComments() {
+    self.track(event: "Update Comment Load New")
+  }
+
+  public func trackLoadOlderProjectComments(page: Int) {
+    self.track(event: "Project Comment Load Older", properties: ["page_count": page])
+  }
+
+  public func trackLoadOlderUpdateComments(page: Int) {
+    self.track(event: "Update Comment Load Older", properties: ["page_count": page])
+  }
+
+  public func trackProjectCommentCreate() {
+    self.track(event: "Project Comment Create")
+  }
+
+  public func trackUpdateCommentCreate() {
+    self.track(event: "Update Comment Create")
+  }
+
+  public func trackProjectCommentsView() {
+    self.track(event: "Project Comment View")
+  }
+
+  public func trackUpdateCommentsView() {
+    self.track(event: "Update Comment View")
+  }
+
   /// Call once when the search view is initially shown.
   public func trackProjectSearchView() {
     self.track(event: "Discover Search")

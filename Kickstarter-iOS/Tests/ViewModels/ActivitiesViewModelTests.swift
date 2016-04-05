@@ -45,7 +45,7 @@ final class ActivitiesViewModelTests: TestCase {
   // Tests the flow of logging in with a user that has not activities and making sure the correct
   // empty state shows.
   func testLoginFlow_ForUserWithNoActivities() {
-    withEnvironment(apiService: MockService(activities: [])) {
+    withEnvironment(apiService: MockService(fetchActivitiesResponse: [])) {
       let activitiesPresent = TestObserver<Bool, NoError>()
       self.vm.outputs.activities.map { $0.count > 0 }.observe(activitiesPresent.observer)
 
