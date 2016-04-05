@@ -21,6 +21,12 @@ internal final class RootTabBarViewController: MVVMTabBarController {
       .addObserverForName(CurrentUserNotifications.sessionEnded, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionEnded()
     }
+
+    NSNotificationCenter
+      .defaultCenter()
+      .addObserverForName(CurrentUserNotifications.userUpdated, object: nil, queue: nil) { [weak self] _ in
+        self?.viewModel.inputs.currentUserUpdated()
+    }
   }
 
   override func bindViewModel() {
