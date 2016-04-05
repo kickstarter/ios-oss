@@ -16,3 +16,12 @@ Beta and iTunes deployments happen by pushing to the remote `beta-dist` and `itu
 * `make deploy`: deploy `master` to beta users
 * `BRANCH=feature make deploy`: deploy `feature` branch to beta users
 * `RELEASE=itunes make deploy`: deploy `master` to iTunes connect
+
+## Related projects
+
+We make heavy use of the following projects, and so it can be helpful to be familiar with them:
+
+* [Prelude](https://github.com/kickstarter/Kickstarter-Prelude)
+* [Models](https://github.com/kickstarter/Kickstarter-Models)
+* [KsApi](https://github.com/kickstarter/Kickstarter-KsApi)
+* [ReactiveExtensions](https://github.com/kickstarter/Kickstarter-ReactiveExtensions)
