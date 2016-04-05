@@ -1,42 +1,55 @@
 import KsApi
 import ReactiveCocoa
 import ReactiveExtensions
-import struct Library.Environment
-import struct Library.AppEnvironment
-import func Library.localizedString
-import enum Result.NoError
+import Library
+import Result
 
 internal protocol LoginViewModelInputs {
+  /// Call when the view will appear.
+  func viewWillAppear()
+
   /// String value of email textfield text
-  var email: MutableProperty<String?> { get }
+  func emailChanged(email: String?)
+
   /// String value of password textfield text
-  var password: MutableProperty<String?> { get }
+  func passwordChanged(password: String?)
+
   /// Call when login button is pressed
   func loginButtonPressed()
+
   /// Call when email textfield keyboard returns
   func emailTextFieldDoneEditing()
+
   /// Call when password textfield keyboard returns
   func passwordTextFieldDoneEditing()
+
+  /// Call when the environment has been logged into
+  func environmentLoggedIn()
 }
 
 internal protocol LoginViewModelOutputs {
   /// Bool value whether form is valid
-  var isFormValid: MutableProperty<Bool> { get }
-  /// Emits when a login request is successful
-  var logInSuccess: Signal<(), NoError> { get }
+  var isFormValid: Signal<Bool, NoError> { get }
+
+  /// Emits when a login success notification should be posted.
+  var postNotification: Signal<NSNotification, NoError> { get }
+
+  /// Emits an access token envelope that can be used to update the environment.
+  var logIntoEnvironment: Signal<AccessTokenEnvelope, NoError> { get }
+
   /// Emits when to dismiss a textfield keyboard
   var dismissKeyboard: Signal<(), NoError> { get }
+
   /// Emits when the password textfield should become the first responder
   var passwordTextFieldBecomeFirstResponder: Signal<(), NoError> { get }
 }
 
 internal protocol LoginViewModelErrors {
-  /// Emits an error String when a login request has failed
-  var invalidLogin: Signal<String, NoError> { get }
-  /// Emits when a generic login error has occurred
-  var genericError: Signal<String, NoError> { get }
-  /// Emits when a tfa request has failed
-  var tfaChallenge: Signal<String, NoError> { get }
+  /// Emits when a login error has occurred and a message shouldbe displayed.
+  var presentError: Signal<String, NoError> { get }
+
+  /// Emits when TFA is required for login.
+  var tfaChallenge: Signal<(), NoError> { get }
 }
 
 internal protocol LoginViewModelType {
@@ -53,79 +66,89 @@ internal final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, L
   internal var errors: LoginViewModelErrors { return self }
 
   // MARK: Inputs
-  internal let email = MutableProperty<String?>(nil)
-  internal let password = MutableProperty<String?>(nil)
-  private var (loginButtonPressedSignal, loginButtonPressedObserver) = Signal<(), NoError>.pipe()
+  private let viewWillAppearProperty = MutableProperty(())
+  internal func viewWillAppear() {
+    self.viewWillAppearProperty.value = ()
+  }
+  private let email = MutableProperty<String?>(nil)
+  internal func emailChanged(email: String?) {
+    self.email.value = email
+  }
+  private let password = MutableProperty<String?>(nil)
+  internal func passwordChanged(password: String?) {
+    self.password.value = password
+  }
+  private let loginButtonPressedProperty = MutableProperty(())
   internal func loginButtonPressed() {
-    loginButtonPressedObserver.sendNext(())
+    self.loginButtonPressedProperty.value = ()
   }
-  private let (emailTextFieldDoneEditingSignal, emailTextFieldDoneEditingObserver) = Signal<(), NoError>.pipe()
+  private let emailTextFieldDoneEditingProperty = MutableProperty(())
   internal func emailTextFieldDoneEditing() {
-    emailTextFieldDoneEditingObserver.sendNext(())
+    self.emailTextFieldDoneEditingProperty.value = ()
   }
-  private let (passwordTextFieldDoneEditingSignal, passwordTextFieldDoneEditingObserver) = Signal<(), NoError>.pipe()
+  private let passwordTextFieldDoneEditingProperty = MutableProperty(())
   internal func passwordTextFieldDoneEditing() {
-    passwordTextFieldDoneEditingObserver.sendNext(())
+    self.passwordTextFieldDoneEditingProperty.value = ()
+  }
+  private let environmentLoggedInProperty = MutableProperty(())
+  internal func environmentLoggedIn() {
+    self.environmentLoggedInProperty.value = ()
   }
 
   // MARK: Outputs
-  internal let isFormValid = MutableProperty(false)
-  internal let logInSuccess: Signal<(), NoError>
+  internal let isFormValid: Signal<Bool, NoError>
+  internal let postNotification: Signal<NSNotification, NoError>
   internal let dismissKeyboard: Signal<(), NoError>
   internal let passwordTextFieldBecomeFirstResponder: Signal<(), NoError>
+  internal let logIntoEnvironment: Signal<AccessTokenEnvelope, NoError>
 
   // MARK: Errors
-  internal let invalidLogin: Signal<String, NoError>
-  internal let genericError: Signal<String, NoError>
-  internal let tfaChallenge: Signal<String, NoError>
+  internal let presentError: Signal<String, NoError>
+  internal let tfaChallenge: Signal<(), NoError>
 
   internal init(env: Environment = AppEnvironment.current) {
     let apiService = env.apiService
-    let currentUser = env.currentUser
     let koala = env.koala
 
     let (loginErrors, loginErrorsObserver) = Signal<ErrorEnvelope, NoError>.pipe()
 
-    invalidLogin = loginErrors
-      .filter { $0.ksrCode == .InvalidXauthLogin }
-      .map { $0.errorMessages.first ??
-        localizedString(key: "login.errors.does_not_match", defaultValue: "Login does not match any of our records.") }
-      .ignoreNil()
+    let emailAndPassword = self.email.signal.ignoreNil()
+      .combineLatestWith(self.password.signal.ignoreNil())
 
-    tfaChallenge = loginErrors
-      .filter { $0.ksrCode == .TfaRequired }
-      .map { $0.errorMessages.first ??
-        localizedString(key: "two_factor.error.message", defaultValue: "The code provided does not match.") }
+    self.isFormValid = self.viewWillAppearProperty.signal.mapConst(false).take(1)
+      .mergeWith(emailAndPassword.map(isValid))
 
-    genericError = loginErrors
-      .filter { $0.ksrCode != .InvalidXauthLogin && $0.ksrCode != .TfaRequired }
-      .map { $0.errorMessages.first ??
-        localizedString(key: "login.errors.unable_to_log_in", defaultValue: "Unable to log in.") }
-
-    let emailAndPassword = email.signal.ignoreNil()
-      .combineLatestWith(password.signal.ignoreNil())
-      .map { ep in (email: ep.0, password: ep.1) }
-
-    isFormValid <~ emailAndPassword.map(LoginViewModel.isValid)
-
-    let login = emailAndPassword.takeWhen(loginButtonPressedSignal)
-      .switchMap { ep in apiService.login(email: ep.0, password: ep.1, code:nil)
-        .demoteErrors(pipeErrorsTo: loginErrorsObserver) }
-
-    self.logInSuccess = login.ignoreValues()
-
-    login.observeNext { envelope in
-      currentUser.login(envelope.user, accessToken: envelope.accessToken)
-      koala.trackLoginSuccess()
+    self.logIntoEnvironment = emailAndPassword
+        .takeWhen(self.loginButtonPressedProperty.signal)
+        .switchMap { ep in
+          apiService.login(email: ep.0, password: ep.1, code: nil)
+            .demoteErrors(pipeErrorsTo: loginErrorsObserver)
     }
 
-    loginErrors.observeNext { _ in koala.trackLoginError() }
+    self.postNotification = self.environmentLoggedInProperty.signal
+      .mapConst(NSNotification(name: CurrentUserNotifications.sessionStarted, object: nil))
+    self.dismissKeyboard = self.passwordTextFieldDoneEditingProperty.signal
+    self.passwordTextFieldBecomeFirstResponder = self.emailTextFieldDoneEditingProperty.signal
 
-    self.dismissKeyboard = passwordTextFieldDoneEditingSignal
-    self.passwordTextFieldBecomeFirstResponder = emailTextFieldDoneEditingSignal
-  }
+    self.presentError = loginErrors
+      .filter { $0.ksrCode != .TfaRequired }
+      .map { env in
+        env.errorMessages.first ??
+          localizedString(key: "login.errors.unable_to_log_in", defaultValue: "Unable to log in.")
+    }
 
-  private static func isValid(email: String, password: String) -> Bool {
-    return email.characters.count > 0 && password.characters.count > 0
+    self.tfaChallenge = loginErrors
+      .filter { $0.ksrCode == .TfaRequired }
+      .ignoreValues()
+
+    self.logIntoEnvironment
+      .observeNext { _ in koala.trackLoginSuccess() }
+
+    loginErrors
+      .observeNext { _ in koala.trackLoginError() }
   }
+}
+
+private func isValid(email email: String, password: String) -> Bool {
+  return email.characters.count > 0 && password.characters.count > 0
 }

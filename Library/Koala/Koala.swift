@@ -3,6 +3,7 @@ import class Foundation.NSBundle
 import class Foundation.NSDate
 import class UIKit.UIDevice
 import class UIKit.UIScreen
+import struct Models.Project
 
 public final class Koala {
   private let client: TrackingClientType
@@ -11,17 +12,22 @@ public final class Koala {
     self.client = client
   }
 
+  /// Call when the activities screen is shown.
+  public func trackActivities() {
+    self.track(event: "Activities")
+  }
+
+  /// Call when the app launches or enters foreground.
   public func trackAppOpen() {
     self.track(event: "App Open")
   }
 
+  /// Call when the app enters the background.
   public func trackAppClose() {
     self.track(event: "App Close")
   }
 
-  /**
-   Call when a discovery search is made, including pagination.
-   */
+  /// Call when a discovery search is made, including pagination.
   public func trackDiscovery() {
     self.track(event: "Discovery List View")
   }
@@ -70,16 +76,12 @@ public final class Koala {
     self.track(event: "Two-factor Authentication Resend Code")
   }
 
-  /**
-   Call once when the search view is initially shown.
-   */
+  /// Call once when the search view is initially shown.
   public func trackProjectSearchView() {
     self.track(event: "Discover Search")
   }
 
-  /**
-   Call when projects have been obtained from a search.
-   */
+  /// Call when projects have been obtained from a search.
   public func trackSearchResults(query query: String, pageCount: Int) {
     let properties: [String:AnyObject] = ["search_term": query, "page_count": pageCount]
 
@@ -142,7 +144,7 @@ public final class Koala {
   private lazy var clientPlatform: String = {
     switch UIDevice.currentDevice().userInterfaceIdiom {
     case .Phone, .Pad: return "ios"
-    case .TV:         return "tvos"
+    case .TV:          return "tvos"
     default:           return "unspecified"
     }
   }()

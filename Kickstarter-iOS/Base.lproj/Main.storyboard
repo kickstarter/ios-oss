@@ -1,58 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="49e-Tb-3d3">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="49e-Tb-3d3">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
     <scenes>
-        <!--Tab Bar Controller-->
+        <!--Root Tab Bar View Controller-->
         <scene sceneID="yl2-sM-qoP">
             <objects>
-                <tabBarController id="49e-Tb-3d3" sceneMemberID="viewController">
+                <tabBarController id="49e-Tb-3d3" customClass="RootTabBarViewController" customModule="Kickstarter_Framework" customModuleProvider="target" sceneMemberID="viewController">
                     <nil key="simulatedBottomBarMetrics"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" id="W28-zg-YXA">
                         <rect key="frame" x="0.0" y="975" width="768" height="49"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </tabBar>
-                    <connections>
-                        <segue destination="aB0-Y1-uoU" kind="relationship" relationship="viewControllers" id="feq-fm-wMt"/>
-                        <segue destination="vn9-w7-g8t" kind="relationship" relationship="viewControllers" id="N81-ip-xbf"/>
-                        <segue destination="jCg-3v-Wa0" kind="relationship" relationship="viewControllers" id="uUV-U0-Sr6"/>
-                    </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HuB-VB-40B" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="0.0" y="0.0"/>
-        </scene>
-        <!--Login-->
-        <scene sceneID="C9S-tv-RiC">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Login" id="jCg-3v-Wa0" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="SRV-Ge-f9Y"/>
-                </viewControllerPlaceholder>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="HHW-9c-3qJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="807" y="736"/>
-        </scene>
-        <!--ActivitiesViewController-->
-        <scene sceneID="7Qa-72-YCD">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Activity" referencedIdentifier="ActivitiesViewController" id="vn9-w7-g8t" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="Onl-El-De9"/>
-                </viewControllerPlaceholder>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="pPq-LP-kkp" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="723.5" y="-134"/>
-        </scene>
-        <!--DiscoveryViewController-->
-        <scene sceneID="dqZ-PK-r8S">
-            <objects>
-                <viewControllerPlaceholder storyboardIdentifier="DiscoveryViewController" storyboardName="Discovery" referencedIdentifier="DiscoveryViewController" id="aB0-Y1-uoU" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Discovery" id="O5y-A6-DA7"/>
-                </viewControllerPlaceholder>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="0tp-N8-bum" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="725" y="-215"/>
         </scene>
     </scenes>
 </document>

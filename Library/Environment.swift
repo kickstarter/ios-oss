@@ -1,12 +1,9 @@
 import AVFoundation
-import class Foundation.NSBundle
-import class Foundation.NSLocale
-import class Foundation.NSTimeZone
-import class HockeySDK.BITHockeyManager
-import struct KsApi.Service
-import protocol KsApi.ServiceType
-import protocol ReactiveCocoa.DateSchedulerType
-import class ReactiveCocoa.QueueScheduler
+import Foundation
+import HockeySDK
+import KsApi
+import ReactiveCocoa
+import Models
 
 /**
  A collection of **all** global variables and singletons that the app wants access to.
@@ -16,7 +13,7 @@ public struct Environment {
   public let apiThrottleInterval: NSTimeInterval
   public let assetImageGeneratorType: AssetImageGeneratorType.Type
   public let countryCode: String
-  public let currentUser: CurrentUserType
+  public let currentUser: User?
   public let debounceInterval: NSTimeInterval
   public let hockeyManager: HockeyManagerType
   public let koala: Koala
@@ -26,13 +23,15 @@ public struct Environment {
   public let mainBundle: NSBundleType
   public let scheduler: DateSchedulerType
   public let timeZone: NSTimeZone
+  public let ubiquitousStore: KeyValueStoreType
+  public let userDefaults: KeyValueStoreType
 
   public init(
     apiService: ServiceType = Service.shared,
     apiThrottleInterval: NSTimeInterval = 0.0,
     assetImageGeneratorType: AssetImageGeneratorType.Type = AVAssetImageGenerator.self,
     countryCode: String = "US",
-    currentUser: CurrentUserType = CurrentUser.shared,
+    currentUser: User? = nil,
     debounceInterval: NSTimeInterval = 0.3,
     hockeyManager: HockeyManagerType = BITHockeyManager.sharedHockeyManager(),
     koala: Koala = Koala(client: KoalaTrackingClient(endpoint: .Production)),
@@ -41,7 +40,9 @@ public struct Environment {
     locale: NSLocale = .currentLocale(),
     mainBundle: NSBundleType = NSBundle.mainBundle(),
     scheduler: DateSchedulerType = QueueScheduler.mainQueueScheduler,
-    timeZone: NSTimeZone = .localTimeZone()) {
+    timeZone: NSTimeZone = .localTimeZone(),
+    ubiquitousStore: KeyValueStoreType = NSUbiquitousKeyValueStore.defaultStore(),
+    userDefaults: KeyValueStoreType = NSUserDefaults.standardUserDefaults()) {
 
     self.apiService = apiService
     self.apiThrottleInterval = apiThrottleInterval
@@ -57,6 +58,8 @@ public struct Environment {
     self.mainBundle = mainBundle
     self.scheduler = scheduler
     self.timeZone = timeZone
+    self.ubiquitousStore = ubiquitousStore
+    self.userDefaults = userDefaults
   }
 
   private var allGlobals: [Any] {
@@ -74,7 +77,9 @@ public struct Environment {
       self.locale,
       self.mainBundle,
       self.scheduler,
-      self.timeZone
+      self.timeZone,
+      self.ubiquitousStore,
+      self.userDefaults,
     ]
   }
 }

@@ -1,40 +1,35 @@
-import class UIKit.UIResponder
-import class UIKit.UIWindow
-import class UIKit.UIApplication
-import protocol UIKit.UIApplicationDelegate
-import protocol Library.HockeyManagerType
-import struct Library.AppEnvironment
-import struct KsApi.Service
-import struct KsApi.ServerConfig
-import struct KsApi.OauthToken
-import enum Library.Language
-import struct Library.CurrentUser
-import class Foundation.NSLocale
-import class Foundation.NSObject
+import UIKit
+import KsApi
+import Library
+import Foundation
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
   var window: UIWindow?
 
-  let viewModel: AppDelegateViewModelType = AppDelegateViewModel()
+  let viewModel: AppDelegateViewModelType
 
   override init() {
-    let token = CurrentUser.shared.accessToken.map(OauthToken.init)
-
     AppEnvironment.pushEnvironment(
-      apiService: Service(
-        serverConfig: ServerConfig.production,
-        oauthToken: token,
-        language: Language.en.rawValue
-      ),
-      language: .en,
-      locale: NSLocale(localeIdentifier: "en")
+      AppEnvironment.fromStorage(
+        ubiquitousStore: NSUbiquitousKeyValueStore.defaultStore(),
+        userDefaults: NSUserDefaults.standardUserDefaults()
+      )
     )
+    self.viewModel = AppDelegateViewModel()
 
-    //    AppEnvironment.pushEnvironment(
-    //      apiService: MockService(),
-    //      countryCode: "US"
-    //    )
+    super.init()
+
+    self.viewModel.outputs.updateCurrentUserInEnvironment
+      .observeForUI()
+      .observeNext { [weak self] user in
+        AppEnvironment.updateCurrentUser(user)
+        self?.viewModel.inputs.currentUserUpdatedInEnvironment()
+    }
+
+    self.viewModel.outputs.postNotification
+      .observeForUI()
+      .observeNext(NSNotificationCenter.defaultCenter().postNotification)
   }
 
   func application(application: UIApplication,

@@ -14,12 +14,10 @@ final class LoginViewModelTests: XCTestCase {
   let trackingClient = MockTrackingClient()
   let service = MockService()
   lazy var koala: Koala = { return Koala(client: self.trackingClient) }()
-  lazy var currentUser: CurrentUserType = { return CurrentUser(apiService: self.service) }()
 
   override func setUp() {
     super.setUp()
-    self.currentUser.logout()
-    AppEnvironment.pushEnvironment(apiService: service, currentUser: currentUser, koala: koala)
+    AppEnvironment.pushEnvironment(apiService: service, koala: koala)
   }
 
   override func tearDown() {
@@ -27,56 +25,55 @@ final class LoginViewModelTests: XCTestCase {
     AppEnvironment.popEnvironment()
   }
 
-  func testFlow() {
+  func testLoginFlow() {
     self.vm = LoginViewModel()
-
-    let currentUserPresent = TestObserver<Bool, NoError>()
-    self.currentUser.producer.map { $0 != nil}.start(currentUserPresent.observer)
 
     let passwordTextFieldBecomeFirstResponder = TestObserver<(), NoError>()
     vm.outputs.passwordTextFieldBecomeFirstResponder.observe(passwordTextFieldBecomeFirstResponder.observer)
 
     let isFormValid = TestObserver<Bool, NoError>()
-    vm.outputs.isFormValid.producer.start(isFormValid.observer)
+    vm.outputs.isFormValid.observe(isFormValid.observer)
 
     let dismissKeyboard = TestObserver<(), NoError>()
     vm.outputs.dismissKeyboard.observe(dismissKeyboard.observer)
 
-    let loginSuccess = TestObserver<(), NoError>()
-    vm.outputs.logInSuccess.observe(loginSuccess.observer)
+    let postNotificationName = TestObserver<String, NoError>()
+    vm.outputs.postNotification.map { $0.name }.observe(postNotificationName.observer)
 
-    let invalidLogin = TestObserver<String, NoError>()
-    vm.errors.invalidLogin.observe(invalidLogin.observer)
+    let logIntoEnvironment = TestObserver<AccessTokenEnvelope, NoError>()
+    vm.outputs.logIntoEnvironment.observe(logIntoEnvironment.observer)
 
-    let genericError = TestObserver<String, NoError>()
-    vm.errors.genericError.observe(genericError.observer)
+    let presentError = TestObserver<String, NoError>()
+    vm.errors.presentError.observe(presentError.observer)
 
-    let tfaChallenge = TestObserver<String, NoError>()
+    let tfaChallenge = TestObserver<(), NoError>()
     vm.errors.tfaChallenge.observe(tfaChallenge.observer)
 
-    currentUserPresent.assertValues([false], "No user is currently logged in")
+    vm.inputs.viewWillAppear()
 
     isFormValid.assertValues([false], "Form is not valid")
 
-    vm.inputs.email.value = "Gina@rules.com"
+    vm.inputs.emailChanged("Gina@rules.com")
     isFormValid.assertValues([false], "Form is not valid")
 
     vm.inputs.emailTextFieldDoneEditing()
     passwordTextFieldBecomeFirstResponder.assertValueCount(1, "Password textfield becomes first responder")
 
-    vm.inputs.password.value = "hello"
+    vm.inputs.passwordChanged("hello")
     isFormValid.assertValues([false, true], "Form is valid")
 
     vm.inputs.passwordTextFieldDoneEditing()
     dismissKeyboard.assertValueCount(1, "Keyboard is dismissed")
 
     vm.inputs.loginButtonPressed()
-    currentUserPresent.assertValues([false, true], "A user is currently logged in")
-    loginSuccess.assertValueCount(1, "Login is successful")
+    logIntoEnvironment.assertValueCount(1, "Log into environment.")
     XCTAssertEqual(["Login"], trackingClient.events, "Koala login is tracked")
 
-    invalidLogin.assertValueCount(0, "Invalid login error did not happen")
-    genericError.assertValueCount(0, "Generic error did not happen")
-    tfaChallenge.assertValueCount(0, "TFA error did not happen")
+    vm.inputs.environmentLoggedIn()
+    postNotificationName.assertValues([CurrentUserNotifications.sessionStarted],
+                                      "Login notification posted.")
+
+    presentError.assertValueCount(0, "Error did not happen")
+    tfaChallenge.assertValueCount(0, "TFA challenge did not happen")
   }
 }

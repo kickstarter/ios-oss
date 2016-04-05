@@ -1,21 +1,33 @@
-import class Library.MVVMTableViewController
-import var UIKit.UITableViewAutomaticDimension
-import class UIKit.NSIndexPath
-import class UIKit.UITableView
+import Foundation
+import Library
 import UIKit
 
 internal final class ActivitiesViewController: MVVMTableViewController {
   let viewModel: ActivitiesViewModelType = ActivitiesViewModel()
   let dataSource = ActivitiesDataSource()
 
+  internal required init?(coder aDecoder: NSCoder) {
+    super.init(coder: aDecoder)
+
+    NSNotificationCenter.defaultCenter()
+      .addObserverForName(CurrentUserNotifications.sessionStarted, object: nil, queue: nil) { [weak self] _ in
+        self?.viewModel.inputs.userSessionStarted()
+    }
+
+    NSNotificationCenter.defaultCenter()
+      .addObserverForName(CurrentUserNotifications.sessionEnded, object: nil, queue: nil) { [weak self] _ in
+        self?.viewModel.inputs.userSessionEnded()
+    }
+  }
+
   override func viewDidLoad() {
     super.viewDidLoad()
     self.tableView.dataSource = dataSource
   }
 
-  internal override func viewDidAppear(animated: Bool) {
-    super.viewDidAppear(animated)
-    self.viewModel.inputs.viewDidAppear()
+  internal override func viewWillAppear(animated: Bool) {
+    super.viewWillAppear(animated)
+    self.viewModel.inputs.viewWillAppear()
   }
 
   override func bindViewModel() {

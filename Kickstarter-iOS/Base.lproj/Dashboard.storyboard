@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="iu7-hr-7vz">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <scenes>
+        <!--Dashboard-->
+        <scene sceneID="RiG-Oc-47s">
+            <objects>
+                <navigationController id="iu7-hr-7vz" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Dashboard" id="nS4-wK-206"/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="GEb-H1-cbe">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="BSX-wh-3mQ" kind="relationship" relationship="rootViewController" id="kwY-6T-1Te"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2Tq-H6-X8H" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-279" y="687"/>
+        </scene>
+        <!--Dashboard View Controller-->
+        <scene sceneID="mYx-nB-oJ6">
+            <objects>
+                <viewController id="BSX-wh-3mQ" customClass="DashboardViewController" customModule="Kickstarter_Framework" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="yUR-ne-Daq"/>
+                        <viewControllerLayoutGuide type="bottom" id="eUi-5S-7rd"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="SC9-74-aHO">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="sPI-sg-TSE"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="frA-IF-AkB" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="416" y="687"/>
+        </scene>
+    </scenes>
+</document>

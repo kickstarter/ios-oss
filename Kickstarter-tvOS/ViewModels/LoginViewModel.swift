@@ -64,13 +64,6 @@ final class LoginViewModel : LoginViewModelInputs, LoginViewModelOutputs, LoginV
       .filter(isValid)
       .flatMap { ep in apiService.login(email: ep.0, password: ep.1, code: nil).demoteErrors(pipeErrorsTo: errorsObserver) }
       .start { event in
-        switch event {
-        case let .Next(envelope):
-          currentUser.login(envelope.user, accessToken: envelope.accessToken)
-          loggedInObserver.sendNext(())
-        default:
-          print("")
-        }
     }
   }
 

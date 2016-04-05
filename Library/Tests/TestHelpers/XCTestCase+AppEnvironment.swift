@@ -1,10 +1,10 @@
 import XCTest
 @testable import Library
 import AVFoundation
-import class Foundation.NSLocale
-import class Foundation.NSTimeZone
-import protocol KsApi.ServiceType
-import protocol ReactiveCocoa.DateSchedulerType
+import Foundation
+import KsApi
+import ReactiveCocoa
+import Models
 
 extension XCTestCase {
 
@@ -25,7 +25,7 @@ extension XCTestCase {
                apiThrottleInterval: NSTimeInterval = AppEnvironment.current.apiThrottleInterval,
                assetImageGeneratorType: AssetImageGeneratorType.Type = AppEnvironment.current.assetImageGeneratorType,
                countryCode: String = AppEnvironment.current.countryCode,
-               currentUser: CurrentUserType = AppEnvironment.current.currentUser,
+               currentUser: User? = AppEnvironment.current.currentUser,
                debounceInterval: NSTimeInterval = AppEnvironment.current.debounceInterval,
                hockeyManager: HockeyManagerType = AppEnvironment.current.hockeyManager,
                koala: Koala = AppEnvironment.current.koala,
@@ -35,6 +35,8 @@ extension XCTestCase {
                mainBundle: NSBundleType = AppEnvironment.current.mainBundle,
                scheduler: DateSchedulerType = AppEnvironment.current.scheduler,
                timeZone: NSTimeZone = AppEnvironment.current.timeZone,
+               ubiquitousStore: KeyValueStoreType = AppEnvironment.current.ubiquitousStore,
+               userDefaults: KeyValueStoreType = AppEnvironment.current.userDefaults,
                @noescape body: () -> ()) {
 
     withEnvironment(
@@ -52,7 +54,9 @@ extension XCTestCase {
         locale: locale,
         mainBundle: mainBundle,
         scheduler: scheduler,
-        timeZone: timeZone
+        timeZone: timeZone,
+        ubiquitousStore: ubiquitousStore,
+        userDefaults: userDefaults
       ),
       body: body
     )

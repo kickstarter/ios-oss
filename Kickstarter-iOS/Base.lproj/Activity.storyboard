@@ -1,12 +1,30 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="JNq-N5-e9l">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Activites-->
+        <scene sceneID="840-08-it9">
+            <objects>
+                <navigationController id="JNq-N5-e9l" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Activites" id="HJm-z1-3We"/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Tgp-wN-sQw">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="tvn-h8-peN" kind="relationship" relationship="rootViewController" id="TNy-Zs-z6Q"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Oko-NT-AXs" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="348" y="373"/>
+        </scene>
+        <!--Activities View Controller-->
         <scene sceneID="3xy-hf-S1V">
             <objects>
                 <tableViewController storyboardIdentifier="ActivitiesViewController" id="tvn-h8-peN" customClass="ActivitiesViewController" customModule="Kickstarter_Framework" customModuleProvider="target" sceneMemberID="viewController">
@@ -16,7 +34,7 @@
                         <color key="backgroundColor" white="0.94999999999999996" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="ActivityStateChangeCell" rowHeight="250" id="Hzx-aM-zE3" userLabel="State Change" customClass="ActivityStateChangeCell" customModule="Kickstarter_Framework" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="400" height="250"/>
+                                <rect key="frame" x="0.0" y="92" width="400" height="250"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Hzx-aM-zE3" id="soh-SV-0mP">
                                     <rect key="frame" x="0.0" y="0.0" width="400" height="250"/>
@@ -125,7 +143,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="__divider_1" rowHeight="32" id="6xK-sx-U1Q">
-                                <rect key="frame" x="0.0" y="278" width="400" height="32"/>
+                                <rect key="frame" x="0.0" y="342" width="400" height="32"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="6xK-sx-U1Q" id="aDR-ne-l7K">
                                     <rect key="frame" x="0.0" y="0.0" width="400" height="32"/>
@@ -136,7 +154,7 @@
                                 <edgeInsets key="layoutMargins" top="16" left="16" bottom="16" right="16"/>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ActivityFriendFollowCell" rowHeight="100" id="I3Q-Yo-ejp" userLabel="Friend Follow" customClass="ActivityFriendFollowCell" customModule="Kickstarter_Framework" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="310" width="400" height="100"/>
+                                <rect key="frame" x="0.0" y="374" width="400" height="100"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="I3Q-Yo-ejp" id="XXL-GY-0wQ">
                                     <rect key="frame" x="0.0" y="0.0" width="400" height="100"/>
@@ -155,7 +173,7 @@
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your friend Zack Sears started following you!" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.69999999999999996" translatesAutoresizingMaskIntoConstraints="NO" id="eef-El-PXt" userLabel="Friend label">
                                                     <rect key="frame" x="72" y="12" width="208" height="36"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XtT-ao-aqM" userLabel="Follow button">
@@ -181,7 +199,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="__divider_2" rowHeight="32" id="xxO-Yf-Vpc">
-                                <rect key="frame" x="0.0" y="410" width="400" height="32"/>
+                                <rect key="frame" x="0.0" y="474" width="400" height="32"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="xxO-Yf-Vpc" id="K8r-su-ERG">
                                     <rect key="frame" x="0.0" y="0.0" width="400" height="32"/>
@@ -192,7 +210,7 @@
                                 <edgeInsets key="layoutMargins" top="16" left="16" bottom="16" right="16"/>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="ActivityFriendBackingCell" rowHeight="200" id="Um1-5C-c6F" userLabel="Friend Backing" customClass="ActivityFriendBackingCell" customModule="Kickstarter_Framework" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="442" width="400" height="200"/>
+                                <rect key="frame" x="0.0" y="506" width="400" height="200"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Um1-5C-c6F" id="3xw-ex-rgq">
                                     <rect key="frame" x="0.0" y="0.0" width="400" height="200"/>
@@ -214,7 +232,7 @@
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Zack Sears backed a Photography project." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.69999999999999996" translatesAutoresizingMaskIntoConstraints="NO" id="n6p-7T-Lkg">
                                                             <rect key="frame" x="56" y="0.0" width="312" height="40"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
-                                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                     </subviews>
@@ -228,7 +246,7 @@
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Cosmic Surgery" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.80000000000000004" translatesAutoresizingMaskIntoConstraints="NO" id="vrG-dK-htn">
                                                                     <rect key="frame" x="0.0" y="0.0" width="280" height="0.0"/>
                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
-                                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="by Alma Haser" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P3B-b5-xfM">
@@ -268,7 +286,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="__divider_3" rowHeight="32" id="Ehm-aL-O7O">
-                                <rect key="frame" x="0.0" y="642" width="400" height="32"/>
+                                <rect key="frame" x="0.0" y="706" width="400" height="32"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Ehm-aL-O7O" id="Q5L-WB-RRf">
                                     <rect key="frame" x="0.0" y="0.0" width="400" height="32"/>
@@ -279,7 +297,7 @@
                                 <edgeInsets key="layoutMargins" top="16" left="16" bottom="16" right="16"/>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="ActivityUpdateCell" rowHeight="380" id="Wv6-wT-OF6" userLabel="Update" customClass="ActivityUpdateCell" customModule="Kickstarter_Framework" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="674" width="400" height="380"/>
+                                <rect key="frame" x="0.0" y="738" width="400" height="380"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Wv6-wT-OF6" id="iJG-Og-j2a">
                                     <rect key="frame" x="0.0" y="0.0" width="400" height="380"/>
@@ -314,13 +332,13 @@
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Update #26" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qj0-jB-Zve">
                                                             <rect key="frame" x="0.0" y="0.0" width="63" height="14"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
-                                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="16 hours ago" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YS9-YP-SpM">
                                                             <rect key="frame" x="300" y="0.0" width="68" height="14"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
-                                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                     </subviews>
@@ -328,14 +346,14 @@
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="important shipping stuff!" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.90000000000000002" translatesAutoresizingMaskIntoConstraints="NO" id="fef-3c-G8d">
                                                     <rect key="frame" x="0.0" y="30" width="368" height="26"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2pH-Zs-dun">
                                                     <rect key="frame" x="0.0" y="72" width="368" height="188"/>
                                                     <string key="text">alert! alert! here are important odds &amp; ends to note as we dive into shipping your rewards! -  please do not worry or ask us about the whereabouts of your rewards... at least not until the middle of april or something... especially if you do not live in the USA. it will take time to put together 4500 packages and international orders will take an additional week or two in transit. clogging our inbox</string>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
@@ -373,7 +391,7 @@
                             <outlet property="delegate" destination="tvn-h8-peN" id="N3S-fl-MVJ"/>
                         </connections>
                     </tableView>
-                    <tabBarItem key="tabBarItem" title="Activites" id="HJm-z1-3We"/>
+                    <navigationItem key="navigationItem" id="UYl-3m-Ykk"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="400" height="1100"/>

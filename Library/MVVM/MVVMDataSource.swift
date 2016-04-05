@@ -141,7 +141,7 @@ public class MVVMDataSource : NSObject, UICollectionViewDataSource, UITableViewD
 
   private func padDataForSection(section: Int) {
     guard self.data.count <= section else { return }
-    
+
     (self.data.count...section).forEach { _ in
       self.data.append([])
     }

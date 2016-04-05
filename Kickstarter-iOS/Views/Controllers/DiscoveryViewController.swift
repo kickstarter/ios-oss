@@ -8,6 +8,7 @@ import var UIKit.UITableViewAutomaticDimension
 import class Library.MVVMTableViewController
 import struct Library.Environment
 import struct Library.AppEnvironment
+import Foundation
 
 internal final class DiscoveryViewController: MVVMTableViewController {
   let viewModel: DiscoveryViewModelType = DiscoveryViewModel()

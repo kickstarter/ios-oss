@@ -1,15 +1,9 @@
 import ReactiveExtensions
 import ReactiveCocoa
-import func Foundation.NSLocalizedString
-import class UIKit.UITextField
-import class UIKit.UIButton
-import class UIKit.UIAlertAction
-import class UIKit.UIAlertController
-import class UIKit.UITapGestureRecognizer
-import class Library.MVVMViewController
-import class Library.BorderButton
-import enum Library.Color
-import func Library.localizedString
+import Foundation
+import UIKit
+import Library
+import Prelude
 
 internal final class LoginViewController: MVVMViewController {
   @IBOutlet internal weak var emailTextField: UITextField!
@@ -31,33 +25,30 @@ internal final class LoginViewController: MVVMViewController {
     emailTextField.layer.borderWidth = 1.0
     passwordTextField.layer.borderWidth = 1.0
 
-    let spacer: UIView = UIView(frame: CGRectMake(0, 0, 10, 0))
-    emailTextField.leftView = spacer
+    emailTextField.leftView = UIView(frame: CGRectMake(0, 0, 10, 0))
     emailTextField.leftViewMode = UITextFieldViewMode.Always;
 
-    let spacer2: UIView = UIView(frame: CGRectMake(0, 0, 10, 0))
-    passwordTextField.leftView = spacer2
+    passwordTextField.leftView = UIView(frame: CGRectMake(0, 0, 10, 0))
     passwordTextField.leftViewMode = UITextFieldViewMode.Always;
 
     let tap = UITapGestureRecognizer(target: self, action: #selector(LoginViewController.dismissKeyboard))
     self.view.addGestureRecognizer(tap)
   }
 
+  override func viewWillAppear(animated: Bool) {
+    super.viewWillAppear(animated)
+    self.viewModel.inputs.viewWillAppear()
+  }
+
   override func bindViewModel() {
-    self.viewModel.inputs.email <~ emailTextField.rac_text
-    self.viewModel.inputs.password <~ passwordTextField.rac_text
+    super.bindViewModel()
 
-    self.emailTextField.rac_signalForControlEvents(UIControlEvents.EditingDidEndOnExit)
-      .subscribeNext { [weak self] _ in
-        self?.viewModel.inputs.emailTextFieldDoneEditing()
+    self.viewModel.outputs.isFormValid
+      .observeForUI()
+      .observeNext { [weak self] isValid in
+        self?.loginButton.alpha = isValid ? 1.0 : 0.5
+        self?.loginButton.enabled = isValid
     }
-
-    self.passwordTextField.rac_signalForControlEvents(UIControlEvents.EditingDidEndOnExit)
-      .subscribeNext { [weak self] _ in
-        self?.viewModel.inputs.passwordTextFieldDoneEditing()
-    }
-
-    self.loginButton.rac_enabled <~ self.viewModel.outputs.isFormValid
 
     self.viewModel.outputs.passwordTextFieldBecomeFirstResponder
       .observeForUI()
@@ -71,28 +62,19 @@ internal final class LoginViewController: MVVMViewController {
         self?.dismissKeyboard()
     }
 
-    self.viewModel.outputs.isFormValid.producer
-      .observeForUI()
-      .startWithNext { [weak self] isValid in
-        self?.loginButton.alpha = isValid ? 1.0 : 0.5
+    self.viewModel.outputs.postNotification
+      .observeNext(NSNotificationCenter.defaultCenter().postNotification)
+
+    self.viewModel.outputs.logIntoEnvironment
+      .observeNext { [weak self] env in
+        AppEnvironment.login(env)
+        self?.viewModel.inputs.environmentLoggedIn()
     }
 
-    self.viewModel.outputs.logInSuccess
-      .observeForUI()
-      .observeNext { [weak self] _ in
-        self?.onLoginSuccess()
-    }
-
-    self.viewModel.errors.invalidLogin
+    self.viewModel.errors.presentError
       .observeForUI()
       .observeNext { [weak self] message in
-        self?.presentError(message)
-    }
-
-    self.viewModel.errors.genericError
-      .observeForUI()
-      .observeNext { [weak self] message in
-        self?.presentError(message)
+        self?.presentViewController(UIAlertController.genericError(message), animated: true, completion: nil)
     }
   }
 
@@ -101,17 +83,27 @@ internal final class LoginViewController: MVVMViewController {
     self.viewModel.inputs.loginButtonPressed()
   }
 
+  @IBAction
+  internal func emailTextFieldChanged(textField: UITextField) {
+    self.viewModel.inputs.emailChanged(textField.text)
+  }
+
+  @IBAction
+  internal func emailTextFieldDoneEditing(textField: UITextField) {
+    self.viewModel.inputs.emailTextFieldDoneEditing()
+  }
+
+  @IBAction
+  internal func passwordTextFieldChanged(textField: UITextField) {
+    self.viewModel.inputs.passwordChanged(textField.text)
+  }
+
+  @IBAction
+  internal func passwordTextFieldDoneEditing(textField: UITextField) {
+    self.viewModel.inputs.passwordTextFieldDoneEditing()
+  }
+
   internal func dismissKeyboard() {
     self.view.endEditing(true)
-  }
-
-  private func onLoginSuccess() {
-    self.navigationController?.tabBarController?.selectedIndex = 0
-    self.navigationController?.popToRootViewControllerAnimated(false)
-  }
-
-  private func presentError(message: String) {
-    let alertController = UIAlertController.genericError(message)
-    self.presentViewController(alertController, animated: true, completion: nil)
   }
 }
