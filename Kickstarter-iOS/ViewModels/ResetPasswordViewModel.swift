@@ -78,9 +78,7 @@ internal final class ResetPasswordViewModel: ResetPasswordViewModelType, ResetPa
   internal let resetFail: Signal<String, NoError>
 
   // MARK: Constructor
-  internal init(env: Environment = AppEnvironment.current) {
-    let apiService = env.apiService
-    let koala = env.koala
+  internal init() {
 
     let (resetFailSignal, resetFailObserver) = Signal<ErrorEnvelope, NoError>.pipe()
     resetFail = resetFailSignal.map { envelope in envelope.errorMessages.first ??
@@ -95,14 +93,16 @@ internal final class ResetPasswordViewModel: ResetPasswordViewModelType, ResetPa
 
     resetSuccess = emailSignal
       .takeWhen(resetButtonPressedSignal)
-      .switchMap { email in apiService.resetPassword(email: email)
-        .demoteErrors(pipeErrorsTo: resetFailObserver)
-        .mapConst(email) }
+      .switchMap { email in
+        AppEnvironment.current.apiService.resetPassword(email: email)
+          .demoteErrors(pipeErrorsTo: resetFailObserver)
+          .mapConst(email)
+    }
 
     returnToLogin = confirmResetButtonPressedSignal
 
-    viewWillAppearSignal.observeNext { _ in koala.trackResetPassword() }
-    resetSuccess.observeNext { _ in koala.trackResetPasswordSuccess() }
+    viewWillAppearSignal.observeNext { AppEnvironment.current.koala.trackResetPassword() }
+    resetSuccess.observeNext { _ in AppEnvironment.current.koala.trackResetPasswordSuccess() }
   }
   
 }

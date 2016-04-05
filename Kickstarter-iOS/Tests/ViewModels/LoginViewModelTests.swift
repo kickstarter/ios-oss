@@ -9,25 +9,15 @@ import XCTest
 @testable import Result
 @testable import Library
 
-final class LoginViewModelTests: XCTestCase {
+final class LoginViewModelTests: TestCase {
   var vm: LoginViewModelType!
-  let trackingClient = MockTrackingClient()
-  let service = MockService()
-  lazy var koala: Koala = { return Koala(client: self.trackingClient) }()
 
   override func setUp() {
     super.setUp()
-    AppEnvironment.pushEnvironment(apiService: service, koala: koala)
-  }
-
-  override func tearDown() {
-    super.tearDown()
-    AppEnvironment.popEnvironment()
+    self.vm = LoginViewModel()
   }
 
   func testLoginFlow() {
-    self.vm = LoginViewModel()
-
     let passwordTextFieldBecomeFirstResponder = TestObserver<(), NoError>()
     vm.outputs.passwordTextFieldBecomeFirstResponder.observe(passwordTextFieldBecomeFirstResponder.observer)
 

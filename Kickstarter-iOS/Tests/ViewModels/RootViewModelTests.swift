@@ -9,22 +9,12 @@ import UIKit
 import Result
 import ReactiveCocoa
 
-final class RootViewModelTests: XCTestCase {
-  let vm: RootViewModelType = RootViewModel()
-  let apiService = MockService()
+final class RootViewModelTests: TestCase {
+  var vm: RootViewModelType!
 
   override func setUp() {
     super.setUp()
-    AppEnvironment.pushEnvironment(
-      currentUser: nil,
-      ubiquitousStore: MockKeyValueStore(),
-      userDefaults: MockKeyValueStore()
-    )
-  }
-
-  override func tearDown() {
-    super.tearDown()
-    AppEnvironment.popEnvironment()
+    self.vm = RootViewModel()
   }
 
   func testViewControllers() {

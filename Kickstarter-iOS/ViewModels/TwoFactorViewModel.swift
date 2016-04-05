@@ -84,9 +84,7 @@ internal final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMo
   internal let codeMismatch: Signal<String, NoError>
   internal let genericFail: Signal<String, NoError>
 
-  internal init(env: Environment = AppEnvironment.current) {
-    let apiService = env.apiService
-    let koala = env.koala
+  internal init() {
 
     let hasInput = emailAndPasswordSignal.ignoreValues()
       .mergeWith(facebookTokenSignal.ignoreValues())
@@ -99,7 +97,7 @@ internal final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMo
       .combineLatestWith(codeSignal)
       .takeWhen(submitPressedSignal)
       .switchMap { ep, code in
-        login(email: ep.email, password: ep.password, code: code, apiService: apiService, loading: isLoadingObserver)
+        login(email: ep.email, password: ep.password, code: code, apiService: AppEnvironment.current.apiService, loading: isLoadingObserver)
           .demoteErrors(pipeErrorsTo: tfaErrorObserver)
       }
 
@@ -107,14 +105,14 @@ internal final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMo
       .combineLatestWith(codeSignal)
       .takeWhen(submitPressedSignal)
       .switchMap { token, code in
-        login(facebookAccessToken: token, code: code, apiService: apiService, loading: isLoadingObserver)
+        login(facebookAccessToken: token, code: code, apiService: AppEnvironment.current.apiService, loading: isLoadingObserver)
           .demoteErrors(pipeErrorsTo: tfaErrorObserver)
       }
 
     let emailPasswordResend = emailAndPasswordSignal
       .takeWhen(resendPressedSignal)
       .switchMap { email, password in
-        login(email: email, password: password, apiService: apiService, loading: isLoadingObserver)
+        login(email: email, password: password, apiService: AppEnvironment.current.apiService, loading: isLoadingObserver)
           .materialize()
           .filter { $0.error != nil }
     }
@@ -122,7 +120,7 @@ internal final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMo
     let facebookResend = facebookTokenSignal
       .takeWhen(resendPressedSignal)
       .switchMap { token in
-        login(facebookAccessToken: token, apiService: apiService, loading: isLoadingObserver)
+        login(facebookAccessToken: token, apiService: AppEnvironment.current.apiService, loading: isLoadingObserver)
           .materialize()
           .filter { $0.error != nil }
     }
@@ -150,9 +148,9 @@ internal final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMo
         localizedString(key: "login.errors.unable_to_log_in", defaultValue: "Unable to log in.")
     }
 
-    viewWillAppearSignal.observeNext { _ in koala.trackTfa() }
-    loginSuccess.observeNext { _ in koala.trackLoginSuccess() }
-    resendPressedSignal.observeNext { _ in koala.trackTfaResendCode() }
+    viewWillAppearSignal.observeNext { AppEnvironment.current.koala.trackTfa() }
+    loginSuccess.observeNext { AppEnvironment.current.koala.trackLoginSuccess() }
+    resendPressedSignal.observeNext { AppEnvironment.current.koala.trackTfaResendCode() }
   }
 }
 
@@ -180,11 +178,7 @@ private func login(email email: String? = nil,
 
   return emailPasswordLogin.mergeWith(facebookLogin)
     .on(
-      started: {
-        loading.sendNext(true)
-      },
-      terminated: {
-        loading.sendNext(false)
-      }
+      started: { loading.sendNext(true) },
+      terminated: { loading.sendNext(false) }
   )
 }

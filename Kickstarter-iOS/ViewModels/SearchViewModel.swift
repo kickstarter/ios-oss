@@ -47,8 +47,7 @@ internal final class SearchViewModel: SearchViewModelType, SearchViewModelInputs
   var inputs: SearchViewModelInputs { return self }
   var outputs: SearchViewModelOutputs { return self }
   
-  init(env: Environment = AppEnvironment.current) {
-
+  init() {
     let query = searchTextChangedSignal
       .mergeWith(viewDidAppearSignal.map(const("")).take(1))
 
@@ -57,18 +56,18 @@ internal final class SearchViewModel: SearchViewModelType, SearchViewModelInputs
     let popular = query
       .filter { $0.isEmpty }
       .map(const(DiscoveryParams(sort: .Popular)))
-      .switchMap { env.apiService.fetchProjects($0).demoteErrors() }
+      .switchMap { AppEnvironment.current.apiService.fetchProjects($0).demoteErrors() }
 
     let searchResults = query
       .switchMap { q in SignalProducer(value: q)
-        .debounce(env.debounceInterval, onScheduler: env.scheduler)
+        .debounce(AppEnvironment.current.debounceInterval, onScheduler: AppEnvironment.current.scheduler)
         .skipRepeats()
         .filter { !$0.isEmpty }
         .map { DiscoveryParams(query: $0) }
-        .switchMap {
-          env.apiService.fetchProjects($0)
+        .switchMap { params in
+          AppEnvironment.current.apiService.fetchProjects(params)
             .demoteErrors()
-            .delay(env.apiThrottleInterval, onScheduler: env.scheduler)
+            .delay(AppEnvironment.current.apiThrottleInterval, onScheduler: AppEnvironment.current.scheduler)
         }
     }
 
@@ -81,11 +80,11 @@ internal final class SearchViewModel: SearchViewModelType, SearchViewModelInputs
 
     self.viewDidAppearSignal
       .take(1)
-      .observeNext { _ in env.koala.trackProjectSearchView() }
+      .observeNext { AppEnvironment.current.koala.trackProjectSearchView() }
 
     query
       .filter { !$0.isEmpty }
       .takeWhen(searchResults)
-      .observeNext { env.koala.trackSearchResults(query: $0, pageCount: 1) }
+      .observeNext { AppEnvironment.current.koala.trackSearchResults(query: $0, pageCount: 1) }
   }
 }

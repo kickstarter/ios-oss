@@ -6,25 +6,12 @@ import Result
 @testable import KsApi_TestHelpers
 @testable import Library
 
-final class TwoFactorViewModelTests: XCTestCase {
-  let apiService = MockService()
-  let trackingClient = MockTrackingClient()
+final class TwoFactorViewModelTests: TestCase {
   var vm: TwoFactorViewModelType!
 
   override func setUp() {
     super.setUp()
-
-    let koala = Koala(client: trackingClient)
-
-    AppEnvironment.pushEnvironment(apiService: apiService, koala: koala)
-
-    vm = TwoFactorViewModel()
-  }
-
-  override func tearDown() {
-    super.tearDown()
-
-    AppEnvironment.popEnvironment()
+    self.vm = TwoFactorViewModel()
   }
 
   func testKoala_viewEvents() {

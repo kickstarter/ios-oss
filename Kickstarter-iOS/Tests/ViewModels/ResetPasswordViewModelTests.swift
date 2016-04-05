@@ -6,25 +6,12 @@ import XCTest
 @testable import Result
 @testable import Library
 
-final class ResetPasswordViewModelTests: XCTestCase {
-  let apiService = MockService()
-  let trackingClient = MockTrackingClient()
+final class ResetPasswordViewModelTests: TestCase {
   var vm: ResetPasswordViewModelType!
 
   override func setUp() {
     super.setUp()
-
-    let koala = Koala(client: trackingClient)
-
-    AppEnvironment.pushEnvironment(apiService: apiService, koala: koala)
-
-    vm = ResetPasswordViewModel()
-  }
-
-  override func tearDown() {
-    super.tearDown()
-
-    AppEnvironment.popEnvironment()
+    self.vm = ResetPasswordViewModel()
   }
 
   func testViewWillAppear() {

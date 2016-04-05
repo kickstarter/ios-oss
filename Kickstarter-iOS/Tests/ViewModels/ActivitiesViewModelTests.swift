@@ -8,22 +8,13 @@ import Result
 import Models
 @testable import Models_TestHelpers
 
-final class ActivitiesViewModelTests: XCTestCase {
+final class ActivitiesViewModelTests: TestCase {
   let apiService = MockService()
-  let vm: ActivitiesViewModelType! = ActivitiesViewModel()
+  var vm: ActivitiesViewModelType!
 
   override func setUp() {
     super.setUp()
-    AppEnvironment.pushEnvironment(
-      apiService: apiService,
-      ubiquitousStore: MockKeyValueStore(),
-      userDefaults: MockKeyValueStore()
-    )
-  }
-
-  override func tearDown() {
-    super.tearDown()
-    AppEnvironment.popEnvironment()
+    self.vm = ActivitiesViewModel()
   }
 
   // Tests the flow of logging in with a user that has activities.

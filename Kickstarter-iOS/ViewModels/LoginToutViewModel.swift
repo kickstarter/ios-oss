@@ -80,8 +80,7 @@ internal final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMo
   internal let showHelpActionSheet: Signal<[HelpType], NoError>
   internal let showHelp: Signal<HelpType, NoError>
 
-  internal init(env: Environment = AppEnvironment.current) {
-    let koala = env.koala
+  internal init() {
 
     self.startLogin = self.loginButtonPressedSignal
     self.startSignup = self.signupButtonPressedSignal
@@ -92,6 +91,6 @@ internal final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMo
       .combineLatestWith(viewDidAppearSignal)
       .take(1)
       .map { intent, _ in intent.trackingString }
-      .observeNext(koala.trackLoginTout)
+      .observeNext { i in AppEnvironment.current.koala.trackLoginTout(i) }
   }
 }

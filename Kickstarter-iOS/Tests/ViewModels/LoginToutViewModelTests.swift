@@ -6,24 +6,12 @@ import XCTest
 @testable import Result
 @testable import Library
 
-final class LoginToutViewModelTests: XCTestCase {
-  let trackingClient = MockTrackingClient()
+final class LoginToutViewModelTests: TestCase {
   var vm: LoginToutViewModelType!
 
   override func setUp() {
     super.setUp()
-
-    let koala = Koala(client: trackingClient)
-
-    AppEnvironment.pushEnvironment(koala: koala)
-
-    vm = LoginToutViewModel()
-  }
-
-  override func tearDown() {
-    super.tearDown()
-
-    AppEnvironment.popEnvironment()
+    self.vm = LoginToutViewModel()
   }
 
   func testKoala_whenLoginIntentBeforeViewAppears() {

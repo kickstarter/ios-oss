@@ -9,20 +9,11 @@ import Result
 @testable import KsApi_TestHelpers
 @testable import ReactiveExtensions_TestHelpers
 
-final class AppDelegateViewModelTests: XCTestCase {
-  let hockeyManager = MockHockeyManager()
-  let trackingClient = MockTrackingClient()
+final class AppDelegateViewModelTests: TestCase {
   var vm: AppDelegateViewModelType!
 
   override func setUp() {
     super.setUp()
-    AppEnvironment.pushEnvironment(
-      apiService: MockService(),
-      hockeyManager: hockeyManager,
-      koala: Koala(client: trackingClient),
-      ubiquitousStore: MockKeyValueStore(),
-      userDefaults: MockKeyValueStore()
-    )
     self.vm = AppDelegateViewModel()
   }
 
