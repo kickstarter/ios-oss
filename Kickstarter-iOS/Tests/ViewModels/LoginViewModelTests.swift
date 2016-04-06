@@ -10,35 +10,28 @@ import XCTest
 @testable import Library
 
 final class LoginViewModelTests: TestCase {
-  var vm: LoginViewModelType!
+  let vm: LoginViewModelType = LoginViewModel()
+  let passwordTextFieldBecomeFirstResponder = TestObserver<(), NoError>()
+  let isFormValid = TestObserver<Bool, NoError>()
+  let dismissKeyboard = TestObserver<(), NoError>()
+  let postNotificationName = TestObserver<String, NoError>()
+  let logIntoEnvironment = TestObserver<AccessTokenEnvelope, NoError>()
+  let showError = TestObserver<String, NoError>()
+  let tfaChallenge = TestObserver<(String, String), NoError>()
 
   override func setUp() {
     super.setUp()
-    self.vm = LoginViewModel()
+
+    vm.outputs.passwordTextFieldBecomeFirstResponder.observe(passwordTextFieldBecomeFirstResponder.observer)
+    vm.outputs.isFormValid.observe(isFormValid.observer)
+    vm.outputs.dismissKeyboard.observe(dismissKeyboard.observer)
+    vm.outputs.postNotification.map { $0.name }.observe(postNotificationName.observer)
+    vm.outputs.logIntoEnvironment.observe(logIntoEnvironment.observer)
+    vm.errors.showError.observe(showError.observer)
+    vm.errors.tfaChallenge.observe(tfaChallenge.observer)
   }
 
   func testLoginFlow() {
-    let passwordTextFieldBecomeFirstResponder = TestObserver<(), NoError>()
-    vm.outputs.passwordTextFieldBecomeFirstResponder.observe(passwordTextFieldBecomeFirstResponder.observer)
-
-    let isFormValid = TestObserver<Bool, NoError>()
-    vm.outputs.isFormValid.observe(isFormValid.observer)
-
-    let dismissKeyboard = TestObserver<(), NoError>()
-    vm.outputs.dismissKeyboard.observe(dismissKeyboard.observer)
-
-    let postNotificationName = TestObserver<String, NoError>()
-    vm.outputs.postNotification.map { $0.name }.observe(postNotificationName.observer)
-
-    let logIntoEnvironment = TestObserver<AccessTokenEnvelope, NoError>()
-    vm.outputs.logIntoEnvironment.observe(logIntoEnvironment.observer)
-
-    let presentError = TestObserver<String, NoError>()
-    vm.errors.presentError.observe(presentError.observer)
-
-    let tfaChallenge = TestObserver<(), NoError>()
-    vm.errors.tfaChallenge.observe(tfaChallenge.observer)
-
     vm.inputs.viewWillAppear()
 
     isFormValid.assertValues([false], "Form is not valid")
@@ -63,7 +56,49 @@ final class LoginViewModelTests: TestCase {
     postNotificationName.assertValues([CurrentUserNotifications.sessionStarted],
                                       "Login notification posted.")
 
-    presentError.assertValueCount(0, "Error did not happen")
+    showError.assertValueCount(0, "Error did not happen")
     tfaChallenge.assertValueCount(0, "TFA challenge did not happen")
+  }
+
+  func testLoginError() {
+    let error = ErrorEnvelope(
+      errorMessages: ["Unable to log in."],
+      ksrCode: .InvalidXauthLogin,
+      httpCode: 400,
+      exception: nil
+    )
+
+    withEnvironment(apiService: MockService(loginError: error)) {
+      vm.inputs.viewWillAppear()
+      vm.inputs.emailChanged("nativesquad@kickstarter.com")
+      vm.inputs.passwordChanged("helloooooo")
+      vm.inputs.loginButtonPressed()
+
+      logIntoEnvironment.assertValueCount(0, "Did not log into environment.")
+      XCTAssertEqual(["Errored User Login"], trackingClient.events)
+      showError.assertValues(["Unable to log in."], "Login errored")
+      tfaChallenge.assertValueCount(0, "TFA challenge did not happen")
+    }
+  }
+
+  func testTfaChallenge() {
+    let error = ErrorEnvelope(
+      errorMessages: ["Two Factor Authenticaion is required."],
+      ksrCode: .TfaRequired,
+      httpCode: 403,
+      exception: nil
+    )
+
+    withEnvironment(apiService: MockService(loginError: error)) {
+      vm.inputs.viewWillAppear()
+      vm.inputs.emailChanged("nativesquad@kickstarter.com")
+      vm.inputs.passwordChanged("helloooooo")
+      vm.inputs.loginButtonPressed()
+
+      logIntoEnvironment.assertValueCount(0, "Did not log into environment.")
+      XCTAssertEqual([], trackingClient.events, "Tfa Challenge error was not tracked")
+      showError.assertValueCount(0, "Login error did not happen")
+      tfaChallenge.assertValueCount(1, "Two factor challenge emitted")
+    }
   }
 }

@@ -45,8 +45,8 @@ internal protocol LoginViewModelOutputs {
 }
 
 internal protocol LoginViewModelErrors {
-  /// Emits when a login error has occurred and a message shouldbe displayed.
-  var presentError: Signal<String, NoError> { get }
+  /// Emits when a login error has occurred and a message should be displayed.
+  var showError: Signal<String, NoError> { get }
 
   /// Emits when TFA is required for login.
   var tfaChallenge: Signal<(String, String), NoError> { get }
@@ -104,7 +104,7 @@ internal final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, L
   internal let logIntoEnvironment: Signal<AccessTokenEnvelope, NoError>
 
   // MARK: Errors
-  internal let presentError: Signal<String, NoError>
+  internal let showError: Signal<String, NoError>
   internal let tfaChallenge: Signal<(String, String), NoError>
 
   internal init(env: Environment = AppEnvironment.current) {
@@ -114,7 +114,7 @@ internal final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, L
       .combineLatestWith(self.password.signal.ignoreNil())
 
     let tfaError = loginErrors
-      .filter { $0.ksrCode == .TfaFailed }
+      .filter { $0.ksrCode == .TfaRequired }
       .ignoreValues()
 
     self.isFormValid = self.viewWillAppearProperty.signal.mapConst(false).take(1)
@@ -132,8 +132,8 @@ internal final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, L
     self.dismissKeyboard = self.passwordTextFieldDoneEditingProperty.signal
     self.passwordTextFieldBecomeFirstResponder = self.emailTextFieldDoneEditingProperty.signal
 
-    self.presentError = loginErrors
-      .filter { $0.ksrCode != .TfaFailed && $0.ksrCode != .TfaRequired }
+    self.showError = loginErrors
+      .filter { $0.ksrCode != .TfaRequired }
       .map { env in
         env.errorMessages.first ??
           localizedString(key: "login.errors.unable_to_log_in", defaultValue: "Unable to log in.")
@@ -145,7 +145,7 @@ internal final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, L
     self.logIntoEnvironment
       .observeNext { _ in AppEnvironment.current.koala.trackLoginSuccess() }
 
-    loginErrors
+    self.showError
       .observeNext { _ in AppEnvironment.current.koala.trackLoginError() }
   }
 }

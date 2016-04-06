@@ -122,7 +122,8 @@ internal final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMo
 
     let facebookLogin = facebookTokenSignal
       .combineLatestWith(code.signal)
-      .filter { _, code in code != nil }
+      .filter { _, code in code != nil
+      }
       .takeWhen(submitPressedSignal)
       .switchMap { token, code in
         login(facebookAccessToken: token,
@@ -140,7 +141,7 @@ internal final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMo
           apiService: AppEnvironment.current.apiService,
           loading: isLoadingObserver)
           .materialize()
-          .filter { $0.error != nil }
+          .filter { isResendSuccessful($0.error) }
     }
 
     let facebookResend = facebookTokenSignal
@@ -150,7 +151,7 @@ internal final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMo
           apiService: AppEnvironment.current.apiService,
           loading: isLoadingObserver)
           .materialize()
-          .filter { $0.error != nil }
+          .filter { isResendSuccessful($0.error) }
     }
 
     self.resendSuccess = Signal.merge([emailPasswordResend, facebookResend]).ignoreValues()
@@ -187,6 +188,8 @@ internal final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMo
 
     self.resendPressedSignal
       .observeNext { AppEnvironment.current.koala.trackTfaResendCode() }
+
+    self.genericFail.observeNext { _ in AppEnvironment.current.koala.trackLoginError() }
   }
 }
 
@@ -217,4 +220,9 @@ private func login(email email: String? = nil,
       started: { loading.sendNext(true) },
       terminated: { loading.sendNext(false) }
   )
+}
+
+private func isResendSuccessful(error:ErrorEnvelope?) -> Bool {
+  guard let error = error else { return false }
+  return error.ksrCode == .TfaRequired
 }

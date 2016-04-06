@@ -71,7 +71,7 @@ internal final class LoginViewController: MVVMViewController {
         self?.viewModel.inputs.environmentLoggedIn()
     }
 
-    self.viewModel.errors.presentError
+    self.viewModel.errors.showError
       .observeForUI()
       .observeNext { [weak self] message in
         self?.presentViewController(UIAlertController.genericError(message), animated: true, completion: nil)
