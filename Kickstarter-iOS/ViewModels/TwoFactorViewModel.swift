@@ -45,11 +45,8 @@ internal protocol TwoFactorViewModelOutputs {
 }
 
 internal protocol TwoFactorViewModelErrors {
-  /// Emits a message when the code is not correct
-  var codeMismatch: Signal<String, NoError> { get }
-
-  /// Emits a message when a request fails
-  var genericFail: Signal<String, NoError> { get }
+  /// Emits a message when the code submitted is not correct or login fails
+  var showError: Signal<String, NoError> { get }
 }
 
 internal protocol TwoFactorViewModelType {
@@ -74,9 +71,10 @@ internal final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMo
     viewWillAppearProperty.value = ()
   }
 
-  private let (emailAndPasswordSignal, emailAndPasswordObserver) = Signal<(email: String, password: String), NoError>.pipe()
+  typealias EmailPasswordType = (email: String?, password: String?)
+  private let emailAndPasswordProperty = MutableProperty<EmailPasswordType>((nil, nil))
   internal func email(email: String, password: String) {
-    emailAndPasswordObserver.sendNext((email, password))
+    emailAndPasswordProperty.value = (email, password)
   }
 
   private let facebookTokenProperty = MutableProperty<String?>(nil)
@@ -114,19 +112,17 @@ internal final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMo
 
   // MARK: TwoFactorViewModelErrors
 
-  internal let codeMismatch: Signal<String, NoError>
-  internal let genericFail: Signal<String, NoError>
+  internal let showError: Signal<String, NoError>
 
   internal init() {
 
-    let hasInput = emailAndPasswordSignal.ignoreValues()
+    let hasInput = emailAndPasswordProperty.signal.ignoreValues()
       .mergeWith(facebookTokenProperty.signal.ignoreValues())
 
     let (isLoadingSignal, isLoadingObserver) = Signal<Bool, NoError>.pipe()
+    let (showErrorSignal, showErrorObserver) = Signal<ErrorEnvelope, NoError>.pipe()
 
-    let (tfaErrorSignal, tfaErrorObserver) = Signal<ErrorEnvelope, NoError>.pipe()
-
-    let emailPasswordLogin = emailAndPasswordSignal
+    let emailPasswordLogin = emailAndPasswordProperty.signal
       .combineLatestWith(codeProperty.signal)
       .filter { _, code in code != nil }
       .takeWhen(submitPressedProperty.signal)
@@ -136,7 +132,7 @@ internal final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMo
           code: code,
           apiService: AppEnvironment.current.apiService,
           loading: isLoadingObserver)
-          .demoteErrors(pipeErrorsTo: tfaErrorObserver)
+          .demoteErrors(pipeErrorsTo: showErrorObserver)
       }
 
     let facebookLogin = facebookTokenProperty.signal
@@ -149,10 +145,10 @@ internal final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMo
           code: code,
           apiService: AppEnvironment.current.apiService,
           loading: isLoadingObserver)
-          .demoteErrors(pipeErrorsTo: tfaErrorObserver)
+          .demoteErrors(pipeErrorsTo: showErrorObserver)
       }
 
-    let emailPasswordResend = emailAndPasswordSignal
+    let emailPasswordResend = emailAndPasswordProperty.signal
       .takeWhen(resendPressedProperty.signal)
       .switchMap { email, password in
         login(email: email,
@@ -173,6 +169,18 @@ internal final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMo
           .filter { isResendSuccessful($0.error) }
     }
 
+    let codeMismatch = showErrorSignal
+      .filter { $0.ksrCode == .TfaFailed }
+      .map { $0.errorMessages.first ??
+        localizedString(key: "two_factor.error.message", defaultValue: "The code provided does not match.")
+    }
+
+    let genericFail = showErrorSignal
+      .filter { $0.ksrCode != .TfaFailed }
+      .map { $0.errorMessages.first ??
+        localizedString(key: "login.errors.unable_to_log_in", defaultValue: "Unable to log in.")
+    }
+
     self.resendSuccess = Signal.merge([emailPasswordResend, facebookResend]).ignoreValues()
 
     self.isLoading = isLoadingSignal
@@ -182,17 +190,7 @@ internal final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMo
       .mergeWith(viewWillAppearProperty.signal.mapConst(false))
       .skipRepeats()
 
-    self.codeMismatch = tfaErrorSignal
-      .filter { $0.ksrCode == .TfaFailed }
-      .map { $0.errorMessages.first ??
-        localizedString(key: "two_factor.error.message", defaultValue: "The code provided does not match.")
-      }
-
-    self.genericFail = tfaErrorSignal
-      .filter { $0.ksrCode != .TfaFailed }
-      .map { $0.errorMessages.first ??
-        localizedString(key: "login.errors.unable_to_log_in", defaultValue: "Unable to log in.")
-    }
+    self.showError = Signal.merge([codeMismatch, genericFail])
 
     self.logIntoEnvironment = Signal.merge([emailPasswordLogin, facebookLogin])
 
@@ -200,19 +198,16 @@ internal final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMo
       .mapConst(NSNotification(name: CurrentUserNotifications.sessionStarted, object: nil))
 
     self.viewWillAppearProperty.signal
-      .observeNext { AppEnvironment.current.koala.trackTfa()
-    }
+      .observeNext { AppEnvironment.current.koala.trackTfa() }
 
     self.logIntoEnvironment
-      .observeNext { _ in AppEnvironment.current.koala.trackLoginSuccess()
-    }
+      .observeNext { _ in AppEnvironment.current.koala.trackLoginSuccess() }
 
     self.resendPressedProperty.signal
-      .observeNext { AppEnvironment.current.koala.trackTfaResendCode()
-    }
+      .observeNext { AppEnvironment.current.koala.trackTfaResendCode() }
 
-    self.genericFail.observeNext { _ in AppEnvironment.current.koala.trackLoginError()
-    }
+    showErrorSignal
+      .observeNext { _ in AppEnvironment.current.koala.trackLoginError() }
   }
 }
 

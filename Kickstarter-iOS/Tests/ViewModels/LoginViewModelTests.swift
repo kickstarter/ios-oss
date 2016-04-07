@@ -17,7 +17,7 @@ final class LoginViewModelTests: TestCase {
   let postNotificationName = TestObserver<String, NoError>()
   let logIntoEnvironment = TestObserver<AccessTokenEnvelope, NoError>()
   let showError = TestObserver<String, NoError>()
-  let tfaChallenge = TestObserver<(String, String), NoError>()
+  let tfaChallenge = TestObserver<String, NoError>()
 
   override func setUp() {
     super.setUp()
@@ -28,7 +28,7 @@ final class LoginViewModelTests: TestCase {
     vm.outputs.postNotification.map { $0.name }.observe(postNotificationName.observer)
     vm.outputs.logIntoEnvironment.observe(logIntoEnvironment.observer)
     vm.errors.showError.observe(showError.observer)
-    vm.errors.tfaChallenge.observe(tfaChallenge.observer)
+    vm.errors.tfaChallenge.map { $0.email }.observe(tfaChallenge.observer)
   }
 
   func testLoginFlow() {
@@ -98,7 +98,7 @@ final class LoginViewModelTests: TestCase {
       logIntoEnvironment.assertValueCount(0, "Did not log into environment.")
       XCTAssertEqual([], trackingClient.events, "Tfa Challenge error was not tracked")
       showError.assertValueCount(0, "Login error did not happen")
-      tfaChallenge.assertValueCount(1, "Two factor challenge emitted")
+      tfaChallenge.assertValues(["nativesquad@kickstarter.com"], "Two factor challenge emitted with email and password")
     }
   }
 }

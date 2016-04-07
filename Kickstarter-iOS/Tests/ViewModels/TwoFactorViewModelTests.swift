@@ -16,8 +16,7 @@ final class TwoFactorViewModelTests: TestCase {
   var logIntoEnvironment = TestObserver<AccessTokenEnvelope, NoError>()
   var postNotificationName = TestObserver<String, NoError>()
   var resendSuccess = TestObserver<(), NoError>()
-  var codeMismatch = TestObserver<String, NoError>()
-  var genericFail = TestObserver<String, NoError>()
+  var showError = TestObserver<String, NoError>()
 
   override func setUp() {
     super.setUp()
@@ -27,8 +26,7 @@ final class TwoFactorViewModelTests: TestCase {
     vm.outputs.logIntoEnvironment.observe(logIntoEnvironment.observer)
     vm.outputs.postNotification.map { $0.name }.observe(postNotificationName.observer)
     vm.outputs.resendSuccess.observe(resendSuccess.observer)
-    vm.errors.codeMismatch.observe(codeMismatch.observer)
-    vm.errors.genericFail.observe(genericFail.observer)
+    vm.errors.showError.observe(showError.observer)
   }
 
   func testKoala_viewEvents() {
@@ -130,9 +128,9 @@ final class TwoFactorViewModelTests: TestCase {
 
       isLoading.assertValues([true, false])
       logIntoEnvironment.assertValueCount(0, "Did not log into environment.")
-      codeMismatch.assertValues(["The code provided does not match."], "Code does not match error emitted")
+      showError.assertValues(["The code provided does not match."], "Code does not match error emitted")
 
-      XCTAssertEqual(["Two-factor Authentication Confirm View"], trackingClient.events)
+      XCTAssertEqual(["Two-factor Authentication Confirm View", "Errored User Login"], trackingClient.events)
     }
   }
 
@@ -152,9 +150,9 @@ final class TwoFactorViewModelTests: TestCase {
 
       isLoading.assertValues([true, false])
       logIntoEnvironment.assertValueCount(0, "Did not log into environment.")
-      codeMismatch.assertValues(["The code provided does not match."], "Code does not match error emitted")
+      showError.assertValues(["The code provided does not match."], "Code does not match error emitted")
 
-      XCTAssertEqual(["Two-factor Authentication Confirm View"], trackingClient.events)
+      XCTAssertEqual(["Two-factor Authentication Confirm View", "Errored User Login"], trackingClient.events)
     }
   }
 
@@ -174,7 +172,7 @@ final class TwoFactorViewModelTests: TestCase {
 
       isLoading.assertValues([true, false])
       logIntoEnvironment.assertValueCount(0, "Did not log into environment.")
-      genericFail.assertValues(["Unable to login."], "Login errored")
+      showError.assertValues(["Unable to login."], "Login errored")
 
       XCTAssertEqual(["Two-factor Authentication Confirm View", "Errored User Login"], trackingClient.events)
     }
@@ -196,7 +194,7 @@ final class TwoFactorViewModelTests: TestCase {
 
       isLoading.assertValues([true, false])
       logIntoEnvironment.assertValueCount(0, "Did not log into environment.")
-      genericFail.assertValues(["Unable to login."], "Errored user login")
+      showError.assertValues(["Unable to login."], "Errored user login")
 
       XCTAssertEqual(["Two-factor Authentication Confirm View", "Errored User Login"], trackingClient.events)
     }

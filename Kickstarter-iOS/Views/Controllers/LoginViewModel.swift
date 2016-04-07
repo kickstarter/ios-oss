@@ -49,7 +49,7 @@ internal protocol LoginViewModelErrors {
   var showError: Signal<String, NoError> { get }
 
   /// Emits when TFA is required for login.
-  var tfaChallenge: Signal<(String, String), NoError> { get }
+  var tfaChallenge: Signal<(email: String, password: String), NoError> { get }
 }
 
 internal protocol LoginViewModelType {
@@ -105,7 +105,7 @@ internal final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, L
 
   // MARK: Errors
   internal let showError: Signal<String, NoError>
-  internal let tfaChallenge: Signal<(String, String), NoError>
+  internal let tfaChallenge: Signal<(email: String, password: String), NoError>
 
   internal init(env: Environment = AppEnvironment.current) {
     let (loginErrors, loginErrorsObserver) = Signal<ErrorEnvelope, NoError>.pipe()

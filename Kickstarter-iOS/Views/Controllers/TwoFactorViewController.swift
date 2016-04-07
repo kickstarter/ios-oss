@@ -11,7 +11,7 @@ internal final class TwoFactorViewController: MVVMViewController {
   @IBOutlet weak var resendButton: BorderButton!
   @IBOutlet weak var submitButton: BorderButton!
 
-  private let viewModel:TwoFactorViewModelType = TwoFactorViewModel()
+  private let viewModel: TwoFactorViewModelType = TwoFactorViewModel()
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -50,13 +50,7 @@ internal final class TwoFactorViewController: MVVMViewController {
     self.viewModel.outputs.postNotification
       .observeNext(NSNotificationCenter.defaultCenter().postNotification)
 
-    self.viewModel.errors.codeMismatch
-      .observeForUI()
-      .observeNext { [weak self] message in
-        self?.showError(message)
-      }
-
-    self.viewModel.errors.genericFail
+    self.viewModel.errors.showError
       .observeForUI()
       .observeNext { [weak self] message in
         self?.showError(message)
