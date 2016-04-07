@@ -63,8 +63,6 @@ final class LoginViewModel : LoginViewModelInputs, LoginViewModelOutputs, LoginV
     emailAndPassword.takeWhen(loginPress)
       .filter(isValid)
       .flatMap { ep in apiService.login(email: ep.0, password: ep.1, code: nil).demoteErrors(pipeErrorsTo: errorsObserver) }
-      .start { event in
-    }
   }
 
   private func isValid(email: String, password: String) -> Bool {

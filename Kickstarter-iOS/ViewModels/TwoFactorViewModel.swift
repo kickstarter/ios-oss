@@ -58,6 +58,14 @@ internal protocol TwoFactorViewModelType {
 internal final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewModelInputs,
   TwoFactorViewModelOutputs, TwoFactorViewModelErrors {
 
+  // A simple type to hold all the data needed to login.
+  private struct TfaData {
+    private let email: String?
+    private let password: String?
+    private let facebookToken: String?
+    private let code: String?
+  }
+
   // MARK: TwoFactorViewModelType
 
   internal var inputs: TwoFactorViewModelInputs { return self }
@@ -71,10 +79,11 @@ internal final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMo
     viewWillAppearProperty.value = ()
   }
 
-  typealias EmailPasswordType = (email: String?, password: String?)
-  private let emailAndPasswordProperty = MutableProperty<EmailPasswordType>((nil, nil))
+  private let emailProperty = MutableProperty<String?>(nil)
+  private let passwordProperty = MutableProperty<String?>(nil)
   internal func email(email: String, password: String) {
-    emailAndPasswordProperty.value = (email, password)
+    self.emailProperty.value = email
+    self.passwordProperty.value = password
   }
 
   private let facebookTokenProperty = MutableProperty<String?>(nil)
@@ -115,59 +124,50 @@ internal final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMo
   internal let showError: Signal<String, NoError>
 
   internal init() {
-
-    let hasInput = emailAndPasswordProperty.signal.ignoreValues()
-      .mergeWith(facebookTokenProperty.signal.ignoreValues())
-
     let (isLoadingSignal, isLoadingObserver) = Signal<Bool, NoError>.pipe()
     let (showErrorSignal, showErrorObserver) = Signal<ErrorEnvelope, NoError>.pipe()
 
-    let emailPasswordLogin = emailAndPasswordProperty.signal
-      .combineLatestWith(codeProperty.signal)
-      .filter { _, code in code != nil }
-      .takeWhen(submitPressedProperty.signal)
-      .switchMap { ep, code in
-        login(email: ep.email,
-          password: ep.password,
-          code: code,
-          apiService: AppEnvironment.current.apiService,
-          loading: isLoadingObserver)
+    let loginData = combineLatest(
+      self.emailProperty.producer,
+      self.passwordProperty.producer,
+      self.facebookTokenProperty.producer,
+      self.codeProperty.producer
+      )
+      .map(TfaData.init)
+
+    let resendData = combineLatest(
+      self.emailProperty.producer,
+      self.passwordProperty.producer,
+      self.facebookTokenProperty.producer,
+      SignalProducer(value: nil)
+      )
+      .map(TfaData.init)
+
+    self.logIntoEnvironment = loginData
+      .takeWhen(self.submitPressedProperty.signal)
+      .switchMap { data in
+        login(data, apiService: AppEnvironment.current.apiService, isLoading: isLoadingObserver)
           .demoteErrors(pipeErrorsTo: showErrorObserver)
       }
 
-    let facebookLogin = facebookTokenProperty.signal
-      .combineLatestWith(codeProperty.signal)
-      .filter { _, code in code != nil
-      }
-      .takeWhen(submitPressedProperty.signal)
-      .switchMap { token, code in
-        login(facebookAccessToken: token,
-          code: code,
-          apiService: AppEnvironment.current.apiService,
-          loading: isLoadingObserver)
-          .demoteErrors(pipeErrorsTo: showErrorObserver)
-      }
-
-    let emailPasswordResend = emailAndPasswordProperty.signal
-      .takeWhen(resendPressedProperty.signal)
-      .switchMap { email, password in
-        login(email: email,
-          password: password,
-          apiService: AppEnvironment.current.apiService,
-          loading: isLoadingObserver)
+    self.resendSuccess = resendData
+      .takeWhen(self.resendPressedProperty.signal)
+      .switchMap { data in
+        login(data, apiService: AppEnvironment.current.apiService, isLoading: isLoadingObserver)
           .materialize()
-          .filter { isResendSuccessful($0.error) }
+          .map { event in event.error }
+          .ignoreNil()
+          .filter { error in error.ksrCode == .TfaRequired }
+          .ignoreValues()
     }
 
-    let facebookResend = facebookTokenProperty.signal
-      .takeWhen(resendPressedProperty.signal)
-      .switchMap { token in
-        login(facebookAccessToken: token,
-          apiService: AppEnvironment.current.apiService,
-          loading: isLoadingObserver)
-          .materialize()
-          .filter { isResendSuccessful($0.error) }
-    }
+    self.isLoading = isLoadingSignal
+
+    self.isFormValid = Signal.merge([
+      codeProperty.signal.map { code in code?.characters.count == 6 },
+      viewWillAppearProperty.signal.mapConst(false)
+      ])
+      .skipRepeats()
 
     let codeMismatch = showErrorSignal
       .filter { $0.ksrCode == .TfaFailed }
@@ -181,18 +181,7 @@ internal final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMo
         localizedString(key: "login.errors.unable_to_log_in", defaultValue: "Unable to log in.")
     }
 
-    self.resendSuccess = Signal.merge([emailPasswordResend, facebookResend]).ignoreValues()
-
-    self.isLoading = isLoadingSignal
-
-    self.isFormValid = combineLatest(hasInput.take(1), codeProperty.signal.ignoreNil())
-      .map { _, code in code.characters.count == 6 }
-      .mergeWith(viewWillAppearProperty.signal.mapConst(false))
-      .skipRepeats()
-
     self.showError = Signal.merge([codeMismatch, genericFail])
-
-    self.logIntoEnvironment = Signal.merge([emailPasswordLogin, facebookLogin])
 
     self.postNotification = self.environmentLoggedInProperty.signal
       .mapConst(NSNotification(name: CurrentUserNotifications.sessionStarted, object: nil))
@@ -211,36 +200,27 @@ internal final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMo
   }
 }
 
-private func login(email email: String? = nil,
-                         password: String? = nil,
-                         facebookAccessToken: String? = nil,
-                         code: String? = nil,
-                         apiService: ServiceType,
-                         loading: Observer<Bool, NoError>) -> SignalProducer<AccessTokenEnvelope, ErrorEnvelope> {
+private func login(tfaData: TwoFactorViewModel.TfaData,
+                   apiService: ServiceType,
+                   isLoading: Observer<Bool, NoError>) -> SignalProducer<AccessTokenEnvelope, ErrorEnvelope> {
 
-
-  let emailPasswordLogin: SignalProducer<AccessTokenEnvelope, ErrorEnvelope>
+  let emailLogin: SignalProducer<AccessTokenEnvelope, ErrorEnvelope>
   let facebookLogin: SignalProducer<AccessTokenEnvelope, ErrorEnvelope>
 
-  if let email = email, password = password {
-    emailPasswordLogin = apiService.login(email: email, password: password, code: code)
+  if let email = tfaData.email, password = tfaData.password {
+    emailLogin = apiService.login(email: email, password: password, code: tfaData.code)
     facebookLogin = .empty
-  } else if let facebookAccessToken = facebookAccessToken {
-    emailPasswordLogin = .empty
-    facebookLogin = apiService.login(facebookAccessToken: facebookAccessToken, code: code)
+  } else if let facebookToken = tfaData.facebookToken {
+    emailLogin = .empty
+    facebookLogin = apiService.login(facebookAccessToken: facebookToken, code: tfaData.code)
   } else {
-    emailPasswordLogin = .empty
+    emailLogin = .empty
     facebookLogin = .empty
   }
 
-  return emailPasswordLogin.mergeWith(facebookLogin)
+  return emailLogin.mergeWith(facebookLogin)
     .on(
-      started: { loading.sendNext(true) },
-      terminated: { loading.sendNext(false) }
+      started: { isLoading.sendNext(true) },
+      terminated: { isLoading.sendNext(false) }
   )
-}
-
-private func isResendSuccessful(error:ErrorEnvelope?) -> Bool {
-  guard let error = error else { return false }
-  return error.ksrCode == .TfaRequired
 }
