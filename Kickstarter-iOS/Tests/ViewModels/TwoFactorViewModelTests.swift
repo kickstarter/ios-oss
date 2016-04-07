@@ -217,7 +217,8 @@ final class TwoFactorViewModelTests: TestCase {
 
       resendSuccess.assertValueCount(1, "Code resent successfully")
 
-      XCTAssertEqual(["Two-factor Authentication Confirm View", "Two-factor Authentication Resend Code"], trackingClient.events)
+      XCTAssertEqual(["Two-factor Authentication Confirm View", "Two-factor Authentication Resend Code"],
+                     trackingClient.events)
     }
   }
 
@@ -238,7 +239,8 @@ final class TwoFactorViewModelTests: TestCase {
 
       resendSuccess.assertValueCount(1, "Code resent successfully")
 
-      XCTAssertEqual(["Two-factor Authentication Confirm View", "Two-factor Authentication Resend Code"], trackingClient.events)
+      XCTAssertEqual(["Two-factor Authentication Confirm View", "Two-factor Authentication Resend Code"],
+                     trackingClient.events)
     }
   }
 
@@ -259,7 +261,8 @@ final class TwoFactorViewModelTests: TestCase {
 
       resendSuccess.assertValueCount(0, "Code was not resent")
 
-      XCTAssertEqual(["Two-factor Authentication Confirm View", "Two-factor Authentication Resend Code"], trackingClient.events)
+      XCTAssertEqual(["Two-factor Authentication Confirm View", "Two-factor Authentication Resend Code"],
+                     trackingClient.events)
     }
   }
 
@@ -280,7 +283,8 @@ final class TwoFactorViewModelTests: TestCase {
 
       resendSuccess.assertValueCount(0, "Code was not resent")
 
-      XCTAssertEqual(["Two-factor Authentication Confirm View", "Two-factor Authentication Resend Code"], trackingClient.events)
+      XCTAssertEqual(["Two-factor Authentication Confirm View", "Two-factor Authentication Resend Code"],
+                     trackingClient.events)
     }
   }
 }

@@ -87,7 +87,7 @@ internal final class LoginViewController: MVVMViewController {
   private func startTwoFactorViewController(email: String, password: String) {
     let tfaVC = self.storyboard?.instantiateViewControllerWithIdentifier("TwoFactorViewController")
       as! TwoFactorViewController
-    tfaVC.email(email, password: password)
+    tfaVC.initialize(email: email, password: password)
     self.navigationController?.pushViewController(tfaVC, animated: true)
   }
 
