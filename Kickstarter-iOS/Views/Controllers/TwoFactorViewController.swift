@@ -11,25 +11,6 @@ internal final class TwoFactorViewController: MVVMViewController {
   @IBOutlet weak var resendButton: BorderButton!
   @IBOutlet weak var submitButton: BorderButton!
 
-  internal var emailAndPassword: (String, String) {
-    get {
-      return self.emailAndPassword
-    }
-    set {
-      self.viewModel.inputs.email(newValue.0, password: newValue.1)
-    }
-  }
-
-  internal var facebookToken: String {
-    get {
-      return self.facebookToken
-    }
-
-    set {
-      self.viewModel.inputs.facebookToken(newValue)
-    }
-  }
-
   private let viewModel:TwoFactorViewModelType = TwoFactorViewModel()
 
   override func viewDidLoad() {
@@ -82,11 +63,20 @@ internal final class TwoFactorViewController: MVVMViewController {
       }
   }
 
+  internal func email(email: String, password: String) {
+    self.viewModel.inputs.email(email, password: password)
+  }
+
+  internal func facebookToken(facebookToken: String) {
+    self.viewModel.inputs.facebookToken(facebookToken)
+  }
+
   private func showError(message: String) {
     self.presentViewController(UIAlertController.genericError(message), animated: true, completion: nil)
   }
 
-  @IBAction func codeEditingChanged(textField: UITextField) {
+  @IBAction
+  internal func codeEditingChanged(textField: UITextField) {
     self.viewModel.inputs.codeChanged(textField.text)
   }
 

@@ -117,6 +117,8 @@ internal final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, L
       .filter { $0.ksrCode == .TfaRequired }
       .ignoreValues()
 
+    self.tfaChallenge = emailAndPassword.takeWhen(tfaError)
+
     self.isFormValid = self.viewWillAppearProperty.signal.mapConst(false).take(1)
       .mergeWith(emailAndPassword.map(isValid))
 
@@ -138,9 +140,6 @@ internal final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, L
         env.errorMessages.first ??
           localizedString(key: "login.errors.unable_to_log_in", defaultValue: "Unable to log in.")
     }
-
-    self.tfaChallenge = emailAndPassword
-      .takeWhen(tfaError)
 
     self.logIntoEnvironment
       .observeNext { _ in AppEnvironment.current.koala.trackLoginSuccess() }

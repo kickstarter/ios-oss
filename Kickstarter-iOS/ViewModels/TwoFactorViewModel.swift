@@ -5,11 +5,22 @@ import KsApi
 import Library
 
 internal protocol TwoFactorViewModelInputs {
+  /// Call when view will appear
   func viewWillAppear()
+
+  /// Call to set email and password
   func email(email: String, password: String)
+
+  /// Call to set facebook token
   func facebookToken(token: String)
+
+  /// Call when code textfield is updated
   func codeChanged(code: String?)
+
+  /// Call when resend button pressed
   func resendPressed()
+
+  /// Call when submit button pressed
   func submitPressed()
 
   /// Call when the environment has been logged into
@@ -17,8 +28,13 @@ internal protocol TwoFactorViewModelInputs {
 }
 
 internal protocol TwoFactorViewModelOutputs {
+  /// Emits whether the form is valid or not
   var isFormValid: Signal<Bool, NoError> { get }
+
+  /// Emits whether a request is loading or not
   var isLoading: Signal<Bool, NoError> { get }
+
+  /// Emits when code was resent successfully
   var resendSuccess: Signal<(), NoError> { get }
 
   /// Emits when a login success notification should be posted.
@@ -29,7 +45,10 @@ internal protocol TwoFactorViewModelOutputs {
 }
 
 internal protocol TwoFactorViewModelErrors {
+  /// Emits a message when the code is not correct
   var codeMismatch: Signal<String, NoError> { get }
+
+  /// Emits a message when a request fails
   var genericFail: Signal<String, NoError> { get }
 }
 
@@ -50,9 +69,9 @@ internal final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMo
 
   // MARK: TwoFactorViewModelInputs
 
-  private let (viewWillAppearSignal, viewWillAppearObserver) = Signal<(), NoError>.pipe()
+  private let viewWillAppearProperty = MutableProperty(())
   internal func viewWillAppear() {
-    viewWillAppearObserver.sendNext()
+    viewWillAppearProperty.value = ()
   }
 
   private let (emailAndPasswordSignal, emailAndPasswordObserver) = Signal<(email: String, password: String), NoError>.pipe()
@@ -60,24 +79,24 @@ internal final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMo
     emailAndPasswordObserver.sendNext((email, password))
   }
 
-  private let (facebookTokenSignal, facebookTokenObserver) = Signal<String, NoError>.pipe()
+  private let facebookTokenProperty = MutableProperty<String?>(nil)
   internal func facebookToken(token: String) {
-    facebookTokenObserver.sendNext(token)
+    self.facebookTokenProperty.value = token
   }
 
-  private let code = MutableProperty<String?>(nil)
+  private let codeProperty = MutableProperty<String?>(nil)
   internal func codeChanged(code: String?) {
-    self.code.value = code
+    self.codeProperty.value = code
   }
 
-  private let (resendPressedSignal, resendPressedObserver) = Signal<(), NoError>.pipe()
+  private let resendPressedProperty = MutableProperty(())
   internal func resendPressed() {
-    resendPressedObserver.sendNext()
+    self.resendPressedProperty.value = ()
   }
 
-  private let (submitPressedSignal, submitPressedObserver) = Signal<(), NoError>.pipe()
+  private let submitPressedProperty = MutableProperty(())
   internal func submitPressed() {
-    submitPressedObserver.sendNext()
+    self.submitPressedProperty.value = ()
   }
 
   private let environmentLoggedInProperty = MutableProperty(())
@@ -101,16 +120,16 @@ internal final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMo
   internal init() {
 
     let hasInput = emailAndPasswordSignal.ignoreValues()
-      .mergeWith(facebookTokenSignal.ignoreValues())
+      .mergeWith(facebookTokenProperty.signal.ignoreValues())
 
     let (isLoadingSignal, isLoadingObserver) = Signal<Bool, NoError>.pipe()
 
     let (tfaErrorSignal, tfaErrorObserver) = Signal<ErrorEnvelope, NoError>.pipe()
 
     let emailPasswordLogin = emailAndPasswordSignal
-      .combineLatestWith(code.signal)
+      .combineLatestWith(codeProperty.signal)
       .filter { _, code in code != nil }
-      .takeWhen(submitPressedSignal)
+      .takeWhen(submitPressedProperty.signal)
       .switchMap { ep, code in
         login(email: ep.email,
           password: ep.password,
@@ -120,11 +139,11 @@ internal final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMo
           .demoteErrors(pipeErrorsTo: tfaErrorObserver)
       }
 
-    let facebookLogin = facebookTokenSignal
-      .combineLatestWith(code.signal)
+    let facebookLogin = facebookTokenProperty.signal
+      .combineLatestWith(codeProperty.signal)
       .filter { _, code in code != nil
       }
-      .takeWhen(submitPressedSignal)
+      .takeWhen(submitPressedProperty.signal)
       .switchMap { token, code in
         login(facebookAccessToken: token,
           code: code,
@@ -134,7 +153,7 @@ internal final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMo
       }
 
     let emailPasswordResend = emailAndPasswordSignal
-      .takeWhen(resendPressedSignal)
+      .takeWhen(resendPressedProperty.signal)
       .switchMap { email, password in
         login(email: email,
           password: password,
@@ -144,8 +163,8 @@ internal final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMo
           .filter { isResendSuccessful($0.error) }
     }
 
-    let facebookResend = facebookTokenSignal
-      .takeWhen(resendPressedSignal)
+    let facebookResend = facebookTokenProperty.signal
+      .takeWhen(resendPressedProperty.signal)
       .switchMap { token in
         login(facebookAccessToken: token,
           apiService: AppEnvironment.current.apiService,
@@ -158,9 +177,9 @@ internal final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMo
 
     self.isLoading = isLoadingSignal
 
-    self.isFormValid = combineLatest(hasInput.take(1), code.signal.ignoreNil())
+    self.isFormValid = combineLatest(hasInput.take(1), codeProperty.signal.ignoreNil())
       .map { _, code in code.characters.count == 6 }
-      .mergeWith(viewWillAppearSignal.mapConst(false))
+      .mergeWith(viewWillAppearProperty.signal.mapConst(false))
       .skipRepeats()
 
     self.codeMismatch = tfaErrorSignal
@@ -180,16 +199,20 @@ internal final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMo
     self.postNotification = self.environmentLoggedInProperty.signal
       .mapConst(NSNotification(name: CurrentUserNotifications.sessionStarted, object: nil))
 
-    self.viewWillAppearSignal
-      .observeNext { AppEnvironment.current.koala.trackTfa() }
+    self.viewWillAppearProperty.signal
+      .observeNext { AppEnvironment.current.koala.trackTfa()
+    }
 
     self.logIntoEnvironment
-      .observeNext { _ in AppEnvironment.current.koala.trackLoginSuccess() }
+      .observeNext { _ in AppEnvironment.current.koala.trackLoginSuccess()
+    }
 
-    self.resendPressedSignal
-      .observeNext { AppEnvironment.current.koala.trackTfaResendCode() }
+    self.resendPressedProperty.signal
+      .observeNext { AppEnvironment.current.koala.trackTfaResendCode()
+    }
 
-    self.genericFail.observeNext { _ in AppEnvironment.current.koala.trackLoginError() }
+    self.genericFail.observeNext { _ in AppEnvironment.current.koala.trackLoginError()
+    }
   }
 }
 
