@@ -47,6 +47,8 @@
 		01BF210B1CA5D6D100184A38 /* ResetPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BF210A1CA5D6D100184A38 /* ResetPasswordViewModel.swift */; };
 		01BF210C1CA5D6D100184A38 /* ResetPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BF210A1CA5D6D100184A38 /* ResetPasswordViewModel.swift */; };
 		01BF21311CA5E81C00184A38 /* ResetPasswordViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BF21301CA5E81C00184A38 /* ResetPasswordViewModelTests.swift */; };
+		01DEFB951CB44A5D003709C0 /* TwoFactorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01DEFB941CB44A5D003709C0 /* TwoFactorViewController.swift */; };
+		01DEFB961CB44A5D003709C0 /* TwoFactorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01DEFB941CB44A5D003709C0 /* TwoFactorViewController.swift */; };
 		01EA879B1C9335C5004E738B /* LoginToutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F761761C85FACB005405ED /* LoginToutViewController.swift */; };
 		01EFBC891C91FB770094EEC2 /* UIColorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01EFBC881C91FB770094EEC2 /* UIColorTests.swift */; };
 		01EFBCAF1C92036E0094EEC2 /* StyledLabelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01EFBCAE1C92036E0094EEC2 /* StyledLabelTests.swift */; };
@@ -894,6 +896,7 @@
 		01BF20D21CA49E3800184A38 /* TwoFactorViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwoFactorViewModelTests.swift; sourceTree = "<group>"; };
 		01BF210A1CA5D6D100184A38 /* ResetPasswordViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResetPasswordViewModel.swift; sourceTree = "<group>"; };
 		01BF21301CA5E81C00184A38 /* ResetPasswordViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResetPasswordViewModelTests.swift; sourceTree = "<group>"; };
+		01DEFB941CB44A5D003709C0 /* TwoFactorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwoFactorViewController.swift; sourceTree = "<group>"; };
 		01EFBC881C91FB770094EEC2 /* UIColorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorTests.swift; sourceTree = "<group>"; };
 		01EFBCAE1C92036E0094EEC2 /* StyledLabelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyledLabelTests.swift; sourceTree = "<group>"; };
 		01EFBCB21C920A7E0094EEC2 /* BorderButtonTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BorderButtonTests.swift; sourceTree = "<group>"; };
@@ -1412,6 +1415,7 @@
 				A7285C9A1C8E8DCF00D83297 /* ProjectViewController.swift */,
 				A775B51F1CA8705B00BBB587 /* RootTabBarViewController.swift */,
 				A745D0201CA897FF00C12802 /* SearchViewController.swift */,
+				01DEFB941CB44A5D003709C0 /* TwoFactorViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -2687,6 +2691,7 @@
 				018F1F841C8E182200643DAA /* LoginViewController.swift in Sources */,
 				A745D1411CAAB48F00C12802 /* LoginToutViewController.swift in Sources */,
 				019502031C8E3EF700F31304 /* LoginViewModel.swift in Sources */,
+				01DEFB961CB44A5D003709C0 /* TwoFactorViewController.swift in Sources */,
 				A75AB2261C8B407F002FC3E6 /* ActivityFriendBackingCell.swift in Sources */,
 				A75AB1FA1C8A84B5002FC3E6 /* ActivitiesDataSource.swift in Sources */,
 				A76077D21CADD3A9001B39D0 /* Notifications.swift in Sources */,
@@ -2775,6 +2780,7 @@
 				A73171991C8EA20300AC07C5 /* ProjectDataSource.swift in Sources */,
 				A7E315CB1C88AC91000DD85A /* DiscoveryProjectCell.swift in Sources */,
 				A75AB2221C8A85D1002FC3E6 /* ActivityUpdateCell.swift in Sources */,
+				01DEFB951CB44A5D003709C0 /* TwoFactorViewController.swift in Sources */,
 				A7FC8C571C8F449500C3B49B /* ProjectSubpagesCell.swift in Sources */,
 				A7285CC11C8E8DDB00D83297 /* ProjectViewModel.swift in Sources */,
 				A7285CC41C8E915B00D83297 /* ProjectMainCell.swift in Sources */,
