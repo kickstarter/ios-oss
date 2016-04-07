@@ -7,11 +7,18 @@ import XCTest
 @testable import Library
 
 final class ResetPasswordViewModelTests: TestCase {
-  var vm: ResetPasswordViewModelType!
+  var vm: ResetPasswordViewModelType = ResetPasswordViewModel()
+
+  let formIsValid = TestObserver<Bool, NoError>()
+  let showResetSuccess = TestObserver<String, NoError>()
+  let returnToLogin = TestObserver<(), NoError>()
 
   override func setUp() {
     super.setUp()
-    self.vm = ResetPasswordViewModel()
+
+    vm.outputs.formIsValid.observe(formIsValid.observer)
+    vm.outputs.showResetSuccess.observe(showResetSuccess.observer)
+    vm.outputs.returnToLogin.observe(returnToLogin.observer)
   }
 
   func testViewWillAppear() {
@@ -21,40 +28,31 @@ final class ResetPasswordViewModelTests: TestCase {
   }
 
   func testFormIsValid() {
-    let formIsValid = TestObserver<Bool, NoError>()
-    vm.outputs.formIsValid.observe(formIsValid.observer)
-
     formIsValid.assertDidNotEmitValue("Form is valid did not emit any values")
 
     vm.inputs.viewWillAppear()
 
     formIsValid.assertValues([false])
 
-    vm.inputs.email("bad")
+    vm.inputs.emailChanged("bad")
 
     formIsValid.assertValues([false])
 
-    vm.inputs.email("gina@kickstarter.com")
+    vm.inputs.emailChanged("gina@kickstarter.com")
 
     formIsValid.assertValues([false, true])
   }
 
   func testResetSuccess() {
-    let resetSuccess = TestObserver<String, NoError>()
-    vm.outputs.resetSuccess.observe(resetSuccess.observer)
-
     vm.inputs.viewWillAppear()
-    vm.inputs.email("lisa@kickstarter.com")
+    vm.inputs.emailChanged("lisa@kickstarter.com")
     vm.inputs.resetButtonPressed()
 
-    resetSuccess.assertValues(["lisa@kickstarter.com"])
+    showResetSuccess.assertValues(["We've sent an email to lisa@kickstarter.com with instructions to reset your password."])
     XCTAssertEqual(["Forgot Password View", "Forgot Password Requested"], trackingClient.events)
   }
 
   func testResetConfirmation() {
-    let returnToLogin = TestObserver<(), NoError>()
-    vm.outputs.returnToLogin.observe(returnToLogin.observer)
-
     vm.inputs.viewWillAppear()
     vm.inputs.confirmResetButtonPressed()
 

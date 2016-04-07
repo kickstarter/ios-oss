@@ -71,6 +71,12 @@ internal final class LoginViewController: MVVMViewController {
         self?.viewModel.inputs.environmentLoggedIn()
     }
 
+    self.viewModel.outputs.showResetPassword
+      .observeForUI()
+      .observeNext { [weak self] in
+        self?.startResetPasswordViewController()
+      }
+
     self.viewModel.errors.showError
       .observeForUI()
       .observeNext { [weak self] message in
@@ -89,6 +95,12 @@ internal final class LoginViewController: MVVMViewController {
       as! TwoFactorViewController
     tfaVC.initialize(email: email, password: password)
     self.navigationController?.pushViewController(tfaVC, animated: true)
+  }
+
+  private func startResetPasswordViewController() {
+    let resetPasswordVC = self.storyboard?.instantiateViewControllerWithIdentifier("ResetPasswordViewController")
+      as! ResetPasswordViewController
+    self.navigationController?.pushViewController(resetPasswordVC, animated: true)
   }
 
   @IBAction
@@ -114,6 +126,11 @@ internal final class LoginViewController: MVVMViewController {
   @IBAction
   internal func passwordTextFieldDoneEditing(textField: UITextField) {
     self.viewModel.inputs.passwordTextFieldDoneEditing()
+  }
+
+  @IBAction
+  internal func resetPasswordButtonPressed(sender: UIButton) {
+    self.viewModel.inputs.resetPasswordButtonPressed()
   }
 
   internal func dismissKeyboard() {

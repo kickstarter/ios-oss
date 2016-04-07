@@ -25,6 +25,9 @@ internal protocol LoginViewModelInputs {
 
   /// Call when the environment has been logged into
   func environmentLoggedIn()
+
+  /// Call when reset password button is pressed
+  func resetPasswordButtonPressed()
 }
 
 internal protocol LoginViewModelOutputs {
@@ -42,6 +45,9 @@ internal protocol LoginViewModelOutputs {
 
   /// Emits when the password textfield should become the first responder
   var passwordTextFieldBecomeFirstResponder: Signal<(), NoError> { get }
+
+  /// Emits when the reset password screen should be shown
+  var showResetPassword: Signal<(), NoError> { get }
 }
 
 internal protocol LoginViewModelErrors {
@@ -96,12 +102,18 @@ internal final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, L
     self.environmentLoggedInProperty.value = ()
   }
 
+  private let resetPasswordPressedProperty = MutableProperty(())
+  internal func resetPasswordButtonPressed() {
+    self.resetPasswordPressedProperty.value = ()
+  }
+
   // MARK: Outputs
   internal let isFormValid: Signal<Bool, NoError>
   internal let postNotification: Signal<NSNotification, NoError>
   internal let dismissKeyboard: Signal<(), NoError>
   internal let passwordTextFieldBecomeFirstResponder: Signal<(), NoError>
   internal let logIntoEnvironment: Signal<AccessTokenEnvelope, NoError>
+  internal let showResetPassword: Signal<(), NoError>
 
   // MARK: Errors
   internal let showError: Signal<String, NoError>
@@ -140,6 +152,8 @@ internal final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, L
         env.errorMessages.first ??
           localizedString(key: "login.errors.unable_to_log_in", defaultValue: "Unable to log in.")
     }
+
+    self.showResetPassword = resetPasswordPressedProperty.signal
 
     self.logIntoEnvironment
       .observeNext { _ in AppEnvironment.current.koala.trackLoginSuccess() }

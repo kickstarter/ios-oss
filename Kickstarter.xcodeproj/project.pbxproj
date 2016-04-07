@@ -32,6 +32,8 @@
 		018F1FAA1C8E1A8200643DAA /* LoginToutViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018F1FA81C8E1A8200643DAA /* LoginToutViewModel.swift */; };
 		019502021C8E3EF700F31304 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019502011C8E3EF700F31304 /* LoginViewModel.swift */; };
 		019502031C8E3EF700F31304 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019502011C8E3EF700F31304 /* LoginViewModel.swift */; };
+		019DDFEC1CB6FF4500BDC113 /* ResetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019DDFEB1CB6FF4500BDC113 /* ResetPasswordViewController.swift */; };
+		019DDFED1CB6FF4500BDC113 /* ResetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019DDFEB1CB6FF4500BDC113 /* ResetPasswordViewController.swift */; };
 		01A1DC4D1C965C7D005761A8 /* UIAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A1DC4C1C965C7D005761A8 /* UIAlertController.swift */; };
 		01A1DC4E1C965C7D005761A8 /* UIAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A1DC4C1C965C7D005761A8 /* UIAlertController.swift */; };
 		01A7A4C01C9690220036E553 /* UITextField+LocalizedPlaceholderKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A7A4BF1C9690220036E553 /* UITextField+LocalizedPlaceholderKey.swift */; };
@@ -886,6 +888,8 @@
 		018F1F821C8E182200643DAA /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		018F1FA81C8E1A8200643DAA /* LoginToutViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginToutViewModel.swift; sourceTree = "<group>"; };
 		019502011C8E3EF700F31304 /* LoginViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginViewModel.swift; path = ../Views/Controllers/LoginViewModel.swift; sourceTree = "<group>"; };
+		019DDFEB1CB6FF4500BDC113 /* ResetPasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResetPasswordViewController.swift; sourceTree = "<group>"; };
+		019DDFF91CB716E500BDC113 /* Models.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = Models.framework; path = "/Users/ginabinetti/Library/Developer/Xcode/DerivedData/Kickstarter-hbdhuknjjxyjezbdyusdhiylmztp/Build/Products/Debug-iphoneos/Models.framework"; sourceTree = "<absolute>"; };
 		01A1DC4C1C965C7D005761A8 /* UIAlertController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIAlertController.swift; sourceTree = "<group>"; };
 		01A7A4BF1C9690220036E553 /* UITextField+LocalizedPlaceholderKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITextField+LocalizedPlaceholderKey.swift"; sourceTree = "<group>"; };
 		01B6ABE51CA2F233003DB4C8 /* LoginToutViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginToutViewModelTests.swift; sourceTree = "<group>"; };
@@ -1416,6 +1420,7 @@
 				A775B51F1CA8705B00BBB587 /* RootTabBarViewController.swift */,
 				A745D0201CA897FF00C12802 /* SearchViewController.swift */,
 				01DEFB941CB44A5D003709C0 /* TwoFactorViewController.swift */,
+				019DDFEB1CB6FF4500BDC113 /* ResetPasswordViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -1662,6 +1667,7 @@
 		A7E06C701C5A6EB300EBDCC2 = {
 			isa = PBXGroup;
 			children = (
+				019DDFF91CB716E500BDC113 /* Models.framework */,
 				A7C795C71C873B800081977F /* Kickstarter-iOS.playground */,
 				A7C7961F1C873CD90081977F /* Kickstarter-tvOS.playground */,
 				A7E06DBC1C5C027800EBDCC2 /* Frameworks */,
@@ -2656,6 +2662,7 @@
 				018F1FAA1C8E1A8200643DAA /* LoginToutViewModel.swift in Sources */,
 				A7285C9C1C8E8DCF00D83297 /* ProjectViewController.swift in Sources */,
 				A762F0191C8CC672005581A4 /* ActivityFriendFollowViewModel.swift in Sources */,
+				019DDFED1CB6FF4500BDC113 /* ResetPasswordViewController.swift in Sources */,
 				A7FC8C551C8F447D00C3B49B /* ProjectSubpagesViewModel.swift in Sources */,
 				A775B5471CA871D700BBB587 /* RootViewModel.swift in Sources */,
 				A7E315C61C88AAA8000DD85A /* DiscoveryProjectsDataSource.swift in Sources */,
@@ -2812,6 +2819,7 @@
 				A7E315C81C88ABAC000DD85A /* DiscoveryProjectViewModel.swift in Sources */,
 				A73171BF1C8EA27400AC07C5 /* ProjectMainViewModel.swift in Sources */,
 				A75AB1E11C8A8255002FC3E6 /* ActivitiesViewModel.swift in Sources */,
+				019DDFEC1CB6FF4500BDC113 /* ResetPasswordViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
