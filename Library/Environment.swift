@@ -12,6 +12,7 @@ public struct Environment {
   public let apiService: ServiceType
   public let apiThrottleInterval: NSTimeInterval
   public let assetImageGeneratorType: AssetImageGeneratorType.Type
+  public let cookieStorage: NSHTTPCookieStorageType
   public let countryCode: String
   public let currentUser: User?
   public let debounceInterval: NSTimeInterval
@@ -30,6 +31,7 @@ public struct Environment {
     apiService: ServiceType = Service.shared,
     apiThrottleInterval: NSTimeInterval = 0.0,
     assetImageGeneratorType: AssetImageGeneratorType.Type = AVAssetImageGenerator.self,
+    cookieStorage: NSHTTPCookieStorageType = NSHTTPCookieStorage.sharedHTTPCookieStorage(),
     countryCode: String = "US",
     currentUser: User? = nil,
     debounceInterval: NSTimeInterval = 0.3,
@@ -47,6 +49,7 @@ public struct Environment {
     self.apiService = apiService
     self.apiThrottleInterval = apiThrottleInterval
     self.assetImageGeneratorType = assetImageGeneratorType
+    self.cookieStorage = cookieStorage
     self.countryCode = countryCode
     self.currentUser = currentUser
     self.debounceInterval = debounceInterval
@@ -67,6 +70,7 @@ public struct Environment {
       self.apiService,
       self.apiThrottleInterval,
       self.assetImageGeneratorType,
+      self.cookieStorage,
       self.countryCode,
       self.currentUser,
       self.debounceInterval,

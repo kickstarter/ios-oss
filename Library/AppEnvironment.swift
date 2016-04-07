@@ -26,8 +26,9 @@ public struct AppEnvironment {
    */
   public static func login(envelope: AccessTokenEnvelope) {
     replaceCurrentEnvironment(
-      apiService: AppEnvironment.current.apiService.login(OauthToken(token: envelope.accessToken)),
-      currentUser: envelope.user
+      apiService: current.apiService.login(OauthToken(token: envelope.accessToken)),
+      currentUser: envelope.user,
+      koala: current.koala.withLoggedInUser(envelope.user)
     )
   }
 
@@ -38,7 +39,10 @@ public struct AppEnvironment {
    - parameter user: A user model.
    */
   public static func updateCurrentUser(user: User) {
-    replaceCurrentEnvironment(currentUser: user)
+    replaceCurrentEnvironment(
+      currentUser: user,
+      koala: current.koala.withLoggedInUser(user)
+    )
   }
 
   /**
@@ -47,7 +51,8 @@ public struct AppEnvironment {
   public static func logout() {
     replaceCurrentEnvironment(
       apiService: AppEnvironment.current.apiService.logout(),
-      currentUser: nil
+      currentUser: nil,
+      koala: current.koala.withLoggedInUser(nil)
     )
   }
 
@@ -89,6 +94,7 @@ public struct AppEnvironment {
     apiService apiService: ServiceType = AppEnvironment.current.apiService,
                apiThrottleInterval: NSTimeInterval = AppEnvironment.current.apiThrottleInterval,
                assetImageGeneratorType: AssetImageGeneratorType.Type = AppEnvironment.current.assetImageGeneratorType,
+               cookieStorage: NSHTTPCookieStorageType = AppEnvironment.current.cookieStorage,
                countryCode: String = AppEnvironment.current.countryCode,
                currentUser: User? = AppEnvironment.current.currentUser,
                debounceInterval: NSTimeInterval = AppEnvironment.current.debounceInterval,
@@ -108,6 +114,7 @@ public struct AppEnvironment {
         apiService: apiService,
         apiThrottleInterval: apiThrottleInterval,
         assetImageGeneratorType: assetImageGeneratorType,
+        cookieStorage: cookieStorage,
         countryCode: countryCode,
         currentUser: currentUser,
         debounceInterval: debounceInterval,
@@ -133,6 +140,7 @@ public struct AppEnvironment {
     apiService apiService: ServiceType = AppEnvironment.current.apiService,
                apiThrottleInterval: NSTimeInterval = AppEnvironment.current.apiThrottleInterval,
                assetImageGeneratorType: AssetImageGeneratorType.Type = AppEnvironment.current.assetImageGeneratorType,
+               cookieStorage: NSHTTPCookieStorageType = AppEnvironment.current.cookieStorage,
                countryCode: String = AppEnvironment.current.countryCode,
                currentUser: User? = AppEnvironment.current.currentUser,
                debounceInterval: NSTimeInterval = AppEnvironment.current.debounceInterval,
@@ -152,6 +160,7 @@ public struct AppEnvironment {
         apiService: apiService,
         apiThrottleInterval: apiThrottleInterval,
         assetImageGeneratorType: assetImageGeneratorType,
+        cookieStorage: cookieStorage,
         countryCode: countryCode,
         currentUser: currentUser,
         debounceInterval: debounceInterval,

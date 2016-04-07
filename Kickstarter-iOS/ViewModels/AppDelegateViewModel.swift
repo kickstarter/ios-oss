@@ -58,20 +58,6 @@ AppDelegateViewModelOutputs {
   internal var outputs: AppDelegateViewModelOutputs { return self }
 
   internal init(env: Environment = AppEnvironment.current) {
-    let koala = AppEnvironment.current.koala
-    let hockeyManager = AppEnvironment.current.hockeyManager
-
-    self.applicationDidFinishLaunchingProperty.signal
-      .take(1)
-      .map { _ in hockeyManager }
-      .observeNext(startHockeyManager)
-
-    self.applicationDidFinishLaunchingProperty.signal.ignoreValues()
-      .mergeWith(self.applicationWillEnterForegroundProperty.signal)
-      .observeNext(koala.trackAppOpen)
-
-    self.applicationDidEnterBackgroundProperty.signal
-      .observeNext(koala.trackAppClose)
 
     self.updateCurrentUserInEnvironment = Signal.merge([
         self.applicationWillEnterForegroundProperty.signal,
@@ -82,6 +68,18 @@ AppDelegateViewModelOutputs {
 
     self.postNotification = self.currentUserUpdatedInEnvironmentProperty.signal
       .mapConst(NSNotification(name: CurrentUserNotifications.userUpdated, object: nil))
+
+    self.applicationDidFinishLaunchingProperty.signal
+      .take(1)
+      .observeNext { _ in startHockeyManager(AppEnvironment.current.hockeyManager) }
+
+    self.applicationDidFinishLaunchingProperty.signal.ignoreValues()
+      .mergeWith(self.applicationWillEnterForegroundProperty.signal)
+      .observeNext { AppEnvironment.current.koala.trackAppOpen() }
+
+    self.applicationDidEnterBackgroundProperty.signal
+      .observeNext { AppEnvironment.current.koala.trackAppClose() }
+
   }
 }
 

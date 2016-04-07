@@ -5,6 +5,7 @@ import ReactiveCocoa
 @testable import KsApi_TestHelpers
 
 internal class TestCase: XCTestCase {
+  internal let cookieStorage = MockCookieStorage()
   internal let hockeyManager = MockHockeyManager()
   internal let scheduler = TestScheduler()
   internal let trackingClient = MockTrackingClient()
@@ -15,11 +16,12 @@ internal class TestCase: XCTestCase {
       apiService: MockService(),
       apiThrottleInterval: 1.0,
       assetImageGeneratorType: AVAssetImageGenerator.self,
+      cookieStorage: self.cookieStorage,
       countryCode: "US",
       currentUser: nil,
       debounceInterval: 1.0,
       hockeyManager: self.hockeyManager,
-      koala: Koala(client: self.trackingClient),
+      koala: Koala(client: self.trackingClient, loggedInUser: nil),
       language: .en,
       launchedCountries: .init(),
       locale: .currentLocale(),

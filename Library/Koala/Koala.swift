@@ -1,15 +1,35 @@
-import func Foundation.sysctlbyname
-import class Foundation.NSBundle
-import class Foundation.NSDate
-import class UIKit.UIDevice
-import class UIKit.UIScreen
-import struct Models.Project
+import Foundation
+import UIKit
+import Models
+import Prelude
 
 public final class Koala {
   private let client: TrackingClientType
+  private let loggedInUser: User?
+  private let bundle: NSBundleType
+  private let device: UIDeviceType
+  private let screen: UIScreenType
 
-  public init(client: TrackingClientType = KoalaTrackingClient()) {
+  public init(client: TrackingClientType,
+              loggedInUser: User? = nil,
+              bundle: NSBundleType = NSBundle.mainBundle(),
+              device: UIDeviceType = UIDevice.currentDevice(),
+              screen: UIScreenType = UIScreen.mainScreen()) {
     self.client = client
+    self.loggedInUser = loggedInUser
+    self.bundle = bundle
+    self.device = device
+    self.screen = screen
+  }
+
+  public func withLoggedInUser(loggedInUser: User?) -> Koala {
+    return Koala(
+      client: self.client,
+      loggedInUser: loggedInUser,
+      bundle: self.bundle,
+      device: self.device,
+      screen: self.screen
+    )
   }
 
   /// Call when the activities screen is shown.
@@ -124,6 +144,31 @@ public final class Koala {
     }
   }
 
+  /**
+   Call when a project page is viewed.
+
+   - parameter project:      The project being viewed.
+   - parameter refTag:       The ref tag used when opening the project.
+   - parameter cookieRefTag: The ref tag pulled from cookie storage when this project was shown.
+   */
+  public func trackProjectShow(project: Project,
+                               refTag: RefTag? = nil,
+                               cookieRefTag: RefTag? = nil) {
+
+    var properties = projectProperties(project, loggedInUser: self.loggedInUser)
+    properties["ref_tag"] = refTag?.stringTag
+    properties["referrer_credit"] = cookieRefTag?.stringTag
+
+    self.track(event: "Project Page", properties: properties)
+  }
+
+  public func trackProjectStar(project: Project) {
+    guard let isStarred = project.isStarred else { return }
+
+    let event = isStarred ? "Project Star" : "Project Unstar"
+    self.track(event: event, properties: projectProperties(project, loggedInUser: self.loggedInUser))
+  }
+
   // Private tracking method that merges in default properties.
   private func track(event event: String, properties: [String:AnyObject] = [:]) {
     self.client.track(
@@ -136,19 +181,23 @@ public final class Koala {
     var props: [String:AnyObject] = [:]
 
     props["manufacturer"] = "Apple"
-    props["app_version"] = NSBundle.mainBundle().infoDictionary?["CFBundleVersion"]
-    props["app_release"] = NSBundle.mainBundle().infoDictionary?["CFBundleShortVersionString"]
-    props["model"] = deviceModel
-    props["os"] = UIDevice.currentDevice().systemName
-    props["os_version"] = UIDevice.currentDevice().systemVersion
-    props["screen_width"] = UInt(UIScreen.mainScreen().bounds.width)
-    props["screen_height"] = UInt(UIScreen.mainScreen().bounds.height)
+    props["app_version"] = self.bundle.infoDictionary?["CFBundleVersion"]
+    props["app_release"] = self.bundle.infoDictionary?["CFBundleShortVersionString"]
+    props["model"] = self.deviceModel
+    props["os"] = self.device.systemName
+    props["os_version"] = self.device.systemVersion
+    props["screen_width"] = UInt(self.screen.bounds.width)
+    props["screen_height"] = UInt(self.screen.bounds.height)
 
     props["koala_lib"] = "iphone"
 
     props["client_type"] = "native"
-    props["device_format"] = deviceFormat
-    props["client_platform"] = clientPlatform
+    props["device_format"] = self.deviceFormat
+    props["client_platform"] = self.clientPlatform
+
+    if let loggedInUser = self.loggedInUser {
+      userProperties(loggedInUser).forEach { props[$0] = $1 }
+    }
 
     // TODO: device_fingerprint, apple_pay_capable, iphone_uuid, preferred_content_size_category,
     //       device_orientation
@@ -165,7 +214,7 @@ public final class Koala {
   }()
 
   private lazy var deviceFormat: String = {
-    switch UIDevice.currentDevice().userInterfaceIdiom {
+    switch self.device.userInterfaceIdiom {
     case .Phone: return "phone"
     case .Pad:   return "tablet"
     case .TV:    return "tv"
@@ -174,10 +223,62 @@ public final class Koala {
   }()
 
   private lazy var clientPlatform: String = {
-    switch UIDevice.currentDevice().userInterfaceIdiom {
+    switch self.device.userInterfaceIdiom {
     case .Phone, .Pad: return "ios"
     case .TV:          return "tvos"
     default:           return "unspecified"
     }
   }()
+}
+
+private func projectProperties(project: Project,
+                               loggedInUser: User?,
+                               prefix: String = "project_") -> [String:AnyObject] {
+
+  var properties = [String:AnyObject]()
+
+  properties["backers_count"] = project.backersCount
+  properties["country"] = project.country.countryCode
+  properties["currency"] = project.country.currencyCode
+  properties["goal"] = project.goal
+  properties["pid"] = project.id
+  properties["name"] = project.name
+  properties["pledged"] = project.pledged
+  properties["percent_raised"] = project.fundingProgress
+  properties["has_video"] = project.video != nil
+
+  properties["category"] = project.category.name
+  properties["parent_category"] = project.category.parent?.name
+
+  properties["location"] = project.location.name
+
+  var loggedInUserProperties: [String:AnyObject] = [:]
+  if let user = loggedInUser {
+    loggedInUserProperties["user_is_project_creator"] = project.creator.id == user.id
+    loggedInUserProperties["user_is_backer"] = project.isBacking ?? false
+    loggedInUserProperties["user_has_starred"] = project.isStarred ?? false
+  }
+
+  // TODO: implement these
+  //properties["state"] = project.state
+  //properties["update_count"] = project.updateCount
+  //properties["comments_count"] = project.commentsCount
+  //properties["hours_remaining"] =
+  //properties["duration"] =
+
+  return properties.prefixedKeys(prefix)
+    .withAllValuesFrom(userProperties(project.creator, prefix: "creator_"))
+    .withAllValuesFrom(loggedInUserProperties)
+}
+
+private func userProperties(user: User, prefix: String = "user_") -> [String:AnyObject] {
+
+  var properties = [String:AnyObject]()
+
+  properties["uid"] = user.id
+  properties["backed_projects_count"] = user.stats?.backedProjectsCount
+  properties["created_projects_count"] = user.stats?.createdProjectsCount
+  properties["starred_projects_count"] = user.stats?.starredProjectsCount
+
+  return properties.prefixedKeys(prefix)
 }
