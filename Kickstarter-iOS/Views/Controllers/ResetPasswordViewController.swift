@@ -56,7 +56,11 @@ internal final class ResetPasswordViewController: MVVMViewController {
         self?.navigationController?.popViewControllerAnimated(true)
       }
 
-    //show error
+    self.viewModel.errors.showError
+      .observeForUI()
+      .observeNext { [weak self] message in
+        self?.presentViewController(UIAlertController.genericError(message), animated: true, completion: nil)
+      }
   }
 
   @IBAction

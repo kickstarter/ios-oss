@@ -2,6 +2,7 @@ import XCTest
 @testable import Kickstarter_iOS
 @testable import ReactiveCocoa
 @testable import ReactiveExtensions_TestHelpers
+@testable import KsApi
 @testable import KsApi_TestHelpers
 @testable import Result
 @testable import Library
@@ -12,6 +13,7 @@ final class ResetPasswordViewModelTests: TestCase {
   let formIsValid = TestObserver<Bool, NoError>()
   let showResetSuccess = TestObserver<String, NoError>()
   let returnToLogin = TestObserver<(), NoError>()
+  let showError = TestObserver<String, NoError>()
 
   override func setUp() {
     super.setUp()
@@ -19,6 +21,7 @@ final class ResetPasswordViewModelTests: TestCase {
     vm.outputs.formIsValid.observe(formIsValid.observer)
     vm.outputs.showResetSuccess.observe(showResetSuccess.observer)
     vm.outputs.returnToLogin.observe(returnToLogin.observer)
+    vm.errors.showError.observe(showError.observer)
   }
 
   func testViewWillAppear() {
@@ -56,6 +59,24 @@ final class ResetPasswordViewModelTests: TestCase {
     vm.inputs.viewWillAppear()
     vm.inputs.confirmResetButtonPressed()
 
-    returnToLogin.assertValueCount(1)
+    returnToLogin.assertValueCount(1, "Shows login after confirming message receipt")
+  }
+
+  func testResetFail() {
+    let error = ErrorEnvelope(
+      errorMessages: ["Sorry, we don't know that email address. Try again?"],
+      ksrCode: nil,
+      httpCode: 404,
+      exception: nil
+    )
+
+    withEnvironment(apiService: MockService(resetPasswordError: error)) {
+      vm.inputs.viewWillAppear()
+      vm.inputs.emailChanged("bad@email")
+      vm.inputs.resetButtonPressed()
+
+      showError.assertValues(["Sorry, we don't know that email address. Try again?"],
+                             "Error alert is shown on bad request")
+    }
   }
 }
