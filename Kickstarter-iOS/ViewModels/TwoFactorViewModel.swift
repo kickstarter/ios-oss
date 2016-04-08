@@ -124,8 +124,8 @@ internal final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMo
   internal let showError: Signal<String, NoError>
 
   internal init() {
-    let (isLoadingSignal, isLoadingObserver) = Signal<Bool, NoError>.pipe()
-    let (showErrorSignal, showErrorObserver) = Signal<ErrorEnvelope, NoError>.pipe()
+    let isLoading = MutableProperty(false)
+    let loginErrors = MutableProperty<ErrorEnvelope?>(nil)
 
     let loginData = combineLatest(
       self.emailProperty.producer,
@@ -146,22 +146,22 @@ internal final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMo
     self.logIntoEnvironment = loginData
       .takeWhen(self.submitPressedProperty.signal)
       .switchMap { data in
-        login(data, apiService: AppEnvironment.current.apiService, isLoading: isLoadingObserver)
-          .demoteErrors(pipeErrorsTo: showErrorObserver)
+        login(data, apiService: AppEnvironment.current.apiService, isLoading: isLoading)
+          .demoteErrors(pipeErrorsTo: loginErrors)
       }
 
     self.resendSuccess = resendData
       .takeWhen(self.resendPressedProperty.signal)
       .switchMap { data in
-        login(data, apiService: AppEnvironment.current.apiService, isLoading: isLoadingObserver)
+        login(data, apiService: AppEnvironment.current.apiService, isLoading: isLoading)
           .materialize()
           .map { event in event.error }
           .ignoreNil()
           .filter { error in error.ksrCode == .TfaRequired }
           .ignoreValues()
-    }
+      }
 
-    self.isLoading = isLoadingSignal
+    self.isLoading = isLoading.signal
 
     self.isFormValid = Signal.merge([
       codeProperty.signal.map { code in code?.characters.count == 6 },
@@ -169,13 +169,13 @@ internal final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMo
       ])
       .skipRepeats()
 
-    let codeMismatch = showErrorSignal
+    let codeMismatch = loginErrors.signal.ignoreNil()
       .filter { $0.ksrCode == .TfaFailed }
       .map { $0.errorMessages.first ??
         localizedString(key: "two_factor.error.message", defaultValue: "The code provided does not match.")
     }
 
-    let genericFail = showErrorSignal
+    let genericFail = loginErrors.signal.ignoreNil()
       .filter { $0.ksrCode != .TfaFailed }
       .map { $0.errorMessages.first ??
         localizedString(key: "login.errors.unable_to_log_in", defaultValue: "Unable to log in.")
@@ -195,14 +195,14 @@ internal final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMo
     self.resendPressedProperty.signal
       .observeNext { AppEnvironment.current.koala.trackTfaResendCode() }
 
-    showErrorSignal
+    loginErrors.signal.ignoreNil()
       .observeNext { _ in AppEnvironment.current.koala.trackLoginError() }
   }
 }
 
 private func login(tfaData: TwoFactorViewModel.TfaData,
                    apiService: ServiceType,
-                   isLoading: Observer<Bool, NoError>) -> SignalProducer<AccessTokenEnvelope, ErrorEnvelope> {
+                   isLoading: MutableProperty<Bool>) -> SignalProducer<AccessTokenEnvelope, ErrorEnvelope> {
 
   let emailLogin: SignalProducer<AccessTokenEnvelope, ErrorEnvelope>
   let facebookLogin: SignalProducer<AccessTokenEnvelope, ErrorEnvelope>
@@ -220,7 +220,7 @@ private func login(tfaData: TwoFactorViewModel.TfaData,
 
   return emailLogin.mergeWith(facebookLogin)
     .on(
-      started: { isLoading.sendNext(true) },
-      terminated: { isLoading.sendNext(false) }
+      started: { isLoading.value = true },
+      terminated: { isLoading.value = false }
   )
 }

@@ -1,9 +1,10 @@
-import class Foundation.NSBundle
+import Foundation
 
 public protocol NSBundleType {
+  static func create(path path: String) -> NSBundleType?
   func pathForResource(name: String?, ofType ext: String?) -> String?
   func localizedStringForKey(key: String, value: String?, table tableName: String?) -> String
-  static func create(path path: String) -> NSBundleType?
+  var infoDictionary: [String:AnyObject]? { get }
 }
 
 extension NSBundle: NSBundleType {
@@ -15,19 +16,23 @@ extension NSBundle: NSBundleType {
 public struct LanguageDoubler: NSBundleType {
   private static let mainBundle = NSBundle.mainBundle()
 
+  public init() {
+  }
+
   public static func create(path path: String) -> NSBundleType? {
     return DoublerBundle(path: path)
   }
 
-  public init() {
-  }
-  
   public func localizedStringForKey(key: String, value: String?, table tableName: String?) -> String {
     return LanguageDoubler.mainBundle.localizedStringForKey(key, value: value, table: tableName)
   }
 
   public func pathForResource(name: String?, ofType ext: String?) -> String? {
     return LanguageDoubler.mainBundle.pathForResource(name, ofType: ext)
+  }
+
+  public var infoDictionary: [String : AnyObject]? {
+    return [:]
   }
 }
 

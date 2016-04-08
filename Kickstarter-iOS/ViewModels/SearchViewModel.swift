@@ -1,13 +1,10 @@
-import struct Foundation.NSTimeInterval
-import struct Library.AppEnvironment
-import struct Library.Environment
-import struct Models.Project
-import struct ReactiveCocoa.SignalProducer
-import class ReactiveCocoa.Signal
-import struct KsApi.Service
-import struct KsApi.DiscoveryParams
-import enum Result.NoError
-import func Prelude.const
+import Foundation
+import Library
+import Models
+import ReactiveCocoa
+import KsApi
+import Result
+import Prelude
 
 internal protocol SearchViewModelInputs {
   /// Call when the view appears.
@@ -32,13 +29,13 @@ internal protocol SearchViewModelType {
 
 internal final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, SearchViewModelOutputs {
   
-  private let (viewDidAppearSignal, viewDidAppearObserver) = Signal<(), NoError>.pipe()
+  private let viewDidAppearProperty = MutableProperty()
   func viewDidAppear() {
-    viewDidAppearObserver.sendNext()
+    self.viewDidAppearProperty.value = ()
   }
-  private let (searchTextChangedSignal, searchTextChangedObserver) = Signal<String, NoError>.pipe()
+  private let searchTextChangedProperty = MutableProperty("")
   func searchTextChanged(searchText: String) {
-    searchTextChangedObserver.sendNext(searchText)
+    self.searchTextChangedProperty.value = searchText
   }
 
   let projects: Signal<[Project], NoError>
@@ -48,8 +45,10 @@ internal final class SearchViewModel: SearchViewModelType, SearchViewModelInputs
   var outputs: SearchViewModelOutputs { return self }
   
   init() {
-    let query = searchTextChangedSignal
-      .mergeWith(viewDidAppearSignal.map(const("")).take(1))
+    let query = Signal.merge([
+      self.searchTextChangedProperty.signal,
+      self.viewDidAppearProperty.signal.map(const("")).take(1)
+      ])
 
     let clears = query.skip(1).map(const([Project]()))
 
@@ -78,7 +77,7 @@ internal final class SearchViewModel: SearchViewModelType, SearchViewModelInputs
       .map { $0.isEmpty }
       .skipRepeats()
 
-    self.viewDidAppearSignal
+    self.viewDidAppearProperty.signal
       .take(1)
       .observeNext { AppEnvironment.current.koala.trackProjectSearchView() }
 

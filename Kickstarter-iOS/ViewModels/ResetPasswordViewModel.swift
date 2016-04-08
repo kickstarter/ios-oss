@@ -8,7 +8,7 @@ internal protocol ResetPasswordViewModelInputs {
   /// Call when the view will appear
   func viewWillAppear()
   /// Call when email textfield input is entered
-  func emailChanged(email: String?)
+  func emailChanged(email: String)
   /// Call when reset button is pressed
   func resetButtonPressed()
   /// Call when OK button is pressed on reset confirmation popup
@@ -47,24 +47,24 @@ internal final class ResetPasswordViewModel: ResetPasswordViewModelType, ResetPa
 
   // MARK: ResetPasswordViewModelInputs
 
-  private let viewWillAppearProperty = MutableProperty(())
+  private let viewWillAppearProperty = MutableProperty()
   func viewWillAppear() {
-    viewWillAppearProperty.value = ()
+    self.viewWillAppearProperty.value = ()
   }
 
-  private let emailProperty = MutableProperty<String?>(nil)
-  func emailChanged(email: String?) {
-    emailProperty.value = email
+  private let emailProperty = MutableProperty("")
+  func emailChanged(email: String) {
+    self.emailProperty.value = email
   }
 
-  private let resetButtonPressedProperty = MutableProperty(())
+  private let resetButtonPressedProperty = MutableProperty()
   func resetButtonPressed() {
-    resetButtonPressedProperty.value = ()
+    self.resetButtonPressedProperty.value = ()
   }
 
-  private let confirmResetButtonPressedProperty = MutableProperty(())
+  private let confirmResetButtonPressedProperty = MutableProperty()
   func confirmResetButtonPressed() {
-    confirmResetButtonPressedProperty.value = ()
+    self.confirmResetButtonPressedProperty.value = ()
   }
 
   // MARK: ResetPasswordViewModelOutputs
@@ -79,24 +79,24 @@ internal final class ResetPasswordViewModel: ResetPasswordViewModelType, ResetPa
 
   // MARK: Constructor
   internal init() {
+    let resetErrors = MutableProperty<ErrorEnvelope?>(nil)
 
-    let (resetFailSignal, resetFailObserver) = Signal<ErrorEnvelope, NoError>.pipe()
-    showError = resetFailSignal.map { envelope in
-      envelope.errorMessages.first ??
-      localizedString(key: "forgot_password.error",
+    showError = resetErrors.signal.ignoreNil()
+      .map { envelope in envelope.errorMessages.first ??
+        localizedString(key: "forgot_password.error",
         defaultValue: "Sorry, we don’t know that email address. Try again?")
     }
 
-    formIsValid = emailProperty.signal.ignoreNil()
+    formIsValid = emailProperty.signal
       .map { email in email.characters.count > 3 }
       .mergeWith(viewWillAppearProperty.signal.mapConst(false))
       .skipRepeats()
 
-    showResetSuccess = emailProperty.signal.ignoreNil()
+    showResetSuccess = emailProperty.signal
       .takeWhen(resetButtonPressedProperty.signal)
       .switchMap { email in
         AppEnvironment.current.apiService.resetPassword(email: email)
-          .demoteErrors(pipeErrorsTo: resetFailObserver)
+          .demoteErrors(pipeErrorsTo: resetErrors)
           .mapConst(localizedString(
             key: "forgot_password.we_sent_an_email_to_email_address_with_instructions_to_reset_your_password",
             defaultValue: "We've sent an email to %{email} with instructions to reset your password.",
@@ -109,5 +109,4 @@ internal final class ResetPasswordViewModel: ResetPasswordViewModelType, ResetPa
     viewWillAppearProperty.signal.observeNext { AppEnvironment.current.koala.trackResetPassword() }
     showResetSuccess.observeNext { _ in AppEnvironment.current.koala.trackResetPasswordSuccess() }
   }
-  
 }

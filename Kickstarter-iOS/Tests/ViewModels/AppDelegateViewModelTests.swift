@@ -10,13 +10,7 @@ import Result
 @testable import ReactiveExtensions_TestHelpers
 
 final class AppDelegateViewModelTests: TestCase {
-  var vm: AppDelegateViewModelType!
-
-  override func setUp() {
-    super.setUp()
-    self.vm = AppDelegateViewModel()
-  }
-
+  let vm: AppDelegateViewModelType = AppDelegateViewModel()
 
   func testHockeyManager_StartsWhenAppLaunches() {
     XCTAssertFalse(hockeyManager.managerStarted, "Manager should not start right away.")

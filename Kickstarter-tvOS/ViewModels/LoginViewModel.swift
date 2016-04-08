@@ -2,8 +2,7 @@ import ReactiveCocoa
 import Result
 import KsApi
 import Models
-import struct Library.Environment
-import struct Library.AppEnvironment
+import Library
 
 protocol LoginViewModelInputs {
   var email: MutableProperty<String?> { get }
@@ -48,11 +47,20 @@ final class LoginViewModel : LoginViewModelInputs, LoginViewModelOutputs, LoginV
     let (loggedInSignal, loggedInObserver) = Signal<(), NoError>.pipe()
     loggedIn = loggedInSignal
 
-    let (errors, errorsObserver) = Signal<ErrorEnvelope, NoError>.pipe()
+    let errors = MutableProperty<ErrorEnvelope?>(nil)
 
-    invalidLogin = errors.filter { $0.ksrCode == .InvalidXauthLogin }.map { $0.errorMessages.first }.ignoreNil()
-    tfaChallenge = errors.filter { $0.ksrCode == .TfaRequired }.ignoreValues()
-    genericError = errors.filter { $0.ksrCode != .InvalidXauthLogin && $0.ksrCode != .TfaRequired }.ignoreValues()
+    invalidLogin = errors.signal.ignoreNil()
+      .filter { $0.ksrCode == .InvalidXauthLogin }
+      .map { $0.errorMessages.first }
+      .ignoreNil()
+
+    tfaChallenge = errors.signal.ignoreNil()
+      .filter { $0.ksrCode == .TfaRequired }
+      .ignoreValues()
+
+    genericError = errors.signal.ignoreNil()
+      .filter { $0.ksrCode != .InvalidXauthLogin && $0.ksrCode != .TfaRequired }
+      .ignoreValues()
 
     let emailAndPassword = email.producer.ignoreNil()
       .combineLatestWith(password.producer.ignoreNil())
@@ -62,7 +70,7 @@ final class LoginViewModel : LoginViewModelInputs, LoginViewModelOutputs, LoginV
 
     emailAndPassword.takeWhen(loginPress)
       .filter(isValid)
-      .flatMap { ep in apiService.login(email: ep.0, password: ep.1, code: nil).demoteErrors(pipeErrorsTo: errorsObserver) }
+      .flatMap { ep in apiService.login(email: ep.0, password: ep.1, code: nil).demoteErrors(pipeErrorsTo: errors) }
   }
 
   private func isValid(email: String, password: String) -> Bool {

@@ -31,7 +31,7 @@ private let stores = [
 internal struct MockBundle: NSBundleType {
   private var store: [String:String]!
 
-  func pathForResource(name: String?, ofType ext: String?) -> String? {
+  internal func pathForResource(name: String?, ofType ext: String?) -> String? {
     return name
   }
 
@@ -42,11 +42,18 @@ internal struct MockBundle: NSBundleType {
     store = stores[lang] ?? [:]
   }
 
-  static func create(path path: String) -> NSBundleType? {
+  internal static func create(path path: String) -> NSBundleType? {
     return MockBundle.init(lang: path)
   }
 
-  func localizedStringForKey(key: String, value: String?, table tableName: String?) -> String {
+  internal func localizedStringForKey(key: String, value: String?, table tableName: String?) -> String {
     return self.store[key] ?? value ?? ""
+  }
+
+  internal var infoDictionary: [String : AnyObject]? {
+    return [
+      "CFBundleVersion": "1.2.3.4.5.6.7.8.9.0",
+      "CFBundleShortVersionString": 1234567890
+    ]
   }
 }

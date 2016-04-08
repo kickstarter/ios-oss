@@ -1,10 +1,8 @@
-import protocol Library.ViewModelType
-import struct Models.Activity
-import class Foundation.NSURL
-import class ReactiveCocoa.Signal
-import enum Result.NoError
-import struct Library.Environment
-import struct Library.AppEnvironment
+import Models
+import Foundation
+import ReactiveCocoa
+import Result
+import Library
 
 internal protocol ActivityFriendFollowViewModelInputs {
   func followButtonPressed()
@@ -24,9 +22,9 @@ ActivityFriendFollowViewModelOutputs {
   private let activity: Activity
 
   // MARK: Inputs
-  private let (followPressedSignal, followPressedObserver) = Signal<(), NoError>.pipe()
+  private let followPressedProperty = MutableProperty()
   internal func followButtonPressed() {
-    followPressedObserver.sendNext(())
+    self.followPressedProperty.value = ()
   }
 
   // MARK: Outputs
@@ -42,7 +40,7 @@ ActivityFriendFollowViewModelOutputs {
   internal init(activity: Activity) {
     self.activity = activity
 
-    self.followPressedSignal
+    self.followPressedProperty.signal
       .observeNext { [weak self] _ in
         print("You wanna follow \(self?.activity.user?.name ?? ""), huh?")
     }
