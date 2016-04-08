@@ -62,7 +62,7 @@ final class ResetPasswordViewModelTests: TestCase {
     returnToLogin.assertValueCount(1, "Shows login after confirming message receipt")
   }
 
-  func testResetFail() {
+  func testResetFail_WithUnknownEmail() {
     let error = ErrorEnvelope(
       errorMessages: ["Sorry, we don't know that email address. Try again?"],
       ksrCode: nil,
@@ -77,6 +77,23 @@ final class ResetPasswordViewModelTests: TestCase {
 
       showError.assertValues(["Sorry, we don't know that email address. Try again?"],
                              "Error alert is shown on bad request")
+    }
+  }
+
+  func testResetFail_WithNon404Error() {
+    let error = ErrorEnvelope(
+      errorMessages: ["Something went wrong."],
+      ksrCode: nil,
+      httpCode: 400,
+      exception: nil
+    )
+
+    withEnvironment(apiService: MockService(resetPasswordError: error)) {
+      vm.inputs.viewWillAppear()
+      vm.inputs.emailChanged("unicorns@sparkles.tv")
+      vm.inputs.resetButtonPressed()
+
+      showError.assertValues(["Something went wrong."], "Error alert is shown on bad request")
     }
   }
 }

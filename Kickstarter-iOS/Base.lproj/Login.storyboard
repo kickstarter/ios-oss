@@ -18,7 +18,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="UHD-eb-qXC">
-                                <rect key="frame" x="40" y="158.5" width="520" height="283"/>
+                                <rect key="frame" x="40" y="159" width="520" height="283"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="1tl-3X-f58">
                                         <rect key="frame" x="0.0" y="0.0" width="520" height="79"/>
@@ -326,7 +326,7 @@
                                             <userDefinedRuntimeAttribute type="string" keyPath="localizedKey" value="two_factor.message"/>
                                         </userDefinedRuntimeAttributes>
                                     </label>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter code" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Ry2-ty-hPc">
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter code" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Ry2-ty-hPc">
                                         <rect key="frame" x="0.0" y="46" width="520" height="44"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="9SF-5i-2kF"/>
@@ -432,7 +432,7 @@
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="5eq-ej-7WQ">
                                 <rect key="frame" x="40" y="241" width="520" height="118"/>
                                 <subviews>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email address" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ZTV-f1-Bmn">
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email address" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="ZTV-f1-Bmn">
                                         <rect key="frame" x="0.0" y="0.0" width="520" height="44"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="8Xk-Or-XFi"/>

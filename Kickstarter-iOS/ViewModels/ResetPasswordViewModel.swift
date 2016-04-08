@@ -8,7 +8,7 @@ internal protocol ResetPasswordViewModelInputs {
   /// Call when the view will appear
   func viewWillAppear()
   /// Call when email textfield input is entered
-  func emailChanged(email: String)
+  func emailChanged(email: String?)
   /// Call when reset button is pressed
   func resetButtonPressed()
   /// Call when OK button is pressed on reset confirmation popup
@@ -52,8 +52,8 @@ internal final class ResetPasswordViewModel: ResetPasswordViewModelType, ResetPa
     self.viewWillAppearProperty.value = ()
   }
 
-  private let emailProperty = MutableProperty("")
-  func emailChanged(email: String) {
+  private let emailProperty = MutableProperty<String?>(nil)
+  func emailChanged(email: String?) {
     self.emailProperty.value = email
   }
 
@@ -82,17 +82,22 @@ internal final class ResetPasswordViewModel: ResetPasswordViewModelType, ResetPa
     let resetErrors = MutableProperty<ErrorEnvelope?>(nil)
 
     showError = resetErrors.signal.ignoreNil()
-      .map { envelope in envelope.errorMessages.first ??
-        localizedString(key: "forgot_password.error",
-        defaultValue: "Sorry, we don’t know that email address. Try again?")
+      .map { envelope in
+        if (envelope.httpCode == 404) {
+          return localizedString(key: "forgot_password.error",
+            defaultValue: "Sorry, we don't know that email address. Try again?")
+        } else {
+          return localizedString(key: "general.error.something_wrong",
+            defaultValue: "Something went wrong.")
+        }
     }
 
-    formIsValid = emailProperty.signal
+    formIsValid = emailProperty.signal.ignoreNil()
       .map { email in email.characters.count > 3 }
       .mergeWith(viewWillAppearProperty.signal.mapConst(false))
       .skipRepeats()
 
-    showResetSuccess = emailProperty.signal
+    showResetSuccess = emailProperty.signal.ignoreNil()
       .takeWhen(resetButtonPressedProperty.signal)
       .switchMap { email in
         AppEnvironment.current.apiService.resetPassword(email: email)
