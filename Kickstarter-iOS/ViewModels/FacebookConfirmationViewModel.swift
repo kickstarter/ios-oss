@@ -40,34 +40,34 @@ internal final class FacebookConfirmationViewModel: FacebookConfirmationViewMode
   internal var errors: FacebookConfirmationViewModelErrors { return self }
 
   // MARK: FacebookConfirmationViewModelInputs
-  private let (viewWillAppearSignal, viewWillAppearObserver) = Signal<(), NoError>.pipe()
+  private let viewWillAppearProperty = MutableProperty()
   internal func viewWillAppear() {
-    viewWillAppearObserver.sendNext()
+    self.viewWillAppearProperty.value = ()
   }
 
-  private let (emailSignal, emailObserver) = Signal<String, NoError>.pipe()
+  private let emailProperty = MutableProperty("")
   internal func email(email: String) {
-    emailObserver.sendNext(email)
+    self.emailProperty.value = email
   }
 
-  private let (sendNewslettersToggledSignal, sendNewslettersToggledObserver) = Signal<Bool, NoError>.pipe()
+  private let sendNewslettersToggledProperty = MutableProperty(false)
   func sendNewslettersToggled(newsletters: Bool) {
-    sendNewslettersToggledObserver.sendNext(newsletters)
+    self.sendNewslettersToggledProperty.value = newsletters
   }
 
-  private let (facebookTokenSignal, facebookTokenObserver) = Signal<String, NoError>.pipe()
+  private let facebookTokenProperty = MutableProperty("")
   func facebookToken(token: String) {
-    facebookTokenObserver.sendNext(token)
+    self.facebookTokenProperty.value = token
   }
 
-  private let (createAccountButtonSignal, createAccountButtonObserver) = Signal<(), NoError>.pipe()
+  private let createAccountButtonProperty = MutableProperty()
   internal func createAccountButtonPressed() {
-    createAccountButtonObserver.sendNext()
+    self.createAccountButtonProperty.value = ()
   }
 
-  private let (loginButtonPressedSignal, loginButtonPressedObserver) = Signal<(), NoError>.pipe()
+  private let loginButtonPressedProperty = MutableProperty()
   internal func loginButtonPressed() {
-    loginButtonPressedObserver.sendNext()
+    self.loginButtonPressedProperty.value = ()
   }
 
   // MARK: FacebookConfirmationViewModelOutputs
@@ -79,35 +79,36 @@ internal final class FacebookConfirmationViewModel: FacebookConfirmationViewMode
   // MARK: FacebookConfirmationViewModelErrors
   internal let accountCreationFail: Signal<String, NoError>
 
-  internal init(env: Environment = AppEnvironment.current) {
-    let apiService = env.apiService
-    let koala = env.koala
+  internal init() {
+    let signupErrors = MutableProperty<ErrorEnvelope?>(nil)
 
-    let (accountCreationFailSignal, accountCreationFailObserver) = Signal<ErrorEnvelope, NoError>.pipe()
-    accountCreationFail = accountCreationFailSignal
+    accountCreationFail = signupErrors.signal.ignoreNil()
       .map { envelope in envelope.errorMessages.first ??
         localizedString(key: "signup.error.something_wrong", defaultValue: "Something went wrong.")
       }
 
-    displayEmail = emailSignal.takeWhen(viewWillAppearSignal)
+    displayEmail = self.emailProperty.signal
+      .takeWhen(self.viewWillAppearProperty.signal)
 
-    sendNewsletters = sendNewslettersToggledSignal
-      .mergeWith(viewWillAppearSignal.mapConst(true))
+    sendNewsletters = self.sendNewslettersToggledProperty.signal
+      .mergeWith(self.viewWillAppearProperty.signal.mapConst(true))
 
-    newAccountSuccess = combineLatest(facebookTokenSignal, sendNewsletters)
-      .takeWhen(createAccountButtonSignal)
+    newAccountSuccess = combineLatest(self.facebookTokenProperty.signal, sendNewsletters)
+      .takeWhen(self.createAccountButtonProperty.signal)
       .switchMap { token, newsletter in
-        apiService.signup(facebookAccessToken: token, sendNewsletters: newsletter)
-          .demoteErrors(pipeErrorsTo: accountCreationFailObserver)
+        AppEnvironment.current.apiService.signup(facebookAccessToken: token, sendNewsletters: newsletter)
+          .demoteErrors(pipeErrorsTo: signupErrors)
       }
       .ignoreValues()
 
-    showLogin = loginButtonPressedSignal
+    showLogin = self.loginButtonPressedProperty.signal
 
-    viewWillAppearSignal.observeNext { _ in koala.trackFacebookConfirmation() }
+    self.viewWillAppearProperty.signal
+      .observeNext { _ in AppEnvironment.current.koala.trackFacebookConfirmation() }
 
-    newAccountSuccess.observeNext { _ in koala.trackSignupSuccess() }
+    newAccountSuccess.observeNext { _ in AppEnvironment.current.koala.trackSignupSuccess() }
 
-    sendNewslettersToggledSignal.observeNext(koala.trackSignupNewsletterToggle)
+    self.sendNewslettersToggledProperty.signal
+      .observeNext { b in AppEnvironment.current.koala.trackSignupNewsletterToggle(b) }
   }
 }

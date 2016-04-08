@@ -59,7 +59,7 @@ internal protocol LoginViewModelType {
 }
 
 internal final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, LoginViewModelOutputs,
-  LoginViewModelErrors {
+LoginViewModelErrors {
 
   // MARK: LoginViewModelType
   internal var inputs: LoginViewModelInputs { return self }
@@ -107,39 +107,40 @@ internal final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, L
   internal let showError: Signal<String, NoError>
   internal let tfaChallenge: Signal<(email: String, password: String), NoError>
 
-  internal init(env: Environment = AppEnvironment.current) {
-    let (loginErrors, loginErrorsObserver) = Signal<ErrorEnvelope, NoError>.pipe()
+  init() {
+    let loginErrors = MutableProperty<ErrorEnvelope?>(nil)
 
     let emailAndPassword = self.email.signal.ignoreNil()
       .combineLatestWith(self.password.signal.ignoreNil())
 
-    let tfaError = loginErrors
+    let tfaError = loginErrors.signal.ignoreNil()
       .filter { $0.ksrCode == .TfaRequired }
       .ignoreValues()
 
-    self.tfaChallenge = emailAndPassword.takeWhen(tfaError)
+    self.tfaChallenge = emailAndPassword
+      .takeWhen(tfaError)
 
     self.isFormValid = self.viewWillAppearProperty.signal.mapConst(false).take(1)
       .mergeWith(emailAndPassword.map(isValid))
 
     self.logIntoEnvironment = emailAndPassword
-        .takeWhen(self.loginButtonPressedProperty.signal)
-        .switchMap { ep in
-          AppEnvironment.current.apiService.login(email: ep.0, password: ep.1, code: nil)
-            .demoteErrors(pipeErrorsTo: loginErrorsObserver)
-    }
+      .takeWhen(self.loginButtonPressedProperty.signal)
+      .switchMap { ep in
+        AppEnvironment.current.apiService.login(email: ep.0, password: ep.1, code: nil)
+          .demoteErrors(pipeErrorsTo: loginErrors)
+      }
 
     self.postNotification = self.environmentLoggedInProperty.signal
       .mapConst(NSNotification(name: CurrentUserNotifications.sessionStarted, object: nil))
     self.dismissKeyboard = self.passwordTextFieldDoneEditingProperty.signal
     self.passwordTextFieldBecomeFirstResponder = self.emailTextFieldDoneEditingProperty.signal
 
-    self.showError = loginErrors
+    self.showError = loginErrors.signal.ignoreNil()
       .filter { $0.ksrCode != .TfaRequired }
       .map { env in
         env.errorMessages.first ??
           localizedString(key: "login.errors.unable_to_log_in", defaultValue: "Unable to log in.")
-    }
+      }
 
     self.logIntoEnvironment
       .observeNext { _ in AppEnvironment.current.koala.trackLoginSuccess() }

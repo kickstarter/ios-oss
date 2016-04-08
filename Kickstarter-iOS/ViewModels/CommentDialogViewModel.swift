@@ -59,7 +59,7 @@ CommentDialogViewModelOutputs, CommentDialogViewModelErrors {
     self.projectProperty.value = project
   }
 
-  private let commentBodyProperty = MutableProperty<String>("")
+  private let commentBodyProperty = MutableProperty("")
   internal func commentBodyChanged(text: String) {
     self.commentBodyProperty.value = text
   }
@@ -86,15 +86,15 @@ CommentDialogViewModelOutputs, CommentDialogViewModelErrors {
   internal var errors: CommentDialogViewModelErrors { return self }
 
   internal init() {
-    let (isLoading, isLoadingObserver) = Signal<Bool, NoError>.pipe()
-    let (errors, errorsObserver) = Signal<ErrorEnvelope, NoError>.pipe()
+    let isLoading = MutableProperty(false)
+    let errors = MutableProperty<ErrorEnvelope?>(nil)
     
     let project = self.projectProperty.signal.ignoreNil()
 
     self.postButtonEnabled = Signal.merge([
       self.viewWillAppearProperty.signal.take(1).mapConst(false),
       self.commentBodyProperty.signal.map { !$0.isEmpty },
-      isLoading.map { !$0 }
+      isLoading.signal.map { !$0 }
       ])
       .skipRepeats()
 
@@ -103,21 +103,21 @@ CommentDialogViewModelOutputs, CommentDialogViewModelErrors {
       .switchMap { project, body in
         AppEnvironment.current.apiService.postComment(body, toProject: project)
           .on(
-            started: { isLoadingObserver.sendNext(true) },
-            terminated: { isLoadingObserver.sendNext(false) }
+            started: { isLoading.value = true },
+            terminated: { isLoading.value = false }
           )
-          .demoteErrors(pipeErrorsTo: errorsObserver)
+          .demoteErrors(pipeErrorsTo: errors)
       }
       .ignoreValues()
 
-    self.commentIsPosting = isLoading
+    self.commentIsPosting = isLoading.signal
 
     self.notifyPresenterOfDismissal = Signal.merge([
       self.cancelButtonPressedProperty.signal,
       self.commentPostedSuccessfully
       ])
 
-    self.presentError = errors
+    self.presentError = errors.signal.ignoreNil()
       .map { env in
         env.errorMessages.first ??
           localizedString(key: "comments.dialog.generic_error",

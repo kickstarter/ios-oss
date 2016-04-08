@@ -1,9 +1,7 @@
-import protocol Library.ViewModelType
-import struct ReactiveCocoa.SignalProducer
-import class ReactiveCocoa.Signal
-import enum Result.NoError
-import struct Library.Environment
-import struct Library.AppEnvironment
+import Library
+import ReactiveCocoa
+import Result
+import Library
 
 internal protocol LoginToutViewModelInputs {
   /// Call when the view controller's viewDidAppear() method is called
@@ -45,33 +43,33 @@ internal final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMo
   internal var outputs: LoginToutViewModelOutputs { return self }
 
   // MARK: Inputs
-  private var (viewDidAppearSignal, viewDidAppearObserver) = Signal<(), NoError>.pipe()
+  private var viewDidAppearProperty = MutableProperty()
   func viewDidAppear() {
-    viewDidAppearObserver.sendNext()
+    self.viewDidAppearProperty.value = ()
   }
-  private let (loginIntentSignal, loginIntentObserver) = Signal<(LoginIntent), NoError>.pipe()
+  private let loginIntentProperty = MutableProperty<LoginIntent?>(nil)
   internal func loginIntent(intent: LoginIntent) {
-    loginIntentObserver.sendNext(intent)
+    self.loginIntentProperty.value = intent
   }
-  private let (facebookButtonPressedSignal, facebookButtonPressedObserver) = Signal<(), NoError>.pipe()
+  private let facebookButtonPressedProperty = MutableProperty()
   internal func facebookButtonPressed() {
-    facebookButtonPressedObserver.sendNext()
+    self.facebookButtonPressedProperty.value = ()
   }
-  private let (loginButtonPressedSignal, loginButtonPressedObserver) = Signal<(), NoError>.pipe()
+  private let loginButtonPressedProperty = MutableProperty()
   internal func loginButtonPressed() {
-    loginButtonPressedObserver.sendNext()
+    self.loginButtonPressedProperty.value = ()
   }
-  private let (signupButtonPressedSignal, signupButtonPressedObserver) = Signal<(), NoError>.pipe()
+  private let signupButtonPressedProperty = MutableProperty()
   internal func signupButtonPressed() {
-    signupButtonPressedObserver.sendNext()
+    self.signupButtonPressedProperty.value = ()
   }
-  private let (helpButtonPressedSignal, helpButtonPressedObserver) = Signal<(), NoError>.pipe()
+  private let helpButtonPressedProperty = MutableProperty()
   internal func helpButtonPressed() {
-    helpButtonPressedObserver.sendNext()
+    self.helpButtonPressedProperty.value = ()
   }
-  private let (helpTypeButtonPressedSignal, helpTypeButtonPressedObserver) = Signal<HelpType, NoError>.pipe()
+  private let helpTypeButtonPressedProperty = MutableProperty<HelpType?>(nil)
   internal func helpTypeButtonPressed(helpType: HelpType) {
-    helpTypeButtonPressedObserver.sendNext(helpType)
+    self.helpTypeButtonPressedProperty.value = helpType
   }
 
   // MARK: Outputs
@@ -82,13 +80,14 @@ internal final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMo
 
   internal init() {
 
-    self.startLogin = self.loginButtonPressedSignal
-    self.startSignup = self.signupButtonPressedSignal
-    self.showHelpActionSheet = self.helpButtonPressedSignal.mapConst(HelpType.allValues)
-    self.showHelp = self.helpTypeButtonPressedSignal
+    self.startLogin = self.loginButtonPressedProperty.signal
+    self.startSignup = self.signupButtonPressedProperty.signal
+    self.showHelpActionSheet = self.helpButtonPressedProperty.signal.mapConst(HelpType.allValues)
+    self.showHelp = self.helpTypeButtonPressedProperty.signal.ignoreNil()
 
-    loginIntentSignal
-      .combineLatestWith(viewDidAppearSignal)
+    loginIntentProperty.signal
+      .ignoreNil()
+      .combineLatestWith(viewDidAppearProperty.signal)
       .take(1)
       .map { intent, _ in intent.trackingString }
       .observeNext { i in AppEnvironment.current.koala.trackLoginTout(i) }

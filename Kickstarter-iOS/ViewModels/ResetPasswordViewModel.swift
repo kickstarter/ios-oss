@@ -47,24 +47,24 @@ internal final class ResetPasswordViewModel: ResetPasswordViewModelType, ResetPa
 
   // MARK: ResetPasswordViewModelInputs
 
-  private let (viewWillAppearSignal, viewWillAppearObserver) = Signal<(), NoError>.pipe()
+  private let viewWillAppearProperty = MutableProperty()
   func viewWillAppear() {
-    viewWillAppearObserver.sendNext()
+    self.viewWillAppearProperty.value = ()
   }
 
-  private let (emailSignal, emailObserver) = Signal<String, NoError>.pipe()
+  private let emailProperty = MutableProperty("")
   func email(email: String) {
-    emailObserver.sendNext(email)
+    self.emailProperty.value = email
   }
 
-  private let (resetButtonPressedSignal, resetButtonPressedObserver) = Signal<(), NoError>.pipe()
+  private let resetButtonPressedProperty = MutableProperty()
   func resetButtonPressed() {
-    resetButtonPressedObserver.sendNext()
+    self.resetButtonPressedProperty.value = ()
   }
 
-  private let (confirmResetButtonPressedSignal, confirmResetButtonPressedObserver) = Signal<(), NoError>.pipe()
+  private let confirmResetButtonPressedProperty = MutableProperty()
   func confirmResetButtonPressed() {
-    confirmResetButtonPressedObserver.sendNext()
+    self.confirmResetButtonPressedProperty.value = ()
   }
 
   // MARK: ResetPasswordViewModelOutputs
@@ -79,30 +79,30 @@ internal final class ResetPasswordViewModel: ResetPasswordViewModelType, ResetPa
 
   // MARK: Constructor
   internal init() {
+    let resetErrors = MutableProperty<ErrorEnvelope?>(nil)
 
-    let (resetFailSignal, resetFailObserver) = Signal<ErrorEnvelope, NoError>.pipe()
-    resetFail = resetFailSignal.map { envelope in envelope.errorMessages.first ??
-      localizedString(key: "forgot_password.error",
-        defaultValue: "Sorry, we don’t know that email address. Try again?")
+    resetFail = resetErrors.signal.ignoreNil()
+      .map { envelope in envelope.errorMessages.first ??
+        localizedString(key: "forgot_password.error",
+          defaultValue: "Sorry, we don’t know that email address. Try again?")
     }
 
-    formIsValid = emailSignal
+    formIsValid = self.emailProperty.signal
       .map { email in email.characters.count > 3 }
-      .mergeWith(viewWillAppearSignal.mapConst(false))
+      .mergeWith(self.viewWillAppearProperty.signal.mapConst(false))
       .skipRepeats()
 
-    resetSuccess = emailSignal
-      .takeWhen(resetButtonPressedSignal)
+    resetSuccess = self.emailProperty.signal
+      .takeWhen(self.resetButtonPressedProperty.signal)
       .switchMap { email in
         AppEnvironment.current.apiService.resetPassword(email: email)
-          .demoteErrors(pipeErrorsTo: resetFailObserver)
+          .demoteErrors(pipeErrorsTo: resetErrors)
           .mapConst(email)
     }
 
-    returnToLogin = confirmResetButtonPressedSignal
+    returnToLogin = self.confirmResetButtonPressedProperty.signal
 
-    viewWillAppearSignal.observeNext { AppEnvironment.current.koala.trackResetPassword() }
-    resetSuccess.observeNext { _ in AppEnvironment.current.koala.trackResetPasswordSuccess() }
+    self.viewWillAppearProperty.signal.observeNext { AppEnvironment.current.koala.trackResetPassword() }
+    self.resetSuccess.observeNext { _ in AppEnvironment.current.koala.trackResetPasswordSuccess() }
   }
-  
 }
