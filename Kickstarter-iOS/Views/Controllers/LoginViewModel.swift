@@ -154,7 +154,7 @@ LoginViewModelErrors {
           localizedString(key: "login.errors.unable_to_log_in", defaultValue: "Unable to log in.")
       }
 
-    self.showResetPassword = resetPasswordPressedProperty.signal
+    self.showResetPassword = self.resetPasswordPressedProperty.signal
 
     self.logIntoEnvironment
       .observeNext { _ in AppEnvironment.current.koala.trackLoginSuccess() }

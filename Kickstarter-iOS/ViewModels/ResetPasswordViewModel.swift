@@ -81,7 +81,7 @@ internal final class ResetPasswordViewModel: ResetPasswordViewModelType, ResetPa
   internal init() {
     let resetErrors = MutableProperty<ErrorEnvelope?>(nil)
 
-    showError = resetErrors.signal.ignoreNil()
+    self.showError = resetErrors.signal.ignoreNil()
       .map { envelope in
         if (envelope.httpCode == 404) {
           return localizedString(key: "forgot_password.error",
@@ -92,12 +92,12 @@ internal final class ResetPasswordViewModel: ResetPasswordViewModelType, ResetPa
         }
     }
 
-    formIsValid = emailProperty.signal.ignoreNil()
+    self.formIsValid = self.emailProperty.signal.ignoreNil()
       .map { email in email.characters.count > 3 }
       .mergeWith(viewWillAppearProperty.signal.mapConst(false))
       .skipRepeats()
 
-    showResetSuccess = emailProperty.signal.ignoreNil()
+    self.showResetSuccess = self.emailProperty.signal.ignoreNil()
       .takeWhen(resetButtonPressedProperty.signal)
       .switchMap { email in
         AppEnvironment.current.apiService.resetPassword(email: email)
@@ -109,9 +109,9 @@ internal final class ResetPasswordViewModel: ResetPasswordViewModelType, ResetPa
             substitutions: ["email": email], env: AppEnvironment.current))
     }
 
-    returnToLogin = confirmResetButtonPressedProperty.signal
+    self.returnToLogin = self.confirmResetButtonPressedProperty.signal
 
-    viewWillAppearProperty.signal.observeNext { AppEnvironment.current.koala.trackResetPassword() }
-    showResetSuccess.observeNext { _ in AppEnvironment.current.koala.trackResetPasswordSuccess() }
+    self.viewWillAppearProperty.signal.observeNext { AppEnvironment.current.koala.trackResetPassword() }
+    self.showResetSuccess.observeNext { _ in AppEnvironment.current.koala.trackResetPasswordSuccess() }
   }
 }

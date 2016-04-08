@@ -70,7 +70,6 @@ internal final class ResetPasswordViewController: MVVMViewController {
   
   @IBAction
   internal func resetPasswordPressed(sender: UIButton) {
-    self.view.endEditing(true)
     self.emailTextField.resignFirstResponder()
     self.viewModel.inputs.resetButtonPressed()
   }

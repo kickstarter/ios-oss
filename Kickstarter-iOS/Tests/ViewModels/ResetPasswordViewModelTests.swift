@@ -64,7 +64,7 @@ final class ResetPasswordViewModelTests: TestCase {
 
   func testResetFail_WithUnknownEmail() {
     let error = ErrorEnvelope(
-      errorMessages: ["Sorry, we don't know that email address. Try again?"],
+      errorMessages: ["The resource you are looking for does not exist."],
       ksrCode: nil,
       httpCode: 404,
       exception: nil
@@ -82,7 +82,7 @@ final class ResetPasswordViewModelTests: TestCase {
 
   func testResetFail_WithNon404Error() {
     let error = ErrorEnvelope(
-      errorMessages: ["Something went wrong."],
+      errorMessages: ["Zoinks!"],
       ksrCode: nil,
       httpCode: 400,
       exception: nil
