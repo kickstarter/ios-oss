@@ -281,7 +281,7 @@ final class TwoFactorViewModelTests: TestCase {
 
       isLoading.assertValues([true, false])
       showError.assertValueCount(0, "No error was emitted")
-      resendSuccess.assertValueCount(0, "Code was not resent")
+      resendSuccess.assertValueCount(1, "Code was not resent")
 
       XCTAssertEqual(["Two-factor Authentication Confirm View", "Two-factor Authentication Resend Code"],
                      trackingClient.events)
