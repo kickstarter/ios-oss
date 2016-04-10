@@ -34,7 +34,7 @@ final class ActivitiesViewModelTests: TestCase {
     showLoggedOutEmptyState.assertValues([true], "Logged-out empty state shown.")
     showLoggedInEmptyState.assertValues([], "No logged-in empty state.")
 
-    AppEnvironment.login(AccessTokenEnvelope(access_token: "deadbeef", user: UserFactory.user))
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: UserFactory.user))
     self.vm.inputs.userSessionStarted()
 
     activitiesPresent.assertValues([true], "Activities load immediately after session starts.")
@@ -61,7 +61,7 @@ final class ActivitiesViewModelTests: TestCase {
       showLoggedOutEmptyState.assertValues([true], "Logged out empty state visible.")
       showLoggedInEmptyState.assertValues([], "Logged in empty state didn't emit.")
 
-      AppEnvironment.login(AccessTokenEnvelope(access_token: "deadbeef", user: UserFactory.user))
+      AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: UserFactory.user))
       self.vm.inputs.userSessionStarted()
 
       activitiesPresent.assertValues([false], "Activities emit an empty array.")
@@ -78,7 +78,7 @@ final class ActivitiesViewModelTests: TestCase {
     let showLoggedOutEmptyState = TestObserver<Bool, NoError>()
     self.vm.outputs.showLoggedOutEmptyState.observe(showLoggedOutEmptyState.observer)
 
-    AppEnvironment.login(AccessTokenEnvelope(access_token: "deadbeef", user: UserFactory.user))
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: UserFactory.user))
     self.vm.inputs.viewWillAppear()
 
     activitiesPresent.assertValues([true], "Activities show right away.")
@@ -98,7 +98,7 @@ final class ActivitiesViewModelTests: TestCase {
     let activitiesPresent = TestObserver<Bool, NoError>()
     self.vm.outputs.activities.map { $0.count > 0 }.observe(activitiesPresent.observer)
 
-    AppEnvironment.login(AccessTokenEnvelope(access_token: "deadbeef", user: UserFactory.user))
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: UserFactory.user))
     self.vm.inputs.userSessionStarted()
 
     activitiesPresent.assertValues([], "Activities don't load after session starts.")

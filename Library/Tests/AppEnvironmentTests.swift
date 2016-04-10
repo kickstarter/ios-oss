@@ -58,7 +58,7 @@ final class AppEnvironmentTests : XCTestCase {
     XCTAssertNil(AppEnvironment.current.apiService.oauthToken)
     XCTAssertNil(AppEnvironment.current.currentUser)
 
-    AppEnvironment.login(AccessTokenEnvelope(access_token: "deadbeef", user: UserFactory.user))
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: UserFactory.user))
 
     XCTAssertEqual("deadbeef", AppEnvironment.current.apiService.oauthToken?.token)
     XCTAssertEqual(UserFactory.user, AppEnvironment.current.currentUser)

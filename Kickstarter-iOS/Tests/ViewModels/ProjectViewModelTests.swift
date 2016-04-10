@@ -81,7 +81,7 @@ internal final class ProjectViewModelTests: TestCase {
                                        "Nothing is emitted when starring while logged out.")
     self.showLoginTout.assertValueCount(1, "Prompt to login when starring while logged out.")
 
-    AppEnvironment.login(AccessTokenEnvelope(access_token: "deadbeef", user: UserFactory.user))
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: UserFactory.user))
     vm.inputs.userSessionStarted()
 
     self.projectIsStarred.assertValues([false, false, true],
@@ -92,7 +92,7 @@ internal final class ProjectViewModelTests: TestCase {
 
   // Tests a logged in user starring a project.
   func testLoggedInUser_StarsProject() {
-    AppEnvironment.login(AccessTokenEnvelope(access_token: "deadbeef", user: UserFactory.user))
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: UserFactory.user))
 
     self.projectIsStarred.assertDidNotEmitValue("No projects emitted at first.")
 
@@ -114,7 +114,7 @@ internal final class ProjectViewModelTests: TestCase {
 
   // Tests a logged in user starring a project that ends soon.
   func testLoggedInUser_StarsEndingSoonProject() {
-    AppEnvironment.login(AccessTokenEnvelope(access_token: "deadbeef", user: UserFactory.user))
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: UserFactory.user))
 
     vm.inputs.project(ProjectFactory.endingSoon)
     vm.inputs.refTag(nil)
@@ -129,7 +129,7 @@ internal final class ProjectViewModelTests: TestCase {
 
   // Tests a user unstarring a project.
   func testLoggedInUser_UnstarsProject() {
-    AppEnvironment.login(AccessTokenEnvelope(access_token: "deadbeef", user: UserFactory.user))
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: UserFactory.user))
 
     vm.inputs.project(ProjectFactory.starred)
     vm.inputs.refTag(nil)
