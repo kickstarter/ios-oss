@@ -16,6 +16,12 @@ internal final class ResetPasswordViewController: MVVMViewController, ResetPassw
 
   private let viewModel: ResetPasswordViewModelType = ResetPasswordViewModel()
 
+  internal func initialize(email email: String?) {
+    guard let emailText = email else { return }
+
+    self.viewModel.inputs.emailChanged(emailText)
+  }
+
   override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -74,12 +80,6 @@ internal final class ResetPasswordViewController: MVVMViewController, ResetPassw
       .observeNext { [weak self] message in
         self?.presentViewController(UIAlertController.genericError(message), animated: true, completion: nil)
       }
-  }
-
-  internal func initialize(email email: String?) {
-    guard let emailText = email else { return }
-
-    self.viewModel.inputs.emailChanged(emailText)
   }
 
   @IBAction

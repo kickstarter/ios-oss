@@ -61,7 +61,7 @@ internal final class ResetPasswordViewModel: ResetPasswordViewModelType, ResetPa
     self.viewWillAppearProperty.value = ()
   }
 
-  private let emailProperty = MutableProperty<String?>(nil)
+  private let emailProperty = MutableProperty<String?>("")
   func emailChanged(email: String?) {
     self.emailProperty.value = email
   }
@@ -106,8 +106,12 @@ internal final class ResetPasswordViewModel: ResetPasswordViewModelType, ResetPa
       .takeWhen(viewDidLoadProperty.signal)
       .take(1)
 
-    self.formIsValid = self.emailProperty.signal.ignoreNil()
-      .map { email in email.characters.count > 3 }
+    self.formIsValid = self.viewDidLoadProperty.signal
+      .take(1)
+      .mapConst(self.emailProperty.producer)
+      .flatten(.Merge)
+      .map { $0 ?? "" }
+      .map(isValidEmail)
       .skipRepeats()
 
     self.showResetSuccess = self.emailProperty.signal.ignoreNil()

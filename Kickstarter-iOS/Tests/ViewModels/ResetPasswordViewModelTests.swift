@@ -37,11 +37,11 @@ final class ResetPasswordViewModelTests: TestCase {
 
     vm.inputs.viewDidLoad()
 
-    formIsValid.assertDidNotEmitValue("Form is valid did not emit any values")
+    formIsValid.assertValues([false], "Emits form is valid after view loads")
 
     vm.inputs.viewWillAppear()
 
-    formIsValid.assertDidNotEmitValue("Form is valid did not emit any values")
+    formIsValid.assertValues([false])
 
     vm.inputs.emailChanged("bad")
 
@@ -52,16 +52,20 @@ final class ResetPasswordViewModelTests: TestCase {
     formIsValid.assertValues([false, true])
   }
 
-  func testFormIsValid_BeforeViewDidLoad() {
+  func testFormIsValid_WithInitialValue() {
     formIsValid.assertDidNotEmitValue("Form is valid did not emit any values")
 
     vm.inputs.emailChanged("hello@goodemail.biz")
 
-    formIsValid.assertValues([true])
+    formIsValid.assertDidNotEmitValue("Form is valid did not emit any values")
 
     vm.inputs.viewDidLoad()
 
     formIsValid.assertValues([true])
+
+    vm.inputs.emailChanged("")
+
+    formIsValid.assertValues([true, false])
   }
 
   func testEmailSetOnce_WithInitialValue() {
