@@ -71,7 +71,7 @@ internal final class CommentsViewModelTests: TestCase {
 
   func testLoggedInNonBacker_ViewingEmptyState() {
     withEnvironment(apiService: MockService(fetchCommentsResponse: [])) {
-      AppEnvironment.login(AccessTokenEnvelope(access_token: "deadbeef", user: UserFactory.user))
+      AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: UserFactory.user))
 
       self.hasComments.assertValues([])
       self.loggedOutEmptyStateVisible.assertValues([])
@@ -92,7 +92,7 @@ internal final class CommentsViewModelTests: TestCase {
 
   func testLoggedInBacker_ViewingEmptyState() {
     withEnvironment(apiService: MockService(fetchCommentsResponse: [])) {
-      AppEnvironment.login(AccessTokenEnvelope(access_token: "deadbeef", user: UserFactory.user))
+      AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: UserFactory.user))
 
       self.hasComments.assertValues([])
       self.loggedOutEmptyStateVisible.assertValues([])
@@ -113,7 +113,7 @@ internal final class CommentsViewModelTests: TestCase {
 
   func testLoggedInBacker_Commenting() {
     withEnvironment(apiService: MockService(fetchCommentsResponse: [])) {
-      AppEnvironment.login(AccessTokenEnvelope(access_token: "deadbeef", user: UserFactory.user))
+      AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: UserFactory.user))
 
       self.hasComments.assertValues([])
       self.commentButtonVisible.assertValues([])

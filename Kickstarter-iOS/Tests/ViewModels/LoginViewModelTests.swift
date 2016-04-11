@@ -81,6 +81,27 @@ final class LoginViewModelTests: TestCase {
     }
   }
 
+  func testLoginError_WithNoErrorMessage() {
+    let error = ErrorEnvelope(
+      errorMessages: [],
+      ksrCode: .InvalidXauthLogin,
+      httpCode: 400,
+      exception: nil
+    )
+
+    withEnvironment(apiService: MockService(loginError: error)) {
+      vm.inputs.viewWillAppear()
+      vm.inputs.emailChanged("nativesquad@kickstarter.com")
+      vm.inputs.passwordChanged("helloooooo")
+      vm.inputs.loginButtonPressed()
+
+      logIntoEnvironment.assertValueCount(0, "Did not log into environment.")
+      XCTAssertEqual(["Errored User Login"], trackingClient.events)
+      showError.assertValueCount(1, "Login errored")
+      tfaChallenge.assertValueCount(0, "TFA challenge did not happen")
+    }
+  }
+
   func testTfaChallenge() {
     let error = ErrorEnvelope(
       errorMessages: ["Two Factor Authenticaion is required."],

@@ -13,6 +13,11 @@ test:
     - PLATFORM=tvOS make test
     - PLATFORM=iOS TARGET=Library make test
     - PLATFORM=tvOS TARGET=Library make test
+experimental:
+  notify:
+    branches:
+      only:
+        - master
 deployment:
   ios_beta:
     branch: beta-dist

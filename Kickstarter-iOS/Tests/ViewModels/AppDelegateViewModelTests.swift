@@ -53,7 +53,7 @@ final class AppDelegateViewModelTests: TestCase {
     let postNotificationName = TestObserver<String, NoError>()
     vm.outputs.postNotification.map { $0.name }.observe(postNotificationName.observer)
 
-    let env = AccessTokenEnvelope(access_token: "deadbeef", user: UserFactory.user)
+    let env = AccessTokenEnvelope(accessToken: "deadbeef", user: UserFactory.user)
     AppEnvironment.login(env)
 
     vm.inputs.applicationDidFinishLaunching(launchOptions: nil)
