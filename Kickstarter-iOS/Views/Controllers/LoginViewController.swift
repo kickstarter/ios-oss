@@ -100,6 +100,7 @@ internal final class LoginViewController: MVVMViewController {
   private func startResetPasswordViewController() {
     let resetPasswordVC = self.storyboard?.instantiateViewControllerWithIdentifier("ResetPasswordViewController")
       as! ResetPasswordViewController
+    resetPasswordVC.initialize(email: emailTextField.text)
     self.navigationController?.pushViewController(resetPasswordVC, animated: true)
   }
 

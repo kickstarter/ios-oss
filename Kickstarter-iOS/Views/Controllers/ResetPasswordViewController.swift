@@ -5,7 +5,11 @@ import ReactiveCocoa
 import Library
 import Prelude
 
-internal final class ResetPasswordViewController: MVVMViewController {
+internal protocol ResetPasswordViewControllerType {
+  func initialize(email email: String?)
+}
+
+internal final class ResetPasswordViewController: MVVMViewController, ResetPasswordViewControllerType {
 
   @IBOutlet weak var emailTextField: UITextField!
   @IBOutlet weak var resetPasswordButton: BorderButton!
@@ -23,15 +27,24 @@ internal final class ResetPasswordViewController: MVVMViewController {
     self.emailTextField.layer.borderWidth = 1.0
     self.emailTextField.leftView = UIView(frame: CGRectMake(0, 0, 10, 0))
     self.emailTextField.leftViewMode = UITextFieldViewMode.Always;
+
+    self.viewModel.inputs.viewDidLoad()
   }
 
   override func viewWillAppear(animated: Bool) {
     super.viewWillAppear(animated)
+
     self.viewModel.inputs.viewWillAppear()
   }
 
   override func bindViewModel() {
     super.bindViewModel()
+
+    self.viewModel.outputs.setEmailInitial
+      .observeForUI()
+      .observeNext { [weak self] email in
+        self?.emailTextField.text = email
+      }
 
     self.viewModel.outputs.formIsValid
       .observeForUI()
@@ -61,6 +74,12 @@ internal final class ResetPasswordViewController: MVVMViewController {
       .observeNext { [weak self] message in
         self?.presentViewController(UIAlertController.genericError(message), animated: true, completion: nil)
       }
+  }
+
+  internal func initialize(email email: String?) {
+    guard let emailText = email else { return }
+
+    self.viewModel.inputs.emailChanged(emailText)
   }
 
   @IBAction

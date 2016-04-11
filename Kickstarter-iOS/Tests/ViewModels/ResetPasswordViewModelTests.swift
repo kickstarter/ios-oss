@@ -14,6 +14,7 @@ final class ResetPasswordViewModelTests: TestCase {
   let showResetSuccess = TestObserver<String, NoError>()
   let returnToLogin = TestObserver<(), NoError>()
   let showError = TestObserver<String, NoError>()
+  let setEmailInitial = TestObserver<String, NoError>()
 
   override func setUp() {
     super.setUp()
@@ -21,6 +22,7 @@ final class ResetPasswordViewModelTests: TestCase {
     vm.outputs.formIsValid.observe(formIsValid.observer)
     vm.outputs.showResetSuccess.observe(showResetSuccess.observer)
     vm.outputs.returnToLogin.observe(returnToLogin.observer)
+    vm.outputs.setEmailInitial.observe(setEmailInitial.observer)
     vm.errors.showError.observe(showError.observer)
   }
 
@@ -33,9 +35,13 @@ final class ResetPasswordViewModelTests: TestCase {
   func testFormIsValid() {
     formIsValid.assertDidNotEmitValue("Form is valid did not emit any values")
 
+    vm.inputs.viewDidLoad()
+
+    formIsValid.assertDidNotEmitValue("Form is valid did not emit any values")
+
     vm.inputs.viewWillAppear()
 
-    formIsValid.assertValues([false])
+    formIsValid.assertDidNotEmitValue("Form is valid did not emit any values")
 
     vm.inputs.emailChanged("bad")
 
@@ -44,6 +50,45 @@ final class ResetPasswordViewModelTests: TestCase {
     vm.inputs.emailChanged("gina@kickstarter.com")
 
     formIsValid.assertValues([false, true])
+  }
+
+  func testFormIsValid_BeforeViewDidLoad() {
+    formIsValid.assertDidNotEmitValue("Form is valid did not emit any values")
+
+    vm.inputs.emailChanged("hello@goodemail.biz")
+
+    formIsValid.assertValues([true])
+
+    vm.inputs.viewDidLoad()
+
+    formIsValid.assertValues([true])
+  }
+
+  func testEmailSetOnce_WithInitialValue() {
+    vm.inputs.emailChanged("nativesquad@kickstarter.com")
+
+    setEmailInitial.assertValueCount(0, "Initial email does not emit")
+
+    vm.inputs.viewDidLoad()
+
+    setEmailInitial.assertValues(["nativesquad@kickstarter.com"])
+
+    vm.inputs.viewDidLoad()
+
+    setEmailInitial.assertValues(["nativesquad@kickstarter.com"])
+  }
+
+  func testEmailNotSet_WithoutInitialValue() {
+    setEmailInitial.assertValueCount(0, "Initial email does not emit")
+
+    vm.inputs.viewDidLoad()
+    vm.inputs.viewWillAppear()
+
+    setEmailInitial.assertValueCount(0, "Initial email does not emit")
+
+    vm.inputs.emailChanged("nativesquad@kickstarter.com")
+
+    setEmailInitial.assertValueCount(0, "Initial email does not emit")
   }
 
   func testResetSuccess() {

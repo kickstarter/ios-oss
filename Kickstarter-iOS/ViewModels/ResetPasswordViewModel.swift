@@ -5,6 +5,8 @@ import KsApi
 import Library
 
 internal protocol ResetPasswordViewModelInputs {
+  /// Call when the view loads
+  func viewDidLoad()
   /// Call when the view will appear
   func viewWillAppear()
   /// Call when email textfield input is entered
@@ -16,6 +18,8 @@ internal protocol ResetPasswordViewModelInputs {
 }
 
 internal protocol ResetPasswordViewModelOutputs {
+  /// Emits email address to set email textfield
+  var setEmailInitial: Signal<String, NoError> { get }
   /// Emits Bool representing form validity
   var formIsValid: Signal<Bool, NoError> { get }
   /// Emits email String when reset is successful
@@ -47,6 +51,11 @@ internal final class ResetPasswordViewModel: ResetPasswordViewModelType, ResetPa
 
   // MARK: ResetPasswordViewModelInputs
 
+  private let viewDidLoadProperty = MutableProperty()
+  func viewDidLoad() {
+    self.viewDidLoadProperty.value = ()
+  }
+
   private let viewWillAppearProperty = MutableProperty()
   func viewWillAppear() {
     self.viewWillAppearProperty.value = ()
@@ -72,6 +81,7 @@ internal final class ResetPasswordViewModel: ResetPasswordViewModelType, ResetPa
   internal let formIsValid: Signal<Bool, NoError>
   internal let showResetSuccess: Signal<String, NoError>
   internal var returnToLogin: Signal<(), NoError>
+  internal var setEmailInitial: Signal<String, NoError>
 
   // MARK: ResetPasswordViewModelErrors
 
@@ -92,9 +102,12 @@ internal final class ResetPasswordViewModel: ResetPasswordViewModelType, ResetPa
         }
     }
 
+    self.setEmailInitial = self.emailProperty.signal.ignoreNil()
+      .takeWhen(viewDidLoadProperty.signal)
+      .take(1)
+
     self.formIsValid = self.emailProperty.signal.ignoreNil()
       .map { email in email.characters.count > 3 }
-      .mergeWith(viewWillAppearProperty.signal.mapConst(false))
       .skipRepeats()
 
     self.showResetSuccess = self.emailProperty.signal.ignoreNil()
@@ -102,11 +115,12 @@ internal final class ResetPasswordViewModel: ResetPasswordViewModelType, ResetPa
       .switchMap { email in
         AppEnvironment.current.apiService.resetPassword(email: email)
           .demoteErrors(pipeErrorsTo: resetErrors)
-          .mapConst(localizedString(
+          .map { _ in localizedString(
             key: "forgot_password.we_sent_an_email_to_email_address_with_instructions_to_reset_your_password",
             defaultValue: "We've sent an email to %{email} with instructions to reset your password.",
             count: nil,
-            substitutions: ["email": email], env: AppEnvironment.current))
+            substitutions: ["email": email], env: AppEnvironment.current)
+      }
     }
 
     self.returnToLogin = self.confirmResetButtonPressedProperty.signal
