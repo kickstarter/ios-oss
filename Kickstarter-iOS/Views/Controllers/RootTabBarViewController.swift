@@ -1,5 +1,6 @@
 import UIKit
 import Library
+import Prelude
 
 internal final class RootTabBarViewController: MVVMTabBarController {
 
@@ -7,6 +8,7 @@ internal final class RootTabBarViewController: MVVMTabBarController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    self.delegate = self
 
     self.viewModel.inputs.viewDidLoad()
 
@@ -37,5 +39,34 @@ internal final class RootTabBarViewController: MVVMTabBarController {
       .observeNext { [weak self] vcs in
         self?.setViewControllers(vcs, animated: false)
     }
+
+    self.viewModel.outputs.selectedIndex
+      .observeForUI()
+      .observeNext { [weak self] index in
+        self?.selectedIndex = index
+    }
+
+    self.viewModel.outputs.scrollToTop
+      .observeForUI()
+      .observeNext(scrollToTop)
   }
+}
+
+extension RootTabBarViewController: UITabBarControllerDelegate {
+
+  func tabBarController(tabBarController: UITabBarController,
+                        didSelectViewController viewController: UIViewController) {
+    self.viewModel.inputs.didSelectIndex(tabBarController.selectedIndex)
+  }
+}
+
+private func scrollToTop(viewController: UIViewController) {
+
+  // Try finding a scroll view inside `viewController`.
+  guard let scrollView = (viewController.view as? UIScrollView) ??
+    ((viewController as? UINavigationController)?.viewControllers.first?.view as? UIScrollView) else {
+      return
+  }
+
+  scrollView.setContentOffset(CGPoint(x: 0.0, y: -scrollView.contentInset.top), animated: true)
 }

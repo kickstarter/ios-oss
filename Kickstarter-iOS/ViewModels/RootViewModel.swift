@@ -2,16 +2,35 @@ import ReactiveCocoa
 import UIKit
 import Result
 import Library
+import Prelude
 
 internal protocol RootViewModelInputs {
+  /// Call from the controller's `viewDidLoad` method.
   func viewDidLoad()
+
+  /// Call when the controller has received a user session started notification.
   func userSessionStarted()
+
+  /// Call when the controller has received a user session ended notification.
   func userSessionEnded()
+
+  /// Call when the controller has received a user updated notification.
   func currentUserUpdated()
+
+  /// Call when selected tab bar index changes.
+  func didSelectIndex(index: Int)
 }
 
 internal protocol RootViewModelOutputs {
+  /// Emits the array of view controllers that should be set on the tab bar.
   var setViewControllers: Signal<[UIViewController], NoError> { get }
+
+  /// Emits an index that the tab bar should be switched to.
+  var selectedIndex: Signal<Int, NoError> { get }
+
+  /// Emits a controller that should be scrolled to the top. This requires figuring out what kind of 
+  // controller it is, and setting its `contentOffset`.
+  var scrollToTop: Signal<UIViewController, NoError> { get }
 }
 
 internal protocol RootViewModelType {
@@ -37,8 +56,14 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
   internal func currentUserUpdated() {
     self.currentUserUpdatedProperty.value = ()
   }
+  private let didSelectIndexProperty = MutableProperty(0)
+  internal func didSelectIndex(index: Int) {
+    self.didSelectIndexProperty.value = index
+  }
 
   internal let setViewControllers: Signal<[UIViewController], NoError>
+  internal let selectedIndex: Signal<Int, NoError>
+  internal let scrollToTop: Signal<UIViewController, NoError>
 
   internal var inputs: RootViewModelInputs { return self }
   internal var outputs: RootViewModelOutputs { return self }
@@ -74,5 +99,20 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
 
     self.setViewControllers = combineLatest([standardTabs, personalizedTabs])
       .map { Array($0.flatten()) }
+
+    self.selectedIndex = Signal.merge([
+      self.viewDidLoadProperty.signal.mapConst(0),
+      self.didSelectIndexProperty.signal
+      ])
+      .withLatestFrom(self.setViewControllers)
+      .map { idx, vcs in clamp(0, vcs.count-1)(idx) }
+
+    let selectedTabAgain = self.selectedIndex.combinePrevious()
+      .map { (prev, next) -> Int? in prev == next ? next : nil }
+      .ignoreNil()
+
+    self.scrollToTop = self.setViewControllers
+      .takePairWhen(selectedTabAgain)
+      .map { (vcs, idx) in vcs[idx] }
   }
 }

@@ -10,16 +10,29 @@ import Result
 import ReactiveCocoa
 
 final class RootViewModelTests: TestCase {
-  var vm: RootViewModelType!
+  let vm: RootViewModelType = RootViewModel()
+  let viewControllerNames = TestObserver<[String], NoError>()
+  let selectedIndex = TestObserver<Int, NoError>()
+  let scrollToTopControllerName = TestObserver<String, NoError>()
 
   override func setUp() {
     super.setUp()
-    self.vm = RootViewModel()
+
+    self.vm.outputs.setViewControllers
+      .map(extractRootNames)
+      .observe(self.viewControllerNames.observer)
+
+    self.vm.outputs.selectedIndex.observe(self.selectedIndex.observer)
+
+    self.vm.outputs.scrollToTop
+      .map(extractRootName)
+      .ignoreNil()
+      .observe(self.scrollToTopControllerName.observer)
   }
 
-  func testViewControllers() {
+  func testSetViewControllers() {
     let viewControllerNames = TestObserver<[String], NoError>()
-    vm.outputs.setViewControllers.map(extractControllerNames)
+    vm.outputs.setViewControllers.map(extractRootNames)
       .observe(viewControllerNames.observer)
 
     vm.inputs.viewDidLoad()
@@ -67,11 +80,57 @@ final class RootViewModelTests: TestCase {
       "Show the logged out tabs."
     )
   }
+
+  func testSelectedIndex() {
+    self.selectedIndex.assertValues([], "No index seleted before view loads.")
+
+    self.vm.inputs.viewDidLoad()
+
+    self.selectedIndex.assertValues([0], "First index selected immediately.")
+
+    self.vm.inputs.didSelectIndex(1)
+
+    self.selectedIndex.assertValues([0, 1], "Selects index immediately.")
+
+    self.vm.inputs.didSelectIndex(0)
+
+    self.selectedIndex.assertValues([0, 1, 0], "Selects index immediately.")
+
+    self.vm.inputs.didSelectIndex(10)
+
+    self.selectedIndex.assertValues([0, 1, 0, 3], "Selecting index out of range safely clamps to bounds.")
+  }
+
+  func testScrollToTop() {
+    self.scrollToTopControllerName.assertDidNotEmitValue()
+
+    self.vm.inputs.viewDidLoad()
+
+    self.scrollToTopControllerName.assertDidNotEmitValue()
+
+    self.vm.inputs.didSelectIndex(1)
+
+    self.scrollToTopControllerName.assertDidNotEmitValue("Selecting index doesn't cause scroll to top.")
+
+    self.vm.inputs.didSelectIndex(0)
+
+    self.scrollToTopControllerName.assertDidNotEmitValue("Selecting different index doesn't cause scroll to top.")
+
+    self.vm.inputs.didSelectIndex(0)
+
+    self.scrollToTopControllerName.assertValues(["Discovery"],
+                                                "Selecting index again causes scroll to top.")
+  }
 }
 
-private func extractControllerNames(vcs: [UIViewController]) -> [String] {
-  return vcs
-    .flatMap { vc in (vc as? UINavigationController)?.viewControllers.first }
+private func extractRootNames(vcs: [UIViewController]) -> [String] {
+  return vcs.flatMap(extractRootName)
+}
+
+private func extractRootName(vc: UIViewController) -> String? {
+  return (vc as? UINavigationController)?
+    .viewControllers
+    .first
     .map { root in
       "\(root.dynamicType)"
         .stringByReplacingOccurrencesOfString("ViewController", withString: "")
