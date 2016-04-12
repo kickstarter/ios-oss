@@ -7,8 +7,6 @@ import Library
 internal protocol ResetPasswordViewModelInputs {
   /// Call when the view loads
   func viewDidLoad()
-  /// Call when the view will appear
-  func viewWillAppear()
   /// Call when email textfield input is entered
   func emailChanged(email: String?)
   /// Call when reset button is pressed
@@ -54,11 +52,6 @@ internal final class ResetPasswordViewModel: ResetPasswordViewModelType, ResetPa
   private let viewDidLoadProperty = MutableProperty()
   func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
-  }
-
-  private let viewWillAppearProperty = MutableProperty()
-  func viewWillAppear() {
-    self.viewWillAppearProperty.value = ()
   }
 
   private let emailProperty = MutableProperty<String?>("")
@@ -108,8 +101,7 @@ internal final class ResetPasswordViewModel: ResetPasswordViewModelType, ResetPa
 
     self.formIsValid = self.viewDidLoadProperty.signal
       .take(1)
-      .mapConst(self.emailProperty.producer)
-      .flatten(.Merge)
+      .flatMap { [email = emailProperty.producer] _ in email }
       .map { $0 ?? "" }
       .map(isValidEmail)
       .skipRepeats()
@@ -129,7 +121,7 @@ internal final class ResetPasswordViewModel: ResetPasswordViewModelType, ResetPa
 
     self.returnToLogin = self.confirmResetButtonPressedProperty.signal
 
-    self.viewWillAppearProperty.signal.observeNext { AppEnvironment.current.koala.trackResetPassword() }
+    self.viewDidLoadProperty.signal.observeNext { AppEnvironment.current.koala.trackResetPassword() }
     self.showResetSuccess.observeNext { _ in AppEnvironment.current.koala.trackResetPasswordSuccess() }
   }
 }

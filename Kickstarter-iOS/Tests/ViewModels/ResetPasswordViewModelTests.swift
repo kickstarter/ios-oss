@@ -26,8 +26,8 @@ final class ResetPasswordViewModelTests: TestCase {
     vm.errors.showError.observe(showError.observer)
   }
 
-  func testViewWillAppear() {
-    vm.inputs.viewWillAppear()
+  func testViewDidLoadTracking() {
+    vm.inputs.viewDidLoad()
 
     XCTAssertEqual(["Forgot Password View"], trackingClient.events)
   }
@@ -38,10 +38,6 @@ final class ResetPasswordViewModelTests: TestCase {
     vm.inputs.viewDidLoad()
 
     formIsValid.assertValues([false], "Emits form is valid after view loads")
-
-    vm.inputs.viewWillAppear()
-
-    formIsValid.assertValues([false])
 
     vm.inputs.emailChanged("bad")
 
@@ -86,7 +82,6 @@ final class ResetPasswordViewModelTests: TestCase {
     setEmailInitial.assertValueCount(0, "Initial email does not emit")
 
     vm.inputs.viewDidLoad()
-    vm.inputs.viewWillAppear()
 
     setEmailInitial.assertValueCount(0, "Initial email does not emit")
 
@@ -96,7 +91,7 @@ final class ResetPasswordViewModelTests: TestCase {
   }
 
   func testResetSuccess() {
-    vm.inputs.viewWillAppear()
+    vm.inputs.viewDidLoad()
     vm.inputs.emailChanged("lisa@kickstarter.com")
     vm.inputs.resetButtonPressed()
 
@@ -105,7 +100,7 @@ final class ResetPasswordViewModelTests: TestCase {
   }
 
   func testResetConfirmation() {
-    vm.inputs.viewWillAppear()
+    vm.inputs.viewDidLoad()
     vm.inputs.confirmResetButtonPressed()
 
     returnToLogin.assertValueCount(1, "Shows login after confirming message receipt")
@@ -120,7 +115,7 @@ final class ResetPasswordViewModelTests: TestCase {
     )
 
     withEnvironment(apiService: MockService(resetPasswordError: error)) {
-      vm.inputs.viewWillAppear()
+      vm.inputs.viewDidLoad()
       vm.inputs.emailChanged("bad@email")
       vm.inputs.resetButtonPressed()
 
@@ -138,7 +133,7 @@ final class ResetPasswordViewModelTests: TestCase {
     )
 
     withEnvironment(apiService: MockService(resetPasswordError: error)) {
-      vm.inputs.viewWillAppear()
+      vm.inputs.viewDidLoad()
       vm.inputs.emailChanged("unicorns@sparkles.tv")
       vm.inputs.resetButtonPressed()
 

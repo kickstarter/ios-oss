@@ -39,8 +39,6 @@ internal final class ResetPasswordViewController: MVVMViewController, ResetPassw
 
   override func viewWillAppear(animated: Bool) {
     super.viewWillAppear(animated)
-
-    self.viewModel.inputs.viewWillAppear()
   }
 
   override func bindViewModel() {
