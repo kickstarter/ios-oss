@@ -5,10 +5,10 @@ import KsApi
 import Library
 
 internal protocol ResetPasswordViewModelInputs {
-  /// Call when the view will appear
-  func viewWillAppear()
+  /// Call when the view loads
+  func viewDidLoad()
   /// Call when email textfield input is entered
-  func email(email: String)
+  func emailChanged(email: String?)
   /// Call when reset button is pressed
   func resetButtonPressed()
   /// Call when OK button is pressed on reset confirmation popup
@@ -16,17 +16,19 @@ internal protocol ResetPasswordViewModelInputs {
 }
 
 internal protocol ResetPasswordViewModelOutputs {
+  /// Emits email address to set email textfield
+  var setEmailInitial: Signal<String, NoError> { get }
   /// Emits Bool representing form validity
   var formIsValid: Signal<Bool, NoError> { get }
   /// Emits email String when reset is successful
-  var resetSuccess: Signal<String, NoError> { get }
+  var showResetSuccess: Signal<String, NoError> { get }
   /// Emits after user closes popup confirmation
   var returnToLogin: Signal<(), NoError> { get }
 }
 
 internal protocol ResetPasswordViewModelErrors {
-  /// Emits error message String on generic error
-  var resetFail: Signal<String, NoError> { get }
+  /// Emits error message String on reset fail
+  var showError: Signal<String, NoError> { get }
 }
 
 internal protocol ResetPasswordViewModelType {
@@ -47,13 +49,13 @@ internal final class ResetPasswordViewModel: ResetPasswordViewModelType, ResetPa
 
   // MARK: ResetPasswordViewModelInputs
 
-  private let viewWillAppearProperty = MutableProperty()
-  func viewWillAppear() {
-    self.viewWillAppearProperty.value = ()
+  private let viewDidLoadProperty = MutableProperty()
+  func viewDidLoad() {
+    self.viewDidLoadProperty.value = ()
   }
 
-  private let emailProperty = MutableProperty("")
-  func email(email: String) {
+  private let emailProperty = MutableProperty<String?>("")
+  func emailChanged(email: String?) {
     self.emailProperty.value = email
   }
 
@@ -70,39 +72,56 @@ internal final class ResetPasswordViewModel: ResetPasswordViewModelType, ResetPa
   // MARK: ResetPasswordViewModelOutputs
 
   internal let formIsValid: Signal<Bool, NoError>
-  internal let resetSuccess: Signal<String, NoError>
+  internal let showResetSuccess: Signal<String, NoError>
   internal var returnToLogin: Signal<(), NoError>
+  internal var setEmailInitial: Signal<String, NoError>
 
   // MARK: ResetPasswordViewModelErrors
 
-  internal let resetFail: Signal<String, NoError>
+  internal let showError: Signal<String, NoError>
 
   // MARK: Constructor
   internal init() {
     let resetErrors = MutableProperty<ErrorEnvelope?>(nil)
 
-    resetFail = resetErrors.signal.ignoreNil()
-      .map { envelope in envelope.errorMessages.first ??
-        localizedString(key: "forgot_password.error",
-          defaultValue: "Sorry, we don’t know that email address. Try again?")
+    self.showError = resetErrors.signal.ignoreNil()
+      .map { envelope in
+        if (envelope.httpCode == 404) {
+          return localizedString(key: "forgot_password.error",
+            defaultValue: "Sorry, we don't know that email address. Try again?")
+        } else {
+          return localizedString(key: "general.error.something_wrong",
+            defaultValue: "Something went wrong.")
+        }
     }
 
-    formIsValid = self.emailProperty.signal
-      .map { email in email.characters.count > 3 }
-      .mergeWith(self.viewWillAppearProperty.signal.mapConst(false))
+    self.setEmailInitial = self.emailProperty.signal.ignoreNil()
+      .takeWhen(viewDidLoadProperty.signal)
+      .take(1)
+
+    self.formIsValid = self.viewDidLoadProperty.signal
+      .take(1)
+      .flatMap { [email = emailProperty.producer] _ in email }
+      .map { $0 ?? "" }
+      .map(isValidEmail)
       .skipRepeats()
 
-    resetSuccess = self.emailProperty.signal
-      .takeWhen(self.resetButtonPressedProperty.signal)
+    self.showResetSuccess = self.emailProperty.signal.ignoreNil()
+      .takeWhen(resetButtonPressedProperty.signal)
       .switchMap { email in
         AppEnvironment.current.apiService.resetPassword(email: email)
           .demoteErrors(pipeErrorsTo: resetErrors)
-          .mapConst(email)
+          .map { _ in localizedString(
+            key: "forgot_password.we_sent_an_email_to_email_address_with_instructions_to_reset_your_password",
+            defaultValue: "We've sent an email to %{email} with instructions to reset your password.",
+            count: nil,
+            substitutions: ["email": email], env: AppEnvironment.current)
+      }
     }
 
-    returnToLogin = self.confirmResetButtonPressedProperty.signal
+    self.returnToLogin = self.confirmResetButtonPressedProperty.signal
 
-    self.viewWillAppearProperty.signal.observeNext { AppEnvironment.current.koala.trackResetPassword() }
-    self.resetSuccess.observeNext { _ in AppEnvironment.current.koala.trackResetPasswordSuccess() }
+    self.viewDidLoadProperty.signal.observeNext { AppEnvironment.current.koala.trackResetPassword() }
+    self.showResetSuccess.observeNext { _ in AppEnvironment.current.koala.trackResetPasswordSuccess() }
   }
 }
