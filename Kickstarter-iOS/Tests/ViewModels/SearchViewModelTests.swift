@@ -152,9 +152,9 @@ final class SearchViewModelTests: TestCase {
 
     hasProjects.assertValues([true, false], "Still no new projects after entering another search term.")
 
-    // TODO: This is hacky right now. We need two `advanceByInterval`s cause we have to push through
-    // the `debounce` scheduler AND the `delay` scheduler :/ We should find a better way...
+    // wait enough time for API request to be fired.
     scheduler.advanceByInterval(1.0)
+    // wait enough time for API request to finish.
     scheduler.advanceByInterval(1.0)
 
     hasProjects.assertValues([true, false, true], "Search projects load after waiting enough time.")
