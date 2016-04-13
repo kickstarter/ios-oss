@@ -237,15 +237,22 @@ private func projectProperties(project: Project,
 
   var properties = [String:AnyObject]()
 
-  properties["backers_count"] = project.backersCount
+  properties["backers_count"] = project.stats.backersCount
   properties["country"] = project.country.countryCode
   properties["currency"] = project.country.currencyCode
-  properties["goal"] = project.goal
+  properties["goal"] = project.stats.goal
   properties["pid"] = project.id
   properties["name"] = project.name
-  properties["pledged"] = project.pledged
+  properties["pledged"] = project.stats.pledged
   properties["percent_raised"] = project.fundingProgress
   properties["has_video"] = project.video != nil
+  properties["state"] = project.state.rawValue
+  properties["update_count"] = project.stats.updatesCount
+  properties["comments_count"] = project.stats.commentsCount
+
+  let now = NSDate().timeIntervalSince1970
+  properties["hours_remaining"] = Int(ceil(max(0.0, (project.deadline - now) / 3_600.0)))
+  properties["duration"] = Int(project.deadline - project.launchedAt)
 
   properties["category"] = project.category.name
   properties["parent_category"] = project.category.parent?.name
@@ -259,12 +266,6 @@ private func projectProperties(project: Project,
     loggedInUserProperties["user_has_starred"] = project.isStarred ?? false
   }
 
-  // TODO: implement these
-  //properties["state"] = project.state
-  //properties["update_count"] = project.updateCount
-  //properties["comments_count"] = project.commentsCount
-  //properties["hours_remaining"] =
-  //properties["duration"] =
 
   return properties.prefixedKeys(prefix)
     .withAllValuesFrom(userProperties(project.creator, prefix: "creator_"))

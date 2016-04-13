@@ -40,7 +40,6 @@ public final class KoalaTrackingClient: TrackingClientType {
       .flatMap(KoalaTrackingClient.koalaRequest)
       .map(koalaTask)
 
-    // TODO: Make a queue of events that are flushed every X seconds.
     task?.resume()
   }
 

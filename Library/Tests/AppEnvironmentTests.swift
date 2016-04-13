@@ -91,6 +91,7 @@ final class AppEnvironmentTests: XCTestCase {
 
     userDefaults.setObject(
       [
+        "apiService.buildVersion": "123",
         "apiService.oauthToken.token": "deadbeef",
         "apiService.serverConfig.apiBaseUrl": "http://api.ksr.com",
         "apiService.serverConfig.apiClientAuth.clientId": "cafebeef",
@@ -105,6 +106,7 @@ final class AppEnvironmentTests: XCTestCase {
     let env = AppEnvironment.fromStorage(ubiquitousStore: ubiquitousStore, userDefaults: userDefaults)
 
     XCTAssertEqual("deadbeef", env.apiService.oauthToken?.token)
+    XCTAssertEqual("123", env.apiService.buildVersion)
     XCTAssertEqual("http://api.ksr.com", env.apiService.serverConfig.apiBaseUrl.absoluteString)
     XCTAssertEqual("cafebeef", env.apiService.serverConfig.apiClientAuth.clientId)
     XCTAssertEqual("hola", env.apiService.serverConfig.basicHTTPAuth?.username)

@@ -19,7 +19,7 @@ internal final class ActivityStateChangeViewModel: ViewModelType, ActivityStateC
   internal lazy var projectImageURL: NSURL? = (self.activity.project?.photo.full).flatMap(NSURL.init)
   internal lazy var projectName: String = "\(self.activity.project?.name ?? "") was successfully funded."
   internal lazy var fundingDate = "Mar 2, 2016"
-  internal lazy var pledgedTitle: String = Format.currency(self.activity.project?.pledged ?? 0,
+  internal lazy var pledgedTitle: String = Format.currency(self.activity.project?.stats.pledged ?? 0,
     country: self.activity.project?.country ?? .US)
   internal lazy var pledgedSubtitle = "pledged of $10,000"
 

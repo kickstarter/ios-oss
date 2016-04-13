@@ -177,29 +177,39 @@ public struct AppEnvironment {
 
     let data = userDefaults.dictionaryForKey(environmentStorageKey) ?? [:]
 
-    var env: Environment = Environment()
+    var service = Service()
+    var currentUser: User? = nil
 
     if let oauthToken = data["apiService.oauthToken.token"] as? String {
       // If there is an oauth token stored in the defaults, then we can authenticate our api service
-      env = Environment(apiService: env.apiService.login(OauthToken(token: oauthToken)))
+      service = service.login(OauthToken(token: oauthToken))
     } else if let oauthToken = ubiquitousStore.stringForKey(oauthTokenStorageKey) {
       // Otherwise if there is a token in the ubiquitous defaults we can use it
-      env = Environment(apiService: env.apiService.login(OauthToken(token: oauthToken)))
+      service = service.login(OauthToken(token: oauthToken))
+    }
+
+    // try restoring the build version
+    if let buildVersion = data["apiService.buildVersion"] as? String {
+      service = Service(
+        serverConfig: service.serverConfig,
+        oauthToken: service.oauthToken,
+        language: service.language,
+        buildVersion: buildVersion
+      )
     }
 
     // Try restoring the client id for the api service
     if let clientId = data["apiService.serverConfig.apiClientAuth.clientId"] as? String {
-      env = Environment(
-        apiService: Service(
-          serverConfig: ServerConfig(
-            apiBaseUrl: env.apiService.serverConfig.apiBaseUrl,
-            webBaseUrl: env.apiService.serverConfig.webBaseUrl,
-            apiClientAuth: ClientAuth(clientId: clientId),
-            basicHTTPAuth: env.apiService.serverConfig.basicHTTPAuth
-          ),
-          oauthToken: env.apiService.oauthToken,
-          language: env.apiService.language
-        )
+      service = Service(
+        serverConfig: ServerConfig(
+          apiBaseUrl: service.serverConfig.apiBaseUrl,
+          webBaseUrl: service.serverConfig.webBaseUrl,
+          apiClientAuth: ClientAuth(clientId: clientId),
+          basicHTTPAuth: service.serverConfig.basicHTTPAuth
+        ),
+        oauthToken: service.oauthToken,
+        language: service.language,
+        buildVersion: service.buildVersion
       )
     }
 
@@ -209,17 +219,16 @@ public struct AppEnvironment {
       webBaseUrlString = data["apiService.serverConfig.webBaseUrl"] as? String,
       webBaseUrl = NSURL(string: webBaseUrlString) {
 
-      env = Environment(
-        apiService: Service(
-          serverConfig: ServerConfig(
-            apiBaseUrl: apiBaseUrl,
-            webBaseUrl: webBaseUrl,
-            apiClientAuth: env.apiService.serverConfig.apiClientAuth,
-            basicHTTPAuth: env.apiService.serverConfig.basicHTTPAuth
-          ),
-          oauthToken: env.apiService.oauthToken,
-          language: env.apiService.language
-        )
+      service = Service(
+        serverConfig: ServerConfig(
+          apiBaseUrl: apiBaseUrl,
+          webBaseUrl: webBaseUrl,
+          apiClientAuth: service.serverConfig.apiClientAuth,
+          basicHTTPAuth: service.serverConfig.basicHTTPAuth
+        ),
+        oauthToken: service.oauthToken,
+        language: service.language,
+        buildVersion: service.buildVersion
       )
     }
 
@@ -227,28 +236,25 @@ public struct AppEnvironment {
     if let username = data["apiService.serverConfig.basicHTTPAuth.username"] as? String,
       password = data["apiService.serverConfig.basicHTTPAuth.password"] as? String {
 
-      env = Environment(
-        apiService: Service(
-          serverConfig: ServerConfig(
-            apiBaseUrl: env.apiService.serverConfig.apiBaseUrl,
-            webBaseUrl: env.apiService.serverConfig.webBaseUrl,
-            apiClientAuth: env.apiService.serverConfig.apiClientAuth,
-            basicHTTPAuth: BasicHTTPAuth(username: username, password: password)
-          ),
-          oauthToken: env.apiService.oauthToken,
-          language: env.apiService.language
-        )
+      service = Service(
+        serverConfig: ServerConfig(
+          apiBaseUrl: service.serverConfig.apiBaseUrl,
+          webBaseUrl: service.serverConfig.webBaseUrl,
+          apiClientAuth: service.serverConfig.apiClientAuth,
+          basicHTTPAuth: BasicHTTPAuth(username: username, password: password)
+        ),
+        oauthToken: service.oauthToken,
+        language: service.language,
+        buildVersion: service.buildVersion
       )
     }
 
     // Try restore the current user
-    if let currentUserObject = data["currentUser"],
-      currentUser = decode(currentUserObject) as User?
-      where env.apiService.oauthToken != nil {
-      env = Environment(apiService: env.apiService, currentUser: currentUser)
+    if service.oauthToken != nil {
+      currentUser = data["currentUser"].flatMap { $0 as? [String:AnyObject] }.flatMap(decode)
     }
 
-    return env
+    return Environment(apiService: service, currentUser: currentUser)
   }
   // swiftlint:enable function_body_length
 
@@ -258,6 +264,7 @@ public struct AppEnvironment {
                                                    userDefaults: KeyValueStoreType) {
 
     let data: [String:AnyObject?] = [
+      "apiService.buildVersion": env.apiService.buildVersion,
       "apiService.oauthToken.token": env.apiService.oauthToken?.token,
       "apiService.serverConfig.apiBaseUrl": env.apiService.serverConfig.apiBaseUrl.absoluteString,
       "apiService.serverConfig.apiClientAuth.clientId": env.apiService.serverConfig.apiClientAuth.clientId,

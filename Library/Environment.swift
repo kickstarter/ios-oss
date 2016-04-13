@@ -65,7 +65,7 @@ public struct Environment {
   public let userDefaults: KeyValueStoreType
 
   public init(
-    apiService: ServiceType = Service.shared,
+    apiService: ServiceType = Service(buildVersion: NSBundle.mainBundle().bundleVersion),
     apiDelayInterval: NSTimeInterval = 0.0,
     assetImageGeneratorType: AssetImageGeneratorType.Type = AVAssetImageGenerator.self,
     cookieStorage: NSHTTPCookieStorageType = NSHTTPCookieStorage.sharedHTTPCookieStorage(),

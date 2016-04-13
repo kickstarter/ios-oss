@@ -7,6 +7,16 @@ public protocol NSBundleType {
   var infoDictionary: [String:AnyObject]? { get }
 }
 
+extension NSBundleType {
+  public var bundleShortVersionString: String {
+    return (self.infoDictionary?["CFBundleShortVersionString"] as? String) ?? "Unknown"
+  }
+
+  public var bundleVersion: String {
+    return (self.infoDictionary?["CFBundleVersion"] as? String) ?? "Unknown"
+  }
+}
+
 extension NSBundle: NSBundleType {
   public static func create(path path: String) -> NSBundleType? {
     return NSBundle(path: path)

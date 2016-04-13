@@ -90,18 +90,21 @@ final class KoalaTests: XCTestCase {
     let event = client.events.last!
 
     XCTAssertEqual("Project Page", event)
-    XCTAssertEqual(project.backersCount, properties["project_backers_count"] as? Int)
+    XCTAssertEqual(project.stats.backersCount, properties["project_backers_count"] as? Int)
     XCTAssertEqual(project.country.countryCode, properties["project_country"] as? String)
     XCTAssertEqual(project.country.currencyCode, properties["project_currency"] as? String)
-    XCTAssertEqual(project.goal, properties["project_goal"] as? Int)
+    XCTAssertEqual(project.stats.goal, properties["project_goal"] as? Int)
     XCTAssertEqual(project.id, properties["project_pid"] as? Int)
-    XCTAssertEqual(project.pledged, properties["project_pledged"] as? Int)
+    XCTAssertEqual(project.stats.pledged, properties["project_pledged"] as? Int)
     XCTAssertEqual(project.fundingProgress, properties["project_percent_raised"] as? Float)
     XCTAssertNotNil(project.video)
     XCTAssertEqual(project.category.name, properties["project_category"] as? String)
     XCTAssertEqual(project.category.parent?.name, properties["project_parent_category"] as? String)
     XCTAssertEqual(project.location.name, properties["project_location"] as? String)
-    XCTAssertEqual(project.backersCount, properties["project_backers_count"] as? Int)
+    XCTAssertEqual(project.stats.backersCount, properties["project_backers_count"] as? Int)
+
+    XCTAssertEqual(24 * 15, properties["project_hours_remaining"] as? Int)
+    XCTAssertEqual(60 * 60 * 24 * 30, properties["project_duration"] as? Int)
 
     XCTAssertEqual("discovery", properties["ref_tag"] as? String)
     XCTAssertEqual("recommended", properties["referrer_credit"] as? String)
