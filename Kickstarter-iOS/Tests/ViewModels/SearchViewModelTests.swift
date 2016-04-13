@@ -16,7 +16,7 @@ final class SearchViewModelTests: TestCase {
 
   // Tests a standard flow of searching for projects.
   func testFlow() {
-    withEnvironment(apiThrottleInterval: 0.0) {
+    withEnvironment(apiDelayInterval: 0.0) {
       self.vm = SearchViewModel()
 
       let hasProjects = TestObserver<Bool, NoError>()

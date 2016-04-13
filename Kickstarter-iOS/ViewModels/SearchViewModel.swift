@@ -66,7 +66,7 @@ internal final class SearchViewModel: SearchViewModelType, SearchViewModelInputs
         .switchMap { params in
           AppEnvironment.current.apiService.fetchProjects(params)
             .demoteErrors()
-            .delay(AppEnvironment.current.apiThrottleInterval, onScheduler: AppEnvironment.current.scheduler)
+            .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
         }
     }
 

@@ -14,7 +14,7 @@ internal class TestCase: XCTestCase {
     super.setUp()
     AppEnvironment.pushEnvironment(
       apiService: MockService(),
-      apiThrottleInterval: 1.0,
+      apiDelayInterval: 1.0,
       assetImageGeneratorType: AVAssetImageGenerator.self,
       cookieStorage: self.cookieStorage,
       countryCode: "US",

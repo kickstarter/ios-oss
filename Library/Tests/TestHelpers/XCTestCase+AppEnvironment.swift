@@ -18,7 +18,7 @@ extension XCTestCase {
   // Pushes an environment onto the stack, executes a closure, and then pops the environment from the stack.
   func withEnvironment(
     apiService apiService: ServiceType = AppEnvironment.current.apiService,
-               apiThrottleInterval: NSTimeInterval = AppEnvironment.current.apiThrottleInterval,
+               apiDelayInterval: NSTimeInterval = AppEnvironment.current.apiDelayInterval,
                // swiftlint:disable line_length
                assetImageGeneratorType: AssetImageGeneratorType.Type = AppEnvironment.current.assetImageGeneratorType,
                // swiftlint:enable line_length
@@ -41,7 +41,7 @@ extension XCTestCase {
     withEnvironment(
       Environment(
         apiService: apiService,
-        apiThrottleInterval: apiThrottleInterval,
+        apiDelayInterval: apiDelayInterval,
         assetImageGeneratorType: assetImageGeneratorType,
         cookieStorage: cookieStorage,
         countryCode: countryCode,

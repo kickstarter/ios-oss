@@ -82,7 +82,7 @@ public struct AppEnvironment {
   // Pushes a new environment onto the stack that changes only a subset of the current global dependencies.
   public static func pushEnvironment(
     apiService apiService: ServiceType = AppEnvironment.current.apiService,
-               apiThrottleInterval: NSTimeInterval = AppEnvironment.current.apiThrottleInterval,
+               apiDelayInterval: NSTimeInterval = AppEnvironment.current.apiDelayInterval,
                // swiftlint:disable line_length
                assetImageGeneratorType: AssetImageGeneratorType.Type = AppEnvironment.current.assetImageGeneratorType,
                // swiftlint:enable line_length
@@ -104,7 +104,7 @@ public struct AppEnvironment {
     pushEnvironment(
       Environment(
         apiService: apiService,
-        apiThrottleInterval: apiThrottleInterval,
+        apiDelayInterval: apiDelayInterval,
         assetImageGeneratorType: assetImageGeneratorType,
         cookieStorage: cookieStorage,
         countryCode: countryCode,
@@ -128,7 +128,7 @@ public struct AppEnvironment {
   // of current global dependencies.
   public static func replaceCurrentEnvironment(
     apiService apiService: ServiceType = AppEnvironment.current.apiService,
-               apiThrottleInterval: NSTimeInterval = AppEnvironment.current.apiThrottleInterval,
+               apiDelayInterval: NSTimeInterval = AppEnvironment.current.apiDelayInterval,
                // swiftlint:disable line_length
                assetImageGeneratorType: AssetImageGeneratorType.Type = AppEnvironment.current.assetImageGeneratorType,
                // swiftlint:enable line_length
@@ -150,7 +150,7 @@ public struct AppEnvironment {
     replaceCurrentEnvironment(
       Environment(
         apiService: apiService,
-        apiThrottleInterval: apiThrottleInterval,
+        apiDelayInterval: apiDelayInterval,
         assetImageGeneratorType: assetImageGeneratorType,
         cookieStorage: cookieStorage,
         countryCode: countryCode,
