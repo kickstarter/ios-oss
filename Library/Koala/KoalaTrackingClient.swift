@@ -23,8 +23,9 @@ public final class KoalaTrackingClient: TrackingClientType {
   }
 
   public func track(event event: String, properties: [String: AnyObject]) {
-    // TODO: Don't log in production
+    #if DEBUG
     print("[Koala] Track: \(event), properties: \(properties)")
+    #endif
     self.track(event: event, properties: properties, time: NSDate())
   }
 
@@ -70,7 +71,9 @@ public final class KoalaTrackingClient: TrackingClientType {
   private func koalaTask(request: NSURLRequest) -> NSURLSessionDataTask {
     return URLSession.dataTaskWithRequest(request) { _, response, err in
       guard let response = response as? NSHTTPURLResponse else { return }
+      #if DEBUG
       print("[Koala] Status code: \(response.statusCode)")
+      #endif
     }
   }
 }
