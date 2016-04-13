@@ -82,6 +82,7 @@ ProjectViewModelOutputs {
   internal var inputs: ProjectViewModelInputs { return self }
   internal var outputs: ProjectViewModelOutputs { return self }
 
+  // swiftlint:disable function_body_length
   internal init() {
     let project = self.projectProperty.signal.ignoreNil()
 
@@ -154,6 +155,7 @@ ProjectViewModelOutputs {
       .ignoreNil()
       .observeNext { AppEnvironment.current.cookieStorage.setCookie($0) }
   }
+  // swiftlint:enable function_body_length
 }
 
 private let cookieSeparator = Character("?")

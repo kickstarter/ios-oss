@@ -28,7 +28,7 @@ enum DiscoveryProjectData {
   }
 }
 
-extension DiscoveryProjectData : Equatable {
+extension DiscoveryProjectData: Equatable {
 }
 func == (lhs: DiscoveryProjectData, rhs: DiscoveryProjectData) -> Bool {
   switch (lhs, rhs) {

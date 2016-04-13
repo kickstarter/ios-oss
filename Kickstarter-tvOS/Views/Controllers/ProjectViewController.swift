@@ -47,7 +47,9 @@ final class ProjectViewController: MVVMViewController {
       layout.estimatedItemSize = CGSize(width: 1920.0, height: 300.0)
     }
 
-    self.view.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(ProjectViewController.pan(_:))))
+    self.view.addGestureRecognizer(
+      UIPanGestureRecognizer(target: self, action: #selector(ProjectViewController.pan(_:)))
+    )
   }
 
   override func viewWillAppear(animated: Bool) {
@@ -125,7 +127,7 @@ final class ProjectViewController: MVVMViewController {
     if let press = presses.first where press.type == .PlayPause {
       self.viewModel.inputs.playPauseClicked(isPlay: player.rate == 0.0)
     }
-    
+
     self.viewModel.inputs.remoteInteraction()
   }
 
@@ -148,7 +150,12 @@ final class ProjectViewController: MVVMViewController {
       message: NSLocalizedString("We'll remind you 48 hrs before this project ends", comment: ""),
       preferredStyle: .Alert
     )
-    alertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .Cancel, handler: nil))
+    alertController.addAction(
+      UIAlertAction(
+        title: NSLocalizedString("OK", comment: ""),
+        style: .Cancel, handler: nil
+      )
+    )
     self.presentViewController(alertController, animated: true, completion: nil)
   }
 
@@ -158,7 +165,13 @@ final class ProjectViewController: MVVMViewController {
       message: NSLocalizedString("You must be logged in to save projects.", comment: ""),
       preferredStyle: .Alert
     )
-    alertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .Cancel, handler: nil))
+    alertController.addAction(
+      UIAlertAction(
+        title: NSLocalizedString("OK", comment: ""),
+        style: .Cancel,
+        handler: nil
+      )
+    )
     self.presentViewController(alertController, animated: true, completion: nil)
   }
 
@@ -175,8 +188,10 @@ final class ProjectViewController: MVVMViewController {
 
 // MARK: UICollectionViewDelegate
 
-extension ProjectViewController : UICollectionViewDelegate {
-  func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
+extension ProjectViewController: UICollectionViewDelegate {
+  func collectionView(collectionView: UICollectionView,
+                      willDisplayCell cell: UICollectionViewCell,
+                                      forItemAtIndexPath indexPath: NSIndexPath) {
 
     if let cell = cell as? ProjectShelfCell {
       cell.delegate = self
@@ -185,7 +200,8 @@ extension ProjectViewController : UICollectionViewDelegate {
     }
   }
 
-  func collectionView(collectionView: UICollectionView, canFocusItemAtIndexPath indexPath: NSIndexPath) -> Bool {
+  func collectionView(collectionView: UICollectionView,
+                      canFocusItemAtIndexPath indexPath: NSIndexPath) -> Bool {
     return false
   }
 
@@ -197,7 +213,9 @@ extension ProjectViewController : UICollectionViewDelegate {
     )
   }
 
-  func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+  func scrollViewWillEndDragging(scrollView: UIScrollView,
+                                 withVelocity velocity: CGPoint,
+                                              targetContentOffset: UnsafeMutablePointer<CGPoint>) {
 
     // when at the top and scrolling down, lock the top to the fold
     if scrollView.contentOffset.y == 0.0 && targetContentOffset.memory.y > 0.0 && velocity.y > 0.0 {
@@ -206,7 +224,10 @@ extension ProjectViewController : UICollectionViewDelegate {
 
     // when below the fold and scrolling up to somewhere in the vicinity of the "more" section,
     // lock the top to the fold
-    if targetContentOffset.memory.y >= 1080.0 && targetContentOffset.memory.y <= 1080.0+700.0 && velocity.y < 0.0 {
+    if targetContentOffset.memory.y >= 1080.0 &&
+      targetContentOffset.memory.y <= 1080.0+700.0 &&
+      velocity.y < 0.0 {
+
       targetContentOffset.memory.y = 1080.0
     }
 
@@ -220,7 +241,7 @@ extension ProjectViewController : UICollectionViewDelegate {
 
 // MARK: ProjectShelfCellDelegate
 
-extension ProjectViewController : ProjectShelfCellDelegate {
+extension ProjectViewController: ProjectShelfCellDelegate {
   func projectShelfTappedSave(cell: ProjectShelfCell) {
   }
 
@@ -231,7 +252,7 @@ extension ProjectViewController : ProjectShelfCellDelegate {
 
 // MARK: ProjectRecommendationsCellDelegate
 
-extension ProjectViewController : ProjectRecommendationsCellDelegate {
+extension ProjectViewController: ProjectRecommendationsCellDelegate {
   func projectRecommendations(cell: ProjectRecommendationsCell, didSelect project: Project) {
     let viewModel = ProjectViewModel(project: project)
     self.presentViewController(ProjectViewController(viewModel: viewModel), animated: true, completion: nil)
@@ -239,13 +260,20 @@ extension ProjectViewController : ProjectRecommendationsCellDelegate {
 }
 
 // MARK: UIViewControllerTransitioningDelegate
-extension ProjectViewController : UIViewControllerTransitioningDelegate {
-  func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+extension ProjectViewController: UIViewControllerTransitioningDelegate {
+  func animationControllerForPresentedController(
+    presented: UIViewController,
+    presentingController presenting: UIViewController,
+                         sourceController source: UIViewController)
+    -> UIViewControllerAnimatedTransitioning? {
+
     self.animator.isPresenting = true
     return self.animator
   }
 
-  func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+  func animationControllerForDismissedController(dismissed: UIViewController)
+    -> UIViewControllerAnimatedTransitioning? {
+
     self.animator.isPresenting = false
     return self.animator
   }
@@ -253,7 +281,7 @@ extension ProjectViewController : UIViewControllerTransitioningDelegate {
 
 // MARK: PlaylistTrayDelegate
 
-extension ProjectViewController : PlaylistTrayDelegate, PlaylistExplorerDelegate {
+extension ProjectViewController: PlaylistTrayDelegate, PlaylistExplorerDelegate {
   func playlistTrayWantsToClose(controller: PlaylistTrayViewController) {
     self.player.play()
     self.dismissViewControllerAnimated(true, completion: nil)

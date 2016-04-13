@@ -1,9 +1,5 @@
-import class Foundation.NSNumber
-import class UIKit.CAGradientLayer
-import struct UIKit.CGPoint
-import var UIKit.CGPointZero
-import class UIKit.UIColor
-import class UIKit.UIView
+import Foundation
+import UIKit
 
 @IBDesignable
 public final class GradientView: UIView {
@@ -19,7 +15,7 @@ public final class GradientView: UIView {
   @IBInspectable
   public var startPoint: CGPoint {
     get {
-      return self.gradientLayer?.startPoint ?? CGPointZero
+      return self.gradientLayer?.startPoint ?? .zero
     }
     set {
       self.gradientLayer?.startPoint = newValue
@@ -29,7 +25,7 @@ public final class GradientView: UIView {
   @IBInspectable
   public var endPoint: CGPoint {
     get {
-      return self.gradientLayer?.endPoint ?? CGPointZero
+      return self.gradientLayer?.endPoint ?? .zero
     }
     set {
       self.gradientLayer?.endPoint = newValue

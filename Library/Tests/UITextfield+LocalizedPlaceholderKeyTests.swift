@@ -1,7 +1,7 @@
 import XCTest
 @testable import Library
 
-final class UITextFieldLocalizedKeyTests : XCTestCase {
+final class UITextFieldLocalizedKeyTests: XCTestCase {
 
   func testLocalizedKey() {
     let tf = UITextField()

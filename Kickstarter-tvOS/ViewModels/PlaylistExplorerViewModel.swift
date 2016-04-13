@@ -37,7 +37,8 @@ protocol PlaylistExplorerViewModelType {
   var outputs: PlaylistExplorerViewModelOutputs { get }
 }
 
-final class PlaylistExplorerViewModel : ViewModelType, PlaylistExplorerViewModelType, PlaylistExplorerViewModelInputs, PlaylistExplorerViewModelOutputs {
+final class PlaylistExplorerViewModel: ViewModelType, PlaylistExplorerViewModelType,
+PlaylistExplorerViewModelInputs, PlaylistExplorerViewModelOutputs {
   typealias Model = Playlist
   let playlist: Playlist
 
@@ -92,7 +93,8 @@ final class PlaylistExplorerViewModel : ViewModelType, PlaylistExplorerViewModel
     self.playlistsOpened = Signal.merge([
       self.focusedPlaylist.mapConst(true),
       self.focusedProject.mapConst(false),
-      self.menuButtonPressedSignal.mapConst(true).debounce(0.1, onScheduler: QueueScheduler.mainQueueScheduler)
+      self.menuButtonPressedSignal.mapConst(true)
+        .debounce(0.1, onScheduler: QueueScheduler.mainQueueScheduler)
       ])
       .skipRepeats()
 

@@ -1,5 +1,7 @@
 /// Make this file computer generated from Localizable.strings
 
+// swiftlint:disable valid_docs
+// swiftlint:disable line_length
 public enum Strings {
 
   /**
@@ -11,7 +13,7 @@ public enum Strings {
 
   /**
    by <b>%{creator_name}</b>
-   
+
    - parameters:
      - creator_name:
   */

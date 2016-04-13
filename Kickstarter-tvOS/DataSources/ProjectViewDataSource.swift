@@ -4,36 +4,36 @@ import struct Models.Reward
 import class Library.MVVMDataSource
 import class Library.SimpleViewModel
 
-final class ProjectViewDataSource : MVVMDataSource {
+final class ProjectViewDataSource: MVVMDataSource {
 
   func loadProject(project: Project) {
     let projectViewModel = SimpleViewModel(model: project)
     setData([projectViewModel],
-      cellClass: ProjectShelfCell.self,
-      inSection: 0
+            cellClass: ProjectShelfCell.self,
+            inSection: 0
     )
 
     setData([projectViewModel],
-      cellClass: ProjectMoreInfoCell.self,
-      inSection: 1
+            cellClass: ProjectMoreInfoCell.self,
+            inSection: 1
     )
 
     if let rewards = project.rewards {
       let finalRewards = rewards
         .filter { r in !r.isNoReward }
         .sort()
-      
+
       setData([SimpleViewModel(model: finalRewards)],
-        cellClass: ProjectRewardsCollectionViewCell.self,
-        inSection: 2
+              cellClass: ProjectRewardsCollectionViewCell.self,
+              inSection: 2
       )
     }
   }
 
   func loadRecommendations(recommendations: [Project]) {
     setData([SimpleViewModel(model: recommendations)],
-      cellClass: ProjectRecommendationsCell.self,
-      inSection: 3
+            cellClass: ProjectRecommendationsCell.self,
+            inSection: 3
     )
   }
 
@@ -56,7 +56,8 @@ final class ProjectViewDataSource : MVVMDataSource {
     case let (cell as ProjectRecommendationsCell, viewModel as SimpleViewModel<[Project]>):
       cell.viewModelProperty.value = viewModel
     default:
-      print("[MVVMDataSource] Potential error in \(self.dynamicType).configureCell : unhandled case of combo (\(cell.dynamicType), \(viewModel.dynamicType)). ")
+      print("[MVVMDataSource] Potential error in \(self.dynamicType).configureCell: unhandled case of " +
+        "combo (\(cell.dynamicType), \(viewModel.dynamicType)). ")
     }
   }
 }

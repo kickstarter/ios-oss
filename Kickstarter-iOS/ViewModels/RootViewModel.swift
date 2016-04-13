@@ -28,7 +28,7 @@ internal protocol RootViewModelOutputs {
   /// Emits an index that the tab bar should be switched to.
   var selectedIndex: Signal<Int, NoError> { get }
 
-  /// Emits a controller that should be scrolled to the top. This requires figuring out what kind of 
+  /// Emits a controller that should be scrolled to the top. This requires figuring out what kind of
   // controller it is, and setting its `contentOffset`.
   var scrollToTop: Signal<UIViewController, NoError> { get }
 }
@@ -88,17 +88,16 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
 
     let personalizedTabs = currentUser
       .map { user in (isLoggedIn: user != nil, isCreator: user?.isCreator ?? false) }
-      .map {
-        [UIViewController?](arrayLiteral:
-          $0.isCreator   ? UIStoryboard(name: "Dashboard", bundle: nil).instantiateInitialViewController() : nil,
-          !$0.isLoggedIn ? UIStoryboard(name: "Login", bundle: nil).instantiateInitialViewController() : nil,
-          $0.isLoggedIn  ? UIStoryboard(name: "Profile", bundle: nil).instantiateInitialViewController() : nil
-        )
+      .map { user -> [UIViewController?] in
+        [
+          user.isCreator   ? initialViewController(storyboardName: "Dashboard") : nil,
+          !user.isLoggedIn ? initialViewController(storyboardName: "Login") : nil,
+          user.isLoggedIn  ? initialViewController(storyboardName: "Profile") : nil
+        ]
       }
       .map { $0.compact() }
 
-    self.setViewControllers = combineLatest([standardTabs, personalizedTabs])
-      .map { Array($0.flatten()) }
+    self.setViewControllers = combineLatest(standardTabs, personalizedTabs).map(+)
 
     self.selectedIndex = Signal.merge([
       self.viewDidLoadProperty.signal.mapConst(0),
@@ -115,4 +114,8 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
       .takePairWhen(selectedTabAgain)
       .map { (vcs, idx) in vcs[idx] }
   }
+}
+
+private func initialViewController(storyboardName storyboardName: String) -> UIViewController? {
+  return UIStoryboard(name: storyboardName, bundle: nil).instantiateInitialViewController()
 }

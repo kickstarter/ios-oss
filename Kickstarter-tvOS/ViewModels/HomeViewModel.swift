@@ -17,7 +17,7 @@ private struct NowPlaying {
   private let project: Project
 }
 
-internal final class HomeViewModel : HomeViewModelType, HomeViewModelInputs, HomeViewModelOutputs {
+internal final class HomeViewModel: HomeViewModelType, HomeViewModelInputs, HomeViewModelOutputs {
 
   // MARK: Inputs
   internal func isActive(active: Bool) {
@@ -61,6 +61,7 @@ internal final class HomeViewModel : HomeViewModelType, HomeViewModelInputs, Hom
   internal var inputs: HomeViewModelInputs { return self }
   internal var outputs: HomeViewModelOutputs { return self }
 
+  // swiftlint:disable function_body_length
   internal init(env: Environment = AppEnvironment.current) {
     let scheduler = env.scheduler
     let apiService = env.apiService
@@ -125,8 +126,9 @@ internal final class HomeViewModel : HomeViewModelType, HomeViewModelInputs, Hom
       ])
       .skipRepeats()
   }
+  // swiftlint:enable function_body_length
 
-  /// Safely extracts project name and video URL from a project
+  // Safely extracts project name and video URL from a project
   private static func nowPlayingInfo(project: Project) -> (projectName: String, url: NSURL)? {
 
     guard let

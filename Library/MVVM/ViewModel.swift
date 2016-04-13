@@ -18,15 +18,15 @@ public protocol ViewModeledCellType {
 }
 
 public extension ViewModeledCellType {
-  /// A producer of view model signals. Automatically ignores the `nil` view model that 
-  /// is initially emitted.
+  // A producer of view model signals. Automatically ignores the `nil` view model that
+  // is initially emitted.
   public var viewModel: SignalProducer<ViewModel, NoError> {
     return self.viewModelProperty.producer.ignoreNil()
   }
 }
 
 /// `Unit` can trivially be made into a view model type.
-extension Unit : ViewModelType {
+extension Unit: ViewModelType {
   public typealias Model = Unit
 }
 

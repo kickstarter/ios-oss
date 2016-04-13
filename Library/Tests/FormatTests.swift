@@ -2,7 +2,8 @@ import XCTest
 @testable import Library
 import Models
 
-final class FormatTests : XCTestCase {
+// swiftlint:disable function_body_length
+final class FormatTests: XCTestCase {
 
   func testWholeNumber() {
     withEnvironment(locale: NSLocale(localeIdentifier: "en")) {

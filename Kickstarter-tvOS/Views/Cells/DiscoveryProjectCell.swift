@@ -38,7 +38,8 @@ final class DiscoveryProjectCell: UICollectionViewCell, ViewModeledCellType {
     }
   }
 
-  override func didUpdateFocusInContext(context: UIFocusUpdateContext, withAnimationCoordinator coordinator: UIFocusAnimationCoordinator) {
+  override func didUpdateFocusInContext(context: UIFocusUpdateContext,
+                                        withAnimationCoordinator coordinator: UIFocusAnimationCoordinator) {
     let focused = self.focused
 
     coordinator.addCoordinatedAnimations({ [weak self] in

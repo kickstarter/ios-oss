@@ -1,0 +1,16 @@
+disabled_rules:
+  - function_parameter_count
+  - nesting
+  - variable_name
+opt_in_rules:
+  - empty_count
+  - force_unwrapping
+line_length: 110
+type_body_length:
+  warning: 300
+  error: 400
+excluded:
+  - Frameworks/
+  - Kickstarter-iOS.playground/
+  - Kickstarter-tvOS.playground/
+reporter: "xcode"

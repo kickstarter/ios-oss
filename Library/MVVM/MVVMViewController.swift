@@ -7,7 +7,7 @@ import class UIKit.UIViewController
 ///
 /// Subclasses should override `bindViewModel`, and do all observations
 /// in that method.
-public class MVVMViewController : UIViewController {
+public class MVVMViewController: UIViewController {
 
   public override func viewDidLoad() {
     super.viewDidLoad()

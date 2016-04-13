@@ -40,6 +40,11 @@ clean:
 
 dependencies: submodules configs
 
+bootstrap:
+	brew update
+	brew doctor
+	brew install swiftlint || brew upgrade swiftlint
+
 submodules:
 	git submodule sync --recursive
 	git submodule update --init --recursive

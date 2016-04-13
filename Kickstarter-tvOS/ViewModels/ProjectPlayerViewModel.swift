@@ -8,7 +8,7 @@ protocol ProjectPlayerViewModelOutputs {
   var videoURL: NSURL { get }
 }
 
-final class ProjectPlayerViewModel : ProjectPlayerViewModelInputs, ProjectPlayerViewModelOutputs {
+final class ProjectPlayerViewModel: ProjectPlayerViewModelInputs, ProjectPlayerViewModelOutputs {
   let videoURL: NSURL
   let project: Project
 

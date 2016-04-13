@@ -25,9 +25,11 @@ internal final class PlaylistViewController: MVVMViewController {
   internal override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.view.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(PlaylistViewController.pan(_:))))
+    self.view.addGestureRecognizer(
+      UIPanGestureRecognizer(target: self, action: #selector(PlaylistViewController.pan(_:)))
+    )
   }
-  
+
   internal override func bindViewModel() {
 
     self.viewModel.outputs.categoryName
@@ -50,7 +52,10 @@ internal final class PlaylistViewController: MVVMViewController {
   }
 
   private func crossFadeBackgroundImage(image: UIImage?) {
-    UIView.transitionWithView(self.backgroundImageView, duration: 0.3, options: [.TransitionCrossDissolve], animations: {
+    UIView.transitionWithView(self.backgroundImageView,
+                              duration: 0.3,
+                              options: [.TransitionCrossDissolve],
+                              animations: {
       self.backgroundImageView.image = image
     }, completion: nil)
   }

@@ -28,7 +28,7 @@ internal protocol SearchViewModelType {
 }
 
 internal final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, SearchViewModelOutputs {
-  
+
   private let viewDidAppearProperty = MutableProperty()
   func viewDidAppear() {
     self.viewDidAppearProperty.value = ()
@@ -40,10 +40,10 @@ internal final class SearchViewModel: SearchViewModelType, SearchViewModelInputs
 
   let projects: Signal<[Project], NoError>
   let isPopularTitleVisible: Signal<Bool, NoError>
-  
+
   var inputs: SearchViewModelInputs { return self }
   var outputs: SearchViewModelOutputs { return self }
-  
+
   init() {
     let query = Signal.merge([
       self.searchTextChangedProperty.signal,

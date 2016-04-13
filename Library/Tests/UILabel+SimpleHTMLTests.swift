@@ -1,7 +1,7 @@
 import XCTest
 @testable import Library
 
-final class UILabelSimpleHTMLTests : XCTestCase {
+final class UILabelSimpleHTMLTests: XCTestCase {
 
   func testSetHTML() {
     let label = UILabel()

@@ -20,7 +20,7 @@ final class ActivitiesViewModelTests: TestCase {
   // Tests the flow of logging in with a user that has activities.
   func testLoginFlow_ForUserWithActivities() {
     let activitiesPresent = TestObserver<Bool, NoError>()
-    self.vm.outputs.activities.map { $0.count > 0 }.observe(activitiesPresent.observer)
+    self.vm.outputs.activities.map { !$0.isEmpty }.observe(activitiesPresent.observer)
 
     let showLoggedOutEmptyState = TestObserver<Bool, NoError>()
     self.vm.outputs.showLoggedOutEmptyState.observe(showLoggedOutEmptyState.observer)
@@ -47,7 +47,7 @@ final class ActivitiesViewModelTests: TestCase {
   func testLoginFlow_ForUserWithNoActivities() {
     withEnvironment(apiService: MockService(fetchActivitiesResponse: [])) {
       let activitiesPresent = TestObserver<Bool, NoError>()
-      self.vm.outputs.activities.map { $0.count > 0 }.observe(activitiesPresent.observer)
+      self.vm.outputs.activities.map { !$0.isEmpty }.observe(activitiesPresent.observer)
 
       let showLoggedOutEmptyState = TestObserver<Bool, NoError>()
       self.vm.outputs.showLoggedOutEmptyState.observe(showLoggedOutEmptyState.observer)
@@ -73,7 +73,7 @@ final class ActivitiesViewModelTests: TestCase {
   // Tests that activities are cleared if the user is logged out for any reason.
   func testInvalidatedTokenFlow_ActivitiesClearAfterSessionCleared() {
     let activitiesPresent = TestObserver<Bool, NoError>()
-    self.vm.outputs.activities.map { $0.count > 0 }.observe(activitiesPresent.observer)
+    self.vm.outputs.activities.map { !$0.isEmpty }.observe(activitiesPresent.observer)
 
     let showLoggedOutEmptyState = TestObserver<Bool, NoError>()
     self.vm.outputs.showLoggedOutEmptyState.observe(showLoggedOutEmptyState.observer)
@@ -87,7 +87,7 @@ final class ActivitiesViewModelTests: TestCase {
     AppEnvironment.logout()
     self.vm.inputs.userSessionEnded()
 
-    activitiesPresent.assertValues([true, false],"Activities clear right away.")
+    activitiesPresent.assertValues([true, false], "Activities clear right away.")
     showLoggedOutEmptyState.assertValues([true], "Empty state displayed.")
   }
 
@@ -96,7 +96,7 @@ final class ActivitiesViewModelTests: TestCase {
   //   * user navigates to activities
   func testLogin_BeforeActivityViewAppeared() {
     let activitiesPresent = TestObserver<Bool, NoError>()
-    self.vm.outputs.activities.map { $0.count > 0 }.observe(activitiesPresent.observer)
+    self.vm.outputs.activities.map { !$0.isEmpty }.observe(activitiesPresent.observer)
 
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: UserFactory.user))
     self.vm.inputs.userSessionStarted()

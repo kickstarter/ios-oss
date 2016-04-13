@@ -10,7 +10,7 @@ import struct Library.AppEnvironment
 @testable import KsApi_TestHelpers
 @testable import ReactiveExtensions_TestHelpers
 
-internal final class PlaylistViewModelTests : XCTestCase {
+internal final class PlaylistViewModelTests: XCTestCase {
   let playlist = Playlist.Featured
   lazy var project: Project = {
     return MockService().fetchProject(DiscoveryParams()).first()!.value!
@@ -64,7 +64,8 @@ internal final class PlaylistViewModelTests : XCTestCase {
   func testBackgroundImageNeverCompleting() {
     let scheduler = TestScheduler()
 
-    withEnvironment(scheduler: scheduler, assetImageGeneratorType: MockNeverFinishingAssetImageGenerator.self) {
+    withEnvironment(scheduler: scheduler,
+                    assetImageGeneratorType: MockNeverFinishingAssetImageGenerator.self) {
 
       let viewModel = PlaylistViewModel(initialPlaylist: playlist, currentProject: project)
 

@@ -1,7 +1,7 @@
 import XCTest
 @testable import Library
 
-final class UILabelIBClearTests : XCTestCase {
+final class UILabelIBClearTests: XCTestCase {
 
   func testClearIBValue() {
     let label = UILabel()

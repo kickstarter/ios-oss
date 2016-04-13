@@ -7,7 +7,7 @@ import class UIKit.UICollectionViewController
 ///
 /// Subclasses will be most interested in overriding `bindViewModel`. This
 /// is where one should observe signals exposed in the view model.
-public class MVVMCollectionViewController : UICollectionViewController {
+public class MVVMCollectionViewController: UICollectionViewController {
   private var needsToBind = true
 
   public override func viewDidLoad() {

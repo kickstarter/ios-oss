@@ -119,7 +119,8 @@ final class LoginViewModelTests: TestCase {
       logIntoEnvironment.assertValueCount(0, "Did not log into environment.")
       XCTAssertEqual([], trackingClient.events, "Tfa Challenge error was not tracked")
       showError.assertValueCount(0, "Login error did not happen")
-      tfaChallenge.assertValues(["nativesquad@kickstarter.com"], "Two factor challenge emitted with email and password")
+      tfaChallenge.assertValues(["nativesquad@kickstarter.com"],
+                                "Two factor challenge emitted with email and password")
     }
   }
 }

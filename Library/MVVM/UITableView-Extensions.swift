@@ -13,6 +13,7 @@ public extension UITableView {
       .dropFirst()
       .joinWithSeparator(".")
 
-    registerNib(UINib(nibName: classNameWithoutModule, bundle: nil), forCellReuseIdentifier: classNameWithoutModule)
+    registerNib(UINib(nibName: classNameWithoutModule, bundle: nil),
+                forCellReuseIdentifier: classNameWithoutModule)
   }
 }

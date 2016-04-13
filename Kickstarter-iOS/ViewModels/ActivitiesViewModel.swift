@@ -36,7 +36,8 @@ internal protocol ActivitiesViewModelType {
   var outputs: ActivitiesViewModelOutputs { get }
 }
 
-internal final class ActivitiesViewModel: ViewModelType, ActivitiesViewModelType, ActitiviesViewModelInputs, ActivitiesViewModelOutputs {
+internal final class ActivitiesViewModel: ViewModelType, ActivitiesViewModelType, ActitiviesViewModelInputs,
+ActivitiesViewModelOutputs {
   typealias Model = Activity
 
   private let viewWillAppearProperty = MutableProperty(())

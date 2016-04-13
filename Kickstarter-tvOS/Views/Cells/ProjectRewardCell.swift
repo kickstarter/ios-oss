@@ -31,7 +31,8 @@ class ProjectRewardCell: UICollectionViewCell, ViewModeledCellType {
     rewardLabel.rac_text <~ reward.map { $0.description ?? "No reward" }
   }
 
-  override func didUpdateFocusInContext(context: UIFocusUpdateContext, withAnimationCoordinator coordinator: UIFocusAnimationCoordinator) {
+  override func didUpdateFocusInContext(context: UIFocusUpdateContext,
+                                        withAnimationCoordinator coordinator: UIFocusAnimationCoordinator) {
     super.didUpdateFocusInContext(context, withAnimationCoordinator: coordinator)
 
     coordinator.addCoordinatedAnimations({
@@ -40,6 +41,6 @@ class ProjectRewardCell: UICollectionViewCell, ViewModeledCellType {
   }
 
   func configureForFocus(focused: Bool) {
-    self.backgroundColor = focused ? UIColor.whiteColor() : UIColor.grayColor()
+    self.backgroundColor = focused ? UIColor.whiteColor(): UIColor.grayColor()
   }
 }

@@ -165,5 +165,5 @@ LoginViewModelErrors {
 }
 
 private func isValid(email email: String, password: String) -> Bool {
-  return email.characters.count > 0 && password.characters.count > 0
+  return !email.characters.isEmpty && !password.characters.isEmpty
 }

@@ -1,0 +1,11 @@
+disabled_rules:
+  - function_parameter_count
+  - nesting
+  - variable_name
+  - force_unwrapping
+  - type_body_length
+  - function_body_length
+opt_in_rules:
+  - empty_count
+line_length: 110
+reporter: "xcode"

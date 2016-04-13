@@ -6,7 +6,9 @@ import class Library.SimpleViewModel
 import protocol Library.ViewModeledCellType
 
 protocol PlaylistTrayCellDelegate: class {
-  func playlistTrayCell(cell: PlaylistTrayCell, didSelectedProject project: Project, inPlaylist playlist: Playlist)
+  func playlistTrayCell(cell: PlaylistTrayCell,
+                        didSelectedProject project: Project,
+                                           inPlaylist playlist: Playlist)
 }
 
 class PlaylistTrayCell: UICollectionViewCell, ViewModeledCellType {
@@ -32,7 +34,8 @@ class PlaylistTrayCell: UICollectionViewCell, ViewModeledCellType {
     }
   }
 
-  override func didUpdateFocusInContext(context: UIFocusUpdateContext, withAnimationCoordinator coordinator: UIFocusAnimationCoordinator) {
+  override func didUpdateFocusInContext(context: UIFocusUpdateContext,
+                                        withAnimationCoordinator coordinator: UIFocusAnimationCoordinator) {
     coordinator.addCoordinatedAnimations({
       self.selectedView.hidden = !self.focused
     }, completion: nil)
@@ -64,20 +67,10 @@ class PlaylistTrayCell: UICollectionViewCell, ViewModeledCellType {
   }
 }
 
-extension PlaylistTrayCell : UICollectionViewDelegate {
+extension PlaylistTrayCell: UICollectionViewDelegate {
   func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
     if let projectViewModel = self.dataSource[indexPath] as? SimpleViewModel<Project> {
       self.viewModelProperty.value?.inputs.selectProject(projectViewModel.model)
     }
   }
-
-  // Keep focused fixed, scroll content. Show maggie.
-//  func collectionView(collectionView: UICollectionView, didUpdateFocusInContext context: UICollectionViewFocusUpdateContext, withAnimationCoordinator coordinator: UIFocusAnimationCoordinator) {
-//
-//    guard let nextFocusedIndexPath = context.nextFocusedIndexPath else { return }
-//
-//    coordinator.addCoordinatedAnimations({
-//      collectionView.scrollToItemAtIndexPath(nextFocusedIndexPath, atScrollPosition: .Left, animated: true)
-//    }, completion: nil)
-//  }
 }

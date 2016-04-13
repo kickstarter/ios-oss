@@ -7,7 +7,7 @@ import class UIKit.UITabBarController
 ///
 /// Subclasses should override `bindViewModel`, and do all observations
 /// in that method.
-public class MVVMTabBarController : UITabBarController {
+public class MVVMTabBarController: UITabBarController {
 
   public override func viewDidLoad() {
     super.viewDidLoad()

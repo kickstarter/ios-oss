@@ -39,9 +39,7 @@ private func lprojFileNameForLanguage(language: Language) -> String {
   return language.rawValue == "en" ? "Base" : language.rawValue
 }
 
-/**
- Returns the pluralization suffx for a count.
-*/
+// Returns the pluralization suffx for a count.
 private func keySuffixForCount(count: Int) -> String {
   switch count {
   case 0:
@@ -57,10 +55,8 @@ private func keySuffixForCount(count: Int) -> String {
   }
 }
 
-/**
- Performs simple string interpolation on keys of the form `%{key}`.
-*/
-func substitute(string: String, with substitutions: [String: String]) -> String {
+// Performs simple string interpolation on keys of the form `%{key}`.
+internal func substitute(string: String, with substitutions: [String: String]) -> String {
 
   return substitutions.reduce(string) { accum, sub in
     return accum.stringByReplacingOccurrencesOfString("%{\(sub.0)}", withString: sub.1)

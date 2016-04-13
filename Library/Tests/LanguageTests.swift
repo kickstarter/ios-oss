@@ -1,7 +1,7 @@
 import XCTest
 @testable import Library
 
-final class LanguageTests : XCTestCase {
+final class LanguageTests: XCTestCase {
 
   func testEquality() {
 

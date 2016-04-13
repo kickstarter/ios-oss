@@ -107,21 +107,21 @@ CommentsViewModelOutputs {
 
     self.loggedOutEmptyStateVisible = combineLatest(project, self.comments)
       .map { project, comments in
-        project.isBacking == nil && comments.count == 0
+        project.isBacking == nil && comments.isEmpty
       }
       .skipWhile { visible in !visible }
       .skipRepeats()
 
     self.nonBackerEmptyStateVisible = combineLatest(project, self.comments)
       .map { project, comments in
-        project.isBacking == false && comments.count == 0
+        project.isBacking == false && comments.isEmpty
       }
       .skipWhile { visible in !visible }
       .skipRepeats()
 
     self.backerEmptyStateVisible = combineLatest(project, self.comments)
       .map { project, comments in
-        project.isBacking == true && comments.count == 0
+        project.isBacking == true && comments.isEmpty
       }
       .skipWhile { visible in !visible }
       .skipRepeats()

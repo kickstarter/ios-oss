@@ -31,8 +31,8 @@ internal final class ResetPasswordViewController: MVVMViewController, ResetPassw
     self.emailTextField.borderStyle = .None
     self.emailTextField.layer.borderColor = Color.Gray.toUIColor().CGColor
     self.emailTextField.layer.borderWidth = 1.0
-    self.emailTextField.leftView = UIView(frame: CGRectMake(0, 0, 10, 0))
-    self.emailTextField.leftViewMode = UITextFieldViewMode.Always;
+    self.emailTextField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
+    self.emailTextField.leftViewMode = .Always
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -84,7 +84,7 @@ internal final class ResetPasswordViewController: MVVMViewController, ResetPassw
   internal func emailTextFieldEditingChanged(textfield: UITextField) {
     self.viewModel.inputs.emailChanged(textfield.text)
   }
-  
+
   @IBAction
   internal func resetPasswordPressed(sender: UIButton) {
     self.emailTextField.resignFirstResponder()

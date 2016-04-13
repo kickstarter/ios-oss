@@ -95,7 +95,9 @@ final class ResetPasswordViewModelTests: TestCase {
     vm.inputs.emailChanged("lisa@kickstarter.com")
     vm.inputs.resetButtonPressed()
 
-    showResetSuccess.assertValues(["We've sent an email to lisa@kickstarter.com with instructions to reset your password."])
+    showResetSuccess.assertValues(
+      ["We've sent an email to lisa@kickstarter.com with instructions to reset your password."]
+    )
     XCTAssertEqual(["Forgot Password View", "Forgot Password Requested"], trackingClient.events)
   }
 

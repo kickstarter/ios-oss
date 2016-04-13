@@ -2,13 +2,14 @@ import UIKit
 import ReactiveCocoa
 import protocol Library.ViewModeledCellType
 
+private let focusedTitleColor = UIColor.whiteColor()
+private let unfocusedTitleColor = UIColor(white: 1.0, alpha: 0.5)
+
 final class HomePlaylistCell: UICollectionViewCell, ViewModeledCellType {
 
   @IBOutlet weak var titleLabel: UILabel!
   @IBOutlet weak var selectedIndicatorView: UIView!
 
-  static var focusedTitleColor = UIColor.whiteColor()
-  static var unfocusedTitleColor = UIColor(white: 1.0, alpha: 0.5)
   static let focusedFont: UIFont = {
     let descriptor = UIFontDescriptor.preferredFontDescriptorWithTextStyle(UIFontTextStyleCallout)
     let mediumDescriptor = descriptor.fontDescriptorWithSymbolicTraits(.TraitBold)
@@ -26,11 +27,11 @@ final class HomePlaylistCell: UICollectionViewCell, ViewModeledCellType {
 
   override func bindViewModel() {
     super.bindViewModel()
-    
     titleLabel.rac_text <~ self.viewModel.map { $0.outputs.title }
   }
 
-  override func didUpdateFocusInContext(context: UIFocusUpdateContext, withAnimationCoordinator coordinator: UIFocusAnimationCoordinator) {
+  override func didUpdateFocusInContext(context: UIFocusUpdateContext,
+                                        withAnimationCoordinator coordinator: UIFocusAnimationCoordinator) {
     coordinator.addCoordinatedAnimations({
       self.render(focused: self.focused)
     }, completion: nil)
@@ -39,6 +40,6 @@ final class HomePlaylistCell: UICollectionViewCell, ViewModeledCellType {
   func render(focused focused: Bool) {
     self.selectedIndicatorView.hidden = !focused
     self.titleLabel.font = focused ? HomePlaylistCell.focusedFont : HomePlaylistCell.unfocusedFont
-    self.titleLabel.textColor = focused ? HomePlaylistCell.focusedTitleColor : HomePlaylistCell.unfocusedTitleColor
+    self.titleLabel.textColor = focused ? focusedTitleColor : unfocusedTitleColor
   }
 }

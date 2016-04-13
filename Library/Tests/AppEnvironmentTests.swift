@@ -6,7 +6,7 @@ import Foundation
 @testable import Models
 @testable import Models_TestHelpers
 
-final class AppEnvironmentTests : XCTestCase {
+final class AppEnvironmentTests: XCTestCase {
 
   func testPushAndPopEnvironment() {
     let lang = AppEnvironment.current.language
@@ -49,7 +49,7 @@ final class AppEnvironmentTests : XCTestCase {
     XCTAssertEqual("com.kickstarter.AppEnvironment.current", AppEnvironment.environmentStorageKey,
                    "Failing this test means users will get logged out, so you better have a good reason.")
     XCTAssertEqual("com.kickstarter.AppEnvironment.oauthToken", AppEnvironment.oauthTokenStorageKey,
-                   "Failing this test means user's tokens will be lost in ubiquitous storage, so you better have a good reason.")
+                   "Failing this means user's token will be lost, so you better have a good reason.")
   }
 
   func testUserSession() {

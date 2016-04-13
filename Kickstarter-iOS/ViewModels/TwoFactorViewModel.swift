@@ -123,6 +123,7 @@ internal final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMo
 
   internal let showError: Signal<String, NoError>
 
+  // swiftlint:disable function_body_length
   internal init() {
     let isLoading = MutableProperty(false)
     let loginErrors = MutableProperty<ErrorEnvelope?>(nil)
@@ -198,6 +199,7 @@ internal final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMo
     loginErrors.signal.ignoreNil()
       .observeNext { _ in AppEnvironment.current.koala.trackLoginError() }
   }
+  // swiftlint:enable function_body_length
 }
 
 private func login(tfaData: TwoFactorViewModel.TfaData,
@@ -220,7 +222,10 @@ private func login(tfaData: TwoFactorViewModel.TfaData,
 
   return emailLogin.mergeWith(facebookLogin)
     .on(
-      started: { isLoading.value = true },
-      terminated: { isLoading.value = false }
-  )
+      started: {
+        isLoading.value = true
+      },
+      terminated: {
+        isLoading.value = false
+    })
 }

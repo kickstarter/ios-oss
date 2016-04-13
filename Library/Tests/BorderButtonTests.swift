@@ -38,7 +38,7 @@ final class BorderButtonTests: XCTestCase {
 
   func testInvalidStyles() {
     let button = BorderButton()
-    
+
     button._color = ""
     XCTAssertEqual(Color.mismatchedColor, button.backgroundColor)
 
@@ -65,4 +65,3 @@ final class BorderButtonTests: XCTestCase {
     XCTAssertEqual(FontStyle.mismatchedFont, button.titleLabel?.font)
   }
 }
-

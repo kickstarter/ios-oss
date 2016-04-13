@@ -8,7 +8,8 @@ import Prelude
 @testable import KsApi_TestHelpers
 @testable import ReactiveExtensions_TestHelpers
 
-final class HomeViewModelTests : XCTestCase {
+// swiftlint:disable function_body_length
+final class HomeViewModelTests: XCTestCase {
 
   /**
    Tests the mechanics of focusing and clicking on playlists in order to guarantee that the currently
@@ -49,7 +50,8 @@ final class HomeViewModelTests : XCTestCase {
 
       XCTAssertEqual(1, nowPlayingTest.values.count, "Focusing a playlist doesn't play it immediately")
       scheduler.advanceByInterval(0.5)
-      XCTAssertEqual(1, nowPlayingTest.values.count, "After a little bit of time the playlist should still not play")
+      XCTAssertEqual(1, nowPlayingTest.values.count,
+                     "After a little bit of time the playlist should still not play")
       scheduler.advanceByInterval(1.0)
       XCTAssertEqual(2, nowPlayingTest.values.count, "After waiting enough time the playlist should play.")
 

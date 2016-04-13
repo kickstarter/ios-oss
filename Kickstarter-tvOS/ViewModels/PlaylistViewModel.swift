@@ -19,7 +19,8 @@ internal protocol PlaylistViewModelType {
   var outputs: PlaylistViewModelOutputs { get }
 }
 
-internal final class PlaylistViewModel : ViewModelType, PlaylistViewModelType, PlaylistViewModelInputs, PlaylistViewModelOutputs {
+internal final class PlaylistViewModel: ViewModelType, PlaylistViewModelType, PlaylistViewModelInputs,
+PlaylistViewModelOutputs {
   typealias Model = Playlist
 
   // MARK: Inputs
@@ -44,7 +45,9 @@ internal final class PlaylistViewModel : ViewModelType, PlaylistViewModelType, P
   internal var inputs: PlaylistViewModelInputs { return self }
   internal var outputs: PlaylistViewModelOutputs { return self }
 
-  internal init(initialPlaylist: Playlist, currentProject: Project, env: Environment = AppEnvironment.current) {
+  internal init(initialPlaylist: Playlist,
+                currentProject: Project,
+                env: Environment = AppEnvironment.current) {
     let apiService = env.apiService
 
     self.project = SignalProducer(signal: next.mergeWith(previous))
@@ -77,12 +80,12 @@ internal final class PlaylistViewModel : ViewModelType, PlaylistViewModelType, P
    */
   private static func stillImage(generator generator: AssetImageGeneratorType,
     scheduler: DateSchedulerType = AppEnvironment.current.scheduler) -> SignalProducer<UIImage?, NoError> {
-      
+
     let requestedTime = CMTimeMakeWithSeconds(30.0, 1)
     let requestedTimeValue = NSValue(CMTime: requestedTime)
 
     let image = SignalProducer<UIImage?, NoError> { observer, disposable in
-      generator.generateCGImagesAsynchronouslyForTimes([requestedTimeValue]) { (time, image, actualTime, result, error) -> Void in
+      generator.generateCGImagesAsynchronouslyForTimes([requestedTimeValue]) { (_, image, _, _, _) in
 
         guard !disposable.disposed else { return }
 

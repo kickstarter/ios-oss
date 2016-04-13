@@ -41,7 +41,8 @@ class SearchViewController: MVVMCollectionViewController {
 
 // MARK: UICollectionViewDelegate
 extension SearchViewController {
-  override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+  override func collectionView(collectionView: UICollectionView,
+                               didSelectItemAtIndexPath indexPath: NSIndexPath) {
 //    let project = dataSource[indexPath]
 //    let controller = ProjectViewController(viewModel: ProjectViewModel(project: project))
 //    self.presentViewController(controller, animated: true, completion: nil)
@@ -49,7 +50,7 @@ extension SearchViewController {
 }
 
 // MARK: UISearchResultsUpdating
-extension SearchViewController : UISearchResultsUpdating {
+extension SearchViewController: UISearchResultsUpdating {
   func updateSearchResultsForSearchController(searchController: UISearchController) {
     guard let query = searchController.searchBar.text else { return }
     viewModel.inputs.updateQuery(query)

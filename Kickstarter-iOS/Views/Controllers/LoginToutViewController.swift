@@ -14,6 +14,7 @@ import func Library.localizedString
 import enum Library.Color
 import class SafariServices.SFSafariViewController
 import struct KsApi.ServerConfig
+import Prelude
 
 internal final class LoginToutViewController: MVVMViewController, MFMailComposeViewControllerDelegate {
   @IBOutlet internal weak var loginButton: BorderButton!
@@ -29,9 +30,15 @@ internal final class LoginToutViewController: MVVMViewController, MFMailComposeV
     self.viewModel.inputs.loginIntent(self.loginIntent)
 
     if let _ = self.presentingViewController {
-      self.navigationItem.leftBarButtonItem = .close(self, selector: #selector(LoginToutViewController.closeButtonPressed))
+      self.navigationItem.leftBarButtonItem = .close(
+        self,
+        selector: #selector(LoginToutViewController.closeButtonPressed)
+      )
     }
-    self.navigationItem.rightBarButtonItem = .help(self, selector: #selector(LoginToutViewController.helpButtonPressed))
+    self.navigationItem.rightBarButtonItem = .help(
+      self,
+      selector: #selector(LoginToutViewController.helpButtonPressed)
+    )
 
     self.view.backgroundColor = Color.OffWhite.toUIColor()
   }
@@ -111,16 +118,21 @@ internal final class LoginToutViewController: MVVMViewController, MFMailComposeV
     self.dismissViewControllerAnimated(true, completion: nil)
   }
 
-  @objc internal func mailComposeController(controller: MFMailComposeViewController, didFinishWithResult result: MFMailComposeResult, error: NSError?) {
+  @objc internal func mailComposeController(controller: MFMailComposeViewController,
+                                            didFinishWithResult result: MFMailComposeResult,
+                                                                error: NSError?) {
     self.dismissViewControllerAnimated(true, completion: nil)
   }
 
   private func startLoginViewController() {
-    let loginVC = self.storyboard?.instantiateViewControllerWithIdentifier("LoginViewController") as! LoginViewController
+    guard let loginVC = self.storyboard?
+      .instantiateViewControllerWithIdentifier("LoginViewController") as? LoginViewController else {
+        fatalError("Couldn’t instantiate LoginViewController.")
+    }
+
     self.navigationController?.pushViewController(loginVC, animated: true)
   }
 
   private func startSignupViewController() {
-
   }
 }

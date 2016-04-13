@@ -15,7 +15,7 @@ protocol ProfileViewModelOutputs {
   var name: MutableProperty<String?> { get }
 }
 
-final class ProfileViewModel : ProfileViewModelInputs, ProfileViewModelOutputs {
+final class ProfileViewModel: ProfileViewModelInputs, ProfileViewModelOutputs {
   // MARK: Inputs
   let (logoutSignal, logoutObserver) = Signal<(), NoError>.pipe()
   func logoutPressed() { logoutObserver.sendNext(()) }

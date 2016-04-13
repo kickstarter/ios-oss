@@ -1,5 +1,6 @@
 import KsApi
 
+// swiftlint:disable type_name
 public enum RefTag {
   case activity
   case activitySample
@@ -17,13 +18,14 @@ public enum RefTag {
   case unrecognized(String)
 
   /**
-   Create a RefTag value from a code string. If a ref tag cannot be matched, an `.unrecognized` tag is 
+   Create a RefTag value from a code string. If a ref tag cannot be matched, an `.unrecognized` tag is
    returned.
 
    - parameter code: A code string.
 
    - returns: A ref tag.
    */
+  // swiftlint:disable cyclomatic_complexity
   public init(code: String) {
     switch code {
     case "activity":                  self = .activity
@@ -50,6 +52,7 @@ public enum RefTag {
     default:                          self = .unrecognized(code)
     }
   }
+  // swiftlint:enable cyclomatic_complexity
 
   /// A string representation of the ref tag that can be used in analytics tracking, cookies, etc...
   public var stringTag: String {

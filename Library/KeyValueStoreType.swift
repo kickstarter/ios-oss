@@ -12,8 +12,8 @@ public protocol KeyValueStoreType {
   func synchronize() -> Bool
 }
 
-extension NSUserDefaults : KeyValueStoreType {}
-extension NSUbiquitousKeyValueStore : KeyValueStoreType {}
+extension NSUserDefaults: KeyValueStoreType {}
+extension NSUbiquitousKeyValueStore: KeyValueStoreType {}
 
 internal class MockKeyValueStore: KeyValueStoreType {
   var store: [String:AnyObject] = [:]

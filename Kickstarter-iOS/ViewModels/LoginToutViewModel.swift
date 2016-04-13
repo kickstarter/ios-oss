@@ -36,7 +36,8 @@ internal protocol LoginToutViewModelType {
   var outputs: LoginToutViewModelOutputs { get }
 }
 
-internal final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewModelInputs, LoginToutViewModelOutputs {
+internal final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewModelInputs,
+LoginToutViewModelOutputs {
 
   // MARK: LoginToutViewModelType
   internal var inputs: LoginToutViewModelInputs { return self }

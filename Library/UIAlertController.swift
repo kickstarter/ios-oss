@@ -2,16 +2,22 @@ import class UIKit.UIAlertController
 import class UIKit.UIAlertAction
 
 public extension UIAlertController {
-  
-  public static func alert(title: String? = nil, message: String? = nil, handler: ((UIAlertAction) -> Void)? = nil) -> UIAlertController {
+
+  public static func alert(title: String? = nil,
+                           message: String? = nil,
+                           handler: ((UIAlertAction) -> Void)? = nil) -> UIAlertController {
     let alertController = UIAlertController(
       title: title,
       message: message,
       preferredStyle: .Alert
     )
-    alertController.addAction(UIAlertAction(title: localizedString(key: "general.alert.buttons.ok", defaultValue: "OK"),
-      style: .Cancel,
-      handler: handler))
+    alertController.addAction(
+      UIAlertAction(
+        title: localizedString(key: "general.alert.buttons.ok", defaultValue: "OK"),
+        style: .Cancel,
+        handler: handler
+      )
+    )
 
     return alertController
   }
@@ -22,9 +28,13 @@ public extension UIAlertController {
       message: message,
       preferredStyle: .Alert
     )
-    alertController.addAction(UIAlertAction(title: localizedString(key: "general.alert.buttons.ok", defaultValue: "OK"),
-      style: .Cancel,
-      handler: nil))
+    alertController.addAction(
+      UIAlertAction(
+        title: localizedString(key: "general.alert.buttons.ok", defaultValue: "OK"),
+        style: .Cancel,
+        handler: nil
+      )
+    )
 
     return alertController
   }

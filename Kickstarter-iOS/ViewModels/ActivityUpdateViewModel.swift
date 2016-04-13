@@ -1,13 +1,9 @@
-import protocol Library.ViewModelType
-import struct Models.Activity
-import struct Library.Environment
-import struct Library.AppEnvironment
-import struct ReactiveCocoa.SignalProducer
-import enum Result.NoError
-import class Foundation.NSURL
-import class Foundation.NSCharacterSet
-import func Library.localizedString
-import enum Library.Format
+import Models
+import ReactiveCocoa
+import Result
+import Foundation
+import Library
+import Prelude
 
 internal protocol ActivityUpdateViewModelOutputs {
   var projectImageURL: NSURL? { get }
@@ -50,7 +46,8 @@ internal final class ActivityUpdateViewModel: ViewModelType, ActivityUpdateViewM
   private static func truncateBody(body: String) -> String {
 
     let maxLength = 300
-    let string = body.htmlStripped()?.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()) ?? ""
+    let string = body.htmlStripped()?
+      .stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()) ?? ""
     let length = min(string.characters.count, maxLength)
     let endIndex = string.startIndex.advancedBy(length)
     let suffix = string.characters.count > maxLength ? "..." : ""

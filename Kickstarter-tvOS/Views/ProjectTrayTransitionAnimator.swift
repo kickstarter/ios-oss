@@ -1,6 +1,6 @@
 import UIKit
 
-final class ProjectTrayTransitionAnimator : NSObject, UIViewControllerAnimatedTransitioning {
+final class ProjectTrayTransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning {
   var isPresenting: Bool = false
   lazy var darkenOverlay: UIView = {
     let view = UIView(frame: CGRect(x: 0, y: 0, width: 1920, height: 1080))

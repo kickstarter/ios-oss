@@ -22,13 +22,13 @@ public final class KoalaTrackingClient: TrackingClientType {
     self.URLSession = URLSession
   }
 
-  public func track(event event: String, properties: [String : AnyObject]) {
+  public func track(event event: String, properties: [String: AnyObject]) {
     // TODO: Don't log in production
     print("[Koala] Track: \(event), properties: \(properties)")
     self.track(event: event, properties: properties, time: NSDate())
   }
 
-  private func track(event event: String, properties: [String : AnyObject], time: NSDate) {
+  private func track(event event: String, properties: [String: AnyObject], time: NSDate) {
     let payload = [
       [ "event": event,
         "properties": properties ]

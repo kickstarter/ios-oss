@@ -8,22 +8,20 @@ import Models
 
 extension XCTestCase {
 
-  /**
-   Pushes an environment onto the stack, executes a closure, and then pops the environment from the stack.
-   */
+  // Pushes an environment onto the stack, executes a closure, and then pops the environment from the stack.
   func withEnvironment(env: Environment, @noescape body: () -> ()) {
     AppEnvironment.pushEnvironment(env)
     body()
     AppEnvironment.popEnvironment()
   }
 
-  /**
-   Pushes an environment onto the stack, executes a closure, and then pops the environment from the stack.
-   */
+  // Pushes an environment onto the stack, executes a closure, and then pops the environment from the stack.
   func withEnvironment(
     apiService apiService: ServiceType = AppEnvironment.current.apiService,
                apiThrottleInterval: NSTimeInterval = AppEnvironment.current.apiThrottleInterval,
+               // swiftlint:disable line_length
                assetImageGeneratorType: AssetImageGeneratorType.Type = AppEnvironment.current.assetImageGeneratorType,
+               // swiftlint:enable line_length
                cookieStorage: NSHTTPCookieStorageType = AppEnvironment.current.cookieStorage,
                countryCode: String = AppEnvironment.current.countryCode,
                currentUser: User? = AppEnvironment.current.currentUser,

@@ -7,7 +7,7 @@ import class UIKit.UITableViewController
 ///
 /// Subclasses will be most interested in overriding `bindViewModel`. This
 /// is where one should observe signals exposed in the view model.
-public class MVVMTableViewController : UITableViewController {
+public class MVVMTableViewController: UITableViewController {
 
   public override func viewDidLoad() {
     super.viewDidLoad()

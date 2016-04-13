@@ -95,7 +95,9 @@ class PlaylistExplorerViewController: MVVMViewController {
     self.setNeedsFocusUpdate()
 
     if opened && self.projectsDataSource.numberOfItems > 0 {
-      self.projectsCollectionView.scrollToItemAtIndexPath(NSIndexPath(forItem: 0, inSection: 0), atScrollPosition: .Left, animated: true)
+      self.projectsCollectionView.scrollToItemAtIndexPath(NSIndexPath(forItem: 0, inSection: 0),
+                                                          atScrollPosition: .Left,
+                                                          animated: true)
     }
 
     UIView.animateWithDuration(animated ? 0.3 : 0.0) {
@@ -107,8 +109,11 @@ class PlaylistExplorerViewController: MVVMViewController {
   }
 }
 
-extension PlaylistExplorerViewController : UICollectionViewDelegate {
-  func collectionView(collectionView: UICollectionView, didUpdateFocusInContext context: UICollectionViewFocusUpdateContext, withAnimationCoordinator coordinator: UIFocusAnimationCoordinator) {
+extension PlaylistExplorerViewController: UICollectionViewDelegate {
+  func collectionView(
+    collectionView: UICollectionView,
+    didUpdateFocusInContext context: UICollectionViewFocusUpdateContext,
+                            withAnimationCoordinator coordinator: UIFocusAnimationCoordinator) {
 
     guard let nextFocusedIndexPath = context.nextFocusedIndexPath else { return }
 

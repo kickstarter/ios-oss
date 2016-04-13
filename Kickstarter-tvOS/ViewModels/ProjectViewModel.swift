@@ -14,7 +14,8 @@ internal protocol ProjectViewModelType {
   var errors: ProjectViewModelErrors { get }
 }
 
-internal final class ProjectViewModel : ProjectViewModelType, ProjectViewModelInputs, ProjectViewModelOutputs, ProjectViewModelErrors {
+internal final class ProjectViewModel: ProjectViewModelType, ProjectViewModelInputs, ProjectViewModelOutputs,
+ProjectViewModelErrors {
   // MARK: Inputs
   private let (isActive, isActiveObserver) = Signal<Bool, NoError>.pipe()
   internal func isActive(active: Bool) {
@@ -30,7 +31,8 @@ internal final class ProjectViewModel : ProjectViewModelType, ProjectViewModelIn
     self.videoIsPlayingObserver.sendNext(isPlay)
   }
 
-  private let (scrollData, scrollDataObserver) = Signal<(offset: CGPoint, size: CGSize, window: CGSize), NoError>.pipe()
+  private let (scrollData, scrollDataObserver) =
+    Signal<(offset: CGPoint, size: CGSize, window: CGSize), NoError>.pipe()
   internal func scrollChanged(offset offset: CGPoint, size: CGSize, window: CGSize) {
     scrollDataObserver.sendNext((offset, size, window))
   }
@@ -105,4 +107,3 @@ internal final class ProjectViewModel : ProjectViewModelType, ProjectViewModelIn
     return clamp(0.0, 1.0)(offset.y / (size.height - window.height))
   }
 }
-

@@ -14,14 +14,14 @@ protocol SearchViewModelOutputs {
 }
 
 final class SearchViewModel: SearchViewModelInputs, SearchViewModelOutputs {
-  // MARK : Inputs
+  // MARK: Inputs
   var inputs: SearchViewModelInputs { return self }
   private let (querySignal, queryObserver) = Signal<String, NoError>.pipe()
   func updateQuery(query: String) {
     queryObserver.sendNext(query)
   }
 
-  //MARK : Outputs
+  //MARK: Outputs
   var outputs: SearchViewModelOutputs { return self }
   var projects: SignalProducer<[Project], NoError>
 

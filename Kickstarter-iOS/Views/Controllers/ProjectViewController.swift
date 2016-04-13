@@ -27,7 +27,8 @@ internal final class ProjectViewController: MVVMTableViewController {
     return view
   }
 
-  override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+  override func tableView(tableView: UITableView,
+                          estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
     return UITableViewAutomaticDimension
   }
 }

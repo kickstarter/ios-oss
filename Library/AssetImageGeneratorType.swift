@@ -5,8 +5,10 @@ public protocol AssetImageGeneratorType {
 
   init(asset: AVAsset)
 
-  func generateCGImagesAsynchronouslyForTimes(requestedTimes: [NSValue], completionHandler handler: AVAssetImageGeneratorCompletionHandler)
+  func generateCGImagesAsynchronouslyForTimes(
+    requestedTimes: [NSValue],
+    completionHandler handler: AVAssetImageGeneratorCompletionHandler)
 }
 
-extension AVAssetImageGenerator : AssetImageGeneratorType {
+extension AVAssetImageGenerator: AssetImageGeneratorType {
 }

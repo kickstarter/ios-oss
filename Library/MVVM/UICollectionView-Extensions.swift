@@ -13,6 +13,7 @@ public extension UICollectionView {
       .dropFirst()
       .joinWithSeparator(".")
 
-    registerNib(UINib(nibName: classNameWithoutModule, bundle: nil), forCellWithReuseIdentifier: classNameWithoutModule)
+    registerNib(UINib(nibName: classNameWithoutModule, bundle: nil),
+                forCellWithReuseIdentifier: classNameWithoutModule)
   }
 }

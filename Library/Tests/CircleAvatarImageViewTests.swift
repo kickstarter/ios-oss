@@ -2,7 +2,7 @@ import XCTest
 @testable import Library
 import UIKit
 
-final class CircleAvatarImageViewTests : XCTestCase {
+final class CircleAvatarImageViewTests: XCTestCase {
 
   func testCircleAvatar() {
     let imageView = CircleAvatarImageView(frame: CGRect(x: 0.0, y: 0.0, width: 100.0, height: 100.0))

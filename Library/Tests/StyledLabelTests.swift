@@ -28,7 +28,7 @@ final class StyledLabelTests: XCTestCase {
 
   func test_IB_WithInvalidStyles() {
     let label = StyledLabel()
-    
+
     label._color = "Blu"
     XCTAssertNil(label.color, "Incorrect color should clear the color enum.")
     XCTAssertEqual(Color.mismatchedColor, label.textColor,

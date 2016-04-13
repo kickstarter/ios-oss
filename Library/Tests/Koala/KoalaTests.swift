@@ -19,7 +19,8 @@ final class KoalaTests: XCTestCase {
     XCTAssertEqual("Apple", properties["manufacturer"] as? String)
 
     XCTAssertEqual(bundle.infoDictionary?["CFBundleVersion"] as? Int, properties["app_version"] as? Int)
-    XCTAssertEqual(bundle.infoDictionary?["CFBundleShortVersionString"] as? String, properties["app_release"] as? String)
+    XCTAssertEqual(bundle.infoDictionary?["CFBundleShortVersionString"] as? String,
+                   properties["app_release"] as? String)
     XCTAssertNotNil(properties["model"])
     XCTAssertEqual(device.systemName, properties["os"] as? String)
     XCTAssertEqual(device.systemVersion, properties["os_version"] as? String)
@@ -106,9 +107,12 @@ final class KoalaTests: XCTestCase {
     XCTAssertEqual("recommended", properties["referrer_credit"] as? String)
 
     XCTAssertEqual(project.creator.id, properties["creator_uid"] as? Int)
-    XCTAssertEqual(project.creator.stats?.backedProjectsCount, properties["creator_backed_projects_count"] as? Int)
-    XCTAssertEqual(project.creator.stats?.createdProjectsCount, properties["creator_created_projects_count"] as? Int)
-    XCTAssertEqual(project.creator.stats?.starredProjectsCount, properties["creator_starred_projects_count"] as? Int)
+    XCTAssertEqual(project.creator.stats?.backedProjectsCount,
+                   properties["creator_backed_projects_count"] as? Int)
+    XCTAssertEqual(project.creator.stats?.createdProjectsCount,
+                   properties["creator_created_projects_count"] as? Int)
+    XCTAssertEqual(project.creator.stats?.starredProjectsCount,
+                   properties["creator_starred_projects_count"] as? Int)
   }
 
   func testProjectProperties_LoggedInUser() {

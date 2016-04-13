@@ -16,7 +16,8 @@ protocol PlaylistsMenuViewModelOutputs {
   var selectedProjectAndPlaylist: Signal<(Project, Playlist), NoError> { get }
 }
 
-final class PlaylistsMenuViewModel : ViewModelType, PlaylistsMenuViewModelInputs, PlaylistsMenuViewModelOutputs {
+final class PlaylistsMenuViewModel: ViewModelType, PlaylistsMenuViewModelInputs,
+PlaylistsMenuViewModelOutputs {
   typealias Model = Playlist
   let playlist: Playlist
 

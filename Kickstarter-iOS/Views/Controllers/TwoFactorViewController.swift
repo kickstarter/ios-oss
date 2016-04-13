@@ -27,8 +27,8 @@ internal final class TwoFactorViewController: MVVMViewController, TwoFactorViewC
     codeTextField.borderStyle = .None
     codeTextField.layer.borderColor = Color.Gray.toUIColor().CGColor
     codeTextField.layer.borderWidth = 1.0
-    codeTextField.leftView = UIView(frame: CGRectMake(0, 0, 10, 0))
-    codeTextField.leftViewMode = UITextFieldViewMode.Always;
+    codeTextField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
+    codeTextField.leftViewMode = .Always
   }
 
   override func viewWillAppear(animated: Bool) {

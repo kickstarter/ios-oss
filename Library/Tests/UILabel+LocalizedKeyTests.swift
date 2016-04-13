@@ -1,7 +1,7 @@
 import XCTest
 @testable import Library
 
-final class UILabelLocalizedKeyTests : XCTestCase {
+final class UILabelLocalizedKeyTests: XCTestCase {
 
   override func setUp() {
     AppEnvironment.pushEnvironment(mainBundle: MockBundle())

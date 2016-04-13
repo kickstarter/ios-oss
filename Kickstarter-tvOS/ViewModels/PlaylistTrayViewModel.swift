@@ -11,7 +11,7 @@ protocol PlaylistTrayViewModelOutputs {
   var playlists: SignalProducer<[Playlist], NoError> { get }
 }
 
-final class PlaylistTrayViewModel : ViewModelType, PlaylistTrayViewModelInputs, PlaylistTrayViewModelOutputs {
+final class PlaylistTrayViewModel: ViewModelType, PlaylistTrayViewModelInputs, PlaylistTrayViewModelOutputs {
   typealias Model = Playlist
 
   var inputs: PlaylistTrayViewModelInputs { return self }

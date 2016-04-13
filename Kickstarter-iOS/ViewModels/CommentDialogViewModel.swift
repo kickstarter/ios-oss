@@ -88,7 +88,7 @@ CommentDialogViewModelOutputs, CommentDialogViewModelErrors {
   internal init() {
     let isLoading = MutableProperty(false)
     let errors = MutableProperty<ErrorEnvelope?>(nil)
-    
+
     let project = self.projectProperty.signal.ignoreNil()
 
     self.postButtonEnabled = Signal.merge([
@@ -103,9 +103,12 @@ CommentDialogViewModelOutputs, CommentDialogViewModelErrors {
       .switchMap { project, body in
         AppEnvironment.current.apiService.postComment(body, toProject: project)
           .on(
-            started: { isLoading.value = true },
-            terminated: { isLoading.value = false }
-          )
+            started: {
+              isLoading.value = true
+            },
+            terminated: {
+              isLoading.value = false
+          })
           .demoteErrors(pipeErrorsTo: errors)
       }
       .ignoreValues()

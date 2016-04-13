@@ -88,7 +88,7 @@ public struct Environment {
   }
 }
 
-extension Environment : CustomStringConvertible, CustomDebugStringConvertible {
+extension Environment: CustomStringConvertible, CustomDebugStringConvertible {
   public var description: String {
     return self.allGlobals.map { "\($0.dynamicType)" }.reduce("", combine: +)
   }

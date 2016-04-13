@@ -133,7 +133,7 @@ public final class Koala {
     self.track(event: "Discover Search")
   }
 
-  /// Call when projects have been obtained from a search.
+  // Call when projects have been obtained from a search.
   public func trackSearchResults(query query: String, pageCount: Int) {
     let properties: [String:AnyObject] = ["search_term": query, "page_count": pageCount]
 
@@ -177,7 +177,7 @@ public final class Koala {
     )
   }
 
-  private func defaultProperties() -> [String : AnyObject] {
+  private func defaultProperties() -> [String: AnyObject] {
     var props: [String:AnyObject] = [:]
 
     props["manufacturer"] = "Apple"
@@ -206,7 +206,7 @@ public final class Koala {
   }
 
   private lazy var deviceModel: String? = {
-    var size : Int = 0
+    var size: Int = 0
     sysctlbyname("hw.machine", nil, &size, nil, 0)
     var machine = [CChar](count: Int(size), repeatedValue: 0)
     sysctlbyname("hw.machine", &machine, &size, nil, 0)

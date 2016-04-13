@@ -21,7 +21,7 @@ protocol LoginViewModelErrors {
   var tfaChallenge: Signal<(), NoError> { get }
 }
 
-final class LoginViewModel : LoginViewModelInputs, LoginViewModelOutputs, LoginViewModelErrors {
+final class LoginViewModel: LoginViewModelInputs, LoginViewModelOutputs, LoginViewModelErrors {
   // MARK: Inputs
   let email = MutableProperty<String?>(nil)
   let password = MutableProperty<String?>(nil)
@@ -70,10 +70,12 @@ final class LoginViewModel : LoginViewModelInputs, LoginViewModelOutputs, LoginV
 
     emailAndPassword.takeWhen(loginPress)
       .filter(isValid)
-      .flatMap { ep in apiService.login(email: ep.0, password: ep.1, code: nil).demoteErrors(pipeErrorsTo: errors) }
+      .flatMap { ep in
+        apiService.login(email: ep.0, password: ep.1, code: nil).demoteErrors(pipeErrorsTo: errors)
+    }
   }
 
   private func isValid(email: String, password: String) -> Bool {
-    return email.characters.count > 5 && password.characters.count > 0
+    return email.characters.count > 5 && !password.characters.isEmpty
   }
 }

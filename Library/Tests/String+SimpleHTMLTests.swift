@@ -1,7 +1,7 @@
 import XCTest
 @testable import Library
 
-final class String_SimpleHTMLTests : XCTestCase {
+final class StringSimpleHTMLTests: XCTestCase {
 
   func testHtmlParsing() {
 

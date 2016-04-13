@@ -23,7 +23,7 @@ internal final class CommentsViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.comments.map { $0.count > 0 }.observe(self.hasComments.observer)
+    self.vm.outputs.comments.map { !$0.isEmpty }.observe(self.hasComments.observer)
     self.vm.outputs.commentButtonVisible.observe(self.commentButtonVisible.observer)
     self.vm.outputs.loggedOutEmptyStateVisible.observe(self.loggedOutEmptyStateVisible.observer)
     self.vm.outputs.nonBackerEmptyStateVisible.observe(self.nonBackerEmptyStateVisible.observer)

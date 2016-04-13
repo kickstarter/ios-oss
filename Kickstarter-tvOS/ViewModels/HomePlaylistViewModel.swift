@@ -7,7 +7,7 @@ protocol HomePlaylistViewModelOutputs {
   var title: String { get }
 }
 
-final class HomePlaylistViewModel : ViewModelType, HomePlaylistViewModelOutputs {
+final class HomePlaylistViewModel: ViewModelType, HomePlaylistViewModelOutputs {
   typealias Model = Playlist
   let playlist: Playlist
 

@@ -39,7 +39,7 @@ class ProjectRecommendationsCell: UICollectionViewCell, ViewModeledCellType {
 
 // MARK: UICollectionViewDelegate
 
-extension ProjectRecommendationsCell : UICollectionViewDelegate {
+extension ProjectRecommendationsCell: UICollectionViewDelegate {
 
   func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
 //    guard let project = dataSource[indexPath].project else { return }

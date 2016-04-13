@@ -10,6 +10,7 @@ import ReactiveCocoa
 import Result
 @testable import Library
 
+// swiftlint:disable function_body_length
 final class SearchViewModelTests: TestCase {
   var vm: SearchViewModelType!
 
@@ -19,7 +20,7 @@ final class SearchViewModelTests: TestCase {
       self.vm = SearchViewModel()
 
       let hasProjects = TestObserver<Bool, NoError>()
-      vm.outputs.projects.map { $0.count > 0 }.observe(hasProjects.observer)
+      vm.outputs.projects.map { !$0.isEmpty }.observe(hasProjects.observer)
 
       let isPopularTitleVisible = TestObserver<Bool, NoError>()
       vm.outputs.isPopularTitleVisible.observe(isPopularTitleVisible.observer)
@@ -32,30 +33,36 @@ final class SearchViewModelTests: TestCase {
 
       hasProjects.assertValues([true], "Projects emitted immediately upon view appearing.")
       isPopularTitleVisible.assertValues([true], "Popular title visible upon view appearing.")
-      XCTAssertEqual(["Discover Search"], trackingClient.events, "The search view event tracked upon view appearing.")
+      XCTAssertEqual(["Discover Search"], trackingClient.events,
+                     "The search view event tracked upon view appearing.")
 
       vm.inputs.searchTextChanged("skull graphic tee")
 
       hasProjects.assertValues([true, false], "Projects clear immediately upon entering search.")
-      isPopularTitleVisible.assertValues([true, false], "Popular title hide immediately upon entering search.")
+      isPopularTitleVisible.assertValues([true, false],
+                                         "Popular title hide immediately upon entering search.")
 
       scheduler.advanceByInterval(0.5)
 
       hasProjects.assertValues([true, false], "Projects don't emit after a little bit of time.")
-      isPopularTitleVisible.assertValues([true, false], "Popular title visibility not change after a little bit of time.")
+      isPopularTitleVisible.assertValues([true, false],
+                                         "Popular title visibility not change after a little bit of time.")
 
       scheduler.advanceByInterval(0.5)
 
       hasProjects.assertValues([true, false, true], "Projects emit after waiting enough time.")
-      isPopularTitleVisible.assertValues([true, false], "Popular title visibility still not emit after time as passed")
+      isPopularTitleVisible.assertValues([true, false],
+                                         "Popular title visibility still not emit after time as passed")
       XCTAssertEqual(["Discover Search", "Discover Search Results"], trackingClient.events,
                      "A koala event is tracked for the search results.")
       XCTAssertEqual("skull graphic tee", trackingClient.properties.last!["search_term"] as? String)
 
       vm.inputs.searchTextChanged("")
 
-      hasProjects.assertValues([true, false, true, false, true], "Clearing search clears projects and brings back popular projects.")
-      isPopularTitleVisible.assertValues([true, false, true], "Clearing search brings back popular title.")
+      hasProjects.assertValues([true, false, true, false, true],
+                               "Clearing search clears projects and brings back popular projects.")
+      isPopularTitleVisible.assertValues([true, false, true],
+                                         "Clearing search brings back popular title.")
       XCTAssertEqual(["Discover Search", "Discover Search Results"], trackingClient.events)
 
       vm.inputs.viewDidAppear()
@@ -77,7 +84,7 @@ final class SearchViewModelTests: TestCase {
     let projects = TestObserver<[Int], NoError>()
     vm.outputs.projects.map { $0.map { $0.id } }.observe(projects.observer)
     let hasProjects = TestObserver<Bool, NoError>()
-    vm.outputs.projects.map { $0.count > 0 }.observe(hasProjects.observer)
+    vm.outputs.projects.map { !$0.isEmpty }.observe(hasProjects.observer)
 
     vm.inputs.viewDidAppear()
 
@@ -99,7 +106,8 @@ final class SearchViewModelTests: TestCase {
 
     scheduler.advanceByInterval(10.0)
 
-    hasProjects.assertValues([true, false, true], "Doesn't search for projects after time enough time passes.")
+    hasProjects.assertValues([true, false, true],
+                             "Doesn't search for projects after time enough time passes.")
     projects.assertLastValue(popularProjects, "Brings back popular projects immediately.")
 
     XCTAssertEqual(["Discover Search"], trackingClient.events)
@@ -113,7 +121,7 @@ final class SearchViewModelTests: TestCase {
     let projects = TestObserver<[Int], NoError>()
     vm.outputs.projects.map { $0.map { $0.id } }.observe(projects.observer)
     let hasProjects = TestObserver<Bool, NoError>()
-    vm.outputs.projects.map { $0.count > 0 }.observe(hasProjects.observer)
+    vm.outputs.projects.map { !$0.isEmpty }.observe(hasProjects.observer)
 
     vm.inputs.viewDidAppear()
 
@@ -137,7 +145,8 @@ final class SearchViewModelTests: TestCase {
 
     scheduler.advanceByInterval(1.0)
 
-    hasProjects.assertValues([true, false], "No new projects load after waiting enough time for the API request to be made but not complete.")
+    hasProjects.assertValues([true, false],
+                             "No projects emit after waiting enough time for API to request to be made")
 
     vm.inputs.searchTextChanged("skull graphic tee")
 

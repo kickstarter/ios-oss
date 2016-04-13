@@ -45,9 +45,7 @@ public struct AppEnvironment {
     )
   }
 
-  /**
-   Invoke when you want to end the user's session.
-   */
+  // Invoke when you want to end the user's session.
   public static func logout() {
     replaceCurrentEnvironment(
       apiService: AppEnvironment.current.apiService.logout(),
@@ -56,44 +54,38 @@ public struct AppEnvironment {
     )
   }
 
-  /**
-   The most recent environment on the stack.
-   */
+  // The most recent environment on the stack.
   public static var current: Environment! {
     return stack.last
   }
 
-  /**
-   Push a new environment onto the stack.
-   */
+  // Push a new environment onto the stack.
   public static func pushEnvironment(env: Environment) {
     saveEnvironment(environment: env, ubiquitousStore: env.ubiquitousStore, userDefaults: env.userDefaults)
     stack.append(env)
   }
 
-  /**
-   Pop an environment off the stack.
-   */
+  // Pop an environment off the stack.
   public static func popEnvironment() -> Environment? {
-    saveEnvironment(environment: current, ubiquitousStore: current.ubiquitousStore, userDefaults: current.userDefaults)
+    saveEnvironment(environment: current,
+                    ubiquitousStore: current.ubiquitousStore,
+                    userDefaults: current.userDefaults)
     return stack.popLast()
   }
 
-  /**
-   Replace the current environment with a new environment.
-   */
+  // Replace the current environment with a new environment.
   public static func replaceCurrentEnvironment(env: Environment) {
     popEnvironment()
     pushEnvironment(env)
   }
 
-  /**
-   Pushes a new environment onto the stack that changes only a subset of the current global dependencies.
-   */
+  // Pushes a new environment onto the stack that changes only a subset of the current global dependencies.
   public static func pushEnvironment(
     apiService apiService: ServiceType = AppEnvironment.current.apiService,
                apiThrottleInterval: NSTimeInterval = AppEnvironment.current.apiThrottleInterval,
+               // swiftlint:disable line_length
                assetImageGeneratorType: AssetImageGeneratorType.Type = AppEnvironment.current.assetImageGeneratorType,
+               // swiftlint:enable line_length
                cookieStorage: NSHTTPCookieStorageType = AppEnvironment.current.cookieStorage,
                countryCode: String = AppEnvironment.current.countryCode,
                currentUser: User? = AppEnvironment.current.currentUser,
@@ -132,14 +124,14 @@ public struct AppEnvironment {
     )
   }
 
-  /**
-   Replaces the current environment onto the stack with an environment that changes only a subset
-   of current global dependencies.
-   */
+  // Replaces the current environment onto the stack with an environment that changes only a subset
+  // of current global dependencies.
   public static func replaceCurrentEnvironment(
     apiService apiService: ServiceType = AppEnvironment.current.apiService,
                apiThrottleInterval: NSTimeInterval = AppEnvironment.current.apiThrottleInterval,
+               // swiftlint:disable line_length
                assetImageGeneratorType: AssetImageGeneratorType.Type = AppEnvironment.current.assetImageGeneratorType,
+               // swiftlint:enable line_length
                cookieStorage: NSHTTPCookieStorageType = AppEnvironment.current.cookieStorage,
                countryCode: String = AppEnvironment.current.countryCode,
                currentUser: User? = AppEnvironment.current.currentUser,
@@ -178,14 +170,8 @@ public struct AppEnvironment {
     )
   }
 
-  /**
-   Returns the last saved environment from user defaults.
-
-   - parameter userDefaults:       A user defaults instance where the data is saved.
-   - parameter ubiquitousStore: A ubiquitous store where an oauth token may be stored.
-
-   - returns: An environment
-   */
+  // Returns the last saved environment from user defaults.
+  // swiftlint:disable function_body_length
   public static func fromStorage(ubiquitousStore ubiquitousStore: KeyValueStoreType,
                                                     userDefaults: KeyValueStoreType) -> Environment {
 
@@ -264,8 +250,9 @@ public struct AppEnvironment {
 
     return env
   }
+  // swiftlint:enable function_body_length
 
-  /// Saves some key data for the current environment
+  // Saves some key data for the current environment
   internal static func saveEnvironment(environment env: Environment = AppEnvironment.current,
                                                    ubiquitousStore: KeyValueStoreType,
                                                    userDefaults: KeyValueStoreType) {

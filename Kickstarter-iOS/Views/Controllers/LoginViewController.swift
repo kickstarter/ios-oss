@@ -25,11 +25,11 @@ internal final class LoginViewController: MVVMViewController {
     emailTextField.layer.borderWidth = 1.0
     passwordTextField.layer.borderWidth = 1.0
 
-    emailTextField.leftView = UIView(frame: CGRectMake(0, 0, 10, 0))
-    emailTextField.leftViewMode = UITextFieldViewMode.Always;
+    emailTextField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
+    emailTextField.leftViewMode = UITextFieldViewMode.Always
 
-    passwordTextField.leftView = UIView(frame: CGRectMake(0, 0, 10, 0))
-    passwordTextField.leftViewMode = UITextFieldViewMode.Always;
+    passwordTextField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
+    passwordTextField.leftViewMode = UITextFieldViewMode.Always
 
     let tap = UITapGestureRecognizer(target: self, action: #selector(LoginViewController.dismissKeyboard))
     self.view.addGestureRecognizer(tap)
@@ -91,15 +91,22 @@ internal final class LoginViewController: MVVMViewController {
   }
 
   private func startTwoFactorViewController(email: String, password: String) {
-    let tfaVC = self.storyboard?.instantiateViewControllerWithIdentifier("TwoFactorViewController")
-      as! TwoFactorViewController
+    guard let tfaVC = self.storyboard?
+      .instantiateViewControllerWithIdentifier("TwoFactorViewController") as? TwoFactorViewController else {
+        fatalError("Couldn’t instantiate TwoFactorViewController.")
+    }
+
     tfaVC.initialize(email: email, password: password)
     self.navigationController?.pushViewController(tfaVC, animated: true)
   }
 
   private func startResetPasswordViewController() {
-    let resetPasswordVC = self.storyboard?.instantiateViewControllerWithIdentifier("ResetPasswordViewController")
-      as! ResetPasswordViewController
+    guard let resetPasswordVC = self.storyboard?
+      .instantiateViewControllerWithIdentifier("ResetPasswordViewController") as? ResetPasswordViewController
+      else {
+        fatalError("Couldn’t instantiate ResetPasswordViewController.")
+    }
+
     resetPasswordVC.initialize(email: emailTextField.text)
     self.navigationController?.pushViewController(resetPasswordVC, animated: true)
   }

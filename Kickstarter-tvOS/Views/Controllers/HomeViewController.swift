@@ -43,17 +43,19 @@ internal final class HomeViewController: MVVMViewController {
     self.videoPlayerView.playerLayer?.player = self.player
     self.videoPlayerView.playerLayer?.videoGravity = AVLayerVideoGravityResizeAspectFill
 
-    collectionView.superview!.layer.mask = { gradientLayer in
-      gradientLayer.frame = collectionView.superview!.bounds
-      gradientLayer.colors = [
-        UIColor.clearColor(),
-        UIColor.blackColor(),
-        UIColor.blackColor(),
-        UIColor.clearColor()
-      ].map { $0.CGColor }
-      gradientLayer.locations = [ 0.0, 0.05, 0.95, 1.0 ]
-      return gradientLayer
-    }(CAGradientLayer())
+    if let superview = collectionView.superview {
+      superview.layer.mask = { gradientLayer in
+        gradientLayer.frame = superview.bounds
+        gradientLayer.colors = [
+          UIColor.clearColor(),
+          UIColor.blackColor(),
+          UIColor.blackColor(),
+          UIColor.clearColor()
+          ].map { $0.CGColor }
+        gradientLayer.locations = [ 0.0, 0.05, 0.95, 1.0 ]
+        return gradientLayer
+      }(CAGradientLayer())
+    }
 
     collectionView.contentInset = UIEdgeInsets(top: 40.0, left: 0.0, bottom: 40.0, right: 0.0)
     collectionView.remembersLastFocusedIndexPath = true
@@ -169,7 +171,10 @@ internal final class HomeViewController: MVVMViewController {
 }
 
 internal extension HomeViewController {
-  internal func collectionView(collectionView: UICollectionView, didUpdateFocusInContext context: UICollectionViewFocusUpdateContext, withAnimationCoordinator coordinator: UIFocusAnimationCoordinator) {
+  internal func collectionView(
+    collectionView: UICollectionView,
+    didUpdateFocusInContext context: UICollectionViewFocusUpdateContext,
+                            withAnimationCoordinator coordinator: UIFocusAnimationCoordinator) {
 
     guard let indexPath = context.nextFocusedIndexPath else { return }
 
@@ -178,7 +183,8 @@ internal extension HomeViewController {
     }
   }
 
-  internal func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+  internal func collectionView(collectionView: UICollectionView,
+                               didSelectItemAtIndexPath indexPath: NSIndexPath) {
     if let viewModel = dataSource[indexPath] as? HomePlaylistViewModel {
       self.viewModel.inputs.clickedPlaylist(viewModel.playlist)
     }

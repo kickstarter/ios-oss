@@ -41,7 +41,8 @@ class ProjectCell: UICollectionViewCell, ViewModeledCellType {
     }
   }
 
-  override func didUpdateFocusInContext(context: UIFocusUpdateContext, withAnimationCoordinator coordinator: UIFocusAnimationCoordinator) {
+  override func didUpdateFocusInContext(context: UIFocusUpdateContext,
+                                        withAnimationCoordinator coordinator: UIFocusAnimationCoordinator) {
     self.focusedInfoView.hidden = !self.focused
   }
 }

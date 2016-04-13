@@ -2,7 +2,7 @@ import UIKit
 import Models
 import class Library.MVVMViewController
 
-protocol PlaylistTrayDelegate : class {
+protocol PlaylistTrayDelegate: class {
   func playlistTrayWantsToClose(controller: PlaylistTrayViewController)
   func playlistTray(controller: PlaylistTrayViewController, didSelectProject: Project, inPlaylist: Playlist)
 }
@@ -28,17 +28,19 @@ class PlaylistTrayViewController: MVVMViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    collectionView.superview!.layer.mask = { gradientLayer in
-      gradientLayer.frame = collectionView.superview!.bounds
-      gradientLayer.colors = [
-        UIColor.clearColor(),
-        UIColor.blackColor(),
-        UIColor.blackColor(),
-        UIColor.clearColor()
-        ].map { $0.CGColor }
-      gradientLayer.locations = [ 0.0, 0.05, 0.9, 1.0 ]
-      return gradientLayer
-    }(CAGradientLayer())
+    if let superview = collectionView.superview {
+      superview.layer.mask = { gradientLayer in
+        gradientLayer.frame = superview.bounds
+        gradientLayer.colors = [
+          UIColor.clearColor(),
+          UIColor.blackColor(),
+          UIColor.blackColor(),
+          UIColor.clearColor()
+          ].map { $0.CGColor }
+        gradientLayer.locations = [ 0.0, 0.05, 0.9, 1.0 ]
+        return gradientLayer
+      }(CAGradientLayer())
+    }
 
     dataSource.registerClasses(collectionView: self.collectionView)
     self.collectionView.dataSource = dataSource
@@ -64,12 +66,15 @@ class PlaylistTrayViewController: MVVMViewController {
   }
 }
 
-extension PlaylistTrayViewController : UICollectionViewDelegate {
-  func collectionView(collectionView: UICollectionView, canFocusItemAtIndexPath indexPath: NSIndexPath) -> Bool {
+extension PlaylistTrayViewController: UICollectionViewDelegate {
+  func collectionView(collectionView: UICollectionView,
+                      canFocusItemAtIndexPath indexPath: NSIndexPath) -> Bool {
     return false
   }
 
-  func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
+  func collectionView(collectionView: UICollectionView,
+                      willDisplayCell cell: UICollectionViewCell,
+                                      forItemAtIndexPath indexPath: NSIndexPath) {
 
     if let cell = cell as? PlaylistTrayCell {
       cell.delegate = self
@@ -77,8 +82,10 @@ extension PlaylistTrayViewController : UICollectionViewDelegate {
   }
 }
 
-extension PlaylistTrayViewController : PlaylistTrayCellDelegate {
-  func playlistTrayCell(cell: PlaylistTrayCell, didSelectedProject project: Project, inPlaylist playlist: Playlist) {
+extension PlaylistTrayViewController: PlaylistTrayCellDelegate {
+  func playlistTrayCell(cell: PlaylistTrayCell,
+                        didSelectedProject project: Project,
+                                           inPlaylist playlist: Playlist) {
 
     self.delegate?.playlistTray(self, didSelectProject: project, inPlaylist: playlist)
   }

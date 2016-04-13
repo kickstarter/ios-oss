@@ -46,7 +46,7 @@ final class RootViewModelTests: TestCase {
 
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: UserFactory.user))
     vm.inputs.userSessionStarted()
-    
+
     viewControllerNames.assertValues(
       [
         ["Discovery", "Search", "Activities", "LoginTout"],
@@ -114,7 +114,9 @@ final class RootViewModelTests: TestCase {
 
     self.vm.inputs.didSelectIndex(0)
 
-    self.scrollToTopControllerName.assertDidNotEmitValue("Selecting different index doesn't cause scroll to top.")
+    self.scrollToTopControllerName.assertDidNotEmitValue(
+      "Selecting different index doesn't cause scroll to top."
+    )
 
     self.vm.inputs.didSelectIndex(0)
 

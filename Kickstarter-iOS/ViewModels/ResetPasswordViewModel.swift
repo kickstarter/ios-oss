@@ -86,7 +86,7 @@ internal final class ResetPasswordViewModel: ResetPasswordViewModelType, ResetPa
 
     self.showError = resetErrors.signal.ignoreNil()
       .map { envelope in
-        if (envelope.httpCode == 404) {
+        if envelope.httpCode == 404 {
           return localizedString(key: "forgot_password.error",
             defaultValue: "Sorry, we don't know that email address. Try again?")
         } else {

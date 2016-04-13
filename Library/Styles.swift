@@ -89,7 +89,7 @@ public enum Color: String {
     ]
   }
 
-  public enum Social:String {
+  public enum Social: String {
     case FacebookBlue
     case TwitterBlue
 
@@ -126,13 +126,14 @@ public extension FontStyle {
   }
 
   #if os(iOS)
-  internal static let mismatchedFont = UIFont(name: "Marker Felt", size: 15.0) ?? UIFont.systemFontOfSize(15.0)
+  internal static let mismatchedFont = UIFont(name: "Marker Felt", size: 15.0) ?? .systemFontOfSize(15.0)
   #else
-  internal static let mismatchedFont = UIFont(name: "Courier New", size: 15.0) ?? UIFont.systemFontOfSize(15.0)
+  internal static let mismatchedFont = UIFont(name: "Courier New", size: 15.0) ?? .systemFontOfSize(15.0)
   #endif
 }
 
 public extension Color {
+  // swiftlint:disable cyclomatic_complexity
   public func toUIColor() -> UIColor {
     switch self {
     case .Black:          return .hex(0x000000)
@@ -158,6 +159,7 @@ public extension Color {
     case .Yellow:         return .hex(0xffffc9)
     }
   }
+  // swiftlint:enable cyclomatic_complexity
 
   #if TARGET_OS_TV
   internal static let mismatchedColor = UIColor.redColor()
@@ -167,6 +169,7 @@ public extension Color {
 }
 
 public extension Color.Category {
+  // swiftlint:disable cyclomatic_complexity
   public func toUIColor() -> UIColor {
     switch self {
     case .Art:                  return .hex(0xffbdab)
@@ -201,6 +204,7 @@ public extension Color.Category {
     case .TheaterSecondary:     return .hex(0xe8514b)
     }
   }
+  // swiftlint:enable cyclomatic_complexity
 }
 
 public extension Color.Social {

@@ -32,7 +32,9 @@ internal protocol FacebookConfirmationViewModelType {
   var errors: FacebookConfirmationViewModelErrors { get }
 }
 
-internal final class FacebookConfirmationViewModel: FacebookConfirmationViewModelType, FacebookConfirmationViewModelInputs, FacebookConfirmationViewModelOutputs, FacebookConfirmationViewModelErrors {
+internal final class FacebookConfirmationViewModel: FacebookConfirmationViewModelType,
+FacebookConfirmationViewModelInputs, FacebookConfirmationViewModelOutputs,
+FacebookConfirmationViewModelErrors {
 
   // MARK: FacebookConfirmationViewModelType
   internal var inputs: FacebookConfirmationViewModelInputs { return self }

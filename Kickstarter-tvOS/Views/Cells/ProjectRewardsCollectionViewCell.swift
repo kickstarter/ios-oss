@@ -13,7 +13,7 @@ class ProjectRewardsCollectionViewCell: UICollectionViewCell, ViewModeledCellTyp
 
   override func awakeFromNib() {
     super.awakeFromNib()
-    
+
     collectionView.registerCellNibForClass(ProjectRewardCell.self)
     collectionView.dataSource = dataSource
 
@@ -32,5 +32,5 @@ class ProjectRewardsCollectionViewCell: UICollectionViewCell, ViewModeledCellTyp
   }
 }
 
-extension ProjectRewardsCollectionViewCell : UICollectionViewDelegate {
+extension ProjectRewardsCollectionViewCell: UICollectionViewDelegate {
 }

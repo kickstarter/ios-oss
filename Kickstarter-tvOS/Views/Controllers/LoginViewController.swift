@@ -46,7 +46,13 @@ final class LoginViewController: MVVMViewController {
       message: message,
       preferredStyle: .Alert
     )
-    alertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .Cancel, handler: nil))
+    alertController.addAction(
+      UIAlertAction(
+        title: NSLocalizedString("OK", comment: ""),
+        style: .Cancel,
+        handler: nil
+      )
+    )
     self.presentViewController(alertController, animated: true, completion: nil)
   }
 

@@ -10,7 +10,7 @@ public final class SimpleDataSource <
   Model
   where
   Cell: ViewModeledCellType,
-  Cell.ViewModel == SimpleViewModel<Model>> : MVVMDataSource {
+  Cell.ViewModel == SimpleViewModel<Model>>: MVVMDataSource {
 
   public override init() {
   }
@@ -23,7 +23,8 @@ public final class SimpleDataSource <
     setData(models.map(SimpleViewModel.init), cellClass: Cell.self, inSection: 0)
   }
 
-  public override func configureCell(collectionCell cell: UICollectionViewCell, withViewModel viewModel: AnyObject) {
+  public override func configureCell(collectionCell cell: UICollectionViewCell,
+                                                    withViewModel viewModel: AnyObject) {
     if let
       cell = cell as? Cell,
       viewModel = viewModel as? Cell.ViewModel {

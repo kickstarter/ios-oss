@@ -15,7 +15,8 @@ protocol _PlaylistOutputs {
   var currentProject: SignalProducer<Project, NoError> { get }
 }
 
-final class _Playlist : _PlaylistInputs, _PlaylistOutputs {
+// swiftlint:disable type_name
+final class _Playlist: _PlaylistInputs, _PlaylistOutputs {
   enum Type {
     case Featured(Models.Category?)
     case Recommended(Models.Category?)
@@ -71,11 +72,30 @@ final class _Playlist : _PlaylistInputs, _PlaylistOutputs {
   var discoveryParams: DiscoveryParams {
     switch self.type {
     case let .Featured(category):
-      return DiscoveryParams(staffPicks: true, hasVideo: true, category: category, state: .Live, includePOTD: true, seed: self.seed)
+      return DiscoveryParams(
+        staffPicks: true,
+        hasVideo: true,
+        category: category,
+        state: .Live,
+        includePOTD: true,
+        seed: self.seed
+      )
     case let .Recommended(category):
-      return DiscoveryParams(hasVideo: true, recommended: true, category: category, state: .Live, seed: self.seed)
+      return DiscoveryParams(
+        hasVideo: true,
+        recommended: true,
+        category: category,
+        state: .Live,
+        seed: self.seed
+      )
     case let .Popular(category):
-        return DiscoveryParams(hasVideo: true, category: category, state: .Live, sort: .Popular, seed: self.seed)
+        return DiscoveryParams(
+          hasVideo: true,
+          category: category,
+          state: .Live,
+          sort: .Popular,
+          seed: self.seed
+      )
     }
   }
 
@@ -130,7 +150,7 @@ enum Playlist {
   }
 }
 
-extension Playlist : Equatable {
+extension Playlist: Equatable {
 }
 
 func == (lhs: Playlist, rhs: Playlist) -> Bool {

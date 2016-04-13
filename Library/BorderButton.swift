@@ -25,7 +25,9 @@ public final class BorderButton: UIButton {
 
   public var titleColorNormal: Color? = .Black {
     didSet {
-      self.setTitleColor(titleColorNormal?.toUIColor() ?? Color.mismatchedColor, forState: UIControlState.Normal)
+      self.setTitleColor(
+        titleColorNormal?.toUIColor() ?? Color.mismatchedColor, forState: UIControlState.Normal
+      )
     }
   }
 

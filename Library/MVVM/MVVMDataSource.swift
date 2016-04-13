@@ -13,33 +13,33 @@ public protocol CellType {
 extension UICollectionViewCell: CellType {}
 extension UITableViewCell: CellType {}
 
-public class MVVMDataSource : NSObject, UICollectionViewDataSource, UITableViewDataSource {
+public class MVVMDataSource: NSObject, UICollectionViewDataSource, UITableViewDataSource {
   private var data = [[(viewModel: AnyObject, reusableId: String)]]()
 
-  /// Override this to check the types of `cell` and `viewModel` and configure the cell accordingly.
+  // Override this to check the types of `cell` and `viewModel` and configure the cell accordingly.
   public func configureCell(collectionCell cell: UICollectionViewCell, withViewModel viewModel: AnyObject) {
   }
 
-  /// Override this to check the types of `cell` and `viewModel` and configure the cell accordingly.
+  // Override this to check the types of `cell` and `viewModel` and configure the cell accordingly.
   public func configureCell(tableCell cell: UITableViewCell, withViewModel viewModel: AnyObject) {
   }
 
-  /// Override this to perform any registrations of cell classes and nibs. Also call this method
-  /// before setting the data source of your collection view.
+  // Override this to perform any registrations of cell classes and nibs. Also call this method
+  // before setting the data source of your collection view.
   public func registerClasses(collectionView collectionView: UICollectionView?) {
   }
 
-  /// Override this to perform any registrations of cell classes and nibs. Also call this method
-  /// before setting the data source of your table view.
+  // Override this to perform any registrations of cell classes and nibs. Also call this method
+  // before setting the data source of your table view.
   public func registerClasses(tableView tableView: UITableView?) {
   }
 
-  /// Clear all data from the data source
+  // Clear all data from the data source
   public final func clearData() {
     self.data = [[]]
   }
 
-  /// Add a row of data to a section.
+  // Add a row of data to a section.
   public final func appendRowData <
     Cell: CellType,
     ViewModel: AnyObject
@@ -53,7 +53,7 @@ public class MVVMDataSource : NSObject, UICollectionViewDataSource, UITableViewD
       self.data[section].append( (viewModel, Cell.defaultReusableId) )
   }
 
-  /// Add a homogenous section of data.
+  // Add a homogenous section of data.
   public final func appendSectionData <
     Cell: CellType,
     ViewModel: AnyObject
@@ -63,12 +63,10 @@ public class MVVMDataSource : NSObject, UICollectionViewDataSource, UITableViewD
     Cell.ViewModel == ViewModel>
     (viewModels: [ViewModel], cellClass: Cell.Type) {
 
-      self.data.append(
-        viewModels.map { ($0, Cell.defaultReusableId) }
-      )
+      self.data.append(viewModels.map { ($0, Cell.defaultReusableId) })
   }
 
-  /// Replace the entirety of a section with homogenous data.
+  // Replace the entirety of a section with homogenous data.
   public final func setData <
     Cell: CellType,
     ViewModel: AnyObject
@@ -92,13 +90,12 @@ public class MVVMDataSource : NSObject, UICollectionViewDataSource, UITableViewD
     return self.data[itemSection.section][itemSection.item].viewModel
   }
 
-  // MARK: UICollectionViewDataSource
-
   public final func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
     return self.data.count
   }
 
-  public final func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+  public final func collectionView(collectionView: UICollectionView,
+                                   numberOfItemsInSection section: Int) -> Int {
     return self.data[section].count
   }
 
@@ -106,7 +103,8 @@ public class MVVMDataSource : NSObject, UICollectionViewDataSource, UITableViewD
     return self.data.reduce(0) { accum, section in accum + section.count }
   }
 
-  public final func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+  public final func collectionView(collectionView: UICollectionView,
+                                   cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
 
     let (viewModel, reusableId) = self.data[indexPath.section][indexPath.item]
 
@@ -117,8 +115,6 @@ public class MVVMDataSource : NSObject, UICollectionViewDataSource, UITableViewD
     return cell
   }
 
-  /// MARK: UITableViewDataSource
-
   public func numberOfSectionsInTableView(tableView: UITableView) -> Int {
     return self.data.count
   }
@@ -127,7 +123,8 @@ public class MVVMDataSource : NSObject, UICollectionViewDataSource, UITableViewD
     return self.data[section].count
   }
 
-  public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+  public func tableView(tableView: UITableView,
+                        cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
     let (viewModel, reusableId) = self.data[indexPath.section][indexPath.row]
 
     let cell = tableView.dequeueReusableCellWithIdentifier(reusableId, forIndexPath: indexPath)
@@ -136,8 +133,6 @@ public class MVVMDataSource : NSObject, UICollectionViewDataSource, UITableViewD
 
     return cell
   }
-
-  /// MARK: Private
 
   private func padDataForSection(section: Int) {
     guard self.data.count <= section else { return }

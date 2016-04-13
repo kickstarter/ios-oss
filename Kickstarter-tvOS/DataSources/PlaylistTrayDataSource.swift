@@ -1,7 +1,7 @@
 import Prelude
 import class Library.MVVMDataSource
 
-final class PlaylistTrayDataSource : MVVMDataSource {
+final class PlaylistTrayDataSource: MVVMDataSource {
 
   override func registerClasses(collectionView collectionView: UICollectionView?) {
     collectionView?.registerCellNibForClass(PlaylistTrayCell.self)
