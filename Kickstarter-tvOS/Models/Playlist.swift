@@ -58,7 +58,7 @@ final class _Playlist: _PlaylistInputs, _PlaylistOutputs {
       return SignalProducer(value: self.projects[item])
     }
 
-    return self.apiService.fetchDiscovery(self.discoveryParams)
+    return self.apiService.fetchDiscovery(params: self.discoveryParams)
       .demoteErrors()
       .on(next: { env in
         self.totalItems = env.stats.count
