@@ -18,6 +18,8 @@ experimental:
     branches:
       only:
         - master
+        - beta-dist
+        - itunes-dist
 deployment:
   ios_beta:
     branch: beta-dist
