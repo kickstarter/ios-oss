@@ -177,7 +177,7 @@ public struct AppEnvironment {
 
     let data = userDefaults.dictionaryForKey(environmentStorageKey) ?? [:]
 
-    var service = Service()
+    var service = AppEnvironment.current.apiService
     var currentUser: User? = nil
 
     if let oauthToken = data["apiService.oauthToken.token"] as? String {
@@ -186,16 +186,6 @@ public struct AppEnvironment {
     } else if let oauthToken = ubiquitousStore.stringForKey(oauthTokenStorageKey) {
       // Otherwise if there is a token in the ubiquitous defaults we can use it
       service = service.login(OauthToken(token: oauthToken))
-    }
-
-    // try restoring the build version
-    if let buildVersion = data["apiService.buildVersion"] as? String {
-      service = Service(
-        serverConfig: service.serverConfig,
-        oauthToken: service.oauthToken,
-        language: service.language,
-        buildVersion: buildVersion
-      )
     }
 
     // Try restoring the client id for the api service
@@ -264,7 +254,6 @@ public struct AppEnvironment {
                                                    userDefaults: KeyValueStoreType) {
 
     let data: [String:AnyObject?] = [
-      "apiService.buildVersion": env.apiService.buildVersion,
       "apiService.oauthToken.token": env.apiService.oauthToken?.token,
       "apiService.serverConfig.apiBaseUrl": env.apiService.serverConfig.apiBaseUrl.absoluteString,
       "apiService.serverConfig.apiClientAuth.clientId": env.apiService.serverConfig.apiClientAuth.clientId,
