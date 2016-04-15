@@ -33,6 +33,7 @@ final class KoalaTests: XCTestCase {
     XCTAssertEqual("ios", properties["client_platform"] as? String)
 
     XCTAssertNil(properties["user_uid"])
+    XCTAssertFalse(properties["user_logged_in"] as! Bool)
   }
 
   func testDefaultPropertiesWithLoggedInUser() {
@@ -46,6 +47,7 @@ final class KoalaTests: XCTestCase {
     let properties = client.properties.last!
 
     XCTAssertEqual(user.id, properties["user_uid"] as? Int)
+    XCTAssertTrue(properties["user_logged_in"] as! Bool)
     XCTAssertEqual(user.stats?.backedProjectsCount!, properties["user_backed_projects_count"] as? Int)
     XCTAssertEqual(user.stats?.createdProjectsCount!, properties["user_created_projects_count"] as? Int)
     XCTAssertEqual(user.stats?.starredProjectsCount!, properties["user_starred_projects_count"] as? Int)

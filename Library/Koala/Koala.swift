@@ -198,6 +198,7 @@ public final class Koala {
     if let loggedInUser = self.loggedInUser {
       userProperties(loggedInUser).forEach { props[$0] = $1 }
     }
+    props["user_logged_in"] = loggedInUser != nil
 
     // TODO: device_fingerprint, apple_pay_capable, iphone_uuid, preferred_content_size_category,
     //       device_orientation
@@ -265,7 +266,6 @@ private func projectProperties(project: Project,
     loggedInUserProperties["user_is_backer"] = project.isBacking ?? false
     loggedInUserProperties["user_has_starred"] = project.isStarred ?? false
   }
-
 
   return properties.prefixedKeys(prefix)
     .withAllValuesFrom(userProperties(project.creator, prefix: "creator_"))
