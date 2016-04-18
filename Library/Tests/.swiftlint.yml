@@ -3,9 +3,9 @@ disabled_rules:
   - nesting
   - variable_name
   - force_unwrapping
+  - force_cast
   - type_body_length
   - function_body_length
-  - force_cast
 opt_in_rules:
   - empty_count
 line_length: 110

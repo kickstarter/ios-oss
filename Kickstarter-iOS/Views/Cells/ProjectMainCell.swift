@@ -1,11 +1,10 @@
-import class UIKit.UITableViewCell
-import protocol Library.ViewModeledCellType
-import class ReactiveCocoa.MutableProperty
+import UIKit
+import Library
+import ReactiveCocoa
+import Models
 
-internal final class ProjectMainCell: UITableViewCell, ViewModeledCellType {
-  internal let viewModelProperty = MutableProperty<ProjectMainViewModel?>(nil)
+internal final class ProjectMainCell: UITableViewCell, ValueCell {
 
-  override func bindViewModel() {
-    super.bindViewModel()
+  func configureWith(value value: Project) {
   }
 }

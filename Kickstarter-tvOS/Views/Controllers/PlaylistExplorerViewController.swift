@@ -1,14 +1,12 @@
 import UIKit
 import Models
-import class Library.MVVMViewController
-import class Library.SimpleDataSource
-import class Library.SimpleViewModel
+import Library
 
 protocol PlaylistExplorerDelegate: class {
   func playlistExplorerWantsToClose(controller: PlaylistExplorerViewController)
 }
 
-class PlaylistExplorerViewController: MVVMViewController {
+class PlaylistExplorerViewController: UIViewController {
   weak var delegate: PlaylistExplorerDelegate?
   @IBOutlet weak var projectsCollectionView: UICollectionView!
   @IBOutlet weak var playlistsCollectionView: UICollectionView!
@@ -50,7 +48,6 @@ class PlaylistExplorerViewController: MVVMViewController {
 
     self.viewModel.outputs.playlists
       .uncollect()
-      .map(HomePlaylistViewModel.init)
       .collect()
       .observeForUI()
       .startWithNext { [weak self] viewModels in
@@ -94,7 +91,7 @@ class PlaylistExplorerViewController: MVVMViewController {
     self.playlistOpened = opened
     self.setNeedsFocusUpdate()
 
-    if opened && self.projectsDataSource.numberOfItems > 0 {
+    if opened && self.projectsDataSource.numberOfItems() > 0 {
       self.projectsCollectionView.scrollToItemAtIndexPath(NSIndexPath(forItem: 0, inSection: 0),
                                                           atScrollPosition: .Left,
                                                           animated: true)
@@ -118,14 +115,14 @@ extension PlaylistExplorerViewController: UICollectionViewDelegate {
     guard let nextFocusedIndexPath = context.nextFocusedIndexPath else { return }
 
     if collectionView === self.playlistsCollectionView {
-      if let playlistViewModel = self.playlistsDataSource[nextFocusedIndexPath] as? HomePlaylistViewModel {
-        self.viewModel.inputs.focusPlaylist(playlistViewModel.playlist)
+      if let playlist = self.playlistsDataSource[nextFocusedIndexPath] as? Playlist {
+        self.viewModel.inputs.focusPlaylist(playlist)
       }
     }
 
     if collectionView === self.projectsCollectionView {
-      if let projectViewModel = self.projectsDataSource[nextFocusedIndexPath] as? SimpleViewModel<Project> {
-        self.viewModel.inputs.focusProject(projectViewModel.model)
+      if let project = self.projectsDataSource[nextFocusedIndexPath] as? Project {
+        self.viewModel.inputs.focusProject(project)
       }
     }
   }

@@ -1,18 +1,23 @@
 import UIKit
 import ReactiveCocoa
 import Models
-import protocol Library.ViewModeledCellType
-import class Library.SimpleViewModel
-import class Library.SimpleDataSource
+import Library
 
-class ProjectRewardsCollectionViewCell: UICollectionViewCell, ViewModeledCellType {
+class ProjectRewardsCollectionViewCell: UICollectionViewCell, ValueCell {
   @IBOutlet weak var collectionView: UICollectionView!
 
-  let viewModelProperty = MutableProperty<SimpleViewModel<[Reward]>?>(nil)
+  let viewModel = SimpleViewModel<[Reward]>()
   let dataSource = SimpleDataSource<ProjectRewardCell, Reward>()
 
   override func awakeFromNib() {
     super.awakeFromNib()
+
+    self.viewModel.model
+      .observeForUI()
+      .observeNext { [weak self] rewards in
+        self?.dataSource.reload(rewards)
+        self?.collectionView.reloadData()
+    }
 
     collectionView.registerCellNibForClass(ProjectRewardCell.self)
     collectionView.dataSource = dataSource
@@ -22,13 +27,8 @@ class ProjectRewardsCollectionViewCell: UICollectionViewCell, ViewModeledCellTyp
     }
   }
 
-  override func bindViewModel() {
-    self.viewModel.map { $0.model }
-      .observeForUI()
-      .startWithNext { [weak self] rewards in
-        self?.dataSource.reload(rewards)
-        self?.collectionView.reloadData()
-    }
+  func configureWith(value value: [Reward]) {
+    self.viewModel.model(value)
   }
 }
 

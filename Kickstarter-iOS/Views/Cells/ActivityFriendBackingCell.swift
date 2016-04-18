@@ -1,11 +1,10 @@
-import class UIKit.UITableViewCell
-import class UIKit.UILabel
-import class UIKit.UIImageView
-import protocol Library.ViewModeledCellType
+import UIKit
+import Library
 import ReactiveCocoa
+import Models
 
-internal final class ActivityFriendBackingCell: UITableViewCell, ViewModeledCellType {
-  let viewModelProperty = MutableProperty<ActivityFriendBackingViewModel?>(nil)
+internal final class ActivityFriendBackingCell: UITableViewCell, ValueCell {
+  var viewModel: ActivityFriendBackingViewModel!
 
   @IBOutlet internal weak var friendImageView: UIImageView!
   @IBOutlet internal weak var friendTitleLabel: UILabel!
@@ -13,33 +12,52 @@ internal final class ActivityFriendBackingCell: UITableViewCell, ViewModeledCell
   @IBOutlet internal weak var creatorNameLabel: UILabel!
   @IBOutlet internal weak var projectImageView: UIImageView!
 
-  override func bindViewModel() {
-    super.bindViewModel()
+  override func awakeFromNib() {
+    super.awakeFromNib()
+    self.viewModel = ActivityFriendBackingViewModel()
 
-    self.viewModel.map { $0.outputs.friendImageURL }
+    self.viewModel.outputs.friendImageURL
       .observeForUI()
-      .on(next: { [weak self] _ in
-        self?.friendImageView.af_cancelImageRequest()
-        self?.friendImageView.image = nil
+      .on(next: { [weak friendImageView] _ in
+        friendImageView?.af_cancelImageRequest()
+        friendImageView?.image = nil
       })
       .ignoreNil()
-      .startWithNext { [weak self] url in
-        self?.friendImageView.af_setImageWithURL(url)
+      .observeNext { [weak friendImageView] url in
+        friendImageView?.af_setImageWithURL(url)
     }
 
-    self.friendTitleLabel.rac_text <~ self.viewModel.map { $0.outputs.friendTitle }.observeForUI()
-    self.projectNameLabel.rac_text <~ self.viewModel.map { $0.outputs.projectName }.observeForUI()
-    self.creatorNameLabel.rac_text <~ self.viewModel.map { $0.outputs.creatorName }.observeForUI()
-
-    self.viewModel.map { $0.outputs.projectImageURL }
+    self.viewModel.outputs.friendTitle
       .observeForUI()
-      .on(next: { [weak self] _ in
-        self?.projectImageView.af_cancelImageRequest()
-        self?.projectImageView.image = nil
+      .observeNext { [weak friendTitleLabel] title in
+        friendTitleLabel?.text = title
+    }
+
+    self.viewModel.outputs.projectName
+      .observeForUI()
+      .observeNext { [weak projectNameLabel] name in
+        projectNameLabel?.text = name
+    }
+
+    self.viewModel.outputs.creatorName
+      .observeForUI()
+      .observeNext { [weak creatorNameLabel] name in
+        creatorNameLabel?.text = name
+    }
+
+    self.viewModel.outputs.projectImageURL
+      .observeForUI()
+      .on(next: { [weak projectImageView] _ in
+        projectImageView?.af_cancelImageRequest()
+        projectImageView?.image = nil
       })
       .ignoreNil()
-      .startWithNext { [weak self] url in
-        self?.projectImageView.af_setImageWithURL(url)
+      .observeNext { [weak projectImageView] url in
+        projectImageView?.af_setImageWithURL(url)
     }
+  }
+
+  func configureWith(value value: Activity) {
+    self.viewModel.inputs.activity(value)
   }
 }

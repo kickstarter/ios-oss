@@ -36,7 +36,7 @@ internal protocol ActivitiesViewModelType {
   var outputs: ActivitiesViewModelOutputs { get }
 }
 
-internal final class ActivitiesViewModel: ViewModelType, ActivitiesViewModelType, ActitiviesViewModelInputs,
+internal final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewModelInputs,
 ActivitiesViewModelOutputs {
   typealias Model = Activity
 

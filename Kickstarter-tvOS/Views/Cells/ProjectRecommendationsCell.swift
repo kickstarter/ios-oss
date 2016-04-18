@@ -1,20 +1,23 @@
 import UIKit
 import Models
 import ReactiveCocoa
-import protocol Library.ViewModeledCellType
-import class Library.SimpleViewModel
-import class Library.SimpleDataSource
+import Library
+import Library
 
-protocol ProjectRecommendationsCellDelegate: class {
+internal protocol ProjectRecommendationsCellDelegate: class {
   func projectRecommendations(cell: ProjectRecommendationsCell, didSelect project: Project)
 }
 
-class ProjectRecommendationsCell: UICollectionViewCell, ViewModeledCellType {
+internal final class ProjectRecommendationsCell: UICollectionViewCell, ValueCell {
   @IBOutlet weak var collectionView: UICollectionView!
   weak var delegate: ProjectRecommendationsCellDelegate? = nil
 
-  let viewModelProperty = MutableProperty<SimpleViewModel<[Project]>?>(nil)
+  let viewModel = SimpleViewModel<[Project]>()
   private let dataSource = SimpleDataSource<ProjectCell, Project>()
+
+  internal func configureWith(value value: [Project]) {
+    self.viewModel.model(value)
+  }
 
   override func awakeFromNib() {
     super.awakeFromNib()
@@ -29,9 +32,9 @@ class ProjectRecommendationsCell: UICollectionViewCell, ViewModeledCellType {
 
   override func bindViewModel() {
 
-    self.viewModel.map { $0.model }
+    self.viewModel.model
       .observeForUI()
-      .startWithNext { [weak self] projects in
+      .observeNext { [weak self] projects in
         self?.dataSource.reload(projects)
     }
   }

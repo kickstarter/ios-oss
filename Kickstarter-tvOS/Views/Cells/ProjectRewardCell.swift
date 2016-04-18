@@ -1,25 +1,27 @@
 import Models
 import ReactiveCocoa
-import protocol Library.ViewModeledCellType
-import class Library.SimpleViewModel
-import enum Library.Format
+import Library
 
-class ProjectRewardCell: UICollectionViewCell, ViewModeledCellType {
+class ProjectRewardCell: UICollectionViewCell, ValueCell {
   @IBOutlet weak var minimumLabel: UILabel!
   @IBOutlet weak var backersCountLabel: UILabel!
   @IBOutlet weak var rewardLabel: UILabel!
 
-  let viewModelProperty = MutableProperty<SimpleViewModel<Reward>?>(nil)
+  let viewModel = SimpleViewModel<Reward>()
+
+  func configureWith(value value: Reward) {
+    self.viewModel.model(value)
+  }
 
   override func awakeFromNib() {
     super.awakeFromNib()
+
     configureForFocus(false)
-  }
 
-  override func bindViewModel() {
-    let reward = self.viewModel.map { $0.model }
+    let reward = self.viewModel.model
 
-    minimumLabel.rac_text <~ reward.map { Format.currency($0.minimum, country: Project.Country.US) }
+    minimumLabel.rac_text <~ reward
+      .map { Format.currency($0.minimum, country: Project.Country.US) }
       .map { "\($0) or more" }
     backersCountLabel.rac_hidden <~ reward.map { $0.backersCount == nil }
 

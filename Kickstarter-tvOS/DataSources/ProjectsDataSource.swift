@@ -1,5 +1,5 @@
 import Models
-import class Library.MVVMDataSource
+import class Library.ValueCellDataSource
 
-final class ProjectsDataSource: MVVMDataSource {
+final class ProjectsDataSource: ValueCellDataSource {
 }

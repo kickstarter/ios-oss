@@ -1,20 +1,34 @@
-import class Library.MVVMTableViewController
-import class UIKit.UICollectionViewFlowLayout
-import struct UIKit.CGSize
-import struct UIKit.CGFloat
-import class UIKit.UITableView
-import class UIKit.UIView
-import class UIKit.NSIndexPath
-import var UIKit.UITableViewAutomaticDimension
+import Library
+import UIKit
+import Models
 
-internal final class ProjectViewController: MVVMTableViewController {
+internal final class ProjectViewController: UITableViewController {
+  private let viewModel: ProjectViewModelType = ProjectViewModel()
   private let dataSource = ProjectDataSource()
+
+  internal func configureWith(project project: Project) {
+    self.viewModel.inputs.project(project)
+  }
 
   override func viewDidLoad() {
     super.viewDidLoad()
-
-    dataSource.loadData()
     self.tableView.dataSource = dataSource
+  }
+
+  override func viewWillAppear(animated: Bool) {
+    super.viewWillAppear(animated)
+    self.viewModel.inputs.viewWillAppear()
+  }
+
+  override func bindViewModel() {
+    super.bindViewModel()
+
+    self.viewModel.outputs.project
+      .observeForUI()
+      .observeNext { [dataSource, weak tableView] project in
+        dataSource.loadProject(project)
+        tableView?.reloadData()
+    }
   }
 
   override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {

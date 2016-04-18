@@ -1,6 +1,6 @@
-import protocol Library.ViewModelType
+import Library
 
-final class EmptyViewModel: ViewModelType {
+final class EmptyViewModel {
   typealias Model = Void
 
   static let shared = EmptyViewModel()

@@ -1,12 +1,11 @@
-import class UIKit.UITableView
-import class UIKit.UINib
+import UIKit
 
 public extension UITableView {
-  func registerCellClass(cellClass: AnyClass) {
+  public func registerCellClass <CellClass: UITableViewCell> (cellClass: CellClass.Type) {
     registerClass(cellClass, forCellReuseIdentifier: cellClass.description())
   }
 
-  func registerCellNibForClass(cellClass: AnyClass) {
+  public func registerCellNibForClass(cellClass: AnyClass) {
     let classNameWithoutModule = cellClass
       .description()
       .componentsSeparatedByString(".")

@@ -1,34 +1,44 @@
 import KsApi
 import ReactiveCocoa
+import Result
 import Models
-import protocol Library.ViewModelType
+import Library
 
-protocol HomePlaylistViewModelOutputs {
-  var title: String { get }
+internal protocol HomePlaylistViewModelInputs {
+  func playlist(playlist: Playlist)
 }
 
-final class HomePlaylistViewModel: ViewModelType, HomePlaylistViewModelOutputs {
-  typealias Model = Playlist
-  let playlist: Playlist
+internal protocol HomePlaylistViewModelOutputs {
+  var title: Signal<String?, NoError> { get }
+}
 
-  // MARK: Outputs
-  let title: String
+internal final class HomePlaylistViewModel: HomePlaylistViewModelInputs, HomePlaylistViewModelOutputs {
+
+  private let playlistProperty = MutableProperty<Playlist?>(nil)
+  internal func playlist(playlist: Playlist) {
+    self.playlistProperty.value = playlist
+  }
+
+  internal let title: Signal<String?, NoError>
+
+  var inputs: HomePlaylistViewModelInputs { return self }
   var outputs: HomePlaylistViewModelOutputs { return self }
 
-  init(playlist: Playlist) {
-    self.playlist = playlist
-
-    switch playlist {
-    case .Featured:
-      self.title = "Featured"
-    case .Recommended:
-      self.title = "Recommended"
-    case .Popular:
-      self.title = "What’s popular now"
-    case let .Category(category):
-      self.title = category.name
-    case let .CategoryFeatured(category):
-      self.title = category.name
+  init() {
+    self.title = self.playlistProperty.signal.ignoreNil()
+      .map { playlist in
+        switch playlist {
+        case .Featured:
+          return "Featured"
+        case .Recommended:
+          return "Recommended"
+        case .Popular:
+          return "What’s popular now"
+        case let .Category(category):
+          return category.name
+        case let .CategoryFeatured(category):
+          return category.name
+        }
     }
   }
 }

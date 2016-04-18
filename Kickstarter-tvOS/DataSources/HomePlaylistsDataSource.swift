@@ -1,24 +1,23 @@
 import Models
 import KsApi
-import class Library.MVVMDataSource
+import Library
 
-final class HomePlaylistsDataSource: MVVMDataSource {
+final class HomePlaylistsDataSource: ValueCellDataSource {
 
-  func load(viewModels: [HomePlaylistViewModel]) {
-    self.setData(viewModels,
-      cellClass: HomePlaylistCell.self,
-      inSection: 0
-    )
+  func load(values: [Playlist]) {
+    self.set(values: values,
+             cellClass: HomePlaylistCell.self,
+             inSection: 0)
   }
 
   override func registerClasses(collectionView collectionView: UICollectionView?) {
     collectionView?.registerCellNibForClass(HomePlaylistCell.self)
   }
 
-  override func configureCell(collectionCell cell: UICollectionViewCell, withViewModel viewModel: AnyObject) {
-    if let cell = cell as? HomePlaylistCell,
-      viewModel = viewModel as? HomePlaylistViewModel {
-        cell.viewModelProperty.value = viewModel
+  override func configureCell(collectionCell cell: UICollectionViewCell, withValue value: Any) {
+
+    if let cell = cell as? HomePlaylistCell, value = value as? Playlist {
+      cell.configureWith(value: value)
     }
   }
 }

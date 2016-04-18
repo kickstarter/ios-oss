@@ -1,40 +1,49 @@
-import class UIKit.UITableViewCell
-import class UIKit.UIImageView
-import class UIKit.UILabel
-import class UIKit.UIButton
-import protocol Library.ViewModeledCellType
+import UIKit
+import Library
 import ReactiveCocoa
+import Models
 
-internal final class ActivityFriendFollowCell: UITableViewCell, ViewModeledCellType {
-  internal let viewModelProperty = MutableProperty<ActivityFriendFollowViewModel?>(nil)
+internal final class ActivityFriendFollowCell: UITableViewCell, ValueCell {
+  private var viewModel: ActivityFriendFollowViewModel!
 
   @IBOutlet internal weak var friendImageView: UIImageView!
   @IBOutlet internal weak var friendLabel: UILabel!
   @IBOutlet internal weak var followButton: UIButton!
 
-  override func bindViewModel() {
-    super.bindViewModel()
+  override func awakeFromNib() {
+    super.awakeFromNib()
+    self.viewModel = ActivityFriendFollowViewModel()
 
-    self.viewModel.map { $0.outputs.friendImageURL }
+    self.viewModel.outputs.friendImageURL
       .observeForUI()
-      .on(next: { [weak self] _ in
-        self?.friendImageView.af_cancelImageRequest()
-        self?.friendImageView.image = nil
+      .on(next: { [weak friendImageView] _ in
+        friendImageView?.af_cancelImageRequest()
+        friendImageView?.image = nil
       })
       .ignoreNil()
-      .startWithNext { [weak self] url in
-        self?.friendImageView.af_setImageWithURL(url)
+      .observeNext { [weak friendImageView] url in
+        friendImageView?.af_setImageWithURL(url)
     }
 
-    self.friendLabel.rac_text <~ self.viewModel.map { $0.outputs.title }
-    self.followButton.rac_hidden <~ self.viewModel.map { $0.outputs.hideFollowButton }
+    self.viewModel.outputs.title
+      .observeForUI()
+      .observeNext { [weak friendLabel] title in
+        friendLabel?.text = title
+    }
 
-    self.viewModel.map { $0.outputs.title }
-      .startWithNext { print($0) }
+    self.viewModel.outputs.hideFollowButton
+      .observeForUI()
+      .observeNext { [weak followButton] hide in
+        followButton?.hidden = hide
+    }
+  }
+
+  func configureWith(value value: Activity) {
+    self.viewModel.inputs.activity(value)
   }
 
   @IBAction
   internal func followButtonPressed() {
-    self.viewModelProperty.value?.inputs.followButtonPressed()
+    self.viewModel.inputs.followButtonPressed()
   }
 }

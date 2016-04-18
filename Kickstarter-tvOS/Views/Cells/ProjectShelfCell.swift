@@ -3,16 +3,15 @@ import Models
 import Prelude
 import ReactiveCocoa
 import AlamofireImage
-import protocol Library.ViewModeledCellType
-import class Library.SimpleViewModel
-import enum Library.Format
+import Library
+import Library
 
 protocol ProjectShelfCellDelegate: class {
   func projectShelfTappedSave(cell: ProjectShelfCell)
   func projectShelfClickedMore(cell: ProjectShelfCell)
 }
 
-final class ProjectShelfCell: UICollectionViewCell, ViewModeledCellType {
+final class ProjectShelfCell: UICollectionViewCell, ValueCell {
   @IBOutlet private weak var projectNameLabel: UILabel!
   @IBOutlet private weak var categoryLabel: UILabel!
   @IBOutlet private weak var remindMeButton: UIButton!
@@ -21,16 +20,14 @@ final class ProjectShelfCell: UICollectionViewCell, ViewModeledCellType {
   @IBOutlet weak var percentageLabel: UILabel!
   @IBOutlet weak var downArrowLabel: UILabel!
 
-  let viewModelProperty = MutableProperty<SimpleViewModel<Project>?>(nil)
+  let viewModel = SimpleViewModel<Project>()
   weak var delegate: ProjectShelfCellDelegate?
 
   override func awakeFromNib() {
     super.awakeFromNib()
     self.downArrowLabel.text = "\u{f3d0}"
-  }
 
-  override func bindViewModel() {
-    let project = self.viewModel.map { $0.model }.observeForUI()
+    let project = self.viewModel.model
 
     self.projectNameLabel.rac_text <~ project.map { $0.name }
     self.categoryLabel.rac_text <~ project.map { $0.category.name }
@@ -39,16 +36,20 @@ final class ProjectShelfCell: UICollectionViewCell, ViewModeledCellType {
     project.map { p in CGFloat(p.fundingProgress) }
       .map(clamp(0.0, 1.0))
       .observeForUI()
-      .startWithNext { [weak self] progress in
+      .observeNext { [weak self] progress in
         guard let progressBarView = self?.progressBarView,
           progressContainerView = progressBarView.superview
-        else { return }
+          else { return }
 
         progressBarView.transform = CGAffineTransformMakeTranslation(
           (progress - 1.0) * progressContainerView.frame.width,
           0.0
         )
     }
+  }
+
+  func configureWith(value value: Project) {
+    self.viewModel.model(value)
   }
 
   override var preferredFocusedView: UIView? {

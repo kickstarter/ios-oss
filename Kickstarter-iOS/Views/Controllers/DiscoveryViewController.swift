@@ -1,8 +1,9 @@
+import Foundation
 import UIKit
 import Library
-import Foundation
+import Models
 
-internal final class DiscoveryViewController: MVVMTableViewController {
+internal final class DiscoveryViewController: UITableViewController {
   let viewModel: DiscoveryViewModelType = DiscoveryViewModel()
   let dataSource = DiscoveryProjectsDataSource()
 
@@ -42,31 +43,21 @@ internal final class DiscoveryViewController: MVVMTableViewController {
                           willDisplayCell cell: UITableViewCell,
                           forRowAtIndexPath indexPath: NSIndexPath) {
 
-    let (row, total) = rowAndTotal(tableView: tableView, indexPath: indexPath)
-    self.viewModel.inputs.willDisplayRow(row, outOf: total)
+    self.viewModel.inputs.willDisplayRow(self.dataSource.itemIndexAt(indexPath),
+                                         outOf: self.dataSource.numberOfItems())
   }
-}
 
-/**
- Returns the linear row index of an index path in a table view, and the total number of rows in the
- table view.
+  override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    guard let project = self.dataSource[indexPath] as? Project else {
+      return
+    }
+    guard let projectViewController = UIStoryboard(name: "Project", bundle: nil)
+      .instantiateInitialViewController() as? ProjectViewController else {
+        fatalError("Couldn't instantiate project view controller.")
+    }
 
- - parameter tableView: A table view.
- - parameter indexPath: An index path.
-
- - returns: The row and total.
- */
-private func rowAndTotal(tableView tableView: UITableView, indexPath: NSIndexPath) -> (row: Int, total: Int) {
-
-  let sections = (0..<tableView.numberOfSections).lazy
-
-  let total = sections
-    .map(UITableView.numberOfRowsInSection(tableView))
-    .reduce(0, combine: +)
-
-  let row = sections[0..<indexPath.section]
-    .map(UITableView.numberOfRowsInSection(tableView))
-    .reduce(indexPath.row, combine: +)
-
-  return (row, total)
+    projectViewController.configureWith(project: project)
+    let nav = UINavigationController(rootViewController: projectViewController)
+    self.presentViewController(nav, animated: true, completion: nil)
+  }
 }

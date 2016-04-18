@@ -1,25 +1,24 @@
-import class Library.MVVMDataSource
+import class Library.ValueCellDataSource
 import struct Models.Project
 import class UIKit.UITableViewCell
 
-internal final class DiscoveryProjectsDataSource: MVVMDataSource {
+internal final class DiscoveryProjectsDataSource: ValueCellDataSource {
 
   func loadData(projects: [Project]) {
-    self.clearData()
+    self.clearValues()
 
-    projects.map { DiscoveryProjectViewModel(project: $0) }
-      .forEach { viewModel in
-        self.appendSectionData(
-          [viewModel],
+    projects.forEach { project in
+        self.appendSection(
+          values: [project],
           cellClass: DiscoveryProjectCell.self
         )
     }
   }
 
-  override func configureCell(tableCell cell: UITableViewCell, withViewModel viewModel: AnyObject) {
+  override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
     if let cell = cell as? DiscoveryProjectCell,
-      viewModel = viewModel as? DiscoveryProjectViewModel {
-        cell.viewModelProperty.value = viewModel
+      project = value as? Project {
+      cell.configureWith(value: project)
     }
   }
 }

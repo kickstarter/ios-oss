@@ -1,39 +1,33 @@
 import UIKit
-import struct Models.Project
-import struct Models.Reward
-import class Library.MVVMDataSource
-import class Library.SimpleViewModel
+import Models
+import Library
 
-final class ProjectViewDataSource: MVVMDataSource {
+final class ProjectViewDataSource: ValueCellDataSource {
 
   func loadProject(project: Project) {
-    let projectViewModel = SimpleViewModel(model: project)
-    setData([projectViewModel],
-            cellClass: ProjectShelfCell.self,
-            inSection: 0
-    )
+    set(values: [project],
+        cellClass: ProjectShelfCell.self,
+        inSection: 0)
 
-    setData([projectViewModel],
-            cellClass: ProjectMoreInfoCell.self,
-            inSection: 1
-    )
+    set(values: [project],
+        cellClass: ProjectMoreInfoCell.self,
+        inSection: 1)
 
     if let rewards = project.rewards {
       let finalRewards = rewards
         .filter { r in !r.isNoReward }
         .sort()
 
-      setData([SimpleViewModel(model: finalRewards)],
-              cellClass: ProjectRewardsCollectionViewCell.self,
-              inSection: 2
-      )
+      set(values: [finalRewards],
+          cellClass: ProjectRewardsCollectionViewCell.self,
+          inSection: 2)
     }
   }
 
   func loadRecommendations(recommendations: [Project]) {
-    setData([SimpleViewModel(model: recommendations)],
-            cellClass: ProjectRecommendationsCell.self,
-            inSection: 3
+    set(values: [recommendations],
+        cellClass: ProjectRecommendationsCell.self,
+        inSection: 3
     )
   }
 
@@ -44,20 +38,20 @@ final class ProjectViewDataSource: MVVMDataSource {
     collectionView?.registerCellNibForClass(ProjectRecommendationsCell.self)
   }
 
-  override func configureCell(collectionCell cell: UICollectionViewCell, withViewModel viewModel: AnyObject) {
+  override func configureCell(collectionCell cell: UICollectionViewCell, withValue value: Any) {
 
-    switch (cell, viewModel) {
-    case let (cell as ProjectShelfCell, viewModel as SimpleViewModel<Project>):
-      cell.viewModelProperty.value = viewModel
-    case let (cell as ProjectMoreInfoCell, viewModel as SimpleViewModel<Project>):
-      cell.viewModelProperty.value = viewModel
-    case let (cell as ProjectRewardsCollectionViewCell, viewModel as SimpleViewModel<[Reward]>):
-      cell.viewModelProperty.value = viewModel
-    case let (cell as ProjectRecommendationsCell, viewModel as SimpleViewModel<[Project]>):
-      cell.viewModelProperty.value = viewModel
+    switch (cell, value) {
+    case let (cell as ProjectShelfCell, value as Project):
+      cell.configureWith(value: value)
+    case let (cell as ProjectMoreInfoCell, value as Project):
+      cell.configureWith(value: value)
+    case let (cell as ProjectRewardsCollectionViewCell, value as [Reward]):
+      cell.configureWith(value: value)
+    case let (cell as ProjectRecommendationsCell, value as [Project]):
+      cell.configureWith(value: value)
     default:
-      print("[MVVMDataSource] Potential error in \(self.dynamicType).configureCell: unhandled case of " +
-        "combo (\(cell.dynamicType), \(viewModel.dynamicType)). ")
+      fatalError("[ValueCellDataSource] Potential error in \(self.dynamicType).configureCell: unhandled " +
+        "case of combo (\(cell.dynamicType), \(value.dynamicType)).")
     }
   }
 }

@@ -1,9 +1,9 @@
-import class UIKit.NSCoder
-import class AVKit.AVPlayerViewController
-import class AVFoundation.AVPlayer
-import class Library.MVVMViewController
+import UIKit
+import AVKit
+import AVFoundation
+import Library
 
-final class ProjectPlayerViewController: MVVMViewController {
+final class ProjectPlayerViewController: UIViewController {
 
   let viewModel: ProjectPlayerViewModel
   let playerController = AVPlayerViewController()

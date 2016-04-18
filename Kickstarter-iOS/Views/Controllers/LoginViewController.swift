@@ -5,7 +5,7 @@ import UIKit
 import Library
 import Prelude
 
-internal final class LoginViewController: MVVMViewController {
+internal final class LoginViewController: UIViewController {
   @IBOutlet internal weak var emailTextField: UITextField!
   @IBOutlet internal weak var passwordTextField: UITextField!
   @IBOutlet internal weak var loginButton: BorderButton!
@@ -96,7 +96,7 @@ internal final class LoginViewController: MVVMViewController {
         fatalError("Couldn’t instantiate TwoFactorViewController.")
     }
 
-    tfaVC.initialize(email: email, password: password)
+    tfaVC.configureWith(email: email, password: password)
     self.navigationController?.pushViewController(tfaVC, animated: true)
   }
 
@@ -107,7 +107,7 @@ internal final class LoginViewController: MVVMViewController {
         fatalError("Couldn’t instantiate ResetPasswordViewController.")
     }
 
-    resetPasswordVC.initialize(email: emailTextField.text)
+    resetPasswordVC.configureWith(email: emailTextField.text)
     self.navigationController?.pushViewController(resetPasswordVC, animated: true)
   }
 

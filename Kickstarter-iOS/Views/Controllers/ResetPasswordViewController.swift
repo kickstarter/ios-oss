@@ -5,18 +5,14 @@ import ReactiveCocoa
 import Library
 import Prelude
 
-internal protocol ResetPasswordViewControllerType {
-  func initialize(email email: String?)
-}
-
-internal final class ResetPasswordViewController: MVVMViewController, ResetPasswordViewControllerType {
+internal final class ResetPasswordViewController: UIViewController {
 
   @IBOutlet weak var emailTextField: UITextField!
   @IBOutlet weak var resetPasswordButton: BorderButton!
 
   private let viewModel: ResetPasswordViewModelType = ResetPasswordViewModel()
 
-  internal func initialize(email email: String?) {
+  internal func configureWith(email email: String?) {
     guard let emailText = email else { return }
 
     self.viewModel.inputs.emailChanged(emailText)

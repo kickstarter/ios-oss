@@ -2,7 +2,7 @@ import Foundation
 import Library
 import UIKit
 
-internal final class ActivitiesViewController: MVVMTableViewController {
+internal final class ActivitiesViewController: UITableViewController {
   let viewModel: ActivitiesViewModelType = ActivitiesViewModel()
   let dataSource = ActivitiesDataSource()
 

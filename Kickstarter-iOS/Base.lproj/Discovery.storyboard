@@ -149,7 +149,6 @@
                                     <outlet property="fundingLabel" destination="gUE-TU-Haw" id="dDf-D0-NdC"/>
                                     <outlet property="projectImageView" destination="sH5-S5-8zF" id="fm2-ck-aKQ"/>
                                     <outlet property="projectNameLabel" destination="Yd4-MJ-fvW" id="L2p-3Y-P7X"/>
-                                    <segue destination="VX3-bD-CGG" kind="presentation" id="m7u-7L-WBI"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -184,14 +183,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3Rj-9E-Q4c" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="724" y="-767"/>
-        </scene>
-        <!--ProjectNavigationController-->
-        <scene sceneID="gzE-Qi-gOc">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Project" referencedIdentifier="ProjectNavigationController" id="VX3-bD-CGG" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="sra-BB-kR8" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1794.5" y="-767"/>
         </scene>
     </scenes>
     <resources>

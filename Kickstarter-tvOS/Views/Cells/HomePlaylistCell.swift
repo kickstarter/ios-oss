@@ -1,12 +1,11 @@
 import UIKit
 import ReactiveCocoa
-import protocol Library.ViewModeledCellType
+import Library
 
 private let focusedTitleColor = UIColor.whiteColor()
 private let unfocusedTitleColor = UIColor(white: 1.0, alpha: 0.5)
 
-final class HomePlaylistCell: UICollectionViewCell, ViewModeledCellType {
-
+final class HomePlaylistCell: UICollectionViewCell, ValueCell {
   @IBOutlet weak var titleLabel: UILabel!
   @IBOutlet weak var selectedIndicatorView: UIView!
 
@@ -18,16 +17,18 @@ final class HomePlaylistCell: UICollectionViewCell, ViewModeledCellType {
 
   static let unfocusedFont = UIFont.preferredFontForTextStyle(UIFontTextStyleBody)
 
-  let viewModelProperty = MutableProperty<HomePlaylistViewModel?>(nil)
+  private var viewModel = HomePlaylistViewModel()
 
   override func awakeFromNib() {
     super.awakeFromNib()
+
+    titleLabel.rac_text <~ self.viewModel.outputs.title
+
     render(focused: false)
   }
 
-  override func bindViewModel() {
-    super.bindViewModel()
-    titleLabel.rac_text <~ self.viewModel.map { $0.outputs.title }
+  func configureWith(value value: Playlist) {
+    self.viewModel.inputs.playlist(value)
   }
 
   override func didUpdateFocusInContext(context: UIFocusUpdateContext,

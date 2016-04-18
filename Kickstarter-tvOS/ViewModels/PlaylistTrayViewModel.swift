@@ -2,7 +2,7 @@ import ReactiveCocoa
 import Result
 import Models
 import KsApi
-import protocol Library.ViewModelType
+import Library
 
 protocol PlaylistTrayViewModelInputs {
 }
@@ -11,7 +11,7 @@ protocol PlaylistTrayViewModelOutputs {
   var playlists: SignalProducer<[Playlist], NoError> { get }
 }
 
-final class PlaylistTrayViewModel: ViewModelType, PlaylistTrayViewModelInputs, PlaylistTrayViewModelOutputs {
+final class PlaylistTrayViewModel: PlaylistTrayViewModelInputs, PlaylistTrayViewModelOutputs {
   typealias Model = Playlist
 
   var inputs: PlaylistTrayViewModelInputs { return self }

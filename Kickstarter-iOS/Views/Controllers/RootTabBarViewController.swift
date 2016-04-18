@@ -2,8 +2,7 @@ import UIKit
 import Library
 import Prelude
 
-internal final class RootTabBarViewController: MVVMTabBarController {
-
+internal final class RootTabBarViewController: UITabBarController {
   private let viewModel: RootViewModelType = RootViewModel()
 
   override func viewDidLoad() {

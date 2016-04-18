@@ -2,26 +2,25 @@ import UIKit
 import Models
 import AlamofireImage
 import ReactiveCocoa
-import protocol Library.ViewModeledCellType
-import class Library.SimpleViewModel
+import Library
 
-final class DiscoveryProjectCell: UICollectionViewCell, ViewModeledCellType {
+final class DiscoveryProjectCell: UICollectionViewCell, ValueCell {
 
   @IBOutlet private weak var projectImageView: UIImageView!
   @IBOutlet private weak var projectNameLabel: UILabel!
   @IBOutlet private weak var creatorLabel: UILabel!
 
-  let viewModelProperty = MutableProperty<SimpleViewModel<Project>?>(nil)
+  let viewModel = SimpleViewModel<Project>()
+
+  func configureWith(value value: Project) {
+    self.viewModel.model(value)
+  }
 
   override func awakeFromNib() {
     super.awakeFromNib()
     creatorLabel.hidden = true
-  }
 
-  override func bindViewModel() {
-    super.bindViewModel()
-
-    let project = self.viewModel.map { $0.model }
+    let project = self.viewModel.model
 
     projectNameLabel.rac_text <~ project.map { $0.name }
     creatorLabel.rac_text <~ project.map { $0.creator.name }
@@ -31,9 +30,9 @@ final class DiscoveryProjectCell: UICollectionViewCell, ViewModeledCellType {
       .on(next: { [weak self] _ in
         self?.projectImageView.af_cancelImageRequest()
         self?.projectImageView.image = nil
-      })
+        })
       .ignoreNil()
-      .startWithNext { [weak self] url in
+      .observeNext { [weak self] url in
         self?.projectImageView.af_setImageWithURL(url, imageTransition: .CrossDissolve(0.3))
     }
   }

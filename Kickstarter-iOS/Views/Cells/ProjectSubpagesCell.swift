@@ -1,7 +1,9 @@
-import class UIKit.UITableViewCell
-import protocol Library.ViewModeledCellType
-import class ReactiveCocoa.MutableProperty
+import UIKit
+import Library
+import ReactiveCocoa
+import Models
 
-internal final class ProjectSubpagesCell: UITableViewCell, ViewModeledCellType {
-  internal let viewModelProperty = MutableProperty<ProjectSubpagesViewModel?>(nil)
+internal final class ProjectSubpagesCell: UITableViewCell, ValueCell {
+  func configureWith(value value: Project) {
+  }
 }

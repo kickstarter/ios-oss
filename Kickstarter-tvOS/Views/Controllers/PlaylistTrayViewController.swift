@@ -1,13 +1,13 @@
 import UIKit
 import Models
-import class Library.MVVMViewController
+import Library
 
 protocol PlaylistTrayDelegate: class {
   func playlistTrayWantsToClose(controller: PlaylistTrayViewController)
   func playlistTray(controller: PlaylistTrayViewController, didSelectProject: Project, inPlaylist: Playlist)
 }
 
-class PlaylistTrayViewController: MVVMViewController {
+class PlaylistTrayViewController: UIViewController {
   weak var delegate: PlaylistTrayDelegate?
 
   @IBOutlet weak var titleLabel: UILabel!
@@ -51,7 +51,7 @@ class PlaylistTrayViewController: MVVMViewController {
     viewModel.outputs.playlists
       .observeForUI()
       .startWithNext { [weak self] playlists in
-        self?.dataSource.load(playlists.map(PlaylistsMenuViewModel.init))
+        self?.dataSource.load(playlists)
     }
   }
 

@@ -1,23 +1,22 @@
 import Prelude
-import class Library.MVVMDataSource
+import class Library.ValueCellDataSource
 
-final class PlaylistTrayDataSource: MVVMDataSource {
+final class PlaylistTrayDataSource: ValueCellDataSource {
 
   override func registerClasses(collectionView collectionView: UICollectionView?) {
     collectionView?.registerCellNibForClass(PlaylistTrayCell.self)
   }
 
-  func load(viewModels: [PlaylistsMenuViewModel]) {
-    for (idx, viewModel) in viewModels.enumerate() {
-      appendRowData(viewModel, cellClass: PlaylistTrayCell.self, toSection: idx)
+  func load(values: [Playlist]) {
+    for (idx, value) in values.enumerate() {
+      appendRow(value: value, cellClass: PlaylistTrayCell.self, toSection: idx)
     }
   }
 
-  override func configureCell(collectionCell cell: UICollectionViewCell, withViewModel viewModel: AnyObject) {
+  override func configureCell(collectionCell cell: UICollectionViewCell, withValue value: Any) {
 
-    if let cell = cell as? PlaylistTrayCell,
-      viewModel = viewModel as? PlaylistsMenuViewModel {
-        cell.viewModelProperty.value = viewModel
+    if let cell = cell as? PlaylistTrayCell, value = value as? Playlist {
+      cell.configureWith(value: value)
     }
   }
 }

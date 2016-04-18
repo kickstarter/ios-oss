@@ -1,10 +1,9 @@
 import UIKit
 import AVFoundation
-import struct Models.Project
-import class Library.MVVMViewController
-import class Library.AVPlayerView
+import Models
+import Library
 
-internal final class HomeViewController: MVVMViewController {
+internal final class HomeViewController: UIViewController {
   @IBOutlet private weak var overlayView: UIView!
   @IBOutlet private weak var videoPlayerView: AVPlayerView!
   @IBOutlet private weak var collectionView: UICollectionView!
@@ -37,6 +36,7 @@ internal final class HomeViewController: MVVMViewController {
 
   internal override func viewDidLoad() {
     super.viewDidLoad()
+    self.viewModel.inputs.viewDidLoad()
 
     self.iconsLabel.text = "\u{f215} \u{f210}"
 
@@ -70,12 +70,12 @@ internal final class HomeViewController: MVVMViewController {
 
   internal override func viewWillAppear(animated: Bool) {
     super.viewWillAppear(animated)
-    viewModel.inputs.isActive(true)
+    viewModel.inputs.viewWillAppear()
   }
 
   internal override func viewWillDisappear(animated: Bool) {
     super.viewWillDisappear(animated)
-    viewModel.inputs.isActive(false)
+    viewModel.inputs.viewWillDisappear()
   }
 
   internal override func bindViewModel() {
@@ -83,18 +83,18 @@ internal final class HomeViewController: MVVMViewController {
 
     self.viewModel.outputs.playlists
       .observeForUI()
-      .startWithNext { [weak self] data in
+      .observeNext { [weak self] data in
         self?.dataSource.load(data)
         self?.collectionView.reloadData()
     }
 
     self.viewModel.outputs.nowPlayingVideoUrl
       .observeForUI()
-      .startWithNext(self.playVideo)
+      .observeNext(self.playVideo)
 
     self.viewModel.outputs.nowPlayingProjectName
       .observeForUI()
-      .startWithNext(self.swapNowPlayingInfo)
+      .observeNext(self.swapNowPlayingInfo)
 
     self.viewModel.outputs.selectProject
       .observeForUI()
@@ -178,15 +178,15 @@ internal extension HomeViewController {
 
     guard let indexPath = context.nextFocusedIndexPath else { return }
 
-    if let viewModel = dataSource[indexPath] as? HomePlaylistViewModel {
-      self.viewModel.inputs.focusedPlaylist(viewModel.playlist)
+    if let playlist = dataSource[indexPath] as? Playlist {
+      self.viewModel.inputs.focusedPlaylist(playlist)
     }
   }
 
   internal func collectionView(collectionView: UICollectionView,
                                didSelectItemAtIndexPath indexPath: NSIndexPath) {
-    if let viewModel = dataSource[indexPath] as? HomePlaylistViewModel {
-      self.viewModel.inputs.clickedPlaylist(viewModel.playlist)
+    if let playlist = dataSource[indexPath] as? Playlist {
+      self.viewModel.inputs.clickedPlaylist(playlist)
     }
   }
 }

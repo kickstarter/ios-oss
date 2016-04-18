@@ -3,11 +3,10 @@ import ReactiveCocoa
 import Models
 import AlamofireImage
 import Prelude
-import protocol Library.ViewModeledCellType
-import class Library.SimpleViewModel
+import Library
 
-class ProjectCell: UICollectionViewCell, ViewModeledCellType {
-  let viewModelProperty = MutableProperty<SimpleViewModel<Project>?>(nil)
+class ProjectCell: UICollectionViewCell, ValueCell {
+  let viewModel = SimpleViewModel<Project>()
 
   @IBOutlet weak var imageView: UIImageView!
   @IBOutlet weak var projectNameLabel: UILabel!
@@ -16,8 +15,14 @@ class ProjectCell: UICollectionViewCell, ViewModeledCellType {
   @IBOutlet weak var categoryLabel: UILabel!
   @IBOutlet weak var focusedInfoView: UIView!
 
-  override func bindViewModel() {
-    let project = self.viewModel.map { $0.model }
+  func configureWith(value value: Project) {
+    self.viewModel.model(value)
+  }
+
+  override func awakeFromNib() {
+    super.awakeFromNib()
+
+    let project = self.viewModel.model
 
     project
       .map { NSURL(string: $0.photo.full) }
@@ -25,7 +30,7 @@ class ProjectCell: UICollectionViewCell, ViewModeledCellType {
       .skipRepeats()
       .on(next: { [weak self] _ in self?.imageView.image = nil })
       .observeForUI()
-      .startWithNext { [weak self] url in
+      .observeNext { [weak self] url in
         self?.imageView.af_setImageWithURL(url)
     }
 
@@ -33,7 +38,7 @@ class ProjectCell: UICollectionViewCell, ViewModeledCellType {
       .map { ($0.name, $0.category.name, $0.percentFunded) }
       .skipRepeats(==)
       .observeForUI()
-      .startWithNext { [weak self] (name, category, percentFunded) in
+      .observeNext { [weak self] (name, category, percentFunded) in
         self?.projectNameLabel.text = name
         self?.unfocusedProjectNameLabel.text = name
         self?.categoryLabel.text = category

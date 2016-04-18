@@ -39,7 +39,7 @@ internal protocol DiscoveryViewModelType {
   var outputs: DiscoveryViewModelOutputs { get }
 }
 
-internal final class DiscoveryViewModel: ViewModelType, DiscoveryViewModelType, DiscoveryViewModelInputs,
+internal final class DiscoveryViewModel: DiscoveryViewModelType, DiscoveryViewModelInputs,
 DiscoveryViewModelOutputs {
   typealias Model = ()
 

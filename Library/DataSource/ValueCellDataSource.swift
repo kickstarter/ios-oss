@@ -1,0 +1,202 @@
+import Foundation
+import UIKit
+
+/**
+ A type-safe wrapper around a two-dimensional array of values that can be used to provide a data source for
+ `UICollectionView`s and `UITableView`s. There is no direct access to the two-dimensional array, and instead
+ values can be appended via public methods that make sure the value you are add to the data source matches
+ the type of value the table/collection cell can handle.
+ */
+public class ValueCellDataSource: NSObject, UICollectionViewDataSource, UITableViewDataSource {
+  private var values: [[(value: Any, reusableId: String)]] = []
+
+  /**
+   Override this method to destructure `cell` and `value` in order to call the `configureWith(value:)` method
+   on the cell with the value. This method is called by the internals of `ValueCellDataSource`, it does not
+   need to be called directly.
+
+   - parameter cell:  A cell that is about to be displayed.
+   - parameter value: A value that is associated with the cell.
+   */
+  public func configureCell(collectionCell cell: UICollectionViewCell, withValue value: Any) {
+  }
+
+  /**
+   Override this method to destructure `cell` and `value` in order to call the `configureWith(value:)` method
+   on the cell with the value. This method is called by the internals of `ValueCellDataSource`, it does not
+   need to be called directly.
+
+   - parameter cell:  A cell that is about to be displayed.
+   - parameter value: A value that is associated with the cell.
+   */
+  public func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
+  }
+
+  /**
+   Override this to perform any registrations of cell classes and nibs. Call this method from your controller
+   before the data source is set on the collection view. If you are using prototype cells you do not need
+   to call this.
+
+   - parameter collectionView: A collection view that needs to have cells registered.
+   */
+  public func registerClasses(collectionView collectionView: UICollectionView?) {
+  }
+
+  /**
+   Override this to perform any registrations of cell classes and nibs. Call this method from your controller
+   before the data source is set on the table view. If you are using prototype cells you do not need
+   to call this.
+
+   - parameter tableView: A table view that needs to have cells registered.
+   */
+  public func registerClasses(tableView tableView: UITableView?) {
+  }
+
+  /**
+   Removes all values from the data source.
+   */
+  public final func clearValues() {
+    self.values = [[]]
+  }
+
+  /**
+   Adds a single value to the end of the section specified.
+
+   - parameter value:     A value to append.
+   - parameter cellClass: The type of cell associated with the value.
+   - parameter section:   The section to append the value to.
+   */
+  public final func appendRow <
+    Cell: ValueCell,
+    Value: Any
+    where
+    Cell.Value == Value>
+    (value value: Value, cellClass: Cell.Type, toSection section: Int) {
+
+    self.padValuesForSection(section)
+    self.values[section].append((value, Cell.defaultReusableId))
+  }
+
+  /**
+   Appends a section of values to the end of the data source.
+
+   - parameter values:    An array of values that make up the section.
+   - parameter cellClass: The type of cell associated with all the values.
+   */
+  public final func appendSection <
+    Cell: ValueCell,
+    Value: Any
+    where
+    Cell.Value == Value>
+    (values values: [Value], cellClass: Cell.Type) {
+
+    self.values.append(values.map { ($0, Cell.defaultReusableId) })
+  }
+
+  /**
+   Replaces a section with values.
+
+   - parameter values:    An array of values to replace the section with.
+   - parameter cellClass: The type of cell associated with the values.
+   - parameter section:   The section to replace.
+   */
+  public final func set <
+    Cell: ValueCell,
+    Value: Any
+    where
+    Cell.Value == Value>
+    (values values: [Value], cellClass: Cell.Type, inSection section: Int) {
+
+    self.padValuesForSection(section)
+    self.values[section] = values.map { ($0, Cell.defaultReusableId) }
+  }
+
+  /**
+   - parameter indexPath: An index path to retrieve a value.
+
+   - returns: The value at the index path given.
+   */
+  public final subscript(indexPath: NSIndexPath) -> Any {
+    return self.values[indexPath.section][indexPath.item].value
+  }
+
+  /**
+   - parameter section: The section to retrieve a value.
+   - parameter item:    The item to retrieve a value.
+
+   - returns: The value at the section, item given.
+   */
+  public final subscript(itemSection itemSection: (item: Int, section: Int)) -> Any {
+    return self.values[itemSection.section][itemSection.item].value
+  }
+
+  /**
+   - returns: The total number of items in the data source.
+   */
+  public final func numberOfItems() -> Int {
+    return self.values.reduce(0) { accum, section in accum + section.count }
+  }
+
+  /**
+   - parameter indexPath: An index path that we want to convert to a linear index.
+
+   - returns: A linear index representation of the index path.
+   */
+  public final func itemIndexAt(indexPath: NSIndexPath) -> Int {
+    return self.values[0..<indexPath.section]
+      .reduce(indexPath.item) { accum, section in accum + section.count }
+  }
+
+  // MARK: UICollectionViewDataSource methods
+
+  public final func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+    return self.values.count
+  }
+
+  public final func collectionView(collectionView: UICollectionView,
+                                   numberOfItemsInSection section: Int) -> Int {
+    return self.values[section].count
+  }
+
+  public final func collectionView(collectionView: UICollectionView,
+                                   cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+
+    let (value, reusableId) = self.values[indexPath.section][indexPath.item]
+
+    let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reusableId, forIndexPath: indexPath)
+
+    self.configureCell(collectionCell: cell, withValue: value)
+
+    return cell
+  }
+
+  // MARK: UITableViewDataSource methods
+
+  public final func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    return self.values.count
+  }
+
+  public final func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return self.values[section].count
+  }
+
+  public final func tableView(tableView: UITableView,
+                        cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+
+    let (value, reusableId) = self.values[indexPath.section][indexPath.row]
+
+    let cell = tableView.dequeueReusableCellWithIdentifier(reusableId, forIndexPath: indexPath)
+
+    self.configureCell(tableCell: cell, withValue: value)
+
+    return cell
+  }
+
+  private func padValuesForSection(section: Int) {
+    guard self.values.count <= section else { return }
+
+    (self.values.count...section).forEach { _ in
+      self.values.append([])
+    }
+  }
+}

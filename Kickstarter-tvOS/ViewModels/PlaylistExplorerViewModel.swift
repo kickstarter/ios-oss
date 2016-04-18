@@ -3,9 +3,7 @@ import ReactiveCocoa
 import Result
 import KsApi
 import Models
-import struct Library.Environment
-import struct Library.AppEnvironment
-import protocol Library.ViewModelType
+import Library
 
 protocol PlaylistExplorerViewModelInputs {
   /// Call when a playlist is focsed.
@@ -37,7 +35,7 @@ protocol PlaylistExplorerViewModelType {
   var outputs: PlaylistExplorerViewModelOutputs { get }
 }
 
-final class PlaylistExplorerViewModel: ViewModelType, PlaylistExplorerViewModelType,
+final class PlaylistExplorerViewModel: PlaylistExplorerViewModelType,
 PlaylistExplorerViewModelInputs, PlaylistExplorerViewModelOutputs {
   typealias Model = Playlist
   let playlist: Playlist

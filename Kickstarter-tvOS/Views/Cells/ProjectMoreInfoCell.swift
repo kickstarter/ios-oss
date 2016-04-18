@@ -3,7 +3,7 @@ import ReactiveCocoa
 import Models
 import Library
 
-class ProjectMoreInfoCell: UICollectionViewCell, ViewModeledCellType {
+class ProjectMoreInfoCell: UICollectionViewCell, ValueCell {
   @IBOutlet weak var creatorLabel: UILabel!
   @IBOutlet weak var projectNameLabel: UILabel!
   @IBOutlet weak var blurbLabel: UILabel!
@@ -14,19 +14,23 @@ class ProjectMoreInfoCell: UICollectionViewCell, ViewModeledCellType {
   @IBOutlet weak var toGoLabel: UILabel!
   @IBOutlet weak var backersCountLabel: UILabel!
 
-  let viewModelProperty = MutableProperty<SimpleViewModel<Project>?>(nil)
+  let viewModel = SimpleViewModel<Project>()
 
   override func awakeFromNib() {
     super.awakeFromNib()
   }
 
+  func configureWith(value value: Project) {
+    self.viewModel.model(value)
+  }
+
   override func bindViewModel() {
-    let project = self.viewModel.map { $0.model }
+    let project = self.viewModel.model
 
     project.map { $0.creator.name }
       .skipRepeats()
       .map(Strings.by_creator)
-      .startWithNext { [weak self] value in
+      .observeNext { [weak self] value in
         self?.creatorLabel.setHTML(value)
     }
     self.projectNameLabel.rac_text <~ project.map { $0.name }

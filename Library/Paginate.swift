@@ -9,7 +9,7 @@ import ReactiveExtensions
  specific to the type of pagination in which a page's results contains a cursor that can be used to request
  the next page of values.
 
- This function is generic over 4 parameters:
+ This function is generic over the following types:
 
  * `Value`:         The type of value that is being paginated, i.e. a single row, not the array of rows. The
                     value must be equatable.

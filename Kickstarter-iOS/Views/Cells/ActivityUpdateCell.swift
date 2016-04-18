@@ -1,15 +1,11 @@
-import class UIKit.UITableViewCell
-import class UIKit.UILabel
-import class UIKit.UIImageView
-import protocol Library.ViewModeledCellType
-import class ReactiveCocoa.MutableProperty
-import struct ReactiveCocoa.SignalProducer
+import UIKit
+import Library
 import ReactiveExtensions
 import ReactiveCocoa
-import struct Models.Activity
+import Models
 
-internal final class ActivityUpdateCell: UITableViewCell, ViewModeledCellType {
-  internal let viewModelProperty = MutableProperty<ActivityUpdateViewModel?>(nil)
+internal final class ActivityUpdateCell: UITableViewCell, ValueCell {
+  private var viewModel: ActivityUpdateViewModel!
 
   @IBOutlet weak var projectImageView: UIImageView!
   @IBOutlet weak var projectNameLabel: UILabel!
@@ -18,24 +14,53 @@ internal final class ActivityUpdateCell: UITableViewCell, ViewModeledCellType {
   @IBOutlet weak var titleLabel: UILabel!
   @IBOutlet weak var bodyLabel: UILabel!
 
-  override func bindViewModel() {
-    super.bindViewModel()
+  override func awakeFromNib() {
+    super.awakeFromNib()
+    self.viewModel = ActivityUpdateViewModel()
 
-    self.projectNameLabel.rac_text <~ self.viewModel.map { $0.outputs.projectName }
-    self.updateSequenceLabel.rac_text <~ self.viewModel.map { $0.outputs.sequenceTitle }
-    self.timestampLabel.rac_text <~ self.viewModel.map { $0.outputs.timestamp }
-    self.titleLabel.rac_text <~ self.viewModel.map { $0.outputs.title }
-    self.bodyLabel.rac_text <~ self.viewModel.map { $0.outputs.body }
-
-    self.viewModel.map { $0.projectImageURL }
+    self.viewModel.outputs.projectImageURL
       .observeForUI()
-      .on(next: { [weak self] _ in
-        self?.projectImageView.af_cancelImageRequest()
-        self?.projectImageView.image = nil
+      .on(next: { [weak projectImageView] _ in
+        projectImageView?.af_cancelImageRequest()
+        projectImageView?.image = nil
       })
       .ignoreNil()
-      .startWithNext { [weak self] url in
-        self?.projectImageView.af_setImageWithURL(url)
+      .observeNext { [weak projectImageView] url in
+        projectImageView?.af_setImageWithURL(url)
     }
+
+    self.viewModel.outputs.projectName
+      .observeForUI()
+      .observeNext { [weak projectNameLabel] name in
+        projectNameLabel?.text = name
+    }
+
+    self.viewModel.outputs.sequenceTitle
+      .observeForUI()
+      .observeNext { [weak updateSequenceLabel] sequence in
+        updateSequenceLabel?.text = sequence
+    }
+
+    self.viewModel.outputs.timestamp
+      .observeForUI()
+      .observeNext { [weak timestampLabel] timestamp in
+        timestampLabel?.text = timestamp
+    }
+
+    self.viewModel.outputs.title
+      .observeForUI()
+      .observeNext { [weak titleLabel] title in
+        titleLabel?.text = title
+    }
+
+    self.viewModel.outputs.body
+      .observeForUI()
+      .observeNext { [weak bodyLabel] body in
+        bodyLabel?.text = body
+    }
+  }
+
+  func configureWith(value value: Activity) {
+    self.viewModel.inputs.activity(value)
   }
 }

@@ -1,5 +1,5 @@
 import Models
-import class Library.MVVMDataSource
+import class Library.ValueCellDataSource
 
-class SearchDataSource: MVVMDataSource {
+class SearchDataSource: ValueCellDataSource {
 }

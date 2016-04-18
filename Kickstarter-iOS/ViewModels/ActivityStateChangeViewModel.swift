@@ -1,31 +1,55 @@
-import protocol Library.ViewModelType
-import struct Models.Activity
-import class Foundation.NSURL
-import enum Library.Format
+import Library
+import Models
+import Foundation
+import Library
+import ReactiveCocoa
+import Result
 
-internal protocol ActivityStateChangeViewModelOutputs {
-  var projectImageURL: NSURL? { get }
-  var projectName: String { get }
-  var fundingDate: String { get }
-  var pledgedTitle: String { get }
-  var pledgedSubtitle: String { get }
+internal protocol ActivityStateChangeViewModelInputs {
+  func activity(activity: Activity)
 }
 
-internal final class ActivityStateChangeViewModel: ViewModelType, ActivityStateChangeViewModelOutputs {
-  internal typealias Model = Activity
-  private let activity: Activity
+internal protocol ActivityStateChangeViewModelOutputs {
+  var projectImageURL: Signal<NSURL?, NoError> { get }
+  var projectName: Signal<String, NoError> { get }
+  var fundingDate: Signal<String, NoError> { get }
+  var pledgedTitle: Signal<String, NoError> { get }
+  var pledgedSubtitle: Signal<String, NoError> { get }
+}
 
-  // MARK: Outputs
-  internal lazy var projectImageURL: NSURL? = (self.activity.project?.photo.full).flatMap(NSURL.init)
-  internal lazy var projectName: String = "\(self.activity.project?.name ?? "") was successfully funded."
-  internal lazy var fundingDate = "Mar 2, 2016"
-  internal lazy var pledgedTitle: String = Format.currency(self.activity.project?.stats.pledged ?? 0,
-    country: self.activity.project?.country ?? .US)
-  internal lazy var pledgedSubtitle = "pledged of $10,000"
+internal final class ActivityStateChangeViewModel: ActivityStateChangeViewModelInputs,
+ActivityStateChangeViewModelOutputs {
 
+  private let activityProperty = MutableProperty<Activity?>(nil)
+  internal func activity(activity: Activity) {
+    self.activityProperty.value = activity
+  }
+
+  internal let projectImageURL: Signal<NSURL?, NoError>
+  internal let projectName: Signal<String, NoError>
+  internal let fundingDate: Signal<String, NoError>
+  internal let pledgedTitle: Signal<String, NoError>
+  internal let pledgedSubtitle: Signal<String, NoError>
+
+  internal var inputs: ActivityStateChangeViewModelInputs { return self }
   internal var outputs: ActivityStateChangeViewModelOutputs { return self }
 
-  internal init(activity: Activity) {
-    self.activity = activity
+  internal init() {
+    let activity = self.activityProperty.signal.ignoreNil()
+
+    self.projectImageURL = activity.map { ($0.project?.photo.full).flatMap(NSURL.init) }
+
+    self.projectName = activity.map { $0.project?.name ?? "" }
+
+    self.fundingDate = activity.mapConst("Mar 2, 2016")
+
+    self.pledgedTitle = activity.map {
+      Format.currency(
+        $0.project?.stats.pledged ?? 0,
+        country: $0.project?.country ?? .US
+      )
+    }
+
+    self.pledgedSubtitle = activity.mapConst("pledged of $10,000")
   }
 }

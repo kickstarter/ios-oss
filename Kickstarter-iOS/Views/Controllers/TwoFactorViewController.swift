@@ -5,12 +5,7 @@ import ReactiveCocoa
 import Library
 import Prelude
 
-internal protocol TwoFactorViewControllerType {
-  func initialize(email email: String, password: String)
-  func initialize(facebookAccessToken token: String)
-}
-
-internal final class TwoFactorViewController: MVVMViewController, TwoFactorViewControllerType {
+internal final class TwoFactorViewController: UIViewController {
 
   @IBOutlet weak var codeTextField: UITextField!
   @IBOutlet weak var resendButton: BorderButton!
@@ -62,11 +57,11 @@ internal final class TwoFactorViewController: MVVMViewController, TwoFactorViewC
       }
   }
 
-  internal func initialize(email email: String, password: String) {
+  internal func configureWith(email email: String, password: String) {
     self.viewModel.inputs.email(email, password: password)
   }
 
-  internal func initialize(facebookAccessToken token: String) {
+  internal func configureWith(facebookAccessToken token: String) {
     self.viewModel.inputs.facebookToken(token)
   }
 

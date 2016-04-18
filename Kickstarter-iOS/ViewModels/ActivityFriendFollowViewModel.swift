@@ -5,44 +5,43 @@ import Result
 import Library
 
 internal protocol ActivityFriendFollowViewModelInputs {
+  func activity(activity: Activity)
   func followButtonPressed()
 }
 
 internal protocol ActivityFriendFollowViewModelOutputs {
-  var friendImageURL: NSURL? { get }
-  var title: String { get }
-  var hideFollowButton: Bool { get }
+  var friendImageURL: Signal<NSURL?, NoError> { get }
+  var title: Signal<String, NoError> { get }
+  var hideFollowButton: Signal<Bool, NoError> { get }
 }
 
-internal final class ActivityFriendFollowViewModel: ViewModelType, ActivityFriendFollowViewModelInputs,
+internal final class ActivityFriendFollowViewModel: ActivityFriendFollowViewModelInputs,
 ActivityFriendFollowViewModelOutputs {
 
-  internal typealias Model = Activity
+  private let activityProperty = MutableProperty<Activity?>(nil)
+  internal func activity(activity: Activity) {
+    self.activityProperty.value = activity
+  }
 
-  private let activity: Activity
-
-  // MARK: Inputs
   private let followPressedProperty = MutableProperty()
   internal func followButtonPressed() {
     self.followPressedProperty.value = ()
   }
 
-  // MARK: Outputs
-  internal lazy var friendImageURL: NSURL? = (self.activity.user?.avatar.medium).flatMap(NSURL.init)
-  internal lazy var title: String = {
-    return "Your friend \(self.activity.user?.name ?? "") is following you!"
-  }()
-  internal lazy var hideFollowButton: Bool = false
+  internal let friendImageURL: Signal<NSURL?, NoError>
+  internal let title: Signal<String, NoError>
+  internal let hideFollowButton: Signal<Bool, NoError>
 
   internal var inputs: ActivityFriendFollowViewModelInputs { return self }
   internal var outputs: ActivityFriendFollowViewModelOutputs { return self }
 
-  internal init(activity: Activity) {
-    self.activity = activity
+  internal init() {
+    let activity = self.activityProperty.signal.ignoreNil()
 
-    self.followPressedProperty.signal
-      .observeNext { [weak self] _ in
-        print("You wanna follow \(self?.activity.user?.name ?? ""), huh?")
-    }
+    self.friendImageURL = activity.map { ($0.user?.avatar.medium).flatMap(NSURL.init) }
+
+    self.title = activity.map { "Your friend \($0.user?.name ?? "") is following you!" }
+
+    self.hideFollowButton = activity.mapConst(false)
   }
 }

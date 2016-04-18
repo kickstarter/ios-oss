@@ -1,6 +1,4 @@
-import protocol Library.ViewModelType
-import struct Models.Project
+import Models
 
-internal final class ProjectSubpagesViewModel: ViewModelType {
-  internal typealias Model = Project
+internal final class ProjectSubpagesViewModel {
 }

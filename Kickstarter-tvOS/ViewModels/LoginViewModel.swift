@@ -41,10 +41,10 @@ final class LoginViewModel: LoginViewModelInputs, LoginViewModelOutputs, LoginVi
   var errors: LoginViewModelErrors { return self }
 
   init(env: Environment = AppEnvironment.current) {
-    let apiService = env.apiService
-    let currentUser = env.currentUser
+    let _ = env.apiService
+    let _ = env.currentUser
 
-    let (loggedInSignal, loggedInObserver) = Signal<(), NoError>.pipe()
+    let (loggedInSignal, _) = Signal<(), NoError>.pipe()
     loggedIn = loggedInSignal
 
     let errors = MutableProperty<ErrorEnvelope?>(nil)
@@ -67,12 +67,6 @@ final class LoginViewModel: LoginViewModelInputs, LoginViewModelOutputs, LoginVi
       .map { ep in (email: ep.0, password: ep.1) }
 
     isValid <~ emailAndPassword.map(isValid)
-
-    emailAndPassword.takeWhen(loginPress)
-      .filter(isValid)
-      .flatMap { ep in
-        apiService.login(email: ep.0, password: ep.1, code: nil).demoteErrors(pipeErrorsTo: errors)
-    }
   }
 
   private func isValid(email: String, password: String) -> Bool {

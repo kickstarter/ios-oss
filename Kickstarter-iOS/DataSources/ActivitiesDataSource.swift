@@ -1,34 +1,31 @@
-import class Library.MVVMDataSource
-import struct Models.Activity
-import class UIKit.UITableView
-import class UIKit.UITableViewCell
+import Library
+import Models
+import UIKit
 
-internal final class ActivitiesDataSource: MVVMDataSource {
-
+internal final class ActivitiesDataSource: ValueCellDataSource {
   func loadData(activities: [Activity]) {
-
-    self.clearData()
+    self.clearValues()
 
     activities.forEach { activity in
       switch activity.category {
       case .Backing:
-        self.appendSectionData(
-          [ActivityFriendBackingViewModel(activity: activity)],
+        self.appendSection(
+          values: [activity],
           cellClass: ActivityFriendBackingCell.self
         )
       case .Update:
-        self.appendSectionData(
-          [ActivityUpdateViewModel(activity: activity)],
+        self.appendSection(
+          values: [activity],
           cellClass: ActivityUpdateCell.self
         )
       case .Follow:
-        self.appendSectionData(
-          [ActivityFriendFollowViewModel(activity: activity)],
+        self.appendSection(
+          values: [activity],
           cellClass: ActivityFriendFollowCell.self
         )
       case .Success:
-        self.appendSectionData(
-          [ActivityStateChangeViewModel(activity: activity)],
+        self.appendSection(
+          values: [activity],
           cellClass: ActivityStateChangeCell.self
         )
       default:
@@ -37,17 +34,17 @@ internal final class ActivitiesDataSource: MVVMDataSource {
     }
   }
 
-  override func configureCell(tableCell cell: UITableViewCell, withViewModel viewModel: AnyObject) {
+  override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
 
-    switch (cell, viewModel) {
-    case let (cell as ActivityUpdateCell, viewModel as ActivityUpdateViewModel):
-      cell.viewModelProperty.value = viewModel
-    case let (cell as ActivityFriendBackingCell, viewModel as ActivityFriendBackingViewModel):
-      cell.viewModelProperty.value = viewModel
-    case let (cell as ActivityFriendFollowCell, viewModel as ActivityFriendFollowViewModel):
-      cell.viewModelProperty.value = viewModel
-    case let (cell as ActivityStateChangeCell, viewModel as ActivityStateChangeViewModel):
-      cell.viewModelProperty.value = viewModel
+    switch (cell, value) {
+    case let (cell as ActivityUpdateCell, activity as Activity):
+      cell.configureWith(value: activity)
+    case let (cell as ActivityFriendBackingCell, activity as Activity):
+      cell.configureWith(value: activity)
+    case let (cell as ActivityFriendFollowCell, activity as Activity):
+      cell.configureWith(value: activity)
+    case let (cell as ActivityStateChangeCell, activity as Activity):
+      cell.configureWith(value: activity)
     default:
       assertionFailure("Unrecognized (cell, viewModel) combo.")
     }

@@ -1,25 +1,38 @@
-import class AVFoundation.AVAsset
-import func AVFoundation.CMTimeMakeWithSeconds
-import func Darwin.arc4random_uniform
+import AVFoundation
+import Darwin
 import UIKit
-import struct KsApi.DiscoveryParams
-import struct Models.Project
-import struct Prelude.SomeError
-import class ReactiveCocoa.Signal
-import struct ReactiveCocoa.SignalProducer
-import protocol ReactiveCocoa.DateSchedulerType
-import enum Result.NoError
-import protocol Library.ViewModelType
-import struct Library.Environment
-import struct Library.AppEnvironment
-import protocol Library.AssetImageGeneratorType
+import KsApi
+import Models
+import Prelude
+import ReactiveCocoa
+import Result
+import Library
+
+internal protocol PlaylistViewModelInputs {
+  /// Call when a pan gesture ends with the distance the gesture traveled
+  func swipeEnded(translation translation: CGPoint)
+}
+
+internal protocol PlaylistViewModelOutputs {
+  /// Emits when a new project should be transitioned too
+  var project: SignalProducer<Project, NoError> { get }
+
+  /// Emits a category name when the label on the screen should change.
+  var categoryName: SignalProducer<String, NoError> { get }
+
+  /// Emits a project name when the label on the screen should change.
+  var projectName: SignalProducer<String, NoError> { get }
+
+  /// Emits an image to be displayed in the background.
+  var backgroundImage: SignalProducer<UIImage?, NoError> { get }
+}
 
 internal protocol PlaylistViewModelType {
   var inputs: PlaylistViewModelInputs { get }
   var outputs: PlaylistViewModelOutputs { get }
 }
 
-internal final class PlaylistViewModel: ViewModelType, PlaylistViewModelType, PlaylistViewModelInputs,
+internal final class PlaylistViewModel: PlaylistViewModelType, PlaylistViewModelInputs,
 PlaylistViewModelOutputs {
   typealias Model = Playlist
 

@@ -1,9 +1,9 @@
 import UIKit
 import ReactiveCocoa
 import ReactiveExtensions
-import class Library.MVVMViewController
+import Library
 
-final class LoginViewController: MVVMViewController {
+final class LoginViewController: UIViewController {
 
   @IBOutlet private weak var emailTextField: UITextField!
   @IBOutlet private weak var passwordTextField: UITextField!

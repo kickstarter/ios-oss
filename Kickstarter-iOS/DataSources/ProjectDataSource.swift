@@ -1,49 +1,45 @@
-import class UIKit.UITableViewCell
-import class Library.MVVMDataSource
+import UIKit
+import Library
+import Models
 
-internal final class ProjectDataSource: MVVMDataSource {
+internal final class ProjectDataSource: ValueCellDataSource {
 
-  internal func loadData() {
-    self.clearData()
+  internal func loadProject(project: Project) {
+    self.clearValues()
 
-    self.appendRowData(
-      ProjectMainViewModel(),
+    self.appendRow(
+      value: project,
       cellClass: ProjectMainCell.self,
       toSection: 0
     )
-    self.appendRowData(
-      ProjectSubpagesViewModel(),
+    self.appendRow(
+      value: project,
       cellClass: ProjectSubpagesCell.self,
       toSection: 0
     )
-    self.appendRowData(
-      ProjectRewardViewModel(),
-      cellClass: ProjectRewardCell.self,
-      toSection: 0
-    )
-    self.appendRowData(
-      ProjectRewardViewModel(),
-      cellClass: ProjectRewardCell.self,
-      toSection: 0
-    )
-    self.appendRowData(
-      ProjectRewardViewModel(),
-      cellClass: ProjectRewardCell.self,
-      toSection: 0
+
+    let rewards = project.rewards
+      .coalesceWith([])
+      .filter { !$0.isNoReward }
+      .sort()
+
+    self.appendSection(
+      values: rewards,
+      cellClass: ProjectRewardCell.self
     )
   }
 
-  override func configureCell(tableCell cell: UITableViewCell, withViewModel viewModel: AnyObject) {
+  override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
 
-    switch (cell, viewModel) {
-    case let (cell as ProjectMainCell, viewModel as ProjectMainViewModel):
-      cell.viewModelProperty.value = viewModel
-    case let (cell as ProjectSubpagesCell, viewModel as ProjectSubpagesViewModel):
-      cell.viewModelProperty.value = viewModel
-    case let (cell as ProjectRewardCell, viewModel as ProjectRewardViewModel):
-      cell.viewModelProperty.value = viewModel
+    switch (cell, value) {
+    case let (cell as ProjectMainCell, value as Project):
+      cell.configureWith(value: value)
+    case let (cell as ProjectSubpagesCell, value as Project):
+      cell.configureWith(value: value)
+    case let (cell as ProjectRewardCell, value as Reward):
+      cell.configureWith(value: value)
     default:
-      assertionFailure("Unrecognized (\(cell.dynamicType), \(viewModel.dynamicType)) combo.")
+      assertionFailure("Unrecognized (\(cell.dynamicType), \(value.dynamicType)) combo.")
     }
   }
 }

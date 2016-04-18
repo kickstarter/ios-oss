@@ -21,22 +21,24 @@ final class HomeViewModelTests: XCTestCase {
 
       let viewModel = HomeViewModel()
 
-      let playlistsTest = TestObserver<[HomePlaylistViewModel], NoError>()
-      viewModel.outputs.playlists.start(playlistsTest.observer)
+      let playlistsTest = TestObserver<[Playlist], NoError>()
+      viewModel.outputs.playlists.observe(playlistsTest.observer)
 
       let nowPlayingTest = TestObserver<String?, NoError>()
-      viewModel.outputs.nowPlayingProjectName.start(nowPlayingTest.observer)
+      viewModel.outputs.nowPlayingProjectName.observe(nowPlayingTest.observer)
 
       let selectProjectTest = TestObserver<Project, NoError>()
       viewModel.outputs.selectProject.observe(selectProjectTest.observer)
 
+      viewModel.inputs.viewDidLoad()
+
       XCTAssert(playlistsTest.didEmitValue, "Right off the bat we should get some playlists to display.")
 
-      viewModel.inputs.isActive(true)
+      viewModel.inputs.viewWillAppear()
 
       guard let
-        playlist = playlistsTest.values.first?.first?.playlist,
-        otherPlaylist = playlistsTest.values.first?.last?.playlist
+        playlist = playlistsTest.values.first?.first,
+        otherPlaylist = playlistsTest.values.first?.last
       where playlist != otherPlaylist
       else {
         XCTAssert(false, "We should have gotten at least 2 different playlists back.")
@@ -95,7 +97,6 @@ final class HomeViewModelTests: XCTestCase {
       let interfaceImportanceTest = TestObserver<Bool, NoError>()
       viewModel.outputs.interfaceImportance.observe(interfaceImportanceTest.observer)
 
-      viewModel.outputs.playlists.start()
       viewModel.inputs.focusedPlaylist(.Featured)
 
       scheduler.advanceByInterval(1.5)

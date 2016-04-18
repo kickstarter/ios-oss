@@ -41,7 +41,7 @@ internal protocol ProjectViewModelType {
   var outputs: ProjectViewModelOutputs { get }
 }
 
-internal final class ProjectViewModel: ViewModelType, ProjectViewModelType, ProjectViewModelInputs,
+internal final class ProjectViewModel: ProjectViewModelType, ProjectViewModelInputs,
 ProjectViewModelOutputs {
   typealias Model = Project
 

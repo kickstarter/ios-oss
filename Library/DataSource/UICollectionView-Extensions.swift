@@ -1,12 +1,11 @@
-import class UIKit.UICollectionView
-import class UIKit.UINib
+import UIKit
 
 public extension UICollectionView {
-  func registerCellClass(cellClass: AnyClass) {
+  public func registerCellClass <CellClass: UICollectionViewCell> (cellClass: CellClass.Type) {
     registerClass(cellClass, forCellWithReuseIdentifier: cellClass.description())
   }
 
-  func registerCellNibForClass(cellClass: AnyClass) {
+  public func registerCellNibForClass(cellClass: AnyClass) {
     let classNameWithoutModule = cellClass
       .description()
       .componentsSeparatedByString(".")

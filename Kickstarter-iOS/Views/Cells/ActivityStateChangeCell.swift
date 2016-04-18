@@ -1,20 +1,12 @@
-import class UIKit.UIImage
-import class UIKit.UIColor
-import class UIKit.UITableViewCell
-import class UIKit.UIImageView
-import class UIKit.UILabel
-import protocol Library.ViewModeledCellType
+import UIKit
+import Library
 import ReactiveCocoa
 import AlamofireImage
-import class CoreImage.CIImage
-import var CoreImage.kCIInputImageKey
-import var CoreImage.kCIInputColorKey
-import var CoreImage.kCIInputIntensityKey
-import class CoreImage.CIFilter
-import class CoreImage.CIColor
+import CoreImage
+import Models
 
-internal final class ActivityStateChangeCell: UITableViewCell, ViewModeledCellType {
-  internal let viewModelProperty = MutableProperty<ActivityStateChangeViewModel?>(nil)
+internal final class ActivityStateChangeCell: UITableViewCell, ValueCell {
+  private var viewModel: ActivityStateChangeViewModel!
 
   @IBOutlet internal weak var projectImageView: UIImageView!
   @IBOutlet internal weak var projectNameLabel: UILabel!
@@ -22,23 +14,48 @@ internal final class ActivityStateChangeCell: UITableViewCell, ViewModeledCellTy
   @IBOutlet internal weak var pledgedTitleLabel: UILabel!
   @IBOutlet internal weak var pledgedSubtitleLabel: UILabel!
 
-  override func bindViewModel() {
-    super.bindViewModel()
+  override func awakeFromNib() {
+    super.awakeFromNib()
 
-    self.viewModel.map { $0.outputs.projectImageURL }
+    self.viewModel = ActivityStateChangeViewModel()
+
+    self.viewModel.outputs.projectImageURL
       .observeForUI()
-      .on(next: { [weak self] _ in
-        self?.projectImageView.af_cancelImageRequest()
-        self?.projectImageView.image = nil
+      .on(next: { [weak projectImageView] _ in
+        projectImageView?.af_cancelImageRequest()
+        projectImageView?.image = nil
       })
       .ignoreNil()
-      .startWithNext { [weak self] url in
-        self?.projectImageView.af_setImageWithURL(url)
+      .observeNext { [weak projectImageView] url in
+        projectImageView?.af_setImageWithURL(url)
     }
 
-    self.projectNameLabel.rac_text <~ self.viewModel.map { $0.outputs.projectName }
-    self.fundedSubtitleLabel.rac_text <~ self.viewModel.map { $0.outputs.fundingDate }
-    self.pledgedTitleLabel.rac_text <~ self.viewModel.map { $0.outputs.pledgedTitle }
-    self.pledgedSubtitleLabel.rac_text <~ self.viewModel.map { $0.outputs.pledgedSubtitle }
+    self.viewModel.outputs.projectName
+      .observeForUI()
+      .observeNext { [weak projectNameLabel] name in
+        projectNameLabel?.text = name
+    }
+
+    self.viewModel.outputs.fundingDate
+      .observeForUI()
+      .observeNext { [weak fundedSubtitleLabel] date in
+        fundedSubtitleLabel?.text = date
+    }
+
+    self.viewModel.outputs.pledgedTitle
+      .observeForUI()
+      .observeNext { [weak pledgedTitleLabel] title in
+        pledgedTitleLabel?.text = title
+    }
+
+    self.viewModel.outputs.pledgedSubtitle
+      .observeForUI()
+      .observeNext { [weak pledgedSubtitleLabel] title in
+        pledgedSubtitleLabel?.text = title
+    }
+  }
+
+  func configureWith(value value: Activity) {
+    self.viewModel.inputs.activity(value)
   }
 }

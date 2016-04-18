@@ -1,9 +1,9 @@
 import AVFoundation
 import struct Models.Project
 import UIKit
-import class Library.MVVMViewController
+import Library
 
-internal final class PlaylistViewController: MVVMViewController {
+internal final class PlaylistViewController: UIViewController {
   @IBOutlet private weak var categoryLabel: UILabel!
   @IBOutlet private weak var playlistLabel: UILabel!
   @IBOutlet private weak var projectLabel: UILabel!

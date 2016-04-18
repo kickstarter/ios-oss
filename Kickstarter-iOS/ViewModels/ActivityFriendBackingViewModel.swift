@@ -1,46 +1,68 @@
-import protocol Library.ViewModelType
-import struct Models.Activity
-import struct Library.Environment
-import struct Library.AppEnvironment
-import class Foundation.NSURL
-import func Library.localizedString
-import class ReactiveCocoa.Signal
-import enum Result.NoError
+import Library
+import Models
+import Library
+import Foundation
+import Library
+import ReactiveCocoa
+import Result
 
-internal protocol ActivityFriendBackingViewModelOutputs {
-  var friendImageURL: NSURL? { get }
-  var friendTitle: String { get }
-  var projectName: String { get }
-  var creatorName: String { get }
-  var projectImageURL: NSURL? { get }
+internal protocol ActivityFriendBackingViewModelInputs {
+  func activity(activity: Activity)
 }
 
-internal final class ActivityFriendBackingViewModel: ViewModelType, ActivityFriendBackingViewModelOutputs {
+internal protocol ActivityFriendBackingViewModelOutputs {
+  var friendImageURL: Signal<NSURL?, NoError> { get }
+  var friendTitle: Signal<String, NoError> { get }
+  var projectName: Signal<String, NoError> { get }
+  var creatorName: Signal<String, NoError> { get }
+  var projectImageURL: Signal<NSURL?, NoError> { get }
+}
 
-  internal typealias Model = Activity
-  private let activity: Activity
+internal protocol ActivityFriendBackingViewModelType {
+  var inputs: ActivityFriendBackingViewModelInputs { get }
+  var outputs: ActivityFriendBackingViewModelOutputs { get }
+}
 
-  // MARK: Outputs
-  internal lazy var friendImageURL: NSURL? = (self.activity.user?.avatar.medium).flatMap(NSURL.init)
-  internal lazy var friendTitle: String = localizedString(
-    key: "friend.title",
-    defaultValue: "%{friend_name} backed a %{category} project.",
-    substitutions: [
-      "friend_name": self.activity.user?.name ?? "",
-      "category": self.activity.project?.category.name ?? ""
-    ]
-  )
-  internal lazy var projectName: String = self.activity.project?.name ?? ""
-  internal lazy var creatorName: String = localizedString(
-    key: "by_creator",
-    defaultValue: "by %{creator_name}",
-    substitutions: ["creator_name": self.activity.project?.creator.name ?? ""]
-  )
-  internal lazy var projectImageURL: NSURL? = (self.activity.project?.photo.med).flatMap(NSURL.init)
+internal final class ActivityFriendBackingViewModel: ActivityFriendBackingViewModelType,
+ActivityFriendBackingViewModelInputs, ActivityFriendBackingViewModelOutputs {
 
+  private let activityProperty = MutableProperty<Activity?>(nil)
+  internal func activity(activity: Activity) {
+    self.activityProperty.value = activity
+  }
+
+  internal let friendImageURL: Signal<NSURL?, NoError>
+  internal let friendTitle: Signal<String, NoError>
+  internal let projectName: Signal<String, NoError>
+  internal let projectImageURL: Signal<NSURL?, NoError>
+  internal let creatorName: Signal<String, NoError>
+
+  internal var inputs: ActivityFriendBackingViewModelInputs { return self }
   internal var outputs: ActivityFriendBackingViewModelOutputs { return self }
 
-  internal init(activity: Activity, env: Environment = AppEnvironment.current) {
-    self.activity = activity
+  internal init() {
+    let activity = self.activityProperty.signal.ignoreNil()
+
+    self.friendImageURL = activity
+      .map { ($0.user?.avatar.medium).flatMap(NSURL.init) }
+
+
+    self.friendTitle = activity
+      .map { activity in
+        localizedString(
+          key: "friend.title",
+          defaultValue: "%{friend_name} backed a %{category} project.",
+          substitutions: [
+            "friend_name": activity.user?.name ?? "",
+            "category": activity.project?.category.name ?? ""
+          ]
+        )
+    }
+
+    self.projectName = activity.map { $0.project?.name ?? "" }
+
+    self.projectImageURL = activity.map { ($0.project?.photo.med).flatMap(NSURL.init) }
+
+    self.creatorName = activity.map { $0.project?.creator.name ?? "" }
   }
 }

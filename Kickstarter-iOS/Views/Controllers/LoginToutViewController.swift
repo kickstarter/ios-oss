@@ -1,22 +1,13 @@
 import ReactiveCocoa
-import class Foundation.NSError
-import class UIKit.UIButton
-import class UIKit.UIAlertController
-import class UIKit.UIAlertAction
-import class UIKit.UIBarButtonItem
-import protocol UIKit.UINavigationControllerDelegate
-import class MessageUI.MFMailComposeViewController
-import protocol MessageUI.MFMailComposeViewControllerDelegate
-import struct MessageUI.MFMailComposeResult
-import class Library.BorderButton
-import class Library.MVVMViewController
-import func Library.localizedString
-import enum Library.Color
-import class SafariServices.SFSafariViewController
-import struct KsApi.ServerConfig
+import Foundation
+import UIKit
+import MessageUI
+import Library
+import SafariServices
+import KsApi
 import Prelude
 
-internal final class LoginToutViewController: MVVMViewController, MFMailComposeViewControllerDelegate {
+internal final class LoginToutViewController: UIViewController, MFMailComposeViewControllerDelegate {
   @IBOutlet internal weak var loginButton: BorderButton!
   @IBOutlet internal weak var signupButton: BorderButton!
   @IBOutlet internal weak var helpButton: BorderButton!

@@ -2,66 +2,67 @@ import KsApi
 import ReactiveCocoa
 import Result
 import Models
-import struct Library.AppEnvironment
-import struct Library.Environment
-import protocol Library.ViewModelType
+import Library
 
 protocol PlaylistsMenuViewModelInputs {
+  func playlist(playlist: Playlist)
   func selectProject(project: Project)
 }
 
 protocol PlaylistsMenuViewModelOutputs {
-  var title: String { get }
-  var projects: SignalProducer<[Project], NoError> { get }
+  var title: Signal<String, NoError> { get }
+  var projects: Signal<[Project], NoError> { get }
   var selectedProjectAndPlaylist: Signal<(Project, Playlist), NoError> { get }
 }
 
-final class PlaylistsMenuViewModel: ViewModelType, PlaylistsMenuViewModelInputs,
+final class PlaylistsMenuViewModel: PlaylistsMenuViewModelInputs,
 PlaylistsMenuViewModelOutputs {
-  typealias Model = Playlist
-  let playlist: Playlist
 
-  // MARK: Inputs
-  let (selectProject, selectProjectObserver) = Signal<Project, NoError>.pipe()
-  func selectProject(project: Project) {
-    selectProjectObserver.sendNext(project)
+  private let playlistProperty = MutableProperty<Playlist?>(nil)
+  internal func playlist(playlist: Playlist) {
+    self.playlistProperty.value = playlist
   }
-  var inputs: PlaylistsMenuViewModelInputs { return self }
 
-  // MARK: Outputs
-  var title: String { return PlaylistsMenuViewModel.titleForPlaylist(playlist) }
-  let projects: SignalProducer<[Project], NoError>
+  private let selectProjectProperty = MutableProperty<Project?>(nil)
+  func selectProject(project: Project) {
+    self.selectProjectProperty.value = project
+  }
+
+  var title: Signal<String, NoError>
+  let projects: Signal<[Project], NoError>
   let selectedProjectAndPlaylist: Signal<(Project, Playlist), NoError>
+
+  var inputs: PlaylistsMenuViewModelInputs { return self }
   var outputs: PlaylistsMenuViewModelOutputs { return self }
 
-  convenience init(playlist: Playlist) {
-    self.init(playlist: playlist, env: AppEnvironment.current)
-  }
+  init() {
+    let playlist = self.playlistProperty.signal.ignoreNil()
 
-  init(playlist: Playlist, env: Environment = AppEnvironment.current) {
-    let apiService = env.apiService
+    self.title = playlist.map(titleForPlaylist)
 
-    self.playlist = playlist
-
-    self.projects = apiService.fetchProjects(self.playlist.discoveryParams)
-      .demoteErrors()
-
-    self.selectedProjectAndPlaylist = self.selectProject
-      .map { ($0, playlist) }
-  }
-
-  private static func titleForPlaylist(playlist: Playlist) -> String {
-    switch playlist {
-    case .Featured:
-      return "Featured"
-    case .Recommended:
-      return "Recommended"
-    case .Popular:
-      return "What’s popular now"
-    case let .Category(category):
-      return category.name
-    case let .CategoryFeatured(category):
-      return category.name
+    self.projects = playlist.switchMap {
+      AppEnvironment.current.apiService.fetchProjects($0.discoveryParams)
+        .demoteErrors()
     }
+
+    self.selectedProjectAndPlaylist = combineLatest(
+      self.selectProjectProperty.signal.ignoreNil(),
+      playlist
+    )
+  }
+}
+
+private func titleForPlaylist(playlist: Playlist) -> String {
+  switch playlist {
+  case .Featured:
+    return "Featured"
+  case .Recommended:
+    return "Recommended"
+  case .Popular:
+    return "What’s popular now"
+  case let .Category(category):
+    return category.name
+  case let .CategoryFeatured(category):
+    return category.name
   }
 }

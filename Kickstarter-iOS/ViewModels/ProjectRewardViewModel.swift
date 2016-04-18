@@ -1,6 +1,5 @@
-import protocol Library.ViewModelType
-import struct Models.Reward
+import Library
+import Models
 
-internal final class ProjectRewardViewModel: ViewModelType {
-  internal typealias Model = Reward
+internal final class ProjectRewardViewModel {
 }

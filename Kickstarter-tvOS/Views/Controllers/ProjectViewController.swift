@@ -2,10 +2,10 @@ import AVFoundation
 import struct Models.Project
 import Prelude
 import UIKit
-import class Library.MVVMViewController
+import Library
 import class Library.AVPlayerView
 
-final class ProjectViewController: MVVMViewController {
+final class ProjectViewController: UIViewController {
   @IBOutlet weak var collectionView: UICollectionView!
   @IBOutlet weak var gradientsView: UIView!
   @IBOutlet weak var videoPlayerView: AVPlayerView!
