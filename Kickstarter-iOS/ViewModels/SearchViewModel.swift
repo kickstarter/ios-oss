@@ -55,7 +55,11 @@ internal final class SearchViewModel: SearchViewModelType, SearchViewModelInputs
     let popular = query
       .filter { $0.isEmpty }
       .map(const(DiscoveryParams(sort: .Popular)))
-      .switchMap { AppEnvironment.current.apiService.fetchProjects($0).demoteErrors() }
+      .switchMap {
+        AppEnvironment.current.apiService.fetchProjects($0)
+          .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
+          .demoteErrors()
+    }
 
     let searchResults = query
       .switchMap { q in SignalProducer(value: q)
