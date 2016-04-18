@@ -13,4 +13,5 @@ excluded:
   - Frameworks/
   - Kickstarter-iOS.playground/
   - Kickstarter-tvOS.playground/
+  - Carthage/
 reporter: "xcode"
