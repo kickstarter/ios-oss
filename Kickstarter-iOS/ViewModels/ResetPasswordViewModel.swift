@@ -46,7 +46,6 @@ internal final class ResetPasswordViewModel: ResetPasswordViewModelType, ResetPa
   internal var outputs: ResetPasswordViewModelOutputs { return self }
   internal var errors: ResetPasswordViewModelErrors { return self }
 
-
   // MARK: ResetPasswordViewModelInputs
 
   private let viewDidLoadProperty = MutableProperty()
@@ -80,21 +79,7 @@ internal final class ResetPasswordViewModel: ResetPasswordViewModelType, ResetPa
 
   internal let showError: Signal<String, NoError>
 
-  // MARK: Constructor
   internal init() {
-    let resetErrors = MutableProperty<ErrorEnvelope?>(nil)
-
-    self.showError = resetErrors.signal.ignoreNil()
-      .map { envelope in
-        if envelope.httpCode == 404 {
-          return localizedString(key: "forgot_password.error",
-            defaultValue: "Sorry, we don't know that email address. Try again?")
-        } else {
-          return localizedString(key: "general.error.something_wrong",
-            defaultValue: "Something went wrong.")
-        }
-    }
-
     self.setEmailInitial = self.emailProperty.signal.ignoreNil()
       .takeWhen(viewDidLoadProperty.signal)
       .take(1)
@@ -106,17 +91,33 @@ internal final class ResetPasswordViewModel: ResetPasswordViewModelType, ResetPa
       .map(isValidEmail)
       .skipRepeats()
 
-    self.showResetSuccess = self.emailProperty.signal.ignoreNil()
+    let resetEvent = self.emailProperty.signal.ignoreNil()
       .takeWhen(resetButtonPressedProperty.signal)
       .switchMap { email in
         AppEnvironment.current.apiService.resetPassword(email: email)
-          .demoteErrors(pipeErrorsTo: resetErrors)
-          .map { _ in localizedString(
-            key: "forgot_password.we_sent_an_email_to_email_address_with_instructions_to_reset_your_password",
-            defaultValue: "We've sent an email to %{email} with instructions to reset your password.",
-            count: nil,
-            substitutions: ["email": email], env: AppEnvironment.current)
-      }
+          .mapConst(email)
+          .materialize()
+    }
+
+    self.showResetSuccess = resetEvent.values().map { email in
+      localizedString(
+        key: "forgot_password.we_sent_an_email_to_email_address_with_instructions_to_reset_your_password",
+        defaultValue: "We've sent an email to %{email} with instructions to reset your password.",
+        count: nil,
+        substitutions: ["email": email],
+        env: AppEnvironment.current
+      )
+    }
+
+    self.showError = resetEvent.errors()
+      .map { envelope in
+        if envelope.httpCode == 404 {
+          return localizedString(key: "forgot_password.error",
+            defaultValue: "Sorry, we don't know that email address. Try again?")
+        } else {
+          return localizedString(key: "general.error.something_wrong",
+            defaultValue: "Something went wrong.")
+        }
     }
 
     self.returnToLogin = self.confirmResetButtonPressedProperty.signal

@@ -126,7 +126,6 @@ internal final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMo
   // swiftlint:disable function_body_length
   internal init() {
     let isLoading = MutableProperty(false)
-    let loginErrors = MutableProperty<ErrorEnvelope?>(nil)
 
     let loginData = combineLatest(
       self.emailProperty.producer,
@@ -144,12 +143,14 @@ internal final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMo
       )
       .map(TfaData.init)
 
-    self.logIntoEnvironment = loginData
+    let loginEvent = loginData
       .takeWhen(self.submitPressedProperty.signal)
       .switchMap { data in
         login(data, apiService: AppEnvironment.current.apiService, isLoading: isLoading)
-          .demoteErrors(pipeErrorsTo: loginErrors)
-      }
+          .materialize()
+    }
+
+    self.logIntoEnvironment = loginEvent.values()
 
     self.resendSuccess = resendData
       .takeWhen(self.resendPressedProperty.signal)
@@ -170,13 +171,13 @@ internal final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMo
       ])
       .skipRepeats()
 
-    let codeMismatch = loginErrors.signal.ignoreNil()
+    let codeMismatch = loginEvent.errors()
       .filter { $0.ksrCode == .TfaFailed }
       .map { $0.errorMessages.first ??
         localizedString(key: "two_factor.error.message", defaultValue: "The code provided does not match.")
     }
 
-    let genericFail = loginErrors.signal.ignoreNil()
+    let genericFail = loginEvent.errors()
       .filter { $0.ksrCode != .TfaFailed }
       .map { $0.errorMessages.first ??
         localizedString(key: "login.errors.unable_to_log_in", defaultValue: "Unable to log in.")
@@ -196,7 +197,7 @@ internal final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMo
     self.resendPressedProperty.signal
       .observeNext { AppEnvironment.current.koala.trackTfaResendCode() }
 
-    loginErrors.signal.ignoreNil()
+    loginEvent.errors()
       .observeNext { _ in AppEnvironment.current.koala.trackLoginError() }
   }
   // swiftlint:enable function_body_length

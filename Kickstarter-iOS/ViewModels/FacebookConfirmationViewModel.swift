@@ -82,12 +82,7 @@ FacebookConfirmationViewModelErrors {
   internal let accountCreationFail: Signal<String, NoError>
 
   internal init() {
-    let signupErrors = MutableProperty<ErrorEnvelope?>(nil)
 
-    accountCreationFail = signupErrors.signal.ignoreNil()
-      .map { envelope in envelope.errorMessages.first ??
-        localizedString(key: "signup.error.something_wrong", defaultValue: "Something went wrong.")
-      }
 
     displayEmail = self.emailProperty.signal
       .takeWhen(self.viewWillAppearProperty.signal)
@@ -95,13 +90,19 @@ FacebookConfirmationViewModelErrors {
     sendNewsletters = self.sendNewslettersToggledProperty.signal
       .mergeWith(self.viewWillAppearProperty.signal.mapConst(true))
 
-    newAccountSuccess = combineLatest(self.facebookTokenProperty.signal, sendNewsletters)
+    let signupEvent = combineLatest(self.facebookTokenProperty.signal, sendNewsletters)
       .takeWhen(self.createAccountButtonProperty.signal)
       .switchMap { token, newsletter in
         AppEnvironment.current.apiService.signup(facebookAccessToken: token, sendNewsletters: newsletter)
-          .demoteErrors(pipeErrorsTo: signupErrors)
-      }
-      .ignoreValues()
+          .materialize()
+    }
+
+    self.newAccountSuccess = signupEvent.values().ignoreValues()
+
+    self.accountCreationFail = signupEvent.errors()
+      .map { envelope in envelope.errorMessages.first ??
+        localizedString(key: "signup.error.something_wrong", defaultValue: "Something went wrong.")
+    }
 
     showLogin = self.loginButtonPressedProperty.signal
 

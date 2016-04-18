@@ -87,7 +87,6 @@ CommentDialogViewModelOutputs, CommentDialogViewModelErrors {
 
   internal init() {
     let isLoading = MutableProperty(false)
-    let errors = MutableProperty<ErrorEnvelope?>(nil)
 
     let project = self.projectProperty.signal.ignoreNil()
 
@@ -98,7 +97,7 @@ CommentDialogViewModelOutputs, CommentDialogViewModelErrors {
       ])
       .skipRepeats()
 
-    self.commentPostedSuccessfully = combineLatest(project, self.commentBodyProperty.signal)
+    let commentPostedEvent = combineLatest(project, self.commentBodyProperty.signal)
       .takeWhen(self.postButtonPressedProperty.signal)
       .switchMap { project, body in
         AppEnvironment.current.apiService.postComment(body, toProject: project)
@@ -109,9 +108,10 @@ CommentDialogViewModelOutputs, CommentDialogViewModelErrors {
             terminated: {
               isLoading.value = false
           })
-          .demoteErrors(pipeErrorsTo: errors)
+          .materialize()
       }
-      .ignoreValues()
+
+    self.commentPostedSuccessfully = commentPostedEvent.values().ignoreValues()
 
     self.commentIsPosting = isLoading.signal
 
@@ -120,7 +120,7 @@ CommentDialogViewModelOutputs, CommentDialogViewModelErrors {
       self.commentPostedSuccessfully
       ])
 
-    self.presentError = errors.signal.ignoreNil()
+    self.presentError = commentPostedEvent.errors()
       .map { env in
         env.errorMessages.first ??
           localizedString(key: "comments.dialog.generic_error",

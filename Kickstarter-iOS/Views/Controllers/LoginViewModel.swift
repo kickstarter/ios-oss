@@ -120,39 +120,39 @@ LoginViewModelErrors {
   internal let tfaChallenge: Signal<(email: String, password: String), NoError>
 
   init() {
-    let loginErrors = MutableProperty<ErrorEnvelope?>(nil)
-
     let emailAndPassword = self.email.signal.ignoreNil()
       .combineLatestWith(self.password.signal.ignoreNil())
 
-    let tfaError = loginErrors.signal.ignoreNil()
+    self.isFormValid = self.viewWillAppearProperty.signal.mapConst(false).take(1)
+      .mergeWith(emailAndPassword.map(isValid))
+
+    let loginEvent = emailAndPassword
+      .takeWhen(self.loginButtonPressedProperty.signal)
+      .switchMap { ep in
+        AppEnvironment.current.apiService.login(email: ep.0, password: ep.1, code: nil)
+          .materialize()
+    }
+
+    self.logIntoEnvironment = loginEvent.values()
+
+    let tfaError = loginEvent.errors()
       .filter { $0.ksrCode == .TfaRequired }
       .ignoreValues()
 
     self.tfaChallenge = emailAndPassword
       .takeWhen(tfaError)
 
-    self.isFormValid = self.viewWillAppearProperty.signal.mapConst(false).take(1)
-      .mergeWith(emailAndPassword.map(isValid))
-
-    self.logIntoEnvironment = emailAndPassword
-      .takeWhen(self.loginButtonPressedProperty.signal)
-      .switchMap { ep in
-        AppEnvironment.current.apiService.login(email: ep.0, password: ep.1, code: nil)
-          .demoteErrors(pipeErrorsTo: loginErrors)
-      }
-
     self.postNotification = self.environmentLoggedInProperty.signal
       .mapConst(NSNotification(name: CurrentUserNotifications.sessionStarted, object: nil))
     self.dismissKeyboard = self.passwordTextFieldDoneEditingProperty.signal
     self.passwordTextFieldBecomeFirstResponder = self.emailTextFieldDoneEditingProperty.signal
 
-    self.showError = loginErrors.signal.ignoreNil()
+    self.showError = loginEvent.errors()
       .filter { $0.ksrCode != .TfaRequired }
       .map { env in
         env.errorMessages.first ??
           localizedString(key: "login.errors.unable_to_log_in", defaultValue: "Unable to log in.")
-      }
+    }
 
     self.showResetPassword = self.resetPasswordPressedProperty.signal
 
@@ -165,5 +165,5 @@ LoginViewModelErrors {
 }
 
 private func isValid(email email: String, password: String) -> Bool {
-  return !email.characters.isEmpty && !password.characters.isEmpty
+  return isValidEmail(email) && !password.characters.isEmpty
 }
