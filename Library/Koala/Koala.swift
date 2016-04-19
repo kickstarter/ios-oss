@@ -253,7 +253,7 @@ private func projectProperties(project: Project,
 
   let now = NSDate().timeIntervalSince1970
   properties["hours_remaining"] = Int(ceil(max(0.0, (project.dates.deadline - now) / 3_600.0)))
-  properties["duration"] = Int(project.dates.deadline - project.dates.launchedAt)
+  properties["duration"] = Int(round(project.dates.deadline - project.dates.launchedAt))
 
   properties["category"] = project.category.name
   properties["parent_category"] = project.category.parent?.name

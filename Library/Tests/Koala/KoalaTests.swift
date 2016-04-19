@@ -106,7 +106,7 @@ final class KoalaTests: XCTestCase {
     XCTAssertEqual(project.stats.backersCount, properties["project_backers_count"] as? Int)
 
     XCTAssertEqual(24 * 15, properties["project_hours_remaining"] as? Int)
-    XCTAssertNotEqualWithAccuracy(60.0 * 60.0 * 24.0 * 30.0, properties["project_duration"] as! Double, 0.001)
+    XCTAssertEqual(60 * 60 * 24 * 30, properties["project_duration"] as? Double)
 
     XCTAssertEqual("discovery", properties["ref_tag"] as? String)
     XCTAssertEqual("recommended", properties["referrer_credit"] as? String)
