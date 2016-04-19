@@ -163,7 +163,7 @@ public final class Koala {
   }
 
   public func trackProjectStar(project: Project) {
-    guard let isStarred = project.isStarred else { return }
+    guard let isStarred = project.personalization.isStarred else { return }
 
     let event = isStarred ? "Project Star" : "Project Unstar"
     self.track(event: event, properties: projectProperties(project, loggedInUser: self.loggedInUser))
@@ -263,8 +263,8 @@ private func projectProperties(project: Project,
   var loggedInUserProperties: [String:AnyObject] = [:]
   if let user = loggedInUser {
     loggedInUserProperties["user_is_project_creator"] = project.creator.id == user.id
-    loggedInUserProperties["user_is_backer"] = project.isBacking ?? false
-    loggedInUserProperties["user_has_starred"] = project.isStarred ?? false
+    loggedInUserProperties["user_is_backer"] = project.personalization.isBacking
+    loggedInUserProperties["user_has_starred"] = project.personalization.isStarred
   }
 
   return properties.prefixedKeys(prefix)

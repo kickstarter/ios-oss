@@ -129,7 +129,7 @@ ProjectViewModelOutputs {
     self.project = Signal.merge([refreshedProject, projectOnStarToggle])
 
     self.showProjectStarredPrompt = projectOnStarToggle
-      .filter { $0.isStarred == true && !$0.endsIn48Hours }
+      .filter { $0.personalization.isStarred == true && !$0.endsIn48Hours }
       .ignoreValues()
 
     self.showLoginTout = loggedOutUserTappedStar

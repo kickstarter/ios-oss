@@ -107,26 +107,26 @@ CommentsViewModelOutputs {
 
     self.loggedOutEmptyStateVisible = combineLatest(project, self.comments)
       .map { project, comments in
-        project.isBacking == nil && comments.isEmpty
+        project.personalization.isBacking == nil && comments.isEmpty
       }
       .skipWhile { visible in !visible }
       .skipRepeats()
 
     self.nonBackerEmptyStateVisible = combineLatest(project, self.comments)
       .map { project, comments in
-        project.isBacking == false && comments.isEmpty
+        project.personalization.isBacking == false && comments.isEmpty
       }
       .skipWhile { visible in !visible }
       .skipRepeats()
 
     self.backerEmptyStateVisible = combineLatest(project, self.comments)
       .map { project, comments in
-        project.isBacking == true && comments.isEmpty
+        project.personalization.isBacking == true && comments.isEmpty
       }
       .skipWhile { visible in !visible }
       .skipRepeats()
 
-    self.commentButtonVisible = project.map { $0.isBacking == true }.skipRepeats()
+    self.commentButtonVisible = project.map { $0.personalization.isBacking == true }.skipRepeats()
 
     self.postCommentDialogPresented = Signal.merge([
       self.commentButtonPressedProperty.signal.mapConst(true),

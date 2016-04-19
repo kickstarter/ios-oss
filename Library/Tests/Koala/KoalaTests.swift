@@ -122,7 +122,7 @@ final class KoalaTests: XCTestCase {
 
   func testProjectProperties_LoggedInUser() {
     let client = MockTrackingClient()
-    let project = ProjectFactory.live()
+    let project = ProjectFactory.personalized
     let loggedInUser = UserFactory.otherUser
     let koala = Koala(client: client, loggedInUser: loggedInUser)
 
@@ -170,7 +170,7 @@ final class KoalaTests: XCTestCase {
 
   func testProjectProperties_LoggedInCreator() {
     let client = MockTrackingClient()
-    let project = ProjectFactory.live()
+    let project = ProjectFactory.personalized
     let loggedInUser = project.creator
     let koala = Koala(client: client, loggedInUser: loggedInUser)
 

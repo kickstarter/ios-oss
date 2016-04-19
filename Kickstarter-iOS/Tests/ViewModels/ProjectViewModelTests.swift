@@ -13,7 +13,7 @@ import Result
 internal final class ProjectViewModelTests: TestCase {
   let vm: ProjectViewModelType = ProjectViewModel()
   let project = TestObserver<Project, NoError>()
-  let projectIsStarred = TestObserver<Bool, NoError>()
+  let projectIsStarred = TestObserver<Bool?, NoError>()
   let showLoginTout = TestObserver<(), NoError>()
   let showProjectStarredPrompt = TestObserver<(), NoError>()
 
@@ -21,7 +21,7 @@ internal final class ProjectViewModelTests: TestCase {
     super.setUp()
 
     self.vm.outputs.project.observe(self.project.observer)
-    self.vm.outputs.project.map { $0.isStarred ?? false }.observe(self.projectIsStarred.observer)
+    self.vm.outputs.project.map { $0.personalization.isStarred }.observe(self.projectIsStarred.observer)
     self.vm.outputs.showLoginTout.observe(self.showLoginTout.observer)
     self.vm.outputs.showProjectStarredPrompt.observe(self.showProjectStarredPrompt.observer)
   }
