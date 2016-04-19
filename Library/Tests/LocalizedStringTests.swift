@@ -29,6 +29,20 @@ class LocalizedStringTests: XCTestCase {
     }
   }
 
+  func testMissingKeyWithCount() {
+    withEnvironment(language: .en, mainBundle: MockBundle()) {
+      XCTAssertEqual(
+        "10 backers",
+        localizedString(
+          key: "missing.key",
+          defaultValue: "%{count} backers",
+          count: 10,
+          substitutions: ["count": "10"]
+        )
+      )
+    }
+  }
+
   func testSimpleSubstitution() {
     let rawString = "Hello %{name}, it's %{temp} degrees out today."
     let subString = substitute(rawString, with: ["name": "Brandon", "temp": "100"])

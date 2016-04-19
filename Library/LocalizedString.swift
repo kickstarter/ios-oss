@@ -27,9 +27,9 @@ substitutions: [String:String] = [:], env: Environment = AppEnvironment.current)
     .optionalFilter {
       // NB: `localizedStringForKey` has the annoying habit of returning the key when the key doesn't exist.
       // We filter those out and hope that we never use a value that is equal to its key.
-      $0.caseInsensitiveCompare(key) != .OrderedSame
+      $0.caseInsensitiveCompare(augmentedKey) != .OrderedSame
     }
-    .optionalFilter { $0 != "" }
+    .optionalFilter { !$0.isEmpty }
     .coalesceWith(defaultValue)
 
   return substitute(localized, with: substitutions)
