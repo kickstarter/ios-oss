@@ -74,6 +74,8 @@
 		9DE6C0571C9B5C7700FCC7B1 /* SearchViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DE6C0561C9B5C7700FCC7B1 /* SearchViewModelTests.swift */; };
 		9DE6C07B1C9B5C8600FCC7B1 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D39C0461C9B5662004E0943 /* SearchViewModel.swift */; };
 		9DE6C0891C9B5FCA00FCC7B1 /* (null) in Sources */ = {isa = PBXBuildFile; };
+		A71356E91CC6AAE1007C3C23 /* ReactiveExtensions_TestHelpers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A782BAB21C9F5EBA007B13C8 /* ReactiveExtensions_TestHelpers.framework */; };
+		A71356EC1CC6AAEE007C3C23 /* KsApi_TestHelpers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A782BA9C1C9F5EBA007B13C8 /* KsApi_TestHelpers.framework */; };
 		A71404391CAF215900A2795B /* KeyValueStoreType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71404381CAF215900A2795B /* KeyValueStoreType.swift */; };
 		A714043A1CAF215900A2795B /* KeyValueStoreType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71404381CAF215900A2795B /* KeyValueStoreType.swift */; };
 		A714051E1CAF631C00A2795B /* CommentDialogViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A714051D1CAF631C00A2795B /* CommentDialogViewModel.swift */; };
@@ -572,6 +574,20 @@
 			proxyType = 1;
 			remoteGlobalIDString = CA43C6621BB35FCF00C180DA;
 			remoteInfo = "ReactiveExtensions-tvOS";
+		};
+		A71356BC1CC6AAD9007C3C23 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8075722D1C88DD8A00E7DA8A /* ReactiveExtensions.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = A7DB1D4C1C9F4FD7008244DA;
+			remoteInfo = "ReactiveExtensions-TestHelpers-tvOS";
+		};
+		A71356EA1CC6AAE7007C3C23 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A7D1F8E41C84FB55000D41D5 /* KsApi.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = A7DB1D971C9F5848008244DA;
+			remoteInfo = "KsApi-TestHelpers-tvOS";
 		};
 		A75511471C8642B3005355CF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1499,6 +1515,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A71356EC1CC6AAEE007C3C23 /* KsApi_TestHelpers.framework in Frameworks */,
+				A71356E91CC6AAE1007C3C23 /* ReactiveExtensions_TestHelpers.framework in Frameworks */,
 				A7B694811C87F52900C49A4F /* Library.framework in Frameworks */,
 				A7B6947C1C87F22400C49A4F /* Prelude.framework in Frameworks */,
 				A7B694361C87A07B00C49A4F /* HockeySDK.framework in Frameworks */,
@@ -2394,6 +2412,8 @@
 			buildRules = (
 			);
 			dependencies = (
+				A71356EB1CC6AAE7007C3C23 /* PBXTargetDependency */,
+				A71356BD1CC6AAD9007C3C23 /* PBXTargetDependency */,
 				A7B694801C87F51900C49A4F /* PBXTargetDependency */,
 			);
 			name = "Library-tvOSTests";
@@ -3684,6 +3704,16 @@
 			isa = PBXTargetDependency;
 			name = "ReactiveExtensions-tvOS";
 			targetProxy = 80FE73151C88F29E00BE0137 /* PBXContainerItemProxy */;
+		};
+		A71356BD1CC6AAD9007C3C23 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "ReactiveExtensions-TestHelpers-tvOS";
+			targetProxy = A71356BC1CC6AAD9007C3C23 /* PBXContainerItemProxy */;
+		};
+		A71356EB1CC6AAE7007C3C23 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "KsApi-TestHelpers-tvOS";
+			targetProxy = A71356EA1CC6AAE7007C3C23 /* PBXContainerItemProxy */;
 		};
 		A75511481C8642B3005355CF /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
