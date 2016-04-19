@@ -188,7 +188,7 @@ private func cookieFromRefTag(refTag: RefTag, project: Project) -> NSHTTPCookie?
   properties[NSHTTPCookieDomain]  = NSURL(string: project.urls.web.project)?.host
   properties[NSHTTPCookiePath]    = NSURL(string: project.urls.web.project)?.path
   properties[NSHTTPCookieVersion] = 0
-  properties[NSHTTPCookieExpires] = NSDate(timeIntervalSince1970: project.deadline)
+  properties[NSHTTPCookieExpires] = NSDate(timeIntervalSince1970: project.dates.deadline)
 
   return NSHTTPCookie(properties: properties)
 }
