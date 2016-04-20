@@ -39,7 +39,7 @@ class PlaylistExplorerViewController: UIViewController {
 
     self.projectsCollectionView.contentInset = UIEdgeInsetsMake(0.0, 80.0, 0.0, 80.0)
 
-    let tap = UITapGestureRecognizer(target: self, action: #selector(PlaylistExplorerViewController.tap(_:)))
+    let tap = UITapGestureRecognizer(target: self, action: #selector(tap(_:)))
     tap.allowedPressTypes = [UIPressType.Menu.rawValue]
     self.view.addGestureRecognizer(tap)
   }

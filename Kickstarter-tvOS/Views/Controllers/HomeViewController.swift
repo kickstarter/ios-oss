@@ -18,7 +18,7 @@ internal final class HomeViewController: UIViewController {
     let player = AVPlayer()
     NSNotificationCenter.defaultCenter().addObserver(
       self,
-      selector: #selector(HomeViewController.playerFinishedPlaying(_:)),
+      selector: #selector(playerFinishedPlaying(_:)),
       name: AVPlayerItemDidPlayToEndTimeNotification,
       object: player
     )

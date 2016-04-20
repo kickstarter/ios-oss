@@ -26,7 +26,7 @@ internal final class PlaylistViewController: UIViewController {
     super.viewDidLoad()
 
     self.view.addGestureRecognizer(
-      UIPanGestureRecognizer(target: self, action: #selector(PlaylistViewController.pan(_:)))
+      UIPanGestureRecognizer(target: self, action: #selector(pan(_:)))
     )
   }
 

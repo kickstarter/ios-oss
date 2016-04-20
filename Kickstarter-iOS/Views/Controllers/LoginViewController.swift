@@ -31,7 +31,7 @@ internal final class LoginViewController: UIViewController {
     passwordTextField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
     passwordTextField.leftViewMode = UITextFieldViewMode.Always
 
-    let tap = UITapGestureRecognizer(target: self, action: #selector(LoginViewController.dismissKeyboard))
+    let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
     self.view.addGestureRecognizer(tap)
   }
 

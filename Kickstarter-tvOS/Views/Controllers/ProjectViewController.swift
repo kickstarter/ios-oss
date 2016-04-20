@@ -48,7 +48,7 @@ final class ProjectViewController: UIViewController {
     }
 
     self.view.addGestureRecognizer(
-      UIPanGestureRecognizer(target: self, action: #selector(ProjectViewController.pan(_:)))
+      UIPanGestureRecognizer(target: self, action: #selector(pan(_:)))
     )
   }
 

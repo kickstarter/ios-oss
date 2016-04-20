@@ -21,15 +21,9 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
     self.viewModel.inputs.loginIntent(self.loginIntent)
 
     if let _ = self.presentingViewController {
-      self.navigationItem.leftBarButtonItem = .close(
-        self,
-        selector: #selector(LoginToutViewController.closeButtonPressed)
-      )
+      self.navigationItem.leftBarButtonItem = .close(self, selector: #selector(closeButtonPressed))
     }
-    self.navigationItem.rightBarButtonItem = .help(
-      self,
-      selector: #selector(LoginToutViewController.helpButtonPressed)
-    )
+    self.navigationItem.rightBarButtonItem = .help(self, selector: #selector(helpButtonPressed))
 
     self.view.backgroundColor = Color.OffWhite.toUIColor()
   }
