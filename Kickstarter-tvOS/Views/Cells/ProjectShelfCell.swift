@@ -29,9 +29,9 @@ final class ProjectShelfCell: UICollectionViewCell, ValueCell {
 
     let project = self.viewModel.model
 
-    self.projectNameLabel.rac_text <~ project.map { $0.name }
-    self.categoryLabel.rac_text <~ project.map { $0.category.name }
-    self.percentageLabel.rac_text <~ project.map { Format.percentage($0.percentFunded) }
+    self.projectNameLabel.rac.text = project.map { $0.name }
+    self.categoryLabel.rac.text = project.map { $0.category.name }
+    self.percentageLabel.rac.text = project.map { Format.percentage($0.percentFunded) }
 
     project.map { p in CGFloat(p.fundingProgress) }
       .map(clamp(0.0, 1.0))

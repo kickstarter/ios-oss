@@ -10,11 +10,11 @@ internal protocol DiscoveryProjectViewModelInputs {
 
 internal protocol DiscoveryProjectViewModelOutputs {
   var projectImageURL: Signal<NSURL?, NoError> { get }
-  var projectName: Signal<String?, NoError> { get }
-  var category: Signal<String?, NoError> { get }
-  var blurb: Signal<String?, NoError> { get }
-  var funding: Signal<String?, NoError> { get }
-  var backers: Signal<String?, NoError> { get }
+  var projectName: Signal<String, NoError> { get }
+  var category: Signal<String, NoError> { get }
+  var blurb: Signal<String, NoError> { get }
+  var funding: Signal<String, NoError> { get }
+  var backers: Signal<String, NoError> { get }
 }
 
 internal protocol DiscoveryProjectViewModelType {
@@ -32,11 +32,11 @@ DiscoveryProjectViewModelInputs, DiscoveryProjectViewModelOutputs {
   }
 
   internal var projectImageURL: Signal<NSURL?, NoError>
-  internal var projectName: Signal<String?, NoError>
-  internal var category: Signal<String?, NoError>
-  internal var blurb: Signal<String?, NoError>
-  internal var funding: Signal<String?, NoError>
-  internal var backers: Signal<String?, NoError>
+  internal var projectName: Signal<String, NoError>
+  internal var category: Signal<String, NoError>
+  internal var blurb: Signal<String, NoError>
+  internal var funding: Signal<String, NoError>
+  internal var backers: Signal<String, NoError>
 
   internal var inputs: DiscoveryProjectViewModelInputs { return self }
   internal var outputs: DiscoveryProjectViewModelOutputs { return self }

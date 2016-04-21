@@ -28,7 +28,7 @@ final class ProfileViewController: UIViewController {
         self?.avatarImageView?.af_setImageWithURL(url, imageTransition: .CrossDissolve(0.3))
     }
 
-    nameLabel.rac_text <~ viewModel.outputs.name
+    nameLabel.rac.text = viewModel.outputs.name.signal.ignoreNil()
   }
 
   @IBAction func logoutPressed(sender: UIButton) {

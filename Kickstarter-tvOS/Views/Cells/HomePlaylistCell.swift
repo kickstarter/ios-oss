@@ -22,7 +22,7 @@ final class HomePlaylistCell: UICollectionViewCell, ValueCell {
   override func awakeFromNib() {
     super.awakeFromNib()
 
-    titleLabel.rac_text <~ self.viewModel.outputs.title
+    titleLabel.rac.text = self.viewModel.outputs.title.ignoreNil()
 
     render(focused: false)
   }

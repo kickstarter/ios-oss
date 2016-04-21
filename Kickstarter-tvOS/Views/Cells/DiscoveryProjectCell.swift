@@ -22,8 +22,8 @@ final class DiscoveryProjectCell: UICollectionViewCell, ValueCell {
 
     let project = self.viewModel.model
 
-    projectNameLabel.rac_text <~ project.map { $0.name }
-    creatorLabel.rac_text <~ project.map { $0.creator.name }
+    projectNameLabel.rac.text = project.map { $0.name }
+    creatorLabel.rac.text = project.map { $0.creator.name }
 
     project.map { NSURL(string: $0.photo.full) }
       .observeForUI()

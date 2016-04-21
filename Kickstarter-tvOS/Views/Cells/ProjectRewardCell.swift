@@ -20,17 +20,17 @@ class ProjectRewardCell: UICollectionViewCell, ValueCell {
 
     let reward = self.viewModel.model
 
-    minimumLabel.rac_text <~ reward
+    minimumLabel.rac.text = reward
       .map { Format.currency($0.minimum, country: Project.Country.US) }
       .map { "\($0) or more" }
-    backersCountLabel.rac_hidden <~ reward.map { $0.backersCount == nil }
+    backersCountLabel.rac.hidden = reward.map { $0.backersCount == nil }
 
-    backersCountLabel.rac_text <~ reward
+    backersCountLabel.rac.text = reward
       .map { $0.backersCount }
       .ignoreNil()
       .map { "\($0) backers" }
 
-    rewardLabel.rac_text <~ reward.map { $0.description ?? "No reward" }
+    rewardLabel.rac.text = reward.map { $0.description ?? "No reward" }
   }
 
   override func didUpdateFocusInContext(context: UIFocusUpdateContext,

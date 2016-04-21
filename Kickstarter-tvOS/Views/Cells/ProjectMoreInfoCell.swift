@@ -33,11 +33,11 @@ class ProjectMoreInfoCell: UICollectionViewCell, ValueCell {
       .observeNext { [weak self] value in
         self?.creatorLabel.setHTML(value)
     }
-    self.projectNameLabel.rac_text <~ project.map { $0.name }
-    self.blurbLabel.rac_text <~ project.map { $0.blurb }
+    self.projectNameLabel.rac.text = project.map { $0.name }
+    self.blurbLabel.rac.text = project.map { $0.blurb }
 
-    self.backersCountLabel.rac_text <~ project.map { Format.wholeNumber($0.stats.backersCount) }
-    self.pledgedLabel.rac_text <~ project.map { Format.currency($0.stats.pledged, country: $0.country) }
-    self.goalLabel.rac_text <~ project.map { Format.currency($0.stats.goal, country: $0.country) }
+    self.backersCountLabel.rac.text = project.map { Format.wholeNumber($0.stats.backersCount) }
+    self.pledgedLabel.rac.text = project.map { Format.currency($0.stats.pledged, country: $0.country) }
+    self.goalLabel.rac.text = project.map { Format.currency($0.stats.goal, country: $0.country) }
   }
 }

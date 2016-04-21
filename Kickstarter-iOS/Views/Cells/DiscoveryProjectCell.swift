@@ -16,35 +16,11 @@ internal final class DiscoveryProjectCell: UITableViewCell, ValueCell {
   @IBOutlet weak var backersLabel: UILabel!
 
   override func bindViewModel() {
-    self.viewModel.outputs.projectName
-      .observeForUI()
-      .observeNext { [weak projectNameLabel] projectName in
-        projectNameLabel?.text = projectName
-    }
-
-    self.viewModel.outputs.category
-      .observeForUI()
-      .observeNext { [weak categoryLabel] category in
-        categoryLabel?.text = category
-    }
-
-    self.viewModel.outputs.blurb
-      .observeForUI()
-      .observeNext { [weak blurbLabel] blurb in
-        blurbLabel?.text = blurb
-    }
-
-    self.viewModel.outputs.funding
-      .observeForUI()
-      .observeNext { [weak fundingLabel] funding in
-        fundingLabel?.text = funding
-    }
-
-    self.viewModel.outputs.backers
-      .observeForUI()
-      .observeNext { [weak backersLabel] backers in
-        backersLabel?.text = backers
-    }
+    self.projectNameLabel.rac.text = self.viewModel.outputs.projectName
+    self.categoryLabel.rac.text = self.viewModel.outputs.category
+    self.blurbLabel.rac.text = self.viewModel.outputs.blurb
+    self.fundingLabel.rac.text = self.viewModel.outputs.funding
+    self.backersLabel.rac.text = self.viewModel.outputs.backers
 
     self.viewModel.outputs.projectImageURL
       .observeForUI()

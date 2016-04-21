@@ -23,9 +23,9 @@ final class LoginViewController: UIViewController {
   override func bindViewModel() {
     super.bindViewModel()
 
-    viewModel.inputs.email <~ emailTextField.rac_text
-    viewModel.inputs.password <~ passwordTextField.rac_text
-    loginButton.rac_enabled <~ viewModel.outputs.isValid
+//    viewModel.inputs.email <~ emailTextField.rac_text
+//    viewModel.inputs.password <~ passwordTextField.rac_text
+//    loginButton.rac_enabled <~ viewModel.outputs.isValid
 
     viewModel.errors.invalidLogin
       .observeNext { [weak self] message in

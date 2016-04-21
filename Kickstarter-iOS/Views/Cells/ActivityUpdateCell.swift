@@ -29,35 +29,11 @@ internal final class ActivityUpdateCell: UITableViewCell, ValueCell {
         projectImageView?.af_setImageWithURL(url)
     }
 
-    self.viewModel.outputs.projectName
-      .observeForUI()
-      .observeNext { [weak projectNameLabel] name in
-        projectNameLabel?.text = name
-    }
-
-    self.viewModel.outputs.sequenceTitle
-      .observeForUI()
-      .observeNext { [weak updateSequenceLabel] sequence in
-        updateSequenceLabel?.text = sequence
-    }
-
-    self.viewModel.outputs.timestamp
-      .observeForUI()
-      .observeNext { [weak timestampLabel] timestamp in
-        timestampLabel?.text = timestamp
-    }
-
-    self.viewModel.outputs.title
-      .observeForUI()
-      .observeNext { [weak titleLabel] title in
-        titleLabel?.text = title
-    }
-
-    self.viewModel.outputs.body
-      .observeForUI()
-      .observeNext { [weak bodyLabel] body in
-        bodyLabel?.text = body
-    }
+    self.projectNameLabel.rac.text = self.viewModel.outputs.projectName.ignoreNil()
+    self.updateSequenceLabel.rac.text = self.viewModel.outputs.sequenceTitle.ignoreNil()
+    self.timestampLabel.rac.text = self.viewModel.outputs.timestamp
+    self.titleLabel.rac.text = self.viewModel.outputs.title.ignoreNil()
+    self.bodyLabel.rac.text = self.viewModel.outputs.body
   }
 
   func configureWith(value value: Activity) {
