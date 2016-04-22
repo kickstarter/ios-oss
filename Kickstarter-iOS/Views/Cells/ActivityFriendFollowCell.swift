@@ -4,15 +4,15 @@ import ReactiveCocoa
 import Models
 
 internal final class ActivityFriendFollowCell: UITableViewCell, ValueCell {
-  private var viewModel: ActivityFriendFollowViewModel!
+  private let viewModel: ActivityFriendFollowViewModel = ActivityFriendFollowViewModel()
 
   @IBOutlet internal weak var friendImageView: UIImageView!
   @IBOutlet internal weak var friendLabel: UILabel!
   @IBOutlet internal weak var followButton: UIButton!
 
-  override func awakeFromNib() {
-    super.awakeFromNib()
-    self.viewModel = ActivityFriendFollowViewModel()
+  override func bindViewModel() {
+    self.friendLabel.rac.text = self.viewModel.outputs.title
+    self.followButton.rac.hidden = self.viewModel.outputs.hideFollowButton
 
     self.viewModel.outputs.friendImageURL
       .observeForUI()
@@ -23,18 +23,6 @@ internal final class ActivityFriendFollowCell: UITableViewCell, ValueCell {
       .ignoreNil()
       .observeNext { [weak friendImageView] url in
         friendImageView?.af_setImageWithURL(url)
-    }
-
-    self.viewModel.outputs.title
-      .observeForUI()
-      .observeNext { [weak friendLabel] title in
-        friendLabel?.text = title
-    }
-
-    self.viewModel.outputs.hideFollowButton
-      .observeForUI()
-      .observeNext { [weak followButton] hide in
-        followButton?.hidden = hide
     }
   }
 

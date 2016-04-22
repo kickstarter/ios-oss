@@ -4,7 +4,7 @@ import ReactiveCocoa
 import Models
 
 internal final class ActivityFriendBackingCell: UITableViewCell, ValueCell {
-  var viewModel: ActivityFriendBackingViewModel!
+  private let viewModel: ActivityFriendBackingViewModel = ActivityFriendBackingViewModel()
 
   @IBOutlet internal weak var friendImageView: UIImageView!
   @IBOutlet internal weak var friendTitleLabel: UILabel!
@@ -12,9 +12,10 @@ internal final class ActivityFriendBackingCell: UITableViewCell, ValueCell {
   @IBOutlet internal weak var creatorNameLabel: UILabel!
   @IBOutlet internal weak var projectImageView: UIImageView!
 
-  override func awakeFromNib() {
-    super.awakeFromNib()
-    self.viewModel = ActivityFriendBackingViewModel()
+  override func bindViewModel() {
+    self.friendTitleLabel.rac.text = self.viewModel.outputs.friendTitle
+    self.projectNameLabel.rac.text = self.viewModel.outputs.projectName
+    self.creatorNameLabel.rac.text = self.viewModel.outputs.creatorName
 
     self.viewModel.outputs.friendImageURL
       .observeForUI()
@@ -25,24 +26,6 @@ internal final class ActivityFriendBackingCell: UITableViewCell, ValueCell {
       .ignoreNil()
       .observeNext { [weak friendImageView] url in
         friendImageView?.af_setImageWithURL(url)
-    }
-
-    self.viewModel.outputs.friendTitle
-      .observeForUI()
-      .observeNext { [weak friendTitleLabel] title in
-        friendTitleLabel?.text = title
-    }
-
-    self.viewModel.outputs.projectName
-      .observeForUI()
-      .observeNext { [weak projectNameLabel] name in
-        projectNameLabel?.text = name
-    }
-
-    self.viewModel.outputs.creatorName
-      .observeForUI()
-      .observeNext { [weak creatorNameLabel] name in
-        creatorNameLabel?.text = name
     }
 
     self.viewModel.outputs.projectImageURL

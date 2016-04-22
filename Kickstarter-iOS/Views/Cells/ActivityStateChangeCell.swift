@@ -6,7 +6,7 @@ import CoreImage
 import Models
 
 internal final class ActivityStateChangeCell: UITableViewCell, ValueCell {
-  private var viewModel: ActivityStateChangeViewModel!
+  private let viewModel: ActivityStateChangeViewModel = ActivityStateChangeViewModel()
 
   @IBOutlet internal weak var projectImageView: UIImageView!
   @IBOutlet internal weak var projectNameLabel: UILabel!
@@ -14,10 +14,11 @@ internal final class ActivityStateChangeCell: UITableViewCell, ValueCell {
   @IBOutlet internal weak var pledgedTitleLabel: UILabel!
   @IBOutlet internal weak var pledgedSubtitleLabel: UILabel!
 
-  override func awakeFromNib() {
-    super.awakeFromNib()
-
-    self.viewModel = ActivityStateChangeViewModel()
+  override func bindViewModel() {
+    self.projectNameLabel.rac.text = self.viewModel.outputs.projectName
+    self.fundedSubtitleLabel.rac.text = self.viewModel.outputs.fundingDate
+    self.pledgedTitleLabel.rac.text = self.viewModel.outputs.pledgedTitle
+    self.pledgedSubtitleLabel.rac.text = self.viewModel.outputs.pledgedSubtitle
 
     self.viewModel.outputs.projectImageURL
       .observeForUI()
@@ -28,30 +29,6 @@ internal final class ActivityStateChangeCell: UITableViewCell, ValueCell {
       .ignoreNil()
       .observeNext { [weak projectImageView] url in
         projectImageView?.af_setImageWithURL(url)
-    }
-
-    self.viewModel.outputs.projectName
-      .observeForUI()
-      .observeNext { [weak projectNameLabel] name in
-        projectNameLabel?.text = name
-    }
-
-    self.viewModel.outputs.fundingDate
-      .observeForUI()
-      .observeNext { [weak fundedSubtitleLabel] date in
-        fundedSubtitleLabel?.text = date
-    }
-
-    self.viewModel.outputs.pledgedTitle
-      .observeForUI()
-      .observeNext { [weak pledgedTitleLabel] title in
-        pledgedTitleLabel?.text = title
-    }
-
-    self.viewModel.outputs.pledgedSubtitle
-      .observeForUI()
-      .observeNext { [weak pledgedSubtitleLabel] title in
-        pledgedSubtitleLabel?.text = title
     }
   }
 
