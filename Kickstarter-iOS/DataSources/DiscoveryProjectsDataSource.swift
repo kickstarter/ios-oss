@@ -1,6 +1,6 @@
-import class Library.ValueCellDataSource
-import struct Models.Project
-import class UIKit.UITableViewCell
+import Library
+import Models
+import UIKit
 
 internal final class DiscoveryProjectsDataSource: ValueCellDataSource {
 
@@ -13,6 +13,10 @@ internal final class DiscoveryProjectsDataSource: ValueCellDataSource {
           cellClass: DiscoveryProjectCell.self
         )
     }
+  }
+
+  internal func projectAtIndexPath(indexPath: NSIndexPath) -> Project? {
+    return self[indexPath] as? Project
   }
 
   override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {

@@ -18,7 +18,6 @@ internal protocol DiscoveryProjectViewModelOutputs {
 }
 
 internal protocol DiscoveryProjectViewModelType {
-
   var inputs: DiscoveryProjectViewModelInputs { get }
   var outputs: DiscoveryProjectViewModelOutputs { get }
 }
@@ -48,7 +47,20 @@ DiscoveryProjectViewModelInputs, DiscoveryProjectViewModelOutputs {
     self.projectName = project.map { $0.name }
     self.category = project.map { $0.category.name }
     self.blurb = project.map { $0.blurb }
-    self.funding = project.map { _ in "89% funded" }
-    self.backers = project.map { _ in "154 backers" }
+    self.funding = project.map {
+      localizedString(
+        key: "card.funded",
+        defaultValue: "%{percent_funded} funded",
+        substitutions: ["percent_funded": Format.percentage($0.percentFunded)]
+      )
+    }
+    self.backers = project.map {
+      localizedString(
+        key: "card.backers",
+        defaultValue: "%{backers_count} backers",
+        count: $0.stats.backersCount,
+        substitutions: ["backers_count": Format.wholeNumber($0.stats.backersCount)]
+      )
+    }
   }
 }

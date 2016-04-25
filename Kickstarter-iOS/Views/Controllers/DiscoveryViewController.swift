@@ -48,7 +48,7 @@ internal final class DiscoveryViewController: UITableViewController {
   }
 
   override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-    guard let project = self.dataSource[indexPath] as? Project else {
+    guard let project = self.dataSource.projectAtIndexPath(indexPath) else {
       return
     }
     guard let projectViewController = UIStoryboard(name: "Project", bundle: nil)

@@ -13,6 +13,9 @@ internal final class ProjectViewController: UITableViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     self.tableView.dataSource = dataSource
+    self.tableView.backgroundColor = Color.OffWhite.toUIColor()
+
+    self.navigationItem.rightBarButtonItem = .close(self, selector: #selector(closeButtonPressed))
   }
 
   override func viewWillAppear(animated: Bool) {
@@ -31,11 +34,11 @@ internal final class ProjectViewController: UITableViewController {
     }
   }
 
-  override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+  override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
     return 32.0
   }
 
-  override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+  override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
     let view = UIView()
     view.backgroundColor = .clearColor()
     return view
@@ -44,5 +47,9 @@ internal final class ProjectViewController: UITableViewController {
   override func tableView(tableView: UITableView,
                           estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
     return UITableViewAutomaticDimension
+  }
+
+  internal func closeButtonPressed() {
+    self.dismissViewControllerAnimated(true, completion: nil)
   }
 }

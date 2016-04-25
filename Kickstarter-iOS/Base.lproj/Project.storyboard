@@ -11,79 +11,130 @@
             <objects>
                 <tableViewController storyboardIdentifier="ProjectViewController" id="zC7-es-NOj" customClass="ProjectViewController" customModule="Kickstarter_Framework" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="9mS-jT-bCQ">
-                        <rect key="frame" x="0.0" y="0.0" width="400" height="1400"/>
+                        <rect key="frame" x="0.0" y="0.0" width="400" height="1800"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ProjectMainCell" rowHeight="720" id="l8X-jc-c3I" customClass="ProjectMainCell" customModule="Kickstarter_Framework" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="400" height="720"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ProjectMainCell" rowHeight="660" id="l8X-jc-c3I" customClass="ProjectMainCell" customModule="Kickstarter_Framework" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="400" height="660"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" tableViewCell="l8X-jc-c3I" id="iXX-NM-hJc">
-                                    <rect key="frame" x="0.0" y="0.0" width="400" height="720"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="400" height="660"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="robert-irwin" translatesAutoresizingMaskIntoConstraints="NO" id="xEv-vI-H10">
-                                            <rect key="frame" x="0.0" y="0.0" width="400" height="300"/>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="robert-irwin" translatesAutoresizingMaskIntoConstraints="NO" id="xEv-vI-H10">
+                                            <rect key="frame" x="0.0" y="0.0" width="400" height="225"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" secondItem="xEv-vI-H10" secondAttribute="width" multiplier="3:4" id="b7j-ga-FUL"/>
+                                                <constraint firstAttribute="height" secondItem="xEv-vI-H10" secondAttribute="width" multiplier="9:16" id="b7j-ga-FUL"/>
                                             </constraints>
                                         </imageView>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="LP9-HC-aKC">
-                                            <rect key="frame" x="16" y="316" width="368" height="331"/>
+                                            <rect key="frame" x="16" y="257" width="368" height="351"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Robert Irwin Project" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.80000000000000004" translatesAutoresizingMaskIntoConstraints="NO" id="B6r-LF-ouj">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Robert Irwin Project" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.80000000000000004" translatesAutoresizingMaskIntoConstraints="NO" id="B6r-LF-ouj" customClass="StyledLabel" customModule="Library">
                                                     <rect key="frame" x="0.0" y="0.0" width="368" height="26"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Title2"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="_color" value="TextDefault"/>
+                                                    </userDefinedRuntimeAttributes>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="by Chinati Foundation" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="T6h-er-GuW">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="by Chinati Foundation" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="T6h-er-GuW" customClass="StyledLabel" customModule="Library">
                                                     <rect key="frame" x="0.0" y="42" width="368" height="17"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Subhead"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="_color" value="TextDefault"/>
+                                                    </userDefinedRuntimeAttributes>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m5f-v3-Ple">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m5f-v3-Ple" customClass="StyledLabel" customModule="Library">
                                                     <rect key="frame" x="0.0" y="75" width="368" height="62"/>
                                                     <string key="text">Chinati is building the only freestanding architectural structure designed by artist Robert Irwin and devoted exclusively to his art.</string>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Body"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="_color" value="TextDefault"/>
+                                                    </userDefinedRuntimeAttributes>
                                                 </label>
                                                 <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="HnH-2Z-9Zw" userLabel="Cat/loc">
                                                     <rect key="frame" x="0.0" y="153" width="368" height="15"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Art" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mai-wG-Nnj">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Art" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mai-wG-Nnj" customClass="StyledLabel" customModule="Library">
                                                             <rect key="frame" x="0.0" y="0.0" width="176" height="15"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Footnote"/>
+                                                                <userDefinedRuntimeAttribute type="string" keyPath="_color" value="TextDefault"/>
+                                                            </userDefinedRuntimeAttributes>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Marfa, TX" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GVk-s8-PdX">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Marfa, TX" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GVk-s8-PdX" customClass="StyledLabel" customModule="Library">
                                                             <rect key="frame" x="192" y="0.0" width="176" height="15"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Footnote"/>
+                                                                <userDefinedRuntimeAttribute type="string" keyPath="_color" value="TextDefault"/>
+                                                            </userDefinedRuntimeAttributes>
                                                         </label>
                                                     </subviews>
                                                 </stackView>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JLh-fM-RDQ" userLabel="Progress view">
+                                                    <rect key="frame" x="0.0" y="184" width="368" height="4"/>
+                                                    <subviews>
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TST-i5-c5t" userLabel="Green bar">
+                                                            <rect key="frame" x="0.0" y="0.0" width="368" height="4"/>
+                                                            <color key="backgroundColor" red="0.1450980392" green="0.79607843140000001" blue="0.40784313729999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                        </view>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="0.89870689660000003" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstItem="TST-i5-c5t" firstAttribute="top" secondItem="JLh-fM-RDQ" secondAttribute="top" id="1dL-J0-HgR"/>
+                                                        <constraint firstAttribute="bottom" secondItem="TST-i5-c5t" secondAttribute="bottom" id="LNB-gs-Yy2"/>
+                                                        <constraint firstItem="TST-i5-c5t" firstAttribute="leading" secondItem="JLh-fM-RDQ" secondAttribute="leading" id="Tlb-tG-RjJ"/>
+                                                        <constraint firstItem="TST-i5-c5t" firstAttribute="width" secondItem="JLh-fM-RDQ" secondAttribute="width" id="bzL-RN-uDX"/>
+                                                        <constraint firstAttribute="height" constant="4" id="uuk-vx-gI7"/>
+                                                    </constraints>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                            <integer key="value" value="2"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
+                                                </view>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aGU-H5-nLW" userLabel="State banner">
-                                                    <rect key="frame" x="0.0" y="184" width="368" height="92"/>
+                                                    <rect key="frame" x="0.0" y="204" width="368" height="92"/>
                                                     <subviews>
                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="RMt-iu-OC0">
                                                             <rect key="frame" x="16" y="16" width="336" height="60"/>
                                                             <subviews>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Funded!" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tLO-GJ-P6S">
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Funded!" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tLO-GJ-P6S" customClass="StyledLabel" customModule="Library">
                                                                     <rect key="frame" x="0.0" y="0.0" width="336" height="20"/>
                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                     <nil key="highlightedColor"/>
+                                                                    <userDefinedRuntimeAttributes>
+                                                                        <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Headline"/>
+                                                                        <userDefinedRuntimeAttribute type="string" keyPath="_color" value="TextDefault"/>
+                                                                    </userDefinedRuntimeAttributes>
                                                                 </label>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This project was successfully funded on Mar 2, 2016!" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tMG-CO-3j3">
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This project was successfully funded on Mar 2, 2016!" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tMG-CO-3j3" customClass="StyledLabel" customModule="Library">
                                                                     <rect key="frame" x="0.0" y="24" width="336" height="36"/>
                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                     <nil key="highlightedColor"/>
+                                                                    <userDefinedRuntimeAttributes>
+                                                                        <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Subhead"/>
+                                                                        <userDefinedRuntimeAttribute type="string" keyPath="_color" value="TextDefault"/>
+                                                                    </userDefinedRuntimeAttributes>
                                                                 </label>
                                                             </subviews>
                                                         </stackView>
@@ -98,56 +149,80 @@
                                                     <edgeInsets key="layoutMargins" top="16" left="16" bottom="16" right="16"/>
                                                 </view>
                                                 <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="ltg-Do-1vt">
-                                                    <rect key="frame" x="0.0" y="292" width="368" height="39"/>
+                                                    <rect key="frame" x="0.0" y="312" width="368" height="39"/>
                                                     <subviews>
                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="DGB-z3-N5l">
                                                             <rect key="frame" x="0.0" y="0.0" width="51" height="39"/>
                                                             <subviews>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="89" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kOC-lA-x4o">
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="89" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kOC-lA-x4o" customClass="StyledLabel" customModule="Library">
                                                                     <rect key="frame" x="0.0" y="0.0" width="51" height="20"/>
                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                     <nil key="highlightedColor"/>
+                                                                    <userDefinedRuntimeAttributes>
+                                                                        <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Headline"/>
+                                                                        <userDefinedRuntimeAttribute type="string" keyPath="_color" value="TextDefault"/>
+                                                                    </userDefinedRuntimeAttributes>
                                                                 </label>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="backers" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nhl-Av-cwM">
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="backers" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nhl-Av-cwM" customClass="StyledLabel" customModule="Library">
                                                                     <rect key="frame" x="0.0" y="22" width="51" height="17"/>
                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                     <nil key="highlightedColor"/>
+                                                                    <userDefinedRuntimeAttributes>
+                                                                        <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Subhead"/>
+                                                                        <userDefinedRuntimeAttribute type="string" keyPath="_color" value="TextDefault"/>
+                                                                    </userDefinedRuntimeAttributes>
                                                                 </label>
                                                             </subviews>
                                                         </stackView>
                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="Fdl-Qt-Wax">
                                                             <rect key="frame" x="112" y="0.0" width="128" height="39"/>
                                                             <subviews>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$21,507" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6aE-VP-ixD">
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$21,507" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6aE-VP-ixD" customClass="StyledLabel" customModule="Library">
                                                                     <rect key="frame" x="0.0" y="0.0" width="128" height="20"/>
                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                     <nil key="highlightedColor"/>
+                                                                    <userDefinedRuntimeAttributes>
+                                                                        <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Headline"/>
+                                                                        <userDefinedRuntimeAttribute type="string" keyPath="_color" value="TextDefault"/>
+                                                                    </userDefinedRuntimeAttributes>
                                                                 </label>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="pledged of $75,000" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9pq-j4-lkM">
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="pledged of $75,000" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9pq-j4-lkM" customClass="StyledLabel" customModule="Library">
                                                                     <rect key="frame" x="0.0" y="22" width="128" height="17"/>
                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                     <nil key="highlightedColor"/>
+                                                                    <userDefinedRuntimeAttributes>
+                                                                        <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Subhead"/>
+                                                                        <userDefinedRuntimeAttribute type="string" keyPath="_color" value="TextDefault"/>
+                                                                    </userDefinedRuntimeAttributes>
                                                                 </label>
                                                             </subviews>
                                                         </stackView>
                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="zLT-Ig-Ome">
                                                             <rect key="frame" x="300" y="0.0" width="68" height="39"/>
                                                             <subviews>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="23" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Go-Nx-FPv">
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="23" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Go-Nx-FPv" customClass="StyledLabel" customModule="Library">
                                                                     <rect key="frame" x="0.0" y="0.0" width="68" height="20"/>
                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                     <nil key="highlightedColor"/>
+                                                                    <userDefinedRuntimeAttributes>
+                                                                        <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Headline"/>
+                                                                        <userDefinedRuntimeAttribute type="string" keyPath="_color" value="TextDefault"/>
+                                                                    </userDefinedRuntimeAttributes>
                                                                 </label>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="days to go" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Epo-Se-Nby">
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="days to go" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Epo-Se-Nby" customClass="StyledLabel" customModule="Library">
                                                                     <rect key="frame" x="0.0" y="22" width="68" height="17"/>
                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                     <nil key="highlightedColor"/>
+                                                                    <userDefinedRuntimeAttributes>
+                                                                        <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Subhead"/>
+                                                                        <userDefinedRuntimeAttribute type="string" keyPath="_color" value="TextDefault"/>
+                                                                    </userDefinedRuntimeAttributes>
                                                                 </label>
                                                             </subviews>
                                                         </stackView>
@@ -155,30 +230,57 @@
                                                 </stackView>
                                             </subviews>
                                         </stackView>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pof-YI-AFV" userLabel="Bottom divider">
+                                            <rect key="frame" x="0.0" y="659" width="400" height="1"/>
+                                            <color key="backgroundColor" white="0.89870689660000003" alpha="1" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="1" id="LbU-bv-zL2"/>
+                                            </constraints>
+                                        </view>
                                     </subviews>
                                     <constraints>
+                                        <constraint firstItem="pof-YI-AFV" firstAttribute="leading" secondItem="iXX-NM-hJc" secondAttribute="leading" id="BJr-Ff-vdq"/>
                                         <constraint firstAttribute="trailing" secondItem="xEv-vI-H10" secondAttribute="trailing" id="Jqf-QM-tRL"/>
                                         <constraint firstItem="xEv-vI-H10" firstAttribute="top" secondItem="iXX-NM-hJc" secondAttribute="top" id="XH1-Fv-jIY"/>
                                         <constraint firstItem="LP9-HC-aKC" firstAttribute="leading" secondItem="iXX-NM-hJc" secondAttribute="leadingMargin" id="ZB4-5f-MXu"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="LP9-HC-aKC" secondAttribute="trailing" id="aPn-d8-39i"/>
                                         <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="LP9-HC-aKC" secondAttribute="bottom" id="dsB-tP-ndu"/>
-                                        <constraint firstItem="LP9-HC-aKC" firstAttribute="top" secondItem="xEv-vI-H10" secondAttribute="bottom" constant="16" id="oLt-w4-wLS"/>
+                                        <constraint firstItem="LP9-HC-aKC" firstAttribute="top" secondItem="xEv-vI-H10" secondAttribute="bottom" constant="32" id="oLt-w4-wLS"/>
                                         <constraint firstItem="xEv-vI-H10" firstAttribute="leading" secondItem="iXX-NM-hJc" secondAttribute="leading" id="sAO-y8-xJG"/>
+                                        <constraint firstAttribute="bottom" secondItem="pof-YI-AFV" secondAttribute="bottom" id="sbi-oJ-hh7"/>
+                                        <constraint firstAttribute="trailing" secondItem="pof-YI-AFV" secondAttribute="trailing" id="zaq-eD-hSk"/>
                                     </constraints>
+                                    <edgeInsets key="layoutMargins" top="32" left="16" bottom="32" right="16"/>
                                 </tableViewCellContentView>
-                                <edgeInsets key="layoutMargins" top="16" left="16" bottom="16" right="16"/>
+                                <connections>
+                                    <outlet property="backersCountLabel" destination="kOC-lA-x4o" id="YBL-z2-rJQ"/>
+                                    <outlet property="blurbLabel" destination="m5f-v3-Ple" id="HwP-iU-MUZ"/>
+                                    <outlet property="categoryLabel" destination="mai-wG-Nnj" id="aRu-Ju-9zi"/>
+                                    <outlet property="creatorLabel" destination="T6h-er-GuW" id="PK7-H4-yq1"/>
+                                    <outlet property="daysLabel" destination="0Go-Nx-FPv" id="O06-SA-XfY"/>
+                                    <outlet property="goalLabel" destination="9pq-j4-lkM" id="4pl-Rh-q0b"/>
+                                    <outlet property="locationLabel" destination="GVk-s8-PdX" id="5lK-ui-yD3"/>
+                                    <outlet property="pledgedLabel" destination="6aE-VP-ixD" id="qN5-RX-eOd"/>
+                                    <outlet property="progressBarView" destination="TST-i5-c5t" id="r6r-v0-f6n"/>
+                                    <outlet property="progressHolderView" destination="JLh-fM-RDQ" id="1N2-K5-nyK"/>
+                                    <outlet property="projectImageView" destination="xEv-vI-H10" id="hQw-9u-S1x"/>
+                                    <outlet property="projectNameLabel" destination="B6r-LF-ouj" id="XXF-3E-GeL"/>
+                                    <outlet property="stateBannerMessageLabel" destination="tMG-CO-3j3" id="Qdf-hH-LfH"/>
+                                    <outlet property="stateBannerTitleLabel" destination="tLO-GJ-P6S" id="TFe-1h-rtt"/>
+                                    <outlet property="stateBannerView" destination="aGU-H5-nLW" id="L6j-8g-06X"/>
+                                </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ProjectSubpagesCell" rowHeight="160" id="uaN-1N-5bP" customClass="ProjectSubpagesCell" customModule="Kickstarter_Framework" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="748" width="400" height="160"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ProjectSubpagesCell" rowHeight="330" id="uaN-1N-5bP" customClass="ProjectSubpagesCell" customModule="Kickstarter_Framework" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="688" width="400" height="330"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" tableViewCell="uaN-1N-5bP" id="aIM-3m-kJw">
-                                    <rect key="frame" x="0.0" y="0.0" width="400" height="160"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="400" height="330"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="fdC-Od-EGr">
-                                            <rect key="frame" x="16" y="10" width="368" height="119"/>
+                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="fdC-Od-EGr">
+                                            <rect key="frame" x="16" y="32" width="368" height="261"/>
                                             <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="brs-OI-rrC">
+                                                <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="brs-OI-rrC" userLabel="Creator stack">
                                                     <rect key="frame" x="0.0" y="0.0" width="368" height="80"/>
                                                     <subviews>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="chinati" translatesAutoresizingMaskIntoConstraints="NO" id="drh-Nk-BPd" customClass="CircleAvatarImageView" customModule="Library">
@@ -191,120 +293,279 @@
                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="L7H-qQ-2zo">
                                                             <rect key="frame" x="96" y="22" width="272" height="37"/>
                                                             <subviews>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Created by" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DBf-CH-ufl">
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Created by" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DBf-CH-ufl" customClass="StyledLabel" customModule="Library">
                                                                     <rect key="frame" x="0.0" y="0.0" width="272" height="15"/>
                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                     <nil key="highlightedColor"/>
+                                                                    <userDefinedRuntimeAttributes>
+                                                                        <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Footnote"/>
+                                                                        <userDefinedRuntimeAttribute type="string" keyPath="_color" value="TextDefault"/>
+                                                                    </userDefinedRuntimeAttributes>
                                                                 </label>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Chinati Foundation" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pg4-Ix-fFY">
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Chinati Foundation" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pg4-Ix-fFY" customClass="StyledLabel" customModule="Library">
                                                                     <rect key="frame" x="0.0" y="19" width="272" height="18"/>
                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                     <nil key="highlightedColor"/>
+                                                                    <userDefinedRuntimeAttributes>
+                                                                        <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Callout"/>
+                                                                        <userDefinedRuntimeAttribute type="string" keyPath="_color" value="TextDefault"/>
+                                                                    </userDefinedRuntimeAttributes>
                                                                 </label>
                                                             </subviews>
                                                         </stackView>
                                                     </subviews>
                                                 </stackView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This project will only be funded if at $75,000 is pledged by Mar 31, 2016." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pUT-yI-jtD">
-                                                    <rect key="frame" x="0.0" y="92" width="368" height="27"/>
+                                                <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Yyc-XA-Ju7" userLabel="Campaign stack">
+                                                    <rect key="frame" x="0.0" y="96" width="368" height="30"/>
+                                                    <subviews>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yZ6-Be-dBq" userLabel="Campaign">
+                                                            <rect key="frame" x="0.0" y="0.0" width="357" height="30"/>
+                                                            <state key="normal" title="Campaign">
+                                                                <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                            </state>
+                                                        </button>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gBC-cn-1Es">
+                                                            <rect key="frame" x="357" y="0.0" width="11" height="30"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                </stackView>
+                                                <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tS8-pw-axZ" userLabel="Updates stack">
+                                                    <rect key="frame" x="0.0" y="142" width="368" height="30"/>
+                                                    <subviews>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mRp-Xm-Kz8" userLabel="Updates">
+                                                            <rect key="frame" x="0.0" y="0.0" width="357" height="30"/>
+                                                            <state key="normal" title="Updates">
+                                                                <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                            </state>
+                                                        </button>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YXu-fc-Dq6">
+                                                            <rect key="frame" x="357" y="0.0" width="11" height="30"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                </stackView>
+                                                <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xja-Bz-boT" userLabel="Comments stack">
+                                                    <rect key="frame" x="0.0" y="188" width="368" height="30"/>
+                                                    <subviews>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZK6-84-TKz" userLabel="Comments">
+                                                            <rect key="frame" x="0.0" y="0.0" width="357" height="30"/>
+                                                            <state key="normal" title="Comments">
+                                                                <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                            </state>
+                                                        </button>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="01y-PV-RBa">
+                                                            <rect key="frame" x="357" y="0.0" width="11" height="30"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                </stackView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This project will only be funded if at $75,000 is pledged by Mar 31, 2016." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pUT-yI-jtD" customClass="StyledLabel" customModule="Library">
+                                                    <rect key="frame" x="0.0" y="234" width="368" height="27"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Caption1"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="_color" value="TextDarkGray"/>
+                                                    </userDefinedRuntimeAttributes>
                                                 </label>
                                             </subviews>
                                         </stackView>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7av-pr-pbi" userLabel="Bottom divider">
+                                            <rect key="frame" x="0.0" y="329" width="400" height="1"/>
+                                            <color key="backgroundColor" white="0.89870689660000003" alpha="1" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="1" id="V4s-aF-EvL"/>
+                                            </constraints>
+                                        </view>
                                     </subviews>
                                     <constraints>
+                                        <constraint firstItem="7av-pr-pbi" firstAttribute="leading" secondItem="aIM-3m-kJw" secondAttribute="leading" id="5aK-1s-yio"/>
+                                        <constraint firstAttribute="bottom" secondItem="7av-pr-pbi" secondAttribute="bottom" id="6DS-jO-Q7w"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="fdC-Od-EGr" secondAttribute="trailing" id="MQr-GT-KGY"/>
+                                        <constraint firstAttribute="trailing" secondItem="7av-pr-pbi" secondAttribute="trailing" id="bR2-jo-BJw"/>
                                         <constraint firstItem="fdC-Od-EGr" firstAttribute="leading" secondItem="aIM-3m-kJw" secondAttribute="leadingMargin" id="rMN-rX-eMR"/>
                                         <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="fdC-Od-EGr" secondAttribute="bottom" id="rzP-SZ-Aty"/>
                                         <constraint firstItem="fdC-Od-EGr" firstAttribute="top" secondItem="aIM-3m-kJw" secondAttribute="topMargin" id="wxz-Gq-e7G"/>
                                     </constraints>
+                                    <edgeInsets key="layoutMargins" top="32" left="16" bottom="32" right="16"/>
                                 </tableViewCellContentView>
-                                <edgeInsets key="layoutMargins" top="16" left="16" bottom="16" right="16"/>
+                                <color key="backgroundColor" red="0.98039215686274506" green="0.98039215686274506" blue="0.98039215686274506" alpha="1" colorSpace="calibratedRGB"/>
+                                <connections>
+                                    <outlet property="creatorImageView" destination="drh-Nk-BPd" id="cyv-ni-wiF"/>
+                                    <outlet property="creatorLabel" destination="pg4-Ix-fFY" id="FhB-O3-ROw"/>
+                                    <outlet property="disclaimerLabel" destination="pUT-yI-jtD" id="swC-Zb-irs"/>
+                                </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ProjectRewardCell" rowHeight="400" id="zRy-Z9-wo5" customClass="ProjectRewardCell" customModule="Kickstarter_Framework" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="908" width="400" height="400"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="separator1" rowHeight="32" id="PnI-qP-Uy3" userLabel="Separator">
+                                <rect key="frame" x="0.0" y="1018" width="400" height="32"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="PnI-qP-Uy3" id="7hO-4s-3bS">
+                                    <rect key="frame" x="0.0" y="0.0" width="400" height="32"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" red="0.94509803920000002" green="0.94509803920000002" blue="0.94509803920000002" alpha="1" colorSpace="calibratedRGB"/>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ProjectRewardCell" rowHeight="460" id="zRy-Z9-wo5" customClass="ProjectRewardCell" customModule="Kickstarter_Framework" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="1050" width="400" height="460"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" tableViewCell="zRy-Z9-wo5" id="Y1R-5I-yVP">
-                                    <rect key="frame" x="0.0" y="0.0" width="400" height="400"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="400" height="460"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="lUP-da-dBe">
-                                            <rect key="frame" x="16" y="10" width="368" height="324"/>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="89D-Hp-bfE" userLabel="Top border">
+                                            <rect key="frame" x="0.0" y="0.0" width="400" height="1"/>
+                                            <color key="backgroundColor" white="0.89916487069999995" alpha="1" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="1" id="3c2-mw-0O8"/>
+                                            </constraints>
+                                        </view>
+                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="lUP-da-dBe">
+                                            <rect key="frame" x="16" y="32" width="368" height="382"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pledged $50 or more" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bV6-XZ-Snp">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pledged $50 or more" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bV6-XZ-Snp" customClass="StyledLabel" customModule="Library">
                                                     <rect key="frame" x="0.0" y="0.0" width="368" height="23"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Headline"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="_color" value="TextDefault"/>
+                                                    </userDefinedRuntimeAttributes>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="21 backers" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lNp-ms-Smb">
-                                                    <rect key="frame" x="0.0" y="35" width="368" height="18"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="21 backers" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lNp-ms-Smb" customClass="StyledLabel" customModule="Library">
+                                                    <rect key="frame" x="0.0" y="39" width="368" height="18"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Caption1"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="_color" value="TextDefault"/>
+                                                    </userDefinedRuntimeAttributes>
                                                 </label>
-                                                <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IG5-oz-8Ov">
-                                                    <rect key="frame" x="0.0" y="65" width="368" height="18"/>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="38g-En-4ez" userLabel="All gone view">
+                                                    <rect key="frame" x="0.0" y="73" width="368" height="20"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="Limited (229 left of 300)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BT3-gr-AwG">
-                                                            <rect key="frame" x="0.0" y="0.0" width="168" height="18"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="All gone" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iSj-j0-GHk" userLabel="All gone" customClass="StyledLabel" customModule="Library">
+                                                            <rect key="frame" x="0.0" y="0.0" width="62" height="20"/>
+                                                            <color key="backgroundColor" white="0.89870689660000003" alpha="1" colorSpace="calibratedWhite"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="20" id="6hL-zM-Gmt"/>
+                                                            </constraints>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Caption1"/>
+                                                                <userDefinedRuntimeAttribute type="string" keyPath="_color" value="TextDefault"/>
+                                                            </userDefinedRuntimeAttributes>
+                                                        </label>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstItem="iSj-j0-GHk" firstAttribute="top" secondItem="38g-En-4ez" secondAttribute="top" id="09X-s0-a2x"/>
+                                                        <constraint firstAttribute="bottom" secondItem="iSj-j0-GHk" secondAttribute="bottom" id="WvP-FQ-WdQ"/>
+                                                        <constraint firstItem="iSj-j0-GHk" firstAttribute="leading" secondItem="38g-En-4ez" secondAttribute="leading" id="qTI-tA-nUm"/>
+                                                    </constraints>
+                                                </view>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="598-89-rQi">
+                                                    <rect key="frame" x="0.0" y="109" width="368" height="20"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="Limited (229 left of 300)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BT3-gr-AwG" customClass="StyledLabel" customModule="Library">
+                                                            <rect key="frame" x="0.0" y="0.0" width="168" height="20"/>
                                                             <color key="backgroundColor" red="1" green="1" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="20" id="hSC-pd-VZl"/>
+                                                            </constraints>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Caption1"/>
+                                                                <userDefinedRuntimeAttribute type="string" keyPath="_color" value="TextDefault"/>
+                                                            </userDefinedRuntimeAttributes>
                                                         </label>
-                                                        <view alpha="0.0" contentMode="scaleToFill" horizontalHuggingPriority="1" verticalHuggingPriority="1" horizontalCompressionResistancePriority="1" verticalCompressionResistancePriority="1" translatesAutoresizingMaskIntoConstraints="NO" id="Dcj-UF-dxT">
-                                                            <rect key="frame" x="168" y="0.0" width="200" height="18"/>
-                                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                        </view>
                                                     </subviews>
-                                                </stackView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sTW-4u-vaE">
-                                                    <rect key="frame" x="0.0" y="95" width="368" height="188"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstItem="BT3-gr-AwG" firstAttribute="leading" secondItem="598-89-rQi" secondAttribute="leading" id="9ai-O3-u1B"/>
+                                                        <constraint firstItem="BT3-gr-AwG" firstAttribute="top" secondItem="598-89-rQi" secondAttribute="top" id="LEM-Mb-hyO"/>
+                                                        <constraint firstAttribute="bottom" secondItem="BT3-gr-AwG" secondAttribute="bottom" id="cdm-oR-SKE"/>
+                                                    </constraints>
+                                                </view>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sTW-4u-vaE" customClass="StyledLabel" customModule="Library">
+                                                    <rect key="frame" x="0.0" y="145" width="368" height="188"/>
                                                     <string key="text">GRAND OPENING POSTER 
 Chinati is producing a special edition poster in commemoration of the dawn to dusk opening of The Robert Irwin building, taking place Saturday, July 23, 2016. Pre-order now with a $50 contribution, exclusively through Kickstarter. Plus, a subscription to the Marfa Sky Report and your name listed as an Irwin supporter on the Chinati website and in the museum’s annual newsletter.</string>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Body"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="_color" value="TextDefault"/>
+                                                    </userDefinedRuntimeAttributes>
                                                 </label>
-                                                <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="MwD-Q6-slM">
-                                                    <rect key="frame" x="0.0" y="295" width="368" height="29"/>
+                                                <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacing="32" translatesAutoresizingMaskIntoConstraints="NO" id="MwD-Q6-slM">
+                                                    <rect key="frame" x="0.0" y="349" width="368" height="33"/>
                                                     <subviews>
-                                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="GKP-pr-AkG">
-                                                            <rect key="frame" x="0.0" y="0.0" width="97" height="29"/>
+                                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="GKP-pr-AkG">
+                                                            <rect key="frame" x="0.0" y="0.0" width="97" height="33"/>
                                                             <subviews>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Estimated delivery" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kAv-sh-qyN">
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Estimated delivery" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kAv-sh-qyN" customClass="StyledLabel" customModule="Library">
                                                                     <rect key="frame" x="0.0" y="0.0" width="97" height="14"/>
                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                     <nil key="highlightedColor"/>
+                                                                    <userDefinedRuntimeAttributes>
+                                                                        <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Caption2"/>
+                                                                        <userDefinedRuntimeAttribute type="string" keyPath="_color" value="TextDarkGray"/>
+                                                                        <userDefinedRuntimeAttribute type="string" keyPath="localizedKey" value="rewards.info.estimated_delivery"/>
+                                                                    </userDefinedRuntimeAttributes>
                                                                 </label>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Aug 2016" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="puT-0j-7J2">
-                                                                    <rect key="frame" x="0.0" y="14" width="97" height="15"/>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Aug 2016" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="puT-0j-7J2" customClass="StyledLabel" customModule="Library">
+                                                                    <rect key="frame" x="0.0" y="18" width="97" height="15"/>
                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                     <nil key="highlightedColor"/>
+                                                                    <userDefinedRuntimeAttributes>
+                                                                        <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Caption2"/>
+                                                                        <userDefinedRuntimeAttribute type="string" keyPath="_color" value="TextDefault"/>
+                                                                    </userDefinedRuntimeAttributes>
                                                                 </label>
                                                             </subviews>
                                                         </stackView>
-                                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="KWJ-ud-s9H">
-                                                            <rect key="frame" x="242" y="0.0" width="126" height="29"/>
+                                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="KWJ-ud-s9H">
+                                                            <rect key="frame" x="242" y="0.0" width="126" height="33"/>
                                                             <subviews>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ships to:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cLK-gE-vnr">
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Shipping" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cLK-gE-vnr" customClass="StyledLabel" customModule="Library">
                                                                     <rect key="frame" x="0.0" y="0.0" width="126" height="14"/>
                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                     <nil key="highlightedColor"/>
+                                                                    <userDefinedRuntimeAttributes>
+                                                                        <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Caption2"/>
+                                                                        <userDefinedRuntimeAttribute type="string" keyPath="_color" value="TextDarkGray"/>
+                                                                        <userDefinedRuntimeAttribute type="string" keyPath="localizedKey" value="rewards.info.shipping"/>
+                                                                    </userDefinedRuntimeAttributes>
                                                                 </label>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Anywhere in the world" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0mb-Da-sfX">
-                                                                    <rect key="frame" x="0.0" y="14" width="126" height="15"/>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Anywhere in the world" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0mb-Da-sfX" customClass="StyledLabel" customModule="Library">
+                                                                    <rect key="frame" x="0.0" y="18" width="126" height="15"/>
                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                     <nil key="highlightedColor"/>
+                                                                    <userDefinedRuntimeAttributes>
+                                                                        <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Caption2"/>
+                                                                        <userDefinedRuntimeAttribute type="string" keyPath="_color" value="TextDefault"/>
+                                                                    </userDefinedRuntimeAttributes>
                                                                 </label>
                                                             </subviews>
                                                         </stackView>
@@ -312,15 +573,66 @@ Chinati is producing a special edition poster in commemoration of the dawn to du
                                                 </stackView>
                                             </subviews>
                                         </stackView>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jfQ-pc-7iw" userLabel="Bottom border">
+                                            <rect key="frame" x="0.0" y="459" width="400" height="1"/>
+                                            <color key="backgroundColor" white="0.89916487069999995" alpha="1" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="1" id="lUa-uh-tjV"/>
+                                            </constraints>
+                                        </view>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZXb-Ah-Vt0" userLabel="Backing badge">
+                                            <rect key="frame" x="273" y="0.0" width="111" height="29"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You selected" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1yj-ya-hw1" customClass="StyledLabel" customModule="Library">
+                                                    <rect key="frame" x="6" y="4" width="99" height="21"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Subhead"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                </label>
+                                            </subviews>
+                                            <color key="backgroundColor" red="0.1450980392" green="0.79607843140000001" blue="0.40784313729999999" alpha="1" colorSpace="calibratedRGB"/>
+                                            <constraints>
+                                                <constraint firstAttribute="bottomMargin" secondItem="1yj-ya-hw1" secondAttribute="bottom" id="Evd-ea-jfn"/>
+                                                <constraint firstItem="1yj-ya-hw1" firstAttribute="leading" secondItem="ZXb-Ah-Vt0" secondAttribute="leadingMargin" id="ent-Re-B2k"/>
+                                                <constraint firstItem="1yj-ya-hw1" firstAttribute="top" secondItem="ZXb-Ah-Vt0" secondAttribute="topMargin" id="loh-g8-YKq"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="1yj-ya-hw1" secondAttribute="trailing" id="qX4-hT-3EX"/>
+                                            </constraints>
+                                            <edgeInsets key="layoutMargins" top="4" left="6" bottom="4" right="6"/>
+                                        </view>
                                     </subviews>
                                     <constraints>
+                                        <constraint firstItem="jfQ-pc-7iw" firstAttribute="leading" secondItem="Y1R-5I-yVP" secondAttribute="leading" id="1c4-Bc-mUs"/>
                                         <constraint firstItem="lUP-da-dBe" firstAttribute="leading" secondItem="Y1R-5I-yVP" secondAttribute="leadingMargin" id="4Sn-FL-M8z"/>
+                                        <constraint firstAttribute="trailing" secondItem="89D-Hp-bfE" secondAttribute="trailing" id="CC2-QC-oc4"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="lUP-da-dBe" secondAttribute="trailing" id="ESn-gk-QE3"/>
+                                        <constraint firstAttribute="trailing" secondItem="jfQ-pc-7iw" secondAttribute="trailing" id="Iek-gt-K7l"/>
                                         <constraint firstItem="lUP-da-dBe" firstAttribute="top" secondItem="Y1R-5I-yVP" secondAttribute="topMargin" id="OFT-GO-cmZ"/>
+                                        <constraint firstItem="89D-Hp-bfE" firstAttribute="top" secondItem="Y1R-5I-yVP" secondAttribute="top" id="RlW-MK-qJM"/>
+                                        <constraint firstItem="89D-Hp-bfE" firstAttribute="leading" secondItem="Y1R-5I-yVP" secondAttribute="leading" id="TUn-OH-0l3"/>
+                                        <constraint firstAttribute="bottom" secondItem="jfQ-pc-7iw" secondAttribute="bottom" id="Uvs-6f-6gB"/>
                                         <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="lUP-da-dBe" secondAttribute="bottom" id="aTr-TH-eYM"/>
+                                        <constraint firstItem="ZXb-Ah-Vt0" firstAttribute="top" secondItem="Y1R-5I-yVP" secondAttribute="top" id="siK-zu-KnA"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="ZXb-Ah-Vt0" secondAttribute="trailing" id="tNr-gl-sya"/>
                                     </constraints>
+                                    <edgeInsets key="layoutMargins" top="32" left="16" bottom="32" right="16"/>
                                 </tableViewCellContentView>
-                                <edgeInsets key="layoutMargins" top="16" left="16" bottom="16" right="16"/>
+                                <connections>
+                                    <outlet property="allGoneView" destination="38g-En-4ez" id="dKb-CN-DpI"/>
+                                    <outlet property="backersLabel" destination="lNp-ms-Smb" id="LmY-Ul-q8g"/>
+                                    <outlet property="descriptionLabel" destination="sTW-4u-vaE" id="ZbB-G9-INB"/>
+                                    <outlet property="estimatedDeliveryLabel" destination="puT-0j-7J2" id="aMp-TC-Z7y"/>
+                                    <outlet property="limitedLabel" destination="BT3-gr-AwG" id="AWz-V2-gnY"/>
+                                    <outlet property="limitedView" destination="598-89-rQi" id="uDT-nl-0wt"/>
+                                    <outlet property="shippingRestrictionsView" destination="KWJ-ud-s9H" id="CKX-2f-dbG"/>
+                                    <outlet property="shippingSummaryLabel" destination="0mb-Da-sfX" id="dgO-Wt-8wD"/>
+                                    <outlet property="shippingView" destination="MwD-Q6-slM" id="H8o-Uj-x24"/>
+                                    <outlet property="titleLabel" destination="bV6-XZ-Snp" id="ZZM-P6-rzH"/>
+                                    <outlet property="youSelectedView" destination="ZXb-Ah-Vt0" id="yWa-O4-wiD"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -331,11 +643,11 @@ Chinati is producing a special edition poster in commemoration of the dawn to du
                     <navigationItem key="navigationItem" id="i9P-tt-0br"/>
                     <nil key="simulatedTopBarMetrics"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="400" height="1400"/>
+                    <size key="freeformSize" width="400" height="1800"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="knZ-cK-ciE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2309" y="-674"/>
+            <point key="canvasLocation" x="2174" y="-715"/>
         </scene>
     </scenes>
     <resources>

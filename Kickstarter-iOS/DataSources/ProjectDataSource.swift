@@ -18,15 +18,13 @@ internal final class ProjectDataSource: ValueCellDataSource {
       toSection: 0
     )
 
-    let rewards = project.rewards
-      .coalesceWith([])
+    (project.rewards ?? [])
       .filter { !$0.isNoReward }
       .sort()
-
-    self.appendSection(
-      values: rewards,
-      cellClass: ProjectRewardCell.self
-    )
+      .map { (project, $0) }
+      .forEach { value in
+        self.appendSection(values: [value], cellClass: ProjectRewardCell.self)
+    }
   }
 
   override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
@@ -36,7 +34,7 @@ internal final class ProjectDataSource: ValueCellDataSource {
       cell.configureWith(value: value)
     case let (cell as ProjectSubpagesCell, value as Project):
       cell.configureWith(value: value)
-    case let (cell as ProjectRewardCell, value as Reward):
+    case let (cell as ProjectRewardCell, value as (Project, Reward)):
       cell.configureWith(value: value)
     default:
       assertionFailure("Unrecognized (\(cell.dynamicType), \(value.dynamicType)) combo.")

@@ -25,8 +25,9 @@ public enum Format {
   private static let currencyFormatter: NSNumberFormatter = {
     let formatter = NSNumberFormatter()
     formatter.numberStyle = .CurrencyStyle
-    formatter.roundingMode = .RoundDown
+    formatter.roundingMode = .RoundUp
     formatter.maximumFractionDigits = 0
+    formatter.generatesDecimalNumbers = false
     return formatter
   }()
 
@@ -74,8 +75,6 @@ public enum Format {
                               env: Environment = AppEnvironment.current) -> String {
 
     Format.currencyFormatter.locale = env.locale
-    Format.currencyFormatter.maximumFractionDigits = 0
-    Format.currencyFormatter.minimumFractionDigits = 0
     Format.currencyFormatter.currencySymbol = country.currencySymbol
 
     let string = Format.currencyFormatter.stringFromNumber(amount) ?? country.currencySymbol + String(amount)
