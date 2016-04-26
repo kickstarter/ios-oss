@@ -12,6 +12,18 @@ import Result
 final class AppDelegateViewModelTests: TestCase {
   let vm: AppDelegateViewModelType = AppDelegateViewModel()
 
+  let updateCurrentUserInEnvironment = TestObserver<User, NoError>()
+  let updateConfigInEnvironment = TestObserver<Config, NoError>()
+  let postNotificationName = TestObserver<String, NoError>()
+
+  override func setUp() {
+    super.setUp()
+
+    vm.outputs.updateCurrentUserInEnvironment.observe(updateCurrentUserInEnvironment.observer)
+    vm.outputs.updateConfigInEnvironment.observe(updateConfigInEnvironment.observer)
+    vm.outputs.postNotification.map { $0.name }.observe(postNotificationName.observer)
+  }
+
   func testHockeyManager_StartsWhenAppLaunches() {
     XCTAssertFalse(hockeyManager.managerStarted, "Manager should not start right away.")
 
@@ -36,10 +48,6 @@ final class AppDelegateViewModelTests: TestCase {
   }
 
   func testCurrentUserUpdating_NothingHappensWhenLoggedOut() {
-
-    let updateCurrentUserInEnvironment = TestObserver<User, NoError>()
-    vm.outputs.updateCurrentUserInEnvironment.observe(updateCurrentUserInEnvironment.observer)
-
     vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
                                             launchOptions: nil)
     vm.inputs.applicationWillEnterForeground()
@@ -49,13 +57,6 @@ final class AppDelegateViewModelTests: TestCase {
   }
 
   func testCurrentUserUpdating_WhenLoggedIn() {
-
-    let updateCurrentUserInEnvironment = TestObserver<User, NoError>()
-    vm.outputs.updateCurrentUserInEnvironment.observe(updateCurrentUserInEnvironment.observer)
-
-    let postNotificationName = TestObserver<String, NoError>()
-    vm.outputs.postNotification.map { $0.name }.observe(postNotificationName.observer)
-
     let env = AccessTokenEnvelope(accessToken: "deadbeef", user: UserFactory.user)
     AppEnvironment.login(env)
 
@@ -100,5 +101,14 @@ final class AppDelegateViewModelTests: TestCase {
                                       annotation: 1)
 
     XCTAssertTrue(self.facebookAppDelegate.openedUrl)
+  }
+
+  func testConfig() {
+    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+                                                 launchOptions: nil)
+    self.updateConfigInEnvironment.assertValueCount(1)
+
+    self.vm.inputs.applicationWillEnterForeground()
+    self.updateConfigInEnvironment.assertValueCount(2)
   }
 }

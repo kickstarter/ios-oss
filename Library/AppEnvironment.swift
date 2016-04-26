@@ -68,10 +68,12 @@ public struct AppEnvironment {
 
   // Pop an environment off the stack.
   public static func popEnvironment() -> Environment? {
-    saveEnvironment(environment: current,
-                    ubiquitousStore: current.ubiquitousStore,
-                    userDefaults: current.userDefaults)
-    return stack.popLast()
+    let last = stack.popLast()
+    let next = current ?? Environment()
+    saveEnvironment(environment: next,
+                    ubiquitousStore: next.ubiquitousStore,
+                    userDefaults: next.userDefaults)
+    return last
   }
 
   // Replace the current environment with a new environment.
@@ -87,6 +89,7 @@ public struct AppEnvironment {
                // swiftlint:disable line_length
                assetImageGeneratorType: AssetImageGeneratorType.Type = AppEnvironment.current.assetImageGeneratorType,
                // swiftlint:enable line_length
+               config: Config? = AppEnvironment.current.config,
                cookieStorage: NSHTTPCookieStorageType = AppEnvironment.current.cookieStorage,
                countryCode: String = AppEnvironment.current.countryCode,
                currentUser: User? = AppEnvironment.current.currentUser,
@@ -108,6 +111,7 @@ public struct AppEnvironment {
         apiService: apiService,
         apiDelayInterval: apiDelayInterval,
         assetImageGeneratorType: assetImageGeneratorType,
+        config: config,
         cookieStorage: cookieStorage,
         countryCode: countryCode,
         currentUser: currentUser,
@@ -135,6 +139,7 @@ public struct AppEnvironment {
                // swiftlint:disable line_length
                assetImageGeneratorType: AssetImageGeneratorType.Type = AppEnvironment.current.assetImageGeneratorType,
                // swiftlint:enable line_length
+               config: Config? = AppEnvironment.current.config,
                cookieStorage: NSHTTPCookieStorageType = AppEnvironment.current.cookieStorage,
                countryCode: String = AppEnvironment.current.countryCode,
                currentUser: User? = AppEnvironment.current.currentUser,
@@ -156,6 +161,7 @@ public struct AppEnvironment {
         apiService: apiService,
         apiDelayInterval: apiDelayInterval,
         assetImageGeneratorType: assetImageGeneratorType,
+        config: config,
         cookieStorage: cookieStorage,
         countryCode: countryCode,
         currentUser: currentUser,
@@ -184,6 +190,7 @@ public struct AppEnvironment {
 
     var service = AppEnvironment.current.apiService
     var currentUser: User? = nil
+    let config: Config? = data["config"].flatMap(decode)
 
     if let oauthToken = data["apiService.oauthToken.token"] as? String {
       // If there is an oauth token stored in the defaults, then we can authenticate our api service
@@ -246,10 +253,10 @@ public struct AppEnvironment {
 
     // Try restore the current user
     if service.oauthToken != nil {
-      currentUser = data["currentUser"].flatMap { $0 as? [String:AnyObject] }.flatMap(decode)
+      currentUser = data["currentUser"].flatMap(decode)
     }
 
-    return Environment(apiService: service, currentUser: currentUser)
+    return Environment(apiService: service, config: config, currentUser: currentUser)
   }
   // swiftlint:enable function_body_length
 
@@ -266,6 +273,7 @@ public struct AppEnvironment {
       "apiService.serverConfig.basicHTTPAuth.password": env.apiService.serverConfig.basicHTTPAuth?.password,
       "apiService.serverConfig.webBaseUrl": env.apiService.serverConfig.webBaseUrl.absoluteString,
       "apiService.language": env.apiService.language,
+      "config": env.config?.encode(),
       "currentUser": env.currentUser?.encode()
     ]
 

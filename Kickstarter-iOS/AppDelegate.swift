@@ -29,6 +29,12 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         self?.viewModel.inputs.currentUserUpdatedInEnvironment()
     }
 
+    self.viewModel.outputs.updateConfigInEnvironment
+      .observeForUI()
+      .observeNext { config in
+        AppEnvironment.replaceCurrentEnvironment(config: config)
+    }
+
     self.viewModel.outputs.postNotification
       .observeForUI()
       .observeNext(NSNotificationCenter.defaultCenter().postNotification)

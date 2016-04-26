@@ -19,6 +19,9 @@ public struct Environment {
   /// A type that exposes how to extract a still image from an AVAsset.
   public let assetImageGeneratorType: AssetImageGeneratorType.Type
 
+  /// A type that holds configuration values we download from the server.
+  public let config: Config?
+
   /// A type that exposes how to interact with cookie storage. Default value is
   /// `NSHTTPCookieStorage.sharedHTTPCookieStorage()`
   public let cookieStorage: NSHTTPCookieStorageType
@@ -72,6 +75,7 @@ public struct Environment {
     apiService: ServiceType = Service(buildVersion: NSBundle.mainBundle().bundleVersion),
     apiDelayInterval: NSTimeInterval = 0.0,
     assetImageGeneratorType: AssetImageGeneratorType.Type = AVAssetImageGenerator.self,
+    config: Config? = nil,
     cookieStorage: NSHTTPCookieStorageType = NSHTTPCookieStorage.sharedHTTPCookieStorage(),
     countryCode: String = "US",
     currentUser: User? = nil,
@@ -91,6 +95,7 @@ public struct Environment {
     self.apiService = apiService
     self.apiDelayInterval = apiDelayInterval
     self.assetImageGeneratorType = assetImageGeneratorType
+    self.config = config
     self.cookieStorage = cookieStorage
     self.countryCode = countryCode
     self.currentUser = currentUser
@@ -113,6 +118,7 @@ public struct Environment {
       self.apiService,
       self.apiDelayInterval,
       self.assetImageGeneratorType,
+      self.config,
       self.cookieStorage,
       self.countryCode,
       self.currentUser,

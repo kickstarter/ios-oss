@@ -3,34 +3,38 @@ import Models
 import UIKit
 
 internal final class ActivitiesDataSource: ValueCellDataSource {
-  func loadData(activities: [Activity]) {
-    self.clearValues()
+
+  private enum Section: Int {
+    case EmptyState
+    case Activities
+  }
+
+  internal func emptyState(visible visible: Bool) {
+    self.set(values: visible ? [()] : [],
+             cellClass: ActivityEmptyStateCell.self,
+             inSection: Section.EmptyState.rawValue)
+  }
+
+  internal func load(activities activities: [Activity]) {
+    let section = Section.Activities.rawValue
+
+    self.clearValues(section: section)
 
     activities.forEach { activity in
       switch activity.category {
       case .Backing:
-        self.appendSection(
-          values: [activity],
-          cellClass: ActivityFriendBackingCell.self
-        )
+        self.appendRow(value: activity, cellClass: ActivityFriendBackingCell.self, toSection: section)
       case .Update:
-        self.appendSection(
-          values: [activity],
-          cellClass: ActivityUpdateCell.self
-        )
+        self.appendRow(value: activity, cellClass: ActivityUpdateCell.self, toSection: section)
       case .Follow:
-        self.appendSection(
-          values: [activity],
-          cellClass: ActivityFriendFollowCell.self
-        )
+        self.appendRow(value: activity, cellClass: ActivityFriendFollowCell.self, toSection: section)
       case .Success:
-        self.appendSection(
-          values: [activity],
-          cellClass: ActivityStateChangeCell.self
-        )
+        self.appendRow(value: activity, cellClass: ActivityStateChangeCell.self, toSection: section)
       default:
         assertionFailure("Unsupported activity")
       }
+
+      self.appendStaticRow(cellIdentifier: "Padding", toSection: section)
     }
   }
 
@@ -45,6 +49,10 @@ internal final class ActivitiesDataSource: ValueCellDataSource {
       cell.configureWith(value: activity)
     case let (cell as ActivityStateChangeCell, activity as Activity):
       cell.configureWith(value: activity)
+    case let (cell as ActivityEmptyStateCell, value as Void):
+      cell.configureWith(value: value)
+    case (is StaticTableViewCell, is Void):
+      return
     default:
       assertionFailure("Unrecognized (cell, viewModel) combo.")
     }

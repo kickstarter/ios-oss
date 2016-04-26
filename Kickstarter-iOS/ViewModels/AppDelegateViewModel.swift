@@ -3,6 +3,7 @@ import Foundation
 import ReactiveCocoa
 import Result
 import Models
+import KsApi
 
 internal protocol AppDelegateViewModelInputs {
   /// Call when the application finishes launching.
@@ -27,10 +28,13 @@ internal protocol AppDelegateViewModelOutputs {
   /// Emits a fresh user to be updated in the app environment.
   var updateCurrentUserInEnvironment: Signal<User, NoError> { get }
 
+  // Emits a config value that should be updated in the environment.
+  var updateConfigInEnvironment: Signal<Config, NoError> { get }
+
   /// Emits an NSNotification that should be immediately posted.
   var postNotification: Signal<NSNotification, NoError> { get }
 
-  /// Return this value in the delegate's 
+  /// Return this value in the delegate's
   var facebookOpenURLReturnValue: MutableProperty<Bool> { get }
 }
 
@@ -67,7 +71,10 @@ AppDelegateViewModelOutputs {
   internal func currentUserUpdatedInEnvironment() {
     self.currentUserUpdatedInEnvironmentProperty.value = ()
   }
-
+  private let configUpdatedInEnvironmentProperty = MutableProperty()
+  internal func configUpdatedInEnvironment() {
+    self.configUpdatedInEnvironmentProperty.value = ()
+  }
   private typealias ApplicationOpenUrl = (
     application: UIApplication,
     url: NSURL,
@@ -86,6 +93,7 @@ AppDelegateViewModelOutputs {
 
   internal let updateCurrentUserInEnvironment: Signal<User, NoError>
   internal let postNotification: Signal<NSNotification, NoError>
+  internal let updateConfigInEnvironment: Signal<Config, NoError>
   internal let facebookOpenURLReturnValue = MutableProperty(false)
 
   internal init() {
@@ -96,6 +104,12 @@ AppDelegateViewModelOutputs {
       ])
       .filter { _ in AppEnvironment.current.apiService.isAuthenticated }
       .switchMap { _ in AppEnvironment.current.apiService.fetchUserSelf().demoteErrors() }
+
+    self.updateConfigInEnvironment = Signal.merge([
+      self.applicationWillEnterForegroundProperty.signal,
+      self.applicationDidFinishLaunchingProperty.signal.ignoreValues()
+      ])
+      .switchMap { AppEnvironment.current.apiService.fetchConfig().demoteErrors() }
 
     self.postNotification = self.currentUserUpdatedInEnvironmentProperty.signal
       .mapConst(NSNotification(name: CurrentUserNotifications.userUpdated, object: nil))

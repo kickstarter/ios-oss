@@ -6,8 +6,9 @@ internal final class ProjectViewController: UITableViewController {
   private let viewModel: ProjectViewModelType = ProjectViewModel()
   private let dataSource = ProjectDataSource()
 
-  internal func configureWith(project project: Project) {
+  internal func configureWith(project project: Project, refTag: RefTag?) {
     self.viewModel.inputs.project(project)
+    self.viewModel.inputs.refTag(refTag)
   }
 
   override func viewDidLoad() {

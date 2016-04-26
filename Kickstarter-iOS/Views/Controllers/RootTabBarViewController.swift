@@ -49,6 +49,10 @@ internal final class RootTabBarViewController: UITabBarController {
       .observeForUI()
       .observeNext(scrollToTop)
   }
+
+  internal func switchToDiscovery() {
+    self.viewModel.inputs.switchToDiscovery()
+  }
 }
 
 extension RootTabBarViewController: UITabBarControllerDelegate {
