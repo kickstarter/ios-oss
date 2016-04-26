@@ -138,7 +138,7 @@
                                     <outlet property="projectNameLabel" destination="2bd-l0-V3a" id="eZj-rg-V4r"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="Padding" rowHeight="32" id="Ehm-aL-O7O" userLabel="---padding---">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="Padding" rowHeight="32" id="Ehm-aL-O7O" userLabel="---padding---" customClass="StaticTableViewCell" customModule="Library">
                                 <rect key="frame" x="0.0" y="312" width="400" height="32"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Ehm-aL-O7O" id="Q5L-WB-RRf">
@@ -195,7 +195,7 @@
                                     <outlet property="friendLabel" destination="eef-El-PXt" id="Sg6-Kj-Pn0"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="Padding2" rowHeight="32" id="Zeb-S9-kS4" userLabel="---padding---">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="Padding2" rowHeight="32" id="Zeb-S9-kS4" userLabel="---padding---" customClass="StaticTableViewCell" customModule="Library">
                                 <rect key="frame" x="0.0" y="444" width="400" height="32"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Zeb-S9-kS4" id="4do-ov-xnh">
@@ -283,7 +283,7 @@
                                     <outlet property="projectNameLabel" destination="vrG-dK-htn" id="2kF-AV-vQq"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="Padding3" rowHeight="32" id="34k-Qc-2B0" userLabel="---padding---">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="Padding3" rowHeight="32" id="34k-Qc-2B0" userLabel="---padding---" customClass="StaticTableViewCell" customModule="Library">
                                 <rect key="frame" x="0.0" y="645" width="400" height="32"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="34k-Qc-2B0" id="21o-i1-nfS">
@@ -394,7 +394,7 @@
                                     <outlet property="updateSequenceLabel" destination="qj0-jB-Zve" id="aqY-tL-ur6"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="Padding4" rowHeight="32" id="aVT-Ep-YIk" userLabel="---padding---">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="Padding4" rowHeight="32" id="aVT-Ep-YIk" userLabel="---padding---" customClass="StaticTableViewCell" customModule="Library">
                                 <rect key="frame" x="0.0" y="1057" width="400" height="32"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="aVT-Ep-YIk" id="Ii8-RX-pIW">
@@ -406,7 +406,7 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <edgeInsets key="layoutMargins" top="16" left="16" bottom="16" right="16"/>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="ActivityEmptyStateCell" rowHeight="300" id="yU1-Yr-SzU" userLabel="Empty state">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="ActivityEmptyStateCell" rowHeight="300" id="yU1-Yr-SzU" userLabel="Empty state" customClass="ActivityEmptyStateCell" customModule="Kickstarter_Framework" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="1089" width="400" height="300"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="yU1-Yr-SzU" id="0ag-zx-q1C">

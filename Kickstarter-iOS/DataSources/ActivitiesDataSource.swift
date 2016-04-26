@@ -49,6 +49,8 @@ internal final class ActivitiesDataSource: ValueCellDataSource {
       cell.configureWith(value: activity)
     case let (cell as ActivityStateChangeCell, activity as Activity):
       cell.configureWith(value: activity)
+    case let (cell as ActivityEmptyStateCell, value as Void):
+      cell.configureWith(value: value)
     case (is StaticTableViewCell, is Void):
       return
     default:
