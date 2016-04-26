@@ -159,4 +159,27 @@ final class AppEnvironmentTests: XCTestCase {
 
     XCTAssertEqual("deadbeef", ubiquitousStore.stringForKey(AppEnvironment.oauthTokenStorageKey))
   }
+
+  func testPushPopSave() {
+    AppEnvironment.pushEnvironment(ubiquitousStore: MockKeyValueStore(),
+                                   userDefaults: MockKeyValueStore())
+
+    AppEnvironment.pushEnvironment(currentUser: UserFactory.user)
+
+    var currentUserId = AppEnvironment.current.userDefaults
+      .dictionaryForKey(AppEnvironment.environmentStorageKey)
+      .flatMap { $0["currentUser"] as? [String:AnyObject] }
+      .flatMap { $0["id"] as? Int }
+    XCTAssertEqual(UserFactory.user.id, currentUserId, "Current user is saved.")
+
+    AppEnvironment.popEnvironment()
+
+    currentUserId = AppEnvironment.current.userDefaults
+      .dictionaryForKey(AppEnvironment.environmentStorageKey)
+      .flatMap { $0["currentUser"] as? [String:AnyObject] }
+      .flatMap { $0["id"] as? Int }
+    XCTAssertEqual(nil, currentUserId, "Current user is cleared.")
+
+    AppEnvironment.popEnvironment()
+  }
 }
