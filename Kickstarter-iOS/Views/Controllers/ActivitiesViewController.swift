@@ -1,6 +1,8 @@
 import Foundation
 import Library
 import UIKit
+import ReactiveCocoa
+import Models
 
 internal final class ActivitiesViewController: UITableViewController {
   let viewModel: ActivitiesViewModelType = ActivitiesViewModel()
@@ -30,29 +32,78 @@ internal final class ActivitiesViewController: UITableViewController {
     self.viewModel.inputs.viewWillAppear()
   }
 
-  override func bindViewModel() {
+  internal override func bindViewModel() {
     super.bindViewModel()
 
     self.viewModel.outputs.activities
       .observeForUI()
       .observeNext { [weak self] activities in
-        self?.dataSource.loadData(activities)
+        self?.dataSource.load(activities: activities)
         self?.tableView.reloadData()
+    }
+
+    Signal.merge(
+      self.viewModel.outputs.showLoggedOutEmptyState,
+      self.viewModel.outputs.showLoggedInEmptyState
+      )
+      .observeForUI()
+      .observeNext { [weak self] visible in
+        self?.dataSource.emptyState(visible: visible)
+    }
+
+    self.viewModel.outputs.isRefreshing
+      .observeForUI()
+      .observeNext { [weak control = self.refreshControl] in
+        $0 ? control?.beginRefreshing() : control?.endRefreshing()
+    }
+
+    self.viewModel.outputs.showProject
+      .observeForUI()
+      .observeNext { [weak self] project, refTag in
+        self?.present(project: project, refTag: refTag)
     }
   }
 
-  override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-    return 32.0
-  }
-
-  override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-    let view = UIView()
-    view.backgroundColor = .clearColor()
-    return view
-  }
-
-  override func tableView(tableView: UITableView,
+  internal override func tableView(tableView: UITableView,
                           estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
     return UITableViewAutomaticDimension
+  }
+
+  internal override func tableView(tableView: UITableView,
+                          willDisplayCell cell: UITableViewCell,
+                                          forRowAtIndexPath indexPath: NSIndexPath) {
+
+    if let cell = cell as? ActivityUpdateCell where cell.delegate == nil {
+      cell.delegate = self.viewModel.inputs
+    }
+
+    self.viewModel.inputs.willDisplayRow(self.dataSource.itemIndexAt(indexPath),
+                                         outOf: self.dataSource.numberOfItems())
+  }
+
+  internal override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    guard let activity = self.dataSource[indexPath] as? Activity else {
+      return
+    }
+
+    if let project = activity.project where activity.category == .Backing {
+      present(project: project, refTag: RefTag.activity)
+    }
+  }
+
+  @IBAction internal func refresh() {
+    self.viewModel.inputs.refresh()
+  }
+
+  private func present(project project: Project, refTag: RefTag) {
+    guard let vc = UIStoryboard(name: "Project", bundle: nil)
+      .instantiateInitialViewController() as? ProjectViewController else {
+        fatalError("Could not instantiate ProjectViewController.")
+    }
+
+    vc.configureWith(project: project, refTag: refTag)
+    self.presentViewController(UINavigationController(rootViewController: vc),
+                               animated: true,
+                               completion: nil)
   }
 }

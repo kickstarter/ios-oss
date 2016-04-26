@@ -7,6 +7,7 @@ import Prelude
 
 internal protocol ActivityUpdateViewModelInputs {
   func activity(activity: Activity)
+  func tappedProjectImage()
 }
 
 internal protocol ActivityUpdateViewModelOutputs {
@@ -16,6 +17,7 @@ internal protocol ActivityUpdateViewModelOutputs {
   var sequenceTitle: Signal<String?, NoError> { get }
   var timestamp: Signal<String, NoError> { get }
   var body: Signal<String, NoError> { get }
+  var tappedActivityProjectImage: Signal<Activity, NoError> { get }
 }
 
 internal final class ActivityUpdateViewModel: ActivityUpdateViewModelInputs, ActivityUpdateViewModelOutputs {
@@ -24,13 +26,18 @@ internal final class ActivityUpdateViewModel: ActivityUpdateViewModelInputs, Act
   internal func activity(activity: Activity) {
     self.activityProperty.value = activity
   }
+  private let tappedProjectImageProperty = MutableProperty()
+  internal func tappedProjectImage() {
+    self.tappedProjectImageProperty.value = ()
+  }
 
-  var projectImageURL: Signal<NSURL?, NoError>
-  var projectName: Signal<String?, NoError>
-  var title: Signal<String?, NoError>
-  var sequenceTitle: Signal<String?, NoError>
-  var timestamp: Signal<String, NoError>
-  var body: Signal<String, NoError>
+  internal let projectImageURL: Signal<NSURL?, NoError>
+  internal let projectName: Signal<String?, NoError>
+  internal let title: Signal<String?, NoError>
+  internal let sequenceTitle: Signal<String?, NoError>
+  internal let timestamp: Signal<String, NoError>
+  internal let body: Signal<String, NoError>
+  internal let tappedActivityProjectImage: Signal<Activity, NoError>
 
   internal var inputs: ActivityUpdateViewModelInputs { return self }
   internal var outputs: ActivityUpdateViewModelOutputs { return self }
@@ -56,6 +63,9 @@ internal final class ActivityUpdateViewModel: ActivityUpdateViewModelInputs, Act
     self.timestamp = activity.mapConst("")
 
     self.body = activity.map { $0.update?.body ?? "" }.map(truncateBody)
+
+    self.tappedActivityProjectImage = activity
+      .takeWhen(self.tappedProjectImageProperty.signal)
   }
 }
 

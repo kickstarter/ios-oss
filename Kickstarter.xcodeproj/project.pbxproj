@@ -97,6 +97,9 @@
 		A714051E1CAF631C00A2795B /* CommentDialogViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A714051D1CAF631C00A2795B /* CommentDialogViewModel.swift */; };
 		A714051F1CAF631C00A2795B /* CommentDialogViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A714051D1CAF631C00A2795B /* CommentDialogViewModel.swift */; };
 		A71405211CAF633500A2795B /* CommentDialogViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71405201CAF633500A2795B /* CommentDialogViewModelTests.swift */; };
+		A7208C951CCBD76300E3DAB3 /* ActivityEmptyStateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7208C941CCBD76300E3DAB3 /* ActivityEmptyStateCell.swift */; };
+		A7208C961CCBD76300E3DAB3 /* ActivityEmptyStateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7208C941CCBD76300E3DAB3 /* ActivityEmptyStateCell.swift */; };
+		A7208CC41CCBDA7900E3DAB3 /* ActivitiesDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7208CC31CCBDA7900E3DAB3 /* ActivitiesDataSourceTests.swift */; };
 		A7208C3E1CCAC86800E3DAB3 /* FacebookAppDelegateProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7208C3D1CCAC86800E3DAB3 /* FacebookAppDelegateProtocol.swift */; };
 		A7208C3F1CCAC86800E3DAB3 /* FacebookAppDelegateProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7208C3D1CCAC86800E3DAB3 /* FacebookAppDelegateProtocol.swift */; };
 		A721DF621C8CF503000CB97C /* TrackingClientType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A721DF611C8CF503000CB97C /* TrackingClientType.swift */; };
@@ -217,6 +220,8 @@
 		A75CBDE71C8A26F800758C55 /* AppDelegateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75CBDE61C8A26F800758C55 /* AppDelegateViewModel.swift */; };
 		A75CBDE81C8A26F800758C55 /* AppDelegateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75CBDE61C8A26F800758C55 /* AppDelegateViewModel.swift */; };
 		A75CF8811CC6D4BE00BBBB7F /* ProjectRewardCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75CF8801CC6D4BE00BBBB7F /* ProjectRewardCellViewModelTests.swift */; };
+		A75CFB081CCE7FCF004CD5FA /* StaticTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75CFB071CCE7FCF004CD5FA /* StaticTableViewCell.swift */; };
+		A75CFB091CCE7FCF004CD5FA /* StaticTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75CFB071CCE7FCF004CD5FA /* StaticTableViewCell.swift */; };
 		A76077D11CADD3A9001B39D0 /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76077D01CADD3A9001B39D0 /* Notifications.swift */; };
 		A76077D21CADD3A9001B39D0 /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76077D01CADD3A9001B39D0 /* Notifications.swift */; };
 		A760780A1CAEE0A6001B39D0 /* IsValidEmail.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76078091CAEE0A6001B39D0 /* IsValidEmail.swift */; };
@@ -1289,6 +1294,8 @@
 		A71404381CAF215900A2795B /* KeyValueStoreType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = KeyValueStoreType.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		A714051D1CAF631C00A2795B /* CommentDialogViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentDialogViewModel.swift; sourceTree = "<group>"; };
 		A71405201CAF633500A2795B /* CommentDialogViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentDialogViewModelTests.swift; sourceTree = "<group>"; };
+		A7208C941CCBD76300E3DAB3 /* ActivityEmptyStateCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityEmptyStateCell.swift; sourceTree = "<group>"; };
+		A7208CC31CCBDA7900E3DAB3 /* ActivitiesDataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivitiesDataSourceTests.swift; sourceTree = "<group>"; };
 		A7208C3D1CCAC86800E3DAB3 /* FacebookAppDelegateProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookAppDelegateProtocol.swift; sourceTree = "<group>"; };
 		A721DF611C8CF503000CB97C /* TrackingClientType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackingClientType.swift; sourceTree = "<group>"; };
 		A721DF641C8CF5A3000CB97C /* KoalaTrackingClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = KoalaTrackingClient.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -1331,6 +1338,7 @@
 		A75AB2241C8B407F002FC3E6 /* ActivityFriendBackingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityFriendBackingCell.swift; sourceTree = "<group>"; };
 		A75CBDE61C8A26F800758C55 /* AppDelegateViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegateViewModel.swift; sourceTree = "<group>"; };
 		A75CF8801CC6D4BE00BBBB7F /* ProjectRewardCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectRewardCellViewModelTests.swift; sourceTree = "<group>"; };
+		A75CFB071CCE7FCF004CD5FA /* StaticTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticTableViewCell.swift; sourceTree = "<group>"; };
 		A76077D01CADD3A9001B39D0 /* Notifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
 		A76078091CAEE0A6001B39D0 /* IsValidEmail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IsValidEmail.swift; sourceTree = "<group>"; };
 		A760782F1CAEE0DD001B39D0 /* IsValidEmailTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IsValidEmailTests.swift; sourceTree = "<group>"; };
@@ -1656,13 +1664,6 @@
 			name = Library;
 			sourceTree = "<group>";
 		};
-		0127FC5E1C98C25300E335C6 /* Library */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Library;
-			sourceTree = "<group>";
-		};
 		802800561C88F62500141235 /* Configs */ = {
 			isa = PBXGroup;
 			children = (
@@ -1696,6 +1697,14 @@
 				A782BAB21C9F5EBA007B13C8 /* ReactiveExtensions_TestHelpers.framework */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		A7208CC21CCBDA5700E3DAB3 /* DataSources */ = {
+			isa = PBXGroup;
+			children = (
+				A7208CC31CCBDA7900E3DAB3 /* ActivitiesDataSourceTests.swift */,
+			);
+			path = DataSources;
 			sourceTree = "<group>";
 		};
 		A721DF3D1C8CF4F6000CB97C /* Koala */ = {
@@ -1785,6 +1794,7 @@
 				A7285CC31C8E915B00D83297 /* ProjectMainCell.swift */,
 				A7FC8C501C8F442D00C3B49B /* ProjectRewardCell.swift */,
 				A7FC8C561C8F449500C3B49B /* ProjectSubpagesCell.swift */,
+				A7208C941CCBD76300E3DAB3 /* ActivityEmptyStateCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -2068,6 +2078,7 @@
 				A72E75FE1CC3B76700983066 /* UIViewController-BindToViewModel.swift */,
 				A72E75961CC313A400983066 /* ValueCell.swift */,
 				A761269F1C90C94000EDCCB9 /* ValueCellDataSource.swift */,
+				A75CFB071CCE7FCF004CD5FA /* StaticTableViewCell.swift */,
 			);
 			path = DataSource;
 			sourceTree = "<group>";
@@ -2146,7 +2157,7 @@
 			children = (
 				A7D1F9901C850CB2000D41D5 /* Info.plist */,
 				A7D1F9911C850CB2000D41D5 /* KickstarterTests.swift */,
-				0127FC5E1C98C25300E335C6 /* Library */,
+				A7208CC21CCBDA5700E3DAB3 /* DataSources */,
 				A775190E1C8CADC80022F175 /* ViewModels */,
 			);
 			path = Tests;
@@ -3339,6 +3350,7 @@
 				A75511651C8642C3005355CF /* String+SimpleHTML.swift in Sources */,
 				A76126B91C90C94000EDCCB9 /* UIView-Extensions.swift in Sources */,
 				A77D7B071CBAAF5D0077586B /* Paginate.swift in Sources */,
+				A75CFB081CCE7FCF004CD5FA /* StaticTableViewCell.swift in Sources */,
 				A78537F81CB5803B00385B73 /* NSHTTPCookieStorageType.swift in Sources */,
 				A75511661C8642C3005355CF /* Strings.swift in Sources */,
 				A75511671C8642C3005355CF /* UIButton+LocalizedKey.swift in Sources */,
@@ -3407,6 +3419,7 @@
 				A75511AD1C8647D9005355CF /* AssetImageGeneratorType.swift in Sources */,
 				A721DF6C1C8CFAF6000CB97C /* MockTrackingClient.swift in Sources */,
 				A75511AE1C8647D9005355CF /* AVPlayerView.swift in Sources */,
+				A75CFB091CCE7FCF004CD5FA /* StaticTableViewCell.swift in Sources */,
 				A714043A1CAF215900A2795B /* KeyValueStoreType.swift in Sources */,
 				A78537F91CB5803B00385B73 /* NSHTTPCookieStorageType.swift in Sources */,
 				A75511AF1C8647D9005355CF /* Environment.swift in Sources */,
@@ -3499,6 +3512,7 @@
 				0146E3231CC0296900082C5B /* FacebookConfirmationViewController.swift in Sources */,
 				0127FC5D1C98C11500E335C6 /* SFSafariViewController.swift in Sources */,
 				0127FC541C98C0F900E335C6 /* HelpType.swift in Sources */,
+				A7208C961CCBD76300E3DAB3 /* ActivityEmptyStateCell.swift in Sources */,
 				A762EFF31C8CC663005581A4 /* ActivityFriendFollowCell.swift in Sources */,
 				A7E315B41C88A8A2000DD85A /* DiscoveryViewModel.swift in Sources */,
 				A745D0221CA897FF00C12802 /* SearchViewController.swift in Sources */,
@@ -3625,6 +3639,7 @@
 				01BC58361CAD7A98000289E8 /* FacebookConfirmationViewModel.swift in Sources */,
 				A714051E1CAF631C00A2795B /* CommentDialogViewModel.swift in Sources */,
 				A77519001C8C97510022F175 /* ActivityFriendBackingViewModel.swift in Sources */,
+				A7208C951CCBD76300E3DAB3 /* ActivityEmptyStateCell.swift in Sources */,
 				A77518FD1C8C8ADA0022F175 /* ActivityUpdateViewModel.swift in Sources */,
 				A7FC8C4E1C8F43E400C3B49B /* ProjectRewardCellViewModel.swift in Sources */,
 				01BF210B1CA5D6D100184A38 /* ResetPasswordViewModel.swift in Sources */,
@@ -3671,6 +3686,7 @@
 				A75CF8811CC6D4BE00BBBB7F /* ProjectRewardCellViewModelTests.swift in Sources */,
 				A72D92301CB1E08800A88249 /* XCTestCase+AppEnvironment.swift in Sources */,
 				9DE6C0891C9B5FCA00FCC7B1 /* (null) in Sources */,
+				A7208CC41CCBDA7900E3DAB3 /* ActivitiesDataSourceTests.swift in Sources */,
 				A7DC836E1C9DB6EE00BB2B44 /* ProjectViewModelTests.swift in Sources */,
 				A7DC83921C9DB9BC00BB2B44 /* (null) in Sources */,
 			);

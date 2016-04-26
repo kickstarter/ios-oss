@@ -56,7 +56,7 @@ internal final class DiscoveryViewController: UITableViewController {
         fatalError("Couldn't instantiate project view controller.")
     }
 
-    projectViewController.configureWith(project: project)
+    projectViewController.configureWith(project: project, refTag: nil)
     let nav = UINavigationController(rootViewController: projectViewController)
     self.presentViewController(nav, animated: true, completion: nil)
   }

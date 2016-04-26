@@ -1,5 +1,5 @@
 import XCTest
-import Library
+@testable import Library
 import UIKit
 
 internal final class IntTableCell: UITableViewCell, ValueCell {
@@ -103,5 +103,30 @@ internal final class ValueCellDataSourceTests: XCTestCase {
   func testClearValues() {
     dataSource.clearValues()
     XCTAssertEqual(0, dataSource.numberOfItems())
+  }
+
+  func testClearValuesInSection() {
+    dataSource.clearValues(section: 0)
+    XCTAssertEqual(6, dataSource.numberOfSectionsInTableView(tableView))
+    XCTAssertEqual(0, dataSource.tableView(tableView, numberOfRowsInSection: 0))
+    XCTAssertEqual(3, dataSource.tableView(tableView, numberOfRowsInSection: 1))
+    XCTAssertEqual(0, dataSource.tableView(tableView, numberOfRowsInSection: 2))
+    XCTAssertEqual(0, dataSource.tableView(tableView, numberOfRowsInSection: 3))
+    XCTAssertEqual(0, dataSource.tableView(tableView, numberOfRowsInSection: 4))
+    XCTAssertEqual(3, dataSource.tableView(tableView, numberOfRowsInSection: 5))
+  }
+
+  func testAppendStaticRow() {
+    dataSource.appendStaticRow(cellIdentifier: "Test", toSection: 0)
+    XCTAssertEqual(6, dataSource.numberOfSectionsInTableView(tableView))
+
+    XCTAssertEqual(3, dataSource.tableView(tableView, numberOfRowsInSection: 0))
+    XCTAssertEqual("Test", dataSource.reusableId(item: 2, section: 0))
+
+    XCTAssertEqual(3, dataSource.tableView(tableView, numberOfRowsInSection: 1))
+    XCTAssertEqual(0, dataSource.tableView(tableView, numberOfRowsInSection: 2))
+    XCTAssertEqual(0, dataSource.tableView(tableView, numberOfRowsInSection: 3))
+    XCTAssertEqual(0, dataSource.tableView(tableView, numberOfRowsInSection: 4))
+    XCTAssertEqual(3, dataSource.tableView(tableView, numberOfRowsInSection: 5))
   }
 }

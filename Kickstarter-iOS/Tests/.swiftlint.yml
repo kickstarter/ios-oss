@@ -3,6 +3,7 @@ disabled_rules:
   - nesting
   - variable_name
   - force_unwrapping
+  - force_cast
   - type_body_length
   - function_body_length
 opt_in_rules:

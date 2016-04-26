@@ -8,6 +8,7 @@ import UIKit
  the type of value the table/collection cell can handle.
  */
 public class ValueCellDataSource: NSObject, UICollectionViewDataSource, UITableViewDataSource {
+
   private var values: [[(value: Any, reusableId: String)]] = []
 
   /**
@@ -60,6 +61,16 @@ public class ValueCellDataSource: NSObject, UICollectionViewDataSource, UITableV
   }
 
   /**
+   Clears all the values stored in a particular section.
+
+   - parameter section: A section index.
+   */
+  public final func clearValues(section section: Int) {
+    self.padValuesForSection(section)
+    self.values[section] = []
+  }
+
+  /**
    Adds a single value to the end of the section specified.
 
    - parameter value:     A value to append.
@@ -75,6 +86,18 @@ public class ValueCellDataSource: NSObject, UICollectionViewDataSource, UITableV
 
     self.padValuesForSection(section)
     self.values[section].append((value, Cell.defaultReusableId))
+  }
+
+  /**
+   Adds a single row to the end of a section without specifying a value. This can be useful for
+   providing static rows.
+
+   - parameter cellIdentifier: The cell identifier of the static row in your table view.
+   - parameter section:        The section to append the row to.
+   */
+  public final func appendStaticRow(cellIdentifier cellIdentifier: String, toSection section: Int) {
+    self.padValuesForSection(section)
+    self.values[section].append(((), cellIdentifier))
   }
 
   /**
@@ -190,6 +213,17 @@ public class ValueCellDataSource: NSObject, UICollectionViewDataSource, UITableV
     self.configureCell(tableCell: cell, withValue: value)
 
     return cell
+  }
+
+  /**
+   - parameter item:    An item index.
+   - parameter section: A section index.
+
+   - returns: The resuableId associated with an (item, section) pair. Marked as internal as it's
+              only useful for testing.
+   */
+  internal func reusableId(item item: Int, section: Int) -> String {
+    return self.values[section][item].reusableId
   }
 
   private func padValuesForSection(section: Int) {
