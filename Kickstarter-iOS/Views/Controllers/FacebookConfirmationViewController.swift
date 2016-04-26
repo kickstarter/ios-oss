@@ -23,8 +23,11 @@ internal final class FacebookConfirmationViewController: UIViewController {
   }
 
   override func bindViewModel() {
-
-    self.emailLabel.rac.text = self.viewModel.outputs.displayEmail
+    self.viewModel.outputs.displayEmail
+      .observeForUI()
+      .observeNext { [weak self] email in
+        self?.emailLabel.text = email
+    }
 
     self.viewModel.outputs.sendNewsletters
       .observeForUI()
