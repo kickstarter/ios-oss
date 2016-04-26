@@ -222,6 +222,12 @@
 		A75CF8811CC6D4BE00BBBB7F /* ProjectRewardCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75CF8801CC6D4BE00BBBB7F /* ProjectRewardCellViewModelTests.swift */; };
 		A75CFB081CCE7FCF004CD5FA /* StaticTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75CFB071CCE7FCF004CD5FA /* StaticTableViewCell.swift */; };
 		A75CFB091CCE7FCF004CD5FA /* StaticTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75CFB071CCE7FCF004CD5FA /* StaticTableViewCell.swift */; };
+		A75CFA4F1CCDB322004CD5FA /* SearchDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75CFA4E1CCDB322004CD5FA /* SearchDataSource.swift */; };
+		A75CFA501CCDB322004CD5FA /* SearchDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75CFA4E1CCDB322004CD5FA /* SearchDataSource.swift */; };
+		A75CFA7D1CCE56C4004CD5FA /* SearchProjectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75CFA7C1CCE56C4004CD5FA /* SearchProjectCell.swift */; };
+		A75CFA7E1CCE56C4004CD5FA /* SearchProjectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75CFA7C1CCE56C4004CD5FA /* SearchProjectCell.swift */; };
+		A75CFA801CCE59B6004CD5FA /* StaticTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75CFA7F1CCE59B6004CD5FA /* StaticTableViewCell.swift */; };
+		A75CFA811CCE59B6004CD5FA /* StaticTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75CFA7F1CCE59B6004CD5FA /* StaticTableViewCell.swift */; };
 		A76077D11CADD3A9001B39D0 /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76077D01CADD3A9001B39D0 /* Notifications.swift */; };
 		A76077D21CADD3A9001B39D0 /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76077D01CADD3A9001B39D0 /* Notifications.swift */; };
 		A760780A1CAEE0A6001B39D0 /* IsValidEmail.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76078091CAEE0A6001B39D0 /* IsValidEmail.swift */; };
@@ -1339,6 +1345,9 @@
 		A75CBDE61C8A26F800758C55 /* AppDelegateViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegateViewModel.swift; sourceTree = "<group>"; };
 		A75CF8801CC6D4BE00BBBB7F /* ProjectRewardCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectRewardCellViewModelTests.swift; sourceTree = "<group>"; };
 		A75CFB071CCE7FCF004CD5FA /* StaticTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticTableViewCell.swift; sourceTree = "<group>"; };
+		A75CFA4E1CCDB322004CD5FA /* SearchDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchDataSource.swift; sourceTree = "<group>"; };
+		A75CFA7C1CCE56C4004CD5FA /* SearchProjectCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchProjectCell.swift; sourceTree = "<group>"; };
+		A75CFA7F1CCE59B6004CD5FA /* StaticTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticTableViewCell.swift; sourceTree = "<group>"; };
 		A76077D01CADD3A9001B39D0 /* Notifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
 		A76078091CAEE0A6001B39D0 /* IsValidEmail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IsValidEmail.swift; sourceTree = "<group>"; };
 		A760782F1CAEE0DD001B39D0 /* IsValidEmailTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IsValidEmailTests.swift; sourceTree = "<group>"; };
@@ -1795,6 +1804,8 @@
 				A7FC8C501C8F442D00C3B49B /* ProjectRewardCell.swift */,
 				A7FC8C561C8F449500C3B49B /* ProjectSubpagesCell.swift */,
 				A7208C941CCBD76300E3DAB3 /* ActivityEmptyStateCell.swift */,
+				A75CFA7C1CCE56C4004CD5FA /* SearchProjectCell.swift */,
+				A75CFA7F1CCE59B6004CD5FA /* StaticTableViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -2363,6 +2374,7 @@
 				A75AB1F81C8A84B5002FC3E6 /* ActivitiesDataSource.swift */,
 				A7E315C41C88AAA8000DD85A /* DiscoveryProjectsDataSource.swift */,
 				A73171981C8EA20300AC07C5 /* ProjectDataSource.swift */,
+				A75CFA4E1CCDB322004CD5FA /* SearchDataSource.swift */,
 			);
 			path = DataSources;
 			sourceTree = "<group>";
@@ -3514,11 +3526,13 @@
 				0127FC541C98C0F900E335C6 /* HelpType.swift in Sources */,
 				A7208C961CCBD76300E3DAB3 /* ActivityEmptyStateCell.swift in Sources */,
 				A762EFF31C8CC663005581A4 /* ActivityFriendFollowCell.swift in Sources */,
+				A75CFA811CCE59B6004CD5FA /* StaticTableViewCell.swift in Sources */,
 				A7E315B41C88A8A2000DD85A /* DiscoveryViewModel.swift in Sources */,
 				A745D0221CA897FF00C12802 /* SearchViewController.swift in Sources */,
 				A745D0481CA8985B00C12802 /* DashboardViewController.swift in Sources */,
 				A731719A1C8EA20300AC07C5 /* ProjectDataSource.swift in Sources */,
 				A7E315CC1C88AC91000DD85A /* DiscoveryProjectCell.swift in Sources */,
+				A75CFA7E1CCE56C4004CD5FA /* SearchProjectCell.swift in Sources */,
 				A75AB2231C8A85D1002FC3E6 /* ActivityUpdateCell.swift in Sources */,
 				A7FC8C581C8F449500C3B49B /* ProjectSubpagesCell.swift in Sources */,
 				01B6AC321CA49972003DB4C8 /* TwoFactorViewModel.swift in Sources */,
@@ -3551,6 +3565,7 @@
 				A7E315C91C88ABAC000DD85A /* DiscoveryProjectViewModel.swift in Sources */,
 				A75AB1E21C8A8255002FC3E6 /* ActivitiesViewModel.swift in Sources */,
 				A775B5211CA8705B00BBB587 /* RootTabBarViewController.swift in Sources */,
+				A75CFA501CCDB322004CD5FA /* SearchDataSource.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3611,6 +3626,7 @@
 				0127FC5C1C98C11500E335C6 /* SFSafariViewController.swift in Sources */,
 				A775B5461CA871D700BBB587 /* RootViewModel.swift in Sources */,
 				01EA879B1C9335C5004E738B /* LoginToutViewController.swift in Sources */,
+				A75CFA801CCE59B6004CD5FA /* StaticTableViewCell.swift in Sources */,
 				018F1FA91C8E1A8200643DAA /* LoginToutViewModel.swift in Sources */,
 				A7285C9B1C8E8DCF00D83297 /* ProjectViewController.swift in Sources */,
 				A762F0181C8CC672005581A4 /* ActivityFriendFollowViewModel.swift in Sources */,
@@ -3626,6 +3642,7 @@
 				A75AB2221C8A85D1002FC3E6 /* ActivityUpdateCell.swift in Sources */,
 				01DEFB951CB44A5D003709C0 /* TwoFactorViewController.swift in Sources */,
 				A7FC8C571C8F449500C3B49B /* ProjectSubpagesCell.swift in Sources */,
+				A75CFA7D1CCE56C4004CD5FA /* SearchProjectCell.swift in Sources */,
 				A7285CC11C8E8DDB00D83297 /* ProjectViewModel.swift in Sources */,
 				0146E3221CC0296900082C5B /* FacebookConfirmationViewController.swift in Sources */,
 				A7285CC41C8E915B00D83297 /* ProjectMainCell.swift in Sources */,
@@ -3646,6 +3663,7 @@
 				9D39C0471C9B5662004E0943 /* SearchViewModel.swift in Sources */,
 				A762F01C1C8CD2B3005581A4 /* ActivityStateChangeCell.swift in Sources */,
 				A75CBDE71C8A26F800758C55 /* AppDelegateViewModel.swift in Sources */,
+				A75CFA4F1CCDB322004CD5FA /* SearchDataSource.swift in Sources */,
 				A751A51F1C85EC0B009C5DEA /* DiscoveryViewController.swift in Sources */,
 				018F1F831C8E182200643DAA /* LoginViewController.swift in Sources */,
 				019502021C8E3EF700F31304 /* LoginViewModel.swift in Sources */,

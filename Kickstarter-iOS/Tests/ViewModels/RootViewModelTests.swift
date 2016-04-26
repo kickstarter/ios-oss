@@ -123,6 +123,13 @@ final class RootViewModelTests: TestCase {
     self.scrollToTopControllerName.assertValues(["Discovery"],
                                                 "Selecting index again causes scroll to top.")
   }
+
+  func testSwitchingTabs() {
+    self.vm.inputs.viewDidLoad()
+    self.selectedIndex.assertValues([0])
+    self.vm.inputs.switchToDiscovery()
+    self.selectedIndex.assertValues([0, 0])
+  }
 }
 
 private func extractRootNames(vcs: [UIViewController]) -> [String] {
