@@ -4,6 +4,7 @@ import ReactiveCocoa
 import Result
 import Models
 import Argo
+import FBSDKCoreKit
 
 /**
  A global stack that captures the current state of global objects that the app wants access to.
@@ -90,6 +91,7 @@ public struct AppEnvironment {
                countryCode: String = AppEnvironment.current.countryCode,
                currentUser: User? = AppEnvironment.current.currentUser,
                debounceInterval: NSTimeInterval = AppEnvironment.current.debounceInterval,
+               facebookAppDelegate: FacebookAppDelegateProtocol = AppEnvironment.current.facebookAppDelegate,
                hockeyManager: HockeyManagerType = AppEnvironment.current.hockeyManager,
                koala: Koala = AppEnvironment.current.koala,
                language: Language = AppEnvironment.current.language,
@@ -110,6 +112,7 @@ public struct AppEnvironment {
         countryCode: countryCode,
         currentUser: currentUser,
         debounceInterval: debounceInterval,
+        facebookAppDelegate: facebookAppDelegate,
         hockeyManager: hockeyManager,
         koala: koala,
         language: language,
@@ -136,6 +139,7 @@ public struct AppEnvironment {
                countryCode: String = AppEnvironment.current.countryCode,
                currentUser: User? = AppEnvironment.current.currentUser,
                debounceInterval: NSTimeInterval = AppEnvironment.current.debounceInterval,
+               facebookAppDelegate: FacebookAppDelegateProtocol = AppEnvironment.current.facebookAppDelegate,
                hockeyManager: HockeyManagerType = AppEnvironment.current.hockeyManager,
                koala: Koala = AppEnvironment.current.koala,
                language: Language = AppEnvironment.current.language,
@@ -156,6 +160,7 @@ public struct AppEnvironment {
         countryCode: countryCode,
         currentUser: currentUser,
         debounceInterval: debounceInterval,
+        facebookAppDelegate: facebookAppDelegate,
         hockeyManager: hockeyManager,
         koala: koala,
         language: language,

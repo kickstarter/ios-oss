@@ -18,10 +18,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="UHD-eb-qXC">
-                                <rect key="frame" x="40" y="159" width="520" height="283"/>
+                                <rect key="frame" x="40" y="157" width="520" height="286"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="1tl-3X-f58">
-                                        <rect key="frame" x="0.0" y="0.0" width="520" height="79"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="520" height="82"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DI6-Zp-Yoj" customClass="BorderButton" customModule="Library">
                                                 <rect key="frame" x="0.0" y="0.0" width="520" height="44"/>
@@ -31,10 +31,10 @@
                                                 </constraints>
                                                 <state key="normal" title="Log in with Facebook"/>
                                                 <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="normalLocalizedKey" value="login_tout.buttons.log_in_with_facebook"/>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="_titleColorNormal" value="White"/>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="_color" value="Blue"/>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="_borderColor" value="Clear"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="_titleColorNormal" value="White"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="_titleColorHighlighted" value="White"/>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="_titleFontStyle" value="Body"/>
                                                 </userDefinedRuntimeAttributes>
                                                 <variation key="default">
@@ -47,9 +47,12 @@
                                                         <include reference="j2Y-9T-Wkx"/>
                                                     </mask>
                                                 </variation>
+                                                <connections>
+                                                    <action selector="facebookLoginButtonPressed:" destination="jyD-hR-XbB" eventType="touchUpInside" id="lED-xT-rnp"/>
+                                                </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="We'll never post anything without your permission." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="npz-Cl-wqX" customClass="StyledLabel" customModule="Library">
-                                                <rect key="frame" x="0.0" y="56" width="520" height="23"/>
+                                                <rect key="frame" x="0.0" y="56" width="520" height="26"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
@@ -68,7 +71,7 @@
                                         </variation>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="eRD-uK-yiP">
-                                        <rect key="frame" x="0.0" y="109" width="520" height="100"/>
+                                        <rect key="frame" x="0.0" y="112" width="520" height="100"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tcm-YK-ZfH" customClass="BorderButton" customModule="Library">
                                                 <rect key="frame" x="0.0" y="0.0" width="520" height="44"/>
@@ -109,7 +112,7 @@
                                         </variation>
                                     </stackView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="RUt-ea-H2e" customClass="BorderButton" customModule="Library">
-                                        <rect key="frame" x="0.0" y="239" width="520" height="44"/>
+                                        <rect key="frame" x="0.0" y="242" width="520" height="44"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="QDd-D3-De3"/>
                                         </constraints>
@@ -169,8 +172,9 @@
                     </navigationItem>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="fbLoginButton" destination="DI6-Zp-Yoj" id="jrl-tE-eBz"/>
                         <outlet property="helpButton" destination="RUt-ea-H2e" id="3Uh-Ol-5W8"/>
-                        <outlet property="loginButton" destination="tcm-YK-ZfH" id="uHI-9Q-v14"/>
+                        <outlet property="loginButton" destination="tcm-YK-ZfH" id="qe9-86-RTl"/>
                         <outlet property="signupButton" destination="ytH-Nw-2z0" id="kt8-oh-pu8"/>
                     </connections>
                 </viewController>
@@ -247,7 +251,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="qIi-a3-8Mq" customClass="BorderButton" customModule="Library">
-                                        <rect key="frame" x="202" y="192" width="116" height="44"/>
+                                        <rect key="frame" x="199" y="192" width="123" height="44"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="n2W-Lf-bmI"/>
                                         </constraints>
@@ -313,10 +317,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="MIO-8w-HoH">
-                                <rect key="frame" x="40" y="218" width="520" height="164"/>
+                                <rect key="frame" x="40" y="214" width="520" height="172"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please enter your verification code to continue." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="etR-It-9BB" customClass="StyledLabel" customModule="Library">
-                                        <rect key="frame" x="0.0" y="0.0" width="520" height="16"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="520" height="24"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
@@ -327,7 +331,7 @@
                                         </userDefinedRuntimeAttributes>
                                     </label>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter code" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Ry2-ty-hPc">
-                                        <rect key="frame" x="0.0" y="46" width="520" height="44"/>
+                                        <rect key="frame" x="0.0" y="54" width="520" height="44"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="9SF-5i-2kF"/>
                                         </constraints>
@@ -341,7 +345,7 @@
                                         </connections>
                                     </textField>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="H8L-sY-JU4">
-                                        <rect key="frame" x="0.0" y="120" width="520" height="44"/>
+                                        <rect key="frame" x="0.0" y="128" width="520" height="44"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YIP-PW-ZCs" customClass="BorderButton" customModule="Library">
                                                 <rect key="frame" x="0.0" y="0.0" width="252" height="44"/>
@@ -482,6 +486,161 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TZ5-3t-VLA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3568" y="736"/>
+        </scene>
+        <!--Facebook Confirmation View Controller-->
+        <scene sceneID="rtI-kv-GeR">
+            <objects>
+                <viewController storyboardIdentifier="FacebookConfirmationViewController" id="rFS-aN-Jbs" customClass="FacebookConfirmationViewController" customModule="Kickstarter_iOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="bof-ZL-VSN"/>
+                        <viewControllerLayoutGuide type="bottom" id="Ej6-dO-LDf"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="s9A-Yd-huW">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="o6G-gP-3eh">
+                                <rect key="frame" x="40" y="107" width="520" height="386"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Before we make your new account, please double check that we got the right email address from your Facebook profile:" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ay8-Ym-I01" customClass="StyledLabel" customModule="Library">
+                                        <rect key="frame" x="0.0" y="0.0" width="520" height="45"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Subhead"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="_color" value="GrayDark"/>
+                                        </userDefinedRuntimeAttributes>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your email" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EiY-Q0-wRr" customClass="StyledLabel" customModule="Library">
+                                        <rect key="frame" x="0.0" y="65" width="520" height="24"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Subhead"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="_color" value="Black"/>
+                                        </userDefinedRuntimeAttributes>
+                                    </label>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="cCu-Nh-agc">
+                                        <rect key="frame" x="0.0" y="109" width="520" height="45"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Receive our weekly newsletters and other occasional updates." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Ha-q6-wmd" customClass="StyledLabel" customModule="Library">
+                                                <rect key="frame" x="0.0" y="2" width="459" height="41"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                <nil key="highlightedColor"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Subhead"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="_color" value="GrayDark"/>
+                                                </userDefinedRuntimeAttributes>
+                                            </label>
+                                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="j4R-JY-GCT">
+                                                <rect key="frame" x="479" y="7" width="43" height="31"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="52" id="HTe-BM-vWE"/>
+                                                </constraints>
+                                                <variation key="default">
+                                                    <mask key="constraints">
+                                                        <exclude reference="HTe-BM-vWE"/>
+                                                    </mask>
+                                                </variation>
+                                                <connections>
+                                                    <action selector="newsletterSwitchChanged:" destination="rFS-aN-Jbs" eventType="valueChanged" id="z5F-cc-MR9"/>
+                                                </connections>
+                                            </switch>
+                                        </subviews>
+                                    </stackView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VHR-ZD-hIa" customClass="BorderButton" customModule="Library">
+                                        <rect key="frame" x="0.0" y="174" width="520" height="44"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="44" id="gZq-Y8-1Ac"/>
+                                        </constraints>
+                                        <state key="normal" title="Create new account"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="_color" value="Green"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="_borderColor" value="Clear"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="_titleColorNormal" value="White"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="_titleColorHighlighted" value="White"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="_titleFontStyle" value="Body"/>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="createAccountButtonPressed:" destination="rFS-aN-Jbs" eventType="touchUpInside" id="7yP-eW-K8g"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ith-iT-qaq" customClass="BorderButton" customModule="Library">
+                                        <rect key="frame" x="0.0" y="238" width="520" height="44"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="44" id="2lE-BS-vMe"/>
+                                        </constraints>
+                                        <state key="normal" title="By signing up, you agree to our terms of use, privacy policy, and cookie policy."/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="_color" value="Clear"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="_borderColor" value="Clear"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="_titleColorNormal" value="GrayDark"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="_titleColorHighlighted" value="Gray"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="_titleFontStyle" value="Caption2"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="normalLocalizedKey" value="login_tout.disclaimer.by_signing_up_you_agree_to_terms"/>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="helpButtonPressed:" destination="rFS-aN-Jbs" eventType="touchUpInside" id="cOj-Gz-DvK"/>
+                                        </connections>
+                                    </button>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="g4y-Ze-ncG">
+                                        <rect key="frame" x="0.0" y="302" width="520" height="84"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Already have a Kickstarter Account?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7LL-th-UNn" customClass="StyledLabel" customModule="Library">
+                                                <rect key="frame" x="0.0" y="0.0" width="520" height="28"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                <nil key="highlightedColor"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Subhead"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="_color" value="GrayDark"/>
+                                                </userDefinedRuntimeAttributes>
+                                            </label>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oMq-Lz-Vqr" customClass="BorderButton" customModule="Library">
+                                                <rect key="frame" x="0.0" y="40" width="520" height="44"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="44" id="bIv-VN-2wO"/>
+                                                </constraints>
+                                                <state key="normal" title="Log in with email"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="_color" value="White"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="_borderColor" value="Gray"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="_titleColorNormal" value="Black"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="_titleColorHighlighted" value="GrayDark"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="_titleFontStyle" value="Body"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="normalLocalizedKey" value="login.buttons.log_in_email"/>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="loginButtonPressed:" destination="rFS-aN-Jbs" eventType="touchUpInside" id="hR5-HT-DAf"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="o6G-gP-3eh" firstAttribute="leading" secondItem="s9A-Yd-huW" secondAttribute="leadingMargin" constant="20" id="IpW-hi-Wae"/>
+                            <constraint firstItem="o6G-gP-3eh" firstAttribute="centerY" secondItem="s9A-Yd-huW" secondAttribute="centerY" id="Ohj-gc-qyS"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="o6G-gP-3eh" secondAttribute="trailing" constant="20" id="U2H-gK-YMX"/>
+                            <constraint firstItem="o6G-gP-3eh" firstAttribute="centerX" secondItem="s9A-Yd-huW" secondAttribute="centerX" id="wwc-wM-hSh"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="createAccountButton" destination="VHR-ZD-hIa" id="m2x-fE-f3n"/>
+                        <outlet property="emailLabel" destination="EiY-Q0-wRr" id="M2A-lI-Wd7"/>
+                        <outlet property="helpButton" destination="ith-iT-qaq" id="tSK-hZ-qlT"/>
+                        <outlet property="loginButton" destination="oMq-Lz-Vqr" id="gGQ-f1-Q19"/>
+                        <outlet property="newsletterSwitch" destination="j4R-JY-GCT" id="m6S-Ak-7lf"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="yrH-NO-Pt4" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4209" y="736"/>
         </scene>
         <!--Login-->
         <scene sceneID="mfV-8d-OMM">

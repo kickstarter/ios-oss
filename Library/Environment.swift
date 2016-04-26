@@ -4,6 +4,7 @@ import HockeySDK
 import KsApi
 import ReactiveCocoa
 import Models
+import FBSDKCoreKit
 
 /**
  A collection of **all** global variables and singletons that the app wants access to.
@@ -30,6 +31,9 @@ public struct Environment {
 
   /// The amount of time to debounce signals by. Default value is `0.3`.
   public let debounceInterval: NSTimeInterval
+
+  /// A delegate to handle Facebook initialization and incoming url requests
+  public let facebookAppDelegate: FacebookAppDelegateProtocol
 
   /// A type that exposes how to initialize and start the Hockey manager. Default value is
   /// `BITHockeyManager.sharedHockeyManager()`.
@@ -72,6 +76,7 @@ public struct Environment {
     countryCode: String = "US",
     currentUser: User? = nil,
     debounceInterval: NSTimeInterval = 0.3,
+    facebookAppDelegate: FacebookAppDelegateProtocol = FBSDKApplicationDelegate.sharedInstance(),
     hockeyManager: HockeyManagerType = BITHockeyManager.sharedHockeyManager(),
     koala: Koala = Koala(client: KoalaTrackingClient(endpoint: .Production)),
     language: Language = .en,
@@ -90,6 +95,7 @@ public struct Environment {
     self.countryCode = countryCode
     self.currentUser = currentUser
     self.debounceInterval = debounceInterval
+    self.facebookAppDelegate = facebookAppDelegate
     self.hockeyManager = hockeyManager
     self.koala = koala
     self.language = language
@@ -111,6 +117,7 @@ public struct Environment {
       self.countryCode,
       self.currentUser,
       self.debounceInterval,
+      self.facebookAppDelegate,
       self.hockeyManager,
       self.koala,
       self.language,

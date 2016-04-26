@@ -88,6 +88,14 @@ public final class Koala {
     self.track(event: "Facebook Confirm")
   }
 
+  public func trackFacebookLoginSuccess() {
+    self.track(event: "Facebook Login")
+  }
+
+  public func trackFacebookLoginError() {
+    self.track(event: "Errored Facebook Login")
+  }
+
   public func trackTfa() {
     self.track(event: "Two-factor Authentication Confirm View")
   }

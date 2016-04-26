@@ -15,7 +15,8 @@ final class AppDelegateViewModelTests: TestCase {
   func testHockeyManager_StartsWhenAppLaunches() {
     XCTAssertFalse(hockeyManager.managerStarted, "Manager should not start right away.")
 
-    vm.inputs.applicationDidFinishLaunching(launchOptions: [:])
+    vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+                                            launchOptions: [:])
     XCTAssertTrue(hockeyManager.managerStarted, "Manager should start when the app launches.")
     XCTAssertTrue(hockeyManager.isAutoSendingReports, "Manager sends crash reports automatically.")
   }
@@ -23,7 +24,8 @@ final class AppDelegateViewModelTests: TestCase {
   func testKoala_AppLifecycle() {
     XCTAssertEqual([], trackingClient.events)
 
-    vm.inputs.applicationDidFinishLaunching(launchOptions: [:])
+    vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+                                            launchOptions: [:])
     XCTAssertEqual(["App Open"], trackingClient.events)
 
     vm.inputs.applicationDidEnterBackground()
@@ -38,7 +40,8 @@ final class AppDelegateViewModelTests: TestCase {
     let updateCurrentUserInEnvironment = TestObserver<User, NoError>()
     vm.outputs.updateCurrentUserInEnvironment.observe(updateCurrentUserInEnvironment.observer)
 
-    vm.inputs.applicationDidFinishLaunching(launchOptions: nil)
+    vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+                                            launchOptions: nil)
     vm.inputs.applicationWillEnterForeground()
     vm.inputs.applicationDidEnterBackground()
 
@@ -56,7 +59,8 @@ final class AppDelegateViewModelTests: TestCase {
     let env = AccessTokenEnvelope(accessToken: "deadbeef", user: UserFactory.user)
     AppEnvironment.login(env)
 
-    vm.inputs.applicationDidFinishLaunching(launchOptions: nil)
+    vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+                                            launchOptions: nil)
 
     updateCurrentUserInEnvironment.assertValues([env.user])
     postNotificationName.assertDidNotEmitValue()
@@ -78,5 +82,23 @@ final class AppDelegateViewModelTests: TestCase {
     postNotificationName.assertValues(
       [CurrentUserNotifications.userUpdated, CurrentUserNotifications.userUpdated]
     )
+  }
+
+  func testFacebookAppDelegate() {
+    XCTAssertFalse(self.facebookAppDelegate.didFinishLaunching)
+    XCTAssertFalse(self.facebookAppDelegate.openedUrl)
+
+    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+                                                 launchOptions: nil)
+
+    XCTAssertTrue(self.facebookAppDelegate.didFinishLaunching)
+    XCTAssertFalse(self.facebookAppDelegate.openedUrl)
+
+    self.vm.inputs.applicationOpenUrl(application: UIApplication.sharedApplication(),
+                                      url: NSURL(string: "http://www.fb.com")!,
+                                      sourceApplication: nil,
+                                      annotation: 1)
+
+    XCTAssertTrue(self.facebookAppDelegate.openedUrl)
   }
 }

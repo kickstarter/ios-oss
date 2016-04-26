@@ -8,6 +8,7 @@ internal class TestCase: XCTestCase {
   internal static let interval = 0.001
 
   internal let cookieStorage = MockCookieStorage()
+  internal let facebookAppDelegate = MockFacebookAppDelegate()
   internal let hockeyManager = MockHockeyManager()
   internal let scheduler = TestScheduler()
   internal let trackingClient = MockTrackingClient()
@@ -22,6 +23,7 @@ internal class TestCase: XCTestCase {
       countryCode: "US",
       currentUser: nil,
       debounceInterval: 0.0,
+      facebookAppDelegate: self.facebookAppDelegate,
       hockeyManager: self.hockeyManager,
       koala: Koala(client: self.trackingClient, loggedInUser: nil),
       language: .en,

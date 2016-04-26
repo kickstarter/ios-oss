@@ -6,13 +6,18 @@ import Models
 
 internal protocol AppDelegateViewModelInputs {
   /// Call when the application finishes launching.
-  func applicationDidFinishLaunching(launchOptions launchOptions: [NSObject: AnyObject]?)
+  func applicationDidFinishLaunching(application application: UIApplication,
+                                                 launchOptions: [NSObject: AnyObject]?)
 
   /// Call when the application will enter foreground.
   func applicationWillEnterForeground()
 
   /// Call when the application enters background.
   func applicationDidEnterBackground()
+
+  /// Call to open a url that was sent to the app
+  func applicationOpenUrl(application application: UIApplication, url: NSURL, sourceApplication: String?,
+                                      annotation: AnyObject)
 
   /// Call after having invoked AppEnvironemt.updateCurrentUser with a fresh user.
   func currentUserUpdatedInEnvironment()
@@ -24,6 +29,9 @@ internal protocol AppDelegateViewModelOutputs {
 
   /// Emits an NSNotification that should be immediately posted.
   var postNotification: Signal<NSNotification, NoError> { get }
+
+  /// Return this value in the delegate's 
+  var facebookOpenURLReturnValue: MutableProperty<Bool> { get }
 }
 
 internal protocol AppDelegateViewModelType {
@@ -34,9 +42,18 @@ internal protocol AppDelegateViewModelType {
 internal final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateViewModelInputs,
 AppDelegateViewModelOutputs {
 
-  private let applicationDidFinishLaunchingProperty = MutableProperty<[NSObject:AnyObject]?>(nil)
-  internal func applicationDidFinishLaunching(launchOptions launchOptions: [NSObject:AnyObject]?) {
-    self.applicationDidFinishLaunchingProperty.value = launchOptions
+  // MARK: AppDelegateViewModelType
+
+  internal var inputs: AppDelegateViewModelInputs { return self }
+  internal var outputs: AppDelegateViewModelOutputs { return self }
+
+  // MARK: AppDelegateViewModelInputs
+
+  private typealias ApplicationWithOptions = (application: UIApplication, options: [NSObject:AnyObject]?)
+  private let applicationDidFinishLaunchingProperty = MutableProperty<ApplicationWithOptions?>(nil)
+  func applicationDidFinishLaunching(application application: UIApplication,
+                                                 launchOptions: [NSObject : AnyObject]?) {
+    self.applicationDidFinishLaunchingProperty.value = (application, launchOptions)
   }
   private let applicationWillEnterForegroundProperty = MutableProperty(())
   internal func applicationWillEnterForeground() {
@@ -51,13 +68,27 @@ AppDelegateViewModelOutputs {
     self.currentUserUpdatedInEnvironmentProperty.value = ()
   }
 
+  private typealias ApplicationOpenUrl = (
+    application: UIApplication,
+    url: NSURL,
+    sourceApplication: String?,
+    annotation: AnyObject
+  )
+  private let applicationOpenUrlProperty = MutableProperty<ApplicationOpenUrl?>(nil)
+  func applicationOpenUrl(application application: UIApplication,
+                                      url: NSURL,
+                                      sourceApplication: String?,
+                                      annotation: AnyObject) {
+    self.applicationOpenUrlProperty.value = (application, url, sourceApplication, annotation)
+  }
+
+  // MARK: AppDelegateViewModelOutputs
+
   internal let updateCurrentUserInEnvironment: Signal<User, NoError>
   internal let postNotification: Signal<NSNotification, NoError>
+  internal let facebookOpenURLReturnValue = MutableProperty(false)
 
-  internal var inputs: AppDelegateViewModelInputs { return self }
-  internal var outputs: AppDelegateViewModelOutputs { return self }
-
-  internal init(env: Environment = AppEnvironment.current) {
+  internal init() {
 
     self.updateCurrentUserInEnvironment = Signal.merge([
         self.applicationWillEnterForegroundProperty.signal,
@@ -69,9 +100,21 @@ AppDelegateViewModelOutputs {
     self.postNotification = self.currentUserUpdatedInEnvironmentProperty.signal
       .mapConst(NSNotification(name: CurrentUserNotifications.userUpdated, object: nil))
 
-    self.applicationDidFinishLaunchingProperty.signal
+    self.applicationDidFinishLaunchingProperty.signal.ignoreNil()
       .take(1)
-      .observeNext { _ in startHockeyManager(AppEnvironment.current.hockeyManager) }
+      .observeNext { appOptions in
+        AppEnvironment.current.facebookAppDelegate.application(
+          appOptions.application,
+          didFinishLaunchingWithOptions: appOptions.options
+        )
+        startHockeyManager(AppEnvironment.current.hockeyManager)
+    }
+
+    self.applicationOpenUrlProperty.signal.ignoreNil()
+      .observeNext {
+        self.facebookOpenURLReturnValue.value = AppEnvironment.current.facebookAppDelegate.application(
+          $0.application, openURL: $0.url, sourceApplication: $0.sourceApplication, annotation: $0.annotation)
+    }
 
     self.applicationDidFinishLaunchingProperty.signal.ignoreValues()
       .mergeWith(self.applicationWillEnterForegroundProperty.signal)
@@ -79,7 +122,6 @@ AppDelegateViewModelOutputs {
 
     self.applicationDidEnterBackgroundProperty.signal
       .observeNext { AppEnvironment.current.koala.trackAppClose() }
-
   }
 }
 

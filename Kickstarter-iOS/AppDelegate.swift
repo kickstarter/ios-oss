@@ -2,23 +2,25 @@ import UIKit
 import KsApi
 import Library
 import Foundation
+import FBSDKCoreKit
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+final class AppDelegate: UIResponder, UIApplicationDelegate {
   var window: UIWindow?
+  let viewModel: AppDelegateViewModelType = AppDelegateViewModel()
 
-  let viewModel: AppDelegateViewModelType
+  func application(application: UIApplication,
+                   didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
 
-  override init() {
-    AppEnvironment.pushEnvironment(
+    AppEnvironment.replaceCurrentEnvironment(
       AppEnvironment.fromStorage(
         ubiquitousStore: NSUbiquitousKeyValueStore.defaultStore(),
         userDefaults: NSUserDefaults.standardUserDefaults()
       )
     )
-    self.viewModel = AppDelegateViewModel()
-
-    super.init()
+    // NB: We have to push this shared instance directly because somehow we get two different shared
+    //     instances if we use the one from `Environment.init`.
+    AppEnvironment.replaceCurrentEnvironment(facebookAppDelegate: FBSDKApplicationDelegate.sharedInstance())
 
     self.viewModel.outputs.updateCurrentUserInEnvironment
       .observeForUI()
@@ -30,12 +32,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     self.viewModel.outputs.postNotification
       .observeForUI()
       .observeNext(NSNotificationCenter.defaultCenter().postNotification)
-  }
 
-  func application(application: UIApplication,
-                   didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-
-    viewModel.inputs.applicationDidFinishLaunching(launchOptions: launchOptions)
+    viewModel.inputs.applicationDidFinishLaunching(application: application, launchOptions: launchOptions)
 
     return true
   }
@@ -46,5 +44,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
   func applicationDidEnterBackground(application: UIApplication) {
     self.viewModel.inputs.applicationDidEnterBackground()
+  }
+
+  func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?,
+                   annotation: AnyObject) -> Bool {
+
+    self.viewModel.inputs.applicationOpenUrl(application: application,
+                                             url: url,
+                                             sourceApplication: sourceApplication,
+                                             annotation: annotation)
+
+    return self.viewModel.outputs.facebookOpenURLReturnValue.value
   }
 }

@@ -33,9 +33,36 @@
                     <view key="view" contentMode="scaleToFill" id="r37-LM-BrW">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Ob-CR-an8" customClass="BorderButton" customModule="Library">
+                                <rect key="frame" x="225" y="278" width="150" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="0dq-tF-zM9"/>
+                                    <constraint firstAttribute="width" constant="150" id="vu9-hb-x69"/>
+                                </constraints>
+                                <state key="normal" title="Log out!"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="_color" value="Green"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="_borderColor" value="Clear"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="_titleColorNormal" value="White"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="_titleColorHighlighted" value="White"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="_titleFontStyle" value="Body"/>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="logoutButtonPressed:" destination="ZHE-Xl-IsL" eventType="touchUpInside" id="REj-D7-PgX"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="9Ob-CR-an8" firstAttribute="centerY" secondItem="r37-LM-BrW" secondAttribute="centerY" id="9PP-wh-JWK"/>
+                            <constraint firstItem="9Ob-CR-an8" firstAttribute="centerX" secondItem="r37-LM-BrW" secondAttribute="centerX" id="F0d-D7-KN6"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="qVU-EJ-idK"/>
+                    <connections>
+                        <outlet property="logoutButton" destination="9Ob-CR-an8" id="V2X-8N-wM2"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Iod-3v-ypO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
