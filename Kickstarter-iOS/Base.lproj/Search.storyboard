@@ -33,7 +33,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="StaticTableViewCell" rowHeight="60" id="zl1-PO-ZJK" customClass="StaticTableViewCell" customModule="Kickstarter_Framework" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="MostPopularCell" rowHeight="60" id="zl1-PO-ZJK" customClass="StaticTableViewCell" customModule="Library">
                                 <rect key="frame" x="0.0" y="92" width="400" height="60"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="zl1-PO-ZJK" id="2a6-oU-qJr">
@@ -79,13 +79,13 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" alignment="center" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="Fl8-Uc-woy">
-                                            <rect key="frame" x="16" y="16" width="368" height="112"/>
+                                            <rect key="frame" x="16" y="16" width="368" height="68"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="rl6-ZV-loa">
-                                                    <rect key="frame" x="0.0" y="0.0" width="232" height="112"/>
+                                                    <rect key="frame" x="0.0" y="22" width="232" height="25"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="HERTZFELDT ON BLU-RAY" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r2z-kV-ETv" customClass="StyledLabel" customModule="Library">
-                                                            <rect key="frame" x="0.0" y="0.0" width="232" height="108"/>
+                                                            <rect key="frame" x="0.0" y="1" width="232" height="0.0"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                             <nil key="highlightedColor"/>
@@ -95,7 +95,7 @@
                                                             </userDefinedRuntimeAttributes>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="created by don hertzfeldt" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="De6-xU-YTo" customClass="StyledLabel" customModule="Library">
-                                                            <rect key="frame" x="0.0" y="112" width="0.0" height="0.0"/>
+                                                            <rect key="frame" x="0.0" y="5" width="194" height="21"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                             <nil key="highlightedColor"/>
@@ -107,7 +107,7 @@
                                                     </subviews>
                                                 </stackView>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="world-of-tomorrow" translatesAutoresizingMaskIntoConstraints="NO" id="HxU-Y4-G12">
-                                                    <rect key="frame" x="248" y="22" width="120" height="68"/>
+                                                    <rect key="frame" x="248" y="0.0" width="120" height="68"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="120" id="YNQ-zN-U97"/>
                                                         <constraint firstAttribute="width" secondItem="HxU-Y4-G12" secondAttribute="height" multiplier="16:9" id="daJ-VP-s1A"/>

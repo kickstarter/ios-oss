@@ -414,10 +414,10 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="UDt-NE-Fa4">
-                                            <rect key="frame" x="32" y="64" width="336" height="145"/>
+                                            <rect key="frame" x="32" y="64" width="336" height="144"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Activity empty" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bv9-kK-LQT" customClass="StyledLabel" customModule="Library">
-                                                    <rect key="frame" x="104" y="0.0" width="129" height="23"/>
+                                                    <rect key="frame" x="113" y="0.0" width="110" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -428,7 +428,7 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="When you back a project or follow a friend, their activity will show up here." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Joz-wC-je2" customClass="StyledLabel" customModule="Library">
-                                                    <rect key="frame" x="11" y="47" width="314" height="41"/>
+                                                    <rect key="frame" x="3" y="45" width="331" height="41"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -438,7 +438,7 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="R72-jl-YgS" customClass="BorderButton" customModule="Library">
-                                                    <rect key="frame" x="100" y="112" width="136" height="33"/>
+                                                    <rect key="frame" x="96" y="110" width="144" height="34"/>
                                                     <inset key="contentEdgeInsets" minX="8" minY="8" maxX="8" maxY="8"/>
                                                     <state key="normal" title="Discovery projects"/>
                                                     <userDefinedRuntimeAttributes>

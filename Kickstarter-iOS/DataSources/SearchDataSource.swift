@@ -4,9 +4,7 @@ import Models
 internal final class SearchDataSource: ValueCellDataSource {
 
   internal func popularTitle(isVisible visible: Bool) {
-    self.set(values: visible ? [()] : [],
-             cellClass: StaticTableViewCell.self,
-             inSection: 0)
+    self.set(cellIdentifiers: ["MostPopularCell"], inSection: 0)
   }
 
   internal func load(projects projects: [Project]) {

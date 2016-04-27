@@ -101,6 +101,17 @@ public class ValueCellDataSource: NSObject, UICollectionViewDataSource, UITableV
   }
 
   /**
+   Sets an entire section of static cells.
+
+   - parameter cellIdentifiers: A list of cell identifiers that represent the rows.
+   - parameter section:         The section to replace.
+   */
+  public final func set(cellIdentifiers cellIdentifiers: [String], inSection section: Int) {
+    self.padValuesForSection(section)
+    self.values[section] = cellIdentifiers.map { ((), $0) }
+  }
+
+  /**
    Appends a section of values to the end of the data source.
 
    - parameter values:    An array of values that make up the section.
