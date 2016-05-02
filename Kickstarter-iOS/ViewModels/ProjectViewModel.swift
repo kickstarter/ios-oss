@@ -112,12 +112,16 @@ ProjectViewModelOutputs {
       .ignoreValues()
       .take(1)
 
-    let refreshedProject = project.take(1)
-      .flatMap { p in
-        AppEnvironment.current.apiService.fetchProject(p)
-          .demoteErrors()
-          .beginsWith(value: p)
+    let initialProject = self.projectProperty.signal.ignoreNil()
+      .takeWhen(self.viewWillAppearProperty.signal)
+
+    let freshProject = initialProject.flatMap {
+      AppEnvironment.current.apiService.fetchProject($0)
+        .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
+        .demoteErrors()
     }
+
+    let refreshedProject = Signal.merge(initialProject, freshProject)
 
     let projectOnStarToggle = project
       .takeWhen(Signal.merge([loggedInUserTappedStar, userLoginAfterTappingStar]))

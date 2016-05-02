@@ -26,6 +26,22 @@ internal final class ProjectViewModelTests: TestCase {
     self.vm.outputs.showProjectStarredPrompt.observe(self.showProjectStarredPrompt.observer)
   }
 
+  func testProjectEmissions() {
+    self.vm.inputs.project(ProjectFactory.live())
+    self.vm.inputs.refTag(nil)
+
+    self.project.assertDidNotEmitValue("Does not emit project right away.")
+
+    self.vm.inputs.viewWillAppear()
+
+    self.project.assertValueCount(1, "Emits project immediately when appearing.")
+
+    // Wait enough time for API request to finish.
+    self.scheduler.advance()
+
+    self.project.assertValueCount(2, "Emits refreshed project after some time passes.")
+  }
+
   // Tests that ref tags and referral credit cookies are tracked in koala and saved like we expect.
   func testTracksRefTag() {
     let project = ProjectFactory.live()
@@ -70,6 +86,7 @@ internal final class ProjectViewModelTests: TestCase {
     vm.inputs.project(ProjectFactory.notStarred)
     vm.inputs.refTag(nil)
     vm.inputs.viewWillAppear()
+    self.scheduler.advance()
 
     self.projectIsStarred.assertValues([false, false],
                                        "Emits project immediately, and then again with update from the API.")
@@ -99,6 +116,7 @@ internal final class ProjectViewModelTests: TestCase {
     vm.inputs.project(ProjectFactory.notStarred)
     vm.inputs.refTag(nil)
     vm.inputs.viewWillAppear()
+    self.scheduler.advance()
 
     self.projectIsStarred.assertValues([false, false],
                                        "Emits project immediately, and then again with update from the API.")
