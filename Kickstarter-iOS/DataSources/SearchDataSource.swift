@@ -2,15 +2,20 @@ import Library
 import Models
 
 internal final class SearchDataSource: ValueCellDataSource {
+  private enum Section: Int {
+    case PopularTitle
+    case Projects
+  }
 
   internal func popularTitle(isVisible visible: Bool) {
-    self.set(cellIdentifiers: ["MostPopularCell"], inSection: 0)
+    self.set(cellIdentifiers: visible ? ["MostPopularCell"] : [],
+             inSection: Section.PopularTitle.rawValue)
   }
 
   internal func load(projects projects: [Project]) {
     self.set(values: projects,
              cellClass: SearchProjectCell.self,
-             inSection: 1)
+             inSection: Section.Projects.rawValue)
   }
 
   override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
