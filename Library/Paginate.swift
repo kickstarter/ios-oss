@@ -75,7 +75,7 @@ public func paginate <Cursor, Value: Equatable, Envelope, ErrorEnvelope, Request
               .map(valuesFromEnvelope)
               .demoteErrors()
           }
-          .takeUntil { !$0.isEmpty }
+          .takeUntil { $0.isEmpty }
           .mergeWith(clearOnNewRequest ? .init(value: []) : .empty)
           .scan([], concater)
       }
