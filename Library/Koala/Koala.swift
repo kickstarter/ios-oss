@@ -208,9 +208,6 @@ public final class Koala {
     }
     props["user_logged_in"] = loggedInUser != nil
 
-    // TODO: device_fingerprint, apple_pay_capable, iphone_uuid, preferred_content_size_category,
-    //       device_orientation
-
     return props
   }
 

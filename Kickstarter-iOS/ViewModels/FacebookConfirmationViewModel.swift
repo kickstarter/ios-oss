@@ -35,8 +35,6 @@ internal protocol FacebookConfirmationViewModelOutputs {
   var showLogin: Signal<(), NoError> { get }
   /// Emits whether a request is loading or not
   var isLoading: Signal<Bool, NoError> { get }
-
-  // TODO: add Help functionality same as logintout
 }
 
 internal protocol FacebookConfirmationViewModelErrors {

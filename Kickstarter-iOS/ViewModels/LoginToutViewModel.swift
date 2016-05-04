@@ -48,8 +48,6 @@ internal protocol LoginToutViewModelOutputs {
   var isLoading: Signal<Bool, NoError> { get }
   /// Emits when Facebook login should start
   var attemptFacebookLogin: Signal<(), NoError> { get }
-
-  // TODO: enable/disable fb login button on request
 }
 
 internal protocol LoginToutViewModelErrors {

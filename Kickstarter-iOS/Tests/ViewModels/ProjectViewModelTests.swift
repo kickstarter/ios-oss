@@ -139,9 +139,6 @@ internal final class ProjectViewModelTests: TestCase {
     vm.inputs.viewWillAppear()
     vm.inputs.starButtonTapped()
 
-    // TODO: This test does not pass because the `toggleStar` mock returns a completely different project
-    // instead of just starring the project that was passed to it, hence the ending soon check is incorrect.
-    //showProjectStarredPrompt.assertValueCount(0, "The star prompt does not show.")
     XCTAssertEqual(["Project Page", "Project Star"], trackingClient.events, "A star koala event is tracked.")
   }
 
