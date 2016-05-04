@@ -57,7 +57,7 @@ final class AppDelegateViewModelTests: TestCase {
   }
 
   func testCurrentUserUpdating_WhenLoggedIn() {
-    let env = AccessTokenEnvelope(accessToken: "deadbeef", user: UserFactory.user)
+    let env = AccessTokenEnvelope(accessToken: "deadbeef", user: UserFactory.user())
     AppEnvironment.login(env)
 
     vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),

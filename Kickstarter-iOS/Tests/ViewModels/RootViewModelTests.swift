@@ -44,7 +44,7 @@ final class RootViewModelTests: TestCase {
       "Show the logged out tabs."
     )
 
-    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: UserFactory.user))
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: UserFactory.user()))
     vm.inputs.userSessionStarted()
 
     viewControllerNames.assertValues(
