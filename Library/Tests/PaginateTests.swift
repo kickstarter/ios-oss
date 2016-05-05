@@ -351,4 +351,97 @@ final class PaginateTests: TestCase {
       loadingTest.assertValues([true, false, true, false, true, false], "Loading stops.")
     }
   }
+
+  // Tests the flow:
+  //   * Load first page of values
+  //   * Try loading a different first page of values but the result is empty
+  // Confirms that an empty list of values is emitted.
+  func testEmptyState_AfterResultSetWasObtained() {
+    let requestFromParams: Int -> SignalProducer<[Int], NoError> = {
+      p in p == 2 ? .init(value: []) : .init(value: [1, 2])
+    }
+    let requestFromCursor: Int -> SignalProducer<[Int], NoError> = { c in .init(value: []) }
+
+    let (values, _) = paginate(
+      requestFirstPageWith: newRequest,
+      requestNextPageWhen: nextPage,
+      clearOnNewRequest: false,
+      valuesFromEnvelope: valuesFromEnvelope,
+      cursorFromEnvelope: cursorFromEnvelope,
+      requestFromParams: requestFromParams,
+      requestFromCursor: requestFromCursor
+    )
+
+    let valuesTest = TestObserver<[Int], NoError>()
+    values.observe(valuesTest.observer)
+
+    // A first page request that does have values
+    self.newRequestObserver.sendNext(1)
+    self.scheduler.advance()
+
+    valuesTest.assertValues([[1, 2]], "Some values are emitted.")
+
+    // A first page request that does not have any values
+    self.newRequestObserver.sendNext(2)
+    self.scheduler.advance()
+
+    valuesTest.assertValues([[1, 2], []], "An empty set of values is emitted.")
+  }
+
+  // Tests the flow
+  //   * Load first page of values
+  //   * Load second page of values
+  //   * Load third page of values but an empty set is returned
+  //   * Try loading a fourth page of values
+  // Confirms that no additional request is made for the fourth page.
+  func testAdditionalPagesAreNotRequestedWhenNoMoreValues() {
+    var numberOfRequests = 0
+    let requestFromParams: Int -> SignalProducer<[Int], NoError> = { p in
+      numberOfRequests += 1
+      return .init(value: [p])
+    }
+    let requestFromCursor: Int -> SignalProducer<[Int], NoError> = { c in
+      numberOfRequests += 1
+      return .init(value: c <= 2 ? [c] : [])
+    }
+
+    let (values, loading) = paginate(
+      requestFirstPageWith: newRequest,
+      requestNextPageWhen: nextPage,
+      clearOnNewRequest: true,
+      valuesFromEnvelope: valuesFromEnvelope,
+      cursorFromEnvelope: cursorFromEnvelope,
+      requestFromParams: requestFromParams,
+      requestFromCursor: requestFromCursor
+    )
+
+    let valuesTest = TestObserver<[Int], NoError>()
+    values.observe(valuesTest.observer)
+    let loadingTest = TestObserver<Bool, NoError>()
+    loading.observe(loadingTest.observer)
+
+    self.newRequestObserver.sendNext(1)
+    self.scheduler.advance()
+
+    valuesTest.assertValues([[1]], "First page of values emitted.")
+    XCTAssertEqual(1, numberOfRequests, "One request is made.")
+
+    self.nextPageObserver.sendNext()
+    self.scheduler.advance()
+
+    valuesTest.assertValues([[1], [1, 2]], "Second page of values emitted.")
+    XCTAssertEqual(2, numberOfRequests, "Another request is made.")
+
+    self.nextPageObserver.sendNext()
+    self.scheduler.advance()
+
+    valuesTest.assertValues([[1], [1, 2]], "Third page was empty so no new values are emitted.")
+    XCTAssertEqual(3, numberOfRequests, "One last request is made.")
+
+    self.nextPageObserver.sendNext()
+    self.scheduler.advance()
+
+    valuesTest.assertValues([[1], [1, 2]], "Still no values emitted.")
+    XCTAssertEqual(3, numberOfRequests, "No additional requests made.")
+  }
 }
