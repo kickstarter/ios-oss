@@ -90,7 +90,7 @@ DiscoveryViewModelOutputs {
     let paramsChanged = combineLatest(filterChange, sortChange)
       .map { filter, sort in filter.with(sort: sort) }
 
-    (self.projects, self.projectsAreLoading) = paginate(
+    (self.projects, self.projectsAreLoading, _) = paginate(
       requestFirstPageWith: paramsChanged,
       requestNextPageWhen: isCloseToBottom,
       clearOnNewRequest: true,

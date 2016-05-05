@@ -17,7 +17,7 @@ final class PaginateTests: TestCase {
     let requestFromParams: Int -> SignalProducer<[Int], NoError> = { p in .init(value: []) }
     let requestFromCursor: Int -> SignalProducer<[Int], NoError> = { c in .init(value: []) }
 
-    let (values, loading) = paginate(
+    let (values, loading, _) = paginate(
       requestFirstPageWith: newRequest,
       requestNextPageWhen: nextPage,
       clearOnNewRequest: true,
@@ -49,7 +49,7 @@ final class PaginateTests: TestCase {
     let requestFromParams: Int -> SignalProducer<[Int], NoError> = { p in .init(value: []) }
     let requestFromCursor: Int -> SignalProducer<[Int], NoError> = { c in .init(value: []) }
 
-    let (values, loading) = paginate(
+    let (values, loading, _) = paginate(
       requestFirstPageWith: newRequest,
       requestNextPageWhen: nextPage,
       clearOnNewRequest: false,
@@ -78,7 +78,7 @@ final class PaginateTests: TestCase {
   }
 
   func testPaginateFlow() {
-    let (values, loading) = paginate(
+    let (values, loading, _) = paginate(
       requestFirstPageWith: newRequest,
       requestNextPageWhen: nextPage,
       clearOnNewRequest: true,
@@ -159,7 +159,7 @@ final class PaginateTests: TestCase {
   }
 
   func testPaginate_DoesntClearOnNewRequest() {
-    let (values, loading) = paginate(
+    let (values, loading, _) = paginate(
       requestFirstPageWith: newRequest,
       requestNextPageWhen: nextPage,
       clearOnNewRequest: false,
@@ -210,7 +210,7 @@ final class PaginateTests: TestCase {
 
   func testPaginate_InterleavingOfNextPage() {
     withEnvironment(apiDelayInterval: TestCase.interval) {
-      let (values, loading) = paginate(
+      let (values, loading, _) = paginate(
         requestFirstPageWith: newRequest,
         requestNextPageWhen: nextPage,
         clearOnNewRequest: true,
@@ -252,7 +252,7 @@ final class PaginateTests: TestCase {
 
   func testPaginate_ClearsOnNewRequest_InterleavingOfNewRequestAndNextPage() {
     withEnvironment(apiDelayInterval: TestCase.interval) {
-      let (values, loading) = paginate(
+      let (values, loading, _) = paginate(
         requestFirstPageWith: newRequest,
         requestNextPageWhen: nextPage,
         clearOnNewRequest: true,
@@ -303,7 +303,7 @@ final class PaginateTests: TestCase {
 
   func testPaginate_DoesNotClearOnNewRequest_InterleavingOfNewRequestAndNextPage() {
     withEnvironment(apiDelayInterval: TestCase.interval) {
-      let (values, loading) = paginate(
+      let (values, loading, _) = paginate(
         requestFirstPageWith: newRequest,
         requestNextPageWhen: nextPage,
         clearOnNewRequest: false,
@@ -362,7 +362,7 @@ final class PaginateTests: TestCase {
     }
     let requestFromCursor: Int -> SignalProducer<[Int], NoError> = { c in .init(value: []) }
 
-    let (values, _) = paginate(
+    let (values, _, _) = paginate(
       requestFirstPageWith: newRequest,
       requestNextPageWhen: nextPage,
       clearOnNewRequest: false,
@@ -405,7 +405,7 @@ final class PaginateTests: TestCase {
       return .init(value: c <= 2 ? [c] : [])
     }
 
-    let (values, loading) = paginate(
+    let (values, loading, _) = paginate(
       requestFirstPageWith: newRequest,
       requestNextPageWhen: nextPage,
       clearOnNewRequest: true,
@@ -443,5 +443,115 @@ final class PaginateTests: TestCase {
 
     valuesTest.assertValues([[1], [1, 2]], "Still no values emitted.")
     XCTAssertEqual(3, numberOfRequests, "No additional requests made.")
+  }
+
+  func testPageCount_WhenNotClearingOnFirstRequest() {
+    let (_, _, pageCountLoaded) = paginate(
+      requestFirstPageWith: newRequest,
+      requestNextPageWhen: nextPage,
+      clearOnNewRequest: false,
+      valuesFromEnvelope: valuesFromEnvelope,
+      cursorFromEnvelope: cursorFromEnvelope,
+      requestFromParams: requestFromParams,
+      requestFromCursor: requestFromCursor
+    )
+
+    let pageCountLoadedTest = TestObserver<Int, NoError>()
+    pageCountLoaded.observe(pageCountLoadedTest.observer)
+
+    self.newRequestObserver.sendNext(1)
+    self.scheduler.advance()
+
+    pageCountLoadedTest.assertValues([1])
+
+    self.nextPageObserver.sendNext()
+    self.scheduler.advance()
+
+    pageCountLoadedTest.assertValues([1, 2])
+
+    self.nextPageObserver.sendNext()
+    self.scheduler.advance()
+
+    pageCountLoadedTest.assertValues([1, 2])
+
+    self.newRequestObserver.sendNext(0)
+    self.scheduler.advance()
+
+    pageCountLoadedTest.assertValues([1, 2, 1])
+
+    self.nextPageObserver.sendNext()
+    self.scheduler.advance()
+
+    pageCountLoadedTest.assertValues([1, 2, 1, 2])
+
+    self.nextPageObserver.sendNext()
+    self.scheduler.advance()
+
+    pageCountLoadedTest.assertValues([1, 2, 1, 2, 3])
+
+    self.nextPageObserver.sendNext()
+    self.scheduler.advance()
+
+    pageCountLoadedTest.assertValues([1, 2, 1, 2, 3])
+
+    self.newRequestObserver.sendNext(0)
+    self.scheduler.advance()
+
+    pageCountLoadedTest.assertValues([1, 2, 1, 2, 3, 1])
+  }
+
+  func testPageCount_WhenClearingOnFirstRequest() {
+    let (_, _, pageCountLoaded) = paginate(
+      requestFirstPageWith: newRequest,
+      requestNextPageWhen: nextPage,
+      clearOnNewRequest: true,
+      valuesFromEnvelope: valuesFromEnvelope,
+      cursorFromEnvelope: cursorFromEnvelope,
+      requestFromParams: requestFromParams,
+      requestFromCursor: requestFromCursor
+    )
+
+    let pageCountLoadedTest = TestObserver<Int, NoError>()
+    pageCountLoaded.observe(pageCountLoadedTest.observer)
+
+    self.newRequestObserver.sendNext(1)
+    self.scheduler.advance()
+
+    pageCountLoadedTest.assertValues([1])
+
+    self.nextPageObserver.sendNext()
+    self.scheduler.advance()
+
+    pageCountLoadedTest.assertValues([1, 2])
+
+    self.nextPageObserver.sendNext()
+    self.scheduler.advance()
+
+    pageCountLoadedTest.assertValues([1, 2])
+
+    self.newRequestObserver.sendNext(0)
+    self.scheduler.advance()
+
+    pageCountLoadedTest.assertValues([1, 2, 1])
+
+    self.nextPageObserver.sendNext()
+    self.scheduler.advance()
+
+    pageCountLoadedTest.assertValues([1, 2, 1, 2])
+
+    self.nextPageObserver.sendNext()
+    self.scheduler.advance()
+
+    pageCountLoadedTest.assertValues([1, 2, 1, 2, 3])
+
+    self.nextPageObserver.sendNext()
+    self.scheduler.advance()
+
+    pageCountLoadedTest.assertValues([1, 2, 1, 2, 3])
+
+    self.newRequestObserver.sendNext(0)
+    self.scheduler.advance()
+
+    pageCountLoadedTest.assertValues([1, 2, 1, 2, 3, 1])
   }
 }

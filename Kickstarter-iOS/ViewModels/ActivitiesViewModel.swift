@@ -112,7 +112,7 @@ ActivitiesViewModelOutputs {
 
     let activities: Signal<[Activity], NoError>
     let isLoading: Signal<Bool, NoError>
-    (activities, isLoading) = paginate(
+    (activities, isLoading, _) = paginate(
       requestFirstPageWith: requestFirstPage,
       requestNextPageWhen: isCloseToBottom,
       clearOnNewRequest: false,

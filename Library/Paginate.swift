@@ -32,9 +32,10 @@ import ReactiveExtensions
                                    values. By default this simply concatenates the arrays, but you might want
                                    to do something more specific, such as concatenating only distinct values.
 
- - returns: A tuple of signals, (paginatedValues, isLoading). The `paginatedValues` signal will emit a full
-            set of values when a new page has loaded. The `isLoading` signal will emit `true` while a page of
-            values is loading, and then `false` when it has terminated (either by completion or error).
+ - returns: A tuple of signals, (paginatedValues, isLoading, pageCount). The `paginatedValues` signal will 
+            emit a full set of values when a new page has loaded. The `isLoading` signal will emit `true` 
+            while a page of values is loading, and then `false` when it has terminated (either by completion 
+            or error). Finally, `pageCount` emits the number of the page that loaded, starting at 1.
  */
 public func paginate <Cursor, Value: Equatable, Envelope, ErrorEnvelope, RequestParams> (
   requestFirstPageWith requestFirstPage: Signal<RequestParams, NoError>,
@@ -45,7 +46,10 @@ public func paginate <Cursor, Value: Equatable, Envelope, ErrorEnvelope, Request
                        requestFromParams: (RequestParams -> SignalProducer<Envelope, ErrorEnvelope>),
                        requestFromCursor: (Cursor -> SignalProducer<Envelope, ErrorEnvelope>),
                        concater: (([Value], [Value]) -> [Value]) = (+))
-  -> (paginatedValues: Signal<[Value], NoError>, isLoading: Signal<Bool, NoError>) {
+  ->
+  (paginatedValues: Signal<[Value], NoError>,
+   isLoading: Signal<Bool, NoError>,
+   pageCount: Signal<Int, NoError>) {
 
     let cursor = MutableProperty<Cursor?>(nil)
     let isLoading = MutableProperty<Bool>(false)
@@ -82,5 +86,9 @@ public func paginate <Cursor, Value: Equatable, Envelope, ErrorEnvelope, Request
       .skip(clearOnNewRequest ? 1 : 0)
       .skipRepeats(==)
 
-    return (paginatedValues, isLoading.signal)
+    let pageCount = Signal.merge(paginatedValues, requestFirstPage.mapConst([]))
+      .scan(0) { accum, values in values.isEmpty ? 0 : accum + 1 }
+      .filter { $0 > 0 }
+
+    return (paginatedValues, isLoading.signal, pageCount)
 }

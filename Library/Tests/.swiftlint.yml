@@ -1,4 +1,5 @@
 disabled_rules:
+  - file_length
   - function_parameter_count
   - nesting
   - variable_name
