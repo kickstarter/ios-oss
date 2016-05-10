@@ -37,7 +37,7 @@ class PlaylistExplorerViewController: UIViewController {
 
     self.playlistsCollectionView.remembersLastFocusedIndexPath = true
 
-    self.projectsCollectionView.contentInset = UIEdgeInsetsMake(0.0, 80.0, 0.0, 80.0)
+    self.projectsCollectionView.contentInset = UIEdgeInsets(top: 0.0, left: 80.0, bottom: 0.0, right: 80.0)
 
     let tap = UITapGestureRecognizer(target: self, action: #selector(tap(_:)))
     tap.allowedPressTypes = [UIPressType.Menu.rawValue]

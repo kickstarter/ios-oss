@@ -32,9 +32,9 @@ import ReactiveExtensions
                                    values. By default this simply concatenates the arrays, but you might want
                                    to do something more specific, such as concatenating only distinct values.
 
- - returns: A tuple of signals, (paginatedValues, isLoading, pageCount). The `paginatedValues` signal will 
-            emit a full set of values when a new page has loaded. The `isLoading` signal will emit `true` 
-            while a page of values is loading, and then `false` when it has terminated (either by completion 
+ - returns: A tuple of signals, (paginatedValues, isLoading, pageCount). The `paginatedValues` signal will
+            emit a full set of values when a new page has loaded. The `isLoading` signal will emit `true`
+            while a page of values is loading, and then `false` when it has terminated (either by completion
             or error). Finally, `pageCount` emits the number of the page that loaded, starting at 1.
  */
 public func paginate <Cursor, Value: Equatable, Envelope, ErrorEnvelope, RequestParams> (

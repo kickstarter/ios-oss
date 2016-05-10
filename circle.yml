@@ -3,12 +3,16 @@ machine:
     version: 7.3
 dependencies:
   pre:
+    - brew install swiftlint
     - security list-keychains
     - security find-identity -p codesigning
     - instruments -s devices
     - xcodebuild -showsdks
 test:
   override:
+    - set -o pipefail &&
+      swiftlint lint --strict --reporter json |
+      tee $CIRCLE_ARTIFACTS/swiftlint-report.json
     - PLATFORM=iOS make test
     - PLATFORM=tvOS make test
     - PLATFORM=iOS TARGET=Library make test

@@ -42,8 +42,9 @@ dependencies: submodules configs
 
 bootstrap:
 	brew update
-	brew doctor
-	brew install swiftlint || brew upgrade swiftlint
+	brew unlink swiftlint
+	brew install swiftlint
+	brew link swiftlint
 
 submodules:
 	git submodule sync --recursive
