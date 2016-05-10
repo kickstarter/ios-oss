@@ -28,6 +28,14 @@
 		0176E13B1C9742FD009CA092 /* UIBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0176E13A1C9742FD009CA092 /* UIBarButtonItem.swift */; };
 		0176E19B1C976703009CA092 /* UITextfield+LocalizedPlaceholderKeyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0176E19A1C976703009CA092 /* UITextfield+LocalizedPlaceholderKeyTests.swift */; };
 		0176E19C1C976703009CA092 /* UITextfield+LocalizedPlaceholderKeyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0176E19A1C976703009CA092 /* UITextfield+LocalizedPlaceholderKeyTests.swift */; };
+		017E88B31CD29C9D003FE5D6 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01D31A371CCA786A0037A178 /* FBSDKLoginKit.framework */; };
+		017E88B41CD29CA1003FE5D6 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01D31A361CCA786A0037A178 /* FBSDKCoreKit.framework */; };
+		017E88B51CD29CCE003FE5D6 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01D31A361CCA786A0037A178 /* FBSDKCoreKit.framework */; };
+		017E88B61CD29CCE003FE5D6 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01D31A361CCA786A0037A178 /* FBSDKCoreKit.framework */; };
+		017E88B71CD29CD1003FE5D6 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01D31A371CCA786A0037A178 /* FBSDKLoginKit.framework */; };
+		017E88B81CD29CD2003FE5D6 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01D31A371CCA786A0037A178 /* FBSDKLoginKit.framework */; };
+		017E88BA1CD2A609003FE5D6 /* UIActivityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 017E88B91CD2A609003FE5D6 /* UIActivityViewController.swift */; };
+		017E88BB1CD2A609003FE5D6 /* UIActivityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 017E88B91CD2A609003FE5D6 /* UIActivityViewController.swift */; };
 		018F1F831C8E182200643DAA /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018F1F821C8E182200643DAA /* LoginViewController.swift */; };
 		018F1F841C8E182200643DAA /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018F1F821C8E182200643DAA /* LoginViewController.swift */; };
 		018F1FA91C8E1A8200643DAA /* LoginToutViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018F1FA81C8E1A8200643DAA /* LoginToutViewModel.swift */; };
@@ -36,6 +44,9 @@
 		019502031C8E3EF700F31304 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019502011C8E3EF700F31304 /* LoginViewModel.swift */; };
 		019DDFEC1CB6FF4500BDC113 /* ResetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019DDFEB1CB6FF4500BDC113 /* ResetPasswordViewController.swift */; };
 		019DDFED1CB6FF4500BDC113 /* ResetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019DDFEB1CB6FF4500BDC113 /* ResetPasswordViewController.swift */; };
+		019E42941CD0088E00AA82D3 /* ThanksViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019E42931CD0088E00AA82D3 /* ThanksViewModel.swift */; };
+		019E42951CD0088E00AA82D3 /* ThanksViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019E42931CD0088E00AA82D3 /* ThanksViewModel.swift */; };
+		019E42C21CD008CC00AA82D3 /* ThanksViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019E42C11CD008CC00AA82D3 /* ThanksViewModelTests.swift */; };
 		01A1DC4D1C965C7D005761A8 /* UIAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A1DC4C1C965C7D005761A8 /* UIAlertController.swift */; };
 		01A1DC4E1C965C7D005761A8 /* UIAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A1DC4C1C965C7D005761A8 /* UIAlertController.swift */; };
 		01A7A4C01C9690220036E553 /* UITextField+LocalizedPlaceholderKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A7A4BF1C9690220036E553 /* UITextField+LocalizedPlaceholderKey.swift */; };
@@ -53,18 +64,13 @@
 		01BF21311CA5E81C00184A38 /* ResetPasswordViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BF21301CA5E81C00184A38 /* ResetPasswordViewModelTests.swift */; };
 		01D31A381CCA786A0037A178 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01D31A361CCA786A0037A178 /* FBSDKCoreKit.framework */; };
 		01D31A3A1CCA786A0037A178 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01D31A361CCA786A0037A178 /* FBSDKCoreKit.framework */; };
-		01D31A3B1CCA786A0037A178 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01D31A361CCA786A0037A178 /* FBSDKCoreKit.framework */; };
 		01D31A3D1CCA786A0037A178 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01D31A371CCA786A0037A178 /* FBSDKLoginKit.framework */; };
-		01D31A3E1CCA786A0037A178 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01D31A371CCA786A0037A178 /* FBSDKLoginKit.framework */; };
 		01D31A3F1CCA786A0037A178 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01D31A371CCA786A0037A178 /* FBSDKLoginKit.framework */; };
-		01D31A401CCA786A0037A178 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01D31A371CCA786A0037A178 /* FBSDKLoginKit.framework */; };
-		01D31A411CCA786B0037A178 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01D31A371CCA786A0037A178 /* FBSDKLoginKit.framework */; };
 		01D31A431CCA78A00037A178 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01D31A421CCA78A00037A178 /* FBSDKCoreKit.framework */; };
 		01D31A441CCA78A00037A178 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01D31A421CCA78A00037A178 /* FBSDKCoreKit.framework */; };
 		01D31A451CCA78A00037A178 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01D31A421CCA78A00037A178 /* FBSDKCoreKit.framework */; };
 		01D31A461CCA78A00037A178 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01D31A421CCA78A00037A178 /* FBSDKCoreKit.framework */; };
 		01D31A471CCA78A00037A178 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01D31A421CCA78A00037A178 /* FBSDKCoreKit.framework */; };
-		01D31A481CCA7C820037A178 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01D31A361CCA786A0037A178 /* FBSDKCoreKit.framework */; };
 		01DEFB951CB44A5D003709C0 /* TwoFactorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01DEFB941CB44A5D003709C0 /* TwoFactorViewController.swift */; };
 		01DEFB961CB44A5D003709C0 /* TwoFactorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01DEFB941CB44A5D003709C0 /* TwoFactorViewController.swift */; };
 		01EA879B1C9335C5004E738B /* LoginToutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F761761C85FACB005405ED /* LoginToutViewController.swift */; };
@@ -1269,10 +1275,13 @@
 		0154A93C1CA1AF2A00DB9BA4 /* LoginViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewModelTests.swift; sourceTree = "<group>"; };
 		0176E13A1C9742FD009CA092 /* UIBarButtonItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIBarButtonItem.swift; sourceTree = "<group>"; };
 		0176E19A1C976703009CA092 /* UITextfield+LocalizedPlaceholderKeyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "UITextfield+LocalizedPlaceholderKeyTests.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		017E88B91CD2A609003FE5D6 /* UIActivityViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIActivityViewController.swift; sourceTree = "<group>"; };
 		018F1F821C8E182200643DAA /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = LoginViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		018F1FA81C8E1A8200643DAA /* LoginToutViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginToutViewModel.swift; sourceTree = "<group>"; };
 		019502011C8E3EF700F31304 /* LoginViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginViewModel.swift; path = ../Views/Controllers/LoginViewModel.swift; sourceTree = "<group>"; };
 		019DDFEB1CB6FF4500BDC113 /* ResetPasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ResetPasswordViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		019E42931CD0088E00AA82D3 /* ThanksViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThanksViewModel.swift; sourceTree = "<group>"; };
+		019E42C11CD008CC00AA82D3 /* ThanksViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThanksViewModelTests.swift; sourceTree = "<group>"; };
 		01A1DC4C1C965C7D005761A8 /* UIAlertController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIAlertController.swift; sourceTree = "<group>"; };
 		01A7A4BF1C9690220036E553 /* UITextField+LocalizedPlaceholderKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITextField+LocalizedPlaceholderKey.swift"; sourceTree = "<group>"; };
 		01B6ABE51CA2F233003DB4C8 /* LoginToutViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginToutViewModelTests.swift; sourceTree = "<group>"; };
@@ -1540,10 +1549,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				A7A29F511CC3E101002BE580 /* ReactiveExtensions_TestHelpers.framework in Frameworks */,
-				01D31A3B1CCA786A0037A178 /* FBSDKCoreKit.framework in Frameworks */,
+				017E88B61CD29CCE003FE5D6 /* FBSDKCoreKit.framework in Frameworks */,
 				A7A29F4E1CC3E0E8002BE580 /* KsApi_TestHelpers.framework in Frameworks */,
 				A7B694761C87F19D00C49A4F /* Prelude.framework in Frameworks */,
-				01D31A401CCA786A0037A178 /* FBSDKLoginKit.framework in Frameworks */,
+				017E88B81CD29CD2003FE5D6 /* FBSDKLoginKit.framework in Frameworks */,
 				A7B694371C87A08500C49A4F /* HockeySDK.framework in Frameworks */,
 				A75511461C8642B3005355CF /* Library.framework in Frameworks */,
 			);
@@ -1578,10 +1587,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				01D31A481CCA7C820037A178 /* FBSDKCoreKit.framework in Frameworks */,
+				017E88B41CD29CA1003FE5D6 /* FBSDKCoreKit.framework in Frameworks */,
 				A76127C21C93104700EDCCB9 /* Prelude.framework in Frameworks */,
-				01D31A411CCA786B0037A178 /* FBSDKLoginKit.framework in Frameworks */,
 				A76127C11C93104300EDCCB9 /* AlamofireImage.framework in Frameworks */,
+				017E88B31CD29C9D003FE5D6 /* FBSDKLoginKit.framework in Frameworks */,
 				A76127C01C93100C00EDCCB9 /* Library.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1624,7 +1633,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				A782BAC11C9F5F4C007B13C8 /* KsApi_TestHelpers.framework in Frameworks */,
-				01D31A3E1CCA786A0037A178 /* FBSDKLoginKit.framework in Frameworks */,
+				017E88B51CD29CCE003FE5D6 /* FBSDKCoreKit.framework in Frameworks */,
+				017E88B71CD29CD1003FE5D6 /* FBSDKLoginKit.framework in Frameworks */,
 				A782BAC31C9F5F4C007B13C8 /* ReactiveExtensions_TestHelpers.framework in Frameworks */,
 				A7B694121C87942C00C49A4F /* Library.framework in Frameworks */,
 			);
@@ -1778,6 +1788,7 @@
 				01BF210A1CA5D6D100184A38 /* ResetPasswordViewModel.swift */,
 				A775B5451CA871D700BBB587 /* RootViewModel.swift */,
 				9D39C0461C9B5662004E0943 /* SearchViewModel.swift */,
+				019E42931CD0088E00AA82D3 /* ThanksViewModel.swift */,
 				01B6AC301CA49972003DB4C8 /* TwoFactorViewModel.swift */,
 			);
 			path = ViewModels;
@@ -1882,12 +1893,13 @@
 				0154A93C1CA1AF2A00DB9BA4 /* LoginViewModelTests.swift */,
 				A750DEF31CC681A000983F7C /* ProjectMainCellViewModelTests.swift */,
 				A75CF8801CC6D4BE00BBBB7F /* ProjectRewardCellViewModelTests.swift */,
+				A77589521CC9649C0038288B /* ProjectSubpagesViewModelTests.swift */,
 				A7DC836D1C9DB6EE00BB2B44 /* ProjectViewModelTests.swift */,
 				01BF21301CA5E81C00184A38 /* ResetPasswordViewModelTests.swift */,
 				A775B54B1CA87C8500BBB587 /* RootViewModelTests.swift */,
 				9DE6C0561C9B5C7700FCC7B1 /* SearchViewModelTests.swift */,
+				019E42C11CD008CC00AA82D3 /* ThanksViewModelTests.swift */,
 				01BF20D21CA49E3800184A38 /* TwoFactorViewModelTests.swift */,
-				A77589521CC9649C0038288B /* ProjectSubpagesViewModelTests.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -2058,6 +2070,7 @@
 				A7C725931C85D36D005A016B /* Strings.swift */,
 				0151AEB01C8F6FD80067F1BE /* StyledLabel.swift */,
 				0151AEAD1C8F61870067F1BE /* Styles.swift */,
+				017E88B91CD2A609003FE5D6 /* UIActivityViewController.swift */,
 				01A1DC4C1C965C7D005761A8 /* UIAlertController.swift */,
 				0176E13A1C9742FD009CA092 /* UIBarButtonItem.swift */,
 				A7C725941C85D36D005A016B /* UIButton+LocalizedKey.swift */,
@@ -3354,6 +3367,7 @@
 				A76126B71C90C94000EDCCB9 /* UICollectionView-Extensions.swift in Sources */,
 				A76126AD1C90C94000EDCCB9 /* ValueCellDataSource.swift in Sources */,
 				A75511631C8642C3005355CF /* LocalizedString.swift in Sources */,
+				017E88BA1CD2A609003FE5D6 /* UIActivityViewController.swift in Sources */,
 				0151AEB31C8F6FE90067F1BE /* StyledLabel.swift in Sources */,
 				0151AEB51C8F6FFE0067F1BE /* Styles.swift in Sources */,
 				A7FC8C061C8F1DEA00C3B49B /* CircleAvatarImageView.swift in Sources */,
@@ -3410,6 +3424,7 @@
 				A75511991C8645A0005355CF /* LocalizedStringTests.swift in Sources */,
 				A75511951C8645A0005355CF /* EnvironmentTests.swift in Sources */,
 				A77D7B351CBAC5F90077586B /* PaginateTests.swift in Sources */,
+				017E88BB1CD2A609003FE5D6 /* UIActivityViewController.swift in Sources */,
 				01EFBC891C91FB770094EEC2 /* UIColorTests.swift in Sources */,
 				A72D929A1CB1F7DA00A88249 /* TestCase.swift in Sources */,
 				A7A29F4A1CC3DE5F002BE580 /* ValueCellDataSourceTests.swift in Sources */,
@@ -3513,6 +3528,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				018F1FAA1C8E1A8200643DAA /* LoginToutViewModel.swift in Sources */,
+				019E42951CD0088E00AA82D3 /* ThanksViewModel.swift in Sources */,
 				A7285C9C1C8E8DCF00D83297 /* ProjectViewController.swift in Sources */,
 				A762F0191C8CC672005581A4 /* ActivityFriendFollowViewModel.swift in Sources */,
 				A750DEC71CC6711D00983F7C /* ProjectMainCellViewModel.swift in Sources */,
@@ -3661,6 +3677,7 @@
 				A762F01C1C8CD2B3005581A4 /* ActivityStateChangeCell.swift in Sources */,
 				A75CBDE71C8A26F800758C55 /* AppDelegateViewModel.swift in Sources */,
 				A75CFA4F1CCDB322004CD5FA /* SearchDataSource.swift in Sources */,
+				019E42941CD0088E00AA82D3 /* ThanksViewModel.swift in Sources */,
 				A751A51F1C85EC0B009C5DEA /* DiscoveryViewController.swift in Sources */,
 				018F1F831C8E182200643DAA /* LoginViewController.swift in Sources */,
 				019502021C8E3EF700F31304 /* LoginViewModel.swift in Sources */,
@@ -3686,6 +3703,7 @@
 				A775B54C1CA87C8500BBB587 /* RootViewModelTests.swift in Sources */,
 				0154A93E1CA1AF3400DB9BA4 /* LoginViewModelTests.swift in Sources */,
 				A77589531CC9649C0038288B /* ProjectSubpagesViewModelTests.swift in Sources */,
+				019E42C21CD008CC00AA82D3 /* ThanksViewModelTests.swift in Sources */,
 				A78323801CB949EF000B094C /* DiscoveryViewModelTests.swift in Sources */,
 				A750DEF41CC681A000983F7C /* ProjectMainCellViewModelTests.swift in Sources */,
 				A77519121C8CADE20022F175 /* AppDelegateViewModelTests.swift in Sources */,
@@ -4210,7 +4228,10 @@
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = NO;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Frameworks/FBSDK/iOS",
+				);
 				"FRAMEWORK_SEARCH_PATHS[sdk=appletv*]" = (
 					"$(SYMROOT)/Release$(EFFECTIVE_PLATFORM_NAME)",
 					"$(PROJECT_DIR)/Frameworks/HockeySDK/tvOS/HockeySDK.embeddedframework",
@@ -4423,7 +4444,10 @@
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = NO;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Frameworks/FBSDK/iOS",
+				);
 				"FRAMEWORK_SEARCH_PATHS[sdk=appletv*]" = (
 					"$(PROJECT_DIR)/Frameworks/HockeySDK/tvOS/HockeySDK.embeddedframework",
 					"$(PROJECT_DIR)/Frameworks/FBSDK/tvOS",
@@ -4446,7 +4470,10 @@
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = NO;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Frameworks/FBSDK/iOS",
+				);
 				"FRAMEWORK_SEARCH_PATHS[sdk=appletv*]" = (
 					"$(PROJECT_DIR)/Frameworks/HockeySDK/tvOS/HockeySDK.embeddedframework",
 					"$(PROJECT_DIR)/Frameworks/FBSDK/tvOS",

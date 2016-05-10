@@ -38,7 +38,7 @@ final class KoalaTests: XCTestCase {
 
   func testDefaultPropertiesWithLoggedInUser() {
     let client = MockTrackingClient()
-    let user = UserFactory.userWithPersonalization
+    let user = UserFactory.loggedInUser
     let koala = Koala(client: client, loggedInUser: user)
 
     koala.trackAppOpen()

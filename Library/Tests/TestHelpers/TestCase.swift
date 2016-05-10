@@ -1,17 +1,21 @@
 import XCTest
 import AVFoundation
 import ReactiveCocoa
+@testable import KsApi
+@testable import KsApi_TestHelpers
 @testable import Library
 @testable import KsApi_TestHelpers
 
 internal class TestCase: XCTestCase {
   internal static let interval = 0.001
 
+  internal let config = ConfigFactory.config
   internal let cookieStorage = MockCookieStorage()
   internal let facebookAppDelegate = MockFacebookAppDelegate()
   internal let hockeyManager = MockHockeyManager()
   internal let scheduler = TestScheduler()
   internal let trackingClient = MockTrackingClient()
+  internal let userDefaults = MockKeyValueStore()
 
   override func setUp() {
     super.setUp()
@@ -19,6 +23,7 @@ internal class TestCase: XCTestCase {
       apiService: MockService(),
       apiDelayInterval: 0.0,
       assetImageGeneratorType: AVAssetImageGenerator.self,
+      config: self.config,
       cookieStorage: self.cookieStorage,
       countryCode: "US",
       currentUser: nil,
@@ -33,7 +38,7 @@ internal class TestCase: XCTestCase {
       scheduler: self.scheduler,
       timeZone: NSTimeZone(name: "GMT")!,
       ubiquitousStore: MockKeyValueStore(),
-      userDefaults: MockKeyValueStore()
+      userDefaults: self.userDefaults
     )
   }
 

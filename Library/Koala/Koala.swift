@@ -52,6 +52,7 @@ public final class Koala {
     self.track(event: "Discovery List View")
   }
 
+  // MARK: Login Events
   public func trackLoginTout(intent: String) {
     self.track(event: "Application Login or Signup", properties: ["intent": intent])
   }
@@ -104,6 +105,7 @@ public final class Koala {
     self.track(event: "Two-factor Authentication Resend Code")
   }
 
+  // MARK: Comments Events
   public func trackLoadNewerProjectComments() {
     self.track(event: "Project Comment Load New")
   }
@@ -136,6 +138,73 @@ public final class Koala {
     self.track(event: "Update Comment View")
   }
 
+  // MARK: Checkout Events
+  public func trackCheckoutNext() {
+    self.track(event: "Checkout Next")
+  }
+
+  public func trackCheckoutCancel() {
+    self.track(event: "Checkout Cancel")
+  }
+
+  public func trackCheckoutLoadFailed() {
+    self.track(event: "Checkout Page Failed")
+  }
+
+  public func trackCheckoutShowShareSheet() {
+    self.track(event: "Checkout Show Share Sheet")
+  }
+
+  public func trackCheckoutCancelShareSheet() {
+    self.track(event: "Checkout Cancel Share Sheet")
+  }
+
+  public func trackCheckoutShowFacebookShareView() {
+    self.track(event: "Checkout Show Share", properties: ["share_type": "facebook"])
+  }
+
+  public func trackCheckoutShowTwitterShareView() {
+    self.track(event: "Checkout Show Share", properties: ["share_type": "twitter"])
+  }
+
+  public func trackCheckoutShareFinishedWithShareType(activityType: String?, completed: Bool) {
+    self.track(event: "Checkout Share Finished",
+               properties: [
+                "share_type": activityType ?? "",
+                "did_share": completed
+              ]
+    )
+  }
+
+  public func trackCheckoutFinishJumpToDiscovery() {
+    self.track(event: "Checkout Finished Discover More")
+  }
+
+  public func trackCheckoutFinishJumpToProject() {
+    self.track(event: "Checkout Finished Discover Open Project")
+  }
+
+  public func trackCheckoutFinishAppStoreRatingAlertRateNow() {
+    self.track(event: "Checkout Finished Alert App Store Rating Rate Now")
+  }
+
+  public func trackCheckoutFinishAppStoreRatingAlertRemindLater() {
+    self.track(event: "Checkout Finished Alert App Store Rating Remind Later")
+  }
+
+  public func trackCheckoutFinishAppStoreRatingAlertNoThanks() {
+    self.track(event: "Checkout Finished Alert App Store Rating No Thanks")
+  }
+
+  public func trackNewsletterToggle(sendNewsletter: Bool) {
+    if sendNewsletter {
+      self.track(event: "Newsletter Subscribe")
+    } else {
+      self.track(event: "Newsletter Unsubscribe")
+    }
+  }
+
+  // MARK: Search Events
   /// Call once when the search view is initially shown.
   public func trackProjectSearchView() {
     self.track(event: "Discover Search")
@@ -152,6 +221,7 @@ public final class Koala {
     }
   }
 
+  // MARK: Project Events
   /**
    Call when a project page is viewed.
 
