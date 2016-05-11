@@ -22,6 +22,13 @@
                                     <rect key="frame" x="0.0" y="0.0" width="400" height="470"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="U54-Or-Qgc" userLabel="Top border">
+                                            <rect key="frame" x="0.0" y="0.0" width="400" height="1"/>
+                                            <color key="backgroundColor" white="0.89916487068965523" alpha="1" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="1" id="nsB-hv-isi"/>
+                                            </constraints>
+                                        </view>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="robert-irwin" translatesAutoresizingMaskIntoConstraints="NO" id="sH5-S5-8zF">
                                             <rect key="frame" x="0.0" y="0.0" width="400" height="225"/>
                                             <constraints>
@@ -110,13 +117,6 @@
                                                 </stackView>
                                             </subviews>
                                         </stackView>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="U54-Or-Qgc" userLabel="Top border">
-                                            <rect key="frame" x="0.0" y="0.0" width="400" height="1"/>
-                                            <color key="backgroundColor" white="0.89916487068965523" alpha="1" colorSpace="calibratedWhite"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="1" id="nsB-hv-isi"/>
-                                            </constraints>
-                                        </view>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sK6-SV-2KS" userLabel="Bottom border">
                                             <rect key="frame" x="0.0" y="469" width="400" height="1"/>
                                             <color key="backgroundColor" white="0.89916487068965523" alpha="1" colorSpace="calibratedWhite"/>

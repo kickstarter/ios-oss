@@ -33,6 +33,12 @@ internal final class ProjectViewController: UITableViewController {
         dataSource.loadProject(project)
         tableView?.reloadData()
     }
+
+    self.viewModel.outputs.openComments
+      .observeForUI()
+      .observeNext { [weak self] project in
+        self?.openComments(forProject: project)
+    }
   }
 
   override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
@@ -50,7 +56,21 @@ internal final class ProjectViewController: UITableViewController {
     return UITableViewAutomaticDimension
   }
 
+  private func openComments(forProject project: Project) {
+    guard let commentsViewController = UIStoryboard(name: "Comments", bundle: nil)
+      .instantiateInitialViewController() as? CommentsViewController else {
+        fatalError("Could not instantiate CommentsViewController.")
+    }
+
+    commentsViewController.configureWith(project: project)
+    self.navigationController?.pushViewController(commentsViewController, animated: true)
+  }
+
   internal func closeButtonPressed() {
     self.dismissViewControllerAnimated(true, completion: nil)
+  }
+
+  @IBAction func commentsButtonPressed() {
+    self.viewModel.inputs.commentsButtonPressed()
   }
 }

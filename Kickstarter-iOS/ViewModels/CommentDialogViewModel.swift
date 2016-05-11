@@ -3,13 +3,17 @@ import Models
 import KsApi
 import Result
 import Library
+import Prelude
 
 internal protocol CommentDialogViewModelInputs {
   /// Call when the view appears.
   func viewWillAppear()
 
+  /// Call when the view disappears.
+  func viewWillDisappear()
+
   /// Call with the project given to the view.
-  func project(project: Project)
+  func project(project: Project, update: Update?)
 
   /// Call when the comment body text changes.
   func commentBodyChanged(text: String)
@@ -25,14 +29,21 @@ internal protocol CommentDialogViewModelOutputs {
   /// Emits a boolean that determines if the post button is enabled.
   var postButtonEnabled: Signal<Bool, NoError> { get }
 
-  /// Emits when the dialog should communicate to its presenter that it wants to be dismissed.
-  var notifyPresenterOfDismissal: Signal<(), NoError> { get }
-
   /// Emits a boolean that determines if the comment is currently posting.
-  var commentIsPosting: Signal<Bool, NoError> { get }
+  var loadingViewIsHidden: Signal<Bool, NoError> { get }
 
-  /// Emits when the comment has successfully posted.
-  var commentPostedSuccessfully: Signal<(), NoError> { get }
+  /// Emits the newly posted comment when the present of this dialog should be notified that posting
+  /// was successful.
+  var notifyPresenterCommentWasPostedSuccesfully: Signal<Comment, NoError> { get }
+
+  /// Emits when the dialog should notify its presenter that it wants to be dismissed.
+  var notifyPresenterDialogWantsDismissal: Signal<(), NoError> { get }
+
+  /// Emits the string to be used as the subtitle of the comment dialog.
+  var subtitle: Signal<String, NoError> { get }
+
+  /// Emits a boolean that determines if the keyboard should be shown or not.
+  var showKeyboard: Signal<Bool, NoError> { get }
 }
 
 internal protocol CommentDialogViewModelErrors {
@@ -54,9 +65,14 @@ CommentDialogViewModelOutputs, CommentDialogViewModelErrors {
     self.viewWillAppearProperty.value = ()
   }
 
-  private let projectProperty = MutableProperty<Project?>(nil)
-  internal func project(project: Project) {
-    self.projectProperty.value = project
+  private let viewWillDisappearProperty = MutableProperty()
+  internal func viewWillDisappear() {
+    self.viewWillDisappearProperty.value = ()
+  }
+
+  private let projectAndUpdateProperty = MutableProperty<(Project, Update?)?>(nil)
+  internal func project(project: Project, update: Update?) {
+    self.projectAndUpdateProperty.value = (project, update)
   }
 
   private let commentBodyProperty = MutableProperty("")
@@ -75,9 +91,11 @@ CommentDialogViewModelOutputs, CommentDialogViewModelErrors {
   }
 
   internal let postButtonEnabled: Signal<Bool, NoError>
-  internal let notifyPresenterOfDismissal: Signal<(), NoError>
-  internal let commentIsPosting: Signal<Bool, NoError>
-  internal let commentPostedSuccessfully: Signal<(), NoError>
+  internal let loadingViewIsHidden: Signal<Bool, NoError>
+  internal let notifyPresenterCommentWasPostedSuccesfully: Signal<Comment, NoError>
+  internal let notifyPresenterDialogWantsDismissal: Signal<(), NoError>
+  internal let subtitle: Signal<String, NoError>
+  internal let showKeyboard: Signal<Bool, NoError>
 
   internal let presentError: Signal<String, NoError>
 
@@ -85,10 +103,17 @@ CommentDialogViewModelOutputs, CommentDialogViewModelErrors {
   internal var outputs: CommentDialogViewModelOutputs { return self }
   internal var errors: CommentDialogViewModelErrors { return self }
 
+  // swiftlint:disable function_body_length
   internal init() {
     let isLoading = MutableProperty(false)
 
-    let project = self.projectProperty.signal.ignoreNil()
+    let project = self.projectAndUpdateProperty.signal.ignoreNil()
+      .map { project, _ in project }
+
+    let updateOrProject = self.projectAndUpdateProperty.signal.ignoreNil()
+      .map { project, update in
+        return update.map(Either.left) ?? Either.right(project)
+    }
 
     self.postButtonEnabled = Signal.merge([
       self.viewWillAppearProperty.signal.take(1).mapConst(false),
@@ -97,10 +122,10 @@ CommentDialogViewModelOutputs, CommentDialogViewModelErrors {
       ])
       .skipRepeats()
 
-    let commentPostedEvent = combineLatest(project, self.commentBodyProperty.signal)
+    let commentPostedEvent = combineLatest(self.commentBodyProperty.signal, updateOrProject)
       .takeWhen(self.postButtonPressedProperty.signal)
-      .switchMap { project, body in
-        AppEnvironment.current.apiService.postComment(body, toProject: project)
+      .switchMap { body, updateOrProject in
+        postComment(body, toUpdateOrComment: updateOrProject)
           .on(
             started: {
               isLoading.value = true
@@ -111,13 +136,16 @@ CommentDialogViewModelOutputs, CommentDialogViewModelErrors {
           .materialize()
       }
 
-    self.commentPostedSuccessfully = commentPostedEvent.values().ignoreValues()
+    self.notifyPresenterCommentWasPostedSuccesfully = commentPostedEvent.values()
 
-    self.commentIsPosting = isLoading.signal
+    self.loadingViewIsHidden = Signal.merge(
+      self.viewWillAppearProperty.signal.mapConst(true),
+      isLoading.signal.map(negate)
+    )
 
-    self.notifyPresenterOfDismissal = Signal.merge([
+    self.notifyPresenterDialogWantsDismissal = Signal.merge([
       self.cancelButtonPressedProperty.signal,
-      self.commentPostedSuccessfully
+      self.notifyPresenterCommentWasPostedSuccesfully.ignoreValues()
       ])
 
     self.presentError = commentPostedEvent.errors()
@@ -127,8 +155,36 @@ CommentDialogViewModelOutputs, CommentDialogViewModelErrors {
             defaultValue: "Sorry, your comment could not be posted.")
     }
 
-    self.commentPostedSuccessfully
-      .take(1)
-      .observeNext { AppEnvironment.current.koala.trackProjectCommentCreate() }
+    self.subtitle = project
+      .takeWhen(self.viewWillAppearProperty.signal)
+      .map { $0.name }
+
+    self.showKeyboard = Signal.merge(
+      self.viewWillAppearProperty.signal.mapConst(true),
+      self.viewWillDisappearProperty.signal.mapConst(false)
+    )
+
+    self.projectAndUpdateProperty.signal.ignoreNil()
+      .takePairWhen(self.notifyPresenterCommentWasPostedSuccesfully)
+      .map { ($0.0, $0.1, $1) }
+      .observeNext { project, update, comment in
+        if let update = update {
+          AppEnvironment.current.koala.trackCommentCreate(comment: comment, update: update, project: project)
+        } else {
+          AppEnvironment.current.koala.trackCommentCreate(comment: comment, project: project)
+        }
+    }
   }
+  // swiftlint:enable function_body_length
+}
+
+private func postComment(body: String, toUpdateOrComment updateOrComment: Either<Update, Project>)
+  -> SignalProducer<Comment, ErrorEnvelope> {
+
+    switch updateOrComment {
+    case let .left(update):
+      return AppEnvironment.current.apiService.postComment(body, toUpdate: update)
+    case let .right(project):
+      return AppEnvironment.current.apiService.postComment(body, toProject: project)
+    }
 }

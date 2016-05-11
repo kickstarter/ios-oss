@@ -6,6 +6,7 @@ import Models
 import Result
 import Prelude
 import Library
+import ReactiveExtensions
 
 internal protocol DiscoveryViewModelInputs {
   /// Call from the controller's viewDidLoad.

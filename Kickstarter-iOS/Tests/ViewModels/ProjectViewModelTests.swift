@@ -46,9 +46,9 @@ internal final class ProjectViewModelTests: TestCase {
   func testTracksRefTag() {
     let project = ProjectFactory.live()
 
-    vm.inputs.viewWillAppear()
     vm.inputs.project(project)
     vm.inputs.refTag(RefTag.category)
+    vm.inputs.viewWillAppear()
 
     XCTAssertEqual([RefTag.category.stringTag],
                    self.trackingClient.properties.flatMap { $0["ref_tag"] as? String },
@@ -65,9 +65,9 @@ internal final class ProjectViewModelTests: TestCase {
 
     // Start up another view model with the same project
     let newVm: ProjectViewModelType = ProjectViewModel()
-    newVm.inputs.viewWillAppear()
     newVm.inputs.project(project)
     newVm.inputs.refTag(RefTag.recommended)
+    newVm.inputs.viewWillAppear()
 
     XCTAssertEqual([RefTag.category.stringTag, RefTag.recommended.stringTag],
                    self.trackingClient.properties.flatMap { $0["ref_tag"] as? String },

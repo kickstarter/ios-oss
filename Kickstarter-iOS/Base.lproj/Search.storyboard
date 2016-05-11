@@ -78,8 +78,8 @@
                                     <rect key="frame" x="0.0" y="0.0" width="400" height="160"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" alignment="center" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="Fl8-Uc-woy">
-                                            <rect key="frame" x="16" y="16" width="368" height="68"/>
+                                        <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="Fl8-Uc-woy">
+                                            <rect key="frame" x="16" y="24" width="368" height="112"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="rl6-ZV-loa">
                                                     <rect key="frame" x="0.0" y="22" width="232" height="25"/>

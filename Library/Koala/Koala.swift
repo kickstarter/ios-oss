@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 import Foundation
 import UIKit
 import Models
@@ -106,36 +107,59 @@ public final class Koala {
   }
 
   // MARK: Comments Events
-  public func trackLoadNewerProjectComments() {
-    self.track(event: "Project Comment Load New")
+
+  public func trackLoadNewerComments(project project: Project) {
+    self.track(event: "Project Comment Load New",
+               properties: projectProperties(project, loggedInUser: self.loggedInUser))
   }
 
-  public func trackLoadNewerUpdateComments() {
-    self.track(event: "Update Comment Load New")
+  public func trackLoadNewerComments(update update: Update, project: Project) {
+    let properties = projectProperties(project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(updateProperties(update))
+
+    self.track(event: "Update Comment Load New", properties: properties)
   }
 
-  public func trackLoadOlderProjectComments(page: Int) {
-    self.track(event: "Project Comment Load Older", properties: ["page_count": page])
+  public func trackLoadOlderComments(project project: Project, page: Int) {
+    let properties = projectProperties(project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(["page_count": page])
+
+    self.track(event: "Project Comment Load Older", properties: properties)
   }
 
-  public func trackLoadOlderUpdateComments(page: Int) {
-    self.track(event: "Update Comment Load Older", properties: ["page_count": page])
+  public func trackLoadOlderComments(update update: Update, project: Project, page: Int) {
+    let properties = projectProperties(project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(updateProperties(update))
+      .withAllValuesFrom(["page_count": page])
+
+    self.track(event: "Update Comment Load Older", properties: properties)
   }
 
-  public func trackProjectCommentCreate() {
-    self.track(event: "Project Comment Create")
+  public func trackCommentCreate(comment comment: Comment, project: Project) {
+    let properties = projectProperties(project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(commentProperties(comment))
+
+    self.track(event: "Project Comment Create", properties: properties)
   }
 
-  public func trackUpdateCommentCreate() {
-    self.track(event: "Update Comment Create")
+  public func trackCommentCreate(comment comment: Comment, update: Update, project: Project) {
+    let properties = projectProperties(project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(updateProperties(update))
+      .withAllValuesFrom(commentProperties(comment))
+
+    self.track(event: "Update Comment Create", properties: properties)
   }
 
-  public func trackProjectCommentsView() {
-    self.track(event: "Project Comment View")
+  public func trackCommentsView(project project: Project) {
+    self.track(event: "Project Comment View",
+               properties: projectProperties(project, loggedInUser: self.loggedInUser))
   }
 
-  public func trackUpdateCommentsView() {
-    self.track(event: "Update Comment View")
+  public func trackCommentsView(update update: Update, project: Project) {
+    let properties = projectProperties(project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(updateProperties(update))
+
+    self.track(event: "Update Comment View", properties: properties)
   }
 
   // MARK: Checkout Events
@@ -345,6 +369,28 @@ private func projectProperties(project: Project,
   return properties.prefixedKeys(prefix)
     .withAllValuesFrom(userProperties(project.creator, prefix: "creator_"))
     .withAllValuesFrom(loggedInUserProperties)
+}
+
+private func updateProperties(update: Update, prefix: String = "update_") -> [String:AnyObject] {
+
+  var properties: [String:AnyObject] = [:]
+
+  properties["comments_count"] = update.commentsCount
+  properties["user_has_liked"] = update.hasLiked
+  properties["likes_count"] = update.likesCount
+  properties["published_at"] = update.publishedAt
+  properties["sequence"] = update.sequence
+
+  return properties.prefixedKeys(prefix)
+}
+
+private func commentProperties(comment: Comment, prefix: String = "comment_") -> [String:AnyObject] {
+
+  var properties: [String:AnyObject] = [:]
+
+  properties["body_length"] = comment.body.characters.count
+
+  return properties.prefixedKeys(prefix)
 }
 
 private func userProperties(user: User, prefix: String = "user_") -> [String:AnyObject] {

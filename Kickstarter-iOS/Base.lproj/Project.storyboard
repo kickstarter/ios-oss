@@ -359,6 +359,9 @@
                                                             <state key="normal" title="Comments">
                                                                 <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                             </state>
+                                                            <connections>
+                                                                <action selector="commentsButtonPressed" destination="zC7-es-NOj" eventType="touchUpInside" id="7xi-aA-35q"/>
+                                                            </connections>
                                                         </button>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="01y-PV-RBa">
                                                             <rect key="frame" x="357" y="0.0" width="11" height="30"/>
@@ -430,10 +433,10 @@
                                             </constraints>
                                         </view>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="lUP-da-dBe">
-                                            <rect key="frame" x="16" y="32" width="368" height="382"/>
+                                            <rect key="frame" x="16" y="32" width="368" height="360"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pledged $50 or more" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bV6-XZ-Snp" customClass="StyledLabel" customModule="Library">
-                                                    <rect key="frame" x="0.0" y="0.0" width="368" height="23"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="368" height="20"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -443,7 +446,7 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="21 backers" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lNp-ms-Smb" customClass="StyledLabel" customModule="Library">
-                                                    <rect key="frame" x="0.0" y="39" width="368" height="18"/>
+                                                    <rect key="frame" x="0.0" y="36" width="368" height="14"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -453,9 +456,9 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </label>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="38g-En-4ez" userLabel="All gone view">
-                                                    <rect key="frame" x="0.0" y="73" width="368" height="20"/>
+                                                    <rect key="frame" x="0.0" y="66" width="368" height="20"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="All gone" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iSj-j0-GHk" userLabel="All gone" customClass="StyledLabel" customModule="Library">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="All gone" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iSj-j0-GHk" userLabel="All gone" customClass="StyledLabel" customModule="Library">
                                                             <rect key="frame" x="0.0" y="0.0" width="62" height="20"/>
                                                             <color key="backgroundColor" white="0.89870689660000003" alpha="1" colorSpace="calibratedWhite"/>
                                                             <constraints>
@@ -478,9 +481,9 @@
                                                     </constraints>
                                                 </view>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="598-89-rQi">
-                                                    <rect key="frame" x="0.0" y="109" width="368" height="20"/>
+                                                    <rect key="frame" x="0.0" y="102" width="368" height="20"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="Limited (229 left of 300)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BT3-gr-AwG" customClass="StyledLabel" customModule="Library">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" misplaced="YES" text="Limited (229 left of 300)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BT3-gr-AwG" customClass="StyledLabel" customModule="Library">
                                                             <rect key="frame" x="0.0" y="0.0" width="168" height="20"/>
                                                             <color key="backgroundColor" red="1" green="1" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
                                                             <constraints>
@@ -503,7 +506,7 @@
                                                     </constraints>
                                                 </view>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sTW-4u-vaE" customClass="StyledLabel" customModule="Library">
-                                                    <rect key="frame" x="0.0" y="145" width="368" height="188"/>
+                                                    <rect key="frame" x="0.0" y="138" width="368" height="188"/>
                                                     <string key="text">GRAND OPENING POSTER 
 Chinati is producing a special edition poster in commemoration of the dawn to dusk opening of The Robert Irwin building, taking place Saturday, July 23, 2016. Pre-order now with a $50 contribution, exclusively through Kickstarter. Plus, a subscription to the Marfa Sky Report and your name listed as an Irwin supporter on the Chinati website and in the museum’s annual newsletter.</string>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
@@ -515,10 +518,10 @@ Chinati is producing a special edition poster in commemoration of the dawn to du
                                                     </userDefinedRuntimeAttributes>
                                                 </label>
                                                 <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacing="32" translatesAutoresizingMaskIntoConstraints="NO" id="MwD-Q6-slM">
-                                                    <rect key="frame" x="0.0" y="349" width="368" height="33"/>
+                                                    <rect key="frame" x="0.0" y="342" width="368" height="18"/>
                                                     <subviews>
                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="GKP-pr-AkG">
-                                                            <rect key="frame" x="0.0" y="0.0" width="97" height="33"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="97" height="18"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Estimated delivery" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kAv-sh-qyN" customClass="StyledLabel" customModule="Library">
                                                                     <rect key="frame" x="0.0" y="0.0" width="97" height="14"/>
@@ -532,7 +535,7 @@ Chinati is producing a special edition poster in commemoration of the dawn to du
                                                                     </userDefinedRuntimeAttributes>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Aug 2016" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="puT-0j-7J2" customClass="StyledLabel" customModule="Library">
-                                                                    <rect key="frame" x="0.0" y="18" width="97" height="15"/>
+                                                                    <rect key="frame" x="0.0" y="18" width="97" height="0.0"/>
                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                     <nil key="highlightedColor"/>
@@ -544,10 +547,10 @@ Chinati is producing a special edition poster in commemoration of the dawn to du
                                                             </subviews>
                                                         </stackView>
                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="KWJ-ud-s9H">
-                                                            <rect key="frame" x="242" y="0.0" width="126" height="33"/>
+                                                            <rect key="frame" x="322" y="0.0" width="46" height="18"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Shipping" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cLK-gE-vnr" customClass="StyledLabel" customModule="Library">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="126" height="14"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="46" height="14"/>
                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                     <nil key="highlightedColor"/>
@@ -558,7 +561,7 @@ Chinati is producing a special edition poster in commemoration of the dawn to du
                                                                     </userDefinedRuntimeAttributes>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Anywhere in the world" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0mb-Da-sfX" customClass="StyledLabel" customModule="Library">
-                                                                    <rect key="frame" x="0.0" y="18" width="126" height="15"/>
+                                                                    <rect key="frame" x="0.0" y="18" width="46" height="0.0"/>
                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                     <nil key="highlightedColor"/>
@@ -580,10 +583,10 @@ Chinati is producing a special edition poster in commemoration of the dawn to du
                                                 <constraint firstAttribute="height" constant="1" id="lUa-uh-tjV"/>
                                             </constraints>
                                         </view>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZXb-Ah-Vt0" userLabel="Backing badge">
+                                        <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZXb-Ah-Vt0" userLabel="Backing badge">
                                             <rect key="frame" x="273" y="0.0" width="111" height="29"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You selected" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1yj-ya-hw1" customClass="StyledLabel" customModule="Library">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="You selected" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1yj-ya-hw1" customClass="StyledLabel" customModule="Library">
                                                     <rect key="frame" x="6" y="4" width="99" height="21"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>

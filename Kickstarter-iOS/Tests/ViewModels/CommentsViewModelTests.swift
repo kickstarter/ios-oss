@@ -18,17 +18,25 @@ internal final class CommentsViewModelTests: TestCase {
   internal var loggedOutEmptyStateVisible = TestObserver<Bool, NoError>()
   internal var nonBackerEmptyStateVisible = TestObserver<Bool, NoError>()
   internal var backerEmptyStateVisible = TestObserver<Bool, NoError>()
-  internal var postCommentDialogPresented = TestObserver<Bool, NoError>()
+  internal let presentPostCommentDialog = TestObserver<(Project, Update?), NoError>()
+  internal let loginToutIsOpen = TestObserver<Bool, NoError>()
+  internal let commentsAreLoading = TestObserver<Bool, NoError>()
 
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.comments.map { !$0.isEmpty }.observe(self.hasComments.observer)
+    self.vm.outputs.dataSource.map { !$0.0.isEmpty }.observe(self.hasComments.observer)
     self.vm.outputs.commentButtonVisible.observe(self.commentButtonVisible.observer)
     self.vm.outputs.loggedOutEmptyStateVisible.observe(self.loggedOutEmptyStateVisible.observer)
     self.vm.outputs.nonBackerEmptyStateVisible.observe(self.nonBackerEmptyStateVisible.observer)
     self.vm.outputs.backerEmptyStateVisible.observe(self.backerEmptyStateVisible.observer)
-    self.vm.outputs.postCommentDialogPresented.observe(self.postCommentDialogPresented.observer)
+    self.vm.outputs.commentsAreLoading.observe(self.commentsAreLoading.observer)
+    self.vm.outputs.presentPostCommentDialog.observe(self.presentPostCommentDialog.observer)
+
+    Signal.merge(
+      self.vm.outputs.openLoginTout.mapConst(true),
+      self.vm.outputs.closeLoginTout.mapConst(false)
+    ).observe(self.loginToutIsOpen.observer)
   }
 
   func testLoggedOutUser_ViewingEmptyState() {
@@ -39,13 +47,14 @@ internal final class CommentsViewModelTests: TestCase {
       self.backerEmptyStateVisible.assertValues([])
       self.commentButtonVisible.assertValues([])
 
-      self.vm.inputs.project(ProjectFactory.live())
-      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.project(ProjectFactory.live(), update: nil)
+      self.vm.inputs.viewDidLoad()
+      self.scheduler.advance()
 
       self.hasComments.assertValues([false], "Empty set of comments emitted.")
       self.loggedOutEmptyStateVisible.assertValues([true], "Logged-out empty state is visible.")
-      self.nonBackerEmptyStateVisible.assertValues([], "Non-backer empty state is not visible.")
-      self.backerEmptyStateVisible.assertValues([], "Backer empty state is not visible.")
+      self.nonBackerEmptyStateVisible.assertValues([false], "Non-backer empty state is not visible.")
+      self.backerEmptyStateVisible.assertValues([false], "Backer empty state is not visible.")
       self.commentButtonVisible.assertValues([false], "Comment button is not visible.")
 
       XCTAssertEqual(["Project Comment View"], trackingClient.events)
@@ -59,13 +68,14 @@ internal final class CommentsViewModelTests: TestCase {
     self.backerEmptyStateVisible.assertValues([])
     self.commentButtonVisible.assertValues([])
 
-    self.vm.inputs.project(ProjectFactory.live())
-    self.vm.inputs.viewWillAppear()
+    self.vm.inputs.project(ProjectFactory.live(), update: nil)
+    self.vm.inputs.viewDidLoad()
+    self.scheduler.advance()
 
     self.hasComments.assertValues([true], "A set of comments is emitted.")
-    self.loggedOutEmptyStateVisible.assertValues([], "Logged-out empty state is not visible.")
-    self.nonBackerEmptyStateVisible.assertValues([], "Non-backer empty state is not visible.")
-    self.backerEmptyStateVisible.assertValues([], "Backer empty state is not visible.")
+    self.loggedOutEmptyStateVisible.assertValues([false], "Logged-out empty state is not visible.")
+    self.nonBackerEmptyStateVisible.assertValues([false], "Non-backer empty state is not visible.")
+    self.backerEmptyStateVisible.assertValues([false], "Backer empty state is not visible.")
     self.commentButtonVisible.assertValues([false], "Comment button is not visible.")
   }
 
@@ -79,13 +89,14 @@ internal final class CommentsViewModelTests: TestCase {
       self.backerEmptyStateVisible.assertValues([])
       self.commentButtonVisible.assertValues([])
 
-      self.vm.inputs.project(ProjectFactory.notBacking)
-      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.project(ProjectFactory.notBacking, update: nil)
+      self.vm.inputs.viewDidLoad()
+      self.scheduler.advance()
 
       self.hasComments.assertValues([false], "Empty set of comments is emitted.")
-      self.loggedOutEmptyStateVisible.assertValues([], "Logged-out empty state is not visible.")
+      self.loggedOutEmptyStateVisible.assertValues([false], "Logged-out empty state is not visible.")
       self.nonBackerEmptyStateVisible.assertValues([true], "Non-backer empty state is visible.")
-      self.backerEmptyStateVisible.assertValues([], "Backer empty state is not visible.")
+      self.backerEmptyStateVisible.assertValues([false], "Backer empty state is not visible.")
       self.commentButtonVisible.assertValues([false], "Comment button is not visible.")
     }
   }
@@ -100,17 +111,158 @@ internal final class CommentsViewModelTests: TestCase {
       self.backerEmptyStateVisible.assertValues([])
       self.commentButtonVisible.assertValues([])
 
-      self.vm.inputs.project(ProjectFactory.backing)
-      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.project(ProjectFactory.backing, update: nil)
+      self.vm.inputs.viewDidLoad()
+      self.scheduler.advance()
 
       self.hasComments.assertValues([false], "Empty set of comments is emitted.")
-      self.loggedOutEmptyStateVisible.assertValues([], "Logged-out empty state is not visible.")
-      self.nonBackerEmptyStateVisible.assertValues([], "Non-backer empty state is not visible.")
+      self.loggedOutEmptyStateVisible.assertValues([false], "Logged-out empty state is not visible.")
+      self.nonBackerEmptyStateVisible.assertValues([false], "Non-backer empty state is not visible.")
       self.backerEmptyStateVisible.assertValues([true], "Backer empty state is visible.")
-      self.commentButtonVisible.assertValues([true], "Comment button is visible.")
+      self.commentButtonVisible.assertValues([false], "Comment button is visible.")
     }
   }
 
+  func testRefreshing() {
+    let comment = CommentFactory.comment()
+
+    withEnvironment(apiService: MockService(fetchCommentsResponse: [comment])) {
+      self.vm.inputs.project(ProjectFactory.live(), update: nil)
+      self.vm.inputs.viewDidLoad()
+      self.scheduler.advance()
+
+      self.hasComments.assertValues([true], "A set of comments is emitted.")
+
+      withEnvironment(apiService: MockService(fetchCommentsResponse: [comment, comment])) {
+        self.vm.inputs.refresh()
+
+        self.hasComments.assertValues([true], "No new comments are emitted.")
+
+        self.scheduler.advance()
+
+        self.hasComments.assertValues([true, true], "Another set of comments are emitted.")
+      }
+    }
+  }
+
+  func testPaginationAndRefresh_Project() {
+    withEnvironment(apiService: MockService(fetchCommentsResponse: [CommentFactory.comment(id: 1)])) {
+      self.vm.inputs.project(ProjectFactory.live(), update: nil)
+      self.vm.inputs.viewDidLoad()
+
+      self.commentsAreLoading.assertValues([true])
+      XCTAssertEqual(["Project Comment View"], self.trackingClient.events)
+
+      self.scheduler.advance()
+
+      self.hasComments.assertValues([true], "A set of comments is emitted.")
+      self.commentsAreLoading.assertValues([true, false])
+
+      withEnvironment(apiService: MockService(fetchCommentsResponse: [CommentFactory.comment(id: 2)])) {
+        self.vm.inputs.willDisplayRow(3, outOf: 4)
+
+        self.hasComments.assertValues([true], "No new comments are emitted.")
+        self.commentsAreLoading.assertValues([true, false, true])
+
+        self.scheduler.advance()
+
+        self.hasComments.assertValues([true, true], "Another set of comments are emitted.")
+        self.commentsAreLoading.assertValues([true, false, true, false])
+        XCTAssertEqual(["Project Comment View", "Project Comment Load Older"],
+                       self.trackingClient.events)
+
+        self.vm.inputs.refresh()
+        self.scheduler.advance()
+
+        self.hasComments.assertValues([true, true, true], "Another set of comments are emitted.")
+        XCTAssertEqual(["Project Comment View", "Project Comment Load Older", "Project Comment Load New"],
+                       self.trackingClient.events)
+      }
+    }
+  }
+
+  func testPaginationAndRefresh_Update() {
+    let update = UpdateFactory.update()
+    let project = ProjectFactory.live()
+
+    withEnvironment(apiService: MockService(fetchCommentsResponse: [CommentFactory.comment(id: 1)])) {
+      self.vm.inputs.project(project, update: update)
+      self.vm.inputs.viewDidLoad()
+
+      self.commentsAreLoading.assertValues([true])
+      XCTAssertEqual(["Update Comment View"], self.trackingClient.events)
+
+      self.scheduler.advance()
+
+      self.hasComments.assertValues([true], "A set of comments is emitted.")
+      self.commentsAreLoading.assertValues([true, false])
+
+      withEnvironment(apiService: MockService(fetchCommentsResponse: [CommentFactory.comment(id: 2)])) {
+        self.vm.inputs.willDisplayRow(3, outOf: 4)
+
+        self.hasComments.assertValues([true], "No new comments are emitted.")
+        self.commentsAreLoading.assertValues([true, false, true])
+
+        self.scheduler.advance()
+
+        self.hasComments.assertValues([true, true], "Another set of comments are emitted.")
+        self.commentsAreLoading.assertValues([true, false, true, false])
+        XCTAssertEqual(["Update Comment View", "Update Comment Load Older"],
+                       self.trackingClient.events)
+
+        self.vm.inputs.refresh()
+        self.scheduler.advance()
+
+        self.hasComments.assertValues([true, true, true], "Another set of comments are emitted.")
+        XCTAssertEqual(["Update Comment View", "Update Comment Load Older", "Update Comment Load New"],
+                       self.trackingClient.events)
+      }
+    }
+  }
+
+  func testUpdateComments_NoProjectProvided() {
+    let update = UpdateFactory.update()
+
+    withEnvironment(apiService: MockService(fetchCommentsResponse: [CommentFactory.comment(id: 1)])) {
+      self.vm.inputs.project(nil, update: update)
+      self.vm.inputs.viewDidLoad()
+
+      self.commentsAreLoading.assertValues([true])
+      XCTAssertEqual(["Update Comment View"], self.trackingClient.events)
+
+      self.scheduler.advance()
+
+      self.hasComments.assertValues([true], "A set of comments is emitted.")
+      self.commentsAreLoading.assertValues([true, false])
+
+      withEnvironment(apiService: MockService(fetchCommentsResponse: [CommentFactory.comment(id: 2)])) {
+        self.vm.inputs.willDisplayRow(3, outOf: 4)
+
+        self.hasComments.assertValues([true], "No new comments are emitted.")
+        self.commentsAreLoading.assertValues([true, false, true])
+
+        self.scheduler.advance()
+
+        self.hasComments.assertValues([true, true], "Another set of comments are emitted.")
+        self.commentsAreLoading.assertValues([true, false, true, false])
+        XCTAssertEqual(["Update Comment View", "Update Comment Load Older"],
+                       self.trackingClient.events)
+
+        self.vm.inputs.refresh()
+        self.scheduler.advance()
+
+        self.hasComments.assertValues([true, true, true], "Another set of comments are emitted.")
+        XCTAssertEqual(["Update Comment View", "Update Comment Load Older", "Update Comment Load New"],
+                       self.trackingClient.events)
+      }
+    }
+  }
+
+  // Tests the flow:
+  //   * Backer views empty state of comments
+  //   * Taps comment button
+  //   * Posts a comment
+  //   * Empty state goes away and comment shows
   func testLoggedInBacker_Commenting() {
     withEnvironment(apiService: MockService(fetchCommentsResponse: [])) {
       AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: UserFactory.user()))
@@ -119,36 +271,74 @@ internal final class CommentsViewModelTests: TestCase {
       self.commentButtonVisible.assertValues([])
       self.backerEmptyStateVisible.assertValues([])
 
-      self.vm.inputs.project(ProjectFactory.backing)
-      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.project(ProjectFactory.backing, update: nil)
+      self.vm.inputs.viewDidLoad()
+      self.scheduler.advance()
 
       self.hasComments.assertValues([false], "Empty set of comments is emitted.")
-      self.commentButtonVisible.assertValues([true], "Comment button is visible.")
+      self.commentButtonVisible.assertValues(
+        [false], "Comment button is not visible since there's a button in the empty state.")
       self.backerEmptyStateVisible.assertValues([true], "Backer empty state is visible.")
 
       self.vm.inputs.commentButtonPressed()
 
-      self.postCommentDialogPresented.assertValues([true],
-                                                   "Comment dialog presents after pressing comment button.")
-
-      self.vm.inputs.cancelCommentButtonPressed()
-
-      self.postCommentDialogPresented.assertValues([true, false],
-                                                   "Comment dialog dismisses after pressing cancel button.")
-
-      self.vm.inputs.commentButtonPressed()
-
-      self.postCommentDialogPresented.assertValues([true, false, true],
-                                                   "Comment dialog re-appears after pressing comment button.")
+      self.presentPostCommentDialog
+        .assertValueCount(1, "Comment dialog presents after pressing comment button.")
 
       withEnvironment(apiService: MockService(fetchCommentsResponse: [CommentFactory.comment()])) {
-        self.vm.inputs.commentPosted()
+        self.vm.inputs.commentPosted(CommentFactory.comment())
+        self.scheduler.advance()
 
-        self.postCommentDialogPresented.assertValues([true, false, true, false],
-                                                     "Comment dialog dismisses after posting comment.")
         self.hasComments.assertValues([false, true], "Newly posted comment emits after posting.")
         self.backerEmptyStateVisible.assertValues([true, false], "Backer empty state is not visible.")
       }
     }
+  }
+
+  // Tests the flow:
+  //   * Logged out user views empty state
+  //   * Taps login button and logs in
+  //   * Empty state changes and comment dialog opens
+  func testLoginFlow_Backer() {
+    withEnvironment(apiService: MockService(fetchCommentsResponse: [])) {
+      self.vm.inputs.project(ProjectFactory.live(), update: nil)
+      self.vm.inputs.viewDidLoad()
+      self.scheduler.advance()
+
+      self.hasComments.assertValues([false], "No comments are emitted.")
+      self.loggedOutEmptyStateVisible.assertValues([true], "Logged out empty state is shown.")
+      self.commentButtonVisible.assertValues([false], "Comment button is not visible.")
+
+      self.vm.inputs.loginButtonPressed()
+
+      self.loginToutIsOpen.assertValues([true], "Login prompt is opened.")
+
+      withEnvironment(apiService: MockService(fetchProjectResponse: ProjectFactory.backing)) {
+
+        AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: UserFactory.user()))
+        self.vm.inputs.userSessionStarted()
+
+        self.loginToutIsOpen.assertValues([true, false], "Login prompt is closed.")
+        self.hasComments.assertValues([false], "Still no comments are emitted.")
+        self.loggedOutEmptyStateVisible.assertValues([true, false], "Logged out empty state is hidden.")
+        self.backerEmptyStateVisible.assertValues([false, true], "Backer empty state is now shown.")
+        self.commentButtonVisible.assertValues(
+          [false], "Comment button is not visible since there's a button in the empty state.")
+        self.presentPostCommentDialog.assertValueCount(1, "Immediately open the post comment dialog.")
+      }
+    }
+  }
+
+  func testNoProjectOrUpdate() {
+    self.vm.inputs.project(nil, update: nil)
+
+    self.hasComments.assertDidNotEmitValue("Nothing emits when no project or update is provided.")
+    self.commentButtonVisible.assertDidNotEmitValue("Nothing emits when no project or update is provided.")
+    self.backerEmptyStateVisible.assertDidNotEmitValue(
+      "Nothing emits when no project or update is provided.")
+    self.loggedOutEmptyStateVisible.assertDidNotEmitValue(
+      "Nothing emits when no project or update is provided.")
+    self.nonBackerEmptyStateVisible.assertDidNotEmitValue(
+      "Nothing emits when no project or update is provided.")
   }
 }

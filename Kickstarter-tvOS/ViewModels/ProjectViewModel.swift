@@ -103,7 +103,7 @@ ProjectViewModelErrors {
   internal init(project initialProject: Project, env: Environment = AppEnvironment.current) {
     let apiService = env.apiService
 
-    self.project = apiService.fetchProject(initialProject)
+    self.project = apiService.fetchProject(project: initialProject)
       .demoteErrors()
       .beginsWith(value: initialProject)
       .replayLazily(1)

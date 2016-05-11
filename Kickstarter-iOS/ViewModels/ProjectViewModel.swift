@@ -22,6 +22,9 @@ internal protocol ProjectViewModelInputs {
 
   /// Call when the star button is tapped.
   func starButtonTapped()
+
+  /// Call when the comments button is pressed.
+  func commentsButtonPressed()
 }
 
 internal protocol ProjectViewModelOutputs {
@@ -34,6 +37,9 @@ internal protocol ProjectViewModelOutputs {
 
   /// Emits when the project has been successfully starred and a prompt should be shown to the user.
   var showProjectStarredPrompt: Signal<(), NoError> { get }
+
+  /// Emits when the project's comments should be opened.
+  var openComments: Signal<Project, NoError> { get }
 }
 
 internal protocol ProjectViewModelType {
@@ -45,7 +51,7 @@ internal final class ProjectViewModel: ProjectViewModelType, ProjectViewModelInp
 ProjectViewModelOutputs {
   typealias Model = Project
 
-  private let viewWillAppearProperty = MutableProperty(())
+  private let viewWillAppearProperty = MutableProperty()
   internal func viewWillAppear() {
     self.viewWillAppearProperty.value = ()
   }
@@ -60,36 +66,40 @@ ProjectViewModelOutputs {
     self.refTagProperty.value = refTag
   }
 
-  private let userSessionStartedProperty = MutableProperty(())
+  private let userSessionStartedProperty = MutableProperty()
   func userSessionStarted() {
     self.userSessionStartedProperty.value = ()
   }
 
-  private let userSessionEndedProperty = MutableProperty(())
+  private let userSessionEndedProperty = MutableProperty()
   func userSessionEnded() {
     self.userSessionEndedProperty.value = ()
   }
 
-  private let starButtonTappedProperty = MutableProperty(())
+  private let starButtonTappedProperty = MutableProperty()
   internal func starButtonTapped() {
     self.starButtonTappedProperty.value = ()
+  }
+
+  private let commentsButtonPressedProperty = MutableProperty()
+  internal func commentsButtonPressed() {
+    self.commentsButtonPressedProperty.value = ()
   }
 
   internal let project: Signal<Project, NoError>
   internal let showLoginTout: Signal<(), NoError>
   internal let showProjectStarredPrompt: Signal<(), NoError>
+  internal let openComments: Signal<Project, NoError>
 
   internal var inputs: ProjectViewModelInputs { return self }
   internal var outputs: ProjectViewModelOutputs { return self }
 
   // swiftlint:disable function_body_length
   internal init() {
-    let project = self.projectProperty.signal.ignoreNil()
-
     let currentUser = Signal.merge([
-        self.viewWillAppearProperty.signal,
-        self.userSessionStartedProperty.signal,
-        self.userSessionEndedProperty.signal
+      self.viewWillAppearProperty.signal,
+      self.userSessionStartedProperty.signal,
+      self.userSessionEndedProperty.signal
       ])
       .map { AppEnvironment.current.currentUser }
       .skipRepeats(==)
@@ -116,19 +126,16 @@ ProjectViewModelOutputs {
       .takeWhen(self.viewWillAppearProperty.signal)
 
     let freshProject = initialProject.flatMap {
-      AppEnvironment.current.apiService.fetchProject($0)
+      AppEnvironment.current.apiService.fetchProject(project: $0)
         .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
         .demoteErrors()
     }
 
     let refreshedProject = Signal.merge(initialProject, freshProject)
 
-    let projectOnStarToggle = project
-      .takeWhen(Signal.merge([loggedInUserTappedStar, userLoginAfterTappingStar]))
-      .switchMap { project in
-        AppEnvironment.current.apiService.toggleStar(project)
-          .demoteErrors()
-    }
+    let projectOnStarToggle = initialProject
+      .takeWhen(Signal.merge(loggedInUserTappedStar, userLoginAfterTappingStar))
+      .switchMap { project in AppEnvironment.current.apiService.toggleStar(project).demoteErrors() }
 
     self.project = Signal.merge([refreshedProject, projectOnStarToggle])
 
@@ -138,14 +145,18 @@ ProjectViewModelOutputs {
 
     self.showLoginTout = loggedOutUserTappedStar
 
+    self.openComments = project
+      .takeWhen(self.commentsButtonPressedProperty.signal)
+
     let cookieRefTag = combineLatest(project, self.refTagProperty.signal)
-      .map { (project, refTag) in
+      .take(1)
+      .map { project, refTag in
         refTagFromCookieStorage(AppEnvironment.current.cookieStorage, project: project) ?? refTag
       }
 
-    combineLatest(self.viewWillAppearProperty.signal, project, self.refTagProperty.signal, cookieRefTag)
+    combineLatest(project, self.refTagProperty.signal, cookieRefTag)
       .take(1)
-      .observeNext { (_, project, refTag, cookieRefTag) in
+      .observeNext { project, refTag, cookieRefTag in
         AppEnvironment.current.koala.trackProjectShow(project, refTag: refTag, cookieRefTag: cookieRefTag)
     }
 
@@ -153,9 +164,9 @@ ProjectViewModelOutputs {
       AppEnvironment.current.koala.trackProjectStar(project)
     }
 
-    combineLatest(self.viewWillAppearProperty.signal, cookieRefTag.ignoreNil(), project)
+    combineLatest(cookieRefTag.ignoreNil(), project)
       .take(1)
-      .map { (_, refTag, project) in cookieFromRefTag(refTag, project: project) }
+      .map { refTag, project in cookieFromRefTag(refTag, project: project) }
       .ignoreNil()
       .observeNext { AppEnvironment.current.cookieStorage.setCookie($0) }
   }
