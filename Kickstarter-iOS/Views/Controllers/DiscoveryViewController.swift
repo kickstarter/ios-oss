@@ -9,7 +9,11 @@ internal final class DiscoveryViewController: UITableViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+
+    self.tableView.estimatedRowHeight = 400.0
+    self.tableView.rowHeight = UITableViewAutomaticDimension
     self.tableView.dataSource = dataSource
+
     self.viewModel.inputs.viewDidLoad()
   }
 
@@ -32,11 +36,6 @@ internal final class DiscoveryViewController: UITableViewController {
     let view = UIView()
     view.backgroundColor = .clearColor()
     return view
-  }
-
-  override func tableView(tableView: UITableView,
-                          estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-    return UITableViewAutomaticDimension
   }
 
   override func tableView(tableView: UITableView,

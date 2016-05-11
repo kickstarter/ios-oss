@@ -24,6 +24,9 @@ internal final class ActivitiesViewController: UITableViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+
+    self.tableView.estimatedRowHeight = 300.0
+    self.tableView.rowHeight = UITableViewAutomaticDimension
     self.tableView.dataSource = dataSource
   }
 
@@ -62,11 +65,6 @@ internal final class ActivitiesViewController: UITableViewController {
       .observeNext { [weak self] project, refTag in
         self?.present(project: project, refTag: refTag)
     }
-  }
-
-  internal override func tableView(tableView: UITableView,
-                          estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-    return UITableViewAutomaticDimension
   }
 
   internal override func tableView(tableView: UITableView,

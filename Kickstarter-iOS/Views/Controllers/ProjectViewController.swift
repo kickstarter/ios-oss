@@ -13,6 +13,9 @@ internal final class ProjectViewController: UITableViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+
+    self.tableView.estimatedRowHeight = 300.0
+    self.tableView.rowHeight = UITableViewAutomaticDimension
     self.tableView.dataSource = dataSource
     self.tableView.backgroundColor = Color.OffWhite.toUIColor()
 
@@ -49,11 +52,6 @@ internal final class ProjectViewController: UITableViewController {
     let view = UIView()
     view.backgroundColor = .clearColor()
     return view
-  }
-
-  override func tableView(tableView: UITableView,
-                          estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-    return UITableViewAutomaticDimension
   }
 
   private func openComments(forProject project: Project) {

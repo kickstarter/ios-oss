@@ -10,7 +10,11 @@ internal final class SearchViewController: UITableViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+
+    self.tableView.estimatedRowHeight = 160.0
+    self.tableView.rowHeight = UITableViewAutomaticDimension
     self.tableView.dataSource = self.dataSource
+
     self.searchTextField.becomeFirstResponder()
   }
 
@@ -34,11 +38,6 @@ internal final class SearchViewController: UITableViewController {
         self?.dataSource.popularTitle(isVisible: visible)
         self?.tableView.reloadData()
     }
-  }
-
-  override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath)
-    -> CGFloat {
-    return UITableViewAutomaticDimension
   }
 
   override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
