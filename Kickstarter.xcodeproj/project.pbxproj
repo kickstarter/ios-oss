@@ -1923,7 +1923,6 @@
 				0154A93C1CA1AF2A00DB9BA4 /* LoginViewModelTests.swift */,
 				A750DEF31CC681A000983F7C /* ProjectMainCellViewModelTests.swift */,
 				A75CF8801CC6D4BE00BBBB7F /* ProjectRewardCellViewModelTests.swift */,
-				A77589521CC9649C0038288B /* ProjectSubpagesViewModelTests.swift */,
 				A7DC836D1C9DB6EE00BB2B44 /* ProjectViewModelTests.swift */,
 				01BF21301CA5E81C00184A38 /* ResetPasswordViewModelTests.swift */,
 				A775B54B1CA87C8500BBB587 /* RootViewModelTests.swift */,
@@ -4850,7 +4849,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_SWIFT_FLAGS = "-D DEBUG";
+				OTHER_SWIFT_FLAGS = "-D DEBUG -Xfrontend -debug-time-function-bodies";
 				PRODUCT_NAME = Kickstarter;
 				SDKROOT = appletvos;
 				STRIP_BITCODE_FROM_COPIED_FILES = NO;
