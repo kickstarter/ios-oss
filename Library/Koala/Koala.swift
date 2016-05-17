@@ -107,7 +107,6 @@ public final class Koala {
   }
 
   // MARK: Comments Events
-
   public func trackLoadNewerComments(project project: Project) {
     self.track(event: "Project Comment Load New",
                properties: projectProperties(project, loggedInUser: self.loggedInUser))
@@ -175,56 +174,70 @@ public final class Koala {
     self.track(event: "Checkout Page Failed")
   }
 
-  public func trackCheckoutShowShareSheet() {
-    self.track(event: "Checkout Show Share Sheet")
+  public func trackCheckoutShowShareSheet(project project: Project) {
+    self.track(event: "Checkout Show Share Sheet",
+               properties: projectProperties(project, loggedInUser: self.loggedInUser))
   }
 
-  public func trackCheckoutCancelShareSheet() {
-    self.track(event: "Checkout Cancel Share Sheet")
+  public func trackCheckoutCancelShareSheet(project project: Project) {
+    self.track(event: "Checkout Cancel Share Sheet",
+               properties: projectProperties(project, loggedInUser: self.loggedInUser))
   }
 
-  public func trackCheckoutShowFacebookShareView() {
-    self.track(event: "Checkout Show Share", properties: ["share_type": "facebook"])
+  public func trackCheckoutCancelShare(project project: Project, shareType: String?) {
+    let properties = projectProperties(project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(["share_type": shareTypeProperty(shareType)])
+
+    self.track(event: "Checkout Cancel Share", properties: properties)
   }
 
-  public func trackCheckoutShowTwitterShareView() {
-    self.track(event: "Checkout Show Share", properties: ["share_type": "twitter"])
+  public func trackCheckoutShowShare(project project: Project, shareType: String?) {
+    let properties = projectProperties(project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(["share_type": shareTypeProperty(shareType)])
+
+    self.track(event: "Checkout Show Share", properties: properties)
   }
 
-  public func trackCheckoutShareFinishedWithShareType(activityType: String?, completed: Bool) {
-    self.track(event: "Checkout Share Finished",
-               properties: [
-                "share_type": activityType ?? "",
-                "did_share": completed
-              ]
-    )
+  // cancel share event
+
+  public func trackCheckoutShare(project project: Project, shareType: String?) {
+    let properties = projectProperties(project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(["share_type": shareTypeProperty(shareType)])
+
+    self.track(event: "Checkout Share", properties: properties)
   }
 
-  public func trackCheckoutFinishJumpToDiscovery() {
-    self.track(event: "Checkout Finished Discover More")
+  public func trackCheckoutFinishJumpToDiscovery(project project: Project) {
+    self.track(event: "Checkout Finished Discover More",
+               properties: projectProperties(project, loggedInUser: self.loggedInUser))
   }
 
-  public func trackCheckoutFinishJumpToProject() {
-    self.track(event: "Checkout Finished Discover Open Project")
+  public func trackCheckoutFinishJumpToProject(project project: Project) {
+    self.track(event: "Checkout Finished Discover Open Project",
+               properties: projectProperties(project, loggedInUser: self.loggedInUser))
   }
 
-  public func trackCheckoutFinishAppStoreRatingAlertRateNow() {
-    self.track(event: "Checkout Finished Alert App Store Rating Rate Now")
+  public func trackCheckoutFinishAppStoreRatingAlertRateNow(project project: Project) {
+    self.track(event: "Checkout Finished Alert App Store Rating Rate Now",
+               properties: projectProperties(project, loggedInUser: self.loggedInUser))
   }
 
-  public func trackCheckoutFinishAppStoreRatingAlertRemindLater() {
-    self.track(event: "Checkout Finished Alert App Store Rating Remind Later")
+  public func trackCheckoutFinishAppStoreRatingAlertRemindLater(project project: Project) {
+    self.track(event: "Checkout Finished Alert App Store Rating Remind Later",
+               properties: projectProperties(project, loggedInUser: self.loggedInUser))
   }
 
-  public func trackCheckoutFinishAppStoreRatingAlertNoThanks() {
-    self.track(event: "Checkout Finished Alert App Store Rating No Thanks")
+  public func trackCheckoutFinishAppStoreRatingAlertNoThanks(project project: Project) {
+    self.track(event: "Checkout Finished Alert App Store Rating No Thanks",
+               properties: projectProperties(project, loggedInUser: self.loggedInUser))
   }
 
-  public func trackNewsletterToggle(sendNewsletter: Bool) {
+  public func trackNewsletterToggle(sendNewsletter: Bool, project: Project) {
+    let properties = projectProperties(project, loggedInUser: self.loggedInUser)
     if sendNewsletter {
-      self.track(event: "Newsletter Subscribe")
+      self.track(event: "Newsletter Subscribe", properties: properties)
     } else {
-      self.track(event: "Newsletter Unsubscribe")
+      self.track(event: "Newsletter Unsubscribe", properties: properties)
     }
   }
 
@@ -408,4 +421,28 @@ private func userProperties(user: User, prefix: String = "user_") -> [String:Any
   properties["starred_projects_count"] = user.stats?.starredProjectsCount
 
   return properties.prefixedKeys(prefix)
+}
+
+private func shareTypeProperty(shareType: String?) -> String {
+  #if os(iOS)
+  guard let shareType = shareType else { return "" }
+
+  if shareType == UIActivityTypePostToFacebook {
+    return "facebook"
+  } else if shareType == UIActivityTypeMessage {
+    return "message"
+  } else if shareType == UIActivityTypeMail {
+    return "email"
+  } else if shareType == UIActivityTypeCopyToPasteboard {
+    return "copy link"
+  } else if shareType == UIActivityTypePostToTwitter {
+    return "twitter"
+  } else if shareType == "com.apple.mobilenotes.SharingExtension" {
+    return "notes"
+  } else {
+    return shareType
+  }
+  #else
+    return ""
+  #endif
 }

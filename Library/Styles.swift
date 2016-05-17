@@ -26,6 +26,7 @@ public enum Color: String {
   case BlueLight
   case BlueRoyal
   case Clear
+  case FacebookBlue
   case Green
   case GreenLight
   case Gray
@@ -39,13 +40,14 @@ public enum Color: String {
   case TextDefault
   case TextDarkGray
   case TextLightGray
+  case TwitterBlue
   case White
   case Yellow
 
   public static let allColors: [Color] = [
-    .Black, .Blue, .BlueDark, .BlueLight, .BlueRoyal, .Clear, .Green, .GreenLight, .Gray, .GrayBlack,
-    .GrayDark, .GrayLight, .GrayMedium, .OffWhite, .Mint, .Pink, .TextDefault, .TextDarkGray,
-    .TextLightGray, .White, .Yellow
+    .Black, .Blue, .BlueDark, .BlueLight, .BlueRoyal, .Clear, .FacebookBlue, .Green, .GreenLight, .Gray,
+    .GrayBlack, .GrayDark, .GrayLight, .GrayMedium, .OffWhite, .Mint, .Pink, .TextDefault, .TextDarkGray,
+    .TextLightGray, .TwitterBlue, .White, .Yellow
   ]
 
   public enum Category: String {
@@ -86,15 +88,6 @@ public enum Color: String {
       .Film, .FilmSecondary, .Food, .FoodSecondary, .Games, .GamesSecondary,
       .Journalism, .JournalismSecondary, .Music, .MusicSecondary, .Photography, .PhotographySecondary,
       .Publishing, .PublishingSecondary, .Technology, .TechnologySecondary, .Theater, .TheaterSecondary
-    ]
-  }
-
-  public enum Social: String {
-    case FacebookBlue
-    case TwitterBlue
-
-    public static let allColors: [Color.Social] = [
-      .TwitterBlue, .FacebookBlue
     ]
   }
 }
@@ -142,6 +135,7 @@ public extension Color {
     case .BlueLight:      return .hex(0xe8f6ff)
     case .BlueRoyal:      return .hex(0x00a0ff)
     case .Clear:          return .clearColor()
+    case .FacebookBlue:   return .hex(0x3b5998)
     case .Green:          return .hex(0x2bde73)
     case .GreenLight:     return .hex(0xdef7e0)
     case .Gray:           return .hex(0xd9d9de)
@@ -155,6 +149,7 @@ public extension Color {
     case .TextDefault:    return .hex(0x000000)
     case .TextDarkGray:   return .hex(0x828587)
     case .TextLightGray:  return .hex(0xf7fafa)
+    case .TwitterBlue:    return .hex(0x00aced)
     case .White:          return .hex(0xffffff)
     case .Yellow:         return .hex(0xffffc9)
     }
@@ -204,14 +199,26 @@ public extension Color.Category {
     case .TheaterSecondary:     return .hex(0xe8514b)
     }
   }
-  // swiftlint:enable cyclomatic_complexity
 }
 
-public extension Color.Social {
-  public func toUIColor() -> UIColor {
-    switch self {
-    case .FacebookBlue: return .hex(0x3b5998)
-    case .TwitterBlue:  return .hex(0x00aced)
-    }
+public func UIColorFromCategoryId(id: Int) -> UIColor? {
+  switch id {
+  case 1: return Color.Category.Art.toUIColor()
+  case 3: return Color.Category.Comics.toUIColor()
+  case 4: return Color.Category.Dance.toUIColor()
+  case 7: return Color.Category.Design.toUIColor()
+  case 9: return Color.Category.Fashion.toUIColor()
+  case 10: return Color.Category.Food.toUIColor()
+  case 11: return Color.Category.Film.toUIColor()
+  case 12: return Color.Category.Games.toUIColor()
+  case 13: return Color.Category.Journalism.toUIColor()
+  case 14: return Color.Category.Music.toUIColor()
+  case 15: return Color.Category.Photography.toUIColor()
+  case 16: return Color.Category.Technology.toUIColor()
+  case 17: return Color.Category.Theater.toUIColor()
+  case 18: return Color.Category.Publishing.toUIColor()
+  case 26: return Color.Category.Crafts.toUIColor()
+  default: return nil
   }
+  // swiftlint:enable cyclomatic_complexity
 }

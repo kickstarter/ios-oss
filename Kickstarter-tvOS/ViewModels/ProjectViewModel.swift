@@ -115,9 +115,9 @@ ProjectViewModelErrors {
       .ignoreNil()
       .skipRepeats(==)
 
-    self.recommendations = apiService.fetchProjects(
-        DiscoveryParams(similarTo: initialProject, hasVideo: true)
-      )
+    self.recommendations = apiService.fetchDiscovery(params:
+      DiscoveryParams(similarTo: initialProject, hasVideo: true))
+      .map { $0.projects }
       .demoteErrors()
 
     self.openPlaylistsExplorer = self.morePlaylistsClickSignal

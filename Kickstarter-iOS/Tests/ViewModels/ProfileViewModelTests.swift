@@ -50,10 +50,13 @@ internal final class ProfileViewModelTests: TestCase {
   }
 
   func testUserWithNoProjects() {
-    withEnvironment(apiService: MockService(fetchDiscoveryResponseCount: 0)) {
+    withEnvironment(apiService: MockService(fetchDiscoveryResponse: [])) {
       AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: UserFactory.user()))
+
       self.vm.inputs.viewWillAppear()
+
       self.scheduler.advance()
+
       self.hasBackedProjects.assertValues([false])
       self.showEmptyState.assertValues([true], "Empty state is shown for user with 0 backed projects.")
     }

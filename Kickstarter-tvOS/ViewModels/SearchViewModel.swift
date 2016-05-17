@@ -35,9 +35,13 @@ final class SearchViewModel: SearchViewModelInputs, SearchViewModelOutputs {
       .throttle(0.3, onScheduler: QueueScheduler.mainQueueScheduler)
       .switchMap { (query) -> SignalProducer<[Project], NoError> in
         if query.isEmpty {
-          return apiService.fetchProjects(DiscoveryParams(sort: .Popular)).demoteErrors()
+          return apiService.fetchDiscovery(params: DiscoveryParams(sort: .Popular))
+            .map { $0.projects }
+            .demoteErrors()
         }
-        return apiService.fetchProjects(DiscoveryParams(query: query)).demoteErrors()
+        return apiService.fetchDiscovery(params: DiscoveryParams(query: query))
+          .map { $0.projects }
+          .demoteErrors()
       }
       .observe(projectsObserver)
   }
