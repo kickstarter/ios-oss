@@ -16,6 +16,7 @@ public enum RefTag {
   case social
   case thanks
   case unrecognized(String)
+  case users
 
   /**
    Create a RefTag value from a code string. If a ref tag cannot be matched, an `.unrecognized` tag is
@@ -49,6 +50,7 @@ public enum RefTag {
     case "search":                    self = .search
     case "social":                    self = .social
     case "thanks":                    self = .thanks
+    case "users":                     self = .users
     default:                          self = .unrecognized(code)
     }
   }
@@ -83,6 +85,8 @@ public enum RefTag {
       return "social"
     case .thanks:
       return "thanks"
+    case .users:
+      return "users"
     case let .unrecognized(code):
       return code
     }
@@ -96,7 +100,7 @@ public func == (lhs: RefTag, rhs: RefTag) -> Bool {
   case (.activity, .activity), (.category, .category), (.categoryFeatured, .categoryFeatured),
     (.activitySample, .activitySample), (.city, .city), (.discovery, .discovery),
     (.discoveryPotd, .discoveryPotd), (.recommended, .recommended), (.search, .search),
-    (.social, .social), (.thanks, .thanks):
+    (.social, .social), (.thanks, .thanks), (.users, .users):
     return true
   case let (.categoryWithSort(lhs), .categoryWithSort(rhs)):
     return lhs == rhs

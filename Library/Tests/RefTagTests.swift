@@ -15,6 +15,7 @@ public final class RefTagTests: XCTestCase {
     XCTAssertEqual("search", RefTag.search.stringTag)
     XCTAssertEqual("social", RefTag.social.stringTag)
     XCTAssertEqual("thanks", RefTag.thanks.stringTag)
+    XCTAssertEqual("users", RefTag.users.stringTag)
 
     XCTAssertEqual("category_ending_soon", RefTag.categoryWithSort(.EndingSoon).stringTag)
     XCTAssertEqual("category", RefTag.categoryWithSort(.Magic).stringTag)
@@ -41,6 +42,7 @@ public final class RefTagTests: XCTestCase {
     XCTAssertEqual(RefTag.search, RefTag.search)
     XCTAssertEqual(RefTag.social, RefTag.social)
     XCTAssertEqual(RefTag.thanks, RefTag.thanks)
+    XCTAssertEqual(RefTag.users, RefTag.users)
 
     XCTAssertEqual(RefTag.categoryWithSort(.Magic), RefTag.categoryWithSort(.Magic))
     XCTAssertNotEqual(RefTag.categoryWithSort(.Magic), RefTag.categoryWithSort(.Popular))
@@ -93,6 +95,7 @@ public final class RefTagTests: XCTestCase {
     XCTAssertEqual(RefTag.search, RefTag(code: RefTag.search.stringTag))
     XCTAssertEqual(RefTag.social, RefTag(code: RefTag.social.stringTag))
     XCTAssertEqual(RefTag.thanks, RefTag(code: RefTag.thanks.stringTag))
+    XCTAssertEqual(RefTag.users, RefTag(code: RefTag.users.stringTag))
     XCTAssertEqual(RefTag.unrecognized("custom"), RefTag(code: RefTag.unrecognized("custom").stringTag))
   }
 }

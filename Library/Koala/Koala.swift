@@ -271,6 +271,11 @@ public final class Koala {
     self.track(event: event, properties: projectProperties(project, loggedInUser: self.loggedInUser))
   }
 
+  // MARK: Profile Events
+  public func trackProfileView() {
+    self.track(event: "Profile View My")
+  }
+
   // Private tracking method that merges in default properties.
   private func track(event event: String, properties: [String:AnyObject] = [:]) {
     self.client.track(
