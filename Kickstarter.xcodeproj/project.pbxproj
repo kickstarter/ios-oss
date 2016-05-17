@@ -93,6 +93,8 @@
 		80FE733A1C88F3D400BE0137 /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7B694301C87A07100C49A4F /* HockeySDK.framework */; };
 		80FE733C1C88F4CA00BE0137 /* AlamofireImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 807571F91C88B8E200E7DA8A /* AlamofireImage.framework */; };
 		9D39C0471C9B5662004E0943 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D39C0461C9B5662004E0943 /* SearchViewModel.swift */; };
+		9D7279FC1CC04BCA00B28C5F /* SignupViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D7279FB1CC04BCA00B28C5F /* SignupViewModelTests.swift */; };
+		9D727A291CC04BE200B28C5F /* SignupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D727A281CC04BE200B28C5F /* SignupViewModel.swift */; };
 		9DE6C0571C9B5C7700FCC7B1 /* SearchViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DE6C0561C9B5C7700FCC7B1 /* SearchViewModelTests.swift */; };
 		9DE6C07B1C9B5C8600FCC7B1 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D39C0461C9B5662004E0943 /* SearchViewModel.swift */; };
 		9DE6C0891C9B5FCA00FCC7B1 /* (null) in Sources */ = {isa = PBXBuildFile; };
@@ -1320,6 +1322,8 @@
 		807571ED1C88B8E200E7DA8A /* AlamofireImage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AlamofireImage.xcodeproj; path = Frameworks/AlamofireImage/AlamofireImage.xcodeproj; sourceTree = "<group>"; };
 		8075722D1C88DD8A00E7DA8A /* ReactiveExtensions.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactiveExtensions.xcodeproj; path = Frameworks/KsApi/Frameworks/ReactiveExtensions/ReactiveExtensions.xcodeproj; sourceTree = "<group>"; };
 		9D39C0461C9B5662004E0943 /* SearchViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = SearchViewModel.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		9D7279FB1CC04BCA00B28C5F /* SignupViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupViewModelTests.swift; sourceTree = "<group>"; };
+		9D727A281CC04BE200B28C5F /* SignupViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupViewModel.swift; sourceTree = "<group>"; };
 		9DE6C0561C9B5C7700FCC7B1 /* SearchViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = SearchViewModelTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		A70119171CD921D0009F8F65 /* CommentsDataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsDataSourceTests.swift; sourceTree = "<group>"; };
 		A70119461CD9273A009F8F65 /* CommentCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentCellViewModelTests.swift; sourceTree = "<group>"; };
@@ -1817,6 +1821,7 @@
 				9D39C0461C9B5662004E0943 /* SearchViewModel.swift */,
 				019E42931CD0088E00AA82D3 /* ThanksViewModel.swift */,
 				01B6AC301CA49972003DB4C8 /* TwoFactorViewModel.swift */,
+				9D727A281CC04BE200B28C5F /* SignupViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -1932,6 +1937,9 @@
 				01BF20D21CA49E3800184A38 /* TwoFactorViewModelTests.swift */,
 				A77589521CC9649C0038288B /* ProjectSubpagesViewModelTests.swift */,
 				A70119461CD9273A009F8F65 /* CommentCellViewModelTests.swift */,
+				A7DC836D1C9DB6EE00BB2B44 /* ProjectViewModelTests.swift */,
+				A783237F1CB949EF000B094C /* DiscoveryViewModelTests.swift */,
+				9D7279FB1CC04BCA00B28C5F /* SignupViewModelTests.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -3711,6 +3719,7 @@
 				A7D1F9481C850B7C000D41D5 /* AppDelegate.swift in Sources */,
 				A745D0211CA897FF00C12802 /* SearchViewController.swift in Sources */,
 				A7F761751C85FA40005405ED /* ActivitiesViewController.swift in Sources */,
+				9D727A291CC04BE200B28C5F /* SignupViewModel.swift in Sources */,
 				A7FC8C511C8F442D00C3B49B /* ProjectRewardCell.swift in Sources */,
 				01BC58361CAD7A98000289E8 /* FacebookConfirmationViewModel.swift in Sources */,
 				A714051E1CAF631C00A2795B /* CommentDialogViewModel.swift in Sources */,
@@ -3756,6 +3765,7 @@
 				A78323801CB949EF000B094C /* DiscoveryViewModelTests.swift in Sources */,
 				A750DEF41CC681A000983F7C /* ProjectMainCellViewModelTests.swift in Sources */,
 				A77519121C8CADE20022F175 /* AppDelegateViewModelTests.swift in Sources */,
+				9D7279FC1CC04BCA00B28C5F /* SignupViewModelTests.swift in Sources */,
 				01BF21311CA5E81C00184A38 /* ResetPasswordViewModelTests.swift in Sources */,
 				A77519141C8CADFE0022F175 /* ActivitiesViewModelTests.swift in Sources */,
 				A72D943B1CB3477000A88249 /* MockBundle.swift in Sources */,
