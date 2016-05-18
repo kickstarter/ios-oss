@@ -67,6 +67,16 @@ internal final class ProfileViewController: UICollectionViewController {
     )
   }
 
+  @IBAction private func messagesButtonPressed() {
+    guard let vc = UIStoryboard(name: "Messages", bundle: nil).instantiateInitialViewController(),
+      messages = vc as? MessageThreadsViewController else {
+        fatalError("Cold not instantiate ProjectViewController")
+    }
+
+    messages.configureWith(project: nil)
+    self.navigationController?.pushViewController(messages, animated: true)
+  }
+
   internal override func collectionView(collectionView: UICollectionView,
                                         didSelectItemAtIndexPath indexPath: NSIndexPath) {
     if let project = self.dataSource[indexPath] as? Project {

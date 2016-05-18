@@ -10,6 +10,7 @@ public enum RefTag {
   case city
   case discovery
   case discoveryPotd
+  case messageThread
   case recommended
   case recommendedWithSort(DiscoveryParams.Sort)
   case search
@@ -41,6 +42,7 @@ public enum RefTag {
     case "city":                      self = .city
     case "discovery":                 self = .discovery
     case "discovery_potd":            self = .discoveryPotd
+    case "message_thread":            self = .messageThread
     case "recommended":               self = .recommended
     case "recommended_ending_soon":   self = .recommendedWithSort(.EndingSoon)
     case "recommended":               self = .recommendedWithSort(.Magic)
@@ -75,6 +77,8 @@ public enum RefTag {
       return "discovery"
     case .discoveryPotd:
       return "discovery_potd"
+    case .messageThread:
+      return "message_thread"
     case .recommended:
       return "recommended"
     case let .recommendedWithSort(sort):
@@ -99,8 +103,8 @@ public func == (lhs: RefTag, rhs: RefTag) -> Bool {
   switch (lhs, rhs) {
   case (.activity, .activity), (.category, .category), (.categoryFeatured, .categoryFeatured),
     (.activitySample, .activitySample), (.city, .city), (.discovery, .discovery),
-    (.discoveryPotd, .discoveryPotd), (.recommended, .recommended), (.search, .search),
-    (.social, .social), (.thanks, .thanks), (.users, .users):
+    (.discoveryPotd, .discoveryPotd), (.messageThread, .messageThread), (.recommended, .recommended),
+    (.search, .search), (.social, .social), (.thanks, .thanks), (.users, .users):
     return true
   case let (.categoryWithSort(lhs), .categoryWithSort(rhs)):
     return lhs == rhs

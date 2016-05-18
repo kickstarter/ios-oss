@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="mwc-aM-Zyn">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="mwc-aM-Zyn">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
@@ -264,6 +264,11 @@ Let's change that!</string>
                         </connections>
                     </collectionView>
                     <navigationItem key="navigationItem" title="Profile" id="yKJ-YE-wcr">
+                        <barButtonItem key="leftBarButtonItem" title="Messages" id="Qnv-Wl-u8j">
+                            <connections>
+                                <action selector="messagesButtonPressed" destination="z5g-R7-WdW" id="ue6-YW-Kmr"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Logout" id="ASu-7c-3l7">
                             <connections>
                                 <action selector="logoutPressed" destination="z5g-R7-WdW" id="IB2-qg-YBa"/>

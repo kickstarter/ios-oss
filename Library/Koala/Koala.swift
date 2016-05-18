@@ -1,6 +1,7 @@
 // swiftlint:disable file_length
 import Foundation
 import UIKit
+import KsApi
 import Models
 import Prelude
 
@@ -10,6 +11,25 @@ public final class Koala {
   private let bundle: NSBundleType
   private let device: UIDeviceType
   private let screen: UIScreenType
+
+  // swiftlint:disable type_name
+  /**
+   Determines the place from which the message dialog was presented.
+
+   - backerModel:     The backing view, usually seen by pressing "View pledge" on the project page.
+   - creatorActivity: The creator's activity feed.
+   - messages:        The messages inbox.
+   - projectMessages: The messages inbox for a particular project of a creator's.
+   - projectPage:     The project page.
+   */
+  public enum MessageDialogContext: String {
+    case backerModel = "backer_modal"
+    case creatorActivity = "creator_activity"
+    case messages = "messages"
+    case projectMessages = "project_messages"
+    case projectPage = "project_page"
+  }
+  // swiftlint:enable type_name
 
   public init(client: TrackingClientType,
               loggedInUser: User? = nil,
@@ -239,6 +259,45 @@ public final class Koala {
     } else {
       self.track(event: "Newsletter Unsubscribe", properties: properties)
     }
+  }
+
+  // MARK: Messages
+
+  public func trackMessageThreadsView(mailbox mailbox: Mailbox, project: Project?) {
+    let properties = project.flatMap { projectProperties($0, loggedInUser: self.loggedInUser) } ?? [:]
+
+    self.track(event: "Message Threads View",
+               properties: properties.withAllValuesFrom(["mailbox": mailbox.rawValue]))
+    // deprecated
+    self.track(event: "Message Inbox View",
+               properties: properties.withAllValuesFrom(["DEPRECATED": true]))
+  }
+
+  public func trackMessageThreadsSearch(term term: String, project: Project?) {
+    let properties = project.flatMap { projectProperties($0, loggedInUser: self.loggedInUser) } ?? [:]
+
+    self.track(event: "Message Threads Search",
+               properties: properties.withAllValuesFrom(["term": term]))
+    self.track(event: "Message Inbox Search",
+               properties: properties.withAllValuesFrom(["term": term, "DEPRECATED": true]))
+  }
+
+  public func trackMessageThreadView(project project: Project) {
+    self.track(event: "Message Thread View",
+               properties: projectProperties(project, loggedInUser: self.loggedInUser))
+  }
+
+  /**
+   Tracks an event for sending a message.
+
+   - parameter project: The project that is the subject of the message.
+   - parameter context: The place where the message was sent from.
+   */
+  public func trackMessageSent(project project: Project, context: MessageDialogContext) {
+    let props = projectProperties(project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(["message_type": "single", "context": context.rawValue])
+
+    self.track(event: "Message Sent", properties: props)
   }
 
   // MARK: Search Events

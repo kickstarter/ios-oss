@@ -11,6 +11,7 @@ public final class RefTagTests: XCTestCase {
     XCTAssertEqual("city", RefTag.city.stringTag)
     XCTAssertEqual("discovery", RefTag.discovery.stringTag)
     XCTAssertEqual("discovery_potd", RefTag.discoveryPotd.stringTag)
+    XCTAssertEqual("message_thread", RefTag.messageThread.stringTag)
     XCTAssertEqual("recommended", RefTag.recommended.stringTag)
     XCTAssertEqual("search", RefTag.search.stringTag)
     XCTAssertEqual("social", RefTag.social.stringTag)
@@ -38,6 +39,7 @@ public final class RefTagTests: XCTestCase {
     XCTAssertEqual(RefTag.city, RefTag.city)
     XCTAssertEqual(RefTag.discovery, RefTag.discovery)
     XCTAssertEqual(RefTag.discoveryPotd, RefTag.discoveryPotd)
+    XCTAssertEqual(RefTag.messageThread, RefTag.messageThread)
     XCTAssertEqual(RefTag.recommended, RefTag.recommended)
     XCTAssertEqual(RefTag.search, RefTag.search)
     XCTAssertEqual(RefTag.social, RefTag.social)
@@ -80,6 +82,7 @@ public final class RefTagTests: XCTestCase {
     XCTAssertEqual(RefTag.city, RefTag(code: RefTag.city.stringTag))
     XCTAssertEqual(RefTag.discovery, RefTag(code: RefTag.discovery.stringTag))
     XCTAssertEqual(RefTag.discoveryPotd, RefTag(code: RefTag.discoveryPotd.stringTag))
+    XCTAssertEqual(RefTag.messageThread, RefTag(code: RefTag.messageThread.stringTag))
     XCTAssertEqual(RefTag.recommended, RefTag(code: RefTag.recommended.stringTag))
 
     XCTAssertEqual(RefTag.recommended, RefTag(code: RefTag.recommendedWithSort(.Magic).stringTag))
