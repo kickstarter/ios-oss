@@ -61,7 +61,8 @@ ProjectRewardCellViewModelInputs, ProjectRewardCellViewModelOutputs {
     let reward = self.rewardProperty.signal.ignoreNil()
     let backing = project.map { $0.backing }
 
-    self.title = combineLatest(project, reward).map { project, reward in (project.country, reward.minimum) }
+    self.title = combineLatest(project, reward)
+      .map { project, reward in (project.country, reward.minimum) }
       .skipRepeats(==)
       .map { country, minimum in
         localizedString(
@@ -78,7 +79,7 @@ ProjectRewardCellViewModelInputs, ProjectRewardCellViewModelOutputs {
           key: "rewards.info.backer_count_backers",
           defaultValue: "%{backer_count} backers",
           count: $0,
-          substitutions: ["backer_count": String($0)]
+          substitutions: ["backer_count": Format.wholeNumber($0)]
         )
     }
 
@@ -92,7 +93,10 @@ ProjectRewardCellViewModelInputs, ProjectRewardCellViewModelOutputs {
       localizedString(
         key: "rewards.info.limited_rewards_remaining_left_of_reward_limit",
         defaultValue: "Limited (%{rewards_remaining} left of %{reward_limit})",
-        substitutions: ["rewards_remaining": String($0.remaining ?? 0), "reward_limit": String($0.limit ?? 0)]
+        substitutions: [
+          "rewards_remaining": Format.wholeNumber($0.remaining ?? 0),
+          "reward_limit": Format.wholeNumber($0.limit ?? 0)
+        ]
       )
     }.skipRepeats()
 

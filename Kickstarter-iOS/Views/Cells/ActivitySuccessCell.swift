@@ -5,8 +5,8 @@ import AlamofireImage
 import CoreImage
 import Models
 
-internal final class ActivityStateChangeCell: UITableViewCell, ValueCell {
-  private let viewModel: ActivityStateChangeViewModel = ActivityStateChangeViewModel()
+internal final class ActivitySuccessCell: UITableViewCell, ValueCell {
+  private let viewModel: ActivitySuccessViewModel = ActivitySuccessViewModel()
 
   @IBOutlet internal weak var projectImageView: UIImageView!
   @IBOutlet internal weak var projectNameLabel: UILabel!

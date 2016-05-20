@@ -38,7 +38,7 @@ final class ActivitiesDataSourceTests: XCTestCase {
     XCTAssertEqual("Padding", self.dataSource.reusableId(item: 3, section: 1))
 
     XCTAssertEqual(successActivity, self.dataSource[itemSection: (4, 1)] as? Activity)
-    XCTAssertEqual("ActivityStateChangeCell", self.dataSource.reusableId(item: 4, section: 1))
+    XCTAssertEqual("ActivitySuccessCell", self.dataSource.reusableId(item: 4, section: 1))
 
     XCTAssertEqual("Padding", self.dataSource.reusableId(item: 5, section: 1))
 

@@ -15,7 +15,7 @@ final class ActivitiesViewModelTests: TestCase {
   let showLoggedOutEmptyState = TestObserver<Bool, NoError>()
   let showLoggedInEmptyState = TestObserver<Bool, NoError>()
   let isRefreshing = TestObserver<Bool, NoError>()
-  let showProject = TestObserver<Project, NoError>()
+  let goToProject = TestObserver<Project, NoError>()
   let showRefTag = TestObserver<RefTag, NoError>()
 
   override func setUp() {
@@ -25,8 +25,8 @@ final class ActivitiesViewModelTests: TestCase {
     self.vm.outputs.showLoggedOutEmptyState.observe(self.showLoggedOutEmptyState.observer)
     self.vm.outputs.showLoggedInEmptyState.observe(self.showLoggedInEmptyState.observer)
     self.vm.outputs.isRefreshing.observe(self.isRefreshing.observer)
-    self.vm.outputs.showProject.map { $0.0 }.observe(self.showProject.observer)
-    self.vm.outputs.showProject.map { $0.1 }.observe(self.showRefTag.observer)
+    self.vm.outputs.goToProject.map { $0.0 }.observe(self.goToProject.observer)
+    self.vm.outputs.goToProject.map { $0.1 }.observe(self.showRefTag.observer)
   }
 
   // Tests the flow of logging in with a user that has activities.
@@ -119,14 +119,14 @@ final class ActivitiesViewModelTests: TestCase {
     activitiesPresent.assertValues([true, true, true], "Activities load immediately after session starts.")
   }
 
-  func testShowProject() {
+  func testgoToProject() {
     let activity = ActivityFactory.backingActivity
     let project = activity.project!
     let refTag = RefTag.activity
 
     self.vm.inputs.activityUpdateCellTappedProjectImage(activity: activity)
 
-    self.showProject.assertValues([project])
+    self.goToProject.assertValues([project])
     self.showRefTag.assertValues([refTag])
   }
 }

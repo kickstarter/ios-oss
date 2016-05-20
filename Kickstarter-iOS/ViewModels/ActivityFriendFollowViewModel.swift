@@ -18,6 +18,22 @@ internal protocol ActivityFriendFollowViewModelOutputs {
 internal final class ActivityFriendFollowViewModel: ActivityFriendFollowViewModelInputs,
 ActivityFriendFollowViewModelOutputs {
 
+  internal init() {
+    let activity = self.activityProperty.signal.ignoreNil()
+
+    self.friendImageURL = activity.map { ($0.user?.avatar.medium).flatMap(NSURL.init) }
+
+    self.title = activity.map {
+      localizedString(
+        key: "activity.user_name_is_now_following_you",
+        defaultValue: "%{user_name} is now following you!",
+        substitutions: ["user_name": $0.user?.name ?? ""]
+      )
+    }
+
+    self.hideFollowButton = activity.mapConst(false)
+  }
+
   private let activityProperty = MutableProperty<Activity?>(nil)
   internal func activity(activity: Activity) {
     self.activityProperty.value = activity
@@ -34,14 +50,4 @@ ActivityFriendFollowViewModelOutputs {
 
   internal var inputs: ActivityFriendFollowViewModelInputs { return self }
   internal var outputs: ActivityFriendFollowViewModelOutputs { return self }
-
-  internal init() {
-    let activity = self.activityProperty.signal.ignoreNil()
-
-    self.friendImageURL = activity.map { ($0.user?.avatar.medium).flatMap(NSURL.init) }
-
-    self.title = activity.map { "Your friend \($0.user?.name ?? "") is following you!" }
-
-    self.hideFollowButton = activity.mapConst(false)
-  }
 }

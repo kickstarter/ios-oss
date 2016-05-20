@@ -60,7 +60,7 @@ internal final class ActivitiesViewController: UITableViewController {
         $0 ? control?.beginRefreshing() : control?.endRefreshing()
     }
 
-    self.viewModel.outputs.showProject
+    self.viewModel.outputs.goToProject
       .observeForUI()
       .observeNext { [weak self] project, refTag in
         self?.present(project: project, refTag: refTag)
@@ -84,9 +84,7 @@ internal final class ActivitiesViewController: UITableViewController {
       return
     }
 
-    if let project = activity.project where activity.category == .Backing {
-      present(project: project, refTag: RefTag.activity)
-    }
+    self.viewModel.inputs.tappedActivity(activity)
   }
 
   @IBAction internal func refresh() {
