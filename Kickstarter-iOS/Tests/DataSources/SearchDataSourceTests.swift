@@ -3,6 +3,7 @@ import XCTest
 @testable import Library
 @testable import Models_TestHelpers
 import Models
+import Prelude
 
 final class SearchDataSourceTests: XCTestCase {
   let dataSource = SearchDataSource()
@@ -20,9 +21,9 @@ final class SearchDataSourceTests: XCTestCase {
 
   func testProjects() {
     dataSource.load(projects: [
-      ProjectFactory.live(id: 1),
-      ProjectFactory.live(id: 2),
-      ProjectFactory.live(id: 3),
+      Project.template |> Project.lens.id *~ 1,
+      Project.template |> Project.lens.id *~ 2,
+      Project.template |> Project.lens.id *~ 3
     ])
 
     XCTAssertEqual(2, self.dataSource.numberOfSectionsInTableView(tableView))

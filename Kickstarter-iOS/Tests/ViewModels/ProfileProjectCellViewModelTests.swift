@@ -6,6 +6,7 @@ import XCTest
 @testable import Library
 @testable import ReactiveExtensions_TestHelpers
 @testable import Models_TestHelpers
+import Prelude
 
 internal final class ProfileProjectCellViewModelTests: TestCase {
   let vm = ProfileProjectCellViewModel()
@@ -29,19 +30,19 @@ internal final class ProfileProjectCellViewModelTests: TestCase {
   }
 
   func testProjectProgressUI() {
-    let liveProject = ProjectFactory.live()
+    let liveProject = Project.template
 
     self.vm.inputs.project(liveProject)
 
     self.progressHidden.assertValues([false], "Progress bar is not hidden for live project.")
-    self.progress.assertValues([liveProject.fundingProgress])
+    self.progress.assertValues([liveProject.stats.fundingProgress])
     self.state.assertValues([String(liveProject.state)])
     self.stateBackgroundColor.assertValues([Color.GrayDark.toUIColor()], "Default background color is gray.")
     self.stateHidden.assertValues([true], "Project state is hidden.")
   }
 
   func testProjectFailedBanner() {
-    let failedProject = ProjectFactory.failed
+    let failedProject = Project.template |> Project.lens.state *~ .failed
 
     self.vm.inputs.project(failedProject)
     self.progressHidden.assertValues([true], "Progress bar is hidden for failed project.")
@@ -51,7 +52,7 @@ internal final class ProfileProjectCellViewModelTests: TestCase {
   }
 
   func testProjectSuccessfulBanner() {
-    let successfulProject = ProjectFactory.successful
+    let successfulProject = Project.template |> Project.lens.state *~ .successful
 
     self.vm.inputs.project(successfulProject)
     self.progressHidden.assertValues([true], "Progress bar is hidden for successful project.")
@@ -61,7 +62,7 @@ internal final class ProfileProjectCellViewModelTests: TestCase {
   }
 
   func testProjectDataEmits() {
-    let project = ProjectFactory.live()
+    let project = Project.template
 
     self.vm.inputs.project(project)
 

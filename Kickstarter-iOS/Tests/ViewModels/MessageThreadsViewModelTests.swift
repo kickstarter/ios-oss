@@ -80,7 +80,7 @@ internal final class MessageThreadsViewModelTests: TestCase {
   }
 
   func testLoadingMessages_WithProject() {
-    self.vm.inputs.configureWith(project: ProjectFactory.live())
+    self.vm.inputs.configureWith(project: Project.template)
     self.vm.inputs.viewDidLoad()
 
     self.loadingFooterIsHidden.assertValues([false], "Loading footer is visible at beginning.")

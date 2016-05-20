@@ -7,6 +7,7 @@ import XCTest
 @testable import Models_TestHelpers
 import ReactiveCocoa
 import Result
+import Prelude
 
 internal final class MessagesViewModelTests: TestCase {
   private let vm: MessagesViewModelType = MessagesViewModel()
@@ -32,11 +33,11 @@ internal final class MessagesViewModelTests: TestCase {
     self.vm.outputs.project.observe(self.project.observer)
     self.vm.outputs.successfullyMarkedAsRead.observe(self.successfullyMarkedAsRead.observer)
 
-    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: UserFactory.user()))
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: User.template))
   }
 
   func testOutputs_ConfiguredWithThread() {
-    let messageThread = MessageThreadFactory.messageThread()
+    let messageThread = MessageThread.template
 
     self.vm.inputs.configureWith(data: .left(messageThread))
     self.vm.inputs.viewDidLoad()
@@ -49,7 +50,7 @@ internal final class MessagesViewModelTests: TestCase {
   }
 
   func testOutputs_ConfiguredWithThread_AndBacking() {
-    let messageThread = MessageThreadFactory.messageThread()
+    let messageThread = MessageThread.template
 
     self.vm.inputs.configureWith(data: .left(messageThread))
     self.vm.inputs.viewDidLoad()
@@ -62,8 +63,8 @@ internal final class MessagesViewModelTests: TestCase {
   }
 
   func testOutputs_ConfiguredWithProject() {
-    let project = ProjectFactory.live(id: 42)
-    let backing = BackingFactory.backing(id: 42)
+    let project = Project.template |> Project.lens.id *~ 42
+    let backing = Backing.template
 
     self.vm.inputs.configureWith(data: .right((project: project, backing: backing)))
     self.vm.inputs.viewDidLoad()
@@ -76,8 +77,8 @@ internal final class MessagesViewModelTests: TestCase {
   }
 
   func testOutputs_ConfiguredWithProject_AndBacking() {
-    let project = ProjectFactory.live(id: 42)
-    let backing = BackingFactory.backing(id: 42)
+    let project = Project.template |> Project.lens.id *~ 42
+    let backing = Backing.template
 
     self.vm.inputs.configureWith(data: .right((project: project, backing: backing)))
     self.vm.inputs.viewDidLoad()
@@ -90,8 +91,8 @@ internal final class MessagesViewModelTests: TestCase {
   }
 
   func testGoToProject() {
-    let project = ProjectFactory.live(id: 42)
-    let backing = BackingFactory.backing(id: 43)
+    let project = Project.template |> Project.lens.id *~ 42
+    let backing = Backing.template
 
     self.vm.inputs.configureWith(data: .right((project: project, backing: backing)))
     self.vm.inputs.viewDidLoad()
@@ -102,8 +103,8 @@ internal final class MessagesViewModelTests: TestCase {
   }
 
   func testGoToBacking() {
-    let project = ProjectFactory.live(id: 42)
-    let backing = BackingFactory.backing(id: 43)
+    let project = Project.template |> Project.lens.id *~ 42
+    let backing = Backing.template
 
     self.vm.inputs.configureWith(data: .right((project: project, backing: backing)))
     self.vm.inputs.viewDidLoad()
@@ -113,8 +114,8 @@ internal final class MessagesViewModelTests: TestCase {
   }
 
   func testReplyFlow() {
-    let project = ProjectFactory.live(id: 42)
-    let backing = BackingFactory.backing(id: 43)
+    let project = Project.template |> Project.lens.id *~ 42
+    let backing = Backing.template
 
     self.vm.inputs.configureWith(data: .right((project: project, backing: backing)))
     self.vm.inputs.viewDidLoad()
@@ -125,13 +126,13 @@ internal final class MessagesViewModelTests: TestCase {
 
     self.presentMessageDialog.assertValueCount(1)
 
-    self.vm.inputs.messageSent(MessageFactory.message())
+    self.vm.inputs.messageSent(Message.template)
 
     self.messages.assertValueCount(2)
   }
 
   func testMarkAsRead() {
-    self.vm.inputs.configureWith(data: .left(MessageThreadFactory.messageThread()))
+    self.vm.inputs.configureWith(data: .left(MessageThread.template))
     self.vm.inputs.viewDidLoad()
 
     self.successfullyMarkedAsRead.assertValueCount(1)

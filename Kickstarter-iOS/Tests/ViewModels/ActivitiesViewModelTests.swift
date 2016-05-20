@@ -7,6 +7,7 @@ import XCTest
 import Result
 import Models
 @testable import Models_TestHelpers
+import Prelude
 
 final class ActivitiesViewModelTests: TestCase {
   let vm: ActivitiesViewModelType! = ActivitiesViewModel()
@@ -37,7 +38,7 @@ final class ActivitiesViewModelTests: TestCase {
     showLoggedOutEmptyState.assertValues([true], "Logged-out empty state shown.")
     showLoggedInEmptyState.assertValues([], "No logged-in empty state.")
 
-    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: UserFactory.user()))
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: User.template))
     self.vm.inputs.userSessionStarted()
     self.scheduler.advance()
 
@@ -57,7 +58,7 @@ final class ActivitiesViewModelTests: TestCase {
       showLoggedOutEmptyState.assertValues([true], "Logged out empty state visible.")
       showLoggedInEmptyState.assertValues([], "Logged in empty state didn't emit.")
 
-      AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: UserFactory.user()))
+      AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: User.template))
       self.vm.inputs.userSessionStarted()
       self.scheduler.advance()
 
@@ -69,7 +70,7 @@ final class ActivitiesViewModelTests: TestCase {
 
   // Tests that activities are cleared if the user is logged out for any reason.
   func testInvalidatedTokenFlow_ActivitiesClearAfterSessionCleared() {
-    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: UserFactory.user()))
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: User.template))
     self.vm.inputs.viewWillAppear()
     self.scheduler.advance()
 
@@ -88,7 +89,7 @@ final class ActivitiesViewModelTests: TestCase {
   //   * user logs in before ever view activities
   //   * user navigates to activities
   func testLogin_BeforeActivityViewAppeared() {
-    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: UserFactory.user()))
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: User.template))
     self.vm.inputs.userSessionStarted()
     self.scheduler.advance()
 
@@ -101,7 +102,7 @@ final class ActivitiesViewModelTests: TestCase {
   }
 
   func testRefreshActivities() {
-    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: UserFactory.user()))
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: User.template))
     self.vm.inputs.userSessionStarted()
     self.vm.inputs.viewWillAppear()
     self.scheduler.advance()
@@ -120,7 +121,7 @@ final class ActivitiesViewModelTests: TestCase {
   }
 
   func testgoToProject() {
-    let activity = ActivityFactory.backingActivity
+    let activity = Activity.template |> Activity.lens.category *~ .Backing
     let project = activity.project!
     let refTag = RefTag.activity
 

@@ -31,9 +31,9 @@ final class ProjectShelfCell: UICollectionViewCell, ValueCell {
 
     self.projectNameLabel.rac.text = project.map { $0.name }
     self.categoryLabel.rac.text = project.map { $0.category.name }
-    self.percentageLabel.rac.text = project.map { Format.percentage($0.percentFunded) }
+    self.percentageLabel.rac.text = project.map { Format.percentage($0.stats.percentFunded) }
 
-    project.map { p in CGFloat(p.fundingProgress) }
+    project.map { p in CGFloat(p.stats.fundingProgress) }
       .map(clamp(0.0, 1.0))
       .observeForUI()
       .observeNext { [weak self] progress in

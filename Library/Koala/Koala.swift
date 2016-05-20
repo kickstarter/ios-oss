@@ -421,7 +421,7 @@ private func projectProperties(project: Project,
   properties["pid"] = project.id
   properties["name"] = project.name
   properties["pledged"] = project.stats.pledged
-  properties["percent_raised"] = project.fundingProgress
+  properties["percent_raised"] = project.stats.fundingProgress
   properties["has_video"] = project.video != nil
   properties["state"] = project.state.rawValue
   properties["update_count"] = project.stats.updatesCount
@@ -475,9 +475,9 @@ private func userProperties(user: User, prefix: String = "user_") -> [String:Any
   var properties = [String:AnyObject]()
 
   properties["uid"] = user.id
-  properties["backed_projects_count"] = user.stats?.backedProjectsCount
-  properties["created_projects_count"] = user.stats?.createdProjectsCount
-  properties["starred_projects_count"] = user.stats?.starredProjectsCount
+  properties["backed_projects_count"] = user.stats.backedProjectsCount
+  properties["created_projects_count"] = user.stats.createdProjectsCount
+  properties["starred_projects_count"] = user.stats.starredProjectsCount
 
   return properties.prefixedKeys(prefix)
 }

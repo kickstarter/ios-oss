@@ -44,7 +44,7 @@ internal final class ProfileProjectCellViewModel: ProfileProjectCellViewModelTyp
 
     self.projectName = project.map { $0.name }
     self.photoURL = project.map { NSURL(string: $0.photo.full) }
-    self.progress = project.map { $0.fundingProgress }
+    self.progress = project.map { $0.stats.fundingProgress }
     self.progressHidden = project.map { $0.state != .live }
     self.state = project.map { $0.state.rawValue }
     self.stateBackgroundColor = project.map {

@@ -33,7 +33,7 @@ internal final class MessageDialogViewModelTests: TestCase {
   }
 
   func testRecipientName() {
-    let thread = MessageThreadFactory.messageThread()
+    let thread = MessageThread.template
     self.vm.inputs.configureWith(messageThread: thread, context: .messages)
     self.vm.inputs.viewDidLoad()
 
@@ -61,7 +61,7 @@ internal final class MessageDialogViewModelTests: TestCase {
   }
 
   func testKeyboardIsVisible() {
-    self.vm.inputs.configureWith(messageThread: MessageThreadFactory.messageThread(), context: .messages)
+    self.vm.inputs.configureWith(messageThread: MessageThread.template, context: .messages)
     self.vm.inputs.viewDidLoad()
     self.keyboardIsVisible.assertValues([true])
 
@@ -78,7 +78,7 @@ internal final class MessageDialogViewModelTests: TestCase {
   }
 
   func testPostingMessage() {
-    self.vm.inputs.configureWith(messageThread: MessageThreadFactory.messageThread(), context: .messages)
+    self.vm.inputs.configureWith(messageThread: MessageThread.template, context: .messages)
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.bodyTextChanged("HELLO")
 

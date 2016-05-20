@@ -22,8 +22,8 @@ internal final class BackingCellViewModelTests: TestCase {
   }
 
   func testOutputs() {
-    let backing = BackingFactory.backing()
-    self.vm.inputs.configureWith(backing: backing, project: ProjectFactory.live())
+    let backing = Backing.template
+    self.vm.inputs.configureWith(backing: backing, project: Project.template)
 
     self.pledged.assertValueCount(1)
     self.reward.assertValues([(backing.reward?.description)!])

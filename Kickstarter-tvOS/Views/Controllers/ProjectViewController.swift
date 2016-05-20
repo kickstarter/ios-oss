@@ -141,7 +141,10 @@ final class ProjectViewController: UIViewController {
       height: endSize.height
     )
 
-    self.videoPlayerView.frame = (progress * 2.0) |> clamp(0.0, 1.0) |> lerp(beginFrame, endFrame)
+    let first = progress * 2.0
+    let second = first |> clamp(0.0, 1.0)
+    let third = second |> lerp(beginFrame, endFrame)
+    self.videoPlayerView.frame = third
   }
 
   private func showRemindMeAlert() {

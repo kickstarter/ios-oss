@@ -9,6 +9,7 @@ import Models
 @testable import Library
 @testable import Models_TestHelpers
 @testable import ReactiveExtensions_TestHelpers
+import Prelude
 
 internal final class ProfileHeaderViewModelTests: TestCase {
   let vm = ProfileHeaderViewModel()
@@ -32,7 +33,7 @@ internal final class ProfileHeaderViewModelTests: TestCase {
   }
 
   func testUserDataEmits() {
-    let user = UserFactory.loggedInUser
+    let user = User.template
 
     self.vm.inputs.user(user)
 
@@ -42,16 +43,16 @@ internal final class ProfileHeaderViewModelTests: TestCase {
   }
 
   func testUserWithCreatedProjects() {
-    let user = UserFactory.creator
+    let user = User.template |> User.lens.stats.createdProjectsCount *~ 1
 
     withEnvironment(apiService: MockService(fetchUserSelfResponse: user)) {
       AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
 
       self.vm.inputs.user(user)
 
-      self.backedProjectsCountLabel.assertValues([String(user.stats?.backedProjectsCount ?? 0)],
+      self.backedProjectsCountLabel.assertValues([String(user.stats.backedProjectsCount ?? 0)],
                                                  "Backed projects count emitted.")
-      self.createdProjectsCountLabel.assertValues([String(user.stats?.createdProjectsCount ?? 0)],
+      self.createdProjectsCountLabel.assertValues([String(user.stats.createdProjectsCount ?? 0)],
                                                   "Created projects count emitted.")
 
       self.createdProjectsCountLabelHidden.assertValues([false], "Created labels are not hidden.")
@@ -61,11 +62,11 @@ internal final class ProfileHeaderViewModelTests: TestCase {
   }
 
   func testUserWithNoCreatedProjects() {
-    let user = UserFactory.loggedInUser
+    let user = User.template |> User.lens.stats.backedProjectsCount *~ 1
 
     self.vm.inputs.user(user)
 
-    self.backedProjectsCountLabel.assertValues([String(user.stats?.backedProjectsCount ?? 0)],
+    self.backedProjectsCountLabel.assertValues([String(user.stats.backedProjectsCount ?? 0)],
                                                "Backed projects count emits.")
     self.createdProjectsCountLabelHidden.assertValues([true])
 

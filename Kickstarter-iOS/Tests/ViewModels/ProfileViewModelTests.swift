@@ -28,7 +28,7 @@ internal final class ProfileViewModelTests: TestCase {
   }
 
   func testProjectCellPressed() {
-    let project = ProjectFactory.live()
+    let project = Project.template
     self.vm.inputs.projectPressed(project)
 
     self.goToProject.assertValues([project], "Project emmitted.")
@@ -36,7 +36,7 @@ internal final class ProfileViewModelTests: TestCase {
   }
 
   func testUserWithBackedProjects() {
-    let currentUser = UserFactory.user()
+    let currentUser = User.template
 
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: currentUser))
     self.vm.inputs.viewWillAppear()
@@ -51,7 +51,7 @@ internal final class ProfileViewModelTests: TestCase {
 
   func testUserWithNoProjects() {
     withEnvironment(apiService: MockService(fetchDiscoveryResponse: [])) {
-      AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: UserFactory.user()))
+      AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: User.template))
 
       self.vm.inputs.viewWillAppear()
 

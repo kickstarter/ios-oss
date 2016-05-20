@@ -1,9 +1,9 @@
 import Models
 import KsApi
+import Prelude
 import ReactiveCocoa
 import Result
-import struct Library.Environment
-import struct Library.AppEnvironment
+import Library
 
 protocol SearchViewModelInputs {
   func updateQuery(query: String)
@@ -33,13 +33,13 @@ final class SearchViewModel: SearchViewModelInputs, SearchViewModelOutputs {
 
     querySignal
       .throttle(0.3, onScheduler: QueueScheduler.mainQueueScheduler)
-      .switchMap { (query) -> SignalProducer<[Project], NoError> in
-        if query.isEmpty {
-          return apiService.fetchDiscovery(params: DiscoveryParams(sort: .Popular))
-            .map { $0.projects }
-            .demoteErrors()
-        }
-        return apiService.fetchDiscovery(params: DiscoveryParams(query: query))
+      .map {
+        $0.isEmpty ?
+          DiscoveryParams.defaults |> DiscoveryParams.lens.sort *~ .Popular :
+          DiscoveryParams.defaults |> DiscoveryParams.lens.query *~ $0
+      }
+      .switchMap {
+        apiService.fetchDiscovery(params: $0)
           .map { $0.projects }
           .demoteErrors()
       }

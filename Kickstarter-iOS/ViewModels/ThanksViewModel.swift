@@ -1,12 +1,11 @@
 // swiftlint:disable file_length
-
 import KsApi
+import Library
 import Models
+import Prelude
 import ReactiveCocoa
 import ReactiveExtensions
 import Result
-import Prelude
-import Library
 import Social.SLComposeViewController
 
 internal protocol ThanksViewModelInputs {
@@ -147,7 +146,7 @@ internal final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs
     let shouldShowGamesAlert = project
       .map { project in
         project.category.rootId == Models.Category.gamesId &&
-        !(AppEnvironment.current.currentUser?.newsletters?.games ?? false) &&
+        !(AppEnvironment.current.currentUser?.newsletters.games ?? false) &&
         !AppEnvironment.current.userDefaults.hasSeenGamesNewsletterPrompt
     }
 
@@ -180,7 +179,7 @@ internal final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs
     self.dismissViewController = self.closeButtonPressedProperty.signal
 
     self.goToDiscovery = self.categoryCellPressedProperty.signal.ignoreNil()
-      .map { DiscoveryParams(category: $0) }
+      .map { DiscoveryParams.defaults |> DiscoveryParams.lens.category *~ $0 }
 
     let rootCategory = project
       .map { $0.category.rootId }
@@ -205,10 +204,10 @@ internal final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs
       .map { AppEnvironment.current.currentUser ?? nil }.ignoreNil()
       .switchMap { user in
         AppEnvironment.current.apiService.updateNewsletters(
-          weekly: user.newsletters?.weekly,
-          promo: user.newsletters?.promo,
-          happening: user.newsletters?.happening,
-          games: true
+          games: true,
+          happening: user.newsletters.happening,
+          promo: user.newsletters.promo,
+          weekly: user.newsletters.weekly
         )
         .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
         .demoteErrors()
@@ -395,12 +394,18 @@ internal final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs
 
 private func relatedProjects(project: Project, category: Models.Category, apiService: ServiceType) ->
   SignalProducer<[Project], NoError> {
-    let recommendedParams = DiscoveryParams(backed: false, recommended: true, perPage: 3)
-    let similarToParams = DiscoveryParams(backed: false, similarTo: project, perPage: 3)
-    let staffPickParams = DiscoveryParams(staffPicks: true,
-                                          backed: false,
-                                          category: category,
-                                          perPage: 3)
+
+    let base = DiscoveryParams.lens.perPage *~ 3 <> DiscoveryParams.lens.backed *~ false
+
+    let recommendedParams = DiscoveryParams.defaults |> base
+      <> DiscoveryParams.lens.recommended *~ true
+
+    let similarToParams = DiscoveryParams.defaults |> base
+      <> DiscoveryParams.lens.similarTo *~ project
+
+    let staffPickParams = DiscoveryParams.defaults |> base
+      <> DiscoveryParams.lens.staffPicks *~ true
+      <> DiscoveryParams.lens.category *~ category
 
     let recommendedProjects = apiService.fetchDiscovery(params: recommendedParams)
       .retry(2)

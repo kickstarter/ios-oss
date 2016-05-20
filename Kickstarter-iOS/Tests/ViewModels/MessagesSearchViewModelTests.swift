@@ -7,6 +7,7 @@ import XCTest
 import Models
 import ReactiveCocoa
 import Result
+import Prelude
 
 internal final class MessagesSearchViewModelTests: TestCase {
   private let vm: MessagesSearchViewModelType = MessagesSearchViewModel()
@@ -98,7 +99,7 @@ internal final class MessagesSearchViewModelTests: TestCase {
   }
 
   func testSearch_WithProject() {
-    let project = ProjectFactory.live(id: 123)
+    let project = Project.template |> Project.lens.id *~ 123
 
     self.vm.inputs.configureWith(project: project)
     self.vm.inputs.viewDidLoad()
@@ -150,8 +151,8 @@ internal final class MessagesSearchViewModelTests: TestCase {
   }
 
   func testGoToMessageThread() {
-    let project = ProjectFactory.live(id: 123)
-    let messageThread = MessageThreadFactory.messageThread()
+    let project = Project.template |> Project.lens.id *~ 123
+    let messageThread = MessageThread.template
 
     self.vm.inputs.configureWith(project: project)
     self.vm.inputs.viewDidLoad()

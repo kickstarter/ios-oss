@@ -35,7 +35,7 @@ class ProjectCell: UICollectionViewCell, ValueCell {
     }
 
     project
-      .map { ($0.name, $0.category.name, $0.percentFunded) }
+      .map { ($0.name, $0.category.name, $0.stats.percentFunded) }
       .skipRepeats(==)
       .observeForUI()
       .observeNext { [weak self] (name, category, percentFunded) in

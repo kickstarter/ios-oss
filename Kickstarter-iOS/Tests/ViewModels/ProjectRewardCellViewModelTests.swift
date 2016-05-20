@@ -6,11 +6,12 @@ import XCTest
 @testable import Models_TestHelpers
 import ReactiveCocoa
 import Result
+import Prelude
 
 final class ProjectRewardCellViewModelTest: TestCase {
   let vm: ProjectRewardCellViewModelType = ProjectRewardCellViewModel()
 
-  let project = ProjectFactory.live()
+  let project = Project.template
   let disabledShipping = Reward.Shipping(enabled: false, preference: nil, summary: nil)
   let restrictedShipping = Reward.Shipping(enabled: true, preference: .restricted, summary: nil)
   let unrestrictedShipping = Reward.Shipping(enabled: true, preference: .unrestricted, summary: nil)
@@ -36,8 +37,10 @@ final class ProjectRewardCellViewModelTest: TestCase {
   }
 
   func testLimitedReward_SoldOut() {
-    let reward = Reward(id: 1, description: "", minimum: 1, backersCount: 1, estimatedDeliveryOn: nil,
-                               shipping: disabledShipping, limit: 1, remaining: 0)
+    let reward = Reward.template
+      |> Reward.lens.backersCount *~ 1
+      <> Reward.lens.limit *~ 1
+      <> Reward.lens.remaining *~ 0
 
     self.vm.inputs.project(project, reward: reward)
 
@@ -47,8 +50,10 @@ final class ProjectRewardCellViewModelTest: TestCase {
   }
 
   func testLimitedReward_NotSoldOut() {
-    let reward = Reward(id: 1, description: "", minimum: 1, backersCount: 1, estimatedDeliveryOn: nil,
-                               shipping: disabledShipping, limit: 2, remaining: 1)
+    let reward = Reward.template
+      |> Reward.lens.backersCount *~ 1
+      <> Reward.lens.limit *~ 2
+      <> Reward.lens.remaining *~ 1
 
     self.vm.inputs.project(project, reward: reward)
 
@@ -58,8 +63,11 @@ final class ProjectRewardCellViewModelTest: TestCase {
   }
 
   func testReward_NoShipping() {
-    let reward = Reward(id: 1, description: "", minimum: 1, backersCount: 1, estimatedDeliveryOn: nil,
-                               shipping: disabledShipping, limit: 2, remaining: 1)
+    let reward = Reward.template
+      |> Reward.lens.backersCount *~ 1
+      <> Reward.lens.limit *~ 2
+      <> Reward.lens.remaining *~ 1
+      <> Reward.lens.shipping *~ disabledShipping
 
     self.vm.inputs.project(project, reward: reward)
 
@@ -68,8 +76,11 @@ final class ProjectRewardCellViewModelTest: TestCase {
   }
 
   func testReward_ShippingEnabled() {
-    let reward = Reward(id: 1, description: "", minimum: 1, backersCount: 1, estimatedDeliveryOn: nil,
-                        shipping: restrictedShipping, limit: 2, remaining: 1)
+    let reward = Reward.template
+      |> Reward.lens.backersCount *~ 1
+      <> Reward.lens.limit *~ 2
+      <> Reward.lens.remaining *~ 1
+      <> Reward.lens.shipping *~ restrictedShipping
 
     self.vm.inputs.project(project, reward: reward)
 
@@ -78,15 +89,24 @@ final class ProjectRewardCellViewModelTest: TestCase {
   }
 
   func testReward_Backing() {
-    let backedProject = ProjectFactory.backing
-    let reward = Reward(id: 99, description: "", minimum: 1, backersCount: 1, estimatedDeliveryOn: nil,
-                        shipping: restrictedShipping, limit: 2, remaining: 1)
-    self.vm.inputs.project(backedProject, reward: reward)
+    let backerReward = Reward.template
+      |> Reward.lens.backersCount *~ 1
+      <> Reward.lens.id *~ 42
+      <> Reward.lens.limit *~ 2
+      <> Reward.lens.remaining *~ 1
+      <> Reward.lens.shipping *~ restrictedShipping
+    let backing = Backing.template
+      |> Backing.lens.reward *~ backerReward
+      <> Backing.lens.rewardId *~ backerReward.id
+    let backedProject = Project.template
+      |> Project.lens.backing *~ backing
+      <> Project.lens.rewards *~ [backerReward, Reward.template]
+
+    self.vm.inputs.project(backedProject, reward: Reward.template)
 
     self.backerLabelHidden.assertValues([true])
 
-    let backedReward = backedProject.rewards!.first!
-    self.vm.inputs.project(backedProject, reward: backedReward)
+    self.vm.inputs.project(backedProject, reward: backerReward)
 
     self.backerLabelHidden.assertValues([true, false])
   }

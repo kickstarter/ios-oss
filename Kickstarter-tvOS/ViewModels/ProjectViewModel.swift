@@ -5,8 +5,7 @@ import ReactiveCocoa
 import Result
 import ReactiveExtensions
 import Prelude
-import struct Library.Environment
-import struct Library.AppEnvironment
+import Library
 
 internal protocol ProjectViewModelInputs {
   /// Call when the controller gains/resigns active state.
@@ -115,8 +114,11 @@ ProjectViewModelErrors {
       .ignoreNil()
       .skipRepeats(==)
 
-    self.recommendations = apiService.fetchDiscovery(params:
-      DiscoveryParams(similarTo: initialProject, hasVideo: true))
+    self.recommendations = apiService.fetchDiscovery(
+      params: DiscoveryParams.defaults
+        |> DiscoveryParams.lens.similarTo *~ initialProject
+        <> DiscoveryParams.lens.hasVideo *~ true
+      )
       .map { $0.projects }
       .demoteErrors()
 

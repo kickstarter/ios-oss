@@ -24,7 +24,7 @@ internal final class MessageCellViewModelTests: TestCase {
   }
 
   func testOutputs() {
-    let message = MessageFactory.message()
+    let message = Message.template
     self.vm.inputs.configureWith(message: message)
 
     self.avatarURL.assertValueCount(1)

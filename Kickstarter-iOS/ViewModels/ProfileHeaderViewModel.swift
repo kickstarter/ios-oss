@@ -45,8 +45,8 @@ internal final class ProfileHeaderViewModel: ProfileHeaderViewModelType,
     let user = userProperty.signal.ignoreNil()
 
     self.avatarURL = user.map { NSURL(string: $0.avatar.large ?? $0.avatar.medium) }
-    self.backedProjectsCountLabel = user.map { Format.wholeNumber($0.stats?.backedProjectsCount ?? 0) }
-    self.createdProjectsCountLabel = user.map { Format.wholeNumber($0.stats?.createdProjectsCount ?? 0) }
+    self.backedProjectsCountLabel = user.map { Format.wholeNumber($0.stats.backedProjectsCount ?? 0) }
+    self.createdProjectsCountLabel = user.map { Format.wholeNumber($0.stats.createdProjectsCount ?? 0) }
     self.userName = user.map { $0.name }
 
     self.createdProjectsCountLabelHidden = user.map { !$0.isCreator }

@@ -1,12 +1,11 @@
 import CoreGraphics
-import Library
 import KsApi
-import ReactiveCocoa
-import Models
-import Result
-import Prelude
 import Library
+import Models
+import Prelude
+import ReactiveCocoa
 import ReactiveExtensions
+import Result
 
 internal protocol DiscoveryViewModelInputs {
   /// Call from the controller's viewDidLoad.
@@ -78,8 +77,12 @@ DiscoveryViewModelOutputs {
       .filter { isClose in isClose }
       .ignoreValues()
 
+    let params = DiscoveryParams.defaults
+      |> DiscoveryParams.lens.staffPicks *~ true
+      |> DiscoveryParams.lens.includePOTD *~ true
+
     let filterChange = Signal.merge(
-      self.viewDidLoadProperty.signal.mapConst(DiscoveryParams(staffPicks: true, includePOTD: true)),
+      self.viewDidLoadProperty.signal.mapConst(params),
       self.filterParamsChangedProperty.signal.ignoreNil()
       )
 
@@ -89,7 +92,7 @@ DiscoveryViewModelOutputs {
     )
 
     let paramsChanged = combineLatest(filterChange, sortChange)
-      .map { filter, sort in filter.with(sort: sort) }
+      .map { filter, sort in filter |> DiscoveryParams.lens.sort *~ sort }
 
     (self.projects, self.projectsAreLoading, _) = paginate(
       requestFirstPageWith: paramsChanged,

@@ -2,11 +2,10 @@ import Foundation
 import KsApi
 import Library
 import Models
-
 import Prelude
 import ReactiveCocoa
-import Result
 import ReactiveExtensions
+import Result
 
 internal protocol ProfileViewModelInputs {
   /// Call when a project cell is pressed.
@@ -47,7 +46,11 @@ internal protocol ProfileViewModelType {
 internal final class ProfileViewModel: ProfileViewModelType, ProfileViewModelInputs, ProfileViewModelOutputs {
   init() {
     let requestFirstPageWith = Signal.merge(viewWillAppearProperty.signal.take(1), refreshProperty.signal)
-      .map { DiscoveryParams(backed: true, sort: .EndingSoon) }
+      .map {
+        DiscoveryParams.defaults
+          |> DiscoveryParams.lens.backed *~ true
+          <> DiscoveryParams.lens.sort *~ .EndingSoon
+    }
 
     let requestNextPageWhen = self.willDisplayRowProperty.signal.ignoreNil()
       .map { row, total in row >= total - 3 }

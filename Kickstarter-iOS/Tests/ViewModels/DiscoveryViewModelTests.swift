@@ -7,6 +7,7 @@ import UIKit
 @testable import KsApi
 @testable import KsApi_TestHelpers
 @testable import Library
+import Prelude
 import ReactiveCocoa
 import Result
 
@@ -71,7 +72,9 @@ final class DiscoveryViewModelTests: TestCase {
       self.hasRemovedProjects.assertValues([false, false], "No projects are removed.")
 
       // Change the filter params used
-      self.vm.inputs.filterParamsChanged(DiscoveryParams(category: CategoryFactory.art))
+      self.vm.inputs.filterParamsChanged(
+        DiscoveryParams.defaults |> DiscoveryParams.lens.category *~ Category.art
+      )
 
       self.hasAddedProjects.assertValues([true, true, false], "No projects are added.")
       self.hasRemovedProjects.assertValues([false, false, true], "Projects are removed right away.")

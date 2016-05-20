@@ -3,15 +3,16 @@ import XCTest
 @testable import Library
 @testable import Models_TestHelpers
 import Models
+import Prelude
 
 final class ActivitiesDataSourceTests: XCTestCase {
   let dataSource = ActivitiesDataSource()
   let tableView = UITableView()
 
   func testDataSource() {
-    let updateActivity = ActivityFactory.updateActivity
-    let backingActivity = ActivityFactory.backingActivity
-    let successActivity = ActivityFactory.successActivity
+    let updateActivity = Activity.template |> Activity.lens.category *~ .Update
+    let backingActivity = Activity.template |> Activity.lens.category *~ .Backing
+    let successActivity = Activity.template |> Activity.lens.category *~ .Success
 
     self.dataSource.emptyState(visible: true)
 

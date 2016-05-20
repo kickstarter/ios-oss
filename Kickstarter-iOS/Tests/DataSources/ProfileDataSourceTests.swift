@@ -3,15 +3,16 @@ import Models
 @testable import Kickstarter_iOS
 @testable import Library
 @testable import Models_TestHelpers
+import Prelude
 
 internal final class ProfileDataSourceTests: XCTestCase {
   let dataSource = ProfileDataSource()
   let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
 
   func testDataSource() {
-    let liveProject = ProjectFactory.live()
-    let successfulProject = ProjectFactory.successful
-    let failedProject = ProjectFactory.failed
+    let liveProject = Project.template
+    let successfulProject = Project.template |> Project.lens.state *~ .successful
+    let failedProject = Project.template |> Project.lens.state *~ .failed
 
     self.dataSource.load(projects: [liveProject, successfulProject, failedProject])
 

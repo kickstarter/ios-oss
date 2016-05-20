@@ -102,7 +102,7 @@ ProjectMainCellViewModelOutputs {
       .skipRepeats(==)
       .map(NSURL.init(string:))
 
-    self.progress = project.map { $0.fundingProgress }
+    self.progress = project.map { $0.stats.fundingProgress }
       .map(clamp(0.0, 1.0))
       .skipRepeats()
 

@@ -30,7 +30,7 @@ final class MessageThreadCellViewModelTests: TestCase {
   }
 
   func testOutputs() {
-    let thread = MessageThreadFactory.messageThread()
+    let thread = MessageThread.template
     self.vm.inputs.configureWith(messageThread: thread)
 
     self.date.assertValueCount(1)
@@ -42,7 +42,7 @@ final class MessageThreadCellViewModelTests: TestCase {
   }
 
   func testReplyIndicatorHidden() {
-    let thread = MessageThreadFactory.messageThread()
+    let thread = MessageThread.template
 
     self.vm.inputs.configureWith(messageThread: thread)
     self.replyIndicatorHidden.assertValues([true])
