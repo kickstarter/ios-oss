@@ -91,7 +91,10 @@ internal final class SignupViewModel: SignupViewModelType, SignupViewModelInputs
       }
 
     self.showError = signupEvent.errors()
-      .map { $0.errorMessages.first ?? "" }
+      .map {
+        $0.errorMessages.first ??
+          localizedString(key: "signup.error.something_wrong", defaultValue: "Something went wrong.")
+      }
 
     self.logIntoEnvironment = signupEvent.values()
 
