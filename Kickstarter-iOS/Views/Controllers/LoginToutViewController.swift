@@ -114,6 +114,10 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
     self.viewModel.inputs.facebookLoginButtonPressed()
   }
 
+  @IBAction private func signupButtonPressed() {
+    self.viewModel.inputs.signupButtonPressed()
+  }
+
   internal func closeButtonPressed() {
     self.dismissViewControllerAnimated(true, completion: nil)
   }
@@ -175,6 +179,12 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
   }
 
   private func pushSignupViewController() {
+    guard let signupVC = self.storyboard?
+      .instantiateViewControllerWithIdentifier("SignupViewController") as? SignupViewController else {
+        fatalError("Couldn’t instantiate SignupViewController.")
+    }
+
+    self.navigationController?.pushViewController(signupVC, animated: true)
   }
 
   private func showHelpType(helpType: HelpType) {

@@ -92,6 +92,8 @@
 		80FE73141C88F29E00BE0137 /* ReactiveExtensions.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 807572391C88DD8B00E7DA8A /* ReactiveExtensions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		80FE733A1C88F3D400BE0137 /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7B694301C87A07100C49A4F /* HockeySDK.framework */; };
 		80FE733C1C88F4CA00BE0137 /* AlamofireImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 807571F91C88B8E200E7DA8A /* AlamofireImage.framework */; };
+		9D1336CB1CEFBB7A00E860A0 /* SignupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D1336CA1CEFBB7A00E860A0 /* SignupViewController.swift */; };
+		9D1336CC1CEFBB7A00E860A0 /* SignupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D1336CA1CEFBB7A00E860A0 /* SignupViewController.swift */; };
 		9D39C0471C9B5662004E0943 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D39C0461C9B5662004E0943 /* SearchViewModel.swift */; };
 		9D7279FC1CC04BCA00B28C5F /* SignupViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D7279FB1CC04BCA00B28C5F /* SignupViewModelTests.swift */; };
 		9D727A291CC04BE200B28C5F /* SignupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D727A281CC04BE200B28C5F /* SignupViewModel.swift */; };
@@ -1321,6 +1323,7 @@
 		802800571C88F64D00141235 /* Base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Base.xcconfig; path = Configs/Base.xcconfig; sourceTree = "<group>"; };
 		807571ED1C88B8E200E7DA8A /* AlamofireImage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AlamofireImage.xcodeproj; path = Frameworks/AlamofireImage/AlamofireImage.xcodeproj; sourceTree = "<group>"; };
 		8075722D1C88DD8A00E7DA8A /* ReactiveExtensions.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactiveExtensions.xcodeproj; path = Frameworks/KsApi/Frameworks/ReactiveExtensions/ReactiveExtensions.xcodeproj; sourceTree = "<group>"; };
+		9D1336CA1CEFBB7A00E860A0 /* SignupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupViewController.swift; sourceTree = "<group>"; };
 		9D39C0461C9B5662004E0943 /* SearchViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = SearchViewModel.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		9D7279FB1CC04BCA00B28C5F /* SignupViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupViewModelTests.swift; sourceTree = "<group>"; };
 		9D727A281CC04BE200B28C5F /* SignupViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupViewModel.swift; sourceTree = "<group>"; };
@@ -1870,6 +1873,7 @@
 				019DDFEB1CB6FF4500BDC113 /* ResetPasswordViewController.swift */,
 				A7180BA81CCED598001711CA /* CommentsViewController.swift */,
 				A7A0534C1CD19C68005AF5E2 /* CommentDialogViewController.swift */,
+				9D1336CA1CEFBB7A00E860A0 /* SignupViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -1922,14 +1926,11 @@
 				A775190F1C8CADC80022F175 /* AppDelegateViewModelTests.swift */,
 				A71405201CAF633500A2795B /* CommentDialogViewModelTests.swift */,
 				A7DB1C541C9E226F008244DA /* CommentsViewModelTests.swift */,
-				A783237F1CB949EF000B094C /* DiscoveryViewModelTests.swift */,
 				01BC58101CAD765B000289E8 /* FacebookConfirmationViewModelTests.swift */,
 				01B6ABE51CA2F233003DB4C8 /* LoginToutViewModelTests.swift */,
 				0154A93C1CA1AF2A00DB9BA4 /* LoginViewModelTests.swift */,
 				A750DEF31CC681A000983F7C /* ProjectMainCellViewModelTests.swift */,
 				A75CF8801CC6D4BE00BBBB7F /* ProjectRewardCellViewModelTests.swift */,
-				A77589521CC9649C0038288B /* ProjectSubpagesViewModelTests.swift */,
-				A7DC836D1C9DB6EE00BB2B44 /* ProjectViewModelTests.swift */,
 				01BF21301CA5E81C00184A38 /* ResetPasswordViewModelTests.swift */,
 				A775B54B1CA87C8500BBB587 /* RootViewModelTests.swift */,
 				9DE6C0561C9B5C7700FCC7B1 /* SearchViewModelTests.swift */,
@@ -3586,6 +3587,7 @@
 				0146E3231CC0296900082C5B /* FacebookConfirmationViewController.swift in Sources */,
 				0127FC5D1C98C11500E335C6 /* SFSafariViewController.swift in Sources */,
 				0127FC541C98C0F900E335C6 /* HelpType.swift in Sources */,
+				9D1336CC1CEFBB7A00E860A0 /* SignupViewController.swift in Sources */,
 				A7208C961CCBD76300E3DAB3 /* ActivityEmptyStateCell.swift in Sources */,
 				A762EFF31C8CC663005581A4 /* ActivityFriendFollowCell.swift in Sources */,
 				A7E315B41C88A8A2000DD85A /* DiscoveryViewModel.swift in Sources */,
@@ -3693,6 +3695,7 @@
 				A775B5461CA871D700BBB587 /* RootViewModel.swift in Sources */,
 				01EA879B1C9335C5004E738B /* LoginToutViewController.swift in Sources */,
 				018F1FA91C8E1A8200643DAA /* LoginToutViewModel.swift in Sources */,
+				9D1336CB1CEFBB7A00E860A0 /* SignupViewController.swift in Sources */,
 				A7285C9B1C8E8DCF00D83297 /* ProjectViewController.swift in Sources */,
 				A762F0181C8CC672005581A4 /* ActivityFriendFollowViewModel.swift in Sources */,
 				A7DB1C301C9E225F008244DA /* CommentsViewModel.swift in Sources */,

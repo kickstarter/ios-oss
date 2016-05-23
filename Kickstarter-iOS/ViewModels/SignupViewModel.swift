@@ -1,15 +1,65 @@
 import Foundation
 import Library
-import Models
-import ReactiveCocoa
 import KsApi
-import Result
+import Models
 import Prelude
+import ReactiveCocoa
+import Result
+
+internal protocol SignupViewModelInputs {
+  /// Call when the view did load.
+  func viewDidLoad()
+
+  /// Call when the user enters a new name.
+  func nameChanged(name: String)
+
+  /// Call when the user enters a new email address.
+  func emailChanged(email: String)
+
+  /// Call when the user enters a new password.
+  func passwordChanged(password: String)
+
+  /// Call when the user toggles weekly newsletter.
+  func weeklyNewsletterChanged(weeklyNewsletter: Bool)
+
+  /// Call when the user taps signup.
+  func signupButtonPressed()
+
+  /// Call when the environment has been logged into
+  func environmentLoggedIn()
+}
+
+internal protocol SignupViewModelOutputs {
+  /// Emits the value for the weekly newsletter.
+  var setWeeklyNewsletterState: Signal<Bool, NoError> { get }
+
+  /// Emits true when the signup button should be enabled, false otherwise.
+  var isSignupButtonEnabled: Signal<Bool, NoError> { get }
+
+  /// Emits when a notification should be posted.
+  var postNotification: Signal<NSNotification, NoError> { get }
+
+  /// Emits an access token envelope that can be used to update the environment.
+  var logIntoEnvironment: Signal<AccessTokenEnvelope, NoError> { get }
+}
+
+internal protocol SignupViewModelErrors {
+  /// Emits when a signup error has occurred and a message should be displayed.
+  var showError: Signal<String, NoError> { get }
+}
+
+internal protocol SignupViewModelType {
+  var inputs: SignupViewModelInputs { get }
+  var outputs: SignupViewModelOutputs { get }
+  var errors: SignupViewModelErrors { get }
+}
 
 internal final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, SignupViewModelOutputs,
 SignupViewModelErrors {
   internal init() {
-    self.setWeeklyNewsletterState = viewDidLoadProperty.signal.map { true }
+    self.setWeeklyNewsletterState = viewDidLoadProperty.signal.map {
+      AppEnvironment.current.countryCode == "US"
+    }
 
     self.isSignupButtonEnabled = combineLatest(
       nameChangedProperty.signal,
@@ -99,52 +149,4 @@ SignupViewModelErrors {
   var inputs: SignupViewModelInputs { return self }
   var outputs: SignupViewModelOutputs { return self }
   var errors: SignupViewModelErrors { return self }
-}
-
-internal protocol SignupViewModelInputs {
-  /// Call when the view did load.
-  func viewDidLoad()
-
-  /// Call when the user enters a new name.
-  func nameChanged(name: String)
-
-  /// Call when the user enters a new email address.
-  func emailChanged(email: String)
-
-  /// Call when the user enters a new password.
-  func passwordChanged(password: String)
-
-  /// Call when the user toggles weekly newsletter.
-  func weeklyNewsletterChanged(weeklyNewsletter: Bool)
-
-  /// Call when the user taps signup.
-  func signupButtonPressed()
-
-  /// Call when the environment has been logged into
-  func environmentLoggedIn()
-}
-
-internal protocol SignupViewModelOutputs {
-  /// Emits the value for the weekly newsletter.
-  var setWeeklyNewsletterState: Signal<Bool, NoError> { get }
-
-  /// Emits true when the signup button should be enabled, false otherwise.
-  var isSignupButtonEnabled: Signal<Bool, NoError> { get }
-
-  /// Emits when a notification should be posted.
-  var postNotification: Signal<NSNotification, NoError> { get }
-
-  /// Emits an access token envelope that can be used to update the environment.
-  var logIntoEnvironment: Signal<AccessTokenEnvelope, NoError> { get }
-}
-
-internal protocol SignupViewModelErrors {
-  /// Emits when a signup error has occurred and a message should be displayed.
-  var showError: Signal<String, NoError> { get }
-}
-
-internal protocol SignupViewModelType {
-  var inputs: SignupViewModelInputs { get }
-  var outputs: SignupViewModelOutputs { get }
-  var errors: SignupViewModelErrors { get }
 }
