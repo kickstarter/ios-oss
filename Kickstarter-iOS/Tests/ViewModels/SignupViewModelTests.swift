@@ -1,28 +1,28 @@
-import Foundation
-import KsApi
-import Library
-@testable import Kickstarter_iOS
-@testable import ReactiveExtensions_TestHelpers
-import ReactiveCocoa
-import Result
 import XCTest
+@testable import Kickstarter_iOS
+@testable import KsApi
+@testable import KsApi_TestHelpers
+@testable import Library
+@testable import ReactiveExtensions_TestHelpers
+@testable import ReactiveCocoa
+@testable import Result
 
 final class SignupViewModelTests: TestCase {
   let vm: SignupViewModelType = SignupViewModel()
-  let setWeeklyNewsletterState = TestObserver<Bool, NoError>()
   let isSignupButtonEnabled = TestObserver<Bool, NoError>()
-  let postNotification = TestObserver<String, NoError>()
   let logIntoEnvironment = TestObserver<AccessTokenEnvelope, NoError>()
+  let postNotification = TestObserver<String, NoError>()
+  let setWeeklyNewsletterState = TestObserver<Bool, NoError>()
   let showError = TestObserver<String, NoError>()
 
   override func setUp() {
     super.setUp()
 
-    vm.outputs.setWeeklyNewsletterState.observe(setWeeklyNewsletterState.observer)
     vm.outputs.isSignupButtonEnabled.observe(isSignupButtonEnabled.observer)
-    vm.outputs.postNotification.map { $0.name } .observe(postNotification.observer)
     vm.outputs.logIntoEnvironment.observe(logIntoEnvironment.observer)
-    vm.errors.showError.observe(showError.observer)
+    vm.outputs.postNotification.map { $0.name } .observe(postNotification.observer)
+    vm.outputs.setWeeklyNewsletterState.observe(setWeeklyNewsletterState.observer)
+    vm.outputs.showError.observe(showError.observer)
   }
 
   // Tests a standard flow for signing up.
@@ -55,6 +55,9 @@ final class SignupViewModelTests: TestCase {
                                   "Notification posted after scheduler advances.")
 
     // MILK: Koala tests
+    // MILK: Disable keyboard?
+    // MILK: first responder events?
+    // MILK:
   }
 
   func testSetWeeklyNewsletterState() {
@@ -68,6 +71,31 @@ final class SignupViewModelTests: TestCase {
     withEnvironment(countryCode: "ES") {
       vm.inputs.viewDidLoad()
       setWeeklyNewsletterState.assertValues([true, false], "False by default for EU users")
+    }
+  }
+
+  func testShowError() {
+    let errorMessages = ["Password is too short (minimum is 6 characters)"]
+    let error = ErrorEnvelope(
+      errorMessages: errorMessages,
+      ksrCode: nil,
+      httpCode: 422,
+      exception: nil
+    )
+
+    withEnvironment(apiService: MockService(signupError: error)) {
+      vm.inputs.viewDidLoad()
+
+      vm.inputs.emailChanged("nativesquad@kickstarter.com")
+      vm.inputs.nameChanged("Native Squad")
+      vm.inputs.passwordChanged("!")
+      vm.inputs.signupButtonPressed()
+
+      showError.assertDidNotEmitValue("Should not emit until scheduler advances.")
+
+      scheduler.advance()
+      logIntoEnvironment.assertValueCount(0, "Should not login.")
+      showError.assertValues(errorMessages)
     }
   }
 }
