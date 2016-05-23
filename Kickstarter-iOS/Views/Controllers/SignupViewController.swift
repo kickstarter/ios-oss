@@ -1,3 +1,4 @@
+import Library
 import UIKit
 
 internal final class SignupViewController: UIViewController {
@@ -18,6 +19,17 @@ internal final class SignupViewController: UIViewController {
       .observeForUI()
       .observeNext { [weak self] in
         self?.newsletterSwitch.on = $0
+      }
+
+    self.viewModel.outputs.showError
+      .observeForUI()
+      .observeNext { [weak self] message in
+        self?.presentViewController(
+          UIAlertController
+            .alert(
+              localizedString(key: "signup.error.title", defaultValue: "Sign up error"),
+              message: message),
+          animated: true, completion: nil)
       }
   }
 
