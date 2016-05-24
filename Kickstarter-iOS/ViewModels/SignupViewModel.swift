@@ -75,16 +75,17 @@ internal final class SignupViewModel: SignupViewModelType, SignupViewModelInputs
     let signupEvent = combineLatest(
         nameChangedProperty.signal,
         emailChangedProperty.signal,
-        passwordChangedProperty.signal
+        passwordChangedProperty.signal,
+        weeklyNewsletterChangedProperty.signal
       )
       .takeWhen(signupButtonPressedProperty.signal)
-      .switchMap { name, email, password in
+      .switchMap { name, email, password, weeklyNewsletter in
         AppEnvironment.current.apiService.signup(
           name: name,
           email: email,
           password: password,
           passwordConfirmation: password,
-          sendNewsletters: true
+          sendNewsletters: weeklyNewsletter ?? false
           )
           .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
           .materialize()
