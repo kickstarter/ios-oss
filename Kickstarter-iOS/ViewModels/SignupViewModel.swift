@@ -10,14 +10,23 @@ internal protocol SignupViewModelInputs {
   /// Call when the user enters a new email address.
   func emailChanged(email: String)
 
+  /// Call when the user has finished editing the email text field.
+  func emailTextFieldDoneEditing()
+
   /// Call when the environment has been logged into
   func environmentLoggedIn()
 
   /// Call when the user enters a new name.
   func nameChanged(name: String)
 
+  /// Call when the user has finished editing the name text field.
+  func nameTextFieldDoneEditing()
+
   /// Call when the user enters a new password.
   func passwordChanged(password: String)
+
+  /// Call when the user has finished editing the password text field.
+  func passwordTextFieldDoneEditing()
 
   /// Call when the user taps signup.
   func signupButtonPressed()
@@ -30,14 +39,26 @@ internal protocol SignupViewModelInputs {
 }
 
 internal protocol SignupViewModelOutputs {
+  /// Dismiss the keyboard.
+  var dismissKeyboard: Signal<(), NoError> { get }
+
+  /// Sets the email text field to become first responder.
+  var emailTextFieldFirstResponder: Signal<(), NoError> { get }
+
   /// Emits true when the signup button should be enabled, false otherwise.
   var isSignupButtonEnabled: Signal<Bool, NoError> { get }
 
   /// Emits an access token envelope that can be used to update the environment.
   var logIntoEnvironment: Signal<AccessTokenEnvelope, NoError> { get }
 
+  /// Sets the password text field to become first responder.
+  var passwordTextFieldFirstResponder: Signal<(), NoError> { get }
+
   /// Emits when a notification should be posted.
   var postNotification: Signal<NSNotification, NoError> { get }
+
+  /// Sets the name text field to become first responder.
+  var nameTextFieldFirstResponder: Signal<(), NoError> { get }
 
   /// Emits the value for the weekly newsletter.
   var setWeeklyNewsletterState: Signal<Bool, NoError> { get }
@@ -55,9 +76,15 @@ internal final class SignupViewModel: SignupViewModelType, SignupViewModelInputs
 
   // swiftlint:disable function_body_length
   internal init() {
-    self.setWeeklyNewsletterState = viewDidLoadProperty.signal.map {
+    self.nameTextFieldFirstResponder = self.viewDidLoadProperty.signal.ignoreValues()
+    self.emailTextFieldFirstResponder = self.nameTextFieldDoneEditingProperty.signal
+    self.passwordTextFieldFirstResponder = self.emailTextFieldDoneEditingProperty.signal
+
+    self.setWeeklyNewsletterState = self.viewDidLoadProperty.signal.map {
       AppEnvironment.current.countryCode == "US"
     }
+
+    self.dismissKeyboard = .empty
 
     self.isSignupButtonEnabled = combineLatest(
       nameChangedProperty.signal,
@@ -114,6 +141,11 @@ internal final class SignupViewModel: SignupViewModelType, SignupViewModelInputs
     self.emailChangedProperty.value = email
   }
 
+  private let emailTextFieldDoneEditingProperty = MutableProperty(())
+  internal func emailTextFieldDoneEditing() {
+    self.emailTextFieldDoneEditingProperty.value = ()
+  }
+
   private let environmentLoggedInProperty = MutableProperty(())
   internal func environmentLoggedIn() {
     self.environmentLoggedInProperty.value = ()
@@ -124,9 +156,19 @@ internal final class SignupViewModel: SignupViewModelType, SignupViewModelInputs
     self.nameChangedProperty.value = name
   }
 
+  private let nameTextFieldDoneEditingProperty = MutableProperty(())
+  internal func nameTextFieldDoneEditing() {
+    self.nameTextFieldDoneEditingProperty.value = ()
+  }
+
   private let passwordChangedProperty = MutableProperty<String>("")
   internal func passwordChanged(password: String) {
     self.passwordChangedProperty.value = password
+  }
+
+  private let passwordTextFieldDoneEditingProperty = MutableProperty(())
+  internal func passwordTextFieldDoneEditing() {
+    self.passwordTextFieldDoneEditingProperty.value = ()
   }
 
   private let signupButtonPressedProperty = MutableProperty()
@@ -145,8 +187,12 @@ internal final class SignupViewModel: SignupViewModelType, SignupViewModelInputs
   }
 
   // OUTPUTS
+  internal let dismissKeyboard: Signal<(), NoError>
+  internal let emailTextFieldFirstResponder: Signal<(), NoError>
   internal let isSignupButtonEnabled: Signal<Bool, NoError>
   internal let logIntoEnvironment: Signal<AccessTokenEnvelope, NoError>
+  internal let nameTextFieldFirstResponder: Signal<(), NoError>
+  internal let passwordTextFieldFirstResponder: Signal<(), NoError>
   internal let postNotification: Signal<NSNotification, NoError>
   internal let setWeeklyNewsletterState: Signal<Bool, NoError>
   internal let showError: Signal<String, NoError>

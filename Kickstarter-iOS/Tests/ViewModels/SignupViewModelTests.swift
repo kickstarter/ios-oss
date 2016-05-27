@@ -9,8 +9,12 @@ import XCTest
 
 final class SignupViewModelTests: TestCase {
   let vm: SignupViewModelType = SignupViewModel()
+  let emailTextFieldFirstResponder = TestObserver<(), NoError>()
+  let dismissKeyboard = TestObserver<(), NoError>()
   let isSignupButtonEnabled = TestObserver<Bool, NoError>()
   let logIntoEnvironment = TestObserver<AccessTokenEnvelope, NoError>()
+  let nameTextFieldFirstResponder = TestObserver<(), NoError>()
+  let passwordTextFieldFirstResponder = TestObserver<(), NoError>()
   let postNotification = TestObserver<String, NoError>()
   let setWeeklyNewsletterState = TestObserver<Bool, NoError>()
   let showError = TestObserver<String, NoError>()
@@ -18,11 +22,38 @@ final class SignupViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
+    vm.outputs.dismissKeyboard.observe(dismissKeyboard.observer)
+    vm.outputs.emailTextFieldFirstResponder.observe(emailTextFieldFirstResponder.observer)
     vm.outputs.isSignupButtonEnabled.observe(isSignupButtonEnabled.observer)
     vm.outputs.logIntoEnvironment.observe(logIntoEnvironment.observer)
-    vm.outputs.postNotification.map { $0.name } .observe(postNotification.observer)
+    vm.outputs.nameTextFieldFirstResponder.observe(nameTextFieldFirstResponder.observer)
+    vm.outputs.passwordTextFieldFirstResponder.observe(passwordTextFieldFirstResponder.observer)
+    vm.outputs.postNotification.map { $0.name }.observe(postNotification.observer)
     vm.outputs.setWeeklyNewsletterState.observe(setWeeklyNewsletterState.observer)
     vm.outputs.showError.observe(showError.observer)
+  }
+
+  func testFirstResponder() {
+    nameTextFieldFirstResponder.assertDidNotEmitValue()
+    emailTextFieldFirstResponder.assertDidNotEmitValue()
+    passwordTextFieldFirstResponder.assertDidNotEmitValue()
+
+    vm.inputs.viewDidLoad()
+    nameTextFieldFirstResponder.assertValueCount(1)
+    emailTextFieldFirstResponder.assertDidNotEmitValue()
+    passwordTextFieldFirstResponder.assertDidNotEmitValue()
+
+    vm.inputs.nameChanged("Native Squad")
+    vm.inputs.nameTextFieldDoneEditing()
+    nameTextFieldFirstResponder.assertValueCount(1)
+    emailTextFieldFirstResponder.assertValueCount(1)
+    passwordTextFieldFirstResponder.assertDidNotEmitValue()
+
+    vm.inputs.emailChanged("therealnativesquad@gmail.com")
+    vm.inputs.emailTextFieldDoneEditing()
+    nameTextFieldFirstResponder.assertValueCount(1)
+    emailTextFieldFirstResponder.assertValueCount(1)
+    passwordTextFieldFirstResponder.assertValueCount(1)
   }
 
   // Tests a standard flow for signing up.
@@ -57,7 +88,6 @@ final class SignupViewModelTests: TestCase {
     // MILK: Koala tests
     // MILK: Disable keyboard?
     // MILK: first responder events?
-    // MILK:
   }
 
   func testSetWeeklyNewsletterState() {
