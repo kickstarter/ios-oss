@@ -33,44 +33,39 @@ final class SignupViewModelTests: TestCase {
     vm.outputs.showError.observe(showError.observer)
   }
 
-  func testFirstResponder() {
+  // Tests a standard flow for signing up.
+  func testFlow() {
     nameTextFieldFirstResponder.assertDidNotEmitValue()
     emailTextFieldFirstResponder.assertDidNotEmitValue()
     passwordTextFieldFirstResponder.assertDidNotEmitValue()
 
     vm.inputs.viewDidLoad()
+
+    setWeeklyNewsletterState.assertValues([true], "Selected when view loads.")
+    isSignupButtonEnabled.assertValues([false], "Disabled when view loads.")
     nameTextFieldFirstResponder.assertValueCount(1)
     emailTextFieldFirstResponder.assertDidNotEmitValue()
     passwordTextFieldFirstResponder.assertDidNotEmitValue()
 
     vm.inputs.nameChanged("Native Squad")
     vm.inputs.nameTextFieldDoneEditing()
+    isSignupButtonEnabled.assertValues([false], "Disable while form is incomplete.")
     nameTextFieldFirstResponder.assertValueCount(1)
     emailTextFieldFirstResponder.assertValueCount(1)
     passwordTextFieldFirstResponder.assertDidNotEmitValue()
 
     vm.inputs.emailChanged("therealnativesquad@gmail.com")
     vm.inputs.emailTextFieldDoneEditing()
+    isSignupButtonEnabled.assertValues([false], "Disabled while form is incomplete.")
     nameTextFieldFirstResponder.assertValueCount(1)
     emailTextFieldFirstResponder.assertValueCount(1)
     passwordTextFieldFirstResponder.assertValueCount(1)
-  }
-
-  // Tests a standard flow for signing up.
-  func testFlow() {
-    vm.inputs.viewDidLoad()
-
-    setWeeklyNewsletterState.assertValues([true], "Selected when view loads.")
-    isSignupButtonEnabled.assertValues([false], "Disabled when view loads.")
-
-    vm.inputs.nameChanged("Native Squad")
-    isSignupButtonEnabled.assertValues([false], "Disable while form is incomplete.")
-
-    vm.inputs.emailChanged("therealnativesquad@gmail.com")
-    isSignupButtonEnabled.assertValues([false], "Disabled while form is incomplete.")
+    dismissKeyboard.assertDidNotEmitValue()
 
     vm.inputs.passwordChanged("0773rw473rm3l0n")
     isSignupButtonEnabled.assertValues([false, true], "Enabled when form has been filled out.")
+    vm.inputs.passwordTextFieldDoneEditing()
+    dismissKeyboard.assertValueCount(1)
 
     vm.inputs.signupButtonPressed()
     logIntoEnvironment.assertDidNotEmitValue("Does not immediately emit after signup button is pressed.")
@@ -86,8 +81,6 @@ final class SignupViewModelTests: TestCase {
                                   "Notification posted after scheduler advances.")
 
     // MILK: Koala tests
-    // MILK: Disable keyboard?
-    // MILK: first responder events?
   }
 
   func testSetWeeklyNewsletterState() {

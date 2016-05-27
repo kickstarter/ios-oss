@@ -80,13 +80,8 @@ internal final class SignupViewModel: SignupViewModelType, SignupViewModelInputs
     self.emailTextFieldFirstResponder = self.nameTextFieldDoneEditingProperty.signal
     self.passwordTextFieldFirstResponder = self.emailTextFieldDoneEditingProperty.signal
 
-    self.setWeeklyNewsletterState = self.viewDidLoadProperty.signal.map {
-      AppEnvironment.current.countryCode == "US"
-    }
-
-    self.dismissKeyboard = .empty
-
-    self.isSignupButtonEnabled = combineLatest(
+    // all fields entered
+    let formValid = combineLatest(
       nameChangedProperty.signal,
       emailChangedProperty.signal,
       passwordChangedProperty.signal
@@ -96,6 +91,22 @@ internal final class SignupViewModel: SignupViewModelType, SignupViewModelInputs
         isValidEmail(email) &&
         !password.characters.isEmpty
       }
+
+    let doneEditingTextField = Signal.merge(
+      self.nameTextFieldDoneEditingProperty.signal,
+      self.emailTextFieldDoneEditingProperty.signal,
+      self.passwordTextFieldDoneEditingProperty.signal
+    )
+
+    self.dismissKeyboard = formValid
+      .takeWhen(doneEditingTextField)
+      .ignoreValues()
+
+    self.setWeeklyNewsletterState = self.viewDidLoadProperty.signal.map {
+      AppEnvironment.current.countryCode == "US"
+    }
+
+    self.isSignupButtonEnabled = formValid
       .mergeWith(viewDidLoadProperty.signal.mapConst(false))
 
     let weeklyNewsletter = Signal.merge(
