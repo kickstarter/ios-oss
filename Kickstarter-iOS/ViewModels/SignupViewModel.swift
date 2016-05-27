@@ -52,6 +52,8 @@ internal protocol SignupViewModelType {
 }
 
 internal final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, SignupViewModelOutputs {
+
+  // swiftlint:disable function_body_length
   internal init() {
     self.setWeeklyNewsletterState = viewDidLoadProperty.signal.map {
       AppEnvironment.current.countryCode == "US"
@@ -69,23 +71,26 @@ internal final class SignupViewModel: SignupViewModelType, SignupViewModelInputs
       }
       .mergeWith(viewDidLoadProperty.signal.mapConst(false))
 
-    // MILK: password confirmation
-    // MILK: newsletter
-    // MILK: Validate input again?
+    let weeklyNewsletter = Signal.merge(
+      self.setWeeklyNewsletterState,
+      self.weeklyNewsletterChangedProperty.signal
+        .map { $0 ?? false }
+    )
+
     let signupEvent = combineLatest(
         nameChangedProperty.signal,
         emailChangedProperty.signal,
         passwordChangedProperty.signal,
-        weeklyNewsletterChangedProperty.signal
+        weeklyNewsletter
       )
       .takeWhen(signupButtonPressedProperty.signal)
-      .switchMap { name, email, password, weeklyNewsletter in
+      .switchMap { name, email, password, newsletter in
         AppEnvironment.current.apiService.signup(
           name: name,
           email: email,
           password: password,
           passwordConfirmation: password,
-          sendNewsletters: weeklyNewsletter ?? false
+          sendNewsletters: newsletter
           )
           .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
           .materialize()
