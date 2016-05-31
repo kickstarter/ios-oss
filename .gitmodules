@@ -1,6 +1,3 @@
-[submodule "Frameworks/Prelude"]
-	path = Frameworks/Prelude
-	url = git@github.com:kickstarter/Kickstarter-Prelude
 [submodule "Frameworks/KsApi"]
 	path = Frameworks/KsApi
 	url = git@github.com:kickstarter/Kickstarter-KsApi.git

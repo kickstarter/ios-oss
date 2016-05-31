@@ -22,6 +22,34 @@ internal protocol ActivityUpdateViewModelOutputs {
 
 internal final class ActivityUpdateViewModel: ActivityUpdateViewModelInputs, ActivityUpdateViewModelOutputs {
 
+  internal init() {
+    let activity = self.activityProperty.signal.ignoreNil()
+
+    self.projectImageURL = activity.map { ($0.project?.photo.med).flatMap(NSURL.init) }
+
+    self.projectName = activity.map { $0.project?.name }
+
+    self.title = activity.map { $0.update?.title }
+
+    self.sequenceTitle = activity.map { $0.update?.sequence ?? 1 }
+      .map {
+        localizedString(
+          key: "update_sequence",
+          defaultValue: "Update #%{sequence}",
+          substitutions: ["sequence": Format.wholeNumber($0)]
+        )
+    }
+
+    self.timestamp = activity.map {
+      Format.date(secondsInUTC: $0.createdAt, dateStyle: .MediumStyle, timeStyle: .NoStyle)
+    }
+
+    self.body = activity.map { $0.update?.body ?? "" }.map(truncateBody)
+
+    self.tappedActivityProjectImage = activity
+      .takeWhen(self.tappedProjectImageProperty.signal)
+  }
+
   private let activityProperty = MutableProperty<Activity?>(nil)
   internal func activity(activity: Activity) {
     self.activityProperty.value = activity
@@ -41,32 +69,6 @@ internal final class ActivityUpdateViewModel: ActivityUpdateViewModelInputs, Act
 
   internal var inputs: ActivityUpdateViewModelInputs { return self }
   internal var outputs: ActivityUpdateViewModelOutputs { return self }
-
-  internal init() {
-    let activity = self.activityProperty.signal.ignoreNil()
-
-    self.projectImageURL = activity.map { ($0.project?.photo.med).flatMap(NSURL.init) }
-
-    self.projectName = activity.map { $0.project?.name }
-
-    self.title = activity.map { $0.update?.title }
-
-    self.sequenceTitle = activity.map { $0.update?.sequence ?? 1 }
-      .map {
-        localizedString(
-          key: "update_sequence",
-          defaultValue: "Update #%{sequence}",
-          substitutions: ["sequence": Format.wholeNumber($0)]
-        )
-    }
-
-    self.timestamp = activity.mapConst("")
-
-    self.body = activity.map { $0.update?.body ?? "" }.map(truncateBody)
-
-    self.tappedActivityProjectImage = activity
-      .takeWhen(self.tappedProjectImageProperty.signal)
-  }
 }
 
 private func truncateBody(body: String) -> String {

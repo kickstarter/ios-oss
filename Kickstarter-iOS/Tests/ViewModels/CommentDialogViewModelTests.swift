@@ -33,7 +33,7 @@ internal final class CommentDialogViewModelTests: TestCase {
 
   internal func testPostingFlow_Project() {
     self.vm.inputs.viewWillAppear()
-    self.vm.inputs.project(ProjectFactory.live(), update: nil)
+    self.vm.inputs.project(Project.template, update: nil)
 
     self.postButtonEnabled.assertValues([false], "Button is not enabled initially.")
     self.loadingViewIsHidden.assertValues([true], "Loading view starts hidden")
@@ -66,7 +66,7 @@ internal final class CommentDialogViewModelTests: TestCase {
 
   internal func testPostingFlow_Update() {
     self.vm.inputs.viewWillAppear()
-    self.vm.inputs.project(ProjectFactory.live(), update: UpdateFactory.update())
+    self.vm.inputs.project(Project.template, update: Update.template)
 
     self.postButtonEnabled.assertValues([false], "Button is not enabled initially.")
     self.loadingViewIsHidden.assertValues([true], "Loading view starts hidden")
@@ -107,7 +107,7 @@ internal final class CommentDialogViewModelTests: TestCase {
 
     withEnvironment(apiService: MockService(postCommentError: error)) {
       self.vm.inputs.viewWillAppear()
-      self.vm.inputs.project(ProjectFactory.live(), update: nil)
+      self.vm.inputs.project(Project.template, update: nil)
       self.vm.inputs.commentBodyChanged("hello")
 
       self.vm.inputs.postButtonPressed()
@@ -134,7 +134,7 @@ internal final class CommentDialogViewModelTests: TestCase {
 
     withEnvironment(apiService: MockService(postCommentError: error)) {
       self.vm.inputs.viewWillAppear()
-      self.vm.inputs.project(ProjectFactory.live(), update: nil)
+      self.vm.inputs.project(Project.template, update: nil)
       self.vm.inputs.commentBodyChanged("hello")
 
       self.vm.inputs.postButtonPressed()
@@ -147,7 +147,7 @@ internal final class CommentDialogViewModelTests: TestCase {
 
   internal func testCancellingFlow() {
     self.vm.inputs.viewWillAppear()
-    self.vm.inputs.project(ProjectFactory.live(), update: nil)
+    self.vm.inputs.project(Project.template, update: nil)
 
     self.vm.inputs.cancelButtonPressed()
     self.notifyPresenterDialogWantsDismissal.assertValueCount(1)

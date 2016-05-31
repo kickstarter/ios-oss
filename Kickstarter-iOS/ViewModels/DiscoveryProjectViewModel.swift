@@ -51,7 +51,7 @@ DiscoveryProjectViewModelInputs, DiscoveryProjectViewModelOutputs {
       localizedString(
         key: "card.funded",
         defaultValue: "%{percent_funded} funded",
-        substitutions: ["percent_funded": Format.percentage($0.percentFunded)]
+        substitutions: ["percent_funded": Format.percentage($0.stats.percentFunded)]
       )
     }
     self.backers = project.map {

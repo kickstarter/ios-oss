@@ -41,7 +41,8 @@ PlaylistsMenuViewModelOutputs {
     self.title = playlist.map(titleForPlaylist)
 
     self.projects = playlist.switchMap {
-      AppEnvironment.current.apiService.fetchProjects($0.discoveryParams)
+      AppEnvironment.current.apiService.fetchDiscovery(params: $0.discoveryParams)
+        .map { $0.projects }
         .demoteErrors()
     }
 

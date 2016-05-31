@@ -3,18 +3,16 @@ import XCTest
 import ReactiveCocoa
 import Result
 @testable import KsApi
-import Models
+@testable import Models
+@testable import Models_TestHelpers
 import Prelude
-import struct Library.Environment
-import struct Library.AppEnvironment
+import Library
 @testable import KsApi_TestHelpers
 @testable import ReactiveExtensions_TestHelpers
 
 internal final class PlaylistViewModelTests: XCTestCase {
   let playlist = Playlist.Featured
-  lazy var project: Project = {
-    return MockService().fetchProject(DiscoveryParams()).first()!.value!
-  }()
+  var project = Project.template
 
   override func setUp() {
     AppEnvironment.pushEnvironment(

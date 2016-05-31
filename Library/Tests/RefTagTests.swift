@@ -11,10 +11,12 @@ public final class RefTagTests: XCTestCase {
     XCTAssertEqual("city", RefTag.city.stringTag)
     XCTAssertEqual("discovery", RefTag.discovery.stringTag)
     XCTAssertEqual("discovery_potd", RefTag.discoveryPotd.stringTag)
+    XCTAssertEqual("message_thread", RefTag.messageThread.stringTag)
     XCTAssertEqual("recommended", RefTag.recommended.stringTag)
     XCTAssertEqual("search", RefTag.search.stringTag)
     XCTAssertEqual("social", RefTag.social.stringTag)
     XCTAssertEqual("thanks", RefTag.thanks.stringTag)
+    XCTAssertEqual("users", RefTag.users.stringTag)
 
     XCTAssertEqual("category_ending_soon", RefTag.categoryWithSort(.EndingSoon).stringTag)
     XCTAssertEqual("category", RefTag.categoryWithSort(.Magic).stringTag)
@@ -37,10 +39,12 @@ public final class RefTagTests: XCTestCase {
     XCTAssertEqual(RefTag.city, RefTag.city)
     XCTAssertEqual(RefTag.discovery, RefTag.discovery)
     XCTAssertEqual(RefTag.discoveryPotd, RefTag.discoveryPotd)
+    XCTAssertEqual(RefTag.messageThread, RefTag.messageThread)
     XCTAssertEqual(RefTag.recommended, RefTag.recommended)
     XCTAssertEqual(RefTag.search, RefTag.search)
     XCTAssertEqual(RefTag.social, RefTag.social)
     XCTAssertEqual(RefTag.thanks, RefTag.thanks)
+    XCTAssertEqual(RefTag.users, RefTag.users)
 
     XCTAssertEqual(RefTag.categoryWithSort(.Magic), RefTag.categoryWithSort(.Magic))
     XCTAssertNotEqual(RefTag.categoryWithSort(.Magic), RefTag.categoryWithSort(.Popular))
@@ -78,6 +82,7 @@ public final class RefTagTests: XCTestCase {
     XCTAssertEqual(RefTag.city, RefTag(code: RefTag.city.stringTag))
     XCTAssertEqual(RefTag.discovery, RefTag(code: RefTag.discovery.stringTag))
     XCTAssertEqual(RefTag.discoveryPotd, RefTag(code: RefTag.discoveryPotd.stringTag))
+    XCTAssertEqual(RefTag.messageThread, RefTag(code: RefTag.messageThread.stringTag))
     XCTAssertEqual(RefTag.recommended, RefTag(code: RefTag.recommended.stringTag))
 
     XCTAssertEqual(RefTag.recommended, RefTag(code: RefTag.recommendedWithSort(.Magic).stringTag))
@@ -93,6 +98,7 @@ public final class RefTagTests: XCTestCase {
     XCTAssertEqual(RefTag.search, RefTag(code: RefTag.search.stringTag))
     XCTAssertEqual(RefTag.social, RefTag(code: RefTag.social.stringTag))
     XCTAssertEqual(RefTag.thanks, RefTag(code: RefTag.thanks.stringTag))
+    XCTAssertEqual(RefTag.users, RefTag(code: RefTag.users.stringTag))
     XCTAssertEqual(RefTag.unrecognized("custom"), RefTag(code: RefTag.unrecognized("custom").stringTag))
   }
 }

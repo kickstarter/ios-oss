@@ -86,7 +86,9 @@ PlaylistExplorerViewModelInputs, PlaylistExplorerViewModelOutputs {
       .debounce(1.0, onScheduler: QueueScheduler.mainQueueScheduler)
       .skipRepeats()
       .map { playlist in playlist.discoveryParams }
-      .switchMap { params in apiService.fetchProjects(params).demoteErrors() }
+      .switchMap { params in apiService.fetchDiscovery(params: params)
+        .map { $0.projects }
+        .demoteErrors() }
 
     self.playlistsOpened = Signal.merge([
       self.focusedPlaylist.mapConst(true),

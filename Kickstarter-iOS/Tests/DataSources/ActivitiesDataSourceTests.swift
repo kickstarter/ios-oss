@@ -3,15 +3,16 @@ import XCTest
 @testable import Library
 @testable import Models_TestHelpers
 import Models
+import Prelude
 
 final class ActivitiesDataSourceTests: XCTestCase {
   let dataSource = ActivitiesDataSource()
   let tableView = UITableView()
 
   func testDataSource() {
-    let updateActivity = ActivityFactory.updateActivity
-    let backingActivity = ActivityFactory.backingActivity
-    let successActivity = ActivityFactory.successActivity
+    let updateActivity = Activity.template |> Activity.lens.category *~ .Update
+    let backingActivity = Activity.template |> Activity.lens.category *~ .Backing
+    let successActivity = Activity.template |> Activity.lens.category *~ .Success
 
     self.dataSource.emptyState(visible: true)
 
@@ -38,7 +39,7 @@ final class ActivitiesDataSourceTests: XCTestCase {
     XCTAssertEqual("Padding", self.dataSource.reusableId(item: 3, section: 1))
 
     XCTAssertEqual(successActivity, self.dataSource[itemSection: (4, 1)] as? Activity)
-    XCTAssertEqual("ActivityStateChangeCell", self.dataSource.reusableId(item: 4, section: 1))
+    XCTAssertEqual("ActivitySuccessCell", self.dataSource.reusableId(item: 4, section: 1))
 
     XCTAssertEqual("Padding", self.dataSource.reusableId(item: 5, section: 1))
 

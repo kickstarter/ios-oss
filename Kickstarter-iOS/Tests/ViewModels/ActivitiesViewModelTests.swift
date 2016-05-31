@@ -7,6 +7,7 @@ import XCTest
 import Result
 import Models
 @testable import Models_TestHelpers
+import Prelude
 
 final class ActivitiesViewModelTests: TestCase {
   let vm: ActivitiesViewModelType! = ActivitiesViewModel()
@@ -15,7 +16,7 @@ final class ActivitiesViewModelTests: TestCase {
   let showLoggedOutEmptyState = TestObserver<Bool, NoError>()
   let showLoggedInEmptyState = TestObserver<Bool, NoError>()
   let isRefreshing = TestObserver<Bool, NoError>()
-  let showProject = TestObserver<Project, NoError>()
+  let goToProject = TestObserver<Project, NoError>()
   let showRefTag = TestObserver<RefTag, NoError>()
 
   override func setUp() {
@@ -25,8 +26,8 @@ final class ActivitiesViewModelTests: TestCase {
     self.vm.outputs.showLoggedOutEmptyState.observe(self.showLoggedOutEmptyState.observer)
     self.vm.outputs.showLoggedInEmptyState.observe(self.showLoggedInEmptyState.observer)
     self.vm.outputs.isRefreshing.observe(self.isRefreshing.observer)
-    self.vm.outputs.showProject.map { $0.0 }.observe(self.showProject.observer)
-    self.vm.outputs.showProject.map { $0.1 }.observe(self.showRefTag.observer)
+    self.vm.outputs.goToProject.map { $0.0 }.observe(self.goToProject.observer)
+    self.vm.outputs.goToProject.map { $0.1 }.observe(self.showRefTag.observer)
   }
 
   // Tests the flow of logging in with a user that has activities.
@@ -37,7 +38,7 @@ final class ActivitiesViewModelTests: TestCase {
     showLoggedOutEmptyState.assertValues([true], "Logged-out empty state shown.")
     showLoggedInEmptyState.assertValues([], "No logged-in empty state.")
 
-    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: UserFactory.user()))
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: User.template))
     self.vm.inputs.userSessionStarted()
     self.scheduler.advance()
 
@@ -57,7 +58,7 @@ final class ActivitiesViewModelTests: TestCase {
       showLoggedOutEmptyState.assertValues([true], "Logged out empty state visible.")
       showLoggedInEmptyState.assertValues([], "Logged in empty state didn't emit.")
 
-      AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: UserFactory.user()))
+      AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: User.template))
       self.vm.inputs.userSessionStarted()
       self.scheduler.advance()
 
@@ -69,7 +70,7 @@ final class ActivitiesViewModelTests: TestCase {
 
   // Tests that activities are cleared if the user is logged out for any reason.
   func testInvalidatedTokenFlow_ActivitiesClearAfterSessionCleared() {
-    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: UserFactory.user()))
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: User.template))
     self.vm.inputs.viewWillAppear()
     self.scheduler.advance()
 
@@ -88,7 +89,7 @@ final class ActivitiesViewModelTests: TestCase {
   //   * user logs in before ever view activities
   //   * user navigates to activities
   func testLogin_BeforeActivityViewAppeared() {
-    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: UserFactory.user()))
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: User.template))
     self.vm.inputs.userSessionStarted()
     self.scheduler.advance()
 
@@ -101,7 +102,7 @@ final class ActivitiesViewModelTests: TestCase {
   }
 
   func testRefreshActivities() {
-    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: UserFactory.user()))
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: User.template))
     self.vm.inputs.userSessionStarted()
     self.vm.inputs.viewWillAppear()
     self.scheduler.advance()
@@ -119,14 +120,14 @@ final class ActivitiesViewModelTests: TestCase {
     activitiesPresent.assertValues([true, true, true], "Activities load immediately after session starts.")
   }
 
-  func testShowProject() {
-    let activity = ActivityFactory.backingActivity
+  func testgoToProject() {
+    let activity = Activity.template |> Activity.lens.category *~ .Backing
     let project = activity.project!
     let refTag = RefTag.activity
 
     self.vm.inputs.activityUpdateCellTappedProjectImage(activity: activity)
 
-    self.showProject.assertValues([project])
+    self.goToProject.assertValues([project])
     self.showRefTag.assertValues([refTag])
   }
 }

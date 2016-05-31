@@ -9,6 +9,7 @@ import Result
 @testable import Models_TestHelpers
 @testable import ReactiveExtensions
 @testable import ReactiveExtensions_TestHelpers
+import Prelude
 
 internal final class ProjectViewModelTests: TestCase {
   let vm: ProjectViewModelType = ProjectViewModel()
@@ -27,7 +28,7 @@ internal final class ProjectViewModelTests: TestCase {
   }
 
   func testProjectEmissions() {
-    self.vm.inputs.project(ProjectFactory.live())
+    self.vm.inputs.project(Project.template)
     self.vm.inputs.refTag(nil)
 
     self.project.assertDidNotEmitValue("Does not emit project right away.")
@@ -44,7 +45,7 @@ internal final class ProjectViewModelTests: TestCase {
 
   // Tests that ref tags and referral credit cookies are tracked in koala and saved like we expect.
   func testTracksRefTag() {
-    let project = ProjectFactory.live()
+    let project = Project.template
 
     vm.inputs.project(project)
     vm.inputs.refTag(RefTag.category)
@@ -83,7 +84,7 @@ internal final class ProjectViewModelTests: TestCase {
   func testLoggedOutUser_StarsProject() {
     self.projectIsStarred.assertDidNotEmitValue("No projects emitted at first.")
 
-    vm.inputs.project(ProjectFactory.notStarred)
+    vm.inputs.project(Project.template |> Project.lens.personalization.isStarred *~ false)
     vm.inputs.refTag(nil)
     vm.inputs.viewWillAppear()
     self.scheduler.advance()
@@ -98,7 +99,7 @@ internal final class ProjectViewModelTests: TestCase {
                                        "Nothing is emitted when starring while logged out.")
     self.showLoginTout.assertValueCount(1, "Prompt to login when starring while logged out.")
 
-    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: UserFactory.user()))
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: User.template))
     vm.inputs.userSessionStarted()
 
     self.projectIsStarred.assertValues([false, false, true],
@@ -109,22 +110,24 @@ internal final class ProjectViewModelTests: TestCase {
 
   // Tests a logged in user starring a project.
   func testLoggedInUser_StarsProject() {
-    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: UserFactory.user()))
+    let project = Project.template
+
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: User.template))
 
     self.projectIsStarred.assertDidNotEmitValue("No projects emitted at first.")
 
-    vm.inputs.project(ProjectFactory.notStarred)
+    vm.inputs.project(project)
     vm.inputs.refTag(nil)
     vm.inputs.viewWillAppear()
     self.scheduler.advance()
 
-    self.projectIsStarred.assertValues([false, false],
+    self.projectIsStarred.assertValues([nil, nil],
                                        "Emits project immediately, and then again with update from the API.")
     XCTAssertEqual(["Project Page"], trackingClient.events, "A project page koala event is tracked.")
 
     vm.inputs.starButtonTapped()
 
-    self.projectIsStarred.assertValues([false, false, true],
+    self.projectIsStarred.assertValues([nil, nil, true],
                                        "Once logged in, the project stars immediately.")
     showProjectStarredPrompt.assertValueCount(1, "The star prompt shows.")
     XCTAssertEqual(["Project Page", "Project Star"], trackingClient.events, "A star koala event is tracked.")
@@ -132,9 +135,11 @@ internal final class ProjectViewModelTests: TestCase {
 
   // Tests a logged in user starring a project that ends soon.
   func testLoggedInUser_StarsEndingSoonProject() {
-    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: UserFactory.user()))
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: User.template))
 
-    vm.inputs.project(ProjectFactory.endingSoon)
+    vm.inputs.project(
+      Project.template |> Project.lens.dates.deadline *~ NSDate().timeIntervalSince1970 - 60.0 * 60.0 * 24.0
+    )
     vm.inputs.refTag(nil)
     vm.inputs.viewWillAppear()
     vm.inputs.starButtonTapped()
@@ -144,9 +149,9 @@ internal final class ProjectViewModelTests: TestCase {
 
   // Tests a user unstarring a project.
   func testLoggedInUser_UnstarsProject() {
-    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: UserFactory.user()))
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: User.template))
 
-    vm.inputs.project(ProjectFactory.starred)
+    vm.inputs.project(Project.template |> Project.lens.personalization.isStarred *~ true)
     vm.inputs.refTag(nil)
     vm.inputs.viewWillAppear()
     vm.inputs.starButtonTapped()

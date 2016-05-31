@@ -39,7 +39,8 @@ public extension UIAlertController {
     return alertController
   }
 
-  public static func games(subscribeHandler: ((UIAlertAction) -> Void)) -> UIAlertController {
+  public static func games(subscribeHandler subscribeHandler: ((UIAlertAction) -> Void))
+    -> UIAlertController {
     let alertController = UIAlertController(
       title: nil,
       message: localizedString(
@@ -66,7 +67,7 @@ public extension UIAlertController {
     return alertController
   }
 
-  public static func rating(yesHandler: ((UIAlertAction) -> Void),
+  public static func rating(yesHandler yesHandler: ((UIAlertAction) -> Void),
                             remindHandler: ((UIAlertAction) -> Void),
                             noHandler: ((UIAlertAction) -> Void)) -> UIAlertController {
     let alertController = UIAlertController(
@@ -104,8 +105,7 @@ public extension UIAlertController {
     return alertController
   }
 
-  public static func newsletterOptIn(newsletter: String,
-                                     environment: Environment = AppEnvironment.current) -> UIAlertController {
+  public static func newsletterOptIn(newsletter: String) -> UIAlertController {
     let alertController = UIAlertController(
       title: localizedString(
         key: "profile.settings.newsletter.opt_in.title",
@@ -115,13 +115,54 @@ public extension UIAlertController {
         defaultValue: "We've sent a confirmation email to the address associated with your account! " +
           "Please check your email in order to confirm that you'd like to subscribe to %{newsletter}.",
         count: nil,
-        substitutions: ["newsletter": newsletter],
-        env: environment),
+        substitutions: ["newsletter": newsletter]),
       preferredStyle: .Alert
     )
     alertController.addAction(
       UIAlertAction(
         title: localizedString(key: "general.alert.buttons.ok", defaultValue: "OK"),
+        style: .Cancel,
+        handler: nil
+      )
+    )
+
+    return alertController
+  }
+
+  public static func projectCopiedToPasteboard(projectURL url: String) -> UIAlertController {
+    let alertController = UIAlertController(
+      title: nil,
+      message: localizedString(
+        key: "project.checkout.share.link.the_project_url_has_been_copied_to_your_clipboard",
+        defaultValue: "The projects's URL has been copied to your clipboard:\n\n%{project_url}",
+        count: nil,
+        substitutions: ["project_url": url]),
+      preferredStyle: .Alert
+    )
+    alertController.addAction(
+      UIAlertAction(
+        title: localizedString(key: "project.checkout.share.link.OK", defaultValue: "OK"),
+        style: .Cancel,
+        handler: nil
+      )
+    )
+
+    return alertController
+  }
+
+  public static func updateCopiedToPasteboard(updateURL url: String) -> UIAlertController {
+    let alertController = UIAlertController(
+      title: nil,
+      message: localizedString(
+        key: "project.checkout.share.link.the_update_url_has_been_copied_to_your_clipboard",
+        defaultValue: "The update's URL has been copied to your clipboard:\n\n%{update_url}",
+        count: nil,
+        substitutions: ["update_url": url]),
+      preferredStyle: .Alert
+    )
+    alertController.addAction(
+      UIAlertAction(
+        title: localizedString(key: "project.checkout.share.link.OK", defaultValue: "OK"),
         style: .Cancel,
         handler: nil
       )

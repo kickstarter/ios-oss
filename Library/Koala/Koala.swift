@@ -1,6 +1,7 @@
 // swiftlint:disable file_length
 import Foundation
 import UIKit
+import KsApi
 import Models
 import Prelude
 
@@ -10,6 +11,25 @@ public final class Koala {
   private let bundle: NSBundleType
   private let device: UIDeviceType
   private let screen: UIScreenType
+
+  // swiftlint:disable type_name
+  /**
+   Determines the place from which the message dialog was presented.
+
+   - backerModel:     The backing view, usually seen by pressing "View pledge" on the project page.
+   - creatorActivity: The creator's activity feed.
+   - messages:        The messages inbox.
+   - projectMessages: The messages inbox for a particular project of a creator's.
+   - projectPage:     The project page.
+   */
+  public enum MessageDialogContext: String {
+    case backerModel = "backer_modal"
+    case creatorActivity = "creator_activity"
+    case messages = "messages"
+    case projectMessages = "project_messages"
+    case projectPage = "project_page"
+  }
+  // swiftlint:enable type_name
 
   public init(client: TrackingClientType,
               loggedInUser: User? = nil,
@@ -107,7 +127,6 @@ public final class Koala {
   }
 
   // MARK: Comments Events
-
   public func trackLoadNewerComments(project project: Project) {
     self.track(event: "Project Comment Load New",
                properties: projectProperties(project, loggedInUser: self.loggedInUser))
@@ -175,57 +194,110 @@ public final class Koala {
     self.track(event: "Checkout Page Failed")
   }
 
-  public func trackCheckoutShowShareSheet() {
-    self.track(event: "Checkout Show Share Sheet")
+  public func trackCheckoutShowShareSheet(project project: Project) {
+    self.track(event: "Checkout Show Share Sheet",
+               properties: projectProperties(project, loggedInUser: self.loggedInUser))
   }
 
-  public func trackCheckoutCancelShareSheet() {
-    self.track(event: "Checkout Cancel Share Sheet")
+  public func trackCheckoutCancelShareSheet(project project: Project) {
+    self.track(event: "Checkout Cancel Share Sheet",
+               properties: projectProperties(project, loggedInUser: self.loggedInUser))
   }
 
-  public func trackCheckoutShowFacebookShareView() {
-    self.track(event: "Checkout Show Share", properties: ["share_type": "facebook"])
+  public func trackCheckoutCancelShare(project project: Project, shareType: String?) {
+    let properties = projectProperties(project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(["share_type": shareTypeProperty(shareType)])
+
+    self.track(event: "Checkout Cancel Share", properties: properties)
   }
 
-  public func trackCheckoutShowTwitterShareView() {
-    self.track(event: "Checkout Show Share", properties: ["share_type": "twitter"])
+  public func trackCheckoutShowShare(project project: Project, shareType: String?) {
+    let properties = projectProperties(project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(["share_type": shareTypeProperty(shareType)])
+
+    self.track(event: "Checkout Show Share", properties: properties)
   }
 
-  public func trackCheckoutShareFinishedWithShareType(activityType: String?, completed: Bool) {
-    self.track(event: "Checkout Share Finished",
-               properties: [
-                "share_type": activityType ?? "",
-                "did_share": completed
-              ]
-    )
+  // cancel share event
+
+  public func trackCheckoutShare(project project: Project, shareType: String?) {
+    let properties = projectProperties(project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(["share_type": shareTypeProperty(shareType)])
+
+    self.track(event: "Checkout Share", properties: properties)
   }
 
-  public func trackCheckoutFinishJumpToDiscovery() {
-    self.track(event: "Checkout Finished Discover More")
+  public func trackCheckoutFinishJumpToDiscovery(project project: Project) {
+    self.track(event: "Checkout Finished Discover More",
+               properties: projectProperties(project, loggedInUser: self.loggedInUser))
   }
 
-  public func trackCheckoutFinishJumpToProject() {
-    self.track(event: "Checkout Finished Discover Open Project")
+  public func trackCheckoutFinishJumpToProject(project project: Project) {
+    self.track(event: "Checkout Finished Discover Open Project",
+               properties: projectProperties(project, loggedInUser: self.loggedInUser))
   }
 
-  public func trackCheckoutFinishAppStoreRatingAlertRateNow() {
-    self.track(event: "Checkout Finished Alert App Store Rating Rate Now")
+  public func trackCheckoutFinishAppStoreRatingAlertRateNow(project project: Project) {
+    self.track(event: "Checkout Finished Alert App Store Rating Rate Now",
+               properties: projectProperties(project, loggedInUser: self.loggedInUser))
   }
 
-  public func trackCheckoutFinishAppStoreRatingAlertRemindLater() {
-    self.track(event: "Checkout Finished Alert App Store Rating Remind Later")
+  public func trackCheckoutFinishAppStoreRatingAlertRemindLater(project project: Project) {
+    self.track(event: "Checkout Finished Alert App Store Rating Remind Later",
+               properties: projectProperties(project, loggedInUser: self.loggedInUser))
   }
 
-  public func trackCheckoutFinishAppStoreRatingAlertNoThanks() {
-    self.track(event: "Checkout Finished Alert App Store Rating No Thanks")
+  public func trackCheckoutFinishAppStoreRatingAlertNoThanks(project project: Project) {
+    self.track(event: "Checkout Finished Alert App Store Rating No Thanks",
+               properties: projectProperties(project, loggedInUser: self.loggedInUser))
   }
 
-  public func trackNewsletterToggle(sendNewsletter: Bool) {
+  public func trackNewsletterToggle(sendNewsletter: Bool, project: Project) {
+    let properties = projectProperties(project, loggedInUser: self.loggedInUser)
     if sendNewsletter {
-      self.track(event: "Newsletter Subscribe")
+      self.track(event: "Newsletter Subscribe", properties: properties)
     } else {
-      self.track(event: "Newsletter Unsubscribe")
+      self.track(event: "Newsletter Unsubscribe", properties: properties)
     }
+  }
+
+  // MARK: Messages
+
+  public func trackMessageThreadsView(mailbox mailbox: Mailbox, project: Project?) {
+    let properties = project.flatMap { projectProperties($0, loggedInUser: self.loggedInUser) } ?? [:]
+
+    self.track(event: "Message Threads View",
+               properties: properties.withAllValuesFrom(["mailbox": mailbox.rawValue]))
+    // deprecated
+    self.track(event: "Message Inbox View",
+               properties: properties.withAllValuesFrom(["DEPRECATED": true]))
+  }
+
+  public func trackMessageThreadsSearch(term term: String, project: Project?) {
+    let properties = project.flatMap { projectProperties($0, loggedInUser: self.loggedInUser) } ?? [:]
+
+    self.track(event: "Message Threads Search",
+               properties: properties.withAllValuesFrom(["term": term]))
+    self.track(event: "Message Inbox Search",
+               properties: properties.withAllValuesFrom(["term": term, "DEPRECATED": true]))
+  }
+
+  public func trackMessageThreadView(project project: Project) {
+    self.track(event: "Message Thread View",
+               properties: projectProperties(project, loggedInUser: self.loggedInUser))
+  }
+
+  /**
+   Tracks an event for sending a message.
+
+   - parameter project: The project that is the subject of the message.
+   - parameter context: The place where the message was sent from.
+   */
+  public func trackMessageSent(project project: Project, context: MessageDialogContext) {
+    let props = projectProperties(project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(["message_type": "single", "context": context.rawValue])
+
+    self.track(event: "Message Sent", properties: props)
   }
 
   // MARK: Search Events
@@ -269,6 +341,11 @@ public final class Koala {
 
     let event = isStarred ? "Project Star" : "Project Unstar"
     self.track(event: event, properties: projectProperties(project, loggedInUser: self.loggedInUser))
+  }
+
+  // MARK: Profile Events
+  public func trackProfileView() {
+    self.track(event: "Profile View My")
   }
 
   // Private tracking method that merges in default properties.
@@ -344,7 +421,7 @@ private func projectProperties(project: Project,
   properties["pid"] = project.id
   properties["name"] = project.name
   properties["pledged"] = project.stats.pledged
-  properties["percent_raised"] = project.fundingProgress
+  properties["percent_raised"] = project.stats.fundingProgress
   properties["has_video"] = project.video != nil
   properties["state"] = project.state.rawValue
   properties["update_count"] = project.stats.updatesCount
@@ -398,9 +475,33 @@ private func userProperties(user: User, prefix: String = "user_") -> [String:Any
   var properties = [String:AnyObject]()
 
   properties["uid"] = user.id
-  properties["backed_projects_count"] = user.stats?.backedProjectsCount
-  properties["created_projects_count"] = user.stats?.createdProjectsCount
-  properties["starred_projects_count"] = user.stats?.starredProjectsCount
+  properties["backed_projects_count"] = user.stats.backedProjectsCount
+  properties["created_projects_count"] = user.stats.createdProjectsCount
+  properties["starred_projects_count"] = user.stats.starredProjectsCount
 
   return properties.prefixedKeys(prefix)
+}
+
+private func shareTypeProperty(shareType: String?) -> String {
+  #if os(iOS)
+  guard let shareType = shareType else { return "" }
+
+  if shareType == UIActivityTypePostToFacebook {
+    return "facebook"
+  } else if shareType == UIActivityTypeMessage {
+    return "message"
+  } else if shareType == UIActivityTypeMail {
+    return "email"
+  } else if shareType == UIActivityTypeCopyToPasteboard {
+    return "copy link"
+  } else if shareType == UIActivityTypePostToTwitter {
+    return "twitter"
+  } else if shareType == "com.apple.mobilenotes.SharingExtension" {
+    return "notes"
+  } else {
+    return shareType
+  }
+  #else
+    return ""
+  #endif
 }

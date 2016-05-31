@@ -36,12 +36,9 @@ internal final class CommentDialogViewController: UIViewController {
   }
 
   override func bindViewModel() {
-
-    self.viewModel.outputs.postButtonEnabled
-      .observeForUI()
-      .observeNext { [weak self] in self?.postButton.enabled = $0 }
-
+    self.postButton.rac.enabled = self.viewModel.outputs.postButtonEnabled
     self.subtitleLabel.rac.text = self.viewModel.outputs.subtitle
+    self.loadingView.rac.hidden = self.viewModel.outputs.loadingViewIsHidden
 
     self.viewModel.outputs.showKeyboard
       .observeForUI()
@@ -60,8 +57,6 @@ internal final class CommentDialogViewController: UIViewController {
     self.viewModel.errors.presentError
       .observeForUI()
       .observeNext { [weak self] in self?.presentError($0) }
-
-    self.loadingView.rac.hidden = self.viewModel.outputs.loadingViewIsHidden
 
     Keyboard.change.observeForUI()
       .observeNext { [weak self] in self?.animateTextViewConstraint($0) }

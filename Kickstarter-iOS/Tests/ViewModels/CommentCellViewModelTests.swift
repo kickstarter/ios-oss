@@ -6,6 +6,7 @@ import XCTest
 @testable import Models_TestHelpers
 import ReactiveCocoa
 import Result
+import Prelude
 
 final class CommentCellViewModelTest: TestCase {
   let vm: CommentCellViewModelType = CommentCellViewModel()
@@ -33,9 +34,9 @@ final class CommentCellViewModelTest: TestCase {
   }
 
   func testOutputs() {
-    let comment = CommentFactory.comment()
-    let project = ProjectFactory.live()
-    let viewer = UserFactory.user(id: 42)
+    let comment = Comment.template
+    let project = Project.template
+    let viewer = User.template |> User.lens.id *~ 12345
 
     self.vm.inputs.comment(comment, project: project, viewer: viewer)
 
@@ -50,8 +51,8 @@ final class CommentCellViewModelTest: TestCase {
   }
 
   func testOutputs_ViewerIs_LoggedOut() {
-    let comment = CommentFactory.comment()
-    let project = ProjectFactory.live()
+    let comment = Comment.template
+    let project = Project.template
 
     self.vm.inputs.comment(comment, project: project, viewer: nil)
 
@@ -66,9 +67,9 @@ final class CommentCellViewModelTest: TestCase {
   }
 
   func testPersonalizedLabels_ViewerIs_NotCreator_NotAuthor() {
-    let comment = CommentFactory.comment()
-    let project = ProjectFactory.live()
-    let viewer = UserFactory.user(id: 42)
+    let comment = Comment.template
+    let project = Project.template
+    let viewer = User.template |> User.lens.id *~ 12345
 
     self.vm.inputs.comment(comment, project: project, viewer: viewer)
 
@@ -77,12 +78,12 @@ final class CommentCellViewModelTest: TestCase {
   }
 
   func testPersonalizedLabels_ViewerIs_NotCreator_Author() {
-    let comment = Comment(author: UserFactory.user(id: 42),
+    let comment = Comment(author: User.template |> User.lens.id *~ 12345,
                           body: "HELLO",
                           createdAt: 123456789.0,
                           deletedAt: nil,
                           id: 1)
-    let project = ProjectFactory.live()
+    let project = Project.template
     let viewer = comment.author
 
     self.vm.inputs.comment(comment, project: project, viewer: viewer)
@@ -92,7 +93,7 @@ final class CommentCellViewModelTest: TestCase {
   }
 
   func testPersonalizedLabels_ViewerIs_Creator_Author() {
-    let project = ProjectFactory.live()
+    let project = Project.template
     let comment = Comment(author: project.creator,
                           body: "HELLO",
                           createdAt: 123456789.0,
@@ -107,8 +108,8 @@ final class CommentCellViewModelTest: TestCase {
   }
 
   func testPersonalizedLabels_ViewerIs_Creator_NonAuthor() {
-    let project = ProjectFactory.live()
-    let comment = Comment(author: UserFactory.user(id: 43),
+    let project = Project.template
+    let comment = Comment(author: User.template |> User.lens.id *~ 12345,
                           body: "HELLO",
                           createdAt: 123456789.0,
                           deletedAt: nil,
@@ -122,9 +123,9 @@ final class CommentCellViewModelTest: TestCase {
   }
 
   func testDeletedComment() {
-    let comment = CommentFactory.deletedComment()
-    let project = ProjectFactory.live()
-    let viewer = UserFactory.user(id: 42)
+    let comment = Comment.template |> Comment.lens.deletedAt *~ 123456789.0
+    let project = Project.template
+    let viewer = User.template |> User.lens.id *~ 12345
 
     self.vm.inputs.comment(comment, project: project, viewer: viewer)
 

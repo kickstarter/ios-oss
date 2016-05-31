@@ -58,15 +58,15 @@ final class AppEnvironmentTests: XCTestCase {
     XCTAssertNil(AppEnvironment.current.apiService.oauthToken)
     XCTAssertNil(AppEnvironment.current.currentUser)
 
-    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: UserFactory.user()))
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: User.template))
 
     XCTAssertEqual("deadbeef", AppEnvironment.current.apiService.oauthToken?.token)
-    XCTAssertEqual(UserFactory.user(), AppEnvironment.current.currentUser)
+    XCTAssertEqual(User.template, AppEnvironment.current.currentUser)
 
-    AppEnvironment.updateCurrentUser(UserFactory.otherUser)
+    AppEnvironment.updateCurrentUser(User.template)
 
     XCTAssertEqual("deadbeef", AppEnvironment.current.apiService.oauthToken?.token)
-    XCTAssertEqual(UserFactory.otherUser, AppEnvironment.current.currentUser)
+    XCTAssertEqual(User.template, AppEnvironment.current.currentUser)
 
     AppEnvironment.logout()
 
@@ -98,7 +98,7 @@ final class AppEnvironmentTests: XCTestCase {
         "apiService.serverConfig.basicHTTPAuth.password": "mundo",
         "apiService.serverConfig.webBaseUrl": "http://ksr.com",
         "apiService.language": "en",
-        "currentUser": UserFactory.user().encode()
+        "currentUser": User.template.encode()
       ],
       forKey: AppEnvironment.environmentStorageKey)
 
@@ -111,7 +111,7 @@ final class AppEnvironmentTests: XCTestCase {
     XCTAssertEqual("mundo", env.apiService.serverConfig.basicHTTPAuth?.password)
     XCTAssertEqual("http://ksr.com", env.apiService.serverConfig.webBaseUrl.absoluteString)
     XCTAssertEqual("en", env.apiService.language)
-    XCTAssertEqual(UserFactory.user(), env.currentUser)
+    XCTAssertEqual(User.template, env.currentUser)
 
     let differentEnv = AppEnvironment.fromStorage(ubiquitousStore: MockKeyValueStore(),
                                                   userDefaults: MockKeyValueStore())
@@ -140,7 +140,7 @@ final class AppEnvironmentTests: XCTestCase {
       ),
       oauthToken: OauthToken(token: "deadbeef")
     )
-    let currentUser = UserFactory.user()
+    let currentUser = User.template
     let userDefaults = MockKeyValueStore()
     let ubiquitousStore = MockKeyValueStore()
 
@@ -155,7 +155,7 @@ final class AppEnvironmentTests: XCTestCase {
     XCTAssertEqual("cafebeef", result["apiService.serverConfig.apiClientAuth.clientId"] as? String)
     XCTAssertEqual("http://ksr.com", result["apiService.serverConfig.webBaseUrl"] as? String)
     XCTAssertEqual("en", result["apiService.language"] as? String)
-    XCTAssertEqual(UserFactory.user().id, (result["currentUser"] as? [String:AnyObject])?["id"] as? Int)
+    XCTAssertEqual(User.template.id, (result["currentUser"] as? [String:AnyObject])?["id"] as? Int)
 
     XCTAssertEqual("deadbeef", ubiquitousStore.stringForKey(AppEnvironment.oauthTokenStorageKey))
   }
@@ -164,13 +164,13 @@ final class AppEnvironmentTests: XCTestCase {
     AppEnvironment.pushEnvironment(ubiquitousStore: MockKeyValueStore(),
                                    userDefaults: MockKeyValueStore())
 
-    AppEnvironment.pushEnvironment(currentUser: UserFactory.user())
+    AppEnvironment.pushEnvironment(currentUser: User.template)
 
     var currentUserId = AppEnvironment.current.userDefaults
       .dictionaryForKey(AppEnvironment.environmentStorageKey)
       .flatMap { $0["currentUser"] as? [String:AnyObject] }
       .flatMap { $0["id"] as? Int }
-    XCTAssertEqual(UserFactory.user().id, currentUserId, "Current user is saved.")
+    XCTAssertEqual(User.template.id, currentUserId, "Current user is saved.")
 
     AppEnvironment.popEnvironment()
 

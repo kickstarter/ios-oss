@@ -6,8 +6,10 @@ import UIKit
 @testable import KsApi_TestHelpers
 @testable import ReactiveExtensions_TestHelpers
 @testable import Models_TestHelpers
+import Models
 import Result
 import ReactiveCocoa
+import Prelude
 
 final class RootViewModelTests: TestCase {
   let vm: RootViewModelType = RootViewModel()
@@ -44,7 +46,7 @@ final class RootViewModelTests: TestCase {
       "Show the logged out tabs."
     )
 
-    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: UserFactory.user()))
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: User.template))
     vm.inputs.userSessionStarted()
 
     viewControllerNames.assertValues(
@@ -55,7 +57,7 @@ final class RootViewModelTests: TestCase {
       "Show the logged in tabs."
     )
 
-    AppEnvironment.updateCurrentUser(UserFactory.creator)
+    AppEnvironment.updateCurrentUser(User.template |> User.lens.stats.createdProjectsCount *~ 1)
     vm.inputs.currentUserUpdated()
 
     viewControllerNames.assertValues(

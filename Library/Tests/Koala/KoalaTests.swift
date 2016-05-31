@@ -1,6 +1,8 @@
 import XCTest
 @testable import Library
 @testable import Models_TestHelpers
+import Models
+import Prelude
 
 final class KoalaTests: XCTestCase {
 
@@ -38,7 +40,10 @@ final class KoalaTests: XCTestCase {
 
   func testDefaultPropertiesWithLoggedInUser() {
     let client = MockTrackingClient()
-    let user = UserFactory.loggedInUser
+    let user = User.template
+      |> User.lens.stats.backedProjectsCount *~ 2
+      <> User.lens.stats.createdProjectsCount *~ 3
+      <> User.lens.stats.starredProjectsCount *~ 4
     let koala = Koala(client: client, loggedInUser: user)
 
     koala.trackAppOpen()
@@ -48,9 +53,9 @@ final class KoalaTests: XCTestCase {
 
     XCTAssertEqual(user.id, properties["user_uid"] as? Int)
     XCTAssertTrue(properties["user_logged_in"] as! Bool)
-    XCTAssertEqual(user.stats?.backedProjectsCount!, properties["user_backed_projects_count"] as? Int)
-    XCTAssertEqual(user.stats?.createdProjectsCount!, properties["user_created_projects_count"] as? Int)
-    XCTAssertEqual(user.stats?.starredProjectsCount!, properties["user_starred_projects_count"] as? Int)
+    XCTAssertEqual(user.stats.backedProjectsCount!, properties["user_backed_projects_count"] as? Int)
+    XCTAssertEqual(user.stats.createdProjectsCount!, properties["user_created_projects_count"] as? Int)
+    XCTAssertEqual(user.stats.starredProjectsCount!, properties["user_starred_projects_count"] as? Int)
   }
 
   func testDeviceFormatAndClientPlatform_ForIPhoneIdiom() {
@@ -83,7 +88,7 @@ final class KoalaTests: XCTestCase {
   func testTrackProject() {
     let client = MockTrackingClient()
     let koala = Koala(client: client, loggedInUser: nil)
-    let project = ProjectFactory.live()
+    let project = Project.template
 
     koala.trackProjectShow(project, refTag: .discovery, cookieRefTag: .recommended)
     XCTAssertEqual(1, client.properties.count)
@@ -98,7 +103,7 @@ final class KoalaTests: XCTestCase {
     XCTAssertEqual(project.stats.goal, properties["project_goal"] as? Int)
     XCTAssertEqual(project.id, properties["project_pid"] as? Int)
     XCTAssertEqual(project.stats.pledged, properties["project_pledged"] as? Int)
-    XCTAssertEqual(project.fundingProgress, properties["project_percent_raised"] as? Float)
+    XCTAssertEqual(project.stats.fundingProgress, properties["project_percent_raised"] as? Float)
     XCTAssertNotNil(project.video)
     XCTAssertEqual(project.category.name, properties["project_category"] as? String)
     XCTAssertEqual(project.category.parent?.name, properties["project_parent_category"] as? String)
@@ -112,18 +117,20 @@ final class KoalaTests: XCTestCase {
     XCTAssertEqual("recommended", properties["referrer_credit"] as? String)
 
     XCTAssertEqual(project.creator.id, properties["creator_uid"] as? Int)
-    XCTAssertEqual(project.creator.stats?.backedProjectsCount,
+    XCTAssertEqual(project.creator.stats.backedProjectsCount,
                    properties["creator_backed_projects_count"] as? Int)
-    XCTAssertEqual(project.creator.stats?.createdProjectsCount,
+    XCTAssertEqual(project.creator.stats.createdProjectsCount,
                    properties["creator_created_projects_count"] as? Int)
-    XCTAssertEqual(project.creator.stats?.starredProjectsCount,
+    XCTAssertEqual(project.creator.stats.starredProjectsCount,
                    properties["creator_starred_projects_count"] as? Int)
   }
 
   func testProjectProperties_LoggedInUser() {
     let client = MockTrackingClient()
-    let project = ProjectFactory.personalized
-    let loggedInUser = UserFactory.otherUser
+    let project = Project.template
+      |> Project.lens.personalization.isBacking *~ false
+      <> Project.lens.personalization.isStarred *~ false
+    let loggedInUser = User.template |> User.lens.id *~ 42
     let koala = Koala(client: client, loggedInUser: loggedInUser)
 
     koala.trackProjectShow(project, refTag: nil, cookieRefTag: nil)
@@ -138,8 +145,10 @@ final class KoalaTests: XCTestCase {
 
   func testProjectProperties_LoggedInBacker() {
     let client = MockTrackingClient()
-    let project = ProjectFactory.backing
-    let loggedInUser = UserFactory.otherUser
+    let project = Project.template
+      |> Project.lens.personalization.isBacking *~ true
+      |> Project.lens.personalization.isStarred *~ false
+    let loggedInUser = User.template |> User.lens.id *~ 42
     let koala = Koala(client: client, loggedInUser: loggedInUser)
 
     koala.trackProjectShow(project, refTag: nil, cookieRefTag: nil)
@@ -154,8 +163,10 @@ final class KoalaTests: XCTestCase {
 
   func testProjectProperties_LoggedInStarrer() {
     let client = MockTrackingClient()
-    let project = ProjectFactory.starred
-    let loggedInUser = UserFactory.otherUser
+    let project = Project.template
+      |> Project.lens.personalization.isBacking *~ false
+      |> Project.lens.personalization.isStarred *~ true
+    let loggedInUser = User.template |> User.lens.id *~ 42
     let koala = Koala(client: client, loggedInUser: loggedInUser)
 
     koala.trackProjectShow(project, refTag: nil, cookieRefTag: nil)
@@ -170,7 +181,9 @@ final class KoalaTests: XCTestCase {
 
   func testProjectProperties_LoggedInCreator() {
     let client = MockTrackingClient()
-    let project = ProjectFactory.personalized
+    let project = Project.template
+      |> Project.lens.personalization.isBacking *~ false
+      <> Project.lens.personalization.isStarred *~ false
     let loggedInUser = project.creator
     let koala = Koala(client: client, loggedInUser: loggedInUser)
 

@@ -18,6 +18,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         userDefaults: NSUserDefaults.standardUserDefaults()
       )
     )
+
     // NB: We have to push this shared instance directly because somehow we get two different shared
     //     instances if we use the one from `Environment.init`.
     AppEnvironment.replaceCurrentEnvironment(facebookAppDelegate: FBSDKApplicationDelegate.sharedInstance())

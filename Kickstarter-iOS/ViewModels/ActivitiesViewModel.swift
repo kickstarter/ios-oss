@@ -7,20 +7,23 @@ import ReactiveExtensions
 import Result
 
 internal protocol ActitiviesViewModelInputs: ActivityUpdateCellDelegate {
-  /// Call when the view appears.
-  func viewWillAppear()
-
   /// Call when the login button is pressed in the logged-out empty state.
   func loginButtonPressed()
 
-  /// Call when a user session has started
-  func userSessionStarted()
+  /// Call when the feed should be refreshed, e.g. pull-to-refresh.
+  func refresh()
+
+  /// Call when an activity is tapped.
+  func tappedActivity(activity: Activity)
 
   /// Call when a user session ends
   func userSessionEnded()
 
-  /// Call when the feed should be refreshed, e.g. pull-to-refresh.
-  func refresh()
+  /// Call when a user session has started
+  func userSessionStarted()
+
+  /// Call when the view appears.
+  func viewWillAppear()
 
   /**
    Call from the controller's `tableView:willDisplayCell:forRowAtIndexPath` method.
@@ -35,17 +38,17 @@ internal protocol ActivitiesViewModelOutputs {
   /// Emits an array of activities that should be displayed
   var activities: Signal<[Activity], NoError> { get }
 
-  /// Emits `true` when the logged-out empty state should be shown, and `false` when it should be hidden.
-  var showLoggedOutEmptyState: Signal<Bool, NoError> { get }
-
-  /// Emits `true` when the logged-in empty state should be shown, and `false` when it should be hidden.
-  var showLoggedInEmptyState: Signal<Bool, NoError> { get }
+  /// Emits a project and ref tag that should be used to present a project controller.
+  var goToProject: Signal<(Project, RefTag), NoError> { get }
 
   /// Emits a boolean that indicates if the activities are refreshing.
   var isRefreshing: Signal<Bool, NoError> { get }
 
-  /// Emits a project and ref tag that should be used to present a project controller.
-  var showProject: Signal<(Project, RefTag), NoError> { get }
+  /// Emits `true` when the logged-in empty state should be shown, and `false` when it should be hidden.
+  var showLoggedInEmptyState: Signal<Bool, NoError> { get }
+
+  /// Emits `true` when the logged-out empty state should be shown, and `false` when it should be hidden.
+  var showLoggedOutEmptyState: Signal<Bool, NoError> { get }
 }
 
 internal protocol ActivitiesViewModelType {
@@ -56,44 +59,6 @@ internal protocol ActivitiesViewModelType {
 internal final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewModelInputs,
 ActivitiesViewModelOutputs {
   typealias Model = Activity
-
-  private let viewWillAppearProperty = MutableProperty(())
-  internal func viewWillAppear() {
-    self.viewWillAppearProperty.value = ()
-  }
-  private let loginButtonPressedProperty = MutableProperty(())
-  internal func loginButtonPressed() {
-    self.loginButtonPressedProperty.value = ()
-  }
-  private let userSessionStartedProperty = MutableProperty(())
-  internal func userSessionStarted() {
-    self.userSessionStartedProperty.value = ()
-  }
-  private let userSessionEndedProperty = MutableProperty(())
-  internal func userSessionEnded() {
-    self.userSessionEndedProperty.value = ()
-  }
-  private let refreshProperty = MutableProperty()
-  internal func refresh() {
-    self.refreshProperty.value = ()
-  }
-  private let willDisplayRowProperty = MutableProperty<(row: Int, total: Int)?>(nil)
-  internal func willDisplayRow(row: Int, outOf totalRows: Int) {
-    self.willDisplayRowProperty.value = (row, totalRows)
-  }
-  private let tappedActivityProjectImage = MutableProperty<Activity?>(nil)
-  internal func activityUpdateCellTappedProjectImage(activity activity: Activity) {
-    self.tappedActivityProjectImage.value = activity
-  }
-
-  internal let activities: Signal<[Activity], NoError>
-  internal let showLoggedInEmptyState: Signal<Bool, NoError>
-  internal let showLoggedOutEmptyState: Signal<Bool, NoError>
-  internal let isRefreshing: Signal<Bool, NoError>
-  internal let showProject: Signal<(Project, RefTag), NoError>
-
-  internal var inputs: ActitiviesViewModelInputs { return self }
-  internal var outputs: ActivitiesViewModelOutputs { return self }
 
   // swiftlint:disable function_body_length
   init() {
@@ -146,12 +111,14 @@ ActivitiesViewModelOutputs {
       .skipRepeats()
 
     self.showLoggedOutEmptyState = isLoggedIn
-      .skipWhile(isTrue)
       .map(negate)
+      .skipWhile(isFalse)
       .skipRepeats()
 
-    self.showProject = self.tappedActivityProjectImage.signal.ignoreNil()
-      .map { $0.project }
+    self.goToProject = Signal.merge(
+      self.tappedActivityProjectImage.signal.map { $0?.project },
+      self.tappedActivityProperty.signal.map { $0?.project }
+      )
       .ignoreNil()
       .map { ($0, RefTag.activity) }
 
@@ -159,4 +126,46 @@ ActivitiesViewModelOutputs {
       .observeNext { AppEnvironment.current.koala.trackActivities() }
   }
   // swiftlint:enable function_body_length
+
+  private let viewWillAppearProperty = MutableProperty(())
+  internal func viewWillAppear() {
+    self.viewWillAppearProperty.value = ()
+  }
+  private let loginButtonPressedProperty = MutableProperty(())
+  internal func loginButtonPressed() {
+    self.loginButtonPressedProperty.value = ()
+  }
+  private let userSessionStartedProperty = MutableProperty(())
+  internal func userSessionStarted() {
+    self.userSessionStartedProperty.value = ()
+  }
+  private let userSessionEndedProperty = MutableProperty(())
+  internal func userSessionEnded() {
+    self.userSessionEndedProperty.value = ()
+  }
+  private let refreshProperty = MutableProperty()
+  internal func refresh() {
+    self.refreshProperty.value = ()
+  }
+  private let willDisplayRowProperty = MutableProperty<(row: Int, total: Int)?>(nil)
+  internal func willDisplayRow(row: Int, outOf totalRows: Int) {
+    self.willDisplayRowProperty.value = (row, totalRows)
+  }
+  private let tappedActivityProjectImage = MutableProperty<Activity?>(nil)
+  internal func activityUpdateCellTappedProjectImage(activity activity: Activity) {
+    self.tappedActivityProjectImage.value = activity
+  }
+  private let tappedActivityProperty = MutableProperty<Activity?>(nil)
+  internal func tappedActivity(activity: Activity) {
+    self.tappedActivityProperty.value = activity
+  }
+
+  internal let activities: Signal<[Activity], NoError>
+  internal let showLoggedInEmptyState: Signal<Bool, NoError>
+  internal let showLoggedOutEmptyState: Signal<Bool, NoError>
+  internal let isRefreshing: Signal<Bool, NoError>
+  internal let goToProject: Signal<(Project, RefTag), NoError>
+
+  internal var inputs: ActitiviesViewModelInputs { return self }
+  internal var outputs: ActivitiesViewModelOutputs { return self }
 }

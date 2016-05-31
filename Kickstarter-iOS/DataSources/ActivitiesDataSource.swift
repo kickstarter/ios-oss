@@ -29,9 +29,13 @@ internal final class ActivitiesDataSource: ValueCellDataSource {
       case .Follow:
         self.appendRow(value: activity, cellClass: ActivityFriendFollowCell.self, toSection: section)
       case .Success:
-        self.appendRow(value: activity, cellClass: ActivityStateChangeCell.self, toSection: section)
+        self.appendRow(value: activity, cellClass: ActivitySuccessCell.self, toSection: section)
+      case .Failure, .Cancellation, .Suspension:
+        self.appendRow(value: activity, cellClass: ActivityNegativeStateChangeCell.self, toSection: section)
+      case .Launch:
+        self.appendRow(value: activity, cellClass: ActivityLaunchCell.self, toSection: section)
       default:
-        assertionFailure("Unsupported activity")
+        assertionFailure("Unsupported activity: \(activity)")
       }
 
       self.appendStaticRow(cellIdentifier: "Padding", toSection: section)
@@ -47,14 +51,18 @@ internal final class ActivitiesDataSource: ValueCellDataSource {
       cell.configureWith(value: activity)
     case let (cell as ActivityFriendFollowCell, activity as Activity):
       cell.configureWith(value: activity)
-    case let (cell as ActivityStateChangeCell, activity as Activity):
+    case let (cell as ActivitySuccessCell, activity as Activity):
       cell.configureWith(value: activity)
+    case let (cell as ActivityNegativeStateChangeCell, value as Activity):
+      cell.configureWith(value: value)
+    case let (cell as ActivityLaunchCell, value as Activity):
+      cell.configureWith(value: value)
     case let (cell as ActivityEmptyStateCell, value as Void):
       cell.configureWith(value: value)
     case (is StaticTableViewCell, is Void):
       return
     default:
-      assertionFailure("Unrecognized (cell, viewModel) combo.")
+      assertionFailure("Unrecognized combo: \(cell), \(value)")
     }
   }
 }

@@ -1,6 +1,7 @@
 import UIKit
 import Library
 import ReactiveCocoa
+import ReactiveExtensions
 import Models
 
 internal final class ProjectSubpagesCell: UITableViewCell, ValueCell {
