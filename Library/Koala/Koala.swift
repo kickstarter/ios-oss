@@ -103,6 +103,11 @@ public final class Koala {
     self.track(event: "Errored User Signup")
   }
 
+  // Call when the user toggles the signup form's newsletter toggle.
+  public func trackSignupNewsletterToggle(sendNewsletters: Bool) {
+    self.track(event: "Signup Newsletter Toggle", properties: ["send_newsletters": sendNewsletters])
+  }
+
   public func trackSignupSuccess() {
     self.track(event: "New User")
   }
@@ -110,10 +115,6 @@ public final class Koala {
   // Call once when the signup view loads.
   public func trackSignupView() {
     self.track(event: "User Signup")
-  }
-
-  public func trackSignupNewsletterToggle(sendNewsletters: Bool) {
-    self.track(event: "Signup Newsletter Toggle", properties: ["send_newsletters": sendNewsletters])
   }
 
   public func trackFacebookConfirmation() {

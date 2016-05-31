@@ -125,4 +125,18 @@ final class SignupViewModelTests: TestCase {
       XCTAssertEqual(["User Signup", "Errored User Signup"], trackingClient.events)
     }
   }
+
+  func testWeeklyNewsletterChanged() {
+    vm.inputs.viewDidLoad()
+    XCTAssertEqual(["User Signup"], trackingClient.events)
+
+    vm.inputs.weeklyNewsletterChanged(true)
+    XCTAssertEqual(["User Signup", "Signup Newsletter Toggle"], trackingClient.events)
+
+    vm.inputs.weeklyNewsletterChanged(false)
+    XCTAssertEqual(
+      ["User Signup", "Signup Newsletter Toggle", "Signup Newsletter Toggle"],
+      trackingClient.events
+    )
+  }
 }

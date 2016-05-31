@@ -112,7 +112,7 @@ internal final class SignupViewModel: SignupViewModelType, SignupViewModelInputs
     let weeklyNewsletter = Signal.merge(
       self.setWeeklyNewsletterState,
       self.weeklyNewsletterChangedProperty.signal
-        .map { $0 ?? false }
+        .ignoreNil()
     )
 
     let signupEvent = combineLatest(
@@ -146,16 +146,20 @@ internal final class SignupViewModel: SignupViewModelType, SignupViewModelInputs
       .mapConst(NSNotification(name: CurrentUserNotifications.sessionStarted, object: nil))
 
     self.environmentLoggedInProperty.signal
-      .observeNext { _ in AppEnvironment.current.koala.trackLoginSuccess() }
+      .observeNext { AppEnvironment.current.koala.trackLoginSuccess() }
 
     self.showError
       .observeNext { _ in AppEnvironment.current.koala.trackSignupError() }
+
+    self.weeklyNewsletterChangedProperty.signal
+      .ignoreNil()
+      .observeNext { AppEnvironment.current.koala.trackSignupNewsletterToggle($0) }
 
     signupEvent.values()
       .observeNext { _ in AppEnvironment.current.koala.trackSignupSuccess() }
 
     self.viewDidLoadProperty.signal
-      .observeNext { _ in AppEnvironment.current.koala.trackSignupView() }
+      .observeNext { AppEnvironment.current.koala.trackSignupView() }
   }
 
   // INPUTS
