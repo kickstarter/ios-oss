@@ -118,7 +118,8 @@ final class SignupViewModelTests: TestCase {
 
       scheduler.advance()
       logIntoEnvironment.assertValueCount(0, "Should not login.")
-      showError.assertValues(errorMessages)
+      showError.assertValues(errorMessages, "Signup error.")
+      XCTAssertEqual(["Errored User Signup"], trackingClient.events)
     }
   }
 }

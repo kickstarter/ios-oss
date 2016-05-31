@@ -140,6 +140,9 @@ internal final class SignupViewModel: SignupViewModelType, SignupViewModelInputs
           localizedString(key: "signup.error.something_wrong", defaultValue: "Something went wrong.")
       }
 
+    self.showError
+      .observeNext { _ in AppEnvironment.current.koala.trackSignupError() }
+
     self.logIntoEnvironment = signupEvent.values()
 
     self.postNotification = self.environmentLoggedInProperty.signal

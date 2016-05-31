@@ -98,6 +98,10 @@ public final class Koala {
     self.track(event: "Forgot Password Errored")
   }
 
+  public func trackSignupError() {
+    self.track(event: "Errored User Signup")
+  }
+
   public func trackSignupSuccess() {
     self.track(event: "New User")
   }
