@@ -108,6 +108,7 @@ public final class Koala {
     self.track(event: "Signup Newsletter Toggle", properties: ["send_newsletters": sendNewsletters])
   }
 
+  // Call when the user has successfully signed up for a new account.
   public func trackSignupSuccess() {
     self.track(event: "New User")
   }
