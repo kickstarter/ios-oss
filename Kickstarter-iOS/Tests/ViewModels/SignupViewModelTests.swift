@@ -9,12 +9,12 @@ import XCTest
 
 final class SignupViewModelTests: TestCase {
   let vm: SignupViewModelType = SignupViewModel()
-  let emailTextFieldFirstResponder = TestObserver<(), NoError>()
+  let emailTextFieldIsFirstResponder = TestObserver<Bool, NoError>()
   let dismissKeyboard = TestObserver<(), NoError>()
   let isSignupButtonEnabled = TestObserver<Bool, NoError>()
   let logIntoEnvironment = TestObserver<AccessTokenEnvelope, NoError>()
-  let nameTextFieldFirstResponder = TestObserver<(), NoError>()
-  let passwordTextFieldFirstResponder = TestObserver<(), NoError>()
+  let nameTextFieldIsFirstResponder = TestObserver<Bool, NoError>()
+  let passwordTextFieldIsFirstResponder = TestObserver<Bool, NoError>()
   let postNotification = TestObserver<String, NoError>()
   let setWeeklyNewsletterState = TestObserver<Bool, NoError>()
   let showError = TestObserver<String, NoError>()
@@ -23,11 +23,11 @@ final class SignupViewModelTests: TestCase {
     super.setUp()
 
     vm.outputs.dismissKeyboard.observe(dismissKeyboard.observer)
-    vm.outputs.emailTextFieldFirstResponder.observe(emailTextFieldFirstResponder.observer)
+    vm.outputs.emailTextFieldIsFirstResponder.observe(emailTextFieldIsFirstResponder.observer)
     vm.outputs.isSignupButtonEnabled.observe(isSignupButtonEnabled.observer)
     vm.outputs.logIntoEnvironment.observe(logIntoEnvironment.observer)
-    vm.outputs.nameTextFieldFirstResponder.observe(nameTextFieldFirstResponder.observer)
-    vm.outputs.passwordTextFieldFirstResponder.observe(passwordTextFieldFirstResponder.observer)
+    vm.outputs.nameTextFieldIsFirstResponder.observe(nameTextFieldIsFirstResponder.observer)
+    vm.outputs.passwordTextFieldIsFirstResponder.observe(passwordTextFieldIsFirstResponder.observer)
     vm.outputs.postNotification.map { $0.name }.observe(postNotification.observer)
     vm.outputs.setWeeklyNewsletterState.observe(setWeeklyNewsletterState.observer)
     vm.outputs.showError.observe(showError.observer)
@@ -35,32 +35,35 @@ final class SignupViewModelTests: TestCase {
 
   // Tests a standard flow for signing up.
   func testFlow() {
-    nameTextFieldFirstResponder.assertDidNotEmitValue()
-    emailTextFieldFirstResponder.assertDidNotEmitValue()
-    passwordTextFieldFirstResponder.assertDidNotEmitValue()
+    nameTextFieldIsFirstResponder.assertDidNotEmitValue()
+    emailTextFieldIsFirstResponder.assertDidNotEmitValue()
+    passwordTextFieldIsFirstResponder.assertDidNotEmitValue()
 
     vm.inputs.viewDidLoad()
 
     XCTAssertEqual(["User Signup"], trackingClient.events)
     setWeeklyNewsletterState.assertValues([true], "Selected when view loads.")
     isSignupButtonEnabled.assertValues([false], "Disabled when view loads.")
-    nameTextFieldFirstResponder.assertValueCount(1, "Name field is first responder when view loads.")
-    emailTextFieldFirstResponder.assertDidNotEmitValue("Not first responder when view loads.")
-    passwordTextFieldFirstResponder.assertDidNotEmitValue("Not first responder when view loads.")
+    nameTextFieldIsFirstResponder.assertValues([true], "Name field is first responder when view loads.")
+    emailTextFieldIsFirstResponder.assertValues([false], "Not first responder when view loads.")
+    passwordTextFieldIsFirstResponder.assertValues([false], "Not first responder when view loads.")
 
     vm.inputs.nameChanged("Native Squad")
     vm.inputs.nameTextFieldDoneEditing()
     isSignupButtonEnabled.assertValues([false], "Disable while form is incomplete.")
-    nameTextFieldFirstResponder.assertValueCount(1, "Does not emit again after editing name.")
-    emailTextFieldFirstResponder.assertValueCount(1, "First responder after editing name.")
-    passwordTextFieldFirstResponder.assertDidNotEmitValue("Not first responder after editing name.")
+    nameTextFieldIsFirstResponder.assertValues([true, false], "Not first responder after editing name.")
+    emailTextFieldIsFirstResponder.assertValues([false, true], "First responder after editing name.")
+    passwordTextFieldIsFirstResponder.assertValues([false], "Not first responder after editing name.")
 
     vm.inputs.emailChanged("therealnativesquad@gmail.com")
     vm.inputs.emailTextFieldDoneEditing()
     isSignupButtonEnabled.assertValues([false], "Disabled while form is incomplete.")
-    nameTextFieldFirstResponder.assertValueCount(1, "Does not emit again after editing email.")
-    emailTextFieldFirstResponder.assertValueCount(1, "Does not emit again after editing email.")
-    passwordTextFieldFirstResponder.assertValueCount(1, "First responder after editing email.")
+    nameTextFieldIsFirstResponder.assertValues([true, false], "Does not emit again.")
+    emailTextFieldIsFirstResponder.assertValues(
+      [false, true, false],
+      "Not first responder after editing email."
+    )
+    passwordTextFieldIsFirstResponder.assertValues([false, true], "First responder after editing email.")
     dismissKeyboard.assertDidNotEmitValue("Don't dismiss until all fields have been edited.")
 
     vm.inputs.passwordChanged("0773rw473rm3l0n")

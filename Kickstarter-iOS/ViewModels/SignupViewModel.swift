@@ -42,8 +42,8 @@ internal protocol SignupViewModelOutputs {
   /// Dismiss the keyboard.
   var dismissKeyboard: Signal<(), NoError> { get }
 
-  /// Sets the email text field to become first responder.
-  var emailTextFieldFirstResponder: Signal<(), NoError> { get }
+  /// Sets whether the email text field is the first responder.
+  var emailTextFieldIsFirstResponder: Signal<Bool, NoError> { get }
 
   /// Emits true when the signup button should be enabled, false otherwise.
   var isSignupButtonEnabled: Signal<Bool, NoError> { get }
@@ -51,14 +51,14 @@ internal protocol SignupViewModelOutputs {
   /// Emits an access token envelope that can be used to update the environment.
   var logIntoEnvironment: Signal<AccessTokenEnvelope, NoError> { get }
 
-  /// Sets the password text field to become first responder.
-  var passwordTextFieldFirstResponder: Signal<(), NoError> { get }
+  /// Sets whether the password text field is the first responder.
+  var passwordTextFieldIsFirstResponder: Signal<Bool, NoError> { get }
 
   /// Emits when a notification should be posted.
   var postNotification: Signal<NSNotification, NoError> { get }
 
-  /// Sets the name text field to become first responder.
-  var nameTextFieldFirstResponder: Signal<(), NoError> { get }
+  /// Sets whether the name text field is the first responder.
+  var nameTextFieldIsFirstResponder: Signal<Bool, NoError> { get }
 
   /// Emits the value for the weekly newsletter.
   var setWeeklyNewsletterState: Signal<Bool, NoError> { get }
@@ -76,9 +76,29 @@ internal final class SignupViewModel: SignupViewModelType, SignupViewModelInputs
 
   // swiftlint:disable function_body_length
   internal init() {
-    self.nameTextFieldFirstResponder = self.viewDidLoadProperty.signal.ignoreValues()
-    self.emailTextFieldFirstResponder = self.nameTextFieldDoneEditingProperty.signal
-    self.passwordTextFieldFirstResponder = self.emailTextFieldDoneEditingProperty.signal
+    self.nameTextFieldIsFirstResponder = Signal.merge(
+      self.viewDidLoadProperty.signal.mapConst(true),
+      self.nameTextFieldDoneEditingProperty.signal.mapConst(false),
+      self.emailTextFieldDoneEditingProperty.signal.mapConst(false),
+      self.passwordTextFieldDoneEditingProperty.signal.mapConst(false)
+    )
+    .skipRepeats()
+
+    self.emailTextFieldIsFirstResponder = Signal.merge(
+      self.viewDidLoadProperty.signal.mapConst(false),
+      self.nameTextFieldDoneEditingProperty.signal.mapConst(true),
+      self.emailTextFieldDoneEditingProperty.signal.mapConst(false),
+      self.passwordTextFieldDoneEditingProperty.signal.mapConst(false)
+    )
+    .skipRepeats()
+
+    self.passwordTextFieldIsFirstResponder = Signal.merge(
+      self.viewDidLoadProperty.signal.mapConst(false),
+      self.nameTextFieldDoneEditingProperty.signal.mapConst(false),
+      self.emailTextFieldDoneEditingProperty.signal.mapConst(true),
+      self.passwordTextFieldDoneEditingProperty.signal.mapConst(false)
+    )
+    .skipRepeats()
 
     // all fields entered
     let formValid = combineLatest(
@@ -215,11 +235,11 @@ internal final class SignupViewModel: SignupViewModelType, SignupViewModelInputs
 
   // OUTPUTS
   internal let dismissKeyboard: Signal<(), NoError>
-  internal let emailTextFieldFirstResponder: Signal<(), NoError>
+  internal let emailTextFieldIsFirstResponder: Signal<Bool, NoError>
   internal let isSignupButtonEnabled: Signal<Bool, NoError>
   internal let logIntoEnvironment: Signal<AccessTokenEnvelope, NoError>
-  internal let nameTextFieldFirstResponder: Signal<(), NoError>
-  internal let passwordTextFieldFirstResponder: Signal<(), NoError>
+  internal let nameTextFieldIsFirstResponder: Signal<Bool, NoError>
+  internal let passwordTextFieldIsFirstResponder: Signal<Bool, NoError>
   internal let postNotification: Signal<NSNotification, NoError>
   internal let setWeeklyNewsletterState: Signal<Bool, NoError>
   internal let showError: Signal<String, NoError>
