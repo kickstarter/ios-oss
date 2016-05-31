@@ -69,9 +69,11 @@ final class SignupViewModelTests: TestCase {
     dismissKeyboard.assertValueCount(1, "Dismiss when all fields have been edited.")
 
     vm.inputs.signupButtonPressed()
+    XCTAssertEqual(["User Signup"], trackingClient.events)
     logIntoEnvironment.assertDidNotEmitValue("Does not immediately emit after signup button is pressed.")
 
     scheduler.advance()
+    XCTAssertEqual(["User Signup", "New User"], trackingClient.events)
     logIntoEnvironment.assertValueCount(1, "Login after scheduler advances.")
     postNotification.assertDidNotEmitValue("Does not emit until environment logged in.")
 
@@ -80,8 +82,6 @@ final class SignupViewModelTests: TestCase {
     scheduler.advance()
     postNotification.assertValues([CurrentUserNotifications.sessionStarted],
                                   "Notification posted after scheduler advances.")
-
-    // MILK: Koala tests
   }
 
   func testSetWeeklyNewsletterState() {

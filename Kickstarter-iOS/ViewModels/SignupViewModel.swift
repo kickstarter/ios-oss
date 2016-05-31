@@ -145,11 +145,14 @@ internal final class SignupViewModel: SignupViewModelType, SignupViewModelInputs
     self.postNotification = self.environmentLoggedInProperty.signal
       .mapConst(NSNotification(name: CurrentUserNotifications.sessionStarted, object: nil))
 
-    self.viewDidLoadProperty.signal
-      .observeNext { _ in AppEnvironment.current.koala.trackSignupView() }
-
     self.showError
       .observeNext { _ in AppEnvironment.current.koala.trackSignupError() }
+
+    signupEvent.values()
+      .observeNext { _ in AppEnvironment.current.koala.trackSignupSuccess() }
+
+    self.viewDidLoadProperty.signal
+      .observeNext { _ in AppEnvironment.current.koala.trackSignupView() }
   }
 
   // INPUTS
