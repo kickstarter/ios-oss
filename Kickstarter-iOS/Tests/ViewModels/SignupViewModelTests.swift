@@ -41,6 +41,7 @@ final class SignupViewModelTests: TestCase {
 
     vm.inputs.viewDidLoad()
 
+    XCTAssertEqual(["User Signup"], trackingClient.events)
     setWeeklyNewsletterState.assertValues([true], "Selected when view loads.")
     isSignupButtonEnabled.assertValues([false], "Disabled when view loads.")
     nameTextFieldFirstResponder.assertValueCount(1, "Name field is first responder when view loads.")
@@ -109,6 +110,7 @@ final class SignupViewModelTests: TestCase {
     withEnvironment(apiService: MockService(signupError: error)) {
       vm.inputs.viewDidLoad()
 
+      XCTAssertEqual(["User Signup"], trackingClient.events)
       vm.inputs.emailChanged("nativesquad@kickstarter.com")
       vm.inputs.nameChanged("Native Squad")
       vm.inputs.passwordChanged("!")
@@ -119,7 +121,7 @@ final class SignupViewModelTests: TestCase {
       scheduler.advance()
       logIntoEnvironment.assertValueCount(0, "Should not login.")
       showError.assertValues(errorMessages, "Signup error.")
-      XCTAssertEqual(["Errored User Signup"], trackingClient.events)
+      XCTAssertEqual(["User Signup", "Errored User Signup"], trackingClient.events)
     }
   }
 }

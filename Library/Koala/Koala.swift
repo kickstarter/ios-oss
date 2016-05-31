@@ -98,12 +98,18 @@ public final class Koala {
     self.track(event: "Forgot Password Errored")
   }
 
+  // Call when an error is returned after attempting to signup.
   public func trackSignupError() {
     self.track(event: "Errored User Signup")
   }
 
   public func trackSignupSuccess() {
     self.track(event: "New User")
+  }
+
+  // Call once when the signup view loads.
+  public func trackSignupView() {
+    self.track(event: "User Signup")
   }
 
   public func trackSignupNewsletterToggle(sendNewsletters: Bool) {
