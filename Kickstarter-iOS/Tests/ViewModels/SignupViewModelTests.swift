@@ -80,6 +80,7 @@ final class SignupViewModelTests: TestCase {
     vm.inputs.environmentLoggedIn()
 
     scheduler.advance()
+    XCTAssertEqual(["User Signup", "New User", "Login"], trackingClient.events)
     postNotification.assertValues([CurrentUserNotifications.sessionStarted],
                                   "Notification posted after scheduler advances.")
   }
