@@ -580,6 +580,8 @@
 		A7E315CB1C88AC91000DD85A /* DiscoveryProjectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E315CA1C88AC91000DD85A /* DiscoveryProjectCell.swift */; };
 		A7E315CC1C88AC91000DD85A /* DiscoveryProjectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E315CA1C88AC91000DD85A /* DiscoveryProjectCell.swift */; };
 		A7E8FAEF1CD6806800DBF142 /* SearchDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E8FAC11CD67F5C00DBF142 /* SearchDataSourceTests.swift */; };
+		A7F3C6061CFE285D005DBE95 /* Prelude.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F3C5EF1CFE284D005DBE95 /* Prelude.framework */; };
+		A7F3C6071CFE2863005DBE95 /* Prelude.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A7F3C5EF1CFE284D005DBE95 /* Prelude.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A7F761751C85FA40005405ED /* ActivitiesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F761741C85FA40005405ED /* ActivitiesViewController.swift */; };
 		A7FC8C061C8F1DEA00C3B49B /* CircleAvatarImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FC8C051C8F1DEA00C3B49B /* CircleAvatarImageView.swift */; };
 		A7FC8C071C8F1DEA00C3B49B /* CircleAvatarImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FC8C051C8F1DEA00C3B49B /* CircleAvatarImageView.swift */; };
@@ -1251,6 +1253,41 @@
 			remoteGlobalIDString = CA43C5F81BB358F200C180DA;
 			remoteInfo = "KsApi-tvOS";
 		};
+		A7F3C5EE1CFE284D005DBE95 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A7F3C5CC1CFE284D005DBE95 /* Prelude.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A7FD08641C81E1DA00332CCB;
+			remoteInfo = "Prelude-iOS";
+		};
+		A7F3C5F01CFE284D005DBE95 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A7F3C5CC1CFE284D005DBE95 /* Prelude.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A7FD087B1C81E24A00332CCB;
+			remoteInfo = "Prelude-iOSTests";
+		};
+		A7F3C5F21CFE284D005DBE95 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A7F3C5CC1CFE284D005DBE95 /* Prelude.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = CA0923F81BB6291900C9EC88;
+			remoteInfo = "Prelude-tvOS";
+		};
+		A7F3C5F41CFE284D005DBE95 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A7F3C5CC1CFE284D005DBE95 /* Prelude.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = CA0924021BB6291900C9EC88;
+			remoteInfo = "Prelude-tvOSTests";
+		};
+		A7F3C6041CFE2857005DBE95 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A7F3C5CC1CFE284D005DBE95 /* Prelude.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = A7FD084C1C81E1DA00332CCB;
+			remoteInfo = "Prelude-iOS";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -1260,6 +1297,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				A7F3C6071CFE2863005DBE95 /* Prelude.framework in Embed Frameworks */,
 				A799CA271CB7DB4400ED75CA /* Alamofire.framework in Embed Frameworks */,
 				A799CA0A1CB7DAEC00ED75CA /* Curry.framework in Embed Frameworks */,
 				A799CA091CB7DAE700ED75CA /* Argo.framework in Embed Frameworks */,
@@ -1606,6 +1644,7 @@
 		A7E315C71C88ABAC000DD85A /* DiscoveryProjectViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryProjectViewModel.swift; sourceTree = "<group>"; };
 		A7E315CA1C88AC91000DD85A /* DiscoveryProjectCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryProjectCell.swift; sourceTree = "<group>"; };
 		A7E8FAC11CD67F5C00DBF142 /* SearchDataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchDataSourceTests.swift; sourceTree = "<group>"; };
+		A7F3C5CC1CFE284D005DBE95 /* Prelude.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Prelude.xcodeproj; path = Frameworks/KsApi/Frameworks/Models/Frameworks/Prelude/Prelude.xcodeproj; sourceTree = "<group>"; };
 		A7F761741C85FA40005405ED /* ActivitiesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivitiesViewController.swift; sourceTree = "<group>"; };
 		A7F761761C85FACB005405ED /* LoginToutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = LoginToutViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		A7FC8C051C8F1DEA00C3B49B /* CircleAvatarImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleAvatarImageView.swift; sourceTree = "<group>"; };
@@ -1694,6 +1733,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A7F3C6061CFE285D005DBE95 /* Prelude.framework in Frameworks */,
 				A799CA041CB7DAD700ED75CA /* Curry.framework in Frameworks */,
 				01D31A381CCA786A0037A178 /* FBSDKCoreKit.framework in Frameworks */,
 				A799CA031CB7DAD200ED75CA /* Argo.framework in Frameworks */,
@@ -2498,6 +2538,7 @@
 				A799C9DC1CB7DAC500ED75CA /* Curry.xcodeproj */,
 				A7D1F8E41C84FB55000D41D5 /* KsApi.xcodeproj */,
 				A799C97F1CB7D99000ED75CA /* Models.xcodeproj */,
+				A7F3C5CC1CFE284D005DBE95 /* Prelude.xcodeproj */,
 				A799C9A31CB7D9DE00ED75CA /* ReactiveCocoa.xcodeproj */,
 				8075722D1C88DD8A00E7DA8A /* ReactiveExtensions.xcodeproj */,
 				A799C9BD1CB7DA7400ED75CA /* Result.xcodeproj */,
@@ -2521,6 +2562,17 @@
 				59322F051CD27B1000C90CC6 /* ProfileDataSource.swift */,
 			);
 			path = DataSources;
+			sourceTree = "<group>";
+		};
+		A7F3C5CD1CFE284D005DBE95 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A7F3C5EF1CFE284D005DBE95 /* Prelude.framework */,
+				A7F3C5F11CFE284D005DBE95 /* Prelude-iOSTests.xctest */,
+				A7F3C5F31CFE284D005DBE95 /* Prelude.framework */,
+				A7F3C5F51CFE284D005DBE95 /* Prelude-tvOSTests.xctest */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -2689,6 +2741,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				A7F3C6051CFE2857005DBE95 /* PBXTargetDependency */,
 				A799CA241CB7DB3700ED75CA /* PBXTargetDependency */,
 				A799CA081CB7DAE300ED75CA /* PBXTargetDependency */,
 				A799CA061CB7DADB00ED75CA /* PBXTargetDependency */,
@@ -2849,6 +2902,10 @@
 				{
 					ProductGroup = A799C9801CB7D99000ED75CA /* Products */;
 					ProjectRef = A799C97F1CB7D99000ED75CA /* Models.xcodeproj */;
+				},
+				{
+					ProductGroup = A7F3C5CD1CFE284D005DBE95 /* Products */;
+					ProjectRef = A7F3C5CC1CFE284D005DBE95 /* Prelude.xcodeproj */;
 				},
 				{
 					ProductGroup = A799C9A41CB7D9DE00ED75CA /* Products */;
@@ -3277,6 +3334,34 @@
 			fileType = wrapper.cfbundle;
 			path = "KsApi-tvOSTests.xctest";
 			remoteRef = A7D1F8F11C84FB55000D41D5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		A7F3C5EF1CFE284D005DBE95 /* Prelude.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Prelude.framework;
+			remoteRef = A7F3C5EE1CFE284D005DBE95 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		A7F3C5F11CFE284D005DBE95 /* Prelude-iOSTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "Prelude-iOSTests.xctest";
+			remoteRef = A7F3C5F01CFE284D005DBE95 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		A7F3C5F31CFE284D005DBE95 /* Prelude.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Prelude.framework;
+			remoteRef = A7F3C5F21CFE284D005DBE95 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		A7F3C5F51CFE284D005DBE95 /* Prelude-tvOSTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "Prelude-tvOSTests.xctest";
+			remoteRef = A7F3C5F41CFE284D005DBE95 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -4170,6 +4255,11 @@
 			isa = PBXTargetDependency;
 			name = "KsApi-tvOS";
 			targetProxy = A7E315901C8882EA000DD85A /* PBXContainerItemProxy */;
+		};
+		A7F3C6051CFE2857005DBE95 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Prelude-iOS";
+			targetProxy = A7F3C6041CFE2857005DBE95 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
