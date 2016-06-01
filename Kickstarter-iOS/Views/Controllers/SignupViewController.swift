@@ -25,6 +25,12 @@ internal final class SignupViewController: UIViewController {
       self.viewModel.outputs.passwordTextFieldBecomeFirstResponder
     self.signupButton.rac.enabled = self.viewModel.outputs.isSignupButtonEnabled
 
+    self.viewModel.outputs.dismissKeyboard
+      .observeForUI()
+      .observeNext { [weak self] in
+        self?.view.endEditing(true)
+      }
+
     self.viewModel.outputs.setWeeklyNewsletterState
       .observeForUI()
       .observeNext { [weak self] in

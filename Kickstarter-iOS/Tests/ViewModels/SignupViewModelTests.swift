@@ -136,8 +136,7 @@ final class SignupViewModelTests: TestCase {
                    trackingClient.properties.flatMap { $0["send_newsletters"] as? Bool })
 
     vm.inputs.weeklyNewsletterChanged(false)
-    XCTAssertEqual(["User Signup", "Signup Newsletter Toggle", "Signup Newsletter Toggle"],
-      trackingClient.events)
+    XCTAssertEqual(["User Signup", "Signup Newsletter Toggle", "Signup Newsletter Toggle"], trackingClient.events)
     XCTAssertEqual([true, false],
                    trackingClient.properties.flatMap { $0["send_newsletters"] as? Bool })
   }

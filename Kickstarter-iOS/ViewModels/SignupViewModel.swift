@@ -76,13 +76,59 @@ internal final class SignupViewModel: SignupViewModelType, SignupViewModelInputs
 
   // swiftlint:disable function_body_length
   internal init() {
-    self.nameTextFieldBecomeFirstResponder = self.viewDidLoadProperty.signal.ignoreValues()
+    let nameIsEmpty = Signal.merge(
+      viewDidLoadProperty.signal.mapConst(true),
+      nameChangedProperty.signal.map { $0.isEmpty }
+    )
 
-    self.emailTextFieldBecomeFirstResponder = self.nameTextFieldReturnProperty.signal.ignoreValues()
+    let emailIsEmpty = Signal.merge(
+      viewDidLoadProperty.signal.mapConst(true),
+      emailChangedProperty.signal.map { $0.isEmpty }
+    )
 
-    self.passwordTextFieldBecomeFirstResponder = self.emailTextFieldReturnProperty.signal.ignoreValues()
+    let passwordIsEmpty = Signal.merge(
+      viewDidLoadProperty.signal.mapConst(true),
+      passwordChangedProperty.signal.map { $0.isEmpty }
+    )
 
-    // all fields entered
+    self.nameTextFieldBecomeFirstResponder = Signal.merge(
+      viewDidLoadProperty.signal.ignoreValues(),
+
+      nameIsEmpty
+        .takeWhen(self.passwordTextFieldReturnProperty.signal)
+        .filter { $0 }
+        .ignoreValues(),
+
+      combineLatest(nameIsEmpty, passwordIsEmpty)
+        .takeWhen(self.emailTextFieldReturnProperty.signal)
+        .filter { n, p in n && !p }
+        .ignoreValues()
+    )
+
+    self.emailTextFieldBecomeFirstResponder = Signal.merge(
+      emailIsEmpty
+        .takeWhen(self.nameTextFieldReturnProperty.signal)
+        .filter { $0 }
+        .ignoreValues(),
+
+      combineLatest(emailIsEmpty, nameIsEmpty)
+        .takeWhen(self.passwordTextFieldReturnProperty.signal)
+        .filter { e, n in e && !n }
+        .ignoreValues()
+    )
+
+    self.passwordTextFieldBecomeFirstResponder = Signal.merge(
+      passwordIsEmpty
+        .takeWhen(self.emailTextFieldReturnProperty.signal)
+        .filter { $0 }
+        .ignoreValues(),
+
+      combineLatest(passwordIsEmpty, emailIsEmpty)
+        .takeWhen(self.nameTextFieldReturnProperty.signal)
+        .filter { p, e in p && !e }
+        .ignoreValues()
+    )
+
     let formValid = combineLatest(
       nameChangedProperty.signal,
       emailChangedProperty.signal,
@@ -94,14 +140,15 @@ internal final class SignupViewModel: SignupViewModelType, SignupViewModelInputs
         !password.characters.isEmpty
       }
 
-    let ReturnTextField = Signal.merge(
-      self.nameTextFieldReturnProperty.signal,
-      self.emailTextFieldReturnProperty.signal,
-      self.passwordTextFieldReturnProperty.signal
-    )
-
-    self.dismissKeyboard = formValid
-      .takeWhen(ReturnTextField)
+    self.dismissKeyboard = combineLatest(nameIsEmpty, emailIsEmpty, passwordIsEmpty)
+      .filter { n, e, p in !n && !e && !p }
+      .takeWhen(
+        Signal.merge(
+          self.nameTextFieldReturnProperty.signal,
+          self.emailTextFieldReturnProperty.signal,
+          self.passwordTextFieldReturnProperty.signal
+        )
+      )
       .ignoreValues()
 
     self.setWeeklyNewsletterState = self.viewDidLoadProperty.signal.map {
