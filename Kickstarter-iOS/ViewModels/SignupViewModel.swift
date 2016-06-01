@@ -96,7 +96,7 @@ internal final class SignupViewModel: SignupViewModelType, SignupViewModelInputs
 
       nameIsEmpty
         .takeWhen(self.passwordTextFieldReturnProperty.signal)
-        .filter { $0 }
+        .filter(isTrue)
         .ignoreValues(),
 
       combineLatest(nameIsEmpty, passwordIsEmpty)
@@ -108,7 +108,7 @@ internal final class SignupViewModel: SignupViewModelType, SignupViewModelInputs
     self.emailTextFieldBecomeFirstResponder = Signal.merge(
       emailIsEmpty
         .takeWhen(self.nameTextFieldReturnProperty.signal)
-        .filter { $0 }
+        .filter(isTrue)
         .ignoreValues(),
 
       combineLatest(emailIsEmpty, nameIsEmpty)
@@ -120,7 +120,7 @@ internal final class SignupViewModel: SignupViewModelType, SignupViewModelInputs
     self.passwordTextFieldBecomeFirstResponder = Signal.merge(
       passwordIsEmpty
         .takeWhen(self.emailTextFieldReturnProperty.signal)
-        .filter { $0 }
+        .filter(isTrue)
         .ignoreValues(),
 
       combineLatest(passwordIsEmpty, emailIsEmpty)
