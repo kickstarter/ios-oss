@@ -9,12 +9,12 @@ import XCTest
 
 final class SignupViewModelTests: TestCase {
   let vm: SignupViewModelType = SignupViewModel()
-  let emailTextFieldIsFirstResponder = TestObserver<Bool, NoError>()
+  let emailTextFieldBecomeFirstResponder = TestObserver<(), NoError>()
   let dismissKeyboard = TestObserver<(), NoError>()
   let isSignupButtonEnabled = TestObserver<Bool, NoError>()
   let logIntoEnvironment = TestObserver<AccessTokenEnvelope, NoError>()
-  let nameTextFieldIsFirstResponder = TestObserver<Bool, NoError>()
-  let passwordTextFieldIsFirstResponder = TestObserver<Bool, NoError>()
+  let nameTextFieldBecomeFirstResponder = TestObserver<(), NoError>()
+  let passwordTextFieldBecomeFirstResponder = TestObserver<(), NoError>()
   let postNotification = TestObserver<String, NoError>()
   let setWeeklyNewsletterState = TestObserver<Bool, NoError>()
   let showError = TestObserver<String, NoError>()
@@ -23,11 +23,11 @@ final class SignupViewModelTests: TestCase {
     super.setUp()
 
     vm.outputs.dismissKeyboard.observe(dismissKeyboard.observer)
-    vm.outputs.emailTextFieldIsFirstResponder.observe(emailTextFieldIsFirstResponder.observer)
+    vm.outputs.emailTextFieldBecomeFirstResponder.observe(emailTextFieldBecomeFirstResponder.observer)
     vm.outputs.isSignupButtonEnabled.observe(isSignupButtonEnabled.observer)
     vm.outputs.logIntoEnvironment.observe(logIntoEnvironment.observer)
-    vm.outputs.nameTextFieldIsFirstResponder.observe(nameTextFieldIsFirstResponder.observer)
-    vm.outputs.passwordTextFieldIsFirstResponder.observe(passwordTextFieldIsFirstResponder.observer)
+    vm.outputs.nameTextFieldBecomeFirstResponder.observe(nameTextFieldBecomeFirstResponder.observer)
+    vm.outputs.passwordTextFieldBecomeFirstResponder.observe(passwordTextFieldBecomeFirstResponder.observer)
     vm.outputs.postNotification.map { $0.name }.observe(postNotification.observer)
     vm.outputs.setWeeklyNewsletterState.observe(setWeeklyNewsletterState.observer)
     vm.outputs.showError.observe(showError.observer)
@@ -35,40 +35,37 @@ final class SignupViewModelTests: TestCase {
 
   // Tests a standard flow for signing up.
   func testFlow() {
-    nameTextFieldIsFirstResponder.assertDidNotEmitValue()
-    emailTextFieldIsFirstResponder.assertDidNotEmitValue()
-    passwordTextFieldIsFirstResponder.assertDidNotEmitValue()
+    nameTextFieldBecomeFirstResponder.assertDidNotEmitValue()
+    emailTextFieldBecomeFirstResponder.assertDidNotEmitValue()
+    passwordTextFieldBecomeFirstResponder.assertDidNotEmitValue()
 
     vm.inputs.viewDidLoad()
 
     XCTAssertEqual(["User Signup"], trackingClient.events)
     setWeeklyNewsletterState.assertValues([true], "Selected when view loads.")
     isSignupButtonEnabled.assertValues([false], "Disabled when view loads.")
-    nameTextFieldIsFirstResponder.assertValues([true], "Name field is first responder when view loads.")
-    emailTextFieldIsFirstResponder.assertValues([false], "Not first responder when view loads.")
-    passwordTextFieldIsFirstResponder.assertValues([false], "Not first responder when view loads.")
+    nameTextFieldBecomeFirstResponder.assertValueCount(1, "Name field is first responder when view loads.")
+    emailTextFieldBecomeFirstResponder.assertDidNotEmitValue("Not first responder when view loads.")
+    passwordTextFieldBecomeFirstResponder.assertDidNotEmitValue("Not first responder when view loads.")
 
     vm.inputs.nameChanged("Native Squad")
-    vm.inputs.nameTextFieldDoneEditing()
+    vm.inputs.nameTextFieldReturn()
     isSignupButtonEnabled.assertValues([false], "Disable while form is incomplete.")
-    nameTextFieldIsFirstResponder.assertValues([true, false], "Not first responder after editing name.")
-    emailTextFieldIsFirstResponder.assertValues([false, true], "First responder after editing name.")
-    passwordTextFieldIsFirstResponder.assertValues([false], "Not first responder after editing name.")
+    nameTextFieldBecomeFirstResponder.assertValueCount(1, "Does not emit again.")
+    emailTextFieldBecomeFirstResponder.assertValueCount(1, "First responder after editing name.")
+    passwordTextFieldBecomeFirstResponder.assertDidNotEmitValue("Not first responder after editing name.")
 
     vm.inputs.emailChanged("therealnativesquad@gmail.com")
-    vm.inputs.emailTextFieldDoneEditing()
+    vm.inputs.emailTextFieldReturn()
     isSignupButtonEnabled.assertValues([false], "Disabled while form is incomplete.")
-    nameTextFieldIsFirstResponder.assertValues([true, false], "Does not emit again.")
-    emailTextFieldIsFirstResponder.assertValues(
-      [false, true, false],
-      "Not first responder after editing email."
-    )
-    passwordTextFieldIsFirstResponder.assertValues([false, true], "First responder after editing email.")
+    nameTextFieldBecomeFirstResponder.assertValueCount(1, "Does not emit again.")
+    emailTextFieldBecomeFirstResponder.assertValueCount(1, "Does not emit again.")
+    passwordTextFieldBecomeFirstResponder.assertValueCount(1, "First responder after editing email.")
     dismissKeyboard.assertDidNotEmitValue("Don't dismiss until all fields have been edited.")
 
     vm.inputs.passwordChanged("0773rw473rm3l0n")
     isSignupButtonEnabled.assertValues([false, true], "Enabled when form has been filled out.")
-    vm.inputs.passwordTextFieldDoneEditing()
+    vm.inputs.passwordTextFieldReturn()
     dismissKeyboard.assertValueCount(1, "Dismiss when all fields have been edited.")
 
     vm.inputs.signupButtonPressed()
@@ -135,11 +132,13 @@ final class SignupViewModelTests: TestCase {
 
     vm.inputs.weeklyNewsletterChanged(true)
     XCTAssertEqual(["User Signup", "Signup Newsletter Toggle"], trackingClient.events)
+    XCTAssertEqual([true],
+                   trackingClient.properties.flatMap { $0["send_newsletters"] as? Bool })
 
     vm.inputs.weeklyNewsletterChanged(false)
-    XCTAssertEqual(
-      ["User Signup", "Signup Newsletter Toggle", "Signup Newsletter Toggle"],
-      trackingClient.events
-    )
+    XCTAssertEqual(["User Signup", "Signup Newsletter Toggle", "Signup Newsletter Toggle"],
+      trackingClient.events)
+    XCTAssertEqual([true, false],
+                   trackingClient.properties.flatMap { $0["send_newsletters"] as? Bool })
   }
 }

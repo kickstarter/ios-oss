@@ -10,8 +10,8 @@ internal protocol SignupViewModelInputs {
   /// Call when the user enters a new email address.
   func emailChanged(email: String)
 
-  /// Call when the user has finished editing the email text field.
-  func emailTextFieldDoneEditing()
+  /// Call when the user returns from email text field.
+  func emailTextFieldReturn()
 
   /// Call when the environment has been logged into
   func environmentLoggedIn()
@@ -19,14 +19,14 @@ internal protocol SignupViewModelInputs {
   /// Call when the user enters a new name.
   func nameChanged(name: String)
 
-  /// Call when the user has finished editing the name text field.
-  func nameTextFieldDoneEditing()
+  /// Call when the user returns from the name text field.
+  func nameTextFieldReturn()
 
   /// Call when the user enters a new password.
   func passwordChanged(password: String)
 
-  /// Call when the user has finished editing the password text field.
-  func passwordTextFieldDoneEditing()
+  /// Call when the user returns from the password text field.
+  func passwordTextFieldReturn()
 
   /// Call when the user taps signup.
   func signupButtonPressed()
@@ -43,7 +43,7 @@ internal protocol SignupViewModelOutputs {
   var dismissKeyboard: Signal<(), NoError> { get }
 
   /// Sets whether the email text field is the first responder.
-  var emailTextFieldIsFirstResponder: Signal<Bool, NoError> { get }
+  var emailTextFieldBecomeFirstResponder: Signal<(), NoError> { get }
 
   /// Emits true when the signup button should be enabled, false otherwise.
   var isSignupButtonEnabled: Signal<Bool, NoError> { get }
@@ -52,13 +52,13 @@ internal protocol SignupViewModelOutputs {
   var logIntoEnvironment: Signal<AccessTokenEnvelope, NoError> { get }
 
   /// Sets whether the password text field is the first responder.
-  var passwordTextFieldIsFirstResponder: Signal<Bool, NoError> { get }
+  var passwordTextFieldBecomeFirstResponder: Signal<(), NoError> { get }
 
   /// Emits when a notification should be posted.
   var postNotification: Signal<NSNotification, NoError> { get }
 
   /// Sets whether the name text field is the first responder.
-  var nameTextFieldIsFirstResponder: Signal<Bool, NoError> { get }
+  var nameTextFieldBecomeFirstResponder: Signal<(), NoError> { get }
 
   /// Emits the value for the weekly newsletter.
   var setWeeklyNewsletterState: Signal<Bool, NoError> { get }
@@ -76,29 +76,11 @@ internal final class SignupViewModel: SignupViewModelType, SignupViewModelInputs
 
   // swiftlint:disable function_body_length
   internal init() {
-    self.nameTextFieldIsFirstResponder = Signal.merge(
-      self.viewDidLoadProperty.signal.mapConst(true),
-      self.nameTextFieldDoneEditingProperty.signal.mapConst(false),
-      self.emailTextFieldDoneEditingProperty.signal.mapConst(false),
-      self.passwordTextFieldDoneEditingProperty.signal.mapConst(false)
-    )
-    .skipRepeats()
+    self.nameTextFieldBecomeFirstResponder = self.viewDidLoadProperty.signal.ignoreValues()
 
-    self.emailTextFieldIsFirstResponder = Signal.merge(
-      self.viewDidLoadProperty.signal.mapConst(false),
-      self.nameTextFieldDoneEditingProperty.signal.mapConst(true),
-      self.emailTextFieldDoneEditingProperty.signal.mapConst(false),
-      self.passwordTextFieldDoneEditingProperty.signal.mapConst(false)
-    )
-    .skipRepeats()
+    self.emailTextFieldBecomeFirstResponder = self.nameTextFieldReturnProperty.signal.ignoreValues()
 
-    self.passwordTextFieldIsFirstResponder = Signal.merge(
-      self.viewDidLoadProperty.signal.mapConst(false),
-      self.nameTextFieldDoneEditingProperty.signal.mapConst(false),
-      self.emailTextFieldDoneEditingProperty.signal.mapConst(true),
-      self.passwordTextFieldDoneEditingProperty.signal.mapConst(false)
-    )
-    .skipRepeats()
+    self.passwordTextFieldBecomeFirstResponder = self.emailTextFieldReturnProperty.signal.ignoreValues()
 
     // all fields entered
     let formValid = combineLatest(
@@ -112,14 +94,14 @@ internal final class SignupViewModel: SignupViewModelType, SignupViewModelInputs
         !password.characters.isEmpty
       }
 
-    let doneEditingTextField = Signal.merge(
-      self.nameTextFieldDoneEditingProperty.signal,
-      self.emailTextFieldDoneEditingProperty.signal,
-      self.passwordTextFieldDoneEditingProperty.signal
+    let ReturnTextField = Signal.merge(
+      self.nameTextFieldReturnProperty.signal,
+      self.emailTextFieldReturnProperty.signal,
+      self.passwordTextFieldReturnProperty.signal
     )
 
     self.dismissKeyboard = formValid
-      .takeWhen(doneEditingTextField)
+      .takeWhen(ReturnTextField)
       .ignoreValues()
 
     self.setWeeklyNewsletterState = self.viewDidLoadProperty.signal.map {
@@ -188,9 +170,9 @@ internal final class SignupViewModel: SignupViewModelType, SignupViewModelInputs
     self.emailChangedProperty.value = email
   }
 
-  private let emailTextFieldDoneEditingProperty = MutableProperty(())
-  internal func emailTextFieldDoneEditing() {
-    self.emailTextFieldDoneEditingProperty.value = ()
+  private let emailTextFieldReturnProperty = MutableProperty(())
+  internal func emailTextFieldReturn() {
+    self.emailTextFieldReturnProperty.value = ()
   }
 
   private let environmentLoggedInProperty = MutableProperty(())
@@ -203,9 +185,9 @@ internal final class SignupViewModel: SignupViewModelType, SignupViewModelInputs
     self.nameChangedProperty.value = name
   }
 
-  private let nameTextFieldDoneEditingProperty = MutableProperty(())
-  internal func nameTextFieldDoneEditing() {
-    self.nameTextFieldDoneEditingProperty.value = ()
+  private let nameTextFieldReturnProperty = MutableProperty(())
+  internal func nameTextFieldReturn() {
+    self.nameTextFieldReturnProperty.value = ()
   }
 
   private let passwordChangedProperty = MutableProperty<String>("")
@@ -213,9 +195,9 @@ internal final class SignupViewModel: SignupViewModelType, SignupViewModelInputs
     self.passwordChangedProperty.value = password
   }
 
-  private let passwordTextFieldDoneEditingProperty = MutableProperty(())
-  internal func passwordTextFieldDoneEditing() {
-    self.passwordTextFieldDoneEditingProperty.value = ()
+  private let passwordTextFieldReturnProperty = MutableProperty(())
+  internal func passwordTextFieldReturn() {
+    self.passwordTextFieldReturnProperty.value = ()
   }
 
   private let signupButtonPressedProperty = MutableProperty()
@@ -235,11 +217,11 @@ internal final class SignupViewModel: SignupViewModelType, SignupViewModelInputs
 
   // OUTPUTS
   internal let dismissKeyboard: Signal<(), NoError>
-  internal let emailTextFieldIsFirstResponder: Signal<Bool, NoError>
+  internal let emailTextFieldBecomeFirstResponder: Signal<(), NoError>
   internal let isSignupButtonEnabled: Signal<Bool, NoError>
   internal let logIntoEnvironment: Signal<AccessTokenEnvelope, NoError>
-  internal let nameTextFieldIsFirstResponder: Signal<Bool, NoError>
-  internal let passwordTextFieldIsFirstResponder: Signal<Bool, NoError>
+  internal let nameTextFieldBecomeFirstResponder: Signal<(), NoError>
+  internal let passwordTextFieldBecomeFirstResponder: Signal<(), NoError>
   internal let postNotification: Signal<NSNotification, NoError>
   internal let setWeeklyNewsletterState: Signal<Bool, NoError>
   internal let showError: Signal<String, NoError>
