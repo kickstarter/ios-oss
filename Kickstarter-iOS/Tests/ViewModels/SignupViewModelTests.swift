@@ -85,6 +85,80 @@ final class SignupViewModelTests: TestCase {
                                   "Notification posted after scheduler advances.")
   }
 
+  // Simulate pressing next on keyboard while text fields are in various
+  // states.
+  func testFirstResponder() {
+    vm.inputs.viewDidLoad()
+    nameTextFieldBecomeFirstResponder.assertValueCount(1, "Name starts as first responder.")
+    emailTextFieldBecomeFirstResponder.assertDidNotEmitValue()
+    passwordTextFieldBecomeFirstResponder.assertDidNotEmitValue()
+
+    vm.inputs.nameTextFieldReturn()
+    nameTextFieldBecomeFirstResponder.assertValueCount(1, "Does not emit another value.")
+    emailTextFieldBecomeFirstResponder.assertValueCount(1, "Email becomes first responder.")
+    passwordTextFieldBecomeFirstResponder.assertDidNotEmitValue()
+
+    vm.inputs.emailTextFieldReturn()
+    nameTextFieldBecomeFirstResponder.assertValueCount(1, "Does not emit another value.")
+    emailTextFieldBecomeFirstResponder.assertValueCount(1, "Does not emit another value.")
+    passwordTextFieldBecomeFirstResponder.assertValueCount(1, "Password becomes first responder.")
+
+    vm.inputs.passwordTextFieldReturn()
+    nameTextFieldBecomeFirstResponder.assertValueCount(2, "Name becomes first responder.")
+    emailTextFieldBecomeFirstResponder.assertValueCount(1, "Does not emit another value.")
+    passwordTextFieldBecomeFirstResponder.assertValueCount(1, "Does not emit another value.")
+
+    vm.inputs.nameChanged("Native Squad")
+    vm.inputs.nameTextFieldReturn()
+    nameTextFieldBecomeFirstResponder.assertValueCount(2, "Does not emit another value.")
+    emailTextFieldBecomeFirstResponder.assertValueCount(2, "Email becomes first responder.")
+    passwordTextFieldBecomeFirstResponder.assertValueCount(1, "Does not emit another value.")
+
+    vm.inputs.emailTextFieldReturn()
+    nameTextFieldBecomeFirstResponder.assertValueCount(2, "Does not emit another value.")
+    emailTextFieldBecomeFirstResponder.assertValueCount(2, "Does not emit another value.")
+    passwordTextFieldBecomeFirstResponder.assertValueCount(2, "Password becomes first responder.")
+
+    vm.inputs.passwordTextFieldReturn()
+    nameTextFieldBecomeFirstResponder.assertValueCount(2, "Does not emit another value.")
+    emailTextFieldBecomeFirstResponder.assertValueCount(3, "Email becomes first responder.")
+    passwordTextFieldBecomeFirstResponder.assertValueCount(2, "Does not emit another value.")
+
+    vm.inputs.nameChanged("")
+    vm.inputs.emailChanged("therealnativesquad@gmail.com")
+    vm.inputs.emailTextFieldReturn()
+    nameTextFieldBecomeFirstResponder.assertValueCount(2, "Does not emit another value.")
+    emailTextFieldBecomeFirstResponder.assertValueCount(3, "Does not emit another value.")
+    passwordTextFieldBecomeFirstResponder.assertValueCount(3, "Password becomes first responder.")
+
+    vm.inputs.passwordTextFieldReturn()
+    nameTextFieldBecomeFirstResponder.assertValueCount(3, "Name becomes first responder.")
+    emailTextFieldBecomeFirstResponder.assertValueCount(3, "Does not emit another value.")
+    passwordTextFieldBecomeFirstResponder.assertValueCount(3, "Does not emit another value.")
+
+    vm.inputs.nameTextFieldReturn()
+    nameTextFieldBecomeFirstResponder.assertValueCount(3, "Does not emit another value.")
+    emailTextFieldBecomeFirstResponder.assertValueCount(3, "Does not emit another value.")
+    passwordTextFieldBecomeFirstResponder.assertValueCount(4, "Password becomes first responder.")
+
+    vm.inputs.emailChanged("")
+    vm.inputs.passwordChanged("0773rw473rm3l0n")
+    vm.inputs.passwordTextFieldReturn()
+    nameTextFieldBecomeFirstResponder.assertValueCount(4, "Name becomes first responder.")
+    emailTextFieldBecomeFirstResponder.assertValueCount(3, "Does not emit another value.")
+    passwordTextFieldBecomeFirstResponder.assertValueCount(4, "Does not emit another value.")
+
+    vm.inputs.nameTextFieldReturn()
+    nameTextFieldBecomeFirstResponder.assertValueCount(4, "Does not emit another value.")
+    emailTextFieldBecomeFirstResponder.assertValueCount(4, "Email becomes first responder.")
+    passwordTextFieldBecomeFirstResponder.assertValueCount(4, "Does not emit another value.")
+
+    vm.inputs.emailTextFieldReturn()
+    nameTextFieldBecomeFirstResponder.assertValueCount(5, "Name becomes first responder")
+    emailTextFieldBecomeFirstResponder.assertValueCount(4, "Does not emit another value.")
+    passwordTextFieldBecomeFirstResponder.assertValueCount(4, "Does not emit another value.")
+  }
+
   func testSetWeeklyNewsletterState() {
     setWeeklyNewsletterState.assertDidNotEmitValue("Should not emit until view loads")
 
@@ -136,7 +210,8 @@ final class SignupViewModelTests: TestCase {
                    trackingClient.properties.flatMap { $0["send_newsletters"] as? Bool })
 
     vm.inputs.weeklyNewsletterChanged(false)
-    XCTAssertEqual(["User Signup", "Signup Newsletter Toggle", "Signup Newsletter Toggle"], trackingClient.events)
+    XCTAssertEqual(["User Signup", "Signup Newsletter Toggle", "Signup Newsletter Toggle"],
+                   trackingClient.events)
     XCTAssertEqual([true, false],
                    trackingClient.properties.flatMap { $0["send_newsletters"] as? Bool })
   }
