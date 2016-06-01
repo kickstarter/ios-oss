@@ -31,6 +31,15 @@ internal final class SignupViewController: UIViewController {
         self?.view.endEditing(true)
       }
 
+    self.viewModel.outputs.logIntoEnvironment
+      .observeNext { [weak self] in
+        AppEnvironment.login($0)
+        self?.viewModel.inputs.environmentLoggedIn()
+      }
+
+    self.viewModel.outputs.postNotification
+      .observeNext(NSNotificationCenter.defaultCenter().postNotification)
+
     self.viewModel.outputs.setWeeklyNewsletterState
       .observeForUI()
       .observeNext { [weak self] in
