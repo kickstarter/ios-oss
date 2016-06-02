@@ -124,7 +124,7 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
     helpTypes.forEach { helpType in
       helpAlert.addAction(UIAlertAction(title: helpType.title, style: .Default, handler: { [weak self] _ in
         self?.viewModel.inputs.helpTypeButtonPressed(helpType)
-      }))
+        }))
     }
 
     helpAlert.addAction(UIAlertAction(title: localizedString(key: "login_tout.help_sheet.cancel",
@@ -157,14 +157,14 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
   private func pushTwoFactorViewController(facebookAccessToken token: String) {
     guard let tfaVC = self.storyboard?.instantiateViewControllerWithIdentifier("TwoFactorViewController")
       as? TwoFactorViewController else {
-      fatalError("Failed to instantiate TwoFactorViewController")
+        fatalError("Failed to instantiate TwoFactorViewController")
     }
     tfaVC.configureWith(facebookAccessToken: token)
     self.navigationController?.pushViewController(tfaVC, animated: true)
   }
 
   private func pushFacebookConfirmationController(facebookUser user: ErrorEnvelope.FacebookUser?,
-                                                                facebookToken token: String) {
+                                                               facebookToken token: String) {
     guard let fbVC = self.storyboard?
       .instantiateViewControllerWithIdentifier("FacebookConfirmationViewController")
       as? FacebookConfirmationViewController else {
