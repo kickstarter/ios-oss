@@ -84,14 +84,6 @@
 		59B6B70A1CCEBC1000953319 /* ProfileProjectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B6B7091CCEBC1000953319 /* ProfileProjectCell.swift */; };
 		59B6B70B1CCEBC1000953319 /* ProfileProjectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B6B7091CCEBC1000953319 /* ProfileProjectCell.swift */; };
 		80FE733A1C88F3D400BE0137 /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7B694301C87A07100C49A4F /* HockeySDK.framework */; };
-		80FE733C1C88F4CA00BE0137 /* AlamofireImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 807571F91C88B8E200E7DA8A /* AlamofireImage.framework */; };
-		9D1336CB1CEFBB7A00E860A0 /* SignupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D1336CA1CEFBB7A00E860A0 /* SignupViewController.swift */; };
-		9D1336CC1CEFBB7A00E860A0 /* SignupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D1336CA1CEFBB7A00E860A0 /* SignupViewController.swift */; };
-		9D39C0471C9B5662004E0943 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D39C0461C9B5662004E0943 /* SearchViewModel.swift */; };
-		9D7279FC1CC04BCA00B28C5F /* SignupViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D7279FB1CC04BCA00B28C5F /* SignupViewModelTests.swift */; };
-		9D727A291CC04BE200B28C5F /* SignupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D727A281CC04BE200B28C5F /* SignupViewModel.swift */; };
-		9DE6C0571C9B5C7700FCC7B1 /* SearchViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DE6C0561C9B5C7700FCC7B1 /* SearchViewModelTests.swift */; };
-		9DE6C07B1C9B5C8600FCC7B1 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D39C0461C9B5662004E0943 /* SearchViewModel.swift */; };
 		9DE6C0891C9B5FCA00FCC7B1 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		A70119451CD92261009F8F65 /* CommentsDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A70119171CD921D0009F8F65 /* CommentsDataSourceTests.swift */; };
 		A707BAD61CFFAB9400653B2F /* HelpType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A707BAD31CFFAB9400653B2F /* HelpType.swift */; };
@@ -164,6 +156,12 @@
 		A745D04B1CA8986E00C12802 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A745D0491CA8986E00C12802 /* ProfileViewController.swift */; };
 		A745D1411CAAB48F00C12802 /* LoginToutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F761761C85FACB005405ED /* LoginToutViewController.swift */; };
 		A745D61D1CAC722900C12802 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 01BDFFB01C87AAD0002E8D34 /* Login.storyboard */; };
+		A74900181D00E23000BC3BE7 /* SignupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74900171D00E23000BC3BE7 /* SignupViewModel.swift */; };
+		A74900191D00E23000BC3BE7 /* SignupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74900171D00E23000BC3BE7 /* SignupViewModel.swift */; };
+		A749001B1D00E25200BC3BE7 /* SignupViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A749001A1D00E25200BC3BE7 /* SignupViewModelTests.swift */; };
+		A749001C1D00E25200BC3BE7 /* SignupViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A749001A1D00E25200BC3BE7 /* SignupViewModelTests.swift */; };
+		A749001E1D00E27100BC3BE7 /* SignupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A749001D1D00E27100BC3BE7 /* SignupViewController.swift */; };
+		A749001F1D00E27100BC3BE7 /* SignupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A749001D1D00E27100BC3BE7 /* SignupViewController.swift */; };
 		A74FFDEF1CE3E33300C7BCB9 /* MessageDialogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74FFDEE1CE3E33300C7BCB9 /* MessageDialogViewController.swift */; };
 		A74FFDF01CE3E33300C7BCB9 /* MessageDialogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74FFDEE1CE3E33300C7BCB9 /* MessageDialogViewController.swift */; };
 		A74FFE681CE3FFE200C7BCB9 /* SearchMessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74FFE671CE3FFE200C7BCB9 /* SearchMessagesViewController.swift */; };
@@ -1188,13 +1186,6 @@
 		599603FF1CE6286900E1B1EC /* ProfileDataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileDataSourceTests.swift; sourceTree = "<group>"; };
 		59B6B7091CCEBC1000953319 /* ProfileProjectCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileProjectCell.swift; sourceTree = "<group>"; };
 		802800571C88F64D00141235 /* Base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Base.xcconfig; path = Configs/Base.xcconfig; sourceTree = "<group>"; };
-		807571ED1C88B8E200E7DA8A /* AlamofireImage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AlamofireImage.xcodeproj; path = Frameworks/AlamofireImage/AlamofireImage.xcodeproj; sourceTree = "<group>"; };
-		8075722D1C88DD8A00E7DA8A /* ReactiveExtensions.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactiveExtensions.xcodeproj; path = Frameworks/KsApi/Frameworks/ReactiveExtensions/ReactiveExtensions.xcodeproj; sourceTree = "<group>"; };
-		9D1336CA1CEFBB7A00E860A0 /* SignupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupViewController.swift; sourceTree = "<group>"; };
-		9D39C0461C9B5662004E0943 /* SearchViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = SearchViewModel.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		9D7279FB1CC04BCA00B28C5F /* SignupViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupViewModelTests.swift; sourceTree = "<group>"; };
-		9D727A281CC04BE200B28C5F /* SignupViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupViewModel.swift; sourceTree = "<group>"; };
-		9DE6C0561C9B5C7700FCC7B1 /* SearchViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = SearchViewModelTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		A70119171CD921D0009F8F65 /* CommentsDataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsDataSourceTests.swift; sourceTree = "<group>"; };
 		A707BAD31CFFAB9400653B2F /* HelpType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpType.swift; sourceTree = "<group>"; };
 		A707BAD41CFFAB9400653B2F /* LoginIntent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginIntent.swift; sourceTree = "<group>"; };
@@ -1226,6 +1217,9 @@
 		A745D0201CA897FF00C12802 /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		A745D0461CA8985B00C12802 /* DashboardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardViewController.swift; sourceTree = "<group>"; };
 		A745D0491CA8986E00C12802 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		A74900171D00E23000BC3BE7 /* SignupViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupViewModel.swift; sourceTree = "<group>"; };
+		A749001A1D00E25200BC3BE7 /* SignupViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupViewModelTests.swift; sourceTree = "<group>"; };
+		A749001D1D00E27100BC3BE7 /* SignupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupViewController.swift; sourceTree = "<group>"; };
 		A74FFDEE1CE3E33300C7BCB9 /* MessageDialogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageDialogViewController.swift; sourceTree = "<group>"; };
 		A74FFE671CE3FFE200C7BCB9 /* SearchMessagesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchMessagesViewController.swift; sourceTree = "<group>"; };
 		A74FFEC81CE4FB9900C7BCB9 /* SearchMessagesDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchMessagesDataSource.swift; sourceTree = "<group>"; };
@@ -1659,13 +1653,6 @@
 			children = (
 				A75CBDE61C8A26F800758C55 /* AppDelegateViewModel.swift */,
 				A775B5451CA871D700BBB587 /* RootViewModel.swift */,
-				9D39C0461C9B5662004E0943 /* SearchViewModel.swift */,
-				019E42931CD0088E00AA82D3 /* ThanksViewModel.swift */,
-				01B6AC301CA49972003DB4C8 /* TwoFactorViewModel.swift */,
-				9D727A281CC04BE200B28C5F /* SignupViewModel.swift */,
-				59395EB41CC578FA008393B1 /* ProfileViewModel.swift */,
-				59322EAF1CD14CA300C90CC6 /* ProfileProjectCellViewModel.swift */,
-				59D9432E1CE3E3E400358D7E /* ProfileHeaderViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -1712,6 +1699,8 @@
 			isa = PBXGroup;
 			children = (
 				A7F761741C85FA40005405ED /* ActivitiesViewController.swift */,
+				A7A0534C1CD19C68005AF5E2 /* CommentDialogViewController.swift */,
+				A7180BA81CCED598001711CA /* CommentsViewController.swift */,
 				A745D0461CA8985B00C12802 /* DashboardViewController.swift */,
 				A751A51E1C85EC0B009C5DEA /* DiscoveryViewController.swift */,
 				0146E3211CC0296900082C5B /* FacebookConfirmationViewController.swift */,
@@ -1722,15 +1711,13 @@
 				A71003D81CDCFA2500B4F4D7 /* MessageThreadsViewController.swift */,
 				A745D0491CA8986E00C12802 /* ProfileViewController.swift */,
 				A7285C9A1C8E8DCF00D83297 /* ProjectViewController.swift */,
+				019DDFEB1CB6FF4500BDC113 /* ResetPasswordViewController.swift */,
 				A775B51F1CA8705B00BBB587 /* RootTabBarViewController.swift */,
 				A74FFE671CE3FFE200C7BCB9 /* SearchMessagesViewController.swift */,
 				A745D0201CA897FF00C12802 /* SearchViewController.swift */,
-				01DEFB941CB44A5D003709C0 /* TwoFactorViewController.swift */,
-				019DDFEB1CB6FF4500BDC113 /* ResetPasswordViewController.swift */,
+				A749001D1D00E27100BC3BE7 /* SignupViewController.swift */,
 				0148EF8F1CDD2879000DEFF8 /* ThanksViewController.swift */,
-				A7180BA81CCED598001711CA /* CommentsViewController.swift */,
-				A7A0534C1CD19C68005AF5E2 /* CommentDialogViewController.swift */,
-				9D1336CA1CEFBB7A00E860A0 /* SignupViewController.swift */,
+				01DEFB941CB44A5D003709C0 /* TwoFactorViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -1780,37 +1767,6 @@
 		A76E0A5B1D00CF7600EC525A /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A77519131C8CADFE0022F175 /* ActivitiesViewModelTests.swift */,
-				A775190F1C8CADC80022F175 /* AppDelegateViewModelTests.swift */,
-				A74FFEDF1CE5295700C7BCB9 /* BackingCellViewModelTests.swift */,
-				A70119461CD9273A009F8F65 /* CommentCellViewModelTests.swift */,
-				A71405201CAF633500A2795B /* CommentDialogViewModelTests.swift */,
-				A7DB1C541C9E226F008244DA /* CommentsViewModelTests.swift */,
-				01BC58101CAD765B000289E8 /* FacebookConfirmationViewModelTests.swift */,
-				01B6ABE51CA2F233003DB4C8 /* LoginToutViewModelTests.swift */,
-				0154A93C1CA1AF2A00DB9BA4 /* LoginViewModelTests.swift */,
-				A74FFEDD1CE527A800C7BCB9 /* MessageCellViewModelTests.swift */,
-				A74FFEE11CE52ABD00C7BCB9 /* MessageDialogViewModelTests.swift */,
-				A7CA0DD81CE695F10030092C /* MessagesSearchViewModelTests.swift */,
-				A74FFECE1CE5097B00C7BCB9 /* MessagesViewModelTests.swift */,
-				A71003E71CDD105900B4F4D7 /* MessageThreadCellViewModelTests.swift */,
-				A7A1CAD61CDCD5620037AB20 /* MessageThreadsViewModelTests.swift */,
-				592879AC1CE4FEB600362264 /* ProfileHeaderViewModelTests.swift */,
-				59D943001CE3DCE000358D7E /* ProfileProjectCellViewModelTests.swift */,
-				59395EE11CC57989008393B1 /* ProfileViewModelTests.swift */,
-				A750DEF31CC681A000983F7C /* ProjectMainCellViewModelTests.swift */,
-				A75CF8801CC6D4BE00BBBB7F /* ProjectRewardCellViewModelTests.swift */,
-				A7DC836D1C9DB6EE00BB2B44 /* ProjectViewModelTests.swift */,
-				01BF21301CA5E81C00184A38 /* ResetPasswordViewModelTests.swift */,
-				A775B54B1CA87C8500BBB587 /* RootViewModelTests.swift */,
-				9DE6C0561C9B5C7700FCC7B1 /* SearchViewModelTests.swift */,
-				019E42C11CD008CC00AA82D3 /* ThanksViewModelTests.swift */,
-				01BF20D21CA49E3800184A38 /* TwoFactorViewModelTests.swift */,
-				A77589521CC9649C0038288B /* ProjectSubpagesViewModelTests.swift */,
-				A70119461CD9273A009F8F65 /* CommentCellViewModelTests.swift */,
-				A7DC836D1C9DB6EE00BB2B44 /* ProjectViewModelTests.swift */,
-				A783237F1CB949EF000B094C /* DiscoveryViewModelTests.swift */,
-				9D7279FB1CC04BCA00B28C5F /* SignupViewModelTests.swift */,
 				A76E0A651D00CF7600EC525A /* AlamofireImage.framework */,
 				A76E0A671D00CF7600EC525A /* AlamofireImage iOS Tests.xctest */,
 				A76E0A691D00CF7600EC525A /* AlamofireImage.framework */,
@@ -1961,6 +1917,7 @@
 				A7830CF21D005C3F00B5B6AE /* ProjectViewModelTests.swift */,
 				A7830CF31D005C3F00B5B6AE /* ResetPasswordViewModelTests.swift */,
 				A7830CF51D005C3F00B5B6AE /* SearchViewModelTests.swift */,
+				A749001A1D00E25200BC3BE7 /* SignupViewModelTests.swift */,
 				A7830CF61D005C3F00B5B6AE /* ThanksViewModelTests.swift */,
 				A7830CF71D005C3F00B5B6AE /* TwoFactorViewModelTests.swift */,
 			);
@@ -2391,6 +2348,7 @@
 				A7F441961D005A9400FE6FC5 /* CommentsViewModel.swift */,
 				A7F441971D005A9400FE6FC5 /* DiscoveryProjectViewModel.swift */,
 				A7F441981D005A9400FE6FC5 /* DiscoveryViewModel.swift */,
+				A74900171D00E23000BC3BE7 /* SignupViewModel.swift */,
 				A7F441991D005A9400FE6FC5 /* FacebookConfirmationViewModel.swift */,
 				A7F4419A1D005A9400FE6FC5 /* LoginToutViewModel.swift */,
 				A7698B291D00602800953FD3 /* LoginViewModel.swift */,
@@ -3387,6 +3345,7 @@
 				A75511681C8642C3005355CF /* UIGestureRecognizer-Extensions.swift in Sources */,
 				A7F441BD1D005A9400FE6FC5 /* CommentsViewModel.swift in Sources */,
 				A7F441D91D005A9400FE6FC5 /* ProjectMainCellViewModel.swift in Sources */,
+				A74900181D00E23000BC3BE7 /* SignupViewModel.swift in Sources */,
 				A7F441D51D005A9400FE6FC5 /* ProfileProjectCellViewModel.swift in Sources */,
 				A7F441AF1D005A9400FE6FC5 /* ActivityFriendBackingViewModel.swift in Sources */,
 				A75511691C8642C3005355CF /* UILabel+IBClear.swift in Sources */,
@@ -3453,6 +3412,7 @@
 				A755119E1C8645A0005355CF /* UILabel+SimpleHTMLTests.swift in Sources */,
 				A7830D121D005C3F00B5B6AE /* MessagesViewModelTests.swift in Sources */,
 				A7830D061D005C3F00B5B6AE /* FacebookConfirmationViewModelTests.swift in Sources */,
+				A749001B1D00E25200BC3BE7 /* SignupViewModelTests.swift in Sources */,
 				A75511941C8645A0005355CF /* AppEnvironmentTests.swift in Sources */,
 				0176E19B1C976703009CA092 /* UITextfield+LocalizedPlaceholderKeyTests.swift in Sources */,
 				A77519221C8CB0360022F175 /* CircleAvatarImageViewTests.swift in Sources */,
@@ -3532,6 +3492,7 @@
 				A76126BA1C90C94000EDCCB9 /* UIView-Extensions.swift in Sources */,
 				A75511B71C8647D9005355CF /* Strings.swift in Sources */,
 				A75511B81C8647D9005355CF /* UIButton+LocalizedKey.swift in Sources */,
+				A74900191D00E23000BC3BE7 /* SignupViewModel.swift in Sources */,
 				A7F441D61D005A9400FE6FC5 /* ProfileProjectCellViewModel.swift in Sources */,
 				A707BAD71CFFAB9400653B2F /* HelpType.swift in Sources */,
 				A75511B91C8647D9005355CF /* UIGestureRecognizer-Extensions.swift in Sources */,
@@ -3579,6 +3540,7 @@
 				A7830D0F1D005C3F00B5B6AE /* MessageDialogViewModelTests.swift in Sources */,
 				A75511EC1C865321005355CF /* XCTestCase+AppEnvironment.swift in Sources */,
 				A75511ED1C865321005355CF /* LanguageTests.swift in Sources */,
+				A749001C1D00E25200BC3BE7 /* SignupViewModelTests.swift in Sources */,
 				A7830D191D005C3F00B5B6AE /* ProfileHeaderViewModelTests.swift in Sources */,
 				A75511EE1C865321005355CF /* UILabel+IBClearTests.swift in Sources */,
 				A761275F1C93052400EDCCB9 /* CGColorRef.swift in Sources */,
@@ -3642,8 +3604,6 @@
 				0127FC5D1C98C11500E335C6 /* SFSafariViewController.swift in Sources */,
 				014A8DEB1CE3C350003BF51C /* ThanksProjectsDataSource.swift in Sources */,
 				014A8D9A1CE38959003BF51C /* ProjectActivityItemProvider.swift in Sources */,
-				0127FC541C98C0F900E335C6 /* HelpType.swift in Sources */,
-				9D1336CC1CEFBB7A00E860A0 /* SignupViewController.swift in Sources */,
 				A74FFDF01CE3E33300C7BCB9 /* MessageDialogViewController.swift in Sources */,
 				A7208C961CCBD76300E3DAB3 /* ActivityEmptyStateCell.swift in Sources */,
 				A762EFF31C8CC663005581A4 /* ActivityFriendFollowCell.swift in Sources */,
@@ -3675,6 +3635,7 @@
 				A75A292B1CE0B7EA00D35E5C /* ProjectBannerCell.swift in Sources */,
 				0148EF911CDD2879000DEFF8 /* ThanksViewController.swift in Sources */,
 				A72A4FF11D00A18600894A36 /* ProfileEmptyStateCell.swift in Sources */,
+				A749001F1D00E27100BC3BE7 /* SignupViewController.swift in Sources */,
 				A762F01D1C8CD2B3005581A4 /* ActivitySuccessCell.swift in Sources */,
 				A75CBDE81C8A26F800758C55 /* AppDelegateViewModel.swift in Sources */,
 				0127FC5A1C98C10D00E335C6 /* MFMailComposeViewController.swift in Sources */,
@@ -3757,8 +3718,6 @@
 				A71003D91CDCFA2500B4F4D7 /* MessageThreadsViewController.swift in Sources */,
 				A74FFE681CE3FFE200C7BCB9 /* SearchMessagesViewController.swift in Sources */,
 				01EA879B1C9335C5004E738B /* LoginToutViewController.swift in Sources */,
-				018F1FA91C8E1A8200643DAA /* LoginToutViewModel.swift in Sources */,
-				9D1336CB1CEFBB7A00E860A0 /* SignupViewController.swift in Sources */,
 				A7285C9B1C8E8DCF00D83297 /* ProjectViewController.swift in Sources */,
 				A745D0471CA8985B00C12802 /* DashboardViewController.swift in Sources */,
 				A7E315C51C88AAA8000DD85A /* DiscoveryProjectsDataSource.swift in Sources */,
@@ -3787,7 +3746,6 @@
 				A7D1F9481C850B7C000D41D5 /* AppDelegate.swift in Sources */,
 				A745D0211CA897FF00C12802 /* SearchViewController.swift in Sources */,
 				A7F761751C85FA40005405ED /* ActivitiesViewController.swift in Sources */,
-				9D727A291CC04BE200B28C5F /* SignupViewModel.swift in Sources */,
 				599603D31CE5220900E1B1EC /* ProfileEmptyStateCell.swift in Sources */,
 				A7FC8C511C8F442D00C3B49B /* ProjectRewardCell.swift in Sources */,
 				A715ACC21CE7ED3600605F02 /* ActivityNegativeStateChangeCell.swift in Sources */,
@@ -3796,6 +3754,7 @@
 				A7208C951CCBD76300E3DAB3 /* ActivityEmptyStateCell.swift in Sources */,
 				014A8D931CE38924003BF51C /* UIActivityViewController.swift in Sources */,
 				A71003DC1CDD068F00B4F4D7 /* MessageThreadsDataSource.swift in Sources */,
+				A749001E1D00E27100BC3BE7 /* SignupViewController.swift in Sources */,
 				A7A052131CD12DD7005AF5E2 /* CommentCell.swift in Sources */,
 				A711FD221CECC8E600659DB4 /* ActivitySuccessCell.swift in Sources */,
 				A75CBDE71C8A26F800758C55 /* AppDelegateViewModel.swift in Sources */,
@@ -3824,9 +3783,6 @@
 			files = (
 				A775B54C1CA87C8500BBB587 /* RootViewModelTests.swift in Sources */,
 				A77519121C8CADE20022F175 /* AppDelegateViewModelTests.swift in Sources */,
-				9D7279FC1CC04BCA00B28C5F /* SignupViewModelTests.swift in Sources */,
-				01BF21311CA5E81C00184A38 /* ResetPasswordViewModelTests.swift in Sources */,
-				A74FFECF1CE5097B00C7BCB9 /* MessagesViewModelTests.swift in Sources */,
 				599604001CE6286900E1B1EC /* ProfileDataSourceTests.swift in Sources */,
 				A72D943B1CB3477000A88249 /* MockBundle.swift in Sources */,
 				A72D92991CB1F7DA00A88249 /* TestCase.swift in Sources */,

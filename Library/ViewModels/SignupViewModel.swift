@@ -1,12 +1,11 @@
 import Foundation
-import Library
 import KsApi
 import Models
 import Prelude
 import ReactiveCocoa
 import Result
 
-internal protocol SignupViewModelInputs {
+public protocol SignupViewModelInputs {
   /// Call when the user enters a new email address.
   func emailChanged(email: String)
 
@@ -38,7 +37,7 @@ internal protocol SignupViewModelInputs {
   func weeklyNewsletterChanged(weeklyNewsletter: Bool)
 }
 
-internal protocol SignupViewModelOutputs {
+public protocol SignupViewModelOutputs {
   /// Dismiss the keyboard.
   var dismissKeyboard: Signal<(), NoError> { get }
 
@@ -67,15 +66,15 @@ internal protocol SignupViewModelOutputs {
   var showError: Signal<String, NoError> { get }
 }
 
-internal protocol SignupViewModelType {
+public protocol SignupViewModelType {
   var inputs: SignupViewModelInputs { get }
   var outputs: SignupViewModelOutputs { get }
 }
 
-internal final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, SignupViewModelOutputs {
+public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, SignupViewModelOutputs {
 
   // swiftlint:disable function_body_length
-  internal init() {
+  public init() {
     let nameIsEmpty = Signal.merge(
       viewDidLoadProperty.signal.mapConst(true),
       nameChangedProperty.signal.map { $0.isEmpty }
@@ -213,66 +212,66 @@ internal final class SignupViewModel: SignupViewModelType, SignupViewModelInputs
 
   // INPUTS
   private let emailChangedProperty = MutableProperty<String>("")
-  internal func emailChanged(email: String) {
+  public func emailChanged(email: String) {
     self.emailChangedProperty.value = email
   }
 
   private let emailTextFieldReturnProperty = MutableProperty(())
-  internal func emailTextFieldReturn() {
+  public func emailTextFieldReturn() {
     self.emailTextFieldReturnProperty.value = ()
   }
 
   private let environmentLoggedInProperty = MutableProperty(())
-  internal func environmentLoggedIn() {
+  public func environmentLoggedIn() {
     self.environmentLoggedInProperty.value = ()
   }
 
   private let nameChangedProperty = MutableProperty<String>("")
-  internal func nameChanged(name: String) {
+  public func nameChanged(name: String) {
     self.nameChangedProperty.value = name
   }
 
   private let nameTextFieldReturnProperty = MutableProperty(())
-  internal func nameTextFieldReturn() {
+  public func nameTextFieldReturn() {
     self.nameTextFieldReturnProperty.value = ()
   }
 
   private let passwordChangedProperty = MutableProperty<String>("")
-  internal func passwordChanged(password: String) {
+  public func passwordChanged(password: String) {
     self.passwordChangedProperty.value = password
   }
 
   private let passwordTextFieldReturnProperty = MutableProperty(())
-  internal func passwordTextFieldReturn() {
+  public func passwordTextFieldReturn() {
     self.passwordTextFieldReturnProperty.value = ()
   }
 
   private let signupButtonPressedProperty = MutableProperty()
-  internal func signupButtonPressed() {
+  public func signupButtonPressed() {
     self.signupButtonPressedProperty.value = ()
   }
 
   private let viewDidLoadProperty = MutableProperty()
-  internal func viewDidLoad() {
+  public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
 
   private let weeklyNewsletterChangedProperty = MutableProperty<Bool?>(nil)
-  internal func weeklyNewsletterChanged(weeklyNewsletter: Bool) {
+  public func weeklyNewsletterChanged(weeklyNewsletter: Bool) {
     self.weeklyNewsletterChangedProperty.value = weeklyNewsletter
   }
 
   // OUTPUTS
-  internal let dismissKeyboard: Signal<(), NoError>
-  internal let emailTextFieldBecomeFirstResponder: Signal<(), NoError>
-  internal let isSignupButtonEnabled: Signal<Bool, NoError>
-  internal let logIntoEnvironment: Signal<AccessTokenEnvelope, NoError>
-  internal let nameTextFieldBecomeFirstResponder: Signal<(), NoError>
-  internal let passwordTextFieldBecomeFirstResponder: Signal<(), NoError>
-  internal let postNotification: Signal<NSNotification, NoError>
-  internal let setWeeklyNewsletterState: Signal<Bool, NoError>
-  internal let showError: Signal<String, NoError>
+  public let dismissKeyboard: Signal<(), NoError>
+  public let emailTextFieldBecomeFirstResponder: Signal<(), NoError>
+  public let isSignupButtonEnabled: Signal<Bool, NoError>
+  public let logIntoEnvironment: Signal<AccessTokenEnvelope, NoError>
+  public let nameTextFieldBecomeFirstResponder: Signal<(), NoError>
+  public let passwordTextFieldBecomeFirstResponder: Signal<(), NoError>
+  public let postNotification: Signal<NSNotification, NoError>
+  public let setWeeklyNewsletterState: Signal<Bool, NoError>
+  public let showError: Signal<String, NoError>
 
-  var inputs: SignupViewModelInputs { return self }
-  var outputs: SignupViewModelOutputs { return self }
+  public var inputs: SignupViewModelInputs { return self }
+  public var outputs: SignupViewModelOutputs { return self }
 }
