@@ -60,6 +60,9 @@ internal protocol SignupViewModelOutputs {
   /// Sets whether the name text field is the first responder.
   var nameTextFieldBecomeFirstResponder: Signal<(), NoError> { get }
 
+  /// Sets the type for the keyboard's return key.
+  // var setReturnKeyType: Signal<UIReturnKeyType, NoError> { get }
+
   /// Emits the value for the weekly newsletter.
   var setWeeklyNewsletterState: Signal<Bool, NoError> { get }
 
@@ -76,72 +79,65 @@ internal final class SignupViewModel: SignupViewModelType, SignupViewModelInputs
 
   // swiftlint:disable function_body_length
   internal init() {
-    let nameIsEmpty = Signal.merge(
-      viewDidLoadProperty.signal.mapConst(true),
-      nameChangedProperty.signal.map { $0.isEmpty }
+    let nameIsValid = Signal.merge(
+      viewDidLoadProperty.signal.mapConst(false),
+      nameChangedProperty.signal.map { !$0.isEmpty }
     )
 
-    let emailIsEmpty = Signal.merge(
-      viewDidLoadProperty.signal.mapConst(true),
-      emailChangedProperty.signal.map { $0.isEmpty }
+    let emailIsValid = Signal.merge(
+      viewDidLoadProperty.signal.mapConst(false),
+      emailChangedProperty.signal.map { !$0.isEmpty }
     )
 
-    let passwordIsEmpty = Signal.merge(
-      viewDidLoadProperty.signal.mapConst(true),
-      passwordChangedProperty.signal.map { $0.isEmpty }
+    let passwordIsValid = Signal.merge(
+      viewDidLoadProperty.signal.mapConst(false),
+      passwordChangedProperty.signal.map { !$0.isEmpty }
     )
 
     self.nameTextFieldBecomeFirstResponder = Signal.merge(
       viewDidLoadProperty.signal.ignoreValues(),
 
-      nameIsEmpty
+      nameIsValid
         .takeWhen(self.passwordTextFieldReturnProperty.signal)
-        .filter(isTrue)
+        .filter(isFalse)
         .ignoreValues(),
 
-      combineLatest(nameIsEmpty, passwordIsEmpty)
+      combineLatest(nameIsValid, passwordIsValid)
         .takeWhen(self.emailTextFieldReturnProperty.signal)
-        .filter { n, p in n && !p }
+        .filter { n, p in !n && p }
         .ignoreValues()
     )
 
     self.emailTextFieldBecomeFirstResponder = Signal.merge(
-      emailIsEmpty
+      emailIsValid
         .takeWhen(self.nameTextFieldReturnProperty.signal)
-        .filter(isTrue)
+        .filter(isFalse)
         .ignoreValues(),
 
-      combineLatest(emailIsEmpty, nameIsEmpty)
+      combineLatest(emailIsValid, nameIsValid)
         .takeWhen(self.passwordTextFieldReturnProperty.signal)
-        .filter { e, n in e && !n }
+        .filter { e, n in !e && n }
         .ignoreValues()
     )
 
     self.passwordTextFieldBecomeFirstResponder = Signal.merge(
-      passwordIsEmpty
+      passwordIsValid
         .takeWhen(self.emailTextFieldReturnProperty.signal)
-        .filter(isTrue)
+        .filter(isFalse)
         .ignoreValues(),
 
-      combineLatest(passwordIsEmpty, emailIsEmpty)
+      combineLatest(passwordIsValid, emailIsValid)
         .takeWhen(self.nameTextFieldReturnProperty.signal)
-        .filter { p, e in p && !e }
+        .filter { p, e in !p && e }
         .ignoreValues()
     )
 
-    let formValid = combineLatest(
-      nameChangedProperty.signal,
-      emailChangedProperty.signal,
-      passwordChangedProperty.signal
-      )
+    let formValid = combineLatest(nameIsValid, emailIsValid, passwordIsValid)
       .map { name, email, password in
-        !name.characters.isEmpty &&
-        isValidEmail(email) &&
-        !password.characters.isEmpty
+        name && email && password
       }
 
-    self.dismissKeyboard = combineLatest(nameIsEmpty, emailIsEmpty, passwordIsEmpty)
-      .filter { n, e, p in !n && !e && !p }
+    self.dismissKeyboard = formValid
       .takeWhen(
         Signal.merge(
           self.nameTextFieldReturnProperty.signal,
@@ -149,14 +145,14 @@ internal final class SignupViewModel: SignupViewModelType, SignupViewModelInputs
           self.passwordTextFieldReturnProperty.signal
         )
       )
+      .filter(isTrue)
       .ignoreValues()
 
     self.setWeeklyNewsletterState = self.viewDidLoadProperty.signal.map {
       AppEnvironment.current.countryCode == "US"
     }
 
-    self.isSignupButtonEnabled = formValid
-      .mergeWith(viewDidLoadProperty.signal.mapConst(false))
+    self.isSignupButtonEnabled = formValid.skipRepeats()
 
     let weeklyNewsletter = Signal.merge(
       self.setWeeklyNewsletterState,
@@ -270,6 +266,7 @@ internal final class SignupViewModel: SignupViewModelType, SignupViewModelInputs
   internal let nameTextFieldBecomeFirstResponder: Signal<(), NoError>
   internal let passwordTextFieldBecomeFirstResponder: Signal<(), NoError>
   internal let postNotification: Signal<NSNotification, NoError>
+  //internal let setReturnKeyType: Signal<UIReturnKeyType, NoError>
   internal let setWeeklyNewsletterState: Signal<Bool, NoError>
   internal let showError: Signal<String, NoError>
 
