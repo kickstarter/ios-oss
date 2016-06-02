@@ -1,9 +1,7 @@
-import ReactiveExtensions
-import ReactiveCocoa
-import Foundation
-import UIKit
 import Library
 import Prelude
+import ReactiveCocoa
+import UIKit
 
 internal final class LoginViewController: UIViewController {
   @IBOutlet internal weak var emailTextField: UITextField!

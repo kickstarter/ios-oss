@@ -1,5 +1,5 @@
-import class SafariServices.SFSafariViewController
-import class Foundation.NSURL
+import Library
+import SafariServices
 
 public extension SFSafariViewController {
   public static func help(helptype: HelpType, baseURL: NSURL) -> SFSafariViewController {

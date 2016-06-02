@@ -1,9 +1,8 @@
+import KsApi
 import Library
-import Foundation
+import Models
 import ReactiveCocoa
 import Result
-import Models
-import KsApi
 
 internal protocol AppDelegateViewModelInputs {
   /// Call when the application finishes launching.
@@ -55,7 +54,7 @@ AppDelegateViewModelOutputs {
 
   private typealias ApplicationWithOptions = (application: UIApplication, options: [NSObject:AnyObject]?)
   private let applicationDidFinishLaunchingProperty = MutableProperty<ApplicationWithOptions?>(nil)
-  func applicationDidFinishLaunching(application application: UIApplication,
+  internal func applicationDidFinishLaunching(application application: UIApplication,
                                                  launchOptions: [NSObject : AnyObject]?) {
     self.applicationDidFinishLaunchingProperty.value = (application, launchOptions)
   }
@@ -82,7 +81,7 @@ AppDelegateViewModelOutputs {
     annotation: AnyObject
   )
   private let applicationOpenUrlProperty = MutableProperty<ApplicationOpenUrl?>(nil)
-  func applicationOpenUrl(application application: UIApplication,
+  internal func applicationOpenUrl(application application: UIApplication,
                                       url: NSURL,
                                       sourceApplication: String?,
                                       annotation: AnyObject) {

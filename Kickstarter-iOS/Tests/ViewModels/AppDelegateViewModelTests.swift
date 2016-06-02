@@ -1,8 +1,8 @@
 import XCTest
 import ReactiveCocoa
 import Result
-@testable import Kickstarter_iOS
 @testable import Library
+@testable import Kickstarter_iOS
 @testable import Models
 @testable import Models_TestHelpers
 @testable import KsApi
@@ -49,7 +49,7 @@ final class AppDelegateViewModelTests: TestCase {
 
   func testCurrentUserUpdating_NothingHappensWhenLoggedOut() {
     vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
-                                            launchOptions: nil)
+                                            launchOptions: [:])
     vm.inputs.applicationWillEnterForeground()
     vm.inputs.applicationDidEnterBackground()
 
@@ -61,7 +61,7 @@ final class AppDelegateViewModelTests: TestCase {
     AppEnvironment.login(env)
 
     vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
-                                            launchOptions: nil)
+                                            launchOptions: [:])
 
     updateCurrentUserInEnvironment.assertValues([env.user])
     postNotificationName.assertDidNotEmitValue()
@@ -90,7 +90,7 @@ final class AppDelegateViewModelTests: TestCase {
     XCTAssertFalse(self.facebookAppDelegate.openedUrl)
 
     self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
-                                                 launchOptions: nil)
+                                                 launchOptions: [:])
 
     XCTAssertTrue(self.facebookAppDelegate.didFinishLaunching)
     XCTAssertFalse(self.facebookAppDelegate.openedUrl)
@@ -105,7 +105,7 @@ final class AppDelegateViewModelTests: TestCase {
 
   func testConfig() {
     self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
-                                                 launchOptions: nil)
+                                                 launchOptions: [:])
     self.updateConfigInEnvironment.assertValueCount(1)
 
     self.vm.inputs.applicationWillEnterForeground()

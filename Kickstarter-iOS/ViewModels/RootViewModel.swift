@@ -1,8 +1,8 @@
-import ReactiveCocoa
-import UIKit
-import Result
 import Library
 import Prelude
+import ReactiveCocoa
+import Result
+import UIKit
 
 internal protocol RootViewModelInputs {
   /// Call from the controller's `viewDidLoad` method.

@@ -72,7 +72,7 @@ internal final class ActivitiesViewController: UITableViewController {
                                           forRowAtIndexPath indexPath: NSIndexPath) {
 
     if let cell = cell as? ActivityUpdateCell where cell.delegate == nil {
-      cell.delegate = self.viewModel.inputs
+      cell.delegate = self
     }
 
     self.viewModel.inputs.willDisplayRow(self.dataSource.itemIndexAt(indexPath),
@@ -101,5 +101,11 @@ internal final class ActivitiesViewController: UITableViewController {
     self.presentViewController(UINavigationController(rootViewController: vc),
                                animated: true,
                                completion: nil)
+  }
+}
+
+extension ActivitiesViewController: ActivityUpdateCellDelegate {
+  internal func activityUpdateCellTappedProjectImage(activity activity: Activity) {
+    self.viewModel.inputs.activityUpdateCellTappedProjectImage(activity: activity)
   }
 }

@@ -1,6 +1,3 @@
 [submodule "Frameworks/KsApi"]
 	path = Frameworks/KsApi
 	url = git@github.com:kickstarter/Kickstarter-KsApi.git
-[submodule "Frameworks/AlamofireImage"]
-	path = Frameworks/AlamofireImage
-	url = git://github.com/Alamofire/AlamofireImage.git

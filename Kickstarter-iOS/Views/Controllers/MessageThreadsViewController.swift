@@ -1,7 +1,7 @@
+import Library
 import Models
 import Prelude
 import ReactiveCocoa
-import ReactiveExtensions
 import UIKit
 
 internal final class MessageThreadsViewController: UITableViewController {
