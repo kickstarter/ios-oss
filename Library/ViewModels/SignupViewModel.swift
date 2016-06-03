@@ -123,7 +123,7 @@ public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, 
         ),
       Signal.merge(
         self.setWeeklyNewsletterState,
-        self.weeklyNewsletterChangedProperty.signal
+        self.weeklyNewsletterChangedProperty.signal.ignoreNil()
         )
       )
       .takeWhen(
