@@ -76,50 +76,44 @@ public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, 
 
   // swiftlint:disable function_body_length
   public init() {
-    let nameIsValid = Signal.merge(
-      self.viewDidLoadProperty.signal.mapConst(false),
-      self.nameChangedProperty.signal.map { !$0.isEmpty })
+    let name = Signal.merge(
+      self.nameChangedProperty.signal,
+      self.viewDidLoadProperty.signal.mapConst("")
+    )
+    let email = Signal.merge(
+      self.emailChangedProperty.signal,
+      self.viewDidLoadProperty.signal.mapConst("")
+    )
+    let password = Signal.merge(
+      self.passwordChangedProperty.signal,
+      self.viewDidLoadProperty.signal.mapConst("")
+    )
+    let newsletter = Signal.merge(
+      self.viewDidLoadProperty.signal.map { AppEnvironment.current.config?.countryCode == "US" },
+      self.weeklyNewsletterChangedProperty.signal.ignoreNil()
+    )
 
-    let emailIsValid = Signal.merge(
-      self.viewDidLoadProperty.signal.mapConst(false),
-      self.emailChangedProperty.signal.map { isValidEmail($0) })
-
-    let passwordIsValid = Signal.merge(
-      self.viewDidLoadProperty.signal.mapConst(false),
-      self.passwordChangedProperty.signal.map { !$0.isEmpty })
+    let nameIsValid = name.map { !$0.isEmpty }
+    let emailIsValid = email.map { isValidEmail($0) }
+    let passwordIsValid = password.map { !$0.isEmpty }
 
     self.nameTextFieldBecomeFirstResponder = self.viewDidLoadProperty.signal.ignoreValues()
     self.emailTextFieldBecomeFirstResponder = self.nameTextFieldReturnProperty.signal
     self.passwordTextFieldBecomeFirstResponder = self.emailTextFieldReturnProperty.signal
 
     self.isSignupButtonEnabled = combineLatest(nameIsValid, emailIsValid, passwordIsValid)
-      .map { name, email, password in
-        name && email && password
-      }
+      .map { $0 && $1 && $2 }
       .skipRepeats()
 
-    self.setWeeklyNewsletterState = self.viewDidLoadProperty.signal.map {
-      // Change to: AppEnvironment.current.config?.countryCode == "US"
-      AppEnvironment.current.countryCode == "US"
-    }
+    self.setWeeklyNewsletterState = newsletter.take(1)
 
-    let signupEvent = combineLatest(
-      Signal.merge(
-        self.nameChangedProperty.signal,
-        self.viewDidLoadProperty.signal.mapConst("")),
-      Signal.merge(
-        self.emailChangedProperty.signal,
-        self.viewDidLoadProperty.signal.mapConst("")),
-      Signal.merge(
-        self.passwordChangedProperty.signal,
-        self.viewDidLoadProperty.signal.mapConst("")),
-      Signal.merge(
-        self.setWeeklyNewsletterState,
-        self.weeklyNewsletterChangedProperty.signal.ignoreNil()))
-      .takeWhen(
-        Signal.merge(
-          passwordTextFieldReturnProperty.signal,
-          signupButtonPressedProperty.signal))
+    let attemptSignup = Signal.merge(
+      self.passwordTextFieldReturnProperty.signal,
+      self.signupButtonPressedProperty.signal
+    )
+
+    let signupEvent = combineLatest(name, email, password, newsletter)
+      .takeWhen(attemptSignup)
       .switchMap { name, email, password, newsletter in
         AppEnvironment.current.apiService.signup(
           name: name,
@@ -131,11 +125,13 @@ public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, 
           .materialize()
       }
 
+    let emailLostFocus = Signal.merge(
+      self.emailTextFieldReturnProperty.signal,
+      self.emailTextFieldDoneEditingProperty.signal
+    )
+
     let emailError = emailIsValid
-      .takeWhen(
-        Signal.merge(
-          self.emailTextFieldReturnProperty.signal,
-          self.emailTextFieldDoneEditingProperty.signal))
+      .takeWhen(emailLostFocus)
       .filter(isFalse)
       .map { _ in
         localizedString(
