@@ -6,7 +6,7 @@ import XCTest
 @testable import ReactiveCocoa
 @testable import Result
 
-private final class SignupViewModelTests: TestCase {
+internal final class SignupViewModelTests: TestCase {
   private let vm: SignupViewModelType = SignupViewModel()
   private let emailTextFieldBecomeFirstResponder = TestObserver<(), NoError>()
   private let isSignupButtonEnabled = TestObserver<Bool, NoError>()
