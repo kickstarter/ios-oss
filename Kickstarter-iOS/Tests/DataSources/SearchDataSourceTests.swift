@@ -21,9 +21,9 @@ final class SearchDataSourceTests: XCTestCase {
 
   func testProjects() {
     dataSource.load(projects: [
-      Project.template |> Project.lens.id *~ 1,
-      Project.template |> Project.lens.id *~ 2,
-      Project.template |> Project.lens.id *~ 3
+      Project.template |> Project.lens.id .~ 1,
+      Project.template |> Project.lens.id .~ 2,
+      Project.template |> Project.lens.id .~ 3
     ])
 
     XCTAssertEqual(2, self.dataSource.numberOfSectionsInTableView(tableView))

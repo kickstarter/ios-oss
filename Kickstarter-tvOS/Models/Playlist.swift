@@ -70,26 +70,26 @@ final class _Playlist: _PlaylistInputs, _PlaylistOutputs {
   }
 
   var discoveryParams: DiscoveryParams {
-    let base = DiscoveryParams.lens.seed *~ self.seed
-      <> DiscoveryParams.lens.state *~ .Live
-      <> DiscoveryParams.lens.hasVideo *~ true
+    let base = DiscoveryParams.lens.seed .~ self.seed
+      <> DiscoveryParams.lens.state .~ .Live
+      <> DiscoveryParams.lens.hasVideo .~ true
 
     switch self.type {
     case let .Featured(category):
       return DiscoveryParams.defaults |> base
-        <> DiscoveryParams.lens.staffPicks *~ true
-        <> DiscoveryParams.lens.includePOTD *~ true
-        <> DiscoveryParams.lens.category *~ category
+        <> DiscoveryParams.lens.staffPicks .~ true
+        <> DiscoveryParams.lens.includePOTD .~ true
+        <> DiscoveryParams.lens.category .~ category
 
     case let .Recommended(category):
       return DiscoveryParams.defaults |> base
-        <> DiscoveryParams.lens.category *~ category
-        <> DiscoveryParams.lens.recommended *~ true
+        <> DiscoveryParams.lens.category .~ category
+        <> DiscoveryParams.lens.recommended .~ true
 
     case let .Popular(category):
       return DiscoveryParams.defaults |> base
-        <> DiscoveryParams.lens.category *~ category
-        <> DiscoveryParams.lens.sort *~ .Popular
+        <> DiscoveryParams.lens.category .~ category
+        <> DiscoveryParams.lens.sort .~ .Popular
     }
   }
 
@@ -114,34 +114,34 @@ enum Playlist {
   case Category(Models.Category)
 
   var discoveryParams: DiscoveryParams {
-    let base = DiscoveryParams.lens.hasVideo *~ true <> DiscoveryParams.lens.state *~ .Live
+    let base = DiscoveryParams.lens.hasVideo .~ true <> DiscoveryParams.lens.state .~ .Live
 
     switch self {
     case Featured:
       return DiscoveryParams.defaults |> base
-        <> DiscoveryParams.lens.staffPicks *~ true
-        <> DiscoveryParams.lens.includePOTD *~ true
+        <> DiscoveryParams.lens.staffPicks .~ true
+        <> DiscoveryParams.lens.includePOTD .~ true
 
     case .Recommended:
       return DiscoveryParams.defaults |> base
-        <> DiscoveryParams.lens.recommended *~ true
+        <> DiscoveryParams.lens.recommended .~ true
 
     case .Popular:
       return DiscoveryParams.defaults |> base
-        <> DiscoveryParams.lens.sort *~ .Popular
+        <> DiscoveryParams.lens.sort .~ .Popular
 
     case let .CategoryFeatured(category):
       return DiscoveryParams.defaults |> base
-        <> DiscoveryParams.lens.category *~ category
+        <> DiscoveryParams.lens.category .~ category
 
     case let .Category(category):
       return DiscoveryParams.defaults |> base
-        <> DiscoveryParams.lens.category *~ category
+        <> DiscoveryParams.lens.category .~ category
     }
   }
 
   var sampleProjectParams: DiscoveryParams {
-    return self.discoveryParams |> DiscoveryParams.lens.perPage *~ 1
+    return self.discoveryParams |> DiscoveryParams.lens.perPage .~ 1
   }
 
   var category: Models.Category? {

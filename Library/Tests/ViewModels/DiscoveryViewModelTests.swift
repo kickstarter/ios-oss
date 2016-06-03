@@ -72,7 +72,7 @@ final class DiscoveryViewModelTests: TestCase {
 
       // Change the filter params used
       self.vm.inputs.filterParamsChanged(
-        DiscoveryParams.defaults |> DiscoveryParams.lens.category *~ Category.art
+        DiscoveryParams.defaults |> DiscoveryParams.lens.category .~ Category.art
       )
 
       self.hasAddedProjects.assertValues([true, true, false], "No projects are added.")

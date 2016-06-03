@@ -83,7 +83,7 @@ internal final class ProjectViewModelTests: TestCase {
   func testLoggedOutUser_StarsProject() {
     self.projectIsStarred.assertDidNotEmitValue("No projects emitted at first.")
 
-    vm.inputs.project(Project.template |> Project.lens.personalization.isStarred *~ false)
+    vm.inputs.project(Project.template |> Project.lens.personalization.isStarred .~ false)
     vm.inputs.refTag(nil)
     vm.inputs.viewWillAppear()
     self.scheduler.advance()
@@ -137,7 +137,7 @@ internal final class ProjectViewModelTests: TestCase {
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: User.template))
 
     vm.inputs.project(
-      Project.template |> Project.lens.dates.deadline *~ NSDate().timeIntervalSince1970 - 60.0 * 60.0 * 24.0
+      Project.template |> Project.lens.dates.deadline .~ NSDate().timeIntervalSince1970 - 60.0 * 60.0 * 24.0
     )
     vm.inputs.refTag(nil)
     vm.inputs.viewWillAppear()
@@ -150,7 +150,7 @@ internal final class ProjectViewModelTests: TestCase {
   func testLoggedInUser_UnstarsProject() {
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: User.template))
 
-    vm.inputs.project(Project.template |> Project.lens.personalization.isStarred *~ true)
+    vm.inputs.project(Project.template |> Project.lens.personalization.isStarred .~ true)
     vm.inputs.refTag(nil)
     vm.inputs.viewWillAppear()
     vm.inputs.starButtonTapped()

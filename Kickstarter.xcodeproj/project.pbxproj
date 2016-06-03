@@ -377,6 +377,8 @@
 		A7A29F4A1CC3DE5F002BE580 /* ValueCellDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7A29F491CC3DE5F002BE580 /* ValueCellDataSourceTests.swift */; };
 		A7A29F4B1CC3DE5F002BE580 /* ValueCellDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7A29F491CC3DE5F002BE580 /* ValueCellDataSourceTests.swift */; };
 		A7A29F4E1CC3E0E8002BE580 /* KsApi_TestHelpers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A782BA9A1C9F5EBA007B13C8 /* KsApi_TestHelpers.framework */; };
+		A7B1BA9A1D01D75F0025A69C /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01D31A361CCA786A0037A178 /* FBSDKCoreKit.framework */; };
+		A7B1BA9B1D01D7620025A69C /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01D31A371CCA786A0037A178 /* FBSDKLoginKit.framework */; };
 		A7B693E61C8772A100C49A4F /* Library.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A755113C1C8642B3005355CF /* Library.framework */; };
 		A7B693E71C8772CE00C49A4F /* Library.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A755113C1C8642B3005355CF /* Library.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A7B693FF1C8789C100C49A4F /* HockeyManagerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B693FE1C8789C100C49A4F /* HockeyManagerType.swift */; };
@@ -1490,6 +1492,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A7B1BA9A1D01D75F0025A69C /* FBSDKCoreKit.framework in Frameworks */,
+				A7B1BA9B1D01D7620025A69C /* FBSDKLoginKit.framework in Frameworks */,
 				A7A29F4E1CC3E0E8002BE580 /* KsApi_TestHelpers.framework in Frameworks */,
 				A75511461C8642B3005355CF /* Library.framework in Frameworks */,
 			);
@@ -2415,6 +2419,7 @@
 				A75511381C8642B3005355CF /* Frameworks */,
 				A75511391C8642B3005355CF /* Headers */,
 				A755113A1C8642B3005355CF /* Resources */,
+				A7B1BA5F1D01D5790025A69C /* swiftlint */,
 			);
 			buildRules = (
 			);
@@ -2453,6 +2458,7 @@
 				A75511CC1C8647D9005355CF /* Frameworks */,
 				A75511D11C8647D9005355CF /* Headers */,
 				A75511D21C8647D9005355CF /* Resources */,
+				A7B1BA991D01D5820025A69C /* swiftlint */,
 			);
 			buildRules = (
 			);
@@ -3274,6 +3280,34 @@
 			shellScript = "if which swiftlint >/dev/null; then\nswiftlint\nelse\necho \"SwiftLint does not exist, download from https://github.com/realm/SwiftLint\"\nfi";
 		};
 		A785398B1CB6E91100385B73 /* swiftlint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = swiftlint;
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\nswiftlint\nelse\necho \"SwiftLint does not exist, download from https://github.com/realm/SwiftLint\"\nfi";
+		};
+		A7B1BA5F1D01D5790025A69C /* swiftlint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = swiftlint;
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\nswiftlint\nelse\necho \"SwiftLint does not exist, download from https://github.com/realm/SwiftLint\"\nfi";
+		};
+		A7B1BA991D01D5820025A69C /* swiftlint */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (

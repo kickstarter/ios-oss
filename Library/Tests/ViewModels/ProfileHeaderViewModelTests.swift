@@ -42,7 +42,7 @@ internal final class ProfileHeaderViewModelTests: TestCase {
   }
 
   func testUserWithCreatedProjects() {
-    let user = User.template |> User.lens.stats.createdProjectsCount *~ 1
+    let user = User.template |> User.lens.stats.createdProjectsCount .~ 1
 
     withEnvironment(apiService: MockService(fetchUserSelfResponse: user)) {
       AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
@@ -61,7 +61,7 @@ internal final class ProfileHeaderViewModelTests: TestCase {
   }
 
   func testUserWithNoCreatedProjects() {
-    let user = User.template |> User.lens.stats.backedProjectsCount *~ 1
+    let user = User.template |> User.lens.stats.backedProjectsCount .~ 1
 
     self.vm.inputs.user(user)
 

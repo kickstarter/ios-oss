@@ -116,8 +116,8 @@ ProjectViewModelErrors {
 
     self.recommendations = apiService.fetchDiscovery(
       params: DiscoveryParams.defaults
-        |> DiscoveryParams.lens.similarTo *~ initialProject
-        <> DiscoveryParams.lens.hasVideo *~ true
+        |> DiscoveryParams.lens.similarTo .~ initialProject
+        <> DiscoveryParams.lens.hasVideo .~ true
       )
       .map { $0.projects }
       .demoteErrors()

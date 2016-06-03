@@ -51,6 +51,9 @@
 #if HOCKEYSDK_FEATURE_AUTHENTICATOR
 @class BITAuthenticator;
 #endif
+#if HOCKEYSDK_FEATURE_METRICS
+@class BITMetricsManager;
+#endif
 
 /** 
  The HockeySDK manager. Responsible for setup and management of all components
@@ -81,6 +84,9 @@
  @warning Most properties of all components require to be set **BEFORE** calling`startManager`!
 
  */
+
+#import "HockeySDKNullability.h"
+NS_ASSUME_NONNULL_BEGIN
 
 @interface BITHockeyManager : NSObject
 
@@ -370,6 +376,31 @@
 
 #endif
 
+#if HOCKEYSDK_FEATURE_METRICS
+
+/**
+ Reference to the initialized BITMetricsManager module
+ 
+ Returns the BITMetricsManager instance initialized by BITHockeyManager
+ */
+@property (nonatomic, strong, readonly) BITMetricsManager *metricsManager;
+
+/**
+ Flag the determines whether the BITMetricsManager should be disabled
+ 
+ If this flag is enabled, then sending metrics data such as sessions and users 
+ will be turned off!
+ 
+ Please note that the BITMetricsManager instance will be initialized anyway!
+ 
+ @warning This property needs to be set before calling `startManager`
+ 
+ *Default*: _NO_
+ @see metricsManager
+ */
+@property (nonatomic, getter = isMetricsManagerDisabled) BOOL disableMetricsManager;
+
+#endif
 
 ///-----------------------------------------------------------------------------
 /// @name Environment
@@ -391,18 +422,6 @@
  @see BITEnvironment
  */
 @property (nonatomic, readonly) BITEnvironment appEnvironment;
-
-
-/**
- Flag that determines whether the application is installed and running
- from an App Store installation.
- 
- Returns _YES_ if the app is installed and running from the App Store
- Returns _NO_ if the app is installed via debug, ad-hoc or enterprise distribution
- 
- @deprecated Please use `appEnvironment` instead!
- */
-@property (nonatomic, readonly, getter=isAppStoreEnvironment) BOOL appStoreEnvironment DEPRECATED_ATTRIBUTE;
 
 
 /**
@@ -496,7 +515,7 @@
  @see userEmail
  @see `[BITHockeyManagerDelegate userIDForHockeyManager:componentManager:]`
  */
-@property (nonatomic, retain) NSString *userID;
+@property (nonatomic, copy) NSString *userID;
 
 
 /** Set the user name that should used in the SDK components
@@ -521,7 +540,7 @@
  @see userEmail
  @see `[BITHockeyManagerDelegate userNameForHockeyManager:componentManager:]`
  */
-@property (nonatomic, retain) NSString *userName;
+@property (nonatomic, copy) NSString *userName;
 
 
 /** Set the users email address that should used in the SDK components
@@ -544,9 +563,9 @@
 
  @see userID
  @see userName
- @see `[BITHockeyManagerDelegate userEmailForHockeyManager:componentManager:]`
+ @see [BITHockeyManagerDelegate userEmailForHockeyManager:componentManager:]
  */
-@property (nonatomic, retain) NSString *userEmail;
+@property (nonatomic, copy) NSString *userEmail;
 
 
 ///-----------------------------------------------------------------------------
@@ -564,3 +583,5 @@
 - (NSString *)build;
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -62,7 +62,7 @@ internal final class MessagesViewModelTests: TestCase {
   }
 
   func testOutputs_ConfiguredWithProject() {
-    let project = Project.template |> Project.lens.id *~ 42
+    let project = Project.template |> Project.lens.id .~ 42
     let backing = Backing.template
 
     self.vm.inputs.configureWith(data: .right((project: project, backing: backing)))
@@ -76,7 +76,7 @@ internal final class MessagesViewModelTests: TestCase {
   }
 
   func testOutputs_ConfiguredWithProject_AndBacking() {
-    let project = Project.template |> Project.lens.id *~ 42
+    let project = Project.template |> Project.lens.id .~ 42
     let backing = Backing.template
 
     self.vm.inputs.configureWith(data: .right((project: project, backing: backing)))
@@ -90,7 +90,7 @@ internal final class MessagesViewModelTests: TestCase {
   }
 
   func testGoToProject() {
-    let project = Project.template |> Project.lens.id *~ 42
+    let project = Project.template |> Project.lens.id .~ 42
     let backing = Backing.template
 
     self.vm.inputs.configureWith(data: .right((project: project, backing: backing)))
@@ -102,7 +102,7 @@ internal final class MessagesViewModelTests: TestCase {
   }
 
   func testGoToBacking() {
-    let project = Project.template |> Project.lens.id *~ 42
+    let project = Project.template |> Project.lens.id .~ 42
     let backing = Backing.template
 
     self.vm.inputs.configureWith(data: .right((project: project, backing: backing)))
@@ -113,7 +113,7 @@ internal final class MessagesViewModelTests: TestCase {
   }
 
   func testReplyFlow() {
-    let project = Project.template |> Project.lens.id *~ 42
+    let project = Project.template |> Project.lens.id .~ 42
     let backing = Backing.template
 
     self.vm.inputs.configureWith(data: .right((project: project, backing: backing)))

@@ -179,7 +179,7 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
     self.dismissViewController = self.closeButtonPressedProperty.signal
 
     self.goToDiscovery = self.categoryCellPressedProperty.signal.ignoreNil()
-      .map { DiscoveryParams.defaults |> DiscoveryParams.lens.category *~ $0 }
+      .map { DiscoveryParams.defaults |> DiscoveryParams.lens.category .~ $0 }
 
     let rootCategory = project
       .map { $0.category.rootId }
@@ -203,14 +203,9 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
     self.updateUserInEnvironment = gamesNewsletterSignupButtonPressedProperty.signal
       .map { AppEnvironment.current.currentUser ?? nil }.ignoreNil()
       .switchMap { user in
-        AppEnvironment.current.apiService.updateNewsletters(
-          games: true,
-          happening: user.newsletters.happening,
-          promo: user.newsletters.promo,
-          weekly: user.newsletters.weekly
-        )
-        .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
-        .demoteErrors()
+        AppEnvironment.current.apiService.updateUserSelf(user |> User.lens.newsletters.games .~ true)
+          .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
+          .demoteErrors()
     }
 
     self.postUserUpdatedNotification = userUpdatedProperty.signal
@@ -395,17 +390,17 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
 private func relatedProjects(project: Project, category: Models.Category, apiService: ServiceType) ->
   SignalProducer<[Project], NoError> {
 
-    let base = DiscoveryParams.lens.perPage *~ 3 <> DiscoveryParams.lens.backed *~ false
+    let base = DiscoveryParams.lens.perPage .~ 3 <> DiscoveryParams.lens.backed .~ false
 
     let recommendedParams = DiscoveryParams.defaults |> base
-      <> DiscoveryParams.lens.recommended *~ true
+      <> DiscoveryParams.lens.recommended .~ true
 
     let similarToParams = DiscoveryParams.defaults |> base
-      <> DiscoveryParams.lens.similarTo *~ project
+      <> DiscoveryParams.lens.similarTo .~ project
 
     let staffPickParams = DiscoveryParams.defaults |> base
-      <> DiscoveryParams.lens.staffPicks *~ true
-      <> DiscoveryParams.lens.category *~ category
+      <> DiscoveryParams.lens.staffPicks .~ true
+      <> DiscoveryParams.lens.category .~ category
 
     let recommendedProjects = apiService.fetchDiscovery(params: recommendedParams)
       .retry(2)

@@ -57,7 +57,7 @@ final class RootViewModelTests: TestCase {
       "Show the logged in tabs."
     )
 
-    AppEnvironment.updateCurrentUser(User.template |> User.lens.stats.createdProjectsCount *~ 1)
+    AppEnvironment.updateCurrentUser(User.template |> User.lens.stats.createdProjectsCount .~ 1)
     vm.inputs.currentUserUpdated()
 
     viewControllerNames.assertValues(

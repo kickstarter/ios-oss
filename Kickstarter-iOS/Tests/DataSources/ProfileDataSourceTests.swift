@@ -11,8 +11,8 @@ internal final class ProfileDataSourceTests: XCTestCase {
 
   func testDataSource() {
     let liveProject = Project.template
-    let successfulProject = Project.template |> Project.lens.state *~ .successful
-    let failedProject = Project.template |> Project.lens.state *~ .failed
+    let successfulProject = Project.template |> Project.lens.state .~ .successful
+    let failedProject = Project.template |> Project.lens.state .~ .failed
 
     self.dataSource.load(projects: [liveProject, successfulProject, failedProject])
 
