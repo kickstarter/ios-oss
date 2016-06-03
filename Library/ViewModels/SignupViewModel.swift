@@ -78,29 +78,19 @@ public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, 
   public init() {
     let nameIsValid = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst(false),
-      self.nameChangedProperty.signal.map { !$0.isEmpty }
-      )
+      self.nameChangedProperty.signal.map { !$0.isEmpty })
 
     let emailIsValid = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst(false),
-      self.emailChangedProperty.signal.map { isValidEmail($0) }
-      )
+      self.emailChangedProperty.signal.map { isValidEmail($0) })
 
     let passwordIsValid = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst(false),
-      self.passwordChangedProperty.signal.map { !$0.isEmpty }
-      )
+      self.passwordChangedProperty.signal.map { !$0.isEmpty })
 
     self.nameTextFieldBecomeFirstResponder = self.viewDidLoadProperty.signal.ignoreValues()
-
     self.emailTextFieldBecomeFirstResponder = self.nameTextFieldReturnProperty.signal
-
     self.passwordTextFieldBecomeFirstResponder = self.emailTextFieldReturnProperty.signal
-
-    self.setWeeklyNewsletterState = self.viewDidLoadProperty.signal.map {
-      // Change to: AppEnvironment.current.config?.countryCode == "US"
-      AppEnvironment.current.countryCode == "US"
-    }
 
     self.isSignupButtonEnabled = combineLatest(nameIsValid, emailIsValid, passwordIsValid)
       .map { name, email, password in
@@ -108,38 +98,35 @@ public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, 
       }
       .skipRepeats()
 
+    self.setWeeklyNewsletterState = self.viewDidLoadProperty.signal.map {
+      // Change to: AppEnvironment.current.config?.countryCode == "US"
+      AppEnvironment.current.countryCode == "US"
+    }
+
     let signupEvent = combineLatest(
       Signal.merge(
         self.nameChangedProperty.signal,
-        self.viewDidLoadProperty.signal.mapConst("")
-        ),
+        self.viewDidLoadProperty.signal.mapConst("")),
       Signal.merge(
         self.emailChangedProperty.signal,
-        self.viewDidLoadProperty.signal.mapConst("")
-        ),
+        self.viewDidLoadProperty.signal.mapConst("")),
       Signal.merge(
         self.passwordChangedProperty.signal,
-        self.viewDidLoadProperty.signal.mapConst("")
-        ),
+        self.viewDidLoadProperty.signal.mapConst("")),
       Signal.merge(
         self.setWeeklyNewsletterState,
-        self.weeklyNewsletterChangedProperty.signal.ignoreNil()
-        )
-      )
+        self.weeklyNewsletterChangedProperty.signal.ignoreNil()))
       .takeWhen(
         Signal.merge(
           passwordTextFieldReturnProperty.signal,
-          signupButtonPressedProperty.signal
-          )
-      )
+          signupButtonPressedProperty.signal))
       .switchMap { name, email, password, newsletter in
         AppEnvironment.current.apiService.signup(
           name: name,
           email: email,
           password: password,
           passwordConfirmation: password,
-          sendNewsletters: newsletter
-          )
+          sendNewsletters: newsletter)
           .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
           .materialize()
       }
@@ -148,23 +135,20 @@ public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, 
       .takeWhen(
         Signal.merge(
           self.emailTextFieldReturnProperty.signal,
-          self.emailTextFieldDoneEditingProperty.signal
-          )
-        )
+          self.emailTextFieldDoneEditingProperty.signal))
       .filter(isFalse)
       .map { _ in
         localizedString(
           // Add to native strings.
           key: "signup.error.email_invalid",
-          defaultValue: "Oof! The email you entered isn't valid."
-        )
+          defaultValue: "Oof! The email you entered isn't valid.")
       }
 
     let signupError = signupEvent.errors()
       .map {
         $0.errorMessages.first ??
           localizedString(key: "signup.error.something_wrong", defaultValue: "Something went wrong.")
-      }
+    }
 
     self.showError = Signal.merge(emailError, signupError)
 
@@ -250,8 +234,8 @@ public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, 
   public let emailTextFieldBecomeFirstResponder: Signal<(), NoError>
   public let isSignupButtonEnabled: Signal<Bool, NoError>
   public let logIntoEnvironment: Signal<AccessTokenEnvelope, NoError>
-  public let passwordTextFieldBecomeFirstResponder: Signal<(), NoError>
   public let nameTextFieldBecomeFirstResponder: Signal<(), NoError>
+  public let passwordTextFieldBecomeFirstResponder: Signal<(), NoError>
   public let postNotification: Signal<NSNotification, NoError>
   public let setWeeklyNewsletterState: Signal<Bool, NoError>
   public let showError: Signal<String, NoError>
