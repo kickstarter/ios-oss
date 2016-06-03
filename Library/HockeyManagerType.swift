@@ -4,7 +4,7 @@ import class HockeySDK.BITHockeyManager
  *  A type that can act like a HockeySDK manager without necessarily interfacing with Hockey.
  */
 public protocol HockeyManagerType {
-  func configureWithIdentifier(appIdentifier: String!)
+  func configureWithIdentifier(appIdentifier: String)
   func startManager()
   func appIdentifier() -> String?
   func autoSendReports()
@@ -32,7 +32,7 @@ internal final class MockHockeyManager: HockeyManagerType {
     self.isAutoSendingReports = true
   }
 
-  internal func configureWithIdentifier(appIdentifier: String!) {
+  internal func configureWithIdentifier(appIdentifier: String) {
     self.configuredAppIdentifier = appIdentifier
   }
 

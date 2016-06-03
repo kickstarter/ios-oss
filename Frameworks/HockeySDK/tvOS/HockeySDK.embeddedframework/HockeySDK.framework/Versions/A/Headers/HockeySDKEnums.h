@@ -1,11 +1,3 @@
-//
-//  HockeySDKEnums.h
-//  HockeySDK
-//
-//  Created by Lukas Spieß on 08/10/15.
-//
-//
-
 #ifndef HockeySDK_HockeyEnums_h
 #define HockeySDK_HockeyEnums_h
 
