@@ -1,5 +1,4 @@
 import XCTest
-@testable import Kickstarter_iOS
 @testable import KsApi
 @testable import KsApi_TestHelpers
 @testable import Library
@@ -10,7 +9,6 @@ import XCTest
 final class SignupViewModelTests: TestCase {
   let vm: SignupViewModelType = SignupViewModel()
   let emailTextFieldBecomeFirstResponder = TestObserver<(), NoError>()
-  let dismissKeyboard = TestObserver<(), NoError>()
   let isSignupButtonEnabled = TestObserver<Bool, NoError>()
   let logIntoEnvironment = TestObserver<AccessTokenEnvelope, NoError>()
   let nameTextFieldBecomeFirstResponder = TestObserver<(), NoError>()
@@ -22,7 +20,6 @@ final class SignupViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
-    vm.outputs.dismissKeyboard.observe(dismissKeyboard.observer)
     vm.outputs.emailTextFieldBecomeFirstResponder.observe(emailTextFieldBecomeFirstResponder.observer)
     vm.outputs.isSignupButtonEnabled.observe(isSignupButtonEnabled.observer)
     vm.outputs.logIntoEnvironment.observe(logIntoEnvironment.observer)
@@ -61,13 +58,11 @@ final class SignupViewModelTests: TestCase {
     nameTextFieldBecomeFirstResponder.assertValueCount(1, "Does not emit again.")
     emailTextFieldBecomeFirstResponder.assertValueCount(1, "Does not emit again.")
     passwordTextFieldBecomeFirstResponder.assertValueCount(1, "First responder after editing email.")
-    dismissKeyboard.assertDidNotEmitValue("Don't dismiss until all fields have been edited.")
 
     vm.inputs.passwordChanged("0773rw473rm3l0n")
-    isSignupButtonEnabled.assertValues([false, true], "Enabled when form has been filled out.")
-    vm.inputs.passwordTextFieldReturn()
-    dismissKeyboard.assertValueCount(1, "Dismiss when all fields have been edited.")
+    isSignupButtonEnabled.assertValues([false, true], "Enabled when form is valid.")
 
+    vm.inputs.passwordTextFieldReturn()
     vm.inputs.signupButtonPressed()
     XCTAssertEqual(["User Signup"], trackingClient.events)
     logIntoEnvironment.assertDidNotEmitValue("Does not immediately emit after signup button is pressed.")
@@ -85,18 +80,16 @@ final class SignupViewModelTests: TestCase {
                                   "Notification posted after scheduler advances.")
   }
 
-  // Simulate pressing next on keyboard while text fields are in various
-  // states.
-  func testFirstResponder() {
+  func testBecomeFirstResponder() {
     vm.inputs.viewDidLoad()
     nameTextFieldBecomeFirstResponder.assertValueCount(1, "Name starts as first responder.")
-    emailTextFieldBecomeFirstResponder.assertDidNotEmitValue()
-    passwordTextFieldBecomeFirstResponder.assertDidNotEmitValue()
+    emailTextFieldBecomeFirstResponder.assertDidNotEmitValue("Not first responder yet.")
+    passwordTextFieldBecomeFirstResponder.assertDidNotEmitValue("Not first responder yet.")
 
     vm.inputs.nameTextFieldReturn()
     nameTextFieldBecomeFirstResponder.assertValueCount(1, "Does not emit another value.")
     emailTextFieldBecomeFirstResponder.assertValueCount(1, "Email becomes first responder.")
-    passwordTextFieldBecomeFirstResponder.assertDidNotEmitValue()
+    passwordTextFieldBecomeFirstResponder.assertDidNotEmitValue("Not first responder yet.")
 
     vm.inputs.emailTextFieldReturn()
     nameTextFieldBecomeFirstResponder.assertValueCount(1, "Does not emit another value.")
@@ -104,59 +97,25 @@ final class SignupViewModelTests: TestCase {
     passwordTextFieldBecomeFirstResponder.assertValueCount(1, "Password becomes first responder.")
 
     vm.inputs.passwordTextFieldReturn()
-    nameTextFieldBecomeFirstResponder.assertValueCount(2, "Name becomes first responder.")
+    nameTextFieldBecomeFirstResponder.assertValueCount(1, "Does not emit another value.")
     emailTextFieldBecomeFirstResponder.assertValueCount(1, "Does not emit another value.")
     passwordTextFieldBecomeFirstResponder.assertValueCount(1, "Does not emit another value.")
+  }
 
-    vm.inputs.nameChanged("Native Squad")
-    vm.inputs.nameTextFieldReturn()
-    nameTextFieldBecomeFirstResponder.assertValueCount(2, "Does not emit another value.")
-    emailTextFieldBecomeFirstResponder.assertValueCount(2, "Email becomes first responder.")
-    passwordTextFieldBecomeFirstResponder.assertValueCount(1, "Does not emit another value.")
+  func testEmailValidity() {
+    vm.inputs.viewDidLoad()
+
+    vm.inputs.emailChanged("nup")
+    showError.assertDidNotEmitValue("Not finished editing yet.")
 
     vm.inputs.emailTextFieldReturn()
-    nameTextFieldBecomeFirstResponder.assertValueCount(2, "Does not emit another value.")
-    emailTextFieldBecomeFirstResponder.assertValueCount(2, "Does not emit another value.")
-    passwordTextFieldBecomeFirstResponder.assertValueCount(2, "Password becomes first responder.")
+    showError.assertValueCount(1, "Email is not valid.")
 
-    vm.inputs.passwordTextFieldReturn()
-    nameTextFieldBecomeFirstResponder.assertValueCount(2, "Does not emit another value.")
-    emailTextFieldBecomeFirstResponder.assertValueCount(3, "Email becomes first responder.")
-    passwordTextFieldBecomeFirstResponder.assertValueCount(2, "Does not emit another value.")
+    vm.inputs.emailTextFieldDoneEditing()
+    showError.assertValueCount(2, "Email is not valid.")
 
-    vm.inputs.nameChanged("")
     vm.inputs.emailChanged("therealnativesquad@gmail.com")
-    vm.inputs.emailTextFieldReturn()
-    nameTextFieldBecomeFirstResponder.assertValueCount(2, "Does not emit another value.")
-    emailTextFieldBecomeFirstResponder.assertValueCount(3, "Does not emit another value.")
-    passwordTextFieldBecomeFirstResponder.assertValueCount(3, "Password becomes first responder.")
-
-    vm.inputs.passwordTextFieldReturn()
-    nameTextFieldBecomeFirstResponder.assertValueCount(3, "Name becomes first responder.")
-    emailTextFieldBecomeFirstResponder.assertValueCount(3, "Does not emit another value.")
-    passwordTextFieldBecomeFirstResponder.assertValueCount(3, "Does not emit another value.")
-
-    vm.inputs.nameTextFieldReturn()
-    nameTextFieldBecomeFirstResponder.assertValueCount(3, "Does not emit another value.")
-    emailTextFieldBecomeFirstResponder.assertValueCount(3, "Does not emit another value.")
-    passwordTextFieldBecomeFirstResponder.assertValueCount(4, "Password becomes first responder.")
-
-    vm.inputs.emailChanged("")
-    vm.inputs.passwordChanged("0773rw473rm3l0n")
-    vm.inputs.passwordTextFieldReturn()
-    nameTextFieldBecomeFirstResponder.assertValueCount(4, "Name becomes first responder.")
-    emailTextFieldBecomeFirstResponder.assertValueCount(3, "Does not emit another value.")
-    passwordTextFieldBecomeFirstResponder.assertValueCount(4, "Does not emit another value.")
-
-    vm.inputs.nameTextFieldReturn()
-    nameTextFieldBecomeFirstResponder.assertValueCount(4, "Does not emit another value.")
-    emailTextFieldBecomeFirstResponder.assertValueCount(4, "Email becomes first responder.")
-    passwordTextFieldBecomeFirstResponder.assertValueCount(4, "Does not emit another value.")
-
-    vm.inputs.emailTextFieldReturn()
-    nameTextFieldBecomeFirstResponder.assertValueCount(5, "Name becomes first responder")
-    emailTextFieldBecomeFirstResponder.assertValueCount(4, "Does not emit another value.")
-    passwordTextFieldBecomeFirstResponder.assertValueCount(4, "Does not emit another value.")
+    showError.assertValueCount(2, "Email is now valid.")
   }
 
   func testSetWeeklyNewsletterState() {
@@ -174,15 +133,15 @@ final class SignupViewModelTests: TestCase {
   }
 
   func testShowError() {
-    let errorMessages = ["Password is too short (minimum is 6 characters)"]
-    let error = ErrorEnvelope(
-      errorMessages: errorMessages,
+    let error = "Password is too short (minimum is 6 characters)"
+    let errorEnvelope = ErrorEnvelope(
+      errorMessages: [error],
       ksrCode: nil,
       httpCode: 422,
       exception: nil
     )
 
-    withEnvironment(apiService: MockService(signupError: error)) {
+    withEnvironment(apiService: MockService(signupError: errorEnvelope)) {
       vm.inputs.viewDidLoad()
 
       XCTAssertEqual(["User Signup"], trackingClient.events)
@@ -195,8 +154,15 @@ final class SignupViewModelTests: TestCase {
 
       scheduler.advance()
       logIntoEnvironment.assertValueCount(0, "Should not login.")
-      showError.assertValues(errorMessages, "Signup error.")
+      showError.assertValues([error], "Signup error.")
       XCTAssertEqual(["User Signup", "Errored User Signup"], trackingClient.events)
+
+      vm.inputs.passwordTextFieldReturn()
+      showError.assertValueCount(1)
+
+      scheduler.advance()
+      showError.assertValues([error, error], "Signup error.")
+      XCTAssertEqual(["User Signup", "Errored User Signup", "Errored User Signup"], trackingClient.events)
     }
   }
 

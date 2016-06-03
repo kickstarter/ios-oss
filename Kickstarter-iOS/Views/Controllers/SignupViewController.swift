@@ -7,6 +7,7 @@ internal final class SignupViewController: UIViewController {
   @IBOutlet private weak var passwordTextField: UITextField!
   @IBOutlet private weak var newsletterSwitch: UISwitch!
   @IBOutlet private weak var signupButton: UIButton!
+
   private let viewModel: SignupViewModelType = SignupViewModel()
 
   override func viewDidLoad() {
@@ -24,12 +25,6 @@ internal final class SignupViewController: UIViewController {
     self.passwordTextField.rac.becomeFirstResponder =
       self.viewModel.outputs.passwordTextFieldBecomeFirstResponder
     self.signupButton.rac.enabled = self.viewModel.outputs.isSignupButtonEnabled
-
-    self.viewModel.outputs.dismissKeyboard
-      .observeForUI()
-      .observeNext { [weak self] in
-        self?.view.endEditing(true)
-      }
 
     self.viewModel.outputs.logIntoEnvironment
       .observeNext { [weak self] in
@@ -60,6 +55,10 @@ internal final class SignupViewController: UIViewController {
 
   @IBAction internal func emailChanged(textField: UITextField) {
     self.viewModel.inputs.emailChanged(textField.text ?? "")
+  }
+
+  @IBAction internal func emailTextFieldDoneEditing(textField: UITextField) {
+    self.viewModel.inputs.emailTextFieldDoneEditing()
   }
 
   @IBAction internal func nameChanged(textField: UITextField) {
