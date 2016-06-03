@@ -18,6 +18,7 @@ internal final class SignupViewController: UIViewController {
   override func bindViewModel() {
     self.emailTextField.rac.becomeFirstResponder = self.viewModel.outputs.emailTextFieldBecomeFirstResponder
     self.nameTextField.rac.becomeFirstResponder = self.viewModel.outputs.nameTextFieldBecomeFirstResponder
+    self.newsletterSwitch.rac.on = self.viewModel.outputs.setWeeklyNewsletterState
     self.passwordTextField.rac.becomeFirstResponder =
       self.viewModel.outputs.passwordTextFieldBecomeFirstResponder
     self.signupButton.rac.enabled = self.viewModel.outputs.isSignupButtonEnabled
@@ -30,12 +31,6 @@ internal final class SignupViewController: UIViewController {
 
     self.viewModel.outputs.postNotification
       .observeNext(NSNotificationCenter.defaultCenter().postNotification)
-
-    self.viewModel.outputs.setWeeklyNewsletterState
-      .observeForUI()
-      .observeNext { [weak self] in
-        self?.newsletterSwitch.on = $0
-      }
 
     self.viewModel.outputs.showError
       .observeForUI()
