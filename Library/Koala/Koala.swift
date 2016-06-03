@@ -98,14 +98,6 @@ public final class Koala {
     self.track(event: "Forgot Password Errored")
   }
 
-  public func trackSignupSuccess() {
-    self.track(event: "New User")
-  }
-
-  public func trackSignupNewsletterToggle(sendNewsletters: Bool) {
-    self.track(event: "Signup Newsletter Toggle", properties: ["send_newsletters": sendNewsletters])
-  }
-
   public func trackFacebookConfirmation() {
     self.track(event: "Facebook Confirm")
   }
@@ -124,6 +116,28 @@ public final class Koala {
 
   public func trackTfaResendCode() {
     self.track(event: "Two-factor Authentication Resend Code")
+  }
+
+  // MARK: Signup
+
+  // Call when an error is returned after attempting to signup.
+  public func trackSignupError() {
+    self.track(event: "Errored User Signup")
+  }
+
+  // Call when the user toggles the signup form's newsletter toggle.
+  public func trackSignupNewsletterToggle(sendNewsletters: Bool) {
+    self.track(event: "Signup Newsletter Toggle", properties: ["send_newsletters": sendNewsletters])
+  }
+
+  // Call when the user has successfully signed up for a new account.
+  public func trackSignupSuccess() {
+    self.track(event: "New User")
+  }
+
+  // Call once when the signup view loads.
+  public func trackSignupView() {
+    self.track(event: "User Signup")
   }
 
   // MARK: Comments Events
