@@ -106,22 +106,6 @@ internal final class SignupViewModelTests: TestCase {
     self.passwordTextFieldBecomeFirstResponder.assertValueCount(1, "Does not emit another value.")
   }
 
-  func testEmailShowError() {
-    self.vm.inputs.viewDidLoad()
-
-    self.vm.inputs.emailChanged("nup")
-    self.showError.assertDidNotEmitValue("Not finished editing yet.")
-
-    self.vm.inputs.emailTextFieldReturn()
-    self.showError.assertValueCount(1, "Email is not valid.")
-
-    self.vm.inputs.emailTextFieldDoneEditing()
-    self.showError.assertValueCount(2, "Email is not valid.")
-
-    self.vm.inputs.emailChanged("therealnativesquad@gmail.com")
-    self.showError.assertValueCount(2, "Email is now valid.")
-  }
-
   func testSetWeeklyNewsletterStateNonUSUser() {
     self.setWeeklyNewsletterState.assertDidNotEmitValue("Should not emit until view loads")
 

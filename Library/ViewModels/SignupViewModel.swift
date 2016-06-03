@@ -10,9 +10,6 @@ public protocol SignupViewModelInputs {
   /// Call when the user enters a new email address.
   func emailChanged(email: String)
 
-  /// Call when the user is done editing the email text field.
-  func emailTextFieldDoneEditing()
-
   /// Call when the user returns from email text field.
   func emailTextFieldReturn()
 
@@ -94,15 +91,15 @@ public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, 
       self.weeklyNewsletterChangedProperty.signal.ignoreNil()
     )
 
-    let nameIsValid = name.map { !$0.isEmpty }
-    let emailIsValid = email.map(isValidEmail)
-    let passwordIsValid = password.map { !$0.isEmpty }
+    let nameIsPresent = name.map { !$0.isEmpty }
+    let emailIsPresent = email.map { !$0.isEmpty }
+    let passwordIsPresent = password.map { !$0.isEmpty }
 
     self.nameTextFieldBecomeFirstResponder = self.viewDidLoadProperty.signal.ignoreValues()
     self.emailTextFieldBecomeFirstResponder = self.nameTextFieldReturnProperty.signal
     self.passwordTextFieldBecomeFirstResponder = self.emailTextFieldReturnProperty.signal
 
-    self.isSignupButtonEnabled = combineLatest(nameIsValid, emailIsValid, passwordIsValid)
+    self.isSignupButtonEnabled = combineLatest(nameIsPresent, emailIsPresent, passwordIsPresent)
       .map { $0 && $1 && $2 }
       .skipRepeats()
 
@@ -126,28 +123,13 @@ public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, 
           .materialize()
       }
 
-    let emailLostFocus = Signal.merge(
-      self.emailTextFieldReturnProperty.signal,
-      self.emailTextFieldDoneEditingProperty.signal
-    )
-
-    let emailError = emailIsValid
-      .takeWhen(emailLostFocus)
-      .filter(isFalse)
-      .map { _ in
-        localizedString(
-          // Add to native strings.
-          key: "signup.error.email_invalid",
-          defaultValue: "Oof! The email you entered isn't valid.")
-      }
-
     let signupError = signupEvent.errors()
       .map {
         $0.errorMessages.first ??
           localizedString(key: "signup.error.something_wrong", defaultValue: "Something went wrong.")
     }
 
-    self.showError = Signal.merge(emailError, signupError)
+    self.showError = signupError
 
     self.logIntoEnvironment = signupEvent.values()
 
@@ -175,11 +157,6 @@ public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, 
   private let emailChangedProperty = MutableProperty("")
   public func emailChanged(email: String) {
     self.emailChangedProperty.value = email
-  }
-
-  private let emailTextFieldDoneEditingProperty = MutableProperty()
-  public func emailTextFieldDoneEditing() {
-    self.emailTextFieldDoneEditingProperty.value = ()
   }
 
   private let emailTextFieldReturnProperty = MutableProperty()

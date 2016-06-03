@@ -48,10 +48,6 @@ internal final class SignupViewController: UIViewController {
     self.viewModel.inputs.emailChanged(textField.text ?? "")
   }
 
-  @IBAction internal func emailTextFieldDoneEditing(textField: UITextField) {
-    self.viewModel.inputs.emailTextFieldDoneEditing()
-  }
-
   @IBAction internal func nameChanged(textField: UITextField) {
     self.viewModel.inputs.nameChanged(textField.text ?? "")
   }
