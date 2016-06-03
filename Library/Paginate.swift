@@ -61,7 +61,7 @@ public func paginate <Cursor, Value: Equatable, Envelope, ErrorEnvelope, Request
       .switchMap { requestParams in
 
         cursorOnNextPage.map(Either.right)
-          .beginsWith(value: Either.left(requestParams))
+          .prefix(value: Either.left(requestParams))
           .switchMap { paramsOrCursor in
 
             paramsOrCursor.ifLeft(requestFromParams, ifRight: requestFromCursor)

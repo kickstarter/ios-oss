@@ -72,7 +72,7 @@ PlaylistViewModelOutputs {
           <> DiscoveryParams.lens.seed .~ Int(arc4random_uniform(100_000))
       }
       .switchMap { params in apiService.fetchProject(params).demoteErrors() }
-      .beginsWith(value: currentProject)
+      .prefix(value: currentProject)
       .replayLazily(1)
 
     self.categoryName = self.project.map { $0.category.name }

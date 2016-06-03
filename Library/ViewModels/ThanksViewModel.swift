@@ -418,7 +418,7 @@ private func relatedProjects(project: Project, category: Models.Category, apiSer
       .uncollect()
 
     return SignalProducer.concat(recommendedProjects, similarToProjects, staffPickProjects)
-      .distincts { $0.id }
+      .uniqueValues { $0.id }
       .demoteErrors()
       .take(3)
       .collect()

@@ -104,7 +104,7 @@ ProjectViewModelErrors {
 
     self.project = apiService.fetchProject(project: initialProject)
       .demoteErrors()
-      .beginsWith(value: initialProject)
+      .prefix(value: initialProject)
       .replayLazily(1)
 
     self.videoURL = self.project
