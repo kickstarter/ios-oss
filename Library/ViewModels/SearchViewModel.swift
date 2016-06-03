@@ -53,7 +53,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
 
     let popular = query
       .filter { $0.isEmpty }
-      .map(const(DiscoveryParams.defaults |> DiscoveryParams.lens.sort *~ .Popular))
+      .map(const(DiscoveryParams.defaults |> DiscoveryParams.lens.sort .~ .Popular))
       .switchMap {
         AppEnvironment.current.apiService.fetchDiscovery(params: $0)
           .map { $0.projects }
@@ -66,7 +66,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
         .debounce(AppEnvironment.current.debounceInterval, onScheduler: AppEnvironment.current.scheduler)
         .skipRepeats()
         .filter { !$0.isEmpty }
-        .map { DiscoveryParams.defaults |> DiscoveryParams.lens.query *~ $0 }
+        .map { DiscoveryParams.defaults |> DiscoveryParams.lens.query .~ $0 }
         .switchMap { params in
           AppEnvironment.current.apiService.fetchDiscovery(params: params)
             .map { $0.projects }

@@ -66,10 +66,10 @@ PlaylistViewModelOutputs {
     self.project = SignalProducer(signal: next.mergeWith(previous))
       .map {
         DiscoveryParams.defaults
-          |> DiscoveryParams.lens.staffPicks *~ true
-          <> DiscoveryParams.lens.hasVideo *~ true
-          <> DiscoveryParams.lens.state *~ .Live
-          <> DiscoveryParams.lens.seed *~ Int(arc4random_uniform(100_000))
+          |> DiscoveryParams.lens.staffPicks .~ true
+          <> DiscoveryParams.lens.hasVideo .~ true
+          <> DiscoveryParams.lens.state .~ .Live
+          <> DiscoveryParams.lens.seed .~ Int(arc4random_uniform(100_000))
       }
       .switchMap { params in apiService.fetchProject(params).demoteErrors() }
       .beginsWith(value: currentProject)

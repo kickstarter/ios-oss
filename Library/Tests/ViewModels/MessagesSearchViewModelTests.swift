@@ -98,7 +98,7 @@ internal final class MessagesSearchViewModelTests: TestCase {
   }
 
   func testSearch_WithProject() {
-    let project = Project.template |> Project.lens.id *~ 123
+    let project = Project.template |> Project.lens.id .~ 123
 
     self.vm.inputs.configureWith(project: project)
     self.vm.inputs.viewDidLoad()
@@ -150,7 +150,7 @@ internal final class MessagesSearchViewModelTests: TestCase {
   }
 
   func testGoToMessageThread() {
-    let project = Project.template |> Project.lens.id *~ 123
+    let project = Project.template |> Project.lens.id .~ 123
     let messageThread = MessageThread.template
 
     self.vm.inputs.configureWith(project: project)

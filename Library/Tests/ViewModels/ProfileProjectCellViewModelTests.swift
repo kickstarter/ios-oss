@@ -41,7 +41,7 @@ internal final class ProfileProjectCellViewModelTests: TestCase {
   }
 
   func testProjectFailedBanner() {
-    let failedProject = Project.template |> Project.lens.state *~ .failed
+    let failedProject = Project.template |> Project.lens.state .~ .failed
 
     self.vm.inputs.project(failedProject)
     self.progressHidden.assertValues([true], "Progress bar is hidden for failed project.")
@@ -51,7 +51,7 @@ internal final class ProfileProjectCellViewModelTests: TestCase {
   }
 
   func testProjectSuccessfulBanner() {
-    let successfulProject = Project.template |> Project.lens.state *~ .successful
+    let successfulProject = Project.template |> Project.lens.state .~ .successful
 
     self.vm.inputs.project(successfulProject)
     self.progressHidden.assertValues([true], "Progress bar is hidden for successful project.")

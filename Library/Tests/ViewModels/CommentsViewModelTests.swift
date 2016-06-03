@@ -89,7 +89,7 @@ internal final class CommentsViewModelTests: TestCase {
       self.backerEmptyStateVisible.assertValues([])
       self.commentButtonVisible.assertValues([])
 
-      self.vm.inputs.project(Project.template |> Project.lens.personalization.isBacking *~ false, update: nil)
+      self.vm.inputs.project(Project.template |> Project.lens.personalization.isBacking .~ false, update: nil)
       self.vm.inputs.viewDidLoad()
       self.scheduler.advance()
 
@@ -111,7 +111,7 @@ internal final class CommentsViewModelTests: TestCase {
       self.backerEmptyStateVisible.assertValues([])
       self.commentButtonVisible.assertValues([])
 
-      self.vm.inputs.project(Project.template |> Project.lens.personalization.isBacking *~ true, update: nil)
+      self.vm.inputs.project(Project.template |> Project.lens.personalization.isBacking .~ true, update: nil)
       self.vm.inputs.viewDidLoad()
       self.scheduler.advance()
 
@@ -158,7 +158,7 @@ internal final class CommentsViewModelTests: TestCase {
       self.hasComments.assertValues([true], "A set of comments is emitted.")
       self.commentsAreLoading.assertValues([true, false])
 
-      let otherComment = Comment.template |> Comment.lens.id *~ 2
+      let otherComment = Comment.template |> Comment.lens.id .~ 2
       withEnvironment(apiService: MockService(fetchCommentsResponse: [otherComment])) {
         self.vm.inputs.willDisplayRow(3, outOf: 4)
 
@@ -198,7 +198,7 @@ internal final class CommentsViewModelTests: TestCase {
       self.hasComments.assertValues([true], "A set of comments is emitted.")
       self.commentsAreLoading.assertValues([true, false])
 
-      let otherComment = Comment.template |> Comment.lens.id *~ 2
+      let otherComment = Comment.template |> Comment.lens.id .~ 2
       withEnvironment(apiService: MockService(fetchCommentsResponse: [otherComment])) {
         self.vm.inputs.willDisplayRow(3, outOf: 4)
 
@@ -237,7 +237,7 @@ internal final class CommentsViewModelTests: TestCase {
       self.hasComments.assertValues([true], "A set of comments is emitted.")
       self.commentsAreLoading.assertValues([true, false])
 
-      let otherComment = Comment.template |> Comment.lens.id *~ 2
+      let otherComment = Comment.template |> Comment.lens.id .~ 2
       withEnvironment(apiService: MockService(fetchCommentsResponse: [otherComment])) {
         self.vm.inputs.willDisplayRow(3, outOf: 4)
 
@@ -267,7 +267,7 @@ internal final class CommentsViewModelTests: TestCase {
   //   * Posts a comment
   //   * Empty state goes away and comment shows
   func testLoggedInBacker_Commenting() {
-    let project = Project.template |> Project.lens.personalization.isBacking *~ true
+    let project = Project.template |> Project.lens.personalization.isBacking .~ true
 
     withEnvironment(apiService: MockService(fetchCommentsResponse: [])) {
       AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: User.template))
@@ -306,7 +306,7 @@ internal final class CommentsViewModelTests: TestCase {
   //   * Empty state changes and comment dialog opens
   func testLoginFlow_Backer() {
     let notBackingProject = Project.template
-    let backingProject = notBackingProject |> Project.lens.personalization.isBacking *~ true
+    let backingProject = notBackingProject |> Project.lens.personalization.isBacking .~ true
 
     withEnvironment(apiService: MockService(fetchCommentsResponse: [])) {
       self.vm.inputs.project(notBackingProject, update: nil)

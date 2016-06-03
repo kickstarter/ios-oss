@@ -37,9 +37,9 @@ final class ProjectRewardCellViewModelTest: TestCase {
 
   func testLimitedReward_SoldOut() {
     let reward = Reward.template
-      |> Reward.lens.backersCount *~ 1
-      <> Reward.lens.limit *~ 1
-      <> Reward.lens.remaining *~ 0
+      |> Reward.lens.backersCount .~ 1
+      <> Reward.lens.limit .~ 1
+      <> Reward.lens.remaining .~ 0
 
     self.vm.inputs.project(project, reward: reward)
 
@@ -50,9 +50,9 @@ final class ProjectRewardCellViewModelTest: TestCase {
 
   func testLimitedReward_NotSoldOut() {
     let reward = Reward.template
-      |> Reward.lens.backersCount *~ 1
-      <> Reward.lens.limit *~ 2
-      <> Reward.lens.remaining *~ 1
+      |> Reward.lens.backersCount .~ 1
+      <> Reward.lens.limit .~ 2
+      <> Reward.lens.remaining .~ 1
 
     self.vm.inputs.project(project, reward: reward)
 
@@ -63,10 +63,10 @@ final class ProjectRewardCellViewModelTest: TestCase {
 
   func testReward_NoShipping() {
     let reward = Reward.template
-      |> Reward.lens.backersCount *~ 1
-      <> Reward.lens.limit *~ 2
-      <> Reward.lens.remaining *~ 1
-      <> Reward.lens.shipping *~ disabledShipping
+      |> Reward.lens.backersCount .~ 1
+      <> Reward.lens.limit .~ 2
+      <> Reward.lens.remaining .~ 1
+      <> Reward.lens.shipping .~ disabledShipping
 
     self.vm.inputs.project(project, reward: reward)
 
@@ -76,10 +76,10 @@ final class ProjectRewardCellViewModelTest: TestCase {
 
   func testReward_ShippingEnabled() {
     let reward = Reward.template
-      |> Reward.lens.backersCount *~ 1
-      <> Reward.lens.limit *~ 2
-      <> Reward.lens.remaining *~ 1
-      <> Reward.lens.shipping *~ restrictedShipping
+      |> Reward.lens.backersCount .~ 1
+      <> Reward.lens.limit .~ 2
+      <> Reward.lens.remaining .~ 1
+      <> Reward.lens.shipping .~ restrictedShipping
 
     self.vm.inputs.project(project, reward: reward)
 
@@ -89,17 +89,17 @@ final class ProjectRewardCellViewModelTest: TestCase {
 
   func testReward_Backing() {
     let backerReward = Reward.template
-      |> Reward.lens.backersCount *~ 1
-      <> Reward.lens.id *~ 42
-      <> Reward.lens.limit *~ 2
-      <> Reward.lens.remaining *~ 1
-      <> Reward.lens.shipping *~ restrictedShipping
+      |> Reward.lens.backersCount .~ 1
+      <> Reward.lens.id .~ 42
+      <> Reward.lens.limit .~ 2
+      <> Reward.lens.remaining .~ 1
+      <> Reward.lens.shipping .~ restrictedShipping
     let backing = Backing.template
-      |> Backing.lens.reward *~ backerReward
-      <> Backing.lens.rewardId *~ backerReward.id
+      |> Backing.lens.reward .~ backerReward
+      <> Backing.lens.rewardId .~ backerReward.id
     let backedProject = Project.template
-      |> Project.lens.backing *~ backing
-      <> Project.lens.rewards *~ [backerReward, Reward.template]
+      |> Project.lens.backing .~ backing
+      <> Project.lens.rewards .~ [backerReward, Reward.template]
 
     self.vm.inputs.project(backedProject, reward: Reward.template)
 

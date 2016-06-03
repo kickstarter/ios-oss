@@ -35,8 +35,8 @@ final class SearchViewModel: SearchViewModelInputs, SearchViewModelOutputs {
       .throttle(0.3, onScheduler: QueueScheduler.mainQueueScheduler)
       .map {
         $0.isEmpty ?
-          DiscoveryParams.defaults |> DiscoveryParams.lens.sort *~ .Popular :
-          DiscoveryParams.defaults |> DiscoveryParams.lens.query *~ $0
+          DiscoveryParams.defaults |> DiscoveryParams.lens.sort .~ .Popular :
+          DiscoveryParams.defaults |> DiscoveryParams.lens.query .~ $0
       }
       .switchMap {
         apiService.fetchDiscovery(params: $0)

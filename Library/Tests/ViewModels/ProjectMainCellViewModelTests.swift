@@ -30,7 +30,7 @@ final class ProjectMainCellViewModelTest: TestCase {
     self.stateHidden.assertValues([true])
     self.progressHidden.assertValues([false])
 
-    let successfulProject = Project.template |> Project.lens.state *~ .successful
+    let successfulProject = Project.template |> Project.lens.state .~ .successful
     self.vm.inputs.project(successfulProject)
 
     self.stateHidden.assertValues([true, false])

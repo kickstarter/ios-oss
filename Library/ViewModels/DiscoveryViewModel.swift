@@ -77,8 +77,8 @@ DiscoveryViewModelOutputs {
       .ignoreValues()
 
     let params = DiscoveryParams.defaults
-      |> DiscoveryParams.lens.staffPicks *~ true
-      |> DiscoveryParams.lens.includePOTD *~ true
+      |> DiscoveryParams.lens.staffPicks .~ true
+      |> DiscoveryParams.lens.includePOTD .~ true
 
     let filterChange = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst(params),
@@ -91,7 +91,7 @@ DiscoveryViewModelOutputs {
     )
 
     let paramsChanged = combineLatest(filterChange, sortChange)
-      .map { filter, sort in filter |> DiscoveryParams.lens.sort *~ sort }
+      .map { filter, sort in filter |> DiscoveryParams.lens.sort .~ sort }
 
     (self.projects, self.projectsAreLoading, _) = paginate(
       requestFirstPageWith: paramsChanged,

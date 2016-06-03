@@ -47,8 +47,8 @@ public final class ProfileViewModel: ProfileViewModelType, ProfileViewModelInput
     let requestFirstPageWith = Signal.merge(viewWillAppearProperty.signal.take(1), refreshProperty.signal)
       .map {
         DiscoveryParams.defaults
-          |> DiscoveryParams.lens.backed *~ true
-          <> DiscoveryParams.lens.sort *~ .EndingSoon
+          |> DiscoveryParams.lens.backed .~ true
+          <> DiscoveryParams.lens.sort .~ .EndingSoon
     }
 
     let requestNextPageWhen = self.willDisplayRowProperty.signal.ignoreNil()

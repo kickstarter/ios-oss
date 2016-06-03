@@ -12,9 +12,9 @@ final class ThanksProjectsDataSourceTests: XCTestCase {
 
   func testLoadData() {
     let projects = [
-      Project.template |> Project.lens.id *~ 1,
-      Project.template |> Project.lens.id *~ 2,
-      Project.template |> Project.lens.id *~ 3
+      Project.template |> Project.lens.id .~ 1,
+      Project.template |> Project.lens.id .~ 2,
+      Project.template |> Project.lens.id .~ 3
     ]
     dataSource.loadData(projects: projects, category: Category.games)
 
@@ -25,9 +25,9 @@ final class ThanksProjectsDataSourceTests: XCTestCase {
 
   func testProjectAtIndexPaths() {
     let projects = [
-      Project.template |> Project.lens.id *~ 1,
-      Project.template |> Project.lens.id *~ 2,
-      Project.template |> Project.lens.id *~ 3
+      Project.template |> Project.lens.id .~ 1,
+      Project.template |> Project.lens.id .~ 2,
+      Project.template |> Project.lens.id .~ 3
     ]
     dataSource.loadData(projects: projects, category: Category.art)
 
@@ -36,17 +36,17 @@ final class ThanksProjectsDataSourceTests: XCTestCase {
     let indexPath2 = NSIndexPath(forItem: 2, inSection: 0)
     let indexPath3 = NSIndexPath(forItem: 3, inSection: 0)
 
-    XCTAssertEqual(Project.template |> Project.lens.id *~ 1, dataSource.projectAtIndexPath(indexPath0))
-    XCTAssertEqual(Project.template |> Project.lens.id *~ 2, dataSource.projectAtIndexPath(indexPath1))
-    XCTAssertEqual(Project.template |> Project.lens.id *~ 3, dataSource.projectAtIndexPath(indexPath2))
+    XCTAssertEqual(Project.template |> Project.lens.id .~ 1, dataSource.projectAtIndexPath(indexPath0))
+    XCTAssertEqual(Project.template |> Project.lens.id .~ 2, dataSource.projectAtIndexPath(indexPath1))
+    XCTAssertEqual(Project.template |> Project.lens.id .~ 3, dataSource.projectAtIndexPath(indexPath2))
     XCTAssertNil(dataSource.projectAtIndexPath(indexPath3), "Project is nil for non-project item")
   }
 
   func testCategoryAtIndexPaths() {
     let projects = [
-      Project.template |> Project.lens.id *~ 1,
-      Project.template |> Project.lens.id *~ 2,
-      Project.template |> Project.lens.id *~ 3
+      Project.template |> Project.lens.id .~ 1,
+      Project.template |> Project.lens.id .~ 2,
+      Project.template |> Project.lens.id .~ 3
     ]
     dataSource.loadData(projects: projects, category: Category.games)
 

@@ -10,9 +10,9 @@ final class ActivitiesDataSourceTests: XCTestCase {
   let tableView = UITableView()
 
   func testDataSource() {
-    let updateActivity = Activity.template |> Activity.lens.category *~ .Update
-    let backingActivity = Activity.template |> Activity.lens.category *~ .Backing
-    let successActivity = Activity.template |> Activity.lens.category *~ .Success
+    let updateActivity = Activity.template |> Activity.lens.category .~ .Update
+    let backingActivity = Activity.template |> Activity.lens.category .~ .Backing
+    let successActivity = Activity.template |> Activity.lens.category .~ .Success
 
     self.dataSource.emptyState(visible: true)
 

@@ -41,9 +41,9 @@ final class KoalaTests: XCTestCase {
   func testDefaultPropertiesWithLoggedInUser() {
     let client = MockTrackingClient()
     let user = User.template
-      |> User.lens.stats.backedProjectsCount *~ 2
-      <> User.lens.stats.createdProjectsCount *~ 3
-      <> User.lens.stats.starredProjectsCount *~ 4
+      |> User.lens.stats.backedProjectsCount .~ 2
+      <> User.lens.stats.createdProjectsCount .~ 3
+      <> User.lens.stats.starredProjectsCount .~ 4
     let koala = Koala(client: client, loggedInUser: user)
 
     koala.trackAppOpen()
@@ -128,9 +128,9 @@ final class KoalaTests: XCTestCase {
   func testProjectProperties_LoggedInUser() {
     let client = MockTrackingClient()
     let project = Project.template
-      |> Project.lens.personalization.isBacking *~ false
-      <> Project.lens.personalization.isStarred *~ false
-    let loggedInUser = User.template |> User.lens.id *~ 42
+      |> Project.lens.personalization.isBacking .~ false
+      <> Project.lens.personalization.isStarred .~ false
+    let loggedInUser = User.template |> User.lens.id .~ 42
     let koala = Koala(client: client, loggedInUser: loggedInUser)
 
     koala.trackProjectShow(project, refTag: nil, cookieRefTag: nil)
@@ -146,9 +146,9 @@ final class KoalaTests: XCTestCase {
   func testProjectProperties_LoggedInBacker() {
     let client = MockTrackingClient()
     let project = Project.template
-      |> Project.lens.personalization.isBacking *~ true
-      |> Project.lens.personalization.isStarred *~ false
-    let loggedInUser = User.template |> User.lens.id *~ 42
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.isStarred .~ false
+    let loggedInUser = User.template |> User.lens.id .~ 42
     let koala = Koala(client: client, loggedInUser: loggedInUser)
 
     koala.trackProjectShow(project, refTag: nil, cookieRefTag: nil)
@@ -164,9 +164,9 @@ final class KoalaTests: XCTestCase {
   func testProjectProperties_LoggedInStarrer() {
     let client = MockTrackingClient()
     let project = Project.template
-      |> Project.lens.personalization.isBacking *~ false
-      |> Project.lens.personalization.isStarred *~ true
-    let loggedInUser = User.template |> User.lens.id *~ 42
+      |> Project.lens.personalization.isBacking .~ false
+      |> Project.lens.personalization.isStarred .~ true
+    let loggedInUser = User.template |> User.lens.id .~ 42
     let koala = Koala(client: client, loggedInUser: loggedInUser)
 
     koala.trackProjectShow(project, refTag: nil, cookieRefTag: nil)
@@ -182,8 +182,8 @@ final class KoalaTests: XCTestCase {
   func testProjectProperties_LoggedInCreator() {
     let client = MockTrackingClient()
     let project = Project.template
-      |> Project.lens.personalization.isBacking *~ false
-      <> Project.lens.personalization.isStarred *~ false
+      |> Project.lens.personalization.isBacking .~ false
+      <> Project.lens.personalization.isStarred .~ false
     let loggedInUser = project.creator
     let koala = Koala(client: client, loggedInUser: loggedInUser)
 
