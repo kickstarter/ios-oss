@@ -76,17 +76,18 @@ public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, 
 
   // swiftlint:disable function_body_length
   public init() {
+    let initialText = self.viewDidLoadProperty.signal.mapConst("")
     let name = Signal.merge(
       self.nameChangedProperty.signal,
-      self.viewDidLoadProperty.signal.mapConst("")
+      initialText
     )
     let email = Signal.merge(
       self.emailChangedProperty.signal,
-      self.viewDidLoadProperty.signal.mapConst("")
+      initialText
     )
     let password = Signal.merge(
       self.passwordChangedProperty.signal,
-      self.viewDidLoadProperty.signal.mapConst("")
+      initialText
     )
     let newsletter = Signal.merge(
       self.viewDidLoadProperty.signal.map { AppEnvironment.current.config?.countryCode == "US" },
