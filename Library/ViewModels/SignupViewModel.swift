@@ -95,7 +95,7 @@ public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, 
     )
 
     let nameIsValid = name.map { !$0.isEmpty }
-    let emailIsValid = email.map { isValidEmail($0) }
+    let emailIsValid = email.map(isValidEmail)
     let passwordIsValid = password.map { !$0.isEmpty }
 
     self.nameTextFieldBecomeFirstResponder = self.viewDidLoadProperty.signal.ignoreValues()
@@ -172,42 +172,42 @@ public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, 
   }
 
   // INPUTS
-  private let emailChangedProperty = MutableProperty<String>("")
+  private let emailChangedProperty = MutableProperty("")
   public func emailChanged(email: String) {
     self.emailChangedProperty.value = email
   }
 
-  private let emailTextFieldDoneEditingProperty = MutableProperty(())
+  private let emailTextFieldDoneEditingProperty = MutableProperty()
   public func emailTextFieldDoneEditing() {
     self.emailTextFieldDoneEditingProperty.value = ()
   }
 
-  private let emailTextFieldReturnProperty = MutableProperty(())
+  private let emailTextFieldReturnProperty = MutableProperty()
   public func emailTextFieldReturn() {
     self.emailTextFieldReturnProperty.value = ()
   }
 
-  private let environmentLoggedInProperty = MutableProperty(())
+  private let environmentLoggedInProperty = MutableProperty()
   public func environmentLoggedIn() {
     self.environmentLoggedInProperty.value = ()
   }
 
-  private let nameChangedProperty = MutableProperty<String>("")
+  private let nameChangedProperty = MutableProperty("")
   public func nameChanged(name: String) {
     self.nameChangedProperty.value = name
   }
 
-  private let nameTextFieldReturnProperty = MutableProperty(())
+  private let nameTextFieldReturnProperty = MutableProperty()
   public func nameTextFieldReturn() {
     self.nameTextFieldReturnProperty.value = ()
   }
 
-  private let passwordChangedProperty = MutableProperty<String>("")
+  private let passwordChangedProperty = MutableProperty("")
   public func passwordChanged(password: String) {
     self.passwordChangedProperty.value = password
   }
 
-  private let passwordTextFieldReturnProperty = MutableProperty(())
+  private let passwordTextFieldReturnProperty = MutableProperty()
   public func passwordTextFieldReturn() {
     self.passwordTextFieldReturnProperty.value = ()
   }
