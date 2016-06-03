@@ -77,65 +77,60 @@ public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, 
   // swiftlint:disable function_body_length
   public init() {
     let nameIsValid = Signal.merge(
-      viewDidLoadProperty.signal.mapConst(false),
-      nameChangedProperty.signal.map { !$0.isEmpty }
-    )
+      self.viewDidLoadProperty.signal.mapConst(false),
+      self.nameChangedProperty.signal.map { !$0.isEmpty }
+      )
 
     let emailIsValid = Signal.merge(
-      viewDidLoadProperty.signal.mapConst(false),
-      emailChangedProperty.signal.map { isValidEmail($0) }
-    )
+      self.viewDidLoadProperty.signal.mapConst(false),
+      self.emailChangedProperty.signal.map { isValidEmail($0) }
+      )
 
     let passwordIsValid = Signal.merge(
-      viewDidLoadProperty.signal.mapConst(false),
-      passwordChangedProperty.signal.map { !$0.isEmpty }
-    )
+      self.viewDidLoadProperty.signal.mapConst(false),
+      self.passwordChangedProperty.signal.map { !$0.isEmpty }
+      )
 
-    self.nameTextFieldBecomeFirstResponder = viewDidLoadProperty.signal.ignoreValues()
+    self.nameTextFieldBecomeFirstResponder = self.viewDidLoadProperty.signal.ignoreValues()
 
     self.emailTextFieldBecomeFirstResponder = self.nameTextFieldReturnProperty.signal
 
     self.passwordTextFieldBecomeFirstResponder = self.emailTextFieldReturnProperty.signal
-
-    let formValid = combineLatest(nameIsValid, emailIsValid, passwordIsValid)
-      .map { name, email, password in
-        name && email && password
-      }
-      .skipRepeats()
 
     self.setWeeklyNewsletterState = self.viewDidLoadProperty.signal.map {
       // Change to: AppEnvironment.current.config?.countryCode == "US"
       AppEnvironment.current.countryCode == "US"
     }
 
-    self.isSignupButtonEnabled = formValid.skipRepeats()
-
-    let weeklyNewsletter = Signal.merge(
-      self.setWeeklyNewsletterState,
-      self.weeklyNewsletterChangedProperty.signal
-        .ignoreNil()
-    )
+    self.isSignupButtonEnabled = combineLatest(nameIsValid, emailIsValid, passwordIsValid)
+      .map { name, email, password in
+        name && email && password
+      }
+      .skipRepeats()
 
     let signupEvent = combineLatest(
       Signal.merge(
         self.nameChangedProperty.signal,
         self.viewDidLoadProperty.signal.mapConst("")
-      ),
+        ),
       Signal.merge(
         self.emailChangedProperty.signal,
         self.viewDidLoadProperty.signal.mapConst("")
-      ),
+        ),
       Signal.merge(
         self.passwordChangedProperty.signal,
         self.viewDidLoadProperty.signal.mapConst("")
-      ),
-      weeklyNewsletter
+        ),
+      Signal.merge(
+        self.setWeeklyNewsletterState,
+        self.weeklyNewsletterChangedProperty.signal
+        )
       )
       .takeWhen(
         Signal.merge(
           passwordTextFieldReturnProperty.signal,
           signupButtonPressedProperty.signal
-        )
+          )
       )
       .switchMap { name, email, password, newsletter in
         AppEnvironment.current.apiService.signup(
@@ -152,13 +147,17 @@ public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, 
     let emailError = emailIsValid
       .takeWhen(
         Signal.merge(
-          emailTextFieldReturnProperty.signal,
-          emailTextFieldDoneEditingProperty.signal
+          self.emailTextFieldReturnProperty.signal,
+          self.emailTextFieldDoneEditingProperty.signal
+          )
         )
-      )
       .filter(isFalse)
       .map { _ in
-        localizedString(key: "signup.error.email_invalid", defaultValue: "Oof! The email you entered isn't valid.")
+        localizedString(
+          // Add to native strings.
+          key: "signup.error.email_invalid",
+          defaultValue: "Oof! The email you entered isn't valid."
+        )
       }
 
     let signupError = signupEvent.errors()

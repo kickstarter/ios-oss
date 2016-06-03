@@ -12,6 +12,7 @@ internal final class SignupViewController: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+
     self.emailTextField.delegate = self
     self.nameTextField.delegate = self
     self.passwordTextField.delegate = self
