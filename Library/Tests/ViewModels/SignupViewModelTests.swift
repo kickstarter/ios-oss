@@ -122,18 +122,20 @@ internal final class SignupViewModelTests: TestCase {
     self.showError.assertValueCount(2, "Email is now valid.")
   }
 
-  func testSetWeeklyNewsletterState() {
+  func testSetWeeklyNewsletterStateNonUSUser() {
     self.setWeeklyNewsletterState.assertDidNotEmitValue("Should not emit until view loads")
 
-    self.withEnvironment(countryCode: "US") {
+    self.withEnvironment(config: ConfigFactory.deConfig) {
       self.vm.inputs.viewDidLoad()
-      self.setWeeklyNewsletterState.assertValues([true], "True by default for US users")
+      self.setWeeklyNewsletterState.assertValues([false], "False by default for non-US users.")
     }
+  }
 
-    self.withEnvironment(countryCode: "ES") {
-      self.vm.inputs.viewDidLoad()
-      self.setWeeklyNewsletterState.assertValues([true, false], "False by default for EU users")
-    }
+  func testSetWeeklyNewsletterUSUser() {
+    self.setWeeklyNewsletterState.assertDidNotEmitValue("Should not emit until view loads.")
+
+    self.vm.inputs.viewDidLoad()
+    self.setWeeklyNewsletterState.assertValues([true], "True by default for users outside EU.")
   }
 
   func testShowError() {
