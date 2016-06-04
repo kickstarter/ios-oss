@@ -1,13 +1,10 @@
 public enum HelpType {
   case Contact
   case Cookie
+  case FAQ
   case HowItWorks
   case Privacy
   case Terms
-
-  public static let allValues: [HelpType] = [
-    .HowItWorks, .Contact, .Terms, .Privacy, .Cookie
-  ]
 
   public var title: String {
     switch self {
@@ -15,6 +12,8 @@ public enum HelpType {
     return localizedString(key: "login_tout.help_sheet.contact", defaultValue: "Contact")
     case .Cookie:
       return localizedString(key: "login_tout.help_sheet.cookie", defaultValue: "Cookie Policy")
+    case .FAQ:
+      return localizedString(key: "profile.settings.about_faq", defaultValue: "Frequently Asked Questions")
     case .HowItWorks:
     return localizedString(key: "login_tout.help_sheet.how_it_works", defaultValue: "How Kickstarter Works")
     case .Privacy:

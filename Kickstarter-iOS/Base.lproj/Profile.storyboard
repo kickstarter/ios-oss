@@ -140,7 +140,7 @@
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No projects" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cVi-yY-KXp" customClass="StyledLabel" customModule="Library">
                                                     <rect key="frame" x="83" y="0.0" width="99" height="23"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Title3"/>
@@ -152,7 +152,7 @@
 
 Let's change that!</string>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Body"/>
@@ -266,12 +266,12 @@ Let's change that!</string>
                     <navigationItem key="navigationItem" title="Profile" id="yKJ-YE-wcr">
                         <barButtonItem key="leftBarButtonItem" title="Messages" id="Qnv-Wl-u8j">
                             <connections>
-                                <action selector="messagesButtonPressed" destination="z5g-R7-WdW" id="ue6-YW-Kmr"/>
+                                <action selector="messagesButtonTapped" destination="z5g-R7-WdW" id="mO5-LZ-L2v"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="Logout" id="ASu-7c-3l7">
+                        <barButtonItem key="rightBarButtonItem" title="Settings" id="17a-eh-4Xa">
                             <connections>
-                                <action selector="logoutPressed" destination="z5g-R7-WdW" id="IB2-qg-YBa"/>
+                                <action selector="settingsTapped" destination="z5g-R7-WdW" id="1ya-X2-ftm"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>

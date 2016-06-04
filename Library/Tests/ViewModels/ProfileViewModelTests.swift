@@ -15,6 +15,7 @@ internal final class ProfileViewModelTests: TestCase {
   let hasBackedProjects = TestObserver<Bool, NoError>()
   let goToProject = TestObserver<Project, NoError>()
   let goToRefTag = TestObserver<RefTag, NoError>()
+  let goToSettings = TestObserver<Void, NoError>()
   let showEmptyState = TestObserver<Bool, NoError>()
 
   internal override func setUp() {
@@ -23,12 +24,18 @@ internal final class ProfileViewModelTests: TestCase {
     self.vm.outputs.backedProjects.map { !$0.isEmpty }.observe(hasBackedProjects.observer)
     self.vm.outputs.goToProject.map { $0.0 }.observe(goToProject.observer)
     self.vm.outputs.goToProject.map { $0.1 }.observe(goToRefTag.observer)
+    self.vm.outputs.goToSettings.observe(goToSettings.observer)
     self.vm.outputs.showEmptyState.observe(showEmptyState.observer)
   }
 
-  func testProjectCellPressed() {
+  func testGoToSettings() {
+    self.vm.inputs.settingsButtonTapped()
+    self.goToSettings.assertValueCount(1, "Go to settings screen.")
+  }
+
+  func testProjectCellTapped() {
     let project = Project.template
-    self.vm.inputs.projectPressed(project)
+    self.vm.inputs.projectTapped(project)
 
     self.goToProject.assertValues([project], "Project emmitted.")
     self.goToRefTag.assertValues([RefTag.users], "RefTag =users emitted.")

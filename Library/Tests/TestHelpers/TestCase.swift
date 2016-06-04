@@ -13,6 +13,7 @@ internal class TestCase: XCTestCase {
   internal let cookieStorage = MockCookieStorage()
   internal let facebookAppDelegate = MockFacebookAppDelegate()
   internal let hockeyManager = MockHockeyManager()
+  internal let mainBundle = MockBundle()
   internal let scheduler = TestScheduler()
   internal let trackingClient = MockTrackingClient()
   internal let userDefaults = MockKeyValueStore()
@@ -34,7 +35,7 @@ internal class TestCase: XCTestCase {
       language: .en,
       launchedCountries: .init(),
       locale: .currentLocale(),
-      mainBundle: MockBundle(),
+      mainBundle: mainBundle,
       scheduler: self.scheduler,
       timeZone: NSTimeZone(name: "GMT")!,
       ubiquitousStore: MockKeyValueStore(),

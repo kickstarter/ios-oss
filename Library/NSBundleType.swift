@@ -13,7 +13,7 @@ extension NSBundleType {
   }
 
   public var bundleVersion: String {
-    return (self.infoDictionary?["CFBundleVersion"] as? String) ?? "Unknown"
+    return String(self.infoDictionary?["CFBundleVersion"] as? Int) ?? "0"
   }
 }
 

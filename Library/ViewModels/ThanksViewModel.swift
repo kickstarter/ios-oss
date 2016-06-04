@@ -201,7 +201,8 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
     self.showRecommendations = zip(projects, rootCategory)
 
     self.updateUserInEnvironment = gamesNewsletterSignupButtonPressedProperty.signal
-      .map { AppEnvironment.current.currentUser ?? nil }.ignoreNil()
+      .map { AppEnvironment.current.currentUser ?? nil }
+      .ignoreNil()
       .switchMap { user in
         AppEnvironment.current.apiService.updateUserSelf(user |> User.lens.newsletters.games .~ true)
           .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)

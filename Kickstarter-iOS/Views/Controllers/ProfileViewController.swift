@@ -52,6 +52,12 @@ internal final class ProfileViewController: UICollectionViewController {
         self?.present(project: project, refTag: refTag)
     }
 
+    self.viewModel.outputs.goToSettings
+      .observeForUI()
+      .observeNext { [weak self] _ in
+        self?.openSettings()
+    }
+
     self.viewModel.outputs.showEmptyState
       .observeForUI()
       .observeNext { [weak self] visible in
@@ -60,17 +66,14 @@ internal final class ProfileViewController: UICollectionViewController {
     }
   }
 
-  @IBAction internal func logoutPressed() {
-    AppEnvironment.logout()
-    NSNotificationCenter.defaultCenter().postNotification(
-      NSNotification(name: CurrentUserNotifications.sessionEnded, object: nil)
-    )
+  @IBAction private func settingsTapped() {
+    self.viewModel.inputs.settingsButtonTapped()
   }
 
-  @IBAction private func messagesButtonPressed() {
+  @IBAction private func messagesButtonTapped() {
     guard let vc = UIStoryboard(name: "Messages", bundle: nil).instantiateInitialViewController(),
       messages = vc as? MessageThreadsViewController else {
-        fatalError("Cold not instantiate ProjectViewController")
+        fatalError("Could not instantiate MessageThreadsViewController.")
     }
 
     messages.configureWith(project: nil)
@@ -80,14 +83,23 @@ internal final class ProfileViewController: UICollectionViewController {
   internal override func collectionView(collectionView: UICollectionView,
                                         didSelectItemAtIndexPath indexPath: NSIndexPath) {
     if let project = self.dataSource[indexPath] as? Project {
-      self.viewModel.inputs.projectPressed(project)
+      self.viewModel.inputs.projectTapped(project)
     }
+  }
+
+  private func openSettings() {
+    guard let settingsViewController = UIStoryboard(name: "Settings", bundle: nil)
+      .instantiateInitialViewController() as? SettingsViewController else {
+        fatalError("Could not instantiate SettingsViewController.")
+    }
+
+    self.navigationController?.pushViewController(settingsViewController, animated: true)
   }
 
   private func present(project project: Project, refTag: RefTag) {
     guard let vc = UIStoryboard(name: "Project", bundle: nil).instantiateInitialViewController()
       as? ProjectViewController else {
-        fatalError("Cold not instantiate ProjectViewController")
+        fatalError("Could not instantiate ProjectViewController.")
     }
 
     vc.configureWith(project: project, refTag: refTag)

@@ -266,8 +266,14 @@ public final class Koala {
                properties: projectProperties(project, loggedInUser: self.loggedInUser))
   }
 
-  public func trackNewsletterToggle(sendNewsletter: Bool, project: Project) {
-    let properties = projectProperties(project, loggedInUser: self.loggedInUser)
+  /**
+   Tracks an event for toggling a newsletter preference.
+
+   - parameter sendNewsletter: The boolean determining whether the newsletter should be sent or not.
+   - parameter project: The referring project from which a newsletter preference is set (e.g. Thanks screen).
+   */
+  public func trackNewsletterToggle(sendNewsletter: Bool, project: Project?) {
+    let properties = project.flatMap { projectProperties($0, loggedInUser: self.loggedInUser) } ?? [:]
     if sendNewsletter {
       self.track(event: "Newsletter Subscribe", properties: properties)
     } else {
@@ -360,6 +366,23 @@ public final class Koala {
   // MARK: Profile Events
   public func trackProfileView() {
     self.track(event: "Profile View My")
+  }
+
+  // MARK: Settings Events
+  public func trackAppStoreRatingOpen() {
+    self.track(event: "App Store Rating Open")
+  }
+
+  public func trackContactEmailOpen() {
+    self.track(event: "Contact Email Open")
+  }
+
+  public func trackContactEmailSent() {
+    self.track(event: "Contact Email Sent")
+  }
+
+  public func trackSettingsView() {
+    self.track(event: "Settings View")
   }
 
   // Private tracking method that merges in default properties.

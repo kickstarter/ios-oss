@@ -141,7 +141,8 @@ LoginToutViewModelOutputs, LoginToutViewModelErrors {
     self.isLoading = isLoading.signal
     self.startLogin = self.loginButtonPressedProperty.signal
     self.startSignup = self.signupButtonPressedProperty.signal
-    self.showHelpActionSheet = self.helpButtonPressedProperty.signal.mapConst(HelpType.allValues)
+    self.showHelpActionSheet = self.helpButtonPressedProperty.signal
+      .mapConst([.HowItWorks, .Contact, .Terms, .Privacy, .Cookie])
     self.showHelp = self.helpTypeButtonPressedProperty.signal.ignoreNil()
     self.attemptFacebookLogin = self.facebookLoginButtonPressedProperty.signal
 

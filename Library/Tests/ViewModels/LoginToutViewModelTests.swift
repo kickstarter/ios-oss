@@ -372,7 +372,7 @@ final class LoginToutViewModelTests: TestCase {
     vm.inputs.viewWillAppear()
     vm.inputs.helpButtonPressed()
 
-    showHelpActionSheet.assertValues([HelpType.allValues])
+    showHelpActionSheet.assertValues([[.HowItWorks, .Contact, .Terms, .Privacy, .Cookie]])
   }
 
   func testShowHelpType() {

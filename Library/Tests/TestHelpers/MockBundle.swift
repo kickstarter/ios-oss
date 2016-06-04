@@ -53,8 +53,8 @@ internal struct MockBundle: NSBundleType {
 
   internal var infoDictionary: [String : AnyObject]? {
     return [
-      "CFBundleVersion": "1.2.3.4.5.6.7.8.9.0",
-      "CFBundleShortVersionString": 1234567890
+      "CFBundleVersion": 1234567890,
+      "CFBundleShortVersionString": "1.2.3.4.5.6.7.8.9.0"
     ]
   }
 }

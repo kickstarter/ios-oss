@@ -5,14 +5,16 @@ public extension SFSafariViewController {
   public static func help(helptype: HelpType, baseURL: NSURL) -> SFSafariViewController {
     let path: String
     switch helptype {
-    case .Terms:
-      path = "terms-of-use"
-    case .Privacy:
-      path = "privacy"
-    case .HowItWorks:
-      path = "about"
     case .Cookie:
       path = "cookies"
+    case .FAQ:
+      path = "help/faq/kickstarter+basics"
+    case .HowItWorks:
+      path = "about"
+    case .Privacy:
+      path = "privacy"
+    case .Terms:
+      path = "terms-of-use"
     default:
       path = ""
     }

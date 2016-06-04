@@ -7,11 +7,14 @@ import ReactiveExtensions
 import Result
 
 public protocol ProfileViewModelInputs {
-  /// Call when a project cell is pressed.
-  func projectPressed(project: Project)
+  /// Call when a project cell is tapped.
+  func projectTapped(project: Project)
 
   /// Call when pull-to-refresh is invoked.
   func refresh()
+
+  /// Call when settings is tapped.
+  func settingsButtonTapped()
 
   /// Call when the view will apear.
   func viewWillAppear()
@@ -32,6 +35,9 @@ public protocol ProfileViewModelOutputs {
 
   /// Emits the project and ref tag when should go to project page.
   var goToProject: Signal<(Project, RefTag), NoError > { get }
+
+  /// Emits when settings should be shown.
+  var goToSettings: Signal<Void, NoError> { get }
 
   /// Emits a boolean that determines if the non-backer empty state is visible.
   var showEmptyState: Signal<Bool, NoError> { get }
@@ -78,21 +84,28 @@ public final class ProfileViewModel: ProfileViewModelType, ProfileViewModelInput
 
     self.showEmptyState = backedProjects.map { $0.isEmpty }
 
-    self.goToProject = projectPressedProperty.signal.ignoreNil()
+    self.goToSettings = settingsButtonTappedProperty.signal
+
+    self.goToProject = projectTappedProperty.signal.ignoreNil()
       .map { ($0, RefTag.users) }
 
     self.viewWillAppearProperty.signal
       .observeNext { AppEnvironment.current.koala.trackProfileView() }
   }
 
-  private let projectPressedProperty = MutableProperty<Project?>(nil)
-  public func projectPressed(project: Project) {
-    projectPressedProperty.value = project
+  private let projectTappedProperty = MutableProperty<Project?>(nil)
+  public func projectTapped(project: Project) {
+    projectTappedProperty.value = project
   }
 
   private let refreshProperty = MutableProperty()
   public func refresh() {
     self.refreshProperty.value = ()
+  }
+
+  private let settingsButtonTappedProperty = MutableProperty()
+  public func settingsButtonTapped() {
+    self.settingsButtonTappedProperty.value = ()
   }
 
   private let viewWillAppearProperty = MutableProperty()
@@ -109,6 +122,7 @@ public final class ProfileViewModel: ProfileViewModelType, ProfileViewModelInput
   public let backedProjects: Signal<[Project], NoError>
   public let endRefreshing: Signal<Void, NoError>
   public let goToProject: Signal<(Project, RefTag), NoError>
+  public let goToSettings: Signal<Void, NoError>
   public let showEmptyState: Signal<Bool, NoError>
 
   public var inputs: ProfileViewModelInputs { return self }
