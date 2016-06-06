@@ -1,7 +1,7 @@
 import XCTest
 @testable import Library
-@testable import Models_TestHelpers
-import Models
+@testable import KsApi_TestHelpers
+import KsApi
 import Prelude
 
 final class KoalaTests: XCTestCase {

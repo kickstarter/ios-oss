@@ -1,6 +1,6 @@
 import Foundation
 import UIKit
-import Models
+import KsApi
 
 public extension UIActivityViewController {
 //  public static func shareProject(project: Project, completionHandler: (String?, Bool) -> Void) ->

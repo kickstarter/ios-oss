@@ -1,6 +1,6 @@
 import UIKit
 import Library
-import Models
+import KsApi
 
 internal final class ProfileViewController: UICollectionViewController {
   private let dataSource = ProfileDataSource()

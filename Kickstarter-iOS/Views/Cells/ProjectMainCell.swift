@@ -1,7 +1,7 @@
 import UIKit
 import Library
 import ReactiveCocoa
-import Models
+import KsApi
 import ReactiveExtensions
 
 internal final class ProjectMainCell: UITableViewCell, ValueCell {

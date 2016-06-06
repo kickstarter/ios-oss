@@ -1,4 +1,4 @@
-import Models
+import KsApi
 import KsApi
 import Prelude
 import ReactiveCocoa

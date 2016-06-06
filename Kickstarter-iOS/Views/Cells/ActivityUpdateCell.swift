@@ -2,7 +2,7 @@ import UIKit
 import Library
 import ReactiveExtensions
 import ReactiveCocoa
-import Models
+import KsApi
 
 protocol ActivityUpdateCellDelegate {
   func activityUpdateCellTappedProjectImage(activity activity: Activity)

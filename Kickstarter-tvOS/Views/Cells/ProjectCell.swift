@@ -1,6 +1,6 @@
 import UIKit
 import ReactiveCocoa
-import Models
+import KsApi
 import AlamofireImage
 import Prelude
 import Library

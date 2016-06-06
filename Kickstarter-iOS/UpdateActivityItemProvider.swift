@@ -1,6 +1,6 @@
 import Foundation
 import UIKit
-import Models
+import KsApi
 import Library
 
 public final class UpdateActivityItemProvider: UIActivityItemProvider {

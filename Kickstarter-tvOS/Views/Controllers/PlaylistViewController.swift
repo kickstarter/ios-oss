@@ -1,5 +1,5 @@
 import AVFoundation
-import struct Models.Project
+import struct KsApi.Project
 import UIKit
 import Library
 

@@ -1,4 +1,4 @@
-import struct Models.Project
+import struct KsApi.Project
 
 public struct LaunchedCountries {
   public let countries: [Project.Country]

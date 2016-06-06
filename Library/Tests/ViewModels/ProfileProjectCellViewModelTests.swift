@@ -1,10 +1,10 @@
 import Foundation
-import Models
+import KsApi
 import Result
 import XCTest
 @testable import Library
 @testable import ReactiveExtensions_TestHelpers
-@testable import Models_TestHelpers
+@testable import KsApi_TestHelpers
 import Prelude
 
 internal final class ProfileProjectCellViewModelTests: TestCase {

@@ -1,6 +1,6 @@
 import Foundation
 import Library
-import Models
+import KsApi
 
 internal final class ProfileDataSource: ValueCellDataSource {
   private var user: User!

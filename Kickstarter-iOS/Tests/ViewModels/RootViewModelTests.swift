@@ -5,8 +5,8 @@ import UIKit
 @testable import KsApi
 @testable import KsApi_TestHelpers
 @testable import ReactiveExtensions_TestHelpers
-@testable import Models_TestHelpers
-import Models
+@testable import KsApi_TestHelpers
+import KsApi
 import Result
 import ReactiveCocoa
 import Prelude

@@ -1,6 +1,5 @@
 import CoreGraphics
 import KsApi
-import Models
 import Prelude
 import ReactiveCocoa
 import ReactiveExtensions

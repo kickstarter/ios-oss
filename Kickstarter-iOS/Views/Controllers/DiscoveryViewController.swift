@@ -1,7 +1,7 @@
 import Foundation
 import UIKit
 import Library
-import Models
+import KsApi
 
 internal final class DiscoveryViewController: UITableViewController {
   let viewModel: DiscoveryViewModelType = DiscoveryViewModel()

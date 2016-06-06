@@ -4,8 +4,8 @@ import ReactiveCocoa
 @testable import KsApi
 @testable import KsApi_TestHelpers
 @testable import Library
-@testable import Models
-@testable import Models_TestHelpers
+@testable import KsApi
+@testable import KsApi_TestHelpers
 @testable import ReactiveExtensions
 @testable import ReactiveExtensions_TestHelpers
 

@@ -1,8 +1,8 @@
 import XCTest
 import UIKit
 @testable import ReactiveExtensions_TestHelpers
-@testable import Models
-@testable import Models_TestHelpers
+@testable import KsApi
+@testable import KsApi_TestHelpers
 @testable import KsApi
 @testable import KsApi_TestHelpers
 @testable import Library

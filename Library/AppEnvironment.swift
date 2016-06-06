@@ -2,7 +2,7 @@ import Foundation
 import KsApi
 import ReactiveCocoa
 import Result
-import Models
+import KsApi
 import Argo
 import FBSDKCoreKit
 

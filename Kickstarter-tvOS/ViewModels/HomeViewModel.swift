@@ -1,7 +1,7 @@
 import ReactiveCocoa
 import Result
 import KsApi
-import Models
+import KsApi
 import Prelude
 import struct Library.Environment
 import struct Library.AppEnvironment

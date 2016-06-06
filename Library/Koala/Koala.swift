@@ -2,7 +2,7 @@
 import Foundation
 import UIKit
 import KsApi
-import Models
+import KsApi
 import Prelude
 
 public final class Koala {

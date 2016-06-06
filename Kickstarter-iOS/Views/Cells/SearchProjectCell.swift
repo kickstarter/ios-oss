@@ -1,6 +1,6 @@
 import UIKit
 import Library
-import Models
+import KsApi
 
 internal final class SearchProjectCell: UITableViewCell, ValueCell {
   @IBOutlet internal weak var projectLabel: UILabel!

@@ -1,4 +1,4 @@
-import Models
+import KsApi
 import KsApi
 import ReactiveCocoa
 import Result
@@ -18,9 +18,9 @@ protocol _PlaylistOutputs {
 // swiftlint:disable type_name
 final class _Playlist: _PlaylistInputs, _PlaylistOutputs {
   enum Type {
-    case Featured(Models.Category?)
-    case Recommended(Models.Category?)
-    case Popular(Models.Category?)
+    case Featured(KsApi.Category?)
+    case Recommended(KsApi.Category?)
+    case Popular(KsApi.Category?)
   }
 
   let apiService: ServiceType
@@ -93,7 +93,7 @@ final class _Playlist: _PlaylistInputs, _PlaylistOutputs {
     }
   }
 
-  var category: Models.Category? {
+  var category: KsApi.Category? {
     switch self.type {
     case let .Featured(category):
       return category
@@ -110,8 +110,8 @@ enum Playlist {
   case Featured
   case Recommended
   case Popular
-  case CategoryFeatured(Models.Category)
-  case Category(Models.Category)
+  case CategoryFeatured(KsApi.Category)
+  case Category(KsApi.Category)
 
   var discoveryParams: DiscoveryParams {
     let base = DiscoveryParams.lens.hasVideo .~ true <> DiscoveryParams.lens.state .~ .Live
@@ -144,7 +144,7 @@ enum Playlist {
     return self.discoveryParams |> DiscoveryParams.lens.perPage .~ 1
   }
 
-  var category: Models.Category? {
+  var category: KsApi.Category? {
     switch self {
     case .Featured, .Recommended, .Popular:
       return nil

@@ -1,6 +1,6 @@
 import XCTest
 @testable import Library
-import Models
+import KsApi
 
 // swiftlint:disable function_body_length
 final class FormatTests: XCTestCase {

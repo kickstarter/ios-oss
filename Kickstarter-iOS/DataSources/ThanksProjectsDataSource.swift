@@ -1,9 +1,9 @@
 import UIKit
-import Models
+import KsApi
 import Library
 
 internal final class ThanksProjectsDataSource: ValueCellDataSource {
-  internal func loadData(projects projects: [Project], category: Models.Category) {
+  internal func loadData(projects projects: [Project], category: KsApi.Category) {
 
     self.set(values: projects, cellClass: ThanksProjectCell.self, inSection: 0)
 
@@ -18,7 +18,7 @@ internal final class ThanksProjectsDataSource: ValueCellDataSource {
     switch (cell, value) {
     case let (cell as ThanksProjectCell, value as Project):
       cell.configureWith(value: value)
-    case let (cell as ThanksCategoryCell, value as Models.Category):
+    case let (cell as ThanksCategoryCell, value as KsApi.Category):
       cell.configureWith(value: value)
     default:
       assertionFailure("Unrecognized (cell, viewModel) combo.")
@@ -29,7 +29,7 @@ internal final class ThanksProjectsDataSource: ValueCellDataSource {
     return self[indexPath] as? Project
   }
 
-  internal func categoryAtIndexPath(indexPath: NSIndexPath) -> Models.Category? {
-    return self[indexPath] as? Models.Category
+  internal func categoryAtIndexPath(indexPath: NSIndexPath) -> KsApi.Category? {
+    return self[indexPath] as? KsApi.Category
   }
 }

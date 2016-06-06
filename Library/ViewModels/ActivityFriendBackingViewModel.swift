@@ -1,4 +1,4 @@
-import Models
+import KsApi
 import ReactiveCocoa
 import Result
 
@@ -66,7 +66,7 @@ ActivityFriendBackingViewModelInputs, ActivityFriendBackingViewModelOutputs {
 }
 
 // swiftlint:disable cyclomatic_complexity
-private func localizedSlug(forCategory category: Models.Category) -> String {
+private func localizedSlug(forCategory category: KsApi.Category) -> String {
   switch category.rootId ?? 0 {
   case 1:
     return "art"

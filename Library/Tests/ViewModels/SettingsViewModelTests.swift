@@ -2,13 +2,13 @@ import Foundation
 import XCTest
 import ReactiveCocoa
 import Result
-import Models
+import KsApi
 import Prelude
 @testable import KsApi
 @testable import Library
 @testable import ReactiveExtensions_TestHelpers
 @testable import KsApi_TestHelpers
-@testable import Models_TestHelpers
+@testable import KsApi_TestHelpers
 
 internal final class SettingsViewModelTests: TestCase {
   let vm = SettingsViewModel()

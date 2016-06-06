@@ -5,8 +5,8 @@ import UIKit
 @testable import ReactiveExtensions
 @testable import ReactiveExtensions_TestHelpers
 @testable import Result
-@testable import Models
-@testable import Models_TestHelpers
+@testable import KsApi
+@testable import KsApi_TestHelpers
 @testable import KsApi
 @testable import KsApi_TestHelpers
 @testable import Library
@@ -15,7 +15,7 @@ import Prelude
 final class ThanksViewModelTests: TestCase {
   let vm: ThanksViewModelType = ThanksViewModel()
   let backedProjectText = TestObserver<String, NoError>()
-  let goToDiscovery = TestObserver<Models.Category, NoError>()
+  let goToDiscovery = TestObserver<KsApi.Category, NoError>()
   let goToProject = TestObserver<Project, NoError>()
   let goToRefTag = TestObserver<RefTag, NoError>()
   let showShareSheet = TestObserver<Project, NoError>()

@@ -1,6 +1,6 @@
 import UIKit
 import Library
-import Models
+import KsApi
 
 internal final class SearchViewController: UITableViewController {
   private let viewModel: SearchViewModelType = SearchViewModel()

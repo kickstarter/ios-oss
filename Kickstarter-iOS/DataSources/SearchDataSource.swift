@@ -1,5 +1,5 @@
 import Library
-import Models
+import KsApi
 
 internal final class SearchDataSource: ValueCellDataSource {
   private enum Section: Int {

@@ -1,6 +1,6 @@
 import KsApi
 import Library
-import Models
+import KsApi
 import ReactiveCocoa
 import Result
 

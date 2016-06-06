@@ -1,5 +1,5 @@
 import UIKit
-import Models
+import KsApi
 import AlamofireImage
 import ReactiveCocoa
 import Library

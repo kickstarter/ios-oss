@@ -1,8 +1,8 @@
 import XCTest
-import Models
+import KsApi
 @testable import Kickstarter_iOS
 @testable import Library
-@testable import Models_TestHelpers
+@testable import KsApi_TestHelpers
 import Prelude
 
 internal final class ProfileDataSourceTests: XCTestCase {

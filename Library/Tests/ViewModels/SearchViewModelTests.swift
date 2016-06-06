@@ -4,7 +4,7 @@ import XCTest
 @testable import KsApi_TestHelpers
 @testable import ReactiveExtensions
 @testable import ReactiveExtensions_TestHelpers
-import Models
+import KsApi
 import ReactiveCocoa
 import Result
 @testable import Library

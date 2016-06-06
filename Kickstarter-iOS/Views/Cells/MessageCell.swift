@@ -1,5 +1,5 @@
 import Library
-import Models
+import KsApi
 import ReactiveExtensions
 import UIKit
 

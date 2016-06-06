@@ -1,7 +1,7 @@
 import UIKit
 import Library
 import ReactiveCocoa
-import Models
+import KsApi
 
 internal final class ActivityFriendFollowCell: UITableViewCell, ValueCell {
   private let viewModel: ActivityFriendFollowViewModel = ActivityFriendFollowViewModel()

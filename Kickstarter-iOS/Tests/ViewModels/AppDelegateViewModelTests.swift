@@ -3,8 +3,8 @@ import ReactiveCocoa
 import Result
 @testable import Library
 @testable import Kickstarter_iOS
-@testable import Models
-@testable import Models_TestHelpers
+@testable import KsApi
+@testable import KsApi_TestHelpers
 @testable import KsApi
 @testable import KsApi_TestHelpers
 @testable import ReactiveExtensions_TestHelpers

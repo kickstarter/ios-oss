@@ -4,7 +4,7 @@ import AVFoundation
 import Foundation
 import KsApi
 import ReactiveCocoa
-import Models
+import KsApi
 
 extension XCTestCase {
 

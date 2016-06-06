@@ -1,10 +1,10 @@
 import XCTest
 @testable import Library
 @testable import ReactiveExtensions_TestHelpers
-@testable import Models_TestHelpers
+@testable import KsApi_TestHelpers
 import ReactiveCocoa
 import Result
-import Models
+import KsApi
 
 internal final class MessageDialogViewModelTests: TestCase {
   private let vm: MessageDialogViewModelType = MessageDialogViewModel()

@@ -1,7 +1,7 @@
 import KsApi
 import ReactiveCocoa
 import Result
-import Models
+import KsApi
 import Library
 
 protocol PlaylistsMenuViewModelInputs {

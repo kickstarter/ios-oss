@@ -1,7 +1,7 @@
 import UIKit
 import Library
 import ReactiveCocoa
-import Models
+import KsApi
 
 internal final class ThanksCategoryCell: UICollectionViewCell, ValueCell {
 
@@ -9,7 +9,7 @@ internal final class ThanksCategoryCell: UICollectionViewCell, ValueCell {
   @IBOutlet private weak var exploreLabel: StyledLabel!
   @IBOutlet private weak var liveProjectCountLabel: StyledLabel!
 
-  func configureWith(value category: Models.Category) {
+  func configureWith(value category: KsApi.Category) {
     self.bgView.backgroundColor = UIColorFromCategoryId(category.id) ?? Color.TextDefault.toUIColor()
     self.exploreLabel.color = shouldOverlayBeDark(category) ? Color.Black : Color.White
     self.exploreLabel.text = localizedString(key: "category_promo.explore_category",
@@ -30,7 +30,7 @@ internal final class ThanksCategoryCell: UICollectionViewCell, ValueCell {
   }
 }
 
-private func shouldOverlayBeDark(category: Models.Category) -> Bool {
+private func shouldOverlayBeDark(category: KsApi.Category) -> Bool {
   switch category.root?.id ?? 0 {
   case 1, 3, 14, 15, 18:
     return true

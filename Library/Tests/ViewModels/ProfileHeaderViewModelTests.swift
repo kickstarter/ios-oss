@@ -2,11 +2,11 @@ import Foundation
 import XCTest
 import ReactiveCocoa
 import Result
-import Models
+import KsApi
 @testable import KsApi
 @testable import KsApi_TestHelpers
 @testable import Library
-@testable import Models_TestHelpers
+@testable import KsApi_TestHelpers
 @testable import ReactiveExtensions_TestHelpers
 import Prelude
 

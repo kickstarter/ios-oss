@@ -1,5 +1,5 @@
 import Library
-import Models
+import KsApi
 
 internal final class MessageThreadsDataSource: ValueCellDataSource {
   // swiftlint:disable type_name

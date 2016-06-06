@@ -2,8 +2,8 @@ import Library
 @testable import ReactiveExtensions_TestHelpers
 import ReactiveCocoa
 import Result
-import Models
-@testable import Models_TestHelpers
+import KsApi
+@testable import KsApi_TestHelpers
 
 final class MessageThreadCellViewModelTests: TestCase {
   private let vm: MessageThreadCellViewModelType = MessageThreadCellViewModel()

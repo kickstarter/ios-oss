@@ -1,4 +1,4 @@
-import Models
+import KsApi
 import ReactiveCocoa
 import ReactiveExtensions
 import Result

@@ -2,7 +2,7 @@ import Foundation
 import Library
 import UIKit
 import ReactiveCocoa
-import Models
+import KsApi
 
 internal final class ActivitiesViewController: UITableViewController {
   let viewModel: ActivitiesViewModelType = ActivitiesViewModel()

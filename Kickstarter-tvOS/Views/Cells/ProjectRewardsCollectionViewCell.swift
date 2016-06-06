@@ -1,6 +1,6 @@
 import UIKit
 import ReactiveCocoa
-import Models
+import KsApi
 import Library
 
 class ProjectRewardsCollectionViewCell: UICollectionViewCell, ValueCell {

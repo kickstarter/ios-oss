@@ -1,7 +1,6 @@
 import ReactiveCocoa
 import ReactiveExtensions
 import Result
-import Models
 import KsApi
 import Prelude
 

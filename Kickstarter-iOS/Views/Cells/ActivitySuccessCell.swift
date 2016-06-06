@@ -3,7 +3,7 @@ import Library
 import ReactiveCocoa
 import AlamofireImage
 import CoreImage
-import Models
+import KsApi
 
 internal final class ActivitySuccessCell: UITableViewCell, ValueCell {
   private let viewModel: ActivitySuccessViewModel = ActivitySuccessViewModel()

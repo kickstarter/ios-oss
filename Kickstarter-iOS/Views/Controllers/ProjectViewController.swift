@@ -1,6 +1,6 @@
 import Library
 import UIKit
-import Models
+import KsApi
 
 internal final class ProjectViewController: UITableViewController {
   private let viewModel: ProjectViewModelType = ProjectViewModel()

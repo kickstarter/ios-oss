@@ -1,5 +1,5 @@
 import UIKit
-import Models
+import KsApi
 import Library
 
 protocol PlaylistTrayDelegate: class {

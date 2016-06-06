@@ -1,5 +1,5 @@
 import ReactiveCocoa
-import Models
+import KsApi
 import KsApi
 import Result
 import Prelude

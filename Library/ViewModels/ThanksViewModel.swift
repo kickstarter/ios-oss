@@ -1,7 +1,7 @@
 #if os(iOS)
 // swiftlint:disable file_length
 import KsApi
-import Models
+import KsApi
 import Prelude
 import ReactiveCocoa
 import ReactiveExtensions
@@ -16,7 +16,7 @@ public protocol ThanksViewModelInputs {
   func closeButtonPressed()
 
   /// Call when category cell is pressed
-  func categoryCellPressed(category: Models.Category)
+  func categoryCellPressed(category: KsApi.Category)
 
   /// Call to set project
   func project(project: Project)
@@ -90,7 +90,7 @@ public protocol ThanksViewModelOutputs {
   var showGamesNewsletterOptInAlert: Signal <String, NoError> { get }
 
   /// Emits array of projects and a category when should show recommendations
-  var showRecommendations: Signal <([Project], Models.Category), NoError> { get }
+  var showRecommendations: Signal <([Project], KsApi.Category), NoError> { get }
 
   /// Emits a User that can be used to replace the current user in the environment
   var updateUserInEnvironment: Signal<User, NoError> { get }
@@ -145,7 +145,7 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
 
     let shouldShowGamesAlert = project
       .map { project in
-        project.category.rootId == Models.Category.gamesId &&
+        project.category.rootId == KsApi.Category.gamesId &&
         !(AppEnvironment.current.currentUser?.newsletters.games ?? false) &&
         !AppEnvironment.current.userDefaults.hasSeenGamesNewsletterPrompt
     }
@@ -304,8 +304,8 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
     closeButtonPressedProperty.value = ()
   }
 
-  private let categoryCellPressedProperty = MutableProperty<Models.Category?>(nil)
-  public func categoryCellPressed(category: Models.Category) {
+  private let categoryCellPressedProperty = MutableProperty<KsApi.Category?>(nil)
+  public func categoryCellPressed(category: KsApi.Category) {
     categoryCellPressedProperty.value = category
   }
 
@@ -381,14 +381,14 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
   public let showFacebookShare: Signal<Project, NoError>
   public let showGamesNewsletterAlert: Signal<(), NoError>
   public let showGamesNewsletterOptInAlert: Signal<String, NoError>
-  public let showRecommendations: Signal<([Project], Models.Category), NoError>
+  public let showRecommendations: Signal<([Project], KsApi.Category), NoError>
   public let updateUserInEnvironment: Signal<User, NoError>
   public let postUserUpdatedNotification: Signal<NSNotification, NoError>
   public let facebookIsAvailable: Signal<Bool, NoError>
   public let twitterIsAvailable: Signal<Bool, NoError>
 }
 
-private func relatedProjects(project: Project, category: Models.Category, apiService: ServiceType) ->
+private func relatedProjects(project: Project, category: KsApi.Category, apiService: ServiceType) ->
   SignalProducer<[Project], NoError> {
 
     let base = DiscoveryParams.lens.perPage .~ 3 <> DiscoveryParams.lens.backed .~ false

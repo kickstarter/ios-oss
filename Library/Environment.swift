@@ -3,7 +3,7 @@ import Foundation
 import HockeySDK
 import KsApi
 import ReactiveCocoa
-import Models
+import KsApi
 import FBSDKCoreKit
 
 /**

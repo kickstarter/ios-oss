@@ -1,6 +1,6 @@
 import Foundation
 import Library
-import Models
+import KsApi
 import UIKit
 import Prelude
 

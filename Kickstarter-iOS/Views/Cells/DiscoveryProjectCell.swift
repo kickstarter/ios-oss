@@ -3,7 +3,7 @@ import Library
 import ReactiveCocoa
 import ReactiveExtensions
 import AlamofireImage
-import Models
+import KsApi
 
 internal final class DiscoveryProjectCell: UITableViewCell, ValueCell {
   let viewModel: DiscoveryProjectViewModelType = DiscoveryProjectViewModel()

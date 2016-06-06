@@ -1,5 +1,5 @@
 import Foundation
-import Models
+import KsApi
 import ReactiveCocoa
 import KsApi
 import Result

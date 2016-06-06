@@ -3,8 +3,8 @@ import XCTest
 import ReactiveCocoa
 import Result
 @testable import KsApi
-@testable import Models
-@testable import Models_TestHelpers
+@testable import KsApi
+@testable import KsApi_TestHelpers
 import Prelude
 import Library
 @testable import KsApi_TestHelpers

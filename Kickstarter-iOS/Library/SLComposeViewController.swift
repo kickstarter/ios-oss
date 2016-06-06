@@ -1,6 +1,6 @@
 import Foundation
 import Social
-import Models
+import KsApi
 import Library
 import AlamofireImage
 

@@ -5,7 +5,7 @@ import ReactiveCocoa
 import Library
 import Prelude
 import KsApi
-import Models
+import KsApi
 import Social
 
 internal final class ThanksViewController: UIViewController, UICollectionViewDelegate {

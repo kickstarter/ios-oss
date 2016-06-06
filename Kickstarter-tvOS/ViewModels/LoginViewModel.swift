@@ -1,7 +1,7 @@
 import ReactiveCocoa
 import Result
 import KsApi
-import Models
+import KsApi
 import Library
 
 protocol LoginViewModelInputs {

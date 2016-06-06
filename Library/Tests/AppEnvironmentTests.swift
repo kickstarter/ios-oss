@@ -3,8 +3,8 @@ import Foundation
 @testable import Library
 @testable import KsApi
 @testable import KsApi_TestHelpers
-@testable import Models
-@testable import Models_TestHelpers
+@testable import KsApi
+@testable import KsApi_TestHelpers
 
 final class AppEnvironmentTests: XCTestCase {
 

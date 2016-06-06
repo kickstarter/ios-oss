@@ -1,6 +1,6 @@
 import UIKit
 import AVFoundation
-import Models
+import KsApi
 import Library
 
 internal final class HomeViewController: UIViewController {

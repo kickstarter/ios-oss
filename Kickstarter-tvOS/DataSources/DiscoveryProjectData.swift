@@ -1,13 +1,13 @@
-import Models
+import KsApi
 
 /// Data model for use with the DiscoverySectionDataSource. It models
 /// the state of having an actual project to render or still waiting
 /// for data to load.
 enum DiscoveryProjectData {
-  case Project(Models.Project)
+  case Project(KsApi.Project)
   case Loading
 
-  var project: Models.Project? {
+  var project: KsApi.Project? {
     switch self {
     case let .Project(project):
       return project

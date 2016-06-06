@@ -4,8 +4,8 @@ import XCTest
 @testable import KsApi_TestHelpers
 @testable import ReactiveExtensions_TestHelpers
 import Result
-import Models
-@testable import Models_TestHelpers
+import KsApi
+@testable import KsApi_TestHelpers
 import Prelude
 
 final class ActivitiesViewModelTests: TestCase {

@@ -2,7 +2,7 @@ import UIKit
 import Library
 import ReactiveCocoa
 import ReactiveExtensions
-import Models
+import KsApi
 
 internal final class ProjectSubpagesCell: UITableViewCell, ValueCell {
   private let viewModel: ProjectSubpagesViewModel = ProjectSubpagesViewModel()

@@ -1,5 +1,5 @@
 import Library
-import Models
+import KsApi
 import UIKit
 
 internal final class ProjectBannerCell: UITableViewCell, ValueCell {
