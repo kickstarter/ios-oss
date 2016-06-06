@@ -14,9 +14,7 @@ test:
       swiftlint lint --strict --reporter json |
       tee $CIRCLE_ARTIFACTS/swiftlint-report.json
     - PLATFORM=iOS make test
-    - PLATFORM=tvOS make test
     - PLATFORM=iOS TARGET=Library make test
-    - PLATFORM=tvOS TARGET=Library make test
 experimental:
   notify:
     branches:
