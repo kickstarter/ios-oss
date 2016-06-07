@@ -66,6 +66,7 @@ PlaylistExplorerViewModelInputs, PlaylistExplorerViewModelOutputs {
 
     if let category = self.playlist.category {
       apiService.fetchCategories()
+        .map { $0.categories }
         .demoteErrors()
         .uncollect()
         .filter { c in c.id == category.id || c.parentId == category.id }

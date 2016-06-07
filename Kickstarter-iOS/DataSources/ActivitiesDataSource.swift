@@ -22,17 +22,17 @@ internal final class ActivitiesDataSource: ValueCellDataSource {
 
     activities.forEach { activity in
       switch activity.category {
-      case .Backing:
+      case .backing:
         self.appendRow(value: activity, cellClass: ActivityFriendBackingCell.self, toSection: section)
-      case .Update:
+      case .update:
         self.appendRow(value: activity, cellClass: ActivityUpdateCell.self, toSection: section)
-      case .Follow:
+      case .follow:
         self.appendRow(value: activity, cellClass: ActivityFriendFollowCell.self, toSection: section)
-      case .Success:
+      case .success:
         self.appendRow(value: activity, cellClass: ActivitySuccessCell.self, toSection: section)
-      case .Failure, .Cancellation, .Suspension:
+      case .failure, .cancellation, .suspension:
         self.appendRow(value: activity, cellClass: ActivityNegativeStateChangeCell.self, toSection: section)
-      case .Launch:
+      case .launch:
         self.appendRow(value: activity, cellClass: ActivityLaunchCell.self, toSection: section)
       default:
         assertionFailure("Unsupported activity: \(activity)")

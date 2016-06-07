@@ -3,6 +3,7 @@ import XCTest
 import ReactiveCocoa
 import Result
 import KsApi
+import Prelude
 @testable import KsApi
 @testable import Library
 @testable import ReactiveExtensions_TestHelpers
@@ -38,7 +39,7 @@ internal final class ProfileViewModelTests: TestCase {
     self.vm.inputs.projectTapped(project)
 
     self.goToProject.assertValues([project], "Project emmitted.")
-    self.goToRefTag.assertValues([RefTag.users], "RefTag =users emitted.")
+    self.goToRefTag.assertValues([.users], "RefTag =users emitted.")
   }
 
   func testUserWithBackedProjects() {
@@ -56,8 +57,10 @@ internal final class ProfileViewModelTests: TestCase {
   }
 
   func testUserWithNoProjects() {
-    withEnvironment(apiService: MockService(fetchDiscoveryResponse: [])) {
-      AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: User.template))
+    let response = .template |> DiscoveryEnvelope.lens.projects .~ []
+
+    withEnvironment(apiService: MockService(fetchDiscoveryResponse: response)) {
+      AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
 
       self.vm.inputs.viewWillAppear()
 

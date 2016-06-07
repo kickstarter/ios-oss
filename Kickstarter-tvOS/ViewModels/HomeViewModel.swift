@@ -119,6 +119,7 @@ internal final class HomeViewModel: HomeViewModelType, HomeViewModelInputs, Home
     self.playlists = self.viewDidLoadProperty.signal
       .switchMap {
         apiService.fetchCategories()
+          .map { $0.categories }
           .sort()
           .uncollect()
           .filter { $0.isRoot }
@@ -133,6 +134,8 @@ internal final class HomeViewModel: HomeViewModelType, HomeViewModelInputs, Home
       .skipRepeats(==)
       .switchMap { playlist in
         apiService.fetchProject(playlist.discoveryParams)
+          .map { $0.projects.first }
+          .ignoreNil()
           .map { NowPlaying(playlist: playlist, project: $0) }
           .demoteErrors()
       }

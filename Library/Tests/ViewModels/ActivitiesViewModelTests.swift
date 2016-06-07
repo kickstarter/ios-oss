@@ -120,7 +120,7 @@ final class ActivitiesViewModelTests: TestCase {
   }
 
   func testgoToProject() {
-    let activity = Activity.template |> Activity.lens.category .~ .Backing
+    let activity = Activity.template |> Activity.lens.category .~ .backing
     let project = activity.project!
     let refTag = RefTag.activity
 

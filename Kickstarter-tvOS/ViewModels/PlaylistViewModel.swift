@@ -70,7 +70,12 @@ PlaylistViewModelOutputs {
           <> DiscoveryParams.lens.state .~ .Live
           <> DiscoveryParams.lens.seed .~ Int(arc4random_uniform(100_000))
       }
-      .switchMap { params in apiService.fetchProject(params).demoteErrors() }
+      .switchMap { params in
+        apiService.fetchProject(params)
+          .map { $0.projects.first }
+          .ignoreNil()
+          .demoteErrors()
+      }
       .prefix(value: currentProject)
       .replayLazily(1)
 

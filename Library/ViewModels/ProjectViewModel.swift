@@ -134,7 +134,11 @@ ProjectViewModelOutputs {
 
     let projectOnStarToggle = initialProject
       .takeWhen(Signal.merge(loggedInUserTappedStar, userLoginAfterTappingStar))
-      .switchMap { project in AppEnvironment.current.apiService.toggleStar(project).demoteErrors() }
+      .switchMap { project in
+        AppEnvironment.current.apiService.toggleStar(project)
+          .map { $0.project }
+          .demoteErrors()
+    }
 
     self.project = Signal.merge([refreshedProject, projectOnStarToggle])
 
