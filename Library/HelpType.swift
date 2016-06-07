@@ -23,3 +23,14 @@ public enum HelpType {
     }
   }
 }
+
+extension HelpType: Equatable {}
+public func == (lhs: HelpType, rhs: HelpType) -> Bool {
+  switch (lhs, rhs) {
+  case (.Contact, .Contact), (.Cookie, .Cookie), (.FAQ, .FAQ), (.HowItWorks, .HowItWorks),
+       (.Privacy, .Privacy), (.Terms, .Terms):
+    return true
+  default:
+    return false
+  }
+}

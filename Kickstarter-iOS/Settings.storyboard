@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="wCS-h4-p7K">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Settings-->
@@ -13,42 +14,59 @@
                         <viewControllerLayoutGuide type="bottom" id="lbG-lz-Ra0"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="xfb-yE-w3U">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="1150"/>
+                        <rect key="frame" x="0.0" y="0.0" width="400" height="1150"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oV4-s7-Cee">
-                                <rect key="frame" x="0.0" y="64" width="600" height="1042"/>
+                                <rect key="frame" x="0.0" y="0.0" width="400" height="1150"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" spacing="32" translatesAutoresizingMaskIntoConstraints="NO" id="8mW-y4-spg" userLabel="Root stack view">
-                                        <rect key="frame" x="0.0" y="0.0" width="600" height="1015"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="32" translatesAutoresizingMaskIntoConstraints="NO" id="8mW-y4-spg" userLabel="Root stack view">
+                                        <rect key="frame" x="16" y="0.0" width="368" height="1139"/>
                                         <subviews>
-                                            <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="HEu-B6-yqB" userLabel="Projects you back stack view">
-                                                <rect key="frame" x="0.0" y="0.0" width="600" height="89"/>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dmI-6Q-By5">
+                                                <rect key="frame" x="0.0" y="0.0" width="368" height="0.0"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" id="TTF-OS-mh6"/>
+                                                </constraints>
+                                            </view>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="HEu-B6-yqB" userLabel="Projects you back stack view">
+                                                <rect key="frame" x="0.0" y="32" width="368" height="95"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Projects you back" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P8S-3I-ZH2" userLabel="Projects you back label" customClass="StyledLabel" customModule="Library">
-                                                        <rect key="frame" x="0.0" y="0.0" width="600" height="21"/>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Projects you back" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P8S-3I-ZH2" userLabel="Projects you back label" customClass="StyledLabel" customModule="Library">
+                                                        <rect key="frame" x="0.0" y="0.0" width="368" height="21"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="string" keyPath="_color" value="GrayDark"/>
                                                             <userDefinedRuntimeAttribute type="string" keyPath="localizedKey" value="profile.settings.backer.title"/>
+                                                            <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Caption1"/>
                                                         </userDefinedRuntimeAttributes>
                                                     </label>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="R2o-td-ax1">
-                                                        <rect key="frame" x="0.0" y="25" width="600" height="30"/>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cR0-14-F6u">
+                                                        <rect key="frame" x="0.0" y="25" width="368" height="1"/>
+                                                        <color key="backgroundColor" white="0.89563577586206899" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="1" id="tUS-hU-h0Y"/>
+                                                        </constraints>
+                                                    </view>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="R2o-td-ax1">
+                                                        <rect key="frame" x="0.0" y="30" width="368" height="30"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Project updates" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y75-ct-zca" customClass="StyledLabel" customModule="Library">
-                                                                <rect key="frame" x="0.0" y="0.0" width="492" height="30"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="260" height="30"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <nil key="highlightedColor"/>
                                                                 <userDefinedRuntimeAttributes>
                                                                     <userDefinedRuntimeAttribute type="string" keyPath="localizedKey" value="profile.settings.backer.project_updates"/>
+                                                                    <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Body"/>
+                                                                    <userDefinedRuntimeAttribute type="string" keyPath="_color" value="TextDefault"/>
                                                                 </userDefinedRuntimeAttributes>
                                                             </label>
                                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dEX-h3-GKc" customClass="BorderButton" customModule="Library">
-                                                                <rect key="frame" x="508" y="0.0" width="30" height="30"/>
+                                                                <rect key="frame" x="276" y="0.0" width="30" height="30"/>
                                                                 <state key="normal" title="Mail"/>
                                                                 <userDefinedRuntimeAttributes>
                                                                     <userDefinedRuntimeAttribute type="string" keyPath="_color" value="Clear"/>
@@ -60,7 +78,7 @@
                                                                 </connections>
                                                             </button>
                                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="G0d-xB-7Ql">
-                                                                <rect key="frame" x="554" y="0.0" width="46" height="30"/>
+                                                                <rect key="frame" x="322" y="0.0" width="46" height="30"/>
                                                                 <state key="normal" title="Mobile"/>
                                                                 <connections>
                                                                     <action selector="mobileUpdatesTapped:" destination="wCS-h4-p7K" eventType="touchUpInside" id="sUv-MA-GJ0"/>
@@ -68,30 +86,56 @@
                                                             </button>
                                                         </subviews>
                                                     </stackView>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="dDN-ET-a8u">
-                                                        <rect key="frame" x="0.0" y="59" width="600" height="30"/>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="dDN-ET-a8u">
+                                                        <rect key="frame" x="0.0" y="64" width="368" height="31"/>
                                                         <subviews>
-                                                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8aU-vJ-x8w">
-                                                                <rect key="frame" x="0.0" y="0.0" width="537" height="30"/>
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8aU-vJ-x8w" customClass="BorderButton" customModule="Library">
+                                                                <rect key="frame" x="0.0" y="1" width="294" height="30"/>
                                                                 <state key="normal" title="Manage project notifications">
                                                                     <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                 </state>
                                                                 <userDefinedRuntimeAttributes>
                                                                     <userDefinedRuntimeAttribute type="string" keyPath="normalLocalizedKey" value="profile.settings.backer.notifications"/>
+                                                                    <userDefinedRuntimeAttribute type="string" keyPath="_color" value="Clear"/>
+                                                                    <userDefinedRuntimeAttribute type="string" keyPath="_borderColor" value="Clear"/>
+                                                                    <userDefinedRuntimeAttribute type="string" keyPath="_titleColorNormal" value="TextDefault"/>
+                                                                    <userDefinedRuntimeAttribute type="string" keyPath="_titleFontStyle" value="Body"/>
                                                                 </userDefinedRuntimeAttributes>
                                                                 <connections>
                                                                     <action selector="manageProjectNotificationsTapped" destination="wCS-h4-p7K" eventType="touchUpInside" id="rdI-5o-rVB"/>
                                                                 </connections>
                                                             </button>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="42" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7dQ-1Q-9kt" customClass="StyledLabel" customModule="Library">
-                                                                <rect key="frame" x="553" y="0.0" width="21" height="30"/>
-                                                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                                <nil key="highlightedColor"/>
-                                                            </label>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="&gt;" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GoP-zW-GUk">
-                                                                <rect key="frame" x="589" y="0.0" width="11" height="30"/>
+                                                            <view contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="GqC-eQ-lh5">
+                                                                <rect key="frame" x="310" y="0.0" width="31" height="31"/>
+                                                                <subviews>
+                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="42" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7dQ-1Q-9kt" customClass="StyledLabel" customModule="Library">
+                                                                        <rect key="frame" x="8" y="2" width="21" height="21"/>
+                                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                                        <nil key="highlightedColor"/>
+                                                                        <userDefinedRuntimeAttributes>
+                                                                            <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Caption1"/>
+                                                                            <userDefinedRuntimeAttribute type="string" keyPath="_color" value="White"/>
+                                                                        </userDefinedRuntimeAttributes>
+                                                                    </label>
+                                                                </subviews>
+                                                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                                <constraints>
+                                                                    <constraint firstItem="7dQ-1Q-9kt" firstAttribute="top" secondItem="GqC-eQ-lh5" secondAttribute="topMargin" id="G0W-dI-voD"/>
+                                                                    <constraint firstAttribute="bottomMargin" secondItem="7dQ-1Q-9kt" secondAttribute="bottom" id="G3S-7S-ECz"/>
+                                                                    <constraint firstAttribute="trailingMargin" secondItem="7dQ-1Q-9kt" secondAttribute="trailing" id="MFs-7w-WUs"/>
+                                                                    <constraint firstItem="7dQ-1Q-9kt" firstAttribute="leading" secondItem="GqC-eQ-lh5" secondAttribute="leadingMargin" id="QSt-kU-w1j"/>
+                                                                </constraints>
+                                                                <edgeInsets key="layoutMargins" top="2" left="8" bottom="8" right="2"/>
+                                                                <userDefinedRuntimeAttributes>
+                                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                                        <integer key="value" value="3"/>
+                                                                    </userDefinedRuntimeAttribute>
+                                                                </userDefinedRuntimeAttributes>
+                                                            </view>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" text="&gt;" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GoP-zW-GUk">
+                                                                <rect key="frame" x="357" y="5" width="11" height="21"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <nil key="highlightedColor"/>
@@ -100,11 +144,11 @@
                                                     </stackView>
                                                 </subviews>
                                             </stackView>
-                                            <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="1ZC-gw-NRT" userLabel="Creator notifications stack view">
-                                                <rect key="frame" x="0.0" y="121" width="600" height="123"/>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="1ZC-gw-NRT" userLabel="Creator notifications stack view">
+                                                <rect key="frame" x="0.0" y="159" width="368" height="128"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Creator notifications" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="It8-HK-urg" userLabel="Creator notifications label" customClass="StyledLabel" customModule="Library">
-                                                        <rect key="frame" x="0.0" y="0.0" width="600" height="21"/>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Creator notifications" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="It8-HK-urg" userLabel="Creator notifications label" customClass="StyledLabel" customModule="Library">
+                                                        <rect key="frame" x="0.0" y="0.0" width="368" height="21"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
@@ -115,29 +159,39 @@
 cHJvZmlsZS4Qc2UQdHRpbmdzLmNyZWF0b3IudGl0bGU
 </string>
                                                             </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Caption1"/>
                                                         </userDefinedRuntimeAttributes>
                                                     </label>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="aBE-X0-gum">
-                                                        <rect key="frame" x="0.0" y="25" width="600" height="30"/>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mWf-qY-SRb">
+                                                        <rect key="frame" x="0.0" y="25" width="368" height="1"/>
+                                                        <color key="backgroundColor" white="0.89563577589999999" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="1" id="dKD-ut-4IG"/>
+                                                        </constraints>
+                                                    </view>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="aBE-X0-gum">
+                                                        <rect key="frame" x="0.0" y="30" width="368" height="30"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="New pledges" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ix6-MD-pGZ" customClass="StyledLabel" customModule="Library">
-                                                                <rect key="frame" x="0.0" y="0.0" width="492" height="30"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="260" height="30"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <nil key="highlightedColor"/>
                                                                 <userDefinedRuntimeAttributes>
                                                                     <userDefinedRuntimeAttribute type="string" keyPath="localizedKey" value="profile.settings.creator.pledges"/>
+                                                                    <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Body"/>
+                                                                    <userDefinedRuntimeAttribute type="string" keyPath="_color" value="TextDefault"/>
                                                                 </userDefinedRuntimeAttributes>
                                                             </label>
                                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bdr-cN-Jni">
-                                                                <rect key="frame" x="508" y="0.0" width="30" height="30"/>
+                                                                <rect key="frame" x="276" y="0.0" width="30" height="30"/>
                                                                 <state key="normal" title="Mail"/>
                                                                 <connections>
                                                                     <action selector="backingsTapped:" destination="wCS-h4-p7K" eventType="touchUpInside" id="GCi-1o-94A"/>
                                                                 </connections>
                                                             </button>
                                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MNV-cv-hSI">
-                                                                <rect key="frame" x="554" y="0.0" width="46" height="30"/>
+                                                                <rect key="frame" x="322" y="0.0" width="46" height="30"/>
                                                                 <state key="normal" title="Mobile"/>
                                                                 <connections>
                                                                     <action selector="mobileBackingsTapped:" destination="wCS-h4-p7K" eventType="touchUpInside" id="s6z-yD-iSw"/>
@@ -145,27 +199,29 @@ cHJvZmlsZS4Qc2UQdHRpbmdzLmNyZWF0b3IudGl0bGU
                                                             </button>
                                                         </subviews>
                                                     </stackView>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="OAB-16-V3F">
-                                                        <rect key="frame" x="0.0" y="59" width="600" height="30"/>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="OAB-16-V3F">
+                                                        <rect key="frame" x="0.0" y="64" width="368" height="30"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="New comments" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eYd-da-BHg" customClass="StyledLabel" customModule="Library">
-                                                                <rect key="frame" x="0.0" y="0.0" width="492" height="30"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="260" height="30"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <nil key="highlightedColor"/>
                                                                 <userDefinedRuntimeAttributes>
                                                                     <userDefinedRuntimeAttribute type="string" keyPath="localizedKey" value="profile.settings.creator.comments"/>
+                                                                    <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Body"/>
+                                                                    <userDefinedRuntimeAttribute type="string" keyPath="_color" value="TextDefault"/>
                                                                 </userDefinedRuntimeAttributes>
                                                             </label>
                                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JjR-gY-rjY">
-                                                                <rect key="frame" x="508" y="0.0" width="30" height="30"/>
+                                                                <rect key="frame" x="276" y="0.0" width="30" height="30"/>
                                                                 <state key="normal" title="Mail"/>
                                                                 <connections>
                                                                     <action selector="commentsTapped:" destination="wCS-h4-p7K" eventType="touchUpInside" id="Td2-Hs-FLB"/>
                                                                 </connections>
                                                             </button>
                                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ObJ-mj-f7Z">
-                                                                <rect key="frame" x="554" y="0.0" width="46" height="30"/>
+                                                                <rect key="frame" x="322" y="0.0" width="46" height="30"/>
                                                                 <state key="normal" title="Mobile"/>
                                                                 <connections>
                                                                     <action selector="mobileCommentsTapped:" destination="wCS-h4-p7K" eventType="touchUpInside" id="s6K-vK-jRP"/>
@@ -173,27 +229,29 @@ cHJvZmlsZS4Qc2UQdHRpbmdzLmNyZWF0b3IudGl0bGU
                                                             </button>
                                                         </subviews>
                                                     </stackView>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="kZF-HL-AY6">
-                                                        <rect key="frame" x="0.0" y="93" width="600" height="30"/>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="kZF-HL-AY6">
+                                                        <rect key="frame" x="0.0" y="98" width="368" height="30"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="New likes" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4vX-r8-BVH" customClass="StyledLabel" customModule="Library">
-                                                                <rect key="frame" x="0.0" y="0.0" width="492" height="30"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="260" height="30"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <nil key="highlightedColor"/>
                                                                 <userDefinedRuntimeAttributes>
                                                                     <userDefinedRuntimeAttribute type="string" keyPath="localizedKey" value="profile.settings.creator.likes"/>
+                                                                    <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Body"/>
+                                                                    <userDefinedRuntimeAttribute type="string" keyPath="_color" value="TextDefault"/>
                                                                 </userDefinedRuntimeAttributes>
                                                             </label>
                                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="s4P-SQ-jQE">
-                                                                <rect key="frame" x="508" y="0.0" width="30" height="30"/>
+                                                                <rect key="frame" x="276" y="0.0" width="30" height="30"/>
                                                                 <state key="normal" title="Mail"/>
                                                                 <connections>
                                                                     <action selector="postLikesTapped:" destination="wCS-h4-p7K" eventType="touchUpInside" id="iql-By-GzW"/>
                                                                 </connections>
                                                             </button>
                                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Zn-NR-WTd">
-                                                                <rect key="frame" x="554" y="0.0" width="46" height="30"/>
+                                                                <rect key="frame" x="322" y="0.0" width="46" height="30"/>
                                                                 <state key="normal" title="Mobile"/>
                                                                 <connections>
                                                                     <action selector="mobilePostLikesTapped:" destination="wCS-h4-p7K" eventType="touchUpInside" id="xKj-9S-dHV"/>
@@ -203,40 +261,50 @@ cHJvZmlsZS4Qc2UQdHRpbmdzLmNyZWF0b3IudGl0bGU
                                                     </stackView>
                                                 </subviews>
                                             </stackView>
-                                            <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="5Ox-jp-RH4" userLabel="Social notifications stack view">
-                                                <rect key="frame" x="0.0" y="275" width="600" height="122"/>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="5Ox-jp-RH4" userLabel="Social notifications stack view">
+                                                <rect key="frame" x="0.0" y="319" width="368" height="127"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Social notifications" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uNC-qv-Q2T" userLabel="Social notifications label" customClass="StyledLabel" customModule="Library">
-                                                        <rect key="frame" x="0.0" y="0.0" width="600" height="21"/>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Social notifications" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uNC-qv-Q2T" userLabel="Social notifications label" customClass="StyledLabel" customModule="Library">
+                                                        <rect key="frame" x="0.0" y="0.0" width="368" height="21"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="string" keyPath="_color" value="GrayDark"/>
                                                             <userDefinedRuntimeAttribute type="string" keyPath="localizedKey" value="profile.settings.social.title"/>
+                                                            <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Caption1"/>
                                                         </userDefinedRuntimeAttributes>
                                                     </label>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="QXG-ES-7T9">
-                                                        <rect key="frame" x="0.0" y="25" width="600" height="30"/>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="n9I-D5-tHe">
+                                                        <rect key="frame" x="0.0" y="25" width="368" height="1"/>
+                                                        <color key="backgroundColor" white="0.89563577589999999" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="1" id="be6-Vz-yp2"/>
+                                                        </constraints>
+                                                    </view>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="QXG-ES-7T9">
+                                                        <rect key="frame" x="0.0" y="30" width="368" height="30"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="New followers" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xgp-Jm-t5f" customClass="StyledLabel" customModule="Library">
-                                                                <rect key="frame" x="0.0" y="0.0" width="492" height="30"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="260" height="30"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <nil key="highlightedColor"/>
                                                                 <userDefinedRuntimeAttributes>
                                                                     <userDefinedRuntimeAttribute type="string" keyPath="localizedKey" value="profile.settings.social.followers"/>
+                                                                    <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Body"/>
+                                                                    <userDefinedRuntimeAttribute type="string" keyPath="_color" value="TextDefault"/>
                                                                 </userDefinedRuntimeAttributes>
                                                             </label>
                                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uwd-RZ-59n">
-                                                                <rect key="frame" x="508" y="0.0" width="30" height="30"/>
+                                                                <rect key="frame" x="276" y="0.0" width="30" height="30"/>
                                                                 <state key="normal" title="Mail"/>
                                                                 <connections>
                                                                     <action selector="followerTapped:" destination="wCS-h4-p7K" eventType="touchUpInside" id="9b5-5W-cH4"/>
                                                                 </connections>
                                                             </button>
                                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5RA-91-rJW">
-                                                                <rect key="frame" x="554" y="0.0" width="46" height="30"/>
+                                                                <rect key="frame" x="322" y="0.0" width="46" height="30"/>
                                                                 <state key="normal" title="Mobile"/>
                                                                 <connections>
                                                                     <action selector="mobileFollowerTapped:" destination="wCS-h4-p7K" eventType="touchUpInside" id="cBW-3u-rn7"/>
@@ -244,27 +312,29 @@ cHJvZmlsZS4Qc2UQdHRpbmdzLmNyZWF0b3IudGl0bGU
                                                             </button>
                                                         </subviews>
                                                     </stackView>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="TAw-2K-nOa">
-                                                        <rect key="frame" x="0.0" y="59" width="600" height="30"/>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="TAw-2K-nOa">
+                                                        <rect key="frame" x="0.0" y="64" width="368" height="30"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Friend backs a project" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mYT-BL-Tse" customClass="StyledLabel" customModule="Library">
-                                                                <rect key="frame" x="0.0" y="0.0" width="492" height="30"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="260" height="30"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <nil key="highlightedColor"/>
                                                                 <userDefinedRuntimeAttributes>
                                                                     <userDefinedRuntimeAttribute type="string" keyPath="localizedKey" value="profile.settings.social.friend_backs"/>
+                                                                    <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Body"/>
+                                                                    <userDefinedRuntimeAttribute type="string" keyPath="_color" value="TextDefault"/>
                                                                 </userDefinedRuntimeAttributes>
                                                             </label>
                                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kDv-XA-XmH">
-                                                                <rect key="frame" x="508" y="0.0" width="30" height="30"/>
+                                                                <rect key="frame" x="276" y="0.0" width="30" height="30"/>
                                                                 <state key="normal" title="Mail"/>
                                                                 <connections>
                                                                     <action selector="friendActivityTapped:" destination="wCS-h4-p7K" eventType="touchUpInside" id="Q0q-tH-QRC"/>
                                                                 </connections>
                                                             </button>
                                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="V2W-jh-eyw">
-                                                                <rect key="frame" x="554" y="0.0" width="46" height="30"/>
+                                                                <rect key="frame" x="322" y="0.0" width="46" height="30"/>
                                                                 <state key="normal" title="Mobile"/>
                                                                 <connections>
                                                                     <action selector="mobileFriendActivityTapped:" destination="wCS-h4-p7K" eventType="touchUpInside" id="nfl-Id-Gno"/>
@@ -272,24 +342,28 @@ cHJvZmlsZS4Qc2UQdHRpbmdzLmNyZWF0b3IudGl0bGU
                                                             </button>
                                                         </subviews>
                                                     </stackView>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="KtF-ri-KrJ">
-                                                        <rect key="frame" x="0.0" y="93" width="600" height="29"/>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="KtF-ri-KrJ">
+                                                        <rect key="frame" x="0.0" y="98" width="368" height="29"/>
                                                         <subviews>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hEp-CW-Yrn">
-                                                                <rect key="frame" x="0.0" y="0.0" width="573" height="29"/>
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hEp-CW-Yrn" customClass="BorderButton" customModule="Library">
+                                                                <rect key="frame" x="0.0" y="0.0" width="341" height="29"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                                 <state key="normal" title="Find friends">
                                                                     <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                 </state>
                                                                 <userDefinedRuntimeAttributes>
                                                                     <userDefinedRuntimeAttribute type="string" keyPath="normalLocalizedKey" value="profile.settings.social.find_friends"/>
+                                                                    <userDefinedRuntimeAttribute type="string" keyPath="_color" value="Clear"/>
+                                                                    <userDefinedRuntimeAttribute type="string" keyPath="_borderColor" value="Clear"/>
+                                                                    <userDefinedRuntimeAttribute type="string" keyPath="_titleColorNormal" value="TextDefault"/>
+                                                                    <userDefinedRuntimeAttribute type="string" keyPath="_titleFontStyle" value="Body"/>
                                                                 </userDefinedRuntimeAttributes>
                                                                 <connections>
                                                                     <action selector="findFriendsTapped" destination="wCS-h4-p7K" eventType="touchUpInside" id="4vc-AG-GIo"/>
                                                                 </connections>
                                                             </button>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="&gt;" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aMy-PR-bWY">
-                                                                <rect key="frame" x="589" y="0.0" width="11" height="29"/>
+                                                                <rect key="frame" x="357" y="0.0" width="11" height="29"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <nil key="highlightedColor"/>
@@ -298,93 +372,109 @@ cHJvZmlsZS4Qc2UQdHRpbmdzLmNyZWF0b3IudGl0bGU
                                                     </stackView>
                                                 </subviews>
                                             </stackView>
-                                            <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="nZ7-PD-Y4S" userLabel="Newsletters stack view">
-                                                <rect key="frame" x="0.0" y="429" width="600" height="161"/>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="nZ7-PD-Y4S" userLabel="Newsletters stack view">
+                                                <rect key="frame" x="0.0" y="478" width="368" height="166"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Newsletters" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NV2-hf-Obd" userLabel="Newsletters label" customClass="StyledLabel" customModule="Library">
-                                                        <rect key="frame" x="0.0" y="0.0" width="600" height="21"/>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Newsletters" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NV2-hf-Obd" userLabel="Newsletters label" customClass="StyledLabel" customModule="Library">
+                                                        <rect key="frame" x="0.0" y="0.0" width="368" height="21"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="string" keyPath="_color" value="GrayDark"/>
                                                             <userDefinedRuntimeAttribute type="string" keyPath="localizedKey" value="profile.settings.newsletter.title"/>
+                                                            <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Caption1"/>
                                                         </userDefinedRuntimeAttributes>
                                                     </label>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="2wO-ha-bau">
-                                                        <rect key="frame" x="0.0" y="25" width="600" height="31"/>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Dg-YY-7Tu">
+                                                        <rect key="frame" x="0.0" y="25" width="368" height="1"/>
+                                                        <color key="backgroundColor" white="0.89563577589999999" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="1" id="ee4-iS-X2o"/>
+                                                        </constraints>
+                                                    </view>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="2wO-ha-bau">
+                                                        <rect key="frame" x="0.0" y="30" width="368" height="31"/>
                                                         <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Projects We Love" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qCy-Gq-IYU">
-                                                                <rect key="frame" x="0.0" y="0.0" width="535" height="31"/>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Projects We Love" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qCy-Gq-IYU" customClass="StyledLabel" customModule="Library">
+                                                                <rect key="frame" x="0.0" y="0.0" width="303" height="31"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <nil key="highlightedColor"/>
                                                                 <userDefinedRuntimeAttributes>
                                                                     <userDefinedRuntimeAttribute type="string" keyPath="localizedKey" value="profile.settings.newsletter.weekly"/>
+                                                                    <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Body"/>
+                                                                    <userDefinedRuntimeAttribute type="string" keyPath="_color" value="TextDefault"/>
                                                                 </userDefinedRuntimeAttributes>
                                                             </label>
                                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DpA-YT-iID">
-                                                                <rect key="frame" x="551" y="0.0" width="51" height="31"/>
+                                                                <rect key="frame" x="319" y="0.0" width="51" height="31"/>
                                                                 <connections>
                                                                     <action selector="weeklyNewsletterTapped:" destination="wCS-h4-p7K" eventType="valueChanged" id="6C7-vB-FC0"/>
                                                                 </connections>
                                                             </switch>
                                                         </subviews>
                                                     </stackView>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="Thy-sJ-j1k">
-                                                        <rect key="frame" x="0.0" y="60" width="600" height="31"/>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="Thy-sJ-j1k">
+                                                        <rect key="frame" x="0.0" y="65" width="368" height="31"/>
                                                         <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Kickstarter News and Events" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lWY-TN-wVz">
-                                                                <rect key="frame" x="0.0" y="0.0" width="535" height="31"/>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Kickstarter News and Events" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lWY-TN-wVz" customClass="StyledLabel" customModule="Library">
+                                                                <rect key="frame" x="0.0" y="0.0" width="303" height="31"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <nil key="highlightedColor"/>
                                                                 <userDefinedRuntimeAttributes>
                                                                     <userDefinedRuntimeAttribute type="string" keyPath="localizedKey" value="profile.settings.newsletter.promo"/>
+                                                                    <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Body"/>
+                                                                    <userDefinedRuntimeAttribute type="string" keyPath="_color" value="TextDefault"/>
                                                                 </userDefinedRuntimeAttributes>
                                                             </label>
                                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hEJ-DK-xvp">
-                                                                <rect key="frame" x="551" y="0.0" width="51" height="31"/>
+                                                                <rect key="frame" x="319" y="0.0" width="51" height="31"/>
                                                                 <connections>
                                                                     <action selector="promoNewsletterTapped:" destination="wCS-h4-p7K" eventType="valueChanged" id="OyL-kF-Sdu"/>
                                                                 </connections>
                                                             </switch>
                                                         </subviews>
                                                     </stackView>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="lzP-Mg-LcC">
-                                                        <rect key="frame" x="0.0" y="95" width="600" height="31"/>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="lzP-Mg-LcC">
+                                                        <rect key="frame" x="0.0" y="100" width="368" height="31"/>
                                                         <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Happening Now" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8xx-yq-J5V">
-                                                                <rect key="frame" x="0.0" y="0.0" width="535" height="31"/>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Happening Now" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8xx-yq-J5V" customClass="StyledLabel" customModule="Library">
+                                                                <rect key="frame" x="0.0" y="0.0" width="303" height="31"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <nil key="highlightedColor"/>
                                                                 <userDefinedRuntimeAttributes>
                                                                     <userDefinedRuntimeAttribute type="string" keyPath="localizedKey" value="profile.settings.newsletter.happening"/>
+                                                                    <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Body"/>
+                                                                    <userDefinedRuntimeAttribute type="string" keyPath="_color" value="TextDefault"/>
                                                                 </userDefinedRuntimeAttributes>
                                                             </label>
                                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ibP-Ow-QOL">
-                                                                <rect key="frame" x="551" y="0.0" width="51" height="31"/>
+                                                                <rect key="frame" x="319" y="0.0" width="51" height="31"/>
                                                                 <connections>
                                                                     <action selector="happeningNewsletterTapped:" destination="wCS-h4-p7K" eventType="valueChanged" id="4nc-nw-Jxk"/>
                                                                 </connections>
                                                             </switch>
                                                         </subviews>
                                                     </stackView>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="qkr-xk-doi">
-                                                        <rect key="frame" x="0.0" y="130" width="600" height="31"/>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="qkr-xk-doi">
+                                                        <rect key="frame" x="0.0" y="135" width="368" height="31"/>
                                                         <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Kickstarter Loves Games" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QnO-BN-lK4">
-                                                                <rect key="frame" x="0.0" y="0.0" width="535" height="31"/>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Kickstarter Loves Games" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QnO-BN-lK4" customClass="StyledLabel" customModule="Library">
+                                                                <rect key="frame" x="0.0" y="0.0" width="303" height="31"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <nil key="highlightedColor"/>
                                                                 <userDefinedRuntimeAttributes>
                                                                     <userDefinedRuntimeAttribute type="string" keyPath="localizedKey" value="profile.settings.newsletter.games"/>
+                                                                    <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Body"/>
+                                                                    <userDefinedRuntimeAttribute type="string" keyPath="_color" value="TextDefault"/>
                                                                 </userDefinedRuntimeAttributes>
                                                             </label>
                                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DvH-64-jw9">
-                                                                <rect key="frame" x="551" y="0.0" width="51" height="31"/>
+                                                                <rect key="frame" x="319" y="0.0" width="51" height="31"/>
                                                                 <connections>
                                                                     <action selector="gamesNewsletterTapped:" destination="wCS-h4-p7K" eventType="valueChanged" id="2Wp-ZG-S3J"/>
                                                                 </connections>
@@ -393,151 +483,183 @@ cHJvZmlsZS4Qc2UQdHRpbmdzLmNyZWF0b3IudGl0bGU
                                                     </stackView>
                                                 </subviews>
                                             </stackView>
-                                            <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="GWS-aD-fwG" userLabel="Help stack view">
-                                                <rect key="frame" x="0.0" y="621" width="600" height="225"/>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="GWS-aD-fwG" userLabel="Help stack view">
+                                                <rect key="frame" x="0.0" y="676" width="368" height="230"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Help" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k1a-uu-6d9" userLabel="Help label" customClass="StyledLabel" customModule="Library">
-                                                        <rect key="frame" x="0.0" y="0.0" width="600" height="21"/>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Help" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k1a-uu-6d9" userLabel="Help label" customClass="StyledLabel" customModule="Library">
+                                                        <rect key="frame" x="0.0" y="0.0" width="368" height="21"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="string" keyPath="_color" value="GrayDark"/>
                                                             <userDefinedRuntimeAttribute type="string" keyPath="localizedKey" value="profile.settings.about.title"/>
+                                                            <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Caption1"/>
                                                         </userDefinedRuntimeAttributes>
                                                     </label>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="pTc-FU-Lz5">
-                                                        <rect key="frame" x="0.0" y="25" width="600" height="30"/>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dI2-Nc-byd">
+                                                        <rect key="frame" x="0.0" y="25" width="368" height="1"/>
+                                                        <color key="backgroundColor" white="0.89563577589999999" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="1" id="EFi-jd-qNV"/>
+                                                        </constraints>
+                                                    </view>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="pTc-FU-Lz5">
+                                                        <rect key="frame" x="0.0" y="30" width="368" height="30"/>
                                                         <subviews>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jjr-6S-aZV">
-                                                                <rect key="frame" x="0.0" y="0.0" width="573" height="30"/>
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jjr-6S-aZV" customClass="BorderButton" customModule="Library">
+                                                                <rect key="frame" x="0.0" y="0.0" width="341" height="30"/>
                                                                 <state key="normal" title="Frequently Asked Questions">
                                                                     <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                 </state>
                                                                 <userDefinedRuntimeAttributes>
                                                                     <userDefinedRuntimeAttribute type="string" keyPath="normalLocalizedKey" value="profile.settings.about.faq"/>
+                                                                    <userDefinedRuntimeAttribute type="string" keyPath="_color" value="Clear"/>
+                                                                    <userDefinedRuntimeAttribute type="string" keyPath="_borderColor" value="Clear"/>
+                                                                    <userDefinedRuntimeAttribute type="string" keyPath="_titleColorNormal" value="TextDefault"/>
+                                                                    <userDefinedRuntimeAttribute type="string" keyPath="_titleFontStyle" value="Body"/>
                                                                 </userDefinedRuntimeAttributes>
                                                                 <connections>
                                                                     <action selector="faqTapped" destination="wCS-h4-p7K" eventType="touchUpInside" id="2qJ-ac-M9J"/>
                                                                 </connections>
                                                             </button>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&gt;" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AVp-Kt-sZX">
-                                                                <rect key="frame" x="589" y="0.0" width="11" height="30"/>
+                                                                <rect key="frame" x="357" y="0.0" width="11" height="30"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                         </subviews>
                                                     </stackView>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="NZx-LR-2PE">
-                                                        <rect key="frame" x="0.0" y="59" width="600" height="30"/>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="NZx-LR-2PE">
+                                                        <rect key="frame" x="0.0" y="64" width="368" height="30"/>
                                                         <subviews>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zG7-vO-CqI">
-                                                                <rect key="frame" x="0.0" y="0.0" width="573" height="30"/>
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zG7-vO-CqI" customClass="BorderButton" customModule="Library">
+                                                                <rect key="frame" x="0.0" y="0.0" width="341" height="30"/>
                                                                 <state key="normal" title="Contact">
                                                                     <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                 </state>
                                                                 <userDefinedRuntimeAttributes>
                                                                     <userDefinedRuntimeAttribute type="string" keyPath="normalLocalizedKey" value="profile.settings.about.contact"/>
+                                                                    <userDefinedRuntimeAttribute type="string" keyPath="_color" value="Clear"/>
+                                                                    <userDefinedRuntimeAttribute type="string" keyPath="_borderColor" value="Clear"/>
+                                                                    <userDefinedRuntimeAttribute type="string" keyPath="_titleColorNormal" value="TextDefault"/>
+                                                                    <userDefinedRuntimeAttribute type="string" keyPath="_titleFontStyle" value="Body"/>
                                                                 </userDefinedRuntimeAttributes>
                                                                 <connections>
                                                                     <action selector="contactTapped" destination="wCS-h4-p7K" eventType="touchUpInside" id="iln-ZQ-FJO"/>
                                                                 </connections>
                                                             </button>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&gt;" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="edy-LY-73i">
-                                                                <rect key="frame" x="589" y="0.0" width="11" height="30"/>
+                                                                <rect key="frame" x="357" y="0.0" width="11" height="30"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                         </subviews>
                                                     </stackView>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="QTS-ZY-L8m">
-                                                        <rect key="frame" x="0.0" y="93" width="600" height="30"/>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="QTS-ZY-L8m">
+                                                        <rect key="frame" x="0.0" y="98" width="368" height="30"/>
                                                         <subviews>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0ni-He-iMI">
-                                                                <rect key="frame" x="0.0" y="0.0" width="573" height="30"/>
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0ni-He-iMI" customClass="BorderButton" customModule="Library">
+                                                                <rect key="frame" x="0.0" y="0.0" width="341" height="30"/>
                                                                 <state key="normal" title="How Kickstarter Works">
                                                                     <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                 </state>
                                                                 <userDefinedRuntimeAttributes>
                                                                     <userDefinedRuntimeAttribute type="string" keyPath="normalLocalizedKey" value="profile.settings.about.how_it_works"/>
+                                                                    <userDefinedRuntimeAttribute type="string" keyPath="_color" value="Clear"/>
+                                                                    <userDefinedRuntimeAttribute type="string" keyPath="_borderColor" value="Clear"/>
+                                                                    <userDefinedRuntimeAttribute type="string" keyPath="_titleColorNormal" value="TextDefault"/>
+                                                                    <userDefinedRuntimeAttribute type="string" keyPath="_titleFontStyle" value="Body"/>
                                                                 </userDefinedRuntimeAttributes>
                                                                 <connections>
                                                                     <action selector="howKickstarterWorksTapped" destination="wCS-h4-p7K" eventType="touchUpInside" id="kX9-IA-PGB"/>
                                                                 </connections>
                                                             </button>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="&gt;" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g8z-KJ-5HN">
-                                                                <rect key="frame" x="589" y="0.0" width="11" height="30"/>
+                                                                <rect key="frame" x="357" y="0.0" width="11" height="30"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                         </subviews>
                                                     </stackView>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="mbZ-w2-HJH">
-                                                        <rect key="frame" x="0.0" y="127" width="600" height="30"/>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="mbZ-w2-HJH">
+                                                        <rect key="frame" x="0.0" y="132" width="368" height="30"/>
                                                         <subviews>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MAD-Xh-sN1">
-                                                                <rect key="frame" x="0.0" y="0.0" width="573" height="30"/>
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MAD-Xh-sN1" customClass="BorderButton" customModule="Library">
+                                                                <rect key="frame" x="0.0" y="0.0" width="341" height="30"/>
                                                                 <state key="normal" title="Terms of Use">
                                                                     <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                 </state>
                                                                 <userDefinedRuntimeAttributes>
                                                                     <userDefinedRuntimeAttribute type="string" keyPath="normalLocalizedKey" value="profile.settings.about.terms"/>
+                                                                    <userDefinedRuntimeAttribute type="string" keyPath="_color" value="Clear"/>
+                                                                    <userDefinedRuntimeAttribute type="string" keyPath="_borderColor" value="Clear"/>
+                                                                    <userDefinedRuntimeAttribute type="string" keyPath="_titleColorNormal" value="TextDefault"/>
+                                                                    <userDefinedRuntimeAttribute type="string" keyPath="_titleFontStyle" value="Body"/>
                                                                 </userDefinedRuntimeAttributes>
                                                                 <connections>
                                                                     <action selector="termsOfUseTapped" destination="wCS-h4-p7K" eventType="touchUpInside" id="dGu-Tt-Bxn"/>
                                                                 </connections>
                                                             </button>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="&gt;" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qtl-5u-Xub">
-                                                                <rect key="frame" x="589" y="0.0" width="11" height="30"/>
+                                                                <rect key="frame" x="357" y="0.0" width="11" height="30"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                         </subviews>
                                                     </stackView>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="qF7-ep-9oK">
-                                                        <rect key="frame" x="0.0" y="161" width="600" height="30"/>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="qF7-ep-9oK">
+                                                        <rect key="frame" x="0.0" y="166" width="368" height="30"/>
                                                         <subviews>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="125-dK-sKR">
-                                                                <rect key="frame" x="0.0" y="0.0" width="573" height="30"/>
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="125-dK-sKR" customClass="BorderButton" customModule="Library">
+                                                                <rect key="frame" x="0.0" y="0.0" width="341" height="30"/>
                                                                 <state key="normal" title="Privacy Policy">
                                                                     <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                 </state>
                                                                 <userDefinedRuntimeAttributes>
                                                                     <userDefinedRuntimeAttribute type="string" keyPath="normalLocalizedKey" value="profile.settings.about.privacy"/>
+                                                                    <userDefinedRuntimeAttribute type="string" keyPath="_color" value="Clear"/>
+                                                                    <userDefinedRuntimeAttribute type="string" keyPath="_borderColor" value="Clear"/>
+                                                                    <userDefinedRuntimeAttribute type="string" keyPath="_titleColorNormal" value="TextDefault"/>
+                                                                    <userDefinedRuntimeAttribute type="string" keyPath="_titleFontStyle" value="Body"/>
                                                                 </userDefinedRuntimeAttributes>
                                                                 <connections>
                                                                     <action selector="privacyPolicyTapped" destination="wCS-h4-p7K" eventType="touchUpInside" id="mJZ-qn-17j"/>
                                                                 </connections>
                                                             </button>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="&gt;" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Yy-pk-VWl">
-                                                                <rect key="frame" x="589" y="0.0" width="11" height="30"/>
+                                                                <rect key="frame" x="357" y="0.0" width="11" height="30"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                         </subviews>
                                                     </stackView>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="mMG-T2-iZt">
-                                                        <rect key="frame" x="0.0" y="195" width="600" height="30"/>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="mMG-T2-iZt">
+                                                        <rect key="frame" x="0.0" y="200" width="368" height="30"/>
                                                         <subviews>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="27X-XZ-cQ5">
-                                                                <rect key="frame" x="0.0" y="0.0" width="573" height="30"/>
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="27X-XZ-cQ5" customClass="BorderButton" customModule="Library">
+                                                                <rect key="frame" x="0.0" y="0.0" width="341" height="30"/>
                                                                 <state key="normal" title="Cookie Policy">
                                                                     <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                 </state>
                                                                 <userDefinedRuntimeAttributes>
                                                                     <userDefinedRuntimeAttribute type="string" keyPath="normalLocalizedKey" value="profile.settings.about.cookie"/>
+                                                                    <userDefinedRuntimeAttribute type="string" keyPath="_color" value="Clear"/>
+                                                                    <userDefinedRuntimeAttribute type="string" keyPath="_borderColor" value="Clear"/>
+                                                                    <userDefinedRuntimeAttribute type="string" keyPath="_titleColorNormal" value="TextDefault"/>
+                                                                    <userDefinedRuntimeAttribute type="string" keyPath="_titleFontStyle" value="Body"/>
                                                                 </userDefinedRuntimeAttributes>
                                                                 <connections>
                                                                     <action selector="cookiePolicyTapped" destination="wCS-h4-p7K" eventType="touchUpInside" id="jzS-Bi-9IG"/>
                                                                 </connections>
                                                             </button>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="&gt;" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2LW-ob-fSq">
-                                                                <rect key="frame" x="589" y="0.0" width="11" height="30"/>
+                                                                <rect key="frame" x="357" y="0.0" width="11" height="30"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <nil key="highlightedColor"/>
@@ -546,36 +668,48 @@ cHJvZmlsZS4Qc2UQdHRpbmdzLmNyZWF0b3IudGl0bGU
                                                     </stackView>
                                                 </subviews>
                                             </stackView>
-                                            <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="SlO-en-sfv" userLabel="Rating stack view">
-                                                <rect key="frame" x="0.0" y="878" width="600" height="55"/>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="SlO-en-sfv" userLabel="Rating stack view">
+                                                <rect key="frame" x="0.0" y="938" width="368" height="60"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="We're all ears!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KIy-TS-4kp" userLabel="Were all ears label" customClass="StyledLabel" customModule="Library">
-                                                        <rect key="frame" x="0.0" y="0.0" width="600" height="21"/>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="We're all ears!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KIy-TS-4kp" userLabel="Were all ears label" customClass="StyledLabel" customModule="Library">
+                                                        <rect key="frame" x="0.0" y="0.0" width="368" height="21"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="string" keyPath="_color" value="GrayDark"/>
                                                             <userDefinedRuntimeAttribute type="string" keyPath="localizedKey" value="profile.settings.rating.title"/>
+                                                            <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Caption1"/>
                                                         </userDefinedRuntimeAttributes>
                                                     </label>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="INh-qu-Avy">
-                                                        <rect key="frame" x="0.0" y="25" width="600" height="30"/>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BVZ-o5-coE">
+                                                        <rect key="frame" x="0.0" y="25" width="368" height="1"/>
+                                                        <color key="backgroundColor" white="0.89563577589999999" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="1" id="Z6X-tv-171"/>
+                                                        </constraints>
+                                                    </view>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="INh-qu-Avy">
+                                                        <rect key="frame" x="0.0" y="30" width="368" height="30"/>
                                                         <subviews>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uhM-6M-CXD">
-                                                                <rect key="frame" x="0.0" y="0.0" width="573" height="30"/>
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uhM-6M-CXD" customClass="BorderButton" customModule="Library">
+                                                                <rect key="frame" x="0.0" y="0.0" width="341" height="30"/>
                                                                 <state key="normal" title="Rate us in the App Store">
                                                                     <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                 </state>
                                                                 <userDefinedRuntimeAttributes>
                                                                     <userDefinedRuntimeAttribute type="string" keyPath="normalLocalizedKey" value="profile.settings.rating.rate_us"/>
+                                                                    <userDefinedRuntimeAttribute type="string" keyPath="_color" value="Clear"/>
+                                                                    <userDefinedRuntimeAttribute type="string" keyPath="_borderColor" value="Clear"/>
+                                                                    <userDefinedRuntimeAttribute type="string" keyPath="_titleColorNormal" value="TextDefault"/>
+                                                                    <userDefinedRuntimeAttribute type="string" keyPath="_titleFontStyle" value="Body"/>
                                                                 </userDefinedRuntimeAttributes>
                                                                 <connections>
                                                                     <action selector="rateUsTapped" destination="wCS-h4-p7K" eventType="touchUpInside" id="RNv-cr-BGe"/>
                                                                 </connections>
                                                             </button>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="&gt;" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7d1-rw-qBI">
-                                                                <rect key="frame" x="589" y="0.0" width="11" height="30"/>
+                                                                <rect key="frame" x="357" y="0.0" width="11" height="30"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <nil key="highlightedColor"/>
@@ -584,56 +718,76 @@ cHJvZmlsZS4Qc2UQdHRpbmdzLmNyZWF0b3IudGl0bGU
                                                     </stackView>
                                                 </subviews>
                                             </stackView>
-                                            <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="IQM-bL-GaS">
-                                                <rect key="frame" x="0.0" y="964" width="600" height="51"/>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="IQM-bL-GaS">
+                                                <rect key="frame" x="0.0" y="1030" width="368" height="77"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Version 3.0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c3R-D7-4ud">
-                                                        <rect key="frame" x="0.0" y="0.0" width="600" height="21"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                        <nil key="highlightedColor"/>
-                                                        <userDefinedRuntimeAttributes>
-                                                            <userDefinedRuntimeAttribute type="string" keyPath="_color" value="GrayDark"/>
-                                                        </userDefinedRuntimeAttributes>
-                                                    </label>
-                                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kM8-GB-tee">
-                                                        <rect key="frame" x="0.0" y="21" width="600" height="30"/>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kM8-GB-tee" customClass="BorderButton" customModule="Library">
+                                                        <rect key="frame" x="0.0" y="0.0" width="368" height="44"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="44" id="amT-H9-Eob"/>
+                                                        </constraints>
                                                         <state key="normal" title="Log out"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="string" keyPath="normalLocalizedKey" value="profile.settings.log_out_button"/>
+                                                            <userDefinedRuntimeAttribute type="string" keyPath="_color" value="GrayDark"/>
+                                                            <userDefinedRuntimeAttribute type="string" keyPath="_borderColor" value="Clear"/>
+                                                            <userDefinedRuntimeAttribute type="string" keyPath="_titleColorNormal" value="White"/>
+                                                            <userDefinedRuntimeAttribute type="string" keyPath="_titleFontStyle" value="Body"/>
                                                         </userDefinedRuntimeAttributes>
                                                         <connections>
                                                             <action selector="logoutTapped" destination="wCS-h4-p7K" eventType="touchUpInside" id="GIp-dT-olC"/>
                                                         </connections>
                                                     </button>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Version 3.0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c3R-D7-4ud" customClass="StyledLabel" customModule="Library">
+                                                        <rect key="frame" x="0.0" y="56" width="368" height="21"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="string" keyPath="_color" value="GrayDark"/>
+                                                            <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Caption1"/>
+                                                        </userDefinedRuntimeAttributes>
+                                                    </label>
                                                 </subviews>
                                             </stackView>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VLB-0D-JqX">
+                                                <rect key="frame" x="0.0" y="1139" width="368" height="0.0"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" id="uSU-eO-Qy1"/>
+                                                </constraints>
+                                            </view>
                                         </subviews>
                                     </stackView>
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="8mW-y4-spg" firstAttribute="top" secondItem="oV4-s7-Cee" secondAttribute="top" id="AAq-4K-89q"/>
-                                    <constraint firstAttribute="trailing" secondItem="8mW-y4-spg" secondAttribute="trailing" id="GLI-hH-Q6n"/>
-                                    <constraint firstItem="8mW-y4-spg" firstAttribute="leading" secondItem="oV4-s7-Cee" secondAttribute="leading" id="efg-h5-Dyf"/>
-                                    <constraint firstItem="8mW-y4-spg" firstAttribute="width" secondItem="oV4-s7-Cee" secondAttribute="width" id="hgI-RB-eNw"/>
+                                    <constraint firstAttribute="trailing" secondItem="8mW-y4-spg" secondAttribute="trailingMargin" id="GLI-hH-Q6n"/>
+                                    <constraint firstItem="8mW-y4-spg" firstAttribute="leading" secondItem="oV4-s7-Cee" secondAttribute="leadingMargin" id="efg-h5-Dyf"/>
+                                    <constraint firstItem="8mW-y4-spg" firstAttribute="width" secondItem="oV4-s7-Cee" secondAttribute="width" constant="-32" id="hgI-RB-eNw"/>
                                     <constraint firstAttribute="bottom" secondItem="8mW-y4-spg" secondAttribute="bottom" id="jva-qJ-WqR"/>
                                 </constraints>
+                                <edgeInsets key="layoutMargins" top="8" left="16" bottom="8" right="16"/>
                             </scrollView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="oV4-s7-Cee" firstAttribute="top" secondItem="cAj-fL-7j8" secondAttribute="bottom" id="HgE-Q5-aZo"/>
                             <constraint firstItem="oV4-s7-Cee" firstAttribute="leading" secondItem="xfb-yE-w3U" secondAttribute="leading" id="TYP-tY-wlD"/>
-                            <constraint firstItem="lbG-lz-Ra0" firstAttribute="top" secondItem="oV4-s7-Cee" secondAttribute="bottom" id="Vz1-7I-A6v"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="oV4-s7-Cee" secondAttribute="bottom" id="VNW-s9-16w"/>
                             <constraint firstAttribute="trailing" secondItem="oV4-s7-Cee" secondAttribute="trailing" id="hPH-yR-0Mh"/>
+                            <constraint firstItem="oV4-s7-Cee" firstAttribute="top" secondItem="xfb-yE-w3U" secondAttribute="topMargin" id="vvw-gM-Ixp"/>
                         </constraints>
                     </view>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" title="Settings" id="Fuf-rR-Z5a"/>
+                    <navigationItem key="navigationItem" title="Settings" id="Fuf-rR-Z5a">
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="string" keyPath="titleLocalizedKey" value="profile.settings.navbar_title"/>
+                        </userDefinedRuntimeAttributes>
+                    </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="600" height="1150"/>
+                    <size key="freeformSize" width="400" height="1150"/>
                     <connections>
                         <outlet property="backingsButton" destination="bdr-cN-Jni" id="OA7-ej-nR6"/>
                         <outlet property="commentsButton" destination="JjR-gY-rjY" id="pHR-pS-cJf"/>

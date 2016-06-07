@@ -9,7 +9,9 @@ import Result
 // swiftlint:disable file_length
 public protocol SettingsViewModelInputs {
   func backingsTapped(selected selected: Bool)
+  func canSendEmail(can: Bool)
   func commentsTapped(selected selected: Bool)
+  func contactEmailSent()
   func findFriendsTapped()
   func followerTapped(selected selected: Bool)
   func friendActivityTapped(selected selected: Bool)
@@ -56,6 +58,7 @@ public protocol SettingsViewModelOutputs {
   var projectNotificationsCount: Signal<String, NoError> { get }
   var promoNewsletterOn: Signal<Bool, NoError> { get }
   var showConfirmLogoutPrompt: Signal<(message: String, cancel: String, confirm: String), NoError> { get }
+  var showErrorPrompt: Signal<(title: String, message: String), NoError> { get }
   var showOptInPrompt: Signal<String, NoError> { get }
   var unableToSaveError: Signal<String, NoError> { get }
   var updatesSelected: Signal<Bool, NoError> { get }
@@ -84,10 +87,10 @@ public final class SettingsViewModel: SettingsViewModelType, SettingsViewModelIn
       .ignoreNil()
 
     let newsletterOn: Signal<(Newsletter, Bool), NoError> = .merge(
-      gamesNewsletterTappedProperty.signal.map { (.games, $0) },
-      happeningNewsletterTappedProperty.signal.map { (.happening, $0) },
-      promoNewsletterTappedProperty.signal.map { (.promo, $0) },
-      weeklyNewsletterTappedProperty.signal.map { (.weekly, $0) }
+      self.gamesNewsletterTappedProperty.signal.map { (.games, $0) },
+      self.happeningNewsletterTappedProperty.signal.map { (.happening, $0) },
+      self.promoNewsletterTappedProperty.signal.map { (.promo, $0) },
+      self.weeklyNewsletterTappedProperty.signal.map { (.weekly, $0) }
     )
 
     let userAttributeChanged: Signal<(UserAttribute, Bool), NoError> = .merge([
@@ -144,23 +147,45 @@ public final class SettingsViewModel: SettingsViewModelType, SettingsViewModelIn
       .map { Format.wholeNumber($0.stats.backedProjectsCount ?? 0) }
       .skipRepeats()
 
-    self.goToAppStoreRating = rateUsTappedProperty.signal
+    self.goToAppStoreRating = self.rateUsTappedProperty.signal
       .map { AppEnvironment.current.config?.iTunesLink ?? "" }
 
-    self.goToFindFriends = findFriendsTappedProperty.signal
-    self.goToHelpType = helpTypeTappedProperty.signal.ignoreNil()
-    self.goToManageProjectNotifications = manageProjectNotificationsTappedProperty.signal
+    self.goToFindFriends = self.findFriendsTappedProperty.signal
 
-    self.showConfirmLogoutPrompt = logoutTappedProperty.signal
+    self.goToHelpType = combineLatest(
+      self.helpTypeTappedProperty.signal.ignoreNil(),
+      self.canSendEmailProperty.signal
+      )
+      .filter { helpType, canSend in helpType != .Contact || canSend }
+      .map { helpType, _ in helpType }
+
+    self.showErrorPrompt = self.canSendEmailProperty.signal
+      .takeWhen(self.helpTypeTappedProperty.signal.filter { $0 == .Contact })
+      .filter(isFalse)
+      .map { _ in
+        (
+          title: localizedString(
+            key: "support_email.noemail.title",
+            defaultValue: "Support"),
+          message: localizedString(
+            key: "support_email.noemail.message",
+            defaultValue: "Looks like you don’t have an e-mail account on your device. Please contact us " +
+              "at app@kickstarter.com.")
+        )
+    }
+
+    self.goToManageProjectNotifications = self.manageProjectNotificationsTappedProperty.signal
+
+    self.showConfirmLogoutPrompt = self.logoutTappedProperty.signal
       .map {
         (message: localizedString(key: "profile.settings.logout_alert.message",
-                                 defaultValue: "Are you sure you want to log out?"),
+                                  defaultValue: "Are you sure you want to log out?"),
         cancel: localizedString(key: "profile.settings.logout_alert.cancel_button", defaultValue: "Cancel"),
         confirm: localizedString(key: "profile.settings.logout_alert.confirm_button", defaultValue: "Log out")
         )
     }
 
-    self.logout = logoutConfirmedProperty.signal
+    self.logout = self.logoutConfirmedProperty.signal
 
     self.showOptInPrompt = newsletterOn
       .filter { _, on in AppEnvironment.current.config?.countryCode == "DE" && on }
@@ -207,9 +232,12 @@ public final class SettingsViewModel: SettingsViewModelType, SettingsViewModelIn
 
     newsletterOn.observeNext { _, on in AppEnvironment.current.koala.trackNewsletterToggle(on, project: nil) }
 
-    self.helpTypeTappedProperty.signal
+    self.goToHelpType
       .filter { $0 == HelpType.Contact }
       .observeNext { _ in AppEnvironment.current.koala.trackContactEmailOpen() }
+
+    self.contactEmailSentProperty.signal
+      .observeNext { AppEnvironment.current.koala.trackContactEmailSent() }
 
     self.rateUsTappedProperty.signal
       .observeNext { _ in AppEnvironment.current.koala.trackAppStoreRatingOpen() }
@@ -223,9 +251,17 @@ public final class SettingsViewModel: SettingsViewModelType, SettingsViewModelIn
   public func backingsTapped(selected selected: Bool) {
     self.backingsTappedProperty.value = selected
   }
+  private let canSendEmailProperty = MutableProperty(false)
+  public func canSendEmail(can: Bool) {
+    self.canSendEmailProperty.value = can
+  }
   private let commentsTappedProperty = MutableProperty(false)
   public func commentsTapped(selected selected: Bool) {
     self.commentsTappedProperty.value = selected
+  }
+  private let contactEmailSentProperty = MutableProperty()
+  public func contactEmailSent() {
+    self.contactEmailSentProperty.value = ()
   }
   private let findFriendsTappedProperty = MutableProperty()
   public func findFriendsTapped() {
@@ -334,6 +370,7 @@ public final class SettingsViewModel: SettingsViewModelType, SettingsViewModelIn
   public let projectNotificationsCount: Signal<String, NoError>
   public let promoNewsletterOn: Signal<Bool, NoError>
   public let showConfirmLogoutPrompt: Signal<(message: String, cancel: String, confirm: String), NoError>
+  public let showErrorPrompt: Signal<(title: String, message: String), NoError>
   public let showOptInPrompt: Signal<String, NoError>
   public let unableToSaveError: Signal<String, NoError>
   public let updatesSelected: Signal<Bool, NoError>

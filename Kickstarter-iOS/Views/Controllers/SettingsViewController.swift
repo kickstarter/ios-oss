@@ -5,7 +5,7 @@ import KsApi
 import SafariServices
 import UIKit
 
-internal final class SettingsViewController: UIViewController, MFMailComposeViewControllerDelegate {
+internal final class SettingsViewController: UIViewController {
   private let viewModel: SettingsViewModelType = SettingsViewModel()
 
   @IBOutlet private weak var backingsButton: UIButton!
@@ -31,6 +31,7 @@ internal final class SettingsViewController: UIViewController, MFMailComposeView
   internal override func viewDidLoad() {
     super.viewDidLoad()
     self.viewModel.inputs.viewDidLoad()
+    self.viewModel.inputs.canSendEmail(MFMailComposeViewController.canSendMail())
     self.view.backgroundColor = Color.OffWhite.toUIColor()
   }
 
@@ -98,11 +99,9 @@ internal final class SettingsViewController: UIViewController, MFMailComposeView
   private func goToHelpType(helpType: HelpType) {
     switch helpType {
     case .Contact:
-      if MFMailComposeViewController.canSendMail() {
-        let mcvc = MFMailComposeViewController.support()
-        mcvc.mailComposeDelegate = self
-        self.presentViewController(mcvc, animated: true, completion: nil)
-      }
+      let controller = MFMailComposeViewController.support()
+      controller.mailComposeDelegate = self
+      self.presentViewController(controller, animated: true, completion: nil)
     default:
       let svc = SFSafariViewController.help(helpType, baseURL: ServerConfig.production.webBaseUrl)
       self.presentViewController(svc, animated: true, completion: nil)
@@ -114,10 +113,14 @@ internal final class SettingsViewController: UIViewController, MFMailComposeView
 
     logoutAlert.addAction(UIAlertAction(title: cancel, style: .Cancel, handler: nil))
 
-    logoutAlert.addAction(UIAlertAction(title: confirm,
-                                        style: .Default,
-                                        handler: { [weak self] _ in
-                                          self?.viewModel.inputs.logoutConfirmed() })
+    logoutAlert.addAction(
+      UIAlertAction(
+        title: confirm,
+        style: .Default,
+        handler: { [weak self] _ in
+          self?.viewModel.inputs.logoutConfirmed()
+        }
+      )
     )
 
     self.presentViewController(logoutAlert, animated: true, completion: nil)
@@ -237,5 +240,18 @@ internal final class SettingsViewController: UIViewController, MFMailComposeView
 
   @IBAction private func weeklyNewsletterTapped(newsletterSwitch: UISwitch) {
     self.viewModel.inputs.weeklyNewsletterTapped(on: newsletterSwitch.on)
+  }
+}
+
+extension SettingsViewController: MFMailComposeViewControllerDelegate {
+  internal func mailComposeController(controller: MFMailComposeViewController,
+                                      didFinishWithResult result: MFMailComposeResult,
+                                      error: NSError?) {
+
+    if result == MFMailComposeResultSent {
+      self.viewModel.inputs.contactEmailSent()
+    }
+
+    controller.dismissViewControllerAnimated(true, completion: nil)
   }
 }

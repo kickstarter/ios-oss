@@ -34,6 +34,7 @@ internal final class SettingsViewModelTests: TestCase {
   let projectNotificationsCount = TestObserver<String, NoError>()
   let promoNewsletterOn = TestObserver<Bool, NoError>()
   let showConfirmLogoutPrompt = TestObserver<(message: String, cancel: String, confirm: String), NoError>()
+  let showErrorPrompt = TestObserver<(title: String, message: String), NoError>()
   let showOptInPrompt = TestObserver<String, NoError>()
   let unableToSaveError = TestObserver<String, NoError>()
   let updatesSelected = TestObserver<Bool, NoError>()
@@ -43,34 +44,35 @@ internal final class SettingsViewModelTests: TestCase {
 
   internal override func setUp() {
     super.setUp()
-    self.vm.outputs.backingsSelected.observe(backingsSelected.observer)
-    self.vm.outputs.commentsSelected.observe(commentsSelected.observer)
-    self.vm.outputs.creatorNotificationsHidden.observe(creatorNotificationsHidden.observer)
-    self.vm.outputs.followerSelected.observe(followerSelected.observer)
-    self.vm.outputs.friendActivitySelected.observe(friendActivitySelected.observer)
-    self.vm.outputs.gamesNewsletterOn.observe(gamesNewsletterOn.observer)
-    self.vm.outputs.goToAppStoreRating.observe(goToAppStoreRating.observer)
-    self.vm.outputs.goToFindFriends.observe(goToFindFriends.observer)
-    self.vm.outputs.goToHelpType.observe(goToHelpType.observer)
-    self.vm.outputs.goToManageProjectNotifications.observe(goToManageProjectNotifications.observer)
-    self.vm.outputs.happeningNewsletterOn.observe(happeningNewsletterOn.observer)
-    self.vm.outputs.logout.observe(logout.observer)
-    self.vm.outputs.mobileBackingsSelected.observe(mobileBackingsSelected.observer)
-    self.vm.outputs.mobileCommentsSelected.observe(mobileCommentsSelected.observer)
-    self.vm.outputs.mobileFollowerSelected.observe(mobileFollowerSelected.observer)
-    self.vm.outputs.mobileFriendActivitySelected.observe(mobileFriendActivitySelected.observer)
-    self.vm.outputs.mobilePostLikesSelected.observe(mobilePostLikesSelected.observer)
-    self.vm.outputs.mobileUpdatesSelected.observe(mobileUpdatesSelected.observer)
-    self.vm.outputs.postLikesSelected.observe(postLikesSelected.observer)
-    self.vm.outputs.projectNotificationsCount.observe(projectNotificationsCount.observer)
-    self.vm.outputs.promoNewsletterOn.observe(promoNewsletterOn.observer)
-    self.vm.outputs.showConfirmLogoutPrompt.observe(showConfirmLogoutPrompt.observer)
-    self.vm.outputs.showOptInPrompt.observe(showOptInPrompt.observer)
-    self.vm.outputs.unableToSaveError.observe(unableToSaveError.observer)
-    self.vm.outputs.updatesSelected.observe(updatesSelected.observer)
-    self.vm.outputs.updateCurrentUser.observe(updateCurrentUser.observer)
-    self.vm.outputs.weeklyNewsletterOn.observe(weeklyNewsletterOn.observer)
-    self.vm.outputs.versionText.observe(versionText.observer)
+    self.vm.outputs.backingsSelected.observe(self.backingsSelected.observer)
+    self.vm.outputs.commentsSelected.observe(self.commentsSelected.observer)
+    self.vm.outputs.creatorNotificationsHidden.observe(self.creatorNotificationsHidden.observer)
+    self.vm.outputs.followerSelected.observe(self.followerSelected.observer)
+    self.vm.outputs.friendActivitySelected.observe(self.friendActivitySelected.observer)
+    self.vm.outputs.gamesNewsletterOn.observe(self.gamesNewsletterOn.observer)
+    self.vm.outputs.goToAppStoreRating.observe(self.goToAppStoreRating.observer)
+    self.vm.outputs.goToFindFriends.observe(self.goToFindFriends.observer)
+    self.vm.outputs.goToHelpType.observe(self.goToHelpType.observer)
+    self.vm.outputs.goToManageProjectNotifications.observe(self.goToManageProjectNotifications.observer)
+    self.vm.outputs.happeningNewsletterOn.observe(self.happeningNewsletterOn.observer)
+    self.vm.outputs.logout.observe(self.logout.observer)
+    self.vm.outputs.mobileBackingsSelected.observe(self.mobileBackingsSelected.observer)
+    self.vm.outputs.mobileCommentsSelected.observe(self.mobileCommentsSelected.observer)
+    self.vm.outputs.mobileFollowerSelected.observe(self.mobileFollowerSelected.observer)
+    self.vm.outputs.mobileFriendActivitySelected.observe(self.mobileFriendActivitySelected.observer)
+    self.vm.outputs.mobilePostLikesSelected.observe(self.mobilePostLikesSelected.observer)
+    self.vm.outputs.mobileUpdatesSelected.observe(self.mobileUpdatesSelected.observer)
+    self.vm.outputs.postLikesSelected.observe(self.postLikesSelected.observer)
+    self.vm.outputs.projectNotificationsCount.observe(self.projectNotificationsCount.observer)
+    self.vm.outputs.promoNewsletterOn.observe(self.promoNewsletterOn.observer)
+    self.vm.outputs.showConfirmLogoutPrompt.observe(self.showConfirmLogoutPrompt.observer)
+    self.vm.outputs.showErrorPrompt.observe(self.showErrorPrompt.observer)
+    self.vm.outputs.showOptInPrompt.observe(self.showOptInPrompt.observer)
+    self.vm.outputs.unableToSaveError.observe(self.unableToSaveError.observer)
+    self.vm.outputs.updatesSelected.observe(self.updatesSelected.observer)
+    self.vm.outputs.updateCurrentUser.observe(self.updateCurrentUser.observer)
+    self.vm.outputs.weeklyNewsletterOn.observe(self.weeklyNewsletterOn.observer)
+    self.vm.outputs.versionText.observe(self.versionText.observer)
   }
 
   func testCreatorNotificationsHidden() {
@@ -153,6 +155,7 @@ internal final class SettingsViewModelTests: TestCase {
     let user = User.template
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
     self.vm.inputs.viewDidLoad()
+    self.vm.inputs.canSendEmail(true)
 
     self.vm.inputs.helpTypeTapped(helpType: .Contact)
     self.goToHelpType.assertValues([.Contact], "Go to compose contact email.")
@@ -175,6 +178,31 @@ internal final class SettingsViewModelTests: TestCase {
     self.vm.inputs.helpTypeTapped(helpType: .Terms)
     self.goToHelpType.assertValues([.Contact, .Cookie, .FAQ, .HowItWorks, .Privacy, .Terms],
                                    "Go to Terms of Use screen.")
+  }
+
+  func testContactWithNoEmailConfigured() {
+    let user = User.template
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
+
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.canSendEmail(false)
+    self.vm.inputs.helpTypeTapped(helpType: .Contact)
+
+    self.goToHelpType.assertValues([], "Do not open email.")
+    self.showErrorPrompt.assertValueCount(1, "Show email error prompt.")
+    XCTAssertEqual(["Settings View"], self.trackingClient.events)
+  }
+
+  func testTrackContactEmailSent() {
+    let user = User.template
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
+
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.canSendEmail(true)
+    self.vm.inputs.helpTypeTapped(helpType: .Contact)
+    self.vm.inputs.contactEmailSent()
+
+    XCTAssertEqual(["Settings View", "Contact Email Open", "Contact Email Sent"], self.trackingClient.events)
   }
 
   func testGoToManageProjectNotifications() {
