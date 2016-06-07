@@ -2,7 +2,6 @@ import AVFoundation
 import Darwin
 import UIKit
 import KsApi
-import KsApi
 import Prelude
 import ReactiveCocoa
 import Result

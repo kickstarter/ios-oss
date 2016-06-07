@@ -1,7 +1,6 @@
 import ReactiveCocoa
 import Result
 import KsApi
-import KsApi
 import Library
 
 protocol PlaylistTrayViewModelInputs {

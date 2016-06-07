@@ -1,7 +1,6 @@
 #if os(iOS)
 // swiftlint:disable file_length
 import KsApi
-import KsApi
 import Prelude
 import ReactiveCocoa
 import ReactiveExtensions
@@ -191,11 +190,8 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
           .demoteErrors()
     }
 
-    let projects = project
-      .combineLatestWith(rootCategory)
-      .flatMap { project, category in
-        relatedProjects(project, category: category, apiService: AppEnvironment.current.apiService)
-      }
+    let projects = combineLatest(project, rootCategory)
+      .flatMap(relatedProjects(toProject:inCategory:))
       .filter { projects in !projects.isEmpty }
 
     self.showRecommendations = zip(projects, rootCategory)
@@ -388,39 +384,38 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
   public let twitterIsAvailable: Signal<Bool, NoError>
 }
 
-private func relatedProjects(project: Project, category: KsApi.Category, apiService: ServiceType) ->
+private func relatedProjects(toProject project: Project, inCategory category: KsApi.Category) ->
   SignalProducer<[Project], NoError> {
 
     let base = DiscoveryParams.lens.perPage .~ 3 <> DiscoveryParams.lens.backed .~ false
 
     let recommendedParams = DiscoveryParams.defaults |> base
-      <> DiscoveryParams.lens.recommended .~ true
+      |> DiscoveryParams.lens.recommended .~ true
 
     let similarToParams = DiscoveryParams.defaults |> base
-      <> DiscoveryParams.lens.similarTo .~ project
+      |> DiscoveryParams.lens.similarTo .~ project
 
     let staffPickParams = DiscoveryParams.defaults |> base
-      <> DiscoveryParams.lens.staffPicks .~ true
-      <> DiscoveryParams.lens.category .~ category
+      |> DiscoveryParams.lens.staffPicks .~ true
+      |> DiscoveryParams.lens.category .~ category
 
-    let recommendedProjects = apiService.fetchDiscovery(params: recommendedParams)
-      .retry(2)
+    let recommendedProjects = AppEnvironment.current.apiService.fetchDiscovery(params: recommendedParams)
+      .demoteErrors()
       .map { $0.projects }
       .uncollect()
 
-    let similarToProjects = apiService.fetchDiscovery(params: similarToParams)
-      .retry(2)
+    let similarToProjects = AppEnvironment.current.apiService.fetchDiscovery(params: similarToParams)
+      .demoteErrors()
       .map { $0.projects }
       .uncollect()
 
-    let staffPickProjects = apiService.fetchDiscovery(params: staffPickParams)
-      .retry(2)
+    let staffPickProjects = AppEnvironment.current.apiService.fetchDiscovery(params: staffPickParams)
+      .demoteErrors()
       .map { $0.projects }
       .uncollect()
 
     return SignalProducer.concat(recommendedProjects, similarToProjects, staffPickProjects)
       .uniqueValues { $0.id }
-      .demoteErrors()
       .take(3)
       .collect()
 }

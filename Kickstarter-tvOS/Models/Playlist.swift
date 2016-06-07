@@ -1,5 +1,4 @@
 import KsApi
-import KsApi
 import ReactiveCocoa
 import Result
 import ReactiveExtensions

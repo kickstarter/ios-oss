@@ -1,6 +1,5 @@
 import ReactiveCocoa
 import KsApi
-import KsApi
 import Result
 import Prelude
 
@@ -117,7 +116,7 @@ CommentDialogViewModelOutputs, CommentDialogViewModelErrors {
     self.postButtonEnabled = Signal.merge([
       self.viewWillAppearProperty.signal.take(1).mapConst(false),
       self.commentBodyProperty.signal.map { !$0.isEmpty },
-      isLoading.signal.map { !$0 }
+      isLoading.signal.map(isFalse)
       ])
       .skipRepeats()
 

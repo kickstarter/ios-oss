@@ -1,7 +1,7 @@
 import KsApi
+import Prelude
 import ReactiveCocoa
 import Result
-import Foundation
 
 public protocol ProjectViewModelInputs {
   /// Call when the view will appear.
@@ -105,12 +105,12 @@ ProjectViewModelOutputs {
 
     let loggedInUserTappedStar = currentUser
       .takeWhen(self.starButtonTappedProperty.signal)
-      .filter { $0 != nil }
+      .filter(isNotNil)
       .ignoreValues()
 
     let loggedOutUserTappedStar = currentUser
       .takeWhen(self.starButtonTappedProperty.signal)
-      .filter { $0 == nil }
+      .filter(isNil)
       .ignoreValues()
 
     // Emits only when a user logs in after having tapped the star while logged out.
@@ -147,11 +147,12 @@ ProjectViewModelOutputs {
     self.openComments = project
       .takeWhen(self.commentsButtonPressedProperty.signal)
 
-    let cookieRefTag = combineLatest(project, self.refTagProperty.signal)
+    let cookieRefTag = combineLatest(
+      self.project.map(refTagFor(project:)),
+      self.refTagProperty.signal
+      )
       .take(1)
-      .map { project, refTag in
-        refTagFromCookieStorage(AppEnvironment.current.cookieStorage, project: project) ?? refTag
-      }
+      .map { $0 ?? $1 }
 
     combineLatest(project, self.refTagProperty.signal, cookieRefTag)
       .take(1)
@@ -165,7 +166,7 @@ ProjectViewModelOutputs {
 
     combineLatest(cookieRefTag.ignoreNil(), project)
       .take(1)
-      .map { refTag, project in cookieFromRefTag(refTag, project: project) }
+      .map(cookieFrom(refTag:project:))
       .ignoreNil()
       .observeNext { AppEnvironment.current.cookieStorage.setCookie($0) }
   }
@@ -176,9 +177,9 @@ private let cookieSeparator = Character("?")
 
 // Extracts the ref tag stored in cookies for a particular project. Returns `nil` if no such cookie has
 // been previously set.
-private func refTagFromCookieStorage(storage: NSHTTPCookieStorageType, project: Project) -> RefTag? {
+private func refTagFor(project project: Project) -> RefTag? {
 
-  return storage.cookies?
+  return AppEnvironment.current.cookieStorage.cookies?
     .filter { cookie in cookie.name == cookieName(project) }
     .first
     .flatMap { cookie in cookie.value.characters.split(cookieSeparator).first }
@@ -192,7 +193,7 @@ private func cookieName(project: Project) -> String {
 }
 
 // Constructs a cookie from a ref tag and project.
-private func cookieFromRefTag(refTag: RefTag, project: Project) -> NSHTTPCookie? {
+private func cookieFrom(refTag refTag: RefTag, project: Project) -> NSHTTPCookie? {
 
   let timestamp = Int(NSDate().timeIntervalSince1970)
 

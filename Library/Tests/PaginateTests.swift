@@ -1,5 +1,6 @@
 import XCTest
 @testable import Library
+import Prelude
 import ReactiveCocoa
 import Result
 @testable import ReactiveExtensions_TestHelpers
@@ -10,7 +11,7 @@ final class PaginateTests: TestCase {
   let (nextPage, nextPageObserver) = Signal<(), NoError>.pipe()
   let requestFromParams: Int -> SignalProducer<[Int], NoError> = { p in .init(value: [p]) }
   let requestFromCursor: Int -> SignalProducer<[Int], NoError> = { c in .init(value: c <= 2 ? [c] : []) }
-  let valuesFromEnvelope: [Int] -> [Int] = { $0 }
+  let valuesFromEnvelope: [Int] -> [Int] = id
   let cursorFromEnvelope: [Int] -> Int = { ($0.last ?? 0) + 1 }
 
   func testEmitsEmptyState_ClearOnNewRequest() {

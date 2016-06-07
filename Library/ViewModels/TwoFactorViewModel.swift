@@ -1,7 +1,8 @@
+import KsApi
+import Prelude
 import ReactiveCocoa
 import ReactiveExtensions
 import Result
-import KsApi
 
 public protocol TwoFactorViewModelInputs {
   /// Call when view will appear
@@ -63,6 +64,15 @@ public final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMode
     private let password: String?
     private let facebookToken: String?
     private let code: String?
+
+    // swiftlint:disable type_name
+    private enum lens {
+      private static let code = Lens<TfaData, String?>(
+        view: { $0.code },
+        set: { TfaData(email: $1.email, password: $1.password, facebookToken: $1.facebookToken, code: $0) }
+      )
+    }
+    // swiftlint:enable type_name
   }
 
   // MARK: TwoFactorViewModelType
@@ -134,13 +144,7 @@ public final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMode
       )
       .map(TfaData.init)
 
-    let resendData = combineLatest(
-      self.emailProperty.producer,
-      self.passwordProperty.producer,
-      self.facebookTokenProperty.producer,
-      SignalProducer(value: nil)
-      )
-      .map(TfaData.init)
+    let resendData = loginData.map(TfaData.lens.code .~ nil)
 
     let loginEvent = loginData
       .takeWhen(self.submitPressedProperty.signal)
@@ -156,8 +160,7 @@ public final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMode
       .switchMap { data in
         login(data, apiService: AppEnvironment.current.apiService, isLoading: isLoading)
           .materialize()
-          .map { event in event.error }
-          .ignoreNil()
+          .errors()
           .filter { error in error.ksrCode == .TfaRequired }
           .ignoreValues()
       }
@@ -206,26 +209,17 @@ private func login(tfaData: TwoFactorViewModel.TfaData,
                    apiService: ServiceType,
                    isLoading: MutableProperty<Bool>) -> SignalProducer<AccessTokenEnvelope, ErrorEnvelope> {
 
-  let emailLogin: SignalProducer<AccessTokenEnvelope, ErrorEnvelope>
-  let facebookLogin: SignalProducer<AccessTokenEnvelope, ErrorEnvelope>
+  let login: SignalProducer<AccessTokenEnvelope, ErrorEnvelope>
 
   if let email = tfaData.email, password = tfaData.password {
-    emailLogin = apiService.login(email: email, password: password, code: tfaData.code)
-    facebookLogin = .empty
+    login = apiService.login(email: email, password: password, code: tfaData.code)
   } else if let facebookToken = tfaData.facebookToken {
-    emailLogin = .empty
-    facebookLogin = apiService.login(facebookAccessToken: facebookToken, code: tfaData.code)
+    login = apiService.login(facebookAccessToken: facebookToken, code: tfaData.code)
   } else {
-    emailLogin = .empty
-    facebookLogin = .empty
+    login = .empty
   }
 
-  return emailLogin.mergeWith(facebookLogin)
-    .on(
-      started: {
-        isLoading.value = true
-      },
-      terminated: {
-        isLoading.value = false
-    })
+  return login
+    .on(started: { isLoading.value = true },
+      terminated: { isLoading.value = false })
 }

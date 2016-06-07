@@ -1,4 +1,5 @@
 import KsApi
+import Prelude
 import ReactiveCocoa
 import Result
 
@@ -105,7 +106,7 @@ ProjectRewardCellViewModelInputs, ProjectRewardCellViewModelOutputs {
     self.allGoneHidden = reward.map { $0.limit == nil || $0.remaining != 0 }
       .skipRepeats()
 
-    self.rewardDisabled = self.allGoneHidden.map { !$0 }
+    self.rewardDisabled = self.allGoneHidden.map(isFalse)
       .skipRepeats()
 
     self.shippingHidden = reward.map { !$0.shipping.enabled }

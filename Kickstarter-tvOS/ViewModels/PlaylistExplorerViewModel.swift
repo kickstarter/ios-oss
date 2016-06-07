@@ -1,9 +1,8 @@
-import Foundation
-import ReactiveCocoa
-import Result
-import KsApi
 import KsApi
 import Library
+import ReactiveCocoa
+import Result
+import Prelude
 
 protocol PlaylistExplorerViewModelInputs {
   /// Call when a playlist is focsed.
@@ -102,7 +101,7 @@ PlaylistExplorerViewModelInputs, PlaylistExplorerViewModelOutputs {
       .combinePrevious()
       .map { $0.0 }
       .takeWhen(self.menuButtonPressedSignal)
-      .filter { $0 }
+      .filter(isTrue)
       .ignoreValues()
   }
 }
