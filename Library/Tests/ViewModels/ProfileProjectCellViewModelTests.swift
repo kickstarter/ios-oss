@@ -5,6 +5,7 @@ import XCTest
 @testable import Library
 @testable import ReactiveExtensions_TestHelpers
 @testable import KsApi_TestHelpers
+@testable import KsApi
 import Prelude
 
 internal final class ProfileProjectCellViewModelTests: TestCase {

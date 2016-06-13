@@ -2,7 +2,7 @@ import Library
 @testable import ReactiveExtensions_TestHelpers
 import ReactiveCocoa
 import Result
-import KsApi
+@testable import KsApi
 @testable import KsApi_TestHelpers
 
 internal final class MessageCellViewModelTests: TestCase {

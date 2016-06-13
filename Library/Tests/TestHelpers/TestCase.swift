@@ -9,7 +9,7 @@ import ReactiveCocoa
 internal class TestCase: XCTestCase {
   internal static let interval = 0.001
 
-  internal let config = ConfigFactory.config
+  internal let config = Config.config
   internal let cookieStorage = MockCookieStorage()
   internal let facebookAppDelegate = MockFacebookAppDelegate()
   internal let hockeyManager = MockHockeyManager()

@@ -109,7 +109,7 @@ internal final class SignupViewModelTests: TestCase {
   func testSetWeeklyNewsletterStateNonUSUser() {
     self.setWeeklyNewsletterState.assertDidNotEmitValue("Should not emit until view loads")
 
-    self.withEnvironment(config: ConfigFactory.deConfig) {
+    self.withEnvironment(config: Config.deConfig) {
       self.vm.inputs.viewDidLoad()
       self.setWeeklyNewsletterState.assertValues([false], "False by default for non-US users.")
     }

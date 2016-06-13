@@ -2,7 +2,6 @@ import Foundation
 import XCTest
 import ReactiveCocoa
 import Result
-import KsApi
 import Prelude
 @testable import KsApi
 @testable import Library
@@ -301,7 +300,7 @@ internal final class SettingsViewModelTests: TestCase {
   }
 
   func testShowOptInPrompt() {
-    withEnvironment(config: ConfigFactory.deConfig) {
+    withEnvironment(config: Config.deConfig) {
       let user = User.template
       AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
       self.vm.inputs.viewDidLoad()

@@ -3,7 +3,7 @@ import Library
 @testable import KsApi_TestHelpers
 import ReactiveCocoa
 import Result
-import KsApi
+@testable import KsApi
 
 internal final class BackingCellViewModelTests: TestCase {
   private let vm: BackingCellViewModelType = BackingCellViewModel()

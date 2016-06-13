@@ -4,7 +4,7 @@ import XCTest
 @testable import KsApi_TestHelpers
 import ReactiveCocoa
 import Result
-import KsApi
+@testable import KsApi
 
 internal final class MessageDialogViewModelTests: TestCase {
   private let vm: MessageDialogViewModelType = MessageDialogViewModel()

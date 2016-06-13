@@ -1,5 +1,5 @@
 import XCTest
-import KsApi
+@testable import KsApi
 @testable import Kickstarter_iOS
 @testable import Library
 @testable import KsApi_TestHelpers
