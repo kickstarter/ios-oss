@@ -17,7 +17,7 @@ endif
 
 XCPRETTY :=
 ifneq ($(CIRCLE_ARTIFACTS),)
-	XCPRETTY += | tee $${CIRCLE_ARTIFACTS}/xcode_raw.log
+	XCPRETTY += | tee $${CIRCLE_ARTIFACTS}/xcode_raw_$(SCHEME).log
 endif
 ifneq ($(shell type -p xcpretty),)
 	XCPRETTY += | xcpretty -c && exit $${PIPESTATUS[0]}
