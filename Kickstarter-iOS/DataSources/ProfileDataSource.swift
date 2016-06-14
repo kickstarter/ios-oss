@@ -5,12 +5,10 @@ import KsApi
 internal final class ProfileDataSource: ValueCellDataSource {
   private var user: User!
 
-  // swiftlint:disable type_name
   internal enum Section: Int {
     case projects
     case emptyState
   }
-  // swiftlint:enable type_name
 
   internal func emptyState(visible visible: Bool) {
 //    self.set(values: visible ? [()] : [],

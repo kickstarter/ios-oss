@@ -11,7 +11,6 @@ public final class Koala {
   private let device: UIDeviceType
   private let screen: UIScreenType
 
-  // swiftlint:disable type_name
   /**
    Determines the place from which the message dialog was presented.
 
@@ -28,7 +27,6 @@ public final class Koala {
     case projectMessages = "project_messages"
     case projectPage = "project_page"
   }
-  // swiftlint:enable type_name
 
   public init(client: TrackingClientType,
               loggedInUser: User? = nil,

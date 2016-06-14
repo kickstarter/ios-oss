@@ -1,6 +1,5 @@
 import KsApi
 
-// swiftlint:disable type_name
 public enum RefTag {
   case activity
   case activitySample

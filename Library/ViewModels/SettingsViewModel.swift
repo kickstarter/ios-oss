@@ -381,7 +381,6 @@ public final class SettingsViewModel: SettingsViewModelType, SettingsViewModelIn
   public var outputs: SettingsViewModelOutputs { return self }
 }
 
-// swiftlint:disable type_name
 private enum UserAttribute {
   case newsletter(Newsletter)
   case notification(Notification)
@@ -452,5 +451,4 @@ private enum Notification {
   case postLikes
   case updates
 }
-// swiftlint:enable type_name
 // swiftlint:enable file_length

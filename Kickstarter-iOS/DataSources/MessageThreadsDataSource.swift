@@ -2,12 +2,10 @@ import Library
 import KsApi
 
 internal final class MessageThreadsDataSource: ValueCellDataSource {
-  // swiftlint:disable type_name
   private enum Section: Int {
     case emptyState
     case messageThreads
   }
-  // swiftlint:enable type_name
 
   internal func load(messageThreads messageThreads: [MessageThread]) {
     self.set(values: messageThreads,

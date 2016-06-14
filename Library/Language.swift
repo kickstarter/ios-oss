@@ -1,7 +1,6 @@
 /**
  Supported languages.
 */
-// swiftlint:disable type_name
 public enum Language: String {
   case en
   case es
