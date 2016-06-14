@@ -55,7 +55,7 @@ internal final class ProfileViewController: UICollectionViewController {
     self.viewModel.outputs.goToSettings
       .observeForUI()
       .observeNext { [weak self] _ in
-        self?.openSettings()
+        self?.goToSettings()
     }
 
     self.viewModel.outputs.showEmptyState
@@ -87,7 +87,7 @@ internal final class ProfileViewController: UICollectionViewController {
     }
   }
 
-  private func openSettings() {
+  private func goToSettings() {
     guard let settingsViewController = UIStoryboard(name: "Settings", bundle: nil)
       .instantiateInitialViewController() as? SettingsViewController else {
         fatalError("Could not instantiate SettingsViewController.")

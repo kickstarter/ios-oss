@@ -1,7 +1,6 @@
 import KsApi
 import Library
 import MessageUI
-import KsApi
 import SafariServices
 import UIKit
 
@@ -46,6 +45,11 @@ internal final class SettingsViewController: UIViewController {
     self.viewModel.outputs.goToHelpType
       .observeForUI()
       .observeNext { [weak self] helpType in self?.goToHelpType(helpType) }
+
+
+    self.viewModel.outputs.goToManageProjectNotifications
+      .observeForUI()
+      .observeNext { [weak self] _ in self?.goToManageProjectNotifications() }
 
     self.viewModel.outputs.logout
       .observeForUI()
@@ -106,6 +110,16 @@ internal final class SettingsViewController: UIViewController {
       let svc = SFSafariViewController.help(helpType, baseURL: ServerConfig.production.webBaseUrl)
       self.presentViewController(svc, animated: true, completion: nil)
     }
+  }
+
+  private func goToManageProjectNotifications() {
+    guard let projectNotificationsViewController =
+      self.storyboard?.instantiateViewControllerWithIdentifier("ProjectNotificationsViewController")
+        as? ProjectNotificationsViewController else {
+          fatalError("Could not instantiate ProjectNotificationsViewController.")
+    }
+
+    self.navigationController?.pushViewController(projectNotificationsViewController, animated: true)
   }
 
   private func showLogoutPrompt(message message: String, cancel: String, confirm: String) {

@@ -70,7 +70,7 @@ public final class ProfileViewModel: ProfileViewModelType, ProfileViewModelInput
       valuesFromEnvelope: { $0.projects },
       cursorFromEnvelope: { $0.urls.api.moreProjects },
       requestFromParams: { AppEnvironment.current.apiService.fetchDiscovery(params: $0) },
-      requestFromCursor: { AppEnvironment.current.apiService.fetchDiscovery(paginationUrl: $0)})
+      requestFromCursor: { AppEnvironment.current.apiService.fetchDiscovery(paginationUrl: $0) })
 
     self.endRefreshing = isLoading.filter(isFalse).ignoreValues()
 
