@@ -42,7 +42,7 @@ dependencies: submodules configs
 
 bootstrap:
 	brew update
-	brew unlink swiftlint
+	brew unlink swiftlint || true
 	brew install swiftlint
 	brew link swiftlint
 
