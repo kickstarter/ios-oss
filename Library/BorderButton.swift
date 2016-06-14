@@ -53,7 +53,6 @@ public final class BorderButton: UIButton {
     }
   }
 
-
   @IBInspectable public var _color: String = Color.White.rawValue {
     didSet {
       color = Color(rawValue: _color)

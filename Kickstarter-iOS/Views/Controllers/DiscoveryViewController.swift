@@ -1,18 +1,27 @@
-import Foundation
-import UIKit
-import Library
 import KsApi
+import Library
+import UIKit
 
-internal final class DiscoveryViewController: UITableViewController {
-  let viewModel: DiscoveryViewModelType = DiscoveryViewModel()
-  let dataSource = DiscoveryProjectsDataSource()
+internal final class DiscoveryViewController: UIViewController {
+  private let viewModel: DiscoveryViewModelType = DiscoveryViewModel()
+  private var dataSource: DiscoveryPagesDataSource!
+
+  private weak var pageViewController: UIPageViewController!
+  private weak var sortPagerViewController: SortPagerViewController!
+  @IBOutlet private weak var titleButton: UIButton!
 
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.tableView.estimatedRowHeight = 400.0
-    self.tableView.rowHeight = UITableViewAutomaticDimension
-    self.tableView.dataSource = dataSource
+    self.pageViewController = self.childViewControllers
+      .filter { $0 is UIPageViewController }
+      .first as? UIPageViewController
+    self.pageViewController.delegate = self
+
+    self.sortPagerViewController = self.childViewControllers
+      .filter { $0 is SortPagerViewController }
+      .first as? SortPagerViewController
+    self.sortPagerViewController.delegate = self
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -20,43 +29,113 @@ internal final class DiscoveryViewController: UITableViewController {
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.viewModel.outputs.projects
+    self.titleButton.rac.title = self.viewModel.outputs.filterLabelText
+
+    self.viewModel.outputs.configurePagerDataSource
       .observeForUI()
-      .observeNext { [weak self] projects in
-        self?.dataSource.loadData(projects)
-        self?.tableView.reloadData()
+      .observeNext { [weak self] in
+        self?.configurePagerDataSource($0)
+    }
+
+    self.viewModel.outputs.configureSortPager
+      .observeNext { [weak self] in
+        self?.sortPagerViewController.configureWith(sorts: $0)
+    }
+
+    self.viewModel.outputs.goToDiscoveryFilters
+      .observeForUI()
+      .observeNext { [weak self] in
+        self?.goToDiscoveryFilters($0)
+    }
+
+    self.viewModel.outputs.loadFilterIntoDataSource
+      .observeNext { [weak self] in
+        self?.dataSource.load(filter: $0)
+    }
+
+    self.viewModel.outputs.selectSortPage
+      .observeNext { [weak self] in
+        self?.sortPagerViewController.select(sort: $0)
+    }
+
+    self.viewModel.outputs.navigateToSort
+      .observeForUI()
+      .observeNext { [weak self] sort, direction in
+        guard let controller = self?.dataSource.controllerFor(sort: sort) else {
+          fatalError("Controller not found for sort \(sort)")
+        }
+
+        self?.pageViewController.setViewControllers(
+          [controller], direction: direction, animated: true, completion: nil
+        )
+    }
+
+    self.viewModel.outputs.dismissDiscoveryFilters
+      .observeForUI()
+      .observeNext { [weak self] in
+        self?.dismissViewControllerAnimated(true, completion: nil)
     }
   }
 
-  override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-    return 32.0
+  private func goToDiscoveryFilters(selectedRow: SelectableRow) {
+    guard let vc = self.storyboard?.instantiateViewControllerWithIdentifier("DiscoveryFiltersViewController"),
+      filters = vc as? DiscoveryFiltersViewController else {
+
+      fatalError("Couldn't instantiate DiscoveryFiltersViewController.")
+    }
+
+    filters.configureWith(selectedRow: selectedRow)
+    filters.delegate = self
+
+    self.presentViewController(vc, animated: true, completion: nil)
   }
 
-  override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-    let view = UIView()
-    view.backgroundColor = .clearColor()
-    return view
+  private func configurePagerDataSource(sorts: [DiscoveryParams.Sort]) {
+    self.dataSource = DiscoveryPagesDataSource(sorts: sorts)
+
+    self.pageViewController.dataSource = self.dataSource
+    self.pageViewController.setViewControllers(
+      [self.dataSource.controllerFor(index: 0)].compact(),
+      direction: .Forward,
+      animated: false,
+      completion: nil
+    )
   }
 
-  override func tableView(tableView: UITableView,
-                          willDisplayCell cell: UITableViewCell,
-                          forRowAtIndexPath indexPath: NSIndexPath) {
+  @IBAction private func filterButtonTapped() {
+    self.viewModel.inputs.filterButtonTapped()
+  }
+}
 
-    self.viewModel.inputs.willDisplayRow(self.dataSource.itemIndexAt(indexPath),
-                                         outOf: self.dataSource.numberOfItems())
+extension DiscoveryViewController: DiscoveryFiltersViewControllerDelegate {
+  internal func discoveryFilters(viewController: DiscoveryFiltersViewController, selectedRow: SelectableRow) {
+    self.viewModel.inputs.filtersSelected(row: selectedRow)
+  }
+}
+
+extension DiscoveryViewController: UIPageViewControllerDelegate {
+  internal func pageViewController(pageViewController: UIPageViewController,
+                                   didFinishAnimating finished: Bool,
+                                   previousViewControllers: [UIViewController],
+                                   transitionCompleted completed: Bool) {
+
+    self.viewModel.inputs.pageTransition(completed: completed)
   }
 
-  override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-    guard let project = self.dataSource.projectAtIndexPath(indexPath) else {
+  internal func pageViewController(
+    pageViewController: UIPageViewController,
+    willTransitionToViewControllers pendingViewControllers: [UIViewController]) {
+
+    guard let idx = pendingViewControllers.first.flatMap(self.dataSource.indexFor(controller:)) else {
       return
     }
-    guard let projectViewController = UIStoryboard(name: "Project", bundle: nil)
-      .instantiateInitialViewController() as? ProjectViewController else {
-        fatalError("Couldn't instantiate project view controller.")
-    }
 
-    projectViewController.configureWith(project: project, refTag: nil)
-    let nav = UINavigationController(rootViewController: projectViewController)
-    self.presentViewController(nav, animated: true, completion: nil)
+    self.viewModel.inputs.willTransition(toPage: idx)
+  }
+}
+
+extension DiscoveryViewController: SortPagerViewControllerDelegate {
+  internal func sortPager(viewController: UIViewController, selectedSort sort: DiscoveryParams.Sort) {
+    self.viewModel.inputs.sortPagerSelected(sort: sort)
   }
 }

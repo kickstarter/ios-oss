@@ -37,16 +37,16 @@ public final class GradientView: UIView {
 
   public override func awakeFromNib() {
     super.awakeFromNib()
-    setGradient([(startColor, 0.0), (endColor, 1.0)])
+    self.setGradient([(self.startColor, 0.0), (self.endColor, 1.0)])
   }
 
   public override func prepareForInterfaceBuilder() {
     super.prepareForInterfaceBuilder()
-    setGradient([(startColor, 0.0), (endColor, 1.0)])
+    self.setGradient([(self.startColor, 0.0), (self.endColor, 1.0)])
   }
 
   public func setGradient(points: [(color: UIColor?, location: Float)]) -> Void {
-    backgroundColor = UIColor.clearColor()
+    self.backgroundColor = UIColor.clearColor()
 
     self.gradientLayer?.colors = points.map { point in
       point.color?.CGColor ?? UIColor.clearColor().CGColor

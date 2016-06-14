@@ -153,6 +153,38 @@
 		A72C3A341D00F29A0075227E /* SettingsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C3A321D00F29A0075227E /* SettingsViewModelTests.swift */; };
 		A72C3A361D00F2B80075227E /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A72C3A351D00F2B80075227E /* Settings.storyboard */; };
 		A72C3A371D00F2B80075227E /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A72C3A351D00F2B80075227E /* Settings.storyboard */; };
+		A72C3A8C1D00F6A80075227E /* ExpandableRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C3A8A1D00F6A80075227E /* ExpandableRow.swift */; };
+		A72C3A8D1D00F6A80075227E /* ExpandableRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C3A8A1D00F6A80075227E /* ExpandableRow.swift */; };
+		A72C3A8E1D00F6A80075227E /* SelectableRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C3A8B1D00F6A80075227E /* SelectableRow.swift */; };
+		A72C3A8F1D00F6A80075227E /* SelectableRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C3A8B1D00F6A80075227E /* SelectableRow.swift */; };
+		A72C3A931D00F6C70075227E /* DiscoveryFiltersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C3A901D00F6C70075227E /* DiscoveryFiltersViewModel.swift */; };
+		A72C3A941D00F6C70075227E /* DiscoveryFiltersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C3A901D00F6C70075227E /* DiscoveryFiltersViewModel.swift */; };
+		A72C3A951D00F6C70075227E /* DiscoveryPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C3A911D00F6C70075227E /* DiscoveryPageViewModel.swift */; };
+		A72C3A961D00F6C70075227E /* DiscoveryPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C3A911D00F6C70075227E /* DiscoveryPageViewModel.swift */; };
+		A72C3A971D00F6C70075227E /* SortPagerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C3A921D00F6C70075227E /* SortPagerViewModel.swift */; };
+		A72C3A981D00F6C70075227E /* SortPagerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C3A921D00F6C70075227E /* SortPagerViewModel.swift */; };
+		A72C3A9C1D00F6E60075227E /* DiscoveryFiltersViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C3A991D00F6E60075227E /* DiscoveryFiltersViewModelTests.swift */; };
+		A72C3A9D1D00F6E60075227E /* DiscoveryFiltersViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C3A991D00F6E60075227E /* DiscoveryFiltersViewModelTests.swift */; };
+		A72C3A9E1D00F6E60075227E /* DiscoveryPageViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C3A9A1D00F6E60075227E /* DiscoveryPageViewModelTests.swift */; };
+		A72C3A9F1D00F6E60075227E /* DiscoveryPageViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C3A9A1D00F6E60075227E /* DiscoveryPageViewModelTests.swift */; };
+		A72C3AA01D00F6E60075227E /* SortPagerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C3A9B1D00F6E60075227E /* SortPagerViewModelTests.swift */; };
+		A72C3AA11D00F6E60075227E /* SortPagerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C3A9B1D00F6E60075227E /* SortPagerViewModelTests.swift */; };
+		A72C3AA31D00F7170075227E /* DiscoveryPagesDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C3AA21D00F7170075227E /* DiscoveryPagesDataSource.swift */; };
+		A72C3AA41D00F7170075227E /* DiscoveryPagesDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C3AA21D00F7170075227E /* DiscoveryPagesDataSource.swift */; };
+		A72C3AA61D00F7A30075227E /* SortPagerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C3AA51D00F7A30075227E /* SortPagerViewController.swift */; };
+		A72C3AA71D00F7A30075227E /* SortPagerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C3AA51D00F7A30075227E /* SortPagerViewController.swift */; };
+		A72C3AA91D00F96C0075227E /* DiscoveryPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C3AA81D00F96C0075227E /* DiscoveryPageViewController.swift */; };
+		A72C3AAA1D00F96C0075227E /* DiscoveryPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C3AA81D00F96C0075227E /* DiscoveryPageViewController.swift */; };
+		A72C3AAC1D00F99B0075227E /* DiscoveryFiltersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C3AAB1D00F99B0075227E /* DiscoveryFiltersViewController.swift */; };
+		A72C3AAD1D00F99B0075227E /* DiscoveryFiltersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C3AAB1D00F99B0075227E /* DiscoveryFiltersViewController.swift */; };
+		A72C3AAF1D00F9C10075227E /* DiscoveryFiltersDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C3AAE1D00F9C10075227E /* DiscoveryFiltersDataSource.swift */; };
+		A72C3AB01D00F9C10075227E /* DiscoveryFiltersDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C3AAE1D00F9C10075227E /* DiscoveryFiltersDataSource.swift */; };
+		A72C3AB41D00FB1F0075227E /* DiscoveryExpandableRowCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C3AB11D00FB1F0075227E /* DiscoveryExpandableRowCell.swift */; };
+		A72C3AB51D00FB1F0075227E /* DiscoveryExpandableRowCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C3AB11D00FB1F0075227E /* DiscoveryExpandableRowCell.swift */; };
+		A72C3AB61D00FB1F0075227E /* DiscoveryExpandedSelectableRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C3AB21D00FB1F0075227E /* DiscoveryExpandedSelectableRow.swift */; };
+		A72C3AB71D00FB1F0075227E /* DiscoveryExpandedSelectableRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C3AB21D00FB1F0075227E /* DiscoveryExpandedSelectableRow.swift */; };
+		A72C3AB81D00FB1F0075227E /* DiscoverySelectableRowCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C3AB31D00FB1F0075227E /* DiscoverySelectableRowCell.swift */; };
+		A72C3AB91D00FB1F0075227E /* DiscoverySelectableRowCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C3AB31D00FB1F0075227E /* DiscoverySelectableRowCell.swift */; };
 		A72D92301CB1E08800A88249 /* XCTestCase+AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75511A31C86460B005355CF /* XCTestCase+AppEnvironment.swift */; };
 		A72D92311CB1E08A00A88249 /* XCTestCase+AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75511A31C86460B005355CF /* XCTestCase+AppEnvironment.swift */; };
 		A72D92991CB1F7DA00A88249 /* TestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72D92981CB1F7DA00A88249 /* TestCase.swift */; };
@@ -252,6 +284,10 @@
 		A75511F41C865321005355CF /* LocalizedStringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A755118E1C8645A0005355CF /* LocalizedStringTests.swift */; };
 		A75511F51C865321005355CF /* EnvironmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A755118A1C8645A0005355CF /* EnvironmentTests.swift */; };
 		A75511F61C865321005355CF /* UIButton+LocalizedKeyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75511901C8645A0005355CF /* UIButton+LocalizedKeyTests.swift */; };
+		A758F4041D0702CF00169CC0 /* DiscoveryFiltersDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A758F4031D0702CF00169CC0 /* DiscoveryFiltersDataSourceTests.swift */; };
+		A758F4051D0702CF00169CC0 /* DiscoveryFiltersDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A758F4031D0702CF00169CC0 /* DiscoveryFiltersDataSourceTests.swift */; };
+		A758F43B1D070B8E00169CC0 /* DiscoveryPagesDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A758F43A1D070B8E00169CC0 /* DiscoveryPagesDataSourceTests.swift */; };
+		A758F43C1D070B8E00169CC0 /* DiscoveryPagesDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A758F43A1D070B8E00169CC0 /* DiscoveryPagesDataSourceTests.swift */; };
 		A75A29241CE0AE5A00D35E5C /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75A29231CE0AE5A00D35E5C /* MessagesViewController.swift */; };
 		A75A29251CE0AE5A00D35E5C /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75A29231CE0AE5A00D35E5C /* MessagesViewController.swift */; };
 		A75A29271CE0B7DD00D35E5C /* BackingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75A29261CE0B7DD00D35E5C /* BackingCell.swift */; };
@@ -1231,6 +1267,22 @@
 		A72C3A2F1D00F28C0075227E /* SettingsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		A72C3A321D00F29A0075227E /* SettingsViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewModelTests.swift; sourceTree = "<group>"; };
 		A72C3A351D00F2B80075227E /* Settings.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Settings.storyboard; sourceTree = "<group>"; };
+		A72C3A8A1D00F6A80075227E /* ExpandableRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpandableRow.swift; sourceTree = "<group>"; };
+		A72C3A8B1D00F6A80075227E /* SelectableRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectableRow.swift; sourceTree = "<group>"; };
+		A72C3A901D00F6C70075227E /* DiscoveryFiltersViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryFiltersViewModel.swift; sourceTree = "<group>"; };
+		A72C3A911D00F6C70075227E /* DiscoveryPageViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryPageViewModel.swift; sourceTree = "<group>"; };
+		A72C3A921D00F6C70075227E /* SortPagerViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SortPagerViewModel.swift; sourceTree = "<group>"; };
+		A72C3A991D00F6E60075227E /* DiscoveryFiltersViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryFiltersViewModelTests.swift; sourceTree = "<group>"; };
+		A72C3A9A1D00F6E60075227E /* DiscoveryPageViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryPageViewModelTests.swift; sourceTree = "<group>"; };
+		A72C3A9B1D00F6E60075227E /* SortPagerViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SortPagerViewModelTests.swift; sourceTree = "<group>"; };
+		A72C3AA21D00F7170075227E /* DiscoveryPagesDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryPagesDataSource.swift; sourceTree = "<group>"; };
+		A72C3AA51D00F7A30075227E /* SortPagerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SortPagerViewController.swift; sourceTree = "<group>"; };
+		A72C3AA81D00F96C0075227E /* DiscoveryPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryPageViewController.swift; sourceTree = "<group>"; };
+		A72C3AAB1D00F99B0075227E /* DiscoveryFiltersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryFiltersViewController.swift; sourceTree = "<group>"; };
+		A72C3AAE1D00F9C10075227E /* DiscoveryFiltersDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryFiltersDataSource.swift; sourceTree = "<group>"; };
+		A72C3AB11D00FB1F0075227E /* DiscoveryExpandableRowCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryExpandableRowCell.swift; sourceTree = "<group>"; };
+		A72C3AB21D00FB1F0075227E /* DiscoveryExpandedSelectableRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryExpandedSelectableRow.swift; sourceTree = "<group>"; };
+		A72C3AB31D00FB1F0075227E /* DiscoverySelectableRowCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoverySelectableRowCell.swift; sourceTree = "<group>"; };
 		A72D92981CB1F7DA00A88249 /* TestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = TestCase.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		A72E75961CC313A400983066 /* ValueCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ValueCell.swift; sourceTree = "<group>"; };
 		A72E75FE1CC3B76700983066 /* UIViewController-BindToViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController-BindToViewModel.swift"; sourceTree = "<group>"; };
@@ -1262,6 +1314,8 @@
 		A75511A31C86460B005355CF /* XCTestCase+AppEnvironment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "XCTestCase+AppEnvironment.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		A75511DA1C8647D9005355CF /* Library.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Library.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A75512011C865321005355CF /* Library-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Library-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A758F4031D0702CF00169CC0 /* DiscoveryFiltersDataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryFiltersDataSourceTests.swift; sourceTree = "<group>"; };
+		A758F43A1D070B8E00169CC0 /* DiscoveryPagesDataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryPagesDataSourceTests.swift; sourceTree = "<group>"; };
 		A75A29231CE0AE5A00D35E5C /* MessagesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesViewController.swift; sourceTree = "<group>"; };
 		A75A29261CE0B7DD00D35E5C /* BackingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackingCell.swift; sourceTree = "<group>"; };
 		A75A29291CE0B7EA00D35E5C /* ProjectBannerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectBannerCell.swift; sourceTree = "<group>"; };
@@ -1657,6 +1711,8 @@
 				01F8ADCE1CEA58AE0026F220 /* ThanksProjectsDataSourceTests.swift */,
 				599603FF1CE6286900E1B1EC /* ProfileDataSourceTests.swift */,
 				A7E8FAC11CD67F5C00DBF142 /* SearchDataSourceTests.swift */,
+				A758F4031D0702CF00169CC0 /* DiscoveryFiltersDataSourceTests.swift */,
+				A758F43A1D070B8E00169CC0 /* DiscoveryPagesDataSourceTests.swift */,
 			);
 			path = DataSources;
 			sourceTree = "<group>";
@@ -1722,6 +1778,7 @@
 		A751A51C1C85EAD8009C5DEA /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				A7208C941CCBD76300E3DAB3 /* ActivityEmptyStateCell.swift */,
 				A75AB2241C8B407F002FC3E6 /* ActivityFriendBackingCell.swift */,
 				A762EFF11C8CC663005581A4 /* ActivityFriendFollowCell.swift */,
 				A715ACEF1CE7F3D300605F02 /* ActivityLaunchCell.swift */,
@@ -1730,19 +1787,21 @@
 				A75AB2211C8A85D1002FC3E6 /* ActivityUpdateCell.swift */,
 				A75A29261CE0B7DD00D35E5C /* BackingCell.swift */,
 				A7A052121CD12DD7005AF5E2 /* CommentCell.swift */,
+				A72C3AB11D00FB1F0075227E /* DiscoveryExpandableRowCell.swift */,
+				A72C3AB21D00FB1F0075227E /* DiscoveryExpandedSelectableRow.swift */,
 				A7E315CA1C88AC91000DD85A /* DiscoveryProjectCell.swift */,
+				A72C3AB31D00FB1F0075227E /* DiscoverySelectableRowCell.swift */,
 				A71003E11CDD077200B4F4D7 /* MessageCell.swift */,
 				A71003DE1CDD06E600B4F4D7 /* MessageThreadCell.swift */,
+				599603D21CE5220900E1B1EC /* ProfileEmptyStateCell.swift */,
+				59B6B7091CCEBC1000953319 /* ProfileProjectCell.swift */,
 				A75A29291CE0B7EA00D35E5C /* ProjectBannerCell.swift */,
 				A7285CC31C8E915B00D83297 /* ProjectMainCell.swift */,
 				A7FC8C501C8F442D00C3B49B /* ProjectRewardCell.swift */,
 				A7FC8C561C8F449500C3B49B /* ProjectSubpagesCell.swift */,
-				59B6B7091CCEBC1000953319 /* ProfileProjectCell.swift */,
-				A7208C941CCBD76300E3DAB3 /* ActivityEmptyStateCell.swift */,
 				A75CFA7C1CCE56C4004CD5FA /* SearchProjectCell.swift */,
-				014A8E171CE3CD86003BF51C /* ThanksProjectCell.swift */,
 				014A8E1A1CE3CE34003BF51C /* ThanksCategoryCell.swift */,
-				599603D21CE5220900E1B1EC /* ProfileEmptyStateCell.swift */,
+				014A8E171CE3CD86003BF51C /* ThanksProjectCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -1754,6 +1813,8 @@
 				A7A0534C1CD19C68005AF5E2 /* CommentDialogViewController.swift */,
 				A7180BA81CCED598001711CA /* CommentsViewController.swift */,
 				A745D0461CA8985B00C12802 /* DashboardViewController.swift */,
+				A72C3AAB1D00F99B0075227E /* DiscoveryFiltersViewController.swift */,
+				A72C3AA81D00F96C0075227E /* DiscoveryPageViewController.swift */,
 				A751A51E1C85EC0B009C5DEA /* DiscoveryViewController.swift */,
 				0146E3211CC0296900082C5B /* FacebookConfirmationViewController.swift */,
 				A7F761761C85FACB005405ED /* LoginToutViewController.swift */,
@@ -1767,6 +1828,7 @@
 				A775B51F1CA8705B00BBB587 /* RootTabBarViewController.swift */,
 				A74FFE671CE3FFE200C7BCB9 /* SearchMessagesViewController.swift */,
 				A745D0201CA897FF00C12802 /* SearchViewController.swift */,
+				A72C3AA51D00F7A30075227E /* SortPagerViewController.swift */,
 				A72C39F31D00F27E0075227E /* SettingsViewController.swift */,
 				A749001D1D00E27100BC3BE7 /* SignupViewController.swift */,
 				0148EF8F1CDD2879000DEFF8 /* ThanksViewController.swift */,
@@ -1877,6 +1939,8 @@
 				A7830CE01D005C3F00B5B6AE /* CommentCellViewModelTests.swift */,
 				A7830CE11D005C3F00B5B6AE /* CommentDialogViewModelTests.swift */,
 				A7830CE21D005C3F00B5B6AE /* CommentsViewModelTests.swift */,
+				A72C3A991D00F6E60075227E /* DiscoveryFiltersViewModelTests.swift */,
+				A72C3A9A1D00F6E60075227E /* DiscoveryPageViewModelTests.swift */,
 				A7830CE31D005C3F00B5B6AE /* DiscoveryViewModelTests.swift */,
 				A7830CE41D005C3F00B5B6AE /* FacebookConfirmationViewModelTests.swift */,
 				A7830CE51D005C3F00B5B6AE /* LoginToutViewModelTests.swift */,
@@ -1895,6 +1959,7 @@
 				A7830CF21D005C3F00B5B6AE /* ProjectViewModelTests.swift */,
 				A7830CF31D005C3F00B5B6AE /* ResetPasswordViewModelTests.swift */,
 				A7830CF51D005C3F00B5B6AE /* SearchViewModelTests.swift */,
+				A72C3A9B1D00F6E60075227E /* SortPagerViewModelTests.swift */,
 				A72C3A321D00F29A0075227E /* SettingsViewModelTests.swift */,
 				A749001A1D00E25200BC3BE7 /* SignupViewModelTests.swift */,
 				A7830CF61D005C3F00B5B6AE /* ThanksViewModelTests.swift */,
@@ -2009,6 +2074,7 @@
 				0156B1A91D0728A0000C4252 /* CacheProtocol.swift */,
 				A7FC8C051C8F1DEA00C3B49B /* CircleAvatarImageView.swift */,
 				A7C7257F1C85D36D005A016B /* Environment.swift */,
+				A72C3A8A1D00F6A80075227E /* ExpandableRow.swift */,
 				A7208C3D1CCAC86800E3DAB3 /* FacebookAppDelegateProtocol.swift */,
 				A7C725801C85D36D005A016B /* Format.swift */,
 				A7C725811C85D36D005A016B /* GradientView.swift */,
@@ -2026,6 +2092,7 @@
 				A78537F71CB5803B00385B73 /* NSHTTPCookieStorageType.swift */,
 				A77D7B061CBAAF5D0077586B /* Paginate.swift */,
 				A7DC83951C9DBBE700BB2B44 /* RefTag.swift */,
+				A72C3A8B1D00F6A80075227E /* SelectableRow.swift */,
 				A7C725921C85D36D005A016B /* String+SimpleHTML.swift */,
 				A7C725931C85D36D005A016B /* Strings.swift */,
 				0151AEB01C8F6FD80067F1BE /* StyledLabel.swift */,
@@ -2338,14 +2405,16 @@
 			children = (
 				A75AB1F81C8A84B5002FC3E6 /* ActivitiesDataSource.swift */,
 				A7A051E41CD12D9A005AF5E2 /* CommentsDataSource.swift */,
+				A72C3AAE1D00F9C10075227E /* DiscoveryFiltersDataSource.swift */,
+				A72C3AA21D00F7170075227E /* DiscoveryPagesDataSource.swift */,
 				A7E315C41C88AAA8000DD85A /* DiscoveryProjectsDataSource.swift */,
 				A75A292C1CE0B95300D35E5C /* MessagesDataSource.swift */,
 				A71003DB1CDD068F00B4F4D7 /* MessageThreadsDataSource.swift */,
+				59322F051CD27B1000C90CC6 /* ProfileDataSource.swift */,
 				A73171981C8EA20300AC07C5 /* ProjectDataSource.swift */,
 				A75CFA4E1CCDB322004CD5FA /* SearchDataSource.swift */,
 				A74FFEC81CE4FB9900C7BCB9 /* SearchMessagesDataSource.swift */,
 				014A8DE91CE3C350003BF51C /* ThanksProjectsDataSource.swift */,
-				59322F051CD27B1000C90CC6 /* ProfileDataSource.swift */,
 			);
 			path = DataSources;
 			sourceTree = "<group>";
@@ -2362,6 +2431,8 @@
 				A7F441941D005A9400FE6FC5 /* CommentCellViewModel.swift */,
 				A7F441951D005A9400FE6FC5 /* CommentDialogViewModel.swift */,
 				A7F441961D005A9400FE6FC5 /* CommentsViewModel.swift */,
+				A72C3A901D00F6C70075227E /* DiscoveryFiltersViewModel.swift */,
+				A72C3A911D00F6C70075227E /* DiscoveryPageViewModel.swift */,
 				A7F441971D005A9400FE6FC5 /* DiscoveryProjectViewModel.swift */,
 				A7F441981D005A9400FE6FC5 /* DiscoveryViewModel.swift */,
 				A74900171D00E23000BC3BE7 /* SignupViewModel.swift */,
@@ -2383,6 +2454,7 @@
 				A7F441A71D005A9400FE6FC5 /* ProjectViewModel.swift */,
 				A7F441A81D005A9400FE6FC5 /* ResetPasswordViewModel.swift */,
 				A7F441AA1D005A9400FE6FC5 /* SearchViewModel.swift */,
+				A72C3A921D00F6C70075227E /* SortPagerViewModel.swift */,
 				A72C3A2F1D00F28C0075227E /* SettingsViewModel.swift */,
 				A7F441AB1D005A9400FE6FC5 /* ThanksViewModel.swift */,
 				A7F441AC1D005A9400FE6FC5 /* TwoFactorViewModel.swift */,
@@ -3316,6 +3388,7 @@
 				A7F441AD1D005A9400FE6FC5 /* ActivitiesViewModel.swift in Sources */,
 				A755115C1C8642C3005355CF /* AssetImageGeneratorType.swift in Sources */,
 				A721DF6B1C8CFAF6000CB97C /* MockTrackingClient.swift in Sources */,
+				A72C3A971D00F6C70075227E /* SortPagerViewModel.swift in Sources */,
 				A755115D1C8642C3005355CF /* AVPlayerView.swift in Sources */,
 				A7F441C91D005A9400FE6FC5 /* MessageDialogViewModel.swift in Sources */,
 				A78537BC1CB5416700385B73 /* UIDeviceType.swift in Sources */,
@@ -3324,6 +3397,7 @@
 				A707BAD61CFFAB9400653B2F /* HelpType.swift in Sources */,
 				A755115F1C8642C3005355CF /* Format.swift in Sources */,
 				A76126B31C90C94000EDCCB9 /* SimpleDataSource.swift in Sources */,
+				A72C3A951D00F6C70075227E /* DiscoveryPageViewModel.swift in Sources */,
 				A7F441C71D005A9400FE6FC5 /* MessageCellViewModel.swift in Sources */,
 				A72E75971CC313A400983066 /* ValueCell.swift in Sources */,
 				A75511601C8642C3005355CF /* GradientView.swift in Sources */,
@@ -3331,6 +3405,7 @@
 				A7F441DD1D005A9400FE6FC5 /* ProjectSubpagesViewModel.swift in Sources */,
 				A7F441E71D005A9400FE6FC5 /* ThanksViewModel.swift in Sources */,
 				A75511621C8642C3005355CF /* LaunchedCountries.swift in Sources */,
+				A72C3A931D00F6C70075227E /* DiscoveryFiltersViewModel.swift in Sources */,
 				A76126B71C90C94000EDCCB9 /* UICollectionView-Extensions.swift in Sources */,
 				A76126AD1C90C94000EDCCB9 /* ValueCellDataSource.swift in Sources */,
 				A72C3A301D00F28C0075227E /* SettingsViewModel.swift in Sources */,
@@ -3383,11 +3458,13 @@
 				A707BADA1CFFAB9400653B2F /* Notifications.swift in Sources */,
 				A721DF651C8CF5A3000CB97C /* KoalaTrackingClient.swift in Sources */,
 				A76126BB1C90C94000EDCCB9 /* UITableView-Extensions.swift in Sources */,
+				A72C3A8E1D00F6A80075227E /* SelectableRow.swift in Sources */,
 				A7F441C11D005A9400FE6FC5 /* DiscoveryViewModel.swift in Sources */,
 				A78537E21CB5422100385B73 /* UIScreenType.swift in Sources */,
 				A7208C3E1CCAC86800E3DAB3 /* FacebookAppDelegateProtocol.swift in Sources */,
 				A707BAD81CFFAB9400653B2F /* LoginIntent.swift in Sources */,
 				A7B693FF1C8789C100C49A4F /* HockeyManagerType.swift in Sources */,
+				A72C3A8C1D00F6A80075227E /* ExpandableRow.swift in Sources */,
 				A7698B2A1D00602800953FD3 /* LoginViewModel.swift in Sources */,
 				A7F441B51D005A9400FE6FC5 /* ActivityUpdateViewModel.swift in Sources */,
 				A721DF681C8CFAEB000CB97C /* Koala.swift in Sources */,
@@ -3414,6 +3491,7 @@
 				A7830D0A1D005C3F00B5B6AE /* LoginViewModelTests.swift in Sources */,
 				A7830D101D005C3F00B5B6AE /* MessagesSearchViewModelTests.swift in Sources */,
 				A7830D0C1D005C3F00B5B6AE /* MessageCellViewModelTests.swift in Sources */,
+				A72C3AA01D00F6E60075227E /* SortPagerViewModelTests.swift in Sources */,
 				A7830D2C1D005C3F00B5B6AE /* TwoFactorViewModelTests.swift in Sources */,
 				A7830D221D005C3F00B5B6AE /* ProjectViewModelTests.swift in Sources */,
 				A7830D241D005C3F00B5B6AE /* ResetPasswordViewModelTests.swift in Sources */,
@@ -3437,9 +3515,11 @@
 				A72C3A331D00F29A0075227E /* SettingsViewModelTests.swift in Sources */,
 				A75511991C8645A0005355CF /* LocalizedStringTests.swift in Sources */,
 				A75511951C8645A0005355CF /* EnvironmentTests.swift in Sources */,
+				A72C3A9E1D00F6E60075227E /* DiscoveryPageViewModelTests.swift in Sources */,
 				A7830D141D005C3F00B5B6AE /* MessageThreadCellViewModelTests.swift in Sources */,
 				A7830D181D005C3F00B5B6AE /* ProfileHeaderViewModelTests.swift in Sources */,
 				A7830CFC1D005C3F00B5B6AE /* BackingCellViewModelTests.swift in Sources */,
+				A72C3A9C1D00F6E60075227E /* DiscoveryFiltersViewModelTests.swift in Sources */,
 				A77D7B351CBAC5F90077586B /* PaginateTests.swift in Sources */,
 				017E88BB1CD2A609003FE5D6 /* UIActivityViewController.swift in Sources */,
 				A7830D161D005C3F00B5B6AE /* MessageThreadsViewModelTests.swift in Sources */,
@@ -3475,6 +3555,7 @@
 				A75511AE1C8647D9005355CF /* AVPlayerView.swift in Sources */,
 				A7F441AE1D005A9400FE6FC5 /* ActivitiesViewModel.swift in Sources */,
 				A75CFB091CCE7FCF004CD5FA /* StaticTableViewCell.swift in Sources */,
+				A72C3A8F1D00F6A80075227E /* SelectableRow.swift in Sources */,
 				A714043A1CAF215900A2795B /* KeyValueStoreType.swift in Sources */,
 				A78537F91CB5803B00385B73 /* NSHTTPCookieStorageType.swift in Sources */,
 				A75511AF1C8647D9005355CF /* Environment.swift in Sources */,
@@ -3519,11 +3600,13 @@
 				A7F441DE1D005A9400FE6FC5 /* ProjectSubpagesViewModel.swift in Sources */,
 				A707BADB1CFFAB9400653B2F /* Notifications.swift in Sources */,
 				A7F441C81D005A9400FE6FC5 /* MessageCellViewModel.swift in Sources */,
+				A72C3A981D00F6C70075227E /* SortPagerViewModel.swift in Sources */,
 				A72C3A311D00F28C0075227E /* SettingsViewModel.swift in Sources */,
 				A75511BB1C8647D9005355CF /* UILabel+LocalizedKey.swift in Sources */,
 				A7208C3F1CCAC86800E3DAB3 /* FacebookAppDelegateProtocol.swift in Sources */,
 				A72E76001CC3B76700983066 /* UIViewController-BindToViewModel.swift in Sources */,
 				A75511BC1C8647D9005355CF /* UILabel+SimpleHTML.swift in Sources */,
+				A72C3A8D1D00F6A80075227E /* ExpandableRow.swift in Sources */,
 				A721DF631C8CF503000CB97C /* TrackingClientType.swift in Sources */,
 				A7DC83971C9DBBE700BB2B44 /* RefTag.swift in Sources */,
 				A7F441D01D005A9400FE6FC5 /* MessageThreadCellViewModel.swift in Sources */,
@@ -3539,6 +3622,7 @@
 				A76126B61C90C94000EDCCB9 /* SimpleViewModel.swift in Sources */,
 				A72E75981CC313A400983066 /* ValueCell.swift in Sources */,
 				A7F441CA1D005A9400FE6FC5 /* MessageDialogViewModel.swift in Sources */,
+				A72C3A961D00F6C70075227E /* DiscoveryPageViewModel.swift in Sources */,
 				A721DF661C8CF5A3000CB97C /* KoalaTrackingClient.swift in Sources */,
 				A76126BC1C90C94000EDCCB9 /* UITableView-Extensions.swift in Sources */,
 				A7B694001C8789C100C49A4F /* HockeyManagerType.swift in Sources */,
@@ -3548,6 +3632,7 @@
 				A77D7B081CBAAF5D0077586B /* Paginate.swift in Sources */,
 				A721DF691C8CFAEB000CB97C /* Koala.swift in Sources */,
 				0151AEBB1C8F811C0067F1BE /* BorderButton.swift in Sources */,
+				A72C3A941D00F6C70075227E /* DiscoveryFiltersViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3563,6 +3648,8 @@
 				A749001C1D00E25200BC3BE7 /* SignupViewModelTests.swift in Sources */,
 				A7830D191D005C3F00B5B6AE /* ProfileHeaderViewModelTests.swift in Sources */,
 				A75511EE1C865321005355CF /* UILabel+IBClearTests.swift in Sources */,
+				A72C3A9D1D00F6E60075227E /* DiscoveryFiltersViewModelTests.swift in Sources */,
+				A72C3A9F1D00F6E60075227E /* DiscoveryPageViewModelTests.swift in Sources */,
 				A761275F1C93052400EDCCB9 /* CGColorRef.swift in Sources */,
 				A75511EF1C865321005355CF /* String+SimpleHTMLTests.swift in Sources */,
 				A75511F01C865321005355CF /* UILabel+LocalizedKeyTests.swift in Sources */,
@@ -3606,6 +3693,7 @@
 				A7830D151D005C3F00B5B6AE /* MessageThreadCellViewModelTests.swift in Sources */,
 				A72C3A341D00F29A0075227E /* SettingsViewModelTests.swift in Sources */,
 				A75511F61C865321005355CF /* UIButton+LocalizedKeyTests.swift in Sources */,
+				A72C3AA11D00F6E60075227E /* SortPagerViewModelTests.swift in Sources */,
 				01EFBCB71C921EA20094EEC2 /* StylesTests.swift in Sources */,
 				A7830D071D005C3F00B5B6AE /* FacebookConfirmationViewModelTests.swift in Sources */,
 			);
@@ -3627,14 +3715,17 @@
 				014A8DEB1CE3C350003BF51C /* ThanksProjectsDataSource.swift in Sources */,
 				014A8D9A1CE38959003BF51C /* ProjectActivityItemProvider.swift in Sources */,
 				A74FFDF01CE3E33300C7BCB9 /* MessageDialogViewController.swift in Sources */,
+				A72C3AAD1D00F99B0075227E /* DiscoveryFiltersViewController.swift in Sources */,
 				A7208C961CCBD76300E3DAB3 /* ActivityEmptyStateCell.swift in Sources */,
 				A762EFF31C8CC663005581A4 /* ActivityFriendFollowCell.swift in Sources */,
 				014A8D941CE38924003BF51C /* UIActivityViewController.swift in Sources */,
 				A745D0221CA897FF00C12802 /* SearchViewController.swift in Sources */,
+				A72C3AAA1D00F96C0075227E /* DiscoveryPageViewController.swift in Sources */,
 				A745D0481CA8985B00C12802 /* DashboardViewController.swift in Sources */,
 				A731719A1C8EA20300AC07C5 /* ProjectDataSource.swift in Sources */,
 				A7E315CC1C88AC91000DD85A /* DiscoveryProjectCell.swift in Sources */,
 				A75CFA7E1CCE56C4004CD5FA /* SearchProjectCell.swift in Sources */,
+				A72C3AA41D00F7170075227E /* DiscoveryPagesDataSource.swift in Sources */,
 				A7A0534E1CD19C68005AF5E2 /* CommentDialogViewController.swift in Sources */,
 				A75AB2231C8A85D1002FC3E6 /* ActivityUpdateCell.swift in Sources */,
 				A7FC8C581C8F449500C3B49B /* ProjectSubpagesCell.swift in Sources */,
@@ -3642,6 +3733,7 @@
 				A71003E01CDD06E600B4F4D7 /* MessageThreadCell.swift in Sources */,
 				A7285CC51C8E915B00D83297 /* ProjectMainCell.swift in Sources */,
 				A71003DD1CDD068F00B4F4D7 /* MessageThreadsDataSource.swift in Sources */,
+				A72C3AB91D00FB1F0075227E /* DiscoverySelectableRowCell.swift in Sources */,
 				A745D04B1CA8986E00C12802 /* ProfileViewController.swift in Sources */,
 				A75A29281CE0B7DD00D35E5C /* BackingCell.swift in Sources */,
 				A7C795B21C873AC90081977F /* AppDelegate.swift in Sources */,
@@ -3652,14 +3744,17 @@
 				A7FC8C521C8F442D00C3B49B /* ProjectRewardCell.swift in Sources */,
 				A7A051E61CD12D9A005AF5E2 /* CommentsDataSource.swift in Sources */,
 				A71003DA1CDCFA2500B4F4D7 /* MessageThreadsViewController.swift in Sources */,
+				A72C3AB71D00FB1F0075227E /* DiscoveryExpandedSelectableRow.swift in Sources */,
 				01F8AE021CEB61D80026F220 /* UpdateActivityItemProvider.swift in Sources */,
 				A7180BAA1CCED598001711CA /* CommentsViewController.swift in Sources */,
+				A72C3AB01D00F9C10075227E /* DiscoveryFiltersDataSource.swift in Sources */,
 				A75A292B1CE0B7EA00D35E5C /* ProjectBannerCell.swift in Sources */,
 				0148EF911CDD2879000DEFF8 /* ThanksViewController.swift in Sources */,
 				A72A4FF11D00A18600894A36 /* ProfileEmptyStateCell.swift in Sources */,
 				A749001F1D00E27100BC3BE7 /* SignupViewController.swift in Sources */,
 				A762F01D1C8CD2B3005581A4 /* ActivitySuccessCell.swift in Sources */,
 				A75CBDE81C8A26F800758C55 /* AppDelegateViewModel.swift in Sources */,
+				A72C3AA71D00F7A30075227E /* SortPagerViewController.swift in Sources */,
 				0127FC5A1C98C10D00E335C6 /* MFMailComposeViewController.swift in Sources */,
 				A7C795B41C873AC90081977F /* DiscoveryViewController.swift in Sources */,
 				A715ACC31CE7ED3600605F02 /* ActivityNegativeStateChangeCell.swift in Sources */,
@@ -3671,6 +3766,7 @@
 				A715ACF11CE7F3D300605F02 /* ActivityLaunchCell.swift in Sources */,
 				01DEFB961CB44A5D003709C0 /* TwoFactorViewController.swift in Sources */,
 				A75AB2261C8B407F002FC3E6 /* ActivityFriendBackingCell.swift in Sources */,
+				A72C3AB51D00FB1F0075227E /* DiscoveryExpandableRowCell.swift in Sources */,
 				A75AB1FA1C8A84B5002FC3E6 /* ActivitiesDataSource.swift in Sources */,
 				01F8ADFF1CEA63000026F220 /* SafariActivity.swift in Sources */,
 				014A8E1C1CE3CE34003BF51C /* ThanksCategoryCell.swift in Sources */,
@@ -3747,14 +3843,17 @@
 				A762EFF21C8CC663005581A4 /* ActivityFriendFollowCell.swift in Sources */,
 				A73171991C8EA20300AC07C5 /* ProjectDataSource.swift in Sources */,
 				5993DEBE1CE296F000925494 /* ProfileHeaderView.swift in Sources */,
+				A72C3AAC1D00F99B0075227E /* DiscoveryFiltersViewController.swift in Sources */,
 				A7E315CB1C88AC91000DD85A /* DiscoveryProjectCell.swift in Sources */,
 				A75A292A1CE0B7EA00D35E5C /* ProjectBannerCell.swift in Sources */,
 				A75AB2221C8A85D1002FC3E6 /* ActivityUpdateCell.swift in Sources */,
 				A7A0534D1CD19C68005AF5E2 /* CommentDialogViewController.swift in Sources */,
+				A72C3AA91D00F96C0075227E /* DiscoveryPageViewController.swift in Sources */,
 				01DEFB951CB44A5D003709C0 /* TwoFactorViewController.swift in Sources */,
 				01F8AE011CEB61D80026F220 /* UpdateActivityItemProvider.swift in Sources */,
 				A7FC8C571C8F449500C3B49B /* ProjectSubpagesCell.swift in Sources */,
 				014A8D961CE38942003BF51C /* SLComposeViewController.swift in Sources */,
+				A72C3AA31D00F7170075227E /* DiscoveryPagesDataSource.swift in Sources */,
 				A75CFA7D1CCE56C4004CD5FA /* SearchProjectCell.swift in Sources */,
 				A75A292D1CE0B95300D35E5C /* MessagesDataSource.swift in Sources */,
 				0148EF901CDD2879000DEFF8 /* ThanksViewController.swift in Sources */,
@@ -3762,6 +3861,7 @@
 				0146E3221CC0296900082C5B /* FacebookConfirmationViewController.swift in Sources */,
 				59322F061CD27B1000C90CC6 /* ProfileDataSource.swift in Sources */,
 				01F8ADFE1CEA63000026F220 /* SafariActivity.swift in Sources */,
+				A72C3AB81D00FB1F0075227E /* DiscoverySelectableRowCell.swift in Sources */,
 				014A8E181CE3CD86003BF51C /* ThanksProjectCell.swift in Sources */,
 				A7285CC41C8E915B00D83297 /* ProjectMainCell.swift in Sources */,
 				A775B5201CA8705B00BBB587 /* RootTabBarViewController.swift in Sources */,
@@ -3772,14 +3872,17 @@
 				599603D31CE5220900E1B1EC /* ProfileEmptyStateCell.swift in Sources */,
 				A7FC8C511C8F442D00C3B49B /* ProjectRewardCell.swift in Sources */,
 				A715ACC21CE7ED3600605F02 /* ActivityNegativeStateChangeCell.swift in Sources */,
+				A72C3AB61D00FB1F0075227E /* DiscoveryExpandedSelectableRow.swift in Sources */,
 				59B6B70A1CCEBC1000953319 /* ProfileProjectCell.swift in Sources */,
 				A715ACF01CE7F3D300605F02 /* ActivityLaunchCell.swift in Sources */,
+				A72C3AAF1D00F9C10075227E /* DiscoveryFiltersDataSource.swift in Sources */,
 				A7208C951CCBD76300E3DAB3 /* ActivityEmptyStateCell.swift in Sources */,
 				014A8D931CE38924003BF51C /* UIActivityViewController.swift in Sources */,
 				A71003DC1CDD068F00B4F4D7 /* MessageThreadsDataSource.swift in Sources */,
 				A749001E1D00E27100BC3BE7 /* SignupViewController.swift in Sources */,
 				A7A052131CD12DD7005AF5E2 /* CommentCell.swift in Sources */,
 				A711FD221CECC8E600659DB4 /* ActivitySuccessCell.swift in Sources */,
+				A72C3AA61D00F7A30075227E /* SortPagerViewController.swift in Sources */,
 				A75CBDE71C8A26F800758C55 /* AppDelegateViewModel.swift in Sources */,
 				A75CFA4F1CCDB322004CD5FA /* SearchDataSource.swift in Sources */,
 				A751A51F1C85EC0B009C5DEA /* DiscoveryViewController.swift in Sources */,
@@ -3791,6 +3894,7 @@
 				A71003E21CDD077200B4F4D7 /* MessageCell.swift in Sources */,
 				A71003DF1CDD06E600B4F4D7 /* MessageThreadCell.swift in Sources */,
 				014A8E1B1CE3CE34003BF51C /* ThanksCategoryCell.swift in Sources */,
+				A72C3AB41D00FB1F0075227E /* DiscoveryExpandableRowCell.swift in Sources */,
 				A75AB1F91C8A84B5002FC3E6 /* ActivitiesDataSource.swift in Sources */,
 				A745D04A1CA8986E00C12802 /* ProfileViewController.swift in Sources */,
 				A74FFEC91CE4FB9900C7BCB9 /* SearchMessagesDataSource.swift in Sources */,
@@ -3806,10 +3910,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				A775B54C1CA87C8500BBB587 /* RootViewModelTests.swift in Sources */,
+				A758F4041D0702CF00169CC0 /* DiscoveryFiltersDataSourceTests.swift in Sources */,
 				A77519121C8CADE20022F175 /* AppDelegateViewModelTests.swift in Sources */,
 				599604001CE6286900E1B1EC /* ProfileDataSourceTests.swift in Sources */,
 				A72D943B1CB3477000A88249 /* MockBundle.swift in Sources */,
 				A72D92991CB1F7DA00A88249 /* TestCase.swift in Sources */,
+				A758F43B1D070B8E00169CC0 /* DiscoveryPagesDataSourceTests.swift in Sources */,
 				A70119451CD92261009F8F65 /* CommentsDataSourceTests.swift in Sources */,
 				A7D1F9931C850CB2000D41D5 /* KickstarterTests.swift in Sources */,
 				01F8ADFC1CEA5B070026F220 /* ThanksProjectsDataSourceTests.swift in Sources */,
@@ -3881,7 +3987,9 @@
 				A72D929B1CB1F7DA00A88249 /* TestCase.swift in Sources */,
 				A7D1F9811C850C34000D41D5 /* kickstartertvTests.swift in Sources */,
 				A72D92311CB1E08A00A88249 /* XCTestCase+AppEnvironment.swift in Sources */,
+				A758F43C1D070B8E00169CC0 /* DiscoveryPagesDataSourceTests.swift in Sources */,
 				A7D1F97F1C850C34000D41D5 /* HomeViewModelTests.swift in Sources */,
+				A758F4051D0702CF00169CC0 /* DiscoveryFiltersDataSourceTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

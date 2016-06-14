@@ -8,10 +8,12 @@ internal final class DiscoveryProjectsDataSource: ValueCellDataSource {
     self.clearValues()
 
     projects.forEach { project in
-        self.appendSection(
-          values: [project],
-          cellClass: DiscoveryProjectCell.self
-        )
+      self.appendRow(
+        value: project,
+        cellClass: DiscoveryProjectCell.self,
+        toSection: 0
+      )
+      self.appendStaticRow(cellIdentifier: "Padding", toSection: 0)
     }
   }
 
