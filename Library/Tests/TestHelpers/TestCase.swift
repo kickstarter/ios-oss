@@ -9,6 +9,7 @@ import ReactiveCocoa
 internal class TestCase: XCTestCase {
   internal static let interval = 0.001
 
+  internal let cache = MockCache()
   internal let config = Config.config
   internal let cookieStorage = MockCookieStorage()
   internal let facebookAppDelegate = MockFacebookAppDelegate()
@@ -24,6 +25,7 @@ internal class TestCase: XCTestCase {
       apiService: MockService(),
       apiDelayInterval: 0.0,
       assetImageGeneratorType: AVAssetImageGenerator.self,
+      cache: self.cache,
       config: self.config,
       cookieStorage: self.cookieStorage,
       countryCode: "US",

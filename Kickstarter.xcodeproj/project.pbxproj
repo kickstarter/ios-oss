@@ -36,6 +36,10 @@
 		0151AEBA1C8F811C0067F1BE /* BorderButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0151AEB91C8F811C0067F1BE /* BorderButton.swift */; };
 		0151AEBB1C8F811C0067F1BE /* BorderButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0151AEB91C8F811C0067F1BE /* BorderButton.swift */; };
 		0154A93B1CA1A17800DB9BA4 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0151AE871C8F60370067F1BE /* UIColor.swift */; };
+		0156B1AA1D0728A0000C4252 /* CacheProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0156B1A91D0728A0000C4252 /* CacheProtocol.swift */; };
+		0156B1AB1D0728A0000C4252 /* CacheProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0156B1A91D0728A0000C4252 /* CacheProtocol.swift */; };
+		0156B1AF1D072CD1000C4252 /* CacheProtocolTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0156B1AC1D072CB8000C4252 /* CacheProtocolTests.swift */; };
+		0156B1B01D072CD1000C4252 /* CacheProtocolTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0156B1AC1D072CB8000C4252 /* CacheProtocolTests.swift */; };
 		0176E13B1C9742FD009CA092 /* UIBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0176E13A1C9742FD009CA092 /* UIBarButtonItem.swift */; };
 		0176E19B1C976703009CA092 /* UITextfield+LocalizedPlaceholderKeyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0176E19A1C976703009CA092 /* UITextfield+LocalizedPlaceholderKeyTests.swift */; };
 		0176E19C1C976703009CA092 /* UITextfield+LocalizedPlaceholderKeyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0176E19A1C976703009CA092 /* UITextfield+LocalizedPlaceholderKeyTests.swift */; };
@@ -1170,6 +1174,8 @@
 		0151AEAD1C8F61870067F1BE /* Styles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Styles.swift; sourceTree = "<group>"; };
 		0151AEB01C8F6FD80067F1BE /* StyledLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyledLabel.swift; sourceTree = "<group>"; };
 		0151AEB91C8F811C0067F1BE /* BorderButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BorderButton.swift; sourceTree = "<group>"; };
+		0156B1A91D0728A0000C4252 /* CacheProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CacheProtocol.swift; sourceTree = "<group>"; };
+		0156B1AC1D072CB8000C4252 /* CacheProtocolTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CacheProtocolTests.swift; sourceTree = "<group>"; };
 		0176E13A1C9742FD009CA092 /* UIBarButtonItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIBarButtonItem.swift; sourceTree = "<group>"; };
 		0176E19A1C976703009CA092 /* UITextfield+LocalizedPlaceholderKeyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "UITextfield+LocalizedPlaceholderKeyTests.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		017E88B91CD2A609003FE5D6 /* UIActivityViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIActivityViewController.swift; sourceTree = "<group>"; };
@@ -1774,6 +1780,7 @@
 			children = (
 				A75511891C8645A0005355CF /* AppEnvironmentTests.swift */,
 				01EFBCB21C920A7E0094EEC2 /* BorderButtonTests.swift */,
+				0156B1AC1D072CB8000C4252 /* CacheProtocolTests.swift */,
 				A77519211C8CB0360022F175 /* CircleAvatarImageViewTests.swift */,
 				A755118A1C8645A0005355CF /* EnvironmentTests.swift */,
 				A755118B1C8645A0005355CF /* FormatTests.swift */,
@@ -1999,6 +2006,7 @@
 				A7C725791C85D36D005A016B /* AssetImageGeneratorType.swift */,
 				A7C7257A1C85D36D005A016B /* AVPlayerView.swift */,
 				0151AEB91C8F811C0067F1BE /* BorderButton.swift */,
+				0156B1A91D0728A0000C4252 /* CacheProtocol.swift */,
 				A7FC8C051C8F1DEA00C3B49B /* CircleAvatarImageView.swift */,
 				A7C7257F1C85D36D005A016B /* Environment.swift */,
 				A7208C3D1CCAC86800E3DAB3 /* FacebookAppDelegateProtocol.swift */,
@@ -3357,6 +3365,7 @@
 				A7F441AF1D005A9400FE6FC5 /* ActivityFriendBackingViewModel.swift in Sources */,
 				A75511691C8642C3005355CF /* UILabel+IBClear.swift in Sources */,
 				A7F441E51D005A9400FE6FC5 /* SearchViewModel.swift in Sources */,
+				0156B1AA1D0728A0000C4252 /* CacheProtocol.swift in Sources */,
 				A7F441B11D005A9400FE6FC5 /* ActivityFriendFollowViewModel.swift in Sources */,
 				A72AFFDA1CD7ED6B008F052B /* Keyboard.swift in Sources */,
 				A755116A1C8642C3005355CF /* UILabel+LocalizedKey.swift in Sources */,
@@ -3412,6 +3421,7 @@
 				A7830D1C1D005C3F00B5B6AE /* ProfileViewModelTests.swift in Sources */,
 				A7830D041D005C3F00B5B6AE /* DiscoveryViewModelTests.swift in Sources */,
 				A755119D1C8645A0005355CF /* UILabel+LocalizedKeyTests.swift in Sources */,
+				0156B1AF1D072CD1000C4252 /* CacheProtocolTests.swift in Sources */,
 				A75511A51C86460B005355CF /* MockBundle.swift in Sources */,
 				A7830D081D005C3F00B5B6AE /* LoginToutViewModelTests.swift in Sources */,
 				A7830D1A1D005C3F00B5B6AE /* ProfileProjectCellViewModelTests.swift in Sources */,
@@ -3478,6 +3488,7 @@
 				A75511B21C8647D9005355CF /* Language.swift in Sources */,
 				A7F441E01D005A9400FE6FC5 /* ProjectViewModel.swift in Sources */,
 				A75511B31C8647D9005355CF /* LaunchedCountries.swift in Sources */,
+				0156B1AB1D0728A0000C4252 /* CacheProtocol.swift in Sources */,
 				A76126B81C90C94000EDCCB9 /* UICollectionView-Extensions.swift in Sources */,
 				A76126AE1C90C94000EDCCB9 /* ValueCellDataSource.swift in Sources */,
 				A760780B1CAEE0A6001B39D0 /* IsValidEmail.swift in Sources */,
@@ -3580,6 +3591,7 @@
 				A7830D011D005C3F00B5B6AE /* CommentDialogViewModelTests.swift in Sources */,
 				01EFBCB11C9203750094EEC2 /* UIColorTests.swift in Sources */,
 				A72D929C1CB1F7DA00A88249 /* TestCase.swift in Sources */,
+				0156B1B01D072CD1000C4252 /* CacheProtocolTests.swift in Sources */,
 				A7830D1B1D005C3F00B5B6AE /* ProfileProjectCellViewModelTests.swift in Sources */,
 				A7830D131D005C3F00B5B6AE /* MessagesViewModelTests.swift in Sources */,
 				A7830D211D005C3F00B5B6AE /* ProjectRewardCellViewModelTests.swift in Sources */,

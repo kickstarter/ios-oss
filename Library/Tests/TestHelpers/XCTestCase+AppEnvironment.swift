@@ -22,6 +22,7 @@ extension XCTestCase {
                // swiftlint:disable line_length
                assetImageGeneratorType: AssetImageGeneratorType.Type = AppEnvironment.current.assetImageGeneratorType,
                // swiftlint:enable line_length
+               cache: CacheProtocol = AppEnvironment.current.cache,
                config: Config? = AppEnvironment.current.config,
                cookieStorage: NSHTTPCookieStorageType = AppEnvironment.current.cookieStorage,
                countryCode: String = AppEnvironment.current.countryCode,
@@ -45,6 +46,7 @@ extension XCTestCase {
         apiService: apiService,
         apiDelayInterval: apiDelayInterval,
         assetImageGeneratorType: assetImageGeneratorType,
+        cache: cache,
         config: config,
         cookieStorage: cookieStorage,
         countryCode: countryCode,

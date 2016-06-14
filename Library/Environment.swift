@@ -19,6 +19,9 @@ public struct Environment {
   /// A type that exposes how to extract a still image from an AVAsset.
   public let assetImageGeneratorType: AssetImageGeneratorType.Type
 
+  /// A type that stores a cached dictionary.
+  public let cache: CacheProtocol
+
   /// A type that holds configuration values we download from the server.
   public let config: Config?
 
@@ -75,6 +78,7 @@ public struct Environment {
     apiService: ServiceType = Service(buildVersion: NSBundle.mainBundle().bundleVersion),
     apiDelayInterval: NSTimeInterval = 0.0,
     assetImageGeneratorType: AssetImageGeneratorType.Type = AVAssetImageGenerator.self,
+    cache: CacheProtocol = NSCache(),
     config: Config? = nil,
     cookieStorage: NSHTTPCookieStorageType = NSHTTPCookieStorage.sharedHTTPCookieStorage(),
     countryCode: String = "US",
@@ -95,6 +99,7 @@ public struct Environment {
     self.apiService = apiService
     self.apiDelayInterval = apiDelayInterval
     self.assetImageGeneratorType = assetImageGeneratorType
+    self.cache = cache
     self.config = config
     self.cookieStorage = cookieStorage
     self.countryCode = countryCode
@@ -118,6 +123,7 @@ public struct Environment {
       self.apiService,
       self.apiDelayInterval,
       self.assetImageGeneratorType,
+      self.cache,
       self.config,
       self.cookieStorage,
       self.countryCode,
