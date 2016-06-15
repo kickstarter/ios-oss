@@ -4,7 +4,7 @@ import Prelude_UIKit
 import UIKit
 import XCPlayground
 
-let liveView = UIView(frame: .init(x: 0, y: 0, width: 600, height: 600))
+let liveView = UIView(frame: .init(x: 0, y: 0, width: 440, height: 600))
   |> UIView.lens.backgroundColor .~ .ksr_offWhite
 XCPlaygroundPage.currentPage.liveView = liveView
 
@@ -13,7 +13,7 @@ let rootStackView = UIStackView(frame: liveView.bounds)
   |> UIStackView.lens.axis .~ .Vertical
   |> UIStackView.lens.distribution .~ .FillEqually
   |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
-  |> UIStackView.lens.layoutMargins .~ .init(top: 16, left: 16, bottom: 16, right: 16)
+  |> UIStackView.lens.layoutMargins .~ .init(all: 16)
 liveView.addSubview(rootStackView)
 
 let positiveButton = positiveButtonStyle <> UIButton.lens.titleText(forState: .Normal) .~ "Positive button"
@@ -25,17 +25,17 @@ func disabled <C: UIControlProtocol> () -> (C -> C) {
 }
 
 let buttonsStyles: [[UIButton -> UIButton]] = [
-  [ positiveButton,       positiveButton      <> disabled() ],
-  [ neutralButton,        neutralButton       <> disabled() ],
-  [ facebookButtonStyle,  facebookButtonStyle <> disabled() ],
-  [ borderButton,         borderButton        <> disabled() ]
+  [ positiveButton,      positiveButton      <> disabled() ],
+  [ neutralButton,       neutralButton       <> disabled() ],
+  [ facebookButtonStyle, facebookButtonStyle <> disabled() ],
+  [ borderButton,        borderButton        <> disabled() ]
 ]
 
 let rowStackViewStyle =
-  UIStackView.lens.alignment          .~ .Top
-    <> UIStackView.lens.axis          .~ .Horizontal
-    <> UIStackView.lens.distribution  .~ .EqualSpacing
-    <> UIStackView.lens.spacing       .~ 24.0
+  UIStackView.lens.alignment .~ .Top
+    <> UIStackView.lens.axis .~ .Horizontal
+    <> UIStackView.lens.distribution .~ .EqualSpacing
+    <> UIStackView.lens.spacing .~ 24.0
 
 for buttonStyles in buttonsStyles {
   rootStackView.addArrangedSubview(
