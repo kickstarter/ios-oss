@@ -35,6 +35,8 @@ internal final class ActivitiesViewController: UITableViewController {
     self.viewModel.inputs.viewWillAppear()
   }
 
+
+  // swiftlint:disable function_body_length
   internal override func bindViewModel() {
     super.bindViewModel()
 
@@ -45,6 +47,20 @@ internal final class ActivitiesViewController: UITableViewController {
         self?.tableView.reloadData()
     }
 
+    self.viewModel.outputs.showFacebookConnectSection
+      .observeForUI()
+      .observeNext { [weak self] source, shouldShow in
+        self?.dataSource.facebookConnect(source: source, visible: shouldShow)
+        self?.tableView.reloadData()
+    }
+
+    self.viewModel.outputs.showFindFriendsSection
+      .observeForUI()
+      .observeNext { [weak self] source, shouldShow in
+        self?.dataSource.findFriends(source: source, visible: shouldShow)
+        self?.tableView.reloadData()
+    }
+
     Signal.merge(
       self.viewModel.outputs.showLoggedOutEmptyState,
       self.viewModel.outputs.showLoggedInEmptyState
@@ -52,6 +68,7 @@ internal final class ActivitiesViewController: UITableViewController {
       .observeForUI()
       .observeNext { [weak self] visible in
         self?.dataSource.emptyState(visible: visible)
+        self?.tableView.reloadData()
     }
 
     self.viewModel.outputs.isRefreshing
@@ -65,14 +82,49 @@ internal final class ActivitiesViewController: UITableViewController {
       .observeNext { [weak self] project, refTag in
         self?.present(project: project, refTag: refTag)
     }
+
+    self.viewModel.outputs.deleteFacebookConnectSection
+      .observeForUI()
+      .observeNext { [weak self] in
+        self?.deleteFacebookSection()
+    }
+
+    self.viewModel.outputs.deleteFindFriendsSection
+      .observeForUI()
+      .observeNext { [weak self] in
+        self?.deleteFindFriendsSection()
+    }
+
+    self.viewModel.outputs.goToFriends
+      .observeForUI()
+      .observeNext { [weak self] source in
+        self?.goToFriends(source: source)
+    }
+
+    self.viewModel.outputs.showFacebookConnectErrorAlert
+      .observeForUI()
+      .observeNext { [weak self] error in
+        self?.presentViewController(
+          UIAlertController.alertController(forError: error),
+          animated: true,
+          completion: nil
+        )
+    }
   }
+  // swiftlint:ensable function_body_length
 
   internal override func tableView(tableView: UITableView,
                           willDisplayCell cell: UITableViewCell,
                                           forRowAtIndexPath indexPath: NSIndexPath) {
 
-    if let cell = cell as? ActivityUpdateCell where cell.delegate == nil {
-      cell.delegate = self
+    if let activityUpdateCell = cell as? ActivityUpdateCell where activityUpdateCell.delegate == nil {
+      activityUpdateCell.delegate = self
+    } else if let FBConnectCell = cell as? FindFriendsFacebookConnectCell
+      where FBConnectCell.delegate == nil {
+      FBConnectCell.delegate = self
+    } else if let findFriendsCell = cell as? FindFriendsHeaderCell
+      where findFriendsCell.delegate == nil {
+      findFriendsCell.delegate = self
     }
 
     self.viewModel.inputs.willDisplayRow(self.dataSource.itemIndexAt(indexPath),
@@ -102,10 +154,60 @@ internal final class ActivitiesViewController: UITableViewController {
                                animated: true,
                                completion: nil)
   }
+
+  private func goToFriends(source source: FriendsSource) {
+    guard let friendVC = UIStoryboard(name: "Friends", bundle: nil)
+      .instantiateInitialViewController() as? FindFriendsViewController else {
+      fatalError("Could not instantiate FindFriendsViewController.")
+    }
+
+    friendVC.configureWith(source: .activity)
+    self.navigationController?.pushViewController(friendVC, animated: true)
+  }
+
+  private func deleteFacebookSection() {
+    self.tableView.beginUpdates()
+
+    self.tableView.deleteRowsAtIndexPaths(self.dataSource.removeFacebookConnectRows(), withRowAnimation: .Top)
+
+    self.tableView.endUpdates()
+  }
+
+  private func deleteFindFriendsSection() {
+    self.tableView.beginUpdates()
+
+    self.tableView.deleteRowsAtIndexPaths(self.dataSource.removeFindFriendsRows(), withRowAnimation: .Top)
+
+    self.tableView.endUpdates()
+  }
 }
 
 extension ActivitiesViewController: ActivityUpdateCellDelegate {
   internal func activityUpdateCellTappedProjectImage(activity activity: Activity) {
     self.viewModel.inputs.activityUpdateCellTappedProjectImage(activity: activity)
+  }
+}
+
+extension ActivitiesViewController: FindFriendsHeaderCellDelegate {
+  func findFriendsHeaderCellDismissHeader() {
+    self.viewModel.inputs.findFriendsHeaderCellDismissHeader()
+  }
+
+  func findFriendsHeaderCellGoToFriends() {
+    self.viewModel.inputs.findFriendsHeaderCellGoToFriends()
+  }
+}
+
+extension ActivitiesViewController: FindFriendsFacebookConnectCellDelegate {
+  func findFriendsFacebookConnectCellDidFacebookConnectUser() {
+    self.viewModel.inputs.findFriendsFacebookConnectCellDidFacebookConnectUser()
+  }
+
+  func findFriendsFacebookConnectCellDidDismissHeader() {
+    self.viewModel.inputs.findFriendsFacebookConnectCellDidDismissHeader()
+  }
+
+  func findFriendsFacebookConnectCellShowErrorAlert(alert: AlertError) {
+    self.viewModel.inputs.findFriendsFacebookConnectCellShowErrorAlert(alert)
   }
 }

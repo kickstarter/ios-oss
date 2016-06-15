@@ -417,6 +417,43 @@ public final class Koala {
     self.track(event: "Settings View")
   }
 
+  // MARK: Find Friends Events
+  public func trackCloseFacebookConnect(source source: FriendsSource) {
+    self.track(event: "Close Facebook Connect", properties: ["source": source.trackingString])
+  }
+
+  public func trackCloseFindFriends(source source: FriendsSource) {
+    self.track(event: "Close Find Friends", properties: ["source": source.trackingString])
+  }
+
+  public func trackDeclineFriendFollowAll(source source: FriendsSource) {
+    self.track(event: "Facebook Friend Decline Follow All", properties: ["source": source.trackingString])
+  }
+
+  public func trackFacebookConnect(source source: FriendsSource) {
+    self.track(event: "Facebook Connect", properties: ["source": source.trackingString])
+  }
+
+  public func trackFacebookConnectError(source source: FriendsSource) {
+    self.track(event: "Facebook Connect Error", properties: ["source": source.trackingString])
+  }
+
+  public func trackFindFriendsView(source source: FriendsSource) {
+    self.track(event: "Find Friends View", properties: ["source": source.trackingString])
+  }
+
+  public func trackFriendFollow(source source: FriendsSource) {
+    self.track(event: "Facebook Friend Follow", properties: ["source": source.trackingString])
+  }
+
+  public func trackFriendFollowAll(source source: FriendsSource) {
+    self.track(event: "Facebook Friend Follow All", properties: ["source": source.trackingString])
+  }
+
+  public func trackFriendUnfollow(source source: FriendsSource) {
+    self.track(event: "Facebook Friend Unfollow", properties: ["source": source.trackingString])
+  }
+
   // Private tracking method that merges in default properties.
   private func track(event event: String, properties: [String:AnyObject] = [:]) {
     self.client.track(

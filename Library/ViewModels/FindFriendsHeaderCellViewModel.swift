@@ -1,0 +1,62 @@
+import KsApi
+import ReactiveCocoa
+import ReactiveExtensions
+import Result
+import Prelude
+
+public protocol FindFriendsHeaderCellViewModelInputs {
+  /// Call when close button is tapped to dismiss this view
+  func closeButtonTapped()
+
+  /// Call to set source from whence this view was loaded
+  func configureWith(source source: FriendsSource)
+
+  /// Call when Find Friends button is tapped
+  func findFriendsButtonTapped()
+}
+
+public protocol FindFriendsHeaderCellViewModelOutputs {
+  /// Emits when should notify delegate to go to Find Friends screen
+  var notifyDelegateGoToFriends: Signal<(), NoError> { get }
+
+  /// Emits when should notify delegate to dismiss this view
+  var notifyDelegateToDismissHeader: Signal<(), NoError> { get }
+}
+
+public protocol FindFriendsHeaderCellViewModelType {
+  var inputs: FindFriendsHeaderCellViewModelInputs { get }
+  var outputs: FindFriendsHeaderCellViewModelOutputs { get }
+}
+
+public final class FindFriendsHeaderCellViewModel: FindFriendsHeaderCellViewModelType,
+  FindFriendsHeaderCellViewModelInputs, FindFriendsHeaderCellViewModelOutputs {
+
+  public init() {
+    self.notifyDelegateGoToFriends = self.findFriendsButtonTappedProperty.signal
+    self.notifyDelegateToDismissHeader = self.closeButtonTappedProperty.signal
+
+    self.configureWithProperty.signal
+      .takeWhen(self.closeButtonTappedProperty.signal)
+      .observeNext { AppEnvironment.current.koala.trackCloseFindFriends(source: $0) }
+  }
+
+  public var inputs: FindFriendsHeaderCellViewModelInputs { return self }
+  public var outputs: FindFriendsHeaderCellViewModelOutputs { return self }
+
+  private let closeButtonTappedProperty = MutableProperty()
+  public func closeButtonTapped() {
+    closeButtonTappedProperty.value = ()
+  }
+  private let configureWithProperty = MutableProperty<FriendsSource>(FriendsSource.activity)
+  public func configureWith(source source: FriendsSource) {
+    configureWithProperty.value = source
+  }
+  private let findFriendsButtonTappedProperty = MutableProperty()
+  public func findFriendsButtonTapped() {
+    findFriendsButtonTappedProperty.value = ()
+  }
+
+  public let notifyDelegateGoToFriends: Signal<(), NoError>
+  public let notifyDelegateToDismissHeader: Signal<(), NoError>
+
+}

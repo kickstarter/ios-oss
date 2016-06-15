@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="3ir-xv-YhI">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <scenes>
+        <!--FindFriendsViewController-->
+        <scene sceneID="zpH-iI-Tnd">
+            <objects>
+                <tableViewController storyboardIdentifier="Friends" title="FindFriendsViewController" id="3ir-xv-YhI" customClass="FindFriendsViewController" customModule="Kickstarter_Framework" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="100" sectionHeaderHeight="28" sectionFooterHeight="28" id="koP-bZ-7wD">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="FindFriendsStatsCell" rowHeight="181" id="ySV-qH-9sh" userLabel="Stats Cell" customClass="FindFriendsStatsCell" customModule="Kickstarter_Framework" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="375" height="181"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ySV-qH-9sh" id="0ad-Qs-ahI">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="181"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="UTl-0e-fPS" userLabel="Outermost Stats Stack View">
+                                            <rect key="frame" x="24" y="24" width="327" height="128"/>
+                                            <subviews>
+                                                <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" distribution="fillEqually" alignment="center" spacing="14" translatesAutoresizingMaskIntoConstraints="NO" id="YI6-hF-zT1" userLabel="Stats Stack View">
+                                                    <rect key="frame" x="0.0" y="0.0" width="327" height="68"/>
+                                                    <subviews>
+                                                        <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" alignment="center" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="dkb-CI-X1M" userLabel="Friends Stack View">
+                                                            <rect key="frame" x="0.0" y="11" width="100" height="47"/>
+                                                            <subviews>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="202" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IZg-yq-Iiq" customClass="StyledLabel" customModule="Library">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="100" height="21"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                    <userDefinedRuntimeAttributes>
+                                                                        <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Headline"/>
+                                                                        <userDefinedRuntimeAttribute type="string" keyPath="_color" value="Black"/>
+                                                                    </userDefinedRuntimeAttributes>
+                                                                </label>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Friends" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1PD-I8-AZB" customClass="StyledLabel" customModule="Library">
+                                                                    <rect key="frame" x="0.0" y="27" width="100" height="21"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                    <userDefinedRuntimeAttributes>
+                                                                        <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Subhead"/>
+                                                                        <userDefinedRuntimeAttribute type="string" keyPath="_color" value="Black"/>
+                                                                    </userDefinedRuntimeAttributes>
+                                                                </label>
+                                                            </subviews>
+                                                            <constraints>
+                                                                <constraint firstItem="1PD-I8-AZB" firstAttribute="width" secondItem="dkb-CI-X1M" secondAttribute="width" id="nRO-Mj-sXX"/>
+                                                                <constraint firstItem="IZg-yq-Iiq" firstAttribute="width" secondItem="dkb-CI-X1M" secondAttribute="width" id="vLo-zX-0lS"/>
+                                                            </constraints>
+                                                        </stackView>
+                                                        <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sTU-6O-U2y" userLabel="Divider View">
+                                                            <rect key="frame" x="114" y="0.0" width="100" height="68"/>
+                                                            <subviews>
+                                                                <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="V0H-Qb-an0">
+                                                                    <rect key="frame" x="49" y="0.0" width="1" height="6"/>
+                                                                    <color key="backgroundColor" red="0.57857875631313127" green="0.57857875631313127" blue="0.57857875631313127" alpha="1" colorSpace="calibratedRGB"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="width" constant="1" id="oPC-2M-oqh"/>
+                                                                    </constraints>
+                                                                </view>
+                                                            </subviews>
+                                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                            <constraints>
+                                                                <constraint firstItem="V0H-Qb-an0" firstAttribute="top" secondItem="sTU-6O-U2y" secondAttribute="top" id="Csm-8i-vOw"/>
+                                                                <constraint firstItem="V0H-Qb-an0" firstAttribute="centerX" secondItem="sTU-6O-U2y" secondAttribute="centerX" id="OrD-5B-pKd"/>
+                                                                <constraint firstItem="V0H-Qb-an0" firstAttribute="height" secondItem="sTU-6O-U2y" secondAttribute="height" id="uaC-GE-BfM"/>
+                                                            </constraints>
+                                                        </view>
+                                                        <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" alignment="center" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="o97-8g-xQm" userLabel="Backed Projects Stack View">
+                                                            <rect key="frame" x="228" y="1" width="100" height="68"/>
+                                                            <subviews>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="3,841" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="47i-yE-rkw" customClass="StyledLabel" customModule="Library">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="100" height="21"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                    <userDefinedRuntimeAttributes>
+                                                                        <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Headline"/>
+                                                                        <userDefinedRuntimeAttribute type="string" keyPath="_color" value="Black"/>
+                                                                    </userDefinedRuntimeAttributes>
+                                                                </label>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Backed projects" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cBy-sV-kkw" customClass="StyledLabel" customModule="Library">
+                                                                    <rect key="frame" x="0.0" y="27" width="100" height="41"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                    <userDefinedRuntimeAttributes>
+                                                                        <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Subhead"/>
+                                                                        <userDefinedRuntimeAttribute type="string" keyPath="_color" value="Black"/>
+                                                                    </userDefinedRuntimeAttributes>
+                                                                </label>
+                                                            </subviews>
+                                                            <constraints>
+                                                                <constraint firstItem="cBy-sV-kkw" firstAttribute="width" secondItem="o97-8g-xQm" secondAttribute="width" id="8Eb-3V-lER"/>
+                                                                <constraint firstItem="47i-yE-rkw" firstAttribute="width" secondItem="o97-8g-xQm" secondAttribute="width" id="v6T-iI-ZuQ"/>
+                                                            </constraints>
+                                                        </stackView>
+                                                    </subviews>
+                                                    <constraints>
+                                                        <constraint firstItem="V0H-Qb-an0" firstAttribute="height" secondItem="YI6-hF-zT1" secondAttribute="height" id="AEI-Fa-t6L"/>
+                                                    </constraints>
+                                                </stackView>
+                                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="vDC-z1-n0V" customClass="BorderButton" customModule="Library">
+                                                    <rect key="frame" x="0.0" y="84" width="327" height="44"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="44" id="nPj-J5-djO"/>
+                                                    </constraints>
+                                                    <inset key="contentEdgeInsets" minX="8" minY="0.0" maxX="8" maxY="0.0"/>
+                                                    <state key="normal" title="Follow all 202 friends"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="_color" value="Blue"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="_borderColor" value="Clear"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="_titleColorNormal" value="White"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="_titleColorHighlighted" value="Gray"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="_titleFontStyle" value="Subhead"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                    <connections>
+                                                        <action selector="followAllButtonTapped:" destination="ySV-qH-9sh" eventType="touchUpInside" id="iuZ-lc-h1D"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                        </stackView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="UTl-0e-fPS" firstAttribute="top" secondItem="0ad-Qs-ahI" secondAttribute="topMargin" constant="16" id="ICx-dR-obH"/>
+                                        <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="UTl-0e-fPS" secondAttribute="bottom" constant="16" id="VgV-qB-yWp"/>
+                                        <constraint firstItem="UTl-0e-fPS" firstAttribute="leading" secondItem="0ad-Qs-ahI" secondAttribute="leadingMargin" constant="16" id="oiI-c3-2Ad"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="UTl-0e-fPS" secondAttribute="trailing" constant="16" id="ymB-gG-uTG"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" red="0.86111108319999996" green="0.97082921529999999" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <edgeInsets key="layoutMargins" top="16" left="16" bottom="16" right="16"/>
+                                <connections>
+                                    <outlet property="backedProjectsCountLabel" destination="47i-yE-rkw" id="BD7-3g-5Mr"/>
+                                    <outlet property="followAllButton" destination="vDC-z1-n0V" id="rvX-NB-FIr"/>
+                                    <outlet property="friendCountLabel" destination="IZg-yq-Iiq" id="Tvg-hs-NTn"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="FindFriendsFriendFollowCell" rowHeight="100" id="Ltx-Pe-78v" userLabel="Friend Cell" customClass="FindFriendsFriendFollowCell" customModule="Kickstarter_Framework" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="209" width="375" height="100"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Ltx-Pe-78v" id="fZb-lz-3pv">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RFf-Q1-mM0">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="1"/>
+                                            <color key="backgroundColor" red="0.92073074489999995" green="0.92073074489999995" blue="0.92073074489999995" alpha="1" colorSpace="calibratedRGB"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="1" id="pMO-Ev-HCN"/>
+                                            </constraints>
+                                        </view>
+                                        <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" alignment="center" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="MLU-qf-b92">
+                                            <rect key="frame" x="8" y="8" width="359" height="72"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="zack-sears" translatesAutoresizingMaskIntoConstraints="NO" id="qnB-Mz-bGC" customClass="CircleAvatarImageView" customModule="Library">
+                                                    <rect key="frame" x="0.0" y="6" width="60" height="60"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="60" id="3QS-c4-z90"/>
+                                                        <constraint firstAttribute="width" secondItem="qnB-Mz-bGC" secondAttribute="height" multiplier="1:1" id="vah-JM-Rbp"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" alignment="top" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="pSU-8p-qlV">
+                                                    <rect key="frame" x="72" y="0.0" width="102" height="72"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Some guy" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JeV-tQ-YIl" customClass="StyledLabel" customModule="Library">
+                                                            <rect key="frame" x="0.0" y="0.0" width="77" height="21"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <nil key="highlightedColor"/>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Footnote"/>
+                                                                <userDefinedRuntimeAttribute type="string" keyPath="_color" value="Black"/>
+                                                                <userDefinedRuntimeAttribute type="string" keyPath="_weight" value="Medium"/>
+                                                            </userDefinedRuntimeAttributes>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Brooklyn, NY" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jqG-T2-tdL" customClass="StyledLabel" customModule="Library">
+                                                            <rect key="frame" x="0.0" y="26" width="100" height="21"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <nil key="highlightedColor"/>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Caption1"/>
+                                                                <userDefinedRuntimeAttribute type="string" keyPath="_color" value="GrayDark"/>
+                                                            </userDefinedRuntimeAttributes>
+                                                        </label>
+                                                        <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="Vj1-JC-55L">
+                                                            <rect key="frame" x="0.0" y="51" width="102" height="21"/>
+                                                            <subviews>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="1,000 backed" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RRc-eG-DSa" customClass="StyledLabel" customModule="Library">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="90" height="21"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                    <userDefinedRuntimeAttributes>
+                                                                        <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Footnote"/>
+                                                                        <userDefinedRuntimeAttribute type="string" keyPath="_color" value="Black"/>
+                                                                    </userDefinedRuntimeAttributes>
+                                                                </label>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" misplaced="YES" text="1 created" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TWI-wp-Kfi" customClass="StyledLabel" customModule="Library">
+                                                                    <rect key="frame" x="102" y="0.0" width="0.0" height="21"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                    <userDefinedRuntimeAttributes>
+                                                                        <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Footnote"/>
+                                                                        <userDefinedRuntimeAttribute type="string" keyPath="_color" value="Black"/>
+                                                                    </userDefinedRuntimeAttributes>
+                                                                </label>
+                                                            </subviews>
+                                                        </stackView>
+                                                    </subviews>
+                                                </stackView>
+                                                <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9qs-oP-aoV">
+                                                    <rect key="frame" x="186" y="14" width="173" height="44"/>
+                                                    <subviews>
+                                                        <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sL7-Yr-Ljj" customClass="BorderButton" customModule="Library">
+                                                            <rect key="frame" x="0.0" y="0.0" width="76" height="44"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="44" id="xOv-pL-YNx"/>
+                                                            </constraints>
+                                                            <inset key="contentEdgeInsets" minX="16" minY="0.0" maxX="16" maxY="0.0"/>
+                                                            <state key="normal" title="Follow"/>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="string" keyPath="_color" value="Blue"/>
+                                                                <userDefinedRuntimeAttribute type="string" keyPath="_borderColor" value="Clear"/>
+                                                                <userDefinedRuntimeAttribute type="string" keyPath="_titleColorNormal" value="White"/>
+                                                                <userDefinedRuntimeAttribute type="string" keyPath="_titleColorHighlighted" value="GrayLight"/>
+                                                                <userDefinedRuntimeAttribute type="string" keyPath="_titleFontStyle" value="Footnote"/>
+                                                                <userDefinedRuntimeAttribute type="string" keyPath="normalLocalizedKey" value="social_following.friend.buttons.follow"/>
+                                                            </userDefinedRuntimeAttributes>
+                                                            <connections>
+                                                                <action selector="followButtonTapped:" destination="Ltx-Pe-78v" eventType="touchUpInside" id="H4m-NN-Cpt"/>
+                                                            </connections>
+                                                        </button>
+                                                        <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="HAe-75-PHH" customClass="BorderButton" customModule="Library">
+                                                            <rect key="frame" x="76" y="0.0" width="97" height="44"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="44" id="Mhz-yi-akA"/>
+                                                            </constraints>
+                                                            <inset key="contentEdgeInsets" minX="16" minY="0.0" maxX="16" maxY="0.0"/>
+                                                            <state key="normal" title="Following"/>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="string" keyPath="_color" value="GrayLight"/>
+                                                                <userDefinedRuntimeAttribute type="string" keyPath="_borderColor" value="Clear"/>
+                                                                <userDefinedRuntimeAttribute type="string" keyPath="_titleColorNormal" value="GrayDark"/>
+                                                                <userDefinedRuntimeAttribute type="string" keyPath="_titleColorHighlighted" value="GrayDark"/>
+                                                                <userDefinedRuntimeAttribute type="string" keyPath="_titleFontStyle" value="Footnote"/>
+                                                                <userDefinedRuntimeAttribute type="string" keyPath="normalLocalizedKey" value="social_following.friend.buttons.following"/>
+                                                            </userDefinedRuntimeAttributes>
+                                                            <connections>
+                                                                <action selector="unfollowButtonTapped:" destination="Ltx-Pe-78v" eventType="touchUpInside" id="r9d-TI-dYC"/>
+                                                            </connections>
+                                                        </button>
+                                                    </subviews>
+                                                </stackView>
+                                            </subviews>
+                                        </stackView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="RFf-Q1-mM0" firstAttribute="top" secondItem="fZb-lz-3pv" secondAttribute="top" id="AIR-th-MMW"/>
+                                        <constraint firstAttribute="trailing" secondItem="RFf-Q1-mM0" secondAttribute="trailing" id="Bmy-vo-DxX"/>
+                                        <constraint firstItem="MLU-qf-b92" firstAttribute="leading" secondItem="fZb-lz-3pv" secondAttribute="leadingMargin" id="Rc1-b3-3WQ"/>
+                                        <constraint firstItem="MLU-qf-b92" firstAttribute="top" secondItem="fZb-lz-3pv" secondAttribute="topMargin" id="SVG-Zh-7xA"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="MLU-qf-b92" secondAttribute="trailing" id="buI-IK-a9q"/>
+                                        <constraint firstItem="RFf-Q1-mM0" firstAttribute="leading" secondItem="fZb-lz-3pv" secondAttribute="leading" id="o9V-jo-d0A"/>
+                                        <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="MLU-qf-b92" secondAttribute="bottom" id="qWA-zF-k49"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <edgeInsets key="layoutMargins" top="16" left="16" bottom="16" right="16"/>
+                                <connections>
+                                    <outlet property="avatarImageView" destination="qnB-Mz-bGC" id="PCk-dh-N4W"/>
+                                    <outlet property="followButton" destination="sL7-Yr-Ljj" id="gQK-Cm-cYE"/>
+                                    <outlet property="friendLocationLabel" destination="jqG-T2-tdL" id="6US-H1-fDq"/>
+                                    <outlet property="friendNameLabel" destination="JeV-tQ-YIl" id="Icj-eT-WNN"/>
+                                    <outlet property="projectsBackedLabel" destination="RRc-eG-DSa" id="Wkr-KK-YXZ"/>
+                                    <outlet property="projectsCreatedLabel" destination="TWI-wp-Kfi" id="NJB-Tz-fha"/>
+                                    <outlet property="unfollowButton" destination="HAe-75-PHH" id="7jy-OS-EsL"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="FindFriendsFacebookConnectCell" rowHeight="200" id="9Vt-9F-2Mp" userLabel="Facebook Connect Cell" customClass="FindFriendsFacebookConnectCell" customModule="Kickstarter_Framework" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="309" width="375" height="200"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="9Vt-9F-2Mp" id="yHZ-jB-hHI">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="200"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Abj-86-lVQ">
+                                            <rect key="frame" x="321" y="8" width="46" height="30"/>
+                                            <state key="normal" title="Button">
+                                                <color key="titleColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="closeButtonTapped:" destination="9Vt-9F-2Mp" eventType="touchUpInside" id="8hE-89-UBa"/>
+                                            </connections>
+                                        </button>
+                                        <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="3me-Wq-2g0">
+                                            <rect key="frame" x="36" y="24" width="303" height="146"/>
+                                            <subviews>
+                                                <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="QUU-La-sfv">
+                                                    <rect key="frame" x="0.0" y="0.0" width="303" height="87"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Friends Recommend the Best Projects" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KOC-28-Z5S" customClass="StyledLabel" customModule="Library">
+                                                            <rect key="frame" x="6" y="0.0" width="293" height="21"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <nil key="highlightedColor"/>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Subhead"/>
+                                                                <userDefinedRuntimeAttribute type="string" keyPath="_weight" value="Medium"/>
+                                                                <userDefinedRuntimeAttribute type="string" keyPath="_color" value="Black"/>
+                                                                <userDefinedRuntimeAttribute type="string" keyPath="localizedKey" value="social_following.header.friends_recommend_the_best_projects"/>
+                                                            </userDefinedRuntimeAttributes>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Connect with Facebook to follow your friends and get notified whenever they launch or back a new project." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EQb-ga-DsL" customClass="StyledLabel" customModule="Library">
+                                                            <rect key="frame" x="2" y="26" width="299" height="61"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <nil key="highlightedColor"/>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Caption1"/>
+                                                                <userDefinedRuntimeAttribute type="string" keyPath="_color" value="Black"/>
+                                                                <userDefinedRuntimeAttribute type="string" keyPath="localizedKey" value="social_following.header.connect_with_facebook_to_follow"/>
+                                                            </userDefinedRuntimeAttributes>
+                                                        </label>
+                                                    </subviews>
+                                                </stackView>
+                                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8iH-eM-TfY" customClass="BorderButton" customModule="Library">
+                                                    <rect key="frame" x="0.0" y="102" width="303" height="44"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="44" id="NiL-CU-9Ez"/>
+                                                    </constraints>
+                                                    <state key="normal" title="Connect with Facebook"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="_color" value="FacebookBlue"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="_borderColor" value="Clear"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="_titleColorNormal" value="White"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                    <connections>
+                                                        <action selector="facebookConnectButtonTapped:" destination="9Vt-9F-2Mp" eventType="touchUpInside" id="IAI-r5-f0j"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                        </stackView>
+                                    </subviews>
+                                    <color key="backgroundColor" red="0.86111108319999996" green="0.97082921529999999" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <constraints>
+                                        <constraint firstAttribute="trailingMargin" secondItem="Abj-86-lVQ" secondAttribute="trailing" id="4Zq-fA-Zxw"/>
+                                        <constraint firstItem="Abj-86-lVQ" firstAttribute="top" secondItem="yHZ-jB-hHI" secondAttribute="topMargin" id="CBN-DJ-4uC"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="3me-Wq-2g0" secondAttribute="trailing" constant="28" id="QUK-6H-1lK"/>
+                                        <constraint firstItem="3me-Wq-2g0" firstAttribute="leading" secondItem="yHZ-jB-hHI" secondAttribute="leadingMargin" constant="28" id="Zkw-Eu-dyH"/>
+                                        <constraint firstItem="3me-Wq-2g0" firstAttribute="top" secondItem="yHZ-jB-hHI" secondAttribute="topMargin" constant="16" id="amW-OA-D5H"/>
+                                        <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="3me-Wq-2g0" secondAttribute="bottom" constant="16" id="laA-lv-ua4"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <edgeInsets key="layoutMargins" top="16" left="16" bottom="16" right="16"/>
+                                <connections>
+                                    <outlet property="closeButton" destination="Abj-86-lVQ" id="FKY-Aj-bYd"/>
+                                    <outlet property="facebookConnectButton" destination="8iH-eM-TfY" id="vgi-rT-wzJ"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="3ir-xv-YhI" id="Phv-Ur-RLx"/>
+                            <outlet property="delegate" destination="3ir-xv-YhI" id="kKL-gk-3sS"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Follow your friends!" id="6FA-85-bp3"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bZS-hO-REq" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1423.5" y="425.5"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="zack-sears" width="160" height="160"/>
+    </resources>
+</document>

@@ -7,6 +7,21 @@ import Result
 public protocol ActitiviesViewModelInputs {
   func activityUpdateCellTappedProjectImage(activity activity: Activity)
 
+  /// Call when the Find Friends section is dismissed.
+  func findFriendsHeaderCellDismissHeader()
+
+  /// Call when controller should transition to Friends view.
+  func findFriendsHeaderCellGoToFriends()
+
+  /// Call when user updates to be Facebook Connected.
+  func findFriendsFacebookConnectCellDidFacebookConnectUser()
+
+  /// Call when the Facebook Connect section is dismissed.
+  func findFriendsFacebookConnectCellDidDismissHeader()
+
+  /// Call when an alert should be shown.
+  func findFriendsFacebookConnectCellShowErrorAlert(alert: AlertError)
+
   /// Call when the login button is pressed in the logged-out empty state.
   func loginButtonPressed()
 
@@ -16,10 +31,10 @@ public protocol ActitiviesViewModelInputs {
   /// Call when an activity is tapped.
   func tappedActivity(activity: Activity)
 
-  /// Call when a user session ends
+  /// Call when a user session ends.
   func userSessionEnded()
 
-  /// Call when a user session has started
+  /// Call when a user session has started.
   func userSessionStarted()
 
   /// Call when the view appears.
@@ -38,11 +53,29 @@ public protocol ActivitiesViewModelOutputs {
   /// Emits an array of activities that should be displayed
   var activities: Signal<[Activity], NoError> { get }
 
+  /// Emits when should remove Facebook Connect section
+  var deleteFacebookConnectSection: Signal<(), NoError> { get }
+
+  /// Emits when should remove Find Friends section.
+  var deleteFindFriendsSection: Signal<(), NoError> { get }
+
+  /// Emits when should transition to Friends view with source (.Activity).
+  var goToFriends: Signal<FriendsSource, NoError> { get }
+
   /// Emits a project and ref tag that should be used to present a project controller.
   var goToProject: Signal<(Project, RefTag), NoError> { get }
 
   /// Emits a boolean that indicates if the activities are refreshing.
   var isRefreshing: Signal<Bool, NoError> { get }
+
+  /// Emits an AlertError to be displayed.
+  var showFacebookConnectErrorAlert: Signal<AlertError, NoError> { get }
+
+  /// Emits whether Facebook Connect header cell should show with the .Activity source.
+  var showFacebookConnectSection: Signal<(FriendsSource, Bool), NoError> { get }
+
+  /// Emits whether Find Friends header cell should show with the .Activity source.
+  var showFindFriendsSection: Signal<(FriendsSource, Bool), NoError> { get }
 
   /// Emits `true` when the logged-in empty state should be shown, and `false` when it should be hidden.
   var showLoggedInEmptyState: Signal<Bool, NoError> { get }
@@ -104,7 +137,6 @@ ActivitiesViewModelOutputs {
       self.userSessionEndedProperty.signal
       ])
       .map { AppEnvironment.current.apiService.isAuthenticated }
-      .skipRepeats(==)
 
     self.showLoggedInEmptyState = isLoggedIn
       .takeWhen(noActivities)
@@ -117,16 +149,72 @@ ActivitiesViewModelOutputs {
 
     self.goToProject = Signal.merge(
       self.tappedActivityProjectImage.signal.map { $0?.project },
-      self.tappedActivityProperty.signal.map { $0?.project }
-      )
+      self.tappedActivityProperty.signal.map { $0?.project })
       .ignoreNil()
       .map { ($0, RefTag.activity) }
+
+    self.showFindFriendsSection = isLoggedIn
+      .map {
+        (.activity,
+        ($0 == true &&
+        (AppEnvironment.current.currentUser?.facebookConnected ?? false) &&
+        !AppEnvironment.current.userDefaults.hasClosedFindFriendsInActivity))
+      }
+      .skipRepeats(==)
+
+    self.showFacebookConnectSection = isLoggedIn
+      .map {
+        (.activity,
+        ($0 == true &&
+        !(AppEnvironment.current.currentUser?.facebookConnected ?? false) &&
+        !AppEnvironment.current.userDefaults.hasClosedFacebookConnectInActivity))
+      }
+      .skipRepeats(==)
+
+    self.deleteFacebookConnectSection = self.dismissFacebookConnectSectionProperty.signal
+
+    self.showFacebookConnectErrorAlert = self.showFacebookConnectErrorAlertProperty.signal.ignoreNil()
+
+    self.deleteFindFriendsSection = self.dismissFindFriendsSectionProperty.signal
+
+    self.goToFriends = Signal.merge(
+      self.goToFriendsProperty.signal,
+      self.userFacebookConnectedProperty.signal
+      )
+      .mapConst(.activity)
+
+    self.dismissFacebookConnectSectionProperty.signal
+      .observeNext {
+        AppEnvironment.current.userDefaults.hasClosedFacebookConnectInActivity = true
+        AppEnvironment.current.koala.trackCloseFacebookConnect(source: FriendsSource.activity)
+    }
+
+    self.dismissFindFriendsSectionProperty.signal
+      .observeNext {
+        AppEnvironment.current.userDefaults.hasClosedFindFriendsInActivity = true
+        AppEnvironment.current.koala.trackCloseFindFriends(source: FriendsSource.activity)
+    }
 
     self.viewWillAppearProperty.signal
       .observeNext { AppEnvironment.current.koala.trackActivities() }
   }
   // swiftlint:enable function_body_length
-
+  private let dismissFacebookConnectSectionProperty = MutableProperty()
+  public func findFriendsFacebookConnectCellDidDismissHeader() {
+    dismissFacebookConnectSectionProperty.value = ()
+  }
+  private let dismissFindFriendsSectionProperty = MutableProperty()
+  public func findFriendsHeaderCellDismissHeader() {
+    dismissFindFriendsSectionProperty.value = ()
+  }
+  private let goToFriendsProperty = MutableProperty()
+  public func findFriendsHeaderCellGoToFriends() {
+    goToFriendsProperty.value = ()
+  }
+  private let showFacebookConnectErrorAlertProperty = MutableProperty<AlertError?>(nil)
+  public func findFriendsFacebookConnectCellShowErrorAlert(alert: AlertError) {
+    showFacebookConnectErrorAlertProperty.value = alert
+  }
   private let viewWillAppearProperty = MutableProperty(())
   public func viewWillAppear() {
     self.viewWillAppearProperty.value = ()
@@ -134,6 +222,10 @@ ActivitiesViewModelOutputs {
   private let loginButtonPressedProperty = MutableProperty(())
   public func loginButtonPressed() {
     self.loginButtonPressedProperty.value = ()
+  }
+  private let userFacebookConnectedProperty = MutableProperty()
+  public func findFriendsFacebookConnectCellDidFacebookConnectUser() {
+    userFacebookConnectedProperty.value = ()
   }
   private let userSessionStartedProperty = MutableProperty(())
   public func userSessionStarted() {
@@ -161,10 +253,16 @@ ActivitiesViewModelOutputs {
   }
 
   public let activities: Signal<[Activity], NoError>
+  public let deleteFacebookConnectSection: Signal<(), NoError>
+  public let deleteFindFriendsSection: Signal<(), NoError>
   public let showLoggedInEmptyState: Signal<Bool, NoError>
   public let showLoggedOutEmptyState: Signal<Bool, NoError>
   public let isRefreshing: Signal<Bool, NoError>
+  public let goToFriends: Signal<FriendsSource, NoError>
   public let goToProject: Signal<(Project, RefTag), NoError>
+  public let showFindFriendsSection: Signal<(FriendsSource, Bool), NoError>
+  public let showFacebookConnectSection: Signal<(FriendsSource, Bool), NoError>
+  public let showFacebookConnectErrorAlert: Signal<AlertError, NoError>
 
   public var inputs: ActitiviesViewModelInputs { return self }
   public var outputs: ActivitiesViewModelOutputs { return self }

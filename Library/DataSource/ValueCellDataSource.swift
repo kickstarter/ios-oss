@@ -233,9 +233,32 @@ public class ValueCellDataSource: NSObject, UICollectionViewDataSource, UITableV
    - returns: The resuableId associated with an (item, section) pair. Marked as internal as it's
               only useful for testing.
    */
-  internal func reusableId(item item: Int, section: Int) -> String {
-    return self.values[section][item].reusableId
+  internal final func reusableId(item item: Int, section: Int) -> String? {
+    if !self.values.isEmpty && self.values.count >= section &&
+      !self.values[section].isEmpty && self.values[section].count >= item {
+
+      return self.values[section][item].reusableId
+    }
+    return nil
   }
+
+  /**
+   Only useful for testing.
+
+   - parameter itemSection: A pair containing an item index and a section index.
+
+   - returns: The value of Any? type that is contained within the section at the item index.
+   */
+  internal final subscript(testItemSection itemSection: (item: Int, section: Int)) -> Any? {
+    let (item, section) = itemSection
+
+    if !self.values.isEmpty && self.values.count >= section &&
+      !self.values[section].isEmpty && self.values[section].count >= item {
+      return self.values[itemSection.section][itemSection.item].value
+    }
+    return nil
+  }
+
 
   private func padValuesForSection(section: Int) {
     guard self.values.count <= section else { return }

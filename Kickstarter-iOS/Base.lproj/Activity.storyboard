@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="JNq-N5-e9l">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="JNq-N5-e9l">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
@@ -29,7 +29,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="ActivitiesViewController" id="tvn-h8-peN" customClass="ActivitiesViewController" customModule="Kickstarter_Framework" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="2ep-oh-IdZ">
-                        <rect key="frame" x="0.0" y="0.0" width="400" height="1800"/>
+                        <rect key="frame" x="0.0" y="0.0" width="400" height="2400"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.94999999999999996" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -144,7 +144,22 @@
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="fSP-QO-zY4" id="aoT-ga-ZXm">
                                     <rect key="frame" x="0.0" y="0.0" width="400" height="32"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TKu-iC-yHr">
+                                            <rect key="frame" x="0.0" y="0.0" width="400" height="32"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="32" id="mzO-Z2-4qy"/>
+                                            </constraints>
+                                        </view>
+                                    </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="TKu-iC-yHr" secondAttribute="trailing" id="XGV-4G-W8O"/>
+                                        <constraint firstAttribute="bottom" secondItem="TKu-iC-yHr" secondAttribute="bottom" id="iyY-KW-gpW"/>
+                                        <constraint firstItem="TKu-iC-yHr" firstAttribute="top" secondItem="aoT-ga-ZXm" secondAttribute="top" id="tez-So-OPz"/>
+                                        <constraint firstItem="TKu-iC-yHr" firstAttribute="leading" secondItem="aoT-ga-ZXm" secondAttribute="leading" id="wnG-c9-N8N"/>
+                                    </constraints>
                                     <edgeInsets key="layoutMargins" top="16" left="16" bottom="16" right="16"/>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -179,7 +194,7 @@
                                             </userDefinedRuntimeAttributes>
                                         </view>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Michael McGregor launched a project: Bjork Swan Dress" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" minimumScaleFactor="0.80000001192092896" translatesAutoresizingMaskIntoConstraints="NO" id="7VW-JN-QN4" userLabel="Project name">
-                                            <rect key="frame" x="32" y="64" width="336" height="51.5"/>
+                                            <rect key="frame" x="32" y="64" width="336" height="52"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
@@ -228,10 +243,10 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="NsI-Zb-hrU">
-                                            <rect key="frame" x="16" y="16" width="368" height="57"/>
+                                            <rect key="frame" x="16" y="16" width="368" height="56"/>
                                             <subviews>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cosmic-surgery" translatesAutoresizingMaskIntoConstraints="NO" id="3NU-cC-xMr">
-                                                    <rect key="frame" x="0.0" y="0.0" width="100" height="57"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="100" height="56"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" secondItem="3NU-cC-xMr" secondAttribute="height" multiplier="16:9" id="3UZ-oj-Zma"/>
                                                         <constraint firstAttribute="width" constant="100" id="ceC-gd-qef"/>
@@ -240,7 +255,7 @@
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Project was not successfully funded." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QjY-Z7-por" customClass="StyledLabel" customModule="Library">
                                                     <rect key="frame" x="124" y="8" width="244" height="41"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Callout"/>
@@ -592,6 +607,196 @@
                                 </tableViewCellContentView>
                                 <edgeInsets key="layoutMargins" top="16" left="16" bottom="16" right="16"/>
                             </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="FindFriendsFacebookConnectCell" rowHeight="280" id="lJH-K2-kWl" userLabel="Facebook Connect Cell" customClass="FindFriendsFacebookConnectCell" customModule="Kickstarter_Framework" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="1756" width="400" height="280"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="lJH-K2-kWl" id="R6r-9U-xhE">
+                                    <rect key="frame" x="0.0" y="0.0" width="400" height="280"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9xM-7l-cFl">
+                                            <rect key="frame" x="356" y="0.0" width="44" height="44"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="44" id="SnY-6v-2tv"/>
+                                                <constraint firstAttribute="width" constant="44" id="s5N-Hf-PMh"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                            <state key="normal" title="X">
+                                                <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="closeButtonTapped:" destination="lJH-K2-kWl" eventType="touchUpInside" id="Kql-fl-Hpo"/>
+                                            </connections>
+                                        </button>
+                                        <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="5n4-Vf-hTS" userLabel="Facebook Connect Stack View">
+                                            <rect key="frame" x="44" y="34" width="312" height="146"/>
+                                            <subviews>
+                                                <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="Zdp-Hx-Gxh">
+                                                    <rect key="frame" x="0.0" y="0.0" width="312" height="87"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Friends Recommend the Best Projects" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s12-8U-gCF" customClass="StyledLabel" customModule="Library">
+                                                            <rect key="frame" x="10" y="0.0" width="293" height="21"/>
+                                                            <accessibility key="accessibilityConfiguration">
+                                                                <accessibilityTraits key="traits" staticText="YES" notEnabled="YES"/>
+                                                            </accessibility>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <nil key="highlightedColor"/>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Subhead"/>
+                                                                <userDefinedRuntimeAttribute type="string" keyPath="_color" value="Black"/>
+                                                                <userDefinedRuntimeAttribute type="string" keyPath="localizedKey" value="social_following.header.friends_recommend_the_best_projects"/>
+                                                                <userDefinedRuntimeAttribute type="string" keyPath="_weight" value="Medium"/>
+                                                            </userDefinedRuntimeAttributes>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Connect with Facebook to follow your friends and get notified whenever they launch or back a new project." lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y2x-aC-oGR" customClass="StyledLabel" customModule="Library">
+                                                            <rect key="frame" x="7" y="26" width="299" height="61"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <nil key="highlightedColor"/>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Caption1"/>
+                                                                <userDefinedRuntimeAttribute type="string" keyPath="_color" value="Black"/>
+                                                                <userDefinedRuntimeAttribute type="string" keyPath="localizedKey" value="social_following.header.connect_with_facebook_to_follow"/>
+                                                            </userDefinedRuntimeAttributes>
+                                                        </label>
+                                                    </subviews>
+                                                </stackView>
+                                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pr8-3v-tUB" customClass="BorderButton" customModule="Library">
+                                                    <rect key="frame" x="0.0" y="102" width="312" height="44"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="44" id="K2E-FU-Rxp"/>
+                                                    </constraints>
+                                                    <state key="normal" title="Connect with Facebook"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="_color" value="FacebookBlue"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="_borderColor" value="Clear"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="_titleColorNormal" value="White"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="_titleColorHighlighted" value="White"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="_titleFontStyle" value="Subhead"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="normalLocalizedKey" value="general.social.buttons.connect_with_facebook"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                    <connections>
+                                                        <action selector="facebookConnectButtonTapped:" destination="lJH-K2-kWl" eventType="touchUpInside" id="cF3-51-mbl"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                        </stackView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="leadingMargin" secondItem="5n4-Vf-hTS" secondAttribute="leading" constant="-28" id="6n9-v0-rOn"/>
+                                        <constraint firstItem="9xM-7l-cFl" firstAttribute="top" secondItem="R6r-9U-xhE" secondAttribute="top" id="cFb-wV-bPj"/>
+                                        <constraint firstItem="5n4-Vf-hTS" firstAttribute="top" secondItem="9xM-7l-cFl" secondAttribute="bottom" constant="-10" id="eff-Cc-P7c"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="5n4-Vf-hTS" secondAttribute="trailing" constant="28" id="v1Y-7F-CJK"/>
+                                        <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="5n4-Vf-hTS" secondAttribute="bottom" constant="28" id="wDy-sX-u7X"/>
+                                        <constraint firstAttribute="trailing" secondItem="9xM-7l-cFl" secondAttribute="trailing" id="wjY-am-yC5"/>
+                                    </constraints>
+                                    <edgeInsets key="layoutMargins" top="16" left="16" bottom="16" right="16"/>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" red="0.86111108319999996" green="0.97082921529999999" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <edgeInsets key="layoutMargins" top="16" left="16" bottom="16" right="16"/>
+                                <connections>
+                                    <outlet property="closeButton" destination="9xM-7l-cFl" id="fDW-PU-X6Q"/>
+                                    <outlet property="facebookConnectButton" destination="pr8-3v-tUB" id="gn3-f7-9uz"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="PaddingHalf" rowHeight="16" id="8bF-yD-Jff" userLabel="---paddingHalf---" customClass="StaticTableViewCell" customModule="Library">
+                                <rect key="frame" x="0.0" y="2036" width="400" height="16"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8bF-yD-Jff" id="t9o-63-Z1E">
+                                    <rect key="frame" x="0.0" y="0.0" width="400" height="16"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7UN-Sx-1o1">
+                                            <rect key="frame" x="0.0" y="0.0" width="400" height="16"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="16" id="dVe-sp-inm"/>
+                                            </constraints>
+                                        </view>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="7UN-Sx-1o1" firstAttribute="top" secondItem="t9o-63-Z1E" secondAttribute="top" id="4Lb-Iv-M9o"/>
+                                        <constraint firstAttribute="trailing" secondItem="7UN-Sx-1o1" secondAttribute="trailing" id="D5t-Az-3Ru"/>
+                                        <constraint firstItem="7UN-Sx-1o1" firstAttribute="leading" secondItem="t9o-63-Z1E" secondAttribute="leading" id="bg4-N2-StR"/>
+                                        <constraint firstAttribute="bottom" secondItem="7UN-Sx-1o1" secondAttribute="bottom" id="ycb-Hc-XJk"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="FindFriendsHeaderCell" rowHeight="280" id="02F-G4-hOr" customClass="FindFriendsHeaderCell" customModule="Kickstarter_Framework" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="2052" width="400" height="280"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="02F-G4-hOr" id="RKb-PD-7pu">
+                                    <rect key="frame" x="0.0" y="0.0" width="400" height="280"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cx3-nx-9Qa">
+                                            <rect key="frame" x="356" y="0.0" width="44" height="44"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="44" id="U26-4f-mbj"/>
+                                                <constraint firstAttribute="width" constant="44" id="k2f-aQ-dU9"/>
+                                            </constraints>
+                                            <state key="normal" title="X">
+                                                <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="closeButtonTapped:" destination="02F-G4-hOr" eventType="touchUpInside" id="IEn-Do-fkx"/>
+                                            </connections>
+                                        </button>
+                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="Yu8-eY-Wzu">
+                                            <rect key="frame" x="44" y="34" width="312" height="132"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Connect with your friends to find projects that you'll love, together." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DlH-tM-otR" customClass="StyledLabel" customModule="Library">
+                                                    <rect key="frame" x="16" y="16" width="280" height="41"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Subhead"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="_color" value="Black"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="localizedKey" value="social_following.header.connect_with_your_friends_to_find_projects"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="_weight" value="Medium"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                </label>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JV5-Jl-yS3" customClass="BorderButton" customModule="Library">
+                                                    <rect key="frame" x="16" y="72" width="280" height="44"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="44" id="YLH-Dz-Js8"/>
+                                                    </constraints>
+                                                    <state key="normal" title="Find your friends"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="_color" value="Blue"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="_borderColor" value="Clear"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="_titleColorNormal" value="White"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="_titleColorHighlighted" value="White"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="_titleFontStyle" value="Subhead"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                    <connections>
+                                                        <action selector="findFriendsButtonTapped:" destination="02F-G4-hOr" eventType="touchUpInside" id="g42-fd-7cU"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                            <edgeInsets key="layoutMargins" top="16" left="16" bottom="16" right="16"/>
+                                        </stackView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="trailingMargin" secondItem="Yu8-eY-Wzu" secondAttribute="trailing" constant="28" id="4gL-Wy-bwc"/>
+                                        <constraint firstItem="Yu8-eY-Wzu" firstAttribute="leading" secondItem="RKb-PD-7pu" secondAttribute="leadingMargin" constant="28" id="AF5-Zo-Mmy"/>
+                                        <constraint firstAttribute="trailing" secondItem="Cx3-nx-9Qa" secondAttribute="trailing" id="j4R-NZ-F79"/>
+                                        <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="Yu8-eY-Wzu" secondAttribute="bottom" constant="16" id="qrK-it-lfe"/>
+                                        <constraint firstItem="Yu8-eY-Wzu" firstAttribute="top" secondItem="Cx3-nx-9Qa" secondAttribute="bottom" constant="-10" id="uLi-LV-i1z"/>
+                                        <constraint firstItem="Cx3-nx-9Qa" firstAttribute="top" secondItem="RKb-PD-7pu" secondAttribute="top" id="xJ0-aU-fKs"/>
+                                    </constraints>
+                                    <edgeInsets key="layoutMargins" top="16" left="16" bottom="16" right="16"/>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" red="0.86111108319999996" green="0.97082921529999999" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <edgeInsets key="layoutMargins" top="16" left="16" bottom="16" right="16"/>
+                                <connections>
+                                    <outlet property="closeButton" destination="Cx3-nx-9Qa" id="u7f-Sc-rMA"/>
+                                    <outlet property="findFriendsButton" destination="JV5-Jl-yS3" id="jFo-ly-XLG"/>
+                                </connections>
+                            </tableViewCell>
                         </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="tvn-h8-peN" id="g2Q-5V-zpL"/>
@@ -601,7 +806,7 @@
                     <navigationItem key="navigationItem" id="UYl-3m-Ykk"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="400" height="1800"/>
+                    <size key="freeformSize" width="400" height="2400"/>
                     <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="ifw-fv-O5y">
                         <autoresizingMask key="autoresizingMask"/>
                         <connections>

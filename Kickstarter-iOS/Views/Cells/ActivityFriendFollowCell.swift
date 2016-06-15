@@ -4,7 +4,7 @@ import ReactiveCocoa
 import KsApi
 
 internal final class ActivityFriendFollowCell: UITableViewCell, ValueCell {
-  private let viewModel: ActivityFriendFollowViewModel = ActivityFriendFollowViewModel()
+  private let viewModel: ActivityFriendFollowCellViewModel = ActivityFriendFollowCellViewModel()
 
   @IBOutlet internal weak var friendImageView: UIImageView!
   @IBOutlet internal weak var friendLabel: UILabel!
@@ -27,11 +27,11 @@ internal final class ActivityFriendFollowCell: UITableViewCell, ValueCell {
   }
 
   func configureWith(value value: Activity) {
-    self.viewModel.inputs.activity(value)
+    self.viewModel.inputs.configureWith(activity: value)
   }
 
   @IBAction
   internal func followButtonPressed() {
-    self.viewModel.inputs.followButtonPressed()
+    self.viewModel.inputs.followButtonTapped()
   }
 }

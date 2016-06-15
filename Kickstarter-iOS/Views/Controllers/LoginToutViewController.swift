@@ -47,6 +47,7 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
     self.signupButton |> signupWithEmailButtonStyle
   }
 
+// swiftlint:disable function_body_length
   override func bindViewModel() {
     self.viewModel.outputs.startLogin
       .observeForUI()
@@ -98,12 +99,17 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
       .observeNext { [weak self] _ in self?.attemptFacebookLogin()
     }
 
-    self.viewModel.errors.showFacebookError
+    self.viewModel.outputs.showFacebookErrorAlert
       .observeForUI()
-      .observeNext { [weak self] (title, message) in
-        self?.showAlert(title: title, message: message)
+      .observeNext { [weak self] error in
+        self?.presentViewController(
+          UIAlertController.alertController(forError: error),
+          animated: true,
+          completion: nil
+        )
     }
   }
+  // swiftlint:enable function_body_length
 
   internal func configureWith(loginIntent intent: LoginIntent) {
     self.viewModel.inputs.loginIntent(intent)
@@ -205,14 +211,6 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
       let svc = SFSafariViewController.help(helpType, baseURL: ServerConfig.production.webBaseUrl)
       self.presentViewController(svc, animated: true, completion: nil)
     }
-  }
-
-  private func showAlert(title title: String, message: String) {
-    self.presentViewController(
-      UIAlertController.alert(title, message: message, handler: nil),
-      animated: true,
-      completion: nil
-    )
   }
 
   // MARK: Facebook Login

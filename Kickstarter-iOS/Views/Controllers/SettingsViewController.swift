@@ -74,6 +74,12 @@ internal final class SettingsViewController: UIViewController {
     self.viewModel.outputs.updateCurrentUser
       .observeNext { user in AppEnvironment.updateCurrentUser(user) }
 
+    self.viewModel.outputs.goToFindFriends
+      .observeForUI()
+      .observeNext { [weak self] in
+        self?.goToFindFriends()
+    }
+
     self.backingsButton.rac.selected = self.viewModel.outputs.backingsSelected
     self.commentsButton.rac.selected = self.viewModel.outputs.commentsSelected
     self.creatorStackView.rac.hidden = self.viewModel.outputs.creatorNotificationsHidden
@@ -98,6 +104,17 @@ internal final class SettingsViewController: UIViewController {
   private func goToAppStore(link link: String) {
     guard let url = NSURL(string: link) else { return }
     UIApplication.sharedApplication().openURL(url)
+  }
+
+  private func goToFindFriends() {
+    guard let friendVC = UIStoryboard(name: "Friends", bundle: nil)
+      .instantiateInitialViewController() as? FindFriendsViewController
+    else {
+      fatalError("Could not instantiate FindFriendsViewController.")
+    }
+
+    friendVC.configureWith(source: .settings)
+    self.navigationController?.pushViewController(friendVC, animated: true)
   }
 
   private func goToHelpType(helpType: HelpType) {
