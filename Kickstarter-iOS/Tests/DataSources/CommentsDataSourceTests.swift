@@ -1,8 +1,8 @@
 import XCTest
 @testable import Kickstarter_iOS
 @testable import Library
-@testable import KsApi_TestHelpers
 @testable import KsApi
+@testable import KsApi_TestHelpers
 
 final class CommentsDataSourceTests: XCTestCase {
   typealias Section = CommentsDataSource.Section

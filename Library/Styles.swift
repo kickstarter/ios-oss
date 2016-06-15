@@ -1,5 +1,5 @@
-import UIKit.UIColor
-import UIKit.UIFont
+// swiftlint:disable type_name
+import UIKit
 
 public enum FontStyle: String {
   case Body

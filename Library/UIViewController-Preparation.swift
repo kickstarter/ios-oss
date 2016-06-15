@@ -34,13 +34,22 @@ extension UIViewController {
   }
 
   internal func ksr_viewDidLoad(animated: Bool) {
-    bindViewModel()
+    self.bindViewModel()
     self.ksr_viewDidLoad(animated)
+    self.bindStyles()
   }
 
+  /**
+   The entry point to bind all view model outputs. Called just before `viewDidLoad`.
+   */
   public func bindViewModel() {
   }
 
+  /**
+   The entry point to bind all styles to UI elements. Called just after `viewDidLoad`.
+   */
+  public func bindStyles() {
+  }
 }
 
 extension UIViewController {

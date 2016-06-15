@@ -7,19 +7,43 @@ import Prelude
 import FBSDKCoreKit
 
 internal final class FacebookConfirmationViewController: UIViewController {
-
-  @IBOutlet weak var emailLabel: StyledLabel!
+  @IBOutlet weak var confirmationLabel: UILabel!
+  @IBOutlet weak var createAccountButton: UIButton!
+  @IBOutlet weak var emailLabel: UILabel!
+  @IBOutlet weak var helpButton: UIButton!
+  @IBOutlet weak var loginButton: UIButton!
+  @IBOutlet weak var loginLabel: UILabel!
+  @IBOutlet weak var newsletterLabel: UILabel!
   @IBOutlet weak var newsletterSwitch: UISwitch!
-  @IBOutlet weak var createAccountButton: BorderButton!
-  @IBOutlet weak var helpButton: BorderButton!
-  @IBOutlet weak var loginButton: BorderButton!
 
   let viewModel: FacebookConfirmationViewModelType = FacebookConfirmationViewModel()
 
   override func viewDidLoad() {
     super.viewDidLoad()
-
     self.viewModel.inputs.viewDidLoad()
+  }
+
+  override func bindStyles() {
+    self |> baseControllerStyle
+
+    self.confirmationLabel
+      |> UILabel.lens.textColor .~ .ksr_textDefault
+      |> UILabel.lens.font .~ .ksr_body
+
+    self.createAccountButton |> createNewAccountButtonStyle
+
+    self.emailLabel
+      |> UILabel.lens.textColor .~ .ksr_textDefault
+      |> UILabel.lens.font .~ .ksr_headline
+      |> UILabel.lens.textAlignment .~ .Center
+
+    self.helpButton |> disclaimerButtonStyle
+
+    self.loginButton |> loginWithEmailButtonStyle
+
+    self.loginLabel |> UILabel.lens.font .~ .ksr_caption1
+
+    self.newsletterLabel |> newsletterLabelStyle
   }
 
   override func bindViewModel() {

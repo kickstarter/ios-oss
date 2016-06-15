@@ -1,33 +1,21 @@
 import Library
 import Prelude
+import Prelude_UIKit
 import ReactiveCocoa
 import UIKit
 
 internal final class LoginViewController: UIViewController {
   @IBOutlet internal weak var emailTextField: UITextField!
+  @IBOutlet internal weak var forgotPasswordButton: UIButton!
+  @IBOutlet internal weak var formBackgroundView: UIView!
+  @IBOutlet internal weak var formDividerView: UIView!
+  @IBOutlet internal weak var loginButton: UIButton!
   @IBOutlet internal weak var passwordTextField: UITextField!
-  @IBOutlet internal weak var loginButton: BorderButton!
-  @IBOutlet internal weak var forgotPasswordButton: BorderButton!
 
   internal let viewModel: LoginViewModelType = LoginViewModel()
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    self.title = localizedString(key: "login.navbar.title", defaultValue: "Log in")
-    self.view.backgroundColor = Color.OffWhite.toUIColor()
-
-    emailTextField.borderStyle = .None
-    passwordTextField.borderStyle = .None
-    emailTextField.layer.borderColor = Color.Gray.toUIColor().CGColor
-    passwordTextField.layer.borderColor = Color.Gray.toUIColor().CGColor
-    emailTextField.layer.borderWidth = 1.0
-    passwordTextField.layer.borderWidth = 1.0
-
-    emailTextField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
-    emailTextField.leftViewMode = UITextFieldViewMode.Always
-
-    passwordTextField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
-    passwordTextField.leftViewMode = UITextFieldViewMode.Always
 
     let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
     self.view.addGestureRecognizer(tap)
@@ -38,15 +26,28 @@ internal final class LoginViewController: UIViewController {
     self.viewModel.inputs.viewWillAppear()
   }
 
+  override func bindStyles() {
+    self |> loginControllerStyle
+
+    self.loginButton |> loginButtonStyle
+
+    self.forgotPasswordButton |> forgotPasswordButtonStyle
+
+    self.emailTextField |> emailFieldStyle
+      <> UITextField.lens.returnKeyType .~ .Next
+
+    self.passwordTextField |> passwordFieldStyle
+      <> UITextField.lens.returnKeyType .~ .Go
+
+    self.formDividerView |> UIView.lens.backgroundColor .~ .ksr_gray
+
+    self.formBackgroundView |> cardStyle()
+  }
+
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.viewModel.outputs.isFormValid
-      .observeForUI()
-      .observeNext { [weak self] isValid in
-        self?.loginButton.alpha = isValid ? 1.0 : 0.5
-        self?.loginButton.enabled = isValid
-    }
+    self.loginButton.rac.enabled = self.viewModel.outputs.isFormValid
 
     self.viewModel.outputs.passwordTextFieldBecomeFirstResponder
       .observeForUI()

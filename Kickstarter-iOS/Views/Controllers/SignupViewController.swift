@@ -1,11 +1,14 @@
 import Library
+import Prelude
+import Prelude_UIKit
 import UIKit
 
 internal final class SignupViewController: UIViewController {
   @IBOutlet private weak var emailTextField: UITextField!
+  @IBOutlet private weak var formBackgroundView: UIView!
   @IBOutlet private weak var nameTextField: UITextField!
-  @IBOutlet private weak var passwordTextField: UITextField!
   @IBOutlet private weak var newsletterSwitch: UISwitch!
+  @IBOutlet private weak var passwordTextField: UITextField!
   @IBOutlet private weak var signupButton: UIButton!
 
   private let viewModel: SignupViewModelType = SignupViewModel()
@@ -13,6 +16,14 @@ internal final class SignupViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     self.viewModel.inputs.viewDidLoad()
+  }
+
+  override func bindStyles() {
+    self |> signupControllerStyle
+
+    self.signupButton |> signupButtonStyle
+
+    self.formBackgroundView |> cardStyle()
   }
 
   override func bindViewModel() {

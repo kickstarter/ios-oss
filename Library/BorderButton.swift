@@ -10,7 +10,6 @@ private let DefaultCornerRadius: CGFloat = 6.0
 
 @IBDesignable
 public final class BorderButton: UIButton {
-
   public var color: Color? = .White {
     didSet {
       self.backgroundColor = color?.toUIColor() ?? Color.mismatchedColor

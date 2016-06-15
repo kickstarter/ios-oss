@@ -6,40 +6,39 @@ import Library
 import Prelude
 
 internal final class TwoFactorViewController: UIViewController {
-
-  @IBOutlet weak var codeTextField: UITextField!
-  @IBOutlet weak var resendButton: BorderButton!
-  @IBOutlet weak var submitButton: BorderButton!
-
   private let viewModel: TwoFactorViewModelType = TwoFactorViewModel()
 
-  override func viewDidLoad() {
-    super.viewDidLoad()
-
-    self.title = localizedString(key: "two_factor.title", defaultValue: "Verify")
-    self.view.backgroundColor = Color.OffWhite.toUIColor()
-
-    codeTextField.borderStyle = .None
-    codeTextField.layer.borderColor = Color.Gray.toUIColor().CGColor
-    codeTextField.layer.borderWidth = 1.0
-    codeTextField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
-    codeTextField.leftViewMode = .Always
-  }
+  @IBOutlet weak var codeTextField: UITextField!
+  @IBOutlet weak var formBackgroundView: UIView!
+  @IBOutlet weak var resendButton: UIButton!
+  @IBOutlet weak var submitButton: UIButton!
+  @IBOutlet weak var titleLabel: UILabel!
 
   override func viewWillAppear(animated: Bool) {
     super.viewWillAppear(animated)
     self.viewModel.inputs.viewWillAppear()
   }
 
+  override func bindStyles() {
+    self |> twoFactorControllerStyle
+
+    self.codeTextField |> tfaCodeFieldStyle
+
+    self.formBackgroundView |> cardStyle()
+
+    self.resendButton |> neutralButtonStyle
+
+    self.submitButton |> positiveButtonStyle
+
+    self.titleLabel
+      |> UILabel.lens.textColor .~ .ksr_textDefault
+      |> UILabel.lens.font .~ .ksr_body
+  }
+
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.viewModel.outputs.isFormValid
-      .observeForUI()
-      .observeNext { [weak self] isValid in
-        self?.submitButton.alpha = isValid ? 1.0 : 0.5
-        self?.submitButton.enabled = isValid
-    }
+    self.submitButton.rac.enabled = self.viewModel.outputs.isFormValid
 
     self.viewModel.outputs.logIntoEnvironment
       .observeNext { [weak self] env in

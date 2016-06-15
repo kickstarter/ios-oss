@@ -9,10 +9,11 @@ import Prelude
 import FBSDKLoginKit
 
 internal final class LoginToutViewController: UIViewController, MFMailComposeViewControllerDelegate {
-  @IBOutlet internal weak var fbLoginButton: BorderButton!
+  @IBOutlet internal weak var fbLoginButton: UIButton!
+  @IBOutlet internal weak var fbDisclaimer: UILabel!
+  @IBOutlet internal weak var helpButton: UIButton!
   @IBOutlet internal weak var loginButton: UIButton!
-  @IBOutlet internal weak var helpButton: BorderButton!
-  @IBOutlet internal weak var signupButton: BorderButton!
+  @IBOutlet internal weak var signupButton: UIButton!
 
   internal let viewModel: LoginToutViewModelType = LoginToutViewModel()
 
@@ -30,13 +31,20 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
       self.navigationItem.leftBarButtonItem = .close(self, selector: #selector(closeButtonPressed))
     }
     self.navigationItem.rightBarButtonItem = .help(self, selector: #selector(helpButtonPressed))
-
-    self.view.backgroundColor = Color.OffWhite.toUIColor()
   }
 
   override func viewWillAppear(animated: Bool) {
     super.viewWillAppear(animated)
     self.viewModel.inputs.viewWillAppear()
+  }
+
+  override func bindStyles() {
+    self |> loginToutControllerStyle
+    self.fbLoginButton |> facebookButtonStyle
+    self.fbDisclaimer |> disclaimerLabelStyle
+    self.helpButton |> disclaimerButtonStyle
+    self.loginButton |> loginWithEmailButtonStyle
+    self.signupButton |> signupWithEmailButtonStyle
   }
 
   override func bindViewModel() {

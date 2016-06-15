@@ -1,12 +1,12 @@
-import Foundation
-import UIKit
-import ReactiveExtensions
-import ReactiveCocoa
 import Library
 import Prelude
+import Prelude_UIKit
+import ReactiveCocoa
+import ReactiveExtensions
+import UIKit
 
 internal final class ResetPasswordViewController: UIViewController {
-
+  @IBOutlet weak var emailTextFieldBackgroundView: UIView!
   @IBOutlet weak var emailTextField: UITextField!
   @IBOutlet weak var resetPasswordButton: BorderButton!
 
@@ -14,27 +14,19 @@ internal final class ResetPasswordViewController: UIViewController {
 
   internal func configureWith(email email: String?) {
     guard let emailText = email else { return }
-
     self.viewModel.inputs.emailChanged(emailText)
   }
 
   override func viewDidLoad() {
     super.viewDidLoad()
-
-    self.title = localizedString(key: "forgot_password.title", defaultValue: "Forgot your password?")
-    self.view.backgroundColor = Color.OffWhite.toUIColor()
-
-    self.emailTextField.borderStyle = .None
-    self.emailTextField.layer.borderColor = Color.Gray.toUIColor().CGColor
-    self.emailTextField.layer.borderWidth = 1.0
-    self.emailTextField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
-    self.emailTextField.leftViewMode = .Always
-
     self.viewModel.inputs.viewDidLoad()
   }
 
-  override func viewWillAppear(animated: Bool) {
-    super.viewWillAppear(animated)
+  override func bindStyles() {
+    self |> resetPasswordControllerStyle
+    self.emailTextField |> emailFieldStyle
+    self.emailTextFieldBackgroundView |> cardStyle()
+    self.resetPasswordButton |> resetPasswordButtonStyle
   }
 
   override func bindViewModel() {
@@ -46,12 +38,7 @@ internal final class ResetPasswordViewController: UIViewController {
         self?.emailTextField.text = email
       }
 
-    self.viewModel.outputs.formIsValid
-      .observeForUI()
-      .observeNext { [weak self] isValid in
-        self?.resetPasswordButton.enabled = isValid
-        self?.resetPasswordButton.alpha = isValid ? 1.0 : 0.5
-      }
+    self.resetPasswordButton.rac.enabled = self.viewModel.outputs.formIsValid
 
     self.viewModel.outputs.showResetSuccess
       .observeForUI()
