@@ -23,11 +23,7 @@ ActivityFriendFollowViewModelOutputs {
     self.friendImageURL = activity.map { ($0.user?.avatar.medium).flatMap(NSURL.init) }
 
     self.title = activity.map {
-      localizedString(
-        key: "activity.user_name_is_now_following_you",
-        defaultValue: "%{user_name} is now following you!",
-        substitutions: ["user_name": $0.user?.name ?? ""]
-      )
+      Strings.activity_user_name_is_now_following_you(user_name: $0.user?.name ?? "")
     }
 
     self.hideFollowButton = activity.mapConst(false)

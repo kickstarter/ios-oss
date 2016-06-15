@@ -1,4 +1,3 @@
-import UIKit
 @testable import Kickstarter_Framework
 import Library
 
