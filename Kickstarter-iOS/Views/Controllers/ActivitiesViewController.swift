@@ -111,7 +111,7 @@ internal final class ActivitiesViewController: UITableViewController {
         )
     }
   }
-  // swiftlint:ensable function_body_length
+  // swiftlint:enable function_body_length
 
   internal override func tableView(tableView: UITableView,
                           willDisplayCell cell: UITableViewCell,
