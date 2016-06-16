@@ -31,7 +31,7 @@ internal final class SettingsViewController: UIViewController {
     super.viewDidLoad()
     self.viewModel.inputs.viewDidLoad()
     self.viewModel.inputs.canSendEmail(MFMailComposeViewController.canSendMail())
-    self.view.backgroundColor = Color.OffWhite.toUIColor()
+    self.view.backgroundColor = .ksr_offWhite
   }
 
   // swiftlint:disable function_body_length

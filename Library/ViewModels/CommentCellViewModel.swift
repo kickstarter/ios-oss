@@ -40,10 +40,10 @@ CommentCellViewModelOutputs {
     let isNotDeleted = comment.map { $0.deletedAt == nil }
 
     self.bodyColor = isNotDeleted.skipRepeats()
-      .map { $0 ? Color.TextDefault.toUIColor() : Color.TextDarkGray.toUIColor() }
+      .map { $0 ? .ksr_textDefault : .ksr_darkGrayText }
 
     self.bodyFont = isNotDeleted.skipRepeats()
-      .map { $0 ? FontStyle.Body.toUIFont() : italicizeFont(FontStyle.Body.toUIFont()) }
+      .map { $0 ? .ksr_body : italicizeFont(.ksr_body) }
 
     self.creatorHidden = self.commentProjectViewer.signal.ignoreNil()
       .map { comment, project, viewer in

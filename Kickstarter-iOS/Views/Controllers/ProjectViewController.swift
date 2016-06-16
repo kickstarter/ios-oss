@@ -17,7 +17,7 @@ internal final class ProjectViewController: UITableViewController {
     self.tableView.estimatedRowHeight = 300.0
     self.tableView.rowHeight = UITableViewAutomaticDimension
     self.tableView.dataSource = dataSource
-    self.tableView.backgroundColor = Color.OffWhite.toUIColor()
+    self.tableView.backgroundColor = .ksr_offWhite
 
     self.navigationItem.rightBarButtonItem = .close(self, selector: #selector(closeButtonPressed))
   }

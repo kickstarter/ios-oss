@@ -10,8 +10,8 @@ internal final class ThanksCategoryCell: UICollectionViewCell, ValueCell {
   @IBOutlet private weak var liveProjectCountLabel: StyledLabel!
 
   func configureWith(value category: KsApi.Category) {
-    self.bgView.backgroundColor = UIColorFromCategoryId(category.id) ?? Color.TextDefault.toUIColor()
-    self.exploreLabel.color = shouldOverlayBeDark(category) ? Color.Black : Color.White
+    self.bgView.backgroundColor = UIColorFromCategoryId(category.id) ?? .ksr_textDefault
+    self.exploreLabel.textColor = shouldOverlayBeDark(category) ? .ksr_black : .ksr_white
     self.exploreLabel.text = localizedString(key: "category_promo.explore_category",
                                              defaultValue: "Explore %{category_name}",
                                              count: nil,

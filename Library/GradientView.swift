@@ -46,10 +46,10 @@ public final class GradientView: UIView {
   }
 
   public func setGradient(points: [(color: UIColor?, location: Float)]) -> Void {
-    self.backgroundColor = UIColor.clearColor()
+    self.backgroundColor = .ksr_clear
 
     self.gradientLayer?.colors = points.map { point in
-      point.color?.CGColor ?? UIColor.clearColor().CGColor
+      point.color?.CGColor ?? UIColor.ksr_clear.CGColor
     }
 
     self.gradientLayer?.locations = points.map { point in

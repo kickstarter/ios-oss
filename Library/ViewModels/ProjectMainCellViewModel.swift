@@ -157,8 +157,8 @@ private func bannerMessageFor(project project: Project) -> String? {
 
 private func bannerColorFor(state state: Project.State) -> UIColor {
   switch state {
-  case .successful:                           return Color.GreenLight.toUIColor()
-  case .canceled, .failed, .suspended:        return Color.GrayMedium.toUIColor()
-  case .live, .started, .submitted, .purged:  return .clearColor()
+  case .successful:                           return .ksr_lightGreen
+  case .canceled, .failed, .suspended:        return .ksr_mediumGray
+  case .live, .started, .submitted, .purged:  return .ksr_clear
   }
 }

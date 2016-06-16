@@ -47,7 +47,7 @@ public final class ProfileProjectCellViewModel: ProfileProjectCellViewModelType,
     self.progressHidden = project.map { $0.state != .live }
     self.state = project.map { $0.state.rawValue }
     self.stateBackgroundColor = project.map {
-      $0.state == .successful ? Color.Green.toUIColor() : Color.GrayDark.toUIColor()
+      $0.state == .successful ? .ksr_green : .ksr_darkGray
     }
     self.stateHidden = project.map { $0.state == .live }
   }

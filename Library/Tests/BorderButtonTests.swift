@@ -18,19 +18,19 @@ final class BorderButtonTests: XCTestCase {
     let button = BorderButton()
 
     button._color = "Green"
-    XCTAssertEqual(Color.Green.toUIColor(), button.backgroundColor)
+    XCTAssertEqual(.ksr_green, button.backgroundColor)
 
     button._borderColor = "Mint"
-    XCTAssertEqual(Color.Mint.toUIColor().CGColor, button.layer.borderColor)
+    XCTAssertEqual(UIColor.ksr_mint.CGColor, button.layer.borderColor)
 
     button._titleColorNormal = "White"
-    XCTAssertEqual(Color.White.toUIColor(), button.titleColorForState(.Normal))
+    XCTAssertEqual(.ksr_white, button.titleColorForState(.Normal))
 
     button._titleColorHighlighted = "GrayDark"
-    XCTAssertEqual(Color.GrayDark.toUIColor(), button.titleColorForState(.Highlighted))
+    XCTAssertEqual(.ksr_darkGray, button.titleColorForState(.Highlighted))
 
     button._titleFontStyle = "Headline"
-    XCTAssertEqual(FontStyle.Headline.toUIFont(), button.titleLabel?.font)
+    XCTAssertEqual(UIFont.ksr_headline, button.titleLabel?.font)
 
     button._titleWeight = "Medium"
     XCTAssertEqual("Medium", button.titleWeight?.rawValue)

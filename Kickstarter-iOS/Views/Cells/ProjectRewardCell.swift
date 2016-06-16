@@ -34,7 +34,7 @@ internal final class ProjectRewardCell: UITableViewCell, ValueCell {
     self.shippingSummaryLabel.rac.text = self.viewModel.outputs.shippingSummary
     self.youSelectedView.rac.hidden = self.viewModel.outputs.backerLabelHidden
     self.rac.backgroundColor = self.viewModel.outputs.backerLabelHidden
-      .map { $0 ? .whiteColor() : Color.GreenLight.toUIColor() }
+      .map { $0 ? .ksr_white : .ksr_lightGreen }
   }
   // swiftlint:enable function_body_length
 
