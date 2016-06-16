@@ -27,7 +27,6 @@
 		0151AEBB1C8F811C0067F1BE /* BorderButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0151AEB91C8F811C0067F1BE /* BorderButton.swift */; };
 		0154A93B1CA1A17800DB9BA4 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0151AE871C8F60370067F1BE /* UIColor.swift */; };
 		0156B1101D06239F000C4252 /* CacheProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0156B10F1D06239F000C4252 /* CacheProtocol.swift */; };
-		0156B1111D06239F000C4252 /* CacheProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0156B10F1D06239F000C4252 /* CacheProtocol.swift */; };
 		0156B1AB1D0728A0000C4252 /* CacheProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0156B1A91D0728A0000C4252 /* CacheProtocol.swift */; };
 		0156B1AF1D072CD1000C4252 /* CacheProtocolTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0156B1AC1D072CB8000C4252 /* CacheProtocolTests.swift */; };
 		0156B1B01D072CD1000C4252 /* CacheProtocolTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0156B1AC1D072CB8000C4252 /* CacheProtocolTests.swift */; };
@@ -3658,7 +3657,6 @@
 				A721DF621C8CF503000CB97C /* TrackingClientType.swift in Sources */,
 				A7F441B91D005A9400FE6FC5 /* CommentCellViewModel.swift in Sources */,
 				A7DC83961C9DBBE700BB2B44 /* RefTag.swift in Sources */,
-				A72E75FF1CC3B76700983066 /* UIViewController-BindToViewModel.swift in Sources */,
 				A7CC13D51D00E6CF00035C52 /* FindFriendsFriendFollowCellViewModel.swift in Sources */,
 				A755116C1C8642C3005355CF /* UIPress-Extensions.swift in Sources */,
 				01A7A4C01C9690220036E553 /* UITextField+LocalizedPlaceholderKey.swift in Sources */,
@@ -3834,8 +3832,6 @@
 				A72C3A311D00F28C0075227E /* SettingsViewModel.swift in Sources */,
 				A75511BB1C8647D9005355CF /* UILabel+LocalizedKey.swift in Sources */,
 				A7208C3F1CCAC86800E3DAB3 /* FacebookAppDelegateProtocol.swift in Sources */,
-				0156B1111D06239F000C4252 /* CacheProtocol.swift in Sources */,
-				A72E76001CC3B76700983066 /* UIViewController-BindToViewModel.swift in Sources */,
 				A7CC13DC1D00E6CF00035C52 /* FindFriendsViewModel.swift in Sources */,
 				A75511BC1C8647D9005355CF /* UILabel+SimpleHTML.swift in Sources */,
 				A73379611D0EDFEE00C91445 /* UIViewController-Preparation.swift in Sources */,
@@ -3993,7 +3989,6 @@
 				A7A051E61CD12D9A005AF5E2 /* CommentsDataSource.swift in Sources */,
 				A71003DA1CDCFA2500B4F4D7 /* MessageThreadsViewController.swift in Sources */,
 				A72C3AB71D00FB1F0075227E /* DiscoveryExpandedSelectableRow.swift in Sources */,
-				01F8AE021CEB61D80026F220 /* UpdateActivityItemProvider.swift in Sources */,
 				A7180BAA1CCED598001711CA /* CommentsViewController.swift in Sources */,
 				A72C3AB01D00F9C10075227E /* DiscoveryFiltersDataSource.swift in Sources */,
 				A75A292B1CE0B7EA00D35E5C /* ProjectBannerCell.swift in Sources */,
@@ -4003,7 +3998,6 @@
 				A762F01D1C8CD2B3005581A4 /* ActivitySuccessCell.swift in Sources */,
 				A75CBDE81C8A26F800758C55 /* AppDelegateViewModel.swift in Sources */,
 				A72C3AA71D00F7A30075227E /* SortPagerViewController.swift in Sources */,
-				0127FC5A1C98C10D00E335C6 /* MFMailComposeViewController.swift in Sources */,
 				A7C795B41C873AC90081977F /* DiscoveryViewController.swift in Sources */,
 				A7CC14571D00E79200035C52 /* ProjectActivityItemProvider.swift in Sources */,
 				A7CC14451D00E75F00035C52 /* FindFriendsDataSource.swift in Sources */,
@@ -4108,7 +4102,6 @@
 				A72C3AA91D00F96C0075227E /* DiscoveryPageViewController.swift in Sources */,
 				01DEFB951CB44A5D003709C0 /* TwoFactorViewController.swift in Sources */,
 				A7FC8C571C8F449500C3B49B /* ProjectSubpagesCell.swift in Sources */,
-				014A8D961CE38942003BF51C /* SLComposeViewController.swift in Sources */,
 				A72C3AA31D00F7170075227E /* DiscoveryPagesDataSource.swift in Sources */,
 				A75CFA7D1CCE56C4004CD5FA /* SearchProjectCell.swift in Sources */,
 				A75A292D1CE0B95300D35E5C /* MessagesDataSource.swift in Sources */,
@@ -4117,7 +4110,6 @@
 				0146E3221CC0296900082C5B /* FacebookConfirmationViewController.swift in Sources */,
 				A7CC14581D00E79200035C52 /* SafariActivity.swift in Sources */,
 				59322F061CD27B1000C90CC6 /* ProfileDataSource.swift in Sources */,
-				01F8ADFE1CEA63000026F220 /* SafariActivity.swift in Sources */,
 				A72C3AB81D00FB1F0075227E /* DiscoverySelectableRowCell.swift in Sources */,
 				014A8E181CE3CD86003BF51C /* ThanksProjectCell.swift in Sources */,
 				A7285CC41C8E915B00D83297 /* ProjectMainCell.swift in Sources */,
@@ -4150,8 +4142,6 @@
 				018F1F831C8E182200643DAA /* LoginViewController.swift in Sources */,
 				5970739F1D07277100B00444 /* ProjectNotificationsDataSource.swift in Sources */,
 				A7A051E51CD12D9A005AF5E2 /* CommentsDataSource.swift in Sources */,
-				A7CC14601D00E79200035C52 /* UIAlertController.swift in Sources */,
-				014A8D991CE38959003BF51C /* ProjectActivityItemProvider.swift in Sources */,
 				597073991D06346700B00444 /* ProjectNotificationsViewController.swift in Sources */,
 				A75AB2251C8B407F002FC3E6 /* ActivityFriendBackingCell.swift in Sources */,
 				A72C39F41D00F27E0075227E /* SettingsViewController.swift in Sources */,
