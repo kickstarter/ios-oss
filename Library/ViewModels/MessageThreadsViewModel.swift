@@ -95,8 +95,8 @@ MessageThreadsViewModelOutputs {
 
     self.mailboxName = mailbox.map {
       switch $0 {
-      case .inbox:  return localizedString(key: "messages.navigation.inbox", defaultValue: "Inbox")
-      case .sent:   return localizedString(key: "messages.navigation.sent", defaultValue: "Sent")
+      case .inbox:  return Strings.messages_navigation_inbox()
+      case .sent:   return Strings.messages_navigation_sent()
       }
     }
 

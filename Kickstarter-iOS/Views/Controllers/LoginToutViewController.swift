@@ -144,12 +144,9 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
         self?.viewModel.inputs.helpTypeButtonPressed(helpType)
         }))
     }
-
-    helpAlert.addAction(UIAlertAction(title: localizedString(key: "login_tout.help_sheet.cancel",
-      defaultValue: "Cancel"),
+    helpAlert.addAction(UIAlertAction(title: Strings.login_tout_help_sheet_cancel(),
       style: .Cancel,
-      handler: nil)
-    )
+      handler: nil))
 
     // iPad provision
     helpAlert.popoverPresentationController?.barButtonItem = self.navigationItem.rightBarButtonItem

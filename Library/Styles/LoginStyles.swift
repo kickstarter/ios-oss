@@ -4,7 +4,7 @@ import UIKit
 
 public let createNewAccountButtonStyle = positiveButtonStyle
   <> UIButton.lens.titleText(forState: .Normal) %~ { _ in
-    localizedString(key: "facebook_confirmation.button", defaultValue: "Create new account")
+    Strings.facebook_confirmation_button()
 }
 
 public let disclaimerButtonStyle =
@@ -19,7 +19,7 @@ public let disclaimerLabelStyle = UILabel.lens.font .~ .ksr_footnote
 
 public let emailFieldStyle = formFieldStyle
   <> UITextField.lens.placeholder %~ { _ in
-    localizedString(key: "login.placeholder_email", defaultValue: "Email")
+    Strings.login_placeholder_email()
   }
   <> UITextField.lens.keyboardType .~ .EmailAddress
 
@@ -30,19 +30,19 @@ public let forgotPasswordButtonStyle =
 
 public let loginButtonStyle = positiveButtonStyle
   <> UIButton.lens.titleText(forState: .Normal) %~ { _ in
-    localizedString(key: "login_tout.default_intent.traditional_login_button", defaultValue: "Log in")
+    Strings.login_tout_back_intent_traditional_login_button()
 }
 
 public let loginControllerStyle = baseControllerStyle
   <> UIViewController.lens.title %~ { _ in
-    localizedString(key: "login.navbar.title", defaultValue: "Log in")
+    Strings.login_navbar_title()
 }
 
 public let loginToutControllerStyle = baseControllerStyle
 
 public let loginWithEmailButtonStyle = borderButtonStyle
   <> UIButton.lens.titleText(forState: .Normal) %~ { _ in
-    localizedString(key: "login.buttons.log_in_email", defaultValue: "Log in with email")
+    Strings.login_buttons_log_in_email()
 }
 
 public let newsletterLabelStyle = UILabel.lens.font .~ .ksr_subhead
@@ -50,31 +50,31 @@ public let newsletterLabelStyle = UILabel.lens.font .~ .ksr_subhead
 
 public let passwordFieldStyle = formFieldStyle
   <> UITextField.lens.placeholder %~ { _ in
-    localizedString(key: "login.placeholder_password", defaultValue: "Password")
+    Strings.login_placeholder_password()
   }
   <> UITextField.lens.secureTextEntry .~ true
 
 public let resetPasswordButtonStyle = positiveButtonStyle
   <> UIButton.lens.titleText(forState: .Normal) %~ { _ in
-    localizedString(key: "forgot_password.buttons.reset_my_password", defaultValue: "Reset my password")
+    Strings.forgot_password_buttons_reset_my_password()
 }
 
 public let resetPasswordControllerStyle = baseControllerStyle
   <> UIViewController.lens.title %~ { _ in
-    localizedString(key: "forgot_password.title", defaultValue: "Forgot your password?")
+    Strings.forgot_password_title()
 }
 
 public let signupButtonStyle = positiveButtonStyle
   <> UIButton.lens.titleText(forState: .Normal) %~ { _ in
-    localizedString(key: "login_tout.default_intent.traditional_signup_button", defaultValue: "Sign up")
+    Strings.login_tout_default_intent_traditional_signup_button()
 }
 
 public let signupControllerStyle = baseControllerStyle
-  <> UIViewController.lens.title .~ localizedString(key: "adf", defaultValue: "Sign up")
+  <> UIViewController.lens.title .~ Strings.signup_button()
 
 public let signupWithEmailButtonStyle = borderButtonStyle
   <> UIButton.lens.titleText(forState: .Normal) %~ { _ in
-    localizedString(key: "signup.button_email", defaultValue: "Sign up with email")
+    Strings.signup_button_email()
 }
 
 public let tfaCodeFieldStyle = formFieldStyle
@@ -82,10 +82,10 @@ public let tfaCodeFieldStyle = formFieldStyle
   <> UITextField.lens.font .~ .ksr_title1
   <> UITextField.lens.keyboardType .~ .NumberPad
   <> UITextField.lens.placeholder %~ { _ in
-    localizedString(key: "two_factor.code_placeholder", defaultValue: "Enter code")
+    Strings.two_factor_code_placeholder()
 }
 
 public let twoFactorControllerStyle = baseControllerStyle
   <> UIViewController.lens.title %~ { _ in
-    localizedString(key: "two_factor.title", defaultValue: "Verify")
+    Strings.two_factor_title()
 }

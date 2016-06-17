@@ -149,7 +149,7 @@ CommentDialogViewModelOutputs, CommentDialogViewModelErrors {
     self.presentError = commentPostedEvent.errors()
       .map { env in
         env.errorMessages.first ??
-          localizedString(key: "comments.dialog.generic_error",
+          localizedString(key: "project.comments.error_posting",
             defaultValue: "Sorry, your comment could not be posted.")
     }
 

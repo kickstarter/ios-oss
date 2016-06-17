@@ -31,11 +31,7 @@ public final class ActivityUpdateViewModel: ActivityUpdateViewModelInputs, Activ
 
     self.sequenceTitle = activity.map { $0.update?.sequence ?? 1 }
       .map {
-        localizedString(
-          key: "update_sequence",
-          defaultValue: "Update #%{sequence}",
-          substitutions: ["sequence": Format.wholeNumber($0)]
-        )
+        Strings.activity_project_update_update_count(update_count: Format.wholeNumber($0))
     }
 
     self.timestamp = activity.map {

@@ -57,22 +57,13 @@ private func disclaimer(project project: Project) -> String? {
   guard project.state == .live else { return nil }
 
   if project.stats.pledged < project.stats.goal {
-    return localizedString(
-      key: "project.disclaimer.goal_not_reached",
-      defaultValue: "This project will only be funded if at least %{goal_currency} is pledged " +
-                    "by %{deadline}.",
-      substitutions: [
-        "goal_currency": Format.currency(project.stats.goal, country: project.country),
-        "deadline": Format.date(secondsInUTC: project.dates.deadline)
-      ]
+    return Strings.project_disclaimer_goal_not_reached(
+        goal_currency: Format.currency(project.stats.goal, country: project.country),
+        deadline: Format.date(secondsInUTC: project.dates.deadline)
     )
   }
 
-  return localizedString(
-    key: "project.disclaimer.goal_reached",
-    defaultValue: "This project will be funded on %{deadline}.",
-    substitutions: [
-      "deadline": Format.date(secondsInUTC: project.dates.deadline)
-    ]
-  )
+  return Strings.project_disclaimer_goal_reached(
+    deadline: Format.date(secondsInUTC: project.dates.deadline)
+    )
 }

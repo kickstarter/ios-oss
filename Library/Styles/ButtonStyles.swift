@@ -29,7 +29,7 @@ public let facebookButtonStyle = roundedStyle()
   <> UIButton.lens.titleLabel.font .~ .ksr_callout
   <> UIButton.lens.contentEdgeInsets .~ .init(top: 12.0, left: 16.0, bottom: 12.0, right: 16.0)
   <> UIButton.lens.titleText(forState: .Normal) %~ { _ in
-    localizedString(key: "login_tout.buttons.log_in_with_facebook", defaultValue: "Log in with Facebook")
+    Strings.login_tout_buttons_log_in_with_facebook()
 }
 
 public let neutralButtonStyle = baseButtonStyle

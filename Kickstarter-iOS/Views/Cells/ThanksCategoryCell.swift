@@ -12,18 +12,13 @@ internal final class ThanksCategoryCell: UICollectionViewCell, ValueCell {
   func configureWith(value category: KsApi.Category) {
     self.bgView.backgroundColor = UIColorFromCategoryId(category.id) ?? .ksr_textDefault
     self.exploreLabel.textColor = shouldOverlayBeDark(category) ? .ksr_black : .ksr_white
-    self.exploreLabel.text = localizedString(key: "category_promo.explore_category",
-                                             defaultValue: "Explore %{category_name}",
-                                             count: nil,
-                                             substitutions: ["category_name": category.name])
+    self.exploreLabel.text = Strings.category_promo_explore_category(category_name: category.name)
 
     self.liveProjectCountLabel.color = self.exploreLabel.color
     if let projectsCount = category.projectsCount {
-      self.liveProjectCountLabel.text = localizedString(
-        key: "category_promo.project_count_live_projects",
-        defaultValue: "%{project_count} live projects",
-        count: nil,
-        substitutions: ["project_count": Format.wholeNumber(projectsCount)])
+      self.liveProjectCountLabel.text = Strings.category_promo_project_count_live_projects(
+        project_count: Format.wholeNumber(projectsCount)
+        )
     } else {
       self.liveProjectCountLabel.hidden = true
     }

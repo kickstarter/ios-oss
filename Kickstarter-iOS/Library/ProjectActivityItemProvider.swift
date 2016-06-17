@@ -19,10 +19,7 @@ public final class ProjectActivityItemProvider: UIActivityItemProvider {
       if activityType == UIActivityTypeMail || activityType == UIActivityTypeMessage {
         return project.name
       } else if activityType == UIActivityTypePostToTwitter {
-        return localizedString(key: "project.checkout.share.twitter_via_kickstarter",
-                               defaultValue: "%{project_or_update_title}, via Kickstarter",
-                               count: nil,
-                               substitutions: ["project_or_update_title": project.name])
+        return Strings.project_checkout_share_twitter_via_kickstarter(project_or_update_title: project.name)
       } else if activityType == UIActivityTypeCopyToPasteboard ||
         activityType == UIActivityTypePostToFacebook {
         return project.urls.web.project

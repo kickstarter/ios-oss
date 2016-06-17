@@ -42,7 +42,7 @@ public extension UIAlertController {
     )
     alertController.addAction(
       UIAlertAction(
-        title: localizedString(key: "general.alert.buttons.ok", defaultValue: "OK"),
+        title: Strings.general_alert_buttons_ok(),
         style: .Cancel,
         handler: handler
       )
@@ -53,13 +53,13 @@ public extension UIAlertController {
 
   public static func genericError(message: String) -> UIAlertController {
     let alertController = UIAlertController(
-      title: localizedString(key: "general.error.oops", defaultValue: "Oops!"),
+      title: Strings.general_error_oops(),
       message: message,
       preferredStyle: .Alert
     )
     alertController.addAction(
       UIAlertAction(
-        title: localizedString(key: "general.alert.buttons.ok", defaultValue: "OK"),
+        title: Strings.general_alert_buttons_ok(),
         style: .Cancel,
         handler: nil
       )
@@ -72,22 +72,19 @@ public extension UIAlertController {
     -> UIAlertController {
     let alertController = UIAlertController(
       title: nil,
-      message: localizedString(
-        key: "project.checkout.games_alert.want_the_coolest_games_delivered_to_your_inbox",
-        defaultValue: "Want the coolest games delivered to your inbox? " +
-          "Our Games team has a newsletter just for you."),
+      message: Strings.project_checkout_games_alert_want_the_coolest_games_delivered_to_your_inbox(),
       preferredStyle: .Alert
     )
     alertController.addAction(
       UIAlertAction(
-        title: localizedString(key: "project.checkout.games_alert.yes_please", defaultValue: "Yes please!"),
+        title: Strings.project_checkout_games_alert_yes_please(),
         style: .Default,
         handler: subscribeHandler
       )
     )
     alertController.addAction(
       UIAlertAction(
-        title: localizedString(key: "project.checkout.games_alert.no_thanks", defaultValue: "No thanks."),
+        title: Strings.project_checkout_games_alert_no_thanks(),
         style: .Default,
         handler: nil
       )
@@ -100,32 +97,27 @@ public extension UIAlertController {
                             remindHandler: ((UIAlertAction) -> Void),
                             noHandler: ((UIAlertAction) -> Void)) -> UIAlertController {
     let alertController = UIAlertController(
-      title: localizedString(key: "profile.settings.rating.title", defaultValue: "Show us some love"),
-      message: localizedString(
-        key: "profile.settings.rating.message",
-        defaultValue: "Thanks for using the Kickstarter app.\nIf you have a moment, " +
-          "would you mind rating your experience?\nWe'd appreciate it!"),
+      title: Strings.profile_settings_rating_title() ,
+      message: Strings.profile_settings_rating_message() ,
       preferredStyle: .Alert
     )
     alertController.addAction(
       UIAlertAction(
-        title: localizedString(key: "profile.settings.rating.option.rate_now", defaultValue: "Rate It Now"),
+        title: Strings.profile_settings_rating_option_rate_now() ,
         style: .Default,
         handler: yesHandler
       )
     )
     alertController.addAction(
       UIAlertAction(
-        title: localizedString(
-          key: "profile.settings.rating.option.remind_later",
-          defaultValue: "Remind Me Later"),
+        title: Strings.profile_settings_rating_option_remind_later() ,
         style: .Default,
         handler: remindHandler
       )
     )
     alertController.addAction(
       UIAlertAction(
-        title: localizedString(key: "profile.settings.rating.option.no_thanks", defaultValue: "No, Thanks"),
+        title: Strings.profile_settings_rating_option_no_thanks() ,
         style: .Default,
         handler: noHandler
       )
@@ -136,20 +128,13 @@ public extension UIAlertController {
 
   public static func newsletterOptIn(newsletter: String) -> UIAlertController {
     let alertController = UIAlertController(
-      title: localizedString(
-        key: "profile.settings.newsletter.opt_in.title",
-        defaultValue: "One final step!"),
-      message: localizedString(
-        key: "profile.settings.newsletter.opt_in.message",
-        defaultValue: "We've sent a confirmation email to the address associated with your account! " +
-          "Please check your email in order to confirm that you'd like to subscribe to %{newsletter}.",
-        count: nil,
-        substitutions: ["newsletter": newsletter]),
+      title: Strings.profile_settings_newsletter_opt_in_title(),
+      message: Strings.profile_settings_newsletter_opt_in_message(newsletter: newsletter),
       preferredStyle: .Alert
     )
     alertController.addAction(
       UIAlertAction(
-        title: localizedString(key: "general.alert.buttons.ok", defaultValue: "OK"),
+        title: Strings.general_alert_buttons_ok(),
         style: .Cancel,
         handler: nil
       )
@@ -161,16 +146,14 @@ public extension UIAlertController {
   public static func projectCopiedToPasteboard(projectURL url: String) -> UIAlertController {
     let alertController = UIAlertController(
       title: nil,
-      message: localizedString(
-        key: "project.checkout.share.link.the_project_url_has_been_copied_to_your_clipboard",
-        defaultValue: "The projects's URL has been copied to your clipboard:\n\n%{project_url}",
-        count: nil,
-        substitutions: ["project_url": url]),
+      message: Strings.project_checkout_share_link_the_project_url_has_been_copied_to_your_clipboard(
+        project_url: url
+        ),
       preferredStyle: .Alert
     )
     alertController.addAction(
       UIAlertAction(
-        title: localizedString(key: "project.checkout.share.link.OK", defaultValue: "OK"),
+        title: Strings.project_checkout_share_link_OK(),
         style: .Cancel,
         handler: nil
       )
@@ -182,16 +165,14 @@ public extension UIAlertController {
   public static func updateCopiedToPasteboard(updateURL url: String) -> UIAlertController {
     let alertController = UIAlertController(
       title: nil,
-      message: localizedString(
-        key: "project.checkout.share.link.the_update_url_has_been_copied_to_your_clipboard",
-        defaultValue: "The update's URL has been copied to your clipboard:\n\n%{update_url}",
-        count: nil,
-        substitutions: ["update_url": url]),
+      message: Strings.project_checkout_share_link_the_update_url_has_been_copied_to_your_clipboard(
+        update_url: url
+        ),
       preferredStyle: .Alert
     )
     alertController.addAction(
       UIAlertAction(
-        title: localizedString(key: "project.checkout.share.link.OK", defaultValue: "OK"),
+        title: Strings.project_checkout_share_link_OK(),
         style: .Cancel,
         handler: nil
       )
@@ -209,21 +190,19 @@ public extension UIAlertController {
         defaultValue: "Follow all %{remote_friends_count} friends",
         count: friendsCount,
         substitutions: ["remote_friends_count": "\(friendsCount)"]),
-      message: localizedString(
-        key: "social_following.nice_youre_about_to_follow_all_friends",
-        defaultValue: "Nice! You're about to follow all of your friends."),
+      message: Strings.social_following_nice_youre_about_to_follow_all_friends(),
       preferredStyle: .Alert
     )
     alertController.addAction(
       UIAlertAction(
-        title: localizedString(key: "general.navigation.buttons.ok", defaultValue: "OK"),
+        title: Strings.general_navigation_buttons_ok(),
         style: .Default,
         handler: yesHandler
       )
     )
     alertController.addAction(
       UIAlertAction(
-        title: localizedString(key: "general.navigation.buttons.cancel", defaultValue: "Cancel"),
+        title: Strings.general_navigation_buttons_cancel(),
         style: .Cancel,
         handler: noHandler
       )
@@ -234,18 +213,13 @@ public extension UIAlertController {
 
   public static func facebookTokenFail() -> UIAlertController {
     let alertController = UIAlertController(
-      title: localizedString(
-        key: "login_tout.errors.facebook.invalid_token.title",
-        defaultValue: "Facebook login"),
-      message: localizedString(
-        key: "login_tout.errors.facebook.invalid_token.message",
-        defaultValue: "There was a problem logging you in with Facebook.\n\nThis is commonly fixed " +
-        "by going to iOS Settings > Facebook and toggling access for Kickstarter."),
+      title: Strings.login_tout_errors_facebook_invalid_token_title(),
+      message: Strings.login_tout_errors_facebook_invalid_token_message(),
       preferredStyle: .Alert
     )
     alertController.addAction(
       UIAlertAction(
-        title: localizedString(key: "general.alert.buttons.ok", defaultValue: "OK"),
+        title: Strings.general_alert_buttons_ok(),
         style: .Cancel,
         handler: nil
       )
@@ -257,17 +231,14 @@ public extension UIAlertController {
   public static func facebookLoginAttemptFail(error: NSError) -> UIAlertController {
     let alertController = UIAlertController(
       title: error.userInfo[FBSDKErrorLocalizedTitleKey] as? String ??
-        localizedString(key: "login_tout.errors.facebook.settings_disabled.title",
-          defaultValue: "Permission denied"),
+        Strings.login_tout_errors_facebook_settings_disabled_title(),
       message: error.userInfo[FBSDKErrorLocalizedDescriptionKey] as? String ??
-        localizedString(key: "login_tout.errors.facebook.settings_disabled.message",
-          defaultValue: "It seems that you have denied Kickstarter access to your Facebook account. "
-            + "Please go to Settings > Facebook to enable access."),
+        Strings.login_tout_errors_facebook_settings_disabled_message(),
       preferredStyle: .Alert
     )
     alertController.addAction(
       UIAlertAction(
-        title: localizedString(key: "general.alert.buttons.ok", defaultValue: "OK"),
+        title: Strings.general_alert_buttons_ok(),
         style: .Cancel,
         handler: nil
       )
@@ -278,16 +249,13 @@ public extension UIAlertController {
 
   public static func genericFacebookError(envelope: ErrorEnvelope) -> UIAlertController {
     let alertController = UIAlertController(
-      title: localizedString(key: "login_tout.errors.facebook.generic_error.title",
-        defaultValue: "Facebook login"),
-      message: envelope.errorMessages.first ??
-        localizedString(key: "login_tout.errors.facebook.generic_error.message",
-          defaultValue: "Couldn't log into Facebook."),
+      title: Strings.login_tout_errors_facebook_generic_error_title(),
+      message: envelope.errorMessages.first ?? Strings.login_tout_errors_facebook_generic_error_message(),
       preferredStyle: .Alert
     )
     alertController.addAction(
       UIAlertAction(
-        title: localizedString(key: "general.alert.buttons.ok", defaultValue: "OK"),
+        title: Strings.general_alert_buttons_ok(),
         style: .Cancel,
         handler: nil
       )
@@ -298,8 +266,7 @@ public extension UIAlertController {
 
   public static func facebookConnectAccountTaken(envelope: ErrorEnvelope) -> UIAlertController {
     let alertController = UIAlertController(
-      title: localizedString(key: "login_tout.errors.facebook.generic_error.title",
-        defaultValue: "Facebook login"),
+      title: Strings.login_tout_errors_facebook_generic_error_title(),
       message: envelope.errorMessages.first ??
         localizedString(key: "login_tout.errors.facebook.account_taken.message",
           defaultValue: "This Facebook account is already linked to another Kickstarter user."),
@@ -307,7 +274,7 @@ public extension UIAlertController {
     )
     alertController.addAction(
       UIAlertAction(
-        title: localizedString(key: "general.alert.buttons.ok", defaultValue: "OK"),
+        title: Strings.general_alert_buttons_ok(),
         style: .Cancel,
         handler: nil
       )
@@ -318,8 +285,7 @@ public extension UIAlertController {
 
   public static func facebookConnectEmailTaken(envelope: ErrorEnvelope) -> UIAlertController {
     let alertController = UIAlertController(
-      title: localizedString(key: "login_tout.errors.facebook.generic_error.title",
-        defaultValue: "Facebook login"),
+      title: Strings.login_tout_errors_facebook_generic_error_title(),
       message: envelope.errorMessages.first ??
         localizedString(key: "login_tout.errors.facebook.email_taken.message",
           defaultValue: "The email associated with this Facebook account is already registered " +
@@ -328,7 +294,7 @@ public extension UIAlertController {
     )
     alertController.addAction(
       UIAlertAction(
-        title: localizedString(key: "general.alert.buttons.ok", defaultValue: "OK"),
+        title: Strings.general_alert_buttons_ok(),
         style: .Cancel,
         handler: nil
       )

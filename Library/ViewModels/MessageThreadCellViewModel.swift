@@ -41,7 +41,7 @@ public final class MessageThreadCellViewModel: MessageThreadCellViewModelType,
     self.participantName = messageThread
       .map { thread -> String in
         if thread.lastMessage.sender.id == AppEnvironment.current.currentUser?.id {
-          let me = localizedString(key: "messages.me", defaultValue: "Me")
+          let me = Strings.messages_me()
           return "<b>\(me)</b>, \(thread.participant.name)"
         }
         return thread.participant.name

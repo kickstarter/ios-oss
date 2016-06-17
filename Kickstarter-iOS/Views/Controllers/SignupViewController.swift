@@ -49,7 +49,7 @@ internal final class SignupViewController: UIViewController {
         self?.presentViewController(
           UIAlertController
             .alert(
-              localizedString(key: "signup.error.title", defaultValue: "Sign up error"),
+              Strings.signup_error_title(),
               message: message),
           animated: true, completion: nil)
       }

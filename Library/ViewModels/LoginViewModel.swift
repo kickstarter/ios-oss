@@ -149,8 +149,7 @@ LoginViewModelErrors {
     self.showError = loginEvent.errors()
       .filter { $0.ksrCode != .TfaRequired }
       .map { env in
-        env.errorMessages.first ??
-          localizedString(key: "login.errors.unable_to_log_in", defaultValue: "Unable to log in.")
+        env.errorMessages.first ?? Strings.login_errors_unable_to_log_in()
     }
 
     self.showResetPassword = self.resetPasswordPressedProperty.signal

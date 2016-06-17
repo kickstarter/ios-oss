@@ -40,13 +40,7 @@ SortPagerViewModelOutputs {
 
     self.createSortButtonsWithTitles = sorts
       .uncollect()
-      .map { sort in
-        localizedString(
-          key: "discovery.sort_types.\(sort.rawValue)",
-          defaultValue: sort.rawValue.stringByReplacingOccurrencesOfString("_", withString: " ")
-            .capitalizedStringWithLocale(AppEnvironment.current.locale)
-          )
-      }
+      .map(sortString)
       .collect()
 
     let selectedPage = combineLatest(
@@ -88,4 +82,19 @@ SortPagerViewModelOutputs {
 
   public var inputs: SortPagerViewModelInputs { return self }
   public var outputs: SortPagerViewModelOutputs { return self }
+}
+
+private func sortString(sort: DiscoveryParams.Sort) -> String {
+  switch sort {
+  case .EndingSoon:
+    return Strings.discovery_sort_types_end_date()
+  case .Magic:
+    return Strings.discovery_sort_types_magic()
+  case .MostFunded:
+    return Strings.discovery_sort_types_most_funded()
+  case .Newest:
+    return Strings.discovery_sort_types_newest()
+  case .Popular:
+    return Strings.discovery_sort_types_popularity()
+  }
 }

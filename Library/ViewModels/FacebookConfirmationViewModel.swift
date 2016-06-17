@@ -136,8 +136,7 @@ FacebookConfirmationViewModelErrors {
     self.showSignupError = signupEvent.errors()
       .map { error in
         error.errorMessages.first ??
-        localizedString(key: "facebook_confirmation.could_not_log_in",
-          defaultValue: "Couldn't log in with Facebook.")
+            Strings.facebook_confirmation_could_not_log_in()
     }
 
     self.showLogin = self.loginButtonPressedProperty.signal

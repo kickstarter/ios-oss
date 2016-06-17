@@ -9,17 +9,17 @@ public enum HelpType {
   public var title: String {
     switch self {
     case .Contact:
-    return localizedString(key: "login_tout.help_sheet.contact", defaultValue: "Contact")
+    return Strings.login_tout_help_sheet_contact()
     case .Cookie:
-      return localizedString(key: "login_tout.help_sheet.cookie", defaultValue: "Cookie Policy")
+      return Strings.login_tout_help_sheet_cookie()
     case .FAQ:
-      return localizedString(key: "profile.settings.about_faq", defaultValue: "Frequently Asked Questions")
+      return Strings.profile_settings_about_faq()
     case .HowItWorks:
-    return localizedString(key: "login_tout.help_sheet.how_it_works", defaultValue: "How Kickstarter Works")
+    return Strings.login_tout_help_sheet_how_it_works()
     case .Privacy:
-      return localizedString(key: "login_tout.help_sheet.privacy", defaultValue: "Privacy Policy")
+      return Strings.login_tout_help_sheet_privacy()
     case .Terms:
-      return localizedString(key: "login_tout.help_sheet.terms", defaultValue: "Terms of Use")
+      return Strings.login_tout_help_sheet_terms()
     }
   }
 }

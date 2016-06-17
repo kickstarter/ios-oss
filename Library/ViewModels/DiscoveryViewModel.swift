@@ -77,15 +77,15 @@ DiscoveryViewModelOutputs {
     self.filterLabelText = self.loadFilterIntoDataSource
       .map { params in
         if params.staffPicks == true {
-          return localizedString(key: "discovery.recommended", defaultValue: "Staff Picks")
+          return Strings.discovery_recommended()
         } else if params.starred == true {
-          return localizedString(key: "discovery.saved", defaultValue: "Starred")
+          return Strings.discovery_saved()
         } else if params.social == true {
-          return localizedString(key: "discovery.friends_backed", defaultValue: "Friends Backed")
+          return Strings.discovery_friends_backed()
         } else if let category = params.category {
           return category.name
         }
-        return localizedString(key: "discovery.everything", defaultValue: "Everything")
+        return Strings.discovery_everything()
     }.skipRepeats()
 
     self.goToDiscoveryFilters = Signal.merge(

@@ -129,8 +129,7 @@ public final class SettingsViewModel: SettingsViewModelType, SettingsViewModelIn
 
     self.unableToSaveError = updateEvent.errors()
       .map { env in
-        env.errorMessages.first ??
-          localizedString(key: "profile.settings.error", defaultValue: "Unable to save.")
+        env.errorMessages.first ?? Strings.profile_settings_error()
     }
 
     let previousUserOnError = Signal.merge(initialUser, updatedUser)
@@ -163,13 +162,8 @@ public final class SettingsViewModel: SettingsViewModelType, SettingsViewModelIn
       .filter(isFalse)
       .map { _ in
         (
-          title: localizedString(
-            key: "support_email.noemail.title",
-            defaultValue: "Support"),
-          message: localizedString(
-            key: "support_email.noemail.message",
-            defaultValue: "Looks like you don’t have an e-mail account on your device. Please contact us " +
-              "at app@kickstarter.com.")
+          title: Strings.support_email_noemail_title(),
+          message: Strings.support_email_noemail_message()
         )
     }
 
@@ -177,10 +171,9 @@ public final class SettingsViewModel: SettingsViewModelType, SettingsViewModelIn
 
     self.showConfirmLogoutPrompt = self.logoutTappedProperty.signal
       .map {
-        (message: localizedString(key: "profile.settings.logout_alert.message",
-                                  defaultValue: "Are you sure you want to log out?"),
-        cancel: localizedString(key: "profile.settings.logout_alert.cancel_button", defaultValue: "Cancel"),
-        confirm: localizedString(key: "profile.settings.logout_alert.confirm_button", defaultValue: "Log out")
+        (message: Strings.profile_settings_logout_alert_message(),
+        cancel: Strings.profile_settings_logout_alert_cancel_button(),
+        confirm: Strings.profile_settings_logout_alert_confirm_button()
         )
     }
 
@@ -222,10 +215,8 @@ public final class SettingsViewModel: SettingsViewModelType, SettingsViewModelIn
 
     self.versionText = viewDidLoadProperty.signal
       .map {
-        localizedString(
-          key: "profile.settings.version_number",
-          defaultValue: "Version %{version_number}",
-          substitutions: ["version_number": AppEnvironment.current.mainBundle.bundleShortVersionString]
+        Strings.profile_settings_version_number(
+            version_number: AppEnvironment.current.mainBundle.bundleShortVersionString
         )
     }
 
@@ -422,17 +413,13 @@ private enum Newsletter {
   private var displayableName: String {
     switch self {
     case .games:
-      return localizedString(key: "profile.settings.newsletter.games",
-                             defaultValue: "Kickstarter Loves Games")
+      return Strings.profile_settings_newsletter_games()
     case .happening:
-      return localizedString(key: "profile.settings.newsletter.happening",
-                             defaultValue: "Happening Now")
+      return Strings.profile_settings_newsletter_happening()
     case .promo:
-      return localizedString(key: "profile.settings.newsletter.promo",
-                             defaultValue: "Kickstarter News and Events")
+      return Strings.profile_settings_newsletter_promo()
     case .weekly:
-      return localizedString(key: "profile.settings.newsletter.weekly",
-                             defaultValue: "Projects We Love")
+      return Strings.profile_settings_newsletter_weekly()
     }
   }
 }

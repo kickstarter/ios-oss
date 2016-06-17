@@ -95,7 +95,9 @@ final class ResetPasswordViewModelTests: TestCase {
     vm.inputs.resetButtonPressed()
 
     showResetSuccess.assertValues(
-      ["We've sent an email to lisa@kickstarter.com with instructions to reset your password."]
+      [Strings.forgot_password_we_sent_an_email_to_email_address_with_instructions_to_reset_your_password(
+        email: "lisa@kickstarter.com")
+      ]
     )
     XCTAssertEqual(["Forgot Password View", "Forgot Password Requested"], trackingClient.events)
   }
@@ -120,7 +122,7 @@ final class ResetPasswordViewModelTests: TestCase {
       vm.inputs.emailChanged("bad@email")
       vm.inputs.resetButtonPressed()
 
-      showError.assertValues(["Sorry, we don't know that email address. Try again?"],
+      showError.assertValues([Strings.forgot_password_error()],
                              "Error alert is shown on bad request")
     }
   }

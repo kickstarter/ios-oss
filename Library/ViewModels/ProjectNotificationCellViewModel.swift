@@ -55,8 +55,7 @@ public final class ProjectNotificationCellViewModel: ProjectNotificationCellView
 
     self.notifyDelegateOfSaveError = updateEvent.errors()
       .map { env in
-        env.errorMessages.first ??
-          localizedString(key: "profile.settings.error", defaultValue: "Unable to save.")
+        env.errorMessages.first ?? Strings.profile_settings_error()
     }
 
     let previousNotificationOnError = notification

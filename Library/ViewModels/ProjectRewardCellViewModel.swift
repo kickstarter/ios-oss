@@ -65,10 +65,8 @@ ProjectRewardCellViewModelInputs, ProjectRewardCellViewModelOutputs {
       .map { project, reward in (project.country, reward.minimum) }
       .skipRepeats(==)
       .map { country, minimum in
-        localizedString(
-          key: "rewards.title.pledge_reward_currency_or_more",
-          defaultValue: "Pledge %{reward_currency} or more",
-          substitutions: ["reward_currency": Format.currency(minimum, country: country)]
+        Strings.rewards_title_pledge_reward_currency_or_more(
+            reward_currency: Format.currency(minimum, country: country)
         )
     }
 
@@ -90,14 +88,10 @@ ProjectRewardCellViewModelInputs, ProjectRewardCellViewModelOutputs {
       .skipRepeats(==)
 
     self.limit = reward.map {
-      localizedString(
-        key: "rewards.info.limited_rewards_remaining_left_of_reward_limit",
-        defaultValue: "Limited (%{rewards_remaining} left of %{reward_limit})",
-        substitutions: [
-          "rewards_remaining": Format.wholeNumber($0.remaining ?? 0),
-          "reward_limit": Format.wholeNumber($0.limit ?? 0)
-        ]
-      )
+        Strings.rewards_info_limited_rewards_remaining_left_of_reward_limit(
+            rewards_remaining: Format.wholeNumber($0.remaining ?? 0),
+            reward_limit: Format.wholeNumber($0.limit ?? 0)
+        )
     }.skipRepeats()
 
     self.limitHidden = reward.map { $0.limit == nil || $0.remaining == 0 }

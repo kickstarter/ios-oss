@@ -122,11 +122,7 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
     let project = self.projectProperty.signal.ignoreNil()
 
     self.backedProjectText = project.map {
-      localizedString(key: "project.checkout.share.you_just_backed_project_share_this_project_html",
-        defaultValue: "You just backed <b>%{project_name}</b>. " +
-        "Share this project with friends to help it along!",
-        count: nil,
-        substitutions: ["project_name": $0.name])
+        Strings.project_checkout_share_you_just_backed_project_share_this_project_html(project_name: $0.name)
       }
       .takeWhen(viewDidLoadProperty.signal)
 
@@ -156,11 +152,7 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
 
     self.showGamesNewsletterOptInAlert = gamesNewsletterSignupButtonPressedProperty.signal
       .filter { AppEnvironment.current.countryCode == "DE" }
-      .map { localizedString(
-        key: "profile.settings.newsletter.games",
-        defaultValue: "Kickstarter Loves Games"
-      )
-    }
+      .map (Strings.profile_settings_newsletter_games)
 
     self.showRatingAlert = shouldShowGamesAlert
       .filter {

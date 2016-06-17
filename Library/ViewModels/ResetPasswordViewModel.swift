@@ -98,23 +98,17 @@ public final class ResetPasswordViewModel: ResetPasswordViewModelType, ResetPass
     }
 
     self.showResetSuccess = resetEvent.values().map { email in
-      localizedString(
-        key: "forgot_password.we_sent_an_email_to_email_address_with_instructions_to_reset_your_password",
-        defaultValue: "We've sent an email to %{email} with instructions to reset your password.",
-        count: nil,
-        substitutions: ["email": email],
-        env: AppEnvironment.current
-      )
+        Strings.forgot_password_we_sent_an_email_to_email_address_with_instructions_to_reset_your_password(
+            email: email
+        )
     }
 
     self.showError = resetEvent.errors()
       .map { envelope in
         if envelope.httpCode == 404 {
-          return localizedString(key: "forgot_password.error",
-            defaultValue: "Sorry, we don't know that email address. Try again?")
+          return Strings.forgot_password_error()
         } else {
-          return localizedString(key: "general.error.something_wrong",
-            defaultValue: "Something went wrong.")
+          return Strings.general_error_something_wrong()
         }
     }
 

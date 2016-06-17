@@ -105,11 +105,7 @@ public final class FindFriendsViewModel: FindFriendsViewModelType, FindFriendsVi
     }
 
     self.title = self.viewDidLoadProperty.signal
-      .map { localizedString(
-        key: "social_following.navigation.title.follow_your_friends",
-        defaultValue: "Follow your friends!"
-      )
-    }
+      .map(Strings.social_following_navigation_title_follow_your_friends)
 
     self.showFollowAllFriendsAlert = self.showFollowAllFriendsAlertProperty.signal
 

@@ -76,11 +76,9 @@ ProjectMainCellViewModelOutputs {
     self.pledged = project.map { Format.currency($0.stats.pledged, country: $0.country) }.skipRepeats()
 
     self.goal = project.map {
-      localizedString(
-        key: "discovery.baseball_card.stats.pledged_of_goal",
-        defaultValue: "pledged of %{goal}",
-        substitutions: ["goal": Format.currency($0.stats.goal, country: $0.country)]
-      )
+      Strings.discovery_baseball_card_stats_pledged_of_goal(
+        goal: Format.currency($0.stats.goal, country: $0.country)
+        )
     }.skipRepeats()
 
     self.stateTitle = state.map(bannerTitleFor(state:))
@@ -112,13 +110,13 @@ ProjectMainCellViewModelOutputs {
 private func bannerTitleFor(state state: Project.State) -> String? {
   switch state {
   case .canceled:
-    return localizedString(key: "project.status.funding_canceled", defaultValue: "Funding canceled")
+    return Strings.project_status_funding_canceled()
   case .failed:
-    return localizedString(key: "project.status.funding_unsuccessful", defaultValue: "Funding unsuccessful")
+    return Strings.project_status_funding_unsuccessful()
   case .successful:
-    return localizedString(key: "project.status.funded", defaultValue: "Funded!")
+    return Strings.project_status_funded()
   case .suspended:
-    return localizedString(key: "project.status.funding_suspended", defaultValue: "Suspended")
+    return Strings.project_status_funding_suspended()
   case .live, .started, .submitted, .purged:
     return nil
   }
@@ -129,27 +127,13 @@ private func bannerMessageFor(project project: Project) -> String? {
 
   switch project.state {
   case .canceled:
-    return localizedString(
-      key: "project.status.funding_project_canceled_by_creator",
-      defaultValue: "This project was canceled by the creator."
-    )
+    return Strings.project_status_funding_project_canceled_by_creator()
   case .failed:
-    return localizedString(
-      key: "project.status.project_funding_goal_not_reached",
-      defaultValue: "This project was unsuccessfully funded on %{deadline}.",
-      substitutions: ["deadline": deadline()]
-    )
+    return Strings.project_status_project_funding_goal_not_reached(deadline: deadline())
   case .successful:
-    return localizedString(
-      key: "project.status.project_was_successfully_funded_on_deadline",
-      defaultValue: "This project was successfully funded on %{deadline}.",
-      substitutions: ["deadline": deadline()]
-    )
+    return Strings.project_status_project_was_successfully_funded_on_deadline(deadline: deadline())
   case .suspended:
-    return localizedString(
-      key: "project.status.funding_project_suspended",
-      defaultValue: "Funding for this project was suspended."
-    )
+    return Strings.project_status_funding_project_suspended()
   case .live, .started, .submitted, .purged:
     return nil
   }

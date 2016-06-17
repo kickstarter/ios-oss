@@ -16,23 +16,17 @@ internal final class ActivityNegativeStateChangeCell: UITableViewCell, ValueCell
   func configureWith(value activity: Activity) {
     switch activity.category {
     case .failure:
-      self.messageLabel.text = localizedString(
-        key: "activity.project_state_change.project_was_not_successfully_funded",
-        defaultValue: "%{project_name} was not successfully funded.",
-        substitutions: ["project_name": activity.project?.name ?? ""]
-      )
+      self.messageLabel.text = Strings.activity_project_state_change_project_was_not_successfully_funded(
+        project_name: activity.project?.name ?? ""
+        )
     case .cancellation:
-      self.messageLabel.text = localizedString(
-        key: "activity.project_state_change.project_was_cancelled_by_creator",
-        defaultValue: "%{project_name} was cancelled by the creator.",
-        substitutions: ["project_name": activity.project?.name ?? ""]
-      )
+      self.messageLabel.text = Strings.activity_project_state_change_project_was_cancelled_by_creator(
+        project_name: activity.project?.name ?? ""
+        )
     case .suspension:
-      self.messageLabel.text = localizedString(
-        key: "activity.project_state_change.project_was_suspended",
-        defaultValue: "%{project_name} was suspended.",
-        substitutions: ["project_name": activity.project?.name ?? ""]
-      )
+      self.messageLabel.text = Strings.activity_project_state_change_project_was_suspended(
+        project_name: activity.project?.name ?? ""
+        )
     default:
       assertionFailure("Unrecognized activity: \(activity).")
     }

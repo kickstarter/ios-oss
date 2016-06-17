@@ -124,8 +124,7 @@ public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, 
 
     let signupError = signupEvent.errors()
       .map {
-        $0.errorMessages.first ??
-          localizedString(key: "signup.error.something_wrong", defaultValue: "Something went wrong.")
+        $0.errorMessages.first ?? Strings.signup_error_something_wrong()
     }
 
     self.showError = signupError

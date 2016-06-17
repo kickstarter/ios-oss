@@ -27,10 +27,9 @@ public final class UpdateActivityItemProvider: UIActivityItemProvider {
       } else if activityType == UIActivityTypeMessage {
         return update.title
       } else if activityType == UIActivityTypePostToTwitter {
-        return localizedString(key: "project.checkout.share.twitter_via_kickstarter",
-                               defaultValue: "%{project_or_update_title}, via Kickstarter",
-                               count: nil,
-                               substitutions: ["project_or_update_title": update.title])
+        return Strings.project_checkout_share_twitter_via_kickstarter(
+            project_or_update_title: update.title
+        )
       } else if activityType == UIActivityTypeCopyToPasteboard ||
         activityType == UIActivityTypePostToFacebook {
         return update.urls.web.update

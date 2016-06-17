@@ -25,25 +25,16 @@ BackingCellViewModelOutputs {
     let backing = backingAndProject.map { $0.0 }
 
     self.pledged = backingAndProject.map { backing, project in
-      localizedString(
-        key: "backing_info.pledged",
-        defaultValue: "Pledged: %{backing_amount}",
-        substitutions: [
-          "backing_amount": Format.currency(backing.amount, country: project.country)
-        ])
+        Strings.backing_info_pledged_backing_amount(
+            backing_amount: Format.currency(backing.amount, country: project.country))
     }
 
     self.reward = backing.map { $0.reward?.description ?? "" }
 
     self.delivery = backing.map { backing in
       backing.reward?.estimatedDeliveryOn.map {
-        localizedString(
-          key: "backing_info.estimated_delivery_date",
-          defaultValue: "Estimated delivery %{delivery_date}",
-          substitutions: [
-            "delivery_date": Format.date(secondsInUTC: $0, dateStyle: .ShortStyle, timeStyle: .NoStyle)
-          ]
-        )
+        Strings.backing_info_estimated_delivery_date(
+            delivery_date: Format.date(secondsInUTC: $0, dateStyle: .ShortStyle, timeStyle: .NoStyle))
       }
     }
     .map { $0 ?? "" }

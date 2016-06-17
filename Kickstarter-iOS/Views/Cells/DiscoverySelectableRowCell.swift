@@ -8,19 +8,15 @@ internal final class DiscoverySelectableRowCell: UITableViewCell, ValueCell {
   func configureWith(value value: SelectableRow) {
 
     if value.params.staffPicks == true {
-      self.filterTitleLabel.text = localizedString(key: "discovery.recommended",
-                                                   defaultValue: "Staff Picks")
+      self.filterTitleLabel.text = Strings.discovery_recommended()
     } else if value.params.starred == true {
-      self.filterTitleLabel.text = localizedString(key: "discovery.saved",
-                                                   defaultValue: "Starred")
+      self.filterTitleLabel.text = Strings.discovery_saved()
     } else if value.params.social == true {
-      self.filterTitleLabel.text = localizedString(key: "discovery.friends_backed",
-                                                   defaultValue: "Friends Backed")
+      self.filterTitleLabel.text = Strings.discovery_friends_backed()
     } else if let category = value.params.category {
       self.filterTitleLabel.text = category.name
     } else {
-      self.filterTitleLabel.text = localizedString(key: "discovery.everything",
-                                                   defaultValue: "Everything")
+      self.filterTitleLabel.text = Strings.discovery_everything()
     }
 
     self.selectedIndicator.hidden = !value.isSelected

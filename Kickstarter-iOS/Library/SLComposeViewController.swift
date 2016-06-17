@@ -32,10 +32,7 @@ public extension SLComposeViewController {
     guard let twitterVC = SLComposeViewController(forServiceType: SLServiceTypeTwitter),
       url = NSURL(string: project.urls.web.project) else { return nil }
 
-    let tweet = localizedString(key: "project.checkout.share.twitter_via_kickstarter",
-                                defaultValue: "%{project_or_update_title}, via Kickstarter",
-                                count: nil,
-                                substitutions: ["project_or_update_title": project.name])
+    let tweet = Strings.project_checkout_share_twitter_via_kickstarter(project_or_update_title: project.name)
 
     twitterVC.setInitialText(tweet)
     twitterVC.addURL(url)
@@ -53,10 +50,9 @@ public extension SLComposeViewController {
     guard let twitterVC = SLComposeViewController(forServiceType: SLServiceTypeTwitter),
       url = NSURL(string: project.urls.web.project) else { return nil }
 
-    let tweet = localizedString(key: "project.checkout.share.twitter.I_just_backed_project_on_kickstarter",
-                                defaultValue: "I just backed %{project_name} on @Kickstarter",
-                                count: nil,
-                                substitutions: ["project_name": project.name])
+    let tweet = Strings.project_checkout_share_twitter_I_just_backed_project_on_kickstarter(
+        project_name: project.name
+        )
 
     twitterVC.setInitialText(tweet)
     twitterVC.addURL(url)

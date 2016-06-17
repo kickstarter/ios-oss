@@ -175,15 +175,11 @@ public final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMode
 
     let codeMismatch = loginEvent.errors()
       .filter { $0.ksrCode == .TfaFailed }
-      .map { $0.errorMessages.first ??
-        localizedString(key: "two_factor.error.message", defaultValue: "The code provided does not match.")
-    }
+      .map { $0.errorMessages.first ?? Strings.two_factor_error_message() }
 
     let genericFail = loginEvent.errors()
       .filter { $0.ksrCode != .TfaFailed }
-      .map { $0.errorMessages.first ??
-        localizedString(key: "login.errors.unable_to_log_in", defaultValue: "Unable to log in.")
-    }
+      .map { $0.errorMessages.first ?? Strings.login_errors_unable_to_log_in() }
 
     self.showError = Signal.merge([codeMismatch, genericFail])
 
