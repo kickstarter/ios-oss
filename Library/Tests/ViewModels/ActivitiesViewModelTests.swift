@@ -1,11 +1,9 @@
 import XCTest
 @testable import Library
 @testable import KsApi
-@testable import KsApi_TestHelpers
 @testable import ReactiveExtensions_TestHelpers
 import Result
 import KsApi
-@testable import KsApi_TestHelpers
 import Prelude
 
 final class ActivitiesViewModelTests: TestCase {

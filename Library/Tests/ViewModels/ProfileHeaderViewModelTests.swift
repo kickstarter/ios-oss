@@ -4,9 +4,7 @@ import ReactiveCocoa
 import Result
 import KsApi
 @testable import KsApi
-@testable import KsApi_TestHelpers
 @testable import Library
-@testable import KsApi_TestHelpers
 @testable import ReactiveExtensions_TestHelpers
 import Prelude
 

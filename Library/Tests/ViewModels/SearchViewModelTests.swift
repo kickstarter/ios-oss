@@ -1,7 +1,6 @@
 import Foundation
 import XCTest
 @testable import KsApi
-@testable import KsApi_TestHelpers
 @testable import ReactiveExtensions
 @testable import ReactiveExtensions_TestHelpers
 import KsApi

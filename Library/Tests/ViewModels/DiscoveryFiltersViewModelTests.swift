@@ -1,6 +1,5 @@
 @testable import ReactiveExtensions_TestHelpers
 @testable import KsApi
-@testable import KsApi_TestHelpers
 @testable import Library
 @testable import Prelude
 import ReactiveCocoa

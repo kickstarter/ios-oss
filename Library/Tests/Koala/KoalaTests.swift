@@ -1,6 +1,5 @@
 import XCTest
 @testable import Library
-@testable import KsApi_TestHelpers
 @testable import KsApi
 import Prelude
 

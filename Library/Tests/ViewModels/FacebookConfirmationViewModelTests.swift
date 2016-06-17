@@ -4,7 +4,6 @@ import ReactiveCocoa
 @testable import ReactiveExtensions_TestHelpers
 @testable import Result
 @testable import KsApi
-@testable import KsApi_TestHelpers
 @testable import Library
 
 final class FacebookConfirmationViewModelTests: TestCase {

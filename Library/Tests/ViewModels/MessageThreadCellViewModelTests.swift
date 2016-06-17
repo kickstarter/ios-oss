@@ -3,7 +3,6 @@ import Library
 import ReactiveCocoa
 import Result
 @testable import KsApi
-@testable import KsApi_TestHelpers
 
 final class MessageThreadCellViewModelTests: TestCase {
   private let vm: MessageThreadCellViewModelType = MessageThreadCellViewModel()

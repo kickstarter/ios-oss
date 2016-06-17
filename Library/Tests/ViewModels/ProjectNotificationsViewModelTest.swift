@@ -3,7 +3,6 @@ import ReactiveCocoa
 import Result
 import XCTest
 @testable import KsApi
-@testable import KsApi_TestHelpers
 @testable import Library
 @testable import ReactiveExtensions
 @testable import ReactiveExtensions_TestHelpers

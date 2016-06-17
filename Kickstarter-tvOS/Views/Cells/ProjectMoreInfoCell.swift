@@ -29,7 +29,7 @@ class ProjectMoreInfoCell: UICollectionViewCell, ValueCell {
 
     project.map { $0.creator.name }
       .skipRepeats()
-      .map(Strings.by_creator)
+      .mapConst("")
       .observeNext { [weak self] value in
         self?.creatorLabel.setHTML(value)
     }

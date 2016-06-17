@@ -1,6 +1,5 @@
 import XCTest
 @testable import KsApi
-@testable import KsApi_TestHelpers
 @testable import ReactiveCocoa
 @testable import ReactiveExtensions
 @testable import ReactiveExtensions_TestHelpers

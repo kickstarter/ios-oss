@@ -3,8 +3,8 @@ import Library
 import UIKit
 
 internal final class DiscoveryPageViewController: UITableViewController {
-  let viewModel: DiscoveryPageViewModelType = DiscoveryPageViewModel()
-  let dataSource = DiscoveryProjectsDataSource()
+  private let viewModel: DiscoveryPageViewModelType = DiscoveryPageViewModel()
+  private let dataSource = DiscoveryProjectsDataSource()
 
   internal func configureWith(sort sort: DiscoveryParams.Sort) {
     self.viewModel.inputs.configureWith(sort: sort)

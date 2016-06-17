@@ -2,9 +2,7 @@ import XCTest
 import AVFoundation
 import ReactiveCocoa
 @testable import KsApi
-@testable import KsApi_TestHelpers
 @testable import Library
-@testable import KsApi_TestHelpers
 
 internal class TestCase: XCTestCase {
   internal static let interval = 0.001

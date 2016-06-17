@@ -3,9 +3,7 @@ import UIKit
 @testable import Kickstarter_iOS
 @testable import Library
 @testable import KsApi
-@testable import KsApi_TestHelpers
 @testable import ReactiveExtensions_TestHelpers
-@testable import KsApi_TestHelpers
 import KsApi
 import Result
 import ReactiveCocoa

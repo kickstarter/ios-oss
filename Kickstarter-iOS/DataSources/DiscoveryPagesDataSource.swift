@@ -8,7 +8,7 @@ internal final class DiscoveryPagesDataSource: NSObject, UIPageViewControllerDat
   internal init(sorts: [DiscoveryParams.Sort]) {
     self.sorts = sorts
 
-    let storyboard = UIStoryboard(name: "Discovery", bundle: nil)
+    let storyboard = UIStoryboard(name: "Discovery", bundle: NSBundle(forClass: self.dynamicType))
 
     self.viewControllers = sorts.map { sort in
       let vc = storyboard.instantiateViewControllerWithIdentifier("DiscoveryPageViewController")

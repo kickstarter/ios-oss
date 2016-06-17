@@ -30,6 +30,7 @@ internal final class DiscoveryProjectCell: UITableViewCell, ValueCell {
         })
       .ignoreNil()
       .observeNext { [weak self] url in
+        print("[self.viewModel.outputs.projectImageURL] \(url)")
         self?.projectImageView.af_setImageWithURL(url)
     }
   }

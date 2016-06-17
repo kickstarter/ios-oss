@@ -3,9 +3,7 @@ import ReactiveCocoa
 import Result
 @testable import KsApi
 @testable import ReactiveExtensions_TestHelpers
-@testable import KsApi_TestHelpers
 @testable import KsApi
-@testable import KsApi_TestHelpers
 @testable import Library
 
 final class TwoFactorViewModelTests: TestCase {

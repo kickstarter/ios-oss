@@ -1,7 +1,6 @@
 import XCTest
 @testable import Kickstarter_iOS
 @testable import Library
-@testable import KsApi_TestHelpers
 import KsApi
 import Prelude
 

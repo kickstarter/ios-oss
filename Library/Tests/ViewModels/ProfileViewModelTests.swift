@@ -7,8 +7,6 @@ import Prelude
 @testable import KsApi
 @testable import Library
 @testable import ReactiveExtensions_TestHelpers
-@testable import KsApi_TestHelpers
-@testable import KsApi_TestHelpers
 
 internal final class ProfileViewModelTests: TestCase {
   let vm = ProfileViewModel()
