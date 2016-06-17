@@ -2,7 +2,6 @@ import XCTest
 import Foundation
 @testable import Library
 @testable import KsApi
-@testable import KsApi
 
 final class AppEnvironmentTests: XCTestCase {
 

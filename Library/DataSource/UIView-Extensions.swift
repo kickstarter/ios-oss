@@ -4,6 +4,10 @@ extension UIView {
   public override func awakeFromNib() {
     super.awakeFromNib()
     bindViewModel()
+    bindStyles()
+  }
+
+  public func bindStyles() {
   }
 
   public func bindViewModel() {

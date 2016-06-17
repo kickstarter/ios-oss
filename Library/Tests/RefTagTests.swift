@@ -9,6 +9,7 @@ public final class RefTagTests: XCTestCase {
     XCTAssertEqual("category", RefTag.category.stringTag)
     XCTAssertEqual("category_featured", RefTag.categoryFeatured.stringTag)
     XCTAssertEqual("city", RefTag.city.stringTag)
+    XCTAssertEqual("dashboard", RefTag.dashboard.stringTag)
     XCTAssertEqual("discovery", RefTag.discovery.stringTag)
     XCTAssertEqual("discovery_potd", RefTag.discoveryPotd.stringTag)
     XCTAssertEqual("message_thread", RefTag.messageThread.stringTag)
@@ -37,6 +38,7 @@ public final class RefTagTests: XCTestCase {
     XCTAssertEqual(RefTag.category, RefTag.category)
     XCTAssertEqual(RefTag.categoryFeatured, RefTag.categoryFeatured)
     XCTAssertEqual(RefTag.city, RefTag.city)
+    XCTAssertEqual(RefTag.dashboard, RefTag.dashboard)
     XCTAssertEqual(RefTag.discovery, RefTag.discovery)
     XCTAssertEqual(RefTag.discoveryPotd, RefTag.discoveryPotd)
     XCTAssertEqual(RefTag.messageThread, RefTag.messageThread)
@@ -80,6 +82,7 @@ public final class RefTagTests: XCTestCase {
                    RefTag(code: RefTag.categoryWithSort(.Popular).stringTag))
 
     XCTAssertEqual(RefTag.city, RefTag(code: RefTag.city.stringTag))
+    XCTAssertEqual(RefTag.dashboard, RefTag(code: RefTag.dashboard.stringTag))
     XCTAssertEqual(RefTag.discovery, RefTag(code: RefTag.discovery.stringTag))
     XCTAssertEqual(RefTag.discoveryPotd, RefTag(code: RefTag.discoveryPotd.stringTag))
     XCTAssertEqual(RefTag.messageThread, RefTag(code: RefTag.messageThread.stringTag))

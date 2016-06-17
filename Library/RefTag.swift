@@ -7,6 +7,7 @@ public enum RefTag {
   case categoryFeatured
   case categoryWithSort(DiscoveryParams.Sort)
   case city
+  case dashboard
   case discovery
   case discoveryPotd
   case messageThread
@@ -39,6 +40,7 @@ public enum RefTag {
     case "category_newest":           self = .categoryWithSort(.Newest)
     case "category_popular":          self = .categoryWithSort(.Popular)
     case "city":                      self = .city
+    case "dashboard":                 self = .dashboard
     case "discovery":                 self = .discovery
     case "discovery_potd":            self = .discoveryPotd
     case "message_thread":            self = .messageThread
@@ -72,6 +74,8 @@ public enum RefTag {
       return "category" + sortRefTagSuffix(sort)
     case .city:
       return "city"
+    case .dashboard:
+      return "dashboard"
     case .discovery:
       return "discovery"
     case .discoveryPotd:
@@ -101,7 +105,7 @@ extension RefTag: Equatable {
 public func == (lhs: RefTag, rhs: RefTag) -> Bool {
   switch (lhs, rhs) {
   case (.activity, .activity), (.category, .category), (.categoryFeatured, .categoryFeatured),
-    (.activitySample, .activitySample), (.city, .city), (.discovery, .discovery),
+    (.activitySample, .activitySample), (.city, .city), (.dashboard, .dashboard), (.discovery, .discovery),
     (.discoveryPotd, .discoveryPotd), (.messageThread, .messageThread), (.recommended, .recommended),
     (.search, .search), (.social, .social), (.thanks, .thanks), (.users, .users):
     return true
