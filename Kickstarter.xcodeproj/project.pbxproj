@@ -2466,7 +2466,10 @@
 				A7C725771C85D36D005A016B /* Library */,
 				A7E06C7A1C5A6EB300EBDCC2 /* Products */,
 			);
+			indentWidth = 2;
 			sourceTree = "<group>";
+			tabWidth = 2;
+			usesTabs = 0;
 		};
 		A7E06C7A1C5A6EB300EBDCC2 /* Products */ = {
 			isa = PBXGroup;
