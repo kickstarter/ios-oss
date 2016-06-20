@@ -10,8 +10,9 @@ type_body_length:
   warning: 300
   error: 400
 excluded:
+  - Carthage/
   - Frameworks/
   - Kickstarter-iOS.playground/
   - Kickstarter-tvOS.playground/
-  - Carthage/
+  - Library/Strings.swift
 reporter: "xcode"
