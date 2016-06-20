@@ -33,12 +33,10 @@ public let loginButtonStyle = positiveButtonStyle
     Strings.login_tout_back_intent_traditional_login_button()
 }
 
-public let loginControllerStyle = baseControllerStyle
+public let loginControllerStyle = baseControllerStyle()
   <> UIViewController.lens.title %~ { _ in
     Strings.login_navbar_title()
 }
-
-public let loginToutControllerStyle = baseControllerStyle
 
 public let loginWithEmailButtonStyle = borderButtonStyle
   <> UIButton.lens.titleText(forState: .Normal) %~ { _ in
@@ -59,7 +57,7 @@ public let resetPasswordButtonStyle = positiveButtonStyle
     Strings.forgot_password_buttons_reset_my_password()
 }
 
-public let resetPasswordControllerStyle = baseControllerStyle
+public let resetPasswordControllerStyle = baseControllerStyle()
   <> UIViewController.lens.title %~ { _ in
     Strings.forgot_password_title()
 }
@@ -69,7 +67,7 @@ public let signupButtonStyle = positiveButtonStyle
     Strings.login_tout_default_intent_traditional_signup_button()
 }
 
-public let signupControllerStyle = baseControllerStyle
+public let signupControllerStyle = baseControllerStyle()
   <> UIViewController.lens.title .~ Strings.signup_button()
 
 public let signupWithEmailButtonStyle = borderButtonStyle
@@ -85,7 +83,7 @@ public let tfaCodeFieldStyle = formFieldStyle
     Strings.two_factor_code_placeholder()
 }
 
-public let twoFactorControllerStyle = baseControllerStyle
+public let twoFactorControllerStyle = baseControllerStyle()
   <> UIViewController.lens.title %~ { _ in
     Strings.two_factor_title()
 }

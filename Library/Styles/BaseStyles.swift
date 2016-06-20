@@ -4,7 +4,26 @@ import UIKit
 
 private let defaultRadius: CGFloat = 3.0
 
-public let baseControllerStyle = UIViewController.lens.view.backgroundColor .~ .ksr_offWhite
+public func baseControllerStyle <VC: UIViewControllerProtocol> () -> (VC -> VC) {
+  return VC.lens.view.backgroundColor .~ .ksr_offWhite
+}
+
+public func baseTableControllerStyle <TVC: UITableViewControllerProtocol>
+  (estimatedRowHeight estimatedRowHeight: CGFloat = 44.0) -> (TVC -> TVC) {
+  return baseControllerStyle()
+    <> TVC.lens.tableView.rowHeight .~ UITableViewAutomaticDimension
+    <> TVC.lens.tableView.estimatedRowHeight .~ estimatedRowHeight
+    <> TVC.lens.tableView.separatorStyle .~ .None
+}
+
+public func baseTableViewCellStyle <TVC: UITableViewCellProtocol> () -> (TVC -> TVC) {
+
+  return
+    (TVC.lens.contentView • UIView.lens.layoutMargins) .~ .init(all: 16.0)
+      <> (TVC.lens.contentView • UIView.lens.preservesSuperviewLayoutMargins) .~ false
+      <> TVC.lens.layoutMargins .~ .init(all: 0.0)
+      <> TVC.lens.preservesSuperviewLayoutMargins .~ false
+}
 
 /**
  - parameter radius: The corner radius. This parameter is optional, and will use a default value if omitted.

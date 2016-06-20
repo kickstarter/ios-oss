@@ -35,6 +35,18 @@ public protocol DashboardActionCellViewModelOutputs {
 
   /// Emits with the project when share sheet should be shown.
   var showShareSheet: Signal<Project, NoError> { get }
+
+  /// Emits the count of unread messages to be displayed.
+  var unreadMessagesCount: Signal<String, NoError> { get }
+
+  /// Emits a boolean that determines if the unread messages indicator should be hidden.
+  var unreadMessagesCountHidden: Signal<Bool, NoError> { get }
+
+  /// Emits the count of unseen activities to be displayed.
+  var unseenActivitiesCount: Signal<String, NoError> { get }
+
+  /// Emits a boolean that determines if the unseen activities indicator should be hidden.
+  var unseenActivitiesCountHidden: Signal<Bool, NoError> { get }
 }
 
 public protocol DashboardActionCellViewModelType {
@@ -58,13 +70,18 @@ public final class DashboardActionCellViewModel: DashboardActionCellViewModelInp
 
     self.lastUpdatePublishedAt = project
       .map {
-        Strings.dashboard_post_update_button_subtitle_last_updated_on_date(
-          date: Format.date(
-            secondsInUTC: $0.creatorData.lastUpdatePublishedAt ?? 0,
-            timeStyle: .NoStyle
+        if let lastUpdatePublishedAt = $0.creatorData.lastUpdatePublishedAt {
+          return Strings.dashboard_post_update_button_subtitle_last_updated_on_date(
+            date: Format.date(secondsInUTC: lastUpdatePublishedAt, timeStyle: .NoStyle)
           )
-        )
+        }
+        return Strings.dashboard_post_update_button_subtitle_you_have_not_posted_an_update_yet()
     }
+
+    self.unreadMessagesCount = project.map { Format.wholeNumber($0.creatorData.unreadMessagesCount ?? 0) }
+    self.unreadMessagesCountHidden = project.map { ($0.creatorData.unreadMessagesCount ?? 0) == 0 }
+    self.unseenActivitiesCount = project.map { Format.wholeNumber($0.creatorData.unseenActivityCount ?? 0) }
+    self.unseenActivitiesCountHidden = project.map { ($0.creatorData.unseenActivityCount ?? 0) == 0 }
   }
 
   private let activityTappedProperty = MutableProperty()
@@ -97,6 +114,10 @@ public final class DashboardActionCellViewModel: DashboardActionCellViewModelInp
   public let goToPostUpdate: Signal<Project, NoError>
   public let lastUpdatePublishedAt: Signal<String, NoError>
   public let showShareSheet: Signal<Project, NoError>
+  public let unreadMessagesCount: Signal<String, NoError>
+  public let unreadMessagesCountHidden: Signal<Bool, NoError>
+  public let unseenActivitiesCount: Signal<String, NoError>
+  public let unseenActivitiesCountHidden: Signal<Bool, NoError>
 
   public var inputs: DashboardActionCellViewModelInputs { return self }
   public var outputs: DashboardActionCellViewModelOutputs { return self }

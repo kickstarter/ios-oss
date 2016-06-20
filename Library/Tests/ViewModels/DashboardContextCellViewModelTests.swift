@@ -32,7 +32,7 @@ internal final class DashboardContextCellViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: project)
 
     self.backersCount.assertValues(["5"])
-    self.deadline.assertValues([String(date)])
+    self.deadline.assertValueCount(1)
     self.pledged.assertValues(["$1,234"])
     self.projectImageURL.assertValues([NSURL(string: Project.Photo.template.full)])
   }

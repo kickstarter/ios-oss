@@ -35,7 +35,9 @@ public final class DashboardContextCellViewModel: DashboardContextCellViewModelI
 
     self.backersCount = project.map { Format.wholeNumber($0.stats.backersCount) }
 
-    self.deadline = project.map { String($0.dates.deadline) }
+    self.deadline = project.map {
+      Format.date(secondsInUTC: $0.dates.deadline, dateStyle: .MediumStyle, timeStyle: .NoStyle)
+    }
 
     self.pledged = project.map { Format.currency($0.stats.pledged, country: $0.country) }
 

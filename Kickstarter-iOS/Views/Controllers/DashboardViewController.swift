@@ -1,6 +1,8 @@
 import KsApi
 import Library
 import UIKit
+import Prelude
+import Prelude_UIKit
 
 internal final class DashboardViewController: UITableViewController {
   let dataSource = DashboardDataSource()
@@ -15,6 +17,10 @@ internal final class DashboardViewController: UITableViewController {
     self.view.backgroundColor = Color.OffWhite.toUIColor()
 
     self.viewModel.inputs.viewDidLoad()
+  }
+
+  override func bindStyles() {
+    self |> baseTableControllerStyle(estimatedRowHeight: 200.0)
   }
 
   internal override func bindViewModel() {

@@ -24,7 +24,7 @@ internal final class FacebookConfirmationViewController: UIViewController {
   }
 
   override func bindStyles() {
-    self |> baseControllerStyle
+    self |> baseControllerStyle()
 
     self.confirmationLabel
       |> UILabel.lens.textColor .~ .ksr_textDefault
