@@ -138,7 +138,6 @@
 		A70968C61D14366D00DB39D3 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73379441D0E36A600C91445 /* Colors.swift */; };
 		A70968C71D14366D00DB39D3 /* BaseStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73378FA1D0AE33B00C91445 /* BaseStyles.swift */; };
 		A70968C81D14366D00DB39D3 /* ButtonStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73379101D0E33A600C91445 /* ButtonStyles.swift */; };
-		A709697B1D143B7500DB39D3 /* Prelude_UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A70969651D143B6E00DB39D3 /* Prelude_UIKit.framework */; };
 		A709697E1D143D1300DB39D3 /* AlertError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A709697D1D143D1300DB39D3 /* AlertError.swift */; };
 		A709697F1D143D1300DB39D3 /* AlertError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A709697D1D143D1300DB39D3 /* AlertError.swift */; };
 		A709698C1D1468A200DB39D3 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80762E311D071BFE0074189D /* Alamofire.framework */; };
@@ -487,6 +486,7 @@
 		A7BE4F211D05C13200353EF9 /* Argo.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A7BE4EF61D05C10200353EF9 /* Argo.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A7BE4F221D05C14100353EF9 /* Curry.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A7BE4F0B1D05C10600353EF9 /* Curry.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A7BE4F231D05C14700353EF9 /* Prelude.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A7BE4F1A1D05C10B00353EF9 /* Prelude.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A7C1910A1D183196001ECC79 /* Prelude_UIKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A727E0831D079B4A00D8FE43 /* Prelude_UIKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A7C795B21C873AC90081977F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D1F9471C850B7C000D41D5 /* AppDelegate.swift */; };
 		A7C795B31C873AC90081977F /* ActivitiesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F761741C85FA40005405ED /* ActivitiesViewController.swift */; };
 		A7C795B41C873AC90081977F /* DiscoveryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A751A51E1C85EC0B009C5DEA /* DiscoveryViewController.swift */; };
@@ -885,20 +885,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = A70969071D14373400DB39D3;
 			remoteInfo = "Prelude-UIKit-tvOS";
-		};
-		A70969641D143B6E00DB39D3 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A7BE4F121D05C10B00353EF9 /* Prelude.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = A70969081D14373400DB39D3;
-			remoteInfo = "Prelude-UIKit-tvOS";
-		};
-		A70969661D143B6E00DB39D3 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A7BE4F121D05C10B00353EF9 /* Prelude.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = A70969111D14373400DB39D3;
-			remoteInfo = "Prelude-UIKit-tvOSTests";
 		};
 		A70969881D14685600DB39D3 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1308,6 +1294,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				A7C1910A1D183196001ECC79 /* Prelude_UIKit.framework in Embed Frameworks */,
 				A7BE4F231D05C14700353EF9 /* Prelude.framework in Embed Frameworks */,
 				80762E431D071CB70074189D /* AlamofireImage.framework in Embed Frameworks */,
 				80762E3F1D071CAA0074189D /* Alamofire.framework in Embed Frameworks */,
@@ -1765,7 +1752,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A709697B1D143B7500DB39D3 /* Prelude_UIKit.framework in Frameworks */,
 				01D31A451CCA78A00037A178 /* FBSDKCoreKit.framework in Frameworks */,
 				80FE733A1C88F3D400BE0137 /* HockeySDK.framework in Frameworks */,
 				A75511E51C864CF0005355CF /* KsApi.framework in Frameworks */,
@@ -2301,8 +2287,6 @@
 				A727E0851D079B4A00D8FE43 /* Prelude-UIKit-iOSTests.xctest */,
 				59B0E0831D147F350081D2DC /* Prelude_UIKit.framework */,
 				59B0E0851D147F350081D2DC /* Prelude-UIKit-tvOSTests.xctest */,
-				A70969651D143B6E00DB39D3 /* Prelude_UIKit.framework */,
-				A70969671D143B6E00DB39D3 /* Prelude-UIKit-tvOSTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -3179,20 +3163,6 @@
 			remoteRef = 80762E3C1D071BFE0074189D /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		A70969651D143B6E00DB39D3 /* Prelude_UIKit.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = Prelude_UIKit.framework;
-			remoteRef = A70969641D143B6E00DB39D3 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		A70969671D143B6E00DB39D3 /* Prelude-UIKit-tvOSTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "Prelude-UIKit-tvOSTests.xctest";
-			remoteRef = A70969661D143B6E00DB39D3 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		A727E0831D079B4A00D8FE43 /* Prelude_UIKit.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -3912,7 +3882,6 @@
 				A76126B81C90C94000EDCCB9 /* UICollectionView-Extensions.swift in Sources */,
 				A76126AE1C90C94000EDCCB9 /* ValueCellDataSource.swift in Sources */,
 				59B0E0071D1207070081D2DC /* DashboardActionCellViewModel.swift in Sources */,
-				A73378FF1D0AE36400C91445 /* LoginStyles.swift in Sources */,
 				A760780B1CAEE0A6001B39D0 /* IsValidEmail.swift in Sources */,
 				A75511B41C8647D9005355CF /* LocalizedString.swift in Sources */,
 				0151AEB41C8F6FEC0067F1BE /* StyledLabel.swift in Sources */,
@@ -3933,7 +3902,6 @@
 				A7F441B41D005A9400FE6FC5 /* ActivitySuccessViewModel.swift in Sources */,
 				A76126BA1C90C94000EDCCB9 /* UIView-Extensions.swift in Sources */,
 				A75511B81C8647D9005355CF /* UIButton+LocalizedKey.swift in Sources */,
-				A73379461D0E36A600C91445 /* Colors.swift in Sources */,
 				59B0E07F1D147F340081D2DC /* DashboardStyles.swift in Sources */,
 				A74900191D00E23000BC3BE7 /* SignupViewModel.swift in Sources */,
 				A7F441D61D005A9400FE6FC5 /* ProfileProjectCellViewModel.swift in Sources */,
