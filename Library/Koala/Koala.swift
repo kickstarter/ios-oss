@@ -1,4 +1,5 @@
 // swiftlint:disable file_length
+// swiftlint:disable type_body_length
 import Foundation
 import UIKit
 import KsApi
@@ -7,10 +8,11 @@ import Prelude
 public final class Koala {
   internal static let DeprecatedKey = "DEPRECATED"
 
-  private let client: TrackingClientType
-  private let loggedInUser: User?
   private let bundle: NSBundleType
+  private let client: TrackingClientType
+  private let config: Config?
   private let device: UIDeviceType
+  private let loggedInUser: User?
   private let screen: UIScreenType
 
   /**
@@ -30,26 +32,18 @@ public final class Koala {
     case projectPage = "project_page"
   }
 
-  public init(client: TrackingClientType,
-              loggedInUser: User? = nil,
-              bundle: NSBundleType = NSBundle.mainBundle(),
+  public init(bundle: NSBundleType = NSBundle.mainBundle(),
+              client: TrackingClientType,
+              config: Config? = nil,
               device: UIDeviceType = UIDevice.currentDevice(),
+              loggedInUser: User? = nil,
               screen: UIScreenType = UIScreen.mainScreen()) {
-    self.client = client
-    self.loggedInUser = loggedInUser
     self.bundle = bundle
+    self.client = client
+    self.config = config
     self.device = device
+    self.loggedInUser = loggedInUser
     self.screen = screen
-  }
-
-  public func withLoggedInUser(loggedInUser: User?) -> Koala {
-    return Koala(
-      client: self.client,
-      loggedInUser: loggedInUser,
-      bundle: self.bundle,
-      device: self.device,
-      screen: self.screen
-    )
   }
 
   /// Call when the activities screen is shown.
@@ -501,6 +495,7 @@ public final class Koala {
       properties(user: loggedInUser).forEach { props[$0] = $1 }
     }
     props["user_logged_in"] = loggedInUser != nil
+    props["user_country"] = self.loggedInUser?.location?.country ?? self.config?.countryCode
 
     return props
   }
@@ -659,6 +654,24 @@ private func shareTypeProperty(shareType: String?) -> String {
     return shareType
   }
   #else
-    return ""
+  return ""
   #endif
 }
+
+// swiftlint:disable type_name
+extension Koala {
+  public enum lens {
+    public static let loggedInUser = Lens<Koala, User?>(
+      view: { $0.loggedInUser },
+      set: { Koala(bundle: $1.bundle, client: $1.client, config: $1.config, device: $1.device,
+        loggedInUser: $0, screen: $1.screen) }
+    )
+
+    public static let config = Lens<Koala, Config?>(
+      view: { $0.config },
+      set: { Koala(bundle: $1.bundle, client: $1.client, config: $0, device: $1.device,
+        loggedInUser: $1.loggedInUser, screen: $1.screen) }
+    )
+  }
+}
+// swiftlint:enable type_name

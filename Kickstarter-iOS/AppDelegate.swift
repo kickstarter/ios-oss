@@ -1,8 +1,9 @@
-import UIKit
+import FBSDKCoreKit
+import Foundation
 import KsApi
 import Library
-import Foundation
-import FBSDKCoreKit
+import Prelude
+import UIKit
 
 @UIApplicationMain
 final class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -30,10 +31,10 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         self?.viewModel.inputs.currentUserUpdatedInEnvironment()
     }
 
-    self.viewModel.outputs.updateConfigInEnvironment
+    self.viewModel.outputs.updateEnvironment
       .observeForUI()
-      .observeNext { config in
-        AppEnvironment.replaceCurrentEnvironment(config: config)
+      .observeNext { config, koala in
+        AppEnvironment.replaceCurrentEnvironment(config: config, koala: koala)
     }
 
     self.viewModel.outputs.postNotification

@@ -6,55 +6,61 @@ import Prelude
 final class KoalaTests: XCTestCase {
 
   func testDefaultProperties() {
-    let client = MockTrackingClient()
     let bundle = MockBundle()
+    let client = MockTrackingClient()
+    let config = Config(abExperiments: [:], appId: 1, countryCode: "GB", features: [:], iTunesLink: "itunes",
+                        launchedCountries: [], locale: "en", stripePublishableKey: "")
     let device = MockDevice(userInterfaceIdiom: .Phone)
     let screen = MockScreen()
-    let koala = Koala(client: client, loggedInUser: nil, bundle: bundle, device: device, screen: screen)
+    let koala = Koala(bundle: bundle, client: client, config: config, device: device, loggedInUser: nil,
+                      screen: screen)
 
     koala.trackAppOpen()
     XCTAssertEqual(1, client.properties.count)
 
-    let properties = client.properties.last!
+    let properties = client.properties.last
 
-    XCTAssertEqual("Apple", properties["manufacturer"] as? String)
+    XCTAssertEqual("Apple", properties?["manufacturer"] as? String)
 
-    XCTAssertEqual(bundle.infoDictionary?["CFBundleVersion"] as? Int, properties["app_version"] as? Int)
+    XCTAssertEqual(bundle.infoDictionary?["CFBundleVersion"] as? Int, properties?["app_version"] as? Int)
     XCTAssertEqual(bundle.infoDictionary?["CFBundleShortVersionString"] as? String,
-                   properties["app_release"] as? String)
-    XCTAssertNotNil(properties["model"])
-    XCTAssertEqual(device.systemName, properties["os"] as? String)
-    XCTAssertEqual(device.systemVersion, properties["os_version"] as? String)
-    XCTAssertEqual(screen.bounds.width, properties["screen_width"] as? CGFloat)
-    XCTAssertEqual(screen.bounds.height, properties["screen_height"] as? CGFloat)
+                   properties?["app_release"] as? String)
+    XCTAssertNotNil(properties?["model"])
+    XCTAssertEqual(device.systemName, properties?["os"] as? String)
+    XCTAssertEqual(device.systemVersion, properties?["os_version"] as? String)
+    XCTAssertEqual(screen.bounds.width, properties?["screen_width"] as? CGFloat)
+    XCTAssertEqual(screen.bounds.height, properties?["screen_height"] as? CGFloat)
 
-    XCTAssertEqual("iphone", properties["koala_lib"] as? String)
-    XCTAssertEqual("native", properties["client_type"] as? String)
-    XCTAssertEqual("phone", properties["device_format"] as? String)
-    XCTAssertEqual("ios", properties["client_platform"] as? String)
+    XCTAssertEqual("iphone", properties?["koala_lib"] as? String)
+    XCTAssertEqual("native", properties?["client_type"] as? String)
+    XCTAssertEqual("phone", properties?["device_format"] as? String)
+    XCTAssertEqual("ios", properties?["client_platform"] as? String)
 
-    XCTAssertNil(properties["user_uid"])
-    XCTAssertFalse(properties["user_logged_in"] as! Bool)
+    XCTAssertNil(properties?["user_uid"])
+    XCTAssertFalse(properties?["user_logged_in"] as! Bool)
+    XCTAssertEqual("GB", properties?["user_country"] as? String)
   }
 
   func testDefaultPropertiesWithLoggedInUser() {
     let client = MockTrackingClient()
-    let user = User.template
+    let user = .template
       |> User.lens.stats.backedProjectsCount .~ 2
-      <> User.lens.stats.createdProjectsCount .~ 3
-      <> User.lens.stats.starredProjectsCount .~ 4
+      |> User.lens.stats.createdProjectsCount .~ 3
+      |> User.lens.stats.starredProjectsCount .~ 4
+      |> User.lens.location .~ .template
     let koala = Koala(client: client, loggedInUser: user)
 
     koala.trackAppOpen()
     XCTAssertEqual(1, client.properties.count)
 
-    let properties = client.properties.last!
+    let properties = client.properties.last
 
-    XCTAssertEqual(user.id, properties["user_uid"] as? Int)
-    XCTAssertTrue(properties["user_logged_in"] as! Bool)
-    XCTAssertEqual(user.stats.backedProjectsCount!, properties["user_backed_projects_count"] as? Int)
-    XCTAssertEqual(user.stats.createdProjectsCount!, properties["user_created_projects_count"] as? Int)
-    XCTAssertEqual(user.stats.starredProjectsCount!, properties["user_starred_projects_count"] as? Int)
+    XCTAssertEqual(user.id, properties?["user_uid"] as? Int)
+    XCTAssertEqual(true, properties?["user_logged_in"] as? Bool)
+    XCTAssertEqual(user.stats.backedProjectsCount, properties?["user_backed_projects_count"] as? Int)
+    XCTAssertEqual(user.stats.createdProjectsCount, properties?["user_created_projects_count"] as? Int)
+    XCTAssertEqual(user.stats.starredProjectsCount, properties?["user_starred_projects_count"] as? Int)
+    XCTAssertEqual(user.location?.country, properties?["user_country"] as? String)
   }
 
   func testDeviceFormatAndClientPlatform_ForIPhoneIdiom() {

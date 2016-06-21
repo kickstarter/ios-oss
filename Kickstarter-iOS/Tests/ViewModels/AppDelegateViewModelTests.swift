@@ -11,14 +11,14 @@ final class AppDelegateViewModelTests: TestCase {
   let vm: AppDelegateViewModelType = AppDelegateViewModel()
 
   let updateCurrentUserInEnvironment = TestObserver<User, NoError>()
-  let updateConfigInEnvironment = TestObserver<Config, NoError>()
+  let updateEnvironment = TestObserver<(Config, Koala), NoError>()
   let postNotificationName = TestObserver<String, NoError>()
 
   override func setUp() {
     super.setUp()
 
     vm.outputs.updateCurrentUserInEnvironment.observe(updateCurrentUserInEnvironment.observer)
-    vm.outputs.updateConfigInEnvironment.observe(updateConfigInEnvironment.observer)
+    vm.outputs.updateEnvironment.observe(updateEnvironment.observer)
     vm.outputs.postNotification.map { $0.name }.observe(postNotificationName.observer)
   }
 
@@ -104,9 +104,9 @@ final class AppDelegateViewModelTests: TestCase {
   func testConfig() {
     self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
                                                  launchOptions: [:])
-    self.updateConfigInEnvironment.assertValueCount(1)
+    self.updateEnvironment.assertValueCount(1)
 
     self.vm.inputs.applicationWillEnterForeground()
-    self.updateConfigInEnvironment.assertValueCount(2)
+    self.updateEnvironment.assertValueCount(2)
   }
 }

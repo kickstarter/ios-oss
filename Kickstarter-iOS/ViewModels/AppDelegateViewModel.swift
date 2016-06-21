@@ -1,6 +1,6 @@
 import KsApi
 import Library
-import KsApi
+import Prelude
 import ReactiveCocoa
 import Result
 
@@ -28,7 +28,7 @@ internal protocol AppDelegateViewModelOutputs {
   var updateCurrentUserInEnvironment: Signal<User, NoError> { get }
 
   // Emits a config value that should be updated in the environment.
-  var updateConfigInEnvironment: Signal<Config, NoError> { get }
+  var updateEnvironment: Signal<(Config, Koala), NoError> { get }
 
   /// Emits an NSNotification that should be immediately posted.
   var postNotification: Signal<NSNotification, NoError> { get }
@@ -45,56 +45,6 @@ internal protocol AppDelegateViewModelType {
 internal final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateViewModelInputs,
 AppDelegateViewModelOutputs {
 
-  // MARK: AppDelegateViewModelType
-
-  internal var inputs: AppDelegateViewModelInputs { return self }
-  internal var outputs: AppDelegateViewModelOutputs { return self }
-
-  // MARK: AppDelegateViewModelInputs
-
-  private typealias ApplicationWithOptions = (application: UIApplication, options: [NSObject:AnyObject]?)
-  private let applicationDidFinishLaunchingProperty = MutableProperty<ApplicationWithOptions?>(nil)
-  internal func applicationDidFinishLaunching(application application: UIApplication,
-                                                 launchOptions: [NSObject : AnyObject]?) {
-    self.applicationDidFinishLaunchingProperty.value = (application, launchOptions)
-  }
-  private let applicationWillEnterForegroundProperty = MutableProperty(())
-  internal func applicationWillEnterForeground() {
-    self.applicationWillEnterForegroundProperty.value = ()
-  }
-  private let applicationDidEnterBackgroundProperty = MutableProperty(())
-  internal func applicationDidEnterBackground() {
-    self.applicationDidEnterBackgroundProperty.value = ()
-  }
-  private let currentUserUpdatedInEnvironmentProperty = MutableProperty(())
-  internal func currentUserUpdatedInEnvironment() {
-    self.currentUserUpdatedInEnvironmentProperty.value = ()
-  }
-  private let configUpdatedInEnvironmentProperty = MutableProperty()
-  internal func configUpdatedInEnvironment() {
-    self.configUpdatedInEnvironmentProperty.value = ()
-  }
-  private typealias ApplicationOpenUrl = (
-    application: UIApplication,
-    url: NSURL,
-    sourceApplication: String?,
-    annotation: AnyObject
-  )
-  private let applicationOpenUrlProperty = MutableProperty<ApplicationOpenUrl?>(nil)
-  internal func applicationOpenUrl(application application: UIApplication,
-                                      url: NSURL,
-                                      sourceApplication: String?,
-                                      annotation: AnyObject) {
-    self.applicationOpenUrlProperty.value = (application, url, sourceApplication, annotation)
-  }
-
-  // MARK: AppDelegateViewModelOutputs
-
-  internal let updateCurrentUserInEnvironment: Signal<User, NoError>
-  internal let postNotification: Signal<NSNotification, NoError>
-  internal let updateConfigInEnvironment: Signal<Config, NoError>
-  internal let facebookOpenURLReturnValue = MutableProperty(false)
-
   internal init() {
 
     self.updateCurrentUserInEnvironment = Signal.merge([
@@ -104,11 +54,14 @@ AppDelegateViewModelOutputs {
       .filter { _ in AppEnvironment.current.apiService.isAuthenticated }
       .switchMap { _ in AppEnvironment.current.apiService.fetchUserSelf().demoteErrors() }
 
-    self.updateConfigInEnvironment = Signal.merge([
+    self.updateEnvironment = Signal.merge([
       self.applicationWillEnterForegroundProperty.signal,
       self.applicationDidFinishLaunchingProperty.signal.ignoreValues()
       ])
       .switchMap { AppEnvironment.current.apiService.fetchConfig().demoteErrors() }
+      .map { config in
+        (config, AppEnvironment.current.koala |> Koala.lens.config .~ config)
+    }
 
     self.postNotification = self.currentUserUpdatedInEnvironmentProperty.signal
       .mapConst(NSNotification(name: CurrentUserNotifications.userUpdated, object: nil))
@@ -136,6 +89,50 @@ AppDelegateViewModelOutputs {
     self.applicationDidEnterBackgroundProperty.signal
       .observeNext { AppEnvironment.current.koala.trackAppClose() }
   }
+
+  internal var inputs: AppDelegateViewModelInputs { return self }
+  internal var outputs: AppDelegateViewModelOutputs { return self }
+
+  private typealias ApplicationWithOptions = (application: UIApplication, options: [NSObject:AnyObject]?)
+  private let applicationDidFinishLaunchingProperty = MutableProperty<ApplicationWithOptions?>(nil)
+  internal func applicationDidFinishLaunching(application application: UIApplication,
+                                                          launchOptions: [NSObject : AnyObject]?) {
+    self.applicationDidFinishLaunchingProperty.value = (application, launchOptions)
+  }
+  private let applicationWillEnterForegroundProperty = MutableProperty(())
+  internal func applicationWillEnterForeground() {
+    self.applicationWillEnterForegroundProperty.value = ()
+  }
+  private let applicationDidEnterBackgroundProperty = MutableProperty(())
+  internal func applicationDidEnterBackground() {
+    self.applicationDidEnterBackgroundProperty.value = ()
+  }
+  private let currentUserUpdatedInEnvironmentProperty = MutableProperty(())
+  internal func currentUserUpdatedInEnvironment() {
+    self.currentUserUpdatedInEnvironmentProperty.value = ()
+  }
+  private let configUpdatedInEnvironmentProperty = MutableProperty()
+  internal func configUpdatedInEnvironment() {
+    self.configUpdatedInEnvironmentProperty.value = ()
+  }
+  private typealias ApplicationOpenUrl = (
+    application: UIApplication,
+    url: NSURL,
+    sourceApplication: String?,
+    annotation: AnyObject
+  )
+  private let applicationOpenUrlProperty = MutableProperty<ApplicationOpenUrl?>(nil)
+  internal func applicationOpenUrl(application application: UIApplication,
+                                               url: NSURL,
+                                               sourceApplication: String?,
+                                               annotation: AnyObject) {
+    self.applicationOpenUrlProperty.value = (application, url, sourceApplication, annotation)
+  }
+
+  internal let updateCurrentUserInEnvironment: Signal<User, NoError>
+  internal let postNotification: Signal<NSNotification, NoError>
+  internal let updateEnvironment: Signal<(Config, Koala), NoError>
+  internal let facebookOpenURLReturnValue = MutableProperty(false)
 }
 
 private func startHockeyManager(hockeyManager: HockeyManagerType) {

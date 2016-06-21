@@ -1,16 +1,15 @@
-import Foundation
-import KsApi
-import ReactiveCocoa
-import Result
-import KsApi
 import Argo
 import FBSDKCoreKit
+import Foundation
+import KsApi
+import Prelude
+import ReactiveCocoa
+import Result
 
 /**
  A global stack that captures the current state of global objects that the app wants access to.
  */
 public struct AppEnvironment {
-
   internal static let environmentStorageKey = "com.kickstarter.AppEnvironment.current"
   internal static let oauthTokenStorageKey = "com.kickstarter.AppEnvironment.oauthToken"
 
@@ -29,7 +28,7 @@ public struct AppEnvironment {
     replaceCurrentEnvironment(
       apiService: current.apiService.login(OauthToken(token: envelope.accessToken)),
       currentUser: envelope.user,
-      koala: current.koala.withLoggedInUser(envelope.user)
+      koala: current.koala |> Koala.lens.loggedInUser .~ envelope.user
     )
   }
 
@@ -42,7 +41,7 @@ public struct AppEnvironment {
   public static func updateCurrentUser(user: User) {
     replaceCurrentEnvironment(
       currentUser: user,
-      koala: current.koala.withLoggedInUser(user)
+      koala: current.koala |> Koala.lens.loggedInUser .~ user
     )
   }
 
@@ -51,7 +50,7 @@ public struct AppEnvironment {
     replaceCurrentEnvironment(
       apiService: AppEnvironment.current.apiService.logout(),
       currentUser: nil,
-      koala: current.koala.withLoggedInUser(nil)
+      koala: current.koala |> Koala.lens.loggedInUser .~ nil
     )
   }
 
