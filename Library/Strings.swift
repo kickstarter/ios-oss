@@ -420,6 +420,23 @@ public enum Strings {
     )
   }
   /**
+   "%{user_name} posted Update #%{update_number}:"
+
+   - **es**: "%{user_name} posted Update #%{update_number}:"
+   - **de**: "%{user_name} posted Update #%{update_number}:"
+   - **fr**: "%{user_name} posted Update #%{update_number}:"
+   - **it**: "%{user_name} posted Update #%{update_number}:"
+   - **en**: "%{user_name} posted Update #%{update_number}:"
+  */
+  public static func activity_creator_actions_user_name_posted_update_number(user_name user_name: String, update_number: String) -> String {
+    return localizedString(
+      key: "activity.creator.actions.user_name_posted_update_number",
+      defaultValue: "%{user_name} posted Update #%{update_number}:",
+      count: nil,
+      substitutions: ["user_name": user_name, "update_number": update_number]
+    )
+  }
+  /**
    "You commented on Update #%{update_number}:"
 
    - **es**: "Tu comentario sobre actualización n° %{update_number}:"

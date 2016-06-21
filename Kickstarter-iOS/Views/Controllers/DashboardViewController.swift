@@ -65,7 +65,13 @@ internal final class DashboardViewController: UITableViewController {
   }
 
   private func goToActivity(project: Project) {
-    print("Not implemented yet!")
+    guard let vc = UIStoryboard(name: "ProjectActivity", bundle: nil)
+      .instantiateInitialViewController() as? ProjectActivitiesViewController else {
+        fatalError("Could not instantiate ProjectActivitiesViewController.")
+    }
+
+    vc.configureWith(project: project)
+    self.navigationController?.pushViewController(vc, animated: true)
   }
 
   private func goToMessages(project: Project) {
