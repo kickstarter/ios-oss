@@ -4,3 +4,6 @@
 [submodule "Frameworks/AlamofireImage"]
 	path = Frameworks/AlamofireImage
 	url = https://github.com/Alamofire/AlamofireImage.git
+[submodule "Frameworks/onepassword-app-extension"]
+	path = Frameworks/onepassword-app-extension
+	url = https://github.com/AgileBits/onepassword-app-extension.git

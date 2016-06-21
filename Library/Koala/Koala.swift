@@ -5,6 +5,8 @@ import KsApi
 import Prelude
 
 public final class Koala {
+  internal static let DeprecatedKey = "DEPRECATED"
+
   private let client: TrackingClientType
   private let loggedInUser: User?
   private let bundle: NSBundleType
@@ -65,6 +67,10 @@ public final class Koala {
     self.track(event: "App Close")
   }
 
+  public func trackAttemptingOnePasswordLogin() {
+    self.track(event: "Attempting 1password Login")
+  }
+
   /**
    Call when a discovery search is made, including pagination.
 
@@ -111,6 +117,17 @@ public final class Koala {
   // MARK: Login Events
   public func trackLoginTout(intent: String) {
     self.track(event: "Application Login or Signup", properties: ["intent": intent])
+  }
+
+  public func trackLoginFormView(onePasswordIsAvailable onePasswordIsAvailable: Bool) {
+    self.track(event: "User Login",
+               properties: [
+                "1password_extension_available": onePasswordIsAvailable,
+                Koala.DeprecatedKey: true
+      ]
+    )
+    self.track(event: "Viewed Login",
+               properties: ["1password_extension_available": onePasswordIsAvailable])
   }
 
   public func trackLoginSuccess() {
@@ -322,7 +339,7 @@ public final class Koala {
                properties: props.withAllValuesFrom(["mailbox": mailbox.rawValue]))
     // deprecated
     self.track(event: "Message Inbox View",
-               properties: props.withAllValuesFrom(["DEPRECATED": true]))
+               properties: props.withAllValuesFrom([Koala.DeprecatedKey: true]))
   }
 
   public func trackMessageThreadsSearch(term term: String, project: Project?) {
@@ -331,7 +348,7 @@ public final class Koala {
     self.track(event: "Message Threads Search",
                properties: props.withAllValuesFrom(["term": term]))
     self.track(event: "Message Inbox Search",
-               properties: props.withAllValuesFrom(["term": term, "DEPRECATED": true]))
+               properties: props.withAllValuesFrom(["term": term, Koala.DeprecatedKey: true]))
   }
 
   public func trackMessageThreadView(project project: Project) {

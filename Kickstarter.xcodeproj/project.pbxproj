@@ -662,6 +662,8 @@
 		A7E06D381C5BFB3800EBDCC2 /* PlaylistExplorerTransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E06CEE1C5BFB3800EBDCC2 /* PlaylistExplorerTransitionAnimator.swift */; };
 		A7E06D391C5BFB3800EBDCC2 /* ProjectTrayTransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E06CEF1C5BFB3800EBDCC2 /* ProjectTrayTransitionAnimator.swift */; };
 		A7E06D3A1C5BFB3800EBDCC2 /* ProjectVideoTransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E06CF01C5BFB3800EBDCC2 /* ProjectVideoTransitionAnimator.swift */; };
+		A7E1C4F21D18C8B3002D6DE3 /* OnePasswordExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = A7E1C4F01D18C8B3002D6DE3 /* OnePasswordExtension.m */; };
+		A7E1C4F31D18C8B3002D6DE3 /* 1Password.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A7E1C4F11D18C8B3002D6DE3 /* 1Password.xcassets */; };
 		A7E315A21C8885EF000DD85A /* Library.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A75511DA1C8647D9005355CF /* Library.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A7E315C51C88AAA8000DD85A /* DiscoveryProjectsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E315C41C88AAA8000DD85A /* DiscoveryProjectsDataSource.swift */; };
 		A7E315C61C88AAA8000DD85A /* DiscoveryProjectsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E315C41C88AAA8000DD85A /* DiscoveryProjectsDataSource.swift */; };
@@ -1689,6 +1691,10 @@
 		A7E06CEE1C5BFB3800EBDCC2 /* PlaylistExplorerTransitionAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = PlaylistExplorerTransitionAnimator.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		A7E06CEF1C5BFB3800EBDCC2 /* ProjectTrayTransitionAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ProjectTrayTransitionAnimator.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		A7E06CF01C5BFB3800EBDCC2 /* ProjectVideoTransitionAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectVideoTransitionAnimator.swift; sourceTree = "<group>"; };
+		A7E1C4EE1D18C8B2002D6DE3 /* Kickstarter-iOS-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Kickstarter-iOS-Bridging-Header.h"; path = "Kickstarter-iOS/Kickstarter-iOS-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
+		A7E1C4EF1D18C8B3002D6DE3 /* OnePasswordExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OnePasswordExtension.h; path = "Frameworks/onepassword-app-extension/OnePasswordExtension.h"; sourceTree = "<group>"; };
+		A7E1C4F01D18C8B3002D6DE3 /* OnePasswordExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OnePasswordExtension.m; path = "Frameworks/onepassword-app-extension/OnePasswordExtension.m"; sourceTree = "<group>"; };
+		A7E1C4F11D18C8B3002D6DE3 /* 1Password.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = 1Password.xcassets; path = "Frameworks/onepassword-app-extension/1Password.xcassets"; sourceTree = "<group>"; };
 		A7E315C41C88AAA8000DD85A /* DiscoveryProjectsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryProjectsDataSource.swift; sourceTree = "<group>"; };
 		A7E315CA1C88AC91000DD85A /* DiscoveryProjectCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryProjectCell.swift; sourceTree = "<group>"; };
 		A7E8FAC11CD67F5C00DBF142 /* SearchDataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchDataSourceTests.swift; sourceTree = "<group>"; };
@@ -1934,6 +1940,7 @@
 			isa = PBXGroup;
 			children = (
 				A7424F421C84F43300FDC1E4 /* iOS */,
+				A7E1C4BD1D18C871002D6DE3 /* onepassword-app-extension */,
 				A7424F411C84F41600FDC1E4 /* tvOS */,
 			);
 			name = Embedded;
@@ -2388,9 +2395,11 @@
 		A7D1F9461C850B7C000D41D5 /* Kickstarter-iOS */ = {
 			isa = PBXGroup;
 			children = (
+				A7E1C4EE1D18C8B2002D6DE3 /* Kickstarter-iOS-Bridging-Header.h */,
 				A7D1F9551C850B7C000D41D5 /* Info.plist */,
 				0148EF611CDD2811000DEFF8 /* Checkout.storyboard */,
 				A7A053491CD18D01005AF5E2 /* Comments.storyboard */,
+				0159B3A11D01FFEE00ACCE2A /* Friends.storyboard */,
 				A71003AA1CDCF4C300B4F4D7 /* Messages.storyboard */,
 				A72C3A351D00F2B80075227E /* Settings.storyboard */,
 				A7D1F9471C850B7C000D41D5 /* AppDelegate.swift */,
@@ -2400,7 +2409,6 @@
 				A775B5511CA886C500BBB587 /* Dashboard.storyboard */,
 				A7E315BD1C88AA56000DD85A /* DataSources */,
 				A7FC8C0C1C8F2D6300C3B49B /* Discovery.storyboard */,
-				0159B3A11D01FFEE00ACCE2A /* Friends.storyboard */,
 				A7D1F9521C850B7C000D41D5 /* LaunchScreen.storyboard */,
 				0127FC511C98BFD000E335C6 /* Library */,
 				A7A5F8221D11ECF60036139A /* Locales */,
@@ -2640,6 +2648,16 @@
 				A7424F0D1C84F40E00FDC1E4 /* Embedded */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		A7E1C4BD1D18C871002D6DE3 /* onepassword-app-extension */ = {
+			isa = PBXGroup;
+			children = (
+				A7E1C4EF1D18C8B3002D6DE3 /* OnePasswordExtension.h */,
+				A7E1C4F01D18C8B3002D6DE3 /* OnePasswordExtension.m */,
+				A7E1C4F11D18C8B3002D6DE3 /* 1Password.xcassets */,
+			);
+			name = "onepassword-app-extension";
 			sourceTree = "<group>";
 		};
 		A7E315BD1C88AA56000DD85A /* DataSources */ = {
@@ -2958,7 +2976,7 @@
 		A7E06C711C5A6EB300EBDCC2 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0720;
+				LastSwiftUpdateCheck = 0730;
 				LastUpgradeCheck = 0730;
 				ORGANIZATIONNAME = Kickstarter;
 				TargetAttributes = {
@@ -3548,6 +3566,7 @@
 				A775B5571CA886DD00BBB587 /* Search.storyboard in Resources */,
 				A745D61D1CAC722900C12802 /* Login.storyboard in Resources */,
 				0148EF621CDD2811000DEFF8 /* Checkout.storyboard in Resources */,
+				A7E1C4F31D18C8B3002D6DE3 /* 1Password.xcassets in Resources */,
 				A7A0534A1CD18D01005AF5E2 /* Comments.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4244,6 +4263,7 @@
 				A75CFA4F1CCDB322004CD5FA /* SearchDataSource.swift in Sources */,
 				A7CC14561D00E79200035C52 /* ProjectActivityItemProvider.swift in Sources */,
 				A7CC14441D00E75F00035C52 /* FindFriendsDataSource.swift in Sources */,
+				A7E1C4F21D18C8B3002D6DE3 /* OnePasswordExtension.m in Sources */,
 				A751A51F1C85EC0B009C5DEA /* DiscoveryViewController.swift in Sources */,
 				018F1F831C8E182200643DAA /* LoginViewController.swift in Sources */,
 				5970739F1D07277100B00444 /* ProjectNotificationsDataSource.swift in Sources */,
@@ -4615,6 +4635,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "app-icon-beta";
+				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -4632,6 +4653,7 @@
 				PRODUCT_NAME = KickBeta;
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
+				SWIFT_OBJC_BRIDGING_HEADER = "Kickstarter-iOS/Kickstarter-iOS-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Hockey;
@@ -5161,6 +5183,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "app-icon-debug";
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEFINES_MODULE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -5178,6 +5201,8 @@
 				PRODUCT_NAME = KickDebug;
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
+				SWIFT_OBJC_BRIDGING_HEADER = "Kickstarter-iOS/Kickstarter-iOS-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -5186,6 +5211,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "app-icon";
+				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5201,6 +5227,7 @@
 				PRODUCT_MODULE_NAME = Kickstarter_iOS;
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
+				SWIFT_OBJC_BRIDGING_HEADER = "Kickstarter-iOS/Kickstarter-iOS-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

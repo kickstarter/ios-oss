@@ -10,6 +10,7 @@ internal final class LoginViewController: UIViewController {
   @IBOutlet internal weak var formBackgroundView: UIView!
   @IBOutlet internal weak var formDividerView: UIView!
   @IBOutlet internal weak var loginButton: UIButton!
+  @IBOutlet internal weak var onePasswordButton: UIButton!
   @IBOutlet internal weak var passwordTextField: UITextField!
 
   internal let viewModel: LoginViewModelType = LoginViewModel()
@@ -19,6 +20,14 @@ internal final class LoginViewController: UIViewController {
 
     let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
     self.view.addGestureRecognizer(tap)
+
+    self.onePasswordButton.addTarget(self,
+                                     action: #selector(onePasswordButtonTapped),
+                                     forControlEvents: .TouchUpInside)
+
+    self.viewModel.inputs.onePassword(
+      isAvailable: OnePasswordExtension.sharedExtension().isAppExtensionAvailable()
+    )
   }
 
   override func viewWillAppear(animated: Bool) {
@@ -42,12 +51,17 @@ internal final class LoginViewController: UIViewController {
     self.formDividerView |> UIView.lens.backgroundColor .~ .ksr_gray
 
     self.formBackgroundView |> cardStyle()
+
+    self.onePasswordButton |> onePasswordButtonStyle
   }
 
   override func bindViewModel() {
     super.bindViewModel()
 
+    self.emailTextField.rac.text = self.viewModel.outputs.emailText
     self.loginButton.rac.enabled = self.viewModel.outputs.isFormValid
+    self.passwordTextField.rac.text = self.viewModel.outputs.passwordText
+    self.onePasswordButton.rac.hidden = self.viewModel.outputs.onePasswordButtonHidden
 
     self.viewModel.outputs.passwordTextFieldBecomeFirstResponder
       .observeForUI()
@@ -76,17 +90,34 @@ internal final class LoginViewController: UIViewController {
         self?.startResetPasswordViewController()
       }
 
-    self.viewModel.errors.showError
+    self.viewModel.outputs.showError
       .observeForUI()
       .observeNext { [weak self] message in
         self?.presentViewController(UIAlertController.genericError(message), animated: true, completion: nil)
     }
 
-    self.viewModel.errors.tfaChallenge
+    self.viewModel.outputs.tfaChallenge
       .observeForUI()
       .observeNext { [weak self] (email, password) in
         self?.startTwoFactorViewController(email, password: password)
-      }
+    }
+
+    self.viewModel.outputs.onePasswordFindLoginForURLString
+      .observeForUI()
+      .observeNext { [weak self] in self?.onePasswordFindLogin(forURLString: $0) }
+  }
+
+  private func onePasswordFindLogin(forURLString string: String) {
+
+    OnePasswordExtension.sharedExtension()
+      .findLoginForURLString(string, forViewController: self, sender: self.onePasswordButton) { result, _ in
+        guard let result = result else { return }
+
+        self.viewModel.inputs.onePasswordFoundLogin(
+          email: result[AppExtensionUsernameKey] as? String,
+          password: result[AppExtensionPasswordKey] as? String
+        )
+    }
   }
 
   private func startTwoFactorViewController(email: String, password: String) {
@@ -138,6 +169,10 @@ internal final class LoginViewController: UIViewController {
   @IBAction
   internal func resetPasswordButtonPressed(sender: UIButton) {
     self.viewModel.inputs.resetPasswordButtonPressed()
+  }
+
+  @objc @IBAction private func onePasswordButtonTapped() {
+    self.viewModel.inputs.onePasswordButtonTapped()
   }
 
   internal func dismissKeyboard() {

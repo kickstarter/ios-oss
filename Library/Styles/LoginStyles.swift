@@ -43,6 +43,12 @@ public let loginWithEmailButtonStyle = borderButtonStyle
     Strings.login_buttons_log_in_email()
 }
 
+public let onePasswordButtonStyle =
+  UIButton.lens.titleLabel.font .~ .ksr_callout
+    <> UIButton.lens.titleColor(forState: .Normal) .~ .ksr_blue
+    <> UIButton.lens.titleColor(forState: .Highlighted) .~ .ksr_lightBlue
+    <> UIButton.lens.titleText(forState: .Normal) %~ { _ in Strings.login_buttons_one_password() }
+
 public let newsletterLabelStyle = UILabel.lens.font .~ .ksr_subhead
   <> UILabel.lens.textColor .~ .ksr_textDefault
 

@@ -59,7 +59,7 @@ internal final class MessagesSearchViewModelTests: TestCase {
     self.hasMessageThreads.assertValues([true])
     self.isSearching.assertValues([false, true, false])
     XCTAssertEqual(["Message Threads Search", "Message Inbox Search"], self.trackingClient.events)
-    XCTAssertEqual([nil, true], self.trackingClient.properties.map { $0["DEPRECATED"] as! Bool? })
+    XCTAssertEqual([nil, true], self.trackingClient.properties.map { $0[Koala.DeprecatedKey] as! Bool? })
     XCTAssertEqual([nil, nil], self.trackingClient.properties.map { $0["project_pid"] as! Int? })
 
     self.vm.inputs.searchTextChanged("hello world")
@@ -75,7 +75,8 @@ internal final class MessagesSearchViewModelTests: TestCase {
     XCTAssertEqual(
       ["Message Threads Search", "Message Inbox Search", "Message Threads Search", "Message Inbox Search"],
       self.trackingClient.events)
-    XCTAssertEqual([nil, true, nil, true], self.trackingClient.properties.map { $0["DEPRECATED"] as! Bool? })
+    XCTAssertEqual([nil, true, nil, true],
+                   self.trackingClient.properties.map { $0[Koala.DeprecatedKey] as! Bool? })
     XCTAssertEqual([nil, nil, nil, nil], self.trackingClient.properties.map { $0["project_pid"] as! Int? })
 
     self.vm.inputs.searchTextChanged("")
@@ -114,7 +115,7 @@ internal final class MessagesSearchViewModelTests: TestCase {
 
     self.hasMessageThreads.assertValues([true])
     XCTAssertEqual(["Message Threads Search", "Message Inbox Search"], self.trackingClient.events)
-    XCTAssertEqual([nil, true], self.trackingClient.properties.map { $0["DEPRECATED"] as! Bool? })
+    XCTAssertEqual([nil, true], self.trackingClient.properties.map { $0[Koala.DeprecatedKey] as! Bool? })
     XCTAssertEqual([project.id, project.id],
                    self.trackingClient.properties.map { $0["project_pid"] as! Int? })
 
@@ -129,7 +130,8 @@ internal final class MessagesSearchViewModelTests: TestCase {
     XCTAssertEqual(
       ["Message Threads Search", "Message Inbox Search", "Message Threads Search", "Message Inbox Search"],
       self.trackingClient.events)
-    XCTAssertEqual([nil, true, nil, true], self.trackingClient.properties.map { $0["DEPRECATED"] as! Bool? })
+    XCTAssertEqual([nil, true, nil, true],
+                   self.trackingClient.properties.map { $0[Koala.DeprecatedKey] as! Bool? })
     XCTAssertEqual([project.id, project.id, project.id, project.id],
                    self.trackingClient.properties.map { $0["project_pid"] as! Int? })
 
