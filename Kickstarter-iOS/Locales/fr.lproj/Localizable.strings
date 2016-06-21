@@ -22,6 +22,7 @@
 "activity.creator.actions.user_name_commented_on_update_number" = "%{user_name} a laissé un commentaire sur l'actu no. %{update_number}.";
 "activity.creator.actions.user_name_commented_on_your_project" = "%{user_name} a laissé un commentaire sur votre projet";
 "activity.creator.actions.user_name_pledged" = "L'engagement de %{user_name} :";
+"activity.creator.actions.user_name_posted_update_number" = "%{user_name} posted Update #%{update_number}:";
 "activity.creator.actions.you_commented_on_update_number" = "Vous avez commenté l'actu no. %{update_number}";
 "activity.creator.actions.you_commented_on_update_number_pronoun" = "Vous";
 "activity.creator.actions.you_commented_on_your_project" = "Vous avez laissé un commentaire sur votre projet.";

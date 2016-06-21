@@ -22,6 +22,7 @@
 "activity.creator.actions.user_name_commented_on_update_number" = "%{user_name} hat die Aktualisierung Nr. %{update_number} kommentiert:";
 "activity.creator.actions.user_name_commented_on_your_project" = "%{user_name} hat dein Projekt kommentiert:";
 "activity.creator.actions.user_name_pledged" = "Beitrag von %{user_name}:";
+"activity.creator.actions.user_name_posted_update_number" = "%{user_name} posted Update #%{update_number}:";
 "activity.creator.actions.you_commented_on_update_number" = "Du hast Aktualisierung Nr. %{update_number} kommentiert:";
 "activity.creator.actions.you_commented_on_update_number_pronoun" = "Du";
 "activity.creator.actions.you_commented_on_your_project" = "Du hast dein Projekt kommentiert:";
