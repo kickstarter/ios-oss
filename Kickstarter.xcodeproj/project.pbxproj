@@ -325,6 +325,8 @@
 		A75511F41C865321005355CF /* LocalizedStringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A755118E1C8645A0005355CF /* LocalizedStringTests.swift */; };
 		A75511F51C865321005355CF /* EnvironmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A755118A1C8645A0005355CF /* EnvironmentTests.swift */; };
 		A75511F61C865321005355CF /* UIButton+LocalizedKeyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75511901C8645A0005355CF /* UIButton+LocalizedKeyTests.swift */; };
+		A757EA6B1D19F93400A5C978 /* OnePasswordExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = A7E1C4F01D18C8B3002D6DE3 /* OnePasswordExtension.m */; };
+		A757EA6C1D19F93400A5C978 /* 1Password.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A7E1C4F11D18C8B3002D6DE3 /* 1Password.xcassets */; };
 		A758F4041D0702CF00169CC0 /* DiscoveryFiltersDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A758F4031D0702CF00169CC0 /* DiscoveryFiltersDataSourceTests.swift */; };
 		A758F43B1D070B8E00169CC0 /* DiscoveryPagesDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A758F43A1D070B8E00169CC0 /* DiscoveryPagesDataSourceTests.swift */; };
 		A75A29241CE0AE5A00D35E5C /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75A29231CE0AE5A00D35E5C /* MessagesViewController.swift */; };
@@ -3522,6 +3524,7 @@
 			files = (
 				0148EF631CDD2811000DEFF8 /* Checkout.storyboard in Resources */,
 				A7A5F82A1D11ECF60036139A /* Localizable.strings in Resources */,
+				A757EA6C1D19F93400A5C978 /* 1Password.xcassets in Resources */,
 				A75CAC0D1D1361E800EBF323 /* Login.storyboard in Resources */,
 				A7A0534B1CD18D01005AF5E2 /* Comments.storyboard in Resources */,
 				A7D120D71D15A7B400F364FD /* Assets.xcassets in Resources */,
@@ -4123,6 +4126,7 @@
 				A7C795B41C873AC90081977F /* DiscoveryViewController.swift in Sources */,
 				A7CC14571D00E79200035C52 /* ProjectActivityItemProvider.swift in Sources */,
 				A7CC14451D00E75F00035C52 /* FindFriendsDataSource.swift in Sources */,
+				A757EA6B1D19F93400A5C978 /* OnePasswordExtension.m in Sources */,
 				A715ACC31CE7ED3600605F02 /* ActivityNegativeStateChangeCell.swift in Sources */,
 				018F1F841C8E182200643DAA /* LoginViewController.swift in Sources */,
 				597073A01D07277100B00444 /* ProjectNotificationsDataSource.swift in Sources */,
@@ -4763,6 +4767,7 @@
 				PRODUCT_NAME = Kickstarter_Framework;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "Kickstarter-iOS/Kickstarter-iOS-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -5097,6 +5102,7 @@
 				PRODUCT_NAME = Kickstarter_Framework;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "Kickstarter-iOS/Kickstarter-iOS-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -5127,6 +5133,7 @@
 				PRODUCT_NAME = Kickstarter_Framework;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "Kickstarter-iOS/Kickstarter-iOS-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
