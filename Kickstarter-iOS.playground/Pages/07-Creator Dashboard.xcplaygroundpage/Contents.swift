@@ -13,8 +13,10 @@ AppEnvironment.replaceCurrentEnvironment(
         |> Project.lens.creatorData.lastUpdatePublishedAt .~ NSDate().timeIntervalSince1970
         |> Project.lens.creatorData.unreadMessagesCount .~ 42
         |> Project.lens.creatorData.unseenActivityCount .~ 1_299
+        |> Project.lens.creatorData.permissions .~ [.post]
     ]
-  )
+  ),
+  currentUser: Project.cosmicSurgery.creator
 )
 
 let controller = storyboard(named: "Dashboard")

@@ -230,6 +230,7 @@
                                     <outlet property="activityButton" destination="TNk-sY-KaC" id="xts-Ro-GEd"/>
                                     <outlet property="lastUpdatePublishedAtLabel" destination="SVz-zw-HZM" id="cwT-k8-5z3"/>
                                     <outlet property="messagesButton" destination="TX5-xu-x33" id="mgl-Lk-j3M"/>
+                                    <outlet property="messagesRowStackView" destination="XeI-c8-wqs" id="CPF-rs-lNN"/>
                                     <outlet property="postUpdateButton" destination="DKc-ei-Ibv" id="Cun-KU-ftY"/>
                                     <outlet property="shareButton" destination="1vV-Ja-sdz" id="AHM-TY-PXz"/>
                                     <outlet property="unreadMessagesCountView" destination="vO1-Gv-4dQ" id="f98-SB-Wvi"/>

@@ -33,6 +33,15 @@ public protocol DashboardActionCellViewModelOutputs {
   /// Emits the last update published time to display.
   var lastUpdatePublishedAt: Signal<String, NoError> { get }
 
+  /// Emits a boolean that determines if the last update published label should be hidden.
+  var lastUpdatePublishedLabelHidden: Signal<Bool, NoError> { get }
+
+  /// Emits a boolean that determines if the messages row should be hidden.
+  var messagesRowHidden: Signal<Bool, NoError> { get }
+
+  /// Emits a boolean that determines if the post update button should be hidden
+  var postUpdateButtonHidden: Signal<Bool, NoError> { get }
+
   /// Emits with the project when share sheet should be shown.
   var showShareSheet: Signal<Project, NoError> { get }
 
@@ -82,6 +91,11 @@ public final class DashboardActionCellViewModel: DashboardActionCellViewModelInp
     self.unreadMessagesCountHidden = project.map { ($0.creatorData.unreadMessagesCount ?? 0) == 0 }
     self.unseenActivitiesCount = project.map { Format.wholeNumber($0.creatorData.unseenActivityCount ?? 0) }
     self.unseenActivitiesCountHidden = project.map { ($0.creatorData.unseenActivityCount ?? 0) == 0 }
+
+    self.lastUpdatePublishedLabelHidden = project.map { !$0.creatorData.permissions.contains(.post) }
+    self.postUpdateButtonHidden = self.lastUpdatePublishedLabelHidden
+
+    self.messagesRowHidden = project.map { $0.creator != AppEnvironment.current.currentUser }
   }
 
   private let activityTappedProperty = MutableProperty()
@@ -113,6 +127,9 @@ public final class DashboardActionCellViewModel: DashboardActionCellViewModelInp
   public let goToMessages: Signal<Project, NoError>
   public let goToPostUpdate: Signal<Project, NoError>
   public let lastUpdatePublishedAt: Signal<String, NoError>
+  public let lastUpdatePublishedLabelHidden: Signal<Bool, NoError>
+  public let messagesRowHidden: Signal<Bool, NoError>
+  public let postUpdateButtonHidden: Signal<Bool, NoError>
   public let showShareSheet: Signal<Project, NoError>
   public let unreadMessagesCount: Signal<String, NoError>
   public let unreadMessagesCountHidden: Signal<Bool, NoError>

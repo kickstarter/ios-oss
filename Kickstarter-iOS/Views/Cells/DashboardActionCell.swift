@@ -22,12 +22,13 @@ internal final class DashboardActionCell: UITableViewCell, ValueCell {
   internal weak var delegate: DashboardActionCellDelegate?
   private let viewModel: DashboardActionCellViewModelType = DashboardActionCellViewModel()
 
-  @IBOutlet internal weak var activityButton: UIButton!
+  @IBOutlet private weak var activityButton: UIButton!
   @IBOutlet private var drillDownIndicatorImageViews: [UIImageView]!
-  @IBOutlet internal weak var lastUpdatePublishedAtLabel: UILabel!
-  @IBOutlet internal weak var messagesButton: UIButton!
-  @IBOutlet internal weak var postUpdateButton: UIButton!
-  @IBOutlet internal weak var shareButton: UIButton!
+  @IBOutlet private weak var lastUpdatePublishedAtLabel: UILabel!
+  @IBOutlet private weak var messagesButton: UIButton!
+  @IBOutlet private weak var messagesRowStackView: UIStackView!
+  @IBOutlet private weak var postUpdateButton: UIButton!
+  @IBOutlet private weak var shareButton: UIButton!
   @IBOutlet private weak var unseenActivitiesCountView: CountBadgeView!
   @IBOutlet private weak var unreadMessagesCountView: CountBadgeView!
 
@@ -57,10 +58,14 @@ internal final class DashboardActionCell: UITableViewCell, ValueCell {
 
   internal override func bindViewModel() {
     self.lastUpdatePublishedAtLabel.rac.text = self.viewModel.outputs.lastUpdatePublishedAt
+    self.messagesRowStackView.rac.hidden = self.viewModel.outputs.messagesRowHidden
     self.unreadMessagesCountView.label.rac.text = self.viewModel.outputs.unreadMessagesCount
     self.unreadMessagesCountView.rac.hidden = self.viewModel.outputs.unreadMessagesCountHidden
     self.unseenActivitiesCountView.label.rac.text = self.viewModel.outputs.unseenActivitiesCount
     self.unseenActivitiesCountView.rac.hidden = self.viewModel.outputs.unseenActivitiesCountHidden
+
+    self.lastUpdatePublishedAtLabel.rac.hidden = self.viewModel.outputs.lastUpdatePublishedLabelHidden
+    self.postUpdateButton.rac.hidden = self.viewModel.outputs.postUpdateButtonHidden
 
     self.viewModel.outputs.goToActivity
       .observeForUI()

@@ -23,6 +23,7 @@ public func baseTableViewCellStyle <TVC: UITableViewCellProtocol> () -> (TVC -> 
       <> (TVC.lens.contentView • UIView.lens.preservesSuperviewLayoutMargins) .~ false
       <> TVC.lens.layoutMargins .~ .init(all: 0.0)
       <> TVC.lens.preservesSuperviewLayoutMargins .~ false
+      <> TVC.lens.selectionStyle .~ .None
 }
 
 /**
