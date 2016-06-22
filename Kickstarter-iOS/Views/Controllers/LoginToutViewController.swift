@@ -27,6 +27,11 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    NSNotificationCenter.defaultCenter()
+      .addObserverForName(CurrentUserNotifications.sessionStarted, object: nil, queue: nil) { [weak self] _ in
+        self?.viewModel.inputs.userSessionStarted()
+    }
+
     if let _ = self.presentingViewController {
       self.navigationItem.leftBarButtonItem = .close(self, selector: #selector(closeButtonPressed))
     }
@@ -35,6 +40,7 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
 
   override func viewWillAppear(animated: Bool) {
     super.viewWillAppear(animated)
+    self.viewModel.inputs.view(isPresented: self.presentingViewController != nil)
     self.viewModel.inputs.viewWillAppear()
   }
 
@@ -107,6 +113,12 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
           animated: true,
           completion: nil
         )
+    }
+
+    self.viewModel.outputs.dismissViewController
+      .observeForUI()
+      .observeNext { [weak self] in
+        self?.dismissViewControllerAnimated(true, completion: nil)
     }
   }
   // swiftlint:enable function_body_length

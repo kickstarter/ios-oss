@@ -9,33 +9,36 @@ import XCTest
 @testable import FBSDKCoreKit
 
 final class LoginToutViewModelTests: TestCase {
-  let vm: LoginToutViewModelType = LoginToutViewModel()
-  let startLogin = TestObserver<(), NoError>()
-  let startSignup = TestObserver<(), NoError>()
-  let showHelpActionSheet = TestObserver<[HelpType], NoError>()
-  let showHelp = TestObserver<HelpType, NoError>()
-  let startFacebookConfirmation = TestObserver<String, NoError>()
-  let startTwoFactorChallenge = TestObserver<String, NoError>()
-  let logIntoEnvironment = TestObserver<AccessTokenEnvelope, NoError>()
-  let postNotification = TestObserver<String, NoError>()
-  let attemptFacebookLogin = TestObserver<(), NoError>()
-  let isLoading = TestObserver<Bool, NoError>()
-  let showFacebookErrorAlert = TestObserver<AlertError, NoError>()
+  private let vm: LoginToutViewModelType = LoginToutViewModel()
+  private let startLogin = TestObserver<(), NoError>()
+  private let startSignup = TestObserver<(), NoError>()
+  private let showHelpActionSheet = TestObserver<[HelpType], NoError>()
+  private let showHelp = TestObserver<HelpType, NoError>()
+  private let startFacebookConfirmation = TestObserver<String, NoError>()
+  private let startTwoFactorChallenge = TestObserver<String, NoError>()
+  private let logIntoEnvironment = TestObserver<AccessTokenEnvelope, NoError>()
+  private let postNotification = TestObserver<String, NoError>()
+  private let attemptFacebookLogin = TestObserver<(), NoError>()
+  private let isLoading = TestObserver<Bool, NoError>()
+  private let showFacebookErrorAlert = TestObserver<AlertError, NoError>()
+  private let dismissViewController = TestObserver<(), NoError>()
 
   override func setUp() {
     super.setUp()
 
-    vm.outputs.startLogin.observe(startLogin.observer)
-    vm.outputs.startSignup.observe(startSignup.observer)
-    vm.outputs.showHelpActionSheet.observe(showHelpActionSheet.observer)
-    vm.outputs.showHelp.observe(showHelp.observer)
-    vm.outputs.startFacebookConfirmation.map { _, token in token }.observe(startFacebookConfirmation.observer)
-    vm.outputs.startTwoFactorChallenge.observe(startTwoFactorChallenge.observer)
-    vm.outputs.logIntoEnvironment.observe(logIntoEnvironment.observer)
-    vm.outputs.postNotification.map { note in note.name }.observe(postNotification.observer)
-    vm.outputs.attemptFacebookLogin.observe(attemptFacebookLogin.observer)
-    vm.outputs.isLoading.observe(isLoading.observer)
-    vm.outputs.showFacebookErrorAlert.observe(showFacebookErrorAlert.observer)
+    self.vm.outputs.startLogin.observe(self.startLogin.observer)
+    self.vm.outputs.startSignup.observe(self.startSignup.observer)
+    self.vm.outputs.showHelpActionSheet.observe(self.showHelpActionSheet.observer)
+    self.vm.outputs.showHelp.observe(self.showHelp.observer)
+    self.vm.outputs.startFacebookConfirmation.map { _, token in token }
+      .observe(self.startFacebookConfirmation.observer)
+    self.vm.outputs.startTwoFactorChallenge.observe(self.startTwoFactorChallenge.observer)
+    self.vm.outputs.logIntoEnvironment.observe(self.logIntoEnvironment.observer)
+    self.vm.outputs.postNotification.map { note in note.name }.observe(self.postNotification.observer)
+    self.vm.outputs.attemptFacebookLogin.observe(self.attemptFacebookLogin.observer)
+    self.vm.outputs.isLoading.observe(self.isLoading.observer)
+    self.vm.outputs.showFacebookErrorAlert.observe(self.showFacebookErrorAlert.observer)
+    self.vm.outputs.dismissViewController.observe(self.dismissViewController.observer)
   }
 
   func testLoginIntentTracking_Default() {
@@ -48,7 +51,7 @@ final class LoginToutViewModelTests: TestCase {
   }
 
   func testKoala_whenLoginIntentBeforeViewAppears() {
-    vm.inputs.loginIntent(LoginIntent.Activity)
+    vm.inputs.loginIntent(.activity)
     vm.inputs.viewWillAppear()
 
     XCTAssertEqual(["Application Login or Signup"], trackingClient.events)
@@ -404,5 +407,21 @@ final class LoginToutViewModelTests: TestCase {
 
     showHelp.assertValues([HelpType.Contact, HelpType.Cookie, HelpType.HowItWorks, HelpType.Privacy,
       HelpType.Terms], "Show help emitted with type .Terms")
+  }
+
+  func testDismissalWhenNotPresented() {
+    self.vm.inputs.viewWillAppear()
+    self.vm.inputs.view(isPresented: false)
+    self.vm.inputs.userSessionStarted()
+
+    self.dismissViewController.assertValueCount(0)
+  }
+
+  func testDismissalWhenPresented() {
+    self.vm.inputs.viewWillAppear()
+    self.vm.inputs.view(isPresented: true)
+    self.vm.inputs.userSessionStarted()
+
+    self.dismissViewController.assertValueCount(1)
   }
 }

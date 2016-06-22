@@ -1,9 +1,10 @@
 public enum LoginIntent {
-  case Activity
-  case BackProject
-  case FavoriteCategory
-  case Generic
-  case LoginTab
-  case MessageCreator
-  case StarProject
+  case activity
+  case backProject
+  case discoveryOnboarding
+  case favoriteCategory
+  case generic
+  case loginTab
+  case messageCreator
+  case starProject
 }

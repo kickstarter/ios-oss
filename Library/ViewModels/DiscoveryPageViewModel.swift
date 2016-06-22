@@ -23,6 +23,9 @@ public protocol DiscoveryPageViewModelInputs {
   /// Call when the view loads.
   func viewDidLoad()
 
+  /// Call when the view will appear.
+  func viewWillAppear()
+
   /**
    Call from the controller's `tableView:willDisplayCell:forRowAtIndexPath` method.
 
@@ -41,6 +44,9 @@ public protocol DiscoveryPageViewModelOutputs {
 
   /// Emits a boolean that determines if projects are currently loading or not.
   var projectsAreLoading: Signal<Bool, NoError> { get }
+
+  /// Emits a boolean that determines of the onboarding should be shown.
+  var showOnboarding: Signal<Bool, NoError> { get }
 }
 
 public protocol DiscoveryPageViewModelType {
@@ -97,6 +103,15 @@ DiscoveryPageViewModelOutputs {
       .takePairWhen(self.tappedProject.signal.ignoreNil())
       .map { params, project in (project, refTag(fromParams: params, project: project)) }
 
+    self.showOnboarding = combineLatest(
+      self.viewWillAppearProperty.signal,
+      self.sortProperty.signal.ignoreNil()
+      )
+      .map { _, sort in
+        return AppEnvironment.current.currentUser == nil && sort == .Magic
+      }
+      .skipRepeats()
+
     requestFirstPageWith
       .takePairWhen(pageCount)
       .observeNext { params, page in
@@ -129,14 +144,19 @@ DiscoveryPageViewModelOutputs {
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
+  private let viewWillAppearProperty = MutableProperty()
+  public func viewWillAppear() {
+    self.viewWillAppearProperty.value = ()
+  }
   private let willDisplayRowProperty = MutableProperty<(row: Int, total: Int)?>(nil)
   public func willDisplayRow(row: Int, outOf totalRows: Int) {
     self.willDisplayRowProperty.value = (row, totalRows)
   }
 
-  public var goToProject: Signal<(Project, RefTag), NoError>
+  public let goToProject: Signal<(Project, RefTag), NoError>
   public let projects: Signal<[Project], NoError>
   public let projectsAreLoading: Signal<Bool, NoError>
+  public let showOnboarding: Signal<Bool, NoError>
 
   public var inputs: DiscoveryPageViewModelInputs { return self }
   public var outputs: DiscoveryPageViewModelOutputs { return self }

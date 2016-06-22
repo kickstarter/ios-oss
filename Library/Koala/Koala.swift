@@ -113,13 +113,14 @@ public final class Koala {
 
     let intentTrackingString: String
     switch intent {
-    case .Activity:         intentTrackingString = "activity"
-    case .BackProject:      intentTrackingString = "pledge"
-    case .FavoriteCategory: intentTrackingString = "favorite_category"
-    case .Generic:          intentTrackingString = "generic"
-    case .LoginTab:         intentTrackingString = "login_tab"
-    case .MessageCreator:   intentTrackingString = "new_message"
-    case .StarProject:      intentTrackingString = "star"
+    case .activity:             intentTrackingString = "activity"
+    case .backProject:          intentTrackingString = "pledge"
+    case .discoveryOnboarding:  intentTrackingString = "discovery_onboarding"
+    case .favoriteCategory:     intentTrackingString = "favorite_category"
+    case .generic:              intentTrackingString = "generic"
+    case .loginTab:             intentTrackingString = "login_tab"
+    case .messageCreator:       intentTrackingString = "new_message"
+    case .starProject:          intentTrackingString = "star"
     }
 
     self.track(event: "Application Login or Signup",

@@ -362,6 +362,10 @@
 		A757EAEE1D19FAFA00A5C978 /* ProjectActivitiesDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D9F58141D131D4A00CE81DE /* ProjectActivitiesDataSource.swift */; };
 		A757EAF01D1ABE7400A5C978 /* ActivitySurveyResponseCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A757EAEF1D1ABE7400A5C978 /* ActivitySurveyResponseCellViewModel.swift */; };
 		A757EAF11D1ABE7400A5C978 /* ActivitySurveyResponseCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A757EAEF1D1ABE7400A5C978 /* ActivitySurveyResponseCellViewModel.swift */; };
+		A757EB2B1D1AD89E00A5C978 /* DiscoveryStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = A757EB2A1D1AD89E00A5C978 /* DiscoveryStyles.swift */; };
+		A757EB2C1D1AD89E00A5C978 /* DiscoveryStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = A757EB2A1D1AD89E00A5C978 /* DiscoveryStyles.swift */; };
+		A757EBB21D1B084F00A5C978 /* DiscoveryOnboardingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A757EBB11D1B084F00A5C978 /* DiscoveryOnboardingCell.swift */; };
+		A757EBB31D1B084F00A5C978 /* DiscoveryOnboardingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A757EBB11D1B084F00A5C978 /* DiscoveryOnboardingCell.swift */; };
 		A758F4041D0702CF00169CC0 /* DiscoveryFiltersDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A758F4031D0702CF00169CC0 /* DiscoveryFiltersDataSourceTests.swift */; };
 		A758F43B1D070B8E00169CC0 /* DiscoveryPagesDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A758F43A1D070B8E00169CC0 /* DiscoveryPagesDataSourceTests.swift */; };
 		A75A29241CE0AE5A00D35E5C /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75A29231CE0AE5A00D35E5C /* MessagesViewController.swift */; };
@@ -1532,6 +1536,8 @@
 		A757E9BD1D19C34600A5C978 /* ActivitySurveyResponseCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivitySurveyResponseCell.swift; sourceTree = "<group>"; };
 		A757EA541D19F6C100A5C978 /* ActivityStyles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityStyles.swift; sourceTree = "<group>"; };
 		A757EAEF1D1ABE7400A5C978 /* ActivitySurveyResponseCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivitySurveyResponseCellViewModel.swift; sourceTree = "<group>"; };
+		A757EB2A1D1AD89E00A5C978 /* DiscoveryStyles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryStyles.swift; sourceTree = "<group>"; };
+		A757EBB11D1B084F00A5C978 /* DiscoveryOnboardingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryOnboardingCell.swift; sourceTree = "<group>"; };
 		A758F4031D0702CF00169CC0 /* DiscoveryFiltersDataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryFiltersDataSourceTests.swift; sourceTree = "<group>"; };
 		A758F43A1D070B8E00169CC0 /* DiscoveryPagesDataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryPagesDataSourceTests.swift; sourceTree = "<group>"; };
 		A75A29231CE0AE5A00D35E5C /* MessagesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesViewController.swift; sourceTree = "<group>"; };
@@ -1986,6 +1992,7 @@
 				A73379101D0E33A600C91445 /* ButtonStyles.swift */,
 				A73379441D0E36A600C91445 /* Colors.swift */,
 				59B0E07D1D147F340081D2DC /* DashboardStyles.swift */,
+				A757EB2A1D1AD89E00A5C978 /* DiscoveryStyles.swift */,
 				A73379471D0E36CA00C91445 /* Fonts.swift */,
 				A73378FD1D0AE36400C91445 /* LoginStyles.swift */,
 			);
@@ -2057,6 +2064,7 @@
 				59B0DFFC1D11B2E50081D2DC /* DashboardContextCell.swift */,
 				A72C3AB11D00FB1F0075227E /* DiscoveryExpandableRowCell.swift */,
 				A72C3AB21D00FB1F0075227E /* DiscoveryExpandedSelectableRow.swift */,
+				A757EBB11D1B084F00A5C978 /* DiscoveryOnboardingCell.swift */,
 				A7E315CA1C88AC91000DD85A /* DiscoveryProjectCell.swift */,
 				A72C3AB31D00FB1F0075227E /* DiscoverySelectableRowCell.swift */,
 				A7CC14371D00E74F00035C52 /* FindFriendsFacebookConnectCell.swift */,
@@ -3773,6 +3781,7 @@
 				A78537BC1CB5416700385B73 /* UIDeviceType.swift in Sources */,
 				A755115E1C8642C3005355CF /* Environment.swift in Sources */,
 				A7F441D11D005A9400FE6FC5 /* MessageThreadsViewModel.swift in Sources */,
+				A757EB2B1D1AD89E00A5C978 /* DiscoveryStyles.swift in Sources */,
 				A707BAD61CFFAB9400653B2F /* HelpType.swift in Sources */,
 				A755115F1C8642C3005355CF /* Format.swift in Sources */,
 				A76126B31C90C94000EDCCB9 /* SimpleDataSource.swift in Sources */,
@@ -4039,6 +4048,7 @@
 				A7F441DC1D005A9400FE6FC5 /* ProjectRewardCellViewModel.swift in Sources */,
 				A75511BD1C8647D9005355CF /* UIPress-Extensions.swift in Sources */,
 				A7CC13DA1D00E6CF00035C52 /* FindFriendsStatsCellViewModel.swift in Sources */,
+				A757EB2C1D1AD89E00A5C978 /* DiscoveryStyles.swift in Sources */,
 				A7F441B21D005A9400FE6FC5 /* ActivityFriendFollowCellViewModel.swift in Sources */,
 				A709697F1D143D1300DB39D3 /* AlertError.swift in Sources */,
 				A707BAD91CFFAB9400653B2F /* LoginIntent.swift in Sources */,
@@ -4201,6 +4211,7 @@
 				A72C3AB71D00FB1F0075227E /* DiscoveryExpandedSelectableRow.swift in Sources */,
 				A7180BAA1CCED598001711CA /* CommentsViewController.swift in Sources */,
 				A72C3AB01D00F9C10075227E /* DiscoveryFiltersDataSource.swift in Sources */,
+				A757EBB31D1B084F00A5C978 /* DiscoveryOnboardingCell.swift in Sources */,
 				A75A292B1CE0B7EA00D35E5C /* ProjectBannerCell.swift in Sources */,
 				9D14FF931D133351005F4ABB /* ProjectActivityUpdateCell.swift in Sources */,
 				59B0E0041D1203970081D2DC /* DashboardActionCell.swift in Sources */,
@@ -4353,6 +4364,7 @@
 				A715ACF01CE7F3D300605F02 /* ActivityLaunchCell.swift in Sources */,
 				A72C3AAF1D00F9C10075227E /* DiscoveryFiltersDataSource.swift in Sources */,
 				A7208C951CCBD76300E3DAB3 /* ActivityEmptyStateCell.swift in Sources */,
+				A757EBB21D1B084F00A5C978 /* DiscoveryOnboardingCell.swift in Sources */,
 				9D9F57D91D131AF200CE81DE /* ProjectActivityUpdateCell.swift in Sources */,
 				59B0E0031D1203970081D2DC /* DashboardActionCell.swift in Sources */,
 				A71003DC1CDD068F00B4F4D7 /* MessageThreadsDataSource.swift in Sources */,

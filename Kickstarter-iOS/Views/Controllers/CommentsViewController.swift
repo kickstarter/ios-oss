@@ -121,7 +121,7 @@ internal final class CommentsViewController: UITableViewController {
     }
 
     self.loginToutViewController = vc
-    login.configureWith(loginIntent: LoginIntent.Generic)
+    login.configureWith(loginIntent: .generic)
     self.presentViewController(UINavigationController(rootViewController: login),
                                animated: true,
                                completion: nil)

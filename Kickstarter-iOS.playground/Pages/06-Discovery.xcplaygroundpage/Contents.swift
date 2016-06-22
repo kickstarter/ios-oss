@@ -6,8 +6,8 @@ import UIKit
 import XCPlayground
 @testable import Kickstarter_Framework
 
-AppEnvironment.replaceCurrentEnvironment(apiService:
-  MockService(
+AppEnvironment.replaceCurrentEnvironment(
+  apiService: MockService(
     fetchDiscoveryResponse: .template |> DiscoveryEnvelope.lens.projects .~ [
       .todayByScottThrift,
       .cosmicSurgery,

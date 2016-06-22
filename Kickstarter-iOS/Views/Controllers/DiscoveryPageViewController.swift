@@ -24,6 +24,11 @@ internal final class DiscoveryPageViewController: UITableViewController {
     self.viewModel.inputs.viewDidLoad()
   }
 
+  internal override func viewWillAppear(animated: Bool) {
+    super.viewWillAppear(animated)
+    self.viewModel.inputs.viewWillAppear()
+  }
+
   internal override func viewDidAppear(animated: Bool) {
     super.viewDidAppear(animated)
     self.viewModel.inputs.viewDidAppear()
@@ -40,18 +45,29 @@ internal final class DiscoveryPageViewController: UITableViewController {
     self.viewModel.outputs.projects
       .observeForUI()
       .observeNext { [weak self] projects in
-        self?.dataSource.loadData(projects)
+        self?.dataSource.load(projects: projects)
         self?.tableView.reloadData()
     }
 
     self.viewModel.outputs.goToProject
       .observeForUI()
       .observeNext { [weak self] in self?.goTo(project: $0, refTag: $1) }
+
+    self.viewModel.outputs.showOnboarding
+      .observeForUI()
+      .observeNext { [weak self] in
+        self?.dataSource.show(onboarding: $0)
+        self?.tableView.reloadData()
+    }
   }
 
   internal override func tableView(tableView: UITableView,
                                    willDisplayCell cell: UITableViewCell,
                                    forRowAtIndexPath indexPath: NSIndexPath) {
+
+    if let cell = cell as? DiscoveryOnboardingCell where cell.delegate == nil {
+      cell.delegate = self
+    }
 
     self.viewModel.inputs.willDisplayRow(self.dataSource.itemIndexAt(indexPath),
                                          outOf: self.dataSource.numberOfItems())
@@ -73,6 +89,20 @@ internal final class DiscoveryPageViewController: UITableViewController {
 
     projectViewController.configureWith(project: project, refTag: refTag)
     let nav = UINavigationController(rootViewController: projectViewController)
+    self.presentViewController(nav, animated: true, completion: nil)
+  }
+}
+
+extension DiscoveryPageViewController: DiscoveryOnboardingCellDelegate {
+  internal func discoveryOnboardingTappedSignUpLoginButton() {
+    let storyboard = UIStoryboard(name: "Login", bundle: nil)
+
+    guard let nav = storyboard.instantiateInitialViewController() as? UINavigationController,
+      loginTout = nav.viewControllers.first as? LoginToutViewController else {
+      fatalError("Could not instantiate initial controller from Login storyboard.")
+    }
+
+    loginTout.configureWith(loginIntent: .discoveryOnboarding)
     self.presentViewController(nav, animated: true, completion: nil)
   }
 }

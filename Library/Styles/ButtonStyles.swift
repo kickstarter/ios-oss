@@ -2,7 +2,7 @@ import Prelude
 import Prelude_UIKit
 import UIKit
 
-private let baseButtonStyle = roundedStyle()
+internal let baseButtonStyle = roundedStyle()
   <> UIButton.lens.titleLabel.font .~ .ksr_callout
   <> UIButton.lens.contentEdgeInsets .~ .init(top: 12.0, left: 16.0, bottom: 12.0, right: 16.0)
   <> UIButton.lens.adjustsImageWhenDisabled .~ false
@@ -22,8 +22,6 @@ public let borderButtonStyle = baseButtonStyle
   <> UIButton.lens.titleColor(forState: .Highlighted) .~ .ksr_lightGrayText
   <> UIButton.lens.backgroundColor(forState: .Highlighted) .~ .ksr_gray
   <> UIButton.lens.titleColor(forState: .Disabled) .~ .ksr_gray
-  <> UIButton.lens.titleLabel.font .~ .ksr_callout
-  <> UIButton.lens.contentEdgeInsets .~ .init(top: 12.0, left: 16.0, bottom: 12.0, right: 16.0)
   <> UIButton.lens.layer.borderColor .~ UIColor.ksr_gray.CGColor
   <> UIButton.lens.layer.borderWidth .~ 1.0
 
@@ -34,8 +32,6 @@ public let facebookButtonStyle = roundedStyle()
   <> UIButton.lens.titleColor(forState: .Disabled) .~ .init(white: 1.0, alpha: 0.5)
   <> UIButton.lens.backgroundColor(forState: .Highlighted) .~ .ksr_darkBlue
   <> UIButton.lens.titleColor(forState: .Highlighted) .~ .init(white: 1.0, alpha: 0.5)
-  <> UIButton.lens.titleLabel.font .~ .ksr_callout
-  <> UIButton.lens.contentEdgeInsets .~ .init(top: 12.0, left: 16.0, bottom: 12.0, right: 16.0)
   <> UIButton.lens.titleText(forState: .Normal) %~ { _ in
     Strings.login_tout_buttons_log_in_with_facebook()
 }

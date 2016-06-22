@@ -15,12 +15,14 @@ internal final class DiscoveryPageViewModelTests: TestCase {
   private let hasAddedProjects = TestObserver<Bool, NoError>()
   private let hasRemovedProjects = TestObserver<Bool, NoError>()
   private let projectsAreLoading = TestObserver<Bool, NoError>()
+  private let showOnboarding = TestObserver<Bool, NoError>()
 
   internal override func setUp() {
     super.setUp()
 
     self.vm.outputs.goToProject.map { $0.0 }.observe(self.goToProject.observer)
     self.vm.outputs.goToProject.map { $0.1 }.observe(self.goToRefTag.observer)
+    self.vm.outputs.showOnboarding.observe(self.showOnboarding.observer)
 
     self.vm.outputs.projects
       .map { $0.count }
@@ -243,5 +245,37 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       [.discovery, .categoryWithSort(.Magic), .discoveryPotd, .recommendedWithSort(.Magic), .social],
       "Go to the project with the social ref tag."
     )
+  }
+
+  func testShowOnboarding_LoggedOutOnMagic() {
+    self.vm.inputs.configureWith(sort: .Magic)
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewWillAppear()
+    self.vm.inputs.viewDidAppear()
+    self.vm.inputs.selectedFilter(.defaults)
+
+    self.showOnboarding.assertValues([true])
+  }
+
+  func testShowOnboarding_LoggedOutOnNonMagic() {
+    self.vm.inputs.configureWith(sort: .Popular)
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewWillAppear()
+    self.vm.inputs.viewDidAppear()
+    self.vm.inputs.selectedFilter(.defaults)
+
+    self.showOnboarding.assertValues([false])
+  }
+
+  func testShowOnboarding_LoggedIn() {
+    withEnvironment(currentUser: .template) {
+      self.vm.inputs.configureWith(sort: .Magic)
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.viewDidAppear()
+      self.vm.inputs.selectedFilter(.defaults)
+
+      self.showOnboarding.assertValues([false])
+    }
   }
 }
