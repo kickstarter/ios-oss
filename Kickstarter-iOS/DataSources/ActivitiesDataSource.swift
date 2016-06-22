@@ -3,56 +3,70 @@ import KsApi
 import UIKit
 
 internal final class ActivitiesDataSource: ValueCellDataSource {
-
-  private enum Section: Int {
-    case EmptyState
-    case FacebookConnect
-    case FindFriends
-    case Activities
+  internal enum Section: Int {
+    case survey
+    case facebookConnect
+    case findFriends
+    case activities
+    case emptyState
   }
 
   internal func emptyState(visible visible: Bool) {
     self.set(values: visible ? [()] : [],
              cellClass: ActivityEmptyStateCell.self,
-             inSection: Section.EmptyState.rawValue)
+             inSection: Section.emptyState.rawValue)
   }
 
   internal func facebookConnect(source source: FriendsSource, visible: Bool) {
     self.set(values: visible ? [source] : [],
              cellClass: FindFriendsFacebookConnectCell.self,
-             inSection: Section.FacebookConnect.rawValue)
+             inSection: Section.facebookConnect.rawValue)
 
     if visible {
-      self.appendStaticRow(cellIdentifier: "PaddingHalf", toSection: Section.FacebookConnect.rawValue)
+      self.appendStaticRow(cellIdentifier: "PaddingHalf", toSection: Section.facebookConnect.rawValue)
     }
   }
 
   internal func findFriends(source source: FriendsSource, visible: Bool) {
     self.set(values: visible ? [source] : [],
              cellClass: FindFriendsHeaderCell.self,
-             inSection: Section.FindFriends.rawValue)
+             inSection: Section.findFriends.rawValue)
 
     if visible {
-      self.appendStaticRow(cellIdentifier: "PaddingHalf", toSection: Section.FindFriends.rawValue)
+      self.appendStaticRow(cellIdentifier: "PaddingHalf", toSection: Section.findFriends.rawValue)
     }
   }
 
   internal func removeFacebookConnectRows() -> [NSIndexPath] {
-    self.clearValues(section: Section.FacebookConnect.rawValue)
+    self.clearValues(section: Section.facebookConnect.rawValue)
 
-    return [NSIndexPath.init(forRow: 0, inSection: Section.FacebookConnect.rawValue),
-            NSIndexPath.init(forRow: 1, inSection: Section.FacebookConnect.rawValue)]
+    return [NSIndexPath(forRow: 0, inSection: Section.facebookConnect.rawValue),
+            NSIndexPath(forRow: 1, inSection: Section.facebookConnect.rawValue)]
   }
 
   internal func removeFindFriendsRows() -> [NSIndexPath] {
-    self.clearValues(section: Section.FindFriends.rawValue)
+    self.clearValues(section: Section.findFriends.rawValue)
 
-    return [NSIndexPath.init(forRow: 0, inSection: Section.FindFriends.rawValue),
-            NSIndexPath.init(forRow: 1, inSection: Section.FindFriends.rawValue)]
+    return [NSIndexPath(forRow: 0, inSection: Section.findFriends.rawValue),
+            NSIndexPath(forRow: 1, inSection: Section.findFriends.rawValue)]
+  }
+
+  internal func load(surveyResponse surveyResponse: SurveyResponse?) {
+
+    if let response = surveyResponse {
+      self.set(values: [response],
+               cellClass: ActivitySurveyResponseCell.self,
+               inSection: Section.survey.rawValue)
+      self.appendStaticRow(cellIdentifier: "Padding", toSection: Section.survey.rawValue)
+    } else {
+      self.set(values: [],
+               cellClass: ActivitySurveyResponseCell.self,
+               inSection: Section.survey.rawValue)
+    }
   }
 
   internal func load(activities activities: [Activity]) {
-    let section = Section.Activities.rawValue
+    let section = Section.activities.rawValue
 
     self.clearValues(section: section)
 
@@ -98,6 +112,8 @@ internal final class ActivitiesDataSource: ValueCellDataSource {
     case let (cell as FindFriendsFacebookConnectCell, value as FriendsSource):
       cell.configureWith(value: value)
     case let (cell as FindFriendsHeaderCell, value as FriendsSource):
+      cell.configureWith(value: value)
+    case let (cell as ActivitySurveyResponseCell, value as SurveyResponse):
       cell.configureWith(value: value)
     case (is StaticTableViewCell, is Void):
       return

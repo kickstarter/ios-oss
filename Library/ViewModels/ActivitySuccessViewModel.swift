@@ -22,7 +22,11 @@ ActivitySuccessViewModelOutputs {
 
     self.projectImageURL = activity.map { ($0.project?.photo.full).flatMap(NSURL.init) }
 
-    self.projectName = activity.map { $0.project?.name ?? "" }
+    self.projectName = activity.map {
+      Strings.activity_project_state_change_project_was_successfully_funded(
+        project_name: $0.project?.name ?? ""
+      )
+    }
 
     self.fundingDate = activity.mapConst("Mar 2, 2016")
 

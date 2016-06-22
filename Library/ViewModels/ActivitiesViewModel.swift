@@ -31,6 +31,9 @@ public protocol ActitiviesViewModelInputs {
   /// Call when an activity is tapped.
   func tappedActivity(activity: Activity)
 
+  /// Call when the respond button is tapped in a survey cell.
+  func tappedRespondNow(forSurveyResponse surveyResponse: SurveyResponse)
+
   /// Call when a user session ends.
   func userSessionEnded()
 
@@ -65,6 +68,9 @@ public protocol ActivitiesViewModelOutputs {
   /// Emits a project and ref tag that should be used to present a project controller.
   var goToProject: Signal<(Project, RefTag), NoError> { get }
 
+  /// Emits a survey response when we should navigate to the survey to fill it out.
+  var goToSurveyResponse: Signal<SurveyResponse, NoError> { get }
+
   /// Emits a boolean that indicates if the activities are refreshing.
   var isRefreshing: Signal<Bool, NoError> { get }
 
@@ -82,6 +88,9 @@ public protocol ActivitiesViewModelOutputs {
 
   /// Emits `true` when the logged-out empty state should be shown, and `false` when it should be hidden.
   var showLoggedOutEmptyState: Signal<Bool, NoError> { get }
+
+  /// Emits a non-`nil` survey response if there is an unanswered one available, and `nil` otherwise.
+  var unansweredSurveyResponse: Signal<SurveyResponse?, NoError> { get }
 }
 
 public protocol ActivitiesViewModelType {
@@ -195,6 +204,15 @@ ActivitiesViewModelOutputs {
         AppEnvironment.current.koala.trackCloseFindFriends(source: FriendsSource.activity)
     }
 
+    self.unansweredSurveyResponse = self.viewWillAppearProperty.signal
+      .switchMap {
+        AppEnvironment.current.apiService.fetchUnansweredSurveyResponses()
+          .demoteErrors()
+      }
+      .map { $0.first }
+
+    self.goToSurveyResponse = self.tappedSurveyResponseProperty.signal.ignoreNil()
+
     self.viewWillAppearProperty.signal
       .observeNext { AppEnvironment.current.koala.trackActivities() }
   }
@@ -247,6 +265,10 @@ ActivitiesViewModelOutputs {
   public func activityUpdateCellTappedProjectImage(activity activity: Activity) {
     self.tappedActivityProjectImage.value = activity
   }
+  private let tappedSurveyResponseProperty = MutableProperty<SurveyResponse?>(nil)
+  public func tappedRespondNow(forSurveyResponse surveyResponse: SurveyResponse) {
+    self.tappedSurveyResponseProperty.value = surveyResponse
+  }
   private let tappedActivityProperty = MutableProperty<Activity?>(nil)
   public func tappedActivity(activity: Activity) {
     self.tappedActivityProperty.value = activity
@@ -260,9 +282,11 @@ ActivitiesViewModelOutputs {
   public let isRefreshing: Signal<Bool, NoError>
   public let goToFriends: Signal<FriendsSource, NoError>
   public let goToProject: Signal<(Project, RefTag), NoError>
+  public let goToSurveyResponse: Signal<SurveyResponse, NoError>
   public let showFindFriendsSection: Signal<(FriendsSource, Bool), NoError>
   public let showFacebookConnectSection: Signal<(FriendsSource, Bool), NoError>
   public let showFacebookConnectErrorAlert: Signal<AlertError, NoError>
+  public let unansweredSurveyResponse: Signal<SurveyResponse?, NoError>
 
   public var inputs: ActitiviesViewModelInputs { return self }
   public var outputs: ActivitiesViewModelOutputs { return self }

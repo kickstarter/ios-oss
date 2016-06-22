@@ -8,97 +8,96 @@ final class ActivitiesDataSourceTests: XCTestCase {
   let dataSource = ActivitiesDataSource()
   let tableView = UITableView()
 
-  func testDataSource() {
-    let updateActivity = Activity.template |> Activity.lens.category .~ .update
-    let backingActivity = Activity.template |> Activity.lens.category .~ .backing
-    let successActivity = Activity.template |> Activity.lens.category .~ .success
+  func testSurvey() {
+    let section = ActivitiesDataSource.Section.survey.rawValue
 
-    self.dataSource.emptyState(visible: true)
+    self.dataSource.load(surveyResponse: .template)
 
-    XCTAssertEqual(1, self.dataSource.numberOfSectionsInTableView(tableView))
-    XCTAssertEqual(1, self.dataSource.tableView(tableView, numberOfRowsInSection: 0))
-    XCTAssertEqual("ActivityEmptyStateCell", self.dataSource.reusableId(item: 0, section: 0))
+    XCTAssertEqual(section + 1, self.dataSource.numberOfSectionsInTableView(tableView))
+    XCTAssertEqual(2, self.dataSource.tableView(tableView, numberOfRowsInSection: section))
+    XCTAssertEqual("ActivitySurveyResponseCell", self.dataSource.reusableId(item: 0, section: section))
 
-    self.dataSource.emptyState(visible: false)
-    self.dataSource.facebookConnect(source: FriendsSource.activity, visible: true)
+    self.dataSource.load(surveyResponse: nil)
 
-    XCTAssertEqual(2, self.dataSource.numberOfSectionsInTableView(tableView))
-    XCTAssertEqual(0, self.dataSource.tableView(tableView, numberOfRowsInSection: 0))
-    XCTAssertEqual(2, self.dataSource.tableView(tableView, numberOfRowsInSection: 1))
-    XCTAssertEqual("FindFriendsFacebookConnectCell", self.dataSource.reusableId(item: 0, section: 1))
-    XCTAssertEqual("PaddingHalf", self.dataSource.reusableId(item: 1, section: 1))
+    XCTAssertEqual(section + 1, self.dataSource.numberOfSectionsInTableView(tableView))
+    XCTAssertEqual(0, self.dataSource.tableView(tableView, numberOfRowsInSection: section))
+  }
+
+  func testFacebookConnect() {
+    let section = ActivitiesDataSource.Section.facebookConnect.rawValue
+
+    self.dataSource.facebookConnect(source: .activity, visible: true)
+
+    XCTAssertEqual(section + 1, self.dataSource.numberOfSectionsInTableView(tableView))
+    XCTAssertEqual(2, self.dataSource.tableView(tableView, numberOfRowsInSection: section))
+    XCTAssertEqual("FindFriendsFacebookConnectCell", self.dataSource.reusableId(item: 0, section: section))
+    XCTAssertEqual("PaddingHalf", self.dataSource.reusableId(item: 1, section: section))
 
     let indexPaths = self.dataSource.removeFacebookConnectRows()
 
     XCTAssertEqual(2, indexPaths.count)
-    XCTAssertEqual(1, indexPaths.first?.section)
-    XCTAssertEqual(2, self.dataSource.numberOfSectionsInTableView(tableView))
-    XCTAssertEqual(0, self.dataSource.tableView(tableView, numberOfRowsInSection: 0))
-    XCTAssertEqual(0, self.dataSource.tableView(tableView, numberOfRowsInSection: 1))
+    XCTAssertEqual(section, indexPaths.first?.section)
+    XCTAssertEqual(section + 1, self.dataSource.numberOfSectionsInTableView(tableView))
+    XCTAssertEqual(0, self.dataSource.tableView(tableView, numberOfRowsInSection: section))
+  }
 
-    self.dataSource.findFriends(source: FriendsSource.activity, visible: true)
+  func testFindFriends() {
+    let section = ActivitiesDataSource.Section.findFriends.rawValue
 
-    XCTAssertEqual(3, self.dataSource.numberOfSectionsInTableView(tableView))
-    XCTAssertEqual(0, self.dataSource.tableView(tableView, numberOfRowsInSection: 0))
-    XCTAssertEqual(0, self.dataSource.tableView(tableView, numberOfRowsInSection: 1))
-    XCTAssertEqual(2, self.dataSource.tableView(tableView, numberOfRowsInSection: 2))
-    XCTAssertEqual("FindFriendsHeaderCell", self.dataSource.reusableId(item: 0, section: 2))
-    XCTAssertEqual("PaddingHalf", self.dataSource.reusableId(item: 1, section: 2))
+    self.dataSource.findFriends(source: .activity, visible: true)
 
-    let indexPathsFriends = self.dataSource.removeFindFriendsRows()
+    XCTAssertEqual(section + 1, self.dataSource.numberOfSectionsInTableView(tableView))
+    XCTAssertEqual(2, self.dataSource.tableView(tableView, numberOfRowsInSection: section))
+    XCTAssertEqual("FindFriendsHeaderCell", self.dataSource.reusableId(item: 0, section: section))
+    XCTAssertEqual("PaddingHalf", self.dataSource.reusableId(item: 1, section: section))
+
+    let indexPaths = self.dataSource.removeFindFriendsRows()
 
     XCTAssertEqual(2, indexPaths.count)
-    XCTAssertEqual(2, indexPathsFriends.first?.section)
-    XCTAssertEqual(3, self.dataSource.numberOfSectionsInTableView(tableView))
-    XCTAssertEqual(0, self.dataSource.tableView(tableView, numberOfRowsInSection: 0))
-    XCTAssertEqual(0, self.dataSource.tableView(tableView, numberOfRowsInSection: 1))
-    XCTAssertEqual(0, self.dataSource.tableView(tableView, numberOfRowsInSection: 2))
+    XCTAssertEqual(section, indexPaths.first?.section)
+    XCTAssertEqual(section + 1, self.dataSource.numberOfSectionsInTableView(tableView))
+    XCTAssertEqual(0, self.dataSource.tableView(tableView, numberOfRowsInSection: section))
+  }
+
+  func testActivities() {
+    let section = ActivitiesDataSource.Section.activities.rawValue
+    let updateActivity = Activity.template |> Activity.lens.category .~ .update
+    let backingActivity = Activity.template |> Activity.lens.category .~ .backing
+    let successActivity = Activity.template |> Activity.lens.category .~ .success
 
     self.dataSource.load(activities: [updateActivity, backingActivity, successActivity])
 
-    XCTAssertEqual(4, self.dataSource.numberOfSectionsInTableView(tableView))
-    XCTAssertEqual(0, self.dataSource.tableView(tableView, numberOfRowsInSection: 0))
-    XCTAssertEqual(0, self.dataSource.tableView(tableView, numberOfRowsInSection: 1))
-    XCTAssertEqual(0, self.dataSource.tableView(tableView, numberOfRowsInSection: 2))
-    XCTAssertEqual(6, self.dataSource.tableView(tableView, numberOfRowsInSection: 3))
+    XCTAssertEqual(section + 1, self.dataSource.numberOfSectionsInTableView(tableView))
+    XCTAssertEqual(6, self.dataSource.tableView(tableView, numberOfRowsInSection: section))
 
-    XCTAssertEqual(updateActivity, self.dataSource[testItemSection: (0, 3)] as? Activity)
-    XCTAssertEqual("ActivityUpdateCell", self.dataSource.reusableId(item: 0, section: 3))
+    XCTAssertEqual(updateActivity, self.dataSource[testItemSection: (0, section)] as? Activity)
+    XCTAssertEqual("ActivityUpdateCell", self.dataSource.reusableId(item: 0, section: section))
 
-    XCTAssertEqual("Padding", self.dataSource.reusableId(item: 1, section: 3))
+    XCTAssertEqual("Padding", self.dataSource.reusableId(item: 1, section: section))
 
-    XCTAssertEqual(backingActivity, self.dataSource[testItemSection: (2, 3)] as? Activity)
-    XCTAssertEqual("ActivityFriendBackingCell", self.dataSource.reusableId(item: 2, section: 3))
+    XCTAssertEqual(backingActivity, self.dataSource[testItemSection: (2, section)] as? Activity)
+    XCTAssertEqual("ActivityFriendBackingCell", self.dataSource.reusableId(item: 2, section: section))
 
-    XCTAssertEqual("Padding", self.dataSource.reusableId(item: 3, section: 3))
+    XCTAssertEqual("Padding", self.dataSource.reusableId(item: 3, section: section))
 
-    XCTAssertEqual(successActivity, self.dataSource[testItemSection: (4, 3)] as? Activity)
-    XCTAssertEqual("ActivitySuccessCell", self.dataSource.reusableId(item: 4, section: 3))
+    XCTAssertEqual(successActivity, self.dataSource[testItemSection: (4, section)] as? Activity)
+    XCTAssertEqual("ActivitySuccessCell", self.dataSource.reusableId(item: 4, section: section))
 
-    XCTAssertEqual("Padding", self.dataSource.reusableId(item: 5, section: 3))
+    XCTAssertEqual("Padding", self.dataSource.reusableId(item: 5, section: section))
+  }
 
-    self.dataSource.load(activities: [])
+  func testEmptyState() {
+    let section = ActivitiesDataSource.Section.emptyState.rawValue
 
-    XCTAssertEqual(4, self.dataSource.numberOfSectionsInTableView(tableView))
-    XCTAssertEqual(0, self.dataSource.tableView(tableView, numberOfRowsInSection: 0))
-    XCTAssertEqual(0, self.dataSource.tableView(tableView, numberOfRowsInSection: 1))
-    XCTAssertEqual(0, self.dataSource.tableView(tableView, numberOfRowsInSection: 2))
-    XCTAssertEqual(0, self.dataSource.tableView(tableView, numberOfRowsInSection: 3))
+    self.dataSource.emptyState(visible: true)
 
-    self.dataSource.facebookConnect(source: FriendsSource.activity, visible: false)
+    XCTAssertEqual(section + 1, self.dataSource.numberOfSectionsInTableView(tableView))
+    XCTAssertEqual(1, self.dataSource.tableView(tableView, numberOfRowsInSection: section))
+    XCTAssertEqual("ActivityEmptyStateCell", self.dataSource.reusableId(item: 0, section: section))
 
-    XCTAssertEqual(4, self.dataSource.numberOfSectionsInTableView(tableView))
-    XCTAssertEqual(0, self.dataSource.tableView(tableView, numberOfRowsInSection: 0))
-    XCTAssertEqual(0, self.dataSource.tableView(tableView, numberOfRowsInSection: 1))
-    XCTAssertEqual(0, self.dataSource.tableView(tableView, numberOfRowsInSection: 2))
-    XCTAssertEqual(0, self.dataSource.tableView(tableView, numberOfRowsInSection: 3))
+    self.dataSource.emptyState(visible: false)
 
-    self.dataSource.findFriends(source: FriendsSource.activity, visible: false)
-
-    XCTAssertEqual(4, self.dataSource.numberOfSectionsInTableView(tableView))
-    XCTAssertEqual(0, self.dataSource.tableView(tableView, numberOfRowsInSection: 0))
-    XCTAssertEqual(0, self.dataSource.tableView(tableView, numberOfRowsInSection: 1))
-    XCTAssertEqual(0, self.dataSource.tableView(tableView, numberOfRowsInSection: 2))
-    XCTAssertEqual(0, self.dataSource.tableView(tableView, numberOfRowsInSection: 3))
+    XCTAssertEqual(section + 1, self.dataSource.numberOfSectionsInTableView(tableView))
+    XCTAssertEqual(0, self.dataSource.tableView(tableView, numberOfRowsInSection: section))
   }
 }

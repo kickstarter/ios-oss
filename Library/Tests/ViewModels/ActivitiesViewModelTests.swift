@@ -7,22 +7,24 @@ import KsApi
 import Prelude
 
 final class ActivitiesViewModelTests: TestCase {
-  let vm: ActivitiesViewModelType! = ActivitiesViewModel()
+  private let vm: ActivitiesViewModelType! = ActivitiesViewModel()
 
-  let activitiesPresent = TestObserver<Bool, NoError>()
-  let showLoggedOutEmptyState = TestObserver<Bool, NoError>()
-  let showLoggedInEmptyState = TestObserver<Bool, NoError>()
-  let isRefreshing = TestObserver<Bool, NoError>()
-  let goToProject = TestObserver<Project, NoError>()
-  let showRefTag = TestObserver<RefTag, NoError>()
-  let deleteFacebookConnectSection = TestObserver<(), NoError>()
-  let deleteFindFriendsSection = TestObserver<(), NoError>()
-  let goToFriends = TestObserver<FriendsSource, NoError>()
-  let showFacebookConnectSection = TestObserver<Bool, NoError>()
-  let showFacebookConnectSectionSource = TestObserver<FriendsSource, NoError>()
-  let showFindFriendsSection = TestObserver<Bool, NoError>()
-  let showFindFriendsSectionSource = TestObserver<FriendsSource, NoError>()
-  let showFacebookConnectErrorAlert = TestObserver<AlertError, NoError>()
+  private let activitiesPresent = TestObserver<Bool, NoError>()
+  private let showLoggedOutEmptyState = TestObserver<Bool, NoError>()
+  private let showLoggedInEmptyState = TestObserver<Bool, NoError>()
+  private let isRefreshing = TestObserver<Bool, NoError>()
+  private let goToProject = TestObserver<Project, NoError>()
+  private let goToSurveyResponse = TestObserver<SurveyResponse, NoError>()
+  private let showRefTag = TestObserver<RefTag, NoError>()
+  private let deleteFacebookConnectSection = TestObserver<(), NoError>()
+  private let deleteFindFriendsSection = TestObserver<(), NoError>()
+  private let goToFriends = TestObserver<FriendsSource, NoError>()
+  private let showFacebookConnectSection = TestObserver<Bool, NoError>()
+  private let showFacebookConnectSectionSource = TestObserver<FriendsSource, NoError>()
+  private let showFindFriendsSection = TestObserver<Bool, NoError>()
+  private let showFindFriendsSectionSource = TestObserver<FriendsSource, NoError>()
+  private let showFacebookConnectErrorAlert = TestObserver<AlertError, NoError>()
+  private let unansweredSurveyResponse = TestObserver<SurveyResponse?, NoError>()
 
   override func setUp() {
     super.setUp()
@@ -36,12 +38,14 @@ final class ActivitiesViewModelTests: TestCase {
     self.vm.outputs.deleteFacebookConnectSection.observe(self.deleteFacebookConnectSection.observer)
     self.vm.outputs.deleteFindFriendsSection.observe(self.deleteFindFriendsSection.observer)
     self.vm.outputs.goToFriends.observe(self.goToFriends.observer)
+    self.vm.outputs.goToSurveyResponse.observe(self.goToSurveyResponse.observer)
     self.vm.outputs.showFacebookConnectSection.map { $0.1 }.observe(self.showFacebookConnectSection.observer)
     self.vm.outputs.showFacebookConnectSection.map { $0.0 }
       .observe(self.showFacebookConnectSectionSource.observer)
     self.vm.outputs.showFindFriendsSection.map { $0.1 }.observe(self.showFindFriendsSection.observer)
     self.vm.outputs.showFindFriendsSection.map { $0.0 }.observe(self.showFindFriendsSectionSource.observer)
     self.vm.outputs.showFacebookConnectErrorAlert.observe(self.showFacebookConnectErrorAlert.observer)
+    self.vm.outputs.unansweredSurveyResponse.observe(self.unansweredSurveyResponse.observer)
   }
 
   // Tests the flow of logging in with a user that has activities.
@@ -298,5 +302,19 @@ final class ActivitiesViewModelTests: TestCase {
     self.vm.inputs.findFriendsFacebookConnectCellShowErrorAlert(alert)
 
     self.showFacebookConnectErrorAlert.assertValues([AlertError.facebookTokenFail])
+  }
+
+  func testSurveys() {
+    let surveyResponse = SurveyResponse.template
+
+    withEnvironment(apiService: MockService(fetchUnansweredSurveyResponsesResponse: [surveyResponse])) {
+      self.vm.inputs.viewWillAppear()
+
+      self.unansweredSurveyResponse.assertValues([surveyResponse])
+
+      self.vm.inputs.tappedRespondNow(forSurveyResponse: surveyResponse)
+
+      self.goToSurveyResponse.assertValues([surveyResponse])
+    }
   }
 }

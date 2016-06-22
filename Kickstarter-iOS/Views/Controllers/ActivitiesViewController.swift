@@ -1,8 +1,8 @@
-import Foundation
-import Library
-import UIKit
-import ReactiveCocoa
 import KsApi
+import Library
+import Prelude
+import ReactiveCocoa
+import UIKit
 
 internal final class ActivitiesViewController: UITableViewController {
   let viewModel: ActivitiesViewModelType = ActivitiesViewModel()
@@ -25,8 +25,7 @@ internal final class ActivitiesViewController: UITableViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.tableView.estimatedRowHeight = 300.0
-    self.tableView.rowHeight = UITableViewAutomaticDimension
+    self |> baseTableControllerStyle(estimatedRowHeight: 300.0)
     self.tableView.dataSource = dataSource
   }
 
@@ -34,7 +33,6 @@ internal final class ActivitiesViewController: UITableViewController {
     super.viewWillAppear(animated)
     self.viewModel.inputs.viewWillAppear()
   }
-
 
   // swiftlint:disable function_body_length
   internal override func bindViewModel() {
@@ -110,6 +108,19 @@ internal final class ActivitiesViewController: UITableViewController {
           completion: nil
         )
     }
+
+    self.viewModel.outputs.unansweredSurveyResponse
+      .observeForUI()
+      .observeNext { [weak self] in
+        self?.dataSource.load(surveyResponse: $0)
+        self?.tableView.reloadData()
+    }
+
+    self.viewModel.outputs.goToSurveyResponse
+      .observeForUI()
+      .observeNext { _ in
+        print("not yet implemented")
+    }
   }
   // swiftlint:enable function_body_length
 
@@ -117,14 +128,14 @@ internal final class ActivitiesViewController: UITableViewController {
                           willDisplayCell cell: UITableViewCell,
                                           forRowAtIndexPath indexPath: NSIndexPath) {
 
-    if let activityUpdateCell = cell as? ActivityUpdateCell where activityUpdateCell.delegate == nil {
-      activityUpdateCell.delegate = self
-    } else if let FBConnectCell = cell as? FindFriendsFacebookConnectCell
-      where FBConnectCell.delegate == nil {
-      FBConnectCell.delegate = self
-    } else if let findFriendsCell = cell as? FindFriendsHeaderCell
-      where findFriendsCell.delegate == nil {
-      findFriendsCell.delegate = self
+    if let cell = cell as? ActivityUpdateCell where cell.delegate == nil {
+      cell.delegate = self
+    } else if let cell = cell as? FindFriendsFacebookConnectCell where cell.delegate == nil {
+      cell.delegate = self
+    } else if let cell = cell as? FindFriendsHeaderCell where cell.delegate == nil {
+      cell.delegate = self
+    } else if let cell = cell as? ActivitySurveyResponseCell where cell.delegate == nil {
+      cell.delegate = self
     }
 
     self.viewModel.inputs.willDisplayRow(self.dataSource.itemIndexAt(indexPath),
@@ -209,5 +220,11 @@ extension ActivitiesViewController: FindFriendsFacebookConnectCellDelegate {
 
   func findFriendsFacebookConnectCellShowErrorAlert(alert: AlertError) {
     self.viewModel.inputs.findFriendsFacebookConnectCellShowErrorAlert(alert)
+  }
+}
+
+extension ActivitiesViewController: ActivitySurveyResponseCellDelegate {
+  func activityTappedRespondNow(forSurveyResponse surveyResponse: SurveyResponse) {
+    self.viewModel.inputs.tappedRespondNow(forSurveyResponse: surveyResponse)
   }
 }

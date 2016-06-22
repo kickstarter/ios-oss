@@ -19,6 +19,7 @@ liveView.addSubview(rootStackView)
 let positiveButton = positiveButtonStyle <> UIButton.lens.titleText(forState: .Normal) .~ "Positive button"
 let neutralButton  = neutralButtonStyle  <> UIButton.lens.titleText(forState: .Normal) .~ "Neutral button"
 let borderButton   = borderButtonStyle   <> UIButton.lens.titleText(forState: .Normal) .~ "Border button"
+let blackButton    = blackButtonStyle    <> UIButton.lens.titleText(forState: .Normal) .~ "Black button"
 
 func disabled <C: UIControlProtocol> () -> (C -> C) {
   return C.lens.enabled .~ false
@@ -27,8 +28,9 @@ func disabled <C: UIControlProtocol> () -> (C -> C) {
 let buttonsStyles: [[UIButton -> UIButton]] = [
   [ positiveButton,      positiveButton      <> disabled() ],
   [ neutralButton,       neutralButton       <> disabled() ],
+  [ borderButton,        borderButton        <> disabled() ],
+  [ blackButton,         blackButton         <> disabled() ],
   [ facebookButtonStyle, facebookButtonStyle <> disabled() ],
-  [ borderButton,        borderButton        <> disabled() ]
 ]
 
 let rowStackViewStyle =

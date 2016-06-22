@@ -352,8 +352,16 @@
 		A75511F41C865321005355CF /* LocalizedStringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A755118E1C8645A0005355CF /* LocalizedStringTests.swift */; };
 		A75511F51C865321005355CF /* EnvironmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A755118A1C8645A0005355CF /* EnvironmentTests.swift */; };
 		A75511F61C865321005355CF /* UIButton+LocalizedKeyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75511901C8645A0005355CF /* UIButton+LocalizedKeyTests.swift */; };
+		A757E9BE1D19C34600A5C978 /* ActivitySurveyResponseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A757E9BD1D19C34600A5C978 /* ActivitySurveyResponseCell.swift */; };
+		A757E9EF1D19C37F00A5C978 /* ActivitySurveyResponseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A757E9BD1D19C34600A5C978 /* ActivitySurveyResponseCell.swift */; };
+		A757EA551D19F6C100A5C978 /* ActivityStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = A757EA541D19F6C100A5C978 /* ActivityStyles.swift */; };
+		A757EA561D19F6C100A5C978 /* ActivityStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = A757EA541D19F6C100A5C978 /* ActivityStyles.swift */; };
 		A757EA6B1D19F93400A5C978 /* OnePasswordExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = A7E1C4F01D18C8B3002D6DE3 /* OnePasswordExtension.m */; };
 		A757EA6C1D19F93400A5C978 /* 1Password.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A7E1C4F11D18C8B3002D6DE3 /* 1Password.xcassets */; };
+		A757EABD1D19FAEE00A5C978 /* ProjectActivitiesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D9F580C1D131B1200CE81DE /* ProjectActivitiesViewController.swift */; };
+		A757EAEE1D19FAFA00A5C978 /* ProjectActivitiesDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D9F58141D131D4A00CE81DE /* ProjectActivitiesDataSource.swift */; };
+		A757EAF01D1ABE7400A5C978 /* ActivitySurveyResponseCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A757EAEF1D1ABE7400A5C978 /* ActivitySurveyResponseCellViewModel.swift */; };
+		A757EAF11D1ABE7400A5C978 /* ActivitySurveyResponseCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A757EAEF1D1ABE7400A5C978 /* ActivitySurveyResponseCellViewModel.swift */; };
 		A758F4041D0702CF00169CC0 /* DiscoveryFiltersDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A758F4031D0702CF00169CC0 /* DiscoveryFiltersDataSourceTests.swift */; };
 		A758F43B1D070B8E00169CC0 /* DiscoveryPagesDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A758F43A1D070B8E00169CC0 /* DiscoveryPagesDataSourceTests.swift */; };
 		A75A29241CE0AE5A00D35E5C /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75A29231CE0AE5A00D35E5C /* MessagesViewController.swift */; };
@@ -1521,6 +1529,9 @@
 		A75511A31C86460B005355CF /* XCTestCase+AppEnvironment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "XCTestCase+AppEnvironment.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		A75511DA1C8647D9005355CF /* Library.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Library.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A75512011C865321005355CF /* Library-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Library-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A757E9BD1D19C34600A5C978 /* ActivitySurveyResponseCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivitySurveyResponseCell.swift; sourceTree = "<group>"; };
+		A757EA541D19F6C100A5C978 /* ActivityStyles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityStyles.swift; sourceTree = "<group>"; };
+		A757EAEF1D1ABE7400A5C978 /* ActivitySurveyResponseCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivitySurveyResponseCellViewModel.swift; sourceTree = "<group>"; };
 		A758F4031D0702CF00169CC0 /* DiscoveryFiltersDataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryFiltersDataSourceTests.swift; sourceTree = "<group>"; };
 		A758F43A1D070B8E00169CC0 /* DiscoveryPagesDataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryPagesDataSourceTests.swift; sourceTree = "<group>"; };
 		A75A29231CE0AE5A00D35E5C /* MessagesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesViewController.swift; sourceTree = "<group>"; };
@@ -1970,12 +1981,13 @@
 		A73378F91D0AE33B00C91445 /* Styles */ = {
 			isa = PBXGroup;
 			children = (
+				A757EA541D19F6C100A5C978 /* ActivityStyles.swift */,
 				A73378FA1D0AE33B00C91445 /* BaseStyles.swift */,
 				A73379101D0E33A600C91445 /* ButtonStyles.swift */,
 				A73379441D0E36A600C91445 /* Colors.swift */,
+				59B0E07D1D147F340081D2DC /* DashboardStyles.swift */,
 				A73379471D0E36CA00C91445 /* Fonts.swift */,
 				A73378FD1D0AE36400C91445 /* LoginStyles.swift */,
-				59B0E07D1D147F340081D2DC /* DashboardStyles.swift */,
 			);
 			path = Styles;
 			sourceTree = "<group>";
@@ -2032,16 +2044,17 @@
 			isa = PBXGroup;
 			children = (
 				A7208C941CCBD76300E3DAB3 /* ActivityEmptyStateCell.swift */,
-				59B0DFFC1D11B2E50081D2DC /* DashboardContextCell.swift */,
-				59B0E0021D1203970081D2DC /* DashboardActionCell.swift */,
 				A75AB2241C8B407F002FC3E6 /* ActivityFriendBackingCell.swift */,
 				A762EFF11C8CC663005581A4 /* ActivityFriendFollowCell.swift */,
 				A715ACEF1CE7F3D300605F02 /* ActivityLaunchCell.swift */,
 				A715ACC11CE7ED3600605F02 /* ActivityNegativeStateChangeCell.swift */,
 				A762F01B1C8CD2B3005581A4 /* ActivitySuccessCell.swift */,
+				A757E9BD1D19C34600A5C978 /* ActivitySurveyResponseCell.swift */,
 				A75AB2211C8A85D1002FC3E6 /* ActivityUpdateCell.swift */,
 				A75A29261CE0B7DD00D35E5C /* BackingCell.swift */,
 				A7A052121CD12DD7005AF5E2 /* CommentCell.swift */,
+				59B0E0021D1203970081D2DC /* DashboardActionCell.swift */,
+				59B0DFFC1D11B2E50081D2DC /* DashboardContextCell.swift */,
 				A72C3AB11D00FB1F0075227E /* DiscoveryExpandableRowCell.swift */,
 				A72C3AB21D00FB1F0075227E /* DiscoveryExpandedSelectableRow.swift */,
 				A7E315CA1C88AC91000DD85A /* DiscoveryProjectCell.swift */,
@@ -2372,6 +2385,7 @@
 				0156B10F1D06239F000C4252 /* CacheProtocol.swift */,
 				0156B1A91D0728A0000C4252 /* CacheProtocol.swift */,
 				A7FC8C051C8F1DEA00C3B49B /* CircleAvatarImageView.swift */,
+				A7D121081D15B08200F364FD /* CountBadgeView.swift */,
 				A7C7257F1C85D36D005A016B /* Environment.swift */,
 				A72C3A8A1D00F6A80075227E /* ExpandableRow.swift */,
 				A7208C3D1CCAC86800E3DAB3 /* FacebookAppDelegateProtocol.swift */,
@@ -2416,7 +2430,6 @@
 				A73378F91D0AE33B00C91445 /* Styles */,
 				A75511881C8645A0005355CF /* Tests */,
 				A7F4418D1D005A9400FE6FC5 /* ViewModels */,
-				A7D121081D15B08200F364FD /* CountBadgeView.swift */,
 			);
 			path = Library;
 			sourceTree = "<group>";
@@ -2456,6 +2469,7 @@
 				A7A053491CD18D01005AF5E2 /* Comments.storyboard */,
 				0159B3A11D01FFEE00ACCE2A /* Friends.storyboard */,
 				A71003AA1CDCF4C300B4F4D7 /* Messages.storyboard */,
+				9D14FF5A1D132F86005F4ABB /* ProjectActivity.storyboard */,
 				A72C3A351D00F2B80075227E /* Settings.storyboard */,
 				A7D1F9471C850B7C000D41D5 /* AppDelegate.swift */,
 				A7D1F9501C850B7C000D41D5 /* Assets.xcassets */,
@@ -2471,7 +2485,6 @@
 				A7D1F94D1C850B7C000D41D5 /* Main.storyboard */,
 				A775B54D1CA8869B00BBB587 /* Profile.storyboard */,
 				A7FC8C261C8F2DCF00C3B49B /* Project.storyboard */,
-				9D14FF5A1D132F86005F4ABB /* ProjectActivity.storyboard */,
 				A775B5551CA886DD00BBB587 /* Search.storyboard */,
 				A7D1F98F1C850CB2000D41D5 /* Tests */,
 				A751A51A1C85EAD8009C5DEA /* ViewModels */,
@@ -2790,6 +2803,7 @@
 				A72C3A921D00F6C70075227E /* SortPagerViewModel.swift */,
 				A7F441AB1D005A9400FE6FC5 /* ThanksViewModel.swift */,
 				A7F441AC1D005A9400FE6FC5 /* TwoFactorViewModel.swift */,
+				A757EAEF1D1ABE7400A5C978 /* ActivitySurveyResponseCellViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -3816,6 +3830,7 @@
 				A75511691C8642C3005355CF /* UILabel+IBClear.swift in Sources */,
 				A7F441E51D005A9400FE6FC5 /* SearchViewModel.swift in Sources */,
 				0156B4191D10B419000C4252 /* UIAlertController.swift in Sources */,
+				A757EAF01D1ABE7400A5C978 /* ActivitySurveyResponseCellViewModel.swift in Sources */,
 				A7CC13D91D00E6CF00035C52 /* FindFriendsStatsCellViewModel.swift in Sources */,
 				A72AFFDA1CD7ED6B008F052B /* Keyboard.swift in Sources */,
 				59B0DFFA1D11B0A20081D2DC /* DashboardContextCellViewModel.swift in Sources */,
@@ -3837,6 +3852,7 @@
 				9D9F58191D13243900CE81DE /* ProjectActivitiesViewModel.swift in Sources */,
 				A72C3A8E1D00F6A80075227E /* SelectableRow.swift in Sources */,
 				A7F441C11D005A9400FE6FC5 /* DiscoveryViewModel.swift in Sources */,
+				A757EA551D19F6C100A5C978 /* ActivityStyles.swift in Sources */,
 				A78537E21CB5422100385B73 /* UIScreenType.swift in Sources */,
 				A7208C3E1CCAC86800E3DAB3 /* FacebookAppDelegateProtocol.swift in Sources */,
 				59B0E07E1D147F340081D2DC /* DashboardStyles.swift in Sources */,
@@ -3981,6 +3997,7 @@
 				A75511B41C8647D9005355CF /* LocalizedString.swift in Sources */,
 				0151AEB41C8F6FEC0067F1BE /* StyledLabel.swift in Sources */,
 				A7F441D81D005A9400FE6FC5 /* ProfileViewModel.swift in Sources */,
+				A757EA561D19F6C100A5C978 /* ActivityStyles.swift in Sources */,
 				A7F441BA1D005A9400FE6FC5 /* CommentCellViewModel.swift in Sources */,
 				0151AEB61C8F70000067F1BE /* Styles.swift in Sources */,
 				A7FC8C071C8F1DEA00C3B49B /* CircleAvatarImageView.swift in Sources */,
@@ -4009,6 +4026,7 @@
 				A72C3A981D00F6C70075227E /* SortPagerViewModel.swift in Sources */,
 				A72C3A311D00F28C0075227E /* SettingsViewModel.swift in Sources */,
 				A75511BB1C8647D9005355CF /* UILabel+LocalizedKey.swift in Sources */,
+				A757EAF11D1ABE7400A5C978 /* ActivitySurveyResponseCellViewModel.swift in Sources */,
 				A7208C3F1CCAC86800E3DAB3 /* FacebookAppDelegateProtocol.swift in Sources */,
 				A7CC13DC1D00E6CF00035C52 /* FindFriendsViewModel.swift in Sources */,
 				A75511BC1C8647D9005355CF /* UILabel+SimpleHTML.swift in Sources */,
@@ -4146,6 +4164,7 @@
 				A7208C961CCBD76300E3DAB3 /* ActivityEmptyStateCell.swift in Sources */,
 				A762EFF31C8CC663005581A4 /* ActivityFriendFollowCell.swift in Sources */,
 				59B0DFC51D11AC850081D2DC /* DashboardDataSource.swift in Sources */,
+				A757EABD1D19FAEE00A5C978 /* ProjectActivitiesViewController.swift in Sources */,
 				A745D0221CA897FF00C12802 /* SearchViewController.swift in Sources */,
 				A72C3AAA1D00F96C0075227E /* DiscoveryPageViewController.swift in Sources */,
 				A745D0481CA8985B00C12802 /* DashboardViewController.swift in Sources */,
@@ -4199,8 +4218,10 @@
 				A7CC14451D00E75F00035C52 /* FindFriendsDataSource.swift in Sources */,
 				A757EA6B1D19F93400A5C978 /* OnePasswordExtension.m in Sources */,
 				A715ACC31CE7ED3600605F02 /* ActivityNegativeStateChangeCell.swift in Sources */,
+				A757EAEE1D19FAFA00A5C978 /* ProjectActivitiesDataSource.swift in Sources */,
 				018F1F841C8E182200643DAA /* LoginViewController.swift in Sources */,
 				597073A01D07277100B00444 /* ProjectNotificationsDataSource.swift in Sources */,
+				A757E9EF1D19C37F00A5C978 /* ActivitySurveyResponseCell.swift in Sources */,
 				9D14FF921D133351005F4ABB /* ProjectActivitySuccessCell.swift in Sources */,
 				014A8E191CE3CD86003BF51C /* ThanksProjectCell.swift in Sources */,
 				59B6B70B1CCEBC1000953319 /* ProfileProjectCell.swift in Sources */,
@@ -4335,6 +4356,7 @@
 				9D9F57D91D131AF200CE81DE /* ProjectActivityUpdateCell.swift in Sources */,
 				59B0E0031D1203970081D2DC /* DashboardActionCell.swift in Sources */,
 				A71003DC1CDD068F00B4F4D7 /* MessageThreadsDataSource.swift in Sources */,
+				A757E9BE1D19C34600A5C978 /* ActivitySurveyResponseCell.swift in Sources */,
 				A749001E1D00E27100BC3BE7 /* SignupViewController.swift in Sources */,
 				59B0DFFD1D11B2E50081D2DC /* DashboardContextCell.swift in Sources */,
 				A7A052131CD12DD7005AF5E2 /* CommentCell.swift in Sources */,

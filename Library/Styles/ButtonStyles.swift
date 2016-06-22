@@ -8,6 +8,14 @@ private let baseButtonStyle = roundedStyle()
   <> UIButton.lens.adjustsImageWhenDisabled .~ false
   <> UIButton.lens.adjustsImageWhenHighlighted .~ false
 
+public let blackButtonStyle = baseButtonStyle
+  <> UIButton.lens.titleColor(forState: .Normal) .~ .ksr_white
+  <> UIButton.lens.backgroundColor(forState: .Normal) .~ .ksr_black
+  <> UIButton.lens.titleColor(forState: .Highlighted) .~ .ksr_white
+  <> UIButton.lens.backgroundColor(forState: .Highlighted) .~ .ksr_green
+  <> UIButton.lens.titleColor(forState: .Disabled) .~ .init(white: 1.0, alpha: 0.75)
+  <> UIButton.lens.backgroundColor(forState: .Disabled) .~ .ksr_gray
+
 public let borderButtonStyle = baseButtonStyle
   <> UIButton.lens.titleColor(forState: .Normal) .~ .ksr_darkGrayText
   <> UIButton.lens.backgroundColor(forState: .Normal) .~ .ksr_clear
@@ -39,8 +47,6 @@ public let neutralButtonStyle = baseButtonStyle
   <> UIButton.lens.backgroundColor(forState: .Highlighted) .~ .ksr_blackGray
   <> UIButton.lens.titleColor(forState: .Disabled) .~ .init(white: 1.0, alpha: 0.75)
   <> UIButton.lens.backgroundColor(forState: .Disabled) .~ .ksr_gray
-  <> UIButton.lens.titleLabel.font .~ .ksr_callout
-
 
 public let positiveButtonStyle = baseButtonStyle
   <> UIButton.lens.titleColor(forState: .Normal) .~ .ksr_white
