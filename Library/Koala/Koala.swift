@@ -109,8 +109,21 @@ public final class Koala {
   }
 
   // MARK: Login Events
-  public func trackLoginTout(intent: String) {
-    self.track(event: "Application Login or Signup", properties: ["intent": intent])
+  public func trackLoginTout(intent intent: LoginIntent) {
+
+    let intentTrackingString: String
+    switch intent {
+    case .Activity:         intentTrackingString = "activity"
+    case .BackProject:      intentTrackingString = "pledge"
+    case .FavoriteCategory: intentTrackingString = "favorite_category"
+    case .Generic:          intentTrackingString = "generic"
+    case .LoginTab:         intentTrackingString = "login_tab"
+    case .MessageCreator:   intentTrackingString = "new_message"
+    case .StarProject:      intentTrackingString = "star"
+    }
+
+    self.track(event: "Application Login or Signup",
+               properties: ["intent": intentTrackingString, "context": intentTrackingString])
   }
 
   public func trackLoginFormView(onePasswordIsAvailable onePasswordIsAvailable: Bool) {
