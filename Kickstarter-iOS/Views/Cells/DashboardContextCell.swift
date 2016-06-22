@@ -26,15 +26,15 @@ internal final class DashboardContextCell: UITableViewCell, ValueCell {
 
     self.backersSubtitleLabel
       |> dashboardStatSubtitleLabelStyle
-      |> UILabel.lens.text .~ Strings.dashboard_tout_backers()
+      |> UILabel.lens.text %~ { _ in Strings.dashboard_tout_backers() }
 
     self.deadlineSubtitleLabel
       |> dashboardStatSubtitleLabelStyle
-      |> UILabel.lens.text .~ Strings.dashboard_tout_remaining()
+      |> UILabel.lens.text %~ { _ in Strings.dashboard_tout_remaining() }
 
     self.pledgedSubtitleLabel
       |> dashboardStatSubtitleLabelStyle
-      |> UILabel.lens.text .~ Strings.dashboard_tout_pledged()
+      |> UILabel.lens.text %~ { _ in Strings.dashboard_tout_pledged() }
 
     self.statsColumnsStackView
       |> UIStackView.lens.distribution .~ .EqualSpacing

@@ -16,3 +16,9 @@ excluded:
   - Kickstarter-tvOS.playground/
   - Library/Strings.swift
 reporter: "xcode"
+custom_rules:
+  localized_lensing:
+    name: "Localized Lensing"
+    regex: "\.~\s+Strings\s*\."
+    message: "Capture calls to `Strings` functions using `%~ { _ in Strings... }`"
+    severity: error

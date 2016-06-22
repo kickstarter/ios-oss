@@ -8,7 +8,7 @@ public let dashboardContextCellStyle = baseTableViewCellStyle()
 }
 
 public let dashboardActivityButtonStyle = UIButton.lens.titleText(forState: .Normal)
-  .~ Strings.dashboard_buttons_activity()
+  %~ { _ in Strings.dashboard_buttons_activity() }
 
 public let dashboardStatTitleLabelStyle =
   UILabel.lens.textColor .~ .ksr_white
@@ -24,11 +24,11 @@ public let lastUpdatePublishedAtLabelStyle =
     <> UILabel.lens.textColor .~ .ksr_darkGrayText
 
 public let dashboardMessagesButtonStyle = UIButton.lens.titleText(forState: .Normal)
-  .~ Strings.dashboard_buttons_messages()
+  %~ { _ in  Strings.dashboard_buttons_messages() }
 
 public let postUpdateButtonStyle = positiveButtonStyle
-  <> UIButton.lens.titleText(forState: .Normal) .~ Strings.dashboard_buttons_post_update()
+  <> UIButton.lens.titleText(forState: .Normal) %~ { _ in  Strings.dashboard_buttons_post_update() }
 
 public let dashboardShareButtonStyle = neutralButtonStyle
-  <> UIButton.lens.titleText(forState: .Normal) .~ Strings.dashboard_buttons_share()
+  <> UIButton.lens.titleText(forState: .Normal) %~ { _ in Strings.dashboard_buttons_share() }
   <> UIButton.lens.contentEdgeInsets .~ .init(topBottom: 12.0, leftRight: 32.0)

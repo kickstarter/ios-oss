@@ -74,7 +74,7 @@ public let signupButtonStyle = positiveButtonStyle
 }
 
 public let signupControllerStyle = baseControllerStyle()
-  <> UIViewController.lens.title .~ Strings.signup_button()
+  <> UIViewController.lens.title %~ { _ in Strings.signup_button() }
 
 public let signupWithEmailButtonStyle = borderButtonStyle
   <> UIButton.lens.titleText(forState: .Normal) %~ { _ in
