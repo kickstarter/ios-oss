@@ -40,7 +40,7 @@ clean:
 
 dependencies: submodules configs
 
-bootstrap:
+bootstrap: hooks
 	brew update
 	brew unlink swiftlint || true
 	brew install swiftlint
@@ -55,6 +55,13 @@ $(configs):
 	cp $@.example $@
 
 configs: $(configs)
+
+hooks = $(addprefix .git/,$(wildcard hooks/*))
+$(hooks):
+	@test -d .git/hooks && ln -fnsv $(patsubst .git/%,$(PWD)/%,$@) $@ \
+		|| echo "skipping git hook installation: .git/hooks does not exist" >&2 1>/dev/null
+
+hooks: $(hooks)
 
 deploy:
 	@if test "$(RELEASE)" != "beta" && test "$(RELEASE)" != "itunes"; \

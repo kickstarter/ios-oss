@@ -1,0 +1,3 @@
+#!/bin/sh
+git diff --cached -r --name-only --no-commit-id -- '*.swift' \
+  | xargs -n1 swiftlint lint --path 2>/dev/null
