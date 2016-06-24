@@ -1,3 +1,2 @@
 #!/bin/sh
-git diff-tree -r --name-only --no-commit-id $1..HEAD -- '*.swift' \
-  | xargs -n1 swiftlint lint --path 2>/dev/null
+swiftlint
