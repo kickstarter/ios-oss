@@ -60,7 +60,7 @@ DiscoveryPageViewModelOutputs {
   // swiftlint:disable function_body_length
   public init() {
     let isCloseToBottom = self.willDisplayRowProperty.signal.ignoreNil()
-      .map { row, total in row >= total - 3 }
+      .map { row, total in row >= total - 3 && row > 0 }
       .skipRepeats()
       .filter(isTrue)
       .ignoreValues()
