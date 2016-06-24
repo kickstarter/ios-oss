@@ -15,7 +15,7 @@ internal final class DiscoveryProjectsDataSource: ValueCellDataSource {
       self.appendRow(
         value: project,
         cellClass: DiscoveryProjectCell.self,
-        toSection: 0
+        toSection: Section.projects.rawValue
       )
       self.appendStaticRow(cellIdentifier: "Padding", toSection: Section.projects.rawValue)
     }
