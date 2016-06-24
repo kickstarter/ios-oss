@@ -10,10 +10,10 @@ AppEnvironment.replaceCurrentEnvironment(
   apiService: MockService(
     fetchProjectsResponse: [
       .cosmicSurgery
-        |> Project.lens.creatorData.lastUpdatePublishedAt .~ NSDate().timeIntervalSince1970
-        |> Project.lens.creatorData.unreadMessagesCount .~ 42
-        |> Project.lens.creatorData.unseenActivityCount .~ 1_299
-        |> Project.lens.creatorData.permissions .~ [.post]
+        |> Project.lens.memberData.lastUpdatePublishedAt .~ NSDate().timeIntervalSince1970
+        |> Project.lens.memberData.unreadMessagesCount .~ 42
+        |> Project.lens.memberData.unseenActivityCount .~ 1_299
+        |> Project.lens.memberData.permissions .~ [.post]
     ]
   ),
   currentUser: Project.cosmicSurgery.creator

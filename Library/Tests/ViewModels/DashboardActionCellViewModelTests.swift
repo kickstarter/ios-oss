@@ -51,7 +51,7 @@ internal final class DashboardActionCellViewModelTests: TestCase {
     let date = NSDate().timeIntervalSince1970
     let formattedDate = Format.date(secondsInUTC: date, timeStyle: .NoStyle)
     let project = Project.template
-      |> Project.lens.creatorData.lastUpdatePublishedAt .~ date
+      |> Project.lens.memberData.lastUpdatePublishedAt .~ date
 
     self.vm.inputs.configureWith(project: project)
     self.lastUpdatePublishedAt.assertValues(["Last updated on \(formattedDate)."])
@@ -61,7 +61,7 @@ internal final class DashboardActionCellViewModelTests: TestCase {
     let creator = .template |> User.lens.id .~ 42
     let project = .template
       |> Project.lens.creator .~ creator
-      |> Project.lens.creatorData.permissions .~ [.post]
+      |> Project.lens.memberData.permissions .~ [.post]
 
     withEnvironment(currentUser: creator) {
       self.vm.inputs.configureWith(project: project)
@@ -77,7 +77,7 @@ internal final class DashboardActionCellViewModelTests: TestCase {
     let collaborator = .template |> User.lens.id .~ 99
     let project = .template
       |> Project.lens.creator .~ creator
-      |> Project.lens.creatorData.permissions .~ [.post]
+      |> Project.lens.memberData.permissions .~ [.post]
 
     withEnvironment(currentUser: collaborator) {
       self.vm.inputs.configureWith(project: project)
@@ -93,7 +93,7 @@ internal final class DashboardActionCellViewModelTests: TestCase {
     let collaborator = .template |> User.lens.id .~ 99
     let project = .template
       |> Project.lens.creator .~ creator
-      |> Project.lens.creatorData.permissions .~ []
+      |> Project.lens.memberData.permissions .~ []
 
     withEnvironment(currentUser: collaborator) {
       self.vm.inputs.configureWith(project: project)
