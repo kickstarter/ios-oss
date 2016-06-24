@@ -79,7 +79,7 @@ public final class DashboardActionCellViewModel: DashboardActionCellViewModelInp
 
     self.lastUpdatePublishedAt = project
       .map {
-        if let lastUpdatePublishedAt = $0.creatorData.lastUpdatePublishedAt {
+        if let lastUpdatePublishedAt = $0.memberData.lastUpdatePublishedAt {
           return Strings.dashboard_post_update_button_subtitle_last_updated_on_date(
             date: Format.date(secondsInUTC: lastUpdatePublishedAt, timeStyle: .NoStyle)
           )
@@ -87,12 +87,12 @@ public final class DashboardActionCellViewModel: DashboardActionCellViewModelInp
         return Strings.dashboard_post_update_button_subtitle_you_have_not_posted_an_update_yet()
     }
 
-    self.unreadMessagesCount = project.map { Format.wholeNumber($0.creatorData.unreadMessagesCount ?? 0) }
-    self.unreadMessagesCountHidden = project.map { ($0.creatorData.unreadMessagesCount ?? 0) == 0 }
-    self.unseenActivitiesCount = project.map { Format.wholeNumber($0.creatorData.unseenActivityCount ?? 0) }
-    self.unseenActivitiesCountHidden = project.map { ($0.creatorData.unseenActivityCount ?? 0) == 0 }
+    self.unreadMessagesCount = project.map { Format.wholeNumber($0.memberData.unreadMessagesCount ?? 0) }
+    self.unreadMessagesCountHidden = project.map { ($0.memberData.unreadMessagesCount ?? 0) == 0 }
+    self.unseenActivitiesCount = project.map { Format.wholeNumber($0.memberData.unseenActivityCount ?? 0) }
+    self.unseenActivitiesCountHidden = project.map { ($0.memberData.unseenActivityCount ?? 0) == 0 }
 
-    self.lastUpdatePublishedLabelHidden = project.map { !$0.creatorData.permissions.contains(.post) }
+    self.lastUpdatePublishedLabelHidden = project.map { !$0.memberData.permissions.contains(.post) }
     self.postUpdateButtonHidden = self.lastUpdatePublishedLabelHidden
 
     self.messagesRowHidden = project.map { $0.creator != AppEnvironment.current.currentUser }
