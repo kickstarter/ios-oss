@@ -84,6 +84,8 @@ DiscoveryViewModelOutputs {
           return Strings.discovery_friends_backed()
         } else if let category = params.category {
           return category.name
+        } else if params.recommended == true {
+          return localizedString(key: "discovery.recommended_for_you", defaultValue: "Recommended for you")
         }
         return Strings.discovery_everything()
     }.skipRepeats()

@@ -15,6 +15,9 @@ internal final class DiscoverySelectableRowCell: UITableViewCell, ValueCell {
       self.filterTitleLabel.text = Strings.discovery_friends_backed()
     } else if let category = value.params.category {
       self.filterTitleLabel.text = category.name
+    } else if value.params.recommended == true {
+      self.filterTitleLabel.text = localizedString(key: "discovery.recommended_for_you",
+                                                   defaultValue: "Recommended for you")
     } else {
       self.filterTitleLabel.text = Strings.discovery_everything()
     }

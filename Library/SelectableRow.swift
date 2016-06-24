@@ -36,6 +36,9 @@ public extension LensType where Whole == SelectableRow, Part == DiscoveryParams 
   public var includePOTD: Lens<SelectableRow, Bool?> {
     return SelectableRow.lens.params • DiscoveryParams.lens.includePOTD
   }
+  public var recommended: Lens<SelectableRow, Bool?> {
+    return SelectableRow.lens.params • DiscoveryParams.lens.recommended
+  }
 }
 
 extension SelectableRow: Equatable {}

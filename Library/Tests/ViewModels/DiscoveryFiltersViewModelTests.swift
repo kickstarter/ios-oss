@@ -18,6 +18,7 @@ private let staffPicksRow = selectableRowTemplate
   |> SelectableRow.lens.params.includePOTD .~ true
 private let starredRow = selectableRowTemplate |> SelectableRow.lens.params.starred .~ true
 private let socialRow = selectableRowTemplate |> SelectableRow.lens.params.social .~ true
+private let recommendedRow = selectableRowTemplate |> SelectableRow.lens.params.recommended .~ true
 private let everythingRow = selectableRowTemplate
 private let artSelectableRow = selectableRowTemplate |> SelectableRow.lens.params.category .~ .art
 private let documentarySelectableRow = selectableRowTemplate
@@ -84,11 +85,42 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
                    self.trackingClient.properties(forKey: "discover_category_id", as: Int.self))
   }
 
-  func testTopFilters() {
+  func testTopFiltersLoggedOut() {
     self.vm.inputs.configureWith(selectedRow: staffPicksRow)
     self.vm.inputs.viewDidLoad()
     self.loadTopRows.assertValues(
-      [[staffPicksRow |> SelectableRow.lens.isSelected .~ true, starredRow, socialRow, everythingRow]],
+      [[staffPicksRow |> SelectableRow.lens.isSelected .~ true, everythingRow]],
+      "The top filter rows load immediately with the first one selected."
+    )
+  }
+
+  func testTopFiltersLoggedIn() {
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
+
+    self.vm.inputs.configureWith(selectedRow: staffPicksRow)
+    self.vm.inputs.viewDidLoad()
+    self.loadTopRows.assertValues(
+      [[staffPicksRow |> SelectableRow.lens.isSelected .~ true, recommendedRow, starredRow, everythingRow]],
+      "The top filter rows load immediately with the first one selected."
+    )
+  }
+
+  func testTopFiltersLoggedInSocial() {
+    AppEnvironment.login(
+      AccessTokenEnvelope(accessToken: "deadbeef", user: .template |> User.lens.social .~ true)
+    )
+
+    self.vm.inputs.configureWith(selectedRow: staffPicksRow)
+    self.vm.inputs.viewDidLoad()
+    self.loadTopRows.assertValues(
+      [
+        [ staffPicksRow |> SelectableRow.lens.isSelected .~ true,
+          recommendedRow,
+          starredRow,
+          socialRow,
+          everythingRow
+        ]
+      ],
       "The top filter rows load immediately with the first one selected."
     )
   }

@@ -42,16 +42,8 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
 
     let initialTopFilters = self.viewDidLoadProperty.signal
       .take(1)
-      .flatMap {
-        SignalProducer(values:
-          .defaults
-            |> DiscoveryParams.lens.staffPicks .~ true
-            |> DiscoveryParams.lens.includePOTD .~ true,
-          .defaults |> DiscoveryParams.lens.starred .~ true,
-          .defaults |> DiscoveryParams.lens.social .~ true,
-          .defaults
-        )
-    }
+      .map { topFilters(forUser: AppEnvironment.current.currentUser) }
+      .uncollect()
 
     self.loadTopRows = combineLatest(
       initialTopFilters,
@@ -176,4 +168,25 @@ private func expandableRows(fromCategories categories: [KsApi.Category]) -> [Exp
       )
     }
     .sort { lhs, rhs in lhs.params.category < rhs.params.category }
+}
+
+private func topFilters(forUser user: User?) -> [DiscoveryParams] {
+  var filters: [DiscoveryParams] = []
+
+  filters.append(.defaults
+    |> DiscoveryParams.lens.staffPicks .~ true
+    |> DiscoveryParams.lens.includePOTD .~ true)
+
+  if user != nil {
+    filters.append(.defaults |> DiscoveryParams.lens.recommended .~ true)
+    filters.append(.defaults |> DiscoveryParams.lens.starred .~ true)
+  }
+
+  if user?.social == true {
+    filters.append(.defaults |> DiscoveryParams.lens.social .~ true)
+  }
+
+  filters.append(.defaults)
+
+  return filters
 }
