@@ -16,11 +16,14 @@ public protocol DashboardViewModelOutputs {
   /// Emits the project and ref tag when should go to project page.
   var goToProject: Signal<(Project, RefTag), NoError > { get }
 
-  /// Emits the currently selected project to display.
+  /// Emits the currently selected project to display in the context and action cells.
   var project: Signal<Project, NoError> { get }
 
-  /// Emits the list of created projects to display.
+  /// Emits the list of created projects to display in the project switcher.
   var projects: Signal<[Project], NoError> { get }
+
+  /// Emits the video stats to display in the video cell.
+  var videoStats: Signal<ProjectStatsEnvelope.VideoStats, NoError> { get }
 }
 
 public protocol DashboardViewModelType {
@@ -32,7 +35,6 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
   DashboardViewModelType {
 
   public init() {
-
     self.projects = self.viewDidLoadProperty.signal
       .switchMap {
         AppEnvironment.current.apiService.fetchProjects(member: true)
@@ -44,23 +46,32 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
 
     self.project = project
 
+    let stats = project
+      .switchMap {
+        AppEnvironment.current.apiService.fetchProjectStats(projectId: $0.id)
+          .demoteErrors()
+      }
+
+    self.videoStats = stats.map { $0.videoStats }.ignoreNil()
+
     self.goToProject = self.projectContextTappedProperty.signal.ignoreNil()
       .map { ($0, RefTag.dashboard) }
   }
 
   private let projectContextTappedProperty = MutableProperty<Project?>(nil)
   public func projectContextTapped(project: Project) {
-    projectContextTappedProperty.value = project
+    self.projectContextTappedProperty.value = project
   }
 
   private let viewDidLoadProperty = MutableProperty()
   public func viewDidLoad() {
-    viewDidLoadProperty.value = ()
+    self.viewDidLoadProperty.value = ()
   }
 
   public let goToProject: Signal<(Project, RefTag), NoError>
   public let project: Signal<Project, NoError>
   public let projects: Signal<[Project], NoError>
+  public let videoStats: Signal<ProjectStatsEnvelope.VideoStats, NoError>
 
   public var inputs: DashboardViewModelInputs { return self }
   public var outputs: DashboardViewModelOutputs { return self }

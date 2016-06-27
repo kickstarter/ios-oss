@@ -8,6 +8,13 @@ extension UIFont {
     return UIFont(descriptor: mediumDescriptor, size: 0.0)
   }
 
+  /// Returns a italicized version of `self`.
+  public var italicized: UIFont {
+    let descriptor = self.fontDescriptor()
+    let mediumDescriptor = descriptor.fontDescriptorWithSymbolicTraits(.TraitItalic)
+    return UIFont(descriptor: mediumDescriptor, size: 0.0)
+  }
+
   /// 17pt font
   public static var ksr_body: UIFont {
     return .preferredFontForTextStyle(UIFontTextStyleBody)
