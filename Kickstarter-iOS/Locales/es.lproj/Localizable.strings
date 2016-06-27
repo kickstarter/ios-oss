@@ -361,6 +361,7 @@
 "discovery.onboarding.title.bring_creative_projects_to_life" = "Dale vida a proyectos creativos";
 "discovery.popular" = "Popular";
 "discovery.recommended" = "Nuestros favoritos";
+"discovery.recommended_for_you" = "Recommended for you";
 "discovery.saved" = "Los más destacados";
 "discovery.search_cancel" = "Cancelar";
 "discovery.sort_types.end_date" = "Fecha de terminación";
@@ -476,6 +477,7 @@
 "login_tout.save_intent.traditional_signup_button" = "Registrar";
 "login_tout.save_intent.traditional_title" = "Utiliza tu dirección de correo electrónico:";
 "messages.could_not_load_messages" = "No se pudieron cargar mensajes";
+"messages.dialog.generic_error" = "Sorry, your message could not be posted.";
 "messages.empty_state.message_backer" = "No le has enviado un mensaje al creador.";
 "messages.empty_state.message_creator" = "No le has enviado un mensaje a este patrocinador.";
 "messages.empty_state.title" = "No hay mensajes";
@@ -614,6 +616,7 @@
 "project.comments.empty_state.logged_out.title" = "No hay comentarios";
 "project.comments.empty_state.non_backer.message" = "Ay, ¡qué pena! Hazte patrocinador para dejar un comentario.";
 "project.comments.empty_state.non_backer.title" = "No hay comentarios";
+"project.comments.error_posting" = "Sorry, your comment could not be posted.";
 "project.comments.posted" = "¡Comentario fue publicado!";
 "project.creator.by_creator" = "por %{creator_name}";
 "project.creator.by_creator_html" = "de %{creator_name}";
@@ -718,6 +721,7 @@
 "social.public_comment" = "Comentario público";
 "social.update" = "Actualización";
 "social.update_number" = "Actualización %{update_number}";
+"social.update_sequence_and_title" = "Update #%{update_number}: %{update_title}";
 "social_following.button.check_out_some_projects" = "¡Checa algunos de los proyectos aquÍ!";
 "social_following.friend.buttons.follow" = "Seguir";
 "social_following.friend.buttons.following" = "Siguiendo";

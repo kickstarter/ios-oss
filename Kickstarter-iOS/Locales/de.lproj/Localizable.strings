@@ -361,6 +361,7 @@
 "discovery.onboarding.title.bring_creative_projects_to_life" = "Du kannst kreative Projekte ins Leben rufen!";
 "discovery.popular" = "Beliebte Projekte";
 "discovery.recommended" = "Team-Favoriten";
+"discovery.recommended_for_you" = "Recommended for you";
 "discovery.saved" = "Meine Favoriten";
 "discovery.search_cancel" = "Abbrechen";
 "discovery.sort_types.end_date" = "Enddatum";
@@ -476,6 +477,7 @@
 "login_tout.save_intent.traditional_signup_button" = "Registrieren";
 "login_tout.save_intent.traditional_title" = "Benutze deine E-Mail-Adresse:";
 "messages.could_not_load_messages" = "Nachrichten konnten nicht geladen werden";
+"messages.dialog.generic_error" = "Sorry, your message could not be posted.";
 "messages.empty_state.message_backer" = "Du hast dem Projektgründer keine Nachricht gesendet.";
 "messages.empty_state.message_creator" = "Du hast diesem Unterstützer keine Nachricht gesendet.";
 "messages.empty_state.title" = "Keine Nachrichten";
@@ -614,6 +616,7 @@
 "project.comments.empty_state.logged_out.title" = "Keine Kommentare";
 "project.comments.empty_state.non_backer.message" = "Oh wie schade. Werde Unterstützer um einen Kommentar zu verfassen.";
 "project.comments.empty_state.non_backer.title" = "Keine Kommentare";
+"project.comments.error_posting" = "Sorry, your comment could not be posted.";
 "project.comments.posted" = "Kommentar veröffentlicht!";
 "project.creator.by_creator" = "von %{creator_name}";
 "project.creator.by_creator_html" = "von %{creator_name}";
@@ -718,6 +721,7 @@
 "social.public_comment" = "Öffentlicher Kommentar";
 "social.update" = "Update";
 "social.update_number" = "Update Nr. %{update_number}";
+"social.update_sequence_and_title" = "Update #%{update_number}: %{update_title}";
 "social_following.button.check_out_some_projects" = "Schau dir diese Projekte an!";
 "social_following.friend.buttons.follow" = "Folgen";
 "social_following.friend.buttons.following" = "Abonniert";

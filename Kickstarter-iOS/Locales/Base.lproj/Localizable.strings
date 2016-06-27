@@ -361,6 +361,7 @@
 "discovery.onboarding.title.bring_creative_projects_to_life" = "Bring creative projects to life";
 "discovery.popular" = "Popular";
 "discovery.recommended" = "Staff Picks";
+"discovery.recommended_for_you" = "Recommended for you";
 "discovery.saved" = "Starred";
 "discovery.search_cancel" = "Cancel";
 "discovery.sort_types.end_date" = "End Date";
@@ -476,6 +477,7 @@
 "login_tout.save_intent.traditional_signup_button" = "Sign up";
 "login_tout.save_intent.traditional_title" = "Use your email address:";
 "messages.could_not_load_messages" = "Couldn't load messages";
+"messages.dialog.generic_error" = "Sorry, your message could not be posted.";
 "messages.empty_state.message_backer" = "You have not sent a message to the creator.";
 "messages.empty_state.message_creator" = "You have not sent a message to this backer.";
 "messages.empty_state.title" = "No messages";
@@ -614,6 +616,7 @@
 "project.comments.empty_state.logged_out.title" = "No comments";
 "project.comments.empty_state.non_backer.message" = "Aw, how sad. Become a backer to leave a comment.";
 "project.comments.empty_state.non_backer.title" = "No comments";
+"project.comments.error_posting" = "Sorry, your comment could not be posted.";
 "project.comments.posted" = "Comment posted!";
 "project.creator.by_creator" = "by %{creator_name}";
 "project.creator.by_creator_html" = "by <u>%{creator_name}</u>";
@@ -718,6 +721,7 @@
 "social.public_comment" = "Public comment";
 "social.update" = "Update";
 "social.update_number" = "Update #%{update_number}";
+"social.update_sequence_and_title" = "Update #%{update_number}: %{update_title}";
 "social_following.button.check_out_some_projects" = "Check out some projects!";
 "social_following.friend.buttons.follow" = "Follow";
 "social_following.friend.buttons.following" = "Following";

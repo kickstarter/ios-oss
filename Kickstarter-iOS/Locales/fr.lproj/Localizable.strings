@@ -22,7 +22,7 @@
 "activity.creator.actions.user_name_commented_on_update_number" = "%{user_name} a laissé un commentaire sur l'actu no. %{update_number}.";
 "activity.creator.actions.user_name_commented_on_your_project" = "%{user_name} a laissé un commentaire sur votre projet";
 "activity.creator.actions.user_name_pledged" = "L'engagement de %{user_name} :";
-"activity.creator.actions.user_name_posted_update_number" = "%{user_name} posted Update #%{update_number}:";
+"activity.creator.actions.user_name_posted_update_number" = "%{user_name} a publié l'actu no. %{update_number} :";
 "activity.creator.actions.you_commented_on_update_number" = "Vous avez commenté l'actu no. %{update_number}";
 "activity.creator.actions.you_commented_on_update_number_pronoun" = "Vous";
 "activity.creator.actions.you_commented_on_your_project" = "Vous avez laissé un commentaire sur votre projet.";
@@ -361,6 +361,7 @@
 "discovery.onboarding.title.bring_creative_projects_to_life" = "Soutenez des projets créatifs";
 "discovery.popular" = "Populaires";
 "discovery.recommended" = "Nos sélections";
+"discovery.recommended_for_you" = "Nos recommandations";
 "discovery.saved" = "Projets préférés";
 "discovery.search_cancel" = "Annuler";
 "discovery.sort_types.end_date" = "Date de fin";
@@ -476,6 +477,7 @@
 "login_tout.save_intent.traditional_signup_button" = "Inscription";
 "login_tout.save_intent.traditional_title" = "Utilisez votre adresse e-mail :";
 "messages.could_not_load_messages" = "Impossible de charger les messages";
+"messages.dialog.generic_error" = "Désolé, votre message n'a pas pu être publié.";
 "messages.empty_state.message_backer" = "Vous n'avez pas envoyé de messages à ce créateur.";
 "messages.empty_state.message_creator" = "Vous n'avez pas envoyé de messages à ce contributeur.";
 "messages.empty_state.title" = "Pas de messages";
@@ -614,6 +616,7 @@
 "project.comments.empty_state.logged_out.title" = "Pas de commentaires";
 "project.comments.empty_state.non_backer.message" = "Oh, quel dommage. Soutenez ce projet afin de pouvoir laisser un commentaire.";
 "project.comments.empty_state.non_backer.title" = "Pas de commentaires";
+"project.comments.error_posting" = "Désolé, votre commentaire n'a pas pu être publié.";
 "project.comments.posted" = "Commentaire publié !";
 "project.creator.by_creator" = "par %{creator_name}";
 "project.creator.by_creator_html" = "par %{creator_name}";
@@ -718,6 +721,7 @@
 "social.public_comment" = "Commentaire public";
 "social.update" = "Actu";
 "social.update_number" = "Actu no. %{update_number}";
+"social.update_sequence_and_title" = "Update #%{update_number}: %{update_title}";
 "social_following.button.check_out_some_projects" = "Découvrez des projets !";
 "social_following.friend.buttons.follow" = "S'abonner";
 "social_following.friend.buttons.following" = "Abonné";

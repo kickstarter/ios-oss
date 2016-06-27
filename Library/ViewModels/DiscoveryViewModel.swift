@@ -85,7 +85,7 @@ DiscoveryViewModelOutputs {
         } else if let category = params.category {
           return category.name
         } else if params.recommended == true {
-          return localizedString(key: "discovery.recommended_for_you", defaultValue: "Recommended for you")
+          return Strings.discovery_recommended_for_you()
         }
         return Strings.discovery_everything()
     }.skipRepeats()

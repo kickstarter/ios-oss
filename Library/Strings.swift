@@ -424,7 +424,7 @@ public enum Strings {
 
    - **es**: "%{user_name} posted Update #%{update_number}:"
    - **de**: "%{user_name} posted Update #%{update_number}:"
-   - **fr**: "%{user_name} posted Update #%{update_number}:"
+   - **fr**: "%{user_name} a publié l'actu no. %{update_number} :"
    - **it**: "%{user_name} posted Update #%{update_number}:"
    - **en**: "%{user_name} posted Update #%{update_number}:"
   */
@@ -6183,6 +6183,23 @@ public enum Strings {
     )
   }
   /**
+   "Recommended for you"
+
+   - **es**: "Recommended for you"
+   - **de**: "Recommended for you"
+   - **fr**: "Nos recommandations"
+   - **it**: "Recommended for you"
+   - **en**: "Recommended for you"
+  */
+  public static func discovery_recommended_for_you() -> String {
+    return localizedString(
+      key: "discovery.recommended_for_you",
+      defaultValue: "Recommended for you",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Starred"
 
    - **es**: "Los más destacados"
@@ -8145,6 +8162,23 @@ This is commonly fixed by going to iOS Settings > Facebook and toggling access f
     return localizedString(
       key: "messages.could_not_load_messages",
       defaultValue: "Couldn't load messages",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Sorry, your message could not be posted."
+
+   - **es**: "Sorry, your message could not be posted."
+   - **de**: "Sorry, your message could not be posted."
+   - **fr**: "Désolé, votre message n'a pas pu être publié."
+   - **it**: "Sorry, your message could not be posted."
+   - **en**: "Sorry, your message could not be posted."
+  */
+  public static func messages_dialog_generic_error() -> String {
+    return localizedString(
+      key: "messages.dialog.generic_error",
+      defaultValue: "Sorry, your message could not be posted.",
       count: nil,
       substitutions: [:]
     )
@@ -10543,6 +10577,23 @@ Thank you for your support!"
     )
   }
   /**
+   "Sorry, your comment could not be posted."
+
+   - **es**: "Sorry, your comment could not be posted."
+   - **de**: "Sorry, your comment could not be posted."
+   - **fr**: "Désolé, votre commentaire n'a pas pu être publié."
+   - **it**: "Sorry, your comment could not be posted."
+   - **en**: "Sorry, your comment could not be posted."
+  */
+  public static func project_comments_error_posting() -> String {
+    return localizedString(
+      key: "project.comments.error_posting",
+      defaultValue: "Sorry, your comment could not be posted.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Comment posted!"
 
    - **es**: "¡Comentario fue publicado!"
@@ -12308,6 +12359,23 @@ Thank you for your support!"
       defaultValue: "Update #%{update_number}",
       count: nil,
       substitutions: ["update_number": update_number]
+    )
+  }
+  /**
+   "Update #%{update_number}: %{update_title}"
+
+   - **es**: "Update #%{update_number}: %{update_title}"
+   - **de**: "Update #%{update_number}: %{update_title}"
+   - **fr**: "Update #%{update_number}: %{update_title}"
+   - **it**: "Update #%{update_number}: %{update_title}"
+   - **en**: "Update #%{update_number}: %{update_title}"
+  */
+  public static func social_update_sequence_and_title(update_number update_number: String, update_title: String) -> String {
+    return localizedString(
+      key: "social.update_sequence_and_title",
+      defaultValue: "Update #%{update_number}: %{update_title}",
+      count: nil,
+      substitutions: ["update_number": update_number, "update_title": update_title]
     )
   }
   /**
