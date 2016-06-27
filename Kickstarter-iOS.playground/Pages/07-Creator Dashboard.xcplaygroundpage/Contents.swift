@@ -8,6 +8,15 @@ import XCPlayground
 
 AppEnvironment.replaceCurrentEnvironment(
   apiService: MockService(
+    fetchProjectStatsResponse: .template
+      |> ProjectStatsEnvelope.lens.videoStats .~
+      (
+        .template
+          |> ProjectStatsEnvelope.VideoStats.lens.externalCompletions .~ 50
+          |> ProjectStatsEnvelope.VideoStats.lens.externalStarts .~ 212
+          |> ProjectStatsEnvelope.VideoStats.lens.internalCompletions .~ 750
+          |> ProjectStatsEnvelope.VideoStats.lens.internalStarts .~ 1000
+      ),
     fetchProjectsResponse: [
       .cosmicSurgery
         |> Project.lens.memberData.lastUpdatePublishedAt .~ NSDate().timeIntervalSince1970

@@ -44,6 +44,13 @@ internal final class DashboardViewController: UITableViewController {
       .observeNext { [weak self] projects in
         self?.tableView.reloadData()
     }
+
+    self.viewModel.outputs.videoStats
+      .observeForUI()
+      .observeNext { [weak self] videoStats in
+        self?.dataSource.load(videoStats: videoStats)
+        self?.tableView.reloadData()
+    }
   }
 
   internal override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {

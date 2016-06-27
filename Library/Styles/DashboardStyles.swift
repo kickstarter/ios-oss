@@ -18,7 +18,6 @@ public let dashboardStatSubtitleLabelStyle =
   UILabel.lens.textColor .~ .ksr_white
     <> UILabel.lens.font .~ .ksr_subhead
 
-
 public let lastUpdatePublishedAtLabelStyle =
   UILabel.lens.font .~ .ksr_caption1
     <> UILabel.lens.textColor .~ .ksr_darkGrayText
@@ -32,3 +31,24 @@ public let postUpdateButtonStyle = positiveButtonStyle
 public let dashboardShareButtonStyle = neutralButtonStyle
   <> UIButton.lens.titleText(forState: .Normal) %~ { _ in Strings.dashboard_buttons_share() }
   <> UIButton.lens.contentEdgeInsets .~ .init(topBottom: 12.0, leftRight: 32.0)
+
+public let dashboardVideoCompletionPercentageLabelStyle =
+  UILabel.lens.textColor .~ .ksr_darkGrayText
+  <> UILabel.lens.font .~ UIFont.ksr_subhead.italicized
+
+public let dashboardVideoExternalPlayCountLabelStyle =
+  UILabel.lens.textColor .~ .ksr_darkGrayText
+    <> UILabel.lens.font .~ .ksr_body
+
+public let dashboardVideoInternalPlayCountLabelStyle =
+  UILabel.lens.textColor .~ .ksr_green
+    <> UILabel.lens.font .~ .ksr_body
+
+public let dashboardVideoPlaysTitleLabelStyle =
+  UILabel.lens.textColor .~ .ksr_darkGrayText
+  <> UILabel.lens.font .~ .ksr_headline
+  <> UILabel.lens.text %~ { _ in Strings.dashboard_graphs_video_title() }
+
+public let dashboardVideoTotalPlaysCountLabelStyle =
+  UILabel.lens.textColor .~ .ksr_black
+    <> UILabel.lens.font .~ UIFont.ksr_title1.bolded
