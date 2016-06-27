@@ -1,13 +1,11 @@
-import Foundation
-import UIKit
 import KsApi
-import Library
+import UIKit
 
 public final class ProjectActivityItemProvider: UIActivityItemProvider {
 
   private var project: Project?
 
-  convenience init(project: Project) {
+  public convenience init(project: Project) {
     self.init(placeholderItem: project.name)
 
     self.project = project

@@ -1,18 +1,19 @@
 import Foundation
 import UIKit.UIActivity
 
-public final class SafariActivity: UIActivity {
+public let SafariActivityType = "com.kickstarter.kickstarter.safari"
 
+public final class SafariActivity: UIActivity {
   private var url: NSURL?
 
-  convenience init(url: NSURL) {
+  public convenience init(url: NSURL) {
     self.init()
 
     self.url = url
   }
 
   public override func activityType() -> String? {
-    return "com.kickstarter.kickstarter.safari"
+    return SafariActivityType
   }
 
   public override func activityTitle() -> String? {

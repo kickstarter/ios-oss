@@ -5,6 +5,7 @@ import ReactiveExtensions
 import Result
 
 public protocol ActitiviesViewModelInputs {
+  /// Called when the project image in an update activity cell is tapped.
   func activityUpdateCellTappedProjectImage(activity activity: Activity)
 
   /// Call when the Find Friends section is dismissed.
@@ -70,6 +71,9 @@ public protocol ActivitiesViewModelOutputs {
 
   /// Emits a survey response when we should navigate to the survey to fill it out.
   var goToSurveyResponse: Signal<SurveyResponse, NoError> { get }
+
+  /// Emits a project and update when we should navigate to that update.
+  var goToUpdate: Signal<(Project, Update), NoError> { get }
 
   /// Emits a boolean that indicates if the activities are refreshing.
   var isRefreshing: Signal<Bool, NoError> { get }
@@ -156,9 +160,13 @@ ActivitiesViewModelOutputs {
       .skipWhile(isFalse)
       .skipRepeats()
 
+    let projectActivities = self.tappedActivityProperty.signal.ignoreNil()
+      .filter { $0.category != .update }
+
     self.goToProject = Signal.merge(
       self.tappedActivityProjectImage.signal.map { $0?.project },
-      self.tappedActivityProperty.signal.map { $0?.project })
+      projectActivities.map { $0.project }
+      )
       .ignoreNil()
       .map { ($0, RefTag.activity) }
 
@@ -218,6 +226,16 @@ ActivitiesViewModelOutputs {
       .skipRepeats(==)
 
     self.goToSurveyResponse = self.tappedSurveyResponseProperty.signal.ignoreNil()
+
+    self.goToUpdate = self.tappedActivityProperty.signal.ignoreNil()
+      .filter { $0.category == .update }
+      .map { ($0.project, $0.update) }
+      .flatMap { (project, update) -> SignalProducer<(Project, Update), NoError> in
+        guard let project = project, update = update else {
+          return .empty
+        }
+        return SignalProducer(value: (project, update))
+      }
 
     self.viewWillAppearProperty.signal
       .observeNext { AppEnvironment.current.koala.trackActivities() }
@@ -289,6 +307,7 @@ ActivitiesViewModelOutputs {
   public let goToFriends: Signal<FriendsSource, NoError>
   public let goToProject: Signal<(Project, RefTag), NoError>
   public let goToSurveyResponse: Signal<SurveyResponse, NoError>
+  public let goToUpdate: Signal<(Project, Update), NoError>
   public let showFindFriendsSection: Signal<(FriendsSource, Bool), NoError>
   public let showFacebookConnectSection: Signal<(FriendsSource, Bool), NoError>
   public let showFacebookConnectErrorAlert: Signal<AlertError, NoError>

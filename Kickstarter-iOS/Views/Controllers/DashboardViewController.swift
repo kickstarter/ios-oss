@@ -5,8 +5,9 @@ import Prelude
 import Prelude_UIKit
 
 internal final class DashboardViewController: UITableViewController {
-  let dataSource = DashboardDataSource()
-  let viewModel: DashboardViewModelType = DashboardViewModel()
+  private let dataSource = DashboardDataSource()
+  private let viewModel: DashboardViewModelType = DashboardViewModel()
+  private let shareViewModel: ShareViewModelType = ShareViewModel()
 
   internal override func viewDidLoad() {
     super.viewDidLoad()
@@ -37,6 +38,9 @@ internal final class DashboardViewController: UITableViewController {
       .observeNext { [weak self] project in
         self?.dataSource.load(project: project)
         self?.tableView.reloadData()
+
+        // NB: this is just temporary for now
+        self?.shareViewModel.inputs.configureWith(shareContext: .creatorDashboard(project))
     }
 
     self.viewModel.outputs.projects
@@ -51,6 +55,10 @@ internal final class DashboardViewController: UITableViewController {
         self?.dataSource.load(videoStats: videoStats)
         self?.tableView.reloadData()
     }
+
+    self.shareViewModel.outputs.showShareSheet
+      .observeForUI()
+      .observeNext { [weak self] in self?.showShareSheet($0) }
   }
 
   internal override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -107,21 +115,19 @@ internal final class DashboardViewController: UITableViewController {
                                completion: nil)
   }
 
-  private func showShareSheet(project: Project) {
-    let activityVC = UIActivityViewController.shareProject(
-      project: project,
-      completionHandler: { activityType, shouldShowPasteboardAlert, completed in
-        if shouldShowPasteboardAlert {
-          let alert = UIAlertController.projectCopiedToPasteboard(projectURL: project.urls.web.project)
-          self.presentViewController(alert, animated: true, completion: nil)
-        }
-    })
+  private func showShareSheet(controller: UIActivityViewController) {
+    controller.completionWithItemsHandler = { [weak self] in
+      self?.shareViewModel.inputs.shareActivityCompletion(activityType: $0,
+                                                          completed: $1,
+                                                          returnedItems: $2,
+                                                          activityError: $3)
+    }
 
     if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
-      activityVC.modalPresentationStyle = .Popover
-      self.presentViewController(activityVC, animated: true, completion: nil)
+      controller.modalPresentationStyle = .Popover
+      self.presentViewController(controller, animated: true, completion: nil)
     } else {
-      self.presentViewController(activityVC, animated: true, completion: nil)
+      self.presentViewController(controller, animated: true, completion: nil)
     }
   }
 }
@@ -140,6 +146,6 @@ extension DashboardViewController: DashboardActionCellDelegate {
   }
 
   internal func showShareSheet(cell: DashboardActionCell?, project: Project) {
-    self.showShareSheet(project)
+    self.shareViewModel.inputs.shareButtonTapped()
   }
 }

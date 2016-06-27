@@ -1,11 +1,10 @@
-import Foundation
-import UIKit
-import ReactiveExtensions
-import ReactiveCocoa
+import KsApi
 import Library
 import Prelude
-import KsApi
+import ReactiveCocoa
+import ReactiveExtensions
 import Social
+import UIKit
 
 internal final class ThanksViewController: UIViewController, UICollectionViewDelegate {
 
@@ -17,6 +16,7 @@ internal final class ThanksViewController: UIViewController, UICollectionViewDel
   @IBOutlet private weak var projectsCollectionView: UICollectionView!
 
   private let viewModel: ThanksViewModelType = ThanksViewModel()
+  private let shareViewModel: ShareViewModelType = ShareViewModel()
   private let dataSource = ThanksProjectsDataSource()
 
   override func viewDidLoad() {
@@ -32,13 +32,8 @@ internal final class ThanksViewController: UIViewController, UICollectionViewDel
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.viewModel.outputs.facebookIsAvailable
-      .observeForUI()
-      .observeNext { [weak self] available in self?.facebookButton.hidden = !available }
-
-    self.viewModel.outputs.twitterIsAvailable
-      .observeForUI()
-      .observeNext { [weak self] available in self?.twitterButton.hidden = !available }
+    self.facebookButton.rac.hidden = self.viewModel.outputs.facebookIsAvailable
+    self.twitterButton.rac.hidden = self.viewModel.outputs.twitterIsAvailable
 
     self.viewModel.outputs.backedProjectText
       .observeForUI()
@@ -76,24 +71,6 @@ internal final class ThanksViewController: UIViewController, UICollectionViewDel
         self?.showRatingAlert()
     }
 
-    self.viewModel.outputs.showShareSheet
-      .observeForUI()
-      .observeNext { [weak self] project in
-        self?.showShareSheet(project: project)
-    }
-
-    self.viewModel.outputs.showFacebookShare
-      .observeForUI()
-      .observeNext { [weak self] project in
-        self?.showFacebookShare(project: project)
-    }
-
-    self.viewModel.outputs.showTwitterShare
-      .observeForUI()
-      .observeNext { [weak self] project in
-        self?.showTwitterShare(project: project)
-    }
-
     self.viewModel.outputs.showGamesNewsletterAlert
       .observeForUI()
       .observeNext { [weak self] in
@@ -121,11 +98,20 @@ internal final class ThanksViewController: UIViewController, UICollectionViewDel
         self?.dataSource.loadData(projects: projects, category: category)
         self?.projectsCollectionView.reloadData()
     }
+
+    self.shareViewModel.outputs.showShareSheet
+      .observeForUI()
+      .observeNext { [weak self] in self?.showShareSheet($0) }
+
+    self.shareViewModel.outputs.showShareCompose
+      .observeForUI()
+      .observeNext { [weak self] in self?.showShareCompose($0) }
   }
   // swiftlint:enable function_body_length
 
   internal func configureWith(project project: Project) {
     self.viewModel.inputs.project(project)
+    self.shareViewModel.inputs.configureWith(shareContext: .thanks(project))
   }
 
   private func goToDiscovery(params params: DiscoveryParams) {
@@ -163,64 +149,6 @@ internal final class ThanksViewController: UIViewController, UICollectionViewDel
     )
   }
 
-  private func showShareSheet(project project: Project) {
-    let activityVC = UIActivityViewController.shareProject(
-      project: project,
-      completionHandler: { activityType, shouldShowPasteboardAlert, completed in
-        if let validType = activityType {
-          self.viewModel.inputs.shareFinishedWithShareType(validType, completed: completed)
-        } else {
-          self.viewModel.inputs.cancelShareSheetButtonPressed()
-        }
-
-        if shouldShowPasteboardAlert {
-          let alert = UIAlertController.projectCopiedToPasteboard(projectURL: project.urls.web.project)
-          self.presentViewController(alert, animated: true, completion: nil)
-        }
-    })
-
-    if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
-      activityVC.modalPresentationStyle = .Popover
-      self.presentViewController(activityVC, animated: true, completion: nil)
-      if let popover = activityVC.popoverPresentationController {
-        popover.permittedArrowDirections = .Up
-        popover.sourceView = self.shareMoreButton
-        popover.sourceRect = CGRect(origin: CGPoint(x: 0, y: 0),
-                                    size: self.shareMoreButton.frame.size)
-      }
-    } else {
-      self.presentViewController(activityVC, animated: true, completion: nil)
-    }
-  }
-
-  private func showFacebookShare(project project: Project) {
-    if let fbVC = SLComposeViewController.facebookShareProject(
-      project: project,
-      completionHandler: { result in
-        if result == .Done {
-          self.viewModel.inputs.shareFinishedWithShareType(UIActivityTypePostToFacebook, completed: true)
-        } else if result == .Cancelled {
-          self.viewModel.inputs.shareFinishedWithShareType(UIActivityTypePostToFacebook, completed: false)
-        }
-      }) {
-      self.presentViewController(fbVC, animated: true, completion: nil)
-    }
-  }
-
-  private func showTwitterShare(project project: Project) {
-    if let twitterVC = SLComposeViewController.twitterShareCheckout(
-      project: project,
-      completionHandler: { result in
-        if result == .Done {
-          self.viewModel.inputs.shareFinishedWithShareType(UIActivityTypePostToFacebook, completed: true)
-        } else if result == .Cancelled {
-          self.viewModel.inputs.shareFinishedWithShareType(UIActivityTypePostToFacebook, completed: false)
-        }
-      }) {
-      self.presentViewController(twitterVC, animated: true, completion: nil)
-    }
-  }
-
   private func showGamesNewsletterAlert() {
     self.presentViewController(
       UIAlertController.games(
@@ -240,6 +168,30 @@ internal final class ThanksViewController: UIViewController, UICollectionViewDel
     )
   }
 
+  private func showShareSheet(controller: UIActivityViewController) {
+    controller.completionWithItemsHandler = { [weak self] in
+      self?.shareViewModel.inputs.shareActivityCompletion(activityType: $0,
+                                                          completed: $1,
+                                                          returnedItems: $2,
+                                                          activityError: $3)
+    }
+
+    if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+      controller.modalPresentationStyle = .Popover
+      let popover = controller.popoverPresentationController
+      popover?.sourceView = self.shareMoreButton
+    }
+
+    self.presentViewController(controller, animated: true, completion: nil)
+  }
+
+  private func showShareCompose(controller: SLComposeViewController) {
+    controller.completionHandler = { [weak self] in
+      self?.shareViewModel.inputs.shareComposeCompletion(result: $0)
+    }
+    self.presentViewController(controller, animated: true, completion: nil)
+  }
+
   internal func collectionView(collectionView: UICollectionView,
                                didSelectItemAtIndexPath indexPath: NSIndexPath) {
     if let project = self.dataSource.projectAtIndexPath(indexPath) {
@@ -250,15 +202,15 @@ internal final class ThanksViewController: UIViewController, UICollectionViewDel
   }
 
   @IBAction func facebookButtonPressed(sender: AnyObject) {
-    self.viewModel.inputs.facebookButtonPressed()
+    self.shareViewModel.inputs.facebookButtonTapped()
   }
 
   @IBAction func twitterButtonPressed(sender: AnyObject) {
-    self.viewModel.inputs.twitterButtonPressed()
+    self.shareViewModel.inputs.twitterButtonTapped()
   }
 
   @IBAction func shareMoreButtonPressed(sender: AnyObject) {
-    self.viewModel.inputs.shareMoreButtonPressed()
+    self.shareViewModel.inputs.shareButtonTapped()
   }
 
   @IBAction func doneButtonPressed(sender: AnyObject) {

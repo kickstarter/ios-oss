@@ -139,8 +139,10 @@ CommentsViewModelOutputs {
 
     let initialProject = projectOrUpdate
       .flatMap { projectOrUpdate in
-        projectOrUpdate.ifLeft({ SignalProducer(value: $0) },
-          ifRight: { AppEnvironment.current.apiService.fetchProject(id: $0.projectId).demoteErrors() })
+        projectOrUpdate.ifLeft(SignalProducer.init(value:),
+          ifRight: {
+            AppEnvironment.current.apiService.fetchProject(param: .id($0.projectId)).demoteErrors()
+        })
     }
 
     let refreshedProjectOnLogin = initialProject

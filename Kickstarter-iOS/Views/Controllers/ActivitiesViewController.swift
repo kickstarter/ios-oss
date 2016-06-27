@@ -121,6 +121,12 @@ internal final class ActivitiesViewController: UITableViewController {
       .observeNext { _ in
         print("not yet implemented")
     }
+
+    self.viewModel.outputs.goToUpdate
+      .observeForUI()
+      .observeNext { [weak self] project, update in
+        self?.goToUpdate(project: project, update: update)
+    }
   }
   // swiftlint:enable function_body_length
 
@@ -174,6 +180,16 @@ internal final class ActivitiesViewController: UITableViewController {
 
     friendVC.configureWith(source: .activity)
     self.navigationController?.pushViewController(friendVC, animated: true)
+  }
+
+  private func goToUpdate(project project: Project, update: Update) {
+    guard let vc = UIStoryboard(name: "Update", bundle: nil)
+      .instantiateViewControllerWithIdentifier("UpdateViewController") as? UpdateViewController else {
+        fatalError("Could not instantiate UpdateViewController")
+    }
+
+    vc.configureWith(project: project, update: update)
+    self.navigationController?.pushViewController(vc, animated: true)
   }
 
   private func deleteFacebookSection() {

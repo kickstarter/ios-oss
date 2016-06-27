@@ -23,15 +23,6 @@ public protocol ThanksViewModelInputs {
   /// Call when project cell is pressed
   func projectPressed(project: Project)
 
-  /// Call when Facebook button is pressed
-  func facebookButtonPressed()
-
-  /// Call when Twitter button is pressed
-  func twitterButtonPressed()
-
-  /// Call when More button is pressed
-  func shareMoreButtonPressed()
-
   /// Call when signup button is pressed on games newsletter alert
   func gamesNewsletterSignupButtonPressed()
 
@@ -43,12 +34,6 @@ public protocol ThanksViewModelInputs {
 
   /// Call when "no thanks" button is pressed on rating alert
   func rateNoThanksButtonPressed()
-
-  /// Call when cancel button is pressed on share sheet
-  func cancelShareSheetButtonPressed()
-
-  /// Call when UIActivityViewController sharing completes
-  func shareFinishedWithShareType(shareType: String?, completed: Bool)
 
   /// Call when the current user has been updated in the environment
   func userUpdated()
@@ -72,15 +57,6 @@ public protocol ThanksViewModelOutputs {
 
   /// Emits when should show rating alert
   var showRatingAlert: Signal <(), NoError> { get }
-
-  /// Emits project when should show share sheet
-  var showShareSheet: Signal<Project, NoError> { get }
-
-  /// Emits project when should show Facebook share
-  var showFacebookShare: Signal<Project, NoError> { get }
-
-  /// Emits project when should show Twitter share
-  var showTwitterShare: Signal<Project, NoError> { get }
 
   /// Emits when should show games newsletter alert
   var showGamesNewsletterAlert: Signal <(), NoError> { get }
@@ -128,15 +104,6 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
 
     self.goToProject = projectPressedProperty.signal.ignoreNil()
       .map { ($0, RefTag.thanks) }
-
-    self.showShareSheet = project
-      .takeWhen(shareMoreButtonPressedProperty.signal)
-
-    self.showFacebookShare = project
-      .takeWhen(facebookButtonPressedProperty.signal)
-
-    self.showTwitterShare = project
-      .takeWhen(twitterButtonPressedProperty.signal)
 
     let shouldShowGamesAlert = project
       .map { project in
@@ -239,41 +206,6 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
       .observeNext { project in
         AppEnvironment.current.koala.trackCheckoutFinishJumpToProject(project: project)
     }
-
-    project
-      .takeWhen(self.cancelShareSheetButtonPressedProperty.signal)
-      .observeNext { project in
-        AppEnvironment.current.koala.trackCheckoutCancelShareSheet(project: project)
-    }
-
-    project
-      .takeWhen(self.showShareSheet)
-      .observeNext { project in
-        AppEnvironment.current.koala.trackCheckoutShowShareSheet(project: project)
-    }
-
-    let projectAndShareTypeAndCompleted = project
-      .takePairWhen(self.shareFinishedWithShareTypeProperty.signal)
-      .map { ($0, $1.0, $1.1) }
-
-    projectAndShareTypeAndCompleted
-      .observeNext { project, shareType, completed in
-        AppEnvironment.current.koala.trackCheckoutShowShare(project: project, shareType: shareType)
-    }
-
-    projectAndShareTypeAndCompleted
-      .filter { _, _, completed in completed }
-      .flatMap { SignalProducer(value: $0).delay(1.0, onScheduler: AppEnvironment.current.scheduler) }
-      .observeNext { project, shareType, _ in
-        AppEnvironment.current.koala.trackCheckoutShare(project: project, shareType: shareType)
-    }
-
-    projectAndShareTypeAndCompleted
-      .filter { _, _, completed in !completed }
-      .flatMap { SignalProducer(value: $0).delay(1.0, onScheduler: AppEnvironment.current.scheduler) }
-      .observeNext { project, shareType, _ in
-        AppEnvironment.current.koala.trackCheckoutCancelShare(project: project, shareType: shareType)
-    }
   }
   // swiftlint:enable function_body_length
 
@@ -307,21 +239,6 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
     projectPressedProperty.value = project
   }
 
-  private let facebookButtonPressedProperty = MutableProperty()
-  public func facebookButtonPressed() {
-    facebookButtonPressedProperty.value = ()
-  }
-
-  private let twitterButtonPressedProperty = MutableProperty()
-  public func twitterButtonPressed() {
-    twitterButtonPressedProperty.value = ()
-  }
-
-  private let shareMoreButtonPressedProperty = MutableProperty()
-  public func shareMoreButtonPressed() {
-    shareMoreButtonPressedProperty.value = ()
-  }
-
   private let gamesNewsletterSignupButtonPressedProperty = MutableProperty()
   public func gamesNewsletterSignupButtonPressed() {
     gamesNewsletterSignupButtonPressedProperty.value = ()
@@ -342,16 +259,6 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
     rateNoThanksButtonPressedProperty.value = ()
   }
 
-  private let cancelShareSheetButtonPressedProperty = MutableProperty()
-  public func cancelShareSheetButtonPressed() {
-    cancelShareSheetButtonPressedProperty.value = ()
-  }
-
-  private let shareFinishedWithShareTypeProperty = MutableProperty<(String?, Bool)>(nil, false)
-  public func shareFinishedWithShareType(shareType: String?, completed: Bool) {
-    shareFinishedWithShareTypeProperty.value = (shareType, completed)
-  }
-
   private let userUpdatedProperty = MutableProperty()
   public func userUpdated() {
     userUpdatedProperty.value = ()
@@ -364,9 +271,6 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
   public let backedProjectText: Signal<String, NoError>
   public let goToProject: Signal<(Project, RefTag), NoError>
   public let showRatingAlert: Signal<(), NoError>
-  public let showShareSheet: Signal<Project, NoError>
-  public let showTwitterShare: Signal<Project, NoError>
-  public let showFacebookShare: Signal<Project, NoError>
   public let showGamesNewsletterAlert: Signal<(), NoError>
   public let showGamesNewsletterOptInAlert: Signal<String, NoError>
   public let showRecommendations: Signal<([Project], KsApi.Category), NoError>

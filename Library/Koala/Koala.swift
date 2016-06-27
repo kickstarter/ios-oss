@@ -255,50 +255,98 @@ public final class Koala {
     self.track(event: "Update Comment View", properties: props)
   }
 
-  // MARK: Checkout Events
-  public func trackCheckoutNext() {
-    self.track(event: "Checkout Next")
+  /**
+   Call when the share sheet is shown.
+
+   - parameter shareContext: The context in which the sharing is happening.
+   */
+  public func trackShowedShareSheet(shareContext shareContext: ShareContext) {
+    let props = properties(shareContext: shareContext, loggedInUser: self.loggedInUser)
+
+    self.track(event: "Showed Share Sheet", properties: props)
+
+    // Deprecated event
+    let deprecatedEvent = shareContext.isThanksContext ? "Checkout Show Share Sheet"
+      : shareContext.update != nil ? "Update Show Share Sheet"
+      : "Project Show Share Sheet"
+    self.track(event: deprecatedEvent, properties: props.withAllValuesFrom([Koala.DeprecatedKey: true]))
   }
 
-  public func trackCheckoutCancel() {
-    self.track(event: "Checkout Cancel")
+  /**
+   Call when the share sheet is canceled.
+
+   - parameter shareContext: The context in which the sharing is happening.
+   */
+  public func trackCanceledShareSheet(shareContext shareContext: ShareContext) {
+    let props = properties(shareContext: shareContext, loggedInUser: self.loggedInUser)
+
+    self.track(event: "Canceled Share Sheet",
+               properties: props)
+
+    // Deprecated event
+    let deprecatedEvent = shareContext.isThanksContext ? "Checkout Cancel Share Sheet"
+      : shareContext.update != nil ? "Update Cancel Share Sheet"
+      : "Project Cancel Share Sheet"
+    self.track(event: deprecatedEvent, properties: props.withAllValuesFrom([Koala.DeprecatedKey: true]))
   }
 
-  public func trackCheckoutLoadFailed() {
-    self.track(event: "Checkout Page Failed")
+  /**
+   Call when a share dialog is shown. Note that this is showing the actual share dialog, and not
+   simply the share sheet.
+
+   - parameter shareContext:      The context in which the sharing is happening.
+   - parameter shareActivityType: The type of share that was shown.
+   */
+  public func trackShowedShare(shareContext shareContext: ShareContext, shareActivityType: String?) {
+    let props = properties(shareContext: shareContext,
+                                loggedInUser: self.loggedInUser,
+                                shareActivityType: shareActivityType)
+    self.track(event: "Showed Share", properties: props)
+
+    // Deprecated event
+    let deprecatedEvent = shareContext.isThanksContext ? "Checkout Show Share"
+      : shareContext.update != nil ? "Update Show Share"
+      : "Project Show Share"
+    self.track(event: deprecatedEvent, properties: props.withAllValuesFrom([Koala.DeprecatedKey: true]))
   }
 
-  public func trackCheckoutShowShareSheet(project project: Project) {
-    self.track(event: "Checkout Show Share Sheet",
-               properties: properties(project: project, loggedInUser: self.loggedInUser))
+  /**
+   Call when a share dialog is canceled. Note that this is canceling the actual share dialog, and not
+   simply the share sheet.
+
+   - parameter shareContext:      The context in which the sharing is happening.
+   - parameter shareActivityType: The type of share that was shown.
+   */
+  public func trackCanceledShare(shareContext shareContext: ShareContext, shareActivityType: String?) {
+    let props = properties(shareContext: shareContext,
+                           loggedInUser: self.loggedInUser,
+                           shareActivityType: shareActivityType)
+    self.track(event: "Canceled Share", properties: props)
+
+    // Deprecated event
+    let deprecatedEvent = shareContext.isThanksContext ? "Checkout Cancel Share"
+      : shareContext.update != nil ? "Update Cancel Share"
+      : "Project Cancel Share"
+    self.track(event: deprecatedEvent, properties: props.withAllValuesFrom([Koala.DeprecatedKey: true]))
   }
 
-  public func trackCheckoutCancelShareSheet(project project: Project) {
-    self.track(event: "Checkout Cancel Share Sheet",
-               properties: properties(project: project, loggedInUser: self.loggedInUser))
-  }
+  /**
+   Call when a share is successfully performed.
 
-  public func trackCheckoutCancelShare(project project: Project, shareType: String?) {
-    let props = properties(project: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(["share_type": shareTypeProperty(shareType)])
+   - parameter shareContext:      The context in which the sharing is happening.
+   - parameter shareActivityType: The type of share that was shown.
+   */
+  public func trackShared(shareContext shareContext: ShareContext, shareActivityType: String?) {
+    let props = properties(shareContext: shareContext,
+                           loggedInUser: self.loggedInUser,
+                           shareActivityType: shareActivityType)
+    self.track(event: "Shared", properties: props)
 
-    self.track(event: "Checkout Cancel Share", properties: props)
-  }
-
-  public func trackCheckoutShowShare(project project: Project, shareType: String?) {
-    let props = properties(project: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(["share_type": shareTypeProperty(shareType)])
-
-    self.track(event: "Checkout Show Share", properties: props)
-  }
-
-  // cancel share event
-
-  public func trackCheckoutShare(project project: Project, shareType: String?) {
-    let props = properties(project: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(["share_type": shareTypeProperty(shareType)])
-
-    self.track(event: "Checkout Share", properties: props)
+    // Deprecated event
+    let deprecatedEvent = shareContext.isThanksContext ? "Checkout Share"
+      : shareContext.update != nil ? "Update Share"
+      : "Project Share"
+    self.track(event: deprecatedEvent, properties: props.withAllValuesFrom([Koala.DeprecatedKey: true]))
   }
 
   public func trackCheckoutFinishJumpToDiscovery(project project: Project) {
@@ -648,6 +696,34 @@ private func properties(category category: KsApi.Category) -> [String:AnyObject]
     .withAllValuesFrom(parentProperties.prefixedKeys("parent_"))
 }
 
+private func properties(shareContext shareContext: ShareContext,
+                                     loggedInUser: User?,
+                                     shareActivityType: String? = nil) -> [String:AnyObject] {
+
+  var result: [String:AnyObject] = [:]
+
+  result["share_activity_type"] = shareActivityType
+  result["share_type"] = shareTypeProperty(shareActivityType)
+
+  switch shareContext {
+  case let .creatorDashboard(project):
+    result = result.withAllValuesFrom(properties(project: project, loggedInUser: loggedInUser))
+    result["context"] = "creator_dashboard"
+  case let .project(project):
+    result = result.withAllValuesFrom(properties(project: project, loggedInUser: loggedInUser))
+    result["context"] = "project"
+  case let .thanks(project):
+    result = result.withAllValuesFrom(properties(project: project, loggedInUser: loggedInUser))
+    result["context"] = "thanks"
+  case let .update(project, update):
+    result = result.withAllValuesFrom(properties(project: project, loggedInUser: loggedInUser))
+    result = result.withAllValuesFrom(properties(update: update))
+    result["context"] = "update"
+  }
+
+  return result
+}
+
 private func shareTypeProperty(shareType: String?) -> String {
   #if os(iOS)
   guard let shareType = shareType else { return "" }
@@ -664,6 +740,8 @@ private func shareTypeProperty(shareType: String?) -> String {
     return "twitter"
   } else if shareType == "com.apple.mobilenotes.SharingExtension" {
     return "notes"
+  } else if shareType == SafariActivityType {
+    return "safari"
   } else {
     return shareType
   }

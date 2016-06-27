@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <scenes>
+        <!--Update #10-->
+        <scene sceneID="UiM-e0-fW7">
+            <objects>
+                <viewController storyboardIdentifier="UpdateViewController" id="LE3-qN-nOM" customClass="UpdateViewController" customModule="Kickstarter_Framework" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="2oM-Jy-8jb"/>
+                        <viewControllerLayoutGuide type="bottom" id="TSv-Wt-dLT"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="bWE-Rh-wWj">
+                        <rect key="frame" x="0.0" y="0.0" width="400" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Update #10" id="DF0-Wc-5x6">
+                        <barButtonItem key="rightBarButtonItem" systemItem="action" id="3hg-e8-J0k" userLabel="Share">
+                            <connections>
+                                <action selector="shareButtonTapped" destination="LE3-qN-nOM" id="0EI-oM-O6k"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="400" height="600"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="73v-gm-EbG" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="586" y="414"/>
+        </scene>
+    </scenes>
+</document>

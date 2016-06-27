@@ -11,13 +11,11 @@ import Prelude
 
 final class ThanksViewModelTests: TestCase {
   let vm: ThanksViewModelType = ThanksViewModel()
+
   let backedProjectText = TestObserver<String, NoError>()
   let goToDiscovery = TestObserver<KsApi.Category, NoError>()
   let goToProject = TestObserver<Project, NoError>()
   let goToRefTag = TestObserver<RefTag, NoError>()
-  let showShareSheet = TestObserver<Project, NoError>()
-  let showFacebookShare = TestObserver<Project, NoError>()
-  let showTwitterShare = TestObserver<Project, NoError>()
   let showRatingAlert = TestObserver<(), NoError>()
   let goToAppStoreRating = TestObserver<String, NoError>()
   let showGamesNewsletterAlert = TestObserver<(), NoError>()
@@ -37,9 +35,6 @@ final class ThanksViewModelTests: TestCase {
       .observe(goToDiscovery.observer)
     vm.outputs.goToProject.map { $0.0 }.observe(goToProject.observer)
     vm.outputs.goToProject.map { $0.1 }.observe(goToRefTag.observer)
-    vm.outputs.showShareSheet.observe(showShareSheet.observer)
-    vm.outputs.showFacebookShare.observe(showFacebookShare.observer)
-    vm.outputs.showTwitterShare.observe(showTwitterShare.observer)
     vm.outputs.showRatingAlert.observe(showRatingAlert.observer)
     vm.outputs.goToAppStoreRating.observe(goToAppStoreRating.observer)
     vm.outputs.showGamesNewsletterAlert.observe(showGamesNewsletterAlert.observer)
@@ -572,106 +567,6 @@ final class ThanksViewModelTests: TestCase {
     }
   }
 
-  func testShareSheet() {
-    vm.inputs.project(.template)
-    vm.inputs.viewDidLoad()
-    vm.inputs.shareMoreButtonPressed()
-
-    showShareSheet.assertValues([.template])
-    XCTAssertEqual(["Checkout Show Share Sheet"], trackingClient.events)
-  }
-
-  func testCancelShareSheet() {
-    vm.inputs.project(.template)
-    vm.inputs.viewDidLoad()
-    vm.inputs.shareMoreButtonPressed()
-    vm.inputs.cancelShareSheetButtonPressed()
-
-    XCTAssertEqual(["Checkout Show Share Sheet", "Checkout Cancel Share Sheet"], trackingClient.events)
-  }
-
-  func testShareFacebook() {
-    let project = Project.template
-
-    vm.inputs.project(project)
-    vm.inputs.viewDidLoad()
-    vm.inputs.facebookButtonPressed()
-
-    showFacebookShare.assertValues([project], "Facebook share dialog shown.")
-    XCTAssertEqual([], trackingClient.events, "No events track yet.")
-    XCTAssertEqual([], trackingClient.properties, "NO properties track yet.")
-
-    // Cancel the share dialog.
-    self.vm.inputs.shareFinishedWithShareType(UIActivityTypePostToFacebook, completed: false)
-    self.scheduler.advanceByInterval(1.0)
-
-    showFacebookShare.assertValues([project])
-    XCTAssertEqual(["Checkout Show Share", "Checkout Cancel Share"], trackingClient.events,
-                   "Show and cancel events are tracked.")
-    XCTAssertEqual(["facebook", "facebook"], trackingClient.properties.map { $0["share_type"] as! String? },
-                   "Facebook properties are tracked.")
-
-    vm.inputs.facebookButtonPressed()
-
-    showFacebookShare.assertValues([project, project], "Facebook share dialog is shown again.")
-    XCTAssertEqual(["Checkout Show Share", "Checkout Cancel Share"], trackingClient.events,
-                   "No new events are tracked.")
-    XCTAssertEqual(["facebook", "facebook"], trackingClient.properties.map { $0["share_type"] as! String? },
-                   "No new properties are tracked.")
-
-    // Successfully share facebook.
-    self.vm.inputs.shareFinishedWithShareType(UIActivityTypePostToFacebook, completed: true)
-    self.scheduler.advanceByInterval(1.0)
-
-    XCTAssertEqual(["Checkout Show Share", "Checkout Cancel Share", "Checkout Show Share", "Checkout Share"],
-                   trackingClient.events,
-                   "Show and share events are tracked")
-    XCTAssertEqual(["facebook", "facebook", "facebook", "facebook"],
-                   trackingClient.properties.map { $0["share_type"] as! String? },
-                   "Facebook properties are tracked.")
-  }
-
-  func testShareTwitter() {
-    let project = Project.template
-
-    vm.inputs.project(project)
-    vm.inputs.viewDidLoad()
-    vm.inputs.twitterButtonPressed()
-
-    showTwitterShare.assertValues([project], "Twitter share dialog shown.")
-    XCTAssertEqual([], trackingClient.events, "No events track yet.")
-    XCTAssertEqual([], trackingClient.properties, "NO properties track yet.")
-
-    // Cancel the share dialog.
-    self.vm.inputs.shareFinishedWithShareType(UIActivityTypePostToTwitter, completed: false)
-    self.scheduler.advanceByInterval(1.0)
-
-    showTwitterShare.assertValues([project])
-    XCTAssertEqual(["Checkout Show Share", "Checkout Cancel Share"], trackingClient.events,
-                   "Show and cancel events are tracked.")
-    XCTAssertEqual(["twitter", "twitter"], trackingClient.properties.map { $0["share_type"] as! String? },
-                   "Twitter properties are tracked.")
-
-    vm.inputs.twitterButtonPressed()
-
-    showTwitterShare.assertValues([project, project], "Twitter share dialog is shown again.")
-    XCTAssertEqual(["Checkout Show Share", "Checkout Cancel Share"], trackingClient.events,
-                   "No new events are tracked.")
-    XCTAssertEqual(["twitter", "twitter"], trackingClient.properties.map { $0["share_type"] as! String? },
-                   "No new properties are tracked.")
-
-    // Successfully share twitter.
-    self.vm.inputs.shareFinishedWithShareType(UIActivityTypePostToTwitter, completed: true)
-    self.scheduler.advanceByInterval(1.0)
-
-    XCTAssertEqual(["Checkout Show Share", "Checkout Cancel Share", "Checkout Show Share", "Checkout Share"],
-                   trackingClient.events,
-                   "Show and share events are tracked")
-    XCTAssertEqual(["twitter", "twitter", "twitter", "twitter"],
-                   trackingClient.properties.map { $0["share_type"] as! String? },
-                   "Twitter properties are tracked.")
-  }
-
   func testRecommendationsWithProjects() {
     let projects = [
       .template |> Project.lens.id .~ 1,
@@ -711,49 +606,6 @@ final class ThanksViewModelTests: TestCase {
 
       showRecommendations.assertValueCount(0, "Recommended projects did not emit")
     }
-  }
-
-  func testMessagesShare() {
-    let project = Project.template
-
-    vm.inputs.project(project)
-    vm.inputs.viewDidLoad()
-    vm.inputs.shareMoreButtonPressed()
-
-    XCTAssertEqual(["Checkout Show Share Sheet"], self.trackingClient.events,
-                   "Track showing the share sheet.")
-
-    vm.inputs.cancelShareSheetButtonPressed()
-
-    XCTAssertEqual(["Checkout Show Share Sheet", "Checkout Cancel Share Sheet"], self.trackingClient.events,
-                   "Track canceling the share sheet.")
-
-    vm.inputs.shareMoreButtonPressed()
-    vm.inputs.shareFinishedWithShareType(UIActivityTypeMessage, completed: false)
-    self.scheduler.advanceByInterval(1.0)
-
-    XCTAssertEqual(
-      [ "Checkout Show Share Sheet", "Checkout Cancel Share Sheet", "Checkout Show Share Sheet",
-        "Checkout Show Share", "Checkout Cancel Share" ],
-      self.trackingClient.events,
-      "Track canceling the share sheet.")
-    XCTAssertEqual([nil, nil, nil, "message", "message"],
-                   trackingClient.properties.map { $0["share_type"] as! String? },
-                   "Message properties are tracked.")
-
-    vm.inputs.shareMoreButtonPressed()
-    vm.inputs.shareFinishedWithShareType(UIActivityTypeMessage, completed: true)
-    self.scheduler.advanceByInterval(1.0)
-
-    XCTAssertEqual(
-      [ "Checkout Show Share Sheet", "Checkout Cancel Share Sheet", "Checkout Show Share Sheet",
-        "Checkout Show Share", "Checkout Cancel Share", "Checkout Show Share Sheet", "Checkout Show Share",
-        "Checkout Share" ],
-      self.trackingClient.events,
-      "Track showing the share sheet, showing the share, and sharing.")
-    XCTAssertEqual([nil, nil, nil, "message", "message", nil, "message", "message"],
-                   trackingClient.properties.map { $0["share_type"] as! String? },
-                   "Message properties are tracked.")
   }
 
   func testFacebookIsAvailable() {

@@ -7,6 +7,7 @@ import ReactiveCocoa
 internal class TestCase: XCTestCase {
   internal static let interval = 0.001
 
+  internal let apiService = MockService()
   internal let cache = MockCache()
   internal let config = Config.config
   internal let cookieStorage = MockCookieStorage()
@@ -20,7 +21,7 @@ internal class TestCase: XCTestCase {
   override func setUp() {
     super.setUp()
     AppEnvironment.pushEnvironment(
-      apiService: MockService(),
+      apiService: self.apiService,
       apiDelayInterval: 0.0,
       assetImageGeneratorType: AVAssetImageGenerator.self,
       cache: self.cache,

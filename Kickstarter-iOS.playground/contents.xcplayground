@@ -1,7 +1,2 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<playground version='6.0' target-platform='ios'>
-    <pages>
-        <page name='01-Introduction'/>
-        <page name='ZZ-Scratch Work'/>
-    </pages>
-</playground>
+<playground version='6.0' target-platform='ios'/>
