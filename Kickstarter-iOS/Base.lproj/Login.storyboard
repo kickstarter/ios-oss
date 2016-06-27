@@ -165,7 +165,7 @@
         <!--Signup View Controller-->
         <scene sceneID="WAt-8F-NQM">
             <objects>
-                <viewController storyboardIdentifier="SignupViewController" id="NFm-bM-Ukr" customClass="SignupViewController" customModule="Kickstarter_iOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SignupViewController" id="NFm-bM-Ukr" customClass="SignupViewController" customModule="Kickstarter_Framework" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="IyL-2u-yxp"/>
                         <viewControllerLayoutGuide type="bottom" id="ZfQ-Dw-htn"/>
@@ -392,10 +392,6 @@
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" returnKeyType="next"/>
-                                                        <connections>
-                                                            <action selector="emailTextFieldChanged:" destination="i0D-IP-SOl" eventType="editingChanged" id="OJH-sW-eeV"/>
-                                                            <action selector="emailTextFieldDoneEditing:" destination="i0D-IP-SOl" eventType="editingDidEnd" id="PBb-SW-g0d"/>
-                                                        </connections>
                                                     </textField>
                                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sED-DC-oIo" userLabel="1password">
                                                         <rect key="frame" x="402" y="0.0" width="86" height="34"/>
@@ -410,10 +406,6 @@
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" secureTextEntry="YES"/>
-                                                <connections>
-                                                    <action selector="passwordTextFieldChanged:" destination="i0D-IP-SOl" eventType="editingChanged" id="h12-Tp-rEz"/>
-                                                    <action selector="passwordTextFieldDoneEditing:" destination="i0D-IP-SOl" eventType="editingDidEnd" id="8Ka-rp-m1R"/>
-                                                </connections>
                                             </textField>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -492,7 +484,7 @@
         <!--Two Factor View Controller-->
         <scene sceneID="oc3-Rh-1xA">
             <objects>
-                <viewController storyboardIdentifier="TwoFactorViewController" id="fYd-5w-f3D" customClass="TwoFactorViewController" customModule="Kickstarter_iOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TwoFactorViewController" id="fYd-5w-f3D" customClass="TwoFactorViewController" customModule="Kickstarter_Framework" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="1wG-fQ-0nY"/>
                         <viewControllerLayoutGuide type="bottom" id="ZBA-gO-pFt"/>
@@ -584,7 +576,7 @@
         <!--Reset Password View Controller-->
         <scene sceneID="peC-f0-jCm">
             <objects>
-                <viewController storyboardIdentifier="ResetPasswordViewController" id="65d-VH-Q1M" customClass="ResetPasswordViewController" customModule="Kickstarter_iOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ResetPasswordViewController" id="65d-VH-Q1M" customClass="ResetPasswordViewController" customModule="Kickstarter_Framework" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="8zw-YX-3vR"/>
                         <viewControllerLayoutGuide type="bottom" id="ytA-2h-Nc2"/>
@@ -653,7 +645,7 @@
         <!--Facebook Confirmation View Controller-->
         <scene sceneID="rtI-kv-GeR">
             <objects>
-                <viewController storyboardIdentifier="FacebookConfirmationViewController" id="rFS-aN-Jbs" customClass="FacebookConfirmationViewController" customModule="Kickstarter_iOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="FacebookConfirmationViewController" id="rFS-aN-Jbs" customClass="FacebookConfirmationViewController" customModule="Kickstarter_Framework" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="bof-ZL-VSN"/>
                         <viewControllerLayoutGuide type="bottom" id="Ej6-dO-LDf"/>

@@ -25,6 +25,19 @@ internal final class LoginViewController: UIViewController {
                                      action: #selector(onePasswordButtonTapped),
                                      forControlEvents: .TouchUpInside)
 
+    self.emailTextField.addTarget(self,
+                                  action: #selector(emailTextFieldDoneEditing),
+                                  forControlEvents: .EditingDidEndOnExit)
+    self.emailTextField.addTarget(self,
+                                  action: #selector(emailTextFieldChanged(_:)),
+                                  forControlEvents: .EditingChanged)
+    self.passwordTextField.addTarget(self,
+                                     action: #selector(passwordTextFieldDoneEditing),
+                                     forControlEvents: .EditingDidEndOnExit)
+    self.passwordTextField.addTarget(self,
+                                     action: #selector(passwordTextFieldChanged(_:)),
+                                     forControlEvents: .EditingChanged)
+
     self.viewModel.inputs.onePassword(
       isAvailable: OnePasswordExtension.sharedExtension().isAppExtensionAvailable()
     )
@@ -146,23 +159,19 @@ internal final class LoginViewController: UIViewController {
     self.viewModel.inputs.loginButtonPressed()
   }
 
-  @IBAction
-  internal func emailTextFieldChanged(textField: UITextField) {
+  @objc internal func emailTextFieldChanged(textField: UITextField) {
     self.viewModel.inputs.emailChanged(textField.text)
   }
 
-  @IBAction
-  internal func emailTextFieldDoneEditing(textField: UITextField) {
+  @objc internal func emailTextFieldDoneEditing() {
     self.viewModel.inputs.emailTextFieldDoneEditing()
   }
 
-  @IBAction
-  internal func passwordTextFieldChanged(textField: UITextField) {
+  @objc internal func passwordTextFieldChanged(textField: UITextField) {
     self.viewModel.inputs.passwordChanged(textField.text)
   }
 
-  @IBAction
-  internal func passwordTextFieldDoneEditing(textField: UITextField) {
+  @objc internal func passwordTextFieldDoneEditing() {
     self.viewModel.inputs.passwordTextFieldDoneEditing()
   }
 
