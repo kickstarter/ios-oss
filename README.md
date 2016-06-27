@@ -33,4 +33,3 @@ We make heavy use of the following projects, and so it can be helpful to be fami
 * [Argo](https://github.com/thoughtbot/Argo)
 * [ReactiveCocoa](https://github.com/ReactiveCocoa/ReactiveCocoa)
 * [AlamofireImage](https://github.com/Alamofire/AlamofireImage)
-* [Alamofire](https://github.com/Alamofire/Alamofire)
