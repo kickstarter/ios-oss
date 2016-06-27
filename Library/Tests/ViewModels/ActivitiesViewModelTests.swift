@@ -317,4 +317,20 @@ final class ActivitiesViewModelTests: TestCase {
       self.goToSurveyResponse.assertValues([surveyResponse])
     }
   }
+
+  func testSurveyClearsAfterLogOut() {
+    let surveyResponse = SurveyResponse.template
+
+    withEnvironment(apiService: MockService(fetchUnansweredSurveyResponsesResponse: [surveyResponse])) {
+      AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
+      self.vm.inputs.viewWillAppear()
+
+      self.unansweredSurveyResponse.assertValues([surveyResponse])
+
+      AppEnvironment.logout()
+      self.vm.inputs.userSessionEnded()
+
+      self.unansweredSurveyResponse.assertValues([surveyResponse, nil])
+    }
+  }
 }

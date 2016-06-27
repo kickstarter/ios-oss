@@ -204,12 +204,18 @@ ActivitiesViewModelOutputs {
         AppEnvironment.current.koala.trackCloseFindFriends(source: FriendsSource.activity)
     }
 
-    self.unansweredSurveyResponse = self.viewWillAppearProperty.signal
+    let unansweredSurveyResponse = self.viewWillAppearProperty.signal
       .switchMap {
         AppEnvironment.current.apiService.fetchUnansweredSurveyResponses()
           .demoteErrors()
       }
       .map { $0.first }
+
+    self.unansweredSurveyResponse = Signal.merge(
+      unansweredSurveyResponse,
+      self.userSessionEndedProperty.signal.mapConst(nil)
+      )
+      .skipRepeats(==)
 
     self.goToSurveyResponse = self.tappedSurveyResponseProperty.signal.ignoreNil()
 
