@@ -608,7 +608,7 @@ public final class Koala {
     props["manufacturer"] = "Apple"
     props["app_version"] = self.bundle.infoDictionary?["CFBundleVersion"]
     props["app_release"] = self.bundle.infoDictionary?["CFBundleShortVersionString"]
-    props["model"] = self.deviceModel
+    props["model"] = Koala.deviceModel
     props["os"] = self.device.systemName
     props["os_version"] = self.device.systemVersion
     props["screen_width"] = UInt(self.screen.bounds.width)
@@ -629,7 +629,7 @@ public final class Koala {
     return props
   }
 
-  private lazy var deviceModel: String? = {
+  private static let deviceModel: String? = {
     var size: Int = 0
     sysctlbyname("hw.machine", nil, &size, nil, 0)
     var machine = [CChar](count: Int(size), repeatedValue: 0)
