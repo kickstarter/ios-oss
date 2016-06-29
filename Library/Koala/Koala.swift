@@ -637,22 +637,22 @@ public final class Koala {
     return String.fromCString(machine)
   }()
 
-  private lazy var deviceFormat: String = {
+  private var deviceFormat: String {
     switch self.device.userInterfaceIdiom {
     case .Phone: return "phone"
     case .Pad:   return "tablet"
     case .TV:    return "tv"
     default:     return "unspecified"
     }
-  }()
+  }
 
-  private lazy var clientPlatform: String = {
+  private var clientPlatform: String {
     switch self.device.userInterfaceIdiom {
     case .Phone, .Pad: return "ios"
     case .TV:          return "tvos"
     default:           return "unspecified"
     }
-  }()
+  }
 }
 
 private func properties(project project: Project,
