@@ -25,6 +25,12 @@ internal final class ThanksViewController: UIViewController, UICollectionViewDel
     self.projectsCollectionView.dataSource = self.dataSource
     self.projectsCollectionView.delegate = self
 
+    self.viewModel.inputs.facebookIsAvailable(
+      SLComposeViewController.isAvailableForServiceType(SLServiceTypeFacebook)
+    )
+    self.viewModel.inputs.twitterIsAvailable(
+      SLComposeViewController.isAvailableForServiceType(SLServiceTypeTwitter)
+    )
     self.viewModel.inputs.viewDidLoad()
   }
 
@@ -32,8 +38,8 @@ internal final class ThanksViewController: UIViewController, UICollectionViewDel
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.facebookButton.rac.hidden = self.viewModel.outputs.facebookIsAvailable
-    self.twitterButton.rac.hidden = self.viewModel.outputs.twitterIsAvailable
+    self.facebookButton.rac.hidden = self.viewModel.outputs.facebookButtonIsHidden
+    self.twitterButton.rac.hidden = self.viewModel.outputs.twitterButtonIsHidden
 
     self.viewModel.outputs.backedProjectText
       .observeForUI()

@@ -1,4 +1,3 @@
-#if os(iOS)
 import XCTest
 import ReactiveCocoa
 import UIKit
@@ -24,8 +23,8 @@ final class ThanksViewModelTests: TestCase {
   let dismissViewController = TestObserver<(), NoError>()
   let postUserUpdatedNotification = TestObserver<String, NoError>()
   let updateUserInEnvironment = TestObserver<User, NoError>()
-  let facebookIsAvailable = TestObserver<Bool, NoError>()
-  let twitterIsAvailable = TestObserver<Bool, NoError>()
+  let facebookButtonIsHidden = TestObserver<Bool, NoError>()
+  let twitterButtonIsHidden = TestObserver<Bool, NoError>()
 
   override func setUp() {
     super.setUp()
@@ -44,8 +43,8 @@ final class ThanksViewModelTests: TestCase {
     vm.outputs.postUserUpdatedNotification.map { note in note.name }
       .observe(postUserUpdatedNotification.observer)
     vm.outputs.updateUserInEnvironment.observe(updateUserInEnvironment.observer)
-    vm.outputs.facebookIsAvailable.observe(facebookIsAvailable.observer)
-    vm.outputs.twitterIsAvailable.observe(twitterIsAvailable.observer)
+    vm.outputs.facebookButtonIsHidden.observe(facebookButtonIsHidden.observer)
+    vm.outputs.twitterButtonIsHidden.observe(twitterButtonIsHidden.observer)
   }
 
   func testDismissViewController() {
@@ -608,22 +607,35 @@ final class ThanksViewModelTests: TestCase {
     }
   }
 
+  func testFacebookIsNotAvailable() {
+    self.vm.inputs.project(.template)
+    self.vm.inputs.facebookIsAvailable(false)
+    self.vm.inputs.viewDidLoad()
+
+    self.facebookButtonIsHidden.assertValues([true], "Facebook button is hidden")
+  }
+
   func testFacebookIsAvailable() {
-    facebookIsAvailable.assertValueCount(0, "Facebook did not emit")
+    self.vm.inputs.project(.template)
+    self.vm.inputs.facebookIsAvailable(true)
+    self.vm.inputs.viewDidLoad()
 
-    vm.inputs.project(.template)
-    vm.inputs.viewDidLoad()
+    self.facebookButtonIsHidden.assertValues([false], "Facebook button is not hidden")
+  }
 
-    facebookIsAvailable.assertValues([false], "Facebook is unavailable")
+  func testTwitterIsNotAvailable() {
+    self.vm.inputs.project(.template)
+    self.vm.inputs.twitterIsAvailable(false)
+    self.vm.inputs.viewDidLoad()
+
+    self.twitterButtonIsHidden.assertValues([true], "Twitter button is hidden.")
   }
 
   func testTwitterIsAvailable() {
-    twitterIsAvailable.assertValueCount(0, "Twitter did not emit")
+    self.vm.inputs.project(.template)
+    self.vm.inputs.twitterIsAvailable(true)
+    self.vm.inputs.viewDidLoad()
 
-    vm.inputs.project(.template)
-    vm.inputs.viewDidLoad()
-
-    twitterIsAvailable.assertValues([false], "Facebook is unavailable")
+    self.twitterButtonIsHidden.assertValues([false], "Twitter button is not hidden.")
   }
 }
-#endif

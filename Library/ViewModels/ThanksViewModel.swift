@@ -1,11 +1,9 @@
-#if os(iOS)
 // swiftlint:disable file_length
 import KsApi
 import Prelude
 import ReactiveCocoa
 import ReactiveExtensions
 import Result
-import Social.SLComposeViewController
 
 public protocol ThanksViewModelInputs {
   /// Call when the view controller view did load
@@ -16,6 +14,10 @@ public protocol ThanksViewModelInputs {
 
   /// Call when category cell is pressed
   func categoryCellPressed(category: KsApi.Category)
+
+  /// Call with a boolean that determines if facebook is available on this device, i.e.
+  /// SLComposeViewController.isAvailableForServiceType(SLServiceTypeFacebook)
+  func facebookIsAvailable(available: Bool)
 
   /// Call to set project
   func project(project: Project)
@@ -35,6 +37,10 @@ public protocol ThanksViewModelInputs {
   /// Call when "no thanks" button is pressed on rating alert
   func rateNoThanksButtonPressed()
 
+  /// Call with a boolean that determines if twitter is available on this device, i.e.
+  /// SLComposeViewController.isAvailableForServiceType(SLServiceTypeTwitter)
+  func twitterIsAvailable(available: Bool)
+
   /// Call when the current user has been updated in the environment
   func userUpdated()
 }
@@ -51,6 +57,9 @@ public protocol ThanksViewModelOutputs {
 
   /// Emits project name to display
   var backedProjectText: Signal<String, NoError> { get }
+
+  /// Emits a bool determining whether or not the facebook button is hidden.
+  var facebookButtonIsHidden: Signal<Bool, NoError> { get }
 
   /// Emits project when should go to Project page
   var goToProject: Signal<(Project, RefTag), NoError> { get }
@@ -73,11 +82,8 @@ public protocol ThanksViewModelOutputs {
   /// Emits when a user updated notification should be posted
   var postUserUpdatedNotification: Signal<NSNotification, NoError> { get }
 
-  /// Emits a bool whether Facebook is available for sharing
-  var facebookIsAvailable: Signal<Bool, NoError> { get }
-
-  /// Emits a bool whether Twitter is available for sharing
-  var twitterIsAvailable: Signal<Bool, NoError> { get }
+  /// Emits a bool determining whether or not the twitter button is hidden.
+  var twitterButtonIsHidden: Signal<Bool, NoError> { get }
 }
 
 public protocol ThanksViewModelType {
@@ -89,12 +95,6 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
 
   // swiftlint:disable function_body_length
   public init() {
-    self.facebookIsAvailable = self.viewDidLoadProperty.signal
-      .map { SLComposeViewController.isAvailableForServiceType(SLServiceTypeFacebook) }
-
-    self.twitterIsAvailable = self.viewDidLoadProperty.signal
-      .map { SLComposeViewController.isAvailableForServiceType(SLServiceTypeTwitter) }
-
     let project = self.projectProperty.signal.ignoreNil()
 
     self.backedProjectText = project.map {
@@ -170,6 +170,9 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
     self.showGamesNewsletterAlert
       .observeNext { AppEnvironment.current.userDefaults.hasSeenGamesNewsletterPrompt = true }
 
+    self.facebookButtonIsHidden = self.facebookIsAvailableProperty.signal.map(negate)
+    self.twitterButtonIsHidden = self.twitterIsAvailableProperty.signal.map(negate)
+
     project
       .takeWhen(self.rateRemindLaterButtonPressedProperty.signal)
       .observeNext { project in
@@ -244,6 +247,11 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
     gamesNewsletterSignupButtonPressedProperty.value = ()
   }
 
+  private let facebookIsAvailableProperty = MutableProperty(false)
+  public func facebookIsAvailable(available: Bool) {
+    self.facebookIsAvailableProperty.value = available
+  }
+
   private let rateNowButtonPressedProperty = MutableProperty()
   public func rateNowButtonPressed() {
     rateNowButtonPressedProperty.value = ()
@@ -259,6 +267,11 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
     rateNoThanksButtonPressedProperty.value = ()
   }
 
+  private let twitterIsAvailableProperty = MutableProperty(false)
+  public func twitterIsAvailable(available: Bool) {
+    self.twitterIsAvailableProperty.value = available
+  }
+
   private let userUpdatedProperty = MutableProperty()
   public func userUpdated() {
     userUpdatedProperty.value = ()
@@ -269,6 +282,7 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
   public let goToDiscovery: Signal<DiscoveryParams, NoError>
   public let goToAppStoreRating: Signal<String, NoError>
   public let backedProjectText: Signal<String, NoError>
+  public let facebookButtonIsHidden: Signal<Bool, NoError>
   public let goToProject: Signal<(Project, RefTag), NoError>
   public let showRatingAlert: Signal<(), NoError>
   public let showGamesNewsletterAlert: Signal<(), NoError>
@@ -276,8 +290,7 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
   public let showRecommendations: Signal<([Project], KsApi.Category), NoError>
   public let updateUserInEnvironment: Signal<User, NoError>
   public let postUserUpdatedNotification: Signal<NSNotification, NoError>
-  public let facebookIsAvailable: Signal<Bool, NoError>
-  public let twitterIsAvailable: Signal<Bool, NoError>
+  public let twitterButtonIsHidden: Signal<Bool, NoError>
 }
 
 private func relatedProjects(toProject project: Project, inCategory category: KsApi.Category) ->
@@ -315,4 +328,3 @@ private func relatedProjects(toProject project: Project, inCategory category: Ks
       .take(3)
       .collect()
 }
-#endif
