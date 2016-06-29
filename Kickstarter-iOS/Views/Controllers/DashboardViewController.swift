@@ -100,7 +100,16 @@ internal final class DashboardViewController: UITableViewController {
   }
 
   private func goToPostUpdate(project: Project) {
-    print("Not implemented yet!")
+    guard let vc = UIStoryboard(name: "UpdateDraft", bundle: nil).instantiateInitialViewController()
+      as? UpdateDraftViewController else {
+        fatalError("Could not instantiate DraftViewController.")
+    }
+
+    vc.configureWith(project: project)
+    vc.delegate = self
+    self.presentViewController(UINavigationController(rootViewController: vc),
+                               animated: true,
+                               completion: nil)
   }
 
   private func goToProject(project: Project, refTag: RefTag) {
@@ -147,5 +156,11 @@ extension DashboardViewController: DashboardActionCellDelegate {
 
   internal func showShareSheet(cell: DashboardActionCell?, project: Project) {
     self.shareViewModel.inputs.shareButtonTapped()
+  }
+}
+
+extension DashboardViewController: UpdateDraftViewControllerDelegate {
+  func updateDraftViewControllerWantsDismissal(updateDraftViewController: UpdateDraftViewController) {
+    self.dismissViewControllerAnimated(true, completion: nil)
   }
 }

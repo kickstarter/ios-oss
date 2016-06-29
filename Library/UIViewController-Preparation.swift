@@ -1,5 +1,7 @@
-import UIKit
 import ObjectiveC
+import UIKit
+import Prelude
+import Prelude_UIKit
 
 extension UIViewController {
   public override class func initialize() {

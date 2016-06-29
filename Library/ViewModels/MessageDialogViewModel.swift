@@ -60,7 +60,7 @@ MessageDialogViewModelOutputs {
     let isLoading = MutableProperty(false)
 
     let bodyIsPresent = self.bodyTextChangedProperty.signal.ignoreNil()
-      .map { !$0.stringByTrimmingCharactersInSet(.whitespaceCharacterSet()).characters.isEmpty }
+      .map { !$0.trimmed().isEmpty }
       .skipRepeats()
 
     self.postButtonEnabled = Signal.merge(

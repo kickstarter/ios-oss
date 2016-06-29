@@ -281,8 +281,6 @@ public struct AppEnvironment {
     ]
 
     userDefaults.setObject(data.compact(), forKey: environmentStorageKey)
-    userDefaults.synchronize()
     ubiquitousStore.setObject(env.apiService.oauthToken?.token, forKey: oauthTokenStorageKey)
-    ubiquitousStore.synchronize()
   }
 }

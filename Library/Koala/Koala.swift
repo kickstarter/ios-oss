@@ -527,6 +527,73 @@ public final class Koala {
     self.track(event: "Facebook Friend Unfollow", properties: ["source": source.trackingString])
   }
 
+  // MARK: Update Draft Events
+
+  public enum AttachmentOrigin: String {
+    case camera = "camera"
+    case cameraRoll = "camera_roll"
+  }
+
+  public func trackViewedUpdateDraft(forProject project: Project) {
+    self.track(event: "Viewed Draft", properties: updateDraftProperties(project: project))
+  }
+
+  public func trackClosedUpdateDraft(forProject project: Project) {
+    self.track(event: "Closed Draft", properties: updateDraftProperties(project: project))
+  }
+
+  public func trackEditedUpdateDraftTitle(forProject project: Project) {
+    self.track(event: "Edited Title", properties: updateDraftProperties(project: project))
+  }
+
+  public func trackEditedUpdateDraftBody(forProject project: Project) {
+    self.track(event: "Edited Body", properties: updateDraftProperties(project: project))
+  }
+
+  public func trackStartedAddUpdateDraftAttachment(forProject project: Project) {
+    self.track(event: "Started Add Attachment", properties: updateDraftProperties(project: project))
+  }
+
+  public func trackCompletedAddUpdateDraftAttachment(forProject project: Project,
+                                                           attachedFrom origin: AttachmentOrigin) {
+    var props = updateDraftProperties(project: project)
+    props["type"] = origin.rawValue
+    self.track(event: "Completed Add Attachment", properties: props)
+  }
+
+  public func trackCanceledAddUpdateDraftAttachment(forProject project: Project) {
+    self.track(event: "Canceled Add Attachment", properties: updateDraftProperties(project: project))
+  }
+
+  public func trackChangedUpdateDraftVisibility(forProject project: Project, isPublic: Bool) {
+    var props = properties(project: project, loggedInUser: self.loggedInUser)
+    props["type"] = isPublic ? "public" : "backers_only"
+    self.track(event: "Changed Visibility", properties: props)
+  }
+
+  public func trackPreviewedUpdate(forProject project: Project) {
+    var props = updateDraftProperties(project: project)
+    self.track(event: "Previewed Update", properties: props)
+
+    props[Koala.DeprecatedKey] = true
+    self.track(event: "Update Preview", properties: props)
+  }
+
+  public func trackPublishedUpdate(forProject project: Project, isPublic: Bool) {
+    var props = updateDraftProperties(project: project)
+    props["type"] = isPublic ? "public" : "backers_only"
+    self.track(event: "Published Update", properties: props)
+
+    props[Koala.DeprecatedKey] = true
+    self.track(event: "Update Published", properties: props)
+  }
+
+  private func updateDraftProperties(project project: Project) -> [String: AnyObject] {
+    var props = properties(project: project, loggedInUser: self.loggedInUser)
+    props["context"] = "update_draft"
+    return props
+  }
+
   // Private tracking method that merges in default properties.
   private func track(event event: String, properties: [String:AnyObject] = [:]) {
     self.client.track(

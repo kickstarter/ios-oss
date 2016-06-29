@@ -137,7 +137,7 @@ AppDelegateViewModelOutputs {
 
 private func startHockeyManager(hockeyManager: HockeyManagerType) {
   guard let identifier = hockeyManager.appIdentifier()
-    where !identifier.characters.isEmpty else {
+    where !identifier.isEmpty else {
       print("HockeyApp not initialized: could not find appIdentifier. This most likely means that " +
         "the hockeyapp.config file could not be found.")
       return

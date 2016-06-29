@@ -69,6 +69,6 @@ final class LoginViewModel: LoginViewModelInputs, LoginViewModelOutputs, LoginVi
   }
 
   private func isValid(email: String, password: String) -> Bool {
-    return email.characters.count > 5 && !password.characters.isEmpty
+    return email.characters.count > 5 && !password.isEmpty
   }
 }

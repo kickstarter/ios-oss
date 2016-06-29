@@ -8,15 +8,15 @@ internal enum AppKeys: String {
 }
 
 public protocol KeyValueStoreType: class {
+  func setBool(bool: Bool, forKey key: String)
   func setObject(object: AnyObject?, forKey key: String)
 
+  func boolForKey(key: String) -> Bool
+  func dictionaryForKey(key: String) -> [String:AnyObject]?
   func objectForKey(key: String) -> AnyObject?
   func stringForKey(key: String) -> String?
-  func dictionaryForKey(key: String) -> [String:AnyObject]?
 
   func removeObjectForKey(key: String)
-
-  func synchronize() -> Bool
 
   var hasClosedFacebookConnectInActivity: Bool { get set }
   var hasClosedFindFriendsInActivity: Bool { get set }
@@ -45,19 +45,19 @@ extension KeyValueStoreType {
 
   public var hasSeenAppRating: Bool {
     get {
-      return self.objectForKey(AppKeys.SeenAppRating.rawValue) as? Bool ?? false
+      return self.boolForKey(AppKeys.SeenAppRating.rawValue)
     }
     set {
-      self.setObject(newValue, forKey: AppKeys.SeenAppRating.rawValue)
+      self.setBool(newValue, forKey: AppKeys.SeenAppRating.rawValue)
     }
   }
 
   public var hasSeenGamesNewsletterPrompt: Bool {
     get {
-      return self.objectForKey(AppKeys.SeenGamesNewsletter.rawValue) as? Bool ?? false
+      return self.boolForKey(AppKeys.SeenGamesNewsletter.rawValue)
     }
     set {
-      self.setObject(newValue, forKey: AppKeys.SeenGamesNewsletter.rawValue)
+      self.setBool(newValue, forKey: AppKeys.SeenGamesNewsletter.rawValue)
     }
   }
 }
@@ -71,8 +71,16 @@ extension NSUbiquitousKeyValueStore: KeyValueStoreType {
 internal class MockKeyValueStore: KeyValueStoreType {
   var store: [String:AnyObject] = [:]
 
+  func setBool(bool: Bool, forKey key: String) {
+    self.store[key] = bool
+  }
+
   func setObject(object: AnyObject?, forKey key: String) {
     self.store[key] = object
+  }
+
+  func boolForKey(key: String) -> Bool {
+    return self.store[key] as? Bool ?? false
   }
 
   func objectForKey(key: String) -> AnyObject? {
@@ -89,9 +97,5 @@ internal class MockKeyValueStore: KeyValueStoreType {
 
   func removeObjectForKey(key: String) {
     self.setObject(nil, forKey: key)
-  }
-
-  func synchronize() -> Bool {
-    return true
   }
 }

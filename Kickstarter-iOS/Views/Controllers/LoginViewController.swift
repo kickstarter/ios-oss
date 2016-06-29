@@ -61,7 +61,7 @@ internal final class LoginViewController: UIViewController {
     self.passwordTextField |> passwordFieldStyle
       <> UITextField.lens.returnKeyType .~ .Go
 
-    self.formDividerView |> UIView.lens.backgroundColor .~ .ksr_gray
+    self.formDividerView |> separatorStyle
 
     self.formBackgroundView |> cardStyle()
 

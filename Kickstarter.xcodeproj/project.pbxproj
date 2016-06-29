@@ -114,6 +114,10 @@
 		59B0E07F1D147F340081D2DC /* DashboardStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B0E07D1D147F340081D2DC /* DashboardStyles.swift */; };
 		59B6B70A1CCEBC1000953319 /* ProfileProjectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B6B7091CCEBC1000953319 /* ProfileProjectCell.swift */; };
 		59B6B70B1CCEBC1000953319 /* ProfileProjectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B6B7091CCEBC1000953319 /* ProfileProjectCell.swift */; };
+		8016BFE81D0F582D00067956 /* String+Whitespace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8016BFE71D0F582D00067956 /* String+Whitespace.swift */; };
+		8016BFE91D0F582D00067956 /* String+Whitespace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8016BFE71D0F582D00067956 /* String+Whitespace.swift */; };
+		803BDF741D11AF7C004A785A /* UpdateDraftViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803BDF731D11AF7C004A785A /* UpdateDraftViewController.swift */; };
+		803BDFA61D11B0DF004A785A /* UpdateDraft.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 803BDFA51D11B0DF004A785A /* UpdateDraft.storyboard */; };
 		59D1E6251D1865AC00896A4C /* DashboardVideoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D1E6241D1865AC00896A4C /* DashboardVideoCell.swift */; };
 		59D1E6261D1865AC00896A4C /* DashboardVideoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D1E6241D1865AC00896A4C /* DashboardVideoCell.swift */; };
 		59D1E6581D1866F800896A4C /* DashboardVideoCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D1E6571D1866F800896A4C /* DashboardVideoCellViewModel.swift */; };
@@ -128,6 +132,10 @@
 		80762E471D071D610074189D /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 80762E391D071BFE0074189D /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		80762E4A1D071D740074189D /* AlamofireImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80762DFB1D071BCF0074189D /* AlamofireImage.framework */; };
 		80762E4B1D071D740074189D /* AlamofireImage.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 80762DFB1D071BCF0074189D /* AlamofireImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		8078D0B31D0F08B1001CFF87 /* UpdateDraftViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8078D0B21D0F08B1001CFF87 /* UpdateDraftViewModelTests.swift */; };
+		8078D0B41D0F08B1001CFF87 /* UpdateDraftViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8078D0B21D0F08B1001CFF87 /* UpdateDraftViewModelTests.swift */; };
+		809F8B661D08B4FF005BADD9 /* UpdateDraftViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809F8B651D08B4FF005BADD9 /* UpdateDraftViewModel.swift */; };
+		809F8B971D08B505005BADD9 /* UpdateDraftViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809F8B651D08B4FF005BADD9 /* UpdateDraftViewModel.swift */; };
 		80FE733A1C88F3D400BE0137 /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7B694301C87A07100C49A4F /* HockeySDK.framework */; };
 		9D14FF5B1D132F86005F4ABB /* ProjectActivity.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9D14FF5A1D132F86005F4ABB /* ProjectActivity.storyboard */; };
 		9D14FF8D1D133351005F4ABB /* ProjectActivityBackingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D9F57CB1D131AF200CE81DE /* ProjectActivityBackingCell.swift */; };
@@ -1465,12 +1473,17 @@
 		59B0E00B1D12144A0081D2DC /* DashboardActionCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardActionCellViewModelTests.swift; sourceTree = "<group>"; };
 		59B0E07D1D147F340081D2DC /* DashboardStyles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardStyles.swift; sourceTree = "<group>"; };
 		59B6B7091CCEBC1000953319 /* ProfileProjectCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileProjectCell.swift; sourceTree = "<group>"; };
+		8016BFE71D0F582D00067956 /* String+Whitespace.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Whitespace.swift"; sourceTree = "<group>"; };
 		59D1E6241D1865AC00896A4C /* DashboardVideoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardVideoCell.swift; sourceTree = "<group>"; };
 		59D1E6571D1866F800896A4C /* DashboardVideoCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardVideoCellViewModel.swift; sourceTree = "<group>"; };
 		59D1E6731D18968300896A4C /* DashboardVideoCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardVideoCellViewModelTests.swift; sourceTree = "<group>"; };
 		802800571C88F64D00141235 /* Base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Base.xcconfig; path = Configs/Base.xcconfig; sourceTree = "<group>"; };
+		803BDF731D11AF7C004A785A /* UpdateDraftViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateDraftViewController.swift; sourceTree = "<group>"; };
+		803BDFA51D11B0DF004A785A /* UpdateDraft.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = UpdateDraft.storyboard; sourceTree = "<group>"; };
 		80762DE71D071BCF0074189D /* AlamofireImage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AlamofireImage.xcodeproj; path = Frameworks/AlamofireImage/AlamofireImage.xcodeproj; sourceTree = "<group>"; };
 		80762E261D071BFE0074189D /* Alamofire.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Alamofire.xcodeproj; path = Frameworks/AlamofireImage/Carthage/Checkouts/Alamofire/Alamofire.xcodeproj; sourceTree = "<group>"; };
+		8078D0B21D0F08B1001CFF87 /* UpdateDraftViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateDraftViewModelTests.swift; sourceTree = "<group>"; };
+		809F8B651D08B4FF005BADD9 /* UpdateDraftViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateDraftViewModel.swift; sourceTree = "<group>"; };
 		9D14FF5A1D132F86005F4ABB /* ProjectActivity.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ProjectActivity.storyboard; sourceTree = "<group>"; };
 		9D14FFC51D135C12005F4ABB /* ProjectActivityUpdateCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectActivityUpdateCellViewModel.swift; sourceTree = "<group>"; };
 		9D14FFF91D135E4F005F4ABB /* ProjectActivityUpdateCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectActivityUpdateCellViewModelTests.swift; sourceTree = "<group>"; };
@@ -2175,6 +2188,7 @@
 				A72C3AA51D00F7A30075227E /* SortPagerViewController.swift */,
 				0148EF8F1CDD2879000DEFF8 /* ThanksViewController.swift */,
 				01DEFB941CB44A5D003709C0 /* TwoFactorViewController.swift */,
+				803BDF731D11AF7C004A785A /* UpdateDraftViewController.swift */,
 				A731BF8B1D1EE44E00A734AC /* UpdateViewController.swift */,
 			);
 			path = Controllers;
@@ -2330,6 +2344,7 @@
 				A72C3A9B1D00F6E60075227E /* SortPagerViewModelTests.swift */,
 				A7830CF61D005C3F00B5B6AE /* ThanksViewModelTests.swift */,
 				A7830CF71D005C3F00B5B6AE /* TwoFactorViewModelTests.swift */,
+				8078D0B21D0F08B1001CFF87 /* UpdateDraftViewModelTests.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -2479,6 +2494,7 @@
 				A75C81251D210F1F00B5AD03 /* ShareContext.swift */,
 				A7C725921C85D36D005A016B /* String+SimpleHTML.swift */,
 				A79BF81E1D11F6AF004C0445 /* Strings.swift */,
+				8016BFE71D0F582D00067956 /* String+Whitespace.swift */,
 				0151AEB01C8F6FD80067F1BE /* StyledLabel.swift */,
 				0151AEAD1C8F61870067F1BE /* Styles.swift */,
 				017E88B91CD2A609003FE5D6 /* UIActivityViewController.swift */,
@@ -2561,6 +2577,7 @@
 				A7FC8C261C8F2DCF00C3B49B /* Project.storyboard */,
 				A775B5551CA886DD00BBB587 /* Search.storyboard */,
 				A7D1F98F1C850CB2000D41D5 /* Tests */,
+				803BDFA51D11B0DF004A785A /* UpdateDraft.storyboard */,
 				A751A51A1C85EAD8009C5DEA /* ViewModels */,
 				A751A51B1C85EAD8009C5DEA /* Views */,
 			);
@@ -2886,6 +2903,8 @@
 				A72C3A921D00F6C70075227E /* SortPagerViewModel.swift */,
 				A7F441AB1D005A9400FE6FC5 /* ThanksViewModel.swift */,
 				A7F441AC1D005A9400FE6FC5 /* TwoFactorViewModel.swift */,
+				809F8B651D08B4FF005BADD9 /* UpdateDraftViewModel.swift */,
+				A757EAEF1D1ABE7400A5C978 /* ActivitySurveyResponseCellViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -3708,6 +3727,7 @@
 				A731BF951D1EE9E000A734AC /* Update.storyboard in Resources */,
 				A7D1F9541C850B7C000D41D5 /* LaunchScreen.storyboard in Resources */,
 				A721DF801C8D1F3C000CB97C /* koala-endpoint.config in Resources */,
+				803BDFA61D11B0DF004A785A /* UpdateDraft.storyboard in Resources */,
 				A7D1F9511C850B7C000D41D5 /* Assets.xcassets in Resources */,
 				0159B3A21D01FFEE00ACCE2A /* Friends.storyboard in Resources */,
 				A7FC8C0E1C8F2D6300C3B49B /* Discovery.storyboard in Resources */,
@@ -3781,6 +3801,7 @@
 				A73378FE1D0AE36400C91445 /* LoginStyles.swift in Sources */,
 				0154A93B1CA1A17800DB9BA4 /* UIColor.swift in Sources */,
 				A7F441CD1D005A9400FE6FC5 /* MessagesViewModel.swift in Sources */,
+				809F8B661D08B4FF005BADD9 /* UpdateDraftViewModel.swift in Sources */,
 				A760780A1CAEE0A6001B39D0 /* IsValidEmail.swift in Sources */,
 				A755115B1C8642C3005355CF /* AppEnvironment.swift in Sources */,
 				A7F441AD1D005A9400FE6FC5 /* ActivitiesViewModel.swift in Sources */,
@@ -3813,6 +3834,7 @@
 				A72C3A931D00F6C70075227E /* DiscoveryFiltersViewModel.swift in Sources */,
 				A76126B71C90C94000EDCCB9 /* UICollectionView-Extensions.swift in Sources */,
 				A73379481D0E36CA00C91445 /* Fonts.swift in Sources */,
+				8016BFE81D0F582D00067956 /* String+Whitespace.swift in Sources */,
 				A76126AD1C90C94000EDCCB9 /* ValueCellDataSource.swift in Sources */,
 				A72C3A301D00F28C0075227E /* SettingsViewModel.swift in Sources */,
 				59B0E0061D1207070081D2DC /* DashboardActionCellViewModel.swift in Sources */,
@@ -3954,6 +3976,7 @@
 				59B0E0001D11EAC70081D2DC /* DashboardViewModelTests.swift in Sources */,
 				597073901D061AAD00B00444 /* SettingsViewModelTests.swift in Sources */,
 				A75511991C8645A0005355CF /* LocalizedStringTests.swift in Sources */,
+				8078D0B31D0F08B1001CFF87 /* UpdateDraftViewModelTests.swift in Sources */,
 				A75511951C8645A0005355CF /* EnvironmentTests.swift in Sources */,
 				A72C3A9E1D00F6E60075227E /* DiscoveryPageViewModelTests.swift in Sources */,
 				A7830D141D005C3F00B5B6AE /* MessageThreadCellViewModelTests.swift in Sources */,
@@ -3994,6 +4017,7 @@
 				A7F441BE1D005A9400FE6FC5 /* CommentsViewModel.swift in Sources */,
 				A7F441E81D005A9400FE6FC5 /* ThanksViewModel.swift in Sources */,
 				A7F441DA1D005A9400FE6FC5 /* ProjectMainCellViewModel.swift in Sources */,
+				8016BFE91D0F582D00067956 /* String+Whitespace.swift in Sources */,
 				A75C81181D210BD700B5AD03 /* ShareViewModel.swift in Sources */,
 				01B6ABBE1CA1E01E003DB4C8 /* UIColor.swift in Sources */,
 				A7CC13D61D00E6CF00035C52 /* FindFriendsFriendFollowCellViewModel.swift in Sources */,
@@ -4023,6 +4047,7 @@
 				A76126B41C90C94000EDCCB9 /* SimpleDataSource.swift in Sources */,
 				A75511B11C8647D9005355CF /* GradientView.swift in Sources */,
 				A7CC14661D00E81B00035C52 /* FriendsSource.swift in Sources */,
+				809F8B971D08B505005BADD9 /* UpdateDraftViewModel.swift in Sources */,
 				A75511B21C8647D9005355CF /* Language.swift in Sources */,
 				A70968C71D14366D00DB39D3 /* BaseStyles.swift in Sources */,
 				597073B51D07294500B00444 /* ProjectNotificationCellViewModel.swift in Sources */,
@@ -4178,6 +4203,7 @@
 				A7830D131D005C3F00B5B6AE /* MessagesViewModelTests.swift in Sources */,
 				0156B4311D11A062000C4252 /* AlertError+Equatable.swift in Sources */,
 				A7830D211D005C3F00B5B6AE /* ProjectRewardCellViewModelTests.swift in Sources */,
+				8078D0B41D0F08B1001CFF87 /* UpdateDraftViewModelTests.swift in Sources */,
 				A7830D251D005C3F00B5B6AE /* ResetPasswordViewModelTests.swift in Sources */,
 				9D14FFFB1D135E4F005F4ABB /* ProjectActivityUpdateCellViewModelTests.swift in Sources */,
 				A7830D2B1D005C3F00B5B6AE /* ThanksViewModelTests.swift in Sources */,
@@ -4398,6 +4424,8 @@
 				599603D31CE5220900E1B1EC /* ProfileEmptyStateCell.swift in Sources */,
 				A731BF8C1D1EE44E00A734AC /* UpdateViewController.swift in Sources */,
 				A7FC8C511C8F442D00C3B49B /* ProjectRewardCell.swift in Sources */,
+				A7CC145E1D00E79200035C52 /* UIActivityViewController.swift in Sources */,
+				803BDF741D11AF7C004A785A /* UpdateDraftViewController.swift in Sources */,
 				A715ACC21CE7ED3600605F02 /* ActivityNegativeStateChangeCell.swift in Sources */,
 				A72C3AB61D00FB1F0075227E /* DiscoveryExpandedSelectableRow.swift in Sources */,
 				59B6B70A1CCEBC1000953319 /* ProfileProjectCell.swift in Sources */,

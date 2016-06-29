@@ -42,10 +42,14 @@ public func cardStyle <V: UIViewProtocol> (cornerRadius radius: CGFloat = defaul
 public let formFieldStyle =
   UITextField.lens.font .~ .ksr_body
     <> UITextField.lens.textColor .~ .ksr_textDefault
+    <> UITextField.lens.backgroundColor .~ .clearColor()
     <> UITextField.lens.borderStyle .~ .None
     <> UITextField.lens.autocapitalizationType .~ .None
     <> UITextField.lens.autocorrectionType .~ .No
     <> UITextField.lens.spellCheckingType .~ .No
+
+public let separatorStyle =
+  UIView.lens.backgroundColor .~ .ksr_gray
 
 /**
  - parameter radius: The corner radius. This parameter is optional, and will use a default value if omitted.

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="16A201w" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="enk-Bj-wRz">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <scenes>
+        <!--Update Draft View Controller-->
+        <scene sceneID="fVN-YM-qq8">
+            <objects>
+                <viewController id="enk-Bj-wRz" customClass="UpdateDraftViewController" customModule="Kickstarter_iOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="aGn-og-lv1"/>
+                        <viewControllerLayoutGuide type="bottom" id="dhv-hE-ULX"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Qh4-E7-eka">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="RRj-ll-JYp">
+                                <rect key="frame" x="20" y="20" width="560" height="580"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LQD-Qe-Uqa">
+                                        <rect key="frame" x="0.0" y="0.0" width="560" height="54"/>
+                                        <subviews>
+                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="SuR-v0-uET">
+                                                <rect key="frame" x="0.0" y="12" width="560" height="30"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <textInputTraits key="textInputTraits"/>
+                                                <connections>
+                                                    <action selector="titleTextFieldDidChange" destination="enk-Bj-wRz" eventType="editingChanged" id="ACH-XW-qPk"/>
+                                                    <action selector="titleTextFieldDoneEditing" destination="enk-Bj-wRz" eventType="editingDidEndOnExit" id="QsO-0B-PVp"/>
+                                                </connections>
+                                            </textField>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="SuR-v0-uET" secondAttribute="trailing" id="90g-lD-4fe"/>
+                                            <constraint firstItem="SuR-v0-uET" firstAttribute="top" secondItem="LQD-Qe-Uqa" secondAttribute="top" constant="12" id="FcQ-Ea-W9b"/>
+                                            <constraint firstItem="SuR-v0-uET" firstAttribute="leading" secondItem="LQD-Qe-Uqa" secondAttribute="leading" id="IIt-dl-ZoZ"/>
+                                            <constraint firstAttribute="bottom" secondItem="SuR-v0-uET" secondAttribute="bottom" constant="12" id="Ihf-19-bBE"/>
+                                        </constraints>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lef-E0-yvK">
+                                        <rect key="frame" x="0.0" y="54" width="560" height="1"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="1" id="Pw1-SZ-H9d"/>
+                                        </constraints>
+                                    </view>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="3c8-1W-jnG">
+                                        <rect key="frame" x="0.0" y="55" width="560" height="30"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pqp-68-JTU">
+                                                <rect key="frame" x="0.0" y="0.0" width="280" height="30"/>
+                                                <state key="normal" title="Public"/>
+                                                <connections>
+                                                    <action selector="isBackersOnlyButtonTapped" destination="enk-Bj-wRz" eventType="touchUpInside" id="6Tl-JN-G8h"/>
+                                                </connections>
+                                            </button>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="bottom" translatesAutoresizingMaskIntoConstraints="NO" id="4jR-2d-dXa">
+                                                <rect key="frame" x="280" y="0.0" width="280" height="30"/>
+                                                <subviews>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yts-sR-fEC">
+                                                        <rect key="frame" x="280" y="0.0" width="0.0" height="0.0"/>
+                                                    </stackView>
+                                                    <button opaque="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Etj-IK-pOh">
+                                                        <rect key="frame" x="170" y="0.0" width="110" height="30"/>
+                                                        <state key="normal" title="Add attachment"/>
+                                                        <connections>
+                                                            <action selector="addAttachmentButtonTapped" destination="enk-Bj-wRz" eventType="touchUpInside" id="0Ob-wA-qGa"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
+                                            </stackView>
+                                        </subviews>
+                                    </stackView>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QLs-Jb-Qmx">
+                                        <rect key="frame" x="0.0" y="85" width="560" height="1"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="1" id="Bkz-AB-BEF"/>
+                                        </constraints>
+                                    </view>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="jMl-AV-rWl">
+                                        <rect key="frame" x="0.0" y="86" width="560" height="494"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="enk-Bj-wRz" id="Vpz-nF-RZH"/>
+                                        </connections>
+                                    </textView>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="lef-E0-yvK" secondAttribute="trailing" id="4tX-VF-AfA"/>
+                            <constraint firstItem="RRj-ll-JYp" firstAttribute="leading" secondItem="Qh4-E7-eka" secondAttribute="leadingMargin" id="IA5-wl-Nqc"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="RRj-ll-JYp" secondAttribute="trailing" id="dmW-AP-7ht"/>
+                            <constraint firstItem="dhv-hE-ULX" firstAttribute="top" secondItem="RRj-ll-JYp" secondAttribute="bottom" id="ezV-FL-Yk7"/>
+                            <constraint firstItem="RRj-ll-JYp" firstAttribute="top" secondItem="aGn-og-lv1" secondAttribute="bottom" id="nuC-Q6-seg"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="Ghc-4p-HFR">
+                        <barButtonItem key="leftBarButtonItem" title="Close" id="PiR-CP-hwu">
+                            <connections>
+                                <action selector="closeButtonTapped" destination="enk-Bj-wRz" id="7Sf-99-srd"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Preview" id="kgZ-DA-Ker">
+                            <connections>
+                                <action selector="previewButtonTapped" destination="enk-Bj-wRz" id="3nH-yC-PAL"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="addAttachmentButton" destination="Etj-IK-pOh" id="dyD-ox-Alz"/>
+                        <outlet property="attachmentsStackView" destination="yts-sR-fEC" id="RXq-hM-os4"/>
+                        <outlet property="bodyTextView" destination="jMl-AV-rWl" id="gtp-Wq-0xJ"/>
+                        <outlet property="bottomConstraint" destination="ezV-FL-Yk7" id="762-et-rF9"/>
+                        <outlet property="bottomSeparatorView" destination="QLs-Jb-Qmx" id="YFw-Y3-e5U"/>
+                        <outlet property="isBackersOnlyButton" destination="Pqp-68-JTU" id="2O1-h0-0Hc"/>
+                        <outlet property="previewButton" destination="kgZ-DA-Ker" id="crB-sY-tKu"/>
+                        <outlet property="titleTextField" destination="SuR-v0-uET" id="gmx-Ys-Gfb"/>
+                        <outlet property="topSeparatorView" destination="lef-E0-yvK" id="GN8-kc-8xI"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xga-Rj-xaq" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="731" y="460"/>
+        </scene>
+    </scenes>
+</document>
