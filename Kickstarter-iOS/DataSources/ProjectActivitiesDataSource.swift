@@ -37,7 +37,7 @@ internal final class ProjectActivitiesDataSource: ValueCellDataSource {
         self.appendRow(value: activity, cellClass: ProjectActivitySuccessCell.self, toSection: section)
       case .update:
         self.appendRow(value: activity, cellClass: ProjectActivityUpdateCell.self, toSection: section)
-      case .backingDropped, .follow, .funding, .watch:
+      case .backingDropped, .follow, .funding, .watch, .unknown:
         assertionFailure("Unsupported activity: \(activity)")
       }
 
