@@ -22,7 +22,7 @@ internal final class ProjectActivitiesDataSource: ValueCellDataSource {
 
     activities.forEach { activity in
       switch activity.category {
-      case .backing, .backingAmount, .backingCanceled, .backingDropped, .backingReward:
+      case .backing, .backingAmount, .backingCanceled, .backingReward:
         self.appendRow(value: activity, cellClass: ProjectActivityBackingCell.self, toSection: section)
       case .cancellation, .failure, .suspension:
         self.appendRow(
@@ -37,7 +37,7 @@ internal final class ProjectActivitiesDataSource: ValueCellDataSource {
         self.appendRow(value: activity, cellClass: ProjectActivitySuccessCell.self, toSection: section)
       case .update:
         self.appendRow(value: activity, cellClass: ProjectActivityUpdateCell.self, toSection: section)
-      default:
+      case .backingDropped, .follow, .funding, .watch:
         assertionFailure("Unsupported activity: \(activity)")
       }
 

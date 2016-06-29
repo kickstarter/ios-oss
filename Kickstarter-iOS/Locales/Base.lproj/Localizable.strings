@@ -23,10 +23,14 @@
 "activity.creator.actions.user_name_commented_on_your_project" = "%{user_name} commented on your project:";
 "activity.creator.actions.user_name_pledged" = "%{user_name} pledged:";
 "activity.creator.actions.user_name_posted_update_number" = "%{user_name} posted Update #%{update_number}:";
+"activity.creator.actions.you_adjusted_your_pledge" = "You adjusted your pledge:";
+"activity.creator.actions.you_canceled_your_pledge" = "You canceled your pledge:";
+"activity.creator.actions.you_changed_your_reward" = "You changed your reward:";
 "activity.creator.actions.you_commented_on_update_number" = "You commented on Update #%{update_number}:";
 "activity.creator.actions.you_commented_on_update_number_pronoun" = "You";
 "activity.creator.actions.you_commented_on_your_project" = "You commented on your project:";
 "activity.creator.actions.you_commented_on_your_project_pronoun" = "You";
+"activity.creator.actions.you_pledged" = "You pledged:";
 "activity.creator.actions.you_posted_update_number" = "You posted Update #%{update_number}:";
 "activity.creator.actions.you_posted_update_number_pronoun" = "You";
 "activity.creator.buttons.backing_info" = "Backing info";

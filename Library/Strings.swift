@@ -437,6 +437,57 @@ public enum Strings {
     )
   }
   /**
+   "You adjusted your pledge:"
+
+   - **es**: "You adjusted your pledge:"
+   - **de**: "You adjusted your pledge:"
+   - **fr**: "You adjusted your pledge:"
+   - **it**: "You adjusted your pledge:"
+   - **en**: "You adjusted your pledge:"
+  */
+  public static func activity_creator_actions_you_adjusted_your_pledge() -> String {
+    return localizedString(
+      key: "activity.creator.actions.you_adjusted_your_pledge",
+      defaultValue: "You adjusted your pledge:",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "You canceled your pledge:"
+
+   - **es**: "You canceled your pledge:"
+   - **de**: "You canceled your pledge:"
+   - **fr**: "You canceled your pledge:"
+   - **it**: "You canceled your pledge:"
+   - **en**: "You canceled your pledge:"
+  */
+  public static func activity_creator_actions_you_canceled_your_pledge() -> String {
+    return localizedString(
+      key: "activity.creator.actions.you_canceled_your_pledge",
+      defaultValue: "You canceled your pledge:",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "You changed your reward:"
+
+   - **es**: "You changed your reward:"
+   - **de**: "You changed your reward:"
+   - **fr**: "You changed your reward:"
+   - **it**: "You changed your reward:"
+   - **en**: "You changed your reward:"
+  */
+  public static func activity_creator_actions_you_changed_your_reward() -> String {
+    return localizedString(
+      key: "activity.creator.actions.you_changed_your_reward",
+      defaultValue: "You changed your reward:",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "You commented on Update #%{update_number}:"
 
    - **es**: "Tu comentario sobre actualización n° %{update_number}:"
@@ -500,6 +551,23 @@ public enum Strings {
     return localizedString(
       key: "activity.creator.actions.you_commented_on_your_project_pronoun",
       defaultValue: "You",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "You pledged:"
+
+   - **es**: "You pledged:"
+   - **de**: "You pledged:"
+   - **fr**: "You pledged:"
+   - **it**: "You pledged:"
+   - **en**: "You pledged:"
+  */
+  public static func activity_creator_actions_you_pledged() -> String {
+    return localizedString(
+      key: "activity.creator.actions.you_pledged",
+      defaultValue: "You pledged:",
       count: nil,
       substitutions: [:]
     )
