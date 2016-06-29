@@ -1,3 +1,4 @@
+import Argo
 import KsApi
 import Library
 import Prelude
@@ -48,10 +49,8 @@ internal final class UpdateViewModel: UpdateViewModelType, UpdateViewModelInputs
       .map { AppEnvironment.current.apiService.preparedRequest(forURL: $0) }
 
     let anotherUpdateLoadRequest = self.policyForNavigationActionProperty.signal.ignoreNil()
-      .filter { $0.navigationType == .LinkActivated && isUpdate(request: $0.request) }
-      .map { $0.request.URL }
-      .ignoreNil()
-      .map { AppEnvironment.current.apiService.preparedRequest(forURL: $0) }
+      .filter { $0.navigationType == .LinkActivated && Router.decodeUpdate(request: $0.request) != nil }
+      .map { AppEnvironment.current.apiService.preparedRequest(forRequest: $0.request) }
 
     self.webViewLoadRequest = Signal.merge(
       initialUpdateLoadRequest,
@@ -59,10 +58,11 @@ internal final class UpdateViewModel: UpdateViewModelType, UpdateViewModelInputs
     )
 
     let anotherUpdate = anotherUpdateLoadRequest
-      .filter(isUpdate(request:))
-      .map(updateParams(fromRequest:))
-      .switchMap { updateId, projectParam in
-        return AppEnvironment.current.apiService.fetchUpdate(updateId: updateId, projectParam: projectParam)
+      .map { Router.decodeUpdate(request: $0) }
+      .ignoreNil()
+      .switchMap { updateRoute in
+        return AppEnvironment.current.apiService
+          .fetchUpdate(updateId: updateRoute.updateId, projectParam: updateRoute.projectParam)
           .demoteErrors()
     }
 
@@ -76,27 +76,34 @@ internal final class UpdateViewModel: UpdateViewModelType, UpdateViewModelInputs
       .map { $0.navigationType == .Other ? .Allow : .Cancel }
 
     let commentsRequest = self.policyForNavigationActionProperty.signal.ignoreNil()
-      .filter { $0.navigationType == .LinkActivated && isComments(request: $0.request) }
+      .filter { $0.navigationType == .LinkActivated }
+      .filter { Router.decodeUpdateComments(request: $0.request) != nil }
 
     self.goToComments = currentUpdate
       .takeWhen(commentsRequest)
 
-    let projectRequest = self.policyForNavigationActionProperty.signal.ignoreNil()
-      .filter { $0.navigationType == .LinkActivated && isProject(request: $0.request) }
-      .map { $0.request }
+    let projectRoute = self.policyForNavigationActionProperty.signal.ignoreNil()
+      .filter { $0.navigationType == .LinkActivated }
+      .map { Router.decodeProject(request: $0.request) }
+      .ignoreNil()
 
-    self.goToProject = combineLatest(
-      projectRequest.map(projectParam(fromRequest:)),
-      projectProperty.signal.ignoreNil()
-      )
-      .switchMap { (param, project) -> SignalProducer<Project, NoError> in
-        if param.id == project.id || param.slug == project.slug {
-          return SignalProducer(value: project)
+    self.goToProject = self.projectProperty.signal.ignoreNil()
+      .takePairWhen(projectRoute)
+      .switchMap { (project, projectRoute) -> SignalProducer<(Project, RefTag?), NoError> in
+
+        let producer: SignalProducer<Project, NoError>
+
+        if projectRoute.projectParam == .id(project.id) ||
+          projectRoute.projectParam == .slug(project.slug) {
+
+          producer = SignalProducer(value: project)
+        } else {
+          producer = AppEnvironment.current.apiService.fetchProject(param: projectRoute.projectParam)
+            .demoteErrors()
         }
-        return AppEnvironment.current.apiService.fetchProject(param: param)
-          .demoteErrors()
+
+        return producer.map { ($0, projectRoute.refTag) }
       }
-      .map { ($0, nil) }
   }
   // swiftlint:enable function_body_length
 
@@ -127,39 +134,4 @@ internal final class UpdateViewModel: UpdateViewModelType, UpdateViewModelInputs
 
   internal var inputs: UpdateViewModelInputs { return self }
   internal var outputs: UpdateViewModelOutputs { return self }
-}
-
-private func isComments(request request: NSURLRequest) -> Bool {
-  return request.URL?.absoluteString.containsString("/comments") == true
-}
-
-private func isUpdate(request request: NSURLRequest) -> Bool {
-  let path = request.URL?.path ?? ""
-  let regex = try? NSRegularExpression(pattern: "^/projects/[a-zA-Z0-9_-]*/[a-zA-Z0-9_-]*/posts/[0-9]*$",
-                                       options: [])
-  let range = NSRange(location: 0, length: path.characters.count)
-  return regex?.firstMatchInString(path, options: [], range: range) != nil
-}
-
-private func isProject(request request: NSURLRequest) -> Bool {
-  let path = request.URL?.path ?? ""
-  let regex = try? NSRegularExpression(pattern: "^/projects/[a-zA-Z0-9_-]*/[a-zA-Z0-9_-]*$", options: [])
-  let range = NSRange(location: 0, length: path.characters.count)
-  return regex?.firstMatchInString(path, options: [], range: range) != nil
-}
-
-private func projectParam(fromRequest request: NSURLRequest) -> Param {
-
-  let slug = request.URL?.path?
-    .componentsSeparatedByString("/")
-    .last ?? ""
-  return .slug(slug)
-}
-
-private func updateParams(fromRequest request: NSURLRequest) -> (updateId: Int, projectParam: Param) {
-
-  let components = request.URL?.path?
-    .componentsSeparatedByString("/") ?? []
-  let (projectComponent, updateComponent) = (components[3], components[5])
-  return (Int(updateComponent) ?? 0, .slug(projectComponent))
 }

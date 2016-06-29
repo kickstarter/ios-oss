@@ -1,3 +1,4 @@
+import Argo
 import KsApi
 
 public enum RefTag {
@@ -144,5 +145,16 @@ private func sortRefTagSuffix(sort: DiscoveryParams.Sort) -> String {
     return "_newest"
   case .Popular:
     return "_popular"
+  }
+}
+
+extension RefTag: Decodable {
+  public static func decode(json: JSON) -> Decoded<RefTag> {
+    switch json {
+    case let .String(code):
+      return .Success(RefTag(code: code))
+    default:
+      return .Failure(.Custom("RefTag code must be a string."))
+    }
   }
 }

@@ -26,8 +26,6 @@
 		0151AEBA1C8F811C0067F1BE /* BorderButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0151AEB91C8F811C0067F1BE /* BorderButton.swift */; };
 		0151AEBB1C8F811C0067F1BE /* BorderButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0151AEB91C8F811C0067F1BE /* BorderButton.swift */; };
 		0154A93B1CA1A17800DB9BA4 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0151AE871C8F60370067F1BE /* UIColor.swift */; };
-		0156B1101D06239F000C4252 /* CacheProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0156B10F1D06239F000C4252 /* CacheProtocol.swift */; };
-		0156B1AB1D0728A0000C4252 /* CacheProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0156B1A91D0728A0000C4252 /* CacheProtocol.swift */; };
 		0156B1AF1D072CD1000C4252 /* CacheProtocolTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0156B1AC1D072CB8000C4252 /* CacheProtocolTests.swift */; };
 		0156B1B01D072CD1000C4252 /* CacheProtocolTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0156B1AC1D072CB8000C4252 /* CacheProtocolTests.swift */; };
 		0156B1FC1D074285000C4252 /* ActivityFriendFollowCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0156B1FB1D074285000C4252 /* ActivityFriendFollowCellViewModelTests.swift */; };
@@ -220,6 +218,10 @@
 		A715ACF11CE7F3D300605F02 /* ActivityLaunchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A715ACEF1CE7F3D300605F02 /* ActivityLaunchCell.swift */; };
 		A7180BA91CCED598001711CA /* CommentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7180BA81CCED598001711CA /* CommentsViewController.swift */; };
 		A7180BAA1CCED598001711CA /* CommentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7180BA81CCED598001711CA /* CommentsViewController.swift */; };
+		A71F59E51D240CAF00909BE3 /* RouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71F59E41D240CAF00909BE3 /* RouterTests.swift */; };
+		A71F59E61D240CAF00909BE3 /* RouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71F59E41D240CAF00909BE3 /* RouterTests.swift */; };
+		A71F59E81D2424CA00909BE3 /* CacheProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71F59E71D2424CA00909BE3 /* CacheProtocol.swift */; };
+		A71F59E91D2424CA00909BE3 /* CacheProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71F59E71D2424CA00909BE3 /* CacheProtocol.swift */; };
 		A7208C3E1CCAC86800E3DAB3 /* FacebookAppDelegateProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7208C3D1CCAC86800E3DAB3 /* FacebookAppDelegateProtocol.swift */; };
 		A7208C3F1CCAC86800E3DAB3 /* FacebookAppDelegateProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7208C3D1CCAC86800E3DAB3 /* FacebookAppDelegateProtocol.swift */; };
 		A7208C951CCBD76300E3DAB3 /* ActivityEmptyStateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7208C941CCBD76300E3DAB3 /* ActivityEmptyStateCell.swift */; };
@@ -310,6 +312,8 @@
 		A734A2651D219CB00080BBD5 /* UpdateViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A734A2641D219CB00080BBD5 /* UpdateViewModelTests.swift */; };
 		A734A2671D21A1790080BBD5 /* WKNavigationActionProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A734A2661D21A1790080BBD5 /* WKNavigationActionProtocol.swift */; };
 		A734A2681D21A1790080BBD5 /* WKNavigationActionProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A734A2661D21A1790080BBD5 /* WKNavigationActionProtocol.swift */; };
+		A734A3A21D22BADF0080BBD5 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = A734A3A11D22BADF0080BBD5 /* Router.swift */; };
+		A734A3A31D22BADF0080BBD5 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = A734A3A11D22BADF0080BBD5 /* Router.swift */; };
 		A745D0211CA897FF00C12802 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A745D0201CA897FF00C12802 /* SearchViewController.swift */; };
 		A745D0221CA897FF00C12802 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A745D0201CA897FF00C12802 /* SearchViewController.swift */; };
 		A745D0471CA8985B00C12802 /* DashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A745D0461CA8985B00C12802 /* DashboardViewController.swift */; };
@@ -1432,8 +1436,6 @@
 		0151AEAD1C8F61870067F1BE /* Styles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Styles.swift; sourceTree = "<group>"; };
 		0151AEB01C8F6FD80067F1BE /* StyledLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyledLabel.swift; sourceTree = "<group>"; };
 		0151AEB91C8F811C0067F1BE /* BorderButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BorderButton.swift; sourceTree = "<group>"; };
-		0156B10F1D06239F000C4252 /* CacheProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CacheProtocol.swift; sourceTree = "<group>"; };
-		0156B1A91D0728A0000C4252 /* CacheProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CacheProtocol.swift; sourceTree = "<group>"; };
 		0156B1AC1D072CB8000C4252 /* CacheProtocolTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CacheProtocolTests.swift; sourceTree = "<group>"; };
 		0156B1FB1D074285000C4252 /* ActivityFriendFollowCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityFriendFollowCellViewModelTests.swift; sourceTree = "<group>"; };
 		0156B3841D107273000C4252 /* FindFriendsDataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindFriendsDataSourceTests.swift; sourceTree = "<group>"; };
@@ -1526,6 +1528,8 @@
 		A715ACC11CE7ED3600605F02 /* ActivityNegativeStateChangeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityNegativeStateChangeCell.swift; sourceTree = "<group>"; };
 		A715ACEF1CE7F3D300605F02 /* ActivityLaunchCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityLaunchCell.swift; sourceTree = "<group>"; };
 		A7180BA81CCED598001711CA /* CommentsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsViewController.swift; sourceTree = "<group>"; };
+		A71F59E41D240CAF00909BE3 /* RouterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouterTests.swift; sourceTree = "<group>"; };
+		A71F59E71D2424CA00909BE3 /* CacheProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CacheProtocol.swift; sourceTree = "<group>"; };
 		A7208C3D1CCAC86800E3DAB3 /* FacebookAppDelegateProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookAppDelegateProtocol.swift; sourceTree = "<group>"; };
 		A7208C941CCBD76300E3DAB3 /* ActivityEmptyStateCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityEmptyStateCell.swift; sourceTree = "<group>"; };
 		A7208CC31CCBDA7900E3DAB3 /* ActivitiesDataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivitiesDataSourceTests.swift; sourceTree = "<group>"; };
@@ -1572,6 +1576,7 @@
 		A733795F1D0EDFEE00C91445 /* UIViewController-Preparation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController-Preparation.swift"; sourceTree = "<group>"; };
 		A734A2641D219CB00080BBD5 /* UpdateViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateViewModelTests.swift; sourceTree = "<group>"; };
 		A734A2661D21A1790080BBD5 /* WKNavigationActionProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WKNavigationActionProtocol.swift; sourceTree = "<group>"; };
+		A734A3A11D22BADF0080BBD5 /* Router.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		A745D0201CA897FF00C12802 /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		A745D0461CA8985B00C12802 /* DashboardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardViewController.swift; sourceTree = "<group>"; };
 		A745D0491CA8986E00C12802 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
@@ -2117,8 +2122,6 @@
 			isa = PBXGroup;
 			children = (
 				A7208C941CCBD76300E3DAB3 /* ActivityEmptyStateCell.swift */,
-				59B0DFFC1D11B2E50081D2DC /* DashboardContextCell.swift */,
-				59B0E0021D1203970081D2DC /* DashboardActionCell.swift */,
 				59D1E6241D1865AC00896A4C /* DashboardVideoCell.swift */,
 				A75AB2241C8B407F002FC3E6 /* ActivityFriendBackingCell.swift */,
 				A762EFF11C8CC663005581A4 /* ActivityFriendFollowCell.swift */,
@@ -2215,6 +2218,7 @@
 				A755118E1C8645A0005355CF /* LocalizedStringTests.swift */,
 				A77D7B341CBAC5F90077586B /* PaginateTests.swift */,
 				A7DC83981C9DBEFA00BB2B44 /* RefTagTests.swift */,
+				A71F59E41D240CAF00909BE3 /* RouterTests.swift */,
 				A755118F1C8645A0005355CF /* String+SimpleHTMLTests.swift */,
 				01EFBCAE1C92036E0094EEC2 /* StyledLabelTests.swift */,
 				01EFBCB51C921EA20094EEC2 /* StylesTests.swift */,
@@ -2300,9 +2304,6 @@
 			isa = PBXGroup;
 			children = (
 				A7830CDD1D005C3F00B5B6AE /* ActivitiesViewModelTests.swift */,
-				59B0DFFF1D11EAC70081D2DC /* DashboardViewModelTests.swift */,
-				59B0E0081D12142B0081D2DC /* DashboardContextCellViewModelTests.swift */,
-				59B0E00B1D12144A0081D2DC /* DashboardActionCellViewModelTests.swift */,
 				59D1E6731D18968300896A4C /* DashboardVideoCellViewModelTests.swift */,
 				0156B1FB1D074285000C4252 /* ActivityFriendFollowCellViewModelTests.swift */,
 				A7830CDF1D005C3F00B5B6AE /* BackingCellViewModelTests.swift */,
@@ -2472,7 +2473,7 @@
 				A7C725791C85D36D005A016B /* AssetImageGeneratorType.swift */,
 				A7C7257A1C85D36D005A016B /* AVPlayerView.swift */,
 				0151AEB91C8F811C0067F1BE /* BorderButton.swift */,
-				0156B10F1D06239F000C4252 /* CacheProtocol.swift */,
+				A71F59E71D2424CA00909BE3 /* CacheProtocol.swift */,
 				A7FC8C051C8F1DEA00C3B49B /* CircleAvatarImageView.swift */,
 				A7D121081D15B08200F364FD /* CountBadgeView.swift */,
 				A7C7257F1C85D36D005A016B /* Environment.swift */,
@@ -2496,6 +2497,7 @@
 				A77D7B061CBAAF5D0077586B /* Paginate.swift */,
 				A75C811A1D210C4700B5AD03 /* ProjectActivityItemProvider.swift */,
 				A7DC83951C9DBBE700BB2B44 /* RefTag.swift */,
+				A734A3A11D22BADF0080BBD5 /* Router.swift */,
 				A75C81191D210C4700B5AD03 /* SafariActivity.swift */,
 				A72C3A8B1D00F6A80075227E /* SelectableRow.swift */,
 				A75C81251D210F1F00B5AD03 /* ShareContext.swift */,
@@ -2519,13 +2521,12 @@
 				01A7A4BF1C9690220036E553 /* UITextField+LocalizedPlaceholderKey.swift */,
 				A733795F1D0EDFEE00C91445 /* UIViewController-Preparation.swift */,
 				A75C811B1D210C4700B5AD03 /* UpdateActivityItemProvider.swift */,
+				A734A2661D21A1790080BBD5 /* WKNavigationActionProtocol.swift */,
 				A7C725851C85D36D005A016B /* DataSource */,
 				A721DF3D1C8CF4F6000CB97C /* Koala */,
 				A73378F91D0AE33B00C91445 /* Styles */,
 				A75511881C8645A0005355CF /* Tests */,
 				A7F4418D1D005A9400FE6FC5 /* ViewModels */,
-				0156B1A91D0728A0000C4252 /* CacheProtocol.swift */,
-				A734A2661D21A1790080BBD5 /* WKNavigationActionProtocol.swift */,
 			);
 			path = Library;
 			sourceTree = "<group>";
@@ -2854,10 +2855,7 @@
 			isa = PBXGroup;
 			children = (
 				A7F4418E1D005A9400FE6FC5 /* ActivitiesViewModel.swift */,
-				59B0DFF91D11B0A20081D2DC /* DashboardContextCellViewModel.swift */,
-				59B0E0051D1207070081D2DC /* DashboardActionCellViewModel.swift */,
 				59D1E6571D1866F800896A4C /* DashboardVideoCellViewModel.swift */,
-				59B0DFF61D11AEF10081D2DC /* DashboardViewModel.swift */,
 				A7F4418F1D005A9400FE6FC5 /* ActivityFriendBackingViewModel.swift */,
 				A7F441901D005A9400FE6FC5 /* ActivityFriendFollowCellViewModel.swift */,
 				A7F441911D005A9400FE6FC5 /* ActivitySuccessViewModel.swift */,
@@ -3823,12 +3821,12 @@
 				A78537BC1CB5416700385B73 /* UIDeviceType.swift in Sources */,
 				A755115E1C8642C3005355CF /* Environment.swift in Sources */,
 				A7F441D11D005A9400FE6FC5 /* MessageThreadsViewModel.swift in Sources */,
+				A71F59E81D2424CA00909BE3 /* CacheProtocol.swift in Sources */,
 				A757EB2B1D1AD89E00A5C978 /* DiscoveryStyles.swift in Sources */,
 				A707BAD61CFFAB9400653B2F /* HelpType.swift in Sources */,
 				A755115F1C8642C3005355CF /* Format.swift in Sources */,
 				A76126B31C90C94000EDCCB9 /* SimpleDataSource.swift in Sources */,
 				A7D121091D15B08200F364FD /* CountBadgeView.swift in Sources */,
-				0156B1101D06239F000C4252 /* CacheProtocol.swift in Sources */,
 				A73379601D0EDFEE00C91445 /* UIViewController-Preparation.swift in Sources */,
 				A72C3A951D00F6C70075227E /* DiscoveryPageViewModel.swift in Sources */,
 				A7F441C71D005A9400FE6FC5 /* MessageCellViewModel.swift in Sources */,
@@ -3849,6 +3847,7 @@
 				A75511631C8642C3005355CF /* LocalizedString.swift in Sources */,
 				A7F441E11D005A9400FE6FC5 /* ResetPasswordViewModel.swift in Sources */,
 				A734A2671D21A1790080BBD5 /* WKNavigationActionProtocol.swift in Sources */,
+				A734A3A21D22BADF0080BBD5 /* Router.swift in Sources */,
 				017E88BA1CD2A609003FE5D6 /* UIActivityViewController.swift in Sources */,
 				9D8772131D19E84E003A4E96 /* ProjectActivityLaunchCellViewModel.swift in Sources */,
 				A7F441CF1D005A9400FE6FC5 /* MessageThreadCellViewModel.swift in Sources */,
@@ -3948,6 +3947,7 @@
 				A761275E1C93052400EDCCB9 /* CGColorRef.swift in Sources */,
 				A755119C1C8645A0005355CF /* UILabel+IBClearTests.swift in Sources */,
 				A7830CFE1D005C3F00B5B6AE /* CommentCellViewModelTests.swift in Sources */,
+				A71F59E51D240CAF00909BE3 /* RouterTests.swift in Sources */,
 				A755119A1C8645A0005355CF /* String+SimpleHTMLTests.swift in Sources */,
 				A7830D0A1D005C3F00B5B6AE /* LoginViewModelTests.swift in Sources */,
 				A7CC142A1D00E70900035C52 /* FindFriendsFaceookConnectCellViewModelTests.swift in Sources */,
@@ -4040,6 +4040,7 @@
 				A7F441AE1D005A9400FE6FC5 /* ActivitiesViewModel.swift in Sources */,
 				9D9F581C1D1324E300CE81DE /* DashboardViewModel.swift in Sources */,
 				A7CC13D81D00E6CF00035C52 /* FindFriendsHeaderCellViewModel.swift in Sources */,
+				A734A3A31D22BADF0080BBD5 /* Router.swift in Sources */,
 				A75CFB091CCE7FCF004CD5FA /* StaticTableViewCell.swift in Sources */,
 				A70968C51D14366D00DB39D3 /* LoginStyles.swift in Sources */,
 				A72C3A8F1D00F6A80075227E /* SelectableRow.swift in Sources */,
@@ -4063,7 +4064,7 @@
 				597073B51D07294500B00444 /* ProjectNotificationCellViewModel.swift in Sources */,
 				A7F441E01D005A9400FE6FC5 /* ProjectViewModel.swift in Sources */,
 				A75511B31C8647D9005355CF /* LaunchedCountries.swift in Sources */,
-				0156B1AB1D0728A0000C4252 /* CacheProtocol.swift in Sources */,
+				A71F59E91D2424CA00909BE3 /* CacheProtocol.swift in Sources */,
 				A76126B81C90C94000EDCCB9 /* UICollectionView-Extensions.swift in Sources */,
 				A76126AE1C90C94000EDCCB9 /* ValueCellDataSource.swift in Sources */,
 				59B0E0071D1207070081D2DC /* DashboardActionCellViewModel.swift in Sources */,
@@ -4181,6 +4182,7 @@
 				A7830D291D005C3F00B5B6AE /* SearchViewModelTests.swift in Sources */,
 				A7830D171D005C3F00B5B6AE /* MessageThreadsViewModelTests.swift in Sources */,
 				59B0E00A1D12142B0081D2DC /* DashboardContextCellViewModelTests.swift in Sources */,
+				A71F59E61D240CAF00909BE3 /* RouterTests.swift in Sources */,
 				A7830D2D1D005C3F00B5B6AE /* TwoFactorViewModelTests.swift in Sources */,
 				9DC204ED1D1B5039003C1636 /* ProjectActivityNegativeStateChangeCellViewModelTests.swift in Sources */,
 				01EFBCB01C92036E0094EEC2 /* StyledLabelTests.swift in Sources */,

@@ -106,6 +106,7 @@ final class UpdateViewModelTests: TestCase {
       XCTAssertEqual(WKNavigationActionPolicy.Cancel.rawValue, policy.rawValue)
 
       self.goToProject.assertValues([anotherProject])
+      self.goToComments.assertValueCount(0)
     }
 
     self.webViewLoadRequest.assertValues(
