@@ -152,7 +152,7 @@ ProjectViewModelOutputs {
       .takeWhen(self.commentsButtonPressedProperty.signal)
 
     let cookieRefTag = combineLatest(
-      self.project.map(refTagFor(project:)),
+      self.project.map(cookieRefTagFor(project:)),
       self.refTagProperty.signal
       )
       .take(1)
@@ -181,7 +181,7 @@ private let cookieSeparator = Character("?")
 
 // Extracts the ref tag stored in cookies for a particular project. Returns `nil` if no such cookie has
 // been previously set.
-private func refTagFor(project project: Project) -> RefTag? {
+private func cookieRefTagFor(project project: Project) -> RefTag? {
 
   return AppEnvironment.current.cookieStorage.cookies?
     .filter { cookie in cookie.name == cookieName(project) }

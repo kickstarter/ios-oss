@@ -136,13 +136,20 @@ internal final class ProjectViewModelTests: TestCase {
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: User.template))
 
     vm.inputs.project(
-      Project.template |> Project.lens.dates.deadline .~ NSDate().timeIntervalSince1970 - 60.0 * 60.0 * 24.0
+      Project.template
+        |> Project.lens.dates.deadline .~ (NSDate().timeIntervalSince1970 + 60.0 * 60.0 * 24.0)
     )
     vm.inputs.refTag(nil)
     vm.inputs.viewWillAppear()
     vm.inputs.starButtonTapped()
 
-    XCTAssertEqual(["Project Page", "Project Star"], trackingClient.events, "A star koala event is tracked.")
+    self.showProjectStarredPrompt.assertValueCount(
+      0, "The star prompt doesn't show cause it's less than 48hrs."
+    )
+
+    XCTAssertEqual(["Project Page", "Project Star"],
+                   self.trackingClient.events,
+                   "A star koala event is tracked.")
   }
 
   // Tests a user unstarring a project.
