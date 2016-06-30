@@ -27,10 +27,8 @@ internal final class ProjectActivitiesDataSource: ValueCellDataSource {
       case .cancellation, .failure, .suspension:
         self.appendRow(
           value: activity, cellClass: ProjectActivityNegativeStateChangeCell.self, toSection: section)
-      case .commentPost:
-        self.appendRow(value: activity, cellClass: ProjectActivityUpdateCommentCell.self, toSection: section)
-      case .commentProject:
-        self.appendRow(value: activity, cellClass: ProjectActivityProjectCommentCell.self, toSection: section)
+      case .commentPost, .commentProject:
+        self.appendRow(value: activity, cellClass: ProjectActivityCommentCell.self, toSection: section)
       case .launch:
         self.appendRow(value: activity, cellClass: ProjectActivityLaunchCell.self, toSection: section)
       case .success:
@@ -50,19 +48,17 @@ internal final class ProjectActivitiesDataSource: ValueCellDataSource {
     switch (cell, value) {
     case let (cell as ProjectActivityBackingCell, activity as Activity):
       cell.configureWith(value: activity)
+    case let (cell as ProjectActivityCommentCell, activity as Activity):
+      cell.configureWith(value: activity)
     case let (cell as ProjectActivityEmptyStateCell, value as Void):
       cell.configureWith(value: value)
     case let (cell as ProjectActivityLaunchCell, activity as Activity):
       cell.configureWith(value: activity)
     case let (cell as ProjectActivityNegativeStateChangeCell, activity as Activity):
       cell.configureWith(value: activity)
-    case let (cell as ProjectActivityProjectCommentCell, activity as Activity):
-      cell.configureWith(value: activity)
     case let (cell as ProjectActivitySuccessCell, activity as Activity):
       cell.configureWith(value: activity)
     case let (cell as ProjectActivityUpdateCell, activity as Activity):
-      cell.configureWith(value: activity)
-    case let (cell as ProjectActivityUpdateCommentCell, activity as Activity):
       cell.configureWith(value: activity)
     case (is StaticTableViewCell, is Void):
       return
