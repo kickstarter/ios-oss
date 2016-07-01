@@ -61,10 +61,7 @@ MessagesSearchViewModelOutputs {
     let clears = query.map(const([MessageThread]()))
 
     let searchResults = query
-      .switchMap {
-        SignalProducer(value: $0)
-          .debounce(AppEnvironment.current.debounceInterval, onScheduler: AppEnvironment.current.scheduler)
-      }
+      .ksr_debounce(AppEnvironment.current.debounceInterval, onScheduler: AppEnvironment.current.scheduler)
       .skipRepeats()
       .filter { !$0.isEmpty }
       .combineLatestWith(project)

@@ -28,21 +28,6 @@ public protocol SearchViewModelType {
 
 public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, SearchViewModelOutputs {
 
-  private let viewDidAppearProperty = MutableProperty()
-  public func viewDidAppear() {
-    self.viewDidAppearProperty.value = ()
-  }
-  private let searchTextChangedProperty = MutableProperty("")
-  public func searchTextChanged(searchText: String) {
-    self.searchTextChangedProperty.value = searchText
-  }
-
-  public let projects: Signal<[Project], NoError>
-  public let isPopularTitleVisible: Signal<Bool, NoError>
-
-  public var inputs: SearchViewModelInputs { return self }
-  public var outputs: SearchViewModelOutputs { return self }
-
   public init() {
     let query = Signal.merge([
       self.searchTextChangedProperty.signal,
@@ -62,17 +47,15 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
     }
 
     let searchResults = query
-      .switchMap { q in SignalProducer(value: q)
-        .debounce(AppEnvironment.current.debounceInterval, onScheduler: AppEnvironment.current.scheduler)
-        .skipRepeats()
-        .filter { !$0.isEmpty }
-        .map { DiscoveryParams.defaults |> DiscoveryParams.lens.query .~ $0 }
-        .switchMap { params in
-          AppEnvironment.current.apiService.fetchDiscovery(params: params)
-            .map { $0.projects }
-            .demoteErrors()
-            .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
-        }
+      .ksr_debounce(AppEnvironment.current.debounceInterval, onScheduler: AppEnvironment.current.scheduler)
+      .skipRepeats()
+      .filter { !$0.isEmpty }
+      .map { DiscoveryParams.defaults |> DiscoveryParams.lens.query .~ $0 }
+      .switchMap { params in
+        AppEnvironment.current.apiService.fetchDiscovery(params: params)
+          .map { $0.projects }
+          .demoteErrors()
+          .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
     }
 
     self.projects = Signal.merge([clears, popular, searchResults])
@@ -91,4 +74,19 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       .takeWhen(searchResults)
       .observeNext { AppEnvironment.current.koala.trackSearchResults(query: $0, pageCount: 1) }
   }
+
+  private let viewDidAppearProperty = MutableProperty()
+  public func viewDidAppear() {
+    self.viewDidAppearProperty.value = ()
+  }
+  private let searchTextChangedProperty = MutableProperty("")
+  public func searchTextChanged(searchText: String) {
+    self.searchTextChangedProperty.value = searchText
+  }
+
+  public let projects: Signal<[Project], NoError>
+  public let isPopularTitleVisible: Signal<Bool, NoError>
+
+  public var inputs: SearchViewModelInputs { return self }
+  public var outputs: SearchViewModelOutputs { return self }
 }

@@ -10,12 +10,10 @@ import Result
 
 // swiftlint:disable function_body_length
 final class SearchViewModelTests: TestCase {
-  var vm: SearchViewModelType!
+  let vm: SearchViewModelType! = SearchViewModel()
 
   // Tests a standard flow of searching for projects.
   func testFlow() {
-    self.vm = SearchViewModel()
-
     let hasProjects = TestObserver<Bool, NoError>()
     vm.outputs.projects.map { !$0.isEmpty }.observe(hasProjects.observer)
 
@@ -72,8 +70,6 @@ final class SearchViewModelTests: TestCase {
   // projects to get mixed up.
   func testOrderingOfPopularAndDelayedSearches() {
     withEnvironment(debounceInterval: TestCase.interval) {
-      self.vm = SearchViewModel()
-
       let projects = TestObserver<[Int], NoError>()
       vm.outputs.projects.map { $0.map { $0.id } }.observe(projects.observer)
       let hasProjects = TestObserver<Bool, NoError>()
@@ -109,19 +105,21 @@ final class SearchViewModelTests: TestCase {
     }
   }
 
+
   // Confirms that entering new search terms cancels previously in-flight API requests for projects,
   // and that ultimately only one set of projects is returned.
   func testCancelingOfSearchResultsWhenEnteringNewSearchTerms() {
-    withEnvironment(apiDelayInterval: TestCase.interval, debounceInterval: TestCase.interval) {
-      self.vm = SearchViewModel()
+    let apiDelay = 2.0
+    let debounceDelay = 1.0
 
+    withEnvironment(apiDelayInterval: apiDelay, debounceInterval: debounceDelay) {
       let projects = TestObserver<[Int], NoError>()
       vm.outputs.projects.map { $0.map { $0.id } }.observe(projects.observer)
       let hasProjects = TestObserver<Bool, NoError>()
       vm.outputs.projects.map { !$0.isEmpty }.observe(hasProjects.observer)
 
       vm.inputs.viewDidAppear()
-      scheduler.advanceByInterval(TestCase.interval)
+      scheduler.advanceByInterval(apiDelay)
 
       hasProjects.assertValues([true], "Popular projects load immediately.")
 
@@ -129,7 +127,8 @@ final class SearchViewModelTests: TestCase {
 
       hasProjects.assertValues([true, false], "Projects clear after entering search term.")
 
-      scheduler.advanceByInterval(TestCase.interval / 2.0)
+      // wait a little bit of time, but not enough to complete the debounce
+      scheduler.advanceByInterval(debounceDelay / 2.0)
 
       hasProjects.assertValues([true, false],
                                "No new projects load after waiting enough a little bit of time.")
@@ -138,12 +137,13 @@ final class SearchViewModelTests: TestCase {
 
       hasProjects.assertValues([true, false], "No new projects load after entering new search term.")
 
-      scheduler.advanceByInterval(TestCase.interval / 2.0)
+      // wait a little bit of time, but not enough to complete the debounce
+      scheduler.advanceByInterval(debounceDelay / 2.0)
 
       hasProjects.assertValues([true, false], "No new projects load after entering new search term.")
 
-      // Wait enough time for debounce request to be made, but not enough time for it to finish.
-      scheduler.advanceByInterval(TestCase.interval)
+      // Wait enough time for debounced request to be made, but not enough time for it to finish.
+      scheduler.advanceByInterval(debounceDelay / 2.0)
 
       hasProjects.assertValues([true, false],
                                "No projects emit after waiting enough time for API to request to be made")
@@ -153,13 +153,18 @@ final class SearchViewModelTests: TestCase {
       hasProjects.assertValues([true, false], "Still no new projects after entering another search term.")
 
       // wait enough time for API request to be fired.
-      scheduler.advanceByInterval(TestCase.interval)
-      // wait enough time for API request to finish.
-      scheduler.advanceByInterval(TestCase.interval)
+      scheduler.advanceByInterval(debounceDelay + apiDelay)
 
       hasProjects.assertValues([true, false, true], "Search projects load after waiting enough time.")
-
       XCTAssertEqual(["Discover Search", "Discover Search Results"], trackingClient.events)
+
+      // run out the scheduler
+      scheduler.run()
+
+      hasProjects.assertValues([true, false, true], "Nothing new is emitted.")
+      XCTAssertEqual(["Discover Search", "Discover Search Results"],
+                     self.trackingClient.events,
+                     "Nothing new is tracked.")
     }
   }
 }
