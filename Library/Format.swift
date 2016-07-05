@@ -21,6 +21,15 @@ public enum Format {
     return formatter
   }()
 
+  // Number formatter for fractions.
+  private static let percentageFractionFormatter: NSNumberFormatter = {
+    let formatter = NSNumberFormatter()
+    formatter.numberStyle = .PercentStyle
+    formatter.roundingMode = .RoundHalfUp
+    formatter.maximumFractionDigits = 0
+    return formatter
+  }()
+
   // Number formatter for currency.
   private static let currencyFormatter: NSNumberFormatter = {
     let formatter = NSNumberFormatter()
@@ -58,6 +67,21 @@ public enum Format {
     Format.percentageFormatter.locale = env.locale
 
     return Format.percentageFormatter.stringFromNumber(Float(percentage) / 100.0)
+      ?? String(percentage) + "%"
+  }
+
+  /**
+   Formats a Double percentage into a string.
+
+   - parameter percentage: A Double where .10 corresponds to 10%.
+   - parameter env:        An (optional) environment.
+
+   - returns: A formatted string.
+   */
+  public static func percentage(percentage: Double, env: Environment = AppEnvironment.current) -> String {
+    Format.percentageFractionFormatter.locale = env.locale
+
+    return Format.percentageFractionFormatter.stringFromNumber(percentage)
       ?? String(percentage) + "%"
   }
 

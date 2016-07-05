@@ -20,6 +20,7 @@ let positiveButton = positiveButtonStyle <> UIButton.lens.titleText(forState: .N
 let neutralButton  = neutralButtonStyle  <> UIButton.lens.titleText(forState: .Normal) .~ "Neutral button"
 let borderButton   = borderButtonStyle   <> UIButton.lens.titleText(forState: .Normal) .~ "Border button"
 let blackButton    = blackButtonStyle    <> UIButton.lens.titleText(forState: .Normal) .~ "Black button"
+let textOnlyButton = textOnlyButtonStyle <> UIButton.lens.titleText(forState: .Normal) .~ "Text only button"
 
 func disabled <C: UIControlProtocol> () -> (C -> C) {
   return C.lens.enabled .~ false
@@ -31,6 +32,7 @@ let buttonsStyles: [[UIButton -> UIButton]] = [
   [ borderButton,        borderButton        <> disabled() ],
   [ blackButton,         blackButton         <> disabled() ],
   [ facebookButtonStyle, facebookButtonStyle <> disabled() ],
+  [ textOnlyButton,      textOnlyButton      <> disabled() ],
 ]
 
 let rowStackViewStyle =

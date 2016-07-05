@@ -422,8 +422,8 @@ public enum Strings {
   /**
    "%{user_name} posted Update #%{update_number}:"
 
-   - **es**: "%{user_name} posted Update #%{update_number}:"
-   - **de**: "%{user_name} posted Update #%{update_number}:"
+   - **es**: "%{user_name} publicó actualización n° %{update_number}:"
+   - **de**: "%{user_name} hat die Aktualisierung Nr. %{update_number} gepostet:"
    - **fr**: "%{user_name} a publié l'actu no. %{update_number} :"
    - **it**: "%{user_name} posted Update #%{update_number}:"
    - **en**: "%{user_name} posted Update #%{update_number}:"
@@ -439,9 +439,9 @@ public enum Strings {
   /**
    "You adjusted your pledge:"
 
-   - **es**: "You adjusted your pledge:"
-   - **de**: "You adjusted your pledge:"
-   - **fr**: "You adjusted your pledge:"
+   - **es**: "Has cambiado la siguiente contribución:"
+   - **de**: "Du hast folgenden Beitrag angepasst:"
+   - **fr**: "Vous avez ajusté votre engagement :"
    - **it**: "You adjusted your pledge:"
    - **en**: "You adjusted your pledge:"
   */
@@ -456,9 +456,9 @@ public enum Strings {
   /**
    "You canceled your pledge:"
 
-   - **es**: "You canceled your pledge:"
-   - **de**: "You canceled your pledge:"
-   - **fr**: "You canceled your pledge:"
+   - **es**: "Has cancelado la siguiente contribución:"
+   - **de**: "Du hast folgenden Beitrag zurückgezogen:"
+   - **fr**: "Vous avez annulé votre engagement :"
    - **it**: "You canceled your pledge:"
    - **en**: "You canceled your pledge:"
   */
@@ -473,9 +473,9 @@ public enum Strings {
   /**
    "You changed your reward:"
 
-   - **es**: "You changed your reward:"
-   - **de**: "You changed your reward:"
-   - **fr**: "You changed your reward:"
+   - **es**: "Has cambiado la siguiente recompensa:"
+   - **de**: "Du hast folgende Belohnung geändert:"
+   - **fr**: "Vous avez changé de récompense :"
    - **it**: "You changed your reward:"
    - **en**: "You changed your reward:"
   */
@@ -558,9 +558,9 @@ public enum Strings {
   /**
    "You pledged:"
 
-   - **es**: "You pledged:"
-   - **de**: "You pledged:"
-   - **fr**: "You pledged:"
+   - **es**: "Tu contribución:"
+   - **de**: "Dein Beitrag:"
+   - **fr**: "Votre engagement :"
    - **it**: "You pledged:"
    - **en**: "You pledged:"
   */
@@ -2421,6 +2421,23 @@ public enum Strings {
     return localizedString(
       key: "dashboard.graphs.rewards.backers",
       defaultValue: "Backers",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "No reward"
+
+   - **es**: "No reward"
+   - **de**: "No reward"
+   - **fr**: "No reward"
+   - **it**: "No reward"
+   - **en**: "No reward"
+  */
+  public static func dashboard_graphs_rewards_no_reward() -> String {
+    return localizedString(
+      key: "dashboard.graphs.rewards.no_reward",
+      defaultValue: "No reward",
       count: nil,
       substitutions: [:]
     )
@@ -6253,8 +6270,8 @@ public enum Strings {
   /**
    "Recommended for you"
 
-   - **es**: "Recommended for you"
-   - **de**: "Recommended for you"
+   - **es**: "Recomendaciones"
+   - **de**: "Empfehlungen für dich"
    - **fr**: "Nos recommandations"
    - **it**: "Recommended for you"
    - **en**: "Recommended for you"
@@ -8237,8 +8254,8 @@ This is commonly fixed by going to iOS Settings > Facebook and toggling access f
   /**
    "Sorry, your message could not be posted."
 
-   - **es**: "Sorry, your message could not be posted."
-   - **de**: "Sorry, your message could not be posted."
+   - **es**: "Lo sentimos, no se pudo publicar tu mensaje."
+   - **de**: "Deine Nachricht konnte leider nicht gepostet werden."
    - **fr**: "Désolé, votre message n'a pas pu être publié."
    - **it**: "Sorry, your message could not be posted."
    - **en**: "Sorry, your message could not be posted."
@@ -10647,8 +10664,8 @@ Thank you for your support!"
   /**
    "Sorry, your comment could not be posted."
 
-   - **es**: "Sorry, your comment could not be posted."
-   - **de**: "Sorry, your comment could not be posted."
+   - **es**: "Lo sentimos, no se pudo publicar tu comentario."
+   - **de**: "Dein Kommentar konnte leider nicht gepostet werden."
    - **fr**: "Désolé, votre commentaire n'a pas pu être publié."
    - **it**: "Sorry, your comment could not be posted."
    - **en**: "Sorry, your comment could not be posted."
@@ -12432,9 +12449,9 @@ Thank you for your support!"
   /**
    "Update #%{update_number}: %{update_title}"
 
-   - **es**: "Update #%{update_number}: %{update_title}"
-   - **de**: "Update #%{update_number}: %{update_title}"
-   - **fr**: "Update #%{update_number}: %{update_title}"
+   - **es**: "Actualización %{update_number}: %{update_title}"
+   - **de**: "Aktualisierung %{update_number}: %{update_title}"
+   - **fr**: "Actu no. %{update_number} : %{update_title}"
    - **it**: "Update #%{update_number}: %{update_title}"
    - **en**: "Update #%{update_number}: %{update_title}"
   */

@@ -386,6 +386,22 @@ public final class Koala {
                properties: props)
   }
 
+  // MARK: Dashboard
+  public func trackDashboardView(project project: Project) {
+    self.track(event: "Dashboard View",
+               properties: properties(project: project, loggedInUser: self.loggedInUser))
+  }
+
+  public func trackDashboardProjectModalView(project project: Project) {
+    self.track(event: "Dashboard Project Modal",
+               properties: properties(project: project, loggedInUser: self.loggedInUser))
+  }
+
+  public func trackDashboardSeeAllRewards(project project: Project) {
+    self.track(event: "Dashboard See All Rewards",
+               properties: properties(project: project, loggedInUser: self.loggedInUser))
+  }
+
   // MARK: Messages
 
   public func trackMessageThreadsView(mailbox mailbox: Mailbox, project: Project?) {

@@ -8,7 +8,7 @@ import XCTest
 @testable import ReactiveExtensions_TestHelpers
 
 internal final class DashboardViewModelTests: TestCase {
-  internal let vm = DashboardViewModel()
+  internal let vm: DashboardViewModelType = DashboardViewModel()
   internal let goToProject = TestObserver<Project, NoError>()
   internal let project = TestObserver<Project, NoError>()
   internal let projects = TestObserver<[Project], NoError>()
@@ -20,6 +20,19 @@ internal final class DashboardViewModelTests: TestCase {
     self.vm.outputs.project.observe(project.observer)
     self.vm.outputs.projects.observe(projects.observer)
     self.vm.outputs.videoStats.observe(videoStats.observer)
+  }
+
+  func testTracking() {
+    let projects = [Project.template]
+
+    withEnvironment(apiService: MockService(fetchProjectsResponse: projects)) {
+      XCTAssertEqual([], self.trackingClient.events)
+
+      self.vm.inputs.viewDidLoad()
+
+      XCTAssertEqual(["Dashboard View"], self.trackingClient.events)
+      XCTAssertEqual([1], self.trackingClient.properties.map { $0["project_pid"] as! Int? })
+    }
   }
 
   func testGoToProject() {

@@ -140,6 +140,7 @@
 "dashboard.graphs.referrers.source" = "Source";
 "dashboard.graphs.referrers.title" = "REFERRERS";
 "dashboard.graphs.rewards.backers" = "Backers";
+"dashboard.graphs.rewards.no_reward" = "No reward";
 "dashboard.graphs.rewards.percent" = "Percent";
 "dashboard.graphs.rewards.pledged" = "Pledged";
 "dashboard.graphs.rewards.see_all" = "See all reward tiers";

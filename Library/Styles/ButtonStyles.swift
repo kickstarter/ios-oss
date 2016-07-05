@@ -25,7 +25,7 @@ public let borderButtonStyle = baseButtonStyle
   <> UIButton.lens.layer.borderColor .~ UIColor.ksr_gray.CGColor
   <> UIButton.lens.layer.borderWidth .~ 1.0
 
-public let facebookButtonStyle = roundedStyle()
+public let facebookButtonStyle = baseButtonStyle
   <> UIButton.lens.backgroundColor(forState: .Normal) .~ .ksr_facebookBlue
   <> UIButton.lens.titleColor(forState: .Normal) .~ .ksr_white
   <> UIButton.lens.backgroundColor(forState: .Disabled) .~ .ksr_darkBlue
@@ -51,3 +51,11 @@ public let positiveButtonStyle = baseButtonStyle
   <> UIButton.lens.backgroundColor(forState: .Highlighted) .~ .ksr_darkGreen
   <> UIButton.lens.titleColor(forState: .Disabled) .~ .init(white: 1.0, alpha: 0.75)
   <> UIButton.lens.backgroundColor(forState: .Disabled) .~ .ksr_gray
+
+public let textOnlyButtonStyle = baseButtonStyle
+  <> UIButton.lens.titleColor(forState: .Normal) .~ .ksr_darkGrayText
+  <> UIButton.lens.backgroundColor(forState: .Normal) .~ .ksr_clear
+  <> UIButton.lens.titleColor(forState: .Highlighted) .~ .ksr_blackGray
+  <> UIButton.lens.backgroundColor(forState: .Highlighted) .~ .ksr_clear
+  <> UIButton.lens.titleColor(forState: .Disabled) .~ .ksr_lightGrayText
+  <> UIButton.lens.backgroundColor(forState: .Disabled) .~ .ksr_clear

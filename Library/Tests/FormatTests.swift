@@ -58,6 +58,28 @@ final class FormatTests: XCTestCase {
     }
   }
 
+  func testPercentageFromDouble() {
+    withEnvironment(locale: NSLocale(localeIdentifier: "en")) {
+      XCTAssertEqual(Format.percentage(0.532), "53%")
+      XCTAssertEqual(Format.percentage(10.66), "1,066%")
+    }
+
+    withEnvironment(locale: NSLocale(localeIdentifier: "es")) {
+      XCTAssertEqual(Format.percentage(0.532), "53 %")
+      XCTAssertEqual(Format.percentage(10.66), "1.066 %")
+    }
+
+    withEnvironment(locale: NSLocale(localeIdentifier: "fr")) {
+      XCTAssertEqual(Format.percentage(0.532), "53 %")
+      XCTAssertEqual(Format.percentage(10.66), "1 066 %")
+    }
+
+    withEnvironment(locale: NSLocale(localeIdentifier: "de")) {
+      XCTAssertEqual(Format.percentage(0.532), "53 %")
+      XCTAssertEqual(Format.percentage(10.66), "1.066 %")
+    }
+  }
+
   func testCurrency() {
     withEnvironment(locale: NSLocale(localeIdentifier: "en")) {
       withEnvironment(countryCode: "US") {

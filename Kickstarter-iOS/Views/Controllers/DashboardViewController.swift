@@ -11,11 +11,8 @@ internal final class DashboardViewController: UITableViewController {
 
   internal override func viewDidLoad() {
     super.viewDidLoad()
-    self.tableView.estimatedRowHeight = 200.0
-    self.tableView.rowHeight = UITableViewAutomaticDimension
-    self.tableView.dataSource = self.dataSource
 
-    self.view.backgroundColor = Color.OffWhite.toUIColor()
+    self.tableView.dataSource = self.dataSource
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -56,6 +53,13 @@ internal final class DashboardViewController: UITableViewController {
         self?.tableView.reloadData()
     }
 
+    self.viewModel.outputs.rewardStats
+      .observeForUI()
+      .observeNext { [weak self] (stats, project) in
+        self?.dataSource.load(rewardStats: stats, project: project)
+        self?.tableView.reloadData()
+    }
+
     self.shareViewModel.outputs.showShareSheet
       .observeForUI()
       .observeNext { [weak self] in self?.showShareSheet($0) }
@@ -74,8 +78,10 @@ internal final class DashboardViewController: UITableViewController {
   internal override func tableView(tableView: UITableView,
                                    willDisplayCell cell: UITableViewCell,
                                    forRowAtIndexPath indexPath: NSIndexPath) {
-    if let cell = cell as? DashboardActionCell {
-      cell.delegate = self
+    if let actionCell = cell as? DashboardActionCell {
+      actionCell.delegate = self
+    } else if let rewardsCell = cell as? DashboardRewardsCell {
+      rewardsCell.delegate = self
     }
   }
 
@@ -162,5 +168,12 @@ extension DashboardViewController: DashboardActionCellDelegate {
 extension DashboardViewController: UpdateDraftViewControllerDelegate {
   func updateDraftViewControllerWantsDismissal(updateDraftViewController: UpdateDraftViewController) {
     self.dismissViewControllerAnimated(true, completion: nil)
+  }
+}
+
+extension DashboardViewController: DashboardRewardsCellDelegate {
+  func dashboardRewardsCellDidAddRewardRows(cell: DashboardRewardsCell?) {
+    self.tableView.beginUpdates()
+    self.tableView.endUpdates()
   }
 }

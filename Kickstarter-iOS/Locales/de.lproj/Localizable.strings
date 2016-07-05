@@ -22,15 +22,15 @@
 "activity.creator.actions.user_name_commented_on_update_number" = "%{user_name} hat die Aktualisierung Nr. %{update_number} kommentiert:";
 "activity.creator.actions.user_name_commented_on_your_project" = "%{user_name} hat dein Projekt kommentiert:";
 "activity.creator.actions.user_name_pledged" = "Beitrag von %{user_name}:";
-"activity.creator.actions.user_name_posted_update_number" = "%{user_name} posted Update #%{update_number}:";
-"activity.creator.actions.you_adjusted_your_pledge" = "You adjusted your pledge:";
-"activity.creator.actions.you_canceled_your_pledge" = "You canceled your pledge:";
-"activity.creator.actions.you_changed_your_reward" = "You changed your reward:";
+"activity.creator.actions.user_name_posted_update_number" = "%{user_name} hat die Aktualisierung Nr. %{update_number} gepostet:";
+"activity.creator.actions.you_adjusted_your_pledge" = "Du hast folgenden Beitrag angepasst:";
+"activity.creator.actions.you_canceled_your_pledge" = "Du hast folgenden Beitrag zurückgezogen:";
+"activity.creator.actions.you_changed_your_reward" = "Du hast folgende Belohnung geändert:";
 "activity.creator.actions.you_commented_on_update_number" = "Du hast Aktualisierung Nr. %{update_number} kommentiert:";
 "activity.creator.actions.you_commented_on_update_number_pronoun" = "Du";
 "activity.creator.actions.you_commented_on_your_project" = "Du hast dein Projekt kommentiert:";
 "activity.creator.actions.you_commented_on_your_project_pronoun" = "Du";
-"activity.creator.actions.you_pledged" = "You pledged:";
+"activity.creator.actions.you_pledged" = "Dein Beitrag:";
 "activity.creator.actions.you_posted_update_number" = "Du hast Aktualisierung Nr. %{update_number} veröffentlicht:";
 "activity.creator.actions.you_posted_update_number_pronoun" = "Du";
 "activity.creator.buttons.backing_info" = "Info zur Unterstützung";
@@ -140,6 +140,7 @@
 "dashboard.graphs.referrers.source" = "Quelle";
 "dashboard.graphs.referrers.title" = "Referrer";
 "dashboard.graphs.rewards.backers" = "Unterstützer";
+"dashboard.graphs.rewards.no_reward" = "No reward";
 "dashboard.graphs.rewards.percent" = "Prozent";
 "dashboard.graphs.rewards.pledged" = "Beiträge gesamt";
 "dashboard.graphs.rewards.see_all" = "Alle Belohnungsstufen anzeigen";
@@ -365,7 +366,7 @@
 "discovery.onboarding.title.bring_creative_projects_to_life" = "Du kannst kreative Projekte ins Leben rufen!";
 "discovery.popular" = "Beliebte Projekte";
 "discovery.recommended" = "Team-Favoriten";
-"discovery.recommended_for_you" = "Recommended for you";
+"discovery.recommended_for_you" = "Empfehlungen für dich";
 "discovery.saved" = "Meine Favoriten";
 "discovery.search_cancel" = "Abbrechen";
 "discovery.sort_types.end_date" = "Enddatum";
@@ -481,7 +482,7 @@
 "login_tout.save_intent.traditional_signup_button" = "Registrieren";
 "login_tout.save_intent.traditional_title" = "Benutze deine E-Mail-Adresse:";
 "messages.could_not_load_messages" = "Nachrichten konnten nicht geladen werden";
-"messages.dialog.generic_error" = "Sorry, your message could not be posted.";
+"messages.dialog.generic_error" = "Deine Nachricht konnte leider nicht gepostet werden.";
 "messages.empty_state.message_backer" = "Du hast dem Projektgründer keine Nachricht gesendet.";
 "messages.empty_state.message_creator" = "Du hast diesem Unterstützer keine Nachricht gesendet.";
 "messages.empty_state.title" = "Keine Nachrichten";
@@ -620,7 +621,7 @@
 "project.comments.empty_state.logged_out.title" = "Keine Kommentare";
 "project.comments.empty_state.non_backer.message" = "Oh wie schade. Werde Unterstützer um einen Kommentar zu verfassen.";
 "project.comments.empty_state.non_backer.title" = "Keine Kommentare";
-"project.comments.error_posting" = "Sorry, your comment could not be posted.";
+"project.comments.error_posting" = "Dein Kommentar konnte leider nicht gepostet werden.";
 "project.comments.posted" = "Kommentar veröffentlicht!";
 "project.creator.by_creator" = "von %{creator_name}";
 "project.creator.by_creator_html" = "von %{creator_name}";
@@ -725,7 +726,7 @@
 "social.public_comment" = "Öffentlicher Kommentar";
 "social.update" = "Update";
 "social.update_number" = "Update Nr. %{update_number}";
-"social.update_sequence_and_title" = "Update #%{update_number}: %{update_title}";
+"social.update_sequence_and_title" = "Aktualisierung %{update_number}: %{update_title}";
 "social_following.button.check_out_some_projects" = "Schau dir diese Projekte an!";
 "social_following.friend.buttons.follow" = "Folgen";
 "social_following.friend.buttons.following" = "Abonniert";

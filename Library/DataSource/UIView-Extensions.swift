@@ -3,8 +3,8 @@ import UIKit
 extension UIView {
   public override func awakeFromNib() {
     super.awakeFromNib()
-    bindViewModel()
-    bindStyles()
+    self.bindViewModel()
+    self.bindStyles()
   }
 
   public func bindStyles() {

@@ -22,6 +22,9 @@ public protocol DashboardViewModelOutputs {
   /// Emits the list of created projects to display in the project switcher.
   var projects: Signal<[Project], NoError> { get }
 
+  /// Emits the project, reward stats, and cumulative pledges to display in the rewards cell.
+  var rewardStats: Signal<(stats: [ProjectStatsEnvelope.RewardStats], project: Project), NoError> { get }
+
   /// Emits the video stats to display in the video cell.
   var videoStats: Signal<ProjectStatsEnvelope.VideoStats, NoError> { get }
 }
@@ -54,15 +57,26 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
 
     self.videoStats = stats.map { $0.videoStats }.ignoreNil()
 
-    self.goToProject = self.projectContextTappedProperty.signal.ignoreNil()
+    self.rewardStats = project
+      .takePairWhen(stats)
+      .map { project, stats in
+        (stats: stats.rewardStats, project: project)
+    }
+
+    let projectFromTap = self.projectContextTappedProperty.signal.ignoreNil()
+
+    self.goToProject = projectFromTap
       .map { ($0, RefTag.dashboard) }
+
+    projectFromTap.observeNext { AppEnvironment.current.koala.trackDashboardProjectModalView(project: $0) }
+
+    project.observeNext { AppEnvironment.current.koala.trackDashboardView(project: $0) }
   }
 
   private let projectContextTappedProperty = MutableProperty<Project?>(nil)
   public func projectContextTapped(project: Project) {
     self.projectContextTappedProperty.value = project
   }
-
   private let viewDidLoadProperty = MutableProperty()
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
@@ -71,6 +85,7 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
   public let goToProject: Signal<(Project, RefTag), NoError>
   public let project: Signal<Project, NoError>
   public let projects: Signal<[Project], NoError>
+  public let rewardStats: Signal<(stats: [ProjectStatsEnvelope.RewardStats], project: Project), NoError>
   public let videoStats: Signal<ProjectStatsEnvelope.VideoStats, NoError>
 
   public var inputs: DashboardViewModelInputs { return self }

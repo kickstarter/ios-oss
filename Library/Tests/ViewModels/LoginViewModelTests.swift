@@ -16,6 +16,7 @@ final class LoginViewModelTests: TestCase {
   private let showError = TestObserver<String, NoError>()
   private let tfaChallenge = TestObserver<String, NoError>()
   private let emailText = TestObserver<String, NoError>()
+  private let tfaChallengePasswordText = TestObserver<String, NoError>()
   private let onePasswordButtonHidden = TestObserver<Bool, NoError>()
   private let onePasswordFindLoginForURLString = TestObserver<String, NoError>()
   private let passwordText = TestObserver<String, NoError>()
@@ -31,6 +32,7 @@ final class LoginViewModelTests: TestCase {
     self.vm.outputs.logIntoEnvironment.observe(self.logIntoEnvironment.observer)
     self.vm.outputs.showError.observe(self.showError.observer)
     self.vm.outputs.tfaChallenge.map { $0.email }.observe(self.tfaChallenge.observer)
+    self.vm.outputs.tfaChallenge.map { $0.password }.observe(self.tfaChallengePasswordText.observer)
     self.vm.outputs.emailText.observe(self.emailText.observer)
     self.vm.outputs.onePasswordButtonHidden.observe(self.onePasswordButtonHidden.observer)
     self.vm.outputs.onePasswordFindLoginForURLString.observe(self.onePasswordFindLoginForURLString.observer)
@@ -137,6 +139,7 @@ final class LoginViewModelTests: TestCase {
       showError.assertValueCount(0, "Login error did not happen")
       tfaChallenge.assertValues(["nativesquad@kickstarter.com"],
                                 "Two factor challenge emitted with email and password")
+      tfaChallengePasswordText.assertValues(["helloooooo"], "Two factor challenge emitted with password")
     }
   }
 

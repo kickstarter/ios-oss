@@ -28,6 +28,26 @@ public let dashboardMessagesButtonStyle = UIButton.lens.titleText(forState: .Nor
 public let postUpdateButtonStyle = positiveButtonStyle
   <> UIButton.lens.titleText(forState: .Normal) %~ { _ in Strings.dashboard_buttons_post_update() }
 
+public let dashboardRewardRowLabelStyle =
+  UILabel.lens.textColor .~ .ksr_darkGrayText
+    <> UILabel.lens.font .~ .ksr_footnote
+
+public let dashboardRewardTitleLabelStyle =
+  UILabel.lens.textColor .~ .ksr_darkGrayText
+    <> UILabel.lens.font .~ .ksr_headline
+    <> UILabel.lens.text %~ { _ in Strings.dashboard_graphs_rewards_title() }
+
+public let dashboardRewardRowTitleButtonStyle = textOnlyButtonStyle
+  <> UIButton.lens.titleLabel.font .~ UIFont.ksr_footnote.bolded
+  <> UIButton.lens.contentEdgeInsets .~ .init(topBottom: 12.0, leftRight: 0.0)
+  <> UIButton.lens.contentHorizontalAlignment .~ .Left
+
+public let dashboardRewardSeeAllButtonStyle = textOnlyButtonStyle
+  <> UIButton.lens.titleLabel.font .~ UIFont.ksr_footnote
+  <> UIButton.lens.contentEdgeInsets .~ .init(topBottom: 12.0, leftRight: 0.0)
+  <> UIButton.lens.titleText(forState: .Normal) %~ { _ in Strings.dashboard_graphs_rewards_see_all() }
+  <> UIButton.lens.titleColor(forState: .Normal) .~ .ksr_blue
+
 public let dashboardShareButtonStyle = neutralButtonStyle
   <> UIButton.lens.titleText(forState: .Normal) %~ { _ in Strings.dashboard_buttons_share() }
   <> UIButton.lens.contentEdgeInsets .~ .init(topBottom: 12.0, leftRight: 32.0)

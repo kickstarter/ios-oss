@@ -8,7 +8,7 @@ internal final class DashboardDataSource: ValueCellDataSource {
     case Action
     case FundingProgress
     case Rewards
-    case Referers
+    case Referrers
     case Video
   }
 
@@ -19,7 +19,19 @@ internal final class DashboardDataSource: ValueCellDataSource {
   }
 
   internal func load(videoStats videoStats: ProjectStatsEnvelope.VideoStats) {
+    self.appendStaticRow(cellIdentifier: "Padding", toSection: Section.Video.rawValue)
+
     self.appendRow(value: videoStats, cellClass: DashboardVideoCell.self, toSection: Section.Video.rawValue)
+  }
+
+  internal func load(rewardStats rewardStats: [ProjectStatsEnvelope.RewardStats],
+                                 project: Project) {
+
+    self.appendStaticRow(cellIdentifier: "Padding", toSection: Section.Rewards.rawValue)
+
+    self.appendRow(value: (rewardStats: rewardStats, project: project),
+                   cellClass: DashboardRewardsCell.self,
+                   toSection: Section.Rewards.rawValue)
   }
 
   internal override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
@@ -30,6 +42,13 @@ internal final class DashboardDataSource: ValueCellDataSource {
       cell.configureWith(value: value)
     case let (cell as DashboardVideoCell, value as ProjectStatsEnvelope.VideoStats):
       cell.configureWith(value: value)
+    case let (
+      cell as DashboardRewardsCell,
+      value as ([ProjectStatsEnvelope.RewardStats], Project)
+      ):
+      cell.configureWith(value: value)
+    case (is StaticTableViewCell, is Void):
+      return
     default:
       assertionFailure("Unrecognized (\(cell.dynamicType), \(value.dynamicType)) combo.")
     }
