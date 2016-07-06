@@ -67,6 +67,12 @@ internal final class DashboardRewardsCell: UITableViewCell, ValueCell {
   internal override func bindViewModel() {
     self.seeAllTiersButton.rac.hidden = self.viewModel.outputs.hideSeeAllTiersButton
 
+    self.viewModel.outputs.notifyDelegateAddedRewardRows
+      .observeForUI()
+      .observeNext { [weak self] _ in
+        self?.delegate?.dashboardRewardsCellDidAddRewardRows(self)
+    }
+
     self.viewModel.outputs.rewardsRowData
       .observeForUI()
       .observeNext { [weak self] data in
@@ -87,8 +93,6 @@ internal final class DashboardRewardsCell: UITableViewCell, ValueCell {
         totalPledged: data.totalPledged)
       }
       .forEach(self.mainStackView.addArrangedSubview)
-
-    self.delegate?.dashboardRewardsCellDidAddRewardRows(self)
   }
 
   internal func configureWith(value value: (rewardStats: [ProjectStatsEnvelope.RewardStats],

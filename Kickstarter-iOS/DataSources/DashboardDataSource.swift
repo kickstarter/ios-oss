@@ -18,10 +18,17 @@ internal final class DashboardDataSource: ValueCellDataSource {
     self.appendRow(value: project, cellClass: DashboardActionCell.self, toSection: Section.Action.rawValue)
   }
 
-  internal func load(videoStats videoStats: ProjectStatsEnvelope.VideoStats) {
-    self.appendStaticRow(cellIdentifier: "Padding", toSection: Section.Video.rawValue)
+  internal func load(cumulative cumulative: ProjectStatsEnvelope.Cumulative,
+                                project: Project,
+                                referrers: [ProjectStatsEnvelope.ReferrerStats]) {
 
-    self.appendRow(value: videoStats, cellClass: DashboardVideoCell.self, toSection: Section.Video.rawValue)
+    self.appendStaticRow(cellIdentifier: "Padding", toSection: Section.Referrers.rawValue)
+
+    self.appendRow(
+      value: (cumulative, project, referrers),
+      cellClass: DashboardReferrersCell.self,
+      toSection: Section.Referrers.rawValue
+    )
   }
 
   internal func load(rewardStats rewardStats: [ProjectStatsEnvelope.RewardStats],
@@ -34,12 +41,21 @@ internal final class DashboardDataSource: ValueCellDataSource {
                    toSection: Section.Rewards.rawValue)
   }
 
+  internal func load(videoStats videoStats: ProjectStatsEnvelope.VideoStats) {
+    self.appendStaticRow(cellIdentifier: "Padding", toSection: Section.Video.rawValue)
+
+    self.appendRow(value: videoStats, cellClass: DashboardVideoCell.self, toSection: Section.Video.rawValue)
+  }
+
   internal override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
     switch (cell, value) {
     case let (cell as DashboardContextCell, value as Project):
       cell.configureWith(value: value)
     case let (cell as DashboardActionCell, value as Project):
       cell.configureWith(value: value)
+    case let (cell as DashboardReferrersCell, value as (ProjectStatsEnvelope.Cumulative, Project,
+      [ProjectStatsEnvelope.ReferrerStats])):
+        cell.configureWith(value: value)
     case let (cell as DashboardVideoCell, value as ProjectStatsEnvelope.VideoStats):
       cell.configureWith(value: value)
     case let (

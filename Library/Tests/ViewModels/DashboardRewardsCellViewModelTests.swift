@@ -9,6 +9,7 @@ internal final class DashboardRewardsCellViewModelTests: TestCase {
   let vm: DashboardRewardsCellViewModelType = DashboardRewardsCellViewModel()
 
   let hideSeeAllTiersButton = TestObserver<Bool, NoError>()
+  let notifyDelegateAddedRewardRows = TestObserver<Void, NoError>()
   let rewardsRowCountry = TestObserver<Project.Country, NoError>()
   let rewardsRowRewards = TestObserver<[ProjectStatsEnvelope.RewardStats], NoError>()
   let rewardsRowTotalPledged = TestObserver<Int, NoError>()
@@ -72,6 +73,7 @@ internal final class DashboardRewardsCellViewModelTests: TestCase {
     super.setUp()
 
     vm.outputs.hideSeeAllTiersButton.observe(hideSeeAllTiersButton.observer)
+    vm.outputs.notifyDelegateAddedRewardRows.observe(notifyDelegateAddedRewardRows.observer)
     vm.outputs.rewardsRowData.map { $0.country }.observe(rewardsRowCountry.observer)
     vm.outputs.rewardsRowData.map { $0.rewardsStats }.observe(rewardsRowRewards.observer)
     vm.outputs.rewardsRowData.map { $0.totalPledged }.observe(rewardsRowTotalPledged.observer)
@@ -131,6 +133,7 @@ internal final class DashboardRewardsCellViewModelTests: TestCase {
     self.rewardsRowCountry.assertValues([.US])
     self.rewardsRowTotalPledged.assertValues([5000])
     self.hideSeeAllTiersButton.assertValues([false])
+    self.notifyDelegateAddedRewardRows.assertDidNotEmitValue("No additional rewards were added.")
 
     self.vm.inputs.seeAllTiersButtonTapped()
 
@@ -140,7 +143,8 @@ internal final class DashboardRewardsCellViewModelTests: TestCase {
     self.rewardsRowCountry.assertValues([.US, .US])
     self.rewardsRowTotalPledged.assertValues([5000, 5000])
     self.hideSeeAllTiersButton.assertValues([false, true])
-    XCTAssertEqual(["Dashboard See All Rewards"], self.trackingClient.events)
+    self.notifyDelegateAddedRewardRows.assertValueCount(1, "Additional rewards were added.")
+    XCTAssertEqual(["Showed All Rewards"], self.trackingClient.events)
   }
 
   func testSorting() {

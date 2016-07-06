@@ -22,6 +22,10 @@ public protocol DashboardViewModelOutputs {
   /// Emits the list of created projects to display in the project switcher.
   var projects: Signal<[Project], NoError> { get }
 
+  /// Emits the cumulative, project, and referreral distribution data to display in the referrers cell.
+  var referrerData: Signal<(cumulative: ProjectStatsEnvelope.Cumulative, project: Project,
+    stats: [ProjectStatsEnvelope.ReferrerStats]), NoError> { get }
+
   /// Emits the project, reward stats, and cumulative pledges to display in the rewards cell.
   var rewardStats: Signal<(stats: [ProjectStatsEnvelope.RewardStats], project: Project), NoError> { get }
 
@@ -47,13 +51,20 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
 
     let project = self.projects.map { $0.first }.ignoreNil()
 
-    self.project = project
-
-    let stats = project
+    let fetchStatsEvent = project
       .switchMap {
         AppEnvironment.current.apiService.fetchProjectStats(projectId: $0.id)
-          .demoteErrors()
+          .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
+          .materialize()
       }
+
+    let stats = fetchStatsEvent.values()
+
+    self.project = project
+
+    self.referrerData = project
+      .takePairWhen(stats)
+      .map { project, stats in (cumulative: stats.cumulative, project: project, stats: stats.referrerStats) }
 
     self.videoStats = stats.map { $0.videoStats }.ignoreNil()
 
@@ -85,6 +96,8 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
   public let goToProject: Signal<(Project, RefTag), NoError>
   public let project: Signal<Project, NoError>
   public let projects: Signal<[Project], NoError>
+  public let referrerData: Signal<(cumulative: ProjectStatsEnvelope.Cumulative, project: Project,
+    stats: [ProjectStatsEnvelope.ReferrerStats]), NoError>
   public let rewardStats: Signal<(stats: [ProjectStatsEnvelope.RewardStats], project: Project), NoError>
   public let videoStats: Signal<ProjectStatsEnvelope.VideoStats, NoError>
 

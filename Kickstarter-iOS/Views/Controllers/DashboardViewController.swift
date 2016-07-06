@@ -46,10 +46,10 @@ internal final class DashboardViewController: UITableViewController {
         self?.tableView.reloadData()
     }
 
-    self.viewModel.outputs.videoStats
+    self.viewModel.outputs.referrerData
       .observeForUI()
-      .observeNext { [weak self] videoStats in
-        self?.dataSource.load(videoStats: videoStats)
+      .observeNext { [weak self] (cumulative, project, referrers) in
+        self?.dataSource.load(cumulative: cumulative, project: project, referrers: referrers)
         self?.tableView.reloadData()
     }
 
@@ -63,6 +63,13 @@ internal final class DashboardViewController: UITableViewController {
     self.shareViewModel.outputs.showShareSheet
       .observeForUI()
       .observeNext { [weak self] in self?.showShareSheet($0) }
+
+    self.viewModel.outputs.videoStats
+      .observeForUI()
+      .observeNext { [weak self] videoStats in
+        self?.dataSource.load(videoStats: videoStats)
+        self?.tableView.reloadData()
+    }
   }
 
   internal override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -80,6 +87,8 @@ internal final class DashboardViewController: UITableViewController {
                                    forRowAtIndexPath indexPath: NSIndexPath) {
     if let actionCell = cell as? DashboardActionCell {
       actionCell.delegate = self
+    } else if let referrersCell = cell as? DashboardReferrersCell {
+      referrersCell.delegate = self
     } else if let rewardsCell = cell as? DashboardRewardsCell {
       rewardsCell.delegate = self
     }
@@ -168,6 +177,18 @@ extension DashboardViewController: DashboardActionCellDelegate {
 extension DashboardViewController: UpdateDraftViewControllerDelegate {
   func updateDraftViewControllerWantsDismissal(updateDraftViewController: UpdateDraftViewController) {
     self.dismissViewControllerAnimated(true, completion: nil)
+  }
+}
+
+extension DashboardViewController: DashboardReferrersCellDelegate {
+  func dashboardReferrersCellDidAddReferrerRows(cell: DashboardReferrersCell?) {
+    let inset = self.tableView.contentInset
+    self.tableView.contentInset = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 1000, right: 0.0)
+
+    self.tableView.beginUpdates()
+    self.tableView.endUpdates()
+
+    self.tableView.contentInset = inset
   }
 }
 

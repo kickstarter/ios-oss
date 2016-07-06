@@ -43,6 +43,9 @@ public protocol DashboardRewardsCellViewModelOutputs {
   /// Emits when should hide See all tiers button.
   var hideSeeAllTiersButton: Signal<Bool, NoError> { get }
 
+  /// Emits when should notify the delegate that reward rows have been added to the stack view.
+  var notifyDelegateAddedRewardRows: Signal<Void, NoError> { get }
+
   /// Emits RewardsRowData. Rewards array is truncated if 'see all' button is present.
   var rewardsRowData: Signal<RewardsRowData, NoError> { get }
 }
@@ -114,6 +117,8 @@ public final class DashboardRewardsCellViewModel: DashboardRewardsCellViewModelT
     }
     .skipRepeats(==)
 
+    self.notifyDelegateAddedRewardRows = self.seeAllTiersButtonTappedProperty.signal
+
     statsProject
       .map { $1 }
       .takeWhen(self.seeAllTiersButtonTappedProperty.signal)
@@ -125,6 +130,7 @@ public final class DashboardRewardsCellViewModel: DashboardRewardsCellViewModelT
   public var outputs: DashboardRewardsCellViewModelOutputs { return self }
 
   public let hideSeeAllTiersButton: Signal<Bool, NoError>
+  public let notifyDelegateAddedRewardRows: Signal<Void, NoError>
   public let rewardsRowData: Signal<RewardsRowData, NoError>
 
   private let backersButtonTappedProperty = MutableProperty()

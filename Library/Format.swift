@@ -25,7 +25,7 @@ public enum Format {
   private static let percentageFractionFormatter: NSNumberFormatter = {
     let formatter = NSNumberFormatter()
     formatter.numberStyle = .PercentStyle
-    formatter.roundingMode = .RoundHalfUp
+    formatter.roundingMode = .RoundDown
     formatter.maximumFractionDigits = 0
     return formatter
   }()
@@ -34,7 +34,7 @@ public enum Format {
   private static let currencyFormatter: NSNumberFormatter = {
     let formatter = NSNumberFormatter()
     formatter.numberStyle = .CurrencyStyle
-    formatter.roundingMode = .RoundUp
+    formatter.roundingMode = .RoundDown
     formatter.maximumFractionDigits = 0
     formatter.generatesDecimalNumbers = false
     return formatter

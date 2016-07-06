@@ -398,7 +398,12 @@ public final class Koala {
   }
 
   public func trackDashboardSeeAllRewards(project project: Project) {
-    self.track(event: "Dashboard See All Rewards",
+    self.track(event: "Showed All Rewards",
+               properties: properties(project: project, loggedInUser: self.loggedInUser))
+  }
+
+  public func trackDashboardSeeMoreReferrers(project project: Project) {
+    self.track(event: "Showed All Referrers",
                properties: properties(project: project, loggedInUser: self.loggedInUser))
   }
 

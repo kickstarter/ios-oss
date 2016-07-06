@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="iu7-hr-7vz">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="iu7-hr-7vz">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
@@ -29,7 +29,7 @@
             <objects>
                 <viewController storyboardIdentifier="DashboardViewController" id="BSX-wh-3mQ" customClass="DashboardViewController" customModule="Kickstarter_Framework" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="200" sectionHeaderHeight="28" sectionFooterHeight="28" id="gp8-vc-7pG">
-                        <rect key="frame" x="0.0" y="0.0" width="400" height="900"/>
+                        <rect key="frame" x="0.0" y="0.0" width="400" height="1200"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" red="0.88811947599999996" green="0.88811947599999996" blue="0.88811947599999996" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
@@ -340,8 +340,193 @@
                                     <outlet property="topRewardsButton" destination="Lpu-AI-fn4" id="EUj-Xq-RDt"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Padding2" rowHeight="32" id="ezI-kE-peF" userLabel="-- padding --">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Padding1" rowHeight="32" id="22x-l8-GcS" userLabel="Padding Cell" customClass="StaticTableViewCell" customModule="Library">
                                 <rect key="frame" x="0.0" y="648" width="400" height="32"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="22x-l8-GcS" id="3Qa-bw-xVk">
+                                    <rect key="frame" x="0.0" y="0.0" width="400" height="32"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xcO-Tv-LNo">
+                                            <rect key="frame" x="0.0" y="0.0" width="400" height="32"/>
+                                            <color key="backgroundColor" red="0.86622080180000005" green="0.86622080180000005" blue="0.86622080180000005" alpha="1" colorSpace="calibratedRGB"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="32" id="9rW-z6-SlD"/>
+                                            </constraints>
+                                        </view>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="bottom" secondItem="xcO-Tv-LNo" secondAttribute="bottom" id="188-zy-14k"/>
+                                        <constraint firstItem="xcO-Tv-LNo" firstAttribute="top" secondItem="3Qa-bw-xVk" secondAttribute="top" id="EI9-8R-Pwo"/>
+                                        <constraint firstItem="xcO-Tv-LNo" firstAttribute="leading" secondItem="3Qa-bw-xVk" secondAttribute="leading" id="eQH-rU-Z6m"/>
+                                        <constraint firstAttribute="trailing" secondItem="xcO-Tv-LNo" secondAttribute="trailing" id="l04-QA-ocl"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <edgeInsets key="layoutMargins" top="16" left="16" bottom="16" right="16"/>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="DashboardReferrersCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="DashboardReferrersCell" rowHeight="500" id="mkD-Zk-eHq" userLabel="Referrers cell" customClass="DashboardReferrersCell" customModule="Kickstarter_Framework" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="680" width="400" height="500"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="mkD-Zk-eHq" id="N1s-de-ZbZ">
+                                    <rect key="frame" x="0.0" y="0.0" width="400" height="500"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="R35-3D-IAX" userLabel="Cell stack view">
+                                            <rect key="frame" x="8" y="8" width="384" height="299"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="REFERRERS" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kpU-3N-iIs">
+                                                    <rect key="frame" x="0.0" y="0.0" width="384" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bpa-35-kKP" userLabel="Cumulative stack view">
+                                                    <rect key="frame" x="0.0" y="37" width="384" height="170"/>
+                                                    <subviews>
+                                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="5IS-Ye-y7H" userLabel="Pledge percent stack view">
+                                                            <rect key="frame" x="0.0" y="0.0" width="202" height="170"/>
+                                                            <subviews>
+                                                                <view contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="rYr-pG-GUU">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="202" height="128"/>
+                                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                                </view>
+                                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="jSS-vz-5aC">
+                                                                    <rect key="frame" x="0.0" y="128" width="202" height="42"/>
+                                                                    <subviews>
+                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="% Kickstarter" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PdK-Oj-5eu">
+                                                                            <rect key="frame" x="0.0" y="0.0" width="202" height="21"/>
+                                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                                            <nil key="highlightedColor"/>
+                                                                        </label>
+                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="% External" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eY1-Jn-SGo">
+                                                                            <rect key="frame" x="0.0" y="21" width="202" height="21"/>
+                                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                                            <nil key="highlightedColor"/>
+                                                                        </label>
+                                                                    </subviews>
+                                                                </stackView>
+                                                            </subviews>
+                                                        </stackView>
+                                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="hn2-jl-yEG" userLabel="Pledge amount stack view">
+                                                            <rect key="frame" x="202" y="0.0" width="182" height="170"/>
+                                                            <subviews>
+                                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="XIN-Rg-ZfA">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="182" height="46"/>
+                                                                    <subviews>
+                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Pledged via Kickstarter" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="09c-30-uO1">
+                                                                            <rect key="frame" x="0.0" y="0.0" width="182" height="21"/>
+                                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                                            <nil key="highlightedColor"/>
+                                                                        </label>
+                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="$13 USD" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C5k-Bs-TOd">
+                                                                            <rect key="frame" x="0.0" y="25" width="182" height="21"/>
+                                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                                            <nil key="highlightedColor"/>
+                                                                        </label>
+                                                                    </subviews>
+                                                                </stackView>
+                                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="TgG-RU-maf">
+                                                                    <rect key="frame" x="0.0" y="62" width="182" height="46"/>
+                                                                    <subviews>
+                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Pledged via External" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="puj-o7-Pzy">
+                                                                            <rect key="frame" x="0.0" y="0.0" width="182" height="21"/>
+                                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                                            <nil key="highlightedColor"/>
+                                                                        </label>
+                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="$27 USD" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y1s-td-c9f">
+                                                                            <rect key="frame" x="0.0" y="25" width="182" height="21"/>
+                                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                                            <nil key="highlightedColor"/>
+                                                                        </label>
+                                                                    </subviews>
+                                                                </stackView>
+                                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="aur-hZ-48K">
+                                                                    <rect key="frame" x="0.0" y="124" width="182" height="46"/>
+                                                                    <subviews>
+                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Average pledge amount" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fzR-s3-HWc">
+                                                                            <rect key="frame" x="0.0" y="0.0" width="182" height="21"/>
+                                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                                            <nil key="highlightedColor"/>
+                                                                        </label>
+                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="$2 USD" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bmB-I4-egh">
+                                                                            <rect key="frame" x="0.0" y="25" width="182" height="21"/>
+                                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                                            <nil key="highlightedColor"/>
+                                                                        </label>
+                                                                    </subviews>
+                                                                </stackView>
+                                                            </subviews>
+                                                        </stackView>
+                                                    </subviews>
+                                                </stackView>
+                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="lIe-sY-Ed9" userLabel="Referrers stack view">
+                                                    <rect key="frame" x="0.0" y="223" width="384" height="30"/>
+                                                    <subviews>
+                                                        <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="JaO-cL-txr" userLabel="Referrers stack view title stack view">
+                                                            <rect key="frame" x="0.0" y="0.0" width="384" height="30"/>
+                                                            <subviews>
+                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jby-Gc-Irc">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="96" height="30"/>
+                                                                    <state key="normal" title="Source"/>
+                                                                </button>
+                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7ar-qE-sll">
+                                                                    <rect key="frame" x="96" y="0.0" width="96" height="30"/>
+                                                                    <state key="normal" title="Backers"/>
+                                                                </button>
+                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5by-kL-ZIk">
+                                                                    <rect key="frame" x="192" y="0.0" width="96" height="30"/>
+                                                                    <state key="normal" title="Pledged"/>
+                                                                </button>
+                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pdd-xo-r34">
+                                                                    <rect key="frame" x="288" y="0.0" width="96" height="30"/>
+                                                                    <state key="normal" title="Percent"/>
+                                                                </button>
+                                                            </subviews>
+                                                        </stackView>
+                                                    </subviews>
+                                                </stackView>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="V51-9f-Avr">
+                                                    <rect key="frame" x="0.0" y="269" width="384" height="30"/>
+                                                    <state key="normal" title="Show more referrers"/>
+                                                </button>
+                                            </subviews>
+                                        </stackView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="trailingMargin" secondItem="R35-3D-IAX" secondAttribute="trailing" id="6mj-ND-9y1"/>
+                                        <constraint firstItem="R35-3D-IAX" firstAttribute="leading" secondItem="N1s-de-ZbZ" secondAttribute="leadingMargin" id="NXh-FB-T1N"/>
+                                        <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="R35-3D-IAX" secondAttribute="bottom" id="bmi-Gz-6sP"/>
+                                        <constraint firstItem="R35-3D-IAX" firstAttribute="top" secondItem="N1s-de-ZbZ" secondAttribute="topMargin" id="t15-FA-Oor"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="averagePledgeAmountSubtitleLabel" destination="bmB-I4-egh" id="JwJ-Tt-21O"/>
+                                    <outlet property="averagePledgeAmountTitleLabel" destination="fzR-s3-HWc" id="SiV-fz-LDv"/>
+                                    <outlet property="backersColumnTitleButton" destination="7ar-qE-sll" id="eMd-8C-cE8"/>
+                                    <outlet property="externalPercentLabel" destination="eY1-Jn-SGo" id="QY6-D0-tKV"/>
+                                    <outlet property="externalPledgedAmountSubtitleLabel" destination="Y1s-td-c9f" id="CAs-rY-k3o"/>
+                                    <outlet property="externalPledgedAmountTitleLabel" destination="puj-o7-Pzy" id="ya8-lg-2wi"/>
+                                    <outlet property="internalPercentLabel" destination="PdK-Oj-5eu" id="fHT-3J-0xB"/>
+                                    <outlet property="internalPledgedAmountSubtitleLabel" destination="C5k-Bs-TOd" id="sw5-c3-LqE"/>
+                                    <outlet property="internalPledgedAmountTitleLabel" destination="09c-30-uO1" id="PJT-Dn-QyM"/>
+                                    <outlet property="percentColumnTitleButton" destination="pdd-xo-r34" id="5De-0B-U1g"/>
+                                    <outlet property="pledgedColumnTitleButton" destination="5by-kL-ZIk" id="Ny9-vT-mh5"/>
+                                    <outlet property="referrersStackView" destination="lIe-sY-Ed9" id="Kss-Dm-fbi"/>
+                                    <outlet property="referrersTitleLabel" destination="kpU-3N-iIs" id="j9D-ew-yeb"/>
+                                    <outlet property="showMoreReferrersButton" destination="V51-9f-Avr" id="Xag-vr-1yf"/>
+                                    <outlet property="sourceColumnTitleButton" destination="Jby-Gc-Irc" id="a2e-Oh-vmw"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Padding2" rowHeight="32" id="ezI-kE-peF" userLabel="-- padding --">
+                                <rect key="frame" x="0.0" y="1180" width="400" height="32"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ezI-kE-peF" id="bDp-xF-niI">
                                     <rect key="frame" x="0.0" y="0.0" width="400" height="32"/>
@@ -363,7 +548,7 @@
                                 <edgeInsets key="layoutMargins" top="16" left="16" bottom="16" right="16"/>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="DashboardVideoCell" selectionStyle="none" indentationWidth="10" reuseIdentifier="DashboardVideoCell" rowHeight="400" id="KYa-Tv-qTT" userLabel="Video cell" customClass="DashboardVideoCell" customModule="Kickstarter_Framework" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="680" width="400" height="400"/>
+                                <rect key="frame" x="0.0" y="1212" width="400" height="400"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KYa-Tv-qTT" id="Wed-BD-KG6">
                                     <rect key="frame" x="0.0" y="0.0" width="400" height="400"/>
@@ -472,7 +657,7 @@
                     </tableView>
                     <navigationItem key="navigationItem" id="sPI-sg-TSE"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="400" height="900"/>
+                    <size key="freeformSize" width="400" height="1200"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="frA-IF-AkB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

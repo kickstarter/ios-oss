@@ -12,14 +12,22 @@ internal final class DashboardViewModelTests: TestCase {
   internal let goToProject = TestObserver<Project, NoError>()
   internal let project = TestObserver<Project, NoError>()
   internal let projects = TestObserver<[Project], NoError>()
+  internal let referrerCumulativeStats = TestObserver<ProjectStatsEnvelope.Cumulative, NoError>()
+  internal let referrerStats = TestObserver<[ProjectStatsEnvelope.ReferrerStats], NoError>()
+  internal let rewardStats = TestObserver<[ProjectStatsEnvelope.RewardStats], NoError>()
   internal let videoStats = TestObserver<ProjectStatsEnvelope.VideoStats, NoError>()
 
   internal override func setUp() {
     super.setUp()
-    self.vm.outputs.goToProject.map { $0.0 }.observe(goToProject.observer)
-    self.vm.outputs.project.observe(project.observer)
-    self.vm.outputs.projects.observe(projects.observer)
-    self.vm.outputs.videoStats.observe(videoStats.observer)
+    self.vm.outputs.goToProject.map { $0.0 }.observe(self.goToProject.observer)
+    self.vm.outputs.project.observe(self.project.observer)
+    self.vm.outputs.projects.observe(self.projects.observer)
+    self.vm.outputs.referrerData
+      .map { cumulative, _, _ in cumulative }
+      .observe(self.referrerCumulativeStats.observer)
+    self.vm.outputs.referrerData.map { _, _, stats in stats }.observe(self.referrerStats.observer)
+    self.vm.outputs.rewardStats.map { stats, _ in stats }.observe(self.rewardStats.observer)
+    self.vm.outputs.videoStats.observe(self.videoStats.observer)
   }
 
   func testTracking() {
@@ -54,12 +62,23 @@ internal final class DashboardViewModelTests: TestCase {
   }
 
   func testProjectStatsEmit() {
+    let projects = [Project.template]
+
     let statsEnvelope = .template
+      |> ProjectStatsEnvelope.lens.cumulative .~ .template
+      |> ProjectStatsEnvelope.lens.referrerStats .~ [.template]
+      |> ProjectStatsEnvelope.lens.rewardStats .~ [.template]
       |> ProjectStatsEnvelope.lens.videoStats .~ .template
 
-    withEnvironment(apiService: MockService(fetchProjectStatsResponse: statsEnvelope)) {
-      self.vm.inputs.viewDidLoad()
-      self.videoStats.assertValueCount(1, "Video stats emitted")
+    withEnvironment(apiService: MockService(fetchProjectsResponse: projects,
+      fetchProjectStatsResponse: statsEnvelope)) {
+        self.vm.inputs.viewDidLoad()
+        self.scheduler.advance()
+
+        self.videoStats.assertValues([.template], "Video stats emitted.")
+        self.referrerCumulativeStats.assertValues([.template], "Cumulative stats emitted.")
+        self.referrerStats.assertValues([[.template]], "Referrer stats emitted.")
+        self.rewardStats.assertValues([[.template]], "Reward stats emitted.")
     }
   }
 }

@@ -25,6 +25,35 @@ public let lastUpdatePublishedAtLabelStyle =
 public let dashboardMessagesButtonStyle = UIButton.lens.titleText(forState: .Normal)
   %~ { _ in  Strings.dashboard_buttons_messages() }
 
+public let dashboardReferrersColumnTitleButtonStyle =
+  UIButton.lens.titleLabel.font .~ .ksr_subhead
+    <> UIButton.lens.titleColor(forState: .Normal) .~ .ksr_darkGray
+    <> UIButton.lens.titleColor(forState: .Highlighted) .~ .ksr_black
+
+public let dashboardReferrersPledgePercentLabelStyle =
+  UILabel.lens.textColor .~ .ksr_darkGrayText
+  <> UILabel.lens.font .~ .ksr_footnote
+
+public let dashboardReferrersPledgeAmountSubtitleLabelStyle =
+  UILabel.lens.textColor .~ .ksr_darkGrayText
+  <> UILabel.lens.font .~ UIFont.ksr_title1.bolded
+
+public let dashboardReferrersPledgeAmountTitleLabelStyle =
+  UILabel.lens.textColor .~ .ksr_darkGrayText
+    <> UILabel.lens.font .~ .ksr_subhead
+
+public let dashboardReferrersRowLabelStyle =
+  UILabel.lens.textColor .~ .ksr_darkGrayText
+  <> UILabel.lens.font .~ .ksr_subhead
+
+public let dashboardReferrersShowMoreButtonStyle =
+  UIButton.lens.titleText(forState: .Normal) %~ { _ in Strings.dashboard_graphs_referrers_show_more() }
+
+public let dashboardReferrersTitleLabelStyle =
+  UILabel.lens.textColor .~ .ksr_darkGrayText
+  <> UILabel.lens.font .~ .ksr_headline
+  <> UILabel.lens.text %~ { _ in Strings.dashboard_graphs_referrers_title() }
+
 public let postUpdateButtonStyle = positiveButtonStyle
   <> UIButton.lens.titleText(forState: .Normal) %~ { _ in Strings.dashboard_buttons_post_update() }
 

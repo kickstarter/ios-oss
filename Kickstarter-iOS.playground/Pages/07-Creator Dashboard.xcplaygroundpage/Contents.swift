@@ -13,6 +13,24 @@ let rewards = (1...6).map {
     |> Reward.lens.minimum .~ $0 * 4
 }
 
+let referrerStats = (1...3).map {
+  .template
+    |> ProjectStatsEnvelope.ReferrerStats.lens.backersCount .~ $0 * 5
+    |> ProjectStatsEnvelope.ReferrerStats.lens.code .~ "direct"
+    |> ProjectStatsEnvelope.ReferrerStats.lens.percentageOfDollars .~ 0.5
+    |> ProjectStatsEnvelope.ReferrerStats.lens.pledged .~ 5
+    |> ProjectStatsEnvelope.ReferrerStats.lens.referrerName .~ "Direct traffic"
+    |> ProjectStatsEnvelope.ReferrerStats.lens.referrerType .~ .external
+  } + (1...3).map {
+    .template
+      |> ProjectStatsEnvelope.ReferrerStats.lens.backersCount .~ $0 * 10
+      |> ProjectStatsEnvelope.ReferrerStats.lens.code .~ "search"
+      |> ProjectStatsEnvelope.ReferrerStats.lens.percentageOfDollars .~ 0.5
+      |> ProjectStatsEnvelope.ReferrerStats.lens.pledged .~ 5
+      |> ProjectStatsEnvelope.ReferrerStats.lens.referrerName .~ "Search"
+      |> ProjectStatsEnvelope.ReferrerStats.lens.referrerType .~ .`internal`
+}
+
 let rewardStats = (1...6).map {
   .template
     |> ProjectStatsEnvelope.RewardStats.lens.backersCount .~ $0 * 5
@@ -33,9 +51,11 @@ let cumulativeStats = .template
 AppEnvironment.replaceCurrentEnvironment(
   apiService: MockService(
     fetchProjectStatsResponse: .template
-      |> ProjectStatsEnvelope.lens.videoStats .~ videoStats
       |> ProjectStatsEnvelope.lens.cumulative .~ cumulativeStats
-      |> ProjectStatsEnvelope.lens.rewardStats .~ rewardStats,
+      |> ProjectStatsEnvelope.lens.rewardStats .~ rewardStats
+      |> ProjectStatsEnvelope.lens.referrerStats .~ referrerStats
+      |> ProjectStatsEnvelope.lens.videoStats .~ videoStats,
+
     fetchProjectsResponse: [
       .cosmicSurgery
         |> Project.lens.memberData.lastUpdatePublishedAt .~ NSDate().timeIntervalSince1970
