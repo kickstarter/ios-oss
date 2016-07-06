@@ -25,8 +25,6 @@ AppEnvironment.replaceCurrentEnvironment(
 let controller = storyboard(named: "Activity")
   .instantiateViewControllerWithIdentifier("ActivitiesViewController") as! ActivitiesViewController
 
-controller.bindViewModel()
-
 XCPlaygroundPage.currentPage.liveView = controller
 controller.view
   |> UIView.lens.frame.size.height .~ 1_600

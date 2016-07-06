@@ -36,8 +36,8 @@ extension UIViewController {
   }
 
   internal func ksr_viewDidLoad(animated: Bool) {
-    self.bindViewModel()
     self.ksr_viewDidLoad(animated)
+    self.bindViewModel()
     self.bindStyles()
   }
 

@@ -21,7 +21,6 @@ let controller = storyboard(named: "Discovery")
 
 controller.configureWith(sort: .Magic)
 controller.change(filter: .defaults)
-controller.bindViewModel()
 
 XCPlaygroundPage.currentPage.liveView = controller
 controller.view |> UIView.lens.frame.size.height .~ 1_250

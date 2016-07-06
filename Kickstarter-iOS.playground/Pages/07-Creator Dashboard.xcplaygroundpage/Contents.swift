@@ -51,9 +51,5 @@ AppEnvironment.replaceCurrentEnvironment(
 let controller = storyboard(named: "Dashboard")
   .instantiateViewControllerWithIdentifier("DashboardViewController") as! DashboardViewController
 
-controller.bindViewModel()
-
-controller.bindStyles()
-
 XCPlaygroundPage.currentPage.liveView = controller
 controller.view |> UIView.lens.frame.size.height .~ 1_250
