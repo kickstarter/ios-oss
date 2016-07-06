@@ -10,10 +10,15 @@ public func baseControllerStyle <VC: UIViewControllerProtocol> () -> (VC -> VC) 
 
 public func baseTableControllerStyle <TVC: UITableViewControllerProtocol>
   (estimatedRowHeight estimatedRowHeight: CGFloat = 44.0) -> (TVC -> TVC) {
-  return baseControllerStyle()
+  let style = baseControllerStyle()
     <> TVC.lens.tableView.rowHeight .~ UITableViewAutomaticDimension
     <> TVC.lens.tableView.estimatedRowHeight .~ estimatedRowHeight
-    <> TVC.lens.tableView.separatorStyle .~ .None
+
+  #if os(iOS)
+    return style <> TVC.lens.tableView.separatorStyle .~ .None
+  #else
+    return style
+  #endif
 }
 
 public func baseTableViewCellStyle <TVC: UITableViewCellProtocol> () -> (TVC -> TVC) {

@@ -65,7 +65,7 @@ internal final class MessageThreadsViewController: UITableViewController {
                                    didSelectRowAtIndexPath indexPath: NSIndexPath) {
 
     if let messageThread = self.dataSource[indexPath] as? MessageThread {
-      guard let messages = UIStoryboard(name: "Messages", bundle: nil)
+      guard let messages = UIStoryboard(name: "Messages", bundle: .framework)
         .instantiateViewControllerWithIdentifier("MessagesViewController") as? MessagesViewController else {
           fatalError("Could not find MessagesViewController.")
       }

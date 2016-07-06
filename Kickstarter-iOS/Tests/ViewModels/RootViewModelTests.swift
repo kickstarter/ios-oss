@@ -1,6 +1,6 @@
 import XCTest
 import UIKit
-@testable import Kickstarter_iOS
+@testable import Kickstarter_Framework
 @testable import Library
 @testable import KsApi
 @testable import ReactiveExtensions_TestHelpers

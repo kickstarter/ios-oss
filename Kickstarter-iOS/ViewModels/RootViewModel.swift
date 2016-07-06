@@ -86,9 +86,9 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
       .take(1)
       .map { _ in
         [
-          UIStoryboard(name: "Discovery", bundle: nil).instantiateInitialViewController(),
-          UIStoryboard(name: "Search", bundle: nil).instantiateInitialViewController(),
-          UIStoryboard(name: "Activity", bundle: nil).instantiateInitialViewController()
+          initialViewController(storyboardName: "Discovery"),
+          initialViewController(storyboardName: "Search"),
+          initialViewController(storyboardName: "Activity")
         ]
       }
       .map { $0.compact() }
@@ -125,5 +125,5 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
 }
 
 private func initialViewController(storyboardName storyboardName: String) -> UIViewController? {
-  return UIStoryboard(name: storyboardName, bundle: nil).instantiateInitialViewController()
+  return UIStoryboard(name: storyboardName, bundle: .framework).instantiateInitialViewController()
 }

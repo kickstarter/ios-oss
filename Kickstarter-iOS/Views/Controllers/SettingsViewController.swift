@@ -107,7 +107,7 @@ internal final class SettingsViewController: UIViewController {
   }
 
   private func goToFindFriends() {
-    guard let friendVC = UIStoryboard(name: "Friends", bundle: nil)
+    guard let friendVC = UIStoryboard(name: "Friends", bundle: .framework)
       .instantiateInitialViewController() as? FindFriendsViewController
     else {
       fatalError("Could not instantiate FindFriendsViewController.")

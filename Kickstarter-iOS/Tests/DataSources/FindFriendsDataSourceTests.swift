@@ -1,6 +1,6 @@
 import XCTest
 @testable import Library
-@testable import Kickstarter_iOS
+@testable import Kickstarter_Framework
 @testable import KsApi
 import Prelude
 

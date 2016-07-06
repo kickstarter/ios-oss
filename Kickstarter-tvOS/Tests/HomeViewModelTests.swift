@@ -1,5 +1,5 @@
 import XCTest
-@testable import Kickstarter_tvOS
+@testable import Kickstarter_Framework
 @testable import KsApi
 import ReactiveCocoa
 import Result

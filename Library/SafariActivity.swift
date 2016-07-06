@@ -1,5 +1,6 @@
+#if os(iOS)
 import Foundation
-import UIKit.UIActivity
+import UIKit
 
 public let SafariActivityType = "com.kickstarter.kickstarter.safari"
 
@@ -32,3 +33,4 @@ public final class SafariActivity: UIActivity {
     self.activityDidFinish(true)
   }
 }
+#endif

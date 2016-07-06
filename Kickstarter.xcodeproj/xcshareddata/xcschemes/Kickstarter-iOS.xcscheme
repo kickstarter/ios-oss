@@ -29,16 +29,6 @@
       shouldUseLaunchSchemeArgsEnv = "YES"
       codeCoverageEnabled = "YES">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "A7D1F9591C850B7C000D41D5"
-               BuildableName = "Kickstarter-iOSTests.xctest"
-               BlueprintName = "Kickstarter-iOSTests"
-               ReferencedContainer = "container:Kickstarter.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference

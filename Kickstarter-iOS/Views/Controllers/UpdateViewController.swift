@@ -49,7 +49,7 @@ internal final class UpdateViewController: WebViewController {
   }
 
   private func goToComments(forUpdate update: Update) {
-    guard let vc = UIStoryboard(name: "Comments", bundle: nil)
+    guard let vc = UIStoryboard(name: "Comments", bundle: .framework)
       .instantiateInitialViewController() as? CommentsViewController else {
         fatalError("Could not instantiate CommentsViewController.")
     }
@@ -59,7 +59,7 @@ internal final class UpdateViewController: WebViewController {
   }
 
   private func goTo(project project: Project, refTag: RefTag?) {
-    guard let vc = UIStoryboard(name: "Project", bundle: nil)
+    guard let vc = UIStoryboard(name: "Project", bundle: .framework)
       .instantiateInitialViewController() as? ProjectViewController else {
         fatalError("Could not instantiate ProjectViewController")
     }

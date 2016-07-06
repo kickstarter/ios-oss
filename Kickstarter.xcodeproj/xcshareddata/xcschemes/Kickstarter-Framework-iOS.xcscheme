@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "A7C795CC1C873BD50081977F"
+               BlueprintIdentifier = "A7C7959D1C873A870081977F"
                BuildableName = "Kickstarter_Framework.framework"
-               BlueprintName = "Kickstarter-tvOS-Framework"
+               BlueprintName = "Kickstarter-Framework-iOS"
                ReferencedContainer = "container:Kickstarter.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -26,9 +26,29 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      shouldUseLaunchSchemeArgsEnv = "YES">
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      codeCoverageEnabled = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "A7D1F9591C850B7C000D41D5"
+               BuildableName = "Kickstarter-Framework-iOSTests.xctest"
+               BlueprintName = "Kickstarter-Framework-iOSTests"
+               ReferencedContainer = "container:Kickstarter.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "A7C7959D1C873A870081977F"
+            BuildableName = "Kickstarter_Framework.framework"
+            BlueprintName = "Kickstarter-Framework-iOS"
+            ReferencedContainer = "container:Kickstarter.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
@@ -45,9 +65,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "A7C795CC1C873BD50081977F"
+            BlueprintIdentifier = "A7C7959D1C873A870081977F"
             BuildableName = "Kickstarter_Framework.framework"
-            BlueprintName = "Kickstarter-tvOS-Framework"
+            BlueprintName = "Kickstarter-Framework-iOS"
             ReferencedContainer = "container:Kickstarter.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -63,9 +83,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "A7C795CC1C873BD50081977F"
+            BlueprintIdentifier = "A7C7959D1C873A870081977F"
             BuildableName = "Kickstarter_Framework.framework"
-            BlueprintName = "Kickstarter-tvOS-Framework"
+            BlueprintName = "Kickstarter-Framework-iOS"
             ReferencedContainer = "container:Kickstarter.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

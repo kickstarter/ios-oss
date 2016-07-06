@@ -86,7 +86,7 @@ internal final class DashboardViewController: UITableViewController {
   }
 
   private func goToActivity(project: Project) {
-    guard let vc = UIStoryboard(name: "ProjectActivity", bundle: nil)
+    guard let vc = UIStoryboard(name: "ProjectActivity", bundle: .framework)
       .instantiateInitialViewController() as? ProjectActivitiesViewController else {
         fatalError("Could not instantiate ProjectActivitiesViewController.")
     }
@@ -96,7 +96,7 @@ internal final class DashboardViewController: UITableViewController {
   }
 
   private func goToMessages(project: Project) {
-    guard let vc = UIStoryboard(name: "Messages", bundle: nil).instantiateInitialViewController(),
+    guard let vc = UIStoryboard(name: "Messages", bundle: .framework).instantiateInitialViewController(),
       messages = vc as? MessageThreadsViewController else {
         fatalError("Could not instantiate MessageThreadsViewController.")
     }
@@ -106,7 +106,7 @@ internal final class DashboardViewController: UITableViewController {
   }
 
   private func goToPostUpdate(project: Project) {
-    guard let vc = UIStoryboard(name: "UpdateDraft", bundle: nil).instantiateInitialViewController()
+    guard let vc = UIStoryboard(name: "UpdateDraft", bundle: .framework).instantiateInitialViewController()
       as? UpdateDraftViewController else {
         fatalError("Could not instantiate DraftViewController.")
     }
@@ -119,7 +119,7 @@ internal final class DashboardViewController: UITableViewController {
   }
 
   private func goToProject(project: Project, refTag: RefTag) {
-    guard let vc = UIStoryboard(name: "Project", bundle: nil).instantiateInitialViewController()
+    guard let vc = UIStoryboard(name: "Project", bundle: .framework).instantiateInitialViewController()
       as? ProjectViewController else {
         fatalError("Could not instantiate ProjectViewController.")
     }

@@ -55,7 +55,7 @@ internal final class ProjectViewController: UITableViewController {
   }
 
   private func openComments(forProject project: Project) {
-    guard let commentsViewController = UIStoryboard(name: "Comments", bundle: nil)
+    guard let commentsViewController = UIStoryboard(name: "Comments", bundle: .framework)
       .instantiateInitialViewController() as? CommentsViewController else {
         fatalError("Could not instantiate CommentsViewController.")
     }

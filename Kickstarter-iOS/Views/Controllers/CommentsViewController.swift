@@ -114,7 +114,7 @@ internal final class CommentsViewController: UITableViewController {
   }
 
   internal func presentLoginTout() {
-    let vc = UIStoryboard(name: "Login", bundle: nil)
+    let vc = UIStoryboard(name: "Login", bundle: .framework)
       .instantiateViewControllerWithIdentifier("LoginToutViewController")
     guard let login = vc as? LoginToutViewController else {
         fatalError("Could not instantiate LoginToutViewController.")

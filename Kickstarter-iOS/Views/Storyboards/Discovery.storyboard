@@ -15,7 +15,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.94999999999999996" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="DiscoveryOnboardingCell" rowHeight="170" id="iqs-B4-LCu" customClass="DiscoveryOnboardingCell" customModule="Kickstarter_iOS">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="DiscoveryOnboardingCell" rowHeight="170" id="iqs-B4-LCu" customClass="DiscoveryOnboardingCell" customModule="Kickstarter_Framework" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="400" height="170"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" tableViewCell="iqs-B4-LCu" id="YJO-e3-rOP">
@@ -595,10 +595,10 @@
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C7C-Pq-Mh1" userLabel="Sorts scroll view">
                                 <rect key="frame" x="0.0" y="0.0" width="400" height="44"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rW6-mF-Pz5" userLabel="Sort buttons">
+                                    <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rW6-mF-Pz5" userLabel="Sort buttons">
                                         <rect key="frame" x="0.0" y="0.0" width="461" height="44"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pkX-KF-GsJ" customClass="BorderButton" customModule="Library">
+                                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pkX-KF-GsJ" customClass="BorderButton" customModule="Library">
                                                 <rect key="frame" x="0.0" y="0.0" width="72" height="44"/>
                                                 <inset key="contentEdgeInsets" minX="16" minY="0.0" maxX="16" maxY="0.0"/>
                                                 <state key="normal" title="Magic"/>
@@ -610,7 +610,7 @@
                                                     <userDefinedRuntimeAttribute type="string" keyPath="_titleFontStyle" value="Subhead"/>
                                                 </userDefinedRuntimeAttributes>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ePJ-pV-uZx" customClass="BorderButton" customModule="Library">
+                                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ePJ-pV-uZx" customClass="BorderButton" customModule="Library">
                                                 <rect key="frame" x="72" y="0.0" width="82" height="44"/>
                                                 <inset key="contentEdgeInsets" minX="16" minY="0.0" maxX="16" maxY="0.0"/>
                                                 <state key="normal" title="Popular"/>
@@ -622,7 +622,7 @@
                                                     <userDefinedRuntimeAttribute type="string" keyPath="_titleFontStyle" value="Subhead"/>
                                                 </userDefinedRuntimeAttributes>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xxC-WK-MIh" customClass="BorderButton" customModule="Library">
+                                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xxC-WK-MIh" customClass="BorderButton" customModule="Library">
                                                 <rect key="frame" x="154" y="0.0" width="81" height="44"/>
                                                 <inset key="contentEdgeInsets" minX="16" minY="0.0" maxX="16" maxY="0.0"/>
                                                 <state key="normal" title="Newest"/>
@@ -634,7 +634,7 @@
                                                     <userDefinedRuntimeAttribute type="string" keyPath="_titleFontStyle" value="Subhead"/>
                                                 </userDefinedRuntimeAttributes>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8h8-jt-GPv" customClass="BorderButton" customModule="Library">
+                                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8h8-jt-GPv" customClass="BorderButton" customModule="Library">
                                                 <rect key="frame" x="235" y="0.0" width="112" height="44"/>
                                                 <inset key="contentEdgeInsets" minX="16" minY="0.0" maxX="16" maxY="0.0"/>
                                                 <state key="normal" title="Ending soon"/>
@@ -646,7 +646,7 @@
                                                     <userDefinedRuntimeAttribute type="string" keyPath="_titleFontStyle" value="Subhead"/>
                                                 </userDefinedRuntimeAttributes>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MNI-8q-4wr" customClass="BorderButton" customModule="Library">
+                                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MNI-8q-4wr" customClass="BorderButton" customModule="Library">
                                                 <rect key="frame" x="347" y="0.0" width="114" height="44"/>
                                                 <inset key="contentEdgeInsets" minX="16" minY="0.0" maxX="16" maxY="0.0"/>
                                                 <state key="normal" title="Most funded"/>

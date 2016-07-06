@@ -1,3 +1,4 @@
+#if os(iOS)
 import KsApi
 import Prelude
 import ReactiveCocoa
@@ -257,3 +258,4 @@ private func shareComposeController(forShareContext shareContext: ShareContext, 
 
     return controller
 }
+#endif

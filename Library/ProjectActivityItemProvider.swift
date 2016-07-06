@@ -1,3 +1,4 @@
+#if os(iOS)
 import KsApi
 import UIKit
 
@@ -26,3 +27,4 @@ public final class ProjectActivityItemProvider: UIActivityItemProvider {
     return self.activityViewControllerPlaceholderItem(activityViewController)
   }
 }
+#endif

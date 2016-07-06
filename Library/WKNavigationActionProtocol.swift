@@ -1,3 +1,4 @@
+#if os(iOS)
 import WebKit
 
 public protocol WKNavigationActionProtocol {
@@ -11,3 +12,4 @@ internal struct MockNavigationAction: WKNavigationActionProtocol {
   internal let navigationType: WKNavigationType
   internal let request: NSURLRequest
 }
+#endif

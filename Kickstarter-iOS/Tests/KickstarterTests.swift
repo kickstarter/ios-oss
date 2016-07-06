@@ -1,5 +1,5 @@
 import XCTest
-@testable import Kickstarter_iOS
+@testable import Kickstarter_Framework
 
 class KickstarterTests: XCTestCase {
 }

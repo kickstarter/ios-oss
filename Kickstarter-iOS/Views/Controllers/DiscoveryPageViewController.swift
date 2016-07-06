@@ -82,7 +82,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
   }
 
   private func goTo(project project: Project, refTag: RefTag) {
-    guard let projectViewController = UIStoryboard(name: "Project", bundle: nil)
+    guard let projectViewController = UIStoryboard(name: "Project", bundle: .framework)
       .instantiateInitialViewController() as? ProjectViewController else {
         fatalError("Couldn't instantiate project view controller.")
     }
@@ -95,7 +95,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
 
 extension DiscoveryPageViewController: DiscoveryOnboardingCellDelegate {
   internal func discoveryOnboardingTappedSignUpLoginButton() {
-    let storyboard = UIStoryboard(name: "Login", bundle: nil)
+    let storyboard = UIStoryboard(name: "Login", bundle: .framework)
 
     guard let nav = storyboard.instantiateInitialViewController() as? UINavigationController,
       loginTout = nav.viewControllers.first as? LoginToutViewController else {

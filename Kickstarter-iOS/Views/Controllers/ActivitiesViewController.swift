@@ -161,7 +161,7 @@ internal final class ActivitiesViewController: UITableViewController {
   }
 
   private func present(project project: Project, refTag: RefTag) {
-    guard let vc = UIStoryboard(name: "Project", bundle: nil)
+    guard let vc = UIStoryboard(name: "Project", bundle: .framework)
       .instantiateInitialViewController() as? ProjectViewController else {
         fatalError("Could not instantiate ProjectViewController.")
     }
@@ -173,7 +173,7 @@ internal final class ActivitiesViewController: UITableViewController {
   }
 
   private func goToFriends(source source: FriendsSource) {
-    guard let friendVC = UIStoryboard(name: "Friends", bundle: nil)
+    guard let friendVC = UIStoryboard(name: "Friends", bundle: .framework)
       .instantiateInitialViewController() as? FindFriendsViewController else {
       fatalError("Could not instantiate FindFriendsViewController.")
     }
@@ -183,7 +183,7 @@ internal final class ActivitiesViewController: UITableViewController {
   }
 
   private func goToUpdate(project project: Project, update: Update) {
-    guard let vc = UIStoryboard(name: "Update", bundle: nil)
+    guard let vc = UIStoryboard(name: "Update", bundle: .framework)
       .instantiateViewControllerWithIdentifier("UpdateViewController") as? UpdateViewController else {
         fatalError("Could not instantiate UpdateViewController")
     }

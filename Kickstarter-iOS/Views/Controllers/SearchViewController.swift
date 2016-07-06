@@ -44,7 +44,7 @@ internal final class SearchViewController: UITableViewController {
     guard let project = self.dataSource[indexPath] as? Project else {
       return
     }
-    guard let projectVC = UIStoryboard(name: "Project", bundle: nil)
+    guard let projectVC = UIStoryboard(name: "Project", bundle: .framework)
       .instantiateInitialViewController() as? ProjectViewController else {
         return
     }

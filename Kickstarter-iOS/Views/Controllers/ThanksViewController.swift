@@ -131,7 +131,7 @@ internal final class ThanksViewController: UIViewController, UICollectionViewDel
   }
 
   private func goToProject(project: Project, reftag: RefTag) {
-    guard let projectViewController = UIStoryboard(name: "Project", bundle: nil)
+    guard let projectViewController = UIStoryboard(name: "Project", bundle: .framework)
       .instantiateViewControllerWithIdentifier("ProjectViewController") as? ProjectViewController else {
         fatalError("Couldn't instantiate view controller.")
     }

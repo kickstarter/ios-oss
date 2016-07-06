@@ -71,7 +71,7 @@ internal final class ProfileViewController: UICollectionViewController {
   }
 
   @IBAction private func messagesButtonTapped() {
-    guard let vc = UIStoryboard(name: "Messages", bundle: nil).instantiateInitialViewController(),
+    guard let vc = UIStoryboard(name: "Messages", bundle: .framework).instantiateInitialViewController(),
       messages = vc as? MessageThreadsViewController else {
         fatalError("Could not instantiate MessageThreadsViewController.")
     }
@@ -88,7 +88,7 @@ internal final class ProfileViewController: UICollectionViewController {
   }
 
   private func goToSettings() {
-    guard let settingsViewController = UIStoryboard(name: "Settings", bundle: nil)
+    guard let settingsViewController = UIStoryboard(name: "Settings", bundle: .framework)
       .instantiateInitialViewController() as? SettingsViewController else {
         fatalError("Could not instantiate SettingsViewController.")
     }
@@ -97,7 +97,7 @@ internal final class ProfileViewController: UICollectionViewController {
   }
 
   private func present(project project: Project, refTag: RefTag) {
-    guard let vc = UIStoryboard(name: "Project", bundle: nil).instantiateInitialViewController()
+    guard let vc = UIStoryboard(name: "Project", bundle: .framework).instantiateInitialViewController()
       as? ProjectViewController else {
         fatalError("Could not instantiate ProjectViewController.")
     }

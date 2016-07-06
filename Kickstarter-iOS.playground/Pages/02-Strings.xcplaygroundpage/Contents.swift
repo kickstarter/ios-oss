@@ -2,7 +2,7 @@ import Foundation
 @testable import Kickstarter_Framework
 import Library
 
-AppEnvironment.replaceCurrentEnvironment(mainBundle: NSBundle(identifier: "com.Kickstarter-iOS-Framework")!)
+AppEnvironment.replaceCurrentEnvironment(mainBundle: NSBundle.framework)
 
 AppEnvironment.replaceCurrentEnvironment(language: .en)
 Strings.activity_empty_state_logged_in_message()

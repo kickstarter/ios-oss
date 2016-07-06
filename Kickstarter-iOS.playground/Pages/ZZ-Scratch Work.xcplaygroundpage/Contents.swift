@@ -31,4 +31,3 @@ second.topAnchor.constraintEqualToAnchor(first.layoutMarginsGuide.topAnchor).act
 second.leadingAnchor.constraintEqualToAnchor(first.layoutMarginsGuide.leadingAnchor).active = true
 second.trailingAnchor.constraintEqualToAnchor(first.layoutMarginsGuide.trailingAnchor).active = true
 second.bottomAnchor.constraintEqualToAnchor(first.layoutMarginsGuide.bottomAnchor).active = true
-

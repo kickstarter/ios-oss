@@ -91,7 +91,7 @@ internal final class MessagesViewController: UITableViewController {
   }
 
   private func goTo(project project: Project, refTag: RefTag) {
-    guard let vc = UIStoryboard(name: "Project", bundle: nil).instantiateInitialViewController(),
+    guard let vc = UIStoryboard(name: "Project", bundle: .framework).instantiateInitialViewController(),
       projectVC = vc as? ProjectViewController else {
         fatalError("Could not instantiate ProjectViewController")
     }

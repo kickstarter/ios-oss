@@ -8,7 +8,7 @@
         <!--Login Tout View Controller-->
         <scene sceneID="ocl-U6-5M0">
             <objects>
-                <viewController storyboardIdentifier="LoginToutViewController" id="jyD-hR-XbB" customClass="LoginToutViewController" customModule="Kickstarter_iOS" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LoginToutViewController" id="jyD-hR-XbB" customClass="LoginToutViewController" customModule="Kickstarter_Framework" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="mxz-L2-flg"/>
                         <viewControllerLayoutGuide type="bottom" id="LQa-Lt-HvU"/>
@@ -362,7 +362,7 @@
         <!--Login View Controller-->
         <scene sceneID="Aqv-6T-RPB">
             <objects>
-                <viewController storyboardIdentifier="LoginViewController" id="i0D-IP-SOl" customClass="LoginViewController" customModule="Kickstarter_iOS" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LoginViewController" id="i0D-IP-SOl" customClass="LoginViewController" customModule="Kickstarter_Framework" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="frH-WO-TYb"/>
                         <viewControllerLayoutGuide type="bottom" id="NlS-Xy-Gop"/>
