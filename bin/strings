@@ -2,7 +2,8 @@
 
 import Foundation
 
-let endpoint = String?("https://***REMOVED***/v1/app/android/config?client_id=***REMOVED***&all_locales=true")
+let endpoint: String? =
+  "https://***REMOVED***/v1/app/android/config?client_id=***REMOVED***&all_locales=true"
 
 extension Dictionary {
   public func withAllValuesFrom(other: Dictionary) -> Dictionary {
@@ -33,6 +34,8 @@ extension Array where Element: Hashable {
   }
 }
 
+let counts = ["zero", "one", "two", "few", "many"]
+
 func flatten(data: [String:AnyObject], prefix: String = "") -> [String:String] {
   return data.reduce([String:String]()) { accum, keyAndNested in
     let (key, nested) = keyAndNested
@@ -43,7 +46,11 @@ func flatten(data: [String:AnyObject], prefix: String = "") -> [String:String] {
     }
 
     if let string = nested as? String {
-      return accum.withAllValuesFrom([newKey: string])
+      var values = [newKey: string]
+      if (counts.contains(key) && string.containsString("_count}")) {
+        values[prefix] = string
+      }
+      return accum.withAllValuesFrom(values)
     }
 
     return [:]
@@ -52,11 +59,12 @@ func flatten(data: [String:AnyObject], prefix: String = "") -> [String:String] {
 
 func stringsFileContents(strings: [String:String]) -> String {
   return strings.keys.sort()
+    .filter { key in !key.hasSuffix(".") }
     .map { key in "\"\(key)\" = \"\(escaped(string: strings[key]!))\";" }
     .joinWithSeparator("\n")
 }
 
-func funcArguments(string: String) -> String {
+func funcArgumentNames(string: String) -> [String] {
   return string
     .componentsSeparatedByString("%{")
     .flatMap { $0.componentsSeparatedByString("}") }
@@ -64,21 +72,32 @@ func funcArguments(string: String) -> String {
     .filter { idx, _ in idx % 2 == 1 }
     .map { _, x in x }
     .distincts(==)
+}
+
+func funcArguments(argumentNames: [String], count: Bool) -> String {
+  return argumentNames
     .enumerate()
     .map { idx, x in
-      if idx == 0 { return "\(x) \(x): String" }
-      return "\(x): String"
+      let type = count && x.hasSuffix("_count") ? "Int" : "String"
+      if idx == 0 { return "\(x) \(x): \(type)" }
+      return "\(x): \(type)"
     }
     .joinWithSeparator(", ")
 }
 
-func funcSubstitutions(string: String) -> String {
+func funcCount(argumentNames: [String]) -> String {
+  return argumentNames
+    .filter { $0.hasSuffix("_count") }
+    .first ?? "nil"
+}
+
+func funcSubstitutions(string: String, count: Bool) -> String {
   let insides = string
     .componentsSeparatedByString("%{")
     .flatMap { $0.componentsSeparatedByString("}") }
     .enumerate()
     .filter { idx, _ in idx % 2 == 1 }
-    .map { _, x in "\"\(x)\": \(x)" }
+    .map { _, x in "\"\(x)\": \(count && x.hasSuffix("_count") ? "Format.wholeNumber(\(x))" : x)" }
     .distincts(==)
     .joinWithSeparator(", ")
   if insides.characters.isEmpty {
@@ -131,26 +150,32 @@ staticStringsLines.append("// swiftlint:disable file_length")
 staticStringsLines.append("// swiftlint:disable type_body_length")
 staticStringsLines.append("public enum Strings {")
 
-stringsByLocale?["Base"]?.keys.sort().forEach { key in
-  let string = (stringsByLocale?["Base"]?[key])!
+stringsByLocale?["Base"]?.keys
+  .filter { key in counts.reduce(true) { $0 && !key.hasSuffix($1) } }
+  .sort()
+  .forEach { key in
+    let string = (stringsByLocale?["Base"]?[key])!
 
-  staticStringsLines.append("  /**")
-  staticStringsLines.append("   \"\((stringsByLocale?["Base"]?[key])!)\"\n")
-  stringsByLocale?.forEach { locale, strings in
-    let trueLocale = locale == "Base" ? "en" : locale
-    staticStringsLines.append("   - **\(trueLocale)**: \"\(strings[key]!)\"")
+    staticStringsLines.append("  /**")
+    staticStringsLines.append("   \"\((stringsByLocale?["Base"]?[key])!)\"\n")
+    stringsByLocale?.forEach { locale, strings in
+      let trueLocale = locale == "Base" ? "en" : locale
+      staticStringsLines.append("   - **\(trueLocale)**: \"\(strings[key]!)\"")
+    }
+    staticStringsLines.append("  */")
+    let pluralCount = key.hasSuffix(".")
+    let key = pluralCount ? String(key.characters.dropLast()) : key
+    let funcName = key.stringByReplacingOccurrencesOfString(".", withString: "_")
+    let argumentNames = funcArgumentNames(string)
+    staticStringsLines.append("  public static func \(funcName)(\(funcArguments(argumentNames, count: pluralCount))) -> String {")
+    staticStringsLines.append("    return localizedString(")
+    staticStringsLines.append("      key: \"\(key)\",")
+    staticStringsLines.append("      defaultValue: \"\(escaped(string: string))\",")
+    staticStringsLines.append("      count: \(pluralCount ? funcCount(argumentNames) : "nil"),")
+    staticStringsLines.append("      substitutions: \(funcSubstitutions(string, count: pluralCount))")
+    staticStringsLines.append("    )")
+    staticStringsLines.append("  }")
   }
-  staticStringsLines.append("  */")
-  let funcName = key.stringByReplacingOccurrencesOfString(".", withString: "_")
-  staticStringsLines.append("  public static func \(funcName)(\(funcArguments(string))) -> String {")
-  staticStringsLines.append("    return localizedString(")
-  staticStringsLines.append("      key: \"\(key)\",")
-  staticStringsLines.append("      defaultValue: \"\(escaped(string: string))\",")
-  staticStringsLines.append("      count: nil,")
-  staticStringsLines.append("      substitutions: \(funcSubstitutions(string))")
-  staticStringsLines.append("    )")
-  staticStringsLines.append("  }")
-}
 
 staticStringsLines.append("}")
 staticStringsLines.append("")
@@ -161,3 +186,4 @@ try! staticStringsFileContents.writeToFile(
   atomically: true,
   encoding: NSUTF8StringEncoding
 )
+

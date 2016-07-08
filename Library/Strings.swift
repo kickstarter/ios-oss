@@ -1916,6 +1916,397 @@ public enum Strings {
     )
   }
   /**
+   "Backing info"
+
+   - **es**: "Backing info"
+   - **de**: "Backing info"
+   - **fr**: "Backing info"
+   - **it**: "Backing info"
+   - **en**: "Backing info"
+  */
+  public static func dashboard_activity_backing_info() -> String {
+    return localizedString(
+      key: "dashboard.activity.backing_info",
+      defaultValue: "Backing info",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "No reward selected"
+
+   - **es**: "No reward selected"
+   - **de**: "No reward selected"
+   - **fr**: "No reward selected"
+   - **it**: "No reward selected"
+   - **en**: "No reward selected"
+  */
+  public static func dashboard_activity_no_reward_selected() -> String {
+    return localizedString(
+      key: "dashboard.activity.no_reward_selected",
+      defaultValue: "No reward selected",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "<b>%{project_name}</b> launched on %{launch_date} with a goal of raising <b>%{goal}</b>"
+
+   - **es**: "<b>%{project_name}</b> launched on %{launch_date} with a goal of raising <b>%{goal}</b>"
+   - **de**: "<b>%{project_name}</b> launched on %{launch_date} with a goal of raising <b>%{goal}</b>"
+   - **fr**: "<b>%{project_name}</b> launched on %{launch_date} with a goal of raising <b>%{goal}</b>"
+   - **it**: "<b>%{project_name}</b> launched on %{launch_date} with a goal of raising <b>%{goal}</b>"
+   - **en**: "<b>%{project_name}</b> launched on %{launch_date} with a goal of raising <b>%{goal}</b>"
+  */
+  public static func dashboard_activity_project_name_launched(project_name project_name: String, launch_date: String, goal: String) -> String {
+    return localizedString(
+      key: "dashboard.activity.project_name_launched",
+      defaultValue: "<b>%{project_name}</b> launched on %{launch_date} with a goal of raising <b>%{goal}</b>",
+      count: nil,
+      substitutions: ["project_name": project_name, "launch_date": launch_date, "goal": goal]
+    )
+  }
+  /**
+   "<b>%{project_name}</b> was canceled on %{cancellation_date}"
+
+   - **es**: "<b>%{project_name}</b> was canceled on %{cancellation_date}"
+   - **de**: "<b>%{project_name}</b> was canceled on %{cancellation_date}"
+   - **fr**: "<b>%{project_name}</b> was canceled on %{cancellation_date}"
+   - **it**: "<b>%{project_name}</b> was canceled on %{cancellation_date}"
+   - **en**: "<b>%{project_name}</b> was canceled on %{cancellation_date}"
+  */
+  public static func dashboard_activity_project_name_was_canceled(project_name project_name: String, cancellation_date: String) -> String {
+    return localizedString(
+      key: "dashboard.activity.project_name_was_canceled",
+      defaultValue: "<b>%{project_name}</b> was canceled on %{cancellation_date}",
+      count: nil,
+      substitutions: ["project_name": project_name, "cancellation_date": cancellation_date]
+    )
+  }
+  /**
+   "<b>%{project_name}</b> was suspended on %{suspension_date}"
+
+   - **es**: "<b>%{project_name}</b> was suspended on %{suspension_date}"
+   - **de**: "<b>%{project_name}</b> was suspended on %{suspension_date}"
+   - **fr**: "<b>%{project_name}</b> was suspended on %{suspension_date}"
+   - **it**: "<b>%{project_name}</b> was suspended on %{suspension_date}"
+   - **en**: "<b>%{project_name}</b> was suspended on %{suspension_date}"
+  */
+  public static func dashboard_activity_project_name_was_suspended(project_name project_name: String, suspension_date: String) -> String {
+    return localizedString(
+      key: "dashboard.activity.project_name_was_suspended",
+      defaultValue: "<b>%{project_name}</b> was suspended on %{suspension_date}",
+      count: nil,
+      substitutions: ["project_name": project_name, "suspension_date": suspension_date]
+    )
+  }
+  /**
+   "<b>%{project_name}</b> was unsuccessful on %{unsuccessful_date}"
+
+   - **es**: "<b>%{project_name}</b> was unsuccessful on %{unsuccessful_date}"
+   - **de**: "<b>%{project_name}</b> was unsuccessful on %{unsuccessful_date}"
+   - **fr**: "<b>%{project_name}</b> was unsuccessful on %{unsuccessful_date}"
+   - **it**: "<b>%{project_name}</b> was unsuccessful on %{unsuccessful_date}"
+   - **en**: "<b>%{project_name}</b> was unsuccessful on %{unsuccessful_date}"
+  */
+  public static func dashboard_activity_project_name_was_unsuccessful(project_name project_name: String, unsuccessful_date: String) -> String {
+    return localizedString(
+      key: "dashboard.activity.project_name_was_unsuccessful",
+      defaultValue: "<b>%{project_name}</b> was unsuccessful on %{unsuccessful_date}",
+      count: nil,
+      substitutions: ["project_name": project_name, "unsuccessful_date": unsuccessful_date]
+    )
+  }
+  /**
+   "Reply"
+
+   - **es**: "Reply"
+   - **de**: "Reply"
+   - **fr**: "Reply"
+   - **it**: "Reply"
+   - **en**: "Reply"
+  */
+  public static func dashboard_activity_reply() -> String {
+    return localizedString(
+      key: "dashboard.activity.reply",
+      defaultValue: "Reply",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "<b>Reward:<b> %{reward_name}"
+
+   - **es**: "<b>Reward:<b> %{reward_name}"
+   - **de**: "<b>Reward:<b> %{reward_name}"
+   - **fr**: "<b>Reward:<b> %{reward_name}"
+   - **it**: "<b>Reward:<b> %{reward_name}"
+   - **en**: "<b>Reward:<b> %{reward_name}"
+  */
+  public static func dashboard_activity_reward_name(reward_name reward_name: String) -> String {
+    return localizedString(
+      key: "dashboard.activity.reward_name",
+      defaultValue: "<b>Reward:<b> %{reward_name}",
+      count: nil,
+      substitutions: ["reward_name": reward_name]
+    )
+  }
+  /**
+   "Send message"
+
+   - **es**: "Send message"
+   - **de**: "Send message"
+   - **fr**: "Send message"
+   - **it**: "Send message"
+   - **en**: "Send message"
+  */
+  public static func dashboard_activity_send_message() -> String {
+    return localizedString(
+      key: "dashboard.activity.send_message",
+      defaultValue: "Send message",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Successfully raised <b>%{pledged}</b> with <b>%{backers}</b> on %{deadline}"
+
+   - **es**: "Successfully raised <b>%{pledged}</b> with <b>%{backers}</b> on %{deadline}"
+   - **de**: "Successfully raised <b>%{pledged}</b> with <b>%{backers}</b> on %{deadline}"
+   - **fr**: "Successfully raised <b>%{pledged}</b> with <b>%{backers}</b> on %{deadline}"
+   - **it**: "Successfully raised <b>%{pledged}</b> with <b>%{backers}</b> on %{deadline}"
+   - **en**: "Successfully raised <b>%{pledged}</b> with <b>%{backers}</b> on %{deadline}"
+  */
+  public static func dashboard_activity_successfully_raised_pledged(pledged pledged: String, backers: String, deadline: String) -> String {
+    return localizedString(
+      key: "dashboard.activity.successfully_raised_pledged",
+      defaultValue: "Successfully raised <b>%{pledged}</b> with <b>%{backers}</b> on %{deadline}",
+      count: nil,
+      substitutions: ["pledged": pledged, "backers": backers, "deadline": deadline]
+    )
+  }
+  /**
+   "Update <b>%{update_number}</b> posted %{time_count} days ago"
+
+   - **es**: "Update <b>%{update_number}</b> posted %{time_count} days ago"
+   - **de**: "Update <b>%{update_number}</b> posted %{time_count} days ago"
+   - **fr**: "Update <b>%{update_number}</b> posted %{time_count} days ago"
+   - **it**: "Update <b>%{update_number}</b> posted %{time_count} days ago"
+   - **en**: "Update <b>%{update_number}</b> posted %{time_count} days ago"
+  */
+  public static func dashboard_activity_update_number_posted_time_count_days_ago(update_number update_number: String, time_count: String) -> String {
+    return localizedString(
+      key: "dashboard.activity.update_number_posted_time_count_days_ago",
+      defaultValue: "Update <b>%{update_number}</b> posted %{time_count} days ago",
+      count: nil,
+      substitutions: ["update_number": update_number, "time_count": time_count]
+    )
+  }
+  /**
+   "<b>%{user_name}</b> adjusted their pledge"
+
+   - **es**: "<b>%{user_name}</b> adjusted their pledge"
+   - **de**: "<b>%{user_name}</b> adjusted their pledge"
+   - **fr**: "<b>%{user_name}</b> adjusted their pledge"
+   - **it**: "<b>%{user_name}</b> adjusted their pledge"
+   - **en**: "<b>%{user_name}</b> adjusted their pledge"
+  */
+  public static func dashboard_activity_user_name_adjusted_their_pledge(user_name user_name: String) -> String {
+    return localizedString(
+      key: "dashboard.activity.user_name_adjusted_their_pledge",
+      defaultValue: "<b>%{user_name}</b> adjusted their pledge",
+      count: nil,
+      substitutions: ["user_name": user_name]
+    )
+  }
+  /**
+   "<b>%{user_name}</b> canceled their pledge"
+
+   - **es**: "<b>%{user_name}</b> canceled their pledge"
+   - **de**: "<b>%{user_name}</b> canceled their pledge"
+   - **fr**: "<b>%{user_name}</b> canceled their pledge"
+   - **it**: "<b>%{user_name}</b> canceled their pledge"
+   - **en**: "<b>%{user_name}</b> canceled their pledge"
+  */
+  public static func dashboard_activity_user_name_canceled_their_pledge(user_name user_name: String) -> String {
+    return localizedString(
+      key: "dashboard.activity.user_name_canceled_their_pledge",
+      defaultValue: "<b>%{user_name}</b> canceled their pledge",
+      count: nil,
+      substitutions: ["user_name": user_name]
+    )
+  }
+  /**
+   "<b>%{user_name}</b> changed their reward"
+
+   - **es**: "<b>%{user_name}</b> changed their reward"
+   - **de**: "<b>%{user_name}</b> changed their reward"
+   - **fr**: "<b>%{user_name}</b> changed their reward"
+   - **it**: "<b>%{user_name}</b> changed their reward"
+   - **en**: "<b>%{user_name}</b> changed their reward"
+  */
+  public static func dashboard_activity_user_name_changed_their_reward(user_name user_name: String) -> String {
+    return localizedString(
+      key: "dashboard.activity.user_name_changed_their_reward",
+      defaultValue: "<b>%{user_name}</b> changed their reward",
+      count: nil,
+      substitutions: ["user_name": user_name]
+    )
+  }
+  /**
+   "<b>%{user_name}</b> commented on Update %{update_number}"
+
+   - **es**: "<b>%{user_name}</b> commented on Update %{update_number}"
+   - **de**: "<b>%{user_name}</b> commented on Update %{update_number}"
+   - **fr**: "<b>%{user_name}</b> commented on Update %{update_number}"
+   - **it**: "<b>%{user_name}</b> commented on Update %{update_number}"
+   - **en**: "<b>%{user_name}</b> commented on Update %{update_number}"
+  */
+  public static func dashboard_activity_user_name_commented_on_update_number(user_name user_name: String, update_number: String) -> String {
+    return localizedString(
+      key: "dashboard.activity.user_name_commented_on_update_number",
+      defaultValue: "<b>%{user_name}</b> commented on Update %{update_number}",
+      count: nil,
+      substitutions: ["user_name": user_name, "update_number": update_number]
+    )
+  }
+  /**
+   "<b>%{user_name}</b> commented on your project"
+
+   - **es**: "<b>%{user_name}</b> commented on your project"
+   - **de**: "<b>%{user_name}</b> commented on your project"
+   - **fr**: "<b>%{user_name}</b> commented on your project"
+   - **it**: "<b>%{user_name}</b> commented on your project"
+   - **en**: "<b>%{user_name}</b> commented on your project"
+  */
+  public static func dashboard_activity_user_name_commented_on_your_project(user_name user_name: String) -> String {
+    return localizedString(
+      key: "dashboard.activity.user_name_commented_on_your_project",
+      defaultValue: "<b>%{user_name}</b> commented on your project",
+      count: nil,
+      substitutions: ["user_name": user_name]
+    )
+  }
+  /**
+   "<b>%{user_name}</b> pledged"
+
+   - **es**: "<b>%{user_name}</b> pledged"
+   - **de**: "<b>%{user_name}</b> pledged"
+   - **fr**: "<b>%{user_name}</b> pledged"
+   - **it**: "<b>%{user_name}</b> pledged"
+   - **en**: "<b>%{user_name}</b> pledged"
+  */
+  public static func dashboard_activity_user_name_pledged(user_name user_name: String) -> String {
+    return localizedString(
+      key: "dashboard.activity.user_name_pledged",
+      defaultValue: "<b>%{user_name}</b> pledged",
+      count: nil,
+      substitutions: ["user_name": user_name]
+    )
+  }
+  /**
+   "<b>You</b> adjusted your pledge"
+
+   - **es**: "<b>You</b> adjusted your pledge"
+   - **de**: "<b>You</b> adjusted your pledge"
+   - **fr**: "<b>You</b> adjusted your pledge"
+   - **it**: "<b>You</b> adjusted your pledge"
+   - **en**: "<b>You</b> adjusted your pledge"
+  */
+  public static func dashboard_activity_you_adjusted_your_pledge() -> String {
+    return localizedString(
+      key: "dashboard.activity.you_adjusted_your_pledge",
+      defaultValue: "<b>You</b> adjusted your pledge",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "<b>You</b> canceled your pledge"
+
+   - **es**: "<b>You</b> canceled your pledge"
+   - **de**: "<b>You</b> canceled your pledge"
+   - **fr**: "<b>You</b> canceled your pledge"
+   - **it**: "<b>You</b> canceled your pledge"
+   - **en**: "<b>You</b> canceled your pledge"
+  */
+  public static func dashboard_activity_you_canceled_your_pledge() -> String {
+    return localizedString(
+      key: "dashboard.activity.you_canceled_your_pledge",
+      defaultValue: "<b>You</b> canceled your pledge",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "<b>You</b> changed your reward"
+
+   - **es**: "<b>You</b> changed your reward"
+   - **de**: "<b>You</b> changed your reward"
+   - **fr**: "<b>You</b> changed your reward"
+   - **it**: "<b>You</b> changed your reward"
+   - **en**: "<b>You</b> changed your reward"
+  */
+  public static func dashboard_activity_you_changed_your_reward() -> String {
+    return localizedString(
+      key: "dashboard.activity.you_changed_your_reward",
+      defaultValue: "<b>You</b> changed your reward",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "<b>You</b> commented on Update %{update_number}"
+
+   - **es**: "<b>You</b> commented on Update %{update_number}"
+   - **de**: "<b>You</b> commented on Update %{update_number}"
+   - **fr**: "<b>You</b> commented on Update %{update_number}"
+   - **it**: "<b>You</b> commented on Update %{update_number}"
+   - **en**: "<b>You</b> commented on Update %{update_number}"
+  */
+  public static func dashboard_activity_you_commented_on_update_number(update_number update_number: String) -> String {
+    return localizedString(
+      key: "dashboard.activity.you_commented_on_update_number",
+      defaultValue: "<b>You</b> commented on Update %{update_number}",
+      count: nil,
+      substitutions: ["update_number": update_number]
+    )
+  }
+  /**
+   "<b>You</b> commented on your project"
+
+   - **es**: "<b>You</b> commented on your project"
+   - **de**: "<b>You</b> commented on your project"
+   - **fr**: "<b>You</b> commented on your project"
+   - **it**: "<b>You</b> commented on your project"
+   - **en**: "<b>You</b> commented on your project"
+  */
+  public static func dashboard_activity_you_commented_on_your_project() -> String {
+    return localizedString(
+      key: "dashboard.activity.you_commented_on_your_project",
+      defaultValue: "<b>You</b> commented on your project",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "<b>You</b> pledged"
+
+   - **es**: "<b>You</b> pledged"
+   - **de**: "<b>You</b> pledged"
+   - **fr**: "<b>You</b> pledged"
+   - **it**: "<b>You</b> pledged"
+   - **en**: "<b>You</b> pledged"
+  */
+  public static func dashboard_activity_you_pledged() -> String {
+    return localizedString(
+      key: "dashboard.activity.you_pledged",
+      defaultValue: "<b>You</b> pledged",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Activity"
 
    - **es**: "Actividad"
@@ -2149,6 +2540,23 @@ public enum Strings {
     return localizedString(
       key: "dashboard.graphs.funding.title",
       defaultValue: "FUNDING PROGRESS",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Funding Progress"
+
+   - **es**: "Funding Progress"
+   - **de**: "Funding Progress"
+   - **fr**: "Funding Progress"
+   - **it**: "Funding Progress"
+   - **en**: "Funding Progress"
+  */
+  public static func dashboard_graphs_funding_title_funding_progress() -> String {
+    return localizedString(
+      key: "dashboard.graphs.funding.title_funding_progress",
+      defaultValue: "Funding Progress",
       count: nil,
       substitutions: [:]
     )
@@ -2409,6 +2817,40 @@ public enum Strings {
     )
   }
   /**
+   "Referrers"
+
+   - **es**: "Referrers"
+   - **de**: "Referrers"
+   - **fr**: "Referrers"
+   - **it**: "Referrers"
+   - **en**: "Referrers"
+  */
+  public static func dashboard_graphs_referrers_title_referrers() -> String {
+    return localizedString(
+      key: "dashboard.graphs.referrers.title_referrers",
+      defaultValue: "Referrers",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "View more referrer stats"
+
+   - **es**: "View more referrer stats"
+   - **de**: "View more referrer stats"
+   - **fr**: "View more referrer stats"
+   - **it**: "View more referrer stats"
+   - **en**: "View more referrer stats"
+  */
+  public static func dashboard_graphs_referrers_view_more_referrer_stats() -> String {
+    return localizedString(
+      key: "dashboard.graphs.referrers.view_more_referrer_stats",
+      defaultValue: "View more referrer stats",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Backers"
 
    - **es**: "Patrocinadores"
@@ -2428,9 +2870,9 @@ public enum Strings {
   /**
    "No reward"
 
-   - **es**: "No reward"
-   - **de**: "No reward"
-   - **fr**: "No reward"
+   - **es**: "Sin recompensa"
+   - **de**: "Keine Belohnung"
+   - **fr**: "Pas de récompense"
    - **it**: "No reward"
    - **en**: "No reward"
   */
@@ -2511,6 +2953,23 @@ public enum Strings {
     )
   }
   /**
+   "Rewards"
+
+   - **es**: "Rewards"
+   - **de**: "Rewards"
+   - **fr**: "Rewards"
+   - **it**: "Rewards"
+   - **en**: "Rewards"
+  */
+  public static func dashboard_graphs_rewards_title_rewards() -> String {
+    return localizedString(
+      key: "dashboard.graphs.rewards.title_rewards",
+      defaultValue: "Rewards",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Top Rewards"
 
    - **es**: "Las mejores recompensas"
@@ -2523,6 +2982,23 @@ public enum Strings {
     return localizedString(
       key: "dashboard.graphs.rewards.top_rewards",
       defaultValue: "Top Rewards",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "View more reward stats"
+
+   - **es**: "View more reward stats"
+   - **de**: "View more reward stats"
+   - **fr**: "View more reward stats"
+   - **it**: "View more reward stats"
+   - **en**: "View more reward stats"
+  */
+  public static func dashboard_graphs_rewards_view_more_reward_stats() -> String {
+    return localizedString(
+      key: "dashboard.graphs.rewards.view_more_reward_stats",
+      defaultValue: "View more reward stats",
       count: nil,
       substitutions: [:]
     )
@@ -2562,6 +3038,40 @@ public enum Strings {
     )
   }
   /**
+   "off-site"
+
+   - **es**: "off-site"
+   - **de**: "off-site"
+   - **fr**: "off-site"
+   - **it**: "off-site"
+   - **en**: "off-site"
+  */
+  public static func dashboard_graphs_video_stats_off_site() -> String {
+    return localizedString(
+      key: "dashboard.graphs.video.stats.off_site",
+      defaultValue: "off-site",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "on Kickstarter"
+
+   - **es**: "on Kickstarter"
+   - **de**: "on Kickstarter"
+   - **fr**: "on Kickstarter"
+   - **it**: "on Kickstarter"
+   - **en**: "on Kickstarter"
+  */
+  public static func dashboard_graphs_video_stats_on_kickstarter() -> String {
+    return localizedString(
+      key: "dashboard.graphs.video.stats.on_kickstarter",
+      defaultValue: "on Kickstarter",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "%{percent_plays_completed} of plays completed"
 
    - **es**: "%{percent_plays_completed} de reproducciones completadas"
@@ -2596,6 +3106,23 @@ public enum Strings {
     )
   }
   /**
+   "<b>%{total_start_count}</b> total plays"
+
+   - **es**: "<b>%{total_start_count}</b> total plays"
+   - **de**: "<b>%{total_start_count}</b> total plays"
+   - **fr**: "<b>%{total_start_count}</b> total plays"
+   - **it**: "<b>%{total_start_count}</b> total plays"
+   - **en**: "<b>%{total_start_count}</b> total plays"
+  */
+  public static func dashboard_graphs_video_stats_total_plays_html(total_start_count total_start_count: String) -> String {
+    return localizedString(
+      key: "dashboard.graphs.video.stats.total_plays_html",
+      defaultValue: "<b>%{total_start_count}</b> total plays",
+      count: nil,
+      substitutions: ["total_start_count": total_start_count]
+    )
+  }
+  /**
    "VIDEO PLAYS"
 
    - **es**: "REPRODUCCIONES DEL VÍDEO"
@@ -2608,6 +3135,23 @@ public enum Strings {
     return localizedString(
       key: "dashboard.graphs.video.title",
       defaultValue: "VIDEO PLAYS",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Video Plays"
+
+   - **es**: "Video Plays"
+   - **de**: "Video Plays"
+   - **fr**: "Video Plays"
+   - **it**: "Video Plays"
+   - **en**: "Video Plays"
+  */
+  public static func dashboard_graphs_video_title_video_plays() -> String {
+    return localizedString(
+      key: "dashboard.graphs.video.title_video_plays",
+      defaultValue: "Video Plays",
       count: nil,
       substitutions: [:]
     )
@@ -3080,80 +3624,12 @@ public enum Strings {
    - **it**: "This will notify %{backer_count} backers that a new update is available. Are you sure you want to post?"
    - **en**: "This will notify %{backer_count} backers that a new update is available. Are you sure you want to post?"
   */
-  public static func dashboard_post_update_preview_confirmation_alert_this_will_notify_backers_that_a_new_update_is_available_few(backer_count backer_count: String) -> String {
+  public static func dashboard_post_update_preview_confirmation_alert_this_will_notify_backers_that_a_new_update_is_available(backer_count backer_count: Int) -> String {
     return localizedString(
-      key: "dashboard.post_update.preview.confirmation_alert.this_will_notify_backers_that_a_new_update_is_available.few",
+      key: "dashboard.post_update.preview.confirmation_alert.this_will_notify_backers_that_a_new_update_is_available",
       defaultValue: "This will notify %{backer_count} backers that a new update is available. Are you sure you want to post?",
-      count: nil,
-      substitutions: ["backer_count": backer_count]
-    )
-  }
-  /**
-   "This will notify %{backer_count} backers that a new update is available. Are you sure you want to post?"
-
-   - **es**: "Esto notificará a %{backer_count} patrocinadores que existe una nueva actualización. ¿Seguro de que quieres publicarla?"
-   - **de**: "%{backer_count} Unterstützer werden über das neue Update benachrichtigt. Bist du sicher, dass du es veröffentlichen willst?"
-   - **fr**: "%{backer_count} contributeurs seront prévenus qu'une nouvelle actu est disponible. Publier quand-même ?"
-   - **it**: "This will notify %{backer_count} backers that a new update is available. Are you sure you want to post?"
-   - **en**: "This will notify %{backer_count} backers that a new update is available. Are you sure you want to post?"
-  */
-  public static func dashboard_post_update_preview_confirmation_alert_this_will_notify_backers_that_a_new_update_is_available_many(backer_count backer_count: String) -> String {
-    return localizedString(
-      key: "dashboard.post_update.preview.confirmation_alert.this_will_notify_backers_that_a_new_update_is_available.many",
-      defaultValue: "This will notify %{backer_count} backers that a new update is available. Are you sure you want to post?",
-      count: nil,
-      substitutions: ["backer_count": backer_count]
-    )
-  }
-  /**
-   "This will notify 1 backer that a new update is available. Are you sure you want to post?"
-
-   - **es**: "Esto notificará a 1 patrocinador que existe una actualización disponible. ¿Seguro de que quieres publicarla?"
-   - **de**: "1 Unterstützer wird über das neue Update benachrichtigt. Bist du sicher, dass du es veröffentlichen willst?"
-   - **fr**: "1 contributeur sera prévenu qu'une nouvelle actu est disponible. Publier quand-même ?"
-   - **it**: "This will notify 1 backer that a new update is available. Are you sure you want to post?"
-   - **en**: "This will notify 1 backer that a new update is available. Are you sure you want to post?"
-  */
-  public static func dashboard_post_update_preview_confirmation_alert_this_will_notify_backers_that_a_new_update_is_available_one() -> String {
-    return localizedString(
-      key: "dashboard.post_update.preview.confirmation_alert.this_will_notify_backers_that_a_new_update_is_available.one",
-      defaultValue: "This will notify 1 backer that a new update is available. Are you sure you want to post?",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "This will notify %{backer_count} backers that a new update is available. Are you sure you want to post?"
-
-   - **es**: "Esto notificará a %{backer_count} patrocinadores que existe una nueva actualización. ¿Seguro de que quieres publicarla?"
-   - **de**: "%{backer_count} Unterstützer werden über das neue Update benachrichtigt. Bist du sicher, dass du es veröffentlichen willst?"
-   - **fr**: "%{backer_count} contributeurs seront prévenus qu'une nouvelle actu est disponible. Publier quand-même ?"
-   - **it**: "This will notify %{backer_count} backers that a new update is available. Are you sure you want to post?"
-   - **en**: "This will notify %{backer_count} backers that a new update is available. Are you sure you want to post?"
-  */
-  public static func dashboard_post_update_preview_confirmation_alert_this_will_notify_backers_that_a_new_update_is_available_two(backer_count backer_count: String) -> String {
-    return localizedString(
-      key: "dashboard.post_update.preview.confirmation_alert.this_will_notify_backers_that_a_new_update_is_available.two",
-      defaultValue: "This will notify %{backer_count} backers that a new update is available. Are you sure you want to post?",
-      count: nil,
-      substitutions: ["backer_count": backer_count]
-    )
-  }
-  /**
-   "This will notify 0 backers that a new update is available. Are you sure you want to post?"
-
-   - **es**: "Esto notificará a 0 patrocinadores que existe una actualización disponible. ¿Seguro de que quieres publicarla?"
-   - **de**: "0 Unterstützer werden über das neue Update benachrichtigt. Bist du sicher, dass du es veröffentlichen möchtest?"
-   - **fr**: "0 contributeurs seront prévenus qu'une nouvelle actu est disponible. Publier quand-même ?"
-   - **it**: "This will notify 0 backers that a new update is available. Are you sure you want to post?"
-   - **en**: "This will notify 0 backers that a new update is available. Are you sure you want to post?"
-  */
-  public static func dashboard_post_update_preview_confirmation_alert_this_will_notify_backers_that_a_new_update_is_available_zero() -> String {
-    return localizedString(
-      key: "dashboard.post_update.preview.confirmation_alert.this_will_notify_backers_that_a_new_update_is_available.zero",
-      defaultValue: "This will notify 0 backers that a new update is available. Are you sure you want to post?",
-      count: nil,
-      substitutions: [:]
+      count: backer_count,
+      substitutions: ["backer_count": Format.wholeNumber(backer_count)]
     )
   }
   /**
@@ -3352,12 +3828,12 @@ public enum Strings {
    - **it**: "%{time_count} days"
    - **en**: "%{time_count} days"
   */
-  public static func dates_time_days_few(time_count time_count: String) -> String {
+  public static func dates_time_days(time_count time_count: Int) -> String {
     return localizedString(
-      key: "dates.time_days.few",
+      key: "dates.time_days",
       defaultValue: "%{time_count} days",
-      count: nil,
-      substitutions: ["time_count": time_count]
+      count: time_count,
+      substitutions: ["time_count": Format.wholeNumber(time_count)]
     )
   }
   /**
@@ -3369,148 +3845,12 @@ public enum Strings {
    - **it**: "%{time_count} days"
    - **en**: "%{time_count} days"
   */
-  public static func dates_time_days_many(time_count time_count: String) -> String {
+  public static func dates_time_days_abbreviated(time_count time_count: Int) -> String {
     return localizedString(
-      key: "dates.time_days.many",
+      key: "dates.time_days_abbreviated",
       defaultValue: "%{time_count} days",
-      count: nil,
-      substitutions: ["time_count": time_count]
-    )
-  }
-  /**
-   "1 day"
-
-   - **es**: "1 día"
-   - **de**: "1 Tag"
-   - **fr**: "1 jour"
-   - **it**: "1 day"
-   - **en**: "1 day"
-  */
-  public static func dates_time_days_one() -> String {
-    return localizedString(
-      key: "dates.time_days.one",
-      defaultValue: "1 day",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "2 days"
-
-   - **es**: "2 días"
-   - **de**: "2 Tage"
-   - **fr**: "2 jours"
-   - **it**: "2 days"
-   - **en**: "2 days"
-  */
-  public static func dates_time_days_two() -> String {
-    return localizedString(
-      key: "dates.time_days.two",
-      defaultValue: "2 days",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "0 days"
-
-   - **es**: "0 días"
-   - **de**: "0 Tage"
-   - **fr**: "0 jours"
-   - **it**: "0 days"
-   - **en**: "0 days"
-  */
-  public static func dates_time_days_zero() -> String {
-    return localizedString(
-      key: "dates.time_days.zero",
-      defaultValue: "0 days",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "%{time_count} days"
-
-   - **es**: "%{time_count} días"
-   - **de**: "%{time_count} Tage"
-   - **fr**: "%{time_count} jours"
-   - **it**: "%{time_count} days"
-   - **en**: "%{time_count} days"
-  */
-  public static func dates_time_days_abbreviated_few(time_count time_count: String) -> String {
-    return localizedString(
-      key: "dates.time_days_abbreviated.few",
-      defaultValue: "%{time_count} days",
-      count: nil,
-      substitutions: ["time_count": time_count]
-    )
-  }
-  /**
-   "%{time_count} days"
-
-   - **es**: "%{time_count} días"
-   - **de**: "%{time_count} Tage"
-   - **fr**: "%{time_count} jours"
-   - **it**: "%{time_count} days"
-   - **en**: "%{time_count} days"
-  */
-  public static func dates_time_days_abbreviated_many(time_count time_count: String) -> String {
-    return localizedString(
-      key: "dates.time_days_abbreviated.many",
-      defaultValue: "%{time_count} days",
-      count: nil,
-      substitutions: ["time_count": time_count]
-    )
-  }
-  /**
-   "1 day"
-
-   - **es**: "1 dia"
-   - **de**: "1 Tag"
-   - **fr**: "1 jour"
-   - **it**: "1 day"
-   - **en**: "1 day"
-  */
-  public static func dates_time_days_abbreviated_one() -> String {
-    return localizedString(
-      key: "dates.time_days_abbreviated.one",
-      defaultValue: "1 day",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "2 days"
-
-   - **es**: "2 días"
-   - **de**: "2 Tage"
-   - **fr**: "2 jours"
-   - **it**: "2 days"
-   - **en**: "2 days"
-  */
-  public static func dates_time_days_abbreviated_two() -> String {
-    return localizedString(
-      key: "dates.time_days_abbreviated.two",
-      defaultValue: "2 days",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "0 days"
-
-   - **es**: "0 días"
-   - **de**: "0 Tage"
-   - **fr**: "0 jours"
-   - **it**: "0 days"
-   - **en**: "0 days"
-  */
-  public static func dates_time_days_abbreviated_zero() -> String {
-    return localizedString(
-      key: "dates.time_days_abbreviated.zero",
-      defaultValue: "0 days",
-      count: nil,
-      substitutions: [:]
+      count: time_count,
+      substitutions: ["time_count": Format.wholeNumber(time_count)]
     )
   }
   /**
@@ -3522,12 +3862,12 @@ public enum Strings {
    - **it**: "%{time_count} days ago"
    - **en**: "%{time_count} days ago"
   */
-  public static func dates_time_days_ago_few(time_count time_count: String) -> String {
+  public static func dates_time_days_ago(time_count time_count: Int) -> String {
     return localizedString(
-      key: "dates.time_days_ago.few",
+      key: "dates.time_days_ago",
       defaultValue: "%{time_count} days ago",
-      count: nil,
-      substitutions: ["time_count": time_count]
+      count: time_count,
+      substitutions: ["time_count": Format.wholeNumber(time_count)]
     )
   }
   /**
@@ -3539,148 +3879,12 @@ public enum Strings {
    - **it**: "%{time_count} days ago"
    - **en**: "%{time_count} days ago"
   */
-  public static func dates_time_days_ago_many(time_count time_count: String) -> String {
+  public static func dates_time_days_ago_abbreviated(time_count time_count: Int) -> String {
     return localizedString(
-      key: "dates.time_days_ago.many",
+      key: "dates.time_days_ago_abbreviated",
       defaultValue: "%{time_count} days ago",
-      count: nil,
-      substitutions: ["time_count": time_count]
-    )
-  }
-  /**
-   "1 day ago"
-
-   - **es**: "hace 1 día"
-   - **de**: "vor 1 Tag"
-   - **fr**: "il y a 1 jour"
-   - **it**: "1 day ago"
-   - **en**: "1 day ago"
-  */
-  public static func dates_time_days_ago_one() -> String {
-    return localizedString(
-      key: "dates.time_days_ago.one",
-      defaultValue: "1 day ago",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "2 days ago"
-
-   - **es**: "hace 2 días"
-   - **de**: "vor 2 Tagen"
-   - **fr**: "il y a 2 jours"
-   - **it**: "2 days ago"
-   - **en**: "2 days ago"
-  */
-  public static func dates_time_days_ago_two() -> String {
-    return localizedString(
-      key: "dates.time_days_ago.two",
-      defaultValue: "2 days ago",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "0 days ago"
-
-   - **es**: "hace 0 días"
-   - **de**: "vor 0 Tagen"
-   - **fr**: "il y a 0 jours"
-   - **it**: "0 days ago"
-   - **en**: "0 days ago"
-  */
-  public static func dates_time_days_ago_zero() -> String {
-    return localizedString(
-      key: "dates.time_days_ago.zero",
-      defaultValue: "0 days ago",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "%{time_count} days ago"
-
-   - **es**: "hace %{time_count} días"
-   - **de**: "vor %{time_count} Tagen"
-   - **fr**: "il y a %{time_count} jours"
-   - **it**: "%{time_count} days ago"
-   - **en**: "%{time_count} days ago"
-  */
-  public static func dates_time_days_ago_abbreviated_few(time_count time_count: String) -> String {
-    return localizedString(
-      key: "dates.time_days_ago_abbreviated.few",
-      defaultValue: "%{time_count} days ago",
-      count: nil,
-      substitutions: ["time_count": time_count]
-    )
-  }
-  /**
-   "%{time_count} days ago"
-
-   - **es**: "hace %{time_count} días"
-   - **de**: "vor %{time_count} Tagen"
-   - **fr**: "il y a %{time_count} jours"
-   - **it**: "%{time_count} days ago"
-   - **en**: "%{time_count} days ago"
-  */
-  public static func dates_time_days_ago_abbreviated_many(time_count time_count: String) -> String {
-    return localizedString(
-      key: "dates.time_days_ago_abbreviated.many",
-      defaultValue: "%{time_count} days ago",
-      count: nil,
-      substitutions: ["time_count": time_count]
-    )
-  }
-  /**
-   "1 day ago"
-
-   - **es**: "hace 1 día"
-   - **de**: "vor 1 Tag"
-   - **fr**: "il y a 1 jour"
-   - **it**: "1 day ago"
-   - **en**: "1 day ago"
-  */
-  public static func dates_time_days_ago_abbreviated_one() -> String {
-    return localizedString(
-      key: "dates.time_days_ago_abbreviated.one",
-      defaultValue: "1 day ago",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "2 days ago"
-
-   - **es**: "hace 2 días"
-   - **de**: "vor 2 Tagen"
-   - **fr**: "il y a 2 jours"
-   - **it**: "2 days ago"
-   - **en**: "2 days ago"
-  */
-  public static func dates_time_days_ago_abbreviated_two() -> String {
-    return localizedString(
-      key: "dates.time_days_ago_abbreviated.two",
-      defaultValue: "2 days ago",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "0 days ago"
-
-   - **es**: "hace 0 días"
-   - **de**: "vor 0 Tagen"
-   - **fr**: "il y a 0 jours"
-   - **it**: "0 days ago"
-   - **en**: "0 days ago"
-  */
-  public static func dates_time_days_ago_abbreviated_zero() -> String {
-    return localizedString(
-      key: "dates.time_days_ago_abbreviated.zero",
-      defaultValue: "0 days ago",
-      count: nil,
-      substitutions: [:]
+      count: time_count,
+      substitutions: ["time_count": Format.wholeNumber(time_count)]
     )
   }
   /**
@@ -3692,80 +3896,12 @@ public enum Strings {
    - **it**: "%{time_count} hours"
    - **en**: "%{time_count} hours"
   */
-  public static func dates_time_hours_few(time_count time_count: String) -> String {
+  public static func dates_time_hours(time_count time_count: Int) -> String {
     return localizedString(
-      key: "dates.time_hours.few",
+      key: "dates.time_hours",
       defaultValue: "%{time_count} hours",
-      count: nil,
-      substitutions: ["time_count": time_count]
-    )
-  }
-  /**
-   "%{time_count} hours"
-
-   - **es**: "%{time_count} horas"
-   - **de**: "%{time_count} Stunden"
-   - **fr**: "%{time_count} heures"
-   - **it**: "%{time_count} hours"
-   - **en**: "%{time_count} hours"
-  */
-  public static func dates_time_hours_many(time_count time_count: String) -> String {
-    return localizedString(
-      key: "dates.time_hours.many",
-      defaultValue: "%{time_count} hours",
-      count: nil,
-      substitutions: ["time_count": time_count]
-    )
-  }
-  /**
-   "1 hour"
-
-   - **es**: "1 hora"
-   - **de**: "1 Stunde"
-   - **fr**: "1 heure"
-   - **it**: "1 hour"
-   - **en**: "1 hour"
-  */
-  public static func dates_time_hours_one() -> String {
-    return localizedString(
-      key: "dates.time_hours.one",
-      defaultValue: "1 hour",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "2 hours"
-
-   - **es**: "2 horas"
-   - **de**: "2 Stunden"
-   - **fr**: "2 heures"
-   - **it**: "2 hours"
-   - **en**: "2 hours"
-  */
-  public static func dates_time_hours_two() -> String {
-    return localizedString(
-      key: "dates.time_hours.two",
-      defaultValue: "2 hours",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "0 hours"
-
-   - **es**: "0 horas"
-   - **de**: "0 Stunden"
-   - **fr**: "0 heures"
-   - **it**: "0 hours"
-   - **en**: "0 hours"
-  */
-  public static func dates_time_hours_zero() -> String {
-    return localizedString(
-      key: "dates.time_hours.zero",
-      defaultValue: "0 hours",
-      count: nil,
-      substitutions: [:]
+      count: time_count,
+      substitutions: ["time_count": Format.wholeNumber(time_count)]
     )
   }
   /**
@@ -3777,80 +3913,12 @@ public enum Strings {
    - **it**: "%{time_count} hrs"
    - **en**: "%{time_count} hrs"
   */
-  public static func dates_time_hours_abbreviated_few(time_count time_count: String) -> String {
+  public static func dates_time_hours_abbreviated(time_count time_count: Int) -> String {
     return localizedString(
-      key: "dates.time_hours_abbreviated.few",
+      key: "dates.time_hours_abbreviated",
       defaultValue: "%{time_count} hrs",
-      count: nil,
-      substitutions: ["time_count": time_count]
-    )
-  }
-  /**
-   "%{time_count} hrs"
-
-   - **es**: "%{time_count} hrs"
-   - **de**: "%{time_count} Std"
-   - **fr**: "%{time_count} h"
-   - **it**: "%{time_count} hrs"
-   - **en**: "%{time_count} hrs"
-  */
-  public static func dates_time_hours_abbreviated_many(time_count time_count: String) -> String {
-    return localizedString(
-      key: "dates.time_hours_abbreviated.many",
-      defaultValue: "%{time_count} hrs",
-      count: nil,
-      substitutions: ["time_count": time_count]
-    )
-  }
-  /**
-   "1 hr"
-
-   - **es**: "1 hr"
-   - **de**: "1 Std"
-   - **fr**: "1 h"
-   - **it**: "1 hr"
-   - **en**: "1 hr"
-  */
-  public static func dates_time_hours_abbreviated_one() -> String {
-    return localizedString(
-      key: "dates.time_hours_abbreviated.one",
-      defaultValue: "1 hr",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "2 hrs"
-
-   - **es**: "2 hrs"
-   - **de**: "2 Std"
-   - **fr**: "2 h"
-   - **it**: "2 hrs"
-   - **en**: "2 hrs"
-  */
-  public static func dates_time_hours_abbreviated_two() -> String {
-    return localizedString(
-      key: "dates.time_hours_abbreviated.two",
-      defaultValue: "2 hrs",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "0 hrs"
-
-   - **es**: "0 hrs"
-   - **de**: "0 Std"
-   - **fr**: "0 h"
-   - **it**: "0 hrs"
-   - **en**: "0 hrs"
-  */
-  public static func dates_time_hours_abbreviated_zero() -> String {
-    return localizedString(
-      key: "dates.time_hours_abbreviated.zero",
-      defaultValue: "0 hrs",
-      count: nil,
-      substitutions: [:]
+      count: time_count,
+      substitutions: ["time_count": Format.wholeNumber(time_count)]
     )
   }
   /**
@@ -3862,80 +3930,12 @@ public enum Strings {
    - **it**: "%{time_count} hours ago"
    - **en**: "%{time_count} hours ago"
   */
-  public static func dates_time_hours_ago_few(time_count time_count: String) -> String {
+  public static func dates_time_hours_ago(time_count time_count: Int) -> String {
     return localizedString(
-      key: "dates.time_hours_ago.few",
+      key: "dates.time_hours_ago",
       defaultValue: "%{time_count} hours ago",
-      count: nil,
-      substitutions: ["time_count": time_count]
-    )
-  }
-  /**
-   "%{time_count} hours ago"
-
-   - **es**: "hace %{time_count} horas"
-   - **de**: "vor %{time_count} Stunden"
-   - **fr**: "il y a %{time_count} heures"
-   - **it**: "%{time_count} hours ago"
-   - **en**: "%{time_count} hours ago"
-  */
-  public static func dates_time_hours_ago_many(time_count time_count: String) -> String {
-    return localizedString(
-      key: "dates.time_hours_ago.many",
-      defaultValue: "%{time_count} hours ago",
-      count: nil,
-      substitutions: ["time_count": time_count]
-    )
-  }
-  /**
-   "1 hour ago"
-
-   - **es**: "hace 1 hora"
-   - **de**: "vor 1 Stunde"
-   - **fr**: "il y a 1 heure"
-   - **it**: "1 hour ago"
-   - **en**: "1 hour ago"
-  */
-  public static func dates_time_hours_ago_one() -> String {
-    return localizedString(
-      key: "dates.time_hours_ago.one",
-      defaultValue: "1 hour ago",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "2 hours ago"
-
-   - **es**: "hace 2 horas"
-   - **de**: "vor 2 Stunden"
-   - **fr**: "il y a 2 heures"
-   - **it**: "2 hours ago"
-   - **en**: "2 hours ago"
-  */
-  public static func dates_time_hours_ago_two() -> String {
-    return localizedString(
-      key: "dates.time_hours_ago.two",
-      defaultValue: "2 hours ago",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "0 hours ago"
-
-   - **es**: "hace 0 horas"
-   - **de**: "vor 0 Std"
-   - **fr**: "il y a 0 heures"
-   - **it**: "0 hours ago"
-   - **en**: "0 hours ago"
-  */
-  public static func dates_time_hours_ago_zero() -> String {
-    return localizedString(
-      key: "dates.time_hours_ago.zero",
-      defaultValue: "0 hours ago",
-      count: nil,
-      substitutions: [:]
+      count: time_count,
+      substitutions: ["time_count": Format.wholeNumber(time_count)]
     )
   }
   /**
@@ -3947,80 +3947,12 @@ public enum Strings {
    - **it**: "%{time_count} hrs ago"
    - **en**: "%{time_count} hrs ago"
   */
-  public static func dates_time_hours_ago_abbreviated_few(time_count time_count: String) -> String {
+  public static func dates_time_hours_ago_abbreviated(time_count time_count: Int) -> String {
     return localizedString(
-      key: "dates.time_hours_ago_abbreviated.few",
+      key: "dates.time_hours_ago_abbreviated",
       defaultValue: "%{time_count} hrs ago",
-      count: nil,
-      substitutions: ["time_count": time_count]
-    )
-  }
-  /**
-   "%{time_count} hrs ago"
-
-   - **es**: "hace %{time_count} hrs"
-   - **de**: "vor %{time_count} Std"
-   - **fr**: "il y a %{time_count} h"
-   - **it**: "%{time_count} hrs ago"
-   - **en**: "%{time_count} hrs ago"
-  */
-  public static func dates_time_hours_ago_abbreviated_many(time_count time_count: String) -> String {
-    return localizedString(
-      key: "dates.time_hours_ago_abbreviated.many",
-      defaultValue: "%{time_count} hrs ago",
-      count: nil,
-      substitutions: ["time_count": time_count]
-    )
-  }
-  /**
-   "1 hr ago"
-
-   - **es**: "hace 1 hr"
-   - **de**: "vor 1 Std"
-   - **fr**: "il y a 1 h"
-   - **it**: "1 hr ago"
-   - **en**: "1 hr ago"
-  */
-  public static func dates_time_hours_ago_abbreviated_one() -> String {
-    return localizedString(
-      key: "dates.time_hours_ago_abbreviated.one",
-      defaultValue: "1 hr ago",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "2 hrs ago"
-
-   - **es**: "hace 2 hrs"
-   - **de**: "vor 2 Std"
-   - **fr**: "il y a 2 h"
-   - **it**: "2 hrs ago"
-   - **en**: "2 hrs ago"
-  */
-  public static func dates_time_hours_ago_abbreviated_two() -> String {
-    return localizedString(
-      key: "dates.time_hours_ago_abbreviated.two",
-      defaultValue: "2 hrs ago",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "0 hrs ago"
-
-   - **es**: "hace 0 hrs"
-   - **de**: "vor 0 Std"
-   - **fr**: "il y a 0 h"
-   - **it**: "0 hrs ago"
-   - **en**: "0 hrs ago"
-  */
-  public static func dates_time_hours_ago_abbreviated_zero() -> String {
-    return localizedString(
-      key: "dates.time_hours_ago_abbreviated.zero",
-      defaultValue: "0 hrs ago",
-      count: nil,
-      substitutions: [:]
+      count: time_count,
+      substitutions: ["time_count": Format.wholeNumber(time_count)]
     )
   }
   /**
@@ -4032,12 +3964,12 @@ public enum Strings {
    - **it**: "in %{time_count} days"
    - **en**: "in %{time_count} days"
   */
-  public static func dates_time_in_days_few(time_count time_count: String) -> String {
+  public static func dates_time_in_days(time_count time_count: Int) -> String {
     return localizedString(
-      key: "dates.time_in_days.few",
+      key: "dates.time_in_days",
       defaultValue: "in %{time_count} days",
-      count: nil,
-      substitutions: ["time_count": time_count]
+      count: time_count,
+      substitutions: ["time_count": Format.wholeNumber(time_count)]
     )
   }
   /**
@@ -4049,148 +3981,12 @@ public enum Strings {
    - **it**: "in %{time_count} days"
    - **en**: "in %{time_count} days"
   */
-  public static func dates_time_in_days_many(time_count time_count: String) -> String {
+  public static func dates_time_in_days_abbreviated(time_count time_count: Int) -> String {
     return localizedString(
-      key: "dates.time_in_days.many",
+      key: "dates.time_in_days_abbreviated",
       defaultValue: "in %{time_count} days",
-      count: nil,
-      substitutions: ["time_count": time_count]
-    )
-  }
-  /**
-   "in 1 day"
-
-   - **es**: "en 1 día"
-   - **de**: "in 1 Tag"
-   - **fr**: "dans 1 jour"
-   - **it**: "in 1 day"
-   - **en**: "in 1 day"
-  */
-  public static func dates_time_in_days_one() -> String {
-    return localizedString(
-      key: "dates.time_in_days.one",
-      defaultValue: "in 1 day",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "in 2 days"
-
-   - **es**: "en 2 días"
-   - **de**: "in 2 Tagen"
-   - **fr**: "dans 2 jours"
-   - **it**: "in 2 days"
-   - **en**: "in 2 days"
-  */
-  public static func dates_time_in_days_two() -> String {
-    return localizedString(
-      key: "dates.time_in_days.two",
-      defaultValue: "in 2 days",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "in 0 days"
-
-   - **es**: "en 0 días"
-   - **de**: "in 0 Tagen"
-   - **fr**: "dans 0 jours"
-   - **it**: "in 0 days"
-   - **en**: "in 0 days"
-  */
-  public static func dates_time_in_days_zero() -> String {
-    return localizedString(
-      key: "dates.time_in_days.zero",
-      defaultValue: "in 0 days",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "in %{time_count} days"
-
-   - **es**: "en %{time_count} días"
-   - **de**: "in %{time_count} Tagen"
-   - **fr**: "dans %{time_count} jours"
-   - **it**: "in %{time_count} days"
-   - **en**: "in %{time_count} days"
-  */
-  public static func dates_time_in_days_abbreviated_few(time_count time_count: String) -> String {
-    return localizedString(
-      key: "dates.time_in_days_abbreviated.few",
-      defaultValue: "in %{time_count} days",
-      count: nil,
-      substitutions: ["time_count": time_count]
-    )
-  }
-  /**
-   "in %{time_count} days"
-
-   - **es**: "en %{time_count} días"
-   - **de**: "in %{time_count} Tagen"
-   - **fr**: "dans %{time_count} jours"
-   - **it**: "in %{time_count} days"
-   - **en**: "in %{time_count} days"
-  */
-  public static func dates_time_in_days_abbreviated_many(time_count time_count: String) -> String {
-    return localizedString(
-      key: "dates.time_in_days_abbreviated.many",
-      defaultValue: "in %{time_count} days",
-      count: nil,
-      substitutions: ["time_count": time_count]
-    )
-  }
-  /**
-   "in 1 day"
-
-   - **es**: "en 1 día"
-   - **de**: "in 1 Tag"
-   - **fr**: "dans 1 jour"
-   - **it**: "in 1 day"
-   - **en**: "in 1 day"
-  */
-  public static func dates_time_in_days_abbreviated_one() -> String {
-    return localizedString(
-      key: "dates.time_in_days_abbreviated.one",
-      defaultValue: "in 1 day",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "in 2 days"
-
-   - **es**: "en 2 días"
-   - **de**: "in 2 Tagen"
-   - **fr**: "dans 2 jours"
-   - **it**: "in 2 days"
-   - **en**: "in 2 days"
-  */
-  public static func dates_time_in_days_abbreviated_two() -> String {
-    return localizedString(
-      key: "dates.time_in_days_abbreviated.two",
-      defaultValue: "in 2 days",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "in 0 days"
-
-   - **es**: "en 0 días"
-   - **de**: "in 0 Tagen"
-   - **fr**: "dans 0 jours"
-   - **it**: "in 0 days"
-   - **en**: "in 0 days"
-  */
-  public static func dates_time_in_days_abbreviated_zero() -> String {
-    return localizedString(
-      key: "dates.time_in_days_abbreviated.zero",
-      defaultValue: "in 0 days",
-      count: nil,
-      substitutions: [:]
+      count: time_count,
+      substitutions: ["time_count": Format.wholeNumber(time_count)]
     )
   }
   /**
@@ -4202,80 +3998,12 @@ public enum Strings {
    - **it**: "in %{time_count} hours"
    - **en**: "in %{time_count} hours"
   */
-  public static func dates_time_in_hours_few(time_count time_count: String) -> String {
+  public static func dates_time_in_hours(time_count time_count: Int) -> String {
     return localizedString(
-      key: "dates.time_in_hours.few",
+      key: "dates.time_in_hours",
       defaultValue: "in %{time_count} hours",
-      count: nil,
-      substitutions: ["time_count": time_count]
-    )
-  }
-  /**
-   "in %{time_count} hours"
-
-   - **es**: "en %{time_count} horas"
-   - **de**: "in %{time_count} Stunden"
-   - **fr**: "dans %{time_count} heures"
-   - **it**: "in %{time_count} hours"
-   - **en**: "in %{time_count} hours"
-  */
-  public static func dates_time_in_hours_many(time_count time_count: String) -> String {
-    return localizedString(
-      key: "dates.time_in_hours.many",
-      defaultValue: "in %{time_count} hours",
-      count: nil,
-      substitutions: ["time_count": time_count]
-    )
-  }
-  /**
-   "in 1 hour"
-
-   - **es**: "en 1 hora"
-   - **de**: "in 1 Stunde"
-   - **fr**: "dans 1 heure"
-   - **it**: "in 1 hour"
-   - **en**: "in 1 hour"
-  */
-  public static func dates_time_in_hours_one() -> String {
-    return localizedString(
-      key: "dates.time_in_hours.one",
-      defaultValue: "in 1 hour",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "in 2 hours"
-
-   - **es**: "en 2 horas"
-   - **de**: "in 2 Stunden"
-   - **fr**: "dans 2 heures"
-   - **it**: "in 2 hours"
-   - **en**: "in 2 hours"
-  */
-  public static func dates_time_in_hours_two() -> String {
-    return localizedString(
-      key: "dates.time_in_hours.two",
-      defaultValue: "in 2 hours",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "in 0 hours"
-
-   - **es**: "en 0 horas"
-   - **de**: "in 0 Stunden"
-   - **fr**: "dans 0 heures"
-   - **it**: "in 0 hours"
-   - **en**: "in 0 hours"
-  */
-  public static func dates_time_in_hours_zero() -> String {
-    return localizedString(
-      key: "dates.time_in_hours.zero",
-      defaultValue: "in 0 hours",
-      count: nil,
-      substitutions: [:]
+      count: time_count,
+      substitutions: ["time_count": Format.wholeNumber(time_count)]
     )
   }
   /**
@@ -4287,80 +4015,12 @@ public enum Strings {
    - **it**: "in %{time_count} hrs"
    - **en**: "in %{time_count} hrs"
   */
-  public static func dates_time_in_hours_abbreviated_few(time_count time_count: String) -> String {
+  public static func dates_time_in_hours_abbreviated(time_count time_count: Int) -> String {
     return localizedString(
-      key: "dates.time_in_hours_abbreviated.few",
+      key: "dates.time_in_hours_abbreviated",
       defaultValue: "in %{time_count} hrs",
-      count: nil,
-      substitutions: ["time_count": time_count]
-    )
-  }
-  /**
-   "in %{time_count} hrs"
-
-   - **es**: "en %{time_count} hrs"
-   - **de**: "in %{time_count} Std"
-   - **fr**: "dans %{time_count} h"
-   - **it**: "in %{time_count} hrs"
-   - **en**: "in %{time_count} hrs"
-  */
-  public static func dates_time_in_hours_abbreviated_many(time_count time_count: String) -> String {
-    return localizedString(
-      key: "dates.time_in_hours_abbreviated.many",
-      defaultValue: "in %{time_count} hrs",
-      count: nil,
-      substitutions: ["time_count": time_count]
-    )
-  }
-  /**
-   "in 1 hr"
-
-   - **es**: "en 1 hr"
-   - **de**: "in 1 Std"
-   - **fr**: "dans 1 h"
-   - **it**: "in 1 hr"
-   - **en**: "in 1 hr"
-  */
-  public static func dates_time_in_hours_abbreviated_one() -> String {
-    return localizedString(
-      key: "dates.time_in_hours_abbreviated.one",
-      defaultValue: "in 1 hr",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "in 2 hrs"
-
-   - **es**: "en 2 hrs"
-   - **de**: "in 2 Std"
-   - **fr**: "dans 2 h"
-   - **it**: "in 2 hrs"
-   - **en**: "in 2 hrs"
-  */
-  public static func dates_time_in_hours_abbreviated_two() -> String {
-    return localizedString(
-      key: "dates.time_in_hours_abbreviated.two",
-      defaultValue: "in 2 hrs",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "in 0 hrs"
-
-   - **es**: "en 0 hrs"
-   - **de**: "in 0 Std"
-   - **fr**: "dans 0 h"
-   - **it**: "in 0 hrs"
-   - **en**: "in 0 hrs"
-  */
-  public static func dates_time_in_hours_abbreviated_zero() -> String {
-    return localizedString(
-      key: "dates.time_in_hours_abbreviated.zero",
-      defaultValue: "in 0 hrs",
-      count: nil,
-      substitutions: [:]
+      count: time_count,
+      substitutions: ["time_count": Format.wholeNumber(time_count)]
     )
   }
   /**
@@ -4372,80 +4032,12 @@ public enum Strings {
    - **it**: "in %{time_count} minutes"
    - **en**: "in %{time_count} minutes"
   */
-  public static func dates_time_in_minutes_few(time_count time_count: String) -> String {
+  public static func dates_time_in_minutes(time_count time_count: Int) -> String {
     return localizedString(
-      key: "dates.time_in_minutes.few",
+      key: "dates.time_in_minutes",
       defaultValue: "in %{time_count} minutes",
-      count: nil,
-      substitutions: ["time_count": time_count]
-    )
-  }
-  /**
-   "in %{time_count} minutes"
-
-   - **es**: "en %{time_count} minutos"
-   - **de**: "in %{time_count} Minuten"
-   - **fr**: "dans %{time_count} minutes"
-   - **it**: "in %{time_count} minutes"
-   - **en**: "in %{time_count} minutes"
-  */
-  public static func dates_time_in_minutes_many(time_count time_count: String) -> String {
-    return localizedString(
-      key: "dates.time_in_minutes.many",
-      defaultValue: "in %{time_count} minutes",
-      count: nil,
-      substitutions: ["time_count": time_count]
-    )
-  }
-  /**
-   "in 1 minute"
-
-   - **es**: "en 1 minuto"
-   - **de**: "in 1 Minute"
-   - **fr**: "dans 1 minute"
-   - **it**: "in 1 minute"
-   - **en**: "in 1 minute"
-  */
-  public static func dates_time_in_minutes_one() -> String {
-    return localizedString(
-      key: "dates.time_in_minutes.one",
-      defaultValue: "in 1 minute",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "in 2 minutes"
-
-   - **es**: "en 2 minutos"
-   - **de**: "in 2 Minuten"
-   - **fr**: "dans 2 minutes"
-   - **it**: "in 2 minutes"
-   - **en**: "in 2 minutes"
-  */
-  public static func dates_time_in_minutes_two() -> String {
-    return localizedString(
-      key: "dates.time_in_minutes.two",
-      defaultValue: "in 2 minutes",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "in 0 minutes"
-
-   - **es**: "en 0 minutes"
-   - **de**: "in 0 Minuten"
-   - **fr**: "dans 0 minutes"
-   - **it**: "in 0 minutes"
-   - **en**: "in 0 minutes"
-  */
-  public static func dates_time_in_minutes_zero() -> String {
-    return localizedString(
-      key: "dates.time_in_minutes.zero",
-      defaultValue: "in 0 minutes",
-      count: nil,
-      substitutions: [:]
+      count: time_count,
+      substitutions: ["time_count": Format.wholeNumber(time_count)]
     )
   }
   /**
@@ -4457,80 +4049,12 @@ public enum Strings {
    - **it**: "in %{time_count} mins"
    - **en**: "in %{time_count} mins"
   */
-  public static func dates_time_in_minutes_abbreviated_few(time_count time_count: String) -> String {
+  public static func dates_time_in_minutes_abbreviated(time_count time_count: Int) -> String {
     return localizedString(
-      key: "dates.time_in_minutes_abbreviated.few",
+      key: "dates.time_in_minutes_abbreviated",
       defaultValue: "in %{time_count} mins",
-      count: nil,
-      substitutions: ["time_count": time_count]
-    )
-  }
-  /**
-   "in %{time_count} mins"
-
-   - **es**: "en %{time_count} mins"
-   - **de**: "in %{time_count} Min"
-   - **fr**: "dans %{time_count} min"
-   - **it**: "in %{time_count} mins"
-   - **en**: "in %{time_count} mins"
-  */
-  public static func dates_time_in_minutes_abbreviated_many(time_count time_count: String) -> String {
-    return localizedString(
-      key: "dates.time_in_minutes_abbreviated.many",
-      defaultValue: "in %{time_count} mins",
-      count: nil,
-      substitutions: ["time_count": time_count]
-    )
-  }
-  /**
-   "in 1 min"
-
-   - **es**: "en 1 min"
-   - **de**: "in 1 Min"
-   - **fr**: "dans 1 min"
-   - **it**: "in 1 min"
-   - **en**: "in 1 min"
-  */
-  public static func dates_time_in_minutes_abbreviated_one() -> String {
-    return localizedString(
-      key: "dates.time_in_minutes_abbreviated.one",
-      defaultValue: "in 1 min",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "in 2 mins"
-
-   - **es**: "en 2 mins"
-   - **de**: "in 2 Min"
-   - **fr**: "dans 2 min"
-   - **it**: "in 2 mins"
-   - **en**: "in 2 mins"
-  */
-  public static func dates_time_in_minutes_abbreviated_two() -> String {
-    return localizedString(
-      key: "dates.time_in_minutes_abbreviated.two",
-      defaultValue: "in 2 mins",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "in 0 mins"
-
-   - **es**: "en 0 mins"
-   - **de**: "in 0 Min"
-   - **fr**: "dans 0 min"
-   - **it**: "in 0 mins"
-   - **en**: "in 0 mins"
-  */
-  public static func dates_time_in_minutes_abbreviated_zero() -> String {
-    return localizedString(
-      key: "dates.time_in_minutes_abbreviated.zero",
-      defaultValue: "in 0 mins",
-      count: nil,
-      substitutions: [:]
+      count: time_count,
+      substitutions: ["time_count": Format.wholeNumber(time_count)]
     )
   }
   /**
@@ -4542,80 +4066,12 @@ public enum Strings {
    - **it**: "%{time_count} minutes"
    - **en**: "%{time_count} minutes"
   */
-  public static func dates_time_minutes_few(time_count time_count: String) -> String {
+  public static func dates_time_minutes(time_count time_count: Int) -> String {
     return localizedString(
-      key: "dates.time_minutes.few",
+      key: "dates.time_minutes",
       defaultValue: "%{time_count} minutes",
-      count: nil,
-      substitutions: ["time_count": time_count]
-    )
-  }
-  /**
-   "%{time_count} minutes"
-
-   - **es**: "%{time_count} minutos"
-   - **de**: "%{time_count} Minuten"
-   - **fr**: "%{time_count} minutes"
-   - **it**: "%{time_count} minutes"
-   - **en**: "%{time_count} minutes"
-  */
-  public static func dates_time_minutes_many(time_count time_count: String) -> String {
-    return localizedString(
-      key: "dates.time_minutes.many",
-      defaultValue: "%{time_count} minutes",
-      count: nil,
-      substitutions: ["time_count": time_count]
-    )
-  }
-  /**
-   "1 minute"
-
-   - **es**: "1 minuto"
-   - **de**: "1 Minute"
-   - **fr**: "1 minute"
-   - **it**: "1 minute"
-   - **en**: "1 minute"
-  */
-  public static func dates_time_minutes_one() -> String {
-    return localizedString(
-      key: "dates.time_minutes.one",
-      defaultValue: "1 minute",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "2 minutes"
-
-   - **es**: "2 minutos"
-   - **de**: "2 MInuten"
-   - **fr**: "2 minutes"
-   - **it**: "2 minutes"
-   - **en**: "2 minutes"
-  */
-  public static func dates_time_minutes_two() -> String {
-    return localizedString(
-      key: "dates.time_minutes.two",
-      defaultValue: "2 minutes",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "0 minutes"
-
-   - **es**: "0 minutos"
-   - **de**: "0 Minuten"
-   - **fr**: "0 minutes"
-   - **it**: "0 minutes"
-   - **en**: "0 minutes"
-  */
-  public static func dates_time_minutes_zero() -> String {
-    return localizedString(
-      key: "dates.time_minutes.zero",
-      defaultValue: "0 minutes",
-      count: nil,
-      substitutions: [:]
+      count: time_count,
+      substitutions: ["time_count": Format.wholeNumber(time_count)]
     )
   }
   /**
@@ -4627,80 +4083,12 @@ public enum Strings {
    - **it**: "%{time_count} mins"
    - **en**: "%{time_count} mins"
   */
-  public static func dates_time_minutes_abbreviated_few(time_count time_count: String) -> String {
+  public static func dates_time_minutes_abbreviated(time_count time_count: Int) -> String {
     return localizedString(
-      key: "dates.time_minutes_abbreviated.few",
+      key: "dates.time_minutes_abbreviated",
       defaultValue: "%{time_count} mins",
-      count: nil,
-      substitutions: ["time_count": time_count]
-    )
-  }
-  /**
-   "%{time_count} mins"
-
-   - **es**: "%{time_count} mins"
-   - **de**: "%{time_count} Min"
-   - **fr**: "%{time_count} min"
-   - **it**: "%{time_count} mins"
-   - **en**: "%{time_count} mins"
-  */
-  public static func dates_time_minutes_abbreviated_many(time_count time_count: String) -> String {
-    return localizedString(
-      key: "dates.time_minutes_abbreviated.many",
-      defaultValue: "%{time_count} mins",
-      count: nil,
-      substitutions: ["time_count": time_count]
-    )
-  }
-  /**
-   "1 min"
-
-   - **es**: "1 min"
-   - **de**: "1 MIn"
-   - **fr**: "1 min"
-   - **it**: "1 min"
-   - **en**: "1 min"
-  */
-  public static func dates_time_minutes_abbreviated_one() -> String {
-    return localizedString(
-      key: "dates.time_minutes_abbreviated.one",
-      defaultValue: "1 min",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "2 mins"
-
-   - **es**: "2 mins"
-   - **de**: "2 Min"
-   - **fr**: "2 min"
-   - **it**: "2 mins"
-   - **en**: "2 mins"
-  */
-  public static func dates_time_minutes_abbreviated_two() -> String {
-    return localizedString(
-      key: "dates.time_minutes_abbreviated.two",
-      defaultValue: "2 mins",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "0 mins"
-
-   - **es**: "0 mins"
-   - **de**: "0 Min"
-   - **fr**: "0 min"
-   - **it**: "0 mins"
-   - **en**: "0 mins"
-  */
-  public static func dates_time_minutes_abbreviated_zero() -> String {
-    return localizedString(
-      key: "dates.time_minutes_abbreviated.zero",
-      defaultValue: "0 mins",
-      count: nil,
-      substitutions: [:]
+      count: time_count,
+      substitutions: ["time_count": Format.wholeNumber(time_count)]
     )
   }
   /**
@@ -4712,80 +4100,12 @@ public enum Strings {
    - **it**: "%{time_count} minutes ago"
    - **en**: "%{time_count} minutes ago"
   */
-  public static func dates_time_minutes_ago_few(time_count time_count: String) -> String {
+  public static func dates_time_minutes_ago(time_count time_count: Int) -> String {
     return localizedString(
-      key: "dates.time_minutes_ago.few",
+      key: "dates.time_minutes_ago",
       defaultValue: "%{time_count} minutes ago",
-      count: nil,
-      substitutions: ["time_count": time_count]
-    )
-  }
-  /**
-   "%{time_count} minutes ago"
-
-   - **es**: "hace %{time_count} minutos"
-   - **de**: "vor %{time_count} Minuten"
-   - **fr**: "il y a %{time_count} minutes"
-   - **it**: "%{time_count} minutes ago"
-   - **en**: "%{time_count} minutes ago"
-  */
-  public static func dates_time_minutes_ago_many(time_count time_count: String) -> String {
-    return localizedString(
-      key: "dates.time_minutes_ago.many",
-      defaultValue: "%{time_count} minutes ago",
-      count: nil,
-      substitutions: ["time_count": time_count]
-    )
-  }
-  /**
-   "1 minute ago"
-
-   - **es**: "hace 1 minuto"
-   - **de**: "vor 1 Minute"
-   - **fr**: "il y a 1 minute"
-   - **it**: "1 minute ago"
-   - **en**: "1 minute ago"
-  */
-  public static func dates_time_minutes_ago_one() -> String {
-    return localizedString(
-      key: "dates.time_minutes_ago.one",
-      defaultValue: "1 minute ago",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "2 minutes ago"
-
-   - **es**: "hace 2 minutos"
-   - **de**: "vor 2 Minuten"
-   - **fr**: "il y a 2 minutes"
-   - **it**: "2 minutes ago"
-   - **en**: "2 minutes ago"
-  */
-  public static func dates_time_minutes_ago_two() -> String {
-    return localizedString(
-      key: "dates.time_minutes_ago.two",
-      defaultValue: "2 minutes ago",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "0 minutes ago"
-
-   - **es**: "hace 0 minutos"
-   - **de**: "vor 0 Minuten"
-   - **fr**: "il y a 0 minutes"
-   - **it**: "0 minutes ago"
-   - **en**: "0 minutes ago"
-  */
-  public static func dates_time_minutes_ago_zero() -> String {
-    return localizedString(
-      key: "dates.time_minutes_ago.zero",
-      defaultValue: "0 minutes ago",
-      count: nil,
-      substitutions: [:]
+      count: time_count,
+      substitutions: ["time_count": Format.wholeNumber(time_count)]
     )
   }
   /**
@@ -4797,80 +4117,12 @@ public enum Strings {
    - **it**: "%{time_count} mins ago"
    - **en**: "%{time_count} mins ago"
   */
-  public static func dates_time_minutes_ago_abbreviated_few(time_count time_count: String) -> String {
+  public static func dates_time_minutes_ago_abbreviated(time_count time_count: Int) -> String {
     return localizedString(
-      key: "dates.time_minutes_ago_abbreviated.few",
+      key: "dates.time_minutes_ago_abbreviated",
       defaultValue: "%{time_count} mins ago",
-      count: nil,
-      substitutions: ["time_count": time_count]
-    )
-  }
-  /**
-   "%{time_count} mins ago"
-
-   - **es**: "hace %{time_count} mins"
-   - **de**: "vor %{time_count} Min"
-   - **fr**: "il y a %{time_count} min"
-   - **it**: "%{time_count} mins ago"
-   - **en**: "%{time_count} mins ago"
-  */
-  public static func dates_time_minutes_ago_abbreviated_many(time_count time_count: String) -> String {
-    return localizedString(
-      key: "dates.time_minutes_ago_abbreviated.many",
-      defaultValue: "%{time_count} mins ago",
-      count: nil,
-      substitutions: ["time_count": time_count]
-    )
-  }
-  /**
-   "1 min ago"
-
-   - **es**: "hace 1 min"
-   - **de**: "vor 1 Min"
-   - **fr**: "il y a 1 min"
-   - **it**: "1 min ago"
-   - **en**: "1 min ago"
-  */
-  public static func dates_time_minutes_ago_abbreviated_one() -> String {
-    return localizedString(
-      key: "dates.time_minutes_ago_abbreviated.one",
-      defaultValue: "1 min ago",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "2 mins ago"
-
-   - **es**: "hace 2 mins"
-   - **de**: "vor 2 Min"
-   - **fr**: "il y a 2 min"
-   - **it**: "2 mins ago"
-   - **en**: "2 mins ago"
-  */
-  public static func dates_time_minutes_ago_abbreviated_two() -> String {
-    return localizedString(
-      key: "dates.time_minutes_ago_abbreviated.two",
-      defaultValue: "2 mins ago",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "0 mins ago"
-
-   - **es**: "hace 0 mins"
-   - **de**: "vor 0 Min"
-   - **fr**: "il y a 0 min"
-   - **it**: "0 mins ago"
-   - **en**: "0 mins ago"
-  */
-  public static func dates_time_minutes_ago_abbreviated_zero() -> String {
-    return localizedString(
-      key: "dates.time_minutes_ago_abbreviated.zero",
-      defaultValue: "0 mins ago",
-      count: nil,
-      substitutions: [:]
+      count: time_count,
+      substitutions: ["time_count": Format.wholeNumber(time_count)]
     )
   }
   /**
@@ -5039,23 +4291,6 @@ public enum Strings {
     return localizedString(
       key: "discovery.activity_sample.title.Since_your_last_visit",
       defaultValue: "Since your last visit",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "Since you've been gone..."
-
-   - **es**: "Lo que ocurrió desde tu última visita:"
-   - **de**: "Seit deinem letzten Besuch ..."
-   - **fr**: "Depuis votre dernière visite..."
-   - **it**: "Since you've been gone..."
-   - **en**: "Since you've been gone..."
-  */
-  public static func discovery_activity_sample_title_since_youve_been_gone() -> String {
-    return localizedString(
-      key: "discovery.activity_sample.title.since_youve_been_gone",
-      defaultValue: "Since you've been gone...",
       count: nil,
       substitutions: [:]
     )
@@ -5341,80 +4576,12 @@ public enum Strings {
    - **it**: "%{friend_name}, %{second_friend_name}, and %{remaining_count} more are backers."
    - **en**: "%{friend_name}, %{second_friend_name}, and %{remaining_count} more are backers."
   */
-  public static func discovery_baseball_card_social_friends_are_backers_few(friend_name friend_name: String, second_friend_name: String, remaining_count: String) -> String {
+  public static func discovery_baseball_card_social_friends_are_backers(friend_name friend_name: String, second_friend_name: String, remaining_count: Int) -> String {
     return localizedString(
-      key: "discovery.baseball_card.social.friends_are_backers.few",
+      key: "discovery.baseball_card.social.friends_are_backers",
       defaultValue: "%{friend_name}, %{second_friend_name}, and %{remaining_count} more are backers.",
-      count: nil,
-      substitutions: ["friend_name": friend_name, "second_friend_name": second_friend_name, "remaining_count": remaining_count]
-    )
-  }
-  /**
-   "%{friend_name}, %{second_friend_name}, and %{remaining_count} more are backers."
-
-   - **es**: "%{friend_name}, %{second_friend_name}, y %{remaining_count} más patrocinan este proyecto."
-   - **de**: "%{friend_name}, %{second_friend_name}, und %{remaining_count} weitere unterstützen dieses Projekt."
-   - **fr**: "%{friend_name}, %{second_friend_name} et %{remaining_count} autres personnes sont contributeurs."
-   - **it**: "%{friend_name}, %{second_friend_name}, and %{remaining_count} more are backers."
-   - **en**: "%{friend_name}, %{second_friend_name}, and %{remaining_count} more are backers."
-  */
-  public static func discovery_baseball_card_social_friends_are_backers_many(friend_name friend_name: String, second_friend_name: String, remaining_count: String) -> String {
-    return localizedString(
-      key: "discovery.baseball_card.social.friends_are_backers.many",
-      defaultValue: "%{friend_name}, %{second_friend_name}, and %{remaining_count} more are backers.",
-      count: nil,
-      substitutions: ["friend_name": friend_name, "second_friend_name": second_friend_name, "remaining_count": remaining_count]
-    )
-  }
-  /**
-   "%{friend_name} is a backer."
-
-   - **es**: "%{friend_name} patrocina este proyecto."
-   - **de**: "%{friend_name} unterstützt dieses Projekt."
-   - **fr**: "%{friend_name} est contributeur."
-   - **it**: "%{friend_name} is a backer."
-   - **en**: "%{friend_name} is a backer."
-  */
-  public static func discovery_baseball_card_social_friends_are_backers_one(friend_name friend_name: String) -> String {
-    return localizedString(
-      key: "discovery.baseball_card.social.friends_are_backers.one",
-      defaultValue: "%{friend_name} is a backer.",
-      count: nil,
-      substitutions: ["friend_name": friend_name]
-    )
-  }
-  /**
-   "%{friend_name} and %{second_friend_name} are backers."
-
-   - **es**: "%{friend_name} y %{second_friend_name} patrocinan este proyecto."
-   - **de**: "%{friend_name} und %{second_friend_name} unterstützen dieses Projekt."
-   - **fr**: "%{friend_name} et %{second_friend_name} sont contributeurs."
-   - **it**: "%{friend_name} and %{second_friend_name} are backers."
-   - **en**: "%{friend_name} and %{second_friend_name} are backers."
-  */
-  public static func discovery_baseball_card_social_friends_are_backers_two(friend_name friend_name: String, second_friend_name: String) -> String {
-    return localizedString(
-      key: "discovery.baseball_card.social.friends_are_backers.two",
-      defaultValue: "%{friend_name} and %{second_friend_name} are backers.",
-      count: nil,
-      substitutions: ["friend_name": friend_name, "second_friend_name": second_friend_name]
-    )
-  }
-  /**
-   "None of your friends are backers."
-
-   - **es**: "Ninguno de tus amigos patrocina este proyecto."
-   - **de**: "Keiner deiner Freunde unterstützt dieses Projekt."
-   - **fr**: "Vos amis n'ont pas soutenu ce projet."
-   - **it**: "None of your friends are backers."
-   - **en**: "None of your friends are backers."
-  */
-  public static func discovery_baseball_card_social_friends_are_backers_zero() -> String {
-    return localizedString(
-      key: "discovery.baseball_card.social.friends_are_backers.zero",
-      defaultValue: "None of your friends are backers.",
-      count: nil,
-      substitutions: [:]
+      count: remaining_count,
+      substitutions: ["friend_name": friend_name, "second_friend_name": second_friend_name, "remaining_count": Format.wholeNumber(remaining_count)]
     )
   }
   /**
@@ -5872,23 +5039,6 @@ public enum Strings {
     return localizedString(
       key: "discovery.favorite_categories.alert.message",
       defaultValue: "Yes! You've saved this as one of your favorite categories.",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "Done"
-
-   - **es**: "Listo"
-   - **de**: "Fertig"
-   - **fr**: "Terminé"
-   - **it**: "Done"
-   - **en**: "Done"
-  */
-  public static func discovery_favorite_categories_buttons_done() -> String {
-    return localizedString(
-      key: "discovery.favorite_categories.buttons.done",
-      defaultValue: "Done",
       count: nil,
       substitutions: [:]
     )
@@ -6795,6 +5945,23 @@ public enum Strings {
     )
   }
   /**
+   "%{backer_count} backers"
+
+   - **es**: "%{backer_count} backers"
+   - **de**: "%{backer_count} backers"
+   - **fr**: "%{backer_count} backers"
+   - **it**: "%{backer_count} backers"
+   - **en**: "%{backer_count} backers"
+  */
+  public static func general_backer_count_backers(backer_count backer_count: Int) -> String {
+    return localizedString(
+      key: "general.backer_count_backers",
+      defaultValue: "%{backer_count} backers",
+      count: backer_count,
+      substitutions: ["backer_count": Format.wholeNumber(backer_count)]
+    )
+  }
+  /**
    "Oops!"
 
    - **es**: "¡Vaya!"
@@ -6960,23 +6127,6 @@ public enum Strings {
     return localizedString(
       key: "general.navigation.buttons.comment",
       defaultValue: "Comment",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "Done"
-
-   - **es**: "Listo"
-   - **de**: "Fertig"
-   - **fr**: "Terminé"
-   - **it**: "Done"
-   - **en**: "Done"
-  */
-  public static func general_navigation_buttons_done() -> String {
-    return localizedString(
-      key: "general.navigation.buttons.done",
-      defaultValue: "Done",
       count: nil,
       substitutions: [:]
     )
@@ -8481,80 +7631,12 @@ This is commonly fixed by going to iOS Settings > Facebook and toggling access f
    - **it**: "%{category_count} categories backed"
    - **en**: "%{category_count} categories backed"
   */
-  public static func profile_category_count_categories_backed_few(category_count category_count: String) -> String {
+  public static func profile_category_count_categories_backed(category_count category_count: Int) -> String {
     return localizedString(
-      key: "profile.category_count_categories_backed.few",
+      key: "profile.category_count_categories_backed",
       defaultValue: "%{category_count} categories backed",
-      count: nil,
-      substitutions: ["category_count": category_count]
-    )
-  }
-  /**
-   "%{category_count} categories backed"
-
-   - **es**: "en %{category_count} categorías"
-   - **de**: "In %{category_count} Kategorien"
-   - **fr**: "%{category_count} catégories soutenues"
-   - **it**: "%{category_count} categories backed"
-   - **en**: "%{category_count} categories backed"
-  */
-  public static func profile_category_count_categories_backed_many(category_count category_count: String) -> String {
-    return localizedString(
-      key: "profile.category_count_categories_backed.many",
-      defaultValue: "%{category_count} categories backed",
-      count: nil,
-      substitutions: ["category_count": category_count]
-    )
-  }
-  /**
-   "1 category backed"
-
-   - **es**: "en 1 categoría"
-   - **de**: "In 1 Kategorie"
-   - **fr**: "1 catégorie soutenue"
-   - **it**: "1 category backed"
-   - **en**: "1 category backed"
-  */
-  public static func profile_category_count_categories_backed_one() -> String {
-    return localizedString(
-      key: "profile.category_count_categories_backed.one",
-      defaultValue: "1 category backed",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "2 categories backed"
-
-   - **es**: "en 2 categorías"
-   - **de**: "In 2 Kategorien"
-   - **fr**: "2 catégories soutenues"
-   - **it**: "2 categories backed"
-   - **en**: "2 categories backed"
-  */
-  public static func profile_category_count_categories_backed_two() -> String {
-    return localizedString(
-      key: "profile.category_count_categories_backed.two",
-      defaultValue: "2 categories backed",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "0 categories backed"
-
-   - **es**: "en 0 categorías"
-   - **de**: "In 0 Kategorien"
-   - **fr**: "0 catégories soutenues"
-   - **it**: "0 categories backed"
-   - **en**: "0 categories backed"
-  */
-  public static func profile_category_count_categories_backed_zero() -> String {
-    return localizedString(
-      key: "profile.category_count_categories_backed.zero",
-      defaultValue: "0 categories backed",
-      count: nil,
-      substitutions: [:]
+      count: category_count,
+      substitutions: ["category_count": Format.wholeNumber(category_count)]
     )
   }
   /**
@@ -8583,80 +7665,12 @@ This is commonly fixed by going to iOS Settings > Facebook and toggling access f
    - **it**: "%{project_count} projects backed"
    - **en**: "%{project_count} projects backed"
   */
-  public static func profile_project_count_projects_backed_few(project_count project_count: String) -> String {
+  public static func profile_project_count_projects_backed(project_count project_count: Int) -> String {
     return localizedString(
-      key: "profile.project_count_projects_backed.few",
+      key: "profile.project_count_projects_backed",
       defaultValue: "%{project_count} projects backed",
-      count: nil,
-      substitutions: ["project_count": project_count]
-    )
-  }
-  /**
-   "%{project_count} projects backed"
-
-   - **es**: "%{project_count} patrocinados"
-   - **de**: "%{project_count} unterstützte Projekte"
-   - **fr**: "%{project_count} projets soutenus"
-   - **it**: "%{project_count} projects backed"
-   - **en**: "%{project_count} projects backed"
-  */
-  public static func profile_project_count_projects_backed_many(project_count project_count: String) -> String {
-    return localizedString(
-      key: "profile.project_count_projects_backed.many",
-      defaultValue: "%{project_count} projects backed",
-      count: nil,
-      substitutions: ["project_count": project_count]
-    )
-  }
-  /**
-   "1 project backed"
-
-   - **es**: "1 proyecto patrocinado"
-   - **de**: "1 unterstütztes Projekt"
-   - **fr**: "1 projet soutenu"
-   - **it**: "1 project backed"
-   - **en**: "1 project backed"
-  */
-  public static func profile_project_count_projects_backed_one() -> String {
-    return localizedString(
-      key: "profile.project_count_projects_backed.one",
-      defaultValue: "1 project backed",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "2 projects backed"
-
-   - **es**: "2 patrocinados"
-   - **de**: "2 unterstützte Projekte"
-   - **fr**: "2 projets soutenus"
-   - **it**: "2 projects backed"
-   - **en**: "2 projects backed"
-  */
-  public static func profile_project_count_projects_backed_two() -> String {
-    return localizedString(
-      key: "profile.project_count_projects_backed.two",
-      defaultValue: "2 projects backed",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "0 projects backed"
-
-   - **es**: "0 patrocinados"
-   - **de**: "0 unterstützte Projekte"
-   - **fr**: "0 projets soutenus"
-   - **it**: "0 projects backed"
-   - **en**: "0 projects backed"
-  */
-  public static func profile_project_count_projects_backed_zero() -> String {
-    return localizedString(
-      key: "profile.project_count_projects_backed.zero",
-      defaultValue: "0 projects backed",
-      count: nil,
-      substitutions: [:]
+      count: project_count,
+      substitutions: ["project_count": Format.wholeNumber(project_count)]
     )
   }
   /**
@@ -8668,80 +7682,12 @@ This is commonly fixed by going to iOS Settings > Facebook and toggling access f
    - **it**: "BACKED %{project_count} PROJECTS"
    - **en**: "BACKED %{project_count} PROJECTS"
   */
-  public static func profile_projects_backed_project_count_projects_few(project_count project_count: String) -> String {
+  public static func profile_projects_backed_project_count_projects(project_count project_count: Int) -> String {
     return localizedString(
-      key: "profile.projects.backed_project_count_projects.few",
+      key: "profile.projects.backed_project_count_projects",
       defaultValue: "BACKED %{project_count} PROJECTS",
-      count: nil,
-      substitutions: ["project_count": project_count]
-    )
-  }
-  /**
-   "BACKED %{project_count} PROJECTS"
-
-   - **es**: "%{project_count} PROYECTOS APOYADOS"
-   - **de**: "HAT %{project_count} PROJEKTE UNTERSTÜTZT"
-   - **fr**: "%{project_count} PROJETS SOUTENUS"
-   - **it**: "BACKED %{project_count} PROJECTS"
-   - **en**: "BACKED %{project_count} PROJECTS"
-  */
-  public static func profile_projects_backed_project_count_projects_many(project_count project_count: String) -> String {
-    return localizedString(
-      key: "profile.projects.backed_project_count_projects.many",
-      defaultValue: "BACKED %{project_count} PROJECTS",
-      count: nil,
-      substitutions: ["project_count": project_count]
-    )
-  }
-  /**
-   "BACKED 1 PROJECT"
-
-   - **es**: "1 PROYECTO PATROCINADO"
-   - **de**: "HAT 1 PROJEKT UNTERSTÜTZT "
-   - **fr**: "1 PROJET SOUTENU"
-   - **it**: "BACKED 1 PROJECT"
-   - **en**: "BACKED 1 PROJECT"
-  */
-  public static func profile_projects_backed_project_count_projects_one() -> String {
-    return localizedString(
-      key: "profile.projects.backed_project_count_projects.one",
-      defaultValue: "BACKED 1 PROJECT",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "BACKED 2 PROJECTS"
-
-   - **es**: "2 PROYECTOS PATROCINADOS"
-   - **de**: "HAT 2 PROJEKTE UNTERSTÜTZT"
-   - **fr**: "2 PROJETS SOUTENUS"
-   - **it**: "BACKED 2 PROJECTS"
-   - **en**: "BACKED 2 PROJECTS"
-  */
-  public static func profile_projects_backed_project_count_projects_two() -> String {
-    return localizedString(
-      key: "profile.projects.backed_project_count_projects.two",
-      defaultValue: "BACKED 2 PROJECTS",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "BACKED 0 PROJECTS"
-
-   - **es**: "0 PROYECTOS PATROCINADOS"
-   - **de**: "HAT 0 PROJEKTE UNTERSTÜTZT"
-   - **fr**: "0 PROJETS SOUTENUS"
-   - **it**: "BACKED 0 PROJECTS"
-   - **en**: "BACKED 0 PROJECTS"
-  */
-  public static func profile_projects_backed_project_count_projects_zero() -> String {
-    return localizedString(
-      key: "profile.projects.backed_project_count_projects.zero",
-      defaultValue: "BACKED 0 PROJECTS",
-      count: nil,
-      substitutions: [:]
+      count: project_count,
+      substitutions: ["project_count": Format.wholeNumber(project_count)]
     )
   }
   /**
@@ -10959,63 +9905,12 @@ Thank you for your support!"
    - **it**: "%{backer_count} more"
    - **en**: "%{backer_count} more"
   */
-  public static func project_social_friends_are_backers_and_more_bold_few(backer_count backer_count: String) -> String {
+  public static func project_social_friends_are_backers_and_more_bold(backer_count backer_count: Int) -> String {
     return localizedString(
-      key: "project.social.friends_are_backers_and_more_bold.few",
+      key: "project.social.friends_are_backers_and_more_bold",
       defaultValue: "%{backer_count} more",
-      count: nil,
-      substitutions: ["backer_count": backer_count]
-    )
-  }
-  /**
-   "%{backer_count} more"
-
-   - **es**: "%{backer_count} más"
-   - **de**: "%{backer_count} weitere"
-   - **fr**: "%{backer_count} autres personnes"
-   - **it**: "%{backer_count} more"
-   - **en**: "%{backer_count} more"
-  */
-  public static func project_social_friends_are_backers_and_more_bold_many(backer_count backer_count: String) -> String {
-    return localizedString(
-      key: "project.social.friends_are_backers_and_more_bold.many",
-      defaultValue: "%{backer_count} more",
-      count: nil,
-      substitutions: ["backer_count": backer_count]
-    )
-  }
-  /**
-   "1 more"
-
-   - **es**: "1 más"
-   - **de**: "1 weitere"
-   - **fr**: "1 autre personne"
-   - **it**: "1 more"
-   - **en**: "1 more"
-  */
-  public static func project_social_friends_are_backers_and_more_bold_one() -> String {
-    return localizedString(
-      key: "project.social.friends_are_backers_and_more_bold.one",
-      defaultValue: "1 more",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "2 more"
-
-   - **es**: "2 más"
-   - **de**: "2 weitere"
-   - **fr**: "2 autres personnes"
-   - **it**: "2 more"
-   - **en**: "2 more"
-  */
-  public static func project_social_friends_are_backers_and_more_bold_two() -> String {
-    return localizedString(
-      key: "project.social.friends_are_backers_and_more_bold.two",
-      defaultValue: "2 more",
-      count: nil,
-      substitutions: [:]
+      count: backer_count,
+      substitutions: ["backer_count": Format.wholeNumber(backer_count)]
     )
   }
   /**
@@ -11027,80 +9922,12 @@ Thank you for your support!"
    - **it**: "%{friends} and %{backer_count} more are backers."
    - **en**: "%{friends} and %{backer_count} more are backers."
   */
-  public static func project_social_friends_are_backers_and_more_count_few(friends friends: String, backer_count: String) -> String {
+  public static func project_social_friends_are_backers_and_more_count(friends friends: String, backer_count: Int) -> String {
     return localizedString(
-      key: "project.social.friends_are_backers_and_more_count.few",
+      key: "project.social.friends_are_backers_and_more_count",
       defaultValue: "%{friends} and %{backer_count} more are backers.",
-      count: nil,
-      substitutions: ["friends": friends, "backer_count": backer_count]
-    )
-  }
-  /**
-   "%{friends} and %{backer_count} more are backers."
-
-   - **es**: "%{friends} y %{backer_count} personas más patrocinan este proyecto."
-   - **de**: "%{friends} und %{backer_count} weitere Personen unterstützen dieses Projekt."
-   - **fr**: "%{friends} et %{backer_count} autres personnes sont contributeurs."
-   - **it**: "%{friends} and %{backer_count} more are backers."
-   - **en**: "%{friends} and %{backer_count} more are backers."
-  */
-  public static func project_social_friends_are_backers_and_more_count_many(friends friends: String, backer_count: String) -> String {
-    return localizedString(
-      key: "project.social.friends_are_backers_and_more_count.many",
-      defaultValue: "%{friends} and %{backer_count} more are backers.",
-      count: nil,
-      substitutions: ["friends": friends, "backer_count": backer_count]
-    )
-  }
-  /**
-   "%{friends} and 1 more are backers."
-
-   - **es**: "%{friends} y 1 persona más patrocinan este proyecto."
-   - **de**: "%{friends} und 1 weitere Person unterstützen dieses Projekt."
-   - **fr**: "%{friends} et 1 autre personne sont contributeurs."
-   - **it**: "%{friends} and 1 more are backers."
-   - **en**: "%{friends} and 1 more are backers."
-  */
-  public static func project_social_friends_are_backers_and_more_count_one(friends friends: String) -> String {
-    return localizedString(
-      key: "project.social.friends_are_backers_and_more_count.one",
-      defaultValue: "%{friends} and 1 more are backers.",
-      count: nil,
-      substitutions: ["friends": friends]
-    )
-  }
-  /**
-   "%{friends} and 2 more are backers."
-
-   - **es**: "%{friends} y 2 personas más patrocinan este proyecto."
-   - **de**: "%{friends} und 2 weitere Personen unterstützen dieses Projekt."
-   - **fr**: "%{friends} et 2 autres personnes sont contributeurs."
-   - **it**: "%{friends} and 2 more are backers."
-   - **en**: "%{friends} and 2 more are backers."
-  */
-  public static func project_social_friends_are_backers_and_more_count_two(friends friends: String) -> String {
-    return localizedString(
-      key: "project.social.friends_are_backers_and_more_count.two",
-      defaultValue: "%{friends} and 2 more are backers.",
-      count: nil,
-      substitutions: ["friends": friends]
-    )
-  }
-  /**
-   "%{friends} and %{friend_name} are backers."
-
-   - **es**: "%{friends} y %{friend_name} patrocinan este proyecto."
-   - **de**: "%{friends} und %{friend_name} unterstützen dieses Projekt."
-   - **fr**: "%{friends} et %{friend_name} sont contributeurs."
-   - **it**: "%{friends} and %{friend_name} are backers."
-   - **en**: "%{friends} and %{friend_name} are backers."
-  */
-  public static func project_social_friends_are_backers_and_more_count_zero(friends friends: String, friend_name: String) -> String {
-    return localizedString(
-      key: "project.social.friends_are_backers_and_more_count.zero",
-      defaultValue: "%{friends} and %{friend_name} are backers.",
-      count: nil,
-      substitutions: ["friends": friends, "friend_name": friend_name]
+      count: backer_count,
+      substitutions: ["friends": friends, "backer_count": Format.wholeNumber(backer_count)]
     )
   }
   /**
@@ -11648,23 +10475,6 @@ Thank you for your support!"
     )
   }
   /**
-   "All gone"
-
-   - **es**: "¡Recompensas agotadas!"
-   - **de**: "Alle weg"
-   - **fr**: "Épuisé"
-   - **it**: "All gone"
-   - **en**: "All gone"
-  */
-  public static func rewards_info_all_gone() -> String {
-    return localizedString(
-      key: "rewards.info.all_gone",
-      defaultValue: "All gone",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
    "%{backer_count} backers"
 
    - **es**: "%{backer_count} patrocinadores"
@@ -11673,80 +10483,12 @@ Thank you for your support!"
    - **it**: "%{backer_count} backers"
    - **en**: "%{backer_count} backers"
   */
-  public static func rewards_info_backer_count_backers_few(backer_count backer_count: String) -> String {
+  public static func rewards_info_backer_count_backers(backer_count backer_count: Int) -> String {
     return localizedString(
-      key: "rewards.info.backer_count_backers.few",
+      key: "rewards.info.backer_count_backers",
       defaultValue: "%{backer_count} backers",
-      count: nil,
-      substitutions: ["backer_count": backer_count]
-    )
-  }
-  /**
-   "%{backer_count} backers"
-
-   - **es**: "%{backer_count} patrocinadores"
-   - **de**: "%{backer_count} Unterstützer"
-   - **fr**: "%{backer_count} contributeurs"
-   - **it**: "%{backer_count} backers"
-   - **en**: "%{backer_count} backers"
-  */
-  public static func rewards_info_backer_count_backers_many(backer_count backer_count: String) -> String {
-    return localizedString(
-      key: "rewards.info.backer_count_backers.many",
-      defaultValue: "%{backer_count} backers",
-      count: nil,
-      substitutions: ["backer_count": backer_count]
-    )
-  }
-  /**
-   "1 backer"
-
-   - **es**: "1 patrocinador"
-   - **de**: "1 Unterstützer"
-   - **fr**: "1 contributeur"
-   - **it**: "1 backer"
-   - **en**: "1 backer"
-  */
-  public static func rewards_info_backer_count_backers_one() -> String {
-    return localizedString(
-      key: "rewards.info.backer_count_backers.one",
-      defaultValue: "1 backer",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "2 backers"
-
-   - **es**: "2 patrocinadores"
-   - **de**: "2 Unterstützer"
-   - **fr**: "2 contributeurs"
-   - **it**: "2 backers"
-   - **en**: "2 backers"
-  */
-  public static func rewards_info_backer_count_backers_two() -> String {
-    return localizedString(
-      key: "rewards.info.backer_count_backers.two",
-      defaultValue: "2 backers",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "0 backers"
-
-   - **es**: "0 patrocinadores"
-   - **de**: "0 Unterstützer"
-   - **fr**: "0 contributeurs"
-   - **it**: "0 backers"
-   - **en**: "0 backers"
-  */
-  public static func rewards_info_backer_count_backers_zero() -> String {
-    return localizedString(
-      key: "rewards.info.backer_count_backers.zero",
-      defaultValue: "0 backers",
-      count: nil,
-      substitutions: [:]
+      count: backer_count,
+      substitutions: ["backer_count": Format.wholeNumber(backer_count)]
     )
   }
   /**
@@ -11781,91 +10523,6 @@ Thank you for your support!"
       defaultValue: "Includes",
       count: nil,
       substitutions: [:]
-    )
-  }
-  /**
-   "%{title} (x%{quantity})"
-
-   - **es**: "%{title} (x%{quantity})"
-   - **de**: "%{title} (x%{quantity})"
-   - **fr**: "%{title} (x%{quantity})"
-   - **it**: "%{title} (x%{quantity})"
-   - **en**: "%{title} (x%{quantity})"
-  */
-  public static func rewards_info_item_quantity_title_few(title title: String, quantity: String) -> String {
-    return localizedString(
-      key: "rewards.info.item_quantity_title.few",
-      defaultValue: "%{title} (x%{quantity})",
-      count: nil,
-      substitutions: ["title": title, "quantity": quantity]
-    )
-  }
-  /**
-   "%{title} (x%{quantity})"
-
-   - **es**: "%{title} (x%{quantity})"
-   - **de**: "%{title} (x%{quantity})"
-   - **fr**: "%{title} (x%{quantity})"
-   - **it**: "%{title} (x%{quantity})"
-   - **en**: "%{title} (x%{quantity})"
-  */
-  public static func rewards_info_item_quantity_title_many(title title: String, quantity: String) -> String {
-    return localizedString(
-      key: "rewards.info.item_quantity_title.many",
-      defaultValue: "%{title} (x%{quantity})",
-      count: nil,
-      substitutions: ["title": title, "quantity": quantity]
-    )
-  }
-  /**
-   "%{title}"
-
-   - **es**: "%{title}"
-   - **de**: "%{title}"
-   - **fr**: "%{title}"
-   - **it**: "%{title}"
-   - **en**: "%{title}"
-  */
-  public static func rewards_info_item_quantity_title_one(title title: String) -> String {
-    return localizedString(
-      key: "rewards.info.item_quantity_title.one",
-      defaultValue: "%{title}",
-      count: nil,
-      substitutions: ["title": title]
-    )
-  }
-  /**
-   "%{title} (x%{quantity})"
-
-   - **es**: "%{title} (x%{quantity})"
-   - **de**: "%{title} (x%{quantity})"
-   - **fr**: "%{title} (x%{quantity})"
-   - **it**: "%{title} (x%{quantity})"
-   - **en**: "%{title} (x%{quantity})"
-  */
-  public static func rewards_info_item_quantity_title_two(title title: String, quantity: String) -> String {
-    return localizedString(
-      key: "rewards.info.item_quantity_title.two",
-      defaultValue: "%{title} (x%{quantity})",
-      count: nil,
-      substitutions: ["title": title, "quantity": quantity]
-    )
-  }
-  /**
-   "%{title} (x%{quantity})"
-
-   - **es**: "%{title} (x%{quantity})"
-   - **de**: "%{title} (x%{quantity})"
-   - **fr**: "%{title} (x%{quantity})"
-   - **it**: "%{title} (x%{quantity})"
-   - **en**: "%{title} (x%{quantity})"
-  */
-  public static func rewards_info_item_quantity_title_zero(title title: String, quantity: String) -> String {
-    return localizedString(
-      key: "rewards.info.item_quantity_title.zero",
-      defaultValue: "%{title} (x%{quantity})",
-      count: nil,
-      substitutions: ["title": title, "quantity": quantity]
     )
   }
   /**
@@ -12523,80 +11180,12 @@ Thank you for your support!"
    - **it**: "%{backed_count} backed"
    - **en**: "%{backed_count} backed"
   */
-  public static func social_following_friend_projects_count_backed_few(backed_count backed_count: String) -> String {
+  public static func social_following_friend_projects_count_backed(backed_count backed_count: Int) -> String {
     return localizedString(
-      key: "social_following.friend.projects_count_backed.few",
+      key: "social_following.friend.projects_count_backed",
       defaultValue: "%{backed_count} backed",
-      count: nil,
-      substitutions: ["backed_count": backed_count]
-    )
-  }
-  /**
-   "%{backed_count} backed"
-
-   - **es**: "%{backed_count} patrocinados"
-   - **de**: "%{backed_count} unterstützt"
-   - **fr**: "%{backed_count} projets soutenus"
-   - **it**: "%{backed_count} backed"
-   - **en**: "%{backed_count} backed"
-  */
-  public static func social_following_friend_projects_count_backed_many(backed_count backed_count: String) -> String {
-    return localizedString(
-      key: "social_following.friend.projects_count_backed.many",
-      defaultValue: "%{backed_count} backed",
-      count: nil,
-      substitutions: ["backed_count": backed_count]
-    )
-  }
-  /**
-   "1 backed"
-
-   - **es**: "1 patrocinado"
-   - **de**: "1 unterstützt"
-   - **fr**: "1 projet soutenu"
-   - **it**: "1 backed"
-   - **en**: "1 backed"
-  */
-  public static func social_following_friend_projects_count_backed_one() -> String {
-    return localizedString(
-      key: "social_following.friend.projects_count_backed.one",
-      defaultValue: "1 backed",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "2 backed"
-
-   - **es**: "2 patrocinados"
-   - **de**: "2 unterstützt"
-   - **fr**: "2 projets soutenus"
-   - **it**: "2 backed"
-   - **en**: "2 backed"
-  */
-  public static func social_following_friend_projects_count_backed_two() -> String {
-    return localizedString(
-      key: "social_following.friend.projects_count_backed.two",
-      defaultValue: "2 backed",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "0 backed"
-
-   - **es**: "0 patrocinados"
-   - **de**: "0 unterstützt"
-   - **fr**: "0 projets soutenus"
-   - **it**: "0 backed"
-   - **en**: "0 backed"
-  */
-  public static func social_following_friend_projects_count_backed_zero() -> String {
-    return localizedString(
-      key: "social_following.friend.projects_count_backed.zero",
-      defaultValue: "0 backed",
-      count: nil,
-      substitutions: [:]
+      count: backed_count,
+      substitutions: ["backed_count": Format.wholeNumber(backed_count)]
     )
   }
   /**
@@ -12608,80 +11197,12 @@ Thank you for your support!"
    - **it**: "%{created_count} created"
    - **en**: "%{created_count} created"
   */
-  public static func social_following_friend_projects_count_created_few(created_count created_count: String) -> String {
+  public static func social_following_friend_projects_count_created(created_count created_count: Int) -> String {
     return localizedString(
-      key: "social_following.friend.projects_count_created.few",
+      key: "social_following.friend.projects_count_created",
       defaultValue: "%{created_count} created",
-      count: nil,
-      substitutions: ["created_count": created_count]
-    )
-  }
-  /**
-   "%{created_count} created"
-
-   - **es**: "%{created_count} creados"
-   - **de**: "%{created_count} erstellt"
-   - **fr**: "%{created_count} projets créés"
-   - **it**: "%{created_count} created"
-   - **en**: "%{created_count} created"
-  */
-  public static func social_following_friend_projects_count_created_many(created_count created_count: String) -> String {
-    return localizedString(
-      key: "social_following.friend.projects_count_created.many",
-      defaultValue: "%{created_count} created",
-      count: nil,
-      substitutions: ["created_count": created_count]
-    )
-  }
-  /**
-   "1 created"
-
-   - **es**: "1 creado"
-   - **de**: "1 erstellt"
-   - **fr**: "1 projet créé"
-   - **it**: "1 created"
-   - **en**: "1 created"
-  */
-  public static func social_following_friend_projects_count_created_one() -> String {
-    return localizedString(
-      key: "social_following.friend.projects_count_created.one",
-      defaultValue: "1 created",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "2 created"
-
-   - **es**: "2 creados"
-   - **de**: "2 erstellt"
-   - **fr**: "2 projets créés"
-   - **it**: "2 created"
-   - **en**: "2 created"
-  */
-  public static func social_following_friend_projects_count_created_two() -> String {
-    return localizedString(
-      key: "social_following.friend.projects_count_created.two",
-      defaultValue: "2 created",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "0 created"
-
-   - **es**: "0 creados"
-   - **de**: "0 erstellt"
-   - **fr**: "0 projets créés"
-   - **it**: "0 created"
-   - **en**: "0 created"
-  */
-  public static func social_following_friend_projects_count_created_zero() -> String {
-    return localizedString(
-      key: "social_following.friend.projects_count_created.zero",
-      defaultValue: "0 created",
-      count: nil,
-      substitutions: [:]
+      count: created_count,
+      substitutions: ["created_count": Format.wholeNumber(created_count)]
     )
   }
   /**
@@ -12846,46 +11367,12 @@ Thank you for your support!"
    - **it**: "Follow all %{remote_friends_count} friends"
    - **en**: "Follow all %{remote_friends_count} friends"
   */
-  public static func social_following_stats_button_follow_all_friends_few(remote_friends_count remote_friends_count: String) -> String {
+  public static func social_following_stats_button_follow_all_friends(remote_friends_count remote_friends_count: Int) -> String {
     return localizedString(
-      key: "social_following.stats.button.follow_all_friends.few",
+      key: "social_following.stats.button.follow_all_friends",
       defaultValue: "Follow all %{remote_friends_count} friends",
-      count: nil,
-      substitutions: ["remote_friends_count": remote_friends_count]
-    )
-  }
-  /**
-   "Follow all %{remote_friends_count} friends"
-
-   - **es**: "Seguir a %{remote_friends_count} amigos"
-   - **de**: "Allen %{remote_friends_count} Freunden folgen"
-   - **fr**: "Suivre ces %{remote_friends_count} amis"
-   - **it**: "Follow all %{remote_friends_count} friends"
-   - **en**: "Follow all %{remote_friends_count} friends"
-  */
-  public static func social_following_stats_button_follow_all_friends_many(remote_friends_count remote_friends_count: String) -> String {
-    return localizedString(
-      key: "social_following.stats.button.follow_all_friends.many",
-      defaultValue: "Follow all %{remote_friends_count} friends",
-      count: nil,
-      substitutions: ["remote_friends_count": remote_friends_count]
-    )
-  }
-  /**
-   "Follow all 2 friends"
-
-   - **es**: "Seguir a ambos"
-   - **de**: "2 Freunden folgen"
-   - **fr**: "Suivre ces 2 amis"
-   - **it**: "Follow all 2 friends"
-   - **en**: "Follow all 2 friends"
-  */
-  public static func social_following_stats_button_follow_all_friends_two() -> String {
-    return localizedString(
-      key: "social_following.stats.button.follow_all_friends.two",
-      defaultValue: "Follow all 2 friends",
-      count: nil,
-      substitutions: [:]
+      count: remote_friends_count,
+      substitutions: ["remote_friends_count": Format.wholeNumber(remote_friends_count)]
     )
   }
   /**
