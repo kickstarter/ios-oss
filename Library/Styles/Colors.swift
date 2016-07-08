@@ -33,10 +33,8 @@ extension UIColor {
       ("Dark Gray Text", .ksr_darkGrayText),
       ("Light Gray Text", .ksr_lightGrayText),
       ("Twitter Blue", .ksr_twitterBlue),
-      ("Whisper", .ksr_whisper),
       ("White", .ksr_white),
-      ("Yellow", .ksr_yellow),
-      ("Custom Indigo", .ksr_customIndigo)
+      ("Yellow", .ksr_yellow)
     ]
   }
 
@@ -256,11 +254,6 @@ extension UIColor {
   }
 
   @available(*, deprecated=1.0)
-  public static var ksr_whisper: UIColor {
-    return .hex(0xFBFAF9)
-  }
-
-  @available(*, deprecated=1.0)
   public static var ksr_white: UIColor {
     return .hex(0xffffff)
   }
@@ -268,10 +261,5 @@ extension UIColor {
   @available(*, deprecated=1.0)
   public static var ksr_yellow: UIColor {
     return .hex(0xffffc9)
-  }
-
-  @available(*, deprecated=1.0)
-  public static var ksr_customIndigo: UIColor {
-    return .hex(0x392B84)
   }
 }
