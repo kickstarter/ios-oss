@@ -32,7 +32,7 @@ public final class CountBadgeView: UIView {
       |> CountBadgeView.lens.translatesAutoresizingMaskIntoConstraints .~ false
 
     self.label
-      |> UILabel.lens.font .~ .ksr_footnote
+      |> UILabel.lens.font .~ .ksr_footnote()
       |> UILabel.lens.textColor .~ .ksr_white
       |> UILabel.lens.contentHuggingPriorityForAxis(.Horizontal) .~ required
       |> UILabel.lens.contentCompressionResistancePriorityForAxis(.Horizontal) .~ required

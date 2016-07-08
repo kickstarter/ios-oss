@@ -17,14 +17,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="UHD-eb-qXC">
-                                <rect key="frame" x="40" y="157" width="520" height="287"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="UHD-eb-qXC">
+                                <rect key="frame" x="0.0" y="157" width="600" height="274"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="1tl-3X-f58">
-                                        <rect key="frame" x="0.0" y="0.0" width="520" height="83"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="1tl-3X-f58">
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="70"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DI6-Zp-Yoj">
-                                                <rect key="frame" x="0.0" y="0.0" width="520" height="44"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="300" id="j2Y-9T-Wkx"/>
                                                     <constraint firstAttribute="height" constant="44" id="wYA-Q6-Bw3"/>
@@ -47,8 +47,8 @@
                                                     <action selector="facebookLoginButtonPressed:" destination="jyD-hR-XbB" eventType="touchUpInside" id="lED-xT-rnp"/>
                                                 </connections>
                                             </button>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="We'll never post anything without your permission." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="npz-Cl-wqX">
-                                                <rect key="frame" x="0.0" y="56" width="520" height="27"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="We'll never post anything without your permission." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="npz-Cl-wqX">
+                                                <rect key="frame" x="0.0" y="56" width="600" height="14"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
@@ -57,15 +57,15 @@
                                                 </variation>
                                             </label>
                                         </subviews>
-                                        <variation key="heightClass=compact" alignment="center" misplaced="YES">
+                                        <variation key="heightClass=compact" misplaced="YES">
                                             <rect key="frame" x="0.0" y="0.0" width="520" height="70"/>
                                         </variation>
                                     </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="eRD-uK-yiP">
-                                        <rect key="frame" x="0.0" y="113" width="520" height="100"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" distribution="fillProportionally" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="eRD-uK-yiP">
+                                        <rect key="frame" x="0.0" y="100" width="600" height="100"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tcm-YK-ZfH">
-                                                <rect key="frame" x="0.0" y="0.0" width="520" height="44"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="44" id="IVh-ao-BJi"/>
                                                 </constraints>
@@ -78,7 +78,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ytH-Nw-2z0">
-                                                <rect key="frame" x="0.0" y="56" width="520" height="44"/>
+                                                <rect key="frame" x="0.0" y="56" width="600" height="44"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="44" id="rmm-8H-xbE"/>
                                                 </constraints>
@@ -91,12 +91,12 @@
                                                 </connections>
                                             </button>
                                         </subviews>
-                                        <variation key="heightClass=compact" axis="horizontal" misplaced="YES">
+                                        <variation key="heightClass=compact" misplaced="YES">
                                             <rect key="frame" x="0.0" y="100" width="520" height="44"/>
                                         </variation>
                                     </stackView>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="RUt-ea-H2e">
-                                        <rect key="frame" x="0.0" y="243" width="520" height="44"/>
+                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="RUt-ea-H2e">
+                                        <rect key="frame" x="0.0" y="230" width="600" height="44"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="QDd-D3-De3"/>
                                         </constraints>
@@ -113,18 +113,6 @@
                                         </connections>
                                     </button>
                                 </subviews>
-                                <constraints>
-                                    <constraint firstItem="1tl-3X-f58" firstAttribute="leading" secondItem="UHD-eb-qXC" secondAttribute="leading" id="6pg-Ko-Rhr"/>
-                                    <constraint firstAttribute="trailing" secondItem="1tl-3X-f58" secondAttribute="trailing" id="GAp-R7-lck"/>
-                                    <constraint firstItem="1tl-3X-f58" firstAttribute="top" secondItem="UHD-eb-qXC" secondAttribute="top" id="Ot9-kQ-O7V"/>
-                                    <constraint firstItem="1tl-3X-f58" firstAttribute="leading" secondItem="UHD-eb-qXC" secondAttribute="leading" id="wb7-8R-AQI"/>
-                                </constraints>
-                                <variation key="default">
-                                    <mask key="constraints">
-                                        <exclude reference="6pg-Ko-Rhr"/>
-                                        <exclude reference="GAp-R7-lck"/>
-                                    </mask>
-                                </variation>
                                 <variation key="heightClass=compact" misplaced="YES">
                                     <rect key="frame" x="40" y="2" width="520" height="218"/>
                                 </variation>
@@ -132,18 +120,10 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="UHD-eb-qXC" firstAttribute="leading" secondItem="vPL-WX-Xrs" secondAttribute="leadingMargin" constant="20" id="0gu-zO-kEL"/>
-                            <constraint firstItem="UHD-eb-qXC" firstAttribute="width" secondItem="vPL-WX-Xrs" secondAttribute="width" id="cOe-IK-hhc"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="UHD-eb-qXC" secondAttribute="trailing" constant="20" id="e9a-9x-0vN"/>
-                            <constraint firstItem="UHD-eb-qXC" firstAttribute="centerY" secondItem="vPL-WX-Xrs" secondAttribute="centerY" id="eSr-iP-iVZ"/>
-                            <constraint firstItem="UHD-eb-qXC" firstAttribute="centerX" secondItem="vPL-WX-Xrs" secondAttribute="centerX" id="w6f-V1-7vI"/>
+                            <constraint firstItem="UHD-eb-qXC" firstAttribute="centerY" secondItem="vPL-WX-Xrs" secondAttribute="centerY" id="BGR-48-jE2"/>
+                            <constraint firstAttribute="trailing" secondItem="UHD-eb-qXC" secondAttribute="trailing" id="NLd-0R-5xk"/>
+                            <constraint firstItem="UHD-eb-qXC" firstAttribute="leading" secondItem="vPL-WX-Xrs" secondAttribute="leading" id="jvx-WU-G68"/>
                         </constraints>
-                        <variation key="default">
-                            <mask key="constraints">
-                                <exclude reference="cOe-IK-hhc"/>
-                                <exclude reference="w6f-V1-7vI"/>
-                            </mask>
-                        </variation>
                     </view>
                     <navigationItem key="navigationItem" id="gR4-vH-q2u">
                         <barButtonItem key="leftBarButtonItem" enabled="NO" id="vxe-O8-0J0"/>
@@ -153,8 +133,11 @@
                     <connections>
                         <outlet property="fbDisclaimer" destination="npz-Cl-wqX" id="iQh-wC-YCl"/>
                         <outlet property="fbLoginButton" destination="DI6-Zp-Yoj" id="jrl-tE-eBz"/>
+                        <outlet property="fbLoginStackView" destination="1tl-3X-f58" id="kz0-C7-Ulv"/>
                         <outlet property="helpButton" destination="RUt-ea-H2e" id="3Uh-Ol-5W8"/>
                         <outlet property="loginButton" destination="tcm-YK-ZfH" id="qe9-86-RTl"/>
+                        <outlet property="loginSignupButtonsStackView" destination="eRD-uK-yiP" id="x2p-vd-fCG"/>
+                        <outlet property="rootStackView" destination="UHD-eb-qXC" id="aZl-hb-zFS"/>
                         <outlet property="signupButton" destination="ytH-Nw-2z0" id="kt8-oh-pu8"/>
                     </connections>
                 </viewController>
@@ -372,29 +355,29 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="WAW-aN-vGd">
-                                <rect key="frame" x="40" y="183" width="520" height="235"/>
+                                <rect key="frame" x="20" y="183" width="560" height="235"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ulQ-3V-EvI" userLabel="Email and password">
-                                        <rect key="frame" x="0.0" y="0.0" width="520" height="101"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="560" height="101"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OeS-as-xL5" userLabel="Divider">
-                                                <rect key="frame" x="0.0" y="50" width="520" height="1"/>
+                                                <rect key="frame" x="0.0" y="50" width="560" height="1"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="1" id="Suu-st-oBO"/>
                                                 </constraints>
                                             </view>
                                             <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="CTA-vI-690" userLabel="Email field">
-                                                <rect key="frame" x="16" y="12" width="488" height="34"/>
+                                                <rect key="frame" x="16" y="12" width="528" height="34"/>
                                                 <subviews>
                                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="rfF-KC-Vmh">
-                                                        <rect key="frame" x="0.0" y="8" width="390" height="19"/>
+                                                        <rect key="frame" x="0.0" y="8" width="430" height="19"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" returnKeyType="next"/>
                                                     </textField>
                                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sED-DC-oIo" userLabel="1password">
-                                                        <rect key="frame" x="402" y="0.0" width="86" height="34"/>
+                                                        <rect key="frame" x="442" y="0.0" width="86" height="34"/>
                                                         <state key="normal" title="1password">
                                                             <color key="titleColor" red="0.031372549020000001" green="0.070588235289999995" blue="0.27058823529999998" alpha="1" colorSpace="calibratedRGB"/>
                                                         </state>
@@ -402,7 +385,7 @@
                                                 </subviews>
                                             </stackView>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="A3g-DY-QEE">
-                                                <rect key="frame" x="16" y="70" width="488" height="19"/>
+                                                <rect key="frame" x="16" y="70" width="528" height="19"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" secureTextEntry="YES"/>
@@ -424,7 +407,7 @@
                                         <edgeInsets key="layoutMargins" top="16" left="16" bottom="16" right="16"/>
                                     </view>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yb8-7t-B6f">
-                                        <rect key="frame" x="0.0" y="131" width="520" height="30"/>
+                                        <rect key="frame" x="0.0" y="131" width="560" height="30"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                         <state key="normal" title="Log in">
                                             <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -434,7 +417,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="qIi-a3-8Mq">
-                                        <rect key="frame" x="0.0" y="191" width="520" height="44"/>
+                                        <rect key="frame" x="0.0" y="191" width="560" height="44"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="n2W-Lf-bmI"/>
                                         </constraints>
@@ -454,18 +437,10 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="WAW-aN-vGd" firstAttribute="centerY" secondItem="bKW-b9-tc9" secondAttribute="centerY" id="4wv-yf-aw9"/>
-                            <constraint firstItem="WAW-aN-vGd" firstAttribute="width" secondItem="bKW-b9-tc9" secondAttribute="width" id="C6p-30-zWt"/>
-                            <constraint firstItem="WAW-aN-vGd" firstAttribute="leading" secondItem="bKW-b9-tc9" secondAttribute="leadingMargin" constant="20" id="QBt-6Y-XjL"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="WAW-aN-vGd" secondAttribute="trailing" constant="20" id="U0q-oZ-Vvk"/>
-                            <constraint firstItem="WAW-aN-vGd" firstAttribute="centerX" secondItem="bKW-b9-tc9" secondAttribute="centerX" id="ZCV-so-w22"/>
+                            <constraint firstItem="WAW-aN-vGd" firstAttribute="leading" secondItem="bKW-b9-tc9" secondAttribute="leadingMargin" id="Jwe-i0-zDX"/>
+                            <constraint firstItem="WAW-aN-vGd" firstAttribute="centerY" secondItem="bKW-b9-tc9" secondAttribute="centerY" id="PVe-yF-ngr"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="WAW-aN-vGd" secondAttribute="trailing" id="j6q-5e-cK8"/>
                         </constraints>
-                        <variation key="default">
-                            <mask key="constraints">
-                                <exclude reference="C6p-30-zWt"/>
-                                <exclude reference="ZCV-so-w22"/>
-                            </mask>
-                        </variation>
                     </view>
                     <connections>
                         <outlet property="emailTextField" destination="rfF-KC-Vmh" id="fUb-r3-jVV"/>

@@ -16,7 +16,7 @@ final class StyledLabelTests: XCTestCase {
 
     label._fontStyle = "Headline"
     XCTAssertNotNil(label.fontStyle)
-    XCTAssertEqual(UIFont.ksr_headline, label.font)
+    XCTAssertEqual(UIFont.ksr_headline(), label.font)
 
     label._color = "Blue"
     XCTAssertNotNil(label.color)

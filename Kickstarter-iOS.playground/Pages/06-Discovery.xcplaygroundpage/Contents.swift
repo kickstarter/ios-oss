@@ -18,9 +18,11 @@ AppEnvironment.replaceCurrentEnvironment(
 
 let controller = storyboard(named: "Discovery")
   .instantiateViewControllerWithIdentifier("DiscoveryPageViewController") as! DiscoveryPageViewController
+let (parent, _) = playgroundControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
 
 controller.configureWith(sort: .Magic)
 controller.change(filter: .defaults)
 
-XCPlaygroundPage.currentPage.liveView = controller
-controller.view |> UIView.lens.frame.size.height .~ 1_250
+let frame = parent.view.frame
+XCPlaygroundPage.currentPage.liveView = parent
+parent.view.frame = frame

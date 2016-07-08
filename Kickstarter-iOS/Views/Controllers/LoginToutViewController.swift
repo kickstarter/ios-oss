@@ -9,11 +9,14 @@ import Prelude
 import FBSDKLoginKit
 
 internal final class LoginToutViewController: UIViewController, MFMailComposeViewControllerDelegate {
-  @IBOutlet internal weak var fbLoginButton: UIButton!
-  @IBOutlet internal weak var fbDisclaimer: UILabel!
-  @IBOutlet internal weak var helpButton: UIButton!
-  @IBOutlet internal weak var loginButton: UIButton!
-  @IBOutlet internal weak var signupButton: UIButton!
+  @IBOutlet private weak var fbDisclaimer: UILabel!
+  @IBOutlet private weak var fbLoginButton: UIButton!
+  @IBOutlet private weak var fbLoginStackView: UIStackView!
+  @IBOutlet private weak var helpButton: UIButton!
+  @IBOutlet private weak var loginButton: UIButton!
+  @IBOutlet private weak var loginSignupButtonsStackView: UIStackView!
+  @IBOutlet private weak var signupButton: UIButton!
+  @IBOutlet private weak var rootStackView: UIStackView!
 
   internal let viewModel: LoginToutViewModelType = LoginToutViewModel()
 
@@ -46,14 +49,18 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
 
   override func bindStyles() {
     self |> baseControllerStyle()
-    self.fbLoginButton |> facebookButtonStyle
+
     self.fbDisclaimer |> disclaimerLabelStyle
+    self.fbLoginButton |> facebookButtonStyle
+    self.fbLoginStackView |> fbLoginStackViewStyle
     self.helpButton |> disclaimerButtonStyle
     self.loginButton |> loginWithEmailButtonStyle
+    self.loginSignupButtonsStackView |> loginSignupButtonsStackViewStyle
+    self.rootStackView |> loginRootStackViewStyle
     self.signupButton |> signupWithEmailButtonStyle
   }
 
-// swiftlint:disable function_body_length
+  // swiftlint:disable function_body_length
   override func bindViewModel() {
     self.viewModel.outputs.startLogin
       .observeForUI()

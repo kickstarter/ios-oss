@@ -14,7 +14,7 @@ public let discoveryOnboardingSignUpButtonStyle = baseButtonStyle
 }
 
 public let discoveryOnboardingTitleStyle =
-  UILabel.lens.font .~ .ksr_title3
+  UILabel.lens.font .~ .ksr_title3()
     <> UILabel.lens.textAlignment .~ .Center
     <> UILabel.lens.numberOfLines .~ 2
     <> UILabel.lens.text %~ { _ in Strings.discovery_onboarding_title_bring_creative_projects_to_life() }

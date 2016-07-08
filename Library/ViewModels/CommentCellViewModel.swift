@@ -43,7 +43,7 @@ CommentCellViewModelOutputs {
       .map { $0 ? .ksr_textDefault : .ksr_darkGrayText }
 
     self.bodyFont = isNotDeleted.skipRepeats()
-      .map { $0 ? .ksr_body : italicizeFont(.ksr_body) }
+      .map { $0 ? UIFont.ksr_body() : UIFont.ksr_body().italicized }
 
     self.creatorHidden = self.commentProjectViewer.signal.ignoreNil()
       .map { comment, project, viewer in
@@ -78,10 +78,4 @@ CommentCellViewModelOutputs {
 
   public var inputs: CommentCellViewModelInputs { return self }
   public var outputs: CommentCellViewModelOutputs { return self }
-}
-
-// Italicizes the font provided
-private func italicizeFont(font: UIFont) -> UIFont {
-  let italicsDescriptor = font.fontDescriptor().fontDescriptorWithSymbolicTraits(.TraitItalic)
-  return UIFont(descriptor: italicsDescriptor, size: 0.0)
 }

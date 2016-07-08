@@ -30,7 +30,7 @@ final class BorderButtonTests: XCTestCase {
     XCTAssertEqual(.ksr_darkGray, button.titleColorForState(.Highlighted))
 
     button._titleFontStyle = "Headline"
-    XCTAssertEqual(UIFont.ksr_headline, button.titleLabel?.font)
+    XCTAssertEqual(UIFont.ksr_headline(), button.titleLabel?.font)
 
     button._titleWeight = "Medium"
     XCTAssertEqual("Medium", button.titleWeight?.rawValue)

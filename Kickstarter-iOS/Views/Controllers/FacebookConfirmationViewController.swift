@@ -28,20 +28,20 @@ internal final class FacebookConfirmationViewController: UIViewController {
 
     self.confirmationLabel
       |> UILabel.lens.textColor .~ .ksr_textDefault
-      |> UILabel.lens.font .~ .ksr_body
+      |> UILabel.lens.font .~ .ksr_body()
 
     self.createAccountButton |> createNewAccountButtonStyle
 
     self.emailLabel
       |> UILabel.lens.textColor .~ .ksr_textDefault
-      |> UILabel.lens.font .~ .ksr_headline
+      |> UILabel.lens.font .~ .ksr_headline()
       |> UILabel.lens.textAlignment .~ .Center
 
     self.helpButton |> disclaimerButtonStyle
 
     self.loginButton |> loginWithEmailButtonStyle
 
-    self.loginLabel |> UILabel.lens.font .~ .ksr_caption1
+    self.loginLabel |> UILabel.lens.font .~ .ksr_caption1()
 
     self.newsletterLabel |> newsletterLabelStyle
   }

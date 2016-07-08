@@ -18,16 +18,16 @@ let rootStackView = UIStackView(frame: liveView.bounds)
 liveView.addSubview(rootStackView)
 
 let fonts: [(String, UIFont)] = [
-  ("title1", .ksr_title1),
-  ("title2", .ksr_title2),
-  ("title3", .ksr_title3),
-  ("headline", .ksr_headline),
-  ("body", .ksr_body),
-  ("callout", .ksr_callout),
-  ("subhead", .ksr_subhead),
-  ("footnote", .ksr_footnote),
-  ("caption1", .ksr_caption1),
-  ("caption2", .ksr_caption2)
+  ("title1", .ksr_title1()),
+  ("title2", .ksr_title2()),
+  ("title3", .ksr_title3()),
+  ("headline", .ksr_headline()),
+  ("body", .ksr_body()),
+  ("callout", .ksr_callout()),
+  ("subhead", .ksr_subhead()),
+  ("footnote", .ksr_footnote()),
+  ("caption1", .ksr_caption1()),
+  ("caption2", .ksr_caption2())
   ].sort { lhs, rhs in lhs.1.pointSize > rhs.1.pointSize }
 
 let base = UILabel.lens.text .~ "The quick brown fox jumps over the lazy dog"

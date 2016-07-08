@@ -2,11 +2,14 @@ import Prelude
 import Prelude_UIKit
 import UIKit
 
-internal let baseButtonStyle = roundedStyle()
-  <> UIButton.lens.titleLabel.font .~ .ksr_callout
-  <> UIButton.lens.contentEdgeInsets .~ .init(top: 12.0, left: 16.0, bottom: 12.0, right: 16.0)
-  <> UIButton.lens.adjustsImageWhenDisabled .~ false
-  <> UIButton.lens.adjustsImageWhenHighlighted .~ false
+internal let baseButtonStyle =
+  roundedStyle()
+    <> UIButton.lens.titleLabel.font %~~ { _, button in
+      button.traitCollection.verticalSizeClass == .Compact ? .ksr_callout(size: 13) : .ksr_callout()
+    }
+    <> UIButton.lens.contentEdgeInsets .~ .init(top: 12.0, left: 16.0, bottom: 12.0, right: 16.0)
+    <> UIButton.lens.adjustsImageWhenDisabled .~ false
+    <> UIButton.lens.adjustsImageWhenHighlighted .~ false
 
 public let blackButtonStyle = baseButtonStyle
   <> UIButton.lens.titleColor(forState: .Normal) .~ .ksr_white
@@ -53,9 +56,7 @@ public let positiveButtonStyle = baseButtonStyle
   <> UIButton.lens.backgroundColor(forState: .Disabled) .~ .ksr_gray
 
 public let textOnlyButtonStyle = baseButtonStyle
-  <> UIButton.lens.titleColor(forState: .Normal) .~ .ksr_darkGrayText
+  <> UIButton.lens.titleColor(forState: .Normal) .~ .ksr_textDefault
   <> UIButton.lens.backgroundColor(forState: .Normal) .~ .ksr_clear
-  <> UIButton.lens.titleColor(forState: .Highlighted) .~ .ksr_blackGray
-  <> UIButton.lens.backgroundColor(forState: .Highlighted) .~ .ksr_clear
-  <> UIButton.lens.titleColor(forState: .Disabled) .~ .ksr_lightGrayText
-  <> UIButton.lens.backgroundColor(forState: .Disabled) .~ .ksr_clear
+  <> UIButton.lens.titleColor(forState: .Highlighted) .~ .ksr_green
+  <> UIButton.lens.titleColor(forState: .Disabled) .~ .ksr_darkGrayText

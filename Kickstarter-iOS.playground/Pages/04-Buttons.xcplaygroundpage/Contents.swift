@@ -4,17 +4,15 @@ import Prelude_UIKit
 import UIKit
 import XCPlayground
 
-let liveView = UIView(frame: .init(x: 0, y: 0, width: 440, height: 600))
-  |> UIView.lens.backgroundColor .~ .ksr_offWhite
-XCPlaygroundPage.currentPage.liveView = liveView
+let (parent, child) = playgroundControllers(device: .pad, orientation: .landscape)
 
-let rootStackView = UIStackView(frame: liveView.bounds)
+let rootStackView = UIStackView(frame: child.view.bounds)
   |> UIStackView.lens.alignment .~ .Leading
   |> UIStackView.lens.axis .~ .Vertical
   |> UIStackView.lens.distribution .~ .FillEqually
   |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
   |> UIStackView.lens.layoutMargins .~ .init(all: 16)
-liveView.addSubview(rootStackView)
+child.view.addSubview(rootStackView)
 
 let positiveButton = positiveButtonStyle <> UIButton.lens.titleText(forState: .Normal) .~ "Positive button"
 let neutralButton  = neutralButtonStyle  <> UIButton.lens.titleText(forState: .Normal) .~ "Neutral button"
@@ -41,10 +39,18 @@ let rowStackViewStyle =
     <> UIStackView.lens.distribution .~ .EqualSpacing
     <> UIStackView.lens.spacing .~ 24.0
 
-for buttonStyles in buttonsStyles {
-  rootStackView.addArrangedSubview(
-    UIStackView()
-      |> rowStackViewStyle
-      |> UIStackView.lens.arrangedSubviews .~ buttonStyles.map { UIButton() |> $0 }
-  )
+buttonsStyles.forEach { styles in
+  let rowStackView = UIStackView()
+  rootStackView.addArrangedSubview(rowStackView)
+  rowStackView |> rowStackViewStyle
+
+  styles.forEach { style in
+    let button = UIButton()
+    rowStackView.addArrangedSubview(button)
+    button |> style
+  }
 }
+
+let frame = parent.view.frame
+XCPlaygroundPage.currentPage.liveView = parent
+parent.view.frame = frame

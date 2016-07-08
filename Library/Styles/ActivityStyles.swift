@@ -3,7 +3,7 @@ import Prelude_UIKit
 import UIKit
 
 public let activitySurveyLabelStyle =
-  UILabel.lens.font .~ .ksr_body
+  UILabel.lens.font .~ .ksr_body()
     <> UILabel.lens.textAlignment .~ .Center
 
 public let activityRespondNowButtonStyle = blackButtonStyle

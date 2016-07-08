@@ -13,24 +13,27 @@ extension UIViewController {
     guard self === UIViewController.self else { return }
 
     dispatch_once(&Static.token) {
-      let originalSelector = #selector(viewDidLoad)
-      let swizzledSelector = #selector(ksr_viewDidLoad)
+      [
+        (#selector(viewDidLoad), #selector(ksr_viewDidLoad)),
+        (#selector(traitCollectionDidChange(_:)), #selector(ksr_traitCollectionDidChange(_:))),
+        ].forEach { original, swizzled in
 
-      let originalMethod = class_getInstanceMethod(self, originalSelector)
-      let swizzledMethod = class_getInstanceMethod(self, swizzledSelector)
+        let originalMethod = class_getInstanceMethod(self, original)
+        let swizzledMethod = class_getInstanceMethod(self, swizzled)
 
-      let didAddMethod = class_addMethod(self,
-                                         originalSelector,
-                                         method_getImplementation(swizzledMethod),
-                                         method_getTypeEncoding(swizzledMethod))
+        let didAddViewDidLoadMethod = class_addMethod(self,
+          original,
+          method_getImplementation(swizzledMethod),
+          method_getTypeEncoding(swizzledMethod))
 
-      if didAddMethod {
-        class_replaceMethod(self,
-                            swizzledSelector,
-                            method_getImplementation(originalMethod),
-                            method_getTypeEncoding(originalMethod))
-      } else {
-        method_exchangeImplementations(originalMethod, swizzledMethod)
+        if didAddViewDidLoadMethod {
+          class_replaceMethod(self,
+            swizzled,
+            method_getImplementation(originalMethod),
+            method_getTypeEncoding(originalMethod))
+        } else {
+          method_exchangeImplementations(originalMethod, swizzledMethod)
+        }
       }
     }
   }
@@ -38,7 +41,6 @@ extension UIViewController {
   internal func ksr_viewDidLoad(animated: Bool) {
     self.ksr_viewDidLoad(animated)
     self.bindViewModel()
-    self.bindStyles()
   }
 
   /**
@@ -51,6 +53,11 @@ extension UIViewController {
    The entry point to bind all styles to UI elements. Called just after `viewDidLoad`.
    */
   public func bindStyles() {
+  }
+
+  public func ksr_traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
+    self.ksr_traitCollectionDidChange(previousTraitCollection)
+    self.bindStyles()
   }
 }
 

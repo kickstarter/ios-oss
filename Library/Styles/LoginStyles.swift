@@ -13,7 +13,7 @@ public let disclaimerButtonStyle =
     <> UIButton.lens.contentEdgeInsets .~ .init(top: 0, left: 16, bottom: 0, right: 16)
     <> UIButton.lens.contentHorizontalAlignment .~ .Center
 
-public let disclaimerLabelStyle = UILabel.lens.font .~ .ksr_footnote
+public let disclaimerLabelStyle = UILabel.lens.font .~ .ksr_footnote()
   <> UILabel.lens.textColor .~ .ksr_darkGray
   <> UILabel.lens.textAlignment .~ .Center
 
@@ -23,8 +23,13 @@ public let emailFieldStyle = formFieldStyle
   }
   <> UITextField.lens.keyboardType .~ .EmailAddress
 
+public let fbLoginStackViewStyle =
+  UIStackView.lens.alignment %~~ { _, stack in
+    stack.traitCollection.horizontalSizeClass == .Compact ? .Fill : .Center
+}
+
 public let forgotPasswordButtonStyle =
-  UIButton.lens.titleLabel.font .~ .ksr_subhead
+  UIButton.lens.titleLabel.font .~ .ksr_subhead()
     <> UIButton.lens.titleColor(forState: .Normal) .~ .ksr_darkGray
     <> UIButton.lens.titleColor(forState: .Highlighted) .~ .ksr_black
 
@@ -38,18 +43,23 @@ public let loginControllerStyle = baseControllerStyle()
     Strings.login_navbar_title()
 }
 
+public let loginSignupButtonsStackViewStyle =
+  UIStackView.lens.axis %~~ { _, stack in
+    stack.traitCollection.verticalSizeClass ==  .Compact ? .Horizontal : .Vertical
+}
+
 public let loginWithEmailButtonStyle = borderButtonStyle
   <> UIButton.lens.titleText(forState: .Normal) %~ { _ in
     Strings.login_buttons_log_in_email()
 }
 
 public let onePasswordButtonStyle =
-  UIButton.lens.titleLabel.font .~ .ksr_callout
+  UIButton.lens.titleLabel.font .~ .ksr_callout()
     <> UIButton.lens.titleColor(forState: .Normal) .~ .ksr_blue
     <> UIButton.lens.titleColor(forState: .Highlighted) .~ .ksr_lightBlue
     <> UIButton.lens.titleText(forState: .Normal) %~ { _ in Strings.login_buttons_one_password() }
 
-public let newsletterLabelStyle = UILabel.lens.font .~ .ksr_subhead
+public let newsletterLabelStyle = UILabel.lens.font .~ .ksr_subhead()
   <> UILabel.lens.textColor .~ .ksr_textDefault
 
 public let passwordFieldStyle = formFieldStyle
@@ -68,6 +78,12 @@ public let resetPasswordControllerStyle = baseControllerStyle()
     Strings.forgot_password_title()
 }
 
+public let loginRootStackViewStyle =
+  UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+    <> UIStackView.lens.layoutMargins %~~ { _, stack in
+      stack.traitCollection.horizontalSizeClass == .Compact ? .init(all: 16.0) : .init(all: 64.0)
+}
+
 public let signupButtonStyle = positiveButtonStyle
   <> UIButton.lens.titleText(forState: .Normal) %~ { _ in
     Strings.login_tout_default_intent_traditional_signup_button()
@@ -83,7 +99,7 @@ public let signupWithEmailButtonStyle = borderButtonStyle
 
 public let tfaCodeFieldStyle = formFieldStyle
   <> UITextField.lens.textAlignment .~ .Center
-  <> UITextField.lens.font .~ .ksr_title1
+  <> UITextField.lens.font .~ .ksr_title1()
   <> UITextField.lens.keyboardType .~ .NumberPad
   <> UITextField.lens.placeholder %~ { _ in
     Strings.two_factor_code_placeholder()

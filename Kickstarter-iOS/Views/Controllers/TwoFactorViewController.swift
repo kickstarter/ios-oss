@@ -32,7 +32,7 @@ internal final class TwoFactorViewController: UIViewController {
 
     self.titleLabel
       |> UILabel.lens.textColor .~ .ksr_textDefault
-      |> UILabel.lens.font .~ .ksr_body
+      |> UILabel.lens.font .~ .ksr_body()
   }
 
   override func bindViewModel() {

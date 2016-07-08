@@ -6,17 +6,19 @@ import UIKit
 import XCPlayground
 @testable import Kickstarter_Framework
 
-let baseActivity = .template
-  |> Activity.lens.project .~ .cosmicSurgery
-  |> Activity.lens.user .~ .brando
-  |> Activity.lens.update .~ .template
-
-let activityCategories: [Activity.Category] = [.update, .backing, .follow, .launch, .success, .failure, .suspension]
+let activities = [.update, .backing, .follow, .launch, .success, .failure, .suspension]
+  .map {
+    .template
+      |> Activity.lens.project .~ .cosmicSurgery
+      |> Activity.lens.user .~ .brando
+      |> Activity.lens.update .~ .template
+      |> Activity.lens.category .~ $0
+}
 
 AppEnvironment.replaceCurrentEnvironment(
   apiService: MockService(
     oauthToken: OauthToken(token: "deadbeef"),
-    fetchActivitiesResponse: activityCategories.map { baseActivity |> Activity.lens.category .~ $0 },
+    fetchActivitiesResponse: activities,
     fetchUnansweredSurveyResponsesResponse: [.template |> SurveyResponse.lens.project .~ .cosmicSurgery]
   ),
   currentUser: Project.cosmicSurgery.creator
@@ -24,7 +26,8 @@ AppEnvironment.replaceCurrentEnvironment(
 
 let controller = storyboard(named: "Activity")
   .instantiateViewControllerWithIdentifier("ActivitiesViewController") as! ActivitiesViewController
+let (parent, _) = playgroundControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
 
-XCPlaygroundPage.currentPage.liveView = controller
-controller.view
-  |> UIView.lens.frame.size.height .~ 1_600
+let frame = parent.view.frame
+XCPlaygroundPage.currentPage.liveView = parent
+parent.view.frame = frame

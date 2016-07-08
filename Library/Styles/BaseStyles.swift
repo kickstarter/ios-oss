@@ -45,7 +45,7 @@ public func cardStyle <V: UIViewProtocol> (cornerRadius radius: CGFloat = defaul
 }
 
 public let formFieldStyle =
-  UITextField.lens.font .~ .ksr_body
+  UITextField.lens.font .~ .ksr_body()
     <> UITextField.lens.textColor .~ .ksr_textDefault
     <> UITextField.lens.backgroundColor .~ .clearColor()
     <> UITextField.lens.borderStyle .~ .None
