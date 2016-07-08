@@ -64,18 +64,6 @@ extension UIColor {
     }
   }
 
-  public static func ksr_green(weight weight: Int) -> UIColor {
-    switch weight {
-    case 100, 200:            return .hex(0xe5f3e9)
-    case 300:                 return .hex(0xceebd7)
-    case 400:                 return .hex(0x2bde73)
-    case 500:                 return .hex(0x25cb68)
-    case 600, 700, 800, 900:  return .hex(0x05af3c)
-    default:
-      fatalError()
-    }
-  }
-
   public static func ksr_grey(weight weight: Int) -> UIColor {
     switch weight {
     case 100:                     return .hex(0xFBFBFA)
@@ -88,13 +76,26 @@ extension UIColor {
     }
   }
 
-  public static func ksr_green(weight weight: Int) -> UIColor {
+  public static func ksr_navy(weight weight: Int) -> UIColor {
     switch weight {
-    case 100, 200:            return .hex(0xe5f3e9)
-    case 300:                 return .hex(0xceebd7)
-    case 400:                 return .hex(0x2bde73)
-    case 500:                 return .hex(0x25cb68)
-    case 600, 700, 800, 900:  return .hex(0x05af3c)
+    case 100, 200:                return .hex(0xF7F7F9)
+    case 300:                     return .hex(0xEFEFF3)
+    case 350:                     return .hex(0xEBEEF2)
+    case 400:                     return .hex(0xDBDEE7)
+    case 500:                     return .hex(0x95959E)
+    case 600:                     return .hex(0x6B7180)
+    case 700:                     return .hex(0x062340)
+    case 800, 900:                return .hex(0x020621)
+    default:
+      fatalError()
+    }
+  }
+
+  public static func ksr_orange(weight weight: Int) -> UIColor {
+    switch weight {
+    case 100, 200, 300:            return .hex(0xE8E1CE)
+    case 400:                      return .hex(0xF7AA1A)
+    case 500, 600, 700, 800, 900:  return .hex(0xE58111)
     default:
       fatalError()
     }
