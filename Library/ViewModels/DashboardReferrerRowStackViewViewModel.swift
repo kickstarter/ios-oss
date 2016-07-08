@@ -49,7 +49,7 @@ public final class DashboardReferrerRowStackViewViewModel: DashboardReferrerRowS
     self.sourceText = countryReferrer.map { _, referrer in referrer.referrerName }
 
     self.textColor = countryReferrer.map { _, referrer in
-      referrer.referrerType == .`internal` ? UIColor.ksr_green : UIColor.ksr_darkGrayText
+      referrer.referrerType == .`internal` ? UIColor.ksr_green(weight: 400) : UIColor.ksr_darkGrayText
     }
   }
 

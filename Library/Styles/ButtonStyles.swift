@@ -15,7 +15,7 @@ public let blackButtonStyle = baseButtonStyle
   <> UIButton.lens.titleColor(forState: .Normal) .~ .ksr_white
   <> UIButton.lens.backgroundColor(forState: .Normal) .~ .ksr_black
   <> UIButton.lens.titleColor(forState: .Highlighted) .~ .ksr_white
-  <> UIButton.lens.backgroundColor(forState: .Highlighted) .~ .ksr_green
+  <> UIButton.lens.backgroundColor(forState: .Highlighted) .~ .ksr_green(weight: 400)
   <> UIButton.lens.titleColor(forState: .Disabled) .~ .init(white: 1.0, alpha: 0.75)
   <> UIButton.lens.backgroundColor(forState: .Disabled) .~ .ksr_gray
 
@@ -49,14 +49,14 @@ public let neutralButtonStyle = baseButtonStyle
 
 public let positiveButtonStyle = baseButtonStyle
   <> UIButton.lens.titleColor(forState: .Normal) .~ .ksr_white
-  <> UIButton.lens.backgroundColor(forState: .Normal) .~ .ksr_green
+  <> UIButton.lens.backgroundColor(forState: .Normal) .~ .ksr_green(weight: 400)
   <> UIButton.lens.titleColor(forState: .Highlighted) .~ .init(white: 1.0, alpha: 0.5)
-  <> UIButton.lens.backgroundColor(forState: .Highlighted) .~ .ksr_darkGreen
+  <> UIButton.lens.backgroundColor(forState: .Highlighted) .~ .ksr_green(weight: 500)
   <> UIButton.lens.titleColor(forState: .Disabled) .~ .init(white: 1.0, alpha: 0.75)
   <> UIButton.lens.backgroundColor(forState: .Disabled) .~ .ksr_gray
 
 public let textOnlyButtonStyle = baseButtonStyle
   <> UIButton.lens.titleColor(forState: .Normal) .~ .ksr_textDefault
   <> UIButton.lens.backgroundColor(forState: .Normal) .~ .ksr_clear
-  <> UIButton.lens.titleColor(forState: .Highlighted) .~ .ksr_green
+  <> UIButton.lens.titleColor(forState: .Highlighted) .~ .ksr_green(weight: 400)
   <> UIButton.lens.titleColor(forState: .Disabled) .~ .ksr_darkGrayText

@@ -141,7 +141,7 @@ private func bannerMessageFor(project project: Project) -> String? {
 
 private func bannerColorFor(state state: Project.State) -> UIColor {
   switch state {
-  case .successful:                           return .ksr_lightGreen
+  case .successful:                           return .ksr_green(weight: 300)
   case .canceled, .failed, .suspended:        return .ksr_mediumGray
   case .live, .started, .submitted, .purged:  return .ksr_clear
   }

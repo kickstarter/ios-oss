@@ -21,7 +21,7 @@ internal final class DashboardVideoCell: UITableViewCell, ValueCell {
     self.externalPlaysCountLabel |> dashboardVideoExternalPlayCountLabelStyle
     self.externalPlaysProgressView |> UIView.lens.backgroundColor .~ .ksr_darkGray
     self.internalPlaysCountLabel |> dashboardVideoInternalPlayCountLabelStyle
-    self.internalPlaysProgressView |> UIView.lens.backgroundColor .~ .ksr_green
+    self.internalPlaysProgressView |> UIView.lens.backgroundColor .~ .ksr_green(weight: 400)
     self.totalPlaysCountLabel |> dashboardVideoTotalPlaysCountLabelStyle
     self.videoPlaysTitleLabel |> dashboardVideoPlaysTitleLabelStyle
   }

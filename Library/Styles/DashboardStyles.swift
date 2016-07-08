@@ -90,7 +90,7 @@ public let dashboardVideoExternalPlayCountLabelStyle =
     <> UILabel.lens.font .~ .ksr_body()
 
 public let dashboardVideoInternalPlayCountLabelStyle =
-  UILabel.lens.textColor .~ .ksr_green
+  UILabel.lens.textColor .~ .ksr_green(weight: 400)
     <> UILabel.lens.font .~ .ksr_body()
 
 public let dashboardVideoPlaysTitleLabelStyle =

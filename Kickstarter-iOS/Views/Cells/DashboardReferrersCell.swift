@@ -86,15 +86,15 @@ internal final class DashboardReferrersCell: UITableViewCell, ValueCell {
 
     self.internalPercentLabel
       |> dashboardReferrersPledgePercentLabelStyle
-      |> UILabel.lens.textColor .~ .ksr_green
+      |> UILabel.lens.textColor .~ .ksr_green(weight: 400)
 
     self.internalPledgedAmountSubtitleLabel
       |> dashboardReferrersPledgeAmountSubtitleLabelStyle
-      |> UILabel.lens.textColor .~ .ksr_green
+      |> UILabel.lens.textColor .~ .ksr_green(weight: 400)
 
     self.internalPledgedAmountTitleLabel
       |> dashboardReferrersPledgeAmountTitleLabelStyle
-      |> UILabel.lens.textColor .~ .ksr_green
+      |> UILabel.lens.textColor .~ .ksr_green(weight: 400)
       |> UILabel.lens.text %~ { _ in Strings.dashboard_graphs_referrers_pledged_via_kickstarter() }
 
     self.percentColumnTitleButton

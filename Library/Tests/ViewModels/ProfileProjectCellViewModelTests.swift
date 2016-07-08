@@ -56,7 +56,7 @@ internal final class ProfileProjectCellViewModelTests: TestCase {
     self.vm.inputs.project(successfulProject)
     self.progressHidden.assertValues([true], "Progress bar is hidden for successful project.")
     self.state.assertValues([String(successfulProject.state)])
-    self.stateBackgroundColor.assertValues([.ksr_green])
+    self.stateBackgroundColor.assertValues([.ksr_green(weight: 400)])
     self.stateHidden.assertValues([false])
   }
 
