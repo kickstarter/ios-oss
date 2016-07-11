@@ -4,7 +4,7 @@ import Prelude_UIKit
 import UIKit
 import XCPlayground
 
-let (parent, child) = playgroundControllers(device: .pad, orientation: .landscape)
+let (parent, child) = playgroundControllers(device: .phone4_7inch, orientation: .portrait)
 
 let rootStackView = UIStackView(frame: child.view.bounds)
   |> UIStackView.lens.alignment .~ .Leading
@@ -14,7 +14,7 @@ let rootStackView = UIStackView(frame: child.view.bounds)
   |> UIStackView.lens.layoutMargins .~ .init(all: 16)
 child.view.addSubview(rootStackView)
 
-let positiveButton = positiveButtonStyle <> UIButton.lens.titleText(forState: .Normal) .~ "Positive button"
+let positiveButton = greenButtonStyle <> UIButton.lens.titleText(forState: .Normal) .~ "Positive button"
 let neutralButton  = neutralButtonStyle  <> UIButton.lens.titleText(forState: .Normal) .~ "Neutral button"
 let borderButton   = borderButtonStyle   <> UIButton.lens.titleText(forState: .Normal) .~ "Border button"
 let blackButton    = blackButtonStyle    <> UIButton.lens.titleText(forState: .Normal) .~ "Black button"

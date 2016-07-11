@@ -18,16 +18,7 @@ final class BorderButtonTests: XCTestCase {
     let button = BorderButton()
 
     button._color = "Green"
-    XCTAssertEqual(.ksr_green(weight: 400), button.backgroundColor)
-
-    button._borderColor = "Mint"
-    XCTAssertEqual(UIColor.ksr_mint.CGColor, button.layer.borderColor)
-
-    button._titleColorNormal = "White"
-    XCTAssertEqual(.ksr_white, button.titleColorForState(.Normal))
-
-    button._titleColorHighlighted = "GrayDark"
-    XCTAssertEqual(.ksr_darkGray, button.titleColorForState(.Highlighted))
+    XCTAssertEqual(.ksr_green_400, button.backgroundColor)
 
     button._titleFontStyle = "Headline"
     XCTAssertEqual(UIFont.ksr_headline(), button.titleLabel?.font)

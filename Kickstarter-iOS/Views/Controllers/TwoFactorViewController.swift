@@ -28,10 +28,10 @@ internal final class TwoFactorViewController: UIViewController {
 
     self.resendButton |> neutralButtonStyle
 
-    self.submitButton |> positiveButtonStyle
+    self.submitButton |> greenButtonStyle
 
     self.titleLabel
-      |> UILabel.lens.textColor .~ .ksr_textDefault
+      |> UILabel.lens.textColor .~ .ksr_text_navy_900
       |> UILabel.lens.font .~ .ksr_body()
   }
 

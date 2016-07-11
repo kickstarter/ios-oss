@@ -19,9 +19,9 @@ internal final class DashboardVideoCell: UITableViewCell, ValueCell {
     self |> baseTableViewCellStyle()
     self.completionPercentageLabel |> dashboardVideoCompletionPercentageLabelStyle
     self.externalPlaysCountLabel |> dashboardVideoExternalPlayCountLabelStyle
-    self.externalPlaysProgressView |> UIView.lens.backgroundColor .~ .ksr_darkGray
+    self.externalPlaysProgressView |> UIView.lens.backgroundColor .~ .ksr_navy_600
     self.internalPlaysCountLabel |> dashboardVideoInternalPlayCountLabelStyle
-    self.internalPlaysProgressView |> UIView.lens.backgroundColor .~ .ksr_green(weight: 400)
+    self.internalPlaysProgressView |> UIView.lens.backgroundColor .~ .ksr_green_400
     self.totalPlaysCountLabel |> dashboardVideoTotalPlaysCountLabelStyle
     self.videoPlaysTitleLabel |> dashboardVideoPlaysTitleLabelStyle
   }

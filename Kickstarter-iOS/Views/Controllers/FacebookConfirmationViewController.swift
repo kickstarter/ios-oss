@@ -27,13 +27,13 @@ internal final class FacebookConfirmationViewController: UIViewController {
     self |> baseControllerStyle()
 
     self.confirmationLabel
-      |> UILabel.lens.textColor .~ .ksr_textDefault
+      |> UILabel.lens.textColor .~ .ksr_text_navy_900
       |> UILabel.lens.font .~ .ksr_body()
 
     self.createAccountButton |> createNewAccountButtonStyle
 
     self.emailLabel
-      |> UILabel.lens.textColor .~ .ksr_textDefault
+      |> UILabel.lens.textColor .~ .ksr_text_navy_900
       |> UILabel.lens.font .~ .ksr_headline()
       |> UILabel.lens.textAlignment .~ .Center
 

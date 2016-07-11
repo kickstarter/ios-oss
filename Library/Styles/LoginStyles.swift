@@ -2,19 +2,19 @@ import Prelude
 import Prelude_UIKit
 import UIKit
 
-public let createNewAccountButtonStyle = positiveButtonStyle
+public let createNewAccountButtonStyle = greenButtonStyle
   <> UIButton.lens.titleText(forState: .Normal) %~ { _ in
     Strings.facebook_confirmation_button()
 }
 
 public let disclaimerButtonStyle =
   UIButton.lens.titleLabel %~ disclaimerLabelStyle
-    <> UIButton.lens.titleColor(forState: .Normal) .~ .ksr_darkGray
+    <> UIButton.lens.titleColor(forState: .Normal) .~ .ksr_text_navy_500
     <> UIButton.lens.contentEdgeInsets .~ .init(top: 0, left: 16, bottom: 0, right: 16)
     <> UIButton.lens.contentHorizontalAlignment .~ .Center
 
 public let disclaimerLabelStyle = UILabel.lens.font .~ .ksr_footnote()
-  <> UILabel.lens.textColor .~ .ksr_darkGray
+  <> UILabel.lens.textColor .~ .ksr_text_navy_500
   <> UILabel.lens.textAlignment .~ .Center
 
 public let emailFieldStyle = formFieldStyle
@@ -30,10 +30,10 @@ public let fbLoginStackViewStyle =
 
 public let forgotPasswordButtonStyle =
   UIButton.lens.titleLabel.font .~ .ksr_subhead()
-    <> UIButton.lens.titleColor(forState: .Normal) .~ .ksr_darkGray
-    <> UIButton.lens.titleColor(forState: .Highlighted) .~ .ksr_black
+    <> UIButton.lens.titleColor(forState: .Normal) .~ .ksr_text_navy_500
+    <> UIButton.lens.titleColor(forState: .Highlighted) .~ .blackColor()
 
-public let loginButtonStyle = positiveButtonStyle
+public let loginButtonStyle = greenButtonStyle
   <> UIButton.lens.titleText(forState: .Normal) %~ { _ in
     Strings.login_tout_back_intent_traditional_login_button()
 }
@@ -55,12 +55,12 @@ public let loginWithEmailButtonStyle = borderButtonStyle
 
 public let onePasswordButtonStyle =
   UIButton.lens.titleLabel.font .~ .ksr_callout()
-    <> UIButton.lens.titleColor(forState: .Normal) .~ .ksr_blue
-    <> UIButton.lens.titleColor(forState: .Highlighted) .~ .ksr_lightBlue
+    <> UIButton.lens.titleColor(forState: .Normal) .~ .ksr_onePasswordBlue
+    <> UIButton.lens.titleColor(forState: .Highlighted) .~ .ksr_navy_500
     <> UIButton.lens.titleText(forState: .Normal) %~ { _ in Strings.login_buttons_one_password() }
 
 public let newsletterLabelStyle = UILabel.lens.font .~ .ksr_subhead()
-  <> UILabel.lens.textColor .~ .ksr_textDefault
+  <> UILabel.lens.textColor .~ .ksr_text_navy_900
 
 public let passwordFieldStyle = formFieldStyle
   <> UITextField.lens.placeholder %~ { _ in
@@ -68,7 +68,7 @@ public let passwordFieldStyle = formFieldStyle
   }
   <> UITextField.lens.secureTextEntry .~ true
 
-public let resetPasswordButtonStyle = positiveButtonStyle
+public let resetPasswordButtonStyle = greenButtonStyle
   <> UIButton.lens.titleText(forState: .Normal) %~ { _ in
     Strings.forgot_password_buttons_reset_my_password()
 }
@@ -84,7 +84,7 @@ public let loginRootStackViewStyle =
       stack.traitCollection.horizontalSizeClass == .Compact ? .init(all: 16.0) : .init(all: 64.0)
 }
 
-public let signupButtonStyle = positiveButtonStyle
+public let signupButtonStyle = greenButtonStyle
   <> UIButton.lens.titleText(forState: .Normal) %~ { _ in
     Strings.login_tout_default_intent_traditional_signup_button()
 }

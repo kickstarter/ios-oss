@@ -5,7 +5,7 @@ import UIKit
 import XCPlayground
 
 let liveView = UIView(frame: .init(x: 0, y: 0, width: 800, height: 600))
-  |> UIView.lens.backgroundColor .~ .ksr_offWhite
+  |> UIView.lens.backgroundColor .~ .ksr_grey_100
 XCPlaygroundPage.currentPage.liveView = liveView
 
 let rootStackView = UIStackView(frame: liveView.bounds)
@@ -31,7 +31,7 @@ let fonts: [(String, UIFont)] = [
   ].sort { lhs, rhs in lhs.1.pointSize > rhs.1.pointSize }
 
 let base = UILabel.lens.text .~ "The quick brown fox jumps over the lazy dog"
-  <> UILabel.lens.textColor .~ .ksr_textDefault
+  <> UILabel.lens.textColor .~ .ksr_text_navy_900
 
 for (name, font) in fonts {
   rootStackView.addArrangedSubview(
@@ -49,4 +49,3 @@ for (name, font) in fonts {
       |> UILabel.lens.text %~ { "\(name).bold: \($0)" }
       |> UILabel.lens.font .~ font.bolded
   )
-}

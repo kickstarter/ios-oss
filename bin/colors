@@ -1,0 +1,99 @@
+#!/usr/bin/env xcrun swift
+
+import Foundation
+
+extension Dictionary {
+  func withAllValuesFrom(other: Dictionary) -> Dictionary {
+    var result = self
+    other.forEach { result[$0] = $1 }
+    return result
+  }
+}
+
+let inPath = "Design/Colors.json"
+let outPath = "Library/Styles/Colors.swift"
+
+let data = NSData(contentsOfFile: inPath)!
+data.length
+let colors =
+  (try! NSJSONSerialization.JSONObjectWithData(data, options: []) as! [String: String])
+    .map { (key: $0, value: $1) }
+    .sort { $0.key < $1.key }
+
+let allColors = colors
+  .reduce([String: [Int: String]]()) { accum, pair in
+    let (name, hex) = pair
+
+    let components = name.componentsSeparatedByString("_")
+    guard components.count > 1 else { return accum }
+    let (color, weight) = (components[0..<components.count-1].joinWithSeparator(" "),
+                           Int(components.last!)!)
+    let label = color.capitalizedString
+
+    return accum.withAllValuesFrom(
+      [label: (accum[label] ?? [:]).withAllValuesFrom([weight: "ksr_\(name)"])]
+    )
+  }
+  .map { (k, v) -> (key: String, value: [(key: Int, value: String)]) in
+    let sorted = v
+      .map { (key: $0, value: $1) }
+      .sort { $0.key < $1.key }
+
+    return (key: k, value: sorted)
+  }
+  .sort { $0.key < $1.key }
+
+var staticStringsLines: [String] = []
+
+staticStringsLines.append("//===============================================================")
+staticStringsLines.append("//")
+staticStringsLines.append("// This file is computer generated from Colors.json. Do not edit.")
+staticStringsLines.append("//")
+staticStringsLines.append("//===============================================================")
+staticStringsLines.append("")
+staticStringsLines.append("import UIKit")
+staticStringsLines.append("")
+staticStringsLines.append("// swiftlint:disable valid_docs")
+staticStringsLines.append("// swiftlint:disable line_length")
+staticStringsLines.append("// swiftlint:disable file_length")
+staticStringsLines.append("// swiftlint:disable type_body_length")
+staticStringsLines.append("extension UIColor {")
+
+staticStringsLines.append("  public static var ksr_allColors: [String: [Int: UIColor]] {")
+staticStringsLines.append("    return [")
+
+let staticAllColors: [String] = allColors.map { label, colors in
+  var staticVar: [String] = []
+  staticVar.append("      \"\(label)\": [")
+
+  let pairs = colors
+    .map { weight, name in "        \(weight): .\(name)" }
+    .joinWithSeparator(",\n")
+  staticVar.append(pairs)
+
+  staticVar.append("      ]")
+  return staticVar.joinWithSeparator("\n")
+}
+staticStringsLines.append(staticAllColors.joinWithSeparator(",\n\n"))
+
+staticStringsLines.append("    ]")
+staticStringsLines.append("  }")
+staticStringsLines.append("")
+
+let staticVars: [String] = colors.map { name, hex in
+  var staticVar: [String] = []
+  staticVar.append("  /// 0x\(hex)")
+  staticVar.append("  public static var ksr_\(name): UIColor {")
+  staticVar.append("    return .hex(0x\(hex))")
+  staticVar.append("  }")
+  return staticVar.joinWithSeparator("\n")
+}
+
+staticStringsLines.append(staticVars.joinWithSeparator("\n\n"))
+staticStringsLines.append("}")
+staticStringsLines.append("") // trailing newline
+
+try! staticStringsLines
+  .joinWithSeparator("\n")
+  .writeToFile(outPath, atomically: true, encoding: NSUTF8StringEncoding)
+

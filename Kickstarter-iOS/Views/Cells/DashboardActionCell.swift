@@ -53,7 +53,7 @@ internal final class DashboardActionCell: UITableViewCell, ValueCell {
     self.messagesButton |> dashboardMessagesButtonStyle
     self.postUpdateButton |> postUpdateButtonStyle
     self.shareButton |> dashboardShareButtonStyle
-    self.drillDownIndicatorImageViews.forEach { $0 |> UIImageView.lens.tintColor .~ .ksr_black }
+    self.drillDownIndicatorImageViews.forEach { $0 |> UIImageView.lens.tintColor .~ .blackColor() }
   }
 
   internal override func bindViewModel() {

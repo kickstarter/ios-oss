@@ -3,11 +3,11 @@ import Prelude_UIKit
 import UIKit
 
 public let discoveryOnboardingSignUpButtonStyle = baseButtonStyle
-  <> UIButton.lens.titleColor(forState: .Normal) .~ .ksr_textDefault
-  <> UIButton.lens.backgroundColor(forState: .Normal) .~ .ksr_white
-  <> UIButton.lens.titleColor(forState: .Highlighted) .~ .ksr_darkGrayText
-  <> UIButton.lens.backgroundColor(forState: .Highlighted) .~ .ksr_lightGrayText
-  <> UIButton.lens.layer.borderColor .~ UIColor.ksr_black.CGColor
+  <> UIButton.lens.titleColor(forState: .Normal) .~ .ksr_text_navy_900
+  <> UIButton.lens.backgroundColor(forState: .Normal) .~ .whiteColor()
+  <> UIButton.lens.titleColor(forState: .Highlighted) .~ .ksr_text_navy_500
+  <> UIButton.lens.backgroundColor(forState: .Highlighted) .~ .ksr_navy_200
+  <> UIButton.lens.layer.borderColor .~ UIColor.blackColor().CGColor
   <> UIButton.lens.layer.borderWidth .~ 1.0
   <> UIButton.lens.titleText(forState: .Normal) %~ { _ in
     Strings.discovery_onboarding_buttons_signup_or_login()

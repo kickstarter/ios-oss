@@ -18,10 +18,6 @@ final class StyledLabelTests: XCTestCase {
     XCTAssertNotNil(label.fontStyle)
     XCTAssertEqual(UIFont.ksr_headline(), label.font)
 
-    label._color = "Blue"
-    XCTAssertNotNil(label.color)
-    XCTAssertEqual(UIColor.ksr_blue, label.textColor)
-
     label._weight = "Medium"
     XCTAssertEqual("Medium", label.weight?.rawValue)
   }

@@ -40,6 +40,6 @@ internal final class DashboardReferrersRowStackViewViewModelTests: TestCase {
     self.percentText.assertValues(["12%"])
     self.pledgedText.assertValues(["$100"])
     self.sourceText.assertValues(["search"])
-    self.textColor.assertValues([UIColor.ksr_green(weight: 400)])
+    self.textColor.assertValues([.ksr_green_400])
   }
 }

@@ -10,7 +10,7 @@ internal final class ActivityNegativeStateChangeCell: UITableViewCell, ValueCell
 
   override func awakeFromNib() {
     super.awakeFromNib()
-    self.backgroundColor = .ksr_gray
+    self.backgroundColor = .ksr_grey_500
   }
 
   func configureWith(value activity: Activity) {

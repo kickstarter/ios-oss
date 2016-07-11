@@ -10,7 +10,7 @@ internal final class ProfileViewController: UICollectionViewController {
   internal override func viewDidLoad() {
     super.viewDidLoad()
     self.collectionView?.dataSource = self.dataSource
-    self.collectionView?.backgroundColor = .ksr_offWhite
+    self.collectionView?.backgroundColor = .ksr_grey_100
 
     if let layout = self.collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
       layout.itemSize = CGSize(width: 160, height: 220)

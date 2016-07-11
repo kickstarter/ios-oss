@@ -8,7 +8,7 @@ public extension UIBarButtonItem {
       style: .Plain,
       target: target,
       action: selector)
-    bbi.tintColor = .ksr_green(weight: 400)
+    bbi.tintColor = .ksr_green_400
     return bbi
   }
 
@@ -18,7 +18,7 @@ public extension UIBarButtonItem {
       style: .Plain,
       target: target,
       action: selector)
-    bbi.tintColor = .ksr_green(weight: 400)
+    bbi.tintColor = .ksr_green_400
     return bbi
   }
 }
