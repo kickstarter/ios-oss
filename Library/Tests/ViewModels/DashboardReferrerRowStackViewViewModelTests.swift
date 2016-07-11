@@ -12,7 +12,6 @@ internal final class DashboardReferrersRowStackViewViewModelTests: TestCase {
   // swiftlint:enable type_name
   internal let vm = DashboardReferrerRowStackViewViewModel()
   internal let backersText = TestObserver<String, NoError>()
-  internal let percentText = TestObserver<String, NoError>()
   internal let pledgedText = TestObserver<String, NoError>()
   internal let sourceText = TestObserver<String, NoError>()
   internal let textColor = TestObserver<UIColor, NoError>()
@@ -20,7 +19,6 @@ internal final class DashboardReferrersRowStackViewViewModelTests: TestCase {
   internal override func setUp() {
     super.setUp()
     self.vm.outputs.backersText.observe(self.backersText.observer)
-    self.vm.outputs.percentText.observe(self.percentText.observer)
     self.vm.outputs.pledgedText.observe(self.pledgedText.observer)
     self.vm.outputs.sourceText.observe(self.sourceText.observer)
     self.vm.outputs.textColor.observe(self.textColor.observer)
@@ -37,9 +35,8 @@ internal final class DashboardReferrersRowStackViewViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(country: country, referrer: referrer)
     self.backersText.assertValues(["50"])
-    self.percentText.assertValues(["12%"])
-    self.pledgedText.assertValues(["$100"])
+    self.pledgedText.assertValues(["$100 (12%)"])
     self.sourceText.assertValues(["search"])
-    self.textColor.assertValues([.ksr_green_400])
+    self.textColor.assertValues([.ksr_green_700])
   }
 }

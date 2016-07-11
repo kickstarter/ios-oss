@@ -16,8 +16,11 @@ public protocol DashboardVideoCellViewModelOutputs {
   /// Emits the count of external starts to be displayed.
   var externalStartCount: Signal<String, NoError> { get }
 
-  /// Emits the external start progress to be displayed in a progress bar..
+  /// Emits the external start progress to be displayed in a progress bar.
   var externalStartProgress: Signal<CGFloat, NoError> { get }
+
+  /// Emits text for the external label.
+  var externalText: Signal<String, NoError> { get }
 
   /// Emits the count of internal starts to be displayed.
   var internalStartCount: Signal<String, NoError> { get }
@@ -25,8 +28,11 @@ public protocol DashboardVideoCellViewModelOutputs {
   /// Emits the internal start progress to be displayed in a progress bar.
   var internalStartProgress: Signal<CGFloat, NoError> { get }
 
+  /// Emits text for the internal label.
+  var internalText: Signal<String, NoError> { get }
+
   /// Emits the total count of video starts to be displayed.
-  var totalStartCount: Signal<String, NoError> { get }
+  var totalStartCount: Signal<NSAttributedString, NoError> { get }
 }
 
 public protocol DashboardVideoCellViewModelType {
@@ -48,29 +54,34 @@ public final class DashboardVideoCellViewModel: DashboardVideoCellViewModelInput
     }
 
     self.externalStartCount = videoStats
-      .map {
-        Strings.dashboard_graphs_video_stats_external_start_count_off_site(
-          external_start_count: Format.wholeNumber($0.externalStarts)
-        )
-    }
+      .map { Format.wholeNumber($0.externalStarts) }
 
     self.externalStartProgress = videoStats.map(externalStartPercentage)
 
     self.internalStartCount = videoStats
-      .map {
-        Strings.dashboard_graphs_video_stats_internal_start_count_on_kickstarter(
-          internal_start_count: Format.wholeNumber($0.internalStarts)
-        )
-    }
+      .map { Format.wholeNumber($0.internalStarts) }
 
     self.internalStartProgress = videoStats.map(internalStartPercentage)
 
     self.totalStartCount = videoStats
-      .map {
-        Strings.dashboard_graphs_video_stats_total_plays(
-          total_start_count: Format.wholeNumber(totalStarts(videoStats: $0))
+      .map { // todo: need new string with count value
+        let string = localizedString(key: "dashboard.totalplays",
+          defaultValue: "<b>%{total_start_count}</b> total plays",
+          count: totalStarts(videoStats: $0),
+          substitutions: ["total_start_count": Format.wholeNumber(totalStarts(videoStats: $0))]
         )
+
+        return string.simpleHtmlAttributedString(font: UIFont.ksr_body(), bold: UIFont.ksr_body().bolded)
+          ?? NSAttributedString(string: "")
     }
+
+    self.internalText = videoStats
+      .map { Format.percentage(Double(internalStartPercentage(videoStats: $0))) +
+        " " + Strings.dashboard_graphs_video_stats_on_kickstarter() }
+
+    self.externalText = videoStats
+      .map { Format.percentage(Double(externalStartPercentage(videoStats: $0))) +
+        " " + Strings.dashboard_graphs_video_stats_off_site() }
   }
 
   private let statsProperty = MutableProperty<ProjectStatsEnvelope.VideoStats?>(nil)
@@ -81,9 +92,11 @@ public final class DashboardVideoCellViewModel: DashboardVideoCellViewModelInput
   public let completionPercentage: Signal<String, NoError>
   public let externalStartCount: Signal<String, NoError>
   public let externalStartProgress: Signal<CGFloat, NoError>
+  public let externalText: Signal<String, NoError>
   public let internalStartCount: Signal<String, NoError>
   public let internalStartProgress: Signal<CGFloat, NoError>
-  public let totalStartCount: Signal<String, NoError>
+  public let internalText: Signal<String, NoError>
+  public let totalStartCount: Signal<NSAttributedString, NoError>
 
   public var inputs: DashboardVideoCellViewModelInputs { return self }
   public var outputs: DashboardVideoCellViewModelOutputs { return self }

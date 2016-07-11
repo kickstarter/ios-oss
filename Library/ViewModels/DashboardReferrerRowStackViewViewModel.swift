@@ -13,10 +13,7 @@ public protocol DashboardReferrerRowStackViewViewModelOutputs {
   /// Emits the number of backers to be displayed.
   var backersText: Signal<String, NoError> { get }
 
-  /// Emits the percentage of dollars to be displayed.
-  var percentText: Signal<String, NoError> { get }
-
-  /// Emits the amount pledged to be displayed.
+  /// Emits the amount pledged and percentage to be displayed.
   var pledgedText: Signal<String, NoError> { get }
 
   /// Emits the referrer source to be displayed.
@@ -39,17 +36,23 @@ public final class DashboardReferrerRowStackViewViewModel: DashboardReferrerRowS
 
     self.backersText = countryReferrer.map { _, referrer in Format.wholeNumber(referrer.backersCount) }
 
-    self.percentText = countryReferrer.map { _, referrer in Format.percentage(referrer.percentageOfDollars) }
-
     self.pledgedText = countryReferrer
       .map { country, referrer in
-        Format.currency(referrer.pledged, country: country)
+        Format.currency(referrer.pledged, country: country) + " ("
+          + Format.percentage(referrer.percentageOfDollars) + ")"
     }
 
     self.sourceText = countryReferrer.map { _, referrer in referrer.referrerName }
 
     self.textColor = countryReferrer.map { _, referrer in
-      referrer.referrerType == .`internal` ? UIColor.ksr_green_400 : UIColor.ksr_text_navy_500
+      switch referrer.referrerType {
+      case .`internal`:
+        return .ksr_green_700
+      case .external:
+        return .ksr_orange_400
+      default:
+        return .ksr_violet_850
+      }
     }
   }
 
@@ -60,7 +63,6 @@ public final class DashboardReferrerRowStackViewViewModel: DashboardReferrerRowS
   }
 
   public let backersText: Signal<String, NoError>
-  public let percentText: Signal<String, NoError>
   public let pledgedText: Signal<String, NoError>
   public let sourceText: Signal<String, NoError>
   public let textColor: Signal<UIColor, NoError>

@@ -22,8 +22,6 @@ internal final class DashboardDataSource: ValueCellDataSource {
                                 project: Project,
                                 referrers: [ProjectStatsEnvelope.ReferrerStats]) {
 
-    self.appendStaticRow(cellIdentifier: "Padding", toSection: Section.Referrers.rawValue)
-
     self.appendRow(
       value: (cumulative, project, referrers),
       cellClass: DashboardReferrersCell.self,
@@ -34,16 +32,12 @@ internal final class DashboardDataSource: ValueCellDataSource {
   internal func load(rewardStats rewardStats: [ProjectStatsEnvelope.RewardStats],
                                  project: Project) {
 
-    self.appendStaticRow(cellIdentifier: "Padding", toSection: Section.Rewards.rawValue)
-
     self.appendRow(value: (rewardStats: rewardStats, project: project),
                    cellClass: DashboardRewardsCell.self,
                    toSection: Section.Rewards.rawValue)
   }
 
   internal func load(videoStats videoStats: ProjectStatsEnvelope.VideoStats) {
-    self.appendStaticRow(cellIdentifier: "Padding", toSection: Section.Video.rawValue)
-
     self.appendRow(value: videoStats, cellClass: DashboardVideoCell.self, toSection: Section.Video.rawValue)
   }
 

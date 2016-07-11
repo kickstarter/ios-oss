@@ -127,7 +127,7 @@ internal final class DashboardRewardsCellViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(rewardStats: stats, project: project)
 
-    self.rewardsRowRewards.assertValues([[zeroPledgedStat2, stat4, stat5, stat2]],
+    self.rewardsRowRewards.assertValues([[stat4, stat5, stat2]],
                                         "Emits 4 initial rewards sorted by minimum value")
 
     self.rewardsRowCountry.assertValues([.US])
@@ -137,8 +137,8 @@ internal final class DashboardRewardsCellViewModelTests: TestCase {
 
     self.vm.inputs.seeAllTiersButtonTapped()
 
-    self.rewardsRowRewards.assertValues([[zeroPledgedStat2, stat4, stat5, stat2],
-      [zeroPledgedStat2, stat4, stat5, stat2, stat3, stat1, zeroPledgedStat1]
+    self.rewardsRowRewards.assertValues([[stat4, stat5, stat2],
+      [stat4, stat5, stat2, stat1, stat3, zeroPledgedStat1, zeroPledgedStat2]
     ], "Emit all rewards sorted by minimum value")
     self.rewardsRowCountry.assertValues([.US, .US])
     self.rewardsRowTotalPledged.assertValues([5000, 5000])
@@ -157,43 +157,32 @@ internal final class DashboardRewardsCellViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(rewardStats: stats, project: project)
 
-    self.rewardsRowRewards.assertValues([[zeroPledgedStat2, stat4, stat5, stat2]],
+    self.rewardsRowRewards.assertValues([[stat4, stat5, stat2]],
                                         "Emits 4 initial rewards sorted by minimum value")
     self.vm.inputs.backersButtonTapped()
 
     self.rewardsRowRewards.assertValues([
-      [zeroPledgedStat2, stat4, stat5, stat2],
-      [stat2, stat1, stat4, stat5]
+      [stat4, stat5, stat2],
+      [stat2, stat1, stat4]
     ],
     "Emits rewards sorted by backers count")
-
-    self.vm.inputs.percentButtonTapped()
-
-    self.rewardsRowRewards.assertValues([
-      [zeroPledgedStat2, stat4, stat5, stat2],
-      [stat2, stat1, stat4, stat5],
-      [stat4, stat5, stat2, stat1]
-    ],
-    "Emits rewards sorted by percent pledged of total")
 
     self.vm.inputs.topRewardsButtonTapped()
 
     self.rewardsRowRewards.assertValues([
-      [zeroPledgedStat2, stat4, stat5, stat2],
-      [stat2, stat1, stat4, stat5],
-      [stat4, stat5, stat2, stat1],
-      [zeroPledgedStat2, stat4, stat5, stat2],
+      [stat4, stat5, stat2],
+      [stat2, stat1, stat4],
+      [zeroPledgedStat2, stat4, stat5],
     ],
     "Emits rewards sorted by min value")
 
     self.vm.inputs.pledgedButtonTapped()
 
     self.rewardsRowRewards.assertValues([
-      [zeroPledgedStat2, stat4, stat5, stat2],
-      [stat2, stat1, stat4, stat5],
-      [stat4, stat5, stat2, stat1],
-      [zeroPledgedStat2, stat4, stat5, stat2],
-      [stat4, stat5, stat2, stat1]
+      [stat4, stat5, stat2],
+      [stat2, stat1, stat4],
+      [zeroPledgedStat2, stat4, stat5],
+      [stat4, stat5, stat2]
     ],
     "Emits rewards sorted by pledged count")
   }

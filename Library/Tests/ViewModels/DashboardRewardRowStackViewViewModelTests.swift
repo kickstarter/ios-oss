@@ -13,7 +13,6 @@ internal final class DashboardRewardRowStackViewViewModelTests: TestCase {
   let vm: DashboardRewardRowStackViewViewModelType = DashboardRewardRowStackViewViewModel()
 
   let backersText = TestObserver<String, NoError>()
-  let percentText = TestObserver<String, NoError>()
   let pledgedText = TestObserver<String, NoError>()
   let topRewardText = TestObserver<String, NoError>()
 
@@ -21,7 +20,6 @@ internal final class DashboardRewardRowStackViewViewModelTests: TestCase {
     super.setUp()
 
     vm.outputs.backersText.observe(backersText.observer)
-    vm.outputs.percentText.observe(percentText.observer)
     vm.outputs.pledgedText.observe(pledgedText.observer)
     vm.outputs.topRewardText.observe(topRewardText.observer)
   }
@@ -36,8 +34,7 @@ internal final class DashboardRewardRowStackViewViewModelTests: TestCase {
     self.vm.inputs.configureWith(country: .US, reward: reward, totalPledged: 1000)
 
     self.backersText.assertValues(["50"])
-    self.percentText.assertValues(["25%"])
-    self.pledgedText.assertValues(["$250"])
+    self.pledgedText.assertValues(["$250 (25%)"])
     self.topRewardText.assertValues(["$5"])
   }
 
@@ -51,8 +48,7 @@ internal final class DashboardRewardRowStackViewViewModelTests: TestCase {
     self.vm.inputs.configureWith(country: .US, reward: reward, totalPledged: 10000)
 
     self.backersText.assertValues(["2"])
-    self.percentText.assertValues(["<1%"])
-    self.pledgedText.assertValues(["$10"])
+    self.pledgedText.assertValues(["$10 (<1%)"])
     self.topRewardText.assertValues(["$5"])
   }
 
@@ -66,8 +62,7 @@ internal final class DashboardRewardRowStackViewViewModelTests: TestCase {
     self.vm.inputs.configureWith(country: .US, reward: reward, totalPledged: 1000)
 
     self.backersText.assertValues(["0"])
-    self.percentText.assertValues(["0%"])
-    self.pledgedText.assertValues(["$0"])
+    self.pledgedText.assertValues(["$0 (0%)"])
     self.topRewardText.assertValues(["$3"])
   }
 
@@ -79,8 +74,7 @@ internal final class DashboardRewardRowStackViewViewModelTests: TestCase {
     self.vm.inputs.configureWith(country: .US, reward: reward, totalPledged: 1000)
 
     self.backersText.assertValues(["200"])
-    self.percentText.assertValues(["20%"])
-    self.pledgedText.assertValues(["$200"])
+    self.pledgedText.assertValues(["$200 (20%)"])
     self.topRewardText.assertValues(["No reward"])
   }
 
@@ -92,8 +86,7 @@ internal final class DashboardRewardRowStackViewViewModelTests: TestCase {
     self.vm.inputs.configureWith(country: .US, reward: reward, totalPledged: 10000)
 
     self.backersText.assertValues(["2"])
-    self.percentText.assertValues(["<1%"])
-    self.pledgedText.assertValues(["$2"])
+    self.pledgedText.assertValues(["$2 (<1%)"])
     self.topRewardText.assertValues(["No reward"])
   }
 
@@ -103,8 +96,7 @@ internal final class DashboardRewardRowStackViewViewModelTests: TestCase {
     self.vm.inputs.configureWith(country: .US, reward: reward, totalPledged: 1000)
 
     self.backersText.assertValues(["0"])
-    self.percentText.assertValues(["0%"])
-    self.pledgedText.assertValues(["$0"])
+    self.pledgedText.assertValues(["$0 (0%)"])
     self.topRewardText.assertValues(["No reward"])
   }
 }

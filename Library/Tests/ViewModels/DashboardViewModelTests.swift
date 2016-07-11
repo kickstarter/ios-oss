@@ -9,7 +9,6 @@ import XCTest
 
 internal final class DashboardViewModelTests: TestCase {
   internal let vm: DashboardViewModelType = DashboardViewModel()
-  internal let goToProject = TestObserver<Project, NoError>()
   internal let project = TestObserver<Project, NoError>()
   internal let projects = TestObserver<[Project], NoError>()
   internal let referrerCumulativeStats = TestObserver<ProjectStatsEnvelope.Cumulative, NoError>()
@@ -19,7 +18,6 @@ internal final class DashboardViewModelTests: TestCase {
 
   internal override func setUp() {
     super.setUp()
-    self.vm.outputs.goToProject.map { $0.0 }.observe(self.goToProject.observer)
     self.vm.outputs.project.observe(self.project.observer)
     self.vm.outputs.projects.observe(self.projects.observer)
     self.vm.outputs.referrerData
@@ -41,13 +39,6 @@ internal final class DashboardViewModelTests: TestCase {
       XCTAssertEqual(["Dashboard View"], self.trackingClient.events)
       XCTAssertEqual([1], self.trackingClient.properties.map { $0["project_pid"] as! Int? })
     }
-  }
-
-  func testGoToProject() {
-    let project = Project.template
-    self.vm.inputs.viewDidLoad()
-    self.vm.inputs.projectContextTapped(project)
-    self.goToProject.assertValues([project], "Go to project screen.")
   }
 
   func testProjectsEmit() {

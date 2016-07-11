@@ -15,9 +15,6 @@ public protocol DashboardRewardRowStackViewViewModelOutputs {
   /// Emits string for backer text label.
   var backersText: Signal<String, NoError> { get }
 
-  /// Emits string for percent text label.
-  var percentText: Signal<String, NoError> { get }
-
   /// Emits string for pledged text label.
   var pledgedText: Signal<String, NoError> { get }
 
@@ -40,14 +37,7 @@ public final class DashboardRewardRowStackViewViewModel: DashboardRewardRowStack
       Format.wholeNumber(reward.backersCount ?? 0)
     }
 
-    self.percentText = countryRewardPledged
-      .map { _, reward, totalPledged in
-        let percent = Double(reward.pledged) / Double(totalPledged)
-        return (percent > 0.01 || percent == 0) ? Format.percentage(percent) : "<1%"
-    }
-
-    self.pledgedText = countryRewardPledged
-      .map { country, reward, _ in Format.currency(reward.pledged, country: country) }
+    self.pledgedText = countryRewardPledged.map(pledgedWithPercentText)
 
     self.topRewardText = countryRewardPledged
       .map { country, reward, _ in
@@ -60,7 +50,6 @@ public final class DashboardRewardRowStackViewViewModel: DashboardRewardRowStack
   public var outputs: DashboardRewardRowStackViewViewModelOutputs { return self }
 
   public let backersText: Signal<String, NoError>
-  public let percentText: Signal<String, NoError>
   public let pledgedText: Signal<String, NoError>
   public let topRewardText: Signal<String, NoError>
 
@@ -71,4 +60,12 @@ public final class DashboardRewardRowStackViewViewModel: DashboardRewardRowStack
                                     totalPledged: Int) {
     countryRewardPledgedProperty.value = (country, reward, totalPledged)
   }
+}
+
+private func pledgedWithPercentText(country country: Project.Country,
+                                            reward: ProjectStatsEnvelope.RewardStats,
+                                            totalPledged: Int) -> String {
+    let percent = Double(reward.pledged) / Double(totalPledged)
+    let percentText = (percent > 0.01 || percent == 0) ? Format.percentage(percent) : "<1%"
+    return Format.currency(reward.pledged, country: country) + " (\(percentText))"
 }

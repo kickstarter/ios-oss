@@ -12,11 +12,11 @@ internal protocol DashboardRewardsCellDelegate: class {
 internal final class DashboardRewardsCell: UITableViewCell, ValueCell {
   private let viewModel: DashboardRewardsCellViewModelType = DashboardRewardsCellViewModel()
 
+  @IBOutlet private weak var containerView: UIView!
   @IBOutlet private weak var mainStackView: UIStackView!
   @IBOutlet private weak var rewardsTitle: UILabel!
   @IBOutlet private weak var topRewardsButton: UIButton!
   @IBOutlet private weak var backersButton: UIButton!
-  @IBOutlet private weak var percentButton: UIButton!
   @IBOutlet private weak var pledgedButton: UIButton!
   @IBOutlet private weak var seeAllTiersButton: UIButton!
 
@@ -28,12 +28,11 @@ internal final class DashboardRewardsCell: UITableViewCell, ValueCell {
     self.topRewardsButton.addTarget(self,
                                     action: #selector(topRewardsButtonTapped),
                                     forControlEvents: .TouchUpInside)
+
     self.backersButton.addTarget(self,
                                  action: #selector(backersButtonTapped),
                                  forControlEvents: .TouchUpInside)
-    self.percentButton.addTarget(self,
-                                 action: #selector(percentButtonTapped),
-                                 forControlEvents: .TouchUpInside)
+
     self.pledgedButton.addTarget(self,
                                  action: #selector(pledgedButtonTapped),
                                  forControlEvents: .TouchUpInside)
@@ -46,22 +45,27 @@ internal final class DashboardRewardsCell: UITableViewCell, ValueCell {
   internal override func bindStyles() {
     self |> baseTableViewCellStyle()
 
-    self.rewardsTitle
-      |> dashboardRewardTitleLabelStyle
+    self.containerView |> UIView.lens.backgroundColor .~ .whiteColor()
+
+    self.rewardsTitle |> dashboardRewardTitleLabelStyle
+
     self.topRewardsButton
-      |> dashboardRewardRowTitleButtonStyle
+      |> dashboardColumnTitleButtonStyle
       |> UIButton.lens.titleText(forState: .Normal) %~ { _ in Strings.dashboard_graphs_rewards_top_rewards() }
+
     self.backersButton
-      |> dashboardRewardRowTitleButtonStyle
+      |> dashboardColumnTitleButtonStyle
       |> UIButton.lens.titleText(forState: .Normal) %~ { _ in Strings.dashboard_graphs_rewards_backers() }
-    self.percentButton
-      |> dashboardRewardRowTitleButtonStyle
-      |> UIButton.lens.titleText(forState: .Normal) %~ { _ in Strings.dashboard_graphs_rewards_percent() }
+
     self.pledgedButton
-      |> dashboardRewardRowTitleButtonStyle
+      |> dashboardColumnTitleButtonStyle
       |> UIButton.lens.titleText(forState: .Normal) %~ { _ in Strings.dashboard_graphs_rewards_pledged() }
+
     self.seeAllTiersButton
-      |> dashboardRewardSeeAllButtonStyle
+      |> dashboardGreenTextBorderButtonStyle
+      |> UIButton.lens.titleText(forState: .Normal) %~ { _ in
+        Strings.dashboard_graphs_rewards_view_more_reward_stats()
+    }
   }
 
   internal override func bindViewModel() {
@@ -81,18 +85,28 @@ internal final class DashboardRewardsCell: UITableViewCell, ValueCell {
   }
 
   internal func addRewardRows(withData data: RewardsRowData) {
-    mainStackView.subviews
-      .filter { $0 is DashboardRewardRowStackView }
-      .forEach { $0.removeFromSuperview() }
+    mainStackView.subviews.forEach { $0.removeFromSuperview() }
 
-    data.rewardsStats
+    let stats = data.rewardsStats
       .map { DashboardRewardRowStackView(
         frame: self.frame,
         country: data.country,
         reward: $0,
         totalPledged: data.totalPledged)
       }
-      .forEach(self.mainStackView.addArrangedSubview)
+
+    let statsCount = stats.count
+    (0..<statsCount).forEach {
+      self.mainStackView.addArrangedSubview(stats[$0])
+
+      if $0 < statsCount - 1 {
+        let divider = UIView() |> UIView.lens.backgroundColor .~ .ksr_navy_300
+
+        divider.heightAnchor.constraintEqualToConstant(1.0).active = true
+
+        self.mainStackView.addArrangedSubview(divider)
+      }
+    }
   }
 
   internal func configureWith(value value: (rewardStats: [ProjectStatsEnvelope.RewardStats],
@@ -102,10 +116,6 @@ internal final class DashboardRewardsCell: UITableViewCell, ValueCell {
 
   @objc private func backersButtonTapped() {
     self.viewModel.inputs.backersButtonTapped()
-  }
-
-  @objc private func percentButtonTapped() {
-    self.viewModel.inputs.percentButtonTapped()
   }
 
   @objc private func pledgedButtonTapped() {

@@ -24,12 +24,6 @@ internal final class DashboardViewController: UITableViewController {
   internal override func bindViewModel() {
     super.bindViewModel()
 
-    self.viewModel.outputs.goToProject
-      .observeForUI()
-      .observeNext { [weak self] project, refTag in
-        self?.goToProject(project, refTag: refTag)
-    }
-
     self.viewModel.outputs.project
       .observeForUI()
       .observeNext { [weak self] project in
@@ -72,21 +66,13 @@ internal final class DashboardViewController: UITableViewController {
     }
   }
 
-  internal override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-    guard let project = self.dataSource[indexPath] as? Project else {
-      return
-    }
-
-    if self.dataSource.didSelectContext(at: indexPath) {
-      self.viewModel.inputs.projectContextTapped(project)
-    }
-  }
-
   internal override func tableView(tableView: UITableView,
                                    willDisplayCell cell: UITableViewCell,
                                    forRowAtIndexPath indexPath: NSIndexPath) {
     if let actionCell = cell as? DashboardActionCell {
       actionCell.delegate = self
+    } else if let contextCell = cell as? DashboardContextCell {
+      contextCell.delegate = self
     } else if let referrersCell = cell as? DashboardReferrersCell {
       referrersCell.delegate = self
     } else if let rewardsCell = cell as? DashboardRewardsCell {
@@ -171,6 +157,12 @@ extension DashboardViewController: DashboardActionCellDelegate {
 
   internal func showShareSheet(cell: DashboardActionCell?, project: Project) {
     self.shareViewModel.inputs.shareButtonTapped()
+  }
+}
+
+extension DashboardViewController: DashboardContextCellDelegate {
+  internal func goToProject(cell: DashboardContextCell?, project: Project, refTag: RefTag) {
+    self.goToProject(project, refTag: refTag)
   }
 }
 

@@ -26,9 +26,6 @@ public protocol DashboardRewardsCellViewModelInputs {
   func configureWith(rewardStats rewardStats: [ProjectStatsEnvelope.RewardStats],
                                  project: Project)
 
-  /// Call when Percent button is tapped.
-  func percentButtonTapped()
-
   /// Call when Pledged button is tapped.
   func pledgedButtonTapped()
 
@@ -66,28 +63,23 @@ public final class DashboardRewardsCellViewModel: DashboardRewardsCellViewModelT
       .map(allRewardsStats(rewards:stats:))
 
 
-    let initialSort = rewards
-      .sort { $0.minimum > $1.minimum }
+    let initialSort = rewards.sort { $0.pledged > $1.pledged }
 
-    let sortedByTop = initialSort.takeWhen(self.topRewardsButtonTappedProperty.signal)
+    let sortedByTop = rewards
+      .sort { $0.minimum > $1.minimum }
+      .takeWhen(self.topRewardsButtonTappedProperty.signal)
 
     let sortedByBackers = rewards
       .takeWhen(self.backersButtonTappedProperty.signal)
       .sort { $0.backersCount > $1.backersCount }
 
-    let sortedByPledgedOrPercent = rewards.sort { $0.pledged > $1.pledged }
-
-    let sortedByPercent = sortedByPledgedOrPercent
-      .takeWhen(self.percentButtonTappedProperty.signal)
-
-    let sortedByPledged = sortedByPledgedOrPercent
+    let sortedByPledged = initialSort
       .takeWhen(self.pledgedButtonTappedProperty.signal)
 
     let allRewards = Signal.merge(
       initialSort,
       sortedByTop,
       sortedByBackers,
-      sortedByPercent,
       sortedByPledged
     )
 
@@ -100,7 +92,7 @@ public final class DashboardRewardsCellViewModel: DashboardRewardsCellViewModelT
     }
 
     let allTiersButtonIsHidden = Signal.merge(
-      rewards.map { $0.count < 6 },
+      rewards.map { $0.count < 5 },
       seeAllTiersButtonTappedProperty.signal.mapConst(true)
     )
 
@@ -109,7 +101,7 @@ public final class DashboardRewardsCellViewModel: DashboardRewardsCellViewModelT
     // if more than 6 rewards, truncate at 4
     self.rewardsRowData = combineLatest(allRewardsRowData, allTiersButtonIsHidden)
       .map { rowData, isHidden in
-        let maxRewards = isHidden ? rowData.rewardsStats : Array(rowData.rewardsStats[0...3])
+        let maxRewards = isHidden ? rowData.rewardsStats : Array(rowData.rewardsStats[0...2])
 
         return RewardsRowData(country: rowData.country,
                             rewardsStats: maxRewards,
@@ -142,10 +134,6 @@ public final class DashboardRewardsCellViewModel: DashboardRewardsCellViewModelT
   public func configureWith(rewardStats rewardStats: [ProjectStatsEnvelope.RewardStats],
                                         project: Project) {
     self.statsProjectProperty.value = (rewardStats, project)
-  }
-  private let percentButtonTappedProperty = MutableProperty()
-  public func percentButtonTapped() {
-    percentButtonTappedProperty.value = ()
   }
   private let pledgedButtonTappedProperty = MutableProperty()
   public func pledgedButtonTapped() {

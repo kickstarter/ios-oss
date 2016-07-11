@@ -13,9 +13,6 @@ public protocol DashboardViewModelInputs {
 }
 
 public protocol DashboardViewModelOutputs {
-  /// Emits the project and ref tag when should go to project page.
-  var goToProject: Signal<(Project, RefTag), NoError > { get }
-
   /// Emits the currently selected project to display in the context and action cells.
   var project: Signal<Project, NoError> { get }
 
@@ -76,9 +73,6 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
 
     let projectFromTap = self.projectContextTappedProperty.signal.ignoreNil()
 
-    self.goToProject = projectFromTap
-      .map { ($0, RefTag.dashboard) }
-
     projectFromTap.observeNext { AppEnvironment.current.koala.trackDashboardProjectModalView(project: $0) }
 
     project.observeNext { AppEnvironment.current.koala.trackDashboardView(project: $0) }
@@ -93,7 +87,6 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
     self.viewDidLoadProperty.value = ()
   }
 
-  public let goToProject: Signal<(Project, RefTag), NoError>
   public let project: Signal<Project, NoError>
   public let projects: Signal<[Project], NoError>
   public let referrerData: Signal<(cumulative: ProjectStatsEnvelope.Cumulative, project: Project,

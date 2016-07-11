@@ -49,7 +49,7 @@ internal final class DashboardActionCell: UITableViewCell, ValueCell {
   internal override func bindStyles() {
     self |> baseTableViewCellStyle()
     self.activityButton |> dashboardActivityButtonStyle
-    self.lastUpdatePublishedAtLabel |> lastUpdatePublishedAtLabelStyle
+    self.lastUpdatePublishedAtLabel |> dashboardLastUpdatePublishedAtLabelStyle
     self.messagesButton |> dashboardMessagesButtonStyle
     self.postUpdateButton |> postUpdateButtonStyle
     self.shareButton |> dashboardShareButtonStyle

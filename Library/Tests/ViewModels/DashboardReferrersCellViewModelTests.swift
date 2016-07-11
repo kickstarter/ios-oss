@@ -53,9 +53,9 @@ internal final class DashboardReferrersCellViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(cumulative: cumulative, project: project, referrers: referrers)
 
-    self.externalPercentText.assertValues(["30% External"])
+    self.externalPercentText.assertValues(["30%"])
     self.externalPledgedText.assertValues(["$300"])
-    self.internalPercentText.assertValues(["70% Kickstarter"])
+    self.internalPercentText.assertValues(["70%"])
     self.internalPledgedText.assertValues(["$700"])
   }
 

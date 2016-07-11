@@ -15,19 +15,30 @@ internal final class DashboardReferrersCell: UITableViewCell, ValueCell {
 
   @IBOutlet private weak var averagePledgeAmountSubtitleLabel: UILabel!
   @IBOutlet private weak var averagePledgeAmountTitleLabel: UILabel!
+  @IBOutlet private weak var averageStackView: UIStackView!
   @IBOutlet private weak var backersColumnTitleButton: UIButton!
+  @IBOutlet private weak var cumulativeStackView: UIStackView!
+  @IBOutlet private weak var customPercentLabel: UILabel!
+  @IBOutlet private weak var customPercentIndicatorLabel: UILabel!
+  @IBOutlet private weak var customPledgedAmountSubtitleLabel: UILabel!
+  @IBOutlet private weak var customPledgedAmountTitleLabel: UILabel!
+  @IBOutlet private weak var customStackView: UIStackView!
   @IBOutlet private weak var externalPercentLabel: UILabel!
+  @IBOutlet private weak var externalPercentIndicatorLabel: UILabel!
   @IBOutlet private weak var externalPledgedAmountSubtitleLabel: UILabel!
   @IBOutlet private weak var externalPledgedAmountTitleLabel: UILabel!
   @IBOutlet private weak var internalPercentLabel: UILabel!
+  @IBOutlet private weak var internalPercentIndicatorLabel: UILabel!
   @IBOutlet private weak var internalPledgedAmountSubtitleLabel: UILabel!
   @IBOutlet private weak var internalPledgedAmountTitleLabel: UILabel!
-  @IBOutlet private weak var percentColumnTitleButton: UIButton!
   @IBOutlet private weak var pledgedColumnTitleButton: UIButton!
+  @IBOutlet private weak var referralChartView: ReferralChartView!
   @IBOutlet private weak var referrersTitleLabel: UILabel!
   @IBOutlet private weak var referrersStackView: UIStackView!
   @IBOutlet private weak var showMoreReferrersButton: UIButton!
   @IBOutlet private weak var sourceColumnTitleButton: UIButton!
+  @IBOutlet private weak var chartCardView: UIView!
+  @IBOutlet var separatorViews: [UIView]!
 
   internal override func awakeFromNib() {
     super.awakeFromNib()
@@ -35,12 +46,6 @@ internal final class DashboardReferrersCell: UITableViewCell, ValueCell {
     self.backersColumnTitleButton.addTarget(
       self,
       action: #selector(backersButtonTapped),
-      forControlEvents: .TouchUpInside
-    )
-
-    self.percentColumnTitleButton.addTarget(
-      self,
-      action: #selector(percentButtonTapped),
       forControlEvents: .TouchUpInside
     )
 
@@ -66,43 +71,48 @@ internal final class DashboardReferrersCell: UITableViewCell, ValueCell {
   internal override func bindStyles() {
     self |> baseTableViewCellStyle()
 
-    self.averagePledgeAmountSubtitleLabel |> dashboardReferrersPledgeAmountSubtitleLabelStyle
-
-    self.averagePledgeAmountTitleLabel
-      |> dashboardReferrersPledgeAmountTitleLabelStyle
+    self.averagePledgeAmountSubtitleLabel
+      |> dashboardStatSubtitleLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.dashboard_graphs_referrers_average_pledge_amount() }
 
+    self.averagePledgeAmountTitleLabel |> dashboardStatTitleLabelStyle
+
     self.backersColumnTitleButton
-      |> dashboardReferrersColumnTitleButtonStyle
+      |> dashboardColumnTitleButtonStyle
       |> UIButton.lens.titleText(forState: .Normal) %~ { _ in Strings.dashboard_graphs_referrers_backers() }
+
+    self.customPercentLabel |> dashboardReferrersPledgePercentLabelStyle
+
+    self.customPercentIndicatorLabel |> UILabel.lens.textColor .~ .ksr_violet_850
+
+    self.customPledgedAmountTitleLabel |> dashboardStatTitleLabelStyle
+
+    self.customPledgedAmountSubtitleLabel
+      |> dashboardStatSubtitleLabelStyle
+      |> UILabel.lens.text %~ { _ in Strings.dashboard_graphs_referrers_pledged_via_custom() }
 
     self.externalPercentLabel |> dashboardReferrersPledgePercentLabelStyle
 
-    self.externalPledgedAmountSubtitleLabel |> dashboardReferrersPledgeAmountSubtitleLabelStyle
+    self.externalPercentIndicatorLabel |> UILabel.lens.textColor .~ .ksr_orange_400
 
-    self.externalPledgedAmountTitleLabel
-      |> dashboardReferrersPledgeAmountTitleLabelStyle
+    self.externalPledgedAmountSubtitleLabel
+      |> dashboardStatSubtitleLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.dashboard_graphs_referrers_pledged_via_external() }
 
-    self.internalPercentLabel
-      |> dashboardReferrersPledgePercentLabelStyle
-      |> UILabel.lens.textColor .~ .ksr_green_400
+    self.externalPledgedAmountTitleLabel |> dashboardStatTitleLabelStyle
+
+    self.internalPercentLabel |> dashboardReferrersPledgePercentLabelStyle
+
+    self.internalPercentIndicatorLabel |> UILabel.lens.textColor .~ .ksr_green_700
 
     self.internalPledgedAmountSubtitleLabel
-      |> dashboardReferrersPledgeAmountSubtitleLabelStyle
-      |> UILabel.lens.textColor .~ .ksr_green_400
-
-    self.internalPledgedAmountTitleLabel
-      |> dashboardReferrersPledgeAmountTitleLabelStyle
-      |> UILabel.lens.textColor .~ .ksr_green_400
+      |> dashboardStatSubtitleLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.dashboard_graphs_referrers_pledged_via_kickstarter() }
 
-    self.percentColumnTitleButton
-      |> dashboardReferrersColumnTitleButtonStyle
-      |> UIButton.lens.titleText(forState: .Normal) %~ { _ in Strings.dashboard_graphs_referrers_percent() }
+    self.internalPledgedAmountTitleLabel |> dashboardStatTitleLabelStyle
 
     self.pledgedColumnTitleButton
-      |> dashboardReferrersColumnTitleButtonStyle
+      |> dashboardColumnTitleButtonStyle
       |> UIButton.lens.titleText(forState: .Normal) %~ { _ in Strings.dashboard_graphs_referrers_pledged() }
 
     self.referrersTitleLabel |> dashboardReferrersTitleLabelStyle
@@ -110,16 +120,27 @@ internal final class DashboardReferrersCell: UITableViewCell, ValueCell {
     self.showMoreReferrersButton |> dashboardReferrersShowMoreButtonStyle
 
     self.sourceColumnTitleButton
-      |> dashboardReferrersColumnTitleButtonStyle
+      |> dashboardColumnTitleButtonStyle
       |> UIButton.lens.titleText(forState: .Normal) %~ { _ in Strings.dashboard_graphs_referrers_source() }
+
+    self.chartCardView |> dashboardChartCardViewStyle
+
+    self.cumulativeStackView |> dashboardReferrersCumulativeStackViewStyle
+
+    self.averageStackView |> dashboardReferrersCumulativeStackViewStyle
+
+    self.separatorViews.forEach { $0 |> separatorStyle }
   }
 
   internal override func bindViewModel() {
-    self.averagePledgeAmountSubtitleLabel.rac.text = self.viewModel.outputs.averagePledgeText
+    self.averagePledgeAmountTitleLabel.rac.text = self.viewModel.outputs.averagePledgeText
+    self.customPercentLabel.rac.text = self.viewModel.outputs.customPercentText
+    self.customPledgedAmountTitleLabel.rac.text = self.viewModel.outputs.customPledgedText
+    self.customStackView.rac.hidden = self.viewModel.outputs.customStackViewHidden
     self.externalPercentLabel.rac.text = self.viewModel.outputs.externalPercentText
-    self.externalPledgedAmountSubtitleLabel.rac.text = self.viewModel.outputs.externalPledgedText
+    self.externalPledgedAmountTitleLabel.rac.text = self.viewModel.outputs.externalPledgedText
     self.internalPercentLabel.rac.text = self.viewModel.outputs.internalPercentText
-    self.internalPledgedAmountSubtitleLabel.rac.text = self.viewModel.outputs.internalPledgedText
+    self.internalPledgedAmountTitleLabel.rac.text = self.viewModel.outputs.internalPledgedText
 
     self.viewModel.outputs.notifyDelegateAddedReferrerRows
       .observeForUI()
@@ -134,20 +155,38 @@ internal final class DashboardReferrersCell: UITableViewCell, ValueCell {
     }
 
     self.showMoreReferrersButton.rac.hidden = self.viewModel.outputs.showMoreReferrersButtonHidden
+
+    self.viewModel.outputs.externalPercentage
+      .observeForUI()
+      .observeNext { [weak self] in self?.referralChartView.externalPercentage = CGFloat($0) }
+
+    self.viewModel.outputs.internalPercentage
+      .observeForUI()
+      .observeNext { [weak self] in self?.referralChartView.internalPercentage = CGFloat($0) }
   }
 
   internal func addReferrerRows(withData data: ReferrersRowData) {
-    referrersStackView.subviews
-      .filter { $0 is DashboardReferrerRowStackView }
-      .forEach { $0.removeFromSuperview() }
+    referrersStackView.subviews.forEach { $0.removeFromSuperview() }
 
-    data.referrers
+    let referrers = data.referrers
       .map { DashboardReferrerRowStackView(
         frame: self.frame,
         country: data.country,
         referrer: $0)
       }
-      .forEach(self.referrersStackView.addArrangedSubview)
+
+    let refsCount = referrers.count
+    (0..<refsCount).forEach {
+      self.referrersStackView.addArrangedSubview(referrers[$0])
+
+      if $0 < refsCount - 1 {
+        let divider = UIView() |> UIView.lens.backgroundColor .~ .ksr_navy_300
+
+        divider.heightAnchor.constraintEqualToConstant(1.0).active = true
+
+        self.referrersStackView.addArrangedSubview(divider)
+      }
+    }
   }
 
   internal func configureWith(value value: (ProjectStatsEnvelope.Cumulative,
@@ -158,10 +197,6 @@ internal final class DashboardReferrersCell: UITableViewCell, ValueCell {
 
   @objc private func backersButtonTapped() {
     self.viewModel.inputs.backersButtonTapped()
-  }
-
-  @objc private func percentButtonTapped() {
-    self.viewModel.inputs.percentButtonTapped()
   }
 
   @objc private func pledgedButtonTapped() {

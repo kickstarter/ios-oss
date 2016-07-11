@@ -40,11 +40,26 @@ public protocol DashboardReferrersCellViewModelOutputs {
   /// Emits the average pledge text to be displayed.
   var averagePledgeText: Signal<String, NoError> { get }
 
+  /// Emits the custom percent text to be displayed.
+  var customPercentText: Signal<String, NoError> { get }
+
+  /// Emits the pledged via custom text to be displayed.
+  var customPledgedText: Signal<String, NoError> { get }
+
+  /// Emits a boolean to determine whether or not custom stats should be hidden.
+  var customStackViewHidden: Signal<Bool, NoError> { get }
+
+  /// Emits the external pledge percentage to be displayed in a chart.
+  var externalPercentage: Signal<Double, NoError> { get }
+
   /// Emits the percent pledged via external text to be displayed.
   var externalPercentText: Signal<String, NoError> { get }
 
   /// Emits the pledged via external text to be displayed.
   var externalPledgedText: Signal<String, NoError> { get }
+
+  /// Emits the internal pledge percentage to be displayed in a chart.
+  var internalPercentage: Signal<Double, NoError> { get }
 
   /// Emits the percent pledged via internal text to be displayed.
   var internalPercentText: Signal<String, NoError> { get }
@@ -74,39 +89,54 @@ public final class DashboardReferrersCellViewModel: DashboardReferrersCellViewMo
   public init() {
     let cumulativeProjectStats = cumulativeProjectStatsProperty.signal.ignoreNil()
 
+    let country = cumulativeProjectStats.map { _, project, _ in project.country }
+
+    let referrers = cumulativeProjectStats.map { _, _, stats in stats }
+
     self.averagePledgeText = cumulativeProjectStats
       .map { cumulative, project, _ in
         Format.currency(cumulative.averagePledge, country: project.country)
     }
 
-    let referrers = cumulativeProjectStats.map { _, _, stats in stats }
+    let customReferrers = referrers
+      .map { referrers in referrers.filter { $0.referrerType == .custom } }
+
+    let customPledgedAmount = customReferrers
+      .map { $0.reduce(0) { accum, referrer in accum + referrer.pledged } }
 
     let externalReferrers = referrers
       .map { referrers in referrers.filter { $0.referrerType == .external } }
 
-    let internalReferrers = referrers
-      .map { referrers in referrers.filter { $0.referrerType == .`internal` } }
-
-    self.externalPercentText = externalReferrers
-      .map { $0.reduce(0.0) { accum, referrer in accum + referrer.percentageOfDollars } }
-      .map { Strings.dashboard_graphs_referrers_percent_external(percent_external: Format.percentage($0)) }
-
     let externalPledgedAmount = externalReferrers
       .map { $0.reduce(0) { accum, referrer in accum + referrer.pledged } }
 
-    let country = cumulativeProjectStats.map { _, project, _ in project.country }
+    let internalReferrers = referrers
+      .map { referrers in referrers.filter { $0.referrerType == .`internal` } }
+
+    let internalPledgedAmount = internalReferrers
+      .map { $0.reduce(0) { accum, referrer in accum + referrer.pledged } }
+
+    self.customPercentText = customReferrers
+      .map { $0.reduce(0.0) { accum, referrer in accum + referrer.percentageOfDollars } }
+      .map { Format.percentage($0) }
+
+    self.customPledgedText = combineLatest(customPledgedAmount, country)
+      .map { pledged, country in Format.currency(pledged, country: country) }
+
+    self.customStackViewHidden = customReferrers.map { $0.isEmpty }
+
+    self.externalPercentage = externalReferrers
+      .map { $0.reduce(0.0) { accum, referrer in accum + referrer.percentageOfDollars } }
+
+    self.externalPercentText = self.externalPercentage.map { Format.percentage($0) }
 
     self.externalPledgedText = combineLatest(externalPledgedAmount, country)
       .map { pledged, country in Format.currency(pledged, country: country) }
 
-    self.internalPercentText = internalReferrers
+    self.internalPercentage = internalReferrers
       .map { $0.reduce(0.0) { accum, referrer in accum + referrer.percentageOfDollars } }
-      .map {
-        Strings.dashboard_graphs_referrers_percent_kickstarter(percent_kickstarter: Format.percentage($0))
-    }
 
-    let internalPledgedAmount = internalReferrers
-      .map { $0.reduce(0) { accum, referrer in accum + referrer.pledged } }
+    self.internalPercentText = self.internalPercentage.map { Format.percentage($0) }
 
     self.internalPledgedText = combineLatest(internalPledgedAmount, country)
       .map { pledged, country in Format.currency(pledged, country: country) }
@@ -127,7 +157,7 @@ public final class DashboardReferrersCellViewModel: DashboardReferrersCellViewMo
 
     let sortedBySource = referrers
       .takeWhen(self.sourceButtonTappedProperty.signal)
-      .sort { $0.referrerName < $1.referrerName }
+      .sort { $0.referrerName.lowercaseString < $1.referrerName.lowercaseString }
 
     let allReferrers = Signal.merge(
       initialSort,
@@ -200,8 +230,13 @@ public final class DashboardReferrersCellViewModel: DashboardReferrersCellViewMo
   }
 
   public let averagePledgeText: Signal<String, NoError>
+  public let customPercentText: Signal<String, NoError>
+  public let customPledgedText: Signal<String, NoError>
+  public let customStackViewHidden: Signal<Bool, NoError>
+  public let externalPercentage: Signal<Double, NoError>
   public let externalPercentText: Signal<String, NoError>
   public let externalPledgedText: Signal<String, NoError>
+  public let internalPercentage: Signal<Double, NoError>
   public let internalPercentText: Signal<String, NoError>
   public let internalPledgedText: Signal<String, NoError>
   public let notifyDelegateAddedReferrerRows: Signal<Void, NoError>

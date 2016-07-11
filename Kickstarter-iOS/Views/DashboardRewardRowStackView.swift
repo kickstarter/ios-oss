@@ -8,7 +8,6 @@ internal final class DashboardRewardRowStackView: UIStackView {
 
   private let rewardsLabel: UILabel = UILabel()
   private let backersLabel: UILabel = UILabel()
-  private let percentLabel: UILabel = UILabel()
   private let pledgedLabel: UILabel = UILabel()
 
   internal init(frame: CGRect,
@@ -18,24 +17,20 @@ internal final class DashboardRewardRowStackView: UIStackView {
 
     super.init(frame: frame)
 
-    self |> UIStackView.lens.axis .~ .Horizontal
-      <> UIStackView.lens.alignment .~ .Fill
-      <> UIStackView.lens.distribution .~ .FillEqually
-      <> UIStackView.lens.spacing .~ 15
-      <> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+    self |> dashboardStatsRowStackViewStyle
 
-    self.rewardsLabel |> dashboardRewardRowLabelStyle
-    self.backersLabel |> dashboardRewardRowLabelStyle
-    self.percentLabel |> dashboardRewardRowLabelStyle
-    self.pledgedLabel |> dashboardRewardRowLabelStyle
+    self.rewardsLabel
+      |> dashboardColumnTextLabelStyle
+      |> UILabel.lens.font .~ UIFont.ksr_subhead().bolded
+
+    self.pledgedLabel |> dashboardColumnTextLabelStyle
+    self.backersLabel |> dashboardColumnTextLabelStyle
 
     self.addArrangedSubview(self.rewardsLabel)
-    self.addArrangedSubview(self.backersLabel)
-    self.addArrangedSubview(self.percentLabel)
     self.addArrangedSubview(self.pledgedLabel)
+    self.addArrangedSubview(self.backersLabel)
 
     self.rewardsLabel.rac.text = self.vm.outputs.topRewardText
-    self.percentLabel.rac.text = self.vm.outputs.percentText
     self.pledgedLabel.rac.text = self.vm.outputs.pledgedText
     self.backersLabel.rac.text = self.vm.outputs.backersText
 

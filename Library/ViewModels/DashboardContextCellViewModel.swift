@@ -6,20 +6,17 @@ import Result
 public protocol DashboardContextCellViewModelInputs {
   /// Call to configure cell with project value.
   func configureWith(project project: Project)
+
+  /// Call when view project button is tapped.
+  func viewProjectTapped()
 }
 
 public protocol DashboardContextCellViewModelOutputs {
-  /// Emits the number of backers to display.
-  var backersCount: Signal<String, NoError> { get }
+  /// Emits the project and ref tag when should go to project page.
+  var goToProject: Signal<(Project, RefTag), NoError > { get }
 
-  /// Emits the project deadline to display.
-  var deadline: Signal<String, NoError> { get }
-
-  /// Emits the amount pledged to display.
-  var pledged: Signal<String, NoError> { get }
-
-  /// Emits the project's image URL to display.
-  var projectImageURL: Signal<NSURL?, NoError> { get }
+  /// Emits the project name to display.
+  var projectName: Signal<String, NoError> { get }
 }
 
 public protocol DashboardContextCellViewModelType {
@@ -33,15 +30,11 @@ public final class DashboardContextCellViewModel: DashboardContextCellViewModelI
   public init() {
     let project = self.projectProperty.signal.ignoreNil()
 
-    self.backersCount = project.map { Format.wholeNumber($0.stats.backersCount) }
+    self.goToProject = project
+      .takeWhen(self.viewProjectTappedProperty.signal)
+      .map { ($0, RefTag.dashboard) }
 
-    self.deadline = project.map {
-      Format.date(secondsInUTC: $0.dates.deadline, dateStyle: .MediumStyle, timeStyle: .NoStyle)
-    }
-
-    self.pledged = project.map { Format.currency($0.stats.pledged, country: $0.country) }
-
-    self.projectImageURL = project.map { NSURL(string: $0.photo.full) }
+    self.projectName = project.map { $0.name }
   }
 
   private let projectProperty = MutableProperty<Project?>(nil)
@@ -49,10 +42,13 @@ public final class DashboardContextCellViewModel: DashboardContextCellViewModelI
     self.projectProperty.value = project
   }
 
-  public let backersCount: Signal<String, NoError>
-  public let deadline: Signal<String, NoError>
-  public let pledged: Signal<String, NoError>
-  public let projectImageURL: Signal<NSURL?, NoError>
+  private let viewProjectTappedProperty = MutableProperty()
+  public func viewProjectTapped() {
+    self.viewProjectTappedProperty.value = ()
+  }
+
+  public let goToProject: Signal<(Project, RefTag), NoError>
+  public let projectName: Signal<String, NoError>
 
   public var inputs: DashboardContextCellViewModelInputs { return self }
   public var outputs: DashboardContextCellViewModelOutputs { return self }

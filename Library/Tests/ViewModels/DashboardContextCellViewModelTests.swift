@@ -9,31 +9,26 @@ import XCTest
 
 internal final class DashboardContextCellViewModelTests: TestCase {
   internal let vm = DashboardContextCellViewModel()
-  internal let backersCount = TestObserver<String, NoError>()
-  internal let deadline = TestObserver<String, NoError>()
-  internal let pledged = TestObserver<String, NoError>()
-  internal let projectImageURL = TestObserver<NSURL?, NoError>()
+  internal let goToProject = TestObserver<Project, NoError>()
+  internal let projectName = TestObserver<String, NoError>()
 
   internal override func setUp() {
     super.setUp()
-    self.vm.outputs.backersCount.observe(backersCount.observer)
-    self.vm.outputs.deadline.observe(deadline.observer)
-    self.vm.outputs.pledged.observe(pledged.observer)
-    self.vm.outputs.projectImageURL.observe(projectImageURL.observer)
+    self.vm.outputs.goToProject.map { $0.0 }.observe(self.goToProject.observer)
+    self.vm.outputs.projectName.observe(projectName.observer)
+  }
+
+  func testGoToProject() {
+    let project = Project.template
+    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.viewProjectTapped()
+    self.goToProject.assertValues([project], "Go to project screen.")
   }
 
   func testProjectDataEmits() {
-    let date = NSDate().timeIntervalSince1970
-    let project = Project.template
-      |> Project.lens.stats.backersCount .~ 5
-      |> Project.lens.stats.pledged .~ 1234
-      |> Project.lens.dates.deadline .~ date
+    let project = .template |> Project.lens.name .~ "Super Sick Project"
 
     self.vm.inputs.configureWith(project: project)
-
-    self.backersCount.assertValues(["5"])
-    self.deadline.assertValueCount(1)
-    self.pledged.assertValues(["$1,234"])
-    self.projectImageURL.assertValues([NSURL(string: Project.Photo.template.full)])
+    self.projectName.assertValues(["Super Sick Project"])
   }
 }
