@@ -13,12 +13,13 @@ internal final class ActivityUpdateCell: UITableViewCell, ValueCell {
 
   internal var delegate: ActivityUpdateCellDelegate?
 
-  @IBOutlet internal weak var projectImageView: UIImageView!
-  @IBOutlet internal weak var projectNameLabel: UILabel!
-  @IBOutlet internal weak var updateSequenceLabel: UILabel!
-  @IBOutlet internal weak var timestampLabel: UILabel!
-  @IBOutlet internal weak var titleLabel: UILabel!
-  @IBOutlet internal weak var bodyLabel: UILabel!
+  @IBOutlet private weak var bodyLabel: UILabel!
+  @IBOutlet private weak var projectImageButton: UIButton!
+  @IBOutlet private weak var projectImageView: UIImageView!
+  @IBOutlet private weak var projectNameLabel: UILabel!
+  @IBOutlet private weak var timestampLabel: UILabel!
+  @IBOutlet private weak var titleLabel: UILabel!
+  @IBOutlet private weak var updateSequenceLabel: UILabel!
 
   override func bindViewModel() {
     self.viewModel.outputs.projectImageURL
@@ -32,11 +33,17 @@ internal final class ActivityUpdateCell: UITableViewCell, ValueCell {
         projectImageView?.af_setImageWithURL(url)
     }
 
+    self.rac.accessibilityLabel = self.viewModel.outputs.cellAccessibilityLabel
+    self.rac.accessibilityValue = self.viewModel.outputs.cellAccessibilityValue
+
     self.projectNameLabel.rac.text = self.viewModel.outputs.projectName.ignoreNil()
     self.updateSequenceLabel.rac.text = self.viewModel.outputs.sequenceTitle.ignoreNil()
     self.timestampLabel.rac.text = self.viewModel.outputs.timestamp
     self.titleLabel.rac.text = self.viewModel.outputs.title.ignoreNil()
     self.bodyLabel.rac.text = self.viewModel.outputs.body
+
+    self.projectImageButton.rac.accessibilityLabel = self.viewModel.outputs.projectButtonAccessibilityLabel
+    self.projectImageButton.rac.accessibilityValue = self.viewModel.outputs.projectButtonAccessibilityValue
 
     self.viewModel.outputs.tappedActivityProjectImage
       .observeForUI()

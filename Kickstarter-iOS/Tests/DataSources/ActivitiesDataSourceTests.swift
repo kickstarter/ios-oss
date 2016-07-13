@@ -31,7 +31,7 @@ final class ActivitiesDataSourceTests: XCTestCase {
     XCTAssertEqual(section + 1, self.dataSource.numberOfSectionsInTableView(tableView))
     XCTAssertEqual(2, self.dataSource.tableView(tableView, numberOfRowsInSection: section))
     XCTAssertEqual("FindFriendsFacebookConnectCell", self.dataSource.reusableId(item: 0, section: section))
-    XCTAssertEqual("PaddingHalf", self.dataSource.reusableId(item: 1, section: section))
+    XCTAssertEqual("HalfPaddingCell", self.dataSource.reusableId(item: 1, section: section))
 
     let indexPaths = self.dataSource.removeFacebookConnectRows()
 
@@ -49,7 +49,7 @@ final class ActivitiesDataSourceTests: XCTestCase {
     XCTAssertEqual(section + 1, self.dataSource.numberOfSectionsInTableView(tableView))
     XCTAssertEqual(2, self.dataSource.tableView(tableView, numberOfRowsInSection: section))
     XCTAssertEqual("FindFriendsHeaderCell", self.dataSource.reusableId(item: 0, section: section))
-    XCTAssertEqual("PaddingHalf", self.dataSource.reusableId(item: 1, section: section))
+    XCTAssertEqual("HalfPaddingCell", self.dataSource.reusableId(item: 1, section: section))
 
     let indexPaths = self.dataSource.removeFindFriendsRows()
 
@@ -73,17 +73,17 @@ final class ActivitiesDataSourceTests: XCTestCase {
     XCTAssertEqual(updateActivity, self.dataSource[testItemSection: (0, section)] as? Activity)
     XCTAssertEqual("ActivityUpdateCell", self.dataSource.reusableId(item: 0, section: section))
 
-    XCTAssertEqual("Padding", self.dataSource.reusableId(item: 1, section: section))
+    XCTAssertEqual("PaddingCell", self.dataSource.reusableId(item: 1, section: section))
 
     XCTAssertEqual(backingActivity, self.dataSource[testItemSection: (2, section)] as? Activity)
     XCTAssertEqual("ActivityFriendBackingCell", self.dataSource.reusableId(item: 2, section: section))
 
-    XCTAssertEqual("Padding", self.dataSource.reusableId(item: 3, section: section))
+    XCTAssertEqual("PaddingCell", self.dataSource.reusableId(item: 3, section: section))
 
     XCTAssertEqual(successActivity, self.dataSource[testItemSection: (4, section)] as? Activity)
     XCTAssertEqual("ActivitySuccessCell", self.dataSource.reusableId(item: 4, section: section))
 
-    XCTAssertEqual("Padding", self.dataSource.reusableId(item: 5, section: section))
+    XCTAssertEqual("PaddingCell", self.dataSource.reusableId(item: 5, section: section))
   }
 
   func testEmptyState() {

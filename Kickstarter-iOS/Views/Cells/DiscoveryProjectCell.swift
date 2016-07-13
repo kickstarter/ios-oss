@@ -1,9 +1,10 @@
-import UIKit
-import Library
-import ReactiveCocoa
-import ReactiveExtensions
 import AlamofireImage
 import KsApi
+import Library
+import Prelude
+import Prelude_UIKit
+import ReactiveCocoa
+import UIKit
 
 internal final class DiscoveryProjectCell: UITableViewCell, ValueCell {
   let viewModel: DiscoveryProjectViewModelType = DiscoveryProjectViewModel()
@@ -16,6 +17,10 @@ internal final class DiscoveryProjectCell: UITableViewCell, ValueCell {
   @IBOutlet weak var backersLabel: UILabel!
 
   override func bindViewModel() {
+    super.bindViewModel()
+
+    self.rac.accessibilityLabel = self.viewModel.outputs.cellAccessibilityLabel
+    self.rac.accessibilityValue = self.viewModel.outputs.cellAccessibilityValue
     self.projectNameLabel.rac.text = self.viewModel.outputs.projectName
     self.categoryLabel.rac.text = self.viewModel.outputs.category
     self.blurbLabel.rac.text = self.viewModel.outputs.blurb
@@ -32,6 +37,13 @@ internal final class DiscoveryProjectCell: UITableViewCell, ValueCell {
       .observeNext { [weak self] url in
         self?.projectImageView.af_setImageWithURL(url)
     }
+  }
+
+  override func bindStyles() {
+    super.bindStyles()
+
+    self |> baseTableViewCellStyle()
+      |> UITableViewCell.lens.accessibilityHint .~ "Open project"
   }
 
   func configureWith(value value: Project) {

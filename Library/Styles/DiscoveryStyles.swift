@@ -1,3 +1,4 @@
+import KsApi
 import Prelude
 import Prelude_UIKit
 import UIKit
@@ -32,4 +33,34 @@ public let discoveryOnboardingStackViewStyle =
 public let discoveryOnboardingCellStyle = baseTableViewCellStyle()
   <> (UITableViewCell.lens.contentView • UIView.lens.layoutMargins) %~ {
     .init(topBottom: 48.0, leftRight: $0.left)
+}
+
+public func discoveryPagerSortButtonStyle <B: UIButtonProtocol> (sort sort: DiscoveryParams.Sort)
+  -> (B -> B) {
+
+    let sortString = string(forSort: sort)
+
+    return
+      B.lens.titleColor(forState: .Normal) .~ UIColor.ksr_text_navy_700
+        <> B.lens.titleColor(forState: .Highlighted) .~ .ksr_text_navy_500
+        <> B.lens.titleLabel.font .~ .ksr_subhead()
+        <> B.lens.accessibilityLabel %~ { _ in "Sort by \(sortString)" }
+        <> B.lens.accessibilityHint %~ { _ in "Change sort" }
+        <> B.lens.contentEdgeInsets .~ .init(topBottom: 0.0, leftRight: 16.0)
+        <> B.lens.titleText(forState: .Normal) .~ sortString
+}
+
+private func string(forSort sort: DiscoveryParams.Sort) -> String {
+  switch sort {
+  case .EndingSoon:
+    return Strings.discovery_sort_types_end_date()
+  case .Magic:
+    return Strings.discovery_sort_types_magic()
+  case .MostFunded:
+    return Strings.discovery_sort_types_most_funded()
+  case .Newest:
+    return Strings.discovery_sort_types_newest()
+  case .Popular:
+    return Strings.discovery_sort_types_popularity()
+  }
 }

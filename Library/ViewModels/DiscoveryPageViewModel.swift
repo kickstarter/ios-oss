@@ -36,6 +36,9 @@ public protocol DiscoveryPageViewModelInputs {
 }
 
 public protocol DiscoveryPageViewModelOutputs {
+  /// Emits when we should focus on the first visible project
+  var focusScreenReaderOnFirstProject: Signal<(), NoError> { get }
+
   /// Emits a project and ref tag that we should go to.
   var goToProject: Signal<(Project, RefTag), NoError> { get }
 
@@ -117,6 +120,21 @@ DiscoveryPageViewModelOutputs {
       .observeNext { params, page in
         AppEnvironment.current.koala.trackDiscovery(params: params, page: page)
     }
+
+    let focusFirstProjectWhenProjectsLoad = pageCount
+      .takeWhen(paginatedProjects)
+      .filter { $0 == 1 }
+      .ignoreValues()
+
+    let focusFirstProjectWhenViewAppears = paginatedProjects
+      .takeWhen(self.viewDidAppearProperty.signal)
+      .filter { !$0.isEmpty }
+      .ignoreValues()
+
+    self.focusScreenReaderOnFirstProject = Signal.merge(
+      focusFirstProjectWhenProjectsLoad,
+      focusFirstProjectWhenViewAppears
+    )
   }
   // swiftlint:enable function_body_length
 
@@ -153,6 +171,7 @@ DiscoveryPageViewModelOutputs {
     self.willDisplayRowProperty.value = (row, totalRows)
   }
 
+  public let focusScreenReaderOnFirstProject: Signal<(), NoError>
   public let goToProject: Signal<(Project, RefTag), NoError>
   public let projects: Signal<[Project], NoError>
   public let projectsAreLoading: Signal<Bool, NoError>

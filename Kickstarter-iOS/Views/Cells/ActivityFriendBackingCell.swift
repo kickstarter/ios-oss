@@ -13,6 +13,8 @@ internal final class ActivityFriendBackingCell: UITableViewCell, ValueCell {
   @IBOutlet internal weak var projectImageView: UIImageView!
 
   override func bindViewModel() {
+    self.rac.accessibilityLabel = self.viewModel.outputs.cellAccessibilityLabel
+    self.rac.accessibilityValue = self.viewModel.outputs.cellAccessibilityValue
     self.friendTitleLabel.rac.text = self.viewModel.outputs.friendTitle
     self.projectNameLabel.rac.text = self.viewModel.outputs.projectName
     self.creatorNameLabel.rac.text = self.viewModel.outputs.creatorName

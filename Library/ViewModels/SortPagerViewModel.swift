@@ -14,8 +14,8 @@ public protocol SortPagerViewModelInputs {
 }
 
 public protocol SortPagerViewModelOutputs {
-  /// Emits a list of titles that should be used to create sort buttons.
-  var createSortButtonsWithTitles: Signal<[String], NoError> { get }
+  /// Emits a list of sorts that should be used to create sort buttons.
+  var createSortButtons: Signal<[DiscoveryParams.Sort], NoError> { get }
 
   /// Emits a sort that should be passed on to the view's delegate.
   var notifyDelegateOfSelectedSort: Signal<DiscoveryParams.Sort, NoError> { get }
@@ -38,10 +38,7 @@ SortPagerViewModelOutputs {
   public init() {
     let sorts = self.sortsProperty.signal.ignoreNil().take(1)
 
-    self.createSortButtonsWithTitles = sorts
-      .uncollect()
-      .map(sortString)
-      .collect()
+    self.createSortButtons = sorts
 
     let selectedPage = combineLatest(
       sorts,
@@ -75,26 +72,11 @@ SortPagerViewModelOutputs {
     self.sortButtonTappedIndexProperty.value = index
   }
 
-  public let createSortButtonsWithTitles: Signal<[String], NoError>
+  public let createSortButtons: Signal<[DiscoveryParams.Sort], NoError>
   public let notifyDelegateOfSelectedSort: Signal<DiscoveryParams.Sort, NoError>
   public let pinSelectedIndicatorToPage: Signal<Int, NoError>
   public let scrollPercentage: Signal<CGFloat, NoError>
 
   public var inputs: SortPagerViewModelInputs { return self }
   public var outputs: SortPagerViewModelOutputs { return self }
-}
-
-private func sortString(sort: DiscoveryParams.Sort) -> String {
-  switch sort {
-  case .EndingSoon:
-    return Strings.discovery_sort_types_end_date()
-  case .Magic:
-    return Strings.discovery_sort_types_magic()
-  case .MostFunded:
-    return Strings.discovery_sort_types_most_funded()
-  case .Newest:
-    return Strings.discovery_sort_types_newest()
-  case .Popular:
-    return Strings.discovery_sort_types_popularity()
-  }
 }

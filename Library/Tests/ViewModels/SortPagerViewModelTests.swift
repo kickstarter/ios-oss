@@ -13,7 +13,7 @@ internal final class SortPagerViewModelTests: TestCase {
   private let notifyDelegateOfSelectedSort = TestObserver<DiscoveryParams.Sort, NoError>()
   private let pinSelectedIndicatorToPage = TestObserver<Int, NoError>()
   private let scrollPercentage = TestObserver<CGFloat, NoError>()
-  private let createSortButtonsWithTitles = TestObserver<[String], NoError>()
+  private let createSortButtons = TestObserver<[DiscoveryParams.Sort], NoError>()
 
   override func setUp() {
     super.setUp()
@@ -21,18 +21,14 @@ internal final class SortPagerViewModelTests: TestCase {
     self.vm.outputs.notifyDelegateOfSelectedSort.observe(self.notifyDelegateOfSelectedSort.observer)
     self.vm.outputs.pinSelectedIndicatorToPage.observe(self.pinSelectedIndicatorToPage.observer)
     self.vm.outputs.scrollPercentage.observe(self.scrollPercentage.observer)
-    self.vm.outputs.createSortButtonsWithTitles.observe(self.createSortButtonsWithTitles.observer)
+    self.vm.outputs.createSortButtons.observe(self.createSortButtons.observer)
   }
 
   func testCreateSortButtons() {
-    self.vm.inputs.configureWith(sorts: [.Magic, .Popular, .Newest, .EndingSoon, .MostFunded])
+    let sorts: [DiscoveryParams.Sort] = [.Magic, .Popular, .Newest, .EndingSoon, .MostFunded]
+    self.vm.inputs.configureWith(sorts: sorts)
 
-    self.createSortButtonsWithTitles.assertValues(
-      [
-        ["Magic", "Popularity", "Newest", "End Date", "Most Funded"]
-      ],
-      "Emits titles for the sort buttons."
-    )
+    self.createSortButtons.assertValues([sorts], "Emits titles for the sort buttons.")
   }
 
   func testPinSelectedIndicator() {

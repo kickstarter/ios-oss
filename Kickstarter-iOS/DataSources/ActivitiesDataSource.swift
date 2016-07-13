@@ -23,7 +23,7 @@ internal final class ActivitiesDataSource: ValueCellDataSource {
              inSection: Section.facebookConnect.rawValue)
 
     if visible {
-      self.appendStaticRow(cellIdentifier: "PaddingHalf", toSection: Section.facebookConnect.rawValue)
+      self.appendStaticRow(cellIdentifier: "HalfPaddingCell", toSection: Section.facebookConnect.rawValue)
     }
   }
 
@@ -33,7 +33,7 @@ internal final class ActivitiesDataSource: ValueCellDataSource {
              inSection: Section.findFriends.rawValue)
 
     if visible {
-      self.appendStaticRow(cellIdentifier: "PaddingHalf", toSection: Section.findFriends.rawValue)
+      self.appendStaticRow(cellIdentifier: "HalfPaddingCell", toSection: Section.findFriends.rawValue)
     }
   }
 
@@ -57,7 +57,7 @@ internal final class ActivitiesDataSource: ValueCellDataSource {
       self.set(values: [response],
                cellClass: ActivitySurveyResponseCell.self,
                inSection: Section.survey.rawValue)
-      self.appendStaticRow(cellIdentifier: "Padding", toSection: Section.survey.rawValue)
+      self.appendStaticRow(cellIdentifier: "PaddingCell", toSection: Section.survey.rawValue)
     } else {
       self.set(values: [],
                cellClass: ActivitySurveyResponseCell.self,
@@ -88,7 +88,7 @@ internal final class ActivitiesDataSource: ValueCellDataSource {
         assertionFailure("Unsupported activity: \(activity)")
       }
 
-      self.appendStaticRow(cellIdentifier: "Padding", toSection: section)
+      self.appendStaticRow(cellIdentifier: "PaddingCell", toSection: section)
     }
   }
 

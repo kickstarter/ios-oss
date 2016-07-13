@@ -7,11 +7,13 @@ public protocol ActivityFriendBackingViewModelInputs {
 }
 
 public protocol ActivityFriendBackingViewModelOutputs {
+  var cellAccessibilityLabel: Signal<String, NoError> { get }
+  var cellAccessibilityValue: Signal<String, NoError> { get }
+  var creatorName: Signal<String, NoError> { get }
   var friendImageURL: Signal<NSURL?, NoError> { get }
   var friendTitle: Signal<String, NoError> { get }
-  var projectName: Signal<String, NoError> { get }
-  var creatorName: Signal<String, NoError> { get }
   var projectImageURL: Signal<NSURL?, NoError> { get }
+  var projectName: Signal<String, NoError> { get }
 }
 
 public protocol ActivityFriendBackingViewModelType {
@@ -48,6 +50,9 @@ ActivityFriendBackingViewModelInputs, ActivityFriendBackingViewModelOutputs {
     self.projectImageURL = activity.map { ($0.project?.photo.med).flatMap(NSURL.init) }
 
     self.creatorName = activity.map { $0.project?.creator.name ?? "" }
+
+    self.cellAccessibilityLabel = self.friendTitle
+    self.cellAccessibilityValue = self.projectName
   }
 
   private let activityProperty = MutableProperty<Activity?>(nil)
@@ -60,6 +65,8 @@ ActivityFriendBackingViewModelInputs, ActivityFriendBackingViewModelOutputs {
   public let projectName: Signal<String, NoError>
   public let projectImageURL: Signal<NSURL?, NoError>
   public let creatorName: Signal<String, NoError>
+  public let cellAccessibilityLabel: Signal<String, NoError>
+  public let cellAccessibilityValue: Signal<String, NoError>
 
   public var inputs: ActivityFriendBackingViewModelInputs { return self }
   public var outputs: ActivityFriendBackingViewModelOutputs { return self }

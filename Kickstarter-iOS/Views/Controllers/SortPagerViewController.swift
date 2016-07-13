@@ -1,6 +1,7 @@
 import KsApi
 import Library
 import Prelude
+import Prelude_UIKit
 import UIKit
 
 internal protocol SortPagerViewControllerDelegate: class {
@@ -25,9 +26,11 @@ internal final class SortPagerViewController: UIViewController {
   }
 
   internal override func bindViewModel() {
-    self.viewModel.outputs.createSortButtonsWithTitles
+    self.viewModel.outputs.createSortButtons
       .observeForUI()
-      .observeNext { [weak self] in self?.createSortButtons($0) }
+      .observeNext { [weak self] in
+        self?.createSortButtons($0)
+    }
 
     self.viewModel.outputs.scrollPercentage
       .observeForUI()
@@ -44,10 +47,10 @@ internal final class SortPagerViewController: UIViewController {
     }
   }
 
-  private func createSortButtons(titles: [String]) {
+  private func createSortButtons(sorts: [DiscoveryParams.Sort]) {
     self.sortsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
-    titles.enumerate().forEach { idx, title in
-      self.sortsStackView.addArrangedSubview(self.buttonFor(title: title, index: idx))
+    sorts.enumerate().forEach { idx, sort in
+      self.sortsStackView.addArrangedSubview(self.buttonFor(sort: sort, index: idx))
     }
   }
 
@@ -69,18 +72,13 @@ internal final class SortPagerViewController: UIViewController {
     }
   }
 
-  private func buttonFor(title title: String, index: Int) -> UIButton {
-    let button = BorderButton()
-    button.color = .Clear
-    button.borderColor = .Clear
-    button.titleColorNormal = .TextDarkGray
-    button.titleColorHighlighted = .TextDefault
-    button.titleFontStyle = .Subhead
-    button.contentEdgeInsets = .init(top: 0.0, left: 16.0, bottom: 0.0, right: 16.0)
-    button.setTitle(title, forState: .Normal)
-    button.addTarget(self, action: #selector(sortButtonTapped(_:)), forControlEvents: .TouchUpInside)
-    button.tag = index
-    return button
+  private func buttonFor(sort sort: DiscoveryParams.Sort, index: Int) -> UIButton {
+    return UIButton()
+      |> discoveryPagerSortButtonStyle(sort: sort)
+      |> UIButton.lens.tag .~ index
+      |> UIButton.lens.targets .~ [
+        (self, #selector(sortButtonTapped(_:)), .TouchUpInside)
+    ]
   }
 
   @objc private func sortButtonTapped(button: UIButton) {

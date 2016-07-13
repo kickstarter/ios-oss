@@ -9,13 +9,17 @@ public protocol ActivityUpdateViewModelInputs {
 }
 
 public protocol ActivityUpdateViewModelOutputs {
+  var body: Signal<String, NoError> { get }
+  var cellAccessibilityLabel: Signal<String, NoError> { get }
+  var cellAccessibilityValue: Signal<String, NoError> { get }
+  var projectButtonAccessibilityLabel: Signal<String, NoError> { get }
+  var projectButtonAccessibilityValue: Signal<String, NoError> { get }
   var projectImageURL: Signal<NSURL?, NoError> { get }
   var projectName: Signal<String?, NoError> { get }
-  var title: Signal<String?, NoError> { get }
   var sequenceTitle: Signal<String?, NoError> { get }
-  var timestamp: Signal<String, NoError> { get }
-  var body: Signal<String, NoError> { get }
   var tappedActivityProjectImage: Signal<Activity, NoError> { get }
+  var timestamp: Signal<String, NoError> { get }
+  var title: Signal<String?, NoError> { get }
 }
 
 public final class ActivityUpdateViewModel: ActivityUpdateViewModelInputs, ActivityUpdateViewModelOutputs {
@@ -42,6 +46,13 @@ public final class ActivityUpdateViewModel: ActivityUpdateViewModelInputs, Activ
 
     self.tappedActivityProjectImage = activity
       .takeWhen(self.tappedProjectImageProperty.signal)
+
+    self.cellAccessibilityLabel = self.projectName.ignoreNil()
+      .map { "Update posted for project: \($0)" }
+    self.cellAccessibilityValue = self.title.ignoreNil()
+
+    self.projectButtonAccessibilityLabel = self.projectName.ignoreNil()
+    self.projectButtonAccessibilityValue = .empty
   }
 
   private let activityProperty = MutableProperty<Activity?>(nil)
@@ -60,6 +71,10 @@ public final class ActivityUpdateViewModel: ActivityUpdateViewModelInputs, Activ
   public let timestamp: Signal<String, NoError>
   public let body: Signal<String, NoError>
   public let tappedActivityProjectImage: Signal<Activity, NoError>
+  public let cellAccessibilityValue: Signal<String, NoError>
+  public let cellAccessibilityLabel: Signal<String, NoError>
+  public let projectButtonAccessibilityLabel: Signal<String, NoError>
+  public let projectButtonAccessibilityValue: Signal<String, NoError>
 
   public var inputs: ActivityUpdateViewModelInputs { return self }
   public var outputs: ActivityUpdateViewModelOutputs { return self }

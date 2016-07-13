@@ -10,6 +10,7 @@ import XCTest
 internal final class DiscoveryPageViewModelTests: TestCase {
   private let vm: DiscoveryPageViewModelType = DiscoveryPageViewModel()
 
+  private let focusScreenReaderOnFirstProject = TestObserver<(), NoError>()
   private let goToProject = TestObserver<Project, NoError>()
   private let goToRefTag = TestObserver<RefTag, NoError>()
   private let hasAddedProjects = TestObserver<Bool, NoError>()
@@ -20,6 +21,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
   internal override func setUp() {
     super.setUp()
 
+    self.vm.outputs.focusScreenReaderOnFirstProject.observe(self.focusScreenReaderOnFirstProject.observer)
     self.vm.outputs.goToProject.map { $0.0 }.observe(self.goToProject.observer)
     self.vm.outputs.goToProject.map { $0.1 }.observe(self.goToRefTag.observer)
     self.vm.outputs.showOnboarding.observe(self.showOnboarding.observer)
@@ -277,5 +279,30 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
       self.showOnboarding.assertValues([false])
     }
+  }
+
+  func testFocusScreenReaderOnFirstProject() {
+    self.vm.inputs.configureWith(sort: .Magic)
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewWillAppear()
+    self.vm.inputs.viewDidAppear()
+    self.vm.inputs.selectedFilter(.defaults)
+
+    self.focusScreenReaderOnFirstProject.assertValueCount(0)
+
+    self.scheduler.advance()
+
+    self.focusScreenReaderOnFirstProject.assertValueCount(1)
+
+    self.vm.inputs.viewDidDisappear()
+    self.vm.inputs.viewWillAppear()
+    self.vm.inputs.viewDidAppear()
+
+    self.focusScreenReaderOnFirstProject.assertValueCount(2)
+
+    self.vm.inputs.willDisplayRow(9, outOf: 10)
+    self.scheduler.advance()
+
+    self.focusScreenReaderOnFirstProject.assertValueCount(2)
   }
 }

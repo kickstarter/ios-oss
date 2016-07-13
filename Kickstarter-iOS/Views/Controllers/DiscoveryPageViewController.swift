@@ -59,6 +59,12 @@ internal final class DiscoveryPageViewController: UITableViewController {
         self?.dataSource.show(onboarding: $0)
         self?.tableView.reloadData()
     }
+
+    self.viewModel.outputs.focusScreenReaderOnFirstProject
+      .observeForUI()
+      .observeNext { [weak self] in
+        self?.accessibilityFocusOnFirstProject()
+    }
   }
 
   internal override func tableView(tableView: UITableView,
@@ -90,6 +96,14 @@ internal final class DiscoveryPageViewController: UITableViewController {
     projectViewController.configureWith(project: project, refTag: refTag)
     let nav = UINavigationController(rootViewController: projectViewController)
     self.presentViewController(nav, animated: true, completion: nil)
+  }
+
+  private func accessibilityFocusOnFirstProject() {
+
+    let cell = self.tableView.visibleCells.filter { $0 is DiscoveryProjectCell }.first
+    if let cell = cell {
+      UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, cell)
+    }
   }
 }
 
