@@ -76,11 +76,24 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
   internal var outputs: RootViewModelOutputs { return self }
 
   internal init() {
-    let currentUser = self.viewDidLoadProperty.signal
-      .mergeWith(self.userSessionStartedProperty.signal)
-      .mergeWith(self.userSessionEndedProperty.signal)
-      .mergeWith(self.currentUserUpdatedProperty.signal)
+    let currentUser = Signal.merge(
+      self.viewDidLoadProperty.signal,
+      self.userSessionStartedProperty.signal,
+      self.userSessionEndedProperty.signal,
+      self.currentUserUpdatedProperty.signal
+      )
       .map { AppEnvironment.current.currentUser }
+
+    let userState = currentUser
+      .switchMap { currentUser -> SignalProducer<(isLoggedIn: Bool, isMember: Bool), NoError> in
+        if currentUser == nil {
+          return .init(value: (false, false))
+        }
+
+        return AppEnvironment.current.apiService.fetchProjects(member: true)
+          .demoteErrors()
+          .map { env in (isLoggedIn: currentUser != nil, isMember: !env.projects.isEmpty) }
+    }
 
     let standardTabs = self.viewDidLoadProperty.signal
       .take(1)
@@ -93,11 +106,10 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
       }
       .map { $0.compact() }
 
-    let personalizedTabs = currentUser
-      .map { user in (isLoggedIn: user != nil, isCreator: user?.isCreator ?? false) }
+    let personalizedTabs = userState
       .map { user -> [UIViewController?] in
         [
-          user.isCreator   ? initialViewController(storyboardName: "Dashboard") : nil,
+          user.isMember   ? initialViewController(storyboardName: "Dashboard") : nil,
           !user.isLoggedIn ? initialViewController(storyboardName: "Login") : nil,
           user.isLoggedIn  ? initialViewController(storyboardName: "Profile") : nil
         ]
