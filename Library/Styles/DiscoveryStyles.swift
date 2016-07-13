@@ -45,10 +45,14 @@ public func discoveryPagerSortButtonStyle <B: UIButtonProtocol> (sort sort: Disc
         <> B.lens.titleColor(forState: .Highlighted) .~ .ksr_text_navy_500
         <> B.lens.titleLabel.font .~ .ksr_subhead()
         <> B.lens.accessibilityLabel %~ { _ in "Sort by \(sortString)" }
-        <> B.lens.accessibilityHint %~ { _ in "Change sort" }
+        <> B.lens.accessibilityHint %~ { _ in "Changes sort" }
         <> B.lens.contentEdgeInsets .~ .init(topBottom: 0.0, leftRight: 16.0)
         <> B.lens.titleText(forState: .Normal) .~ sortString
 }
+
+public let discoveryProjectCellStyle =
+  baseTableViewCellStyle()
+    <> UITableViewCell.lens.accessibilityHint .~ "Opens project."
 
 private func string(forSort sort: DiscoveryParams.Sort) -> String {
   switch sort {

@@ -42,8 +42,7 @@ internal final class DiscoveryProjectCell: UITableViewCell, ValueCell {
   override func bindStyles() {
     super.bindStyles()
 
-    self |> baseTableViewCellStyle()
-      |> UITableViewCell.lens.accessibilityHint .~ "Open project"
+    self |> discoveryProjectCellStyle
   }
 
   func configureWith(value value: Project) {
