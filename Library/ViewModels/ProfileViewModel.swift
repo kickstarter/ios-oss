@@ -15,7 +15,7 @@ public protocol ProfileViewModelInputs {
   /// Call when settings is tapped.
   func settingsButtonTapped()
 
-  /// Call when the view will apear.
+  /// Call when the view will appear.
   func viewWillAppear()
 
   /// Call when a new row is displayed.

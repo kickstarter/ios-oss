@@ -133,6 +133,7 @@ MessagesViewModelOutputs {
   public func configureWith(data data: Either<MessageThread, (project: Project, backing: Backing)>) {
     self.configData.value = data
   }
+
   private let messageSentProperty = MutableProperty<Message?>(nil)
   public func messageSent(message: Message) {
     self.messageSentProperty.value = message
