@@ -134,6 +134,10 @@
 		80EAEF071D243FC7008C2353 /* BackingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EAEF011D243B69008C2353 /* BackingViewController.swift */; };
 		80EAEF091D244274008C2353 /* BackingViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EAEF081D244274008C2353 /* BackingViewModelTests.swift */; };
 		80FE733A1C88F3D400BE0137 /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7B694301C87A07100C49A4F /* HockeySDK.framework */; };
+		9D10B91B1D35407C008B8045 /* String+Truncate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D10B91A1D35407C008B8045 /* String+Truncate.swift */; };
+		9D10B91C1D35407C008B8045 /* String+Truncate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D10B91A1D35407C008B8045 /* String+Truncate.swift */; };
+		9D10B94E1D354105008B8045 /* String+TruncateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D10B94D1D354105008B8045 /* String+TruncateTests.swift */; };
+		9D10B94F1D354105008B8045 /* String+TruncateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D10B94D1D354105008B8045 /* String+TruncateTests.swift */; };
 		9D14FF8D1D133351005F4ABB /* ProjectActivityBackingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D9F57CB1D131AF200CE81DE /* ProjectActivityBackingCell.swift */; };
 		9D14FF8E1D133351005F4ABB /* ProjectActivityEmptyStateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D9F57CC1D131AF200CE81DE /* ProjectActivityEmptyStateCell.swift */; };
 		9D14FF8F1D133351005F4ABB /* ProjectActivityLaunchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D9F57CD1D131AF200CE81DE /* ProjectActivityLaunchCell.swift */; };
@@ -1379,6 +1383,8 @@
 		80762E261D071BFE0074189D /* Alamofire.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Alamofire.xcodeproj; path = Frameworks/AlamofireImage/Carthage/Checkouts/Alamofire/Alamofire.xcodeproj; sourceTree = "<group>"; };
 		8078D0B21D0F08B1001CFF87 /* UpdateDraftViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateDraftViewModelTests.swift; sourceTree = "<group>"; };
 		809F8B651D08B4FF005BADD9 /* UpdateDraftViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateDraftViewModel.swift; sourceTree = "<group>"; };
+		9D10B91A1D35407C008B8045 /* String+Truncate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Truncate.swift"; sourceTree = "<group>"; };
+		9D10B94D1D354105008B8045 /* String+TruncateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+TruncateTests.swift"; sourceTree = "<group>"; };
 		80EAEEFF1D243A7A008C2353 /* BackingViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackingViewModel.swift; sourceTree = "<group>"; };
 		80EAEF011D243B69008C2353 /* BackingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackingViewController.swift; sourceTree = "<group>"; };
 		80EAEF031D243C4E008C2353 /* Backing.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Backing.storyboard; sourceTree = "<group>"; };
@@ -2156,6 +2162,7 @@
 				A7DC83981C9DBEFA00BB2B44 /* RefTagTests.swift */,
 				A71F59E41D240CAF00909BE3 /* RouterTests.swift */,
 				A755118F1C8645A0005355CF /* String+SimpleHTMLTests.swift */,
+				9D10B94D1D354105008B8045 /* String+TruncateTests.swift */,
 				01EFBCAE1C92036E0094EEC2 /* StyledLabelTests.swift */,
 				01EFBCB51C921EA20094EEC2 /* StylesTests.swift */,
 				A75511901C8645A0005355CF /* UIButton+LocalizedKeyTests.swift */,
@@ -2446,6 +2453,7 @@
 				A75C81251D210F1F00B5AD03 /* ShareContext.swift */,
 				A7C725921C85D36D005A016B /* String+SimpleHTML.swift */,
 				A79BF81E1D11F6AF004C0445 /* Strings.swift */,
+				9D10B91A1D35407C008B8045 /* String+Truncate.swift */,
 				8016BFE71D0F582D00067956 /* String+Whitespace.swift */,
 				0151AEB01C8F6FD80067F1BE /* StyledLabel.swift */,
 				0151AEAD1C8F61870067F1BE /* Styles.swift */,
@@ -3749,6 +3757,7 @@
 				A73379601D0EDFEE00C91445 /* UIViewController-Preparation.swift in Sources */,
 				A72C3A951D00F6C70075227E /* DiscoveryPageViewModel.swift in Sources */,
 				A7F441C71D005A9400FE6FC5 /* MessageCellViewModel.swift in Sources */,
+				9D10B91B1D35407C008B8045 /* String+Truncate.swift in Sources */,
 				A72E75971CC313A400983066 /* ValueCell.swift in Sources */,
 				A75511601C8642C3005355CF /* GradientView.swift in Sources */,
 				A7CC13D31D00E6CF00035C52 /* FindFriendsFacebookConnectCellViewModel.swift in Sources */,
@@ -3896,6 +3905,7 @@
 				A7830D1E1D005C3F00B5B6AE /* ProjectMainCellViewModelTests.swift in Sources */,
 				9D2F4BDD1D1AE01500B7C554 /* ProjectActivitySuccessCellViewModelTests.swift in Sources */,
 				A75C81231D210EE200B5AD03 /* ShareViewModelTests.swift in Sources */,
+				9D10B94E1D354105008B8045 /* String+TruncateTests.swift in Sources */,
 				5970738E1D061A9900B00444 /* ProjectNotificationsViewModelTest.swift in Sources */,
 				A755119E1C8645A0005355CF /* UILabel+SimpleHTMLTests.swift in Sources */,
 				A7830D121D005C3F00B5B6AE /* MessagesViewModelTests.swift in Sources */,
@@ -4003,6 +4013,7 @@
 				A75511B41C8647D9005355CF /* LocalizedString.swift in Sources */,
 				0151AEB41C8F6FEC0067F1BE /* StyledLabel.swift in Sources */,
 				A7F441D81D005A9400FE6FC5 /* ProfileViewModel.swift in Sources */,
+				9D10B91C1D35407C008B8045 /* String+Truncate.swift in Sources */,
 				9D2F4BE11D1AE02700B7C554 /* ProjectActivitySuccessCellViewModel.swift in Sources */,
 				A757EA561D19F6C100A5C978 /* ActivityStyles.swift in Sources */,
 				9D25472E1D23135F0053844D /* ProjectActivityCommentCellViewModel.swift in Sources */,
@@ -4136,6 +4147,7 @@
 				9D2F4BDE1D1AE01800B7C554 /* ProjectActivitySuccessCellViewModelTests.swift in Sources */,
 				A7830CF91D005C3F00B5B6AE /* ActivitiesViewModelTests.swift in Sources */,
 				A78537941CB46CFB00385B73 /* KoalaTests.swift in Sources */,
+				9D10B94F1D354105008B8045 /* String+TruncateTests.swift in Sources */,
 				A75511F41C865321005355CF /* LocalizedStringTests.swift in Sources */,
 				59B0E00D1D12144A0081D2DC /* DashboardActionCellViewModelTests.swift in Sources */,
 				A7830D111D005C3F00B5B6AE /* MessagesSearchViewModelTests.swift in Sources */,
