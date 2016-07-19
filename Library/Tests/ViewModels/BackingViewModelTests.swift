@@ -1,8 +1,9 @@
-import Library
 import Prelude
 import ReactiveCocoa
 import Result
+import XCTest
 @testable import KsApi
+@testable import Library
 @testable import ReactiveExtensions_TestHelpers
 
 internal final class BackingViewModelTests: TestCase {
@@ -22,7 +23,7 @@ internal final class BackingViewModelTests: TestCase {
 
   override func setUp() {
     super.setUp()
-    AppEnvironment.login(AccessTokenEnvelope(accessToken: "hello", user: User.template))
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "hello", user: .template))
     self.vm.outputs.backerAvatarURL.map { $0?.absoluteString }.observe(backerAvatarURL.observer)
     self.vm.outputs.backerName.observe(backerName.observer)
     self.vm.outputs.backerSequence.observe(backerSequence.observer)
@@ -89,56 +90,57 @@ internal final class BackingViewModelTests: TestCase {
     withEnvironment(apiService: MockService(fetchBackingResponse: .template
       |> Backing.lens.amount .~ 35
       |> Backing.lens.pledgedAt .~ 1468527587.32843 )) {
-      self.vm.inputs.configureWith(project: .template |> Project.lens.country .~ .US, backer: nil)
+        self.vm.inputs.configureWith(project: .template |> Project.lens.country .~ .US, backer: nil)
 
-      self.backerPledgeAmountAndDate.assertValues([])
+        self.backerPledgeAmountAndDate.assertValues([])
 
-      self.vm.inputs.viewDidLoad()
+        self.vm.inputs.viewDidLoad()
 
-      self.backerPledgeAmountAndDate.assertValues(["$35 on July 14, 2016"],
-                                                  "Backer label emits pledge amount")
+        self.backerPledgeAmountAndDate.assertValues(["$35 on July 14, 2016"],
+                                                    "Backer label emits pledge amount")
     }
   }
 
   func testBackerPledgeStatus() {
     withEnvironment(apiService: MockService(fetchBackingResponse: .template
       |> Backing.lens.status .~ .pledged)) {
-      self.vm.inputs.configureWith(project: .template, backer: nil)
+        self.vm.inputs.configureWith(project: .template, backer: nil)
 
-      self.backerPledgeStatus.assertValues([])
+        self.backerPledgeStatus.assertValues([])
 
-      self.vm.inputs.viewDidLoad()
+        self.vm.inputs.viewDidLoad()
 
-      self.backerPledgeStatus.assertValues(["Status: Pledged"], "Backer label emits pledge status")
+        self.backerPledgeStatus.assertValues(["Status: Pledged"], "Backer label emits pledge status")
     }
   }
 
   func testBackerRewardDescription() {
     let reward = .template |> Reward.lens.description .~ "Cool Item"
 
-      withEnvironment(apiService: MockService (fetchBackingResponse: .template
-        |> Backing.lens.amount .~ 10_00
-        |> Backing.lens.reward .~ reward)) {
-      self.vm.inputs.configureWith(project: .template, backer: nil)
+    withEnvironment(apiService: MockService (fetchBackingResponse: .template
+      |> Backing.lens.amount .~ 10_00
+      |> Backing.lens.reward .~ reward)) {
+        self.vm.inputs.configureWith(project: .template, backer: nil)
 
-      self.backerRewardDescription.assertValues([])
+        self.backerRewardDescription.assertValues([])
 
-      self.vm.inputs.viewDidLoad()
+        self.vm.inputs.viewDidLoad()
 
-      self.backerRewardDescription.assertValues(["$10 - Cool Item"], "Backer label emits reward description")
+        self.backerRewardDescription.assertValues(["$10 - Cool Item"],
+                                                  "Backer label emits reward description")
     }
   }
 
   func testBackerShippingCost() {
     withEnvironment(apiService: MockService (fetchBackingResponse: .template
       |> Backing.lens.shippingAmount .~ 37)) {
-      self.vm.inputs.configureWith(project: .template, backer: nil)
+        self.vm.inputs.configureWith(project: .template, backer: nil)
 
-      self.backerShippingCost.assertValues([])
+        self.backerShippingCost.assertValues([])
 
-      self.vm.inputs.viewDidLoad()
+        self.vm.inputs.viewDidLoad()
 
-      self.backerShippingCost.assertValues(["$37"], "Backer label emits shipping cost") //change to amount
+        self.backerShippingCost.assertValues(["$37"], "Backer label emits shipping cost")
     }
   }
 
@@ -151,14 +153,14 @@ internal final class BackingViewModelTests: TestCase {
 
     withEnvironment(apiService: MockService (fetchBackingResponse: .template
       |> Backing.lens.reward .~ (.template |> Reward.lens.shipping .~ shipping))) {
-      self.vm.inputs.configureWith(project: .template, backer: nil)
+        self.vm.inputs.configureWith(project: .template, backer: nil)
 
-      self.backerShippingDescription.assertValues([])
+        self.backerShippingDescription.assertValues([])
 
-      self.vm.inputs.viewDidLoad()
+        self.vm.inputs.viewDidLoad()
 
-      self.backerShippingDescription.assertValues([ "Ships only to Litville, Legitas"],
-                                                  "Backer label emits reward description")
+        self.backerShippingDescription.assertValues([ "Ships only to Litville, Legitas"],
+                                                    "Backer label emits reward description")
     }
   }
 
@@ -178,6 +180,22 @@ internal final class BackingViewModelTests: TestCase {
 
       self.goToMessagesProject.assertValues([project])
       self.goToMessagesBacking.assertValues([backing])
+    }
+  }
+
+  func testEventsTracked() {
+    withEnvironment(apiService: MockService(fetchBackingResponse: .template)) {
+      self.vm.inputs.configureWith(project: .template, backer: .template)
+
+      XCTAssertEqual([], self.trackingClient.events)
+
+      self.vm.inputs.viewDidLoad()
+
+      XCTAssertEqual(["Viewed Pledge", "Modal Dialog View"],
+                     self.trackingClient.events, "Koala pledge view tracked")
+
+      XCTAssertEqual([nil, true],
+                     self.trackingClient.properties(forKey: Koala.DeprecatedKey, as: Bool.self))
     }
   }
 }

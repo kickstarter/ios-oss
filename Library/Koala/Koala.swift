@@ -615,6 +615,16 @@ public final class Koala {
     return props
   }
 
+  // MARK: Pledge screen events
+  public func trackViewedPledge(forProject project: Project) {
+    self.track(event: "Viewed Pledge",
+               properties: properties(project: project, loggedInUser: self.loggedInUser))
+
+    // Deprecated event
+    self.track(event: "Modal Dialog View",
+               properties: ["modal_class": "backer_info", Koala.DeprecatedKey: true])
+  }
+
   // Private tracking method that merges in default properties.
   private func track(event event: String, properties: [String:AnyObject] = [:]) {
     self.client.track(

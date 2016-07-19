@@ -75,13 +75,12 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
           .map { (project, $0) }
     }
 
+    let project = projectAndBacking.map(first)
     let backing = projectAndBacking.map(second)
-
     let reward = backing.map { $0.reward }.ignoreNil()
 
     self.backerSequence = backing
       .map { Strings.backer_modal_backer_number(backer_number: Format.wholeNumber($0.sequence)) }
-
 
     let backer = projectAndBacker.map(second)
 
@@ -93,7 +92,6 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
 
     self.backerPledgeAmountAndDate = projectAndBacking
       .map { project, backing in
-
         Strings.backer_modal_pledge_amount_on_pledge_date(
           pledge_amount: Format.currency(backing.amount, country: project.country),
           pledge_date: Format.date(
@@ -104,10 +102,7 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
         )
     }
 
-    self.backerRewardDescription = combineLatest(
-      projectAndBacker.map(first),
-      reward
-      )
+    self.backerRewardDescription = combineLatest(project, reward)
       .map { project, reward in
         Strings.backer_modal_reward_amount_reward_description(
           reward_amount: Format.currency(reward.minimum, country: project.country),
@@ -121,6 +116,10 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
       .map { project, backing in Format.currency(backing.shippingAmount ?? 0, country: project.country) }
 
     self.goToMessages = projectAndBacking.takeWhen(self.viewMessagesTappedProperty.signal)
+
+    project
+      .takeWhen(self.viewDidLoadProperty.signal)
+      .observeNext { AppEnvironment.current.koala.trackViewedPledge(forProject: $0) }
   }
   // swiftlint:enable function_body_length
 
@@ -132,11 +131,6 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
   private let projectAndBackerProperty = MutableProperty<(Project, User?)?>(nil)
   public func configureWith(project project: Project, backer: User?) {
     self.projectAndBackerProperty.value = (project, backer)
-  }
-
-  private let viewDidAppearProperty = MutableProperty()
-  public func viewDidAppear() {
-    self.viewDidAppearProperty.value = ()
   }
 
   private let viewDidLoadProperty = MutableProperty()
