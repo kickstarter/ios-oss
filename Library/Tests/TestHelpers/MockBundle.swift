@@ -12,6 +12,17 @@ private let stores = [
     "echo": "echo",
     "hello_format": "hello %{a} %{b}",
     "placeholder_password": "password",
+    "dates.just_now": "just now",
+    "dates.time_hours_ago.zero": "%{time_count} hours ago",
+    "dates.time_hours_ago.one": "%{time_count} hour ago",
+    "dates.time_hours_ago.two": "%{time_count} hours ago",
+    "dates.time_hours_ago.few": "%{time_count} hours ago",
+    "dates.time_hours_ago.many": "%{time_count} hours ago",
+    "dates.time_hours_ago_abbreviated.zero": "%{time_count} hrs ago",
+    "dates.time_hours_ago_abbreviated.one": "%{time_count} hr ago",
+    "dates.time_hours_ago_abbreviated.two": "%{time_count} hrs ago",
+    "dates.time_hours_ago_abbreviated.few": "%{time_count} hrs ago",
+    "dates.time_hours_ago_abbreviated.many": "%{time_count} hrs ago",
   ],
   "de": [
     "test_count.zero": "de_zero",
@@ -21,7 +32,9 @@ private let stores = [
     "test_count.many": "de_%{the_count} many",
     "hello": "de_world",
     "echo": "echo",
-    "hello_format": "de_hello %{a} %{b}"
+    "hello_format": "de_hello %{a} %{b}",
+    "dates.time_hours_ago.one": "vor %{time_count} Stunde",
+    "dates.time_hours_ago_abbreviated.one": "vor %{time_count} Std",
   ],
   "es": [
     "placeholder_password": "el secreto",

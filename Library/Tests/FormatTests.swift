@@ -1,6 +1,6 @@
 import XCTest
-@testable import Library
 import KsApi
+@testable import Library
 
 // swiftlint:disable function_body_length
 final class FormatTests: XCTestCase {
@@ -236,6 +236,77 @@ final class FormatTests: XCTestCase {
       withEnvironment(timeZone: EST) {
         XCTAssertEqual(Format.date(secondsInUTC: date), "9 oct. 1983 20:00:00")
       }
+    }
+  }
+
+  func testDuration() {
+    let threshold = 30
+    let inMinutes = NSDate().timeIntervalSince1970 + 61 * 2
+    let inHours = NSDate().timeIntervalSince1970 + 60 * 61 * 2
+    let inDays = NSDate().timeIntervalSince1970 + 60 * 61 * 24 * 2
+    let pastThreshold = NSDate().timeIntervalSince1970 + 60 * 61 * 24 * Double(threshold + 1)
+
+    withEnvironment(locale: NSLocale(localeIdentifier: "en"), language: .en) {
+      XCTAssertEqual("2 minutes", Format.duration(secondsInUTC: inMinutes))
+      XCTAssertEqual("2 hours", Format.duration(secondsInUTC: inHours))
+      XCTAssertEqual("2 days", Format.duration(secondsInUTC: inDays))
+      XCTAssertNil(Format.duration(secondsInUTC: pastThreshold))
+      XCTAssertNil(Format.duration(secondsInUTC: pastThreshold, thresholdInDays: threshold))
+    }
+  }
+
+  func testRelative() {
+    AppEnvironment.replaceCurrentEnvironment(mainBundle: MockBundle())
+
+    let justNow = NSDate().timeIntervalSince1970 - 30
+    let rightNow = NSDate().timeIntervalSince1970 + 31
+    let minutesAgo = NSDate().timeIntervalSince1970 - 60 * 30
+    let inMinutes = NSDate().timeIntervalSince1970 + 60 * 31
+    let hoursAgo = NSDate().timeIntervalSince1970 - 60 * 60
+    let inHours = NSDate().timeIntervalSince1970 + 60 * 61
+    let yesterday = NSDate().timeIntervalSince1970 - 60 * 60 * 24
+    let tomorrow = NSDate().timeIntervalSince1970 + 60 * 61 * 24
+    let daysAgo = NSDate().timeIntervalSince1970 - 60 * 60 * 24 * 2
+    let inDays = NSDate().timeIntervalSince1970 + 60 * 61 * 24 * 2
+    let awhileAgo = NSDate().timeIntervalSince1970 - 60 * 60 * 24 * 31
+    let inAwhile = NSDate().timeIntervalSince1970 - 60 * 60 * 24 * 32
+
+    withEnvironment(locale: NSLocale(localeIdentifier: "en"), language: .en) {
+      XCTAssertEqual("just now", Format.relative(secondsInUTC: justNow))
+      XCTAssertEqual("right now", Format.relative(secondsInUTC: rightNow))
+      XCTAssertEqual("30 minutes ago", Format.relative(secondsInUTC: minutesAgo))
+      XCTAssertEqual("in 30 minutes", Format.relative(secondsInUTC: inMinutes))
+      XCTAssertEqual("1 hour ago", Format.relative(secondsInUTC: hoursAgo))
+      XCTAssertEqual("in 1 hours", Format.relative(secondsInUTC: inHours))
+      XCTAssertEqual("yesterday", Format.relative(secondsInUTC: yesterday))
+      XCTAssertEqual("in 1 days", Format.relative(secondsInUTC: tomorrow))
+      XCTAssertEqual("2 days ago", Format.relative(secondsInUTC: daysAgo))
+      XCTAssertEqual("in 2 days", Format.relative(secondsInUTC: inDays))
+      XCTAssertEqual(Format.date(secondsInUTC: awhileAgo, timeStyle: .NoStyle),
+                     Format.relative(secondsInUTC: awhileAgo))
+      XCTAssertEqual(Format.date(secondsInUTC: inAwhile, timeStyle: .NoStyle),
+                     Format.relative(secondsInUTC: inAwhile))
+
+      XCTAssertEqual("just now", Format.relative(secondsInUTC: justNow, abbreviate: true))
+      XCTAssertEqual("right now", Format.relative(secondsInUTC: rightNow, abbreviate: true))
+      XCTAssertEqual("30 mins ago", Format.relative(secondsInUTC: minutesAgo, abbreviate: true))
+      XCTAssertEqual("in 30 mins", Format.relative(secondsInUTC: inMinutes, abbreviate: true))
+      XCTAssertEqual("1 hr ago", Format.relative(secondsInUTC: hoursAgo, abbreviate: true))
+      XCTAssertEqual("in 1 hrs", Format.relative(secondsInUTC: inHours, abbreviate: true))
+      XCTAssertEqual("yesterday", Format.relative(secondsInUTC: yesterday, abbreviate: true))
+      XCTAssertEqual("in 1 days", Format.relative(secondsInUTC: tomorrow, abbreviate: true))
+      XCTAssertEqual("2 days ago", Format.relative(secondsInUTC: daysAgo, abbreviate: true))
+      XCTAssertEqual("in 2 days", Format.relative(secondsInUTC: inDays, abbreviate: true))
+      XCTAssertEqual(Format.date(secondsInUTC: awhileAgo, timeStyle: .NoStyle),
+                     Format.relative(secondsInUTC: awhileAgo, abbreviate: true))
+      XCTAssertEqual(Format.date(secondsInUTC: inAwhile, timeStyle: .NoStyle),
+                     Format.relative(secondsInUTC: inAwhile, abbreviate: true))
+    }
+
+    withEnvironment(locale: NSLocale(localeIdentifier: "de"), language: .de) {
+      XCTAssertEqual("vor 1 Stunde", Format.relative(secondsInUTC: hoursAgo))
+
+      XCTAssertEqual("vor 1 Std", Format.relative(secondsInUTC: hoursAgo, abbreviate: true))
     }
   }
 }

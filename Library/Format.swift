@@ -1,9 +1,5 @@
-import class Foundation.NSDate
-import class Foundation.NSDateFormatter
-import enum Foundation.NSDateFormatterStyle
-import class Foundation.NSNumberFormatter
-import struct Foundation.NSTimeInterval
-import struct KsApi.Project
+import Foundation
+import KsApi
 
 public enum Format {
   // Number formatter for whole numbers.
@@ -137,4 +133,77 @@ public enum Format {
 
     return Format.dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: seconds))
   }
+
+  /**
+   Format a duration into a string.
+
+   - parameter seconds: Seconds represention of the date as measured from UTC.
+   - parameter abbreviate: (optional) Whether or not to use the abbreviated style.
+
+   - returns: A formatted string.
+   */
+  public static func duration(secondsInUTC seconds: NSTimeInterval,
+                              thresholdInDays: Int = defaultThresholdInDays) -> String? {
+
+    let components = NSCalendar.currentCalendar().components([.Day, .Hour, .Minute, .Second],
+                                                             fromDate: NSDate(),
+                                                             toDate: NSDate(timeIntervalSince1970: seconds),
+                                                             options: [])
+    guard components.day < thresholdInDays else { return nil }
+    if components.day > 0 {
+      return Strings.dates_time_days(time_count: components.day)
+    } else if components.hour > 0 {
+      return Strings.dates_time_hours(time_count: components.hour)
+    } else if components.minute >= 0 && components.second >= 0 {
+      return Strings.dates_time_minutes(time_count: components.minute)
+    }
+    return nil
+  }
+
+  /**
+   Format a date into a relative string.
+
+   - parameter secondsInUTC: Seconds represention of the date as measured from UTC.
+   - parameter abbreviate: (optional) Whether or not to use the abbreviated style.
+
+   - returns: A formatted string.
+  */
+  public static func relative(secondsInUTC seconds: NSTimeInterval, abbreviate: Bool = false,
+                              threshold thresholdInDays: Int = defaultThresholdInDays) -> String {
+
+    let components = NSCalendar.currentCalendar().components([.Day, .Hour, .Minute, .Second],
+                                                             fromDate: NSDate(timeIntervalSince1970: seconds),
+                                                             toDate: NSDate(),
+                                                             options: [])
+
+    if abs(components.day) > thresholdInDays {
+      return Format.date(secondsInUTC: seconds, dateStyle: .MediumStyle, timeStyle: .NoStyle)
+    } else if components.day > 1 {
+      let format = abbreviate ? Strings.dates_time_days_ago_abbreviated : Strings.dates_time_days_ago
+      return format(time_count: components.day)
+    } else if components.day == 1 {
+      return Strings.dates_yesterday()
+    } else if components.hour > 0 {
+      let format = abbreviate ? Strings.dates_time_hours_ago_abbreviated : Strings.dates_time_hours_ago
+      return format(time_count: components.hour)
+    } else if components.minute > 0 {
+      let format = abbreviate ? Strings.dates_time_minutes_ago_abbreviated : Strings.dates_time_minutes_ago
+      return format(time_count: components.minute)
+    } else if components.second > 0 {
+      return Strings.dates_just_now()
+    } else if components.day < 0 {
+      let format = abbreviate ? Strings.dates_time_in_days_abbreviated : Strings.dates_time_in_days
+      return format(time_count: -components.day)
+    } else if components.hour < 0 {
+      let format = abbreviate ? Strings.dates_time_in_hours_abbreviated : Strings.dates_time_in_hours
+      return format(time_count: -components.hour)
+    } else if components.minute < 0 {
+      let format = abbreviate ? Strings.dates_time_in_minutes_abbreviated : Strings.dates_time_in_minutes
+      return format(time_count: -components.minute)
+    } else {
+      return Strings.dates_right_now()
+    }
+  }
 }
+
+private let defaultThresholdInDays = 30 // days
