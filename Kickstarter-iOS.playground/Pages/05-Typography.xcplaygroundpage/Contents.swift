@@ -49,3 +49,4 @@ for (name, font) in fonts {
       |> UILabel.lens.text %~ { "\(name).bold: \($0)" }
       |> UILabel.lens.font .~ font.bolded
   )
+}

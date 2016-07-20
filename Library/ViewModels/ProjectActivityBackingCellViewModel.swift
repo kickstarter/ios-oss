@@ -8,8 +8,8 @@ public protocol ProjectActivityBackingCellViewModelInputs {
   /// Call when the backing info button is pressed.
   func backingInfoButtonPressed()
 
-  /// Call to set the activity.
-  func configureWith(activity activity: Activity)
+  /// Call to set the activity and project.
+  func configureWith(activity activity: Activity, project: Project)
 
   /// Call when the send message button is pressed.
   func sendMessageButtonPressed()
@@ -30,6 +30,9 @@ public protocol ProjectActivityBackingCellViewModelOutputs {
 
   /// Emits whether the pledge amount label should be hidden.
   var pledgeAmountLabelIsHidden: Signal<Bool, NoError> { get }
+
+  /// Emits whether the pledge amounts stack view should be hidden.
+  var pledgeAmountsStackViewIsHidden: Signal<Bool, NoError> { get }
 
   /// Emits the old pledge amount.
   var previousPledgeAmount: Signal<String, NoError> { get }
@@ -53,7 +56,8 @@ public final class ProjectActivityBackingCellViewModel: ProjectActivityBackingCe
 ProjectActivityBackingCellViewModelInputs, ProjectActivityBackingCellViewModelOutputs {
 
   public init() {
-    let activity = self.activityProperty.signal.ignoreNil()
+    let activityAndProject = self.activityAndProjectProperty.signal.ignoreNil()
+    let activity = activityAndProject.map(first)
 
     self.backerImageURL = activity
       .map { ($0.user?.avatar.medium).flatMap(NSURL.init) }
@@ -63,39 +67,48 @@ ProjectActivityBackingCellViewModelInputs, ProjectActivityBackingCellViewModelOu
       .map { $0.memberData.backing }
       .ignoreNil()
 
-    self.goToSendMessage = activity
-      .map { activity -> (Project, Backing)? in
-        guard let project = activity.project else { return nil }
+    self.goToSendMessage = activityAndProject
+      .map { activity, project -> (Project, Backing)? in
         guard let backing = activity.memberData.backing else { return nil }
         return (project, backing)
       }
       .ignoreNil()
 
-    self.pledgeAmount = activity.map { activity in
-      guard let amount = activity.memberData.amount ?? activity.memberData.newAmount else { return "" }
-      guard let country = activity.project?.country else { return "" }
+    self.pledgeAmount = activityAndProject
+      .map { activity, project in
+        guard let amount = activity.memberData.amount ?? activity.memberData.newAmount else { return "" }
 
-      return Format.currency(amount, country: country)
+        return Format.currency(amount, country: project.country)
     }
 
-    self.pledgeAmountLabelIsHidden = self.pledgeAmount
+    let pledgeAmountLabelIsHidden = self.pledgeAmount
       .map { $0.isEmpty }
-      .skipRepeats()
 
-    self.previousPledgeAmount = activity.map { activity in
-      guard let amount = activity.memberData.oldAmount else { return "" }
-      guard let country = activity.project?.country else { return "" }
+    self.pledgeAmountLabelIsHidden = pledgeAmountLabelIsHidden.skipRepeats()
 
-      return Format.currency(amount, country: country)
+    self.previousPledgeAmount = activityAndProject
+      .map { activity, project in
+        guard let amount = activity.memberData.oldAmount else { return "" }
+
+        return Format.currency(amount, country: project.country)
     }
 
-    self.previousPledgeAmountLabelIsHidden = self.previousPledgeAmount
+    let previousPledgeAmountLabelIsHidden = self.previousPledgeAmount
       .map { $0.isEmpty }
-      .skipRepeats()
 
-    self.reward = activity.map(rewardSummary(fromActivity:))
+    self.previousPledgeAmountLabelIsHidden = previousPledgeAmountLabelIsHidden.skipRepeats()
 
-    self.title = activity.map(title(fromActivity:))
+    self.pledgeAmountsStackViewIsHidden =
+      zip(
+        pledgeAmountLabelIsHidden,
+        previousPledgeAmountLabelIsHidden
+        )
+        .map { $0 && $1 }
+        .skipRepeats()
+
+    self.reward = activityAndProject.map(rewardSummary(activity:project:))
+
+    self.title = activity.map(title(activity:))
   }
 
   private let backingInfoButtonPressedProperty = MutableProperty()
@@ -103,9 +116,9 @@ ProjectActivityBackingCellViewModelInputs, ProjectActivityBackingCellViewModelOu
     self.backingInfoButtonPressedProperty.value = ()
   }
 
-  private let activityProperty = MutableProperty<Activity?>(nil)
-  public func configureWith(activity activity: Activity) {
-    self.activityProperty.value = activity
+  private let activityAndProjectProperty = MutableProperty<(Activity, Project)?>(nil)
+  public func configureWith(activity activity: Activity, project: Project) {
+    self.activityAndProjectProperty.value = (activity, project)
   }
 
   private let sendMessageButtonPressedProperty = MutableProperty()
@@ -118,6 +131,7 @@ ProjectActivityBackingCellViewModelInputs, ProjectActivityBackingCellViewModelOu
   public let goToSendMessage: Signal<(Project, Backing), NoError>
   public let pledgeAmount: Signal<String, NoError>
   public let pledgeAmountLabelIsHidden: Signal<Bool, NoError>
+  public let pledgeAmountsStackViewIsHidden: Signal<Bool, NoError>
   public let previousPledgeAmount: Signal<String, NoError>
   public let previousPledgeAmountLabelIsHidden: Signal<Bool, NoError>
   public let reward: Signal<String, NoError>
@@ -132,38 +146,40 @@ private func currentUserIsBacker(activity activity: Activity) -> Bool {
   return AppEnvironment.current.currentUser?.id == backing.backerId
 }
 
-private func rewardSummary(fromActivity activity: Activity) -> String {
-  guard let reward = reward(fromActivity: activity) else { return "" }
-  return reward.title ?? reward.description
+private func rewardSummary(activity activity: Activity, project: Project) -> String {
+  guard let reward = reward(activity: activity, project: project) else { return "" }
+  return reward.isNoReward ?
+    Strings.dashboard_activity_no_reward_selected() :
+    Strings.dashboard_activity_reward_name(reward_name: reward.title ?? reward.description)
 }
 
-private func reward(fromActivity activity: Activity) -> Reward? {
+private func reward(activity activity: Activity, project: Project) -> Reward? {
   guard let rewardId = activity.memberData.rewardId ?? activity.memberData.newRewardId else { return nil }
-  guard let rewards = activity.project?.rewards else { return nil }
+  guard let rewards = project.rewards else { return nil }
 
   return rewards.filter { $0.id == rewardId }.first
 }
 
-private func title(fromActivity activity: Activity) -> String {
+private func title(activity activity: Activity) -> String {
   guard let userName = activity.user?.name else { return "" }
 
   switch activity.category {
   case .backing:
     return currentUserIsBacker(activity: activity) ?
-      Strings.activity_creator_actions_you_pledged() :
-      Strings.activity_creator_actions_user_name_pledged(user_name: userName)
+      Strings.dashboard_activity_you_pledged() :
+      Strings.dashboard_activity_user_name_pledged(user_name: userName)
   case .backingAmount:
     return currentUserIsBacker(activity: activity) ?
-      Strings.activity_creator_actions_you_adjusted_your_pledge() :
-      Strings.activity_creator_actions_user_name_adjusted_their_pledge(user_name: userName)
+      Strings.dashboard_activity_you_adjusted_your_pledge() :
+      Strings.dashboard_activity_user_name_adjusted_their_pledge(user_name: userName)
   case .backingCanceled:
     return currentUserIsBacker(activity: activity) ?
-      Strings.activity_creator_actions_you_canceled_your_pledge() :
-      Strings.activity_creator_actions_user_name_canceled_their_pledge(user_name: userName)
+      Strings.dashboard_activity_you_canceled_your_pledge() :
+      Strings.dashboard_activity_user_name_canceled_their_pledge(user_name: userName)
   case .backingReward:
     return currentUserIsBacker(activity: activity) ?
-      Strings.activity_creator_actions_you_changed_your_reward() :
-      Strings.activity_creator_actions_user_name_changed_their_reward(user_name: userName)
+      Strings.dashboard_activity_you_changed_your_reward() :
+      Strings.dashboard_activity_user_name_changed_their_reward(user_name: userName)
   default:
     assertionFailure("Unrecognized activity: \(activity).")
     return ""

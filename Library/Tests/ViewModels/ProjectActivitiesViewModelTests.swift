@@ -11,13 +11,15 @@ final class ProjectActivitiesViewModelTests: TestCase {
 
   private let activitiesPresent = TestObserver<Bool, NoError>()
   private let isRefreshing = TestObserver<Bool, NoError>()
+  private let project = TestObserver<Project, NoError>()
   private let showEmptyState = TestObserver<Bool, NoError>()
 
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.activities.map { !$0.isEmpty }.observe(self.activitiesPresent.observer)
+    self.vm.outputs.activitiesAndProject.map { !$0.0.isEmpty }.observe(self.activitiesPresent.observer)
     self.vm.outputs.isRefreshing.observe(self.isRefreshing.observer)
+    self.vm.outputs.activitiesAndProject.map(second).observe(self.project.observer)
     self.vm.outputs.showEmptyState.observe(self.showEmptyState.observer)
 
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
@@ -34,6 +36,7 @@ final class ProjectActivitiesViewModelTests: TestCase {
 
       self.scheduler.advance()
       self.activitiesPresent.assertValues([true], "Show activities after scheduler advances")
+      self.project.assertValues([project], "Emits project")
     }
 
     withEnvironment(apiService: MockService(fetchProjectActivitiesResponse:
@@ -41,6 +44,7 @@ final class ProjectActivitiesViewModelTests: TestCase {
       self.vm.inputs.refresh()
       self.scheduler.advance()
       self.activitiesPresent.assertValues([true, true], "Activities refreshed")
+      self.project.assertValues([project, project], "Emits project")
     }
 
     withEnvironment(apiService: MockService(fetchProjectActivitiesResponse:
@@ -48,6 +52,7 @@ final class ProjectActivitiesViewModelTests: TestCase {
       self.vm.inputs.willDisplayRow(9, outOf: 10)
       self.scheduler.advance()
       self.activitiesPresent.assertValues([true, true, true], "Activities paginate")
+      self.project.assertValues([project, project, project], "Emits project")
     }
 
     self.showEmptyState.assertValues([false],
@@ -64,6 +69,7 @@ final class ProjectActivitiesViewModelTests: TestCase {
 
       self.activitiesPresent.assertValues([false], "No activities")
       self.showEmptyState.assertValues([true], "Activities not present, show empty state")
+      self.project.assertValues([project], "Emits project")
     }
   }
 }

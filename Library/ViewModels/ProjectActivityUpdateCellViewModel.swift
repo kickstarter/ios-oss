@@ -5,25 +5,25 @@ import ReactiveExtensions
 import Result
 
 public protocol ProjectActivityUpdateCellViewModelInputs {
-  /// Call to set the activity.
-  func configureWith(activity activity: Activity)
+  /// Call to set the activity and project.
+  func configureWith(activity activity: Activity, project: Project)
 }
 
 public protocol ProjectActivityUpdateCellViewModelOutputs {
   /// Emits the update's author and sequence.
-  var activityTitle: Signal<String?, NoError> { get }
+  var activityTitle: Signal<String, NoError> { get }
 
-  /// Emits a boolean indicating whether the author label is hidden.
-  var authorIsHidden: Signal<Bool, NoError> { get }
+  /// Emits the update's body.
+  var body: Signal<String, NoError> { get }
 
-  /// Emits the author's image URL.
-  var authorImageURL: Signal<NSURL?, NoError> { get }
+  /// Emits the number of comments.
+  var commentsCount: Signal<String, NoError> { get }
 
-  /// Emits the author's name.
-  var authorName: Signal<String?, NoError> { get }
+  /// Emits the number of likes.
+  var likesCount: Signal<String, NoError> { get }
 
   /// Emits the title of the update.
-  var updateTitle: Signal<String?, NoError> { get }
+  var updateTitle: Signal<String, NoError> { get }
 }
 
 public protocol ProjectActivityUpdateCellViewModelType {
@@ -34,60 +34,53 @@ public protocol ProjectActivityUpdateCellViewModelType {
 public final class ProjectActivityUpdateCellViewModel: ProjectActivityUpdateCellViewModelType,
 ProjectActivityUpdateCellViewModelInputs, ProjectActivityUpdateCellViewModelOutputs {
   public init() {
-    let activity = self.activityProperty.signal.ignoreNil()
+    let activityAndProject = self.activityAndProjectProperty.signal.ignoreNil()
+    let activity = activityAndProject.map(first)
 
-    let authorAndTitle = activity
-      .map { activity in
-        (
-          author: activity.update.flatMap(authorFrom(update:)),
-          title: activity.update.map(titleFrom(update:))
-        )
+    self.activityTitle = activity.map { activity in
+      guard let update = activity.update else { return "" }
+      return titleFrom(update: update)
     }
 
-    self.authorIsHidden = activity
-      .map { activity in
-        if let update = activity.update {
-          return !currentUserIsAuthor(update: update)
-        }
-        return true
+    self.body = activity.map { activity in
+      guard let update = activity.update else { return "" }
+      return update.body?.htmlStripped()?.truncated(maxLength: 300) ?? ""
     }
 
-    self.authorName = authorAndTitle.map { $0.author }
-    self.activityTitle = authorAndTitle.map { $0.title }
+    self.commentsCount = activity.map { activity in
+      guard let update = activity.update else { return "" }
+      guard let commentsCount = update.commentsCount else { return "" }
+      return Format.wholeNumber(commentsCount)
+    }
 
-    self.authorImageURL = activity
-      .map { ($0.user?.avatar.medium).flatMap(NSURL.init) }
+    self.likesCount = activity.map { activity in
+      guard let update = activity.update else { return "" }
+      guard let likesCount = update.likesCount else { return "" }
+      return Format.wholeNumber(likesCount)
+    }
 
-    self.updateTitle = activity.map { $0.update?.title }
+    self.updateTitle = activity.map { $0.update?.title ?? "" }
   }
 
-  private let activityProperty = MutableProperty<Activity?>(nil)
-  public func configureWith(activity activity: Activity) {
-    self.activityProperty.value = activity
+  private let activityAndProjectProperty = MutableProperty<(Activity, Project)?>(nil)
+  public func configureWith(activity activity: Activity, project: Project) {
+    self.activityAndProjectProperty.value = (activity, project)
   }
 
-  public let activityTitle: Signal<String?, NoError>
-  public let authorImageURL: Signal<NSURL?, NoError>
-  public let authorIsHidden: Signal<Bool, NoError>
-  public let authorName: Signal<String?, NoError>
-  public let updateTitle: Signal<String?, NoError>
+  public let activityTitle: Signal<String, NoError>
+  public let body: Signal<String, NoError>
+  public let commentsCount: Signal<String, NoError>
+  public let likesCount: Signal<String, NoError>
+  public let updateTitle: Signal<String, NoError>
 
   public var inputs: ProjectActivityUpdateCellViewModelInputs { return self }
   public var outputs: ProjectActivityUpdateCellViewModelOutputs { return self }
 }
 
-private func authorFrom(update update: Update) -> String? {
-  return currentUserIsAuthor(update: update) ?
-    Strings.activity_creator_you() : update.user?.name
-}
-
-private func currentUserIsAuthor(update update: Update) -> Bool {
-  return AppEnvironment.current.currentUser == update.user
-}
-
 private func titleFrom(update update: Update) -> String {
-  return Strings.activity_creator_actions_user_name_posted_update_number(
-    user_name: authorFrom(update: update) ?? "",
-    update_number: Format.wholeNumber(update.sequence ?? 0)
+  return Strings.dashboard_activity_update_number_posted_time_count_days_ago(
+    space: "\u{00a0}",
+    update_number: Format.wholeNumber(update.sequence ?? 0),
+    time_count_days_ago: update.publishedAt.map { Format.relative(secondsInUTC: $0) } ?? ""
   )
 }

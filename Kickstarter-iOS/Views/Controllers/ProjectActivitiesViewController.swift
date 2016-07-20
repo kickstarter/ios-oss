@@ -1,5 +1,6 @@
 import KsApi
 import Library
+import Prelude
 import UIKit
 
 internal final class ProjectActivitiesViewController: UITableViewController {
@@ -15,18 +16,17 @@ internal final class ProjectActivitiesViewController: UITableViewController {
 
     self.viewModel.inputs.viewDidLoad()
 
-    self.tableView.estimatedRowHeight = 300.0
-    self.tableView.rowHeight = UITableViewAutomaticDimension
+    self |> baseTableControllerStyle(estimatedRowHeight: 300.0)
     self.tableView.dataSource = dataSource
   }
 
   internal override func bindViewModel() {
     super.bindViewModel()
 
-    self.viewModel.outputs.activities
+    self.viewModel.outputs.activitiesAndProject
       .observeForUI()
-      .observeNext { [weak self] activities in
-        self?.dataSource.load(activities: activities)
+      .observeNext { [weak self] activities, project in
+        self?.dataSource.load(activities: activities, project: project)
         self?.tableView.reloadData()
     }
 

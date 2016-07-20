@@ -11,8 +11,8 @@ public protocol ProjectActivityCommentCellViewModelInputs {
   /// Call when the comment button is pressed.
   func commentButtonPressed()
 
-  /// Call to set the activity.
-  func configureWith(activity activity: Activity)
+  /// Call to set the activity and project.
+  func configureWith(activity activity: Activity, project: Project)
 }
 
 public protocol ProjectActivityCommentCellViewModelOutputs {
@@ -44,25 +44,26 @@ public final class ProjectActivityCommentCellViewModel: ProjectActivityCommentCe
 ProjectActivityCommentCellViewModelInputs, ProjectActivityCommentCellViewModelOutputs {
 
   public init() {
-    let activity = self.activityProperty.signal.ignoreNil()
+    let activityAndProject = self.activityAndProjectProperty.signal.ignoreNil()
+    let activity = activityAndProject.map(first)
 
     self.authorImageURL = activity.map { ($0.user?.avatar.medium).flatMap(NSURL.init) }
 
     self.body = activity.map { $0.comment?.body ?? "" }
 
-    self.goToBackingInfo = activity
+    self.goToBackingInfo = activityAndProject
       .takeWhen(self.backingInfoButtonPressedProperty.signal)
-      .map { activity -> (Project, User)? in
-        guard let project = activity.project, user = activity.user else { return nil }
+      .map { activity, project -> (Project, User)? in
+        guard let user = activity.user else { return nil }
         return (project, user)
       }
       .ignoreNil()
 
-    self.goToProjectComment = activity
+    self.goToProjectComment = activityAndProject
       .takeWhen(self.commentButtonPressedProperty.signal)
-      .filter { $0.category == .commentProject }
-      .flatMap { activity -> SignalProducer<(Project, String), NoError> in
-        guard let project = activity.project, user = activity.user else { return .empty }
+      .filter { activity, project in activity.category == .commentProject }
+      .flatMap { activity, project -> SignalProducer<(Project, String), NoError> in
+        guard let user = activity.user else { return .empty }
         return .init(value: (project, user.name))
       }
 
@@ -76,11 +77,11 @@ ProjectActivityCommentCellViewModelInputs, ProjectActivityCommentCellViewModelOu
 
     let projectTitle = activity
       .filter { $0.category == .commentProject }
-      .map(commentOnProjectTitle(forActivity:))
+      .map(commentOnProjectTitle(activity:))
 
     let updateTitle = activity
       .filter { $0.category == .commentPost }
-      .map(commentOnUpdateTitle(forActivity:))
+      .map(commentOnUpdateTitle(activity:))
 
     self.title = Signal.merge(projectTitle, updateTitle)
   }
@@ -95,9 +96,9 @@ ProjectActivityCommentCellViewModelInputs, ProjectActivityCommentCellViewModelOu
     self.commentButtonPressedProperty.value = ()
   }
 
-  private let activityProperty = MutableProperty<Activity?>(nil)
-  public func configureWith(activity activity: Activity) {
-    self.activityProperty.value = activity
+  private let activityAndProjectProperty = MutableProperty<(Activity, Project)?>(nil)
+  public func configureWith(activity activity: Activity, project: Project) {
+    self.activityAndProjectProperty.value = (activity, project)
   }
 
   public let authorImageURL: Signal<NSURL?, NoError>
@@ -111,24 +112,26 @@ ProjectActivityCommentCellViewModelInputs, ProjectActivityCommentCellViewModelOu
   public var outputs: ProjectActivityCommentCellViewModelOutputs { return self }
 }
 
-private func commentOnProjectTitle(forActivity activity: Activity) -> String {
+private func commentOnProjectTitle(activity activity: Activity) -> String {
   guard let user = activity.user else { return "" }
 
   return AppEnvironment.current.currentUser == user ?
-    Strings.activity_creator_actions_you_commented_on_your_project() :
-    Strings.activity_creator_actions_user_name_commented_on_your_project(user_name: user.name)
+    Strings.dashboard_activity_you_commented_on_your_project() :
+    Strings.dashboard_activity_user_name_commented_on_your_project(user_name: user.name)
 }
 
-private func commentOnUpdateTitle(forActivity activity: Activity) -> String {
+private func commentOnUpdateTitle(activity activity: Activity) -> String {
   guard let update = activity.update, user = activity.user else { return "" }
 
   if AppEnvironment.current.currentUser == user {
-    return Strings.activity_creator_actions_you_commented_on_update_number(
+    return Strings.dashboard_activity_you_commented_on_update_number(
+      space: "\u{00a0}",
       update_number: String(update.sequence)
     )
   } else {
-    return Strings.activity_creator_actions_user_name_commented_on_update_number(
+    return Strings.dashboard_activity_user_name_commented_on_update_number(
       user_name: user.name,
+      space: "\u{00a0}",
       update_number: String(update.sequence)
     )
   }

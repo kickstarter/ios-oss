@@ -107,7 +107,7 @@ UpdateDraftViewModelOutputs {
     )
 
     self.title = draft.map { $0.update.title }
-    self.body = draft.map { $0.update.body }
+    self.body = draft.map { $0.update.body ?? "" }
 
     let wasBackersOnly = draft.map { $0.update.isPublic }.map(negate)
     self.isBackersOnly = Signal.merge(wasBackersOnly, self.isBackersOnlyOnProperty.signal)

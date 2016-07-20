@@ -24,8 +24,8 @@ public protocol ProjectActivitiesViewModelInputs {
 }
 
 public protocol ProjectActivitiesViewModelOutputs {
-  /// Emits an array of activities that should be displayed.
-  var activities: Signal<[Activity], NoError> { get }
+  /// Emits a an array of activities and project that should be displayed.
+  var activitiesAndProject: Signal<([Activity], Project), NoError> { get }
 
   /// Emits a boolean that indicates whether the view is refreshing.
   var isRefreshing: Signal<Bool, NoError> { get }
@@ -43,13 +43,15 @@ public final class ProjectActivitiesViewModel: ProjectActivitiesViewModelType,
   ProjectActivitiesViewModelInputs, ProjectActivitiesViewModelOutputs {
 
   public init() {
+    let project = self.projectProperty.signal.ignoreNil()
+
     let isCloseToBottom = self.willDisplayRowProperty.signal.ignoreNil()
       .map { row, total in row >= total - 3 }
       .skipRepeats()
       .filter(isTrue)
       .ignoreValues()
 
-    let requestFirstPage = self.projectProperty.signal.ignoreNil()
+    let requestFirstPage = project
       .takeWhen(
         .merge(
           self.viewDidLoadProperty.signal,
@@ -57,7 +59,8 @@ public final class ProjectActivitiesViewModel: ProjectActivitiesViewModelType,
         )
     )
 
-    (self.activities, self.isRefreshing, _) = paginate(
+    let activities: Signal<[Activity], NoError>
+    (activities, self.isRefreshing, _) = paginate(
       requestFirstPageWith: requestFirstPage,
       requestNextPageWhen: isCloseToBottom,
       clearOnNewRequest: false,
@@ -67,7 +70,9 @@ public final class ProjectActivitiesViewModel: ProjectActivitiesViewModelType,
       requestFromCursor: { AppEnvironment.current.apiService.fetchProjectActivities(paginationUrl: $0) }
     )
 
-    self.showEmptyState = self.activities
+    self.activitiesAndProject = combineLatest(activities, project)
+
+    self.showEmptyState = activities
       .map { $0.isEmpty }
       .skipRepeats()
   }
@@ -86,7 +91,7 @@ public final class ProjectActivitiesViewModel: ProjectActivitiesViewModelType,
     self.willDisplayRowProperty.value = (row, totalRows)
   }
 
-  public let activities: Signal<[Activity], NoError>
+  public let activitiesAndProject: Signal<([Activity], Project), NoError>
   public let isRefreshing: Signal<Bool, NoError>
   public let showEmptyState: Signal<Bool, NoError>
 

@@ -10,72 +10,73 @@ internal final class ProjectActivityNegativeStateChangeCellViewModelTests: TestC
   private let vm: ProjectActivityNegativeStateChangeCellViewModel =
     ProjectActivityNegativeStateChangeCellViewModel()
 
-  private let backgroundImage = TestObserver<String?, NoError>()
   private let title = TestObserver<String, NoError>()
 
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.backgroundImageURL.map { $0?.absoluteString }.observe(self.backgroundImage.observer)
     self.vm.outputs.title.observe(self.title.observer)
   }
 
-  func testBackgroundImage() {
-    let project = .template
-      |> Project.lens.photo.med .~ "http://coolpic.com/cool.jpg"
-      |> Project.lens.state .~ .failed
-    let activity = .template
-      |> Activity.lens.project .~ project
-      |> Activity.lens.category .~ .failure
-
-    self.vm.inputs.configureWith(activity: activity)
-    self.backgroundImage.assertValues(["http://coolpic.com/cool.jpg"], "Emits project's image URL")
-  }
-
   func testTitleForCancelledProject() {
+    let canceledAt = NSDate().timeIntervalSince1970
     let projectName = "Sick Skull Graphic Lunchbox"
+
     let project = .template
       |> Project.lens.name .~ projectName
       |> Project.lens.state .~ .canceled
     let activity = .template
       |> Activity.lens.category .~ .cancellation
+      |> Activity.lens.createdAt .~ canceledAt
       |> Activity.lens.project .~ project
 
-    self.vm.inputs.configureWith(activity: activity)
-    let expected = Strings.activity_project_state_change_project_was_cancelled_by_creator(
-      project_name: projectName
+    self.vm.inputs.configureWith(activity: activity, project: project)
+    let expected = Strings.dashboard_activity_project_name_was_canceled(
+      project_name: projectName,
+      cancellation_date: Format.date(secondsInUTC: canceledAt, dateStyle: .LongStyle, timeStyle: .NoStyle)
+        .nonBreakingSpaced()
     )
     self.title.assertValues([expected], "Emits title indicating the project was cancelled")
   }
 
   func testTitleForFailedProject() {
+    let failedAt = NSDate().timeIntervalSince1970
     let projectName = "Sick Skull Graphic Lunchbox"
+
     let project = .template
       |> Project.lens.name .~ projectName
       |> Project.lens.state .~ .failed
     let activity = .template
       |> Activity.lens.category .~ .failure
+      |> Activity.lens.createdAt .~ failedAt
       |> Activity.lens.project .~ project
 
-    self.vm.inputs.configureWith(activity: activity)
-    let expected = Strings.activity_project_state_change_project_was_not_successfully_funded(
-      project_name: projectName
+    self.vm.inputs.configureWith(activity: activity, project: project)
+    let expected = Strings.dashboard_activity_project_name_was_unsuccessful(
+      project_name: projectName,
+      unsuccessful_date: Format.date(secondsInUTC: failedAt, dateStyle: .LongStyle, timeStyle: .NoStyle)
+        .nonBreakingSpaced()
     )
-    self.title.assertValues([expected], "Emits title indicating the project was not successfully funded")
+    self.title.assertValues([expected], "Emits title indicating the project was unsuccessful")
   }
 
   func testTitleForSuspendedProject() {
+    let suspendedAt = NSDate().timeIntervalSince1970
     let projectName = "Sick Skull Graphic Lunchbox"
+
     let project = .template
       |> Project.lens.name .~ projectName
       |> Project.lens.state .~ .suspended
     let activity = .template
       |> Activity.lens.category .~ .suspension
+      |> Activity.lens.createdAt .~ suspendedAt
       |> Activity.lens.project .~ project
 
-    self.vm.inputs.configureWith(activity: activity)
-    let expected = Strings.activity_project_state_change_project_was_suspended(
-      project_name: projectName
+    self.vm.inputs.configureWith(activity: activity, project: project)
+    let expected = Strings.dashboard_activity_project_name_was_suspended(
+      project_name: projectName,
+      suspension_date: Format.date(secondsInUTC: suspendedAt, dateStyle: .LongStyle, timeStyle: .NoStyle)
+        .nonBreakingSpaced()
     )
     self.title.assertValues([expected], "Emits title indicating the project was suspended")
   }

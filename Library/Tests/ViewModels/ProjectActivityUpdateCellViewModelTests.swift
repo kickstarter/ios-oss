@@ -8,126 +8,101 @@ import Result
 internal final class ProjectActivityUpdateCellViewModelTests: TestCase {
   private let vm: ProjectActivityUpdateCellViewModelType = ProjectActivityUpdateCellViewModel()
 
-  private let activityTitle = TestObserver<String?, NoError>()
-  private let authorImage = TestObserver<String?, NoError>()
-  private let authorIsHidden = TestObserver<Bool, NoError>()
-  private let authorName = TestObserver<String?, NoError>()
+  private let activityTitle = TestObserver<String, NoError>()
+  private let body = TestObserver<String, NoError>()
+  private let commentsCount = TestObserver<String, NoError>()
   private let defaultUser = .template |> User.lens.name .~ "Christopher"
-  private let updateTitle = TestObserver<String?, NoError>()
+  private let likesCount = TestObserver<String, NoError>()
+  private let updateTitle = TestObserver<String, NoError>()
 
   override func setUp() {
     super.setUp()
 
     self.vm.outputs.activityTitle.observe(self.activityTitle.observer)
-    self.vm.outputs.authorImageURL.map { $0?.absoluteString }.observe(self.authorImage.observer)
-    self.vm.outputs.authorIsHidden.observe(self.authorIsHidden.observer)
-    self.vm.outputs.authorName.observe(self.authorName.observer)
+    self.vm.outputs.body.observe(self.body.observer)
+    self.vm.outputs.commentsCount.observe(self.commentsCount.observer)
+    self.vm.outputs.likesCount.observe(self.likesCount.observer)
     self.vm.outputs.updateTitle.observe(self.updateTitle.observer)
 
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: self.defaultUser))
   }
 
   func testActivityTitle() {
+    let project = Project.template
+    let publishedAt = NSDate().timeIntervalSince1970
     let update = .template
+      |> Update.lens.publishedAt .~ publishedAt
       |> Update.lens.sequence .~ 9
       |> Update.lens.user .~ self.defaultUser
     let activity = .template
+      |> Activity.lens.project .~ project
       |> Activity.lens.update .~ update
 
-    self.vm.inputs.configureWith(activity: activity)
-    self.activityTitle.assertValues(
-      [
-        Strings.activity_creator_actions_user_name_posted_update_number(
-          user_name: Strings.activity_creator_you(),
-          update_number: "9"
-        )
-      ], "Emits activity's title")
+    self.vm.inputs.configureWith(activity: activity, project: project)
+    let expected = Strings.dashboard_activity_update_number_posted_time_count_days_ago(
+      space: "\u{00a0}",
+      update_number: "9",
+      time_count_days_ago: Format.relative(secondsInUTC: publishedAt)
+    )
+    self.activityTitle.assertValues([expected], "Emits activity's title")
   }
 
-  func testAuthorImage() {
-    let user = .template
-      |> User.lens.avatar.medium .~ "http://coolpic.com/cool.jpg"
-
-    let activity = .template
-      |> Activity.lens.user .~ user
-
-    self.vm.inputs.configureWith(activity: activity)
-    self.authorImage.assertValues(["http://coolpic.com/cool.jpg"], "Emits author's image URL")
-  }
-
-  func testAuthorWhenAuthorIsCurrentUser() {
-
+  func testBody() {
+    let body = "We've reached our funding goal, thanks y'all!"
+    let project = Project.template
     let update = .template
-      |> Update.lens.user .~ self.defaultUser
+      |> Update.lens.body .~ body
     let activity = .template
       |> Activity.lens.update .~ update
 
-    self.vm.inputs.configureWith(activity: activity)
-    self.authorName.assertValues([Strings.activity_creator_you()], "Emits 'You' if current user is author.")
-    self.authorIsHidden.assertValues([false], "Show author if same as current user")
+    self.vm.inputs.configureWith(activity: activity, project: project)
+    self.body.assertValues([body], "Emits update's body")
   }
 
-  func testAuthorWhenAuthorIsNotCurrentUser() {
-    let user = .template
-      |> User.lens.id .~ 9
-      |> User.lens.name .~ "Tiegz"
-
+  func testBodyIsStrippedOfHtml() {
+    let project = Project.template
     let update = .template
-      |> Update.lens.user .~ user
+      |> Update.lens.body .~ "<b>Oh yeah!</b>"
     let activity = .template
+      |> Activity.lens.project .~ project
       |> Activity.lens.update .~ update
 
-    self.vm.inputs.configureWith(activity: activity)
-    self.authorName.assertValues(["Tiegz"], "Emits author's name if not current user")
-    self.authorIsHidden.assertValues([true], "Hide author if not current user")
+    self.vm.inputs.configureWith(activity: activity, project: project)
+    self.body.assertValues(["Oh yeah!"], "Emits update's body, with HTML stripped")
   }
 
-  func testAuthorWhenCellIsReused() {
+  func testCommentsCount() {
+    let project = Project.template
+    let update = .template
+      |> Update.lens.commentsCount .~ 50
+    let activity = .template
+      |> Activity.lens.project .~ project
+      |> Activity.lens.update .~ update
 
-    let user = User.template
-    withEnvironment(currentUser: user) {
-      let tiegz = .template
-        |> User.lens.id .~ 9
-        |> User.lens.name .~ "Tiegz"
+    self.vm.inputs.configureWith(activity: activity, project: project)
+    self.commentsCount.assertValues([Format.wholeNumber(50)], "Emits number of comments")
+  }
 
-      let update = .template
-        |> Update.lens.user .~ user
-      let activity = .template
-        |> Activity.lens.update .~ update
+  func testLikesCount() {
+    let project = Project.template
+    let update = .template
+      |> Update.lens.likesCount .~ 25
+    let activity = .template
+      |> Activity.lens.project .~ project
+      |> Activity.lens.update .~ update
 
-      self.vm.inputs.configureWith(activity: activity)
-      self.authorName.assertValues([Strings.activity_creator_you()], "Emits 'You' if current user is author.")
-      self.authorIsHidden.assertValues([false], "Show author if same as current user")
-
-      let otherUpdate = .template
-        |> Update.lens.user .~ (tiegz)
-      let otherActivity = .template
-        |> Activity.lens.update .~ otherUpdate
-
-      self.vm.inputs.configureWith(activity: otherActivity)
-
-      self.authorName.assertValues(
-        [Strings.activity_creator_you(), "Tiegz"],
-        "Emits author's name if not current user.")
-      self.authorIsHidden.assertValues([false, true], "Hide author if not current user")
-
-      self.vm.inputs.configureWith(activity: activity)
-
-      self.authorName.assertValues([
-        Strings.activity_creator_you(), "Tiegz", Strings.activity_creator_you()],
-        "Emits 'You' if current user is author")
-      self.authorIsHidden.assertValues([false, true, false], "Show author if same as current user")
-    }
+    self.vm.inputs.configureWith(activity: activity, project: project)
+    self.likesCount.assertValues([Format.wholeNumber(25)], "Emits number of likes")
   }
 
   func testUpdateTitle() {
+    let project = Project.template
     let update = .template
       |> Update.lens.title .~ "Great news!"
-
     let activity = .template
       |> Activity.lens.update .~ update
 
-    self.vm.inputs.configureWith(activity: activity)
+    self.vm.inputs.configureWith(activity: activity, project: project)
     self.updateTitle.assertValues(["Great news!"], "Emits update's title")
   }
 }

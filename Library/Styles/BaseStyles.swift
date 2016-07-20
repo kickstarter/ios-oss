@@ -24,7 +24,7 @@ public func baseTableControllerStyle <TVC: UITableViewControllerProtocol>
 public func baseTableViewCellStyle <TVC: UITableViewCellProtocol> () -> (TVC -> TVC) {
 
   return
-    (TVC.lens.contentView • UIView.lens.layoutMargins) .~ .init(all: 16.0)
+    (TVC.lens.contentView • UIView.lens.layoutMargins) .~ .init(topBottom: 8, leftRight: 16.0)
       <> (TVC.lens.contentView • UIView.lens.preservesSuperviewLayoutMargins) .~ false
       <> TVC.lens.layoutMargins .~ .init(all: 0.0)
       <> TVC.lens.preservesSuperviewLayoutMargins .~ false

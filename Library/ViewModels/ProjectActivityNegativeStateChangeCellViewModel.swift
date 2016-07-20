@@ -5,14 +5,11 @@ import ReactiveExtensions
 import Result
 
 public protocol ProjectActivityNegativeStateChangeCellViewModelInputs {
-  /// Call to set the activity.
-  func configureWith(activity activity: Activity)
+  /// Call to set the activity and project.
+  func configureWith(activity activity: Activity, project: Project)
 }
 
 public protocol ProjectActivityNegativeStateChangeCellViewModelOutputs {
-  /// Emits the background image URL.
-  var backgroundImageURL: Signal<NSURL?, NoError> { get }
-
   /// Emits the title of the activity.
   var title: Signal<String, NoError> { get }
 }
@@ -28,24 +25,27 @@ ProjectActivityNegativeStateChangeCellViewModelType, ProjectActivityNegativeStat
 ProjectActivityNegativeStateChangeCellViewModelOutputs {
 
   public init() {
-    let activity = self.activityProperty.signal.ignoreNil()
-    let project = activity.map { $0.project }.ignoreNil()
+    let activityAndProject = self.activityAndProjectProperty.signal.ignoreNil()
 
-    self.backgroundImageURL = project.map { $0.photo.med }.map(NSURL.init(string:))
-
-    self.title = activity.map { activity in
+    self.title = activityAndProject.map { activity, project in
         switch activity.category {
         case .cancellation:
-          return Strings.activity_project_state_change_project_was_cancelled_by_creator(
-            project_name: activity.project?.name ?? ""
+          return Strings.dashboard_activity_project_name_was_canceled(
+            project_name: project.name ?? "",
+            cancellation_date: Format.date(secondsInUTC: activity.createdAt, dateStyle: .LongStyle,
+              timeStyle: .NoStyle).nonBreakingSpaced()
           )
         case .failure:
-          return Strings.activity_project_state_change_project_was_not_successfully_funded(
-            project_name: activity.project?.name ?? ""
+          return Strings.dashboard_activity_project_name_was_unsuccessful(
+            project_name: project.name ?? "",
+            unsuccessful_date: Format.date(secondsInUTC: activity.createdAt, dateStyle: .LongStyle,
+              timeStyle: .NoStyle).nonBreakingSpaced()
           )
         case .suspension:
-          return Strings.activity_project_state_change_project_was_suspended(
-            project_name: activity.project?.name ?? ""
+          return Strings.dashboard_activity_project_name_was_suspended(
+            project_name: project.name ?? "",
+            suspension_date: Format.date(secondsInUTC: activity.createdAt, dateStyle: .LongStyle,
+              timeStyle: .NoStyle).nonBreakingSpaced()
           )
         default:
           assertionFailure("Unrecognized activity: \(activity).")
@@ -54,12 +54,11 @@ ProjectActivityNegativeStateChangeCellViewModelOutputs {
     }
   }
 
-  private let activityProperty = MutableProperty<Activity?>(nil)
-  public func configureWith(activity activity: Activity) {
-    self.activityProperty.value = activity
+  private let activityAndProjectProperty = MutableProperty<(Activity, Project)?>(nil)
+  public func configureWith(activity activity: Activity, project: Project) {
+    self.activityAndProjectProperty.value = (activity, project)
   }
 
-  public let backgroundImageURL: Signal<NSURL?, NoError>
   public let title: Signal<String, NoError>
 
   public var inputs: ProjectActivityNegativeStateChangeCellViewModelInputs { return self }

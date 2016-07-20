@@ -34,39 +34,45 @@ internal final class ProjectActivityCommentCellViewModelTests: TestCase {
   }
 
   func testAuthorImage() {
+    let project = Project.template
     let user = .template
       |> User.lens.avatar.medium .~ "http://coolpic.com/cool.jpg"
-
     let activity = .template
+      |> Activity.lens.project .~ project
       |> Activity.lens.user .~ user
 
-    self.vm.inputs.configureWith(activity: activity)
+    self.vm.inputs.configureWith(activity: activity, project: project)
     self.authorImage.assertValues(["http://coolpic.com/cool.jpg"], "Emits author's image URL")
   }
 
   func testBody() {
+    let project = Project.template
     let body1 = "Thanks for the update!"
     let commentPostActivity = .template
       |> Activity.lens.category .~ .commentPost
       |> Activity.lens.comment .~ (.template |> Comment.lens.body .~ body1)
+      |> Activity.lens.project .~ project
 
-    self.vm.inputs.configureWith(activity: commentPostActivity)
+    self.vm.inputs.configureWith(activity: commentPostActivity, project: project)
     self.body.assertValues([body1], "Emits post comment's body")
 
     let body2 = "Aw, the limited bundle is all gone!"
     let commentProjectActivity = .template
       |> Activity.lens.category .~ .commentProject
       |> Activity.lens.comment .~ (.template |> Comment.lens.body .~ body2)
+      |> Activity.lens.project .~ project
 
-    self.vm.inputs.configureWith(activity: commentProjectActivity)
+    self.vm.inputs.configureWith(activity: commentProjectActivity, project: project)
     self.body.assertValues([body1, body2], "Emits project comment's body")
   }
 
   func testGoToBackingInfo() {
+    let project = Project.template
     let activity = .template
-        |> Activity.lens.category .~ .commentProject
+      |> Activity.lens.category .~ .commentProject
+      |> Activity.lens.project .~ project
 
-      self.vm.inputs.configureWith(activity: activity)
+      self.vm.inputs.configureWith(activity: activity, project: project)
       self.vm.inputs.backingInfoButtonPressed()
       self.goToBackingInfo.assertValueCount(1, "Should go to backing")
   }
@@ -80,7 +86,7 @@ internal final class ProjectActivityCommentCellViewModelTests: TestCase {
       |> Activity.lens.project .~ project
       |> Activity.lens.user .~ user
 
-    self.vm.inputs.configureWith(activity: activity)
+    self.vm.inputs.configureWith(activity: activity, project: project)
     self.vm.inputs.commentButtonPressed()
     self.goToProjectCommentProject.assertValues([project], "Should emit project")
     self.goToProjectCommentName.assertValues(["Christopher"], "Should emit author name")
@@ -89,15 +95,17 @@ internal final class ProjectActivityCommentCellViewModelTests: TestCase {
   }
 
   func testGoToUpdateComment() {
+    let project = Project.template
     let update = Update.template
     let user = User.template |> User.lens.name .~ "Christopher"
     let activity = .template
       |> Activity.lens.category .~ .commentPost
       |> Activity.lens.comment .~ .template
+      |> Activity.lens.project .~ project
       |> Activity.lens.update .~ update
       |> Activity.lens.user .~ user
 
-    self.vm.inputs.configureWith(activity: activity)
+    self.vm.inputs.configureWith(activity: activity, project: project)
     self.vm.inputs.commentButtonPressed()
     self.goToUpdateCommentName.assertValues(["Christopher"], "Should emit author name")
     self.goToUpdateCommentUpdate.assertValues([update], "Should emit update")
@@ -106,53 +114,63 @@ internal final class ProjectActivityCommentCellViewModelTests: TestCase {
   }
 
   func testTitleProject() {
+    let project = Project.template
     let activity = .template
       |> Activity.lens.category .~ .commentProject
       |> Activity.lens.comment .~ (.template |> Comment.lens.body .~ "Love this project!")
+      |> Activity.lens.project .~ project
       |> Activity.lens.user .~ (.template |> User.lens.name .~ "Christopher")
 
-    self.vm.inputs.configureWith(activity: activity)
-    let expected = Strings.activity_creator_actions_user_name_commented_on_your_project(
-      user_name: "Christopher"
-    )
+    self.vm.inputs.configureWith(activity: activity, project: project)
+    let expected = Strings.dashboard_activity_user_name_commented_on_your_project(user_name: "Christopher")
     self.title.assertValues([expected], "Should emit that author commented on project")
   }
 
   func testTitleProjectAsCurrentUser() {
+    let project = Project.template
     let activity = .template
       |> Activity.lens.category .~ .commentProject
       |> Activity.lens.comment .~ (.template |> Comment.lens.body .~ "Love this project!")
+      |> Activity.lens.project .~ project
       |> Activity.lens.user .~ self.defaultUser
 
-    self.vm.inputs.configureWith(activity: activity)
-    let expected = Strings.activity_creator_actions_you_commented_on_your_project()
+    self.vm.inputs.configureWith(activity: activity, project: project)
+    let expected = Strings.dashboard_activity_you_commented_on_your_project()
     self.title.assertValues([expected], "Should emit 'you' commented on project")
   }
 
   func testTitleUpdate() {
+    let project = Project.template
     let activity = .template
       |> Activity.lens.category .~ .commentPost
       |> Activity.lens.comment .~ (.template |> Comment.lens.body .~ "Good update!")
+      |> Activity.lens.project .~ project
       |> Activity.lens.update .~ (.template |> Update.lens.sequence .~ 5)
       |> Activity.lens.user .~ (.template |> User.lens.name .~ "Christopher")
 
-    self.vm.inputs.configureWith(activity: activity)
-    let expected = Strings.activity_creator_actions_user_name_commented_on_update_number(
+    self.vm.inputs.configureWith(activity: activity, project: project)
+    let expected = Strings.dashboard_activity_user_name_commented_on_update_number(
       user_name: "Christopher",
+      space: "\u{00a0}",
       update_number: "5"
     )
     self.title.assertValues([expected], "Should emit that author commented on update")
   }
 
   func testTitleUpdateAsCurrentUser() {
+    let project = Project.template
     let activity = .template
       |> Activity.lens.category .~ .commentPost
       |> Activity.lens.comment .~ (.template |> Comment.lens.body .~ "Good update!")
+      |> Activity.lens.project .~ project
       |> Activity.lens.update .~ (.template |> Update.lens.sequence .~ 5)
       |> Activity.lens.user .~ self.defaultUser
 
-    self.vm.inputs.configureWith(activity: activity)
-    let expected = Strings.activity_creator_actions_you_commented_on_update_number(update_number: "5")
+    self.vm.inputs.configureWith(activity: activity, project: project)
+    let expected = Strings.dashboard_activity_you_commented_on_update_number(
+      space: "\u{00a0}",
+      update_number: "5"
+    )
     self.title.assertValues([expected], "Should emit 'you' commented on update")
   }
 }

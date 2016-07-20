@@ -112,6 +112,7 @@
 "creator_project_preview.subtitle.project_suspended" = "Projet suspendu";
 "dashboard.activity.backing_info" = "Infos sur la contribution";
 "dashboard.activity.no_reward_selected" = "Pas de récompense sélectionnée";
+"dashboard.activity.pledge_info" = "Infos sur mon engagement";
 "dashboard.activity.project_name_launched" = "<b>%{project_name}</b> lancé le %{launch_date} avec un objectif de <b>%{goal}</b>";
 "dashboard.activity.project_name_was_canceled" = "<b>%{project_name}</b> a été annulé le %{cancellation_date}";
 "dashboard.activity.project_name_was_suspended" = "<b>%{project_name}</b> a été suspendu le %{suspension_date}";
