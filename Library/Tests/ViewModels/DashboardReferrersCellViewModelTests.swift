@@ -34,7 +34,7 @@ internal final class DashboardReferrersCellViewModelTests: TestCase {
 
   func testAccumulatedReferrerDataEmits() {
     let country = Project.Country.US
-    let cumulative = ProjectStatsEnvelope.Cumulative.template
+    let cumulative = ProjectStatsEnvelope.CumulativeStats.template
     let project = .template |> Project.lens.country .~ country
     let referrers = [
       .template
@@ -62,7 +62,7 @@ internal final class DashboardReferrersCellViewModelTests: TestCase {
   func testCumulativeDataEmits() {
     let country = Project.Country.US
     let cumulative = .template
-      |> ProjectStatsEnvelope.Cumulative.lens.averagePledge .~ 50
+      |> ProjectStatsEnvelope.CumulativeStats.lens.averagePledge .~ 50
     let project = .template |> Project.lens.country .~ country
     let referrers = [ProjectStatsEnvelope.ReferrerStats.template]
 
@@ -83,7 +83,7 @@ internal final class DashboardReferrersCellViewModelTests: TestCase {
     let stats10 = .template |> ProjectStatsEnvelope.ReferrerStats.lens.backersCount .~ 10
 
     let country = Project.Country.US
-    let cumulative = ProjectStatsEnvelope.Cumulative.template
+    let cumulative = ProjectStatsEnvelope.CumulativeStats.template
     let project = .template |> Project.lens.country .~ country
     let referrers = [stats1, stats2, stats3, stats4, stats5, stats6, stats7, stats8, stats9, stats10]
 
@@ -109,7 +109,7 @@ internal final class DashboardReferrersCellViewModelTests: TestCase {
 
   func testSortByColumn() {
     let country = Project.Country.US
-    let cumulative = ProjectStatsEnvelope.Cumulative.template
+    let cumulative = ProjectStatsEnvelope.CumulativeStats.template
     let project = .template |> Project.lens.country .~ country
 
     let stats1 = .template

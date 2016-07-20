@@ -305,7 +305,6 @@ final class FormatTests: XCTestCase {
 
     withEnvironment(locale: NSLocale(localeIdentifier: "de"), language: .de) {
       XCTAssertEqual("vor 1 Stunde", Format.relative(secondsInUTC: hoursAgo))
-
       XCTAssertEqual("vor 1 Std", Format.relative(secondsInUTC: hoursAgo, abbreviate: true))
     }
   }

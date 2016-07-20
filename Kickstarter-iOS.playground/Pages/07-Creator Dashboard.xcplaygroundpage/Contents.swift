@@ -60,17 +60,35 @@ let videoStats = .template
   |> ProjectStatsEnvelope.VideoStats.lens.internalStarts .~ 1000
 
 let cumulativeStats = .template
-  |> ProjectStatsEnvelope.Cumulative.lens.pledged .~ rewardStats.reduce(0) { $0 + $1.pledged }
+  |> ProjectStatsEnvelope.CumulativeStats.lens.pledged .~ rewardStats.reduce(0) { $0 + $1.pledged }
 
-let cosmicSurgery = .cosmicSurgery |> Project.lens.stats.pledged .~ cumulativeStats.pledged
+let cosmicSurgery = .cosmicSurgery
+  |> Project.lens.stats.pledged .~ cumulativeStats.pledged
+
+let stats = [
+  3_000, 4_000, 5_000, 7_000, 8_000,
+  13_000, 14_000, 15_000, 17_000, 18_000
+//  37_000, 37_600, 38_500, 29_009, 30_000,
+//  25_000, 30_000, 50_000, 50_000, 40_000,
+//  40_000, 40_000, 140_000, 40_000, 40_000,
+//  35_000, 30_000, 30_000, 35_000, 40_000,
+//  40_000, 40_000, 40_000, 40_000, 40_000, 40_000
+]
+
+let fundingStats = stats.enumerate().map { idx, pledged in
+  .template
+    |> ProjectStatsEnvelope.FundingDateStats.lens.cumulativePledged .~ pledged
+    |> ProjectStatsEnvelope.FundingDateStats.lens.date .~ (cosmicSurgery.dates.launchedAt + NSTimeInterval(idx * 86_400))
+}
 
 AppEnvironment.replaceCurrentEnvironment(
   apiService: MockService(
     fetchProjectStatsResponse: .template
-      |> ProjectStatsEnvelope.lens.cumulative .~ cumulativeStats
-      |> ProjectStatsEnvelope.lens.rewardStats .~ rewardStats
-      |> ProjectStatsEnvelope.lens.referrerStats .~ referrerStats
-      |> ProjectStatsEnvelope.lens.videoStats .~ videoStats,
+      |> ProjectStatsEnvelope.lens.cumulativeStats .~ cumulativeStats
+      |> ProjectStatsEnvelope.lens.referralDistribution .~ referrerStats
+      |> ProjectStatsEnvelope.lens.rewardDistribution .~ rewardStats
+      |> ProjectStatsEnvelope.lens.videoStats .~ videoStats
+      |> ProjectStatsEnvelope.lens.fundingDistribution .~ fundingStats,
 
     fetchProjectsResponse: [
       cosmicSurgery

@@ -9,22 +9,24 @@ import XCTest
 
 internal final class DashboardViewModelTests: TestCase {
   internal let vm: DashboardViewModelType = DashboardViewModel()
+  internal let fundingStats = TestObserver<[ProjectStatsEnvelope.FundingDateStats], NoError>()
   internal let project = TestObserver<Project, NoError>()
   internal let projects = TestObserver<[Project], NoError>()
-  internal let referrerCumulativeStats = TestObserver<ProjectStatsEnvelope.Cumulative, NoError>()
+  internal let referrerCumulativeStats = TestObserver<ProjectStatsEnvelope.CumulativeStats, NoError>()
   internal let referrerStats = TestObserver<[ProjectStatsEnvelope.ReferrerStats], NoError>()
   internal let rewardStats = TestObserver<[ProjectStatsEnvelope.RewardStats], NoError>()
   internal let videoStats = TestObserver<ProjectStatsEnvelope.VideoStats, NoError>()
 
   internal override func setUp() {
     super.setUp()
+    self.vm.outputs.fundingData.map { stats, _ in stats }.observe(self.fundingStats.observer)
     self.vm.outputs.project.observe(self.project.observer)
     self.vm.outputs.projects.observe(self.projects.observer)
     self.vm.outputs.referrerData
       .map { cumulative, _, _ in cumulative }
       .observe(self.referrerCumulativeStats.observer)
     self.vm.outputs.referrerData.map { _, _, stats in stats }.observe(self.referrerStats.observer)
-    self.vm.outputs.rewardStats.map { stats, _ in stats }.observe(self.rewardStats.observer)
+    self.vm.outputs.rewardData.map { stats, _ in stats }.observe(self.rewardStats.observer)
     self.vm.outputs.videoStats.observe(self.videoStats.observer)
   }
 
@@ -56,9 +58,10 @@ internal final class DashboardViewModelTests: TestCase {
     let projects = [Project.template]
 
     let statsEnvelope = .template
-      |> ProjectStatsEnvelope.lens.cumulative .~ .template
-      |> ProjectStatsEnvelope.lens.referrerStats .~ [.template]
-      |> ProjectStatsEnvelope.lens.rewardStats .~ [.template]
+      |> ProjectStatsEnvelope.lens.cumulativeStats .~ .template
+      |> ProjectStatsEnvelope.lens.fundingDistribution .~ [.template]
+      |> ProjectStatsEnvelope.lens.referralDistribution .~ [.template]
+      |> ProjectStatsEnvelope.lens.rewardDistribution .~ [.template]
       |> ProjectStatsEnvelope.lens.videoStats .~ .template
 
     withEnvironment(apiService: MockService(fetchProjectsResponse: projects,
@@ -66,10 +69,11 @@ internal final class DashboardViewModelTests: TestCase {
         self.vm.inputs.viewDidLoad()
         self.scheduler.advance()
 
-        self.videoStats.assertValues([.template], "Video stats emitted.")
+        self.fundingStats.assertValues([[.template]], "Funding stats emitted.")
         self.referrerCumulativeStats.assertValues([.template], "Cumulative stats emitted.")
         self.referrerStats.assertValues([[.template]], "Referrer stats emitted.")
         self.rewardStats.assertValues([[.template]], "Reward stats emitted.")
+        self.videoStats.assertValues([.template], "Video stats emitted.")
     }
   }
 }

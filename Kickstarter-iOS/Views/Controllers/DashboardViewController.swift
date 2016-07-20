@@ -24,6 +24,13 @@ internal final class DashboardViewController: UITableViewController {
   internal override func bindViewModel() {
     super.bindViewModel()
 
+    self.viewModel.outputs.fundingData
+      .observeForUI()
+      .observeNext { [weak self] stats, project in
+        self?.dataSource.load(fundingDateStats: stats, project: project)
+        self?.tableView.reloadData()
+    }
+
     self.viewModel.outputs.project
       .observeForUI()
       .observeNext { [weak self] project in
@@ -47,7 +54,7 @@ internal final class DashboardViewController: UITableViewController {
         self?.tableView.reloadData()
     }
 
-    self.viewModel.outputs.rewardStats
+    self.viewModel.outputs.rewardData
       .observeForUI()
       .observeNext { [weak self] (stats, project) in
         self?.dataSource.load(rewardStats: stats, project: project)

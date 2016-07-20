@@ -13,20 +13,24 @@ public protocol DashboardViewModelInputs {
 }
 
 public protocol DashboardViewModelOutputs {
-  /// Emits the currently selected project to display in the context and action cells.
+  /// Emits the funding stats and project to be displayed in the funding cell.
+  var fundingData: Signal<(funding: [ProjectStatsEnvelope.FundingDateStats],
+                           project: Project), NoError> { get }
+
+  /// Emits the currently selected project to be displayed in the context and action cells.
   var project: Signal<Project, NoError> { get }
 
-  /// Emits the list of created projects to display in the project switcher.
+  /// Emits the list of created projects to be displayed in the project switcher.
   var projects: Signal<[Project], NoError> { get }
 
-  /// Emits the cumulative, project, and referreral distribution data to display in the referrers cell.
-  var referrerData: Signal<(cumulative: ProjectStatsEnvelope.Cumulative, project: Project,
+  /// Emits the cumulative, project, and referreral distribution data to be displayed in the referrers cell.
+  var referrerData: Signal<(cumulative: ProjectStatsEnvelope.CumulativeStats, project: Project,
     stats: [ProjectStatsEnvelope.ReferrerStats]), NoError> { get }
 
-  /// Emits the project, reward stats, and cumulative pledges to display in the rewards cell.
-  var rewardStats: Signal<(stats: [ProjectStatsEnvelope.RewardStats], project: Project), NoError> { get }
+  /// Emits the reward stats and project to be displayed in the rewards cell.
+  var rewardData: Signal<(stats: [ProjectStatsEnvelope.RewardStats], project: Project), NoError> { get }
 
-  /// Emits the video stats to display in the video cell.
+  /// Emits the video stats to be displayed in the video cell.
   var videoStats: Signal<ProjectStatsEnvelope.VideoStats, NoError> { get }
 }
 
@@ -57,18 +61,26 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
 
     let stats = fetchStatsEvent.values()
 
+    self.fundingData = project
+      .takePairWhen(stats)
+      .map { project, stats in
+        (funding: stats.fundingDistribution, project: project)
+    }
+
     self.project = project
 
     self.referrerData = project
       .takePairWhen(stats)
-      .map { project, stats in (cumulative: stats.cumulative, project: project, stats: stats.referrerStats) }
+      .map { project, stats in
+        (cumulative: stats.cumulativeStats, project: project, stats: stats.referralDistribution)
+    }
 
     self.videoStats = stats.map { $0.videoStats }.ignoreNil()
 
-    self.rewardStats = project
+    self.rewardData = project
       .takePairWhen(stats)
       .map { project, stats in
-        (stats: stats.rewardStats, project: project)
+        (stats: stats.rewardDistribution, project: project)
     }
 
     let projectFromTap = self.projectContextTappedProperty.signal.ignoreNil()
@@ -87,11 +99,13 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
     self.viewDidLoadProperty.value = ()
   }
 
+  public let fundingData: Signal<(funding: [ProjectStatsEnvelope.FundingDateStats],
+                                  project: Project), NoError>
   public let project: Signal<Project, NoError>
   public let projects: Signal<[Project], NoError>
-  public let referrerData: Signal<(cumulative: ProjectStatsEnvelope.Cumulative, project: Project,
+  public let referrerData: Signal<(cumulative: ProjectStatsEnvelope.CumulativeStats, project: Project,
     stats: [ProjectStatsEnvelope.ReferrerStats]), NoError>
-  public let rewardStats: Signal<(stats: [ProjectStatsEnvelope.RewardStats], project: Project), NoError>
+  public let rewardData: Signal<(stats: [ProjectStatsEnvelope.RewardStats], project: Project), NoError>
   public let videoStats: Signal<ProjectStatsEnvelope.VideoStats, NoError>
 
   public var inputs: DashboardViewModelInputs { return self }

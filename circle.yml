@@ -3,6 +3,7 @@ machine:
     version: 7.3
 dependencies:
   pre:
+    - brew install swiftlint
     - security list-keychains
     - security find-identity -p codesigning
     - instruments -s devices

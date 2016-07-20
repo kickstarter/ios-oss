@@ -5,7 +5,6 @@ public final class ReferralChartView: UIView {
 
   public required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
-    self.backgroundColor = .clearColor()
   }
 
   public init() {
@@ -97,5 +96,4 @@ public final class ReferralChartView: UIView {
     )
   }
   // swiftlint:enable function_body_length
-
 }

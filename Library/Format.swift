@@ -89,7 +89,7 @@ public enum Format {
    - parameter env: (optional) An environment to use for locality.
 
    - returns: A formatted string.
-  */
+   */
   public static func currency(amount: Int,
                               country: Project.Country,
                               env: Environment = AppEnvironment.current) -> String {
@@ -120,7 +120,7 @@ public enum Format {
    - parameter env: (optional) An environment to use for locality and time zones.
 
    - returns: A formatted string.
-  */
+   */
   public static func date(secondsInUTC seconds: NSTimeInterval,
                                        dateStyle: NSDateFormatterStyle = .MediumStyle,
                                        timeStyle: NSDateFormatterStyle = .MediumStyle,
@@ -138,12 +138,12 @@ public enum Format {
    Format a duration into a string.
 
    - parameter seconds: Seconds represention of the date as measured from UTC.
-   - parameter abbreviate: (optional) Whether or not to use the abbreviated style.
+   - parameter thresholdInDays: (optional) Threshold.
 
    - returns: A formatted string.
    */
   public static func duration(secondsInUTC seconds: NSTimeInterval,
-                              thresholdInDays: Int = defaultThresholdInDays) -> String? {
+                                           thresholdInDays: Int = defaultThresholdInDays) -> String? {
 
     let components = NSCalendar.currentCalendar().components([.Day, .Hour, .Minute, .Second],
                                                              fromDate: NSDate(),
@@ -165,11 +165,14 @@ public enum Format {
 
    - parameter secondsInUTC: Seconds represention of the date as measured from UTC.
    - parameter abbreviate: (optional) Whether or not to use the abbreviated style.
+   - parameter threshold: (optional) Threshold.
 
    - returns: A formatted string.
-  */
-  public static func relative(secondsInUTC seconds: NSTimeInterval, abbreviate: Bool = false,
-                              threshold thresholdInDays: Int = defaultThresholdInDays) -> String {
+   */
+  public static func relative(
+    secondsInUTC seconds: NSTimeInterval,
+                 abbreviate: Bool = false,
+                 threshold thresholdInDays: Int = defaultThresholdInDays) -> String {
 
     let components = NSCalendar.currentCalendar().components([.Day, .Hour, .Minute, .Second],
                                                              fromDate: NSDate(timeIntervalSince1970: seconds),

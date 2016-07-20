@@ -15,7 +15,7 @@ public let dashboardCardStyle = roundedStyle()
 
 public let dashboardChartCardViewStyle = dashboardCardStyle
   <> UIView.lens.backgroundColor .~ .ksr_grey_100
-  <> UIView.lens.layoutMargins .~ .init(topBottom: 24, leftRight: 0)
+  <> UIView.lens.layoutMargins .~ .init(topBottom: 24.0, leftRight: 0.0)
 
 public let dashboardColumnTitleButtonStyle =
   UIButton.lens.titleLabel.font .~ UIFont.ksr_caption1().bolded
@@ -32,6 +32,31 @@ public let dashboardContextCellStyle = baseTableViewCellStyle()
   <> (UITableViewCell.lens.contentView • UIView.lens.layoutMargins) %~ {
     .init(topBottom: 32.0, leftRight: $0.left)
 }
+
+public let dashboardFundingGraphAxisSeparatorViewStyle =
+  UIView.lens.backgroundColor .~ .ksr_navy_500
+  <> UIView.lens.accessibilityElementsHidden .~ true
+
+public let dashboardFundingGraphXAxisLabelStyle =
+  UILabel.lens.font .~ UIFont.ksr_caption1().bolded
+    <> UILabel.lens.textColor .~ .ksr_navy_700
+    <> UILabel.lens.accessibilityElementsHidden .~ true
+
+public let dashboardFundingGraphXAxisStackViewStyle =
+  UIStackView.lens.layoutMargins .~ .init(topBottom: 8.0, leftRight: 16.0)
+    <> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+
+public let dashboardFundingGraphYAxisLabelStyle =
+  UILabel.lens.font .~ .ksr_caption2()
+    <> UILabel.lens.textColor .~ .ksr_text_navy_500
+
+public let dashboardFundingProgressTitleLabelStyle = dashboardCellTitleLabelStyle
+  <> UILabel.lens.text %~ { _ in Strings.dashboard_graphs_funding_title_funding_progress() }
+
+public let dashboardFundingStatsStackView =
+  UIStackView.lens.layoutMargins .~ .init(topBottom: 24.0, leftRight: 16.0)
+  <> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+  <> UIStackView.lens.distribution .~ .EqualSpacing
 
 public let dashboardGrayTextBorderButtonStyle = borderButtonStyle
   <> UIButton.lens.titleLabel.font .~ .ksr_footnote()

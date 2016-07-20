@@ -189,7 +189,7 @@ internal final class DashboardReferrersCell: UITableViewCell, ValueCell {
     }
   }
 
-  internal func configureWith(value value: (ProjectStatsEnvelope.Cumulative,
+  internal func configureWith(value value: (ProjectStatsEnvelope.CumulativeStats,
                                             Project,
                                             [ProjectStatsEnvelope.ReferrerStats])) {
     self.viewModel.inputs.configureWith(cumulative: value.0, project: value.1, referrers: value.2)
