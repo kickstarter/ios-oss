@@ -387,8 +387,8 @@ public final class Koala {
   }
 
   // MARK: Dashboard
-  public func trackDashboardView(project project: Project) {
-    self.track(event: "Dashboard View",
+  public func trackDashboardClosedProjectSwitcher(onProject project: Project) {
+    self.track(event: "Closed Project Switcher",
                properties: properties(project: project, loggedInUser: self.loggedInUser))
   }
 
@@ -404,6 +404,25 @@ public final class Koala {
 
   public func trackDashboardSeeMoreReferrers(project project: Project) {
     self.track(event: "Showed All Referrers",
+               properties: properties(project: project, loggedInUser: self.loggedInUser))
+  }
+
+  public func trackDashboardShowProjectSwitcher(onProject project: Project) {
+    self.track(event: "Showed Project Switcher",
+               properties: properties(project: project, loggedInUser: self.loggedInUser))
+  }
+
+  public func trackDashboardSwitchProject(project: Project) {
+    self.track(event: "Switched Projects",
+               properties: properties(project: project, loggedInUser: self.loggedInUser))
+
+    // deprecated
+    self.track(event: "Creator Project Navigate",
+               properties: properties(project: project, loggedInUser: self.loggedInUser))
+  }
+
+  public func trackDashboardView(project project: Project) {
+    self.track(event: "Dashboard View",
                properties: properties(project: project, loggedInUser: self.loggedInUser))
   }
 

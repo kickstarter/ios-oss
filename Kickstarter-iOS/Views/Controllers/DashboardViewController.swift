@@ -5,6 +5,9 @@ import Prelude
 import Prelude_UIKit
 
 internal final class DashboardViewController: UITableViewController {
+  @IBOutlet weak var titleView: DashboardTitleView!
+  @IBOutlet weak var shareButton: UIBarButtonItem!
+
   private let dataSource = DashboardDataSource()
   private let viewModel: DashboardViewModelType = DashboardViewModel()
   private let shareViewModel: ShareViewModelType = ShareViewModel()
@@ -14,6 +17,14 @@ internal final class DashboardViewController: UITableViewController {
 
     self.tableView.dataSource = self.dataSource
 
+    let shareButton = shareBarButtonItemStyle
+      |> UIBarButtonItem.lens.target .~ self
+      |> UIBarButtonItem.lens.action .~ #selector(DashboardViewController.shareButtonTapped)
+
+    self.navigationItem.rightBarButtonItem = shareButton
+
+    self.titleView.delegate = self
+
     self.viewModel.inputs.viewDidLoad()
   }
 
@@ -21,6 +32,7 @@ internal final class DashboardViewController: UITableViewController {
     self |> baseTableControllerStyle(estimatedRowHeight: 200.0)
   }
 
+  // swiftlint:disable function_body_length
   internal override func bindViewModel() {
     super.bindViewModel()
 
@@ -41,12 +53,6 @@ internal final class DashboardViewController: UITableViewController {
         self?.shareViewModel.inputs.configureWith(shareContext: .creatorDashboard(project))
     }
 
-    self.viewModel.outputs.projects
-      .observeForUI()
-      .observeNext { [weak self] projects in
-        self?.tableView.reloadData()
-    }
-
     self.viewModel.outputs.referrerData
       .observeForUI()
       .observeNext { [weak self] (cumulative, project, referrers) in
@@ -61,17 +67,44 @@ internal final class DashboardViewController: UITableViewController {
         self?.tableView.reloadData()
     }
 
-    self.shareViewModel.outputs.showShareSheet
-      .observeForUI()
-      .observeNext { [weak self] in self?.showShareSheet($0) }
-
     self.viewModel.outputs.videoStats
       .observeForUI()
       .observeNext { [weak self] videoStats in
         self?.dataSource.load(videoStats: videoStats)
         self?.tableView.reloadData()
     }
+
+    self.viewModel.outputs.presentProjectsDrawer
+      .observeForUI()
+      .observeNext { [weak self] data in
+        self?.presentProjectsDrawer(data: data)
+    }
+
+    self.viewModel.outputs.animateOutProjectsDrawer
+      .observeForUI()
+      .observeNext { [weak self] in
+        if let drawerVC = self?.presentedViewController as? DashboardProjectsDrawerViewController {
+          drawerVC.animateOut()
+        }
+    }
+
+    self.viewModel.outputs.dismissProjectsDrawer
+      .observeForUI()
+      .observeNext { [weak self] in
+        self?.dismissViewControllerAnimated(false, completion: nil)
+    }
+
+    self.viewModel.outputs.updateTitleViewData
+      .observeForUI()
+      .observeNext { [weak element = self.titleView] data in
+        element?.updateData(data)
+    }
+
+    self.shareViewModel.outputs.showShareSheet
+      .observeForUI()
+      .observeNext { [weak self] in self?.showShareSheet($0) }
   }
+  // swiftlint:enable function_body_length
 
   internal override func tableView(tableView: UITableView,
                                    willDisplayCell cell: UITableViewCell,
@@ -132,6 +165,17 @@ internal final class DashboardViewController: UITableViewController {
                                completion: nil)
   }
 
+  private func presentProjectsDrawer(data data: [ProjectsDrawerData]) {
+    guard let drawerVC = UIStoryboard(name: "DashboardProjectsDrawer", bundle: .framework)
+      .instantiateInitialViewController() as? DashboardProjectsDrawerViewController else {
+        fatalError("Could not instantiate DashboardProjectsDrawerViewController.")
+    }
+    drawerVC.configureWith(data: data)
+    drawerVC.delegate = self
+    self.modalPresentationStyle = .OverCurrentContext
+    self.presentViewController(drawerVC, animated: false, completion: nil)
+  }
+
   private func showShareSheet(controller: UIActivityViewController) {
     controller.completionWithItemsHandler = { [weak self] in
       self?.shareViewModel.inputs.shareActivityCompletion(activityType: $0,
@@ -146,6 +190,10 @@ internal final class DashboardViewController: UITableViewController {
     } else {
       self.presentViewController(controller, animated: true, completion: nil)
     }
+  }
+
+  @objc private func shareButtonTapped() {
+    self.shareViewModel.inputs.shareButtonTapped()
   }
 }
 
@@ -195,5 +243,25 @@ extension DashboardViewController: DashboardRewardsCellDelegate {
   func dashboardRewardsCellDidAddRewardRows(cell: DashboardRewardsCell?) {
     self.tableView.beginUpdates()
     self.tableView.endUpdates()
+  }
+}
+
+extension DashboardViewController: DashboardProjectsDrawerViewControllerDelegate {
+  func dashboardProjectsDrawerCellDidTapProject(project: Project) {
+    self.viewModel.inputs.dashboardProjectsDrawerSwitchToProject(project)
+  }
+
+  func dashboardProjectsDrawerDidAnimateOut() {
+    self.viewModel.inputs.dashboardProjectsDrawerDidAnimateOut()
+  }
+
+  func dashboardProjectsDrawerHideDrawer() {
+    self.viewModel.inputs.showHideProjectsDrawer()
+  }
+}
+
+extension DashboardViewController: DashboardTitleViewDelegate {
+  func dashboardTitleViewShowHideProjectsDrawer() {
+    self.viewModel.inputs.showHideProjectsDrawer()
   }
 }

@@ -89,7 +89,7 @@ internal final class DashboardReferrersCellViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(cumulative: cumulative, project: project, referrers: referrers)
     self.referrersRowCountry.assertValues([country], "Project country emits.")
-    self.referrersRowReferrers.assertValues([[stats1, stats2, stats3, stats4]],
+    self.referrersRowReferrers.assertValues([[stats1, stats2, stats3]],
                                             "First four referrer stats emit.")
     self.showMoreReferrersButtonHidden.assertValues([false], "Button shown when there are more referrers.")
     XCTAssertEqual([], self.trackingClient.events)
@@ -97,7 +97,7 @@ internal final class DashboardReferrersCellViewModelTests: TestCase {
     self.vm.inputs.showMoreReferrersTapped()
     self.referrersRowReferrers.assertValues(
       [
-        [stats1, stats2, stats3, stats4],
+        [stats1, stats2, stats3],
         [stats1, stats2, stats3, stats4, stats5, stats6, stats7, stats8, stats9, stats10]
       ],
       "Remaining referrer stats emit."

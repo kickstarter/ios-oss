@@ -13,9 +13,11 @@ internal final class DashboardDataSource: ValueCellDataSource {
   }
 
   internal func load(project project: Project) {
-    self.appendRow(value: project, cellClass: DashboardContextCell.self, toSection: Section.Context.rawValue)
+    self.clearValues()
 
-    self.appendRow(value: project, cellClass: DashboardActionCell.self, toSection: Section.Action.rawValue)
+    self.set(values: [project], cellClass: DashboardContextCell.self, inSection: Section.Context.rawValue)
+
+    self.set(values: [project], cellClass: DashboardActionCell.self, inSection: Section.Action.rawValue)
   }
 
   internal func load(fundingDateStats stats: [ProjectStatsEnvelope.FundingDateStats], project: Project) {
@@ -30,23 +32,19 @@ internal final class DashboardDataSource: ValueCellDataSource {
                                 project: Project,
                                 referrers: [ProjectStatsEnvelope.ReferrerStats]) {
 
-    self.appendRow(
-      value: (cumulative, project, referrers),
-      cellClass: DashboardReferrersCell.self,
-      toSection: Section.Referrers.rawValue
-    )
+    self.set(values: [(cumulative, project, referrers)], cellClass: DashboardReferrersCell.self,
+             inSection: Section.Referrers.rawValue)
   }
 
   internal func load(rewardStats rewardStats: [ProjectStatsEnvelope.RewardStats],
                                  project: Project) {
 
-    self.appendRow(value: (rewardStats: rewardStats, project: project),
-                   cellClass: DashboardRewardsCell.self,
-                   toSection: Section.Rewards.rawValue)
+    self.set(values: [(rewardStats: rewardStats, project: project)], cellClass: DashboardRewardsCell.self,
+             inSection: Section.Rewards.rawValue)
   }
 
   internal func load(videoStats videoStats: ProjectStatsEnvelope.VideoStats) {
-    self.appendRow(value: videoStats, cellClass: DashboardVideoCell.self, toSection: Section.Video.rawValue)
+    self.set(values: [videoStats], cellClass: DashboardVideoCell.self, inSection: Section.Video.rawValue)
   }
 
   internal override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {

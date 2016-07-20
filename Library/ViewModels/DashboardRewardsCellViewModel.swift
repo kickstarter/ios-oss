@@ -101,7 +101,9 @@ public final class DashboardRewardsCellViewModel: DashboardRewardsCellViewModelT
     // if more than 6 rewards, truncate at 4
     self.rewardsRowData = combineLatest(allRewardsRowData, allTiersButtonIsHidden)
       .map { rowData, isHidden in
-        let maxRewards = isHidden ? rowData.rewardsStats : Array(rowData.rewardsStats[0...2])
+        let rewardCount = rowData.rewardsStats.count
+        let maxRewards = isHidden ? rowData.rewardsStats :
+          Array(rowData.rewardsStats[0..<(min(3, rewardCount))])
 
         return RewardsRowData(country: rowData.country,
                             rewardsStats: maxRewards,

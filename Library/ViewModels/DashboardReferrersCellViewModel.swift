@@ -179,7 +179,9 @@ public final class DashboardReferrersCellViewModel: DashboardReferrersCellViewMo
 
     self.referrersRowData = combineLatest(allReferrersRowData, showMoreReferrersButtonIsHidden)
       .map { rowData, isHidden in
-        let maxReferrers = isHidden ? rowData.referrers : Array(rowData.referrers[0...3])
+        let refCount = rowData.referrers.count
+        let maxReferrers = isHidden ? rowData.referrers :
+          Array(rowData.referrers[0..<(min(3, refCount))])
         return ReferrersRowData(country: rowData.country, referrers: maxReferrers)
     }
     .skipRepeats(==)

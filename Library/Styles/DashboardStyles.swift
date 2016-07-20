@@ -6,7 +6,7 @@ public let dashboardActivityButtonStyle = UIButton.lens.titleText(forState: .Nor
   %~ { _ in Strings.dashboard_buttons_activity() }
 
 public let dashboardCellTitleLabelStyle =
-  UILabel.lens.textColor .~ .ksr_navy_700
+  UILabel.lens.textColor .~ .ksr_text_navy_700
   <> UILabel.lens.font .~ .ksr_title2()
 
 public let dashboardCardStyle = roundedStyle()
@@ -25,13 +25,20 @@ public let dashboardColumnTitleButtonStyle =
     <> UIButton.lens.contentHorizontalAlignment .~ .Left
 
 public let dashboardColumnTextLabelStyle =
-  UILabel.lens.textColor .~ .ksr_navy_700
+  UILabel.lens.textColor .~ .ksr_text_navy_700
     <> UILabel.lens.font .~ .ksr_caption1()
 
 public let dashboardContextCellStyle = baseTableViewCellStyle()
   <> (UITableViewCell.lens.contentView • UIView.lens.layoutMargins) %~ {
     .init(topBottom: 32.0, leftRight: $0.left)
 }
+
+public let dashboardDrawerProjectNameTextLabelStyle =
+  UILabel.lens.textColor .~ .ksr_text_navy_600
+    <> UILabel.lens.font .~ .ksr_caption1()
+
+public let dashboardDrawerProjectNumberTextLabelStyle = dashboardColumnTextLabelStyle
+  <> UILabel.lens.font .~ UIFont.ksr_caption1().bolded
 
 public let dashboardFundingGraphAxisSeparatorViewStyle =
   UIView.lens.backgroundColor .~ .ksr_navy_500
@@ -71,11 +78,11 @@ public let dashboardGreenTextBorderButtonStyle = borderButtonStyle
   <> UIButton.lens.layer.borderColor .~ UIColor.ksr_navy_300.CGColor
 
 public let dashboardStatTitleLabelStyle =
-  UILabel.lens.textColor .~ .ksr_navy_700
+  UILabel.lens.textColor .~ .ksr_text_navy_700
     <> UILabel.lens.font .~ UIFont.ksr_body().bolded
 
 public let dashboardStatSubtitleLabelStyle =
-  UILabel.lens.textColor .~ .ksr_navy_500
+  UILabel.lens.textColor .~ .ksr_text_navy_500
     <> UILabel.lens.font .~ .ksr_caption1()
 
 public let dashboardLastUpdatePublishedAtLabelStyle =
@@ -86,7 +93,7 @@ public let dashboardMessagesButtonStyle = UIButton.lens.titleText(forState: .Nor
   %~ { _ in  Strings.dashboard_buttons_messages() }
 
 public let dashboardReferrersPledgePercentLabelStyle =
-  UILabel.lens.textColor .~ .ksr_navy_600
+  UILabel.lens.textColor .~ .ksr_text_navy_600
   <> UILabel.lens.font .~ .ksr_footnote()
 
 public let dashboardReferrersShowMoreButtonStyle = dashboardGreenTextBorderButtonStyle

@@ -1918,9 +1918,9 @@ public enum Strings {
   /**
    "Backing info"
 
-   - **es**: "Backing info"
+   - **es**: "Info sobre patrocinamiento"
    - **de**: "Backing info"
-   - **fr**: "Backing info"
+   - **fr**: "Infos sur la contribution"
    - **it**: "Backing info"
    - **en**: "Backing info"
   */
@@ -1935,9 +1935,9 @@ public enum Strings {
   /**
    "No reward selected"
 
-   - **es**: "No reward selected"
+   - **es**: "No se seleccionó ninguna recompensa"
    - **de**: "No reward selected"
-   - **fr**: "No reward selected"
+   - **fr**: "Pas de récompense sélectionnée"
    - **it**: "No reward selected"
    - **en**: "No reward selected"
   */
@@ -1952,9 +1952,9 @@ public enum Strings {
   /**
    "<b>%{project_name}</b> launched on %{launch_date} with a goal of raising <b>%{goal}</b>"
 
-   - **es**: "<b>%{project_name}</b> launched on %{launch_date} with a goal of raising <b>%{goal}</b>"
+   - **es**: "<b>%{project_name}</b>, publicado el %{launch_date}, meta de financiamiento: <b>%{goal}</b>"
    - **de**: "<b>%{project_name}</b> launched on %{launch_date} with a goal of raising <b>%{goal}</b>"
-   - **fr**: "<b>%{project_name}</b> launched on %{launch_date} with a goal of raising <b>%{goal}</b>"
+   - **fr**: "<b>%{project_name}</b> lancé le %{launch_date} avec un objectif de <b>%{goal}</b>"
    - **it**: "<b>%{project_name}</b> launched on %{launch_date} with a goal of raising <b>%{goal}</b>"
    - **en**: "<b>%{project_name}</b> launched on %{launch_date} with a goal of raising <b>%{goal}</b>"
   */
@@ -1969,9 +1969,9 @@ public enum Strings {
   /**
    "<b>%{project_name}</b> was canceled on %{cancellation_date}"
 
-   - **es**: "<b>%{project_name}</b> was canceled on %{cancellation_date}"
+   - **es**: "<b>%{project_name}</b> fue cancelado el %{cancellation_date}"
    - **de**: "<b>%{project_name}</b> was canceled on %{cancellation_date}"
-   - **fr**: "<b>%{project_name}</b> was canceled on %{cancellation_date}"
+   - **fr**: "<b>%{project_name}</b> a été annulé le %{cancellation_date}"
    - **it**: "<b>%{project_name}</b> was canceled on %{cancellation_date}"
    - **en**: "<b>%{project_name}</b> was canceled on %{cancellation_date}"
   */
@@ -1986,9 +1986,9 @@ public enum Strings {
   /**
    "<b>%{project_name}</b> was suspended on %{suspension_date}"
 
-   - **es**: "<b>%{project_name}</b> was suspended on %{suspension_date}"
+   - **es**: "<b>%{project_name}</b> fue suspendido el %{suspension_date}"
    - **de**: "<b>%{project_name}</b> was suspended on %{suspension_date}"
-   - **fr**: "<b>%{project_name}</b> was suspended on %{suspension_date}"
+   - **fr**: "<b>%{project_name}</b> a été suspendu le %{suspension_date}"
    - **it**: "<b>%{project_name}</b> was suspended on %{suspension_date}"
    - **en**: "<b>%{project_name}</b> was suspended on %{suspension_date}"
   */
@@ -2003,9 +2003,9 @@ public enum Strings {
   /**
    "<b>%{project_name}</b> was unsuccessful on %{unsuccessful_date}"
 
-   - **es**: "<b>%{project_name}</b> was unsuccessful on %{unsuccessful_date}"
+   - **es**: "<b>%{project_name}</b> terminó sin éxito el %{unsuccessful_date}"
    - **de**: "<b>%{project_name}</b> was unsuccessful on %{unsuccessful_date}"
-   - **fr**: "<b>%{project_name}</b> was unsuccessful on %{unsuccessful_date}"
+   - **fr**: "<b>%{project_name}</b> n'a pas atteint son objectif de financement avant le %{unsuccessful_date}"
    - **it**: "<b>%{project_name}</b> was unsuccessful on %{unsuccessful_date}"
    - **en**: "<b>%{project_name}</b> was unsuccessful on %{unsuccessful_date}"
   */
@@ -2020,9 +2020,9 @@ public enum Strings {
   /**
    "Reply"
 
-   - **es**: "Reply"
+   - **es**: "Responder"
    - **de**: "Reply"
-   - **fr**: "Reply"
+   - **fr**: "Répondre"
    - **it**: "Reply"
    - **en**: "Reply"
   */
@@ -2035,18 +2035,18 @@ public enum Strings {
     )
   }
   /**
-   "<b>Reward:<b> %{reward_name}"
+   "<b>Reward:</b> %{reward_name}"
 
-   - **es**: "<b>Reward:<b> %{reward_name}"
-   - **de**: "<b>Reward:<b> %{reward_name}"
-   - **fr**: "<b>Reward:<b> %{reward_name}"
-   - **it**: "<b>Reward:<b> %{reward_name}"
-   - **en**: "<b>Reward:<b> %{reward_name}"
+   - **es**: "<b>Recompensa:</b> %{reward_name}"
+   - **de**: "<b>Reward:</b> %{reward_name}"
+   - **fr**: "<b>Récompense :<b> %{reward_name}"
+   - **it**: "<b>Reward:</b> %{reward_name}"
+   - **en**: "<b>Reward:</b> %{reward_name}"
   */
   public static func dashboard_activity_reward_name(reward_name reward_name: String) -> String {
     return localizedString(
       key: "dashboard.activity.reward_name",
-      defaultValue: "<b>Reward:<b> %{reward_name}",
+      defaultValue: "<b>Reward:</b> %{reward_name}",
       count: nil,
       substitutions: ["reward_name": reward_name]
     )
@@ -2054,9 +2054,9 @@ public enum Strings {
   /**
    "Send message"
 
-   - **es**: "Send message"
+   - **es**: "Enviar mensaje"
    - **de**: "Send message"
-   - **fr**: "Send message"
+   - **fr**: "Envoyer un message"
    - **it**: "Send message"
    - **en**: "Send message"
   */
@@ -2071,9 +2071,9 @@ public enum Strings {
   /**
    "Successfully raised <b>%{pledged}</b> with <b>%{backers}</b> on %{deadline}"
 
-   - **es**: "Successfully raised <b>%{pledged}</b> with <b>%{backers}</b> on %{deadline}"
+   - **es**: "Financiamiento exitoso: Se recaudaron <b>%{pledged}</b> gracias a <b>%{backers}</b> el %{deadline}"
    - **de**: "Successfully raised <b>%{pledged}</b> with <b>%{backers}</b> on %{deadline}"
-   - **fr**: "Successfully raised <b>%{pledged}</b> with <b>%{backers}</b> on %{deadline}"
+   - **fr**: "Financement de <b>%{pledged}</b> réussi le %{deadline} grâce à <b>%{backers}</b>"
    - **it**: "Successfully raised <b>%{pledged}</b> with <b>%{backers}</b> on %{deadline}"
    - **en**: "Successfully raised <b>%{pledged}</b> with <b>%{backers}</b> on %{deadline}"
   */
@@ -2086,28 +2086,28 @@ public enum Strings {
     )
   }
   /**
-   "Update <b>%{update_number}</b> posted %{time_count} days ago"
+   "Update #<b>%{update_number}</b> posted %{time_count_days_ago}"
 
-   - **es**: "Update <b>%{update_number}</b> posted %{time_count} days ago"
-   - **de**: "Update <b>%{update_number}</b> posted %{time_count} days ago"
-   - **fr**: "Update <b>%{update_number}</b> posted %{time_count} days ago"
-   - **it**: "Update <b>%{update_number}</b> posted %{time_count} days ago"
-   - **en**: "Update <b>%{update_number}</b> posted %{time_count} days ago"
+   - **es**: "Actualización <b>%{update_number}</b> publicado el %{time_count_days_ago}"
+   - **de**: "Update #<b>%{update_number}</b> posted %{time_count_days_ago}"
+   - **fr**: "Actu no. <b>%{update_number}</b> publiée il y a %{time_count}"
+   - **it**: "Update #<b>%{update_number}</b> posted %{time_count_days_ago}"
+   - **en**: "Update #<b>%{update_number}</b> posted %{time_count_days_ago}"
   */
-  public static func dashboard_activity_update_number_posted_time_count_days_ago(update_number update_number: String, time_count: String) -> String {
+  public static func dashboard_activity_update_number_posted_time_count_days_ago(update_number update_number: String, time_count_days_ago: String) -> String {
     return localizedString(
       key: "dashboard.activity.update_number_posted_time_count_days_ago",
-      defaultValue: "Update <b>%{update_number}</b> posted %{time_count} days ago",
+      defaultValue: "Update #<b>%{update_number}</b> posted %{time_count_days_ago}",
       count: nil,
-      substitutions: ["update_number": update_number, "time_count": time_count]
+      substitutions: ["update_number": update_number, "time_count_days_ago": time_count_days_ago]
     )
   }
   /**
    "<b>%{user_name}</b> adjusted their pledge"
 
-   - **es**: "<b>%{user_name}</b> adjusted their pledge"
+   - **es**: "<b>%{user_name}</b> ajustó su contribución"
    - **de**: "<b>%{user_name}</b> adjusted their pledge"
-   - **fr**: "<b>%{user_name}</b> adjusted their pledge"
+   - **fr**: "<b>%{user_name}</b> a ajusté son engagement"
    - **it**: "<b>%{user_name}</b> adjusted their pledge"
    - **en**: "<b>%{user_name}</b> adjusted their pledge"
   */
@@ -2122,9 +2122,9 @@ public enum Strings {
   /**
    "<b>%{user_name}</b> canceled their pledge"
 
-   - **es**: "<b>%{user_name}</b> canceled their pledge"
+   - **es**: "<b>%{user_name}</b> canceló su contribución"
    - **de**: "<b>%{user_name}</b> canceled their pledge"
-   - **fr**: "<b>%{user_name}</b> canceled their pledge"
+   - **fr**: "<b>%{user_name}</b> a annulé son engagement"
    - **it**: "<b>%{user_name}</b> canceled their pledge"
    - **en**: "<b>%{user_name}</b> canceled their pledge"
   */
@@ -2139,9 +2139,9 @@ public enum Strings {
   /**
    "<b>%{user_name}</b> changed their reward"
 
-   - **es**: "<b>%{user_name}</b> changed their reward"
+   - **es**: "<b>%{user_name}</b> cambió su recompensa"
    - **de**: "<b>%{user_name}</b> changed their reward"
-   - **fr**: "<b>%{user_name}</b> changed their reward"
+   - **fr**: "<b>%{user_name}</b> a changé de récompense"
    - **it**: "<b>%{user_name}</b> changed their reward"
    - **en**: "<b>%{user_name}</b> changed their reward"
   */
@@ -2154,18 +2154,18 @@ public enum Strings {
     )
   }
   /**
-   "<b>%{user_name}</b> commented on Update %{update_number}"
+   "<b>%{user_name}</b> commented on Update #%{update_number}"
 
-   - **es**: "<b>%{user_name}</b> commented on Update %{update_number}"
-   - **de**: "<b>%{user_name}</b> commented on Update %{update_number}"
-   - **fr**: "<b>%{user_name}</b> commented on Update %{update_number}"
-   - **it**: "<b>%{user_name}</b> commented on Update %{update_number}"
-   - **en**: "<b>%{user_name}</b> commented on Update %{update_number}"
+   - **es**: "<b>%{user_name}</b> hizo un comentario sobre la actualización n° %{update_number}"
+   - **de**: "<b>%{user_name}</b> commented on Update #%{update_number}"
+   - **fr**: "<b>%{user_name}</b> a commenté l'Actu no. %{update_number}"
+   - **it**: "<b>%{user_name}</b> commented on Update #%{update_number}"
+   - **en**: "<b>%{user_name}</b> commented on Update #%{update_number}"
   */
   public static func dashboard_activity_user_name_commented_on_update_number(user_name user_name: String, update_number: String) -> String {
     return localizedString(
       key: "dashboard.activity.user_name_commented_on_update_number",
-      defaultValue: "<b>%{user_name}</b> commented on Update %{update_number}",
+      defaultValue: "<b>%{user_name}</b> commented on Update #%{update_number}",
       count: nil,
       substitutions: ["user_name": user_name, "update_number": update_number]
     )
@@ -2173,9 +2173,9 @@ public enum Strings {
   /**
    "<b>%{user_name}</b> commented on your project"
 
-   - **es**: "<b>%{user_name}</b> commented on your project"
+   - **es**: "<b>%{user_name}</b> hizo un comentario sobre tu proyecto"
    - **de**: "<b>%{user_name}</b> commented on your project"
-   - **fr**: "<b>%{user_name}</b> commented on your project"
+   - **fr**: "<b>%{user_name}</b> a commenté votre projet"
    - **it**: "<b>%{user_name}</b> commented on your project"
    - **en**: "<b>%{user_name}</b> commented on your project"
   */
@@ -2190,9 +2190,9 @@ public enum Strings {
   /**
    "<b>%{user_name}</b> pledged"
 
-   - **es**: "<b>%{user_name}</b> pledged"
+   - **es**: "<b>%{user_name}</b> hizo una contribución"
    - **de**: "<b>%{user_name}</b> pledged"
-   - **fr**: "<b>%{user_name}</b> pledged"
+   - **fr**: "<b>%{user_name}</b> s'est engagé(e)"
    - **it**: "<b>%{user_name}</b> pledged"
    - **en**: "<b>%{user_name}</b> pledged"
   */
@@ -2207,9 +2207,9 @@ public enum Strings {
   /**
    "<b>You</b> adjusted your pledge"
 
-   - **es**: "<b>You</b> adjusted your pledge"
+   - **es**: "<b>Has</b> cambiado tu contribución"
    - **de**: "<b>You</b> adjusted your pledge"
-   - **fr**: "<b>You</b> adjusted your pledge"
+   - **fr**: "<b>Vous</b> avez ajusté votre engagement"
    - **it**: "<b>You</b> adjusted your pledge"
    - **en**: "<b>You</b> adjusted your pledge"
   */
@@ -2224,9 +2224,9 @@ public enum Strings {
   /**
    "<b>You</b> canceled your pledge"
 
-   - **es**: "<b>You</b> canceled your pledge"
+   - **es**: "<b>Has</b> cancelado tu contribución"
    - **de**: "<b>You</b> canceled your pledge"
-   - **fr**: "<b>You</b> canceled your pledge"
+   - **fr**: "<b>Vous</b> avez annulé votre engagement"
    - **it**: "<b>You</b> canceled your pledge"
    - **en**: "<b>You</b> canceled your pledge"
   */
@@ -2241,9 +2241,9 @@ public enum Strings {
   /**
    "<b>You</b> changed your reward"
 
-   - **es**: "<b>You</b> changed your reward"
+   - **es**: "<b>Has</b> cambiado tu recompensa"
    - **de**: "<b>You</b> changed your reward"
-   - **fr**: "<b>You</b> changed your reward"
+   - **fr**: "<b>Vous</b> avez changé de récompense"
    - **it**: "<b>You</b> changed your reward"
    - **en**: "<b>You</b> changed your reward"
   */
@@ -2256,18 +2256,18 @@ public enum Strings {
     )
   }
   /**
-   "<b>You</b> commented on Update %{update_number}"
+   "<b>You</b> commented on Update #%{update_number}"
 
-   - **es**: "<b>You</b> commented on Update %{update_number}"
-   - **de**: "<b>You</b> commented on Update %{update_number}"
-   - **fr**: "<b>You</b> commented on Update %{update_number}"
-   - **it**: "<b>You</b> commented on Update %{update_number}"
-   - **en**: "<b>You</b> commented on Update %{update_number}"
+   - **es**: "<b>Has</b> hecho un comentario sobre la actualización n° %{update_number}"
+   - **de**: "<b>You</b> commented on Update #%{update_number}"
+   - **fr**: "<b>Vous</b> avez commenté l'Actu no. %{update_number}"
+   - **it**: "<b>You</b> commented on Update #%{update_number}"
+   - **en**: "<b>You</b> commented on Update #%{update_number}"
   */
   public static func dashboard_activity_you_commented_on_update_number(update_number update_number: String) -> String {
     return localizedString(
       key: "dashboard.activity.you_commented_on_update_number",
-      defaultValue: "<b>You</b> commented on Update %{update_number}",
+      defaultValue: "<b>You</b> commented on Update #%{update_number}",
       count: nil,
       substitutions: ["update_number": update_number]
     )
@@ -2275,9 +2275,9 @@ public enum Strings {
   /**
    "<b>You</b> commented on your project"
 
-   - **es**: "<b>You</b> commented on your project"
+   - **es**: "<b>Has</b> hecho un comentario sobre tu proyecto"
    - **de**: "<b>You</b> commented on your project"
-   - **fr**: "<b>You</b> commented on your project"
+   - **fr**: "<b>Vous</b> avez commenté votre projet"
    - **it**: "<b>You</b> commented on your project"
    - **en**: "<b>You</b> commented on your project"
   */
@@ -2292,9 +2292,9 @@ public enum Strings {
   /**
    "<b>You</b> pledged"
 
-   - **es**: "<b>You</b> pledged"
+   - **es**: "<b>Has</b> hecho una contribución"
    - **de**: "<b>You</b> pledged"
-   - **fr**: "<b>You</b> pledged"
+   - **fr**: "<b>Vous</b> vous êtes engagé(e)"
    - **it**: "<b>You</b> pledged"
    - **en**: "<b>You</b> pledged"
   */
@@ -2547,9 +2547,9 @@ public enum Strings {
   /**
    "Funding Progress"
 
-   - **es**: "Funding Progress"
+   - **es**: "Progreso del financiamiento"
    - **de**: "Funding Progress"
-   - **fr**: "Funding Progress"
+   - **fr**: "Évolution du financement"
    - **it**: "Funding Progress"
    - **en**: "Funding Progress"
   */
@@ -2819,9 +2819,9 @@ public enum Strings {
   /**
    "Referrers"
 
-   - **es**: "Referrers"
+   - **es**: "Referencias"
    - **de**: "Referrers"
-   - **fr**: "Referrers"
+   - **fr**: "Référents"
    - **it**: "Referrers"
    - **en**: "Referrers"
   */
@@ -2836,9 +2836,9 @@ public enum Strings {
   /**
    "View more referrer stats"
 
-   - **es**: "View more referrer stats"
+   - **es**: "Mostrar más"
    - **de**: "View more referrer stats"
-   - **fr**: "View more referrer stats"
+   - **fr**: "Plus de statistiques sur les référents"
    - **it**: "View more referrer stats"
    - **en**: "View more referrer stats"
   */
@@ -2955,9 +2955,9 @@ public enum Strings {
   /**
    "Rewards"
 
-   - **es**: "Rewards"
+   - **es**: "Recompensas"
    - **de**: "Rewards"
-   - **fr**: "Rewards"
+   - **fr**: "Récompenses"
    - **it**: "Rewards"
    - **en**: "Rewards"
   */
@@ -2989,9 +2989,9 @@ public enum Strings {
   /**
    "View more reward stats"
 
-   - **es**: "View more reward stats"
-   - **de**: "View more reward stats"
-   - **fr**: "View more reward stats"
+   - **es**: "Mostrar más"
+   - **de**: "Mehr ansehen"
+   - **fr**: "Plus de statistiques sur les récompenses"
    - **it**: "View more reward stats"
    - **en**: "View more reward stats"
   */
@@ -3040,9 +3040,9 @@ public enum Strings {
   /**
    "off-site"
 
-   - **es**: "off-site"
+   - **es**: "en otro lugar"
    - **de**: "off-site"
-   - **fr**: "off-site"
+   - **fr**: "hors site"
    - **it**: "off-site"
    - **en**: "off-site"
   */
@@ -3057,9 +3057,9 @@ public enum Strings {
   /**
    "on Kickstarter"
 
-   - **es**: "on Kickstarter"
+   - **es**: "en Kickstarter"
    - **de**: "on Kickstarter"
-   - **fr**: "on Kickstarter"
+   - **fr**: "sur Kickstarter"
    - **it**: "on Kickstarter"
    - **en**: "on Kickstarter"
   */
@@ -3108,18 +3108,18 @@ public enum Strings {
   /**
    "<b>%{total_start_count}</b> total plays"
 
-   - **es**: "<b>%{total_start_count}</b> total plays"
+   - **es**: "<b>%{total_start_count}</b> reproducciones"
    - **de**: "<b>%{total_start_count}</b> total plays"
-   - **fr**: "<b>%{total_start_count}</b> total plays"
+   - **fr**: "<b>%{total_start_count}</b> lectures (total)"
    - **it**: "<b>%{total_start_count}</b> total plays"
    - **en**: "<b>%{total_start_count}</b> total plays"
   */
-  public static func dashboard_graphs_video_stats_total_plays_html(total_start_count total_start_count: String) -> String {
+  public static func dashboard_graphs_video_stats_total_plays_count(total_start_count total_start_count: Int) -> String {
     return localizedString(
-      key: "dashboard.graphs.video.stats.total_plays_html",
+      key: "dashboard.graphs.video.stats.total_plays_count",
       defaultValue: "<b>%{total_start_count}</b> total plays",
-      count: nil,
-      substitutions: ["total_start_count": total_start_count]
+      count: total_start_count,
+      substitutions: ["total_start_count": Format.wholeNumber(total_start_count)]
     )
   }
   /**
@@ -3142,9 +3142,9 @@ public enum Strings {
   /**
    "Video Plays"
 
-   - **es**: "Video Plays"
+   - **es**: "Reproducciones de video"
    - **de**: "Video Plays"
-   - **fr**: "Video Plays"
+   - **fr**: "Lectures vidéo"
    - **it**: "Video Plays"
    - **en**: "Video Plays"
   */
@@ -3732,6 +3732,23 @@ public enum Strings {
       defaultValue: "You haven’t posted an update yet.",
       count: nil,
       substitutions: [:]
+    )
+  }
+  /**
+   "Project #%{current_project_index}"
+
+   - **es**: "Proyecto n° %{current_project_index}"
+   - **de**: "Project #%{current_project_index}"
+   - **fr**: "Projet no. %{current_project_index}"
+   - **it**: "Project #%{current_project_index}"
+   - **en**: "Project #%{current_project_index}"
+  */
+  public static func dashboard_switcher_project_number(current_project_index current_project_index: String) -> String {
+    return localizedString(
+      key: "dashboard.switcher.project_number",
+      defaultValue: "Project #%{current_project_index}",
+      count: nil,
+      substitutions: ["current_project_index": current_project_index]
     )
   }
   /**
@@ -5947,9 +5964,9 @@ public enum Strings {
   /**
    "%{backer_count} backers"
 
-   - **es**: "%{backer_count} backers"
+   - **es**: "%{backer_count} patrocinadores"
    - **de**: "%{backer_count} backers"
-   - **fr**: "%{backer_count} backers"
+   - **fr**: "%{backer_count} contributeurs"
    - **it**: "%{backer_count} backers"
    - **en**: "%{backer_count} backers"
   */
