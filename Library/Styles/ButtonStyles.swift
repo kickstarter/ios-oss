@@ -41,7 +41,7 @@ public let facebookButtonStyle = baseButtonStyle
   <> UIButton.lens.backgroundColor(forState: .Highlighted) .~ .ksr_navy_900
   <> UIButton.lens.titleColor(forState: .Disabled) .~ .init(white: 1.0, alpha: 0.5)
   <> UIButton.lens.backgroundColor(forState: .Disabled) .~ .ksr_navy_900
-  <> UIButton.lens.titleText(forState: .Normal) %~ { _ in
+  <> UIButton.lens.title(forState: .Normal) %~ { _ in
     Strings.login_tout_buttons_log_in_with_facebook()
 }
 

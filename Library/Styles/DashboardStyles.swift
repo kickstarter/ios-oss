@@ -2,7 +2,7 @@ import Prelude
 import Prelude_UIKit
 import UIKit
 
-public let dashboardActivityButtonStyle = UIButton.lens.titleText(forState: .Normal)
+public let dashboardActivityButtonStyle = UIButton.lens.title(forState: .Normal)
   %~ { _ in Strings.dashboard_buttons_activity() }
 
 public let dashboardCellTitleLabelStyle =
@@ -89,7 +89,7 @@ public let dashboardLastUpdatePublishedAtLabelStyle =
   UILabel.lens.font .~ .ksr_caption1()
     <> UILabel.lens.textColor .~ .ksr_text_navy_500
 
-public let dashboardMessagesButtonStyle = UIButton.lens.titleText(forState: .Normal)
+public let dashboardMessagesButtonStyle = UIButton.lens.title(forState: .Normal)
   %~ { _ in  Strings.dashboard_buttons_messages() }
 
 public let dashboardReferrersPledgePercentLabelStyle =
@@ -97,7 +97,7 @@ public let dashboardReferrersPledgePercentLabelStyle =
   <> UILabel.lens.font .~ .ksr_footnote()
 
 public let dashboardReferrersShowMoreButtonStyle = dashboardGreenTextBorderButtonStyle
-  <> UIButton.lens.titleText(forState: .Normal) %~ { _ in
+  <> UIButton.lens.title(forState: .Normal) %~ { _ in
     Strings.dashboard_graphs_referrers_view_more_referrer_stats()
   }
 
@@ -109,7 +109,7 @@ public let dashboardReferrersTitleLabelStyle = dashboardCellTitleLabelStyle
   <> UILabel.lens.text %~ { _ in Strings.dashboard_graphs_referrers_title_referrers() }
 
 public let postUpdateButtonStyle = greenButtonStyle
-  <> UIButton.lens.titleText(forState: .Normal) %~ { _ in Strings.dashboard_buttons_post_update() }
+  <> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.dashboard_buttons_post_update() }
 
 public let dashboardRewardTitleLabelStyle = dashboardCellTitleLabelStyle
     <> UILabel.lens.text %~ { _ in Strings.dashboard_graphs_rewards_title_rewards() }
@@ -122,13 +122,13 @@ public let dashboardRewardRowTitleButtonStyle = textOnlyButtonStyle
 public let dashboardRewardSeeAllButtonStyle = textOnlyButtonStyle
   <> UIButton.lens.titleLabel.font .~ .ksr_footnote()
   <> UIButton.lens.contentEdgeInsets .~ .init(topBottom: 12.0, leftRight: 0.0)
-  <> UIButton.lens.titleText(forState: .Normal) %~ { _ in
+  <> UIButton.lens.title(forState: .Normal) %~ { _ in
     Strings.dashboard_graphs_rewards_view_more_reward_stats()
   }
   <> UIButton.lens.titleColor(forState: .Normal) .~ .ksr_navy_700
 
 public let dashboardShareButtonStyle = neutralButtonStyle
-  <> UIButton.lens.titleText(forState: .Normal) %~ { _ in Strings.dashboard_buttons_share() }
+  <> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.dashboard_buttons_share() }
   <> UIButton.lens.contentEdgeInsets .~ .init(topBottom: 12.0, leftRight: 32.0)
 
 public let dashboardReferrersCumulativeStackViewStyle =
@@ -177,8 +177,8 @@ public let updateTitleTextFieldStyle = formFieldStyle
   <> UITextField.lens.returnKeyType .~ .Next
 
 public let updateBackersOnlyButtonStyle =
-  UIButton.lens.titleText(forState: .Normal) %~ { _ in Strings.dashboard_post_update_compose_public_label() }
-    <> UIButton.lens.titleText(forState: .Selected)
+  UIButton.lens.title(forState: .Normal) %~ { _ in Strings.dashboard_post_update_compose_public_label() }
+    <> UIButton.lens.title(forState: .Selected)
       %~ { _ in Strings.dashboard_post_update_compose_private_label() }
 
 public let updateAttachmentsStackViewStyle = UIStackView.lens.alignment .~ .LastBaseline
@@ -194,5 +194,5 @@ public let updateBodyTextViewStyle = UITextView.lens.backgroundColor .~ .clearCo
 
 public let updateAddAttachmentButtonStyle =
   UIButton.lens.contentEdgeInsets .~ .init(topBottom: 12.0, leftRight: 0.0)
-    <> UIButton.lens.titleText(forState: .Normal)
+    <> UIButton.lens.title(forState: .Normal)
       %~ { _ in Strings.dashboard_post_update_compose_attachment_buttons_add_attachment() }

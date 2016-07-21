@@ -7,7 +7,7 @@ public let activitySurveyLabelStyle =
     <> UILabel.lens.textAlignment .~ .Center
 
 public let activityRespondNowButtonStyle = blackButtonStyle
-  <> UIButton.lens.titleText(forState: .Normal) %~ { _ in
+  <> UIButton.lens.title(forState: .Normal) %~ { _ in
     Strings.discovery_survey_button_respond_now()
 }
 

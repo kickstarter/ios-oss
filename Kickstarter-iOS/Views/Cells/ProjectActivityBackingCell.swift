@@ -111,7 +111,7 @@ internal final class ProjectActivityBackingCell: UITableViewCell, ValueCell {
 
     self.pledgeInfoButton
       |> projectActivityFooterButton
-      |> UIButton.lens.titleText(forState: .Normal) %~ { _ in Strings.dashboard_activity_pledge_info() }
+      |> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.dashboard_activity_pledge_info() }
 
     self.previousPledgeAmountLabel
       |> UILabel.lens.font .~ .ksr_callout(size: 24)
@@ -121,6 +121,6 @@ internal final class ProjectActivityBackingCell: UITableViewCell, ValueCell {
 
     self.sendMessageButton
       |> projectActivityFooterButton
-      |> UIButton.lens.titleText(forState: .Normal) %~ { _ in Strings.dashboard_activity_send_message() }
+      |> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.dashboard_activity_send_message() }
   }
 }

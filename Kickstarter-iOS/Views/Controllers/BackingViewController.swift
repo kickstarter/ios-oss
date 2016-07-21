@@ -53,7 +53,7 @@ internal final class BackingViewController: UIViewController {
     self.backerShippingDescriptionLabel |> UILabel.lens.font .~ .ksr_body()
 
     self.messageCreatorButton
-      |> UIButton.lens.titleText(forState: .Normal) %~ { _ in Strings.social_message_creator() }
+      |> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.social_message_creator() }
       |> greenButtonStyle
 
     self.pledgedLabel
@@ -77,7 +77,7 @@ internal final class BackingViewController: UIViewController {
     self.shippingSeperatorView |> separatorStyle
 
     self.viewMessagesButton
-      |> UIButton.lens.titleText(forState: .Normal) %~ { _ in Strings.backer_modal_view_messages() }
+      |> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.backer_modal_view_messages() }
       |> neutralButtonStyle
   }
 

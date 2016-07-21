@@ -10,7 +10,7 @@ public let discoveryOnboardingSignUpButtonStyle = baseButtonStyle
   <> UIButton.lens.backgroundColor(forState: .Highlighted) .~ .ksr_navy_200
   <> UIButton.lens.layer.borderColor .~ UIColor.blackColor().CGColor
   <> UIButton.lens.layer.borderWidth .~ 1.0
-  <> UIButton.lens.titleText(forState: .Normal) %~ { _ in
+  <> UIButton.lens.title(forState: .Normal) %~ { _ in
     Strings.discovery_onboarding_buttons_signup_or_login()
 }
 
@@ -47,7 +47,7 @@ public func discoveryPagerSortButtonStyle <B: UIButtonProtocol> (sort sort: Disc
         <> B.lens.accessibilityLabel %~ { _ in "Sort by \(sortString)" }
         <> B.lens.accessibilityHint %~ { _ in "Changes sort" }
         <> B.lens.contentEdgeInsets .~ .init(topBottom: 0.0, leftRight: 16.0)
-        <> B.lens.titleText(forState: .Normal) .~ sortString
+        <> B.lens.title(forState: .Normal) .~ sortString
 }
 
 public let discoveryProjectCellStyle =

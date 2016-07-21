@@ -14,11 +14,11 @@ let rootStackView = UIStackView(frame: child.view.bounds)
   |> UIStackView.lens.layoutMargins .~ .init(all: 16)
 child.view.addSubview(rootStackView)
 
-let positiveButton = greenButtonStyle <> UIButton.lens.titleText(forState: .Normal) .~ "Positive button"
-let neutralButton  = neutralButtonStyle  <> UIButton.lens.titleText(forState: .Normal) .~ "Neutral button"
-let borderButton   = borderButtonStyle   <> UIButton.lens.titleText(forState: .Normal) .~ "Border button"
-let blackButton    = blackButtonStyle    <> UIButton.lens.titleText(forState: .Normal) .~ "Black button"
-let textOnlyButton = textOnlyButtonStyle <> UIButton.lens.titleText(forState: .Normal) .~ "Text only button"
+let positiveButton = greenButtonStyle <> UIButton.lens.title(forState: .Normal) .~ "Positive button"
+let neutralButton  = neutralButtonStyle  <> UIButton.lens.title(forState: .Normal) .~ "Neutral button"
+let borderButton   = borderButtonStyle   <> UIButton.lens.title(forState: .Normal) .~ "Border button"
+let blackButton    = blackButtonStyle    <> UIButton.lens.title(forState: .Normal) .~ "Black button"
+let textOnlyButton = textOnlyButtonStyle <> UIButton.lens.title(forState: .Normal) .~ "Text only button"
 
 func disabled <C: UIControlProtocol> () -> (C -> C) {
   return C.lens.enabled .~ false
