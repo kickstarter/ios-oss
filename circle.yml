@@ -10,6 +10,9 @@ dependencies:
     - instruments -s devices
     - xcodebuild -showsdks
 test:
+  pre:
+    - xcrun instruments -w '547B1B63-3F66-4E5B-8001-F78F2F1CDEA7' || true
+    - sleep 15
   override:
     - set -o pipefail &&
       swiftlint lint --strict --reporter json |
