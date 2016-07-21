@@ -16,7 +16,7 @@ public protocol ProfileViewModelInputs {
   func settingsButtonTapped()
 
   /// Call when the view will appear.
-  func viewWillAppear()
+  func viewWillAppear(animated: Bool)
 
   /// Call when a new row is displayed.
   func willDisplayRow(row: Int, outOf totalRows: Int)
@@ -49,7 +49,10 @@ public protocol ProfileViewModelType {
 
 public final class ProfileViewModel: ProfileViewModelType, ProfileViewModelInputs, ProfileViewModelOutputs {
   public init() {
-    let requestFirstPageWith = Signal.merge(viewWillAppearProperty.signal.take(1), refreshProperty.signal)
+    let requestFirstPageWith = Signal.merge(
+      viewWillAppearProperty.signal.ignoreValues().take(1),
+      refreshProperty.signal
+      )
       .map {
         DiscoveryParams.defaults
           |> DiscoveryParams.lens.backed .~ true
@@ -75,7 +78,7 @@ public final class ProfileViewModel: ProfileViewModelType, ProfileViewModelInput
     self.endRefreshing = isLoading.filter(isFalse).ignoreValues()
 
     self.user = viewWillAppearProperty.signal
-      .switchMap {
+      .switchMap { _ in
         AppEnvironment.current.apiService.fetchUserSelf()
           .prefix(SignalProducer(values: [AppEnvironment.current.currentUser].compact()))
           .demoteErrors()
@@ -88,8 +91,8 @@ public final class ProfileViewModel: ProfileViewModelType, ProfileViewModelInput
     self.goToProject = projectTappedProperty.signal.ignoreNil()
       .map { ($0, RefTag.users) }
 
-    self.viewWillAppearProperty.signal
-      .observeNext { AppEnvironment.current.koala.trackProfileView() }
+    self.viewWillAppearProperty.signal.filter(isFalse)
+      .observeNext { _ in AppEnvironment.current.koala.trackProfileView() }
   }
 
   private let projectTappedProperty = MutableProperty<Project?>(nil)
@@ -107,9 +110,9 @@ public final class ProfileViewModel: ProfileViewModelType, ProfileViewModelInput
     self.settingsButtonTappedProperty.value = ()
   }
 
-  private let viewWillAppearProperty = MutableProperty()
-  public func viewWillAppear() {
-    self.viewWillAppearProperty.value = ()
+  private let viewWillAppearProperty = MutableProperty(false)
+  public func viewWillAppear(animated: Bool) {
+    self.viewWillAppearProperty.value = animated
   }
 
   private let willDisplayRowProperty = MutableProperty<(row: Int, total: Int)?>(nil)

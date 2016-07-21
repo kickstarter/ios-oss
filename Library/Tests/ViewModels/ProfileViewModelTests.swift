@@ -40,11 +40,11 @@ internal final class ProfileViewModelTests: TestCase {
     self.goToRefTag.assertValues([.users], "RefTag =users emitted.")
   }
 
-  func testUserWithBackedProjects() {
+  func testUserWithBackedProjectsWithProfileViewTracking() {
     let currentUser = User.template
 
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: currentUser))
-    self.vm.inputs.viewWillAppear()
+    self.vm.inputs.viewWillAppear(false)
     self.scheduler.advance()
 
     self.user.assertValues([currentUser, currentUser], "Current user immediately emmitted and refreshed.")
@@ -54,13 +54,42 @@ internal final class ProfileViewModelTests: TestCase {
     XCTAssertEqual(["Profile View My"], trackingClient.events)
   }
 
-  func testUserWithNoProjects() {
+  func testUserWithBackedProjectsWithoutProfileViewTracking() {
+    let currentUser = User.template
+
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: currentUser))
+    self.vm.inputs.viewWillAppear(true)
+    self.scheduler.advance()
+
+    self.user.assertValues([currentUser, currentUser], "Current user immediately emmitted and refreshed.")
+    self.hasBackedProjects.assertValues([true])
+    self.showEmptyState.assertValues([false])
+
+    XCTAssertEqual([], trackingClient.events)
+  }
+
+  func testUserWithNoProjectsWithViewWillAppearAnimatedFalse() {
     let response = .template |> DiscoveryEnvelope.lens.projects .~ []
 
     withEnvironment(apiService: MockService(fetchDiscoveryResponse: response)) {
       AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
 
-      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.viewWillAppear(false)
+
+      self.scheduler.advance()
+
+      self.hasBackedProjects.assertValues([false])
+      self.showEmptyState.assertValues([true], "Empty state is shown for user with 0 backed projects.")
+    }
+  }
+
+  func testUserWithNoProjectsWithViewWillAppearAnimatedTrue() {
+    let response = .template |> DiscoveryEnvelope.lens.projects .~ []
+
+    withEnvironment(apiService: MockService(fetchDiscoveryResponse: response)) {
+      AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
+
+      self.vm.inputs.viewWillAppear(true)
 
       self.scheduler.advance()
 

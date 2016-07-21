@@ -22,7 +22,7 @@ internal final class ProfileViewController: UICollectionViewController {
 
   internal override func viewWillAppear(animated: Bool) {
     super.viewWillAppear(animated)
-    self.viewModel.inputs.viewWillAppear()
+    self.viewModel.inputs.viewWillAppear(animated)
   }
 
   internal override func bindViewModel() {
