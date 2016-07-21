@@ -55,19 +55,17 @@ final class RootViewModelTests: TestCase {
       "Show the logged in tabs."
     )
 
-    withEnvironment(apiService: MockService(fetchProjectsResponse: [.template])) {
-      AppEnvironment.updateCurrentUser(User.template |> User.lens.stats.createdProjectsCount .~ 1)
-      vm.inputs.currentUserUpdated()
+    AppEnvironment.updateCurrentUser(.template |> User.lens.stats.memberProjectsCount .~ 1)
+    vm.inputs.currentUserUpdated()
 
-      viewControllerNames.assertValues(
-        [
-          ["Discovery", "Search", "Activities", "LoginTout"],
-          ["Discovery", "Search", "Activities", "Profile"],
-          ["Discovery", "Search", "Activities", "Dashboard", "Profile"]
-        ],
-        "Show the creator dashboard tab."
-      )
-    }
+    viewControllerNames.assertValues(
+      [
+        ["Discovery", "Search", "Activities", "LoginTout"],
+        ["Discovery", "Search", "Activities", "Profile"],
+        ["Discovery", "Search", "Activities", "Dashboard", "Profile"]
+      ],
+      "Show the creator dashboard tab."
+    )
 
     AppEnvironment.logout()
     vm.inputs.userSessionEnded()
@@ -81,6 +79,20 @@ final class RootViewModelTests: TestCase {
       ],
       "Show the logged out tabs."
     )
+  }
+
+  func testViewControllersDontOverEmit() {
+    let viewControllerNames = TestObserver<[String], NoError>()
+    vm.outputs.setViewControllers.map(extractRootNames)
+      .observe(viewControllerNames.observer)
+
+    self.vm.inputs.viewDidLoad()
+
+    self.viewControllerNames.assertValueCount(1)
+
+    self.vm.inputs.currentUserUpdated()
+
+    self.viewControllerNames.assertValueCount(1)
   }
 
   func testSelectedIndex() {

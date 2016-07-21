@@ -84,16 +84,9 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
       )
       .map { AppEnvironment.current.currentUser }
 
-    let userState = currentUser
-      .switchMap { currentUser -> SignalProducer<(isLoggedIn: Bool, isMember: Bool), NoError> in
-        if currentUser == nil {
-          return .init(value: (false, false))
-        }
-
-        return AppEnvironment.current.apiService.fetchProjects(member: true)
-          .demoteErrors()
-          .map { env in (isLoggedIn: currentUser != nil, isMember: !env.projects.isEmpty) }
-    }
+    let userState: Signal<(isLoggedIn: Bool, isMember: Bool), NoError> = currentUser
+      .map { ($0 != nil, ($0?.stats.memberProjectsCount ?? 0) > 0) }
+      .skipRepeats(==)
 
     let standardTabs = self.viewDidLoadProperty.signal
       .take(1)
