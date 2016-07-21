@@ -25,7 +25,7 @@ public final class CountBadgeView: UIView {
 
     self
       |> roundedStyle(cornerRadius: floor(self.bounds.size.height / 2.0))
-      |> CountBadgeView.lens.backgroundColor .~ .ksr_navy_600
+      |> CountBadgeView.lens.backgroundColor .~ .ksr_navy_300
       |> CountBadgeView.lens.layoutMargins .~ .init(topBottom: 4.0, leftRight: 8.0)
       |> CountBadgeView.lens.contentHuggingPriorityForAxis(.Horizontal) .~ required
       |> CountBadgeView.lens.contentCompressionResistancePriorityForAxis(.Horizontal) .~ required
@@ -33,7 +33,7 @@ public final class CountBadgeView: UIView {
 
     self.label
       |> UILabel.lens.font .~ .ksr_footnote()
-      |> UILabel.lens.textColor .~ .whiteColor()
+      |> UILabel.lens.textColor .~ .ksr_text_navy_700
       |> UILabel.lens.contentHuggingPriorityForAxis(.Horizontal) .~ required
       |> UILabel.lens.contentCompressionResistancePriorityForAxis(.Horizontal) .~ required
       |> UILabel.lens.translatesAutoresizingMaskIntoConstraints .~ false

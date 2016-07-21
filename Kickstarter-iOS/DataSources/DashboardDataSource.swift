@@ -21,10 +21,10 @@ internal final class DashboardDataSource: ValueCellDataSource {
   }
 
   internal func load(fundingDateStats stats: [ProjectStatsEnvelope.FundingDateStats], project: Project) {
-    self.appendRow(
-      value: (stats, project),
+    self.set(
+      values: [(stats, project)],
       cellClass: DashboardFundingCell.self,
-      toSection: Section.FundingProgress.rawValue
+      inSection: Section.FundingProgress.rawValue
     )
   }
 

@@ -9,25 +9,45 @@ import XCTest
 
 internal final class DashboardActionCellViewModelTests: TestCase {
   private let vm = DashboardActionCellViewModel()
+  private let activityButtonAccessibilityLabel = TestObserver<String, NoError>()
   private let goToActivity = TestObserver<Project, NoError>()
   private let goToMessages = TestObserver<Project, NoError>()
   private let goToPostUpdate = TestObserver<Project, NoError>()
   private let lastUpdatePublishedAt = TestObserver<String, NoError>()
   private let lastUpdatePublishedLabelHidden = TestObserver<Bool, NoError>()
+  private let messagesButtonAccessibilityLabel = TestObserver<String, NoError>()
   private let messagesRowHidden = TestObserver<Bool, NoError>()
+  private let postUpdateButtonAccessibilityValue = TestObserver<String, NoError>()
   private let postUpdateButtonHidden = TestObserver<Bool, NoError>()
-  private let showShareSheet = TestObserver<Project, NoError>()
 
   internal override func setUp() {
     super.setUp()
+    self.vm.outputs.activityButtonAccessibilityLabel.observe(self.activityButtonAccessibilityLabel.observer)
     self.vm.outputs.goToActivity.observe(self.goToActivity.observer)
     self.vm.outputs.goToMessages.observe(self.goToMessages.observer)
     self.vm.outputs.goToPostUpdate.observe(self.goToPostUpdate.observer)
     self.vm.outputs.lastUpdatePublishedAt.observe(self.lastUpdatePublishedAt.observer)
     self.vm.outputs.lastUpdatePublishedLabelHidden.observe(self.lastUpdatePublishedLabelHidden.observer)
+    self.vm.outputs.messagesButtonAccessibilityLabel.observe(self.messagesButtonAccessibilityLabel.observer)
     self.vm.outputs.messagesRowHidden.observe(self.messagesRowHidden.observer)
+    self.vm.outputs.postUpdateButtonAccessibilityValue
+      .observe(self.postUpdateButtonAccessibilityValue.observer)
     self.vm.outputs.postUpdateButtonHidden.observe(self.postUpdateButtonHidden.observer)
-    self.vm.outputs.showShareSheet.observe(self.showShareSheet.observer)
+  }
+
+  func testAccessibilityElements() {
+    let date = NSDate().timeIntervalSince1970
+    let formattedDate = Format.date(secondsInUTC: date, timeStyle: .NoStyle)
+    let project = .template
+      |> Project.lens.memberData.lastUpdatePublishedAt .~ date
+      |> Project.lens.memberData.unreadMessagesCount .~ 10
+      |> Project.lens.memberData.unseenActivityCount .~ 7
+
+    self.vm.inputs.configureWith(project: project)
+
+    self.activityButtonAccessibilityLabel.assertValues(["Activity, 7 unseen"])
+    self.messagesButtonAccessibilityLabel.assertValues(["Messages, 10 unread"])
+    self.postUpdateButtonAccessibilityValue.assertValues(["Last updated on \(formattedDate)."])
   }
 
   func testGoToScreens() {
@@ -40,9 +60,6 @@ internal final class DashboardActionCellViewModelTests: TestCase {
     self.vm.inputs.messagesTapped()
     self.goToMessages.assertValues([project], "Go to messages screen.")
 
-    self.vm.inputs.shareTapped()
-    self.showShareSheet.assertValues([project], "Show share sheet.")
-
     self.vm.inputs.postUpdateTapped()
     self.goToPostUpdate.assertValues([project], "Go to post update screen.")
   }
@@ -50,7 +67,7 @@ internal final class DashboardActionCellViewModelTests: TestCase {
   func testLastUpdatePublishedAtEmits() {
     let date = NSDate().timeIntervalSince1970
     let formattedDate = Format.date(secondsInUTC: date, timeStyle: .NoStyle)
-    let project = Project.template
+    let project = .template
       |> Project.lens.memberData.lastUpdatePublishedAt .~ date
 
     self.vm.inputs.configureWith(project: project)

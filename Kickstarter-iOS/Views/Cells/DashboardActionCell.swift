@@ -13,9 +13,6 @@ internal protocol DashboardActionCellDelegate: class {
 
   /// Call with project value when navigating to post update screen.
   func goToPostUpdate(cell: DashboardActionCell?, project: Project)
-
-  /// Call with project value when should show share sheet.
-  func showShareSheet(cell: DashboardActionCell?, project: Project)
 }
 
 internal final class DashboardActionCell: UITableViewCell, ValueCell {
@@ -28,7 +25,7 @@ internal final class DashboardActionCell: UITableViewCell, ValueCell {
   @IBOutlet private weak var messagesButton: UIButton!
   @IBOutlet private weak var messagesRowStackView: UIStackView!
   @IBOutlet private weak var postUpdateButton: UIButton!
-  @IBOutlet private weak var shareButton: UIButton!
+  @IBOutlet private weak var separatorView: UIView!
   @IBOutlet private weak var unseenActivitiesCountView: CountBadgeView!
   @IBOutlet private weak var unreadMessagesCountView: CountBadgeView!
 
@@ -42,29 +39,33 @@ internal final class DashboardActionCell: UITableViewCell, ValueCell {
     self.postUpdateButton.addTarget(self,
                                     action: #selector(postUpdateTapped),
                                     forControlEvents: .TouchUpInside)
-
-    self.shareButton.addTarget(self, action: #selector(shareTapped), forControlEvents: .TouchUpInside)
   }
 
   internal override func bindStyles() {
     self |> baseTableViewCellStyle()
+    self.isAccessibilityElement = false
+    self.accessibilityElements = [self.activityButton, self.messagesButton, self.postUpdateButton]
     self.activityButton |> dashboardActivityButtonStyle
+    self.activityButton.accessibilityHint = "Opens activity."
     self.lastUpdatePublishedAtLabel |> dashboardLastUpdatePublishedAtLabelStyle
     self.messagesButton |> dashboardMessagesButtonStyle
+    self.messagesButton.accessibilityHint = "Opens messages."
     self.postUpdateButton |> postUpdateButtonStyle
-    self.shareButton |> dashboardShareButtonStyle
-    self.drillDownIndicatorImageViews.forEach { $0 |> UIImageView.lens.tintColor .~ .blackColor() }
+    self.postUpdateButton.accessibilityHint = "Opens editor."
+    self.separatorView |> separatorStyle
   }
 
   internal override func bindViewModel() {
+    self.activityButton.rac.accessibilityLabel = self.viewModel.outputs.activityButtonAccessibilityLabel
     self.lastUpdatePublishedAtLabel.rac.text = self.viewModel.outputs.lastUpdatePublishedAt
+    self.messagesButton.rac.accessibilityLabel = self.viewModel.outputs.messagesButtonAccessibilityLabel
     self.messagesRowStackView.rac.hidden = self.viewModel.outputs.messagesRowHidden
     self.unreadMessagesCountView.label.rac.text = self.viewModel.outputs.unreadMessagesCount
     self.unreadMessagesCountView.rac.hidden = self.viewModel.outputs.unreadMessagesCountHidden
     self.unseenActivitiesCountView.label.rac.text = self.viewModel.outputs.unseenActivitiesCount
     self.unseenActivitiesCountView.rac.hidden = self.viewModel.outputs.unseenActivitiesCountHidden
-
     self.lastUpdatePublishedAtLabel.rac.hidden = self.viewModel.outputs.lastUpdatePublishedLabelHidden
+    self.postUpdateButton.rac.accessibilityValue = self.viewModel.outputs.postUpdateButtonAccessibilityValue
     self.postUpdateButton.rac.hidden = self.viewModel.outputs.postUpdateButtonHidden
 
     self.viewModel.outputs.goToActivity
@@ -84,12 +85,6 @@ internal final class DashboardActionCell: UITableViewCell, ValueCell {
       .observeNext { [weak self] project in
         self?.delegate?.goToPostUpdate(self, project: project)
     }
-
-    self.viewModel.outputs.showShareSheet
-      .observeForUI()
-      .observeNext { [weak self] project in
-        self?.delegate?.showShareSheet(self, project: project)
-    }
   }
 
   internal func configureWith(value value: Project) {
@@ -106,9 +101,5 @@ internal final class DashboardActionCell: UITableViewCell, ValueCell {
 
   @objc private func postUpdateTapped() {
     self.viewModel.inputs.postUpdateTapped()
-  }
-
-  @objc private func shareTapped() {
-    self.viewModel.inputs.shareTapped()
   }
 }

@@ -58,6 +58,7 @@ public let formFieldStyle =
 
 public let separatorStyle =
   UIView.lens.backgroundColor .~ .ksr_navy_300
+  <> UIView.lens.accessibilityElementsHidden .~ true
 
 /**
  - parameter radius: The corner radius. This parameter is optional, and will use a default value if omitted.
