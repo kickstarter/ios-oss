@@ -106,6 +106,7 @@ internal final class ProfileViewController: UICollectionViewController {
     self.presentViewController(UINavigationController(rootViewController: vc),
                                animated: true,
                                completion: nil)
+
   }
 
   internal override func collectionView(collectionView: UICollectionView,

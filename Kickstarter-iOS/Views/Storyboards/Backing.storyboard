@@ -186,7 +186,7 @@ Also includes the pdf and all other digital downloads.</string>
                         <outlet property="backerPledgeStatusLabel" destination="wcy-zW-waG" id="ATS-3e-uX8"/>
                         <outlet property="backerRewardDescriptionLabel" destination="xKo-Vg-Yw0" id="Twb-Bt-Snv"/>
                         <outlet property="backerSequenceLabel" destination="RDN-tj-drx" id="QcR-ey-VLC"/>
-                        <outlet property="backerShippingCostLabel" destination="edh-dk-q3p" id="SD7-hi-klN"/>
+                        <outlet property="backerShippingAmountLabel" destination="edh-dk-q3p" id="9Wb-uu-tsD"/>
                         <outlet property="backerShippingDescriptionLabel" destination="JfE-js-EHM" id="LqI-sC-9zu"/>
                         <outlet property="messageCreatorButton" destination="emc-GM-WzE" id="qdi-LP-xUY"/>
                         <outlet property="pledgedLabel" destination="3BU-fE-wPG" id="Jzo-xV-9eN"/>
