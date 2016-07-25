@@ -22,6 +22,9 @@ public struct Environment {
   /// A type that stores a cached dictionary.
   public let cache: CacheProtocol
 
+  /// The user's calendar.
+  public let calendar: NSCalendar
+
   /// A type that holds configuration values we download from the server.
   public let config: Config?
 
@@ -79,6 +82,7 @@ public struct Environment {
     apiDelayInterval: NSTimeInterval = 0.0,
     assetImageGeneratorType: AssetImageGeneratorType.Type = AVAssetImageGenerator.self,
     cache: CacheProtocol = NSCache(),
+    calendar: NSCalendar = NSCalendar.currentCalendar(),
     config: Config? = nil,
     cookieStorage: NSHTTPCookieStorageType = NSHTTPCookieStorage.sharedHTTPCookieStorage(),
     countryCode: String = "US",
@@ -100,6 +104,7 @@ public struct Environment {
     self.apiDelayInterval = apiDelayInterval
     self.assetImageGeneratorType = assetImageGeneratorType
     self.cache = cache
+    self.calendar = calendar
     self.config = config
     self.cookieStorage = cookieStorage
     self.countryCode = countryCode
@@ -124,6 +129,7 @@ public struct Environment {
       self.apiDelayInterval,
       self.assetImageGeneratorType,
       self.cache,
+      self.calendar,
       self.config,
       self.cookieStorage,
       self.countryCode,

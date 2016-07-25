@@ -200,7 +200,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
   }
 
   func testGoToProject() {
-    let potdAt = NSCalendar.currentCalendar().startOfDayForDate(NSDate()).timeIntervalSince1970
+    let potdAt = AppEnvironment.current.calendar.startOfDayForDate(NSDate()).timeIntervalSince1970
     let project = Project.template
     let potd = project
       |> Project.lens.id %~ { $0 + 1 }

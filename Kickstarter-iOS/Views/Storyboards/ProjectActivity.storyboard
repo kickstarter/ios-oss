@@ -701,6 +701,39 @@
                                     <outlet property="updateTitleLabel" destination="NvF-N9-IQT" id="Bwq-6x-aqg"/>
                                 </connections>
                             </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Padding6" rowHeight="32" id="O6V-9D-3jW" userLabel="---padding---" customClass="StaticTableViewCell" customModule="Library">
+                                <rect key="frame" x="0.0" y="1274" width="400" height="32"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="O6V-9D-3jW" id="0ED-zu-lXL">
+                                    <rect key="frame" x="0.0" y="0.0" width="400" height="31"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                                <edgeInsets key="layoutMargins" top="16" left="16" bottom="16" right="16"/>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ProjectActivityDateCell" id="MOB-5u-2y7" userLabel="Date" customClass="ProjectActivityDateCell" customModule="Kickstarter_Framework" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="1306" width="400" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="MOB-5u-2y7" id="9tq-Jl-onk">
+                                    <rect key="frame" x="0.0" y="0.0" width="400" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="September 23, 2016" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jwZ-W1-4Pq">
+                                            <rect key="frame" x="8" y="8" width="156" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="jwZ-W1-4Pq" firstAttribute="leading" secondItem="9tq-Jl-onk" secondAttribute="leadingMargin" id="DE9-b9-q2j"/>
+                                        <constraint firstItem="jwZ-W1-4Pq" firstAttribute="top" secondItem="9tq-Jl-onk" secondAttribute="topMargin" id="Hrm-xk-KNE"/>
+                                        <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="jwZ-W1-4Pq" secondAttribute="bottom" id="hLZ-kk-RaC"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="dateLabel" destination="jwZ-W1-4Pq" id="4sT-3q-Pha"/>
+                                </connections>
+                            </tableViewCell>
                         </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="AEX-MI-2R0" id="rtV-Kj-r7l"/>

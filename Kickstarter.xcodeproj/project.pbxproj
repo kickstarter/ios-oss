@@ -182,6 +182,8 @@
 		9D2F4BE01D1AE02700B7C554 /* ProjectActivitySuccessCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D2F4BDF1D1AE02700B7C554 /* ProjectActivitySuccessCellViewModel.swift */; };
 		9D2F4BE11D1AE02700B7C554 /* ProjectActivitySuccessCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D2F4BDF1D1AE02700B7C554 /* ProjectActivitySuccessCellViewModel.swift */; };
 		9D50E9471D2EDBE50096DAEC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A7D1F9501C850B7C000D41D5 /* Assets.xcassets */; };
+		9D525F101D4158BA003CAE04 /* ProjectActivityDateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D525F0E1D4158AC003CAE04 /* ProjectActivityDateCell.swift */; };
+		9D525F121D417FD7003CAE04 /* ProjectActivitiesDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D525F111D417FD7003CAE04 /* ProjectActivitiesDataSourceTests.swift */; };
 		9D8772131D19E84E003A4E96 /* ProjectActivityLaunchCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8772121D19E84E003A4E96 /* ProjectActivityLaunchCellViewModel.swift */; };
 		9D8772141D19E84E003A4E96 /* ProjectActivityLaunchCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8772121D19E84E003A4E96 /* ProjectActivityLaunchCellViewModel.swift */; };
 		9D8772481D19E9D4003A4E96 /* ProjectActivityLaunchCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8772451D19E9C9003A4E96 /* ProjectActivityLaunchCellViewModelTests.swift */; };
@@ -1445,6 +1447,8 @@
 		9D25472C1D23135F0053844D /* ProjectActivityCommentCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectActivityCommentCellViewModel.swift; sourceTree = "<group>"; };
 		9D2F4BAA1D1ADF1800B7C554 /* ProjectActivitySuccessCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectActivitySuccessCellViewModelTests.swift; sourceTree = "<group>"; };
 		9D2F4BDF1D1AE02700B7C554 /* ProjectActivitySuccessCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectActivitySuccessCellViewModel.swift; sourceTree = "<group>"; };
+		9D525F0E1D4158AC003CAE04 /* ProjectActivityDateCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectActivityDateCell.swift; sourceTree = "<group>"; };
+		9D525F111D417FD7003CAE04 /* ProjectActivitiesDataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectActivitiesDataSourceTests.swift; sourceTree = "<group>"; };
 		9D8772121D19E84E003A4E96 /* ProjectActivityLaunchCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectActivityLaunchCellViewModel.swift; sourceTree = "<group>"; };
 		9D8772451D19E9C9003A4E96 /* ProjectActivityLaunchCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectActivityLaunchCellViewModelTests.swift; sourceTree = "<group>"; };
 		9D9F57CB1D131AF200CE81DE /* ProjectActivityBackingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectActivityBackingCell.swift; sourceTree = "<group>"; };
@@ -2000,6 +2004,7 @@
 				A757ED1F1D1C181D00A5C978 /* DiscoveryProjectsDataSourceTest.swift */,
 				0156B3841D107273000C4252 /* FindFriendsDataSourceTests.swift */,
 				599603FF1CE6286900E1B1EC /* ProfileDataSourceTests.swift */,
+				9D525F111D417FD7003CAE04 /* ProjectActivitiesDataSourceTests.swift */,
 				A7E8FAC11CD67F5C00DBF142 /* SearchDataSourceTests.swift */,
 				01F8ADCE1CEA58AE0026F220 /* ThanksProjectsDataSourceTests.swift */,
 			);
@@ -2151,6 +2156,7 @@
 				9D9F57CB1D131AF200CE81DE /* ProjectActivityBackingCell.swift */,
 				9D2546F71D23101E0053844D /* ProjectActivityCommentCell.swift */,
 				9D9F57CC1D131AF200CE81DE /* ProjectActivityEmptyStateCell.swift */,
+				9D525F0E1D4158AC003CAE04 /* ProjectActivityDateCell.swift */,
 				9D9F57CD1D131AF200CE81DE /* ProjectActivityLaunchCell.swift */,
 				9D9F57CE1D131AF200CE81DE /* ProjectActivityNegativeStateChangeCell.swift */,
 				9D9F57D01D131AF200CE81DE /* ProjectActivitySuccessCell.swift */,
@@ -4301,6 +4307,7 @@
 				A7CC143C1D00E74F00035C52 /* FindFriendsFacebookConnectCell.swift in Sources */,
 				014A8DEB1CE3C350003BF51C /* ThanksProjectsDataSource.swift in Sources */,
 				A74FFDF01CE3E33300C7BCB9 /* MessageDialogViewController.swift in Sources */,
+				9D525F101D4158BA003CAE04 /* ProjectActivityDateCell.swift in Sources */,
 				A72C3AAD1D00F99B0075227E /* DiscoveryFiltersViewController.swift in Sources */,
 				A7208C961CCBD76300E3DAB3 /* ActivityEmptyStateCell.swift in Sources */,
 				A762EFF31C8CC663005581A4 /* ActivityFriendFollowCell.swift in Sources */,
@@ -4476,6 +4483,7 @@
 				9DE6C0891C9B5FCA00FCC7B1 /* (null) in Sources */,
 				A7208CC41CCBDA7900E3DAB3 /* ActivitiesDataSourceTests.swift in Sources */,
 				A7DC83921C9DB9BC00BB2B44 /* (null) in Sources */,
+				9D525F121D417FD7003CAE04 /* ProjectActivitiesDataSourceTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

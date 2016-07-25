@@ -139,16 +139,18 @@ public enum Format {
 
    - parameter seconds: Seconds represention of the date as measured from UTC.
    - parameter thresholdInDays: (optional) Threshold.
+   - parameter env: An (optional) environment.
 
    - returns: A formatted string.
    */
   public static func duration(secondsInUTC seconds: NSTimeInterval,
-                                           thresholdInDays: Int = defaultThresholdInDays) -> String? {
+                                           thresholdInDays: Int = defaultThresholdInDays,
+                                           env: Environment = AppEnvironment.current) -> String? {
 
-    let components = NSCalendar.currentCalendar().components([.Day, .Hour, .Minute, .Second],
-                                                             fromDate: NSDate(),
-                                                             toDate: NSDate(timeIntervalSince1970: seconds),
-                                                             options: [])
+    let components = env.calendar.components([.Day, .Hour, .Minute, .Second],
+                                             fromDate: NSDate(),
+                                             toDate: NSDate(timeIntervalSince1970: seconds),
+                                             options: [])
     guard components.day < thresholdInDays else { return nil }
     if components.day > 0 {
       return Strings.dates_time_days(time_count: components.day)
@@ -166,18 +168,20 @@ public enum Format {
    - parameter secondsInUTC: Seconds represention of the date as measured from UTC.
    - parameter abbreviate: (optional) Whether or not to use the abbreviated style.
    - parameter threshold: (optional) Threshold.
+   - parameter env: An (optional) environment.
 
    - returns: A formatted string.
    */
   public static func relative(
     secondsInUTC seconds: NSTimeInterval,
                  abbreviate: Bool = false,
-                 threshold thresholdInDays: Int = defaultThresholdInDays) -> String {
+                 threshold thresholdInDays: Int = defaultThresholdInDays,
+                 env: Environment = AppEnvironment.current) -> String {
 
-    let components = NSCalendar.currentCalendar().components([.Day, .Hour, .Minute, .Second],
-                                                             fromDate: NSDate(timeIntervalSince1970: seconds),
-                                                             toDate: NSDate(),
-                                                             options: [])
+    let components = env.calendar.components([.Day, .Hour, .Minute, .Second],
+                                             fromDate: NSDate(timeIntervalSince1970: seconds),
+                                             toDate: NSDate(),
+                                             options: [])
 
     if abs(components.day) > thresholdInDays {
       return Format.date(secondsInUTC: seconds, dateStyle: .MediumStyle, timeStyle: .NoStyle)
