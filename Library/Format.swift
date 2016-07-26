@@ -135,32 +135,59 @@ public enum Format {
   }
 
   /**
-   Format a duration into a string.
+   Format a duration into a string, i.e. "20 days", "14 hours", etc...
 
    - parameter seconds: Seconds represention of the date as measured from UTC.
-   - parameter thresholdInDays: (optional) Threshold.
+   - parameter useToGo: If true, a localized "to go" will be appended to the unit so that it reads
+                        "20 days to go", etc.
+   - parameter abbreviate: Determines if an abbreviated version of the time unit string will be used.
    - parameter env: An (optional) environment.
 
-   - returns: A formatted string.
+   - returns: A pair of strings for the numeric time value and unit.
    */
-  public static func duration(secondsInUTC seconds: NSTimeInterval,
-                                           thresholdInDays: Int = defaultThresholdInDays,
-                                           env: Environment = AppEnvironment.current) -> String? {
+  // swiftlint:disable valid_docs
+  public static func duration(
+    secondsInUTC seconds: NSTimeInterval,
+                 abbreviate: Bool = false,
+                 useToGo: Bool = false,
+                 env: Environment = AppEnvironment.current) -> (time: String, unit: String) {
 
     let components = env.calendar.components([.Day, .Hour, .Minute, .Second],
                                              fromDate: NSDate(),
                                              toDate: NSDate(timeIntervalSince1970: seconds),
                                              options: [])
-    guard components.day < thresholdInDays else { return nil }
-    if components.day > 0 {
-      return Strings.dates_time_days(time_count: components.day)
-    } else if components.hour > 0 {
-      return Strings.dates_time_hours(time_count: components.hour)
+
+    let string: String
+    if components.day > 1 {
+      let format = abbreviate ? Strings.dates_time_days_abbreviated : Strings.dates_time_days
+      string = format(time_count: components.day)
+    } else if components.day == 1 || components.hour > 0 {
+      let format = abbreviate ? Strings.dates_time_hours_abbreviated : Strings.dates_time_hours
+      string = format(time_count: components.day * 24 + components.hour)
     } else if components.minute >= 0 && components.second >= 0 {
-      return Strings.dates_time_minutes(time_count: components.minute)
+      let format = abbreviate ? Strings.dates_time_minutes_abbreviated : Strings.dates_time_minutes
+      string = format(time_count: components.minute)
+    } else {
+      string = ""
     }
-    return nil
+
+    let split = string.componentsSeparatedByString(" ")
+    guard split.count >= 1 else { return ("", "") }
+
+    let result = (
+      time: split.first ?? "",
+      unit: split.suffixFrom(1).joinWithSeparator(" ")
+    )
+
+    if useToGo {
+      return (
+        time: result.time,
+        unit: Strings.discovery_baseball_card_time_left_to_go(time_left: result.unit)
+      )
+    }
+    return result
   }
+  // swiftlint:enable valid_docs
 
   /**
    Format a date into a relative string.

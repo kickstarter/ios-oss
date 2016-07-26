@@ -118,18 +118,11 @@ public final class DashboardFundingCellViewModel: DashboardFundingCellViewModelI
       .map { _, project in Format.currency(project.stats.pledged, country: project.country) }
 
     let timeRemaining = statsProject.map { _, project in
-      Format.duration(secondsInUTC: project.dates.deadline)
+      Format.duration(secondsInUTC: project.dates.deadline, useToGo: true)
     }
 
-    self.timeRemainingTitleText = timeRemaining.map {
-      $0?.componentsSeparatedByString(" ").first ?? "0"
-    }
-
-    self.timeRemainingSubtitleText = timeRemaining
-      .map { $0?.componentsSeparatedByString(" ").last ??
-        Strings.discovery_baseball_card_deadline_units_secs()
-      }
-      .map { Strings.discovery_baseball_card_time_left_to_go(time_left: $0) }
+    self.timeRemainingTitleText = timeRemaining.map(first)
+    self.timeRemainingSubtitleText = timeRemaining.map(second)
 
     // Make a native string for this.
     self.cellAccessibilityValue = statsProject.map { _, project in
@@ -141,9 +134,8 @@ public final class DashboardFundingCellViewModel: DashboardFundingCellViewModelI
 
       Strings.general_backer_count_backers(backer_count: project.stats.backersCount) + ", " +
 
-      Strings.discovery_baseball_card_time_left_to_go(
-        time_left: Format.duration(secondsInUTC: project.dates.deadline) ?? ""
-      )
+      Format.duration(secondsInUTC: project.dates.deadline, useToGo: true).time + " " +
+      Format.duration(secondsInUTC: project.dates.deadline, useToGo: true).unit
     }
     // swiftlint:enable function_body_length
   }

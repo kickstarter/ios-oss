@@ -92,7 +92,7 @@ internal final class DashboardFundingCellViewModelTests: TestCase {
 
     let project = .template
       |> Project.lens.stats.backersCount .~ 2_000
-      |> Project.lens.dates.deadline .~ NSDate().timeIntervalSince1970 + 60.0 * 60.0 * 24.0 * 1
+      |> Project.lens.dates.deadline .~ NSDate().timeIntervalSince1970 + 60.0 * 60.0 * 24.0
       |> Project.lens.stats.goal .~ 50_000
       |> Project.lens.stats.pledged .~ 5_000
 

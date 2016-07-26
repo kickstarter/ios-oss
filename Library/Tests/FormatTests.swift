@@ -240,19 +240,60 @@ final class FormatTests: XCTestCase {
   }
 
   func testDuration() {
-    let threshold = 30
-    let inMinutes = NSDate().timeIntervalSince1970 + 61 * 2
-    let inHours = NSDate().timeIntervalSince1970 + 60 * 61 * 2
-    let inDays = NSDate().timeIntervalSince1970 + 60 * 61 * 24 * 2
-    let pastThreshold = NSDate().timeIntervalSince1970 + 60 * 61 * 24 * Double(threshold + 1)
+    let thirtyMins = NSDate().timeIntervalSince1970 + 60 * 30 + 1
+    let oneDay = NSDate().timeIntervalSince1970 + 60 * 60 * 24 + 1
+    let oneAndAHalfDays = NSDate().timeIntervalSince1970 + 60 * 60 * 24 * 1.5 + 1
+    let sixDays = NSDate().timeIntervalSince1970 + 60 * 60 * 24 * 6 + 1
 
-    withEnvironment(locale: NSLocale(localeIdentifier: "en"), language: .en) {
-      XCTAssertEqual("2 minutes", Format.duration(secondsInUTC: inMinutes))
-      XCTAssertEqual("2 hours", Format.duration(secondsInUTC: inHours))
-      XCTAssertEqual("2 days", Format.duration(secondsInUTC: inDays))
-      XCTAssertNil(Format.duration(secondsInUTC: pastThreshold))
-      XCTAssertNil(Format.duration(secondsInUTC: pastThreshold, thresholdInDays: threshold))
-    }
+    XCTAssertEqual("30", Format.duration(secondsInUTC: thirtyMins).time)
+    XCTAssertEqual("minutes", Format.duration(secondsInUTC: thirtyMins).unit)
+
+    XCTAssertEqual("24", Format.duration(secondsInUTC: oneDay).time)
+    XCTAssertEqual("hours", Format.duration(secondsInUTC: oneDay).unit)
+
+    XCTAssertEqual("36", Format.duration(secondsInUTC: oneAndAHalfDays).time)
+    XCTAssertEqual("hours", Format.duration(secondsInUTC: oneAndAHalfDays).unit)
+
+    XCTAssertEqual("6", Format.duration(secondsInUTC: sixDays).time)
+    XCTAssertEqual("days", Format.duration(secondsInUTC: sixDays).unit)
+  }
+
+  func testDurationAbbreviated() {
+    let thirtyMins = NSDate().timeIntervalSince1970 + 60 * 30 + 1
+    let oneDay = NSDate().timeIntervalSince1970 + 60 * 60 * 24 + 1
+    let oneAndAHalfDays = NSDate().timeIntervalSince1970 + 60 * 60 * 24 * 1.5 + 1
+    let sixDays = NSDate().timeIntervalSince1970 + 60 * 60 * 24 * 6 + 1
+
+    XCTAssertEqual("30", Format.duration(secondsInUTC: thirtyMins, abbreviate: true).time)
+    XCTAssertEqual("mins", Format.duration(secondsInUTC: thirtyMins, abbreviate: true).unit)
+
+    XCTAssertEqual("24", Format.duration(secondsInUTC: oneDay, abbreviate: true).time)
+    XCTAssertEqual("hrs", Format.duration(secondsInUTC: oneDay, abbreviate: true).unit)
+
+    XCTAssertEqual("36", Format.duration(secondsInUTC: oneAndAHalfDays, abbreviate: true).time)
+    XCTAssertEqual("hrs", Format.duration(secondsInUTC: oneAndAHalfDays, abbreviate: true).unit)
+
+    XCTAssertEqual("6", Format.duration(secondsInUTC: sixDays, abbreviate: true).time)
+    XCTAssertEqual("days", Format.duration(secondsInUTC: sixDays, abbreviate: true).unit)
+  }
+
+  func testDurationUsingToGo() {
+    let thirtyMins = NSDate().timeIntervalSince1970 + 60 * 30 + 1
+    let oneDay = NSDate().timeIntervalSince1970 + 60 * 60 * 24 + 1
+    let oneAndAHalfDays = NSDate().timeIntervalSince1970 + 60 * 60 * 24 * 1.5 + 1
+    let sixDays = NSDate().timeIntervalSince1970 + 60 * 60 * 24 * 6 + 1
+
+    XCTAssertEqual("30", Format.duration(secondsInUTC: thirtyMins, useToGo: true).time)
+    XCTAssertEqual("minutes to go", Format.duration(secondsInUTC: thirtyMins, useToGo: true).unit)
+
+    XCTAssertEqual("24", Format.duration(secondsInUTC: oneDay, useToGo: true).time)
+    XCTAssertEqual("hours to go", Format.duration(secondsInUTC: oneDay, useToGo: true).unit)
+
+    XCTAssertEqual("36", Format.duration(secondsInUTC: oneAndAHalfDays, useToGo: true).time)
+    XCTAssertEqual("hours to go", Format.duration(secondsInUTC: oneAndAHalfDays, useToGo: true).unit)
+
+    XCTAssertEqual("6", Format.duration(secondsInUTC: sixDays, useToGo: true).time)
+    XCTAssertEqual("days to go", Format.duration(secondsInUTC: sixDays, useToGo: true).unit)
   }
 
   func testRelative() {
