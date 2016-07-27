@@ -139,6 +139,7 @@ public final class Koala {
   }
 
   public func trackLoginSuccess() {
+    self.track(event: "Logged In")
     self.track(event: "Login")
   }
 
@@ -163,6 +164,7 @@ public final class Koala {
   }
 
   public func trackFacebookLoginSuccess() {
+    self.track(event: "Logged In With Facebook")
     self.track(event: "Facebook Login")
   }
 

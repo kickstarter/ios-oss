@@ -87,14 +87,15 @@ final class FacebookConfirmationViewModelTests: TestCase {
     scheduler.advance()
 
     logIntoEnvironment.assertValueCount(1, "Account successfully created")
-    XCTAssertEqual(["Facebook Confirm", "Facebook Login"], trackingClient.events, "Koala login is tracked")
+    XCTAssertEqual(["Facebook Confirm", "Logged In With Facebook", "Facebook Login"], trackingClient.events,
+                   "Koala login is tracked")
 
     vm.inputs.environmentLoggedIn()
 
     postNotification.assertValues([CurrentUserNotifications.sessionStarted],
                                   "Login notification posted.")
 
-    XCTAssertEqual(["Facebook Confirm", "Facebook Login"], trackingClient.events)
+    XCTAssertEqual(["Facebook Confirm", "Logged In With Facebook", "Facebook Login"], trackingClient.events)
   }
 
   func testCreateNewAccount_withNewsletterToggle() {
@@ -106,8 +107,10 @@ final class FacebookConfirmationViewModelTests: TestCase {
     scheduler.advance()
 
     logIntoEnvironment.assertValueCount(1, "Account successfully created")
-    XCTAssertEqual(["Facebook Confirm", "Signup Newsletter Toggle", "Facebook Login"],
-                   trackingClient.events, "Koala login is tracked")
+    XCTAssertEqual(
+      ["Facebook Confirm", "Signup Newsletter Toggle", "Logged In With Facebook", "Facebook Login"],
+      trackingClient.events, "Koala login is tracked"
+    )
 
     vm.inputs.environmentLoggedIn()
 

@@ -64,7 +64,8 @@ final class LoginViewModelTests: TestCase {
 
     vm.inputs.loginButtonPressed()
     logIntoEnvironment.assertValueCount(1, "Log into environment.")
-    XCTAssertEqual(["User Login", "Viewed Login", "Login"], trackingClient.events, "Koala login is tracked")
+    XCTAssertEqual(["User Login", "Viewed Login", "Logged In", "Login"], trackingClient.events,
+                   "Koala login is tracked")
 
     vm.inputs.environmentLoggedIn()
     postNotificationName.assertValues([CurrentUserNotifications.sessionStarted],
@@ -169,7 +170,7 @@ final class LoginViewModelTests: TestCase {
     self.emailText.assertValues(["nativesquad@gmail.com"])
     self.passwordText.assertValues(["hello"])
     self.logIntoEnvironment.assertValueCount(1, "Log into environment.")
-    XCTAssertEqual(["User Login", "Viewed Login", "Login", "Attempting 1password Login"],
+    XCTAssertEqual(["User Login", "Viewed Login", "Logged In", "Login", "Attempting 1password Login"],
                    self.trackingClient.events,
                    "Koala login is tracked")
 

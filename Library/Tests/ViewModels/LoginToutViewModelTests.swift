@@ -105,7 +105,7 @@ final class LoginToutViewModelTests: TestCase {
     scheduler.advance()
 
     logIntoEnvironment.assertValueCount(1, "Log into environment.")
-    XCTAssertEqual(["Application Login or Signup", "Facebook Login"],
+    XCTAssertEqual(["Application Login or Signup", "Logged In With Facebook", "Facebook Login"],
                    trackingClient.events, "Koala login is tracked")
 
     vm.inputs.environmentLoggedIn()

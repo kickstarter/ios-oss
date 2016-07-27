@@ -83,7 +83,7 @@ final class TwoFactorViewModelTests: TestCase {
 
     isLoading.assertValues([true, false])
     logIntoEnvironment.assertValueCount(1, "Log into environment.")
-    XCTAssertEqual(["Two-factor Authentication Confirm View", "Login"], trackingClient.events)
+    XCTAssertEqual(["Two-factor Authentication Confirm View", "Logged In", "Login"], trackingClient.events)
 
     vm.inputs.environmentLoggedIn()
 
@@ -100,7 +100,8 @@ final class TwoFactorViewModelTests: TestCase {
 
     isLoading.assertValues([true, false])
     logIntoEnvironment.assertValueCount(1, "Log into environment.")
-    XCTAssertEqual(["Two-factor Authentication Confirm View", "Login"], trackingClient.events)
+    XCTAssertEqual(["Two-factor Authentication Confirm View", "Logged In With Facebook", "Facebook Login"],
+                   trackingClient.events)
 
     vm.inputs.environmentLoggedIn()
 

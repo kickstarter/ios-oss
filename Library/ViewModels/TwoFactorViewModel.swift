@@ -189,8 +189,13 @@ public final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMode
     self.viewWillAppearProperty.signal
       .observeNext { AppEnvironment.current.koala.trackTfa() }
 
-    self.logIntoEnvironment
-      .observeNext { _ in AppEnvironment.current.koala.trackLoginSuccess() }
+    self.facebookTokenProperty.signal.ignoreValues()
+      .takeWhen(self.logIntoEnvironment)
+      .observeNext { AppEnvironment.current.koala.trackFacebookLoginSuccess() }
+
+    self.passwordProperty.signal.ignoreValues()
+      .takeWhen(self.logIntoEnvironment)
+      .observeNext { AppEnvironment.current.koala.trackLoginSuccess() }
 
     self.resendPressedProperty.signal
       .observeNext { AppEnvironment.current.koala.trackTfaResendCode() }
