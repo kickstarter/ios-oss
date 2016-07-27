@@ -1916,6 +1916,23 @@ public enum Strings {
     )
   }
   /**
+   "Share project"
+
+   - **es**: "Compartir proyecto"
+   - **de**: "Share project"
+   - **fr**: "Share project"
+   - **it**: "Share project"
+   - **en**: "Share project"
+  */
+  public static func dashboard_accessibility_label_share_project() -> String {
+    return localizedString(
+      key: "dashboard.accessibility_label_share_project",
+      defaultValue: "Share project",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Backing info"
 
    - **es**: "Info sobre patrocinamiento"
@@ -3752,6 +3769,40 @@ public enum Strings {
     )
   }
   /**
+   "Closes list of projects."
+
+   - **es**: "Cierra la lista de proyectos."
+   - **de**: "Closes list of projects."
+   - **fr**: "Closes list of projects."
+   - **it**: "Closes list of projects."
+   - **en**: "Closes list of projects."
+  */
+  public static func dashboard_switcher_accessibility_label_closes_list_of_projects() -> String {
+    return localizedString(
+      key: "dashboard.switcher.accessibility_label_closes_list_of_projects",
+      defaultValue: "Closes list of projects.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Opens list of projects."
+
+   - **es**: "Abre una lista de proyectos."
+   - **de**: "Opens list of projects."
+   - **fr**: "Opens list of projects."
+   - **it**: "Opens list of projects."
+   - **en**: "Opens list of projects."
+  */
+  public static func dashboard_switcher_accessibility_label_opens_list_of_projects() -> String {
+    return localizedString(
+      key: "dashboard.switcher.accessibility_label_opens_list_of_projects",
+      defaultValue: "Opens list of projects.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Project #%{current_project_index}"
 
    - **es**: "Proyecto n° %{current_project_index}"
@@ -3766,6 +3817,23 @@ public enum Strings {
       defaultValue: "Project #%{current_project_index}",
       count: nil,
       substitutions: ["current_project_index": current_project_index]
+    )
+  }
+  /**
+   "Opens project."
+
+   - **es**: "Abre la página de proyecto."
+   - **de**: "Opens project."
+   - **fr**: "Opens project."
+   - **it**: "Opens project."
+   - **en**: "Opens project."
+  */
+  public static func dashboard_tout_accessibility_hint_opens_project() -> String {
+    return localizedString(
+      key: "dashboard.tout.accessibility_hint_opens_project",
+      defaultValue: "Opens project.",
+      count: nil,
+      substitutions: [:]
     )
   }
   /**

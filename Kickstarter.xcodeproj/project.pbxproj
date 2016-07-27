@@ -127,16 +127,12 @@
 		5993DEBF1CE296F000925494 /* ProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5993DEBD1CE296F000925494 /* ProfileHeaderView.swift */; };
 		599604001CE6286900E1B1EC /* ProfileDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 599603FF1CE6286900E1B1EC /* ProfileDataSourceTests.swift */; };
 		59B0DFC51D11AC850081D2DC /* DashboardDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B0DFC31D11AC850081D2DC /* DashboardDataSource.swift */; };
-		59B0DFFA1D11B0A20081D2DC /* DashboardContextCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B0DFF91D11B0A20081D2DC /* DashboardContextCellViewModel.swift */; };
-		59B0DFFB1D11B0A20081D2DC /* DashboardContextCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B0DFF91D11B0A20081D2DC /* DashboardContextCellViewModel.swift */; };
 		59B0DFFE1D11B2E50081D2DC /* DashboardContextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B0DFFC1D11B2E50081D2DC /* DashboardContextCell.swift */; };
 		59B0E0001D11EAC70081D2DC /* DashboardViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B0DFFF1D11EAC70081D2DC /* DashboardViewModelTests.swift */; };
 		59B0E0011D11EAC70081D2DC /* DashboardViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B0DFFF1D11EAC70081D2DC /* DashboardViewModelTests.swift */; };
 		59B0E0041D1203970081D2DC /* DashboardActionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B0E0021D1203970081D2DC /* DashboardActionCell.swift */; };
 		59B0E0061D1207070081D2DC /* DashboardActionCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B0E0051D1207070081D2DC /* DashboardActionCellViewModel.swift */; };
 		59B0E0071D1207070081D2DC /* DashboardActionCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B0E0051D1207070081D2DC /* DashboardActionCellViewModel.swift */; };
-		59B0E0091D12142B0081D2DC /* DashboardContextCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B0E0081D12142B0081D2DC /* DashboardContextCellViewModelTests.swift */; };
-		59B0E00A1D12142B0081D2DC /* DashboardContextCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B0E0081D12142B0081D2DC /* DashboardContextCellViewModelTests.swift */; };
 		59B0E00C1D12144A0081D2DC /* DashboardActionCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B0E00B1D12144A0081D2DC /* DashboardActionCellViewModelTests.swift */; };
 		59B0E00D1D12144A0081D2DC /* DashboardActionCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B0E00B1D12144A0081D2DC /* DashboardActionCellViewModelTests.swift */; };
 		59B0E07E1D147F340081D2DC /* DashboardStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B0E07D1D147F340081D2DC /* DashboardStyles.swift */; };
@@ -1428,12 +1424,10 @@
 		599603D21CE5220900E1B1EC /* ProfileEmptyStateCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileEmptyStateCell.swift; sourceTree = "<group>"; };
 		599603FF1CE6286900E1B1EC /* ProfileDataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileDataSourceTests.swift; sourceTree = "<group>"; };
 		59B0DFC31D11AC850081D2DC /* DashboardDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardDataSource.swift; sourceTree = "<group>"; };
-		59B0DFF91D11B0A20081D2DC /* DashboardContextCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardContextCellViewModel.swift; sourceTree = "<group>"; };
 		59B0DFFC1D11B2E50081D2DC /* DashboardContextCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardContextCell.swift; sourceTree = "<group>"; };
 		59B0DFFF1D11EAC70081D2DC /* DashboardViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardViewModelTests.swift; sourceTree = "<group>"; };
 		59B0E0021D1203970081D2DC /* DashboardActionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardActionCell.swift; sourceTree = "<group>"; };
 		59B0E0051D1207070081D2DC /* DashboardActionCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardActionCellViewModel.swift; sourceTree = "<group>"; };
-		59B0E0081D12142B0081D2DC /* DashboardContextCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardContextCellViewModelTests.swift; sourceTree = "<group>"; };
 		59B0E00B1D12144A0081D2DC /* DashboardActionCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardActionCellViewModelTests.swift; sourceTree = "<group>"; };
 		59B0E07D1D147F340081D2DC /* DashboardStyles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardStyles.swift; sourceTree = "<group>"; };
 		59B6B7091CCEBC1000953319 /* ProfileProjectCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileProjectCell.swift; sourceTree = "<group>"; };
@@ -3920,7 +3914,6 @@
 				018422BB1D2C483000CA7566 /* DashboardTitleViewViewModel.swift in Sources */,
 				A72AFFDA1CD7ED6B008F052B /* Keyboard.swift in Sources */,
 				9D25472D1D23135F0053844D /* ProjectActivityCommentCellViewModel.swift in Sources */,
-				59B0DFFA1D11B0A20081D2DC /* DashboardContextCellViewModel.swift in Sources */,
 				A755116A1C8642C3005355CF /* UILabel+LocalizedKey.swift in Sources */,
 				A755116B1C8642C3005355CF /* UILabel+SimpleHTML.swift in Sources */,
 				A721DF621C8CF503000CB97C /* TrackingClientType.swift in Sources */,
@@ -4047,7 +4040,6 @@
 				A7CC14321D00E70900035C52 /* FindFriendsViewModelTests.swift in Sources */,
 				A7A29F4A1CC3DE5F002BE580 /* ValueCellDataSourceTests.swift in Sources */,
 				A7830D2A1D005C3F00B5B6AE /* ThanksViewModelTests.swift in Sources */,
-				59B0E0091D12142B0081D2DC /* DashboardContextCellViewModelTests.swift in Sources */,
 				A7830D001D005C3F00B5B6AE /* CommentDialogViewModelTests.swift in Sources */,
 				0156B1FC1D074285000C4252 /* ActivityFriendFollowCellViewModelTests.swift in Sources */,
 				0156B4301D11A062000C4252 /* AlertError+Equatable.swift in Sources */,
@@ -4081,7 +4073,6 @@
 				A7CC13D61D00E6CF00035C52 /* FindFriendsFriendFollowCellViewModel.swift in Sources */,
 				A75511AC1C8647D9005355CF /* AppEnvironment.swift in Sources */,
 				A7F441BC1D005A9400FE6FC5 /* CommentDialogViewModel.swift in Sources */,
-				59B0DFFB1D11B0A20081D2DC /* DashboardContextCellViewModel.swift in Sources */,
 				018422BC1D2C483400CA7566 /* DashboardTitleViewViewModel.swift in Sources */,
 				A75511AD1C8647D9005355CF /* AssetImageGeneratorType.swift in Sources */,
 				A721DF6C1C8CFAF6000CB97C /* MockTrackingClient.swift in Sources */,
@@ -4245,7 +4236,6 @@
 				A75511F21C865321005355CF /* UILabel+SimpleHTMLTests.swift in Sources */,
 				A7830D291D005C3F00B5B6AE /* SearchViewModelTests.swift in Sources */,
 				A7830D171D005C3F00B5B6AE /* MessageThreadsViewModelTests.swift in Sources */,
-				59B0E00A1D12142B0081D2DC /* DashboardContextCellViewModelTests.swift in Sources */,
 				A71F59E61D240CAF00909BE3 /* RouterTests.swift in Sources */,
 				A7830D2D1D005C3F00B5B6AE /* TwoFactorViewModelTests.swift in Sources */,
 				9DC204ED1D1B5039003C1636 /* ProjectActivityNegativeStateChangeCellViewModelTests.swift in Sources */,

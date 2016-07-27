@@ -17,7 +17,8 @@ internal final class DashboardViewController: UITableViewController {
 
     self.tableView.dataSource = self.dataSource
 
-    let shareButton = shareBarButtonItemStyle
+    let shareButton = UIBarButtonItem()
+      |> shareBarButtonItemStyle
       |> UIBarButtonItem.lens.target .~ self
       |> UIBarButtonItem.lens.action .~ #selector(DashboardViewController.shareButtonTapped)
 
@@ -26,6 +27,12 @@ internal final class DashboardViewController: UITableViewController {
     self.titleView.delegate = self
 
     self.viewModel.inputs.viewDidLoad()
+  }
+
+  override func viewDidAppear(animated: Bool) {
+    super.viewDidAppear(animated)
+
+    self.viewModel.inputs.viewDidAppear()
   }
 
   override func bindStyles() {
@@ -100,6 +107,18 @@ internal final class DashboardViewController: UITableViewController {
         element?.updateData(data)
     }
 
+    self.viewModel.outputs.goToProject
+      .observeForUI()
+      .observeNext { [weak self] (project, reftag) in
+        self?.goToProject(project, refTag: reftag)
+    }
+
+    self.viewModel.outputs.focusScreenReaderOnTitleView
+      .observeForUI()
+      .observeNext { [weak self] in
+        self?.accessibilityFocusOnTitleView()
+    }
+
     self.shareViewModel.outputs.showShareSheet
       .observeForUI()
       .observeNext { [weak self] in self?.showShareSheet($0) }
@@ -111,8 +130,6 @@ internal final class DashboardViewController: UITableViewController {
                                    forRowAtIndexPath indexPath: NSIndexPath) {
     if let actionCell = cell as? DashboardActionCell {
       actionCell.delegate = self
-    } else if let contextCell = cell as? DashboardContextCell {
-      contextCell.delegate = self
     } else if let referrersCell = cell as? DashboardReferrersCell {
       referrersCell.delegate = self
     } else if let rewardsCell = cell as? DashboardRewardsCell {
@@ -128,6 +145,13 @@ internal final class DashboardViewController: UITableViewController {
 
     vc.configureWith(project: project)
     self.navigationController?.pushViewController(vc, animated: true)
+  }
+
+  internal override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    let cell = tableView.cellForRowAtIndexPath(indexPath)
+    if let _ = cell as? DashboardContextCell {
+      self.viewModel.inputs.projectContextCellTapped()
+    }
   }
 
   private func goToMessages(project: Project) {
@@ -192,6 +216,10 @@ internal final class DashboardViewController: UITableViewController {
     }
   }
 
+  private func accessibilityFocusOnTitleView() {
+    UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, self.titleView)
+  }
+
   @objc private func shareButtonTapped() {
     self.shareViewModel.inputs.shareButtonTapped()
   }
@@ -208,12 +236,6 @@ extension DashboardViewController: DashboardActionCellDelegate {
 
   internal func goToPostUpdate(cell: DashboardActionCell?, project: Project) {
     self.goToPostUpdate(project)
-  }
-}
-
-extension DashboardViewController: DashboardContextCellDelegate {
-  internal func goToProject(cell: DashboardContextCell?, project: Project, refTag: RefTag) {
-    self.goToProject(project, refTag: refTag)
   }
 }
 

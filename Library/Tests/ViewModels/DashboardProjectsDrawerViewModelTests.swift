@@ -13,6 +13,7 @@ internal final class DashboardProjectsDrawerViewModelTests: TestCase {
   let notifyDelegateToCloseDrawer = TestObserver<(), NoError>()
   let notifyDelegateDidAnimateOut = TestObserver<(), NoError>()
   let notifyDelegateProjectCellTapped = TestObserver<Project, NoError>()
+  let focusScreenReaderOnFirstProject = TestObserver<(), NoError>()
 
   let project1 = .template |> Project.lens.id .~ 4
   let project2 = .template |> Project.lens.id .~ 6
@@ -35,6 +36,7 @@ internal final class DashboardProjectsDrawerViewModelTests: TestCase {
     self.vm.outputs.notifyDelegateToCloseDrawer.observe(self.notifyDelegateToCloseDrawer.observer)
     self.vm.outputs.notifyDelegateDidAnimateOut.observe(self.notifyDelegateDidAnimateOut.observer)
     self.vm.outputs.notifyDelegateProjectCellTapped.observe(self.notifyDelegateProjectCellTapped.observer)
+    self.vm.outputs.focusScreenReaderOnFirstProject.observe(self.focusScreenReaderOnFirstProject.observer)
   }
 
   func testConfigureWith() {
@@ -55,25 +57,43 @@ internal final class DashboardProjectsDrawerViewModelTests: TestCase {
     self.projectsDrawerData.assertValues([data1, data2])
   }
 
-//  func testProjectTapped() {
-//    self.vm.inputs.configureWith(projects: [.template, project1], currentProjectIndex: 0)
-//    self.vm.inputs.viewDidLoad()
-//
-//    self.projectCellTapped.assertValueCount(0)
-//
-//    self.vm.inputs.projectCellTapped(project1)
-//
-//    self.projectCellTapped.assertValues([project1])
-//  }
-//
-//  func testBackgroundTapped() {
-//    self.vm.inputs.configureWith(projects: [.template, project1], currentProjectIndex: 0)
-//    self.vm.inputs.viewDidLoad()
-//
-//    self.backgroundTapped.assertValueCount(0)
-//
-//    self.vm.inputs.backgroundTapped()
-//
-//    self.backgroundTapped.assertValueCount(1)
-//  }
+  func testProjectTapped() {
+    self.vm.inputs.configureWith(data: data1)
+    self.vm.inputs.viewDidLoad()
+
+    self.notifyDelegateProjectCellTapped.assertValueCount(0)
+
+    self.vm.inputs.projectCellTapped(project1)
+
+    self.notifyDelegateProjectCellTapped.assertValues([project1])
+  }
+
+  func testAnimateOut_OnBackgroundTapped() {
+    self.vm.inputs.configureWith(data: data1)
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.animateInCompleted()
+
+    self.notifyDelegateToCloseDrawer.assertValueCount(0)
+
+    self.vm.inputs.backgroundTapped()
+
+    self.notifyDelegateToCloseDrawer.assertValueCount(1)
+    self.notifyDelegateDidAnimateOut.assertValueCount(0)
+
+    self.vm.inputs.animateOutCompleted()
+
+    self.notifyDelegateToCloseDrawer.assertValueCount(1, "Drawer close does not emit")
+    self.notifyDelegateDidAnimateOut.assertValueCount(1, "Notify delegate animate out complete emits")
+  }
+
+  func testAnimateIn_FocusOnFirstProject() {
+    self.vm.inputs.configureWith(data: data1)
+    self.vm.inputs.viewDidLoad()
+
+    self.focusScreenReaderOnFirstProject.assertValueCount(0)
+
+    self.vm.inputs.animateInCompleted()
+
+    self.focusScreenReaderOnFirstProject.assertValueCount(1)
+  }
 }

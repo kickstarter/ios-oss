@@ -110,6 +110,7 @@
 "creator_project_preview.subtitle.funding_canceled" = "Financiamiento cancelado";
 "creator_project_preview.subtitle.funding_unsuccessful_on_deadline" = "Financiamiento sin éxito el %{deadline}";
 "creator_project_preview.subtitle.project_suspended" = "Proyecto suspendido";
+"dashboard.accessibility_label_share_project" = "Compartir proyecto";
 "dashboard.activity.backing_info" = "Info sobre patrocinamiento";
 "dashboard.activity.no_reward_selected" = "No se seleccionó ninguna recompensa";
 "dashboard.activity.pledge_info" = "Info sobre contribución";
@@ -226,7 +227,10 @@
 "dashboard.post_update_button.subtitle.last_updated_on_date" = "Última actualización el %{date}.";
 "dashboard.post_update_button.subtitle.last_updated_on_date_relative_date" = "Última actualización el %{date} (%{relative_date}).";
 "dashboard.post_update_button.subtitle.you_have_not_posted_an_update_yet" = "Aún no has publicado ninguna actualización.";
+"dashboard.switcher.accessibility_label_closes_list_of_projects" = "Cierra la lista de proyectos.";
+"dashboard.switcher.accessibility_label_opens_list_of_projects" = "Abre una lista de proyectos.";
 "dashboard.switcher.project_number" = "Proyecto n° %{current_project_index}";
+"dashboard.tout.accessibility_hint_opens_project" = "Abre la página de proyecto.";
 "dashboard.tout.backers" = "patrocinadores";
 "dashboard.tout.pledged" = "contribuido";
 "dashboard.tout.remaining" = "restante";

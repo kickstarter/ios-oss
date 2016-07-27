@@ -5,6 +5,9 @@ import ReactiveCocoa
 import ReactiveExtensions
 
 public protocol DashboardProjectsDrawerViewModelInputs {
+  /// Call when the view has completed animating in.
+  func animateInCompleted()
+
   /// Call when the view has completed animating out.
   func animateOutCompleted()
 
@@ -22,6 +25,9 @@ public protocol DashboardProjectsDrawerViewModelInputs {
 }
 
 public protocol DashboardProjectsDrawerViewModelOutputs {
+  /// Emits when to shift screen reader focus on first project cell.
+  var focusScreenReaderOnFirstProject: Signal<(), NoError> { get }
+
   /// Emits projects to display in tableview.
   var projectsDrawerData: Signal<[ProjectsDrawerData], NoError> { get }
 
@@ -52,19 +58,22 @@ DashboardProjectsDrawerViewModelInputs, DashboardProjectsDrawerViewModelOutputs 
     self.notifyDelegateProjectCellTapped = self.projectCellTappedProperty.signal.ignoreNil()
 
     self.notifyDelegateDidAnimateOut = self.animateOutCompletedProperty.signal
+
+    self.focusScreenReaderOnFirstProject = self.animateInCompletedProperty.signal
   }
 
   public var inputs: DashboardProjectsDrawerViewModelInputs { return self }
   public var outputs: DashboardProjectsDrawerViewModelOutputs { return self }
 
+  public let focusScreenReaderOnFirstProject: Signal<(), NoError>
   public let projectsDrawerData: Signal<[ProjectsDrawerData], NoError>
   public let notifyDelegateDidAnimateOut: Signal<(), NoError>
   public var notifyDelegateToCloseDrawer: Signal<(), NoError>
   public let notifyDelegateProjectCellTapped: Signal<Project, NoError>
 
-  private let animateOutViewProperty = MutableProperty()
-  public func animateOutView() {
-    self.animateOutViewProperty.value = ()
+  private let animateInCompletedProperty = MutableProperty()
+  public func animateInCompleted() {
+    self.animateInCompletedProperty.value = ()
   }
   private let animateOutCompletedProperty = MutableProperty()
   public func animateOutCompleted() {

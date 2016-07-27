@@ -15,11 +15,11 @@ internal final class DashboardViewModelTests: TestCase {
   internal let referrerStats = TestObserver<[ProjectStatsEnvelope.ReferrerStats], NoError>()
   internal let rewardStats = TestObserver<[ProjectStatsEnvelope.RewardStats], NoError>()
   internal let videoStats = TestObserver<ProjectStatsEnvelope.VideoStats, NoError>()
-
   internal let animateOutProjectsDrawer = TestObserver<(), NoError>()
   internal let dismissProjectsDrawer = TestObserver<(), NoError>()
   internal let presentProjectsDrawer = TestObserver<[ProjectsDrawerData], NoError>()
   internal let updateTitleViewData = TestObserver<DashboardTitleViewData, NoError>()
+  internal let focusScreenReaderOnTitleView = TestObserver<(), NoError>()
 
   let project1 = Project.template
   let project2 = .template |> Project.lens.id .~ 4
@@ -34,11 +34,29 @@ internal final class DashboardViewModelTests: TestCase {
     self.vm.outputs.referrerData.map { _, _, stats in stats }.observe(self.referrerStats.observer)
     self.vm.outputs.rewardData.map { stats, _ in stats }.observe(self.rewardStats.observer)
     self.vm.outputs.videoStats.observe(self.videoStats.observer)
-
     self.vm.outputs.dismissProjectsDrawer.observe(self.dismissProjectsDrawer.observer)
     self.vm.outputs.presentProjectsDrawer.observe(self.presentProjectsDrawer.observer)
     self.vm.outputs.animateOutProjectsDrawer.observe(self.animateOutProjectsDrawer.observer)
     self.vm.outputs.updateTitleViewData.observe(self.updateTitleViewData.observer)
+    self.vm.outputs.focusScreenReaderOnTitleView.observe(self.focusScreenReaderOnTitleView.observer)
+  }
+
+  func testScreenReaderFocus() {
+    let projects = [Project.template]
+
+    withEnvironment(apiService: MockService(fetchProjectsResponse: projects)) {
+      self.vm.inputs.viewDidLoad()
+
+      self.focusScreenReaderOnTitleView.assertValueCount(0)
+
+      self.vm.inputs.viewDidAppear()
+
+      self.focusScreenReaderOnTitleView.assertValueCount(1)
+
+      self.vm.inputs.viewDidAppear()
+
+      self.focusScreenReaderOnTitleView.assertValueCount(2)
+    }
   }
 
   func testProject() {

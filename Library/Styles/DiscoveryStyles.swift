@@ -52,7 +52,8 @@ public func discoveryPagerSortButtonStyle <B: UIButtonProtocol> (sort sort: Disc
 
 public let discoveryProjectCellStyle =
   baseTableViewCellStyle()
-    <> UITableViewCell.lens.accessibilityHint .~ "Opens project."
+    <> UITableViewCell.lens.accessibilityHint .~ localizedString(key: "key.todo",
+                                                                 defaultValue: "Opens project.")
 
 private func string(forSort sort: DiscoveryParams.Sort) -> String {
   switch sort {

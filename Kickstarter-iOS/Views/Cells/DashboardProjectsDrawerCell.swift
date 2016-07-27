@@ -24,6 +24,13 @@ internal final class DashboardProjectsDrawerCell: UITableViewCell, ValueCell {
     self.projectNumLabel.rac.text = self.viewModel.outputs.projectNumberText
     self.projectNameLabel.rac.text = self.viewModel.outputs.projectNameText
     self.checkmarkImageView.rac.hidden = self.viewModel.outputs.isCheckmarkHidden
+
+    self.rac.accessibilityLabel = self.viewModel.outputs.cellAccessibilityLabel
+    self.rac.accessibilityValue = self.viewModel.outputs.cellAccessibilityValue
+
+    self
+      |> UITableViewCell.lens.isAccessibilityElement .~ true
+      |> UITableViewCell.lens.accessibilityTraits .~ UIAccessibilityTraitButton
   }
 
   internal override func bindStyles() {

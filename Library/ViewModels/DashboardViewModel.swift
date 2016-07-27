@@ -32,11 +32,14 @@ public protocol DashboardViewModelInputs {
   /// Call when the projects drawer has animated out.
   func dashboardProjectsDrawerDidAnimateOut()
 
-  /// Call when the project context is tapped.
-  func projectContextTapped(project: Project)
+  /// Call when the project context cell is tapped.
+  func projectContextCellTapped()
 
   /// Call when to show or hide the projects drawer.
   func showHideProjectsDrawer()
+
+  /// Call when the view did appear.
+  func viewDidAppear()
 
   /// Call when the view did load.
   func viewDidLoad()
@@ -49,10 +52,15 @@ public protocol DashboardViewModelOutputs {
   /// Emits when should dismiss projects drawer.
   var dismissProjectsDrawer: Signal<(), NoError> { get }
 
+  /// Emits when to focus the screen reader on the titleView.
+  var focusScreenReaderOnTitleView: Signal<(), NoError> { get }
+
   /// Emits the funding stats and project to be displayed in the funding cell.
   var fundingData: Signal<(funding: [ProjectStatsEnvelope.FundingDateStats],
                            project: Project), NoError> { get }
 
+  /// Emits when to go to the project page.
+  var goToProject: Signal<(Project, RefTag), NoError> { get }
 
   /// Emits when should present projects drawer with data to populate it.
   var presentProjectsDrawer: Signal<[ProjectsDrawerData], NoError> { get }
@@ -182,7 +190,14 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
 
     self.dismissProjectsDrawer = self.projectsDrawerDidAnimateOutProperty.signal
 
-    self.projectContextTappedProperty.signal.ignoreNil()
+    self.goToProject = selectedProject
+      .takeWhen(self.projectContextCellTappedProperty.signal)
+      .map { ($0, RefTag.dashboard) }
+
+    self.focusScreenReaderOnTitleView = self.viewDidAppearProperty.signal
+
+    selectedProject
+      .takeWhen(self.projectContextCellTappedProperty.signal)
       .observeNext { AppEnvironment.current.koala.trackDashboardProjectModalView(project: $0) }
 
     selectedProject
@@ -206,9 +221,9 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
   public func showHideProjectsDrawer() {
     self.showHideProjectsDrawerProperty.value = ()
   }
-  private let projectContextTappedProperty = MutableProperty<Project?>(nil)
-  public func projectContextTapped(project: Project) {
-    self.projectContextTappedProperty.value = project
+  private let projectContextCellTappedProperty = MutableProperty()
+  public func projectContextCellTapped() {
+    self.projectContextCellTappedProperty.value = ()
   }
   private let switchToProjectProperty = MutableProperty<Project?>(nil)
   public func dashboardProjectsDrawerSwitchToProject(project: Project) {
@@ -218,6 +233,10 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
   public func dashboardProjectsDrawerDidAnimateOut() {
     self.projectsDrawerDidAnimateOutProperty.value = ()
   }
+  private let viewDidAppearProperty = MutableProperty()
+  public func viewDidAppear() {
+    self.viewDidAppearProperty.value = ()
+  }
   private let viewDidLoadProperty = MutableProperty()
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
@@ -225,8 +244,10 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
 
   public let animateOutProjectsDrawer: Signal<(), NoError>
   public let dismissProjectsDrawer: Signal<(), NoError>
+  public let focusScreenReaderOnTitleView: Signal<(), NoError>
   public let fundingData: Signal<(funding: [ProjectStatsEnvelope.FundingDateStats],
     project: Project), NoError>
+  public let goToProject: Signal<(Project, RefTag), NoError>
   public let project: Signal<Project, NoError>
   public let presentProjectsDrawer: Signal<[ProjectsDrawerData], NoError>
   public let referrerData: Signal<(cumulative: ProjectStatsEnvelope.CumulativeStats, project: Project,

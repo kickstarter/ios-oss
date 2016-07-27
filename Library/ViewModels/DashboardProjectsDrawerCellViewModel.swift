@@ -10,6 +10,12 @@ public protocol DashboardProjectsDrawerCellViewModelInputs {
 }
 
 public protocol DashboardProjectsDrawerCellViewModelOutputs {
+  /// Emits label for accessibility.
+  var cellAccessibilityLabel: Signal<String, NoError> { get }
+
+  /// Emits value for accessibility.
+  var cellAccessibilityValue: Signal<String, NoError> { get }
+
   /// Emits whether should show checkmark or not.
   var isCheckmarkHidden: Signal<Bool, NoError> { get }
 
@@ -35,12 +41,18 @@ public final class DashboardProjectsDrawerCellViewModel: DashboardProjectsDrawer
       Strings.dashboard_switcher_project_number(current_project_index: "\($0 + 1)")
     }
 
-    self.isCheckmarkHidden = self.isCheckedProperty.signal.map(negate)
+    let isChecked = self.isCheckedProperty.signal
+    self.isCheckmarkHidden = isChecked.map(negate)
+
+    self.cellAccessibilityLabel = self.projectNameText
+    self.cellAccessibilityValue = isChecked.map { $0 ? "Selected" : "Unselected" }
   }
 
   public var inputs: DashboardProjectsDrawerCellViewModelInputs { return self }
   public var outputs: DashboardProjectsDrawerCellViewModelOutputs { return self }
 
+  public let cellAccessibilityLabel: Signal<String, NoError>
+  public let cellAccessibilityValue: Signal<String, NoError>
   public let projectNameText: Signal<String, NoError>
   public let projectNumberText: Signal<String, NoError>
   public let isCheckmarkHidden: Signal<Bool, NoError>

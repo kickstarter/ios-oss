@@ -13,6 +13,7 @@ internal final class DashboardTitleView: UIView {
   private let viewModel: DashboardTitleViewViewModelType = DashboardTitleViewViewModel()
 
   @IBOutlet private weak var titleButton: UIButton!
+  @IBOutlet private weak var titleLabel: UILabel!
   @IBOutlet private weak var arrowImageView: UIImageView!
 
   internal weak var delegate: DashboardTitleViewDelegate?
@@ -21,18 +22,22 @@ internal final class DashboardTitleView: UIView {
     super.awakeFromNib()
 
     self.titleButton
-      |> textOnlyButtonStyle
-      |> UIButton.lens.contentEdgeInsets %~ { insets in .init(topBottom: insets.top, leftRight: 0) }
-      |> UIButton.lens.titleColor(forState: .Normal) .~ .ksr_text_navy_600
-      |> UIButton.lens.titleColor(forState: .Highlighted) .~ .ksr_text_navy_900
+      |> UIView.lens.accessibilityLabel %~ { _ in Strings.tabbar_dashboard() }
+      |> UIView.lens.accessibilityTraits .~ UIAccessibilityTraitStaticText
+
+    self.titleButton.addTarget(self,
+                               action: #selector(titleButtonTapped),
+                               forControlEvents: .TouchUpInside)
+
+    self.titleLabel |> dashboardTitleViewTextStyle
 
     self.arrowImageView
       |> UIImageView.lens.hidden .~ true
-      |> UIImageView.lens.tintColor .~ .ksr_navy_600
+      |> UIImageView.lens.tintColor .~ .ksr_navy_700
 
-    self.titleButton.addTarget(self, action: #selector(titleButtonTapped), forControlEvents: .TouchUpInside)
-
-    self.titleButton.rac.title = self.viewModel.outputs.titleText
+    self.titleButton.rac.accessibilityLabel = self.viewModel.outputs.titleAccessibilityLabel
+    self.titleButton.rac.accessibilityHint = self.viewModel.outputs.titleAccessibilityHint
+    self.titleLabel.rac.text = self.viewModel.outputs.titleText
     self.titleButton.rac.enabled = self.viewModel.outputs.titleButtonIsEnabled
 
     self.viewModel.outputs.hideArrow
@@ -41,6 +46,9 @@ internal final class DashboardTitleView: UIView {
         guard let _self = self else { return }
         UIView.animateWithDuration(0.2) {
           _self.arrowImageView.hidden = hide
+        }
+        if !hide {
+          _self.titleButton |> UIView.lens.accessibilityTraits .~ UIAccessibilityTraitButton
         }
     }
 
@@ -54,6 +62,15 @@ internal final class DashboardTitleView: UIView {
       .observeForUI()
       .observeNext { [weak self] in
         self?.delegate?.dashboardTitleViewShowHideProjectsDrawer()
+    }
+
+    self.viewModel.outputs.titleButtonIsEnabled
+      .observeForUI()
+      .observeNext { [weak self] isEnabled in
+        guard let _titleLabel = self?.titleLabel else { return }
+        if isEnabled {
+          _titleLabel |> UILabel.lens.font .~ UIFont.ksr_footnote(size: 14.0).bolded
+        }
     }
   }
 
@@ -76,6 +93,6 @@ internal final class DashboardTitleView: UIView {
   }
 
   @objc private func titleButtonTapped() {
-    self.viewModel.inputs.titleTapped()
+    self.viewModel.inputs.titleButtonTapped()
   }
 }

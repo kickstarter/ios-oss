@@ -68,6 +68,12 @@ internal final class DashboardProjectsDrawerViewController: UITableViewControlle
       .observeNext { [weak self] project in
         self?.delegate?.dashboardProjectsDrawerCellDidTapProject(project)
     }
+
+    self.viewModel.outputs.focusScreenReaderOnFirstProject
+      .observeForUI()
+      .observeNext { [weak self] in
+        self?.accessibilityFocusOnFirstProject()
+    }
   }
 
   override func bindStyles() {
@@ -119,8 +125,22 @@ internal final class DashboardProjectsDrawerViewController: UITableViewControlle
                                options: .CurveEaseOut,
                                animations: {
       self.tableView.contentOffset = CGPoint(x: 0.0, y: 0.0)
-      }, completion: nil
+      }, completion: { _ in
+        self.viewModel.inputs.animateInCompleted()
+      }
     )
+  }
+
+  private func accessibilityFocusOnFirstProject() {
+    let cell = self.tableView.visibleCells.filter { $0 is DashboardProjectsDrawerCell }.first
+    if let cell = cell {
+      UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, cell)
+    }
+  }
+
+  override func accessibilityPerformEscape() -> Bool {
+    self.viewModel.inputs.backgroundTapped()
+    return true
   }
 
   @objc private func backgroundTapped() {

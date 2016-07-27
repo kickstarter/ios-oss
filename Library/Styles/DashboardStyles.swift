@@ -74,6 +74,7 @@ public let dashboardGrayTextBorderButtonStyle = borderButtonStyle
   <> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 12)
   <> UIButton.lens.titleColor(forState: .Normal) .~ .ksr_navy_600
   <> UIButton.lens.titleColor(forState: .Highlighted) .~ .ksr_grey_100
+  <> UIButton.lens.backgroundColor(forState: .Highlighted) .~ .ksr_navy_600
   <> UIButton.lens.layer.borderColor .~ UIColor.ksr_navy_300.CGColor
 
 public let dashboardGreenTextBorderButtonStyle = borderButtonStyle
@@ -147,6 +148,10 @@ public let dashboardStatsRowStackViewStyle =
     <> UIStackView.lens.distribution .~ .FillEqually
     <> UIStackView.lens.spacing .~ 15
     <> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+
+public let dashboardTitleViewTextStyle =
+  UILabel.lens.textColor .~ .ksr_text_navy_700
+  <> UILabel.lens.font .~ .ksr_footnote(size: 14.0)
 
 public let dashboardVideoCompletionPercentageLabelStyle =
   UILabel.lens.textColor .~ .ksr_navy_500

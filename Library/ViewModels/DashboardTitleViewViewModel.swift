@@ -8,8 +8,8 @@ public protocol DashboardTitleViewViewModelInputs {
   /// Call to update the data for the title.
   func updateData(data: DashboardTitleViewData)
 
-  /// Call when title is tapped.
-  func titleTapped()
+  /// Call when title button is tapped.
+  func titleButtonTapped()
 }
 
 public protocol DashboardTitleViewViewModelOutputs {
@@ -19,7 +19,13 @@ public protocol DashboardTitleViewViewModelOutputs {
   /// Emits when the delegate should show/hide the projects drawer when the title is tapped.
   var notifyDelegateShowHideProjectsDrawer: Signal<(), NoError> { get }
 
-  /// Emits when title button should be enabled.
+  /// Emits a11y label for title view.
+  var titleAccessibilityLabel: Signal<String, NoError> { get }
+
+  /// Emits a11y hint for title view.
+  var titleAccessibilityHint: Signal<String, NoError> { get }
+
+  /// Emits whether title should be tappable.
   var titleButtonIsEnabled: Signal<Bool, NoError> { get }
 
   /// Emits the text for the title view.
@@ -51,7 +57,20 @@ public final class DashboardTitleViewViewModel: DashboardTitleViewViewModelType,
       .filter { _, hideArrow in !hideArrow }
       .map(first)
 
-    self.notifyDelegateShowHideProjectsDrawer = self.titleTappedProperty.signal
+    self.notifyDelegateShowHideProjectsDrawer = self.titleButtonTappedProperty.signal
+
+    self.titleAccessibilityLabel = self.titleText
+      .takeWhen(isArrowHidden.filter(isFalse))
+      .map { Strings.tabbar_dashboard() + ", " + $0 }
+
+    self.titleAccessibilityHint = self.updateArrowState
+      .map { switch $0 {
+      case .open:
+        return Strings.dashboard_switcher_accessibility_label_closes_list_of_projects()
+      case .closed:
+        return Strings.dashboard_switcher_accessibility_label_opens_list_of_projects()
+      }
+    }
   }
 
   public var inputs: DashboardTitleViewViewModelInputs { return self }
@@ -60,6 +79,8 @@ public final class DashboardTitleViewViewModel: DashboardTitleViewViewModelType,
   public let updateArrowState: Signal<DrawerState, NoError>
   public let hideArrow: Signal<Bool, NoError>
   public let notifyDelegateShowHideProjectsDrawer: Signal<(), NoError>
+  public let titleAccessibilityLabel: Signal<String, NoError>
+  public let titleAccessibilityHint: Signal<String, NoError>
   public let titleText: Signal<String, NoError>
   public let titleButtonIsEnabled: Signal<Bool, NoError>
 
@@ -69,8 +90,8 @@ public final class DashboardTitleViewViewModel: DashboardTitleViewViewModelType,
     self.currentProjectIndexProperty.value = data.currentProjectIndex
     self.updateDrawerStateHideArrowProperty.value = (data.drawerState, data.isArrowHidden)
   }
-  private let titleTappedProperty = MutableProperty()
-  public func titleTapped() {
-    titleTappedProperty.value = ()
+  private let titleButtonTappedProperty = MutableProperty()
+  public func titleButtonTapped() {
+    titleButtonTappedProperty.value = ()
   }
 }
