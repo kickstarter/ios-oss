@@ -5,8 +5,10 @@ import ReactiveCocoa
 import Library
 import Prelude
 import FBSDKCoreKit
+import MessageUI
 
-internal final class FacebookConfirmationViewController: UIViewController {
+internal final class FacebookConfirmationViewController: UIViewController,
+  MFMailComposeViewControllerDelegate {
   @IBOutlet weak var confirmationLabel: UILabel!
   @IBOutlet weak var createAccountButton: UIButton!
   @IBOutlet weak var emailLabel: UILabel!
@@ -16,7 +18,8 @@ internal final class FacebookConfirmationViewController: UIViewController {
   @IBOutlet weak var newsletterLabel: UILabel!
   @IBOutlet weak var newsletterSwitch: UISwitch!
 
-  let viewModel: FacebookConfirmationViewModelType = FacebookConfirmationViewModel()
+  private let viewModel: FacebookConfirmationViewModelType = FacebookConfirmationViewModel()
+  private let helpViewModel = HelpViewModel()
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -60,7 +63,7 @@ internal final class FacebookConfirmationViewController: UIViewController {
 
     self.viewModel.outputs.showLogin
       .observeForUI()
-      .observeNext { [weak self] _ in self?.pushLoginViewController()
+      .observeNext { [weak self] _ in self?.goToLoginViewController()
     }
 
     self.viewModel.outputs.logIntoEnvironment
@@ -79,14 +82,60 @@ internal final class FacebookConfirmationViewController: UIViewController {
       .observeNext { [weak self] message in
         self?.presentViewController(UIAlertController.genericError(message), animated: true, completion: nil)
     }
+
+    self.helpViewModel.outputs.showHelpSheet
+      .observeForUI()
+      .observeNext { [weak self] in
+        self?.showHelpSheet(helpTypes: $0)
+    }
+
+    self.helpViewModel.outputs.showMailCompose
+      .observeForUI()
+      .observeNext { [weak self] in
+        guard let _self = self else { return }
+        let controller = MFMailComposeViewController.support()
+        controller.mailComposeDelegate = _self
+        _self.presentViewController(controller, animated: true, completion: nil)
+    }
+
+    self.helpViewModel.outputs.showNoEmailError
+      .observeForUI()
+      .observeNext { [weak self] alert in
+        self?.presentViewController(alert, animated: true, completion: nil)
+    }
+
+    self.helpViewModel.outputs.showWebHelp
+      .observeForUI()
+      .observeNext { [weak self] helpType in
+        self?.goToHelpType(helpType)
+    }
   }
 
   internal func configureWith(facebookUserEmail email: String, facebookAccessToken token: String) {
     self.viewModel.inputs.email(email)
     self.viewModel.inputs.facebookToken(token)
+    self.helpViewModel.inputs.configureWith(helpContext: .facebookConfirmation)
+    self.helpViewModel.inputs.canSendEmail(MFMailComposeViewController.canSendMail())
   }
 
-  internal func pushLoginViewController() {
+  @objc internal func mailComposeController(controller: MFMailComposeViewController,
+                                            didFinishWithResult result: MFMailComposeResult,
+                                                                error: NSError?) {
+    self.helpViewModel.inputs.mailComposeCompletion(result: result)
+    self.dismissViewControllerAnimated(true, completion: nil)
+  }
+
+  private func goToHelpType(helpType: HelpType) {
+    guard let helpVC = UIStoryboard(name: "Help", bundle: .framework)
+      .instantiateViewControllerWithIdentifier("HelpWebViewController") as? HelpWebViewController else {
+        fatalError("Could not instantiate HelpWebViewController")
+    }
+
+    helpVC.configureWith(helpType: helpType)
+    self.navigationController?.pushViewController(helpVC, animated: true)
+  }
+
+  private func goToLoginViewController() {
     guard let loginVC = self.storyboard?.instantiateViewControllerWithIdentifier("LoginViewController")
       as? LoginViewController else {
         fatalError("Couldn’t instantiate LoginViewController")
@@ -94,15 +143,41 @@ internal final class FacebookConfirmationViewController: UIViewController {
     self.navigationController?.pushViewController(loginVC, animated: true)
   }
 
-  @IBAction func newsletterSwitchChanged(sender: UISwitch) {
+  private func showHelpSheet(helpTypes helpTypes: [HelpType]) {
+    let helpSheet = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+
+    helpTypes.forEach { helpType in
+      helpSheet.addAction(UIAlertAction(title: helpType.title, style: .Default, handler: {
+        [weak helpVM = self.helpViewModel] _ in
+        helpVM?.inputs.helpTypeButtonTapped(helpType)
+      }))
+    }
+
+    helpSheet.addAction(UIAlertAction(title: Strings.login_tout_help_sheet_cancel(),
+      style: .Cancel,
+      handler: { [weak helpVM = self.helpViewModel] _ in
+        helpVM?.inputs.cancelHelpSheetButtonTapped()
+      }))
+
+    //iPad provision
+    helpSheet.popoverPresentationController?.barButtonItem = self.navigationItem.rightBarButtonItem
+
+    self.presentViewController(helpSheet, animated: true, completion: nil)
+  }
+
+  @IBAction private func newsletterSwitchChanged(sender: UISwitch) {
     self.viewModel.inputs.sendNewslettersToggled(sender.on)
   }
-  @IBAction func createAccountButtonPressed(sender: AnyObject) {
+
+  @IBAction private func createAccountButtonPressed(sender: AnyObject) {
     self.viewModel.inputs.createAccountButtonPressed()
   }
-  @IBAction func loginButtonPressed(sender: BorderButton) {
+
+  @IBAction private func loginButtonPressed(sender: BorderButton) {
     self.viewModel.inputs.loginButtonPressed()
   }
-  @IBAction func helpButtonPressed(sender: AnyObject) {
+
+  @objc private func helpButtonPressed(sender: AnyObject) {
+    self.helpViewModel.inputs.showHelpSheetButtonTapped()
   }
 }

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <scenes>
+        <!--Help Web View Controller-->
+        <scene sceneID="j0a-nU-4SU">
+            <objects>
+                <viewController storyboardIdentifier="HelpWebViewController" id="vVP-yn-aQN" customClass="HelpWebViewController" customModule="Kickstarter_Framework" customModuleProvider="target" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="j05-b2-sry">
+                        <nil key="title"/>
+                        <view key="titleView" contentMode="scaleToFill" id="8DW-JY-nIN">
+                            <rect key="frame" x="113" y="6" width="150" height="33"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="kickstarter-logo" translatesAutoresizingMaskIntoConstraints="NO" id="cFh-PA-4rs">
+                                    <rect key="frame" x="1" y="2" width="149" height="29"/>
+                                </imageView>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstItem="cFh-PA-4rs" firstAttribute="centerX" secondItem="8DW-JY-nIN" secondAttribute="centerX" id="DYF-DH-BWg"/>
+                                <constraint firstItem="cFh-PA-4rs" firstAttribute="centerY" secondItem="8DW-JY-nIN" secondAttribute="centerY" id="fAt-HM-Bep"/>
+                            </constraints>
+                        </view>
+                    </navigationItem>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="cri-lm-ee6" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1194.5" y="436.5"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="mFY-at-DQZ">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="7hz-w8-BmZ" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="tA9-y8-35d">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="vVP-yn-aQN" kind="relationship" relationship="rootViewController" id="88c-LV-zgy"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jDC-WR-7vv" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="625" y="437"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="kickstarter-logo" width="149" height="29"/>
+    </resources>
+</document>

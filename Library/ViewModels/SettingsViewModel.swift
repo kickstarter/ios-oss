@@ -8,15 +8,12 @@ import Result
 // swiftlint:disable file_length
 public protocol SettingsViewModelInputs {
   func backingsTapped(selected selected: Bool)
-  func canSendEmail(can: Bool)
   func commentsTapped(selected selected: Bool)
-  func contactEmailSent()
   func findFriendsTapped()
   func followerTapped(selected selected: Bool)
   func friendActivityTapped(selected selected: Bool)
   func gamesNewsletterTapped(on on: Bool)
   func happeningNewsletterTapped(on on: Bool)
-  func helpTypeTapped(helpType helpType: HelpType)
   func logoutConfirmed()
   func logoutTapped()
   func manageProjectNotificationsTapped()
@@ -43,7 +40,6 @@ public protocol SettingsViewModelOutputs {
   var gamesNewsletterOn: Signal<Bool, NoError> { get }
   var goToAppStoreRating: Signal<String, NoError> { get }
   var goToFindFriends: Signal<Void, NoError> { get }
-  var goToHelpType: Signal<HelpType, NoError> { get }
   var goToManageProjectNotifications: Signal<Void, NoError> { get }
   var happeningNewsletterOn: Signal<Bool, NoError> { get }
   var logout: Signal<Void, NoError> { get }
@@ -57,7 +53,6 @@ public protocol SettingsViewModelOutputs {
   var projectNotificationsCount: Signal<String, NoError> { get }
   var promoNewsletterOn: Signal<Bool, NoError> { get }
   var showConfirmLogoutPrompt: Signal<(message: String, cancel: String, confirm: String), NoError> { get }
-  var showErrorPrompt: Signal<(title: String, message: String), NoError> { get }
   var showOptInPrompt: Signal<String, NoError> { get }
   var unableToSaveError: Signal<String, NoError> { get }
   var updatesSelected: Signal<Bool, NoError> { get }
@@ -150,23 +145,6 @@ public final class SettingsViewModel: SettingsViewModelType, SettingsViewModelIn
 
     self.goToFindFriends = self.findFriendsTappedProperty.signal
 
-    self.goToHelpType = combineLatest(
-      self.helpTypeTappedProperty.signal.ignoreNil(),
-      self.canSendEmailProperty.signal
-      )
-      .filter { helpType, canSend in helpType != .Contact || canSend }
-      .map { helpType, _ in helpType }
-
-    self.showErrorPrompt = self.canSendEmailProperty.signal
-      .takeWhen(self.helpTypeTappedProperty.signal.filter { $0 == .Contact })
-      .filter(isFalse)
-      .map { _ in
-        (
-          title: Strings.support_email_noemail_title(),
-          message: Strings.support_email_noemail_message()
-        )
-    }
-
     self.goToManageProjectNotifications = self.manageProjectNotificationsTappedProperty.signal
 
     self.showConfirmLogoutPrompt = self.logoutTappedProperty.signal
@@ -222,13 +200,6 @@ public final class SettingsViewModel: SettingsViewModelType, SettingsViewModelIn
 
     newsletterOn.observeNext { _, on in AppEnvironment.current.koala.trackNewsletterToggle(on, project: nil) }
 
-    self.goToHelpType
-      .filter { $0 == HelpType.Contact }
-      .observeNext { _ in AppEnvironment.current.koala.trackContactEmailOpen() }
-
-    self.contactEmailSentProperty.signal
-      .observeNext { AppEnvironment.current.koala.trackContactEmailSent() }
-
     self.rateUsTappedProperty.signal
       .observeNext { _ in AppEnvironment.current.koala.trackAppStoreRatingOpen() }
 
@@ -241,17 +212,9 @@ public final class SettingsViewModel: SettingsViewModelType, SettingsViewModelIn
   public func backingsTapped(selected selected: Bool) {
     self.backingsTappedProperty.value = selected
   }
-  private let canSendEmailProperty = MutableProperty(false)
-  public func canSendEmail(can: Bool) {
-    self.canSendEmailProperty.value = can
-  }
   private let commentsTappedProperty = MutableProperty(false)
   public func commentsTapped(selected selected: Bool) {
     self.commentsTappedProperty.value = selected
-  }
-  private let contactEmailSentProperty = MutableProperty()
-  public func contactEmailSent() {
-    self.contactEmailSentProperty.value = ()
   }
   private let findFriendsTappedProperty = MutableProperty()
   public func findFriendsTapped() {
@@ -272,10 +235,6 @@ public final class SettingsViewModel: SettingsViewModelType, SettingsViewModelIn
   private let happeningNewsletterTappedProperty = MutableProperty(false)
   public func happeningNewsletterTapped(on on: Bool) {
     self.happeningNewsletterTappedProperty.value = on
-  }
-  private let helpTypeTappedProperty = MutableProperty<HelpType?>(nil)
-  public func helpTypeTapped(helpType helpType: HelpType) {
-    self.helpTypeTappedProperty.value = helpType
   }
   private let logoutConfirmedProperty = MutableProperty()
   public func logoutConfirmed() {
@@ -346,7 +305,6 @@ public final class SettingsViewModel: SettingsViewModelType, SettingsViewModelIn
   public let gamesNewsletterOn: Signal<Bool, NoError>
   public let goToAppStoreRating: Signal<String, NoError>
   public let goToFindFriends: Signal<Void, NoError>
-  public let goToHelpType: Signal<HelpType, NoError>
   public let goToManageProjectNotifications: Signal<Void, NoError>
   public let happeningNewsletterOn: Signal<Bool, NoError>
   public let logout: Signal<Void, NoError>
@@ -360,7 +318,6 @@ public final class SettingsViewModel: SettingsViewModelType, SettingsViewModelIn
   public let projectNotificationsCount: Signal<String, NoError>
   public let promoNewsletterOn: Signal<Bool, NoError>
   public let showConfirmLogoutPrompt: Signal<(message: String, cancel: String, confirm: String), NoError>
-  public let showErrorPrompt: Signal<(title: String, message: String), NoError>
   public let showOptInPrompt: Signal<String, NoError>
   public let unableToSaveError: Signal<String, NoError>
   public let updatesSelected: Signal<Bool, NoError>

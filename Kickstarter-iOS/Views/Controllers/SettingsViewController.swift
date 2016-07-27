@@ -1,11 +1,13 @@
 import KsApi
 import Library
 import MessageUI
+import Prelude
 import SafariServices
 import UIKit
 
 internal final class SettingsViewController: UIViewController {
   private let viewModel: SettingsViewModelType = SettingsViewModel()
+  private let helpViewModel: HelpViewModelType = HelpViewModel()
 
   @IBOutlet private weak var backingsButton: UIButton!
   @IBOutlet private weak var commentsButton: UIButton!
@@ -29,9 +31,19 @@ internal final class SettingsViewController: UIViewController {
 
   internal override func viewDidLoad() {
     super.viewDidLoad()
+
+    self.helpViewModel.inputs.configureWith(helpContext: .settings)
+    self.helpViewModel.inputs.canSendEmail(MFMailComposeViewController.canSendMail())
+
     self.viewModel.inputs.viewDidLoad()
-    self.viewModel.inputs.canSendEmail(MFMailComposeViewController.canSendMail())
-    self.view.backgroundColor = .ksr_grey_100
+  }
+
+  override func bindStyles() {
+    super.bindStyles()
+
+    self
+      |> baseControllerStyle()
+      |> UIViewController.lens.title %~ { _ in Strings.profile_settings_navbar_title() }
   }
 
   // swiftlint:disable function_body_length
@@ -41,11 +53,6 @@ internal final class SettingsViewController: UIViewController {
     self.viewModel.outputs.goToAppStoreRating
       .observeForUI()
       .observeNext { [weak self] link in self?.goToAppStore(link: link) }
-
-    self.viewModel.outputs.goToHelpType
-      .observeForUI()
-      .observeNext { [weak self] helpType in self?.goToHelpType(helpType) }
-
 
     self.viewModel.outputs.goToManageProjectNotifications
       .observeForUI()
@@ -78,6 +85,27 @@ internal final class SettingsViewController: UIViewController {
       .observeForUI()
       .observeNext { [weak self] in
         self?.goToFindFriends()
+    }
+
+    self.helpViewModel.outputs.showMailCompose
+      .observeForUI()
+      .observeNext { [weak self] in
+        guard let _self = self else { return }
+        let controller = MFMailComposeViewController.support()
+        controller.mailComposeDelegate = _self
+        _self.presentViewController(controller, animated: true, completion: nil)
+    }
+
+    self.helpViewModel.outputs.showNoEmailError
+      .observeForUI()
+      .observeNext { [weak self] alert in
+        self?.presentViewController(alert, animated: true, completion: nil)
+    }
+
+    self.helpViewModel.outputs.showWebHelp
+      .observeForUI()
+      .observeNext { [weak self] helpType in
+        self?.goToHelpType(helpType)
     }
 
     self.backingsButton.rac.selected = self.viewModel.outputs.backingsSelected
@@ -118,15 +146,13 @@ internal final class SettingsViewController: UIViewController {
   }
 
   private func goToHelpType(helpType: HelpType) {
-    switch helpType {
-    case .Contact:
-      let controller = MFMailComposeViewController.support()
-      controller.mailComposeDelegate = self
-      self.presentViewController(controller, animated: true, completion: nil)
-    default:
-      let svc = SFSafariViewController.help(helpType, baseURL: ServerConfig.production.webBaseUrl)
-      self.presentViewController(svc, animated: true, completion: nil)
+    guard let helpVC = UIStoryboard(name: "Help", bundle: .framework)
+      .instantiateViewControllerWithIdentifier("HelpWebViewController") as? HelpWebViewController else {
+        fatalError("Could not instantiate HelpWebViewController")
     }
+
+    helpVC.configureWith(helpType: helpType)
+    self.navigationController?.pushViewController(helpVC, animated: true)
   }
 
   private func goToManageProjectNotifications() {
@@ -182,15 +208,15 @@ internal final class SettingsViewController: UIViewController {
   }
 
   @IBAction private func contactTapped() {
-    self.viewModel.inputs.helpTypeTapped(helpType: .Contact)
+    self.helpViewModel.inputs.helpTypeButtonTapped(.contact)
   }
 
   @IBAction private func cookiePolicyTapped() {
-    self.viewModel.inputs.helpTypeTapped(helpType: .Cookie)
+    self.helpViewModel.inputs.helpTypeButtonTapped(.cookie)
   }
 
   @IBAction private func faqTapped() {
-    self.viewModel.inputs.helpTypeTapped(helpType: .FAQ)
+    self.helpViewModel.inputs.helpTypeButtonTapped(.faq)
   }
 
   @IBAction private func findFriendsTapped() {
@@ -214,7 +240,7 @@ internal final class SettingsViewController: UIViewController {
   }
 
   @IBAction private func howKickstarterWorksTapped() {
-    self.viewModel.inputs.helpTypeTapped(helpType: .HowItWorks)
+    self.helpViewModel.inputs.helpTypeButtonTapped(.howItWorks)
   }
 
   @IBAction private func manageProjectNotificationsTapped() {
@@ -250,7 +276,7 @@ internal final class SettingsViewController: UIViewController {
   }
 
   @IBAction private func privacyPolicyTapped() {
-    self.viewModel.inputs.helpTypeTapped(helpType: .Privacy)
+    self.helpViewModel.inputs.helpTypeButtonTapped(.privacy)
   }
 
   @IBAction private func promoNewsletterTapped(newsletterSwitch: UISwitch) {
@@ -262,7 +288,7 @@ internal final class SettingsViewController: UIViewController {
   }
 
   @IBAction private func termsOfUseTapped() {
-    self.viewModel.inputs.helpTypeTapped(helpType: .Terms)
+    self.helpViewModel.inputs.helpTypeButtonTapped(.terms)
   }
 
   @IBAction private func updatesTapped(button: UIButton) {
@@ -278,11 +304,7 @@ extension SettingsViewController: MFMailComposeViewControllerDelegate {
   internal func mailComposeController(controller: MFMailComposeViewController,
                                       didFinishWithResult result: MFMailComposeResult,
                                       error: NSError?) {
-
-    if result == MFMailComposeResultSent {
-      self.viewModel.inputs.contactEmailSent()
-    }
-
+    self.helpViewModel.inputs.mailComposeCompletion(result: result)
     controller.dismissViewControllerAnimated(true, completion: nil)
   }
 }

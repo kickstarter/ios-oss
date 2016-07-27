@@ -17,12 +17,6 @@ public protocol LoginToutViewModelInputs {
   /// Call when Facebook login completed successfully with a result
   func facebookLoginSuccess(result result: FBSDKLoginManagerLoginResult)
 
-  /// Call when the help button is pressed
-  func helpButtonPressed()
-
-  /// Call when a help sheet button is pressed
-  func helpTypeButtonPressed(helpType: HelpType)
-
   /// Call to set the reason the user is attempting to log in
   func loginIntent(intent: LoginIntent)
 
@@ -62,12 +56,6 @@ public protocol LoginToutViewModelOutputs {
   /// Emits when should show Facebook error alert with AlertError
   var showFacebookErrorAlert: Signal<AlertError, NoError> { get }
 
-  /// Emits when the help actionsheet should be shown with an array of HelpType values
-  var showHelpActionSheet: Signal<[HelpType], NoError> { get }
-
-  /// Emits a HelpType value when a button on the help actionsheet is pressed
-  var showHelp: Signal<HelpType, NoError> { get }
-
   /// Emits when Login view should be shown
   var startLogin: Signal<(), NoError> { get }
 
@@ -96,9 +84,6 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
     self.isLoading = isLoading.signal
     self.startLogin = self.loginButtonPressedProperty.signal
     self.startSignup = self.signupButtonPressedProperty.signal
-    self.showHelpActionSheet = self.helpButtonPressedProperty.signal.mapConst(
-      [.HowItWorks, .Contact, .Terms, .Privacy, .Cookie])
-    self.showHelp = self.helpTypeButtonPressedProperty.signal.ignoreNil()
     self.attemptFacebookLogin = self.facebookLoginButtonPressedProperty.signal
 
     let tokenString = self.facebookLoginSuccessProperty.signal.ignoreNil()
@@ -208,14 +193,6 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
   public func environmentLoggedIn() {
     self.environmentLoggedInProperty.value = ()
   }
-  private let helpButtonPressedProperty = MutableProperty()
-  public func helpButtonPressed() {
-    self.helpButtonPressedProperty.value = ()
-  }
-  private let helpTypeButtonPressedProperty = MutableProperty<HelpType?>(nil)
-  public func helpTypeButtonPressed(helpType: HelpType) {
-    self.helpTypeButtonPressedProperty.value = helpType
-  }
 
   private let userSessionStartedProperty = MutableProperty()
   public func userSessionStarted() {
@@ -233,8 +210,6 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
   public let startTwoFactorChallenge: Signal<String, NoError>
   public let logIntoEnvironment: Signal<AccessTokenEnvelope, NoError>
   public let postNotification: Signal<NSNotification, NoError>
-  public let showHelpActionSheet: Signal<[HelpType], NoError>
-  public let showHelp: Signal<HelpType, NoError>
   public let isLoading: Signal<Bool, NoError>
   public let attemptFacebookLogin: Signal<(), NoError>
   public let showFacebookErrorAlert: Signal<AlertError, NoError>

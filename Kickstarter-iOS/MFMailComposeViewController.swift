@@ -1,10 +1,10 @@
-import class MessageUI.MFMailComposeViewController
-import class Foundation.NSBundle
-import class UIKit.UIDevice
-import enum Library.Strings
+import Foundation
+import Library
+import MessageUI
+import UIKit
 
-public extension MFMailComposeViewController {
-  public static func support() -> MFMailComposeViewController {
+internal extension MFMailComposeViewController {
+  internal static func support() -> MFMailComposeViewController {
     let mcvc = MFMailComposeViewController()
 
     mcvc.setSubject(
@@ -16,7 +16,7 @@ public extension MFMailComposeViewController {
     let body = Strings.support_email_body() +
       "\(NSBundle.mainBundle().infoDictionary?["CFBundleShortVersionString"]) | " +
       "\(UIDevice.currentDevice().systemVersion) | " +
-      "\(UIDevice.currentDevice().model)\n" // todo: should be full string as used in Koala
+      "\(UIDevice.currentDevice().model)\n" // todo: should be full deviceModel as used in Koala
     mcvc.setMessageBody(body, isHTML: false)
 
     return mcvc

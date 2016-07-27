@@ -17,7 +17,6 @@ internal final class SettingsViewModelTests: TestCase {
   let gamesNewsletterOn = TestObserver<Bool, NoError>()
   let goToAppStoreRating = TestObserver<String, NoError>()
   let goToFindFriends = TestObserver<Void, NoError>()
-  let goToHelpType = TestObserver<HelpType, NoError>()
   let goToManageProjectNotifications = TestObserver<Void, NoError>()
   let happeningNewsletterOn = TestObserver<Bool, NoError>()
   let logout = TestObserver<Void, NoError>()
@@ -31,7 +30,6 @@ internal final class SettingsViewModelTests: TestCase {
   let projectNotificationsCount = TestObserver<String, NoError>()
   let promoNewsletterOn = TestObserver<Bool, NoError>()
   let showConfirmLogoutPrompt = TestObserver<(message: String, cancel: String, confirm: String), NoError>()
-  let showErrorPrompt = TestObserver<(title: String, message: String), NoError>()
   let showOptInPrompt = TestObserver<String, NoError>()
   let unableToSaveError = TestObserver<String, NoError>()
   let updatesSelected = TestObserver<Bool, NoError>()
@@ -49,7 +47,6 @@ internal final class SettingsViewModelTests: TestCase {
     self.vm.outputs.gamesNewsletterOn.observe(self.gamesNewsletterOn.observer)
     self.vm.outputs.goToAppStoreRating.observe(self.goToAppStoreRating.observer)
     self.vm.outputs.goToFindFriends.observe(self.goToFindFriends.observer)
-    self.vm.outputs.goToHelpType.observe(self.goToHelpType.observer)
     self.vm.outputs.goToManageProjectNotifications.observe(self.goToManageProjectNotifications.observer)
     self.vm.outputs.happeningNewsletterOn.observe(self.happeningNewsletterOn.observer)
     self.vm.outputs.logout.observe(self.logout.observer)
@@ -63,7 +60,6 @@ internal final class SettingsViewModelTests: TestCase {
     self.vm.outputs.projectNotificationsCount.observe(self.projectNotificationsCount.observer)
     self.vm.outputs.promoNewsletterOn.observe(self.promoNewsletterOn.observer)
     self.vm.outputs.showConfirmLogoutPrompt.observe(self.showConfirmLogoutPrompt.observer)
-    self.vm.outputs.showErrorPrompt.observe(self.showErrorPrompt.observer)
     self.vm.outputs.showOptInPrompt.observe(self.showOptInPrompt.observer)
     self.vm.outputs.unableToSaveError.observe(self.unableToSaveError.observer)
     self.vm.outputs.updatesSelected.observe(self.updatesSelected.observer)
@@ -146,60 +142,6 @@ internal final class SettingsViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.findFriendsTapped()
     self.goToFindFriends.assertValueCount(1, "Go to Find Friends screen.")
-  }
-
-  func testGoToHelpType() {
-    let user = User.template
-    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
-    self.vm.inputs.viewDidLoad()
-    self.vm.inputs.canSendEmail(true)
-
-    self.vm.inputs.helpTypeTapped(helpType: .Contact)
-    self.goToHelpType.assertValues([.Contact], "Go to compose contact email.")
-    XCTAssertEqual(["Settings View", "Contact Email Open"], self.trackingClient.events)
-
-    self.vm.inputs.helpTypeTapped(helpType: .Cookie)
-    self.goToHelpType.assertValues([.Contact, .Cookie], "Go to Cookie Policy screen.")
-
-    self.vm.inputs.helpTypeTapped(helpType: .FAQ)
-    self.goToHelpType.assertValues([.Contact, .Cookie, .FAQ], "Go to FAQ screen.")
-
-    self.vm.inputs.helpTypeTapped(helpType: .HowItWorks)
-    self.goToHelpType.assertValues([.Contact, .Cookie, .FAQ, .HowItWorks],
-                                   "Go to How Kickstarter Works screen.")
-
-    self.vm.inputs.helpTypeTapped(helpType: .Privacy)
-    self.goToHelpType.assertValues([.Contact, .Cookie, .FAQ, .HowItWorks, .Privacy],
-                                   "Go to Privacy Policy screen.")
-
-    self.vm.inputs.helpTypeTapped(helpType: .Terms)
-    self.goToHelpType.assertValues([.Contact, .Cookie, .FAQ, .HowItWorks, .Privacy, .Terms],
-                                   "Go to Terms of Use screen.")
-  }
-
-  func testContactWithNoEmailConfigured() {
-    let user = User.template
-    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
-
-    self.vm.inputs.viewDidLoad()
-    self.vm.inputs.canSendEmail(false)
-    self.vm.inputs.helpTypeTapped(helpType: .Contact)
-
-    self.goToHelpType.assertValues([], "Do not open email.")
-    self.showErrorPrompt.assertValueCount(1, "Show email error prompt.")
-    XCTAssertEqual(["Settings View"], self.trackingClient.events)
-  }
-
-  func testTrackContactEmailSent() {
-    let user = User.template
-    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
-
-    self.vm.inputs.viewDidLoad()
-    self.vm.inputs.canSendEmail(true)
-    self.vm.inputs.helpTypeTapped(helpType: .Contact)
-    self.vm.inputs.contactEmailSent()
-
-    XCTAssertEqual(["Settings View", "Contact Email Open", "Contact Email Sent"], self.trackingClient.events)
   }
 
   func testGoToManageProjectNotifications() {

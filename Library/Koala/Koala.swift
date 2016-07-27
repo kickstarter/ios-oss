@@ -518,14 +518,6 @@ public final class Koala {
     self.track(event: "App Store Rating Open")
   }
 
-  public func trackContactEmailOpen() {
-    self.track(event: "Contact Email Open")
-  }
-
-  public func trackContactEmailSent() {
-    self.track(event: "Contact Email Sent")
-  }
-
   public func trackSettingsView() {
     self.track(event: "Settings View")
   }
@@ -642,6 +634,39 @@ public final class Koala {
     // Deprecated event
     self.track(event: "Modal Dialog View",
                properties: ["modal_class": "backer_info", Koala.DeprecatedKey: true])
+  }
+
+  // MARK: Help events
+  public func trackCanceledContactEmail(context context: HelpContext) {
+    self.track(event: "Canceled Contact Email", properties: ["context": context.trackingString])
+  }
+
+  public func trackCanceledHelpMenu(context context: HelpContext) {
+    self.track(event: "Canceled Help Menu", properties: ["context": context.trackingString])
+  }
+
+
+  public func trackOpenedContactEmail(context context: HelpContext) {
+    // deprecated
+    self.track(event: "Contact Email Open", properties: [Koala.DeprecatedKey: true])
+  }
+
+  public func trackSelectedHelpOption(context context: HelpContext, type: HelpType) {
+    self.track(event: "Selected Help Option",
+               properties: ["context": context.trackingString, "type": type.trackingString]
+    )
+  }
+
+  public func trackSentContactEmail(context context: HelpContext) {
+    self.track(event: "Sent Contact Email",
+               properties: ["context": context.trackingString])
+
+    // deprecated
+    self.track(event: "Contact Email Sent", properties: [Koala.DeprecatedKey: true])
+  }
+
+  public func trackShowedHelpMenu(context context: HelpContext) {
+    self.track(event: "Showed Help Menu", properties: ["context": context.trackingString])
   }
 
   // Private tracking method that merges in default properties.

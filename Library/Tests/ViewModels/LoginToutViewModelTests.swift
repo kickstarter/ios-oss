@@ -12,8 +12,6 @@ final class LoginToutViewModelTests: TestCase {
   private let vm: LoginToutViewModelType = LoginToutViewModel()
   private let startLogin = TestObserver<(), NoError>()
   private let startSignup = TestObserver<(), NoError>()
-  private let showHelpActionSheet = TestObserver<[HelpType], NoError>()
-  private let showHelp = TestObserver<HelpType, NoError>()
   private let startFacebookConfirmation = TestObserver<String, NoError>()
   private let startTwoFactorChallenge = TestObserver<String, NoError>()
   private let logIntoEnvironment = TestObserver<AccessTokenEnvelope, NoError>()
@@ -28,8 +26,6 @@ final class LoginToutViewModelTests: TestCase {
 
     self.vm.outputs.startLogin.observe(self.startLogin.observer)
     self.vm.outputs.startSignup.observe(self.startSignup.observer)
-    self.vm.outputs.showHelpActionSheet.observe(self.showHelpActionSheet.observer)
-    self.vm.outputs.showHelp.observe(self.showHelp.observer)
     self.vm.outputs.startFacebookConfirmation.map { _, token in token }
       .observe(self.startFacebookConfirmation.observer)
     self.vm.outputs.startTwoFactorChallenge.observe(self.startTwoFactorChallenge.observer)
@@ -374,39 +370,6 @@ final class LoginToutViewModelTests: TestCase {
       startFacebookConfirmation.assertValues(["12344566", "12344566"],
                                              "Start Facebook confirmation emitted with token")
     }
-  }
-
-  func testShowHelpSheet() {
-    vm.inputs.viewWillAppear()
-    vm.inputs.helpButtonPressed()
-
-    showHelpActionSheet.assertValues([[.HowItWorks, .Contact, .Terms, .Privacy, .Cookie]])
-  }
-
-  func testShowHelpType() {
-    vm.inputs.viewWillAppear()
-    vm.inputs.helpTypeButtonPressed(HelpType.Contact)
-
-    showHelp.assertValues([HelpType.Contact], "Show help emitted with type .Contact")
-
-    vm.inputs.helpTypeButtonPressed(HelpType.Cookie)
-
-    showHelp.assertValues([HelpType.Contact, HelpType.Cookie], "Show help emitted with type .Cookie")
-
-    vm.inputs.helpTypeButtonPressed(HelpType.HowItWorks)
-
-    showHelp.assertValues([HelpType.Contact, HelpType.Cookie, HelpType.HowItWorks],
-                          "Show help emitted with type .HowItWorks")
-
-    vm.inputs.helpTypeButtonPressed(HelpType.Privacy)
-
-    showHelp.assertValues([HelpType.Contact, HelpType.Cookie, HelpType.HowItWorks, HelpType.Privacy],
-                          "Show help emitted with type .Privacy")
-
-    vm.inputs.helpTypeButtonPressed(HelpType.Terms)
-
-    showHelp.assertValues([HelpType.Contact, HelpType.Cookie, HelpType.HowItWorks, HelpType.Privacy,
-      HelpType.Terms], "Show help emitted with type .Terms")
   }
 
   func testDismissalWhenNotPresented() {

@@ -209,10 +209,6 @@ extension DashboardViewController: DashboardActionCellDelegate {
   internal func goToPostUpdate(cell: DashboardActionCell?, project: Project) {
     self.goToPostUpdate(project)
   }
-
-  internal func showShareSheet(cell: DashboardActionCell?, project: Project) {
-    self.shareViewModel.inputs.shareButtonTapped()
-  }
 }
 
 extension DashboardViewController: DashboardContextCellDelegate {
