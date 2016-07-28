@@ -28,6 +28,11 @@ internal final class MessageDialogViewController: UIViewController {
     self.viewModel.inputs.configureWith(messageThread: messageThread, context: context)
   }
 
+  internal func configureWith(project project: Project,
+                                      context: Koala.MessageDialogContext) {
+    self.viewModel.inputs.configureWith(project: project, context: context)
+  }
+
   internal override func bindViewModel() {
     self.nameLabel.rac.text = self.viewModel.outputs.recipientName
     self.postButton.rac.enabled = self.viewModel.outputs.postButtonEnabled

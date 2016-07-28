@@ -39,6 +39,7 @@ internal final class MessageDialogViewModelTests: TestCase {
   }
 
   func testButtonEnabled() {
+    self.vm.inputs.configureWith(messageThread: .template, context: .messages)
     self.vm.inputs.viewDidLoad()
     self.postButtonEnabled.assertValues([false])
 
@@ -59,7 +60,7 @@ internal final class MessageDialogViewModelTests: TestCase {
   }
 
   func testKeyboardIsVisible() {
-    self.vm.inputs.configureWith(messageThread: MessageThread.template, context: .messages)
+    self.vm.inputs.configureWith(messageThread: .template, context: .messages)
     self.vm.inputs.viewDidLoad()
     self.keyboardIsVisible.assertValues([true])
 
@@ -72,11 +73,36 @@ internal final class MessageDialogViewModelTests: TestCase {
     self.vm.inputs.bodyTextChanged("HELLO")
     self.vm.inputs.postButtonPressed()
     self.scheduler.advance()
+
     self.keyboardIsVisible.assertValues([true, false, true, false])
   }
 
-  func testPostingMessage() {
-    self.vm.inputs.configureWith(messageThread: MessageThread.template, context: .messages)
+  func testPostingMessageToThread() {
+    self.vm.inputs.configureWith(messageThread: .template, context: .messages)
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.bodyTextChanged("HELLO")
+
+    self.loadingViewIsHidden.assertValues([true])
+    self.notifyPresenterCommentWasPostedSuccesfully.assertValueCount(0)
+    self.notifyPresenterDialogWantsDismissal.assertValueCount(0)
+
+    self.vm.inputs.postButtonPressed()
+
+    self.loadingViewIsHidden.assertValues([true, false])
+    self.notifyPresenterCommentWasPostedSuccesfully.assertValueCount(0)
+    self.notifyPresenterDialogWantsDismissal.assertValueCount(0)
+
+    self.scheduler.advance()
+
+    self.loadingViewIsHidden.assertValues([true, false, true])
+    self.notifyPresenterCommentWasPostedSuccesfully.assertValueCount(1)
+    self.notifyPresenterDialogWantsDismissal.assertValueCount(1)
+
+    XCTAssertEqual(["Message Sent"], self.trackingClient.events)
+  }
+
+  func testPostingMessageToCreator() {
+    self.vm.inputs.configureWith(project: .template, context: .messages)
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.bodyTextChanged("HELLO")
 
