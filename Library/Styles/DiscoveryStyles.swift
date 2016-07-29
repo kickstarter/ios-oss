@@ -54,7 +54,9 @@ public func discoveryPagerSortButtonStyle <B: UIButtonProtocol> (sort sort: Disc
 
 public let discoveryProjectCellStyle =
   baseTableViewCellStyle()
-    <> UITableViewCell.lens.accessibilityHint .~ Strings.dashboard_tout_accessibility_hint_opens_project()
+    <> UITableViewCell.lens.accessibilityHint %~ { _ in
+      Strings.dashboard_tout_accessibility_hint_opens_project()
+}
 
 private func string(forSort sort: DiscoveryParams.Sort) -> String {
   switch sort {
