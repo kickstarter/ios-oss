@@ -9,6 +9,8 @@ public let dashboardActionButtonStyle = UIButton.lens.titleLabel.font .~ .ksr_su
 public let dashboardActivityButtonStyle =
   dashboardActionButtonStyle
     <> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.dashboard_buttons_activity() }
+    <> UIButton.lens.accessibilityHint %~ { _ in Strings.accessibility_dashboard_buttons_activity_hint() }
+    <> UIButton.lens.accessibilityLabel %~ { _ in Strings.dashboard_buttons_activity() }
 
 public let dashboardCellTitleLabelStyle =
   UILabel.lens.textColor .~ .ksr_text_navy_700
@@ -93,7 +95,9 @@ public let dashboardStatSubtitleLabelStyle =
 
 public let dashboardMessagesButtonStyle =
   dashboardActionButtonStyle
-    <> UIButton.lens.title(forState: .Normal) %~ { _ in  Strings.dashboard_buttons_messages() }
+    <> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.dashboard_buttons_messages() }
+    <> UIButton.lens.accessibilityHint %~ { _ in Strings.accessibility_dashboard_buttons_messages_hint() }
+    <> UIButton.lens.accessibilityLabel %~ { _ in Strings.dashboard_buttons_messages() }
 
 public let dashboardLastUpdatePublishedAtLabelStyle =
   UILabel.lens.font .~ .ksr_caption1()
@@ -120,6 +124,7 @@ public let postUpdateButtonStyle = dashboardGreenTextBorderButtonStyle
   <> UIButton.lens.titleColor(forState: .Normal) .~ .ksr_text_navy_700
   <> UIButton.lens.titleColor(forState: .Highlighted) .~ .ksr_text_navy_500
   <> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.dashboard_buttons_post_update() }
+  <> UIButton.lens.accessibilityHint %~ { _ in Strings.accessibility_dashboard_buttons_post_update_hint() }
   <> UIButton.lens.accessibilityLabel %~ { _ in Strings.dashboard_buttons_post_update() }
 
 public let dashboardRewardTitleLabelStyle = dashboardCellTitleLabelStyle

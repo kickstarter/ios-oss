@@ -44,16 +44,17 @@ public func discoveryPagerSortButtonStyle <B: UIButtonProtocol> (sort sort: Disc
       B.lens.titleColor(forState: .Normal) .~ UIColor.ksr_text_navy_700
         <> B.lens.titleColor(forState: .Highlighted) .~ .ksr_text_navy_500
         <> B.lens.titleLabel.font .~ .ksr_subhead()
-        <> B.lens.accessibilityLabel %~ { _ in "Sort by \(sortString)" }
-        <> B.lens.accessibilityHint %~ { _ in "Changes sort" }
+        <> B.lens.accessibilityLabel %~ { _ in
+          Strings.discovery_accessibility_buttons_sort_label(sort: sortString)
+        }
+        <> B.lens.accessibilityHint %~ { _ in Strings.discovery_accessibility_buttons_sort_hint() }
         <> B.lens.contentEdgeInsets .~ .init(topBottom: 0.0, leftRight: 16.0)
         <> B.lens.title(forState: .Normal) .~ sortString
 }
 
 public let discoveryProjectCellStyle =
   baseTableViewCellStyle()
-    <> UITableViewCell.lens.accessibilityHint .~ localizedString(key: "key.todo",
-                                                                 defaultValue: "Opens project.")
+    <> UITableViewCell.lens.accessibilityHint .~ Strings.dashboard_tout_accessibility_hint_opens_project()
 
 private func string(forSort sort: DiscoveryParams.Sort) -> String {
   switch sort {

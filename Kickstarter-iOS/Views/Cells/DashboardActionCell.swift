@@ -46,12 +46,9 @@ internal final class DashboardActionCell: UITableViewCell, ValueCell {
     self.isAccessibilityElement = false
     self.accessibilityElements = [self.activityButton, self.messagesButton, self.postUpdateButton]
     self.activityButton |> dashboardActivityButtonStyle
-    self.activityButton.accessibilityHint = "Opens activity."
     self.lastUpdatePublishedAtLabel |> dashboardLastUpdatePublishedAtLabelStyle
     self.messagesButton |> dashboardMessagesButtonStyle
-    self.messagesButton.accessibilityHint = "Opens messages."
     self.postUpdateButton |> postUpdateButtonStyle
-    self.postUpdateButton.accessibilityHint = "Opens editor."
     self.separatorView |> separatorStyle
   }
 
