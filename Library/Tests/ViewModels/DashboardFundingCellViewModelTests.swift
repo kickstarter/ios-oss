@@ -37,7 +37,7 @@ internal final class DashboardFundingCellViewModelTests: TestCase {
   }
 
   func testCellAccessibility() {
-    let project = .template
+    let liveProject = .template
       |> Project.lens.stats.backersCount .~ 5
       |> Project.lens.stats.pledged .~ 50
       |> Project.lens.stats.goal .~ 10_000
@@ -46,10 +46,41 @@ internal final class DashboardFundingCellViewModelTests: TestCase {
 
     let stats = [ProjectStatsEnvelope.FundingDateStats.template]
 
-    self.vm.inputs.configureWith(fundingDateStats: stats, project: project)
+    self.vm.inputs.configureWith(fundingDateStats: stats, project: liveProject)
 
-    // Make a native string for this.
-    self.cellAccessibilityValue.assertValues(["$50 pledged of $10,000 goal, 5 backers, 2 days to go"])
+    self.cellAccessibilityValue.assertValues(
+      [Strings.dashboard_graphs_funding_accessibility_live_stat_value(
+        pledged: Format.currency(liveProject.stats.pledged, country: liveProject.country),
+        goal: Format.currency(liveProject.stats.goal, country: liveProject.country),
+        backers_count: liveProject.stats.backersCount,
+        time_left: Format.duration(secondsInUTC: liveProject.dates.deadline).time + " " +
+          Format.duration(secondsInUTC: liveProject.dates.deadline).unit
+      )],
+      "Live project stats value emits."
+    )
+
+    let nonLiveProject = .template |> Project.lens.state .~ .successful
+
+    self.vm.inputs.configureWith(fundingDateStats: stats, project: nonLiveProject)
+
+    self.cellAccessibilityValue.assertValues(
+      [
+        Strings.dashboard_graphs_funding_accessibility_live_stat_value(
+        pledged: Format.currency(liveProject.stats.pledged, country: liveProject.country),
+        goal: Format.currency(liveProject.stats.goal, country: liveProject.country),
+        backers_count: liveProject.stats.backersCount,
+        time_left: Format.duration(secondsInUTC: liveProject.dates.deadline).time + " " +
+          Format.duration(secondsInUTC: liveProject.dates.deadline).unit
+        ),
+        Strings.dashboard_graphs_funding_accessibility_non_live_stat_value(
+          pledged: Format.currency(nonLiveProject.stats.pledged, country: nonLiveProject.country),
+          goal: Format.currency(nonLiveProject.stats.goal, country: nonLiveProject.country),
+          backers_count: nonLiveProject.stats.backersCount,
+          time_left: Format.duration(secondsInUTC: nonLiveProject.dates.deadline).time + " " +
+            Format.duration(secondsInUTC: nonLiveProject.dates.deadline).unit
+      )],
+      "Non live project stats value emits."
+    )
   }
 
   func testFundingGraphDataEmits() {

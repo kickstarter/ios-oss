@@ -124,18 +124,22 @@ public final class DashboardFundingCellViewModel: DashboardFundingCellViewModelI
     self.timeRemainingTitleText = timeRemaining.map(first)
     self.timeRemainingSubtitleText = timeRemaining.map(second)
 
-    // Make a native string for this.
-    self.cellAccessibilityValue = statsProject.map { _, project in
+    self.cellAccessibilityValue = statsProject
+      .map { _, project in
 
-      Format.currency(project.stats.pledged, country: project.country) + " " +
+        let pledged = Format.currency(project.stats.pledged, country: project.country)
+        let goal = Format.currency(project.stats.goal, country: project.country)
+        let backersCount = project.stats.backersCount
+        let (time, unit) = Format.duration(secondsInUTC: project.dates.deadline, useToGo: false)
+        let timeLeft = time + " " + unit
 
-      Strings.discovery_baseball_card_stats_pledged_of_goal(goal: Format.currency(project.stats.goal,
-        country: project.country)) + " " + Strings.activity_project_state_change_goal() + ", " +
-
-      Strings.general_backer_count_backers(backer_count: project.stats.backersCount) + ", " +
-
-      Format.duration(secondsInUTC: project.dates.deadline, useToGo: true).time + " " +
-      Format.duration(secondsInUTC: project.dates.deadline, useToGo: true).unit
+        return project.state == .live ?
+          Strings.dashboard_graphs_funding_accessibility_live_stat_value(
+            pledged: pledged, goal: goal, backers_count: backersCount, time_left: timeLeft
+          ) :
+          Strings.dashboard_graphs_funding_accessibility_non_live_stat_value(
+            pledged: pledged, goal: goal, backers_count: backersCount, time_left: timeLeft
+        )
     }
     // swiftlint:enable function_body_length
   }

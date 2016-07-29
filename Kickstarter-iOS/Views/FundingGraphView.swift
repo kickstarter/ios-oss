@@ -197,7 +197,7 @@ public final class FundingGraphView: UIView {
       UIColor.ksr_green_500.setStroke()
       goalPath.stroke()
 
-      self.goalLabel.text = "Goal"
+      self.goalLabel.text = Strings.dashboard_graphs_funding_goal()
       self.goalLabel.sizeToFit()
 
       self.goalLabel.frame = self.goalLabel.frame.insetBy(dx: -6, dy: -3).integral
