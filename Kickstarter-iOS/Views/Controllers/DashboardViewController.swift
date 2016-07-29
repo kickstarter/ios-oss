@@ -19,8 +19,7 @@ internal final class DashboardViewController: UITableViewController {
 
     let shareButton = UIBarButtonItem()
       |> shareBarButtonItemStyle
-      |> UIBarButtonItem.lens.target .~ self
-      |> UIBarButtonItem.lens.action .~ #selector(DashboardViewController.shareButtonTapped)
+      |> UIBarButtonItem.lens.targetAction .~ (self, #selector(DashboardViewController.shareButtonTapped))
 
     self.navigationItem.rightBarButtonItem = shareButton
 
