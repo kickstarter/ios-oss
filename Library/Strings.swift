@@ -29,6 +29,23 @@ public enum Strings {
     )
   }
   /**
+   "Opens activity."
+
+   - **es**: "Opens activity."
+   - **de**: "Opens activity."
+   - **fr**: "Opens activity."
+   - **it**: "Opens activity."
+   - **en**: "Opens activity."
+  */
+  public static func accessibility_dashboard_buttons_activity_hint() -> String {
+    return localizedString(
+      key: "accessibility.dashboard.buttons.activity_hint",
+      defaultValue: "Opens activity.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Messages"
 
    - **es**: "Mensajes"
@@ -41,6 +58,40 @@ public enum Strings {
     return localizedString(
       key: "accessibility.dashboard.buttons.messages",
       defaultValue: "Messages",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Opens messages."
+
+   - **es**: "Opens messages."
+   - **de**: "Opens messages."
+   - **fr**: "Opens messages."
+   - **it**: "Opens messages."
+   - **en**: "Opens messages."
+  */
+  public static func accessibility_dashboard_buttons_messages_hint() -> String {
+    return localizedString(
+      key: "accessibility.dashboard.buttons.messages_hint",
+      defaultValue: "Opens messages.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Opens editor."
+
+   - **es**: "Opens editor."
+   - **de**: "Opens editor."
+   - **fr**: "Opens editor."
+   - **it**: "Opens editor."
+   - **en**: "Opens editor."
+  */
+  public static func accessibility_dashboard_buttons_post_update_hint() -> String {
+    return localizedString(
+      key: "accessibility.dashboard.buttons.post_update_hint",
+      defaultValue: "Opens editor.",
       count: nil,
       substitutions: [:]
     )
@@ -1919,8 +1970,8 @@ public enum Strings {
    "Share project"
 
    - **es**: "Compartir proyecto"
-   - **de**: "Share project"
-   - **fr**: "Share project"
+   - **de**: "Projekt teilen"
+   - **fr**: "Partager ce projet"
    - **it**: "Share project"
    - **en**: "Share project"
   */
@@ -2511,6 +2562,40 @@ public enum Strings {
     )
   }
   /**
+   "%{pledged} of %{goal} goal, %{backers_count} backers so far, %{time_left} to go"
+
+   - **es**: "%{pledged} de %{goal} recaudado, %{backers_count} patrocinadores hasta ahora, tiempo restante: %{time_left}"
+   - **de**: "%{pledged} von %{goal} erreicht, bisher %{backers_count} Unterstützer, noch %{time_left}"
+   - **fr**: "%{pledged} engagés sur %{goal}, %{backers_count} contributeurs pour le moment, plus que %{time_left}"
+   - **it**: "%{pledged} of %{goal} goal, %{backers_count} backers so far, %{time_left} to go"
+   - **en**: "%{pledged} of %{goal} goal, %{backers_count} backers so far, %{time_left} to go"
+  */
+  public static func dashboard_graphs_funding_accessibility_live_stat_value(pledged pledged: String, goal: String, backers_count: Int, time_left: String) -> String {
+    return localizedString(
+      key: "dashboard.graphs.funding.accessibility.live_stat_value",
+      defaultValue: "%{pledged} of %{goal} goal, %{backers_count} backers so far, %{time_left} to go",
+      count: backers_count,
+      substitutions: ["pledged": pledged, "goal": goal, "backers_count": Format.wholeNumber(backers_count), "time_left": time_left]
+    )
+  }
+  /**
+   "%{pledged} of %{goal} goal, %{backers_count} backers total, %{time_left} to go"
+
+   - **es**: "%{pledged} de %{goal} recaudado, %{backers_count} patrocinadores hasta ahora, tiempo restante: %{time_left}"
+   - **de**: "%{pledged} von %{goal} erreicht, bisher %{backers_count} Unterstützer, noch %{time_left}"
+   - **fr**: "%{pledged} engagés sur %{goal}, %{backers_count} contributeurs, plus que %{time_left}"
+   - **it**: "%{pledged} of %{goal} goal, %{backers_count} backers total, %{time_left} to go"
+   - **en**: "%{pledged} of %{goal} goal, %{backers_count} backers total, %{time_left} to go"
+  */
+  public static func dashboard_graphs_funding_accessibility_non_live_stat_value(pledged pledged: String, goal: String, backers_count: Int, time_left: String) -> String {
+    return localizedString(
+      key: "dashboard.graphs.funding.accessibility.non_live_stat_value",
+      defaultValue: "%{pledged} of %{goal} goal, %{backers_count} backers total, %{time_left} to go",
+      count: backers_count,
+      substitutions: ["pledged": pledged, "goal": goal, "backers_count": Format.wholeNumber(backers_count), "time_left": time_left]
+    )
+  }
+  /**
    "Backers"
 
    - **es**: "Patrocinadores"
@@ -2523,6 +2608,23 @@ public enum Strings {
     return localizedString(
       key: "dashboard.graphs.funding.backers",
       defaultValue: "Backers",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Goal"
+
+   - **es**: "Meta"
+   - **de**: "Finanzierungsziel"
+   - **fr**: "Objectif"
+   - **it**: "Goal"
+   - **en**: "Goal"
+  */
+  public static func dashboard_graphs_funding_goal() -> String {
+    return localizedString(
+      key: "dashboard.graphs.funding.goal",
+      defaultValue: "Goal",
       count: nil,
       substitutions: [:]
     )
@@ -3772,8 +3874,8 @@ public enum Strings {
    "Closes list of projects."
 
    - **es**: "Cierra la lista de proyectos."
-   - **de**: "Closes list of projects."
-   - **fr**: "Closes list of projects."
+   - **de**: "Schließt Projekt-Liste."
+   - **fr**: "Ferme la liste de projets."
    - **it**: "Closes list of projects."
    - **en**: "Closes list of projects."
   */
@@ -3789,8 +3891,8 @@ public enum Strings {
    "Opens list of projects."
 
    - **es**: "Abre una lista de proyectos."
-   - **de**: "Opens list of projects."
-   - **fr**: "Opens list of projects."
+   - **de**: "Öffnet eine Liste von Projekten."
+   - **fr**: "Ouvre une liste de projets."
    - **it**: "Opens list of projects."
    - **en**: "Opens list of projects."
   */
@@ -3823,8 +3925,8 @@ public enum Strings {
    "Opens project."
 
    - **es**: "Abre la página de proyecto."
-   - **de**: "Opens project."
-   - **fr**: "Opens project."
+   - **de**: "Öffnet die Projektseite."
+   - **fr**: "Ouvre le projet."
    - **it**: "Opens project."
    - **en**: "Opens project."
   */
@@ -4242,6 +4344,40 @@ public enum Strings {
       defaultValue: "yesterday",
       count: nil,
       substitutions: [:]
+    )
+  }
+  /**
+   "Changes sort."
+
+   - **es**: "Changes sort."
+   - **de**: "Changes sort."
+   - **fr**: "Changes sort."
+   - **it**: "Changes sort."
+   - **en**: "Changes sort."
+  */
+  public static func discovery_accessibility_buttons_sort_hint() -> String {
+    return localizedString(
+      key: "discovery.accessibility.buttons.sort_hint",
+      defaultValue: "Changes sort.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Sort by %{sort}"
+
+   - **es**: "Sort by %{sort}"
+   - **de**: "Sort by %{sort}"
+   - **fr**: "Sort by %{sort}"
+   - **it**: "Sort by %{sort}"
+   - **en**: "Sort by %{sort}"
+  */
+  public static func discovery_accessibility_buttons_sort_label(sort sort: String) -> String {
+    return localizedString(
+      key: "discovery.accessibility.buttons.sort_label",
+      defaultValue: "Sort by %{sort}",
+      count: nil,
+      substitutions: ["sort": sort]
     )
   }
   /**
@@ -4684,6 +4820,40 @@ public enum Strings {
       defaultValue: "%{friend_name}, %{second_friend_name}, and %{remaining_count} more are backers.",
       count: remaining_count,
       substitutions: ["friend_name": friend_name, "second_friend_name": second_friend_name, "remaining_count": Format.wholeNumber(remaining_count)]
+    )
+  }
+  /**
+   "%{backers_count} backers so far, %{percent_funded} funded, %{time_left} to go"
+
+   - **es**: "De momento tiene %{backers_count} patrocinadores, financiado al %{percent_funded}, tiempo restante: %{time_left}"
+   - **de**: "Bisher %{backers_count} Unterstützer, %{percent_funded} finanziert, noch %{time_left}"
+   - **fr**: "Pour le moment, %{backers_count} contributeurs, projet financé à %{percent_funded}, plus que %{time_left}"
+   - **it**: "%{backers_count} backers so far, %{percent_funded} funded, %{time_left} to go"
+   - **en**: "%{backers_count} backers so far, %{percent_funded} funded, %{time_left} to go"
+  */
+  public static func discovery_baseball_card_stats_accessibility_live_stat_value(backers_count backers_count: Int, percent_funded: String, time_left: String) -> String {
+    return localizedString(
+      key: "discovery.baseball_card.stats.accessibility.live_stat_value",
+      defaultValue: "%{backers_count} backers so far, %{percent_funded} funded, %{time_left} to go",
+      count: backers_count,
+      substitutions: ["backers_count": Format.wholeNumber(backers_count), "percent_funded": percent_funded, "time_left": time_left]
+    )
+  }
+  /**
+   "%{backers_count} backers total, %{percent_funded} funded, %{time_left} to go"
+
+   - **es**: "De momento tiene %{backers_count} patrocinadores, financiado al %{percent_funded}, tiempo restante: %{time_left}"
+   - **de**: "Gesamt %{backers_count} Unterstützer, %{percent_funded} finanziert, noch %{time_left}"
+   - **fr**: "%{backers_count} contributeurs, projet financé à %{percent_funded}, plus que %{time_left}"
+   - **it**: "%{backers_count} backers total, %{percent_funded} funded, %{time_left} to go"
+   - **en**: "%{backers_count} backers total, %{percent_funded} funded, %{time_left} to go"
+  */
+  public static func discovery_baseball_card_stats_accessibility_non_live_stat_value(backers_count backers_count: Int, percent_funded: String, time_left: String) -> String {
+    return localizedString(
+      key: "discovery.baseball_card.stats.accessibility.non_live_stat_value",
+      defaultValue: "%{backers_count} backers total, %{percent_funded} funded, %{time_left} to go",
+      count: backers_count,
+      substitutions: ["backers_count": Format.wholeNumber(backers_count), "percent_funded": percent_funded, "time_left": time_left]
     )
   }
   /**
