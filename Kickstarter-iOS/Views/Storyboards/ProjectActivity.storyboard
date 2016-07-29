@@ -157,6 +157,7 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="backerImageView" destination="Nn8-nK-Q3F" id="QHY-cc-rI6"/>
+                                    <outlet property="backingButton" destination="XPI-ie-ymu" id="iWa-c3-Dus"/>
                                     <outlet property="bulletSeparatorView" destination="a4G-dh-Z1V" id="6Mh-Ji-vY3"/>
                                     <outlet property="cardView" destination="Ydc-qb-aN2" id="XBl-ux-J2f"/>
                                     <outlet property="footerDividerView" destination="V7L-ge-3Zr" id="e1Y-LQ-uUW"/>
@@ -167,11 +168,10 @@
                                     <outlet property="pledgeAmountLabelsStackView" destination="Tpe-7i-lAJ" id="IQy-2r-5sn"/>
                                     <outlet property="pledgeAmountsStackView" destination="OCz-TD-WeB" id="ZXD-AY-pTL"/>
                                     <outlet property="pledgeDetailsStackView" destination="QkO-xZ-Ovn" id="56V-Cg-NMY"/>
-                                    <outlet property="pledgeInfoButton" destination="XPI-ie-ymu" id="ApE-Jc-tQj"/>
                                     <outlet property="previousPledgeAmountLabel" destination="lea-aa-Lwz" id="z42-CL-3Pa"/>
                                     <outlet property="previousPledgeStrikethroughView" destination="syT-h6-C0K" id="uuV-ch-4kD"/>
                                     <outlet property="rewardLabel" destination="5NY-KW-8F6" id="xig-gy-VMC"/>
-                                    <outlet property="sendMessageButton" destination="LKn-Xv-bse" id="gxM-qm-xrq"/>
+                                    <outlet property="sendMessageButton" destination="LKn-Xv-bse" id="8Vm-43-N2Y"/>
                                     <outlet property="titleLabel" destination="AHV-lo-Ote" id="jBX-J0-owF"/>
                                 </connections>
                             </tableViewCell>
@@ -295,8 +295,8 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="addCommentButton" destination="NBn-U4-IDf" id="aag-jm-Jgs"/>
                                     <outlet property="authorImageView" destination="574-8O-9pL" id="U0V-fg-0F2"/>
+                                    <outlet property="backingButton" destination="7zh-xR-3Oa" id="JtH-dK-yYU"/>
                                     <outlet property="bodyLabel" destination="J1x-jk-apU" id="7lX-2C-3ia"/>
                                     <outlet property="bodyView" destination="40D-9V-I0L" id="0Ee-qO-MIS"/>
                                     <outlet property="bulletSeparatorView" destination="nyw-hr-krw" id="YKq-KR-vhw"/>
@@ -305,7 +305,7 @@
                                     <outlet property="footerStackView" destination="z0x-Fl-Nx6" id="ggo-3F-RdD"/>
                                     <outlet property="headerDividerView" destination="LeC-hl-9Zp" id="Qbp-qm-onO"/>
                                     <outlet property="headerStackView" destination="bp8-Vb-Q97" id="bhq-qJ-QQm"/>
-                                    <outlet property="pledgeInfoButton" destination="7zh-xR-3Oa" id="rak-4K-Y0N"/>
+                                    <outlet property="replyButton" destination="NBn-U4-IDf" id="HeG-jr-Erh"/>
                                     <outlet property="titleLabel" destination="brI-m4-cVT" id="Zmp-IG-sbB"/>
                                 </connections>
                             </tableViewCell>

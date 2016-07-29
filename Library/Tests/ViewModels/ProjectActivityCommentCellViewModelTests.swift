@@ -11,11 +11,9 @@ internal final class ProjectActivityCommentCellViewModelTests: TestCase {
   private let authorImage = TestObserver<String?, NoError>()
   private let body = TestObserver<String, NoError>()
   private let defaultUser = .template |> User.lens.id .~ 9
-  private let goToBackingInfo = TestObserver<(Project, User), NoError>()
-  private let goToProjectCommentProject = TestObserver<Project, NoError>()
-  private let goToProjectCommentName = TestObserver<String, NoError>()
-  private let goToUpdateCommentName = TestObserver<String, NoError>()
-  private let goToUpdateCommentUpdate = TestObserver<Update, NoError>()
+  private let notifyDelegateGoToBacking = TestObserver<(Project, User), NoError>()
+  private let notifyDelegateGoToSendReplyOnProject = TestObserver<(Project, Comment), NoError>()
+  private let notifyDelegateGoToSendReplyOnUpdate = TestObserver<(Update, Comment), NoError>()
   private let title = TestObserver<String, NoError>()
 
   internal override func setUp() {
@@ -23,11 +21,11 @@ internal final class ProjectActivityCommentCellViewModelTests: TestCase {
 
     self.vm.outputs.authorImageURL.map { $0?.absoluteString }.observe(self.authorImage.observer)
     self.vm.outputs.body.observe(self.body.observer)
-    self.vm.outputs.goToBackingInfo.observe(self.goToBackingInfo.observer)
-    self.vm.outputs.goToProjectComment.map { $0.0 }.observe(self.goToProjectCommentProject.observer)
-    self.vm.outputs.goToProjectComment.map { $0.1 }.observe(self.goToProjectCommentName.observer)
-    self.vm.outputs.goToUpdateComment.map { $0.1 }.observe(self.goToUpdateCommentName.observer)
-    self.vm.outputs.goToUpdateComment.map { $0.0 }.observe(self.goToUpdateCommentUpdate.observer)
+    self.vm.outputs.notifyDelegateGoToBacking.observe(self.notifyDelegateGoToBacking.observer)
+    self.vm.outputs.notifyDelegateGoToSendReplyOnProject
+      .observe(self.notifyDelegateGoToSendReplyOnProject.observer)
+    self.vm.outputs.notifyDelegateGoToSendReplyOnUpdate
+      .observe(self.notifyDelegateGoToSendReplyOnUpdate.observer)
     self.vm.outputs.title.observe(self.title.observer)
 
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: self.defaultUser))
@@ -66,18 +64,18 @@ internal final class ProjectActivityCommentCellViewModelTests: TestCase {
     self.body.assertValues([body1, body2], "Emits project comment's body")
   }
 
-  func testGoToBackingInfo() {
+  func testNotifyDelegateGoToBacking() {
     let project = Project.template
     let activity = .template
       |> Activity.lens.category .~ .commentProject
       |> Activity.lens.project .~ project
 
       self.vm.inputs.configureWith(activity: activity, project: project)
-      self.vm.inputs.backingInfoButtonPressed()
-      self.goToBackingInfo.assertValueCount(1, "Should go to backing")
+      self.vm.inputs.backingButtonPressed()
+      self.notifyDelegateGoToBacking.assertValueCount(1, "Should go to backing")
   }
 
-  func testGoToProjectComment() {
+  func testNotifyDelegateGoToSendReplyOnProject() {
     let project = Project.template
     let user = User.template |> User.lens.name .~ "Christopher"
     let activity = .template
@@ -87,14 +85,11 @@ internal final class ProjectActivityCommentCellViewModelTests: TestCase {
       |> Activity.lens.user .~ user
 
     self.vm.inputs.configureWith(activity: activity, project: project)
-    self.vm.inputs.commentButtonPressed()
-    self.goToProjectCommentProject.assertValues([project], "Should emit project")
-    self.goToProjectCommentName.assertValues(["Christopher"], "Should emit author name")
-    self.goToUpdateCommentUpdate.assertDidNotEmitValue("Should not emit update")
-    self.goToUpdateCommentName.assertDidNotEmitValue("Should not emit update author name")
+    self.vm.inputs.replyButtonPressed()
+    self.notifyDelegateGoToSendReplyOnProject.assertValueCount(1, "Should go to send reply on project")
   }
 
-  func testGoToUpdateComment() {
+  func testNotifyDelegateGoToSendReplyOnUpdate() {
     let project = Project.template
     let update = Update.template
     let user = User.template |> User.lens.name .~ "Christopher"
@@ -106,11 +101,8 @@ internal final class ProjectActivityCommentCellViewModelTests: TestCase {
       |> Activity.lens.user .~ user
 
     self.vm.inputs.configureWith(activity: activity, project: project)
-    self.vm.inputs.commentButtonPressed()
-    self.goToUpdateCommentName.assertValues(["Christopher"], "Should emit author name")
-    self.goToUpdateCommentUpdate.assertValues([update], "Should emit update")
-    self.goToProjectCommentProject.assertDidNotEmitValue("Should not emit project")
-    self.goToProjectCommentName.assertDidNotEmitValue("Should not emit project author name")
+    self.vm.inputs.replyButtonPressed()
+    self.notifyDelegateGoToSendReplyOnUpdate.assertValueCount(1, "Should go to send reply on update")
   }
 
   func testTitleProject() {

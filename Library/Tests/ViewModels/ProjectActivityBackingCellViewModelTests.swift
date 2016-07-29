@@ -10,8 +10,8 @@ internal final class ProjectActivityBackingCellViewModelTests: TestCase {
 
   private let backerImage = TestObserver<String?, NoError>()
   private let defaultUser = .template |> User.lens.id .~ 90
-  private let goToBackingInfo = TestObserver<Backing, NoError>()
-  private let goToSendMessage = TestObserver<(Project, Backing), NoError>()
+  private let notifyDelegateGoToBacking = TestObserver<(Project, User), NoError>()
+  private let notifyDelegateGoToSendMessage = TestObserver<(Project, Backing), NoError>()
   private let pledgeAmount = TestObserver<String, NoError>()
   private let pledgeAmountLabelIsHidden = TestObserver<Bool, NoError>()
   private let pledgeAmountsStackViewIsHidden = TestObserver<Bool, NoError>()
@@ -24,8 +24,8 @@ internal final class ProjectActivityBackingCellViewModelTests: TestCase {
     super.setUp()
 
     self.vm.outputs.backerImageURL.map { $0?.absoluteString }.observe(self.backerImage.observer)
-    self.vm.outputs.goToBackingInfo.observe(self.goToBackingInfo.observer)
-    self.vm.outputs.goToSendMessage.observe(self.goToSendMessage.observer)
+    self.vm.outputs.notifyDelegateGoToBacking.observe(self.notifyDelegateGoToBacking.observer)
+    self.vm.outputs.notifyDelegateGoToSendMessage.observe(self.notifyDelegateGoToSendMessage.observer)
     self.vm.outputs.pledgeAmount.observe(self.pledgeAmount.observer)
     self.vm.outputs.pledgeAmountLabelIsHidden.observe(self.pledgeAmountLabelIsHidden.observer)
     self.vm.outputs.pledgeAmountsStackViewIsHidden.observe(self.pledgeAmountsStackViewIsHidden.observer)
@@ -50,7 +50,7 @@ internal final class ProjectActivityBackingCellViewModelTests: TestCase {
     self.backerImage.assertValues(["http://coolpic.com/cool.jpg"], "Emits backer's image URL")
   }
 
-  func testGoToBackingInfo() {
+  func testNotifyDelegateGoToBacking() {
     let project = Project.template
     let activity = .template
       |> Activity.lens.category .~ .backing
@@ -58,11 +58,13 @@ internal final class ProjectActivityBackingCellViewModelTests: TestCase {
       |> Activity.lens.project .~ project
 
     self.vm.inputs.configureWith(activity: activity, project: project)
-    self.vm.inputs.backingInfoButtonPressed()
-    self.goToBackingInfo.assertValues([activity.memberData.backing!], "Emits backing from activity")
+    self.notifyDelegateGoToBacking.assertValueCount(0)
+
+    self.vm.inputs.backingButtonPressed()
+    self.notifyDelegateGoToBacking.assertValueCount(1, "Should go to backing")
   }
 
-  func testGoToSendMessage() {
+  func testNotifyDelegateGoToSendMessage() {
     let project = Project.template
     let activity = .template
       |> Activity.lens.category .~ .backing
@@ -70,8 +72,12 @@ internal final class ProjectActivityBackingCellViewModelTests: TestCase {
       |> Activity.lens.project .~ project
 
     self.vm.inputs.configureWith(activity: activity, project: project)
+    self.notifyDelegateGoToSendMessage.assertValueCount(0)
+
     self.vm.inputs.sendMessageButtonPressed()
-    self.goToSendMessage.assertValueCount(1, "Go to send message after pressing send message button")
+    self.notifyDelegateGoToSendMessage.assertValueCount(
+      1, "Go to send message after pressing send message button"
+    )
   }
 
   func testPledgeAmount() {

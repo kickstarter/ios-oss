@@ -4,11 +4,18 @@ import Prelude
 import Prelude_UIKit
 import UIKit
 
+internal protocol ProjectActivityCommentCellDelegate: class {
+  func projectActivityCommentCellGoToBacking(project project: Project, user: User)
+  func projectActivityCommentCellGoToSendReplyOnProject(project project: Project, comment: Comment)
+  func projectActivityCommentCellGoToSendReplyOnUpdate(update update: Update, comment: Comment)
+}
+
 internal final class ProjectActivityCommentCell: UITableViewCell, ValueCell {
   private let viewModel: ProjectActivityCommentCellViewModelType = ProjectActivityCommentCellViewModel()
+  internal weak var delegate: ProjectActivityCommentCellDelegate?
 
-  @IBOutlet private weak var addCommentButton: UIButton!
   @IBOutlet private weak var authorImageView: UIImageView!
+  @IBOutlet private weak var backingButton: UIButton!
   @IBOutlet private weak var bodyLabel: UILabel!
   @IBOutlet private weak var bodyView: UIView!
   @IBOutlet private weak var bulletSeparatorView: UIView!
@@ -17,8 +24,18 @@ internal final class ProjectActivityCommentCell: UITableViewCell, ValueCell {
   @IBOutlet private weak var footerStackView: UIStackView!
   @IBOutlet private weak var headerDividerView: UIView!
   @IBOutlet private weak var headerStackView: UIStackView!
-  @IBOutlet private weak var pledgeInfoButton: UIButton!
+  @IBOutlet private weak var replyButton: UIButton!
   @IBOutlet private weak var titleLabel: UILabel!
+
+  internal override func awakeFromNib() {
+    super.awakeFromNib()
+
+    self.backingButton
+      |> UIButton.lens.targets .~ [(self, #selector(backingButtonPressed), .TouchUpInside)]
+
+    self.replyButton
+      |> UIButton.lens.targets .~ [(self, #selector(replyButtonPressed), .TouchUpInside)]
+  }
 
   internal func configureWith(value activityAndProject: (Activity, Project)) {
     self.viewModel.inputs.configureWith(activity: activityAndProject.0,
@@ -37,6 +54,24 @@ internal final class ProjectActivityCommentCell: UITableViewCell, ValueCell {
       .ignoreNil()
       .observeNext { [weak self] url in
         self?.authorImageView.af_setImageWithURL(url)
+    }
+
+    self.viewModel.outputs.notifyDelegateGoToBacking
+      .observeForUI()
+      .observeNext { [weak self] project, user in
+        self?.delegate?.projectActivityCommentCellGoToBacking(project: project, user: user)
+    }
+
+    self.viewModel.outputs.notifyDelegateGoToSendReplyOnProject
+      .observeForUI()
+      .observeNext { [weak self] project, comment in
+        self?.delegate?.projectActivityCommentCellGoToSendReplyOnProject(project: project, comment: comment)
+    }
+
+    self.viewModel.outputs.notifyDelegateGoToSendReplyOnUpdate
+      .observeForUI()
+      .observeNext { [weak self] update, comment in
+        self?.delegate?.projectActivityCommentCellGoToSendReplyOnUpdate(update: update, comment: comment)
     }
 
     self.bodyLabel.rac.text = self.viewModel.outputs.body
@@ -59,7 +94,7 @@ internal final class ProjectActivityCommentCell: UITableViewCell, ValueCell {
 
     self |> baseTableViewCellStyle()
 
-    self.addCommentButton
+    self.replyButton
       |> projectActivityFooterButton
       |> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.dashboard_activity_reply() }
 
@@ -81,8 +116,16 @@ internal final class ProjectActivityCommentCell: UITableViewCell, ValueCell {
 
     self.headerStackView |> projectActivityHeaderStackViewStyle
 
-    self.pledgeInfoButton
+    self.backingButton
       |> projectActivityFooterButton
       |> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.dashboard_activity_pledge_info() }
+  }
+
+  @objc private func backingButtonPressed(button: UIButton) {
+    self.viewModel.inputs.backingButtonPressed()
+  }
+
+  @objc private func replyButtonPressed(button: UIButton) {
+    self.viewModel.inputs.replyButtonPressed()
   }
 }

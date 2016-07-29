@@ -5,8 +5,8 @@ import ReactiveExtensions
 import Result
 
 public protocol ProjectActivityBackingCellViewModelInputs {
-  /// Call when the backing info button is pressed.
-  func backingInfoButtonPressed()
+  /// Call when the backing button is pressed.
+  func backingButtonPressed()
 
   /// Call to set the activity and project.
   func configureWith(activity activity: Activity, project: Project)
@@ -19,11 +19,11 @@ public protocol ProjectActivityBackingCellViewModelOutputs {
   /// Emits a URL for the backer's avatar.
   var backerImageURL: Signal<NSURL?, NoError> { get }
 
-  /// Emits when the backing info screen should be loaded.
-  var goToBackingInfo: Signal<Backing, NoError> { get }
+  /// Emits when the delegate should go to the backing screen.
+  var notifyDelegateGoToBacking: Signal<(Project, User), NoError> { get }
 
-  /// Emits when the send message screen should be loaded.
-  var goToSendMessage: Signal<(Project, Backing), NoError> { get }
+  /// Emits when the delegate should go to the send message screen.
+  var notifyDelegateGoToSendMessage: Signal<(Project, Backing), NoError> { get }
 
   /// Emits the new pledge amount.
   var pledgeAmount: Signal<String, NoError> { get }
@@ -62,17 +62,19 @@ ProjectActivityBackingCellViewModelInputs, ProjectActivityBackingCellViewModelOu
     self.backerImageURL = activity
       .map { ($0.user?.avatar.medium).flatMap(NSURL.init) }
 
-    self.goToBackingInfo = activity
-      .takeWhen(self.backingInfoButtonPressedProperty.signal)
-      .map { $0.memberData.backing }
-      .ignoreNil()
+    self.notifyDelegateGoToBacking = activityAndProject
+      .takeWhen(self.backingButtonPressedProperty.signal)
+      .flatMap { activity, project -> SignalProducer<(Project, User), NoError> in
+        guard let user = activity.user else { return .empty }
+        return .init(value: (project, user))
+    }
 
-    self.goToSendMessage = activityAndProject
-      .map { activity, project -> (Project, Backing)? in
-        guard let backing = activity.memberData.backing else { return nil }
-        return (project, backing)
-      }
-      .ignoreNil()
+    self.notifyDelegateGoToSendMessage = activityAndProject
+      .takeWhen(self.sendMessageButtonPressedProperty.signal)
+      .flatMap { activity, project -> SignalProducer<(Project, Backing), NoError> in
+        guard let backing = activity.memberData.backing else { return .empty }
+        return .init(value: (project, backing))
+    }
 
     self.pledgeAmount = activityAndProject
       .map { activity, project in
@@ -111,9 +113,9 @@ ProjectActivityBackingCellViewModelInputs, ProjectActivityBackingCellViewModelOu
     self.title = activity.map(title(activity:))
   }
 
-  private let backingInfoButtonPressedProperty = MutableProperty()
-  public func backingInfoButtonPressed() {
-    self.backingInfoButtonPressedProperty.value = ()
+  private let backingButtonPressedProperty = MutableProperty()
+  public func backingButtonPressed() {
+    self.backingButtonPressedProperty.value = ()
   }
 
   private let activityAndProjectProperty = MutableProperty<(Activity, Project)?>(nil)
@@ -127,8 +129,8 @@ ProjectActivityBackingCellViewModelInputs, ProjectActivityBackingCellViewModelOu
   }
 
   public let backerImageURL: Signal<NSURL?, NoError>
-  public let goToBackingInfo: Signal<Backing, NoError>
-  public let goToSendMessage: Signal<(Project, Backing), NoError>
+  public let notifyDelegateGoToBacking: Signal<(Project, User), NoError>
+  public let notifyDelegateGoToSendMessage: Signal<(Project, Backing), NoError>
   public let pledgeAmount: Signal<String, NoError>
   public let pledgeAmountLabelIsHidden: Signal<Bool, NoError>
   public let pledgeAmountsStackViewIsHidden: Signal<Bool, NoError>

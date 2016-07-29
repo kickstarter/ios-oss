@@ -37,7 +37,7 @@ internal final class ProjectActivitiesDataSource: ValueCellDataSource {
     }
   }
 
-  override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
+  internal override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
 
     switch (cell, value) {
     case let (cell as ProjectActivityBackingCell, value as (Activity, Project)):
@@ -104,6 +104,10 @@ internal final class ProjectActivitiesDataSource: ValueCellDataSource {
     case .backingDropped, .follow, .funding, .watch, .unknown:
       assertionFailure("Unsupported activity: \(activity)")
     }
+  }
 
+  internal func activityAndProjectAtIndexPath(indexPath: NSIndexPath) -> (Activity, Project)? {
+    guard let value = self[indexPath] as? (Activity, Project) else { return nil }
+    return value
   }
 }

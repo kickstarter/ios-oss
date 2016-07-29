@@ -10,8 +10,10 @@ public let projectActivityCardStyle = cardStyle()
 
 public let projectActivityDividerViewStyle = UIView.lens.backgroundColor .~ .ksr_navy_300
 
-public let projectActivityFooterButton = UIButton.lens.titleColor(forState: .Normal) .~ .ksr_text_green_700
-  <> UIButton.lens.titleLabel.font .~ UIFont.ksr_footnote(size: 12).bolded
+public let projectActivityFooterButton =
+  UIButton.lens.titleColor(forState: .Normal) .~ .ksr_text_green_700
+    <> UIButton.lens.titleLabel.font .~ UIFont.ksr_footnote(size: 12).bolded
+    <> UIButton.lens.titleColor(forState: .Highlighted) .~ .ksr_grey_100
 
 public let projectActivityFooterStackViewStyle =
   UIStackView.lens.layoutMargins .~ .init(topBottom: 6, leftRight: 12)

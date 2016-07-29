@@ -4,10 +4,17 @@ import Prelude
 import Prelude_UIKit
 import UIKit
 
+internal protocol ProjectActivityBackingCellDelegate: class {
+  func projectActivityBackingCellGoToBacking(project project: Project, user: User)
+  func projectActivityBackingCellGoToSendMessage(project project: Project, backing: Backing)
+}
+
 internal final class ProjectActivityBackingCell: UITableViewCell, ValueCell {
   private let viewModel: ProjectActivityBackingCellViewModelType = ProjectActivityBackingCellViewModel()
+  internal weak var delegate: ProjectActivityBackingCellDelegate?
 
   @IBOutlet private weak var backerImageView: CircleAvatarImageView!
+  @IBOutlet private weak var backingButton: UIButton!
   @IBOutlet private weak var bulletSeparatorView: UIView!
   @IBOutlet private weak var cardView: UIView!
   @IBOutlet private weak var footerDividerView: UIView!
@@ -18,12 +25,21 @@ internal final class ProjectActivityBackingCell: UITableViewCell, ValueCell {
   @IBOutlet private weak var pledgeAmountLabelsStackView: UIStackView!
   @IBOutlet private weak var pledgeAmountsStackView: UIView!
   @IBOutlet private weak var pledgeDetailsStackView: UIStackView!
-  @IBOutlet private weak var pledgeInfoButton: UIButton!
   @IBOutlet private weak var previousPledgeAmountLabel: UILabel!
   @IBOutlet private weak var previousPledgeStrikethroughView: UIView!
   @IBOutlet private weak var rewardLabel: UILabel!
   @IBOutlet private weak var sendMessageButton: UIButton!
   @IBOutlet private weak var titleLabel: UILabel!
+
+  internal override func awakeFromNib() {
+    super.awakeFromNib()
+
+    self.backingButton
+      |> UIButton.lens.targets .~ [(self, #selector(backingButtonPressed), .TouchUpInside)]
+
+    self.sendMessageButton
+      |> UIButton.lens.targets .~ [(self, #selector(sendMessageButtonPressed), .TouchUpInside)]
+  }
 
   internal func configureWith(value activityAndProject: (Activity, Project)) {
     self.viewModel.inputs.configureWith(activity: activityAndProject.0,
@@ -42,6 +58,18 @@ internal final class ProjectActivityBackingCell: UITableViewCell, ValueCell {
       .ignoreNil()
       .observeNext { [weak self] url in
         self?.backerImageView.af_setImageWithURL(url)
+    }
+
+    self.viewModel.outputs.notifyDelegateGoToBacking
+      .observeForUI()
+      .observeNext { [weak self] project, user in
+        self?.delegate?.projectActivityBackingCellGoToBacking(project: project, user: user)
+    }
+
+    self.viewModel.outputs.notifyDelegateGoToSendMessage
+      .observeForUI()
+      .observeNext { [weak self] project, backing in
+        self?.delegate?.projectActivityBackingCellGoToSendMessage(project: project, backing: backing)
     }
 
     self.pledgeAmountLabel.rac.hidden = self.viewModel.outputs.pledgeAmountLabelIsHidden
@@ -109,7 +137,7 @@ internal final class ProjectActivityBackingCell: UITableViewCell, ValueCell {
       <> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
       <> UIStackView.lens.spacing .~ 10
 
-    self.pledgeInfoButton
+    self.backingButton
       |> projectActivityFooterButton
       |> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.dashboard_activity_pledge_info() }
 
@@ -122,5 +150,13 @@ internal final class ProjectActivityBackingCell: UITableViewCell, ValueCell {
     self.sendMessageButton
       |> projectActivityFooterButton
       |> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.dashboard_activity_send_message() }
+  }
+
+  @objc private func backingButtonPressed(button: UIButton) {
+    self.viewModel.inputs.backingButtonPressed()
+  }
+
+  @objc private func sendMessageButtonPressed(button: UIButton) {
+    self.viewModel.inputs.sendMessageButtonPressed()
   }
 }
