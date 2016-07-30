@@ -322,7 +322,7 @@ internal final class SettingsViewModelTests: TestCase {
   func testVersionTextEmits() {
     self.vm.inputs.viewDidLoad()
     XCTAssertEqual(["Settings View"], self.trackingClient.events)
-    self.versionText.assertValues(["Version \(self.mainBundle.bundleShortVersionString)"],
+    self.versionText.assertValues(["Version \(self.mainBundle.shortVersionString)"],
                               "Build version string emitted.")
   }
 }

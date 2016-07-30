@@ -34,9 +34,7 @@ public final class ActivityUpdateViewModel: ActivityUpdateViewModelInputs, Activ
     self.title = activity.map { $0.update?.title }
 
     self.sequenceTitle = activity.map { $0.update?.sequence ?? 1 }
-      .map {
-        Strings.activity_project_update_update_count(update_count: Format.wholeNumber($0))
-    }
+      .map { Strings.activity_project_update_update_count(update_count: Format.wholeNumber($0)) }
 
     self.timestamp = activity.map {
       Format.date(secondsInUTC: $0.createdAt, dateStyle: .MediumStyle, timeStyle: .NoStyle)

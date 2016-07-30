@@ -21,6 +21,12 @@ public func baseTableControllerStyle <TVC: UITableViewControllerProtocol>
   #endif
 }
 
+public let baseNavigationBarStyle =
+  UINavigationBar.lens.titleTextAttributes .~ [
+    NSForegroundColorAttributeName: UIColor.ksr_text_navy_600,
+    NSFontAttributeName: UIFont.ksr_subhead(size: 15)
+]
+
 public func baseTableViewCellStyle <TVC: UITableViewCellProtocol> () -> (TVC -> TVC) {
 
   return
@@ -55,6 +61,7 @@ public let formFieldStyle =
     <> UITextField.lens.autocapitalizationType .~ .None
     <> UITextField.lens.autocorrectionType .~ .No
     <> UITextField.lens.spellCheckingType .~ .No
+    <> UITextField.lens.tintColor .~ .ksr_green_700
 
 public let separatorStyle =
   UIView.lens.backgroundColor .~ .ksr_navy_300

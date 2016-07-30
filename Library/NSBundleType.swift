@@ -8,11 +8,15 @@ public protocol NSBundleType {
 }
 
 extension NSBundleType {
-  public var bundleShortVersionString: String {
-    return (self.infoDictionary?["CFBundleShortVersionString"] as? String) ?? "Unknown"
+  public var identifier: String {
+    return self.infoDictionary?["CFBundleIdentifier"] as? String ?? "Unknown"
   }
 
-  public var bundleVersion: String {
+  public var shortVersionString: String {
+    return self.infoDictionary?["CFBundleShortVersionString"] as? String ?? "Unknown"
+  }
+
+  public var version: String {
     return String(self.infoDictionary?["CFBundleVersion"] as? Int) ?? "0"
   }
 }

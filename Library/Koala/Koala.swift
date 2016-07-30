@@ -563,11 +563,6 @@ public final class Koala {
 
   // MARK: Update Draft Events
 
-  public enum AttachmentOrigin: String {
-    case camera = "camera"
-    case cameraRoll = "camera_roll"
-  }
-
   public func trackViewedUpdateDraft(forProject project: Project) {
     self.track(event: "Viewed Draft", properties: updateDraftProperties(project: project))
   }
@@ -589,14 +584,34 @@ public final class Koala {
   }
 
   public func trackCompletedAddUpdateDraftAttachment(forProject project: Project,
-                                                           attachedFrom origin: AttachmentOrigin) {
+                                                           attachedFrom source: AttachmentSource) {
     var props = updateDraftProperties(project: project)
-    props["type"] = origin.rawValue
+    props["type"] = source.rawValue
     self.track(event: "Completed Add Attachment", properties: props)
   }
 
   public func trackCanceledAddUpdateDraftAttachment(forProject project: Project) {
     self.track(event: "Canceled Add Attachment", properties: updateDraftProperties(project: project))
+  }
+
+  public func trackFailedAddUpdateDraftAttachment(forProject project: Project) {
+    self.track(event: "Failed Add Attachment", properties: updateDraftProperties(project: project))
+  }
+
+  public func trackStartedRemoveUpdateDraftAttachment(forProject project: Project) {
+    self.track(event: "Started Remove Attachment", properties: updateDraftProperties(project: project))
+  }
+
+  public func trackCanceledRemoveUpdateDraftAttachment(forProject project: Project) {
+    self.track(event: "Canceled Remove Attachment", properties: updateDraftProperties(project: project))
+  }
+
+  public func trackCompletedRemoveUpdateDraftAttachment(forProject project: Project) {
+    self.track(event: "Completed Remove Attachment", properties: updateDraftProperties(project: project))
+  }
+
+  public func trackFailedRemoveUpdateDraftAttachment(forProject project: Project) {
+    self.track(event: "Failed Remove Attachment", properties: updateDraftProperties(project: project))
   }
 
   public func trackChangedUpdateDraftVisibility(forProject project: Project, isPublic: Bool) {

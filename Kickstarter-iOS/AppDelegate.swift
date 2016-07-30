@@ -45,6 +45,8 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
       .observeForUI()
       .observeNext(NSNotificationCenter.defaultCenter().postNotification)
 
+    self.window?.tintColor = .ksr_navy_700
+
     viewModel.inputs.applicationDidFinishLaunching(application: application, launchOptions: launchOptions)
 
     return true

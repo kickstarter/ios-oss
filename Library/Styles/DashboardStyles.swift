@@ -53,7 +53,7 @@ public let dashboardFundingGraphAxisSeparatorViewStyle =
 
 public let dashboardFundingGraphXAxisLabelStyle =
   UILabel.lens.font .~ UIFont.ksr_caption1().bolded
-    <> UILabel.lens.textColor .~ .ksr_navy_700
+    <> UILabel.lens.textColor .~ .ksr_text_navy_700
     <> UILabel.lens.accessibilityElementsHidden .~ true
 
 public let dashboardFundingGraphXAxisStackViewStyle =
@@ -128,7 +128,7 @@ public let postUpdateButtonStyle = dashboardGreenTextBorderButtonStyle
   <> UIButton.lens.accessibilityLabel %~ { _ in Strings.dashboard_buttons_post_update() }
 
 public let dashboardRewardTitleLabelStyle = dashboardCellTitleLabelStyle
-    <> UILabel.lens.text %~ { _ in Strings.dashboard_graphs_rewards_title_rewards() }
+  <> UILabel.lens.text %~ { _ in Strings.dashboard_graphs_rewards_title_rewards() }
 
 public let dashboardRewardRowTitleButtonStyle = textOnlyButtonStyle
   <> UIButton.lens.titleLabel.font .~ UIFont.ksr_footnote().bolded
@@ -159,7 +159,7 @@ public let dashboardTitleViewTextStyle =
   <> UILabel.lens.font .~ .ksr_footnote(size: 14.0)
 
 public let dashboardVideoCompletionPercentageLabelStyle =
-  UILabel.lens.textColor .~ .ksr_navy_500
+  UILabel.lens.textColor .~ .ksr_text_navy_500
   <> UILabel.lens.font .~ UIFont.ksr_caption1()
 
 public let dashboardVideoExternalPlaysProgressViewStyle =
@@ -187,28 +187,3 @@ public let dashboardViewProjectButtonStyle = dashboardGrayTextBorderButtonStyle
   <> UIButton.lens.backgroundColor(forState: .Normal) .~ .whiteColor()
   <> UIButton.lens.titleColor(forState: .Normal) .~ .ksr_navy_700
   <> UIButton.lens.contentEdgeInsets .~ .init(topBottom: 8, leftRight: 16)
-
-public let updateTitleTextFieldStyle = formFieldStyle
-  <> UITextField.lens.placeholder %~ { _ in Strings.dashboard_post_update_compose_placeholder_title() }
-  <> UITextField.lens.returnKeyType .~ .Next
-
-public let updateBackersOnlyButtonStyle =
-  UIButton.lens.title(forState: .Normal) %~ { _ in Strings.dashboard_post_update_compose_public_label() }
-    <> UIButton.lens.title(forState: .Selected)
-      %~ { _ in Strings.dashboard_post_update_compose_private_label() }
-
-public let updateAttachmentsStackViewStyle = UIStackView.lens.alignment .~ .LastBaseline
-  <> UIStackView.lens.distribution .~ .EqualSpacing
-  <> UIStackView.lens.layoutMargins .~ .init(all: 4.0)
-  <> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
-  <> UIStackView.lens.spacing .~ 4.0
-
-public let updateBodyTextViewStyle = UITextView.lens.backgroundColor .~ .clearColor()
-  <> UITextView.lens.font .~ .ksr_body()
-  <> UITextView.lens.textColor .~ .ksr_text_navy_900
-  <> UITextView.lens.textContainerInset .~ .init(top: 20.0, left: 0.0, bottom: 0.0, right: 0.0)
-
-public let updateAddAttachmentButtonStyle =
-  UIButton.lens.contentEdgeInsets .~ .init(topBottom: 12.0, leftRight: 0.0)
-    <> UIButton.lens.title(forState: .Normal)
-      %~ { _ in Strings.dashboard_post_update_compose_attachment_buttons_add_attachment() }

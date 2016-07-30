@@ -17,8 +17,7 @@ internal final class ThanksCategoryCell: UICollectionViewCell, ValueCell {
     self.liveProjectCountLabel.color = self.exploreLabel.color
     if let projectsCount = category.projectsCount {
       self.liveProjectCountLabel.text = Strings.category_promo_project_count_live_projects(
-        project_count: Format.wholeNumber(projectsCount)
-        )
+        project_count: Format.wholeNumber(projectsCount))
     } else {
       self.liveProjectCountLabel.hidden = true
     }

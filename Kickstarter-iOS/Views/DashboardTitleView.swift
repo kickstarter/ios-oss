@@ -22,12 +22,13 @@ internal final class DashboardTitleView: UIView {
     super.awakeFromNib()
 
     self.titleButton
-      |> UIView.lens.accessibilityLabel %~ { _ in Strings.tabbar_dashboard() }
-      |> UIView.lens.accessibilityTraits .~ UIAccessibilityTraitStaticText
-
-    self.titleButton.addTarget(self,
-                               action: #selector(titleButtonTapped),
-                               forControlEvents: .TouchUpInside)
+      |> UIButton.lens.contentEdgeInsets %~ { insets in .init(topBottom: insets.top, leftRight: 0) }
+      |> UIButton.lens.titleColor(forState: .Normal) .~ .ksr_text_navy_600
+      |> UIButton.lens.titleColor(forState: .Highlighted) .~ .ksr_text_navy_900
+      |> UIButton.lens.titleLabel.font .~ .ksr_callout()
+      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.tabbar_dashboard() }
+      |> UIButton.lens.accessibilityTraits .~ UIAccessibilityTraitStaticText
+      |> UIButton.lens.targets .~ [(self, #selector(titleButtonTapped), .TouchUpInside)]
 
     self.titleLabel |> dashboardTitleViewTextStyle
 

@@ -194,7 +194,7 @@ public final class SettingsViewModel: SettingsViewModelType, SettingsViewModelIn
     self.versionText = viewDidLoadProperty.signal
       .map {
         Strings.profile_settings_version_number(
-            version_number: AppEnvironment.current.mainBundle.bundleShortVersionString
+            version_number: AppEnvironment.current.mainBundle.shortVersionString
         )
     }
 
