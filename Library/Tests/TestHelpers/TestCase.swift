@@ -1,6 +1,7 @@
 import XCTest
 import AVFoundation
 import ReactiveCocoa
+import Result
 @testable import KsApi
 @testable import Library
 
@@ -37,6 +38,7 @@ internal class TestCase: XCTestCase {
       launchedCountries: .init(),
       locale: .currentLocale(),
       mainBundle: mainBundle,
+      reachability: .init(value: .wifi),
       scheduler: self.scheduler,
       timeZone: NSTimeZone(name: "GMT")!,
       ubiquitousStore: MockKeyValueStore(),

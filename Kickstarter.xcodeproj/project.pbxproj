@@ -152,6 +152,8 @@
 		802650C61D39A0EF00C64A86 /* Kickstarter_Framework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7C7959E1C873A870081977F /* Kickstarter_Framework.framework */; };
 		8072F41D1D46B75200999EF1 /* UpdatePreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8072F41C1D46B75200999EF1 /* UpdatePreviewViewController.swift */; };
 		8072F44F1D46BAA400999EF1 /* UpdatePreviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8072F44E1D46BAA400999EF1 /* UpdatePreviewViewModel.swift */; };
+		8053D3111D3848A3007B85DB /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8053D3101D3848A3007B85DB /* Reachability.swift */; };
+		8053D3121D3848A3007B85DB /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8053D3101D3848A3007B85DB /* Reachability.swift */; };
 		80762E3F1D071CAA0074189D /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 80762E311D071BFE0074189D /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		80762E431D071CB70074189D /* AlamofireImage.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 80762DF31D071BCF0074189D /* AlamofireImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		80762E461D071D610074189D /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80762E391D071BFE0074189D /* Alamofire.framework */; };
@@ -1445,6 +1447,7 @@
 		803BDF731D11AF7C004A785A /* UpdateDraftViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateDraftViewController.swift; sourceTree = "<group>"; };
 		8072F41C1D46B75200999EF1 /* UpdatePreviewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdatePreviewViewController.swift; sourceTree = "<group>"; };
 		8072F44E1D46BAA400999EF1 /* UpdatePreviewViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdatePreviewViewModel.swift; sourceTree = "<group>"; };
+		8053D3101D3848A3007B85DB /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		80762DE71D071BCF0074189D /* AlamofireImage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AlamofireImage.xcodeproj; path = Frameworks/AlamofireImage/AlamofireImage.xcodeproj; sourceTree = "<group>"; };
 		80762E261D071BFE0074189D /* Alamofire.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Alamofire.xcodeproj; path = Frameworks/AlamofireImage/Carthage/Checkouts/Alamofire/Alamofire.xcodeproj; sourceTree = "<group>"; };
 		8078D0B21D0F08B1001CFF87 /* UpdateDraftViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateDraftViewModelTests.swift; sourceTree = "<group>"; };
@@ -2543,6 +2546,7 @@
 				A78537F71CB5803B00385B73 /* NSHTTPCookieStorageType.swift */,
 				A77D7B061CBAAF5D0077586B /* Paginate.swift */,
 				A75C811A1D210C4700B5AD03 /* ProjectActivityItemProvider.swift */,
+				8053D3101D3848A3007B85DB /* Reachability.swift */,
 				A7DC83951C9DBBE700BB2B44 /* RefTag.swift */,
 				A734A3A11D22BADF0080BBD5 /* Router.swift */,
 				A75C81191D210C4700B5AD03 /* SafariActivity.swift */,
@@ -3837,6 +3841,7 @@
 				A73378FE1D0AE36400C91445 /* LoginStyles.swift in Sources */,
 				0154A93B1CA1A17800DB9BA4 /* UIColor.swift in Sources */,
 				A7F441CD1D005A9400FE6FC5 /* MessagesViewModel.swift in Sources */,
+				8053D3111D3848A3007B85DB /* Reachability.swift in Sources */,
 				809F8B661D08B4FF005BADD9 /* UpdateDraftViewModel.swift in Sources */,
 				A760780A1CAEE0A6001B39D0 /* IsValidEmail.swift in Sources */,
 				A755115B1C8642C3005355CF /* AppEnvironment.swift in Sources */,
@@ -4217,6 +4222,7 @@
 				0151AEBB1C8F811C0067F1BE /* BorderButton.swift in Sources */,
 				A7D1210A1D15B08200F364FD /* CountBadgeView.swift in Sources */,
 				A72C3A941D00F6C70075227E /* DiscoveryFiltersViewModel.swift in Sources */,
+				8053D3121D3848A3007B85DB /* Reachability.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

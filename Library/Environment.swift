@@ -3,7 +3,7 @@ import Foundation
 import HockeySDK
 import KsApi
 import ReactiveCocoa
-import KsApi
+import Result
 import FBSDKCoreKit
 
 /**
@@ -64,6 +64,9 @@ public struct Environment {
   /// A type that exposes how to interface with an NSBundle. Default value is `NSBundle.mainBundle()`.
   public let mainBundle: NSBundleType
 
+  /// A reachability signal producer.
+  public let reachability: SignalProducer<Reachability, NoError>
+
   /// A scheduler to use for all time-based RAC operators. Default value is
   /// `QueueScheduler.mainQueueScheduler`.
   public let scheduler: DateSchedulerType
@@ -95,6 +98,7 @@ public struct Environment {
     launchedCountries: LaunchedCountries = .init(),
     locale: NSLocale = .currentLocale(),
     mainBundle: NSBundleType = NSBundle.mainBundle(),
+    reachability: SignalProducer<Reachability, NoError> = Reachability.signalProducer,
     scheduler: DateSchedulerType = QueueScheduler.mainQueueScheduler,
     timeZone: NSTimeZone = .localTimeZone(),
     ubiquitousStore: KeyValueStoreType = NSUbiquitousKeyValueStore.defaultStore(),
@@ -117,6 +121,7 @@ public struct Environment {
     self.launchedCountries = launchedCountries
     self.locale = locale
     self.mainBundle = mainBundle
+    self.reachability = reachability
     self.scheduler = scheduler
     self.timeZone = timeZone
     self.ubiquitousStore = ubiquitousStore
@@ -142,6 +147,7 @@ public struct Environment {
       self.launchedCountries,
       self.locale,
       self.mainBundle,
+      self.reachability,
       self.scheduler,
       self.timeZone,
       self.ubiquitousStore,

@@ -1,6 +1,6 @@
 // swiftlint:disable file_length
 // swiftlint:disable type_body_length
-import Foundation
+import CoreTelephony
 import UIKit
 import KsApi
 import Prelude
@@ -711,6 +711,8 @@ public final class Koala {
     props["client_type"] = "native"
     props["device_format"] = self.deviceFormat
     props["client_platform"] = self.clientPlatform
+    props["cellular_connection"] = CTTelephonyNetworkInfo().currentRadioAccessTechnology
+    props["wifi_connection"] = Reachability.current == .wifi
 
     if let loggedInUser = self.loggedInUser {
       properties(user: loggedInUser).forEach { props[$0] = $1 }
