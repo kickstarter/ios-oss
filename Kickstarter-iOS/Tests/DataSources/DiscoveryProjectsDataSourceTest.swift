@@ -22,6 +22,20 @@ final class DiscoveryProjectsDataSourceTests: XCTestCase {
     XCTAssertEqual(0, self.dataSource.tableView(tableView, numberOfRowsInSection: section))
   }
 
+  func testActivitySample() {
+    let section = DiscoveryProjectsDataSource.Section.activitySample.rawValue
+
+    self.dataSource.load(activities: [.template])
+
+    XCTAssertEqual(section + 1, self.dataSource.numberOfSectionsInTableView(tableView))
+    XCTAssertEqual(1, self.dataSource.tableView(tableView, numberOfRowsInSection: section))
+
+    self.dataSource.load(activities: [])
+
+    XCTAssertEqual(section + 1, self.dataSource.numberOfSectionsInTableView(tableView))
+    XCTAssertEqual(0, self.dataSource.tableView(tableView, numberOfRowsInSection: section))
+  }
+
   func testProjects() {
     let section = DiscoveryProjectsDataSource.Section.projects.rawValue
 

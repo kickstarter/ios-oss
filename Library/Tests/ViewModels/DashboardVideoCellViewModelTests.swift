@@ -20,9 +20,9 @@ internal final class DashboardVideoCellViewModelTests: TestCase {
     super.setUp()
     self.vm.outputs.completionPercentage.observe(completionPercentage.observer)
     self.vm.outputs.externalStartCount.observe(externalStartCount.observer)
-    self.vm.outputs.externalStartProgress.observe(externalStartProgress.observer)
+    self.vm.outputs.externalStartProgress.map { round($0 * 100) }.observe(externalStartProgress.observer)
     self.vm.outputs.internalStartCount.observe(internalStartCount.observer)
-    self.vm.outputs.internalStartProgress.observe(internalStartProgress.observer)
+    self.vm.outputs.internalStartProgress.map { round($0 * 100) }.observe(internalStartProgress.observer)
     self.vm.outputs.totalStartCount.map { $0.string }.observe(totalStartCount.observer)
   }
 
@@ -37,9 +37,9 @@ internal final class DashboardVideoCellViewModelTests: TestCase {
 
     self.completionPercentage.assertValues(["60% of plays completed"], "Floored completion percent emits.")
     self.externalStartCount.assertValues(["2,000"], "Formatted external start count emits.")
-    self.externalStartProgress.assertValues([0.4], "External start percentage float value emits.")
+    self.externalStartProgress.assertValues([40], "External start percentage float value emits.")
     self.internalStartCount.assertValues(["3,000"], "Formatted internal start count emits.")
-    self.internalStartProgress.assertValues([0.6], "Internal start percentage float value emits.")
+    self.internalStartProgress.assertValues([60], "Internal start percentage float value emits.")
     self.totalStartCount.assertValues(["5,000 total plays"], "Formatted total start count emits.")
   }
 }

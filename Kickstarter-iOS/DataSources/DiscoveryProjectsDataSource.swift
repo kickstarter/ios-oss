@@ -5,7 +5,25 @@ import UIKit
 internal final class DiscoveryProjectsDataSource: ValueCellDataSource {
   internal enum Section: Int {
     case onboarding
+    case activitySample
     case projects
+  }
+
+  func load(activities activities: [Activity]) {
+    let section = Section.activitySample.rawValue
+
+    self.clearValues(section: section)
+
+    activities.forEach { activity in
+      switch activity.category {
+      case .backing:
+        self.set(values: [activity], cellClass: ActivitySampleBackingCell.self, inSection: section)
+      case .follow:
+        self.set(values: [activity], cellClass: ActivitySampleFollowCell.self, inSection: section)
+      default:
+        self.set(values: [activity], cellClass: ActivitySampleProjectCell.self, inSection: section)
+      }
+    }
   }
 
   func load(projects projects: [Project]) {
@@ -27,6 +45,10 @@ internal final class DiscoveryProjectsDataSource: ValueCellDataSource {
              inSection: Section.onboarding.rawValue)
   }
 
+  internal func activityAtIndexPath(indexPath: NSIndexPath) -> Activity? {
+    return self[indexPath] as? Activity
+  }
+
   internal func projectAtIndexPath(indexPath: NSIndexPath) -> Project? {
     return self[indexPath] as? Project
   }
@@ -34,6 +56,12 @@ internal final class DiscoveryProjectsDataSource: ValueCellDataSource {
   override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
 
     switch (cell, value) {
+    case let (cell as ActivitySampleBackingCell, value as Activity):
+      cell.configureWith(value: value)
+    case let (cell as ActivitySampleFollowCell, value as Activity):
+      cell.configureWith(value: value)
+    case let (cell as ActivitySampleProjectCell, value as Activity):
+      cell.configureWith(value: value)
     case let (cell as DiscoveryProjectCell, value as Project):
       cell.configureWith(value: value)
     case let (cell as DiscoveryOnboardingCell, value as Void):

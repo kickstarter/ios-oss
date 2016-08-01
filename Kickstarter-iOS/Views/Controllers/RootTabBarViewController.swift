@@ -50,6 +50,10 @@ internal final class RootTabBarViewController: UITabBarController {
       .observeNext(scrollToTop)
   }
 
+  internal func switchToActivities() {
+    self.viewModel.inputs.switchToActivities()
+  }
+
   internal func switchToDiscovery() {
     self.viewModel.inputs.switchToDiscovery()
   }

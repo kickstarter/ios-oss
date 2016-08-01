@@ -143,6 +143,8 @@ final class RootViewModelTests: TestCase {
     self.selectedIndex.assertValues([0])
     self.vm.inputs.switchToDiscovery()
     self.selectedIndex.assertValues([0, 0])
+    self.vm.inputs.switchToActivities()
+    self.selectedIndex.assertValues([0, 0, 2])
   }
 }
 

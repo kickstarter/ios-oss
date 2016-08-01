@@ -11,6 +11,9 @@ public protocol DiscoveryPageViewModelInputs {
   /// Call when the filter is changed.
   func selectedFilter(params: DiscoveryParams)
 
+  /// Call when the user taps on the activity sample.
+  func tapped(activity activity: Activity)
+
   /// Call when the user taps on a project.
   func tapped(project project: Project)
 
@@ -18,7 +21,7 @@ public protocol DiscoveryPageViewModelInputs {
   func viewDidAppear()
 
   /// Call when the view disappears.
-  func viewDidDisappear()
+  func viewDidDisappear(animated animated: Bool)
 
   /// Call when the view loads.
   func viewDidLoad()
@@ -36,11 +39,17 @@ public protocol DiscoveryPageViewModelInputs {
 }
 
 public protocol DiscoveryPageViewModelOutputs {
+  /// Emits a list of activities to be displayed in the sample.
+  var activitiesForSample: Signal<[Activity], NoError> { get }
+
   /// Emits when we should focus on the first visible project
   var focusScreenReaderOnFirstProject: Signal<(), NoError> { get }
 
   /// Emits a project and ref tag that we should go to.
   var goToProject: Signal<(Project, RefTag), NoError> { get }
+
+  /// Emits a project and update when should go to update.
+  var goToProjectUpdate: Signal<(Project, Update), NoError> { get }
 
   /// Emits a list of projects that should be shown.
   var projects: Signal<[Project], NoError> { get }
@@ -58,26 +67,26 @@ public protocol DiscoveryPageViewModelType {
 }
 
 public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, DiscoveryPageViewModelInputs,
-DiscoveryPageViewModelOutputs {
+  DiscoveryPageViewModelOutputs {
 
   // swiftlint:disable function_body_length
   public init() {
-    let isCloseToBottom = self.willDisplayRowProperty.signal.ignoreNil()
-      .map { row, total in row >= total - 3 && row > 0 }
-      .skipRepeats()
-      .filter(isTrue)
-      .ignoreValues()
-
     let paramsChanged = combineLatest(
       self.sortProperty.signal.ignoreNil(),
       self.selectedFilterProperty.signal.ignoreNil()
       )
       .map(DiscoveryParams.lens.sort.set)
 
+    let isCloseToBottom = self.willDisplayRowProperty.signal.ignoreNil()
+      .map { row, total in row >= total - 3 && row > 0 }
+      .skipRepeats()
+      .filter(isTrue)
+      .ignoreValues()
+
     let isVisible = Signal.merge(
       self.viewDidAppearProperty.signal.mapConst(true),
       self.viewDidDisappearProperty.signal.mapConst(false)
-    ).skipRepeats()
+      ).skipRepeats()
 
     let requestFirstPageWith = combineLatest(paramsChanged, isVisible)
       .filter { _, visible in visible }
@@ -102,9 +111,56 @@ DiscoveryPageViewModelOutputs {
       .skipWhile { $0.isEmpty }
       .skipRepeats(==)
 
-    self.goToProject = paramsChanged
+    let fetchActivityEvent = self.viewWillAppearProperty.signal
+      .filter { _ in AppEnvironment.current.currentUser != nil }
+      .switchMap { _ in
+        AppEnvironment.current.apiService.fetchActivities(count: 1)
+          .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
+          .materialize()
+    }
+
+    let activitySampleTapped = self.tappedActivity.signal.ignoreNil()
+      .filter { $0.category != .update }
+      .map { $0.project }.ignoreNil()
+      .map { ($0, RefTag.activitySample) }
+
+    let projectCardTapped = paramsChanged
       .takePairWhen(self.tappedProject.signal.ignoreNil())
       .map { params, project in (project, refTag(fromParams: params, project: project)) }
+
+    self.goToProject = Signal.merge(activitySampleTapped, projectCardTapped)
+
+    self.goToProjectUpdate = self.tappedActivity.signal.ignoreNil()
+      .filter { $0.category == .update }
+      .flatMap { activity -> SignalProducer<(Project, Update), NoError> in
+        guard let project = activity.project, update = activity.update else {
+          return .empty
+        }
+        return SignalProducer(value: (project, update))
+    }
+
+    let activities = fetchActivityEvent.values().map { $0.activities }
+      .skipRepeats(==)
+      .map {$0.filter { activity in hasNotSeen(activity: activity) } }
+      .on(next: { activities in saveSeen(activities: activities) })
+
+    // Clear the activity sample when selecting a new filter or swiping to a new sort view.
+    let clearActivitySample = Signal.merge(
+      paramsChanged.mapConst(true),
+      self.goToProject.mapConst(false),
+      self.goToProjectUpdate.mapConst(false),
+      self.viewDidDisappearProperty.signal.filter { animated in !animated }.mapConst(false),
+      self.viewDidAppearProperty.signal.mapConst(true),
+      self.viewWillAppearProperty.signal.map { _ in AppEnvironment.current.currentUser == nil }
+      )
+      .takeWhen(self.viewDidDisappearProperty.signal)
+      .filter(isTrue)
+
+    self.activitiesForSample = Signal.merge(
+      activities,
+      clearActivitySample.mapConst([])
+      )
+      .skipRepeats(==)
 
     self.showOnboarding = combineLatest(
       self.viewWillAppearProperty.signal,
@@ -146,6 +202,10 @@ DiscoveryPageViewModelOutputs {
   public func selectedFilter(params: DiscoveryParams) {
     self.selectedFilterProperty.value = params
   }
+  private let tappedActivity = MutableProperty<Activity?>(nil)
+  public func tapped(activity activity: Activity) {
+    self.tappedActivity.value = activity
+  }
   private let tappedProject = MutableProperty<Project?>(nil)
   public func tapped(project project: Project) {
     self.tappedProject.value = project
@@ -154,9 +214,9 @@ DiscoveryPageViewModelOutputs {
   public func viewDidAppear() {
     self.viewDidAppearProperty.value = ()
   }
-  private let viewDidDisappearProperty = MutableProperty()
-  public func viewDidDisappear() {
-    self.viewDidDisappearProperty.value = ()
+  private let viewDidDisappearProperty = MutableProperty(false)
+  public func viewDidDisappear(animated animated: Bool) {
+    self.viewDidDisappearProperty.value = animated
   }
   private let viewDidLoadProperty = MutableProperty()
   public func viewDidLoad() {
@@ -171,14 +231,26 @@ DiscoveryPageViewModelOutputs {
     self.willDisplayRowProperty.value = (row, totalRows)
   }
 
+  public let activitiesForSample: Signal<[Activity], NoError>
   public let focusScreenReaderOnFirstProject: Signal<(), NoError>
   public let goToProject: Signal<(Project, RefTag), NoError>
+  public let goToProjectUpdate: Signal<(Project, Update), NoError>
   public let projects: Signal<[Project], NoError>
   public let projectsAreLoading: Signal<Bool, NoError>
   public let showOnboarding: Signal<Bool, NoError>
 
   public var inputs: DiscoveryPageViewModelInputs { return self }
   public var outputs: DiscoveryPageViewModelOutputs { return self }
+}
+
+private func hasNotSeen(activity activity: Activity) -> Bool {
+  return activity.id != AppEnvironment.current.userDefaults.lastSeenActivitySampleId
+}
+
+private func saveSeen(activities activities: [Activity]) -> () {
+  activities.forEach { activity in
+    AppEnvironment.current.userDefaults.lastSeenActivitySampleId = activity.id
+  }
 }
 
 private func refTag(fromParams params: DiscoveryParams, project: Project) -> RefTag {

@@ -1,0 +1,67 @@
+import Library
+import KsApi
+import Prelude
+import UIKit
+
+internal protocol ActivitySampleFollowCellDelegate: class {
+  /// Call when should go to activity screen.
+  func goToActivity()
+}
+
+internal final class ActivitySampleFollowCell: UITableViewCell, ValueCell {
+  private let viewModel: ActivitySampleFollowCellViewModelType = ActivitySampleFollowCellViewModel()
+  internal weak var delegate: ActivitySampleFollowCellDelegate?
+
+  @IBOutlet private weak var activityTitleLabel: UILabel!
+  @IBOutlet private weak var friendFollowLabel: UILabel!
+  @IBOutlet private weak var friendImageView: CircleAvatarImageView!
+  @IBOutlet private weak var seeAllActivityButton: UIButton!
+
+  internal override func awakeFromNib() {
+    super.awakeFromNib()
+
+    self.seeAllActivityButton.addTarget(
+      self,
+      action: #selector(seeAllActivityButtonTapped),
+      forControlEvents: .TouchUpInside
+    )
+  }
+
+  internal override func bindStyles() {
+    super.bindStyles()
+    self.activityTitleLabel |> activitySampleTitleLabelStyle
+    self.friendFollowLabel |> activitySampleFriendFollowLabelStyle
+    self.seeAllActivityButton |> activitySampleSeeAllActivityButtonStyle
+  }
+
+  internal override func bindViewModel() {
+    super.bindViewModel()
+
+    self.friendFollowLabel.rac.text = self.viewModel.outputs.friendFollowText
+
+    self.viewModel.outputs.friendImageURL
+      .observeForUI()
+      .on(next: { [weak self] _ in
+        self?.friendImageView.af_cancelImageRequest()
+        self?.friendImageView.image = nil
+        })
+      .ignoreNil()
+      .observeNext { [weak self] url in
+        self?.friendImageView.af_setImageWithURL(url)
+    }
+
+    self.viewModel.outputs.goToActivity
+      .observeForUI()
+      .observeNext { [weak self] _ in
+        self?.delegate?.goToActivity()
+    }
+  }
+
+  internal func configureWith(value value: Activity) {
+    self.viewModel.inputs.configureWith(activity: value)
+  }
+
+  @objc private func seeAllActivityButtonTapped() {
+    self.viewModel.inputs.seeAllActivityTapped()
+  }
+}

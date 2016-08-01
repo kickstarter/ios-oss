@@ -129,7 +129,7 @@ ActivitiesViewModelOutputs {
       clearOnNewRequest: false,
       valuesFromEnvelope: { $0.activities },
       cursorFromEnvelope: { $0.urls.api.moreActivities },
-      requestFromParams: { _ in AppEnvironment.current.apiService.fetchActivities() },
+      requestFromParams: { _ in AppEnvironment.current.apiService.fetchActivities(count: nil) },
       requestFromCursor: { AppEnvironment.current.apiService.fetchActivities(paginationUrl: $0) })
 
     self.isRefreshing = isLoading

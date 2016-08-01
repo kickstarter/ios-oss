@@ -36,11 +36,18 @@ internal final class DiscoveryPageViewController: UITableViewController {
 
   override func viewDidDisappear(animated: Bool) {
     super.viewDidDisappear(animated)
-    self.viewModel.inputs.viewDidDisappear()
+    self.viewModel.inputs.viewDidDisappear(animated: animated)
   }
 
   internal override func bindViewModel() {
     super.bindViewModel()
+
+    self.viewModel.outputs.activitiesForSample
+      .observeForUI()
+      .observeNext { [weak self] activities in
+        self?.dataSource.load(activities: activities)
+        self?.tableView.reloadData()
+    }
 
     self.viewModel.outputs.projects
       .observeForUI()
@@ -51,7 +58,15 @@ internal final class DiscoveryPageViewController: UITableViewController {
 
     self.viewModel.outputs.goToProject
       .observeForUI()
-      .observeNext { [weak self] in self?.goTo(project: $0, refTag: $1) }
+      .observeNext { [weak self] in
+        self?.goTo(project: $0, refTag: $1)
+    }
+
+    self.viewModel.outputs.goToProjectUpdate
+      .observeForUI()
+      .observeNext { [weak self] project, update in
+        self?.goTo(project: project, update: update)
+    }
 
     self.viewModel.outputs.showOnboarding
       .observeForUI()
@@ -71,7 +86,13 @@ internal final class DiscoveryPageViewController: UITableViewController {
                                    willDisplayCell cell: UITableViewCell,
                                    forRowAtIndexPath indexPath: NSIndexPath) {
 
-    if let cell = cell as? DiscoveryOnboardingCell where cell.delegate == nil {
+    if let cell = cell as? ActivitySampleBackingCell where cell.delegate == nil {
+      cell.delegate = self
+    } else if let cell = cell as? ActivitySampleFollowCell where cell.delegate == nil {
+      cell.delegate = self
+    } else if let cell = cell as? ActivitySampleProjectCell where cell.delegate == nil {
+      cell.delegate = self
+    } else if let cell = cell as? DiscoveryOnboardingCell where cell.delegate == nil {
       cell.delegate = self
     }
 
@@ -84,6 +105,8 @@ internal final class DiscoveryPageViewController: UITableViewController {
 
     if let project = self.dataSource.projectAtIndexPath(indexPath) {
       self.viewModel.inputs.tapped(project: project)
+    } else if let activity = self.dataSource.activityAtIndexPath(indexPath) {
+      self.viewModel.inputs.tapped(activity: activity)
     }
   }
 
@@ -98,12 +121,32 @@ internal final class DiscoveryPageViewController: UITableViewController {
     self.presentViewController(nav, animated: true, completion: nil)
   }
 
+  private func goTo(project project: Project, update: Update) {
+    guard let updateVC = UIStoryboard(name: "Update", bundle: .framework)
+      .instantiateViewControllerWithIdentifier("UpdateViewController") as? UpdateViewController else {
+        fatalError("Couldn't instantiate update view controller.")
+    }
+
+    updateVC.configureWith(project: project, update: update)
+    self.navigationController?.pushViewController(updateVC, animated: true)
+  }
+
   private func accessibilityFocusOnFirstProject() {
 
     let cell = self.tableView.visibleCells.filter { $0 is DiscoveryProjectCell }.first
     if let cell = cell {
       UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, cell)
     }
+  }
+}
+
+extension DiscoveryPageViewController: ActivitySampleBackingCellDelegate, ActivitySampleFollowCellDelegate,
+  ActivitySampleProjectCellDelegate {
+  internal func goToActivity() {
+    guard let root = self.tabBarController as? RootTabBarViewController else {
+      return
+    }
+    root.switchToActivities()
   }
 }
 

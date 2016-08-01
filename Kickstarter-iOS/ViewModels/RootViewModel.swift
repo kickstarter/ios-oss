@@ -20,6 +20,9 @@ internal protocol RootViewModelInputs {
   /// Call when selected tab bar index changes.
   func didSelectIndex(index: Int)
 
+  /// Call when should switch to the activities tab.
+  func switchToActivities()
+
   /// Call when it's wanted to switch to the discovery tab.
   func switchToDiscovery()
 }
@@ -62,6 +65,10 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
   private let didSelectIndexProperty = MutableProperty(0)
   internal func didSelectIndex(index: Int) {
     self.didSelectIndexProperty.value = index
+  }
+  private let switchToActivitiesProperty = MutableProperty()
+  internal func switchToActivities() {
+    self.switchToActivitiesProperty.value = ()
   }
   private let switchToDiscoveryProperty = MutableProperty()
   internal func switchToDiscovery() {
@@ -114,6 +121,7 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
     self.selectedIndex = Signal.merge([
       self.viewDidLoadProperty.signal.mapConst(0),
       self.didSelectIndexProperty.signal,
+      self.switchToActivitiesProperty.signal.mapConst(2),
       self.switchToDiscoveryProperty.signal.mapConst(0)
       ])
       .withLatestFrom(self.setViewControllers)

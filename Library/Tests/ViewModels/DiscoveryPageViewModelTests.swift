@@ -10,9 +10,11 @@ import XCTest
 internal final class DiscoveryPageViewModelTests: TestCase {
   private let vm: DiscoveryPageViewModelType = DiscoveryPageViewModel()
 
+  private let activitiesForSample = TestObserver<[Activity], NoError>()
   private let focusScreenReaderOnFirstProject = TestObserver<(), NoError>()
   private let goToProject = TestObserver<Project, NoError>()
   private let goToRefTag = TestObserver<RefTag, NoError>()
+  private let goToProjectUpdate = TestObserver<Update, NoError>()
   private let hasAddedProjects = TestObserver<Bool, NoError>()
   private let hasRemovedProjects = TestObserver<Bool, NoError>()
   private let projectsAreLoading = TestObserver<Bool, NoError>()
@@ -21,9 +23,11 @@ internal final class DiscoveryPageViewModelTests: TestCase {
   internal override func setUp() {
     super.setUp()
 
+    self.vm.outputs.activitiesForSample.observe(self.activitiesForSample.observer)
     self.vm.outputs.focusScreenReaderOnFirstProject.observe(self.focusScreenReaderOnFirstProject.observer)
     self.vm.outputs.goToProject.map { $0.0 }.observe(self.goToProject.observer)
     self.vm.outputs.goToProject.map { $0.1 }.observe(self.goToRefTag.observer)
+    self.vm.outputs.goToProjectUpdate.map { $0.1 }.observe(self.goToProjectUpdate.observer)
     self.vm.outputs.showOnboarding.observe(self.showOnboarding.observer)
 
     self.vm.outputs.projects
@@ -103,7 +107,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
                    "No new properties are tracked.")
 
     // Change the filter params used
-    self.vm.inputs.viewDidDisappear()
+    self.vm.inputs.viewDidDisappear(animated: true)
     self.vm.inputs.selectedFilter(
       .defaults |> DiscoveryParams.lens.category .~ Category.art
     )
@@ -165,7 +169,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     self.hasAddedProjects.assertValues([true], "Projects load after the filter is changed.")
 
     // Navigate away from page
-    self.vm.inputs.viewDidDisappear()
+    self.vm.inputs.viewDidDisappear(animated: true)
     self.scheduler.advance()
 
     self.hasAddedProjects.assertValues([true], "Nothing changes when navigating away from view.")
@@ -191,7 +195,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     self.hasAddedProjects.assertValues([true, false, true], "Projects load once the view appears again.")
 
     // Navigate away and back
-    self.vm.inputs.viewDidDisappear()
+    self.vm.inputs.viewDidDisappear(animated: true)
     self.vm.inputs.viewDidAppear()
     self.scheduler.advance()
 
@@ -247,6 +251,139 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       [.discovery, .categoryWithSort(.Magic), .discoveryPotd, .recommendedWithSort(.Magic), .social],
       "Go to the project with the social ref tag."
     )
+
+    let activityProject = Project.template
+    let activity = .template |> Activity.lens.project .~ activityProject
+
+    self.vm.inputs.tapped(activity: activity)
+    self.goToProject.assertValues([project, project, potd, project, project, activityProject])
+    self.goToRefTag.assertValues(
+      [.discovery, .categoryWithSort(.Magic), .discoveryPotd, .recommendedWithSort(.Magic), .social,
+        .activitySample],
+      "Go to the project with the social ref tag."
+    )
+  }
+
+  func testGoToProjectUpdate() {
+    let update = Update.template
+
+    let activity = .template
+      |> Activity.lens.category .~ .update
+      |> Activity.lens.project .~ Project.template
+      |> Activity.lens.update .~ update
+
+    self.vm.inputs.tapped(activity: activity)
+    self.goToProjectUpdate.assertValues([update])
+  }
+
+  func testShowActivitySample() {
+    let activity1 = .template
+      |> Activity.lens.id .~ 111
+
+    let activity2 = .template
+      |> Activity.lens.id .~ 222
+
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: User.template))
+
+    withEnvironment(apiService: MockService(fetchActivitiesResponse: [activity1])) {
+      self.vm.inputs.configureWith(sort: .Magic)
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.viewDidAppear()
+      self.scheduler.advance()
+
+      self.activitiesForSample.assertValues([[activity1]], "Activity sample is shown.")
+
+      // Change the filter.
+      self.vm.inputs.selectedFilter(.defaults |> DiscoveryParams.lens.category .~ Category.art)
+      self.vm.inputs.viewDidDisappear(animated: true)
+      self.vm.inputs.viewDidAppear()
+
+      self.activitiesForSample.assertValues([[activity1], []], "Activity sample is hidden.")
+
+      // Change the filter again.
+      self.vm.inputs.selectedFilter(.defaults |> DiscoveryParams.lens.starred .~ true)
+      self.vm.inputs.viewDidDisappear(animated: true)
+      self.vm.inputs.viewDidAppear()
+
+      self.activitiesForSample.assertValues([[activity1], []], "Activity sample is still hidden.")
+
+      withEnvironment(apiService: MockService(fetchActivitiesResponse: [activity2])) {
+        self.vm.inputs.viewWillAppear()
+        self.vm.inputs.viewDidAppear()
+        self.scheduler.advance()
+
+        self.activitiesForSample.assertValues([[activity1], [], [activity2]],
+                                              "New activity sample is shown.")
+      }
+    }
+  }
+
+  func testActivitySampleWithLifecycle() {
+    let activity = Activity.template
+
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: User.template))
+
+    withEnvironment(apiService: MockService(fetchActivitiesResponse: [activity])) {
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.viewDidAppear()
+      self.scheduler.advance()
+
+      self.activitiesForSample.assertValues([[activity]], "Activity sample is shown.")
+
+      // Tap on activity to go to project screen, then close project screen.
+      self.vm.inputs.tapped(activity: activity)
+      self.vm.inputs.viewDidDisappear(animated: true)
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.viewDidAppear()
+
+      self.activitiesForSample.assertValues([[activity]], "Activity sample is still shown.")
+
+      // Change tab.
+      self.vm.inputs.viewDidDisappear(animated: false)
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.viewDidAppear()
+
+      self.activitiesForSample.assertValues([[activity]], "Activity sample is still shown.")
+
+      // Swipe half way to new sort, but return to same sort.
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.viewDidAppear()
+
+      self.activitiesForSample.assertValues([[activity]], "Activity sample is still shown.")
+
+      // Swipe to new sort, swipe back.
+      self.vm.inputs.viewDidDisappear(animated: true)
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.viewDidAppear()
+
+      self.activitiesForSample.assertValues([[activity], []], "Activity sample is cleared.")
+    }
+  }
+
+  func testClearActivitiesWhenLoggedOut() {
+    let activity = .template
+      |> Activity.lens.id .~ 111
+
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: User.template))
+
+    withEnvironment(apiService: MockService(fetchActivitiesResponse: [activity])) {
+      self.vm.inputs.configureWith(sort: .Magic)
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.viewDidAppear()
+      self.scheduler.advance()
+
+      self.activitiesForSample.assertValues([[activity]], "Activity sample is shown.")
+    }
+
+    AppEnvironment.logout()
+    self.vm.inputs.viewDidDisappear(animated: true)
+    self.vm.inputs.viewWillAppear()
+    self.vm.inputs.viewDidAppear()
+
+    self.activitiesForSample.assertValues([[activity], []],
+                                          "Activities are cleared out when logging out.")
   }
 
   func testShowOnboarding_LoggedOutOnMagic() {
@@ -294,7 +431,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
     self.focusScreenReaderOnFirstProject.assertValueCount(1)
 
-    self.vm.inputs.viewDidDisappear()
+    self.vm.inputs.viewDidDisappear(animated: true)
     self.vm.inputs.viewWillAppear()
     self.vm.inputs.viewDidAppear()
 
