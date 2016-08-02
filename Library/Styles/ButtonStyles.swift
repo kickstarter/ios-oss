@@ -41,8 +41,18 @@ public let facebookButtonStyle = baseButtonStyle
   <> UIButton.lens.backgroundColor(forState: .Highlighted) .~ .ksr_navy_900
   <> UIButton.lens.titleColor(forState: .Disabled) .~ .init(white: 1.0, alpha: 0.5)
   <> UIButton.lens.backgroundColor(forState: .Disabled) .~ .ksr_navy_900
+  <> UIButton.lens.tintColor .~ .whiteColor()
+  <> UIButton.lens.imageEdgeInsets .~ .init(top: 0, left: 0, bottom: 0, right: 24.0)
+  <> UIButton.lens.image(forState: .Normal) %~ { _ in image(named: "fb-logo-white") }
+
+public let facebookLoginButtonStyle = facebookButtonStyle
   <> UIButton.lens.title(forState: .Normal) %~ { _ in
     Strings.login_tout_buttons_log_in_with_facebook()
+}
+
+public let facebookThanksButtonStyle = facebookButtonStyle
+  <> UIButton.lens.title(forState: .Normal) %~ { _ in
+    Strings.project_checkout_share_buttons_share()
 }
 
 public let neutralButtonStyle = baseButtonStyle
@@ -66,3 +76,17 @@ public let textOnlyButtonStyle = baseButtonStyle
   <> UIButton.lens.backgroundColor(forState: .Normal) .~ .clearColor()
   <> UIButton.lens.titleColor(forState: .Highlighted) .~ .ksr_green_400
   <> UIButton.lens.titleColor(forState: .Disabled) .~ .ksr_navy_500
+
+public let twitterButtonStyle = baseButtonStyle
+  <> UIButton.lens.titleColor(forState: .Normal) .~ .whiteColor()
+  <> UIButton.lens.backgroundColor(forState: .Normal) .~ .ksr_twitterBlue
+  <> UIButton.lens.titleColor(forState: .Highlighted) .~ .init(white: 1.0, alpha: 0.5)
+  <> UIButton.lens.backgroundColor(forState: .Highlighted) .~ .ksr_navy_900
+  <> UIButton.lens.titleColor(forState: .Disabled) .~ .init(white: 1.0, alpha: 0.5)
+  <> UIButton.lens.backgroundColor(forState: .Disabled) .~ .ksr_navy_900
+  <> UIButton.lens.tintColor .~ .whiteColor()
+  <> UIButton.lens.imageEdgeInsets .~ .init(top: 0, left: 0, bottom: 0, right: 24.0)
+  <> UIButton.lens.image(forState: .Normal) %~ { _ in image(named: "twitter-logo-blue") }
+  <> UIButton.lens.title(forState: .Normal) %~ { _ in
+    Strings.project_checkout_share_buttons_tweet()
+}

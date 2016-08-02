@@ -9,11 +9,11 @@ public protocol ThanksViewModelInputs {
   /// Call when the view controller view did load
   func viewDidLoad()
 
-  /// Call when close button is pressed
-  func closeButtonPressed()
+  /// Call when close button is tapped
+  func closeButtonTapped()
 
-  /// Call when category cell is pressed
-  func categoryCellPressed(category: KsApi.Category)
+  /// Call when category cell is tapped
+  func categoryCellTapped(category: KsApi.Category)
 
   /// Call with a boolean that determines if facebook is available on this device, i.e.
   /// SLComposeViewController.isAvailableForServiceType(SLServiceTypeFacebook)
@@ -22,20 +22,20 @@ public protocol ThanksViewModelInputs {
   /// Call to set project
   func project(project: Project)
 
-  /// Call when project cell is pressed
-  func projectPressed(project: Project)
+  /// Call when project cell is tapped
+  func projectTapped(project: Project)
 
-  /// Call when signup button is pressed on games newsletter alert
-  func gamesNewsletterSignupButtonPressed()
+  /// Call when signup button is tapped on games newsletter alert
+  func gamesNewsletterSignupButtonTapped()
 
-  /// Call when "rate now" button is pressed on rating alert
-  func rateNowButtonPressed()
+  /// Call when "rate now" button is tapped on rating alert
+  func rateNowButtonTapped()
 
-  /// Call when "remind" button is pressed on rating alert
-  func rateRemindLaterButtonPressed()
+  /// Call when "remind" button is tapped on rating alert
+  func rateRemindLaterButtonTapped()
 
-  /// Call when "no thanks" button is pressed on rating alert
-  func rateNoThanksButtonPressed()
+  /// Call when "no thanks" button is tapped on rating alert
+  func rateNoThanksButtonTapped()
 
   /// Call with a boolean that determines if twitter is available on this device, i.e.
   /// SLComposeViewController.isAvailableForServiceType(SLServiceTypeTwitter)
@@ -55,8 +55,8 @@ public protocol ThanksViewModelOutputs {
   /// Emits iTunes link when should go to App Store
   var goToAppStoreRating: Signal<String, NoError> { get }
 
-  /// Emits project name to display
-  var backedProjectText: Signal<String, NoError> { get }
+  /// Emits backed project subheader text to display
+  var backedProjectText: Signal<NSAttributedString, NoError> { get }
 
   /// Emits a bool determining whether or not the facebook button is hidden.
   var facebookButtonIsHidden: Signal<Bool, NoError> { get }
@@ -98,11 +98,16 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
     let project = self.projectProperty.signal.ignoreNil()
 
     self.backedProjectText = project.map {
-        Strings.project_checkout_share_you_just_backed_project_share_this_project_html(project_name: $0.name)
+      let string = Strings.project_checkout_share_you_just_backed_project_share_this_project_html(
+        project_name: $0.name
+      )
+
+      return string.simpleHtmlAttributedString(font: UIFont.ksr_subhead(), bold: UIFont.ksr_subhead().bolded)
+        ?? NSAttributedString(string: "")
       }
       .takeWhen(viewDidLoadProperty.signal)
 
-    self.goToProject = projectPressedProperty.signal.ignoreNil()
+    self.goToProject = projectTappedProperty.signal.ignoreNil()
       .map { ($0, RefTag.thanks) }
 
     let shouldShowGamesAlert = project
@@ -117,7 +122,7 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
       .takeWhen(viewDidLoadProperty.signal)
       .ignoreValues()
 
-    self.showGamesNewsletterOptInAlert = gamesNewsletterSignupButtonPressedProperty.signal
+    self.showGamesNewsletterOptInAlert = gamesNewsletterSignupButtonTappedProperty.signal
       .filter { AppEnvironment.current.countryCode == "DE" }
       .map (Strings.profile_settings_newsletter_games)
 
@@ -131,12 +136,12 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
       .ignoreValues()
       .on(next: { AppEnvironment.current.userDefaults.hasSeenAppRating = true })
 
-    self.goToAppStoreRating = self.rateNowButtonPressedProperty.signal
+    self.goToAppStoreRating = self.rateNowButtonTappedProperty.signal
       .map { AppEnvironment.current.config?.iTunesLink ?? "" }
 
-    self.dismissViewController = self.closeButtonPressedProperty.signal
+    self.dismissViewController = self.closeButtonTappedProperty.signal
 
-    self.goToDiscovery = self.categoryCellPressedProperty.signal.ignoreNil()
+    self.goToDiscovery = self.categoryCellTappedProperty.signal.ignoreNil()
       .map { DiscoveryParams.defaults |> DiscoveryParams.lens.category .~ $0 }
 
     let rootCategory = project
@@ -155,7 +160,7 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
 
     self.showRecommendations = zip(projects, rootCategory)
 
-    self.updateUserInEnvironment = gamesNewsletterSignupButtonPressedProperty.signal
+    self.updateUserInEnvironment = gamesNewsletterSignupButtonTappedProperty.signal
       .map { AppEnvironment.current.currentUser ?? nil }
       .ignoreNil()
       .switchMap { user in
@@ -174,14 +179,14 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
     self.twitterButtonIsHidden = self.twitterIsAvailableProperty.signal.map(negate)
 
     project
-      .takeWhen(self.rateRemindLaterButtonPressedProperty.signal)
+      .takeWhen(self.rateRemindLaterButtonTappedProperty.signal)
       .observeNext { project in
         AppEnvironment.current.userDefaults.hasSeenAppRating = false
         AppEnvironment.current.koala.trackCheckoutFinishAppStoreRatingAlertRemindLater(project: project)
     }
 
     project
-      .takeWhen(self.rateNoThanksButtonPressedProperty.signal)
+      .takeWhen(self.rateNoThanksButtonTappedProperty.signal)
       .observeNext { project in
         AppEnvironment.current.koala.trackCheckoutFinishAppStoreRatingAlertNoThanks(project: project)
     }
@@ -193,7 +198,7 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
     }
 
     project
-      .takeWhen(self.gamesNewsletterSignupButtonPressedProperty.signal)
+      .takeWhen(self.gamesNewsletterSignupButtonTappedProperty.signal)
       .observeNext { project in
         AppEnvironment.current.koala.trackNewsletterToggle(true, project: project)
     }
@@ -222,14 +227,14 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
     viewDidLoadProperty.value = ()
   }
 
-  private let closeButtonPressedProperty = MutableProperty()
-  public func closeButtonPressed() {
-    closeButtonPressedProperty.value = ()
+  private let closeButtonTappedProperty = MutableProperty()
+  public func closeButtonTapped() {
+    closeButtonTappedProperty.value = ()
   }
 
-  private let categoryCellPressedProperty = MutableProperty<KsApi.Category?>(nil)
-  public func categoryCellPressed(category: KsApi.Category) {
-    categoryCellPressedProperty.value = category
+  private let categoryCellTappedProperty = MutableProperty<KsApi.Category?>(nil)
+  public func categoryCellTapped(category: KsApi.Category) {
+    categoryCellTappedProperty.value = category
   }
 
   private let projectProperty = MutableProperty<Project?>(nil)
@@ -237,14 +242,14 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
     projectProperty.value = project
   }
 
-  private let projectPressedProperty = MutableProperty<Project?>(nil)
-  public func projectPressed(project: Project) {
-    projectPressedProperty.value = project
+  private let projectTappedProperty = MutableProperty<Project?>(nil)
+  public func projectTapped(project: Project) {
+    projectTappedProperty.value = project
   }
 
-  private let gamesNewsletterSignupButtonPressedProperty = MutableProperty()
-  public func gamesNewsletterSignupButtonPressed() {
-    gamesNewsletterSignupButtonPressedProperty.value = ()
+  private let gamesNewsletterSignupButtonTappedProperty = MutableProperty()
+  public func gamesNewsletterSignupButtonTapped() {
+    gamesNewsletterSignupButtonTappedProperty.value = ()
   }
 
   private let facebookIsAvailableProperty = MutableProperty(false)
@@ -252,19 +257,19 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
     self.facebookIsAvailableProperty.value = available
   }
 
-  private let rateNowButtonPressedProperty = MutableProperty()
-  public func rateNowButtonPressed() {
-    rateNowButtonPressedProperty.value = ()
+  private let rateNowButtonTappedProperty = MutableProperty()
+  public func rateNowButtonTapped() {
+    rateNowButtonTappedProperty.value = ()
   }
 
-  private let rateRemindLaterButtonPressedProperty = MutableProperty()
-  public func rateRemindLaterButtonPressed() {
-    rateRemindLaterButtonPressedProperty.value = ()
+  private let rateRemindLaterButtonTappedProperty = MutableProperty()
+  public func rateRemindLaterButtonTapped() {
+    rateRemindLaterButtonTappedProperty.value = ()
   }
 
-  private let rateNoThanksButtonPressedProperty = MutableProperty()
-  public func rateNoThanksButtonPressed() {
-    rateNoThanksButtonPressedProperty.value = ()
+  private let rateNoThanksButtonTappedProperty = MutableProperty()
+  public func rateNoThanksButtonTapped() {
+    rateNoThanksButtonTappedProperty.value = ()
   }
 
   private let twitterIsAvailableProperty = MutableProperty(false)
@@ -281,7 +286,7 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
   public let dismissViewController: Signal<(), NoError>
   public let goToDiscovery: Signal<DiscoveryParams, NoError>
   public let goToAppStoreRating: Signal<String, NoError>
-  public let backedProjectText: Signal<String, NoError>
+  public let backedProjectText: Signal<NSAttributedString, NoError>
   public let facebookButtonIsHidden: Signal<Bool, NoError>
   public let goToProject: Signal<(Project, RefTag), NoError>
   public let showRatingAlert: Signal<(), NoError>

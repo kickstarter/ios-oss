@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="nCn-IR-Tk9">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="nCn-IR-Tk9">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -20,22 +20,17 @@
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mR7-fy-Hzw">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="wob-EU-fLW">
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="wob-EU-fLW">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="504"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Uj7-Jz-Wug" userLabel="Woohoo Banner">
                                                 <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Woohoo!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FWZ-5u-RHC" customClass="StyledLabel" customModule="Library">
-                                                        <rect key="frame" x="0.0" y="37" width="375" height="26"/>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Woohoo!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FWZ-5u-RHC">
+                                                        <rect key="frame" x="0.0" y="40" width="375" height="21"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
-                                                        <userDefinedRuntimeAttributes>
-                                                            <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Title2"/>
-                                                            <userDefinedRuntimeAttribute type="string" keyPath="_color" value="White"/>
-                                                            <userDefinedRuntimeAttribute type="string" keyPath="_weight" value="Medium"/>
-                                                        </userDefinedRuntimeAttributes>
                                                     </label>
                                                 </subviews>
                                                 <color key="backgroundColor" red="0.019607843137254902" green="0.031372549019607843" blue="0.21568627450980393" alpha="1" colorSpace="calibratedRGB"/>
@@ -46,94 +41,56 @@
                                                     <constraint firstAttribute="height" constant="100" id="sUO-NT-74l"/>
                                                 </constraints>
                                             </view>
-                                            <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" distribution="equalSpacing" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="OLm-1C-1HQ">
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="OLm-1C-1HQ">
                                                 <rect key="frame" x="0.0" y="120" width="375" height="202"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="You just backed Oi!. Share this project with friends to help it along!" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0W0-Br-5Lh" customClass="StyledLabel" customModule="Library">
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You just backed Oi!. Share this project with friends to help it along!" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0W0-Br-5Lh">
                                                         <rect key="frame" x="16" y="0.0" width="343" height="41"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
-                                                        <userDefinedRuntimeAttributes>
-                                                            <userDefinedRuntimeAttribute type="string" keyPath="_color" value="Black"/>
-                                                            <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Subhead"/>
-                                                        </userDefinedRuntimeAttributes>
                                                     </label>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" distribution="fillProportionally" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="OOy-aR-Uyw">
+                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="OOy-aR-Uyw">
                                                         <rect key="frame" x="16" y="61" width="343" height="100"/>
                                                         <subviews>
                                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="NWv-Wr-7su">
                                                                 <rect key="frame" x="0.0" y="0.0" width="343" height="44"/>
                                                                 <subviews>
-                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="77G-AT-HOf" customClass="BorderButton" customModule="Library">
+                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="77G-AT-HOf">
                                                                         <rect key="frame" x="0.0" y="0.0" width="166" height="44"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="height" constant="44" id="4qh-SY-y7H"/>
                                                                         </constraints>
                                                                         <state key="normal" title="Facebook"/>
-                                                                        <userDefinedRuntimeAttributes>
-                                                                            <userDefinedRuntimeAttribute type="string" keyPath="_color" value="FacebookBlue"/>
-                                                                            <userDefinedRuntimeAttribute type="string" keyPath="_borderColor" value="Clear"/>
-                                                                            <userDefinedRuntimeAttribute type="string" keyPath="_titleColorNormal" value="White"/>
-                                                                            <userDefinedRuntimeAttribute type="string" keyPath="_titleColorHighlighted" value="White"/>
-                                                                            <userDefinedRuntimeAttribute type="string" keyPath="_titleFontStyle" value="Caption1"/>
-                                                                        </userDefinedRuntimeAttributes>
-                                                                        <connections>
-                                                                            <action selector="facebookButtonPressed:" destination="ILN-vW-QhC" eventType="touchUpInside" id="Pa9-dF-oYI"/>
-                                                                        </connections>
                                                                     </button>
-                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vzY-F8-uru" customClass="BorderButton" customModule="Library">
+                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vzY-F8-uru">
                                                                         <rect key="frame" x="178" y="0.0" width="165" height="44"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="height" constant="44" id="zV7-QK-RBF"/>
                                                                         </constraints>
                                                                         <state key="normal" title="Tweet"/>
-                                                                        <userDefinedRuntimeAttributes>
-                                                                            <userDefinedRuntimeAttribute type="string" keyPath="_color" value="TwitterBlue"/>
-                                                                            <userDefinedRuntimeAttribute type="string" keyPath="_borderColor" value="Clear"/>
-                                                                            <userDefinedRuntimeAttribute type="string" keyPath="_titleColorNormal" value="White"/>
-                                                                            <userDefinedRuntimeAttribute type="string" keyPath="_titleColorHighlighted" value="White"/>
-                                                                            <userDefinedRuntimeAttribute type="string" keyPath="_titleFontStyle" value="Caption1"/>
-                                                                        </userDefinedRuntimeAttributes>
-                                                                        <connections>
-                                                                            <action selector="twitterButtonPressed:" destination="ILN-vW-QhC" eventType="touchUpInside" id="9ad-cH-jWH"/>
-                                                                        </connections>
                                                                     </button>
                                                                 </subviews>
                                                             </stackView>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kb6-LU-AvY" customClass="BorderButton" customModule="Library">
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kb6-LU-AvY">
                                                                 <rect key="frame" x="0.0" y="56" width="343" height="44"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="44" id="Afh-a9-DP3"/>
                                                                 </constraints>
                                                                 <state key="normal" title="More share options"/>
-                                                                <userDefinedRuntimeAttributes>
-                                                                    <userDefinedRuntimeAttribute type="string" keyPath="_color" value="White"/>
-                                                                    <userDefinedRuntimeAttribute type="string" keyPath="_borderColor" value="GrayMedium"/>
-                                                                    <userDefinedRuntimeAttribute type="string" keyPath="_titleColorNormal" value="Black"/>
-                                                                    <userDefinedRuntimeAttribute type="string" keyPath="_titleColorHighlighted" value="Black"/>
-                                                                    <userDefinedRuntimeAttribute type="string" keyPath="_titleFontStyle" value="Caption1"/>
-                                                                </userDefinedRuntimeAttributes>
-                                                                <connections>
-                                                                    <action selector="shareMoreButtonPressed:" destination="ILN-vW-QhC" eventType="touchUpInside" id="VhE-J1-mKM"/>
-                                                                </connections>
                                                             </button>
                                                         </subviews>
                                                     </stackView>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Looking for more projects? Check these out." textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3ZZ-Ud-4qC" customClass="StyledLabel" customModule="Library">
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Looking for more projects? Check these out." textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3ZZ-Ud-4qC">
                                                         <rect key="frame" x="16" y="181" width="343" height="21"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
-                                                        <userDefinedRuntimeAttributes>
-                                                            <userDefinedRuntimeAttribute type="string" keyPath="_color" value="Black"/>
-                                                            <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Subhead"/>
-                                                        </userDefinedRuntimeAttributes>
                                                     </label>
                                                 </subviews>
                                                 <edgeInsets key="layoutMargins" top="0.0" left="16" bottom="0.0" right="16"/>
                                             </stackView>
-                                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="6Zd-eq-KT1">
+                                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="6Zd-eq-KT1">
                                                 <rect key="frame" x="0.0" y="342" width="375" height="162"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <constraints>
@@ -168,15 +125,11 @@
                                                                         </userDefinedRuntimeAttribute>
                                                                     </userDefinedRuntimeAttributes>
                                                                 </view>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cosmic Surgery" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qcQ-bN-yI9" userLabel="Project name" customClass="StyledLabel" customModule="Library">
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cosmic Surgery" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qcQ-bN-yI9" userLabel="Project name">
                                                                     <rect key="frame" x="16" y="109" width="256" height="21"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                                     <nil key="highlightedColor"/>
-                                                                    <userDefinedRuntimeAttributes>
-                                                                        <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Callout"/>
-                                                                        <userDefinedRuntimeAttribute type="string" keyPath="_color" value="White"/>
-                                                                    </userDefinedRuntimeAttributes>
                                                                 </label>
                                                             </subviews>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -210,28 +163,20 @@
                                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MvZ-n7-4B8">
                                                                     <rect key="frame" x="0.0" y="0.0" width="288" height="146"/>
                                                                     <subviews>
-                                                                        <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="qjq-jB-vVE">
+                                                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="qjq-jB-vVE">
                                                                             <rect key="frame" x="0.0" y="52" width="288" height="42"/>
                                                                             <subviews>
-                                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Explore Publishing" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6g4-Lz-PjD" customClass="StyledLabel" customModule="Library">
+                                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Explore Publishing" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6g4-Lz-PjD">
                                                                                     <rect key="frame" x="0.0" y="0.0" width="288" height="21"/>
                                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                                                     <nil key="highlightedColor"/>
-                                                                                    <userDefinedRuntimeAttributes>
-                                                                                        <userDefinedRuntimeAttribute type="string" keyPath="_color" value="White"/>
-                                                                                        <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Callout"/>
-                                                                                    </userDefinedRuntimeAttributes>
                                                                                 </label>
-                                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="500 projects" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4kI-qX-gRO" customClass="StyledLabel" customModule="Library">
+                                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="500 projects" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4kI-qX-gRO">
                                                                                     <rect key="frame" x="0.0" y="21" width="288" height="21"/>
                                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                                                     <nil key="highlightedColor"/>
-                                                                                    <userDefinedRuntimeAttributes>
-                                                                                        <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Footnote"/>
-                                                                                        <userDefinedRuntimeAttribute type="string" keyPath="_color" value="White"/>
-                                                                                    </userDefinedRuntimeAttributes>
                                                                                 </label>
                                                                             </subviews>
                                                                         </stackView>
@@ -280,27 +225,46 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="mR7-fy-Hzw" firstAttribute="top" secondItem="1jl-ge-lGm" secondAttribute="bottom" constant="-64" id="M3W-Dv-LTY"/>
+                            <constraint firstItem="mR7-fy-Hzw" firstAttribute="top" secondItem="1jl-ge-lGm" secondAttribute="bottom" id="M3W-Dv-LTY"/>
                             <constraint firstItem="FvT-DD-6mq" firstAttribute="top" secondItem="mR7-fy-Hzw" secondAttribute="bottom" id="QxJ-6G-ciH"/>
+                            <constraint firstItem="mR7-fy-Hzw" firstAttribute="top" secondItem="Ket-JX-mNi" secondAttribute="topMargin" id="g7e-tr-Uxu"/>
                             <constraint firstItem="mR7-fy-Hzw" firstAttribute="leading" secondItem="Ket-JX-mNi" secondAttribute="leading" id="wcz-cD-x7T"/>
                             <constraint firstItem="mR7-fy-Hzw" firstAttribute="trailing" secondItem="Ket-JX-mNi" secondAttribute="trailing" id="zWA-vf-j7Z"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="M3W-Dv-LTY"/>
+                            </mask>
+                        </variation>
                     </view>
                     <navigationItem key="navigationItem" id="CVf-u3-q5f">
-                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="Wdq-N9-L4j">
-                            <connections>
-                                <action selector="doneButtonPressed:" destination="ILN-vW-QhC" id="yiS-ls-aQq"/>
-                            </connections>
-                        </barButtonItem>
+                        <nil key="title"/>
+                        <view key="titleView" contentMode="scaleToFill" id="FH9-sj-9zO">
+                            <rect key="frame" x="113" y="6" width="150" height="33"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="kickstarter-logo" translatesAutoresizingMaskIntoConstraints="NO" id="Gms-E0-Wqa">
+                                    <rect key="frame" x="1" y="2" width="149" height="29"/>
+                                </imageView>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstItem="Gms-E0-Wqa" firstAttribute="centerX" secondItem="FH9-sj-9zO" secondAttribute="centerX" id="Ol5-Vx-8tF"/>
+                                <constraint firstItem="Gms-E0-Wqa" firstAttribute="centerY" secondItem="FH9-sj-9zO" secondAttribute="centerY" id="f0U-ZH-A8I"/>
+                            </constraints>
+                        </view>
+                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="Wdq-N9-L4j"/>
                     </navigationItem>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
+                        <outlet property="backedLabel" destination="0W0-Br-5Lh" id="PER-Gm-fry"/>
                         <outlet property="doneButton" destination="Wdq-N9-L4j" id="6H8-Ec-Iex"/>
                         <outlet property="facebookButton" destination="77G-AT-HOf" id="Qh0-eR-h1Z"/>
-                        <outlet property="projectNameLabel" destination="0W0-Br-5Lh" id="DWs-LR-2zb"/>
                         <outlet property="projectsCollectionView" destination="6Zd-eq-KT1" id="231-tZ-eIF"/>
+                        <outlet property="recommendationsLabel" destination="3ZZ-Ud-4qC" id="oUA-3v-9RG"/>
                         <outlet property="shareMoreButton" destination="kb6-LU-AvY" id="pGo-Zm-EjO"/>
                         <outlet property="twitterButton" destination="vzY-F8-uru" id="9dS-0T-XgQ"/>
+                        <outlet property="woohooLabel" destination="FWZ-5u-RHC" id="mSb-qb-ueE"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="i1S-yy-n9A" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -311,6 +275,7 @@
         <scene sceneID="P9i-OD-sQf">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="nCn-IR-Tk9" sceneMemberID="viewController">
+                    <extendedEdge key="edgesForExtendedLayout"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="zqG-93-Qvf">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -328,5 +293,6 @@
     </scenes>
     <resources>
         <image name="cosmic-surgery" width="800" height="600"/>
+        <image name="kickstarter-logo" width="149" height="29"/>
     </resources>
 </document>

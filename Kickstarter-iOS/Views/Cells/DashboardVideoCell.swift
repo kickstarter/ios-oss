@@ -52,12 +52,7 @@ internal final class DashboardVideoCell: UITableViewCell, ValueCell {
     self.internalPlaysCountLabel.rac.text = self.viewModel.outputs.internalStartCount
     self.internalLabel.rac.text = self.viewModel.outputs.internalText
     self.externalLabel.rac.text = self.viewModel.outputs.externalText
-
-    self.viewModel.outputs.totalStartCount
-      .observeForUI()
-      .observeNext { [weak element = totalPlaysCountLabel] attrString in
-        element?.attributedText = attrString
-    }
+    self.totalPlaysCountLabel.rac.attributedText = self.viewModel.outputs.totalStartCount
 
     self.viewModel.outputs.externalStartProgress
       .observeForUI()

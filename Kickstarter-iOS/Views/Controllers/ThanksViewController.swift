@@ -8,12 +8,14 @@ import UIKit
 
 internal final class ThanksViewController: UIViewController, UICollectionViewDelegate {
 
-  @IBOutlet private weak var projectNameLabel: StyledLabel!
-  @IBOutlet private weak var facebookButton: BorderButton!
-  @IBOutlet private weak var twitterButton: BorderButton!
-  @IBOutlet private weak var shareMoreButton: BorderButton!
+  @IBOutlet private weak var facebookButton: UIButton!
+  @IBOutlet private weak var twitterButton: UIButton!
+  @IBOutlet private weak var shareMoreButton: UIButton!
   @IBOutlet private weak var doneButton: UIBarButtonItem!
   @IBOutlet private weak var projectsCollectionView: UICollectionView!
+  @IBOutlet weak var backedLabel: UILabel!
+  @IBOutlet weak var recommendationsLabel: UILabel!
+  @IBOutlet weak var woohooLabel: UILabel!
 
   private let viewModel: ThanksViewModelType = ThanksViewModel()
   private let shareViewModel: ShareViewModelType = ShareViewModel()
@@ -34,18 +36,50 @@ internal final class ThanksViewController: UIViewController, UICollectionViewDel
     self.viewModel.inputs.viewDidLoad()
   }
 
+  override func bindStyles() {
+    super.bindStyles()
+
+    self |> baseControllerStyle()
+
+    self.woohooLabel
+      |> UILabel.lens.textColor .~ .whiteColor()
+      |> UILabel.lens.font .~ UIFont.ksr_title2().bolded
+      |> UILabel.lens.text %~ { _ in Strings.project_checkout_share_exclamation() }
+
+    self.backedLabel |> UILabel.lens.textColor .~ .ksr_text_navy_900
+
+    self.recommendationsLabel
+      |> UILabel.lens.textColor .~ .ksr_text_navy_900
+      |> UILabel.lens.font .~ .ksr_subhead()
+      |> UILabel.lens.text %~ { _ in Strings.project_checkout_looking_for_more_projects_check_these_out() }
+
+    self.facebookButton
+      |> facebookThanksButtonStyle
+      |> UIButton.lens.targets .~ [(self, #selector(facebookButtonTapped), .TouchUpInside)]
+
+    self.twitterButton
+      |> twitterButtonStyle
+      |> UIButton.lens.targets .~ [(self, #selector(twitterButtonTapped), .TouchUpInside)]
+
+    self.shareMoreButton
+      |> borderButtonStyle
+      |> UIButton.lens.targets .~ [(self, #selector(shareMoreButtonTapped), .TouchUpInside)]
+      |> UIButton.lens.title(forState: .Normal) %~ { _ in
+        Strings.project_checkout_share_buttons_more_share_options()
+    }
+
+    self.doneButton
+      |> doneBarButtonItemStyle
+      |> UIBarButtonItem.lens.targetAction .~ (self, #selector(doneButtonTapped))
+  }
+
   // swiftlint:disable function_body_length
   override func bindViewModel() {
     super.bindViewModel()
 
     self.facebookButton.rac.hidden = self.viewModel.outputs.facebookButtonIsHidden
     self.twitterButton.rac.hidden = self.viewModel.outputs.twitterButtonIsHidden
-
-    self.viewModel.outputs.backedProjectText
-      .observeForUI()
-      .observeNext { [weak self] text in
-        self?.projectNameLabel.setHTML(text)
-    }
+    self.backedLabel.rac.attributedText = self.viewModel.outputs.backedProjectText
 
     self.viewModel.outputs.dismissViewController
     .observeForUI()
@@ -144,11 +178,11 @@ internal final class ThanksViewController: UIViewController, UICollectionViewDel
     self.presentViewController(
       UIAlertController.rating(
         yesHandler: { [weak self] action in
-          self?.viewModel.inputs.rateNowButtonPressed()
+          self?.viewModel.inputs.rateNowButtonTapped()
         }, remindHandler: { [weak self] action in
-          self?.viewModel.inputs.rateRemindLaterButtonPressed()
+          self?.viewModel.inputs.rateRemindLaterButtonTapped()
         }, noHandler: { [weak self] action in
-          self?.viewModel.inputs.rateNoThanksButtonPressed()
+          self?.viewModel.inputs.rateNoThanksButtonTapped()
       }),
       animated: true,
       completion: nil
@@ -159,7 +193,7 @@ internal final class ThanksViewController: UIViewController, UICollectionViewDel
     self.presentViewController(
       UIAlertController.games(
         subscribeHandler: { [weak self] action in
-          self?.viewModel.inputs.gamesNewsletterSignupButtonPressed()
+          self?.viewModel.inputs.gamesNewsletterSignupButtonTapped()
       }),
       animated: true,
       completion: nil
@@ -201,25 +235,25 @@ internal final class ThanksViewController: UIViewController, UICollectionViewDel
   internal func collectionView(collectionView: UICollectionView,
                                didSelectItemAtIndexPath indexPath: NSIndexPath) {
     if let project = self.dataSource.projectAtIndexPath(indexPath) {
-      self.viewModel.inputs.projectPressed(project)
+      self.viewModel.inputs.projectTapped(project)
     } else if let category = self.dataSource.categoryAtIndexPath(indexPath) {
-      self.viewModel.inputs.categoryCellPressed(category)
+      self.viewModel.inputs.categoryCellTapped(category)
     }
   }
 
-  @IBAction func facebookButtonPressed(sender: AnyObject) {
+  @objc private func facebookButtonTapped() {
     self.shareViewModel.inputs.facebookButtonTapped()
   }
 
-  @IBAction func twitterButtonPressed(sender: AnyObject) {
+  @objc private func twitterButtonTapped() {
     self.shareViewModel.inputs.twitterButtonTapped()
   }
 
-  @IBAction func shareMoreButtonPressed(sender: AnyObject) {
+  @objc private func shareMoreButtonTapped() {
     self.shareViewModel.inputs.shareButtonTapped()
   }
 
-  @IBAction func doneButtonPressed(sender: AnyObject) {
-    self.viewModel.inputs.closeButtonPressed()
+  @objc private func doneButtonTapped() {
+    self.viewModel.inputs.closeButtonTapped()
   }
 }

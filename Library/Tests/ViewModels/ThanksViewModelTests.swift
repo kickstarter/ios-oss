@@ -29,7 +29,7 @@ final class ThanksViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
-    vm.outputs.backedProjectText.observe(backedProjectText.observer)
+    vm.outputs.backedProjectText.map { $0.string }.observe(backedProjectText.observer)
     vm.outputs.goToDiscovery.map { params in params.category ?? Category.filmAndVideo }
       .observe(goToDiscovery.observer)
     vm.outputs.goToProject.map { $0.0 }.observe(goToProject.observer)
@@ -51,7 +51,7 @@ final class ThanksViewModelTests: TestCase {
     vm.inputs.project(.template)
     vm.inputs.viewDidLoad()
 
-    vm.inputs.closeButtonPressed()
+    vm.inputs.closeButtonTapped()
 
     dismissViewController.assertValueCount(1)
     XCTAssertEqual([], trackingClient.events, "No Koala tracking emitted")
@@ -75,7 +75,7 @@ final class ThanksViewModelTests: TestCase {
 
       showRecommendations.assertValueCount(1)
 
-      vm.inputs.categoryCellPressed(.illustration)
+      vm.inputs.categoryCellTapped(.illustration)
 
       goToDiscovery.assertValues([.illustration])
       XCTAssertEqual(["Checkout Finished Discover More"], trackingClient.events)
@@ -87,7 +87,7 @@ final class ThanksViewModelTests: TestCase {
     vm.inputs.project(project)
     vm.inputs.viewDidLoad()
 
-    backedProjectText.assertValues(["You just backed <b>\(project.name)</b>. " +
+    backedProjectText.assertValues(["You just backed The Project. " +
       "Share this project with friends to help it along!"], "Name of project emits")
   }
 
@@ -112,7 +112,7 @@ final class ThanksViewModelTests: TestCase {
       showRatingAlert.assertValueCount(1, "Rating alert shows on first viewing")
       showGamesNewsletterAlert.assertValueCount(0, "Games alert does not emit")
 
-      vm.inputs.rateNowButtonPressed()
+      vm.inputs.rateNowButtonTapped()
 
       let secondVM: ThanksViewModelType = ThanksViewModel()
       let secondShowRatingAlert = TestObserver<(), NoError>()
@@ -148,7 +148,7 @@ final class ThanksViewModelTests: TestCase {
       showRatingAlert.assertValueCount(1, "Rating alert shows on first viewing")
       showGamesNewsletterAlert.assertValueCount(0, "Games alert does not emit")
 
-      vm.inputs.rateNoThanksButtonPressed()
+      vm.inputs.rateNoThanksButtonTapped()
 
       let secondVM: ThanksViewModelType = ThanksViewModel()
       let secondShowRatingAlert = TestObserver<(), NoError>()
@@ -184,7 +184,7 @@ final class ThanksViewModelTests: TestCase {
       showRatingAlert.assertValueCount(1, "Rating alert shows on first viewing")
       showGamesNewsletterAlert.assertValueCount(0, "Games alert does not emit")
 
-      vm.inputs.rateRemindLaterButtonPressed()
+      vm.inputs.rateRemindLaterButtonTapped()
 
       let secondVM: ThanksViewModelType = ThanksViewModel()
       let secondShowRatingAlert = TestObserver<(), NoError>()
@@ -207,7 +207,7 @@ final class ThanksViewModelTests: TestCase {
 
       showRatingAlert.assertValueCount(1, "Rating alert shows on first viewing")
 
-      vm.inputs.rateNowButtonPressed()
+      vm.inputs.rateNowButtonTapped()
 
       XCTAssertEqual(true, AppEnvironment.current.userDefaults.hasSeenAppRating, "Rating pref saved")
       XCTAssertEqual(["Checkout Finished Alert App Store Rating Rate Now"], trackingClient.events)
@@ -222,7 +222,7 @@ final class ThanksViewModelTests: TestCase {
 
       showRatingAlert.assertValueCount(1, "Rating alert shows on first viewing")
 
-      vm.inputs.rateRemindLaterButtonPressed()
+      vm.inputs.rateRemindLaterButtonTapped()
 
       XCTAssertEqual(false, AppEnvironment.current.userDefaults.hasSeenAppRating, "Rating pref saved")
       XCTAssertEqual(["Checkout Finished Alert App Store Rating Remind Later"], trackingClient.events)
@@ -236,7 +236,7 @@ final class ThanksViewModelTests: TestCase {
 
       showRatingAlert.assertValueCount(1, "Rating alert shows on first viewing")
 
-      vm.inputs.rateNoThanksButtonPressed()
+      vm.inputs.rateNoThanksButtonTapped()
 
       XCTAssertEqual(true, AppEnvironment.current.userDefaults.hasSeenAppRating, "Rating pref saved")
       XCTAssertEqual(["Checkout Finished Alert App Store Rating No Thanks"], trackingClient.events)
@@ -289,7 +289,7 @@ final class ThanksViewModelTests: TestCase {
 
       showGamesNewsletterAlert.assertValueCount(1)
 
-      vm.inputs.gamesNewsletterSignupButtonPressed()
+      vm.inputs.gamesNewsletterSignupButtonTapped()
 
       scheduler.advance()
 
@@ -311,7 +311,7 @@ final class ThanksViewModelTests: TestCase {
 
       showGamesNewsletterAlert.assertValueCount(1)
 
-      vm.inputs.gamesNewsletterSignupButtonPressed()
+      vm.inputs.gamesNewsletterSignupButtonTapped()
 
       showGamesNewsletterOptInAlert.assertValues(["Kickstarter Loves Games"], "Opt-in alert emits with title")
       XCTAssertEqual(["Newsletter Subscribe"], trackingClient.events)
@@ -342,7 +342,7 @@ final class ThanksViewModelTests: TestCase {
       secondShowRatingAlert.assertValueCount(1, "Rating alert shows on non-games project")
       secondShowGamesNewsletterAlert.assertValueCount(0, "Games alert does not show on non-games project")
 
-      vm.inputs.rateNowButtonPressed()
+      vm.inputs.rateNowButtonTapped()
 
       let thirdVM: ThanksViewModelType = ThanksViewModel()
       let thirdShowRatingAlert = TestObserver<(), NoError>()
@@ -378,7 +378,7 @@ final class ThanksViewModelTests: TestCase {
       secondShowRatingAlert.assertValueCount(1, "Rating alert shows on non-games project")
       secondShowGamesNewsletterAlert.assertValueCount(0, "Games alert does not show on non-games project")
 
-      vm.inputs.rateNoThanksButtonPressed()
+      vm.inputs.rateNoThanksButtonTapped()
 
       let thirdVM: ThanksViewModelType = ThanksViewModel()
       let thirdShowRatingAlert = TestObserver<(), NoError>()
@@ -415,7 +415,7 @@ final class ThanksViewModelTests: TestCase {
       secondShowRatingAlert.assertValueCount(1, "Rating alert shows on non-games project")
       secondShowGamesNewsletterAlert.assertValueCount(0, "Games alert does not show on non-games project")
 
-      vm.inputs.rateRemindLaterButtonPressed()
+      vm.inputs.rateRemindLaterButtonTapped()
 
       let thirdVM: ThanksViewModelType = ThanksViewModel()
       let thirdShowRatingAlert = TestObserver<(), NoError>()
@@ -439,7 +439,7 @@ final class ThanksViewModelTests: TestCase {
       showRatingAlert.assertValueCount(1, "Rating alert shows on non-games project")
       showGamesNewsletterAlert.assertValueCount(0, "Games alert does not show on non-games project")
 
-      vm.inputs.rateNowButtonPressed()
+      vm.inputs.rateNowButtonTapped()
 
       let secondVM: ThanksViewModelType = ThanksViewModel()
       let secondShowRatingAlert = TestObserver<(), NoError>()
@@ -475,7 +475,7 @@ final class ThanksViewModelTests: TestCase {
       showRatingAlert.assertValueCount(1, "Rating alert shows on non-games project")
       showGamesNewsletterAlert.assertValueCount(0, "Games alert does not show on non-games project")
 
-      vm.inputs.rateNoThanksButtonPressed()
+      vm.inputs.rateNoThanksButtonTapped()
 
       let secondVM: ThanksViewModelType = ThanksViewModel()
       let secondShowRatingAlert = TestObserver<(), NoError>()
@@ -512,7 +512,7 @@ final class ThanksViewModelTests: TestCase {
       showRatingAlert.assertValueCount(1, "Rating alert shows on non-games project")
       showGamesNewsletterAlert.assertValueCount(0, "Games alert does not show on non-games project")
 
-      vm.inputs.rateRemindLaterButtonPressed()
+      vm.inputs.rateRemindLaterButtonTapped()
 
       let secondVM: ThanksViewModelType = ThanksViewModel()
       let secondShowRatingAlert = TestObserver<(), NoError>()
@@ -558,7 +558,7 @@ final class ThanksViewModelTests: TestCase {
 
       showRecommendations.assertValueCount(1)
 
-      vm.inputs.projectPressed(project)
+      vm.inputs.projectTapped(project)
 
       goToProject.assertValues([project])
       goToRefTag.assertValues([.thanks])
