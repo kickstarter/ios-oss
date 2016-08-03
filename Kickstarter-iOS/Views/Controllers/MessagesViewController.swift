@@ -82,7 +82,7 @@ internal final class MessagesViewController: UITableViewController {
         fatalError("Could not instantiate MessageDialogViewController")
     }
 
-    dialog.configureWith(messageThread: messageThread, context: context)
+    dialog.configureWith(messageSubject: .messageThread(messageThread), context: context)
     dialog.modalPresentationStyle = .FormSheet
     dialog.delegate = self
     self.presentViewController(UINavigationController(rootViewController: dialog),

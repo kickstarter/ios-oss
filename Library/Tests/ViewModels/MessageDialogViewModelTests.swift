@@ -32,14 +32,14 @@ internal final class MessageDialogViewModelTests: TestCase {
 
   func testRecipientName() {
     let thread = MessageThread.template
-    self.vm.inputs.configureWith(messageThread: thread, context: .messages)
+    self.vm.inputs.configureWith(messageSubject: .messageThread(thread), context: .messages)
     self.vm.inputs.viewDidLoad()
 
     self.recipientName.assertValues([thread.participant.name])
   }
 
   func testButtonEnabled() {
-    self.vm.inputs.configureWith(messageThread: .template, context: .messages)
+    self.vm.inputs.configureWith(messageSubject: .messageThread(.template), context: .messages)
     self.vm.inputs.viewDidLoad()
     self.postButtonEnabled.assertValues([false])
 
@@ -60,7 +60,7 @@ internal final class MessageDialogViewModelTests: TestCase {
   }
 
   func testKeyboardIsVisible() {
-    self.vm.inputs.configureWith(messageThread: .template, context: .messages)
+    self.vm.inputs.configureWith(messageSubject: .messageThread(.template), context: .messages)
     self.vm.inputs.viewDidLoad()
     self.keyboardIsVisible.assertValues([true])
 
@@ -78,7 +78,7 @@ internal final class MessageDialogViewModelTests: TestCase {
   }
 
   func testPostingMessageToThread() {
-    self.vm.inputs.configureWith(messageThread: .template, context: .messages)
+    self.vm.inputs.configureWith(messageSubject: .messageThread(.template), context: .messages)
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.bodyTextChanged("HELLO")
 
@@ -102,7 +102,31 @@ internal final class MessageDialogViewModelTests: TestCase {
   }
 
   func testPostingMessageToCreator() {
-    self.vm.inputs.configureWith(project: .template, context: .messages)
+    self.vm.inputs.configureWith(messageSubject: .project(.template), context: .messages)
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.bodyTextChanged("HELLO")
+
+    self.loadingViewIsHidden.assertValues([true])
+    self.notifyPresenterCommentWasPostedSuccesfully.assertValueCount(0)
+    self.notifyPresenterDialogWantsDismissal.assertValueCount(0)
+
+    self.vm.inputs.postButtonPressed()
+
+    self.loadingViewIsHidden.assertValues([true, false])
+    self.notifyPresenterCommentWasPostedSuccesfully.assertValueCount(0)
+    self.notifyPresenterDialogWantsDismissal.assertValueCount(0)
+
+    self.scheduler.advance()
+
+    self.loadingViewIsHidden.assertValues([true, false, true])
+    self.notifyPresenterCommentWasPostedSuccesfully.assertValueCount(1)
+    self.notifyPresenterDialogWantsDismissal.assertValueCount(1)
+
+    XCTAssertEqual(["Message Sent"], self.trackingClient.events)
+  }
+
+  func testPostingMessageToBacker() {
+    self.vm.inputs.configureWith(messageSubject: .backing(.template), context: .messages)
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.bodyTextChanged("HELLO")
 

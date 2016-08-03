@@ -23,14 +23,10 @@ internal final class MessageDialogViewController: UIViewController {
     self.viewModel.inputs.viewDidLoad()
   }
 
-  internal func configureWith(messageThread messageThread: MessageThread,
-                                            context: Koala.MessageDialogContext) {
-    self.viewModel.inputs.configureWith(messageThread: messageThread, context: context)
-  }
+  internal func configureWith(messageSubject messageSubject: MessageSubject,
+                                             context: Koala.MessageDialogContext) {
 
-  internal func configureWith(project project: Project,
-                                      context: Koala.MessageDialogContext) {
-    self.viewModel.inputs.configureWith(project: project, context: context)
+    self.viewModel.inputs.configureWith(messageSubject: messageSubject, context: context)
   }
 
   internal override func bindViewModel() {
