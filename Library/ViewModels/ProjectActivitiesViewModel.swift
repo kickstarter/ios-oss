@@ -8,7 +8,7 @@ public enum ProjectActivitiesGoTo {
   case backing(Project, User)
   case comments(Project, Update?)
   case project(Project)
-  case sendMessage(Project, Backing)
+  case sendMessage(Backing, Koala.MessageDialogContext)
   case sendReplyOnProject(Project, Comment)
   case sendReplyOnUpdate(Update, Comment)
   case update(Project, Update)
@@ -92,7 +92,8 @@ public final class ProjectActivitiesViewModel: ProjectActivitiesViewModelType,
     )
 
     let activities: Signal<[Activity], NoError>
-    (activities, self.isRefreshing, _) = paginate(
+    let pageCount: Signal<Int, NoError>
+    (activities, self.isRefreshing, pageCount) = paginate(
       requestFirstPageWith: requestFirstPage,
       requestNextPageWhen: isCloseToBottom,
       clearOnNewRequest: false,
@@ -133,7 +134,9 @@ public final class ProjectActivitiesViewModel: ProjectActivitiesViewModelType,
 
     let projectActivityBackingCellGoToSendMessage =
       self.projectActivityBackingCellGoToSendMessageProperty.signal.ignoreNil()
-        .map { project, backing in ProjectActivitiesGoTo.sendMessage(project, backing) }
+        .map { project, backing in
+          ProjectActivitiesGoTo.sendMessage(backing, Koala.MessageDialogContext.creatorActivity)
+    }
 
     let projectActivityCommentCellGoToBacking =
       self.projectActivityCommentCellGoToBackingProperty.signal.ignoreNil()
@@ -155,6 +158,21 @@ public final class ProjectActivitiesViewModel: ProjectActivitiesViewModelType,
       projectActivityCommentCellGoToSendReplyOnProject,
       projectActivityCommentCellGoToSendReplyOnUpdate
     )
+
+    project
+      .takeWhen(self.viewDidLoadProperty.signal)
+      .take(1)
+      .observeNext { AppEnvironment.current.koala.trackViewedProjectActivity(project: $0) }
+
+    project
+      .takeWhen(pageCount.skip(1).filter { $0 == 1 })
+      .observeNext { AppEnvironment.current.koala.trackLoadedNewerProjectActivity(project: $0) }
+
+    project
+      .takePairWhen(pageCount.skip(1).filter { $0 > 1 })
+      .observeNext { project, pageCount in
+        AppEnvironment.current.koala.trackLoadedOlderProjectActivity(project: project, page: pageCount)
+    }
   }
   // swiftlint:enable function_body_length
 

@@ -44,8 +44,8 @@ internal final class ProjectActivitiesViewController: UITableViewController {
           self?.goToSendReplyOnProject(project: project, comment: comment)
         case let .sendReplyOnUpdate(update, comment):
           self?.goToSendReplyOnUpdate(update: update, comment: comment)
-        case let .sendMessage(project, backing):
-          self?.goToSendMessage(project: project, backing: backing)
+        case let .sendMessage(backing, context):
+          self?.goToSendMessage(backing: backing, context: context)
         case let .update(project, update):
           self?.goToUpdate(project: project, update: update)
         }
@@ -110,7 +110,20 @@ internal final class ProjectActivitiesViewController: UITableViewController {
                                completion: nil)
   }
 
-  internal func goToSendMessage(project project: Project, backing: Backing) {
+  internal func goToSendMessage(backing backing: Backing,
+                                        context: Koala.MessageDialogContext) {
+    guard let vc = UIStoryboard(name: "Messages", bundle: .framework)
+      .instantiateViewControllerWithIdentifier("MessageDialogViewController") as? MessageDialogViewController
+      else {
+        fatalError("Couldn’t instantiate MessageDialogViewController.")
+    }
+
+    vc.configureWith(messageSubject: MessageSubject.backing(backing), context: context)
+    vc.modalPresentationStyle = .FormSheet
+    vc.delegate = self
+    self.presentViewController(UINavigationController(rootViewController: vc),
+                               animated: true,
+                               completion: nil)
   }
 
   internal func goToSendReplyOnProject(project project: Project, comment: Comment) {
@@ -130,26 +143,35 @@ internal final class ProjectActivitiesViewController: UITableViewController {
   }
 }
 
+extension ProjectActivitiesViewController: MessageDialogViewControllerDelegate {
+  internal func messageDialogWantsDismissal(dialog: MessageDialogViewController) {
+    dialog.dismissViewControllerAnimated(true, completion: nil)
+  }
+
+  internal func messageDialog(dialog: MessageDialogViewController, postedMessage message: Message) {
+  }
+}
+
 extension ProjectActivitiesViewController: ProjectActivityBackingCellDelegate {
-  func projectActivityBackingCellGoToBacking(project project: Project, user: User) {
+  internal func projectActivityBackingCellGoToBacking(project project: Project, user: User) {
     self.viewModel.inputs.projectActivityBackingCellGoToBacking(project: project, user: user)
   }
 
-  func projectActivityBackingCellGoToSendMessage(project project: Project, backing: Backing) {
+  internal func projectActivityBackingCellGoToSendMessage(project project: Project, backing: Backing) {
     self.viewModel.inputs.projectActivityBackingCellGoToSendMessage(project: project, backing: backing)
   }
 }
 
 extension ProjectActivitiesViewController: ProjectActivityCommentCellDelegate {
-  func projectActivityCommentCellGoToBacking(project project: Project, user: User) {
+  internal func projectActivityCommentCellGoToBacking(project project: Project, user: User) {
     self.viewModel.inputs.projectActivityCommentCellGoToBacking(project: project, user: user)
   }
 
-  func projectActivityCommentCellGoToSendReplyOnProject(project project: Project, comment: Comment) {
+  internal func projectActivityCommentCellGoToSendReplyOnProject(project project: Project, comment: Comment) {
     self.viewModel.inputs.projectActivityCommentCellGoToSendReplyOnProject(project: project, comment: comment)
   }
 
-  func projectActivityCommentCellGoToSendReplyOnUpdate(update update: Update, comment: Comment) {
+  internal func projectActivityCommentCellGoToSendReplyOnUpdate(update update: Update, comment: Comment) {
     self.viewModel.inputs.projectActivityCommentCellGoToSendReplyOnUpdate(update: update, comment: comment)
   }
 }

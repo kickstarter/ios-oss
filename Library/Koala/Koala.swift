@@ -428,6 +428,35 @@ public final class Koala {
                properties: properties(project: project, loggedInUser: self.loggedInUser))
   }
 
+  // MARK: Project activity
+  public func trackViewedProjectActivity(project project: Project) {
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+
+    self.track(event: "Viewed Project Activity", properties: props)
+    // deprecated
+    self.track(event: "Creator Activity View",
+               properties: props.withAllValuesFrom([Koala.DeprecatedKey: true]))
+  }
+
+  public func trackLoadedNewerProjectActivity(project project: Project) {
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+
+    self.track(event: "Loaded Newer Project Activity", properties: props)
+    // deprecated
+    self.track(event: "Creator Activity View Load Newer",
+               properties: props.withAllValuesFrom([Koala.DeprecatedKey: true]))
+  }
+
+  public func trackLoadedOlderProjectActivity(project project: Project, page: Int) {
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(["page_count": page])
+
+    self.track(event: "Loaded Older Project Activity", properties: props)
+    // deprecated
+    self.track(event: "Creator Activity View Load Older",
+               properties: props.withAllValuesFrom([Koala.DeprecatedKey: true]))
+  }
+
   // MARK: Messages
 
   public func trackMessageThreadsView(mailbox mailbox: Mailbox, project: Project?) {
