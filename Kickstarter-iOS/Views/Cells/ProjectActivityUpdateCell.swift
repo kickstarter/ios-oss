@@ -39,11 +39,10 @@ internal final class ProjectActivityUpdateCell: UITableViewCell, ValueCell {
     }
 
     self.bodyLabel.rac.text = self.viewModel.outputs.body
-
+    self.rac.accessibilityLabel = self.viewModel.outputs.cellAccessibilityLabel
+    self.rac.accessibilityValue = self.viewModel.outputs.cellAccessibilityValue
     self.commentsCountLabel.rac.text = self.viewModel.outputs.commentsCount
-
     self.likesCountLabel.rac.text = self.viewModel.outputs.likesCount
-
     self.updateTitleLabel.rac.text = self.viewModel.outputs.updateTitle
   }
 
@@ -55,6 +54,9 @@ internal final class ProjectActivityUpdateCell: UITableViewCell, ValueCell {
         <> UILabel.lens.textColor .~ .ksr_text_navy_600
 
     self |> baseTableViewCellStyle()
+      |> UITableViewCell.lens.accessibilityHint %~ { _ in
+        localizedString(key: "key.todo", defaultValue: "Opens update.")
+    }
 
     self.cardView |> projectActivityCardStyle
 

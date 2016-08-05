@@ -230,6 +230,8 @@
 		9DC204ED1D1B5039003C1636 /* ProjectActivityNegativeStateChangeCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DC204E91D1B4EC1003C1636 /* ProjectActivityNegativeStateChangeCellViewModelTests.swift */; };
 		9DC572E51D36CA9800AE209C /* ProjectActivityStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DC572E41D36CA9800AE209C /* ProjectActivityStyles.swift */; };
 		9DC572E61D36CA9800AE209C /* ProjectActivityStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DC572E41D36CA9800AE209C /* ProjectActivityStyles.swift */; };
+		9DD1E3881D50035E00D4829E /* ProjectActivityData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DD1E3871D50035E00D4829E /* ProjectActivityData.swift */; };
+		9DD1E3891D50035E00D4829E /* ProjectActivityData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DD1E3871D50035E00D4829E /* ProjectActivityData.swift */; };
 		9DE6C0891C9B5FCA00FCC7B1 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		9DEE3B561D1D819D0020C2BE /* ProjectActivityBackingCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DEE3B241D1D81950020C2BE /* ProjectActivityBackingCellViewModel.swift */; };
 		9DEE3B571D1D819E0020C2BE /* ProjectActivityBackingCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DEE3B241D1D81950020C2BE /* ProjectActivityBackingCellViewModel.swift */; };
@@ -1513,6 +1515,7 @@
 		9DC204B61D1B46BD003C1636 /* ProjectActivityNegativeStateChangeCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectActivityNegativeStateChangeCellViewModel.swift; sourceTree = "<group>"; };
 		9DC204E91D1B4EC1003C1636 /* ProjectActivityNegativeStateChangeCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectActivityNegativeStateChangeCellViewModelTests.swift; sourceTree = "<group>"; };
 		9DC572E41D36CA9800AE209C /* ProjectActivityStyles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectActivityStyles.swift; sourceTree = "<group>"; };
+		9DD1E3871D50035E00D4829E /* ProjectActivityData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectActivityData.swift; sourceTree = "<group>"; };
 		9DEE3B241D1D81950020C2BE /* ProjectActivityBackingCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectActivityBackingCellViewModel.swift; sourceTree = "<group>"; };
 		9DEE3B581D1D81C80020C2BE /* ProjectActivityBackingCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectActivityBackingCellViewModelTests.swift; sourceTree = "<group>"; };
 		A70119171CD921D0009F8F65 /* CommentsDataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsDataSourceTests.swift; sourceTree = "<group>"; };
@@ -2380,7 +2383,6 @@
 				A7830CE11D005C3F00B5B6AE /* CommentDialogViewModelTests.swift */,
 				A7830CE21D005C3F00B5B6AE /* CommentsViewModelTests.swift */,
 				59B0E00B1D12144A0081D2DC /* DashboardActionCellViewModelTests.swift */,
-				59B0E0081D12142B0081D2DC /* DashboardContextCellViewModelTests.swift */,
 				593AC6031D33F996002613F4 /* DashboardFundingCellViewModelTests.swift */,
 				01FD71861D36BE1A00070BAC /* DashboardProjectsDrawerCellViewModelTests.swift */,
 				01FD71831D36BA2900070BAC /* DashboardProjectsDrawerViewModelTests.swift */,
@@ -2613,6 +2615,7 @@
 				A73378F91D0AE33B00C91445 /* Styles */,
 				A75511881C8645A0005355CF /* Tests */,
 				A7F4418D1D005A9400FE6FC5 /* ViewModels */,
+				9DD1E3871D50035E00D4829E /* ProjectActivityData.swift */,
 			);
 			path = Library;
 			sourceTree = "<group>";
@@ -2936,7 +2939,6 @@
 				A7F441951D005A9400FE6FC5 /* CommentDialogViewModel.swift */,
 				A7F441961D005A9400FE6FC5 /* CommentsViewModel.swift */,
 				59B0E0051D1207070081D2DC /* DashboardActionCellViewModel.swift */,
-				59B0DFF91D11B0A20081D2DC /* DashboardContextCellViewModel.swift */,
 				593AC6001D33F517002613F4 /* DashboardFundingCellViewModel.swift */,
 				018422BF1D2C486900CA7566 /* DashboardProjectsDrawerCellViewModel.swift */,
 				0199545E1D2D818E00BC1390 /* DashboardProjectsDrawerViewModel.swift */,
@@ -3990,6 +3992,7 @@
 				8001D4C91D415692009E6667 /* UpdateDraftStyles.swift in Sources */,
 				A7F441B71D005A9400FE6FC5 /* BackingCellViewModel.swift in Sources */,
 				A7CC13DB1D00E6CF00035C52 /* FindFriendsViewModel.swift in Sources */,
+				9DD1E3881D50035E00D4829E /* ProjectActivityData.swift in Sources */,
 				01940B261D42DC1A0074FCE3 /* HelpViewModel.swift in Sources */,
 				593AC6011D33F517002613F4 /* DashboardFundingCellViewModel.swift in Sources */,
 				A76126B51C90C94000EDCCB9 /* SimpleViewModel.swift in Sources */,
@@ -4176,6 +4179,7 @@
 				A71F59E91D2424CA00909BE3 /* CacheProtocol.swift in Sources */,
 				A76126B81C90C94000EDCCB9 /* UICollectionView-Extensions.swift in Sources */,
 				A76126AE1C90C94000EDCCB9 /* ValueCellDataSource.swift in Sources */,
+				9DD1E3891D50035E00D4829E /* ProjectActivityData.swift in Sources */,
 				59B0E0071D1207070081D2DC /* DashboardActionCellViewModel.swift in Sources */,
 				A760780B1CAEE0A6001B39D0 /* IsValidEmail.swift in Sources */,
 				9DC572E61D36CA9800AE209C /* ProjectActivityStyles.swift in Sources */,

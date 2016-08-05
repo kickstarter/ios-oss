@@ -10,6 +10,8 @@ internal final class ProjectActivityCommentCellViewModelTests: TestCase {
 
   private let authorImage = TestObserver<String?, NoError>()
   private let body = TestObserver<String, NoError>()
+  private let cellAccessibilityLabel = TestObserver<String, NoError>()
+  private let cellAccessibilityValue = TestObserver<String, NoError>()
   private let defaultUser = .template |> User.lens.id .~ 9
   private let notifyDelegateGoToBacking = TestObserver<(Project, User), NoError>()
   private let notifyDelegateGoToSendReplyOnProject = TestObserver<(Project, Comment), NoError>()
@@ -21,6 +23,8 @@ internal final class ProjectActivityCommentCellViewModelTests: TestCase {
 
     self.vm.outputs.authorImageURL.map { $0?.absoluteString }.observe(self.authorImage.observer)
     self.vm.outputs.body.observe(self.body.observer)
+    self.vm.outputs.cellAccessibilityLabel.observe(self.cellAccessibilityLabel.observer)
+    self.vm.outputs.cellAccessibilityValue.observe(self.cellAccessibilityValue.observer)
     self.vm.outputs.notifyDelegateGoToBacking.observe(self.notifyDelegateGoToBacking.observer)
     self.vm.outputs.notifyDelegateGoToSendReplyOnProject
       .observe(self.notifyDelegateGoToSendReplyOnProject.observer)
@@ -62,6 +66,32 @@ internal final class ProjectActivityCommentCellViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(activity: commentProjectActivity, project: project)
     self.body.assertValues([body1, body2], "Emits project comment's body")
+  }
+
+  func testCellAccessibilityLabel() {
+    let project = Project.template
+    let activity = .template
+      |> Activity.lens.category .~ .commentProject
+      |> Activity.lens.comment .~ (.template |> Comment.lens.body .~ "Will this ship to Europe?")
+      |> Activity.lens.project .~ project
+      |> Activity.lens.user .~ (.template |> User.lens.name .~ "Christopher")
+
+    self.vm.inputs.configureWith(activity: activity, project: project)
+    let expected = Strings.dashboard_activity_user_name_commented_on_your_project(user_name: "Christopher")
+      .htmlStripped() ?? ""
+    self.cellAccessibilityLabel.assertValues([expected], "Should emit accessibility label")
+  }
+
+  func testCellAccessibilityValue() {
+    let project = Project.template
+    let body = "Thanks for the update!"
+    let activity = .template
+      |> Activity.lens.category .~ .commentPost
+      |> Activity.lens.comment .~ (.template |> Comment.lens.body .~ body)
+      |> Activity.lens.project .~ project
+
+    self.vm.inputs.configureWith(activity: activity, project: project)
+    self.cellAccessibilityValue.assertValues([body], "Emits accessibility value")
   }
 
   func testNotifyDelegateGoToBacking() {

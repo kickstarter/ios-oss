@@ -23,10 +23,10 @@ internal final class ProjectActivitiesViewController: UITableViewController {
   internal override func bindViewModel() {
     super.bindViewModel()
 
-    self.viewModel.outputs.activitiesAndProject
+    self.viewModel.outputs.projectActivityData
       .observeForUI()
-      .observeNext { [weak self] activities, project in
-        self?.dataSource.load(activities: activities, project: project)
+      .observeNext { [weak self] projectActivityData in
+        self?.dataSource.load(projectActivityData: projectActivityData)
         self?.tableView.reloadData()
     }
 

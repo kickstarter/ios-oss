@@ -11,6 +11,7 @@ final class ProjectActivitiesViewModelTests: TestCase {
 
   private let activitiesPresent = TestObserver<Bool, NoError>()
   private let goTo = TestObserver<ProjectActivitiesGoTo, NoError>()
+  private let groupedDates = TestObserver<Bool, NoError>()
   private let isRefreshing = TestObserver<Bool, NoError>()
   private let project = TestObserver<Project, NoError>()
   private let showEmptyState = TestObserver<Bool, NoError>()
@@ -18,10 +19,17 @@ final class ProjectActivitiesViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.activitiesAndProject.map { !$0.0.isEmpty }.observe(self.activitiesPresent.observer)
+    self.vm.outputs.projectActivityData
+      .map { !$0.activities.isEmpty }
+      .observe(self.activitiesPresent.observer)
     self.vm.outputs.goTo.observe(self.goTo.observer)
     self.vm.outputs.isRefreshing.observe(self.isRefreshing.observer)
-    self.vm.outputs.activitiesAndProject.map(second).observe(self.project.observer)
+    self.vm.outputs.projectActivityData
+      .map { $0.project }
+      .observe(self.project.observer)
+    self.vm.outputs.projectActivityData
+      .map { $0.groupedDates }
+      .observe(self.groupedDates.observer)
     self.vm.outputs.showEmptyState.observe(self.showEmptyState.observer)
 
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
@@ -38,6 +46,7 @@ final class ProjectActivitiesViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.activitiesPresent.assertValues([true], "Show activities after scheduler advances")
+      self.groupedDates.assertValues([true], "Group dates by default")
       self.project.assertValues([project], "Emits project")
       XCTAssertEqual(["Viewed Project Activity", "Creator Activity View"],
                      self.trackingClient.events, "View event and its deprecated version are tracked")
@@ -49,6 +58,7 @@ final class ProjectActivitiesViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.activitiesPresent.assertValues([true, true], "Activities refreshed")
+      self.groupedDates.assertValues([true, true], "Group dates by default")
       self.project.assertValues([project, project], "Emits project")
       XCTAssertEqual(["Viewed Project Activity", "Creator Activity View", "Loaded Newer Project Activity",
         "Creator Activity View Load Newer"],
@@ -61,6 +71,7 @@ final class ProjectActivitiesViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.activitiesPresent.assertValues([true, true, true], "Activities paginate")
+      self.groupedDates.assertValues([true, true, true], "Group dates by default")
       self.project.assertValues([project, project, project], "Emits project")
       XCTAssertEqual(["Viewed Project Activity", "Creator Activity View", "Loaded Newer Project Activity",
         "Creator Activity View Load Newer", "Loaded Older Project Activity",
@@ -162,6 +173,32 @@ final class ProjectActivitiesViewModelTests: TestCase {
 
       self.vm.inputs.projectActivityCommentCellGoToSendReplyOnUpdate(update: update, comment: comment)
       self.goTo.assertValueCount(10, "Should go to comments for update")
+    }
+  }
+
+  func testGroupedDatesWhenVoiceOverIsNotRunning() {
+    let project = Project.template
+    let activities = [.template |> Activity.lens.project .~ project]
+
+    withEnvironment(apiService: MockService(fetchProjectActivitiesResponse: activities),
+                    isVoiceOverRunning: { false }) {
+      self.vm.inputs.configureWith(project)
+      self.vm.inputs.viewDidLoad()
+      self.scheduler.advance()
+      self.groupedDates.assertValues([true], "Group dates when voice over is not running")
+    }
+  }
+
+  func testGroupedDatesWhenVoiceOverIsRunning() {
+    let project = Project.template
+    let activities = [.template |> Activity.lens.project .~ project]
+
+    withEnvironment(apiService: MockService(fetchProjectActivitiesResponse: activities),
+                    isVoiceOverRunning: { true }) {
+      self.vm.inputs.configureWith(project)
+      self.vm.inputs.viewDidLoad()
+      self.scheduler.advance()
+      self.groupedDates.assertValues([false], "Don't group dates when voice over is running")
     }
   }
 }

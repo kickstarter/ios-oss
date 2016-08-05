@@ -16,6 +16,12 @@ public protocol ProjectActivityUpdateCellViewModelOutputs {
   /// Emits the update's body.
   var body: Signal<String, NoError> { get }
 
+  /// Emits the cell's accessibility label.
+  var cellAccessibilityLabel: Signal<String, NoError> { get }
+
+  /// Emits the cell's accessibility value.
+  var cellAccessibilityValue: Signal<String, NoError> { get }
+
   /// Emits the number of comments.
   var commentsCount: Signal<String, NoError> { get }
 
@@ -37,15 +43,18 @@ ProjectActivityUpdateCellViewModelInputs, ProjectActivityUpdateCellViewModelOutp
     let activityAndProject = self.activityAndProjectProperty.signal.ignoreNil()
     let activity = activityAndProject.map(first)
 
-    self.activityTitle = activity.map { activity in
-      guard let update = activity.update else { return "" }
-      return titleFrom(update: update)
-    }
+    self.activityTitle = activity.map(updateNumber(activity:))
 
     self.body = activity.map { activity in
       guard let update = activity.update else { return "" }
       return update.body?.htmlStripped()?.truncated(maxLength: 300) ?? ""
     }
+
+    self.cellAccessibilityLabel = activity.map { activity in
+      return updateNumber(activity: activity).htmlStripped() ?? ""
+    }
+
+    self.cellAccessibilityValue = activity.map(title(activity:))
 
     self.commentsCount = activity.map { activity in
       guard let update = activity.update else { return "" }
@@ -59,7 +68,7 @@ ProjectActivityUpdateCellViewModelInputs, ProjectActivityUpdateCellViewModelOutp
       return Format.wholeNumber(likesCount)
     }
 
-    self.updateTitle = activity.map { $0.update?.title ?? "" }
+    self.updateTitle = activity.map(title(activity:))
   }
 
   private let activityAndProjectProperty = MutableProperty<(Activity, Project)?>(nil)
@@ -69,6 +78,8 @@ ProjectActivityUpdateCellViewModelInputs, ProjectActivityUpdateCellViewModelOutp
 
   public let activityTitle: Signal<String, NoError>
   public let body: Signal<String, NoError>
+  public let cellAccessibilityLabel: Signal<String, NoError>
+  public let cellAccessibilityValue: Signal<String, NoError>
   public let commentsCount: Signal<String, NoError>
   public let likesCount: Signal<String, NoError>
   public let updateTitle: Signal<String, NoError>
@@ -77,10 +88,16 @@ ProjectActivityUpdateCellViewModelInputs, ProjectActivityUpdateCellViewModelOutp
   public var outputs: ProjectActivityUpdateCellViewModelOutputs { return self }
 }
 
-private func titleFrom(update update: Update) -> String {
+private func updateNumber(activity activity: Activity) -> String {
+  guard let update = activity.update else { return "" }
   return Strings.dashboard_activity_update_number_posted_time_count_days_ago(
     space: "\u{00a0}",
     update_number: Format.wholeNumber(update.sequence ?? 0),
     time_count_days_ago: update.publishedAt.map { Format.relative(secondsInUTC: $0) } ?? ""
   )
+}
+
+private func title(activity activity: Activity) -> String {
+  guard let update = activity.update else { return "" }
+  return update.title
 }

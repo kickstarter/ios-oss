@@ -33,6 +33,7 @@ internal class TestCase: XCTestCase {
       debounceInterval: 0.0,
       facebookAppDelegate: self.facebookAppDelegate,
       hockeyManager: self.hockeyManager,
+      isVoiceOverRunning: { false },
       koala: Koala(client: self.trackingClient, loggedInUser: nil),
       language: .en,
       launchedCountries: .init(),

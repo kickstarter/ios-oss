@@ -49,6 +49,9 @@ internal final class ProjectActivitySuccessCell: UITableViewCell, ValueCell {
     super.bindStyles()
 
     self |> baseTableViewCellStyle()
+      |> UITableViewCell.lens.accessibilityHint %~ { _ in
+        localizedString(key: "key.todo", defaultValue: "Opens project.")
+    }
 
     self.cardView
       |> roundedStyle()

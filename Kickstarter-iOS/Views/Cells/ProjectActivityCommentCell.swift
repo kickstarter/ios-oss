@@ -56,6 +56,9 @@ internal final class ProjectActivityCommentCell: UITableViewCell, ValueCell {
         self?.authorImageView.af_setImageWithURL(url)
     }
 
+    self.rac.accessibilityLabel = self.viewModel.outputs.cellAccessibilityLabel
+    self.rac.accessibilityValue = self.viewModel.outputs.cellAccessibilityValue
+
     self.viewModel.outputs.notifyDelegateGoToBacking
       .observeForUI()
       .observeNext { [weak self] project, user in
@@ -93,6 +96,9 @@ internal final class ProjectActivityCommentCell: UITableViewCell, ValueCell {
     super.bindStyles()
 
     self |> baseTableViewCellStyle()
+      |> UITableViewCell.lens.accessibilityHint %~ { _ in
+        localizedString(key: "key.todo", defaultValue: "Opens comments.")
+    }
 
     self.replyButton
       |> projectActivityFooterButton

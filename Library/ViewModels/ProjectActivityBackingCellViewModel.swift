@@ -19,6 +19,12 @@ public protocol ProjectActivityBackingCellViewModelOutputs {
   /// Emits a URL for the backer's avatar.
   var backerImageURL: Signal<NSURL?, NoError> { get }
 
+  /// Emits the cell's accessibility label.
+  var cellAccessibilityLabel: Signal<String, NoError> { get }
+
+  /// Emits the cell's accessibility value.
+  var cellAccessibilityValue: Signal<String, NoError> { get }
+
   /// Emits when the delegate should go to the backing screen.
   var notifyDelegateGoToBacking: Signal<(Project, User), NoError> { get }
 
@@ -55,12 +61,21 @@ public protocol ProjectActivityBackingCellViewModelType {
 public final class ProjectActivityBackingCellViewModel: ProjectActivityBackingCellViewModelType,
 ProjectActivityBackingCellViewModelInputs, ProjectActivityBackingCellViewModelOutputs {
 
+  // swiftlint:disable function_body_length
   public init() {
     let activityAndProject = self.activityAndProjectProperty.signal.ignoreNil()
     let activity = activityAndProject.map(first)
+    let title = activity.map(title(activity:))
 
     self.backerImageURL = activity
       .map { ($0.user?.avatar.medium).flatMap(NSURL.init) }
+
+    self.cellAccessibilityLabel = title.map { title in title.htmlStripped() ?? "" }
+
+    self.cellAccessibilityValue = activityAndProject
+      .flatMap { activity, project -> SignalProducer<String, NoError> in
+        return .init(value: accessibilityValue(activity: activity, project: project))
+    }
 
     self.notifyDelegateGoToBacking = activityAndProject
       .takeWhen(self.backingButtonPressedProperty.signal)
@@ -77,11 +92,7 @@ ProjectActivityBackingCellViewModelInputs, ProjectActivityBackingCellViewModelOu
     }
 
     self.pledgeAmount = activityAndProject
-      .map { activity, project in
-        guard let amount = activity.memberData.amount ?? activity.memberData.newAmount else { return "" }
-
-        return Format.currency(amount, country: project.country)
-    }
+      .map(amount(activity:project:))
 
     let pledgeAmountLabelIsHidden = self.pledgeAmount
       .map { $0.isEmpty }
@@ -89,11 +100,7 @@ ProjectActivityBackingCellViewModelInputs, ProjectActivityBackingCellViewModelOu
     self.pledgeAmountLabelIsHidden = pledgeAmountLabelIsHidden.skipRepeats()
 
     self.previousPledgeAmount = activityAndProject
-      .map { activity, project in
-        guard let amount = activity.memberData.oldAmount else { return "" }
-
-        return Format.currency(amount, country: project.country)
-    }
+      .map(oldAmount(activity:project:))
 
     let previousPledgeAmountLabelIsHidden = self.previousPledgeAmount
       .map { $0.isEmpty }
@@ -110,8 +117,9 @@ ProjectActivityBackingCellViewModelInputs, ProjectActivityBackingCellViewModelOu
 
     self.reward = activityAndProject.map(rewardSummary(activity:project:))
 
-    self.title = activity.map(title(activity:))
+    self.title = title
   }
+  // swiftlint:enable function_body_length
 
   private let backingButtonPressedProperty = MutableProperty()
   public func backingButtonPressed() {
@@ -129,6 +137,8 @@ ProjectActivityBackingCellViewModelInputs, ProjectActivityBackingCellViewModelOu
   }
 
   public let backerImageURL: Signal<NSURL?, NoError>
+  public let cellAccessibilityLabel: Signal<String, NoError>
+  public let cellAccessibilityValue: Signal<String, NoError>
   public let notifyDelegateGoToBacking: Signal<(Project, User), NoError>
   public let notifyDelegateGoToSendMessage: Signal<(Project, Backing), NoError>
   public let pledgeAmount: Signal<String, NoError>
@@ -141,6 +151,35 @@ ProjectActivityBackingCellViewModelInputs, ProjectActivityBackingCellViewModelOu
 
   public var inputs: ProjectActivityBackingCellViewModelInputs { return self }
   public var outputs: ProjectActivityBackingCellViewModelOutputs { return self }
+}
+
+private func accessibilityValue(activity activity: Activity, project: Project) -> String {
+  switch activity.category {
+  case .backing, .backingCanceled:
+    return localizedString(
+      key: "key.todo",
+      defaultValue: "Amount: %{amount}, %{reward}",
+      substitutions: [
+        "amount": amount(activity: activity, project: project),
+        "reward": rewardSummary(activity: activity, project: project).htmlStripped() ?? ""
+      ]
+    )
+  case .backingAmount:
+    return localizedString(
+      key: "key.todo",
+      defaultValue: "Amount: %{amount}, previous amount: %{previous_amount}",
+      substitutions: [
+        "amount": amount(activity: activity, project: project),
+        "previous_amount": oldAmount(activity: activity, project: project)
+      ]
+    )
+  case .backingReward:
+    return rewardSummary(activity: activity, project: project).htmlStripped() ?? ""
+  case .backingDropped, .cancellation, .commentPost, .commentProject, .failure, .follow, .funding,
+  .launch, .success, .suspension, .update, .watch, .unknown:
+    assertionFailure("Unrecognized activity: \(activity).")
+    return ""
+  }
 }
 
 private func currentUserIsBacker(activity activity: Activity) -> Bool {
@@ -186,4 +225,14 @@ private func title(activity activity: Activity) -> String {
     assertionFailure("Unrecognized activity: \(activity).")
     return ""
   }
+}
+
+private func amount(activity activity: Activity, project: Project) -> String {
+  guard let amount = activity.memberData.amount ?? activity.memberData.newAmount else { return "" }
+  return Format.currency(amount, country: project.country)
+}
+
+private func oldAmount(activity activity: Activity, project: Project) -> String {
+  guard let amount = activity.memberData.oldAmount else { return "" }
+  return Format.currency(amount, country: project.country)
 }

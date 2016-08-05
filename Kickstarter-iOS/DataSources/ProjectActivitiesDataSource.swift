@@ -15,12 +15,12 @@ internal final class ProjectActivitiesDataSource: ValueCellDataSource {
              inSection: Section.emptyState.rawValue)
   }
 
-  internal func load(activities activities: [Activity], project: Project) {
+  internal func load(projectActivityData projectActivityData: ProjectActivityData) {
     let section = Section.activities.rawValue
 
     self.clearValues(section: section)
 
-    activities
+    projectActivityData.activities
       .groupedBy { activity in
         return AppEnvironment.current.calendar.startOfDayForDate(
           NSDate(timeIntervalSince1970: activity.createdAt)
@@ -29,11 +29,18 @@ internal final class ProjectActivitiesDataSource: ValueCellDataSource {
       .sort { $0.0.timeIntervalSince1970 > $1.0.timeIntervalSince1970 }
       .forEach { date, activitiesForDate in
 
-        self.appendRow(value: date, cellClass: ProjectActivityDateCell.self, toSection: section)
+        if projectActivityData.groupedDates {
+          appendDateRow(date: date, section: section)
+        }
 
         activitiesForDate
           .sorted(comparator: Activity.lens.createdAt.comparator.reversed)
-          .forEach { appendActivityRow($0, project: project, section: section) }
+          .forEach { activity in
+            if !projectActivityData.groupedDates {
+              appendDateRow(date: date, section: section)
+            }
+            appendActivityRow(activity: activity, project: projectActivityData.project, section: section)
+        }
     }
   }
 
@@ -63,7 +70,11 @@ internal final class ProjectActivitiesDataSource: ValueCellDataSource {
     }
   }
 
-  internal func appendActivityRow(activity: Activity, project: Project, section: Int) {
+  internal func appendDateRow(date date: NSDate, section: Int) {
+    self.appendRow(value: date, cellClass: ProjectActivityDateCell.self, toSection: section)
+  }
+
+  internal func appendActivityRow(activity activity: Activity, project: Project, section: Int) {
     switch activity.category {
     case .backing, .backingAmount, .backingCanceled, .backingReward:
       self.appendRow(

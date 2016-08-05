@@ -9,6 +9,8 @@ internal final class ProjectActivityBackingCellViewModelTests: TestCase {
   private let vm: ProjectActivityBackingCellViewModelType = ProjectActivityBackingCellViewModel()
 
   private let backerImage = TestObserver<String?, NoError>()
+  private let cellAccessibilityLabel = TestObserver<String, NoError>()
+  private let cellAccessibilityValue = TestObserver<String, NoError>()
   private let defaultUser = .template |> User.lens.id .~ 90
   private let notifyDelegateGoToBacking = TestObserver<(Project, User), NoError>()
   private let notifyDelegateGoToSendMessage = TestObserver<(Project, Backing), NoError>()
@@ -24,6 +26,8 @@ internal final class ProjectActivityBackingCellViewModelTests: TestCase {
     super.setUp()
 
     self.vm.outputs.backerImageURL.map { $0?.absoluteString }.observe(self.backerImage.observer)
+    self.vm.outputs.cellAccessibilityLabel.observe(self.cellAccessibilityLabel.observer)
+    self.vm.outputs.cellAccessibilityValue.observe(self.cellAccessibilityValue.observer)
     self.vm.outputs.notifyDelegateGoToBacking.observe(self.notifyDelegateGoToBacking.observer)
     self.vm.outputs.notifyDelegateGoToSendMessage.observe(self.notifyDelegateGoToSendMessage.observer)
     self.vm.outputs.pledgeAmount.observe(self.pledgeAmount.observer)
@@ -48,6 +52,106 @@ internal final class ProjectActivityBackingCellViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(activity: activity, project: project)
     self.backerImage.assertValues(["http://coolpic.com/cool.jpg"], "Emits backer's image URL")
+  }
+
+  func testCellAccessibilityLabel() {
+    let project = Project.template
+    let user = User.template
+    let activity = .template
+      |> Activity.lens.category .~ .backing
+      |> Activity.lens.project .~ project
+      |> Activity.lens.user .~ user
+
+    self.vm.inputs.configureWith(activity: activity, project: project)
+    self.cellAccessibilityLabel.assertValues(
+      [Strings.dashboard_activity_user_name_pledged(user_name: user.name).htmlStripped() ?? ""],
+      "Emits accessibility label"
+    )
+  }
+
+  func testCellAccessibilityValueForBacking() {
+    let amount = 25
+    let title = "Sick Skull Graphic Mousepad"
+    let reward = .template
+      |> Reward.lens.id .~ 10
+      |> Reward.lens.title .~ title
+    let project = .template
+      |> Project.lens.rewards .~ [reward]
+    let user = User.template
+    let activity = .template
+      |> Activity.lens.category .~ .backing
+      |> Activity.lens.memberData.amount .~ amount
+      |> Activity.lens.memberData.rewardId .~ reward.id
+      |> Activity.lens.project .~ project
+      |> Activity.lens.user .~ user
+
+    self.vm.inputs.configureWith(activity: activity, project: project)
+    let expected = localizedString(
+      key: "key.todo",
+      defaultValue: "Amount: %{amount}, %{reward}",
+      substitutions: [
+        "amount": Format.currency(amount, country: project.country),
+        "reward": Strings.dashboard_activity_reward_name(reward_name: title).htmlStripped() ?? ""
+      ]
+    )
+    self.cellAccessibilityValue.assertValues([expected], "Emits accessibility value")
+  }
+
+  func testCellAccessibilityValueForBackingAmountAndReward() {
+    let title = "Sick Skull Graphic Calculator"
+    let oldAmount = 15
+    let newAmount = 25
+    let oldReward = .template
+      |> Reward.lens.id .~ 10
+    let newReward = .template
+      |> Reward.lens.id .~ 11
+      |> Reward.lens.title .~ title
+    let project = .template
+      |> Project.lens.rewards .~ [oldReward, newReward]
+    let user = User.template
+    let activity = .template
+      |> Activity.lens.category .~ .backingAmount
+      |> Activity.lens.memberData.oldAmount .~ oldAmount
+      |> Activity.lens.memberData.oldRewardId .~ oldReward.id
+      |> Activity.lens.memberData.newAmount .~ newAmount
+      |> Activity.lens.memberData.newRewardId .~ newReward.id
+      |> Activity.lens.project .~ project
+      |> Activity.lens.user .~ user
+
+    self.vm.inputs.configureWith(activity: activity, project: project)
+    let expected = localizedString(
+      key: "key.todo",
+      defaultValue: "Amount: %{amount}, previous amount: %{previous_amount}",
+      substitutions: [
+        "amount": Format.currency(newAmount, country: project.country),
+        "previous_amount": Format.currency(oldAmount, country: project.country)
+      ]
+    )
+    self.cellAccessibilityValue.assertValues([expected], "Emits accessibility value")
+  }
+
+  func testCellAccessibilityValueForBackingReward() {
+    let title = "Sick Skull Graphic Pen"
+    let oldReward = .template
+      |> Reward.lens.id .~ 10
+    let newReward = .template
+      |> Reward.lens.id .~ 11
+      |> Reward.lens.title .~ title
+    let project = .template
+      |> Project.lens.rewards .~ [oldReward, newReward]
+    let user = User.template
+    let activity = .template
+      |> Activity.lens.category .~ .backingReward
+      |> Activity.lens.memberData.oldRewardId .~ oldReward.id
+      |> Activity.lens.memberData.newRewardId .~ newReward.id
+      |> Activity.lens.project .~ project
+      |> Activity.lens.user .~ user
+
+    self.vm.inputs.configureWith(activity: activity, project: project)
+    self.cellAccessibilityValue.assertValues(
+      [Strings.dashboard_activity_reward_name(reward_name: title).htmlStripped() ?? ""],
+      "Emits accessibility value"
+    )
   }
 
   func testNotifyDelegateGoToBacking() {

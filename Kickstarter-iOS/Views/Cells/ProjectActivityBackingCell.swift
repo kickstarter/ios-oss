@@ -49,6 +49,9 @@ internal final class ProjectActivityBackingCell: UITableViewCell, ValueCell {
   internal override func bindViewModel() {
     super.bindViewModel()
 
+    self.rac.accessibilityLabel = self.viewModel.outputs.cellAccessibilityLabel
+    self.rac.accessibilityValue = self.viewModel.outputs.cellAccessibilityValue
+
     self.viewModel.outputs.backerImageURL
       .observeForUI()
       .on(next: { [weak self] _ in
@@ -113,6 +116,9 @@ internal final class ProjectActivityBackingCell: UITableViewCell, ValueCell {
     super.bindStyles()
 
     self |> baseTableViewCellStyle()
+      |> UITableViewCell.lens.accessibilityHint %~ { _ in
+        localizedString(key: "key.todo", defaultValue: "Opens pledge info.")
+    }
 
     self.bulletSeparatorView |> projectActivityBulletSeparatorViewStyle
 

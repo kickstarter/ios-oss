@@ -10,6 +10,8 @@ internal final class ProjectActivityUpdateCellViewModelTests: TestCase {
 
   private let activityTitle = TestObserver<String, NoError>()
   private let body = TestObserver<String, NoError>()
+  private let cellAccessibilityLabel = TestObserver<String, NoError>()
+  private let cellAccessibilityValue = TestObserver<String, NoError>()
   private let commentsCount = TestObserver<String, NoError>()
   private let defaultUser = .template |> User.lens.name .~ "Christopher"
   private let likesCount = TestObserver<String, NoError>()
@@ -20,6 +22,8 @@ internal final class ProjectActivityUpdateCellViewModelTests: TestCase {
 
     self.vm.outputs.activityTitle.observe(self.activityTitle.observer)
     self.vm.outputs.body.observe(self.body.observer)
+    self.vm.outputs.cellAccessibilityLabel.observe(self.cellAccessibilityLabel.observer)
+    self.vm.outputs.cellAccessibilityValue.observe(self.cellAccessibilityValue.observer)
     self.vm.outputs.commentsCount.observe(self.commentsCount.observer)
     self.vm.outputs.likesCount.observe(self.likesCount.observer)
     self.vm.outputs.updateTitle.observe(self.updateTitle.observer)
@@ -69,6 +73,39 @@ internal final class ProjectActivityUpdateCellViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(activity: activity, project: project)
     self.body.assertValues(["Oh yeah!"], "Emits update's body, with HTML stripped")
+  }
+
+  func testCellAccessibilityLabel() {
+    let project = Project.template
+    let publishedAt = NSDate().timeIntervalSince1970
+    let update = .template
+      |> Update.lens.publishedAt .~ publishedAt
+      |> Update.lens.sequence .~ 9
+      |> Update.lens.user .~ self.defaultUser
+    let activity = .template
+      |> Activity.lens.project .~ project
+      |> Activity.lens.update .~ update
+
+    self.vm.inputs.configureWith(activity: activity, project: project)
+    let expected = (Strings.dashboard_activity_update_number_posted_time_count_days_ago(
+        space: "\u{00a0}",
+        update_number: "9",
+        time_count_days_ago: Format.relative(secondsInUTC: publishedAt)
+      )
+      .htmlStripped() ?? "")
+    self.cellAccessibilityLabel.assertValues([expected], "Emits accessibility label")
+  }
+
+  func testCellAccessibilityValue() {
+    let title = "Spirit animals!"
+    let project = Project.template
+    let update = .template
+      |> Update.lens.title .~ title
+    let activity = .template
+      |> Activity.lens.update .~ update
+
+    self.vm.inputs.configureWith(activity: activity, project: project)
+    self.cellAccessibilityValue.assertValues([title], "Emits accessibility value")
   }
 
   func testCommentsCount() {

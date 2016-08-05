@@ -6,6 +6,10 @@ import UIKit
 import XCPlayground
 @testable import Kickstarter_Framework
 
+// Setting `isVoiceOverRunning` to `true` outputs a date before every activity.
+let isVoiceOverRunning = false
+
+
 let project = Project.cosmicSurgery
 
 let baseActivity = .template
@@ -68,7 +72,8 @@ AppEnvironment.replaceCurrentEnvironment(
     oauthToken: OauthToken(token: "deadbeef"),
     fetchProjectActivitiesResponse: activityCategories.map { baseActivity |> Activity.lens.category .~ $0 } + backingActivities
   ),
-  currentUser: Project.cosmicSurgery.creator
+  currentUser: Project.cosmicSurgery.creator,
+  isVoiceOverRunning: { return isVoiceOverRunning }
 )
 
 let controller = storyboard(named: "ProjectActivity")

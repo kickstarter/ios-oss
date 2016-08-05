@@ -52,14 +52,14 @@ public protocol ProjectActivitiesViewModelInputs {
 }
 
 public protocol ProjectActivitiesViewModelOutputs {
-  /// Emits a an array of activities and project that should be displayed.
-  var activitiesAndProject: Signal<([Activity], Project), NoError> { get }
-
   /// Emits when another screen should be loaded.
   var goTo: Signal<ProjectActivitiesGoTo, NoError> { get }
 
   /// Emits a boolean that indicates whether the view is refreshing.
   var isRefreshing: Signal<Bool, NoError> { get }
+
+  /// Emits project activity data.
+  var projectActivityData: Signal<ProjectActivityData, NoError> { get }
 
   /// Emits `true` when the empty state should be shown, and `false` when it should be hidden.
   var showEmptyState: Signal<Bool, NoError> { get }
@@ -103,7 +103,13 @@ public final class ProjectActivitiesViewModel: ProjectActivitiesViewModelType,
       requestFromCursor: { AppEnvironment.current.apiService.fetchProjectActivities(paginationUrl: $0) }
     )
 
-    self.activitiesAndProject = combineLatest(activities, project)
+    self.projectActivityData = combineLatest(activities, project)
+      .map { activities, project in
+        ProjectActivityData(
+          activities: activities,
+          project: project,
+          groupedDates: !AppEnvironment.current.isVoiceOverRunning())
+      }
 
     self.showEmptyState = activities
       .map { $0.isEmpty }
@@ -220,9 +226,9 @@ public final class ProjectActivitiesViewModel: ProjectActivitiesViewModelType,
     self.willDisplayRowProperty.value = (row, totalRows)
   }
 
-  public let activitiesAndProject: Signal<([Activity], Project), NoError>
   public let goTo: Signal<ProjectActivitiesGoTo, NoError>
   public let isRefreshing: Signal<Bool, NoError>
+  public let projectActivityData: Signal<ProjectActivityData, NoError>
   public let showEmptyState: Signal<Bool, NoError>
 
   public var inputs: ProjectActivitiesViewModelInputs { return self }

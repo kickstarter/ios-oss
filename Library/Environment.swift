@@ -48,6 +48,9 @@ public struct Environment {
   /// `BITHockeyManager.sharedHockeyManager()`.
   public let hockeyManager: HockeyManagerType
 
+  /// A function that returns whether voice over mode is running.
+  public let isVoiceOverRunning: () -> Bool
+
   /// A type that exposes endpoints for tracking various Kickstarter events.
   public let koala: Koala
 
@@ -93,6 +96,7 @@ public struct Environment {
     debounceInterval: NSTimeInterval = 0.3,
     facebookAppDelegate: FacebookAppDelegateProtocol = FBSDKApplicationDelegate.sharedInstance(),
     hockeyManager: HockeyManagerType = BITHockeyManager.sharedHockeyManager(),
+    isVoiceOverRunning: () -> Bool = UIAccessibilityIsVoiceOverRunning,
     koala: Koala = Koala(client: KoalaTrackingClient(endpoint: .Production)),
     language: Language = .en,
     launchedCountries: LaunchedCountries = .init(),
@@ -116,6 +120,7 @@ public struct Environment {
     self.debounceInterval = debounceInterval
     self.facebookAppDelegate = facebookAppDelegate
     self.hockeyManager = hockeyManager
+    self.isVoiceOverRunning = isVoiceOverRunning
     self.koala = koala
     self.language = language
     self.launchedCountries = launchedCountries
@@ -142,6 +147,7 @@ public struct Environment {
       self.debounceInterval,
       self.facebookAppDelegate,
       self.hockeyManager,
+      self.isVoiceOverRunning,
       self.koala,
       self.language,
       self.launchedCountries,

@@ -22,6 +22,12 @@ public protocol ProjectActivityCommentCellViewModelOutputs {
   /// Emits the body of the comment.
   var body: Signal<String, NoError> { get }
 
+  /// Emits the cell's accessibility label.
+  var cellAccessibilityLabel: Signal<String, NoError> { get }
+
+  /// Emits the cell's accessibility value.
+  var cellAccessibilityValue: Signal<String, NoError> { get }
+
   /// Go to the backing info screen.
   var notifyDelegateGoToBacking: Signal<(Project, User), NoError> { get }
 
@@ -84,6 +90,10 @@ ProjectActivityCommentCellViewModelInputs, ProjectActivityCommentCellViewModelOu
       .map(commentOnUpdateTitle(activity:))
 
     self.title = Signal.merge(projectTitle, updateTitle)
+
+    self.cellAccessibilityLabel = self.title.map { title in title.htmlStripped() ?? "" }
+
+    self.cellAccessibilityValue = self.body
   }
 
   private let backingButtonPressedProperty = MutableProperty()
@@ -103,6 +113,8 @@ ProjectActivityCommentCellViewModelInputs, ProjectActivityCommentCellViewModelOu
 
   public let authorImageURL: Signal<NSURL?, NoError>
   public let body: Signal<String, NoError>
+  public let cellAccessibilityLabel: Signal<String, NoError>
+  public let cellAccessibilityValue: Signal<String, NoError>
   public let notifyDelegateGoToBacking: Signal<(Project, User), NoError>
   public let notifyDelegateGoToSendReplyOnProject: Signal<(Project, Comment), NoError>
   public let notifyDelegateGoToSendReplyOnUpdate: Signal<(Update, Comment), NoError>
