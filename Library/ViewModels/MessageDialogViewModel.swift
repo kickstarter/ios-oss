@@ -115,14 +115,15 @@ MessageDialogViewModelOutputs {
 
     self.recipientName = messageSubject
       .take(1)
-      .map { messageSubject -> String in
+      .flatMap { messageSubject -> SignalProducer<String, NoError> in
         switch messageSubject {
         case let .backing(backing):
-          return backing.backer?.name ?? ""
+          guard let name = backing.backer?.name else { return fetchBackerName(backing: backing) }
+          return .init(value: name)
         case let .messageThread(messageThread):
-          return messageThread.participant.name
+          return .init(value: messageThread.participant.name)
         case let .project(project):
-          return project.creator.name
+          return .init(value: project.creator.name)
         }
     }
 
@@ -173,4 +174,11 @@ MessageDialogViewModelOutputs {
 
   public var inputs: MessageDialogViewModelInputs { return self }
   public var outputs: MessageDialogViewModelOutputs { return self }
+}
+
+func fetchBackerName(backing backing: Backing) -> SignalProducer<String, NoError> {
+  return AppEnvironment.current.apiService.fetchUser(userId: backing.backerId)
+    .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
+    .demoteErrors()
+    .map { $0.name }
 }

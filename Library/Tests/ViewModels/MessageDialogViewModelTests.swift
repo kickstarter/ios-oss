@@ -1,5 +1,6 @@
 import XCTest
 @testable import Library
+import Prelude
 @testable import ReactiveExtensions_TestHelpers
 import ReactiveCocoa
 import Result
@@ -36,6 +37,24 @@ internal final class MessageDialogViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     self.recipientName.assertValues([thread.participant.name])
+  }
+
+  func testRecipientNameWhenBackingHasNoBacker() {
+    let backing = .template
+        |> Backing.lens.backer .~ nil
+    let name = "Blobber"
+    let backer = .template
+      |> User.lens.name .~ name
+
+    withEnvironment(apiService: MockService(fetchUserResponse: backer)) {
+      self.vm.inputs.configureWith(messageSubject: .backing(backing), context: .messages)
+      self.vm.inputs.viewDidLoad()
+
+      self.recipientName.assertValueCount(0, "Backer not present on backing, needs to be fetched from API")
+
+      self.scheduler.advance()
+      self.recipientName.assertValues([name], "Should emit backer name after fetching from API")
+    }
   }
 
   func testButtonEnabled() {
@@ -126,8 +145,16 @@ internal final class MessageDialogViewModelTests: TestCase {
   }
 
   func testPostingMessageToBacker() {
-    self.vm.inputs.configureWith(messageSubject: .backing(.template), context: .messages)
+    let name = "Blobster"
+    let backer = .template
+      |> User.lens.name .~ name
+    let backing = .template
+      |> Backing.lens.backer .~ backer
+    self.vm.inputs.configureWith(messageSubject: .backing(backing), context: .messages)
     self.vm.inputs.viewDidLoad()
+
+    self.recipientName.assertValues([name], "Should emit backer's name")
+
     self.vm.inputs.bodyTextChanged("HELLO")
 
     self.loadingViewIsHidden.assertValues([true])
