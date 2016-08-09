@@ -144,21 +144,23 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       .map {$0.filter { activity in hasNotSeen(activity: activity) } }
       .on(next: { activities in saveSeen(activities: activities) })
 
-    // Clear the activity sample when selecting a new filter or swiping to a new sort view.
-    let clearActivitySample = Signal.merge(
+    let clearActivitySampleOnLogout = self.viewWillAppearProperty.signal
+      .filter { _ in AppEnvironment.current.currentUser == nil }
+
+    let clearActivitySampleOnNavigate = Signal.merge(
       paramsChanged.mapConst(true),
       self.goToProject.mapConst(false),
       self.goToProjectUpdate.mapConst(false),
       self.viewDidDisappearProperty.signal.filter { animated in !animated }.mapConst(false),
-      self.viewDidAppearProperty.signal.mapConst(true),
-      self.viewWillAppearProperty.signal.map { _ in AppEnvironment.current.currentUser == nil }
+      self.viewDidAppearProperty.signal.mapConst(true)
       )
       .takeWhen(self.viewDidDisappearProperty.signal)
       .filter(isTrue)
 
     self.activitiesForSample = Signal.merge(
       activities,
-      clearActivitySample.mapConst([])
+      clearActivitySampleOnLogout.mapConst([]),
+      clearActivitySampleOnNavigate.mapConst([])
       )
       .skipRepeats(==)
 

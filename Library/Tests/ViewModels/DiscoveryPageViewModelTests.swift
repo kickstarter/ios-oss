@@ -297,6 +297,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       // Change the filter.
       self.vm.inputs.selectedFilter(.defaults |> DiscoveryParams.lens.category .~ Category.art)
       self.vm.inputs.viewDidDisappear(animated: true)
+      self.vm.inputs.viewWillAppear()
       self.vm.inputs.viewDidAppear()
 
       self.activitiesForSample.assertValues([[activity1], []], "Activity sample is hidden.")
@@ -304,6 +305,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       // Change the filter again.
       self.vm.inputs.selectedFilter(.defaults |> DiscoveryParams.lens.starred .~ true)
       self.vm.inputs.viewDidDisappear(animated: true)
+      self.vm.inputs.viewWillAppear()
       self.vm.inputs.viewDidAppear()
 
       self.activitiesForSample.assertValues([[activity1], []], "Activity sample is still hidden.")
@@ -377,8 +379,9 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.activitiesForSample.assertValues([[activity]], "Activity sample is shown.")
     }
 
+    // Switch to profile tab to log out.
+    self.vm.inputs.viewDidDisappear(animated: false)
     AppEnvironment.logout()
-    self.vm.inputs.viewDidDisappear(animated: true)
     self.vm.inputs.viewWillAppear()
     self.vm.inputs.viewDidAppear()
 
