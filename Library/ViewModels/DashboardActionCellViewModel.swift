@@ -21,6 +21,9 @@ public protocol DashboardActionCellViewModelOutputs {
   /// Emits the activity button label and unseen activities count to be read by voiceover.
   var activityButtonAccessibilityLabel: Signal<String, NoError> { get }
 
+  /// Emits a boolean that determines if the activity row is hidden.
+  var activityRowHidden: Signal<Bool, NoError> { get }
+
   /// Emits with the project when should go to activity screen.
   var goToActivity: Signal<Project, NoError> { get }
 
@@ -109,6 +112,8 @@ public final class DashboardActionCellViewModel: DashboardActionCellViewModelInp
     self.postUpdateButtonHidden = self.lastUpdatePublishedLabelHidden
 
     self.messagesRowHidden = project.map { $0.creator != AppEnvironment.current.currentUser }
+
+    self.activityRowHidden = project.map { !$0.memberData.permissions.contains(.viewPledges) }
   }
 
   private let activityTappedProperty = MutableProperty()
@@ -132,6 +137,7 @@ public final class DashboardActionCellViewModel: DashboardActionCellViewModelInp
   }
 
   public let activityButtonAccessibilityLabel: Signal<String, NoError>
+  public let activityRowHidden: Signal<Bool, NoError>
   public let goToActivity: Signal<Project, NoError>
   public let goToMessages: Signal<Project, NoError>
   public let goToPostUpdate: Signal<Project, NoError>

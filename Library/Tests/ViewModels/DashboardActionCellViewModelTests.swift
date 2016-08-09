@@ -9,7 +9,9 @@ import XCTest
 
 internal final class DashboardActionCellViewModelTests: TestCase {
   private let vm = DashboardActionCellViewModel()
+
   private let activityButtonAccessibilityLabel = TestObserver<String, NoError>()
+  private let activityRowHidden = TestObserver<Bool, NoError>()
   private let goToActivity = TestObserver<Project, NoError>()
   private let goToMessages = TestObserver<Project, NoError>()
   private let goToPostUpdate = TestObserver<Project, NoError>()
@@ -22,7 +24,9 @@ internal final class DashboardActionCellViewModelTests: TestCase {
 
   internal override func setUp() {
     super.setUp()
+
     self.vm.outputs.activityButtonAccessibilityLabel.observe(self.activityButtonAccessibilityLabel.observer)
+    self.vm.outputs.activityRowHidden.observe(self.activityRowHidden.observer)
     self.vm.outputs.goToActivity.observe(self.goToActivity.observer)
     self.vm.outputs.goToMessages.observe(self.goToMessages.observer)
     self.vm.outputs.goToPostUpdate.observe(self.goToPostUpdate.observer)
@@ -48,6 +52,22 @@ internal final class DashboardActionCellViewModelTests: TestCase {
     self.activityButtonAccessibilityLabel.assertValues(["Activity, 7 unseen"])
     self.messagesButtonAccessibilityLabel.assertValues(["Messages, 10 unread"])
     self.postUpdateButtonAccessibilityValue.assertValues(["Last updated on \(formattedDate)."])
+  }
+
+  func testActivityRowHidden_WithViewPledgePermissions() {
+    self.vm.inputs.configureWith(
+      project: .template |> Project.lens.memberData.permissions .~ [.viewPledges]
+    )
+
+    self.activityRowHidden.assertValues([false])
+  }
+
+  func testActivityRowHidden_WithoutViewPledgePermissions() {
+    self.vm.inputs.configureWith(
+      project: .template |> Project.lens.memberData.permissions .~ []
+    )
+
+    self.activityRowHidden.assertValues([true])
   }
 
   func testGoToScreens() {

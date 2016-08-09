@@ -20,6 +20,7 @@ internal final class DashboardActionCell: UITableViewCell, ValueCell {
   private let viewModel: DashboardActionCellViewModelType = DashboardActionCellViewModel()
 
   @IBOutlet private weak var activityButton: UIButton!
+  @IBOutlet private weak var activityRowStackView: UIStackView!
   @IBOutlet private var drillDownIndicatorImageViews: [UIImageView]!
   @IBOutlet private weak var lastUpdatePublishedAtLabel: UILabel!
   @IBOutlet private weak var messagesButton: UIButton!
@@ -54,6 +55,7 @@ internal final class DashboardActionCell: UITableViewCell, ValueCell {
 
   internal override func bindViewModel() {
     self.activityButton.rac.accessibilityLabel = self.viewModel.outputs.activityButtonAccessibilityLabel
+    self.activityRowStackView.rac.hidden = self.viewModel.outputs.activityRowHidden
     self.lastUpdatePublishedAtLabel.rac.text = self.viewModel.outputs.lastUpdatePublishedAt
     self.messagesButton.rac.accessibilityLabel = self.viewModel.outputs.messagesButtonAccessibilityLabel
     self.messagesRowStackView.rac.hidden = self.viewModel.outputs.messagesRowHidden
