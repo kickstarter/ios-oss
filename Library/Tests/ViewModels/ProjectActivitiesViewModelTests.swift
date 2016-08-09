@@ -168,10 +168,12 @@ final class ProjectActivitiesViewModelTests: TestCase {
       self.vm.inputs.projectActivityCommentCellGoToBacking(project: project, user: user)
       self.goTo.assertValueCount(8, "Should go to backing")
 
-      self.vm.inputs.projectActivityCommentCellGoToSendReplyOnProject(project: project, comment: comment)
+      self.vm.inputs.projectActivityCommentCellGoToSendReply(project: project, update: nil, comment: comment)
       self.goTo.assertValueCount(9, "Should go to comments for project")
 
-      self.vm.inputs.projectActivityCommentCellGoToSendReplyOnUpdate(update: update, comment: comment)
+      self.vm.inputs.projectActivityCommentCellGoToSendReply(project: project,
+                                                             update: update,
+                                                             comment: comment)
       self.goTo.assertValueCount(10, "Should go to comments for update")
     }
   }

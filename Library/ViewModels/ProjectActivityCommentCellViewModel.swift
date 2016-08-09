@@ -31,11 +31,8 @@ public protocol ProjectActivityCommentCellViewModelOutputs {
   /// Go to the backing info screen.
   var notifyDelegateGoToBacking: Signal<(Project, User), NoError> { get }
 
-  /// Go to the project comment screen.
-  var notifyDelegateGoToSendReplyOnProject: Signal<(Project, Comment), NoError> { get }
-
-  /// Go to the update comment screen.
-  var notifyDelegateGoToSendReplyOnUpdate: Signal<(Update, Comment), NoError> { get }
+  /// Go to the comment reply dialog for the project/update comment.
+  var notifyDelegateGoToSendReply: Signal<(Project, Update?, Comment), NoError> { get }
 
   /// Emits the activity's title.
   var title: Signal<String, NoError> { get }
@@ -65,21 +62,22 @@ ProjectActivityCommentCellViewModelInputs, ProjectActivityCommentCellViewModelOu
       }
       .ignoreNil()
 
-    self.notifyDelegateGoToSendReplyOnProject = activityAndProject
-      .takeWhen(self.replyButtonPressedProperty.signal)
-      .filter { activity, project in activity.category == .commentProject }
-      .flatMap { activity, project -> SignalProducer<(Project, Comment), NoError> in
+    let projectComment = activityAndProject
+      .filter { activity, _ in activity.category == .commentProject }
+      .flatMap { activity, project -> SignalProducer<(Project, Update?, Comment), NoError> in
         guard let comment = activity.comment else { return .empty }
-        return .init(value: (project, comment))
-      }
+        return .init(value: (project, nil, comment))
+    }
 
-    self.notifyDelegateGoToSendReplyOnUpdate = activity
-      .takeWhen(self.replyButtonPressedProperty.signal)
-      .filter { $0.category == .commentPost }
-      .flatMap { activity -> SignalProducer<(Update, Comment), NoError> in
+    let updateComment = activityAndProject
+      .filter { activity, _ in activity.category == .commentPost }
+      .flatMap { activity, project -> SignalProducer<(Project, Update?, Comment), NoError> in
         guard let update = activity.update, comment = activity.comment else { return .empty }
-        return .init(value: (update, comment))
-      }
+        return .init(value: (project, update, comment))
+    }
+
+    self.notifyDelegateGoToSendReply = Signal.merge(projectComment, updateComment)
+      .takeWhen(self.replyButtonPressedProperty.signal)
 
     let projectTitle = activity
       .filter { $0.category == .commentProject }
@@ -116,8 +114,7 @@ ProjectActivityCommentCellViewModelInputs, ProjectActivityCommentCellViewModelOu
   public let cellAccessibilityLabel: Signal<String, NoError>
   public let cellAccessibilityValue: Signal<String, NoError>
   public let notifyDelegateGoToBacking: Signal<(Project, User), NoError>
-  public let notifyDelegateGoToSendReplyOnProject: Signal<(Project, Comment), NoError>
-  public let notifyDelegateGoToSendReplyOnUpdate: Signal<(Update, Comment), NoError>
+  public let notifyDelegateGoToSendReply: Signal<(Project, Update?, Comment), NoError>
   public let title: Signal<String, NoError>
 
   public var inputs: ProjectActivityCommentCellViewModelInputs { return self }

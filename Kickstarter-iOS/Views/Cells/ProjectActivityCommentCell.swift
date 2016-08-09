@@ -6,8 +6,7 @@ import UIKit
 
 internal protocol ProjectActivityCommentCellDelegate: class {
   func projectActivityCommentCellGoToBacking(project project: Project, user: User)
-  func projectActivityCommentCellGoToSendReplyOnProject(project project: Project, comment: Comment)
-  func projectActivityCommentCellGoToSendReplyOnUpdate(update update: Update, comment: Comment)
+  func projectActivityCommentCellGoToSendReply(project project: Project, update: Update?, comment: Comment)
 }
 
 internal final class ProjectActivityCommentCell: UITableViewCell, ValueCell {
@@ -65,16 +64,12 @@ internal final class ProjectActivityCommentCell: UITableViewCell, ValueCell {
         self?.delegate?.projectActivityCommentCellGoToBacking(project: project, user: user)
     }
 
-    self.viewModel.outputs.notifyDelegateGoToSendReplyOnProject
+    self.viewModel.outputs.notifyDelegateGoToSendReply
       .observeForUI()
-      .observeNext { [weak self] project, comment in
-        self?.delegate?.projectActivityCommentCellGoToSendReplyOnProject(project: project, comment: comment)
-    }
-
-    self.viewModel.outputs.notifyDelegateGoToSendReplyOnUpdate
-      .observeForUI()
-      .observeNext { [weak self] update, comment in
-        self?.delegate?.projectActivityCommentCellGoToSendReplyOnUpdate(update: update, comment: comment)
+      .observeNext { [weak self] project, update, comment in
+        self?.delegate?.projectActivityCommentCellGoToSendReply(
+          project: project, update: update, comment: comment
+        )
     }
 
     self.bodyLabel.rac.text = self.viewModel.outputs.body

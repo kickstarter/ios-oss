@@ -106,7 +106,8 @@ internal final class CommentsViewController: UITableViewController {
     }
 
     dialog.modalPresentationStyle = .FormSheet
-    dialog.configureWith(project: project, update: update)
+    dialog.configureWith(project: project, update: update, recipient: nil,
+                         context: update == nil ? .projectComments : .updateComments)
     dialog.delegate = self
     self.presentViewController(UINavigationController(rootViewController: dialog),
                                animated: true,

@@ -32,6 +32,19 @@ public final class Koala {
     case projectPage = "project_page"
   }
 
+  /**
+   Determines the place from which the comments dialog was presented.
+
+   - projectActivity: The creator's project activity screen.
+   - projectComments: The comments screen for a project.
+   - updateComments:  The comments screen for an update.
+   */
+  public enum CommentDialogContext: String {
+    case projectActivity = "project_activity"
+    case projectComments = "project_comments"
+    case updateComments = "update_comments"
+  }
+
   public init(bundle: NSBundleType = NSBundle.mainBundle(),
               client: TrackingClientType,
               config: Config? = nil,
@@ -228,6 +241,44 @@ public final class Koala {
       .withAllValuesFrom(["page_count": page])
 
     self.track(event: "Update Comment Load Older", properties: props)
+  }
+
+  public func trackOpenedCommentEditor(project project: Project,
+                                               update: Update?,
+                                               context: CommentDialogContext) {
+
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(update.map { properties(update: $0) } ?? [:])
+      .withAllValuesFrom(
+        ["context": context.rawValue, "type": update == nil ? "project" : "update"]
+    )
+
+    self.track(event: "Opened Comment Editor", properties: props)
+  }
+
+  public func trackCanceledCommentEditor(project project: Project,
+                                                 update: Update?,
+                                                 context: CommentDialogContext) {
+
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(update.map { properties(update: $0) } ?? [:])
+      .withAllValuesFrom(
+        ["context": context.rawValue, "type": update == nil ? "project" : "update"]
+    )
+
+    self.track(event: "Canceled Comment Editor", properties: props)
+  }
+
+  public func trackPostedComment(project project: Project,
+                                         update: Update?,
+                                         context: CommentDialogContext) {
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(update.map { properties(update: $0) } ?? [:])
+      .withAllValuesFrom(
+        ["context": context.rawValue, "type": update == nil ? "project" : "update"]
+    )
+
+    self.track(event: "Posted Comment", properties: props)
   }
 
   public func trackCommentCreate(comment comment: Comment, project: Project) {

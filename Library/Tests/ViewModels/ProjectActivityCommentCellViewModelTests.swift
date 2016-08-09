@@ -14,8 +14,7 @@ internal final class ProjectActivityCommentCellViewModelTests: TestCase {
   private let cellAccessibilityValue = TestObserver<String, NoError>()
   private let defaultUser = .template |> User.lens.id .~ 9
   private let notifyDelegateGoToBacking = TestObserver<(Project, User), NoError>()
-  private let notifyDelegateGoToSendReplyOnProject = TestObserver<(Project, Comment), NoError>()
-  private let notifyDelegateGoToSendReplyOnUpdate = TestObserver<(Update, Comment), NoError>()
+  private let notifyDelegateGoToSendReply = TestObserver<(Project, Update?, Comment), NoError>()
   private let title = TestObserver<String, NoError>()
 
   internal override func setUp() {
@@ -26,10 +25,8 @@ internal final class ProjectActivityCommentCellViewModelTests: TestCase {
     self.vm.outputs.cellAccessibilityLabel.observe(self.cellAccessibilityLabel.observer)
     self.vm.outputs.cellAccessibilityValue.observe(self.cellAccessibilityValue.observer)
     self.vm.outputs.notifyDelegateGoToBacking.observe(self.notifyDelegateGoToBacking.observer)
-    self.vm.outputs.notifyDelegateGoToSendReplyOnProject
-      .observe(self.notifyDelegateGoToSendReplyOnProject.observer)
-    self.vm.outputs.notifyDelegateGoToSendReplyOnUpdate
-      .observe(self.notifyDelegateGoToSendReplyOnUpdate.observer)
+    self.vm.outputs.notifyDelegateGoToSendReply
+      .observe(self.notifyDelegateGoToSendReply.observer)
     self.vm.outputs.title.observe(self.title.observer)
 
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: self.defaultUser))
@@ -105,7 +102,7 @@ internal final class ProjectActivityCommentCellViewModelTests: TestCase {
       self.notifyDelegateGoToBacking.assertValueCount(1, "Should go to backing")
   }
 
-  func testNotifyDelegateGoToSendReplyOnProject() {
+  func testNotifyDelegateGoToSendReply_Project() {
     let project = Project.template
     let user = User.template |> User.lens.name .~ "Christopher"
     let activity = .template
@@ -116,10 +113,10 @@ internal final class ProjectActivityCommentCellViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(activity: activity, project: project)
     self.vm.inputs.replyButtonPressed()
-    self.notifyDelegateGoToSendReplyOnProject.assertValueCount(1, "Should go to send reply on project")
+    self.notifyDelegateGoToSendReply.assertValueCount(1, "Should go to send reply on project")
   }
 
-  func testNotifyDelegateGoToSendReplyOnUpdate() {
+  func testNotifyDelegateGoToSendReply_Update() {
     let project = Project.template
     let update = Update.template
     let user = User.template |> User.lens.name .~ "Christopher"
@@ -132,7 +129,7 @@ internal final class ProjectActivityCommentCellViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(activity: activity, project: project)
     self.vm.inputs.replyButtonPressed()
-    self.notifyDelegateGoToSendReplyOnUpdate.assertValueCount(1, "Should go to send reply on update")
+    self.notifyDelegateGoToSendReply.assertValueCount(1, "Should go to send reply on update")
   }
 
   func testTitleProject() {

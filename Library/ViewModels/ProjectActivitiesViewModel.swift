@@ -9,8 +9,7 @@ public enum ProjectActivitiesGoTo {
   case comments(Project, Update?)
   case project(Project)
   case sendMessage(Backing, Koala.MessageDialogContext)
-  case sendReplyOnProject(Project, Comment)
-  case sendReplyOnUpdate(Update, Comment)
+  case sendReply(Project, Update?, Comment)
   case update(Project, Update)
 }
 
@@ -30,11 +29,8 @@ public protocol ProjectActivitiesViewModelInputs {
   /// Call when the comment cell's backing button is pressed.
   func projectActivityCommentCellGoToBacking(project project: Project, user: User)
 
-  /// Call when the comment cell's reply button is pressed for a project comment.
-  func projectActivityCommentCellGoToSendReplyOnProject(project project: Project, comment: Comment)
-
-  /// Call when the comment cell's reply button is pressed for a project update.
-  func projectActivityCommentCellGoToSendReplyOnUpdate(update update: Update, comment: Comment)
+  /// Call when the comment cell's reply button is pressed.
+  func projectActivityCommentCellGoToSendReply(project project: Project, update: Update?, comment: Comment)
 
   /// Call when pull-to-refresh is invoked.
   func refresh()
@@ -148,21 +144,16 @@ public final class ProjectActivitiesViewModel: ProjectActivitiesViewModelType,
       self.projectActivityCommentCellGoToBackingProperty.signal.ignoreNil()
         .map { project, user in ProjectActivitiesGoTo.backing(project, user) }
 
-    let projectActivityCommentCellGoToSendReplyOnProject =
-      self.projectActivityCommentCellGoToSendReplyOnProject.signal.ignoreNil()
-        .map { project, comment in ProjectActivitiesGoTo.sendReplyOnProject(project, comment) }
-
-    let projectActivityCommentCellGoToSendReplyOnUpdate =
-      self.projectActivityCommentCellGoToSendReplyOnUpdate.signal.ignoreNil()
-        .map { update, comment in ProjectActivitiesGoTo.sendReplyOnUpdate(update, comment) }
+    let projectActivityCommentCellGoToSendReply =
+      self.projectActivityCommentCellGoToSendReplyProperty.signal.ignoreNil()
+        .map { project, update, comment in ProjectActivitiesGoTo.sendReply(project, update, comment) }
 
     self.goTo = Signal.merge(
       cellTappedGoTo,
       projectActivityBackingCellGoToBacking,
       projectActivityBackingCellGoToSendMessage,
       projectActivityCommentCellGoToBacking,
-      projectActivityCommentCellGoToSendReplyOnProject,
-      projectActivityCommentCellGoToSendReplyOnUpdate
+      projectActivityCommentCellGoToSendReply
     )
 
     project
@@ -205,14 +196,12 @@ public final class ProjectActivitiesViewModel: ProjectActivitiesViewModelType,
     self.projectActivityCommentCellGoToBackingProperty.value = (project, user)
   }
 
-  private let projectActivityCommentCellGoToSendReplyOnProject = MutableProperty<(Project, Comment)?>(nil)
-  public func projectActivityCommentCellGoToSendReplyOnProject(project project: Project, comment: Comment) {
-    self.projectActivityCommentCellGoToSendReplyOnProject.value = (project, comment)
-  }
-
-  private let projectActivityCommentCellGoToSendReplyOnUpdate = MutableProperty<(Update, Comment)?>(nil)
-  public func projectActivityCommentCellGoToSendReplyOnUpdate(update update: Update, comment: Comment) {
-    self.projectActivityCommentCellGoToSendReplyOnUpdate.value = (update, comment)
+  private let projectActivityCommentCellGoToSendReplyProperty
+    = MutableProperty<(Project, Update?, Comment)?>(nil)
+  public func projectActivityCommentCellGoToSendReply(project project: Project,
+                                                              update: Update?,
+                                                              comment: Comment) {
+    self.projectActivityCommentCellGoToSendReplyProperty.value = (project, update, comment)
   }
 
   private let refreshProperty = MutableProperty()

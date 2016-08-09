@@ -3,6 +3,13 @@ import KsApi
 import Result
 import Prelude
 
+public struct CommentDialogData {
+  public let project: Project
+  public let update: Update?
+  public let recipient: User?
+  public let context: Koala.CommentDialogContext
+}
+
 public protocol CommentDialogViewModelInputs {
   /// Call when the view appears.
   func viewWillAppear()
@@ -10,8 +17,9 @@ public protocol CommentDialogViewModelInputs {
   /// Call when the view disappears.
   func viewWillDisappear()
 
-  /// Call with the project given to the view.
-  func project(project: Project, update: Update?)
+  /// Call with the project, update (optional), recipient (optional) and context given to the view.
+  func configureWith(project project: Project, update: Update?, recipient: User?,
+                             context: Koala.CommentDialogContext)
 
   /// Call when the comment body text changes.
   func commentBodyChanged(text: String)
@@ -24,6 +32,9 @@ public protocol CommentDialogViewModelInputs {
 }
 
 public protocol CommentDialogViewModelOutputs {
+  /// Emits a string that should be put into the body text view.
+  var bodyTextViewText: Signal<String, NoError> { get }
+
   /// Emits a boolean that determines if the post button is enabled.
   var postButtonEnabled: Signal<Bool, NoError> { get }
 
@@ -68,9 +79,12 @@ CommentDialogViewModelOutputs, CommentDialogViewModelErrors {
     self.viewWillDisappearProperty.value = ()
   }
 
-  private let projectAndUpdateProperty = MutableProperty<(Project, Update?)?>(nil)
-  public func project(project: Project, update: Update?) {
-    self.projectAndUpdateProperty.value = (project, update)
+  private let configurationDataProperty = MutableProperty<CommentDialogData?>(nil)
+  public func configureWith(project project: Project, update: Update?, recipient: User?,
+                            context: Koala.CommentDialogContext) {
+
+    self.configurationDataProperty.value = CommentDialogData(project: project, update: update,
+                                                             recipient: recipient, context: context)
   }
 
   private let commentBodyProperty = MutableProperty("")
@@ -88,6 +102,7 @@ CommentDialogViewModelOutputs, CommentDialogViewModelErrors {
     self.cancelButtonPressedProperty.value = ()
   }
 
+  public let bodyTextViewText: Signal<String, NoError>
   public let postButtonEnabled: Signal<Bool, NoError>
   public let loadingViewIsHidden: Signal<Bool, NoError>
   public let notifyPresenterCommentWasPostedSuccesfully: Signal<Comment, NoError>
@@ -105,12 +120,15 @@ CommentDialogViewModelOutputs, CommentDialogViewModelErrors {
   public init() {
     let isLoading = MutableProperty(false)
 
-    let project = self.projectAndUpdateProperty.signal.ignoreNil()
-      .map { project, _ in project }
+    let configurationData = self.configurationDataProperty.signal.ignoreNil()
+      .takeWhen(self.viewWillAppearProperty.signal)
 
-    let updateOrProject = self.projectAndUpdateProperty.signal.ignoreNil()
-      .map { project, update in
-        return update.map(Either.left) ?? Either.right(project)
+    let project = configurationData
+      .map { $0.project }
+
+    let updateOrProject = configurationData
+      .map { data in
+        return data.update.map(Either.left) ?? Either.right(data.project)
     }
 
     self.postButtonEnabled = Signal.merge([
@@ -162,15 +180,40 @@ CommentDialogViewModelOutputs, CommentDialogViewModelErrors {
       self.viewWillDisappearProperty.signal.mapConst(false)
     )
 
-    self.projectAndUpdateProperty.signal.ignoreNil()
+    self.bodyTextViewText = configurationData
+      .map { data in data.recipient?.name }
+      .ignoreNil()
+      .map { "@\($0): " }
+
+    configurationData
+      .takeWhen(self.viewWillAppearProperty.signal)
+      .observeNext { data in
+        AppEnvironment.current.koala.trackOpenedCommentEditor(
+          project: data.project, update: data.update, context: data.context
+        )
+    }
+
+    configurationData
+      .takeWhen(self.cancelButtonPressedProperty.signal)
+      .observeNext { data in
+        AppEnvironment.current.koala.trackCanceledCommentEditor(
+          project: data.project, update: data.update, context: data.context
+        )
+    }
+
+    configurationData
       .takePairWhen(self.notifyPresenterCommentWasPostedSuccesfully)
-      .map { ($0.0, $0.1, $1) }
-      .observeNext { project, update, comment in
-        if let update = update {
-          AppEnvironment.current.koala.trackCommentCreate(comment: comment, update: update, project: project)
+      .observeNext { data, comment in
+        if let update = data.update {
+          AppEnvironment.current.koala.trackCommentCreate(
+            comment: comment, update: update, project: data.project
+          )
         } else {
-          AppEnvironment.current.koala.trackCommentCreate(comment: comment, project: project)
+          AppEnvironment.current.koala.trackCommentCreate(comment: comment, project: data.project)
         }
+        AppEnvironment.current.koala.trackPostedComment(
+          project: data.project, update: data.update, context: data.context
+        )
     }
   }
   // swiftlint:enable function_body_length

@@ -40,10 +40,8 @@ internal final class ProjectActivitiesViewController: UITableViewController {
           self?.goToComments(project: project, update: update)
         case let .project(project):
           self?.goToProject(project: project)
-        case let .sendReplyOnProject(project, comment):
-          self?.goToSendReplyOnProject(project: project, comment: comment)
-        case let .sendReplyOnUpdate(update, comment):
-          self?.goToSendReplyOnUpdate(update: update, comment: comment)
+        case let .sendReply(project, update, comment):
+          self?.goToSendReply(project: project, update: update, comment: comment)
         case let .sendMessage(backing, context):
           self?.goToSendMessage(backing: backing, context: context)
         case let .update(project, update):
@@ -126,10 +124,20 @@ internal final class ProjectActivitiesViewController: UITableViewController {
                                completion: nil)
   }
 
-  internal func goToSendReplyOnProject(project project: Project, comment: Comment) {
-  }
+  internal func goToSendReply(project project: Project, update: Update?, comment: Comment) {
+    guard let dialog = UIStoryboard(name: "Comments", bundle: .framework)
+      .instantiateViewControllerWithIdentifier("CommentDialogViewController") as? CommentDialogViewController
+      else {
+        fatalError("Could not instantiate CommentDialogViewController.")
+    }
 
-  internal func goToSendReplyOnUpdate(update update: Update, comment: Comment) {
+    dialog.modalPresentationStyle = .FormSheet
+    dialog.configureWith(project: project, update: update, recipient: comment.author,
+                         context: .projectActivity)
+    dialog.delegate = self
+    self.presentViewController(UINavigationController(rootViewController: dialog),
+                               animated: true,
+                               completion: nil)
   }
 
   internal func goToUpdate(project project: Project, update: Update) {
@@ -167,11 +175,18 @@ extension ProjectActivitiesViewController: ProjectActivityCommentCellDelegate {
     self.viewModel.inputs.projectActivityCommentCellGoToBacking(project: project, user: user)
   }
 
-  internal func projectActivityCommentCellGoToSendReplyOnProject(project project: Project, comment: Comment) {
-    self.viewModel.inputs.projectActivityCommentCellGoToSendReplyOnProject(project: project, comment: comment)
+  func projectActivityCommentCellGoToSendReply(project project: Project, update: Update?, comment: Comment) {
+    self.viewModel.inputs.projectActivityCommentCellGoToSendReply(project: project,
+                                                                  update: update,
+                                                                  comment: comment)
+  }
+}
+
+extension ProjectActivitiesViewController: CommentDialogDelegate {
+  internal func commentDialogWantsDismissal(dialog: CommentDialogViewController) {
+    dialog.dismissViewControllerAnimated(true, completion: nil)
   }
 
-  internal func projectActivityCommentCellGoToSendReplyOnUpdate(update update: Update, comment: Comment) {
-    self.viewModel.inputs.projectActivityCommentCellGoToSendReplyOnUpdate(update: update, comment: comment)
+  internal func commentDialog(dialog: CommentDialogViewController, postedComment: Comment) {
   }
 }

@@ -31,11 +31,14 @@ internal final class CommentDialogViewController: UIViewController {
     self.viewModel.inputs.viewWillDisappear()
   }
 
-  internal func configureWith(project project: Project, update: Update?) {
-    self.viewModel.inputs.project(project, update: update)
+  internal func configureWith(project project: Project, update: Update?, recipient: User?,
+                                      context: Koala.CommentDialogContext) {
+    self.viewModel.inputs.configureWith(project: project, update: update, recipient: recipient,
+                                        context: context)
   }
 
   override func bindViewModel() {
+    self.bodyTextView.rac.text = self.viewModel.outputs.bodyTextViewText
     self.postButton.rac.enabled = self.viewModel.outputs.postButtonEnabled
     self.subtitleLabel.rac.text = self.viewModel.outputs.subtitle
     self.loadingView.rac.hidden = self.viewModel.outputs.loadingViewIsHidden

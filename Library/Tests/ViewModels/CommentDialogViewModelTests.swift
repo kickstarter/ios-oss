@@ -9,15 +9,18 @@ import ReactiveCocoa
 internal final class CommentDialogViewModelTests: TestCase {
   internal let vm: CommentDialogViewModelType = CommentDialogViewModel()
 
+  internal let bodyTextViewText = TestObserver<String, NoError>()
   internal var postButtonEnabled = TestObserver<Bool, NoError>()
   internal var loadingViewIsHidden = TestObserver<Bool, NoError>()
   internal var presentError = TestObserver<String, NoError>()
   internal let notifyPresenterCommentWasPostedSuccesfully = TestObserver<Comment, NoError>()
   internal let notifyPresenterDialogWantsDismissal = TestObserver<(), NoError>()
+  internal let showKeyboard = TestObserver<Bool, NoError>()
 
   internal override func setUp() {
     super.setUp()
 
+    self.vm.outputs.bodyTextViewText.observe(self.bodyTextViewText.observer)
     self.vm.outputs.postButtonEnabled.observe(self.postButtonEnabled.observer)
     self.vm.outputs.notifyPresenterDialogWantsDismissal
       .observe(self.notifyPresenterDialogWantsDismissal.observer)
@@ -25,11 +28,27 @@ internal final class CommentDialogViewModelTests: TestCase {
     self.vm.outputs.notifyPresenterCommentWasPostedSuccesfully
       .observe(self.notifyPresenterCommentWasPostedSuccesfully.observer)
     self.vm.errors.presentError.observe(self.presentError.observer)
+    self.vm.outputs.showKeyboard.observe(self.showKeyboard.observer)
+  }
+
+  func testBodyTextViewText_WithoutRecipient() {
+    self.vm.inputs.configureWith(project: .template, update: nil, recipient: nil, context: .projectComments)
+    self.vm.inputs.viewWillAppear()
+
+    self.bodyTextViewText.assertValues([])
+  }
+
+  func testBodyTextViewText_WithRecipient() {
+    let user = User.template
+    self.vm.inputs.configureWith(project: .template, update: nil, recipient: user, context: .projectComments)
+    self.vm.inputs.viewWillAppear()
+
+    self.bodyTextViewText.assertValues(["@\(user.name): "])
   }
 
   internal func testPostingFlow_Project() {
+    self.vm.inputs.configureWith(project: .template, update: nil, recipient: nil, context: .projectComments)
     self.vm.inputs.viewWillAppear()
-    self.vm.inputs.project(Project.template, update: nil)
 
     self.postButtonEnabled.assertValues([false], "Button is not enabled initially.")
     self.loadingViewIsHidden.assertValues([true], "Loading view starts hidden")
@@ -57,12 +76,16 @@ internal final class CommentDialogViewModelTests: TestCase {
     self.notifyPresenterDialogWantsDismissal
       .assertValueCount(1, "Dialog is dismissed after posting of comment.")
 
-    XCTAssertEqual(["Project Comment Create"], self.trackingClient.events, "Koala event is tracked.")
+    XCTAssertEqual(["Opened Comment Editor", "Project Comment Create", "Posted Comment"],
+                   self.trackingClient.events, "Koala event is tracked.")
+    XCTAssertEqual(["project", nil, "project"],
+                   self.trackingClient.properties(forKey: "type", as: String.self))
   }
 
   internal func testPostingFlow_Update() {
+    self.vm.inputs.configureWith(project: .template, update: .template, recipient: nil,
+                                 context: .updateComments)
     self.vm.inputs.viewWillAppear()
-    self.vm.inputs.project(Project.template, update: Update.template)
 
     self.postButtonEnabled.assertValues([false], "Button is not enabled initially.")
     self.loadingViewIsHidden.assertValues([true], "Loading view starts hidden")
@@ -90,7 +113,10 @@ internal final class CommentDialogViewModelTests: TestCase {
     self.notifyPresenterDialogWantsDismissal
       .assertValueCount(1, "Dialog is dismissed after posting of comment.")
 
-    XCTAssertEqual(["Update Comment Create"], self.trackingClient.events, "Koala event is tracked.")
+    XCTAssertEqual(["Opened Comment Editor", "Update Comment Create", "Posted Comment"],
+                   self.trackingClient.events, "Koala event is tracked.")
+    XCTAssertEqual(["update", nil, "update"],
+                   self.trackingClient.properties(forKey: "type", as: String.self))
   }
 
   internal func testPostingErrorFlow() {
@@ -102,8 +128,8 @@ internal final class CommentDialogViewModelTests: TestCase {
     )
 
     withEnvironment(apiService: MockService(postCommentError: error)) {
+      self.vm.inputs.configureWith(project: .template, update: nil, recipient: nil, context: .projectComments)
       self.vm.inputs.viewWillAppear()
-      self.vm.inputs.project(Project.template, update: nil)
       self.vm.inputs.commentBodyChanged("hello")
 
       self.vm.inputs.postButtonPressed()
@@ -116,7 +142,7 @@ internal final class CommentDialogViewModelTests: TestCase {
       self.notifyPresenterDialogWantsDismissal
         .assertValueCount(0, "Comment dialog does not dismiss automatically.")
 
-      XCTAssertEqual([], trackingClient.events, "Koala event is not tracked.")
+      XCTAssertEqual(["Opened Comment Editor"], trackingClient.events, "Koala event is not tracked.")
     }
   }
 
@@ -129,23 +155,37 @@ internal final class CommentDialogViewModelTests: TestCase {
     )
 
     withEnvironment(apiService: MockService(postCommentError: error)) {
+      self.vm.inputs.configureWith(project: .template, update: nil, recipient: nil, context: .projectComments)
       self.vm.inputs.viewWillAppear()
-      self.vm.inputs.project(Project.template, update: nil)
       self.vm.inputs.commentBodyChanged("hello")
 
       self.vm.inputs.postButtonPressed()
 
       self.presentError.assertValueCount(1, "Error message is emitted.")
 
-      XCTAssertEqual([], trackingClient.events, "Koala event is not tracked.")
+      XCTAssertEqual(["Opened Comment Editor"], trackingClient.events, "Koala event is not tracked.")
     }
   }
 
   internal func testCancellingFlow() {
+    self.vm.inputs.configureWith(project: .template, update: nil, recipient: nil, context: .projectComments)
     self.vm.inputs.viewWillAppear()
-    self.vm.inputs.project(Project.template, update: nil)
 
     self.vm.inputs.cancelButtonPressed()
     self.notifyPresenterDialogWantsDismissal.assertValueCount(1)
+
+    XCTAssertEqual(["Opened Comment Editor", "Canceled Comment Editor"],
+                   self.trackingClient.events)
+  }
+
+  func testShowKeyboard() {
+    self.vm.inputs.configureWith(project: .template, update: nil, recipient: nil, context: .projectComments)
+    self.vm.inputs.viewWillAppear()
+
+    self.showKeyboard.assertValues([true])
+
+    self.vm.inputs.viewWillDisappear()
+
+    self.showKeyboard.assertValues([true, false])
   }
 }
