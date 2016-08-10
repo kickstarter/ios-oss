@@ -284,6 +284,7 @@ public final class Koala {
   public func trackCommentCreate(comment comment: Comment, project: Project) {
     let props = properties(project: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(properties(comment: comment))
+      .withAllValuesFrom([Koala.DeprecatedKey: true])
 
     self.track(event: "Project Comment Create", properties: props)
   }
@@ -292,6 +293,7 @@ public final class Koala {
     let props = properties(project: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(properties(update: update))
       .withAllValuesFrom(properties(comment: comment))
+      .withAllValuesFrom([Koala.DeprecatedKey: true])
 
     self.track(event: "Update Comment Create", properties: props)
   }

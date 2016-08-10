@@ -131,7 +131,11 @@ CommentsViewModelOutputs {
 
   // swiftlint:disable function_body_length
   public init() {
-    let projectOrUpdate = self.projectAndUpdateProperty.signal.ignoreNil()
+    let projectOrUpdate = combineLatest(
+      self.projectAndUpdateProperty.signal.ignoreNil(),
+      self.viewDidLoadProperty.signal
+      )
+      .map(first)
       .flatMap { project, update in
         return SignalProducer(value: project.map(Either.left) ?? update.map(Either.right))
           .ignoreNil()
@@ -205,10 +209,15 @@ CommentsViewModelOutputs {
       }
       .skipRepeats()
 
-    self.commentButtonVisible = combineLatest(project, self.backerEmptyStateVisible)
+    let userCanComment = combineLatest(project, self.backerEmptyStateVisible)
       .map { project, emptyStateVisible in
-        project.personalization.isBacking == true && !emptyStateVisible
+        canComment(onProject: project) && !emptyStateVisible
       }
+
+    self.commentButtonVisible = Signal.merge(
+      self.viewDidLoadProperty.signal.mapConst(false),
+      userCanComment
+      )
       .skipRepeats()
 
     self.presentPostCommentDialog = combineLatest(project, update)
@@ -242,7 +251,7 @@ CommentsViewModelOutputs {
 
     combineLatest(project, update)
       .takePairWhen(pageCount.skip(1).filter { $0 > 1 })
-      .map { ($0.0, $0.1, $1) }
+      .map(unpack)
       .observeNext { project, update, pageCount in
         if let update = update {
           AppEnvironment.current.koala
@@ -253,4 +262,9 @@ CommentsViewModelOutputs {
     }
   }
   // swiftlint:enable function_body_length
+}
+
+private func canComment(onProject project: Project) -> Bool {
+  return project.personalization.isBacking == true
+    || project.memberData.permissions.contains(.comment)
 }
