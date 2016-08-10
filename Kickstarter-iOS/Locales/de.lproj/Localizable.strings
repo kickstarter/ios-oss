@@ -1,8 +1,9 @@
+"Youre_about_to_create_a_new_Kickstarter_account" = "You're about to create a new Kickstarter account with the email address you use for Facebook. Please confirm that it’s correct before proceeding.";
 "accessibility.dashboard.buttons.activity" = "Aktivität";
-"accessibility.dashboard.buttons.activity_hint" = "Opens activity.";
+"accessibility.dashboard.buttons.activity_hint" = "Öffnet Sparte Aktivität.";
 "accessibility.dashboard.buttons.messages" = "Nachrichten";
-"accessibility.dashboard.buttons.messages_hint" = "Opens messages.";
-"accessibility.dashboard.buttons.post_update_hint" = "Opens editor.";
+"accessibility.dashboard.buttons.messages_hint" = "Öffnet Nachrichten.";
+"accessibility.dashboard.buttons.post_update_hint" = "Öffnet Edit-Tool.";
 "accessibility.discovery.buttons.activity" = "Aktivität";
 "accessibility.discovery.buttons.close" = "Schließen";
 "accessibility.discovery.buttons.creator_dashboard" = "Projektgründer-Dashboard";
@@ -341,8 +342,8 @@
 "dates.time_minutes_ago_abbreviated.two" = "vor 2 Min";
 "dates.time_minutes_ago_abbreviated.zero" = "vor 0 Min";
 "dates.yesterday" = "Gestern";
-"discovery.accessibility.buttons.sort_hint" = "Changes sort.";
-"discovery.accessibility.buttons.sort_label" = "Sort by %{sort}";
+"discovery.accessibility.buttons.sort_hint" = "Sortiert Änderungen.";
+"discovery.accessibility.buttons.sort_label" = "Sortiert nach %{sort}";
 "discovery.accessibility.live_project_count" = "Live-Projekte";
 "discovery.accessibility.toolbar.buttons.activity_label" = "Aktivität-Übersicht";
 "discovery.accessibility.toolbar.buttons.filter_label" = "Filter: Kategorie";

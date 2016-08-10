@@ -29,23 +29,12 @@ internal final class FacebookConfirmationViewController: UIViewController,
   override func bindStyles() {
     self |> baseControllerStyle()
 
-    self.confirmationLabel
-      |> UILabel.lens.textColor .~ .ksr_text_navy_900
-      |> UILabel.lens.font .~ .ksr_body()
-
+    self.confirmationLabel |> fbConfirmationMessageLabelStyle
     self.createAccountButton |> createNewAccountButtonStyle
-
-    self.emailLabel
-      |> UILabel.lens.textColor .~ .ksr_text_navy_900
-      |> UILabel.lens.font .~ .ksr_headline()
-      |> UILabel.lens.textAlignment .~ .Center
-
+    self.emailLabel |> fbConfirmEmailLabelStyle
     self.helpButton |> disclaimerButtonStyle
-
     self.loginButton |> loginWithEmailButtonStyle
-
-    self.loginLabel |> UILabel.lens.font .~ .ksr_caption1()
-
+    self.loginLabel |> fbWrongAccountLabelStyle
     self.newsletterLabel |> newsletterLabelStyle
   }
 

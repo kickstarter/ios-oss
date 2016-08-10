@@ -50,7 +50,7 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
   override func bindStyles() {
     self |> baseControllerStyle()
 
-    self.fbDisclaimer |> disclaimerLabelStyle
+    self.fbDisclaimer |> fbDisclaimerLabelStyle
     self.fbLoginButton |> facebookLoginButtonStyle
 
     self.fbLoginStackView |> fbLoginStackViewStyle

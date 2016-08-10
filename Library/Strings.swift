@@ -12,6 +12,23 @@
 // swiftlint:disable type_body_length
 public enum Strings {
   /**
+   "You're about to create a new Kickstarter account with the email address you use for Facebook. Please confirm that it’s correct before proceeding."
+
+   - **es**: "You're about to create a new Kickstarter account with the email address you use for Facebook. Please confirm that it’s correct before proceeding."
+   - **de**: "You're about to create a new Kickstarter account with the email address you use for Facebook. Please confirm that it’s correct before proceeding."
+   - **fr**: "Vous êtes sur le point de créer un nouveau compte Kickstarter avec l'adresse e-mail que vous utilisez sur Facebook. Veuillez confirmer avant de continuer."
+   - **it**: "You're about to create a new Kickstarter account with the email address you use for Facebook. Please confirm that it’s correct before proceeding."
+   - **en**: "You're about to create a new Kickstarter account with the email address you use for Facebook. Please confirm that it’s correct before proceeding."
+  */
+  public static func Youre_about_to_create_a_new_Kickstarter_account() -> String {
+    return localizedString(
+      key: "Youre_about_to_create_a_new_Kickstarter_account",
+      defaultValue: "You're about to create a new Kickstarter account with the email address you use for Facebook. Please confirm that it’s correct before proceeding.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Activity"
 
    - **es**: "Actividad"
@@ -31,9 +48,9 @@ public enum Strings {
   /**
    "Opens activity."
 
-   - **es**: "Opens activity."
-   - **de**: "Opens activity."
-   - **fr**: "Opens activity."
+   - **es**: "Abre actividades."
+   - **de**: "Öffnet Sparte Aktivität."
+   - **fr**: "Ouvre l'activité."
    - **it**: "Opens activity."
    - **en**: "Opens activity."
   */
@@ -65,9 +82,9 @@ public enum Strings {
   /**
    "Opens messages."
 
-   - **es**: "Opens messages."
-   - **de**: "Opens messages."
-   - **fr**: "Opens messages."
+   - **es**: "Abre mensajes."
+   - **de**: "Öffnet Nachrichten."
+   - **fr**: "Ouvre les messages."
    - **it**: "Opens messages."
    - **en**: "Opens messages."
   */
@@ -82,9 +99,9 @@ public enum Strings {
   /**
    "Opens editor."
 
-   - **es**: "Opens editor."
-   - **de**: "Opens editor."
-   - **fr**: "Opens editor."
+   - **es**: "Abre editor."
+   - **de**: "Öffnet Edit-Tool."
+   - **fr**: "Ouvre l'éditeur."
    - **it**: "Opens editor."
    - **en**: "Opens editor."
   */
@@ -4349,9 +4366,9 @@ public enum Strings {
   /**
    "Changes sort."
 
-   - **es**: "Changes sort."
-   - **de**: "Changes sort."
-   - **fr**: "Changes sort."
+   - **es**: "Clasif. de cambios."
+   - **de**: "Sortiert Änderungen."
+   - **fr**: "Modifie le tri."
    - **it**: "Changes sort."
    - **en**: "Changes sort."
   */
@@ -4366,9 +4383,9 @@ public enum Strings {
   /**
    "Sort by %{sort}"
 
-   - **es**: "Sort by %{sort}"
-   - **de**: "Sort by %{sort}"
-   - **fr**: "Sort by %{sort}"
+   - **es**: "Clasificar por %{sort}"
+   - **de**: "Sortiert nach %{sort}"
+   - **fr**: "Trier par %{sort}"
    - **it**: "Sort by %{sort}"
    - **en**: "Sort by %{sort}"
   */
