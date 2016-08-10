@@ -45,6 +45,7 @@ public extension String {
 
     // Sub all bold and italic fonts in the attributed html string
     let stringRange = NSRange(location: 0, length: string.length)
+    string.beginEditing()
     string.enumerateAttribute(NSFontAttributeName, inRange: stringRange, options: []) { value, range, stop in
 
       guard let htmlFont = value as? UIFont else { return }
@@ -60,6 +61,7 @@ public extension String {
 
       string.addAttributes(newAttributes, range: range)
     }
+    string.endEditing()
 
     return string
   }

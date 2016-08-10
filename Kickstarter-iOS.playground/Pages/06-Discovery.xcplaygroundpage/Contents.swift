@@ -47,7 +47,8 @@ AppEnvironment.replaceCurrentEnvironment(
 
 let controller = storyboard(named: "Discovery")
   .instantiateViewControllerWithIdentifier("DiscoveryPageViewController") as! DiscoveryPageViewController
-let (parent, _) = playgroundControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
+
+let (parent, _) = playgroundControllers(device: .pad, orientation: .portrait, child: controller)
 
 controller.configureWith(sort: .Magic)
 controller.change(filter: .defaults)

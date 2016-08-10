@@ -196,9 +196,7 @@ private func rewardSummary(activity activity: Activity, project: Project) -> Str
 
 private func reward(activity activity: Activity, project: Project) -> Reward? {
   guard let rewardId = activity.memberData.rewardId ?? activity.memberData.newRewardId else { return nil }
-  guard let rewards = project.rewards else { return nil }
-
-  return rewards.filter { $0.id == rewardId }.first
+  return project.rewards.filter { $0.id == rewardId }.first
 }
 
 private func title(activity activity: Activity) -> String {

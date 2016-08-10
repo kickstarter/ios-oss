@@ -111,9 +111,10 @@ internal final class DiscoveryPageViewController: UITableViewController {
   }
 
   private func goTo(project project: Project, refTag: RefTag) {
-    guard let projectViewController = UIStoryboard(name: "Project", bundle: .framework)
-      .instantiateInitialViewController() as? ProjectViewController else {
-        fatalError("Couldn't instantiate project view controller.")
+    let vc = UIStoryboard(name: "ProjectMagazine", bundle: .framework)
+      .instantiateViewControllerWithIdentifier("ProjectMagazineViewController")
+    guard let projectViewController = vc as? ProjectMagazineViewController else {
+      fatalError("Couldn't instantiate project view controller.")
     }
 
     projectViewController.configureWith(project: project, refTag: refTag)

@@ -30,7 +30,10 @@ internal final class DashboardFundingCell: UITableViewCell, ValueCell {
     super.bindStyles()
 
     self.accessibilityLabel = Strings.dashboard_graphs_funding_title_funding_progress()
-    self |> baseTableViewCellStyle()
+
+    self
+      |> baseTableViewCellStyle()
+
     self.backersSubtitleLabel
       |> dashboardStatSubtitleLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.dashboard_tout_backers() }

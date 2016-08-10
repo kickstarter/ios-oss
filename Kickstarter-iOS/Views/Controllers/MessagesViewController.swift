@@ -91,14 +91,15 @@ internal final class MessagesViewController: UITableViewController {
   }
 
   private func goTo(project project: Project, refTag: RefTag) {
-    guard let vc = UIStoryboard(name: "Project", bundle: .framework).instantiateInitialViewController(),
-      projectVC = vc as? ProjectViewController else {
-        fatalError("Could not instantiate ProjectViewController")
+    let vc = UIStoryboard(name: "ProjectMagazine", bundle: .framework)
+      .instantiateViewControllerWithIdentifier("ProjectMagazineViewController")
+    guard let projectViewController = vc as? ProjectMagazineViewController else {
+      fatalError("Couldn't instantiate project view controller.")
     }
-    projectVC.configureWith(project: project, refTag: refTag)
-    self.presentViewController(UINavigationController(rootViewController: projectVC),
-                               animated: true,
-                               completion: nil)
+
+    projectViewController.configureWith(project: project, refTag: refTag)
+    let nav = UINavigationController(rootViewController: projectViewController)
+    self.presentViewController(nav, animated: true, completion: nil)
   }
 }
 

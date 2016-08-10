@@ -44,15 +44,16 @@ internal final class SearchViewController: UITableViewController {
     guard let project = self.dataSource[indexPath] as? Project else {
       return
     }
-    guard let projectVC = UIStoryboard(name: "Project", bundle: .framework)
-      .instantiateInitialViewController() as? ProjectViewController else {
-        return
+
+    let vc = UIStoryboard(name: "ProjectMagazine", bundle: .framework)
+      .instantiateViewControllerWithIdentifier("ProjectMagazineViewController")
+    guard let projectViewController = vc as? ProjectMagazineViewController else {
+      fatalError("Couldn't instantiate project view controller.")
     }
 
-    projectVC.configureWith(project: project, refTag: RefTag.search)
-    self.presentViewController(UINavigationController(rootViewController: projectVC),
-                               animated: true,
-                               completion: nil)
+    projectViewController.configureWith(project: project, refTag: .search)
+    let nav = UINavigationController(rootViewController: projectViewController)
+    self.presentViewController(nav, animated: true, completion: nil)
   }
 
   @IBAction internal func searchTextChanged(textField: UITextField) {

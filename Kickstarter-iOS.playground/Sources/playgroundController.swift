@@ -70,14 +70,14 @@ public func playgroundControllers(device device: Device = .phone4_7inch,
         .init(userInterfaceIdiom: .Phone)
         ])
     case (.phone5_5inch, .portrait):
-      parent.view.frame = .init(x: 0, y: 0, width: 540, height: 960)
+      parent.view.frame = .init(x: 0, y: 0, width: 414, height: 736)
       traits = .init(traitsFromCollections: [
         .init(horizontalSizeClass: .Compact),
         .init(verticalSizeClass: .Regular),
         .init(userInterfaceIdiom: .Phone)
         ])
     case (.phone5_5inch, .landscape):
-      parent.view.frame = .init(x: 0, y: 0, width: 960, height: 540)
+      parent.view.frame = .init(x: 0, y: 0, width: 736, height: 414)
       traits = .init(traitsFromCollections: [
         .init(horizontalSizeClass: .Regular),
         .init(verticalSizeClass: .Compact),

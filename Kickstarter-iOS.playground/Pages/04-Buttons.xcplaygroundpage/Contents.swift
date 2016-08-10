@@ -4,7 +4,7 @@ import Prelude_UIKit
 import UIKit
 import XCPlayground
 
-let (parent, child) = playgroundControllers(device: .phone4_7inch, orientation: .portrait)
+let (parent, child) = playgroundControllers(device: .phone5_5inch, orientation: .portrait)
 
 let rootStackView = UIStackView(frame: child.view.bounds)
   |> UIStackView.lens.alignment .~ .Leading
@@ -14,24 +14,21 @@ let rootStackView = UIStackView(frame: child.view.bounds)
   |> UIStackView.lens.layoutMargins .~ .init(all: 16)
 child.view.addSubview(rootStackView)
 
-let positiveButton = greenButtonStyle <> UIButton.lens.title(forState: .Normal) .~ "Positive button"
-let neutralButton  = neutralButtonStyle  <> UIButton.lens.title(forState: .Normal) .~ "Neutral button"
-let borderButton   = borderButtonStyle   <> UIButton.lens.title(forState: .Normal) .~ "Border button"
-let blackButton    = blackButtonStyle    <> UIButton.lens.title(forState: .Normal) .~ "Black button"
-let textOnlyButton = textOnlyButtonStyle <> UIButton.lens.title(forState: .Normal) .~ "Text only button"
-
 func disabled <C: UIControlProtocol> () -> (C -> C) {
   return C.lens.enabled .~ false
 }
 
-let buttonsStyles: [[UIButton -> UIButton]] = [
-  [ positiveButton,      positiveButton      <> disabled() ],
-  [ neutralButton,       neutralButton       <> disabled() ],
-  [ borderButton,        borderButton        <> disabled() ],
-  [ blackButton,         blackButton         <> disabled() ],
-  [ facebookButtonStyle, facebookButtonStyle <> disabled() ],
-  [ textOnlyButton,      textOnlyButton      <> disabled() ],
+let baseButtonsStyles: [UIButton -> UIButton] = [
+  greenButtonStyle     <> UIButton.lens.title(forState: .Normal) .~ "Green button",
+  navyButtonStyle      <> UIButton.lens.title(forState: .Normal) .~ "Navy button",
+  lightNavyButtonStyle <> UIButton.lens.title(forState: .Normal) .~ "Light navy button",
+  neutralButtonStyle   <> UIButton.lens.title(forState: .Normal) .~ "Neutral button",
+  borderButtonStyle    <> UIButton.lens.title(forState: .Normal) .~ "Border button",
+  blackButtonStyle     <> UIButton.lens.title(forState: .Normal) .~ "Black button",
+  textOnlyButtonStyle  <> UIButton.lens.title(forState: .Normal) .~ "Text only button"
 ]
+
+let buttonsStyles: [[UIButton -> UIButton]] = baseButtonsStyles.map { [$0, $0 <> disabled()] }
 
 let rowStackViewStyle =
   UIStackView.lens.alignment .~ .Top

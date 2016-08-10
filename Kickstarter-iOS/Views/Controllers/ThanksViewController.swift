@@ -102,7 +102,7 @@ internal final class ThanksViewController: UIViewController, UICollectionViewDel
     self.viewModel.outputs.goToProject
       .observeForUI()
       .observeNext { [weak self] (project, reftag) in
-        self?.goToProject(project, reftag: reftag)
+        self?.goToProject(project, refTag: reftag)
     }
 
     self.viewModel.outputs.showRatingAlert
@@ -164,14 +164,16 @@ internal final class ThanksViewController: UIViewController, UICollectionViewDel
     UIApplication.sharedApplication().openURL(url)
   }
 
-  private func goToProject(project: Project, reftag: RefTag) {
-    guard let projectViewController = UIStoryboard(name: "Project", bundle: .framework)
-      .instantiateViewControllerWithIdentifier("ProjectViewController") as? ProjectViewController else {
-        fatalError("Couldn't instantiate view controller.")
+  private func goToProject(project: Project, refTag: RefTag) {
+    let vc = UIStoryboard(name: "ProjectMagazine", bundle: .framework)
+      .instantiateViewControllerWithIdentifier("ProjectMagazineViewController")
+    guard let projectViewController = vc as? ProjectMagazineViewController else {
+      fatalError("Couldn't instantiate project view controller.")
     }
 
-    projectViewController.configureWith(project: project, refTag: reftag)
-    self.navigationController?.pushViewController(projectViewController, animated: true)
+    projectViewController.configureWith(project: project, refTag: refTag)
+    let nav = UINavigationController(rootViewController: projectViewController)
+    self.presentViewController(nav, animated: true, completion: nil)
   }
 
   private func showRatingAlert() {

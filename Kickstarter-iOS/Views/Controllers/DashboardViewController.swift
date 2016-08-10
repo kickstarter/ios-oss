@@ -177,15 +177,15 @@ internal final class DashboardViewController: UITableViewController {
   }
 
   private func goToProject(project: Project, refTag: RefTag) {
-    guard let vc = UIStoryboard(name: "Project", bundle: .framework).instantiateInitialViewController()
-      as? ProjectViewController else {
-        fatalError("Could not instantiate ProjectViewController.")
+    let vc = UIStoryboard(name: "ProjectMagazine", bundle: .framework)
+      .instantiateViewControllerWithIdentifier("ProjectMagazineViewController")
+    guard let projectViewController = vc as? ProjectMagazineViewController else {
+      fatalError("Couldn't instantiate project view controller.")
     }
 
-    vc.configureWith(project: project, refTag: refTag)
-    self.presentViewController(UINavigationController(rootViewController: vc),
-                               animated: true,
-                               completion: nil)
+    projectViewController.configureWith(project: project, refTag: refTag)
+    let nav = UINavigationController(rootViewController: projectViewController)
+    self.presentViewController(nav, animated: true, completion: nil)
   }
 
   private func presentProjectsDrawer(data data: [ProjectsDrawerData]) {
