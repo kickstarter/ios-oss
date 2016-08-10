@@ -49,7 +49,9 @@ internal final class UpdateViewModel: UpdateViewModelType, UpdateViewModelInputs
       .map { AppEnvironment.current.apiService.preparedRequest(forURL: $0) }
 
     let anotherUpdateLoadRequest = self.policyForNavigationActionProperty.signal.ignoreNil()
-      .filter { $0.navigationType == .LinkActivated && Router.decodeUpdate(request: $0.request) != nil }
+      .filter {
+        $0.navigationType == .LinkActivated && Navigation.Project.updateWithRequest($0.request) != nil
+      }
       .map { AppEnvironment.current.apiService.preparedRequest(forRequest: $0.request) }
 
     self.webViewLoadRequest = Signal.merge(
@@ -58,11 +60,11 @@ internal final class UpdateViewModel: UpdateViewModelType, UpdateViewModelInputs
     )
 
     let anotherUpdate = anotherUpdateLoadRequest
-      .map { Router.decodeUpdate(request: $0) }
+      .map(Navigation.Project.updateWithRequest)
       .ignoreNil()
-      .switchMap { updateRoute in
+      .switchMap { project, update in
         return AppEnvironment.current.apiService
-          .fetchUpdate(updateId: updateRoute.updateId, projectParam: updateRoute.projectParam)
+          .fetchUpdate(updateId: update, projectParam: project)
           .demoteErrors()
     }
 
@@ -77,32 +79,33 @@ internal final class UpdateViewModel: UpdateViewModelType, UpdateViewModelInputs
 
     let commentsRequest = self.policyForNavigationActionProperty.signal.ignoreNil()
       .filter { $0.navigationType == .LinkActivated }
-      .filter { Router.decodeUpdateComments(request: $0.request) != nil }
+      .filter { Navigation.Project.updateCommentsWithRequest($0.request) != nil }
 
     self.goToComments = currentUpdate
       .takeWhen(commentsRequest)
 
-    let projectRoute = self.policyForNavigationActionProperty.signal.ignoreNil()
+    let projectParamAndRefTag = self.policyForNavigationActionProperty.signal.ignoreNil()
       .filter { $0.navigationType == .LinkActivated }
-      .map { Router.decodeProject(request: $0.request) }
+      .map { Navigation.Project.withRequest($0.request) }
       .ignoreNil()
 
     self.goToProject = self.projectProperty.signal.ignoreNil()
-      .takePairWhen(projectRoute)
-      .switchMap { (project, projectRoute) -> SignalProducer<(Project, RefTag?), NoError> in
+      .takePairWhen(projectParamAndRefTag)
+      .switchMap { (project, projectParamAndRefTag) -> SignalProducer<(Project, RefTag?), NoError> in
 
+        let (projectParam, refTag) = projectParamAndRefTag
         let producer: SignalProducer<Project, NoError>
 
-        if projectRoute.projectParam == .id(project.id) ||
-          projectRoute.projectParam == .slug(project.slug) {
+        if projectParam == .id(project.id) ||
+          projectParam == .slug(project.slug) {
 
           producer = SignalProducer(value: project)
         } else {
-          producer = AppEnvironment.current.apiService.fetchProject(param: projectRoute.projectParam)
+          producer = AppEnvironment.current.apiService.fetchProject(param: projectParam)
             .demoteErrors()
         }
 
-        return producer.map { ($0, projectRoute.refTag) }
+        return producer.map { ($0, refTag) }
       }
   }
   // swiftlint:enable function_body_length

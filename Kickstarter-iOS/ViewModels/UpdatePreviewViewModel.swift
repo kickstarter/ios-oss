@@ -54,7 +54,8 @@ internal final class UpdatePreviewViewModel: UpdatePreviewViewModelInputs,
     let redirectRequest = self.policyForNavigationActionProperty.signal.ignoreNil()
       .map { $0.request }
       .filter {
-        !AppEnvironment.current.apiService.isPrepared(request: $0) && Router.decodeUpdate(request: $0) != nil
+        !AppEnvironment.current.apiService.isPrepared(request: $0)
+          && Navigation.Project.updateWithRequest($0) != nil
       }
       .map { AppEnvironment.current.apiService.preparedRequest(forRequest: $0) }
 
