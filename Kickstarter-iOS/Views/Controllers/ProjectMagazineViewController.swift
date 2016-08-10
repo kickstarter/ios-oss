@@ -27,7 +27,6 @@ internal final class ProjectMagazineViewController: UIViewController {
   @IBOutlet private weak var topShareButton: UIButton!
   @IBOutlet private weak var viewPledgeButton: UIButton!
 
-
   internal func configureWith(project project: Project, refTag: RefTag?) {
     self.viewModel.inputs.configureWith(project: project, refTag: refTag)
     self.shareViewModel.inputs.configureWith(shareContext: .project(project))

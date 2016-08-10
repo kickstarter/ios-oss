@@ -141,7 +141,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
 
     let activities = fetchActivityEvent.values().map { $0.activities }
       .skipRepeats(==)
-      .map {$0.filter { activity in hasNotSeen(activity: activity) } }
+      .map { $0.filter { activity in hasNotSeen(activity: activity) } }
       .on(next: { activities in saveSeen(activities: activities) })
 
     let clearActivitySampleOnLogout = self.viewWillAppearProperty.signal

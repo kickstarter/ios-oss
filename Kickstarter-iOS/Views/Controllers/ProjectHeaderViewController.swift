@@ -28,7 +28,6 @@ internal final class ProjectHeaderViewController: UIViewController {
   @IBOutlet private weak var mainInfoStackView: UIStackView!
   @IBOutlet private weak var pledgeSubtitleLabel: UILabel!
   @IBOutlet private weak var pledgedTitleLabel: UILabel!
-  @IBOutlet private weak var projectImageView: UIImageView!
   @IBOutlet private weak var projectNameAndBlurbLabel: SimpleHTMLLabel!
   @IBOutlet private weak var projectStateAndProgressStackView: UIStackView!
   @IBOutlet private weak var projectStateLabel: UILabel!
@@ -46,6 +45,7 @@ internal final class ProjectHeaderViewController: UIViewController {
   @IBOutlet private weak var updatesButton: UIButton!
   @IBOutlet private weak var updatesSubtitleLabel: UILabel!
   @IBOutlet private weak var updatesTitleLabel: UILabel!
+  private var videoViewController: VideoViewController!
   @IBOutlet private weak var youreABackerLabel: UILabel!
 
   internal override func viewDidLoad() {
@@ -66,6 +66,10 @@ internal final class ProjectHeaderViewController: UIViewController {
     self.rewardsTabButton.addTarget(self,
                                     action: #selector(rewardsTabButtonTapped),
                                     forControlEvents: .TouchUpInside)
+
+    self.videoViewController = self.childViewControllers
+      .flatMap { $0 as? VideoViewController }
+      .first
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -232,19 +236,13 @@ internal final class ProjectHeaderViewController: UIViewController {
     self.updatesButton.rac.accessibilityLabel = self.viewModel.outputs.updatesButtonAccessibilityLabel
     self.updatesTitleLabel.rac.text = self.viewModel.outputs.updatesLabelText
 
+    self.viewModel.outputs.configureVideoViewControllerWithProject
+      .observeForUI()
+      .observeNext { [weak self] project in self?.videoViewController.configureWith(project: project) }
+
     self.viewModel.outputs.goToComments
       .observeForUI()
       .observeNext { [weak self] in self?.goToComments(project: $0) }
-
-    self.viewModel.outputs.projectImageUrl
-      .observeForUI()
-      .on(next: { [weak self] _ in
-        self?.projectImageView.image = nil
-      })
-      .ignoreNil()
-      .observeNext { [weak self] in
-        self?.projectImageView.af_setImageWithURL($0)
-    }
 
     self.viewModel.outputs.notifyDelegateToShowCampaignTab
       .observeNext { [weak self] in self?.delegate?.projectHeaderShowCampaignTab() }

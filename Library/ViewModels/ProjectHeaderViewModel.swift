@@ -51,6 +51,9 @@ public protocol ProjectHeaderViewModelOutputs {
   /// Emits the text of the comments label.
   var commentsLabelText: Signal<String, NoError> { get }
 
+  /// Emits a project that should be used to configure video view controller.
+  var configureVideoViewControllerWithProject: Signal<Project, NoError> { get }
+
   /// Emits a boolean that determines if the conversion labels should be hidden.
   var conversionLabelHidden: Signal<Bool, NoError> { get }
 
@@ -124,6 +127,8 @@ ProjectHeaderViewModelOutputs {
   public init() {
     let project = combineLatest(self.projectProperty.signal.ignoreNil(), self.viewDidLoadProperty.signal)
       .map(first)
+
+    self.configureVideoViewControllerWithProject = project
 
     self.projectNameAndBlurbLabelText = project
       .skipRepeats { $0.name == $1.name && $0.blurb == $1.blurb }
@@ -321,6 +326,7 @@ ProjectHeaderViewModelOutputs {
   public let campaignSelectedViewHidden: Signal<Bool, NoError>
   public let commentsButtonAccessibilityLabel: Signal<String, NoError>
   public let commentsLabelText: Signal<String, NoError>
+  public let configureVideoViewControllerWithProject: Signal<Project, NoError>
   public let conversionLabelHidden: Signal<Bool, NoError>
   public let conversionLabelText: Signal<String, NoError>
   public let deadlineSubtitleLabelText: Signal<String, NoError>

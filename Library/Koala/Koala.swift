@@ -768,6 +768,39 @@ public final class Koala {
     self.track(event: "Showed Help Menu", properties: ["context": context.trackingString])
   }
 
+  // MARK: Video events
+  public func trackVideoCompleted(forProject project: Project) {
+    // deprecated
+    self.track(event: "Project Video Complete", properties: [Koala.DeprecatedKey: true])
+
+    self.track(event: "Completed Project Video",
+               properties: properties(project: project, loggedInUser: self.loggedInUser))
+  }
+
+  public func trackVideoPaused(forProject project: Project) {
+    // deprecated
+    self.track(event: "Project Video Pause", properties: [Koala.DeprecatedKey: true])
+
+    self.track(event: "Paused Project Video",
+               properties: properties(project: project, loggedInUser: self.loggedInUser))
+  }
+
+  public func trackVideoResume(forProject project: Project) {
+    // deprecated
+    self.track(event: "Project Video Resume", properties: [Koala.DeprecatedKey: true])
+
+    self.track(event: "Resumed Project Video",
+               properties: properties(project: project, loggedInUser: self.loggedInUser))
+  }
+
+  public func trackVideoStart(forProject project: Project) {
+    // deprecated
+    self.track(event: "Project Video Start", properties: [Koala.DeprecatedKey: true])
+
+    self.track(event: "Started Project Video",
+               properties: properties(project: project, loggedInUser: self.loggedInUser))
+  }
+
   // Private tracking method that merges in default properties.
   private func track(event event: String, properties: [String:AnyObject] = [:]) {
     self.client.track(

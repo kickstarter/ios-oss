@@ -17,6 +17,7 @@ final class ProjectHeaderViewModelTests: TestCase {
   private let campaignSelectedViewHidden = TestObserver<Bool, NoError>()
   private let commentsButtonAccessibilityLabel = TestObserver<String, NoError>()
   private let commentsLabelText = TestObserver<String, NoError>()
+  private let configureVideoViewControllerWithProject = TestObserver<Project, NoError>()
   private let conversionLabelHidden = TestObserver<Bool, NoError>()
   private let conversionLabelText = TestObserver<String, NoError>()
   private let deadlineSubtitleLabelText = TestObserver<String, NoError>()
@@ -26,7 +27,6 @@ final class ProjectHeaderViewModelTests: TestCase {
   private let notifyDelegateToShowRewardsTab = TestObserver<(), NoError>()
   private let pledgedSubtitleLabelText = TestObserver<String, NoError>()
   private let pledgedTitleLabelText = TestObserver<String, NoError>()
-  private let projectImageUrl = TestObserver<NSURL?, NoError>()
   private let projectNameAndBlurbLabelText = TestObserver<String, NoError>()
   private let rewardsButtonAccessibilityLabel = TestObserver<String, NoError>()
   private let rewardsTabButtonSelected = TestObserver<Bool, NoError>()
@@ -45,6 +45,8 @@ final class ProjectHeaderViewModelTests: TestCase {
     self.vm.outputs.backersTitleLabelText.observe(self.backersTitleLabelText.observer)
     self.vm.outputs.campaignButtonSelected.observe(self.campaignButtonSelected.observer)
     self.vm.outputs.campaignSelectedViewHidden.observe(self.campaignSelectedViewHidden.observer)
+    self.vm.outputs.configureVideoViewControllerWithProject
+      .observe(self.configureVideoViewControllerWithProject.observer)
     self.vm.outputs.commentsButtonAccessibilityLabel.observe(self.commentsButtonAccessibilityLabel.observer)
     self.vm.outputs.commentsLabelText.observe(self.commentsLabelText.observer)
     self.vm.outputs.conversionLabelHidden.observe(self.conversionLabelHidden.observer)
@@ -56,7 +58,6 @@ final class ProjectHeaderViewModelTests: TestCase {
     self.vm.outputs.notifyDelegateToShowRewardsTab.observe(self.notifyDelegateToShowRewardsTab.observer)
     self.vm.outputs.pledgedSubtitleLabelText.observe(self.pledgedSubtitleLabelText.observer)
     self.vm.outputs.pledgedTitleLabelText.observe(self.pledgedTitleLabelText.observer)
-    self.vm.outputs.projectImageUrl.observe(self.projectImageUrl.observer)
     self.vm.outputs.projectNameAndBlurbLabelText.observe(self.projectNameAndBlurbLabelText.observer)
     self.vm.outputs.rewardsButtonAccessibilityLabel.observe(self.rewardsButtonAccessibilityLabel.observer)
     self.vm.outputs.rewardsTabButtonSelected.observe(self.rewardsTabButtonSelected.observer)
@@ -74,6 +75,14 @@ final class ProjectHeaderViewModelTests: TestCase {
     self.vm.inputs.viewWillAppear()
 
     self.allStatsStackViewAccessibilityValue.assertValueCount(1)
+  }
+
+  func testConfigureVideoViewControllerWithProject() {
+    let project = Project.template
+    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.viewDidLoad()
+
+    self.configureVideoViewControllerWithProject.assertValues([project])
   }
 
   func testYoureABackerLabelHidden_NotABacker() {
@@ -295,14 +304,6 @@ final class ProjectHeaderViewModelTests: TestCase {
         [Strings.discovery_baseball_card_stats_pledged_of_goal(goal: "$4")]
       )
     }
-  }
-
-  func testProjectImageUrl() {
-    self.vm.inputs.configureWith(project: .template)
-    self.vm.inputs.viewDidLoad()
-    self.vm.inputs.viewWillAppear()
-
-    self.projectImageUrl.assertValueCount(1)
   }
 
   func testNameAndBlurbLabel() {
