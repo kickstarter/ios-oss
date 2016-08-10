@@ -24,12 +24,6 @@ public final class ReferralChartView: UIView {
     }
   }
 
-  public var ringThicknessPercentage: CGFloat = 0.1 {
-    didSet {
-      self.setNeedsDisplay()
-    }
-  }
-
   // swiftlint:disable function_body_length
   public override func drawRect(rect: CGRect) {
     super.drawRect(rect)
@@ -85,15 +79,6 @@ public final class ReferralChartView: UIView {
                     0)
     CGContextClosePath(context)
     CGContextFillPath(context)
-
-    UIColor.ksr_grey_100.set()
-    CGContextFillEllipseInRect(
-      context,
-      rect.insetBy(
-        dx: self.ringThicknessPercentage * self.bounds.width,
-        dy: self.ringThicknessPercentage * self.bounds.height
-      )
-    )
   }
   // swiftlint:enable function_body_length
 }
