@@ -48,18 +48,26 @@ internal final class SortPagerViewController: UIViewController {
   }
 
   private func createSortButtons(sorts: [DiscoveryParams.Sort]) {
-    self.sortsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
-    sorts.enumerate().forEach { idx, sort in
-      self.sortsStackView.addArrangedSubview(self.buttonFor(sort: sort, index: idx))
+
+    self.sortsStackView
+      |> UIStackView.lens.arrangedSubviews .~ sorts.enumerate().map { idx, sort in
+        self.buttonFor(sort: sort, index: idx)
     }
   }
 
   private func scrollTo(percentage percentage: CGFloat) {
-    let point = CGPoint(
+    let contentOffset = CGPoint(
       x: percentage * (self.scrollView.contentSize.width - self.scrollView.bounds.width),
       y: 0.0
     )
-    self.scrollView.setContentOffset(point, animated: true)
+
+    let sortButtonRight = percentage * self.scrollView.contentSize.width - self.scrollView.contentOffset.x
+    let sortButtonLeft = sortButtonRight - self.indicatorViewWidthConstraint.constant
+
+    if sortButtonRight + Styles.grid(6) > self.view.bounds.width
+      || sortButtonLeft - Styles.grid(6) < 0.0 {
+      self.scrollView.setContentOffset(contentOffset, animated: true)
+    }
   }
 
   private func pinSelectedIndicator(toPage page: Int) {
