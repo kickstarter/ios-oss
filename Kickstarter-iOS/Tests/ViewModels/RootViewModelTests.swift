@@ -14,6 +14,8 @@ final class RootViewModelTests: TestCase {
   let viewControllerNames = TestObserver<[String], NoError>()
   let selectedIndex = TestObserver<Int, NoError>()
   let scrollToTopControllerName = TestObserver<String, NoError>()
+  let tabBarItemsData = TestObserver<TabBarItemsData, NoError>()
+  let profileItemData = TestObserver<ProfileTabBarItemData, NoError>()
 
   override func setUp() {
     super.setUp()
@@ -28,6 +30,9 @@ final class RootViewModelTests: TestCase {
       .map(extractRootName)
       .ignoreNil()
       .observe(self.scrollToTopControllerName.observer)
+
+    self.vm.outputs.tabBarItemsData.observe(self.tabBarItemsData.observer)
+    self.vm.outputs.profileTabBarItemData.observe(self.profileItemData.observer)
   }
 
   func testSetViewControllers() {
@@ -39,7 +44,7 @@ final class RootViewModelTests: TestCase {
 
     viewControllerNames.assertValues(
       [
-        ["Discovery", "Search", "Activities", "LoginTout"]
+        ["Discovery", "Activities", "Search", "LoginTout"]
       ],
       "Show the logged out tabs."
     )
@@ -49,8 +54,8 @@ final class RootViewModelTests: TestCase {
 
     viewControllerNames.assertValues(
       [
-        ["Discovery", "Search", "Activities", "LoginTout"],
-        ["Discovery", "Search", "Activities", "Profile"]
+        ["Discovery", "Activities", "Search", "LoginTout"],
+        ["Discovery", "Activities", "Search", "Profile"]
       ],
       "Show the logged in tabs."
     )
@@ -60,9 +65,9 @@ final class RootViewModelTests: TestCase {
 
     viewControllerNames.assertValues(
       [
-        ["Discovery", "Search", "Activities", "LoginTout"],
-        ["Discovery", "Search", "Activities", "Profile"],
-        ["Discovery", "Search", "Activities", "Dashboard", "Profile"]
+        ["Discovery", "Activities", "Search", "LoginTout"],
+        ["Discovery", "Activities", "Search", "Profile"],
+        ["Discovery", "Activities", "Search", "Dashboard", "Profile"]
       ],
       "Show the creator dashboard tab."
     )
@@ -72,10 +77,10 @@ final class RootViewModelTests: TestCase {
 
     viewControllerNames.assertValues(
       [
-        ["Discovery", "Search", "Activities", "LoginTout"],
-        ["Discovery", "Search", "Activities", "Profile"],
-        ["Discovery", "Search", "Activities", "Dashboard", "Profile"],
-        ["Discovery", "Search", "Activities", "LoginTout"],
+        ["Discovery", "Activities", "Search", "LoginTout"],
+        ["Discovery", "Activities", "Search", "Profile"],
+        ["Discovery", "Activities", "Search", "Dashboard", "Profile"],
+        ["Discovery", "Activities", "Search", "LoginTout"],
       ],
       "Show the logged out tabs."
     )
@@ -144,7 +149,85 @@ final class RootViewModelTests: TestCase {
     self.vm.inputs.switchToDiscovery()
     self.selectedIndex.assertValues([0, 0])
     self.vm.inputs.switchToActivities()
-    self.selectedIndex.assertValues([0, 0, 2])
+    self.selectedIndex.assertValues([0, 0, 1])
+  }
+
+  func testTabBarItemStyles() {
+    let items = [
+      TabBarItem.home(index: 0),
+      .activity(index: 1),
+      .search(index: 2),
+      .profile(index: 3)
+    ]
+    let itemsMember = [
+      TabBarItem.home(index: 0),
+      .activity(index: 1),
+      .search(index: 2),
+      .dashboard(index: 3),
+      .profile(index: 4)
+    ]
+    let tabData = TabBarItemsData(items: items, isLoggedIn: false, isMember: false)
+    let tabDataLoggedIn = TabBarItemsData(items: items, isLoggedIn: true, isMember: false)
+    let tabDataMember = TabBarItemsData(items: itemsMember, isLoggedIn: true, isMember: true)
+
+    self.tabBarItemsData.assertValueCount(0)
+
+    self.vm.inputs.viewDidLoad()
+
+    self.tabBarItemsData.assertValues([tabData])
+
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: User.template))
+    self.vm.inputs.userSessionStarted()
+
+    self.tabBarItemsData.assertValues([tabData, tabDataLoggedIn])
+
+    AppEnvironment.logout()
+    self.vm.inputs.userSessionEnded()
+
+    self.tabBarItemsData.assertValues([tabData, tabDataLoggedIn, tabData])
+
+    let creator = .template |> User.lens.stats.memberProjectsCount .~ 1
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: creator))
+    self.vm.inputs.userSessionStarted()
+
+    self.tabBarItemsData.assertValues([tabData, tabDataLoggedIn, tabData, tabDataMember])
+  }
+
+  func testProfileTabBarItem() {
+    let user = .template |> User.lens.avatar.small .~ "http://image.com/image"
+    let creator = .template
+      |> User.lens.stats.memberProjectsCount .~ 1
+      |> User.lens.avatar.small .~ "http://image.com/image2"
+
+    let data = ProfileTabBarItemData(avatarUrl: NSURL(string: user.avatar.small),
+                                     isMember: false,
+                                     item: TabBarItem.profile(index: 3))
+    let dataMember = ProfileTabBarItemData(avatarUrl: NSURL(string: creator.avatar.small),
+                                     isMember: true,
+                                     item: TabBarItem.profile(index: 4))
+
+    AppEnvironment.logout()
+    self.vm.inputs.userSessionEnded()
+    self.vm.inputs.viewDidLoad()
+
+    self.profileItemData.assertValueCount(0)
+
+    // logged in avatar
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
+    self.vm.inputs.userSessionStarted()
+
+    self.profileItemData.assertValues([data])
+
+    AppEnvironment.logout()
+    self.vm.inputs.userSessionEnded()
+
+    self.profileItemData.assertValues([data], "Profile image does not emit on logout")
+
+    // logged in avatar member
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: creator))
+    self.vm.inputs.userSessionStarted()
+
+    self.profileItemData.assertValues([data, dataMember])
   }
 }
 

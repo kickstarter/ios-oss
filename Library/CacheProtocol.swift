@@ -2,6 +2,7 @@ import Foundation
 
 public protocol CacheProtocol: class {
   subscript(key: String) -> AnyObject? { get set }
+  init()
   func removeAllObjects()
 }
 
@@ -40,7 +41,7 @@ extension NSCache: CacheProtocol {
   }
 }
 
-internal class MockCache: CacheProtocol {
+internal final class MockCache: CacheProtocol {
   private var cache: [String: AnyObject] = [:]
 
   subscript(key: String) -> AnyObject? {

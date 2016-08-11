@@ -49,6 +49,7 @@ public struct AppEnvironment {
   public static func logout() {
     replaceCurrentEnvironment(
       apiService: AppEnvironment.current.apiService.logout(),
+      cache: AppEnvironment.current.cache.dynamicType.init(),
       currentUser: nil,
       koala: current.koala |> Koala.lens.loggedInUser .~ nil
     )

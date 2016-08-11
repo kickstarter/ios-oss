@@ -67,6 +67,7 @@
 		01A120D31D2D6E6200B42F73 /* DashboardProjectsDrawerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A120D21D2D6E6200B42F73 /* DashboardProjectsDrawerViewController.swift */; };
 		01A7A4C01C9690220036E553 /* UITextField+LocalizedPlaceholderKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A7A4BF1C9690220036E553 /* UITextField+LocalizedPlaceholderKey.swift */; };
 		01A7A4C11C9690220036E553 /* UITextField+LocalizedPlaceholderKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A7A4BF1C9690220036E553 /* UITextField+LocalizedPlaceholderKey.swift */; };
+		01AFE30E1D5A97FB0094C263 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A73923B31D272242004524C3 /* Main.storyboard */; };
 		01B6ABBE1CA1E01E003DB4C8 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0151AE871C8F60370067F1BE /* UIColor.swift */; };
 		01C7CDB11D13462500D9E0D1 /* DashboardRewardRowStackViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0156B5571D133BA0000C4252 /* DashboardRewardRowStackViewViewModel.swift */; };
 		01C7CDB21D13462500D9E0D1 /* DashboardRewardRowStackViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0156B5571D133BA0000C4252 /* DashboardRewardRowStackViewViewModel.swift */; };
@@ -90,6 +91,7 @@
 		01EFBCB41C920A7E0094EEC2 /* BorderButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01EFBCB21C920A7E0094EEC2 /* BorderButtonTests.swift */; };
 		01EFBCB61C921EA20094EEC2 /* StylesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01EFBCB51C921EA20094EEC2 /* StylesTests.swift */; };
 		01EFBCB71C921EA20094EEC2 /* StylesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01EFBCB51C921EA20094EEC2 /* StylesTests.swift */; };
+		01F547ED1D53994B000A98EF /* TabBarItemStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01F547EC1D53994B000A98EF /* TabBarItemStyles.swift */; };
 		01F8ADFC1CEA5B070026F220 /* ThanksProjectsDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01F8ADCE1CEA58AE0026F220 /* ThanksProjectsDataSourceTests.swift */; };
 		01FD71841D36BA2900070BAC /* DashboardProjectsDrawerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FD71831D36BA2900070BAC /* DashboardProjectsDrawerViewModelTests.swift */; };
 		01FD71851D36BA3900070BAC /* DashboardProjectsDrawerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FD71831D36BA2900070BAC /* DashboardProjectsDrawerViewModelTests.swift */; };
@@ -1446,6 +1448,7 @@
 		01EFBCAE1C92036E0094EEC2 /* StyledLabelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyledLabelTests.swift; sourceTree = "<group>"; };
 		01EFBCB21C920A7E0094EEC2 /* BorderButtonTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BorderButtonTests.swift; sourceTree = "<group>"; };
 		01EFBCB51C921EA20094EEC2 /* StylesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StylesTests.swift; sourceTree = "<group>"; };
+		01F547EC1D53994B000A98EF /* TabBarItemStyles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarItemStyles.swift; sourceTree = "<group>"; };
 		01F8ADCE1CEA58AE0026F220 /* ThanksProjectsDataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThanksProjectsDataSourceTests.swift; sourceTree = "<group>"; };
 		01FD71831D36BA2900070BAC /* DashboardProjectsDrawerViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardProjectsDrawerViewModelTests.swift; sourceTree = "<group>"; };
 		01FD71861D36BE1A00070BAC /* DashboardProjectsDrawerCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardProjectsDrawerCellViewModelTests.swift; sourceTree = "<group>"; };
@@ -2108,17 +2111,18 @@
 		A73378F91D0AE33B00C91445 /* Styles */ = {
 			isa = PBXGroup;
 			children = (
+				598D96C11D429756003F3F66 /* ActivitySampleStyles.swift */,
 				A757EA541D19F6C100A5C978 /* ActivityStyles.swift */,
 				01FD71EB1D3808E500070BAC /* BarButtonItemStyles.swift */,
 				A73378FA1D0AE33B00C91445 /* BaseStyles.swift */,
 				A73379101D0E33A600C91445 /* ButtonStyles.swift */,
 				A73379441D0E36A600C91445 /* Colors.swift */,
 				59B0E07D1D147F340081D2DC /* DashboardStyles.swift */,
-				598D96C11D429756003F3F66 /* ActivitySampleStyles.swift */,
 				A757EB2A1D1AD89E00A5C978 /* DiscoveryStyles.swift */,
 				A73379471D0E36CA00C91445 /* Fonts.swift */,
 				A73378FD1D0AE36400C91445 /* LoginStyles.swift */,
 				9DC572E41D36CA9800AE209C /* ProjectActivityStyles.swift */,
+				01F547EC1D53994B000A98EF /* TabBarItemStyles.swift */,
 				A796FF261D425A4500CD58AA /* ProjectStyles.swift */,
 				8001D4971D41568C009E6667 /* UpdateDraftStyles.swift */,
 			);
@@ -3832,6 +3836,7 @@
 				A73923BC1D272242004524C3 /* Activity.storyboard in Resources */,
 				A7A5F82A1D11ECF60036139A /* Localizable.strings in Resources */,
 				A73923C51D272242004524C3 /* Messages.storyboard in Resources */,
+				01AFE30E1D5A97FB0094C263 /* Main.storyboard in Resources */,
 				A757EA6C1D19F93400A5C978 /* 1Password.xcassets in Resources */,
 				A7D120D71D15A7B400F364FD /* Assets.xcassets in Resources */,
 				80EAEF051D243C4E008C2353 /* Backing.storyboard in Resources */,
@@ -4000,6 +4005,7 @@
 				0199545F1D2D818E00BC1390 /* DashboardProjectsDrawerViewModel.swift in Sources */,
 				A76126B91C90C94000EDCCB9 /* UIView-Extensions.swift in Sources */,
 				A77D7B071CBAAF5D0077586B /* Paginate.swift in Sources */,
+				01F547ED1D53994B000A98EF /* TabBarItemStyles.swift in Sources */,
 				597073B41D07294500B00444 /* ProjectNotificationCellViewModel.swift in Sources */,
 				A75CFB081CCE7FCF004CD5FA /* StaticTableViewCell.swift in Sources */,
 				A7F441D71D005A9400FE6FC5 /* ProfileViewModel.swift in Sources */,
