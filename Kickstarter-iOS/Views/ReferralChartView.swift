@@ -63,7 +63,7 @@ public final class ReferralChartView: UIView {
     CGContextClosePath(context)
     CGContextFillPath(context)
 
-    UIColor.ksr_violet_850.set()
+    UIColor.ksr_violet_500.set()
     CGContextMoveToPoint(context, self.bounds.width/2, self.bounds.height/2)
     CGContextAddLineToPoint(context,
                             self.bounds.width/2 + self.bounds.width/2 *

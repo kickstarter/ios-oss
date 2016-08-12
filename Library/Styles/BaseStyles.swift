@@ -66,9 +66,8 @@ public let containerViewBackgroundStyle =
 public func dropShadowStyle <V: UIViewProtocol> (blurRadius blurRadius: CGFloat = 4.0,
                                                             cornerRadius: CGFloat = 0.0) -> ((V) -> V) {
   return
-    V.lens.layer.shadowColor .~ UIColor.blackColor().CGColor
+    V.lens.layer.shadowColor .~ UIColor.ksr_dropShadow.CGColor
       <> V.lens.layer.shadowOffset .~ .zero
-      <> V.lens.layer.shadowOpacity .~ 0.07
       <> V.lens.layer.shadowRadius .~ blurRadius
 }
 

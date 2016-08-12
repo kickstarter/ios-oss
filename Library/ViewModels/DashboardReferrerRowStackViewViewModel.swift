@@ -51,7 +51,7 @@ public final class DashboardReferrerRowStackViewViewModel: DashboardReferrerRowS
       case .external:
         return .ksr_orange_400
       default:
-        return .ksr_violet_850
+        return .ksr_violet_500
       }
     }
   }
