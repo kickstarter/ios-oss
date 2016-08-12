@@ -81,6 +81,9 @@ public protocol ProjectHeaderViewModelOutputs {
   /// Emits the text for the pledged title label.
   var pledgedTitleLabelText: Signal<String, NoError> { get }
 
+  /// Emits a percentage between 0.0 and 1.0 that can be used to render the funding progress bar.
+  var progressPercentage: Signal<Float, NoError> { get }
+
   /// Emits a URL to be loaded into the project's image view.
   var projectImageUrl: Signal<NSURL?, NoError> { get }
 
@@ -276,6 +279,10 @@ ProjectHeaderViewModelOutputs {
           substitutions: ["rewards_count": Format.wholeNumber(p.stats.updatesCount ?? 0)]
         )
     }
+
+    self.progressPercentage = project
+      .map(Project.lens.stats.fundingProgress.view)
+      .map(clamp(0, 1))
   }
   // swiftlint:enable function_body_length
 
@@ -336,6 +343,7 @@ ProjectHeaderViewModelOutputs {
   public let notifyDelegateToShowRewardsTab: Signal<(), NoError>
   public let pledgedSubtitleLabelText: Signal<String, NoError>
   public let pledgedTitleLabelText: Signal<String, NoError>
+  public let progressPercentage: Signal<Float, NoError>
   public let projectImageUrl: Signal<NSURL?, NoError>
   public let projectNameAndBlurbLabelText: Signal<String, NoError>
   public let projectStateLabelHidden: Signal<Bool, NoError>

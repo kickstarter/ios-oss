@@ -27,6 +27,7 @@ final class ProjectHeaderViewModelTests: TestCase {
   private let notifyDelegateToShowRewardsTab = TestObserver<(), NoError>()
   private let pledgedSubtitleLabelText = TestObserver<String, NoError>()
   private let pledgedTitleLabelText = TestObserver<String, NoError>()
+  private let progressPercentage = TestObserver<Float, NoError>()
   private let projectNameAndBlurbLabelText = TestObserver<String, NoError>()
   private let rewardsButtonAccessibilityLabel = TestObserver<String, NoError>()
   private let rewardsTabButtonSelected = TestObserver<Bool, NoError>()
@@ -59,6 +60,7 @@ final class ProjectHeaderViewModelTests: TestCase {
     self.vm.outputs.pledgedSubtitleLabelText.observe(self.pledgedSubtitleLabelText.observer)
     self.vm.outputs.pledgedTitleLabelText.observe(self.pledgedTitleLabelText.observer)
     self.vm.outputs.projectNameAndBlurbLabelText.observe(self.projectNameAndBlurbLabelText.observer)
+    self.vm.outputs.progressPercentage.observe(self.progressPercentage.observer)
     self.vm.outputs.rewardsButtonAccessibilityLabel.observe(self.rewardsButtonAccessibilityLabel.observer)
     self.vm.outputs.rewardsTabButtonSelected.observe(self.rewardsTabButtonSelected.observer)
     self.vm.outputs.rewardsTabButtonTitleText.observe(self.rewardsTabButtonTitleText.observer)
@@ -315,6 +317,28 @@ final class ProjectHeaderViewModelTests: TestCase {
     self.projectNameAndBlurbLabelText.assertValues(
       ["<b>\(project.name).</b> \(project.blurb)"]
     )
+  }
+
+  func testProgressPercentage_UnderFunded() {
+    let project = .template
+      |> Project.lens.stats.pledged .~ 100
+      |> Project.lens.stats.goal .~ 200
+    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewWillAppear()
+
+    self.progressPercentage.assertValues([0.5])
+  }
+
+  func testProgressPercentage_OverFunded() {
+    let project = .template
+      |> Project.lens.stats.pledged .~ 300
+      |> Project.lens.stats.goal .~ 200
+    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewWillAppear()
+
+    self.progressPercentage.assertValues([1.0])
   }
 
   func testRewardsButtonAccessibilityLabel() {

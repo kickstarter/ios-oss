@@ -28,6 +28,7 @@ internal final class ProjectHeaderViewController: UIViewController {
   @IBOutlet private weak var mainInfoStackView: UIStackView!
   @IBOutlet private weak var pledgeSubtitleLabel: UILabel!
   @IBOutlet private weak var pledgedTitleLabel: UILabel!
+  @IBOutlet private weak var progressBarView: UIView!
   @IBOutlet private weak var projectNameAndBlurbLabel: SimpleHTMLLabel!
   @IBOutlet private weak var projectStateAndProgressStackView: UIStackView!
   @IBOutlet private weak var projectStateLabel: UILabel!
@@ -249,6 +250,13 @@ internal final class ProjectHeaderViewController: UIViewController {
 
     self.viewModel.outputs.notifyDelegateToShowRewardsTab
       .observeNext { [weak self] in self?.delegate?.projectHeaderShowRewardsTab() }
+
+    self.viewModel.outputs.progressPercentage
+      .observeForUI()
+      .observeNext { [weak self] progress in
+        self?.progressBarView.layer.anchorPoint = CGPoint(x: CGFloat(0.5 / progress), y: 0.5)
+        self?.progressBarView.transform = CGAffineTransformMakeScale(CGFloat(progress), 1.0)
+    }
   }
 
   private func goToComments(project project: Project) {
