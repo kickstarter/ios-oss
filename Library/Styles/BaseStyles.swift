@@ -5,7 +5,7 @@ import UIKit
 public enum Styles {
   public static let cornerRadius: CGFloat = 4.0
 
-  public static func grid(count: Int = 1) -> CGFloat {
+  public static func grid(count: Int) -> CGFloat {
     return 6.0 * CGFloat(count)
   }
 
@@ -40,7 +40,12 @@ public let baseNavigationBarStyle =
 public func baseTableViewCellStyle <TVC: UITableViewCellProtocol> () -> (TVC -> TVC) {
 
   return
-    TVC.lens.contentView.layoutMargins .~ .init(topBottom: Styles.grid(), leftRight: Styles.grid(2))
+    TVC.lens.contentView.layoutMargins %~~ { _, cell in
+      if cell.traitCollection.isRegularRegular {
+        return .init(topBottom: Styles.grid(3), leftRight: Styles.grid(6))
+      }
+      return .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
+      }
       <> (TVC.lens.contentView • UIView.lens.preservesSuperviewLayoutMargins) .~ false
       <> TVC.lens.layoutMargins .~ .init(all: 0.0)
       <> TVC.lens.preservesSuperviewLayoutMargins .~ false
@@ -63,12 +68,16 @@ public func cardStyle <V: UIViewProtocol> (cornerRadius radius: CGFloat = Styles
 public let containerViewBackgroundStyle =
   UIView.lens.backgroundColor .~ .ksr_grey_100
 
-public func dropShadowStyle <V: UIViewProtocol> (blurRadius blurRadius: CGFloat = 4.0,
-                                                            cornerRadius: CGFloat = 0.0) -> ((V) -> V) {
+public func dropShadowStyle <V: UIViewProtocol> (
+  radius radius: CGFloat = 2.0,
+         offset: CGSize = .init(width: 0, height: 1)) -> ((V) -> V) {
   return
     V.lens.layer.shadowColor .~ UIColor.ksr_dropShadow.CGColor
-      <> V.lens.layer.shadowOffset .~ .zero
-      <> V.lens.layer.shadowRadius .~ blurRadius
+      <> V.lens.layer.shadowOpacity .~ 1
+      <> V.lens.layer.shadowRadius .~ radius
+      <> V.lens.layer.masksToBounds .~ false
+      <> V.lens.layer.shouldRasterize .~ true
+      <> V.lens.layer.shadowOffset .~ offset
 }
 
 public let formFieldStyle =

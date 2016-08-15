@@ -101,7 +101,7 @@ internal final class ProjectFooterViewController: UIViewController {
       |> UIStackView.lens.spacing .~ 0
 
     self.creatorStatsStackView
-      |> UIStackView.lens.spacing .~ Styles.grid()
+      |> UIStackView.lens.spacing .~ Styles.grid(1)
 
     self.contactCreatorButton
       |> contactCreatorButtonStyle
@@ -127,7 +127,7 @@ internal final class ProjectFooterViewController: UIViewController {
       |> UIStackView.lens.layoutMargins .~ .init(topBottom: Styles.grid(4), leftRight: 0)
       |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
       |> UIStackView.lens.alignment .~ .Center
-      |> UIStackView.lens.spacing .~ Styles.grid()
+      |> UIStackView.lens.spacing .~ Styles.grid(1)
 
     self.keepReadingLabel
       |> UILabel.lens.textColor .~ .ksr_text_navy_700

@@ -520,6 +520,8 @@
 		A76E0AF61D00D09B00EC525A /* Result.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A76E0AEB1D00D09100EC525A /* Result.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A7722F401D2D3B6B0049BCDC /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01D31A361CCA786A0037A178 /* FBSDKCoreKit.framework */; };
 		A7722F411D2D3B6C0049BCDC /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01D31A371CCA786A0037A178 /* FBSDKLoginKit.framework */; };
+		A77352ED1D5E70FC0017E239 /* MostPopularCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A77352EC1D5E70FC0017E239 /* MostPopularCell.swift */; };
+		A773531F1D5E8AEF0017E239 /* MostPopularSearchProjectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A773531E1D5E8AEF0017E239 /* MostPopularSearchProjectCell.swift */; };
 		A77519121C8CADE20022F175 /* AppDelegateViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A775190F1C8CADC80022F175 /* AppDelegateViewModelTests.swift */; };
 		A77519221C8CB0360022F175 /* CircleAvatarImageViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A77519211C8CB0360022F175 /* CircleAvatarImageViewTests.swift */; };
 		A77519231C8CB11B0022F175 /* CircleAvatarImageViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A77519211C8CB0360022F175 /* CircleAvatarImageViewTests.swift */; };
@@ -532,6 +534,8 @@
 		A77D7B361CBAC5F90077586B /* PaginateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A77D7B341CBAC5F90077586B /* PaginateTests.swift */; };
 		A78011981D2DB1EF0027396E /* ProjectMagazine.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A78011971D2DB1EF0027396E /* ProjectMagazine.storyboard */; };
 		A78012651D2EEA620027396E /* ReferralChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A78012641D2EEA620027396E /* ReferralChartView.swift */; };
+		A7808B6B1D61E9DF001CF96A /* MostPopularSearchProjectCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7808B6A1D61E9DF001CF96A /* MostPopularSearchProjectCellViewModel.swift */; };
+		A7808B6C1D61E9DF001CF96A /* MostPopularSearchProjectCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7808B6A1D61E9DF001CF96A /* MostPopularSearchProjectCellViewModel.swift */; };
 		A782B4171D2C249E0069D10E /* DiscoveryProjectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E06CC91C5BFB3800EBDCC2 /* DiscoveryProjectCell.swift */; };
 		A782B4181D2C249E0069D10E /* DiscoveryProjectCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7E06CCA1C5BFB3800EBDCC2 /* DiscoveryProjectCell.xib */; };
 		A782B4191D2C249E0069D10E /* HomePlaylistCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E06CCB1C5BFB3800EBDCC2 /* HomePlaylistCell.swift */; };
@@ -1697,6 +1701,8 @@
 		A76E0AAF1D00D02300EC525A /* ReactiveCocoa.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactiveCocoa.xcodeproj; path = Frameworks/KsApi/Frameworks/ReactiveExtensions/Frameworks/ReactiveCocoa/ReactiveCocoa.xcodeproj; sourceTree = "<group>"; };
 		A76E0AC51D00D05F00EC525A /* ReactiveExtensions.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactiveExtensions.xcodeproj; path = Frameworks/KsApi/Frameworks/ReactiveExtensions/ReactiveExtensions.xcodeproj; sourceTree = "<group>"; };
 		A76E0ADB1D00D09100EC525A /* Result.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Result.xcodeproj; path = Frameworks/KsApi/Frameworks/ReactiveExtensions/Frameworks/ReactiveCocoa/Carthage/Checkouts/Result/Result.xcodeproj; sourceTree = "<group>"; };
+		A77352EC1D5E70FC0017E239 /* MostPopularCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MostPopularCell.swift; sourceTree = "<group>"; };
+		A773531E1D5E8AEF0017E239 /* MostPopularSearchProjectCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MostPopularSearchProjectCell.swift; sourceTree = "<group>"; };
 		A775190F1C8CADC80022F175 /* AppDelegateViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegateViewModelTests.swift; sourceTree = "<group>"; };
 		A77519211C8CB0360022F175 /* CircleAvatarImageViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = CircleAvatarImageViewTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		A775B51F1CA8705B00BBB587 /* RootTabBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootTabBarViewController.swift; sourceTree = "<group>"; };
@@ -1706,6 +1712,7 @@
 		A77D7B341CBAC5F90077586B /* PaginateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaginateTests.swift; sourceTree = "<group>"; };
 		A78011971D2DB1EF0027396E /* ProjectMagazine.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ProjectMagazine.storyboard; sourceTree = "<group>"; };
 		A78012641D2EEA620027396E /* ReferralChartView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReferralChartView.swift; sourceTree = "<group>"; };
+		A7808B6A1D61E9DF001CF96A /* MostPopularSearchProjectCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MostPopularSearchProjectCellViewModel.swift; sourceTree = "<group>"; };
 		A7830CDD1D005C3F00B5B6AE /* ActivitiesViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivitiesViewModelTests.swift; sourceTree = "<group>"; };
 		A7830CDF1D005C3F00B5B6AE /* BackingCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackingCellViewModelTests.swift; sourceTree = "<group>"; };
 		A7830CE01D005C3F00B5B6AE /* CommentCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentCellViewModelTests.swift; sourceTree = "<group>"; };
@@ -2221,6 +2228,9 @@
 				A762EFF11C8CC663005581A4 /* ActivityFriendFollowCell.swift */,
 				A715ACEF1CE7F3D300605F02 /* ActivityLaunchCell.swift */,
 				A715ACC11CE7ED3600605F02 /* ActivityNegativeStateChangeCell.swift */,
+				598D96821D417905003F3F66 /* ActivitySampleBackingCell.swift */,
+				598D96B51D426D80003F3F66 /* ActivitySampleFollowCell.swift */,
+				598D96B71D426F70003F3F66 /* ActivitySampleProjectCell.swift */,
 				A762F01B1C8CD2B3005581A4 /* ActivitySuccessCell.swift */,
 				A757E9BD1D19C34600A5C978 /* ActivitySurveyResponseCell.swift */,
 				A75AB2211C8A85D1002FC3E6 /* ActivityUpdateCell.swift */,
@@ -2237,9 +2247,6 @@
 				A72C3AB11D00FB1F0075227E /* DiscoveryExpandableRowCell.swift */,
 				A72C3AB21D00FB1F0075227E /* DiscoveryExpandedSelectableRow.swift */,
 				A757EBB11D1B084F00A5C978 /* DiscoveryOnboardingCell.swift */,
-				598D96821D417905003F3F66 /* ActivitySampleBackingCell.swift */,
-				598D96B71D426F70003F3F66 /* ActivitySampleProjectCell.swift */,
-				598D96B51D426D80003F3F66 /* ActivitySampleFollowCell.swift */,
 				A7E315CA1C88AC91000DD85A /* DiscoveryProjectCell.swift */,
 				A72C3AB31D00FB1F0075227E /* DiscoverySelectableRowCell.swift */,
 				A7CC14371D00E74F00035C52 /* FindFriendsFacebookConnectCell.swift */,
@@ -2248,13 +2255,14 @@
 				A7CC143A1D00E74F00035C52 /* FindFriendsStatsCell.swift */,
 				A71003E11CDD077200B4F4D7 /* MessageCell.swift */,
 				A71003DE1CDD06E600B4F4D7 /* MessageThreadCell.swift */,
+				A77352EC1D5E70FC0017E239 /* MostPopularCell.swift */,
 				A74382041D3458C900040A95 /* PaddingCell.swift */,
 				599603D21CE5220900E1B1EC /* ProfileEmptyStateCell.swift */,
 				59B6B7091CCEBC1000953319 /* ProfileProjectCell.swift */,
 				9D9F57CB1D131AF200CE81DE /* ProjectActivityBackingCell.swift */,
 				9D2546F71D23101E0053844D /* ProjectActivityCommentCell.swift */,
-				9D9F57CC1D131AF200CE81DE /* ProjectActivityEmptyStateCell.swift */,
 				9D525F0E1D4158AC003CAE04 /* ProjectActivityDateCell.swift */,
+				9D9F57CC1D131AF200CE81DE /* ProjectActivityEmptyStateCell.swift */,
 				9D9F57CD1D131AF200CE81DE /* ProjectActivityLaunchCell.swift */,
 				9D9F57CE1D131AF200CE81DE /* ProjectActivityNegativeStateChangeCell.swift */,
 				9D9F57D01D131AF200CE81DE /* ProjectActivitySuccessCell.swift */,
@@ -2265,6 +2273,7 @@
 				A75CFA7C1CCE56C4004CD5FA /* SearchProjectCell.swift */,
 				014A8E1A1CE3CE34003BF51C /* ThanksCategoryCell.swift */,
 				014A8E171CE3CD86003BF51C /* ThanksProjectCell.swift */,
+				A773531E1D5E8AEF0017E239 /* MostPopularSearchProjectCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -3048,6 +3057,7 @@
 				A7F441AB1D005A9400FE6FC5 /* ThanksViewModel.swift */,
 				A7F441AC1D005A9400FE6FC5 /* TwoFactorViewModel.swift */,
 				809F8B651D08B4FF005BADD9 /* UpdateDraftViewModel.swift */,
+				A7808B6A1D61E9DF001CF96A /* MostPopularSearchProjectCellViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -3983,7 +3993,6 @@
 				A75511631C8642C3005355CF /* LocalizedString.swift in Sources */,
 				A7F441E11D005A9400FE6FC5 /* ResetPasswordViewModel.swift in Sources */,
 				A734A2671D21A1790080BBD5 /* WKNavigationActionProtocol.swift in Sources */,
-				A734A3A21D22BADF0080BBD5 /* Router.swift in Sources */,
 				A7C93FB61D44142900C2DF9B /* ProjectDescriptionViewModel.swift in Sources */,
 				017E88BA1CD2A609003FE5D6 /* UIActivityViewController.swift in Sources */,
 				9D8772131D19E84E003A4E96 /* ProjectActivityLaunchCellViewModel.swift in Sources */,
@@ -4010,6 +4019,7 @@
 				A75CFB081CCE7FCF004CD5FA /* StaticTableViewCell.swift in Sources */,
 				A7F441D71D005A9400FE6FC5 /* ProfileViewModel.swift in Sources */,
 				597073521D05FE6B00B00444 /* ProjectNotificationsViewModel.swift in Sources */,
+				A7808B6B1D61E9DF001CF96A /* MostPopularSearchProjectCellViewModel.swift in Sources */,
 				59019FB61D21A47700EAEC9D /* DashboardReferrerRowStackViewViewModel.swift in Sources */,
 				01FD71EC1D3808E500070BAC /* BarButtonItemStyles.swift in Sources */,
 				A7F441E91D005A9400FE6FC5 /* TwoFactorViewModel.swift in Sources */,
@@ -4331,6 +4341,7 @@
 				A7F441CA1D005A9400FE6FC5 /* MessageDialogViewModel.swift in Sources */,
 				A72C3A961D00F6C70075227E /* DiscoveryPageViewModel.swift in Sources */,
 				A70968C61D14366D00DB39D3 /* Colors.swift in Sources */,
+				A7808B6C1D61E9DF001CF96A /* MostPopularSearchProjectCellViewModel.swift in Sources */,
 				A721DF661C8CF5A3000CB97C /* KoalaTrackingClient.swift in Sources */,
 				A76126BC1C90C94000EDCCB9 /* UITableView-Extensions.swift in Sources */,
 				A7B694001C8789C100C49A4F /* HockeyManagerType.swift in Sources */,
@@ -4531,6 +4542,8 @@
 				A749001F1D00E27100BC3BE7 /* SignupViewController.swift in Sources */,
 				59B0DFFE1D11B2E50081D2DC /* DashboardContextCell.swift in Sources */,
 				A762F01D1C8CD2B3005581A4 /* ActivitySuccessCell.swift in Sources */,
+				A773531F1D5E8AEF0017E239 /* MostPopularSearchProjectCell.swift in Sources */,
+				A77352ED1D5E70FC0017E239 /* MostPopularCell.swift in Sources */,
 				59D1E6261D1865AC00896A4C /* DashboardVideoCell.swift in Sources */,
 				A75CBDE81C8A26F800758C55 /* AppDelegateViewModel.swift in Sources */,
 				A72C3AA71D00F7A30075227E /* SortPagerViewController.swift in Sources */,

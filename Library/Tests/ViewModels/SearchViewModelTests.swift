@@ -7,60 +7,88 @@ import KsApi
 import ReactiveCocoa
 import Result
 @testable import Library
+import Prelude
 
 // swiftlint:disable function_body_length
-final class SearchViewModelTests: TestCase {
-  let vm: SearchViewModelType! = SearchViewModel()
+internal final class SearchViewModelTests: TestCase {
+  private let vm: SearchViewModelType! = SearchViewModel()
+
+  private let changeSearchFieldFocusFocused = TestObserver<Bool, NoError>()
+  private let changeSearchFieldFocusAnimated = TestObserver<Bool, NoError>()
+  private let isPopularTitleVisible = TestObserver<Bool, NoError>()
+  private let hasProjects = TestObserver<Bool, NoError>()
+  private let searchFieldText = TestObserver<String, NoError>()
+
+  override func setUp() {
+    super.setUp()
+
+    self.vm.outputs.changeSearchFieldFocus.map(first).observe(self.changeSearchFieldFocusFocused.observer)
+    self.vm.outputs.changeSearchFieldFocus.map(second).observe(self.changeSearchFieldFocusAnimated.observer)
+    self.vm.outputs.isPopularTitleVisible.observe(self.isPopularTitleVisible.observer)
+    self.vm.outputs.projects.map { !$0.isEmpty }.observe(self.hasProjects.observer)
+    self.vm.outputs.searchFieldText.observe(self.searchFieldText.observer)
+  }
+
+  func testChangeSearchFieldFocus() {
+    self.vm.inputs.viewDidAppear()
+
+    self.changeSearchFieldFocusFocused.assertValues([false])
+    self.changeSearchFieldFocusAnimated.assertValues([false])
+
+    self.vm.inputs.searchFieldDidBeginEditing()
+
+    self.changeSearchFieldFocusFocused.assertValues([false, true])
+    self.changeSearchFieldFocusAnimated.assertValues([false, true])
+
+    self.vm.inputs.cancelButtonPressed()
+
+    self.changeSearchFieldFocusFocused.assertValues([false, true, false])
+    self.changeSearchFieldFocusAnimated.assertValues([false, true, true])
+  }
 
   // Tests a standard flow of searching for projects.
   func testFlow() {
-    let hasProjects = TestObserver<Bool, NoError>()
-    vm.outputs.projects.map { !$0.isEmpty }.observe(hasProjects.observer)
-
-    let isPopularTitleVisible = TestObserver<Bool, NoError>()
-    vm.outputs.isPopularTitleVisible.observe(isPopularTitleVisible.observer)
-
-    hasProjects.assertDidNotEmitValue("No projects before view is visible.")
-    isPopularTitleVisible.assertDidNotEmitValue("Popular title is not visible before view is visible.")
+    self.hasProjects.assertDidNotEmitValue("No projects before view is visible.")
+    self.isPopularTitleVisible.assertDidNotEmitValue("Popular title is not visible before view is visible.")
     XCTAssertEqual([], trackingClient.events, "No events tracked before view is visible.")
 
-    vm.inputs.viewDidAppear()
-    scheduler.advance()
+    self.vm.inputs.viewDidAppear()
+    self.scheduler.advance()
 
-    hasProjects.assertValues([true], "Projects emitted immediately upon view appearing.")
-    isPopularTitleVisible.assertValues([true], "Popular title visible upon view appearing.")
+    self.hasProjects.assertValues([true], "Projects emitted immediately upon view appearing.")
+    self.isPopularTitleVisible.assertValues([true], "Popular title visible upon view appearing.")
     XCTAssertEqual(["Discover Search"], trackingClient.events,
                    "The search view event tracked upon view appearing.")
 
-    vm.inputs.searchTextChanged("skull graphic tee")
+    self.vm.inputs.searchTextChanged("skull graphic tee")
 
-    hasProjects.assertValues([true, false], "Projects clear immediately upon entering search.")
-    isPopularTitleVisible.assertValues([true, false],
+    self.hasProjects.assertValues([true, false], "Projects clear immediately upon entering search.")
+    self.isPopularTitleVisible.assertValues([true, false],
                                        "Popular title hide immediately upon entering search.")
 
-    scheduler.advance()
+    self.scheduler.advance()
 
-    hasProjects.assertValues([true, false, true], "Projects emit after waiting enough time.")
-    isPopularTitleVisible.assertValues([true, false],
+    self.hasProjects.assertValues([true, false, true], "Projects emit after waiting enough time.")
+    self.isPopularTitleVisible.assertValues([true, false],
                                        "Popular title visibility still not emit after time has passed.")
     XCTAssertEqual(["Discover Search", "Discover Search Results"], trackingClient.events,
                    "A koala event is tracked for the search results.")
     XCTAssertEqual("skull graphic tee", trackingClient.properties.last!["search_term"] as? String)
 
-    vm.inputs.searchTextChanged("")
-    scheduler.advance()
+    self.vm.inputs.searchTextChanged("")
+    self.scheduler.advance()
 
-    hasProjects.assertValues([true, false, true, false, true],
+    self.hasProjects.assertValues([true, false, true, false, true],
                              "Clearing search clears projects and brings back popular projects.")
-    isPopularTitleVisible.assertValues([true, false, true],
+    self.isPopularTitleVisible.assertValues([true, false, true],
                                        "Clearing search brings back popular title.")
     XCTAssertEqual(["Discover Search", "Discover Search Results"], trackingClient.events)
 
-    vm.inputs.viewDidAppear()
+    self.vm.inputs.viewDidAppear()
 
-    hasProjects.assertValues([true, false, true, false, true],
+    self.hasProjects.assertValues([true, false, true, false, true],
                              "Leaving view and coming back doesn't load more projects.")
-    isPopularTitleVisible.assertValues([true, false, true],
+    self.isPopularTitleVisible.assertValues([true, false, true],
                                        "Leaving view and coming back doesn't change popular title")
     XCTAssertEqual(["Discover Search", "Discover Search Results"], trackingClient.events,
                    "Leaving view and coming back doesn't emit more koala events.")
@@ -71,33 +99,31 @@ final class SearchViewModelTests: TestCase {
   func testOrderingOfPopularAndDelayedSearches() {
     withEnvironment(debounceInterval: TestCase.interval) {
       let projects = TestObserver<[Int], NoError>()
-      vm.outputs.projects.map { $0.map { $0.id } }.observe(projects.observer)
-      let hasProjects = TestObserver<Bool, NoError>()
-      vm.outputs.projects.map { !$0.isEmpty }.observe(hasProjects.observer)
+      self.vm.outputs.projects.map { $0.map { $0.id } }.observe(projects.observer)
 
-      vm.inputs.viewDidAppear()
-      scheduler.advance()
+      self.vm.inputs.viewDidAppear()
+      self.scheduler.advance()
 
-      hasProjects.assertValues([true], "Popular projects emit immediately.")
+      self.hasProjects.assertValues([true], "Popular projects emit immediately.")
       let popularProjects = projects.values.last!
 
-      vm.inputs.searchTextChanged("skull graphic tee")
+      self.vm.inputs.searchTextChanged("skull graphic tee")
 
-      hasProjects.assertValues([true, false], "Clears projects immediately.")
+      self.hasProjects.assertValues([true, false], "Clears projects immediately.")
 
-      scheduler.advanceByInterval(TestCase.interval / 2.0)
+      self.scheduler.advanceByInterval(TestCase.interval / 2.0)
 
-      hasProjects.assertValues([true, false], "Doesn't emit projects after a little time.")
+      self.hasProjects.assertValues([true, false], "Doesn't emit projects after a little time.")
 
-      vm.inputs.searchTextChanged("")
-      scheduler.advance()
+      self.vm.inputs.searchTextChanged("")
+      self.scheduler.advance()
 
-      hasProjects.assertValues([true, false, true], "Brings back popular projets immediately.")
+      self.hasProjects.assertValues([true, false, true], "Brings back popular projets immediately.")
       projects.assertLastValue(popularProjects, "Brings back popular projects immediately.")
 
-      scheduler.run()
+      self.scheduler.run()
 
-      hasProjects.assertValues([true, false, true],
+      self.hasProjects.assertValues([true, false, true],
                                "Doesn't search for projects after time enough time passes.")
       projects.assertLastValue(popularProjects, "Brings back popular projects immediately.")
 
@@ -114,57 +140,71 @@ final class SearchViewModelTests: TestCase {
 
     withEnvironment(apiDelayInterval: apiDelay, debounceInterval: debounceDelay) {
       let projects = TestObserver<[Int], NoError>()
-      vm.outputs.projects.map { $0.map { $0.id } }.observe(projects.observer)
-      let hasProjects = TestObserver<Bool, NoError>()
-      vm.outputs.projects.map { !$0.isEmpty }.observe(hasProjects.observer)
+      self.vm.outputs.projects.map { $0.map { $0.id } }.observe(projects.observer)
 
-      vm.inputs.viewDidAppear()
-      scheduler.advanceByInterval(apiDelay)
+      self.vm.inputs.viewDidAppear()
+      self.scheduler.advanceByInterval(apiDelay)
 
-      hasProjects.assertValues([true], "Popular projects load immediately.")
+      self.hasProjects.assertValues([true], "Popular projects load immediately.")
 
-      vm.inputs.searchTextChanged("skull")
+      self.vm.inputs.searchTextChanged("skull")
 
-      hasProjects.assertValues([true, false], "Projects clear after entering search term.")
+      self.hasProjects.assertValues([true, false], "Projects clear after entering search term.")
 
       // wait a little bit of time, but not enough to complete the debounce
-      scheduler.advanceByInterval(debounceDelay / 2.0)
+      self.scheduler.advanceByInterval(debounceDelay / 2.0)
 
-      hasProjects.assertValues([true, false],
+      self.hasProjects.assertValues([true, false],
                                "No new projects load after waiting enough a little bit of time.")
 
-      vm.inputs.searchTextChanged("skull graphic")
+      self.vm.inputs.searchTextChanged("skull graphic")
 
-      hasProjects.assertValues([true, false], "No new projects load after entering new search term.")
+      self.hasProjects.assertValues([true, false], "No new projects load after entering new search term.")
 
       // wait a little bit of time, but not enough to complete the debounce
-      scheduler.advanceByInterval(debounceDelay / 2.0)
+      self.scheduler.advanceByInterval(debounceDelay / 2.0)
 
-      hasProjects.assertValues([true, false], "No new projects load after entering new search term.")
+      self.hasProjects.assertValues([true, false], "No new projects load after entering new search term.")
 
       // Wait enough time for debounced request to be made, but not enough time for it to finish.
-      scheduler.advanceByInterval(debounceDelay / 2.0)
+      self.scheduler.advanceByInterval(debounceDelay / 2.0)
 
-      hasProjects.assertValues([true, false],
+      self.hasProjects.assertValues([true, false],
                                "No projects emit after waiting enough time for API to request to be made")
 
-      vm.inputs.searchTextChanged("skull graphic tee")
+      self.vm.inputs.searchTextChanged("skull graphic tee")
 
-      hasProjects.assertValues([true, false], "Still no new projects after entering another search term.")
+      self.hasProjects.assertValues([true, false],
+                                    "Still no new projects after entering another search term.")
 
       // wait enough time for API request to be fired.
-      scheduler.advanceByInterval(debounceDelay + apiDelay)
+      self.scheduler.advanceByInterval(debounceDelay + apiDelay)
 
-      hasProjects.assertValues([true, false, true], "Search projects load after waiting enough time.")
+      self.hasProjects.assertValues([true, false, true], "Search projects load after waiting enough time.")
       XCTAssertEqual(["Discover Search", "Discover Search Results"], trackingClient.events)
 
       // run out the scheduler
-      scheduler.run()
+      self.scheduler.run()
 
-      hasProjects.assertValues([true, false, true], "Nothing new is emitted.")
+      self.hasProjects.assertValues([true, false, true], "Nothing new is emitted.")
       XCTAssertEqual(["Discover Search", "Discover Search Results"],
                      self.trackingClient.events,
                      "Nothing new is tracked.")
     }
+  }
+
+  func testSearchFieldText() {
+    self.vm.inputs.viewDidAppear()
+    self.vm.inputs.searchFieldDidBeginEditing()
+
+    self.searchFieldText.assertValues([])
+
+    self.vm.inputs.searchTextChanged("HELLO")
+
+    self.searchFieldText.assertValues([])
+
+    self.vm.inputs.cancelButtonPressed()
+
+    self.searchFieldText.assertValues([""])
   }
 }

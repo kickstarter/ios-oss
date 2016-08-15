@@ -56,6 +56,6 @@ public let categoryLocationButtonStyle =
     <> UIButton.lens.titleColor(forState: .Highlighted) .~ .ksr_navy_700
     <> UIButton.lens.adjustsImageWhenHighlighted .~ true
     <> UIButton.lens.tintColor .~ .ksr_text_navy_500
-    <> UIButton.lens.titleEdgeInsets .~ .init(top: 0, left: Styles.grid(), bottom: 0, right: -Styles.grid())
-    <> (UIButton.lens.contentEdgeInsets • UIEdgeInsets.lens.right) %~ { $0 + Styles.grid() }
+    <> UIButton.lens.titleEdgeInsets .~ .init(top: 0, left: Styles.grid(1), bottom: 0, right: -Styles.grid(1))
+    <> (UIButton.lens.contentEdgeInsets • UIEdgeInsets.lens.right) %~ { $0 + Styles.grid(1) }
     <> UIButton.lens.layer.cornerRadius .~ Styles.grid(3)

@@ -47,7 +47,7 @@ internal final class RewardCell: UITableViewCell, ValueCell {
       |> UIStackView.lens.spacing .~ Styles.grid(4)
 
     self.minimumStackView
-      |> UIStackView.lens.spacing .~ Styles.grid()
+      |> UIStackView.lens.spacing .~ Styles.grid(1)
 
     self.titleDescriptionStackView
       |> UIStackView.lens.spacing .~ Styles.grid(2)
@@ -64,7 +64,7 @@ internal final class RewardCell: UITableViewCell, ValueCell {
     self.allGoneContainerView
       |> roundedStyle()
       |> UIView.lens.backgroundColor .~ UIColor.ksr_navy_700
-      |> UIView.lens.layoutMargins .~ .init(topBottom: Styles.gridHalf(), leftRight: Styles.grid())
+      |> UIView.lens.layoutMargins .~ .init(topBottom: Styles.gridHalf(), leftRight: Styles.grid(1))
 
     self.allGoneLabel
       |> UILabel.lens.textColor .~ .whiteColor()
@@ -106,7 +106,7 @@ internal final class RewardCell: UITableViewCell, ValueCell {
     self.youreABackerContainerView
       |> roundedStyle()
       |> UIView.lens.backgroundColor .~ UIColor.ksr_green_700
-      |> UIView.lens.layoutMargins .~ .init(all: Styles.grid())
+      |> UIView.lens.layoutMargins .~ .init(all: Styles.grid(1))
 
     self.youreABackerLabel
       |> UILabel.lens.font .~ .ksr_headline(size: Styles.grid(2))

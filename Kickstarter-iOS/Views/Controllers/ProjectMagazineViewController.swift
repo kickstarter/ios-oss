@@ -135,7 +135,7 @@ internal final class ProjectMagazineViewController: UIViewController {
     }
 
     self.bottomButtonContainerView
-      |> UIView.lens.layoutMargins .~ .init(all: Styles.grid())
+      |> UIView.lens.layoutMargins .~ .init(all: Styles.grid(1))
       |> UIView.lens.backgroundColor .~ UIColor.ksr_navy_200.colorWithAlphaComponent(0.4)
   }
   // swiftlint:enable function_body_length
