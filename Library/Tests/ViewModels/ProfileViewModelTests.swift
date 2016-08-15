@@ -51,7 +51,7 @@ internal final class ProfileViewModelTests: TestCase {
     self.hasBackedProjects.assertValues([true])
     self.showEmptyState.assertValues([false])
 
-    XCTAssertEqual(["Profile View My"], trackingClient.events)
+    XCTAssertEqual(["Profile View My", "Viewed Profile"], trackingClient.events)
   }
 
   func testUserWithBackedProjectsWithoutProfileViewTracking() {

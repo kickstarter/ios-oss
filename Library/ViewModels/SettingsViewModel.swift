@@ -14,6 +14,7 @@ public protocol SettingsViewModelInputs {
   func friendActivityTapped(selected selected: Bool)
   func gamesNewsletterTapped(on on: Bool)
   func happeningNewsletterTapped(on on: Bool)
+  func logoutCanceled()
   func logoutConfirmed()
   func logoutTapped()
   func manageProjectNotificationsTapped()
@@ -198,10 +199,52 @@ public final class SettingsViewModel: SettingsViewModelType, SettingsViewModelIn
         )
     }
 
-    newsletterOn.observeNext { _, on in AppEnvironment.current.koala.trackNewsletterToggle(on, project: nil) }
+    // Tracking Events
+    Signal.merge(
+      self.backingsTappedProperty.signal.mapConst(Notification.backings.type),
+      self.commentsTappedProperty.signal.mapConst(Notification.comments.type),
+      self.followerTappedProperty.signal.mapConst(Notification.follower.type),
+      self.friendActivityTappedProperty.signal.mapConst(Notification.friendActivity.type),
+      self.postLikesTappedProperty.signal.mapConst(Notification.postLikes.type),
+      self.updatesTappedProperty.signal.mapConst(Notification.updates.type)
+    )
+      .observeNext {
+        AppEnvironment.current.koala.trackChangeEmailNotification(type: $0)
+    }
 
-    self.rateUsTappedProperty.signal
+    Signal.merge(
+      self.gamesNewsletterTappedProperty.signal.mapConst(Newsletter.games.rawValue),
+      self.happeningNewsletterTappedProperty.signal.mapConst(Newsletter.happening.rawValue),
+      self.promoNewsletterTappedProperty.signal.mapConst(Newsletter.promo.rawValue),
+      self.weeklyNewsletterTappedProperty.signal.mapConst(Newsletter.weekly.rawValue)
+      )
+      .observeNext {
+        AppEnvironment.current.koala.trackChangeNewsletter(type: $0)
+    }
+
+    Signal.merge(
+      self.mobileBackingsTappedProperty.signal.mapConst(Notification.mobileBackings.type),
+      self.mobileCommentsTappedProperty.signal.mapConst(Notification.mobileComments.type),
+      self.mobileFollowerTappedProperty.signal.mapConst(Notification.mobileFollower.type),
+      self.mobileFriendActivityTappedProperty.signal.mapConst(Notification.mobileFriendActivity.type),
+      self.mobilePostLikesTappedProperty.signal.mapConst(Notification.mobilePostLikes.type),
+      self.mobileUpdatesTappedProperty.signal.mapConst(Notification.mobileUpdates.type)
+      )
+      .observeNext {
+        AppEnvironment.current.koala.trackChangePushNotification(type: $0)
+    }
+
+    self.logoutCanceledProperty.signal
+      .observeNext { _ in AppEnvironment.current.koala.trackCancelLogoutModal() }
+
+    self.logoutConfirmedProperty.signal
+      .observeNext { _ in AppEnvironment.current.koala.trackConfirmLogoutModal() }
+
+    self.goToAppStoreRating
       .observeNext { _ in AppEnvironment.current.koala.trackAppStoreRatingOpen() }
+
+    self.showConfirmLogoutPrompt
+      .observeNext { _ in AppEnvironment.current.koala.trackLogoutModal() }
 
     self.viewDidLoadProperty.signal.observeNext { _ in AppEnvironment.current.koala.trackSettingsView() }
   }
@@ -235,6 +278,10 @@ public final class SettingsViewModel: SettingsViewModelType, SettingsViewModelIn
   private let happeningNewsletterTappedProperty = MutableProperty(false)
   public func happeningNewsletterTapped(on on: Bool) {
     self.happeningNewsletterTappedProperty.value = on
+  }
+  private let logoutCanceledProperty = MutableProperty()
+  public func logoutCanceled() {
+    self.logoutCanceledProperty.value = ()
   }
   private let logoutConfirmedProperty = MutableProperty()
   public func logoutConfirmed() {
@@ -361,7 +408,7 @@ private enum UserAttribute {
   }
 }
 
-private enum Newsletter {
+private enum Newsletter: String {
   case games
   case happening
   case promo
@@ -394,5 +441,17 @@ private enum Notification {
   case mobileUpdates
   case postLikes
   case updates
+
+  // Notification types for event tracking.
+  private var type: String {
+    switch self {
+    case .backings, .mobileBackings:                return "New pledges"
+    case .comments, .mobileComments:                return "New comments"
+    case .follower, .mobileFollower:                return "New followers"
+    case .friendActivity, .mobileFriendActivity:    return "Friend backs a project"
+    case .postLikes, .mobilePostLikes:              return "New likes"
+    case .updates, .mobileUpdates:                  return "Project updates"
+    }
+  }
 }
 // swiftlint:enable file_length

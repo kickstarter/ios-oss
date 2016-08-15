@@ -168,7 +168,15 @@ internal final class SettingsViewController: UIViewController {
   private func showLogoutPrompt(message message: String, cancel: String, confirm: String) {
     let logoutAlert = UIAlertController(title: nil, message: message, preferredStyle: .Alert)
 
-    logoutAlert.addAction(UIAlertAction(title: cancel, style: .Cancel, handler: nil))
+    logoutAlert.addAction(
+      UIAlertAction(
+        title: cancel,
+        style: .Cancel,
+        handler: { [weak self] _ in
+          self?.viewModel.inputs.logoutCanceled()
+        }
+      )
+    )
 
     logoutAlert.addAction(
       UIAlertAction(

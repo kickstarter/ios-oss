@@ -594,16 +594,54 @@ public final class Koala {
 
   // MARK: Profile Events
   public func trackProfileView() {
-    self.track(event: "Profile View My")
+    // deprecated
+    self.track(event: "Profile View My", properties: [Koala.DeprecatedKey: true])
+
+    self.track(event: "Viewed Profile")
   }
 
   // MARK: Settings Events
   public func trackAppStoreRatingOpen() {
-    self.track(event: "App Store Rating Open")
+    // deprecated
+    self.track(event: "App Store Rating Open", properties: [Koala.DeprecatedKey: true])
+
+    self.track(event: "Opened App Store Listing")
+  }
+
+  public func trackCancelLogoutModal() {
+    self.track(event: "Canceled Logout", properties: ["context": "modal"])
+  }
+
+  public func trackChangeEmailNotification(type notificationType: String) {
+    self.track(event: "Changed Email Notifications", properties: ["type": notificationType])
+  }
+
+  public func trackChangeNewsletter(type newsletterType: String) {
+    self.track(event: "Changed Newsletter Subscription", properties: ["type": newsletterType])
+  }
+
+  public func trackChangeProjectNotification(project: ProjectNotification.Project) {
+    let props: [String: AnyObject] = ["name": project.name, "id": project.id]
+    self.track(event: "Changed Project Notifications", properties: props)
+  }
+
+  public func trackChangePushNotification(type notificationType: String) {
+    self.track(event: "Changed Push Notifications", properties: ["type": notificationType])
+  }
+
+  public func trackConfirmLogoutModal() {
+    self.track(event: "Confirmed Logout", properties: ["context": "modal"])
+  }
+
+  public func trackLogoutModal() {
+    self.track(event: "Triggered Logout Modal")
   }
 
   public func trackSettingsView() {
-    self.track(event: "Settings View")
+    // deprecated
+    self.track(event: "Settings View", properties: [Koala.DeprecatedKey: true])
+
+    self.track(event: "Viewed Settings")
   }
 
   // MARK: Find Friends Events

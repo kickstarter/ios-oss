@@ -63,6 +63,9 @@ internal final class ProjectNotificationCellViewModelTests: TestCase {
     self.scheduler.advance()
     self.notificationOn.assertValues([false, true, false], "Notification turned off.")
     self.notifyDelegateOfSaveError.assertDidNotEmitValue("Notification preference saved successfully.")
+
+    XCTAssertEqual(["Changed Project Notifications", "Changed Project Notifications",
+      "Changed Project Notifications"], self.trackingClient.events)
   }
 
   internal func testUpdateError() {
