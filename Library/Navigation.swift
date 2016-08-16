@@ -118,6 +118,7 @@ private let routes = [
 ]
 
 extension Navigation.Project {
+  // swiftlint:disable conditional_binding_cascade
   public static func withRequest(request: NSURLRequest) -> (Param, RefTag?)? {
     guard let nav = Navigation.match(request), case let .project(project, .root, refTag) = nav
       else { return nil }
@@ -135,6 +136,7 @@ extension Navigation.Project {
       else { return nil }
     return (project, update)
   }
+  // swiftlint:enable conditional_binding_cascade
 }
 
 // MARK: Router

@@ -6,8 +6,10 @@ internal final class DiscoveryPageViewController: UITableViewController {
   private let viewModel: DiscoveryPageViewModelType = DiscoveryPageViewModel()
   private let dataSource = DiscoveryProjectsDataSource()
 
-  internal func configureWith(sort sort: DiscoveryParams.Sort) {
-    self.viewModel.inputs.configureWith(sort: sort)
+  internal static func configuredWith(sort sort: DiscoveryParams.Sort) -> DiscoveryPageViewController {
+    let vc = Storyboard.Discovery.instantiate(DiscoveryPageViewController)
+    vc.viewModel.inputs.configureWith(sort: sort)
+    return vc
   }
 
   internal func change(filter filter: DiscoveryParams) {

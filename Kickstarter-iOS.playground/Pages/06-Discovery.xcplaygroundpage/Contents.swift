@@ -45,12 +45,12 @@ AppEnvironment.replaceCurrentEnvironment(
   )
 )
 
-let controller = storyboard(named: "Discovery")
-  .instantiateViewControllerWithIdentifier("DiscoveryPageViewController") as! DiscoveryPageViewController
+UIView.initialize()
+UIViewController.initialize()
+let controller = DiscoveryPageViewController.configuredWith(sort: .Magic)
 
 let (parent, _) = playgroundControllers(device: .pad, orientation: .portrait, child: controller)
 
-controller.configureWith(sort: .Magic)
 controller.change(filter: .defaults)
 
 let frame = parent.view.frame

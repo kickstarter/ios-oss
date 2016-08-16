@@ -7,18 +7,7 @@ internal final class DiscoveryPagesDataSource: NSObject, UIPageViewControllerDat
 
   internal init(sorts: [DiscoveryParams.Sort]) {
     self.sorts = sorts
-
-    let storyboard = UIStoryboard(name: "Discovery", bundle: NSBundle(forClass: self.dynamicType))
-
-    self.viewControllers = sorts.map { sort in
-      let vc = storyboard.instantiateViewControllerWithIdentifier("DiscoveryPageViewController")
-      guard let page = vc as? DiscoveryPageViewController else {
-        fatalError("Couldn't instantiate DiscoveryPageViewController.")
-      }
-
-      page.configureWith(sort: sort)
-      return page
-    }
+    self.viewControllers = sorts.map(DiscoveryPageViewController.configuredWith(sort:))
   }
 
   internal func load(filter filter: DiscoveryParams) {
