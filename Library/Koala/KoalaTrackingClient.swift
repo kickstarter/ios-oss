@@ -1,12 +1,4 @@
-import class Foundation.NSURLSession
-import class Foundation.NSJSONSerialization
-import class Foundation.NSDate
-import class Foundation.NSMutableURLRequest
-import class Foundation.NSURLRequest
-import class Foundation.NSURL
-import class Foundation.NSURLSessionDataTask
-import class Foundation.NSHTTPURLResponse
-import var Foundation.NSUTF8StringEncoding
+import Foundation
 
 public final class KoalaTrackingClient: TrackingClientType {
   private let URLSession: NSURLSession
@@ -24,7 +16,7 @@ public final class KoalaTrackingClient: TrackingClientType {
 
   public func track(event event: String, properties: [String: AnyObject]) {
     #if DEBUG
-    print("[Koala] Track: \(event), properties: \(properties)")
+    NSLog("[Koala Track]: \(event), properties: \(properties)")
     #endif
     self.track(event: event, properties: properties, time: NSDate())
   }
@@ -71,7 +63,7 @@ public final class KoalaTrackingClient: TrackingClientType {
     return URLSession.dataTaskWithRequest(request) { _, response, err in
       guard let response = response as? NSHTTPURLResponse else { return }
       #if DEBUG
-      print("[Koala] Status code: \(response.statusCode)")
+      NSLog("[Koala Status code]: \(response.statusCode)")
       #endif
     }
   }
