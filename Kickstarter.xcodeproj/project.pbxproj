@@ -536,6 +536,11 @@
 		A78012651D2EEA620027396E /* ReferralChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A78012641D2EEA620027396E /* ReferralChartView.swift */; };
 		A7808B6B1D61E9DF001CF96A /* MostPopularSearchProjectCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7808B6A1D61E9DF001CF96A /* MostPopularSearchProjectCellViewModel.swift */; };
 		A7808B6C1D61E9DF001CF96A /* MostPopularSearchProjectCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7808B6A1D61E9DF001CF96A /* MostPopularSearchProjectCellViewModel.swift */; };
+		A7808BBE1D6240B9001CF96A /* ProjectCreatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7808BBD1D6240B9001CF96A /* ProjectCreatorViewController.swift */; };
+		A7808BF01D625C6A001CF96A /* ProjectCreateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7808BEF1D625C6A001CF96A /* ProjectCreateViewModel.swift */; };
+		A7808BF11D625C6A001CF96A /* ProjectCreateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7808BEF1D625C6A001CF96A /* ProjectCreateViewModel.swift */; };
+		A7808BF31D625D10001CF96A /* ProjectCreatorViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7808BF21D625D10001CF96A /* ProjectCreatorViewModelTests.swift */; };
+		A7808BF41D625D10001CF96A /* ProjectCreatorViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7808BF21D625D10001CF96A /* ProjectCreatorViewModelTests.swift */; };
 		A782B4171D2C249E0069D10E /* DiscoveryProjectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E06CC91C5BFB3800EBDCC2 /* DiscoveryProjectCell.swift */; };
 		A782B4181D2C249E0069D10E /* DiscoveryProjectCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7E06CCA1C5BFB3800EBDCC2 /* DiscoveryProjectCell.xib */; };
 		A782B4191D2C249E0069D10E /* HomePlaylistCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E06CCB1C5BFB3800EBDCC2 /* HomePlaylistCell.swift */; };
@@ -644,8 +649,8 @@
 		A7AD54491D465B370016B4C2 /* ProjectHeaderViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7AD54471D465B370016B4C2 /* ProjectHeaderViewModelTests.swift */; };
 		A7AD548A1D4682C20016B4C2 /* ProjectDescriptionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7AD54891D4682C20016B4C2 /* ProjectDescriptionViewModelTests.swift */; };
 		A7AD548B1D4682C20016B4C2 /* ProjectDescriptionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7AD54891D4682C20016B4C2 /* ProjectDescriptionViewModelTests.swift */; };
-		A7AD548D1D4683900016B4C2 /* NewProjectViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7AD548C1D4683900016B4C2 /* NewProjectViewModelTests.swift */; };
-		A7AD548E1D4683900016B4C2 /* NewProjectViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7AD548C1D4683900016B4C2 /* NewProjectViewModelTests.swift */; };
+		A7AD548D1D4683900016B4C2 /* ProjectMagazineViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7AD548C1D4683900016B4C2 /* ProjectMagazineViewModelTests.swift */; };
+		A7AD548E1D4683900016B4C2 /* ProjectMagazineViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7AD548C1D4683900016B4C2 /* ProjectMagazineViewModelTests.swift */; };
 		A7B1BA9A1D01D75F0025A69C /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01D31A361CCA786A0037A178 /* FBSDKCoreKit.framework */; };
 		A7B1BA9B1D01D7620025A69C /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01D31A371CCA786A0037A178 /* FBSDKLoginKit.framework */; };
 		A7B693E71C8772CE00C49A4F /* Library.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A755113C1C8642B3005355CF /* Library.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -1713,6 +1718,9 @@
 		A78011971D2DB1EF0027396E /* ProjectMagazine.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ProjectMagazine.storyboard; sourceTree = "<group>"; };
 		A78012641D2EEA620027396E /* ReferralChartView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReferralChartView.swift; sourceTree = "<group>"; };
 		A7808B6A1D61E9DF001CF96A /* MostPopularSearchProjectCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MostPopularSearchProjectCellViewModel.swift; sourceTree = "<group>"; };
+		A7808BBD1D6240B9001CF96A /* ProjectCreatorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectCreatorViewController.swift; sourceTree = "<group>"; };
+		A7808BEF1D625C6A001CF96A /* ProjectCreateViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectCreateViewModel.swift; sourceTree = "<group>"; };
+		A7808BF21D625D10001CF96A /* ProjectCreatorViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectCreatorViewModelTests.swift; sourceTree = "<group>"; };
 		A7830CDD1D005C3F00B5B6AE /* ActivitiesViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivitiesViewModelTests.swift; sourceTree = "<group>"; };
 		A7830CDF1D005C3F00B5B6AE /* BackingCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackingCellViewModelTests.swift; sourceTree = "<group>"; };
 		A7830CE01D005C3F00B5B6AE /* CommentCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentCellViewModelTests.swift; sourceTree = "<group>"; };
@@ -1755,7 +1763,7 @@
 		A7A882BE1D31745500E9046E /* SimpleHTMLLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleHTMLLabel.swift; sourceTree = "<group>"; };
 		A7AD54471D465B370016B4C2 /* ProjectHeaderViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectHeaderViewModelTests.swift; sourceTree = "<group>"; };
 		A7AD54891D4682C20016B4C2 /* ProjectDescriptionViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectDescriptionViewModelTests.swift; sourceTree = "<group>"; };
-		A7AD548C1D4683900016B4C2 /* NewProjectViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewProjectViewModelTests.swift; sourceTree = "<group>"; };
+		A7AD548C1D4683900016B4C2 /* ProjectMagazineViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectMagazineViewModelTests.swift; sourceTree = "<group>"; };
 		A7B693FE1C8789C100C49A4F /* HockeyManagerType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HockeyManagerType.swift; sourceTree = "<group>"; };
 		A7B694271C87A04C00C49A4F /* HockeySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = HockeySDK.framework; sourceTree = "<group>"; };
 		A7B694291C87A04C00C49A4F /* HockeySDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = HockeySDKResources.bundle; sourceTree = "<group>"; };
@@ -2282,7 +2290,6 @@
 			isa = PBXGroup;
 			children = (
 				A7F761741C85FA40005405ED /* ActivitiesViewController.swift */,
-				59673CBC1D50ED380035AFD9 /* VideoViewController.swift */,
 				80EAEF011D243B69008C2353 /* BackingViewController.swift */,
 				A7A0534C1CD19C68005AF5E2 /* CommentDialogViewController.swift */,
 				A7180BA81CCED598001711CA /* CommentsViewController.swift */,
@@ -2301,6 +2308,7 @@
 				A71003D81CDCFA2500B4F4D7 /* MessageThreadsViewController.swift */,
 				A745D0491CA8986E00C12802 /* ProfileViewController.swift */,
 				9D9F580C1D131B1200CE81DE /* ProjectActivitiesViewController.swift */,
+				A7808BBD1D6240B9001CF96A /* ProjectCreatorViewController.swift */,
 				A7561A3A1D3144210028DEA1 /* ProjectDescriptionViewController.swift */,
 				A79281851D3690EC00281409 /* ProjectFooterViewController.swift */,
 				A79281531D3690E000281409 /* ProjectHeaderViewController.swift */,
@@ -2320,6 +2328,7 @@
 				803BDF731D11AF7C004A785A /* UpdateDraftViewController.swift */,
 				8072F41C1D46B75200999EF1 /* UpdatePreviewViewController.swift */,
 				A731BF8B1D1EE44E00A734AC /* UpdateViewController.swift */,
+				59673CBC1D50ED380035AFD9 /* VideoViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -2460,7 +2469,6 @@
 				A7CC14281D00E70900035C52 /* FindFriendsStatsCellViewModelTests.swift */,
 				A7CC14291D00E70900035C52 /* FindFriendsViewModelTests.swift */,
 				01940B7F1D46DCC30074FCE3 /* HelpViewModelTests.swift */,
-				59673CD21D50FB350035AFD9 /* VideoViewModelTests.swift */,
 				A7830CE51D005C3F00B5B6AE /* LoginToutViewModelTests.swift */,
 				A7830CE61D005C3F00B5B6AE /* LoginViewModelTests.swift */,
 				A7830CE71D005C3F00B5B6AE /* MessageCellViewModelTests.swift */,
@@ -2469,7 +2477,6 @@
 				A7830CEA1D005C3F00B5B6AE /* MessagesViewModelTests.swift */,
 				A7830CEB1D005C3F00B5B6AE /* MessageThreadCellViewModelTests.swift */,
 				A7830CEC1D005C3F00B5B6AE /* MessageThreadsViewModelTests.swift */,
-				A7AD548C1D4683900016B4C2 /* NewProjectViewModelTests.swift */,
 				A7830CED1D005C3F00B5B6AE /* ProfileHeaderViewModelTests.swift */,
 				A7830CEE1D005C3F00B5B6AE /* ProfileProjectCellViewModelTests.swift */,
 				A7830CEF1D005C3F00B5B6AE /* ProfileViewModelTests.swift */,
@@ -2480,9 +2487,11 @@
 				9DC204E91D1B4EC1003C1636 /* ProjectActivityNegativeStateChangeCellViewModelTests.swift */,
 				9D2F4BAA1D1ADF1800B7C554 /* ProjectActivitySuccessCellViewModelTests.swift */,
 				9D14FFF91D135E4F005F4ABB /* ProjectActivityUpdateCellViewModelTests.swift */,
+				A7808BF21D625D10001CF96A /* ProjectCreatorViewModelTests.swift */,
 				A7AD54891D4682C20016B4C2 /* ProjectDescriptionViewModelTests.swift */,
 				A7B9AE611D463FE20096A9B7 /* ProjectFooterViewModelTests.swift */,
 				A7AD54471D465B370016B4C2 /* ProjectHeaderViewModelTests.swift */,
+				A7AD548C1D4683900016B4C2 /* ProjectMagazineViewModelTests.swift */,
 				597073BF1D0760F200B00444 /* ProjectNotificationCellViewModelTests.swift */,
 				597073861D06169700B00444 /* ProjectNotificationsViewModelTest.swift */,
 				A7830CF31D005C3F00B5B6AE /* ResetPasswordViewModelTests.swift */,
@@ -2496,6 +2505,7 @@
 				A7830CF61D005C3F00B5B6AE /* ThanksViewModelTests.swift */,
 				A7830CF71D005C3F00B5B6AE /* TwoFactorViewModelTests.swift */,
 				8078D0B21D0F08B1001CFF87 /* UpdateDraftViewModelTests.swift */,
+				59673CD21D50FB350035AFD9 /* VideoViewModelTests.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -2996,7 +3006,6 @@
 				A7F441921D005A9400FE6FC5 /* ActivityUpdateViewModel.swift */,
 				A7F441931D005A9400FE6FC5 /* BackingCellViewModel.swift */,
 				80EAEEFF1D243A7A008C2353 /* BackingViewModel.swift */,
-				59673CBE1D50EE9B0035AFD9 /* VideoViewModel.swift */,
 				A7F441941D005A9400FE6FC5 /* CommentCellViewModel.swift */,
 				A7F441951D005A9400FE6FC5 /* CommentDialogViewModel.swift */,
 				A7F441961D005A9400FE6FC5 /* CommentsViewModel.swift */,
@@ -3030,6 +3039,7 @@
 				A7F4419E1D005A9400FE6FC5 /* MessagesViewModel.swift */,
 				A7F4419F1D005A9400FE6FC5 /* MessageThreadCellViewModel.swift */,
 				A7F441A01D005A9400FE6FC5 /* MessageThreadsViewModel.swift */,
+				A7808B6A1D61E9DF001CF96A /* MostPopularSearchProjectCellViewModel.swift */,
 				A7F441A11D005A9400FE6FC5 /* ProfileHeaderViewModel.swift */,
 				A7F441A21D005A9400FE6FC5 /* ProfileProjectCellViewModel.swift */,
 				A7F441A31D005A9400FE6FC5 /* ProfileViewModel.swift */,
@@ -3040,6 +3050,7 @@
 				9DC204B61D1B46BD003C1636 /* ProjectActivityNegativeStateChangeCellViewModel.swift */,
 				9D2F4BDF1D1AE02700B7C554 /* ProjectActivitySuccessCellViewModel.swift */,
 				9D14FFC51D135C12005F4ABB /* ProjectActivityUpdateCellViewModel.swift */,
+				A7808BEF1D625C6A001CF96A /* ProjectCreateViewModel.swift */,
 				A7C93FB51D44142900C2DF9B /* ProjectDescriptionViewModel.swift */,
 				A74A94991D4532690031C23D /* ProjectFooterViewModel.swift */,
 				A7C93F7F1D440D9200C2DF9B /* ProjectHeaderViewModel.swift */,
@@ -3057,7 +3068,7 @@
 				A7F441AB1D005A9400FE6FC5 /* ThanksViewModel.swift */,
 				A7F441AC1D005A9400FE6FC5 /* TwoFactorViewModel.swift */,
 				809F8B651D08B4FF005BADD9 /* UpdateDraftViewModel.swift */,
-				A7808B6A1D61E9DF001CF96A /* MostPopularSearchProjectCellViewModel.swift */,
+				59673CBE1D50EE9B0035AFD9 /* VideoViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -3958,6 +3969,7 @@
 				A755115D1C8642C3005355CF /* AVPlayerView.swift in Sources */,
 				A7F441C91D005A9400FE6FC5 /* MessageDialogViewModel.swift in Sources */,
 				A78537BC1CB5416700385B73 /* UIDeviceType.swift in Sources */,
+				A7808BF01D625C6A001CF96A /* ProjectCreateViewModel.swift in Sources */,
 				A755115E1C8642C3005355CF /* Environment.swift in Sources */,
 				A7F441D11D005A9400FE6FC5 /* MessageThreadsViewModel.swift in Sources */,
 				A71F59E81D2424CA00909BE3 /* CacheProtocol.swift in Sources */,
@@ -4101,6 +4113,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A7808BF31D625D10001CF96A /* ProjectCreatorViewModelTests.swift in Sources */,
 				59F368C71D245BE8005404DC /* DashboardReferrerRowStackViewViewModelTests.swift in Sources */,
 				A7CC142E1D00E70900035C52 /* FindFriendsHeaderCellViewModelTests.swift in Sources */,
 				A75511981C8645A0005355CF /* LaunchedCountriesTests.swift in Sources */,
@@ -4123,7 +4136,7 @@
 				A7830D101D005C3F00B5B6AE /* MessagesSearchViewModelTests.swift in Sources */,
 				5955E6841D2180E400B4153D /* DashboardReferrersCellViewModelTests.swift in Sources */,
 				A7830D0C1D005C3F00B5B6AE /* MessageCellViewModelTests.swift in Sources */,
-				A7AD548D1D4683900016B4C2 /* NewProjectViewModelTests.swift in Sources */,
+				A7AD548D1D4683900016B4C2 /* ProjectMagazineViewModelTests.swift in Sources */,
 				A72C3AA01D00F6E60075227E /* SortPagerViewModelTests.swift in Sources */,
 				A7830D2C1D005C3F00B5B6AE /* TwoFactorViewModelTests.swift in Sources */,
 				01940B831D46DE9B0074FCE3 /* HelpViewModelTests.swift in Sources */,
@@ -4286,6 +4299,7 @@
 				A75C811D1D210C4700B5AD03 /* SafariActivity.swift in Sources */,
 				9D8772141D19E84E003A4E96 /* ProjectActivityLaunchCellViewModel.swift in Sources */,
 				A7F441E21D005A9400FE6FC5 /* ResetPasswordViewModel.swift in Sources */,
+				A7808BF11D625C6A001CF96A /* ProjectCreateViewModel.swift in Sources */,
 				A7F441C01D005A9400FE6FC5 /* DiscoveryProjectViewModel.swift in Sources */,
 				A75C81211D210C4700B5AD03 /* UpdateActivityItemProvider.swift in Sources */,
 				597073531D05FE6B00B00444 /* ProjectNotificationsViewModel.swift in Sources */,
@@ -4409,6 +4423,7 @@
 				9D2F4BDE1D1AE01800B7C554 /* ProjectActivitySuccessCellViewModelTests.swift in Sources */,
 				A7830CF91D005C3F00B5B6AE /* ActivitiesViewModelTests.swift in Sources */,
 				A78537941CB46CFB00385B73 /* KoalaTests.swift in Sources */,
+				A7808BF41D625D10001CF96A /* ProjectCreatorViewModelTests.swift in Sources */,
 				A7D1CE831D5556C100E621C2 /* RewardCellViewModelTests.swift in Sources */,
 				9D10B94F1D354105008B8045 /* String+TruncateTests.swift in Sources */,
 				A75511F41C865321005355CF /* LocalizedStringTests.swift in Sources */,
@@ -4449,7 +4464,7 @@
 				A7830D031D005C3F00B5B6AE /* CommentsViewModelTests.swift in Sources */,
 				01EFBCB41C920A7E0094EEC2 /* BorderButtonTests.swift in Sources */,
 				A7830D1D1D005C3F00B5B6AE /* ProfileViewModelTests.swift in Sources */,
-				A7AD548E1D4683900016B4C2 /* NewProjectViewModelTests.swift in Sources */,
+				A7AD548E1D4683900016B4C2 /* ProjectMagazineViewModelTests.swift in Sources */,
 				A7830D151D005C3F00B5B6AE /* MessageThreadCellViewModelTests.swift in Sources */,
 				598D96C01D427B8B003F3F66 /* ActivitySampleBackingCellViewModelTests.swift in Sources */,
 				A75511F61C865321005355CF /* UIButton+LocalizedKeyTests.swift in Sources */,
@@ -4551,6 +4566,7 @@
 				5955E64F1D21800300B4153D /* DashboardReferrersCell.swift in Sources */,
 				9D14FF8D1D133351005F4ABB /* ProjectActivityBackingCell.swift in Sources */,
 				A7CC14451D00E75F00035C52 /* FindFriendsDataSource.swift in Sources */,
+				A7808BBE1D6240B9001CF96A /* ProjectCreatorViewController.swift in Sources */,
 				A79281541D3690E000281409 /* ProjectHeaderViewController.swift in Sources */,
 				015B78851D47FF51003216AC /* MFMailComposeViewController.swift in Sources */,
 				A757EA6B1D19F93400A5C978 /* OnePasswordExtension.m in Sources */,

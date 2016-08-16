@@ -24,7 +24,7 @@ public final class Koala {
    - projectMessages: The messages inbox for a particular project of a creator's.
    - projectPage:     The project page.
    */
-  public enum MessageDialogContext: String {
+  public enum MessageDialogContext: String, Equatable {
     case backerModel = "backer_modal"
     case creatorActivity = "creator_activity"
     case messages = "messages"

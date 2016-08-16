@@ -29,6 +29,7 @@ public enum Navigation {
     case creatorBio
     case description
     case friends
+    case messageCreator
     case updates
     case update(Int, Navigation.Project.Update)
     case survey(Int)
@@ -65,6 +66,8 @@ public func == (lhs: Navigation, rhs: Navigation) -> Bool {
   case let (.project(lhsParam, .description, lhsRefTag), .project(rhsParam, .description, rhsRefTag)):
     return lhsParam == rhsParam && lhsRefTag == rhsRefTag
   case let (.project(lhsParam, .friends, lhsRefTag), .project(rhsParam, .friends, rhsRefTag)):
+    return lhsParam == rhsParam && lhsRefTag == rhsRefTag
+  case let (.project(lhsParam, .messageCreator, lhsRefTag), .project(rhsParam, .messageCreator, rhsRefTag)):
     return lhsParam == rhsParam && lhsRefTag == rhsRefTag
   case let (.project(lhsParam, .updates, lhsRefTag), .project(rhsParam, .updates, rhsRefTag)):
     return lhsParam == rhsParam && lhsRefTag == rhsRefTag
@@ -107,6 +110,7 @@ private let routes = [
   "/projects/:creator_param/:project_param/creator_bio": creatorBio,
   "/projects/:creator_param/:project_param/description": projectDescription,
   "/projects/:creator_param/:project_param/friends": friends,
+  "/projects/:creator_param/:project_param/messages/new": messageCreator,
   "/projects/:creator_param/:project_param/posts": posts,
   "/projects/:creator_param/:project_param/posts/:update_param": update,
   "/projects/:creator_param/:project_param/posts/:update_param/comments": updateComments,
@@ -204,6 +208,13 @@ private func friends(params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
     <*> .Success(.friends)
+    <*> params <|? "ref_tag"
+}
+
+private func messageCreator(params: RouteParams) -> Decoded<Navigation> {
+  return curry(Navigation.project)
+    <^> params <| "project_param"
+    <*> .Success(.messageCreator)
     <*> params <|? "ref_tag"
 }
 

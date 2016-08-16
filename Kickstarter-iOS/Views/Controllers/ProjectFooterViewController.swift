@@ -13,30 +13,31 @@ internal final class ProjectFooterViewController: UIViewController {
   internal weak var delegate: ProjectFooterViewControllerDelegate?
 
   @IBOutlet weak var backedCountLabel: UILabel!
-  @IBOutlet weak var bottomPanelView: UIView!
-  @IBOutlet var bulletViews: [UILabel]!
-  @IBOutlet weak var categoryAndLocationStackView: UIStackView!
-  @IBOutlet weak var categoryButton: UIButton!
-  @IBOutlet weak var contactCreatorButton: UIButton!
-  @IBOutlet weak var createdByLabel: UILabel!
-  @IBOutlet weak var createdCountLabel: UILabel!
-  @IBOutlet weak var creatorImageView: UIImageView!
-  @IBOutlet weak var creatorInfoStackView: UIStackView!
-  @IBOutlet weak var creatorNameAndStatsStackView: UIStackView!
-  @IBOutlet weak var creatorNameLabel: UILabel!
-  @IBOutlet weak var creatorStackView: UIStackView!
-  @IBOutlet weak var creatorStatsStackView: UIStackView!
-  @IBOutlet weak var downArrowImageView: UIImageView!
-  @IBOutlet weak var keepReadingButton: UIButton!
-  @IBOutlet weak var keepReadingContainerView: UIView!
-  @IBOutlet weak var keepReadingLabel: UILabel!
-  @IBOutlet weak var keepReadingStackView: UIStackView!
-  @IBOutlet weak var locationButton: UIButton!
-  @IBOutlet weak var rootStackView: UIStackView!
-  @IBOutlet var separatorViews: [UIView]!
-  @IBOutlet weak var topGradientView: GradientView!
-  @IBOutlet weak var topPanelView: UIView!
-  @IBOutlet weak var updatesCountLabel: UILabel!
+  @IBOutlet private weak var bottomPanelView: UIView!
+  @IBOutlet private var bulletViews: [UILabel]!
+  @IBOutlet private weak var categoryAndLocationStackView: UIStackView!
+  @IBOutlet private weak var categoryButton: UIButton!
+  @IBOutlet private weak var contactCreatorButton: UIButton!
+  @IBOutlet private weak var createdByLabel: UILabel!
+  @IBOutlet private weak var createdCountLabel: UILabel!
+  @IBOutlet private weak var creatorButton: UIButton!
+  @IBOutlet private weak var creatorImageView: UIImageView!
+  @IBOutlet private weak var creatorInfoStackView: UIStackView!
+  @IBOutlet private weak var creatorNameAndStatsStackView: UIStackView!
+  @IBOutlet private weak var creatorNameLabel: UILabel!
+  @IBOutlet private weak var creatorStackView: UIStackView!
+  @IBOutlet private weak var creatorStatsStackView: UIStackView!
+  @IBOutlet private weak var downArrowImageView: UIImageView!
+  @IBOutlet private weak var keepReadingButton: UIButton!
+  @IBOutlet private weak var keepReadingContainerView: UIView!
+  @IBOutlet private weak var keepReadingLabel: UILabel!
+  @IBOutlet private weak var keepReadingStackView: UIStackView!
+  @IBOutlet private weak var locationButton: UIButton!
+  @IBOutlet private weak var rootStackView: UIStackView!
+  @IBOutlet private var separatorViews: [UIView]!
+  @IBOutlet private weak var topGradientView: GradientView!
+  @IBOutlet private weak var topPanelView: UIView!
+  @IBOutlet private weak var updatesCountLabel: UILabel!
 
   internal func configureWith(project project: Project) {
     self.viewModel.inputs.configureWith(project: project)
@@ -52,6 +53,10 @@ internal final class ProjectFooterViewController: UIViewController {
     self.contactCreatorButton.addTarget(self,
                                         action: #selector(contactCreatorButtonTapped),
                                         forControlEvents: .TouchUpInside)
+
+    self.creatorButton.addTarget(self,
+                                 action: #selector(creatorButtonTapped),
+                                 forControlEvents: .TouchUpInside)
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -175,6 +180,10 @@ internal final class ProjectFooterViewController: UIViewController {
     self.viewModel.outputs.goToMessageCreator
       .observeForUI()
       .observeNext { [weak self] in self?.goToMessageCreator(forProject: $0) }
+
+    self.viewModel.outputs.goToCreatorBio
+      .observeForUI()
+      .observeNext { [weak self] in self?.goToCreatorBio(forProject: $0) }
   }
 
   @objc private func keepReadingButtonTapped() {
@@ -183,6 +192,10 @@ internal final class ProjectFooterViewController: UIViewController {
 
   @objc private func contactCreatorButtonTapped() {
     self.viewModel.inputs.contactCreatorButtonTapped()
+  }
+
+  @objc private func creatorButtonTapped() {
+    self.viewModel.inputs.creatorButtonTapped()
   }
 
   private func goToMessageCreator(forProject project: Project) {
@@ -198,6 +211,12 @@ internal final class ProjectFooterViewController: UIViewController {
     self.presentViewController(UINavigationController(rootViewController: vc),
                                animated: true,
                                completion: nil)
+  }
+
+  private func goToCreatorBio(forProject project: Project) {
+    let vc = ProjectCreatorViewController()
+    vc.configureWith(project: project)
+    self.navigationController?.pushViewController(vc, animated: true)
   }
 }
 

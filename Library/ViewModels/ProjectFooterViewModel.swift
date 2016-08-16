@@ -10,6 +10,8 @@ public protocol ProjectFooterViewModelInputs {
   /// Call when the contact creator button is tapped.
   func contactCreatorButtonTapped()
 
+  func creatorButtonTapped()
+
   /// Call when the "keep reading" button is tapped.
   func keepReadingButtonTapped()
 
@@ -32,6 +34,8 @@ public protocol ProjectFooterViewModelOutputs {
 
   /// Emits the text for the creator's name label.
   var creatorNameLabelText: Signal<String, NoError> { get }
+
+  var goToCreatorBio: Signal<Project, NoError> { get }
 
   /// Emits a project when we should go to the message creator screen.
   var goToMessageCreator: Signal<Project, NoError> { get }
@@ -104,6 +108,9 @@ ProjectFooterViewModelOutputs {
 
     self.goToMessageCreator = project
       .takeWhen(self.contactCreatorButtonTappedProperty.signal)
+
+    self.goToCreatorBio = project
+      .takeWhen(self.creatorButtonTappedProperty.signal)
   }
 
   private let projectProperty = MutableProperty<Project?>(nil)
@@ -114,6 +121,11 @@ ProjectFooterViewModelOutputs {
   private let contactCreatorButtonTappedProperty = MutableProperty()
   public func contactCreatorButtonTapped() {
     self.contactCreatorButtonTappedProperty.value = ()
+  }
+
+  private let creatorButtonTappedProperty = MutableProperty()
+  public func creatorButtonTapped() {
+    self.creatorButtonTappedProperty.value = ()
   }
 
   private let keepReadingButtonTappedProperty = MutableProperty()
@@ -131,6 +143,7 @@ ProjectFooterViewModelOutputs {
   public let createdProjectsLabelText: Signal<String, NoError>
   public let creatorImageUrl: Signal<NSURL?, NoError>
   public let creatorNameLabelText: Signal<String, NoError>
+  public let goToCreatorBio: Signal<Project, NoError>
   public let goToMessageCreator: Signal<Project, NoError>
   public let keepReadingHidden: Signal<Bool, NoError>
   public let locationButtonTitle: Signal<String, NoError>
