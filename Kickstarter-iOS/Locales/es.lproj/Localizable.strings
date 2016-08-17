@@ -1,4 +1,4 @@
-"Youre_about_to_create_a_new_Kickstarter_account" = "You're about to create a new Kickstarter account with the email address you use for Facebook. Please confirm that it’s correct before proceeding.";
+"Youre_about_to_create_a_new_Kickstarter_account" = "Estás a punto de crear una nueva cuenta de Kickstarter usando el correo electrónico associado a tu cuenta de Facebook. Por favor confírmalo antes de proceder.";
 "accessibility.dashboard.buttons.activity" = "Actividad";
 "accessibility.dashboard.buttons.activity_hint" = "Abre actividades.";
 "accessibility.dashboard.buttons.messages" = "Mensajes";
@@ -448,6 +448,7 @@
 "discovery.survey.button.respond_now" = "Responder ahora";
 "discovery.survey.creator_needs_some_info_to_deliver_reward_for_project" = "%{creator_name} necesita un par de datos para entregarte tu recompensa de %{project_name}.";
 "discovery.survey.reward_survey" = "¡Encuesta sobre recompensas!";
+"ending_soon" = "Ending Soon";
 "facebook_confirmation.button" = "Crear una nueva cuenta";
 "facebook_confirmation.could_not_log_in" = "No se pudo iniciar sesión con Facebook.";
 "facebook_confirmation.detail" = "Antes de crear nueva cuenta, por favor verifica si hemos seleccionado la dirección de correo electrónico correcta de tu perfil de Facebook:";
@@ -492,6 +493,7 @@
 "general.social.buttons.connect_with_twitter" = "Conectar con Twitter";
 "general.switch_toggle_off" = "NO";
 "general.switch_toggle_on" = "SÍ";
+"home" = "Inicio";
 "invalid_api_client_alert.cancel" = "Cancelar";
 "invalid_api_client_alert.message" = "Parece que estás usando una versión muy antigua de esta aplicación. Por favor descarga la última versión de la App Store para continuar usándola.";
 "invalid_api_client_alert.title" = "Por favor actualizar";
@@ -567,6 +569,7 @@
 "messages.navigation.sent" = "Enviados";
 "messages.search.placeholder_search_messages" = "Buscar mensajes";
 "messages.sent_date" = "enviado %{sent_date}";
+"popular" = "Popular";
 "profile.buttons.messages" = "Mensajes";
 "profile.buttons.settings" = "Configuración";
 "profile.category_count_categories_backed.few" = "en %{category_count} categorías";

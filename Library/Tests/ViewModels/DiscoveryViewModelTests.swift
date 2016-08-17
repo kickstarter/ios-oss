@@ -17,6 +17,7 @@ internal final class DiscoveryViewModelTests: TestCase {
   private let navigateToSort = TestObserver<DiscoveryParams.Sort, NoError>()
   private let navigateDirection = TestObserver<UIPageViewControllerNavigationDirection, NoError>()
   private let selectSortPage = TestObserver<DiscoveryParams.Sort, NoError>()
+  private let updateSortPagerStyle = TestObserver<Int?, NoError>()
 
   internal override func setUp() {
     super.setUp()
@@ -28,6 +29,7 @@ internal final class DiscoveryViewModelTests: TestCase {
     self.vm.outputs.navigateToSort.map { $0.0 }.observe(self.navigateToSort.observer)
     self.vm.outputs.navigateToSort.map { $0.1 }.observe(self.navigateDirection.observer)
     self.vm.outputs.selectSortPage.observe(self.selectSortPage.observer)
+    self.vm.outputs.updateSortPagerStyle.observe(self.updateSortPagerStyle.observer)
   }
 
   func testConfigureDataSource() {
@@ -36,6 +38,33 @@ internal final class DiscoveryViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     self.configureDataSource.assertValueCount(1, "Data source configures after view loads.")
+  }
+
+  func trackViewAppearedEvent() {
+    let selectableRow = SelectableRow(isSelected: false, params: .defaults)
+
+    self.vm.inputs.viewDidLoad()
+
+    XCTAssertEqual([], self.trackingClient.events)
+
+    self.vm.inputs.viewWillAppear(animated: false)
+
+    XCTAssertEqual(["Viewed Discovery"], self.trackingClient.events)
+    XCTAssertEqual(["magic"], self.trackingClient.properties(forKey: "discover_sort"))
+    XCTAssertEqual([true], self.trackingClient.properties(forKey: "discover_staff_picks", as: Bool.self))
+
+    self.vm.inputs.filterButtonTapped()
+    self.vm.inputs.filtersSelected(row: selectableRow |> SelectableRow.lens.params.category .~ Category.art)
+
+    XCTAssertEqual(["Viewed Discovery", "Viewed Discovery"], self.trackingClient.events)
+    XCTAssertEqual(["magic", "magic"], self.trackingClient.properties(forKey: "discover_sort"))
+    XCTAssertEqual([1], self.trackingClient.properties(forKey: "category_id", as: Int.self))
+
+    self.vm.inputs.viewWillAppear(animated: true)
+
+    XCTAssertEqual(["Viewed Discovery", "Viewed Discovery"], self.trackingClient.events, "Does not emit")
+    XCTAssertEqual(["magic", "magic"], self.trackingClient.properties(forKey: "discover_sort"))
+    XCTAssertEqual([1], self.trackingClient.properties(forKey: "category_id", as: Int.self))
   }
 
   func testFilterLabelText() {
@@ -204,26 +233,52 @@ internal final class DiscoveryViewModelTests: TestCase {
 
     self.vm.inputs.pageTransition(completed: true)
 
-    XCTAssertEqual(["Discover Swiped Sorts"], self.trackingClient.events,
+    XCTAssertEqual(["Selected Discovery Sort"], self.trackingClient.events,
                    "Swipe event tracked once the transition completes.")
     XCTAssertEqual(["popularity"], self.trackingClient.properties(forKey: "discover_sort"),
                    "Correct sort is tracked.")
+    XCTAssertEqual(["swipe"], self.trackingClient.properties(forKey: "gesture_type"))
 
     self.vm.inputs.sortPagerSelected(sort: .Newest)
 
-    XCTAssertEqual(["Discover Swiped Sorts", "Discover Pager Selected Sort"],
+    XCTAssertEqual(["Selected Discovery Sort", "Selected Discovery Sort"],
                    self.trackingClient.events,
                    "Event is tracked when a sort is chosen from the pager.")
     XCTAssertEqual(["popularity", "newest"],
                    self.trackingClient.properties(forKey: "discover_sort"),
                    "Correct sort is tracked.")
+    XCTAssertEqual(["swipe", "tap"], self.trackingClient.properties(forKey: "gesture_type"))
 
     self.vm.inputs.sortPagerSelected(sort: .Newest)
 
-    XCTAssertEqual(["Discover Swiped Sorts", "Discover Pager Selected Sort"],
+    XCTAssertEqual(["Selected Discovery Sort", "Selected Discovery Sort"],
                    self.trackingClient.events,
                    "Selecting the same sort again does not track another event.")
     XCTAssertEqual(["popularity", "newest"],
                    self.trackingClient.properties(forKey: "discover_sort"))
+  }
+
+  func testUpdateSortPagerStyle() {
+    let selectableRow = SelectableRow(isSelected: false, params: .defaults)
+
+    self.vm.inputs.viewDidLoad()
+
+    self.updateSortPagerStyle.assertValueCount(0)
+
+    self.vm.inputs.filterButtonTapped()
+    self.vm.inputs.filtersSelected(row: selectableRow |> SelectableRow.lens.params.category .~ Category.art)
+
+    self.updateSortPagerStyle.assertValues([1], "Emits the category id")
+
+    self.vm.inputs.filterButtonTapped()
+    self.vm.inputs.filtersSelected(row: selectableRow |> SelectableRow.lens.params.category .~ Category.art)
+
+    self.updateSortPagerStyle.assertValues([1], "Does not emit a repeat value.")
+
+    self.vm.inputs.filterButtonTapped()
+    self.vm.inputs.filtersSelected(row: selectableRow
+      |> SelectableRow.lens.params.category .~ Category.tabletopGames)
+
+    self.updateSortPagerStyle.assertValues([1, 12], "Emits root category id.")
   }
 }

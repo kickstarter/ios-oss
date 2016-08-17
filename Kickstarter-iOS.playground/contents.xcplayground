@@ -20,5 +20,6 @@
         <page name='13-Video Player'/>
         <page name='14-Facebook Confirmation'/>
         <page name='15-Search'/>
+        <page name='16 - Discovery Sort'/>
     </pages>
 </playground>

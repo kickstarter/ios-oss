@@ -1,4 +1,4 @@
-"Youre_about_to_create_a_new_Kickstarter_account" = "You're about to create a new Kickstarter account with the email address you use for Facebook. Please confirm that it’s correct before proceeding.";
+"Youre_about_to_create_a_new_Kickstarter_account" = "Du wirst hiermit ein neues Kickstarter-Konto mit deiner Facebook-E-Mail-Adresse anlegen. Bitte bestätige diesen Vorgang.";
 "accessibility.dashboard.buttons.activity" = "Aktivität";
 "accessibility.dashboard.buttons.activity_hint" = "Öffnet Sparte Aktivität.";
 "accessibility.dashboard.buttons.messages" = "Nachrichten";
@@ -448,6 +448,7 @@
 "discovery.survey.button.respond_now" = "Jetzt antworten";
 "discovery.survey.creator_needs_some_info_to_deliver_reward_for_project" = "%{creator_name} benötigt einige Angaben, um dir deine Belohnung für %{project_name} zustellen zu können.";
 "discovery.survey.reward_survey" = "Befragung zur Belohnung!";
+"ending_soon" = "Ending Soon";
 "facebook_confirmation.button" = "Neues Konto einrichten";
 "facebook_confirmation.could_not_log_in" = "Anmeldung über Facebook fehlgeschlagen";
 "facebook_confirmation.detail" = "Bevor wir dein neues Konto anlegen, überprüfe bitte, dass wir die richtige E-Mail-Adresse von deinem Facebook-Konto erhalten haben:";
@@ -492,6 +493,7 @@
 "general.social.buttons.connect_with_twitter" = "MIt Twitter verknüpfen";
 "general.switch_toggle_off" = "NEIN";
 "general.switch_toggle_on" = "JA";
+"home" = "Home";
 "invalid_api_client_alert.cancel" = "Abbrechen";
 "invalid_api_client_alert.message" = "Du scheinst eine sehr alte Version der App zu benutzen. Um fortzufahren, installiere bitte die neueste Version aus dem App Store.";
 "invalid_api_client_alert.title" = "Bitte aktualisieren";
@@ -567,6 +569,7 @@
 "messages.navigation.sent" = "Gesendet";
 "messages.search.placeholder_search_messages" = "Nachrichten suchen";
 "messages.sent_date" = "gesendet %{sent_date}";
+"popular" = "Beliebt";
 "profile.buttons.messages" = "Nachrichten";
 "profile.buttons.settings" = "Einstellungen";
 "profile.category_count_categories_backed.few" = "In %{category_count} Kategorien";

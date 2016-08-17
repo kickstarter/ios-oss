@@ -1,7 +1,6 @@
 import class UIKit.UILabel
 import class UIKit.UIFont
 
-@IBDesignable
 public final class StyledLabel: UILabel {
   public var fontStyle: FontStyle? = .Body {
     didSet {
@@ -21,19 +20,19 @@ public final class StyledLabel: UILabel {
     }
   }
 
-  @IBInspectable public var _fontStyle: String = FontStyle.Body.rawValue {
+  public var _fontStyle: String = FontStyle.Body.rawValue {
     didSet {
       self.fontStyle = FontStyle(rawValue: _fontStyle)
     }
   }
 
-  @IBInspectable public var _weight: String = Weight.Default.rawValue {
+  public var _weight: String = Weight.Default.rawValue {
     didSet {
       self.weight = Weight(rawValue: _weight)
     }
   }
 
-  @IBInspectable public var _color: String = Color.TextDefault.rawValue {
+  public var _color: String = Color.TextDefault.rawValue {
     didSet {
       self.color = Color(rawValue: _color)
     }

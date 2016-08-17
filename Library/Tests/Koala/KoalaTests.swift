@@ -201,4 +201,83 @@ final class KoalaTests: XCTestCase {
     XCTAssertEqual(false, properties["user_is_backer"] as? Bool)
     XCTAssertEqual(false, properties["user_has_starred"] as? Bool)
   }
+
+  func testDiscoveryProperties() {
+    let client = MockTrackingClient()
+    let params = .defaults
+      |> DiscoveryParams.lens.staffPicks .~ true
+      <> DiscoveryParams.lens.starred .~ false
+      <> DiscoveryParams.lens.social .~ false
+      <> DiscoveryParams.lens.recommended .~ false
+      <> DiscoveryParams.lens.category .~ Category.art
+      <> DiscoveryParams.lens.query .~ "collage"
+      <> DiscoveryParams.lens.sort .~ .Popular
+
+    let loggedInUser = User.template |> User.lens.id .~ 42
+    let koala = Koala(client: client, loggedInUser: loggedInUser)
+
+    koala.trackDiscovery(params: params, page: 1)
+
+    let properties = client.properties.last!
+
+    XCTAssertEqual(1, properties["discover_category_id"] as? Int)
+    XCTAssertEqual(false, properties["discover_recommended"] as? Bool)
+    XCTAssertEqual(false, properties["discover_social"] as? Bool)
+    XCTAssertEqual(true, properties["discover_staff_picks"] as? Bool)
+    XCTAssertEqual(false, properties["discover_starred"] as? Bool)
+    XCTAssertEqual("collage", properties["discover_term"] as? String)
+    XCTAssertEqual(false, properties["discover_everything"] as? Bool)
+    XCTAssertEqual("popularity", properties["discover_sort"] as? String)
+    XCTAssertEqual(1, properties["page"] as? Int)
+  }
+
+  func testDiscoveryProperties_NoCategory() {
+    let client = MockTrackingClient()
+    let params = .defaults
+      |> DiscoveryParams.lens.staffPicks .~ true
+      <> DiscoveryParams.lens.starred .~ false
+      <> DiscoveryParams.lens.social .~ false
+      <> DiscoveryParams.lens.recommended .~ false
+      <> DiscoveryParams.lens.category .~ nil
+      <> DiscoveryParams.lens.sort .~ .Popular
+
+    let loggedInUser = User.template |> User.lens.id .~ 42
+    let koala = Koala(client: client, loggedInUser: loggedInUser)
+
+    koala.trackDiscovery(params: params, page: 1)
+
+    let properties = client.properties.last!
+
+    XCTAssertNil(properties["discover_category_id"])
+    XCTAssertEqual(false, properties["discover_recommended"] as? Bool)
+    XCTAssertEqual(false, properties["discover_social"] as? Bool)
+    XCTAssertEqual(true, properties["discover_staff_picks"] as? Bool)
+    XCTAssertEqual(false, properties["discover_starred"] as? Bool)
+    XCTAssertEqual(false, properties["discover_everything"] as? Bool)
+    XCTAssertEqual("popularity", properties["discover_sort"] as? String)
+    XCTAssertEqual(1, properties["page"] as? Int)
+  }
+
+  func testDiscoveryProperties_Everything() {
+    let client = MockTrackingClient()
+    let params = .defaults
+      |> DiscoveryParams.lens.sort .~ .Magic
+
+    let loggedInUser = User.template |> User.lens.id .~ 42
+    let koala = Koala(client: client, loggedInUser: loggedInUser)
+
+    koala.trackDiscovery(params: params, page: 1)
+
+    let properties = client.properties.last!
+
+    XCTAssertNil(properties["discover_category_id"])
+    XCTAssertNil(properties["discover_recommended"])
+    XCTAssertNil(properties["discover_social"])
+    XCTAssertNil(properties["discover_staff_picks"])
+    XCTAssertNil(properties["discover_starred"])
+    XCTAssertNil(properties["discover_term"])
+    XCTAssertEqual(true, properties["discover_everything"] as? Bool)
+    XCTAssertEqual("magic", properties["discover_sort"] as? String)
+    XCTAssertEqual(1, properties["page"] as? Int)
+  }
 }

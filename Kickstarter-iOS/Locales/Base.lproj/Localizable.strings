@@ -448,6 +448,7 @@
 "discovery.survey.button.respond_now" = "Respond now";
 "discovery.survey.creator_needs_some_info_to_deliver_reward_for_project" = "%{creator_name} needs some info to deliver your reward for %{project_name}.";
 "discovery.survey.reward_survey" = "Reward Survey!";
+"ending_soon" = "Ending Soon";
 "facebook_confirmation.button" = "Create new account";
 "facebook_confirmation.could_not_log_in" = "Couldn't log in with Facebook.";
 "facebook_confirmation.detail" = "Before we make your new account, please double check that we got the right email address from your Facebook profile:";
@@ -492,6 +493,7 @@
 "general.social.buttons.connect_with_twitter" = "Connect with Twitter";
 "general.switch_toggle_off" = "OFF";
 "general.switch_toggle_on" = "ON";
+"home" = "Home";
 "invalid_api_client_alert.cancel" = "Cancel";
 "invalid_api_client_alert.message" = "You seem to be using a really old version of the app. Please upgrade from the App Store to continue using.";
 "invalid_api_client_alert.title" = "Please Upgrade";
@@ -567,6 +569,7 @@
 "messages.navigation.sent" = "Sent";
 "messages.search.placeholder_search_messages" = "Search messages";
 "messages.sent_date" = "sent %{sent_date}";
+"popular" = "Popular";
 "profile.buttons.messages" = "Messages";
 "profile.buttons.settings" = "Settings";
 "profile.category_count_categories_backed.few" = "%{category_count} categories backed";

@@ -10,6 +10,11 @@ internal final class DiscoveryViewController: UIViewController {
   private weak var sortPagerViewController: SortPagerViewController!
   @IBOutlet private weak var titleButton: UIButton!
 
+  internal static func configured() -> DiscoveryViewController {
+    let vc = Storyboard.Discovery.instantiate(DiscoveryViewController)
+    return vc
+  }
+
   override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -24,6 +29,12 @@ internal final class DiscoveryViewController: UIViewController {
     self.sortPagerViewController.delegate = self
 
     self.viewModel.inputs.viewDidLoad()
+  }
+
+  override func viewWillAppear(animated: Bool) {
+    super.viewWillAppear(animated)
+
+    self.viewModel.inputs.viewWillAppear(animated: animated)
   }
 
   override func bindViewModel() {
@@ -56,6 +67,12 @@ internal final class DiscoveryViewController: UIViewController {
     self.viewModel.outputs.selectSortPage
       .observeNext { [weak self] in
         self?.sortPagerViewController.select(sort: $0)
+    }
+
+    self.viewModel.outputs.updateSortPagerStyle
+      .observeForUI()
+      .observeNext { [weak self] id in
+        self?.sortPagerViewController.updateStyle(categoryId: id)
     }
 
     self.viewModel.outputs.navigateToSort

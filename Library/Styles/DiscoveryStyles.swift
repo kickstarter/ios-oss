@@ -3,6 +3,58 @@ import Prelude
 import Prelude_UIKit
 import UIKit
 
+public enum CategoryGroup {
+  case none
+  case culture
+  case entertainment
+  case story
+
+  public init(categoryId: Int?) {
+    if let categoryId = categoryId {
+      switch categoryId {
+      case 1, 26, 7, 9, 17:
+        self = .culture
+      case 6, 10, 12, 14, 16:
+        self = .entertainment
+      case 3, 11, 13, 15, 18:
+        self = .story
+      default:
+        self = .none
+      }
+    } else {
+      self = .none
+    }
+  }
+}
+
+private func discoveryPrimaryColor(forCategoryId id: Int?) -> UIColor {
+  let group = CategoryGroup(categoryId: id)
+  switch group {
+  case .none:
+    return .ksr_green_700
+  case .culture:
+    return .ksr_violet_600
+  case .entertainment:
+    return .ksr_magenta_400
+  case .story:
+    return .ksr_forest_500
+  }
+}
+
+public func discoveryIndicatorColor(forCategoryId id: Int?) -> UIColor {
+  let group = CategoryGroup(categoryId: id)
+  switch group {
+  case .none:
+    return .ksr_navy_700
+  case .culture:
+    return .ksr_red_400
+  case .entertainment:
+    return .ksr_violet_500
+  case .story:
+    return .ksr_forest_700
+  }
+}
+
 public let discoveryOnboardingSignUpButtonStyle = baseButtonStyle
   <> UIButton.lens.titleColor(forState: .Normal) .~ .ksr_text_navy_900
   <> UIButton.lens.backgroundColor(forState: .Normal) .~ .whiteColor()
@@ -35,21 +87,34 @@ public let discoveryOnboardingCellStyle = baseTableViewCellStyle()
     .init(topBottom: 48.0, leftRight: $0.left)
 }
 
-public func discoveryPagerSortButtonStyle <B: UIButtonProtocol> (sort sort: DiscoveryParams.Sort)
-  -> (B -> B) {
+public func discoverySortPagerButtonStyle <B: UIButtonProtocol> (sort sort: DiscoveryParams.Sort,
+                                                                 categoryId: Int?,
+                                                                 isLeftMost: Bool,
+                                                                 isRightMost: Bool) -> (B -> B) {
 
-    let sortString = string(forSort: sort)
+  let sortString = string(forSort: sort)
+  let titleColor = discoveryPrimaryColor(forCategoryId: categoryId)
 
-    return
-      B.lens.titleColor(forState: .Normal) .~ UIColor.ksr_text_navy_700
-        <> B.lens.titleColor(forState: .Highlighted) .~ .ksr_text_navy_500
-        <> B.lens.titleLabel.font .~ .ksr_subhead()
-        <> B.lens.accessibilityLabel %~ { _ in
-          Strings.discovery_accessibility_buttons_sort_label(sort: sortString)
-        }
-        <> B.lens.accessibilityHint %~ { _ in Strings.discovery_accessibility_buttons_sort_hint() }
-        <> B.lens.contentEdgeInsets .~ .init(topBottom: 0.0, leftRight: 16.0)
-        <> B.lens.title(forState: .Normal) .~ sortString
+  let normalTitleString = NSAttributedString(string: sortString, attributes: [
+    NSFontAttributeName: UIFont.ksr_subhead(size: 14.0),
+    NSForegroundColorAttributeName: titleColor.colorWithAlphaComponent(0.6)
+  ])
+
+  let selectedTitleString = NSAttributedString(string: sortString, attributes: [
+    NSFontAttributeName: UIFont.ksr_subhead(size: 14.0).bolded,
+    NSForegroundColorAttributeName: titleColor
+  ])
+
+  return
+    B.lens.titleColor(forState: .Highlighted) .~ titleColor
+      <> B.lens.accessibilityLabel %~ { _ in
+        Strings.discovery_accessibility_buttons_sort_label(sort: sortString)
+      }
+      <> B.lens.accessibilityHint %~ { _ in Strings.discovery_accessibility_buttons_sort_hint() }
+      <> B.lens.contentEdgeInsets .~ sortButtonEdgeInsets(isLeftMost: isLeftMost,
+                                                          isRightMost: isRightMost)
+      <> B.lens.attributedTitle(forState: .Normal) %~ { _ in normalTitleString }
+      <> B.lens.attributedTitle(forState: .Selected) %~ { _ in selectedTitleString }
 }
 
 public let discoveryProjectCellStyle =
@@ -58,17 +123,30 @@ public let discoveryProjectCellStyle =
       Strings.dashboard_tout_accessibility_hint_opens_project()
 }
 
+private func sortButtonEdgeInsets(isLeftMost isLeftMost: Bool, isRightMost: Bool) -> UIEdgeInsets {
+
+  let edge = Styles.grid(2)
+  let inner = Styles.grid(4) - 3
+
+  return UIEdgeInsets(
+    top: 0,
+    left: isLeftMost ? edge : inner,
+    bottom: 0,
+    right: isRightMost ? edge : inner
+  )
+}
+
 private func string(forSort sort: DiscoveryParams.Sort) -> String {
   switch sort {
   case .EndingSoon:
-    return Strings.discovery_sort_types_end_date()
+    return Strings.ending_soon()
   case .Magic:
-    return Strings.discovery_sort_types_magic()
+    return Strings.home()
   case .MostFunded:
     return Strings.discovery_sort_types_most_funded()
   case .Newest:
     return Strings.discovery_sort_types_newest()
   case .Popular:
-    return Strings.discovery_sort_types_popularity()
+    return Strings.popular()
   }
 }

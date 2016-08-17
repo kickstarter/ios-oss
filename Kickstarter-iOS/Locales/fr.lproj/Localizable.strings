@@ -448,6 +448,7 @@
 "discovery.survey.button.respond_now" = "Répondre";
 "discovery.survey.creator_needs_some_info_to_deliver_reward_for_project" = "%{creator_name} a besoin de quelques informations pour vous envoyer votre récompense pour le projet %{project_name}.";
 "discovery.survey.reward_survey" = "Le questionnaire des récompenses !";
+"ending_soon" = "Ending Soon";
 "facebook_confirmation.button" = "Créer un nouveau compte";
 "facebook_confirmation.could_not_log_in" = "La connexion Facebook a échoué.";
 "facebook_confirmation.detail" = "Avant de créer votre compte, vérifions l'adresse e-mail que nous avons obtenue de votre profil Facebook :";
@@ -492,6 +493,7 @@
 "general.social.buttons.connect_with_twitter" = "Connexion Twitter";
 "general.switch_toggle_off" = "OFF";
 "general.switch_toggle_on" = "ON";
+"home" = "Accueil";
 "invalid_api_client_alert.cancel" = "Annuler";
 "invalid_api_client_alert.message" = "On dirait que vous utilisez une ancienne version de l'application. Veuillez la mettre à jour depuis l'App Store pour continuer à l'utiliser.";
 "invalid_api_client_alert.title" = "Veuillez mettre à jour";
@@ -567,6 +569,7 @@
 "messages.navigation.sent" = "Envoyé";
 "messages.search.placeholder_search_messages" = "Rechercher";
 "messages.sent_date" = "envoyé le %{sent_date}";
+"popular" = "Tendances";
 "profile.buttons.messages" = "Messages";
 "profile.buttons.settings" = "Paramètres";
 "profile.category_count_categories_backed.few" = "%{category_count} catégories soutenues";

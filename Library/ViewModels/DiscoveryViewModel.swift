@@ -20,6 +20,9 @@ public protocol DiscoveryViewModelInputs {
   /// Call from the controller's viewDidLoad.
   func viewDidLoad()
 
+  /// Call from the controller's viewWillAppear.
+  func viewWillAppear(animated animated: Bool)
+
   /// Call when the UIPageViewController begins a transition sequence.
   func willTransition(toPage nextPage: Int)
 }
@@ -48,6 +51,9 @@ public protocol DiscoveryViewModelOutputs {
 
   /// Emits a sort that should be passed on to the sort pager view controller.
   var selectSortPage: Signal<DiscoveryParams.Sort, NoError> { get }
+
+  /// Emits a category id to update the sort pager view controller style.
+  var updateSortPagerStyle: Signal<Int?, NoError> { get }
 }
 
 public protocol DiscoveryViewModelType {
@@ -69,10 +75,12 @@ DiscoveryViewModelOutputs {
     self.configurePagerDataSource = self.viewDidLoadProperty.signal.mapConst(sorts)
     self.configureSortPager = self.configurePagerDataSource
 
-    self.loadFilterIntoDataSource = Signal.merge(
+    let currentParams = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst(initialParams),
       self.filtersSelectedRowProperty.signal.ignoreNil().map { $0.params }
-      )
+    )
+
+    self.loadFilterIntoDataSource = currentParams
 
     self.filterLabelText = self.loadFilterIntoDataSource
       .map { params in
@@ -120,12 +128,20 @@ DiscoveryViewModelOutputs {
 
     self.dismissDiscoveryFilters = self.filtersSelectedRowProperty.signal.ignoreValues()
 
+    self.updateSortPagerStyle = self.filtersSelectedRowProperty.signal.ignoreNil()
+      .map { $0.params.category?.root?.id }
+      .skipRepeats(==)
+
     self.sortPagerSelectedSortProperty.signal.ignoreNil()
       .skipRepeats(==)
-      .observeNext { AppEnvironment.current.koala.trackDiscoveryPagerSelectedSort(nextSort: $0) }
+      .observeNext { AppEnvironment.current.koala.trackDiscoverySelectedSort(nextSort: $0, gesture: .tap) }
 
     swipeToSort
-      .observeNext { AppEnvironment.current.koala.trackDiscoverySortsSwiped(nextSort: $0) }
+      .observeNext { AppEnvironment.current.koala.trackDiscoverySelectedSort(nextSort: $0, gesture: .swipe) }
+
+    currentParams
+      .takeWhen(self.viewWillAppearProperty.signal.ignoreNil().filter(isFalse))
+      .observeNext { AppEnvironment.current.koala.trackDiscoveryViewed(params: $0) }
   }
   // swiftlint:enable function_body_length
 
@@ -153,6 +169,10 @@ DiscoveryViewModelOutputs {
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
+  private let viewWillAppearProperty = MutableProperty<Bool?>(nil)
+  public func viewWillAppear(animated animated: Bool) {
+    self.viewWillAppearProperty.value = animated
+  }
 
   public let configurePagerDataSource: Signal<[DiscoveryParams.Sort], NoError>
   public let configureSortPager: Signal<[DiscoveryParams.Sort], NoError>
@@ -162,6 +182,7 @@ DiscoveryViewModelOutputs {
   public let loadFilterIntoDataSource: Signal<DiscoveryParams, NoError>
   public let navigateToSort: Signal<(DiscoveryParams.Sort, UIPageViewControllerNavigationDirection), NoError>
   public let selectSortPage: Signal<DiscoveryParams.Sort, NoError>
+  public let updateSortPagerStyle: Signal<Int?, NoError>
 
   public var inputs: DiscoveryViewModelInputs { return self }
   public var outputs: DiscoveryViewModelOutputs { return self }

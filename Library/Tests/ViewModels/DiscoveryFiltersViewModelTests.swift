@@ -68,20 +68,22 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
     self.vm.configureWith(selectedRow: staffPicksRow)
     self.vm.inputs.viewDidLoad()
 
-    XCTAssertEqual(["Discover Switch Modal"], self.trackingClient.events)
+    XCTAssertEqual(["Viewed Discovery Filters", "Discover Switch Modal"], self.trackingClient.events)
 
     self.vm.inputs.tapped(expandableRow: filmExpandableRow)
 
-    XCTAssertEqual(["Discover Switch Modal"], self.trackingClient.events)
+    XCTAssertEqual(["Viewed Discovery Filters", "Discover Switch Modal"], self.trackingClient.events)
 
     self.vm.inputs.tapped(selectableRow: documentarySelectableRow)
 
-    XCTAssertEqual(["Discover Switch Modal", "Discover Modal Selected Filter"],
+    XCTAssertEqual(["Viewed Discovery Filters", "Discover Switch Modal", "Selected Discovery Filter",
+      "Discover Modal Selected Filter"],
                    self.trackingClient.events)
 
-    XCTAssertEqual(["Discover Switch Modal", "Discover Modal Selected Filter"],
+    XCTAssertEqual(["Viewed Discovery Filters", "Discover Switch Modal", "Selected Discovery Filter",
+      "Discover Modal Selected Filter"],
                    self.trackingClient.events)
-    XCTAssertEqual([nil, Category.documentary.id],
+    XCTAssertEqual([nil, nil, Category.documentary.id, Category.documentary.id],
                    self.trackingClient.properties(forKey: "discover_category_id", as: Int.self))
   }
 

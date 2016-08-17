@@ -59,10 +59,10 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     self.hasAddedProjects.assertValues([true], "Projects are added.")
     self.hasRemovedProjects.assertValues([false], "Projects are not removed.")
     self.projectsAreLoading.assertValues([true, false], "Loading indicator toggles on/off.")
-    XCTAssertEqual(["Discover List View"],
+    XCTAssertEqual(["Loaded Discovery Results", "Discover List View"],
                    self.trackingClient.events,
                    "Event is tracked once projects load.")
-    XCTAssertEqual([1],
+    XCTAssertEqual([1, 1],
                    self.trackingClient.properties(forKey: "page", as: Int.self),
                    "First page property tracks.")
 
@@ -72,10 +72,10 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
     self.hasAddedProjects.assertValues([true], "No projects are added.")
     self.hasRemovedProjects.assertValues([false], "No projects are removed.")
-    XCTAssertEqual(["Discover List View"],
+    XCTAssertEqual(["Loaded Discovery Results", "Discover List View"],
                    self.trackingClient.events,
                    "No new events are tracked.")
-    XCTAssertEqual([1],
+    XCTAssertEqual([1, 1],
                    self.trackingClient.properties(forKey: "page", as: Int.self),
                    "No new properties are tracked.")
 
@@ -86,10 +86,11 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     self.hasAddedProjects.assertValues([true, true], "More projects are added from pagination.")
     self.hasRemovedProjects.assertValues([false, false], "No projects are removed.")
     self.projectsAreLoading.assertValues([true, false, true, false], "Loading indicator toggles on/off.")
-    XCTAssertEqual(["Discover List View", "Discover List View"],
+    XCTAssertEqual(["Loaded Discovery Results", "Discover List View", "Loaded Discovery Results",
+      "Discover List View"],
                    self.trackingClient.events,
                    "Another event is tracked.")
-    XCTAssertEqual([1, 2],
+    XCTAssertEqual([1, 1, 2, 2],
                    self.trackingClient.properties(forKey: "page", as: Int.self),
                    "The second page property is tracked.")
 
@@ -99,10 +100,11 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
     self.hasAddedProjects.assertValues([true, true], "No projects are added.")
     self.hasRemovedProjects.assertValues([false, false], "No projects are removed.")
-    XCTAssertEqual(["Discover List View", "Discover List View"],
+    XCTAssertEqual(["Loaded Discovery Results", "Discover List View", "Loaded Discovery Results",
+      "Discover List View"],
                    self.trackingClient.events,
                    "No new events are tracked.")
-    XCTAssertEqual([1, 2],
+    XCTAssertEqual([1, 1, 2, 2],
                    self.trackingClient.properties(forKey: "page", as: Int.self),
                    "No new properties are tracked.")
 
@@ -123,10 +125,11 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     self.hasRemovedProjects.assertValues([false, false, true, false], "Projects are not removed.")
     self.projectsAreLoading.assertValues([true, false, true, false, true, false],
                                          "Loading indicator toggles on/off.")
-    XCTAssertEqual(["Discover List View", "Discover List View", "Discover List View"],
+    XCTAssertEqual(["Loaded Discovery Results", "Discover List View", "Loaded Discovery Results",
+      "Discover List View", "Loaded Discovery Results", "Discover List View"],
                    self.trackingClient.events,
                    "Another event is tracked.")
-    XCTAssertEqual([1, 2, 1],
+    XCTAssertEqual([1, 1, 2, 2, 1, 1],
                    self.trackingClient.properties(forKey: "page", as: Int.self),
                    "The first page property is tracked.")
 
@@ -142,10 +145,12 @@ internal final class DiscoveryPageViewModelTests: TestCase {
                                          "Projects are not removed.")
     self.projectsAreLoading.assertValues([true, false, true, false, true, false, true, false],
                                          "Loading indicator toggles on/off.")
-    XCTAssertEqual(["Discover List View", "Discover List View", "Discover List View", "Discover List View"],
+    XCTAssertEqual(["Loaded Discovery Results", "Discover List View", "Loaded Discovery Results",
+      "Discover List View", "Loaded Discovery Results", "Discover List View", "Loaded Discovery Results",
+      "Discover List View"],
                    self.trackingClient.events,
                    "Another event is tracked.")
-    XCTAssertEqual([1, 2, 1, 2],
+    XCTAssertEqual([1, 1, 2, 2, 1, 1, 2, 2],
                    self.trackingClient.properties(forKey: "page", as: Int.self),
                    "The second page property is tracked.")
   }

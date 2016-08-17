@@ -45,6 +45,12 @@ public final class Koala {
     case updateComments = "update_comments"
   }
 
+  /// Determines which gesture was used.
+  public enum GestureType: String {
+    case swipe = "swipe"
+    case tap = "tap"
+  }
+
   public init(bundle: NSBundleType = NSBundle.mainBundle(),
               client: TrackingClientType,
               config: Config? = nil,
@@ -85,40 +91,76 @@ public final class Koala {
    - parameter page: The number of pages that have been loaded.
    */
   public func trackDiscovery(params params: DiscoveryParams, page: Int) {
+    let props = properties(params: params).withAllValuesFrom(["page": page])
+
+    self.track(event: "Loaded Discovery Results", properties: props)
+
+    // Deprecated event
     self.track(event: "Discover List View",
-               properties: properties(params: params).withAllValuesFrom(["page": page]))
+               properties: props.withAllValuesFrom([Koala.DeprecatedKey: true]))
+  }
+
+  public func trackDiscoveryViewed(params params: DiscoveryParams) {
+    self.track(event: "Viewed Discovery", properties: properties(params: params))
   }
 
   /// Call when the discovery filters appear
   public func trackDiscoveryModal() {
-    self.track(event: "Discover Switch Modal", properties: ["modal_type": "filters"])
+    let props: [String:AnyObject] = ["modal_type": "filters"]
+
+    self.track(event: "Viewed Discovery Filters", properties: props)
+
+    // Deprecated event
+    self.track(event: "Discover Switch Modal",
+               properties: props.withAllValuesFrom([Koala.DeprecatedKey: true]))
   }
 
   /**
    Call when a filter is selected from the discovery modal.
 
    - parameter params: The params selected from the modal.
+   - parameter isFavorite: Whether the filter is a favorite category or not.
    */
-  public func trackDiscoveryModalSelectedFilter(params params: DiscoveryParams) {
-    self.track(event: "Discover Modal Selected Filter", properties: properties(params: params))
+  public func trackDiscoveryModalSelectedFilter(params params: DiscoveryParams, isFavorite: Bool = false) {
+    self.track(event: "Selected Discovery Filter",
+               properties: properties(params: params).withAllValuesFrom([
+                "is_favorite": isFavorite ? "1" : "0"
+               ]))
+
+    // Deprecated event
+    self.track(event: "Discover Modal Selected Filter",
+               properties: properties(params: params).withAllValuesFrom([Koala.DeprecatedKey: true]))
   }
 
   /**
-   Call when the user swipes between sorts.
+   Call when closing filter modal without selecting a new filter.
 
-   - parameter sort: The new sort that was swiped to.
-   */
-  public func trackDiscoverySortsSwiped(nextSort sort: DiscoveryParams.Sort) {
-    self.track(event: "Discover Swiped Sorts", properties: ["discover_sort": sort.rawValue])
+   - parameter params: The params selected from the modal.
+  **/
+  public func trackDiscoveryModalClosedFilter(params params: DiscoveryParams) {
+    self.track(event: "Closed Discovery Filter", properties: properties(params: params))
   }
 
   /**
-   Call when the user swipes between sorts.
+   Call when expanding filter on a parent category tap.
+
+   - parameter params: The params selected from the modal.
+  **/
+  public func trackDiscoveryModalExpandedFilter(params params: DiscoveryParams) {
+    self.track(event: "Expanded Discovery Filter", properties: properties(params: params))
+  }
+
+  /**
+   Call when the user swipes between sorts or selects a sort.
 
    - parameter sort: The new sort that was selected.
+   - parameter gesture: The gesture that was used.
    */
-  public func trackDiscoveryPagerSelectedSort(nextSort sort: DiscoveryParams.Sort) {
-    self.track(event: "Discover Pager Selected Sort", properties: ["discover_sort": sort.rawValue])
+  public func trackDiscoverySelectedSort(nextSort sort: DiscoveryParams.Sort, gesture: GestureType) {
+    self.track(event: "Selected Discovery Sort", properties: [
+      "discover_sort": sort.rawValue,
+      "gesture_type": gesture.rawValue
+      ])
   }
 
   // MARK: Login Events
@@ -979,17 +1021,19 @@ private func properties(user user: User, prefix: String = "user_") -> [String:An
 private func properties(params params: DiscoveryParams, prefix: String = "discover_") -> [String:AnyObject] {
   var result: [String:AnyObject] = [:]
 
+  // NB: All filters should be added here since `result["everything"]` is derived from this.
+  result["recommended"] = params.recommended
+  result["social"] = params.social
   result["staff_picks"] = params.staffPicks
   result["starred"] = params.starred
-  result["everything"] = nil
-  result["social"] = params.social
-  result["sort"] = params.sort?.rawValue
   result["term"] = params.query
-  result["page"] = params.page
+  result = result.withAllValuesFrom(params.category.map(properties(category:)) ?? [:])
 
-  return result
-    .withAllValuesFrom(params.category.map(properties(category:)) ?? [:])
-    .prefixedKeys("discover_")
+  result["everything"] = result.isEmpty
+  result["page"] = params.page
+  result["sort"] = params.sort?.rawValue
+
+  return result.prefixedKeys("discover_")
 }
 
 private func properties(category category: KsApi.Category) -> [String:AnyObject] {

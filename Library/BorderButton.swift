@@ -8,7 +8,6 @@ import struct UIKit.CGRect
 private let DefaultBorderWidth: CGFloat = 1.0
 private let DefaultCornerRadius: CGFloat = 6.0
 
-@IBDesignable
 public final class BorderButton: UIButton {
   public var color: Color? = .White {
     didSet {
@@ -52,37 +51,37 @@ public final class BorderButton: UIButton {
     }
   }
 
-  @IBInspectable public var _color: String = Color.White.rawValue {
+  public var _color: String = Color.White.rawValue {
     didSet {
       color = Color(rawValue: _color)
     }
   }
 
-  @IBInspectable public var _borderColor: String = Color.Black.rawValue {
+  public var _borderColor: String = Color.Black.rawValue {
     didSet {
       borderColor = Color(rawValue: _borderColor)
     }
   }
 
-  @IBInspectable public var _titleColorNormal: String = Color.TextDefault.rawValue {
+  public var _titleColorNormal: String = Color.TextDefault.rawValue {
     didSet {
       titleColorNormal = Color(rawValue: _titleColorNormal)
     }
   }
 
-  @IBInspectable public var _titleColorHighlighted: String = Color.TextLightGray.rawValue {
+  public var _titleColorHighlighted: String = Color.TextLightGray.rawValue {
     didSet {
       titleColorHighlighted = Color(rawValue: _titleColorHighlighted)
     }
   }
 
-  @IBInspectable public var _titleFontStyle: String = FontStyle.Body.rawValue {
+  public var _titleFontStyle: String = FontStyle.Body.rawValue {
     didSet {
       titleFontStyle = FontStyle(rawValue: _titleFontStyle)
     }
   }
 
-  @IBInspectable public var _titleWeight: String = Weight.Default.rawValue {
+  public var _titleWeight: String = Weight.Default.rawValue {
     didSet {
       titleWeight = Weight(rawValue: _titleWeight)
     }

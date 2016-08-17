@@ -47,11 +47,9 @@ AppEnvironment.replaceCurrentEnvironment(
 
 UIView.initialize()
 UIViewController.initialize()
-let controller = DiscoveryPageViewController.configuredWith(sort: .Magic)
+let controller = DiscoveryViewController.configured()
 
-let (parent, _) = playgroundControllers(device: .pad, orientation: .portrait, child: controller)
-
-controller.change(filter: .defaults)
+let (parent, _) = playgroundControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
 
 let frame = parent.view.frame
 XCPlaygroundPage.currentPage.liveView = parent

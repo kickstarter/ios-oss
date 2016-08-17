@@ -12,6 +12,7 @@ internal final class SortPagerViewController: UIViewController {
   internal weak var delegate: SortPagerViewControllerDelegate?
   private let viewModel: SortPagerViewModelType = SortPagerViewModel()
 
+  @IBOutlet private weak var indicatorView: UIView!
   @IBOutlet private weak var indicatorViewLeadingConstraint: NSLayoutConstraint!
   @IBOutlet private weak var indicatorViewWidthConstraint: NSLayoutConstraint!
   @IBOutlet private weak var scrollView: UIScrollView!
@@ -25,16 +26,22 @@ internal final class SortPagerViewController: UIViewController {
     self.viewModel.inputs.select(sort: sort)
   }
 
+  internal func updateStyle(categoryId categoryId: Int?) {
+    self.viewModel.inputs.updateStyle(categoryId: categoryId)
+  }
+
+  override func viewWillAppear(animated: Bool) {
+    super.viewWillAppear(animated)
+
+    self.viewModel.inputs.viewWillAppear()
+  }
+
   internal override func bindViewModel() {
     self.viewModel.outputs.createSortButtons
       .observeForUI()
       .observeNext { [weak self] in
         self?.createSortButtons($0)
     }
-
-    self.viewModel.outputs.scrollPercentage
-      .observeForUI()
-      .observeNext { [weak self] in self?.scrollTo(percentage: $0) }
 
     self.viewModel.outputs.pinSelectedIndicatorToPage
       .observeForUI()
@@ -45,48 +52,84 @@ internal final class SortPagerViewController: UIViewController {
         guard let _self = self else { return }
         _self.delegate?.sortPager(_self, selectedSort: sort)
     }
+
+    self.viewModel.outputs.updateSortStyle
+      .observeForUI()
+      .observeNext { [weak self] (id, sorts) in
+        self?.updateSortStyle(forCategoryId: id, sorts: sorts)
+    }
+
+    self.viewModel.outputs.setSelectedButton
+      .observeForUI()
+      .observeNext { [weak self] in
+        self?.selectButton(atIndex: $0)
+    }
+  }
+
+  override func bindStyles() {
+    super.bindStyles()
+
+    self.view |> UIView.lens.backgroundColor .~ .whiteColor()
   }
 
   private func createSortButtons(sorts: [DiscoveryParams.Sort]) {
-
     self.sortsStackView
       |> UIStackView.lens.arrangedSubviews .~ sorts.enumerate().map { idx, sort in
-        self.buttonFor(sort: sort, index: idx)
+          UIButton()
+            |> UIButton.lens.tag .~ idx
+            |> UIButton.lens.targets .~ [
+              (self, #selector(sortButtonTapped(_:)), .TouchUpInside)
+          ]
     }
   }
 
-  private func scrollTo(percentage percentage: CGFloat) {
-    let contentOffset = CGPoint(
-      x: percentage * (self.scrollView.contentSize.width - self.scrollView.bounds.width),
-      y: 0.0
-    )
+  internal func pinSelectedIndicator(toPage page: Int) {
+    guard let button = self.sortsStackView.arrangedSubviews[page] as? UIButton  else { return }
 
-    let sortButtonRight = percentage * self.scrollView.contentSize.width - self.scrollView.contentOffset.x
-    let sortButtonLeft = sortButtonRight - self.indicatorViewWidthConstraint.constant
+    let padding = page == 0 ? Styles.grid(2) : Styles.grid(4) - 3
 
-    if sortButtonRight + Styles.grid(6) > self.view.bounds.width
-      || sortButtonLeft - Styles.grid(6) < 0.0 {
-      self.scrollView.setContentOffset(contentOffset, animated: true)
-    }
-  }
+    let leadingConstant = button.frame.origin.x + padding
+    let widthConstant = button.titleLabel?.frame.width ?? button.frame.width
 
-  private func pinSelectedIndicator(toPage page: Int) {
-    let view = self.sortsStackView.arrangedSubviews[page]
+    self.indicatorViewLeadingConstraint.constant = leadingConstant
+    self.indicatorViewWidthConstraint.constant = widthConstant
+
+    let rightSort = leadingConstant + widthConstant + Styles.grid(11) - self.scrollView.contentOffset.x
+    let leftSort = leadingConstant - Styles.grid(11) - self.scrollView.contentOffset.x
 
     UIView.animateWithDuration(0.2) {
-      self.indicatorViewLeadingConstraint.constant = view.frame.origin.x
-      self.indicatorViewWidthConstraint.constant = view.frame.width
       self.scrollView.layoutIfNeeded()
+
+      if rightSort > self.view.bounds.width {
+        self.scrollView.contentOffset = CGPoint(x: self.scrollView.contentSize.width - self.view.bounds.width,
+                                                y: 0)
+      } else if leftSort < 0.0 {
+        self.scrollView.contentOffset = CGPoint(x: 0.0, y: 0)
+      }
     }
   }
 
-  private func buttonFor(sort sort: DiscoveryParams.Sort, index: Int) -> UIButton {
-    return UIButton()
-      |> discoveryPagerSortButtonStyle(sort: sort)
-      |> UIButton.lens.tag .~ index
-      |> UIButton.lens.targets .~ [
-        (self, #selector(sortButtonTapped(_:)), .TouchUpInside)
-    ]
+  private func updateSortStyle(forCategoryId categoryId: Int?, sorts: [DiscoveryParams.Sort]) {
+    self.indicatorView |> UIView.lens.backgroundColor .~ discoveryIndicatorColor(forCategoryId: categoryId)
+
+    let zipped = zip(sorts, self.sortsStackView.arrangedSubviews)
+
+    for (sort, view) in zipped {
+      let index = sorts.indexOf(sort)
+      (view as? UIButton)
+        ?|> discoverySortPagerButtonStyle(sort: sort,
+                                                categoryId: categoryId,
+                                                isLeftMost: index == 0,
+                                                isRightMost: index == sorts.count - 1)
+    }
+    self.scrollView.layoutIfNeeded()
+  }
+
+  private func selectButton(atIndex index: Int) {
+    for (idx, button) in self.sortsStackView.arrangedSubviews.enumerate() {
+      (button as? UIButton)
+        ?|> UIButton.lens.selected .~ (idx == index)
+    }
   }
 
   @objc private func sortButtonTapped(button: UIButton) {

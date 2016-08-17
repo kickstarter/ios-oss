@@ -14,8 +14,8 @@ public enum Strings {
   /**
    "You're about to create a new Kickstarter account with the email address you use for Facebook. Please confirm that it’s correct before proceeding."
 
-   - **es**: "You're about to create a new Kickstarter account with the email address you use for Facebook. Please confirm that it’s correct before proceeding."
-   - **de**: "You're about to create a new Kickstarter account with the email address you use for Facebook. Please confirm that it’s correct before proceeding."
+   - **es**: "Estás a punto de crear una nueva cuenta de Kickstarter usando el correo electrónico associado a tu cuenta de Facebook. Por favor confírmalo antes de proceder."
+   - **de**: "Du wirst hiermit ein neues Kickstarter-Konto mit deiner Facebook-E-Mail-Adresse anlegen. Bitte bestätige diesen Vorgang."
    - **fr**: "Vous êtes sur le point de créer un nouveau compte Kickstarter avec l'adresse e-mail que vous utilisez sur Facebook. Veuillez confirmer avant de continuer."
    - **it**: "You're about to create a new Kickstarter account with the email address you use for Facebook. Please confirm that it’s correct before proceeding."
    - **en**: "You're about to create a new Kickstarter account with the email address you use for Facebook. Please confirm that it’s correct before proceeding."
@@ -5928,6 +5928,23 @@ public enum Strings {
     )
   }
   /**
+   "Ending Soon"
+
+   - **es**: "Ending Soon"
+   - **de**: "Ending Soon"
+   - **fr**: "Ending Soon"
+   - **it**: "Ending Soon"
+   - **en**: "Ending Soon"
+  */
+  public static func ending_soon() -> String {
+    return localizedString(
+      key: "ending_soon",
+      defaultValue: "Ending Soon",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Create new account"
 
    - **es**: "Crear una nueva cuenta"
@@ -6586,6 +6603,23 @@ public enum Strings {
     return localizedString(
       key: "general.switch_toggle_on",
       defaultValue: "ON",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Home"
+
+   - **es**: "Inicio"
+   - **de**: "Home"
+   - **fr**: "Accueil"
+   - **it**: "Home"
+   - **en**: "Home"
+  */
+  public static func home() -> String {
+    return localizedString(
+      key: "home",
+      defaultValue: "Home",
       count: nil,
       substitutions: [:]
     )
@@ -7875,6 +7909,23 @@ This is commonly fixed by going to iOS Settings > Facebook and toggling access f
       defaultValue: "sent %{sent_date}",
       count: nil,
       substitutions: ["sent_date": sent_date]
+    )
+  }
+  /**
+   "Popular"
+
+   - **es**: "Popular"
+   - **de**: "Beliebt"
+   - **fr**: "Tendances"
+   - **it**: "Popular"
+   - **en**: "Popular"
+  */
+  public static func popular() -> String {
+    return localizedString(
+      key: "popular",
+      defaultValue: "Popular",
+      count: nil,
+      substitutions: [:]
     )
   }
   /**
