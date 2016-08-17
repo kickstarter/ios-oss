@@ -1,5 +1,7 @@
-import Library
 import KsApi
+import Library
+import Prelude
+import Prelude_UIKit
 import UIKit
 
 internal protocol ProjectNotificationCellDelegate: class {
@@ -13,8 +15,18 @@ internal final class ProjectNotificationCell: UITableViewCell, ValueCell {
 
   @IBOutlet private weak var nameLabel: UILabel!
   @IBOutlet private weak var notificationSwitch: UISwitch!
+  @IBOutlet private weak var separatorView: UIView!
+
+  internal override func bindStyles() {
+    super.bindStyles()
+    self |> baseTableViewCellStyle()
+    self.nameLabel |> settingsSectionLabelStyle
+    self.separatorView |> separatorStyle
+  }
 
   internal override func bindViewModel() {
+    super.bindViewModel()
+
     self.nameLabel.rac.text = self.viewModel.outputs.name
     self.notificationSwitch.rac.on = self.viewModel.outputs.notificationOn
 

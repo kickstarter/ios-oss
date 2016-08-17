@@ -131,6 +131,8 @@
 		597073B51D07294500B00444 /* ProjectNotificationCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 597073B31D07294500B00444 /* ProjectNotificationCellViewModel.swift */; };
 		597073C31D07626700B00444 /* ProjectNotificationCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 597073BF1D0760F200B00444 /* ProjectNotificationCellViewModelTests.swift */; };
 		597073C41D07626800B00444 /* ProjectNotificationCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 597073BF1D0760F200B00444 /* ProjectNotificationCellViewModelTests.swift */; };
+		597582E31D5D12AE008765DE /* SettingsStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 597582E21D5D12AE008765DE /* SettingsStyles.swift */; };
+		597582E41D5D12AE008765DE /* SettingsStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 597582E21D5D12AE008765DE /* SettingsStyles.swift */; };
 		598D96B41D41790C003F3F66 /* ActivitySampleBackingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598D96821D417905003F3F66 /* ActivitySampleBackingCell.swift */; };
 		598D96B61D426D80003F3F66 /* ActivitySampleFollowCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598D96B51D426D80003F3F66 /* ActivitySampleFollowCell.swift */; };
 		598D96B81D426F70003F3F66 /* ActivitySampleProjectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598D96B71D426F70003F3F66 /* ActivitySampleProjectCell.swift */; };
@@ -1484,6 +1486,7 @@
 		597073B01D07281800B00444 /* ProjectNotificationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectNotificationCell.swift; sourceTree = "<group>"; };
 		597073B31D07294500B00444 /* ProjectNotificationCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectNotificationCellViewModel.swift; sourceTree = "<group>"; };
 		597073BF1D0760F200B00444 /* ProjectNotificationCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectNotificationCellViewModelTests.swift; sourceTree = "<group>"; };
+		597582E21D5D12AE008765DE /* SettingsStyles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsStyles.swift; sourceTree = "<group>"; };
 		598D96821D417905003F3F66 /* ActivitySampleBackingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivitySampleBackingCell.swift; sourceTree = "<group>"; };
 		598D96B51D426D80003F3F66 /* ActivitySampleFollowCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivitySampleFollowCell.swift; sourceTree = "<group>"; };
 		598D96B71D426F70003F3F66 /* ActivitySampleProjectCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivitySampleProjectCell.swift; sourceTree = "<group>"; };
@@ -2135,6 +2138,8 @@
 				A73379101D0E33A600C91445 /* ButtonStyles.swift */,
 				A73379441D0E36A600C91445 /* Colors.swift */,
 				59B0E07D1D147F340081D2DC /* DashboardStyles.swift */,
+				597582E21D5D12AE008765DE /* SettingsStyles.swift */,
+				598D96C11D429756003F3F66 /* ActivitySampleStyles.swift */,
 				A757EB2A1D1AD89E00A5C978 /* DiscoveryStyles.swift */,
 				A73379471D0E36CA00C91445 /* Fonts.swift */,
 				A73378FD1D0AE36400C91445 /* LoginStyles.swift */,
@@ -4046,6 +4051,7 @@
 				A7F441BD1D005A9400FE6FC5 /* CommentsViewModel.swift in Sources */,
 				A74900181D00E23000BC3BE7 /* SignupViewModel.swift in Sources */,
 				A7F441D51D005A9400FE6FC5 /* ProfileProjectCellViewModel.swift in Sources */,
+				597582E31D5D12AE008765DE /* SettingsStyles.swift in Sources */,
 				9D14FFC61D135C12005F4ABB /* ProjectActivityUpdateCellViewModel.swift in Sources */,
 				A7F441AF1D005A9400FE6FC5 /* ActivityFriendBackingViewModel.swift in Sources */,
 				80EAEF001D243A7A008C2353 /* BackingViewModel.swift in Sources */,
@@ -4290,6 +4296,7 @@
 				0151AEB61C8F70000067F1BE /* Styles.swift in Sources */,
 				A7FC8C071C8F1DEA00C3B49B /* CircleAvatarImageView.swift in Sources */,
 				A7698B2B1D00602800953FD3 /* LoginViewModel.swift in Sources */,
+				597582E41D5D12AE008765DE /* SettingsStyles.swift in Sources */,
 				A7C93FB41D44139100C2DF9B /* ProjectMagazineViewModel.swift in Sources */,
 				A75511B51C8647D9005355CF /* NSBundleType.swift in Sources */,
 				A7F441D21D005A9400FE6FC5 /* MessageThreadsViewModel.swift in Sources */,

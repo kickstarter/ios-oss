@@ -8,6 +8,7 @@ import Result
 // swiftlint:disable file_length
 public protocol SettingsViewModelInputs {
   func backingsTapped(selected selected: Bool)
+  func betaFeedbackButtonTapped()
   func commentsTapped(selected selected: Bool)
   func findFriendsTapped()
   func followerTapped(selected selected: Bool)
@@ -34,12 +35,14 @@ public protocol SettingsViewModelInputs {
 
 public protocol SettingsViewModelOutputs {
   var backingsSelected: Signal<Bool, NoError> { get }
+  var betaFeedbackButtonHidden: Signal<Bool, NoError> { get }
   var commentsSelected: Signal<Bool, NoError> { get }
   var creatorNotificationsHidden: Signal<Bool, NoError> { get }
   var followerSelected: Signal<Bool, NoError> { get }
   var friendActivitySelected: Signal<Bool, NoError> { get }
   var gamesNewsletterOn: Signal<Bool, NoError> { get }
   var goToAppStoreRating: Signal<String, NoError> { get }
+  var goToBetaFeedback: Signal<(), NoError> { get }
   var goToFindFriends: Signal<Void, NoError> { get }
   var goToManageProjectNotifications: Signal<Void, NoError> { get }
   var happeningNewsletterOn: Signal<Bool, NoError> { get }
@@ -144,6 +147,8 @@ public final class SettingsViewModel: SettingsViewModelType, SettingsViewModelIn
     self.goToAppStoreRating = self.rateUsTappedProperty.signal
       .map { AppEnvironment.current.config?.iTunesLink ?? "" }
 
+    self.goToBetaFeedback = self.betaFeedbackButtonTappedProperty.signal
+
     self.goToFindFriends = self.findFriendsTappedProperty.signal
 
     self.goToManageProjectNotifications = self.manageProjectNotificationsTappedProperty.signal
@@ -198,6 +203,8 @@ public final class SettingsViewModel: SettingsViewModelType, SettingsViewModelIn
             version_number: AppEnvironment.current.mainBundle.shortVersionString
         )
     }
+
+    self.betaFeedbackButtonHidden = self.viewDidLoadProperty.signal.mapConst(false)
 
     // Tracking Events
     Signal.merge(
@@ -254,6 +261,10 @@ public final class SettingsViewModel: SettingsViewModelType, SettingsViewModelIn
   private let backingsTappedProperty = MutableProperty(false)
   public func backingsTapped(selected selected: Bool) {
     self.backingsTappedProperty.value = selected
+  }
+  private let betaFeedbackButtonTappedProperty = MutableProperty()
+  public func betaFeedbackButtonTapped() {
+    self.betaFeedbackButtonTappedProperty.value = ()
   }
   private let commentsTappedProperty = MutableProperty(false)
   public func commentsTapped(selected selected: Bool) {
@@ -345,12 +356,14 @@ public final class SettingsViewModel: SettingsViewModelType, SettingsViewModelIn
   }
 
   public let backingsSelected: Signal<Bool, NoError>
+  public let betaFeedbackButtonHidden: Signal<Bool, NoError>
   public let commentsSelected: Signal<Bool, NoError>
   public let creatorNotificationsHidden: Signal<Bool, NoError>
   public let followerSelected: Signal<Bool, NoError>
   public let friendActivitySelected: Signal<Bool, NoError>
   public let gamesNewsletterOn: Signal<Bool, NoError>
   public let goToAppStoreRating: Signal<String, NoError>
+  public let goToBetaFeedback: Signal<(), NoError>
   public let goToFindFriends: Signal<Void, NoError>
   public let goToManageProjectNotifications: Signal<Void, NoError>
   public let happeningNewsletterOn: Signal<Bool, NoError>

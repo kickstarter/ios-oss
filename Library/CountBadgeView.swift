@@ -25,7 +25,7 @@ public final class CountBadgeView: UIView {
 
     self
       |> roundedStyle(cornerRadius: floor(self.bounds.size.height / 2.0))
-      |> CountBadgeView.lens.backgroundColor .~ .ksr_navy_300
+      |> CountBadgeView.lens.backgroundColor .~ .ksr_navy_400
       |> CountBadgeView.lens.layoutMargins .~ .init(topBottom: 4.0, leftRight: 8.0)
       |> CountBadgeView.lens.contentHuggingPriorityForAxis(.Horizontal) .~ required
       |> CountBadgeView.lens.contentCompressionResistancePriorityForAxis(.Horizontal) .~ required
