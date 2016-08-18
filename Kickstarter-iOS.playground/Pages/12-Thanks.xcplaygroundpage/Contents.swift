@@ -31,9 +31,8 @@ AppEnvironment.replaceCurrentEnvironment(
   language: .en, locale: NSLocale(localeIdentifier: "en")
 )
 
-let controller = storyboard(named: "Checkout")
-  .instantiateViewControllerWithIdentifier("ThanksViewController") as! ThanksViewController
-controller.configureWith(project: Project.cosmicSurgery)
+initialize()
+let controller = ThanksViewController.configuredWith(project: Project.cosmicSurgery)
 let nav = UINavigationController(rootViewController: controller)
 
 let (parent, _) = playgroundControllers(device: .phone4_7inch, orientation: .portrait, child: nav)

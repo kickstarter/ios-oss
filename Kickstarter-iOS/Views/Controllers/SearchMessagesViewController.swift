@@ -65,14 +65,8 @@ internal final class SearchMessagesViewController: UITableViewController {
   }
 
   private func goTo(messageThread messageThread: MessageThread) {
-
-    let vc = self.storyboard?.instantiateViewControllerWithIdentifier("MessagesViewController")
-
-    if let messages = vc as? MessagesViewController {
-
-      messages.configureWith(messageThread: messageThread)
-      self.navigationController?.pushViewController(messages, animated: true)
-    }
+    let vc = MessagesViewController.configuredWith(messageThread: messageThread)
+    self.navigationController?.pushViewController(vc, animated: true)
   }
 
   @IBAction private func searchTextChanged(textField: UITextField) {

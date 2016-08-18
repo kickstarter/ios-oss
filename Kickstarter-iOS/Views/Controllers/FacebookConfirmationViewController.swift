@@ -21,6 +21,17 @@ internal final class FacebookConfirmationViewController: UIViewController,
   private let viewModel: FacebookConfirmationViewModelType = FacebookConfirmationViewModel()
   private let helpViewModel = HelpViewModel()
 
+  internal static func configuredWith(facebookUserEmail email: String, facebookAccessToken token: String)
+    -> FacebookConfirmationViewController {
+
+      let vc = Storyboard.Login.instantiate(FacebookConfirmationViewController)
+      vc.viewModel.inputs.email(email)
+      vc.viewModel.inputs.facebookToken(token)
+      vc.helpViewModel.inputs.configureWith(helpContext: .facebookConfirmation)
+      vc.helpViewModel.inputs.canSendEmail(MFMailComposeViewController.canSendMail())
+      return vc
+  }
+
   override func viewDidLoad() {
     super.viewDidLoad()
     self.viewModel.inputs.viewDidLoad()
@@ -100,13 +111,6 @@ internal final class FacebookConfirmationViewController: UIViewController,
     }
   }
 
-  internal func configureWith(facebookUserEmail email: String, facebookAccessToken token: String) {
-    self.viewModel.inputs.email(email)
-    self.viewModel.inputs.facebookToken(token)
-    self.helpViewModel.inputs.configureWith(helpContext: .facebookConfirmation)
-    self.helpViewModel.inputs.canSendEmail(MFMailComposeViewController.canSendMail())
-  }
-
   @objc internal func mailComposeController(controller: MFMailComposeViewController,
                                             didFinishWithResult result: MFMailComposeResult,
                                                                 error: NSError?) {
@@ -115,21 +119,12 @@ internal final class FacebookConfirmationViewController: UIViewController,
   }
 
   private func goToHelpType(helpType: HelpType) {
-    guard let helpVC = UIStoryboard(name: "Help", bundle: .framework)
-      .instantiateViewControllerWithIdentifier("HelpWebViewController") as? HelpWebViewController else {
-        fatalError("Could not instantiate HelpWebViewController")
-    }
-
-    helpVC.configureWith(helpType: helpType)
-    self.navigationController?.pushViewController(helpVC, animated: true)
+    let vc = HelpWebViewController.configuredWith(helpType: helpType)
+    self.navigationController?.pushViewController(vc, animated: true)
   }
 
   private func goToLoginViewController() {
-    guard let loginVC = self.storyboard?.instantiateViewControllerWithIdentifier("LoginViewController")
-      as? LoginViewController else {
-        fatalError("Couldn’t instantiate LoginViewController")
-    }
-    self.navigationController?.pushViewController(loginVC, animated: true)
+    self.navigationController?.pushViewController(LoginViewController.instantiate(), animated: true)
   }
 
   private func showHelpSheet(helpTypes helpTypes: [HelpType]) {

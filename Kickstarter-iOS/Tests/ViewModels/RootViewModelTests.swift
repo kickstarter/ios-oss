@@ -105,19 +105,19 @@ final class RootViewModelTests: TestCase {
 
     self.vm.inputs.viewDidLoad()
 
-    self.selectedIndex.assertValues([0], "First index selected immediately.")
+    self.selectedIndex.assertValues([], "No index selected immediately.")
 
     self.vm.inputs.didSelectIndex(1)
 
-    self.selectedIndex.assertValues([0, 1], "Selects index immediately.")
+    self.selectedIndex.assertValues([1], "Selects index immediately.")
 
     self.vm.inputs.didSelectIndex(0)
 
-    self.selectedIndex.assertValues([0, 1, 0], "Selects index immediately.")
+    self.selectedIndex.assertValues([1, 0], "Selects index immediately.")
 
     self.vm.inputs.didSelectIndex(10)
 
-    self.selectedIndex.assertValues([0, 1, 0, 3], "Selecting index out of range safely clamps to bounds.")
+    self.selectedIndex.assertValues([1, 0, 3], "Selecting index out of range safely clamps to bounds.")
   }
 
   func testScrollToTop() {
@@ -145,11 +145,26 @@ final class RootViewModelTests: TestCase {
 
   func testSwitchingTabs() {
     self.vm.inputs.viewDidLoad()
-    self.selectedIndex.assertValues([0])
+    self.selectedIndex.assertValues([])
     self.vm.inputs.switchToDiscovery()
-    self.selectedIndex.assertValues([0, 0])
+    self.selectedIndex.assertValues([0])
     self.vm.inputs.switchToActivities()
-    self.selectedIndex.assertValues([0, 0, 1])
+    self.selectedIndex.assertValues([0, 1])
+    self.vm.inputs.switchToSearch()
+    self.selectedIndex.assertValues([0, 1, 2])
+    self.vm.inputs.switchToProfile()
+    self.selectedIndex.assertValues([0, 1, 2])
+    self.vm.inputs.switchToLogin()
+    self.selectedIndex.assertValues([0, 1, 2, 3])
+
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: User.template))
+    self.vm.inputs.userSessionStarted()
+
+    self.selectedIndex.assertValues([0, 1, 2, 3, 3])
+    self.vm.inputs.switchToProfile()
+    self.selectedIndex.assertValues([0, 1, 2, 3, 3, 3])
+    self.vm.inputs.switchToLogin()
+    self.selectedIndex.assertValues([0, 1, 2, 3, 3, 3])
   }
 
   func testTabBarItemStyles() {

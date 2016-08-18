@@ -1,4 +1,5 @@
 import Library
+import KsApi
 import Prelude
 import ReactiveCocoa
 import Result
@@ -31,11 +32,23 @@ internal protocol RootViewModelInputs {
   /// Call when selected tab bar index changes.
   func didSelectIndex(index: Int)
 
-  /// Call when should switch to the activities tab.
+  /// Call when we should switch to the activities tab.
   func switchToActivities()
 
-  /// Call when it's wanted to switch to the discovery tab.
+  /// Call when we should switch to the creator dashboard tab.
+  func switchToDashboard(project param: Param)
+
+  /// Call when we should switch to the discovery tab.
   func switchToDiscovery()
+
+  /// Call when we should switch to the login tab.
+  func switchToLogin()
+
+  /// Call when we should switch to the profile tab.
+  func switchToProfile()
+
+  /// Call when we should switch to the search tab.
+  func switchToSearch()
 
   /// Call when the controller has received a user session ended notification.
   func userSessionEnded()
@@ -91,7 +104,7 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
       .map { _ in
         [
           initialViewController(storyboardName: "Discovery"),
-          initialViewController(storyboardName: "Activity"),
+          UINavigationController(rootViewController: ActivitiesViewController.instantiate()),
           initialViewController(storyboardName: "Search")
         ]
       }
@@ -100,8 +113,11 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
     let personalizedTabs = userState
       .map { user -> [UIViewController?] in
         [
-          user.isMember   ? initialViewController(storyboardName: "Dashboard") : nil,
-          !user.isLoggedIn ? initialViewController(storyboardName: "Login") : nil,
+          user.isMember    ? initialViewController(storyboardName: "Dashboard") : nil,
+          !user.isLoggedIn ?
+            UINavigationController(
+              rootViewController: LoginToutViewController.configuredWith(loginIntent: .generic)
+            ) as UIViewController? : nil,
           user.isLoggedIn  ? initialViewController(storyboardName: "Profile") : nil
         ]
       }
@@ -109,14 +125,54 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
 
     self.setViewControllers = combineLatest(standardTabs, personalizedTabs).map(+)
 
-    self.selectedIndex = Signal.merge([
-      self.viewDidLoadProperty.signal.mapConst(0),
-      self.didSelectIndexProperty.signal,
-      self.switchToActivitiesProperty.signal.mapConst(1),
-      self.switchToDiscoveryProperty.signal.mapConst(0)
-      ])
-      .withLatestFrom(self.setViewControllers)
-      .map { idx, vcs in clamp(0, vcs.count-1)(idx) }
+    let loginState = userState.map { $0.isLoggedIn }
+    let vcCount = self.setViewControllers.map { $0.count }
+
+    let switchToLogin = combineLatest(vcCount, loginState)
+      .takeWhen(self.switchToLoginProperty.signal)
+      .filter { isFalse($1) }
+      .map(first)
+    let switchToProfile = combineLatest(vcCount, loginState)
+      .takeWhen(self.switchToProfileProperty.signal)
+      .filter { isTrue($1) }
+      .map(first)
+
+    let dashboard = self.setViewControllers
+      .map { vcs in
+        vcs.reduce(nil) { accum, vc -> DashboardViewController? in
+          guard
+            let nav = vc as? UINavigationController,
+            dashboard = nav.viewControllers.first as? DashboardViewController
+            else { return accum }
+
+          return dashboard
+        }
+      }
+      .ignoreNil()
+
+    let switchToDashboard =
+      combineLatest(self.switchToDashboardProperty.signal.ignoreNil(), dashboard, loginState)
+        .filter { _, _, loginState in isTrue(loginState) }
+        .map { param, dashboard, _ in (param, dashboard) }
+
+    switchToDashboard
+      .observeForUI()
+      .observeNext { param, dashboard in dashboard.`switch`(toProject: param) }
+
+    self.selectedIndex =
+      combineLatest(
+        .merge(
+          self.didSelectIndexProperty.signal,
+          self.switchToActivitiesProperty.signal.mapConst(1),
+          self.switchToDiscoveryProperty.signal.mapConst(0),
+          self.switchToSearchProperty.signal.mapConst(2),
+          switchToLogin,
+          switchToProfile,
+          switchToDashboard.mapConst(3)
+        ),
+        self.setViewControllers,
+        self.viewDidLoadProperty.signal)
+        .map { idx, vcs, _ in clamp(0, vcs.count-1)(idx) }
 
     let selectedTabAgain = self.selectedIndex.combinePrevious()
       .map { (prev, next) -> Int? in prev == next ? next : nil }
@@ -151,9 +207,25 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
   internal func switchToActivities() {
     self.switchToActivitiesProperty.value = ()
   }
+  private let switchToDashboardProperty = MutableProperty<Param?>(nil)
+  internal func switchToDashboard(project param: Param) {
+    self.switchToDashboardProperty.value = param
+  }
   private let switchToDiscoveryProperty = MutableProperty()
   internal func switchToDiscovery() {
     self.switchToDiscoveryProperty.value = ()
+  }
+  private let switchToLoginProperty = MutableProperty()
+  internal func switchToLogin() {
+    self.switchToLoginProperty.value = ()
+  }
+  private let switchToProfileProperty = MutableProperty()
+  internal func switchToProfile() {
+    self.switchToProfileProperty.value = ()
+  }
+  private let switchToSearchProperty = MutableProperty()
+  internal func switchToSearch() {
+    self.switchToSearchProperty.value = ()
   }
   private let userSessionStartedProperty = MutableProperty<()>()
   internal func userSessionStarted() {

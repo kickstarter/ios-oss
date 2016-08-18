@@ -71,13 +71,8 @@ internal final class ProfileViewController: UICollectionViewController {
   }
 
   @IBAction private func messagesButtonTapped() {
-    guard let vc = UIStoryboard(name: "Messages", bundle: .framework).instantiateInitialViewController(),
-      messages = vc as? MessageThreadsViewController else {
-        fatalError("Could not instantiate MessageThreadsViewController.")
-    }
-
-    messages.configureWith(project: nil)
-    self.navigationController?.pushViewController(messages, animated: true)
+    let vc = MessageThreadsViewController.configuredWith(project: nil)
+    self.navigationController?.pushViewController(vc, animated: true)
   }
 
   internal override func collectionView(collectionView: UICollectionView,
@@ -88,23 +83,12 @@ internal final class ProfileViewController: UICollectionViewController {
   }
 
   private func goToSettings() {
-    guard let settingsViewController = UIStoryboard(name: "Settings", bundle: .framework)
-      .instantiateInitialViewController() as? SettingsViewController else {
-        fatalError("Could not instantiate SettingsViewController.")
-    }
-
-    self.navigationController?.pushViewController(settingsViewController, animated: true)
+    self.navigationController?.pushViewController(SettingsViewController.instantiate(), animated: true)
   }
 
   private func present(project project: Project, refTag: RefTag) {
-    let vc = UIStoryboard(name: "ProjectMagazine", bundle: .framework)
-      .instantiateViewControllerWithIdentifier("ProjectMagazineViewController")
-    guard let projectViewController = vc as? ProjectMagazineViewController else {
-      fatalError("Couldn't instantiate project view controller.")
-    }
-
-    projectViewController.configureWith(project: project, refTag: refTag)
-    let nav = UINavigationController(rootViewController: projectViewController)
+    let vc = ProjectMagazineViewController.configuredWith(projectOrParam: .left(project), refTag: .dashboard)
+    let nav = UINavigationController(rootViewController: vc)
     self.presentViewController(nav, animated: true, completion: nil)
   }
 

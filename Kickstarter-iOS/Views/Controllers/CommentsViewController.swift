@@ -13,8 +13,12 @@ internal final class CommentsViewController: UITableViewController {
   @IBOutlet internal weak var commentBarButton: UIBarButtonItem!
   private weak var loginToutViewController: UIViewController? = nil
 
-  internal func configureWith(project project: Project? = nil, update: Update? = nil) {
-    self.viewModel.inputs.project(project, update: update)
+  internal static func configuredWith(project project: Project? = nil, update: Update? = nil)
+    -> CommentsViewController {
+
+      let vc = Storyboard.Comments.instantiate(CommentsViewController)
+      vc.viewModel.inputs.project(project, update: update)
+      return vc
   }
 
   internal override func viewDidLoad() {
@@ -100,14 +104,10 @@ internal final class CommentsViewController: UITableViewController {
   }
 
   internal func presentCommentDialog(project project: Project, update: Update?) {
-    guard let vc = self.storyboard?.instantiateViewControllerWithIdentifier("CommentDialogViewController"),
-      dialog = vc as? CommentDialogViewController else {
-        fatalError("Could not instantiate CommentDialogViewController.")
-    }
-
+    let dialog = CommentDialogViewController
+      .configuredWith(project: project, update: update, recipient: nil,
+                      context: update == nil ? .projectComments : .updateComments)
     dialog.modalPresentationStyle = .FormSheet
-    dialog.configureWith(project: project, update: update, recipient: nil,
-                         context: update == nil ? .projectComments : .updateComments)
     dialog.delegate = self
     self.presentViewController(UINavigationController(rootViewController: dialog),
                                animated: true,
@@ -115,14 +115,7 @@ internal final class CommentsViewController: UITableViewController {
   }
 
   internal func presentLoginTout() {
-    let vc = UIStoryboard(name: "Login", bundle: .framework)
-      .instantiateViewControllerWithIdentifier("LoginToutViewController")
-    guard let login = vc as? LoginToutViewController else {
-        fatalError("Could not instantiate LoginToutViewController.")
-    }
-
-    self.loginToutViewController = vc
-    login.configureWith(loginIntent: .generic)
+    let login = LoginToutViewController.configuredWith(loginIntent: .generic)
     self.presentViewController(UINavigationController(rootViewController: login),
                                animated: true,
                                completion: nil)

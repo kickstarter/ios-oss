@@ -9,7 +9,7 @@
         <!--Comments View Controller-->
         <scene sceneID="xum-1V-8eC">
             <objects>
-                <tableViewController id="q9l-Wg-1lg" customClass="CommentsViewController" customModule="Kickstarter_Framework" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="CommentsViewController" id="q9l-Wg-1lg" customClass="CommentsViewController" customModule="Kickstarter_Framework" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="198" sectionHeaderHeight="28" sectionFooterHeight="28" id="7dk-Uz-2T0">
                         <rect key="frame" x="0.0" y="0.0" width="450" height="1600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

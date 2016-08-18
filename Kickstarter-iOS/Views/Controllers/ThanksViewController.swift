@@ -21,6 +21,13 @@ internal final class ThanksViewController: UIViewController, UICollectionViewDel
   private let shareViewModel: ShareViewModelType = ShareViewModel()
   private let dataSource = ThanksProjectsDataSource()
 
+  internal static func configuredWith(project project: Project) -> ThanksViewController {
+    let vc = Storyboard.Checkout.instantiate(ThanksViewController)
+    vc.viewModel.inputs.project(project)
+    vc.shareViewModel.inputs.configureWith(shareContext: .thanks(project))
+    return vc
+  }
+
   override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -149,11 +156,6 @@ internal final class ThanksViewController: UIViewController, UICollectionViewDel
   }
   // swiftlint:enable function_body_length
 
-  internal func configureWith(project project: Project) {
-    self.viewModel.inputs.project(project)
-    self.shareViewModel.inputs.configureWith(shareContext: .thanks(project))
-  }
-
   private func goToDiscovery(params params: DiscoveryParams) {
     self.dismissViewControllerAnimated(true, completion: nil)
     // go to discovery
@@ -165,14 +167,8 @@ internal final class ThanksViewController: UIViewController, UICollectionViewDel
   }
 
   private func goToProject(project: Project, refTag: RefTag) {
-    let vc = UIStoryboard(name: "ProjectMagazine", bundle: .framework)
-      .instantiateViewControllerWithIdentifier("ProjectMagazineViewController")
-    guard let projectViewController = vc as? ProjectMagazineViewController else {
-      fatalError("Couldn't instantiate project view controller.")
-    }
-
-    projectViewController.configureWith(project: project, refTag: refTag)
-    let nav = UINavigationController(rootViewController: projectViewController)
+    let vc = ProjectMagazineViewController.configuredWith(projectOrParam: .left(project), refTag: refTag)
+    let nav = UINavigationController(rootViewController: vc)
     self.presentViewController(nav, animated: true, completion: nil)
   }
 

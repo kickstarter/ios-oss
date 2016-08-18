@@ -7,8 +7,10 @@ internal final class ProjectActivitiesViewController: UITableViewController {
   private let viewModel: ProjectActivitiesViewModelType = ProjectActivitiesViewModel()
   private let dataSource = ProjectActivitiesDataSource()
 
-  internal func configureWith(project project: Project) {
-    self.viewModel.inputs.configureWith(project)
+  internal static func configuredWith(project project: Project) -> ProjectActivitiesViewController {
+    let vc = Storyboard.ProjectActivity.instantiate(ProjectActivitiesViewController)
+    vc.viewModel.inputs.configureWith(project)
+    return vc
   }
 
   internal override func viewDidLoad() {
@@ -77,46 +79,24 @@ internal final class ProjectActivitiesViewController: UITableViewController {
   }
 
   internal func goToBacking(project project: Project, user: User) {
-    guard let vc = UIStoryboard(name: "Backing", bundle: .framework).instantiateInitialViewController()
-      as? BackingViewController else {
-        fatalError("Could not instantiate BackingViewController.")
-    }
-
-    vc.configureWith(project: project, backer: user)
+    let vc = BackingViewController.configuredWith(project: project, backer: user)
     self.navigationController?.pushViewController(vc, animated: true)
   }
 
   internal func goToComments(project project: Project, update: Update?) {
-    guard let vc = UIStoryboard(name: "Comments", bundle: .framework).instantiateInitialViewController()
-      as? CommentsViewController else {
-        fatalError("Could not instantiate CommentsViewController.")
-    }
-
-    vc.configureWith(project: project, update: update)
+    let vc = CommentsViewController.configuredWith(project: project, update: update)
     self.navigationController?.pushViewController(vc, animated: true)
   }
 
   internal func goToProject(project project: Project) {
-    let vc = UIStoryboard(name: "ProjectMagazine", bundle: .framework)
-      .instantiateViewControllerWithIdentifier("ProjectMagazineViewController")
-    guard let projectViewController = vc as? ProjectMagazineViewController else {
-      fatalError("Couldn't instantiate project view controller.")
-    }
-
-    projectViewController.configureWith(project: project, refTag: .dashboard)
-    let nav = UINavigationController(rootViewController: projectViewController)
+    let vc = ProjectMagazineViewController.configuredWith(projectOrParam: .left(project), refTag: .dashboard)
+    let nav = UINavigationController(rootViewController: vc)
     self.presentViewController(nav, animated: true, completion: nil)
   }
 
   internal func goToSendMessage(backing backing: Backing,
                                         context: Koala.MessageDialogContext) {
-    guard let vc = UIStoryboard(name: "Messages", bundle: .framework)
-      .instantiateViewControllerWithIdentifier("MessageDialogViewController") as? MessageDialogViewController
-      else {
-        fatalError("Couldn’t instantiate MessageDialogViewController.")
-    }
-
-    vc.configureWith(messageSubject: MessageSubject.backing(backing), context: context)
+    let vc = MessageDialogViewController.configuredWith(messageSubject: .backing(backing), context: context)
     vc.modalPresentationStyle = .FormSheet
     vc.delegate = self
     self.presentViewController(UINavigationController(rootViewController: vc),
@@ -125,15 +105,9 @@ internal final class ProjectActivitiesViewController: UITableViewController {
   }
 
   internal func goToSendReply(project project: Project, update: Update?, comment: Comment) {
-    guard let dialog = UIStoryboard(name: "Comments", bundle: .framework)
-      .instantiateViewControllerWithIdentifier("CommentDialogViewController") as? CommentDialogViewController
-      else {
-        fatalError("Could not instantiate CommentDialogViewController.")
-    }
-
+    let dialog = CommentDialogViewController
+      .configuredWith(project: project, update: update, recipient: comment.author, context: .projectActivity)
     dialog.modalPresentationStyle = .FormSheet
-    dialog.configureWith(project: project, update: update, recipient: comment.author,
-                         context: .projectActivity)
     dialog.delegate = self
     self.presentViewController(UINavigationController(rootViewController: dialog),
                                animated: true,
@@ -141,12 +115,7 @@ internal final class ProjectActivitiesViewController: UITableViewController {
   }
 
   internal func goToUpdate(project project: Project, update: Update) {
-    guard let vc = UIStoryboard(name: "Update", bundle: .framework)
-      .instantiateViewControllerWithIdentifier("UpdateViewController") as? UpdateViewController else {
-        fatalError("Could not instantiate UpdateViewController")
-    }
-
-    vc.configureWith(project: project, update: update)
+    let vc = UpdateViewController.configuredWith(project: project, update: update)
     self.navigationController?.pushViewController(vc, animated: true)
   }
 }

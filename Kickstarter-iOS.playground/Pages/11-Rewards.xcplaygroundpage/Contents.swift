@@ -27,8 +27,8 @@ AppEnvironment.replaceCurrentEnvironment(
   )
 )
 
-let controller = storyboard(named: "ProjectMagazine")
-  .instantiateViewControllerWithIdentifier("RewardsViewController") as! RewardsViewController
+initialize()
+let controller = Storyboard.ProjectMagazine.instantiate(RewardsViewController)
 controller.configureWith(project: project)
 controller.transfer(headerView: UIView(), previousContentOffset: nil)
 

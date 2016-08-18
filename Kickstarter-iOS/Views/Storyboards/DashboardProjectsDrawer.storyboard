@@ -8,7 +8,7 @@
         <!--Dashboard Projects Drawer-->
         <scene sceneID="Gi0-iO-cp7">
             <objects>
-                <tableViewController title="Dashboard Projects Drawer" modalPresentationStyle="overCurrentContext" id="WXe-nO-1vC" customClass="DashboardProjectsDrawerViewController" customModule="Kickstarter_Framework" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="DashboardProjectsDrawerViewController" title="Dashboard Projects Drawer" modalPresentationStyle="overCurrentContext" id="WXe-nO-1vC" customClass="DashboardProjectsDrawerViewController" customModule="Kickstarter_Framework" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" showsHorizontalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="fZ0-Pt-0RS">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

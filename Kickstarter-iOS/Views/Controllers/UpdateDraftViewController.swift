@@ -29,6 +29,12 @@ internal final class UpdateDraftViewController: UIViewController {
 
   @IBOutlet private var separatorViews: [UIView]!
 
+  internal static func configuredWith(project project: Project) -> UpdateDraftViewController {
+    let vc = Storyboard.UpdateDraft.instantiate(UpdateDraftViewController)
+    vc.viewModel.inputs.configureWith(project: project)
+    return vc
+  }
+
   internal override func bindStyles() {
     super.bindStyles()
 
@@ -131,12 +137,7 @@ internal final class UpdateDraftViewController: UIViewController {
     self.viewModel.outputs.goToPreview
       .observeForUI()
       .observeNext { [weak self] draft in
-        guard let vc = UIStoryboard(name: "UpdateDraft", bundle: .framework)
-          .instantiateViewControllerWithIdentifier("UpdatePreviewViewController")
-          as? UpdatePreviewViewController else {
-            fatalError("Could not instantiate UpdatePreviewViewController")
-        }
-        vc.configureWith(draft: draft)
+        let vc = UpdatePreviewViewController.configuredWith(draft: draft)
         self?.navigationController?.pushViewController(vc, animated: true)
     }
 
@@ -168,10 +169,6 @@ internal final class UpdateDraftViewController: UIViewController {
       .observeNext { [weak self] in self?.animateBottomConstraint($0) }
   }
   // swiftlint:enable function_body_length
-
-  internal func configureWith(project project: Project) {
-    self.viewModel.inputs.configureWith(project: project)
-  }
 
   internal override func viewDidLoad() {
     super.viewDidLoad()

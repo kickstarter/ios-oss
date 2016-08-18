@@ -16,6 +16,7 @@ final class ProjectMagazineViewModelTests: TestCase {
   private let goToLoginTout = TestObserver<(), NoError>()
   private let managePledgeButtonHidden = TestObserver<Bool, NoError>()
   private let notifyDescriptionToExpand = TestObserver<(), NoError>()
+  private let project = TestObserver<Project, NoError>()
   private let rewardsViewHidden = TestObserver<Bool, NoError>()
   private let showProjectStarredPrompt = TestObserver<String, NoError>()
   private let starButtonAccessibilityHint = TestObserver<String, NoError>()
@@ -35,6 +36,7 @@ final class ProjectMagazineViewModelTests: TestCase {
     self.vm.outputs.goToLoginTout.observe(self.goToLoginTout.observer)
     self.vm.outputs.managePledgeButtonHidden.observe(self.managePledgeButtonHidden.observer)
     self.vm.outputs.notifyDescriptionToExpand.observe(self.notifyDescriptionToExpand.observer)
+    self.vm.outputs.project.observe(self.project.observer)
     self.vm.outputs.rewardsViewHidden.observe(self.rewardsViewHidden.observer)
     self.vm.outputs.showProjectStarredPrompt.observe(self.showProjectStarredPrompt.observer)
     self.vm.outputs.starButtonSelected.observe(self.starButtonSelected.observer)
@@ -48,9 +50,9 @@ final class ProjectMagazineViewModelTests: TestCase {
 
   func testBackProjectButtonHidden_LiveProject_NotBacking() {
     self.vm.inputs.configureWith(
-      project: .template
+      projectOrParam: .left(.template
         |> Project.lens.state .~ .live
-        |> Project.lens.personalization.isBacking .~ false,
+        |> Project.lens.personalization.isBacking .~ false),
       refTag: .discovery
     )
     self.vm.inputs.viewDidLoad()
@@ -60,9 +62,9 @@ final class ProjectMagazineViewModelTests: TestCase {
 
   func testBackProjectButtonHidden_LiveProject_Backing() {
     self.vm.inputs.configureWith(
-      project: .template
+      projectOrParam: .left(.template
         |> Project.lens.state .~ .live
-        |> Project.lens.personalization.isBacking .~ true,
+        |> Project.lens.personalization.isBacking .~ true),
       refTag: .discovery
     )
     self.vm.inputs.viewDidLoad()
@@ -72,9 +74,9 @@ final class ProjectMagazineViewModelTests: TestCase {
 
   func testBackProjectButtonHidden_NotLiveProject_NotBacking() {
     self.vm.inputs.configureWith(
-      project: .template
+      projectOrParam: .left(.template
         |> Project.lens.state .~ .successful
-        |> Project.lens.personalization.isBacking .~ false,
+        |> Project.lens.personalization.isBacking .~ false),
       refTag: .discovery
     )
     self.vm.inputs.viewDidLoad()
@@ -84,9 +86,9 @@ final class ProjectMagazineViewModelTests: TestCase {
 
   func testBackProjectButtonHidden_NotLiveProject_Backing() {
     self.vm.inputs.configureWith(
-      project: .template
+      projectOrParam: .left(.template
         |> Project.lens.state .~ .successful
-        |> Project.lens.personalization.isBacking .~ true,
+        |> Project.lens.personalization.isBacking .~ true),
       refTag: .discovery
     )
     self.vm.inputs.viewDidLoad()
@@ -96,9 +98,9 @@ final class ProjectMagazineViewModelTests: TestCase {
 
   func testBottomShareButtonHidden_LiveProject_NotBacking() {
     self.vm.inputs.configureWith(
-      project: .template
+      projectOrParam: .left(.template
         |> Project.lens.state .~ .live
-        |> Project.lens.personalization.isBacking .~ false,
+        |> Project.lens.personalization.isBacking .~ false),
       refTag: .discovery
     )
     self.vm.inputs.viewDidLoad()
@@ -108,9 +110,9 @@ final class ProjectMagazineViewModelTests: TestCase {
 
   func testBottomShareButtonHidden_LiveProject_Backing() {
     self.vm.inputs.configureWith(
-      project: .template
+      projectOrParam: .left(.template
         |> Project.lens.state .~ .live
-        |> Project.lens.personalization.isBacking .~ true,
+        |> Project.lens.personalization.isBacking .~ true),
       refTag: .discovery
     )
     self.vm.inputs.viewDidLoad()
@@ -120,9 +122,9 @@ final class ProjectMagazineViewModelTests: TestCase {
 
   func testBottomShareButtonHidden_NotLiveProject_NotBacking() {
     self.vm.inputs.configureWith(
-      project: .template
+      projectOrParam: .left(.template
         |> Project.lens.state .~ .successful
-        |> Project.lens.personalization.isBacking .~ false,
+        |> Project.lens.personalization.isBacking .~ false),
       refTag: .discovery
     )
     self.vm.inputs.viewDidLoad()
@@ -132,9 +134,9 @@ final class ProjectMagazineViewModelTests: TestCase {
 
   func testBottomShareButtonHidden_NotLiveProject_Backing() {
     self.vm.inputs.configureWith(
-      project: .template
+      projectOrParam: .left(.template
         |> Project.lens.state .~ .successful
-        |> Project.lens.personalization.isBacking .~ true,
+        |> Project.lens.personalization.isBacking .~ true),
       refTag: .discovery
     )
     self.vm.inputs.viewDidLoad()
@@ -145,7 +147,7 @@ final class ProjectMagazineViewModelTests: TestCase {
   func testConfigureChildViewControllers() {
     let project = Project.template
 
-    self.vm.inputs.configureWith(project: project, refTag: .discovery)
+    self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .discovery)
     self.vm.inputs.viewDidLoad()
 
     self.configureChildViewControllersWithProject.assertValues([project])
@@ -156,7 +158,7 @@ final class ProjectMagazineViewModelTests: TestCase {
   }
 
   func testDescriptionAndRewardsViewHidden() {
-    self.vm.inputs.configureWith(project: .template, refTag: .discovery)
+    self.vm.inputs.configureWith(projectOrParam: .left(.template), refTag: .discovery)
     self.vm.inputs.viewDidLoad()
 
     self.descriptionViewHidden.assertValues([false])
@@ -179,7 +181,7 @@ final class ProjectMagazineViewModelTests: TestCase {
   }
 
   func testNotifyDescriptionToExpand() {
-    self.vm.inputs.configureWith(project: .template, refTag: .discovery)
+    self.vm.inputs.configureWith(projectOrParam: .left(.template), refTag: .discovery)
     self.vm.inputs.viewDidLoad()
 
     self.notifyDescriptionToExpand.assertValueCount(0)
@@ -190,7 +192,7 @@ final class ProjectMagazineViewModelTests: TestCase {
   }
 
   func testTransferFooterAndHeaderToDescriptionController() {
-    self.vm.inputs.configureWith(project: .template, refTag: .discovery)
+    self.vm.inputs.configureWith(projectOrParam: .left(.template), refTag: .discovery)
     self.vm.inputs.viewDidLoad()
 
     self.transferFooterAndHeaderToDescriptionController.assertValueCount(1)
@@ -209,7 +211,7 @@ final class ProjectMagazineViewModelTests: TestCase {
   }
 
   func testTransferFooterAndHeaderToRewardsController() {
-    self.vm.inputs.configureWith(project: .template, refTag: .discovery)
+    self.vm.inputs.configureWith(projectOrParam: .left(.template), refTag: .discovery)
     self.vm.inputs.viewDidLoad()
 
     self.transferFooterAndHeaderToRewardsController.assertValueCount(0)
@@ -229,9 +231,9 @@ final class ProjectMagazineViewModelTests: TestCase {
 
   func testManagePledgeButtonHidden_LiveProject_NotBacking() {
     self.vm.inputs.configureWith(
-      project: .template
+      projectOrParam: .left(.template
         |> Project.lens.state .~ .live
-        |> Project.lens.personalization.isBacking .~ false,
+        |> Project.lens.personalization.isBacking .~ false),
       refTag: .discovery
     )
     self.vm.inputs.viewDidLoad()
@@ -241,9 +243,9 @@ final class ProjectMagazineViewModelTests: TestCase {
 
   func testManagePledgeButtonHidden_LiveProject_Backing() {
     self.vm.inputs.configureWith(
-      project: .template
+      projectOrParam: .left(.template
         |> Project.lens.state .~ .live
-        |> Project.lens.personalization.isBacking .~ true,
+        |> Project.lens.personalization.isBacking .~ true),
       refTag: .discovery
     )
     self.vm.inputs.viewDidLoad()
@@ -253,9 +255,9 @@ final class ProjectMagazineViewModelTests: TestCase {
 
   func testManagePledgeButtonHidden_NotLiveProject_NotBacking() {
     self.vm.inputs.configureWith(
-      project: .template
+      projectOrParam: .left(.template
         |> Project.lens.state .~ .successful
-        |> Project.lens.personalization.isBacking .~ false,
+        |> Project.lens.personalization.isBacking .~ false),
       refTag: .discovery
     )
     self.vm.inputs.viewDidLoad()
@@ -265,9 +267,9 @@ final class ProjectMagazineViewModelTests: TestCase {
 
   func testManagePledgeButtonHidden_NotLiveProject_Backing() {
     self.vm.inputs.configureWith(
-      project: .template
+      projectOrParam: .left(.template
         |> Project.lens.state .~ .successful
-        |> Project.lens.personalization.isBacking .~ true,
+        |> Project.lens.personalization.isBacking .~ true),
       refTag: .discovery
     )
     self.vm.inputs.viewDidLoad()
@@ -277,9 +279,9 @@ final class ProjectMagazineViewModelTests: TestCase {
 
   func testViewPledgeButtonHidden_LiveProject_NotBacking() {
     self.vm.inputs.configureWith(
-      project: .template
+      projectOrParam: .left(.template
         |> Project.lens.state .~ .live
-        |> Project.lens.personalization.isBacking .~ false,
+        |> Project.lens.personalization.isBacking .~ false),
       refTag: .discovery
     )
     self.vm.inputs.viewDidLoad()
@@ -289,9 +291,9 @@ final class ProjectMagazineViewModelTests: TestCase {
 
   func testViewPledgeButtonHidden_LiveProject_Backing() {
     self.vm.inputs.configureWith(
-      project: .template
+      projectOrParam: .left(.template
         |> Project.lens.state .~ .live
-        |> Project.lens.personalization.isBacking .~ true,
+        |> Project.lens.personalization.isBacking .~ true),
       refTag: .discovery
     )
     self.vm.inputs.viewDidLoad()
@@ -301,9 +303,9 @@ final class ProjectMagazineViewModelTests: TestCase {
 
   func testViewPledgeButtonHidden_NotLiveProject_NotBacking() {
     self.vm.inputs.configureWith(
-      project: .template
+      projectOrParam: .left(.template
         |> Project.lens.state .~ .successful
-        |> Project.lens.personalization.isBacking .~ false,
+        |> Project.lens.personalization.isBacking .~ false),
       refTag: .discovery
     )
     self.vm.inputs.viewDidLoad()
@@ -313,9 +315,9 @@ final class ProjectMagazineViewModelTests: TestCase {
 
   func testViewPledgeButtonHidden_NotLiveProject_Backing() {
     self.vm.inputs.configureWith(
-      project: .template
+      projectOrParam: .left(.template
         |> Project.lens.state .~ .successful
-        |> Project.lens.personalization.isBacking .~ true,
+        |> Project.lens.personalization.isBacking .~ true),
       refTag: .discovery
     )
     self.vm.inputs.viewDidLoad()
@@ -327,7 +329,7 @@ final class ProjectMagazineViewModelTests: TestCase {
   func testTracksRefTag() {
     let project = Project.template
 
-    self.vm.inputs.configureWith(project: project, refTag: .category)
+    self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .category)
     self.vm.inputs.viewDidLoad()
 
     XCTAssertEqual([RefTag.category.stringTag],
@@ -346,7 +348,7 @@ final class ProjectMagazineViewModelTests: TestCase {
 
     // Start up another view model with the same project
     let newVm: ProjectMagazineViewModelType = ProjectMagazineViewModel()
-    newVm.inputs.configureWith(project: project, refTag: .recommended)
+    newVm.inputs.configureWith(projectOrParam: .left(project), refTag: .recommended)
     newVm.inputs.viewDidLoad()
 
     XCTAssertEqual([RefTag.category.stringTag, RefTag.recommended.stringTag],
@@ -364,7 +366,7 @@ final class ProjectMagazineViewModelTests: TestCase {
     self.starButtonSelected.assertDidNotEmitValue("No projects emitted at first.")
 
     self.vm.inputs.configureWith(
-      project: .template |> Project.lens.personalization.isStarred .~ false,
+      projectOrParam: .left(.template |> Project.lens.personalization.isStarred .~ false),
       refTag: nil
     )
     self.vm.inputs.viewDidLoad()
@@ -398,7 +400,7 @@ final class ProjectMagazineViewModelTests: TestCase {
 
     self.starButtonSelected.assertDidNotEmitValue("No projects emitted at first.")
 
-    self.vm.inputs.configureWith(project: project, refTag: nil)
+    self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: nil)
     self.vm.inputs.viewDidLoad()
     self.scheduler.advance()
 
@@ -420,8 +422,8 @@ final class ProjectMagazineViewModelTests: TestCase {
     AppEnvironment.login(.init(accessToken: "deadbeef", user: User.template))
 
     self.vm.inputs.configureWith(
-      project: .template
-        |> Project.lens.dates.deadline .~ (NSDate().timeIntervalSince1970 + 60.0 * 60.0 * 24.0),
+      projectOrParam: .left(.template
+        |> Project.lens.dates.deadline .~ (NSDate().timeIntervalSince1970 + 60.0 * 60.0 * 24.0)),
       refTag: nil
     )
     self.vm.inputs.viewDidLoad()
@@ -441,7 +443,7 @@ final class ProjectMagazineViewModelTests: TestCase {
     AppEnvironment.login(.init(accessToken: "deadbeef", user: User.template))
 
     self.vm.inputs.configureWith(
-      project: .template |> Project.lens.personalization.isStarred .~ true,
+      projectOrParam: .left(.template |> Project.lens.personalization.isStarred .~ true),
       refTag: nil
     )
     self.vm.inputs.viewDidLoad()
@@ -450,5 +452,35 @@ final class ProjectMagazineViewModelTests: TestCase {
     self.showProjectStarredPrompt.assertValueCount(0, "The star prompt does not show.")
     XCTAssertEqual(["Project Page", "Project Unstar"], trackingClient.events,
                    "An unstar koala event is tracked.")
+  }
+
+  func testProjectEmitsProject() {
+    let project = Project.template
+
+    withEnvironment(apiService: MockService(fetchProjectResponse: project)) {
+      self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: nil)
+      self.vm.inputs.viewDidLoad()
+
+      self.project.assertValues([project], "Emits project immediately.")
+
+      self.scheduler.advance()
+
+      self.project.assertValues([project, project], "Emits project after fetching.")
+    }
+  }
+
+  func testParamEmitsProject() {
+    let project = Project.template
+
+    withEnvironment(apiService: MockService(fetchProjectResponse: project)) {
+      self.vm.inputs.configureWith(projectOrParam: .right(.id(project.id)), refTag: nil)
+      self.vm.inputs.viewDidLoad()
+
+      self.project.assertValues([], "Emits nothing.")
+
+      self.scheduler.advance()
+
+      self.project.assertValues([project], "Emits project after fetching.")
+    }
   }
 }

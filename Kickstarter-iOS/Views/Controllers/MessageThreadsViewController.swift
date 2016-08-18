@@ -11,6 +11,12 @@ internal final class MessageThreadsViewController: UITableViewController {
   @IBOutlet private weak var mailboxLabel: UILabel!
   @IBOutlet private weak var footerView: UIView!
 
+  internal static func configuredWith(project project: Project?) -> MessageThreadsViewController {
+    let vc = Storyboard.Messages.instantiate(MessageThreadsViewController)
+    vc.viewModel.inputs.configureWith(project: project)
+    return vc
+  }
+
   internal override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -19,10 +25,6 @@ internal final class MessageThreadsViewController: UITableViewController {
     self.tableView.dataSource = self.dataSource
 
     self.viewModel.inputs.viewDidLoad()
-  }
-
-  internal func configureWith(project project: Project?) {
-    self.viewModel.inputs.configureWith(project: project)
   }
 
   internal override func bindViewModel() {
@@ -65,12 +67,8 @@ internal final class MessageThreadsViewController: UITableViewController {
                                    didSelectRowAtIndexPath indexPath: NSIndexPath) {
 
     if let messageThread = self.dataSource[indexPath] as? MessageThread {
-      guard let messages = UIStoryboard(name: "Messages", bundle: .framework)
-        .instantiateViewControllerWithIdentifier("MessagesViewController") as? MessagesViewController else {
-          fatalError("Could not find MessagesViewController.")
-      }
-      messages.configureWith(messageThread: messageThread)
-      self.navigationController?.pushViewController(messages, animated: true)
+      let vc = MessagesViewController.configuredWith(messageThread: messageThread)
+      self.navigationController?.pushViewController(vc, animated: true)
     }
   }
 

@@ -13,13 +13,24 @@ final class AppDelegateViewModelTests: TestCase {
   let updateCurrentUserInEnvironment = TestObserver<User, NoError>()
   let updateEnvironment = TestObserver<(Config, Koala), NoError>()
   let postNotificationName = TestObserver<String, NoError>()
+  let presentViewController = TestObserver<Int, NoError>()
+  let goToActivity = TestObserver<(), NoError>()
+  let goToLogin = TestObserver<(), NoError>()
+  let goToProfile = TestObserver<(), NoError>()
+  let goToSearch = TestObserver<(), NoError>()
 
   override func setUp() {
     super.setUp()
 
-    vm.outputs.updateCurrentUserInEnvironment.observe(updateCurrentUserInEnvironment.observer)
-    vm.outputs.updateEnvironment.observe(updateEnvironment.observer)
-    vm.outputs.postNotification.map { $0.name }.observe(postNotificationName.observer)
+    vm.outputs.updateCurrentUserInEnvironment.observe(self.updateCurrentUserInEnvironment.observer)
+    vm.outputs.updateEnvironment.observe(self.updateEnvironment.observer)
+    vm.outputs.postNotification.map { $0.name }.observe(self.postNotificationName.observer)
+    vm.outputs.presentViewController.map { ($0 as! UINavigationController).viewControllers.count }
+      .observe(self.presentViewController.observer)
+    vm.outputs.goToActivity.observe(self.goToActivity.observer)
+    vm.outputs.goToLogin.observe(self.goToLogin.observer)
+    vm.outputs.goToProfile.observe(self.goToProfile.observer)
+    vm.outputs.goToSearch.observe(self.goToSearch.observer)
   }
 
   func testHockeyManager_StartsWhenAppLaunches() {
@@ -108,5 +119,109 @@ final class AppDelegateViewModelTests: TestCase {
 
     self.vm.inputs.applicationWillEnterForeground()
     self.updateEnvironment.assertValueCount(2)
+  }
+
+  func testPresentViewController() {
+    let apiService = MockService(fetchProjectResponse: .template, fetchUpdateResponse: .template)
+    withEnvironment(apiService: apiService) {
+      let rootUrl = "https://www.kickstarter.com/"
+
+      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+                                                   launchOptions: [:])
+
+      self.presentViewController.assertValues([])
+
+      let projectUrl =
+        rootUrl + "projects/tequila/help-me-transform-this-pile-of-wood"
+      self.vm.inputs.applicationOpenUrl(application: UIApplication.sharedApplication(),
+                                        url: NSURL(string: projectUrl)!,
+                                        sourceApplication: nil,
+                                        annotation: 1)
+
+      self.presentViewController.assertValues([1])
+
+      let commentsUrl =
+        projectUrl + "/comments"
+      self.vm.inputs.applicationOpenUrl(application: UIApplication.sharedApplication(),
+                                        url: NSURL(string: commentsUrl)!,
+                                        sourceApplication: nil,
+                                        annotation: 1)
+
+      self.presentViewController.assertValues([1, 2])
+
+      let updateUrl =
+        projectUrl + "/posts/1399396"
+      self.vm.inputs.applicationOpenUrl(application: UIApplication.sharedApplication(),
+                                        url: NSURL(string: updateUrl)!,
+                                        sourceApplication: nil,
+                                        annotation: 1)
+
+      self.presentViewController.assertValues([1, 2, 2])
+
+      let updateCommentsUrl =
+        updateUrl + "/comments"
+      self.vm.inputs.applicationOpenUrl(application: UIApplication.sharedApplication(),
+                                        url: NSURL(string: updateCommentsUrl)!,
+                                        sourceApplication: nil,
+                                        annotation: 1)
+
+      self.presentViewController.assertValues([1, 2, 2, 3])
+    }
+  }
+
+  func testGoToActivity() {
+    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+                                                 launchOptions: [:])
+
+    self.goToActivity.assertValueCount(0)
+
+    self.vm.inputs.applicationOpenUrl(application: UIApplication.sharedApplication(),
+                                      url: NSURL(string: "https://www.kickstarter.com/activity")!,
+                                      sourceApplication: nil,
+                                      annotation: 1)
+
+    self.goToActivity.assertValueCount(1)
+  }
+
+  func testGoToLogin() {
+    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+                                                 launchOptions: [:])
+
+    self.goToLogin.assertValueCount(0)
+
+    self.vm.inputs.applicationOpenUrl(application: UIApplication.sharedApplication(),
+                                      url: NSURL(string: "https://www.kickstarter.com/authorize")!,
+                                      sourceApplication: nil,
+                                      annotation: 1)
+
+    self.goToLogin.assertValueCount(1)
+  }
+
+  func testGoToProfile() {
+    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+                                                 launchOptions: [:])
+
+    self.goToProfile.assertValueCount(0)
+
+    self.vm.inputs.applicationOpenUrl(application: UIApplication.sharedApplication(),
+                                      url: NSURL(string: "https://www.kickstarter.com/profile/me")!,
+                                      sourceApplication: nil,
+                                      annotation: 1)
+
+    self.goToProfile.assertValueCount(1)
+  }
+
+  func testGoToSearch() {
+    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+                                                 launchOptions: [:])
+
+    self.goToSearch.assertValueCount(0)
+
+    self.vm.inputs.applicationOpenUrl(application: UIApplication.sharedApplication(),
+                                      url: NSURL(string: "https://www.kickstarter.com/search")!,
+                                      sourceApplication: nil,
+                                      annotation: 1)
+
+    self.goToSearch.assertValueCount(1)
   }
 }

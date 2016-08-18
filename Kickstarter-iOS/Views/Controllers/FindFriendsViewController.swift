@@ -11,6 +11,12 @@ internal final class FindFriendsViewController: UITableViewController {
   private let viewModel: FindFriendsViewModelType = FindFriendsViewModel()
   private let dataSource = FindFriendsDataSource()
 
+  internal static func configuredWith(source source: FriendsSource) -> FindFriendsViewController {
+    let vc = Storyboard.Friends.instantiate(FindFriendsViewController)
+    vc.viewModel.inputs.configureWith(source: source)
+    return vc
+  }
+
   override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -65,10 +71,6 @@ internal final class FindFriendsViewController: UITableViewController {
         completion: nil
       )
     }
-  }
-
-  internal func configureWith(source source: FriendsSource) {
-    self.viewModel.inputs.configureWith(source: source)
   }
 
   override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell,

@@ -5,8 +5,10 @@ import UIKit
 internal final class HelpWebViewController: WebViewController {
   private let viewModel: HelpWebViewModelType = HelpWebViewModel()
 
-  internal func configureWith(helpType helpType: HelpType) {
-    self.viewModel.inputs.configureWith(helpType: helpType)
+  internal static func configuredWith(helpType helpType: HelpType) -> HelpWebViewController {
+    let vc = Storyboard.Help.instantiate(HelpWebViewController)
+    vc.viewModel.inputs.configureWith(helpType: helpType)
+    return vc
   }
 
   internal override func viewDidLoad() {

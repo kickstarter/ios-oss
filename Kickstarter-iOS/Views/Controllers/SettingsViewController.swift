@@ -71,6 +71,10 @@ internal final class SettingsViewController: UIViewController {
   @IBOutlet var pushNotificationButtons: [UIButton]!
   @IBOutlet var separatorViews: [UIView]!
 
+  internal static func instantiate() -> SettingsViewController {
+    return Storyboard.Settings.instantiate(SettingsViewController)
+  }
+
   internal override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -374,34 +378,18 @@ internal final class SettingsViewController: UIViewController {
   }
 
   private func goToFindFriends() {
-    guard let friendVC = UIStoryboard(name: "Friends", bundle: .framework)
-      .instantiateInitialViewController() as? FindFriendsViewController
-    else {
-      fatalError("Could not instantiate FindFriendsViewController.")
-    }
-
-    friendVC.configureWith(source: .settings)
-    self.navigationController?.pushViewController(friendVC, animated: true)
+    let vc = FindFriendsViewController.configuredWith(source: .settings)
+    self.navigationController?.pushViewController(vc, animated: true)
   }
 
   private func goToHelpType(helpType: HelpType) {
-    guard let helpVC = UIStoryboard(name: "Help", bundle: .framework)
-      .instantiateViewControllerWithIdentifier("HelpWebViewController") as? HelpWebViewController else {
-        fatalError("Could not instantiate HelpWebViewController")
-    }
-
-    helpVC.configureWith(helpType: helpType)
-    self.navigationController?.pushViewController(helpVC, animated: true)
+    let vc = HelpWebViewController.configuredWith(helpType: helpType)
+    self.navigationController?.pushViewController(vc, animated: true)
   }
 
   private func goToManageProjectNotifications() {
-    guard let projectNotificationsViewController =
-      self.storyboard?.instantiateViewControllerWithIdentifier("ProjectNotificationsViewController")
-        as? ProjectNotificationsViewController else {
-          fatalError("Could not instantiate ProjectNotificationsViewController.")
-    }
-
-    self.navigationController?.pushViewController(projectNotificationsViewController, animated: true)
+    let vc = ProjectNotificationsViewController.instantiate()
+    self.navigationController?.pushViewController(vc, animated: true)
   }
 
   private func showLogoutPrompt(message message: String, cancel: String, confirm: String) {

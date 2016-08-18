@@ -30,10 +30,8 @@ AppEnvironment.replaceCurrentEnvironment(
   config: .template |> Config.lens.countryCode .~ "US"
 )
 
-let controller = storyboard(named: "ProjectMagazine")
-  .instantiateViewControllerWithIdentifier("ProjectMagazineViewController") as! ProjectMagazineViewController
-
-controller.configureWith(project: project, refTag: nil)
+initialize()
+let controller = ProjectMagazineViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
 
 let (parent, _) = playgroundControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
 

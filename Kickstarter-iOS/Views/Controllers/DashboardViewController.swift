@@ -12,6 +12,14 @@ internal final class DashboardViewController: UITableViewController {
   private let viewModel: DashboardViewModelType = DashboardViewModel()
   private let shareViewModel: ShareViewModelType = ShareViewModel()
 
+  internal static func instantiate() -> DashboardViewController {
+    return Storyboard.Dashboard.instantiate(DashboardViewController)
+  }
+
+  internal func `switch`(toProject param: Param) {
+    self.viewModel.inputs.`switch`(toProject: param)
+  }
+
   internal override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -137,12 +145,7 @@ internal final class DashboardViewController: UITableViewController {
   }
 
   private func goToActivity(project: Project) {
-    guard let vc = UIStoryboard(name: "ProjectActivity", bundle: .framework)
-      .instantiateInitialViewController() as? ProjectActivitiesViewController else {
-        fatalError("Could not instantiate ProjectActivitiesViewController.")
-    }
-
-    vc.configureWith(project: project)
+    let vc = ProjectActivitiesViewController.configuredWith(project: project)
     self.navigationController?.pushViewController(vc, animated: true)
   }
 
@@ -154,49 +157,28 @@ internal final class DashboardViewController: UITableViewController {
   }
 
   private func goToMessages(project: Project) {
-    guard let vc = UIStoryboard(name: "Messages", bundle: .framework).instantiateInitialViewController(),
-      messages = vc as? MessageThreadsViewController else {
-        fatalError("Could not instantiate MessageThreadsViewController.")
-    }
-
-    messages.configureWith(project: project)
-    self.navigationController?.pushViewController(messages, animated: true)
+    let vc = MessageThreadsViewController.configuredWith(project: project)
+    self.navigationController?.pushViewController(vc, animated: true)
   }
 
   private func goToPostUpdate(project: Project) {
-    guard let vc = UIStoryboard(name: "UpdateDraft", bundle: .framework).instantiateInitialViewController()
-      as? UpdateDraftViewController else {
-        fatalError("Could not instantiate DraftViewController.")
-    }
-
-    vc.configureWith(project: project)
-    vc.delegate = self
+    let vc = UpdateDraftViewController.configuredWith(project: project)
     self.presentViewController(UINavigationController(rootViewController: vc),
                                animated: true,
                                completion: nil)
   }
 
   private func goToProject(project: Project, refTag: RefTag) {
-    let vc = UIStoryboard(name: "ProjectMagazine", bundle: .framework)
-      .instantiateViewControllerWithIdentifier("ProjectMagazineViewController")
-    guard let projectViewController = vc as? ProjectMagazineViewController else {
-      fatalError("Couldn't instantiate project view controller.")
-    }
-
-    projectViewController.configureWith(project: project, refTag: refTag)
-    let nav = UINavigationController(rootViewController: projectViewController)
+    let vc = ProjectMagazineViewController.configuredWith(projectOrParam: .left(project), refTag: refTag)
+    let nav = UINavigationController(rootViewController: vc)
     self.presentViewController(nav, animated: true, completion: nil)
   }
 
   private func presentProjectsDrawer(data data: [ProjectsDrawerData]) {
-    guard let drawerVC = UIStoryboard(name: "DashboardProjectsDrawer", bundle: .framework)
-      .instantiateInitialViewController() as? DashboardProjectsDrawerViewController else {
-        fatalError("Could not instantiate DashboardProjectsDrawerViewController.")
-    }
-    drawerVC.configureWith(data: data)
-    drawerVC.delegate = self
+    let vc = DashboardProjectsDrawerViewController.configuredWith(data: data)
+    vc.delegate = self
     self.modalPresentationStyle = .OverCurrentContext
-    self.presentViewController(drawerVC, animated: false, completion: nil)
+    self.presentViewController(vc, animated: false, completion: nil)
   }
 
   private func showShareSheet(controller: UIActivityViewController) {
@@ -265,7 +247,7 @@ extension DashboardViewController: DashboardRewardsCellDelegate {
 
 extension DashboardViewController: DashboardProjectsDrawerViewControllerDelegate {
   func dashboardProjectsDrawerCellDidTapProject(project: Project) {
-    self.viewModel.inputs.dashboardProjectsDrawerSwitchToProject(project)
+    self.viewModel.inputs.`switch`(toProject: .id(project.id))
   }
 
   func dashboardProjectsDrawerDidAnimateOut() {

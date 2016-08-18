@@ -39,13 +39,7 @@ internal final class ProjectCreatorViewController: WebViewController {
   }
 
   private func goToMessageDialog(subject subject: MessageSubject, context: Koala.MessageDialogContext) {
-    guard let vc = UIStoryboard(name: "Messages", bundle: .framework)
-      .instantiateViewControllerWithIdentifier("MessageDialogViewController") as? MessageDialogViewController
-      else {
-        fatalError("Could not instantiate MessageDialogViewController.")
-    }
-
-    vc.configureWith(messageSubject: subject, context: context)
+    let vc = MessageDialogViewController.configuredWith(messageSubject: subject, context: context)
     vc.modalPresentationStyle = .FormSheet
     vc.delegate = self
     self.presentViewController(UINavigationController(rootViewController: vc),

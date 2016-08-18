@@ -25,9 +25,8 @@ AppEnvironment.replaceCurrentEnvironment(
   currentUser: Project.cosmicSurgery.creator
 )
 
-let controller = storyboard(named: "UpdateDraft")
-  .instantiateViewControllerWithIdentifier("UpdateDraftViewController") as! UpdateDraftViewController
-controller.configureWith(project: .template)
+initialize()
+let controller = UpdateDraftViewController.configuredWith(project: .template)
 
 XCPlaygroundPage.currentPage.liveView =
 //  controller

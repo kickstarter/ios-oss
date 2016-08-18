@@ -6,24 +6,6 @@
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
-        <!--Activities-->
-        <scene sceneID="840-08-it9">
-            <objects>
-                <navigationController id="JNq-N5-e9l" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Activities" id="HJm-z1-3We"/>
-                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Tgp-wN-sQw">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="tvn-h8-peN" kind="relationship" relationship="rootViewController" id="TNy-Zs-z6Q"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Oko-NT-AXs" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="348" y="373"/>
-        </scene>
         <!--Activities View Controller-->
         <scene sceneID="3xy-hf-S1V">
             <objects>

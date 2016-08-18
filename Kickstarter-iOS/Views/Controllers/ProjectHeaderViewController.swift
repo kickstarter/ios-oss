@@ -260,12 +260,7 @@ internal final class ProjectHeaderViewController: UIViewController {
   }
 
   private func goToComments(project project: Project) {
-    guard let vc = UIStoryboard(name: "Comments", bundle: .framework)
-      .instantiateInitialViewController() as? CommentsViewController else {
-        fatalError("Could not instantiate CommentsViewController.")
-    }
-
-    vc.configureWith(project: project, update: nil)
+    let vc = CommentsViewController.configuredWith(project: project)
     self.navigationController?.pushViewController(vc, animated: true)
   }
 

@@ -45,9 +45,8 @@ AppEnvironment.replaceCurrentEnvironment(
   )
 )
 
-UIView.initialize()
-UIViewController.initialize()
-let controller = DiscoveryViewController.configured()
+initialize()
+let controller = DiscoveryViewController.instantiate()
 
 let (parent, _) = playgroundControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
 

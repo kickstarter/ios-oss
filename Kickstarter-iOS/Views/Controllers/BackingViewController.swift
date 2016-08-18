@@ -26,6 +26,12 @@ internal final class BackingViewController: UIViewController {
 
   private let viewModel: BackingViewModelType = BackingViewModel()
 
+  internal static func configuredWith(project project: Project, backer: User?) -> BackingViewController {
+    let vc = Storyboard.Backing.instantiate(BackingViewController)
+    vc.viewModel.inputs.configureWith(project: project, backer: backer)
+    return vc
+  }
+
   internal override func viewDidLoad() {
     super.viewDidLoad()
     self.messageCreatorButton
@@ -133,10 +139,6 @@ internal final class BackingViewController: UIViewController {
     }
   }
 
-  internal func configureWith(project project: Project, backer: User?) {
-    self.viewModel.inputs.configureWith(project: project, backer: backer)
-  }
-
   @objc private func messageCreatorTapped(button: UIButton) {
     self.viewModel.inputs.messageCreatorTapped()
   }
@@ -146,12 +148,7 @@ internal final class BackingViewController: UIViewController {
   }
 
   private func goToMessages(project project: Project, backing: Backing) {
-    let vc = UIStoryboard(name: "Messages", bundle: .framework)
-      .instantiateViewControllerWithIdentifier("MessagesViewController")
-
-    if let messages = vc as? MessagesViewController {
-      messages.configureWith(project: project, backing: backing)
-      self.navigationController?.pushViewController(messages, animated: true)
-    }
+    let vc = MessagesViewController.configuredWith(project: project, backing: backing)
+    self.navigationController?.pushViewController(vc, animated: true)
   }
 }

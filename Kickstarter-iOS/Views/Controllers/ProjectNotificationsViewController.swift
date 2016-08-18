@@ -6,6 +6,10 @@ internal final class ProjectNotificationsViewController: UITableViewController {
   private let viewModel: ProjectNotificationsViewModelType = ProjectNotificationsViewModel()
   private let dataSource = ProjectNotificationsDataSource()
 
+  internal static func instantiate() -> ProjectNotificationsViewController {
+    return Storyboard.Settings.instantiate(ProjectNotificationsViewController)
+  }
+
   internal override func viewDidLoad() {
     super.viewDidLoad()
     self.viewModel.inputs.viewDidLoad()

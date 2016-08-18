@@ -15,6 +15,10 @@ internal final class LoginViewController: UIViewController {
 
   internal let viewModel: LoginViewModelType = LoginViewModel()
 
+  internal static func instantiate() -> LoginViewController {
+    return Storyboard.Login.instantiate(LoginViewController)
+  }
+
   override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -134,24 +138,13 @@ internal final class LoginViewController: UIViewController {
   }
 
   private func startTwoFactorViewController(email: String, password: String) {
-    guard let tfaVC = self.storyboard?
-      .instantiateViewControllerWithIdentifier("TwoFactorViewController") as? TwoFactorViewController else {
-        fatalError("Couldn’t instantiate TwoFactorViewController.")
-    }
-
-    tfaVC.configureWith(email: email, password: password)
-    self.navigationController?.pushViewController(tfaVC, animated: true)
+    let vc = TwoFactorViewController.configuredWith(email: email, password: password)
+    self.navigationController?.pushViewController(vc, animated: true)
   }
 
   private func startResetPasswordViewController() {
-    guard let resetPasswordVC = self.storyboard?
-      .instantiateViewControllerWithIdentifier("ResetPasswordViewController") as? ResetPasswordViewController
-      else {
-        fatalError("Couldn’t instantiate ResetPasswordViewController.")
-    }
-
-    resetPasswordVC.configureWith(email: emailTextField.text)
-    self.navigationController?.pushViewController(resetPasswordVC, animated: true)
+    let vc = ResetPasswordViewController.configuredWith(email: emailTextField.text)
+    self.navigationController?.pushViewController(vc, animated: true)
   }
 
   @IBAction

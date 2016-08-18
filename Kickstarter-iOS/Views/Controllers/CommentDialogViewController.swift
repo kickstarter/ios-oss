@@ -31,10 +31,12 @@ internal final class CommentDialogViewController: UIViewController {
     self.viewModel.inputs.viewWillDisappear()
   }
 
-  internal func configureWith(project project: Project, update: Update?, recipient: User?,
-                                      context: Koala.CommentDialogContext) {
-    self.viewModel.inputs.configureWith(project: project, update: update, recipient: recipient,
-                                        context: context)
+  internal static func configuredWith(project project: Project, update: Update?, recipient: User?,
+                                      context: Koala.CommentDialogContext) -> CommentDialogViewController {
+    let vc = Storyboard.Comments.instantiate(CommentDialogViewController)
+    vc.viewModel.inputs.configureWith(project: project, update: update, recipient: recipient,
+                                      context: context)
+    return vc
   }
 
   override func bindViewModel() {

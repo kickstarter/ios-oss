@@ -7,7 +7,7 @@
         <!--Backing View Controller-->
         <scene sceneID="8if-Jf-Fak">
             <objects>
-                <viewController id="VFn-0N-DwZ" customClass="BackingViewController" customModule="Kickstarter_Framework" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="BackingViewController" id="VFn-0N-DwZ" customClass="BackingViewController" customModule="Kickstarter_Framework" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Leb-Ey-ppO"/>
                         <viewControllerLayoutGuide type="bottom" id="jVN-2v-jZa"/>

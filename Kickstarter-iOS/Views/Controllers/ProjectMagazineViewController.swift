@@ -27,9 +27,17 @@ internal final class ProjectMagazineViewController: UIViewController {
   @IBOutlet private weak var topShareButton: UIButton!
   @IBOutlet private weak var viewPledgeButton: UIButton!
 
-  internal func configureWith(project project: Project, refTag: RefTag?) {
-    self.viewModel.inputs.configureWith(project: project, refTag: refTag)
-    self.shareViewModel.inputs.configureWith(shareContext: .project(project))
+  internal static func configuredWith(projectOrParam projectOrParam: Either<Project, Param>, refTag: RefTag?)
+    -> ProjectMagazineViewController {
+      let vc = Storyboard.ProjectMagazine.instantiate(ProjectMagazineViewController)
+
+      vc.viewModel.inputs.configureWith(projectOrParam: projectOrParam, refTag: refTag)
+      vc.viewModel.outputs.project
+        .observeForUI()
+        .observeNext { [weak vc] in
+          vc?.shareViewModel.inputs.configureWith(shareContext: .project($0)) }
+
+      return vc
   }
 
   internal override func viewDidLoad() {
@@ -227,12 +235,7 @@ internal final class ProjectMagazineViewController: UIViewController {
   }
 
   private func goToLoginTout() {
-    guard let vc = UIStoryboard(name: "Login", bundle: .framework)
-      .instantiateViewControllerWithIdentifier("LoginToutViewController") as? LoginToutViewController else {
-      fatalError("Could not instantiate LoginToutViewController.")
-    }
-
-    vc.configureWith(loginIntent: .starProject)
+    let vc = LoginToutViewController.configuredWith(loginIntent: .starProject)
     self.presentViewController(UINavigationController(rootViewController: vc),
                                animated: true,
                                completion: nil)

@@ -6,8 +6,9 @@ import UIKit
 import XCPlayground
 @testable import Kickstarter_Framework
 
-let controller = storyboard(named: "Login")
-  .instantiateViewControllerWithIdentifier("FacebookConfirmationViewController") as! FacebookConfirmationViewController
+initialize()
+let controller = FacebookConfirmationViewController
+  .configuredWith(facebookUserEmail: "", facebookAccessToken: "")
 
 // Set the device type and orientation.
 let (parent, _) = playgroundControllers(device: .phone4_7inch, orientation: .portrait, child: controller)

@@ -760,25 +760,5 @@
             </objects>
             <point key="canvasLocation" x="4209" y="736"/>
         </scene>
-        <!--Login-->
-        <scene sceneID="mfV-8d-OMM">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="OyO-rp-Px7" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Login" id="9MK-Ma-x87"/>
-                    <toolbarItems/>
-                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="MhB-p0-2fa">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="jyD-hR-XbB" kind="relationship" relationship="rootViewController" id="UcX-4m-0Uh"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="8gX-sf-zDj" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="807" y="736"/>
-        </scene>
     </scenes>
 </document>

@@ -18,8 +18,8 @@ let currentUser = loggedOut
 
 AppEnvironment.replaceCurrentEnvironment(currentUser: currentUser, mainBundle: NSBundle.framework)
 
-let controller = storyboard(named: "Main")
-  .instantiateViewControllerWithIdentifier("RootTabBarViewController") as! RootTabBarViewController
+initialize()
+let controller = Storyboard.Main.instantiate(RootTabBarViewController)
 
 let (parent, _) = playgroundControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
 let frame = parent.view.frame

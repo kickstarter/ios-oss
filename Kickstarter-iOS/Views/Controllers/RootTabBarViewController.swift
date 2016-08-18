@@ -1,12 +1,13 @@
 import AlamofireImage
+import KsApi
 import Library
 import Prelude
 import UIKit
 
-internal final class RootTabBarViewController: UITabBarController {
+public final class RootTabBarViewController: UITabBarController {
   private let viewModel: RootViewModelType = RootViewModel()
 
-  override func viewDidLoad() {
+  override public func viewDidLoad() {
     super.viewDidLoad()
     self.delegate = self
 
@@ -31,7 +32,7 @@ internal final class RootTabBarViewController: UITabBarController {
     self.viewModel.inputs.viewDidLoad()
   }
 
-  override func bindStyles() {
+  override public func bindStyles() {
     super.bindStyles()
 
     self.tabBar
@@ -39,7 +40,7 @@ internal final class RootTabBarViewController: UITabBarController {
       |> UITabBar.lens.barTintColor .~ tabBarTintColor
   }
 
-  override func bindViewModel() {
+  override public func bindViewModel() {
     super.bindViewModel()
 
     self.viewModel.outputs.setViewControllers
@@ -71,12 +72,28 @@ internal final class RootTabBarViewController: UITabBarController {
     }
   }
 
-  internal func switchToActivities() {
+  public func switchToActivities() {
     self.viewModel.inputs.switchToActivities()
   }
 
-  internal func switchToDiscovery() {
+  public func switchToDashboard(project param: Param) {
+    self.viewModel.inputs.switchToDashboard(project: param)
+  }
+
+  public func switchToDiscovery() {
     self.viewModel.inputs.switchToDiscovery()
+  }
+
+  public func switchToLogin() {
+    self.viewModel.inputs.switchToLogin()
+  }
+
+  public func switchToProfile() {
+    self.viewModel.inputs.switchToProfile()
+  }
+
+  public func switchToSearch() {
+    self.viewModel.inputs.switchToSearch()
   }
 
   // swiftlint:disable cyclomatic_complexity
@@ -152,8 +169,8 @@ internal final class RootTabBarViewController: UITabBarController {
 }
 
 extension RootTabBarViewController: UITabBarControllerDelegate {
-  func tabBarController(tabBarController: UITabBarController,
-                        didSelectViewController viewController: UIViewController) {
+  public func tabBarController(tabBarController: UITabBarController,
+                               didSelectViewController viewController: UIViewController) {
     self.viewModel.inputs.didSelectIndex(tabBarController.selectedIndex)
   }
 }

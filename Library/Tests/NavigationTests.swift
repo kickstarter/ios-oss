@@ -36,7 +36,7 @@ public final class NavigationTests: XCTestCase {
     KSRAssertMatch(.project(.slug("project"), .creatorBio, refTag: nil),
                    "/projects/creator/project/creator_bio")
 
-    KSRAssertMatch(.project(.slug("project"), .description, refTag: nil),
+    KSRAssertMatch(.project(.slug("project"), .root, refTag: nil),
                    "/projects/creator/project/description")
 
     KSRAssertMatch(.project(.slug("project"), .friends, refTag: nil),
@@ -54,17 +54,19 @@ public final class NavigationTests: XCTestCase {
     KSRAssertMatch(.project(.slug("project"), .survey(3), refTag: nil),
                    "/projects/creator/project/surveys/3")
 
-    KSRAssertMatch(.tab(.discovery(.root)),
+    KSRAssertMatch(.tab(.discovery(DiscoveryParams.defaults, .root)),
                    "/discover")
 
-    KSRAssertMatch(.tab(.discovery(.advanced)),
+    KSRAssertMatch(.tab(.discovery(DiscoveryParams.defaults, .advanced)),
                    "/discover/advanced")
 
-    KSRAssertMatch(.tab(.discovery(.category(category: .slug("a"), subcategory: nil))),
-                   "/discover/categories/a")
+    KSRAssertMatch(
+      .tab(.discovery(DiscoveryParams.defaults, .category(category: .slug("a"), subcategory: nil))),
+      "/discover/categories/a")
 
-    KSRAssertMatch(.tab(.discovery(.category(category: .slug("b"), subcategory: .slug("c")))),
-                   "/discover/categories/b/c")
+    KSRAssertMatch(
+      .tab(.discovery(DiscoveryParams.defaults, .category(category: .slug("b"), subcategory: .slug("c")))),
+      "/discover/categories/b/c")
 
     KSRAssertMatch(.tab(.search),
                    "/search")
@@ -74,5 +76,8 @@ public final class NavigationTests: XCTestCase {
 
     KSRAssertMatch(.tab(.me),
                    "/profile/me")
+
+    KSRAssertMatch(.tab(.login),
+                   "/authorize")
   }
 }

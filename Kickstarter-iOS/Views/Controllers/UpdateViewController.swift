@@ -7,9 +7,11 @@ internal final class UpdateViewController: WebViewController {
   private let viewModel: UpdateViewModelType = UpdateViewModel()
   private let shareViewModel: ShareViewModelType = ShareViewModel()
 
-  internal func configureWith(project project: Project, update: Update) {
-    self.viewModel.inputs.configureWith(project: project, update: update)
-    self.shareViewModel.inputs.configureWith(shareContext: .update(project, update))
+  internal static func configuredWith(project project: Project, update: Update) -> UpdateViewController {
+    let vc = Storyboard.Update.instantiate(UpdateViewController)
+    vc.viewModel.inputs.configureWith(project: project, update: update)
+    vc.shareViewModel.inputs.configureWith(shareContext: .update(project, update))
+    return vc
   }
 
   internal override func viewDidLoad() {
@@ -49,24 +51,13 @@ internal final class UpdateViewController: WebViewController {
   }
 
   private func goToComments(forUpdate update: Update) {
-    guard let vc = UIStoryboard(name: "Comments", bundle: .framework)
-      .instantiateInitialViewController() as? CommentsViewController else {
-        fatalError("Could not instantiate CommentsViewController.")
-    }
-
-    vc.configureWith(project: nil, update: update)
+    let vc = CommentsViewController.configuredWith(update: update)
     self.navigationController?.pushViewController(vc, animated: true)
   }
 
   private func goTo(project project: Project, refTag: RefTag?) {
-    let vc = UIStoryboard(name: "ProjectMagazine", bundle: .framework)
-      .instantiateViewControllerWithIdentifier("ProjectMagazineViewController")
-    guard let projectViewController = vc as? ProjectMagazineViewController else {
-      fatalError("Couldn't instantiate project view controller.")
-    }
-
-    projectViewController.configureWith(project: project, refTag: refTag)
-    let nav = UINavigationController(rootViewController: projectViewController)
+    let vc = ProjectMagazineViewController.configuredWith(projectOrParam: .left(project), refTag: refTag)
+    let nav = UINavigationController(rootViewController: vc)
     self.presentViewController(nav, animated: true, completion: nil)
   }
 

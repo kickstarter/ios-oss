@@ -11,7 +11,7 @@ private let rateKeyPath = "rate"
 internal final class VideoViewController: UIViewController {
   private let viewModel: VideoViewModelType = VideoViewModel()
   private var playerController: AVPlayerViewController!
-  private var timeObserver: AnyObject!
+  private var timeObserver: AnyObject?
 
   @IBOutlet private weak var playButton: UIButton!
   @IBOutlet private weak var projectImageView: UIImageView!
@@ -140,7 +140,9 @@ internal final class VideoViewController: UIViewController {
   }
 
   deinit {
-    self.playerController.player?.removeTimeObserver(self.timeObserver)
+    if let timeObserver = self.timeObserver {
+      self.playerController.player?.removeTimeObserver(timeObserver)
+    }
     self.playerController.player?.removeObserver(self, forKeyPath: durationKeyPath)
     self.playerController.player?.removeObserver(self, forKeyPath: rateKeyPath)
   }

@@ -24,8 +24,8 @@ AppEnvironment.replaceCurrentEnvironment(
   currentUser: Project.cosmicSurgery.creator
 )
 
-let controller = storyboard(named: "Activity")
-  .instantiateViewControllerWithIdentifier("ActivitiesViewController") as! ActivitiesViewController
+initialize()
+let controller = ActivitiesViewController.instantiate()
 let (parent, _) = playgroundControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
 
 let frame = parent.view.frame

@@ -6,12 +6,20 @@ internal final class MessagesViewController: UITableViewController {
   private let viewModel: MessagesViewModelType = MessagesViewModel()
   private let dataSource = MessagesDataSource()
 
-  internal func configureWith(messageThread messageThread: MessageThread) {
-    self.viewModel.inputs.configureWith(data: .left(messageThread))
+  internal static func configuredWith(messageThread messageThread: MessageThread) -> MessagesViewController {
+    let vc = instantiate()
+    vc.viewModel.inputs.configureWith(data: .left(messageThread))
+    return vc
   }
 
-  internal func configureWith(project project: Project, backing: Backing) {
-    self.viewModel.inputs.configureWith(data: .right((project: project, backing: backing)))
+  internal static func configuredWith(project project: Project, backing: Backing) -> MessagesViewController {
+    let vc = instantiate()
+    vc.viewModel.inputs.configureWith(data: .right((project: project, backing: backing)))
+    return vc
+  }
+
+  private static func instantiate() -> MessagesViewController {
+    return Storyboard.Messages.instantiate(MessagesViewController)
   }
 
   override func viewDidLoad() {
@@ -77,12 +85,8 @@ internal final class MessagesViewController: UITableViewController {
 
   private func presentMessageDialog(messageThread messageThread: MessageThread,
                                                   context: Koala.MessageDialogContext) {
-    guard let vc = self.storyboard?.instantiateViewControllerWithIdentifier("MessageDialogViewController"),
-      dialog = vc as? MessageDialogViewController else {
-        fatalError("Could not instantiate MessageDialogViewController")
-    }
-
-    dialog.configureWith(messageSubject: .messageThread(messageThread), context: context)
+    let dialog = MessageDialogViewController
+      .configuredWith(messageSubject: .messageThread(messageThread), context: context)
     dialog.modalPresentationStyle = .FormSheet
     dialog.delegate = self
     self.presentViewController(UINavigationController(rootViewController: dialog),
@@ -91,14 +95,8 @@ internal final class MessagesViewController: UITableViewController {
   }
 
   private func goTo(project project: Project, refTag: RefTag) {
-    let vc = UIStoryboard(name: "ProjectMagazine", bundle: .framework)
-      .instantiateViewControllerWithIdentifier("ProjectMagazineViewController")
-    guard let projectViewController = vc as? ProjectMagazineViewController else {
-      fatalError("Couldn't instantiate project view controller.")
-    }
-
-    projectViewController.configureWith(project: project, refTag: refTag)
-    let nav = UINavigationController(rootViewController: projectViewController)
+    let vc = ProjectMagazineViewController.configuredWith(projectOrParam: .left(project), refTag: refTag)
+    let nav = UINavigationController(rootViewController: vc)
     self.presentViewController(nav, animated: true, completion: nil)
   }
 }

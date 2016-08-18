@@ -76,10 +76,8 @@ AppEnvironment.replaceCurrentEnvironment(
   isVoiceOverRunning: { return isVoiceOverRunning }
 )
 
-let controller = storyboard(named: "ProjectActivity")
-  .instantiateViewControllerWithIdentifier("ProjectActivitiesViewController") as! ProjectActivitiesViewController
-
-controller.configureWith(project: project)
+initialize()
+let controller = ProjectActivitiesViewController.configuredWith(project: project)
 controller.bindViewModel()
 
 XCPlaygroundPage.currentPage.liveView = controller

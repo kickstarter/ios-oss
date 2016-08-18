@@ -10,9 +10,8 @@ internal final class DiscoveryViewController: UIViewController {
   private weak var sortPagerViewController: SortPagerViewController!
   @IBOutlet private weak var titleButton: UIButton!
 
-  internal static func configured() -> DiscoveryViewController {
-    let vc = Storyboard.Discovery.instantiate(DiscoveryViewController)
-    return vc
+  internal static func instantiate() -> DiscoveryViewController {
+    return Storyboard.Discovery.instantiate(DiscoveryViewController)
   }
 
   override func viewDidLoad() {

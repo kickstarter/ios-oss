@@ -199,13 +199,8 @@ internal final class ProjectFooterViewController: UIViewController {
   }
 
   private func goToMessageCreator(forProject project: Project) {
-    guard let vc = UIStoryboard(name: "Messages", bundle: .framework)
-      .instantiateViewControllerWithIdentifier("MessageDialogViewController") as? MessageDialogViewController
-      else {
-        fatalError("Could not instantiate MessageDialogViewController.")
-    }
-
-    vc.configureWith(messageSubject: .project(project), context: .projectPage)
+    let vc = MessageDialogViewController
+      .configuredWith(messageSubject: .project(project), context: .projectPage)
     vc.modalPresentationStyle = .FormSheet
     vc.delegate = self
     self.presentViewController(UINavigationController(rootViewController: vc),

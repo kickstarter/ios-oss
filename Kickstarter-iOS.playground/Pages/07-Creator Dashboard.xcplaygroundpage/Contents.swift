@@ -102,8 +102,8 @@ AppEnvironment.replaceCurrentEnvironment(
   currentUser: cosmicSurgery.creator
 )
 
-let controller = storyboard(named: "Dashboard")
-  .instantiateViewControllerWithIdentifier("DashboardViewController") as! DashboardViewController
+initialize()
+let controller = DashboardViewController.instantiate()
 
 XCPlaygroundPage.currentPage.liveView = controller
 controller.view |> UIView.lens.frame.size.height .~ 1_250

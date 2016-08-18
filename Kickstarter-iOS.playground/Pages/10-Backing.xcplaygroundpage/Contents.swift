@@ -30,9 +30,7 @@ AppEnvironment.replaceCurrentEnvironment(
   mainBundle: NSBundle.framework
 )
 
-let controller = storyboard(named: "Backing")
-  .instantiateInitialViewController() as! BackingViewController
-
-controller.configureWith(project: .template, backer: .template)
+initialize()
+let controller = BackingViewController.configuredWith(project: .template, backer: .template)
 
 XCPlaygroundPage.currentPage.liveView = controller

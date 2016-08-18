@@ -56,12 +56,20 @@ internal final class TwoFactorViewController: UIViewController {
       }
   }
 
-  internal func configureWith(email email: String, password: String) {
-    self.viewModel.inputs.email(email, password: password)
+  internal static func configuredWith(email email: String, password: String) -> TwoFactorViewController {
+    let vc = instantiate()
+    vc.viewModel.inputs.email(email, password: password)
+    return vc
   }
 
-  internal func configureWith(facebookAccessToken token: String) {
-    self.viewModel.inputs.facebookToken(token)
+  internal static func configuredWith(facebookAccessToken token: String) -> TwoFactorViewController {
+    let vc = instantiate()
+    vc.viewModel.inputs.facebookToken(token)
+    return vc
+  }
+
+  private static func instantiate() -> TwoFactorViewController {
+    return Storyboard.Login.instantiate(TwoFactorViewController)
   }
 
   private func showError(message: String) {

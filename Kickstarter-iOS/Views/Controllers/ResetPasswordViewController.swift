@@ -12,9 +12,12 @@ internal final class ResetPasswordViewController: UIViewController {
 
   private let viewModel: ResetPasswordViewModelType = ResetPasswordViewModel()
 
-  internal func configureWith(email email: String?) {
-    guard let emailText = email else { return }
-    self.viewModel.inputs.emailChanged(emailText)
+  internal static func configuredWith(email email: String?) -> ResetPasswordViewController {
+    let vc = Storyboard.Login.instantiate(ResetPasswordViewController)
+    if let email = email {
+      vc.viewModel.inputs.emailChanged(email)
+    }
+    return vc
   }
 
   override func viewDidLoad() {

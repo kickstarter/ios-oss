@@ -8,6 +8,10 @@ internal final class ActivitiesViewController: UITableViewController {
   let viewModel: ActivitiesViewModelType = ActivitiesViewModel()
   let dataSource = ActivitiesDataSource()
 
+  internal static func instantiate() -> ActivitiesViewController {
+    return Storyboard.Activity.instantiate(ActivitiesViewController)
+  }
+
   internal required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
 
@@ -161,34 +165,18 @@ internal final class ActivitiesViewController: UITableViewController {
   }
 
   private func present(project project: Project, refTag: RefTag) {
-    let vc = UIStoryboard(name: "ProjectMagazine", bundle: .framework)
-      .instantiateViewControllerWithIdentifier("ProjectMagazineViewController")
-    guard let projectViewController = vc as? ProjectMagazineViewController else {
-      fatalError("Couldn't instantiate project view controller.")
-    }
-
-    projectViewController.configureWith(project: project, refTag: refTag)
-    let nav = UINavigationController(rootViewController: projectViewController)
+    let vc = ProjectMagazineViewController.configuredWith(projectOrParam: .left(project), refTag: refTag)
+    let nav = UINavigationController(rootViewController: vc)
     self.presentViewController(nav, animated: true, completion: nil)
   }
 
   private func goToFriends(source source: FriendsSource) {
-    guard let friendVC = UIStoryboard(name: "Friends", bundle: .framework)
-      .instantiateInitialViewController() as? FindFriendsViewController else {
-      fatalError("Could not instantiate FindFriendsViewController.")
-    }
-
-    friendVC.configureWith(source: .activity)
-    self.navigationController?.pushViewController(friendVC, animated: true)
+    let vc = FindFriendsViewController.configuredWith(source: .activity)
+    self.navigationController?.pushViewController(vc, animated: true)
   }
 
   private func goToUpdate(project project: Project, update: Update) {
-    guard let vc = UIStoryboard(name: "Update", bundle: .framework)
-      .instantiateViewControllerWithIdentifier("UpdateViewController") as? UpdateViewController else {
-        fatalError("Could not instantiate UpdateViewController")
-    }
-
-    vc.configureWith(project: project, update: update)
+    let vc = UpdateViewController.configuredWith(project: project, update: update)
     self.navigationController?.pushViewController(vc, animated: true)
   }
 

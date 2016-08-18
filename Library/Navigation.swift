@@ -6,14 +6,13 @@ import KsApi
 public enum Navigation {
   case tab(Tab)
   case project(Param, Navigation.Project, refTag: RefTag?)
-  case authorize
 
   public enum Tab {
-    case discovery(Navigation.Discovery)
+    case discovery(DiscoveryParams, Navigation.Discovery)
     case search
     case activity
-//    case dashboard(project: Param)
-//    case login
+    case dashboard(project: Param)
+    case login
     case me
   }
 
@@ -27,7 +26,6 @@ public enum Navigation {
     case root
     case comments
     case creatorBio
-    case description
     case friends
     case messageCreator
     case updates
@@ -45,25 +43,26 @@ extension Navigation: Equatable {}
 // swiftlint:disable cyclomatic_complexity
 public func == (lhs: Navigation, rhs: Navigation) -> Bool {
   switch (lhs, rhs) {
-  case (.tab(.discovery(.root)), (.tab(.discovery(.root)))),
-       (.tab(.discovery(.advanced)), (.tab(.discovery(.advanced)))),
-       (.tab(.search), (.tab(.search))),
+  case (.tab(.search), (.tab(.search))),
        (.tab(.activity), (.tab(.activity))),
-//       (.tab(.login), (.tab(.login))),
-       (.tab(.me), (.tab(.me))),
-       (.authorize, .authorize):
+       (.tab(.login), (.tab(.login))),
+       (.tab(.me), (.tab(.me))):
     return true
-  case let (.tab(.discovery(.category(lhsCat, lhsSubCat))), .tab(.discovery(.category(rhsCat, rhsSubCat)))):
-    return lhsCat == rhsCat && lhsSubCat == rhsSubCat
-//  case let (.tab(.dashboard(lhsProject)), .tab(.dashboard(rhsProject))):
-//    return lhsProject == rhsProject
+  case let (.tab(.discovery(lhsParams, .root)), (.tab(.discovery(rhsParams, .root)))):
+    return lhsParams == rhsParams
+  case let (.tab(.discovery(lhsParams, .advanced)), (.tab(.discovery(rhsParams, .advanced)))):
+    return lhsParams == rhsParams
+  case let (.tab(.discovery(lhsParams, .category(lhsCat, lhsSubCat))),
+    .tab(.discovery(rhsParams, .category(rhsCat, rhsSubCat)))):
+
+    return lhsParams == rhsParams && lhsCat == rhsCat && lhsSubCat == rhsSubCat
+  case let (.tab(.dashboard(lhsProject)), .tab(.dashboard(rhsProject))):
+    return lhsProject == rhsProject
   case let (.project(lhsParam, .root, lhsRefTag), .project(rhsParam, .root, rhsRefTag)):
     return lhsParam == rhsParam && lhsRefTag == rhsRefTag
   case let (.project(lhsParam, .comments, lhsRefTag), .project(rhsParam, .comments, rhsRefTag)):
     return lhsParam == rhsParam && lhsRefTag == rhsRefTag
   case let (.project(lhsParam, .creatorBio, lhsRefTag), .project(rhsParam, .creatorBio, rhsRefTag)):
-    return lhsParam == rhsParam && lhsRefTag == rhsRefTag
-  case let (.project(lhsParam, .description, lhsRefTag), .project(rhsParam, .description, rhsRefTag)):
     return lhsParam == rhsParam && lhsRefTag == rhsRefTag
   case let (.project(lhsParam, .friends, lhsRefTag), .project(rhsParam, .friends, rhsRefTag)):
     return lhsParam == rhsParam && lhsRefTag == rhsRefTag
@@ -108,7 +107,8 @@ private let routes = [
   "/projects/:creator_param/:project_param": project,
   "/projects/:creator_param/:project_param/comments": projectComments,
   "/projects/:creator_param/:project_param/creator_bio": creatorBio,
-  "/projects/:creator_param/:project_param/description": projectDescription,
+  "/projects/:creator_param/:project_param/dashboard": dashboard,
+  "/projects/:creator_param/:project_param/description": project,
   "/projects/:creator_param/:project_param/friends": friends,
   "/projects/:creator_param/:project_param/messages/new": messageCreator,
   "/projects/:creator_param/:project_param/posts": posts,
@@ -149,25 +149,32 @@ private func activity(_: RouteParams) -> Decoded<Navigation> {
 }
 
 private func authorize(_: RouteParams) -> Decoded<Navigation> {
-  return .Success(.authorize)
+  return .Success(.tab(.login))
 }
 
-private func discovery(_: RouteParams) -> Decoded<Navigation> {
-  return .Success(.tab(.discovery(.root)))
+private func discovery(params: RouteParams) -> Decoded<Navigation> {
+  guard let discoveryParams = DiscoveryParams.decode(params).value
+    else { return .Failure(.Custom("Failed to extact discovery params")) }
+  return .Success(.tab(.discovery(discoveryParams, .root)))
 }
 
-private func discoveryAdvanced(_: RouteParams) -> Decoded<Navigation> {
-  return .Success(.tab(.discovery(.advanced)))
+private func discoveryAdvanced(params: RouteParams) -> Decoded<Navigation> {
+  guard let discoveryParams = DiscoveryParams.decode(params).value
+    else { return .Failure(.Custom("Failed to extact discovery params")) }
+  return .Success(.tab(.discovery(discoveryParams, .advanced)))
 }
 
 private func category(params: RouteParams) -> Decoded<Navigation> {
+  guard let discoveryParams = DiscoveryParams.decode(params).value
+    else { return .Failure(.Custom("Failed to extact discovery params")) }
+
   let categoryMatch = curry(Navigation.Discovery.category)
     <^> params <| "category_param"
     <*> params <|? "subcategory_param"
 
   guard let category = categoryMatch.value else { return .Failure(.Custom("Failed to route category")) }
 
-  return .Success(.tab(.discovery(category)))
+  return .Success(.tab(.discovery(discoveryParams, category)))
 }
 
 private func me(_: RouteParams) -> Decoded<Navigation> {
@@ -199,11 +206,11 @@ private func creatorBio(params: RouteParams) -> Decoded<Navigation> {
     <*> params <|? "ref_tag"
 }
 
-private func projectDescription(params: RouteParams) -> Decoded<Navigation> {
-  return curry(Navigation.project)
-    <^> params <| "project_param"
-    <*> .Success(.description)
-    <*> params <|? "ref_tag"
+private func dashboard(params: RouteParams) -> Decoded<Navigation> {
+  guard let dashboard = (Navigation.Tab.dashboard <^> params <| "project_param").value
+    else { return .Failure(.Custom("Failed to extract project param")) }
+
+  return .Success(.tab(dashboard))
 }
 
 private func friends(params: RouteParams) -> Decoded<Navigation> {

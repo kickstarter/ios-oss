@@ -27,6 +27,14 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
     return manager
   }()
 
+  internal static func configuredWith(loginIntent intent: LoginIntent) -> LoginToutViewController {
+    let vc = Storyboard.Login.instantiate(LoginToutViewController)
+    vc.viewModel.inputs.loginIntent(intent)
+    vc.helpViewModel.inputs.configureWith(helpContext: .loginTout)
+    vc.helpViewModel.inputs.canSendEmail(MFMailComposeViewController.canSendMail())
+    return vc
+  }
+
   override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -146,12 +154,6 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
   }
   // swiftlint:enable function_body_length
 
-  internal func configureWith(loginIntent intent: LoginIntent) {
-    self.viewModel.inputs.loginIntent(intent)
-    self.helpViewModel.inputs.configureWith(helpContext: .loginTout)
-    self.helpViewModel.inputs.canSendEmail(MFMailComposeViewController.canSendMail())
-  }
-
   @objc internal func mailComposeController(controller: MFMailComposeViewController,
                                             didFinishWithResult result: MFMailComposeResult,
                                                                 error: NSError?) {
@@ -160,51 +162,28 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
   }
 
   private func goToHelpType(helpType: HelpType) {
-    guard let helpVC = UIStoryboard(name: "Help", bundle: .framework)
-      .instantiateViewControllerWithIdentifier("HelpWebViewController") as? HelpWebViewController else {
-        fatalError("Could not instantiate HelpWebViewController")
-    }
-
-    helpVC.configureWith(helpType: helpType)
-    self.navigationController?.pushViewController(helpVC, animated: true)
+    let vc = HelpWebViewController.configuredWith(helpType: helpType)
+    self.navigationController?.pushViewController(vc, animated: true)
   }
 
   private func pushLoginViewController() {
-    guard let loginVC = self.storyboard?
-      .instantiateViewControllerWithIdentifier("LoginViewController") as? LoginViewController else {
-        fatalError("Couldn’t instantiate LoginViewController.")
-    }
-
-    self.navigationController?.pushViewController(loginVC, animated: true)
+    self.navigationController?.pushViewController(LoginViewController.instantiate(), animated: true)
   }
 
   private func pushTwoFactorViewController(facebookAccessToken token: String) {
-    guard let tfaVC = self.storyboard?.instantiateViewControllerWithIdentifier("TwoFactorViewController")
-      as? TwoFactorViewController else {
-        fatalError("Failed to instantiate TwoFactorViewController")
-    }
-    tfaVC.configureWith(facebookAccessToken: token)
-    self.navigationController?.pushViewController(tfaVC, animated: true)
+    let vc = TwoFactorViewController.configuredWith(facebookAccessToken: token)
+    self.navigationController?.pushViewController(vc, animated: true)
   }
 
   private func pushFacebookConfirmationController(facebookUser user: ErrorEnvelope.FacebookUser?,
                                                                facebookToken token: String) {
-    guard let fbVC = self.storyboard?
-      .instantiateViewControllerWithIdentifier("FacebookConfirmationViewController")
-      as? FacebookConfirmationViewController else {
-        fatalError("Failed to instantiate FacebookConfirmationViewController")
-    }
-    fbVC.configureWith(facebookUserEmail: user?.email ?? "", facebookAccessToken: token)
-    self.navigationController?.pushViewController(fbVC, animated: true)
+    let vc = FacebookConfirmationViewController
+      .configuredWith(facebookUserEmail: user?.email ?? "", facebookAccessToken: token)
+    self.navigationController?.pushViewController(vc, animated: true)
   }
 
   private func pushSignupViewController() {
-    guard let signupVC = self.storyboard?
-      .instantiateViewControllerWithIdentifier("SignupViewController") as? SignupViewController else {
-        fatalError("Couldn’t instantiate SignupViewController.")
-    }
-
-    self.navigationController?.pushViewController(signupVC, animated: true)
+    self.navigationController?.pushViewController(SignupViewController.instantiate(), animated: true)
   }
 
   private func showHelpSheet(helpTypes helpTypes: [HelpType]) {

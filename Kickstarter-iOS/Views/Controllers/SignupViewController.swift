@@ -13,6 +13,10 @@ internal final class SignupViewController: UIViewController {
 
   private let viewModel: SignupViewModelType = SignupViewModel()
 
+  internal static func instantiate() -> SignupViewController {
+    return Storyboard.Login.instantiate(SignupViewController)
+  }
+
   override func viewDidLoad() {
     super.viewDidLoad()
     self.viewModel.inputs.viewDidLoad()

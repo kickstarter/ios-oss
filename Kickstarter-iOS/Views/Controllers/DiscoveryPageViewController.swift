@@ -113,25 +113,14 @@ internal final class DiscoveryPageViewController: UITableViewController {
   }
 
   private func goTo(project project: Project, refTag: RefTag) {
-    let vc = UIStoryboard(name: "ProjectMagazine", bundle: .framework)
-      .instantiateViewControllerWithIdentifier("ProjectMagazineViewController")
-    guard let projectViewController = vc as? ProjectMagazineViewController else {
-      fatalError("Couldn't instantiate project view controller.")
-    }
-
-    projectViewController.configureWith(project: project, refTag: refTag)
-    let nav = UINavigationController(rootViewController: projectViewController)
+    let vc = ProjectMagazineViewController.configuredWith(projectOrParam: .left(project), refTag: refTag)
+    let nav = UINavigationController(rootViewController: vc)
     self.presentViewController(nav, animated: true, completion: nil)
   }
 
   private func goTo(project project: Project, update: Update) {
-    guard let updateVC = UIStoryboard(name: "Update", bundle: .framework)
-      .instantiateViewControllerWithIdentifier("UpdateViewController") as? UpdateViewController else {
-        fatalError("Couldn't instantiate update view controller.")
-    }
-
-    updateVC.configureWith(project: project, update: update)
-    self.navigationController?.pushViewController(updateVC, animated: true)
+    let vc = UpdateViewController.configuredWith(project: project, update: update)
+    self.navigationController?.pushViewController(vc, animated: true)
   }
 
   private func accessibilityFocusOnFirstProject() {
@@ -155,14 +144,8 @@ extension DiscoveryPageViewController: ActivitySampleBackingCellDelegate, Activi
 
 extension DiscoveryPageViewController: DiscoveryOnboardingCellDelegate {
   internal func discoveryOnboardingTappedSignUpLoginButton() {
-    let storyboard = UIStoryboard(name: "Login", bundle: .framework)
-
-    guard let nav = storyboard.instantiateInitialViewController() as? UINavigationController,
-      loginTout = nav.viewControllers.first as? LoginToutViewController else {
-      fatalError("Could not instantiate initial controller from Login storyboard.")
-    }
-
-    loginTout.configureWith(loginIntent: .discoveryOnboarding)
+    let loginTout = LoginToutViewController.configuredWith(loginIntent: .discoveryOnboarding)
+    let nav = UINavigationController(rootViewController: loginTout)
     self.presentViewController(nav, animated: true, completion: nil)
   }
 }

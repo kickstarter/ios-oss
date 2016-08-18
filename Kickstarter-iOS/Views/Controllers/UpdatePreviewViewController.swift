@@ -8,8 +8,10 @@ internal final class UpdatePreviewViewController: WebViewController {
 
   @IBOutlet weak var publishBarButtonItem: UIBarButtonItem!
 
-  internal func configureWith(draft draft: UpdateDraft) {
-    self.viewModel.inputs.configureWith(draft: draft)
+  internal static func configuredWith(draft draft: UpdateDraft) -> UpdatePreviewViewController {
+    let vc = Storyboard.UpdateDraft.instantiate(UpdatePreviewViewController)
+    vc.viewModel.inputs.configureWith(draft: draft)
+    return vc
   }
 
   internal override func viewDidLoad() {
@@ -56,12 +58,7 @@ internal final class UpdatePreviewViewController: WebViewController {
   }
 
   private func goTo(update update: Update, forProject project: Project) {
-    guard let vc = UIStoryboard(name: "Update", bundle: .framework)
-      .instantiateViewControllerWithIdentifier("UpdateViewController") as? UpdateViewController else {
-        fatalError("Could not instantiate UpdateViewController")
-    }
-
-    vc.configureWith(project: project, update: update)
+    let vc = UpdateViewController.configuredWith(project: project, update: update)
     self.navigationController?.pushViewController(vc, animated: true)
   }
 

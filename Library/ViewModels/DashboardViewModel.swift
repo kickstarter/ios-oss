@@ -27,7 +27,7 @@ public struct ProjectsDrawerData {
 
 public protocol DashboardViewModelInputs {
   /// Call to switch display to another project from the drawer.
-  func dashboardProjectsDrawerSwitchToProject(project: Project)
+  func `switch`(toProject param: Param)
 
   /// Call when the projects drawer has animated out.
   func dashboardProjectsDrawerDidAnimateOut()
@@ -92,60 +92,56 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
 
   // swiftlint:disable function_body_length
   public init() {
-    let projectAndSelectedProject = self.viewDidLoadProperty.signal
+    let projects = self.viewDidLoadProperty.signal
       .switchMap {
         AppEnvironment.current.apiService.fetchProjects(member: true)
           .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
           .demoteErrors()
-      }
-      .flatMap { env -> SignalProducer<([Project], Project), NoError> in
-        if let first = env.projects.first {
-          return .init(value: (env.projects, first))
-        }
-        return .empty
-      }
-      .switchMap { [producer = self.switchToProjectProperty.producer] (projects, mostRecentProject) in
-        return producer
-          .ignoreNil()
-          .map { (projects, $0) }
-          .prefix(value: (projects, mostRecentProject))
+          .map { $0.projects }
     }
 
-    let selectedProject = projectAndSelectedProject.map(second)
-    self.project = selectedProject
+    let projectsAndSelected = projects
+      .switchMap { [switchToProject = switchToProjectProperty.producer] projects in
+        switchToProject
+          .map { param in
+            find(projectForParam: param, in: projects) ?? projects.first
+          }
+          .ignoreNil()
+          .map { (projects, $0) }
+    }
 
-    let fetchStatsEvent = selectedProject
-      .switchMap {
-        AppEnvironment.current.apiService.fetchProjectStats(projectId: $0.id)
+    self.project = projectsAndSelected.map(second)
+
+    let selectedProjectAndStatsEvent = self.project
+      .switchMap { project in
+        AppEnvironment.current.apiService.fetchProjectStats(projectId: project.id)
           .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
+          .map { (project, $0) }
           .materialize()
       }
 
-    let stats = fetchStatsEvent.values()
+    let selectedProjectAndStats = selectedProjectAndStatsEvent.values()
 
-    self.fundingData = selectedProject
-      .takePairWhen(stats)
+    self.fundingData = selectedProjectAndStats
       .map { project, stats in
         (funding: stats.fundingDistribution, project: project)
     }
 
-    self.referrerData = selectedProject
-      .takePairWhen(stats)
+    self.referrerData = selectedProjectAndStats
       .map { project, stats in
         (cumulative: stats.cumulativeStats, project: project, stats: stats.referralDistribution)
     }
 
-    self.videoStats = stats.map { $0.videoStats }.ignoreNil()
+    self.videoStats = selectedProjectAndStats.map { _, stats in stats.videoStats }.ignoreNil()
 
-    self.rewardData = selectedProject
-      .takePairWhen(stats)
+    self.rewardData = selectedProjectAndStats
       .map { project, stats in
         (stats: stats.rewardDistribution, project: project)
     }
 
     let drawerStateProjectsAndSelectedProject = Signal.merge(
-      projectAndSelectedProject.map { ($0, $1, false) },
-      projectAndSelectedProject.takeWhen(showHideProjectsDrawerProperty.signal).map { ($0, $1, true) }
+      projectsAndSelected.map { ($0, $1, false) },
+      projectsAndSelected.takeWhen(showHideProjectsDrawerProperty.signal).map { ($0, $1, true) }
       )
       .scan(nil) { (data, projectsProjectToggle) -> (DrawerState, [Project], Project)? in
 
@@ -190,29 +186,32 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
 
     self.dismissProjectsDrawer = self.projectsDrawerDidAnimateOutProperty.signal
 
-    self.goToProject = selectedProject
+    self.goToProject = self.project
       .takeWhen(self.projectContextCellTappedProperty.signal)
       .map { ($0, RefTag.dashboard) }
 
     self.focusScreenReaderOnTitleView = self.viewDidAppearProperty.signal
 
-    selectedProject
+    self.project
       .takeWhen(self.projectContextCellTappedProperty.signal)
       .observeNext { AppEnvironment.current.koala.trackDashboardProjectModalView(project: $0) }
 
-    selectedProject
+    self.project
       .take(1)
       .observeNext { AppEnvironment.current.koala.trackDashboardView(project: $0) }
 
-    selectedProject
+    self.project
       .takeWhen(updateDrawerStateToOpen.filter(isTrue))
       .observeNext { AppEnvironment.current.koala.trackDashboardShowProjectSwitcher(onProject: $0) }
 
-    selectedProject
+    self.project
       .takeWhen(updateDrawerStateToOpen.filter(isFalse))
       .observeNext { AppEnvironment.current.koala.trackDashboardClosedProjectSwitcher(onProject: $0) }
 
-    self.switchToProjectProperty.signal.ignoreNil()
+    self.project
+      .skip(1)
+      .takeWhen(updateDrawerStateToOpen.filter(isFalse))
+      .skipRepeats()
       .observeNext { AppEnvironment.current.koala.trackDashboardSwitchProject($0) }
   }
   // swiftlint:enable function_body_length
@@ -225,9 +224,9 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
   public func projectContextCellTapped() {
     self.projectContextCellTappedProperty.value = ()
   }
-  private let switchToProjectProperty = MutableProperty<Project?>(nil)
-  public func dashboardProjectsDrawerSwitchToProject(project: Project) {
-    self.switchToProjectProperty.value = project
+  private let switchToProjectProperty = MutableProperty<Param?>(nil)
+  public func `switch`(toProject param: Param) {
+    self.switchToProjectProperty.value = param
   }
   private let projectsDrawerDidAnimateOutProperty = MutableProperty()
   public func dashboardProjectsDrawerDidAnimateOut() {
@@ -270,4 +269,14 @@ public func == (lhs: DashboardTitleViewData, rhs: DashboardTitleViewData) -> Boo
   return lhs.drawerState == rhs.drawerState &&
          lhs.currentProjectIndex == rhs.currentProjectIndex &&
          lhs.isArrowHidden == rhs.isArrowHidden
+}
+
+private func find(projectForParam param: Param?, in projects: [Project]) -> Project? {
+  guard let param = param else { return nil }
+
+  return projects.filter { project in
+    if case .id(project.id) = param { return true }
+    if case .slug(project.slug) = param { return true }
+    return false
+  }.first
 }

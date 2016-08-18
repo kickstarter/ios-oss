@@ -16,7 +16,8 @@ AppEnvironment.replaceCurrentEnvironment(
   )
 )
 
-let controller = storyboard(named: "Search").instantiateInitialViewController()!
+initialize()
+let controller = Storyboard.Search.instantiate(SearchViewController)
 
 // Set the device type and orientation.
 let (parent, _) = playgroundControllers(device: .phone4inch, orientation: .portrait, child: controller)

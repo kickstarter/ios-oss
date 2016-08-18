@@ -22,8 +22,12 @@ internal final class DashboardProjectsDrawerViewController: UITableViewControlle
   private let viewModel: DashboardProjectsDrawerViewModelType = DashboardProjectsDrawerViewModel()
   private let dataSource = DashboardProjectsDrawerDataSource()
 
-  internal func configureWith(data data: [ProjectsDrawerData]) {
-    self.viewModel.inputs.configureWith(data: data)
+  internal static func configuredWith(data data: [ProjectsDrawerData])
+    -> DashboardProjectsDrawerViewController {
+
+      let vc = Storyboard.DashboardProjectsDrawer.instantiate(DashboardProjectsDrawerViewController)
+      vc.viewModel.inputs.configureWith(data: data)
+      return vc
   }
 
   internal override func viewDidLoad() {

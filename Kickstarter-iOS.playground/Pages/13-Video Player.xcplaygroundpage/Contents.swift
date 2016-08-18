@@ -21,8 +21,8 @@ AppEnvironment.replaceCurrentEnvironment(
   )
 )
 
-let controller = storyboard(named: "Video")
-  .instantiateViewControllerWithIdentifier("VideoViewController") as! VideoViewController
+initialize()
+let controller = Storyboard.Video.instantiate(VideoViewController)
 controller.configureWith(project: project)
 
 XCPlaygroundPage.currentPage.liveView = controller

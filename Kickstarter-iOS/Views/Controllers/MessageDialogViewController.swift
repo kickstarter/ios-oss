@@ -18,15 +18,17 @@ internal final class MessageDialogViewController: UIViewController {
   @IBOutlet private weak var loadingView: UIView!
   @IBOutlet private weak var bottomConstraint: NSLayoutConstraint!
 
+  internal static func configuredWith(messageSubject messageSubject: MessageSubject,
+                                      context: Koala.MessageDialogContext) -> MessageDialogViewController {
+
+    let vc = Storyboard.Messages.instantiate(MessageDialogViewController)
+    vc.viewModel.inputs.configureWith(messageSubject: messageSubject, context: context)
+    return vc
+  }
+
   internal override func viewDidLoad() {
     super.viewDidLoad()
     self.viewModel.inputs.viewDidLoad()
-  }
-
-  internal func configureWith(messageSubject messageSubject: MessageSubject,
-                                             context: Koala.MessageDialogContext) {
-
-    self.viewModel.inputs.configureWith(messageSubject: messageSubject, context: context)
   }
 
   internal override func bindViewModel() {

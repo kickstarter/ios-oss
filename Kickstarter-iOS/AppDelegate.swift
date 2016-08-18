@@ -14,6 +14,10 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
   var window: UIWindow?
   let viewModel: AppDelegateViewModelType = AppDelegateViewModel()
 
+  internal var rootTabBarController: RootTabBarViewController? {
+    return self.window?.rootViewController as? RootTabBarViewController
+  }
+
   func application(application: UIApplication,
                    didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
 
@@ -45,9 +49,28 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
       .observeForUI()
       .observeNext(NSNotificationCenter.defaultCenter().postNotification)
 
+    self.viewModel.outputs.presentViewController
+      .observeForUI()
+      .observeNext { [weak self] in
+        self?.rootTabBarController?.presentViewController($0, animated: true, completion: nil)
+    }
+
+    self.viewModel.outputs.goToActivity
+      .observeForUI()
+      .observeNext { [weak self] in
+        self?.rootTabBarController?.switchToActivities()
+    }
+
+    self.viewModel.outputs.goToDashboard
+      .observeForUI()
+      .observeNext { [weak self] param in
+        self?.rootTabBarController?.switchToDashboard(project: param)
+    }
+
     self.window?.tintColor = .ksr_navy_700
 
-    viewModel.inputs.applicationDidFinishLaunching(application: application, launchOptions: launchOptions)
+    self.viewModel.inputs
+      .applicationDidFinishLaunching(application: application, launchOptions: launchOptions)
 
     return true
   }

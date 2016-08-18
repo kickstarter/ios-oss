@@ -8,7 +8,7 @@ public protocol ProjectMagazineViewModelInputs {
   func backProjectButtonTapped()
 
   /// Call with the project given to the view controller.
-  func configureWith(project project: Project, refTag: RefTag?)
+  func configureWith(projectOrParam projectOrParam: Either<Project, Param>, refTag: RefTag?)
 
   /// Call when the description should be expanded in the campaign tab.
   func expandDescription()
@@ -59,6 +59,9 @@ public protocol ProjectMagazineViewModelOutputs {
 
   /// Emits when we should notify the description controller to expand.
   var notifyDescriptionToExpand: Signal<(), NoError> { get }
+
+  /// Emits when the project has loaded.
+  var project: Signal<Project, NoError> { get }
 
   /// Emits a boolean that determines if the rewards biew is hidden.
   var rewardsViewHidden: Signal<Bool, NoError> { get }
@@ -118,16 +121,18 @@ ProjectMagazineViewModelOutputs {
       .ignoreValues()
       .take(1)
 
-    let initialProject = self.projectProperty.signal.ignoreNil()
+    self.project = self.projectOrParamProperty.signal.ignoreNil()
       .takeWhen(self.viewDidLoadProperty.signal)
-      .switchMap { p in
-        AppEnvironment.current.apiService.fetchProject(project: p)
+      .map { p in (p.left, p.ifLeft({ Param.id($0.id) }, ifRight: id)) }
+      .switchMap { project, param -> SignalProducer<Project, NoError> in
+        let fetchedProject = AppEnvironment.current.apiService.fetchProject(param: param)
           .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
-          .prefix(value: p)
           .demoteErrors()
+
+        return project.map { fetchedProject.prefix(value: $0) } ?? fetchedProject
     }
 
-    let projectOnStarToggle = initialProject
+    let projectOnStarToggle = self.project
       .takeWhen(.merge(loggedInUserTappedStar, userLoginAfterTappingStar))
       .switchMap { project in
         AppEnvironment.current.apiService.toggleStar(project)
@@ -137,7 +142,7 @@ ProjectMagazineViewModelOutputs {
 
     self.goToLoginTout = loggedOutUserTappedStar
 
-    self.configureChildViewControllersWithProject = initialProject
+    self.configureChildViewControllersWithProject = self.project
 
     self.showProjectStarredPrompt = projectOnStarToggle
       .filter { $0.personalization.isStarred == true && !$0.endsIn48Hours }
@@ -162,7 +167,7 @@ ProjectMagazineViewModelOutputs {
 
     self.notifyDescriptionToExpand = self.expandDescriptionProperty.signal
 
-    let project = Signal.merge(initialProject, projectOnStarToggle)
+    let project = Signal.merge(self.project, projectOnStarToggle)
 
     self.starButtonSelected = project
       .map { $0.personalization.isStarred == true }
@@ -216,10 +221,10 @@ ProjectMagazineViewModelOutputs {
   }
   // swiftlint:enable function_body_length
 
-  private let projectProperty = MutableProperty<Project?>(nil)
+  private let projectOrParamProperty = MutableProperty<Either<Project, Param>?>(nil)
   private let refTagProperty = MutableProperty<RefTag?>(nil)
-  public func configureWith(project project: Project, refTag: RefTag?) {
-    self.projectProperty.value = project
+  public func configureWith(projectOrParam projectOrParam: Either<Project, Param>, refTag: RefTag?) {
+    self.projectOrParamProperty.value = projectOrParam
     self.refTagProperty.value = refTag
   }
 
@@ -280,6 +285,7 @@ ProjectMagazineViewModelOutputs {
   public let goToLoginTout: Signal<(), NoError>
   public let managePledgeButtonHidden: Signal<Bool, NoError>
   public let notifyDescriptionToExpand: Signal<(), NoError>
+  public let project: Signal<Project, NoError>
   public let rewardsViewHidden: Signal<Bool, NoError>
   public let showProjectStarredPrompt: Signal<String, NoError>
   public let starButtonAccessibilityHint: Signal<String, NoError>
