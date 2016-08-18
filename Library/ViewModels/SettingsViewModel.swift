@@ -47,6 +47,7 @@ public protocol SettingsViewModelOutputs {
   var goToManageProjectNotifications: Signal<Void, NoError> { get }
   var happeningNewsletterOn: Signal<Bool, NoError> { get }
   var logout: Signal<Void, NoError> { get }
+  var manageProjectNotificationsButtonAccessibilityHint: Signal<String, NoError> { get }
   var mobileBackingsSelected: Signal<Bool, NoError> { get }
   var mobileCommentsSelected: Signal<Bool, NoError> { get }
   var mobileFollowerSelected: Signal<Bool, NoError> { get }
@@ -206,7 +207,11 @@ public final class SettingsViewModel: SettingsViewModelType, SettingsViewModelIn
 
     self.betaFeedbackButtonHidden = self.viewDidLoadProperty.signal.mapConst(false)
 
-    // Tracking Events
+    // a11y
+    self.manageProjectNotificationsButtonAccessibilityHint = self.updateCurrentUser
+      .map { Strings.profile_project_count_projects_backed(project_count: $0.stats.backedProjectsCount ?? 0) }
+
+    // Koala
     Signal.merge(
       self.backingsTappedProperty.signal.mapConst(Notification.backings.type),
       self.commentsTappedProperty.signal.mapConst(Notification.comments.type),
@@ -368,6 +373,7 @@ public final class SettingsViewModel: SettingsViewModelType, SettingsViewModelIn
   public let goToManageProjectNotifications: Signal<Void, NoError>
   public let happeningNewsletterOn: Signal<Bool, NoError>
   public let logout: Signal<Void, NoError>
+  public var manageProjectNotificationsButtonAccessibilityHint: Signal<String, NoError>
   public let mobileBackingsSelected: Signal<Bool, NoError>
   public let mobileCommentsSelected: Signal<Bool, NoError>
   public let mobileFollowerSelected: Signal<Bool, NoError>

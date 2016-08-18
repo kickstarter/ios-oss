@@ -115,8 +115,6 @@ internal final class SettingsViewController: UIViewController {
                                        action: #selector(privacyPolicyTapped),
                                        forControlEvents: .TouchUpInside)
 
-
-
     self.rateUsButton.addTarget(self, action: #selector(rateUsTapped), forControlEvents: .TouchUpInside)
 
     self.viewModel.inputs.viewDidLoad()
@@ -134,9 +132,20 @@ internal final class SettingsViewController: UIViewController {
       |> greenButtonStyle
       |> UIButton.lens.title(forState: .Normal) .~ "Submit feedback for beta"
 
+    self.contactButton
+      |> settingsSectionButtonStyle
+      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.profile_settings_about_contact() }
+      |> UIButton.lens.accessibilityHint %~ { _ in
+        localizedString(key: "todo", defaultValue: "Opens email composer.")
+    }
+
     self.contactLabel
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_about_contact() }
+
+    self.cookiePolicyButton
+      |> settingsSectionButtonStyle
+      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.profile_settings_about_cookie() }
 
     self.cookiePolicyLabel
       |> settingsSectionLabelStyle
@@ -147,15 +156,26 @@ internal final class SettingsViewController: UIViewController {
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_creator_title() }
 
     self.emailNotificationButtons
-      ||> settingsEmailIconButton
+      ||> settingsNotificationIconButtonStyle
       ||> UIButton.lens.image(forState: .Normal)
         .~ UIImage(named: "email-icon", inBundle: .framework, compatibleWithTraitCollection: nil)
       ||> UIButton.lens.image(forState: .Selected)
         .~ image(named: "email-icon", tintColor: .ksr_green_400, inBundle: NSBundle.framework)
+      ||> UIButton.lens.accessibilityLabel %~ { _ in
+        localizedString(key: "todo", defaultValue: "Email notifications")
+    }
+
+    self.faqButton
+      |> settingsSectionButtonStyle
+      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.profile_settings_about_faq() }
 
     self.faqLabel
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_about_faq() }
+
+    self.findFriendsButton
+      |> settingsSectionButtonStyle
+      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.profile_settings_social_find_friends() }
 
     self.findFriendsLabel
       |> settingsSectionLabelStyle
@@ -173,6 +193,10 @@ internal final class SettingsViewController: UIViewController {
       |> settingsTitleLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_about_title() }
 
+    self.howKsrWorksButton
+      |> settingsSectionButtonStyle
+      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.profile_settings_about_how_it_works() }
+
     self.howKsrWorksLabel
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_about_how_it_works() }
@@ -186,6 +210,10 @@ internal final class SettingsViewController: UIViewController {
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_newsletter_promo() }
 
     self.logoutButton |> settingsLogoutButtonStyle
+
+    self.manageProjectNotificationsButton
+      |> settingsSectionButtonStyle
+      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.profile_settings_backer_notifications() }
 
     self.manageProjectNotificationsLabel
       |> settingsSectionLabelStyle
@@ -211,6 +239,10 @@ internal final class SettingsViewController: UIViewController {
       |> settingsTitleLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_newsletter_title() }
 
+    self.privacyPolicyButton
+      |> settingsSectionButtonStyle
+      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.profile_settings_about_privacy() }
+
     self.privacyPolicyLabel
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_about_privacy() }
@@ -228,14 +260,21 @@ internal final class SettingsViewController: UIViewController {
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_backer_title() }
 
     self.pushNotificationButtons
-      ||> settingsPhoneIconButton
+      ||> settingsNotificationIconButtonStyle
       ||> UIButton.lens.image(forState: .Normal)
       .~ UIImage(named: "phone-icon", inBundle: .framework, compatibleWithTraitCollection: nil)
       ||> UIButton.lens.image(forState: .Selected)
       .~ image(named: "phone-icon", tintColor: .ksr_green_400, inBundle: NSBundle.framework)
+      ||> UIButton.lens.accessibilityLabel %~ { _ in
+        localizedString(key: "todo", defaultValue: "Push notifications")
+    }
+
+    self.rateUsButton
+      |> settingsSectionButtonStyle
+      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.profile_settings_rating_rate_us() }
 
     self.rateUsLabel
-      |> settingsTitleLabelStyle
+      |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_rating_rate_us() }
 
     self.separatorViews
@@ -244,6 +283,10 @@ internal final class SettingsViewController: UIViewController {
     self.socialNotificationsTitleLabel
       |> settingsTitleLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_social_title() }
+
+    self.termsOfUseButton
+      |> settingsSectionButtonStyle
+      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.profile_settings_about_terms() }
 
     self.termsOfUseLabel
       |> settingsSectionLabelStyle
@@ -333,6 +376,8 @@ internal final class SettingsViewController: UIViewController {
     self.friendActivityButton.rac.selected = self.viewModel.outputs.friendActivitySelected
     self.gamesNewsletterSwitch.rac.on = self.viewModel.outputs.gamesNewsletterOn
     self.happeningNewsletterSwitch.rac.on = self.viewModel.outputs.happeningNewsletterOn
+    self.manageProjectNotificationsButton.rac.accessibilityHint =
+      self.viewModel.outputs.manageProjectNotificationsButtonAccessibilityHint
     self.mobileBackingsButton.rac.selected = self.viewModel.outputs.mobileBackingsSelected
     self.mobileCommentsButton.rac.selected = self.viewModel.outputs.mobileCommentsSelected
     self.mobileFollowerButton.rac.selected = self.viewModel.outputs.mobileFollowerSelected
