@@ -15,6 +15,7 @@ internal final class VideoViewController: UIViewController {
 
   @IBOutlet private weak var playButton: UIButton!
   @IBOutlet private weak var projectImageView: UIImageView!
+  @IBOutlet private weak var videoContainerView: UIView!
 
   internal func configureWith(project project: Project) {
     self.viewModel.inputs.configureWith(project: project)
@@ -41,13 +42,16 @@ internal final class VideoViewController: UIViewController {
 
     self.playButton
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.accessibility_projects_buttons_play_video() }
-      |> UIButton.lens.accessibilityHint %~ { _ in
-        localizedString(key: "todo", defaultValue: "Plays project video.")
-    }
+
+    self.projectImageView
+      |> UIImageView.lens.accessibilityElementsHidden .~ true
   }
 
   internal override func bindViewModel() {
     super.bindViewModel()
+
+    self.playButton.rac.hidden = self.viewModel.outputs.playButtonHidden
+    self.videoContainerView.rac.hidden = self.viewModel.outputs.videoViewHidden
 
     self.viewModel.outputs.addCompletionObserver
       .observeForUI()
@@ -73,12 +77,11 @@ internal final class VideoViewController: UIViewController {
         self?.playerController.player?.play()
     }
 
-    self.viewModel.outputs.projectImagePlayButtonHidden
+    self.viewModel.outputs.projectImageHidden
       .observeForUI()
       .observeNext { [weak self] hidden in
         UIView.animateWithDuration(0.5) {
           self?.projectImageView.alpha = hidden ? 0 : 1
-          self?.playButton.alpha = hidden ? 0 : 1
         }
     }
 

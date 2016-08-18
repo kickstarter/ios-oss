@@ -15,9 +15,11 @@ internal final class VideoViewModelTests: TestCase {
   internal let incrementVideoStart = TestObserver<VoidEnvelope, NoError>()
   internal let pauseVideo = TestObserver<Void, NoError>()
   internal let playVideo = TestObserver<Void, NoError>()
-  internal let projectImagePlayButtonHidden = TestObserver<Bool, NoError>()
+  internal let playButtonHidden = TestObserver<Bool, NoError>()
+  internal let projectImageHidden = TestObserver<Bool, NoError>()
   internal let projectImageURL = TestObserver<String?, NoError>()
   internal let seekToBeginning = TestObserver<Void, NoError>()
+  internal let videoViewHidden = TestObserver<Bool, NoError>()
 
   let pauseRate = 0.0
   let playRate = 1.0
@@ -35,9 +37,11 @@ internal final class VideoViewModelTests: TestCase {
     self.vm.outputs.incrementVideoStart.observe(self.incrementVideoStart.observer)
     self.vm.outputs.pauseVideo.observe(self.pauseVideo.observer)
     self.vm.outputs.playVideo.observe(self.playVideo.observer)
-    self.vm.outputs.projectImagePlayButtonHidden.observe(self.projectImagePlayButtonHidden.observer)
+    self.vm.outputs.playButtonHidden.observe(self.playButtonHidden.observer)
+    self.vm.outputs.projectImageHidden.observe(self.projectImageHidden.observer)
     self.vm.outputs.projectImageURL.map { $0?.absoluteString }.observe(self.projectImageURL.observer)
     self.vm.outputs.seekToBeginning.observe(self.seekToBeginning.observer)
+    self.vm.outputs.videoViewHidden.observe(self.videoViewHidden.observer)
   }
 
   func testAddCompletionObserver() {
@@ -87,7 +91,9 @@ internal final class VideoViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     self.vm.inputs.playButtonTapped()
-    self.projectImagePlayButtonHidden.assertValues([true])
+    self.playButtonHidden.assertValues([false, true])
+    self.projectImageHidden.assertValues([false, true])
+    self.videoViewHidden.assertValues([true, false])
 
     self.vm.inputs.viewDidDisappear(animated: true)
 
@@ -99,19 +105,26 @@ internal final class VideoViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.durationChanged(toNew: duration)
 
-    self.projectImagePlayButtonHidden.assertValues([])
+    self.playButtonHidden.assertValues([false])
+    self.projectImageHidden.assertValues([false])
+    self.videoViewHidden.assertValues([true])
 
     self.vm.inputs.playButtonTapped()
     self.vm.inputs.rateChanged(toNew: playRate, atTime: startTime)
 
     self.playVideo.assertValueCount(1)
-    self.projectImagePlayButtonHidden.assertValues([true], "Overlaid views hidden when video starts.")
+    self.playButtonHidden.assertValues([false, true])
+    self.projectImageHidden.assertValues([false, true], "Overlaid views hidden when video starts.")
+    self.videoViewHidden.assertValues([true, false])
 
     self.vm.inputs.rateChanged(toNew: pauseRate, atTime: halfwayTime)
-    self.projectImagePlayButtonHidden.assertValues([true], "Overlaid views still hidden on pause.")
+    self.playButtonHidden.assertValues([false, true])
+    self.projectImageHidden.assertValues([false, true], "Overlaid views still hidden on pause.")
 
     self.vm.inputs.rateChanged(toNew: pauseRate, atTime: duration)
-    self.projectImagePlayButtonHidden.assertValues([true, false], "Overlaid views reappear at end.")
+    self.playButtonHidden.assertValues([false, true, false])
+    self.projectImageHidden.assertValues([false, true, false], "Overlaid views reappear at end.")
+    self.videoViewHidden.assertValues([true, false, true])
   }
 
   func testProjectImageEmits() {
@@ -122,6 +135,22 @@ internal final class VideoViewModelTests: TestCase {
     self.vm.inputs.durationChanged(toNew: duration)
 
     self.projectImageURL.assertValues([project.photo.full])
+    self.projectImageHidden.assertValues([false])
+    self.videoViewHidden.assertValues([true])
+  }
+
+  func testProjectWithNoVideo() {
+    let project = .template
+      |> Project.lens.video .~ nil
+
+    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.viewDidLoad()
+
+    self.configurePlayerWithURL.assertValues([])
+    self.addCompletionObserver.assertValues([])
+    self.playButtonHidden.assertValues([true])
+    self.projectImageHidden.assertValues([false])
+    self.videoViewHidden.assertValues([true])
   }
 
   func testSeekPlayerToBeginning() {

@@ -54,6 +54,7 @@
                     <connections>
                         <outlet property="playButton" destination="eBP-iG-9iY" id="qTG-HO-rbm"/>
                         <outlet property="projectImageView" destination="Z6Z-Qr-3Gq" id="J2C-u2-4ei"/>
+                        <outlet property="videoContainerView" destination="xRP-Dy-zdg" id="5hO-s9-LSa"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TWx-34-H27" userLabel="First Responder" sceneMemberID="firstResponder"/>

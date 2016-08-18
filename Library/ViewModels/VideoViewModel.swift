@@ -50,14 +50,20 @@ public protocol VideoViewModelOutputs {
   /// Emits when the video should be played.
   var playVideo: Signal<Void, NoError> { get }
 
-  /// Emits a boolean to determine whether or not the project image and play button should be hidden.
-  var projectImagePlayButtonHidden: Signal<Bool, NoError> { get }
+  /// Emits a boolean to determine whether or not the play button should be hidden.
+  var playButtonHidden: Signal<Bool, NoError> { get }
+
+  /// Emits a boolean to determine whether or not the project image should be hidden.
+  var projectImageHidden: Signal<Bool, NoError> { get }
 
   /// Emits with the project image url to be displayed.
   var projectImageURL: Signal<NSURL?, NoError> { get }
 
   /// Emits when should seek video back to beginning.
   var seekToBeginning: Signal<Void, NoError> { get }
+
+  /// Emits a boolean to determine whether or not the video player should be hidden.
+  var videoViewHidden: Signal<Bool, NoError> { get }
 }
 
 public protocol VideoViewModelType {
@@ -109,6 +115,7 @@ public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, 
     self.addCompletionObserver = completionThreshold.map { CMTimeMakeWithSeconds($0, 1) }
 
     self.configurePlayerWithURL = project
+      .filter { $0.video != nil }
       .map { NSURL(string: $0.video?.high ?? "") }
       .ignoreNil()
       .skipRepeats()
@@ -117,10 +124,16 @@ public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, 
 
     self.playVideo = self.playButtonTappedProperty.signal
 
-    self.projectImagePlayButtonHidden = Signal.merge(
+    let elementsHiddenOnPlayback = Signal.merge(
       self.playVideo.mapConst(true),
       reachedEndOfVideo.mapConst(false)
       )
+      .skipRepeats()
+
+    self.projectImageHidden = Signal.merge(elementsHiddenOnPlayback, project.mapConst(false))
+      .skipRepeats()
+
+    self.playButtonHidden = Signal.merge(project.map { $0.video == nil }, elementsHiddenOnPlayback)
       .skipRepeats()
 
     self.projectImageURL = project.map { NSURL(string: $0.photo.full) }.skipRepeats(==)
@@ -140,6 +153,8 @@ public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, 
         AppEnvironment.current.apiService.incrementVideoStart(forProject: $0)
           .demoteErrors()
       }
+
+    self.videoViewHidden = self.projectImageHidden.map { !$0 }
 
     project
       .takeWhen(videoCompleted)
@@ -196,9 +211,11 @@ public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, 
   public let incrementVideoStart: Signal<VoidEnvelope, NoError>
   public let pauseVideo: Signal<Void, NoError>
   public let playVideo: Signal<Void, NoError>
-  public let projectImagePlayButtonHidden: Signal<Bool, NoError>
+  public var playButtonHidden: Signal<Bool, NoError>
+  public var projectImageHidden: Signal<Bool, NoError>
   public let projectImageURL: Signal<NSURL?, NoError>
   public let seekToBeginning: Signal<Void, NoError>
+  public var videoViewHidden: Signal<Bool, NoError>
 
   public var inputs: VideoViewModelInputs { return self }
   public var outputs: VideoViewModelOutputs { return self }
