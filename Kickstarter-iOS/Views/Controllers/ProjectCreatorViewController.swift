@@ -18,15 +18,15 @@ internal final class ProjectCreatorViewController: WebViewController {
     super.bindViewModel()
 
     self.viewModel.outputs.loadWebViewRequest
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in self?.webView.loadRequest($0) }
 
     self.viewModel.outputs.goToMessageDialog
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in self?.goToMessageDialog(subject: $0, context: $1) }
 
     self.viewModel.outputs.goToSafariBrowser
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in
         self?.goToSafariBrowser(url: $0)
     }

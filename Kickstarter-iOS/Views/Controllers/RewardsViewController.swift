@@ -38,14 +38,14 @@ internal final class RewardsViewController: UITableViewController {
     super.bindViewModel()
 
     self.viewModel.outputs.loadProjectIntoDataSource
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] project in
         self?.dataSource.load(project: project)
         self?.tableView.reloadData()
     }
 
     self.viewModel.outputs.layoutHeaderView
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in
         self?.layoutHeaderView(atContentOffset: $0)
     }

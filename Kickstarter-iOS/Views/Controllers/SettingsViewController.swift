@@ -323,29 +323,29 @@ internal final class SettingsViewController: UIViewController {
     super.bindViewModel()
 
     self.viewModel.outputs.goToAppStoreRating
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] link in self?.goToAppStore(link: link) }
 
     self.viewModel.outputs.goToManageProjectNotifications
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] _ in self?.goToManageProjectNotifications() }
 
     self.viewModel.outputs.logout
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in self?.logout() }
 
     self.viewModel.outputs.showConfirmLogoutPrompt
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] (message, cancel, confirm) in
         self?.showLogoutPrompt(message: message, cancel: cancel, confirm: confirm)
     }
 
     self.viewModel.outputs.showOptInPrompt
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] newsletter in self?.showOptInPrompt(newsletter) }
 
     self.viewModel.outputs.unableToSaveError
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] message in
         self?.presentViewController(UIAlertController.genericError(message), animated: true, completion: nil)
     }
@@ -354,17 +354,17 @@ internal final class SettingsViewController: UIViewController {
       .observeNext { user in AppEnvironment.updateCurrentUser(user) }
 
     self.viewModel.outputs.goToFindFriends
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in
         self?.goToFindFriends()
     }
 
     self.viewModel.outputs.goToBetaFeedback
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in self?.goToBetaFeedback() }
 
     self.helpViewModel.outputs.showMailCompose
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in
         guard let _self = self else { return }
         let controller = MFMailComposeViewController.support()
@@ -373,13 +373,13 @@ internal final class SettingsViewController: UIViewController {
     }
 
     self.helpViewModel.outputs.showNoEmailError
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] alert in
         self?.presentViewController(alert, animated: true, completion: nil)
     }
 
     self.helpViewModel.outputs.showWebHelp
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] helpType in
         self?.goToHelpType(helpType)
     }

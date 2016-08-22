@@ -39,21 +39,21 @@ internal final class SearchMessagesViewController: UITableViewController {
     self.loadingView.rac.animating = self.viewModel.outputs.isSearching
 
     self.viewModel.outputs.messageThreads
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] messageThreads in
         self?.dataSource.load(messageThreads: messageThreads)
         self?.tableView.reloadData()
     }
 
     self.viewModel.outputs.emptyStateIsVisible
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] isVisible in
         self?.dataSource.emptyState(isVisible: isVisible)
         self?.tableView.reloadData()
     }
 
     self.viewModel.outputs.goToMessageThread
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in self?.goTo(messageThread: $0) }
   }
 

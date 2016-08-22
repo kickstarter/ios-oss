@@ -27,39 +27,39 @@ internal final class ProfileViewController: UICollectionViewController {
 
   internal override func bindViewModel() {
     self.viewModel.outputs.backedProjects
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] ps in
         self?.dataSource.load(projects: ps)
         self?.collectionView?.reloadData()
       }
 
     self.viewModel.outputs.user
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] u in
         self?.dataSource.load(user: u)
         self?.collectionView?.reloadData()
     }
 
     self.viewModel.outputs.endRefreshing
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in
         self?.refreshControl.endRefreshing()
     }
 
     self.viewModel.outputs.goToProject
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] project, refTag in
         self?.present(project: project, refTag: refTag)
     }
 
     self.viewModel.outputs.goToSettings
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] _ in
         self?.goToSettings()
     }
 
     self.viewModel.outputs.showEmptyState
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] visible in
         self?.dataSource.emptyState(visible: visible)
         self?.collectionView?.reloadData()

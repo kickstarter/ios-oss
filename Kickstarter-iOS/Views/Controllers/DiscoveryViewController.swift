@@ -42,7 +42,7 @@ internal final class DiscoveryViewController: UIViewController {
     self.titleButton.rac.title = self.viewModel.outputs.filterLabelText
 
     self.viewModel.outputs.configurePagerDataSource
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in
         self?.configurePagerDataSource($0)
     }
@@ -53,29 +53,31 @@ internal final class DiscoveryViewController: UIViewController {
     }
 
     self.viewModel.outputs.goToDiscoveryFilters
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in
         self?.goToDiscoveryFilters($0)
     }
 
     self.viewModel.outputs.loadFilterIntoDataSource
+      .observeForControllerAction()
       .observeNext { [weak self] in
         self?.dataSource.load(filter: $0)
     }
 
     self.viewModel.outputs.selectSortPage
+      .observeForControllerAction()
       .observeNext { [weak self] in
         self?.sortPagerViewController.select(sort: $0)
     }
 
     self.viewModel.outputs.updateSortPagerStyle
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] id in
         self?.sortPagerViewController.updateStyle(categoryId: id)
     }
 
     self.viewModel.outputs.navigateToSort
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] sort, direction in
         guard let controller = self?.dataSource.controllerFor(sort: sort) else {
           fatalError("Controller not found for sort \(sort)")
@@ -87,7 +89,7 @@ internal final class DiscoveryViewController: UIViewController {
     }
 
     self.viewModel.outputs.dismissDiscoveryFilters
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in
         self?.dismissViewControllerAnimated(true, completion: nil)
     }

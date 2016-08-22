@@ -48,7 +48,7 @@ internal final class DashboardProjectsDrawerViewController: UITableViewControlle
     super.bindViewModel()
 
     self.viewModel.outputs.projectsDrawerData
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] data in
         self?.dataSource.load(data: data)
         self?.tableView.reloadData()
@@ -56,25 +56,25 @@ internal final class DashboardProjectsDrawerViewController: UITableViewControlle
     }
 
     self.viewModel.outputs.notifyDelegateToCloseDrawer
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in
         self?.delegate?.dashboardProjectsDrawerHideDrawer()
     }
 
     self.viewModel.outputs.notifyDelegateDidAnimateOut
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in
         self?.delegate?.dashboardProjectsDrawerDidAnimateOut()
     }
 
     self.viewModel.outputs.notifyDelegateProjectCellTapped
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] project in
         self?.delegate?.dashboardProjectsDrawerCellDidTapProject(project)
     }
 
     self.viewModel.outputs.focusScreenReaderOnFirstProject
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in
         self?.accessibilityFocusOnFirstProject()
     }

@@ -53,7 +53,7 @@ internal final class MessageDialogViewController: UIViewController {
     }
 
     self.viewModel.outputs.showAlertMessage
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in self?.presentError($0) }
   }
 

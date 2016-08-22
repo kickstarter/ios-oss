@@ -33,34 +33,34 @@ internal final class MessagesViewController: UITableViewController {
 
   override func bindViewModel() {
     self.viewModel.outputs.project
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in
         self?.dataSource.load(project: $0)
         self?.tableView.reloadData()
     }
 
     self.viewModel.outputs.backingAndProject
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] backing, project in
         self?.dataSource.load(backing: backing, project: project)
         self?.tableView.reloadData()
     }
 
     self.viewModel.outputs.messages
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in
         self?.dataSource.load(messages: $0)
         self?.tableView.reloadData()
     }
 
     self.viewModel.outputs.presentMessageDialog
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] messageThread, context in
         self?.presentMessageDialog(messageThread: messageThread, context: context)
     }
 
     self.viewModel.outputs.goToProject
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] project, refTag in self?.goTo(project: project, refTag: refTag) }
   }
 

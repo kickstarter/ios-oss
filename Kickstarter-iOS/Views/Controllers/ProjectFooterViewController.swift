@@ -163,7 +163,7 @@ internal final class ProjectFooterViewController: UIViewController {
     self.locationButton.rac.title = self.viewModel.outputs.locationButtonTitle
 
     self.viewModel.outputs.creatorImageUrl
-      .observeForUI()
+      .observeForControllerAction()
       .on(next: { [weak self] _ in
         self?.creatorImageView.image = nil
       })
@@ -178,11 +178,11 @@ internal final class ProjectFooterViewController: UIViewController {
     }
 
     self.viewModel.outputs.goToMessageCreator
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in self?.goToMessageCreator(forProject: $0) }
 
     self.viewModel.outputs.goToCreatorBio
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in self?.goToCreatorBio(forProject: $0) }
   }
 

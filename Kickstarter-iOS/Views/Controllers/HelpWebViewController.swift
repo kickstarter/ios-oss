@@ -19,7 +19,7 @@ internal final class HelpWebViewController: WebViewController {
 
   internal override func bindViewModel() {
     self.viewModel.outputs.webViewLoadRequest
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in self?.webView.loadRequest($0) }
   }
 }

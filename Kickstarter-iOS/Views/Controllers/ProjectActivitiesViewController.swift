@@ -26,14 +26,14 @@ internal final class ProjectActivitiesViewController: UITableViewController {
     super.bindViewModel()
 
     self.viewModel.outputs.projectActivityData
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] projectActivityData in
         self?.dataSource.load(projectActivityData: projectActivityData)
         self?.tableView.reloadData()
     }
 
     self.viewModel.outputs.goTo
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] goTo in
         switch goTo {
         case let .backing(project, user):
@@ -52,7 +52,7 @@ internal final class ProjectActivitiesViewController: UITableViewController {
     }
 
     self.viewModel.outputs.showEmptyState
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] visible in
         self?.dataSource.emptyState(visible: visible)
         self?.tableView.reloadData()

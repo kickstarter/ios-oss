@@ -122,7 +122,7 @@ internal final class BackingViewController: UIViewController {
       self.viewModel.outputs.backerShippingDescriptionAccessibilityLabel
 
     self.viewModel.outputs.backerAvatarURL
-      .observeForUI()
+      .observeForControllerAction()
       .on(next: { [weak backerAvatarImageView] _ in
         backerAvatarImageView?.af_cancelImageRequest()
         backerAvatarImageView?.image = nil
@@ -133,7 +133,7 @@ internal final class BackingViewController: UIViewController {
     }
 
     self.viewModel.outputs.goToMessages
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] project, backing in
         self?.goToMessages(project: project, backing: backing)
     }

@@ -48,7 +48,7 @@ internal final class SignupViewController: UIViewController {
       .observeNext(NSNotificationCenter.defaultCenter().postNotification)
 
     self.viewModel.outputs.showError
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] message in
         self?.presentViewController(
           UIAlertController

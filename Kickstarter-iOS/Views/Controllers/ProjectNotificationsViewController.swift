@@ -19,7 +19,7 @@ internal final class ProjectNotificationsViewController: UITableViewController {
 
   internal override func bindViewModel() {
     self.viewModel.outputs.projectNotifications
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] notifications in
         self?.dataSource.load(notifications: notifications)
         self?.tableView.reloadData()

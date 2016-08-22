@@ -38,57 +38,57 @@ internal final class CommentsViewController: UITableViewController {
   // swiftlint:disable function_body_length
   internal override func bindViewModel() {
     self.viewModel.outputs.dataSource
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] comments, project, user in
         self?.dataSource.load(comments: comments, project: project, loggedInUser: user)
         self?.tableView.reloadData()
     }
 
     self.viewModel.outputs.backerEmptyStateVisible
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] visible in
         self?.dataSource.backerEmptyState(visible: visible)
         self?.tableView.reloadData()
     }
 
     self.viewModel.outputs.loggedOutEmptyStateVisible
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] visible in
         self?.dataSource.loggedOutEmptyState(visible: visible)
         self?.tableView.reloadData()
     }
 
     self.viewModel.outputs.nonBackerEmptyStateVisible
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] visible in
         self?.dataSource.nonBackerEmptyState(visible: visible)
         self?.tableView.reloadData()
     }
 
     self.viewModel.outputs.commentButtonVisible
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] visible in
         self?.navigationItem.rightBarButtonItem = visible ? self?.commentBarButton : nil
     }
 
     self.viewModel.outputs.presentPostCommentDialog
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] project, update in
         self?.presentCommentDialog(project: project, update: update)
     }
 
     self.viewModel.outputs.openLoginTout
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in self?.presentLoginTout() }
 
     self.viewModel.outputs.closeLoginTout
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in
         self?.loginToutViewController?.dismissViewControllerAnimated(true, completion: nil)
     }
 
     self.viewModel.outputs.commentsAreLoading
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in
         $0 ? self?.refreshControl?.beginRefreshing() : self?.refreshControl?.endRefreshing()
     }

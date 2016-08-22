@@ -51,18 +51,18 @@ internal final class FacebookConfirmationViewController: UIViewController,
 
   override func bindViewModel() {
     self.viewModel.outputs.displayEmail
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] email in
         self?.emailLabel.text = email
     }
 
     self.viewModel.outputs.sendNewsletters
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] send in self?.newsletterSwitch.setOn(send, animated: false)
     }
 
     self.viewModel.outputs.showLogin
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] _ in self?.goToLoginViewController()
     }
 
@@ -78,19 +78,19 @@ internal final class FacebookConfirmationViewController: UIViewController,
     }
 
     self.viewModel.errors.showSignupError
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] message in
         self?.presentViewController(UIAlertController.genericError(message), animated: true, completion: nil)
     }
 
     self.helpViewModel.outputs.showHelpSheet
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in
         self?.showHelpSheet(helpTypes: $0)
     }
 
     self.helpViewModel.outputs.showMailCompose
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in
         guard let _self = self else { return }
         let controller = MFMailComposeViewController.support()
@@ -99,13 +99,13 @@ internal final class FacebookConfirmationViewController: UIViewController,
     }
 
     self.helpViewModel.outputs.showNoEmailError
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] alert in
         self?.presentViewController(alert, animated: true, completion: nil)
     }
 
     self.helpViewModel.outputs.showWebHelp
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] helpType in
         self?.goToHelpType(helpType)
     }

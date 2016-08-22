@@ -50,7 +50,7 @@ internal final class TwoFactorViewController: UIViewController {
       .observeNext(NSNotificationCenter.defaultCenter().postNotification)
 
     self.viewModel.errors.showError
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] message in
         self?.showError(message)
       }

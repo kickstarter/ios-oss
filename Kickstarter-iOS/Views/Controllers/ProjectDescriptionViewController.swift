@@ -73,13 +73,13 @@ internal final class ProjectDescriptionViewController: WebViewController {
     super.bindViewModel()
 
     self.viewModel.outputs.loadWebViewRequest
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in
         self?.webView.loadRequest($0)
     }
 
     self.viewModel.outputs.layoutFooterAndHeader
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] descriptionExpanded, contentOffset in
         self?.layoutFooterAndHeader(descriptionExpanded: descriptionExpanded, contentOffset: contentOffset)
     }

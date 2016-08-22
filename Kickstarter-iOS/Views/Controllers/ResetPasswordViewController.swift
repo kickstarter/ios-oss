@@ -36,7 +36,7 @@ internal final class ResetPasswordViewController: UIViewController {
     super.bindViewModel()
 
     self.viewModel.outputs.setEmailInitial
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] email in
         self?.emailTextField.text = email
       }
@@ -44,7 +44,7 @@ internal final class ResetPasswordViewController: UIViewController {
     self.resetPasswordButton.rac.enabled = self.viewModel.outputs.formIsValid
 
     self.viewModel.outputs.showResetSuccess
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] message in
         self?.presentViewController(UIAlertController.alert(
           message: message,
@@ -54,13 +54,13 @@ internal final class ResetPasswordViewController: UIViewController {
       }
 
     self.viewModel.outputs.returnToLogin
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] _ in
         self?.navigationController?.popViewControllerAnimated(true)
       }
 
     self.viewModel.errors.showError
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] message in
         self?.presentViewController(UIAlertController.genericError(message), animated: true, completion: nil)
       }

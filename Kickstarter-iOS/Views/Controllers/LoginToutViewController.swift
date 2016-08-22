@@ -72,12 +72,12 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
   // swiftlint:disable function_body_length
   override func bindViewModel() {
     self.viewModel.outputs.startLogin
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] _ in
         self?.pushLoginViewController()
     }
     self.viewModel.outputs.startSignup
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] _ in
         self?.pushSignupViewController()
     }
@@ -94,13 +94,13 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
     }
 
     self.viewModel.outputs.startFacebookConfirmation
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] (user, token) in
         self?.pushFacebookConfirmationController(facebookUser: user, facebookToken: token)
     }
 
     self.viewModel.outputs.startTwoFactorChallenge
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] token in
         self?.pushTwoFactorViewController(facebookAccessToken: token)
     }
@@ -110,7 +110,7 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
     }
 
     self.viewModel.outputs.showFacebookErrorAlert
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] error in
         self?.presentViewController(
           UIAlertController.alertController(forError: error),
@@ -120,19 +120,19 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
     }
 
     self.viewModel.outputs.dismissViewController
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in
         self?.dismissViewControllerAnimated(true, completion: nil)
     }
 
     self.helpViewModel.outputs.showHelpSheet
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in
         self?.showHelpSheet(helpTypes: $0)
     }
 
     self.helpViewModel.outputs.showMailCompose
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in
         guard let _self = self else { return }
         let controller = MFMailComposeViewController.support()
@@ -141,13 +141,13 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
     }
 
     self.helpViewModel.outputs.showNoEmailError
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] alert in
         self?.presentViewController(alert, animated: true, completion: nil)
     }
 
     self.helpViewModel.outputs.showWebHelp
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] helpType in
         self?.goToHelpType(helpType)
     }

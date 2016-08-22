@@ -33,7 +33,7 @@ internal final class ProjectMagazineViewController: UIViewController {
 
       vc.viewModel.inputs.configureWith(projectOrParam: projectOrParam, refTag: refTag)
       vc.viewModel.outputs.project
-        .observeForUI()
+        .observeForControllerAction()
         .observeNext { [weak vc] in
           vc?.shareViewModel.inputs.configureWith(shareContext: .project($0)) }
 
@@ -168,13 +168,13 @@ internal final class ProjectMagazineViewController: UIViewController {
     }
 
     self.viewModel.outputs.transferFooterAndHeaderToDescriptionController
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in
         self?.transferFooterAndHeaderToDescriptionController()
     }
 
     self.viewModel.outputs.transferFooterAndHeaderToRewardsController
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in
         self?.transferFooterAndHeaderToRewardsController()
     }
@@ -185,7 +185,7 @@ internal final class ProjectMagazineViewController: UIViewController {
     }
 
     self.viewModel.outputs.showProjectStarredPrompt
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in
         self?.showProjectStarredPrompt(message: $0)
     }
@@ -197,17 +197,17 @@ internal final class ProjectMagazineViewController: UIViewController {
     }
 
     self.viewModel.outputs.goToLoginTout
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in
         self?.goToLoginTout()
     }
 
     self.shareViewModel.outputs.showShareSheet
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in self?.showShareSheet($0) }
 
     self.shareViewModel.outputs.showShareCompose
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in self?.showShareCompose($0) }
   }
   // swiftlint:enable function_body_length

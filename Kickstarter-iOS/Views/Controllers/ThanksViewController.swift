@@ -89,43 +89,43 @@ internal final class ThanksViewController: UIViewController, UICollectionViewDel
     self.backedLabel.rac.attributedText = self.viewModel.outputs.backedProjectText
 
     self.viewModel.outputs.dismissViewController
-    .observeForUI()
+    .observeForControllerAction()
       .observeNext { [weak self] in
         self?.dismissViewControllerAnimated(true, completion: nil)
     }
 
     self.viewModel.outputs.goToDiscovery
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] params in
         self?.goToDiscovery(params: params)
     }
 
     self.viewModel.outputs.goToAppStoreRating
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] link in
         self?.goToAppStore(link: link)
     }
 
     self.viewModel.outputs.goToProject
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] (project, reftag) in
         self?.goToProject(project, refTag: reftag)
     }
 
     self.viewModel.outputs.showRatingAlert
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in
         self?.showRatingAlert()
     }
 
     self.viewModel.outputs.showGamesNewsletterAlert
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in
         self?.showGamesNewsletterAlert()
     }
 
     self.viewModel.outputs.showGamesNewsletterOptInAlert
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] title in
         self?.showGamesNewsletterOptInAlert(title: title)
     }
@@ -140,18 +140,18 @@ internal final class ThanksViewController: UIViewController, UICollectionViewDel
       .observeNext(NSNotificationCenter.defaultCenter().postNotification)
 
     self.viewModel.outputs.showRecommendations
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] projects, category in
         self?.dataSource.loadData(projects: projects, category: category)
         self?.projectsCollectionView.reloadData()
     }
 
     self.shareViewModel.outputs.showShareSheet
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in self?.showShareSheet($0) }
 
     self.shareViewModel.outputs.showShareCompose
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in self?.showShareCompose($0) }
   }
   // swiftlint:enable function_body_length

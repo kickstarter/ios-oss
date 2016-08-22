@@ -81,13 +81,13 @@ internal final class LoginViewController: UIViewController {
     self.onePasswordButton.rac.hidden = self.viewModel.outputs.onePasswordButtonHidden
 
     self.viewModel.outputs.passwordTextFieldBecomeFirstResponder
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] _ in
         self?.passwordTextField.becomeFirstResponder()
     }
 
     self.viewModel.outputs.dismissKeyboard
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] visible in
         self?.dismissKeyboard()
     }
@@ -102,25 +102,25 @@ internal final class LoginViewController: UIViewController {
     }
 
     self.viewModel.outputs.showResetPassword
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in
         self?.startResetPasswordViewController()
       }
 
     self.viewModel.outputs.showError
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] message in
         self?.presentViewController(UIAlertController.genericError(message), animated: true, completion: nil)
     }
 
     self.viewModel.outputs.tfaChallenge
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] (email, password) in
         self?.startTwoFactorViewController(email, password: password)
     }
 
     self.viewModel.outputs.onePasswordFindLoginForURLString
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in self?.onePasswordFindLogin(forURLString: $0) }
   }
 

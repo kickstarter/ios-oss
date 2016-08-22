@@ -27,19 +27,19 @@ internal final class UpdateViewController: WebViewController {
     self.navigationItem.rac.title = self.viewModel.outputs.title
 
     self.viewModel.outputs.webViewLoadRequest
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in self?.webView.loadRequest($0) }
 
     self.viewModel.outputs.goToComments
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in self?.goToComments(forUpdate: $0) }
 
     self.viewModel.outputs.goToProject
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in self?.goTo(project: $0, refTag: $1) }
 
     self.shareViewModel.outputs.showShareSheet
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in self?.showShareSheet($0) }
   }
 

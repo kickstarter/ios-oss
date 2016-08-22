@@ -51,14 +51,14 @@ internal final class DashboardViewController: UITableViewController {
     super.bindViewModel()
 
     self.viewModel.outputs.fundingData
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] stats, project in
         self?.dataSource.load(fundingDateStats: stats, project: project)
         self?.tableView.reloadData()
     }
 
     self.viewModel.outputs.project
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] project in
         self?.dataSource.load(project: project)
         self?.tableView.reloadData()
@@ -68,34 +68,34 @@ internal final class DashboardViewController: UITableViewController {
     }
 
     self.viewModel.outputs.referrerData
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] (cumulative, project, referrers) in
         self?.dataSource.load(cumulative: cumulative, project: project, referrers: referrers)
         self?.tableView.reloadData()
     }
 
     self.viewModel.outputs.rewardData
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] (stats, project) in
         self?.dataSource.load(rewardStats: stats, project: project)
         self?.tableView.reloadData()
     }
 
     self.viewModel.outputs.videoStats
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] videoStats in
         self?.dataSource.load(videoStats: videoStats)
         self?.tableView.reloadData()
     }
 
     self.viewModel.outputs.presentProjectsDrawer
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] data in
         self?.presentProjectsDrawer(data: data)
     }
 
     self.viewModel.outputs.animateOutProjectsDrawer
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in
         if let drawerVC = self?.presentedViewController as? DashboardProjectsDrawerViewController {
           drawerVC.animateOut()
@@ -103,31 +103,31 @@ internal final class DashboardViewController: UITableViewController {
     }
 
     self.viewModel.outputs.dismissProjectsDrawer
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in
         self?.dismissViewControllerAnimated(false, completion: nil)
     }
 
     self.viewModel.outputs.updateTitleViewData
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak element = self.titleView] data in
         element?.updateData(data)
     }
 
     self.viewModel.outputs.goToProject
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] (project, reftag) in
         self?.goToProject(project, refTag: reftag)
     }
 
     self.viewModel.outputs.focusScreenReaderOnTitleView
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in
         self?.accessibilityFocusOnTitleView()
     }
 
     self.shareViewModel.outputs.showShareSheet
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in self?.showShareSheet($0) }
   }
   // swiftlint:enable function_body_length

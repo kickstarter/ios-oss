@@ -75,14 +75,14 @@ internal final class SearchViewController: UITableViewController {
   internal override func bindViewModel() {
 
     self.viewModel.outputs.projects
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] projects in
         self?.dataSource.load(projects: projects)
         self?.tableView.reloadData()
     }
 
     self.viewModel.outputs.isPopularTitleVisible
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] visible in
         self?.dataSource.popularTitle(isVisible: visible)
         self?.tableView.reloadData()
@@ -91,7 +91,7 @@ internal final class SearchViewController: UITableViewController {
     self.searchTextField.rac.text = self.viewModel.outputs.searchFieldText
 
     self.viewModel.outputs.changeSearchFieldFocus
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in
         self?.changeSearchFieldFocus(focus: $0, animated: $1)
     }

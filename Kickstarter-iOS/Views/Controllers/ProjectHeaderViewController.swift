@@ -238,11 +238,11 @@ internal final class ProjectHeaderViewController: UIViewController {
     self.updatesTitleLabel.rac.text = self.viewModel.outputs.updatesLabelText
 
     self.viewModel.outputs.configureVideoViewControllerWithProject
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] project in self?.videoViewController.configureWith(project: project) }
 
     self.viewModel.outputs.goToComments
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in self?.goToComments(project: $0) }
 
     self.viewModel.outputs.notifyDelegateToShowCampaignTab
@@ -252,7 +252,7 @@ internal final class ProjectHeaderViewController: UIViewController {
       .observeNext { [weak self] in self?.delegate?.projectHeaderShowRewardsTab() }
 
     self.viewModel.outputs.progressPercentage
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] progress in
         self?.progressBarView.layer.anchorPoint = CGPoint(x: CGFloat(0.5 / progress), y: 0.5)
         self?.progressBarView.transform = CGAffineTransformMakeScale(CGFloat(progress), 1.0)

@@ -38,13 +38,13 @@ internal final class SortPagerViewController: UIViewController {
 
   internal override func bindViewModel() {
     self.viewModel.outputs.createSortButtons
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in
         self?.createSortButtons($0)
     }
 
     self.viewModel.outputs.pinSelectedIndicatorToPage
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in self?.pinSelectedIndicator(toPage: $0) }
 
     self.viewModel.outputs.notifyDelegateOfSelectedSort
@@ -54,13 +54,13 @@ internal final class SortPagerViewController: UIViewController {
     }
 
     self.viewModel.outputs.updateSortStyle
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] (id, sorts) in
         self?.updateSortStyle(forCategoryId: id, sorts: sorts)
     }
 
     self.viewModel.outputs.setSelectedButton
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in
         self?.selectButton(atIndex: $0)
     }

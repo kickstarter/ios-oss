@@ -34,21 +34,21 @@ internal final class DiscoveryFiltersViewController: UITableViewController {
 
   internal override func bindViewModel() {
     self.viewModel.outputs.loadTopRows
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in
         self?.dataSource.load(topRows: $0)
         self?.tableView.reloadData()
     }
 
     self.viewModel.outputs.loadCategoryRows
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in
         self?.dataSource.load(categoryRows: $0)
         self?.tableView.reloadData()
     }
 
     self.viewModel.outputs.notifyDelegateOfSelectedRow
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in
         guard let _self = self else { return }
         _self.delegate?.discoveryFilters(_self, selectedRow: $0)

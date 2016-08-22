@@ -34,19 +34,19 @@ internal final class UpdatePreviewViewController: WebViewController {
 
   internal override func bindViewModel() {
     self.viewModel.outputs.webViewLoadRequest
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in self?.webView.loadRequest($0) }
 
     self.viewModel.outputs.goToUpdate
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in self?.goTo(update: $1, forProject: $0) }
 
     self.viewModel.outputs.showPublishConfirmation
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in self?.showPublishConfirmation(message: $0) }
 
     self.viewModel.outputs.showPublishFailure
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in self?.showPublishFailure() }
   }
 

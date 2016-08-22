@@ -45,40 +45,40 @@ internal final class DiscoveryPageViewController: UITableViewController {
     super.bindViewModel()
 
     self.viewModel.outputs.activitiesForSample
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] activities in
         self?.dataSource.load(activities: activities)
         self?.tableView.reloadData()
     }
 
     self.viewModel.outputs.projects
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] projects in
         self?.dataSource.load(projects: projects)
         self?.tableView.reloadData()
     }
 
     self.viewModel.outputs.goToProject
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in
         self?.goTo(project: $0, refTag: $1)
     }
 
     self.viewModel.outputs.goToProjectUpdate
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] project, update in
         self?.goTo(project: project, update: update)
     }
 
     self.viewModel.outputs.showOnboarding
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in
         self?.dataSource.show(onboarding: $0)
         self?.tableView.reloadData()
     }
 
     self.viewModel.outputs.focusScreenReaderOnFirstProject
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in
         self?.accessibilityFocusOnFirstProject()
     }

@@ -33,25 +33,25 @@ internal final class MessageThreadsViewController: UITableViewController {
     self.tableView.tableFooterView?.rac.hidden = self.viewModel.outputs.loadingFooterIsHidden
 
     self.viewModel.outputs.messageThreads
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] threads in
         self?.dataSource.load(messageThreads: threads)
         self?.tableView.reloadData()
     }
 
     self.viewModel.outputs.emptyStateIsVisible
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] isVisible in
         self?.dataSource.emptyState(isVisible: isVisible)
         self?.tableView.reloadData()
     }
 
     self.viewModel.outputs.showMailboxChooserActionSheet
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in self?.showMailboxChooserActionSheet() }
 
     self.viewModel.outputs.goToSearch
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in self?.goToSearch() }
   }
 

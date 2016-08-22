@@ -43,21 +43,21 @@ internal final class ActivitiesViewController: UITableViewController {
     super.bindViewModel()
 
     self.viewModel.outputs.activities
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] activities in
         self?.dataSource.load(activities: activities)
         self?.tableView.reloadData()
     }
 
     self.viewModel.outputs.showFacebookConnectSection
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] source, shouldShow in
         self?.dataSource.facebookConnect(source: source, visible: shouldShow)
         self?.tableView.reloadData()
     }
 
     self.viewModel.outputs.showFindFriendsSection
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] source, shouldShow in
         self?.dataSource.findFriends(source: source, visible: shouldShow)
         self?.tableView.reloadData()
@@ -67,44 +67,44 @@ internal final class ActivitiesViewController: UITableViewController {
       self.viewModel.outputs.showLoggedOutEmptyState,
       self.viewModel.outputs.showLoggedInEmptyState
       )
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] visible in
         self?.dataSource.emptyState(visible: visible)
         self?.tableView.reloadData()
     }
 
     self.viewModel.outputs.isRefreshing
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak control = self.refreshControl] in
         $0 ? control?.beginRefreshing() : control?.endRefreshing()
     }
 
     self.viewModel.outputs.goToProject
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] project, refTag in
         self?.present(project: project, refTag: refTag)
     }
 
     self.viewModel.outputs.deleteFacebookConnectSection
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in
         self?.deleteFacebookSection()
     }
 
     self.viewModel.outputs.deleteFindFriendsSection
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in
         self?.deleteFindFriendsSection()
     }
 
     self.viewModel.outputs.goToFriends
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] source in
         self?.goToFriends(source: source)
     }
 
     self.viewModel.outputs.showFacebookConnectErrorAlert
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] error in
         self?.presentViewController(
           UIAlertController.alertController(forError: error),
@@ -114,20 +114,20 @@ internal final class ActivitiesViewController: UITableViewController {
     }
 
     self.viewModel.outputs.unansweredSurveyResponse
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in
         self?.dataSource.load(surveyResponse: $0)
         self?.tableView.reloadData()
     }
 
     self.viewModel.outputs.goToSurveyResponse
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { _ in
         print("not yet implemented")
     }
 
     self.viewModel.outputs.goToUpdate
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] project, update in
         self?.goToUpdate(project: project, update: update)
     }

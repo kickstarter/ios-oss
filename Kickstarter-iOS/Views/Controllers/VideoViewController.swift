@@ -63,31 +63,31 @@ internal final class VideoViewController: UIViewController {
     self.videoContainerView.rac.hidden = self.viewModel.outputs.videoViewHidden
 
     self.viewModel.outputs.addCompletionObserver
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] time in
         self?.addCompletionObserver(atTime: time)
     }
 
     self.viewModel.outputs.configurePlayerWithURL
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] url in
         self?.configurePlayer(withURL: url)
     }
 
     self.viewModel.outputs.pauseVideo
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in
         self?.playerController.player?.pause()
     }
 
     self.viewModel.outputs.playVideo
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in
         self?.playerController.player?.play()
     }
 
     self.viewModel.outputs.projectImageHidden
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] hidden in
         UIView.animateWithDuration(0.5) {
           self?.projectImageView.alpha = hidden ? 0 : 1
@@ -95,7 +95,7 @@ internal final class VideoViewController: UIViewController {
     }
 
     self.viewModel.outputs.projectImageURL
-      .observeForUI()
+      .observeForControllerAction()
       .on(next: { [weak self] _ in
         self?.projectImageView.af_cancelImageRequest()
         self?.projectImageView.image = nil
@@ -106,7 +106,7 @@ internal final class VideoViewController: UIViewController {
     }
 
     self.viewModel.outputs.seekToBeginning
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in
         self?.playerController.player?.seekToTime(kCMTimeZero)
     }

@@ -46,21 +46,21 @@ internal final class CommentDialogViewController: UIViewController {
     self.loadingView.rac.hidden = self.viewModel.outputs.loadingViewIsHidden
 
     self.viewModel.outputs.showKeyboard
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak textView = self.bodyTextView] show in
         show ? textView?.becomeFirstResponder() : textView?.resignFirstResponder()
     }
 
     self.viewModel.outputs.notifyPresenterDialogWantsDismissal
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in self?.notifyPresenterOfDismissal() }
 
     self.viewModel.outputs.notifyPresenterCommentWasPostedSuccesfully
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in self?.commentPostedSuccessfully($0) }
 
     self.viewModel.errors.presentError
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in self?.presentError($0) }
 
     Keyboard.change.observeForUI()

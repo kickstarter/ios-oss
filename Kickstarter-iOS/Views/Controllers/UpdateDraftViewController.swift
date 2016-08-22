@@ -77,7 +77,7 @@ internal final class UpdateDraftViewController: UIViewController {
     self.view.rac.endEditing = self.viewModel.outputs.resignFirstResponder
 
     self.viewModel.outputs.attachments
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] attachments in
         guard let attachmentsStackView = self?.attachmentsStackView else { return }
         attachmentsStackView |>
@@ -86,22 +86,22 @@ internal final class UpdateDraftViewController: UIViewController {
     }
 
     self.viewModel.outputs.notifyPresenterViewControllerWantsDismissal
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in
         guard let _self = self else { return }
         _self.delegate?.updateDraftViewControllerWantsDismissal(_self)
     }
 
     self.viewModel.outputs.showAttachmentActions
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] actions in self?.showAttachmentActions(actions) }
 
     self.viewModel.outputs.showImagePicker
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] action in self?.showImagePicker(forAction: action) }
 
     self.viewModel.outputs.attachmentAdded
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] attachment in
         guard let _self = self else { return }
         let imageView = _self.imageView(forAttachment: attachment)
@@ -115,11 +115,11 @@ internal final class UpdateDraftViewController: UIViewController {
     }
 
     self.viewModel.outputs.showRemoveAttachmentConfirmation
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] attachment in self?.showRemoveAttachmentAlert(attachment) }
 
     self.viewModel.outputs.attachmentRemoved
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] attachment in
         guard let _self = self else { return }
         UIView.animateWithDuration(0.2) {
@@ -135,14 +135,14 @@ internal final class UpdateDraftViewController: UIViewController {
     }
 
     self.viewModel.outputs.goToPreview
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] draft in
         let vc = UpdatePreviewViewController.configuredWith(draft: draft)
         self?.navigationController?.pushViewController(vc, animated: true)
     }
 
     self.viewModel.outputs.showAddAttachmentFailure
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { [weak self] in
         let alert = UIAlertController
           .genericError(Strings.dashboard_post_update_compose_error_could_not_save_update())
@@ -150,7 +150,7 @@ internal final class UpdateDraftViewController: UIViewController {
     }
 
     self.viewModel.outputs.showRemoveAttachmentFailure
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { // [weak self] in
 //        let alert = UIAlertController
 //          .genericError(Strings.dashboard_post_update_compose_error_could_not_save_update())
@@ -158,7 +158,7 @@ internal final class UpdateDraftViewController: UIViewController {
     }
 
     self.viewModel.outputs.showSaveFailure
-      .observeForUI()
+      .observeForControllerAction()
       .observeNext { // [weak self] in
 //        let alert = UIAlertController
 //          .genericError(Strings.dashboard_post_update_compose_error_could_not_save_update())
