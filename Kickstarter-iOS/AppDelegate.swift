@@ -12,12 +12,13 @@ import UIKit
 @UIApplicationMain
 final class AppDelegate: UIResponder, UIApplicationDelegate {
   var window: UIWindow?
-  let viewModel: AppDelegateViewModelType = AppDelegateViewModel()
+  private let viewModel: AppDelegateViewModelType = AppDelegateViewModel()
 
   internal var rootTabBarController: RootTabBarViewController? {
     return self.window?.rootViewController as? RootTabBarViewController
   }
 
+  // swiftlint:disable function_body_length
   func application(application: UIApplication,
                    didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
 
@@ -67,6 +68,35 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         self?.rootTabBarController?.switchToDashboard(project: param)
     }
 
+    self.viewModel.outputs.registerUserNotificationSettings
+      .observeForUI()
+      .observeNext {
+        UIApplication.sharedApplication().registerUserNotificationSettings(
+          UIUserNotificationSettings(forTypes: .Alert, categories: [])
+        )
+        UIApplication.sharedApplication().registerForRemoteNotifications()
+    }
+
+    self.viewModel.outputs.unregisterForRemoteNotifications
+      .observeForUI()
+      .observeNext(UIApplication.sharedApplication().unregisterForRemoteNotifications)
+
+    self.viewModel.outputs.presentRemoteNotificationAlert
+      .observeForUI()
+      .observeNext { [weak self] in self?.presentRemoteNotificationAlert($0) }
+
+    NSNotificationCenter
+      .defaultCenter()
+      .addObserverForName(CurrentUserNotifications.sessionStarted, object: nil, queue: nil) { [weak self] _ in
+        self?.viewModel.inputs.userSessionStarted()
+    }
+
+    NSNotificationCenter
+      .defaultCenter()
+      .addObserverForName(CurrentUserNotifications.sessionEnded, object: nil, queue: nil) { [weak self] _ in
+        self?.viewModel.inputs.userSessionEnded()
+    }
+
     self.window?.tintColor = .ksr_navy_700
 
     self.viewModel.inputs
@@ -74,6 +104,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     return true
   }
+  // swiftlint:enable function_body_length
 
   func applicationWillEnterForeground(application: UIApplication) {
     self.viewModel.inputs.applicationWillEnterForeground()
@@ -92,5 +123,42 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
                                              annotation: annotation)
 
     return self.viewModel.outputs.facebookOpenURLReturnValue.value
+  }
+
+  internal func application(application: UIApplication,
+                            didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
+    self.viewModel.inputs.didRegisterForRemoteNotifications(withDeviceTokenData: deviceToken)
+  }
+
+  internal func application(application: UIApplication,
+                            didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
+
+    self.viewModel.inputs.didReceive(remoteNotification: userInfo,
+                                     applicationIsActive: application.applicationState == .Active)
+  }
+
+  internal func application(application: UIApplication,
+                            didReceiveLocalNotification notification: UILocalNotification) {
+
+    if let userInfo = notification.userInfo where userInfo["aps"] != nil {
+      self.viewModel.inputs.didReceive(remoteNotification: userInfo,
+                                       applicationIsActive: application.applicationState == .Active)
+    }
+  }
+
+  private func presentRemoteNotificationAlert(message: String) {
+    let alert = UIAlertController(title: nil, message: message, preferredStyle: .Alert)
+
+    alert.addAction(
+      UIAlertAction(title: Strings.general_alert_buttons_ok(), style: .Default) { [weak self] _ in
+        self?.viewModel.inputs.openRemoteNotificationTappedOk()
+      }
+    )
+
+    alert.addAction(
+      UIAlertAction(title: Strings.general_navigation_buttons_cancel(), style: .Cancel, handler: nil)
+    )
+
+    self.rootTabBarController?.presentViewController(alert, animated: true, completion: nil)
   }
 }

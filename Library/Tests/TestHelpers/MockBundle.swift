@@ -42,21 +42,20 @@ private let stores = [
 ]
 
 internal struct MockBundle: NSBundleType {
-  private var store: [String:String]!
+  internal let bundleIdentifier: String?
+  private let store: [String:String]
 
   internal func pathForResource(name: String?, ofType ext: String?) -> String? {
     return name
   }
 
-  internal init() {
-  }
-
-  internal init(lang: String) {
-    store = stores[lang] ?? [:]
+  internal init(bundleIdentifier: String? = "com.bundle.mock", lang: String = "Base") {
+    self.bundleIdentifier = bundleIdentifier
+    self.store = stores[lang] ?? [:]
   }
 
   internal static func create(path path: String) -> NSBundleType? {
-    return MockBundle.init(lang: path)
+    return MockBundle(lang: path)
   }
 
   internal func localizedStringForKey(key: String, value: String?, table tableName: String?) -> String {
@@ -65,9 +64,10 @@ internal struct MockBundle: NSBundleType {
   }
 
   internal var infoDictionary: [String : AnyObject]? {
-    return [
-      "CFBundleVersion": 1234567890,
-      "CFBundleShortVersionString": "1.2.3.4.5.6.7.8.9.0"
-    ]
+    var result: [String:AnyObject] = [:]
+    result["CFBundleIdentifier"] = self.bundleIdentifier
+    result["CFBundleVersion"] = 1234567890
+    result["CFBundleShortVersionString"] = "1.2.3.4.5.6.7.8.9.0"
+    return result
   }
 }

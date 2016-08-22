@@ -7,12 +7,9 @@ import XCPlayground
 @testable import Kickstarter_Framework
 
 // Set the user's backed project count stats.
-let stats = .template
-  |> User.Stats.lens.backedProjectsCount .~ 100
-  |> User.Stats.lens.createdProjectsCount .~ 2
-
 let user = .template
-  |> User.lens.stats .~ stats
+  |> User.lens.stats.backedProjectsCount .~ 100
+  |> User.lens.stats.createdProjectsCount .~ 2
 
 // Set the device language and environment.
 AppEnvironment.replaceCurrentEnvironment(
@@ -26,8 +23,8 @@ AppEnvironment.replaceCurrentEnvironment(
 )
 
 // Instantiate the Settings view controller.
-let controller = storyboard(named: "Settings")
-  .instantiateViewControllerWithIdentifier("SettingsViewController") as! SettingsViewController
+initialize()
+let controller = Storyboard.Settings.instantiate(SettingsViewController.self)
 
 // Set the device type and orientation.
 let (parent, _) = playgroundControllers(device: .phone4_7inch, orientation: .portrait, child: controller)

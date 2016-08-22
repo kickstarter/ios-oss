@@ -66,67 +66,132 @@ public enum Navigation {
 }
 
 extension Navigation: Equatable {}
-// swiftlint:disable cyclomatic_complexity
-// swiftlint:disable function_body_length
 public func == (lhs: Navigation, rhs: Navigation) -> Bool {
   switch (lhs, rhs) {
-  case let (.checkout(lhsParam, .payments(.root)), .checkout(rhsParam, .payments(.root))):
-    return lhsParam == rhsParam
-  case let (.checkout(lhsParam, (.payments(.new))), .checkout(rhsParam, (.payments(.new)))):
-    return lhsParam == rhsParam
-  case let (.checkout(lhsParam, (.payments(.useStoredCard))),
-    .checkout(rhsParam, (.payments(.useStoredCard)))):
-    return lhsParam == rhsParam
-  case (.signup, .signup),
-       (.tab(.search), (.tab(.search))),
-       (.tab(.activity), (.tab(.activity))),
-       (.tab(.login), (.tab(.login))),
-       (.tab(.me), (.tab(.me))):
+  case let (.checkout(lhsId, lhsCheckout), .checkout(rhsId, rhsCheckout)):
+    return lhsId == rhsId && lhsCheckout == rhsCheckout
+  case (.signup, .signup):
     return true
-  case let (.tab(.discovery(lhsParams, .root)), (.tab(.discovery(rhsParams, .root)))):
-    return lhsParams == rhsParams
-  case let (.tab(.discovery(lhsParams, .advanced)), (.tab(.discovery(rhsParams, .advanced)))):
-    return lhsParams == rhsParams
-  case let (.tab(.discovery(lhsParams, .category(lhsCat, lhsSubCat))),
-    .tab(.discovery(rhsParams, .category(rhsCat, rhsSubCat)))):
-    return lhsParams == rhsParams && lhsCat == rhsCat && lhsSubCat == rhsSubCat
-  case let (.tab(.dashboard(lhsProject)), .tab(.dashboard(rhsProject))):
-    return lhsProject == rhsProject
-  case let (.project(lhsParam, .root, lhsRefTag), .project(rhsParam, .root, rhsRefTag)):
-    return lhsParam == rhsParam && lhsRefTag == rhsRefTag
-  case let (.project(lparam, .checkout(lid, .thanks), lref), .project(rparam, .checkout(rid, .thanks), rref)):
-    return lparam == rparam && lid == rid && lref == rref
-  case let (.project(lhsParam, .comments, lhsRefTag), .project(rhsParam, .comments, rhsRefTag)):
-    return lhsParam == rhsParam && lhsRefTag == rhsRefTag
-  case let (.project(lhsParam, .creatorBio, lhsRefTag), .project(rhsParam, .creatorBio, rhsRefTag)):
-    return lhsParam == rhsParam && lhsRefTag == rhsRefTag
-  case let (.project(lhsParam, .friends, lhsRefTag), .project(rhsParam, .friends, rhsRefTag)):
-    return lhsParam == rhsParam && lhsRefTag == rhsRefTag
-  case let (.project(lhsParam, .messageCreator, lhsRefTag), .project(rhsParam, .messageCreator, rhsRefTag)):
-    return lhsParam == rhsParam && lhsRefTag == rhsRefTag
-  case let (.project(lhsParam, .pledge(.destroy), lhsRefTag),
-    .project(rhsParam, .pledge(.destroy), rhsRefTag)):
-    return lhsParam == rhsParam && lhsRefTag == rhsRefTag
-  case let (.project(lhsParam, .pledge(.edit), lhsRefTag), .project(rhsParam, .pledge(.edit), rhsRefTag)):
-    return lhsParam == rhsParam && lhsRefTag == rhsRefTag
-  case let (.project(lhsParam, .pledge(.new), lhsRefTag), .project(rhsParam, .pledge(.new), rhsRefTag)):
-    return lhsParam == rhsParam && lhsRefTag == rhsRefTag
-  case let (.project(lhsParam, .pledge(.root), lhsRefTag), .project(rhsParam, .pledge(.root), rhsRefTag)):
-    return lhsParam == rhsParam && lhsRefTag == rhsRefTag
-  case let (.project(lhsParam, .updates, lhsRefTag), .project(rhsParam, .updates, rhsRefTag)):
-    return lhsParam == rhsParam && lhsRefTag == rhsRefTag
-  case let (.project(lparam, .update(lid, .root), lref), .project(rparam, .update(rid, .root), rref)):
-    return lparam == rparam && lid == rid && lref == rref
-  case let (.project(lparam, .update(lid, .comments), lref), .project(rparam, .update(rid, .comments), rref)):
-    return lparam == rparam && lid == rid && lref == rref
-  case let (.project(lparam, .survey(lid), lref), .project(rparam, .survey(rid), rref)):
-    return lparam == rparam && lid == rid && lref == rref
+  case let (.tab(lhs), .tab(rhs)):
+    return lhs == rhs
+  case let (.project(lhsParam, lhsProject, lhsRefTag), .project(rhsParam, rhsProject, rhsRefTag)):
+    return lhsParam == rhsParam && lhsProject == rhsProject && lhsRefTag == rhsRefTag
   default:
     return false
   }
 }
-// swiftlint:enable function_body_length
+
+extension Navigation.Checkout: Equatable {}
+public func == (lhs: Navigation.Checkout, rhs: Navigation.Checkout) -> Bool {
+  switch (lhs, rhs) {
+  case let (.payments(lhsPayment), .payments(rhsPayment)):
+    return lhsPayment == rhsPayment
+  }
+}
+
+extension Navigation.Checkout.Payment: Equatable {}
+public func == (lhs: Navigation.Checkout.Payment, rhs: Navigation.Checkout.Payment) -> Bool {
+  switch (lhs, rhs) {
+  case (.new, .new), (.root, .root), (.useStoredCard, .useStoredCard):
+    return true
+  default:
+    return false
+  }
+}
+
+// swiftlint:disable cyclomatic_complexity
+extension Navigation.Project: Equatable {}
+public func == (lhs: Navigation.Project, rhs: Navigation.Project) -> Bool {
+  switch (lhs, rhs) {
+  case let (.checkout(lhsId, lhsCheckout), .checkout(rhsId, rhsCheckout)):
+    return lhsId == rhsId && lhsCheckout == rhsCheckout
+  case (.root, .root):
+    return true
+  case (.comments, .comments):
+    return true
+  case (.creatorBio, .creatorBio):
+    return true
+  case (.friends, .friends):
+    return true
+  case (.messageCreator, .messageCreator):
+    return true
+  case let (.pledge(lhsPledge), .pledge(rhsPledge)):
+    return lhsPledge == rhsPledge
+  case (.updates, .updates):
+    return true
+  case let (.update(lhsId, lhsUpdate), .update(rhsId, rhsUpdate)):
+    return lhsId == rhsId && lhsUpdate == rhsUpdate
+  case let (.survey(lhsId), .survey(rhsId)):
+    return lhsId == rhsId
+  default:
+    return false
+  }
+}
 // swiftlint:enable cyclomatic_complexity
+
+extension Navigation.Project.Checkout: Equatable {}
+public func == (lhs: Navigation.Project.Checkout, rhs: Navigation.Project.Checkout) -> Bool {
+  switch (lhs, rhs) {
+  case (.thanks, .thanks):
+    return true
+  }
+}
+
+extension Navigation.Project.Pledge: Equatable {}
+public func == (lhs: Navigation.Project.Pledge, rhs: Navigation.Project.Pledge) -> Bool {
+  switch (lhs, rhs) {
+  case (.destroy, .destroy), (.edit, .edit), (.new, .new), (.root, .root):
+    return true
+  default:
+    return false
+  }
+}
+
+extension Navigation.Project.Update {}
+public func == (lhs: Navigation.Project.Update, rhs: Navigation.Project.Update) -> Bool {
+  switch (lhs, rhs) {
+  case (.root, .root):
+    return true
+  case (.comments, .comments):
+    return true
+  default:
+    return false
+  }
+}
+
+extension Navigation.Discovery: Equatable {}
+public func == (lhs: Navigation.Discovery, rhs: Navigation.Discovery) -> Bool {
+  switch (lhs, rhs) {
+  case (.root, .root):
+    return true
+  case (.advanced, .advanced):
+    return true
+  case let (.category(lhsCatParam, lhsSubCatParam), .category(rhsCatParam, rhsSubCatParam)):
+    return lhsCatParam == rhsCatParam && lhsSubCatParam == rhsSubCatParam
+  default:
+    return false
+  }
+}
+
+extension Navigation.Tab: Equatable {}
+public func == (lhs: Navigation.Tab, rhs: Navigation.Tab) -> Bool {
+  switch (lhs, rhs) {
+  case let (.discovery(lhsParams, lhsDiscovery), .discovery(rhsParams, rhsDiscovery)):
+    return lhsParams == rhsParams && lhsDiscovery == rhsDiscovery
+  case (.search, .search):
+    return true
+  case (.activity, .activity):
+    return true
+  case let (.dashboard(lhsParam), .dashboard(rhsParam)):
+    return lhsParam == rhsParam
+  case (.login, .login):
+    return true
+  case (.me, .me):
+    return true
+  default:
+    return false
+  }
+}
 
 extension Navigation {
   public static func match(url: NSURL) -> Navigation? {

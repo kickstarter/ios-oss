@@ -80,6 +80,17 @@ public final class Koala {
     self.track(event: "App Close")
   }
 
+  public func trackNotificationOpened() {
+    let props: [String: AnyObject] = [
+      "notification_type": "push",
+    ]
+
+    self.track(event: "Notification Opened",
+               properties: props.withAllValuesFrom([Koala.DeprecatedKey: true]))
+
+    self.track(event: "Opened Notification", properties: props)
+  }
+
   public func trackAttemptingOnePasswordLogin() {
     self.track(event: "Attempting 1password Login")
   }

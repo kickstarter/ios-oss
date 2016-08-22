@@ -12,7 +12,10 @@ internal final class SettingsViewController: UIViewController {
   private let helpViewModel: HelpViewModelType = HelpViewModel()
 
   @IBOutlet private weak var backingsButton: UIButton!
+  @IBOutlet private weak var betaDebugPushNotificationsButton: UIButton!
   @IBOutlet private weak var betaFeedbackButton: UIButton!
+  @IBOutlet private weak var betaTitleLabel: UILabel!
+  @IBOutlet private weak var betaToolsStackView: UIStackView!
   @IBOutlet private weak var commentsButton: UIButton!
   @IBOutlet private weak var contactButton: UIButton!
   @IBOutlet private weak var contactLabel: UILabel!
@@ -85,6 +88,10 @@ internal final class SettingsViewController: UIViewController {
                                       action: #selector(betaFeedbackButtonTapped),
                                       forControlEvents: .TouchUpInside)
 
+    self.betaDebugPushNotificationsButton.addTarget(self,
+                                                    action: #selector(betaDebugPushNotificationsButtonTapped),
+                                                    forControlEvents: .TouchUpInside)
+
     self.contactButton.addTarget(self, action: #selector(contactTapped), forControlEvents: .TouchUpInside)
 
     self.cookiePolicyButton.addTarget(self,
@@ -128,9 +135,18 @@ internal final class SettingsViewController: UIViewController {
       |> baseControllerStyle()
       |> UIViewController.lens.title %~ { _ in Strings.profile_settings_navbar_title() }
 
+    self.betaDebugPushNotificationsButton
+      |> UIButton.lens.titleColor(forState: .Normal) .~ .ksr_text_navy_700
+      |> UIButton.lens.titleLabel.font .~ .ksr_body()
+      |> UIButton.lens.contentHorizontalAlignment .~ .Left
+
     self.betaFeedbackButton
       |> greenButtonStyle
       |> UIButton.lens.title(forState: .Normal) .~ "Submit feedback for beta"
+
+    self.betaTitleLabel
+      |> settingsTitleLabelStyle
+      |> UILabel.lens.text .~ "Beta tools"
 
     self.contactButton
       |> settingsSectionButtonStyle
@@ -369,7 +385,7 @@ internal final class SettingsViewController: UIViewController {
     }
 
     self.backingsButton.rac.selected = self.viewModel.outputs.backingsSelected
-    self.betaFeedbackButton.rac.hidden = self.viewModel.outputs.betaFeedbackButtonHidden
+    self.betaToolsStackView.rac.hidden = self.viewModel.outputs.betaToolsHidden.mapConst(false)
     self.commentsButton.rac.selected = self.viewModel.outputs.commentsSelected
     self.creatorStackView.rac.hidden = self.viewModel.outputs.creatorNotificationsHidden
     self.followerButton.rac.selected = self.viewModel.outputs.followerSelected
@@ -581,6 +597,13 @@ internal final class SettingsViewController: UIViewController {
 
   @objc private func betaFeedbackButtonTapped() {
     self.viewModel.inputs.betaFeedbackButtonTapped()
+  }
+
+  @objc private func betaDebugPushNotificationsButtonTapped() {
+    self.navigationController?.pushViewController(
+      Storyboard.DebugPushNotifications.instantiate(DebugPushNotificationsViewController.self),
+      animated: true
+    )
   }
 }
 

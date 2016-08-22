@@ -1,6 +1,13 @@
 import Foundation
 
+public enum KickstarterBundleIdentifier: String {
+  case alpha = "com.kickstarter.kickstarter.alpha"
+  case beta = "com.kickstarter.kickstarter.beta"
+  case release = "com.kickstarter.kickstarter"
+}
+
 public protocol NSBundleType {
+  var bundleIdentifier: String? { get }
   static func create(path path: String) -> NSBundleType?
   func pathForResource(name: String?, ofType ext: String?) -> String?
   func localizedStringForKey(key: String, value: String?, table tableName: String?) -> String
@@ -19,6 +26,18 @@ extension NSBundleType {
   public var version: String {
     return String(self.infoDictionary?["CFBundleVersion"] as? Int) ?? "0"
   }
+
+  public var isAlpha: Bool {
+    return self.identifier == KickstarterBundleIdentifier.alpha.rawValue
+  }
+
+  public var isBeta: Bool {
+    return self.identifier == KickstarterBundleIdentifier.beta.rawValue
+  }
+
+  public var isRelease: Bool {
+    return self.identifier == KickstarterBundleIdentifier.release.rawValue
+  }
 }
 
 extension NSBundle: NSBundleType {
@@ -32,6 +51,8 @@ public struct LanguageDoubler: NSBundleType {
 
   public init() {
   }
+
+  public let bundleIdentifier: String? = "com.language.doubler"
 
   public static func create(path path: String) -> NSBundleType? {
     return DoublerBundle(path: path)

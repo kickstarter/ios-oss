@@ -84,7 +84,7 @@ public struct Environment {
   public let userDefaults: KeyValueStoreType
 
   public init(
-    apiService: ServiceType = Service(buildVersion: NSBundle.mainBundle().version),
+    apiService: ServiceType = Service(),
     apiDelayInterval: NSTimeInterval = 0.0,
     assetImageGeneratorType: AssetImageGeneratorType.Type = AVAssetImageGenerator.self,
     cache: CacheProtocol = NSCache(),

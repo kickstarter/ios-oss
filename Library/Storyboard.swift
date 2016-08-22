@@ -7,6 +7,7 @@ public enum Storyboard: String {
   case Comments
   case Dashboard
   case DashboardProjectsDrawer
+  case DebugPushNotifications
   case Discovery
   case Friends
   case Help

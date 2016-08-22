@@ -297,8 +297,6 @@ final class FormatTests: XCTestCase {
   }
 
   func testRelative() {
-    AppEnvironment.replaceCurrentEnvironment(mainBundle: MockBundle())
-
     let justNow = NSDate().timeIntervalSince1970 - 30
     let rightNow = NSDate().timeIntervalSince1970 + 31
     let minutesAgo = NSDate().timeIntervalSince1970 - 60 * 30
@@ -312,7 +310,7 @@ final class FormatTests: XCTestCase {
     let awhileAgo = NSDate().timeIntervalSince1970 - 60 * 60 * 24 * 31
     let inAwhile = NSDate().timeIntervalSince1970 - 60 * 60 * 24 * 32
 
-    withEnvironment(locale: NSLocale(localeIdentifier: "en"), language: .en) {
+    withEnvironment(locale: NSLocale(localeIdentifier: "en"), language: .en, mainBundle: MockBundle()) {
       XCTAssertEqual("just now", Format.relative(secondsInUTC: justNow))
       XCTAssertEqual("right now", Format.relative(secondsInUTC: rightNow))
       XCTAssertEqual("30 minutes ago", Format.relative(secondsInUTC: minutesAgo))
@@ -344,7 +342,7 @@ final class FormatTests: XCTestCase {
                      Format.relative(secondsInUTC: inAwhile, abbreviate: true))
     }
 
-    withEnvironment(locale: NSLocale(localeIdentifier: "de"), language: .de) {
+    withEnvironment(locale: NSLocale(localeIdentifier: "de"), language: .de, mainBundle: MockBundle()) {
       XCTAssertEqual("vor 1 Stunde", Format.relative(secondsInUTC: hoursAgo))
       XCTAssertEqual("vor 1 Std", Format.relative(secondsInUTC: hoursAgo, abbreviate: true))
     }

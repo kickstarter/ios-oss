@@ -11,7 +11,7 @@ internal final class SettingsViewModelTests: TestCase {
   let vm = SettingsViewModel()
 
   let backingsSelected = TestObserver<Bool, NoError>()
-  let betaFeedbackButtonHidden = TestObserver<Bool, NoError>()
+  let betaToolsHidden = TestObserver<Bool, NoError>()
   let commentsSelected = TestObserver<Bool, NoError>()
   let creatorNotificationsHidden = TestObserver<Bool, NoError>()
   let followerSelected = TestObserver<Bool, NoError>()
@@ -43,7 +43,7 @@ internal final class SettingsViewModelTests: TestCase {
   internal override func setUp() {
     super.setUp()
     self.vm.outputs.backingsSelected.observe(self.backingsSelected.observer)
-    self.vm.outputs.betaFeedbackButtonHidden.observe(self.betaFeedbackButtonHidden.observer)
+    self.vm.outputs.betaToolsHidden.observe(self.betaToolsHidden.observer)
     self.vm.outputs.commentsSelected.observe(self.commentsSelected.observer)
     self.vm.outputs.creatorNotificationsHidden.observe(self.creatorNotificationsHidden.observer)
     self.vm.outputs.followerSelected.observe(self.followerSelected.observer)
@@ -73,11 +73,44 @@ internal final class SettingsViewModelTests: TestCase {
     self.vm.outputs.versionText.observe(self.versionText.observer)
   }
 
-  func testBetaFeedbackButtonHidden() {
-    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
-    self.vm.inputs.viewDidLoad()
+  func testbetaToolsHidden_Alpha() {
+    withEnvironment(mainBundle: MockBundle(bundleIdentifier: KickstarterBundleIdentifier.alpha.rawValue)) {
+      AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
 
-    self.betaFeedbackButtonHidden.assertValues([false])
+      self.vm.inputs.viewDidLoad()
+
+      self.betaToolsHidden.assertValues([false])
+    }
+  }
+
+  func testbetaToolsHidden_Beta() {
+    withEnvironment(mainBundle: MockBundle(bundleIdentifier: KickstarterBundleIdentifier.beta.rawValue)) {
+      AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
+
+      self.vm.inputs.viewDidLoad()
+
+      self.betaToolsHidden.assertValues([false])
+    }
+  }
+
+  func testbetaToolsHidden_Release() {
+    withEnvironment(mainBundle: MockBundle(bundleIdentifier: KickstarterBundleIdentifier.release.rawValue)) {
+      AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
+
+      self.vm.inputs.viewDidLoad()
+
+      self.betaToolsHidden.assertValues([true])
+    }
+  }
+
+  func testbetaToolsHidden_Unknown() {
+    withEnvironment(mainBundle: MockBundle(bundleIdentifier: "com.unknown")) {
+      AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
+
+      self.vm.inputs.viewDidLoad()
+
+      self.betaToolsHidden.assertValues([true])
+    }
   }
 
   func testCreatorNotificationsHidden() {

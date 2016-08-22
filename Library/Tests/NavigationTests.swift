@@ -106,5 +106,11 @@ public final class NavigationTests: XCTestCase {
 
     KSRAssertMatch(.tab(.login),
                    "/authorize")
+
+    KSRAssertMatch(.project(.slug("project"), .messageCreator, refTag: nil),
+                   "/projects/creator/project/messages/new")
+
+    KSRAssertMatch(.tab(.dashboard(project: .slug("project"))),
+                   "/projects/creator/project/dashboard")
   }
 }

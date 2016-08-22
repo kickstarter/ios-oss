@@ -359,7 +359,6 @@
 		A734A2671D21A1790080BBD5 /* WKNavigationActionProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A734A2661D21A1790080BBD5 /* WKNavigationActionProtocol.swift */; };
 		A734A2681D21A1790080BBD5 /* WKNavigationActionProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A734A2661D21A1790080BBD5 /* WKNavigationActionProtocol.swift */; };
 		A73923BC1D272242004524C3 /* Activity.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A73923AB1D272242004524C3 /* Activity.storyboard */; };
-		A73923BD1D272242004524C3 /* Thanks.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A73923AC1D272242004524C3 /* Thanks.storyboard */; };
 		A73923BE1D272242004524C3 /* Comments.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A73923AD1D272242004524C3 /* Comments.storyboard */; };
 		A73923BF1D272242004524C3 /* Dashboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A73923AE1D272242004524C3 /* Dashboard.storyboard */; };
 		A73923C01D272242004524C3 /* Discovery.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A73923AF1D272242004524C3 /* Discovery.storyboard */; };
@@ -465,6 +464,8 @@
 		A75619E91D3042EB0028DEA1 /* ProjectMagazineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75619E81D3042EB0028DEA1 /* ProjectMagazineViewController.swift */; };
 		A7561A3B1D3144210028DEA1 /* ProjectDescriptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7561A3A1D3144210028DEA1 /* ProjectDescriptionViewController.swift */; };
 		A7561A3D1D3146290028DEA1 /* ProjectNavigatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7561A3C1D3146290028DEA1 /* ProjectNavigatorViewController.swift */; };
+		A75798911D6A201F0063CEEC /* DebugPushNotifictionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75798901D6A201F0063CEEC /* DebugPushNotifictionsViewController.swift */; };
+		A75798C31D6A24CD0063CEEC /* DebugPushNotifications.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A75798C21D6A24CD0063CEEC /* DebugPushNotifications.storyboard */; };
 		A757E9EF1D19C37F00A5C978 /* ActivitySurveyResponseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A757E9BD1D19C34600A5C978 /* ActivitySurveyResponseCell.swift */; };
 		A757EA551D19F6C100A5C978 /* ActivityStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = A757EA541D19F6C100A5C978 /* ActivityStyles.swift */; };
 		A757EA561D19F6C100A5C978 /* ActivityStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = A757EA541D19F6C100A5C978 /* ActivityStyles.swift */; };
@@ -648,6 +649,7 @@
 		A796A8901D48DE79009B6EF6 /* RewardsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A796A88E1D48DE79009B6EF6 /* RewardsViewModel.swift */; };
 		A796FF581D425A4C00CD58AA /* ProjectStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = A796FF261D425A4500CD58AA /* ProjectStyles.swift */; };
 		A796FF591D425A4D00CD58AA /* ProjectStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = A796FF261D425A4500CD58AA /* ProjectStyles.swift */; };
+		A7986C9D1D6B85840027030D /* Thanks.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A73923AC1D272242004524C3 /* Thanks.storyboard */; };
 		A79BF81F1D11F6AF004C0445 /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A79BF81E1D11F6AF004C0445 /* Strings.swift */; };
 		A79BF8201D11F6AF004C0445 /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A79BF81E1D11F6AF004C0445 /* Strings.swift */; };
 		A7A051E61CD12D9A005AF5E2 /* CommentsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7A051E41CD12D9A005AF5E2 /* CommentsDataSource.swift */; };
@@ -1688,6 +1690,8 @@
 		A75619E81D3042EB0028DEA1 /* ProjectMagazineViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectMagazineViewController.swift; sourceTree = "<group>"; };
 		A7561A3A1D3144210028DEA1 /* ProjectDescriptionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectDescriptionViewController.swift; sourceTree = "<group>"; };
 		A7561A3C1D3146290028DEA1 /* ProjectNavigatorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectNavigatorViewController.swift; sourceTree = "<group>"; };
+		A75798901D6A201F0063CEEC /* DebugPushNotifictionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DebugPushNotifictionsViewController.swift; sourceTree = "<group>"; };
+		A75798C21D6A24CD0063CEEC /* DebugPushNotifications.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = DebugPushNotifications.storyboard; sourceTree = "<group>"; };
 		A757E9BD1D19C34600A5C978 /* ActivitySurveyResponseCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivitySurveyResponseCell.swift; sourceTree = "<group>"; };
 		A757EA541D19F6C100A5C978 /* ActivityStyles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityStyles.swift; sourceTree = "<group>"; };
 		A757EAEF1D1ABE7400A5C978 /* ActivitySurveyResponseCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivitySurveyResponseCellViewModel.swift; sourceTree = "<group>"; };
@@ -2177,6 +2181,7 @@
 				A73923AD1D272242004524C3 /* Comments.storyboard */,
 				A73923AE1D272242004524C3 /* Dashboard.storyboard */,
 				01A120D01D2D646300B42F73 /* DashboardProjectsDrawer.storyboard */,
+				A75798C21D6A24CD0063CEEC /* DebugPushNotifications.storyboard */,
 				A73923AF1D272242004524C3 /* Discovery.storyboard */,
 				A73923B01D272242004524C3 /* Friends.storyboard */,
 				01940B2D1D46A9AD0074FCE3 /* Help.storyboard */,
@@ -2232,8 +2237,8 @@
 				A75CBDE61C8A26F800758C55 /* AppDelegateViewModel.swift */,
 				01940B2A1D46814E0074FCE3 /* HelpWebViewModel.swift */,
 				A775B5451CA871D700BBB587 /* RootViewModel.swift */,
-				A731BF8E1D1EE4CD00A734AC /* UpdateViewModel.swift */,
 				8072F44E1D46BAA400999EF1 /* UpdatePreviewViewModel.swift */,
+				A731BF8E1D1EE4CD00A734AC /* UpdateViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -2241,14 +2246,14 @@
 		A751A51B1C85EAD8009C5DEA /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				015A06F21D21914E007AE210 /* DashboardRewardRowStackView.swift */,
+				018422841D2C47A400CA7566 /* DashboardTitleView.swift */,
+				595CDAB71D3537180051C816 /* FundingGraphView.swift */,
+				5993DEBD1CE296F000925494 /* ProfileHeaderView.swift */,
+				A78012641D2EEA620027396E /* ReferralChartView.swift */,
 				A751A51C1C85EAD8009C5DEA /* Cells */,
 				A751A51D1C85EAD8009C5DEA /* Controllers */,
 				A73923AA1D272242004524C3 /* Storyboards */,
-				015A06F21D21914E007AE210 /* DashboardRewardRowStackView.swift */,
-				018422841D2C47A400CA7566 /* DashboardTitleView.swift */,
-				5993DEBD1CE296F000925494 /* ProfileHeaderView.swift */,
-				A78012641D2EEA620027396E /* ReferralChartView.swift */,
-				595CDAB71D3537180051C816 /* FundingGraphView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2321,6 +2326,7 @@
 				A7180BA81CCED598001711CA /* CommentsViewController.swift */,
 				01A120D21D2D6E6200B42F73 /* DashboardProjectsDrawerViewController.swift */,
 				A745D0461CA8985B00C12802 /* DashboardViewController.swift */,
+				A75798901D6A201F0063CEEC /* DebugPushNotifictionsViewController.swift */,
 				A72C3AAB1D00F99B0075227E /* DiscoveryFiltersViewController.swift */,
 				A72C3AA81D00F96C0075227E /* DiscoveryPageViewController.swift */,
 				A751A51E1C85EC0B009C5DEA /* DiscoveryViewController.swift */,
@@ -3897,13 +3903,13 @@
 				A757EA6C1D19F93400A5C978 /* 1Password.xcassets in Resources */,
 				A7D120D71D15A7B400F364FD /* Assets.xcassets in Resources */,
 				80EAEF051D243C4E008C2353 /* Backing.storyboard in Resources */,
+				A75798C31D6A24CD0063CEEC /* DebugPushNotifications.storyboard in Resources */,
 				A73923C31D272242004524C3 /* Login.storyboard in Resources */,
 				A73923C91D272242004524C3 /* Search.storyboard in Resources */,
 				A78011981D2DB1EF0027396E /* ProjectMagazine.storyboard in Resources */,
 				A73923C21D272242004524C3 /* LaunchScreen.storyboard in Resources */,
 				A73923CC1D272242004524C3 /* UpdateDraft.storyboard in Resources */,
-				A73923BD1D272242004524C3 /* Thanks.storyboard in Resources */,
-				A73923BD1D272242004524C3 /* Thanks.storyboard in Resources */,
+				A7986C9D1D6B85840027030D /* Thanks.storyboard in Resources */,
 				A73923CB1D272242004524C3 /* Update.storyboard in Resources */,
 				01A120D11D2D646300B42F73 /* DashboardProjectsDrawer.storyboard in Resources */,
 				59673C8B1D50EC920035AFD9 /* Video.storyboard in Resources */,
@@ -4581,6 +4587,7 @@
 				A7C795B31C873AC90081977F /* ActivitiesViewController.swift in Sources */,
 				59322F071CD27B1000C90CC6 /* ProfileDataSource.swift in Sources */,
 				A731BF8D1D1EE44E00A734AC /* UpdateViewController.swift in Sources */,
+				A75798911D6A201F0063CEEC /* DebugPushNotifictionsViewController.swift in Sources */,
 				A7CC14401D00E74F00035C52 /* FindFriendsHeaderCell.swift in Sources */,
 				A7A051E61CD12D9A005AF5E2 /* CommentsDataSource.swift in Sources */,
 				A71003DA1CDCFA2500B4F4D7 /* MessageThreadsViewController.swift in Sources */,

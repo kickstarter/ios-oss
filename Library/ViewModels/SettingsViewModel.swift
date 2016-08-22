@@ -35,7 +35,7 @@ public protocol SettingsViewModelInputs {
 
 public protocol SettingsViewModelOutputs {
   var backingsSelected: Signal<Bool, NoError> { get }
-  var betaFeedbackButtonHidden: Signal<Bool, NoError> { get }
+  var betaToolsHidden: Signal<Bool, NoError> { get }
   var commentsSelected: Signal<Bool, NoError> { get }
   var creatorNotificationsHidden: Signal<Bool, NoError> { get }
   var followerSelected: Signal<Bool, NoError> { get }
@@ -205,7 +205,8 @@ public final class SettingsViewModel: SettingsViewModelType, SettingsViewModelIn
         )
     }
 
-    self.betaFeedbackButtonHidden = self.viewDidLoadProperty.signal.mapConst(false)
+    self.betaToolsHidden = self.viewDidLoadProperty.signal
+      .map { !AppEnvironment.current.mainBundle.isAlpha && !AppEnvironment.current.mainBundle.isBeta }
 
     // a11y
     self.manageProjectNotificationsButtonAccessibilityHint = self.updateCurrentUser
@@ -361,7 +362,7 @@ public final class SettingsViewModel: SettingsViewModelType, SettingsViewModelIn
   }
 
   public let backingsSelected: Signal<Bool, NoError>
-  public let betaFeedbackButtonHidden: Signal<Bool, NoError>
+  public let betaToolsHidden: Signal<Bool, NoError>
   public let commentsSelected: Signal<Bool, NoError>
   public let creatorNotificationsHidden: Signal<Bool, NoError>
   public let followerSelected: Signal<Bool, NoError>

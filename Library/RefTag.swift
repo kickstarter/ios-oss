@@ -12,6 +12,7 @@ public enum RefTag {
   case discovery
   case discoveryPotd
   case messageThread
+  case push
   case recommended
   case recommendedWithSort(DiscoveryParams.Sort)
   case search
@@ -45,6 +46,7 @@ public enum RefTag {
     case "discovery":                 self = .discovery
     case "discovery_potd":            self = .discoveryPotd
     case "message_thread":            self = .messageThread
+    case "push":                      self = .push
     case "recommended":               self = .recommended
     case "recommended_ending_soon":   self = .recommendedWithSort(.EndingSoon)
     case "recommended":               self = .recommendedWithSort(.Magic)
@@ -83,6 +85,8 @@ public enum RefTag {
       return "discovery_potd"
     case .messageThread:
       return "message_thread"
+    case .push:
+      return "push"
     case .recommended:
       return "recommended"
     case let .recommendedWithSort(sort):
