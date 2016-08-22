@@ -19,6 +19,7 @@ public enum Storyboard: String {
   case ProjectMagazine
   case Search
   case Settings
+  case Thanks
   case Update
   case UpdateDraft
   case Video

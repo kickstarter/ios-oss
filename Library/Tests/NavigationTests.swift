@@ -24,8 +24,20 @@ public final class NavigationTests: XCTestCase {
   }
 
   func testRecognizesURLs() {
+    KSRAssertMatch(.checkout(1, .payments(.new)),
+                   "/checkouts/1/payments/new")
+
+    KSRAssertMatch(.checkout(1, .payments(.root)),
+                   "/checkouts/1/payments")
+
+    KSRAssertMatch(.checkout(1, .payments(.useStoredCard)),
+                   "/checkouts/1/payments/use_stored_card")
+
     KSRAssertMatch(.project(.slug("project"), .root, refTag: nil),
                    "/projects/creator/project")
+
+    KSRAssertMatch(.project(.slug("project"), .checkout(1, .thanks), refTag: nil),
+                   "/projects/creator/project/checkouts/1/thanks")
 
     KSRAssertMatch(.project(.slug("project"), .root, refTag: .discovery),
                    "/projects/creator/project?ref_tag=discovery")
@@ -42,6 +54,18 @@ public final class NavigationTests: XCTestCase {
     KSRAssertMatch(.project(.slug("project"), .friends, refTag: nil),
                    "/projects/creator/project/friends")
 
+    KSRAssertMatch(.project(.slug("project"), .pledge(.root), refTag: nil),
+                   "/projects/creator/project/pledge")
+
+    KSRAssertMatch(.project(.slug("project"), .pledge(.destroy), refTag: nil),
+                   "/projects/creator/project/pledge/destroy")
+
+    KSRAssertMatch(.project(.slug("project"), .pledge(.edit), refTag: nil),
+                   "/projects/creator/project/pledge/edit")
+
+    KSRAssertMatch(.project(.slug("project"), .pledge(.new), refTag: nil),
+                   "/projects/creator/project/pledge/new")
+
     KSRAssertMatch(.project(.slug("project"), .updates, refTag: nil),
                    "/projects/creator/project/posts")
 
@@ -53,6 +77,9 @@ public final class NavigationTests: XCTestCase {
 
     KSRAssertMatch(.project(.slug("project"), .survey(3), refTag: nil),
                    "/projects/creator/project/surveys/3")
+
+    KSRAssertMatch(.signup,
+                   "/signup")
 
     KSRAssertMatch(.tab(.discovery(DiscoveryParams.defaults, .root)),
                    "/discover")

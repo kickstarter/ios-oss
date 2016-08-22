@@ -47,6 +47,9 @@ public struct AppEnvironment {
 
   // Invoke when you want to end the user's session.
   public static func logout() {
+    let storage = AppEnvironment.current.cookieStorage
+    storage.cookies?.forEach(storage.deleteCookie)
+
     replaceCurrentEnvironment(
       apiService: AppEnvironment.current.apiService.logout(),
       cache: AppEnvironment.current.cache.dynamicType.init(),

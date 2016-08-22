@@ -1,11 +1,24 @@
+// swiftlint:disable file_length
 import Argo
 import Curry
 import Foundation
 import KsApi
 
 public enum Navigation {
+  case checkout(Int, Navigation.Checkout)
+  case signup
   case tab(Tab)
   case project(Param, Navigation.Project, refTag: RefTag?)
+
+  public enum Checkout {
+    case payments(Navigation.Checkout.Payment)
+
+    public enum Payment {
+      case new
+      case root
+      case useStoredCard
+    }
+  }
 
   public enum Tab {
     case discovery(DiscoveryParams, Navigation.Discovery)
@@ -23,14 +36,27 @@ public enum Navigation {
   }
 
   public enum Project {
+    case checkout(Int, Navigation.Project.Checkout)
     case root
     case comments
     case creatorBio
     case friends
     case messageCreator
+    case pledge(Navigation.Project.Pledge)
     case updates
     case update(Int, Navigation.Project.Update)
     case survey(Int)
+
+    public enum Checkout {
+      case thanks
+    }
+
+    public enum Pledge {
+      case destroy
+      case edit
+      case new
+      case root
+    }
 
     public enum Update {
       case root
@@ -41,9 +67,18 @@ public enum Navigation {
 
 extension Navigation: Equatable {}
 // swiftlint:disable cyclomatic_complexity
+// swiftlint:disable function_body_length
 public func == (lhs: Navigation, rhs: Navigation) -> Bool {
   switch (lhs, rhs) {
-  case (.tab(.search), (.tab(.search))),
+  case let (.checkout(lhsParam, .payments(.root)), .checkout(rhsParam, .payments(.root))):
+    return lhsParam == rhsParam
+  case let (.checkout(lhsParam, (.payments(.new))), .checkout(rhsParam, (.payments(.new)))):
+    return lhsParam == rhsParam
+  case let (.checkout(lhsParam, (.payments(.useStoredCard))),
+    .checkout(rhsParam, (.payments(.useStoredCard)))):
+    return lhsParam == rhsParam
+  case (.signup, .signup),
+       (.tab(.search), (.tab(.search))),
        (.tab(.activity), (.tab(.activity))),
        (.tab(.login), (.tab(.login))),
        (.tab(.me), (.tab(.me))):
@@ -54,12 +89,13 @@ public func == (lhs: Navigation, rhs: Navigation) -> Bool {
     return lhsParams == rhsParams
   case let (.tab(.discovery(lhsParams, .category(lhsCat, lhsSubCat))),
     .tab(.discovery(rhsParams, .category(rhsCat, rhsSubCat)))):
-
     return lhsParams == rhsParams && lhsCat == rhsCat && lhsSubCat == rhsSubCat
   case let (.tab(.dashboard(lhsProject)), .tab(.dashboard(rhsProject))):
     return lhsProject == rhsProject
   case let (.project(lhsParam, .root, lhsRefTag), .project(rhsParam, .root, rhsRefTag)):
     return lhsParam == rhsParam && lhsRefTag == rhsRefTag
+  case let (.project(lparam, .checkout(lid, .thanks), lref), .project(rparam, .checkout(rid, .thanks), rref)):
+    return lparam == rparam && lid == rid && lref == rref
   case let (.project(lhsParam, .comments, lhsRefTag), .project(rhsParam, .comments, rhsRefTag)):
     return lhsParam == rhsParam && lhsRefTag == rhsRefTag
   case let (.project(lhsParam, .creatorBio, lhsRefTag), .project(rhsParam, .creatorBio, rhsRefTag)):
@@ -67,6 +103,15 @@ public func == (lhs: Navigation, rhs: Navigation) -> Bool {
   case let (.project(lhsParam, .friends, lhsRefTag), .project(rhsParam, .friends, rhsRefTag)):
     return lhsParam == rhsParam && lhsRefTag == rhsRefTag
   case let (.project(lhsParam, .messageCreator, lhsRefTag), .project(rhsParam, .messageCreator, rhsRefTag)):
+    return lhsParam == rhsParam && lhsRefTag == rhsRefTag
+  case let (.project(lhsParam, .pledge(.destroy), lhsRefTag),
+    .project(rhsParam, .pledge(.destroy), rhsRefTag)):
+    return lhsParam == rhsParam && lhsRefTag == rhsRefTag
+  case let (.project(lhsParam, .pledge(.edit), lhsRefTag), .project(rhsParam, .pledge(.edit), rhsRefTag)):
+    return lhsParam == rhsParam && lhsRefTag == rhsRefTag
+  case let (.project(lhsParam, .pledge(.new), lhsRefTag), .project(rhsParam, .pledge(.new), rhsRefTag)):
+    return lhsParam == rhsParam && lhsRefTag == rhsRefTag
+  case let (.project(lhsParam, .pledge(.root), lhsRefTag), .project(rhsParam, .pledge(.root), rhsRefTag)):
     return lhsParam == rhsParam && lhsRefTag == rhsRefTag
   case let (.project(lhsParam, .updates, lhsRefTag), .project(rhsParam, .updates, rhsRefTag)):
     return lhsParam == rhsParam && lhsRefTag == rhsRefTag
@@ -80,6 +125,7 @@ public func == (lhs: Navigation, rhs: Navigation) -> Bool {
     return false
   }
 }
+// swiftlint:enable function_body_length
 // swiftlint:enable cyclomatic_complexity
 
 extension Navigation {
@@ -98,19 +144,28 @@ extension Navigation {
 private let routes = [
   "/activity": activity,
   "/authorize": authorize,
+  "/checkouts/:checkout_param/payments": paymentsRoot,
+  "/checkouts/:checkout_param/payments/new": paymentsNew,
+  "/checkouts/:checkout_param/payments/use_stored_card": paymentsUseStoredCard,
   "/discover": discovery,
   "/discover/advanced": discoveryAdvanced,
   "/discover/categories/:category_param": category,
   "/discover/categories/:category_param/:subcategory_param": category,
   "/profile/:user_param": me,
   "/search": search,
+  "/signup": signup,
   "/projects/:creator_param/:project_param": project,
+  "/projects/:creator_param/:project_param/checkouts/:checkout_param/thanks": thanks,
   "/projects/:creator_param/:project_param/comments": projectComments,
   "/projects/:creator_param/:project_param/creator_bio": creatorBio,
   "/projects/:creator_param/:project_param/dashboard": dashboard,
   "/projects/:creator_param/:project_param/description": project,
   "/projects/:creator_param/:project_param/friends": friends,
   "/projects/:creator_param/:project_param/messages/new": messageCreator,
+  "/projects/:creator_param/:project_param/pledge": pledgeRoot,
+  "/projects/:creator_param/:project_param/pledge/destroy": pledgeDestroy,
+  "/projects/:creator_param/:project_param/pledge/edit": pledgeEdit,
+  "/projects/:creator_param/:project_param/pledge/new": pledgeNew,
   "/projects/:creator_param/:project_param/posts": posts,
   "/projects/:creator_param/:project_param/posts/:update_param": update,
   "/projects/:creator_param/:project_param/posts/:update_param/comments": updateComments,
@@ -152,6 +207,24 @@ private func authorize(_: RouteParams) -> Decoded<Navigation> {
   return .Success(.tab(.login))
 }
 
+private func paymentsNew(params: RouteParams) -> Decoded<Navigation> {
+  return curry(Navigation.checkout)
+    <^> (params <| "checkout_param" >>- stringToInt)
+    <*> .Success(.payments(.new))
+}
+
+private func paymentsRoot(params: RouteParams) -> Decoded<Navigation> {
+  return curry(Navigation.checkout)
+    <^> (params <| "checkout_param" >>- stringToInt)
+    <*> .Success(.payments(.root))
+}
+
+private func paymentsUseStoredCard(params: RouteParams) -> Decoded<Navigation> {
+  return curry(Navigation.checkout)
+    <^> (params <| "checkout_param" >>- stringToInt)
+    <*> .Success(.payments(.useStoredCard))
+}
+
 private func discovery(params: RouteParams) -> Decoded<Navigation> {
   guard let discoveryParams = DiscoveryParams.decode(params).value
     else { return .Failure(.Custom("Failed to extact discovery params")) }
@@ -185,10 +258,23 @@ private func search(_: RouteParams) -> Decoded<Navigation> {
   return .Success(.tab(.search))
 }
 
+private func signup(_: RouteParams) -> Decoded<Navigation> {
+  return .Success(.signup)
+}
+
 private func project(params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
     <*> .Success(.root)
+    <*> params <|? "ref_tag"
+}
+
+private func thanks(params: RouteParams) -> Decoded<Navigation> {
+  return curry(Navigation.project)
+    <^> params <| "project_param"
+    <*> (curry(Navigation.Project.checkout)
+      <^> (params <| "checkout_param" >>- stringToInt)
+      <*> .Success(.thanks))
     <*> params <|? "ref_tag"
 }
 
@@ -224,6 +310,34 @@ private func messageCreator(params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
     <*> .Success(.messageCreator)
+    <*> params <|? "ref_tag"
+}
+
+private func pledgeDestroy(params: RouteParams) -> Decoded<Navigation> {
+  return curry(Navigation.project)
+    <^> params <| "project_param"
+    <*> .Success(.pledge(.destroy))
+    <*> params <|? "ref_tag"
+}
+
+private func pledgeEdit(params: RouteParams) -> Decoded<Navigation> {
+  return curry(Navigation.project)
+    <^> params <| "project_param"
+    <*> .Success(.pledge(.edit))
+    <*> params <|? "ref_tag"
+}
+
+private func pledgeNew(params: RouteParams) -> Decoded<Navigation> {
+  return curry(Navigation.project)
+    <^> params <| "project_param"
+    <*> .Success(.pledge(.new))
+    <*> params <|? "ref_tag"
+}
+
+private func pledgeRoot(params: RouteParams) -> Decoded<Navigation> {
+  return curry(Navigation.project)
+    <^> params <| "project_param"
+    <*> .Success(.pledge(.root))
     <*> params <|? "ref_tag"
 }
 

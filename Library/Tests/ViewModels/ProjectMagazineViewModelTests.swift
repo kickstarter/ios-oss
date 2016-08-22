@@ -14,6 +14,7 @@ final class ProjectMagazineViewModelTests: TestCase {
   private let configureChildViewControllersWithProject = TestObserver<Project, NoError>()
   private let descriptionViewHidden = TestObserver<Bool, NoError>()
   private let goToLoginTout = TestObserver<(), NoError>()
+  private let goToCheckoutIntent = TestObserver<CheckoutIntent, NoError>()
   private let managePledgeButtonHidden = TestObserver<Bool, NoError>()
   private let notifyDescriptionToExpand = TestObserver<(), NoError>()
   private let project = TestObserver<Project, NoError>()
@@ -33,6 +34,7 @@ final class ProjectMagazineViewModelTests: TestCase {
     self.vm.outputs.configureChildViewControllersWithProject
       .observe(self.configureChildViewControllersWithProject.observer)
     self.vm.outputs.descriptionViewHidden.observe(self.descriptionViewHidden.observer)
+    self.vm.outputs.goToCheckout.map { (_, _, intent) in intent }.observe(self.goToCheckoutIntent.observer)
     self.vm.outputs.goToLoginTout.observe(self.goToLoginTout.observer)
     self.vm.outputs.managePledgeButtonHidden.observe(self.managePledgeButtonHidden.observer)
     self.vm.outputs.notifyDescriptionToExpand.observe(self.notifyDescriptionToExpand.observer)
@@ -178,6 +180,19 @@ final class ProjectMagazineViewModelTests: TestCase {
 
     self.descriptionViewHidden.assertValues([false, true, false])
     self.rewardsViewHidden.assertValues([true, false, true])
+  }
+
+  func testGoToCheckout() {
+    self.vm.inputs.configureWith(projectOrParam: .left(.template), refTag: .discovery)
+    self.vm.inputs.viewDidLoad()
+
+    self.goToCheckoutIntent.assertValueCount(0)
+
+    self.vm.inputs.backProjectButtonTapped()
+    self.goToCheckoutIntent.assertValues([.new])
+
+    self.vm.inputs.managePledgeButtonTapped()
+    self.goToCheckoutIntent.assertValues([.new, .manage])
   }
 
   func testNotifyDescriptionToExpand() {

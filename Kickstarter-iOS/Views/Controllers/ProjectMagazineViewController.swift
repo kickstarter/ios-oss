@@ -146,7 +146,6 @@ internal final class ProjectMagazineViewController: UIViewController {
       |> UIView.lens.layoutMargins .~ .init(all: Styles.grid(1))
       |> UIView.lens.backgroundColor .~ UIColor.ksr_navy_200.colorWithAlphaComponent(0.4)
   }
-  // swiftlint:enable function_body_length
 
   override func bindViewModel() {
     super.bindViewModel()
@@ -191,6 +190,12 @@ internal final class ProjectMagazineViewController: UIViewController {
         self?.showProjectStarredPrompt(message: $0)
     }
 
+    self.viewModel.outputs.goToCheckout
+      .observeForUI()
+      .observeNext { [weak self] project, reward, intent in
+        self?.goToCheckout(project: project, reward: reward, intent: intent)
+    }
+
     self.viewModel.outputs.goToLoginTout
       .observeForUI()
       .observeNext { [weak self] in
@@ -205,6 +210,7 @@ internal final class ProjectMagazineViewController: UIViewController {
       .observeForUI()
       .observeNext { [weak self] in self?.showShareCompose($0) }
   }
+  // swiftlint:enable function_body_length
 
   private func transferFooterAndHeaderToDescriptionController() {
     let offset = CGPoint.init(
@@ -232,6 +238,11 @@ internal final class ProjectMagazineViewController: UIViewController {
   private func showProjectStarredPrompt(message message: String) {
     let alert = UIAlertController.alert(nil, message: message, handler: nil)
     self.presentViewController(alert, animated: true, completion: nil)
+  }
+
+  private func goToCheckout(project project: Project, reward: Reward?, intent: CheckoutIntent) {
+    let vc = CheckoutViewController.configuredWith(project: project, reward: reward, intent: intent)
+    self.navigationController?.pushViewController(vc, animated: true)
   }
 
   private func goToLoginTout() {

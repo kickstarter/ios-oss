@@ -51,6 +51,9 @@ public protocol ProjectMagazineViewModelOutputs {
   /// Emits a boolean that determines if the description view is hidden.
   var descriptionViewHidden: Signal<Bool, NoError> { get }
 
+  /// Emits when the checkout screen should be shown to the user.
+  var goToCheckout: Signal<(Project, Reward?, CheckoutIntent), NoError> { get }
+
   /// Emits when the login tout should be shown to the user.
   var goToLoginTout: Signal<(), NoError> { get }
 
@@ -139,6 +142,16 @@ ProjectMagazineViewModelOutputs {
           .map { $0.project }
           .demoteErrors()
     }
+
+    let managePledge = self.project
+      .takeWhen(self.managePledgeButtonTappedProperty.signal)
+      .map { project -> (Project, Reward?, CheckoutIntent) in (project, nil, .manage) }
+
+    let backProject = self.project
+      .takeWhen(self.backProjectButtonTappedProperty.signal)
+      .map { project -> (Project, Reward?, CheckoutIntent) in (project, nil, .new) }
+
+    self.goToCheckout = Signal.merge(managePledge, backProject)
 
     self.goToLoginTout = loggedOutUserTappedStar
 
@@ -282,6 +295,7 @@ ProjectMagazineViewModelOutputs {
   public let bottomShareButtonHidden: Signal<Bool, NoError>
   public let configureChildViewControllersWithProject: Signal<Project, NoError>
   public let descriptionViewHidden: Signal<Bool, NoError>
+  public let goToCheckout: Signal<(Project, Reward?, CheckoutIntent), NoError>
   public let goToLoginTout: Signal<(), NoError>
   public let managePledgeButtonHidden: Signal<Bool, NoError>
   public let notifyDescriptionToExpand: Signal<(), NoError>

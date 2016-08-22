@@ -6,7 +6,7 @@ import Prelude_UIKit
 import UIKit
 import XCPlayground
 
-//: __Checkout Thanks Page__
+//: __Thanks Page__
 
 let projects = [
   .anomalisa |> Project.lens.photo.med .~ "http://lorempixel.com/460/345/",

@@ -22,7 +22,7 @@ internal final class ThanksViewController: UIViewController, UICollectionViewDel
   private let dataSource = ThanksProjectsDataSource()
 
   internal static func configuredWith(project project: Project) -> ThanksViewController {
-    let vc = Storyboard.Checkout.instantiate(ThanksViewController)
+    let vc = Storyboard.Thanks.instantiate(ThanksViewController)
     vc.viewModel.inputs.project(project)
     vc.shareViewModel.inputs.configureWith(shareContext: .thanks(project))
     return vc
