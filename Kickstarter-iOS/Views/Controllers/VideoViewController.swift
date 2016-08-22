@@ -31,10 +31,19 @@ internal final class VideoViewController: UIViewController {
     self.viewModel.inputs.viewDidLoad()
   }
 
+  internal override func viewDidAppear(animated: Bool) {
+    super.viewDidAppear(animated)
+    self.viewModel.inputs.viewDidAppear()
+  }
+
   internal override func viewDidDisappear(animated: Bool) {
     super.viewDidDisappear(animated)
-
     self.viewModel.inputs.viewDidDisappear(animated: animated)
+  }
+
+  internal override func viewWillDisappear(animated: Bool) {
+    super.viewWillDisappear(animated)
+    self.viewModel.inputs.viewWillDisappear()
   }
 
   internal override func bindStyles() {

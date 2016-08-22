@@ -47,6 +47,9 @@ internal final class VideoViewModelTests: TestCase {
   func testAddCompletionObserver() {
     self.vm.inputs.configureWith(project: Project.template)
     self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewDidAppear()
+
+    self.vm.inputs.playButtonTapped()
     self.vm.inputs.durationChanged(toNew: duration)
 
     self.addCompletionObserver.assertValues([completedThreshold], "Observer added to completion threshold.")
@@ -58,6 +61,8 @@ internal final class VideoViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(project: project)
     self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewDidAppear()
+    self.vm.inputs.playButtonTapped()
 
     self.configurePlayerWithURL.assertValues([video.high], "Video url emitted.")
   }
@@ -66,10 +71,10 @@ internal final class VideoViewModelTests: TestCase {
     withEnvironment(apiService: MockService()) {
       self.vm.inputs.configureWith(project: Project.template)
       self.vm.inputs.viewDidLoad()
-      self.vm.inputs.durationChanged(toNew: duration)
-      self.vm.inputs.rateChanged(toNew: pauseRate, atTime: startTime)
+      self.vm.inputs.viewDidAppear()
 
       self.vm.inputs.playButtonTapped()
+      self.vm.inputs.durationChanged(toNew: duration)
       self.vm.inputs.rateChanged(toNew: playRate, atTime: startTime)
 
       self.incrementVideoStart.assertValueCount(1, "Incremented video start count.")
@@ -89,27 +94,48 @@ internal final class VideoViewModelTests: TestCase {
   func testPauseVideoWhenViewDidDisappear() {
     self.vm.inputs.configureWith(project: Project.template)
     self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewDidAppear()
 
-    self.vm.inputs.playButtonTapped()
-    self.playButtonHidden.assertValues([false, true])
-    self.projectImageHidden.assertValues([false, true])
-    self.videoViewHidden.assertValues([true, false])
-
+    // Leave the project magazine without starting video.
+    self.vm.inputs.viewWillDisappear()
     self.vm.inputs.viewDidDisappear(animated: true)
+    self.pauseVideo.assertDidNotEmitValue("Video not paused by view navigation.")
+    XCTAssertEqual([], self.trackingClient.events, "No tracking events occur.")
 
+    // Go back to the project and start playing the video.
+    self.vm.inputs.viewDidAppear()
+    self.vm.inputs.playButtonTapped()
+    self.vm.inputs.durationChanged(toNew: duration)
+    self.vm.inputs.rateChanged(toNew: playRate, atTime: startTime)
+    self.pauseVideo.assertDidNotEmitValue("Video not paused by view navigation.")
+
+    // Player pauses the video.
+    self.vm.inputs.rateChanged(toNew: pauseRate, atTime: halfwayTime)
+    self.pauseVideo.assertDidNotEmitValue("Video not paused by view navigation.")
+    XCTAssertEqual(["Project Video Start", "Started Project Video", "Project Video Pause",
+      "Paused Project Video"], self.trackingClient.events)
+
+    // Leave the project magazine.
+    self.vm.inputs.viewWillDisappear()
+    self.vm.inputs.viewDidDisappear(animated: true)
     self.pauseVideo.assertValueCount(1, "Video pauses when view disappears.")
+    XCTAssertEqual(
+      ["Project Video Start", "Started Project Video", "Project Video Pause", "Paused Project Video"],
+      self.trackingClient.events, "Pause event not tracked again."
+    )
   }
 
   func testProjectImagePlayButtonVisibility() {
     self.vm.inputs.configureWith(project: Project.template)
     self.vm.inputs.viewDidLoad()
-    self.vm.inputs.durationChanged(toNew: duration)
+    self.vm.inputs.viewDidAppear()
 
     self.playButtonHidden.assertValues([false])
     self.projectImageHidden.assertValues([false])
     self.videoViewHidden.assertValues([true])
 
     self.vm.inputs.playButtonTapped()
+    self.vm.inputs.durationChanged(toNew: duration)
     self.vm.inputs.rateChanged(toNew: playRate, atTime: startTime)
 
     self.playVideo.assertValueCount(1)
@@ -132,7 +158,7 @@ internal final class VideoViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(project: project)
     self.vm.inputs.viewDidLoad()
-    self.vm.inputs.durationChanged(toNew: duration)
+    self.vm.inputs.viewDidAppear()
 
     self.projectImageURL.assertValues([project.photo.full])
     self.projectImageHidden.assertValues([false])
@@ -145,6 +171,7 @@ internal final class VideoViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(project: project)
     self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewDidAppear()
 
     self.configurePlayerWithURL.assertValues([])
     self.addCompletionObserver.assertValues([])
@@ -156,9 +183,10 @@ internal final class VideoViewModelTests: TestCase {
   func testSeekPlayerToBeginning() {
     self.vm.inputs.configureWith(project: Project.template)
     self.vm.inputs.viewDidLoad()
-    self.vm.inputs.durationChanged(toNew: duration)
+    self.vm.inputs.viewDidAppear()
 
     self.vm.inputs.playButtonTapped()
+    self.vm.inputs.durationChanged(toNew: duration)
     self.vm.inputs.rateChanged(toNew: playRate, atTime: startTime)
 
     self.vm.inputs.crossedCompletionThreshold()
@@ -170,12 +198,12 @@ internal final class VideoViewModelTests: TestCase {
   func testTrackVideoPlayback() {
     self.vm.inputs.configureWith(project: Project.template)
     self.vm.inputs.viewDidLoad()
-    self.vm.inputs.durationChanged(toNew: duration)
+    self.vm.inputs.viewDidAppear()
 
     XCTAssertEqual([], self.trackingClient.events)
 
-    self.vm.inputs.rateChanged(toNew: pauseRate, atTime: startTime)
-    XCTAssertEqual([], self.trackingClient.events, "Skip initial pause signal tracking.")
+    self.vm.inputs.playButtonTapped()
+    self.vm.inputs.durationChanged(toNew: duration)
 
     self.vm.inputs.rateChanged(toNew: playRate, atTime: startTime)
     XCTAssertEqual(["Project Video Start", "Started Project Video"], self.trackingClient.events)
@@ -211,6 +239,8 @@ internal final class VideoViewModelTests: TestCase {
     self.vm.inputs.playButtonTapped()
     self.vm.inputs.rateChanged(toNew: playRate, atTime: startTime)
 
+    self.pauseVideo.assertDidNotEmitValue("Video not paused by view navigation.")
+
     XCTAssertEqual(
       [
         "Project Video Start", "Started Project Video", "Project Video Pause", "Paused Project Video",
@@ -221,12 +251,12 @@ internal final class VideoViewModelTests: TestCase {
   }
 
   func testTrackVideoCompletionViaScrubbing() {
-    self.vm.inputs.viewDidLoad()
     self.vm.inputs.configureWith(project: Project.template)
-    self.vm.inputs.durationChanged(toNew: duration)
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewDidAppear()
 
-    self.vm.inputs.rateChanged(toNew: pauseRate, atTime: startTime)
-    XCTAssertEqual([], self.trackingClient.events, "Skip initial pause signal tracking.")
+    self.vm.inputs.playButtonTapped()
+    self.vm.inputs.durationChanged(toNew: duration)
 
     self.vm.inputs.rateChanged(toNew: playRate, atTime: startTime)
     XCTAssertEqual(["Project Video Start", "Started Project Video"], self.trackingClient.events)

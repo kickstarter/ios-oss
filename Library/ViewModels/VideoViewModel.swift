@@ -24,11 +24,17 @@ public protocol VideoViewModelInputs {
   /// Call with rate and current time when playback rate changes.
   func rateChanged(toNew rate: Double, atTime currentTime: CMTime)
 
+  /// Call when the view did appear.
+  func viewDidAppear()
+
   /// Call when the view did disappear.
   func viewDidDisappear(animated animated: Bool)
 
   /// Call when the view did load.
   func viewDidLoad()
+
+  /// Call when the view will disappear.
+  func viewWillDisappear()
 }
 
 public protocol VideoViewModelOutputs {
@@ -82,8 +88,13 @@ public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, 
     )
     .map(first)
 
-    let duration = self.durationProperty.signal.ignoreNil()
-    let rateCurrentTime = self.rateCurrentTimeProperty.signal.ignoreNil().skip(1)
+    let viewIsVisible = Signal.merge(
+      self.viewDidAppearProperty.signal.mapConst(true),
+      self.viewWillDisappearProperty.signal.mapConst(false)
+    )
+
+    let duration = self.durationProperty.signal.ignoreNil().skipRepeats()
+    let rateCurrentTime = self.rateCurrentTimeProperty.signal.ignoreNil().skipRepeats(==)
 
     let completionThreshold = duration
       .map { 0.85 * CMTimeGetSeconds($0) }
@@ -116,13 +127,15 @@ public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, 
 
     self.configurePlayerWithURL = project
       .filter { $0.video != nil }
+      .takeWhen(self.playButtonTappedProperty.signal)
       .map { NSURL(string: $0.video?.high ?? "") }
       .ignoreNil()
       .skipRepeats()
 
-    self.pauseVideo = self.viewDidDisappearProperty.signal.ignoreValues()
-
     self.playVideo = self.playButtonTappedProperty.signal
+
+    self.pauseVideo = self.playVideo
+      .takeWhen(self.viewWillDisappearProperty.signal)
 
     let elementsHiddenOnPlayback = Signal.merge(
       self.playVideo.mapConst(true),
@@ -160,8 +173,10 @@ public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, 
       .takeWhen(videoCompleted)
       .observeNext { AppEnvironment.current.koala.trackVideoCompleted(forProject: $0) }
 
-    project
+    combineLatest(project, viewIsVisible)
       .takeWhen(videoPaused)
+      .filter { _, isVisible in isVisible }
+      .map(first)
       .observeNext { AppEnvironment.current.koala.trackVideoPaused(forProject: $0) }
 
     project
@@ -170,9 +185,7 @@ public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, 
 
     project
       .takeWhen(videoStarted)
-      .observeNext {
-        AppEnvironment.current.koala.trackVideoStart(forProject: $0)
-    }
+      .observeNext { AppEnvironment.current.koala.trackVideoStart(forProject: $0) }
   }
   // swiftlint:enable function_body_length
 
@@ -196,6 +209,10 @@ public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, 
   public func rateChanged(toNew rate: Double, atTime currentTime: CMTime) {
     self.rateCurrentTimeProperty.value = (rate, currentTime)
   }
+  private let viewDidAppearProperty = MutableProperty()
+  public func viewDidAppear() {
+    self.viewDidAppearProperty.value = ()
+  }
   private let viewDidDisappearProperty = MutableProperty(false)
   public func viewDidDisappear(animated animated: Bool) {
     self.viewDidDisappearProperty.value = animated
@@ -203,6 +220,10 @@ public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, 
   private let viewDidLoadProperty = MutableProperty()
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
+  }
+  private let viewWillDisappearProperty = MutableProperty()
+  public func viewWillDisappear() {
+    self.viewWillDisappearProperty.value = ()
   }
 
   public let addCompletionObserver: Signal<CMTime, NoError>
