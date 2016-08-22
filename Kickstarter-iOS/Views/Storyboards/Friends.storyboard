@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="3ir-xv-YhI">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="16A239m" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="3ir-xv-YhI">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
@@ -9,7 +9,7 @@
         <!--FindFriendsViewController-->
         <scene sceneID="zpH-iI-Tnd">
             <objects>
-                <tableViewController storyboardIdentifier="Friends" title="FindFriendsViewController" id="3ir-xv-YhI" customClass="FindFriendsViewController" customModule="Kickstarter_Framework" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="FindFriendsViewController" title="FindFriendsViewController" id="3ir-xv-YhI" customClass="FindFriendsViewController" customModule="Kickstarter_Framework" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="100" sectionHeaderHeight="28" sectionFooterHeight="28" id="koP-bZ-7wD">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -22,16 +22,16 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="181"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="UTl-0e-fPS" userLabel="Outermost Stats Stack View">
+                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="UTl-0e-fPS" userLabel="Outermost Stats Stack View">
                                             <rect key="frame" x="24" y="24" width="327" height="128"/>
                                             <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" distribution="fillEqually" alignment="center" spacing="14" translatesAutoresizingMaskIntoConstraints="NO" id="YI6-hF-zT1" userLabel="Stats Stack View">
+                                                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" spacing="14" translatesAutoresizingMaskIntoConstraints="NO" id="YI6-hF-zT1" userLabel="Stats Stack View">
                                                     <rect key="frame" x="0.0" y="0.0" width="327" height="68"/>
                                                     <subviews>
-                                                        <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" alignment="center" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="dkb-CI-X1M" userLabel="Friends Stack View">
-                                                            <rect key="frame" x="0.0" y="11" width="100" height="47"/>
+                                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="dkb-CI-X1M" userLabel="Friends Stack View">
+                                                            <rect key="frame" x="0.0" y="10" width="100" height="48"/>
                                                             <subviews>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="202" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IZg-yq-Iiq" customClass="StyledLabel" customModule="Library">
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="202" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IZg-yq-Iiq" customClass="StyledLabel" customModule="Library">
                                                                     <rect key="frame" x="0.0" y="0.0" width="100" height="21"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -41,7 +41,7 @@
                                                                         <userDefinedRuntimeAttribute type="string" keyPath="_color" value="Black"/>
                                                                     </userDefinedRuntimeAttributes>
                                                                 </label>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Friends" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1PD-I8-AZB" customClass="StyledLabel" customModule="Library">
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Friends" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1PD-I8-AZB" customClass="StyledLabel" customModule="Library">
                                                                     <rect key="frame" x="0.0" y="27" width="100" height="21"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -57,8 +57,8 @@
                                                                 <constraint firstItem="IZg-yq-Iiq" firstAttribute="width" secondItem="dkb-CI-X1M" secondAttribute="width" id="vLo-zX-0lS"/>
                                                             </constraints>
                                                         </stackView>
-                                                        <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sTU-6O-U2y" userLabel="Divider View">
-                                                            <rect key="frame" x="114" y="0.0" width="100" height="68"/>
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sTU-6O-U2y" userLabel="Divider View">
+                                                            <rect key="frame" x="114" y="0.0" width="99" height="68"/>
                                                             <subviews>
                                                                 <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="V0H-Qb-an0">
                                                                     <rect key="frame" x="49" y="0.0" width="1" height="6"/>
@@ -75,10 +75,10 @@
                                                                 <constraint firstItem="V0H-Qb-an0" firstAttribute="height" secondItem="sTU-6O-U2y" secondAttribute="height" id="uaC-GE-BfM"/>
                                                             </constraints>
                                                         </view>
-                                                        <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" alignment="center" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="o97-8g-xQm" userLabel="Backed Projects Stack View">
-                                                            <rect key="frame" x="228" y="1" width="100" height="68"/>
+                                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="o97-8g-xQm" userLabel="Backed Projects Stack View">
+                                                            <rect key="frame" x="227" y="0.0" width="100" height="68"/>
                                                             <subviews>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="3,841" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="47i-yE-rkw" customClass="StyledLabel" customModule="Library">
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3,841" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="47i-yE-rkw" customClass="StyledLabel" customModule="Library">
                                                                     <rect key="frame" x="0.0" y="0.0" width="100" height="21"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -88,7 +88,7 @@
                                                                         <userDefinedRuntimeAttribute type="string" keyPath="_color" value="Black"/>
                                                                     </userDefinedRuntimeAttributes>
                                                                 </label>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Backed projects" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cBy-sV-kkw" customClass="StyledLabel" customModule="Library">
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Backed projects" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cBy-sV-kkw" customClass="StyledLabel" customModule="Library">
                                                                     <rect key="frame" x="0.0" y="27" width="100" height="41"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -109,7 +109,7 @@
                                                         <constraint firstItem="V0H-Qb-an0" firstAttribute="height" secondItem="YI6-hF-zT1" secondAttribute="height" id="AEI-Fa-t6L"/>
                                                     </constraints>
                                                 </stackView>
-                                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="vDC-z1-n0V" customClass="BorderButton" customModule="Library">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="vDC-z1-n0V" customClass="BorderButton" customModule="Library">
                                                     <rect key="frame" x="0.0" y="84" width="327" height="44"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="44" id="nPj-J5-djO"/>
@@ -159,20 +159,20 @@
                                                 <constraint firstAttribute="height" constant="1" id="pMO-Ev-HCN"/>
                                             </constraints>
                                         </view>
-                                        <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" alignment="center" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="MLU-qf-b92">
-                                            <rect key="frame" x="8" y="8" width="359" height="72"/>
+                                        <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="MLU-qf-b92">
+                                            <rect key="frame" x="8" y="8" width="359" height="73"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="zack-sears" translatesAutoresizingMaskIntoConstraints="NO" id="qnB-Mz-bGC" customClass="CircleAvatarImageView" customModule="Library">
-                                                    <rect key="frame" x="0.0" y="6" width="60" height="60"/>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="zack-sears" translatesAutoresizingMaskIntoConstraints="NO" id="qnB-Mz-bGC" customClass="CircleAvatarImageView" customModule="Library">
+                                                    <rect key="frame" x="0.0" y="7" width="60" height="60"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="60" id="3QS-c4-z90"/>
                                                         <constraint firstAttribute="width" secondItem="qnB-Mz-bGC" secondAttribute="height" multiplier="1:1" id="vah-JM-Rbp"/>
                                                     </constraints>
                                                 </imageView>
-                                                <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" alignment="top" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="pSU-8p-qlV">
-                                                    <rect key="frame" x="72" y="0.0" width="102" height="72"/>
+                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="pSU-8p-qlV">
+                                                    <rect key="frame" x="72" y="0.0" width="102" height="73"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Some guy" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JeV-tQ-YIl" customClass="StyledLabel" customModule="Library">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Some guy" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JeV-tQ-YIl" customClass="StyledLabel" customModule="Library">
                                                             <rect key="frame" x="0.0" y="0.0" width="77" height="21"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -183,7 +183,7 @@
                                                                 <userDefinedRuntimeAttribute type="string" keyPath="_weight" value="Medium"/>
                                                             </userDefinedRuntimeAttributes>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Brooklyn, NY" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jqG-T2-tdL" customClass="StyledLabel" customModule="Library">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Brooklyn, NY" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jqG-T2-tdL" customClass="StyledLabel" customModule="Library">
                                                             <rect key="frame" x="0.0" y="26" width="100" height="21"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -193,10 +193,10 @@
                                                                 <userDefinedRuntimeAttribute type="string" keyPath="_color" value="GrayDark"/>
                                                             </userDefinedRuntimeAttributes>
                                                         </label>
-                                                        <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="Vj1-JC-55L">
-                                                            <rect key="frame" x="0.0" y="51" width="102" height="21"/>
+                                                        <stackView opaque="NO" contentMode="scaleToFill" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="Vj1-JC-55L">
+                                                            <rect key="frame" x="0.0" y="52" width="102" height="21"/>
                                                             <subviews>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="1,000 backed" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RRc-eG-DSa" customClass="StyledLabel" customModule="Library">
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1,000 backed" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RRc-eG-DSa" customClass="StyledLabel" customModule="Library">
                                                                     <rect key="frame" x="0.0" y="0.0" width="90" height="21"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -206,7 +206,7 @@
                                                                         <userDefinedRuntimeAttribute type="string" keyPath="_color" value="Black"/>
                                                                     </userDefinedRuntimeAttributes>
                                                                 </label>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" misplaced="YES" text="1 created" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TWI-wp-Kfi" customClass="StyledLabel" customModule="Library">
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="1 created" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TWI-wp-Kfi" customClass="StyledLabel" customModule="Library">
                                                                     <rect key="frame" x="102" y="0.0" width="0.0" height="21"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -220,10 +220,10 @@
                                                         </stackView>
                                                     </subviews>
                                                 </stackView>
-                                                <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9qs-oP-aoV">
-                                                    <rect key="frame" x="186" y="14" width="173" height="44"/>
+                                                <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="9qs-oP-aoV">
+                                                    <rect key="frame" x="186" y="15" width="173" height="44"/>
                                                     <subviews>
-                                                        <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sL7-Yr-Ljj" customClass="BorderButton" customModule="Library">
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sL7-Yr-Ljj" customClass="BorderButton" customModule="Library">
                                                             <rect key="frame" x="0.0" y="0.0" width="76" height="44"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="44" id="xOv-pL-YNx"/>
@@ -242,7 +242,7 @@
                                                                 <action selector="followButtonTapped:" destination="Ltx-Pe-78v" eventType="touchUpInside" id="H4m-NN-Cpt"/>
                                                             </connections>
                                                         </button>
-                                                        <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="HAe-75-PHH" customClass="BorderButton" customModule="Library">
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="HAe-75-PHH" customClass="BorderButton" customModule="Library">
                                                             <rect key="frame" x="76" y="0.0" width="97" height="44"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="44" id="Mhz-yi-akA"/>
@@ -303,14 +303,14 @@
                                                 <action selector="closeButtonTapped:" destination="9Vt-9F-2Mp" eventType="touchUpInside" id="8hE-89-UBa"/>
                                             </connections>
                                         </button>
-                                        <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="3me-Wq-2g0">
+                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="3me-Wq-2g0">
                                             <rect key="frame" x="36" y="24" width="303" height="146"/>
                                             <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="QUU-La-sfv">
+                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="QUU-La-sfv">
                                                     <rect key="frame" x="0.0" y="0.0" width="303" height="87"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Friends Recommend the Best Projects" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KOC-28-Z5S" customClass="StyledLabel" customModule="Library">
-                                                            <rect key="frame" x="6" y="0.0" width="293" height="21"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Friends Recommend the Best Projects" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KOC-28-Z5S" customClass="StyledLabel" customModule="Library">
+                                                            <rect key="frame" x="5" y="0.0" width="293" height="21"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
@@ -321,7 +321,7 @@
                                                                 <userDefinedRuntimeAttribute type="string" keyPath="localizedKey" value="social_following.header.friends_recommend_the_best_projects"/>
                                                             </userDefinedRuntimeAttributes>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Connect with Facebook to follow your friends and get notified whenever they launch or back a new project." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EQb-ga-DsL" customClass="StyledLabel" customModule="Library">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Connect with Facebook to follow your friends and get notified whenever they launch or back a new project." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EQb-ga-DsL" customClass="StyledLabel" customModule="Library">
                                                             <rect key="frame" x="2" y="26" width="299" height="61"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -334,7 +334,7 @@
                                                         </label>
                                                     </subviews>
                                                 </stackView>
-                                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8iH-eM-TfY" customClass="BorderButton" customModule="Library">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8iH-eM-TfY" customClass="BorderButton" customModule="Library">
                                                     <rect key="frame" x="0.0" y="102" width="303" height="44"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="44" id="NiL-CU-9Ez"/>
