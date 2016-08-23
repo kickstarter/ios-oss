@@ -10,24 +10,35 @@ public enum CategoryGroup {
   case story
 
   public init(categoryId: Int?) {
-    if let categoryId = categoryId {
-      switch categoryId {
-      case 1, 26, 7, 9, 17:
-        self = .culture
-      case 6, 10, 12, 14, 16:
-        self = .entertainment
-      case 3, 11, 13, 15, 18:
-        self = .story
-      default:
-        self = .none
-      }
-    } else {
+    let category = RootCategory(categoryId: categoryId ?? RootCategory.unrecognized.rawValue)
+    switch category {
+    case .art, .crafts, .design, .fashion, .theater:
+      self = .culture
+    case .dance, .food, .games, .music, .tech:
+    self = .entertainment
+    case .comics, .film, .journalism, .photography, .publishing:
+      self = .story
+    case .unrecognized:
       self = .none
     }
   }
 }
 
-private func discoveryPrimaryColor(forCategoryId id: Int?) -> UIColor {
+public func discoveryPrimaryColor(forCategoryId id: Int?) -> UIColor {
+  let group = CategoryGroup(categoryId: id)
+  switch group {
+  case .none:
+    return .ksr_navy_700
+  case .culture:
+    return .ksr_red_400
+  case .entertainment:
+    return .ksr_violet_500
+  case .story:
+    return .ksr_forest_700
+  }
+}
+
+private func discoverySortColor(forCategoryId id: Int?) -> UIColor {
   let group = CategoryGroup(categoryId: id)
   switch group {
   case .none:
@@ -41,19 +52,31 @@ private func discoveryPrimaryColor(forCategoryId id: Int?) -> UIColor {
   }
 }
 
-public func discoveryIndicatorColor(forCategoryId id: Int?) -> UIColor {
+public func discoveryGradientColors(forCategoryId id: Int?) -> (UIColor, UIColor) {
   let group = CategoryGroup(categoryId: id)
   switch group {
   case .none:
-    return .ksr_navy_700
+    return (.whiteColor(), .whiteColor())
   case .culture:
-    return .ksr_red_400
+    return (.ksr_peachToBlushGradientStart, .ksr_peachToBlushGradientEnd)
   case .entertainment:
-    return .ksr_violet_500
+    return (.ksr_lavenderToPowderGradientStart, .ksr_lavenderToPowderGradientEnd)
   case .story:
-    return .ksr_forest_700
+    return (.ksr_sandToSageGradientStart, .ksr_sandToSageGradientEnd)
   }
 }
+
+public let discoveryBorderLineStyle = UIView.lens.alpha .~ 0.15
+
+public let discoveryNavDividerLabelStyle =
+  UILabel.lens.font .~ UIFont.ksr_callout()
+    <> UILabel.lens.alpha .~ 0.6
+
+public let discoveryNavTitleStackViewStyle =
+  UIStackView.lens.layoutMargins %~~ { _, stack in
+    stack.traitCollection.horizontalSizeClass == .Compact ? .init(top: -6.0) : .init(top: 0.0)
+    }
+    <> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
 
 public let discoveryOnboardingSignUpButtonStyle = baseButtonStyle
   <> UIButton.lens.titleColor(forState: .Normal) .~ .ksr_text_navy_900
@@ -87,13 +110,20 @@ public let discoveryOnboardingCellStyle = baseTableViewCellStyle()
     .init(topBottom: 48.0, leftRight: $0.left)
 }
 
+public let discoveryProjectCellStyle =
+  baseTableViewCellStyle()
+    <> UITableViewCell.lens.accessibilityHint %~ { _ in
+      Strings.dashboard_tout_accessibility_hint_opens_project()
+}
+
+
 public func discoverySortPagerButtonStyle <B: UIButtonProtocol> (sort sort: DiscoveryParams.Sort,
                                                                  categoryId: Int?,
                                                                  isLeftMost: Bool,
                                                                  isRightMost: Bool) -> (B -> B) {
 
   let sortString = string(forSort: sort)
-  let titleColor = discoveryPrimaryColor(forCategoryId: categoryId)
+  let titleColor = discoverySortColor(forCategoryId: categoryId)
 
   let normalTitleString = NSAttributedString(string: sortString, attributes: [
     NSFontAttributeName: UIFont.ksr_subhead(size: 14.0),
@@ -115,12 +145,6 @@ public func discoverySortPagerButtonStyle <B: UIButtonProtocol> (sort sort: Disc
                                                           isRightMost: isRightMost)
       <> B.lens.attributedTitle(forState: .Normal) %~ { _ in normalTitleString }
       <> B.lens.attributedTitle(forState: .Selected) %~ { _ in selectedTitleString }
-}
-
-public let discoveryProjectCellStyle =
-  baseTableViewCellStyle()
-    <> UITableViewCell.lens.accessibilityHint %~ { _ in
-      Strings.dashboard_tout_accessibility_hint_opens_project()
 }
 
 private func sortButtonEdgeInsets(isLeftMost isLeftMost: Bool, isRightMost: Bool) -> UIEdgeInsets {

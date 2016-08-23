@@ -73,7 +73,7 @@ final class FindFriendsViewModelTests: TestCase {
 
     vm.inputs.viewDidLoad()
 
-    title.assertValues(["Follow your friends!"])
+    title.assertValues([Strings.follow_friends()])
   }
 
   func testGoToDiscovery() {

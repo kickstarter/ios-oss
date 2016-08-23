@@ -10,26 +10,32 @@ import XCTest
 internal final class DiscoveryViewModelTests: TestCase {
   private let vm: DiscoveryViewModelType = DiscoveryViewModel()
 
-  private let loadFilterIntoDataSource = TestObserver<DiscoveryParams, NoError>()
   private let configureDataSource = TestObserver<[DiscoveryParams.Sort], NoError>()
-  private let filterLabelText = TestObserver<String, NoError>()
-  private let goToDiscoveryFilters = TestObserver<SelectableRow, NoError>()
+  private let configureNavigationHeader = TestObserver<DiscoveryParams, NoError>()
+  private let loadFilterIntoDataSource = TestObserver<DiscoveryParams, NoError>()
   private let navigateToSort = TestObserver<DiscoveryParams.Sort, NoError>()
   private let navigateDirection = TestObserver<UIPageViewControllerNavigationDirection, NoError>()
   private let selectSortPage = TestObserver<DiscoveryParams.Sort, NoError>()
   private let updateSortPagerStyle = TestObserver<Int?, NoError>()
+
+  let initialParams = .defaults
+    |> DiscoveryParams.lens.staffPicks .~ true
+    |> DiscoveryParams.lens.includePOTD .~ true
+
+  let categoryParams = .defaults |> DiscoveryParams.lens.category .~ .art
+  let subcategoryParams = .defaults |> DiscoveryParams.lens.category .~ .documentary
+  let starredParams = .defaults |> DiscoveryParams.lens.starred .~ true
 
   internal override func setUp() {
     super.setUp()
 
     self.vm.outputs.loadFilterIntoDataSource.observe(self.loadFilterIntoDataSource.observer)
     self.vm.outputs.configurePagerDataSource.observe(self.configureDataSource.observer)
-    self.vm.outputs.filterLabelText.observe(self.filterLabelText.observer)
-    self.vm.outputs.goToDiscoveryFilters.observe(self.goToDiscoveryFilters.observer)
     self.vm.outputs.navigateToSort.map { $0.0 }.observe(self.navigateToSort.observer)
     self.vm.outputs.navigateToSort.map { $0.1 }.observe(self.navigateDirection.observer)
     self.vm.outputs.selectSortPage.observe(self.selectSortPage.observer)
     self.vm.outputs.updateSortPagerStyle.observe(self.updateSortPagerStyle.observer)
+    self.vm.outputs.configureNavigationHeader.observe(self.configureNavigationHeader.observer)
   }
 
   func testConfigureDataSource() {
@@ -41,8 +47,6 @@ internal final class DiscoveryViewModelTests: TestCase {
   }
 
   func trackViewAppearedEvent() {
-    let selectableRow = SelectableRow(isSelected: false, params: .defaults)
-
     self.vm.inputs.viewDidLoad()
 
     XCTAssertEqual([], self.trackingClient.events)
@@ -53,8 +57,7 @@ internal final class DiscoveryViewModelTests: TestCase {
     XCTAssertEqual(["magic"], self.trackingClient.properties(forKey: "discover_sort"))
     XCTAssertEqual([true], self.trackingClient.properties(forKey: "discover_staff_picks", as: Bool.self))
 
-    self.vm.inputs.filterButtonTapped()
-    self.vm.inputs.filtersSelected(row: selectableRow |> SelectableRow.lens.params.category .~ Category.art)
+    self.vm.inputs.filterSelected(withParams: categoryParams)
 
     XCTAssertEqual(["Viewed Discovery", "Viewed Discovery"], self.trackingClient.events)
     XCTAssertEqual(["magic", "magic"], self.trackingClient.properties(forKey: "discover_sort"))
@@ -67,78 +70,26 @@ internal final class DiscoveryViewModelTests: TestCase {
     XCTAssertEqual([1], self.trackingClient.properties(forKey: "category_id", as: Int.self))
   }
 
-  func testFilterLabelText() {
-    let selectableRow = SelectableRow(isSelected: false, params: .defaults)
-
-    self.filterLabelText.assertValueCount(0)
-
-    self.vm.inputs.viewDidLoad()
-
-    self.filterLabelText.assertValues(["Staff Picks"])
-
-    self.vm.inputs.filterButtonTapped()
-    self.vm.inputs.filtersSelected(row: selectableRow |> SelectableRow.lens.params.category .~ Category.art)
-
-    self.filterLabelText.assertValues(["Staff Picks", "Art"])
-
-    self.vm.inputs.filterButtonTapped()
-    self.vm.inputs.filtersSelected(row: selectableRow |> SelectableRow.lens.params.starred .~ true)
-
-    self.filterLabelText.assertValues(["Staff Picks", "Art", "Starred"])
-
-    self.vm.inputs.filterButtonTapped()
-    self.vm.inputs.filtersSelected(row: selectableRow |> SelectableRow.lens.params.social .~ true)
-
-    self.filterLabelText.assertValues(["Staff Picks", "Art", "Starred", "Friends Backed"])
-
-    self.vm.inputs.filterButtonTapped()
-    self.vm.inputs.filtersSelected(row: selectableRow)
-
-    self.filterLabelText.assertValues(["Staff Picks", "Art", "Starred", "Friends Backed", "Everything"])
-  }
-
-  func testGoToDiscoveryFilters() {
-    let initialParams = .defaults
-      |> DiscoveryParams.lens.staffPicks .~ true
-      |> DiscoveryParams.lens.includePOTD .~ true
-    let initialSelectedRow = SelectableRow(isSelected: true, params: initialParams)
-    let selectableRow = SelectableRow(
-      isSelected: false,
-      params: .defaults |> DiscoveryParams.lens.category .~ Category.art
-    )
-
-    self.vm.inputs.viewDidLoad()
-
-    self.vm.inputs.filterButtonTapped()
-    self.goToDiscoveryFilters.assertValues([initialSelectedRow],
-                                           "Go to discovery filters with initial params.")
-
-    self.vm.inputs.filtersSelected(row: selectableRow)
-    self.vm.inputs.filterButtonTapped()
-
-    self.goToDiscoveryFilters.assertValues([initialSelectedRow, selectableRow],
-                                           "Go to discovery filters with currently selected params.")
-  }
-
   func testLoadFilterIntoDataSource() {
-    let initialParams = .defaults
-      |> DiscoveryParams.lens.staffPicks .~ true
-      |> DiscoveryParams.lens.includePOTD .~ true
-    let selectableRow = SelectableRow(
-      isSelected: false,
-      params: .defaults |> DiscoveryParams.lens.category .~ Category.art
-    )
+    self.loadFilterIntoDataSource.assertValueCount(0)
 
     self.vm.inputs.viewDidLoad()
 
     self.loadFilterIntoDataSource.assertValues([initialParams],
                                                "Initial params load into data source immediately.")
 
-    self.vm.inputs.filterButtonTapped()
-    self.vm.inputs.filtersSelected(row: selectableRow)
+    self.vm.inputs.filterSelected(withParams: starredParams)
 
-    self.loadFilterIntoDataSource.assertValues([initialParams, selectableRow.params],
+    self.loadFilterIntoDataSource.assertValues([initialParams, starredParams],
                                                "New params load into data source after selecting.")
+  }
+
+  func testConfigureNavigationHeader() {
+    self.configureNavigationHeader.assertValueCount(0)
+
+    self.vm.inputs.viewDidLoad()
+
+    self.configureNavigationHeader.assertValues([initialParams])
   }
 
   func testOrdering() {
@@ -259,26 +210,20 @@ internal final class DiscoveryViewModelTests: TestCase {
   }
 
   func testUpdateSortPagerStyle() {
-    let selectableRow = SelectableRow(isSelected: false, params: .defaults)
-
     self.vm.inputs.viewDidLoad()
 
     self.updateSortPagerStyle.assertValueCount(0)
 
-    self.vm.inputs.filterButtonTapped()
-    self.vm.inputs.filtersSelected(row: selectableRow |> SelectableRow.lens.params.category .~ Category.art)
+    self.vm.inputs.filterSelected(withParams: categoryParams)
 
     self.updateSortPagerStyle.assertValues([1], "Emits the category id")
 
-    self.vm.inputs.filterButtonTapped()
-    self.vm.inputs.filtersSelected(row: selectableRow |> SelectableRow.lens.params.category .~ Category.art)
+    self.vm.inputs.filterSelected(withParams: categoryParams)
 
     self.updateSortPagerStyle.assertValues([1], "Does not emit a repeat value.")
 
-    self.vm.inputs.filterButtonTapped()
-    self.vm.inputs.filtersSelected(row: selectableRow
-      |> SelectableRow.lens.params.category .~ Category.tabletopGames)
+    self.vm.inputs.filterSelected(withParams: subcategoryParams)
 
-    self.updateSortPagerStyle.assertValues([1, 12], "Emits root category id.")
+    self.updateSortPagerStyle.assertValues([1, 11], "Emits root category id.")
   }
 }

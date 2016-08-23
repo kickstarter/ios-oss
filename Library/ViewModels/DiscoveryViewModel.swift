@@ -5,11 +5,8 @@ import ReactiveExtensions
 import Result
 
 public protocol DiscoveryViewModelInputs {
-  /// Call when the filter button is pressed.
-  func filterButtonTapped()
-
   /// Call when params have been selected from the filters menu.
-  func filtersSelected(row row: SelectableRow)
+  func filterSelected(withParams params: DiscoveryParams)
 
   /// Call when the UIPageViewController finishes transitioning.
   func pageTransition(completed completed: Bool)
@@ -28,20 +25,14 @@ public protocol DiscoveryViewModelInputs {
 }
 
 public protocol DiscoveryViewModelOutputs {
+  /// Emits params to configure the navigation header.
+  var configureNavigationHeader: Signal<DiscoveryParams, NoError> { get }
+
   /// Emits an array of sorts that should be used to configure the pager data source.
   var configurePagerDataSource: Signal<[DiscoveryParams.Sort], NoError> { get }
 
   /// Emits an array of sorts that should be used to configure the sort pager controller.
   var configureSortPager: Signal<[DiscoveryParams.Sort], NoError> { get }
-
-  /// Emits when the filters view controller should be dismissed.
-  var dismissDiscoveryFilters: Signal<(), NoError> { get }
-
-  /// Emits a string to display in the filter label.
-  var filterLabelText: Signal<String, NoError> { get }
-
-  /// Emits when the discovery filters should be presented.
-  var goToDiscoveryFilters: Signal<SelectableRow, NoError> { get }
 
   /// Emits a discovery params value that should be passed to all the pages in discovery.
   var loadFilterIntoDataSource: Signal<DiscoveryParams, NoError> { get }
@@ -74,35 +65,14 @@ DiscoveryViewModelOutputs {
 
     self.configurePagerDataSource = self.viewDidLoadProperty.signal.mapConst(sorts)
     self.configureSortPager = self.configurePagerDataSource
+    self.configureNavigationHeader = self.viewDidLoadProperty.signal.mapConst(initialParams)
 
     let currentParams = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst(initialParams),
-      self.filtersSelectedRowProperty.signal.ignoreNil().map { $0.params }
+      self.filtersSelectedParamsProperty.signal.ignoreNil()
     )
 
     self.loadFilterIntoDataSource = currentParams
-
-    self.filterLabelText = self.loadFilterIntoDataSource
-      .map { params in
-        if params.staffPicks == true {
-          return Strings.discovery_recommended()
-        } else if params.starred == true {
-          return Strings.discovery_saved()
-        } else if params.social == true {
-          return Strings.discovery_friends_backed()
-        } else if let category = params.category {
-          return category.name
-        } else if params.recommended == true {
-          return Strings.discovery_recommended_for_you()
-        }
-        return Strings.discovery_everything()
-    }.skipRepeats()
-
-    self.goToDiscoveryFilters = Signal.merge(
-      self.viewDidLoadProperty.signal.mapConst(SelectableRow(isSelected: true, params: initialParams)),
-      self.filtersSelectedRowProperty.signal.ignoreNil()
-      )
-      .takeWhen(self.filterButtonTappedProperty.signal)
 
     let swipeToSort = self.willTransitionToPageProperty.signal
       .takeWhen(self.pageTransitionCompletedProperty.signal.filter(isTrue))
@@ -126,10 +96,8 @@ DiscoveryViewModelOutputs {
          sorts.indexOf(next.sort) < sorts.indexOf(previous.sort) ? .Reverse : .Forward)
     }
 
-    self.dismissDiscoveryFilters = self.filtersSelectedRowProperty.signal.ignoreValues()
-
-    self.updateSortPagerStyle = self.filtersSelectedRowProperty.signal.ignoreNil()
-      .map { $0.params.category?.root?.id }
+    self.updateSortPagerStyle = self.filtersSelectedParamsProperty.signal.ignoreNil()
+      .map { $0.category?.root?.id }
       .skipRepeats(==)
 
     self.sortPagerSelectedSortProperty.signal.ignoreNil()
@@ -145,13 +113,9 @@ DiscoveryViewModelOutputs {
   }
   // swiftlint:enable function_body_length
 
-  private let filterButtonTappedProperty = MutableProperty()
-  public func filterButtonTapped() {
-    self.filterButtonTappedProperty.value = ()
-  }
-  private let filtersSelectedRowProperty = MutableProperty<SelectableRow?>(nil)
-  public func filtersSelected(row row: SelectableRow) {
-    self.filtersSelectedRowProperty.value = row
+  private let filtersSelectedParamsProperty = MutableProperty<DiscoveryParams?>(nil)
+  public func filterSelected(withParams params: DiscoveryParams) {
+    self.filtersSelectedParamsProperty.value = params
   }
   private let pageTransitionCompletedProperty = MutableProperty(false)
   public func pageTransition(completed completed: Bool) {
@@ -174,11 +138,9 @@ DiscoveryViewModelOutputs {
     self.viewWillAppearProperty.value = animated
   }
 
+  public let configureNavigationHeader: Signal<DiscoveryParams, NoError>
   public let configurePagerDataSource: Signal<[DiscoveryParams.Sort], NoError>
   public let configureSortPager: Signal<[DiscoveryParams.Sort], NoError>
-  public let dismissDiscoveryFilters: Signal<(), NoError>
-  public let filterLabelText: Signal<String, NoError>
-  public let goToDiscoveryFilters: Signal<SelectableRow, NoError>
   public let loadFilterIntoDataSource: Signal<DiscoveryParams, NoError>
   public let navigateToSort: Signal<(DiscoveryParams.Sort, UIPageViewControllerNavigationDirection), NoError>
   public let selectSortPage: Signal<DiscoveryParams.Sort, NoError>

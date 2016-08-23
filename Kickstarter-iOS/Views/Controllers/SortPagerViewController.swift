@@ -12,6 +12,7 @@ internal final class SortPagerViewController: UIViewController {
   internal weak var delegate: SortPagerViewControllerDelegate?
   private let viewModel: SortPagerViewModelType = SortPagerViewModel()
 
+  @IBOutlet private weak var borderLineView: UIView!
   @IBOutlet private weak var indicatorView: UIView!
   @IBOutlet private weak var indicatorViewLeadingConstraint: NSLayoutConstraint!
   @IBOutlet private weak var indicatorViewWidthConstraint: NSLayoutConstraint!
@@ -69,7 +70,11 @@ internal final class SortPagerViewController: UIViewController {
   override func bindStyles() {
     super.bindStyles()
 
-    self.view |> UIView.lens.backgroundColor .~ .whiteColor()
+    self.view
+      |> UIView.lens.backgroundColor .~ .whiteColor()
+
+    self.borderLineView
+      |> discoveryBorderLineStyle
   }
 
   private func createSortButtons(sorts: [DiscoveryParams.Sort]) {
@@ -110,7 +115,11 @@ internal final class SortPagerViewController: UIViewController {
   }
 
   private func updateSortStyle(forCategoryId categoryId: Int?, sorts: [DiscoveryParams.Sort]) {
-    self.indicatorView |> UIView.lens.backgroundColor .~ discoveryIndicatorColor(forCategoryId: categoryId)
+    self.indicatorView
+      |> UIView.lens.backgroundColor .~ discoveryPrimaryColor(forCategoryId: categoryId)
+
+    self.borderLineView
+      |> UIView.lens.backgroundColor .~ discoveryPrimaryColor(forCategoryId: categoryId)
 
     let zipped = zip(sorts, self.sortsStackView.arrangedSubviews)
 

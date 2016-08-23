@@ -33,16 +33,8 @@ ActivityFriendBackingViewModelInputs, ActivityFriendBackingViewModelOutputs {
 
     self.friendTitle = activity
       .map { activity in
-        guard let category = activity.project?.category else { return "" }
-
-        return localizedString(
-          key: "activity.friend_backed_\(localizedSlug(forCategory: category))_project",
-          defaultValue: "%{friend_name} backed a %{category} project.",
-          substitutions: [
-            "friend_name": activity.user?.name ?? "",
-            "category": activity.project?.category.root?.name ?? ""
-          ]
-        )
+        guard let categoryId = activity.project?.category.rootId else { return "" }
+        return string(forCategoryId: categoryId, friendName: activity.user?.name ?? "")
     }
 
     self.projectName = activity.map { $0.project?.name ?? "" }
@@ -73,40 +65,25 @@ ActivityFriendBackingViewModelInputs, ActivityFriendBackingViewModelOutputs {
 }
 
 // swiftlint:disable cyclomatic_complexity
-private func localizedSlug(forCategory category: KsApi.Category) -> String {
-  switch category.rootId ?? 0 {
-  case 1:
-    return "art"
-  case 3:
-    return "comics"
-  case 6:
-    return "crafts"
-  case 7:
-    return "dance"
-  case 9:
-    return "design"
-  case 11:
-    return "fashion"
-  case 10:
-    return "film"
-  case 12:
-    return "food"
-  case 13:
-    return "games"
-  case 14:
-    return "journalism"
-  case 15:
-    return "music"
-  case 18:
-    return "photography"
-  case 16:
-    return "publishing"
-  case 17:
-    return "tech"
-  case 26:
-    return "theater"
-  default:
-    return ""
+private func string(forCategoryId id: Int, friendName: String) -> String {
+  let root = RootCategory(categoryId: id)
+  switch root {
+  case .art:          return Strings.activity_friend_backed_art_project(friend_name: friendName)
+  case .comics:       return Strings.activity_friend_backed_comics_project(friend_name: friendName)
+  case .dance:        return Strings.activity_friend_backed_dance_project(friend_name: friendName)
+  case .design:       return Strings.activity_friend_backed_design_project(friend_name: friendName)
+  case .fashion:      return Strings.activity_friend_backed_fashion_project(friend_name: friendName)
+  case .food:         return Strings.activity_friend_backed_food_project(friend_name: friendName)
+  case .film:         return Strings.activity_friend_backed_film_project(friend_name: friendName)
+  case .games:        return Strings.activity_friend_backed_games_project(friend_name: friendName)
+  case .journalism:   return Strings.activity_friend_backed_journalism_project(friend_name: friendName)
+  case .music:        return Strings.activity_friend_backed_music_project(friend_name: friendName)
+  case .photography:  return Strings.activity_friend_backed_photography_project(friend_name: friendName)
+  case .tech:         return Strings.activity_friend_backed_tech_project(friend_name: friendName)
+  case .theater:      return Strings.activity_friend_backed_theater_project(friend_name: friendName)
+  case .publishing:   return Strings.activity_friend_backed_publishing_project(friend_name: friendName)
+  case .crafts:       return Strings.activity_friend_backed_crafts_project(friend_name: friendName)
+  case .unrecognized: return ""
   }
 }
 // swiftlint:enable cyclomatic_complexity

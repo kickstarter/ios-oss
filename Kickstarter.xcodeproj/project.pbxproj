@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		013F2FDC1D66243E0066DB77 /* DiscoveryNavigationHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013F2FDB1D66243E0066DB77 /* DiscoveryNavigationHeaderViewModel.swift */; };
 		0146E3231CC0296900082C5B /* FacebookConfirmationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0146E3211CC0296900082C5B /* FacebookConfirmationViewController.swift */; };
 		0148EF911CDD2879000DEFF8 /* ThanksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0148EF8F1CDD2879000DEFF8 /* ThanksViewController.swift */; };
 		014A8DEB1CE3C350003BF51C /* ThanksProjectsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 014A8DE91CE3C350003BF51C /* ThanksProjectsDataSource.swift */; };
@@ -33,7 +34,11 @@
 		015A07461D247564007AE210 /* UpdateDraftViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803BDF731D11AF7C004A785A /* UpdateDraftViewController.swift */; };
 		015B78851D47FF51003216AC /* MFMailComposeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015B78841D47FF51003216AC /* MFMailComposeViewController.swift */; };
 		015B78BC1D481805003216AC /* HelpWebViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015B78BB1D481805003216AC /* HelpWebViewModelTests.swift */; };
+		0169F8C11D6CA27500C8D5C5 /* RootCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0169F8C01D6CA27500C8D5C5 /* RootCategory.swift */; };
+		0169F8C21D6CA27500C8D5C5 /* RootCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0169F8C01D6CA27500C8D5C5 /* RootCategory.swift */; };
 		0170E7701D25C55200E2CCE4 /* ProjectActivityCommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D2546F71D23101E0053844D /* ProjectActivityCommentCell.swift */; };
+		017508161D67A4E300BB1863 /* DiscoveryNavigationHeaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 017508151D67A4E300BB1863 /* DiscoveryNavigationHeaderViewController.swift */; };
+		017508781D68C9E900BB1863 /* DiscoveryNavigationHeaderViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 017508771D68C9E900BB1863 /* DiscoveryNavigationHeaderViewModelTests.swift */; };
 		0176E13B1C9742FD009CA092 /* UIBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0176E13A1C9742FD009CA092 /* UIBarButtonItem.swift */; };
 		0176E19B1C976703009CA092 /* UITextfield+LocalizedPlaceholderKeyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0176E19A1C976703009CA092 /* UITextfield+LocalizedPlaceholderKeyTests.swift */; };
 		0176E19C1C976703009CA092 /* UITextfield+LocalizedPlaceholderKeyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0176E19A1C976703009CA092 /* UITextfield+LocalizedPlaceholderKeyTests.swift */; };
@@ -1424,6 +1429,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		013F2FDB1D66243E0066DB77 /* DiscoveryNavigationHeaderViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryNavigationHeaderViewModel.swift; sourceTree = "<group>"; };
 		0146E3211CC0296900082C5B /* FacebookConfirmationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookConfirmationViewController.swift; sourceTree = "<group>"; };
 		0148EF8F1CDD2879000DEFF8 /* ThanksViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThanksViewController.swift; sourceTree = "<group>"; };
 		014A8DE91CE3C350003BF51C /* ThanksProjectsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThanksProjectsDataSource.swift; sourceTree = "<group>"; };
@@ -1444,6 +1450,9 @@
 		015A06F51D219513007AE210 /* DashboardRewardsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardRewardsCell.swift; sourceTree = "<group>"; };
 		015B78841D47FF51003216AC /* MFMailComposeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MFMailComposeViewController.swift; sourceTree = "<group>"; };
 		015B78BB1D481805003216AC /* HelpWebViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpWebViewModelTests.swift; sourceTree = "<group>"; };
+		0169F8C01D6CA27500C8D5C5 /* RootCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootCategory.swift; sourceTree = "<group>"; };
+		017508151D67A4E300BB1863 /* DiscoveryNavigationHeaderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryNavigationHeaderViewController.swift; sourceTree = "<group>"; };
+		017508771D68C9E900BB1863 /* DiscoveryNavigationHeaderViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryNavigationHeaderViewModelTests.swift; sourceTree = "<group>"; };
 		0176E13A1C9742FD009CA092 /* UIBarButtonItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIBarButtonItem.swift; sourceTree = "<group>"; };
 		0176E19A1C976703009CA092 /* UITextfield+LocalizedPlaceholderKeyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "UITextfield+LocalizedPlaceholderKeyTests.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		017E88B91CD2A609003FE5D6 /* UIActivityViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIActivityViewController.swift; sourceTree = "<group>"; };
@@ -2332,6 +2341,7 @@
 				A7180BA81CCED598001711CA /* CommentsViewController.swift */,
 				01A120D21D2D6E6200B42F73 /* DashboardProjectsDrawerViewController.swift */,
 				A745D0461CA8985B00C12802 /* DashboardViewController.swift */,
+				017508151D67A4E300BB1863 /* DiscoveryNavigationHeaderViewController.swift */,
 				A75798901D6A201F0063CEEC /* DebugPushNotifictionsViewController.swift */,
 				A72C3AAB1D00F99B0075227E /* DiscoveryFiltersViewController.swift */,
 				A72C3AA81D00F96C0075227E /* DiscoveryPageViewController.swift */,
@@ -2498,6 +2508,7 @@
 				018422C61D2C48E300CA7566 /* DashboardTitleViewViewModelTests.swift */,
 				59D1E6731D18968300896A4C /* DashboardVideoCellViewModelTests.swift */,
 				59B0DFFF1D11EAC70081D2DC /* DashboardViewModelTests.swift */,
+				017508771D68C9E900BB1863 /* DiscoveryNavigationHeaderViewModelTests.swift */,
 				A78851C31D6C91C600617930 /* DeprecatedWebViewModelTests.swift */,
 				A72C3A991D00F6E60075227E /* DiscoveryFiltersViewModelTests.swift */,
 				A72C3A9A1D00F6E60075227E /* DiscoveryPageViewModelTests.swift */,
@@ -2667,8 +2678,10 @@
 				A7C7257A1C85D36D005A016B /* AVPlayerView.swift */,
 				0151AEB91C8F811C0067F1BE /* BorderButton.swift */,
 				A71F59E71D2424CA00909BE3 /* CacheProtocol.swift */,
+				9DBF80DE1D666CAC007F2843 /* CheckoutIntent.swift */,
 				A7FC8C051C8F1DEA00C3B49B /* CircleAvatarImageView.swift */,
 				A7D121081D15B08200F364FD /* CountBadgeView.swift */,
+				A7C725851C85D36D005A016B /* DataSource */,
 				A7C7257F1C85D36D005A016B /* Environment.swift */,
 				A72C3A8A1D00F6A80075227E /* ExpandableRow.swift */,
 				A7208C3D1CCAC86800E3DAB3 /* FacebookAppDelegateProtocol.swift */,
@@ -2681,6 +2694,7 @@
 				A76078091CAEE0A6001B39D0 /* IsValidEmail.swift */,
 				A72AFFD91CD7ED6B008F052B /* Keyboard.swift */,
 				A71404381CAF215900A2795B /* KeyValueStoreType.swift */,
+				A721DF3D1C8CF4F6000CB97C /* Koala */,
 				A7C725821C85D36D005A016B /* Language.swift */,
 				A7C725831C85D36D005A016B /* LaunchedCountries.swift */,
 				A7C725841C85D36D005A016B /* LocalizedString.swift */,
@@ -2690,19 +2704,24 @@
 				A7C725911C85D36D005A016B /* NSBundleType.swift */,
 				A78537F71CB5803B00385B73 /* NSHTTPCookieStorageType.swift */,
 				A77D7B061CBAAF5D0077586B /* Paginate.swift */,
+				9DD1E3871D50035E00D4829E /* ProjectActivityData.swift */,
 				A75C811A1D210C4700B5AD03 /* ProjectActivityItemProvider.swift */,
 				8053D3101D3848A3007B85DB /* Reachability.swift */,
 				A7DC83951C9DBBE700BB2B44 /* RefTag.swift */,
+				0169F8C01D6CA27500C8D5C5 /* RootCategory.swift */,
 				A75C81191D210C4700B5AD03 /* SafariActivity.swift */,
 				A72C3A8B1D00F6A80075227E /* SelectableRow.swift */,
 				A75C81251D210F1F00B5AD03 /* ShareContext.swift */,
+				A7A882BE1D31745500E9046E /* SimpleHTMLLabel.swift */,
 				8024FE4A1D6376BF0067A1F6 /* Storyboard.swift */,
 				A7C725921C85D36D005A016B /* String+SimpleHTML.swift */,
-				A79BF81E1D11F6AF004C0445 /* Strings.swift */,
 				9D10B91A1D35407C008B8045 /* String+Truncate.swift */,
 				8016BFE71D0F582D00067956 /* String+Whitespace.swift */,
+				A79BF81E1D11F6AF004C0445 /* Strings.swift */,
 				0151AEB01C8F6FD80067F1BE /* StyledLabel.swift */,
+				A73378F91D0AE33B00C91445 /* Styles */,
 				0151AEAD1C8F61870067F1BE /* Styles.swift */,
+				A75511881C8645A0005355CF /* Tests */,
 				017E88B91CD2A609003FE5D6 /* UIActivityViewController.swift */,
 				0156B4181D10B419000C4252 /* UIAlertController.swift */,
 				0176E13A1C9742FD009CA092 /* UIBarButtonItem.swift */,
@@ -2718,15 +2737,8 @@
 				01A7A4BF1C9690220036E553 /* UITextField+LocalizedPlaceholderKey.swift */,
 				A733795F1D0EDFEE00C91445 /* UIViewController-Preparation.swift */,
 				A75C811B1D210C4700B5AD03 /* UpdateActivityItemProvider.swift */,
-				A734A2661D21A1790080BBD5 /* WKNavigationActionProtocol.swift */,
-				A7C725851C85D36D005A016B /* DataSource */,
-				A721DF3D1C8CF4F6000CB97C /* Koala */,
-				A73378F91D0AE33B00C91445 /* Styles */,
-				A75511881C8645A0005355CF /* Tests */,
 				A7F4418D1D005A9400FE6FC5 /* ViewModels */,
-				A7A882BE1D31745500E9046E /* SimpleHTMLLabel.swift */,
-				9DD1E3871D50035E00D4829E /* ProjectActivityData.swift */,
-				9DBF80DE1D666CAC007F2843 /* CheckoutIntent.swift */,
+				A734A2661D21A1790080BBD5 /* WKNavigationActionProtocol.swift */,
 			);
 			path = Library;
 			sourceTree = "<group>";
@@ -3064,6 +3076,7 @@
 				018422B81D2C482900CA7566 /* DashboardTitleViewViewModel.swift */,
 				59D1E6571D1866F800896A4C /* DashboardVideoCellViewModel.swift */,
 				9D9F580E1D131B4000CE81DE /* DashboardViewModel.swift */,
+				013F2FDB1D66243E0066DB77 /* DiscoveryNavigationHeaderViewModel.swift */,
 				A78851901D6C900000617930 /* DeprecatedWebViewModel.swift */,
 				A72C3A901D00F6C70075227E /* DiscoveryFiltersViewModel.swift */,
 				A72C3A911D00F6C70075227E /* DiscoveryPageViewModel.swift */,
@@ -4001,6 +4014,7 @@
 			files = (
 				0156B3751D0F7524000C4252 /* ActivityFriendFollowCellViewModel.swift in Sources */,
 				A7F441BF1D005A9400FE6FC5 /* DiscoveryProjectViewModel.swift in Sources */,
+				013F2FDC1D66243E0066DB77 /* DiscoveryNavigationHeaderViewModel.swift in Sources */,
 				A79BF81F1D11F6AF004C0445 /* Strings.swift in Sources */,
 				A73379451D0E36A600C91445 /* Colors.swift in Sources */,
 				01C7CDB11D13462500D9E0D1 /* DashboardRewardRowStackViewViewModel.swift in Sources */,
@@ -4142,6 +4156,7 @@
 				A7208C3E1CCAC86800E3DAB3 /* FacebookAppDelegateProtocol.swift in Sources */,
 				598D96C21D429756003F3F66 /* ActivitySampleStyles.swift in Sources */,
 				59B0E07E1D147F340081D2DC /* DashboardStyles.swift in Sources */,
+				0169F8C11D6CA27500C8D5C5 /* RootCategory.swift in Sources */,
 				A707BAD81CFFAB9400653B2F /* LoginIntent.swift in Sources */,
 				A7B693FF1C8789C100C49A4F /* HockeyManagerType.swift in Sources */,
 				A72C3A8C1D00F6A80075227E /* ExpandableRow.swift in Sources */,
@@ -4224,6 +4239,7 @@
 				A75511941C8645A0005355CF /* AppEnvironmentTests.swift in Sources */,
 				9DC204EC1D1B5037003C1636 /* ProjectActivityNegativeStateChangeCellViewModelTests.swift in Sources */,
 				0176E19B1C976703009CA092 /* UITextfield+LocalizedPlaceholderKeyTests.swift in Sources */,
+				017508781D68C9E900BB1863 /* DiscoveryNavigationHeaderViewModelTests.swift in Sources */,
 				59D1E6791D189EFE00896A4C /* DashboardVideoCellViewModelTests.swift in Sources */,
 				A77519221C8CB0360022F175 /* CircleAvatarImageViewTests.swift in Sources */,
 				A78537931CB46CFB00385B73 /* KoalaTests.swift in Sources */,
@@ -4318,6 +4334,7 @@
 				019954601D2D818E00BC1390 /* DashboardProjectsDrawerViewModel.swift in Sources */,
 				A7CC14661D00E81B00035C52 /* FriendsSource.swift in Sources */,
 				A75511B21C8647D9005355CF /* Language.swift in Sources */,
+				0169F8C21D6CA27500C8D5C5 /* RootCategory.swift in Sources */,
 				A70968C71D14366D00DB39D3 /* BaseStyles.swift in Sources */,
 				A74A949B1D4532690031C23D /* ProjectFooterViewModel.swift in Sources */,
 				A7A882C01D31745500E9046E /* SimpleHTMLLabel.swift in Sources */,
@@ -4653,6 +4670,7 @@
 				9D14FF8E1D133351005F4ABB /* ProjectActivityEmptyStateCell.swift in Sources */,
 				A72C39F51D00F27E0075227E /* SettingsViewController.swift in Sources */,
 				A715ACF11CE7F3D300605F02 /* ActivityLaunchCell.swift in Sources */,
+				017508161D67A4E300BB1863 /* DiscoveryNavigationHeaderViewController.swift in Sources */,
 				A78012651D2EEA620027396E /* ReferralChartView.swift in Sources */,
 				597073B21D07281800B00444 /* ProjectNotificationCell.swift in Sources */,
 				01DEFB961CB44A5D003709C0 /* TwoFactorViewController.swift in Sources */,

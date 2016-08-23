@@ -1576,6 +1576,295 @@ public enum Strings {
     )
   }
   /**
+   "All Art Projects"
+
+   - **es**: "Todos los proyectos de la categoría Arte"
+   - **de**: "All Art Projects"
+   - **fr**: "Tous les projets de la catégorie Art"
+   - **it**: "All Art Projects"
+   - **en**: "All Art Projects"
+  */
+  public static func all_art_projects() -> String {
+    return localizedString(
+      key: "all_art_projects",
+      defaultValue: "All Art Projects",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "All Comics Projects"
+
+   - **es**: "Todos los proyectos de la categoría Comics"
+   - **de**: "All Comics Projects"
+   - **fr**: "Tous les projets de la catégorie Bande dessinée"
+   - **it**: "All Comics Projects"
+   - **en**: "All Comics Projects"
+  */
+  public static func all_comics_projects() -> String {
+    return localizedString(
+      key: "all_comics_projects",
+      defaultValue: "All Comics Projects",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "All Crafts Projects"
+
+   - **es**: "Todos los proyectos de la categoría Artesanías"
+   - **de**: "All Crafts Projects"
+   - **fr**: "Tous les projets de la catégorie Artisanat"
+   - **it**: "All Crafts Projects"
+   - **en**: "All Crafts Projects"
+  */
+  public static func all_crafts_projects() -> String {
+    return localizedString(
+      key: "all_crafts_projects",
+      defaultValue: "All Crafts Projects",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "All Dance Projects"
+
+   - **es**: "Todos los proyectos de la categoría Danza"
+   - **de**: "All Dance Projects"
+   - **fr**: "Tous les projets de la catégorie Danse"
+   - **it**: "All Dance Projects"
+   - **en**: "All Dance Projects"
+  */
+  public static func all_dance_projects() -> String {
+    return localizedString(
+      key: "all_dance_projects",
+      defaultValue: "All Dance Projects",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "All Design Projects"
+
+   - **es**: "Todos los proyectos de la categoría Diseño"
+   - **de**: "All Design Projects"
+   - **fr**: "Tous les projets de la catégorie Design"
+   - **it**: "All Design Projects"
+   - **en**: "All Design Projects"
+  */
+  public static func all_design_projects() -> String {
+    return localizedString(
+      key: "all_design_projects",
+      defaultValue: "All Design Projects",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "All Fashion Projects"
+
+   - **es**: "Todos los proyectos de la categoría Moda"
+   - **de**: "All Fashion Projects"
+   - **fr**: "Tous les projets de la catégorie Mode"
+   - **it**: "All Fashion Projects"
+   - **en**: "All Fashion Projects"
+  */
+  public static func all_fashion_projects() -> String {
+    return localizedString(
+      key: "all_fashion_projects",
+      defaultValue: "All Fashion Projects",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "All Film & Video Projects"
+
+   - **es**: "Todos los proyectos de la categoría Cine y Video"
+   - **de**: "All Film & Video Projects"
+   - **fr**: "Tous les projets de la catégorie Cinéma et vidéo"
+   - **it**: "All Film & Video Projects"
+   - **en**: "All Film & Video Projects"
+  */
+  public static func all_film_projects() -> String {
+    return localizedString(
+      key: "all_film_projects",
+      defaultValue: "All Film & Video Projects",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "All Food Projects"
+
+   - **es**: "Todos los proyectos de la categoría Comida"
+   - **de**: "All Food Projects"
+   - **fr**: "Tous les projets de la catégorie Gastronomie"
+   - **it**: "All Food Projects"
+   - **en**: "All Food Projects"
+  */
+  public static func all_food_projects() -> String {
+    return localizedString(
+      key: "all_food_projects",
+      defaultValue: "All Food Projects",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "All Games Projects"
+
+   - **es**: "Todos los proyectos de la categoría Juegos"
+   - **de**: "All Games Projects"
+   - **fr**: "Tous les projets de la catégorie Jeux"
+   - **it**: "All Games Projects"
+   - **en**: "All Games Projects"
+  */
+  public static func all_games_projects() -> String {
+    return localizedString(
+      key: "all_games_projects",
+      defaultValue: "All Games Projects",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "All Journalism Projects"
+
+   - **es**: "Todos los proyectos de la categoría Periodismo"
+   - **de**: "All Journalism Projects"
+   - **fr**: "Tous les projets de la catégorie Journalisme"
+   - **it**: "All Journalism Projects"
+   - **en**: "All Journalism Projects"
+  */
+  public static func all_journalism_projects() -> String {
+    return localizedString(
+      key: "all_journalism_projects",
+      defaultValue: "All Journalism Projects",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "All Music Projects"
+
+   - **es**: "Todos los proyectos de la categoría Música"
+   - **de**: "All Music Projects"
+   - **fr**: "Tous les projets de la catégorie Musique"
+   - **it**: "All Music Projects"
+   - **en**: "All Music Projects"
+  */
+  public static func all_music_projects() -> String {
+    return localizedString(
+      key: "all_music_projects",
+      defaultValue: "All Music Projects",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "All Photography Projects"
+
+   - **es**: "Todos los proyectos de la categoría Fotografía"
+   - **de**: "All Photography Projects"
+   - **fr**: "Tous les projets de la catégorie Photographie"
+   - **it**: "All Photography Projects"
+   - **en**: "All Photography Projects"
+  */
+  public static func all_photography_projects() -> String {
+    return localizedString(
+      key: "all_photography_projects",
+      defaultValue: "All Photography Projects",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "All Projects"
+
+   - **es**: "Todos los proyectos"
+   - **de**: "All Projects"
+   - **fr**: "Tous les projets"
+   - **it**: "All Projects"
+   - **en**: "All Projects"
+  */
+  public static func all_projects() -> String {
+    return localizedString(
+      key: "all_projects",
+      defaultValue: "All Projects",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "All Publishing Projects"
+
+   - **es**: "Todos los proyectos de la categoría Editorial"
+   - **de**: "All Publishing Projects"
+   - **fr**: "Tous les projets de la catégorie Édition"
+   - **it**: "All Publishing Projects"
+   - **en**: "All Publishing Projects"
+  */
+  public static func all_publishing_projects() -> String {
+    return localizedString(
+      key: "all_publishing_projects",
+      defaultValue: "All Publishing Projects",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "All Technology Projects"
+
+   - **es**: "Todos los proyectos de la categoría Tecnología"
+   - **de**: "All Technology Projects"
+   - **fr**: "Tous les projets de la catégorie Technologie"
+   - **it**: "All Technology Projects"
+   - **en**: "All Technology Projects"
+  */
+  public static func all_tech_projects() -> String {
+    return localizedString(
+      key: "all_tech_projects",
+      defaultValue: "All Technology Projects",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "All Theater Projects"
+
+   - **es**: "Todos los proyectos de la categoría Teatro"
+   - **de**: "All Theater Projects"
+   - **fr**: "Tous les projets de la catégorie Théâtre"
+   - **it**: "All Theater Projects"
+   - **en**: "All Theater Projects"
+  */
+  public static func all_theater_projects() -> String {
+    return localizedString(
+      key: "all_theater_projects",
+      defaultValue: "All Theater Projects",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Backed by Friends"
+
+   - **es**: "Patrocinados por amigos"
+   - **de**: "Backed by Friends"
+   - **fr**: "Soutenu par mes amis"
+   - **it**: "Backed by Friends"
+   - **en**: "Backed by Friends"
+  */
+  public static func backed_by_friends() -> String {
+    return localizedString(
+      key: "backed_by_friends",
+      defaultValue: "Backed by Friends",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Backer #%{backer_number}"
 
    - **es**: "Patrocinador n° %{backer_number}"
@@ -1896,6 +2185,40 @@ public enum Strings {
       defaultValue: "%{project_count} live projects",
       count: nil,
       substitutions: ["project_count": project_count]
+    )
+  }
+  /**
+   "Closes filters."
+
+   - **es**: "Closes filters."
+   - **de**: "Closes filters."
+   - **fr**: "Closes filters."
+   - **it**: "Closes filters."
+   - **en**: "Closes filters."
+  */
+  public static func closes_filters() -> String {
+    return localizedString(
+      key: "closes_filters",
+      defaultValue: "Closes filters.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Connect with Facebook to follow friends and get notified when they back or launch projects."
+
+   - **es**: "Conéctate via Facebook y sigue a tus amigos - ¡te avisaremos cada vez que publican o patrocinan un proyecto!"
+   - **de**: "Connect with Facebook to follow friends and get notified when they back or launch projects."
+   - **fr**: "Connectez-vous avec votre compte Facebook pour suivre vos amis et recevoir des notifications chaque fois qu'ils soutiennent ou lancent un projet."
+   - **it**: "Connect with Facebook to follow friends and get notified when they back or launch projects."
+   - **en**: "Connect with Facebook to follow friends and get notified when they back or launch projects."
+  */
+  public static func connect_with_facebook_to_follow_friends_and_get_notified() -> String {
+    return localizedString(
+      key: "connect_with_facebook_to_follow_friends_and_get_notified",
+      defaultValue: "Connect with Facebook to follow friends and get notified when they back or launch projects.",
+      count: nil,
+      substitutions: [:]
     )
   }
   /**
@@ -4364,6 +4687,23 @@ public enum Strings {
     )
   }
   /**
+   "Discover more projects."
+
+   - **es**: "Descubre más proyectos."
+   - **de**: "Discover more projects."
+   - **fr**: "Découvrez plus de projets."
+   - **it**: "Discover more projects."
+   - **en**: "Discover more projects."
+  */
+  public static func discover_more_projects() -> String {
+    return localizedString(
+      key: "discover_more_projects",
+      defaultValue: "Discover more projects.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Changes sort."
 
    - **es**: "Clasif. de cambios."
@@ -5248,35 +5588,35 @@ public enum Strings {
     )
   }
   /**
-   "Get social to discover more projects that you'll love, together."
+   "Discover more projects."
 
    - **es**: "¡Descubrir proyectos juntos es más divertido."
    - **de**: "Gemeinsam Projekte entdecken macht mehr Spaß."
    - **fr**: "Encore plus de projets à découvrir et à suivre ensemble."
-   - **it**: "Get social to discover more projects that you'll love, together."
-   - **en**: "Get social to discover more projects that you'll love, together."
+   - **it**: "Discover more projects."
+   - **en**: "Discover more projects."
   */
   public static func discovery_facebook_connect_hero_get_social_to_discover_more_projects() -> String {
     return localizedString(
       key: "discovery.facebook_connect_hero.get_social_to_discover_more_projects",
-      defaultValue: "Get social to discover more projects that you'll love, together.",
+      defaultValue: "Discover more projects.",
       count: nil,
       substitutions: [:]
     )
   }
   /**
-   "If you connect with Facebook, you can follow your friends to get notified as they're launching and backing new projects."
+   "Connect with Facebook to follow friends and get notified when they back or launch projects."
 
    - **es**: "Si te conectas via Facebook puedes seguir a tus amigos y te avisaremos cada vez que publican o patrocinan un proyecto."
    - **de**: "Wenn du dein Konto mit Facebook verknüpfst, kannst du deinen Freunden folgen und wirst benachrichtigt, sobald sie ein Projekt veröffentlichen oder unterstützen."
    - **fr**: "Si vous vous connectez avec votre compte Facebook, vous pourrez suivre vos amis et recevoir des notifications chaque fois qu'ils lancent ou soutiennent de nouveaux projets."
-   - **it**: "If you connect with Facebook, you can follow your friends to get notified as they're launching and backing new projects."
-   - **en**: "If you connect with Facebook, you can follow your friends to get notified as they're launching and backing new projects."
+   - **it**: "Connect with Facebook to follow friends and get notified when they back or launch projects."
+   - **en**: "Connect with Facebook to follow friends and get notified when they back or launch projects."
   */
   public static func discovery_facebook_connect_hero_if_you_connect_with_facebook() -> String {
     return localizedString(
       key: "discovery.facebook_connect_hero.if_you_connect_with_facebook",
-      defaultValue: "If you connect with Facebook, you can follow your friends to get notified as they're launching and backing new projects.",
+      defaultValue: "Connect with Facebook to follow friends and get notified when they back or launch projects.",
       count: nil,
       substitutions: [:]
     )
@@ -5469,35 +5809,35 @@ public enum Strings {
     )
   }
   /**
-   "Follow your friends and we'll notify you whenever they launch or back a new project."
+   "Follow your Facebook friends and get notified when they back or launch projects."
 
    - **es**: "Sigue a tus amigos y te avisaremos cuando publican o patrocinan un proyecto."
    - **de**: "Folge deinen Freunden und wir werden dich benachrichtigen, sobald sie ein Projekt unterstützen oder veröffentlichen."
    - **fr**: "Suivez vos amis et nous vous informerons chaque fois qu'ils lancent ou soutiennent un nouveau projet."
-   - **it**: "Follow your friends and we'll notify you whenever they launch or back a new project."
-   - **en**: "Follow your friends and we'll notify you whenever they launch or back a new project."
+   - **it**: "Follow your Facebook friends and get notified when they back or launch projects."
+   - **en**: "Follow your Facebook friends and get notified when they back or launch projects."
   */
   public static func discovery_find_friends_hero_follow_your_friends_and_we_will_notify_you() -> String {
     return localizedString(
       key: "discovery.find_friends_hero.follow_your_friends_and_we_will_notify_you",
-      defaultValue: "Follow your friends and we'll notify you whenever they launch or back a new project.",
+      defaultValue: "Follow your Facebook friends and get notified when they back or launch projects.",
       count: nil,
       substitutions: [:]
     )
   }
   /**
-   "Your friends are here!"
+   "Discover more projects."
 
    - **es**: "¡Tus amigos están aquí!"
    - **de**: "Deine Freunde sind hier!"
    - **fr**: "Vos amis sont ici !"
-   - **it**: "Your friends are here!"
-   - **en**: "Your friends are here!"
+   - **it**: "Discover more projects."
+   - **en**: "Discover more projects."
   */
   public static func discovery_find_friends_hero_your_friends_are_here() -> String {
     return localizedString(
       key: "discovery.find_friends_hero.your_friends_are_here",
-      defaultValue: "Your friends are here!",
+      defaultValue: "Discover more projects.",
       count: nil,
       substitutions: [:]
     )
@@ -5930,9 +6270,9 @@ public enum Strings {
   /**
    "Ending Soon"
 
-   - **es**: "Ending Soon"
+   - **es**: "Finaliza pronto"
    - **de**: "Ending Soon"
-   - **fr**: "Ending Soon"
+   - **fr**: "Campagnes bientôt terminées"
    - **it**: "Ending Soon"
    - **en**: "Ending Soon"
   */
@@ -6093,6 +6433,176 @@ public enum Strings {
     return localizedString(
       key: "facebook_confirmation.wrong_account_title",
       defaultValue: "Already have a Kickstarter account?",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Filtered by all projects"
+
+   - **es**: "Filtered by all projects"
+   - **de**: "Filtered by all projects"
+   - **fr**: "Filtered by all projects"
+   - **it**: "Filtered by all projects"
+   - **en**: "Filtered by all projects"
+  */
+  public static func filtered_by_all_projects() -> String {
+    return localizedString(
+      key: "filtered_by_all_projects",
+      defaultValue: "Filtered by all projects",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Filtered by %{category_name}"
+
+   - **es**: "Filtered by %{category_name}"
+   - **de**: "Filtered by %{category_name}"
+   - **fr**: "Filtered by %{category_name}"
+   - **it**: "Filtered by %{category_name}"
+   - **en**: "Filtered by %{category_name}"
+  */
+  public static func filtered_by_category_name(category_name category_name: String) -> String {
+    return localizedString(
+      key: "filtered_by_category_name",
+      defaultValue: "Filtered by %{category_name}",
+      count: nil,
+      substitutions: ["category_name": category_name]
+    )
+  }
+  /**
+   "Filtered by projects backed by friends"
+
+   - **es**: "Filtered by projects backed by friends"
+   - **de**: "Filtered by projects backed by friends"
+   - **fr**: "Filtered by projects backed by friends"
+   - **it**: "Filtered by projects backed by friends"
+   - **en**: "Filtered by projects backed by friends"
+  */
+  public static func filtered_by_projects_backed_by_friends() -> String {
+    return localizedString(
+      key: "filtered_by_projects_backed_by_friends",
+      defaultValue: "Filtered by projects backed by friends",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Filtered by projects recommended for you"
+
+   - **es**: "Filtered by projects recommended for you"
+   - **de**: "Filtered by projects recommended for you"
+   - **fr**: "Filtered by projects recommended for you"
+   - **it**: "Filtered by projects recommended for you"
+   - **en**: "Filtered by projects recommended for you"
+  */
+  public static func filtered_by_projects_recommended_for_you() -> String {
+    return localizedString(
+      key: "filtered_by_projects_recommended_for_you",
+      defaultValue: "Filtered by projects recommended for you",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Filtered by projects we love"
+
+   - **es**: "Filtered by projects we love"
+   - **de**: "Filtered by projects we love"
+   - **fr**: "Filtered by projects we love"
+   - **it**: "Filtered by projects we love"
+   - **en**: "Filtered by projects we love"
+  */
+  public static func filtered_by_projects_we_love() -> String {
+    return localizedString(
+      key: "filtered_by_projects_we_love",
+      defaultValue: "Filtered by projects we love",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Filtered by starred projects"
+
+   - **es**: "Filtered by starred projects"
+   - **de**: "Filtered by starred projects"
+   - **fr**: "Filtered by starred projects"
+   - **it**: "Filtered by starred projects"
+   - **en**: "Filtered by starred projects"
+  */
+  public static func filtered_by_starred_projects() -> String {
+    return localizedString(
+      key: "filtered_by_starred_projects",
+      defaultValue: "Filtered by starred projects",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Filtered by %{subcategory_name} in %{category_name}"
+
+   - **es**: "Filtered by %{subcategory_name} in %{category_name}"
+   - **de**: "Filtered by %{subcategory_name} in %{category_name}"
+   - **fr**: "Filtered by %{subcategory_name} in %{category_name}"
+   - **it**: "Filtered by %{subcategory_name} in %{category_name}"
+   - **en**: "Filtered by %{subcategory_name} in %{category_name}"
+  */
+  public static func filtered_by_subcategory_name_in_category_name(subcategory_name subcategory_name: String, category_name: String) -> String {
+    return localizedString(
+      key: "filtered_by_subcategory_name_in_category_name",
+      defaultValue: "Filtered by %{subcategory_name} in %{category_name}",
+      count: nil,
+      substitutions: ["subcategory_name": subcategory_name, "category_name": category_name]
+    )
+  }
+  /**
+   "Find Facebook friends"
+
+   - **es**: "Encuentra amigos en Facebook"
+   - **de**: "Find Facebook friends"
+   - **fr**: "Retrouver mes amis Facebook"
+   - **it**: "Find Facebook friends"
+   - **en**: "Find Facebook friends"
+  */
+  public static func find_facebook_friends() -> String {
+    return localizedString(
+      key: "find_facebook_friends",
+      defaultValue: "Find Facebook friends",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Follow friends"
+
+   - **es**: "Seguir a amigos"
+   - **de**: "Follow friends"
+   - **fr**: "Suivre mes amis"
+   - **it**: "Follow friends"
+   - **en**: "Follow friends"
+  */
+  public static func follow_friends() -> String {
+    return localizedString(
+      key: "follow_friends",
+      defaultValue: "Follow friends",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Follow your Facebook friends and get notified when they back or launch projects."
+
+   - **es**: "Sigue a tus amigos en Facebook - ¡te avisaremos cada vez que publican o patrocinan un proyecto!"
+   - **de**: "Follow your Facebook friends and get notified when they back or launch projects."
+   - **fr**: "Suivez vos amis Facebook pour recevoir des notifications chaque fois qu'ils soutiennent ou lancent un projet."
+   - **it**: "Follow your Facebook friends and get notified when they back or launch projects."
+   - **en**: "Follow your Facebook friends and get notified when they back or launch projects."
+  */
+  public static func follow_your_facebook_friends_and_get_notified() -> String {
+    return localizedString(
+      key: "follow_your_facebook_friends_and_get_notified",
+      defaultValue: "Follow your Facebook friends and get notified when they back or launch projects.",
       count: nil,
       substitutions: [:]
     )
@@ -7912,6 +8422,23 @@ This is commonly fixed by going to iOS Settings > Facebook and toggling access f
     )
   }
   /**
+   "Opens filters."
+
+   - **es**: "Opens filters."
+   - **de**: "Opens filters."
+   - **fr**: "Opens filters."
+   - **it**: "Opens filters."
+   - **en**: "Opens filters."
+  */
+  public static func opens_filters() -> String {
+    return localizedString(
+      key: "opens_filters",
+      defaultValue: "Opens filters.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Popular"
 
    - **es**: "Popular"
@@ -8973,18 +9500,18 @@ Thank you for your support!"
     )
   }
   /**
-   "Find friends"
+   "Find Facebook friends"
 
    - **es**: "Encontrar amigos"
    - **de**: "Freunde finden"
    - **fr**: "Rechercher mes amis"
-   - **it**: "Find friends"
-   - **en**: "Find friends"
+   - **it**: "Find Facebook friends"
+   - **en**: "Find Facebook friends"
   */
   public static func profile_settings_social_find_friends() -> String {
     return localizedString(
       key: "profile.settings.social.find_friends",
-      defaultValue: "Find friends",
+      defaultValue: "Find Facebook friends",
       count: nil,
       substitutions: [:]
     )
@@ -10781,6 +11308,23 @@ Thank you for your support!"
     )
   }
   /**
+   "Projects We Love"
+
+   - **es**: "Nuestros Favoritos"
+   - **de**: "Projects We Love"
+   - **fr**: "Nos coups de cœur"
+   - **it**: "Projects We Love"
+   - **en**: "Projects We Love"
+  */
+  public static func projects_we_love() -> String {
+    return localizedString(
+      key: "projects_we_love",
+      defaultValue: "Projects We Love",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Close"
 
    - **es**: "Cerrar"
@@ -11597,69 +12141,69 @@ Thank you for your support!"
     )
   }
   /**
-   "Connect with Facebook to follow your friends and get notified whenever they launch or back a new project."
+   "Connect with Facebook to follow friends and get notified when they back or launch projects."
 
    - **es**: "Conéctate via Facebook y sigue a tus amigos - ¡te avisaremos cada vez que publican o patrocinan un proyecto!"
    - **de**: "Verknüpfe dein Konto mit Facebook - du kannst deinen Freunden folgen und wirst benachrichtigt, wenn sie ein Projekt veröffentlichen oder unterstützen."
    - **fr**: "Connectez-vous avec votre compte Facebook pour suivre vos amis et recevoir des notifications chaque fois qu'ils lancent ou soutiennent un nouveau projet."
-   - **it**: "Connect with Facebook to follow your friends and get notified whenever they launch or back a new project."
-   - **en**: "Connect with Facebook to follow your friends and get notified whenever they launch or back a new project."
+   - **it**: "Connect with Facebook to follow friends and get notified when they back or launch projects."
+   - **en**: "Connect with Facebook to follow friends and get notified when they back or launch projects."
   */
   public static func social_following_header_connect_with_facebook_to_follow() -> String {
     return localizedString(
       key: "social_following.header.connect_with_facebook_to_follow",
-      defaultValue: "Connect with Facebook to follow your friends and get notified whenever they launch or back a new project.",
+      defaultValue: "Connect with Facebook to follow friends and get notified when they back or launch projects.",
       count: nil,
       substitutions: [:]
     )
   }
   /**
-   "Connect with your friends to find projects that you'll love, together."
+   "Follow your Facebook friends and get notified when they back or launch projects."
 
    - **es**: "Tú y tus amigos - ¡un equipo invencible para descubrir grandes proyectos!"
    - **de**: "Entdecke gemeinsam mit deinen Freunden klasse Projekte!"
    - **fr**: "Rejoignez-les et découvrez ensemble de nouveaux projets."
-   - **it**: "Connect with your friends to find projects that you'll love, together."
-   - **en**: "Connect with your friends to find projects that you'll love, together."
+   - **it**: "Follow your Facebook friends and get notified when they back or launch projects."
+   - **en**: "Follow your Facebook friends and get notified when they back or launch projects."
   */
   public static func social_following_header_connect_with_your_friends_to_find_projects() -> String {
     return localizedString(
       key: "social_following.header.connect_with_your_friends_to_find_projects",
-      defaultValue: "Connect with your friends to find projects that you'll love, together.",
+      defaultValue: "Follow your Facebook friends and get notified when they back or launch projects.",
       count: nil,
       substitutions: [:]
     )
   }
   /**
-   "Friends Recommend the Best Projects"
+   "Discover more projects."
 
    - **es**: "Tus amigos siempre tienen el mejor gusto"
    - **de**: "Die besten Projekt-Empfehlungen kommen von Freunden"
    - **fr**: "Les meilleurs projets sont recommandés entre amis"
-   - **it**: "Friends Recommend the Best Projects"
-   - **en**: "Friends Recommend the Best Projects"
+   - **it**: "Discover more projects."
+   - **en**: "Discover more projects."
   */
   public static func social_following_header_friends_recommend_the_best_projects() -> String {
     return localizedString(
       key: "social_following.header.friends_recommend_the_best_projects",
-      defaultValue: "Friends Recommend the Best Projects",
+      defaultValue: "Discover more projects.",
       count: nil,
       substitutions: [:]
     )
   }
   /**
-   "Follow your friends!"
+   "Follow friends"
 
    - **es**: "¡Sigue a tus amigos!"
    - **de**: "Folge deinen Freunden!"
    - **fr**: "Suivez vos amis !"
-   - **it**: "Follow your friends!"
-   - **en**: "Follow your friends!"
+   - **it**: "Follow friends"
+   - **en**: "Follow friends"
   */
   public static func social_following_navigation_title_follow_your_friends() -> String {
     return localizedString(
       key: "social_following.navigation.title.follow_your_friends",
-      defaultValue: "Follow your friends!",
+      defaultValue: "Follow friends",
       count: nil,
       substitutions: [:]
     )

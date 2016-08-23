@@ -6,6 +6,22 @@ import UIKit
 import XCPlayground
 @testable import Kickstarter_Framework
 
+let basicParams = DiscoveryParams.defaults
+
+let paramsWithCategory = .defaults
+  |> DiscoveryParams.lens.category .~ .art
+
+let paramsWithSubcategory = .defaults
+  |> DiscoveryParams.lens.category .~ (
+    .documentary
+      |> Category.lens.name .~ "Documentary"
+)
+
+//: Uncomment initialParams below to test different navigation title strings.
+let initialParms = basicParams
+//let initialParms = paramsWithCategory
+//let initialParms = paramsWithSubcategory
+
 let brando = User.brando
 let blob = User.template
 
@@ -42,14 +58,23 @@ AppEnvironment.replaceCurrentEnvironment(
       .anomalisa
     ],
     fetchActivitiesResponse: [projectUpdate, follow, backing]
-  )
+  ),
+  language: .en,
+  mainBundle: NSBundle.framework
 )
 
 initialize()
 let controller = DiscoveryViewController.instantiate()
 
-let (parent, _) = playgroundControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
+let (parent, _) = playgroundControllers(device: .phone4inch, orientation: .portrait, child: controller)
 
 let frame = parent.view.frame
 XCPlaygroundPage.currentPage.liveView = parent
 parent.view.frame = frame
+
+controller.filterHeaderViewController.updateParams(initialParms, filtersAreHidden: true)
+
+
+
+
+

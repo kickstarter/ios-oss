@@ -24,7 +24,7 @@ AppEnvironment.login(AccessTokenEnvelope(accessToken: "cafebeef",
 )
 
 AppEnvironment.replaceCurrentEnvironment(
-  language: .en,
+  language: .es,
   locale: NSLocale(localeIdentifier: "en"),
   apiService: MockService(fetchBackingResponse: backing),
   mainBundle: NSBundle.framework

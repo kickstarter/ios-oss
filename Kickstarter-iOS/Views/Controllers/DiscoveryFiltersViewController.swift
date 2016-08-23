@@ -10,8 +10,11 @@ internal final class DiscoveryFiltersViewController: UITableViewController {
   private let viewModel: DiscoveryFiltersViewModelType = DiscoveryFiltersViewModel()
   internal weak var delegate: DiscoveryFiltersViewControllerDelegate?
 
-  internal func configureWith(selectedRow selectedRow: SelectableRow) {
-    self.viewModel.inputs.configureWith(selectedRow: selectedRow)
+  internal static func configuredWith(selectedRow selectedRow: SelectableRow)
+    -> DiscoveryFiltersViewController {
+    let vc = Storyboard.Discovery.instantiate(DiscoveryFiltersViewController)
+    vc.viewModel.inputs.configureWith(selectedRow: selectedRow)
+    return vc
   }
 
   override func viewDidLoad() {

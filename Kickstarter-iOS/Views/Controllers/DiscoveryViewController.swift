@@ -1,14 +1,15 @@
 import KsApi
 import Library
+import Prelude
 import UIKit
 
 internal final class DiscoveryViewController: UIViewController {
   private let viewModel: DiscoveryViewModelType = DiscoveryViewModel()
   private var dataSource: DiscoveryPagesDataSource!
 
+  internal weak var navigationHeaderViewController: DiscoveryNavigationHeaderViewController!
   private weak var pageViewController: UIPageViewController!
   private weak var sortPagerViewController: SortPagerViewController!
-  @IBOutlet private weak var titleButton: UIButton!
 
   internal static func instantiate() -> DiscoveryViewController {
     return Storyboard.Discovery.instantiate(DiscoveryViewController)
@@ -18,14 +19,16 @@ internal final class DiscoveryViewController: UIViewController {
     super.viewDidLoad()
 
     self.pageViewController = self.childViewControllers
-      .filter { $0 is UIPageViewController }
-      .first as? UIPageViewController
+      .flatMap { $0 as? UIPageViewController }.first
     self.pageViewController.delegate = self
 
     self.sortPagerViewController = self.childViewControllers
-      .filter { $0 is SortPagerViewController }
-      .first as? SortPagerViewController
+      .flatMap { $0 as? SortPagerViewController }.first
     self.sortPagerViewController.delegate = self
+
+    self.navigationHeaderViewController = self.childViewControllers
+      .flatMap { $0 as? DiscoveryNavigationHeaderViewController }.first
+    self.navigationHeaderViewController.delegate = self
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -39,7 +42,11 @@ internal final class DiscoveryViewController: UIViewController {
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.titleButton.rac.title = self.viewModel.outputs.filterLabelText
+    self.viewModel.outputs.configureNavigationHeader
+      .observeForControllerAction()
+      .observeNext { [weak self] in
+        self?.navigationHeaderViewController.configureWith(params: $0)
+    }
 
     self.viewModel.outputs.configurePagerDataSource
       .observeForControllerAction()
@@ -50,12 +57,6 @@ internal final class DiscoveryViewController: UIViewController {
     self.viewModel.outputs.configureSortPager
       .observeNext { [weak self] in
         self?.sortPagerViewController.configureWith(sorts: $0)
-    }
-
-    self.viewModel.outputs.goToDiscoveryFilters
-      .observeForControllerAction()
-      .observeNext { [weak self] in
-        self?.goToDiscoveryFilters($0)
     }
 
     self.viewModel.outputs.loadFilterIntoDataSource
@@ -87,25 +88,6 @@ internal final class DiscoveryViewController: UIViewController {
           [controller], direction: direction, animated: true, completion: nil
         )
     }
-
-    self.viewModel.outputs.dismissDiscoveryFilters
-      .observeForControllerAction()
-      .observeNext { [weak self] in
-        self?.dismissViewControllerAnimated(true, completion: nil)
-    }
-  }
-
-  private func goToDiscoveryFilters(selectedRow: SelectableRow) {
-    guard let vc = self.storyboard?.instantiateViewControllerWithIdentifier("DiscoveryFiltersViewController"),
-      filters = vc as? DiscoveryFiltersViewController else {
-
-      fatalError("Couldn't instantiate DiscoveryFiltersViewController.")
-    }
-
-    filters.configureWith(selectedRow: selectedRow)
-    filters.delegate = self
-
-    self.presentViewController(vc, animated: true, completion: nil)
   }
 
   private func configurePagerDataSource(sorts: [DiscoveryParams.Sort]) {
@@ -118,16 +100,6 @@ internal final class DiscoveryViewController: UIViewController {
       animated: false,
       completion: nil
     )
-  }
-
-  @IBAction private func filterButtonTapped() {
-    self.viewModel.inputs.filterButtonTapped()
-  }
-}
-
-extension DiscoveryViewController: DiscoveryFiltersViewControllerDelegate {
-  internal func discoveryFilters(viewController: DiscoveryFiltersViewController, selectedRow: SelectableRow) {
-    self.viewModel.inputs.filtersSelected(row: selectedRow)
   }
 }
 
@@ -155,5 +127,11 @@ extension DiscoveryViewController: UIPageViewControllerDelegate {
 extension DiscoveryViewController: SortPagerViewControllerDelegate {
   internal func sortPager(viewController: UIViewController, selectedSort sort: DiscoveryParams.Sort) {
     self.viewModel.inputs.sortPagerSelected(sort: sort)
+  }
+}
+
+extension DiscoveryViewController: DiscoveryNavigationHeaderViewDelegate {
+  func discoveryNavigationHeaderFilterSelectedParams(params: DiscoveryParams) {
+    self.viewModel.inputs.filterSelected(withParams: params)
   }
 }
