@@ -32,7 +32,6 @@ internal final class FindFriendsHeaderCell: UITableViewCell, ValueCell {
     self.viewModel.inputs.configureWith(source: source)
   }
 
-
   @IBAction func closeButtonTapped(sender: AnyObject) {
     self.viewModel.inputs.closeButtonTapped()
   }

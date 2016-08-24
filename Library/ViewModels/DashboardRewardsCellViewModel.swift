@@ -62,7 +62,6 @@ public final class DashboardRewardsCellViewModel: DashboardRewardsCellViewModelT
       .map { stats, project in (project.rewards ?? [], stats) }
       .map(allRewardsStats(rewards:stats:))
 
-
     let initialSort = rewards.sort { $0.pledged > $1.pledged }
 
     let sortedByTop = rewards

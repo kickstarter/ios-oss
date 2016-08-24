@@ -51,7 +51,6 @@ public protocol MessageDialogViewModelType {
 public final class MessageDialogViewModel: MessageDialogViewModelType, MessageDialogViewModelInputs,
 MessageDialogViewModelOutputs {
 
-
   // swiftlint:disable function_body_length
   public init() {
     let messageSubject = self.messageSubjectProperty.signal.ignoreNil()

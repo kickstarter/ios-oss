@@ -83,7 +83,6 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       )
       .skipRepeats()
 
-
     self.viewDidAppearProperty.signal
       .take(1)
       .observeNext { AppEnvironment.current.koala.trackProjectSearchView() }

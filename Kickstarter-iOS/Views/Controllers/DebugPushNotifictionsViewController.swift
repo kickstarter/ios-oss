@@ -142,7 +142,6 @@ private let allPushData: [[String:AnyObject]] = [
     ]
   ],
 
-
   [
     "aps": [
       "alert": "Double Fine Adventure has been canceled."
@@ -153,7 +152,6 @@ private let allPushData: [[String:AnyObject]] = [
       "project_id": 1929840910
     ]
   ],
-
 
   [
     "aps": [

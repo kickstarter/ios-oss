@@ -30,7 +30,6 @@ ActivityFriendBackingViewModelInputs, ActivityFriendBackingViewModelOutputs {
     self.friendImageURL = activity
       .map { ($0.user?.avatar.medium).flatMap(NSURL.init) }
 
-
     self.friendTitle = activity
       .map { activity in
         guard let categoryId = activity.project?.category.rootId else { return "" }

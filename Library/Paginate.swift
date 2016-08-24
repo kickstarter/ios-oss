@@ -3,7 +3,6 @@ import Result
 import Prelude
 import ReactiveExtensions
 
-
 /**
  Returns signals that can be used to coordinate the process of paginating through values. This function is
  specific to the type of pagination in which a page's results contains a cursor that can be used to request

@@ -259,7 +259,6 @@ public class ValueCellDataSource: NSObject, UICollectionViewDataSource, UITableV
     return nil
   }
 
-
   private func padValuesForSection(section: Int) {
     guard self.values.count <= section else { return }
 

@@ -28,7 +28,6 @@ internal final class BackingViewModelTests: TestCase {
   internal let goToMessagesProject = TestObserver<Project, NoError>()
   internal let presentMessageDialog = TestObserver<MessageThread, NoError>()
 
-
   override func setUp() {
     super.setUp()
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "hello", user: .template))

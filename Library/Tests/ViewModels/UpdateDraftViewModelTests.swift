@@ -452,7 +452,6 @@ final class UpdateDraftViewModelTests: TestCase {
     }
   }
 
-
   func testPreviewTappedWithEdits() {
     let draft = UpdateDraft.template
     withEnvironment(apiService: MockService(fetchDraftResponse: draft)) {

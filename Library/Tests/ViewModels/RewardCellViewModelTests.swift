@@ -234,7 +234,6 @@ final class RewardCellViewModelTests: TestCase {
     self.remainingStackViewHidden.assertValues([true, false])
   }
 
-
   func testRemainingLabel() {
     self.vm.inputs.configureWith(
       project: .template,

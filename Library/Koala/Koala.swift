@@ -835,7 +835,6 @@ public final class Koala {
     self.track(event: "Canceled Help Menu", properties: ["context": context.trackingString])
   }
 
-
   public func trackOpenedContactEmail(context context: HelpContext) {
     // deprecated
     self.track(event: "Contact Email Open", properties: [Koala.DeprecatedKey: true])

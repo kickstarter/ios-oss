@@ -131,7 +131,6 @@ internal final class SearchViewModelTests: TestCase {
     }
   }
 
-
   // Confirms that entering new search terms cancels previously in-flight API requests for projects,
   // and that ultimately only one set of projects is returned.
   func testCancelingOfSearchResultsWhenEnteringNewSearchTerms() {

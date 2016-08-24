@@ -116,7 +116,6 @@ public let discoveryProjectCellStyle =
       Strings.dashboard_tout_accessibility_hint_opens_project()
 }
 
-
 public func discoverySortPagerButtonStyle <B: UIButtonProtocol> (sort sort: DiscoveryParams.Sort,
                                                                  categoryId: Int?,
                                                                  isLeftMost: Bool,

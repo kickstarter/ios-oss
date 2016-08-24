@@ -20,7 +20,7 @@ final class SearchViewModel: SearchViewModelInputs, SearchViewModelOutputs {
     queryObserver.sendNext(query)
   }
 
-  //MARK: Outputs
+  // MARK: Outputs
   var outputs: SearchViewModelOutputs { return self }
   var projects: SignalProducer<[Project], NoError>
 
