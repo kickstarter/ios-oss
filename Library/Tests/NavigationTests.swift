@@ -54,8 +54,8 @@ public final class NavigationTests: XCTestCase {
     KSRAssertMatch(.project(.slug("project"), .friends, refTag: nil),
                    "/projects/creator/project/friends")
 
-    KSRAssertMatch(.project(.slug("project"), .pledge(.root), refTag: nil),
-                   "/projects/creator/project/pledge")
+    KSRAssertMatch(.project(.slug("project"), .pledge(.bigPrint), refTag: nil),
+                   "/projects/creator/project/pledge/big_print")
 
     KSRAssertMatch(.project(.slug("project"), .pledge(.destroy), refTag: nil),
                    "/projects/creator/project/pledge/destroy")
@@ -65,6 +65,9 @@ public final class NavigationTests: XCTestCase {
 
     KSRAssertMatch(.project(.slug("project"), .pledge(.new), refTag: nil),
                    "/projects/creator/project/pledge/new")
+
+    KSRAssertMatch(.project(.slug("project"), .pledge(.root), refTag: nil),
+                   "/projects/creator/project/pledge")
 
     KSRAssertMatch(.project(.slug("project"), .updates, refTag: nil),
                    "/projects/creator/project/posts")

@@ -24,6 +24,7 @@ public enum Storyboard: String {
   case Update
   case UpdateDraft
   case Video
+  case WebModal
 
   public func instantiate<VC: UIViewController>(viewController: VC.Type,
                           inBundle bundle: NSBundle = .framework) -> VC {

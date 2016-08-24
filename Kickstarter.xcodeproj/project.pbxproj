@@ -239,6 +239,12 @@
 		9D8772141D19E84E003A4E96 /* ProjectActivityLaunchCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8772121D19E84E003A4E96 /* ProjectActivityLaunchCellViewModel.swift */; };
 		9D8772481D19E9D4003A4E96 /* ProjectActivityLaunchCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8772451D19E9C9003A4E96 /* ProjectActivityLaunchCellViewModelTests.swift */; };
 		9D8772491D19E9D4003A4E96 /* ProjectActivityLaunchCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8772451D19E9C9003A4E96 /* ProjectActivityLaunchCellViewModelTests.swift */; };
+		9D89B7E31D6B8B310021F6FF /* WebModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D89B7E21D6B8B310021F6FF /* WebModalViewController.swift */; };
+		9D89B7E51D6B8DB90021F6FF /* WebModalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D89B7E41D6B8DB90021F6FF /* WebModalViewModel.swift */; };
+		9D89B7E61D6B8DB90021F6FF /* WebModalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D89B7E41D6B8DB90021F6FF /* WebModalViewModel.swift */; };
+		9D89B7E81D6BA71F0021F6FF /* WebModal.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9D89B7E71D6BA71F0021F6FF /* WebModal.storyboard */; };
+		9D89B7FA1D6CC2AD0021F6FF /* WebModalViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D89B7F91D6CC2AD0021F6FF /* WebModalViewModelTests.swift */; };
+		9D89B7FB1D6CC2AD0021F6FF /* WebModalViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D89B7F91D6CC2AD0021F6FF /* WebModalViewModelTests.swift */; };
 		9D9F58171D13240B00CE81DE /* ProjectActivitiesViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D9F58121D131B8300CE81DE /* ProjectActivitiesViewModelTests.swift */; };
 		9D9F58181D13240B00CE81DE /* ProjectActivitiesViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D9F58121D131B8300CE81DE /* ProjectActivitiesViewModelTests.swift */; };
 		9D9F58191D13243900CE81DE /* ProjectActivitiesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D9F580F1D131B4000CE81DE /* ProjectActivitiesViewModel.swift */; };
@@ -1572,6 +1578,10 @@
 		9D525F111D417FD7003CAE04 /* ProjectActivitiesDataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectActivitiesDataSourceTests.swift; sourceTree = "<group>"; };
 		9D8772121D19E84E003A4E96 /* ProjectActivityLaunchCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectActivityLaunchCellViewModel.swift; sourceTree = "<group>"; };
 		9D8772451D19E9C9003A4E96 /* ProjectActivityLaunchCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectActivityLaunchCellViewModelTests.swift; sourceTree = "<group>"; };
+		9D89B7E21D6B8B310021F6FF /* WebModalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebModalViewController.swift; sourceTree = "<group>"; };
+		9D89B7E41D6B8DB90021F6FF /* WebModalViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebModalViewModel.swift; sourceTree = "<group>"; };
+		9D89B7E71D6BA71F0021F6FF /* WebModal.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = WebModal.storyboard; sourceTree = "<group>"; };
+		9D89B7F91D6CC2AD0021F6FF /* WebModalViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebModalViewModelTests.swift; sourceTree = "<group>"; };
 		9D9F57CB1D131AF200CE81DE /* ProjectActivityBackingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectActivityBackingCell.swift; sourceTree = "<group>"; };
 		9D9F57CC1D131AF200CE81DE /* ProjectActivityEmptyStateCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectActivityEmptyStateCell.swift; sourceTree = "<group>"; };
 		9D9F57CD1D131AF200CE81DE /* ProjectActivityLaunchCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectActivityLaunchCell.swift; sourceTree = "<group>"; };
@@ -2213,6 +2223,7 @@
 				A73923BA1D272242004524C3 /* Update.storyboard */,
 				A73923BB1D272242004524C3 /* UpdateDraft.storyboard */,
 				59673C8A1D50EC920035AFD9 /* Video.storyboard */,
+				9D89B7E71D6BA71F0021F6FF /* WebModal.storyboard */,
 			);
 			path = Storyboards;
 			sourceTree = "<group>";
@@ -2377,6 +2388,7 @@
 				8072F41C1D46B75200999EF1 /* UpdatePreviewViewController.swift */,
 				A731BF8B1D1EE44E00A734AC /* UpdateViewController.swift */,
 				59673CBC1D50ED380035AFD9 /* VideoViewController.swift */,
+				9D89B7E21D6B8B310021F6FF /* WebModalViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -2557,6 +2569,7 @@
 				A7830CF71D005C3F00B5B6AE /* TwoFactorViewModelTests.swift */,
 				8078D0B21D0F08B1001CFF87 /* UpdateDraftViewModelTests.swift */,
 				59673CD21D50FB350035AFD9 /* VideoViewModelTests.swift */,
+				9D89B7F91D6CC2AD0021F6FF /* WebModalViewModelTests.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -3127,6 +3140,7 @@
 				A7F441AC1D005A9400FE6FC5 /* TwoFactorViewModel.swift */,
 				809F8B651D08B4FF005BADD9 /* UpdateDraftViewModel.swift */,
 				59673CBE1D50EE9B0035AFD9 /* VideoViewModel.swift */,
+				9D89B7E41D6B8DB90021F6FF /* WebModalViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -3922,6 +3936,7 @@
 				A73923C51D272242004524C3 /* Messages.storyboard in Resources */,
 				01AFE30E1D5A97FB0094C263 /* Main.storyboard in Resources */,
 				A757EA6C1D19F93400A5C978 /* 1Password.xcassets in Resources */,
+				9D89B7E81D6BA71F0021F6FF /* WebModal.storyboard in Resources */,
 				A7D120D71D15A7B400F364FD /* Assets.xcassets in Resources */,
 				80EAEF051D243C4E008C2353 /* Backing.storyboard in Resources */,
 				A75798C31D6A24CD0063CEEC /* DebugPushNotifications.storyboard in Resources */,
@@ -4105,6 +4120,7 @@
 				A7F441E91D005A9400FE6FC5 /* TwoFactorViewModel.swift in Sources */,
 				9DEE3B561D1D819D0020C2BE /* ProjectActivityBackingCellViewModel.swift in Sources */,
 				A78537F81CB5803B00385B73 /* NSHTTPCookieStorageType.swift in Sources */,
+				9D89B7E51D6B8DB90021F6FF /* WebModalViewModel.swift in Sources */,
 				A75C81261D210F1F00B5AD03 /* ShareContext.swift in Sources */,
 				A75511671C8642C3005355CF /* UIButton+LocalizedKey.swift in Sources */,
 				A75511681C8642C3005355CF /* UIGestureRecognizer-Extensions.swift in Sources */,
@@ -4197,6 +4213,7 @@
 				A755119C1C8645A0005355CF /* UILabel+IBClearTests.swift in Sources */,
 				A7830CFE1D005C3F00B5B6AE /* CommentCellViewModelTests.swift in Sources */,
 				A71F59E51D240CAF00909BE3 /* NavigationTests.swift in Sources */,
+				9D89B7FA1D6CC2AD0021F6FF /* WebModalViewModelTests.swift in Sources */,
 				A755119A1C8645A0005355CF /* String+SimpleHTMLTests.swift in Sources */,
 				A7B9AE621D463FE20096A9B7 /* ProjectFooterViewModelTests.swift in Sources */,
 				598D96CE1D42B727003F3F66 /* ActivitySampleProjectCellViewModelTests.swift in Sources */,
@@ -4436,6 +4453,7 @@
 				A70968C61D14366D00DB39D3 /* Colors.swift in Sources */,
 				A7808B6C1D61E9DF001CF96A /* MostPopularSearchProjectCellViewModel.swift in Sources */,
 				A721DF661C8CF5A3000CB97C /* KoalaTrackingClient.swift in Sources */,
+				9D89B7E61D6B8DB90021F6FF /* WebModalViewModel.swift in Sources */,
 				A76126BC1C90C94000EDCCB9 /* UITableView-Extensions.swift in Sources */,
 				A7B694001C8789C100C49A4F /* HockeyManagerType.swift in Sources */,
 				A7F441B81D005A9400FE6FC5 /* BackingCellViewModel.swift in Sources */,
@@ -4510,6 +4528,7 @@
 				598D96C91D42A97E003F3F66 /* ActivitySampleFollowCellViewModelTests.swift in Sources */,
 				01940B841D46DE9C0074FCE3 /* HelpViewModelTests.swift in Sources */,
 				A7D1CEC91D5668BE00E621C2 /* RewardsViewModelTests.swift in Sources */,
+				9D89B7FB1D6CC2AD0021F6FF /* WebModalViewModelTests.swift in Sources */,
 				59B0E00D1D12144A0081D2DC /* DashboardActionCellViewModelTests.swift in Sources */,
 				A78851C51D6C91C600617930 /* DeprecatedWebViewModelTests.swift in Sources */,
 				A7830D111D005C3F00B5B6AE /* MessagesSearchViewModelTests.swift in Sources */,
@@ -4648,6 +4667,7 @@
 				A7C795B41C873AC90081977F /* DiscoveryViewController.swift in Sources */,
 				8024FE7E1D637A600067A1F6 /* Storyboard.swift in Sources */,
 				5955E64F1D21800300B4153D /* DashboardReferrersCell.swift in Sources */,
+				9D89B7E31D6B8B310021F6FF /* WebModalViewController.swift in Sources */,
 				9D14FF8D1D133351005F4ABB /* ProjectActivityBackingCell.swift in Sources */,
 				A7CC14451D00E75F00035C52 /* FindFriendsDataSource.swift in Sources */,
 				A7808BBE1D6240B9001CF96A /* ProjectCreatorViewController.swift in Sources */,

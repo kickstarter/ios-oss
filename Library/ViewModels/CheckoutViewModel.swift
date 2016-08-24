@@ -1,5 +1,5 @@
-import Argo
 import KsApi
+import Prelude
 import ReactiveCocoa
 import ReactiveExtensions
 import Result
@@ -38,8 +38,14 @@ public protocol CheckoutViewModelOutputs {
   /// Emits when the login tout should be opened.
   var openLoginTout: Signal<Void, NoError> { get }
 
+  /// Emits when we should open a safari browser with the URL.
+  var goToSafariBrowser: Signal<NSURL, NoError> { get }
+
   /// Emits when the thanks screen should be loaded.
   var goToThanks: Signal<Project, NoError> { get }
+
+  /// Emits when the web modal should be loaded.
+  var goToWebModal: Signal<NSURLRequest, NoError> { get }
 
   /// Emits when the view controller should be popped.
   var popViewController: Signal<Void, NoError> { get }
@@ -77,12 +83,20 @@ public final class CheckoutViewModel: CheckoutViewModelType {
           webViewNavigationType: navigationType)
     }
 
-    let allowedRequests = requestData
+    let webViewRequest = requestData
       .filter { requestData in
         // Allow through requests that the web view can load once they're prepared.
         !requestData.shouldStartLoad && isNavigationLoadedByWebView(navigation: requestData.navigation)
       }
       .map { $0.request }
+
+    let modalRequestOrSafariRequest = requestData
+      .filter(isModal)
+      .map { requestData -> Either<NSURLRequest, NSURLRequest> in
+        if let navigation = requestData.navigation,
+          case .project(_, .pledge(.bigPrint), _) = navigation { return Either.left(requestData.request) }
+        return Either.right(requestData.request)
+    }
 
     let retryAfterSessionStartedRequest = requestData
       .combinePrevious()
@@ -99,9 +113,17 @@ public final class CheckoutViewModel: CheckoutViewModelType {
 
     self.closeLoginTout = userSessionStarted
 
+    self.goToSafariBrowser = modalRequestOrSafariRequest
+      .map { $0.right?.URL }
+      .ignoreNil()
+
     self.goToThanks = checkoutData
       .map { $0.project }
       .takeWhen(thanksRequest)
+
+    self.goToWebModal = modalRequestOrSafariRequest
+      .map { $0.left }
+      .ignoreNil()
 
     self.openLoginTout = requestData
       .filter { $0.navigation == .signup }
@@ -119,9 +141,9 @@ public final class CheckoutViewModel: CheckoutViewModelType {
       .map { $0.shouldStartLoad }
 
     self.webViewLoadRequest = Signal.merge(
-      allowedRequests,
       initialRequest,
-      retryAfterSessionStartedRequest
+      retryAfterSessionStartedRequest,
+      webViewRequest
       )
       .map { AppEnvironment.current.apiService.preparedRequest(forRequest: $0) }
   }
@@ -150,7 +172,9 @@ public final class CheckoutViewModel: CheckoutViewModelType {
 
   public let closeLoginTout: Signal<Void, NoError>
   public let openLoginTout: Signal<Void, NoError>
+  public let goToSafariBrowser: Signal<NSURL, NoError>
   public let goToThanks: Signal<Project, NoError>
+  public let goToWebModal: Signal<NSURLRequest, NoError>
   public let popViewController: Signal<Void, NoError>
   public let webViewLoadRequest: Signal<NSURLRequest, NoError>
 
@@ -168,6 +192,14 @@ private func buildInitialRequest(checkoutData: CheckoutData) -> NSURLRequest? {
     pathToAppend = "pledge/new"
   }
   return NSURLRequest(URL: baseURL.URLByAppendingPathComponent(pathToAppend))
+}
+
+private func isModal(requestData requestData: RequestData) -> Bool {
+  guard let url = requestData.request.URL else { return false }
+  guard let components = NSURLComponents(URL: url, resolvingAgainstBaseURL: false) else { return false }
+  guard let queryItems = components.queryItems else { return false }
+
+  return queryItems.filter { $0.name == "modal" }.first?.value == "true"
 }
 
 private func isNavigationLoadedByWebView(navigation navigation: Navigation?) -> Bool {
