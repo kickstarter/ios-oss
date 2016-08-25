@@ -118,6 +118,10 @@
 		5955E6841D2180E400B4153D /* DashboardReferrersCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5955E6831D2180E400B4153D /* DashboardReferrersCellViewModelTests.swift */; };
 		5955E6851D2180E400B4153D /* DashboardReferrersCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5955E6831D2180E400B4153D /* DashboardReferrersCellViewModelTests.swift */; };
 		595CDAB81D3537180051C816 /* FundingGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 595CDAB71D3537180051C816 /* FundingGraphView.swift */; };
+		595F82641D679346008B8C56 /* DiscoveryPostcardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 595F82631D679346008B8C56 /* DiscoveryPostcardViewModel.swift */; };
+		595F82651D679346008B8C56 /* DiscoveryPostcardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 595F82631D679346008B8C56 /* DiscoveryPostcardViewModel.swift */; };
+		59610A311D6B8AA800C8206A /* DiscoveryPostcardViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 596109FE1D6B8AA100C8206A /* DiscoveryPostcardViewModelTests.swift */; };
+		59610A321D6B8AA800C8206A /* DiscoveryPostcardViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 596109FE1D6B8AA100C8206A /* DiscoveryPostcardViewModelTests.swift */; };
 		59673C8B1D50EC920035AFD9 /* Video.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 59673C8A1D50EC920035AFD9 /* Video.storyboard */; };
 		59673CBD1D50ED380035AFD9 /* VideoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59673CBC1D50ED380035AFD9 /* VideoViewController.swift */; };
 		59673CBF1D50EE9B0035AFD9 /* VideoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59673CBE1D50EE9B0035AFD9 /* VideoViewModel.swift */; };
@@ -157,6 +161,8 @@
 		598D96CF1D42B727003F3F66 /* ActivitySampleProjectCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598D96CD1D42B727003F3F66 /* ActivitySampleProjectCellViewModelTests.swift */; };
 		5993DEBF1CE296F000925494 /* ProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5993DEBD1CE296F000925494 /* ProfileHeaderView.swift */; };
 		599604001CE6286900E1B1EC /* ProfileDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 599603FF1CE6286900E1B1EC /* ProfileDataSourceTests.swift */; };
+		59AE35B01D67631B00A310E6 /* DiscoveryPage.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 59AE35AF1D67631B00A310E6 /* DiscoveryPage.storyboard */; };
+		59AE35E21D67643100A310E6 /* DiscoveryPostcardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59AE35E11D67643100A310E6 /* DiscoveryPostcardCell.swift */; };
 		59B0DFC51D11AC850081D2DC /* DashboardDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B0DFC31D11AC850081D2DC /* DashboardDataSource.swift */; };
 		59B0DFFE1D11B2E50081D2DC /* DashboardContextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B0DFFC1D11B2E50081D2DC /* DashboardContextCell.swift */; };
 		59B0E0001D11EAC70081D2DC /* DashboardViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B0DFFF1D11EAC70081D2DC /* DashboardViewModelTests.swift */; };
@@ -783,7 +789,6 @@
 		A7E1C4F31D18C8B3002D6DE3 /* 1Password.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A7E1C4F11D18C8B3002D6DE3 /* 1Password.xcassets */; };
 		A7E315A21C8885EF000DD85A /* Library.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A75511DA1C8647D9005355CF /* Library.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A7E315C61C88AAA8000DD85A /* DiscoveryProjectsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E315C41C88AAA8000DD85A /* DiscoveryProjectsDataSource.swift */; };
-		A7E315CC1C88AC91000DD85A /* DiscoveryProjectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E315CA1C88AC91000DD85A /* DiscoveryProjectCell.swift */; };
 		A7E3BE771D415FF900F63EE6 /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7B694271C87A04C00C49A4F /* HockeySDK.framework */; };
 		A7E8FAEF1CD6806800DBF142 /* SearchDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E8FAC11CD67F5C00DBF142 /* SearchDataSourceTests.swift */; };
 		A7F441AD1D005A9400FE6FC5 /* ActivitiesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F4418E1D005A9400FE6FC5 /* ActivitiesViewModel.swift */; };
@@ -803,8 +808,6 @@
 		A7F441BC1D005A9400FE6FC5 /* CommentDialogViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F441951D005A9400FE6FC5 /* CommentDialogViewModel.swift */; };
 		A7F441BD1D005A9400FE6FC5 /* CommentsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F441961D005A9400FE6FC5 /* CommentsViewModel.swift */; };
 		A7F441BE1D005A9400FE6FC5 /* CommentsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F441961D005A9400FE6FC5 /* CommentsViewModel.swift */; };
-		A7F441BF1D005A9400FE6FC5 /* DiscoveryProjectViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F441971D005A9400FE6FC5 /* DiscoveryProjectViewModel.swift */; };
-		A7F441C01D005A9400FE6FC5 /* DiscoveryProjectViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F441971D005A9400FE6FC5 /* DiscoveryProjectViewModel.swift */; };
 		A7F441C11D005A9400FE6FC5 /* DiscoveryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F441981D005A9400FE6FC5 /* DiscoveryViewModel.swift */; };
 		A7F441C21D005A9400FE6FC5 /* DiscoveryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F441981D005A9400FE6FC5 /* DiscoveryViewModel.swift */; };
 		A7F441C31D005A9400FE6FC5 /* FacebookConfirmationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F441991D005A9400FE6FC5 /* FacebookConfirmationViewModel.swift */; };
@@ -1506,6 +1509,8 @@
 		5955E6801D21805200B4153D /* DashboardReferrersCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardReferrersCellViewModel.swift; sourceTree = "<group>"; };
 		5955E6831D2180E400B4153D /* DashboardReferrersCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardReferrersCellViewModelTests.swift; sourceTree = "<group>"; };
 		595CDAB71D3537180051C816 /* FundingGraphView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FundingGraphView.swift; sourceTree = "<group>"; };
+		595F82631D679346008B8C56 /* DiscoveryPostcardViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryPostcardViewModel.swift; sourceTree = "<group>"; };
+		596109FE1D6B8AA100C8206A /* DiscoveryPostcardViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryPostcardViewModelTests.swift; sourceTree = "<group>"; };
 		59673C8A1D50EC920035AFD9 /* Video.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Video.storyboard; sourceTree = "<group>"; };
 		59673CBC1D50ED380035AFD9 /* VideoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoViewController.swift; sourceTree = "<group>"; };
 		59673CBE1D50EE9B0035AFD9 /* VideoViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoViewModel.swift; sourceTree = "<group>"; };
@@ -1531,6 +1536,8 @@
 		5993DEBD1CE296F000925494 /* ProfileHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileHeaderView.swift; sourceTree = "<group>"; };
 		599603D21CE5220900E1B1EC /* ProfileEmptyStateCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileEmptyStateCell.swift; sourceTree = "<group>"; };
 		599603FF1CE6286900E1B1EC /* ProfileDataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileDataSourceTests.swift; sourceTree = "<group>"; };
+		59AE35AF1D67631B00A310E6 /* DiscoveryPage.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = DiscoveryPage.storyboard; sourceTree = "<group>"; };
+		59AE35E11D67643100A310E6 /* DiscoveryPostcardCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryPostcardCell.swift; sourceTree = "<group>"; };
 		59B0DFC31D11AC850081D2DC /* DashboardDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardDataSource.swift; sourceTree = "<group>"; };
 		59B0DFFC1D11B2E50081D2DC /* DashboardContextCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardContextCell.swift; sourceTree = "<group>"; };
 		59B0DFFF1D11EAC70081D2DC /* DashboardViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardViewModelTests.swift; sourceTree = "<group>"; };
@@ -1954,7 +1961,6 @@
 		A7E1C4F01D18C8B3002D6DE3 /* OnePasswordExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OnePasswordExtension.m; path = "Frameworks/onepassword-app-extension/OnePasswordExtension.m"; sourceTree = "<group>"; };
 		A7E1C4F11D18C8B3002D6DE3 /* 1Password.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = 1Password.xcassets; path = "Frameworks/onepassword-app-extension/1Password.xcassets"; sourceTree = "<group>"; };
 		A7E315C41C88AAA8000DD85A /* DiscoveryProjectsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryProjectsDataSource.swift; sourceTree = "<group>"; };
-		A7E315CA1C88AC91000DD85A /* DiscoveryProjectCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryProjectCell.swift; sourceTree = "<group>"; };
 		A7E8FAC11CD67F5C00DBF142 /* SearchDataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchDataSourceTests.swift; sourceTree = "<group>"; };
 		A7F4418E1D005A9400FE6FC5 /* ActivitiesViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivitiesViewModel.swift; sourceTree = "<group>"; };
 		A7F4418F1D005A9400FE6FC5 /* ActivityFriendBackingViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityFriendBackingViewModel.swift; sourceTree = "<group>"; };
@@ -1965,7 +1971,6 @@
 		A7F441941D005A9400FE6FC5 /* CommentCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentCellViewModel.swift; sourceTree = "<group>"; };
 		A7F441951D005A9400FE6FC5 /* CommentDialogViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentDialogViewModel.swift; sourceTree = "<group>"; };
 		A7F441961D005A9400FE6FC5 /* CommentsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsViewModel.swift; sourceTree = "<group>"; };
-		A7F441971D005A9400FE6FC5 /* DiscoveryProjectViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryProjectViewModel.swift; sourceTree = "<group>"; };
 		A7F441981D005A9400FE6FC5 /* DiscoveryViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryViewModel.swift; sourceTree = "<group>"; };
 		A7F441991D005A9400FE6FC5 /* FacebookConfirmationViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookConfirmationViewModel.swift; sourceTree = "<group>"; };
 		A7F4419A1D005A9400FE6FC5 /* LoginToutViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginToutViewModel.swift; sourceTree = "<group>"; };
@@ -2208,6 +2213,7 @@
 				01A120D01D2D646300B42F73 /* DashboardProjectsDrawer.storyboard */,
 				A75798C21D6A24CD0063CEEC /* DebugPushNotifications.storyboard */,
 				A73923AF1D272242004524C3 /* Discovery.storyboard */,
+				59AE35AF1D67631B00A310E6 /* DiscoveryPage.storyboard */,
 				A73923B01D272242004524C3 /* Friends.storyboard */,
 				01940B2D1D46A9AD0074FCE3 /* Help.storyboard */,
 				A73923B11D272242004524C3 /* LaunchScreen.storyboard */,
@@ -2311,7 +2317,7 @@
 				A72C3AB11D00FB1F0075227E /* DiscoveryExpandableRowCell.swift */,
 				A72C3AB21D00FB1F0075227E /* DiscoveryExpandedSelectableRow.swift */,
 				A757EBB11D1B084F00A5C978 /* DiscoveryOnboardingCell.swift */,
-				A7E315CA1C88AC91000DD85A /* DiscoveryProjectCell.swift */,
+				59AE35E11D67643100A310E6 /* DiscoveryPostcardCell.swift */,
 				A72C3AB31D00FB1F0075227E /* DiscoverySelectableRowCell.swift */,
 				A7CC14371D00E74F00035C52 /* FindFriendsFacebookConnectCell.swift */,
 				A7CC14381D00E74F00035C52 /* FindFriendsFriendFollowCell.swift */,
@@ -2532,6 +2538,7 @@
 				A7CC14281D00E70900035C52 /* FindFriendsStatsCellViewModelTests.swift */,
 				A7CC14291D00E70900035C52 /* FindFriendsViewModelTests.swift */,
 				01940B7F1D46DCC30074FCE3 /* HelpViewModelTests.swift */,
+				596109FE1D6B8AA100C8206A /* DiscoveryPostcardViewModelTests.swift */,
 				A7830CE51D005C3F00B5B6AE /* LoginToutViewModelTests.swift */,
 				A7830CE61D005C3F00B5B6AE /* LoginViewModelTests.swift */,
 				A7830CE71D005C3F00B5B6AE /* MessageCellViewModelTests.swift */,
@@ -3093,7 +3100,7 @@
 				A78851901D6C900000617930 /* DeprecatedWebViewModel.swift */,
 				A72C3A901D00F6C70075227E /* DiscoveryFiltersViewModel.swift */,
 				A72C3A911D00F6C70075227E /* DiscoveryPageViewModel.swift */,
-				A7F441971D005A9400FE6FC5 /* DiscoveryProjectViewModel.swift */,
+				595F82631D679346008B8C56 /* DiscoveryPostcardViewModel.swift */,
 				A7F441981D005A9400FE6FC5 /* DiscoveryViewModel.swift */,
 				A7F441991D005A9400FE6FC5 /* FacebookConfirmationViewModel.swift */,
 				A7CC13CE1D00E6CF00035C52 /* FindFriendsFacebookConnectCellViewModel.swift */,
@@ -3931,6 +3938,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				59AE35B01D67631B00A310E6 /* DiscoveryPage.storyboard in Resources */,
 				A73923BC1D272242004524C3 /* Activity.storyboard in Resources */,
 				A7A5F82A1D11ECF60036139A /* Localizable.strings in Resources */,
 				A73923C51D272242004524C3 /* Messages.storyboard in Resources */,
@@ -4028,7 +4036,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				0156B3751D0F7524000C4252 /* ActivityFriendFollowCellViewModel.swift in Sources */,
-				A7F441BF1D005A9400FE6FC5 /* DiscoveryProjectViewModel.swift in Sources */,
 				013F2FDC1D66243E0066DB77 /* DiscoveryNavigationHeaderViewModel.swift in Sources */,
 				A79BF81F1D11F6AF004C0445 /* Strings.swift in Sources */,
 				A73379451D0E36A600C91445 /* Colors.swift in Sources */,
@@ -4124,6 +4131,7 @@
 				A75C81261D210F1F00B5AD03 /* ShareContext.swift in Sources */,
 				A75511671C8642C3005355CF /* UIButton+LocalizedKey.swift in Sources */,
 				A75511681C8642C3005355CF /* UIGestureRecognizer-Extensions.swift in Sources */,
+				595F82641D679346008B8C56 /* DiscoveryPostcardViewModel.swift in Sources */,
 				A7F441BD1D005A9400FE6FC5 /* CommentsViewModel.swift in Sources */,
 				A74900181D00E23000BC3BE7 /* SignupViewModel.swift in Sources */,
 				A7F441D51D005A9400FE6FC5 /* ProfileProjectCellViewModel.swift in Sources */,
@@ -4205,6 +4213,7 @@
 				A7CC142E1D00E70900035C52 /* FindFriendsHeaderCellViewModelTests.swift in Sources */,
 				A75511981C8645A0005355CF /* LaunchedCountriesTests.swift in Sources */,
 				A7CC14301D00E70900035C52 /* FindFriendsStatsCellViewModelTests.swift in Sources */,
+				59610A311D6B8AA800C8206A /* DiscoveryPostcardViewModelTests.swift in Sources */,
 				A75511961C8645A0005355CF /* FormatTests.swift in Sources */,
 				01EFBCAF1C92036E0094EEC2 /* StyledLabelTests.swift in Sources */,
 				A75511A71C86460B005355CF /* XCTestCase+AppEnvironment.swift in Sources */,
@@ -4336,6 +4345,7 @@
 				A72C3A8F1D00F6A80075227E /* SelectableRow.swift in Sources */,
 				A714043A1CAF215900A2795B /* KeyValueStoreType.swift in Sources */,
 				9D9F581A1D13243A00CE81DE /* ProjectActivitiesViewModel.swift in Sources */,
+				595F82651D679346008B8C56 /* DiscoveryPostcardViewModel.swift in Sources */,
 				A78537F91CB5803B00385B73 /* NSHTTPCookieStorageType.swift in Sources */,
 				9DC204B81D1B46BD003C1636 /* ProjectActivityNegativeStateChangeCellViewModel.swift in Sources */,
 				A747A8EC1D45896000AF199A /* RewardCellViewModel.swift in Sources */,
@@ -4394,7 +4404,6 @@
 				9D8772141D19E84E003A4E96 /* ProjectActivityLaunchCellViewModel.swift in Sources */,
 				A7F441E21D005A9400FE6FC5 /* ResetPasswordViewModel.swift in Sources */,
 				A7808BF11D625C6A001CF96A /* ProjectCreateViewModel.swift in Sources */,
-				A7F441C01D005A9400FE6FC5 /* DiscoveryProjectViewModel.swift in Sources */,
 				A75C81211D210C4700B5AD03 /* UpdateActivityItemProvider.swift in Sources */,
 				597073531D05FE6B00B00444 /* ProjectNotificationsViewModel.swift in Sources */,
 				A7F441EA1D005A9400FE6FC5 /* TwoFactorViewModel.swift in Sources */,
@@ -4532,6 +4541,7 @@
 				59B0E00D1D12144A0081D2DC /* DashboardActionCellViewModelTests.swift in Sources */,
 				A78851C51D6C91C600617930 /* DeprecatedWebViewModelTests.swift in Sources */,
 				A7830D111D005C3F00B5B6AE /* MessagesSearchViewModelTests.swift in Sources */,
+				59610A321D6B8AA800C8206A /* DiscoveryPostcardViewModelTests.swift in Sources */,
 				A7B9AE631D463FE20096A9B7 /* ProjectFooterViewModelTests.swift in Sources */,
 				597073911D061AB000B00444 /* SettingsViewModelTests.swift in Sources */,
 				A75511F51C865321005355CF /* EnvironmentTests.swift in Sources */,
@@ -4605,13 +4615,13 @@
 				A747A7DF1D454E8500AF199A /* RewardsViewController.swift in Sources */,
 				A762EFF31C8CC663005581A4 /* ActivityFriendFollowCell.swift in Sources */,
 				59019FBA1D21ABD200EAEC9D /* DashboardReferrerRowStackView.swift in Sources */,
+				59AE35E21D67643100A310E6 /* DiscoveryPostcardCell.swift in Sources */,
 				59B0DFC51D11AC850081D2DC /* DashboardDataSource.swift in Sources */,
 				A757EABD1D19FAEE00A5C978 /* ProjectActivitiesViewController.swift in Sources */,
 				A745D0221CA897FF00C12802 /* SearchViewController.swift in Sources */,
 				A72C3AAA1D00F96C0075227E /* DiscoveryPageViewController.swift in Sources */,
 				A745D0481CA8985B00C12802 /* DashboardViewController.swift in Sources */,
 				015A06F41D219156007AE210 /* DashboardRewardRowStackView.swift in Sources */,
-				A7E315CC1C88AC91000DD85A /* DiscoveryProjectCell.swift in Sources */,
 				A75CFA7E1CCE56C4004CD5FA /* SearchProjectCell.swift in Sources */,
 				A72C3AA41D00F7170075227E /* DiscoveryPagesDataSource.swift in Sources */,
 				A7A0534E1CD19C68005AF5E2 /* CommentDialogViewController.swift in Sources */,

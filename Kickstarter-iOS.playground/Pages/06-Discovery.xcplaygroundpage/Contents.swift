@@ -22,9 +22,11 @@ let initialParms = basicParams
 //let initialParms = paramsWithCategory
 //let initialParms = paramsWithSubcategory
 
+// Instantiate users for logged in and out states.
 let brando = User.brando
 let blob = User.template
 
+// Instantiate activity sample types.
 let update = .template
   |> Update.lens.title .~ "Spirit animals on their way"
   |> Update.lens.sequence .~ 42
@@ -50,19 +52,38 @@ let launch = .template
   |> Activity.lens.user .~ brando
   |> Activity.lens.project .~ Project.cosmicSurgery
 
+// Instantiate projects with metadata
+let today = AppEnvironment.current.calendar.startOfDayForDate(NSDate()).timeIntervalSince1970
+
+let potd = .todayByScottThrift
+  |> Project.lens.dates.potdAt .~ today
+
+let starred = .todayByScottThrift
+  |> Project.lens.personalization.isStarred .~ true
+
+let backed = .cosmicSurgery
+  |> Project.lens.personalization.isBacking .~ true
+
+let featured = .anomalisa
+  |> Project.lens.dates.featuredAt .~ today
+
+// Set the current app environment.
 AppEnvironment.replaceCurrentEnvironment(
   apiService: MockService(
     fetchDiscoveryResponse: .template |> DiscoveryEnvelope.lens.projects .~ [
-      .todayByScottThrift,
-      .cosmicSurgery,
-      .anomalisa
+      potd,
+      starred,
+      backed,
+      featured
     ],
     fetchActivitiesResponse: [projectUpdate, follow, backing]
   ),
   language: .en,
+  locale: NSLocale(localeIdentifier: "en"),
   mainBundle: NSBundle.framework
 )
 
+// Initialize the view controller.
 initialize()
 let controller = DiscoveryViewController.instantiate()
 
@@ -71,10 +92,3 @@ let (parent, _) = playgroundControllers(device: .phone4inch, orientation: .portr
 let frame = parent.view.frame
 XCPlaygroundPage.currentPage.liveView = parent
 parent.view.frame = frame
-
-controller.filterHeaderViewController.updateParams(initialParms, filtersAreHidden: true)
-
-
-
-
-

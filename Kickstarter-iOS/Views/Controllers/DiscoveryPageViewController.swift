@@ -1,5 +1,6 @@
 import KsApi
 import Library
+import Prelude
 import UIKit
 
 internal final class DiscoveryPageViewController: UITableViewController {
@@ -7,7 +8,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
   private let dataSource = DiscoveryProjectsDataSource()
 
   internal static func configuredWith(sort sort: DiscoveryParams.Sort) -> DiscoveryPageViewController {
-    let vc = Storyboard.Discovery.instantiate(DiscoveryPageViewController)
+    let vc = Storyboard.DiscoveryPage.instantiate(DiscoveryPageViewController)
     vc.viewModel.inputs.configureWith(sort: sort)
     return vc
   }
@@ -19,26 +20,33 @@ internal final class DiscoveryPageViewController: UITableViewController {
   internal override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.tableView.estimatedRowHeight = 400.0
-    self.tableView.rowHeight = UITableViewAutomaticDimension
     self.tableView.dataSource = self.dataSource
-
     self.viewModel.inputs.viewDidLoad()
   }
 
   internal override func viewWillAppear(animated: Bool) {
     super.viewWillAppear(animated)
+
     self.viewModel.inputs.viewWillAppear()
   }
 
   internal override func viewDidAppear(animated: Bool) {
     super.viewDidAppear(animated)
+
     self.viewModel.inputs.viewDidAppear()
   }
 
-  override func viewDidDisappear(animated: Bool) {
+  internal override func viewDidDisappear(animated: Bool) {
     super.viewDidDisappear(animated)
+
     self.viewModel.inputs.viewDidDisappear(animated: animated)
+  }
+
+  internal override func bindStyles() {
+    super.bindStyles()
+
+    self
+      |> baseTableControllerStyle(estimatedRowHeight: 200.0)
   }
 
   internal override func bindViewModel() {

@@ -32,10 +32,9 @@ internal final class DiscoveryProjectsDataSource: ValueCellDataSource {
     projects.forEach { project in
       self.appendRow(
         value: project,
-        cellClass: DiscoveryProjectCell.self,
+        cellClass: DiscoveryPostcardCell.self,
         toSection: Section.projects.rawValue
       )
-      self.appendStaticRow(cellIdentifier: "PaddingCell", toSection: Section.projects.rawValue)
     }
   }
 
@@ -62,7 +61,7 @@ internal final class DiscoveryProjectsDataSource: ValueCellDataSource {
       cell.configureWith(value: value)
     case let (cell as ActivitySampleProjectCell, value as Activity):
       cell.configureWith(value: value)
-    case let (cell as DiscoveryProjectCell, value as Project):
+    case let (cell as DiscoveryPostcardCell, value as Project):
       cell.configureWith(value: value)
     case let (cell as DiscoveryOnboardingCell, value as Void):
       cell.configureWith(value: value)

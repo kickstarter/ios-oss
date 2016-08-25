@@ -9,6 +9,7 @@ public enum Storyboard: String {
   case DashboardProjectsDrawer
   case DebugPushNotifications
   case Discovery
+  case DiscoveryPage
   case Friends
   case Help
   case LaunchScreen

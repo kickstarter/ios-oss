@@ -42,7 +42,7 @@ final class DiscoveryProjectsDataSourceTests: XCTestCase {
     self.dataSource.load(projects: [.template, .template, .template])
 
     XCTAssertEqual(section + 1, self.dataSource.numberOfSectionsInTableView(tableView))
-    XCTAssertEqual(6, self.dataSource.tableView(tableView, numberOfRowsInSection: section))
+    XCTAssertEqual(3, self.dataSource.tableView(tableView, numberOfRowsInSection: section))
 
     self.dataSource.load(projects: [])
 

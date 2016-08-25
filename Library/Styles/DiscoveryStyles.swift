@@ -146,6 +146,41 @@ public func discoverySortPagerButtonStyle <B: UIButtonProtocol> (sort sort: Disc
       <> B.lens.attributedTitle(forState: .Selected) %~ { _ in selectedTitleString }
 }
 
+public let postcardMetadataLabelStyle =
+  UILabel.lens.font .~ .ksr_headline(size: 12.0)
+    <> UILabel.lens.textColor .~ .ksr_text_navy_700
+
+public let postcardMetadataStackViewStyle =
+  UIStackView.lens.alignment .~ .Center
+    <> UIStackView.lens.spacing .~ Styles.grid(1)
+    <> UIStackView.lens.layoutMargins .~ .init(topBottom: Styles.grid(1), leftRight: 8.0)
+    <> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+
+public let postcardNameAndBlurbStyle =
+  SimpleHTMLLabel.lens.baseFont .~ .ksr_title3(size: 18.0)
+    <> SimpleHTMLLabel.lens.baseColor .~ .ksr_text_navy_600
+    <> SimpleHTMLLabel.lens.boldFont .~ .ksr_title3(size: 18.0)
+    <> SimpleHTMLLabel.lens.boldColor .~ .ksr_text_navy_700
+    <> SimpleHTMLLabel.lens.numberOfLines .~ 3
+    <> SimpleHTMLLabel.lens.minimumScaleFactor .~ 0.5
+    <> SimpleHTMLLabel.lens.adjustsFontSizeToFitWidth .~ true
+    <> SimpleHTMLLabel.lens.lineBreakMode .~ .ByTruncatingTail
+    <> SimpleHTMLLabel.lens.contentHuggingPriorityForAxis(.Vertical) .~ UILayoutPriorityRequired
+    <> SimpleHTMLLabel.lens.contentCompressionResistancePriorityForAxis(.Vertical) .~ UILayoutPriorityRequired
+
+public let postcardSocialStackViewStyle =
+  UIStackView.lens.alignment .~ .Center
+    <> UIStackView.lens.spacing .~ Styles.grid(1)
+    <> UIStackView.lens.layoutMargins .~ .init(topBottom: Styles.grid(1), leftRight: 8.0)
+    <> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+
+public let postcardStatsSubtitleStyle =
+  UILabel.lens.font .~ .ksr_caption1()
+    <> UILabel.lens.textColor .~ .ksr_text_navy_500
+
+public let postcardStatsTitleStyle =
+  UILabel.lens.font .~ .ksr_headline(size: 12.0)
+
 private func sortButtonEdgeInsets(isLeftMost isLeftMost: Bool, isRightMost: Bool) -> UIEdgeInsets {
 
   let edge = Styles.grid(2)
