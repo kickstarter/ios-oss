@@ -74,8 +74,7 @@ public final class CheckoutViewModel: CheckoutViewModelType {
       .map { request, navigationType -> RequestData in
         let navigation = Navigation.match(request)
 
-        let shouldStartLoad = isNavigationLoadedByWebView(navigation: navigation)
-          && AppEnvironment.current.apiService.isPrepared(request: request)
+        let shouldStartLoad = isLoadableByWebView(request: request, navigation: navigation)
 
         return RequestData(request: request,
           navigation: navigation,
@@ -194,6 +193,12 @@ private func buildInitialRequest(checkoutData: CheckoutData) -> NSURLRequest? {
   return NSURLRequest(URL: baseURL.URLByAppendingPathComponent(pathToAppend))
 }
 
+private func isLoadableByWebView(request request: NSURLRequest, navigation: Navigation?) -> Bool {
+  let preparedWebViewRequest = isNavigationLoadedByWebView(navigation: navigation)
+    && AppEnvironment.current.apiService.isPrepared(request: request)
+  return preparedWebViewRequest || isStripeRequest(request: request)
+}
+
 private func isModal(requestData requestData: RequestData) -> Bool {
   guard let url = requestData.request.URL else { return false }
   guard let components = NSURLComponents(URL: url, resolvingAgainstBaseURL: false) else { return false }
@@ -217,4 +222,8 @@ private func isNavigationLoadedByWebView(navigation navigation: Navigation?) -> 
   default:
     return false
   }
+}
+
+private func isStripeRequest(request request: NSURLRequest) -> Bool {
+  return request.URL?.host?.hasSuffix("stripe.com") == true
 }

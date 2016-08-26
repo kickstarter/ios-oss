@@ -95,6 +95,6 @@ internal final class CheckoutViewController: DeprecatedWebViewController {
   }
 
   private func popViewController() {
-    self.navigationController?.popViewControllerAnimated(true)
+    self.navigationController?.popToRootViewControllerAnimated(true)
   }
 }
