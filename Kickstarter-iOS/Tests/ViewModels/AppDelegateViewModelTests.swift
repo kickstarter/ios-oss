@@ -10,6 +10,7 @@ import Result
 final class AppDelegateViewModelTests: TestCase {
   let vm: AppDelegateViewModelType = AppDelegateViewModel()
 
+  let configureHockey = TestObserver<HockeyConfigData, NoError>()
   let updateCurrentUserInEnvironment = TestObserver<User, NoError>()
   let updateEnvironment = TestObserver<(Config, Koala), NoError>()
   let postNotificationName = TestObserver<String, NoError>()
@@ -27,6 +28,7 @@ final class AppDelegateViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
+    vm.outputs.configureHockey.observe(self.configureHockey.observer)
     vm.outputs.updateCurrentUserInEnvironment.observe(self.updateCurrentUserInEnvironment.observer)
     vm.outputs.updateEnvironment.observe(self.updateEnvironment.observer)
     vm.outputs.postNotification.map { $0.name }.observe(self.postNotificationName.observer)
@@ -43,13 +45,138 @@ final class AppDelegateViewModelTests: TestCase {
     vm.outputs.unregisterForRemoteNotifications.observe(self.unregisterForRemoteNotifications.observer)
   }
 
-  func testHockeyManager_StartsWhenAppLaunches() {
-    XCTAssertFalse(hockeyManager.managerStarted, "Manager should not start right away.")
+  func testConfigureHockey_BetaApp_LoggedOut() {
+    let betaBundle = MockBundle(bundleIdentifier: KickstarterBundleIdentifier.beta.rawValue, lang: "en")
 
-    vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
-                                            launchOptions: [:])
-    XCTAssertTrue(hockeyManager.managerStarted, "Manager should start when the app launches.")
-    XCTAssertTrue(hockeyManager.isAutoSendingReports, "Manager sends crash reports automatically.")
+    withEnvironment(mainBundle: betaBundle) {
+      vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+                                              launchOptions: [:])
+
+      self.configureHockey.assertValues([
+        HockeyConfigData(
+          appIdentifier: HockeyConfigData.betaAppIdentifier,
+          disableUpdates: false,
+          userId: "0",
+          userName: "anonymous"
+        )
+        ])
+    }
+  }
+
+  func testConfigureHockey_BetaApp_LoggedIn() {
+    let currentUser = User.template
+    withEnvironment(
+      mainBundle: MockBundle(bundleIdentifier: KickstarterBundleIdentifier.beta.rawValue, lang: "en"),
+      currentUser: .template) {
+        vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+                                                launchOptions: [:])
+
+        self.configureHockey.assertValues([
+          HockeyConfigData(
+            appIdentifier: HockeyConfigData.betaAppIdentifier,
+            disableUpdates: false,
+            userId: String(currentUser.id),
+            userName: currentUser.name
+          )
+          ])
+    }
+  }
+
+  func testConfigureHockey_ProductionApp_LoggedOut() {
+    let bundle = MockBundle(bundleIdentifier: KickstarterBundleIdentifier.release.rawValue, lang: "en")
+    withEnvironment(mainBundle: bundle) {
+      vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+                                              launchOptions: [:])
+
+      self.configureHockey.assertValues([
+        HockeyConfigData(
+          appIdentifier: HockeyConfigData.releaseAppIdentifier,
+          disableUpdates: true,
+          userId: "0",
+          userName: "anonymous"
+        )
+        ])
+    }
+  }
+
+  func testConfigureHockey_ProductionApp_LoggedIn() {
+    let bundle = MockBundle(bundleIdentifier: KickstarterBundleIdentifier.release.rawValue, lang: "en")
+    let currentUser = User.template
+
+    withEnvironment(mainBundle: bundle, currentUser: .template) {
+        vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+                                                launchOptions: [:])
+
+        self.configureHockey.assertValues([
+          HockeyConfigData(
+            appIdentifier: HockeyConfigData.releaseAppIdentifier,
+            disableUpdates: true,
+            userId: String(currentUser.id),
+            userName: currentUser.name
+          )
+          ])
+    }
+  }
+
+  func testConfigureHockey_SessionChanges() {
+    let bundle = MockBundle(bundleIdentifier: KickstarterBundleIdentifier.release.rawValue, lang: "en")
+    let currentUser = User.template
+
+    withEnvironment(mainBundle: bundle) {
+      vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+                                              launchOptions: [:])
+
+      self.configureHockey.assertValues([
+        HockeyConfigData(
+          appIdentifier: HockeyConfigData.releaseAppIdentifier,
+          disableUpdates: true,
+          userId: "0",
+          userName: "anonymous"
+        )
+        ])
+
+      AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
+      self.vm.inputs.userSessionStarted()
+
+      self.configureHockey.assertValues([
+        HockeyConfigData(
+          appIdentifier: HockeyConfigData.releaseAppIdentifier,
+          disableUpdates: true,
+          userId: "0",
+          userName: "anonymous"
+        ),
+        HockeyConfigData(
+          appIdentifier: HockeyConfigData.releaseAppIdentifier,
+          disableUpdates: true,
+          userId: String(currentUser.id),
+          userName: currentUser.name
+        )
+        ])
+
+      AppEnvironment.logout()
+      self.vm.inputs.userSessionStarted()
+
+      self.configureHockey.assertValues([
+        HockeyConfigData(
+          appIdentifier: HockeyConfigData.releaseAppIdentifier,
+          disableUpdates: true,
+          userId: "0",
+          userName: "anonymous"
+        ),
+        HockeyConfigData(
+          appIdentifier: HockeyConfigData.releaseAppIdentifier,
+          disableUpdates: true,
+          userId: String(currentUser.id),
+          userName: currentUser.name
+        ),
+        HockeyConfigData(
+          appIdentifier: HockeyConfigData.releaseAppIdentifier,
+          disableUpdates: true,
+          userId: "0",
+          userName: "anonymous"
+        )
+        ])
+    }
   }
 
   func testKoala_AppLifecycle() {

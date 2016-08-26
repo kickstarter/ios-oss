@@ -13,7 +13,6 @@ internal class TestCase: XCTestCase {
   internal let config = Config.config
   internal let cookieStorage = MockCookieStorage()
   internal let facebookAppDelegate = MockFacebookAppDelegate()
-  internal let hockeyManager = MockHockeyManager()
   internal let mainBundle = MockBundle()
   internal let scheduler = TestScheduler()
   internal let trackingClient = MockTrackingClient()
@@ -32,7 +31,6 @@ internal class TestCase: XCTestCase {
       currentUser: nil,
       debounceInterval: 0.0,
       facebookAppDelegate: self.facebookAppDelegate,
-      hockeyManager: self.hockeyManager,
       isVoiceOverRunning: { false },
       koala: Koala(client: self.trackingClient, loggedInUser: nil),
       language: .en,

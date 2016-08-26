@@ -6,6 +6,24 @@ import Prelude
 import ReactiveCocoa
 import Result
 
+public struct HockeyConfigData {
+  public let appIdentifier: String
+  public let disableUpdates: Bool
+  public let userId: String
+  public let userName: String
+
+  public static let releaseAppIdentifier = "***REMOVED***"
+  public static let betaAppIdentifier = "***REMOVED***"
+}
+
+extension HockeyConfigData: Equatable {}
+public func == (lhs: HockeyConfigData, rhs: HockeyConfigData) -> Bool {
+  return lhs.appIdentifier == rhs.appIdentifier
+    && lhs.disableUpdates == rhs.disableUpdates
+    && lhs.userId == rhs.userId
+    && lhs.userName == rhs.userName
+}
+
 public protocol AppDelegateViewModelInputs {
   /// Call when the application finishes launching.
   func applicationDidFinishLaunching(application application: UIApplication,
@@ -41,6 +59,9 @@ public protocol AppDelegateViewModelInputs {
 }
 
 public protocol AppDelegateViewModelOutputs {
+  /// Emits an app identifier that should be used to configure the hockey app manager.
+  var configureHockey: Signal<HockeyConfigData, NoError> { get }
+
   /// Return this value in the delegate's.
   var facebookOpenURLReturnValue: MutableProperty<Bool> { get }
 
@@ -122,7 +143,6 @@ AppDelegateViewModelOutputs {
           appOptions.application,
           didFinishLaunchingWithOptions: appOptions.options
         )
-        startHockeyManager(AppEnvironment.current.hockeyManager)
     }
 
     let openUrl = self.applicationOpenUrlProperty.signal.ignoreNil()
@@ -293,6 +313,26 @@ AppDelegateViewModelOutputs {
     self.applicationDidEnterBackgroundProperty.signal
       .observeNext { AppEnvironment.current.koala.trackAppClose() }
 
+    self.configureHockey = Signal.merge(
+      self.applicationLaunchOptionsProperty.signal.ignoreValues(),
+      self.userSessionStartedProperty.signal,
+      self.userSessionEndedProperty.signal
+      )
+      .map { _ in
+        let bundleIdentifier = AppEnvironment.current.mainBundle.bundleIdentifier
+        let appIdentifier = bundleIdentifier == KickstarterBundleIdentifier.release.rawValue
+          ? HockeyConfigData.releaseAppIdentifier
+          : HockeyConfigData.betaAppIdentifier
+        let disableUpdates = bundleIdentifier == KickstarterBundleIdentifier.release.rawValue ? true : false
+
+        return HockeyConfigData(
+            appIdentifier: appIdentifier,
+            disableUpdates: disableUpdates,
+            userId: (AppEnvironment.current.currentUser?.id).map(String.init) ?? "0",
+            userName: AppEnvironment.current.currentUser?.name ?? "anonymous"
+        )
+    }
+
     deepLinkFromNotification
       .observeNext { _ in AppEnvironment.current.koala.trackNotificationOpened() }
   }
@@ -368,6 +408,8 @@ AppDelegateViewModelOutputs {
     self.userSessionStartedProperty.value = ()
   }
 
+  public let configureHockey: Signal<HockeyConfigData, NoError>
+  public let facebookOpenURLReturnValue = MutableProperty(false)
   public let goToActivity: Signal<(), NoError>
   public let goToDashboard: Signal<Param, NoError>
   public let goToLogin: Signal<(), NoError>
@@ -381,20 +423,6 @@ AppDelegateViewModelOutputs {
   public let unregisterForRemoteNotifications: Signal<(), NoError>
   public let updateCurrentUserInEnvironment: Signal<User, NoError>
   public let updateEnvironment: Signal<(Config, Koala), NoError>
-  public let facebookOpenURLReturnValue = MutableProperty(false)
-}
-
-private func startHockeyManager(hockeyManager: HockeyManagerType) {
-  guard let identifier = hockeyManager.appIdentifier()
-    where !identifier.isEmpty else {
-      print("HockeyApp not initialized: could not find appIdentifier. This most likely means that " +
-        "the hockeyapp.config file could not be found.")
-      return
-  }
-
-  hockeyManager.configureWithIdentifier(identifier)
-  hockeyManager.startManager()
-  hockeyManager.autoSendReports()
 }
 
 private func deviceToken(fromData data: NSData) -> String {

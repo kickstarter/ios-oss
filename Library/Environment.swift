@@ -1,6 +1,5 @@
 import AVFoundation
 import Foundation
-import HockeySDK
 import KsApi
 import ReactiveCocoa
 import Result
@@ -43,10 +42,6 @@ public struct Environment {
 
   /// A delegate to handle Facebook initialization and incoming url requests
   public let facebookAppDelegate: FacebookAppDelegateProtocol
-
-  /// A type that exposes how to initialize and start the Hockey manager. Default value is
-  /// `BITHockeyManager.sharedHockeyManager()`.
-  public let hockeyManager: HockeyManagerType
 
   /// A function that returns whether voice over mode is running.
   public let isVoiceOverRunning: () -> Bool
@@ -95,7 +90,6 @@ public struct Environment {
     currentUser: User? = nil,
     debounceInterval: NSTimeInterval = 0.3,
     facebookAppDelegate: FacebookAppDelegateProtocol = FBSDKApplicationDelegate.sharedInstance(),
-    hockeyManager: HockeyManagerType = BITHockeyManager.sharedHockeyManager(),
     isVoiceOverRunning: () -> Bool = UIAccessibilityIsVoiceOverRunning,
     koala: Koala = Koala(client: KoalaTrackingClient(endpoint: .Production)),
     language: Language = .en,
@@ -119,7 +113,6 @@ public struct Environment {
     self.currentUser = currentUser
     self.debounceInterval = debounceInterval
     self.facebookAppDelegate = facebookAppDelegate
-    self.hockeyManager = hockeyManager
     self.isVoiceOverRunning = isVoiceOverRunning
     self.koala = koala
     self.language = language
@@ -146,7 +139,6 @@ public struct Environment {
       self.currentUser,
       self.debounceInterval,
       self.facebookAppDelegate,
-      self.hockeyManager,
       self.isVoiceOverRunning,
       self.koala,
       self.language,

@@ -1,12 +1,13 @@
 import FBSDKCoreKit
 import Foundation
+import HockeySDK
 import KsApi
 import Kickstarter_Framework
-import ReactiveCocoa
-import Result
-import ReactiveExtensions
 import Library
 import Prelude
+import ReactiveCocoa
+import ReactiveExtensions
+import Result
 import UIKit
 
 @UIApplicationMain
@@ -84,6 +85,19 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     self.viewModel.outputs.presentRemoteNotificationAlert
       .observeForUI()
       .observeNext { [weak self] in self?.presentRemoteNotificationAlert($0) }
+
+    self.viewModel.outputs.configureHockey
+      .observeForUI()
+      .observeNext { data in
+        let manager = BITHockeyManager.sharedHockeyManager()
+        manager.configureWithIdentifier(data.appIdentifier)
+        manager.crashManager.crashManagerStatus = .AutoSend
+        manager.disableUpdateManager = data.disableUpdates
+        manager.userID = data.userId
+        manager.userName = data.userName
+        manager.startManager()
+        manager.authenticator.authenticateInstallation()
+    }
 
     NSNotificationCenter
       .defaultCenter()
