@@ -15,6 +15,7 @@ internal final class VideoViewController: UIViewController {
 
   @IBOutlet private weak var playButton: UIButton!
   @IBOutlet private weak var projectImageView: UIImageView!
+  @IBOutlet private weak var videoOverlayView: UIView!
   @IBOutlet private weak var videoContainerView: UIView!
 
   internal func configureWith(project project: Project) {
@@ -54,6 +55,10 @@ internal final class VideoViewController: UIViewController {
 
     self.projectImageView
       |> UIImageView.lens.accessibilityElementsHidden .~ true
+
+    self.videoOverlayView
+      |> UIView.lens.backgroundColor .~ .blackColor()
+      |> UIView.lens.alpha .~ 0.1
   }
 
   internal override func bindViewModel() {
@@ -61,6 +66,7 @@ internal final class VideoViewController: UIViewController {
 
     self.playButton.rac.hidden = self.viewModel.outputs.playButtonHidden
     self.videoContainerView.rac.hidden = self.viewModel.outputs.videoViewHidden
+    self.videoOverlayView.rac.hidden = self.viewModel.outputs.playButtonHidden
 
     self.viewModel.outputs.addCompletionObserver
       .observeForControllerAction()

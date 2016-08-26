@@ -68,6 +68,9 @@ public protocol VideoViewModelOutputs {
   /// Emits when should seek video back to beginning.
   var seekToBeginning: Signal<Void, NoError> { get }
 
+  /// Emits a boolean to determine whether or not the video overlay should be hidden.
+  var videoOverlayViewHidden: Signal<Bool, NoError> { get }
+
   /// Emits a boolean to determine whether or not the video player should be hidden.
   var videoViewHidden: Signal<Bool, NoError> { get }
 }
@@ -167,6 +170,8 @@ public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, 
           .demoteErrors()
       }
 
+    self.videoOverlayViewHidden = self.playButtonHidden
+
     self.videoViewHidden = self.projectImageHidden.map { !$0 }
 
     project
@@ -236,6 +241,7 @@ public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, 
   public var projectImageHidden: Signal<Bool, NoError>
   public let projectImageURL: Signal<NSURL?, NoError>
   public let seekToBeginning: Signal<Void, NoError>
+  public var videoOverlayViewHidden: Signal<Bool, NoError>
   public var videoViewHidden: Signal<Bool, NoError>
 
   public var inputs: VideoViewModelInputs { return self }
