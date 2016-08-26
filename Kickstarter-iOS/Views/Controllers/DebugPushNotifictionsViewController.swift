@@ -113,7 +113,7 @@ private let allPushData: [[String:AnyObject]] = [
       "alert": "Update #6 posted by Double Fine Adventure."
     ],
     "activity": [
-      "category": "post",
+      "category": "update",
       "id": 1,
       "project_id": 1929840910,
       "update_id": 190349
