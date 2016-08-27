@@ -188,7 +188,6 @@
 		8016BFE91D0F582D00067956 /* String+Whitespace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8016BFE71D0F582D00067956 /* String+Whitespace.swift */; };
 		8024FE7E1D637A600067A1F6 /* Storyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8024FE4A1D6376BF0067A1F6 /* Storyboard.swift */; };
 		8024FE7F1D637A610067A1F6 /* Storyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8024FE4A1D6376BF0067A1F6 /* Storyboard.swift */; };
-		802650C61D39A0EF00C64A86 /* Kickstarter_Framework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7C7959E1C873A870081977F /* Kickstarter_Framework.framework */; };
 		8053D3111D3848A3007B85DB /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8053D3101D3848A3007B85DB /* Reachability.swift */; };
 		8053D3121D3848A3007B85DB /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8053D3101D3848A3007B85DB /* Reachability.swift */; };
 		8072F41D1D46B75200999EF1 /* UpdatePreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8072F41C1D46B75200999EF1 /* UpdatePreviewViewController.swift */; };
@@ -854,13 +853,6 @@
 			proxyType = 2;
 			remoteGlobalIDString = A70969111D14373400DB39D3;
 			remoteInfo = "Prelude-UIKit-tvOSTests";
-		};
-		802650F71D39A0FD00C64A86 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A7E06C711C5A6EB300EBDCC2 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = A7C7959D1C873A870081977F;
-			remoteInfo = "Kickstarter-Framework-iOS";
 		};
 		80762DF21D071BCF0074189D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -2004,7 +1996,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				802650C61D39A0EF00C64A86 /* Kickstarter_Framework.framework in Frameworks */,
 				A7D1210F1D1770C800F364FD /* ReactiveExtensions_TestHelpers.framework in Frameworks */,
 				A7B1BA9A1D01D75F0025A69C /* FBSDKCoreKit.framework in Frameworks */,
 				A7B1BA9B1D01D7620025A69C /* FBSDKLoginKit.framework in Frameworks */,
@@ -3211,7 +3202,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				802650F81D39A0FD00C64A86 /* PBXTargetDependency */,
 				A7D1210E1D1770C100F364FD /* PBXTargetDependency */,
 				A75511481C8642B3005355CF /* PBXTargetDependency */,
 			);
@@ -4825,11 +4815,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		802650F81D39A0FD00C64A86 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = A7C7959D1C873A870081977F /* Kickstarter-Framework-iOS */;
-			targetProxy = 802650F71D39A0FD00C64A86 /* PBXContainerItemProxy */;
-		};
 		80762E491D071D610074189D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "Alamofire tvOS";
