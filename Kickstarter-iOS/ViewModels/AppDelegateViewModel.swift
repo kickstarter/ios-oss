@@ -319,15 +319,14 @@ AppDelegateViewModelOutputs {
       self.userSessionEndedProperty.signal
       )
       .map { _ in
-        let bundleIdentifier = AppEnvironment.current.mainBundle.bundleIdentifier
-        let appIdentifier = bundleIdentifier == KickstarterBundleIdentifier.release.rawValue
+        let mainBundle = AppEnvironment.current.mainBundle
+        let appIdentifier = mainBundle.isRelease
           ? HockeyConfigData.releaseAppIdentifier
           : HockeyConfigData.betaAppIdentifier
-        let disableUpdates = bundleIdentifier == KickstarterBundleIdentifier.release.rawValue ? true : false
 
         return HockeyConfigData(
             appIdentifier: appIdentifier,
-            disableUpdates: disableUpdates,
+            disableUpdates: mainBundle.isRelease || mainBundle.isAlpha,
             userId: (AppEnvironment.current.currentUser?.id).map(String.init) ?? "0",
             userName: AppEnvironment.current.currentUser?.name ?? "anonymous"
         )
