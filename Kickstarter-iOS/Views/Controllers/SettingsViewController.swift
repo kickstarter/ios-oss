@@ -351,6 +351,7 @@ internal final class SettingsViewController: UIViewController {
     }
 
     self.viewModel.outputs.updateCurrentUser
+      .observeForUI()
       .observeNext { user in AppEnvironment.updateCurrentUser(user) }
 
     self.viewModel.outputs.goToFindFriends
