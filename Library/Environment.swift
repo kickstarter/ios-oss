@@ -91,7 +91,7 @@ public struct Environment {
     debounceInterval: NSTimeInterval = 0.3,
     facebookAppDelegate: FacebookAppDelegateProtocol = FBSDKApplicationDelegate.sharedInstance(),
     isVoiceOverRunning: () -> Bool = UIAccessibilityIsVoiceOverRunning,
-    koala: Koala = Koala(client: KoalaTrackingClient(endpoint: .Production)),
+    koala: Koala = Koala(client: KoalaTrackingClient(endpoint: .production)),
     language: Language = .en,
     launchedCountries: LaunchedCountries = .init(),
     locale: NSLocale = .currentLocale(),

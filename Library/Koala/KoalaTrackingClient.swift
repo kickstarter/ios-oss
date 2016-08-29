@@ -1,15 +1,24 @@
 import Foundation
 
 public final class KoalaTrackingClient: TrackingClientType {
-  private let URLSession: NSURLSession
   private let endpoint: Endpoint
+  private let URLSession: NSURLSession
 
-  public enum Endpoint: String {
-    case Production = "production"
-    case Staging = "staging"
+  public enum Endpoint {
+    case staging
+    case production
+
+    var base: String {
+      switch self {
+      case .staging:
+        return "https://***REMOVED***/native/track"
+      case .production:
+        return "https://***REMOVED***/native/track"
+      }
+    }
   }
 
-  public init(endpoint: Endpoint = .Production, URLSession: NSURLSession = .sharedSession()) {
+  public init(endpoint: Endpoint = .production, URLSession: NSURLSession = .sharedSession()) {
     self.endpoint = endpoint
     self.URLSession = URLSession
   }
@@ -35,22 +44,13 @@ public final class KoalaTrackingClient: TrackingClientType {
     task?.resume()
   }
 
-  // Extract the koala endpoint URL from the `koala-endpoint.config` file in the bundle.
-  private lazy var endpointBase: String = AppEnvironment.current.mainBundle
-    .pathForResource("koala-endpoint", ofType: "config")
-    .flatMap { try? String(contentsOfFile: $0) }
-    .flatMap { $0.dataUsingEncoding(NSUTF8StringEncoding) }
-    .flatMap { try? NSJSONSerialization.JSONObjectWithData($0, options: []) }
-    .flatMap { $0 as? [String:String] }
-    .flatMap { $0[self.endpoint.rawValue] } ?? ""
-
   private static func base64Payload(payload: [AnyObject]) -> String? {
     return (try? NSJSONSerialization.dataWithJSONObject(payload, options: []))
       .map { $0.base64EncodedStringWithOptions([]) }
   }
 
   private func koalaURL(dataString: String) -> NSURL? {
-    return NSURL(string: "\(self.endpointBase)?data=\(dataString)")
+    return NSURL(string: "\(self.endpoint.base)?data=\(dataString)")
   }
 
   private static func koalaRequest(url: NSURL) -> NSURLRequest {
@@ -61,9 +61,9 @@ public final class KoalaTrackingClient: TrackingClientType {
 
   private func koalaTask(request: NSURLRequest) -> NSURLSessionDataTask {
     return URLSession.dataTaskWithRequest(request) { _, response, err in
-      guard let response = response as? NSHTTPURLResponse else { return }
       #if DEBUG
-      NSLog("[Koala Status code]: \(response.statusCode)")
+        let httpResponses = response as? NSHTTPURLResponse
+        NSLog("[Koala Status code]: \(httpResponses?.statusCode)")
       #endif
     }
   }
