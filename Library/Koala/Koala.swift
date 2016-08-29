@@ -801,6 +801,21 @@ public final class Koala {
     self.track(event: "Update Preview", properties: props)
   }
 
+  public func trackTriggeredPublishConfirmationModal(forProject project: Project) {
+    self.track(event: "Triggered Publish Confirmation Modal",
+               properties: updateDraftProperties(project: project))
+  }
+
+  public func trackCanceledPublishUpdate(forProject project: Project) {
+    self.track(event: "Canceled Publish", properties: updateDraftProperties(project: project)
+      .withAllValuesFrom(["context": "modal"]))
+  }
+
+  public func trackConfirmedPublishUpdate(forProject project: Project) {
+    self.track(event: "Confirmed Publish", properties: updateDraftProperties(project: project)
+      .withAllValuesFrom(["context": "modal"]))
+  }
+
   public func trackPublishedUpdate(forProject project: Project, isPublic: Bool) {
     var props = updateDraftProperties(project: project)
     props["type"] = isPublic ? "public" : "backers_only"

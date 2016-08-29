@@ -135,6 +135,8 @@ public final class UpdateDraftViewModel: UpdateDraftViewModelType, UpdateDraftVi
 UpdateDraftViewModelOutputs {
   // swiftlint:disable function_body_length
   public init() {
+    // MARK: Loading
+
     let project = self.projectProperty.signal.ignoreNil()
     let draftEvent = combineLatest(self.viewDidLoadProperty.signal, project)
       .map(second)
@@ -157,6 +159,8 @@ UpdateDraftViewModelOutputs {
         update_number: Format.wholeNumber($0.update.sequence))
     }
 
+    // MARK: Form Fields
+
     self.title = draft.map { $0.update.title }
     self.body = draft.map { $0.update.body ?? "" }
 
@@ -170,15 +174,13 @@ UpdateDraftViewModelOutputs {
     let bodyChanged = hasChanged(self.body, currentBody)
     let isBackersOnlyChanged = hasChanged(wasBackersOnly, self.isBackersOnly)
 
+    // MARK: Attachments
+
     self.attachments = draft
       .map {
-        $0.images.map(UpdateDraft.Attachment.image) + [$0.video.map(UpdateDraft.Attachment.video)].compact()
+        $0.images.map(UpdateDraft.Attachment.image)
+          + [$0.video.map(UpdateDraft.Attachment.video)].compact()
     }
-
-    self.isAttachmentsSectionHidden = Signal.merge(
-      self.viewDidLoadProperty.signal.mapConst(true),
-      self.attachments.map { $0.isEmpty }
-    )
 
     self.showAttachmentActions = self.addAttachmentButtonTappedProperty.signal
 
@@ -197,7 +199,17 @@ UpdateDraftViewModelOutputs {
     self.attachmentAdded = addAttachmentEvent.values()
       .map(UpdateDraft.Attachment.image)
 
-    self.showRemoveAttachmentConfirmation = self.attachments
+    let addedAttachments = Signal
+      .merge(
+        self.attachments,
+        self.attachments
+          .switchMap { [attachmentAdded] attachments in
+            attachmentAdded
+              .scan(attachments) { $0 + [$1] }
+        }
+    )
+
+    self.showRemoveAttachmentConfirmation = addedAttachments
       .takePairWhen(self.attachmentTappedProperty.signal)
       .map { attachments, id in attachments.filter { $0.id == id }.first }
       .ignoreNil()
@@ -215,6 +227,31 @@ UpdateDraftViewModelOutputs {
     self.attachmentRemoved = removeAttachmentEvent.values()
       .map(UpdateDraft.Attachment.image)
 
+    let removedAttachments = addedAttachments
+      .switchMap { [attachmentRemoved] attachments in
+        attachmentRemoved
+          .scan(attachments) { currentAttachments, toRemove in
+            currentAttachments.filter { toRemove != $0 }
+        }
+    }
+
+    let currentAttachments = Signal
+      .merge(
+        self.attachments,
+        addedAttachments,
+        removedAttachments
+    )
+    removedAttachments.observeNext { print($0) }
+
+    self.isAttachmentsSectionHidden = Signal
+      .merge(
+        self.viewDidLoadProperty.signal.mapConst(true),
+        currentAttachments.map { $0.isEmpty }
+      )
+      .skipRepeats()
+
+    // MARK: Validation
+
     let hasContent = combineLatest(currentTitle, currentBody, self.attachments)
       .map { title, body, attachments in
         !title.trimmed().isEmpty && (!body.trimmed().isEmpty || !attachments.isEmpty)
@@ -226,6 +263,8 @@ UpdateDraftViewModelOutputs {
         hasContent
       )
       .skipRepeats()
+
+    // MARK: Focus
 
     let draftHasTitle = draft
       .map { !$0.update.title.isEmpty }
@@ -249,6 +288,8 @@ UpdateDraftViewModelOutputs {
       )
       .ignoreValues()
     )
+
+    // MARK: Saving
 
     let saveAction = Signal.merge(
       self.closeButtonTappedProperty.signal.mapConst(SaveAction.dismiss),
@@ -300,7 +341,7 @@ UpdateDraftViewModelOutputs {
 
     self.resignFirstResponder = self.viewWillDisappearProperty.signal
 
-    // koala
+    // MARK: Koala
 
     project
       .observeNext { AppEnvironment.current.koala.trackViewedUpdateDraft(forProject: $0) }
@@ -386,8 +427,6 @@ UpdateDraftViewModelOutputs {
       .observeNext {
         AppEnvironment.current.koala.trackFailedRemoveUpdateDraftAttachment(forProject: $0)
     }
-
-    // trackPublishedUpdate(forProject: $0)
   }
   // swiftlint:enable function_body_length
 

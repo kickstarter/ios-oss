@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="16A254g" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="enk-Bj-wRz">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="16A304a" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="enk-Bj-wRz">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
@@ -185,7 +185,7 @@
             </objects>
             <point key="canvasLocation" x="731" y="460"/>
         </scene>
-        <!--Title-->
+        <!--Update Preview View Controller-->
         <scene sceneID="QqP-dn-1yu">
             <objects>
                 <viewController storyboardIdentifier="UpdatePreviewViewController" id="gfI-J8-nrW" customClass="UpdatePreviewViewController" customModule="Kickstarter_Framework" customModuleProvider="target" sceneMemberID="viewController">
@@ -198,7 +198,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Title" id="D2O-aQ-axa">
+                    <navigationItem key="navigationItem" id="D2O-aQ-axa">
                         <barButtonItem key="rightBarButtonItem" title="Item" id="IZ7-xP-pwc"/>
                     </navigationItem>
                     <connections>

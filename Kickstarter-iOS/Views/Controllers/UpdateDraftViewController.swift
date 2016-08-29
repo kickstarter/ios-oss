@@ -110,6 +110,7 @@ internal final class UpdateDraftViewController: UIViewController {
         after(0.1) {
           let scrollView = _self.attachmentsScrollView
           let offset = scrollView.contentSize.width - scrollView.bounds.size.width
+          guard offset >= scrollView.contentOffset.x else { return }
           scrollView.setContentOffset(CGPoint(x: offset, y: 0), animated: true)
         }
     }
@@ -125,13 +126,6 @@ internal final class UpdateDraftViewController: UIViewController {
         UIView.animateWithDuration(0.2) {
           _self.attachmentsStackView.viewWithTag(attachment.id)?.removeFromSuperview()
         }
-
-        after(0.1) {
-          let scrollView = _self.attachmentsScrollView
-          let offset = scrollView.contentSize.width - scrollView.bounds.size.width
-          guard offset >= scrollView.contentOffset.x else { return }
-          scrollView.setContentOffset(CGPoint(x: offset, y: 0), animated: true)
-        }
     }
 
     self.viewModel.outputs.goToPreview
@@ -145,24 +139,24 @@ internal final class UpdateDraftViewController: UIViewController {
       .observeForControllerAction()
       .observeNext { [weak self] in
         let alert = UIAlertController
-          .genericError(Strings.dashboard_post_update_compose_error_could_not_save_update())
+          .genericError(localizedString(key: "todo", defaultValue: "Couldn't add attachment"))
         self?.presentViewController(alert, animated: true, completion: nil)
     }
 
     self.viewModel.outputs.showRemoveAttachmentFailure
       .observeForControllerAction()
-      .observeNext { // [weak self] in
-//        let alert = UIAlertController
-//          .genericError(Strings.dashboard_post_update_compose_error_could_not_save_update())
-//        self?.presentViewController(alert, animated: true, completion: nil)
+      .observeNext { [weak self] in
+        let alert = UIAlertController
+          .genericError(localizedString(key: "todo", defaultValue: "Couldn't remove attachment"))
+        self?.presentViewController(alert, animated: true, completion: nil)
     }
 
     self.viewModel.outputs.showSaveFailure
       .observeForControllerAction()
-      .observeNext { // [weak self] in
-//        let alert = UIAlertController
-//          .genericError(Strings.dashboard_post_update_compose_error_could_not_save_update())
-//        self?.presentViewController(alert, animated: true, completion: nil)
+      .observeNext { [weak self] in
+        let alert = UIAlertController
+          .genericError(Strings.dashboard_post_update_compose_error_could_not_save_update())
+        self?.presentViewController(alert, animated: true, completion: nil)
     }
 
     Keyboard.change.observeForUI()
@@ -253,6 +247,7 @@ internal final class UpdateDraftViewController: UIViewController {
   private func imageView(forAttachment attachment: UpdateDraft.Attachment) -> UIImageView {
     let imageView = UIImageView() |> updateAttachmentsThumbStyle
       |> UIImageView.lens.tag .~ attachment.id
+
     imageView.widthAnchor.constraintEqualToAnchor(imageView.heightAnchor).active = true
     if let url = NSURL(string: attachment.thumbUrl) {
       imageView.af_setImageWithURL(url)

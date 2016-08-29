@@ -23,23 +23,17 @@ internal final class UpdatePreviewViewController: WebViewController {
     self.viewModel.inputs.viewDidLoad()
   }
 
-  func publishButtonTapped() {
-    self.viewModel.inputs.publishButtonTapped()
-  }
-
   internal override func bindStyles() {
     self |> baseControllerStyle()
     self.publishBarButtonItem |> updatePreviewBarButtonItemStyle
+
+    self.navigationItem.title = nil
   }
 
   internal override func bindViewModel() {
     self.viewModel.outputs.webViewLoadRequest
       .observeForControllerAction()
       .observeNext { [weak self] in self?.webView.loadRequest($0) }
-
-    self.viewModel.outputs.goToUpdate
-      .observeForControllerAction()
-      .observeNext { [weak self] in self?.goTo(update: $1, forProject: $0) }
 
     self.viewModel.outputs.showPublishConfirmation
       .observeForControllerAction()
@@ -48,6 +42,10 @@ internal final class UpdatePreviewViewController: WebViewController {
     self.viewModel.outputs.showPublishFailure
       .observeForControllerAction()
       .observeNext { [weak self] in self?.showPublishFailure() }
+
+    self.viewModel.outputs.goToUpdate
+      .observeForControllerAction()
+      .observeNext { [weak self] in self?.goTo(update: $1, forProject: $0) }
   }
 
   internal func webView(webView: WKWebView,
@@ -57,9 +55,8 @@ internal final class UpdatePreviewViewController: WebViewController {
     decisionHandler(self.viewModel.inputs.decidePolicyFor(navigationAction: navigationAction))
   }
 
-  private func goTo(update update: Update, forProject project: Project) {
-    let vc = UpdateViewController.configuredWith(project: project, update: update)
-    self.navigationController?.pushViewController(vc, animated: true)
+  @objc private func publishButtonTapped() {
+    self.viewModel.inputs.publishButtonTapped()
   }
 
   private func showPublishConfirmation(message message: String) {
@@ -76,11 +73,11 @@ internal final class UpdatePreviewViewController: WebViewController {
       }
     )
     alert.addAction(
-      .init(
+      UIAlertAction(
         title: Strings.dashboard_post_update_preview_confirmation_alert_cancel_button(),
-        style: .Cancel,
-        handler: nil
-      )
+        style: .Cancel) { _ in
+          self.viewModel.inputs.publishCancelButtonTapped()
+      }
     )
     self.presentViewController(alert, animated: true, completion: nil)
   }
@@ -89,5 +86,10 @@ internal final class UpdatePreviewViewController: WebViewController {
     let alert = UIAlertController
       .genericError(Strings.dashboard_post_update_preview_confirmation_alert_error_something_wrong())
     self.presentViewController(alert, animated: true, completion: nil)
+  }
+
+  private func goTo(update update: Update, forProject project: Project) {
+    let vc = UpdateViewController.configuredWith(project: project, update: update)
+    self.navigationController?.setViewControllers([vc], animated: true)
   }
 }

@@ -7,6 +7,8 @@ internal final class UpdateViewController: WebViewController {
   private let viewModel: UpdateViewModelType = UpdateViewModel()
   private let shareViewModel: ShareViewModelType = ShareViewModel()
 
+  private let closeButton = UIBarButtonItem()
+
   internal static func configuredWith(project project: Project, update: Update) -> UpdateViewController {
     let vc = Storyboard.Update.instantiate(UpdateViewController)
     vc.viewModel.inputs.configureWith(project: project, update: update)
@@ -19,8 +21,23 @@ internal final class UpdateViewController: WebViewController {
     self.viewModel.inputs.viewDidLoad()
   }
 
+  override func viewWillAppear(animated: Bool) {
+    super.viewWillAppear(animated)
+
+    guard
+      self.presentingViewController != nil,
+      let navigationController = self.navigationController
+      where navigationController.viewControllers == [self]
+      else { return }
+
+    self.navigationItem.leftBarButtonItem = self.closeButton
+  }
+
   internal override func bindStyles() {
     self |> baseControllerStyle()
+
+    self.closeButton |> closeBarButtonItemStyle
+      |> UIBarButtonItem.lens.targetAction .~ (self, #selector(dismiss))
   }
 
   internal override func bindViewModel() {
@@ -82,5 +99,9 @@ internal final class UpdateViewController: WebViewController {
 
   @IBAction private func shareButtonTapped() {
     self.shareViewModel.inputs.shareButtonTapped()
+  }
+
+  @objc private func dismiss() {
+    self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
   }
 }

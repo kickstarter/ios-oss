@@ -79,10 +79,56 @@ final class UpdatePreviewViewModelTests: TestCase {
 
       self.goToUpdate.assertValues([])
       self.goToUpdateProject.assertValues([])
+
       self.vm.inputs.publishConfirmationButtonTapped()
+
+      self.goToUpdate.assertValues([])
+      self.goToUpdateProject.assertValues([])
+
+      self.scheduler.advance()
+
       self.goToUpdate.assertValues([draft.update])
       self.goToUpdateProject.assertValues([project])
       self.showPublishFailure.assertValueCount(0)
+
+      XCTAssertEqual(
+        ["Triggered Publish Confirmation Modal", "Confirmed Publish", "Published Update", "Update Published"],
+        trackingClient.events, "Koala event is tracked.")
+    }
+  }
+
+  func testPublishCanceled() {
+    let project = .template
+      |> Project.lens.id .~ 2
+      |> Project.lens.stats.backersCount .~ 1_024
+    let draft = .template
+      |> UpdateDraft.lens.update.id .~ 1
+      |> UpdateDraft.lens.update.projectId .~ project.id
+
+    let api = MockService(fetchProjectResponse: project, fetchUpdateResponse: draft.update)
+    withEnvironment(apiService: api) {
+      self.vm.inputs.configureWith(draft: draft)
+      self.vm.inputs.viewDidLoad()
+
+      self.showPublishConfirmation.assertValues([])
+      self.vm.inputs.publishButtonTapped()
+      let confirmation =
+      "This will notify 1,024 backers that a new update is available. Are you sure you want to post?"
+      self.showPublishConfirmation.assertValues([confirmation])
+
+      self.goToUpdate.assertValues([])
+      self.goToUpdateProject.assertValues([])
+
+      self.vm.inputs.publishCancelButtonTapped()
+
+      self.scheduler.advance()
+
+      self.goToUpdate.assertValues([])
+      self.goToUpdateProject.assertValues([])
+
+      XCTAssertEqual(
+        ["Triggered Publish Confirmation Modal", "Canceled Publish"],
+        trackingClient.events, "Koala event is tracked.")
     }
   }
 
@@ -102,8 +148,14 @@ final class UpdatePreviewViewModelTests: TestCase {
 
       self.showPublishFailure.assertValueCount(0)
       self.vm.inputs.publishConfirmationButtonTapped()
+
+      self.scheduler.advance()
+
       self.goToUpdate.assertValues([])
       self.showPublishFailure.assertValueCount(1)
     }
+
+    XCTAssertEqual(["Triggered Publish Confirmation Modal", "Confirmed Publish"],
+                   trackingClient.events, "Koala event is not tracked.")
   }
 }

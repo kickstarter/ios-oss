@@ -15,9 +15,10 @@ final class UpdateDraftViewModelTests: TestCase {
   let body = TestObserver<String, NoError>()
   let bodyTextViewBecomeFirstResponder = TestObserver<(), NoError>()
   let goToPreview = TestObserver<UpdateDraft, NoError>()
-  let isLoading = TestObserver<Bool, NoError>()
+  let isAttachmentsSectionHidden = TestObserver<Bool, NoError>()
   let isBackersOnly = TestObserver<Bool, NoError>()
   let isBodyPlaceholderHidden = TestObserver<Bool, NoError>()
+  let isLoading = TestObserver<Bool, NoError>()
   let isPreviewButtonEnabled = TestObserver<Bool, NoError>()
   let navigationItemTitle = TestObserver<String, NoError>()
   let notifyPresenterViewControllerWantsDismissal = TestObserver<(), NoError>()
@@ -41,9 +42,10 @@ final class UpdateDraftViewModelTests: TestCase {
     vm.outputs.body.observe(self.body.observer)
     vm.outputs.bodyTextViewBecomeFirstResponder.observe(self.bodyTextViewBecomeFirstResponder.observer)
     vm.outputs.goToPreview.observe(self.goToPreview.observer)
+    vm.outputs.isAttachmentsSectionHidden.observe(self.isAttachmentsSectionHidden.observer)
     vm.outputs.isBackersOnly.observe(self.isBackersOnly.observer)
-    vm.outputs.isLoading.observe(self.isLoading.observer)
     vm.outputs.isBodyPlaceholderHidden.observe(self.isBodyPlaceholderHidden.observer)
+    vm.outputs.isLoading.observe(self.isLoading.observer)
     vm.outputs.isPreviewButtonEnabled.observe(self.isPreviewButtonEnabled.observer)
     vm.outputs.navigationItemTitle.observe(self.navigationItemTitle.observer)
     vm.outputs.notifyPresenterViewControllerWantsDismissal
@@ -358,8 +360,7 @@ final class UpdateDraftViewModelTests: TestCase {
   func testRemoveAttachmentFailure() {
     let id = 1
     let image = .template |> UpdateDraft.Image.lens.id .~ id
-    let draft = .template
-      |> UpdateDraft.lens.images .~ [image]
+    let draft = .template |> UpdateDraft.lens.images .~ [image]
     withEnvironment(apiService: MockService(fetchDraftResponse: draft,
       removeAttachmentError: .couldNotParseJSON)) {
         self.vm.inputs.configureWith(project: .template)
@@ -379,6 +380,74 @@ final class UpdateDraftViewModelTests: TestCase {
         XCTAssertEqual([
           "Viewed Draft", "Started Remove Attachment", "Failed Remove Attachment"],
                        self.trackingClient.events, "Koala attachment events tracked")
+    }
+  }
+
+  func testBlankAttachmentVisibility() {
+    let id = 1
+    let image = .template |> UpdateDraft.Image.lens.id .~ id
+    withEnvironment(
+      apiService: MockService(
+        fetchDraftResponse: .blank, addAttachmentResponse: image, removeAttachmentResponse: image)
+    ) {
+      self.vm.inputs.configureWith(project: .template)
+      self.vm.inputs.viewDidLoad()
+
+      self.isAttachmentsSectionHidden.assertValues([true])
+
+      self.scheduler.advance()
+
+      self.isAttachmentsSectionHidden.assertValues([true])
+
+      self.vm.inputs.addAttachmentButtonTapped(availableSources: [.camera, .cameraRoll])
+      self.vm.inputs.addAttachmentSheetButtonTapped(.camera)
+      self.vm.inputs.imagePicked(url: NSURL(string: "/tmp/photo.jpg")!, fromSource: .camera)
+
+      self.scheduler.advance()
+
+      self.isAttachmentsSectionHidden.assertValues([true, false])
+
+      self.vm.inputs.attachmentTapped(id: id)
+      self.vm.inputs.remove(attachment: .image(image))
+
+      self.scheduler.advance()
+
+      self.isAttachmentsSectionHidden.assertValues([true, false, true])
+    }
+  }
+
+  func testExistingAttachmentVisibility() {
+    let existingId = 1
+    let existingImage = .template |> UpdateDraft.Image.lens.id .~ existingId
+    let newImage = .template |> UpdateDraft.Image.lens.id .~ 2
+    let draft = .template |> UpdateDraft.lens.images .~ [existingImage]
+    withEnvironment(
+      apiService: MockService(
+        fetchDraftResponse: draft, addAttachmentResponse: newImage, removeAttachmentResponse: existingImage)
+    ) {
+      self.vm.inputs.configureWith(project: .template)
+      self.vm.inputs.viewDidLoad()
+
+      self.isAttachmentsSectionHidden.assertValues([true])
+
+      self.scheduler.advance()
+
+      self.isAttachmentsSectionHidden.assertValues([true, false])
+
+      self.vm.inputs.addAttachmentButtonTapped(availableSources: [.camera, .cameraRoll])
+      self.vm.inputs.addAttachmentSheetButtonTapped(.camera)
+      self.vm.inputs.imagePicked(url: NSURL(string: "/tmp/photo.jpg")!, fromSource: .camera)
+
+      self.scheduler.advance()
+
+      self.isAttachmentsSectionHidden.assertValues([true, false])
+
+      self.vm.inputs.attachmentTapped(id: existingId)
+      self.vm.inputs.remove(attachment: .image(existingImage))
+
+      self.scheduler.advance()
+
+      self.isAttachmentsSectionHidden.assertValues([true, false])
     }
   }
 
