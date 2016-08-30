@@ -16,7 +16,7 @@ internal final class WebModalViewController: WebViewController {
   internal override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.navigationItem.rightBarButtonItem =
+    self.navigationItem.leftBarButtonItem =
       UIBarButtonItem(title: Strings.general_navigation_buttons_close(),
                       style: .Plain,
                       target: self,

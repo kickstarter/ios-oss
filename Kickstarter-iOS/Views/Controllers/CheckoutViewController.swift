@@ -19,6 +19,13 @@ internal final class CheckoutViewController: DeprecatedWebViewController {
 
   internal override func viewDidLoad() {
     super.viewDidLoad()
+
+    self.navigationItem.leftBarButtonItem =
+      UIBarButtonItem(title: Strings.general_navigation_buttons_cancel(),
+                      style: .Plain,
+                      target: self,
+                      action: #selector(cancelButtonTapped))
+
     self.viewModel.inputs.viewDidLoad()
   }
 
@@ -66,6 +73,10 @@ internal final class CheckoutViewController: DeprecatedWebViewController {
     return self.viewModel.inputs.shouldStartLoad(withRequest: request, navigationType: navigationType)
   }
 
+  @objc private func cancelButtonTapped() {
+    self.viewModel.inputs.cancelButtonTapped()
+  }
+
   private func closeLoginTout() {
     self.loginToutViewController?.dismissViewControllerAnimated(true, completion: nil)
   }
@@ -77,8 +88,13 @@ internal final class CheckoutViewController: DeprecatedWebViewController {
   }
 
   private func goToThanks(project project: Project) {
-    let vc = ThanksViewController.configuredWith(project: project)
-    self.navigationController?.pushViewController(vc, animated: true)
+    let thanksVC = ThanksViewController.configuredWith(project: project)
+    let stack = self.navigationController?.viewControllers
+    guard let root = stack?.first else {
+      assertionFailure("Unable to find root view controller!")
+      return
+    }
+    self.navigationController?.setViewControllers([root, thanksVC], animated: true)
   }
 
   private func goToWebModal(request request: NSURLRequest) {

@@ -57,6 +57,9 @@ public final class NavigationTests: XCTestCase {
     KSRAssertMatch(.project(.slug("project"), .pledge(.bigPrint), refTag: nil),
                    "/projects/creator/project/pledge/big_print")
 
+    KSRAssertMatch(.project(.slug("project"), .pledge(.changeMethod), refTag: nil),
+                   "/projects/creator/project/pledge/change_method")
+
     KSRAssertMatch(.project(.slug("project"), .pledge(.destroy), refTag: nil),
                    "/projects/creator/project/pledge/destroy")
 

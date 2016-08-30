@@ -98,13 +98,106 @@ final class CheckoutViewModelTests: TestCase {
 
       // 4: Redirect to project, view controller popped
       self.popViewController.assertDidNotEmitValue()
+      XCTAssertEqual([], self.trackingClient.events)
+
       XCTAssertFalse(
+        self.vm.inputs.shouldStartLoad(withRequest: projectRequest(project: project), navigationType: .Other)
+      )
+      XCTAssertEqual(["Checkout Cancel", "Canceled Checkout"], self.trackingClient.events)
+      self.popViewController.assertValueCount(1)
+    }
+  }
+
+  func testChangePaymentMethod() {
+    let project = Project.template
+    withEnvironment(currentUser: .template) {
+      self.webViewLoadRequestURL.assertDidNotEmitValue()
+
+      self.vm.inputs.configureWith(project: project, reward: nil, intent: .manage)
+      self.vm.inputs.viewDidLoad()
+
+      // 1: Show reward and shipping form
+      self.webViewLoadRequestIsPrepared.assertValues([true])
+      self.webViewLoadRequestURL.assertValues([editPledgeURL(project: project)])
+
+      XCTAssertTrue(
         self.vm.inputs.shouldStartLoad(
-          withRequest: projectRequest(project: project),
+          withRequest: editPledgeRequest(project: project).prepared(),
           navigationType: .Other
         )
       )
-      self.popViewController.assertValueCount(1)
+      XCTAssertTrue(self.vm.inputs.shouldStartLoad(withRequest: stripeRequest(), navigationType: .Other))
+
+      // 2: Click change payment method button
+      XCTAssertFalse(
+        self.vm.inputs.shouldStartLoad(
+          withRequest: changePaymentMethodRequest(project: project),
+          navigationType: .FormSubmitted
+        ),
+        "Not prepared"
+      )
+
+      self.webViewLoadRequestIsPrepared.assertValues([true, true])
+      self.webViewLoadRequestURL.assertValues(
+        [editPledgeURL(project: project), changePaymentMethodURL(project: project)]
+      )
+      XCTAssertTrue(
+        self.vm.inputs.shouldStartLoad(
+          withRequest: changePaymentMethodRequest(project: project).prepared(),
+          navigationType: .Other
+        )
+      )
+      XCTAssertTrue(self.vm.inputs.shouldStartLoad(withRequest: stripeRequest(), navigationType: .Other))
+
+      // 3: Redirect to new payments form
+      self.webViewLoadRequestURL.assertValueCount(2)
+
+      XCTAssertFalse(
+        self.vm.inputs.shouldStartLoad(withRequest: newPaymentsRequest(), navigationType: .Other),
+        "Not prepared"
+      )
+
+      self.webViewLoadRequestIsPrepared.assertValues([true, true, true])
+      self.webViewLoadRequestURL.assertValues(
+        [editPledgeURL(project: project), changePaymentMethodURL(project: project), newPaymentsURL()]
+      )
+
+      XCTAssertTrue(
+        self.vm.inputs.shouldStartLoad(withRequest: newPaymentsRequest().prepared(), navigationType: .Other)
+      )
+      XCTAssertTrue(self.vm.inputs.shouldStartLoad(withRequest: stripeRequest(), navigationType: .Other))
+
+      // 4: Pledge with new card
+      self.webViewLoadRequestURL.assertValueCount(3)
+
+      XCTAssertFalse(
+        self.vm.inputs.shouldStartLoad(withRequest: paymentsRequest(), navigationType: .FormSubmitted),
+        "Not prepared"
+      )
+
+      self.webViewLoadRequestIsPrepared.assertValues([true, true, true, true])
+      self.webViewLoadRequestURL.assertValues(
+        [
+          editPledgeURL(project: project),
+          changePaymentMethodURL(project: project),
+          newPaymentsURL(),
+          paymentsURL()
+        ]
+      )
+
+      XCTAssertTrue(
+        self.vm.inputs.shouldStartLoad(withRequest: paymentsRequest().prepared(), navigationType: .Other)
+      )
+
+      // 5: Redirect to thanks
+      self.goToThanks.assertDidNotEmitValue()
+      self.webViewLoadRequestURL.assertValueCount(4)
+
+      XCTAssertFalse(
+        self.vm.inputs.shouldStartLoad(withRequest: thanksRequest(project: project), navigationType: .Other),
+        "Not prepared"
+      )
+      self.goToThanks.assertValueCount(1)
     }
   }
 
@@ -463,7 +556,35 @@ final class CheckoutViewModelTests: TestCase {
     self.goToWebModal.assertValueCount(1)
   }
 
-  func testPopViewController() {
+  func testcancelButtonPopsViewController() {
+    let project = Project.template
+
+    self.vm.inputs.configureWith(project: project, reward: nil, intent: .new)
+    self.vm.inputs.viewDidLoad()
+
+    // 1: Show reward and shipping form
+    self.webViewLoadRequestIsPrepared.assertValues([true])
+    self.webViewLoadRequestURL.assertValues([newPledgeURL(project: project)])
+
+    XCTAssertTrue(
+      self.vm.inputs.shouldStartLoad(
+        withRequest: newPledgeRequest(project: project).prepared(),
+        navigationType: .Other
+      )
+    )
+    XCTAssertTrue(self.vm.inputs.shouldStartLoad(withRequest: stripeRequest(), navigationType: .Other))
+
+    // 2: Cancel button tapped
+    self.popViewController.assertDidNotEmitValue()
+    XCTAssertEqual([], self.trackingClient.events)
+
+    self.vm.inputs.cancelButtonTapped()
+    self.popViewController.assertValueCount(1)
+    XCTAssertEqual(["Checkout Cancel", "Canceled Checkout"],
+                   self.trackingClient.events, "Cancel event and its deprecated version are tracked")
+  }
+
+  func testProjectRequestPopsViewController() {
     let project = Project.template
 
     self.vm.inputs.configureWith(project: project, reward: nil, intent: .new)
@@ -483,6 +604,7 @@ final class CheckoutViewModelTests: TestCase {
 
     // 2: Project link clicked
     self.popViewController.assertDidNotEmitValue()
+    XCTAssertEqual([], self.trackingClient.events)
 
     XCTAssertFalse(
       self.vm.inputs.shouldStartLoad(
@@ -492,6 +614,8 @@ final class CheckoutViewModelTests: TestCase {
     )
 
     self.popViewController.assertValueCount(1)
+    XCTAssertEqual(["Checkout Cancel", "Canceled Checkout"],
+                   self.trackingClient.events, "Cancel event and its deprecated version are tracked")
   }
 }
 
@@ -501,48 +625,52 @@ internal extension NSURLRequest {
   }
 }
 
-private func cancelPledgeURL(project project: Project) -> String {
-  return "\(project.urls.web.project)/pledge/destroy"
-}
-
 private func cancelPledgeRequest(project project: Project) -> NSURLRequest {
   return NSURLRequest(URL: NSURL(string: cancelPledgeURL(project: project))!)
 }
 
-private func creatorURL(project project: Project) -> String {
-  return "\(project.urls.web.project)/pledge/big_print?modal=true#creator"
+private func cancelPledgeURL(project project: Project) -> String {
+  return "\(project.urls.web.project)/pledge/destroy"
+}
+
+private func changePaymentMethodRequest(project project: Project) -> NSURLRequest {
+  return NSURLRequest(URL: NSURL(string: changePaymentMethodURL(project: project))!)
+}
+
+private func changePaymentMethodURL(project project: Project) -> String {
+  return "\(project.urls.web.project)/pledge/change_method"
 }
 
 private func creatorRequest(project project: Project) -> NSURLRequest {
   return NSURLRequest(URL: NSURL(string: creatorURL(project: project))!)
 }
 
-private func editPledgeURL(project project: Project) -> String {
-  return "\(project.urls.web.project)/pledge/edit"
+private func creatorURL(project project: Project) -> String {
+  return "\(project.urls.web.project)/pledge/big_print?modal=true#creator"
 }
 
 private func editPledgeRequest(project project: Project) -> NSURLRequest {
   return NSURLRequest(URL: NSURL(string: editPledgeURL(project: project))!)
 }
 
-private func newPaymentsURL() -> String {
-  return "https://www.kickstarter.com/checkouts/1/payments/new"
+private func editPledgeURL(project project: Project) -> String {
+  return "\(project.urls.web.project)/pledge/edit"
 }
 
 private func newPaymentsRequest() -> NSURLRequest {
   return NSURLRequest(URL: NSURL(string: newPaymentsURL())!)
 }
 
-private func newPledgeURL(project project: Project) -> String {
-  return "\(project.urls.web.project)/pledge/new"
+private func newPaymentsURL() -> String {
+  return "https://www.kickstarter.com/checkouts/1/payments/new"
 }
 
 private func newPledgeRequest(project project: Project) -> NSURLRequest {
   return NSURLRequest(URL: NSURL(string: newPledgeURL(project: project))!)
 }
 
-private func paymentsURL() -> String {
-  return "https://www.kickstarter.com/checkouts/1/payments"
+private func newPledgeURL(project project: Project) -> String {
+  return "\(project.urls.web.project)/pledge/new"
 }
 
 private func paymentsRequest() -> NSURLRequest {
@@ -551,8 +679,8 @@ private func paymentsRequest() -> NSURLRequest {
   return request
 }
 
-private func pledgeURL(project project: Project) -> String {
-  return "\(project.urls.web.project)/pledge"
+private func paymentsURL() -> String {
+  return "https://www.kickstarter.com/checkouts/1/payments"
 }
 
 private func pledgeRequest(project project: Project) -> NSURLRequest {
@@ -561,8 +689,8 @@ private func pledgeRequest(project project: Project) -> NSURLRequest {
   return request
 }
 
-private func privacyPolicyURL(project project: Project) -> String {
-  return "\(project.urls.web.project)/privacy?modal=true&ref=checkout_payment_sources_page"
+private func pledgeURL(project project: Project) -> String {
+  return "\(project.urls.web.project)/pledge"
 }
 
 private func privacyPolicyRequest(project project: Project) -> NSURLRequest {
@@ -571,34 +699,38 @@ private func privacyPolicyRequest(project project: Project) -> NSURLRequest {
   )
 }
 
-private func projectRequest(project project: Project) -> NSURLRequest {
-  return NSURLRequest(URL: NSURL(string: project.urls.web.project)!)
+private func privacyPolicyURL(project project: Project) -> String {
+  return "\(project.urls.web.project)/privacy?modal=true&ref=checkout_payment_sources_page"
 }
 
-private func thanksURL(project project: Project) -> String {
-  return "\(project.urls.web.project)/checkouts/1/thanks"
+private func projectRequest(project project: Project) -> NSURLRequest {
+  return NSURLRequest(URL: NSURL(string: project.urls.web.project)!)
 }
 
 private func signupRequest() -> NSURLRequest {
   return NSURLRequest(URL: NSURL(string: "https://www.kickstarter.com/signup?context=checkout&then=%2Ffoo")!)
 }
 
-private func stripeURL() -> String {
-  return "https://js.stripe.com/v2/channel.html"
-}
-
 private func stripeRequest() -> NSURLRequest {
   return NSURLRequest(URL: NSURL(string: stripeURL())!)
+}
+
+private func stripeURL() -> String {
+  return "https://js.stripe.com/v2/channel.html"
 }
 
 private func thanksRequest(project project: Project) -> NSURLRequest {
   return NSURLRequest(URL: NSURL(string: thanksURL(project: project))!)
 }
 
-private func useStoredCardURL() -> String {
-  return "https://www.kickstarter.com/checkouts/1/payments/use_stored_card"
+private func thanksURL(project project: Project) -> String {
+  return "\(project.urls.web.project)/checkouts/1/thanks"
 }
 
 private func useStoredCardRequest() -> NSURLRequest {
   return NSURLRequest(URL: NSURL(string: useStoredCardURL())!)
+}
+
+private func useStoredCardURL() -> String {
+  return "https://www.kickstarter.com/checkouts/1/payments/use_stored_card"
 }

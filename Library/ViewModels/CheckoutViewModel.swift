@@ -18,6 +18,9 @@ internal struct RequestData {
 }
 
 public protocol CheckoutViewModelInputs {
+  /// Call when the back button is tapped.
+  func cancelButtonTapped()
+
   /// Call to set the project, reward, and why the user is checking out.
   func configureWith(project project: Project, reward: Reward?, intent: CheckoutIntent)
 
@@ -82,6 +85,14 @@ public final class CheckoutViewModel: CheckoutViewModelType {
           webViewNavigationType: navigationType)
     }
 
+    let projectRequest = requestData
+      .filter { requestData in
+        if let navigation = requestData.navigation,
+          case .project(_, .root, _) = navigation { return true }
+        return false
+      }
+      .ignoreValues()
+
     let webViewRequest = requestData
       .filter { requestData in
         // Allow through requests that the web view can load once they're prepared.
@@ -128,13 +139,12 @@ public final class CheckoutViewModel: CheckoutViewModelType {
       .filter { $0.navigation == .signup }
       .ignoreValues()
 
-    self.popViewController = requestData
-      .filter { requestData in
-        if let navigation = requestData.navigation,
-          case .project(_, .root, _) = navigation { return true }
-        return false
-      }
-      .ignoreValues()
+    let checkoutCancelled = Signal.merge(
+      projectRequest,
+      self.cancelButtonTappedProperty.signal
+      )
+
+    self.popViewController = checkoutCancelled
 
     self.shouldStartLoadResponseProperty <~ requestData
       .map { $0.shouldStartLoad }
@@ -145,8 +155,13 @@ public final class CheckoutViewModel: CheckoutViewModelType {
       webViewRequest
       )
       .map { AppEnvironment.current.apiService.preparedRequest(forRequest: $0) }
+
+    checkoutCancelled.observeNext { AppEnvironment.current.koala.trackCheckoutCancel() }
   }
   // swiftlint:enable function_body_length
+
+  private let cancelButtonTappedProperty = MutableProperty()
+  public func cancelButtonTapped() { self.cancelButtonTappedProperty.value = () }
 
   private let checkoutDataProperty = MutableProperty<(CheckoutData)?>(nil)
   public func configureWith(project project: Project, reward: Reward?, intent: CheckoutIntent) {
@@ -162,9 +177,7 @@ public final class CheckoutViewModel: CheckoutViewModelType {
   }
 
   private let userSessionStartedProperty = MutableProperty()
-  public func userSessionStarted() {
-    self.userSessionStartedProperty.value = ()
-  }
+  public func userSessionStarted() { self.userSessionStartedProperty.value = () }
 
   private let viewDidLoadProperty = MutableProperty()
   public func viewDidLoad() { self.viewDidLoadProperty.value = () }
@@ -211,9 +224,10 @@ private func isNavigationLoadedByWebView(navigation navigation: Navigation?) -> 
   guard let nav = navigation else { return false }
   switch nav {
   case
-    .checkout(_, .payments(.root)),
     .checkout(_, .payments(.new)),
+    .checkout(_, .payments(.root)),
     .checkout(_, .payments(.useStoredCard)),
+    .project(_, .pledge(.changeMethod), _),
     .project(_, .pledge(.destroy), _),
     .project(_, .pledge(.edit), _),
     .project(_, .pledge(.new), _),

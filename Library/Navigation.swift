@@ -53,6 +53,7 @@ public enum Navigation {
 
     public enum Pledge {
       case bigPrint
+      case changeMethod
       case destroy
       case edit
       case new
@@ -141,7 +142,8 @@ public func == (lhs: Navigation.Project.Checkout, rhs: Navigation.Project.Checko
 extension Navigation.Project.Pledge: Equatable {}
 public func == (lhs: Navigation.Project.Pledge, rhs: Navigation.Project.Pledge) -> Bool {
   switch (lhs, rhs) {
-  case (.bigPrint, .bigPrint), (.destroy, .destroy), (.edit, .edit), (.new, .new), (.root, .root):
+  case (.bigPrint, .bigPrint), (.changeMethod, .changeMethod), (.destroy, .destroy), (.edit, .edit),
+       (.new, .new), (.root, .root):
     return true
   default:
     return false
@@ -230,6 +232,7 @@ private let routes = [
   "/projects/:creator_param/:project_param/messages/new": messageCreator,
   "/projects/:creator_param/:project_param/pledge": pledgeRoot,
   "/projects/:creator_param/:project_param/pledge/big_print": pledgeBigPrint,
+  "/projects/:creator_param/:project_param/pledge/change_method": pledgeChangeMethod,
   "/projects/:creator_param/:project_param/pledge/destroy": pledgeDestroy,
   "/projects/:creator_param/:project_param/pledge/edit": pledgeEdit,
   "/projects/:creator_param/:project_param/pledge/new": pledgeNew,
@@ -384,6 +387,13 @@ private func pledgeBigPrint(params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
     <*> .Success(.pledge(.bigPrint))
+    <*> params <|? "ref_tag"
+}
+
+private func pledgeChangeMethod(params: RouteParams) -> Decoded<Navigation> {
+  return curry(Navigation.project)
+    <^> params <| "project_param"
+    <*> .Success(.pledge(.changeMethod))
     <*> params <|? "ref_tag"
 }
 

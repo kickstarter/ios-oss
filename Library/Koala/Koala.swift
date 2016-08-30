@@ -174,6 +174,12 @@ public final class Koala {
       ])
   }
 
+  // MARK: Checkout Events
+  public func trackCheckoutCancel() {
+    self.track(event: "Checkout Cancel", properties: [Koala.DeprecatedKey: true])
+    self.track(event: "Canceled Checkout")
+  }
+
   // MARK: Login Events
   public func trackLoginTout(intent intent: LoginIntent) {
 
