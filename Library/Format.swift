@@ -138,6 +138,8 @@ public enum Format {
     } else if components.minute >= 0 && components.second >= 0 {
       let format = abbreviate ? Strings.dates_time_minutes_abbreviated : Strings.dates_time_minutes
       string = format(time_count: components.minute)
+    } else if components.second < 0 {
+      string = "0 " + Strings.discovery_baseball_card_deadline_units_secs()
     } else {
       string = ""
     }
