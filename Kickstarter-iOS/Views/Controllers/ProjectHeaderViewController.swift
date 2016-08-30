@@ -59,8 +59,8 @@ internal final class ProjectHeaderViewController: UIViewController {
                                   action: #selector(commentsButtonTapped),
                                   forControlEvents: .TouchUpInside)
     self.updatesButton.addTarget(self,
-                                  action: #selector(updatesButtonTapped),
-                                  forControlEvents: .TouchUpInside)
+                                 action: #selector(updatesButtonTapped),
+                                 forControlEvents: .TouchUpInside)
     self.campaignTabButton.addTarget(self,
                                      action: #selector(campaignTabButtonTapped),
                                      forControlEvents: .TouchUpInside)
@@ -209,6 +209,7 @@ internal final class ProjectHeaderViewController: UIViewController {
   }
   // swiftlint:enable function_body_length
 
+  // swiftlint:disable function_body_length
   internal override func bindViewModel() {
     super.bindViewModel()
 
@@ -245,6 +246,10 @@ internal final class ProjectHeaderViewController: UIViewController {
       .observeForControllerAction()
       .observeNext { [weak self] in self?.goToComments(project: $0) }
 
+    self.viewModel.outputs.goToUpdates
+      .observeForControllerAction()
+      .observeNext { [weak self] in self?.goToUpdates(forProject: $0) }
+
     self.viewModel.outputs.notifyDelegateToShowCampaignTab
       .observeNext { [weak self] in self?.delegate?.projectHeaderShowCampaignTab() }
 
@@ -258,9 +263,16 @@ internal final class ProjectHeaderViewController: UIViewController {
         self?.progressBarView.transform = CGAffineTransformMakeScale(CGFloat(progress), 1.0)
     }
   }
+  // swiftlint:enable function_body_length
 
   private func goToComments(project project: Project) {
     let vc = CommentsViewController.configuredWith(project: project)
+    self.navigationController?.pushViewController(vc, animated: true)
+  }
+
+  private func goToUpdates(forProject project: Project) {
+    let vc = ProjectUpdatesViewController()
+    vc.configureWith(project: project)
     self.navigationController?.pushViewController(vc, animated: true)
   }
 

@@ -23,6 +23,7 @@ final class ProjectHeaderViewModelTests: TestCase {
   private let deadlineSubtitleLabelText = TestObserver<String, NoError>()
   private let deadlineTitleLabelText = TestObserver<String, NoError>()
   private let goToComments = TestObserver<Project, NoError>()
+  private let goToUpdates = TestObserver<Project, NoError>()
   private let notifyDelegateToShowCampaignTab = TestObserver<(), NoError>()
   private let notifyDelegateToShowRewardsTab = TestObserver<(), NoError>()
   private let pledgedSubtitleLabelText = TestObserver<String, NoError>()
@@ -55,6 +56,7 @@ final class ProjectHeaderViewModelTests: TestCase {
     self.vm.outputs.deadlineSubtitleLabelText.observe(self.deadlineSubtitleLabelText.observer)
     self.vm.outputs.deadlineTitleLabelText.observe(self.deadlineTitleLabelText.observer)
     self.vm.outputs.goToComments.observe(self.goToComments.observer)
+    self.vm.outputs.goToUpdates.observe(self.goToUpdates.observer)
     self.vm.outputs.notifyDelegateToShowCampaignTab.observe(self.notifyDelegateToShowCampaignTab.observer)
     self.vm.outputs.notifyDelegateToShowRewardsTab.observe(self.notifyDelegateToShowRewardsTab.observer)
     self.vm.outputs.pledgedSubtitleLabelText.observe(self.pledgedSubtitleLabelText.observer)
@@ -263,6 +265,17 @@ final class ProjectHeaderViewModelTests: TestCase {
     self.vm.inputs.commentsButtonTapped()
 
     self.goToComments.assertValues([project])
+  }
+
+  func testGoToUpdates() {
+    let project = Project.template
+
+    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewWillAppear()
+    self.vm.inputs.updatesButtonTapped()
+
+    self.goToUpdates.assertValues([project])
   }
 
   func testPledgedLabels_WhenConversionNotNeeded() {

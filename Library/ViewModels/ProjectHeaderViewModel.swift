@@ -69,6 +69,9 @@ public protocol ProjectHeaderViewModelOutputs {
   /// Emits the project when we should navigate to the comments of that project.
   var goToComments: Signal<Project, NoError> { get }
 
+  /// Emits the project when we should navigate to the updates of that project.
+  var goToUpdates: Signal<Project, NoError> { get }
+
   /// Emits when the delegate should be notified to show the campaign tab.
   var notifyDelegateToShowCampaignTab: Signal<(), NoError> { get }
 
@@ -229,8 +232,9 @@ ProjectHeaderViewModelOutputs {
       )
     }
 
-    self.goToComments = project
-      .takeWhen(self.commentsButtonTappedProperty.signal)
+    self.goToComments = project.takeWhen(self.commentsButtonTappedProperty.signal)
+
+    self.goToUpdates = project.takeWhen(self.updatesButtonTappedProperty.signal)
 
     self.allStatsStackViewAccessibilityValue = project
       .map { project in
@@ -339,6 +343,7 @@ ProjectHeaderViewModelOutputs {
   public let deadlineSubtitleLabelText: Signal<String, NoError>
   public let deadlineTitleLabelText: Signal<String, NoError>
   public let goToComments: Signal<Project, NoError>
+  public var goToUpdates: Signal<Project, NoError>
   public let notifyDelegateToShowCampaignTab: Signal<(), NoError>
   public let notifyDelegateToShowRewardsTab: Signal<(), NoError>
   public let pledgedSubtitleLabelText: Signal<String, NoError>
