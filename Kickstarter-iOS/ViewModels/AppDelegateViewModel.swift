@@ -69,7 +69,10 @@ public protocol AppDelegateViewModelOutputs {
   var goToActivity: Signal<(), NoError> { get }
 
   /// Emits when the root view controller should navigate to the creator dashboard.
-  var goToDashboard: Signal<Param, NoError> { get }
+  var goToDashboard: Signal<Param?, NoError> { get }
+
+  /// Emits when the root view controller should navigate to the creator dashboard.
+  var goToDiscovery: Signal<DiscoveryParams?, NoError> { get }
 
   /// Emits when the root view controller should navigate to the login screen.
   var goToLogin: Signal<(), NoError> { get }
@@ -218,6 +221,29 @@ AppDelegateViewModelOutputs {
       )
       .ignoreNil()
 
+    self.goToDiscovery = deepLink
+      .map { link -> Optional<[String: String]?> in
+        guard case let .tab(.discovery(rawParams)) = link else { return .None }
+        return .Some(rawParams)
+      }
+      .ignoreNil()
+      .switchMap { rawParams -> SignalProducer<DiscoveryParams?, NoError> in
+        guard
+          let rawParams = rawParams,
+          params = DiscoveryParams.decode(.parse(rawParams)).value
+          else { return .init(value: nil) }
+
+        guard
+          let rawCategoryParam = rawParams["category_id"],
+          categoryParam = Param.decode(.String(rawCategoryParam)).value
+          else { return .init(value: params) }
+
+        return AppEnvironment.current.apiService.fetchCategory(param: categoryParam)
+          .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
+          .demoteErrors()
+          .map { params |> DiscoveryParams.lens.category .~ $0 }
+    }
+
     self.goToActivity = deepLink
       .filter { $0 == .tab(.activity) }
       .ignoreValues()
@@ -251,9 +277,9 @@ AppDelegateViewModelOutputs {
     }
 
     self.goToDashboard = deepLink
-      .map { link -> Param? in
-        guard case let .tab(.dashboard(param)) = link else { return nil }
-        return param
+      .map { link -> Optional<Param?> in
+        guard case let .tab(.dashboard(param)) = link else { return .None }
+        return .Some(param)
       }
       .ignoreNil()
 
@@ -416,7 +442,8 @@ AppDelegateViewModelOutputs {
   public let configureHockey: Signal<HockeyConfigData, NoError>
   public let facebookOpenURLReturnValue = MutableProperty(false)
   public let goToActivity: Signal<(), NoError>
-  public let goToDashboard: Signal<Param, NoError>
+  public let goToDashboard: Signal<Param?, NoError>
+  public let goToDiscovery: Signal<DiscoveryParams?, NoError>
   public let goToLogin: Signal<(), NoError>
   public let goToProfile: Signal<(), NoError>
   public let goToSearch: Signal<(), NoError>

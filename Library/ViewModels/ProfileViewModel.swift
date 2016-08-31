@@ -56,7 +56,7 @@ public final class ProfileViewModel: ProfileViewModelType, ProfileViewModelInput
       .map {
         DiscoveryParams.defaults
           |> DiscoveryParams.lens.backed .~ true
-          <> DiscoveryParams.lens.sort .~ .EndingSoon
+          <> DiscoveryParams.lens.sort .~ .endingSoon
     }
 
     let requestNextPageWhen = self.willDisplayRowProperty.signal.ignoreNil()

@@ -12,8 +12,10 @@ import Prelude
 final class RootViewModelTests: TestCase {
   let vm: RootViewModelType = RootViewModel()
   let viewControllerNames = TestObserver<[String], NoError>()
+  let filterDiscovery = TestObserver<DiscoveryParams, NoError>()
   let selectedIndex = TestObserver<Int, NoError>()
   let scrollToTopControllerName = TestObserver<String, NoError>()
+  let switchDashboardProject = TestObserver<Param, NoError>()
   let tabBarItemsData = TestObserver<TabBarItemsData, NoError>()
   let profileItemData = TestObserver<ProfileTabBarItemData, NoError>()
 
@@ -24,7 +26,9 @@ final class RootViewModelTests: TestCase {
       .map(extractRootNames)
       .observe(self.viewControllerNames.observer)
 
+    self.vm.outputs.filterDiscovery.map(second).observe(self.filterDiscovery.observer)
     self.vm.outputs.selectedIndex.observe(self.selectedIndex.observer)
+    self.vm.outputs.switchDashboardProject.map(second).observe(self.switchDashboardProject.observer)
 
     self.vm.outputs.scrollToTop
       .map(extractRootName)
@@ -49,7 +53,7 @@ final class RootViewModelTests: TestCase {
       "Show the logged out tabs."
     )
 
-    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: User.template))
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
     vm.inputs.userSessionStarted()
 
     viewControllerNames.assertValues(
@@ -146,7 +150,7 @@ final class RootViewModelTests: TestCase {
   func testSwitchingTabs() {
     self.vm.inputs.viewDidLoad()
     self.selectedIndex.assertValues([])
-    self.vm.inputs.switchToDiscovery()
+    self.vm.inputs.switchToDiscovery(params: nil)
     self.selectedIndex.assertValues([0])
     self.vm.inputs.switchToActivities()
     self.selectedIndex.assertValues([0, 1])
@@ -157,7 +161,7 @@ final class RootViewModelTests: TestCase {
     self.vm.inputs.switchToLogin()
     self.selectedIndex.assertValues([0, 1, 2, 3])
 
-    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: User.template))
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
     self.vm.inputs.userSessionStarted()
 
     self.selectedIndex.assertValues([0, 1, 2, 3, 3])
@@ -165,6 +169,30 @@ final class RootViewModelTests: TestCase {
     self.selectedIndex.assertValues([0, 1, 2, 3, 3, 3])
     self.vm.inputs.switchToLogin()
     self.selectedIndex.assertValues([0, 1, 2, 3, 3, 3])
+  }
+
+  func testSwitchToDiscoveryParam() {
+    self.vm.inputs.viewDidLoad()
+
+    let params = DiscoveryParams.defaults
+
+    self.filterDiscovery.assertValues([])
+    self.vm.inputs.switchToDiscovery(params: params)
+    self.filterDiscovery.assertValues([params])
+  }
+
+  func testSwitchToDashboardParam() {
+    self.vm.inputs.viewDidLoad()
+
+    let param = Param.id(1)
+
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: .template
+      |> User.lens.stats.memberProjectsCount .~ 1))
+    self.vm.inputs.userSessionStarted()
+
+    self.switchDashboardProject.assertValues([])
+    self.vm.inputs.switchToDashboard(project: param)
+    self.switchDashboardProject.assertValues([param])
   }
 
   func testTabBarItemStyles() {
@@ -191,7 +219,7 @@ final class RootViewModelTests: TestCase {
 
     self.tabBarItemsData.assertValues([tabData])
 
-    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: User.template))
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
     self.vm.inputs.userSessionStarted()
 
     self.tabBarItemsData.assertValues([tabData, tabDataLoggedIn])

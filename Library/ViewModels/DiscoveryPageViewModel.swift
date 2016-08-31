@@ -172,7 +172,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       self.sortProperty.signal.ignoreNil()
       )
       .map { _, sort in
-        return AppEnvironment.current.currentUser == nil && sort == .Magic
+        return AppEnvironment.current.currentUser == nil && sort == .magic
       }
       .skipRepeats()
 
@@ -260,9 +260,9 @@ private func refTag(fromParams params: DiscoveryParams, project: Project) -> Ref
   if project.isPotdToday() {
     return .discoveryPotd
   } else if params.category != nil {
-    return .categoryWithSort(params.sort ?? .Magic)
+    return .categoryWithSort(params.sort ?? .magic)
   } else if params.staffPicks == true {
-    return .recommendedWithSort(params.sort ?? .Magic)
+    return .recommendedWithSort(params.sort ?? .magic)
   } else if params.social == true {
     return .social
   }

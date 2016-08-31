@@ -148,7 +148,7 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
       .map { $0.category.rootId }
       .ignoreNil()
       .flatMap {
-        return AppEnvironment.current.apiService.fetchCategory(id: $0)
+        return AppEnvironment.current.apiService.fetchCategory(param: .id($0))
           .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
           .map { $0.root ?? $0 }
           .demoteErrors()

@@ -46,7 +46,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
   }
 
   func testPaginating() {
-    self.vm.inputs.configureWith(sort: .Magic)
+    self.vm.inputs.configureWith(sort: .magic)
     self.scheduler.advance()
 
     self.hasAddedProjects.assertDidNotEmitValue("No projects load at first.")
@@ -163,7 +163,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
    */
   func testViewLifecycle() {
     // Configure and load up view model
-    self.vm.inputs.configureWith(sort: .Magic)
+    self.vm.inputs.configureWith(sort: .magic)
     self.vm.inputs.viewDidAppear()
     self.scheduler.advance()
 
@@ -217,7 +217,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       |> Project.lens.id %~ { $0 + 1 }
       |> Project.lens.dates.potdAt .~ potdAt
 
-    self.vm.inputs.configureWith(sort: .Magic)
+    self.vm.inputs.configureWith(sort: .magic)
     self.vm.inputs.viewDidAppear()
     self.vm.inputs.selectedFilter(.defaults)
     self.scheduler.advance()
@@ -231,13 +231,13 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     self.vm.inputs.tapped(project: project)
 
     self.goToProject.assertValues([project, project])
-    self.goToRefTag.assertValues([.discovery, .categoryWithSort(.Magic)],
+    self.goToRefTag.assertValues([.discovery, .categoryWithSort(.magic)],
                                  "Go to the project with the category sort ref tag.")
 
     self.vm.inputs.tapped(project: potd)
 
     self.goToProject.assertValues([project, project, potd])
-    self.goToRefTag.assertValues([.discovery, .categoryWithSort(.Magic), .discoveryPotd],
+    self.goToRefTag.assertValues([.discovery, .categoryWithSort(.magic), .discoveryPotd],
                                  "Go to the project with the POTD ref tag.")
 
     self.vm.inputs.selectedFilter(.defaults |> DiscoveryParams.lens.staffPicks .~ true)
@@ -245,7 +245,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
     self.goToProject.assertValues([project, project, potd, project])
     self.goToRefTag.assertValues(
-      [.discovery, .categoryWithSort(.Magic), .discoveryPotd, .recommendedWithSort(.Magic)],
+      [.discovery, .categoryWithSort(.magic), .discoveryPotd, .recommendedWithSort(.magic)],
       "Go to the project with the recommended sort ref tag."
     )
 
@@ -254,7 +254,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
     self.goToProject.assertValues([project, project, potd, project, project])
     self.goToRefTag.assertValues(
-      [.discovery, .categoryWithSort(.Magic), .discoveryPotd, .recommendedWithSort(.Magic), .social],
+      [.discovery, .categoryWithSort(.magic), .discoveryPotd, .recommendedWithSort(.magic), .social],
       "Go to the project with the social ref tag."
     )
 
@@ -264,7 +264,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     self.vm.inputs.tapped(activity: activity)
     self.goToProject.assertValues([project, project, potd, project, project, activityProject])
     self.goToRefTag.assertValues(
-      [.discovery, .categoryWithSort(.Magic), .discoveryPotd, .recommendedWithSort(.Magic), .social,
+      [.discovery, .categoryWithSort(.magic), .discoveryPotd, .recommendedWithSort(.magic), .social,
         .activitySample],
       "Go to the project with the social ref tag."
     )
@@ -292,7 +292,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: User.template))
 
     withEnvironment(apiService: MockService(fetchActivitiesResponse: [activity1])) {
-      self.vm.inputs.configureWith(sort: .Magic)
+      self.vm.inputs.configureWith(sort: .magic)
       self.vm.inputs.viewWillAppear()
       self.vm.inputs.viewDidAppear()
       self.scheduler.advance()
@@ -375,7 +375,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: User.template))
 
     withEnvironment(apiService: MockService(fetchActivitiesResponse: [activity])) {
-      self.vm.inputs.configureWith(sort: .Magic)
+      self.vm.inputs.configureWith(sort: .magic)
       self.vm.inputs.viewWillAppear()
       self.vm.inputs.viewDidAppear()
       self.scheduler.advance()
@@ -394,7 +394,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
   }
 
   func testShowOnboarding_LoggedOutOnMagic() {
-    self.vm.inputs.configureWith(sort: .Magic)
+    self.vm.inputs.configureWith(sort: .magic)
     self.vm.inputs.viewWillAppear()
     self.vm.inputs.viewDidAppear()
     self.vm.inputs.selectedFilter(.defaults)
@@ -403,7 +403,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
   }
 
   func testShowOnboarding_LoggedOutOnNonMagic() {
-    self.vm.inputs.configureWith(sort: .Popular)
+    self.vm.inputs.configureWith(sort: .popular)
     self.vm.inputs.viewWillAppear()
     self.vm.inputs.viewDidAppear()
     self.vm.inputs.selectedFilter(.defaults)
@@ -413,7 +413,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
   func testShowOnboarding_LoggedIn() {
     withEnvironment(currentUser: .template) {
-      self.vm.inputs.configureWith(sort: .Magic)
+      self.vm.inputs.configureWith(sort: .magic)
       self.vm.inputs.viewWillAppear()
       self.vm.inputs.viewDidAppear()
       self.vm.inputs.selectedFilter(.defaults)
@@ -423,7 +423,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
   }
 
   func testFocusScreenReaderOnFirstProject() {
-    self.vm.inputs.configureWith(sort: .Magic)
+    self.vm.inputs.configureWith(sort: .magic)
     self.vm.inputs.viewWillAppear()
     self.vm.inputs.viewDidAppear()
     self.vm.inputs.selectedFilter(.defaults)

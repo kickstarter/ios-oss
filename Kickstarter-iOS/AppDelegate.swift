@@ -43,9 +43,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     self.viewModel.outputs.updateEnvironment
       .observeForUI()
-      .observeNext { config, koala in
-        AppEnvironment.replaceCurrentEnvironment(config: config, koala: koala)
-    }
+      .observeNext { config, koala in AppEnvironment.replaceCurrentEnvironment(config: config, koala: koala) }
 
     self.viewModel.outputs.postNotification
       .observeForUI()
@@ -57,17 +55,17 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         self?.rootTabBarController?.presentViewController($0, animated: true, completion: nil)
     }
 
+    self.viewModel.outputs.goToDiscovery
+      .observeForUI()
+      .observeNext { [weak self] in self?.rootTabBarController?.switchToDiscovery(params: $0) }
+
     self.viewModel.outputs.goToActivity
       .observeForUI()
-      .observeNext { [weak self] in
-        self?.rootTabBarController?.switchToActivities()
-    }
+      .observeNext { [weak self] in self?.rootTabBarController?.switchToActivities() }
 
     self.viewModel.outputs.goToDashboard
       .observeForUI()
-      .observeNext { [weak self] param in
-        self?.rootTabBarController?.switchToDashboard(project: param)
-    }
+      .observeNext { [weak self] in self?.rootTabBarController?.switchToDashboard(project: $0) }
 
     self.viewModel.outputs.registerUserNotificationSettings
       .observeForUI()
@@ -145,7 +143,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
   }
 
   internal func application(application: UIApplication,
-                            didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
+                            didReceiveRemoteNotification userInfo: [NSObject: AnyObject]) {
 
     self.viewModel.inputs.didReceive(remoteNotification: userInfo,
                                      applicationIsActive: application.applicationState == .Active)

@@ -7,6 +7,10 @@ internal final class ProfileViewController: UICollectionViewController {
   private let viewModel: ProfileViewModelType = ProfileViewModel()
   private let refreshControl = UIRefreshControl()
 
+  internal static func instantiate() -> ProfileViewController {
+    return Storyboard.Profile.instantiate(ProfileViewController)
+  }
+
   internal override func viewDidLoad() {
     super.viewDidLoad()
     self.collectionView?.dataSource = self.dataSource

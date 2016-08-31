@@ -87,19 +87,17 @@ public final class NavigationTests: XCTestCase {
     KSRAssertMatch(.signup,
                    "/signup")
 
-    KSRAssertMatch(.tab(.discovery(DiscoveryParams.defaults, .root)),
-                   "/discover")
+    KSRAssertMatch(.tab(.discovery(["staff_picks": "true", "sort": "newest"])),
+                   "/discover?sort=newest")
 
-    KSRAssertMatch(.tab(.discovery(DiscoveryParams.defaults, .advanced)),
+    KSRAssertMatch(.tab(.discovery([:])),
                    "/discover/advanced")
 
-    KSRAssertMatch(
-      .tab(.discovery(DiscoveryParams.defaults, .category(category: .slug("a"), subcategory: nil))),
-      "/discover/categories/a")
+    KSRAssertMatch(.tab(.discovery(["category_id": "a"])),
+                   "/discover/categories/a")
 
-    KSRAssertMatch(
-      .tab(.discovery(DiscoveryParams.defaults, .category(category: .slug("b"), subcategory: .slug("c")))),
-      "/discover/categories/b/c")
+    KSRAssertMatch(.tab(.discovery(["category_id": "c", "parent_category_id": "b"])),
+                   "/discover/categories/b/c")
 
     KSRAssertMatch(.tab(.search),
                    "/search")

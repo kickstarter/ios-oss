@@ -57,7 +57,7 @@ internal final class DiscoveryViewModelTests: TestCase {
     XCTAssertEqual(["magic"], self.trackingClient.properties(forKey: "discover_sort"))
     XCTAssertEqual([true], self.trackingClient.properties(forKey: "discover_staff_picks", as: Bool.self))
 
-    self.vm.inputs.filterSelected(withParams: categoryParams)
+    self.vm.inputs.filter(withParams: categoryParams)
 
     XCTAssertEqual(["Viewed Discovery", "Viewed Discovery"], self.trackingClient.events)
     XCTAssertEqual(["magic", "magic"], self.trackingClient.properties(forKey: "discover_sort"))
@@ -74,11 +74,12 @@ internal final class DiscoveryViewModelTests: TestCase {
     self.loadFilterIntoDataSource.assertValueCount(0)
 
     self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewWillAppear(animated: false)
 
     self.loadFilterIntoDataSource.assertValues([initialParams],
                                                "Initial params load into data source immediately.")
 
-    self.vm.inputs.filterSelected(withParams: starredParams)
+    self.vm.inputs.filter(withParams: starredParams)
 
     self.loadFilterIntoDataSource.assertValues([initialParams, starredParams],
                                                "New params load into data source after selecting.")
@@ -88,6 +89,7 @@ internal final class DiscoveryViewModelTests: TestCase {
     self.configureNavigationHeader.assertValueCount(0)
 
     self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewWillAppear(animated: false)
 
     self.configureNavigationHeader.assertValues([initialParams])
   }
@@ -100,6 +102,7 @@ internal final class DiscoveryViewModelTests: TestCase {
     ).observe(test.observer)
 
     self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewWillAppear(animated: false)
 
     test.assertValues(["configureDataSource", "loadFilterIntoDataSource"],
                       "The data source should be configured first, and then the filter changed.")
@@ -135,28 +138,28 @@ internal final class DiscoveryViewModelTests: TestCase {
 
     self.vm.inputs.pageTransition(completed: true)
 
-    self.selectSortPage.assertValues([.Popular], "Select the popular page in the pager.")
+    self.selectSortPage.assertValues([.popular], "Select the popular page in the pager.")
     self.navigateToSort.assertValues([], "Don't navigate to a page.")
     self.navigateDirection.assertValues([], "Don't navigate to a page.")
 
     self.vm.inputs.willTransition(toPage: 2)
     self.vm.inputs.pageTransition(completed: true)
 
-    self.selectSortPage.assertValues([.Popular, .Newest], "Select the newest page in the pager.")
+    self.selectSortPage.assertValues([.popular, .newest], "Select the newest page in the pager.")
     self.navigateToSort.assertValues([], "Navigate to the newest page.")
     self.navigateDirection.assertValues([], "Navigate forward to the page.")
 
-    self.vm.inputs.sortPagerSelected(sort: .Magic)
+    self.vm.inputs.sortPagerSelected(sort: .magic)
 
-    self.selectSortPage.assertValues([.Popular, .Newest, .Magic], "Select the magic page in the pager.")
-    self.navigateToSort.assertValues([.Magic], "Navigate to the magic page.")
+    self.selectSortPage.assertValues([.popular, .newest, .magic], "Select the magic page in the pager.")
+    self.navigateToSort.assertValues([.magic], "Navigate to the magic page.")
     self.navigateDirection.assertValues([.Reverse], "Navigate backwards to the page.")
 
-    self.vm.inputs.sortPagerSelected(sort: .Magic)
+    self.vm.inputs.sortPagerSelected(sort: .magic)
 
-    self.selectSortPage.assertValues([.Popular, .Newest, .Magic],
+    self.selectSortPage.assertValues([.popular, .newest, .magic],
                                      "Selecting the same page again emits nothing new.")
-    self.navigateToSort.assertValues([.Magic],
+    self.navigateToSort.assertValues([.magic],
                                      "Selecting the same page again emits nothing new.")
     self.navigateDirection.assertValues([.Reverse],
                                         "Selecting the same page again emits nothing new.")
@@ -190,7 +193,7 @@ internal final class DiscoveryViewModelTests: TestCase {
                    "Correct sort is tracked.")
     XCTAssertEqual(["swipe"], self.trackingClient.properties(forKey: "gesture_type"))
 
-    self.vm.inputs.sortPagerSelected(sort: .Newest)
+    self.vm.inputs.sortPagerSelected(sort: .newest)
 
     XCTAssertEqual(["Selected Discovery Sort", "Selected Discovery Sort"],
                    self.trackingClient.events,
@@ -200,7 +203,7 @@ internal final class DiscoveryViewModelTests: TestCase {
                    "Correct sort is tracked.")
     XCTAssertEqual(["swipe", "tap"], self.trackingClient.properties(forKey: "gesture_type"))
 
-    self.vm.inputs.sortPagerSelected(sort: .Newest)
+    self.vm.inputs.sortPagerSelected(sort: .newest)
 
     XCTAssertEqual(["Selected Discovery Sort", "Selected Discovery Sort"],
                    self.trackingClient.events,
@@ -214,15 +217,15 @@ internal final class DiscoveryViewModelTests: TestCase {
 
     self.updateSortPagerStyle.assertValueCount(0)
 
-    self.vm.inputs.filterSelected(withParams: categoryParams)
+    self.vm.inputs.filter(withParams: categoryParams)
 
     self.updateSortPagerStyle.assertValues([1], "Emits the category id")
 
-    self.vm.inputs.filterSelected(withParams: categoryParams)
+    self.vm.inputs.filter(withParams: categoryParams)
 
     self.updateSortPagerStyle.assertValues([1], "Does not emit a repeat value.")
 
-    self.vm.inputs.filterSelected(withParams: subcategoryParams)
+    self.vm.inputs.filter(withParams: subcategoryParams)
 
     self.updateSortPagerStyle.assertValues([1, 11], "Emits root category id.")
   }

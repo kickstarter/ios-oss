@@ -211,7 +211,7 @@ final class KoalaTests: XCTestCase {
       <> DiscoveryParams.lens.recommended .~ false
       <> DiscoveryParams.lens.category .~ Category.art
       <> DiscoveryParams.lens.query .~ "collage"
-      <> DiscoveryParams.lens.sort .~ .Popular
+      <> DiscoveryParams.lens.sort .~ .popular
 
     let loggedInUser = User.template |> User.lens.id .~ 42
     let koala = Koala(client: client, loggedInUser: loggedInUser)
@@ -239,7 +239,7 @@ final class KoalaTests: XCTestCase {
       <> DiscoveryParams.lens.social .~ false
       <> DiscoveryParams.lens.recommended .~ false
       <> DiscoveryParams.lens.category .~ nil
-      <> DiscoveryParams.lens.sort .~ .Popular
+      <> DiscoveryParams.lens.sort .~ .popular
 
     let loggedInUser = User.template |> User.lens.id .~ 42
     let koala = Koala(client: client, loggedInUser: loggedInUser)
@@ -261,7 +261,7 @@ final class KoalaTests: XCTestCase {
   func testDiscoveryProperties_Everything() {
     let client = MockTrackingClient()
     let params = .defaults
-      |> DiscoveryParams.lens.sort .~ .Magic
+      |> DiscoveryParams.lens.sort .~ .magic
 
     let loggedInUser = User.template |> User.lens.id .~ 42
     let koala = Koala(client: client, loggedInUser: loggedInUser)

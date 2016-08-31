@@ -19,17 +19,17 @@ public final class RefTagTests: XCTestCase {
     XCTAssertEqual("thanks", RefTag.thanks.stringTag)
     XCTAssertEqual("users", RefTag.users.stringTag)
 
-    XCTAssertEqual("category_ending_soon", RefTag.categoryWithSort(.EndingSoon).stringTag)
-    XCTAssertEqual("category", RefTag.categoryWithSort(.Magic).stringTag)
-    XCTAssertEqual("category_most_funded", RefTag.categoryWithSort(.MostFunded).stringTag)
-    XCTAssertEqual("category_newest", RefTag.categoryWithSort(.Newest).stringTag)
-    XCTAssertEqual("category_popular", RefTag.categoryWithSort(.Popular).stringTag)
+    XCTAssertEqual("category_ending_soon", RefTag.categoryWithSort(.endingSoon).stringTag)
+    XCTAssertEqual("category", RefTag.categoryWithSort(.magic).stringTag)
+    XCTAssertEqual("category_most_funded", RefTag.categoryWithSort(.mostFunded).stringTag)
+    XCTAssertEqual("category_newest", RefTag.categoryWithSort(.newest).stringTag)
+    XCTAssertEqual("category_popular", RefTag.categoryWithSort(.popular).stringTag)
 
-    XCTAssertEqual("recommended_ending_soon", RefTag.recommendedWithSort(.EndingSoon).stringTag)
-    XCTAssertEqual("recommended", RefTag.recommendedWithSort(.Magic).stringTag)
-    XCTAssertEqual("recommended_most_funded", RefTag.recommendedWithSort(.MostFunded).stringTag)
-    XCTAssertEqual("recommended_newest", RefTag.recommendedWithSort(.Newest).stringTag)
-    XCTAssertEqual("recommended_popular", RefTag.recommendedWithSort(.Popular).stringTag)
+    XCTAssertEqual("recommended_ending_soon", RefTag.recommendedWithSort(.endingSoon).stringTag)
+    XCTAssertEqual("recommended", RefTag.recommendedWithSort(.magic).stringTag)
+    XCTAssertEqual("recommended_most_funded", RefTag.recommendedWithSort(.mostFunded).stringTag)
+    XCTAssertEqual("recommended_newest", RefTag.recommendedWithSort(.newest).stringTag)
+    XCTAssertEqual("recommended_popular", RefTag.recommendedWithSort(.popular).stringTag)
   }
 
   func testEquatable() {
@@ -48,11 +48,11 @@ public final class RefTagTests: XCTestCase {
     XCTAssertEqual(RefTag.thanks, RefTag.thanks)
     XCTAssertEqual(RefTag.users, RefTag.users)
 
-    XCTAssertEqual(RefTag.categoryWithSort(.Magic), RefTag.categoryWithSort(.Magic))
-    XCTAssertNotEqual(RefTag.categoryWithSort(.Magic), RefTag.categoryWithSort(.Popular))
+    XCTAssertEqual(RefTag.categoryWithSort(.magic), RefTag.categoryWithSort(.magic))
+    XCTAssertNotEqual(RefTag.categoryWithSort(.magic), RefTag.categoryWithSort(.popular))
 
-    XCTAssertEqual(RefTag.recommendedWithSort(.Magic), RefTag.recommendedWithSort(.Magic))
-    XCTAssertNotEqual(RefTag.recommendedWithSort(.Magic), RefTag.recommendedWithSort(.Popular))
+    XCTAssertEqual(RefTag.recommendedWithSort(.magic), RefTag.recommendedWithSort(.magic))
+    XCTAssertNotEqual(RefTag.recommendedWithSort(.magic), RefTag.recommendedWithSort(.popular))
   }
 
   func testCustomStringConvertible() {
@@ -71,15 +71,15 @@ public final class RefTagTests: XCTestCase {
     XCTAssertEqual(RefTag.categoryFeatured, RefTag(code: RefTag.categoryFeatured.stringTag))
     XCTAssertEqual(RefTag.activitySample, RefTag(code: RefTag.activitySample.stringTag))
 
-    XCTAssertEqual(RefTag.categoryWithSort(.EndingSoon),
-                   RefTag(code: RefTag.categoryWithSort(.EndingSoon).stringTag))
-    XCTAssertEqual(RefTag.category, RefTag(code: RefTag.categoryWithSort(.Magic).stringTag))
-    XCTAssertEqual(RefTag.categoryWithSort(.MostFunded),
-                   RefTag(code: RefTag.categoryWithSort(.MostFunded).stringTag))
-    XCTAssertEqual(RefTag.categoryWithSort(.Newest),
-                   RefTag(code: RefTag.categoryWithSort(.Newest).stringTag))
-    XCTAssertEqual(RefTag.categoryWithSort(.Popular),
-                   RefTag(code: RefTag.categoryWithSort(.Popular).stringTag))
+    XCTAssertEqual(RefTag.categoryWithSort(.endingSoon),
+                   RefTag(code: RefTag.categoryWithSort(.endingSoon).stringTag))
+    XCTAssertEqual(RefTag.category, RefTag(code: RefTag.categoryWithSort(.magic).stringTag))
+    XCTAssertEqual(RefTag.categoryWithSort(.mostFunded),
+                   RefTag(code: RefTag.categoryWithSort(.mostFunded).stringTag))
+    XCTAssertEqual(RefTag.categoryWithSort(.newest),
+                   RefTag(code: RefTag.categoryWithSort(.newest).stringTag))
+    XCTAssertEqual(RefTag.categoryWithSort(.popular),
+                   RefTag(code: RefTag.categoryWithSort(.popular).stringTag))
 
     XCTAssertEqual(RefTag.city, RefTag(code: RefTag.city.stringTag))
     XCTAssertEqual(RefTag.dashboard, RefTag(code: RefTag.dashboard.stringTag))
@@ -88,15 +88,15 @@ public final class RefTagTests: XCTestCase {
     XCTAssertEqual(RefTag.messageThread, RefTag(code: RefTag.messageThread.stringTag))
     XCTAssertEqual(RefTag.recommended, RefTag(code: RefTag.recommended.stringTag))
 
-    XCTAssertEqual(RefTag.recommended, RefTag(code: RefTag.recommendedWithSort(.Magic).stringTag))
-    XCTAssertEqual(RefTag.recommendedWithSort(.EndingSoon),
-                   RefTag(code: RefTag.recommendedWithSort(.EndingSoon).stringTag))
-    XCTAssertEqual(RefTag.recommendedWithSort(.MostFunded),
-                   RefTag(code: RefTag.recommendedWithSort(.MostFunded).stringTag))
-    XCTAssertEqual(RefTag.recommendedWithSort(.Newest),
-                   RefTag(code: RefTag.recommendedWithSort(.Newest).stringTag))
-    XCTAssertEqual(RefTag.recommendedWithSort(.Popular),
-                   RefTag(code: RefTag.recommendedWithSort(.Popular).stringTag))
+    XCTAssertEqual(RefTag.recommended, RefTag(code: RefTag.recommendedWithSort(.magic).stringTag))
+    XCTAssertEqual(RefTag.recommendedWithSort(.endingSoon),
+                   RefTag(code: RefTag.recommendedWithSort(.endingSoon).stringTag))
+    XCTAssertEqual(RefTag.recommendedWithSort(.mostFunded),
+                   RefTag(code: RefTag.recommendedWithSort(.mostFunded).stringTag))
+    XCTAssertEqual(RefTag.recommendedWithSort(.newest),
+                   RefTag(code: RefTag.recommendedWithSort(.newest).stringTag))
+    XCTAssertEqual(RefTag.recommendedWithSort(.popular),
+                   RefTag(code: RefTag.recommendedWithSort(.popular).stringTag))
 
     XCTAssertEqual(RefTag.search, RefTag(code: RefTag.search.stringTag))
     XCTAssertEqual(RefTag.social, RefTag(code: RefTag.social.stringTag))

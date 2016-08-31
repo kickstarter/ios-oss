@@ -36,10 +36,10 @@ internal protocol RootViewModelInputs {
   func switchToActivities()
 
   /// Call when we should switch to the creator dashboard tab.
-  func switchToDashboard(project param: Param)
+  func switchToDashboard(project param: Param?)
 
   /// Call when we should switch to the discovery tab.
-  func switchToDiscovery()
+  func switchToDiscovery(params params: DiscoveryParams?)
 
   /// Call when we should switch to the login tab.
   func switchToLogin()
@@ -61,6 +61,9 @@ internal protocol RootViewModelInputs {
 }
 
 internal protocol RootViewModelOutputs {
+  /// Emits when the discovery VC should filter with specific params.
+  var filterDiscovery: Signal<(DiscoveryViewController, DiscoveryParams), NoError> { get }
+
   /// Emits profile tab bar item data to style it when a user logs in.
   var profileTabBarItemData: Signal<ProfileTabBarItemData, NoError> { get }
 
@@ -73,6 +76,9 @@ internal protocol RootViewModelOutputs {
 
   /// Emits the array of view controllers that should be set on the tab bar.
   var setViewControllers: Signal<[UIViewController], NoError> { get }
+
+  /// Emits when the dashboard should switch projects.
+  var switchDashboardProject: Signal<(DashboardViewController, Param), NoError> { get }
 
   /// Emits data for setting tab bar item styles.
   var tabBarItemsData: Signal<TabBarItemsData, NoError> { get }
@@ -99,31 +105,30 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
       .map { ($0 != nil, ($0?.stats.memberProjectsCount ?? 0) > 0) }
       .skipRepeats(==)
 
-    let standardTabs = self.viewDidLoadProperty.signal
-      .take(1)
+    let standardViewControllers = self.viewDidLoadProperty.signal
       .map { _ in
         [
-          initialViewController(storyboardName: "Discovery"),
-          UINavigationController(rootViewController: ActivitiesViewController.instantiate()),
-          initialViewController(storyboardName: "Search")
+          DiscoveryViewController.instantiate(),
+          ActivitiesViewController.instantiate(),
+          SearchViewController.instantiate()
         ]
       }
-      .map { $0.compact() }
 
-    let personalizedTabs = userState
-      .map { user -> [UIViewController?] in
+    let personalizedViewControllers = userState
+      .map { user in
         [
-          user.isMember    ? initialViewController(storyboardName: "Dashboard") : nil,
-          !user.isLoggedIn ?
-            UINavigationController(
-              rootViewController: LoginToutViewController.configuredWith(loginIntent: .generic)
-            ) as UIViewController? : nil,
-          user.isLoggedIn  ? initialViewController(storyboardName: "Profile") : nil
+          user.isMember    ? DashboardViewController.instantiate() as UIViewController? : nil,
+          !user.isLoggedIn
+            ? LoginToutViewController.configuredWith(loginIntent: .generic) as UIViewController? : nil,
+          user.isLoggedIn  ? ProfileViewController.instantiate() as UIViewController? : nil
         ]
       }
       .map { $0.compact() }
 
-    self.setViewControllers = combineLatest(standardTabs, personalizedTabs).map(+)
+    let viewControllers = combineLatest(standardViewControllers, personalizedViewControllers).map(+)
+
+    self.setViewControllers = viewControllers
+      .map { $0.map(UINavigationController.init(rootViewController:)) }
 
     let loginState = userState.map { $0.isLoggedIn }
     let vcCount = self.setViewControllers.map { $0.count }
@@ -137,27 +142,26 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
       .filter { isTrue($1) }
       .map(first)
 
-    let dashboard = self.setViewControllers
-      .map { vcs in
-        vcs.reduce(nil) { accum, vc -> DashboardViewController? in
-          guard
-            let nav = vc as? UINavigationController,
-            dashboard = nav.viewControllers.first as? DashboardViewController
-            else { return accum }
-
-          return dashboard
-        }
-      }
+    let discovery = viewControllers
+      .map(first(DiscoveryViewController))
       .ignoreNil()
 
-    let switchToDashboard =
-      combineLatest(self.switchToDashboardProperty.signal.ignoreNil(), dashboard, loginState)
-        .filter { _, _, loginState in isTrue(loginState) }
-        .map { param, dashboard, _ in (param, dashboard) }
+    self.filterDiscovery =
+      combineLatest(discovery, self.switchToDiscoveryProperty.signal.ignoreNil())
 
-    switchToDashboard
-      .observeForUI()
-      .observeNext { param, dashboard in dashboard.`switch`(toProject: param) }
+    let dashboard = viewControllers
+      .map(first(DashboardViewController))
+      .ignoreNil()
+
+    self.switchDashboardProject =
+      combineLatest(dashboard, self.switchToDashboardProperty.signal.ignoreNil(),
+        loginState)
+        .filter { _, _, loginState in
+          isTrue(loginState)
+        }
+        .map { dashboard, param, _ in
+          (dashboard, param)
+    }
 
     self.selectedIndex =
       combineLatest(
@@ -168,19 +172,19 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
           self.switchToSearchProperty.signal.mapConst(2),
           switchToLogin,
           switchToProfile,
-          switchToDashboard.mapConst(3)
+          self.switchToDashboardProperty.signal.mapConst(3)
         ),
         self.setViewControllers,
         self.viewDidLoadProperty.signal)
-        .map { idx, vcs, _ in clamp(0, vcs.count-1)(idx) }
+        .map { idx, vcs, _ in clamp(0, vcs.count - 1)(idx) }
 
     let selectedTabAgain = self.selectedIndex.combinePrevious()
-      .map { (prev, next) -> Int? in prev == next ? next : nil }
+      .map { prev, next -> Int? in prev == next ? next : nil }
       .ignoreNil()
 
     self.scrollToTop = self.setViewControllers
       .takePairWhen(selectedTabAgain)
-      .map { (vcs, idx) in vcs[idx] }
+      .map { vcs, idx in vcs[idx] }
 
     self.tabBarItemsData = combineLatest(userState, self.viewDidLoadProperty.signal)
       .map(first)
@@ -208,12 +212,12 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
     self.switchToActivitiesProperty.value = ()
   }
   private let switchToDashboardProperty = MutableProperty<Param?>(nil)
-  internal func switchToDashboard(project param: Param) {
+  internal func switchToDashboard(project param: Param?) {
     self.switchToDashboardProperty.value = param
   }
-  private let switchToDiscoveryProperty = MutableProperty()
-  internal func switchToDiscovery() {
-    self.switchToDiscoveryProperty.value = ()
+  private let switchToDiscoveryProperty = MutableProperty<DiscoveryParams?>(nil)
+  internal func switchToDiscovery(params params: DiscoveryParams?) {
+    self.switchToDiscoveryProperty.value = params
   }
   private let switchToLoginProperty = MutableProperty()
   internal func switchToLogin() {
@@ -241,18 +245,16 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
     self.viewDidLoadProperty.value = ()
   }
 
+  internal let filterDiscovery: Signal<(DiscoveryViewController, DiscoveryParams), NoError>
   internal let profileTabBarItemData: Signal<ProfileTabBarItemData, NoError>
   internal let scrollToTop: Signal<UIViewController, NoError>
   internal let selectedIndex: Signal<Int, NoError>
   internal let setViewControllers: Signal<[UIViewController], NoError>
+  internal let switchDashboardProject: Signal<(DashboardViewController, Param), NoError>
   internal let tabBarItemsData: Signal<TabBarItemsData, NoError>
 
   internal var inputs: RootViewModelInputs { return self }
   internal var outputs: RootViewModelOutputs { return self }
-}
-
-private func initialViewController(storyboardName storyboardName: String) -> UIViewController? {
-  return UIStoryboard(name: storyboardName, bundle: .framework).instantiateInitialViewController()
 }
 
 private func tabData(isLoggedIn isLoggedIn: Bool, isMember: Bool) -> TabBarItemsData {
@@ -298,3 +300,12 @@ func == (lhs: TabBarItem, rhs: TabBarItem) -> Bool {
   }
 }
 // swiftlint:enable cyclomatic_complexity
+
+private func first<VC: UIViewController>(viewController: VC.Type) -> ([UIViewController]) -> VC? {
+
+  return { viewControllers in
+    viewControllers
+      .indexOf { $0 is VC }
+      .flatMap { viewControllers[$0] as? VC }
+  }
+}

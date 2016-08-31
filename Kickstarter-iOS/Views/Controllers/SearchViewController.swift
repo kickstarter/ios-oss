@@ -16,6 +16,10 @@ internal final class SearchViewController: UITableViewController {
   @IBOutlet private weak var searchStackView: UIStackView!
   @IBOutlet private weak var searchTextField: UITextField!
 
+  internal static func instantiate() -> SearchViewController {
+    return Storyboard.Search.instantiate(SearchViewController)
+  }
+
   internal override func viewDidLoad() {
     super.viewDidLoad()
     self.tableView.dataSource = self.dataSource

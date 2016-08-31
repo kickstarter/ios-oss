@@ -68,9 +68,6 @@
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3Ma-6l-ZAC">
                                             <rect key="frame" x="0.0" y="0.0" width="60" height="33"/>
                                             <state key="normal" title="Discover"/>
-                                            <connections>
-                                                <action selector="filterButtonTapped" destination="G4V-ye-CLN" eventType="touchUpInside" id="9aI-On-ZQT"/>
-                                            </connections>
                                         </button>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="v" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rl7-PT-kWp">
                                             <rect key="frame" x="66" y="0.0" width="9" height="33"/>
@@ -297,25 +294,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hYG-xM-Tc1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1840.5" y="-54.5"/>
-        </scene>
-        <!--Discovery-->
-        <scene sceneID="KXx-iK-MHK">
-            <objects>
-                <navigationController navigationBarHidden="YES" id="Dwy-O3-xlF" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Discovery" id="N0M-7p-mqS"/>
-                    <nil key="simulatedTopBarMetrics"/>
-                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="TTo-pO-DKG">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="G4V-ye-CLN" kind="relationship" relationship="rootViewController" id="YoD-bt-LUk"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="3Rj-9E-Q4c" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="724" y="-767"/>
         </scene>
         <!--Sort Pager View Controller-->
         <scene sceneID="faJ-fs-J13">

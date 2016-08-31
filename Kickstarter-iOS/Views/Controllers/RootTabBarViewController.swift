@@ -45,15 +45,11 @@ public final class RootTabBarViewController: UITabBarController {
 
     self.viewModel.outputs.setViewControllers
       .observeForControllerAction()
-      .observeNext { [weak self] vcs in
-        self?.setViewControllers(vcs, animated: false)
-    }
+      .observeNext { [weak self] in self?.setViewControllers($0, animated: false) }
 
     self.viewModel.outputs.selectedIndex
       .observeForControllerAction()
-      .observeNext { [weak self] index in
-        self?.selectedIndex = index
-    }
+      .observeNext { [weak self] in self?.selectedIndex = $0 }
 
     self.viewModel.outputs.scrollToTop
       .observeForControllerAction()
@@ -61,27 +57,31 @@ public final class RootTabBarViewController: UITabBarController {
 
     self.viewModel.outputs.tabBarItemsData
       .observeForControllerAction()
-      .observeNext { [weak self] data in
-        self?.setTabBarItemStyles(withData: data)
-    }
+      .observeNext { [weak self] in self?.setTabBarItemStyles(withData: $0) }
 
     self.viewModel.outputs.profileTabBarItemData
       .observeForControllerAction()
-      .observeNext { [weak self] data in
-        self?.setProfileImage(withData: data)
-    }
+      .observeNext { [weak self] in self?.setProfileImage(withData: $0) }
+
+    self.viewModel.outputs.filterDiscovery
+      .observeForControllerAction()
+      .observeNext { $0.filter(with: $1) }
+
+    self.viewModel.outputs.switchDashboardProject
+      .observeForControllerAction()
+      .observeNext { $0.`switch`(toProject: $1) }
   }
 
   public func switchToActivities() {
     self.viewModel.inputs.switchToActivities()
   }
 
-  public func switchToDashboard(project param: Param) {
+  public func switchToDashboard(project param: Param?) {
     self.viewModel.inputs.switchToDashboard(project: param)
   }
 
-  public func switchToDiscovery() {
-    self.viewModel.inputs.switchToDiscovery()
+  public func switchToDiscovery(params params: DiscoveryParams?) {
+    self.viewModel.inputs.switchToDiscovery(params: params)
   }
 
   public func switchToLogin() {

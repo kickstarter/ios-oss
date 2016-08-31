@@ -7,27 +7,9 @@
     </dependencies>
     <scenes>
         <!--Profile-->
-        <scene sceneID="5Zj-Uc-Vov">
-            <objects>
-                <navigationController id="mwc-aM-Zyn" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Profile" id="4dZ-dA-kFP"/>
-                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Scb-ww-CKS">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="z5g-R7-WdW" kind="relationship" relationship="rootViewController" id="ukg-km-r1J"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Jc1-AI-hWD" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-437" y="612"/>
-        </scene>
-        <!--Profile-->
         <scene sceneID="hSd-U0-ni7">
             <objects>
-                <collectionViewController id="z5g-R7-WdW" customClass="ProfileViewController" customModule="Kickstarter_Framework" customModuleProvider="target" sceneMemberID="viewController">
+                <collectionViewController storyboardIdentifier="ProfileViewController" id="z5g-R7-WdW" customClass="ProfileViewController" customModule="Kickstarter_Framework" customModuleProvider="target" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="UEr-Ig-oNz">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

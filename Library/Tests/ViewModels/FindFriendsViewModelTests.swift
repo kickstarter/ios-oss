@@ -79,7 +79,7 @@ final class FindFriendsViewModelTests: TestCase {
   func testGoToDiscovery() {
     let params = DiscoveryParams.defaults
       |> DiscoveryParams.lens.social .~ true
-      |> DiscoveryParams.lens.sort .~ .Magic
+      |> DiscoveryParams.lens.sort .~ .magic
 
     withEnvironment(currentUser: User.template) {
       vm.inputs.configureWith(source: FriendsSource.findFriends)

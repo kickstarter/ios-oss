@@ -21,18 +21,12 @@ public enum Navigation {
   }
 
   public enum Tab {
-    case discovery(DiscoveryParams, Navigation.Discovery)
+    case discovery([String:String]?)
     case search
     case activity
-    case dashboard(project: Param)
+    case dashboard(project: Param?)
     case login
     case me
-  }
-
-  public enum Discovery {
-    case root
-    case advanced
-    case category(category: Param, subcategory: Param?)
   }
 
   public enum Project {
@@ -162,31 +156,19 @@ public func == (lhs: Navigation.Project.Update, rhs: Navigation.Project.Update) 
   }
 }
 
-extension Navigation.Discovery: Equatable {}
-public func == (lhs: Navigation.Discovery, rhs: Navigation.Discovery) -> Bool {
-  switch (lhs, rhs) {
-  case (.root, .root):
-    return true
-  case (.advanced, .advanced):
-    return true
-  case let (.category(lhsCatParam, lhsSubCatParam), .category(rhsCatParam, rhsSubCatParam)):
-    return lhsCatParam == rhsCatParam && lhsSubCatParam == rhsSubCatParam
-  default:
-    return false
-  }
-}
-
 extension Navigation.Tab: Equatable {}
 public func == (lhs: Navigation.Tab, rhs: Navigation.Tab) -> Bool {
   switch (lhs, rhs) {
-  case let (.discovery(lhsParams, lhsDiscovery), .discovery(rhsParams, rhsDiscovery)):
-    return lhsParams == rhsParams && lhsDiscovery == rhsDiscovery
   case (.search, .search):
     return true
   case (.activity, .activity):
     return true
   case let (.dashboard(lhsParam), .dashboard(rhsParam)):
     return lhsParam == rhsParam
+  case let (.discovery(lhsParams?), .discovery(rhsParams?)):
+    return lhsParams == rhsParams
+  case (.discovery(nil), .discovery(nil)):
+    return true
   case (.login, .login):
     return true
   case (.me, .me):
@@ -215,10 +197,10 @@ private let routes = [
   "/checkouts/:checkout_param/payments": paymentsRoot,
   "/checkouts/:checkout_param/payments/new": paymentsNew,
   "/checkouts/:checkout_param/payments/use_stored_card": paymentsUseStoredCard,
-  "/discover": discovery,
-  "/discover/advanced": discoveryAdvanced,
-  "/discover/categories/:category_param": category,
-  "/discover/categories/:category_param/:subcategory_param": category,
+  "/discover": discovery(defaults: ["staff_picks": "true"]),
+  "/discover/advanced": discovery(),
+  "/discover/categories/:category_id": discovery(),
+  "/discover/categories/:parent_category_id/:category_id": discovery(),
   "/profile/:user_param": me,
   "/search": search,
   "/signup": signup,
@@ -295,29 +277,20 @@ private func paymentsUseStoredCard(params: RouteParams) -> Decoded<Navigation> {
     <*> .Success(.payments(.useStoredCard))
 }
 
-private func discovery(params: RouteParams) -> Decoded<Navigation> {
-  guard let discoveryParams = DiscoveryParams.decode(params).value
-    else { return .Failure(.Custom("Failed to extact discovery params")) }
-  return .Success(.tab(.discovery(discoveryParams, .root)))
-}
+private func discovery(defaults defaults: [String: String] = [:]) -> (RouteParams) -> Decoded<Navigation> {
+  return { routeParams in
+    guard case let .Object(object) = routeParams
+      else { return .Failure(.Custom("Failed to extact discovery params")) }
 
-private func discoveryAdvanced(params: RouteParams) -> Decoded<Navigation> {
-  guard let discoveryParams = DiscoveryParams.decode(params).value
-    else { return .Failure(.Custom("Failed to extact discovery params")) }
-  return .Success(.tab(.discovery(discoveryParams, .advanced)))
-}
+    var discoveryParams: [String:String] = defaults
+    for (key, value) in object {
+      guard case let .String(stringValue) = value
+        else { return .Failure(.Custom("Failed to extact discovery params")) }
+      discoveryParams[key] = stringValue
+    }
 
-private func category(params: RouteParams) -> Decoded<Navigation> {
-  guard let discoveryParams = DiscoveryParams.decode(params).value
-    else { return .Failure(.Custom("Failed to extact discovery params")) }
-
-  let categoryMatch = curry(Navigation.Discovery.category)
-    <^> params <| "category_param"
-    <*> params <|? "subcategory_param"
-
-  guard let category = categoryMatch.value else { return .Failure(.Custom("Failed to route category")) }
-
-  return .Success(.tab(.discovery(discoveryParams, category)))
+    return .Success(.tab(.discovery(discoveryParams)))
+  }
 }
 
 private func me(_: RouteParams) -> Decoded<Navigation> {
@@ -363,7 +336,7 @@ private func creatorBio(params: RouteParams) -> Decoded<Navigation> {
 }
 
 private func dashboard(params: RouteParams) -> Decoded<Navigation> {
-  guard let dashboard = (Navigation.Tab.dashboard <^> params <| "project_param").value
+  guard let dashboard = (Navigation.Tab.dashboard <^> params <|? "project_param").value
     else { return .Failure(.Custom("Failed to extract project param")) }
 
   return .Success(.tab(dashboard))

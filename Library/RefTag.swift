@@ -36,11 +36,11 @@ public enum RefTag {
     case "category":                  self = .category
     case "category_featured":         self = .categoryFeatured
     case "discovery_activity_sample": self = .activitySample
-    case "category_ending_soon":      self = .categoryWithSort(.EndingSoon)
-    case "category":                  self = .categoryWithSort(.Magic)
-    case "category_most_funded":      self = .categoryWithSort(.MostFunded)
-    case "category_newest":           self = .categoryWithSort(.Newest)
-    case "category_popular":          self = .categoryWithSort(.Popular)
+    case "category_ending_soon":      self = .categoryWithSort(.endingSoon)
+    case "category":                  self = .categoryWithSort(.magic)
+    case "category_most_funded":      self = .categoryWithSort(.mostFunded)
+    case "category_newest":           self = .categoryWithSort(.newest)
+    case "category_popular":          self = .categoryWithSort(.popular)
     case "city":                      self = .city
     case "dashboard":                 self = .dashboard
     case "discovery":                 self = .discovery
@@ -48,11 +48,11 @@ public enum RefTag {
     case "message_thread":            self = .messageThread
     case "push":                      self = .push
     case "recommended":               self = .recommended
-    case "recommended_ending_soon":   self = .recommendedWithSort(.EndingSoon)
-    case "recommended":               self = .recommendedWithSort(.Magic)
-    case "recommended_most_funded":   self = .recommendedWithSort(.MostFunded)
-    case "recommended_newest":        self = .recommendedWithSort(.Newest)
-    case "recommended_popular":       self = .recommendedWithSort(.Popular)
+    case "recommended_ending_soon":   self = .recommendedWithSort(.endingSoon)
+    case "recommended":               self = .recommendedWithSort(.magic)
+    case "recommended_most_funded":   self = .recommendedWithSort(.mostFunded)
+    case "recommended_newest":        self = .recommendedWithSort(.newest)
+    case "recommended_popular":       self = .recommendedWithSort(.popular)
     case "search":                    self = .search
     case "social":                    self = .social
     case "thanks":                    self = .thanks
@@ -139,15 +139,15 @@ extension RefTag: Hashable {
 
 private func sortRefTagSuffix(sort: DiscoveryParams.Sort) -> String {
   switch sort {
-  case .EndingSoon:
+  case .endingSoon:
     return "_ending_soon"
-  case .Magic:
+  case .magic:
     return ""
-  case .MostFunded:
+  case .mostFunded:
     return "_most_funded"
-  case .Newest:
+  case .newest:
     return "_newest"
-  case .Popular:
+  case .popular:
     return "_popular"
   }
 }

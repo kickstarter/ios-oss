@@ -1,9 +1,10 @@
 import XCTest
+import Prelude
 import ReactiveCocoa
+import ReactiveExtensions
 import Result
 @testable import Library
 @testable import Kickstarter_Framework
-@testable import KsApi
 @testable import KsApi
 @testable import ReactiveExtensions_TestHelpers
 
@@ -18,7 +19,8 @@ final class AppDelegateViewModelTests: TestCase {
   let presentViewController = TestObserver<Int, NoError>()
   let pushTokenSuccessfullyRegistered = TestObserver<(), NoError>()
   let goToActivity = TestObserver<(), NoError>()
-  let goToDashboard = TestObserver<Param, NoError>()
+  let goToDashboard = TestObserver<Param?, NoError>()
+  let goToDiscovery = TestObserver<DiscoveryParams?, NoError>()
   let goToLogin = TestObserver<(), NoError>()
   let goToProfile = TestObserver<(), NoError>()
   let goToSearch = TestObserver<(), NoError>()
@@ -38,6 +40,7 @@ final class AppDelegateViewModelTests: TestCase {
     vm.outputs.pushTokenSuccessfullyRegistered.observe(self.pushTokenSuccessfullyRegistered.observer)
     vm.outputs.goToActivity.observe(self.goToActivity.observer)
     vm.outputs.goToDashboard.observe(self.goToDashboard.observer)
+    vm.outputs.goToDiscovery.observe(self.goToDiscovery.observer)
     vm.outputs.goToLogin.observe(self.goToLogin.observer)
     vm.outputs.goToProfile.observe(self.goToProfile.observer)
     vm.outputs.goToSearch.observe(self.goToSearch.observer)
@@ -327,6 +330,56 @@ final class AppDelegateViewModelTests: TestCase {
                                       annotation: 1)
 
     self.goToActivity.assertValueCount(1)
+  }
+
+  func testGoToDashboard() {
+    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+                                                 launchOptions: [:])
+
+    self.goToDashboard.assertValueCount(0)
+
+    let url = "https://www.kickstarter.com/projects/tequila/help-me-transform-this-pile-of-wood/dashboard"
+    self.vm.inputs.applicationOpenUrl(application: UIApplication.sharedApplication(),
+                                      url: NSURL(string: url)!,
+                                      sourceApplication: nil,
+                                      annotation: 1)
+
+    self.goToDashboard.assertValueCount(1)
+  }
+
+  func testGoToDiscovery() {
+    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+                                                 launchOptions: [:])
+
+    self.goToDiscovery.assertValues([])
+
+    self.vm.inputs.applicationOpenUrl(application: UIApplication.sharedApplication(),
+                                      url: NSURL(string: "https://www.kickstarter.com/discover?sort=newest")!,
+                                      sourceApplication: nil,
+                                      annotation: 1)
+
+    let params = .defaults
+      |> DiscoveryParams.lens.sort .~ .newest
+      |> DiscoveryParams.lens.staffPicks .~ true
+    self.goToDiscovery.assertValues([params])
+  }
+
+  func testGoToDiscoveryWithCategory() {
+    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+                                                 launchOptions: [:])
+
+    self.goToDiscovery.assertValues([])
+
+    let url = NSURL(string: "https://www.kickstarter.com/discover/categories/art")!
+    self.vm.inputs.applicationOpenUrl(application: UIApplication.sharedApplication(),
+                                      url: url,
+                                      sourceApplication: nil,
+                                      annotation: 1)
+
+    self.scheduler.advance()
+
+    let params = .defaults |> DiscoveryParams.lens.category .~ .art
+    self.goToDiscovery.assertValues([params])
   }
 
   func testGoToLogin() {

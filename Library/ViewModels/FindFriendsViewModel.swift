@@ -101,7 +101,7 @@ public final class FindFriendsViewModel: FindFriendsViewModelType, FindFriendsVi
       .map {
         DiscoveryParams.defaults
           |> DiscoveryParams.lens.social .~ true
-          |> DiscoveryParams.lens.sort .~ .Magic
+          |> DiscoveryParams.lens.sort .~ .magic
     }
 
     self.title = self.viewDidLoadProperty.signal

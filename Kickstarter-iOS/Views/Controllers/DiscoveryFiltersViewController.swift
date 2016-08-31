@@ -20,6 +20,7 @@ internal final class DiscoveryFiltersViewController: UIViewController, UITableVi
 
   internal static func configuredWith(selectedRow selectedRow: SelectableRow, categories: [KsApi.Category])
     -> DiscoveryFiltersViewController {
+
       let vc = Storyboard.Discovery.instantiate(DiscoveryFiltersViewController)
       vc.viewModel.inputs.configureWith(selectedRow: selectedRow, categories: categories)
       return vc

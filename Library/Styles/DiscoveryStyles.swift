@@ -200,15 +200,15 @@ private func sortButtonEdgeInsets(isLeftMost isLeftMost: Bool, isRightMost: Bool
 
 private func string(forSort sort: DiscoveryParams.Sort) -> String {
   switch sort {
-  case .EndingSoon:
+  case .endingSoon:
     return Strings.ending_soon()
-  case .Magic:
+  case .magic:
     return Strings.home()
-  case .MostFunded:
+  case .mostFunded:
     return Strings.discovery_sort_types_most_funded()
-  case .Newest:
+  case .newest:
     return Strings.discovery_sort_types_newest()
-  case .Popular:
+  case .popular:
     return Strings.popular()
   }
 }

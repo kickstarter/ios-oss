@@ -33,7 +33,7 @@ internal final class SortPagerViewModelTests: TestCase {
   }
 
   func testCreateSortButtons() {
-    let sorts: [DiscoveryParams.Sort] = [.Magic, .Popular, .Newest, .EndingSoon, .MostFunded]
+    let sorts: [DiscoveryParams.Sort] = [.magic, .popular, .newest, .endingSoon, .mostFunded]
     self.vm.inputs.configureWith(sorts: sorts)
     self.vm.inputs.viewWillAppear()
 
@@ -41,7 +41,7 @@ internal final class SortPagerViewModelTests: TestCase {
   }
 
   func testUpdateStyle() {
-    let sorts: [DiscoveryParams.Sort] = [.Magic, .Popular, .Newest, .EndingSoon, .MostFunded]
+    let sorts: [DiscoveryParams.Sort] = [.magic, .popular, .newest, .endingSoon, .mostFunded]
     self.vm.inputs.configureWith(sorts: sorts)
 
     self.updateSortStyleId.assertValueCount(0)
@@ -77,7 +77,7 @@ internal final class SortPagerViewModelTests: TestCase {
   }
 
   func testSelectedButton() {
-    let sorts: [DiscoveryParams.Sort] = [.Magic, .Popular, .Newest, .EndingSoon, .MostFunded]
+    let sorts: [DiscoveryParams.Sort] = [.magic, .popular, .newest, .endingSoon, .mostFunded]
 
     self.vm.inputs.configureWith(sorts: sorts)
 
@@ -91,11 +91,11 @@ internal final class SortPagerViewModelTests: TestCase {
 
     self.setSelectedButton.assertValues([0, 2], "Set the third button to the selected state.")
 
-    self.vm.inputs.select(sort: .Popular)
+    self.vm.inputs.select(sort: .popular)
 
     self.setSelectedButton.assertValues([0, 2, 1], "Set the second button to the selected state.")
 
-    self.vm.inputs.select(sort: .MostFunded)
+    self.vm.inputs.select(sort: .mostFunded)
 
     self.setSelectedButton.assertValues([0, 2, 1, 4], "Set the last button to the selected state.")
 
@@ -105,7 +105,7 @@ internal final class SortPagerViewModelTests: TestCase {
   }
 
   func testPinSelectedIndicator() {
-    self.vm.inputs.configureWith(sorts: [.Magic, .Popular, .Newest, .EndingSoon, .MostFunded])
+    self.vm.inputs.configureWith(sorts: [.magic, .popular, .newest, .endingSoon, .mostFunded])
 
     self.pinSelectedIndicatorToPage.assertValueCount(0)
 
@@ -114,7 +114,7 @@ internal final class SortPagerViewModelTests: TestCase {
     self.pinSelectedIndicatorToPage.assertValues([0], "First index emits initially.")
     self.pinSelectedIndicatorAnimated.assertValues([false])
 
-    self.vm.inputs.select(sort: .Popular)
+    self.vm.inputs.select(sort: .popular)
 
     self.pinSelectedIndicatorToPage.assertValues([0, 1], "Index of popular emits.")
     self.pinSelectedIndicatorAnimated.assertValues([false, true])
@@ -131,23 +131,23 @@ internal final class SortPagerViewModelTests: TestCase {
   }
 
   func testNotifyDelegate() {
-    self.vm.inputs.configureWith(sorts: [.Magic, .Popular, .Newest, .EndingSoon, .MostFunded])
+    self.vm.inputs.configureWith(sorts: [.magic, .popular, .newest, .endingSoon, .mostFunded])
     self.vm.inputs.viewWillAppear()
 
     self.notifyDelegateOfSelectedSort.assertValues([], "Nothing emits initially.")
 
     self.vm.inputs.sortButtonTapped(index: 0)
 
-    self.notifyDelegateOfSelectedSort.assertValues([.Magic], "Tapping sort button notifies the delegate.")
+    self.notifyDelegateOfSelectedSort.assertValues([.magic], "Tapping sort button notifies the delegate.")
 
     self.vm.inputs.sortButtonTapped(index: 1)
 
-    self.notifyDelegateOfSelectedSort.assertValues([.Magic, .Popular],
+    self.notifyDelegateOfSelectedSort.assertValues([.magic, .popular],
                                                    "Tapping sort button notifies the delegate.")
 
     self.vm.inputs.sortButtonTapped(index: 4)
 
-    self.notifyDelegateOfSelectedSort.assertValues([.Magic, .Popular, .MostFunded],
+    self.notifyDelegateOfSelectedSort.assertValues([.magic, .popular, .mostFunded],
                                                    "Tapping sort button notifies the delegate.")
   }
 }

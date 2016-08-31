@@ -53,7 +53,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
 
     let popular = query
       .filter { $0.isEmpty }
-      .map(const(DiscoveryParams.defaults |> DiscoveryParams.lens.sort .~ .Popular))
+      .map(const(DiscoveryParams.defaults |> DiscoveryParams.lens.sort .~ .popular))
       .switchMap {
         AppEnvironment.current.apiService.fetchDiscovery(params: $0)
           .map { $0.projects }

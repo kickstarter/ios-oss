@@ -1,3 +1,4 @@
+import Argo
 import KsApi
 import Prelude
 import ReactiveCocoa
@@ -6,7 +7,7 @@ import Result
 
 public protocol DiscoveryViewModelInputs {
   /// Call when params have been selected from the filters menu.
-  func filterSelected(withParams params: DiscoveryParams)
+  func filter(withParams params: DiscoveryParams)
 
   /// Call when the UIPageViewController finishes transitioning.
   func pageTransition(completed completed: Bool)
@@ -54,24 +55,24 @@ public protocol DiscoveryViewModelType {
 
 public final class DiscoveryViewModel: DiscoveryViewModelType, DiscoveryViewModelInputs,
 DiscoveryViewModelOutputs {
+  private static let defaultParams = .defaults
+    |> DiscoveryParams.lens.staffPicks .~ true
+    |> DiscoveryParams.lens.includePOTD .~ true
 
   // swiftlint:disable function_body_length
   public init() {
-    let initialParams = .defaults
-      |> DiscoveryParams.lens.staffPicks .~ true
-      |> DiscoveryParams.lens.includePOTD .~ true
-
-    let sorts: [DiscoveryParams.Sort] = [.Magic, .Popular, .Newest, .EndingSoon, .MostFunded]
+    let sorts: [DiscoveryParams.Sort] = [.magic, .popular, .newest, .endingSoon, .mostFunded]
 
     self.configurePagerDataSource = self.viewDidLoadProperty.signal.mapConst(sorts)
     self.configureSortPager = self.configurePagerDataSource
-    self.configureNavigationHeader = self.viewDidLoadProperty.signal.mapConst(initialParams)
 
-    let currentParams = Signal.merge(
-      self.viewDidLoadProperty.signal.mapConst(initialParams),
-      self.filtersSelectedParamsProperty.signal.ignoreNil()
-    )
+    let currentParams = self.viewWillAppearProperty.signal
+      .take(1)
+      .flatMap { [filterWithParams = filterWithParamsProperty.producer.ignoreNil()] _ in
+        filterWithParams.prefix(value: DiscoveryViewModel.defaultParams)
+    }
 
+    self.configureNavigationHeader = currentParams
     self.loadFilterIntoDataSource = currentParams
 
     let swipeToSort = self.willTransitionToPageProperty.signal
@@ -80,23 +81,25 @@ DiscoveryViewModelOutputs {
 
     self.selectSortPage = Signal.merge(
       swipeToSort,
-      self.sortPagerSelectedSortProperty.signal.ignoreNil()
+      self.sortPagerSelectedSortProperty.signal.ignoreNil(),
+      currentParams.map { $0.sort }.ignoreNil()
       )
       .skipRepeats()
 
     self.navigateToSort = Signal.merge(
       swipeToSort.map { (sort: $0, ignore: true) },
-      self.sortPagerSelectedSortProperty.signal.ignoreNil().map { (sort: $0, ignore: false) }
+      self.sortPagerSelectedSortProperty.signal.ignoreNil().map { (sort: $0, ignore: false) },
+      currentParams.map { $0.sort }.ignoreNil().map { (sort: $0, ignore: false) }
       )
       .skipRepeats(==)
-      .combinePrevious((sort: .Magic, ignore: true))
+      .combinePrevious((sort: .magic, ignore: true))
       .filter { previous, next in !next.ignore }
       .map { previous, next in
         (next.sort,
          sorts.indexOf(next.sort) < sorts.indexOf(previous.sort) ? .Reverse : .Forward)
     }
 
-    self.updateSortPagerStyle = self.filtersSelectedParamsProperty.signal.ignoreNil()
+    self.updateSortPagerStyle = self.filterWithParamsProperty.signal.ignoreNil()
       .map { $0.category?.root?.id }
       .skipRepeats(==)
 
@@ -113,9 +116,9 @@ DiscoveryViewModelOutputs {
   }
   // swiftlint:enable function_body_length
 
-  private let filtersSelectedParamsProperty = MutableProperty<DiscoveryParams?>(nil)
-  public func filterSelected(withParams params: DiscoveryParams) {
-    self.filtersSelectedParamsProperty.value = params
+  private let filterWithParamsProperty = MutableProperty<DiscoveryParams?>(nil)
+  public func filter(withParams params: DiscoveryParams) {
+    self.filterWithParamsProperty.value = params
   }
   private let pageTransitionCompletedProperty = MutableProperty(false)
   public func pageTransition(completed completed: Bool) {

@@ -4,7 +4,7 @@ import XCTest
 import KsApi
 import Prelude
 
-private let sorts: [DiscoveryParams.Sort] = [.Magic, .Popular, .Newest]
+private let sorts: [DiscoveryParams.Sort] = [.magic, .popular, .newest]
 
 internal final class DiscoveryPagesDataSourceTests: XCTestCase {
   private let dataSource = DiscoveryPagesDataSource(sorts: sorts)
