@@ -271,8 +271,7 @@ internal final class ProjectHeaderViewController: UIViewController {
   }
 
   private func goToUpdates(forProject project: Project) {
-    let vc = ProjectUpdatesViewController()
-    vc.configureWith(project: project)
+    let vc = ProjectUpdatesViewController.configuredWith(project: project)
     self.navigationController?.pushViewController(vc, animated: true)
   }
 

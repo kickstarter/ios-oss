@@ -286,6 +286,15 @@ final class AppDelegateViewModelTests: TestCase {
 
       self.presentViewController.assertValues([1, 2])
 
+      let updatesUrl =
+        projectUrl + "/posts"
+      self.vm.inputs.applicationOpenUrl(application: UIApplication.sharedApplication(),
+                                        url: NSURL(string: updatesUrl)!,
+                                        sourceApplication: nil,
+                                        annotation: 1)
+
+      self.presentViewController.assertValues([1, 2, 2])
+
       let updateUrl =
         projectUrl + "/posts/1399396"
       self.vm.inputs.applicationOpenUrl(application: UIApplication.sharedApplication(),
@@ -293,7 +302,7 @@ final class AppDelegateViewModelTests: TestCase {
                                         sourceApplication: nil,
                                         annotation: 1)
 
-      self.presentViewController.assertValues([1, 2, 2])
+      self.presentViewController.assertValues([1, 2, 2, 3])
 
       let updateCommentsUrl =
         updateUrl + "/comments"
@@ -302,7 +311,7 @@ final class AppDelegateViewModelTests: TestCase {
                                         sourceApplication: nil,
                                         annotation: 1)
 
-      self.presentViewController.assertValues([1, 2, 2, 3])
+      self.presentViewController.assertValues([1, 2, 2, 3, 4])
     }
   }
 

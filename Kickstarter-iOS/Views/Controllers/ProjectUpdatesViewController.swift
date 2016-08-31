@@ -5,8 +5,10 @@ import SafariServices
 internal final class ProjectUpdatesViewController: WebViewController {
   private let viewModel: ProjectUpdatesViewModelType = ProjectUpdatesViewModel()
 
-  internal func configureWith(project project: Project) {
-    self.viewModel.inputs.configureWith(project: project)
+  internal static func configuredWith(project project: Project) -> ProjectUpdatesViewController {
+    let vc = ProjectUpdatesViewController()
+    vc.viewModel.inputs.configureWith(project: project)
+    return vc
   }
 
   internal override func viewDidLoad() {

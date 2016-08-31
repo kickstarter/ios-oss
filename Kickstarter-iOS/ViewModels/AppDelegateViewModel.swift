@@ -265,6 +265,10 @@ AppDelegateViewModelOutputs {
       .filter { _, subpage, _ in subpage == .comments }
       .map { project, _, vcs in vcs + [CommentsViewController.configuredWith(project: project, update: nil)] }
 
+    let updatesLink = projectLink
+      .filter { _, subpage, _ in subpage == .updates }
+      .map { project, _, vcs in vcs + [ProjectUpdatesViewController.configuredWith(project: project)] }
+
     let updateLink = projectLink
       .map { project, subpage, vcs -> (Project, Int, Navigation.Project.Update, [UIViewController])? in
         guard case let .update(id, updateSubpage) = subpage else { return nil }
@@ -276,8 +280,9 @@ AppDelegateViewModelOutputs {
           .demoteErrors()
           .observeForUI()
           .map { update -> (Project, Update, Navigation.Project.Update, [UIViewController]) in
-            (project, update, updateSubpage,
-              vcs + [UpdateViewController.configuredWith(project: project, update: update)])
+            (project, update, updateSubpage, vcs + [
+              ProjectUpdatesViewController.configuredWith(project: project),
+              UpdateViewController.configuredWith(project: project, update: update)])
         }
     }
 
@@ -297,6 +302,7 @@ AppDelegateViewModelOutputs {
       .merge(
         projectRootLink,
         projectCommentsLink,
+        updatesLink,
         updateRootLink,
         updateCommentsLink
       )
