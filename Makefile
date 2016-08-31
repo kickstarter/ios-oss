@@ -80,4 +80,7 @@ deploy:
 	git push -f origin $(DIST_BRANCH)
 	git branch -d $(DIST_BRANCH)
 
-.PHONY: test-all test clean dependencies submodules deploy
+lint:
+	swiftlint lint --reporter json
+
+.PHONY: test-all test clean dependencies submodules deploy lint
