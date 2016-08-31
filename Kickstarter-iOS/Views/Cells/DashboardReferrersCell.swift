@@ -68,6 +68,7 @@ internal final class DashboardReferrersCell: UITableViewCell, ValueCell {
     )
   }
 
+  // swiftlint:disable function_body_length
   internal override func bindStyles() {
     self |> baseTableViewCellStyle()
 
@@ -75,62 +76,81 @@ internal final class DashboardReferrersCell: UITableViewCell, ValueCell {
       |> dashboardStatSubtitleLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.dashboard_graphs_referrers_average_pledge_amount() }
 
-    self.averagePledgeAmountTitleLabel |> dashboardStatTitleLabelStyle
+    self.averagePledgeAmountTitleLabel
+      |> dashboardStatTitleLabelStyle
 
     self.backersColumnTitleButton
       |> dashboardColumnTitleButtonStyle
       |> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.dashboard_graphs_referrers_backers() }
 
-    self.customPercentLabel |> dashboardReferrersPledgePercentLabelStyle
+    self.customPercentLabel
+      |> dashboardReferrersPledgePercentLabelStyle
 
-    self.customPercentIndicatorLabel |> UILabel.lens.textColor .~ .ksr_violet_500
+    self.customPercentIndicatorLabel
+      |> UILabel.lens.textColor .~ .ksr_violet_500
 
-    self.customPledgedAmountTitleLabel |> dashboardStatTitleLabelStyle
+    self.customPledgedAmountTitleLabel
+      |> dashboardStatTitleLabelStyle
 
     self.customPledgedAmountSubtitleLabel
       |> dashboardStatSubtitleLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.dashboard_graphs_referrers_pledged_via_custom() }
 
-    self.externalPercentLabel |> dashboardReferrersPledgePercentLabelStyle
+    self.externalPercentLabel
+      |> dashboardReferrersPledgePercentLabelStyle
 
-    self.externalPercentIndicatorLabel |> UILabel.lens.textColor .~ .ksr_orange_400
+    self.externalPercentIndicatorLabel
+      |> UILabel.lens.textColor .~ .ksr_orange_400
 
     self.externalPledgedAmountSubtitleLabel
       |> dashboardStatSubtitleLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.dashboard_graphs_referrers_pledged_via_external() }
 
-    self.externalPledgedAmountTitleLabel |> dashboardStatTitleLabelStyle
+    self.externalPledgedAmountTitleLabel
+      |> dashboardStatTitleLabelStyle
 
-    self.internalPercentLabel |> dashboardReferrersPledgePercentLabelStyle
+    self.internalPercentLabel
+      |> dashboardReferrersPledgePercentLabelStyle
 
-    self.internalPercentIndicatorLabel |> UILabel.lens.textColor .~ .ksr_green_700
+    self.internalPercentIndicatorLabel
+      |> UILabel.lens.textColor .~ .ksr_green_700
 
     self.internalPledgedAmountSubtitleLabel
       |> dashboardStatSubtitleLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.dashboard_graphs_referrers_pledged_via_kickstarter() }
 
-    self.internalPledgedAmountTitleLabel |> dashboardStatTitleLabelStyle
+    self.internalPledgedAmountTitleLabel
+      |> dashboardStatTitleLabelStyle
 
     self.pledgedColumnTitleButton
       |> dashboardColumnTitleButtonStyle
       |> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.dashboard_graphs_referrers_pledged() }
 
-    self.referrersTitleLabel |> dashboardReferrersTitleLabelStyle
+    self.referrersTitleLabel
+      |> dashboardReferrersTitleLabelStyle
 
-    self.showMoreReferrersButton |> dashboardReferrersShowMoreButtonStyle
+    self.referralChartView
+      |> UIView.lens.backgroundColor .~ .clearColor()
+
+    self.showMoreReferrersButton
+      |> dashboardReferrersShowMoreButtonStyle
 
     self.sourceColumnTitleButton
       |> dashboardColumnTitleButtonStyle
       |> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.dashboard_graphs_referrers_source() }
 
-    self.chartCardView |> dashboardChartCardViewStyle
+    self.chartCardView
+      |> dashboardChartCardViewStyle
 
-    self.cumulativeStackView |> dashboardReferrersCumulativeStackViewStyle
+    self.cumulativeStackView
+      |> dashboardReferrersCumulativeStackViewStyle
 
-    self.averageStackView |> dashboardReferrersCumulativeStackViewStyle
+    self.averageStackView
+      |> dashboardReferrersCumulativeStackViewStyle
 
     self.separatorViews.forEach { $0 |> separatorStyle }
   }
+  // swiftlint:enable function_body_length
 
   internal override func bindViewModel() {
     self.averagePledgeAmountTitleLabel.rac.text = self.viewModel.outputs.averagePledgeText
