@@ -1,69 +1,155 @@
+import KsApi
 import Library
+import Prelude
 import UIKit
 
 internal protocol DiscoveryFiltersViewControllerDelegate: class {
   func discoveryFilters(viewController: DiscoveryFiltersViewController, selectedRow: SelectableRow)
+  func discoveryFiltersDidClose(viewController: DiscoveryFiltersViewController)
 }
 
-internal final class DiscoveryFiltersViewController: UITableViewController {
+internal final class DiscoveryFiltersViewController: UIViewController, UITableViewDelegate {
+  @IBOutlet private weak var closeButton: UIButton!
+  @IBOutlet private weak var backgroundGradientView: GradientView!
+  @IBOutlet private weak var filtersTableView: UITableView!
+
   private let dataSource = DiscoveryFiltersDataSource()
   private let viewModel: DiscoveryFiltersViewModelType = DiscoveryFiltersViewModel()
+
   internal weak var delegate: DiscoveryFiltersViewControllerDelegate?
 
-  internal static func configuredWith(selectedRow selectedRow: SelectableRow)
+  internal static func configuredWith(selectedRow selectedRow: SelectableRow, categories: [KsApi.Category])
     -> DiscoveryFiltersViewController {
-    let vc = Storyboard.Discovery.instantiate(DiscoveryFiltersViewController)
-    vc.viewModel.inputs.configureWith(selectedRow: selectedRow)
-    return vc
+      let vc = Storyboard.Discovery.instantiate(DiscoveryFiltersViewController)
+      vc.viewModel.inputs.configureWith(selectedRow: selectedRow, categories: categories)
+      return vc
   }
 
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.tableView.backgroundView = {
-      $0.setGradient([
-        (UIColor.hex(0x0A1342), 0.0),
-        (UIColor.hex(0x132F67), 1.0)
-      ])
-      return $0
-    }(GradientView())
+    self.filtersTableView.dataSource = self.dataSource
+    self.filtersTableView.delegate = self
+    self.filtersTableView |> UITableView.lens.alpha .~ 0
 
-    self.tableView.estimatedRowHeight = 44.0
-    self.tableView.rowHeight = UITableViewAutomaticDimension
-    self.tableView.dataSource = self.dataSource
+    self.backgroundGradientView.startPoint = CGPoint(x: 0.0, y: 1.0)
+    self.backgroundGradientView.endPoint = CGPoint(x: 1.0, y: 0.0)
+    self.backgroundGradientView |> UIView.lens.alpha .~ 0
 
     self.viewModel.inputs.viewDidLoad()
   }
 
   internal override func bindViewModel() {
-    self.viewModel.outputs.loadTopRows
+    super.bindViewModel()
+
+    self.viewModel.outputs.animateInView
       .observeForControllerAction()
       .observeNext { [weak self] in
-        self?.dataSource.load(topRows: $0)
-        self?.tableView.reloadData()
+        self?.animateIn(categoryId: $0)
+    }
+
+    self.viewModel.outputs.loadTopRows
+      .observeForControllerAction()
+      .observeNext { [weak self] rows, id in
+        self?.dataSource.load(topRows: rows, categoryId: id)
+        self?.filtersTableView.reloadData()
     }
 
     self.viewModel.outputs.loadCategoryRows
       .observeForControllerAction()
-      .observeNext { [weak self] in
-        self?.dataSource.load(categoryRows: $0)
-        self?.tableView.reloadData()
+      .observeNext { [weak self] rows, id, selectedRowId in
+        self?.dataSource.load(categoryRows: rows, categoryId: id)
+        self?.filtersTableView.reloadData()
+        if let indexPath = self?.dataSource.indexPath(forCategoryId: selectedRowId) {
+          self?.filtersTableView.scrollToRowAtIndexPath(indexPath, atScrollPosition: .Top, animated: false)
+        }
     }
 
     self.viewModel.outputs.notifyDelegateOfSelectedRow
       .observeForControllerAction()
-      .observeNext { [weak self] in
+      .observeNext { [weak self] selectedRow in
         guard let _self = self else { return }
-        _self.delegate?.discoveryFilters(_self, selectedRow: $0)
+        _self.animateOut()
+        _self.delegate?.discoveryFilters(_self, selectedRow: selectedRow)
     }
   }
 
-  internal override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+  internal override func bindStyles() {
+    super.bindStyles()
 
+    self.filtersTableView
+      |> UITableView.lens.rowHeight .~ UITableViewAutomaticDimension
+      |> UITableView.lens.estimatedRowHeight .~ 44.0
+      |> UITableView.lens.backgroundColor .~ .clearColor()
+
+    self.closeButton
+      |> UIButton.lens.targets .~ [(self, #selector(closeButtonTapped), .TouchUpInside)]
+  }
+
+  internal func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
     if let expandableRow = self.dataSource.expandableRow(indexPath: indexPath) {
       self.viewModel.inputs.tapped(expandableRow: expandableRow)
     } else if let selectableRow = self.dataSource.selectableRow(indexPath: indexPath) {
       self.viewModel.inputs.tapped(selectableRow: selectableRow)
     }
+  }
+
+  internal func tableView(tableView: UITableView,
+                          willDisplayCell cell: UITableViewCell,
+                                          forRowAtIndexPath indexPath: NSIndexPath) {
+    guard self.viewModel.outputs.shouldAnimateSelectableCell else { return }
+
+    guard let cell = cell as? DiscoveryExpandedSelectableRowCell else { return }
+    cell.animateIn(delayOffset: indexPath.row)
+  }
+
+  private func animateIn(categoryId categoryId: Int?) {
+    let (startColor, endColor) = discoveryGradientColors(forCategoryId: categoryId)
+    self.backgroundGradientView.setGradient([(startColor, 0.0), (endColor, 1.0)])
+
+    self.filtersTableView.frame.origin.y -= 20
+
+    UIView.animateWithDuration(0.2,
+                               delay: 0.0,
+                               options: .CurveEaseOut,
+                               animations: {
+                                self.backgroundGradientView.alpha = 1
+                                },
+                               completion: nil)
+
+    UIView.animateWithDuration(0.2,
+                               delay: 0.2,
+                               usingSpringWithDamping: 0.6,
+                               initialSpringVelocity: 1.0,
+                               options: .CurveEaseOut, animations: {
+                                self.filtersTableView.alpha = 1
+                                self.filtersTableView.frame.origin.y += 20
+                                },
+                               completion: nil)
+  }
+
+  private func animateOut() {
+    UIView.animateWithDuration(0.1,
+                               delay: 0.0,
+                               options: .CurveEaseOut,
+                               animations: {
+                                self.filtersTableView.alpha = 0
+                                self.filtersTableView.frame.origin.y -= 20
+                                },
+                               completion: nil)
+
+    UIView.animateWithDuration(0.2,
+                               delay: 0.1,
+                               options: .CurveEaseOut,
+                               animations: {
+                                self.backgroundGradientView.alpha = 0
+                                self.filtersTableView.alpha = 0
+                                },
+                               completion: nil)
+  }
+
+  @objc private func closeButtonTapped(button: UIButton) {
+    self.animateOut()
+    self.delegate?.discoveryFiltersDidClose(self)
   }
 }

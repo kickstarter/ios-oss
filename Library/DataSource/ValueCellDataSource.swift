@@ -165,6 +165,15 @@ public class ValueCellDataSource: NSObject, UICollectionViewDataSource, UITableV
   }
 
   /**
+   - parameter section: The section to retrieve a value.
+
+   - returns: The array of values in the section.
+   */
+  public final subscript(section section: Int) -> [Any] {
+    return self.values[section].map { $0.value }
+  }
+
+  /**
    - returns: The total number of items in the data source.
    */
   public final func numberOfItems() -> Int {

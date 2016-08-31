@@ -12,20 +12,24 @@ internal final class SortPagerViewModelTests: TestCase {
 
   private let notifyDelegateOfSelectedSort = TestObserver<DiscoveryParams.Sort, NoError>()
   private let pinSelectedIndicatorToPage = TestObserver<Int, NoError>()
+  private let pinSelectedIndicatorAnimated = TestObserver<Bool, NoError>()
   private let createSortButtons = TestObserver<[DiscoveryParams.Sort], NoError>()
   private let setSelectedButton = TestObserver<Int, NoError>()
   private let updateSortStyleId = TestObserver<Int?, NoError>()
   private let updateSortStyleSorts = TestObserver<[DiscoveryParams.Sort], NoError>()
+  private let updateSortStyleAnimated = TestObserver<Bool, NoError>()
 
   override func setUp() {
     super.setUp()
 
     self.vm.outputs.notifyDelegateOfSelectedSort.observe(self.notifyDelegateOfSelectedSort.observer)
-    self.vm.outputs.pinSelectedIndicatorToPage.observe(self.pinSelectedIndicatorToPage.observer)
+    self.vm.outputs.pinSelectedIndicatorToPage.map(first).observe(self.pinSelectedIndicatorToPage.observer)
+    self.vm.outputs.pinSelectedIndicatorToPage.map(second).observe(self.pinSelectedIndicatorAnimated.observer)
     self.vm.outputs.createSortButtons.observe(self.createSortButtons.observer)
     self.vm.outputs.setSelectedButton.observe(self.setSelectedButton.observer)
     self.vm.outputs.updateSortStyle.map(first).observe(self.updateSortStyleId.observer)
     self.vm.outputs.updateSortStyle.map(second).observe(self.updateSortStyleSorts.observer)
+    self.vm.outputs.updateSortStyle.map { $0.2 }.observe(self.updateSortStyleAnimated.observer)
   }
 
   func testCreateSortButtons() {
@@ -47,21 +51,25 @@ internal final class SortPagerViewModelTests: TestCase {
 
     self.updateSortStyleId.assertValues([nil])
     self.updateSortStyleSorts.assertValues([sorts])
+    self.updateSortStyleAnimated.assertValues([false])
 
     self.vm.inputs.updateStyle(categoryId: 3)
 
     self.updateSortStyleId.assertValues([nil, 3])
     self.updateSortStyleSorts.assertValues([sorts, sorts])
+    self.updateSortStyleAnimated.assertValues([false, true])
 
     self.vm.inputs.updateStyle(categoryId: 12)
 
     self.updateSortStyleId.assertValues([nil, 3, 12])
     self.updateSortStyleSorts.assertValues([sorts, sorts, sorts])
+    self.updateSortStyleAnimated.assertValues([false, true, true])
 
     self.vm.inputs.updateStyle(categoryId: nil)
 
     self.updateSortStyleId.assertValues([nil, 3, 12, nil])
     self.updateSortStyleSorts.assertValues([sorts, sorts, sorts, sorts])
+    self.updateSortStyleAnimated.assertValues([false, true, true, true])
 
     self.vm.inputs.viewWillAppear()
 
@@ -104,15 +112,18 @@ internal final class SortPagerViewModelTests: TestCase {
     self.vm.inputs.viewWillAppear()
 
     self.pinSelectedIndicatorToPage.assertValues([0], "First index emits initially.")
+    self.pinSelectedIndicatorAnimated.assertValues([false])
 
     self.vm.inputs.select(sort: .Popular)
 
     self.pinSelectedIndicatorToPage.assertValues([0, 1], "Index of popular emits.")
+    self.pinSelectedIndicatorAnimated.assertValues([false, true])
 
     self.vm.inputs.sortButtonTapped(index: 3)
 
     self.pinSelectedIndicatorToPage.assertValues([0, 1],
                                                  "Tapping sort button does not cause indicator to change.")
+    self.pinSelectedIndicatorAnimated.assertValues([false, true])
 
     self.vm.inputs.viewWillAppear()
 

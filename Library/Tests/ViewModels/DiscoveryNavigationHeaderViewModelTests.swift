@@ -18,6 +18,8 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
   private let secondaryLabelIsHidden = TestObserver<Bool, NoError>()
   private let titleAccessibilityHint = TestObserver<String, NoError>()
   private let titleAccessibilityLabel = TestObserver<String, NoError>()
+  private let showDiscoveryFiltersRow = TestObserver<SelectableRow, NoError>()
+  private let showDiscoveryFiltersCats = TestObserver<[KsApi.Category], NoError>()
 
   let initialParams = .defaults
     |> DiscoveryParams.lens.staffPicks .~ true
@@ -41,9 +43,65 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
     self.vm.outputs.secondaryLabelIsHidden.observe(self.secondaryLabelIsHidden.observer)
     self.vm.outputs.titleButtonAccessibilityHint.observe(self.titleAccessibilityHint.observer)
     self.vm.outputs.titleButtonAccessibilityLabel.observe(self.titleAccessibilityLabel.observer)
+    self.vm.outputs.showDiscoveryFilters.map(first).observe(self.showDiscoveryFiltersRow.observer)
+    self.vm.outputs.showDiscoveryFilters.map(second).observe(self.showDiscoveryFiltersCats.observer)
+  }
+
+  func testShowFilters() {
+    let categories = [
+      Category.illustration,
+      .documentary,
+      .filmAndVideo,
+      .art
+    ]
+
+    let categoriesResponse = .template |> CategoriesEnvelope.lens.categories .~ categories
+    let initialRow = SelectableRow(isSelected: true, params: initialParams)
+    let starredRow = selectableRow |> SelectableRow.lens.params .~ starredParams
+    let artRow = selectableRow |> SelectableRow.lens.params .~ categoryParams
+
+    withEnvironment(apiService: MockService(fetchCategoriesResponse: categoriesResponse)) {
+
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.configureWith(params: initialParams)
+
+      self.showDiscoveryFiltersRow.assertValueCount(0)
+
+      self.vm.inputs.titleButtonTapped()
+
+      self.showDiscoveryFiltersRow.assertValues([initialRow])
+      self.showDiscoveryFiltersCats.assertValues([categories])
+
+      self.vm.inputs.filtersSelected(row: starredRow)
+
+      self.showDiscoveryFiltersRow.assertValues([initialRow], "Show Filters does not emit on selection.")
+
+      self.vm.inputs.titleButtonTapped()
+
+      self.showDiscoveryFiltersRow.assertValues([initialRow, starredRow])
+      self.showDiscoveryFiltersCats.assertValues([categories, categories])
+
+      self.vm.inputs.titleButtonTapped()
+
+      self.showDiscoveryFiltersRow.assertValues([initialRow, starredRow],
+                                                "Show filters does not emit on close.")
+
+      self.vm.inputs.titleButtonTapped()
+
+      self.showDiscoveryFiltersRow.assertValues([initialRow, starredRow, starredRow])
+      self.showDiscoveryFiltersCats.assertValues([categories, categories, categories])
+
+      self.vm.inputs.filtersSelected(row: artRow)
+      self.vm.inputs.titleButtonTapped()
+
+      self.showDiscoveryFiltersRow.assertValues([initialRow, starredRow, starredRow, artRow])
+      self.showDiscoveryFiltersCats.assertValues([categories, categories, categories, categories])
+    }
   }
 
   func testTitleData() {
+    self.vm.inputs.viewDidLoad()
+
     self.animateArrowToDown.assertValueCount(0)
     self.dividerIsHidden.assertValueCount(0)
     self.primaryLabelText.assertValueCount(0)
@@ -157,6 +215,7 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
   }
 
   func testNotifyFilterSelectdParams() {
+    self.vm.inputs.viewDidLoad()
     self.vm.inputs.configureWith(params: initialParams)
 
     self.notifyDelegateFilterSelectedParams.assertValueCount(0)

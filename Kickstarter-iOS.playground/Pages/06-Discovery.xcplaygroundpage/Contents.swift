@@ -17,11 +17,6 @@ let paramsWithSubcategory = .defaults
       |> Category.lens.name .~ "Documentary"
 )
 
-//: Uncomment initialParams below to test different navigation title strings.
-let initialParms = basicParams
-//let initialParms = paramsWithCategory
-//let initialParms = paramsWithSubcategory
-
 // Instantiate users for logged in and out states.
 let brando = User.brando
 let blob = User.template

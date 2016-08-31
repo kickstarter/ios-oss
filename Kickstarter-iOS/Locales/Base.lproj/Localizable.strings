@@ -127,6 +127,7 @@
 "category_promo.explore_category" = "Explore %{category_name}";
 "category_promo.project_count_live_projects" = "%{project_count} live projects";
 "closes_filters" = "Closes filters.";
+"collections" = "Collections";
 "connect_with_facebook_to_follow_friends_and_get_notified" = "Connect with Facebook to follow friends and get notified when they back or launch projects.";
 "creator_project_preview.subtitle.days_to_go_percent_funded" = "%{days_to_go} to go · %{percent_funded} funded";
 "creator_project_preview.subtitle.funded_on_deadline" = "Funded on %{deadline}";
@@ -488,6 +489,7 @@
 "find_facebook_friends" = "Find Facebook friends";
 "follow_friends" = "Follow friends";
 "follow_your_facebook_friends_and_get_notified" = "Follow your Facebook friends and get notified when they back or launch projects.";
+"following" = "Following";
 "forgot_password.buttons.ok" = "OK";
 "forgot_password.buttons.reset_my_password" = "Reset my password";
 "forgot_password.detail" = "Tell us the email you used to sign up and we’ll get you logged in.";

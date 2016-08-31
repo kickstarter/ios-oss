@@ -4,8 +4,8 @@ import ReactiveCocoa
 import Result
 
 public protocol DiscoveryFiltersViewModelInputs {
-  /// Call with the (optional) row that is selected when the filters appear.
-  func configureWith(selectedRow selectedRow: SelectableRow)
+  /// Call with the row that is selected when the filters appear and array of loaded categories.
+  func configureWith(selectedRow selectedRow: SelectableRow, categories: [KsApi.Category])
 
   /// Call when an expandable row is tapped.
   func tapped(expandableRow expandableRow: ExpandableRow)
@@ -18,14 +18,25 @@ public protocol DiscoveryFiltersViewModelInputs {
 }
 
 public protocol DiscoveryFiltersViewModelOutputs {
-  /// Emits an array of expandable rows to put into the categories section of filters.
-  var loadCategoryRows: Signal<[ExpandableRow], NoError> { get }
+  /// Emits a category id to set the background gradient and animate in the view.
+  var animateInView: Signal<Int?, NoError> { get }
 
-  /// Emits an array of selectable rows to put into the top filters section.
-  var loadTopRows: Signal<[SelectableRow], NoError> { get }
+  /**
+   Emits an array of expandable rows to put into the categories section of filters,
+   a category id to set row styles, and an optional category id for setting scrollTo position.
+   **/
+  var loadCategoryRows: Signal<(rows: [ExpandableRow], categoryId: Int?, selectedRowId: Int?),
+    NoError> { get }
+
+  /// Emits an array of selectable rows to put into the top filters section and category id to set row styles.
+  var loadTopRows: Signal<(rows: [SelectableRow], categoryId: Int?), NoError> { get }
 
   /// Emits a selectable row when the delegate should be notified of the selection.
   var notifyDelegateOfSelectedRow: Signal<SelectableRow, NoError> { get }
+
+  /// A bool that determines whether a cell should be animated when it is displayed.
+  var shouldAnimateSelectableCell: Bool { get }
+
 }
 
 public protocol DiscoveryFiltersViewModelType {
@@ -36,32 +47,43 @@ public protocol DiscoveryFiltersViewModelType {
 public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
   DiscoveryFiltersViewModelInputs, DiscoveryFiltersViewModelOutputs {
 
+  // swiftlint:disable function_body_length
   public init() {
-    let categories = self.viewDidLoadProperty.signal
-      .switchMap { AppEnvironment.current.apiService.fetchCategories().demoteErrors() }
 
     let initialTopFilters = self.viewDidLoadProperty.signal
       .take(1)
       .map { topFilters(forUser: AppEnvironment.current.currentUser) }
-      .uncollect()
 
-    self.loadTopRows = combineLatest(
+    let initialSelectedRowWithCategories = combineLatest(
+      self.initialSelectedRowWithCategoriesProperty.signal.ignoreNil(),
+      self.viewDidLoadProperty.signal
+      )
+      .take(1)
+      .map(first)
+
+    let topRows = combineLatest(
       initialTopFilters,
-      self.initialSelectedRowProperty.signal.take(1)
+      initialSelectedRowWithCategories.map(first)
       )
       .map { params, selectedRow in
-        SelectableRow(
-          isSelected: (selectedRow?.params).map { $0 == params } == true,
-          params: params
-        )
-      }
-      .collect()
+        params.map {
+          SelectableRow(isSelected: $0 == selectedRow.params, params: $0)
+        }
+    }
 
-    let initialRows = combineLatest(
-      self.initialSelectedRowProperty.signal,
-      categories.map { $0.categories }.map(expandableRows(fromCategories:))
+    let categoryId = self.initialSelectedRowWithCategoriesProperty.signal.ignoreNil()
+      .map(first)
+      .map { $0.params.category?.rootId }
+
+    self.loadTopRows = combineLatest(topRows, categoryId).map { (rows: $0, categoryId: $1) }
+
+    let selectedRowId = Signal.merge(
+        categoryId,
+        self.tappedExpandableRowProperty.signal.ignoreNil().map { $0.params.category?.rootId }
       )
-      .map(expand(parentOf:in:))
+
+    let initialRows = initialSelectedRowWithCategories
+      .map(expandableRows(selectedRow:categories:))
 
     let expandingRows = combineLatest(
       self.tappedExpandableRowProperty.signal.ignoreNil(),
@@ -69,20 +91,46 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
       )
       .map(toggleExpansion(row:in:))
 
-    self.loadCategoryRows = Signal.merge(initialRows, expandingRows)
+    let initialCatRowsAndIdAndSelectedRowId = combineLatest(categoryId, selectedRowId)
+      .takePairWhen(initialRows)
+
+    let expandedCatRowsAndIdAndSelectedRowId = combineLatest(categoryId, selectedRowId)
+      .takePairWhen(expandingRows)
+
+    self.loadCategoryRows = Signal.merge(
+      initialCatRowsAndIdAndSelectedRowId,
+      expandedCatRowsAndIdAndSelectedRowId
+      )
+      .map { (rows: $1, categoryId: $0.0, selectedRowId: $0.1) }
 
     self.notifyDelegateOfSelectedRow = self.tappedSelectableRowProperty.signal.ignoreNil()
+
+    self.shouldAnimateSelectableCellProperty <~ Signal.merge(
+      self.tappedExpandableRowProperty.signal.mapConst(true),
+
+      self.tappedExpandableRowProperty.signal
+        .delay(0.3, onScheduler: AppEnvironment.current.scheduler)
+        .mapConst(false)
+    )
+
+    self.animateInView = categoryId
+      .takeWhen(self.viewDidLoadProperty.signal)
 
     self.viewDidLoadProperty.signal
       .observeNext { AppEnvironment.current.koala.trackDiscoveryModal() }
 
     self.notifyDelegateOfSelectedRow
       .observeNext { AppEnvironment.current.koala.trackDiscoveryModalSelectedFilter(params: $0.params) }
-  }
 
-  private let initialSelectedRowProperty = MutableProperty<SelectableRow?>(nil)
-  public func configureWith(selectedRow selectedRow: SelectableRow) {
-    self.initialSelectedRowProperty.value = selectedRow
+    self.tappedExpandableRowProperty.signal.ignoreNil()
+      .observeNext { AppEnvironment.current.koala.trackDiscoveryModalExpandedFilter(params: $0.params) }
+  }
+  // swiftlint:enable function_body_length
+
+  private let initialSelectedRowWithCategoriesProperty =
+    MutableProperty<(SelectableRow, [KsApi.Category])?>(nil)
+  public func configureWith(selectedRow selectedRow: SelectableRow, categories: [KsApi.Category]) {
+    self.initialSelectedRowWithCategoriesProperty.value = (selectedRow, categories)
   }
   private let tappedExpandableRowProperty = MutableProperty<ExpandableRow?>(nil)
   public func tapped(expandableRow expandableRow: ExpandableRow) {
@@ -97,8 +145,15 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
     self.viewDidLoadProperty.value = ()
   }
 
-  public let loadCategoryRows: Signal<[ExpandableRow], NoError>
-  public let loadTopRows: Signal<[SelectableRow], NoError>
+  private let shouldAnimateSelectableCellProperty = MutableProperty(false)
+  public var shouldAnimateSelectableCell: Bool {
+    return self.shouldAnimateSelectableCellProperty.value
+  }
+
+  public let animateInView: Signal<Int?, NoError>
+  public let loadCategoryRows: Signal<(rows: [ExpandableRow], categoryId: Int?, selectedRowId: Int?),
+  NoError>
+  public let loadTopRows: Signal<(rows: [SelectableRow], categoryId: Int?), NoError>
   public let notifyDelegateOfSelectedRow: Signal<SelectableRow, NoError>
 
   public var inputs: DiscoveryFiltersViewModelInputs { return self }
@@ -106,22 +161,41 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
 }
 
 /**
- Finds the expandable row that contains the given seletable row, and expands it.
+ Converts an array of categories into a grouped array of expandable rows,
+ then finds the expandable row that contains the given selectable row, and expands it.
 
- - parameter selectedRow:    An optional selected row to search for.
- - parameter expandableRows: All expandable rows to search through.
+ - parameter selectedRow: An optional selected row to search for.
 
- - returns: A new array of expandable rows with one row expanded. If no selected row is provided, then the
-            `expandableRows` value is returned unchanged.
+ - parameter categories: A full array of categories.
+
+ - returns: An array of expandable rows with one row expanded.
  */
-private func expand(parentOf selectedRow: SelectableRow?,
-                    in expandableRows: [ExpandableRow]) -> [ExpandableRow] {
-  guard let selectedRow = selectedRow else { return expandableRows }
+private func expandableRows(selectedRow selectedRow: SelectableRow,
+                                        categories: [KsApi.Category]) -> [ExpandableRow] {
+
+  let expandableRows = categories
+    .sort { lhs, _ in !lhs.isRoot }
+    .groupedBy { $0.parent ?? $0 }
+    .map { rootCategory, rootWithChildren in
+      ExpandableRow(
+        isExpanded: false,
+        params: .defaults |> DiscoveryParams.lens.category .~ rootCategory,
+        selectableRows: rootWithChildren
+          .sort()
+          .map { childCategory in
+            SelectableRow(
+              isSelected: childCategory == selectedRow.params.category,
+              params: .defaults |> DiscoveryParams.lens.category .~ childCategory
+            )
+        }
+      )
+    }
+    .sort { lhs, rhs in lhs.params.category < rhs.params.category }
 
   return expandableRows.map { expandableRow in
-    expandableRow
+    return expandableRow
       |> ExpandableRow.lens.isExpanded .~
-        expandableRow.selectableRows.map { $0.params }.contains(selectedRow.params)
+      expandableRow.selectableRows.lazy.map { $0.params }.contains(selectedRow.params)
   }
 }
 
@@ -134,40 +208,15 @@ private func expand(parentOf selectedRow: SelectableRow?,
  - returns: A new array of expandable rows with the provided row's expansion toggled.
  */
 private func toggleExpansion(row rowToToggle: ExpandableRow,
-                             in expandableRows: [ExpandableRow]) -> [ExpandableRow] {
-  return expandableRows.map { expandableRow in
-    expandableRow
-      |> ExpandableRow.lens.isExpanded .~ (expandableRow == rowToToggle && !rowToToggle.isExpanded)
+                                 in expandableRows: [ExpandableRow]) -> [ExpandableRow] {
+
+  return expandableRows
+    .map { expandableRow in
+
+      return expandableRow
+        |> ExpandableRow.lens.isExpanded .~ (expandableRow.params == rowToToggle.params &&
+          !rowToToggle.isExpanded)
   }
-}
-
-/**
- Converts an array of categories into a grouped array of expandable rows.
-
- - parameter categories: A full array of categories.
-
- - returns: An array of expandable rows.
- */
-private func expandableRows(fromCategories categories: [KsApi.Category]) -> [ExpandableRow] {
-
-  return categories
-    .sort { lhs, _ in !lhs.isRoot }
-    .groupedBy { $0.parent ?? $0 }
-    .map { rootCategory, rootWithChildren in
-      ExpandableRow(
-        isExpanded: false,
-        params: .defaults |> DiscoveryParams.lens.category .~ rootCategory,
-        selectableRows: rootWithChildren
-          .sort()
-          .map { childCategory in
-            SelectableRow(
-              isSelected: false,
-              params: .defaults |> DiscoveryParams.lens.category .~ childCategory
-            )
-        }
-      )
-    }
-    .sort { lhs, rhs in lhs.params.category < rhs.params.category }
 }
 
 private func topFilters(forUser user: User?) -> [DiscoveryParams] {
@@ -178,8 +227,8 @@ private func topFilters(forUser user: User?) -> [DiscoveryParams] {
     |> DiscoveryParams.lens.includePOTD .~ true)
 
   if user != nil {
-    filters.append(.defaults |> DiscoveryParams.lens.recommended .~ true)
     filters.append(.defaults |> DiscoveryParams.lens.starred .~ true)
+    filters.append(.defaults |> DiscoveryParams.lens.recommended .~ true)
   }
 
   if user?.social == true {

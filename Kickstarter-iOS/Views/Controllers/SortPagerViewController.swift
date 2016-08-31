@@ -44,26 +44,28 @@ internal final class SortPagerViewController: UIViewController {
         self?.createSortButtons($0)
     }
 
+    self.viewModel.outputs.setSelectedButton
+      .observeForControllerAction()
+      .observeNext { [weak self] in
+        self?.selectButton(atIndex: $0)
+    }
+
     self.viewModel.outputs.pinSelectedIndicatorToPage
       .observeForControllerAction()
-      .observeNext { [weak self] in self?.pinSelectedIndicator(toPage: $0) }
+      .observeNext { [weak self] page, animated in
+        self?.pinSelectedIndicator(toPage: page, animated: animated)
+    }
+
+    self.viewModel.outputs.updateSortStyle
+      .observeForControllerAction()
+      .observeNext { [weak self] (id, sorts, animated) in
+        self?.updateSortStyle(forCategoryId: id, sorts: sorts, animated: animated)
+    }
 
     self.viewModel.outputs.notifyDelegateOfSelectedSort
       .observeNext { [weak self] sort in
         guard let _self = self else { return }
         _self.delegate?.sortPager(_self, selectedSort: sort)
-    }
-
-    self.viewModel.outputs.updateSortStyle
-      .observeForControllerAction()
-      .observeNext { [weak self] (id, sorts) in
-        self?.updateSortStyle(forCategoryId: id, sorts: sorts)
-    }
-
-    self.viewModel.outputs.setSelectedButton
-      .observeForControllerAction()
-      .observeNext { [weak self] in
-        self?.selectButton(atIndex: $0)
     }
   }
 
@@ -88,7 +90,14 @@ internal final class SortPagerViewController: UIViewController {
     }
   }
 
-  internal func pinSelectedIndicator(toPage page: Int) {
+  private func selectButton(atIndex index: Int) {
+    for (idx, button) in self.sortsStackView.arrangedSubviews.enumerate() {
+      (button as? UIButton)
+        ?|> UIButton.lens.selected .~ (idx == index)
+    }
+  }
+
+  internal func pinSelectedIndicator(toPage page: Int, animated: Bool) {
     guard let button = self.sortsStackView.arrangedSubviews[page] as? UIButton  else { return }
 
     let padding = page == 0 ? Styles.grid(2) : Styles.grid(4) - 3
@@ -102,7 +111,7 @@ internal final class SortPagerViewController: UIViewController {
     let rightSort = leadingConstant + widthConstant + Styles.grid(11) - self.scrollView.contentOffset.x
     let leftSort = leadingConstant - Styles.grid(11) - self.scrollView.contentOffset.x
 
-    UIView.animateWithDuration(0.2) {
+    UIView.animateWithDuration(animated ? 0.2 : 0.0) {
       self.scrollView.layoutIfNeeded()
 
       if rightSort > self.view.bounds.width {
@@ -114,31 +123,30 @@ internal final class SortPagerViewController: UIViewController {
     }
   }
 
-  private func updateSortStyle(forCategoryId categoryId: Int?, sorts: [DiscoveryParams.Sort]) {
-    self.indicatorView
-      |> UIView.lens.backgroundColor .~ discoveryPrimaryColor(forCategoryId: categoryId)
-
-    self.borderLineView
-      |> UIView.lens.backgroundColor .~ discoveryPrimaryColor(forCategoryId: categoryId)
+  private func updateSortStyle(forCategoryId categoryId: Int?,
+                                             sorts: [DiscoveryParams.Sort],
+                                             animated: Bool) {
 
     let zipped = zip(sorts, self.sortsStackView.arrangedSubviews)
-
     for (sort, view) in zipped {
       let index = sorts.indexOf(sort)
       (view as? UIButton)
         ?|> discoverySortPagerButtonStyle(sort: sort,
-                                                categoryId: categoryId,
-                                                isLeftMost: index == 0,
-                                                isRightMost: index == sorts.count - 1)
+                                          categoryId: categoryId,
+                                          isLeftMost: index == 0,
+                                          isRightMost: index == sorts.count - 1)
     }
     self.scrollView.layoutIfNeeded()
-  }
 
-  private func selectButton(atIndex index: Int) {
-    for (idx, button) in self.sortsStackView.arrangedSubviews.enumerate() {
-      (button as? UIButton)
-        ?|> UIButton.lens.selected .~ (idx == index)
-    }
+    UIView.transitionWithView(self.view,
+                              duration: animated ? 0.2 : 0.0,
+                              options: [.TransitionCrossDissolve, .CurveEaseOut],
+                              animations: {
+                                [self.indicatorView, self.borderLineView]
+                                  ||> UIView.lens.backgroundColor .~
+                                    discoveryPrimaryColor(forCategoryId: categoryId)
+                              },
+                              completion: nil)
   }
 
   @objc private func sortButtonTapped(button: UIButton) {

@@ -38,7 +38,7 @@ public func discoveryPrimaryColor(forCategoryId id: Int?) -> UIColor {
   }
 }
 
-private func discoverySortColor(forCategoryId id: Int?) -> UIColor {
+public func discoverySecondaryColor(forCategoryId id: Int?) -> UIColor {
   let group = CategoryGroup(categoryId: id)
   switch group {
   case .none:
@@ -89,6 +89,14 @@ public let discoveryOnboardingSignUpButtonStyle = baseButtonStyle
     Strings.discovery_onboarding_buttons_signup_or_login()
 }
 
+public func discoveryFilterLabelStyle<L: UILabelProtocol> (categoryId categoryId: Int?, isSelected: Bool)
+  -> (L -> L) {
+  return
+    L.lens.font .~ isSelected ? UIFont.ksr_title1(size: 22).bolded : .ksr_title1(size: 22)
+      <> L.lens.textColor .~ discoveryPrimaryColor(forCategoryId: categoryId)
+      <> L.lens.alpha .~ (categoryId == nil) ? 1.0 : (isSelected ? 1.0 : 0.6)
+}
+
 public let discoveryOnboardingTitleStyle =
   UILabel.lens.font .~ .ksr_title3()
     <> UILabel.lens.textAlignment .~ .Center
@@ -122,7 +130,7 @@ public func discoverySortPagerButtonStyle <B: UIButtonProtocol> (sort sort: Disc
                                                                  isRightMost: Bool) -> (B -> B) {
 
   let sortString = string(forSort: sort)
-  let titleColor = discoverySortColor(forCategoryId: categoryId)
+  let titleColor = discoverySecondaryColor(forCategoryId: categoryId)
 
   let normalTitleString = NSAttributedString(string: sortString, attributes: [
     NSFontAttributeName: UIFont.ksr_subhead(size: 14.0),

@@ -13,6 +13,9 @@ public protocol DiscoveryNavigationHeaderViewModelInputs {
 
   /// Call when title button is tapped.
   func titleButtonTapped()
+
+  /// Call when the view controller view loads.
+  func viewDidLoad()
 }
 
 public protocol DiscoveryNavigationHeaderViewModelOutputs {
@@ -25,8 +28,8 @@ public protocol DiscoveryNavigationHeaderViewModelOutputs {
   /// Emits when the filters view controller should be dismissed.
   var dismissDiscoveryFilters: Signal<(), NoError> { get }
 
-  /// Emits a category id to set gradient view color.
-  var gradientViewCategoryIdForColor: Signal<Int?, NoError> { get }
+  /// Emits a category id to set gradient view color and whether the view is fullscreen.
+  var gradientViewCategoryIdForColor: Signal<(categoryId: Int?, isFullScreen: Bool), NoError> { get }
 
   /// Emits params for Discovery view controller when filter selected.
   var notifyDelegateFilterSelectedParams: Signal<DiscoveryParams, NoError> { get }
@@ -50,7 +53,7 @@ public protocol DiscoveryNavigationHeaderViewModelOutputs {
   var secondaryLabelText: Signal<String, NoError> { get }
 
   /// Emits when discovery filters view controller should be presented.
-  var showDiscoveryFilters: Signal<SelectableRow, NoError> { get }
+  var showDiscoveryFilters: Signal<(row: SelectableRow, categories: [KsApi.Category]), NoError> { get }
 
   /// Emits a color for all subviews.
   var subviewColor: Signal<UIColor, NoError> { get }
@@ -72,6 +75,13 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
 
   // swiftlint:disable function_body_length
   public init() {
+    let categories = self.viewDidLoadProperty.signal
+      .switchMap {
+        AppEnvironment.current.apiService.fetchCategories()
+          .demoteErrors()
+      }
+      .map { $0.categories }
+
     let currentParams = Signal.merge(
       self.paramsProperty.signal.ignoreNil(),
       self.filtersSelectedRowProperty.signal.ignoreNil().map { $0.params }
@@ -99,12 +109,13 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
       .map { $0.subcategory == nil }
       .skipRepeats()
 
-    self.dismissDiscoveryFilters = Signal.merge(
+    let dismissFiltersSignal = Signal.merge(
       self.filtersSelectedRowProperty.signal.ignoreValues(),
       paramsAndFiltersAreHidden.filter { $0.filtersAreHidden }.ignoreValues()
     )
 
-    self.gradientViewCategoryIdForColor = categoryId
+    self.dismissDiscoveryFilters = dismissFiltersSignal
+      .delay(0.4, onScheduler: AppEnvironment.current.scheduler)
 
     self.notifyDelegateFilterSelectedParams = currentParams.skip(1)
 
@@ -126,22 +137,39 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
 
     self.secondaryLabelText = strings.map { $0.subcategory ?? "" }
 
-    self.showDiscoveryFilters = Signal.merge(
+    let categoriesWithParams = combineLatest(categories, (Signal.merge(
       self.paramsProperty.signal.ignoreNil().map { SelectableRow(isSelected: true, params: $0) },
       self.filtersSelectedRowProperty.signal.ignoreNil()
-      )
+      )))
+      .map { categories, row in (row: row, categories: categories) }
+
+    self.showDiscoveryFilters = categoriesWithParams
       .takeWhen(paramsAndFiltersAreHidden.filter { !$0.filtersAreHidden })
 
     self.subviewColor = primaryColor
 
+    let isFullScreen = Signal.merge(
+      self.paramsProperty.signal.ignoreNil().mapConst(false),
+      self.showDiscoveryFilters.mapConst(true),
+      dismissFiltersSignal.mapConst(false)
+    )
+
+    self.gradientViewCategoryIdForColor = combineLatest(categoryId, isFullScreen)
+      .map { (categoryId: $0, isFullScreen: $1) }
+
     self.titleButtonAccessibilityHint = self.animateArrowToDown
-      .map { $0 ? localizedString(key: "key.todo", defaultValue: "Opens filters.") :
-        localizedString(key: "key.todo", defaultValue: "Closes filters.")
+      .map { $0 ? Strings.opens_filters() : Strings.closes_filters()
     }
 
     self.titleButtonAccessibilityLabel = paramsAndFiltersAreHidden
       .map(first)
       .map(accessibilityLabelForTitleButton)
+
+    Signal.merge(
+      self.filtersSelectedRowProperty.signal.ignoreNil().map { $0.params },
+      paramsAndFiltersAreHidden.filter { $0.filtersAreHidden }.map { $0.params }
+    )
+    .observeNext { AppEnvironment.current.koala.trackDiscoveryModalClosedFilter(params: $0) }
   }
   // swiftlint:enable function_body_length
 
@@ -157,11 +185,15 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
   public func titleButtonTapped() {
     self.titleButtonTappedProperty.value = ()
   }
+  private let viewDidLoadProperty = MutableProperty()
+  public func viewDidLoad() {
+    self.viewDidLoadProperty.value = ()
+  }
 
   public let animateArrowToDown: Signal<Bool, NoError>
   public let dividerIsHidden: Signal<Bool, NoError>
   public let dismissDiscoveryFilters: Signal<(), NoError>
-  public let gradientViewCategoryIdForColor: Signal<Int?, NoError>
+  public let gradientViewCategoryIdForColor: Signal<(categoryId: Int?, isFullScreen: Bool), NoError>
   public let notifyDelegateFilterSelectedParams: Signal<DiscoveryParams, NoError>
   public let primaryLabelFont: Signal<UIFont, NoError>
   public let primaryLabelOpacity: Signal<CGFloat, NoError>
@@ -169,7 +201,7 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
   public let secondaryLabelFont: Signal<UIFont, NoError>
   public let secondaryLabelIsHidden: Signal<Bool, NoError>
   public let secondaryLabelText: Signal<String, NoError>
-  public let showDiscoveryFilters: Signal<SelectableRow, NoError>
+  public let showDiscoveryFilters: Signal<(row: SelectableRow, categories: [KsApi.Category]), NoError>
   public let subviewColor: Signal<UIColor, NoError>
   public let titleButtonAccessibilityHint: Signal<String, NoError>
   public let titleButtonAccessibilityLabel: Signal<String, NoError>
@@ -187,7 +219,7 @@ private func stringsForTitle(params params: DiscoveryParams) -> (filter: String,
   } else if params.starred == true {
     filterText = Strings.discovery_saved()
   } else if params.social == true {
-    filterText = Strings.backed_by_friends()
+    filterText = Strings.following()
   } else if let category = params.category {
     filterText = category.isRoot ? string(forCategoryId: category.id) : category.root?.name ?? ""
     subcategoryText = category.isRoot ? nil : category.name
@@ -218,26 +250,6 @@ private func accessibilityLabelForTitleButton(params params: DiscoveryParams) ->
   }
 }
 
-// swiftlint:disable cyclomatic_complexity
 private func string(forCategoryId id: Int) -> String {
-  let root = RootCategory(categoryId: id)
-  switch root {
-  case .art:          return Strings.all_art_projects()
-  case .comics:       return Strings.all_comics_projects()
-  case .dance:        return Strings.all_dance_projects()
-  case .design:       return Strings.all_design_projects()
-  case .fashion:      return Strings.all_fashion_projects()
-  case .food:         return Strings.all_food_projects()
-  case .film:         return Strings.all_film_projects()
-  case .games:        return Strings.all_games_projects()
-  case .journalism:   return Strings.all_journalism_projects()
-  case .music:        return Strings.all_music_projects()
-  case .photography:  return Strings.all_photography_projects()
-  case .tech:         return Strings.all_tech_projects()
-  case .theater:      return Strings.all_theater_projects()
-  case .publishing:   return Strings.all_publishing_projects()
-  case .crafts:       return Strings.all_crafts_projects()
-  case .unrecognized: return ""
-  }
+  return RootCategory(categoryId: id).allProjectsString()
 }
-// swiftlint:enable cyclomatic_complexity

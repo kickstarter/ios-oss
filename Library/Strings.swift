@@ -1579,7 +1579,7 @@ public enum Strings {
    "All Art Projects"
 
    - **es**: "Todos los proyectos de la categoría Arte"
-   - **de**: "All Art Projects"
+   - **de**: "Alle Projekte der Kategorie Kunst"
    - **fr**: "Tous les projets de la catégorie Art"
    - **it**: "All Art Projects"
    - **en**: "All Art Projects"
@@ -1596,7 +1596,7 @@ public enum Strings {
    "All Comics Projects"
 
    - **es**: "Todos los proyectos de la categoría Comics"
-   - **de**: "All Comics Projects"
+   - **de**: "Alle Projekte der Kategorie Comics"
    - **fr**: "Tous les projets de la catégorie Bande dessinée"
    - **it**: "All Comics Projects"
    - **en**: "All Comics Projects"
@@ -1613,7 +1613,7 @@ public enum Strings {
    "All Crafts Projects"
 
    - **es**: "Todos los proyectos de la categoría Artesanías"
-   - **de**: "All Crafts Projects"
+   - **de**: "Alle Projekte der Kategorie Kunsthandwerk"
    - **fr**: "Tous les projets de la catégorie Artisanat"
    - **it**: "All Crafts Projects"
    - **en**: "All Crafts Projects"
@@ -1630,7 +1630,7 @@ public enum Strings {
    "All Dance Projects"
 
    - **es**: "Todos los proyectos de la categoría Danza"
-   - **de**: "All Dance Projects"
+   - **de**: "Alle Projekte der Kategorie Tanz"
    - **fr**: "Tous les projets de la catégorie Danse"
    - **it**: "All Dance Projects"
    - **en**: "All Dance Projects"
@@ -1647,7 +1647,7 @@ public enum Strings {
    "All Design Projects"
 
    - **es**: "Todos los proyectos de la categoría Diseño"
-   - **de**: "All Design Projects"
+   - **de**: "Alle Projekte der Kategorie Design"
    - **fr**: "Tous les projets de la catégorie Design"
    - **it**: "All Design Projects"
    - **en**: "All Design Projects"
@@ -1664,7 +1664,7 @@ public enum Strings {
    "All Fashion Projects"
 
    - **es**: "Todos los proyectos de la categoría Moda"
-   - **de**: "All Fashion Projects"
+   - **de**: "Alle Projekte der Kategorie Mode"
    - **fr**: "Tous les projets de la catégorie Mode"
    - **it**: "All Fashion Projects"
    - **en**: "All Fashion Projects"
@@ -1681,7 +1681,7 @@ public enum Strings {
    "All Film & Video Projects"
 
    - **es**: "Todos los proyectos de la categoría Cine y Video"
-   - **de**: "All Film & Video Projects"
+   - **de**: "Alle Projekte der Kategorie Film & Video"
    - **fr**: "Tous les projets de la catégorie Cinéma et vidéo"
    - **it**: "All Film & Video Projects"
    - **en**: "All Film & Video Projects"
@@ -1698,7 +1698,7 @@ public enum Strings {
    "All Food Projects"
 
    - **es**: "Todos los proyectos de la categoría Comida"
-   - **de**: "All Food Projects"
+   - **de**: "Alle Projekte der Kategorie Essen"
    - **fr**: "Tous les projets de la catégorie Gastronomie"
    - **it**: "All Food Projects"
    - **en**: "All Food Projects"
@@ -1715,7 +1715,7 @@ public enum Strings {
    "All Games Projects"
 
    - **es**: "Todos los proyectos de la categoría Juegos"
-   - **de**: "All Games Projects"
+   - **de**: "Alle Projekte der Kategorie Spiele"
    - **fr**: "Tous les projets de la catégorie Jeux"
    - **it**: "All Games Projects"
    - **en**: "All Games Projects"
@@ -1732,7 +1732,7 @@ public enum Strings {
    "All Journalism Projects"
 
    - **es**: "Todos los proyectos de la categoría Periodismo"
-   - **de**: "All Journalism Projects"
+   - **de**: "Alle Projekte der Kategorie Journalismus"
    - **fr**: "Tous les projets de la catégorie Journalisme"
    - **it**: "All Journalism Projects"
    - **en**: "All Journalism Projects"
@@ -1749,7 +1749,7 @@ public enum Strings {
    "All Music Projects"
 
    - **es**: "Todos los proyectos de la categoría Música"
-   - **de**: "All Music Projects"
+   - **de**: "Alle Projekte der Kategorie Musik"
    - **fr**: "Tous les projets de la catégorie Musique"
    - **it**: "All Music Projects"
    - **en**: "All Music Projects"
@@ -1766,7 +1766,7 @@ public enum Strings {
    "All Photography Projects"
 
    - **es**: "Todos los proyectos de la categoría Fotografía"
-   - **de**: "All Photography Projects"
+   - **de**: "Alle Projekte der Kategorie Fotografie"
    - **fr**: "Tous les projets de la catégorie Photographie"
    - **it**: "All Photography Projects"
    - **en**: "All Photography Projects"
@@ -1783,7 +1783,7 @@ public enum Strings {
    "All Projects"
 
    - **es**: "Todos los proyectos"
-   - **de**: "All Projects"
+   - **de**: "Alle Projekte"
    - **fr**: "Tous les projets"
    - **it**: "All Projects"
    - **en**: "All Projects"
@@ -1800,7 +1800,7 @@ public enum Strings {
    "All Publishing Projects"
 
    - **es**: "Todos los proyectos de la categoría Editorial"
-   - **de**: "All Publishing Projects"
+   - **de**: "Alle Projekte der Kategorie Publishing"
    - **fr**: "Tous les projets de la catégorie Édition"
    - **it**: "All Publishing Projects"
    - **en**: "All Publishing Projects"
@@ -1817,7 +1817,7 @@ public enum Strings {
    "All Technology Projects"
 
    - **es**: "Todos los proyectos de la categoría Tecnología"
-   - **de**: "All Technology Projects"
+   - **de**: "Alle Projekte der Kategorie Technologie"
    - **fr**: "Tous les projets de la catégorie Technologie"
    - **it**: "All Technology Projects"
    - **en**: "All Technology Projects"
@@ -1834,7 +1834,7 @@ public enum Strings {
    "All Theater Projects"
 
    - **es**: "Todos los proyectos de la categoría Teatro"
-   - **de**: "All Theater Projects"
+   - **de**: "Alle Projekte der Kategorie Theater"
    - **fr**: "Tous les projets de la catégorie Théâtre"
    - **it**: "All Theater Projects"
    - **en**: "All Theater Projects"
@@ -1851,7 +1851,7 @@ public enum Strings {
    "Backed by Friends"
 
    - **es**: "Patrocinados por amigos"
-   - **de**: "Backed by Friends"
+   - **de**: "Von Freunden unterstützt"
    - **fr**: "Soutenu par mes amis"
    - **it**: "Backed by Friends"
    - **en**: "Backed by Friends"
@@ -2190,9 +2190,9 @@ public enum Strings {
   /**
    "Closes filters."
 
-   - **es**: "Closes filters."
-   - **de**: "Closes filters."
-   - **fr**: "Closes filters."
+   - **es**: "Cerrar filtros."
+   - **de**: "Filter schließen."
+   - **fr**: "Ferme les filtres."
    - **it**: "Closes filters."
    - **en**: "Closes filters."
   */
@@ -2205,10 +2205,27 @@ public enum Strings {
     )
   }
   /**
+   "Collections"
+
+   - **es**: "Collections"
+   - **de**: "Collections"
+   - **fr**: "Collections"
+   - **it**: "Collections"
+   - **en**: "Collections"
+  */
+  public static func collections() -> String {
+    return localizedString(
+      key: "collections",
+      defaultValue: "Collections",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Connect with Facebook to follow friends and get notified when they back or launch projects."
 
    - **es**: "Conéctate via Facebook y sigue a tus amigos - ¡te avisaremos cada vez que publican o patrocinan un proyecto!"
-   - **de**: "Connect with Facebook to follow friends and get notified when they back or launch projects."
+   - **de**: "Verknüpfe dein Konto mit Facebook - du kannst deinen Freunden folgen und wirst benachrichtigt, wenn sie ein Projekt veröffentlichen oder unterstützen."
    - **fr**: "Connectez-vous avec votre compte Facebook pour suivre vos amis et recevoir des notifications chaque fois qu'ils soutiennent ou lancent un projet."
    - **it**: "Connect with Facebook to follow friends and get notified when they back or launch projects."
    - **en**: "Connect with Facebook to follow friends and get notified when they back or launch projects."
@@ -4690,7 +4707,7 @@ public enum Strings {
    "Discover more projects."
 
    - **es**: "Descubre más proyectos."
-   - **de**: "Discover more projects."
+   - **de**: "Noch mehr Projekte erkunden."
    - **fr**: "Découvrez plus de projets."
    - **it**: "Discover more projects."
    - **en**: "Discover more projects."
@@ -6271,7 +6288,7 @@ public enum Strings {
    "Ending Soon"
 
    - **es**: "Finaliza pronto"
-   - **de**: "Ending Soon"
+   - **de**: "Endet bald"
    - **fr**: "Campagnes bientôt terminées"
    - **it**: "Ending Soon"
    - **en**: "Ending Soon"
@@ -6338,7 +6355,7 @@ public enum Strings {
   /**
    "Sign up"
 
-   - **es**: "Registración"
+   - **es**: "Registrarse"
    - **de**: "Registrieren"
    - **fr**: "Inscription"
    - **it**: "Sign up"
@@ -6440,9 +6457,9 @@ public enum Strings {
   /**
    "Filtered by all projects"
 
-   - **es**: "Filtered by all projects"
-   - **de**: "Filtered by all projects"
-   - **fr**: "Filtered by all projects"
+   - **es**: "Filtro: Todos los proyectos"
+   - **de**: "Filter: Alle Projekte"
+   - **fr**: "Filtré : tous les projets"
    - **it**: "Filtered by all projects"
    - **en**: "Filtered by all projects"
   */
@@ -6457,9 +6474,9 @@ public enum Strings {
   /**
    "Filtered by %{category_name}"
 
-   - **es**: "Filtered by %{category_name}"
-   - **de**: "Filtered by %{category_name}"
-   - **fr**: "Filtered by %{category_name}"
+   - **es**: "Filtro: %{category_name}"
+   - **de**: "Filter: %{category_name}"
+   - **fr**: "Filtré par catégorie : %{category_name}"
    - **it**: "Filtered by %{category_name}"
    - **en**: "Filtered by %{category_name}"
   */
@@ -6474,9 +6491,9 @@ public enum Strings {
   /**
    "Filtered by projects backed by friends"
 
-   - **es**: "Filtered by projects backed by friends"
-   - **de**: "Filtered by projects backed by friends"
-   - **fr**: "Filtered by projects backed by friends"
+   - **es**: "Filtro: Proyectos patrocinados por amigos"
+   - **de**: "Filter: Von Freunden unterstützte Projekte"
+   - **fr**: "Filtré : engagements de mes amis"
    - **it**: "Filtered by projects backed by friends"
    - **en**: "Filtered by projects backed by friends"
   */
@@ -6491,9 +6508,9 @@ public enum Strings {
   /**
    "Filtered by projects recommended for you"
 
-   - **es**: "Filtered by projects recommended for you"
-   - **de**: "Filtered by projects recommended for you"
-   - **fr**: "Filtered by projects recommended for you"
+   - **es**: "Filtro: Proyectos recomendados"
+   - **de**: "Filter: Für dich empfohlene Projekte"
+   - **fr**: "Filtré : recommandations"
    - **it**: "Filtered by projects recommended for you"
    - **en**: "Filtered by projects recommended for you"
   */
@@ -6508,9 +6525,9 @@ public enum Strings {
   /**
    "Filtered by projects we love"
 
-   - **es**: "Filtered by projects we love"
-   - **de**: "Filtered by projects we love"
-   - **fr**: "Filtered by projects we love"
+   - **es**: "Filtro: Nuestros favoritos"
+   - **de**: "Filter: Team-Favoriten"
+   - **fr**: "Filtré : Coups de cœur"
    - **it**: "Filtered by projects we love"
    - **en**: "Filtered by projects we love"
   */
@@ -6525,9 +6542,9 @@ public enum Strings {
   /**
    "Filtered by starred projects"
 
-   - **es**: "Filtered by starred projects"
-   - **de**: "Filtered by starred projects"
-   - **fr**: "Filtered by starred projects"
+   - **es**: "Filtro: Tus favoritos"
+   - **de**: "Filter: Favoriten"
+   - **fr**: "Filtré : mes projets préférés"
    - **it**: "Filtered by starred projects"
    - **en**: "Filtered by starred projects"
   */
@@ -6542,9 +6559,9 @@ public enum Strings {
   /**
    "Filtered by %{subcategory_name} in %{category_name}"
 
-   - **es**: "Filtered by %{subcategory_name} in %{category_name}"
-   - **de**: "Filtered by %{subcategory_name} in %{category_name}"
-   - **fr**: "Filtered by %{subcategory_name} in %{category_name}"
+   - **es**: "Filtro: %{subcategory_name} en %{category_name}"
+   - **de**: "Filter: %{subcategory_name} in %{category_name}"
+   - **fr**: "Filtré : %{subcategory_name}, sous %{category_name}"
    - **it**: "Filtered by %{subcategory_name} in %{category_name}"
    - **en**: "Filtered by %{subcategory_name} in %{category_name}"
   */
@@ -6560,7 +6577,7 @@ public enum Strings {
    "Find Facebook friends"
 
    - **es**: "Encuentra amigos en Facebook"
-   - **de**: "Find Facebook friends"
+   - **de**: "Finde Freunde auf Facebook"
    - **fr**: "Retrouver mes amis Facebook"
    - **it**: "Find Facebook friends"
    - **en**: "Find Facebook friends"
@@ -6577,7 +6594,7 @@ public enum Strings {
    "Follow friends"
 
    - **es**: "Seguir a amigos"
-   - **de**: "Follow friends"
+   - **de**: "Freunden folgen"
    - **fr**: "Suivre mes amis"
    - **it**: "Follow friends"
    - **en**: "Follow friends"
@@ -6594,7 +6611,7 @@ public enum Strings {
    "Follow your Facebook friends and get notified when they back or launch projects."
 
    - **es**: "Sigue a tus amigos en Facebook - ¡te avisaremos cada vez que publican o patrocinan un proyecto!"
-   - **de**: "Follow your Facebook friends and get notified when they back or launch projects."
+   - **de**: "Folge deinen Freunden auf Facebook - du wirst benachrichtigt, sobald sie ein Projekt unterstützen oder veröffentlichen."
    - **fr**: "Suivez vos amis Facebook pour recevoir des notifications chaque fois qu'ils soutiennent ou lancent un projet."
    - **it**: "Follow your Facebook friends and get notified when they back or launch projects."
    - **en**: "Follow your Facebook friends and get notified when they back or launch projects."
@@ -6603,6 +6620,23 @@ public enum Strings {
     return localizedString(
       key: "follow_your_facebook_friends_and_get_notified",
       defaultValue: "Follow your Facebook friends and get notified when they back or launch projects.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Following"
+
+   - **es**: "Following"
+   - **de**: "Following"
+   - **fr**: "Following"
+   - **it**: "Following"
+   - **en**: "Following"
+  */
+  public static func following() -> String {
+    return localizedString(
+      key: "following",
+      defaultValue: "Following",
       count: nil,
       substitutions: [:]
     )
@@ -7863,7 +7897,7 @@ This is commonly fixed by going to iOS Settings > Facebook and toggling access f
   /**
    "Sign up"
 
-   - **es**: "Registración"
+   - **es**: "Registrarse"
    - **de**: "Registrieren"
    - **fr**: "Inscription"
    - **it**: "Sign up"
@@ -8424,9 +8458,9 @@ This is commonly fixed by going to iOS Settings > Facebook and toggling access f
   /**
    "Opens filters."
 
-   - **es**: "Opens filters."
-   - **de**: "Opens filters."
-   - **fr**: "Opens filters."
+   - **es**: "Abrir filtros."
+   - **de**: "Filter öffnen."
+   - **fr**: "Ouvre les filtres."
    - **it**: "Opens filters."
    - **en**: "Opens filters."
   */
@@ -9504,7 +9538,7 @@ Thank you for your support!"
 
    - **es**: "Encontrar amigos"
    - **de**: "Freunde finden"
-   - **fr**: "Rechercher mes amis"
+   - **fr**: "Rechercher mes amis Facebook"
    - **it**: "Find Facebook friends"
    - **en**: "Find Facebook friends"
   */
@@ -11311,7 +11345,7 @@ Thank you for your support!"
    "Projects We Love"
 
    - **es**: "Nuestros Favoritos"
-   - **de**: "Projects We Love"
+   - **de**: "Team-Favoriten"
    - **fr**: "Nos coups de cœur"
    - **it**: "Projects We Love"
    - **en**: "Projects We Love"
@@ -11769,7 +11803,7 @@ Thank you for your support!"
   /**
    "Receive our weekly newsletter and other occasional updates."
 
-   - **es**: "Descubre nuevos proyectos con nuestro beletín semanal."
+   - **es**: "Descubre nuevos proyectos con nuestro boletín semanal."
    - **de**: "Endecke neue Projekte in unserem wöchentlichen Newsletter."
    - **fr**: "Découvrez de nouveaux projets grâce à notre lettre d'informations hebdomadaire."
    - **it**: "Receive our weekly newsletter and other occasional updates."
@@ -12196,7 +12230,7 @@ Thank you for your support!"
 
    - **es**: "¡Sigue a tus amigos!"
    - **de**: "Folge deinen Freunden!"
-   - **fr**: "Suivez vos amis !"
+   - **fr**: "Suivez vos amis"
    - **it**: "Follow friends"
    - **en**: "Follow friends"
   */

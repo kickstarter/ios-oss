@@ -27,26 +27,21 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
     self.viewModel.inputs.configureWith(params: params)
   }
 
+  override func viewWillAppear(animated: Bool) {
+    super.viewWillAppear(animated)
+  }
+
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.titleButton
-      |> UIButton.lens.targets .~ [(self, action: #selector(titleButtonTapped), .TouchUpInside)]
-
-    self.primaryLabel
-      |> UILabel.lens.isAccessibilityElement .~ false
-
-    self.secondaryLabel
-      |> UILabel.lens.isAccessibilityElement .~ false
-
-    self.dividerLabel
-      |> UILabel.lens.isAccessibilityElement .~ false
-
     self.gradientBackgroundView.startPoint = CGPoint(x: 0.0, y: 1.0)
     self.gradientBackgroundView.endPoint = CGPoint(x: 1.0, y: 0.0)
+
+    self.viewModel.inputs.viewDidLoad()
   }
 
-  override func bindViewModel() {
+  // swiftlint:disable function_body_length
+  internal override func bindViewModel() {
     super.bindViewModel()
 
     self.arrowImageView.rac.tintColor = self.viewModel.outputs.subviewColor
@@ -72,9 +67,8 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
 
     self.viewModel.outputs.gradientViewCategoryIdForColor
       .observeForControllerAction()
-      .observeNext { [weak element = self.gradientBackgroundView] in
-        let (startColor, endColor) = discoveryGradientColors(forCategoryId: $0)
-        element?.setGradient([(color: startColor, location: 0.0), (color: endColor, location: 1.0)])
+      .observeNext { [weak self] id, isFullScreen in
+        self?.setBackgroundGradient(categoryId: id, isFullScreen: isFullScreen)
     }
 
     self.viewModel.outputs.notifyDelegateFilterSelectedParams
@@ -85,8 +79,8 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
 
     self.viewModel.outputs.showDiscoveryFilters
       .observeForControllerAction()
-      .observeNext { [weak self] in
-        self?.showDiscoveryFilters(selectedRow: $0)
+      .observeNext { [weak self] row, cats in
+        self?.showDiscoveryFilters(selectedRow: row, categories: cats)
     }
 
     self.viewModel.outputs.dismissDiscoveryFilters
@@ -95,8 +89,9 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
         self?.dismissViewControllerAnimated(false, completion: nil)
     }
   }
+  // swiftlint:enable function_body_length
 
-  override func bindStyles() {
+  internal override func bindStyles() {
     super.bindStyles()
 
     self.borderLineView
@@ -104,23 +99,81 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
 
     self.dividerLabel
       |> discoveryNavDividerLabelStyle
+      |> UILabel.lens.isAccessibilityElement .~ false
 
     self.titleStackView
       |> discoveryNavTitleStackViewStyle
+
+    self.primaryLabel
+      |> UILabel.lens.isAccessibilityElement .~ false
+
+    self.secondaryLabel
+      |> UILabel.lens.isAccessibilityElement .~ false
+
+    self.titleButton
+      |> UIButton.lens.targets .~ [(self, action: #selector(titleButtonTapped), .TouchUpInside)]
   }
 
-  private func showDiscoveryFilters(selectedRow selectedRow: SelectableRow) {
-    let vc = DiscoveryFiltersViewController.configuredWith(selectedRow: selectedRow)
+  private func showDiscoveryFilters(selectedRow selectedRow: SelectableRow, categories: [KsApi.Category]) {
+    let vc = DiscoveryFiltersViewController.configuredWith(selectedRow: selectedRow, categories: categories)
     vc.delegate = self
+    vc.modalPresentationStyle = .OverFullScreen
     self.presentViewController(vc, animated: false, completion: nil)
   }
 
   private func animateArrow(toDown toDown: Bool) {
     let scale: CGFloat = toDown ? 1.0 : -1.0
 
-    UIView.animateWithDuration(0.2, delay: 0.0, options: .CurveEaseOut, animations: {
-      self.arrowImageView.transform = CGAffineTransformMakeScale(1.0, scale)
-      }, completion: nil)
+    UIView.animateWithDuration(0.2,
+                               delay: 0.0,
+                               options: .CurveEaseOut,
+                               animations: {
+                                self.arrowImageView.transform = CGAffineTransformMakeScale(1.0, scale)
+                                },
+                               completion: nil)
+  }
+
+  private func setBackgroundGradient(categoryId categoryId: Int?, isFullScreen: Bool) {
+
+    let (startColor, endColor) = discoveryGradientColors(forCategoryId: categoryId)
+
+    if isFullScreen {
+      UIView.transitionWithView(self.gradientBackgroundView,
+                                duration: 0.2,
+                                options: [.TransitionCrossDissolve, .CurveEaseOut],
+                                animations: {
+                                  self.gradientBackgroundView.setGradient([
+                                    (color: startColor, location: 0.0),
+                                    (color: endColor, location: 0.2)])
+                                  },
+                                completion: nil)
+
+      UIView.animateWithDuration(0.2,
+                                 delay: 0.1,
+                                 options: .CurveEaseIn,
+                                 animations: {
+                                  self.borderLineView.transform = CGAffineTransformMakeScale(0.93, 1.0)
+                                 },
+                                 completion: nil)
+    } else {
+      UIView.animateWithDuration(0.1,
+                                 delay: 0.0,
+                                 options: .CurveEaseOut,
+                                 animations: {
+                                  self.borderLineView.transform = CGAffineTransformMakeScale(1.0, 1.0)
+                                 },
+                                 completion: nil)
+
+      UIView.transitionWithView(self.gradientBackgroundView,
+                                duration: 0.2,
+                                options: [.TransitionCrossDissolve, .CurveEaseOut],
+                                animations: {
+                                  self.gradientBackgroundView.setGradient([
+                                    (color: startColor, location: 0.0),
+                                    (color: endColor, location: 1.0)])
+                                  },
+                                completion: nil)
+    }
   }
 
   @objc private func titleButtonTapped() {
@@ -129,6 +182,10 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
 }
 
 extension DiscoveryNavigationHeaderViewController: DiscoveryFiltersViewControllerDelegate {
+  internal func discoveryFiltersDidClose(viewController: DiscoveryFiltersViewController) {
+    self.viewModel.inputs.titleButtonTapped()
+  }
+
   internal func discoveryFilters(viewController: DiscoveryFiltersViewController, selectedRow: SelectableRow) {
     self.viewModel.inputs.filtersSelected(row: selectedRow)
   }

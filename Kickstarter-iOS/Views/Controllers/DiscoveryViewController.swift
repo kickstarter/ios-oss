@@ -7,7 +7,7 @@ internal final class DiscoveryViewController: UIViewController {
   private let viewModel: DiscoveryViewModelType = DiscoveryViewModel()
   private var dataSource: DiscoveryPagesDataSource!
 
-  internal weak var navigationHeaderViewController: DiscoveryNavigationHeaderViewController!
+  private weak var navigationHeaderViewController: DiscoveryNavigationHeaderViewController!
   private weak var pageViewController: UIPageViewController!
   private weak var sortPagerViewController: SortPagerViewController!
 
