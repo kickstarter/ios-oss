@@ -76,7 +76,8 @@ internal final class MostPopularSearchProjectCell: UITableViewCell, ValueCell {
     self.viewModel.outputs.fundingProgress
       .observeForUI()
       .observeNext { [weak self] in
-        self?.fundingProgressBarView.layer.anchorPoint = CGPoint(x: CGFloat(0.5 / $0), y: 0.5)
+        let anchorX = $0 == 0 ? 0 : 0.5 / $0
+        self?.fundingProgressBarView.layer.anchorPoint = CGPoint(x: CGFloat(anchorX), y: 0.5)
         self?.fundingProgressBarView.transform = CGAffineTransformMakeScale(CGFloat($0), 1.0)
     }
 

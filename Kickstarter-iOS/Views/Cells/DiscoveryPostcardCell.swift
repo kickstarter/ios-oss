@@ -163,7 +163,8 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
     self.viewModel.outputs.progressPercentage
       .observeForUI()
       .observeNext { [weak self] progress in
-        self?.fundingProgressBarView.layer.anchorPoint = CGPoint(x: CGFloat(0.5 / progress), y: 0.5)
+        let anchorX = progress == 0 ? 0 : 0.5 / progress
+        self?.fundingProgressBarView.layer.anchorPoint = CGPoint(x: CGFloat(anchorX), y: 0.5)
         self?.fundingProgressBarView.transform = CGAffineTransformMakeScale(CGFloat(progress), 1.0)
     }
 

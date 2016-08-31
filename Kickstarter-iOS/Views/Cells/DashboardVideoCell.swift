@@ -57,14 +57,16 @@ internal final class DashboardVideoCell: UITableViewCell, ValueCell {
     self.viewModel.outputs.externalStartProgress
       .observeForUI()
       .observeNext { [weak element = externalPlaysProgressView] progress in
-        element?.layer.anchorPoint = CGPoint(x: 0.5, y: 1 - CGFloat(0.5 / progress))
+        let anchorY = progress == 0 ? 0 : 0.5 / progress
+        element?.layer.anchorPoint = CGPoint(x: 0.5, y: 1 - CGFloat(anchorY))
         element?.transform = CGAffineTransformMakeScale(1.0, CGFloat(progress))
     }
 
     self.viewModel.outputs.internalStartProgress
       .observeForUI()
       .observeNext { [weak element = internalPlaysProgressView] progress in
-        element?.layer.anchorPoint = CGPoint(x: 0.5, y: 1 - CGFloat(0.5 / progress))
+        let anchorY = progress == 0 ? 0 : 0.5 / progress
+        element?.layer.anchorPoint = CGPoint(x: 0.5, y: 1 - CGFloat(anchorY))
         element?.transform = CGAffineTransformMakeScale(1.0, CGFloat(progress))
     }
   }

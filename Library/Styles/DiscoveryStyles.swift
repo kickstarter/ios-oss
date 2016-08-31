@@ -170,11 +170,7 @@ public let postcardNameAndBlurbStyle =
     <> SimpleHTMLLabel.lens.boldFont .~ .ksr_title3(size: 18.0)
     <> SimpleHTMLLabel.lens.boldColor .~ .ksr_text_navy_700
     <> SimpleHTMLLabel.lens.numberOfLines .~ 3
-    <> SimpleHTMLLabel.lens.minimumScaleFactor .~ 0.5
-    <> SimpleHTMLLabel.lens.adjustsFontSizeToFitWidth .~ true
     <> SimpleHTMLLabel.lens.lineBreakMode .~ .ByTruncatingTail
-    <> SimpleHTMLLabel.lens.contentHuggingPriorityForAxis(.Vertical) .~ UILayoutPriorityRequired
-    <> SimpleHTMLLabel.lens.contentCompressionResistancePriorityForAxis(.Vertical) .~ UILayoutPriorityRequired
 
 public let postcardSocialStackViewStyle =
   UIStackView.lens.alignment .~ .Center

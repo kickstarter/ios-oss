@@ -47,7 +47,7 @@ let launch = .template
   |> Activity.lens.user .~ brando
   |> Activity.lens.project .~ Project.cosmicSurgery
 
-// Instantiate projects with metadata
+// Instantiate projects with metadata.
 let today = AppEnvironment.current.calendar.startOfDayForDate(NSDate()).timeIntervalSince1970
 
 let potd = .todayByScottThrift

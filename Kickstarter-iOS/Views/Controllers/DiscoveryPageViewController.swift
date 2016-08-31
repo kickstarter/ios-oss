@@ -21,7 +21,6 @@ internal final class DiscoveryPageViewController: UITableViewController {
     super.viewDidLoad()
 
     self.tableView.dataSource = self.dataSource
-    self.viewModel.inputs.viewDidLoad()
   }
 
   internal override func viewWillAppear(animated: Bool) {
@@ -47,6 +46,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
 
     self
       |> baseTableControllerStyle(estimatedRowHeight: 200.0)
+      |> DiscoveryPageViewController.lens.view.backgroundColor .~ .clearColor()
   }
 
   internal override func bindViewModel() {
@@ -59,11 +59,12 @@ internal final class DiscoveryPageViewController: UITableViewController {
         self?.tableView.reloadData()
     }
 
-    self.viewModel.outputs.projects
+    self.viewModel.outputs.asyncReloadData
       .observeForControllerAction()
-      .observeNext { [weak self] projects in
-        self?.dataSource.load(projects: projects)
-        self?.tableView.reloadData()
+      .observeNext { [weak self] in
+        dispatch_async(dispatch_get_main_queue()) {
+          self?.tableView.reloadData()
+        }
     }
 
     self.viewModel.outputs.goToProject
@@ -76,6 +77,13 @@ internal final class DiscoveryPageViewController: UITableViewController {
       .observeForControllerAction()
       .observeNext { [weak self] project, update in
         self?.goTo(project: project, update: update)
+    }
+
+    self.viewModel.outputs.projects
+      .observeForControllerAction()
+      .observeNext { [weak self] projects in
+        self?.dataSource.load(projects: projects)
+        self?.tableView.reloadData()
     }
 
     self.viewModel.outputs.showOnboarding

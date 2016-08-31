@@ -11,6 +11,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
   private let vm: DiscoveryPageViewModelType = DiscoveryPageViewModel()
 
   private let activitiesForSample = TestObserver<[Activity], NoError>()
+  private let asyncReloadData = TestObserver<Void, NoError>()
   private let focusScreenReaderOnFirstProject = TestObserver<(), NoError>()
   private let goToProject = TestObserver<Project, NoError>()
   private let goToRefTag = TestObserver<RefTag, NoError>()
@@ -24,6 +25,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     super.setUp()
 
     self.vm.outputs.activitiesForSample.observe(self.activitiesForSample.observer)
+    self.vm.outputs.asyncReloadData.observe(self.asyncReloadData.observer)
     self.vm.outputs.focusScreenReaderOnFirstProject.observe(self.focusScreenReaderOnFirstProject.observer)
     self.vm.outputs.goToProject.map { $0.0 }.observe(self.goToProject.observer)
     self.vm.outputs.goToProject.map { $0.1 }.observe(self.goToRefTag.observer)
@@ -45,7 +47,6 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
   func testPaginating() {
     self.vm.inputs.configureWith(sort: .Magic)
-    self.vm.inputs.viewDidLoad()
     self.scheduler.advance()
 
     self.hasAddedProjects.assertDidNotEmitValue("No projects load at first.")
@@ -56,6 +57,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     self.vm.inputs.viewDidAppear()
     self.scheduler.advance()
 
+    self.asyncReloadData.assertValueCount(1, "Reload data when projects are first added.")
     self.hasAddedProjects.assertValues([true], "Projects are added.")
     self.hasRemovedProjects.assertValues([false], "Projects are not removed.")
     self.projectsAreLoading.assertValues([true, false], "Loading indicator toggles on/off.")
@@ -139,6 +141,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     self.vm.inputs.willDisplayRow(20, outOf: 20)
     self.scheduler.advance()
 
+    self.asyncReloadData.assertValueCount(1, "View is only reloaded once in the beginning.")
     self.hasAddedProjects.assertValues([true, true, false, true, true],
                                        "Projects are added.")
     self.hasRemovedProjects.assertValues([false, false, true, false, false],
@@ -161,7 +164,6 @@ internal final class DiscoveryPageViewModelTests: TestCase {
   func testViewLifecycle() {
     // Configure and load up view model
     self.vm.inputs.configureWith(sort: .Magic)
-    self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewDidAppear()
     self.scheduler.advance()
 
@@ -216,7 +218,6 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       |> Project.lens.dates.potdAt .~ potdAt
 
     self.vm.inputs.configureWith(sort: .Magic)
-    self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewDidAppear()
     self.vm.inputs.selectedFilter(.defaults)
     self.scheduler.advance()
@@ -292,7 +293,6 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
     withEnvironment(apiService: MockService(fetchActivitiesResponse: [activity1])) {
       self.vm.inputs.configureWith(sort: .Magic)
-      self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear()
       self.vm.inputs.viewDidAppear()
       self.scheduler.advance()
@@ -376,7 +376,6 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
     withEnvironment(apiService: MockService(fetchActivitiesResponse: [activity])) {
       self.vm.inputs.configureWith(sort: .Magic)
-      self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear()
       self.vm.inputs.viewDidAppear()
       self.scheduler.advance()
@@ -396,7 +395,6 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
   func testShowOnboarding_LoggedOutOnMagic() {
     self.vm.inputs.configureWith(sort: .Magic)
-    self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewWillAppear()
     self.vm.inputs.viewDidAppear()
     self.vm.inputs.selectedFilter(.defaults)
@@ -406,7 +404,6 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
   func testShowOnboarding_LoggedOutOnNonMagic() {
     self.vm.inputs.configureWith(sort: .Popular)
-    self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewWillAppear()
     self.vm.inputs.viewDidAppear()
     self.vm.inputs.selectedFilter(.defaults)
@@ -417,7 +414,6 @@ internal final class DiscoveryPageViewModelTests: TestCase {
   func testShowOnboarding_LoggedIn() {
     withEnvironment(currentUser: .template) {
       self.vm.inputs.configureWith(sort: .Magic)
-      self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear()
       self.vm.inputs.viewDidAppear()
       self.vm.inputs.selectedFilter(.defaults)
@@ -428,7 +424,6 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
   func testFocusScreenReaderOnFirstProject() {
     self.vm.inputs.configureWith(sort: .Magic)
-    self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewWillAppear()
     self.vm.inputs.viewDidAppear()
     self.vm.inputs.selectedFilter(.defaults)

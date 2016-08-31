@@ -35,7 +35,8 @@ internal final class ProfileProjectCell: UICollectionViewCell, ValueCell {
     self.viewModel.outputs.progress
       .observeForUI()
       .observeNext { [weak element = progressBarView] progress in
-        element?.layer.anchorPoint = CGPoint(x: CGFloat(0.5 / progress), y: 0.5)
+        let anchorX = progress == 0 ? 0 : 0.5 / progress
+        element?.layer.anchorPoint = CGPoint(x: CGFloat(anchorX), y: 0.5)
         element?.transform = CGAffineTransformMakeScale(CGFloat(progress), 1.0)
     }
 

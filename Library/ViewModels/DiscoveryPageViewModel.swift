@@ -23,9 +23,6 @@ public protocol DiscoveryPageViewModelInputs {
   /// Call when the view disappears.
   func viewDidDisappear(animated animated: Bool)
 
-  /// Call when the view loads.
-  func viewDidLoad()
-
   /// Call when the view will appear.
   func viewWillAppear()
 
@@ -41,6 +38,10 @@ public protocol DiscoveryPageViewModelInputs {
 public protocol DiscoveryPageViewModelOutputs {
   /// Emits a list of activities to be displayed in the sample.
   var activitiesForSample: Signal<[Activity], NoError> { get }
+
+  /// Hack to emit when we should asynchronously reload the table view's data to properly display postcards.
+  /// Hopefully in the future we can remove this when we can resolve postcard display issues.
+  var asyncReloadData: Signal<Void, NoError> { get }
 
   /// Emits when we should focus on the first visible project
   var focusScreenReaderOnFirstProject: Signal<(), NoError> { get }
@@ -110,6 +111,8 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       )
       .skipWhile { $0.isEmpty }
       .skipRepeats(==)
+
+    self.asyncReloadData = self.projects.take(1).ignoreValues()
 
     let fetchActivityEvent = self.viewWillAppearProperty.signal
       .filter { _ in AppEnvironment.current.currentUser != nil }
@@ -220,10 +223,6 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
   public func viewDidDisappear(animated animated: Bool) {
     self.viewDidDisappearProperty.value = animated
   }
-  private let viewDidLoadProperty = MutableProperty()
-  public func viewDidLoad() {
-    self.viewDidLoadProperty.value = ()
-  }
   private let viewWillAppearProperty = MutableProperty()
   public func viewWillAppear() {
     self.viewWillAppearProperty.value = ()
@@ -234,6 +233,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
   }
 
   public let activitiesForSample: Signal<[Activity], NoError>
+  public var asyncReloadData: Signal<Void, NoError>
   public let focusScreenReaderOnFirstProject: Signal<(), NoError>
   public let goToProject: Signal<(Project, RefTag), NoError>
   public let goToProjectUpdate: Signal<(Project, Update), NoError>

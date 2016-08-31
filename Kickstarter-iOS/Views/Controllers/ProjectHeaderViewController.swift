@@ -259,7 +259,8 @@ internal final class ProjectHeaderViewController: UIViewController {
     self.viewModel.outputs.progressPercentage
       .observeForControllerAction()
       .observeNext { [weak self] progress in
-        self?.progressBarView.layer.anchorPoint = CGPoint(x: CGFloat(0.5 / progress), y: 0.5)
+        let anchorX = progress == 0 ? 0 : 0.5 / progress
+        self?.progressBarView.layer.anchorPoint = CGPoint(x: CGFloat(anchorX), y: 0.5)
         self?.progressBarView.transform = CGAffineTransformMakeScale(CGFloat(progress), 1.0)
     }
   }
