@@ -29,13 +29,20 @@ internal final class ActivitiesViewController: UITableViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    self |> baseTableControllerStyle(estimatedRowHeight: 300.0)
     self.tableView.dataSource = dataSource
   }
 
   internal override func viewWillAppear(animated: Bool) {
     super.viewWillAppear(animated)
     self.viewModel.inputs.viewWillAppear()
+  }
+
+  internal override func bindStyles() {
+    super.bindStyles()
+
+    self |> baseTableControllerStyle(estimatedRowHeight: 300.0)
+    self.navigationItem
+      |> UINavigationItem.lens.title %~ { _ in Strings.activity_navigation_title_activity() }
   }
 
   // swiftlint:disable function_body_length
