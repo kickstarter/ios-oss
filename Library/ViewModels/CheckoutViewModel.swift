@@ -24,6 +24,9 @@ public protocol CheckoutViewModelInputs {
   /// Call to set the project, reward, and why the user is checking out.
   func configureWith(project project: Project, reward: Reward?, intent: CheckoutIntent)
 
+  /// Call when the failure alert OK button is tapped.
+  func failureAlertButtonTapped()
+
   /// Call when the webview decides whether to load a request.
   func shouldStartLoad(withRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool
 
@@ -38,9 +41,6 @@ public protocol CheckoutViewModelOutputs {
   /// Emits when the login tout should be closed.
   var closeLoginTout: Signal<Void, NoError> { get }
 
-  /// Emits when the login tout should be opened.
-  var openLoginTout: Signal<Void, NoError> { get }
-
   /// Emits when we should open a safari browser with the URL.
   var goToSafariBrowser: Signal<NSURL, NoError> { get }
 
@@ -50,8 +50,14 @@ public protocol CheckoutViewModelOutputs {
   /// Emits when the web modal should be loaded.
   var goToWebModal: Signal<NSURLRequest, NoError> { get }
 
+  /// Emits when the login tout should be opened.
+  var openLoginTout: Signal<Void, NoError> { get }
+
   /// Emits when the view controller should be popped.
   var popViewController: Signal<Void, NoError> { get }
+
+  /// Emits when an alert should be shown indicating the pledge was not successful.
+  var showFailureAlert: Signal<String, NoError> { get }
 
   /// Emits a request that should be loaded into the webview.
   var webViewLoadRequest: Signal<NSURLRequest, NoError> { get }
@@ -63,9 +69,13 @@ public protocol CheckoutViewModelType: CheckoutViewModelInputs, CheckoutViewMode
 }
 
 public final class CheckoutViewModel: CheckoutViewModelType {
+
+  private let checkoutRacingViewModel: CheckoutRacingViewModelType = CheckoutRacingViewModel()
+
   // swiftlint:disable function_body_length
   public init() {
     let checkoutData = self.checkoutDataProperty.signal.ignoreNil()
+    let failureAlertButtonTapped = self.failureAlertButtonTappedProperty.signal
     let userSessionStarted = self.userSessionStartedProperty.signal
 
     let initialRequest = checkoutData
@@ -113,13 +123,25 @@ public final class CheckoutViewModel: CheckoutViewModelType {
       .takeWhen(userSessionStarted)
       .map { previous, _ in previous.request }
 
-    let thanksRequest = requestData
-      .filter { requestData in
-        if let navigation = requestData.navigation,
-          case .project(_, .checkout(_, .thanks), _) = navigation { return true }
-        return false
+    let thanksRequestOrRacingRequest = requestData
+      .map { requestData -> Either<NSURLRequest, NSURLRequest>? in
+        guard let navigation = requestData.navigation else { return nil }
+        if case .project(_, .checkout(_, .thanks(let racing)), _) = navigation {
+          guard let r = racing else { return Either.left(requestData.request) }
+          return r ? Either.right(requestData.request) : Either.left(requestData.request)
+        }
+        return nil
       }
+      .ignoreNil()
+
+    let thanksRequest = thanksRequestOrRacingRequest
+      .map { $0.left }
+      .ignoreNil()
       .ignoreValues()
+
+    let racingRequest = thanksRequestOrRacingRequest
+      .map { $0.right }
+      .ignoreNil()
 
     self.closeLoginTout = userSessionStarted
 
@@ -127,9 +149,14 @@ public final class CheckoutViewModel: CheckoutViewModelType {
       .map { $0.right?.URL }
       .ignoreNil()
 
+    let thanksRequestOrRacingSuccessful = Signal.merge(
+      thanksRequest,
+      self.checkoutRacingViewModel.outputs.goToThanks
+    )
+
     self.goToThanks = checkoutData
       .map { $0.project }
-      .takeWhen(thanksRequest)
+      .takeWhen(thanksRequestOrRacingSuccessful)
 
     self.goToWebModal = modalRequestOrSafariRequest
       .map { $0.left }
@@ -144,7 +171,7 @@ public final class CheckoutViewModel: CheckoutViewModelType {
       self.cancelButtonTappedProperty.signal
       )
 
-    self.popViewController = checkoutCancelled
+    self.popViewController = Signal.merge(checkoutCancelled, failureAlertButtonTapped)
 
     self.shouldStartLoadResponseProperty <~ requestData
       .map { $0.shouldStartLoad }
@@ -155,6 +182,12 @@ public final class CheckoutViewModel: CheckoutViewModelType {
       webViewRequest
       )
       .map { AppEnvironment.current.apiService.preparedRequest(forRequest: $0) }
+
+    racingRequest
+      .observeNext { [weak self] request in
+        guard let url = request.URL?.URLByDeletingLastPathComponent else { return }
+        self?.checkoutRacingViewModel.inputs.configureWith(url: url)
+    }
 
     checkoutCancelled.observeNext { AppEnvironment.current.koala.trackCheckoutCancel() }
   }
@@ -167,6 +200,9 @@ public final class CheckoutViewModel: CheckoutViewModelType {
   public func configureWith(project project: Project, reward: Reward?, intent: CheckoutIntent) {
     self.checkoutDataProperty.value = CheckoutData(intent: intent, project: project, reward: reward)
   }
+
+  private let failureAlertButtonTappedProperty = MutableProperty()
+  public func failureAlertButtonTapped() { self.failureAlertButtonTappedProperty.value = () }
 
   private let shouldStartLoadProperty = MutableProperty<(NSURLRequest, UIWebViewNavigationType)?>(nil)
   private let shouldStartLoadResponseProperty = MutableProperty(false)
@@ -188,6 +224,9 @@ public final class CheckoutViewModel: CheckoutViewModelType {
   public let goToThanks: Signal<Project, NoError>
   public let goToWebModal: Signal<NSURLRequest, NoError>
   public let popViewController: Signal<Void, NoError>
+  public var showFailureAlert: Signal<String, NoError> {
+    return self.checkoutRacingViewModel.outputs.showFailureAlert
+  }
   public let webViewLoadRequest: Signal<NSURLRequest, NoError>
 
   public var inputs: CheckoutViewModelInputs { return self }

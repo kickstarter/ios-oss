@@ -36,8 +36,11 @@ public final class NavigationTests: XCTestCase {
     KSRAssertMatch(.project(.slug("project"), .root, refTag: nil),
                    "/projects/creator/project")
 
-    KSRAssertMatch(.project(.slug("project"), .checkout(1, .thanks), refTag: nil),
+    KSRAssertMatch(.project(.slug("project"), .checkout(1, .thanks(racing: nil)), refTag: nil),
                    "/projects/creator/project/checkouts/1/thanks")
+
+    KSRAssertMatch(.project(.slug("project"), .checkout(1, .thanks(racing: true)), refTag: nil),
+                   "/projects/creator/project/checkouts/1/thanks?racing=1")
 
     KSRAssertMatch(.project(.slug("project"), .root, refTag: .discovery),
                    "/projects/creator/project?ref_tag=discovery")

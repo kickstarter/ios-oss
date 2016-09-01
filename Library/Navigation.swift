@@ -42,7 +42,7 @@ public enum Navigation {
     case survey(Int)
 
     public enum Checkout {
-      case thanks
+      case thanks(racing: Bool?)
     }
 
     public enum Pledge {
@@ -128,8 +128,8 @@ public func == (lhs: Navigation.Project, rhs: Navigation.Project) -> Bool {
 extension Navigation.Project.Checkout: Equatable {}
 public func == (lhs: Navigation.Project.Checkout, rhs: Navigation.Project.Checkout) -> Bool {
   switch (lhs, rhs) {
-  case (.thanks, .thanks):
-    return true
+  case let (.thanks(lhsRacing), .thanks(rhsRacing)):
+    return lhsRacing == rhsRacing
   }
 }
 
@@ -313,11 +313,14 @@ private func project(params: RouteParams) -> Decoded<Navigation> {
 }
 
 private func thanks(params: RouteParams) -> Decoded<Navigation> {
+  let thanks = curry(Navigation.Project.Checkout.thanks)
+    <^> (params <|? "racing" >>- oneToBool)
+
   return curry(Navigation.project)
     <^> params <| "project_param"
     <*> (curry(Navigation.Project.checkout)
       <^> (params <| "checkout_param" >>- stringToInt)
-      <*> .Success(.thanks))
+      <*> thanks)
     <*> params <|? "ref_tag"
 }
 
@@ -475,6 +478,10 @@ private func parsedParams(url url: NSURL, fromTemplate template: String) -> Rout
   }
 
   return .Object(object)
+}
+
+private func oneToBool(string: String?) -> Decoded<Bool?> {
+  return string.flatMap { Int($0) }.map { $0 == 1 }.map(Decoded.Success) ?? .Success(nil)
 }
 
 private func stringToInt(string: String) -> Decoded<Int> {

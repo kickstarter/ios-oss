@@ -56,6 +56,10 @@ internal final class CheckoutViewController: DeprecatedWebViewController {
       .observeForControllerAction()
       .observeNext { [weak self] _ in self?.popViewController() }
 
+    self.viewModel.outputs.showFailureAlert
+      .observeForControllerAction()
+      .observeNext { [weak self] message in self?.showFailureAlert(message: message) }
+
     self.viewModel.outputs.webViewLoadRequest
       .observeForControllerAction()
       .observeNext { [weak self] request in
@@ -112,5 +116,18 @@ internal final class CheckoutViewController: DeprecatedWebViewController {
 
   private func popViewController() {
     self.navigationController?.popToRootViewControllerAnimated(true)
+  }
+
+  private func showFailureAlert(message message: String) {
+    self.presentViewController(
+      UIAlertController.alert(
+        message: message,
+        handler: { [weak self] _ in
+          self?.viewModel.inputs.failureAlertButtonTapped()
+        }
+      ),
+      animated: true,
+      completion: nil
+    )
   }
 }
