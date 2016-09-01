@@ -478,7 +478,7 @@
                             <constraint firstItem="H2g-DT-JXM" firstAttribute="top" secondItem="189-Qu-20l" secondAttribute="top" id="Xq0-ie-rTE"/>
                             <constraint firstItem="AvP-Jg-11Z" firstAttribute="top" secondItem="Z2S-j5-umj" secondAttribute="bottom" id="YP3-fh-T5U"/>
                             <constraint firstItem="AvP-Jg-11Z" firstAttribute="centerX" secondItem="189-Qu-20l" secondAttribute="centerX" id="dF0-3N-f3X"/>
-                            <constraint firstItem="Uqu-6W-LIK" firstAttribute="top" secondItem="H2g-DT-JXM" secondAttribute="bottom" constant="-1" id="g0v-HA-ErW"/>
+                            <constraint firstItem="Uqu-6W-LIK" firstAttribute="top" secondItem="H2g-DT-JXM" secondAttribute="bottom" id="g0v-HA-ErW"/>
                             <constraint firstItem="H2g-DT-JXM" firstAttribute="leading" secondItem="189-Qu-20l" secondAttribute="leading" id="np9-Pa-vI9"/>
                             <constraint firstItem="9CN-EK-zBj" firstAttribute="trailing" secondItem="AvP-Jg-11Z" secondAttribute="trailing" id="ogl-6o-HhW"/>
                             <constraint firstAttribute="trailing" secondItem="Uqu-6W-LIK" secondAttribute="trailing" id="tUN-qu-H4u"/>
@@ -487,6 +487,7 @@
                     </view>
                     <connections>
                         <outlet property="arrowImageView" destination="0Gr-Vv-egm" id="kxl-cB-kRF"/>
+                        <outlet property="borderLineHeightConstraint" destination="JXf-q8-Fkc" id="PFD-oJ-ky2"/>
                         <outlet property="borderLineView" destination="Uqu-6W-LIK" id="vqp-Ea-69S"/>
                         <outlet property="dividerLabel" destination="RHL-NK-fXr" id="dQn-Xj-o1t"/>
                         <outlet property="gradientBackgroundView" destination="H2g-DT-JXM" id="eqS-Qx-RXI"/>

@@ -14,6 +14,7 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
 
   @IBOutlet private weak var arrowImageView: UIImageView!
   @IBOutlet private weak var borderLineView: UIView!
+  @IBOutlet private weak var borderLineHeightConstraint: NSLayoutConstraint!
   @IBOutlet private weak var dividerLabel: UILabel!
   @IBOutlet private weak var gradientBackgroundView: GradientView!
   @IBOutlet private weak var primaryLabel: UILabel!
@@ -96,6 +97,8 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
 
     self.borderLineView
       |> discoveryBorderLineStyle
+
+    self.borderLineHeightConstraint.constant = 1.0 / UIScreen.mainScreen().scale
 
     self.dividerLabel
       |> discoveryNavDividerLabelStyle

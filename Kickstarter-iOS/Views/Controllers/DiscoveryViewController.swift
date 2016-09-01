@@ -37,12 +37,14 @@ internal final class DiscoveryViewController: UIViewController {
     super.viewWillAppear(animated)
 
     self.viewModel.inputs.viewWillAppear(animated: animated)
+
+    self.navigationController?.setNavigationBarHidden(true, animated: animated)
   }
 
-  override func bindStyles() {
-    super.bindStyles()
+  override func viewWillDisappear(animated: Bool) {
+    super.viewWillDisappear(animated)
 
-    self.navigationController ?|> UINavigationController.lens.navigationBarHidden .~ true
+    self.navigationController?.setNavigationBarHidden(false, animated: animated)
   }
 
   override func bindViewModel() {
