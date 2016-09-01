@@ -26,7 +26,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
   @IBOutlet private weak var metadataIconImageView: UIImageView!
   @IBOutlet private weak var projectImageView: UIImageView!
   @IBOutlet private weak var projectInfoStackView: UIStackView!
-  @IBOutlet private weak var projectNameAndBlurbLabel: SimpleHTMLLabel!
+  @IBOutlet private weak var projectNameAndBlurbLabel: UILabel!
   @IBOutlet private weak var projectStateIconImageView: UIImageView!
   @IBOutlet private weak var projectStateSubtitleLabel: UILabel!
   @IBOutlet private weak var projectStateTitleLabel: UILabel!
@@ -99,7 +99,8 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
       |> UIStackView.lens.spacing .~ Styles.grid(4)
 
     self.projectNameAndBlurbLabel
-      |> postcardNameAndBlurbStyle
+      |> UILabel.lens.numberOfLines .~ 3
+      |> UILabel.lens.lineBreakMode .~ .ByTruncatingTail
 
     self.projectStateIconImageView
       |> UIImageView.lens.tintColor .~ .ksr_green_700
@@ -115,6 +116,9 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
 
     self.projectStatsStackView
       |> UIStackView.lens.spacing .~ Styles.grid(3)
+
+    self.socialAvatarImageView
+      |> UIImageView.lens.layer.shouldRasterize .~ true
 
     self.socialLabel
       |> UILabel.lens.numberOfLines .~ 2
@@ -141,7 +145,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
     self.deadlineTitleLabel.rac.text = self.viewModel.outputs.deadlineTitleLabelText
     self.fundingTitleLabel.rac.text = self.viewModel.outputs.percentFundedTitleLabelText
     self.metadataView.rac.hidden = self.viewModel.outputs.metadataViewHidden
-    self.projectNameAndBlurbLabel.rac.html = self.viewModel.outputs.projectNameAndBlurbLabelText
+    self.projectNameAndBlurbLabel.rac.attributedText = self.viewModel.outputs.projectNameAndBlurbLabelText
     self.projectStateIconImageView.rac.hidden = self.viewModel.outputs.projectStateIconHidden
     self.projectStateSubtitleLabel.rac.text = self.viewModel.outputs.projectStateSubtitleLabelText
     self.projectStateTitleLabel.rac.textColor = self.viewModel.outputs.projectStateTitleLabelColor
@@ -194,5 +198,15 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
 
   internal func configureWith(value value: Project) {
     self.viewModel.inputs.configureWith(project: value)
+  }
+
+  internal override func layoutSubviews() {
+    super.layoutSubviews()
+
+    dispatch_async(dispatch_get_main_queue()) {
+      self.cardView.layer.shadowPath = UIBezierPath.init(rect: self.cardView.bounds).CGPath
+      self.metadataBackgroundView.layer.shadowPath =
+        UIBezierPath.init(rect: self.metadataBackgroundView.bounds).CGPath
+    }
   }
 }

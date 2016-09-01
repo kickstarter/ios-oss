@@ -164,14 +164,6 @@ public let postcardMetadataStackViewStyle =
     <> UIStackView.lens.layoutMargins .~ .init(topBottom: Styles.grid(1), leftRight: 8.0)
     <> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
 
-public let postcardNameAndBlurbStyle =
-  SimpleHTMLLabel.lens.baseFont .~ .ksr_title3(size: 18.0)
-    <> SimpleHTMLLabel.lens.baseColor .~ .ksr_text_navy_600
-    <> SimpleHTMLLabel.lens.boldFont .~ .ksr_title3(size: 18.0)
-    <> SimpleHTMLLabel.lens.boldColor .~ .ksr_text_navy_700
-    <> SimpleHTMLLabel.lens.numberOfLines .~ 3
-    <> SimpleHTMLLabel.lens.lineBreakMode .~ .ByTruncatingTail
-
 public let postcardSocialStackViewStyle =
   UIStackView.lens.alignment .~ .Center
     <> UIStackView.lens.spacing .~ Styles.grid(1)

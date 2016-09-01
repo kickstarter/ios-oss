@@ -79,7 +79,7 @@ public protocol DiscoveryPostcardViewModelOutputs {
   var projectImageURL: Signal<NSURL?, NoError> { get }
 
   /// Emits the text to be put into the project name and blurb label.
-  var projectNameAndBlurbLabelText: Signal<String, NoError> { get }
+  var projectNameAndBlurbLabelText: Signal<NSAttributedString, NoError> { get }
 
   /// Emits a boolean that determines if the project state icon should be hidden.
   var projectStateIconHidden: Signal<Bool, NoError> { get }
@@ -121,11 +121,13 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
   public init() {
     let project = self.projectProperty.signal.ignoreNil()
 
-    self.backersTitleLabelText = project.map { Format.wholeNumber($0.stats.backersCount) }
+    self.backersTitleLabelText = project
+      .filter { $0.state == .live }
+      .map { Format.wholeNumber($0.stats.backersCount) }
 
-    let deadlineTitleAndSubtitle = project.map {
-      return Format.duration(secondsInUTC: $0.dates.deadline, useToGo: true) ?? ("", "")
-    }
+    let deadlineTitleAndSubtitle = project
+      .filter { $0.state == .live }
+      .map { Format.duration(secondsInUTC: $0.dates.deadline, useToGo: true) ?? ("", "") }
 
     self.deadlineTitleLabelText = deadlineTitleAndSubtitle.map(first)
     self.deadlineSubtitleLabelText = deadlineTitleAndSubtitle.map(second)
@@ -142,9 +144,9 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
 
     self.metadataData = project.map(postcardMetadata(forProject:)).ignoreNil()
 
-    self.percentFundedTitleLabelText = project.map {
-      Format.percentage($0.stats.percentFunded)
-    }
+    self.percentFundedTitleLabelText = project
+      .filter { $0.state == .live }
+      .map { Format.percentage($0.stats.percentFunded) }
 
     self.progressPercentage = project
       .map(Project.lens.stats.fundingProgress.view)
@@ -153,9 +155,7 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
     self.projectImageURL = project.map { $0.photo.full }.map(NSURL.init(string:))
 
     self.projectNameAndBlurbLabelText = project
-      .map {
-        "<b>\($0.name.stringByTrimmingCharactersInSet(periodCharacterSet)).</b> \($0.blurb)"
-    }
+      .map(nameBlurbAttributedString(forProject:))
 
     self.projectStateIconHidden = project
       .filter { $0.state != .live }
@@ -214,7 +214,7 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
   public let percentFundedTitleLabelText: Signal<String, NoError>
   public let progressPercentage: Signal<Float, NoError>
   public let projectImageURL: Signal<NSURL?, NoError>
-  public let projectNameAndBlurbLabelText: Signal<String, NoError>
+  public let projectNameAndBlurbLabelText: Signal<NSAttributedString, NoError>
   public var projectStateIconHidden: Signal<Bool, NoError>
   public let projectStateStackViewHidden: Signal<Bool, NoError>
   public let projectStatsStackViewHidden: Signal<Bool, NoError>
@@ -245,21 +245,6 @@ private func socialText(forFriends friends: [User]) -> String? {
   }
 }
 
-// Returns the disparate metadata data for a project based on metadata precedence.
-private func postcardMetadata(forProject project: Project) -> PostcardMetadataData? {
-  if project.personalization.isBacking == true {
-    return PostcardMetadataType.backing.data(forProject: project)
-  } else if project.personalization.isStarred == true {
-    return PostcardMetadataType.starred.data(forProject: project)
-  } else if project.isPotdToday() {
-    return PostcardMetadataType.potd.data(forProject: project)
-  } else if project.isFeaturedToday() {
-    return PostcardMetadataType.featured.data(forProject: project)
-  } else {
-    return nil
-  }
-}
-
 private func fundingStatusText(forProject project: Project) -> String {
   switch project.state {
   case .canceled:
@@ -272,5 +257,42 @@ private func fundingStatusText(forProject project: Project) -> String {
     return Strings.dashboard_creator_project_funding_suspended()
   case .live, .purged, .started, .submitted:
     return ""
+  }
+}
+
+private func nameBlurbAttributedString(forProject project: Project) -> NSAttributedString {
+  let baseNameAttributedString = NSMutableAttributedString(
+    string: "\(project.name.stringByTrimmingCharactersInSet(periodCharacterSet)). ",
+    attributes: [
+      NSFontAttributeName: UIFont.ksr_title3(size: 18.0),
+      NSForegroundColorAttributeName: UIColor.ksr_text_navy_700
+    ]
+  )
+
+  let blurbAttributedString = NSAttributedString(
+    string: project.blurb,
+    attributes: [
+      NSFontAttributeName: UIFont.ksr_title3(size: 18.0),
+      NSForegroundColorAttributeName: UIColor.ksr_text_navy_600
+    ]
+  )
+
+  baseNameAttributedString.appendAttributedString(blurbAttributedString)
+
+  return baseNameAttributedString
+}
+
+// Returns the disparate metadata data for a project based on metadata precedence.
+private func postcardMetadata(forProject project: Project) -> PostcardMetadataData? {
+  if project.personalization.isBacking == true {
+    return PostcardMetadataType.backing.data(forProject: project)
+  } else if project.personalization.isStarred == true {
+    return PostcardMetadataType.starred.data(forProject: project)
+  } else if project.isPotdToday() {
+    return PostcardMetadataType.potd.data(forProject: project)
+  } else if project.isFeaturedToday() {
+    return PostcardMetadataType.featured.data(forProject: project)
+  } else {
+    return nil
   }
 }

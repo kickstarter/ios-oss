@@ -40,7 +40,8 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.vm.outputs.percentFundedTitleLabelText.observe(self.percentFundedTitleLabelText.observer)
     self.vm.outputs.progressPercentage.observe(self.progressPercentage.observer)
     self.vm.outputs.projectImageURL.map { $0?.absoluteString }.observe(self.projectImageURL.observer)
-    self.vm.outputs.projectNameAndBlurbLabelText.observe(self.projectNameAndBlurbLabelText.observer)
+    self.vm.outputs.projectNameAndBlurbLabelText
+      .map { $0.string }.observe(self.projectNameAndBlurbLabelText.observer)
     self.vm.outputs.projectStateIconHidden.observe(self.projectStateIconHidden.observer)
     self.vm.outputs.projectStateStackViewHidden.observe(self.projectStateStackViewHidden.observer)
     self.vm.outputs.projectStateSubtitleLabelText.observe(self.projectStateSubtitleLabelText.observer)
@@ -162,7 +163,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.progressPercentage.assertValues([project.stats.fundingProgress])
     self.projectImageURL.assertValues([project.photo.full])
     self.projectNameAndBlurbLabelText.assertValues(
-      ["<b>\(project.name).</b> \(project.blurb)"]
+      ["\(project.name). \(project.blurb)"]
     )
   }
 
