@@ -118,7 +118,7 @@ private func externalStartPercentage(videoStats stats: ProjectStatsEnvelope.Vide
 // Percent ratio of internal starts to total starts measured from `0.0` to `1.0`.
 private func internalStartPercentage(videoStats stats: ProjectStatsEnvelope.VideoStats) -> CGFloat {
   let total = totalStarts(videoStats: stats)
-  return CGFloat(stats.internalStarts) / CGFloat(total)
+  return ceil(100.0 * CGFloat(stats.internalStarts) / CGFloat(total)) / 100.0
 }
 
 private func totalCompletions(videoStats stats: ProjectStatsEnvelope.VideoStats) -> Int {
