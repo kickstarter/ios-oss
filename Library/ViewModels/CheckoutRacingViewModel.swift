@@ -49,12 +49,12 @@ public final class CheckoutRacingViewModel: CheckoutRacingViewModelType {
             }
           }
           .retry(9)
+          .timeoutWithError(
+            CheckoutRetryError(),
+            afterInterval: 10,
+            onScheduler: AppEnvironment.current.scheduler
+          )
       }
-      .timeoutWithError(
-        CheckoutRetryError(),
-        afterInterval: 10,
-        onScheduler: AppEnvironment.current.scheduler
-      )
       .materialize()
 
     self.goToThanks = envelope
