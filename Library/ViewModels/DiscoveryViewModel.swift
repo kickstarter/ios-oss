@@ -6,7 +6,7 @@ import ReactiveExtensions
 import Result
 
 public protocol DiscoveryViewModelInputs {
-  /// Call when params have been selected from the filters menu.
+  /// Call when params have been selected.
   func filter(withParams params: DiscoveryParams)
 
   /// Call when the UIPageViewController finishes transitioning.
@@ -70,7 +70,8 @@ DiscoveryViewModelOutputs {
       .take(1)
       .flatMap { [filterWithParams = filterWithParamsProperty.producer.ignoreNil()] _ in
         filterWithParams.prefix(value: DiscoveryViewModel.defaultParams)
-    }
+      }
+      .skipRepeats()
 
     self.configureNavigationHeader = currentParams
     self.loadFilterIntoDataSource = currentParams
