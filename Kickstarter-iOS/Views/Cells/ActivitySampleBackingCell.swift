@@ -12,9 +12,12 @@ internal final class ActivitySampleBackingCell: UITableViewCell, ValueCell {
   private let viewModel: ActivitySampleBackingCellViewModelType = ActivitySampleBackingCellViewModel()
   internal weak var delegate: ActivitySampleBackingCellDelegate?
 
+  @IBOutlet private weak var activityStackView: UIStackView!
   @IBOutlet private weak var activityTitleLabel: UILabel!
+  @IBOutlet private weak var backerImageAndInfoStackView: UIStackView!
   @IBOutlet private weak var backerImageView: CircleAvatarImageView!
   @IBOutlet private weak var backingTitleLabel: UILabel!
+  @IBOutlet private weak var cardView: UIView!
   @IBOutlet private weak var seeAllActivityButton: UIButton!
 
   internal override func awakeFromNib() {
@@ -29,9 +32,33 @@ internal final class ActivitySampleBackingCell: UITableViewCell, ValueCell {
 
   internal override func bindStyles() {
     super.bindStyles()
-    self.activityTitleLabel |> activitySampleTitleLabelStyle
-    self.backingTitleLabel |> activitySampleBackingTitleLabelStyle
-    self.seeAllActivityButton |> activitySampleSeeAllActivityButtonStyle
+
+    self
+      |> baseTableViewCellStyle()
+      |> ActivitySampleBackingCell.lens.contentView.layoutMargins
+      .~ .init(top: Styles.grid(4), left: Styles.grid(2), bottom: Styles.grid(3), right: Styles.grid(2))
+      |> UITableViewCell.lens.backgroundColor .~ .clearColor()
+      |> UITableViewCell.lens.accessibilityHint %~ { _ in
+        Strings.dashboard_tout_accessibility_hint_opens_project()
+    }
+
+    self.activityStackView
+      |> activitySampleStackViewStyle
+
+    self.activityTitleLabel
+      |> activitySampleTitleLabelStyle
+
+    self.backerImageAndInfoStackView
+      |> UIStackView.lens.spacing .~ Styles.grid(2)
+
+    self.backingTitleLabel
+      |> activitySampleBackingTitleLabelStyle
+
+    self.cardView
+      |> dropShadowStyle()
+
+    self.seeAllActivityButton
+      |> activitySampleSeeAllActivityButtonStyle
   }
 
   internal override func bindViewModel() {

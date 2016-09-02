@@ -73,6 +73,7 @@ AppEnvironment.replaceCurrentEnvironment(
     ],
     fetchActivitiesResponse: [projectUpdate, follow, backing]
   ),
+  currentUser: User.template,
   language: .en,
   locale: NSLocale(localeIdentifier: "en"),
   mainBundle: NSBundle.framework

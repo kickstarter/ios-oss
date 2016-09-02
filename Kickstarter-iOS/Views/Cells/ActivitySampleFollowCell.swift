@@ -12,8 +12,11 @@ internal final class ActivitySampleFollowCell: UITableViewCell, ValueCell {
   private let viewModel: ActivitySampleFollowCellViewModelType = ActivitySampleFollowCellViewModel()
   internal weak var delegate: ActivitySampleFollowCellDelegate?
 
+  @IBOutlet private weak var activityStackView: UIStackView!
   @IBOutlet private weak var activityTitleLabel: UILabel!
+  @IBOutlet private weak var cardView: UIView!
   @IBOutlet private weak var friendFollowLabel: UILabel!
+  @IBOutlet private weak var friendImageAndFollowStackView: UIStackView!
   @IBOutlet private weak var friendImageView: CircleAvatarImageView!
   @IBOutlet private weak var seeAllActivityButton: UIButton!
 
@@ -29,9 +32,30 @@ internal final class ActivitySampleFollowCell: UITableViewCell, ValueCell {
 
   internal override func bindStyles() {
     super.bindStyles()
-    self.activityTitleLabel |> activitySampleTitleLabelStyle
-    self.friendFollowLabel |> activitySampleFriendFollowLabelStyle
-    self.seeAllActivityButton |> activitySampleSeeAllActivityButtonStyle
+
+    self
+      |> baseTableViewCellStyle()
+      |> ActivitySampleFollowCell.lens.contentView.layoutMargins
+      .~ .init(top: Styles.grid(4), left: Styles.grid(2), bottom: Styles.grid(3), right: Styles.grid(2))
+      |> UITableViewCell.lens.backgroundColor .~ .clearColor()
+
+    self.activityStackView
+      |> activitySampleStackViewStyle
+
+    self.activityTitleLabel
+      |> activitySampleTitleLabelStyle
+
+    self.cardView
+      |> dropShadowStyle()
+
+    self.friendFollowLabel
+      |> activitySampleFriendFollowLabelStyle
+
+    self.friendImageAndFollowStackView
+      |> UIStackView.lens.spacing .~ Styles.grid(2)
+
+    self.seeAllActivityButton
+      |> activitySampleSeeAllActivityButtonStyle
   }
 
   internal override func bindViewModel() {
