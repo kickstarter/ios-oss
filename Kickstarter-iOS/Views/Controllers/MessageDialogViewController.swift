@@ -34,7 +34,7 @@ internal final class MessageDialogViewController: UIViewController {
   internal override func bindViewModel() {
     self.nameLabel.rac.text = self.viewModel.outputs.recipientName
     self.postButton.rac.enabled = self.viewModel.outputs.postButtonEnabled
-    self.loadingView.rac.hidden =  self.viewModel.outputs.loadingViewIsHidden
+    self.loadingView.rac.hidden = self.viewModel.outputs.loadingViewIsHidden
     self.bodyTextView.rac.isFirstResponder = self.viewModel.outputs.keyboardIsVisible
 
     self.bottomConstraint.rac.constant = Keyboard.change

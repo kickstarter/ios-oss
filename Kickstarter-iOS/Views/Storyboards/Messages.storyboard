@@ -209,12 +209,9 @@
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="v" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TKE-4k-JnY" userLabel="Icon">
-                                            <rect key="frame" x="46" y="0.0" width="9" height="33"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="arrow-down" translatesAutoresizingMaskIntoConstraints="NO" id="EW3-b0-MFq">
+                                            <rect key="frame" x="46" y="14" width="11" height="6"/>
+                                        </imageView>
                                     </subviews>
                                 </stackView>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4DR-RI-47z" userLabel="Button overlay">
@@ -736,12 +733,12 @@
                         <constraints>
                             <constraint firstItem="Lyc-i3-lJV" firstAttribute="top" secondItem="vtp-r8-Uzf" secondAttribute="top" id="3ai-2O-pNA"/>
                             <constraint firstItem="Lyc-i3-lJV" firstAttribute="trailing" secondItem="vtp-r8-Uzf" secondAttribute="trailing" id="3tZ-oM-v9k"/>
-                            <constraint firstAttribute="leadingMargin" secondItem="vtp-r8-Uzf" secondAttribute="leading" id="Im8-OH-6Wu"/>
                             <constraint firstItem="Lyc-i3-lJV" firstAttribute="bottom" secondItem="vtp-r8-Uzf" secondAttribute="bottom" id="JqW-Tk-gb8"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="vtp-r8-Uzf" secondAttribute="trailing" id="OJc-h6-GAJ"/>
-                            <constraint firstItem="vtp-r8-Uzf" firstAttribute="top" secondItem="8Fd-CO-jPw" secondAttribute="bottom" constant="8" id="RKq-2L-7YP"/>
-                            <constraint firstItem="mgQ-Tg-TJO" firstAttribute="top" secondItem="vtp-r8-Uzf" secondAttribute="bottom" constant="20" id="Ujh-9B-1Aw"/>
+                            <constraint firstItem="vtp-r8-Uzf" firstAttribute="top" secondItem="sep-Kz-bhW" secondAttribute="top" id="Qa1-8h-1Gt"/>
+                            <constraint firstItem="vtp-r8-Uzf" firstAttribute="leading" secondItem="sep-Kz-bhW" secondAttribute="leadingMargin" id="bYY-Ql-7oq"/>
+                            <constraint firstItem="mgQ-Tg-TJO" firstAttribute="top" secondItem="vtp-r8-Uzf" secondAttribute="bottom" id="boJ-cf-Xi5"/>
                             <constraint firstItem="Lyc-i3-lJV" firstAttribute="leading" secondItem="vtp-r8-Uzf" secondAttribute="leading" id="oBp-G8-4Uy"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="vtp-r8-Uzf" secondAttribute="trailing" id="yxX-6G-la1"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Py1-Ke-h2x">
@@ -798,7 +795,7 @@
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
                         <outlet property="bodyTextView" destination="vtp-r8-Uzf" id="Td2-ei-nNr"/>
-                        <outlet property="bottomConstraint" destination="Ujh-9B-1Aw" id="hDh-0T-4mW"/>
+                        <outlet property="bottomConstraint" destination="boJ-cf-Xi5" id="3a8-ro-1rH"/>
                         <outlet property="loadingView" destination="Lyc-i3-lJV" id="Q1P-Sw-nvn"/>
                         <outlet property="nameLabel" destination="mxd-lZ-Kbx" id="1vA-5n-SZw"/>
                         <outlet property="postButton" destination="9ac-Ox-Glu" id="PXV-cT-NC8"/>
@@ -810,6 +807,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="arrow-down" width="11" height="6"/>
         <image name="cosmic-surgery" width="800" height="600"/>
         <image name="zack-sears" width="160" height="160"/>
     </resources>

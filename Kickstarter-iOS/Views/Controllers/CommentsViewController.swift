@@ -23,16 +23,22 @@ internal final class CommentsViewController: UITableViewController {
 
   internal override func viewDidLoad() {
     super.viewDidLoad()
-    self.viewModel.inputs.viewDidLoad()
 
-    self.tableView.estimatedRowHeight = 200.0
-    self.tableView.rowHeight = UITableViewAutomaticDimension
     self.tableView.dataSource = self.dataSource
 
     NSNotificationCenter.defaultCenter()
       .addObserverForName(CurrentUserNotifications.sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()
     }
+
+    self.viewModel.inputs.viewDidLoad()
+  }
+
+  internal override func bindStyles() {
+    self.tableView
+      |> UITableView.lens.allowsSelection .~ false
+      |> UITableView.lens.estimatedRowHeight .~ 200.0
+      |> UITableView.lens.rowHeight .~ UITableViewAutomaticDimension
   }
 
   // swiftlint:disable function_body_length
