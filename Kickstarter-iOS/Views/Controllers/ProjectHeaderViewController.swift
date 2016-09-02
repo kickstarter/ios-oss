@@ -109,7 +109,7 @@ internal final class ProjectHeaderViewController: UIViewController {
       ||> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
 
     [self.pledgedTitleLabel, self.backersTitleLabel, self.deadlineTitleLabel]
-      ||> projectStatTitleStlye
+      ||> projectStatTitleStyle
 
     [self.pledgeSubtitleLabel, self.backersSubtitleLabel, self.deadlineSubtitleLabel]
       ||> projectStatSubtitleStyle
@@ -226,7 +226,7 @@ internal final class ProjectHeaderViewController: UIViewController {
     self.deadlineTitleLabel.rac.text = self.viewModel.outputs.deadlineTitleLabelText
     self.pledgedTitleLabel.rac.text = self.viewModel.outputs.pledgedTitleLabelText
     self.pledgeSubtitleLabel.rac.text = self.viewModel.outputs.pledgedSubtitleLabelText
-    self.projectNameAndBlurbLabel.rac.html = self.viewModel.outputs.projectNameAndBlurbLabelText
+    self.projectNameAndBlurbLabel.rac.attributedText = self.viewModel.outputs.projectNameAndBlurbLabelText
     self.projectStateLabel.rac.hidden = self.viewModel.outputs.projectStateLabelHidden
     self.projectStateLabel.rac.text = self.viewModel.outputs.projectStateLabelText
     self.rewardsButton.rac.accessibilityLabel = self.viewModel.outputs.rewardsButtonAccessibilityLabel

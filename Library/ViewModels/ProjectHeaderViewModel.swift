@@ -91,7 +91,7 @@ public protocol ProjectHeaderViewModelOutputs {
   var projectImageUrl: Signal<NSURL?, NoError> { get }
 
   /// Emits the text to be put into the project name and blurb label.
-  var projectNameAndBlurbLabelText: Signal<String, NoError> { get }
+  var projectNameAndBlurbLabelText: Signal<NSAttributedString, NoError> { get }
 
   /// Emits a boolean that determines if the project state label should be hidden.
   var projectStateLabelHidden: Signal<Bool, NoError> { get }
@@ -138,9 +138,7 @@ ProjectHeaderViewModelOutputs {
 
     self.projectNameAndBlurbLabelText = project
       .skipRepeats { $0.name == $1.name && $0.blurb == $1.blurb }
-      .map {
-        "<b>\($0.name.stringByTrimmingCharactersInSet(.init(charactersInString: "."))).</b> \($0.blurb)"
-    }
+      .map(projectAttributedNameAndBlurb)
 
     self.projectStateLabelHidden = project.map { $0.state == .live }
 
@@ -350,7 +348,7 @@ ProjectHeaderViewModelOutputs {
   public let pledgedTitleLabelText: Signal<String, NoError>
   public let progressPercentage: Signal<Float, NoError>
   public let projectImageUrl: Signal<NSURL?, NoError>
-  public let projectNameAndBlurbLabelText: Signal<String, NoError>
+  public let projectNameAndBlurbLabelText: Signal<NSAttributedString, NoError>
   public let projectStateLabelHidden: Signal<Bool, NoError>
   public let projectStateLabelText: Signal<String, NoError>
   public let rewardsButtonAccessibilityLabel: Signal<String, NoError>

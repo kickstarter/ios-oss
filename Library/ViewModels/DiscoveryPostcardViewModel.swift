@@ -3,8 +3,6 @@ import Prelude
 import ReactiveCocoa
 import Result
 
-private let periodCharacterSet = NSCharacterSet(charactersInString: ".")
-
 public struct PostcardMetadataData {
   public let iconImage: UIImage?
   public let labelText: String
@@ -155,7 +153,7 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
     self.projectImageURL = project.map { $0.photo.full }.map(NSURL.init(string:))
 
     self.projectNameAndBlurbLabelText = project
-      .map(nameBlurbAttributedString(forProject:))
+      .map(projectAttributedNameAndBlurb)
 
     self.projectStateIconHidden = project
       .filter { $0.state != .live }
@@ -258,28 +256,6 @@ private func fundingStatusText(forProject project: Project) -> String {
   case .live, .purged, .started, .submitted:
     return ""
   }
-}
-
-private func nameBlurbAttributedString(forProject project: Project) -> NSAttributedString {
-  let baseNameAttributedString = NSMutableAttributedString(
-    string: "\(project.name.stringByTrimmingCharactersInSet(periodCharacterSet)). ",
-    attributes: [
-      NSFontAttributeName: UIFont.ksr_title3(size: 18.0),
-      NSForegroundColorAttributeName: UIColor.ksr_text_navy_700
-    ]
-  )
-
-  let blurbAttributedString = NSAttributedString(
-    string: project.blurb,
-    attributes: [
-      NSFontAttributeName: UIFont.ksr_title3(size: 18.0),
-      NSForegroundColorAttributeName: UIColor.ksr_text_navy_600
-    ]
-  )
-
-  baseNameAttributedString.appendAttributedString(blurbAttributedString)
-
-  return baseNameAttributedString
 }
 
 // Returns the disparate metadata data for a project based on metadata precedence.

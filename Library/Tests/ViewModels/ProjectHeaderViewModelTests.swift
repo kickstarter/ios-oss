@@ -61,7 +61,8 @@ final class ProjectHeaderViewModelTests: TestCase {
     self.vm.outputs.notifyDelegateToShowRewardsTab.observe(self.notifyDelegateToShowRewardsTab.observer)
     self.vm.outputs.pledgedSubtitleLabelText.observe(self.pledgedSubtitleLabelText.observer)
     self.vm.outputs.pledgedTitleLabelText.observe(self.pledgedTitleLabelText.observer)
-    self.vm.outputs.projectNameAndBlurbLabelText.observe(self.projectNameAndBlurbLabelText.observer)
+    self.vm.outputs.projectNameAndBlurbLabelText.map { $0.string }
+      .observe(self.projectNameAndBlurbLabelText.observer)
     self.vm.outputs.progressPercentage.observe(self.progressPercentage.observer)
     self.vm.outputs.rewardsButtonAccessibilityLabel.observe(self.rewardsButtonAccessibilityLabel.observer)
     self.vm.outputs.rewardsTabButtonSelected.observe(self.rewardsTabButtonSelected.observer)
@@ -328,7 +329,7 @@ final class ProjectHeaderViewModelTests: TestCase {
     self.vm.inputs.viewWillAppear()
 
     self.projectNameAndBlurbLabelText.assertValues(
-      ["<b>\(project.name).</b> \(project.blurb)"]
+      ["\(project.name). \(project.blurb)"]
     )
   }
 

@@ -167,6 +167,17 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     )
   }
 
+  func testProjectNamePunctuationIsRetained() {
+    let project = .template
+      |> Project.lens.name .~ "The Turtle Hat. Helping people come out of their shells!"
+
+    self.vm.inputs.configureWith(project: project)
+
+    self.projectNameAndBlurbLabelText.assertValues(
+      ["\(project.name) \(project.blurb)"]
+    )
+  }
+
   func testSocialData() {
     let oneFriend = [.template |> User.lens.name .~ "Milky"]
 
