@@ -54,7 +54,9 @@ internal final class CommentsViewModelTests: TestCase {
       self.backerEmptyStateVisible.assertValues([false], "Backer empty state is not visible.")
       self.commentButtonVisible.assertValues([false], "Comment button is not visible.")
 
-      XCTAssertEqual(["Project Comment View"], trackingClient.events)
+      XCTAssertEqual(["Project Comment View", "Viewed Project Comments"], trackingClient.events)
+      XCTAssertEqual([true, nil],
+                     self.trackingClient.properties(forKey: Koala.DeprecatedKey, as: Bool.self))
     }
   }
 
@@ -148,7 +150,9 @@ internal final class CommentsViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
 
       self.commentsAreLoading.assertValues([true])
-      XCTAssertEqual(["Project Comment View"], self.trackingClient.events)
+      XCTAssertEqual(["Project Comment View", "Viewed Project Comments"], self.trackingClient.events)
+      XCTAssertEqual([true, nil],
+                     self.trackingClient.properties(forKey: Koala.DeprecatedKey, as: Bool.self))
 
       self.scheduler.advance()
 
@@ -166,15 +170,27 @@ internal final class CommentsViewModelTests: TestCase {
 
         self.hasComments.assertValues([true, true], "Another set of comments are emitted.")
         self.commentsAreLoading.assertValues([true, false, true, false])
-        XCTAssertEqual(["Project Comment View", "Project Comment Load Older"],
-                       self.trackingClient.events)
+        XCTAssertEqual(
+          [
+            "Project Comment View", "Viewed Project Comments", "Project Comment Load Older",
+            "Loaded Older Project Comments"
+          ],
+          self.trackingClient.events)
+        XCTAssertEqual([true, nil, true, nil],
+                       self.trackingClient.properties(forKey: Koala.DeprecatedKey, as: Bool.self))
 
         self.vm.inputs.refresh()
         self.scheduler.advance()
 
         self.hasComments.assertValues([true, true, true], "Another set of comments are emitted.")
-        XCTAssertEqual(["Project Comment View", "Project Comment Load Older", "Project Comment Load New"],
-                       self.trackingClient.events)
+        XCTAssertEqual(
+          [
+            "Project Comment View", "Viewed Project Comments", "Project Comment Load Older",
+            "Loaded Older Project Comments", "Project Comment Load New", "Loaded Newer Project Comments"
+          ],
+          self.trackingClient.events)
+        XCTAssertEqual([true, nil, true, nil, true, nil],
+                       self.trackingClient.properties(forKey: Koala.DeprecatedKey, as: Bool.self))
       }
     }
   }

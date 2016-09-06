@@ -296,8 +296,12 @@ public final class Koala {
 
   // MARK: Comments Events
   public func trackLoadNewerComments(project project: Project) {
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+
     self.track(event: "Project Comment Load New",
-               properties: properties(project: project, loggedInUser: self.loggedInUser))
+               properties: props.withAllValuesFrom([Koala.DeprecatedKey: true]))
+
+    self.track(event: "Loaded Newer Project Comments", properties: props)
   }
 
   public func trackLoadNewerComments(update update: Update, project: Project) {
@@ -311,7 +315,10 @@ public final class Koala {
     let props = properties(project: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(["page_count": page])
 
-    self.track(event: "Project Comment Load Older", properties: props)
+    self.track(event: "Project Comment Load Older",
+               properties: props.withAllValuesFrom([Koala.DeprecatedKey: true]))
+
+    self.track(event: "Loaded Older Project Comments", properties: props)
   }
 
   public func trackLoadOlderComments(update update: Update, project: Project, page: Int) {
@@ -378,8 +385,12 @@ public final class Koala {
   }
 
   public func trackCommentsView(project project: Project) {
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+
     self.track(event: "Project Comment View",
-               properties: properties(project: project, loggedInUser: self.loggedInUser))
+               properties: props.withAllValuesFrom([Koala.DeprecatedKey: true]))
+
+    self.track(event: "Viewed Project Comments", properties: props)
   }
 
   public func trackCommentsView(update update: Update, project: Project) {
