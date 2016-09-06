@@ -73,3 +73,10 @@ internal final class SearchMessagesViewController: UITableViewController {
     self.viewModel.inputs.searchTextChanged(textField.text)
   }
 }
+
+extension SearchMessagesViewController: UITextFieldDelegate {
+  internal func textFieldShouldClear(textField: UITextField) -> Bool {
+    self.viewModel.inputs.clearSearchText()
+    return true
+  }
+}

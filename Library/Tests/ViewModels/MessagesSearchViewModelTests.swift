@@ -42,7 +42,13 @@ internal final class MessagesSearchViewModelTests: TestCase {
 
   func testSearch_NoProject() {
     self.vm.inputs.configureWith(project: nil)
+
+    XCTAssertEqual([], self.trackingClient.events)
+
     self.vm.inputs.viewDidLoad()
+
+    XCTAssertEqual(["Viewed Message Search"], self.trackingClient.events)
+
     self.vm.inputs.viewWillAppear()
 
     self.hasMessageThreads.assertValues([])
@@ -52,56 +58,91 @@ internal final class MessagesSearchViewModelTests: TestCase {
 
     self.hasMessageThreads.assertValues([])
     self.isSearching.assertValues([false, true])
-    XCTAssertEqual([], self.trackingClient.events)
+    XCTAssertEqual(["Viewed Message Search"], self.trackingClient.events)
 
     self.scheduler.advance()
 
     self.hasMessageThreads.assertValues([true])
     self.isSearching.assertValues([false, true, false])
-    XCTAssertEqual(["Message Threads Search", "Message Inbox Search"], self.trackingClient.events)
-    XCTAssertEqual([nil, true], self.trackingClient.properties.map { $0[Koala.DeprecatedKey] as! Bool? })
-    XCTAssertEqual([nil, nil], self.trackingClient.properties.map { $0["project_pid"] as! Int? })
-
-    self.vm.inputs.searchTextChanged("hello world")
-
-    self.hasMessageThreads.assertValues([true, false])
-    self.isSearching.assertValues([false, true, false, true])
-    XCTAssertEqual(["Message Threads Search", "Message Inbox Search"], self.trackingClient.events)
-
-    self.scheduler.advance()
-
-    self.hasMessageThreads.assertValues([true, false, true])
-    self.isSearching.assertValues([false, true, false, true, false])
     XCTAssertEqual(
-      ["Message Threads Search", "Message Inbox Search", "Message Threads Search", "Message Inbox Search"],
+      [
+        "Viewed Message Search", "Message Threads Search", "Message Inbox Search",
+        "Viewed Message Search Results"
+      ],
       self.trackingClient.events)
-    XCTAssertEqual([nil, true, nil, true],
+    XCTAssertEqual([nil, true, true, nil],
                    self.trackingClient.properties.map { $0[Koala.DeprecatedKey] as! Bool? })
     XCTAssertEqual([nil, nil, nil, nil], self.trackingClient.properties.map { $0["project_pid"] as! Int? })
+    XCTAssertEqual([nil, nil, nil, true], self.trackingClient.properties.map { $0["has_results"] as! Bool? })
 
-    self.vm.inputs.searchTextChanged("")
-    self.vm.inputs.searchTextChanged(nil)
+    withEnvironment(apiService: MockService(fetchMessageThreadsResponse: [])) {
+      self.vm.inputs.searchTextChanged("hello world")
 
-    self.hasMessageThreads.assertValues([true, false, true, false])
-    self.isSearching.assertValues([false, true, false, true, false])
-    XCTAssertEqual(
-      ["Message Threads Search", "Message Inbox Search", "Message Threads Search", "Message Inbox Search"],
-      self.trackingClient.events)
+      self.hasMessageThreads.assertValues([true, false])
+      self.isSearching.assertValues([false, true, false, true])
+      XCTAssertEqual(
+        [
+          "Viewed Message Search", "Message Threads Search", "Message Inbox Search",
+          "Viewed Message Search Results"
+        ],
+        self.trackingClient.events)
 
-    self.scheduler.advance()
+      self.scheduler.advance()
 
-    self.hasMessageThreads.assertValues([true, false, true, false])
-    self.isSearching.assertValues([false, true, false, true, false])
-    XCTAssertEqual(
-      ["Message Threads Search", "Message Inbox Search", "Message Threads Search", "Message Inbox Search"],
-      self.trackingClient.events)
+      self.hasMessageThreads.assertValues([true, false])
+      self.isSearching.assertValues([false, true, false, true, false])
+      XCTAssertEqual(
+        [
+          "Viewed Message Search", "Message Threads Search", "Message Inbox Search",
+          "Viewed Message Search Results", "Message Threads Search", "Message Inbox Search",
+          "Viewed Message Search Results"
+        ],
+        self.trackingClient.events)
+      XCTAssertEqual([nil, true, true, nil, true, true, nil],
+        self.trackingClient.properties.map { $0[Koala.DeprecatedKey] as! Bool? })
+      XCTAssertEqual([nil, nil, nil, nil, nil, nil, nil],
+        self.trackingClient.properties.map { $0["project_pid"] as! Int? })
+      XCTAssertEqual([nil, nil, nil, true, nil, nil, false],
+        self.trackingClient.properties.map { $0["has_results"] as! Bool? })
+
+      self.vm.inputs.searchTextChanged("")
+      self.vm.inputs.searchTextChanged(nil)
+
+      self.hasMessageThreads.assertValues([true, false])
+      self.isSearching.assertValues([false, true, false, true, false])
+      XCTAssertEqual(
+        [
+          "Viewed Message Search", "Message Threads Search", "Message Inbox Search",
+          "Viewed Message Search Results", "Message Threads Search", "Message Inbox Search",
+          "Viewed Message Search Results"
+        ],
+        self.trackingClient.events)
+
+      self.scheduler.advance()
+
+      self.hasMessageThreads.assertValues([true, false])
+      self.isSearching.assertValues([false, true, false, true, false])
+      XCTAssertEqual(
+        [
+          "Viewed Message Search", "Message Threads Search", "Message Inbox Search",
+          "Viewed Message Search Results", "Message Threads Search", "Message Inbox Search",
+          "Viewed Message Search Results"
+        ],
+        self.trackingClient.events)
+    }
   }
 
   func testSearch_WithProject() {
     let project = Project.template |> Project.lens.id .~ 123
 
     self.vm.inputs.configureWith(project: project)
+
+    XCTAssertEqual([], self.trackingClient.events)
+
     self.vm.inputs.viewDidLoad()
+
+    XCTAssertEqual(["Viewed Message Search"], self.trackingClient.events)
+
     self.vm.inputs.viewWillAppear()
 
     self.hasMessageThreads.assertValues([])
@@ -109,44 +150,67 @@ internal final class MessagesSearchViewModelTests: TestCase {
     self.vm.inputs.searchTextChanged("hello")
 
     self.hasMessageThreads.assertValues([])
-    XCTAssertEqual([], self.trackingClient.events)
+    XCTAssertEqual(["Viewed Message Search"], self.trackingClient.events)
 
     self.scheduler.advance()
 
     self.hasMessageThreads.assertValues([true])
-    XCTAssertEqual(["Message Threads Search", "Message Inbox Search"], self.trackingClient.events)
-    XCTAssertEqual([nil, true], self.trackingClient.properties.map { $0[Koala.DeprecatedKey] as! Bool? })
-    XCTAssertEqual([project.id, project.id],
+    XCTAssertEqual(
+      [
+        "Viewed Message Search", "Message Threads Search", "Message Inbox Search",
+        "Viewed Message Search Results"
+      ],
+      self.trackingClient.events)
+    XCTAssertEqual([nil, true, true, nil],
+                   self.trackingClient.properties.map { $0[Koala.DeprecatedKey] as! Bool? })
+    XCTAssertEqual([project.id, project.id, project.id, project.id],
                    self.trackingClient.properties.map { $0["project_pid"] as! Int? })
 
     self.vm.inputs.searchTextChanged("hello world")
 
     self.hasMessageThreads.assertValues([true, false])
-    XCTAssertEqual(["Message Threads Search", "Message Inbox Search"], self.trackingClient.events)
+    XCTAssertEqual(
+      [
+        "Viewed Message Search", "Message Threads Search", "Message Inbox Search",
+        "Viewed Message Search Results"
+      ],
+      self.trackingClient.events)
 
     self.scheduler.advance()
 
     self.hasMessageThreads.assertValues([true, false, true])
     XCTAssertEqual(
-      ["Message Threads Search", "Message Inbox Search", "Message Threads Search", "Message Inbox Search"],
+      [
+        "Viewed Message Search", "Message Threads Search", "Message Inbox Search",
+        "Viewed Message Search Results", "Message Threads Search", "Message Inbox Search",
+        "Viewed Message Search Results"
+      ],
       self.trackingClient.events)
-    XCTAssertEqual([nil, true, nil, true],
+    XCTAssertEqual([nil, true, true, nil, true, true, nil],
                    self.trackingClient.properties.map { $0[Koala.DeprecatedKey] as! Bool? })
-    XCTAssertEqual([project.id, project.id, project.id, project.id],
+    XCTAssertEqual([project.id, project.id, project.id, project.id, project.id, project.id, project.id],
                    self.trackingClient.properties.map { $0["project_pid"] as! Int? })
 
     self.vm.inputs.searchTextChanged("")
 
     self.hasMessageThreads.assertValues([true, false, true, false])
     XCTAssertEqual(
-      ["Message Threads Search", "Message Inbox Search", "Message Threads Search", "Message Inbox Search"],
+      [
+        "Viewed Message Search", "Message Threads Search", "Message Inbox Search",
+        "Viewed Message Search Results", "Message Threads Search", "Message Inbox Search",
+        "Viewed Message Search Results"
+      ],
       self.trackingClient.events)
 
     self.scheduler.advance()
 
     self.hasMessageThreads.assertValues([true, false, true, false])
     XCTAssertEqual(
-      ["Message Threads Search", "Message Inbox Search", "Message Threads Search", "Message Inbox Search"],
+      [
+        "Viewed Message Search", "Message Threads Search", "Message Inbox Search",
+        "Viewed Message Search Results", "Message Threads Search", "Message Inbox Search",
+        "Viewed Message Search Results"
+      ],
       self.trackingClient.events)
   }
 
@@ -161,5 +225,101 @@ internal final class MessagesSearchViewModelTests: TestCase {
     self.vm.inputs.tappedMessageThread(messageThread)
 
     self.goToMessageThread.assertValues([messageThread])
+  }
+
+  func testClearSearchTerm_NoProject() {
+    self.vm.inputs.configureWith(project: nil)
+
+    XCTAssertEqual([], self.trackingClient.events)
+
+    self.vm.inputs.viewDidLoad()
+
+    XCTAssertEqual(["Viewed Message Search"], self.trackingClient.events)
+
+    self.vm.inputs.viewWillAppear()
+
+    self.hasMessageThreads.assertValues([])
+
+    self.vm.inputs.searchTextChanged("hello")
+
+    self.hasMessageThreads.assertValues([])
+    XCTAssertEqual(["Viewed Message Search"], self.trackingClient.events)
+
+    self.scheduler.advance()
+
+    self.hasMessageThreads.assertValues([true])
+    XCTAssertEqual(
+      [
+        "Viewed Message Search", "Message Threads Search", "Message Inbox Search",
+        "Viewed Message Search Results"
+      ],
+      self.trackingClient.events)
+    XCTAssertEqual([nil, true, true, nil],
+                   self.trackingClient.properties.map { $0[Koala.DeprecatedKey] as! Bool? })
+    XCTAssertEqual([nil, nil, nil, nil],
+                   self.trackingClient.properties.map { $0["project_pid"] as! Int? })
+
+    self.vm.inputs.clearSearchText()
+
+    self.hasMessageThreads.assertValues([true, false])
+    XCTAssertEqual(
+      [
+        "Viewed Message Search", "Message Threads Search", "Message Inbox Search",
+        "Viewed Message Search Results", "Cleared Message Search Term"
+      ],
+      self.trackingClient.events)
+    XCTAssertEqual([nil, true, true, nil, nil],
+                   self.trackingClient.properties.map { $0[Koala.DeprecatedKey] as! Bool? })
+    XCTAssertEqual([nil, nil, nil, nil, nil],
+                   self.trackingClient.properties.map { $0["project_pid"] as! Int? })
+  }
+
+  func testClearSearchTerm_WithProject() {
+    let project = Project.template |> Project.lens.id .~ 123
+
+    self.vm.inputs.configureWith(project: project)
+
+    XCTAssertEqual([], self.trackingClient.events)
+
+    self.vm.inputs.viewDidLoad()
+
+    XCTAssertEqual(["Viewed Message Search"], self.trackingClient.events)
+
+    self.vm.inputs.viewWillAppear()
+
+    self.hasMessageThreads.assertValues([])
+
+    self.vm.inputs.searchTextChanged("hello")
+
+    self.hasMessageThreads.assertValues([])
+    XCTAssertEqual(["Viewed Message Search"], self.trackingClient.events)
+
+    self.scheduler.advance()
+
+    self.hasMessageThreads.assertValues([true])
+    XCTAssertEqual(
+      [
+        "Viewed Message Search", "Message Threads Search", "Message Inbox Search",
+        "Viewed Message Search Results"
+      ],
+      self.trackingClient.events)
+    XCTAssertEqual([nil, true, true, nil],
+                   self.trackingClient.properties.map { $0[Koala.DeprecatedKey] as! Bool? })
+    XCTAssertEqual([project.id, project.id, project.id, project.id],
+                   self.trackingClient.properties.map { $0["project_pid"] as! Int? })
+
+    self.vm.inputs.clearSearchText()
+
+    self.hasMessageThreads.assertValues([true, false])
+    XCTAssertEqual(
+      [
+        "Viewed Message Search", "Message Threads Search", "Message Inbox Search",
+        "Viewed Message Search Results", "Cleared Message Search Term"
+      ],
+      self.trackingClient.events)
+    XCTAssertEqual([nil, true, true, nil, nil],
+                   self.trackingClient.properties.map { $0[Koala.DeprecatedKey] as! Bool? })
+    XCTAssertEqual([project.id, project.id, project.id, project.id, project.id],
+                   self.trackingClient.properties.map { $0["project_pid"] as! Int? })
   }
 }

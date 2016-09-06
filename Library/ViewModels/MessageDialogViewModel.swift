@@ -132,10 +132,12 @@ MessageDialogViewModelOutputs {
     )
 
     combineLatest(project, self.contextProperty.signal.ignoreNil())
+      .takeWhen(self.viewDidLoadProperty.signal)
+      .observeNext { AppEnvironment.current.koala.trackViewedMessageEditor(project: $0, context: $1) }
+
+    combineLatest(project, self.contextProperty.signal.ignoreNil())
       .takeWhen(self.notifyPresenterCommentWasPostedSuccesfully)
-      .observeNext { project, context in
-        AppEnvironment.current.koala.trackMessageSent(project: project, context: context)
-    }
+      .observeNext { AppEnvironment.current.koala.trackMessageSent(project: $0, context: $1) }
   }
   // swiftlint:enable function_body_length
 

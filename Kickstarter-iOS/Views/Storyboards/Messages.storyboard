@@ -200,7 +200,7 @@
                             <rect key="frame" x="61" y="6" width="478" height="33"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
-                                <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="djz-c8-ji0">
+                                <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="djz-c8-ji0">
                                     <rect key="frame" x="212" y="0.0" width="55" height="33"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Inbox" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Znl-pP-aP1" userLabel="Inbox">
@@ -665,6 +665,7 @@
                                             </userDefinedRuntimeAttributes>
                                             <connections>
                                                 <action selector="searchTextChanged:" destination="ycB-Uw-jvw" eventType="editingChanged" id="OKr-En-Wo9"/>
+                                                <outlet property="delegate" destination="ycB-Uw-jvw" id="PVY-td-eGa"/>
                                             </connections>
                                         </textField>
                                         <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Kwa-lS-ZfK" userLabel="Loading">

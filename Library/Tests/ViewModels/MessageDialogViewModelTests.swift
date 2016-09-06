@@ -97,8 +97,13 @@ internal final class MessageDialogViewModelTests: TestCase {
   }
 
   func testPostingMessageToThread() {
+    XCTAssertEqual([], self.trackingClient.events)
+
     self.vm.inputs.configureWith(messageSubject: .messageThread(.template), context: .messages)
     self.vm.inputs.viewDidLoad()
+
+    XCTAssertEqual(["Viewed Message Editor"], self.trackingClient.events)
+
     self.vm.inputs.bodyTextChanged("HELLO")
 
     self.loadingViewIsHidden.assertValues([true])
@@ -106,6 +111,8 @@ internal final class MessageDialogViewModelTests: TestCase {
     self.notifyPresenterDialogWantsDismissal.assertValueCount(0)
 
     self.vm.inputs.postButtonPressed()
+
+    XCTAssertEqual(["Viewed Message Editor"], self.trackingClient.events)
 
     self.loadingViewIsHidden.assertValues([true, false])
     self.notifyPresenterCommentWasPostedSuccesfully.assertValueCount(0)
@@ -117,7 +124,9 @@ internal final class MessageDialogViewModelTests: TestCase {
     self.notifyPresenterCommentWasPostedSuccesfully.assertValueCount(1)
     self.notifyPresenterDialogWantsDismissal.assertValueCount(1)
 
-    XCTAssertEqual(["Message Sent"], self.trackingClient.events)
+    XCTAssertEqual(["Viewed Message Editor", "Message Sent", "Sent Message"], self.trackingClient.events)
+    XCTAssertEqual([nil, true, nil],
+                   self.trackingClient.properties(forKey: Koala.DeprecatedKey, as: Bool.self))
   }
 
   func testPostingMessageToCreator() {
@@ -141,7 +150,7 @@ internal final class MessageDialogViewModelTests: TestCase {
     self.notifyPresenterCommentWasPostedSuccesfully.assertValueCount(1)
     self.notifyPresenterDialogWantsDismissal.assertValueCount(1)
 
-    XCTAssertEqual(["Message Sent"], self.trackingClient.events)
+    XCTAssertEqual(["Viewed Message Editor", "Message Sent", "Sent Message"], self.trackingClient.events)
   }
 
   func testPostingMessageToBacker() {
@@ -173,6 +182,6 @@ internal final class MessageDialogViewModelTests: TestCase {
     self.notifyPresenterCommentWasPostedSuccesfully.assertValueCount(1)
     self.notifyPresenterDialogWantsDismissal.assertValueCount(1)
 
-    XCTAssertEqual(["Message Sent"], self.trackingClient.events)
+    XCTAssertEqual(["Viewed Message Editor", "Message Sent", "Sent Message"], self.trackingClient.events)
   }
 }

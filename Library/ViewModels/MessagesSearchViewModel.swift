@@ -6,6 +6,9 @@ import Result
 import Prelude
 
 public protocol MessagesSearchViewModelInputs {
+  /// Call when the search clear button is tapped.
+  func clearSearchText()
+
   /// Call with the (optional) project given to the view.
   func configureWith(project project: Project?)
 
@@ -50,13 +53,19 @@ public protocol MessagesSearchViewModelType {
 public final class MessagesSearchViewModel: MessagesSearchViewModelType, MessagesSearchViewModelInputs,
 MessagesSearchViewModelOutputs {
 
+  // swiftlint:disable function_body_length
   public init() {
     let isLoading = MutableProperty(false)
 
     let project = self.projectProperty.producer
       .takeWhen(self.viewDidLoadProperty.signal)
 
-    let query = self.searchTextChangedProperty.signal
+    let query = Signal
+      .merge(
+        self.searchTextChangedProperty.signal,
+        self.clearSearchTextProperty.signal.mapConst("")
+      )
+      .skipRepeats()
 
     let clears = query.map(const([MessageThread]()))
 
@@ -92,13 +101,27 @@ MessagesSearchViewModelOutputs {
 
     self.goToMessageThread = self.tappedMessageThreadProperty.signal.ignoreNil()
 
-    combineLatest(project.take(1), query)
-      .takeWhen(self.messageThreads.filter { !$0.isEmpty })
-      .observeNext { project, term in
-        AppEnvironment.current.koala.trackMessageThreadsSearch(term: term, project: project)
-    }
-  }
+    project
+      .takeWhen(self.viewDidLoadProperty.signal)
+      .observeNext { AppEnvironment.current.koala.trackViewedMessageSearch(project: $0) }
 
+    combineLatest(query, project.take(1), self.messageThreads.map { !$0.isEmpty })
+      .takeWhen(self.isSearching.filter(isFalse))
+      .filter { query, _, _ in !query.isEmpty }
+      .observeNext {
+        AppEnvironment.current.koala.trackViewedMessageSearchResults(term: $0, project: $1, hasResults: $2)
+    }
+
+    project
+      .takeWhen(self.clearSearchTextProperty.signal)
+      .observeNext { AppEnvironment.current.koala.trackClearedMessageSearchTerm(project: $0) }
+  }
+  // swiftlint:enable function_body_length
+
+  private let clearSearchTextProperty = MutableProperty()
+  public func clearSearchText() {
+    self.clearSearchTextProperty.value = ()
+  }
   private let projectProperty = MutableProperty<Project?>(nil)
   public func configureWith(project project: Project?) {
     self.projectProperty.value = project

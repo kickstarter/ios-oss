@@ -44,7 +44,9 @@ internal final class MessagesViewModelTests: TestCase {
     self.backingAndProject.assertValueCount(1)
     self.messages.assertValueCount(1)
 
-    XCTAssertEqual(["Message Thread View"], self.trackingClient.events)
+    XCTAssertEqual(["Message Thread View", "Viewed Message Thread"], self.trackingClient.events)
+    XCTAssertEqual([true, nil],
+                   self.trackingClient.properties(forKey: Koala.DeprecatedKey, as: Bool.self))
   }
 
   func testOutputs_ConfiguredWithThread_AndBacking() {
@@ -57,7 +59,7 @@ internal final class MessagesViewModelTests: TestCase {
     self.backingAndProject.assertValueCount(1)
     self.messages.assertValueCount(1)
 
-    XCTAssertEqual(["Message Thread View"], self.trackingClient.events)
+    XCTAssertEqual(["Message Thread View", "Viewed Message Thread"], self.trackingClient.events)
   }
 
   func testOutputs_ConfiguredWithProject() {
@@ -71,7 +73,7 @@ internal final class MessagesViewModelTests: TestCase {
     self.backingAndProject.assertValueCount(1)
     self.messages.assertValueCount(1)
 
-    XCTAssertEqual(["Message Thread View"], self.trackingClient.events)
+    XCTAssertEqual(["Message Thread View", "Viewed Message Thread"], self.trackingClient.events)
   }
 
   func testOutputs_ConfiguredWithProject_AndBacking() {
@@ -85,7 +87,7 @@ internal final class MessagesViewModelTests: TestCase {
     self.backingAndProject.assertValueCount(1)
     self.messages.assertValueCount(1)
 
-    XCTAssertEqual(["Message Thread View"], self.trackingClient.events)
+    XCTAssertEqual(["Message Thread View", "Viewed Message Thread"], self.trackingClient.events)
   }
 
   func testGoToProject() {

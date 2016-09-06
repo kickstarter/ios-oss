@@ -574,25 +574,59 @@ public final class Koala {
   public func trackMessageThreadsView(mailbox mailbox: Mailbox, project: Project?) {
     let props = project.flatMap { properties(project: $0, loggedInUser: self.loggedInUser) } ?? [:]
 
-    self.track(event: "Message Threads View",
-               properties: props.withAllValuesFrom(["mailbox": mailbox.rawValue]))
+    switch mailbox {
+    case .inbox:
+      self.track(event: "Viewed Message Inbox", properties: props)
+    case .sent:
+      self.track(event: "Viewed Sent Messages", properties: props)
+    }
+
     // deprecated
-    self.track(event: "Message Inbox View",
-               properties: props.withAllValuesFrom([Koala.DeprecatedKey: true]))
+    let deprecatedProps = props.withAllValuesFrom([Koala.DeprecatedKey: true])
+    self.track(event: "Message Threads View",
+               properties: deprecatedProps.withAllValuesFrom(["mailbox": mailbox.rawValue]))
+    self.track(event: "Message Inbox View", properties: deprecatedProps)
   }
 
-  public func trackMessageThreadsSearch(term term: String, project: Project?) {
+  public func trackViewedMessageSearch(project project: Project?) {
     let props = project.flatMap { properties(project: $0, loggedInUser: self.loggedInUser) } ?? [:]
 
-    self.track(event: "Message Threads Search",
-               properties: props.withAllValuesFrom(["term": term]))
-    self.track(event: "Message Inbox Search",
-               properties: props.withAllValuesFrom(["term": term, Koala.DeprecatedKey: true]))
+    self.track(event: "Viewed Message Search", properties: props)
+  }
+
+  public func trackViewedMessageSearchResults(term term: String, project: Project?, hasResults: Bool) {
+    let props = (project.flatMap { properties(project: $0, loggedInUser: self.loggedInUser) } ?? [:])
+      .withAllValuesFrom(["term": term])
+    let deprecatedProps = props.withAllValuesFrom([Koala.DeprecatedKey: true])
+
+    self.track(event: "Message Threads Search", properties: deprecatedProps)
+    self.track(event: "Message Inbox Search", properties: deprecatedProps)
+
+    self.track(event: "Viewed Message Search Results",
+               properties: props.withAllValuesFrom(["has_results": hasResults]))
+  }
+
+  public func trackClearedMessageSearchTerm(project project: Project?) {
+    let props = project.flatMap { properties(project: $0, loggedInUser: self.loggedInUser) } ?? [:]
+
+    self.track(event: "Cleared Message Search Term",
+               properties: props)
   }
 
   public func trackMessageThreadView(project project: Project) {
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+
     self.track(event: "Message Thread View",
-               properties: properties(project: project, loggedInUser: self.loggedInUser))
+               properties: props.withAllValuesFrom([Koala.DeprecatedKey: true]))
+
+    self.track(event: "Viewed Message Thread", properties: props)
+  }
+
+  public func trackViewedMessageEditor(project project: Project, context: MessageDialogContext) {
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(["message_type": "single", "context": context.rawValue])
+
+    self.track(event: "Viewed Message Editor", properties: props)
   }
 
   /**
@@ -605,7 +639,10 @@ public final class Koala {
     let props = properties(project: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(["message_type": "single", "context": context.rawValue])
 
-    self.track(event: "Message Sent", properties: props)
+    self.track(event: "Message Sent",
+               properties: props.withAllValuesFrom([Koala.DeprecatedKey: true]))
+
+    self.track(event: "Sent Message", properties: props)
   }
 
   // MARK: Search Events
