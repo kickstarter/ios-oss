@@ -16,7 +16,7 @@ final class KoalaTests: XCTestCase {
                       screen: screen)
 
     koala.trackAppOpen()
-    XCTAssertEqual(1, client.properties.count)
+    XCTAssertEqual(["App Open", "Opened App"], client.events)
 
     let properties = client.properties.last
 
@@ -51,7 +51,7 @@ final class KoalaTests: XCTestCase {
     let koala = Koala(client: client, loggedInUser: user)
 
     koala.trackAppOpen()
-    XCTAssertEqual(1, client.properties.count)
+    XCTAssertEqual(["App Open", "Opened App"], client.events)
 
     let properties = client.properties.last
 

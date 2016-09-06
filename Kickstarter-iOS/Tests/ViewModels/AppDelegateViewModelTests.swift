@@ -187,13 +187,14 @@ final class AppDelegateViewModelTests: TestCase {
 
     vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
                                             launchOptions: [:])
-    XCTAssertEqual(["App Open"], trackingClient.events)
+    XCTAssertEqual(["App Open", "Opened App"], trackingClient.events)
 
     vm.inputs.applicationDidEnterBackground()
-    XCTAssertEqual(["App Open", "App Close"], trackingClient.events)
+    XCTAssertEqual(["App Open", "Opened App", "App Close", "Closed App"], trackingClient.events)
 
     vm.inputs.applicationWillEnterForeground()
-    XCTAssertEqual(["App Open", "App Close", "App Open"], trackingClient.events)
+    XCTAssertEqual(["App Open", "Opened App", "App Close", "Closed App", "App Open", "Opened App"],
+                   trackingClient.events)
   }
 
   func testCurrentUserUpdating_NothingHappensWhenLoggedOut() {
@@ -250,6 +251,25 @@ final class AppDelegateViewModelTests: TestCase {
                                       annotation: 1)
 
     XCTAssertTrue(self.facebookAppDelegate.openedUrl)
+  }
+
+  func testOpenAppBanner() {
+    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+                                                 launchOptions: [:])
+
+    XCTAssertEqual(["App Open", "Opened App"], self.trackingClient.events)
+
+    self.vm.inputs.applicationOpenUrl(application: UIApplication.sharedApplication(),
+                                      url: NSURL(string: "http://www.google.com/?app_banner=1&hello=world")!,
+                                      sourceApplication: nil,
+                                      annotation: 1)
+
+    XCTAssertEqual(["App Open", "Opened App", "Smart App Banner Opened", "Opened App Banner"],
+                   self.trackingClient.events)
+    XCTAssertEqual([true, nil, true, nil],
+                   self.trackingClient.properties(forKey: Koala.DeprecatedKey, as: Bool.self))
+    XCTAssertEqual([nil, nil, "world", "world"],
+                   self.trackingClient.properties(forKey: "hello", as: String.self))
   }
 
   func testConfig() {
@@ -475,8 +495,9 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.inputs.didReceive(remoteNotification: friendBackingPushData, applicationIsActive: false)
 
     self.presentViewController.assertValueCount(1)
-    XCTAssertEqual(["App Open", "Notification Opened", "Opened Notification"], self.trackingClient.events)
-    XCTAssertEqual([nil, true, nil],
+    XCTAssertEqual(["App Open", "Opened App", "Notification Opened", "Opened Notification"],
+                   self.trackingClient.events)
+    XCTAssertEqual([true, nil, true, nil],
                    self.trackingClient.properties(forKey: Koala.DeprecatedKey, as: Bool.self))
 
   }
@@ -490,12 +511,13 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.inputs.didReceive(remoteNotification: friendBackingPushData, applicationIsActive: true)
 
     self.presentViewController.assertValueCount(0)
-    XCTAssertEqual(["App Open"], self.trackingClient.events)
+    XCTAssertEqual(["App Open", "Opened App"], self.trackingClient.events)
 
     self.vm.inputs.openRemoteNotificationTappedOk()
 
     self.presentViewController.assertValueCount(1)
-    XCTAssertEqual(["App Open", "Notification Opened", "Opened Notification"], self.trackingClient.events)
+    XCTAssertEqual(["App Open", "Opened App", "Notification Opened", "Opened Notification"],
+                   self.trackingClient.events)
   }
 
   func testOpenPushNotification_LaunchApp() {
@@ -505,8 +527,9 @@ final class AppDelegateViewModelTests: TestCase {
     )
 
     self.presentViewController.assertValueCount(1)
-    XCTAssertEqual(["Notification Opened", "Opened Notification", "App Open"], self.trackingClient.events)
-    XCTAssertEqual([true, nil, nil],
+    XCTAssertEqual(["Notification Opened", "Opened Notification", "App Open", "Opened App"],
+                   self.trackingClient.events)
+    XCTAssertEqual([true, nil, true, nil],
                    self.trackingClient.properties(forKey: Koala.DeprecatedKey, as: Bool.self))
   }
 
@@ -695,7 +718,36 @@ final class AppDelegateViewModelTests: TestCase {
     )
 
     self.presentViewController.assertValueCount(1)
+  }
 
+  func testContinueUserActivity_ValidActivity() {
+    let userActivity = NSUserActivity(activityType: NSUserActivityTypeBrowsingWeb)
+    userActivity.webpageURL = NSURL(string: "https://www.kickstarter.com/activity")
+
+    self.vm.inputs.applicationDidFinishLaunching(application: .sharedApplication(), launchOptions: [:])
+
+    self.goToActivity.assertValueCount(0)
+    XCTAssertFalse(self.vm.outputs.continueUserActivityReturnValue.value)
+    XCTAssertEqual(["App Open", "Opened App"], self.trackingClient.events)
+
+    self.vm.inputs.applicationContinueUserActivity(userActivity)
+
+    self.goToActivity.assertValueCount(1)
+    XCTAssertTrue(self.vm.outputs.continueUserActivityReturnValue.value)
+    XCTAssertEqual(["App Open", "Opened App", "Continue User Activity", "Opened Deep Link"],
+                   self.trackingClient.events)
+    XCTAssertEqual([true, nil, true, nil],
+                   self.trackingClient.properties(forKey: Koala.DeprecatedKey, as: Bool.self))
+  }
+
+  func testContinueUserActivity_InvalidActivity() {
+    let userActivity = NSUserActivity(activityType: "Other")
+
+    self.vm.inputs.applicationDidFinishLaunching(application: .sharedApplication(), launchOptions: [:])
+    self.vm.inputs.applicationContinueUserActivity(userActivity)
+
+    XCTAssertFalse(self.vm.outputs.continueUserActivityReturnValue.value)
+    XCTAssertEqual(["App Open", "Opened App"], self.trackingClient.events)
   }
 }
 

@@ -25,6 +25,9 @@ public func == (lhs: HockeyConfigData, rhs: HockeyConfigData) -> Bool {
 }
 
 public protocol AppDelegateViewModelInputs {
+  /// Call when the application is handed off to.
+  func applicationContinueUserActivity(userActivity: NSUserActivity) -> Bool
+
   /// Call when the application finishes launching.
   func applicationDidFinishLaunching(application application: UIApplication,
                                                  launchOptions: [NSObject: AnyObject]?)
@@ -37,7 +40,7 @@ public protocol AppDelegateViewModelInputs {
 
   /// Call to open a url that was sent to the app
   func applicationOpenUrl(application application: UIApplication, url: NSURL, sourceApplication: String?,
-                                      annotation: AnyObject)
+                                      annotation: AnyObject) -> Bool
 
   /// Call after having invoked AppEnvironemt.updateCurrentUser with a fresh user.
   func currentUserUpdatedInEnvironment()
@@ -62,7 +65,10 @@ public protocol AppDelegateViewModelOutputs {
   /// Emits an app identifier that should be used to configure the hockey app manager.
   var configureHockey: Signal<HockeyConfigData, NoError> { get }
 
-  /// Return this value in the delegate's.
+  /// Return this value in the delegate method.
+  var continueUserActivityReturnValue: MutableProperty<Bool> { get }
+
+  /// Return this value in the delegate method.
   var facebookOpenURLReturnValue: MutableProperty<Bool> { get }
 
   /// Emits when the root view controller should navigate to activity.
@@ -203,7 +209,7 @@ AppDelegateViewModelOutputs {
       .takeWhen(self.openRemoteNotificationTappedOkProperty.signal)
 
     let pushEnvelope = Signal.merge(
-      pushEnvelopeAndIsActive.filter { _, isActive in !isActive },
+      pushEnvelopeAndIsActive.filter(negate • second),
       explicitlyOpenedNotification
       )
       .map(first)
@@ -213,11 +219,25 @@ AppDelegateViewModelOutputs {
 
     // Deep links
 
-    let deepLinkFromOpenedUrl = openUrl.map { Navigation.match($0.url) }
+    let continueUserActivity = applicationContinueUserActivityProperty.signal.ignoreNil()
 
-    let deepLink = Signal.merge(
-      deepLinkFromOpenedUrl,
-      deepLinkFromNotification
+    let continueUserActivityWithNavigation = continueUserActivity
+      .filter { $0.activityType == NSUserActivityTypeBrowsingWeb }
+      .map { activity in (activity, activity.webpageURL.flatMap(Navigation.match)) }
+      .filter(isNotNil • second)
+
+    self.continueUserActivityReturnValue <~ continueUserActivityWithNavigation.mapConst(true)
+
+    let deepLinkFromUrl = Signal
+      .merge(
+        openUrl.map { Navigation.match($0.url) },
+        continueUserActivityWithNavigation.map(second)
+      )
+
+    let deepLink = Signal
+      .merge(
+        deepLinkFromUrl,
+        deepLinkFromNotification
       )
       .ignoreNil()
 
@@ -357,12 +377,23 @@ AppDelegateViewModelOutputs {
           : HockeyConfigData.betaAppIdentifier
 
         return HockeyConfigData(
-            appIdentifier: appIdentifier,
-            disableUpdates: mainBundle.isRelease || mainBundle.isAlpha,
-            userId: (AppEnvironment.current.currentUser?.id).map(String.init) ?? "0",
-            userName: AppEnvironment.current.currentUser?.name ?? "anonymous"
+          appIdentifier: appIdentifier,
+          disableUpdates: mainBundle.isRelease || mainBundle.isAlpha,
+          userId: (AppEnvironment.current.currentUser?.id).map(String.init) ?? "0",
+          userName: AppEnvironment.current.currentUser?.name ?? "anonymous"
         )
     }
+
+    openUrl
+      .map { NSURLComponents(URL: $0.url, resolvingAgainstBaseURL: false)?.queryItems }
+      .ignoreNil()
+      .map { items in Dictionary.keyValuePairs(items.map { ($0.name, $0.value) }).compact() }
+      .filter { $0["app_banner"] == "1" }
+      .observeNext { AppEnvironment.current.koala.trackOpenedAppBanner($0) }
+
+    continueUserActivityWithNavigation
+      .map(first)
+      .observeNext { AppEnvironment.current.koala.trackUserActivity($0) }
 
     deepLinkFromNotification
       .observeNext { _ in AppEnvironment.current.koala.trackNotificationOpened() }
@@ -373,10 +404,16 @@ AppDelegateViewModelOutputs {
   public var inputs: AppDelegateViewModelInputs { return self }
   public var outputs: AppDelegateViewModelOutputs { return self }
 
-  private typealias ApplicationWithOptions = (application: UIApplication, options: [NSObject:AnyObject]?)
+  private let applicationContinueUserActivityProperty = MutableProperty<NSUserActivity?>(nil)
+  public func applicationContinueUserActivity(userActivity: NSUserActivity) -> Bool {
+    self.applicationContinueUserActivityProperty.value = userActivity
+    return self.continueUserActivityReturnValue.value
+  }
+
+  private typealias ApplicationWithOptions = (application: UIApplication, options: [NSObject: AnyObject]?)
   private let applicationLaunchOptionsProperty = MutableProperty<ApplicationWithOptions?>(nil)
   public func applicationDidFinishLaunching(application application: UIApplication,
-                                                          launchOptions: [NSObject : AnyObject]?) {
+                                                        launchOptions: [NSObject: AnyObject]?) {
     self.applicationLaunchOptionsProperty.value = (application, launchOptions)
   }
 
@@ -418,10 +455,11 @@ AppDelegateViewModelOutputs {
   )
   private let applicationOpenUrlProperty = MutableProperty<ApplicationOpenUrl?>(nil)
   public func applicationOpenUrl(application application: UIApplication,
-                                               url: NSURL,
-                                               sourceApplication: String?,
-                                               annotation: AnyObject) {
+                                             url: NSURL,
+                                             sourceApplication: String?,
+                                             annotation: AnyObject) -> Bool {
     self.applicationOpenUrlProperty.value = (application, url, sourceApplication, annotation)
+    return self.facebookOpenURLReturnValue.value
   }
 
   private let openRemoteNotificationTappedOkProperty = MutableProperty()
@@ -440,6 +478,7 @@ AppDelegateViewModelOutputs {
   }
 
   public let configureHockey: Signal<HockeyConfigData, NoError>
+  public let continueUserActivityReturnValue = MutableProperty(false)
   public let facebookOpenURLReturnValue = MutableProperty(false)
   public let goToActivity: Signal<(), NoError>
   public let goToDashboard: Signal<Param?, NoError>

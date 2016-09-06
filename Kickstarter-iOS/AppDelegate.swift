@@ -126,15 +126,19 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     self.viewModel.inputs.applicationDidEnterBackground()
   }
 
+  func application(application: UIApplication, continueUserActivity userActivity: NSUserActivity,
+                   restorationHandler: ([AnyObject]?) -> Void) -> Bool {
+
+    return self.viewModel.inputs.applicationContinueUserActivity(userActivity)
+  }
+
   func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?,
                    annotation: AnyObject) -> Bool {
 
-    self.viewModel.inputs.applicationOpenUrl(application: application,
-                                             url: url,
-                                             sourceApplication: sourceApplication,
-                                             annotation: annotation)
-
-    return self.viewModel.outputs.facebookOpenURLReturnValue.value
+    return self.viewModel.inputs.applicationOpenUrl(application: application,
+                                                    url: url,
+                                                    sourceApplication: sourceApplication,
+                                                    annotation: annotation)
   }
 
   internal func application(application: UIApplication,

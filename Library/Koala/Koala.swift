@@ -72,12 +72,14 @@ public final class Koala {
 
   /// Call when the app launches or enters foreground.
   public func trackAppOpen() {
-    self.track(event: "App Open")
+    self.track(event: "App Open", properties: [Koala.DeprecatedKey: true])
+    self.track(event: "Opened App")
   }
 
   /// Call when the app enters the background.
   public func trackAppClose() {
-    self.track(event: "App Close")
+    self.track(event: "App Close", properties: [Koala.DeprecatedKey: true])
+    self.track(event: "Closed App")
   }
 
   public func trackNotificationOpened() {
@@ -89,6 +91,24 @@ public final class Koala {
                properties: props.withAllValuesFrom([Koala.DeprecatedKey: true]))
 
     self.track(event: "Opened Notification", properties: props)
+  }
+
+  public func trackOpenedAppBanner(queryParams: [String: String]) {
+    let props: [String: AnyObject] = [:].withAllValuesFrom(queryParams)
+
+    self.track(event: "Smart App Banner Opened",
+               properties: props.withAllValuesFrom([Koala.DeprecatedKey: true]))
+
+    self.track(event: "Opened App Banner", properties: props)
+  }
+
+  public func trackUserActivity(userActivity: NSUserActivity) {
+    let props = properties(userActivity: userActivity)
+
+    self.track(event: "Continue User Activity",
+               properties: props.withAllValuesFrom([Koala.DeprecatedKey: true]))
+
+    self.track(event: "Opened Deep Link", properties: props)
   }
 
   public func trackAttemptingOnePasswordLogin() {
@@ -1084,6 +1104,16 @@ private func properties(user user: User, prefix: String = "user_") -> [String:An
   properties["starred_projects_count"] = user.stats.starredProjectsCount
 
   return properties.prefixedKeys(prefix)
+}
+
+private func properties(userActivity userActivity: NSUserActivity) -> [String:AnyObject] {
+  let properties: [String: AnyObject?] = [
+    "user_activity_type": userActivity.activityType,
+    "user_activity_title": userActivity.title,
+    "user_activity_webpage_url": userActivity.webpageURL,
+    "user_activity_keywords": userActivity.keywords,
+  ]
+  return properties.compact()
 }
 
 private func properties(params params: DiscoveryParams, prefix: String = "discover_") -> [String:AnyObject] {
