@@ -29,7 +29,7 @@ internal final class ProjectHeaderViewController: UIViewController {
   @IBOutlet private weak var pledgeSubtitleLabel: UILabel!
   @IBOutlet private weak var pledgedTitleLabel: UILabel!
   @IBOutlet private weak var progressBarView: UIView!
-  @IBOutlet private weak var projectNameAndBlurbLabel: SimpleHTMLLabel!
+  @IBOutlet private weak var projectNameAndBlurbLabel: UILabel!
   @IBOutlet private weak var projectStateAndProgressStackView: UIStackView!
   @IBOutlet private weak var projectStateLabel: UILabel!
   @IBOutlet private weak var rewardsButton: UIButton!
@@ -102,7 +102,8 @@ internal final class ProjectHeaderViewController: UIViewController {
       |> UIStackView.lens.spacing .~ Styles.grid(3)
 
     self.projectNameAndBlurbLabel
-      |> projectNameAndBlurbStyle
+      |> UILabel.lens.numberOfLines .~ 5
+      |> UILabel.lens.lineBreakMode .~ .ByTruncatingTail
 
     [self.mainInfoStackView, self.subpagesStackView]
       ||> UIStackView.lens.layoutMargins .~ .init(topBottom: 0, leftRight: Styles.grid(2))

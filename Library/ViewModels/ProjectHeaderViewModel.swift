@@ -137,7 +137,6 @@ ProjectHeaderViewModelOutputs {
     self.configureVideoViewControllerWithProject = project
 
     self.projectNameAndBlurbLabelText = project
-      .skipRepeats { $0.name == $1.name && $0.blurb == $1.blurb }
       .map(projectAttributedNameAndBlurb)
 
     self.projectStateLabelHidden = project.map { $0.state == .live }

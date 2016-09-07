@@ -48,18 +48,6 @@ public let subpageTabButtonStyle =
     <> UIButton.lens.backgroundColor(forState: .Highlighted) .~ .ksr_grey_300
     <> UIButton.lens.adjustsImageWhenHighlighted .~ false
 
-public let projectNameAndBlurbStyle =
-  SimpleHTMLLabel.lens.baseFont .~ .ksr_title3()
-    <> SimpleHTMLLabel.lens.baseColor .~ .ksr_text_navy_600
-    <> SimpleHTMLLabel.lens.boldFont .~ .ksr_title3()
-    <> SimpleHTMLLabel.lens.boldColor .~ .ksr_text_navy_700
-    <> SimpleHTMLLabel.lens.numberOfLines .~ 5
-    <> SimpleHTMLLabel.lens.minimumScaleFactor .~ 0.5
-    <> SimpleHTMLLabel.lens.adjustsFontSizeToFitWidth .~ true
-    <> SimpleHTMLLabel.lens.lineBreakMode .~ .ByTruncatingTail
-    <> SimpleHTMLLabel.lens.contentHuggingPriorityForAxis(.Vertical) .~ UILayoutPriorityRequired
-    <> SimpleHTMLLabel.lens.contentCompressionResistancePriorityForAxis(.Vertical) .~ UILayoutPriorityRequired
-
 public let contactCreatorButtonStyle =
   borderButtonStyle
     <> UIButton.lens.backgroundColor(forState: .Normal) .~ .ksr_navy_200
