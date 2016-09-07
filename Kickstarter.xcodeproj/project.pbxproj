@@ -255,6 +255,9 @@
 		9D50E9471D2EDBE50096DAEC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A7D1F9501C850B7C000D41D5 /* Assets.xcassets */; };
 		9D525F101D4158BA003CAE04 /* ProjectActivityDateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D525F0E1D4158AC003CAE04 /* ProjectActivityDateCell.swift */; };
 		9D525F121D417FD7003CAE04 /* ProjectActivitiesDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D525F111D417FD7003CAE04 /* ProjectActivitiesDataSourceTests.swift */; };
+		9D7536CD1D78D78600A7623B /* SurveyResponseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D7536CC1D78D78600A7623B /* SurveyResponseViewController.swift */; };
+		9D7536CF1D78D88D00A7623B /* SurveyResponseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D7536CE1D78D88D00A7623B /* SurveyResponseViewModel.swift */; };
+		9D7536D01D78D88D00A7623B /* SurveyResponseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D7536CE1D78D88D00A7623B /* SurveyResponseViewModel.swift */; };
 		9D8772131D19E84E003A4E96 /* ProjectActivityLaunchCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8772121D19E84E003A4E96 /* ProjectActivityLaunchCellViewModel.swift */; };
 		9D8772141D19E84E003A4E96 /* ProjectActivityLaunchCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8772121D19E84E003A4E96 /* ProjectActivityLaunchCellViewModel.swift */; };
 		9D8772481D19E9D4003A4E96 /* ProjectActivityLaunchCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8772451D19E9C9003A4E96 /* ProjectActivityLaunchCellViewModelTests.swift */; };
@@ -271,6 +274,8 @@
 		9D9F581A1D13243A00CE81DE /* ProjectActivitiesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D9F580F1D131B4000CE81DE /* ProjectActivitiesViewModel.swift */; };
 		9D9F581B1D1324E200CE81DE /* DashboardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D9F580E1D131B4000CE81DE /* DashboardViewModel.swift */; };
 		9D9F581C1D1324E300CE81DE /* DashboardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D9F580E1D131B4000CE81DE /* DashboardViewModel.swift */; };
+		9DA4E2FC1D79C97B005C1897 /* SurveyResponseViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DA4E2FB1D79C97B005C1897 /* SurveyResponseViewModelTests.swift */; };
+		9DA4E2FD1D79C97B005C1897 /* SurveyResponseViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DA4E2FB1D79C97B005C1897 /* SurveyResponseViewModelTests.swift */; };
 		9DA8C3C31D3D4860000BB2F9 /* String+WhitespaceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DA8C3C21D3D4860000BB2F9 /* String+WhitespaceTests.swift */; };
 		9DA8C3C41D3D4860000BB2F9 /* String+WhitespaceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DA8C3C21D3D4860000BB2F9 /* String+WhitespaceTests.swift */; };
 		9DBF80DF1D666CAC007F2843 /* CheckoutIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DBF80DE1D666CAC007F2843 /* CheckoutIntent.swift */; };
@@ -1592,6 +1597,8 @@
 		9D2F4BDF1D1AE02700B7C554 /* ProjectActivitySuccessCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectActivitySuccessCellViewModel.swift; sourceTree = "<group>"; };
 		9D525F0E1D4158AC003CAE04 /* ProjectActivityDateCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectActivityDateCell.swift; sourceTree = "<group>"; };
 		9D525F111D417FD7003CAE04 /* ProjectActivitiesDataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectActivitiesDataSourceTests.swift; sourceTree = "<group>"; };
+		9D7536CC1D78D78600A7623B /* SurveyResponseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SurveyResponseViewController.swift; sourceTree = "<group>"; };
+		9D7536CE1D78D88D00A7623B /* SurveyResponseViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SurveyResponseViewModel.swift; sourceTree = "<group>"; };
 		9D8772121D19E84E003A4E96 /* ProjectActivityLaunchCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectActivityLaunchCellViewModel.swift; sourceTree = "<group>"; };
 		9D8772451D19E9C9003A4E96 /* ProjectActivityLaunchCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectActivityLaunchCellViewModelTests.swift; sourceTree = "<group>"; };
 		9D89B7E21D6B8B310021F6FF /* WebModalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebModalViewController.swift; sourceTree = "<group>"; };
@@ -1609,6 +1616,7 @@
 		9D9F580F1D131B4000CE81DE /* ProjectActivitiesViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectActivitiesViewModel.swift; sourceTree = "<group>"; };
 		9D9F58121D131B8300CE81DE /* ProjectActivitiesViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectActivitiesViewModelTests.swift; sourceTree = "<group>"; };
 		9D9F58141D131D4A00CE81DE /* ProjectActivitiesDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectActivitiesDataSource.swift; sourceTree = "<group>"; };
+		9DA4E2FB1D79C97B005C1897 /* SurveyResponseViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SurveyResponseViewModelTests.swift; sourceTree = "<group>"; };
 		9DA8C3C21D3D4860000BB2F9 /* String+WhitespaceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+WhitespaceTests.swift"; sourceTree = "<group>"; };
 		9DBF80DE1D666CAC007F2843 /* CheckoutIntent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckoutIntent.swift; sourceTree = "<group>"; };
 		9DC204B61D1B46BD003C1636 /* ProjectActivityNegativeStateChangeCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectActivityNegativeStateChangeCellViewModel.swift; sourceTree = "<group>"; };
@@ -2394,6 +2402,7 @@
 				A72C39F31D00F27E0075227E /* SettingsViewController.swift */,
 				A749001D1D00E27100BC3BE7 /* SignupViewController.swift */,
 				A72C3AA51D00F7A30075227E /* SortPagerViewController.swift */,
+				9D7536CC1D78D78600A7623B /* SurveyResponseViewController.swift */,
 				0148EF8F1CDD2879000DEFF8 /* ThanksViewController.swift */,
 				01DEFB941CB44A5D003709C0 /* TwoFactorViewController.swift */,
 				803BDF731D11AF7C004A785A /* UpdateDraftViewController.swift */,
@@ -2585,6 +2594,7 @@
 				8078D0B21D0F08B1001CFF87 /* UpdateDraftViewModelTests.swift */,
 				59673CD21D50FB350035AFD9 /* VideoViewModelTests.swift */,
 				9D89B7F91D6CC2AD0021F6FF /* WebModalViewModelTests.swift */,
+				9DA4E2FB1D79C97B005C1897 /* SurveyResponseViewModelTests.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -3151,6 +3161,7 @@
 				A75C81161D210BD700B5AD03 /* ShareViewModel.swift */,
 				A74900171D00E23000BC3BE7 /* SignupViewModel.swift */,
 				A72C3A921D00F6C70075227E /* SortPagerViewModel.swift */,
+				9D7536CE1D78D88D00A7623B /* SurveyResponseViewModel.swift */,
 				A7F441AB1D005A9400FE6FC5 /* ThanksViewModel.swift */,
 				A7F441AC1D005A9400FE6FC5 /* TwoFactorViewModel.swift */,
 				809F8B651D08B4FF005BADD9 /* UpdateDraftViewModel.swift */,
@@ -4163,6 +4174,7 @@
 				5955E6811D21805200B4153D /* DashboardReferrersCellViewModel.swift in Sources */,
 				A75C81201D210C4700B5AD03 /* UpdateActivityItemProvider.swift in Sources */,
 				A7F441B91D005A9400FE6FC5 /* CommentCellViewModel.swift in Sources */,
+				9D7536CF1D78D88D00A7623B /* SurveyResponseViewModel.swift in Sources */,
 				A7DC83961C9DBBE700BB2B44 /* RefTag.swift in Sources */,
 				A7CC13D51D00E6CF00035C52 /* FindFriendsFriendFollowCellViewModel.swift in Sources */,
 				598D96C51D42A3E3003F3F66 /* ActivitySampleFollowCellViewModel.swift in Sources */,
@@ -4294,6 +4306,7 @@
 				A7830D181D005C3F00B5B6AE /* ProfileHeaderViewModelTests.swift in Sources */,
 				A7830CFC1D005C3F00B5B6AE /* BackingCellViewModelTests.swift in Sources */,
 				A72C3A9C1D00F6E60075227E /* DiscoveryFiltersViewModelTests.swift in Sources */,
+				9DA4E2FC1D79C97B005C1897 /* SurveyResponseViewModelTests.swift in Sources */,
 				A77D7B351CBAC5F90077586B /* PaginateTests.swift in Sources */,
 				017E88BB1CD2A609003FE5D6 /* UIActivityViewController.swift in Sources */,
 				01FD71871D36BE1A00070BAC /* DashboardProjectsDrawerCellViewModelTests.swift in Sources */,
@@ -4441,6 +4454,7 @@
 				A72C3A311D00F28C0075227E /* SettingsViewModel.swift in Sources */,
 				A75511BB1C8647D9005355CF /* UILabel+LocalizedKey.swift in Sources */,
 				A757EAF11D1ABE7400A5C978 /* ActivitySurveyResponseCellViewModel.swift in Sources */,
+				9D7536D01D78D88D00A7623B /* SurveyResponseViewModel.swift in Sources */,
 				598D96CC1D42AE85003F3F66 /* ActivitySampleProjectCellViewModel.swift in Sources */,
 				A7208C3F1CCAC86800E3DAB3 /* FacebookAppDelegateProtocol.swift in Sources */,
 				9DEE3B571D1D819E0020C2BE /* ProjectActivityBackingCellViewModel.swift in Sources */,
@@ -4581,6 +4595,7 @@
 				A743817C1D33E03D00040A95 /* ActivityFriendBackingViewModelTests.swift in Sources */,
 				A7A29F4B1CC3DE5F002BE580 /* ValueCellDataSourceTests.swift in Sources */,
 				A76078311CAEE0DD001B39D0 /* IsValidEmailTests.swift in Sources */,
+				9DA4E2FD1D79C97B005C1897 /* SurveyResponseViewModelTests.swift in Sources */,
 				A7AD548B1D4682C20016B4C2 /* ProjectDescriptionViewModelTests.swift in Sources */,
 				597073C41D07626800B00444 /* ProjectNotificationCellViewModelTests.swift in Sources */,
 				018422C81D2C48E300CA7566 /* DashboardTitleViewViewModelTests.swift in Sources */,
@@ -4644,6 +4659,7 @@
 				A74382051D3458C900040A95 /* PaddingCell.swift in Sources */,
 				0169F9841D6E0B2000C8D5C5 /* DiscoveryFiltersStaticRowCell.swift in Sources */,
 				A71003E01CDD06E600B4F4D7 /* MessageThreadCell.swift in Sources */,
+				9D7536CD1D78D78600A7623B /* SurveyResponseViewController.swift in Sources */,
 				59392BEC1D7094B0001C99A4 /* ProjectUpdatesViewController.swift in Sources */,
 				9DDE1F721D5925A90092D9A5 /* CheckoutViewController.swift in Sources */,
 				01940B2B1D46814E0074FCE3 /* HelpWebViewModel.swift in Sources */,

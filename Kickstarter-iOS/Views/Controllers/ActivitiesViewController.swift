@@ -129,8 +129,8 @@ internal final class ActivitiesViewController: UITableViewController {
 
     self.viewModel.outputs.goToSurveyResponse
       .observeForControllerAction()
-      .observeNext { _ in
-        print("not yet implemented")
+      .observeNext { [weak self] surveyResponse in
+        self?.goToSurveyResponse(surveyResponse: surveyResponse)
     }
 
     self.viewModel.outputs.goToUpdate
@@ -180,6 +180,12 @@ internal final class ActivitiesViewController: UITableViewController {
   private func goToFriends(source source: FriendsSource) {
     let vc = FindFriendsViewController.configuredWith(source: .activity)
     self.navigationController?.pushViewController(vc, animated: true)
+  }
+
+  private func goToSurveyResponse(surveyResponse surveyResponse: SurveyResponse) {
+    let vc = SurveyResponseViewController.configuredWith(surveyResponse: surveyResponse)
+    let nav = UINavigationController(rootViewController: vc)
+    self.navigationController?.presentViewController(nav, animated: true, completion: nil)
   }
 
   private func goToUpdate(project project: Project, update: Update) {

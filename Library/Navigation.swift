@@ -9,6 +9,7 @@ public enum Navigation {
   case signup
   case tab(Tab)
   case project(Param, Navigation.Project, refTag: RefTag?)
+  case user(Param, Navigation.User)
 
   public enum Checkout {
     case payments(Navigation.Checkout.Payment)
@@ -59,6 +60,10 @@ public enum Navigation {
       case comments
     }
   }
+
+  public enum User {
+    case survey(Int)
+  }
 }
 
 extension Navigation: Equatable {}
@@ -72,6 +77,8 @@ public func == (lhs: Navigation, rhs: Navigation) -> Bool {
     return lhs == rhs
   case let (.project(lhsParam, lhsProject, lhsRefTag), .project(rhsParam, rhsProject, rhsRefTag)):
     return lhsParam == rhsParam && lhsProject == rhsProject && lhsRefTag == rhsRefTag
+  case let (.user(lhsParam, lhsUser), .user(rhsParam, rhsUser)):
+    return lhsParam == rhsParam && lhsUser == rhsUser
   default:
     return false
   }
@@ -178,6 +185,14 @@ public func == (lhs: Navigation.Tab, rhs: Navigation.Tab) -> Bool {
   }
 }
 
+extension Navigation.User: Equatable {}
+public func == (lhs: Navigation.User, rhs: Navigation.User) -> Bool {
+  switch (lhs, rhs) {
+  case let (.survey(lhsId), .survey(rhsId)):
+    return lhsId == rhsId
+  }
+}
+
 extension Navigation {
   public static func match(url: NSURL) -> Navigation? {
     return routes.reduce(nil) { accum, templateAndRoute in
@@ -221,7 +236,8 @@ private let routes = [
   "/projects/:creator_param/:project_param/posts": posts,
   "/projects/:creator_param/:project_param/posts/:update_param": update,
   "/projects/:creator_param/:project_param/posts/:update_param/comments": updateComments,
-  "/projects/:creator_param/:project_param/surveys/:survey_param": survey,
+  "/projects/:creator_param/:project_param/surveys/:survey_param": projectSurvey,
+  "/users/:user_param/surveys/:survey_response_id": userSurvey
 ]
 
 extension Navigation.Project {
@@ -408,6 +424,13 @@ private func posts(params: RouteParams) -> Decoded<Navigation> {
     <*> params <|? "ref_tag"
 }
 
+private func projectSurvey(params: RouteParams) -> Decoded<Navigation> {
+  return curry(Navigation.project)
+    <^> params <| "project_param"
+    <*> (Navigation.Project.survey <^> (params <| "survey_param" >>- stringToInt))
+    <*> params <|? "ref_tag"
+}
+
 private func update(params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
@@ -426,11 +449,10 @@ private func updateComments(params: RouteParams) -> Decoded<Navigation> {
     <*> params <|? "ref_tag"
 }
 
-private func survey(params: RouteParams) -> Decoded<Navigation> {
-  return curry(Navigation.project)
-    <^> params <| "project_param"
-    <*> (Navigation.Project.survey <^> (params <| "survey_param" >>- stringToInt))
-    <*> params <|? "ref_tag"
+private func userSurvey(params: RouteParams) -> Decoded<Navigation> {
+  return curry(Navigation.user)
+  <^> params <| "user_param"
+  <*> (Navigation.User.survey <^> (params <| "survey_response_id" >>- stringToInt))
 }
 
 // MARK: Helpers

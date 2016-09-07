@@ -119,5 +119,8 @@ public final class NavigationTests: XCTestCase {
 
     KSRAssertMatch(.tab(.dashboard(project: .slug("project"))),
                    "/projects/creator/project/dashboard")
+
+    KSRAssertMatch(.user(.slug("self"), .survey(3)),
+                   "/users/self/surveys/3")
   }
 }

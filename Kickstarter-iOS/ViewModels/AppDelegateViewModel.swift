@@ -311,6 +311,21 @@ AppDelegateViewModelOutputs {
       .filter { _, subpage, _ in subpage == .comments }
       .map { project, _, vcs in vcs + [CommentsViewController.configuredWith(project: project, update: nil)] }
 
+    let surveyResponseLink = deepLink
+      .map { link -> Int? in
+        guard case let .user(_, .survey(surveyResponseId)) = link else { return nil }
+        return surveyResponseId
+      }
+      .ignoreNil()
+      .switchMap { surveyResponseId in
+        AppEnvironment.current.apiService.fetchSurveyResponse(surveyResponseId: surveyResponseId)
+          .demoteErrors()
+          .observeForUI()
+          .map { surveyResponse -> [UIViewController] in
+            [SurveyResponseViewController.configuredWith(surveyResponse: surveyResponse)]
+        }
+    }
+
     let updatesLink = projectLink
       .filter { _, subpage, _ in subpage == .updates }
       .map { project, _, vcs in vcs + [ProjectUpdatesViewController.configuredWith(project: project)] }
@@ -348,6 +363,7 @@ AppDelegateViewModelOutputs {
       .merge(
         projectRootLink,
         projectCommentsLink,
+        surveyResponseLink,
         updatesLink,
         updateRootLink,
         updateCommentsLink
@@ -552,7 +568,7 @@ private func navigation(fromPushEnvelope envelope: PushEnvelope) -> Navigation? 
   }
 
   if let survey = envelope.survey {
-    return .project(.id(survey.projectId), .survey(survey.id), refTag: .push)
+    return .user(.slug("self"), .survey(survey.id))
   }
 
   return nil

@@ -601,6 +601,27 @@ final class AppDelegateViewModelTests: TestCase {
     self.presentViewController.assertValueCount(0)
   }
 
+  func testOpenNotification_SurveyResponse() {
+    self.vm.inputs.applicationDidFinishLaunching(
+      application: UIApplication.sharedApplication(),
+      launchOptions: [UIApplicationLaunchOptionsRemoteNotificationKey: surveyResponsePushData]
+    )
+
+    self.presentViewController.assertValueCount(1)
+  }
+
+  func testOpenNotification_SurveyResponse_BadData() {
+    var badPushData = surveyResponsePushData
+    badPushData["survey"]?["id"] = nil
+
+    self.vm.inputs.applicationDidFinishLaunching(
+      application: UIApplication.sharedApplication(),
+      launchOptions: [UIApplicationLaunchOptionsRemoteNotificationKey: badPushData]
+    )
+
+    self.presentViewController.assertValueCount(0)
+  }
+
   func testOpenNotification_UpdateComment() {
     self.vm.inputs.applicationDidFinishLaunching(
       application: UIApplication.sharedApplication(),
@@ -799,6 +820,16 @@ private let projectCommentPushData = [
   ],
   "activity": [
     "category": "comment-project",
+    "id": 1,
+    "project_id": 1
+  ]
+]
+
+private let surveyResponsePushData = [
+  "aps": [
+    "alert": "Response needed! Get your reward for backing some project."
+  ],
+  "survey": [
     "id": 1,
     "project_id": 1
   ]
