@@ -151,6 +151,8 @@
 		597073C41D07626800B00444 /* ProjectNotificationCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 597073BF1D0760F200B00444 /* ProjectNotificationCellViewModelTests.swift */; };
 		597582E31D5D12AE008765DE /* SettingsStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 597582E21D5D12AE008765DE /* SettingsStyles.swift */; };
 		597582E41D5D12AE008765DE /* SettingsStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 597582E21D5D12AE008765DE /* SettingsStyles.swift */; };
+		5981BE101D7F4656002E49F1 /* CommentStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5981BE0F1D7F4656002E49F1 /* CommentStyles.swift */; };
+		5981BE111D7F4656002E49F1 /* CommentStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5981BE0F1D7F4656002E49F1 /* CommentStyles.swift */; };
 		598D96B41D41790C003F3F66 /* ActivitySampleBackingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598D96821D417905003F3F66 /* ActivitySampleBackingCell.swift */; };
 		598D96B61D426D80003F3F66 /* ActivitySampleFollowCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598D96B51D426D80003F3F66 /* ActivitySampleFollowCell.swift */; };
 		598D96B81D426F70003F3F66 /* ActivitySampleProjectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598D96B71D426F70003F3F66 /* ActivitySampleProjectCell.swift */; };
@@ -1527,6 +1529,7 @@
 		597073B31D07294500B00444 /* ProjectNotificationCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectNotificationCellViewModel.swift; sourceTree = "<group>"; };
 		597073BF1D0760F200B00444 /* ProjectNotificationCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectNotificationCellViewModelTests.swift; sourceTree = "<group>"; };
 		597582E21D5D12AE008765DE /* SettingsStyles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsStyles.swift; sourceTree = "<group>"; };
+		5981BE0F1D7F4656002E49F1 /* CommentStyles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentStyles.swift; sourceTree = "<group>"; };
 		598D96821D417905003F3F66 /* ActivitySampleBackingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivitySampleBackingCell.swift; sourceTree = "<group>"; };
 		598D96B51D426D80003F3F66 /* ActivitySampleFollowCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivitySampleFollowCell.swift; sourceTree = "<group>"; };
 		598D96B71D426F70003F3F66 /* ActivitySampleProjectCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivitySampleProjectCell.swift; sourceTree = "<group>"; };
@@ -2189,6 +2192,7 @@
 				A73379101D0E33A600C91445 /* ButtonStyles.swift */,
 				A73379441D0E36A600C91445 /* Colors.swift */,
 				59B0E07D1D147F340081D2DC /* DashboardStyles.swift */,
+				5981BE0F1D7F4656002E49F1 /* CommentStyles.swift */,
 				597582E21D5D12AE008765DE /* SettingsStyles.swift */,
 				598D96C11D429756003F3F66 /* ActivitySampleStyles.swift */,
 				A757EB2A1D1AD89E00A5C978 /* DiscoveryStyles.swift */,
@@ -4042,6 +4046,7 @@
 				A79BF81F1D11F6AF004C0445 /* Strings.swift in Sources */,
 				A73379451D0E36A600C91445 /* Colors.swift in Sources */,
 				01C7CDB11D13462500D9E0D1 /* DashboardRewardRowStackViewViewModel.swift in Sources */,
+				5981BE101D7F4656002E49F1 /* CommentStyles.swift in Sources */,
 				A73378FE1D0AE36400C91445 /* LoginStyles.swift in Sources */,
 				0154A93B1CA1A17800DB9BA4 /* UIColor.swift in Sources */,
 				9D0FB7751D7600B5005774F2 /* CheckoutRacingViewModel.swift in Sources */,
@@ -4355,6 +4360,7 @@
 				9DC204B81D1B46BD003C1636 /* ProjectActivityNegativeStateChangeCellViewModel.swift in Sources */,
 				A747A8EC1D45896000AF199A /* RewardCellViewModel.swift in Sources */,
 				A70968C41D14366D00DB39D3 /* Fonts.swift in Sources */,
+				5981BE111D7F4656002E49F1 /* CommentStyles.swift in Sources */,
 				A75511AF1C8647D9005355CF /* Environment.swift in Sources */,
 				A7F441C41D005A9400FE6FC5 /* FacebookConfirmationViewModel.swift in Sources */,
 				A75511B01C8647D9005355CF /* Format.swift in Sources */,

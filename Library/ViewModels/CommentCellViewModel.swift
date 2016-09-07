@@ -40,15 +40,13 @@ CommentCellViewModelOutputs {
     let isNotDeleted = comment.map { $0.deletedAt == nil }
 
     self.bodyColor = isNotDeleted.skipRepeats()
-      .map { $0 ? .ksr_text_navy_900 : .ksr_text_navy_500 }
+      .map { $0 ? .ksr_text_navy_700 : .ksr_text_navy_500 }
 
     self.bodyFont = isNotDeleted.skipRepeats()
-      .map { $0 ? UIFont.ksr_body() : UIFont.ksr_body().italicized }
+      .map { $0 ? UIFont.ksr_body(size: 16.0) : UIFont.ksr_body(size: 16.0).italicized }
 
     self.creatorHidden = self.commentProjectViewer.signal.ignoreNil()
-      .map { comment, project, viewer in
-        viewer?.id != project.creator.id || comment.author.id == viewer?.id
-    }
+      .map { comment, project, _ in comment.author.id != project.creator.id }
 
     self.name = comment.map { $0.author.name }
 
@@ -57,8 +55,8 @@ CommentCellViewModelOutputs {
     }
 
     self.youHidden = self.commentProjectViewer.signal.ignoreNil()
-      .map { comment, _, viewer in
-        comment.author.id != viewer?.id
+      .map { comment, project, viewer in
+        comment.author.id != viewer?.id || comment.author.id == project.creator.id
     }
   }
 

@@ -35,25 +35,54 @@ internal final class CommentsViewController: UITableViewController {
   }
 
   internal override func bindStyles() {
-    self.tableView
-      |> UITableView.lens.allowsSelection .~ false
-      |> UITableView.lens.estimatedRowHeight .~ 200.0
-      |> UITableView.lens.rowHeight .~ UITableViewAutomaticDimension
+    super.bindStyles()
+
+    self
+      |> baseTableControllerStyle(estimatedRowHeight: 200.0)
+      |> CommentsViewController.lens.view.backgroundColor .~ .whiteColor()
+
+    self.commentBarButton
+      |> UIBarButtonItem.lens.title %~ { _ in Strings.general_navigation_buttons_comment() }
+      |> UIBarButtonItem.lens.accessibilityLabel %~ { _ in Strings.general_navigation_buttons_comment() }
+      |> UIBarButtonItem.lens.accessibilityValue %~ { _ in
+        Strings.project_comments_accessibility_button_write()
+      }
+      |> UIBarButtonItem.lens.accessibilityHint %~ { _ in
+        Strings.accessibility_dashboard_buttons_post_update_hint()
+    }
   }
 
   // swiftlint:disable function_body_length
   internal override func bindViewModel() {
-    self.viewModel.outputs.dataSource
-      .observeForControllerAction()
-      .observeNext { [weak self] comments, project, user in
-        self?.dataSource.load(comments: comments, project: project, loggedInUser: user)
-        self?.tableView.reloadData()
-    }
-
     self.viewModel.outputs.backerEmptyStateVisible
       .observeForControllerAction()
       .observeNext { [weak self] visible in
         self?.dataSource.backerEmptyState(visible: visible)
+        self?.tableView.reloadData()
+    }
+
+    self.viewModel.outputs.closeLoginTout
+      .observeForControllerAction()
+      .observeNext { [weak self] in
+        self?.loginToutViewController?.dismissViewControllerAnimated(true, completion: nil)
+    }
+
+    self.viewModel.outputs.commentButtonVisible
+      .observeForControllerAction()
+      .observeNext { [weak self] visible in
+        self?.navigationItem.rightBarButtonItem = visible ? self?.commentBarButton : nil
+    }
+
+    self.viewModel.outputs.commentsAreLoading
+      .observeForControllerAction()
+      .observeNext { [weak self] in
+        $0 ? self?.refreshControl?.beginRefreshing() : self?.refreshControl?.endRefreshing()
+    }
+
+    self.viewModel.outputs.dataSource
+      .observeForControllerAction()
+      .observeNext { [weak self] comments, project, user in
+        self?.dataSource.load(comments: comments, project: project, loggedInUser: user)
         self?.tableView.reloadData()
     }
 
@@ -71,32 +100,14 @@ internal final class CommentsViewController: UITableViewController {
         self?.tableView.reloadData()
     }
 
-    self.viewModel.outputs.commentButtonVisible
+    self.viewModel.outputs.openLoginTout
       .observeForControllerAction()
-      .observeNext { [weak self] visible in
-        self?.navigationItem.rightBarButtonItem = visible ? self?.commentBarButton : nil
-    }
+      .observeNext { [weak self] in self?.presentLoginTout() }
 
     self.viewModel.outputs.presentPostCommentDialog
       .observeForControllerAction()
       .observeNext { [weak self] project, update in
         self?.presentCommentDialog(project: project, update: update)
-    }
-
-    self.viewModel.outputs.openLoginTout
-      .observeForControllerAction()
-      .observeNext { [weak self] in self?.presentLoginTout() }
-
-    self.viewModel.outputs.closeLoginTout
-      .observeForControllerAction()
-      .observeNext { [weak self] in
-        self?.loginToutViewController?.dismissViewControllerAnimated(true, completion: nil)
-    }
-
-    self.viewModel.outputs.commentsAreLoading
-      .observeForControllerAction()
-      .observeNext { [weak self] in
-        $0 ? self?.refreshControl?.beginRefreshing() : self?.refreshControl?.endRefreshing()
     }
   }
   // swiftlint:enable function_body_length
@@ -137,10 +148,6 @@ internal final class CommentsViewController: UITableViewController {
 
   @IBAction func emptyStateLoginButtonPressed() {
     self.viewModel.inputs.loginButtonPressed()
-  }
-
-  @IBAction func emptyStateBecomeABackerButtonPressed() {
-    self.viewModel.inputs.backProjectButtonPressed()
   }
 
   @IBAction func emptyStateCommentButtonPressed() {

@@ -33,8 +33,8 @@ final class CommentCellViewModelTest: TestCase {
 
   func testOutputs() {
     let comment = Comment.template
-    let project = Project.template
-    let viewer = User.template |> User.lens.id .~ 12345
+    let project = .template |> Project.lens.creator.id .~ 222
+    let viewer = .template |> User.lens.id .~ 12345
 
     self.vm.inputs.comment(comment, project: project, viewer: viewer)
 
@@ -45,12 +45,12 @@ final class CommentCellViewModelTest: TestCase {
     self.creatorHidden.assertValues([true], "The creator tag is hidden.")
     self.commenterName.assertValues([comment.author.name], "The author's name is emitted.")
     self.timestamp.assertValueCount(1, "A timestamp is emitted.")
-    self.youHidden.assertValues([true], "The you tab is hidden.")
+    self.youHidden.assertValues([true], "The you tag is hidden.")
   }
 
   func testOutputs_ViewerIs_LoggedOut() {
     let comment = Comment.template
-    let project = Project.template
+    let project = .template |> Project.lens.creator.id .~ 222
 
     self.vm.inputs.comment(comment, project: project, viewer: nil)
 
@@ -61,13 +61,13 @@ final class CommentCellViewModelTest: TestCase {
     self.creatorHidden.assertValues([true], "The creator tag is hidden.")
     self.commenterName.assertValues([comment.author.name], "The author's name is emitted.")
     self.timestamp.assertValueCount(1, "A timestamp is emitted.")
-    self.youHidden.assertValues([true], "The you tab is hidden.")
+    self.youHidden.assertValues([true], "The you tag is hidden.")
   }
 
   func testPersonalizedLabels_ViewerIs_NotCreator_NotAuthor() {
     let comment = Comment.template
-    let project = Project.template
-    let viewer = User.template |> User.lens.id .~ 12345
+    let project = .template |> Project.lens.creator.id .~ 222
+    let viewer = .template |> User.lens.id .~ 12345
 
     self.vm.inputs.comment(comment, project: project, viewer: viewer)
 
@@ -101,12 +101,12 @@ final class CommentCellViewModelTest: TestCase {
 
     self.vm.inputs.comment(comment, project: project, viewer: viewer)
 
-    self.creatorHidden.assertValues([true], "Creator tag is hidden.")
-    self.youHidden.assertValues([false], "You tag is shown instead of creator tag.")
+    self.creatorHidden.assertValues([false], "Creator tag is shown instead of You tag.")
+    self.youHidden.assertValues([true], "You tag is hidden.")
   }
 
   func testPersonalizedLabels_ViewerIs_Creator_NonAuthor() {
-    let project = Project.template
+    let project = .template |> Project.lens.creator.id .~ 11111
     let comment = Comment(author: User.template |> User.lens.id .~ 12345,
                           body: "HELLO",
                           createdAt: 123456789.0,
@@ -116,13 +116,13 @@ final class CommentCellViewModelTest: TestCase {
 
     self.vm.inputs.comment(comment, project: project, viewer: viewer)
 
-    self.creatorHidden.assertValues([false], "Creator take is shown.")
+    self.creatorHidden.assertValues([true], "Creator tag is hidden for non-authored comment.")
     self.youHidden.assertValues([true], "You tag is hidden.")
   }
 
   func testDeletedComment() {
-    let comment = Comment.template |> Comment.lens.deletedAt .~ 123456789.0
-    let project = Project.template
+    let comment = .template |> Comment.lens.deletedAt .~ 123456789.0
+    let project = .template |> Project.lens.creator.id .~ 11111
     let viewer = User.template |> User.lens.id .~ 12345
 
     self.vm.inputs.comment(comment, project: project, viewer: viewer)

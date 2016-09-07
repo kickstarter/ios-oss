@@ -5,30 +5,27 @@ import KsApi
 import Prelude
 
 public protocol CommentsViewModelInputs {
-  /// Call when the view loads.
-  func viewDidLoad()
-
-  /// Call with the project/update that we are viewing comments for. Both can be provided to minimize
-  /// the number of API requests made, but it will be assumed we are viewing the comments for the update.
-  func project(project: Project?, update: Update?)
-
   /// Call when the comment button is pressed.
   func commentButtonPressed()
+
+  /// Call when the comment dialog has posted a comment.
+  func commentPosted(comment: Comment)
 
   /// Call when the login button is pressed in the empty state.
   func loginButtonPressed()
 
-  /// Call when the 'back this project' button is pressed in the empty state.
-  func backProjectButtonPressed()
-
-  /// Call when the comment dialog has posted a comment.
-  func commentPosted(comment: Comment)
+  /// Call with the project/update that we are viewing comments for. Both can be provided to minimize
+  /// the number of API requests made, but it will be assumed we are viewing the comments for the update.
+  func project(project: Project?, update: Update?)
 
   ///  Call when pull-to-refresh is invoked.
   func refresh()
 
   /// Call when a user session has started
   func userSessionStarted()
+
+  /// Call when the view loads.
+  func viewDidLoad()
 
   /// Call when a new row is displayed.
   func willDisplayRow(row: Int, outOf totalRows: Int)
@@ -70,64 +67,6 @@ public protocol CommentsViewModelType {
 
 public final class CommentsViewModel: CommentsViewModelType, CommentsViewModelInputs,
 CommentsViewModelOutputs {
-
-  private let viewDidLoadProperty = MutableProperty()
-  public func viewDidLoad() {
-    self.viewDidLoadProperty.value = ()
-  }
-
-  private let projectAndUpdateProperty = MutableProperty<(Project?, Update?)?>(nil)
-  public func project(project: Project?, update: Update?) {
-    self.projectAndUpdateProperty.value = (project, update)
-  }
-
-  private let commentButtonPressedProperty = MutableProperty()
-  public func commentButtonPressed() {
-    self.commentButtonPressedProperty.value = ()
-  }
-
-  private let loginButtonPressedProperty = MutableProperty()
-  public func loginButtonPressed() {
-    self.loginButtonPressedProperty.value = ()
-  }
-
-  private let backProjectButtonPressedProperty = MutableProperty()
-  public func backProjectButtonPressed() {
-    self.backProjectButtonPressedProperty.value = ()
-  }
-
-  private let commentPostedProperty = MutableProperty<Comment?>(nil)
-  public func commentPosted(comment: Comment) {
-    self.commentPostedProperty.value = comment
-  }
-
-  private let refreshProperty = MutableProperty()
-  public func refresh() {
-    self.refreshProperty.value = ()
-  }
-
-  private let userSessionStartedProperty = MutableProperty()
-  public func userSessionStarted() {
-    self.userSessionStartedProperty.value = ()
-  }
-
-  private let willDisplayRowProperty = MutableProperty<(row: Int, total: Int)?>(nil)
-  public func willDisplayRow(row: Int, outOf totalRows: Int) {
-    self.willDisplayRowProperty.value = (row, totalRows)
-  }
-
-  public let dataSource: Signal<([Comment], Project, User?), NoError>
-  public let commentButtonVisible: Signal<Bool, NoError>
-  public let loggedOutEmptyStateVisible: Signal<Bool, NoError>
-  public let nonBackerEmptyStateVisible: Signal<Bool, NoError>
-  public let backerEmptyStateVisible: Signal<Bool, NoError>
-  public let presentPostCommentDialog: Signal<(Project, Update?), NoError>
-  public let openLoginTout: Signal<(), NoError>
-  public let closeLoginTout: Signal<(), NoError>
-  public let commentsAreLoading: Signal<Bool, NoError>
-
-  public var inputs: CommentsViewModelInputs { return self }
-  public var outputs: CommentsViewModelOutputs { return self }
 
   // swiftlint:disable function_body_length
   public init() {
@@ -212,12 +151,9 @@ CommentsViewModelOutputs {
     let userCanComment = combineLatest(project, self.backerEmptyStateVisible)
       .map { project, emptyStateVisible in
         canComment(onProject: project) && !emptyStateVisible
-      }
+    }
 
-    self.commentButtonVisible = Signal.merge(
-      self.viewDidLoadProperty.signal.mapConst(false),
-      userCanComment
-      )
+    self.commentButtonVisible = userCanComment
       .skipRepeats()
 
     self.presentPostCommentDialog = combineLatest(project, update)
@@ -262,6 +198,59 @@ CommentsViewModelOutputs {
     }
   }
   // swiftlint:enable function_body_length
+
+  private let commentButtonPressedProperty = MutableProperty()
+  public func commentButtonPressed() {
+    self.commentButtonPressedProperty.value = ()
+  }
+
+  private let commentPostedProperty = MutableProperty<Comment?>(nil)
+  public func commentPosted(comment: Comment) {
+    self.commentPostedProperty.value = comment
+  }
+
+  private let loginButtonPressedProperty = MutableProperty()
+  public func loginButtonPressed() {
+    self.loginButtonPressedProperty.value = ()
+  }
+
+  private let projectAndUpdateProperty = MutableProperty<(Project?, Update?)?>(nil)
+  public func project(project: Project?, update: Update?) {
+    self.projectAndUpdateProperty.value = (project, update)
+  }
+
+  private let refreshProperty = MutableProperty()
+  public func refresh() {
+    self.refreshProperty.value = ()
+  }
+
+  private let userSessionStartedProperty = MutableProperty()
+  public func userSessionStarted() {
+    self.userSessionStartedProperty.value = ()
+  }
+
+  private let viewDidLoadProperty = MutableProperty()
+  public func viewDidLoad() {
+    self.viewDidLoadProperty.value = ()
+  }
+
+  private let willDisplayRowProperty = MutableProperty<(row: Int, total: Int)?>(nil)
+  public func willDisplayRow(row: Int, outOf totalRows: Int) {
+    self.willDisplayRowProperty.value = (row, totalRows)
+  }
+
+  public let backerEmptyStateVisible: Signal<Bool, NoError>
+  public let closeLoginTout: Signal<(), NoError>
+  public let commentButtonVisible: Signal<Bool, NoError>
+  public let commentsAreLoading: Signal<Bool, NoError>
+  public let dataSource: Signal<([Comment], Project, User?), NoError>
+  public let loggedOutEmptyStateVisible: Signal<Bool, NoError>
+  public let nonBackerEmptyStateVisible: Signal<Bool, NoError>
+  public let openLoginTout: Signal<(), NoError>
+  public let presentPostCommentDialog: Signal<(Project, Update?), NoError>
+
+  public var inputs: CommentsViewModelInputs { return self }
+  public var outputs: CommentsViewModelOutputs { return self }
 }
 
 private func canComment(onProject project: Project) -> Bool {
