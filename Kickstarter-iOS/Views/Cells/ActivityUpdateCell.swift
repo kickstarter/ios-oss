@@ -5,12 +5,12 @@ import ReactiveCocoa
 import KsApi
 
 protocol ActivityUpdateCellDelegate {
+  /// Call with the activity value when navigating to the activity's project.
   func activityUpdateCellTappedProjectImage(activity activity: Activity)
 }
 
 internal final class ActivityUpdateCell: UITableViewCell, ValueCell {
-  private var viewModel: ActivityUpdateViewModel = ActivityUpdateViewModel()
-
+  private var viewModel: ActivityUpdateViewModelType = ActivityUpdateViewModel()
   internal var delegate: ActivityUpdateCellDelegate?
 
   @IBOutlet private weak var bodyLabel: UILabel!
@@ -21,7 +21,17 @@ internal final class ActivityUpdateCell: UITableViewCell, ValueCell {
   @IBOutlet private weak var titleLabel: UILabel!
   @IBOutlet private weak var updateSequenceLabel: UILabel!
 
-  override func bindViewModel() {
+  internal override func bindViewModel() {
+    self.rac.accessibilityLabel = self.viewModel.outputs.cellAccessibilityLabel
+    self.rac.accessibilityValue = self.viewModel.outputs.cellAccessibilityValue
+    self.projectNameLabel.rac.text = self.viewModel.outputs.projectName
+    self.updateSequenceLabel.rac.text = self.viewModel.outputs.sequenceTitle
+    self.timestampLabel.rac.text = self.viewModel.outputs.timestamp
+    self.titleLabel.rac.text = self.viewModel.outputs.title
+    self.bodyLabel.rac.text = self.viewModel.outputs.body
+    self.projectImageButton.accessibilityHint = Strings.dashboard_tout_accessibility_hint_opens_project()
+    self.projectImageButton.rac.accessibilityLabel = self.viewModel.outputs.projectButtonAccessibilityLabel
+
     self.viewModel.outputs.projectImageURL
       .observeForUI()
       .on(next: { [weak projectImageView] _ in
@@ -33,27 +43,15 @@ internal final class ActivityUpdateCell: UITableViewCell, ValueCell {
         projectImageView?.af_setImageWithURL(url)
     }
 
-    self.rac.accessibilityLabel = self.viewModel.outputs.cellAccessibilityLabel
-    self.rac.accessibilityValue = self.viewModel.outputs.cellAccessibilityValue
-
-    self.projectNameLabel.rac.text = self.viewModel.outputs.projectName.ignoreNil()
-    self.updateSequenceLabel.rac.text = self.viewModel.outputs.sequenceTitle.ignoreNil()
-    self.timestampLabel.rac.text = self.viewModel.outputs.timestamp
-    self.titleLabel.rac.text = self.viewModel.outputs.title.ignoreNil()
-    self.bodyLabel.rac.text = self.viewModel.outputs.body
-
-    self.projectImageButton.rac.accessibilityLabel = self.viewModel.outputs.projectButtonAccessibilityLabel
-    self.projectImageButton.rac.accessibilityValue = self.viewModel.outputs.projectButtonAccessibilityValue
-
-    self.viewModel.outputs.tappedActivityProjectImage
+    self.viewModel.outputs.notifyDelegateTappedProjectImage
       .observeForUI()
       .observeNext { [weak self] activity in
         self?.delegate?.activityUpdateCellTappedProjectImage(activity: activity)
     }
   }
 
-  func configureWith(value value: Activity) {
-    self.viewModel.inputs.activity(value)
+  internal func configureWith(value value: Activity) {
+    self.viewModel.inputs.configureWith(activity: value)
   }
 
   @IBAction internal func tappedProjectImage() {

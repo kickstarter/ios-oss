@@ -6,7 +6,7 @@ import CoreImage
 import KsApi
 
 internal final class ActivitySuccessCell: UITableViewCell, ValueCell {
-  private let viewModel: ActivitySuccessViewModel = ActivitySuccessViewModel()
+  private let viewModel: ActivitySuccessViewModelType = ActivitySuccessViewModel()
 
   @IBOutlet internal weak var projectImageView: UIImageView!
   @IBOutlet internal weak var projectNameLabel: UILabel!
@@ -33,6 +33,6 @@ internal final class ActivitySuccessCell: UITableViewCell, ValueCell {
   }
 
   func configureWith(value value: Activity) {
-    self.viewModel.inputs.activity(value)
+    self.viewModel.inputs.configureWith(activity: value)
   }
 }

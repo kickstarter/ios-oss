@@ -3,45 +3,52 @@ import ReactiveCocoa
 import Result
 
 public protocol ActivitySuccessViewModelInputs {
-  func activity(activity: Activity)
+  func configureWith(activity activity: Activity)
 }
 
 public protocol ActivitySuccessViewModelOutputs {
+  var fundingDate: Signal<String, NoError> { get }
   var projectImageURL: Signal<NSURL?, NoError> { get }
   var projectName: Signal<String, NoError> { get }
-  var fundingDate: Signal<String, NoError> { get }
-  var pledgedTitle: Signal<String, NoError> { get }
   var pledgedSubtitle: Signal<String, NoError> { get }
+  var pledgedTitle: Signal<String, NoError> { get }
 }
 
-public final class ActivitySuccessViewModel: ActivitySuccessViewModelInputs,
+public protocol ActivitySuccessViewModelType {
+  var inputs: ActivitySuccessViewModelInputs { get }
+  var outputs: ActivitySuccessViewModelOutputs { get }
+}
+
+public final class ActivitySuccessViewModel: ActivitySuccessViewModelType, ActivitySuccessViewModelInputs,
 ActivitySuccessViewModelOutputs {
 
   public init() {
-    let activity = self.activityProperty.signal.ignoreNil()
+    let project = self.activityProperty.signal.ignoreNil()
+      .map { $0.project }.ignoreNil()
 
-    self.projectImageURL = activity.map { ($0.project?.photo.full).flatMap(NSURL.init) }
+    self.projectImageURL = project.map { $0.photo.full }.map(NSURL.init(string:))
 
-    self.projectName = activity.map {
+    self.projectName = project.map {
       Strings.activity_project_state_change_project_was_successfully_funded(
-        project_name: $0.project?.name ?? ""
+        project_name: $0.name
       )
     }
 
-    self.fundingDate = activity.mapConst("Mar 2, 2016")
-
-    self.pledgedTitle = activity.map {
-      Format.currency(
-        $0.project?.stats.pledged ?? 0,
-        country: $0.project?.country ?? .US
-      )
+    self.fundingDate = project.map {
+      Format.date(secondsInUTC: $0.dates.stateChangedAt, dateStyle: .MediumStyle, timeStyle: .NoStyle)
     }
 
-    self.pledgedSubtitle = activity.mapConst("pledged of $10,000")
+    self.pledgedTitle = project.map { Format.currency($0.stats.pledged, country: $0.country) }
+
+    self.pledgedSubtitle = project.map {
+      Strings.activity_project_state_change_pledged_of_goal(
+        goal: Format.currency($0.stats.goal, country: $0.country)
+      )
+    }
   }
 
   private let activityProperty = MutableProperty<Activity?>(nil)
-  public func activity(activity: Activity) {
+  public func configureWith(activity activity: Activity) {
     self.activityProperty.value = activity
   }
 
