@@ -135,13 +135,27 @@ ProjectMagazineViewModelOutputs {
         return project.map { fetchedProject.prefix(value: $0) } ?? fetchedProject
     }
 
+    let starToggleLens = Project.lens.personalization.isStarred %~ { !($0 ?? false) }
+
     let projectOnStarToggle = self.project
       .takeWhen(.merge(loggedInUserTappedStar, userLoginAfterTappingStar))
+      .scan(nil) { accum, project -> Project? in (accum ?? project) |> starToggleLens }
+      .ignoreNil()
+
+    let projectOnStarToggleAndSuccess = projectOnStarToggle
       .switchMap { project in
         AppEnvironment.current.apiService.toggleStar(project)
-          .map { $0.project }
-          .demoteErrors()
+          .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
+          .map { ($0.project, success: true) }
+          .flatMapError { _ in .init(value: (project, success: false)) }
     }
+    let projectOnStarToggleSuccess = projectOnStarToggleAndSuccess
+      .filter(second)
+      .map(first)
+
+    let revertStarToggle = projectOnStarToggle
+      .takeWhen(projectOnStarToggleAndSuccess.filter(negate • second))
+      .map(starToggleLens)
 
     let managePledge = self.project
       .takeWhen(self.managePledgeButtonTappedProperty.signal)
@@ -157,7 +171,7 @@ ProjectMagazineViewModelOutputs {
 
     self.configureChildViewControllersWithProject = self.project
 
-    self.showProjectStarredPrompt = projectOnStarToggle
+    self.showProjectStarredPrompt = projectOnStarToggleSuccess
       .filter { $0.personalization.isStarred == true && !$0.endsIn48Hours }
       .map { _ in Strings.project_star_confirmation() }
 
@@ -180,7 +194,8 @@ ProjectMagazineViewModelOutputs {
 
     self.notifyDescriptionToExpand = self.expandDescriptionProperty.signal
 
-    let project = Signal.merge(self.project, projectOnStarToggle)
+    let project = Signal
+      .merge(self.project, projectOnStarToggle, projectOnStarToggleSuccess, revertStarToggle)
 
     self.starButtonSelected = project
       .map { $0.personalization.isStarred == true }
@@ -222,9 +237,8 @@ ProjectMagazineViewModelOutputs {
         AppEnvironment.current.koala.trackProjectShow(project, refTag: refTag, cookieRefTag: cookieRefTag)
     }
 
-    projectOnStarToggle.observeNext { project in
-      AppEnvironment.current.koala.trackProjectStar(project)
-    }
+    projectOnStarToggleSuccess
+      .observeNext { AppEnvironment.current.koala.trackProjectStar($0) }
 
     combineLatest(cookieRefTag.ignoreNil(), project)
       .take(1)

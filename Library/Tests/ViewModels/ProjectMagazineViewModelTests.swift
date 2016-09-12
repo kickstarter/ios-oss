@@ -384,7 +384,6 @@ final class ProjectMagazineViewModelTests: TestCase {
 
     withEnvironment(apiService: MockService(toggleStarResponse: toggleStarResponse)) {
       self.starButtonSelected.assertDidNotEmitValue("No projects emitted at first.")
-
       self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: nil)
       self.vm.inputs.viewDidLoad()
       self.scheduler.advance()
@@ -400,11 +399,14 @@ final class ProjectMagazineViewModelTests: TestCase {
                                            "Nothing is emitted when starring while logged out.")
       self.goToLoginTout.assertValueCount(1, "Prompt to login when starring while logged out.")
 
-      AppEnvironment.login(.init(accessToken: "deadbeef", user: User.template))
+      AppEnvironment.login(.init(accessToken: "deadbeef", user: .template))
       self.vm.inputs.userSessionStarted()
 
       self.starButtonSelected.assertValues([false, true],
                                            "Once logged in, the project stars immediately.")
+
+      self.scheduler.advance()
+
       self.showProjectStarredPrompt.assertValueCount(1, "The star prompt shows.")
       XCTAssertEqual(["Project Page", "Project Star"], trackingClient.events,
                      "A star koala event is tracked.")
@@ -412,16 +414,14 @@ final class ProjectMagazineViewModelTests: TestCase {
   }
 
   // Tests a logged in user starring a project.
-  func testLoggedInUser_StarsProject() {
+  func testLoggedInUser_StarsAndUnstarsProject() {
+    AppEnvironment.login(.init(accessToken: "deadbeef", user: .template))
+
     let project = Project.template
     let toggleStarResponse = .template
       |> StarEnvelope.lens.project .~ (project |> Project.lens.personalization.isStarred .~ true)
 
     withEnvironment(apiService: MockService(toggleStarResponse: toggleStarResponse)) {
-      AppEnvironment.login(.init(accessToken: "deadbeef", user: User.template))
-
-      self.starButtonSelected.assertDidNotEmitValue("No projects emitted at first.")
-
       self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: nil)
       self.vm.inputs.viewDidLoad()
       self.scheduler.advance()
@@ -435,53 +435,108 @@ final class ProjectMagazineViewModelTests: TestCase {
 
       self.starButtonSelected.assertValues([false, true],
                                            "Once logged in, the project stars immediately.")
+      self.scheduler.advance()
+
       self.showProjectStarredPrompt.assertValueCount(1, "The star prompt shows.")
       XCTAssertEqual(["Project Page", "Project Star"], trackingClient.events,
                      "A star koala event is tracked.")
+
+      let untoggleStarResponse = .template
+        |> StarEnvelope.lens.project .~ (project |> Project.lens.personalization.isStarred .~ false)
+
+      withEnvironment(apiService: MockService(toggleStarResponse: untoggleStarResponse)) {
+        self.vm.inputs.starButtonTapped()
+
+        self.starButtonSelected.assertValues([false, true, false],
+                                             "The project unstars immediately.")
+
+        self.scheduler.advance()
+
+        self.starButtonSelected.assertValues([false, true, false],
+                                             "The project unstars immediately.")
+
+        self.showProjectStarredPrompt.assertValueCount(1, "The star prompt only showed for starring.")
+        XCTAssertEqual(["Project Page", "Project Star", "Project Unstar"], self.trackingClient.events,
+                       "A star koala event is tracked.")
+      }
     }
   }
 
   // Tests a logged in user starring a project that ends soon.
   func testLoggedInUser_StarsEndingSoonProject() {
+    AppEnvironment.login(.init(accessToken: "deadbeef", user: .template))
+
     let project = .template
+      |> Project.lens.personalization.isStarred .~ false
       |> Project.lens.dates.deadline .~ (NSDate().timeIntervalSince1970 + 60.0 * 60.0 * 24.0)
+
     let toggleStarResponse = .template
       |> StarEnvelope.lens.project .~ (project |> Project.lens.personalization.isStarred .~ true)
 
     withEnvironment(apiService: MockService(toggleStarResponse: toggleStarResponse)) {
-      AppEnvironment.login(.init(accessToken: "deadbeef", user: User.template))
-
       self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: nil)
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.starButtonTapped()
+
+      self.scheduler.advance()
 
       self.showProjectStarredPrompt.assertValueCount(
         0, "The star prompt doesn't show cause it's less than 48hrs."
       )
 
-      XCTAssertEqual(["Project Page", "Project Star"],
-                     self.trackingClient.events,
+      XCTAssertEqual(["Project Page", "Project Star"], self.trackingClient.events,
                      "A star koala event is tracked.")
     }
   }
 
   // Tests a user unstarring a project.
   func testLoggedInUser_UnstarsProject() {
+    AppEnvironment.login(.init(accessToken: "deadbeef", user: .template))
+
     let project = .template |> Project.lens.personalization.isStarred .~ true
     let toggleStarResponse = .template
       |> StarEnvelope.lens.project .~ (project |> Project.lens.personalization.isStarred .~ false)
 
     withEnvironment(apiService: MockService(toggleStarResponse: toggleStarResponse)) {
-      AppEnvironment.login(.init(accessToken: "deadbeef", user: User.template))
-
       self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: nil)
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.starButtonTapped()
 
+      self.scheduler.advance()
+
       self.showProjectStarredPrompt.assertValueCount(0, "The star prompt does not show.")
-      XCTAssertEqual(["Project Page", "Project Unstar"], trackingClient.events,
+
+      XCTAssertEqual(["Project Page", "Project Unstar"], self.trackingClient.events,
                      "An unstar koala event is tracked.")
     }
+  }
+
+  func testLoggedInStarFailure() {
+    AppEnvironment.login(.init(accessToken: "deadbeef", user: .template))
+
+    let project = .template |> Project.lens.personalization.isStarred .~ false
+
+    self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: nil)
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.starButtonTapped()
+
+    self.starButtonSelected.assertValues([false, true])
+
+    self.scheduler.advance()
+
+    self.starButtonSelected.assertValues([false, true, false])
+
+    self.showProjectStarredPrompt.assertValueCount(0, "The star prompt does not show.")
+    XCTAssertEqual(["Project Page"], trackingClient.events, "The star event does not track.")
+
+    self.vm.inputs.starButtonTapped()
+
+// fix:
+//    self.starButtonSelected.assertValues([false, true, false, true])
+//
+//    self.scheduler.advance()
+//
+//    self.starButtonSelected.assertValues([false, true, false, true, false])
   }
 
   func testProjectEmitsProject() {
