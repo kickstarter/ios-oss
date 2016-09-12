@@ -129,6 +129,14 @@ internal final class SearchViewController: UITableViewController {
     self.presentViewController(nav, animated: true, completion: nil)
   }
 
+  internal override func tableView(tableView: UITableView,
+                                   willDisplayCell cell: UITableViewCell,
+                                   forRowAtIndexPath indexPath: NSIndexPath) {
+
+    self.viewModel.inputs.willDisplayRow(self.dataSource.itemIndexAt(indexPath),
+                                         outOf: self.dataSource.numberOfItems())
+  }
+
   @objc private func searchTextChanged(textField: UITextField) {
     self.viewModel.inputs.searchTextChanged(textField.text ?? "")
   }
@@ -145,5 +153,10 @@ internal final class SearchViewController: UITableViewController {
 extension SearchViewController: UITextFieldDelegate {
   internal func textFieldDidBeginEditing(textField: UITextField) {
     self.viewModel.inputs.searchFieldDidBeginEditing()
+  }
+
+  internal func textFieldShouldClear(textField: UITextField) -> Bool {
+    self.viewModel.inputs.clearSearchText()
+    return true
   }
 }

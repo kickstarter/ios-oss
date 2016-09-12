@@ -9,6 +9,9 @@ public protocol SearchViewModelInputs {
   /// Call when the cancel button is pressed.
   func cancelButtonPressed()
 
+  /// Call when the search clear button is tapped.
+  func clearSearchText()
+
   /// Call when the search field begins editing.
   func searchFieldDidBeginEditing()
 
@@ -17,6 +20,14 @@ public protocol SearchViewModelInputs {
 
   /// Call when the view appears.
   func viewDidAppear()
+
+  /**
+   Call from the controller's `tableView:willDisplayCell:forRowAtIndexPath` method.
+
+   - parameter row:       The 0-based index of the row displaying.
+   - parameter totalRows: The total number of rows in the table view.
+   */
+  func willDisplayRow(row: Int, outOf totalRows: Int)
 }
 
 public protocol SearchViewModelOutputs {
@@ -43,54 +54,60 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
 
   // swiftlint:disable function_body_length
   public init() {
-    let query = Signal.merge([
-      self.searchTextChangedProperty.signal,
-      self.viewDidAppearProperty.signal.map(const("")).take(1),
-      self.cancelButtonPressedProperty.signal.mapConst("")
-      ])
-
-    let clears = query.skip(1).map(const([Project]()))
-
-    let popular = query
-      .filter { $0.isEmpty }
-      .map(const(DiscoveryParams.defaults |> DiscoveryParams.lens.sort .~ .popular))
-      .switchMap {
-        AppEnvironment.current.apiService.fetchDiscovery(params: $0)
-          .map { $0.projects }
-          .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
-          .demoteErrors()
-    }
-
-    let searchResults = query
-      .ksr_debounce(AppEnvironment.current.debounceInterval, onScheduler: AppEnvironment.current.scheduler)
-      .skipRepeats()
-      .filter { !$0.isEmpty }
-      .map { DiscoveryParams.defaults |> DiscoveryParams.lens.query .~ $0 }
-      .switchMap { params in
-        AppEnvironment.current.apiService.fetchDiscovery(params: params)
-          .map { $0.projects }
-          .demoteErrors()
-          .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
-    }
-
-    self.projects = Signal.merge([clears, popular, searchResults])
-      .skipRepeats(==)
-
-    self.isPopularTitleVisible = Signal.merge(
-      popular.mapConst(true),
-      clears.mapConst(false),
-      searchResults.mapConst(false)
+    let query = Signal
+      .merge(
+        self.searchTextChangedProperty.signal,
+        self.viewDidAppearProperty.signal.map(const("")).take(1),
+        self.cancelButtonPressedProperty.signal.mapConst(""),
+        self.clearSearchTextProperty.signal.mapConst("")
       )
+
+    let popular = self.viewDidAppearProperty.signal
+      .switchMap {
+        AppEnvironment.current.apiService
+          .fetchDiscovery(params: .defaults |> DiscoveryParams.lens.sort .~ .popular)
+          .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
+          .demoteErrors()
+      }
+      .map { $0.projects }
+
+    let clears = query.mapConst([Project]())
+
+    self.isPopularTitleVisible = combineLatest(query, popular)
+      .map { query, _ in query.isEmpty }
       .skipRepeats()
 
-    self.viewDidAppearProperty.signal
-      .take(1)
-      .observeNext { AppEnvironment.current.koala.trackProjectSearchView() }
-
-    query
+    let requestFirstPageWith = query
       .filter { !$0.isEmpty }
-      .takeWhen(searchResults)
-      .observeNext { AppEnvironment.current.koala.trackSearchResults(query: $0, pageCount: 1) }
+      .map { .defaults |> DiscoveryParams.lens.query .~ $0 }
+
+    let isCloseToBottom = self.willDisplayRowProperty.signal.ignoreNil()
+      .map { row, total in row >= total - 3 }
+      .skipRepeats()
+      .filter(isTrue)
+      .ignoreValues()
+
+    let requestFromParamsWithDebounce = { params in
+      SignalProducer<(), ErrorEnvelope>(value: ())
+        .switchMap {
+          AppEnvironment.current.apiService.fetchDiscovery(params: params)
+            .ksr_debounce(
+              AppEnvironment.current.debounceInterval, onScheduler: AppEnvironment.current.scheduler)
+      }
+    }
+
+    let (searchResults, _, page) = paginate(
+      requestFirstPageWith: requestFirstPageWith,
+      requestNextPageWhen: isCloseToBottom,
+      clearOnNewRequest: true,
+      valuesFromEnvelope: { $0.projects },
+      cursorFromEnvelope: { $0.urls.api.moreProjects },
+      requestFromParams: requestFromParamsWithDebounce,
+      requestFromCursor: { AppEnvironment.current.apiService.fetchDiscovery(paginationUrl: $0) })
+
+    self.projects = combineLatest(self.isPopularTitleVisible, popular, .merge(clears, searchResults))
+      .map { showPopular, popular, searchResults in showPopular ? popular : searchResults }
+      .skipRepeats(==)
 
     self.changeSearchFieldFocus = Signal.merge(
       self.viewDidAppearProperty.signal.mapConst((false, false)),
@@ -99,12 +116,34 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
     )
 
     self.searchFieldText = self.cancelButtonPressedProperty.signal.mapConst("")
+
+    // koala
+
+    self.viewDidAppearProperty.signal
+      .take(1)
+      .observeNext { AppEnvironment.current.koala.trackProjectSearchView() }
+
+    combineLatest(query, page)
+      .takePairWhen(searchResults.map { !$0.isEmpty })
+      .map(unpack)
+      .filter { query, _, _ in !query.isEmpty }
+      .observeNext { query, page, hasResults in
+        AppEnvironment.current.koala.trackSearchResults(query: query, page: page, hasResults: hasResults)
+    }
+
+    self.clearSearchTextProperty.signal
+      .observeNext { AppEnvironment.current.koala.trackClearedSearchTerm() }
   }
   // swiftlint:enable function_body_length
 
   private let cancelButtonPressedProperty = MutableProperty()
   public func cancelButtonPressed() {
     self.cancelButtonPressedProperty.value = ()
+  }
+
+  private let clearSearchTextProperty = MutableProperty()
+  public func clearSearchText() {
+    self.clearSearchTextProperty.value = ()
   }
 
   private let searchFieldDidBeginEditingProperty = MutableProperty()
@@ -120,6 +159,11 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
   private let viewDidAppearProperty = MutableProperty()
   public func viewDidAppear() {
     self.viewDidAppearProperty.value = ()
+  }
+
+  private let willDisplayRowProperty = MutableProperty<(row: Int, total: Int)?>(nil)
+  public func willDisplayRow(row: Int, outOf totalRows: Int) {
+    self.willDisplayRowProperty.value = (row, totalRows)
   }
 
   public let changeSearchFieldFocus: Signal<(focused: Bool, animate: Bool), NoError>

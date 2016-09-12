@@ -69,15 +69,11 @@ internal final class DiscoveryPageViewController: UITableViewController {
 
     self.viewModel.outputs.goToProject
       .observeForControllerAction()
-      .observeNext { [weak self] in
-        self?.goTo(project: $0, refTag: $1)
-    }
+      .observeNext { [weak self] in self?.goTo(project: $0, refTag: $1) }
 
     self.viewModel.outputs.goToProjectUpdate
       .observeForControllerAction()
-      .observeNext { [weak self] project, update in
-        self?.goTo(project: project, update: update)
-    }
+      .observeNext { [weak self] project, update in self?.goTo(project: project, update: update) }
 
     self.viewModel.outputs.projects
       .observeForControllerAction()

@@ -25,7 +25,7 @@ internal final class SearchViewModelTests: TestCase {
     self.vm.outputs.changeSearchFieldFocus.map(first).observe(self.changeSearchFieldFocusFocused.observer)
     self.vm.outputs.changeSearchFieldFocus.map(second).observe(self.changeSearchFieldFocusAnimated.observer)
     self.vm.outputs.isPopularTitleVisible.observe(self.isPopularTitleVisible.observer)
-    self.vm.outputs.projects.map { !$0.isEmpty }.observe(self.hasProjects.observer)
+    self.vm.outputs.projects.map { !$0.isEmpty }.skipRepeats(==).observe(self.hasProjects.observer)
     self.vm.outputs.searchFieldText.observe(self.searchFieldText.observer)
   }
 
@@ -53,26 +53,48 @@ internal final class SearchViewModelTests: TestCase {
     XCTAssertEqual([], trackingClient.events, "No events tracked before view is visible.")
 
     self.vm.inputs.viewDidAppear()
+
+    self.isPopularTitleVisible.assertValues([])
+
     self.scheduler.advance()
 
     self.hasProjects.assertValues([true], "Projects emitted immediately upon view appearing.")
     self.isPopularTitleVisible.assertValues([true], "Popular title visible upon view appearing.")
-    XCTAssertEqual(["Discover Search"], trackingClient.events,
+    XCTAssertEqual(["Discover Search", "Viewed Search"], trackingClient.events,
                    "The search view event tracked upon view appearing.")
+    XCTAssertEqual([true, nil],
+                   self.trackingClient.properties(forKey: Koala.DeprecatedKey, as: Bool.self))
 
     self.vm.inputs.searchTextChanged("skull graphic tee")
 
     self.hasProjects.assertValues([true, false], "Projects clear immediately upon entering search.")
     self.isPopularTitleVisible.assertValues([true, false],
-                                       "Popular title hide immediately upon entering search.")
+                                            "Popular title hide immediately upon entering search.")
 
     self.scheduler.advance()
 
     self.hasProjects.assertValues([true, false, true], "Projects emit after waiting enough time.")
     self.isPopularTitleVisible.assertValues([true, false],
-                                       "Popular title visibility still not emit after time has passed.")
-    XCTAssertEqual(["Discover Search", "Discover Search Results"], trackingClient.events,
+                                            "Popular title visibility still not emit after time has passed.")
+    XCTAssertEqual(["Discover Search", "Viewed Search", "Discover Search Results", "Loaded Search Results"],
+                   trackingClient.events,
                    "A koala event is tracked for the search results.")
+    XCTAssertEqual([true, nil, true, nil],
+                   self.trackingClient.properties(forKey: Koala.DeprecatedKey, as: Bool.self))
+    XCTAssertEqual("skull graphic tee", trackingClient.properties.last!["search_term"] as? String)
+
+    self.vm.inputs.willDisplayRow(7, outOf: 10)
+    self.scheduler.advance()
+
+    XCTAssertEqual(
+      [
+        "Discover Search", "Viewed Search", "Discover Search Results", "Loaded Search Results",
+        "Discover Search Results Load More", "Loaded More Search Results"
+      ],
+      trackingClient.events,
+      "A koala event is tracked for the search results.")
+    XCTAssertEqual([true, nil, true, nil, true, nil],
+                   self.trackingClient.properties(forKey: Koala.DeprecatedKey, as: Bool.self))
     XCTAssertEqual("skull graphic tee", trackingClient.properties.last!["search_term"] as? String)
 
     self.vm.inputs.searchTextChanged("")
@@ -81,28 +103,39 @@ internal final class SearchViewModelTests: TestCase {
     self.hasProjects.assertValues([true, false, true, false, true],
                              "Clearing search clears projects and brings back popular projects.")
     self.isPopularTitleVisible.assertValues([true, false, true],
-                                       "Clearing search brings back popular title.")
-    XCTAssertEqual(["Discover Search", "Discover Search Results"], trackingClient.events)
+                                            "Clearing search brings back popular title.")
+    XCTAssertEqual(
+      [
+        "Discover Search", "Viewed Search", "Discover Search Results", "Loaded Search Results",
+        "Discover Search Results Load More", "Loaded More Search Results"
+      ],
+      trackingClient.events)
 
     self.vm.inputs.viewDidAppear()
 
     self.hasProjects.assertValues([true, false, true, false, true],
                              "Leaving view and coming back doesn't load more projects.")
     self.isPopularTitleVisible.assertValues([true, false, true],
-                                       "Leaving view and coming back doesn't change popular title")
-    XCTAssertEqual(["Discover Search", "Discover Search Results"], trackingClient.events,
-                   "Leaving view and coming back doesn't emit more koala events.")
-  }
+                                            "Leaving view and coming back doesn't change popular title")
+    XCTAssertEqual(
+      [
+        "Discover Search", "Viewed Search", "Discover Search Results", "Loaded Search Results",
+        "Discover Search Results Load More", "Loaded More Search Results"
+      ],
+      trackingClient.events)  }
 
   // Confirms that clearing search during an in-flight search doesn't cause search results and popular
   // projects to get mixed up.
   func testOrderingOfPopularAndDelayedSearches() {
-    withEnvironment(debounceInterval: TestCase.interval) {
+    let apiDelay = TestCase.interval
+    let debounceDelay = TestCase.interval
+
+    withEnvironment(debounceInterval: debounceDelay) {
       let projects = TestObserver<[Int], NoError>()
       self.vm.outputs.projects.map { $0.map { $0.id } }.observe(projects.observer)
 
       self.vm.inputs.viewDidAppear()
-      self.scheduler.advance()
+      self.scheduler.advanceByInterval(apiDelay)
 
       self.hasProjects.assertValues([true], "Popular projects emit immediately.")
       let popularProjects = projects.values.last!
@@ -111,12 +144,11 @@ internal final class SearchViewModelTests: TestCase {
 
       self.hasProjects.assertValues([true, false], "Clears projects immediately.")
 
-      self.scheduler.advanceByInterval(TestCase.interval / 2.0)
+      self.scheduler.advanceByInterval(debounceDelay / 2.0)
 
       self.hasProjects.assertValues([true, false], "Doesn't emit projects after a little time.")
 
       self.vm.inputs.searchTextChanged("")
-      self.scheduler.advance()
 
       self.hasProjects.assertValues([true, false, true], "Brings back popular projets immediately.")
       projects.assertLastValue(popularProjects, "Brings back popular projects immediately.")
@@ -127,7 +159,7 @@ internal final class SearchViewModelTests: TestCase {
                                "Doesn't search for projects after time enough time passes.")
       projects.assertLastValue(popularProjects, "Brings back popular projects immediately.")
 
-      XCTAssertEqual(["Discover Search"], trackingClient.events)
+      XCTAssertEqual(["Discover Search", "Viewed Search"], trackingClient.events)
     }
   }
 
@@ -154,7 +186,7 @@ internal final class SearchViewModelTests: TestCase {
       self.scheduler.advanceByInterval(debounceDelay / 2.0)
 
       self.hasProjects.assertValues([true, false],
-                               "No new projects load after waiting enough a little bit of time.")
+                                    "No new projects load after waiting enough a little bit of time.")
 
       self.vm.inputs.searchTextChanged("skull graphic")
 
@@ -168,8 +200,8 @@ internal final class SearchViewModelTests: TestCase {
       // Wait enough time for debounced request to be made, but not enough time for it to finish.
       self.scheduler.advanceByInterval(debounceDelay / 2.0)
 
-      self.hasProjects.assertValues([true, false],
-                               "No projects emit after waiting enough time for API to request to be made")
+      self.hasProjects.assertValues(
+        [true, false], "No projects emit after waiting enough time for API to request to be made")
 
       self.vm.inputs.searchTextChanged("skull graphic tee")
 
@@ -180,13 +212,14 @@ internal final class SearchViewModelTests: TestCase {
       self.scheduler.advanceByInterval(debounceDelay + apiDelay)
 
       self.hasProjects.assertValues([true, false, true], "Search projects load after waiting enough time.")
-      XCTAssertEqual(["Discover Search", "Discover Search Results"], trackingClient.events)
+      XCTAssertEqual(["Discover Search", "Viewed Search", "Discover Search Results", "Loaded Search Results"],
+                     self.trackingClient.events)
 
       // run out the scheduler
       self.scheduler.run()
 
       self.hasProjects.assertValues([true, false, true], "Nothing new is emitted.")
-      XCTAssertEqual(["Discover Search", "Discover Search Results"],
+      XCTAssertEqual(["Discover Search", "Viewed Search", "Discover Search Results", "Loaded Search Results"],
                      self.trackingClient.events,
                      "Nothing new is tracked.")
     }

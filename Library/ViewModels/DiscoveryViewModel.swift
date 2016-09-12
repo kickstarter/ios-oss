@@ -80,24 +80,25 @@ DiscoveryViewModelOutputs {
       .takeWhen(self.pageTransitionCompletedProperty.signal.filter(isTrue))
       .map { sorts[$0] }
 
-    self.selectSortPage = Signal.merge(
-      swipeToSort,
-      self.sortPagerSelectedSortProperty.signal.ignoreNil(),
-      currentParams.map { $0.sort }.ignoreNil()
+    self.selectSortPage = Signal
+      .merge(
+        swipeToSort,
+        self.sortPagerSelectedSortProperty.signal.ignoreNil(),
+        currentParams.map { $0.sort }.ignoreNil()
       )
       .skipRepeats()
 
-    self.navigateToSort = Signal.merge(
-      swipeToSort.map { (sort: $0, ignore: true) },
-      self.sortPagerSelectedSortProperty.signal.ignoreNil().map { (sort: $0, ignore: false) },
-      currentParams.map { $0.sort }.ignoreNil().map { (sort: $0, ignore: false) }
+    self.navigateToSort = Signal
+      .merge(
+        swipeToSort.map { (sort: $0, ignore: true) },
+        self.sortPagerSelectedSortProperty.signal.ignoreNil().map { (sort: $0, ignore: false) },
+        currentParams.map { $0.sort }.ignoreNil().map { (sort: $0, ignore: false) }
       )
       .skipRepeats(==)
       .combinePrevious((sort: .magic, ignore: true))
       .filter { previous, next in !next.ignore }
       .map { previous, next in
-        (next.sort,
-         sorts.indexOf(next.sort) < sorts.indexOf(previous.sort) ? .Reverse : .Forward)
+        (next.sort, sorts.indexOf(next.sort) < sorts.indexOf(previous.sort) ? .Reverse : .Forward)
     }
 
     self.updateSortPagerStyle = self.filterWithParamsProperty.signal.ignoreNil()

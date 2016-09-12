@@ -679,18 +679,31 @@ public final class Koala {
   // MARK: Search Events
   /// Call once when the search view is initially shown.
   public func trackProjectSearchView() {
-    self.track(event: "Discover Search")
+    self.track(event: "Discover Search", properties: [Koala.DeprecatedKey: true])
+
+    self.track(event: "Viewed Search")
   }
 
   // Call when projects have been obtained from a search.
-  public func trackSearchResults(query query: String, pageCount: Int) {
-    let properties: [String:AnyObject] = ["search_term": query, "page_count": pageCount]
+  public func trackSearchResults(query query: String, page: Int, hasResults: Bool) {
+    let sharedProps: [String:AnyObject] = ["search_term": query]
 
-    if pageCount == 1 {
-      self.track(event: "Discover Search Results", properties: properties)
+    let deprecatedProps = sharedProps.withAllValuesFrom(["page_count": page, Koala.DeprecatedKey: true])
+    let props = sharedProps.withAllValuesFrom(["page": page, "has_results": hasResults])
+
+    if page == 1 {
+      self.track(event: "Discover Search Results", properties: deprecatedProps)
+
+      self.track(event: "Loaded Search Results", properties: props)
     } else {
-      self.track(event: "Discover Search Results Load More", properties: properties)
+      self.track(event: "Discover Search Results Load More", properties: deprecatedProps)
+
+      self.track(event: "Loaded More Search Results", properties: props)
     }
+  }
+
+  public func trackClearedSearchTerm() {
+    self.track(event: "Cleared Search Term")
   }
 
   // MARK: Project Events
