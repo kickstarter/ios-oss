@@ -7,6 +7,7 @@ import Result
 
 final class TwoFactorViewModelTests: TestCase {
   let vm: TwoFactorViewModelType = TwoFactorViewModel()
+  var codeTextFieldBecomeFirstResponder = TestObserver<(), NoError>()
   var isFormValid = TestObserver<Bool, NoError>()
   var isLoading = TestObserver<Bool, NoError>()
   var logIntoEnvironment = TestObserver<AccessTokenEnvelope, NoError>()
@@ -17,12 +18,18 @@ final class TwoFactorViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
+    vm.outputs.codeTextFieldBecomeFirstResponder.observe(codeTextFieldBecomeFirstResponder.observer)
     vm.outputs.isFormValid.observe(isFormValid.observer)
     vm.outputs.isLoading.observe(isLoading.observer)
     vm.outputs.logIntoEnvironment.observe(logIntoEnvironment.observer)
     vm.outputs.postNotification.map { $0.name }.observe(postNotificationName.observer)
     vm.outputs.resendSuccess.observe(resendSuccess.observer)
-    vm.errors.showError.observe(showError.observer)
+    vm.outputs.showError.observe(showError.observer)
+  }
+
+  func testCodeTextFieldBecomesFirstResponder() {
+    self.vm.inputs.viewDidLoad()
+    self.codeTextFieldBecomeFirstResponder.assertValueCount(1)
   }
 
   func testKoala_viewEvents() {

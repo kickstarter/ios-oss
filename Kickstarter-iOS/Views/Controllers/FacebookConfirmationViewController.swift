@@ -32,24 +32,32 @@ internal final class FacebookConfirmationViewController: UIViewController,
       return vc
   }
 
-  override func viewDidLoad() {
+  internal override func viewDidLoad() {
     super.viewDidLoad()
+
+    self.helpButton.addTarget(self, action: #selector(helpButtonPressed), forControlEvents: .TouchUpInside)
+
     self.viewModel.inputs.viewDidLoad()
   }
 
-  override func bindStyles() {
-    self |> baseControllerStyle()
+  internal override func bindStyles() {
+    super.bindStyles()
 
+    self |> baseControllerStyle()
     self.confirmationLabel |> fbConfirmationMessageLabelStyle
     self.createAccountButton |> createNewAccountButtonStyle
     self.emailLabel |> fbConfirmEmailLabelStyle
     self.helpButton |> disclaimerButtonStyle
     self.loginButton |> loginWithEmailButtonStyle
     self.loginLabel |> fbWrongAccountLabelStyle
+    self.navigationItem.title = Strings.signup_navbar_title()
     self.newsletterLabel |> newsletterLabelStyle
   }
 
+  // swiftlint:disable function_body_length
   override func bindViewModel() {
+    super.bindViewModel()
+
     self.viewModel.outputs.displayEmail
       .observeForControllerAction()
       .observeNext { [weak self] email in
@@ -110,13 +118,7 @@ internal final class FacebookConfirmationViewController: UIViewController,
         self?.goToHelpType(helpType)
     }
   }
-
-  @objc internal func mailComposeController(controller: MFMailComposeViewController,
-                                            didFinishWithResult result: MFMailComposeResult,
-                                                                error: NSError?) {
-    self.helpViewModel.inputs.mailComposeCompletion(result: result)
-    self.dismissViewControllerAnimated(true, completion: nil)
-  }
+  // swiftlint:enable function_body_length
 
   private func goToHelpType(helpType: HelpType) {
     let vc = HelpWebViewController.configuredWith(helpType: helpType)
@@ -163,5 +165,12 @@ internal final class FacebookConfirmationViewController: UIViewController,
 
   @objc private func helpButtonPressed(sender: AnyObject) {
     self.helpViewModel.inputs.showHelpSheetButtonTapped()
+  }
+
+  @objc internal func mailComposeController(controller: MFMailComposeViewController,
+                                            didFinishWithResult result: MFMailComposeResult,
+                                                                error: NSError?) {
+    self.helpViewModel.inputs.mailComposeCompletion(result: result)
+    self.dismissViewControllerAnimated(true, completion: nil)
   }
 }

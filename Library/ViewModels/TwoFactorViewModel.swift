@@ -5,17 +5,17 @@ import ReactiveExtensions
 import Result
 
 public protocol TwoFactorViewModelInputs {
-  /// Call when view will appear
-  func viewWillAppear()
+  /// Call when code textfield is updated
+  func codeChanged(code: String?)
 
   /// Call to set email and password
   func email(email: String, password: String)
 
+  /// Call when the environment has been logged into
+  func environmentLoggedIn()
+
   /// Call to set facebook token
   func facebookToken(token: String)
-
-  /// Call when code textfield is updated
-  func codeChanged(code: String?)
 
   /// Call when resend button pressed
   func resendPressed()
@@ -23,28 +23,32 @@ public protocol TwoFactorViewModelInputs {
   /// Call when submit button pressed
   func submitPressed()
 
-  /// Call when the environment has been logged into
-  func environmentLoggedIn()
+  /// Call when the view did load.
+  func viewDidLoad()
+
+  /// Call when view will appear
+  func viewWillAppear()
 }
 
 public protocol TwoFactorViewModelOutputs {
+  /// Emits when the code text field is the first responder.
+  var codeTextFieldBecomeFirstResponder: Signal<(), NoError> { get }
+
   /// Emits whether the form is valid or not
   var isFormValid: Signal<Bool, NoError> { get }
 
   /// Emits whether a request is loading or not
   var isLoading: Signal<Bool, NoError> { get }
 
-  /// Emits when code was resent successfully
-  var resendSuccess: Signal<(), NoError> { get }
+  /// Emits an access token envelope that can be used to update the environment.
+  var logIntoEnvironment: Signal<AccessTokenEnvelope, NoError> { get }
 
   /// Emits when a login success notification should be posted.
   var postNotification: Signal<NSNotification, NoError> { get }
 
-  /// Emits an access token envelope that can be used to update the environment.
-  var logIntoEnvironment: Signal<AccessTokenEnvelope, NoError> { get }
-}
+  /// Emits when code was resent successfully
+  var resendSuccess: Signal<(), NoError> { get }
 
-public protocol TwoFactorViewModelErrors {
   /// Emits a message when the code submitted is not correct or login fails
   var showError: Signal<String, NoError> { get }
 }
@@ -52,11 +56,10 @@ public protocol TwoFactorViewModelErrors {
 public protocol TwoFactorViewModelType {
   var inputs: TwoFactorViewModelInputs { get }
   var outputs: TwoFactorViewModelOutputs { get }
-  var errors: TwoFactorViewModelErrors { get }
 }
 
 public final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewModelInputs,
-  TwoFactorViewModelOutputs, TwoFactorViewModelErrors {
+  TwoFactorViewModelOutputs {
 
   // A simple type to hold all the data needed to login.
   private struct TfaData {
@@ -74,63 +77,6 @@ public final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMode
     }
     // swiftlint:enable type_name
   }
-
-  // MARK: TwoFactorViewModelType
-
-  public var inputs: TwoFactorViewModelInputs { return self }
-  public var outputs: TwoFactorViewModelOutputs { return self }
-  public var errors: TwoFactorViewModelErrors { return self }
-
-  // MARK: TwoFactorViewModelInputs
-
-  private let viewWillAppearProperty = MutableProperty(())
-  public func viewWillAppear() {
-    viewWillAppearProperty.value = ()
-  }
-
-  private let emailProperty = MutableProperty<String?>(nil)
-  private let passwordProperty = MutableProperty<String?>(nil)
-  public func email(email: String, password: String) {
-    self.emailProperty.value = email
-    self.passwordProperty.value = password
-  }
-
-  private let facebookTokenProperty = MutableProperty<String?>(nil)
-  public func facebookToken(token: String) {
-    self.facebookTokenProperty.value = token
-  }
-
-  private let codeProperty = MutableProperty<String?>(nil)
-  public func codeChanged(code: String?) {
-    self.codeProperty.value = code
-  }
-
-  private let resendPressedProperty = MutableProperty(())
-  public func resendPressed() {
-    self.resendPressedProperty.value = ()
-  }
-
-  private let submitPressedProperty = MutableProperty(())
-  public func submitPressed() {
-    self.submitPressedProperty.value = ()
-  }
-
-  private let environmentLoggedInProperty = MutableProperty(())
-  public func environmentLoggedIn() {
-    self.environmentLoggedInProperty.value = ()
-  }
-
-  // MARK: TwoFactorViewModelOutputs
-
-  public let isFormValid: Signal<Bool, NoError>
-  public let isLoading: Signal<Bool, NoError>
-  public let resendSuccess: Signal<(), NoError>
-  public let postNotification: Signal<NSNotification, NoError>
-  public let logIntoEnvironment: Signal<AccessTokenEnvelope, NoError>
-
-  // MARK: TwoFactorViewModelErrors
-
-  public let showError: Signal<String, NoError>
 
   // swiftlint:disable function_body_length
   public init() {
@@ -152,6 +98,8 @@ public final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMode
         login(data, apiService: AppEnvironment.current.apiService, isLoading: isLoading)
           .materialize()
     }
+
+    self.codeTextFieldBecomeFirstResponder = self.viewDidLoadProperty.signal
 
     self.logIntoEnvironment = loginEvent.values()
 
@@ -204,6 +152,59 @@ public final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMode
       .observeNext { _ in AppEnvironment.current.koala.trackLoginError() }
   }
   // swiftlint:enable function_body_length
+
+  private let codeProperty = MutableProperty<String?>(nil)
+  public func codeChanged(code: String?) {
+    self.codeProperty.value = code
+  }
+
+  private let emailProperty = MutableProperty<String?>(nil)
+  private let passwordProperty = MutableProperty<String?>(nil)
+  public func email(email: String, password: String) {
+    self.emailProperty.value = email
+    self.passwordProperty.value = password
+  }
+
+  private let environmentLoggedInProperty = MutableProperty(())
+  public func environmentLoggedIn() {
+    self.environmentLoggedInProperty.value = ()
+  }
+
+  private let facebookTokenProperty = MutableProperty<String?>(nil)
+  public func facebookToken(token: String) {
+    self.facebookTokenProperty.value = token
+  }
+
+  private let resendPressedProperty = MutableProperty(())
+  public func resendPressed() {
+    self.resendPressedProperty.value = ()
+  }
+
+  private let submitPressedProperty = MutableProperty(())
+  public func submitPressed() {
+    self.submitPressedProperty.value = ()
+  }
+
+  private let viewDidLoadProperty = MutableProperty()
+  public func viewDidLoad() {
+    self.viewDidLoadProperty.value = ()
+  }
+
+  private let viewWillAppearProperty = MutableProperty()
+  public func viewWillAppear() {
+    self.viewWillAppearProperty.value = ()
+  }
+
+  public let codeTextFieldBecomeFirstResponder: Signal<(), NoError>
+  public let isFormValid: Signal<Bool, NoError>
+  public let isLoading: Signal<Bool, NoError>
+  public let logIntoEnvironment: Signal<AccessTokenEnvelope, NoError>
+  public let postNotification: Signal<NSNotification, NoError>
+  public let resendSuccess: Signal<(), NoError>
+  public let showError: Signal<String, NoError>
+
+  public var inputs: TwoFactorViewModelInputs { return self }
+  public var outputs: TwoFactorViewModelOutputs { return self }
 }
 
 private func login(tfaData: TwoFactorViewModel.TfaData,

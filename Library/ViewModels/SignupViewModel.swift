@@ -5,7 +5,6 @@ import ReactiveCocoa
 import Result
 
 public protocol SignupViewModelInputs {
-
   /// Call when the user enters a new email address.
   func emailChanged(email: String)
 
@@ -94,7 +93,7 @@ public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, 
     let emailIsPresent = email.map { !$0.isEmpty }
     let passwordIsPresent = password.map { !$0.isEmpty }
 
-    self.nameTextFieldBecomeFirstResponder = self.viewDidLoadProperty.signal.ignoreValues()
+    self.nameTextFieldBecomeFirstResponder = self.viewDidLoadProperty.signal
     self.emailTextFieldBecomeFirstResponder = self.nameTextFieldReturnProperty.signal
     self.passwordTextFieldBecomeFirstResponder = self.emailTextFieldReturnProperty.signal
 
@@ -151,7 +150,6 @@ public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, 
       .observeNext { AppEnvironment.current.koala.trackSignupView() }
   }
 
-  // INPUTS
   private let emailChangedProperty = MutableProperty("")
   public func emailChanged(email: String) {
     self.emailChangedProperty.value = email
@@ -202,7 +200,6 @@ public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, 
     self.weeklyNewsletterChangedProperty.value = weeklyNewsletter
   }
 
-  // OUTPUTS
   public let emailTextFieldBecomeFirstResponder: Signal<(), NoError>
   public let isSignupButtonEnabled: Signal<Bool, NoError>
   public let logIntoEnvironment: Signal<AccessTokenEnvelope, NoError>

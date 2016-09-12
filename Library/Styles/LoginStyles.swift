@@ -8,11 +8,18 @@ public let createNewAccountButtonStyle = greenButtonStyle
 public let disclaimerButtonStyle =
     UIButton.lens.titleColor(forState: .Normal) .~ .ksr_text_navy_500
       <> UIButton.lens.titleLabel.font .~ .ksr_footnote()
+      <> UIButton.lens.titleLabel.textAlignment .~ .Center
       <> UIButton.lens.contentEdgeInsets .~ .init(top: 0, left: 16, bottom: 0, right: 16)
-      <> UIButton.lens.contentHorizontalAlignment .~ .Center
       <> UIButton.lens.title(forState: .Normal) %~ { _ in
         Strings.login_tout_disclaimer_by_signing_up_you_agree_to_terms()
-}
+      }
+      <> UIButton.lens.accessibilityValue %~ { _ in Strings.general_navigation_buttons_help() }
+      <> UIButton.lens.accessibilityLabel %~ { _ in
+        Strings.login_tout_disclaimer_by_signing_up_you_agree_to_terms()
+      }
+      <> UIButton.lens.accessibilityHint %~ { _ in
+        localizedString(key: "todo", defaultValue: "Opens help sheet.")
+      }
 
 public let emailFieldStyle = formFieldStyle
   <> UITextField.lens.placeholder %~ { _ in Strings.login_placeholder_email() }
@@ -22,9 +29,10 @@ public let fbConfirmationMessageLabelStyle = UILabel.lens.textColor .~ .ksr_text
   <> UILabel.lens.font .~ .ksr_body()
   <> UILabel.lens.text %~ { _ in Strings.Youre_about_to_create_a_new_Kickstarter_account() }
 
-public let fbConfirmEmailLabelStyle =  UILabel.lens.textColor .~ .ksr_text_navy_900
+public let fbConfirmEmailLabelStyle =  UILabel.lens.textColor .~ .ksr_text_navy_700
   <> UILabel.lens.font .~ .ksr_headline()
-  <> UILabel.lens.textAlignment .~ .Center
+  <> UILabel.lens.textAlignment .~ .Left
+  <> UILabel.lens.adjustsFontSizeToFitWidth .~ true
 
 public let fbDisclaimerLabelStyle = UILabel.lens.font .~ .ksr_footnote()
   <> UILabel.lens.textColor .~ .ksr_text_navy_500
@@ -39,6 +47,7 @@ public let fbLoginStackViewStyle =
 }
 
 public let fbWrongAccountLabelStyle = UILabel.lens.font .~ .ksr_caption1()
+  <> UILabel.lens.textColor .~ .ksr_text_navy_700
   <> UILabel.lens.text %~ { _ in Strings.facebook_confirmation_wrong_account_title() }
 
 public let forgotPasswordButtonStyle =
@@ -70,8 +79,8 @@ public let onePasswordButtonStyle =
     <> UIButton.lens.titleColor(forState: .Highlighted) .~ .ksr_navy_500
     <> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.login_buttons_one_password() }
 
-public let newsletterLabelStyle = UILabel.lens.font .~ .ksr_subhead()
-  <> UILabel.lens.textColor .~ .ksr_text_navy_900
+public let newsletterLabelStyle = UILabel.lens.font .~ .ksr_footnote()
+  <> UILabel.lens.textColor .~ .ksr_text_navy_700
   <> UILabel.lens.text %~ { _ in Strings.signup_newsletter_full() }
 
 public let passwordFieldStyle = formFieldStyle

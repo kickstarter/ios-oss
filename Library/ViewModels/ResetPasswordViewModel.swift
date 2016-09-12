@@ -15,6 +15,8 @@ public protocol ResetPasswordViewModelInputs {
 }
 
 public protocol ResetPasswordViewModelOutputs {
+  /// Sets whether the email text field is the first responder.
+  var emailTextFieldBecomeFirstResponder: Signal<(), NoError> { get }
   /// Emits email address to set email textfield
   var setEmailInitial: Signal<String, NoError> { get }
   /// Emits Bool representing form validity
@@ -23,9 +25,6 @@ public protocol ResetPasswordViewModelOutputs {
   var showResetSuccess: Signal<String, NoError> { get }
   /// Emits after user closes popup confirmation
   var returnToLogin: Signal<(), NoError> { get }
-}
-
-public protocol ResetPasswordViewModelErrors {
   /// Emits error message String on reset fail
   var showError: Signal<String, NoError> { get }
 }
@@ -33,52 +32,14 @@ public protocol ResetPasswordViewModelErrors {
 public protocol ResetPasswordViewModelType {
   var inputs: ResetPasswordViewModelInputs { get }
   var outputs: ResetPasswordViewModelOutputs { get }
-  var errors: ResetPasswordViewModelErrors { get }
 }
 
 public final class ResetPasswordViewModel: ResetPasswordViewModelType, ResetPasswordViewModelInputs,
-  ResetPasswordViewModelOutputs, ResetPasswordViewModelErrors {
-
-  // MARK: ResetPasswordViewModelType
-
-  public var inputs: ResetPasswordViewModelInputs { return self }
-  public var outputs: ResetPasswordViewModelOutputs { return self }
-  public var errors: ResetPasswordViewModelErrors { return self }
-
-  // MARK: ResetPasswordViewModelInputs
-
-  private let viewDidLoadProperty = MutableProperty()
-  public func viewDidLoad() {
-    self.viewDidLoadProperty.value = ()
-  }
-
-  private let emailProperty = MutableProperty<String?>(nil)
-  public func emailChanged(email: String?) {
-    self.emailProperty.value = email
-  }
-
-  private let resetButtonPressedProperty = MutableProperty()
-  public func resetButtonPressed() {
-    self.resetButtonPressedProperty.value = ()
-  }
-
-  private let confirmResetButtonPressedProperty = MutableProperty()
-  public func confirmResetButtonPressed() {
-    self.confirmResetButtonPressedProperty.value = ()
-  }
-
-  // MARK: ResetPasswordViewModelOutputs
-
-  public let formIsValid: Signal<Bool, NoError>
-  public let showResetSuccess: Signal<String, NoError>
-  public var returnToLogin: Signal<(), NoError>
-  public var setEmailInitial: Signal<String, NoError>
-
-  // MARK: ResetPasswordViewModelErrors
-
-  public let showError: Signal<String, NoError>
+  ResetPasswordViewModelOutputs {
 
   public init() {
+    self.emailTextFieldBecomeFirstResponder = self.viewDidLoadProperty.signal
+
     self.setEmailInitial = self.emailProperty.signal.ignoreNil()
       .takeWhen(viewDidLoadProperty.signal)
       .take(1)
@@ -117,4 +78,34 @@ public final class ResetPasswordViewModel: ResetPasswordViewModelType, ResetPass
     self.viewDidLoadProperty.signal.observeNext { AppEnvironment.current.koala.trackResetPassword() }
     self.showResetSuccess.observeNext { _ in AppEnvironment.current.koala.trackResetPasswordSuccess() }
   }
+
+  private let viewDidLoadProperty = MutableProperty()
+  public func viewDidLoad() {
+    self.viewDidLoadProperty.value = ()
+  }
+
+  private let emailProperty = MutableProperty<String?>(nil)
+  public func emailChanged(email: String?) {
+    self.emailProperty.value = email
+  }
+
+  private let resetButtonPressedProperty = MutableProperty()
+  public func resetButtonPressed() {
+    self.resetButtonPressedProperty.value = ()
+  }
+
+  private let confirmResetButtonPressedProperty = MutableProperty()
+  public func confirmResetButtonPressed() {
+    self.confirmResetButtonPressedProperty.value = ()
+  }
+
+  public let emailTextFieldBecomeFirstResponder: Signal<(), NoError>
+  public let formIsValid: Signal<Bool, NoError>
+  public let showResetSuccess: Signal<String, NoError>
+  public var returnToLogin: Signal<(), NoError>
+  public var setEmailInitial: Signal<String, NoError>
+  public let showError: Signal<String, NoError>
+
+  public var inputs: ResetPasswordViewModelInputs { return self }
+  public var outputs: ResetPasswordViewModelOutputs { return self }
 }

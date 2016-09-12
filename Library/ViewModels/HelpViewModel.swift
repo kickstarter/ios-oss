@@ -8,6 +8,7 @@ public enum HelpContext {
   case loginTout
   case facebookConfirmation
   case settings
+  case signup
 
   public var trackingString: String {
     switch self {
@@ -17,6 +18,8 @@ public enum HelpContext {
       return "Facebook Confirmation"
     case .settings:
       return "Settings"
+    case .signup:
+      return "Signup"
     }
   }
 }

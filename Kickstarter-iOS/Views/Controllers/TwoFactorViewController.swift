@@ -10,34 +10,51 @@ internal final class TwoFactorViewController: UIViewController {
 
   @IBOutlet weak var codeTextField: UITextField!
   @IBOutlet weak var formBackgroundView: UIView!
+  @IBOutlet weak var formStackView: UIStackView!
   @IBOutlet weak var resendButton: UIButton!
   @IBOutlet weak var submitButton: UIButton!
   @IBOutlet weak var titleLabel: UILabel!
 
-  override func viewWillAppear(animated: Bool) {
+  internal override func viewDidLoad() {
+    super.viewDidLoad()
+    self.viewModel.inputs.viewDidLoad()
+  }
+
+  internal override func viewWillAppear(animated: Bool) {
     super.viewWillAppear(animated)
     self.viewModel.inputs.viewWillAppear()
   }
 
-  override func bindStyles() {
-    self |> twoFactorControllerStyle
+  internal override func bindStyles() {
+    super.bindStyles()
 
-    self.codeTextField |> tfaCodeFieldStyle
+    self
+      |> twoFactorControllerStyle
 
-    self.formBackgroundView |> cardStyle()
+    self.codeTextField
+      |> tfaCodeFieldStyle
 
-    self.resendButton |> neutralButtonStyle
+    self.formBackgroundView
+      |> cardStyle()
 
-    self.submitButton |> greenButtonStyle
+    self.formStackView
+      |> UIStackView.lens.spacing .~ Styles.grid(5)
+
+    self.resendButton
+      |> borderButtonStyle
+
+    self.submitButton
+      |> greenButtonStyle
 
     self.titleLabel
-      |> UILabel.lens.textColor .~ .ksr_text_navy_900
+      |> UILabel.lens.textColor .~ .ksr_text_navy_700
       |> UILabel.lens.font .~ .ksr_body()
   }
 
-  override func bindViewModel() {
+  internal override func bindViewModel() {
     super.bindViewModel()
 
+    self.codeTextField.rac.becomeFirstResponder = self.viewModel.outputs.codeTextFieldBecomeFirstResponder
     self.submitButton.rac.enabled = self.viewModel.outputs.isFormValid
 
     self.viewModel.outputs.logIntoEnvironment
@@ -49,7 +66,7 @@ internal final class TwoFactorViewController: UIViewController {
     self.viewModel.outputs.postNotification
       .observeNext(NSNotificationCenter.defaultCenter().postNotification)
 
-    self.viewModel.errors.showError
+    self.viewModel.outputs.showError
       .observeForControllerAction()
       .observeNext { [weak self] message in
         self?.showError(message)

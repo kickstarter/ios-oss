@@ -60,7 +60,6 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
 
     self.fbDisclaimer |> fbDisclaimerLabelStyle
     self.fbLoginButton |> facebookLoginButtonStyle
-
     self.fbLoginStackView |> fbLoginStackViewStyle
     self.helpButton |> disclaimerButtonStyle
     self.loginButton |> loginWithEmailButtonStyle

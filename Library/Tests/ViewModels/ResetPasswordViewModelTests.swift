@@ -6,94 +6,101 @@ import XCTest
 @testable import Library
 
 final class ResetPasswordViewModelTests: TestCase {
-  var vm: ResetPasswordViewModelType = ResetPasswordViewModel()
+  internal let vm: ResetPasswordViewModelType = ResetPasswordViewModel()
+  internal let emailTextFieldBecomeFirstResponder = TestObserver<(), NoError>()
+  internal let formIsValid = TestObserver<Bool, NoError>()
+  internal let showResetSuccess = TestObserver<String, NoError>()
+  internal let returnToLogin = TestObserver<(), NoError>()
+  internal let showError = TestObserver<String, NoError>()
+  internal let setEmailInitial = TestObserver<String, NoError>()
 
-  let formIsValid = TestObserver<Bool, NoError>()
-  let showResetSuccess = TestObserver<String, NoError>()
-  let returnToLogin = TestObserver<(), NoError>()
-  let showError = TestObserver<String, NoError>()
-  let setEmailInitial = TestObserver<String, NoError>()
-
-  override func setUp() {
+  internal override func setUp() {
     super.setUp()
 
-    vm.outputs.formIsValid.observe(formIsValid.observer)
-    vm.outputs.showResetSuccess.observe(showResetSuccess.observer)
-    vm.outputs.returnToLogin.observe(returnToLogin.observer)
-    vm.outputs.setEmailInitial.observe(setEmailInitial.observer)
-    vm.errors.showError.observe(showError.observer)
+    self.vm.outputs.emailTextFieldBecomeFirstResponder
+      .observe(self.emailTextFieldBecomeFirstResponder.observer)
+    self.vm.outputs.formIsValid.observe(self.formIsValid.observer)
+    self.vm.outputs.showResetSuccess.observe(self.showResetSuccess.observer)
+    self.vm.outputs.returnToLogin.observe(self.returnToLogin.observer)
+    self.vm.outputs.setEmailInitial.observe(self.setEmailInitial.observer)
+    self.vm.outputs.showError.observe(self.showError.observer)
+  }
+
+  func testEmailFieldBecomesFirstResponder() {
+    self.vm.inputs.viewDidLoad()
+    self.emailTextFieldBecomeFirstResponder.assertValueCount(1)
   }
 
   func testViewDidLoadTracking() {
-    vm.inputs.viewDidLoad()
+    self.vm.inputs.viewDidLoad()
 
     XCTAssertEqual(["Forgot Password View"], trackingClient.events)
   }
 
   func testFormIsValid() {
-    formIsValid.assertDidNotEmitValue("Form is valid did not emit any values")
+    self.formIsValid.assertDidNotEmitValue("Form is valid did not emit any values")
 
-    vm.inputs.viewDidLoad()
+    self.vm.inputs.viewDidLoad()
 
-    formIsValid.assertValues([false], "Emits form is valid after view loads")
+    self.formIsValid.assertValues([false], "Emits form is valid after view loads")
 
-    vm.inputs.emailChanged("bad")
+    self.vm.inputs.emailChanged("bad")
 
-    formIsValid.assertValues([false])
+    self.formIsValid.assertValues([false])
 
-    vm.inputs.emailChanged("gina@kickstarter.com")
+    self.vm.inputs.emailChanged("gina@kickstarter.com")
 
-    formIsValid.assertValues([false, true])
+    self.formIsValid.assertValues([false, true])
   }
 
   func testFormIsValid_WithInitialValue() {
-    formIsValid.assertDidNotEmitValue("Form is valid did not emit any values")
+    self.formIsValid.assertDidNotEmitValue("Form is valid did not emit any values")
 
-    vm.inputs.emailChanged("hello@goodemail.biz")
+    self.vm.inputs.emailChanged("hello@goodemail.biz")
 
-    formIsValid.assertDidNotEmitValue("Form is valid did not emit any values")
+    self.formIsValid.assertDidNotEmitValue("Form is valid did not emit any values")
 
-    vm.inputs.viewDidLoad()
+    self.vm.inputs.viewDidLoad()
 
-    formIsValid.assertValues([true])
+    self.formIsValid.assertValues([true])
 
-    vm.inputs.emailChanged("")
+    self.vm.inputs.emailChanged("")
 
-    formIsValid.assertValues([true, false])
+    self.formIsValid.assertValues([true, false])
   }
 
   func testEmailSetOnce_WithInitialValue() {
-    vm.inputs.emailChanged("nativesquad@kickstarter.com")
+    self.vm.inputs.emailChanged("nativesquad@kickstarter.com")
 
-    setEmailInitial.assertValueCount(0, "Initial email does not emit")
+    self.setEmailInitial.assertValueCount(0, "Initial email does not emit")
 
-    vm.inputs.viewDidLoad()
+    self.vm.inputs.viewDidLoad()
 
-    setEmailInitial.assertValues(["nativesquad@kickstarter.com"])
+    self.setEmailInitial.assertValues(["nativesquad@kickstarter.com"])
 
-    vm.inputs.viewDidLoad()
+    self.vm.inputs.viewDidLoad()
 
-    setEmailInitial.assertValues(["nativesquad@kickstarter.com"])
+    self.setEmailInitial.assertValues(["nativesquad@kickstarter.com"])
   }
 
   func testEmailNotSet_WithoutInitialValue() {
-    setEmailInitial.assertValueCount(0, "Initial email does not emit")
+    self.setEmailInitial.assertValueCount(0, "Initial email does not emit")
 
-    vm.inputs.viewDidLoad()
+    self.vm.inputs.viewDidLoad()
 
-    setEmailInitial.assertValueCount(0, "Initial email does not emit")
+    self.setEmailInitial.assertValueCount(0, "Initial email does not emit")
 
-    vm.inputs.emailChanged("nativesquad@kickstarter.com")
+    self.vm.inputs.emailChanged("nativesquad@kickstarter.com")
 
-    setEmailInitial.assertValueCount(0, "Initial email does not emit")
+    self.setEmailInitial.assertValueCount(0, "Initial email does not emit")
   }
 
   func testResetSuccess() {
-    vm.inputs.viewDidLoad()
-    vm.inputs.emailChanged("lisa@kickstarter.com")
-    vm.inputs.resetButtonPressed()
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.emailChanged("lisa@kickstarter.com")
+    self.vm.inputs.resetButtonPressed()
 
-    showResetSuccess.assertValues(
+    self.showResetSuccess.assertValues(
       [Strings.forgot_password_we_sent_an_email_to_email_address_with_instructions_to_reset_your_password(
         email: "lisa@kickstarter.com")
       ]
@@ -102,10 +109,10 @@ final class ResetPasswordViewModelTests: TestCase {
   }
 
   func testResetConfirmation() {
-    vm.inputs.viewDidLoad()
-    vm.inputs.confirmResetButtonPressed()
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.confirmResetButtonPressed()
 
-    returnToLogin.assertValueCount(1, "Shows login after confirming message receipt")
+    self.returnToLogin.assertValueCount(1, "Shows login after confirming message receipt")
   }
 
   func testResetFail_WithUnknownEmail() {
@@ -117,12 +124,12 @@ final class ResetPasswordViewModelTests: TestCase {
     )
 
     withEnvironment(apiService: MockService(resetPasswordError: error)) {
-      vm.inputs.viewDidLoad()
-      vm.inputs.emailChanged("bad@email")
-      vm.inputs.resetButtonPressed()
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.emailChanged("bad@email")
+      self.vm.inputs.resetButtonPressed()
 
-      showError.assertValues([Strings.forgot_password_error()],
-                             "Error alert is shown on bad request")
+      self.showError.assertValues([Strings.forgot_password_error()],
+                                  "Error alert is shown on bad request")
     }
   }
 
@@ -135,11 +142,11 @@ final class ResetPasswordViewModelTests: TestCase {
     )
 
     withEnvironment(apiService: MockService(resetPasswordError: error)) {
-      vm.inputs.viewDidLoad()
-      vm.inputs.emailChanged("unicorns@sparkles.tv")
-      vm.inputs.resetButtonPressed()
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.emailChanged("unicorns@sparkles.tv")
+      self.vm.inputs.resetButtonPressed()
 
-      showError.assertValues(["Something went wrong."], "Error alert is shown on bad request")
+      self.showError.assertValues(["Something went wrong."], "Error alert is shown on bad request")
     }
   }
 }

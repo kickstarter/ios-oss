@@ -154,5 +154,13 @@ internal final class HelpViewModelTests: TestCase {
     XCTAssertEqual(["Showed Help Menu", "Canceled Help Menu"], self.trackingClient.events)
     XCTAssertEqual(["Login Tout", "Login Tout"],
                    self.trackingClient.properties.map { $0["context"] as! String? })
+
+    self.vm.inputs.configureWith(helpContext: .signup)
+    self.vm.inputs.canSendEmail(true)
+
+    self.vm.inputs.showHelpSheetButtonTapped()
+    XCTAssertEqual(["Showed Help Menu", "Canceled Help Menu", "Showed Help Menu"], self.trackingClient.events)
+    XCTAssertEqual(["Login Tout", "Login Tout", "Signup"],
+                   self.trackingClient.properties.map { $0["context"] as! String? })
   }
 }

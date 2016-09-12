@@ -6,20 +6,21 @@ import UIKit
 import XCPlayground
 @testable import Kickstarter_Framework
 
+// Instantiate the Two Factor view controller.
 initialize()
-let controller = FacebookConfirmationViewController
-  .configuredWith(facebookUserEmail: "hello@kickstarter.com", facebookAccessToken: "")
+let controller = Storyboard.Login.instantiate(TwoFactorViewController.self)
 
 // Set the device type and orientation.
-let (parent, _) = playgroundControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
+let (parent, _) = playgroundControllers(device: .phone4inch, orientation: .portrait, child: controller)
 
 // Set the device language.
 AppEnvironment.replaceCurrentEnvironment(
-  language: .de,
+  language: .en,
   locale: NSLocale(localeIdentifier: "en"),
   mainBundle: NSBundle.framework
 )
 
+// Render the screen.
 let frame = parent.view.frame
 XCPlaygroundPage.currentPage.liveView = parent
 parent.view.frame = frame

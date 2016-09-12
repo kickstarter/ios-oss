@@ -69,8 +69,9 @@ public let greenButtonStyle =
     <> UIButton.lens.backgroundColor(forState: .Normal) .~ .ksr_green_500
     <> UIButton.lens.titleColor(forState: .Highlighted) .~ .init(white: 1.0, alpha: 0.5)
     <> UIButton.lens.backgroundColor(forState: .Highlighted) .~ .ksr_green_700
-    <> UIButton.lens.titleColor(forState: .Disabled) .~ .init(white: 0.0, alpha: 0.4)
-    <> UIButton.lens.backgroundColor(forState: .Disabled) .~ UIColor.ksr_green_400
+    <> UIButton.lens.titleColor(forState: .Disabled) .~ .whiteColor()
+    <> UIButton.lens.backgroundColor(forState: .Disabled)
+      .~ UIColor.ksr_green_400.colorWithAlphaComponent(0.5)
     <> UIButton.lens.layer.borderColor .~ UIColor.ksr_green_700.CGColor
     <> UIButton.lens.layer.borderWidth .~ 1.0
 

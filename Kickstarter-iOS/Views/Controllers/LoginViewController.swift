@@ -45,6 +45,8 @@ internal final class LoginViewController: UIViewController {
     self.viewModel.inputs.onePassword(
       isAvailable: OnePasswordExtension.sharedExtension().isAppExtensionAvailable()
     )
+
+    self.viewModel.inputs.viewDidLoad()
   }
 
   override func viewWillAppear(animated: Bool) {
@@ -75,16 +77,13 @@ internal final class LoginViewController: UIViewController {
   override func bindViewModel() {
     super.bindViewModel()
 
+    self.emailTextField.rac.becomeFirstResponder = self.viewModel.outputs.emailTextFieldBecomeFirstResponder
     self.emailTextField.rac.text = self.viewModel.outputs.emailText
     self.loginButton.rac.enabled = self.viewModel.outputs.isFormValid
+    self.passwordTextField.rac.becomeFirstResponder =
+      self.viewModel.outputs.passwordTextFieldBecomeFirstResponder
     self.passwordTextField.rac.text = self.viewModel.outputs.passwordText
     self.onePasswordButton.rac.hidden = self.viewModel.outputs.onePasswordButtonHidden
-
-    self.viewModel.outputs.passwordTextFieldBecomeFirstResponder
-      .observeForControllerAction()
-      .observeNext { [weak self] _ in
-        self?.passwordTextField.becomeFirstResponder()
-    }
 
     self.viewModel.outputs.dismissKeyboard
       .observeForControllerAction()

@@ -36,17 +36,22 @@ public protocol LoginViewModelInputs {
   /// Call when reset password button is pressed
   func resetPasswordButtonPressed()
 
+  /// Call when the view did load.
+  func viewDidLoad()
+
   /// Call when the view will appear.
   func viewWillAppear()
 }
 
 public protocol LoginViewModelOutputs {
-
   /// Emits when to dismiss a textfield keyboard
   var dismissKeyboard: Signal<(), NoError> { get }
 
   /// Emits text that should be put into the email field.
   var emailText: Signal<String, NoError> { get }
+
+  /// Sets whether the email text field is the first responder.
+  var emailTextFieldBecomeFirstResponder: Signal<(), NoError> { get }
 
   /// Bool value whether form is valid
   var isFormValid: Signal<Bool, NoError> { get }
@@ -92,6 +97,8 @@ public final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, Log
       .merge(self.emailChangedProperty.signal.ignoreNil(), self.prefillEmailProperty.signal.ignoreNil()),
       .merge(self.passwordChangedProperty.signal.ignoreNil(), self.prefillPasswordProperty.signal.ignoreNil())
     )
+
+    self.emailTextFieldBecomeFirstResponder = self.viewDidLoadProperty.signal
 
     self.isFormValid = self.viewWillAppearProperty.signal.mapConst(false).take(1)
       .mergeWith(emailAndPassword.map(isValid))
@@ -200,9 +207,14 @@ public final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, Log
   public func resetPasswordButtonPressed() {
     self.resetPasswordPressedProperty.value = ()
   }
+  private let viewDidLoadProperty = MutableProperty()
+  public func viewDidLoad() {
+    self.viewDidLoadProperty.value = ()
+  }
 
   public let dismissKeyboard: Signal<(), NoError>
   public let emailText: Signal<String, NoError>
+  public let emailTextFieldBecomeFirstResponder: Signal<(), NoError>
   public let isFormValid: Signal<Bool, NoError>
   public let logIntoEnvironment: Signal<AccessTokenEnvelope, NoError>
   public var onePasswordButtonHidden: Signal<Bool, NoError>

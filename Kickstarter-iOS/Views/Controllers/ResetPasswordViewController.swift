@@ -35,6 +35,8 @@ internal final class ResetPasswordViewController: UIViewController {
   override func bindViewModel() {
     super.bindViewModel()
 
+    self.emailTextField.rac.becomeFirstResponder = self.viewModel.outputs.emailTextFieldBecomeFirstResponder
+
     self.viewModel.outputs.setEmailInitial
       .observeForControllerAction()
       .observeNext { [weak self] email in
@@ -59,7 +61,7 @@ internal final class ResetPasswordViewController: UIViewController {
         self?.navigationController?.popViewControllerAnimated(true)
       }
 
-    self.viewModel.errors.showError
+    self.viewModel.outputs.showError
       .observeForControllerAction()
       .observeNext { [weak self] message in
         self?.presentViewController(UIAlertController.genericError(message), animated: true, completion: nil)
