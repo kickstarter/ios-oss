@@ -154,13 +154,12 @@ ProjectActivityBackingCellViewModelInputs, ProjectActivityBackingCellViewModelOu
 }
 
 private func accessibilityValue(activity activity: Activity, project: Project) -> String {
-   guard let reward = reward(activity: activity, project: project) else { return "" }
-
   switch activity.category {
   case .backing, .backingCanceled:
     return Strings.Amount_reward(
       amount: amount(activity: activity, project: project),
-      reward: reward.title ?? "")
+      reward: rewardSummary(activity: activity, project: project).htmlStripped() ?? ""
+    )
   case .backingAmount:
     return Strings.Amount_previous_amount(
       amount: amount(activity: activity, project: project),

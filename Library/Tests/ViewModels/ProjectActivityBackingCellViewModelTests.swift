@@ -86,8 +86,9 @@ internal final class ProjectActivityBackingCellViewModelTests: TestCase {
       |> Activity.lens.user .~ user
 
     self.vm.inputs.configureWith(activity: activity, project: project)
-    let expected = Strings.Amount_reward(amount: Format.currency(amount, country: project.country),
-                                         reward: reward.title ?? "")
+    let expected = Strings.Amount_reward(
+      amount: Format.currency(amount, country: project.country),
+      reward: Strings.dashboard_activity_reward_name(reward_name: title).htmlStripped() ?? "")
 
     self.cellAccessibilityValue.assertValues([expected], "Emits accessibility value")
   }
