@@ -15,7 +15,7 @@ public enum Strings {
    "All Art Projects"
 
    - **es**: "Todos los proyectos de la categoría Arte"
-   - **de**: "All Art Projects"
+   - **de**: "Alle Projekte der Kategorie Kunst"
    - **fr**: "Tous les projets de la catégorie Art"
    - **it**: "All Art Projects"
    - **en**: "All Art Projects"
@@ -32,7 +32,7 @@ public enum Strings {
    "All Comics Projects"
 
    - **es**: "Todos los proyectos de la categoría Comics"
-   - **de**: "All Comics Projects"
+   - **de**: "Alle Projekte der Kategorie Comics"
    - **fr**: "Tous les projets de la catégorie Bande dessinée"
    - **it**: "All Comics Projects"
    - **en**: "All Comics Projects"
@@ -49,7 +49,7 @@ public enum Strings {
    "All Crafts Projects"
 
    - **es**: "Todos los proyectos de la categoría Artesanías"
-   - **de**: "All Crafts Projects"
+   - **de**: "Alle Projekte der Kategorie Kunsthandwerk"
    - **fr**: "Tous les projets de la catégorie Artisanat"
    - **it**: "All Crafts Projects"
    - **en**: "All Crafts Projects"
@@ -66,7 +66,7 @@ public enum Strings {
    "All Dance Projects"
 
    - **es**: "Todos los proyectos de la categoría Danza"
-   - **de**: "All Dance Projects"
+   - **de**: "Alle Projekte der Kategorie Tanz"
    - **fr**: "Tous les projets de la catégorie Danse"
    - **it**: "All Dance Projects"
    - **en**: "All Dance Projects"
@@ -83,7 +83,7 @@ public enum Strings {
    "All Design Projects"
 
    - **es**: "Todos los proyectos de la categoría Diseño"
-   - **de**: "All Design Projects"
+   - **de**: "Alle Projekte der Kategorie Design"
    - **fr**: "Tous les projets de la catégorie Design"
    - **it**: "All Design Projects"
    - **en**: "All Design Projects"
@@ -100,7 +100,7 @@ public enum Strings {
    "All Fashion Projects"
 
    - **es**: "Todos los proyectos de la categoría Moda"
-   - **de**: "All Fashion Projects"
+   - **de**: "Alle Projekte der Kategorie Mode"
    - **fr**: "Tous les projets de la catégorie Mode"
    - **it**: "All Fashion Projects"
    - **en**: "All Fashion Projects"
@@ -117,7 +117,7 @@ public enum Strings {
    "All Film & Video Projects"
 
    - **es**: "Todos los proyectos de la categoría Cine y Video"
-   - **de**: "All Film & Video Projects"
+   - **de**: "Alle Projekte der Kategorie Film & Video"
    - **fr**: "Tous les projets de la catégorie Cinéma et vidéo"
    - **it**: "All Film & Video Projects"
    - **en**: "All Film & Video Projects"
@@ -134,7 +134,7 @@ public enum Strings {
    "All Food Projects"
 
    - **es**: "Todos los proyectos de la categoría Comida"
-   - **de**: "All Food Projects"
+   - **de**: "Alle Projekte der Kategorie Essen"
    - **fr**: "Tous les projets de la catégorie Gastronomie"
    - **it**: "All Food Projects"
    - **en**: "All Food Projects"
@@ -151,7 +151,7 @@ public enum Strings {
    "All Games Projects"
 
    - **es**: "Todos los proyectos de la categoría Juegos"
-   - **de**: "All Games Projects"
+   - **de**: "Alle Projekte der Kategorie Spiele"
    - **fr**: "Tous les projets de la catégorie Jeux"
    - **it**: "All Games Projects"
    - **en**: "All Games Projects"
@@ -168,7 +168,7 @@ public enum Strings {
    "All Journalism Projects"
 
    - **es**: "Todos los proyectos de la categoría Periodismo"
-   - **de**: "All Journalism Projects"
+   - **de**: "Alle Projekte der Kategorie Journalismus"
    - **fr**: "Tous les projets de la catégorie Journalisme"
    - **it**: "All Journalism Projects"
    - **en**: "All Journalism Projects"
@@ -185,7 +185,7 @@ public enum Strings {
    "All Music Projects"
 
    - **es**: "Todos los proyectos de la categoría Música"
-   - **de**: "All Music Projects"
+   - **de**: "Alle Projekte der Kategorie Musik"
    - **fr**: "Tous les projets de la catégorie Musique"
    - **it**: "All Music Projects"
    - **en**: "All Music Projects"
@@ -202,7 +202,7 @@ public enum Strings {
    "All Photography Projects"
 
    - **es**: "Todos los proyectos de la categoría Fotografía"
-   - **de**: "All Photography Projects"
+   - **de**: "Alle Projekte der Kategorie Fotografie"
    - **fr**: "Tous les projets de la catégorie Photographie"
    - **it**: "All Photography Projects"
    - **en**: "All Photography Projects"
@@ -219,7 +219,7 @@ public enum Strings {
    "All Projects"
 
    - **es**: "Todos los proyectos"
-   - **de**: "All Projects"
+   - **de**: "Alle Projekte"
    - **fr**: "Tous les projets"
    - **it**: "All Projects"
    - **en**: "All Projects"
@@ -236,7 +236,7 @@ public enum Strings {
    "All Publishing Projects"
 
    - **es**: "Todos los proyectos de la categoría Editorial"
-   - **de**: "All Publishing Projects"
+   - **de**: "Alle Projekte der Kategorie Publishing"
    - **fr**: "Tous les projets de la catégorie Édition"
    - **it**: "All Publishing Projects"
    - **en**: "All Publishing Projects"
@@ -253,7 +253,7 @@ public enum Strings {
    "All Technology Projects"
 
    - **es**: "Todos los proyectos de la categoría Tecnología"
-   - **de**: "All Technology Projects"
+   - **de**: "Alle Projekte der Kategorie Technologie"
    - **fr**: "Tous les projets de la catégorie Technologie"
    - **it**: "All Technology Projects"
    - **en**: "All Technology Projects"
@@ -270,7 +270,7 @@ public enum Strings {
    "All Theater Projects"
 
    - **es**: "Todos los proyectos de la categoría Teatro"
-   - **de**: "All Theater Projects"
+   - **de**: "Alle Projekte der Kategorie Theater"
    - **fr**: "Tous les projets de la catégorie Théâtre"
    - **it**: "All Theater Projects"
    - **en**: "All Theater Projects"
@@ -287,7 +287,7 @@ public enum Strings {
    "All gone"
 
    - **es**: "¡Recompensas agotadas!"
-   - **de**: "All gone"
+   - **de**: "Alle weg"
    - **fr**: "Épuisé"
    - **it**: "All gone"
    - **en**: "All gone"
@@ -304,7 +304,7 @@ public enum Strings {
    "Amount: %{amount}, previous amount: %{previous_amount}"
 
    - **es**: "Monto actual: %{amount}, monto previo: %{previous_amount}"
-   - **de**: "Amount: %{amount}, previous amount: %{previous_amount}"
+   - **de**: "Jetziger Betrag: %{amount}, vorheriger Betrag: %{previous_amount}"
    - **fr**: "Montant : %{amount}, montant précédant : %{previous_amount}"
    - **it**: "Amount: %{amount}, previous amount: %{previous_amount}"
    - **en**: "Amount: %{amount}, previous amount: %{previous_amount}"
@@ -321,7 +321,7 @@ public enum Strings {
    "Amount: %{amount}, %{reward}"
 
    - **es**: "Monto: %{amount}, %{reward}"
-   - **de**: "Amount: %{amount}, %{reward}"
+   - **de**: "Betrag: %{amount}, %{reward}"
    - **fr**: "Montant : %{amount}, %{reward}"
    - **it**: "Amount: %{amount}, %{reward}"
    - **en**: "Amount: %{amount}, %{reward}"
@@ -338,7 +338,7 @@ public enum Strings {
    "Ask me anything"
 
    - **es**: "¡Pregúntame!"
-   - **de**: "Ask me anything"
+   - **de**: "Frage stellen"
    - **fr**: "Posez-moi une question !"
    - **it**: "Ask me anything"
    - **en**: "Ask me anything"
@@ -355,7 +355,7 @@ public enum Strings {
    "Backed by Friends"
 
    - **es**: "Patrocinados por amigos"
-   - **de**: "Backed by Friends"
+   - **de**: "Von Freunden unterstützt"
    - **fr**: "Soutenu par mes amis"
    - **it**: "Backed by Friends"
    - **en**: "Backed by Friends"
@@ -372,7 +372,7 @@ public enum Strings {
    "Closes filters."
 
    - **es**: "Cierra filtros."
-   - **de**: "Closes filters."
+   - **de**: "Filter schließen."
    - **fr**: "Ferme les filtres."
    - **it**: "Closes filters."
    - **en**: "Closes filters."
@@ -389,7 +389,7 @@ public enum Strings {
    "Collections"
 
    - **es**: "Colecciones"
-   - **de**: "Collections"
+   - **de**: "Sammlungen"
    - **fr**: "Collections"
    - **it**: "Collections"
    - **en**: "Collections"
@@ -406,7 +406,7 @@ public enum Strings {
    "Connect with Facebook to follow friends and get notified when they back or launch projects."
 
    - **es**: "Si te conectas via Facebook puedes seguir a tus amigos y te avisaremos cada vez que publican o patrocinan un proyecto."
-   - **de**: "Connect with Facebook to follow friends and get notified when they back or launch projects."
+   - **de**: "Verknüpfe dein Konto mit Facebook - du kannst deinen Freunden folgen und wirst benachrichtigt, sobald sie ein Projekt veröffentlichen oder unterstützen."
    - **fr**: "Si vous vous connectez avec votre compte Facebook, vous pourrez suivre vos amis et recevoir des notifications chaque fois qu'ils lancent ou soutiennent de nouveaux projets."
    - **it**: "Connect with Facebook to follow friends and get notified when they back or launch projects."
    - **en**: "Connect with Facebook to follow friends and get notified when they back or launch projects."
@@ -420,10 +420,27 @@ public enum Strings {
     )
   }
   /**
+   "Continue to payment"
+
+   - **es**: "Continue to payment"
+   - **de**: "Continue to payment"
+   - **fr**: "Continue to payment"
+   - **it**: "Continue to payment"
+   - **en**: "Continue to payment"
+  */
+  public static func Continue_to_payment() -> String {
+    return localizedString(
+      key: "Continue_to_payment",
+      defaultValue: "Continue to payment",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Couldn't add attachment"
 
    - **es**: "No se pudo añadir el anexo"
-   - **de**: "Couldn't add attachment"
+   - **de**: "Anhang konnte nicht hinzugefügt werden"
    - **fr**: "Impossible d'ajouter la pièce jointe"
    - **it**: "Couldn't add attachment"
    - **en**: "Couldn't add attachment"
@@ -440,7 +457,7 @@ public enum Strings {
    "Couldn't remove attachment"
 
    - **es**: "No se pudo remover el anexo"
-   - **de**: "Couldn't remove attachment"
+   - **de**: "Anhang konnte nicht entfernt werden"
    - **fr**: "Impossible de supprimer la pièce jointe"
    - **it**: "Couldn't remove attachment"
    - **en**: "Couldn't remove attachment"
@@ -457,7 +474,7 @@ public enum Strings {
    "Discover more projects."
 
    - **es**: "Descubre más proyectos."
-   - **de**: "Discover more projects."
+   - **de**: "Erkunde mehr Projekte."
    - **fr**: "Découvrez plus de projets."
    - **it**: "Discover more projects."
    - **en**: "Discover more projects."
@@ -471,10 +488,27 @@ public enum Strings {
     )
   }
   /**
+   "Done"
+
+   - **es**: "Done"
+   - **de**: "Done"
+   - **fr**: "Done"
+   - **it**: "Done"
+   - **en**: "Done"
+  */
+  public static func Done() -> String {
+    return localizedString(
+      key: "Done",
+      defaultValue: "Done",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Email notifications"
 
    - **es**: "Notificaciones por correo electrónico"
-   - **de**: "Email notifications"
+   - **de**: "Benachrichtigung per E-Mail"
    - **fr**: "Notifications par e-mail"
    - **it**: "Email notifications"
    - **en**: "Email notifications"
@@ -491,7 +525,7 @@ public enum Strings {
    "Ending Soon"
 
    - **es**: "Finaliza pronto"
-   - **de**: "Ending Soon"
+   - **de**: "Endet bald"
    - **fr**: "Campagnes bientôt terminées"
    - **it**: "Ending Soon"
    - **en**: "Ending Soon"
@@ -505,10 +539,27 @@ public enum Strings {
     )
   }
   /**
+   "Estimated to fulfill:"
+
+   - **es**: "Estimated to fulfill:"
+   - **de**: "Estimated to fulfill:"
+   - **fr**: "Estimated to fulfill:"
+   - **it**: "Estimated to fulfill:"
+   - **en**: "Estimated to fulfill:"
+  */
+  public static func Estimated_to_fulfill() -> String {
+    return localizedString(
+      key: "Estimated_to_fulfill",
+      defaultValue: "Estimated to fulfill:",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Filtered by all projects"
 
    - **es**: "Filtro: Todos los proyectos"
-   - **de**: "Filtered by all projects"
+   - **de**: "Filter: Alle Projekte"
    - **fr**: "Filtré : tous les projets"
    - **it**: "Filtered by all projects"
    - **en**: "Filtered by all projects"
@@ -525,7 +576,7 @@ public enum Strings {
    "Filtered by %{category_name}"
 
    - **es**: "Filtro: %{category_name}"
-   - **de**: "Filtered by %{category_name}"
+   - **de**: "Filter: %{category_name}"
    - **fr**: "Filtré par catégorie : %{category_name}"
    - **it**: "Filtered by %{category_name}"
    - **en**: "Filtered by %{category_name}"
@@ -542,7 +593,7 @@ public enum Strings {
    "Filtered by projects backed by friends"
 
    - **es**: "Filtro: Proyectos patrocinados por amigos"
-   - **de**: "Filtered by projects backed by friends"
+   - **de**: "Filter: Von Freunden unterstützte Projekte"
    - **fr**: "Filtré : engagements de mes amis"
    - **it**: "Filtered by projects backed by friends"
    - **en**: "Filtered by projects backed by friends"
@@ -559,7 +610,7 @@ public enum Strings {
    "Filtered by projects recommended for you"
 
    - **es**: "Filtro: Proyectos recomendados"
-   - **de**: "Filtered by projects recommended for you"
+   - **de**: "Filter: Für dich empfohlene Projekte"
    - **fr**: "Filtré : recommandations"
    - **it**: "Filtered by projects recommended for you"
    - **en**: "Filtered by projects recommended for you"
@@ -576,7 +627,7 @@ public enum Strings {
    "Filtered by projects we love"
 
    - **es**: "Filtro: Nuestros favoritos"
-   - **de**: "Filtered by projects we love"
+   - **de**: "Filter: Team-Favoriten"
    - **fr**: "Filtré : Coups de cœur"
    - **it**: "Filtered by projects we love"
    - **en**: "Filtered by projects we love"
@@ -593,7 +644,7 @@ public enum Strings {
    "Filtered by starred projects"
 
    - **es**: "Filtro: Tus favoritos"
-   - **de**: "Filtered by starred projects"
+   - **de**: "Filter: Favoriten"
    - **fr**: "Filtré : mes projets préférés"
    - **it**: "Filtered by starred projects"
    - **en**: "Filtered by starred projects"
@@ -610,7 +661,7 @@ public enum Strings {
    "Filtered by %{subcategory_name} in %{category_name}"
 
    - **es**: "Filtro: %{subcategory_name} en %{category_name}"
-   - **de**: "Filtered by %{subcategory_name} in %{category_name}"
+   - **de**: "Filter: %{subcategory_name} in %{category_name}"
    - **fr**: "Filtré : %{subcategory_name}, sous %{category_name}"
    - **it**: "Filtered by %{subcategory_name} in %{category_name}"
    - **en**: "Filtered by %{subcategory_name} in %{category_name}"
@@ -627,7 +678,7 @@ public enum Strings {
    "Find Facebook friends"
 
    - **es**: "Encuentra amigos en Facebook"
-   - **de**: "Find Facebook friends"
+   - **de**: "Finde Freunde auf Facebook"
    - **fr**: "Retrouver mes amis Facebook"
    - **it**: "Find Facebook friends"
    - **en**: "Find Facebook friends"
@@ -644,7 +695,7 @@ public enum Strings {
    "First created"
 
    - **es**: "Primer proyecto creado"
-   - **de**: "First created"
+   - **de**: "Erstes Projekt"
    - **fr**: "Premier projet créé"
    - **it**: "First created"
    - **en**: "First created"
@@ -661,7 +712,7 @@ public enum Strings {
    "Follow friends"
 
    - **es**: "Seguir a amigos"
-   - **de**: "Follow friends"
+   - **de**: "Freunden folgen"
    - **fr**: "Suivez vos amis"
    - **it**: "Follow friends"
    - **en**: "Follow friends"
@@ -678,7 +729,7 @@ public enum Strings {
    "Follow your Facebook friends and get notified when they back or launch projects."
 
    - **es**: "Sigue a tus amigos y te avisaremos cuando publican o patrocinan un proyecto."
-   - **de**: "Follow your Facebook friends and get notified when they back or launch projects."
+   - **de**: "Folge deinen Freunden und wir werden dich benachrichtigen, sobald sie ein Projekt unterstützen oder veröffentlichen."
    - **fr**: "Rejoignez-les et découvrez ensemble de nouveaux projets."
    - **it**: "Follow your Facebook friends and get notified when they back or launch projects."
    - **en**: "Follow your Facebook friends and get notified when they back or launch projects."
@@ -695,7 +746,7 @@ public enum Strings {
    "Following"
 
    - **es**: "Siguiendo"
-   - **de**: "Following"
+   - **de**: "Abonniert"
    - **fr**: "Projets soutenus par mes amis"
    - **it**: "Following"
    - **en**: "Following"
@@ -726,10 +777,27 @@ public enum Strings {
     )
   }
   /**
+   "It’s a way to bring creative projects to life."
+
+   - **es**: "It’s a way to bring creative projects to life."
+   - **de**: "It’s a way to bring creative projects to life."
+   - **fr**: "It’s a way to bring creative projects to life."
+   - **it**: "It’s a way to bring creative projects to life."
+   - **en**: "It’s a way to bring creative projects to life."
+  */
+  public static func Its_a_way_to_bring_creative_projects_to_life() -> String {
+    return localizedString(
+      key: "Its_a_way_to_bring_creative_projects_to_life",
+      defaultValue: "It’s a way to bring creative projects to life.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Keep reading"
 
    - **es**: "Leer más"
-   - **de**: "Keep reading"
+   - **de**: "Mehr lesen"
    - **fr**: "Plus"
    - **it**: "Keep reading"
    - **en**: "Keep reading"
@@ -743,10 +811,61 @@ public enum Strings {
     )
   }
   /**
+   "Kickstarter (if funded)"
+
+   - **es**: "Kickstarter (if funded)"
+   - **de**: "Kickstarter (if funded)"
+   - **fr**: "Kickstarter (if funded)"
+   - **it**: "Kickstarter (if funded)"
+   - **en**: "Kickstarter (if funded)"
+  */
+  public static func Kickstarter_if_funded() -> String {
+    return localizedString(
+      key: "Kickstarter_if_funded",
+      defaultValue: "Kickstarter (if funded)",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Kickstarter is not a store."
+
+   - **es**: "Kickstarter is not a store."
+   - **de**: "Kickstarter is not a store."
+   - **fr**: "Kickstarter is not a store."
+   - **it**: "Kickstarter is not a store."
+   - **en**: "Kickstarter is not a store."
+  */
+  public static func Kickstarter_is_not_a_store() -> String {
+    return localizedString(
+      key: "Kickstarter_is_not_a_store",
+      defaultValue: "Kickstarter is not a store.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Learn more about accountability"
+
+   - **es**: "Learn more about accountability"
+   - **de**: "Learn more about accountability"
+   - **fr**: "Learn more about accountability"
+   - **it**: "Learn more about accountability"
+   - **en**: "Learn more about accountability"
+  */
+  public static func Learn_more_about_accountability() -> String {
+    return localizedString(
+      key: "Learn_more_about_accountability",
+      defaultValue: "Learn more about accountability",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Opens comments."
 
    - **es**: "Abre comentarios."
-   - **de**: "Opens comments."
+   - **de**: "Öffnet Kommentare."
    - **fr**: "Ouvre les commentaires."
    - **it**: "Opens comments."
    - **en**: "Opens comments."
@@ -763,7 +882,7 @@ public enum Strings {
    "Opens email composer."
 
    - **es**: "Abre plantilla de correo."
-   - **de**: "Opens email composer."
+   - **de**: "Öffnet E-Mail-Vorlage."
    - **fr**: "Ouvre l'éditeur d'e-mail."
    - **it**: "Opens email composer."
    - **en**: "Opens email composer."
@@ -780,7 +899,7 @@ public enum Strings {
    "Opens filters."
 
    - **es**: "Abre filtros."
-   - **de**: "Opens filters."
+   - **de**: "Öffnet Filter."
    - **fr**: "Ouvre les filtres."
    - **it**: "Opens filters."
    - **en**: "Opens filters."
@@ -797,7 +916,7 @@ public enum Strings {
    "Opens help sheet."
 
    - **es**: "Abre hoja de ayuda."
-   - **de**: "Opens help sheet."
+   - **de**: "Öffnet die Hilfe-Seite."
    - **fr**: "Ouvre la page d'aide."
    - **it**: "Opens help sheet."
    - **en**: "Opens help sheet."
@@ -814,7 +933,7 @@ public enum Strings {
    "Opens pledge info."
 
    - **es**: "Abre info sobre contribución."
-   - **de**: "Opens pledge info."
+   - **de**: "Öffnet Info zu Beitrag."
    - **fr**: "Ouvre les infos sur l'engagement."
    - **it**: "Opens pledge info."
    - **en**: "Opens pledge info."
@@ -879,6 +998,23 @@ public enum Strings {
     )
   }
   /**
+   "Other payment methods"
+
+   - **es**: "Other payment methods"
+   - **de**: "Other payment methods"
+   - **fr**: "Other payment methods"
+   - **it**: "Other payment methods"
+   - **en**: "Other payment methods"
+  */
+  public static func Other_payment_methods() -> String {
+    return localizedString(
+      key: "Other_payment_methods",
+      defaultValue: "Other payment methods",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Popular"
 
    - **es**: "Popular"
@@ -930,6 +1066,40 @@ public enum Strings {
     )
   }
   /**
+   "Shipping"
+
+   - **es**: "Shipping"
+   - **de**: "Shipping"
+   - **fr**: "Shipping"
+   - **it**: "Shipping"
+   - **en**: "Shipping"
+  */
+  public static func Shipping() -> String {
+    return localizedString(
+      key: "Shipping",
+      defaultValue: "Shipping",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Ships to:"
+
+   - **es**: "Ships to:"
+   - **de**: "Ships to:"
+   - **fr**: "Ships to:"
+   - **it**: "Ships to:"
+   - **en**: "Ships to:"
+  */
+  public static func Ships_to() -> String {
+    return localizedString(
+      key: "Ships_to",
+      defaultValue: "Ships to:",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Stars project."
 
    - **es**: "Marca proyecto como favorito."
@@ -959,6 +1129,40 @@ public enum Strings {
     return localizedString(
       key: "Unstars_project",
       defaultValue: "Unstars project.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Your pledge amount:"
+
+   - **es**: "Your pledge amount:"
+   - **de**: "Your pledge amount:"
+   - **fr**: "Your pledge amount:"
+   - **it**: "Your pledge amount:"
+   - **en**: "Your pledge amount:"
+  */
+  public static func Your_pledge_amount() -> String {
+    return localizedString(
+      key: "Your_pledge_amount",
+      defaultValue: "Your pledge amount:",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Your shipping destination"
+
+   - **es**: "Your shipping destination"
+   - **de**: "Your shipping destination"
+   - **fr**: "Your shipping destination"
+   - **it**: "Your shipping destination"
+   - **en**: "Your shipping destination"
+  */
+  public static func Your_shipping_destination() -> String {
+    return localizedString(
+      key: "Your_shipping_destination",
+      defaultValue: "Your shipping destination",
       count: nil,
       substitutions: [:]
     )
@@ -2871,7 +3075,7 @@ public enum Strings {
    "%{comments_count} comments"
 
    - **es**: "%{comments_count} comments"
-   - **de**: "%{comments_count} comments"
+   - **de**: "%{comments_count} Kommentare"
    - **fr**: "%{comments_count} comments"
    - **it**: "%{comments_count} comments"
    - **en**: "%{comments_count} comments"
@@ -6948,6 +7152,23 @@ public enum Strings {
     )
   }
   /**
+   "…more"
+
+   - **es**: "…more"
+   - **de**: "…more"
+   - **fr**: "…more"
+   - **it**: "…more"
+   - **en**: "…more"
+  */
+  public static func ellipsis_more() -> String {
+    return localizedString(
+      key: "ellipsis_more",
+      defaultValue: "…more",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Create new account"
 
    - **es**: "Crear una nueva cuenta"
@@ -7699,7 +7920,7 @@ public enum Strings {
    "%{left} left"
 
    - **es**: "%{left} left"
-   - **de**: "%{left} left"
+   - **de**: "%{left} verbleibend"
    - **fr**: "%{left} left"
    - **it**: "%{left} left"
    - **en**: "%{left} left"
@@ -8946,6 +9167,23 @@ This is commonly fixed by going to iOS Settings > Facebook and toggling access f
       defaultValue: "%{percentage} funded",
       count: nil,
       substitutions: ["percentage": percentage]
+    )
+  }
+  /**
+   "+%{shipping_cost}"
+
+   - **es**: "+%{shipping_cost}"
+   - **de**: "+%{shipping_cost}"
+   - **fr**: "+%{shipping_cost}"
+   - **it**: "+%{shipping_cost}"
+   - **en**: "+%{shipping_cost}"
+  */
+  public static func plus_shipping_cost(shipping_cost shipping_cost: String) -> String {
+    return localizedString(
+      key: "plus_shipping_cost",
+      defaultValue: "+%{shipping_cost}",
+      count: nil,
+      substitutions: ["shipping_cost": shipping_cost]
     )
   }
   /**

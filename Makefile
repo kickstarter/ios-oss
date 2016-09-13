@@ -44,7 +44,7 @@ bootstrap: hooks
 	brew update
 	brew unlink swiftlint || true
 	brew install swiftlint
-	brew link swiftlint
+	brew link --overwrite swiftlint
 
 submodules:
 	git submodule sync --recursive
@@ -83,4 +83,7 @@ deploy:
 lint:
 	swiftlint lint --reporter json
 
-.PHONY: test-all test clean dependencies submodules deploy lint
+strings:
+	bin/strings
+
+.PHONY: test-all test clean dependencies submodules deploy lint strings
