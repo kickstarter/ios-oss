@@ -5,13 +5,13 @@ import KsApi
 
 internal final class FindFriendsFriendFollowCell: UITableViewCell, ValueCell {
 
-  @IBOutlet weak var avatarImageView: CircleAvatarImageView!
-  @IBOutlet weak var friendNameLabel: StyledLabel!
-  @IBOutlet weak var friendLocationLabel: StyledLabel!
-  @IBOutlet weak var projectsBackedLabel: StyledLabel!
-  @IBOutlet weak var projectsCreatedLabel: StyledLabel!
-  @IBOutlet weak var followButton: BorderButton!
-  @IBOutlet weak var unfollowButton: BorderButton!
+  @IBOutlet private weak var avatarImageView: CircleAvatarImageView!
+  @IBOutlet private weak var friendNameLabel: StyledLabel!
+  @IBOutlet private weak var friendLocationLabel: StyledLabel!
+  @IBOutlet private weak var projectsBackedLabel: StyledLabel!
+  @IBOutlet private weak var projectsCreatedLabel: StyledLabel!
+  @IBOutlet private weak var followButton: BorderButton!
+  @IBOutlet private weak var unfollowButton: BorderButton!
 
   private let viewModel: FindFriendsFriendFollowCellViewModelType = FindFriendsFriendFollowCellViewModel()
 

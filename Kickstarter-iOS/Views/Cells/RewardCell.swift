@@ -5,32 +5,32 @@ import Prelude
 internal final class RewardCell: UITableViewCell, ValueCell {
   private let viewModel: RewardCellViewModelType = RewardCellViewModel()
 
-  @IBOutlet weak var allGoneContainerView: UIView!
-  @IBOutlet weak var allGoneLabel: UILabel!
-  @IBOutlet weak var backersCountLabel: UILabel!
-  @IBOutlet var bulletSeparatorViews: [UILabel]!
-  @IBOutlet weak var cardView: UIView!
-  @IBOutlet weak var checkmarkImageView: UIImageView!
-  @IBOutlet weak var conversionLabel: UILabel!
-  @IBOutlet weak var descriptionLabel: UILabel!
-  @IBOutlet weak var footerStackView: UIStackView!
-  @IBOutlet weak var includesTitleLabel: UILabel!
-  @IBOutlet weak var itemsContainerStackView: UIStackView!
-  @IBOutlet weak var itemsHeaderStackView: UIStackView!
-  @IBOutlet weak var itemsStackView: UIStackView!
-  @IBOutlet weak var minimumLabel: UILabel!
-  @IBOutlet weak var minimumStackView: UIStackView!
-  @IBOutlet weak var remainingLabel: UILabel!
-  @IBOutlet weak var remainingStackView: UIStackView!
-  @IBOutlet weak var rewardTitleLabel: UILabel!
-  @IBOutlet weak var rootStackView: UIStackView!
-  @IBOutlet var separatorViews: [UIView]!
-  @IBOutlet weak var statsStackView: UIStackView!
-  @IBOutlet weak var titleDescriptionStackView: UIStackView!
-  @IBOutlet weak var youreABackerCheckmarkImageView: UIImageView!
-  @IBOutlet weak var youreABackerContainerView: UIView!
-  @IBOutlet weak var youreABackerLabel: UILabel!
-  @IBOutlet weak var youreABackerStackView: UIStackView!
+  @IBOutlet private weak var allGoneContainerView: UIView!
+  @IBOutlet private weak var allGoneLabel: UILabel!
+  @IBOutlet private weak var backersCountLabel: UILabel!
+  @IBOutlet private var bulletSeparatorViews: [UILabel]!
+  @IBOutlet private weak var cardView: UIView!
+  @IBOutlet private weak var checkmarkImageView: UIImageView!
+  @IBOutlet private weak var conversionLabel: UILabel!
+  @IBOutlet private weak var descriptionLabel: UILabel!
+  @IBOutlet private weak var footerStackView: UIStackView!
+  @IBOutlet private weak var includesTitleLabel: UILabel!
+  @IBOutlet private weak var itemsContainerStackView: UIStackView!
+  @IBOutlet private weak var itemsHeaderStackView: UIStackView!
+  @IBOutlet private weak var itemsStackView: UIStackView!
+  @IBOutlet private weak var minimumLabel: UILabel!
+  @IBOutlet private weak var minimumStackView: UIStackView!
+  @IBOutlet private weak var remainingLabel: UILabel!
+  @IBOutlet private weak var remainingStackView: UIStackView!
+  @IBOutlet private weak var rewardTitleLabel: UILabel!
+  @IBOutlet private weak var rootStackView: UIStackView!
+  @IBOutlet private var separatorViews: [UIView]!
+  @IBOutlet private weak var statsStackView: UIStackView!
+  @IBOutlet private weak var titleDescriptionStackView: UIStackView!
+  @IBOutlet private weak var youreABackerCheckmarkImageView: UIImageView!
+  @IBOutlet private weak var youreABackerContainerView: UIView!
+  @IBOutlet private weak var youreABackerLabel: UILabel!
+  @IBOutlet private weak var youreABackerStackView: UIStackView!
 
   func configureWith(value value: (Project, Reward)) {
     self.viewModel.inputs.configureWith(project: value.0, reward: value.1)

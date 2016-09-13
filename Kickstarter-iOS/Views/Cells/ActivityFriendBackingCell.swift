@@ -6,11 +6,11 @@ import KsApi
 internal final class ActivityFriendBackingCell: UITableViewCell, ValueCell {
   private let viewModel: ActivityFriendBackingViewModel = ActivityFriendBackingViewModel()
 
-  @IBOutlet internal weak var friendImageView: UIImageView!
-  @IBOutlet internal weak var friendTitleLabel: UILabel!
-  @IBOutlet internal weak var projectNameLabel: UILabel!
-  @IBOutlet internal weak var creatorNameLabel: UILabel!
-  @IBOutlet internal weak var projectImageView: UIImageView!
+  @IBOutlet private weak var friendImageView: UIImageView!
+  @IBOutlet private weak var friendTitleLabel: UILabel!
+  @IBOutlet private weak var projectNameLabel: UILabel!
+  @IBOutlet private weak var creatorNameLabel: UILabel!
+  @IBOutlet private weak var projectImageView: UIImageView!
 
   override func bindViewModel() {
     self.rac.accessibilityLabel = self.viewModel.outputs.cellAccessibilityLabel

@@ -70,9 +70,9 @@ internal final class SettingsViewController: UIViewController {
   @IBOutlet private weak var wereAllEarsTitleLabel: UILabel!
   @IBOutlet private weak var versionLabel: UILabel!
 
-  @IBOutlet var emailNotificationButtons: [UIButton]!
-  @IBOutlet var pushNotificationButtons: [UIButton]!
-  @IBOutlet var separatorViews: [UIView]!
+  @IBOutlet private var emailNotificationButtons: [UIButton]!
+  @IBOutlet private var pushNotificationButtons: [UIButton]!
+  @IBOutlet private var separatorViews: [UIView]!
 
   internal static func instantiate() -> SettingsViewController {
     return Storyboard.Settings.instantiate(SettingsViewController)

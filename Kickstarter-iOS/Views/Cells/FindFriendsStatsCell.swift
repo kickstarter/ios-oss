@@ -9,9 +9,9 @@ protocol FindFriendsStatsCellDelegate: class {
 
 internal final class FindFriendsStatsCell: UITableViewCell, ValueCell {
 
-  @IBOutlet weak var friendCountLabel: StyledLabel!
-  @IBOutlet weak var backedProjectsCountLabel: StyledLabel!
-  @IBOutlet weak var followAllButton: BorderButton!
+  @IBOutlet private weak var friendCountLabel: StyledLabel!
+  @IBOutlet private weak var backedProjectsCountLabel: StyledLabel!
+  @IBOutlet private weak var followAllButton: BorderButton!
 
   internal weak var delegate: FindFriendsStatsCellDelegate?
 

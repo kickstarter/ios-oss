@@ -13,9 +13,9 @@ internal final class ThanksViewController: UIViewController, UICollectionViewDel
   @IBOutlet private weak var shareMoreButton: UIButton!
   @IBOutlet private weak var doneButton: UIBarButtonItem!
   @IBOutlet private weak var projectsCollectionView: UICollectionView!
-  @IBOutlet weak var backedLabel: UILabel!
-  @IBOutlet weak var recommendationsLabel: UILabel!
-  @IBOutlet weak var woohooLabel: UILabel!
+  @IBOutlet private weak var backedLabel: UILabel!
+  @IBOutlet private weak var recommendationsLabel: UILabel!
+  @IBOutlet private weak var woohooLabel: UILabel!
 
   private let viewModel: ThanksViewModelType = ThanksViewModel()
   private let shareViewModel: ShareViewModelType = ShareViewModel()

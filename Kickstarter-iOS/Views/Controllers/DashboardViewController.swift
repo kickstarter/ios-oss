@@ -5,8 +5,8 @@ import Prelude
 import Prelude_UIKit
 
 internal final class DashboardViewController: UITableViewController {
-  @IBOutlet weak var titleView: DashboardTitleView!
-  @IBOutlet weak var shareButton: UIBarButtonItem!
+  @IBOutlet private weak var titleView: DashboardTitleView!
+  @IBOutlet private weak var shareButton: UIBarButtonItem!
 
   private let dataSource = DashboardDataSource()
   private let viewModel: DashboardViewModelType = DashboardViewModel()

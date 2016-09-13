@@ -9,8 +9,8 @@ protocol FindFriendsHeaderCellDelegate {
 
 internal final class FindFriendsHeaderCell: UITableViewCell, ValueCell {
 
-  @IBOutlet internal weak var findFriendsButton: BorderButton!
-  @IBOutlet internal weak var closeButton: UIButton!
+  @IBOutlet private weak var findFriendsButton: BorderButton!
+  @IBOutlet private weak var closeButton: UIButton!
 
   internal var delegate: FindFriendsHeaderCellDelegate?
 

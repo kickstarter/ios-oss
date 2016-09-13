@@ -4,15 +4,15 @@ import KsApi
 import Library
 
 class ProjectMoreInfoCell: UICollectionViewCell, ValueCell {
-  @IBOutlet weak var creatorLabel: UILabel!
-  @IBOutlet weak var projectNameLabel: UILabel!
-  @IBOutlet weak var blurbLabel: UILabel!
-  @IBOutlet weak var progressBarView: UIView!
-  @IBOutlet weak var pledgedLabel: UILabel!
-  @IBOutlet weak var goalLabel: UILabel!
-  @IBOutlet weak var timeLabel: UILabel!
-  @IBOutlet weak var toGoLabel: UILabel!
-  @IBOutlet weak var backersCountLabel: UILabel!
+  @IBOutlet private weak var creatorLabel: UILabel!
+  @IBOutlet private weak var projectNameLabel: UILabel!
+  @IBOutlet private weak var blurbLabel: UILabel!
+  @IBOutlet private weak var progressBarView: UIView!
+  @IBOutlet private weak var pledgedLabel: UILabel!
+  @IBOutlet private weak var goalLabel: UILabel!
+  @IBOutlet private weak var timeLabel: UILabel!
+  @IBOutlet private weak var toGoLabel: UILabel!
+  @IBOutlet private weak var backersCountLabel: UILabel!
 
   let viewModel = SimpleViewModel<Project>()
 

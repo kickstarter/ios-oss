@@ -4,7 +4,7 @@ import KsApi
 import Library
 
 class ProjectRewardsCollectionViewCell: UICollectionViewCell, ValueCell {
-  @IBOutlet weak var collectionView: UICollectionView!
+  @IBOutlet private weak var collectionView: UICollectionView!
 
   let viewModel = SimpleViewModel<[Reward]>()
   let dataSource = SimpleDataSource<ProjectRewardCell, Reward>()

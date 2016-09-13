@@ -5,6 +5,7 @@ disabled_rules:
 opt_in_rules:
   - empty_count
   - force_unwrapping
+  - private_outlet
 line_length: 110
 type_body_length:
   warning: 300

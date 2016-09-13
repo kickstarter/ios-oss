@@ -5,13 +5,13 @@ import ReactiveCocoa
 import UIKit
 
 internal final class LoginViewController: UIViewController {
-  @IBOutlet internal weak var emailTextField: UITextField!
-  @IBOutlet internal weak var forgotPasswordButton: UIButton!
-  @IBOutlet internal weak var formBackgroundView: UIView!
-  @IBOutlet internal weak var formDividerView: UIView!
-  @IBOutlet internal weak var loginButton: UIButton!
-  @IBOutlet internal weak var onePasswordButton: UIButton!
-  @IBOutlet internal weak var passwordTextField: UITextField!
+  @IBOutlet private weak var emailTextField: UITextField!
+  @IBOutlet private weak var forgotPasswordButton: UIButton!
+  @IBOutlet private weak var formBackgroundView: UIView!
+  @IBOutlet private weak var formDividerView: UIView!
+  @IBOutlet private weak var loginButton: UIButton!
+  @IBOutlet private weak var onePasswordButton: UIButton!
+  @IBOutlet private weak var passwordTextField: UITextField!
 
   internal let viewModel: LoginViewModelType = LoginViewModel()
 

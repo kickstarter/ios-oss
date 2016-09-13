@@ -6,9 +6,9 @@ import Library
 import class Library.AVPlayerView
 
 final class ProjectViewController: UIViewController {
-  @IBOutlet weak var collectionView: UICollectionView!
-  @IBOutlet weak var gradientsView: UIView!
-  @IBOutlet weak var videoPlayerView: AVPlayerView!
+  @IBOutlet private weak var collectionView: UICollectionView!
+  @IBOutlet private weak var gradientsView: UIView!
+  @IBOutlet private weak var videoPlayerView: AVPlayerView!
 
   let dataSource = ProjectViewDataSource()
   let viewModel: ProjectViewModelType

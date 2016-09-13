@@ -6,9 +6,9 @@ import KsApi
 internal final class ActivityFriendFollowCell: UITableViewCell, ValueCell {
   private let viewModel: ActivityFriendFollowCellViewModel = ActivityFriendFollowCellViewModel()
 
-  @IBOutlet internal weak var friendImageView: UIImageView!
-  @IBOutlet internal weak var friendLabel: UILabel!
-  @IBOutlet internal weak var followButton: UIButton!
+  @IBOutlet private weak var friendImageView: UIImageView!
+  @IBOutlet private weak var friendLabel: UILabel!
+  @IBOutlet private weak var followButton: UIButton!
 
   override func bindViewModel() {
     self.friendLabel.rac.text = self.viewModel.outputs.title

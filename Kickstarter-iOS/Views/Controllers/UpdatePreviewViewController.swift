@@ -6,7 +6,7 @@ import UIKit
 internal final class UpdatePreviewViewController: WebViewController {
   private let viewModel: UpdatePreviewViewModelType = UpdatePreviewViewModel()
 
-  @IBOutlet weak var publishBarButtonItem: UIBarButtonItem!
+  @IBOutlet private weak var publishBarButtonItem: UIBarButtonItem!
 
   internal static func configuredWith(draft draft: UpdateDraft) -> UpdatePreviewViewController {
     let vc = Storyboard.UpdateDraft.instantiate(UpdatePreviewViewController)

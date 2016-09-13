@@ -3,9 +3,9 @@ import ReactiveCocoa
 import Library
 
 class ProjectRewardCell: UICollectionViewCell, ValueCell {
-  @IBOutlet weak var minimumLabel: UILabel!
-  @IBOutlet weak var backersCountLabel: UILabel!
-  @IBOutlet weak var rewardLabel: UILabel!
+  @IBOutlet private weak var minimumLabel: UILabel!
+  @IBOutlet private weak var backersCountLabel: UILabel!
+  @IBOutlet private weak var rewardLabel: UILabel!
 
   let viewModel = SimpleViewModel<Reward>()
 

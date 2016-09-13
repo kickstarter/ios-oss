@@ -9,7 +9,7 @@ internal protocol ProjectRecommendationsCellDelegate: class {
 }
 
 internal final class ProjectRecommendationsCell: UICollectionViewCell, ValueCell {
-  @IBOutlet weak var collectionView: UICollectionView!
+  @IBOutlet private weak var collectionView: UICollectionView!
   weak var delegate: ProjectRecommendationsCellDelegate? = nil
 
   let viewModel = SimpleViewModel<[Project]>()

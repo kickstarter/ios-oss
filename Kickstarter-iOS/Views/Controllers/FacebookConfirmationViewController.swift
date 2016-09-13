@@ -9,14 +9,14 @@ import MessageUI
 
 internal final class FacebookConfirmationViewController: UIViewController,
   MFMailComposeViewControllerDelegate {
-  @IBOutlet weak var confirmationLabel: UILabel!
-  @IBOutlet weak var createAccountButton: UIButton!
-  @IBOutlet weak var emailLabel: UILabel!
-  @IBOutlet weak var helpButton: UIButton!
-  @IBOutlet weak var loginButton: UIButton!
-  @IBOutlet weak var loginLabel: UILabel!
-  @IBOutlet weak var newsletterLabel: UILabel!
-  @IBOutlet weak var newsletterSwitch: UISwitch!
+  @IBOutlet private weak var confirmationLabel: UILabel!
+  @IBOutlet private weak var createAccountButton: UIButton!
+  @IBOutlet private weak var emailLabel: UILabel!
+  @IBOutlet private weak var helpButton: UIButton!
+  @IBOutlet private weak var loginButton: UIButton!
+  @IBOutlet private weak var loginLabel: UILabel!
+  @IBOutlet private weak var newsletterLabel: UILabel!
+  @IBOutlet private weak var newsletterSwitch: UISwitch!
 
   private let viewModel: FacebookConfirmationViewModelType = FacebookConfirmationViewModel()
   private let helpViewModel = HelpViewModel()

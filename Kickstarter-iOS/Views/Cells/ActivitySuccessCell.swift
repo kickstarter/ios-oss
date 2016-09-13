@@ -8,11 +8,11 @@ import KsApi
 internal final class ActivitySuccessCell: UITableViewCell, ValueCell {
   private let viewModel: ActivitySuccessViewModelType = ActivitySuccessViewModel()
 
-  @IBOutlet internal weak var projectImageView: UIImageView!
-  @IBOutlet internal weak var projectNameLabel: UILabel!
-  @IBOutlet internal weak var fundedSubtitleLabel: UILabel!
-  @IBOutlet internal weak var pledgedTitleLabel: UILabel!
-  @IBOutlet internal weak var pledgedSubtitleLabel: UILabel!
+  @IBOutlet private weak var projectImageView: UIImageView!
+  @IBOutlet private weak var projectNameLabel: UILabel!
+  @IBOutlet private weak var fundedSubtitleLabel: UILabel!
+  @IBOutlet private weak var pledgedTitleLabel: UILabel!
+  @IBOutlet private weak var pledgedSubtitleLabel: UILabel!
 
   override func bindViewModel() {
     self.projectNameLabel.rac.text = self.viewModel.outputs.projectName

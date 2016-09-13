@@ -38,7 +38,7 @@ internal final class DashboardReferrersCell: UITableViewCell, ValueCell {
   @IBOutlet private weak var showMoreReferrersButton: UIButton!
   @IBOutlet private weak var sourceColumnTitleButton: UIButton!
   @IBOutlet private weak var chartCardView: UIView!
-  @IBOutlet var separatorViews: [UIView]!
+  @IBOutlet private var separatorViews: [UIView]!
 
   internal override func awakeFromNib() {
     super.awakeFromNib()

@@ -6,8 +6,8 @@ private let focusedTitleColor = UIColor.whiteColor()
 private let unfocusedTitleColor = UIColor(white: 1.0, alpha: 0.5)
 
 final class HomePlaylistCell: UICollectionViewCell, ValueCell {
-  @IBOutlet weak var titleLabel: UILabel!
-  @IBOutlet weak var selectedIndicatorView: UIView!
+  @IBOutlet private weak var titleLabel: UILabel!
+  @IBOutlet private weak var selectedIndicatorView: UIView!
 
   static let focusedFont: UIFont = {
     let descriptor = UIFontDescriptor.preferredFontDescriptorWithTextStyle(UIFontTextStyleCallout)

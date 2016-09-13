@@ -11,8 +11,8 @@ protocol FindFriendsFacebookConnectCellDelegate: class {
 
 internal final class FindFriendsFacebookConnectCell: UITableViewCell, ValueCell {
 
-  @IBOutlet weak var closeButton: UIButton!
-  @IBOutlet weak var facebookConnectButton: BorderButton!
+  @IBOutlet private weak var closeButton: UIButton!
+  @IBOutlet private weak var facebookConnectButton: BorderButton!
 
   internal weak var delegate: FindFriendsFacebookConnectCellDelegate?
 

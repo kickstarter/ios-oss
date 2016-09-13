@@ -15,10 +15,10 @@ final class ProjectShelfCell: UICollectionViewCell, ValueCell {
   @IBOutlet private weak var projectNameLabel: UILabel!
   @IBOutlet private weak var categoryLabel: UILabel!
   @IBOutlet private weak var remindMeButton: UIButton!
-  @IBOutlet weak var moreButton: UIButton!
-  @IBOutlet weak var progressBarView: UIView!
-  @IBOutlet weak var percentageLabel: UILabel!
-  @IBOutlet weak var downArrowLabel: UILabel!
+  @IBOutlet private weak var moreButton: UIButton!
+  @IBOutlet private weak var progressBarView: UIView!
+  @IBOutlet private weak var percentageLabel: UILabel!
+  @IBOutlet private weak var downArrowLabel: UILabel!
 
   let viewModel = SimpleViewModel<Project>()
   weak var delegate: ProjectShelfCellDelegate?

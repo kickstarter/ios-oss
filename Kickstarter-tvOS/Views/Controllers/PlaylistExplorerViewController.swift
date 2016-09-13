@@ -8,8 +8,8 @@ protocol PlaylistExplorerDelegate: class {
 
 class PlaylistExplorerViewController: UIViewController {
   weak var delegate: PlaylistExplorerDelegate?
-  @IBOutlet weak var projectsCollectionView: UICollectionView!
-  @IBOutlet weak var playlistsCollectionView: UICollectionView!
+  @IBOutlet private weak var projectsCollectionView: UICollectionView!
+  @IBOutlet private weak var playlistsCollectionView: UICollectionView!
 
   let viewModel: PlaylistExplorerViewModelType
   let projectsDataSource = SimpleDataSource<ProjectCell, Project>()

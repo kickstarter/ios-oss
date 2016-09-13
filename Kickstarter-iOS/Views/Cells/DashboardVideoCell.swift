@@ -20,7 +20,7 @@ internal final class DashboardVideoCell: UITableViewCell, ValueCell {
   @IBOutlet private weak var externalLabel: UILabel!
   @IBOutlet private weak var externalPlaysProgressView: UIView!
 
-  @IBOutlet weak var statsContainerView: UIView!
+  @IBOutlet private weak var statsContainerView: UIView!
 
   internal override func bindStyles() {
     self |> baseTableViewCellStyle()

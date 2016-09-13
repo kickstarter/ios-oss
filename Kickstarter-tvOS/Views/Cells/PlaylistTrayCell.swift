@@ -12,10 +12,10 @@ protocol PlaylistTrayCellDelegate: class {
 class PlaylistTrayCell: UICollectionViewCell, ValueCell {
   weak var delegate: PlaylistTrayCellDelegate?
 
-  @IBOutlet weak var selectedView: UIView!
-  @IBOutlet weak var titleLabel: UILabel!
-  @IBOutlet weak var countLabel: UILabel!
-  @IBOutlet weak var projectsCollectionView: UICollectionView!
+  @IBOutlet private weak var selectedView: UIView!
+  @IBOutlet private weak var titleLabel: UILabel!
+  @IBOutlet private weak var countLabel: UILabel!
+  @IBOutlet private weak var projectsCollectionView: UICollectionView!
 
   private let viewModel: PlaylistsMenuViewModel = PlaylistsMenuViewModel()
   let dataSource = SimpleDataSource<ProjectCell, Project>()

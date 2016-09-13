@@ -12,7 +12,7 @@ internal final class ProjectFooterViewController: UIViewController {
   private let viewModel: ProjectFooterViewModelType = ProjectFooterViewModel()
   internal weak var delegate: ProjectFooterViewControllerDelegate?
 
-  @IBOutlet weak var backedCountLabel: UILabel!
+  @IBOutlet private weak var backedCountLabel: UILabel!
   @IBOutlet private weak var bottomPanelView: UIView!
   @IBOutlet private var bulletViews: [UILabel]!
   @IBOutlet private weak var categoryAndLocationStackView: UIStackView!

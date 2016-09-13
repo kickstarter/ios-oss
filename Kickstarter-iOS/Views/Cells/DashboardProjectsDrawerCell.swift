@@ -5,9 +5,9 @@ import UIKit
 
 internal final class DashboardProjectsDrawerCell: UITableViewCell, ValueCell {
 
-  @IBOutlet weak var projectNumLabel: UILabel!
-  @IBOutlet weak var projectNameLabel: UILabel!
-  @IBOutlet weak var checkmarkImageView: UIImageView!
+  @IBOutlet private weak var projectNumLabel: UILabel!
+  @IBOutlet private weak var projectNameLabel: UILabel!
+  @IBOutlet private weak var checkmarkImageView: UIImageView!
 
   private let viewModel: DashboardProjectsDrawerCellViewModelType =
     DashboardProjectsDrawerCellViewModel()

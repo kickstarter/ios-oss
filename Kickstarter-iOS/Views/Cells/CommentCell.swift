@@ -6,18 +6,18 @@ import UIKit
 internal final class CommentCell: UITableViewCell, ValueCell {
   private let viewModel = CommentCellViewModel()
 
-  @IBOutlet internal weak var authorAndTimestampStackView: UIStackView!
-  @IBOutlet internal weak var authorStackView: UIStackView!
-  @IBOutlet internal weak var avatarImageView: UIImageView!
-  @IBOutlet internal weak var bodyLabel: UILabel!
-  @IBOutlet internal weak var commentStackView: UIStackView!
-  @IBOutlet internal weak var creatorLabel: UILabel!
-  @IBOutlet internal weak var creatorView: UIView!
-  @IBOutlet internal weak var nameLabel: UILabel!
-  @IBOutlet internal weak var rootStackView: UIStackView!
-  @IBOutlet internal weak var timestampLabel: UILabel!
-  @IBOutlet internal weak var youLabel: UILabel!
-  @IBOutlet internal weak var youView: UIView!
+  @IBOutlet private weak var authorAndTimestampStackView: UIStackView!
+  @IBOutlet private weak var authorStackView: UIStackView!
+  @IBOutlet private weak var avatarImageView: UIImageView!
+  @IBOutlet private weak var bodyLabel: UILabel!
+  @IBOutlet private weak var commentStackView: UIStackView!
+  @IBOutlet private weak var creatorLabel: UILabel!
+  @IBOutlet private weak var creatorView: UIView!
+  @IBOutlet private weak var nameLabel: UILabel!
+  @IBOutlet private weak var rootStackView: UIStackView!
+  @IBOutlet private weak var timestampLabel: UILabel!
+  @IBOutlet private weak var youLabel: UILabel!
+  @IBOutlet private weak var youView: UIView!
 
   internal override func bindStyles() {
     super.bindStyles()

@@ -21,7 +21,7 @@ internal final class DashboardFundingCell: UITableViewCell, ValueCell {
   @IBOutlet private weak var launchDateLabel: UILabel!
   @IBOutlet private weak var pledgedSubtitleLabel: UILabel!
   @IBOutlet private weak var pledgedTitleLabel: UILabel!
-  @IBOutlet var separatorViews: [UIView]!
+  @IBOutlet private var separatorViews: [UIView]!
   @IBOutlet private weak var statsStackView: UIStackView!
   @IBOutlet private weak var timeRemainingSubtitleLabel: UILabel!
   @IBOutlet private weak var timeRemainingTitleLabel: UILabel!

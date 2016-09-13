@@ -8,12 +8,12 @@ import Library
 class ProjectCell: UICollectionViewCell, ValueCell {
   let viewModel = SimpleViewModel<Project>()
 
-  @IBOutlet weak var imageView: UIImageView!
-  @IBOutlet weak var projectNameLabel: UILabel!
-  @IBOutlet weak var unfocusedProjectNameLabel: UILabel!
-  @IBOutlet weak var fundedLabel: UILabel!
-  @IBOutlet weak var categoryLabel: UILabel!
-  @IBOutlet weak var focusedInfoView: UIView!
+  @IBOutlet private weak var imageView: UIImageView!
+  @IBOutlet private weak var projectNameLabel: UILabel!
+  @IBOutlet private weak var unfocusedProjectNameLabel: UILabel!
+  @IBOutlet private weak var fundedLabel: UILabel!
+  @IBOutlet private weak var categoryLabel: UILabel!
+  @IBOutlet private weak var focusedInfoView: UIView!
 
   func configureWith(value value: Project) {
     self.viewModel.model(value)

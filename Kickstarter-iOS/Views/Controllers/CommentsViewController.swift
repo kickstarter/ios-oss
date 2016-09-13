@@ -10,7 +10,7 @@ internal final class CommentsViewController: UITableViewController {
   private let viewModel: CommentsViewModelType = CommentsViewModel()
   private let dataSource = CommentsDataSource()
 
-  @IBOutlet internal weak var commentBarButton: UIBarButtonItem!
+  @IBOutlet private weak var commentBarButton: UIBarButtonItem!
   private weak var loginToutViewController: UIViewController? = nil
 
   internal static func configuredWith(project project: Project? = nil, update: Update? = nil)

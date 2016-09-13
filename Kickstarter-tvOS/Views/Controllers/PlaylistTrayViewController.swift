@@ -10,8 +10,8 @@ protocol PlaylistTrayDelegate: class {
 class PlaylistTrayViewController: UIViewController {
   weak var delegate: PlaylistTrayDelegate?
 
-  @IBOutlet weak var titleLabel: UILabel!
-  @IBOutlet weak var collectionView: UICollectionView!
+  @IBOutlet private weak var titleLabel: UILabel!
+  @IBOutlet private weak var collectionView: UICollectionView!
 
   let viewModel: PlaylistTrayViewModel
   let dataSource = PlaylistTrayDataSource()

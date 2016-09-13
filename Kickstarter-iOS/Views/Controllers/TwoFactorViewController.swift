@@ -8,12 +8,12 @@ import Prelude
 internal final class TwoFactorViewController: UIViewController {
   private let viewModel: TwoFactorViewModelType = TwoFactorViewModel()
 
-  @IBOutlet weak var codeTextField: UITextField!
-  @IBOutlet weak var formBackgroundView: UIView!
-  @IBOutlet weak var formStackView: UIStackView!
-  @IBOutlet weak var resendButton: UIButton!
-  @IBOutlet weak var submitButton: UIButton!
-  @IBOutlet weak var titleLabel: UILabel!
+  @IBOutlet private weak var codeTextField: UITextField!
+  @IBOutlet private weak var formBackgroundView: UIView!
+  @IBOutlet private weak var formStackView: UIStackView!
+  @IBOutlet private weak var resendButton: UIButton!
+  @IBOutlet private weak var submitButton: UIButton!
+  @IBOutlet private weak var titleLabel: UILabel!
 
   internal override func viewDidLoad() {
     super.viewDidLoad()
@@ -27,8 +27,8 @@ internal final class TwoFactorViewController: UIViewController {
 
   internal override func bindStyles() {
     super.bindStyles()
-
     self
+
       |> twoFactorControllerStyle
 
     self.codeTextField
