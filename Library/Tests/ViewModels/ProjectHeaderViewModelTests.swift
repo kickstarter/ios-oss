@@ -365,7 +365,17 @@ final class ProjectHeaderViewModelTests: TestCase {
     self.rewardsButtonAccessibilityLabel.assertValues(["\(rewardsCount) rewards"])
   }
 
-  func testrewardsTabButton() {
+  func testRewardsButtonAccessibilityLabel_omitsNoReward() {
+    let project = .template
+      |> Project.lens.rewards .~ [.noReward, .template, .template]
+    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewWillAppear()
+
+    self.rewardsButtonAccessibilityLabel.assertValues(["2 rewards"])
+  }
+
+  func testRewardsTabButton() {
     let project = Project.template
     self.vm.inputs.configureWith(project: project)
     self.vm.inputs.viewDidLoad()
@@ -373,6 +383,18 @@ final class ProjectHeaderViewModelTests: TestCase {
 
     self.rewardsTabButtonTitleText.assertValues(
       ["\(Strings.project_subpages_menu_buttons_rewards()) (\(Format.wholeNumber(project.rewards.count)))"]
+    )
+  }
+
+  func testRewardsTabButton_omitsNoReward() {
+    let project = .template
+      |> Project.lens.rewards .~ [.noReward, .template]
+    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewWillAppear()
+
+    self.rewardsTabButtonTitleText.assertValues(
+      ["\(Strings.project_subpages_menu_buttons_rewards()) (1)"]
     )
   }
 
@@ -385,6 +407,16 @@ final class ProjectHeaderViewModelTests: TestCase {
     self.rewardsLabelText.assertValues(
       [Format.wholeNumber(project.rewards.count)]
     )
+  }
+
+  func testRewardsLabel_omitsNoReward() {
+    let project = .template
+      |> Project.lens.rewards .~ [.noReward, .template]
+    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewWillAppear()
+
+    self.rewardsLabelText.assertValues(["1"])
   }
 
   func testUpdatesButtonAccessibilityLabel() {

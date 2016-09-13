@@ -147,8 +147,11 @@ ProjectHeaderViewModelOutputs {
 
     self.projectImageUrl = project.map { NSURL(string: $0.photo.full) }
 
-    self.rewardsLabelText = project
-      .map { String($0.rewards.count) }
+    let rewardsCount = project
+      .map { project in project.rewards.filter { !$0.isNoReward }.count }
+
+    self.rewardsLabelText = rewardsCount
+      .map { String($0) }
 
     self.commentsLabelText = project
       .map { Format.wholeNumber($0.stats.commentsCount ?? 0) }
@@ -156,8 +159,8 @@ ProjectHeaderViewModelOutputs {
     self.updatesLabelText = project
       .map { String($0.stats.updatesCount ?? 0) }
 
-    self.rewardsTabButtonTitleText = project
-      .map { "\(Strings.project_subpages_menu_buttons_rewards()) (\($0.rewards.count))" }
+    self.rewardsTabButtonTitleText = rewardsCount
+      .map { "\(Strings.project_subpages_menu_buttons_rewards()) (\($0))" }
 
     self.campaignSelectedViewHidden = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst(false),
@@ -251,8 +254,8 @@ ProjectHeaderViewModelOutputs {
         )
     }
 
-    self.rewardsButtonAccessibilityLabel = project
-      .map { p in Strings.rewards_count_rewards(rewards_count: String(p.rewards.count)) }
+    self.rewardsButtonAccessibilityLabel = rewardsCount
+      .map { Strings.rewards_count_rewards(rewards_count: Format.wholeNumber($0)) }
 
     self.commentsButtonAccessibilityLabel = project
       .map { p in
