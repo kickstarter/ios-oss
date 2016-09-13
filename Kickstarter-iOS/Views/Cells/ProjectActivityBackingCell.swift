@@ -116,9 +116,7 @@ internal final class ProjectActivityBackingCell: UITableViewCell, ValueCell {
     super.bindStyles()
 
     self |> baseTableViewCellStyle()
-      |> UITableViewCell.lens.accessibilityHint %~ { _ in
-        localizedString(key: "key.todo", defaultValue: "Opens pledge info.")
-    }
+      |> UITableViewCell.lens.accessibilityHint %~ { _ in Strings.Opens_pledge_info() }
 
     self.bulletSeparatorView |> projectActivityBulletSeparatorViewStyle
 

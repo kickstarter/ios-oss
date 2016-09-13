@@ -84,22 +84,14 @@ ProjectFooterViewModelOutputs {
       .map { $0.creator.stats.createdProjectsCount ?? 0 }
       .map {
         $0 <= 1
-          ? localizedString(key: "todo", defaultValue: "First created")
+          ? Strings.First_created()
           : Strings.social_following_friend_projects_count_created(created_count: $0)
     }
 
     self.creatorNameLabelText = project.map(Project.lens.creator.name.view)
 
     self.updatesLabelText = project
-      .map { $0.stats.updatesCount ?? 0 }
-      .map {
-        localizedString(
-          key: "todo",
-          defaultValue: "%{updates_count} updates",
-          count: $0,
-          substitutions: ["updates_count": Format.wholeNumber($0)]
-        )
-    }
+      .map { Strings.updates_count_updates(updates_count: Format.wholeNumber($0.stats.updatesCount ?? 0))}
 
     self.creatorImageUrl = project.map { NSURL(string: $0.creator.avatar.medium) }
 

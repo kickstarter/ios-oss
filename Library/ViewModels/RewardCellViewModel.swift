@@ -76,14 +76,7 @@ RewardCellViewModelOutputs {
 
     self.remainingLabelText = projectAndReward
       .map { _, reward in reward.remaining ?? 0 }
-      .map {
-        localizedString(
-          key: "todo",
-          defaultValue: "%{left} left",
-          count: $0,
-          substitutions: ["left": Format.wholeNumber($0)]
-        )
-    }
+      .map { Strings.left_left(left: Format.wholeNumber($0)) }
 
     self.minimumAndConversionLabelsColor = projectAndReward
       .map { _, reward in reward.remaining == 0 ? .ksr_text_navy_500 : .ksr_text_green_700 }

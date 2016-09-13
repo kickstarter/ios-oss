@@ -160,19 +160,13 @@ internal final class ProjectHeaderViewController: UIViewController {
       ||> UIButton.lens.backgroundColor(forState: .Selected) .~ .ksr_grey_500
 
     self.rewardsButton
-      |> UIButton.lens.accessibilityHint %~ { _ in
-        localizedString(key: "key.todo", defaultValue: "Opens rewards.")
-    }
+      |> UIButton.lens.accessibilityHint %~ { _ in Strings.Opens_rewards() }
 
     self.commentsButton
-      |> UIButton.lens.accessibilityHint %~ { _ in
-        localizedString(key: "key.todo", defaultValue: "Opens comments.")
-    }
+      |> UIButton.lens.accessibilityHint %~ { _ in Strings.Opens_comments() }
 
     self.updatesButton
-      |> UIButton.lens.accessibilityHint %~ { _ in
-        localizedString(key: "key.todo", defaultValue: "Opens updates.")
-    }
+      |> UIButton.lens.accessibilityHint %~ { _ in Strings.Opens_update() }
 
     self.subpageStackViews
       ||> UIStackView.lens.spacing .~ -2
@@ -204,9 +198,7 @@ internal final class ProjectHeaderViewController: UIViewController {
     self.youreABackerLabel
       |> UILabel.lens.textColor .~ .ksr_text_green_700
       |> UILabel.lens.font .~ UIFont.ksr_headline(size: 14)
-      |> UILabel.lens.text %~ { _ in
-        localizedString(key: "key.todo", defaultValue: "You’re a backer!")
-    }
+      |> UILabel.lens.text %~ { _ in Strings.Youre_a_backer() }
   }
   // swiftlint:enable function_body_length
 

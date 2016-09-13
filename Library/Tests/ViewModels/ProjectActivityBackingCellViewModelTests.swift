@@ -86,14 +86,9 @@ internal final class ProjectActivityBackingCellViewModelTests: TestCase {
       |> Activity.lens.user .~ user
 
     self.vm.inputs.configureWith(activity: activity, project: project)
-    let expected = localizedString(
-      key: "key.todo",
-      defaultValue: "Amount: %{amount}, %{reward}",
-      substitutions: [
-        "amount": Format.currency(amount, country: project.country),
-        "reward": Strings.dashboard_activity_reward_name(reward_name: title).htmlStripped() ?? ""
-      ]
-    )
+    let expected = Strings.Amount_reward(amount: Format.currency(amount, country: project.country),
+                                         reward: reward.title ?? "")
+
     self.cellAccessibilityValue.assertValues([expected], "Emits accessibility value")
   }
 
@@ -119,14 +114,10 @@ internal final class ProjectActivityBackingCellViewModelTests: TestCase {
       |> Activity.lens.user .~ user
 
     self.vm.inputs.configureWith(activity: activity, project: project)
-    let expected = localizedString(
-      key: "key.todo",
-      defaultValue: "Amount: %{amount}, previous amount: %{previous_amount}",
-      substitutions: [
-        "amount": Format.currency(newAmount, country: project.country),
-        "previous_amount": Format.currency(oldAmount, country: project.country)
-      ]
-    )
+    let expected = Strings.Amount_previous_amount(
+      amount: Format.currency(newAmount, country: project.country),
+                                 previous_amount:  Format.currency(oldAmount,
+                                         country: project.country))
     self.cellAccessibilityValue.assertValues([expected], "Emits accessibility value")
   }
 

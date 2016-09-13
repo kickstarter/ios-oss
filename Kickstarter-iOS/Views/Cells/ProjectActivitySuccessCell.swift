@@ -50,7 +50,7 @@ internal final class ProjectActivitySuccessCell: UITableViewCell, ValueCell {
 
     self |> baseTableViewCellStyle()
       |> UITableViewCell.lens.accessibilityHint %~ { _ in
-        localizedString(key: "key.todo", defaultValue: "Opens project.")
+        Strings.Opens_project()
     }
 
     self.cardView

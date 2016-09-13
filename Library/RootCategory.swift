@@ -25,21 +25,21 @@ public enum RootCategory: Int {
 public extension RootCategory {
   public func allProjectsString() -> String {
     switch self {
-    case .art:          return Strings.all_art_projects()
-    case .comics:       return Strings.all_comics_projects()
-    case .dance:        return Strings.all_dance_projects()
-    case .design:       return Strings.all_design_projects()
-    case .fashion:      return Strings.all_fashion_projects()
-    case .food:         return Strings.all_food_projects()
-    case .film:         return Strings.all_film_projects()
-    case .games:        return Strings.all_games_projects()
-    case .journalism:   return Strings.all_journalism_projects()
-    case .music:        return Strings.all_music_projects()
-    case .photography:  return Strings.all_photography_projects()
-    case .tech:         return Strings.all_tech_projects()
-    case .theater:      return Strings.all_theater_projects()
-    case .publishing:   return Strings.all_publishing_projects()
-    case .crafts:       return Strings.all_crafts_projects()
+    case .art:          return Strings.All_Art_Projects()
+    case .comics:       return Strings.All_Comics_Projects()
+    case .dance:        return Strings.All_Dance_Projects()
+    case .design:       return Strings.All_Design_Projects()
+    case .fashion:      return Strings.All_Fashion_Projects()
+    case .food:         return Strings.All_Food_Projects()
+    case .film:         return Strings.All_Film_Projects()
+    case .games:        return Strings.All_Games_Projects()
+    case .journalism:   return Strings.All_Journalism_Projects()
+    case .music:        return Strings.All_Music_Projects()
+    case .photography:  return Strings.All_Photography_Projects()
+    case .tech:         return Strings.All_Tech_Projects()
+    case .theater:      return Strings.All_Theater_Projects()
+    case .publishing:   return Strings.All_Publishing_Projects()
+    case .crafts:       return Strings.All_Crafts_Projects()
     case .unrecognized: return ""
     }
   }

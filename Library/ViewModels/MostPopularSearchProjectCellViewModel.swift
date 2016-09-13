@@ -26,11 +26,7 @@ MostPopularSearchProjectCellViewModelInputs, MostPopularSearchProjectCellViewMod
     let project = self.projectProperty.signal.ignoreNil()
 
     self.fundingLabelText = project.map {
-      localizedString(
-        key: "key.todo",
-        defaultValue: "%{percentage} funded",
-        substitutions: ["percentage": Format.percentage($0.stats.percentFunded)]
-      )
+      Strings.percentage_funded(percentage: Format.percentage($0.stats.percentFunded))
     }
 
     self.fundingProgress = project

@@ -204,8 +204,8 @@ ProjectMagazineViewModelOutputs {
     self.starButtonAccessibilityHint = self.starButtonSelected
       .map { starred in
         starred
-          ? localizedString(key: "key.todo", defaultValue: "Unstars project.")
-          : localizedString(key: "key.todo", defaultValue: "Stars project.")
+          ? Strings.Unstars_project()
+          : Strings.Stars_projects()
     }
 
     self.backProjectButtonHidden = project

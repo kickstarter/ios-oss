@@ -38,9 +38,7 @@ internal final class ProjectActivityNegativeStateChangeCell: UITableViewCell, Va
     super.bindStyles()
 
     self |> baseTableViewCellStyle()
-      |> UITableViewCell.lens.accessibilityHint %~ { _ in
-        localizedString(key: "key.todo", defaultValue: "Opens project.")
-    }
+      |> UITableViewCell.lens.accessibilityHint %~ { _ in Strings.Opens_project() }
 
     self.cardView
       |> cardStyle()

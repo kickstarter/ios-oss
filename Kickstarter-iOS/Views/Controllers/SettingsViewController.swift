@@ -151,9 +151,7 @@ internal final class SettingsViewController: UIViewController {
     self.contactButton
       |> settingsSectionButtonStyle
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.profile_settings_about_contact() }
-      |> UIButton.lens.accessibilityHint %~ { _ in
-        localizedString(key: "todo", defaultValue: "Opens email composer.")
-    }
+      |> UIButton.lens.accessibilityHint %~ { _ in Strings.Opens_email_composer() }
 
     self.contactLabel
       |> settingsSectionLabelStyle
@@ -177,9 +175,7 @@ internal final class SettingsViewController: UIViewController {
         .~ UIImage(named: "email-icon", inBundle: .framework, compatibleWithTraitCollection: nil)
       ||> UIButton.lens.image(forState: .Selected)
         .~ image(named: "email-icon", tintColor: .ksr_green_400, inBundle: NSBundle.framework)
-      ||> UIButton.lens.accessibilityLabel %~ { _ in
-        localizedString(key: "todo", defaultValue: "Email notifications")
-    }
+      ||> UIButton.lens.accessibilityLabel %~ { _ in Strings.Email_notifications() }
 
     self.faqButton
       |> settingsSectionButtonStyle
@@ -281,9 +277,7 @@ internal final class SettingsViewController: UIViewController {
       .~ UIImage(named: "phone-icon", inBundle: .framework, compatibleWithTraitCollection: nil)
       ||> UIButton.lens.image(forState: .Selected)
       .~ image(named: "phone-icon", tintColor: .ksr_green_400, inBundle: NSBundle.framework)
-      ||> UIButton.lens.accessibilityLabel %~ { _ in
-        localizedString(key: "todo", defaultValue: "Push notifications")
-    }
+      ||> UIButton.lens.accessibilityLabel %~ { _ in Strings.Push_notifications() }
 
     self.rateUsButton
       |> settingsSectionButtonStyle

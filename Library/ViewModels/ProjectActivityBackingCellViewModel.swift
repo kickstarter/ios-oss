@@ -154,29 +154,21 @@ ProjectActivityBackingCellViewModelInputs, ProjectActivityBackingCellViewModelOu
 }
 
 private func accessibilityValue(activity activity: Activity, project: Project) -> String {
+   guard let reward = reward(activity: activity, project: project) else { return "" }
+
   switch activity.category {
   case .backing, .backingCanceled:
-    return localizedString(
-      key: "key.todo",
-      defaultValue: "Amount: %{amount}, %{reward}",
-      substitutions: [
-        "amount": amount(activity: activity, project: project),
-        "reward": rewardSummary(activity: activity, project: project).htmlStripped() ?? ""
-      ]
-    )
+    return Strings.Amount_reward(
+      amount: amount(activity: activity, project: project),
+      reward: reward.title ?? "")
   case .backingAmount:
-    return localizedString(
-      key: "key.todo",
-      defaultValue: "Amount: %{amount}, previous amount: %{previous_amount}",
-      substitutions: [
-        "amount": amount(activity: activity, project: project),
-        "previous_amount": oldAmount(activity: activity, project: project)
-      ]
-    )
+    return Strings.Amount_previous_amount(
+      amount: amount(activity: activity, project: project),
+      previous_amount:oldAmount(activity: activity, project: project))
   case .backingReward:
     return rewardSummary(activity: activity, project: project).htmlStripped() ?? ""
   case .backingDropped, .cancellation, .commentPost, .commentProject, .failure, .follow, .funding,
-  .launch, .success, .suspension, .update, .watch, .unknown:
+       .launch, .success, .suspension, .update, .watch, .unknown:
     assertionFailure("Unrecognized activity: \(activity).")
     return ""
   }

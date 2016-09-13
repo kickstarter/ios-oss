@@ -69,7 +69,7 @@ internal final class RewardCell: UITableViewCell, ValueCell {
     self.allGoneLabel
       |> UILabel.lens.textColor .~ .whiteColor()
       |> UILabel.lens.font .~ .ksr_headline(size: 12)
-      |> UILabel.lens.text %~ { _ in localizedString(key: "key.todo", defaultValue: "All gone") }
+      |> UILabel.lens.text %~ { _ in Strings.All_gone() }
 
     self.cardView
       |> cardStyle()
@@ -111,9 +111,7 @@ internal final class RewardCell: UITableViewCell, ValueCell {
     self.youreABackerLabel
       |> UILabel.lens.font .~ .ksr_headline(size: Styles.grid(2))
       |> UILabel.lens.textColor .~ .whiteColor()
-      |> UILabel.lens.text %~ { _ in
-        localizedString(key: "key.todo", defaultValue: "You’re a backer")
-    }
+      |> UILabel.lens.text %~ { _ in Strings.Youre_a_backer() }
 
     self.youreABackerStackView
       |> UIStackView.lens.layoutMargins .~ self.allGoneContainerView.layoutMargins

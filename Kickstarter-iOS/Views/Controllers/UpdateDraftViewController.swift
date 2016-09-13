@@ -139,7 +139,7 @@ internal final class UpdateDraftViewController: UIViewController {
       .observeForControllerAction()
       .observeNext { [weak self] in
         let alert = UIAlertController
-          .genericError(localizedString(key: "todo", defaultValue: "Couldn't add attachment"))
+          .genericError(Strings.Couldnt_add_attachment())
         self?.presentViewController(alert, animated: true, completion: nil)
     }
 
@@ -147,7 +147,7 @@ internal final class UpdateDraftViewController: UIViewController {
       .observeForControllerAction()
       .observeNext { [weak self] in
         let alert = UIAlertController
-          .genericError(localizedString(key: "todo", defaultValue: "Couldn't remove attachment"))
+          .genericError(Strings.Couldnt_remove_attachment())
         self?.presentViewController(alert, animated: true, completion: nil)
     }
 

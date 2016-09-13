@@ -59,9 +59,7 @@ public let contactCreatorButtonStyle =
     <> UIButton.lens.adjustsImageWhenHighlighted .~ true
     <> UIButton.lens.tintColor .~ .ksr_text_navy_500
     <> UIButton.lens.titleEdgeInsets .~ .init(top: 0, left: Styles.grid(2), bottom: 0, right: 0)
-    <> UIButton.lens.title(forState: .Normal) %~ { _ in
-      localizedString(key: "todo", defaultValue: "Ask me anything")
-}
+    <> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.Ask_me_anything() }
 
 public let categoryLocationButtonStyle =
   borderButtonStyle

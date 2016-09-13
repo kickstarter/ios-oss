@@ -151,7 +151,7 @@ staticStringsLines.append("// swiftlint:disable type_body_length")
 staticStringsLines.append("public enum Strings {")
 
 stringsByLocale?["Base"]?.keys
-  .filter { key in counts.reduce(true) { $0 && !key.hasSuffix($1) } }
+  .filter { key in counts.reduce(true) { $0 && !key.hasSuffix(".\($1)") } }
   .sort()
   .forEach { key in
     let string = (stringsByLocale?["Base"]?[key])!

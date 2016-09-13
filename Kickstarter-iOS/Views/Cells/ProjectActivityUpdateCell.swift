@@ -54,9 +54,7 @@ internal final class ProjectActivityUpdateCell: UITableViewCell, ValueCell {
         <> UILabel.lens.textColor .~ .ksr_text_navy_600
 
     self |> baseTableViewCellStyle()
-      |> UITableViewCell.lens.accessibilityHint %~ { _ in
-        localizedString(key: "key.todo", defaultValue: "Opens update.")
-    }
+      |> UITableViewCell.lens.accessibilityHint %~ { _ in Strings.Opens_update() }
 
     self.cardView |> projectActivityCardStyle
 

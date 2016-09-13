@@ -137,7 +137,7 @@ internal final class ProjectFooterViewController: UIViewController {
     self.keepReadingLabel
       |> UILabel.lens.textColor .~ .ksr_text_navy_700
       |> UILabel.lens.font .~ .ksr_headline(size: 14)
-      |> UILabel.lens.text %~ { _ in localizedString(key: "todo", defaultValue: "Keep reading") }
+      |> UILabel.lens.text %~ { _ in Strings.Keep_reading() }
 
     self.downArrowImageView
       |> UIImageView.lens.tintColor .~ self.keepReadingLabel.textColor

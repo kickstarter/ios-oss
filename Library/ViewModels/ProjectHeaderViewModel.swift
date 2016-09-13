@@ -252,33 +252,16 @@ ProjectHeaderViewModelOutputs {
     }
 
     self.rewardsButtonAccessibilityLabel = project
-      .map { p in
-        localizedString(
-          key: "key.todo",
-          defaultValue: "%{rewards_count} rewards",
-          count: p.rewards.count,
-          substitutions: ["rewards_count": String(p.rewards.count)]
-        )
-    }
+      .map { p in Strings.rewards_count_rewards(rewards_count: String(p.rewards.count)) }
 
     self.commentsButtonAccessibilityLabel = project
       .map { p in
-        localizedString(
-          key: "key.todo",
-          defaultValue: "%{rewards_count} comments",
-          count: p.stats.commentsCount ?? 0,
-          substitutions: ["rewards_count": Format.wholeNumber(p.stats.commentsCount ?? 0)]
-        )
+        Strings.comments_count_comments(comments_count: Format.wholeNumber(p.stats.commentsCount ?? 0))
     }
 
     self.updatesButtonAccessibilityLabel = project
       .map { p in
-        localizedString(
-          key: "key.todo",
-          defaultValue: "%{rewards_count} updates",
-          count: p.stats.updatesCount ?? 0,
-          substitutions: ["rewards_count": Format.wholeNumber(p.stats.updatesCount ?? 0)]
-        )
+        Strings.updates_count_updates(updates_count: Format.wholeNumber(p.stats.updatesCount ?? 0))
     }
 
     self.progressPercentage = project

@@ -10,7 +10,7 @@ internal final class DiscoveryFiltersDataSource: ValueCellDataSource {
   }
 
   internal func load(topRows rows: [SelectableRow], categoryId: Int?) {
-    self.set(values: [(title: Strings.collections(),
+    self.set(values: [(title: Strings.Collections(),
                        categoryId: categoryId)],
              cellClass: DiscoveryFiltersStaticRowCell.self,
              inSection: Section.collectionsHeader.rawValue)

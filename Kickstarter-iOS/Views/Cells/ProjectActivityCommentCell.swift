@@ -91,9 +91,7 @@ internal final class ProjectActivityCommentCell: UITableViewCell, ValueCell {
     super.bindStyles()
 
     self |> baseTableViewCellStyle()
-      |> UITableViewCell.lens.accessibilityHint %~ { _ in
-        localizedString(key: "key.todo", defaultValue: "Opens comments.")
-    }
+      |> UITableViewCell.lens.accessibilityHint %~ { _ in Strings.Opens_comments() }
 
     self.replyButton
       |> projectActivityFooterButton

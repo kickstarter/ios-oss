@@ -158,7 +158,7 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
       .map { (categoryId: $0, isFullScreen: $1) }
 
     self.titleButtonAccessibilityHint = self.animateArrowToDown
-      .map { $0 ? Strings.opens_filters() : Strings.closes_filters()
+      .map { $0 ? Strings.Opens_filters() : Strings.Closes_filters()
     }
 
     self.titleButtonAccessibilityLabel = paramsAndFiltersAreHidden
@@ -215,38 +215,38 @@ private func stringsForTitle(params params: DiscoveryParams) -> (filter: String,
   var subcategoryText: String? = nil
 
   if params.staffPicks == true {
-    filterText = Strings.projects_we_love()
+    filterText = Strings.Projects_We_Love()
   } else if params.starred == true {
     filterText = Strings.discovery_saved()
   } else if params.social == true {
-    filterText = Strings.following()
+    filterText = Strings.Following()
   } else if let category = params.category {
     filterText = category.isRoot ? string(forCategoryId: category.id) : category.root?.name ?? ""
     subcategoryText = category.isRoot ? nil : category.name
   } else if params.recommended == true {
     filterText = Strings.discovery_recommended_for_you()
   } else {
-    filterText = Strings.all_projects()
+    filterText = Strings.All_Projects()
   }
   return (filter: filterText, subcategory: subcategoryText)
 }
 
 private func accessibilityLabelForTitleButton(params params: DiscoveryParams) -> String {
   if params.staffPicks == true {
-    return Strings.filtered_by_projects_we_love()
+    return Strings.Filtered_by_projects_we_love()
   } else if params.starred == true {
-    return Strings.filtered_by_starred_projects()
+    return Strings.Filtered_by_starred_projects()
   } else if params.social == true {
-    return Strings.filtered_by_projects_backed_by_friends()
+    return Strings.Filtered_by_projects_backed_by_friends()
   } else if let category = params.category {
     return category.isRoot ?
-      Strings.filtered_by_category_name(category_name: category.name) :
-      Strings.filtered_by_subcategory_name_in_category_name(subcategory_name: category.name,
+      Strings.Filtered_by_category_name(category_name: category.name) :
+      Strings.Filtered_by_subcategory_name_in_category_name(subcategory_name: category.name,
                                                             category_name: category.root?.name ?? "")
   } else if params.recommended == true {
-    return Strings.filtered_by_projects_recommended_for_you()
+    return Strings.Filtered_by_projects_recommended_for_you()
   } else {
-    return Strings.filtered_by_all_projects()
+    return Strings.Filtered_by_all_projects()
   }
 }
 

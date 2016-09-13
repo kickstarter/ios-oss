@@ -114,101 +114,101 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
 
     self.animateArrowToDown.assertValues([true])
     self.dividerIsHidden.assertValues([true])
-    self.primaryLabelText.assertValues([Strings.projects_we_love()])
+    self.primaryLabelText.assertValues([Strings.Projects_We_Love()])
     self.secondaryLabelText.assertValues([""])
     self.secondaryLabelIsHidden.assertValues([true])
-    self.titleAccessibilityHint.assertValues([Strings.opens_filters()])
-    self.titleAccessibilityLabel.assertValues([Strings.filtered_by_projects_we_love()])
+    self.titleAccessibilityHint.assertValues([Strings.Opens_filters()])
+    self.titleAccessibilityLabel.assertValues([Strings.Filtered_by_projects_we_love()])
 
     self.vm.inputs.titleButtonTapped()
 
     self.animateArrowToDown.assertValues([true, false])
     self.dividerIsHidden.assertValues([true])
-    self.primaryLabelText.assertValues([Strings.projects_we_love(), Strings.projects_we_love()])
+    self.primaryLabelText.assertValues([Strings.Projects_We_Love(), Strings.Projects_We_Love()])
     self.secondaryLabelText.assertValues(["", ""])
     self.secondaryLabelIsHidden.assertValues([true])
-    self.titleAccessibilityHint.assertValues([Strings.opens_filters(), Strings.closes_filters()])
-    self.titleAccessibilityLabel.assertValues([Strings.filtered_by_projects_we_love(),
-      Strings.filtered_by_projects_we_love()])
+    self.titleAccessibilityHint.assertValues([Strings.Opens_filters(), Strings.Closes_filters()])
+    self.titleAccessibilityLabel.assertValues([Strings.Filtered_by_projects_we_love(),
+      Strings.Filtered_by_projects_we_love()])
 
     self.vm.inputs.filtersSelected(row: selectableRow |> SelectableRow.lens.params .~ starredParams)
 
     self.animateArrowToDown.assertValues([true, false, true])
     self.dividerIsHidden.assertValues([true])
-    self.primaryLabelText.assertValues([Strings.projects_we_love(), Strings.projects_we_love(),
+    self.primaryLabelText.assertValues([Strings.Projects_We_Love(), Strings.Projects_We_Love(),
       Strings.discovery_saved()])
     self.secondaryLabelText.assertValues(["", "", ""])
     self.secondaryLabelIsHidden.assertValues([true])
-    self.titleAccessibilityHint.assertValues([Strings.opens_filters(), Strings.closes_filters(),
-      Strings.opens_filters()])
-    self.titleAccessibilityLabel.assertValues([Strings.filtered_by_projects_we_love(),
-      Strings.filtered_by_projects_we_love(), Strings.filtered_by_starred_projects()])
+    self.titleAccessibilityHint.assertValues([Strings.Opens_filters(), Strings.Closes_filters(),
+      Strings.Opens_filters()])
+    self.titleAccessibilityLabel.assertValues([Strings.Filtered_by_projects_we_love(),
+      Strings.Filtered_by_projects_we_love(), Strings.Filtered_by_starred_projects()])
 
     self.vm.inputs.titleButtonTapped()
 
     self.animateArrowToDown.assertValues([true, false, true, false])
     self.dividerIsHidden.assertValues([true])
-    self.primaryLabelText.assertValues([Strings.projects_we_love(), Strings.projects_we_love(),
+    self.primaryLabelText.assertValues([Strings.Projects_We_Love(), Strings.Projects_We_Love(),
       Strings.discovery_saved(), Strings.discovery_saved()])
     self.secondaryLabelText.assertValues(["", "", "", ""])
     self.secondaryLabelIsHidden.assertValues([true])
-    self.titleAccessibilityHint.assertValues([Strings.opens_filters(), Strings.closes_filters(),
-      Strings.opens_filters(), Strings.closes_filters()])
-    self.titleAccessibilityLabel.assertValues([Strings.filtered_by_projects_we_love(),
-      Strings.filtered_by_projects_we_love(), Strings.filtered_by_starred_projects(),
-      Strings.filtered_by_starred_projects()])
+    self.titleAccessibilityHint.assertValues([Strings.Opens_filters(), Strings.Closes_filters(),
+      Strings.Opens_filters(), Strings.Closes_filters()])
+    self.titleAccessibilityLabel.assertValues([Strings.Filtered_by_projects_we_love(),
+      Strings.Filtered_by_projects_we_love(), Strings.Filtered_by_starred_projects(),
+      Strings.Filtered_by_starred_projects()])
 
     self.vm.inputs.filtersSelected(row: selectableRow |> SelectableRow.lens.params .~ categoryParams)
 
     self.animateArrowToDown.assertValues([true, false, true, false, true])
     self.dividerIsHidden.assertValues([true])
-    self.primaryLabelText.assertValues([Strings.projects_we_love(), Strings.projects_we_love(),
-      Strings.discovery_saved(), Strings.discovery_saved(), Strings.all_art_projects()])
+    self.primaryLabelText.assertValues([Strings.Projects_We_Love(), Strings.Projects_We_Love(),
+      Strings.discovery_saved(), Strings.discovery_saved(), Strings.All_Art_Projects()])
     self.secondaryLabelText.assertValues(["", "", "", "", ""])
     self.secondaryLabelIsHidden.assertValues([true])
-    self.titleAccessibilityHint.assertValues([Strings.opens_filters(), Strings.closes_filters(),
-      Strings.opens_filters(), Strings.closes_filters(), Strings.opens_filters()])
-    self.titleAccessibilityLabel.assertValues([Strings.filtered_by_projects_we_love(),
-      Strings.filtered_by_projects_we_love(), Strings.filtered_by_starred_projects(),
-      Strings.filtered_by_starred_projects(),
-      Strings.filtered_by_category_name(category_name: categoryParams.category?.name ?? "")])
+    self.titleAccessibilityHint.assertValues([Strings.Opens_filters(), Strings.Closes_filters(),
+      Strings.Opens_filters(), Strings.Closes_filters(), Strings.Opens_filters()])
+    self.titleAccessibilityLabel.assertValues([Strings.Filtered_by_projects_we_love(),
+      Strings.Filtered_by_projects_we_love(), Strings.Filtered_by_starred_projects(),
+      Strings.Filtered_by_starred_projects(),
+      Strings.Filtered_by_category_name(category_name: categoryParams.category?.name ?? "")])
 
     self.vm.inputs.titleButtonTapped()
 
     self.animateArrowToDown.assertValues([true, false, true, false, true, false])
     self.dividerIsHidden.assertValues([true])
-    self.primaryLabelText.assertValues([Strings.projects_we_love(), Strings.projects_we_love(),
-      Strings.discovery_saved(), Strings.discovery_saved(), Strings.all_art_projects(),
-      Strings.all_art_projects()])
+    self.primaryLabelText.assertValues([Strings.Projects_We_Love(), Strings.Projects_We_Love(),
+      Strings.discovery_saved(), Strings.discovery_saved(), Strings.All_Art_Projects(),
+      Strings.All_Art_Projects()])
     self.secondaryLabelText.assertValues(["", "", "", "", "", ""])
     self.secondaryLabelIsHidden.assertValues([true])
-    self.titleAccessibilityHint.assertValues([Strings.opens_filters(), Strings.closes_filters(),
-      Strings.opens_filters(), Strings.closes_filters(), Strings.opens_filters(), Strings.closes_filters()])
-    self.titleAccessibilityLabel.assertValues([Strings.filtered_by_projects_we_love(),
-      Strings.filtered_by_projects_we_love(), Strings.filtered_by_starred_projects(),
-      Strings.filtered_by_starred_projects(),
-      Strings.filtered_by_category_name(category_name: categoryParams.category?.name ?? ""),
-      Strings.filtered_by_category_name(category_name: categoryParams.category?.name ?? "")
+    self.titleAccessibilityHint.assertValues([Strings.Opens_filters(), Strings.Closes_filters(),
+      Strings.Opens_filters(), Strings.Closes_filters(), Strings.Opens_filters(), Strings.Closes_filters()])
+    self.titleAccessibilityLabel.assertValues([Strings.Filtered_by_projects_we_love(),
+      Strings.Filtered_by_projects_we_love(), Strings.Filtered_by_starred_projects(),
+      Strings.Filtered_by_starred_projects(),
+      Strings.Filtered_by_category_name(category_name: categoryParams.category?.name ?? ""),
+      Strings.Filtered_by_category_name(category_name: categoryParams.category?.name ?? "")
     ])
 
     self.vm.inputs.filtersSelected(row: selectableRow |> SelectableRow.lens.params .~ subcategoryParams)
 
     self.animateArrowToDown.assertValues([true, false, true, false, true, false, true])
     self.dividerIsHidden.assertValues([true, false])
-    self.primaryLabelText.assertValues([Strings.projects_we_love(), Strings.projects_we_love(),
-      Strings.discovery_saved(), Strings.discovery_saved(), Strings.all_art_projects(),
-      Strings.all_art_projects(), "Film & Video"])
+    self.primaryLabelText.assertValues([Strings.Projects_We_Love(), Strings.Projects_We_Love(),
+      Strings.discovery_saved(), Strings.discovery_saved(), Strings.All_Art_Projects(),
+      Strings.All_Art_Projects(), "Film & Video"])
     self.secondaryLabelText.assertValues(["", "", "", "", "", "", "Documentary"])
     self.secondaryLabelIsHidden.assertValues([true, false])
-    self.titleAccessibilityHint.assertValues([Strings.opens_filters(), Strings.closes_filters(),
-      Strings.opens_filters(), Strings.closes_filters(), Strings.opens_filters(), Strings.closes_filters(),
-      Strings.opens_filters()])
-    self.titleAccessibilityLabel.assertValues([Strings.filtered_by_projects_we_love(),
-      Strings.filtered_by_projects_we_love(), Strings.filtered_by_starred_projects(),
-      Strings.filtered_by_starred_projects(),
-      Strings.filtered_by_category_name(category_name: categoryParams.category?.name ?? ""),
-      Strings.filtered_by_category_name(category_name: categoryParams.category?.name ?? ""),
-      Strings.filtered_by_subcategory_name_in_category_name(
+    self.titleAccessibilityHint.assertValues([Strings.Opens_filters(), Strings.Closes_filters(),
+      Strings.Opens_filters(), Strings.Closes_filters(), Strings.Opens_filters(), Strings.Closes_filters(),
+      Strings.Opens_filters()])
+    self.titleAccessibilityLabel.assertValues([Strings.Filtered_by_projects_we_love(),
+      Strings.Filtered_by_projects_we_love(), Strings.Filtered_by_starred_projects(),
+      Strings.Filtered_by_starred_projects(),
+      Strings.Filtered_by_category_name(category_name: categoryParams.category?.name ?? ""),
+      Strings.Filtered_by_category_name(category_name: categoryParams.category?.name ?? ""),
+      Strings.Filtered_by_subcategory_name_in_category_name(
         subcategory_name: subcategoryParams.category?.name ?? "",
         category_name: subcategoryParams.category?.root?.name ?? "")
       ])
