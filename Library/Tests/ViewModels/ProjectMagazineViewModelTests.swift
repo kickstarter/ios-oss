@@ -15,6 +15,8 @@ final class ProjectMagazineViewModelTests: TestCase {
   private let descriptionViewHidden = TestObserver<Bool, NoError>()
   private let goToLoginTout = TestObserver<(), NoError>()
   private let goToCheckoutIntent = TestObserver<CheckoutIntent, NoError>()
+  private let goToViewPledgeUser = TestObserver<User, NoError>()
+  private let goToViewPledgeProject = TestObserver<Project, NoError>()
   private let managePledgeButtonHidden = TestObserver<Bool, NoError>()
   private let notifyDescriptionToExpand = TestObserver<(), NoError>()
   private let project = TestObserver<Project, NoError>()
@@ -36,6 +38,8 @@ final class ProjectMagazineViewModelTests: TestCase {
     self.vm.outputs.descriptionViewHidden.observe(self.descriptionViewHidden.observer)
     self.vm.outputs.goToCheckout.map { (_, _, intent) in intent }.observe(self.goToCheckoutIntent.observer)
     self.vm.outputs.goToLoginTout.observe(self.goToLoginTout.observer)
+    self.vm.outputs.goToViewPledge.map(first).observe(self.goToViewPledgeProject.observer)
+    self.vm.outputs.goToViewPledge.map(second).observe(self.goToViewPledgeUser.observer)
     self.vm.outputs.managePledgeButtonHidden.observe(self.managePledgeButtonHidden.observer)
     self.vm.outputs.notifyDescriptionToExpand.observe(self.notifyDescriptionToExpand.observer)
     self.vm.outputs.project.observe(self.project.observer)
@@ -194,6 +198,48 @@ final class ProjectMagazineViewModelTests: TestCase {
     self.vm.inputs.managePledgeButtonTapped()
     self.goToCheckoutIntent.assertValues([.new, .manage])
   }
+
+  func testGoToViewPledge() {
+    let project = Project.template
+
+    let user = User.template
+
+    withEnvironment(currentUser: user) {
+      self.vm.inputs.configureWith(projectOrParam: .left(.template), refTag: nil)
+
+      self.vm.inputs.viewDidLoad()
+
+      self.goToViewPledgeProject.assertDidNotEmitValue()
+      self.goToViewPledgeUser.assertDidNotEmitValue()
+
+      self.vm.inputs.viewPledgeButtonTapped()
+
+      self.goToViewPledgeProject.assertValues([project])
+      self.goToViewPledgeUser.assertValues([user])
+    }
+  }
+
+  func testGoToViewPledge_ConfiguredWithParam() {
+    let project = Project.template
+
+    let user = User.template
+
+    withEnvironment(currentUser: user) {
+      self.vm.inputs.configureWith(projectOrParam: .right(Param.id(1)), refTag: nil)
+
+      self.vm.inputs.viewDidLoad()
+      self.scheduler.advance()
+
+      self.goToViewPledgeProject.assertDidNotEmitValue()
+      self.goToViewPledgeUser.assertDidNotEmitValue()
+
+      self.vm.inputs.viewPledgeButtonTapped()
+
+      self.goToViewPledgeProject.assertValues([project])
+      self.goToViewPledgeUser.assertValues([user])
+    }
+  }
+
 
   func testNotifyDescriptionToExpand() {
     self.vm.inputs.configureWith(projectOrParam: .left(.template), refTag: .discovery)

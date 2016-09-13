@@ -202,6 +202,12 @@ internal final class ProjectMagazineViewController: UIViewController {
         self?.goToLoginTout()
     }
 
+    self.viewModel.outputs.goToViewPledge
+      .observeForUI()
+      .observeNext { [weak self] project, currentUser in
+        self?.goToViewPledge(project: project, user: currentUser)
+    }
+
     self.shareViewModel.outputs.showShareSheet
       .observeForControllerAction()
       .observeNext { [weak self] in self?.showShareSheet($0) }
@@ -250,6 +256,11 @@ internal final class ProjectMagazineViewController: UIViewController {
     self.presentViewController(UINavigationController(rootViewController: vc),
                                animated: true,
                                completion: nil)
+  }
+
+  private func goToViewPledge(project project: Project, user: User) {
+    let vc = BackingViewController.configuredWith(project: project, backer: user)
+    self.navigationController?.pushViewController(vc, animated: true)
   }
 
   private func showShareSheet(controller: UIActivityViewController) {

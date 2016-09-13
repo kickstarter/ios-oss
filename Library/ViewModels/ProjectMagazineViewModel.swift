@@ -57,6 +57,9 @@ public protocol ProjectMagazineViewModelOutputs {
   /// Emits when the login tout should be shown to the user.
   var goToLoginTout: Signal<(), NoError> { get }
 
+  /// Emits when the backing screen should be shown to the user.
+  var goToViewPledge: Signal<(Project, User), NoError> { get }
+
   /// Emits a boolean that determines if the "manage pledge" button is hidden.
   var managePledgeButtonHidden: Signal<Bool, NoError> { get }
 
@@ -237,6 +240,9 @@ ProjectMagazineViewModelOutputs {
         AppEnvironment.current.koala.trackProjectShow(project, refTag: refTag, cookieRefTag: cookieRefTag)
     }
 
+    self.goToViewPledge = combineLatest(project, currentUser.ignoreNil())
+      .takeWhen(self.viewPledgeButtonTappedProperty.signal)
+
     projectOnStarToggleSuccess
       .observeNext { AppEnvironment.current.koala.trackProjectStar($0) }
 
@@ -311,6 +317,7 @@ ProjectMagazineViewModelOutputs {
   public let descriptionViewHidden: Signal<Bool, NoError>
   public let goToCheckout: Signal<(Project, Reward?, CheckoutIntent), NoError>
   public let goToLoginTout: Signal<(), NoError>
+  public let goToViewPledge: Signal<(Project, User), NoError>
   public let managePledgeButtonHidden: Signal<Bool, NoError>
   public let notifyDescriptionToExpand: Signal<(), NoError>
   public let project: Signal<Project, NoError>
