@@ -95,11 +95,7 @@ MessageDialogViewModelOutputs {
     self.notifyPresenterCommentWasPostedSuccesfully = sendMessageResult.values()
 
     self.showAlertMessage = sendMessageResult.errors()
-      .map {
-        $0.errorMessages.first ??
-          localizedString(key: "messages.dialog.generic_error",
-            defaultValue: "Sorry, your message could not be posted.")
-    }
+      .map { $0.errorMessages.first ?? Strings.messages_dialog_generic_error() }
 
     self.notifyPresenterDialogWantsDismissal = Signal.merge(
       self.cancelButtonPressedProperty.signal,

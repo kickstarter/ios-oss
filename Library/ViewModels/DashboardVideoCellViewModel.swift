@@ -65,12 +65,9 @@ public final class DashboardVideoCellViewModel: DashboardVideoCellViewModelInput
 
     self.totalStartCount = videoStats
       .map { // todo: need new string with count value
-        let string = localizedString(key: "dashboard.totalplays",
-          defaultValue: "<b>%{total_start_count}</b> total plays",
-          count: totalStarts(videoStats: $0),
-          substitutions: ["total_start_count": Format.wholeNumber(totalStarts(videoStats: $0))]
+        let string = Strings.dashboard_graphs_video_stats_total_plays_count(
+          total_start_count: totalStarts(videoStats: $0)
         )
-
         return string.simpleHtmlAttributedString(font: UIFont.ksr_body(), bold: UIFont.ksr_body().bolded)
           ?? NSAttributedString(string: "")
     }

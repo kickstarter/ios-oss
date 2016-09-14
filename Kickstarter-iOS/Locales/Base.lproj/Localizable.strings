@@ -42,6 +42,7 @@
 "Follow_friends" = "Follow friends";
 "Follow_your_Facebook_friends_and_get_notified" = "Follow your Facebook friends and get notified when they back or launch projects.";
 "Following" = "Following";
+"Got_it_your_survey_response_has_been_submitted" = "Got it! Your survey response has been submitted.";
 "Home" = "Home";
 "Its_a_way_to_bring_creative_projects_to_life" = "It’s a way to bring creative projects to life.";
 "Keep_reading" = "Keep reading";
@@ -63,6 +64,9 @@
 "Shipping" = "Shipping";
 "Ships_to" = "Ships to:";
 "Stars_projects" = "Stars project.";
+"Survey" = "Survey";
+"The_email_associated_with_this_Facebook_account_is_already_registered" = "The email associated with this Facebook account is already registered to another Kickstarter user.";
+"This_facebook_account_is_already_linked_to_another_Kickstarter_user" = "This Facebook account is already linked to another Kickstarter user.";
 "Unstars_project" = "Unstars project.";
 "Your_pledge_amount" = "Your pledge amount:";
 "Your_shipping_destination" = "Your shipping destination";

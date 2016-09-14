@@ -424,7 +424,7 @@ public enum Strings {
 
    - **es**: "Continue to payment"
    - **de**: "Continue to payment"
-   - **fr**: "Continue to payment"
+   - **fr**: "Continuer vers le paiement"
    - **it**: "Continue to payment"
    - **en**: "Continue to payment"
   */
@@ -492,7 +492,7 @@ public enum Strings {
 
    - **es**: "Done"
    - **de**: "Done"
-   - **fr**: "Done"
+   - **fr**: "Terminé"
    - **it**: "Done"
    - **en**: "Done"
   */
@@ -760,6 +760,23 @@ public enum Strings {
     )
   }
   /**
+   "Got it! Your survey response has been submitted."
+
+   - **es**: "Got it! Your survey response has been submitted."
+   - **de**: "Got it! Your survey response has been submitted."
+   - **fr**: "Got it! Your survey response has been submitted."
+   - **it**: "Got it! Your survey response has been submitted."
+   - **en**: "Got it! Your survey response has been submitted."
+  */
+  public static func Got_it_your_survey_response_has_been_submitted() -> String {
+    return localizedString(
+      key: "Got_it_your_survey_response_has_been_submitted",
+      defaultValue: "Got it! Your survey response has been submitted.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Home"
 
    - **es**: "Inicio"
@@ -781,7 +798,7 @@ public enum Strings {
 
    - **es**: "It’s a way to bring creative projects to life."
    - **de**: "It’s a way to bring creative projects to life."
-   - **fr**: "It’s a way to bring creative projects to life."
+   - **fr**: "C'est un outil qui permet de donner vie à des projets créatifs."
    - **it**: "It’s a way to bring creative projects to life."
    - **en**: "It’s a way to bring creative projects to life."
   */
@@ -815,7 +832,7 @@ public enum Strings {
 
    - **es**: "Kickstarter (if funded)"
    - **de**: "Kickstarter (if funded)"
-   - **fr**: "Kickstarter (if funded)"
+   - **fr**: "Kickstarter (si le projet est financé)"
    - **it**: "Kickstarter (if funded)"
    - **en**: "Kickstarter (if funded)"
   */
@@ -832,7 +849,7 @@ public enum Strings {
 
    - **es**: "Kickstarter is not a store."
    - **de**: "Kickstarter is not a store."
-   - **fr**: "Kickstarter is not a store."
+   - **fr**: "Kickstarter n'est pas un magasin."
    - **it**: "Kickstarter is not a store."
    - **en**: "Kickstarter is not a store."
   */
@@ -849,7 +866,7 @@ public enum Strings {
 
    - **es**: "Learn more about accountability"
    - **de**: "Learn more about accountability"
-   - **fr**: "Learn more about accountability"
+   - **fr**: "En savoir plus sur la responsabilité"
    - **it**: "Learn more about accountability"
    - **en**: "Learn more about accountability"
   */
@@ -1002,7 +1019,7 @@ public enum Strings {
 
    - **es**: "Other payment methods"
    - **de**: "Other payment methods"
-   - **fr**: "Other payment methods"
+   - **fr**: "Autres moyens de paiement"
    - **it**: "Other payment methods"
    - **en**: "Other payment methods"
   */
@@ -1070,7 +1087,7 @@ public enum Strings {
 
    - **es**: "Shipping"
    - **de**: "Shipping"
-   - **fr**: "Shipping"
+   - **fr**: "Expédition"
    - **it**: "Shipping"
    - **en**: "Shipping"
   */
@@ -1087,7 +1104,7 @@ public enum Strings {
 
    - **es**: "Ships to:"
    - **de**: "Ships to:"
-   - **fr**: "Ships to:"
+   - **fr**: "Livraison :"
    - **it**: "Ships to:"
    - **en**: "Ships to:"
   */
@@ -1117,6 +1134,57 @@ public enum Strings {
     )
   }
   /**
+   "Survey"
+
+   - **es**: "Survey"
+   - **de**: "Survey"
+   - **fr**: "Survey"
+   - **it**: "Survey"
+   - **en**: "Survey"
+  */
+  public static func Survey() -> String {
+    return localizedString(
+      key: "Survey",
+      defaultValue: "Survey",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "The email associated with this Facebook account is already registered to another Kickstarter user."
+
+   - **es**: "The email associated with this Facebook account is already registered to another Kickstarter user."
+   - **de**: "The email associated with this Facebook account is already registered to another Kickstarter user."
+   - **fr**: "The email associated with this Facebook account is already registered to another Kickstarter user."
+   - **it**: "The email associated with this Facebook account is already registered to another Kickstarter user."
+   - **en**: "The email associated with this Facebook account is already registered to another Kickstarter user."
+  */
+  public static func The_email_associated_with_this_Facebook_account_is_already_registered() -> String {
+    return localizedString(
+      key: "The_email_associated_with_this_Facebook_account_is_already_registered",
+      defaultValue: "The email associated with this Facebook account is already registered to another Kickstarter user.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "This Facebook account is already linked to another Kickstarter user."
+
+   - **es**: "This Facebook account is already linked to another Kickstarter user."
+   - **de**: "This Facebook account is already linked to another Kickstarter user."
+   - **fr**: "This Facebook account is already linked to another Kickstarter user."
+   - **it**: "This Facebook account is already linked to another Kickstarter user."
+   - **en**: "This Facebook account is already linked to another Kickstarter user."
+  */
+  public static func This_facebook_account_is_already_linked_to_another_Kickstarter_user() -> String {
+    return localizedString(
+      key: "This_facebook_account_is_already_linked_to_another_Kickstarter_user",
+      defaultValue: "This Facebook account is already linked to another Kickstarter user.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Unstars project."
 
    - **es**: "Remueve proyecto de favoritos."
@@ -1138,7 +1206,7 @@ public enum Strings {
 
    - **es**: "Your pledge amount:"
    - **de**: "Your pledge amount:"
-   - **fr**: "Your pledge amount:"
+   - **fr**: "Montant engagé :"
    - **it**: "Your pledge amount:"
    - **en**: "Your pledge amount:"
   */
@@ -1155,7 +1223,7 @@ public enum Strings {
 
    - **es**: "Your shipping destination"
    - **de**: "Your shipping destination"
-   - **fr**: "Your shipping destination"
+   - **fr**: "Destination d'expédition"
    - **it**: "Your shipping destination"
    - **en**: "Your shipping destination"
   */
@@ -3076,7 +3144,7 @@ public enum Strings {
 
    - **es**: "%{comments_count} comments"
    - **de**: "%{comments_count} Kommentare"
-   - **fr**: "%{comments_count} comments"
+   - **fr**: "%{comments_count} commentaires"
    - **it**: "%{comments_count} comments"
    - **en**: "%{comments_count} comments"
   */
@@ -9174,7 +9242,7 @@ This is commonly fixed by going to iOS Settings > Facebook and toggling access f
 
    - **es**: "+%{shipping_cost}"
    - **de**: "+%{shipping_cost}"
-   - **fr**: "+%{shipping_cost}"
+   - **fr**: "+ %{shipping_cost}"
    - **it**: "+%{shipping_cost}"
    - **en**: "+%{shipping_cost}"
   */

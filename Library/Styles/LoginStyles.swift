@@ -17,9 +17,7 @@ public let disclaimerButtonStyle =
       <> UIButton.lens.accessibilityLabel %~ { _ in
         Strings.login_tout_disclaimer_by_signing_up_you_agree_to_terms()
       }
-      <> UIButton.lens.accessibilityHint %~ { _ in
-        localizedString(key: "todo", defaultValue: "Opens help sheet.")
-      }
+      <> UIButton.lens.accessibilityHint %~ { _ in Strings.Opens_help_sheet() }
 
 public let emailFieldStyle = formFieldStyle
   <> UITextField.lens.placeholder %~ { _ in Strings.login_placeholder_email() }

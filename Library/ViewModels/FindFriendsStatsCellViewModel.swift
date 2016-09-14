@@ -46,12 +46,7 @@ public final class FindFriendsStatsCellViewModel: FindFriendsStatsCellViewModelT
     self.backedProjectsCountText = friendProjectsCount.map { Format.wholeNumber($0) }
 
     self.followAllText = remoteFriendCount
-      .map { localizedString(
-        key: "social_following.stats.button.follow_all_friends",
-        defaultValue: "Follow all %{remote_friends_count} friends",
-        count: $0,
-        substitutions: ["remote_friends_count": Format.wholeNumber($0)])
-    }
+      .map(Strings.social_following_stats_button_follow_all_friends(remote_friends_count:))
 
     self.friendsCountText = remoteFriendCount.map { Format.wholeNumber($0) }
 

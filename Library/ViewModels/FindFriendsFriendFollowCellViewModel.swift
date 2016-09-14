@@ -68,26 +68,14 @@ public final class FindFriendsFriendFollowCellViewModel: FindFriendsFriendFollow
 
     self.projectsBackedText = friend
       .map { $0.stats.backedProjectsCount ?? 0 }
-      .map { localizedString(
-        key: "social_following.friend.projects_count_backed",
-        defaultValue: "%{backed_count} backed",
-        count: $0,
-        substitutions: ["backed_count": "\($0)"]
-      )
-    }
+      .map(Strings.social_following_friend_projects_count_backed(backed_count:))
 
     self.hideProjectsCreated = friend.map { $0.stats.createdProjectsCount == 0 }
 
     self.projectsCreatedText = friend
       .filter { $0.stats.createdProjectsCount > 0 }
       .map { $0.stats.createdProjectsCount ?? 0 }
-      .map { localizedString(
-        key: "social_following.friend.projects_count_created",
-        defaultValue: "%{created_count} created",
-        count: $0,
-        substitutions: ["created_count": "\($0)"]
-      )
-    }
+      .map(Strings.social_following_friend_projects_count_created(created_count:))
 
     let isLoadingFollowRequest = MutableProperty(false)
     let isLoadingUnfollowRequest = MutableProperty(false)

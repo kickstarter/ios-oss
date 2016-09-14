@@ -90,12 +90,10 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
       }
 
     self.showAlert = redirectAfterPostRequest
-      .mapConst(
-        localizedString(key: "todo", defaultValue: "Got it! Your survey response has been submitted.")
-      )
+      .mapConst(Strings.Got_it_your_survey_response_has_been_submitted())
 
     self.title = self.viewDidLoadProperty.signal
-      .mapConst(localizedString(key: "todo", defaultValue: "Survey"))
+      .mapConst(Strings.Survey())
 
     self.webViewLoadRequest = Signal.merge(
       initialRequest,

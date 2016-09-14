@@ -176,11 +176,7 @@ public extension UIAlertController {
                                              yesHandler: ((UIAlertAction) -> Void),
                                              noHandler: ((UIAlertAction) -> Void)) -> UIAlertController {
     let alertController = UIAlertController(
-      title: localizedString(
-        key: "social_following.stats.button.follow_all_friends",
-        defaultValue: "Follow all %{remote_friends_count} friends",
-        count: friendsCount,
-        substitutions: ["remote_friends_count": "\(friendsCount)"]),
+      title: Strings.social_following_stats_button_follow_all_friends(remote_friends_count: friendsCount),
       message: Strings.social_following_nice_youre_about_to_follow_all_friends(),
       preferredStyle: .Alert
     )
@@ -259,8 +255,7 @@ public extension UIAlertController {
     let alertController = UIAlertController(
       title: Strings.login_tout_errors_facebook_generic_error_title(),
       message: envelope.errorMessages.first ??
-        localizedString(key: "login_tout.errors.facebook.account_taken.message",
-          defaultValue: "This Facebook account is already linked to another Kickstarter user."),
+        Strings.This_facebook_account_is_already_linked_to_another_Kickstarter_user(),
       preferredStyle: .Alert
     )
     alertController.addAction(
@@ -278,9 +273,7 @@ public extension UIAlertController {
     let alertController = UIAlertController(
       title: Strings.login_tout_errors_facebook_generic_error_title(),
       message: envelope.errorMessages.first ??
-        localizedString(key: "login_tout.errors.facebook.email_taken.message",
-          defaultValue: "The email associated with this Facebook account is already registered " +
-          "to another Kickstarter user."),
+        Strings.The_email_associated_with_this_Facebook_account_is_already_registered(),
       preferredStyle: .Alert
     )
     alertController.addAction(

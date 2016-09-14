@@ -110,9 +110,7 @@ final class SurveyResponseViewModelTests: TestCase {
       "Intercept redirect to survey"
     )
 
-    self.showAlert.assertValues(
-      [localizedString(key: "todo", defaultValue: "Got it! Your survey response has been submitted.")]
-    )
+    self.showAlert.assertValues([Strings.Got_it_your_survey_response_has_been_submitted()])
 
     // 4. Tap OK on alert, dismiss view controller.
     self.dismissViewController.assertDidNotEmitValue()
@@ -126,7 +124,7 @@ final class SurveyResponseViewModelTests: TestCase {
     self.title.assertValueCount(0)
 
     self.vm.inputs.viewDidLoad()
-    self.title.assertValues([localizedString(key: "todo", defaultValue: "Survey")])
+    self.title.assertValues([Strings.Survey()])
   }
 }
 
