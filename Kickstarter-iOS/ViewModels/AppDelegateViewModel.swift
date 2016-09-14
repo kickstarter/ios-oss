@@ -71,6 +71,9 @@ public protocol AppDelegateViewModelOutputs {
   /// Return this value in the delegate method.
   var facebookOpenURLReturnValue: MutableProperty<Bool> { get }
 
+  /// Emits when opening the app with an invalid access token.
+  var forceLogout: Signal<(), NoError> { get }
+
   /// Emits when the root view controller should navigate to activity.
   var goToActivity: Signal<(), NoError> { get }
 
@@ -125,13 +128,21 @@ AppDelegateViewModelOutputs {
   // swiftlint:disable function_body_length
   // swiftlint:disable cyclomatic_complexity
   public init() {
-
-    self.updateCurrentUserInEnvironment = Signal.merge([
+    let currentUserEvent = Signal
+      .merge(
         self.applicationWillEnterForegroundProperty.signal,
         self.applicationLaunchOptionsProperty.signal.ignoreValues()
-      ])
+      )
       .filter { _ in AppEnvironment.current.apiService.isAuthenticated }
-      .switchMap { _ in AppEnvironment.current.apiService.fetchUserSelf().demoteErrors() }
+      .switchMap { _ in AppEnvironment.current.apiService.fetchUserSelf().materialize() }
+
+    self.updateCurrentUserInEnvironment = currentUserEvent
+      .values()
+
+    self.forceLogout = currentUserEvent
+      .errors()
+      .filter { $0.ksrCode == .AccessTokenInvalid }
+      .ignoreValues()
 
     self.updateEnvironment = Signal.merge([
       self.applicationWillEnterForegroundProperty.signal,
@@ -496,6 +507,7 @@ AppDelegateViewModelOutputs {
   public let configureHockey: Signal<HockeyConfigData, NoError>
   public let continueUserActivityReturnValue = MutableProperty(false)
   public let facebookOpenURLReturnValue = MutableProperty(false)
+  public let forceLogout: Signal<(), NoError>
   public let goToActivity: Signal<(), NoError>
   public let goToDashboard: Signal<Param?, NoError>
   public let goToDiscovery: Signal<DiscoveryParams?, NoError>

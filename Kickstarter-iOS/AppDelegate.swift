@@ -41,6 +41,15 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         self?.viewModel.inputs.currentUserUpdatedInEnvironment()
     }
 
+    self.viewModel.outputs.forceLogout
+      .observeForUI()
+      .observeNext {
+        AppEnvironment.logout()
+        NSNotificationCenter.defaultCenter().postNotification(
+          NSNotification(name: CurrentUserNotifications.sessionEnded, object: nil)
+        )
+    }
+
     self.viewModel.outputs.updateEnvironment
       .observeForUI()
       .observeNext { config, koala in AppEnvironment.replaceCurrentEnvironment(config: config, koala: koala) }

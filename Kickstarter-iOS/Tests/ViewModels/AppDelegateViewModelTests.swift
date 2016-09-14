@@ -12,40 +12,42 @@ final class AppDelegateViewModelTests: TestCase {
   let vm: AppDelegateViewModelType = AppDelegateViewModel()
 
   let configureHockey = TestObserver<HockeyConfigData, NoError>()
-  let updateCurrentUserInEnvironment = TestObserver<User, NoError>()
-  let updateEnvironment = TestObserver<(Config, Koala), NoError>()
-  let postNotificationName = TestObserver<String, NoError>()
-  let presentRemoteNotificationAlert = TestObserver<String, NoError>()
-  let presentViewController = TestObserver<Int, NoError>()
-  let pushTokenSuccessfullyRegistered = TestObserver<(), NoError>()
+  let forceLogout = TestObserver<(), NoError>()
   let goToActivity = TestObserver<(), NoError>()
   let goToDashboard = TestObserver<Param?, NoError>()
   let goToDiscovery = TestObserver<DiscoveryParams?, NoError>()
   let goToLogin = TestObserver<(), NoError>()
   let goToProfile = TestObserver<(), NoError>()
   let goToSearch = TestObserver<(), NoError>()
+  let postNotificationName = TestObserver<String, NoError>()
+  let presentRemoteNotificationAlert = TestObserver<String, NoError>()
+  let presentViewController = TestObserver<Int, NoError>()
+  let pushTokenSuccessfullyRegistered = TestObserver<(), NoError>()
   let registerUserNotificationSettings = TestObserver<(), NoError>()
   let unregisterForRemoteNotifications = TestObserver<(), NoError>()
+  let updateCurrentUserInEnvironment = TestObserver<User, NoError>()
+  let updateEnvironment = TestObserver<(Config, Koala), NoError>()
 
   override func setUp() {
     super.setUp()
 
     vm.outputs.configureHockey.observe(self.configureHockey.observer)
-    vm.outputs.updateCurrentUserInEnvironment.observe(self.updateCurrentUserInEnvironment.observer)
-    vm.outputs.updateEnvironment.observe(self.updateEnvironment.observer)
-    vm.outputs.postNotification.map { $0.name }.observe(self.postNotificationName.observer)
-    vm.outputs.presentRemoteNotificationAlert.observe(presentRemoteNotificationAlert.observer)
-    vm.outputs.presentViewController.map { ($0 as! UINavigationController).viewControllers.count }
-      .observe(self.presentViewController.observer)
-    vm.outputs.pushTokenSuccessfullyRegistered.observe(self.pushTokenSuccessfullyRegistered.observer)
+    vm.outputs.forceLogout.observe(self.forceLogout.observer)
     vm.outputs.goToActivity.observe(self.goToActivity.observer)
     vm.outputs.goToDashboard.observe(self.goToDashboard.observer)
     vm.outputs.goToDiscovery.observe(self.goToDiscovery.observer)
     vm.outputs.goToLogin.observe(self.goToLogin.observer)
     vm.outputs.goToProfile.observe(self.goToProfile.observer)
     vm.outputs.goToSearch.observe(self.goToSearch.observer)
+    vm.outputs.postNotification.map { $0.name }.observe(self.postNotificationName.observer)
+    vm.outputs.presentRemoteNotificationAlert.observe(presentRemoteNotificationAlert.observer)
+    vm.outputs.presentViewController.map { ($0 as! UINavigationController).viewControllers.count }
+      .observe(self.presentViewController.observer)
+    vm.outputs.pushTokenSuccessfullyRegistered.observe(self.pushTokenSuccessfullyRegistered.observer)
     vm.outputs.registerUserNotificationSettings.observe(self.registerUserNotificationSettings.observer)
     vm.outputs.unregisterForRemoteNotifications.observe(self.unregisterForRemoteNotifications.observer)
+    vm.outputs.updateCurrentUserInEnvironment.observe(self.updateCurrentUserInEnvironment.observer)
+    vm.outputs.updateEnvironment.observe(self.updateEnvironment.observer)
   }
 
   func testConfigureHockey_BetaApp_LoggedOut() {
@@ -233,6 +235,26 @@ final class AppDelegateViewModelTests: TestCase {
     postNotificationName.assertValues(
       [CurrentUserNotifications.userUpdated, CurrentUserNotifications.userUpdated]
     )
+  }
+
+  func testInvalidAccessToken() {
+    let token = OauthToken(token: "deadbeef")
+    let error = ErrorEnvelope(
+      errorMessages: ["invalid deadbeef"],
+      ksrCode: .AccessTokenInvalid,
+      httpCode: 401,
+      exception: nil
+    )
+
+    withEnvironment(apiService: MockService(oauthToken: token, fetchUserSelfError: error)) {
+      self.forceLogout.assertValueCount(0)
+
+      vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+                                              launchOptions: [:])
+
+      updateCurrentUserInEnvironment.assertDidNotEmitValue()
+      self.forceLogout.assertValueCount(1)
+    }
   }
 
   func testFacebookAppDelegate() {
