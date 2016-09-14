@@ -35,7 +35,7 @@ public let projectStatTitleStyle =
     <> UILabel.lens.textColor .~ .ksr_text_navy_700
 
 public let projectStatSubtitleStyle =
-  UILabel.lens.font .~ .ksr_caption1()
+  UILabel.lens.font .~ .ksr_caption1(size: 13)
     <> UILabel.lens.textColor .~ .ksr_text_navy_600
 
 public let subpageTabButtonStyle =

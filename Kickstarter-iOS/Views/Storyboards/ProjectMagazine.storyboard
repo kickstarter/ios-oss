@@ -100,13 +100,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9sf-ro-BJr" userLabel="Description">
-                                <rect key="frame" x="0.0" y="64" width="400" height="886"/>
+                                <rect key="frame" x="0.0" y="64" width="400" height="876"/>
                                 <connections>
                                     <segue destination="w9Y-HM-Enz" kind="embed" id="fP2-QN-iIT"/>
                                 </connections>
                             </containerView>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ut6-lv-HBb" userLabel="Rewards">
-                                <rect key="frame" x="0.0" y="64" width="400" height="886"/>
+                                <rect key="frame" x="0.0" y="64" width="400" height="876"/>
                                 <connections>
                                     <segue destination="y27-fs-9bB" kind="embed" id="ds4-9D-zM8"/>
                                 </connections>
@@ -118,28 +118,28 @@
                                 </connections>
                             </containerView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kyL-XG-e1U">
-                                <rect key="frame" x="0.0" y="950" width="400" height="50"/>
+                                <rect key="frame" x="0.0" y="940" width="400" height="60"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wPE-Dv-iIg">
-                                        <rect key="frame" x="8" y="8" width="384" height="34"/>
+                                        <rect key="frame" x="8" y="8" width="384" height="44"/>
                                         <state key="normal" title="Back this project">
                                             <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ACn-jv-uGg">
-                                        <rect key="frame" x="8" y="8" width="384" height="34"/>
+                                        <rect key="frame" x="8" y="8" width="384" height="44"/>
                                         <state key="normal" title="Manager your pledge">
                                             <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lQQ-2Q-6ZX">
-                                        <rect key="frame" x="8" y="8" width="384" height="34"/>
+                                        <rect key="frame" x="8" y="8" width="384" height="44"/>
                                         <state key="normal" title="View your pledge">
                                             <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ooh-TD-xYA">
-                                        <rect key="frame" x="8" y="8" width="384" height="34"/>
+                                        <rect key="frame" x="8" y="8" width="384" height="44"/>
                                         <state key="normal" title="View your pledge">
                                             <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -151,7 +151,7 @@
                                     <constraint firstAttribute="leadingMargin" secondItem="lQQ-2Q-6ZX" secondAttribute="leading" id="2Gd-BD-HxY"/>
                                     <constraint firstAttribute="bottomMargin" secondItem="wPE-Dv-iIg" secondAttribute="bottom" id="3BX-5i-qDk"/>
                                     <constraint firstAttribute="bottomMargin" secondItem="ACn-jv-uGg" secondAttribute="bottom" id="4uh-ck-Zox"/>
-                                    <constraint firstAttribute="height" constant="50" id="6RC-TP-m3z"/>
+                                    <constraint firstAttribute="height" constant="60" id="6RC-TP-m3z"/>
                                     <constraint firstAttribute="trailingMargin" secondItem="ooh-TD-xYA" secondAttribute="trailing" id="H81-So-r1Z"/>
                                     <constraint firstAttribute="leadingMargin" secondItem="ACn-jv-uGg" secondAttribute="leading" id="NCZ-y5-3aQ"/>
                                     <constraint firstAttribute="trailingMargin" secondItem="ACn-jv-uGg" secondAttribute="trailing" id="PdA-hA-VGT"/>

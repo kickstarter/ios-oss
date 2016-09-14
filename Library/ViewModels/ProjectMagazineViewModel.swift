@@ -52,7 +52,7 @@ public protocol ProjectMagazineViewModelOutputs {
   var descriptionViewHidden: Signal<Bool, NoError> { get }
 
   /// Emits when the checkout screen should be shown to the user.
-  var goToCheckout: Signal<(Project, Reward?, CheckoutIntent), NoError> { get }
+  var goToCheckout: Signal<(Project, NSURLRequest), NoError> { get }
 
   /// Emits when the login tout should be shown to the user.
   var goToLoginTout: Signal<(), NoError> { get }
@@ -162,13 +162,24 @@ ProjectMagazineViewModelOutputs {
 
     let managePledge = self.project
       .takeWhen(self.managePledgeButtonTappedProperty.signal)
-      .map { project -> (Project, Reward?, CheckoutIntent) in (project, nil, .manage) }
+      .map { project in
+        NSURL(string: project.urls.web.project)
+          .map { $0.URLByAppendingPathComponent("pledge/edit") }
+          .map(NSURLRequest.init(URL:))
+      }
+      .ignoreNil()
 
     let backProject = self.project
       .takeWhen(self.backProjectButtonTappedProperty.signal)
-      .map { project -> (Project, Reward?, CheckoutIntent) in (project, nil, .new) }
+      .map { project in
+        NSURL(string: project.urls.web.project)
+          .map { $0.URLByAppendingPathComponent("pledge/new") }
+          .map(NSURLRequest.init(URL:))
+      }
+      .ignoreNil()
 
-    self.goToCheckout = Signal.merge(managePledge, backProject)
+    self.goToCheckout = self.project
+      .takePairWhen(Signal.merge(managePledge, backProject))
 
     self.goToLoginTout = loggedOutUserTappedStar
 
@@ -315,7 +326,7 @@ ProjectMagazineViewModelOutputs {
   public let bottomShareButtonHidden: Signal<Bool, NoError>
   public let configureChildViewControllersWithProject: Signal<Project, NoError>
   public let descriptionViewHidden: Signal<Bool, NoError>
-  public let goToCheckout: Signal<(Project, Reward?, CheckoutIntent), NoError>
+  public let goToCheckout: Signal<(Project, NSURLRequest), NoError>
   public let goToLoginTout: Signal<(), NoError>
   public let goToViewPledge: Signal<(Project, User), NoError>
   public let managePledgeButtonHidden: Signal<Bool, NoError>

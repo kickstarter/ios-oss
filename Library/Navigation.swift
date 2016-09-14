@@ -15,6 +15,7 @@ public enum Navigation {
     case payments(Navigation.Checkout.Payment)
 
     public enum Payment {
+      case applePay(payload: String)
       case new
       case root
       case useStoredCard
@@ -97,6 +98,8 @@ public func == (lhs: Navigation.Checkout.Payment, rhs: Navigation.Checkout.Payme
   switch (lhs, rhs) {
   case (.new, .new), (.root, .root), (.useStoredCard, .useStoredCard):
     return true
+  case let (.applePay(lhs), .applePay(rhs)):
+    return lhs == rhs
   default:
     return false
   }
@@ -211,6 +214,7 @@ private let routes = [
   "/authorize": authorize,
   "/checkouts/:checkout_param/payments": paymentsRoot,
   "/checkouts/:checkout_param/payments/new": paymentsNew,
+  "/checkouts/:checkout_param/payments/apple-pay": paymentsApplePay,
   "/checkouts/:checkout_param/payments/use_stored_card": paymentsUseStoredCard,
   "/discover": discovery(defaults: ["staff_picks": "true"]),
   "/discover/advanced": discovery(),
@@ -279,6 +283,15 @@ private func paymentsNew(params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.checkout)
     <^> (params <| "checkout_param" >>- stringToInt)
     <*> .Success(.payments(.new))
+}
+
+private func paymentsApplePay(params: RouteParams) -> Decoded<Navigation> {
+
+  return curry(Navigation.checkout)
+    <^> (params <| "checkout_param" >>- stringToInt)
+    <*> (curry(Navigation.Checkout.payments)
+      <^> (curry(Navigation.Checkout.Payment.applePay)
+        <^> params <| "payload"))
 }
 
 private func paymentsRoot(params: RouteParams) -> Decoded<Navigation> {

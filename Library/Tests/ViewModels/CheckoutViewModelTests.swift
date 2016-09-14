@@ -4,17 +4,22 @@ import XCTest
 @testable import ReactiveExtensions_TestHelpers
 import Result
 import KsApi
+import PassKit
 import Prelude
+
+private let questionMark = NSCharacterSet(charactersInString: "?")
 
 final class CheckoutViewModelTests: TestCase {
   private let vm: CheckoutViewModelType = CheckoutViewModel()
 
-  private let closeLoginTout = TestObserver<Void, NoError>()
-  private let openLoginTout = TestObserver<Void, NoError>()
+  private let closeLoginTout = TestObserver<(), NoError>()
+  private let evaluateJavascript = TestObserver<String, NoError>()
+  private let goToPaymentAuthorization = TestObserver<NSDictionary, NoError>()
   private let goToSafariBrowser = TestObserver<NSURL, NoError>()
   private let goToThanks = TestObserver<Project, NoError>()
   private let goToWebModal = TestObserver<NSURLRequest, NoError>()
-  private let popViewController = TestObserver<Void, NoError>()
+  private let openLoginTout = TestObserver<(), NoError>()
+  private let popViewController = TestObserver<(), NoError>()
   private let showFailureAlert = TestObserver<String, NoError>()
   private let webViewLoadRequestIsPrepared = TestObserver<Bool, NoError>()
   private let webViewLoadRequestURL = TestObserver<String, NoError>()
@@ -23,10 +28,13 @@ final class CheckoutViewModelTests: TestCase {
     super.setUp()
 
     self.vm.outputs.closeLoginTout.observe(self.closeLoginTout.observer)
-    self.vm.outputs.openLoginTout.observe(self.openLoginTout.observer)
+    self.vm.outputs.evaluateJavascript.observe(self.evaluateJavascript.observer)
+    self.vm.outputs.goToPaymentAuthorization.map { $0.encode() as NSDictionary }
+      .observe(self.goToPaymentAuthorization.observer)
     self.vm.outputs.goToSafariBrowser.observe(self.goToSafariBrowser.observer)
     self.vm.outputs.goToThanks.observe(self.goToThanks.observer)
     self.vm.outputs.goToWebModal.observe(self.goToWebModal.observer)
+    self.vm.outputs.openLoginTout.observe(self.openLoginTout.observer)
     self.vm.outputs.popViewController.observe(self.popViewController.observer)
     self.vm.outputs.showFailureAlert.observe(self.showFailureAlert.observer)
     self.vm.outputs.webViewLoadRequest
@@ -37,8 +45,10 @@ final class CheckoutViewModelTests: TestCase {
         // Trim query parameters
         guard let url = request.URL else { return nil }
         guard let components = NSURLComponents(URL: url, resolvingAgainstBaseURL: false) else { return nil }
-        components.query = nil
-        return components.string
+        components.queryItems = components.queryItems?.filter {
+          $0.name != "client_id" && $0.name != "oauth_token"
+        }
+        return components.string?.stringByTrimmingCharactersInSet(questionMark)
       }
       .ignoreNil()
       .observe(self.webViewLoadRequestURL.observer)
@@ -47,7 +57,9 @@ final class CheckoutViewModelTests: TestCase {
   func testCancelButtonPopsViewController() {
     let project = Project.template
 
-    self.vm.inputs.configureWith(project: project, reward: nil, intent: .new)
+    self.vm.inputs.configureWith(initialRequest: newPledgeRequest(project: project).prepared(),
+                                 project: project,
+                                 applePayCapable: false)
     self.vm.inputs.viewDidLoad()
 
     // 1: Show reward and shipping form
@@ -77,7 +89,9 @@ final class CheckoutViewModelTests: TestCase {
     withEnvironment(currentUser: .template) {
       self.webViewLoadRequestURL.assertDidNotEmitValue()
 
-      self.vm.inputs.configureWith(project: project, reward: nil, intent: .manage)
+      self.vm.inputs.configureWith(initialRequest: editPledgeRequest(project: project).prepared(),
+                                   project: project,
+                                   applePayCapable: false)
       self.vm.inputs.viewDidLoad()
 
       // 1: Show reward and shipping form
@@ -136,6 +150,8 @@ final class CheckoutViewModelTests: TestCase {
       XCTAssertEqual(["Checkout Cancel", "Canceled Checkout"], self.trackingClient.events)
       self.popViewController.assertValueCount(1)
     }
+
+    self.evaluateJavascript.assertValueCount(0, "No javascript was evaluated.")
   }
 
   func testChangePaymentMethod() {
@@ -143,7 +159,9 @@ final class CheckoutViewModelTests: TestCase {
     withEnvironment(currentUser: .template) {
       self.webViewLoadRequestURL.assertDidNotEmitValue()
 
-      self.vm.inputs.configureWith(project: project, reward: nil, intent: .manage)
+      self.vm.inputs.configureWith(initialRequest: editPledgeRequest(project: project).prepared(),
+                                   project: project,
+                                   applePayCapable: false)
       self.vm.inputs.viewDidLoad()
 
       // 1: Show reward and shipping form
@@ -233,6 +251,8 @@ final class CheckoutViewModelTests: TestCase {
       )
       self.goToThanks.assertValueCount(1)
     }
+
+    self.evaluateJavascript.assertValueCount(0, "No javascript was evaluated.")
   }
 
   func testLoggedInUserPledgingWithNewCard() {
@@ -240,7 +260,9 @@ final class CheckoutViewModelTests: TestCase {
     withEnvironment(currentUser: .template) {
       self.webViewLoadRequestURL.assertDidNotEmitValue()
 
-      self.vm.inputs.configureWith(project: project, reward: nil, intent: .new)
+      self.vm.inputs.configureWith(initialRequest: newPledgeRequest(project: project).prepared(),
+                                   project: project,
+                                   applePayCapable: false)
       self.vm.inputs.viewDidLoad()
 
       // 1: Show reward and shipping form
@@ -327,10 +349,12 @@ final class CheckoutViewModelTests: TestCase {
           withRequest: thanksRequest(project: project, racing: false),
           navigationType: .Other
         ),
-        "Not prepared"
+        "Don't go to the URL since we handle it with a native thanks screen."
       )
       self.goToThanks.assertValueCount(1)
     }
+
+    self.evaluateJavascript.assertValueCount(0, "No javascript was evaluated.")
   }
 
   func testLoggedInUserPledgingWithStoredCard() {
@@ -338,7 +362,9 @@ final class CheckoutViewModelTests: TestCase {
     withEnvironment(currentUser: .template) {
       self.webViewLoadRequestURL.assertDidNotEmitValue()
 
-      self.vm.inputs.configureWith(project: project, reward: nil, intent: .new)
+      self.vm.inputs.configureWith(initialRequest: newPledgeRequest(project: project).prepared(),
+                                   project: project,
+                                   applePayCapable: false)
       self.vm.inputs.viewDidLoad()
 
       // 1: Show reward and shipping form
@@ -424,16 +450,20 @@ final class CheckoutViewModelTests: TestCase {
           withRequest: thanksRequest(project: project, racing: false),
           navigationType: .Other
         ),
-        "Not prepared"
+        "Don't go to the URL since we handle it with a native thanks screen."
       )
       self.goToThanks.assertValueCount(1)
     }
+
+    self.evaluateJavascript.assertValueCount(0, "No javascript was evaluated.")
   }
 
   func testLoginDuringCheckout() {
     let project = Project.template
 
-    self.vm.inputs.configureWith(project: project, reward: nil, intent: .new)
+    self.vm.inputs.configureWith(initialRequest: newPledgeRequest(project: project).prepared(),
+                                 project: project,
+                                 applePayCapable: false)
     self.vm.inputs.viewDidLoad()
 
     // 1: Show reward and shipping form
@@ -500,6 +530,7 @@ final class CheckoutViewModelTests: TestCase {
       self.vm.inputs.shouldStartLoad(withRequest: newPaymentsRequest(), navigationType: .Other),
       "Not prepared"
     )
+
     self.webViewLoadRequestURL.assertValues(
       [
         newPledgeURL(project: project),
@@ -508,9 +539,12 @@ final class CheckoutViewModelTests: TestCase {
         newPaymentsURL()
       ]
     )
+
     XCTAssertTrue(
       self.vm.inputs.shouldStartLoad(withRequest: newPaymentsRequest().prepared(), navigationType: .Other)
     )
+
+    self.evaluateJavascript.assertValueCount(0, "No javascript was evaluated.")
 
     // The rest of the checkout flow is the same as if the user had been logged in at the beginning,
     // so no need for further tests.
@@ -521,7 +555,9 @@ final class CheckoutViewModelTests: TestCase {
     withEnvironment(currentUser: .template) {
       self.webViewLoadRequestURL.assertDidNotEmitValue()
 
-      self.vm.inputs.configureWith(project: project, reward: nil, intent: .manage)
+      self.vm.inputs.configureWith(initialRequest: editPledgeRequest(project: project).prepared(),
+                                   project: project,
+                                   applePayCapable: false)
       self.vm.inputs.viewDidLoad()
 
       // 1: Show reward and shipping form
@@ -567,15 +603,19 @@ final class CheckoutViewModelTests: TestCase {
           withRequest: thanksRequest(project: project, racing: false),
           navigationType: .Other
         ),
-        "Not prepared"
+        "Don't go to the URL since we handle it with a native thanks screen."
       )
       self.goToThanks.assertValueCount(1)
     }
+
+    self.evaluateJavascript.assertValueCount(0, "No javascript was evaluated.")
   }
 
   func testModalRequests() {
     let project = Project.template
-    self.vm.inputs.configureWith(project: project, reward: nil, intent: .new)
+    self.vm.inputs.configureWith(initialRequest: newPledgeRequest(project: project).prepared(),
+                                 project: project,
+                                 applePayCapable: false)
     self.vm.inputs.viewDidLoad()
 
     XCTAssertTrue(
@@ -605,7 +645,9 @@ final class CheckoutViewModelTests: TestCase {
     withEnvironment(apiService: MockService(fetchCheckoutResponse: failedEnvelope), currentUser: .template) {
       self.webViewLoadRequestURL.assertDidNotEmitValue()
 
-      self.vm.inputs.configureWith(project: project, reward: nil, intent: .new)
+      self.vm.inputs.configureWith(initialRequest: newPledgeRequest(project: project).prepared(),
+                                   project: project,
+                                   applePayCapable: false)
       self.vm.inputs.viewDidLoad()
 
       // 1: Show reward and shipping form
@@ -704,6 +746,8 @@ final class CheckoutViewModelTests: TestCase {
       self.vm.inputs.failureAlertButtonTapped()
       self.popViewController.assertValueCount(1)
     }
+
+    self.evaluateJavascript.assertValueCount(0, "No javascript was evaluated.")
   }
 
   func testRacingSuccess() {
@@ -712,7 +756,9 @@ final class CheckoutViewModelTests: TestCase {
     withEnvironment(apiService: MockService(fetchCheckoutResponse: envelope), currentUser: .template) {
       self.webViewLoadRequestURL.assertDidNotEmitValue()
 
-      self.vm.inputs.configureWith(project: project, reward: nil, intent: .new)
+      self.vm.inputs.configureWith(initialRequest: newPledgeRequest(project: project).prepared(),
+                                   project: project,
+                                   applePayCapable: false)
       self.vm.inputs.viewDidLoad()
 
       // 1: Show reward and shipping form
@@ -804,12 +850,16 @@ final class CheckoutViewModelTests: TestCase {
       self.showFailureAlert.assertValueCount(0)
       self.goToThanks.assertValueCount(1)
     }
+
+    self.evaluateJavascript.assertValueCount(0, "No javascript was evaluated.")
   }
 
   func testProjectRequestPopsViewController() {
     let project = Project.template
 
-    self.vm.inputs.configureWith(project: project, reward: nil, intent: .new)
+    self.vm.inputs.configureWith(initialRequest: newPledgeRequest(project: project).prepared(),
+                                 project: project,
+                                 applePayCapable: false)
     self.vm.inputs.viewDidLoad()
 
     // 1: Show reward and shipping form
@@ -839,12 +889,225 @@ final class CheckoutViewModelTests: TestCase {
     XCTAssertEqual(["Checkout Cancel", "Canceled Checkout"],
                    self.trackingClient.events, "Cancel event and its deprecated version are tracked")
   }
+
+  func testEmbeddedApplePayFlow() {
+    let amount = 25
+    let location = Location.template
+    let reward = .template
+      |> Reward.lens.minimum .~ 20
+    let project = .template
+      |> Project.lens.rewards .~ [reward]
+
+    withEnvironment(currentUser: .template) {
+      self.webViewLoadRequestURL.assertDidNotEmitValue()
+
+      self.vm.inputs.configureWith(initialRequest: newPledgeRequest(project: project).prepared(),
+                                   project: project,
+                                   applePayCapable: true)
+      self.vm.inputs.viewDidLoad()
+
+      // 1: Show reward and shipping form
+      self.webViewLoadRequestIsPrepared.assertValues([true])
+      self.webViewLoadRequestURL.assertValues([newPledgeURL(project: project)])
+
+      XCTAssertTrue(
+        self.vm.inputs.shouldStartLoad(
+          withRequest: newPledgeRequest(project: project).prepared(),
+          navigationType: .Other
+        )
+      )
+      XCTAssertTrue(self.vm.inputs.shouldStartLoad(withRequest: stripeRequest(), navigationType: .Other))
+
+      // 2: Submit reward and shipping form
+      self.webViewLoadRequestURL.assertValueCount(1)
+
+      XCTAssertFalse(
+        self.vm.inputs.shouldStartLoad(
+          withRequest: pledgeRequest(project: project),
+          navigationType: .FormSubmitted
+        ),
+        "Not prepared"
+      )
+
+      self.webViewLoadRequestIsPrepared.assertValues([true, true])
+      self.webViewLoadRequestURL.assertValues(
+        [newPledgeURL(project: project), pledgeURL(project: project)]
+      )
+
+      XCTAssertTrue(
+        self.vm.inputs.shouldStartLoad(
+          withRequest: pledgeRequest(project: project).prepared(),
+          navigationType: .Other
+        )
+      )
+
+      // 3: Redirect to new payments form
+      self.webViewLoadRequestURL.assertValueCount(2)
+
+      XCTAssertFalse(
+        self.vm.inputs.shouldStartLoad(withRequest: newPaymentsRequest(), navigationType: .Other),
+        "Not prepared"
+      )
+
+      self.webViewLoadRequestIsPrepared.assertValues([true, true, true])
+      self.webViewLoadRequestURL.assertValues(
+        [newPledgeURL(project: project), pledgeURL(project: project), newPaymentsURL()]
+      )
+
+      XCTAssertTrue(
+        self.vm.inputs.shouldStartLoad(withRequest: newPaymentsRequest().prepared(), navigationType: .Other)
+      )
+      XCTAssertTrue(self.vm.inputs.shouldStartLoad(withRequest: stripeRequest(), navigationType: .Other))
+
+      // 4: Pledge with apple pay
+      self.webViewLoadRequestURL.assertValueCount(3)
+
+      XCTAssertFalse(
+        self.vm.inputs.shouldStartLoad(
+          withRequest: applePayUrlRequest(
+            project: project,
+            amount: amount,
+            reward: reward,
+            location: location
+          ),
+          navigationType: .LinkClicked
+        ),
+        "Apple Pay url not allowed"
+      )
+
+      self.webViewLoadRequestIsPrepared.assertValues([true, true, true])
+      self.webViewLoadRequestURL.assertValues(
+        [
+          newPledgeURL(project: project),
+          pledgeURL(project: project),
+          newPaymentsURL()
+        ]
+      )
+
+      // 5: Apple Pay sheet
+
+      self.goToPaymentAuthorization.assertValueCount(1)
+
+      self.vm.inputs.paymentAuthorizationWillAuthorizePayment()
+
+      XCTAssertEqual(["Apple Pay Show Sheet"], self.trackingClient.events)
+
+      self.vm.inputs.paymentAuthorizationDidFinish()
+
+      XCTAssertEqual(["Apple Pay Show Sheet", "Apple Pay Canceled"], self.trackingClient.events)
+
+      self.vm.inputs.paymentAuthorizationWillAuthorizePayment()
+      self.vm.inputs.paymentAuthorization(
+        didAuthorizePayment: .init(
+          tokenData: .init(
+            paymentMethodData: .init(displayName: "AmEx 1111", network: "AmEx", type: .Credit),
+            transactionIdentifier: "apple_pay_deadbeef"
+          )
+        )
+      )
+
+      XCTAssertEqual(
+        [
+          "Apple Pay Show Sheet", "Apple Pay Canceled", "Apple Pay Show Sheet", "Apple Pay Authorized"
+        ],
+        self.trackingClient.events)
+
+      self.vm.inputs.stripeCreatedToken(stripeToken: "stripe_deadbeef", error: nil)
+
+      XCTAssertEqual(
+        [
+          "Apple Pay Show Sheet", "Apple Pay Canceled", "Apple Pay Show Sheet", "Apple Pay Authorized",
+          "Apple Pay Stripe Token Created"
+        ],
+        self.trackingClient.events)
+
+      self.vm.inputs.paymentAuthorizationDidFinish()
+
+      XCTAssertEqual(
+        [
+          "Apple Pay Show Sheet", "Apple Pay Canceled", "Apple Pay Show Sheet", "Apple Pay Authorized",
+          "Apple Pay Stripe Token Created", "Apple Pay Finished"
+        ],
+        self.trackingClient.events)
+
+      self.evaluateJavascript.assertValues([
+        "window.checkout_apple_pay_next({\"apple_pay_token\":{\"transaction_identifier\":" +
+          "\"apple_pay_deadbeef\",\"payment_instrument_name\":\"AmEx 1111\",\"payment_network\":\"AmEx\"}," +
+          "\"stripe_token\":{\"id\":\"stripe_deadbeef\"}});"
+        ])
+
+      // 6: Submit payment form
+      self.webViewLoadRequestURL.assertValueCount(3)
+
+      XCTAssertFalse(
+        self.vm.inputs.shouldStartLoad(withRequest: paymentsRequest(), navigationType: .FormSubmitted),
+        "Not prepared"
+      )
+
+      self.webViewLoadRequestIsPrepared.assertValues([true, true, true, true])
+      self.webViewLoadRequestURL.assertValues(
+        [
+          newPledgeURL(project: project),
+          pledgeURL(project: project),
+          newPaymentsURL(),
+          paymentsURL()
+        ]
+      )
+
+      XCTAssertTrue(
+        self.vm.inputs.shouldStartLoad(withRequest: paymentsRequest().prepared(), navigationType: .Other)
+      )
+
+      // 7: Redirect to thanks
+      self.goToThanks.assertDidNotEmitValue()
+      self.webViewLoadRequestURL.assertValueCount(4)
+
+      XCTAssertFalse(
+        self.vm.inputs.shouldStartLoad(
+          withRequest: thanksRequest(project: project, racing: false),
+          navigationType: .Other
+        ),
+        "Don't go to the URL since we handle it with a native thanks screen."
+      )
+      self.goToThanks.assertValueCount(1)
+    }
+  }
 }
 
 internal extension NSURLRequest {
   internal func prepared() -> NSURLRequest {
     return AppEnvironment.current.apiService.preparedRequest(forRequest: self)
   }
+}
+
+private func applePayUrlRequest(project project: Project,
+                                 amount: Int,
+                                 reward: Reward,
+                                 location: Location) -> NSURLRequest {
+
+  let payload = [
+    "country_code": project.country.countryCode,
+    "currency_code": project.country.currencyCode,
+    "merchant_identifier": PKPaymentAuthorizationViewController.merchantIdentifier,
+    "supported_networks": [ "AmEx", "Visa", "MasterCard", "Discover" ],
+    "payment_summary_items": [
+      [
+        "label": project.name,
+        "amount": "\(amount)"
+      ],
+      [
+        "label": "Kickstarter (if funded)",
+        "amount": "\(amount)"
+      ]
+    ]
+  ]
+
+  return (try? NSJSONSerialization.dataWithJSONObject(payload, options: []))
+    .flatMap { String(data: $0.base64EncodedDataWithOptions([]), encoding: NSUTF8StringEncoding) }
+    .map { "https://www.kickstarter.com/checkouts/1/payments/apple-pay?payload=\($0)" }
+    .flatMap(NSURL.init(string:))
+    .flatMap(NSURLRequest.init(URL:))
+    .coalesceWith(NSURLRequest())
 }
 
 private func cancelPledgeRequest(project project: Project) -> NSURLRequest {

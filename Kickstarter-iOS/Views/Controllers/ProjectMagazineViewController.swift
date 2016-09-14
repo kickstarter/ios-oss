@@ -97,7 +97,7 @@ internal final class ProjectMagazineViewController: UIViewController {
       |> baseControllerStyle()
 
     self.actionStackView
-      |> UIStackView.lens.spacing .~ 32
+      |> UIStackView.lens.spacing .~ Styles.grid(3)
       |> UIStackView.lens.distribution .~ .FillEqually
 
     [self.starButton, self.topShareButton]
@@ -121,6 +121,7 @@ internal final class ProjectMagazineViewController: UIViewController {
     self.closeBarButtonItem
       |> UIBarButtonItem.lens.accessibilityLabel %~ { _ in Strings.accessibility_projects_buttons_close() }
       |> UIBarButtonItem.lens.title .~ nil
+      |> UIBarButtonItem.lens.tintColor .~ .ksr_navy_500
       |> UIBarButtonItem.lens.image
         .~ UIImage(named: "close-icon", inBundle: .framework, compatibleWithTraitCollection: nil)
 
@@ -192,8 +193,8 @@ internal final class ProjectMagazineViewController: UIViewController {
 
     self.viewModel.outputs.goToCheckout
       .observeForUI()
-      .observeNext { [weak self] project, reward, intent in
-        self?.goToCheckout(project: project, reward: reward, intent: intent)
+      .observeNext { [weak self] project, initialRequest in
+        self?.goToCheckout(initialRequest: initialRequest, project: project)
     }
 
     self.viewModel.outputs.goToLoginTout
@@ -246,8 +247,8 @@ internal final class ProjectMagazineViewController: UIViewController {
     self.presentViewController(alert, animated: true, completion: nil)
   }
 
-  private func goToCheckout(project project: Project, reward: Reward?, intent: CheckoutIntent) {
-    let vc = CheckoutViewController.configuredWith(project: project, reward: reward, intent: intent)
+  private func goToCheckout(initialRequest initialRequest: NSURLRequest, project: Project) {
+    let vc = CheckoutViewController.configuredWith(initialRequest: initialRequest, project: project)
     self.navigationController?.pushViewController(vc, animated: true)
   }
 

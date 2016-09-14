@@ -1,20 +1,26 @@
 import KsApi
 import Library
+import PassKit
 import Prelude
 import ReactiveCocoa
 import SafariServices
+import Stripe
 import UIKit
 
 internal final class CheckoutViewController: DeprecatedWebViewController {
   private weak var loginToutViewController: UIViewController? = nil
   private let viewModel: CheckoutViewModelType = CheckoutViewModel()
 
-  internal static func configuredWith(project project: Project,
-                                              reward: Reward?,
-                                              intent: CheckoutIntent) -> CheckoutViewController {
-    let vc = Storyboard.Checkout.instantiate(CheckoutViewController)
-    vc.viewModel.inputs.configureWith(project: project, reward: reward, intent: intent)
-    return vc
+  internal static func configuredWith(initialRequest initialRequest: NSURLRequest, project: Project)
+    -> CheckoutViewController {
+
+      let vc = Storyboard.Checkout.instantiate(CheckoutViewController)
+      vc.viewModel.inputs.configureWith(
+        initialRequest: initialRequest,
+        project: project,
+        applePayCapable: PKPaymentAuthorizationViewController.applePayCapable()
+      )
+      return vc
   }
 
   internal override func viewDidLoad() {
@@ -29,12 +35,19 @@ internal final class CheckoutViewController: DeprecatedWebViewController {
     self.viewModel.inputs.viewDidLoad()
   }
 
+  // swiftlint:disable function_body_length
   internal override func bindViewModel() {
     super.bindViewModel()
 
     self.viewModel.outputs.closeLoginTout
       .observeForControllerAction()
       .observeNext { [weak self] _ in self?.closeLoginTout() }
+
+    self.viewModel.outputs.evaluateJavascript
+      .observeForControllerAction()
+      .observeNext { [weak self] js in
+        self?.webView.stringByEvaluatingJavaScriptFromString(js)
+    }
 
     self.viewModel.outputs.goToSafariBrowser
       .observeForControllerAction()
@@ -66,14 +79,20 @@ internal final class CheckoutViewController: DeprecatedWebViewController {
         self?.webView.loadRequest(request)
     }
 
+    self.viewModel.outputs.goToPaymentAuthorization
+      .observeForControllerAction()
+      .observeNext { [weak self] in self?.goToPaymentAuthorization(request: $0) }
+
     NSNotificationCenter.defaultCenter()
       .addObserverForName(CurrentUserNotifications.sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()
     }
   }
+  // swiftlint:disable function_body_length
 
-  func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest,
-               navigationType: UIWebViewNavigationType) -> Bool {
+  internal func webView(webView: UIWebView,
+                        shouldStartLoadWithRequest request: NSURLRequest,
+                        navigationType: UIWebViewNavigationType) -> Bool {
     return self.viewModel.inputs.shouldStartLoad(withRequest: request, navigationType: navigationType)
   }
 
@@ -83,6 +102,12 @@ internal final class CheckoutViewController: DeprecatedWebViewController {
 
   private func closeLoginTout() {
     self.loginToutViewController?.dismissViewControllerAnimated(true, completion: nil)
+  }
+
+  private func goToPaymentAuthorization(request request: PKPaymentRequest) {
+    let vc = PKPaymentAuthorizationViewController(paymentRequest: request)
+    vc.delegate = self
+    self.presentViewController(vc, animated: true, completion: nil)
   }
 
   private func goToSafariBrowser(url url: NSURL) {
@@ -129,5 +154,37 @@ internal final class CheckoutViewController: DeprecatedWebViewController {
       animated: true,
       completion: nil
     )
+  }
+}
+
+extension CheckoutViewController: PKPaymentAuthorizationViewControllerDelegate {
+
+  internal func paymentAuthorizationViewControllerWillAuthorizePayment(
+    controller: PKPaymentAuthorizationViewController) {
+    self.viewModel.inputs.paymentAuthorizationWillAuthorizePayment()
+  }
+
+  internal func paymentAuthorizationViewController(
+    controller: PKPaymentAuthorizationViewController,
+    didAuthorizePayment payment: PKPayment,
+                        completion: (PKPaymentAuthorizationStatus) -> Void) {
+
+    self.viewModel.inputs.paymentAuthorization(didAuthorizePayment: .init(payment: payment))
+
+    STPAPIClient.sharedClient().createTokenWithPayment(payment) { [weak self] token, error in
+      if let status = self?.viewModel.inputs.stripeCreatedToken(stripeToken: token?.tokenId, error: error) {
+        completion(status)
+      } else {
+        completion(.Failure)
+      }
+    }
+  }
+
+  internal func paymentAuthorizationViewControllerDidFinish(
+    controller: PKPaymentAuthorizationViewController) {
+
+    controller.dismissViewControllerAnimated(true) {
+      self.viewModel.inputs.paymentAuthorizationDidFinish()
+    }
   }
 }

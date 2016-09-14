@@ -59,12 +59,12 @@ internal final class RewardCell: UITableViewCell, ValueCell {
       |> UIStackView.lens.spacing .~ Styles.grid(2)
 
     self.statsStackView
-      |> UIStackView.lens.spacing .~ Styles.gridHalf()
+      |> UIStackView.lens.spacing .~ Styles.gridHalf(1)
 
     self.allGoneContainerView
       |> roundedStyle()
       |> UIView.lens.backgroundColor .~ UIColor.ksr_navy_700
-      |> UIView.lens.layoutMargins .~ .init(topBottom: Styles.gridHalf(), leftRight: Styles.grid(1))
+      |> UIView.lens.layoutMargins .~ .init(topBottom: Styles.gridHalf(1), leftRight: Styles.grid(1))
 
     self.allGoneLabel
       |> UILabel.lens.textColor .~ .whiteColor()
@@ -116,7 +116,7 @@ internal final class RewardCell: UITableViewCell, ValueCell {
     self.youreABackerStackView
       |> UIStackView.lens.layoutMargins .~ self.allGoneContainerView.layoutMargins
       |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
-      |> UIStackView.lens.spacing .~ Styles.gridHalf()
+      |> UIStackView.lens.spacing .~ Styles.gridHalf(1)
       |> UIStackView.lens.alignment .~ .Center
 
     self.checkmarkImageView

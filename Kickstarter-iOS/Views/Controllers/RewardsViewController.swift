@@ -49,9 +49,15 @@ internal final class RewardsViewController: UITableViewController {
       .observeNext { [weak self] in
         self?.layoutHeaderView(atContentOffset: $0)
     }
+
+    self.viewModel.outputs.goToRewardPledge
+      .observeForControllerAction()
+      .observeNext { [weak self] project, reward in
+        self?.goToRewardPledge(project: project, reward: reward)
+    }
   }
 
-  override func viewDidLayoutSubviews() {
+  internal override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
     self.viewModel.inputs.viewDidLayoutSubviews(contentSize: self.tableView.contentSize)
   }
@@ -72,5 +78,16 @@ internal final class RewardsViewController: UITableViewController {
     if let contentOffset = contentOffset {
       self.tableView.contentOffset.y = -self.tableView.contentInset.top + contentOffset.y
     }
+  }
+
+  internal override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    guard let (_, reward) = self.dataSource[indexPath] as? (Project, Reward) else { return }
+    self.viewModel.inputs.tapped(reward: reward)
+  }
+
+  private func goToRewardPledge(project project: Project, reward: Reward) {
+    let vc = RewardPledgeViewController.configuredWith(project: project, reward: reward)
+    let nav = UINavigationController(rootViewController: vc)
+    self.presentViewController(nav, animated: true, completion: nil)
   }
 }

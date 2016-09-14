@@ -28,10 +28,10 @@ internal final class CommentCell: UITableViewCell, ValueCell {
       .init(topBottom: Styles.grid(3), leftRight: Styles.grid(2))
 
     self.authorAndTimestampStackView
-      |> UIStackView.lens.spacing .~ Styles.gridHalf()
+      |> UIStackView.lens.spacing .~ Styles.gridHalf(1)
 
     self.authorStackView
-      |> UIStackView.lens.spacing .~ Styles.gridHalf()
+      |> UIStackView.lens.spacing .~ Styles.gridHalf(1)
 
     self.commentStackView
       |> UIStackView.lens.spacing .~ Styles.grid(2)

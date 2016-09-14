@@ -154,7 +154,7 @@ internal final class ProjectHeaderViewController: UIViewController {
       |> UILabel.lens.text %~ { _ in Strings.project_subpages_menu_buttons_updates() }
 
     [self.rewardsButton, self.commentsButton, self.updatesButton]
-      ||> cardStyle()
+      ||> cardStyle(cornerRadius: 2)
       ||> UIButton.lens.backgroundColor .~ .clearColor()
       ||> UIButton.lens.backgroundColor(forState: .Highlighted) .~ .ksr_grey_500
       ||> UIButton.lens.backgroundColor(forState: .Selected) .~ .ksr_grey_500

@@ -10,7 +10,7 @@ AppEnvironment.replaceCurrentEnvironment(
   apiService: MockService(),
   config: Config.template |> Config.lens.countryCode .~ "US",
   mainBundle: NSBundle.framework,
-  language: .en
+  language: .de
 )
 
 let project = Project.cosmicSurgery
@@ -32,8 +32,8 @@ let controller = Storyboard.ProjectMagazine.instantiate(RewardsViewController)
 controller.configureWith(project: project)
 controller.transfer(headerView: UIView(), previousContentOffset: nil)
 
-let (parent, _) = playgroundControllers(device: .phone4inch, orientation: .landscape, child: controller)
+let (parent, _) = playgroundControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
 
-let frame = parent.view.frame |> CGRect.lens.size.height .~ 1_000
+let frame = parent.view.frame |> CGRect.lens.size.height .~ 1_500
 XCPlaygroundPage.currentPage.liveView = parent
 parent.view.frame = frame

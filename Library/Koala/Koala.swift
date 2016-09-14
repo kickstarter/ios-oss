@@ -45,6 +45,11 @@ public final class Koala {
     case updateComments = "update_comments"
   }
 
+  public enum CheckoutContext: String {
+    case native
+    case web
+  }
+
   /// Determines which gesture was used.
   public enum GestureType: String {
     case swipe = "swipe"
@@ -991,6 +996,50 @@ public final class Koala {
 
     self.track(event: "Started Project Video",
                properties: properties(project: project, loggedInUser: self.loggedInUser))
+  }
+
+  // MARK: Apple Pay events
+
+  public func trackShowApplePaySheet(project project: Project, context: CheckoutContext) {
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(["context": context.rawValue])
+
+    self.track(event: "Apple Pay Show Sheet", properties: props)
+  }
+
+  public func trackApplePayAuthorizedPayment(project project: Project, context: CheckoutContext) {
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(["context": context.rawValue])
+
+    self.track(event: "Apple Pay Authorized", properties: props)
+  }
+
+  public func trackStripeTokenCreatedForApplePay(project project: Project, context: CheckoutContext) {
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(["context": context.rawValue])
+
+    self.track(event: "Apple Pay Stripe Token Created", properties: props)
+  }
+
+  public func trackStripeTokenErroredForApplePay(project project: Project, context: CheckoutContext) {
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(["context": context.rawValue])
+
+    self.track(event: "Apple Pay Stripe Token Errored", properties: props)
+  }
+
+  public func trackApplePayFinished(project project: Project, context: CheckoutContext) {
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(["context": context.rawValue])
+
+    self.track(event: "Apple Pay Finished", properties: props)
+  }
+
+  public func trackApplePaySheetCanceled(project project: Project, context: CheckoutContext) {
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(["context": context.rawValue])
+
+    self.track(event: "Apple Pay Canceled", properties: props)
   }
 
   // Private tracking method that merges in default properties.

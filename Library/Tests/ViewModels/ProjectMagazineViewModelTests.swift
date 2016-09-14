@@ -14,7 +14,8 @@ final class ProjectMagazineViewModelTests: TestCase {
   private let configureChildViewControllersWithProject = TestObserver<Project, NoError>()
   private let descriptionViewHidden = TestObserver<Bool, NoError>()
   private let goToLoginTout = TestObserver<(), NoError>()
-  private let goToCheckoutIntent = TestObserver<CheckoutIntent, NoError>()
+  private let goToCheckoutProject = TestObserver<Project, NoError>()
+  private let goToCheckoutRequest = TestObserver<NSURLRequest, NoError>()
   private let goToViewPledgeUser = TestObserver<User, NoError>()
   private let goToViewPledgeProject = TestObserver<Project, NoError>()
   private let managePledgeButtonHidden = TestObserver<Bool, NoError>()
@@ -36,7 +37,8 @@ final class ProjectMagazineViewModelTests: TestCase {
     self.vm.outputs.configureChildViewControllersWithProject
       .observe(self.configureChildViewControllersWithProject.observer)
     self.vm.outputs.descriptionViewHidden.observe(self.descriptionViewHidden.observer)
-    self.vm.outputs.goToCheckout.map { (_, _, intent) in intent }.observe(self.goToCheckoutIntent.observer)
+    self.vm.outputs.goToCheckout.map(second).observe(self.goToCheckoutRequest.observer)
+    self.vm.outputs.goToCheckout.map(first).observe(self.goToCheckoutProject.observer)
     self.vm.outputs.goToLoginTout.observe(self.goToLoginTout.observer)
     self.vm.outputs.goToViewPledge.map(first).observe(self.goToViewPledgeProject.observer)
     self.vm.outputs.goToViewPledge.map(second).observe(self.goToViewPledgeUser.observer)
@@ -187,16 +189,25 @@ final class ProjectMagazineViewModelTests: TestCase {
   }
 
   func testGoToCheckout() {
-    self.vm.inputs.configureWith(projectOrParam: .left(.template), refTag: .discovery)
+    let project = Project.template
+    self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .discovery)
     self.vm.inputs.viewDidLoad()
 
-    self.goToCheckoutIntent.assertValueCount(0)
+    self.goToCheckoutProject.assertValueCount(0)
+    self.goToCheckoutRequest.assertValueCount(0)
 
     self.vm.inputs.backProjectButtonTapped()
-    self.goToCheckoutIntent.assertValues([.new])
+    self.goToCheckoutProject.assertValues([project])
+    self.goToCheckoutRequest.assertValues([
+      NSURLRequest(URL: NSURL(string: project.urls.web.project + "/pledge/new")!)
+      ])
 
     self.vm.inputs.managePledgeButtonTapped()
-    self.goToCheckoutIntent.assertValues([.new, .manage])
+    self.goToCheckoutProject.assertValues([project, project])
+    self.goToCheckoutRequest.assertValues([
+      NSURLRequest(URL: NSURL(string: project.urls.web.project + "/pledge/new")!),
+      NSURLRequest(URL: NSURL(string: project.urls.web.project + "/pledge/edit")!)
+    ])
   }
 
   func testGoToViewPledge() {
@@ -225,7 +236,7 @@ final class ProjectMagazineViewModelTests: TestCase {
     let user = User.template
 
     withEnvironment(currentUser: user) {
-      self.vm.inputs.configureWith(projectOrParam: .right(Param.id(1)), refTag: nil)
+      self.vm.inputs.configureWith(projectOrParam: .right(.id(1)), refTag: nil)
 
       self.vm.inputs.viewDidLoad()
       self.scheduler.advance()

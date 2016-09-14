@@ -6,5 +6,9 @@
 	<array>
 		<string>applinks:www.kickstarter.com</string>
 	</array>
+	<key>com.apple.developer.in-app-payments</key>
+	<array>
+		<string>merchant.com.kickstarter</string>
+	</array>
 </dict>
 </plist>

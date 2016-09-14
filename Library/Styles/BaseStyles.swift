@@ -9,7 +9,7 @@ public enum Styles {
     return 6.0 * CGFloat(count)
   }
 
-  public static func gridHalf(count: Int = 1) -> CGFloat {
+  public static func gridHalf(count: Int) -> CGFloat {
     return grid(count) / 2.0
   }
 }
@@ -91,7 +91,7 @@ public let formFieldStyle =
     <> UITextField.lens.tintColor .~ .ksr_green_700
 
 public let separatorStyle =
-  UIView.lens.backgroundColor .~ .ksr_navy_300
+  UIView.lens.backgroundColor .~ .ksr_grey_400
   <> UIView.lens.accessibilityElementsHidden .~ true
 
 /**

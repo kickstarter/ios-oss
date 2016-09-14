@@ -2,7 +2,7 @@ import Prelude
 import Prelude_UIKit
 import UIKit
 
-internal let baseButtonStyle =
+public let baseButtonStyle =
   roundedStyle()
     <> UIButton.lens.titleLabel.font %~~ { _, button in
       button.traitCollection.verticalSizeClass == .Compact
