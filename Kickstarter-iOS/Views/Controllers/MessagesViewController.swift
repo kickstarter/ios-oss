@@ -62,6 +62,10 @@ internal final class MessagesViewController: UITableViewController {
     self.viewModel.outputs.goToProject
       .observeForControllerAction()
       .observeNext { [weak self] project, refTag in self?.goTo(project: project, refTag: refTag) }
+
+    self.viewModel.outputs.goToBacking
+      .observeForControllerAction()
+      .observeNext { [weak self] project, user in self?.goToBacking(project: project, user: user)}
   }
 
   internal override func tableView(tableView: UITableView,
@@ -72,6 +76,8 @@ internal final class MessagesViewController: UITableViewController {
   internal override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
     if self.dataSource.isProjectBanner(indexPath: indexPath) {
       self.viewModel.inputs.projectBannerTapped()
+    } else if self.dataSource.isBackingInfo(indexPath: indexPath) {
+      self.viewModel.inputs.backingInfoPressed()
     }
   }
 
@@ -98,6 +104,11 @@ internal final class MessagesViewController: UITableViewController {
     let vc = ProjectMagazineViewController.configuredWith(projectOrParam: .left(project), refTag: refTag)
     let nav = UINavigationController(rootViewController: vc)
     self.presentViewController(nav, animated: true, completion: nil)
+  }
+
+  private func goToBacking(project project: Project, user: User) {
+    let vc = BackingViewController.configuredWith(project: project, backer: user)
+    self.navigationController?.pushViewController(vc, animated: true)
   }
 }
 

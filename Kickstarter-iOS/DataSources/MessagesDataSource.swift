@@ -30,6 +30,10 @@ internal final class MessagesDataSource: ValueCellDataSource {
     return indexPath.section == Section.ProjectBanner.rawValue
   }
 
+  internal func isBackingInfo(indexPath indexPath: NSIndexPath) -> Bool {
+    return indexPath.section == Section.Backing.rawValue
+  }
+
   internal override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
 
     switch (cell, value) {

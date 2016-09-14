@@ -28,7 +28,7 @@ public protocol MessagesViewModelOutputs {
   var backingAndProject: Signal<(Backing, Project), NoError> { get }
 
   /// Emits when we should go to the backing screen.
-  var goToBacking: Signal<(Backing, Project), NoError> { get }
+  var goToBacking: Signal<(Project, User), NoError> { get }
 
   /// Emits when we should go to the projet.
   var goToProject: Signal<(Project, RefTag), NoError> { get }
@@ -104,7 +104,7 @@ MessagesViewModelOutputs {
       .map { ($0.messageThread, .messages) }
       .takeWhen(self.replyButtonPressedProperty.signal)
 
-    self.goToBacking = self.backingAndProject
+    self.goToBacking = combineLatest(project, currentUser)
       .takeWhen(self.backingInfoPressedProperty.signal)
 
     self.goToProject = self.project.takeWhen(self.projectBannerTappedProperty.signal)
@@ -152,7 +152,7 @@ MessagesViewModelOutputs {
   }
 
   public let backingAndProject: Signal<(Backing, Project), NoError>
-  public let goToBacking: Signal<(Backing, Project), NoError>
+  public let goToBacking: Signal<(Project, User), NoError>
   public let goToProject: Signal<(Project, RefTag), NoError>
   public let messages: Signal<[Message], NoError>
   public let presentMessageDialog: Signal<(MessageThread, Koala.MessageDialogContext), NoError>

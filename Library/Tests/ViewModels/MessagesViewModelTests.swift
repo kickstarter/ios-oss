@@ -11,7 +11,8 @@ internal final class MessagesViewModelTests: TestCase {
   private let vm: MessagesViewModelType = MessagesViewModel()
 
   private let backingAndProject = TestObserver<(Backing, Project), NoError>()
-  private let goToBacking = TestObserver<Backing, NoError>()
+  private let goToBackingProject = TestObserver<Project, NoError>()
+  private let goToBackingUser = TestObserver<User, NoError>()
   private let goToProject = TestObserver<Project, NoError>()
   private let goToRefTag = TestObserver<RefTag, NoError>()
   private let messages = TestObserver<[Message], NoError>()
@@ -23,7 +24,8 @@ internal final class MessagesViewModelTests: TestCase {
     super.setUp()
 
     self.vm.outputs.backingAndProject.observe(self.backingAndProject.observer)
-    self.vm.outputs.goToBacking.map { $0.0 }.observe(self.goToBacking.observer)
+    self.vm.outputs.goToBacking.map(first).observe(self.goToBackingProject.observer)
+     self.vm.outputs.goToBacking.map(second).observe(self.goToBackingUser.observer)
     self.vm.outputs.goToProject.map { $0.0 }.observe(self.goToProject.observer)
     self.vm.outputs.goToProject.map { $0.1 }.observe(self.goToRefTag.observer)
     self.vm.outputs.messages.observe(self.messages.observer)
@@ -105,12 +107,21 @@ internal final class MessagesViewModelTests: TestCase {
   func testGoToBacking() {
     let project = Project.template |> Project.lens.id .~ 42
     let backing = Backing.template
+    let user = User.template
 
-    self.vm.inputs.configureWith(data: .right((project: project, backing: backing)))
-    self.vm.inputs.viewDidLoad()
-    self.vm.inputs.backingInfoPressed()
+    withEnvironment(currentUser: user) {
+      self.vm.inputs.configureWith(data: .right((project: project, backing: backing)))
 
-    self.goToBacking.assertValues([backing])
+      self.vm.inputs.viewDidLoad()
+
+      self.goToBackingProject.assertDidNotEmitValue()
+      self.goToBackingUser.assertDidNotEmitValue()
+
+      self.vm.inputs.backingInfoPressed()
+
+      self.goToBackingProject.assertValues([project])
+      self.goToBackingUser.assertValues([user])
+    }
   }
 
   func testReplyFlow() {
