@@ -240,7 +240,6 @@ final class ProjectMagazineViewModelTests: TestCase {
     }
   }
 
-
   func testNotifyDescriptionToExpand() {
     self.vm.inputs.configureWith(projectOrParam: .left(.template), refTag: .discovery)
     self.vm.inputs.viewDidLoad()
