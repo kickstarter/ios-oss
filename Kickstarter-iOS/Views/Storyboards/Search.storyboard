@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="zb8-de-x1Y">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="16A313a" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="zb8-de-x1Y">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
@@ -127,8 +127,8 @@
                                                 <constraint firstItem="Mdz-7b-scY" firstAttribute="leading" secondItem="xnf-rz-KkX" secondAttribute="leadingMargin" id="ul3-gt-v0I"/>
                                             </constraints>
                                         </view>
-                                        <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GzV-yc-rd0">
-                                            <rect key="frame" x="16" y="259" width="368" height="1"/>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GzV-yc-rd0">
+                                            <rect key="frame" x="16" y="349" width="368" height="1"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="1" id="y6m-SH-oKl"/>
@@ -177,18 +177,18 @@
                                             <rect key="frame" x="16" y="24" width="80" height="45"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </view>
-                                        <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" alignment="center" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="7Bu-Q1-vRs">
-                                            <rect key="frame" x="16" y="24" width="368" height="50"/>
+                                        <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="7Bu-Q1-vRs">
+                                            <rect key="frame" x="16" y="24" width="368" height="45"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="world-of-tomorrow" translatesAutoresizingMaskIntoConstraints="NO" id="o5j-hv-hBJ">
-                                                    <rect key="frame" x="0.0" y="3" width="80" height="45"/>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="world-of-tomorrow" translatesAutoresizingMaskIntoConstraints="NO" id="o5j-hv-hBJ">
+                                                    <rect key="frame" x="0.0" y="0.0" width="80" height="45"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="80" id="aY4-mQ-cym"/>
                                                         <constraint firstAttribute="width" secondItem="o5j-hv-hBJ" secondAttribute="height" multiplier="16:9" id="qXp-9p-bUo"/>
                                                     </constraints>
                                                 </imageView>
-                                                <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="SOr-RI-dIj">
-                                                    <rect key="frame" x="96" y="0.0" width="272" height="50"/>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SOr-RI-dIj">
+                                                    <rect key="frame" x="96" y="4" width="272" height="37"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="HERTZFELDT ON BLU-RAY" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kqx-C7-H1c">
                                                             <rect key="frame" x="8" y="8" width="256" height="21"/>
@@ -207,8 +207,8 @@
                                                 </view>
                                             </subviews>
                                         </stackView>
-                                        <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TX0-Jd-jBC" userLabel="Bottom border">
-                                            <rect key="frame" x="16" y="159" width="368" height="1"/>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TX0-Jd-jBC" userLabel="Bottom border">
+                                            <rect key="frame" x="16" y="99" width="368" height="1"/>
                                             <color key="backgroundColor" white="0.89916487069999995" alpha="1" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="1" id="prU-pN-Uec"/>
@@ -234,6 +234,7 @@
                                     <outlet property="columnsStackView" destination="7Bu-Q1-vRs" id="KFD-Fm-ZwH"/>
                                     <outlet property="imageShadowView" destination="3Ie-p2-cOs" id="BU8-BU-Wek"/>
                                     <outlet property="projectImageView" destination="o5j-hv-hBJ" id="2O0-NT-KAj"/>
+                                    <outlet property="projectImageWidthConstraint" destination="aY4-mQ-cym" id="nQ1-1w-hMB"/>
                                     <outlet property="projectLabel" destination="kqx-C7-H1c" id="pgZ-tt-V2b"/>
                                     <outlet property="projectNameContainerView" destination="SOr-RI-dIj" id="JIt-T1-W0G"/>
                                     <outlet property="separateView" destination="TX0-Jd-jBC" id="04v-VK-gDm"/>

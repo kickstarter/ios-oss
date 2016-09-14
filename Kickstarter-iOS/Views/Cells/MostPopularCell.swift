@@ -13,8 +13,12 @@ internal final class MostPopularCell: UITableViewCell, ValueCell {
 
     self
       |> baseTableViewCellStyle()
-      |> (MostPopularCell.lens.contentView.layoutMargins • UIEdgeInsets.lens.topBottom)
-        .~ (Styles.grid(4), Styles.grid(4))
+      |> MostPopularCell.lens.backgroundColor .~ .clearColor()
+      |> MostPopularCell.lens.contentView.layoutMargins %~~ { _, cell in
+        cell.traitCollection.isRegularRegular
+          ? .init(top: Styles.grid(4), left: Styles.grid(24), bottom: Styles.grid(2), right: Styles.grid(24))
+          : .init(topBottom: Styles.grid(2), leftRight: Styles.grid(2))
+    }
 
     self.mostPopularLabel
       |> UILabel.lens.font .~ .ksr_title1(size: 22)

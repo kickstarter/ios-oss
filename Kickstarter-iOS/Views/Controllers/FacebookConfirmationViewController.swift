@@ -81,9 +81,8 @@ internal final class FacebookConfirmationViewController: UIViewController,
     }
 
     self.viewModel.outputs.postNotification
-      .observeNext { note in
-        NSNotificationCenter.defaultCenter().postNotification(note)
-    }
+      .observeForUI()
+      .observeNext(NSNotificationCenter.defaultCenter().postNotification)
 
     self.viewModel.errors.showSignupError
       .observeForControllerAction()

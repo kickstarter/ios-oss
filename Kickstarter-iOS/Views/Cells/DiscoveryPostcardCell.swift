@@ -42,10 +42,14 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
 
     self
       |> baseTableViewCellStyle()
+      |> DiscoveryPostcardCell.lens.backgroundColor .~ .clearColor()
       // Future: the top should adjust to grid(4) when there is metadata present.
-      |> DiscoveryPostcardCell.lens.contentView.layoutMargins .~
-        .init(topBottom: Styles.grid(3), leftRight: Styles.grid(2))
-      |> UITableViewCell.lens.accessibilityHint %~ { _ in
+      |> DiscoveryPostcardCell.lens.contentView.layoutMargins %~~ { _, cell in
+        cell.traitCollection.isRegularRegular
+          ? .init(topBottom: Styles.grid(4), leftRight: Styles.grid(30))
+          : .init(topBottom: Styles.grid(3), leftRight: Styles.grid(2))
+      }
+      |> DiscoveryPostcardCell.lens.accessibilityHint %~ { _ in
         Strings.dashboard_tout_accessibility_hint_opens_project()
     }
 
@@ -116,6 +120,12 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
 
     self.projectStatsStackView
       |> UIStackView.lens.spacing .~ Styles.grid(3)
+      |> UIStackView.lens.layoutMargins %~~ { _, stackView in
+        stackView.traitCollection.isRegularRegular
+          ? .init(topBottom: 0, leftRight: Styles.grid(4))
+          : .init(all: 0)
+      }
+      |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
 
     self.socialAvatarImageView
       |> UIImageView.lens.layer.shouldRasterize .~ true

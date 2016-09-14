@@ -77,6 +77,7 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
       }
 
     self.viewModel.outputs.postNotification
+      .observeForUI()
       .observeNext(NSNotificationCenter.defaultCenter().postNotification)
 
     self.viewModel.outputs.showError

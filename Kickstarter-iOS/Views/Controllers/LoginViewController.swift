@@ -92,6 +92,7 @@ internal final class LoginViewController: UIViewController {
     }
 
     self.viewModel.outputs.postNotification
+      .observeForUI()
       .observeNext(NSNotificationCenter.defaultCenter().postNotification)
 
     self.viewModel.outputs.logIntoEnvironment

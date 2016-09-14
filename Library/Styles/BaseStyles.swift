@@ -42,7 +42,7 @@ public func baseTableViewCellStyle <TVC: UITableViewCellProtocol> () -> (TVC -> 
   return
     TVC.lens.contentView.layoutMargins %~~ { _, cell in
       if cell.traitCollection.isRegularRegular {
-        return .init(topBottom: Styles.grid(3), leftRight: Styles.grid(6))
+        return .init(topBottom: Styles.grid(3), leftRight: Styles.grid(12))
       }
       return .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
       }

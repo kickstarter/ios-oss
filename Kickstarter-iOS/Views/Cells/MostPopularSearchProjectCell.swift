@@ -27,9 +27,12 @@ internal final class MostPopularSearchProjectCell: UITableViewCell, ValueCell {
 
     self
       |> baseTableViewCellStyle()
-      |> MostPopularSearchProjectCell.lens.contentView.layoutMargins %~ {
-        .init(top: 0, left: $0.left, bottom: $0.bottom + Styles.grid(3), right: $0.right)
-      }
+      |> MostPopularSearchProjectCell.lens.backgroundColor .~ .clearColor()
+      |> MostPopularSearchProjectCell.lens.contentView.layoutMargins %~~ { _, cell in
+        cell.traitCollection.isRegularRegular
+          ? .init(topBottom: Styles.grid(2), leftRight: Styles.grid(20))
+          : .init(topBottom: Styles.grid(2), leftRight: Styles.grid(2))
+    }
 
     self.cardView
       |> dropShadowStyle()
@@ -53,13 +56,21 @@ internal final class MostPopularSearchProjectCell: UITableViewCell, ValueCell {
 
     self.projectInfoOverlayView
       |> UIView.lens.backgroundColor .~ .init(white: 1.0, alpha: 0.95)
-      |> UIView.lens.layoutMargins .~ .init(all: Styles.grid(2))
+      |> UIView.lens.layoutMargins %~~ { _, label in
+        label.traitCollection.isRegularRegular
+          ? .init(all: Styles.grid(6))
+          : .init(all: Styles.grid(2))
+    }
 
     self.projectInfoStackView
       |> UIStackView.lens.spacing .~ Styles.grid(2)
 
     self.projectNameLabel
-      |> UILabel.lens.font .~ UIFont.ksr_title1(size: 18)
+      |> UILabel.lens.font %~~ { _, label in
+        label.traitCollection.isRegularRegular
+          ? UIFont.ksr_title2()
+          : UIFont.ksr_title1(size: 18)
+      }
       |> UILabel.lens.textColor .~ UIColor.ksr_text_navy_700
       |> UILabel.lens.numberOfLines .~ 2
       |> UILabel.lens.lineBreakMode .~ .ByTruncatingTail

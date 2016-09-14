@@ -113,11 +113,6 @@ public let discoveryOnboardingStackViewStyle =
     <> UIStackView.lens.distribution .~ .Fill
     <> UIStackView.lens.alignment .~ .Fill
 
-public let discoveryOnboardingCellStyle = baseTableViewCellStyle()
-  <> (UITableViewCell.lens.contentView • UIView.lens.layoutMargins) %~ {
-    .init(topBottom: 48.0, leftRight: $0.left)
-}
-
 public let discoveryProjectCellStyle =
   baseTableViewCellStyle()
     <> UITableViewCell.lens.accessibilityHint %~ { _ in
@@ -171,11 +166,19 @@ public let postcardSocialStackViewStyle =
     <> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
 
 public let postcardStatsSubtitleStyle =
-  UILabel.lens.font .~ .ksr_caption1()
+  UILabel.lens.font %~~ { _, label in
+      label.traitCollection.isRegularRegular
+        ? .ksr_caption1(size: 14)
+        : .ksr_caption1(size: 12)
+    }
     <> UILabel.lens.textColor .~ .ksr_text_navy_500
 
 public let postcardStatsTitleStyle =
-  UILabel.lens.font .~ .ksr_headline(size: 12.0)
+  UILabel.lens.font %~~ { _, label in
+    label.traitCollection.isRegularRegular
+      ? .ksr_headline(size: 14)
+      : .ksr_headline(size: 12)
+  }
 
 private func sortButtonEdgeInsets(isLeftMost isLeftMost: Bool, isRightMost: Bool) -> UIEdgeInsets {
 

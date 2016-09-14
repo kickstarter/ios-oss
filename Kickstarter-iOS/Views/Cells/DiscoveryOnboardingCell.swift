@@ -24,7 +24,13 @@ internal final class DiscoveryOnboardingCell: UITableViewCell, ValueCell {
   }
 
   internal override func bindStyles() {
-    self |> discoveryOnboardingCellStyle
+    self
+      |> baseTableViewCellStyle()
+      |> DiscoveryOnboardingCell.lens.contentView.layoutMargins %~~ { layoutMargins, cell in
+        cell.traitCollection.isRegularRegular
+          ? .init(topBottom: Styles.grid(6), leftRight: Styles.grid(16))
+          : .init(topBottom: Styles.grid(8), leftRight: layoutMargins.left)
+    }
 
     self.loginButton |> discoveryOnboardingSignUpButtonStyle
     self.logoImageView |> discoveryOnboardingLogoStyle

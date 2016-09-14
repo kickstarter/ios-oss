@@ -7,6 +7,7 @@ internal final class SearchProjectCell: UITableViewCell, ValueCell {
   @IBOutlet private weak var columnsStackView: UIStackView!
   @IBOutlet private weak var imageShadowView: UIView!
   @IBOutlet private weak var projectImageView: UIImageView!
+  @IBOutlet private weak var projectImageWidthConstraint: NSLayoutConstraint!
   @IBOutlet private weak var projectLabel: UILabel!
   @IBOutlet private weak var projectNameContainerView: UIView!
   @IBOutlet private weak var separateView: UIView!
@@ -26,13 +27,20 @@ internal final class SearchProjectCell: UITableViewCell, ValueCell {
 
     self
       |> baseTableViewCellStyle()
-      |> SearchProjectCell.lens.contentView.layoutMargins %~ {
-        .init(top: Styles.grid(2), left: $0.left, bottom: Styles.grid(2), right: $0.right)
+      |> SearchProjectCell.lens.backgroundColor .~ .clearColor()
+      |> SearchProjectCell.lens.contentView.layoutMargins %~~ { _, cell in
+        cell.traitCollection.isRegularRegular
+          ? .init(topBottom: Styles.grid(4), leftRight: Styles.grid(24))
+          : .init(topBottom: Styles.grid(2), leftRight: Styles.grid(2))
     }
 
     self.columnsStackView
       |> UIStackView.lens.alignment .~ .Top
-      |> UIStackView.lens.spacing .~ Styles.grid(2)
+      |> UIStackView.lens.spacing %~~ { _, stackView in
+        stackView.traitCollection.isRegularRegular
+          ? Styles.grid(4)
+          : Styles.grid(2)
+      }
       |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
       |> UIStackView.lens.layoutMargins .~ .init(topBottom: 0, leftRight: Styles.grid(2))
 
@@ -43,8 +51,14 @@ internal final class SearchProjectCell: UITableViewCell, ValueCell {
       |> UIImageView.lens.contentMode .~ .ScaleAspectFill
       |> UIImageView.lens.clipsToBounds .~ true
 
+    self.projectImageWidthConstraint.constant = self.traitCollection.isRegularRegular ? 140 : 80
+
     self.projectLabel
-      |> UILabel.lens.font .~ .ksr_headline(size: 14)
+      |> UILabel.lens.font %~~ { _, label in
+        label.traitCollection.isRegularRegular
+          ? .ksr_title3()
+          : .ksr_headline(size: 14)
+      }
       |> UILabel.lens.textColor .~ .ksr_text_navy_600
 
     self.projectNameContainerView
