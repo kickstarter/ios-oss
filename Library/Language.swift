@@ -2,10 +2,12 @@
  Supported languages.
 */
 public enum Language: String {
+  case de
   case en
   case es
   case fr
-  case de
+
+  public static let allLanguages: [Language] = [.de, .en, .es, .fr]
 }
 
 extension Language: Equatable {}

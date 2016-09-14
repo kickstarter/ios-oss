@@ -6,8 +6,6 @@ import UIKit
 import XCPlayground
 @testable import Kickstarter_Framework
 
-AppEnvironment.replaceCurrentEnvironment(mainBundle: NSBundle.framework, language: .en)
-
 let rewards = (1...6).map {
   .template
     |> Reward.lens.backersCount .~ $0 * 5
@@ -68,11 +66,10 @@ let cosmicSurgery = .cosmicSurgery
 let stats = [
   3_000, 4_000, 5_000, 7_000, 8_000,
   13_000, 14_000, 15_000, 17_000, 18_000,
-//  37_000, 37_600, 38_500, 29_009, 30_000,
-//  25_000, 30_000, 50_000, 50_000, 40_000,
-//  40_000, 40_000, 140_000, 40_000, 40_000,
-//  35_000, 30_000, 30_000, 35_000, 40_000,
-//  40_000, 40_000, 40_000, 40_000, 40_000, 40_000
+//  20_000, 21_000, 22_000, 23_000, 24_000,
+//  24_000, 24_000, 24_200, 24_400, 24_800,
+//  25_000, 25_800, 26_800, 28_000, 29_500,
+//  31_500, 33_000, 35_000, 37_000, 40_000
 ]
 
 let fundingStats = stats.enumerate().map { idx, pledged in
@@ -99,7 +96,10 @@ AppEnvironment.replaceCurrentEnvironment(
         |> Project.lens.rewards .~ rewards
     ]
   ),
-  currentUser: cosmicSurgery.creator
+  currentUser: cosmicSurgery.creator,
+  language: .de,
+  locale: NSLocale(localeIdentifier: "de"),
+  mainBundle: NSBundle.framework
 )
 
 initialize()

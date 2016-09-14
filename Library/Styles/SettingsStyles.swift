@@ -8,6 +8,7 @@ public let settingsSectionButtonStyle =
 public let settingsSectionLabelStyle =
   UILabel.lens.textColor .~ .ksr_text_navy_700
     <> UILabel.lens.font .~ .ksr_body()
+    <> UILabel.lens.numberOfLines .~ 2
 
 public let settingsTitleLabelStyle =
   UILabel.lens.textColor .~ .ksr_text_navy_600

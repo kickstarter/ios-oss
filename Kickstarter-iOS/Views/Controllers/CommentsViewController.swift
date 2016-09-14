@@ -55,7 +55,7 @@ internal final class CommentsViewController: UITableViewController {
   // swiftlint:disable function_body_length
   internal override func bindViewModel() {
     self.viewModel.outputs.backerEmptyStateVisible
-      .observeForControllerAction()
+      .observeForUI()
       .observeNext { [weak self] visible in
         self?.dataSource.backerEmptyState(visible: visible)
         self?.tableView.reloadData()
@@ -68,33 +68,33 @@ internal final class CommentsViewController: UITableViewController {
     }
 
     self.viewModel.outputs.commentButtonVisible
-      .observeForControllerAction()
+      .observeForUI()
       .observeNext { [weak self] visible in
         self?.navigationItem.rightBarButtonItem = visible ? self?.commentBarButton : nil
     }
 
     self.viewModel.outputs.commentsAreLoading
-      .observeForControllerAction()
+      .observeForUI()
       .observeNext { [weak self] in
         $0 ? self?.refreshControl?.beginRefreshing() : self?.refreshControl?.endRefreshing()
     }
 
     self.viewModel.outputs.dataSource
-      .observeForControllerAction()
+      .observeForUI()
       .observeNext { [weak self] comments, project, user in
         self?.dataSource.load(comments: comments, project: project, loggedInUser: user)
         self?.tableView.reloadData()
     }
 
     self.viewModel.outputs.loggedOutEmptyStateVisible
-      .observeForControllerAction()
+      .observeForUI()
       .observeNext { [weak self] visible in
         self?.dataSource.loggedOutEmptyState(visible: visible)
         self?.tableView.reloadData()
     }
 
     self.viewModel.outputs.nonBackerEmptyStateVisible
-      .observeForControllerAction()
+      .observeForUI()
       .observeNext { [weak self] visible in
         self?.dataSource.nonBackerEmptyState(visible: visible)
         self?.tableView.reloadData()

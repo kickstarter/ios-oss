@@ -1,11 +1,12 @@
-import XCTest
 import AVFoundation
+import FBSnapshotTestCase
 import ReactiveCocoa
 import Result
+import XCTest
 @testable import KsApi
 @testable import Library
 
-internal class TestCase: XCTestCase {
+internal class TestCase: FBSnapshotTestCase {
   internal static let interval = 0.001
 
   internal let apiService = MockService()

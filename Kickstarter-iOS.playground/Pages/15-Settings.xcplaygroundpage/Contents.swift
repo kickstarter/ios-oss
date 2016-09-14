@@ -30,6 +30,6 @@ let controller = Storyboard.Settings.instantiate(SettingsViewController.self)
 let (parent, _) = playgroundControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
 
 // Render the screen.
-let frame = parent.view.frame |> CGRect.lens.size.height .~ 1_400
+let frame = parent.view.frame |> CGRect.lens.size.height .~ 1_800
 XCPlaygroundPage.currentPage.liveView = parent
 parent.view.frame = frame

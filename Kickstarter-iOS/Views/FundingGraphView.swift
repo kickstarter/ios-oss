@@ -8,8 +8,17 @@ private typealias Line = (start: CGPoint, end: CGPoint)
 public final class FundingGraphView: UIView {
   private let goalLabel = UILabel()
 
+  override public init(frame: CGRect) {
+    super.init(frame: frame)
+    self.setUp()
+  }
+
   public required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
+    self.setUp()
+  }
+
+  private func setUp() {
     self.backgroundColor = .clearColor()
     self.addSubview(self.goalLabel)
     self.goalLabel

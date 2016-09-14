@@ -30,6 +30,7 @@ We make heavy use of the following projects, and so it can be helpful to be fami
 
 ### 3rd party
 
-* [Argo](https://github.com/thoughtbot/Argo)
-* [ReactiveCocoa](https://github.com/ReactiveCocoa/ReactiveCocoa)
 * [AlamofireImage](https://github.com/Alamofire/AlamofireImage)
+* [Argo](https://github.com/thoughtbot/Argo)
+* [FBSnapshotTestCase](https://github.com/facebook/ios-snapshot-test-case)
+* [ReactiveCocoa](https://github.com/ReactiveCocoa/ReactiveCocoa)

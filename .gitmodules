@@ -7,3 +7,6 @@
 [submodule "Frameworks/onepassword-app-extension"]
 	path = Frameworks/onepassword-app-extension
 	url = https://github.com/AgileBits/onepassword-app-extension.git
+[submodule "Frameworks/ios-snapshot-test-case"]
+	path = Frameworks/ios-snapshot-test-case
+	url = https://github.com/facebook/ios-snapshot-test-case.git
