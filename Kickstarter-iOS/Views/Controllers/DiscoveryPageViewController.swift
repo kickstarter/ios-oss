@@ -88,6 +88,12 @@ internal final class DiscoveryPageViewController: UITableViewController {
         self?.dataSource.show(onboarding: $0)
         self?.tableView.reloadData()
     }
+
+    self.viewModel.outputs.setScrollsToTop
+      .observeForUI()
+      .observeNext { [weak self] in
+        self?.tableView ?|> UIScrollView.lens.scrollsToTop .~ $0
+    }
   }
 
   internal override func tableView(tableView: UITableView,

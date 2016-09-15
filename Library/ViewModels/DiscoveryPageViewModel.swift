@@ -58,6 +58,9 @@ public protocol DiscoveryPageViewModelOutputs {
   /// Emits a boolean that determines if projects are currently loading or not.
   var projectsAreLoading: Signal<Bool, NoError> { get }
 
+  /// Emits a bool to allow status bar tap to scroll the table view to the top.
+  var setScrollsToTop: Signal<Bool, NoError> { get }
+
   /// Emits a boolean that determines of the onboarding should be shown.
   var showOnboarding: Signal<Bool, NoError> { get }
 }
@@ -196,6 +199,11 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       focusFirstProjectWhenProjectsLoad,
       focusFirstProjectWhenViewAppears
     )
+
+    self.setScrollsToTop = Signal.merge(
+      self.viewDidAppearProperty.signal.mapConst(true),
+      self.viewDidDisappearProperty.signal.mapConst(false)
+    )
   }
   // swiftlint:enable function_body_length
 
@@ -239,6 +247,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
   public let goToProjectUpdate: Signal<(Project, Update), NoError>
   public let projects: Signal<[Project], NoError>
   public let projectsAreLoading: Signal<Bool, NoError>
+  public let setScrollsToTop: Signal<Bool, NoError>
   public let showOnboarding: Signal<Bool, NoError>
 
   public var inputs: DiscoveryPageViewModelInputs { return self }

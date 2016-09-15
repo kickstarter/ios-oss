@@ -72,6 +72,9 @@ internal final class SortPagerViewController: UIViewController {
   override func bindStyles() {
     super.bindStyles()
 
+    self.scrollView
+      |> UIScrollView.lens.scrollsToTop .~ false
+
     self.view
       |> UIView.lens.backgroundColor .~ .whiteColor()
 

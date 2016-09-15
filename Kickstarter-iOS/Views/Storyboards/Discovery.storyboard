@@ -58,35 +58,6 @@
                     </view>
                     <navigationItem key="navigationItem" id="leH-O1-cVh">
                         <nil key="title"/>
-                        <view key="titleView" contentMode="scaleToFill" id="zSQ-bZ-ILq">
-                            <rect key="frame" x="64" y="6" width="272" height="33"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <subviews>
-                                <stackView opaque="NO" contentMode="scaleToFill" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="ifx-nV-rS3">
-                                    <rect key="frame" x="99" y="0.0" width="75" height="33"/>
-                                    <subviews>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3Ma-6l-ZAC">
-                                            <rect key="frame" x="0.0" y="0.0" width="60" height="33"/>
-                                            <state key="normal" title="Discover"/>
-                                        </button>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="v" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rl7-PT-kWp">
-                                            <rect key="frame" x="66" y="0.0" width="9" height="33"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
-                                </stackView>
-                            </subviews>
-                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                            <constraints>
-                                <constraint firstAttribute="bottom" secondItem="ifx-nV-rS3" secondAttribute="bottom" id="01f-5O-pxe"/>
-                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="ifx-nV-rS3" secondAttribute="trailing" id="IvZ-yH-3F3"/>
-                                <constraint firstItem="ifx-nV-rS3" firstAttribute="centerX" secondItem="zSQ-bZ-ILq" secondAttribute="centerX" id="Mty-0A-PW6"/>
-                                <constraint firstItem="ifx-nV-rS3" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="zSQ-bZ-ILq" secondAttribute="leading" id="YOW-Nl-Rh1"/>
-                                <constraint firstItem="ifx-nV-rS3" firstAttribute="top" secondItem="zSQ-bZ-ILq" secondAttribute="top" id="gZf-7y-MTJ"/>
-                            </constraints>
-                        </view>
                     </navigationItem>
                     <nil key="simulatedTopBarMetrics"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>

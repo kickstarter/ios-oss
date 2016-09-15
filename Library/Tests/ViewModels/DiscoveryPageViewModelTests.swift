@@ -20,6 +20,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
   private let hasRemovedProjects = TestObserver<Bool, NoError>()
   private let projectsAreLoading = TestObserver<Bool, NoError>()
   private let showOnboarding = TestObserver<Bool, NoError>()
+  private let setScrollsToTop = TestObserver<Bool, NoError>()
 
   internal override func setUp() {
     super.setUp()
@@ -31,6 +32,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     self.vm.outputs.goToProject.map { $0.1 }.observe(self.goToRefTag.observer)
     self.vm.outputs.goToProjectUpdate.map { $0.1 }.observe(self.goToProjectUpdate.observer)
     self.vm.outputs.showOnboarding.observe(self.showOnboarding.observer)
+    self.vm.outputs.setScrollsToTop.observe(self.setScrollsToTop.observer)
 
     self.vm.outputs.projects
       .map { $0.count }
@@ -444,5 +446,19 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     self.scheduler.advance()
 
     self.focusScreenReaderOnFirstProject.assertValueCount(2)
+  }
+
+  func testScrollsToTop() {
+    self.vm.inputs.configureWith(sort: .magic)
+
+    self.setScrollsToTop.assertValueCount(0)
+
+    self.vm.inputs.viewDidAppear()
+
+    self.setScrollsToTop.assertValues([true])
+
+    self.vm.inputs.viewDidDisappear(animated: true)
+
+    self.setScrollsToTop.assertValues([true, false])
   }
 }

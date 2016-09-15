@@ -204,7 +204,7 @@ private func expandableRows(selectedRow selectedRow: SelectableRow,
               isSelected: childCategory == selectedRow.params.category,
               params: .defaults |> DiscoveryParams.lens.category .~ childCategory
             )
-        }
+          }
       )
     }
     .sort { lhs, rhs in lhs.params.category < rhs.params.category }
@@ -213,6 +213,13 @@ private func expandableRows(selectedRow selectedRow: SelectableRow,
     return expandableRow
       |> ExpandableRow.lens.isExpanded .~
       expandableRow.selectableRows.lazy.map { $0.params }.contains(selectedRow.params)
+      |> ExpandableRow.lens.selectableRows .~
+      expandableRow.selectableRows.sort {
+        if $0.params.category?.isRoot == $1.params.category?.isRoot {
+          return $0.params.category?.name < $1.params.category?.name
+        }
+        return ($0.params.category?.isRoot ?? false) && !($1.params.category?.isRoot ?? false)
+    }
   }
 }
 
