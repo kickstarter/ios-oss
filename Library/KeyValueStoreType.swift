@@ -1,11 +1,13 @@
 import Foundation
 
-internal enum AppKeys: String {
-  case ClosedFacebookConnectInActivity = "com.kickstarter.KeyValueStoreType.closedFacebookConnectInActivity"
-  case ClosedFindFriendsInActivity = "com.kickstarter.KeyValueStoreType.closedFindFriendsInActivity"
-  case LastSeenActivitySampleId = "com.kickstarter.KeyValueStoreType.lastSeenActivitySampleId"
-  case SeenAppRating = "com.kickstarter.KeyValueStoreType.hasSeenAppRating"
-  case SeenGamesNewsletter = "com.kickstarter.KeyValueStoreType.hasSeenGamesNewsletter"
+public enum AppKeys: String {
+  case closedFacebookConnectInActivity = "com.kickstarter.KeyValueStoreType.closedFacebookConnectInActivity"
+  case closedFindFriendsInActivity = "com.kickstarter.KeyValueStoreType.closedFindFriendsInActivity"
+  case favoriteCategoryIds = "favorite_category_ids"
+  case hasSeenFavoriteCategoryAlert = "com.kickstarter.KeyValueStoreType.hasSeenFavoriteCategoryAlert"
+  case lastSeenActivitySampleId = "com.kickstarter.KeyValueStoreType.lastSeenActivitySampleId"
+  case seenAppRating = "com.kickstarter.KeyValueStoreType.hasSeenAppRating"
+  case seenGamesNewsletter = "com.kickstarter.KeyValueStoreType.hasSeenGamesNewsletter"
 }
 
 public protocol KeyValueStoreType: class {
@@ -18,59 +20,80 @@ public protocol KeyValueStoreType: class {
   func integerForKey(key: String) -> Int
   func objectForKey(key: String) -> AnyObject?
   func stringForKey(key: String) -> String?
+  func synchronize() -> Bool
 
   func removeObjectForKey(key: String)
 
+  var favoriteCategoryIds: [Int] { get set }
   var hasClosedFacebookConnectInActivity: Bool { get set }
   var hasClosedFindFriendsInActivity: Bool { get set }
   var hasSeenAppRating: Bool { get set }
+  var hasSeenFavoriteCategoryAlert: Bool { get set }
   var hasSeenGamesNewsletterPrompt: Bool { get set }
   var lastSeenActivitySampleId: Int { get set }
 }
 
 extension KeyValueStoreType {
-  public var hasClosedFacebookConnectInActivity: Bool {
+  public var favoriteCategoryIds: [Int] {
     get {
-      return self.objectForKey(AppKeys.ClosedFacebookConnectInActivity.rawValue) as? Bool ?? false
+      return self.objectForKey(AppKeys.favoriteCategoryIds.rawValue) as? [Int] ?? []
     }
     set {
-      self.setObject(newValue, forKey: AppKeys.ClosedFacebookConnectInActivity.rawValue)
+      self.setObject(newValue, forKey: AppKeys.favoriteCategoryIds.rawValue)
+    }
+  }
+
+  public var hasClosedFacebookConnectInActivity: Bool {
+    get {
+      return self.objectForKey(AppKeys.closedFacebookConnectInActivity.rawValue) as? Bool ?? false
+    }
+    set {
+      self.setObject(newValue, forKey: AppKeys.closedFacebookConnectInActivity.rawValue)
     }
   }
 
   public var hasClosedFindFriendsInActivity: Bool {
     get {
-      return self.objectForKey(AppKeys.ClosedFindFriendsInActivity.rawValue) as? Bool ?? false
+      return self.objectForKey(AppKeys.closedFindFriendsInActivity.rawValue) as? Bool ?? false
     }
     set {
-      self.setObject(newValue, forKey: AppKeys.ClosedFindFriendsInActivity.rawValue)
+      self.setObject(newValue, forKey: AppKeys.closedFindFriendsInActivity.rawValue)
     }
   }
 
   public var hasSeenAppRating: Bool {
     get {
-      return self.boolForKey(AppKeys.SeenAppRating.rawValue)
+      return self.boolForKey(AppKeys.seenAppRating.rawValue)
     }
     set {
-      self.setBool(newValue, forKey: AppKeys.SeenAppRating.rawValue)
+      self.setBool(newValue, forKey: AppKeys.seenAppRating.rawValue)
+    }
+  }
+
+  public var hasSeenFavoriteCategoryAlert: Bool {
+    get {
+      return self.boolForKey(AppKeys.hasSeenFavoriteCategoryAlert.rawValue)
+    }
+    set {
+      self.setBool(newValue, forKey: AppKeys.hasSeenFavoriteCategoryAlert.rawValue)
     }
   }
 
   public var hasSeenGamesNewsletterPrompt: Bool {
     get {
-      return self.boolForKey(AppKeys.SeenGamesNewsletter.rawValue)
+      return self.boolForKey(AppKeys.seenGamesNewsletter.rawValue)
     }
     set {
-      self.setBool(newValue, forKey: AppKeys.SeenGamesNewsletter.rawValue)
+      self.setBool(newValue, forKey: AppKeys.seenGamesNewsletter.rawValue)
     }
   }
 
   public var lastSeenActivitySampleId: Int {
     get {
-      return self.integerForKey(AppKeys.LastSeenActivitySampleId.rawValue)
+      return self.integerForKey(AppKeys.lastSeenActivitySampleId.rawValue)
     }
     set {
-      self.setInteger(newValue, forKey: AppKeys.LastSeenActivitySampleId.rawValue)
+      self.setInteger(newValue, forKey: AppKeys.lastSeenActivitySampleId.rawValue)
     }
   }
 }
@@ -125,5 +148,9 @@ internal class MockKeyValueStore: KeyValueStoreType {
 
   func removeObjectForKey(key: String) {
     self.setObject(nil, forKey: key)
+  }
+
+  func synchronize() -> Bool {
+    return true
   }
 }

@@ -31,13 +31,19 @@ internal final class DiscoveryFiltersViewController: UIViewController, UITableVi
 
     self.filtersTableView.dataSource = self.dataSource
     self.filtersTableView.delegate = self
-    self.filtersTableView |> UITableView.lens.alpha .~ 0
 
     self.backgroundGradientView.startPoint = CGPoint(x: 0.0, y: 1.0)
     self.backgroundGradientView.endPoint = CGPoint(x: 1.0, y: 0.0)
-    self.backgroundGradientView |> UIView.lens.alpha .~ 0
+
+    self.closeButton.addTarget(self, action: #selector(closeButtonTapped), forControlEvents: .TouchUpInside)
 
     self.viewModel.inputs.viewDidLoad()
+  }
+
+  override func viewWillAppear(animated: Bool) {
+    super.viewWillAppear(animated)
+
+    self.viewModel.inputs.viewWillAppear()
   }
 
   internal override func bindViewModel() {
@@ -53,6 +59,13 @@ internal final class DiscoveryFiltersViewController: UIViewController, UITableVi
       .observeForControllerAction()
       .observeNext { [weak self] rows, id in
         self?.dataSource.load(topRows: rows, categoryId: id)
+        self?.filtersTableView.reloadData()
+    }
+
+    self.viewModel.outputs.loadFavoriteRows
+      .observeForControllerAction()
+      .observeNext { [weak self] rows, id in
+        self?.dataSource.load(favoriteRows: rows, categoryId: id)
         self?.filtersTableView.reloadData()
     }
 
@@ -82,9 +95,6 @@ internal final class DiscoveryFiltersViewController: UIViewController, UITableVi
       |> UITableView.lens.rowHeight .~ UITableViewAutomaticDimension
       |> UITableView.lens.estimatedRowHeight .~ 44.0
       |> UITableView.lens.backgroundColor .~ .clearColor()
-
-    self.closeButton
-      |> UIButton.lens.targets .~ [(self, #selector(closeButtonTapped), .TouchUpInside)]
   }
 
   internal func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -107,8 +117,10 @@ internal final class DiscoveryFiltersViewController: UIViewController, UITableVi
   private func animateIn(categoryId categoryId: Int?) {
     let (startColor, endColor) = discoveryGradientColors(forCategoryId: categoryId)
     self.backgroundGradientView.setGradient([(startColor, 0.0), (endColor, 1.0)])
+    self.backgroundGradientView.alpha = 0
 
     self.filtersTableView.frame.origin.y -= 20
+    self.filtersTableView.alpha = 0
 
     UIView.animateWithDuration(0.2,
                                delay: 0.0,

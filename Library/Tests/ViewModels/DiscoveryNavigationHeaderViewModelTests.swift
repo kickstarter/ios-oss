@@ -20,6 +20,12 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
   private let titleAccessibilityLabel = TestObserver<String, NoError>()
   private let showDiscoveryFiltersRow = TestObserver<SelectableRow, NoError>()
   private let showDiscoveryFiltersCats = TestObserver<[KsApi.Category], NoError>()
+  private let favoriteButtonAccessibilityLabel = TestObserver<String, NoError>()
+  private let favoriteViewIsDimmed = TestObserver<Bool, NoError>()
+  private let favoriteViewIsHidden = TestObserver<Bool, NoError>()
+  private let showFavoriteOnboardingAlert = TestObserver<String, NoError>()
+  private let updateFavoriteButtonSelected = TestObserver<Bool, NoError>()
+  private let updateFavoriteButtonAnimated = TestObserver<Bool, NoError>()
 
   let initialParams = .defaults
     |> DiscoveryParams.lens.staffPicks .~ true
@@ -45,6 +51,12 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
     self.vm.outputs.titleButtonAccessibilityLabel.observe(self.titleAccessibilityLabel.observer)
     self.vm.outputs.showDiscoveryFilters.map(first).observe(self.showDiscoveryFiltersRow.observer)
     self.vm.outputs.showDiscoveryFilters.map(second).observe(self.showDiscoveryFiltersCats.observer)
+    self.vm.outputs.favoriteButtonAccessibilityLabel.observe(self.favoriteButtonAccessibilityLabel.observer)
+    self.vm.outputs.favoriteViewIsDimmed.observe(self.favoriteViewIsDimmed.observer)
+    self.vm.outputs.favoriteViewIsHidden.observe(self.favoriteViewIsHidden.observer)
+    self.vm.outputs.showFavoriteOnboardingAlert.observe(self.showFavoriteOnboardingAlert.observer)
+    self.vm.outputs.updateFavoriteButton.map(first).observe(self.updateFavoriteButtonSelected.observer)
+    self.vm.outputs.updateFavoriteButton.map(second).observe(self.updateFavoriteButtonAnimated.observer)
   }
 
   func testShowFilters() {
@@ -214,7 +226,7 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
       ])
   }
 
-  func testNotifyFilterSelectdParams() {
+  func testNotifyFilterSelectedParams() {
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.configureWith(params: initialParams)
 
@@ -227,5 +239,108 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
     self.vm.inputs.filtersSelected(row: selectableRow |> SelectableRow.lens.params .~ categoryParams)
 
     self.notifyDelegateFilterSelectedParams.assertValues([DiscoveryParams.defaults, categoryParams])
+  }
+
+  func testFavoriting() {
+    let artSelectableRow = selectableRow |> SelectableRow.lens.params .~ categoryParams
+
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.configureWith(params: initialParams)
+
+    self.favoriteViewIsHidden.assertValues([true])
+
+    self.vm.inputs.titleButtonTapped()
+
+    self.favoriteViewIsHidden.assertValues([true])
+    self.favoriteViewIsDimmed.assertValueCount(0)
+    self.updateFavoriteButtonAnimated.assertValueCount(0)
+    self.updateFavoriteButtonSelected.assertValueCount(0)
+    self.favoriteButtonAccessibilityLabel.assertValueCount(0)
+
+    self.vm.inputs.filtersSelected(row: artSelectableRow)
+
+    self.favoriteViewIsHidden.assertValues([true, false])
+    self.favoriteViewIsDimmed.assertValues([false])
+    self.updateFavoriteButtonAnimated.assertValues([false])
+    self.updateFavoriteButtonSelected.assertValues([false])
+    self.showFavoriteOnboardingAlert.assertValueCount(0)
+    self.favoriteButtonAccessibilityLabel.assertValues([
+      Strings.discovery_favorite_categories_buttons_favorite_a11y_label()
+    ])
+
+    self.vm.inputs.favoriteButtonTapped()
+
+    self.favoriteViewIsHidden.assertValues([true, false])
+    self.favoriteViewIsDimmed.assertValues([false])
+    self.updateFavoriteButtonAnimated.assertValues([false, true])
+    self.updateFavoriteButtonSelected.assertValues([false, true])
+    self.showFavoriteOnboardingAlert.assertValues(["All Art Projects"])
+    self.favoriteButtonAccessibilityLabel.assertValues([
+      Strings.discovery_favorite_categories_buttons_favorite_a11y_label(),
+      Strings.discovery_favorite_categories_buttons_unfavorite_a11y_label()
+      ])
+
+    self.vm.inputs.titleButtonTapped()
+
+    self.favoriteViewIsHidden.assertValues([true, false])
+    self.favoriteViewIsDimmed.assertValues([false, true])
+    self.updateFavoriteButtonAnimated.assertValues([false, true])
+    self.updateFavoriteButtonSelected.assertValues([false, true])
+    self.showFavoriteOnboardingAlert.assertValues(["All Art Projects"])
+    self.favoriteButtonAccessibilityLabel.assertValues([
+      Strings.discovery_favorite_categories_buttons_favorite_a11y_label(),
+      Strings.discovery_favorite_categories_buttons_unfavorite_a11y_label()
+      ])
+
+    self.vm.inputs.titleButtonTapped()
+
+    self.favoriteViewIsHidden.assertValues([true, false])
+    self.favoriteViewIsDimmed.assertValues([false, true, false])
+    self.updateFavoriteButtonAnimated.assertValues([false, true])
+    self.updateFavoriteButtonSelected.assertValues([false, true])
+    self.showFavoriteOnboardingAlert.assertValues(["All Art Projects"])
+    self.favoriteButtonAccessibilityLabel.assertValues([
+      Strings.discovery_favorite_categories_buttons_favorite_a11y_label(),
+      Strings.discovery_favorite_categories_buttons_unfavorite_a11y_label()
+      ])
+
+    self.vm.inputs.favoriteButtonTapped()
+
+    self.favoriteViewIsHidden.assertValues([true, false])
+    self.favoriteViewIsDimmed.assertValues([false, true, false])
+    self.updateFavoriteButtonAnimated.assertValues([false, true, true])
+    self.updateFavoriteButtonSelected.assertValues([false, true, false])
+    self.showFavoriteOnboardingAlert.assertValues(["All Art Projects"], "Alert does not emit again.")
+    self.favoriteButtonAccessibilityLabel.assertValues([
+      Strings.discovery_favorite_categories_buttons_favorite_a11y_label(),
+      Strings.discovery_favorite_categories_buttons_unfavorite_a11y_label(),
+      Strings.discovery_favorite_categories_buttons_favorite_a11y_label()
+    ])
+
+    self.vm.inputs.titleButtonTapped()
+
+    self.favoriteViewIsHidden.assertValues([true, false])
+    self.favoriteViewIsDimmed.assertValues([false, true, false, true])
+    self.updateFavoriteButtonAnimated.assertValues([false, true, true])
+    self.updateFavoriteButtonSelected.assertValues([false, true, false])
+    self.showFavoriteOnboardingAlert.assertValues(["All Art Projects"], "Alert does not emit again.")
+    self.favoriteButtonAccessibilityLabel.assertValues([
+      Strings.discovery_favorite_categories_buttons_favorite_a11y_label(),
+      Strings.discovery_favorite_categories_buttons_unfavorite_a11y_label(),
+      Strings.discovery_favorite_categories_buttons_favorite_a11y_label()
+      ])
+
+    self.vm.inputs.filtersSelected(row: selectableRow)
+
+    self.favoriteViewIsHidden.assertValues([true, false, true])
+    self.favoriteViewIsDimmed.assertValues([false, true, false, true])
+    self.updateFavoriteButtonAnimated.assertValues([false, true, true])
+    self.updateFavoriteButtonSelected.assertValues([false, true, false])
+    self.showFavoriteOnboardingAlert.assertValues(["All Art Projects"], "Alert does not emit again.")
+    self.favoriteButtonAccessibilityLabel.assertValues([
+      Strings.discovery_favorite_categories_buttons_favorite_a11y_label(),
+      Strings.discovery_favorite_categories_buttons_unfavorite_a11y_label(),
+      Strings.discovery_favorite_categories_buttons_favorite_a11y_label()
+      ])
   }
 }

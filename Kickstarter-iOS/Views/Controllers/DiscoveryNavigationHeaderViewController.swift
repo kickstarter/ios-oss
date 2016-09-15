@@ -16,7 +16,11 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
   @IBOutlet private weak var borderLineView: UIView!
   @IBOutlet private weak var borderLineHeightConstraint: NSLayoutConstraint!
   @IBOutlet private weak var dividerLabel: UILabel!
+  @IBOutlet private weak var favoriteContainerView: UIView!
+  @IBOutlet private weak var favoriteButton: UIButton!
   @IBOutlet private weak var gradientBackgroundView: GradientView!
+  @IBOutlet private weak var heartImageView: UIImageView!
+  @IBOutlet private weak var heartOutlineImageView: UIImageView!
   @IBOutlet private weak var primaryLabel: UILabel!
   @IBOutlet private weak var secondaryLabel: UILabel!
   @IBOutlet private weak var titleButton: UIButton!
@@ -38,6 +42,11 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
     self.gradientBackgroundView.startPoint = CGPoint(x: 0.0, y: 1.0)
     self.gradientBackgroundView.endPoint = CGPoint(x: 1.0, y: 0.0)
 
+    self.favoriteButton.addTarget(self, action: #selector(favoriteButtonTapped),
+                                  forControlEvents: .TouchUpInside)
+
+    self.titleButton.addTarget(self, action: #selector(titleButtonTapped), forControlEvents: .TouchUpInside)
+
     self.viewModel.inputs.viewDidLoad()
   }
 
@@ -47,6 +56,10 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
 
     self.arrowImageView.rac.tintColor = self.viewModel.outputs.subviewColor
     self.borderLineView.rac.backgroundColor = self.viewModel.outputs.subviewColor
+    self.favoriteContainerView.rac.hidden = self.viewModel.outputs.favoriteViewIsHidden
+    self.favoriteButton.rac.accessibilityLabel = self.viewModel.outputs.favoriteButtonAccessibilityLabel
+    self.heartImageView.rac.tintColor = self.viewModel.outputs.subviewColor
+    self.heartOutlineImageView.rac.tintColor = self.viewModel.outputs.subviewColor
     self.primaryLabel.rac.text = self.viewModel.outputs.primaryLabelText
     self.primaryLabel.rac.textColor = self.viewModel.outputs.subviewColor
     self.primaryLabel.rac.font = self.viewModel.outputs.primaryLabelFont
@@ -64,6 +77,12 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
       .observeForControllerAction()
       .observeNext { [weak self] in
         self?.animateArrow(toDown: $0)
+    }
+
+    self.viewModel.outputs.updateFavoriteButton
+      .observeForControllerAction()
+      .observeNext { [weak self] in
+        self?.updateFavoriteButton(selected: $0, animated: $1)
     }
 
     self.viewModel.outputs.gradientViewCategoryIdForColor
@@ -89,6 +108,21 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
       .observeNext { [weak self] in
         self?.dismissViewControllerAnimated(false, completion: nil)
     }
+
+    self.viewModel.outputs.showFavoriteOnboardingAlert
+      .observeForControllerAction()
+      .observeNext { [weak self] in
+        self?.showFavoriteCategoriesAlert(categoryName: $0)
+    }
+
+    self.viewModel.outputs.favoriteViewIsDimmed
+      .observeForControllerAction()
+      .observeNext { [weak self] isDimmed in
+        UIView.animateWithDuration(0.2, delay: 0.0, options: .CurveEaseOut, animations: {
+          self?.favoriteContainerView.alpha = isDimmed ? 0.4 : 1.0
+        },
+        completion: nil)
+    }
   }
   // swiftlint:enable function_body_length
 
@@ -104,8 +138,8 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
       |> discoveryNavDividerLabelStyle
       |> UILabel.lens.isAccessibilityElement .~ false
 
-    self.titleStackView
-      |> discoveryNavTitleStackViewStyle
+    self.favoriteContainerView
+      |> UIView.lens.layoutMargins .~ .init(left: Styles.grid(2))
 
     self.primaryLabel
       |> UILabel.lens.isAccessibilityElement .~ false
@@ -113,8 +147,8 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
     self.secondaryLabel
       |> UILabel.lens.isAccessibilityElement .~ false
 
-    self.titleButton
-      |> UIButton.lens.targets .~ [(self, action: #selector(titleButtonTapped), .TouchUpInside)]
+    self.titleStackView
+      |> discoveryNavTitleStackViewStyle
   }
 
   private func showDiscoveryFilters(selectedRow selectedRow: SelectableRow, categories: [KsApi.Category]) {
@@ -124,17 +158,92 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
     self.presentViewController(vc, animated: false, completion: nil)
   }
 
+  private func showFavoriteCategoriesAlert(categoryName categoryName: String) {
+    let alertController = UIAlertController(
+      title: categoryName,
+      message: Strings.discovery_favorite_categories_alert_message(),
+      preferredStyle: .Alert
+    )
+    alertController.addAction(
+      UIAlertAction(
+        title: Strings.discovery_favorite_categories_alert_buttons_got_it(),
+        style: .Cancel,
+        handler: nil
+      )
+    )
+
+    self.presentViewController(alertController, animated: true, completion: nil)
+  }
+
   private func animateArrow(toDown toDown: Bool) {
     let scale: CGFloat = toDown ? 1.0 : -1.0
 
-    UIView.animateWithDuration(0.2,
-                               delay: 0.0,
-                               options: .CurveEaseOut,
-                               animations: {
-                                self.arrowImageView.transform = CGAffineTransformMakeScale(1.0, scale)
-                                },
-                               completion: nil)
+    UIView.animateWithDuration(0.2, delay: 0.0, options: .CurveEaseOut, animations: {
+      self.arrowImageView.transform = CGAffineTransformMakeScale(1.0, scale)
+     },
+     completion: nil)
   }
+
+  // swiftlint:disable function_body_length
+  private func updateFavoriteButton(selected selected: Bool, animated: Bool) {
+    let duration = animated ? 0.4 : 0.0
+
+    if selected {
+      self.heartImageView.transform = CGAffineTransformMakeScale(0.0, 0.0)
+
+      UIView.animateWithDuration(duration,
+                                 delay: 0.0,
+                                 usingSpringWithDamping: 0.6,
+                                 initialSpringVelocity: 0.8,
+                                 options: .CurveEaseOut,
+                                 animations: {
+                                  self.heartImageView.alpha = 1.0
+                                  self.heartImageView.transform = CGAffineTransformMakeScale(1.0, 1.0)
+                                  self.heartOutlineImageView.transform =
+                                    CGAffineTransformMakeScale(1.4, 1.4)
+                                  },
+                                 completion: nil)
+
+      UIView.animateWithDuration(duration,
+                                 delay: animated ? 0.1 : 0.0,
+                                 usingSpringWithDamping: 0.6,
+                                 initialSpringVelocity: 0.8,
+                                 options: .CurveEaseOut,
+                                 animations: {
+                                  self.heartOutlineImageView.transform =
+                                    CGAffineTransformMakeScale(1.0, 1.0)
+                                  self.heartOutlineImageView.alpha = 0.0
+                                  },
+                                 completion: nil)
+    } else {
+      UIView.animateWithDuration(duration,
+                                 delay: 0.0,
+                                 usingSpringWithDamping: 0.6,
+                                 initialSpringVelocity: 0.8,
+                                 options: .CurveEaseOut,
+                                 animations: {
+                                  self.heartImageView.transform = CGAffineTransformMakeScale(0.0, 0.0)
+                                  self.heartOutlineImageView.transform =
+                                    CGAffineTransformMakeScale(1.4, 1.4)
+                                  self.heartOutlineImageView.alpha = 1.0
+                                  },
+                                 completion: nil)
+
+      UIView.animateWithDuration(duration,
+                                 delay: animated ? 0.1 : 0.0,
+                                 usingSpringWithDamping: 0.6,
+                                 initialSpringVelocity: 0.8,
+                                 options: .CurveEaseOut,
+                                 animations: {
+                                  self.heartOutlineImageView.transform =
+                                    CGAffineTransformMakeScale(1.0, 1.0)
+                                  },
+                                 completion: { _ in
+                                  self.heartImageView.alpha = 0.0
+      })
+    }
+  }
+  // swiftlint:ensable function_body_length
 
   private func setBackgroundGradient(categoryId categoryId: Int?, isFullScreen: Bool) {
 
@@ -181,6 +290,10 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
 
   @objc private func titleButtonTapped() {
     self.viewModel.inputs.titleButtonTapped()
+  }
+
+  @objc private func favoriteButtonTapped() {
+    self.viewModel.inputs.favoriteButtonTapped()
   }
 }
 

@@ -3577,6 +3577,9 @@
 							com.apple.SafariKeychain = {
 								enabled = 1;
 							};
+							com.apple.iCloud = {
+								enabled = 1;
+							};
 						};
 					};
 					A7D1F9591C850B7C000D41D5 = {

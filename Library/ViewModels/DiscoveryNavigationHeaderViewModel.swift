@@ -8,6 +8,9 @@ public protocol DiscoveryNavigationHeaderViewModelInputs {
   /// Call to configure with Discovery params.
   func configureWith(params params: DiscoveryParams)
 
+  /// Call when favorite category button is tapped.
+  func favoriteButtonTapped()
+
   /// Call when params have been selected from the filters menu.
   func filtersSelected(row row: SelectableRow)
 
@@ -27,6 +30,15 @@ public protocol DiscoveryNavigationHeaderViewModelOutputs {
 
   /// Emits when the filters view controller should be dismissed.
   var dismissDiscoveryFilters: Signal<(), NoError> { get }
+
+  /// Emits a11y label for favorite button.
+  var favoriteButtonAccessibilityLabel: Signal<String, NoError> { get }
+
+  /// Emits when favorite button should be enabled, e.g. when filters is closed.
+  var favoriteViewIsDimmed: Signal<Bool, NoError> { get }
+
+  /// Emits whether the favorite container view is hidden.
+  var favoriteViewIsHidden: Signal<Bool, NoError> { get }
 
   /// Emits a category id to set gradient view color and whether the view is fullscreen.
   var gradientViewCategoryIdForColor: Signal<(categoryId: Int?, isFullScreen: Bool), NoError> { get }
@@ -55,6 +67,9 @@ public protocol DiscoveryNavigationHeaderViewModelOutputs {
   /// Emits when discovery filters view controller should be presented.
   var showDiscoveryFilters: Signal<(row: SelectableRow, categories: [KsApi.Category]), NoError> { get }
 
+  /// Emits to show an onboarding alert for first time tapping the favorite button with the category name.
+  var showFavoriteOnboardingAlert: Signal<String, NoError> { get }
+
   /// Emits a color for all subviews.
   var subviewColor: Signal<UIColor, NoError> { get }
 
@@ -63,6 +78,9 @@ public protocol DiscoveryNavigationHeaderViewModelOutputs {
 
   /// Emits a11y label for title button.
   var titleButtonAccessibilityLabel: Signal<String, NoError> { get }
+
+  /// Emits to update heart to selected or not, with animation or not.
+  var updateFavoriteButton: Signal<(selected: Bool, animated: Bool), NoError> { get }
 }
 
 public protocol DiscoveryNavigationHeaderViewModelType {
@@ -107,6 +125,16 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
 
     self.dividerIsHidden = strings
       .map { $0.subcategory == nil }
+      .skipRepeats()
+
+    self.favoriteViewIsHidden = paramsAndFiltersAreHidden.map(first)
+      .map { $0.category == nil }
+      .mergeWith(self.viewDidLoadProperty.signal.mapConst(true))
+      .skipRepeats()
+
+    self.favoriteViewIsDimmed = paramsAndFiltersAreHidden
+      .filter { params, _ in params.category != nil }
+      .map { _, filtersAreHidden in !filtersAreHidden }
       .skipRepeats()
 
     let dismissFiltersSignal = Signal.merge(
@@ -165,6 +193,35 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
       .map(first)
       .map(accessibilityLabelForTitleButton)
 
+    let categoryIdOnParamsUpdated = currentParams
+      .map { $0.category?.id }
+      .ignoreNil()
+
+    let categoryIdOnFavoriteTap = categoryIdOnParamsUpdated
+      .takeWhen(self.favoriteButtonTappedProperty.signal)
+      .on(next: { toggleStoredFavoriteCategory(withId: $0) })
+
+    self.updateFavoriteButton = Signal.merge(
+      categoryIdOnParamsUpdated.map { ($0, false) },
+      categoryIdOnFavoriteTap.map { ($0, true) }
+      )
+      .map { id, animated in (selected: isFavoriteCategoryStored(withId: id), animated: animated) }
+
+    self.favoriteButtonAccessibilityLabel = self.updateFavoriteButton
+      .map { $0.selected ? Strings.discovery_favorite_categories_buttons_unfavorite_a11y_label() :
+        Strings.discovery_favorite_categories_buttons_favorite_a11y_label() }
+
+    self.showFavoriteOnboardingAlert = strings.map { $0.subcategory ?? $0.filter }
+      .takeWhen(self.favoriteButtonTappedProperty.signal)
+      .filter { _ in
+        !AppEnvironment.current.ubiquitousStore.hasSeenFavoriteCategoryAlert ||
+        !AppEnvironment.current.userDefaults.hasSeenFavoriteCategoryAlert
+      }
+      .on(next: { _ in
+        AppEnvironment.current.ubiquitousStore.hasSeenFavoriteCategoryAlert = true
+        AppEnvironment.current.userDefaults.hasSeenFavoriteCategoryAlert = true
+      })
+
     Signal.merge(
       self.filtersSelectedRowProperty.signal.ignoreNil().map { $0.params },
       paramsAndFiltersAreHidden.filter { $0.filtersAreHidden }.map { $0.params }
@@ -176,6 +233,10 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
   private let paramsProperty = MutableProperty<DiscoveryParams?>(nil)
   public func configureWith(params params: DiscoveryParams) {
     self.paramsProperty.value = params
+  }
+  private let favoriteButtonTappedProperty = MutableProperty()
+  public func favoriteButtonTapped() {
+    self.favoriteButtonTappedProperty.value = ()
   }
   private let filtersSelectedRowProperty = MutableProperty<SelectableRow?>(nil)
   public func filtersSelected(row row: SelectableRow) {
@@ -193,6 +254,9 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
   public let animateArrowToDown: Signal<Bool, NoError>
   public let dividerIsHidden: Signal<Bool, NoError>
   public let dismissDiscoveryFilters: Signal<(), NoError>
+  public let favoriteButtonAccessibilityLabel: Signal<String, NoError>
+  public let favoriteViewIsDimmed: Signal<Bool, NoError>
+  public let favoriteViewIsHidden: Signal<Bool, NoError>
   public let gradientViewCategoryIdForColor: Signal<(categoryId: Int?, isFullScreen: Bool), NoError>
   public let notifyDelegateFilterSelectedParams: Signal<DiscoveryParams, NoError>
   public let primaryLabelFont: Signal<UIFont, NoError>
@@ -202,9 +266,11 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
   public let secondaryLabelIsHidden: Signal<Bool, NoError>
   public let secondaryLabelText: Signal<String, NoError>
   public let showDiscoveryFilters: Signal<(row: SelectableRow, categories: [KsApi.Category]), NoError>
+  public let showFavoriteOnboardingAlert: Signal<String, NoError>
   public let subviewColor: Signal<UIColor, NoError>
   public let titleButtonAccessibilityHint: Signal<String, NoError>
   public let titleButtonAccessibilityLabel: Signal<String, NoError>
+  public let updateFavoriteButton: Signal<(selected: Bool, animated: Bool), NoError>
 
   public var inputs: DiscoveryNavigationHeaderViewModelInputs { return self }
   public var outputs: DiscoveryNavigationHeaderViewModelOutputs { return self }
@@ -252,4 +318,23 @@ private func accessibilityLabelForTitleButton(params params: DiscoveryParams) ->
 
 private func string(forCategoryId id: Int) -> String {
   return RootCategory(categoryId: id).allProjectsString()
+}
+
+private func isFavoriteCategoryStored(withId id: Int) -> Bool {
+  return AppEnvironment.current.ubiquitousStore.favoriteCategoryIds.indexOf(id) != nil ||
+  AppEnvironment.current.userDefaults.favoriteCategoryIds.indexOf(id) != nil
+}
+
+private func toggleStoredFavoriteCategory(withId id: Int) {
+  if let index = AppEnvironment.current.ubiquitousStore.favoriteCategoryIds.indexOf(id) {
+    AppEnvironment.current.ubiquitousStore.favoriteCategoryIds.removeAtIndex(index)
+  } else {
+    AppEnvironment.current.ubiquitousStore.favoriteCategoryIds.append(id)
+  }
+
+  if let index = AppEnvironment.current.userDefaults.favoriteCategoryIds.indexOf(id) {
+    AppEnvironment.current.userDefaults.favoriteCategoryIds.removeAtIndex(index)
+  } else {
+    AppEnvironment.current.userDefaults.favoriteCategoryIds.append(id)
+  }
 }

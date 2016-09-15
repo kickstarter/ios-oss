@@ -17,6 +17,7 @@ internal class TestCase: FBSnapshotTestCase {
   internal let mainBundle = MockBundle()
   internal let scheduler = TestScheduler()
   internal let trackingClient = MockTrackingClient()
+  internal let ubiquitousStore = MockKeyValueStore()
   internal let userDefaults = MockKeyValueStore()
 
   override func setUp() {
@@ -41,7 +42,7 @@ internal class TestCase: FBSnapshotTestCase {
       reachability: .init(value: .wifi),
       scheduler: self.scheduler,
       timeZone: NSTimeZone(name: "GMT")!,
-      ubiquitousStore: MockKeyValueStore(),
+      ubiquitousStore: self.ubiquitousStore,
       userDefaults: self.userDefaults
     )
   }

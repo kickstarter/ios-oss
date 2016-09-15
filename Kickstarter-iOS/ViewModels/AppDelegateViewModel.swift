@@ -107,6 +107,9 @@ public protocol AppDelegateViewModelOutputs {
   /// Emits when we should attempt registering the user for notifications.
   var registerUserNotificationSettings: Signal<(), NoError> { get }
 
+  /// Emits to synchronize iCloud on app launch.
+  var synchronizeUbiquitousStore: Signal<(), NoError> { get }
+
   /// Emits when we should unregister the user from notifications.
   var unregisterForRemoteNotifications: Signal<(), NoError> { get }
 
@@ -171,6 +174,10 @@ AppDelegateViewModelOutputs {
       AppEnvironment.current.facebookAppDelegate.application(
         $0.application, openURL: $0.url, sourceApplication: $0.sourceApplication, annotation: $0.annotation)
     }
+
+    // iCloud
+
+    self.synchronizeUbiquitousStore = self.applicationLaunchOptionsProperty.signal.ignoreValues()
 
     // Push notifications
 
@@ -519,6 +526,7 @@ AppDelegateViewModelOutputs {
   public let presentViewController: Signal<UIViewController, NoError>
   public let pushTokenSuccessfullyRegistered: Signal<(), NoError>
   public let registerUserNotificationSettings: Signal<(), NoError>
+  public let synchronizeUbiquitousStore: Signal<(), NoError>
   public let unregisterForRemoteNotifications: Signal<(), NoError>
   public let updateCurrentUserInEnvironment: Signal<User, NoError>
   public let updateEnvironment: Signal<(Config, Koala), NoError>

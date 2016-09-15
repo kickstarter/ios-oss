@@ -9,6 +9,8 @@ internal final class DiscoveryFiltersDataSourceTests: XCTestCase {
   private let collections = DiscoveryFiltersDataSource.Section.collections.rawValue
   private let categoriesHeader = DiscoveryFiltersDataSource.Section.categoriesHeader.rawValue
   private let categories = DiscoveryFiltersDataSource.Section.categories.rawValue
+  private let favoritesHeader = DiscoveryFiltersDataSource.Section.favoritesHeader.rawValue
+  private let favorites = DiscoveryFiltersDataSource.Section.favorites.rawValue
 
   private let dataSource = DiscoveryFiltersDataSource()
   private let tableView = UITableView()
@@ -28,6 +30,23 @@ internal final class DiscoveryFiltersDataSourceTests: XCTestCase {
     XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: collectionsHeader))
     XCTAssertEqual("DiscoveryFiltersStaticRowCell",
                    self.dataSource.reusableId(item: 0, section: collectionsHeader))
+  }
+
+  func testLoadFavoriteRows() {
+    self.dataSource.load(favoriteRows: [
+      SelectableRow(isSelected: false, params: .defaults),
+      SelectableRow(isSelected: false, params: .defaults),
+      SelectableRow(isSelected: false, params: .defaults),
+      SelectableRow(isSelected: false, params: .defaults)
+      ],
+                         categoryId: nil
+    )
+
+    XCTAssertEqual(4, self.dataSource.tableView(self.tableView, numberOfRowsInSection: favorites))
+    XCTAssertEqual("DiscoverySelectableRowCell", self.dataSource.reusableId(item: 0, section: favorites))
+    XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: favoritesHeader))
+    XCTAssertEqual("DiscoveryFiltersStaticRowCell",
+                   self.dataSource.reusableId(item: 0, section: favoritesHeader))
   }
 
   func testLoadCategories() {

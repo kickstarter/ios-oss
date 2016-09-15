@@ -106,6 +106,12 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         manager.authenticator.authenticateInstallation()
     }
 
+    self.viewModel.outputs.synchronizeUbiquitousStore
+      .observeForUI()
+      .observeNext {
+        AppEnvironment.current.ubiquitousStore.synchronize()
+    }
+
     NSNotificationCenter
       .defaultCenter()
       .addObserverForName(CurrentUserNotifications.sessionStarted, object: nil, queue: nil) { [weak self] _ in

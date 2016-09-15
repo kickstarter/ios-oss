@@ -17,8 +17,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="400" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <containerView opaque="NO" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FAX-pt-y2u" userLabel="Pages container">
-                                <rect key="frame" x="0.0" y="114" width="400" height="437"/>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FAX-pt-y2u" userLabel="Pages container">
+                                <rect key="frame" x="0.0" y="115" width="400" height="485"/>
                                 <connections>
                                     <segue destination="ynw-dc-pxD" kind="embed" id="5LZ-9P-sMI"/>
                                 </connections>
@@ -428,6 +428,40 @@
                                     <constraint firstAttribute="height" constant="1" id="JXf-q8-Fkc"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CTG-N8-oCA" userLabel="Favorite Container View">
+                                <rect key="frame" x="0.0" y="11" width="44" height="44"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="heart-outline" translatesAutoresizingMaskIntoConstraints="NO" id="Ij6-dc-OpY">
+                                        <rect key="frame" x="8" y="13" width="20" height="18"/>
+                                    </imageView>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="heart" translatesAutoresizingMaskIntoConstraints="NO" id="DzE-4H-e6W">
+                                        <rect key="frame" x="9" y="14" width="18" height="16"/>
+                                    </imageView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3gE-WC-mdL">
+                                        <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="Ij6-dc-OpY" firstAttribute="centerY" secondItem="CTG-N8-oCA" secondAttribute="centerY" id="3MH-JC-Tka"/>
+                                    <constraint firstItem="DzE-4H-e6W" firstAttribute="centerY" secondItem="CTG-N8-oCA" secondAttribute="centerY" id="8VW-fL-4dy"/>
+                                    <constraint firstItem="DzE-4H-e6W" firstAttribute="centerX" secondItem="Ij6-dc-OpY" secondAttribute="centerX" id="91i-t8-NKG"/>
+                                    <constraint firstAttribute="width" constant="44" id="BV3-mC-ige"/>
+                                    <constraint firstItem="Ij6-dc-OpY" firstAttribute="leading" secondItem="CTG-N8-oCA" secondAttribute="leading" id="UGW-fI-Y6d"/>
+                                    <constraint firstAttribute="trailing" secondItem="3gE-WC-mdL" secondAttribute="trailing" id="gPS-Zs-Dz7"/>
+                                    <constraint firstAttribute="height" constant="44" id="kta-sW-9wm"/>
+                                    <constraint firstAttribute="bottom" secondItem="3gE-WC-mdL" secondAttribute="bottom" id="oA9-E0-IWH"/>
+                                    <constraint firstItem="3gE-WC-mdL" firstAttribute="top" secondItem="CTG-N8-oCA" secondAttribute="top" id="t7C-hc-550"/>
+                                    <constraint firstItem="3gE-WC-mdL" firstAttribute="leading" secondItem="CTG-N8-oCA" secondAttribute="leading" id="tHp-RL-lvi"/>
+                                    <constraint firstItem="Ij6-dc-OpY" firstAttribute="leading" secondItem="CTG-N8-oCA" secondAttribute="leadingMargin" id="tTF-Nj-zOg"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="UGW-fI-Y6d"/>
+                                    </mask>
+                                </variation>
+                            </view>
                             <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="AvP-Jg-11Z" userLabel="Outer Stack View">
                                 <rect key="frame" x="104" y="0.0" width="193" height="65"/>
                                 <subviews>
@@ -481,7 +515,9 @@
                             <constraint firstItem="Uqu-6W-LIK" firstAttribute="top" secondItem="H2g-DT-JXM" secondAttribute="bottom" constant="-1" id="g0v-HA-ErW"/>
                             <constraint firstItem="H2g-DT-JXM" firstAttribute="leading" secondItem="189-Qu-20l" secondAttribute="leading" id="np9-Pa-vI9"/>
                             <constraint firstItem="9CN-EK-zBj" firstAttribute="trailing" secondItem="AvP-Jg-11Z" secondAttribute="trailing" id="ogl-6o-HhW"/>
+                            <constraint firstItem="CTG-N8-oCA" firstAttribute="centerY" secondItem="RUu-Jy-Y4V" secondAttribute="centerY" id="pY8-ei-3kJ"/>
                             <constraint firstAttribute="trailing" secondItem="Uqu-6W-LIK" secondAttribute="trailing" id="tUN-qu-H4u"/>
+                            <constraint firstItem="CTG-N8-oCA" firstAttribute="leading" secondItem="189-Qu-20l" secondAttribute="leading" id="ufK-KL-tb3"/>
                             <constraint firstAttribute="bottom" secondItem="H2g-DT-JXM" secondAttribute="bottom" id="vnK-fd-I4j"/>
                         </constraints>
                     </view>
@@ -490,7 +526,11 @@
                         <outlet property="borderLineHeightConstraint" destination="JXf-q8-Fkc" id="PFD-oJ-ky2"/>
                         <outlet property="borderLineView" destination="Uqu-6W-LIK" id="vqp-Ea-69S"/>
                         <outlet property="dividerLabel" destination="RHL-NK-fXr" id="dQn-Xj-o1t"/>
+                        <outlet property="favoriteButton" destination="3gE-WC-mdL" id="3U0-oM-QDh"/>
+                        <outlet property="favoriteContainerView" destination="CTG-N8-oCA" id="YZD-bV-5Ls"/>
                         <outlet property="gradientBackgroundView" destination="H2g-DT-JXM" id="eqS-Qx-RXI"/>
+                        <outlet property="heartImageView" destination="DzE-4H-e6W" id="W47-0B-s1t"/>
+                        <outlet property="heartOutlineImageView" destination="Ij6-dc-OpY" id="9Zd-Lt-Qsp"/>
                         <outlet property="primaryLabel" destination="Xzf-ev-nrc" id="jay-lV-74W"/>
                         <outlet property="secondaryLabel" destination="gOI-JQ-dJe" id="0p8-sw-qr7"/>
                         <outlet property="titleButton" destination="9CN-EK-zBj" id="5eH-Cp-A4r"/>
@@ -506,5 +546,7 @@
         <image name="arrow-down" width="11" height="6"/>
         <image name="check-circle" width="18" height="19"/>
         <image name="checkmark-selected-filter" width="11" height="8"/>
+        <image name="heart" width="18" height="16"/>
+        <image name="heart-outline" width="20" height="18"/>
     </resources>
 </document>

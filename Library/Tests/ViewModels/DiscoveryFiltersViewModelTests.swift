@@ -48,6 +48,9 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
   private let loadTopRows = TestObserver<[SelectableRow], NoError>()
   private let loadTopRowsInitialId = TestObserver<Int?, NoError>()
   private let notifyDelegateOfSelectedRow = TestObserver<SelectableRow, NoError>()
+  private let loadFavoriteRows = TestObserver<[SelectableRow], NoError>()
+  private let loadFavoriteRowsId = TestObserver<Int?, NoError>()
+
   private let categories = [ Category.art, .illustration, .filmAndVideo, .documentary ]
 
   override func setUp() {
@@ -60,34 +63,39 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
     self.vm.outputs.loadTopRows.map(first).observe(self.loadTopRows.observer)
     self.vm.outputs.loadTopRows.map(second).observe(self.loadTopRowsInitialId.observer)
     self.vm.outputs.notifyDelegateOfSelectedRow.observe(self.notifyDelegateOfSelectedRow.observer)
+    self.vm.outputs.loadFavoriteRows.map(first).observe(self.loadFavoriteRows.observer)
+    self.vm.outputs.loadFavoriteRows.map(second).observe(self.loadFavoriteRowsId.observer)
   }
 
   func testAnimateIn_Default() {
     self.vm.configureWith(selectedRow: staffPicksRow, categories: categories)
+    self.vm.inputs.viewDidLoad()
 
     self.animateInView.assertValueCount(0)
 
-    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewWillAppear()
 
     self.animateInView.assertValues([nil])
   }
 
   func testAnimateIn_Category() {
     self.vm.configureWith(selectedRow: artSelectableRow, categories: categories)
+    self.vm.inputs.viewDidLoad()
 
     self.animateInView.assertValueCount(0)
 
-    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewWillAppear()
 
     self.animateInView.assertValues([1])
   }
 
   func testAnimateIn_Subcategory() {
     self.vm.configureWith(selectedRow: documentarySelectableRow, categories: categories)
+    self.vm.inputs.viewDidLoad()
 
     self.animateInView.assertValueCount(0)
 
-    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewWillAppear()
 
     self.animateInView.assertValues([11])
   }
@@ -288,5 +296,41 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
     XCTAssertEqual([Category.art.projectsCount, Category.filmAndVideo.projectsCount],
                    counts,
                    "Root counts are preserved in expandable rows.")
+  }
+
+  func testFavoriteRows_Without_Favorites() {
+    self.vm.inputs.configureWith(selectedRow: staffPicksRow, categories: categories)
+    self.vm.inputs.viewDidLoad()
+
+    self.loadFavoriteRows.assertValueCount(0, "Favorite rows does not emit without favorites set.")
+  }
+
+  func testFavoriteRows_With_Favorites() {
+    self.ubiquitousStore.favoriteCategoryIds = [1, 30]
+
+    self.vm.inputs.configureWith(selectedRow: staffPicksRow, categories: categories)
+
+    self.loadFavoriteRows.assertValueCount(0)
+
+    self.vm.inputs.viewDidLoad()
+
+    self.loadFavoriteRows.assertValues([[artSelectableRow, documentarySelectableRow]])
+    self.loadFavoriteRowsId.assertValues([nil])
+  }
+
+  func testFavoriteRows_With_Favorites_Selected() {
+    self.ubiquitousStore.favoriteCategoryIds = [1, 30]
+
+    self.vm.inputs.configureWith(selectedRow: artSelectableRow, categories: categories)
+
+    self.loadFavoriteRows.assertValueCount(0)
+
+    self.vm.inputs.viewDidLoad()
+
+    self.loadFavoriteRows.assertValues([[
+      artSelectableRow |> SelectableRow.lens.isSelected .~ true,
+      documentarySelectableRow
+    ]])
+    self.loadFavoriteRowsId.assertValues([1])
   }
 }

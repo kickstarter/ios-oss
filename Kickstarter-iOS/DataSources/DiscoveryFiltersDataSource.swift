@@ -5,13 +5,14 @@ internal final class DiscoveryFiltersDataSource: ValueCellDataSource {
   internal enum Section: Int {
     case collectionsHeader
     case collections
+    case favoritesHeader
+    case favorites
     case categoriesHeader
     case categories
   }
 
   internal func load(topRows rows: [SelectableRow], categoryId: Int?) {
-    self.set(values: [(title: Strings.Collections(),
-                       categoryId: categoryId)],
+    self.set(values: [(title: Strings.Collections(), categoryId: categoryId)],
              cellClass: DiscoveryFiltersStaticRowCell.self,
              inSection: Section.collectionsHeader.rawValue)
 
@@ -19,6 +20,17 @@ internal final class DiscoveryFiltersDataSource: ValueCellDataSource {
     self.set(values: rowsAndId,
              cellClass: DiscoverySelectableRowCell.self,
              inSection: Section.collections.rawValue)
+  }
+
+  internal func load(favoriteRows rows: [SelectableRow], categoryId: Int?) {
+    self.set(values: [(title: Strings.discovery_filters_favorites_title(), categoryId: categoryId)],
+             cellClass: DiscoveryFiltersStaticRowCell.self,
+             inSection: Section.favoritesHeader.rawValue)
+
+    let rowsAndId = rows.map { (row: $0, categoryId: categoryId) }
+    self.set(values: rowsAndId,
+             cellClass: DiscoverySelectableRowCell.self,
+             inSection: Section.favorites.rawValue)
   }
 
   internal func load(categoryRows rows: [ExpandableRow], categoryId: Int?) {
@@ -48,15 +60,15 @@ internal final class DiscoveryFiltersDataSource: ValueCellDataSource {
   }
 
   internal func selectableRow(indexPath indexPath: NSIndexPath) -> SelectableRow? {
-    if let data = self[indexPath] as? (SelectableRow, Int?) {
-      return data.0
+    if let (row, _) = self[indexPath] as? (SelectableRow, Int?) {
+      return row
     }
     return nil
   }
 
   internal func expandableRow(indexPath indexPath: NSIndexPath) -> ExpandableRow? {
-    if let data = self[indexPath] as? (ExpandableRow, Int?) {
-      return data.0
+    if let (row, _) = self[indexPath] as? (ExpandableRow, Int?) {
+      return row
     }
     return nil
   }

@@ -15,6 +15,9 @@ public protocol DiscoveryFiltersViewModelInputs {
 
   /// Call when the view loads.
   func viewDidLoad()
+
+  /// Call when the view will appear.
+  func viewWillAppear()
 }
 
 public protocol DiscoveryFiltersViewModelOutputs {
@@ -28,6 +31,9 @@ public protocol DiscoveryFiltersViewModelOutputs {
   var loadCategoryRows: Signal<(rows: [ExpandableRow], categoryId: Int?, selectedRowId: Int?),
     NoError> { get }
 
+  /// Emits an array of selectable rows for the favorites section and category id to set row styles.
+  var loadFavoriteRows: Signal<(rows: [SelectableRow], categoryId: Int?), NoError> { get }
+
   /// Emits an array of selectable rows to put into the top filters section and category id to set row styles.
   var loadTopRows: Signal<(rows: [SelectableRow], categoryId: Int?), NoError> { get }
 
@@ -36,7 +42,6 @@ public protocol DiscoveryFiltersViewModelOutputs {
 
   /// A bool that determines whether a cell should be animated when it is displayed.
   var shouldAnimateSelectableCell: Bool { get }
-
 }
 
 public protocol DiscoveryFiltersViewModelType {
@@ -77,6 +82,13 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
 
     self.loadTopRows = combineLatest(topRows, categoryId).map { (rows: $0, categoryId: $1) }
 
+    let favoriteRows = initialSelectedRowWithCategories
+      .map(favorites(selectedRow:categories:))
+      .ignoreNil()
+
+    self.loadFavoriteRows = combineLatest(favoriteRows, categoryId)
+      .map { (rows: $0, categoryId: $1) }
+
     let selectedRowId = Signal.merge(
         categoryId,
         self.tappedExpandableRowProperty.signal.ignoreNil().map { $0.params.category?.rootId }
@@ -114,7 +126,7 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
     )
 
     self.animateInView = categoryId
-      .takeWhen(self.viewDidLoadProperty.signal)
+      .takeWhen(self.viewWillAppearProperty.signal)
 
     self.viewDidLoadProperty.signal
       .observeNext { AppEnvironment.current.koala.trackDiscoveryModal() }
@@ -144,6 +156,10 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
+  private let viewWillAppearProperty = MutableProperty()
+  public func viewWillAppear() {
+    self.viewWillAppearProperty.value = ()
+  }
 
   private let shouldAnimateSelectableCellProperty = MutableProperty(false)
   public var shouldAnimateSelectableCell: Bool {
@@ -153,6 +169,7 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
   public let animateInView: Signal<Int?, NoError>
   public let loadCategoryRows: Signal<(rows: [ExpandableRow], categoryId: Int?, selectedRowId: Int?),
   NoError>
+  public let loadFavoriteRows: Signal<(rows: [SelectableRow], categoryId: Int?), NoError>
   public let loadTopRows: Signal<(rows: [SelectableRow], categoryId: Int?), NoError>
   public let notifyDelegateOfSelectedRow: Signal<SelectableRow, NoError>
 
@@ -238,4 +255,23 @@ private func topFilters(forUser user: User?) -> [DiscoveryParams] {
   filters.append(.defaults)
 
   return filters
+}
+
+private func favorites(selectedRow selectedRow: SelectableRow, categories: [KsApi.Category])
+  -> [SelectableRow]? {
+
+  let faves: [SelectableRow] = categories.flatMap { category in
+    if AppEnvironment.current.ubiquitousStore.favoriteCategoryIds.contains(category.id) ||
+      AppEnvironment.current.userDefaults.favoriteCategoryIds.contains(category.id) {
+
+      return SelectableRow(
+        isSelected: category == selectedRow.params.category,
+        params: .defaults |> DiscoveryParams.lens.category .~ category
+      )
+    } else {
+      return nil
+    }
+  }
+
+  return faves.isEmpty ? nil : faves
 }
