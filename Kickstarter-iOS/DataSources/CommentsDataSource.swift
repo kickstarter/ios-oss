@@ -4,9 +4,7 @@ import UIKit
 
 internal final class CommentsDataSource: ValueCellDataSource {
   internal enum Section: Int {
-    case BackerEmptyState
-    case NonBackerEmptyState
-    case LoggedOutEmptyState
+    case EmptyState
     case Comments
   }
 
@@ -16,19 +14,11 @@ internal final class CommentsDataSource: ValueCellDataSource {
              inSection: Section.Comments.rawValue)
   }
 
-  internal func backerEmptyState(visible visible: Bool) {
-    self.set(cellIdentifiers: visible ? ["BackerEmptyState"] : [],
-             inSection: Section.BackerEmptyState.rawValue)
-  }
-
-  internal func nonBackerEmptyState(visible visible: Bool) {
-    self.set(cellIdentifiers: visible ? ["NonBackerEmptyState"] : [],
-             inSection: Section.NonBackerEmptyState.rawValue)
-  }
-
-  internal func loggedOutEmptyState(visible visible: Bool) {
-    self.set(cellIdentifiers: visible ? ["LoggedOutEmptyState"] : [],
-             inSection: Section.LoggedOutEmptyState.rawValue)
+  internal func load(project project: Project, update: Update?) {
+    self.set(values: [(project, update)],
+             cellClass: CommentsEmptyStateCell.self,
+             inSection: Section.EmptyState.rawValue
+    )
   }
 
   internal override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
@@ -36,8 +26,8 @@ internal final class CommentsDataSource: ValueCellDataSource {
     switch (cell, value) {
     case let (cell as CommentCell, value as (Comment, Project, User?)):
       cell.configureWith(value: value)
-    case (is StaticTableViewCell, is Void):
-      return
+    case let (cell as CommentsEmptyStateCell, value as (Project, Update?)):
+      cell.configureWith(value: value)
     default:
       assertionFailure("Unrecognized (cell, viewModel) combo.")
     }

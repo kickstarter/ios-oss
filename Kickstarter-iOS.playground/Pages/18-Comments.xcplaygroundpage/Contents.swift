@@ -14,6 +14,7 @@ let creator = .template
 
 let project = .template
   |> Project.lens.creator .~ creator
+  |> Project.lens.personalization.isBacking .~ false
 
 let backerComment = .template
   |> Comment.lens.author .~ backer
@@ -33,10 +34,10 @@ let comments = [Comment.template, backerComment, creatorComment, deletedComment]
 // Set the current app environment.
 AppEnvironment.replaceCurrentEnvironment(
   apiService: MockService(
-    fetchCommentsResponse: comments
+    fetchCommentsResponse: []
   ),
   currentUser: backer,
-  language: .de,
+  language: .en,
   locale: NSLocale(localeIdentifier: "en"),
   mainBundle: NSBundle.framework
 )

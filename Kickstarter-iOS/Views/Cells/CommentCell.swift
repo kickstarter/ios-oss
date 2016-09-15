@@ -15,6 +15,7 @@ internal final class CommentCell: UITableViewCell, ValueCell {
   @IBOutlet private weak var creatorView: UIView!
   @IBOutlet private weak var nameLabel: UILabel!
   @IBOutlet private weak var rootStackView: UIStackView!
+  @IBOutlet private weak var separatorView: UIView!
   @IBOutlet private weak var timestampLabel: UILabel!
   @IBOutlet private weak var youLabel: UILabel!
   @IBOutlet private weak var youView: UIView!
@@ -51,6 +52,9 @@ internal final class CommentCell: UITableViewCell, ValueCell {
 
     self.rootStackView
       |> UIStackView.lens.spacing .~ Styles.grid(2)
+
+    self.separatorView
+      |> separatorStyle
 
     self.timestampLabel
       |> UILabel.lens.font .~ .ksr_body(size: 12.0)

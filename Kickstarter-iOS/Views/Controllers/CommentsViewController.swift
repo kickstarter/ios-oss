@@ -10,14 +10,15 @@ internal final class CommentsViewController: UITableViewController {
   private let viewModel: CommentsViewModelType = CommentsViewModel()
   private let dataSource = CommentsDataSource()
 
-  @IBOutlet private weak var commentBarButton: UIBarButtonItem!
+  // This button needs to store a strong reference so as to not get wiped when setting hidden state.
+  @IBOutlet private var commentBarButton: UIBarButtonItem!
   private weak var loginToutViewController: UIViewController? = nil
 
   internal static func configuredWith(project project: Project? = nil, update: Update? = nil)
     -> CommentsViewController {
 
       let vc = Storyboard.Comments.instantiate(CommentsViewController)
-      vc.viewModel.inputs.project(project, update: update)
+      vc.viewModel.inputs.configureWith(project: project, update: update)
       return vc
   }
 
@@ -44,9 +45,6 @@ internal final class CommentsViewController: UITableViewController {
     self.commentBarButton
       |> UIBarButtonItem.lens.title %~ { _ in Strings.general_navigation_buttons_comment() }
       |> UIBarButtonItem.lens.accessibilityLabel %~ { _ in Strings.general_navigation_buttons_comment() }
-      |> UIBarButtonItem.lens.accessibilityValue %~ { _ in
-        Strings.project_comments_accessibility_button_write()
-      }
       |> UIBarButtonItem.lens.accessibilityHint %~ { _ in
         Strings.accessibility_dashboard_buttons_post_update_hint()
     }
@@ -54,12 +52,6 @@ internal final class CommentsViewController: UITableViewController {
 
   // swiftlint:disable function_body_length
   internal override func bindViewModel() {
-    self.viewModel.outputs.backerEmptyStateVisible
-      .observeForUI()
-      .observeNext { [weak self] visible in
-        self?.dataSource.backerEmptyState(visible: visible)
-        self?.tableView.reloadData()
-    }
 
     self.viewModel.outputs.closeLoginTout
       .observeForControllerAction()
@@ -67,7 +59,7 @@ internal final class CommentsViewController: UITableViewController {
         self?.loginToutViewController?.dismissViewControllerAnimated(true, completion: nil)
     }
 
-    self.viewModel.outputs.commentButtonVisible
+    self.viewModel.outputs.commentBarButtonVisible
       .observeForUI()
       .observeNext { [weak self] visible in
         self?.navigationItem.rightBarButtonItem = visible ? self?.commentBarButton : nil
@@ -86,17 +78,10 @@ internal final class CommentsViewController: UITableViewController {
         self?.tableView.reloadData()
     }
 
-    self.viewModel.outputs.loggedOutEmptyStateVisible
-      .observeForUI()
-      .observeNext { [weak self] visible in
-        self?.dataSource.loggedOutEmptyState(visible: visible)
-        self?.tableView.reloadData()
-    }
-
-    self.viewModel.outputs.nonBackerEmptyStateVisible
-      .observeForUI()
-      .observeNext { [weak self] visible in
-        self?.dataSource.nonBackerEmptyState(visible: visible)
+    self.viewModel.outputs.emptyStateVisible
+      .observeForControllerAction()
+      .observeNext { [weak self] project, update in
+        self?.dataSource.load(project: project, update: update)
         self?.tableView.reloadData()
     }
 
@@ -115,6 +100,10 @@ internal final class CommentsViewController: UITableViewController {
   override func tableView(tableView: UITableView,
                           willDisplayCell cell: UITableViewCell,
                           forRowAtIndexPath indexPath: NSIndexPath) {
+
+    if let emptyCell = cell as? CommentsEmptyStateCell {
+      emptyCell.delegate = self
+    }
 
     self.viewModel.inputs.willDisplayRow(self.dataSource.itemIndexAt(indexPath),
                                          outOf: self.dataSource.numberOfItems())
@@ -145,23 +134,24 @@ internal final class CommentsViewController: UITableViewController {
   @IBAction internal func refresh() {
     self.viewModel.inputs.refresh()
   }
-
-  @IBAction func emptyStateLoginButtonPressed() {
-    self.viewModel.inputs.loginButtonPressed()
-  }
-
-  @IBAction func emptyStateCommentButtonPressed() {
-    self.viewModel.inputs.commentButtonPressed()
-  }
 }
 
 extension CommentsViewController: CommentDialogDelegate {
-
   internal func commentDialogWantsDismissal(dialog: CommentDialogViewController) {
     dialog.dismissViewControllerAnimated(true, completion: nil)
   }
 
   internal func commentDialog(dialog: CommentDialogViewController, postedComment comment: Comment) {
     self.viewModel.inputs.commentPosted(comment)
+  }
+}
+
+extension CommentsViewController: CommentsEmptyStateCellDelegate {
+  internal func commentEmptyStateCellGoToCommentDialog() {
+    self.viewModel.inputs.commentButtonPressed()
+  }
+
+  internal func commentEmptyStateCellGoToLoginTout() {
+    self.viewModel.inputs.loginButtonPressed()
   }
 }

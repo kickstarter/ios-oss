@@ -138,7 +138,7 @@
                                                 </stackView>
                                             </subviews>
                                         </stackView>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="txa-bY-wlx" userLabel="Bottom border">
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="txa-bY-wlx" userLabel="Separator View">
                                             <rect key="frame" x="0.0" y="239" width="450" height="1"/>
                                             <color key="backgroundColor" white="0.89916487069999995" alpha="1" colorSpace="calibratedWhite"/>
                                             <constraints>
@@ -167,163 +167,60 @@
                                     <outlet property="creatorView" destination="3ZL-S5-lKl" id="sze-g3-qOo"/>
                                     <outlet property="nameLabel" destination="SZ1-p2-Ltk" id="eeK-14-mPY"/>
                                     <outlet property="rootStackView" destination="lCq-XA-K79" id="9Pv-lq-NDk"/>
+                                    <outlet property="separatorView" destination="txa-bY-wlx" id="7o1-GL-p3j"/>
                                     <outlet property="timestampLabel" destination="lZg-7v-hQH" id="UHj-aO-c6a"/>
                                     <outlet property="youLabel" destination="Uwt-lE-S07" id="RuP-sK-ZQQ"/>
                                     <outlet property="youView" destination="3ET-R2-24I" id="ExL-bE-Za6"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="LoggedOutEmptyState" rowHeight="300" id="VEX-7p-lQ3" customClass="StaticTableViewCell" customModule="Library">
-                                <rect key="frame" x="0.0" y="332" width="450" height="300"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CommentsEmptyStateCell" id="AgR-zW-Trc" customClass="CommentsEmptyStateCell" customModule="Kickstarter_Framework" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="332" width="450" height="198"/>
                                 <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="VEX-7p-lQ3" id="30t-3w-g2C">
-                                    <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="AgR-zW-Trc" id="GhZ-I8-Uys">
+                                    <rect key="frame" x="0.0" y="0.0" width="450" height="198"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" axis="vertical" alignment="center" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="zpb-V7-j3N">
-                                            <rect key="frame" x="16" y="16" width="418" height="268"/>
+                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="cVd-US-vZv">
+                                            <rect key="frame" x="8" y="8" width="434" height="182"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" ambiguous="YES" misplaced="YES" text="No comments" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="25k-w6-WPe">
-                                                    <rect key="frame" x="156" y="0.0" width="107" height="21"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AZn-wj-Gtg">
+                                                    <rect key="frame" x="196" y="0.0" width="42" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
-                                                    <userDefinedRuntimeAttributes>
-                                                        <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Title1"/>
-                                                        <userDefinedRuntimeAttribute type="string" keyPath="_weight" value="Medium"/>
-                                                    </userDefinedRuntimeAttributes>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Aw, how sad. Log in to become a backer or leave a comment." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c29-47-hhA">
-                                                    <rect key="frame" x="16" y="45" width="388" height="170"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9gh-od-HDY">
+                                                    <rect key="frame" x="196" y="48" width="42" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
-                                                    <userDefinedRuntimeAttributes>
-                                                        <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Body"/>
-                                                    </userDefinedRuntimeAttributes>
                                                 </label>
-                                                <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IHV-AV-zWP">
-                                                    <rect key="frame" x="178" y="238" width="62" height="30"/>
-                                                    <inset key="contentEdgeInsets" minX="12" minY="6" maxX="12" maxY="6"/>
-                                                    <state key="normal" title="Login"/>
-                                                    <userDefinedRuntimeAttributes>
-                                                        <userDefinedRuntimeAttribute type="string" keyPath="_color" value="Green"/>
-                                                        <userDefinedRuntimeAttribute type="string" keyPath="_borderColor" value="Clear"/>
-                                                        <userDefinedRuntimeAttribute type="string" keyPath="_titleColorNormal" value="White"/>
-                                                        <userDefinedRuntimeAttribute type="string" keyPath="_titleFontStyle" value="Body"/>
-                                                        <userDefinedRuntimeAttribute type="string" keyPath="_titleWeight" value="Medium"/>
-                                                    </userDefinedRuntimeAttributes>
-                                                    <connections>
-                                                        <action selector="emptyStateLoginButtonPressed" destination="q9l-Wg-1lg" eventType="touchUpInside" id="gNk-EZ-KLx"/>
-                                                    </connections>
+                                                <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oCo-Np-Afj">
+                                                    <rect key="frame" x="194" y="95" width="46" height="30"/>
+                                                    <state key="normal" title="Button"/>
+                                                </button>
+                                                <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IVI-02-UbI">
+                                                    <rect key="frame" x="194" y="152" width="46" height="30"/>
+                                                    <state key="normal" title="Button"/>
                                                 </button>
                                             </subviews>
                                         </stackView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="zpb-V7-j3N" firstAttribute="top" secondItem="30t-3w-g2C" secondAttribute="topMargin" id="8qQ-RD-Ba1"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="zpb-V7-j3N" secondAttribute="trailing" id="RRa-On-4q0"/>
-                                        <constraint firstAttribute="bottomMargin" secondItem="zpb-V7-j3N" secondAttribute="bottom" id="soa-MO-XOE"/>
-                                        <constraint firstItem="zpb-V7-j3N" firstAttribute="leading" secondItem="30t-3w-g2C" secondAttribute="leadingMargin" id="wgQ-w8-vRN"/>
+                                        <constraint firstItem="cVd-US-vZv" firstAttribute="top" secondItem="GhZ-I8-Uys" secondAttribute="topMargin" id="MHk-b4-8Z4"/>
+                                        <constraint firstItem="cVd-US-vZv" firstAttribute="leading" secondItem="GhZ-I8-Uys" secondAttribute="leadingMargin" id="NA9-BX-6TG"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="cVd-US-vZv" secondAttribute="bottom" id="OrH-Dv-0E6"/>
+                                        <constraint firstItem="cVd-US-vZv" firstAttribute="centerY" secondItem="GhZ-I8-Uys" secondAttribute="centerY" id="vZS-Xd-oc1"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="cVd-US-vZv" secondAttribute="trailing" id="xmF-Ga-wxq"/>
                                     </constraints>
-                                    <edgeInsets key="layoutMargins" top="16" left="16" bottom="16" right="16"/>
                                 </tableViewCellContentView>
-                            </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NonBackerEmptyState" rowHeight="300" id="t5h-FH-sQR" userLabel="NonBackerEmptyState" customClass="StaticTableViewCell" customModule="Library">
-                                <rect key="frame" x="0.0" y="632" width="450" height="300"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="t5h-FH-sQR" id="zI8-Il-cJ4">
-                                    <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" axis="vertical" alignment="center" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="3z5-SD-KyK">
-                                            <rect key="frame" x="16" y="16" width="418" height="268"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" misplaced="YES" text="No comments" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d16-im-INu">
-                                                    <rect key="frame" x="156" y="0.0" width="107" height="21"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                    <userDefinedRuntimeAttributes>
-                                                        <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Title1"/>
-                                                        <userDefinedRuntimeAttribute type="string" keyPath="_weight" value="Medium"/>
-                                                    </userDefinedRuntimeAttributes>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Aw, how sad. Become a backer to leave a comment." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6gL-Ga-6p9">
-                                                    <rect key="frame" x="12" y="45" width="395" height="224"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                    <userDefinedRuntimeAttributes>
-                                                        <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Body"/>
-                                                    </userDefinedRuntimeAttributes>
-                                                </label>
-                                            </subviews>
-                                        </stackView>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstAttribute="trailingMargin" secondItem="3z5-SD-KyK" secondAttribute="trailing" id="6nb-eM-pwl"/>
-                                        <constraint firstItem="3z5-SD-KyK" firstAttribute="leading" secondItem="zI8-Il-cJ4" secondAttribute="leadingMargin" id="OTT-BZ-zeY"/>
-                                        <constraint firstAttribute="bottomMargin" secondItem="3z5-SD-KyK" secondAttribute="bottom" id="Z8K-XV-P23"/>
-                                        <constraint firstItem="3z5-SD-KyK" firstAttribute="top" secondItem="zI8-Il-cJ4" secondAttribute="topMargin" id="cxu-Rw-M2y"/>
-                                    </constraints>
-                                    <edgeInsets key="layoutMargins" top="16" left="16" bottom="16" right="16"/>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="BackerEmptyState" rowHeight="300" id="Cbb-oB-S6t" userLabel="BackerEmptyState" customClass="StaticTableViewCell" customModule="Library">
-                                <rect key="frame" x="0.0" y="932" width="450" height="300"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Cbb-oB-S6t" id="a7T-OM-uDH">
-                                    <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" axis="vertical" alignment="center" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="bBG-96-dtV">
-                                            <rect key="frame" x="16" y="16" width="418" height="268"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" ambiguous="YES" misplaced="YES" text="No comments" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wre-Fs-O65">
-                                                    <rect key="frame" x="156" y="0.0" width="107" height="21"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                    <userDefinedRuntimeAttributes>
-                                                        <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Title1"/>
-                                                        <userDefinedRuntimeAttribute type="string" keyPath="_weight" value="Medium"/>
-                                                    </userDefinedRuntimeAttributes>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Aw, how sad. Be the first backer to leave a comment on this project." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3ek-DA-RY9">
-                                                    <rect key="frame" x="9" y="45" width="402" height="170"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                    <userDefinedRuntimeAttributes>
-                                                        <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Body"/>
-                                                    </userDefinedRuntimeAttributes>
-                                                </label>
-                                                <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UyG-xc-lpT">
-                                                    <rect key="frame" x="164" y="238" width="91" height="30"/>
-                                                    <inset key="contentEdgeInsets" minX="12" minY="6" maxX="12" maxY="6"/>
-                                                    <state key="normal" title="Comment"/>
-                                                    <userDefinedRuntimeAttributes>
-                                                        <userDefinedRuntimeAttribute type="string" keyPath="_color" value="Green"/>
-                                                        <userDefinedRuntimeAttribute type="string" keyPath="_borderColor" value="Clear"/>
-                                                        <userDefinedRuntimeAttribute type="string" keyPath="_titleColorNormal" value="White"/>
-                                                        <userDefinedRuntimeAttribute type="string" keyPath="_titleFontStyle" value="Body"/>
-                                                        <userDefinedRuntimeAttribute type="string" keyPath="_titleWeight" value="Medium"/>
-                                                    </userDefinedRuntimeAttributes>
-                                                    <connections>
-                                                        <action selector="emptyStateCommentButtonPressed" destination="q9l-Wg-1lg" eventType="touchUpInside" id="7kg-D2-LyS"/>
-                                                    </connections>
-                                                </button>
-                                            </subviews>
-                                        </stackView>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstItem="bBG-96-dtV" firstAttribute="leading" secondItem="a7T-OM-uDH" secondAttribute="leadingMargin" id="KLG-31-QZn"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="bBG-96-dtV" secondAttribute="trailing" id="jPr-yZ-rje"/>
-                                        <constraint firstAttribute="bottomMargin" secondItem="bBG-96-dtV" secondAttribute="bottom" id="uKu-mu-joO"/>
-                                        <constraint firstItem="bBG-96-dtV" firstAttribute="top" secondItem="a7T-OM-uDH" secondAttribute="topMargin" id="uTZ-Zc-dUI"/>
-                                    </constraints>
-                                    <edgeInsets key="layoutMargins" top="16" left="16" bottom="16" right="16"/>
-                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="leaveACommentButton" destination="oCo-Np-Afj" id="6lQ-iZ-6my"/>
+                                    <outlet property="loginButton" destination="IVI-02-UbI" id="x4x-rV-qqk"/>
+                                    <outlet property="rootStackView" destination="cVd-US-vZv" id="N5s-0p-SVf"/>
+                                    <outlet property="subtitleLabel" destination="9gh-od-HDY" id="8Q9-r0-sle"/>
+                                    <outlet property="titleLabel" destination="AZn-wj-Gtg" id="M4T-zJ-cxc"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>

@@ -16,7 +16,7 @@ public protocol CommentsViewModelInputs {
 
   /// Call with the project/update that we are viewing comments for. Both can be provided to minimize
   /// the number of API requests made, but it will be assumed we are viewing the comments for the update.
-  func project(project: Project?, update: Update?)
+  func configureWith(project project: Project?, update: Update?)
 
   ///  Call when pull-to-refresh is invoked.
   func refresh()
@@ -35,17 +35,11 @@ public protocol CommentsViewModelOutputs {
   /// Emits a list of comments that should be displayed.
   var dataSource: Signal<([Comment], Project, User?), NoError> { get }
 
-  /// Emits a boolean that determines if the comment button is visible.
-  var commentButtonVisible: Signal<Bool, NoError> { get }
+  /// Emits a boolean that determines if the comment bar button is visible.
+  var commentBarButtonVisible: Signal<Bool, NoError> { get }
 
-  /// Emits a boolean that determines if the logged-out empty state is visible.
-  var loggedOutEmptyStateVisible: Signal<Bool, NoError> { get }
-
-  /// Emits a boolean that determines if the logged-in, non-backer empty state is visible.
-  var nonBackerEmptyStateVisible: Signal<Bool, NoError> { get }
-
-  /// Emits a boolean that determines if the logged-in, backer empty state is visible.
-  var backerEmptyStateVisible: Signal<Bool, NoError> { get }
+  /// Emits a project and an update to display the empty state.
+  var emptyStateVisible: Signal<(Project, Update?), NoError> { get }
 
   /// Emits a project and optional update when the comment dialog should be presented.
   var presentPostCommentDialog: Signal<(Project, Update?), NoError> { get }
@@ -130,30 +124,18 @@ CommentsViewModelOutputs {
 
     self.commentsAreLoading = isLoading
 
-    self.loggedOutEmptyStateVisible = combineLatest(project, comments)
-      .map { project, comments in
-        project.personalization.isBacking == nil && comments.isEmpty
-      }
+    self.emptyStateVisible = combineLatest(comments, project, update)
+      .filter { comments, _, _ in comments.isEmpty }
+      .map { _, project, update in (project, update) }
+
+    let userCanComment = combineLatest(comments, project)
+      .map { comments, project in !comments.isEmpty && canComment(onProject: project) }
       .skipRepeats()
 
-    self.nonBackerEmptyStateVisible = combineLatest(project, comments)
-      .map { project, comments in
-        project.personalization.isBacking == false && comments.isEmpty
-      }
-      .skipRepeats()
-
-    self.backerEmptyStateVisible = combineLatest(project, comments)
-      .map { project, comments in
-        project.personalization.isBacking == true && comments.isEmpty
-      }
-      .skipRepeats()
-
-    let userCanComment = combineLatest(project, self.backerEmptyStateVisible)
-      .map { project, emptyStateVisible in
-        canComment(onProject: project) && !emptyStateVisible
-    }
-
-    self.commentButtonVisible = userCanComment
+    self.commentBarButtonVisible = Signal.merge(
+      self.viewDidLoadProperty.signal.mapConst(false),
+      userCanComment
+      )
       .skipRepeats()
 
     self.presentPostCommentDialog = combineLatest(project, update)
@@ -215,7 +197,7 @@ CommentsViewModelOutputs {
   }
 
   private let projectAndUpdateProperty = MutableProperty<(Project?, Update?)?>(nil)
-  public func project(project: Project?, update: Update?) {
+  public func configureWith(project project: Project?, update: Update?) {
     self.projectAndUpdateProperty.value = (project, update)
   }
 
@@ -239,13 +221,11 @@ CommentsViewModelOutputs {
     self.willDisplayRowProperty.value = (row, totalRows)
   }
 
-  public let backerEmptyStateVisible: Signal<Bool, NoError>
   public let closeLoginTout: Signal<(), NoError>
-  public let commentButtonVisible: Signal<Bool, NoError>
+  public let commentBarButtonVisible: Signal<Bool, NoError>
   public let commentsAreLoading: Signal<Bool, NoError>
   public let dataSource: Signal<([Comment], Project, User?), NoError>
-  public let loggedOutEmptyStateVisible: Signal<Bool, NoError>
-  public let nonBackerEmptyStateVisible: Signal<Bool, NoError>
+  public var emptyStateVisible: Signal<(Project, Update?), NoError>
   public let openLoginTout: Signal<(), NoError>
   public let presentPostCommentDialog: Signal<(Project, Update?), NoError>
 

@@ -153,6 +153,11 @@
 		597582E41D5D12AE008765DE /* SettingsStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 597582E21D5D12AE008765DE /* SettingsStyles.swift */; };
 		5981BE101D7F4656002E49F1 /* CommentStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5981BE0F1D7F4656002E49F1 /* CommentStyles.swift */; };
 		5981BE111D7F4656002E49F1 /* CommentStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5981BE0F1D7F4656002E49F1 /* CommentStyles.swift */; };
+		5981BE431D7F59DE002E49F1 /* CommentsEmptyStateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5981BE421D7F59DE002E49F1 /* CommentsEmptyStateCell.swift */; };
+		5981BE451D7F61C0002E49F1 /* CommentsEmptyStateCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5981BE441D7F61C0002E49F1 /* CommentsEmptyStateCellViewModel.swift */; };
+		5981BE461D7F61C0002E49F1 /* CommentsEmptyStateCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5981BE441D7F61C0002E49F1 /* CommentsEmptyStateCellViewModel.swift */; };
+		5981BE681D7F86C8002E49F1 /* CommentsEmptyStateCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5981BE671D7F86C8002E49F1 /* CommentsEmptyStateCellViewModelTests.swift */; };
+		5981BE691D7F86C8002E49F1 /* CommentsEmptyStateCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5981BE671D7F86C8002E49F1 /* CommentsEmptyStateCellViewModelTests.swift */; };
 		5981BF1B1D81BA6D002E49F1 /* ActivitySuccessViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5981BF1A1D81BA6D002E49F1 /* ActivitySuccessViewModelTests.swift */; };
 		5981BF1C1D81BA6D002E49F1 /* ActivitySuccessViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5981BF1A1D81BA6D002E49F1 /* ActivitySuccessViewModelTests.swift */; };
 		5981BF4E1D81CE1C002E49F1 /* ActivityUpdateViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5981BF4D1D81CE1C002E49F1 /* ActivityUpdateViewModelTests.swift */; };
@@ -1598,6 +1603,9 @@
 		597073BF1D0760F200B00444 /* ProjectNotificationCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectNotificationCellViewModelTests.swift; sourceTree = "<group>"; };
 		597582E21D5D12AE008765DE /* SettingsStyles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsStyles.swift; sourceTree = "<group>"; };
 		5981BE0F1D7F4656002E49F1 /* CommentStyles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentStyles.swift; sourceTree = "<group>"; };
+		5981BE421D7F59DE002E49F1 /* CommentsEmptyStateCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsEmptyStateCell.swift; sourceTree = "<group>"; };
+		5981BE441D7F61C0002E49F1 /* CommentsEmptyStateCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsEmptyStateCellViewModel.swift; sourceTree = "<group>"; };
+		5981BE671D7F86C8002E49F1 /* CommentsEmptyStateCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsEmptyStateCellViewModelTests.swift; sourceTree = "<group>"; };
 		5981BF1A1D81BA6D002E49F1 /* ActivitySuccessViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivitySuccessViewModelTests.swift; sourceTree = "<group>"; };
 		5981BF4D1D81CE1C002E49F1 /* ActivityUpdateViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityUpdateViewModelTests.swift; sourceTree = "<group>"; };
 		598D96821D417905003F3F66 /* ActivitySampleBackingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivitySampleBackingCell.swift; sourceTree = "<group>"; };
@@ -2460,6 +2468,7 @@
 				A773531E1D5E8AEF0017E239 /* MostPopularSearchProjectCell.swift */,
 				A74382041D3458C900040A95 /* PaddingCell.swift */,
 				599603D21CE5220900E1B1EC /* ProfileEmptyStateCell.swift */,
+				5981BE421D7F59DE002E49F1 /* CommentsEmptyStateCell.swift */,
 				59B6B7091CCEBC1000953319 /* ProfileProjectCell.swift */,
 				9D9F57CB1D131AF200CE81DE /* ProjectActivityBackingCell.swift */,
 				9D2546F71D23101E0053844D /* ProjectActivityCommentCell.swift */,
@@ -2652,6 +2661,7 @@
 				A7830CE01D005C3F00B5B6AE /* CommentCellViewModelTests.swift */,
 				A7830CE11D005C3F00B5B6AE /* CommentDialogViewModelTests.swift */,
 				A7830CE21D005C3F00B5B6AE /* CommentsViewModelTests.swift */,
+				5981BE671D7F86C8002E49F1 /* CommentsEmptyStateCellViewModelTests.swift */,
 				59B0E00B1D12144A0081D2DC /* DashboardActionCellViewModelTests.swift */,
 				593AC6031D33F996002613F4 /* DashboardFundingCellViewModelTests.swift */,
 				01FD71861D36BE1A00070BAC /* DashboardProjectsDrawerCellViewModelTests.swift */,
@@ -3230,6 +3240,7 @@
 				9D0FB7741D7600B5005774F2 /* CheckoutRacingViewModel.swift */,
 				9DDE1F731D5926D80092D9A5 /* CheckoutViewModel.swift */,
 				A7F441941D005A9400FE6FC5 /* CommentCellViewModel.swift */,
+				5981BE441D7F61C0002E49F1 /* CommentsEmptyStateCellViewModel.swift */,
 				A7F441951D005A9400FE6FC5 /* CommentDialogViewModel.swift */,
 				A7F441961D005A9400FE6FC5 /* CommentsViewModel.swift */,
 				59B0E0051D1207070081D2DC /* DashboardActionCellViewModel.swift */,
@@ -4224,6 +4235,7 @@
 				0156B3751D0F7524000C4252 /* ActivityFriendFollowCellViewModel.swift in Sources */,
 				013F2FDC1D66243E0066DB77 /* DiscoveryNavigationHeaderViewModel.swift in Sources */,
 				A79BF81F1D11F6AF004C0445 /* Strings.swift in Sources */,
+				5981BE451D7F61C0002E49F1 /* CommentsEmptyStateCellViewModel.swift in Sources */,
 				A73379451D0E36A600C91445 /* Colors.swift in Sources */,
 				01C7CDB11D13462500D9E0D1 /* DashboardRewardRowStackViewViewModel.swift in Sources */,
 				5981BE101D7F4656002E49F1 /* CommentStyles.swift in Sources */,
@@ -4414,6 +4426,7 @@
 				A761275E1C93052400EDCCB9 /* CGColorRef.swift in Sources */,
 				A755119C1C8645A0005355CF /* UILabel+IBClearTests.swift in Sources */,
 				A7830CFE1D005C3F00B5B6AE /* CommentCellViewModelTests.swift in Sources */,
+				5981BE681D7F86C8002E49F1 /* CommentsEmptyStateCellViewModelTests.swift in Sources */,
 				59392C211D70A117001C99A4 /* ProjectUpdatesViewModelTests.swift in Sources */,
 				A71F59E51D240CAF00909BE3 /* NavigationTests.swift in Sources */,
 				9D89B7FA1D6CC2AD0021F6FF /* WebModalViewModelTests.swift in Sources */,
@@ -4665,6 +4678,7 @@
 				A76126B61C90C94000EDCCB9 /* SimpleViewModel.swift in Sources */,
 				A79BF8201D11F6AF004C0445 /* Strings.swift in Sources */,
 				A72E75981CC313A400983066 /* ValueCell.swift in Sources */,
+				5981BE461D7F61C0002E49F1 /* CommentsEmptyStateCellViewModel.swift in Sources */,
 				9D14FFC71D135C12005F4ABB /* ProjectActivityUpdateCellViewModel.swift in Sources */,
 				A7F441CA1D005A9400FE6FC5 /* MessageDialogViewModel.swift in Sources */,
 				A72C3A961D00F6C70075227E /* DiscoveryPageViewModel.swift in Sources */,
@@ -4785,6 +4799,7 @@
 				A7AD548B1D4682C20016B4C2 /* ProjectDescriptionViewModelTests.swift in Sources */,
 				597073C41D07626800B00444 /* ProjectNotificationCellViewModelTests.swift in Sources */,
 				018422C81D2C48E300CA7566 /* DashboardTitleViewViewModelTests.swift in Sources */,
+				5981BE691D7F86C8002E49F1 /* CommentsEmptyStateCellViewModelTests.swift in Sources */,
 				A7DC839A1C9DBEFA00BB2B44 /* RefTagTests.swift in Sources */,
 				A7830D031D005C3F00B5B6AE /* CommentsViewModelTests.swift in Sources */,
 				01EFBCB41C920A7E0094EEC2 /* BorderButtonTests.swift in Sources */,
@@ -4827,6 +4842,7 @@
 				A74FFDF01CE3E33300C7BCB9 /* MessageDialogViewController.swift in Sources */,
 				9D525F101D4158BA003CAE04 /* ProjectActivityDateCell.swift in Sources */,
 				A7208C961CCBD76300E3DAB3 /* ActivityEmptyStateCell.swift in Sources */,
+				5981BE431D7F59DE002E49F1 /* CommentsEmptyStateCell.swift in Sources */,
 				A747A7DF1D454E8500AF199A /* RewardsViewController.swift in Sources */,
 				A762EFF31C8CC663005581A4 /* ActivityFriendFollowCell.swift in Sources */,
 				59019FBA1D21ABD200EAEC9D /* DashboardReferrerRowStackView.swift in Sources */,
