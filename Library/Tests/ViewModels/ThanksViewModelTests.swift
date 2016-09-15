@@ -584,13 +584,7 @@ final class ThanksViewModelTests: TestCase {
 
       scheduler.advance()
 
-      showRecommendations.assertValues([
-        [
-          .template |> Project.lens.id .~ 1,
-          .template |> Project.lens.id .~ 2,
-          .template |> Project.lens.id .~ 5
-        ]
-      ], "Three non-repeating projects emit")
+      showRecommendations.assertValueCount(1, "Recommended projects emit, shuffled.")
     }
   }
 

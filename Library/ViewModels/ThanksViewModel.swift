@@ -304,6 +304,7 @@ private func relatedProjects(toProject project: Project, inCategory category: Ks
     let base = DiscoveryParams.lens.perPage .~ 3 <> DiscoveryParams.lens.backed .~ false
 
     let recommendedParams = DiscoveryParams.defaults |> base
+      |> DiscoveryParams.lens.perPage .~ 6
       |> DiscoveryParams.lens.recommended .~ true
 
     let similarToParams = DiscoveryParams.defaults |> base
@@ -315,7 +316,7 @@ private func relatedProjects(toProject project: Project, inCategory category: Ks
 
     let recommendedProjects = AppEnvironment.current.apiService.fetchDiscovery(params: recommendedParams)
       .demoteErrors()
-      .map { $0.projects }
+      .map { shuffle(projects: $0.projects) }
       .uncollect()
 
     let similarToProjects = AppEnvironment.current.apiService.fetchDiscovery(params: similarToParams)
@@ -332,4 +333,24 @@ private func relatedProjects(toProject project: Project, inCategory category: Ks
       .uniqueValues { $0.id }
       .take(3)
       .collect()
+}
+
+// Shuffle an array without mutating the input argument.
+// Based on the Fisher-Yates shuffle algorithm https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle.
+private func shuffle(projects xs: [Project]) -> [Project] {
+  var ys = xs
+  let length = ys.count
+
+  if length > 1 {
+    for i in 0...length - 1 {
+      let j = Int(arc4random_uniform(UInt32(length - 1)))
+      let temp = ys[i]
+      ys[i] = ys[j]
+      ys[j] = temp
+    }
+    return ys
+
+  } else {
+    return xs
+  }
 }
