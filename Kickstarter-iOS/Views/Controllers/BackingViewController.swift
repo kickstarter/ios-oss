@@ -137,6 +137,12 @@ internal final class BackingViewController: UIViewController {
       .observeNext { [weak self] project, backing in
         self?.goToMessages(project: project, backing: backing)
     }
+
+    self.viewModel.outputs.goToMessageCreator
+      .observeForControllerAction()
+      .observeNext { [weak self] messageSubject, context in
+        self?.goToMessageCreator(messageSubject: messageSubject, context: context)
+    }
   }
 
   @objc private func messageCreatorTapped(button: UIButton) {
@@ -150,5 +156,24 @@ internal final class BackingViewController: UIViewController {
   private func goToMessages(project project: Project, backing: Backing) {
     let vc = MessagesViewController.configuredWith(project: project, backing: backing)
     self.navigationController?.pushViewController(vc, animated: true)
+  }
+
+  private func goToMessageCreator(messageSubject messageSubject: MessageSubject,
+                                                 context: Koala.MessageDialogContext) {
+    let vc = MessageDialogViewController.configuredWith(messageSubject: messageSubject, context: context)
+    vc.modalPresentationStyle = .FormSheet
+    vc.delegate = self
+    self.presentViewController(UINavigationController(rootViewController: vc),
+                               animated: true,
+                               completion: nil)
+  }
+}
+
+extension BackingViewController: MessageDialogViewControllerDelegate {
+  internal func messageDialogWantsDismissal(dialog: MessageDialogViewController) {
+    dialog.dismissViewControllerAnimated(true, completion: nil)
+  }
+
+  internal func messageDialog(dialog: MessageDialogViewController, postedMessage message: Message) {
   }
 }

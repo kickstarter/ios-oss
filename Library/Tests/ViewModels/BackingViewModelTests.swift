@@ -26,6 +26,8 @@ internal final class BackingViewModelTests: TestCase {
   internal let backerShippingDescriptionAccessibilityLabel = TestObserver<String, NoError>()
   internal let goToMessagesBacking = TestObserver<Backing, NoError>()
   internal let goToMessagesProject = TestObserver<Project, NoError>()
+  internal let goToMessageCreatorSubject = TestObserver<MessageSubject, NoError>()
+  internal let goToMessageCreatorContext = TestObserver<Koala.MessageDialogContext, NoError>()
   internal let presentMessageDialog = TestObserver<MessageThread, NoError>()
 
   override func setUp() {
@@ -53,6 +55,8 @@ internal final class BackingViewModelTests: TestCase {
       .observe(backerShippingDescriptionAccessibilityLabel.observer)
     self.vm.outputs.goToMessages.map(first).observe(goToMessagesProject.observer)
     self.vm.outputs.goToMessages.map(second).observe(goToMessagesBacking.observer)
+    self.vm.outputs.goToMessageCreator.map(first).observe(goToMessageCreatorSubject.observer)
+    self.vm.outputs.goToMessageCreator.map(second).observe(goToMessageCreatorContext.observer)
   }
 
   func testBackerAvatarURL() {
@@ -307,6 +311,25 @@ internal final class BackingViewModelTests: TestCase {
 
       self.goToMessagesProject.assertValues([project])
       self.goToMessagesBacking.assertValues([backing])
+    }
+  }
+
+  func testGoToMessageCreator() {
+    let project = Project.template
+    let backing = Backing.template
+
+    withEnvironment(apiService: MockService(fetchBackingResponse: backing)) {
+      self.vm.inputs.configureWith(project: project, backer: nil)
+
+      self.vm.inputs.viewDidLoad()
+
+      self.goToMessageCreatorSubject.assertDidNotEmitValue()
+      self.goToMessageCreatorContext.assertDidNotEmitValue()
+
+      self.vm.inputs.messageCreatorTapped()
+
+      self.goToMessageCreatorSubject.assertValues([.backing(backing)])
+      self.goToMessageCreatorContext.assertValues([.backerModel])
     }
   }
 

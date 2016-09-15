@@ -66,6 +66,9 @@ public protocol BackingViewModelOutputs {
 
   /// Emits with the project when should go to messages screen.
   var goToMessages: Signal<(Project, Backing), NoError> { get }
+
+  /// Emits with the project when should go to message creator screen.
+  var goToMessageCreator: Signal<(MessageSubject, Koala.MessageDialogContext), NoError> { get }
 }
 
 public protocol BackingViewModelType {
@@ -147,6 +150,10 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
 
     self.goToMessages = projectAndBacking.takeWhen(self.viewMessagesTappedProperty.signal)
 
+    self.goToMessageCreator = backing
+      .takeWhen(self.messageCreatorTappedProperty.signal)
+      .map { (MessageSubject.backing($0), .backerModel) }
+
     project
       .takeWhen(self.viewDidLoadProperty.signal)
       .observeNext { AppEnvironment.current.koala.trackViewedPledge(forProject: $0) }
@@ -189,6 +196,7 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
   public let backerShippingDescription: Signal<String, NoError>
   public let backerShippingDescriptionAccessibilityLabel: Signal<String, NoError>
   public let goToMessages: Signal<(Project, Backing), NoError>
+  public let goToMessageCreator: Signal<(MessageSubject, Koala.MessageDialogContext), NoError>
 
   public var inputs: BackingViewModelInputs { return self }
   public var outputs: BackingViewModelOutputs { return self }
