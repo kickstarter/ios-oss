@@ -39,16 +39,22 @@ internal final class DiscoveryExpandedSelectableRowCell: UITableViewCell, ValueC
   }
 
   internal func animateIn(delayOffset delayOffset: Int) {
-    self.contentView.frame.origin.y -= 50
-    let delay = 0.0 + (0.01 * Double(delayOffset))
+    self.contentView.transform = CGAffineTransformMakeTranslation(0.0, 50.0)
+    self.alpha = 0
+    let delay = 0.03 * Double(delayOffset)
 
-    UIView.animateWithDuration(0.2,
+    UIView.animateWithDuration(0.3, delay: delay, options: .CurveEaseOut, animations: {
+        self.alpha = 1
+      },
+      completion: nil)
+
+    UIView.animateWithDuration(0.3,
                                delay: delay,
                                usingSpringWithDamping: 0.7,
                                initialSpringVelocity: 1.0,
                                options: .CurveEaseOut,
                                animations: {
-                                self.contentView.frame.origin.y += 50
+                                self.contentView.transform = CGAffineTransformIdentity
                                 },
                                completion: nil)
   }

@@ -75,9 +75,21 @@ internal final class DiscoveryFiltersDataSource: ValueCellDataSource {
 
   internal func indexPath(forCategoryId categoryId: Int?) -> NSIndexPath? {
     for (idx, value) in self[section: Section.categories.rawValue].enumerate() {
-      guard let rowAndId = value as? (ExpandableRow, Int?) else { continue }
-      if rowAndId.0.params.category?.id == categoryId {
+      guard let (row, _) = value as? (ExpandableRow, Int?) else { continue }
+      if row.params.category?.id == categoryId {
         return NSIndexPath(forItem: idx, inSection: Section.categories.rawValue)
+      }
+    }
+
+    return nil
+  }
+
+  internal func expandedRow() -> Int? {
+    for (idx, value) in self[section: Section.categories.rawValue].enumerate() {
+      guard let (row, _) = value as? (ExpandableRow, Int?) else { continue }
+
+      if row.isExpanded {
+        return idx
       }
     }
 

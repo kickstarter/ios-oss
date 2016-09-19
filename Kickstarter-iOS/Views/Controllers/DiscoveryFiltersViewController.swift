@@ -111,7 +111,9 @@ internal final class DiscoveryFiltersViewController: UIViewController, UITableVi
     guard self.viewModel.outputs.shouldAnimateSelectableCell else { return }
 
     guard let cell = cell as? DiscoveryExpandedSelectableRowCell else { return }
-    cell.animateIn(delayOffset: indexPath.row)
+
+    let delay = indexPath.row - (self.dataSource.expandedRow() ?? 0)
+    cell.animateIn(delayOffset: delay)
   }
 
   private func animateIn(categoryId categoryId: Int?) {
