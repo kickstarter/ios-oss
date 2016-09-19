@@ -19,6 +19,7 @@ internal final class ProjectActivityCommentCell: UITableViewCell, ValueCell {
   @IBOutlet private weak var bodyView: UIView!
   @IBOutlet private weak var bulletSeparatorView: UIView!
   @IBOutlet private weak var cardView: UIView!
+  @IBOutlet private weak var containerStackView: UIStackView!
   @IBOutlet private weak var footerDividerView: UIView!
   @IBOutlet private weak var footerStackView: UIStackView!
   @IBOutlet private weak var headerDividerView: UIView!
@@ -90,34 +91,52 @@ internal final class ProjectActivityCommentCell: UITableViewCell, ValueCell {
   internal override func bindStyles() {
     super.bindStyles()
 
-    self |> baseTableViewCellStyle()
+    self
+      |> baseTableViewCellStyle()
+      |> ProjectActivityCommentCell.lens.contentView.layoutMargins %~~ { layoutMargins, cell in
+        cell.traitCollection.isRegularRegular
+          ? projectActivityRegularRegularLayoutMargins
+          : layoutMargins
+      }
       |> UITableViewCell.lens.accessibilityHint %~ { _ in Strings.Opens_comments() }
-
-    self.replyButton
-      |> projectActivityFooterButton
-      |> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.dashboard_activity_reply() }
-
-    self.bodyLabel
-      |> UILabel.lens.textColor .~ .ksr_text_navy_700
-      |> UILabel.lens.font .~ .ksr_body(size: 14)
-
-    self.bodyView |> UIView.lens.layoutMargins .~ .init(topBottom: 20, leftRight: 12)
-
-    self.bulletSeparatorView |> projectActivityBulletSeparatorViewStyle
-
-    self.cardView |> projectActivityCardStyle
-
-    self.footerDividerView |> projectActivityDividerViewStyle
-
-    self.footerStackView |> projectActivityFooterStackViewStyle
-
-    self.headerDividerView |> projectActivityDividerViewStyle
-
-    self.headerStackView |> projectActivityHeaderStackViewStyle
 
     self.backingButton
       |> projectActivityFooterButton
       |> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.dashboard_activity_pledge_info() }
+
+    self.bodyLabel
+      |> UILabel.lens.textColor .~ .ksr_text_navy_700
+      |> UILabel.lens.font %~~ { _, label in
+          label.traitCollection.isRegularRegular
+            ? UIFont.ksr_body()
+            : UIFont.ksr_body(size: 14)
+      }
+
+    self.bodyView
+      |> UIView.lens.layoutMargins .~ .init(topBottom: Styles.grid(3), leftRight: Styles.grid(2))
+
+    self.bulletSeparatorView
+      |> projectActivityBulletSeparatorViewStyle
+
+    self.cardView
+      |> dropShadowStyle()
+
+    self.footerDividerView
+      |> projectActivityDividerViewStyle
+
+    self.footerStackView
+      |> projectActivityFooterStackViewStyle
+      |> UIStackView.lens.layoutMargins .~ .init(all: Styles.grid(2))
+
+    self.headerDividerView
+      |> projectActivityDividerViewStyle
+
+    self.headerStackView
+      |> projectActivityHeaderStackViewStyle
+
+    self.replyButton
+      |> projectActivityFooterButton
+      |> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.dashboard_activity_reply() }
   }
 
   @objc private func backingButtonPressed(button: UIButton) {

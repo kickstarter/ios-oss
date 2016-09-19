@@ -17,11 +17,19 @@ internal final class ProjectActivityDateCell: UITableViewCell, ValueCell {
 
   internal override func bindStyles() {
     super.bindStyles()
-
     self
       |> baseTableViewCellStyle()
-      |> (UITableViewCell.lens.contentView • UIView.lens.layoutMargins)
-        .~ .init(top: 24, left: 16, bottom: 4, right: 16)
+
+      |> ProjectActivityDateCell.lens.contentView.layoutMargins %~~ { layoutMargins, cell in
+        cell.traitCollection.isRegularRegular
+          ? .init(
+            top: Styles.grid(4),
+            left: projectActivityRegularRegularLeftRight,
+            bottom: 0,
+            right: projectActivityRegularRegularLeftRight
+            )
+          : .init(top: Styles.grid(4), left: Styles.grid(2), bottom: Styles.grid(1), right: Styles.grid(2))
+      }
 
     self.dateLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 13)

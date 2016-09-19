@@ -17,9 +17,11 @@ internal final class ProjectActivityBackingCellViewModelTests: TestCase {
   private let pledgeAmount = TestObserver<String, NoError>()
   private let pledgeAmountLabelIsHidden = TestObserver<Bool, NoError>()
   private let pledgeAmountsStackViewIsHidden = TestObserver<Bool, NoError>()
+  private let pledgeDetailsSeparatorStackViewIsHidden = TestObserver<Bool, NoError>()
   private let previousPledgeAmount = TestObserver<String, NoError>()
   private let previousPledgeAmountLabelIsHidden = TestObserver<Bool, NoError>()
   private let reward = TestObserver<String, NoError>()
+  private let rewardLabelIsHidden = TestObserver<Bool, NoError>()
   private let title = TestObserver<String, NoError>()
 
   internal override func setUp() {
@@ -33,9 +35,12 @@ internal final class ProjectActivityBackingCellViewModelTests: TestCase {
     self.vm.outputs.pledgeAmount.observe(self.pledgeAmount.observer)
     self.vm.outputs.pledgeAmountLabelIsHidden.observe(self.pledgeAmountLabelIsHidden.observer)
     self.vm.outputs.pledgeAmountsStackViewIsHidden.observe(self.pledgeAmountsStackViewIsHidden.observer)
+    self.vm.outputs.pledgeDetailsSeparatorStackViewIsHidden
+      .observe(self.pledgeDetailsSeparatorStackViewIsHidden.observer)
     self.vm.outputs.previousPledgeAmount.observe(self.previousPledgeAmount.observer)
     self.vm.outputs.previousPledgeAmountLabelIsHidden.observe(self.previousPledgeAmountLabelIsHidden.observer)
     self.vm.outputs.reward.observe(self.reward.observer)
+    self.vm.outputs.rewardLabelIsHidden.observe(self.rewardLabelIsHidden.observer)
     self.vm.outputs.title.observe(self.title.observer)
 
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: self.defaultUser))
@@ -203,6 +208,50 @@ internal final class ProjectActivityBackingCellViewModelTests: TestCase {
     self.pledgeAmountLabelIsHidden.assertValues([false, true], "Hidden when there's no amount")
   }
 
+  func testPledgeDetailsSeparatorStackViewIsHidden() {
+    let reward1 = .template
+      |> Reward.lens.description .~ "Super sick"
+      |> Reward.lens.id .~ 19
+      |> Reward.lens.title .~ "Sick Skull Graphic Skateboard"
+
+    let project = .template
+      |> Project.lens.rewards .~ [.noReward, reward1]
+
+    let activity1 = .template
+      |> Activity.lens.category .~ .backing
+      |> Activity.lens.memberData.rewardId .~ 19
+      |> Activity.lens.memberData.amount .~ 5
+      |> Activity.lens.project .~ project
+
+    self.vm.inputs.configureWith(activity: activity1, project: project)
+    self.pledgeDetailsSeparatorStackViewIsHidden.assertValues(
+      [false],
+      "Not hidden when activity has reward and amount"
+    )
+
+    let activity2 = .template
+      |> Activity.lens.category .~ .backing
+      |> Activity.lens.memberData.rewardId .~ 19
+      |> Activity.lens.project .~ project
+
+    self.vm.inputs.configureWith(activity: activity2, project: project)
+    self.pledgeDetailsSeparatorStackViewIsHidden.assertValues(
+      [false, true],
+      "Hidden when activity has reward but no amount"
+    )
+
+    let activity3 = .template
+      |> Activity.lens.category .~ .backing
+      |> Activity.lens.memberData.amount .~ 5
+      |> Activity.lens.project .~ project
+
+    self.vm.inputs.configureWith(activity: activity3, project: project)
+    self.pledgeDetailsSeparatorStackViewIsHidden.assertValues(
+      [false, true],
+      "Hidden when activity has reward but no amount"
+    )
+  }
+
   func testPreviousPledgeAmount() {
     let project = Project.template
     let activity = .template
@@ -259,6 +308,7 @@ internal final class ProjectActivityBackingCellViewModelTests: TestCase {
     self.vm.inputs.configureWith(activity: activity1, project: project)
     let expected1 = Strings.dashboard_activity_reward_name(reward_name: reward1.title!)
     self.reward.assertValues([expected1], "Should emit reward title if present")
+    self.rewardLabelIsHidden.assertValues([false])
 
     let activity2 = .template
       |> Activity.lens.category .~ .backing
@@ -269,6 +319,7 @@ internal final class ProjectActivityBackingCellViewModelTests: TestCase {
     let expected2 = Strings.dashboard_activity_reward_name(reward_name: reward2.description)
     self.reward.assertValues([expected1, expected2],
                              "Should emit reward description if title not present")
+    self.rewardLabelIsHidden.assertValues([false, false])
 
     let activity3 = .template
       |> Activity.lens.category .~ .backing
@@ -278,6 +329,17 @@ internal final class ProjectActivityBackingCellViewModelTests: TestCase {
     self.vm.inputs.configureWith(activity: activity3, project: project)
     let expected3 = Strings.dashboard_activity_no_reward_selected()
     self.reward.assertValues([expected1, expected2, expected3], "Should emit no reward selected")
+    self.rewardLabelIsHidden.assertValues([false, false, false])
+
+    let activity4 = .template
+      |> Activity.lens.category .~ .backingAmount
+      |> Activity.lens.memberData.oldAmount .~ 5
+      |> Activity.lens.memberData.newAmount .~ 10
+      |> Activity.lens.project .~ project
+
+    self.vm.inputs.configureWith(activity: activity4, project: project)
+    self.reward.assertValues([expected1, expected2, expected3, ""])
+    self.rewardLabelIsHidden.assertValues([false, false, false, true])
   }
 
   func testTitleBacking() {

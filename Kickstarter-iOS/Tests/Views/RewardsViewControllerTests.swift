@@ -30,7 +30,7 @@ internal final class RewardsViewControllerTests: TestCase {
       |> Project.lens.personalization.backing .~ (
         .template |> Backing.lens.rewardId .~ 1
     )
-    AppEnvironment.replaceCurrentEnvironment(
+    AppEnvironment.pushEnvironment(
       apiService: MockService(
         oauthToken: OauthToken(token: "deadbeef"),
         fetchProjectResponse: project
@@ -50,5 +50,7 @@ internal final class RewardsViewControllerTests: TestCase {
         FBSnapshotVerifyView(parent.view, identifier: "Rewards - \(language) - \(country)")
       }
     }
+
+    AppEnvironment.popEnvironment()
   }
 }

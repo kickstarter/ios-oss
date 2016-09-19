@@ -9,6 +9,10 @@ import XCPlayground
 // Setting `isVoiceOverRunning` to `true` outputs a date before every activity.
 let isVoiceOverRunning = false
 
+let device = Device.phone5_5inch
+let orientation = Orientation.portrait
+
+
 
 let project = Project.cosmicSurgery
 
@@ -80,6 +84,7 @@ initialize()
 let controller = ProjectActivitiesViewController.configuredWith(project: project)
 controller.bindViewModel()
 
-XCPlaygroundPage.currentPage.liveView = controller
-controller.view
-  |> UIView.lens.frame.size.height .~ 1_600
+let (parent, _) = playgroundControllers(device: device, orientation: orientation, child: controller)
+let frame = parent.view.frame
+XCPlaygroundPage.currentPage.liveView = parent
+parent.view.frame = frame

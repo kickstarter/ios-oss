@@ -36,11 +36,18 @@ internal final class ProjectActivityLaunchCell: UITableViewCell, ValueCell {
   internal override func bindStyles() {
     super.bindStyles()
 
-    self |> baseTableViewCellStyle()
+    self
+      |> baseTableViewCellStyle()
+      |> ProjectActivityLaunchCell.lens.contentView.layoutMargins %~~ { layoutMargins, cell in
+        cell.traitCollection.isRegularRegular
+          ? projectActivityRegularRegularLayoutMargins
+          : layoutMargins
+      }
       |> UITableViewCell.lens.accessibilityHint %~ { _ in Strings.Opens_project() }
 
     self.cardView
       |> cardStyle()
-      <> UIView.lens.layer.borderColor .~ UIColor.ksr_navy_700.CGColor
+      |> dropShadowStyle()
+      |> UIView.lens.layer.borderColor .~ UIColor.ksr_navy_700.CGColor
   }
 }

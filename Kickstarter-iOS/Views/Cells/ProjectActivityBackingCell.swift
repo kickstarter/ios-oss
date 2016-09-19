@@ -24,6 +24,7 @@ internal final class ProjectActivityBackingCell: UITableViewCell, ValueCell {
   @IBOutlet private weak var pledgeAmountLabel: UILabel!
   @IBOutlet private weak var pledgeAmountLabelsStackView: UIStackView!
   @IBOutlet private weak var pledgeAmountsStackView: UIView!
+  @IBOutlet private weak var pledgeDetailsSeparatorView: UIView!
   @IBOutlet private weak var pledgeDetailsStackView: UIStackView!
   @IBOutlet private weak var previousPledgeAmountLabel: UILabel!
   @IBOutlet private weak var previousPledgeStrikethroughView: UIView!
@@ -46,6 +47,7 @@ internal final class ProjectActivityBackingCell: UITableViewCell, ValueCell {
                                         project: activityAndProject.1)
   }
 
+  // swiftlint:disable function_body_length
   internal override func bindViewModel() {
     super.bindViewModel()
 
@@ -81,15 +83,21 @@ internal final class ProjectActivityBackingCell: UITableViewCell, ValueCell {
 
     self.pledgeAmountsStackView.rac.hidden = self.viewModel.outputs.pledgeAmountsStackViewIsHidden
 
+    self.pledgeDetailsSeparatorView.rac.hidden =
+      self.viewModel.outputs.pledgeDetailsSeparatorStackViewIsHidden
+
     self.previousPledgeAmountLabel.rac.hidden = self.viewModel.outputs.previousPledgeAmountLabelIsHidden
 
     self.previousPledgeAmountLabel.rac.text = self.viewModel.outputs.previousPledgeAmount
+
+    self.rewardLabel.rac.hidden = self.viewModel.outputs.rewardLabelIsHidden
 
     self.viewModel.outputs.reward.observeForUI()
       .observeNext { [weak rewardLabel] title in
         guard let rewardLabel = rewardLabel else { return }
 
-        rewardLabel.attributedText = title.simpleHtmlAttributedString(font: .ksr_body(size: 12),
+        rewardLabel.attributedText = title.simpleHtmlAttributedString(
+          font: .ksr_body(size: 12),
           bold: UIFont.ksr_body(size: 12).bolded,
           italic: nil
         )
@@ -111,45 +119,60 @@ internal final class ProjectActivityBackingCell: UITableViewCell, ValueCell {
         titleLabel |> projectActivityTitleLabelStyle
     }
   }
+  // swiftlint:enable function_body_length
 
   internal override func bindStyles() {
     super.bindStyles()
 
-    self |> baseTableViewCellStyle()
+    self
+      |> baseTableViewCellStyle()
+      |> ProjectActivityBackingCell.lens.contentView.layoutMargins %~~ { layoutMargins, cell in
+        cell.traitCollection.isRegularRegular
+          ? projectActivityRegularRegularLayoutMargins
+          : layoutMargins
+      }
       |> UITableViewCell.lens.accessibilityHint %~ { _ in Strings.Opens_pledge_info() }
-
-    self.bulletSeparatorView |> projectActivityBulletSeparatorViewStyle
-
-    self.cardView |> projectActivityCardStyle
-
-    self.footerStackView |> projectActivityFooterStackViewStyle
-
-    self.footerDividerView |> projectActivityDividerViewStyle
-
-    self.headerDividerView |> projectActivityDividerViewStyle
-
-    self.headerStackView |> projectActivityHeaderStackViewStyle
-
-    self.pledgeAmountLabel
-      |> UILabel.lens.textColor .~ .ksr_text_green_700
-      |> UILabel.lens.font .~ .ksr_callout(size: 24)
-
-    self.pledgeAmountLabelsStackView |> UIStackView.lens.spacing .~ 10
-
-    self.pledgeDetailsStackView
-      |> UIStackView.lens.layoutMargins .~ .init(topBottom: 14, leftRight: 12)
-      <> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
-      <> UIStackView.lens.spacing .~ 10
 
     self.backingButton
       |> projectActivityFooterButton
       |> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.dashboard_activity_pledge_info() }
 
+    self.bulletSeparatorView
+      |> projectActivityBulletSeparatorViewStyle
+
+    self.cardView
+      |> dropShadowStyle()
+
+    self.footerDividerView
+      |> projectActivityDividerViewStyle
+
+    self.footerStackView
+      |> projectActivityFooterStackViewStyle
+      |> UIStackView.lens.layoutMargins .~ .init(all: Styles.grid(2))
+
+    self.headerDividerView
+      |> projectActivityDividerViewStyle
+
+    self.headerStackView
+      |> projectActivityHeaderStackViewStyle
+
+    self.pledgeAmountLabel
+      |> UILabel.lens.textColor .~ .ksr_text_green_700
+      |> UILabel.lens.font .~ .ksr_callout(size: 24)
+
+    self.pledgeAmountLabelsStackView
+      |> UIStackView.lens.spacing .~ Styles.grid(2)
+
+    self.pledgeDetailsStackView
+      |> UIStackView.lens.layoutMargins .~ .init(topBottom: Styles.grid(3), leftRight: Styles.grid(2))
+      |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+
     self.previousPledgeAmountLabel
       |> UILabel.lens.font .~ .ksr_callout(size: 24)
       |> UILabel.lens.textColor .~ .ksr_navy_500
 
-    self.previousPledgeStrikethroughView |> UIView.lens.backgroundColor .~ .ksr_navy_500
+    self.previousPledgeStrikethroughView
+      |> UIView.lens.backgroundColor .~ .ksr_navy_500
 
     self.sendMessageButton
       |> projectActivityFooterButton

@@ -13,9 +13,14 @@ internal final class ProjectActivityUpdateCell: UITableViewCell, ValueCell {
   @IBOutlet private weak var cardView: UIView!
   @IBOutlet private weak var commentsCountImageView: UIImageView!
   @IBOutlet private weak var commentsCountLabel: UILabel!
+  @IBOutlet private weak var commentsStackView: UIStackView!
+  @IBOutlet private weak var containerStackView: UIStackView!
+  @IBOutlet private weak var contentAndFooterStackView: UIStackView!
   @IBOutlet private weak var footerDividerView: UIView!
+  @IBOutlet private weak var likeAndCommentsCountStackView: UIStackView!
   @IBOutlet private weak var likesCountImageView: UIImageView!
   @IBOutlet private weak var likesCountLabel: UILabel!
+  @IBOutlet private weak var likesStackView: UIStackView!
   @IBOutlet private weak var updateTitleLabel: UILabel!
 
   internal func configureWith(value activityAndProject: (Activity, Project)) {
@@ -35,7 +40,8 @@ internal final class ProjectActivityUpdateCell: UITableViewCell, ValueCell {
           italic: nil
         )
 
-        activityTitleLabel |> projectActivityTitleLabelStyle
+        activityTitleLabel
+          |> projectActivityTitleLabelStyle
     }
 
     self.bodyLabel.rac.text = self.viewModel.outputs.body
@@ -46,6 +52,7 @@ internal final class ProjectActivityUpdateCell: UITableViewCell, ValueCell {
     self.updateTitleLabel.rac.text = self.viewModel.outputs.updateTitle
   }
 
+  // swiftlint:disable function_body_length
   internal override func bindStyles() {
     super.bindStyles()
 
@@ -53,29 +60,63 @@ internal final class ProjectActivityUpdateCell: UITableViewCell, ValueCell {
       UILabel.lens.font .~ .ksr_caption1(size: 12)
         <> UILabel.lens.textColor .~ .ksr_text_navy_600
 
-    self |> baseTableViewCellStyle()
+    self
+      |> baseTableViewCellStyle()
+      |> ProjectActivityUpdateCell.lens.contentView.layoutMargins %~~ { layoutMargins, cell in
+        cell.traitCollection.isRegularRegular
+          ? projectActivityRegularRegularLayoutMargins
+          : layoutMargins
+      }
       |> UITableViewCell.lens.accessibilityHint %~ { _ in Strings.Opens_update() }
 
-    self.cardView |> projectActivityCardStyle
+    self.cardView
+      |> dropShadowStyle()
 
     self.bodyLabel
-      |> UILabel.lens.font .~ .ksr_body(size: 14)
-      |> UILabel.lens.numberOfLines .~ 5
+      |> UILabel.lens.numberOfLines .~ 4
       |> UILabel.lens.textColor .~ .ksr_text_navy_600
+      |> UILabel.lens.font %~~ { _, label in
+          label.traitCollection.isRegularRegular
+            ? UIFont.ksr_body()
+            : UIFont.ksr_body(size: 14)
+      }
 
-    self.commentsCountImageView |> UIImageView.lens.tintColor .~ .ksr_navy_600
+    self.commentsCountImageView
+      |> UIImageView.lens.tintColor .~ .ksr_navy_600
 
-    self.commentsCountLabel |> statLabel
+    self.commentsCountLabel
+      |> statLabel
 
-    self.footerDividerView |> UIView.lens.backgroundColor .~ .ksr_navy_300
+    self.commentsStackView
+      |> UIStackView.lens.spacing .~ Styles.grid(1)
 
-    self.likesCountImageView |> UIImageView.lens.tintColor .~ .ksr_navy_600
+    self.containerStackView
+      |> UIStackView.lens.spacing .~ Styles.grid(4)
+      |> UIStackView.lens.layoutMargins .~ .init(topBottom: Styles.grid(3), leftRight: Styles.grid(2))
+      |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
 
-    self.likesCountLabel |> statLabel
+    self.contentAndFooterStackView
+      |> UIStackView.lens.spacing .~ Styles.grid(3)
+
+    self.footerDividerView
+      |> projectActivityDividerViewStyle
+
+    self.likeAndCommentsCountStackView
+      |> UIStackView.lens.spacing .~ Styles.grid(3)
+
+    self.likesCountImageView
+      |> UIImageView.lens.tintColor .~ .ksr_navy_600
+
+    self.likesCountLabel
+      |> statLabel
+
+    self.likesStackView
+      |> UIStackView.lens.spacing .~ Styles.grid(1)
 
     self.updateTitleLabel
       |> UILabel.lens.font .~ .ksr_title1(size: 22)
       |> UILabel.lens.numberOfLines .~ 0
       |> UILabel.lens.textColor .~ .ksr_text_navy_700
   }
+  // swiftlint:enable function_body_length
 }

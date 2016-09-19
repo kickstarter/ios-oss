@@ -42,6 +42,7 @@ internal final class RewardCell: UITableViewCell, ValueCell {
 
     self
       |> baseTableViewCellStyle()
+      |> RewardCell.lens.backgroundColor .~ .whiteColor()
 
     self.rootStackView
       |> UIStackView.lens.spacing .~ Styles.grid(4)

@@ -15,7 +15,7 @@ public enum Styles {
 }
 
 public func baseControllerStyle <VC: UIViewControllerProtocol> () -> (VC -> VC) {
-  return VC.lens.view.backgroundColor .~ .ksr_grey_100
+  return VC.lens.view.backgroundColor .~ .ksr_grey_200
 }
 
 public func baseTableControllerStyle <TVC: UITableViewControllerProtocol>
@@ -33,8 +33,8 @@ public func baseTableControllerStyle <TVC: UITableViewControllerProtocol>
 
 public let baseNavigationBarStyle =
   UINavigationBar.lens.titleTextAttributes .~ [
-    NSForegroundColorAttributeName: UIColor.ksr_text_navy_600,
-    NSFontAttributeName: UIFont.ksr_subhead(size: 15)
+    NSForegroundColorAttributeName: UIColor.ksr_text_navy_700,
+    NSFontAttributeName: UIFont.ksr_callout()
 ]
 
 public func baseTableViewCellStyle <TVC: UITableViewCellProtocol> () -> (TVC -> TVC) {
@@ -46,6 +46,7 @@ public func baseTableViewCellStyle <TVC: UITableViewCellProtocol> () -> (TVC -> 
       }
       return .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
       }
+      <> TVC.lens.backgroundColor .~ .clearColor()
       <> (TVC.lens.contentView • UIView.lens.preservesSuperviewLayoutMargins) .~ false
       <> TVC.lens.layoutMargins .~ .init(all: 0.0)
       <> TVC.lens.preservesSuperviewLayoutMargins .~ false

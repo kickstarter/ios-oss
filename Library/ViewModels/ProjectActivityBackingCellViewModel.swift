@@ -40,6 +40,9 @@ public protocol ProjectActivityBackingCellViewModelOutputs {
   /// Emits whether the pledge amounts stack view should be hidden.
   var pledgeAmountsStackViewIsHidden: Signal<Bool, NoError> { get }
 
+  /// Emits where the pledge details separator stack view should be hidden.
+  var pledgeDetailsSeparatorStackViewIsHidden: Signal<Bool, NoError> { get }
+
   /// Emits the old pledge amount.
   var previousPledgeAmount: Signal<String, NoError> { get }
 
@@ -48,6 +51,9 @@ public protocol ProjectActivityBackingCellViewModelOutputs {
 
   /// Emits a description of the reward.
   var reward: Signal<String, NoError> { get }
+
+  /// Emits whether the reward label should be hidden.
+  var rewardLabelIsHidden: Signal<Bool, NoError> { get }
 
   /// Emits the activity's title.
   var title: Signal<String, NoError> { get }
@@ -107,17 +113,30 @@ ProjectActivityBackingCellViewModelInputs, ProjectActivityBackingCellViewModelOu
 
     self.previousPledgeAmountLabelIsHidden = previousPledgeAmountLabelIsHidden.skipRepeats()
 
-    self.pledgeAmountsStackViewIsHidden =
-      zip(
-        pledgeAmountLabelIsHidden,
-        previousPledgeAmountLabelIsHidden
-        )
-        .map { $0 && $1 }
-        .skipRepeats()
+    let pledgeAmountsStackViewIsHidden = zip(
+      pledgeAmountLabelIsHidden,
+      previousPledgeAmountLabelIsHidden
+      )
+      .map { $0 && $1 }
+      .skipRepeats()
+
+    self.pledgeAmountsStackViewIsHidden = pledgeAmountsStackViewIsHidden
 
     self.reward = activityAndProject.map(rewardSummary(activity:project:))
 
+    let rewardLabelIsHidden = self.reward
+      .map { $0.isEmpty }
+
+    self.rewardLabelIsHidden = rewardLabelIsHidden
+
     self.title = title
+
+    self.pledgeDetailsSeparatorStackViewIsHidden = zip(
+      pledgeAmountsStackViewIsHidden,
+      rewardLabelIsHidden
+      )
+      .map { $0 || $1 }
+      .skipRepeats()
   }
   // swiftlint:enable function_body_length
 
@@ -144,9 +163,11 @@ ProjectActivityBackingCellViewModelInputs, ProjectActivityBackingCellViewModelOu
   public let pledgeAmount: Signal<String, NoError>
   public let pledgeAmountLabelIsHidden: Signal<Bool, NoError>
   public let pledgeAmountsStackViewIsHidden: Signal<Bool, NoError>
+  public let pledgeDetailsSeparatorStackViewIsHidden: Signal<Bool, NoError>
   public let previousPledgeAmount: Signal<String, NoError>
   public let previousPledgeAmountLabelIsHidden: Signal<Bool, NoError>
   public let reward: Signal<String, NoError>
+  public let rewardLabelIsHidden: Signal<Bool, NoError>
   public let title: Signal<String, NoError>
 
   public var inputs: ProjectActivityBackingCellViewModelInputs { return self }

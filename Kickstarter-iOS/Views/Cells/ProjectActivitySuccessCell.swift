@@ -8,6 +8,7 @@ internal final class ProjectActivitySuccessCell: UITableViewCell, ValueCell {
   private let viewModel: ProjectActivitySuccessCellViewModelType = ProjectActivitySuccessCellViewModel()
 
   @IBOutlet private weak var backgroundImageView: UIImageView!
+  @IBOutlet private weak var dropShadowView: UIView!
   @IBOutlet private weak var cardView: UIView!
   @IBOutlet private weak var titleLabel: UILabel!
 
@@ -48,7 +49,13 @@ internal final class ProjectActivitySuccessCell: UITableViewCell, ValueCell {
   internal override func bindStyles() {
     super.bindStyles()
 
-    self |> baseTableViewCellStyle()
+    self
+      |> baseTableViewCellStyle()
+      |> ProjectActivitySuccessCell.lens.contentView.layoutMargins %~~ { layoutMargins, cell in
+        cell.traitCollection.isRegularRegular
+          ? projectActivityRegularRegularLayoutMargins
+          : layoutMargins
+      }
       |> UITableViewCell.lens.accessibilityHint %~ { _ in
         Strings.Opens_project()
     }
@@ -56,5 +63,10 @@ internal final class ProjectActivitySuccessCell: UITableViewCell, ValueCell {
     self.cardView
       |> roundedStyle()
       |> UIView.lens.layoutMargins .~ .init(all: 24.0)
+
+    self.dropShadowView
+      |> roundedStyle()
+      |> UIView.lens.backgroundColor .~ .whiteColor()
+      |> dropShadowStyle()
   }
 }

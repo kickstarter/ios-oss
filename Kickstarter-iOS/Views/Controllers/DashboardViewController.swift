@@ -148,6 +148,7 @@ internal final class DashboardViewController: UITableViewController {
   private func goToActivity(project: Project) {
     let vc = ProjectActivitiesViewController.configuredWith(project: project)
     self.navigationController?.pushViewController(vc, animated: true)
+    navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .Plain, target: nil, action: nil)
   }
 
   internal override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {

@@ -18,7 +18,9 @@ internal final class ProjectActivitiesViewController: UITableViewController {
 
     self.viewModel.inputs.viewDidLoad()
 
-    self |> baseTableControllerStyle(estimatedRowHeight: 300.0)
+    self.navigationController?.navigationBar
+      ?|> baseNavigationBarStyle
+
     self.tableView.dataSource = dataSource
   }
 
@@ -26,7 +28,7 @@ internal final class ProjectActivitiesViewController: UITableViewController {
     super.bindViewModel()
 
     self.viewModel.outputs.projectActivityData
-      .observeForControllerAction()
+      .observeForUI()
       .observeNext { [weak self] projectActivityData in
         self?.dataSource.load(projectActivityData: projectActivityData)
         self?.tableView.reloadData()
@@ -52,11 +54,23 @@ internal final class ProjectActivitiesViewController: UITableViewController {
     }
 
     self.viewModel.outputs.showEmptyState
-      .observeForControllerAction()
+      .observeForUI()
       .observeNext { [weak self] visible in
         self?.dataSource.emptyState(visible: visible)
         self?.tableView.reloadData()
     }
+  }
+
+  internal override func bindStyles() {
+    super.bindStyles()
+
+    self
+      |> baseTableControllerStyle(estimatedRowHeight: 200.0)
+
+    self.navigationController
+      ?|> UINavigationController.lens.navigationBar.barTintColor .~ .whiteColor()
+
+    self.title = Strings.activity_navigation_title_activity()
   }
 
   internal override func tableView(tableView: UITableView,

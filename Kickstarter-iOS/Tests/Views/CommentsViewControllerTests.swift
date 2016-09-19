@@ -46,7 +46,7 @@ internal final class CommentsViewControllerTests: TestCase {
 
     let comments = [defaultComment, backerComment, creatorComment, deletedComment]
 
-    AppEnvironment.replaceCurrentEnvironment(
+    AppEnvironment.pushEnvironment(
       apiService: MockService(
         fetchCommentsResponse: comments
       ),
@@ -65,5 +65,7 @@ internal final class CommentsViewControllerTests: TestCase {
         FBSnapshotVerifyView(parent.view, identifier: "Comments - lang_\(language)")
       }
     }
+
+    AppEnvironment.popEnvironment()
   }
 }
