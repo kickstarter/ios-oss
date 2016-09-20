@@ -255,7 +255,7 @@ ProjectHeaderViewModelOutputs {
     }
 
     self.rewardsButtonAccessibilityLabel = rewardsCount
-      .map { Strings.rewards_count_rewards(rewards_count: Format.wholeNumber($0)) }
+      .map(Strings.Rewards_count_rewards(rewards_count:))
 
     self.commentsButtonAccessibilityLabel = project
       .map { p in
