@@ -491,7 +491,7 @@ public enum Strings {
    "Done"
 
    - **es**: "Done"
-   - **de**: "Done"
+   - **de**: "Fertig!"
    - **fr**: "Terminé"
    - **it**: "Done"
    - **en**: "Done"
@@ -500,6 +500,23 @@ public enum Strings {
     return localizedString(
       key: "Done",
       defaultValue: "Done",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Earth"
+
+   - **es**: "Earth"
+   - **de**: "Earth"
+   - **fr**: "Earth"
+   - **it**: "Earth"
+   - **en**: "Earth"
+  */
+  public static func Earth() -> String {
+    return localizedString(
+      key: "Earth",
+      defaultValue: "Earth",
       count: nil,
       substitutions: [:]
     )
@@ -763,8 +780,8 @@ public enum Strings {
    "Got it! Your survey response has been submitted."
 
    - **es**: "Got it! Your survey response has been submitted."
-   - **de**: "Got it! Your survey response has been submitted."
-   - **fr**: "Got it! Your survey response has been submitted."
+   - **de**: "Alles klar! Deine Antwort auf die Befragung wurde übermittelt."
+   - **fr**: "Merci ! Vos réponses au questionnaire ont bien été envoyées."
    - **it**: "Got it! Your survey response has been submitted."
    - **en**: "Got it! Your survey response has been submitted."
   */
@@ -797,7 +814,7 @@ public enum Strings {
    "It’s a way to bring creative projects to life."
 
    - **es**: "It’s a way to bring creative projects to life."
-   - **de**: "It’s a way to bring creative projects to life."
+   - **de**: "Es ist eine Plattform, um kreative Projekte ins Leben zu rufen."
    - **fr**: "C'est un outil qui permet de donner vie à des projets créatifs."
    - **it**: "It’s a way to bring creative projects to life."
    - **en**: "It’s a way to bring creative projects to life."
@@ -831,7 +848,7 @@ public enum Strings {
    "Kickstarter (if funded)"
 
    - **es**: "Kickstarter (if funded)"
-   - **de**: "Kickstarter (if funded)"
+   - **de**: "Kickstarter (bei Finanzierung)"
    - **fr**: "Kickstarter (si le projet est financé)"
    - **it**: "Kickstarter (if funded)"
    - **en**: "Kickstarter (if funded)"
@@ -848,7 +865,7 @@ public enum Strings {
    "Kickstarter is not a store."
 
    - **es**: "Kickstarter is not a store."
-   - **de**: "Kickstarter is not a store."
+   - **de**: "Kickstarter ist kein Geschäft."
    - **fr**: "Kickstarter n'est pas un magasin."
    - **it**: "Kickstarter is not a store."
    - **en**: "Kickstarter is not a store."
@@ -865,7 +882,7 @@ public enum Strings {
    "Learn more about accountability"
 
    - **es**: "Learn more about accountability"
-   - **de**: "Learn more about accountability"
+   - **de**: "Weitere Informationen zur Rechenschaftspflicht"
    - **fr**: "En savoir plus sur la responsabilité"
    - **it**: "Learn more about accountability"
    - **en**: "Learn more about accountability"
@@ -967,7 +984,7 @@ public enum Strings {
    "Opens project."
 
    - **es**: "Abre proyecto."
-   - **de**: "Opens project."
+   - **de**: "Öffnet Projektseite."
    - **fr**: "Ouvre le projet."
    - **it**: "Opens project."
    - **en**: "Opens project."
@@ -984,7 +1001,7 @@ public enum Strings {
    "Opens rewards."
 
    - **es**: "Abre recompensas."
-   - **de**: "Opens rewards."
+   - **de**: "Öffnet Belohnungen."
    - **fr**: "Ouvre les récompenses."
    - **it**: "Opens rewards."
    - **en**: "Opens rewards."
@@ -1001,7 +1018,7 @@ public enum Strings {
    "Opens update."
 
    - **es**: "Abre actualización."
-   - **de**: "Opens update."
+   - **de**: "Öffnet Update."
    - **fr**: "Ouvre l'actu."
    - **it**: "Opens update."
    - **en**: "Opens update."
@@ -1018,7 +1035,7 @@ public enum Strings {
    "Other payment methods"
 
    - **es**: "Other payment methods"
-   - **de**: "Other payment methods"
+   - **de**: "Weitere Zahlungsmethoden"
    - **fr**: "Autres moyens de paiement"
    - **it**: "Other payment methods"
    - **en**: "Other payment methods"
@@ -1035,7 +1052,7 @@ public enum Strings {
    "Popular"
 
    - **es**: "Popular"
-   - **de**: "Popular"
+   - **de**: "Beliebt"
    - **fr**: "Tendances"
    - **it**: "Popular"
    - **en**: "Popular"
@@ -1052,7 +1069,7 @@ public enum Strings {
    "Projects We Love"
 
    - **es**: "Nuestros Favoritos"
-   - **de**: "Projects We Love"
+   - **de**: "Team-Favoriten"
    - **fr**: "Nos coups de cœur"
    - **it**: "Projects We Love"
    - **en**: "Projects We Love"
@@ -1069,7 +1086,7 @@ public enum Strings {
    "Push notifications"
 
    - **es**: "Notificaciones Push"
-   - **de**: "Push notifications"
+   - **de**: "Push-Benachrichtigungen"
    - **fr**: "Notifications push"
    - **it**: "Push notifications"
    - **en**: "Push notifications"
@@ -1086,7 +1103,7 @@ public enum Strings {
    "Shipping"
 
    - **es**: "Shipping"
-   - **de**: "Shipping"
+   - **de**: "Versand"
    - **fr**: "Expédition"
    - **it**: "Shipping"
    - **en**: "Shipping"
@@ -1103,7 +1120,7 @@ public enum Strings {
    "Ships to:"
 
    - **es**: "Ships to:"
-   - **de**: "Ships to:"
+   - **de**: "Versand an:"
    - **fr**: "Livraison :"
    - **it**: "Ships to:"
    - **en**: "Ships to:"
@@ -1120,7 +1137,7 @@ public enum Strings {
    "Stars project."
 
    - **es**: "Marca proyecto como favorito."
-   - **de**: "Stars project."
+   - **de**: "Markiert Projekt als Favoriten."
    - **fr**: "Ajoute le projet aux projets préférés."
    - **it**: "Stars project."
    - **en**: "Stars project."
@@ -1137,8 +1154,8 @@ public enum Strings {
    "Survey"
 
    - **es**: "Survey"
-   - **de**: "Survey"
-   - **fr**: "Survey"
+   - **de**: "Befragung"
+   - **fr**: "Questionnaire"
    - **it**: "Survey"
    - **en**: "Survey"
   */
@@ -1154,8 +1171,8 @@ public enum Strings {
    "The email associated with this Facebook account is already registered to another Kickstarter user."
 
    - **es**: "The email associated with this Facebook account is already registered to another Kickstarter user."
-   - **de**: "The email associated with this Facebook account is already registered to another Kickstarter user."
-   - **fr**: "The email associated with this Facebook account is already registered to another Kickstarter user."
+   - **de**: "Diese E-Mail-Adresse ist bereits einem anderen Kickstarter-Nutzer zugeordnet."
+   - **fr**: "L'adresse e-mail associée à ce compte Facebook a déjà été enregistrée par un autre utilisateur Kickstarter."
    - **it**: "The email associated with this Facebook account is already registered to another Kickstarter user."
    - **en**: "The email associated with this Facebook account is already registered to another Kickstarter user."
   */
@@ -1171,8 +1188,8 @@ public enum Strings {
    "This Facebook account is already linked to another Kickstarter user."
 
    - **es**: "This Facebook account is already linked to another Kickstarter user."
-   - **de**: "This Facebook account is already linked to another Kickstarter user."
-   - **fr**: "This Facebook account is already linked to another Kickstarter user."
+   - **de**: "Dieses Facebook-Konto ist bereits einem anderen Kickstarter-Nutzer zugeordnet."
+   - **fr**: "Ce compte Facebook est déjà relié à un autre utilisateur Kickstarter."
    - **it**: "This Facebook account is already linked to another Kickstarter user."
    - **en**: "This Facebook account is already linked to another Kickstarter user."
   */
@@ -1188,7 +1205,7 @@ public enum Strings {
    "Unstars project."
 
    - **es**: "Remueve proyecto de favoritos."
-   - **de**: "Unstars project."
+   - **de**: "Entfernt Markierung als Favoriten."
    - **fr**: "Supprime le projet des projets préférés."
    - **it**: "Unstars project."
    - **en**: "Unstars project."
@@ -1205,7 +1222,7 @@ public enum Strings {
    "Your pledge amount:"
 
    - **es**: "Your pledge amount:"
-   - **de**: "Your pledge amount:"
+   - **de**: "Dein Beitrag:"
    - **fr**: "Montant engagé :"
    - **it**: "Your pledge amount:"
    - **en**: "Your pledge amount:"
@@ -1222,7 +1239,7 @@ public enum Strings {
    "Your shipping destination"
 
    - **es**: "Your shipping destination"
-   - **de**: "Your shipping destination"
+   - **de**: "Dein Versandziel"
    - **fr**: "Destination d'expédition"
    - **it**: "Your shipping destination"
    - **en**: "Your shipping destination"
@@ -1239,7 +1256,7 @@ public enum Strings {
    "You’re a backer!"
 
    - **es**: "¡Eres un patrocinador!"
-   - **de**: "You’re a backer!"
+   - **de**: "Du gehörst jetzt zu den Unterstützern!"
    - **fr**: "Vous êtes contributeur !"
    - **it**: "You’re a backer!"
    - **en**: "You’re a backer!"
@@ -3450,7 +3467,7 @@ public enum Strings {
 
    - **es**: "Actualización <b>%{update_number}</b> publicado el %{time_count_days_ago}"
    - **de**: "Update <b>%{update_number}</b> vor %{time_count_days_ago} gepostet"
-   - **fr**: "Actu no. <b>%{update_number}</b> publiée il y a %{time_count}"
+   - **fr**: "Actu no. <b>%{update_number}</b> publiée il y a %{time_count_days_ago}"
    - **it**: "<b>Update%{space}#%{update_number}</b> posted %{time_count_days_ago}"
    - **en**: "<b>Update%{space}#%{update_number}</b> posted %{time_count_days_ago}"
   */
@@ -9224,7 +9241,7 @@ This is commonly fixed by going to iOS Settings > Facebook and toggling access f
    "%{percentage} funded"
 
    - **es**: "%{percentage} financiado"
-   - **de**: "%{percentage} funded"
+   - **de**: "%{percentage} finanziert"
    - **fr**: "Financé à %{percentage}"
    - **it**: "%{percentage} funded"
    - **en**: "%{percentage} funded"
@@ -12382,7 +12399,7 @@ Thank you for your support!"
    "%{rewards_count} rewards"
 
    - **es**: "%{rewards_count} recompensas"
-   - **de**: "%{rewards_count} rewards"
+   - **de**: "%{rewards_count} Belohnungen"
    - **fr**: "%{rewards_count} récompenses"
    - **it**: "%{rewards_count} rewards"
    - **en**: "%{rewards_count} rewards"
@@ -13705,7 +13722,7 @@ Thank you for your support!"
    "%{updates_count} updates"
 
    - **es**: "%{updates_count} actualizaciones"
-   - **de**: "%{updates_count} updates"
+   - **de**: "%{updates_count} Updates"
    - **fr**: "%{updates_count} actus"
    - **it**: "%{updates_count} updates"
    - **en**: "%{updates_count} updates"

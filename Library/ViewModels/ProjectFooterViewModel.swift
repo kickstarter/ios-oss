@@ -96,7 +96,9 @@ ProjectFooterViewModelOutputs {
     self.creatorImageUrl = project.map { NSURL(string: $0.creator.avatar.medium) }
 
     self.categoryButtonTitle = project.map(Project.lens.category.name.view)
-    self.locationButtonTitle = project.map(Project.lens.location.displayableName.view)
+    self.locationButtonTitle = project.map {
+      $0.location == .none ? Strings.Earth() : $0.location.displayableName
+    }
 
     self.goToMessageCreator = project
       .takeWhen(self.contactCreatorButtonTappedProperty.signal)

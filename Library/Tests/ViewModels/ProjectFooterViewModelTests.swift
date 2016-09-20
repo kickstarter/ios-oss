@@ -139,6 +139,14 @@ final class ProjectFooterViewModelTests: TestCase {
     self.locationButtonTitle.assertValues([project.location.displayableName])
   }
 
+  func testLocationLabel_Empty_Location() {
+    let project = .template |> Project.lens.location .~ .none
+    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.viewDidLoad()
+
+    self.locationButtonTitle.assertValues(["Earth"])
+  }
+
   func testUpdatesLabel() {
     self.vm.inputs.configureWith(project:
       .template
