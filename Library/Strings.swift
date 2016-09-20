@@ -352,6 +352,23 @@ public enum Strings {
     )
   }
   /**
+   "Back this project below:"
+
+   - **es**: "Back this project below:"
+   - **de**: "Back this project below:"
+   - **fr**: "Back this project below:"
+   - **it**: "Back this project below:"
+   - **en**: "Back this project below:"
+  */
+  public static func Back_this_project_below_colon() -> String {
+    return localizedString(
+      key: "Back_this_project_below_colon",
+      defaultValue: "Back this project below:",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Backed by Friends"
 
    - **es**: "Patrocinados por amigos"
@@ -422,7 +439,7 @@ public enum Strings {
   /**
    "Continue to payment"
 
-   - **es**: "Continue to payment"
+   - **es**: "Continuar a pago"
    - **de**: "Continue to payment"
    - **fr**: "Continuer vers le paiement"
    - **it**: "Continue to payment"
@@ -490,7 +507,7 @@ public enum Strings {
   /**
    "Done"
 
-   - **es**: "Done"
+   - **es**: "Listo"
    - **de**: "Fertig!"
    - **fr**: "Terminé"
    - **it**: "Done"
@@ -779,7 +796,7 @@ public enum Strings {
   /**
    "Got it! Your survey response has been submitted."
 
-   - **es**: "Got it! Your survey response has been submitted."
+   - **es**: "¡Listo! Hemos recibido tus respuestas a nuestro cuestionario."
    - **de**: "Alles klar! Deine Antwort auf die Befragung wurde übermittelt."
    - **fr**: "Merci ! Vos réponses au questionnaire ont bien été envoyées."
    - **it**: "Got it! Your survey response has been submitted."
@@ -813,7 +830,7 @@ public enum Strings {
   /**
    "It’s a way to bring creative projects to life."
 
-   - **es**: "It’s a way to bring creative projects to life."
+   - **es**: "Es una plataforma para dar vida a proyectos creativos."
    - **de**: "Es ist eine Plattform, um kreative Projekte ins Leben zu rufen."
    - **fr**: "C'est un outil qui permet de donner vie à des projets créatifs."
    - **it**: "It’s a way to bring creative projects to life."
@@ -847,7 +864,7 @@ public enum Strings {
   /**
    "Kickstarter (if funded)"
 
-   - **es**: "Kickstarter (if funded)"
+   - **es**: "Kickstarter (si financiación es exitosa)"
    - **de**: "Kickstarter (bei Finanzierung)"
    - **fr**: "Kickstarter (si le projet est financé)"
    - **it**: "Kickstarter (if funded)"
@@ -864,7 +881,7 @@ public enum Strings {
   /**
    "Kickstarter is not a store."
 
-   - **es**: "Kickstarter is not a store."
+   - **es**: "Kickstarter no es una tienda."
    - **de**: "Kickstarter ist kein Geschäft."
    - **fr**: "Kickstarter n'est pas un magasin."
    - **it**: "Kickstarter is not a store."
@@ -881,7 +898,7 @@ public enum Strings {
   /**
    "Learn more about accountability"
 
-   - **es**: "Learn more about accountability"
+   - **es**: "Más información sobre las responsabilidades"
    - **de**: "Weitere Informationen zur Rechenschaftspflicht"
    - **fr**: "En savoir plus sur la responsabilité"
    - **it**: "Learn more about accountability"
@@ -891,6 +908,57 @@ public enum Strings {
     return localizedString(
       key: "Learn_more_about_accountability",
       defaultValue: "Learn more about accountability",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Make a pledge without a reward"
+
+   - **es**: "Make a pledge without a reward"
+   - **de**: "Make a pledge without a reward"
+   - **fr**: "Make a pledge without a reward"
+   - **it**: "Make a pledge without a reward"
+   - **en**: "Make a pledge without a reward"
+  */
+  public static func Make_a_pledge_without_a_reward() -> String {
+    return localizedString(
+      key: "Make_a_pledge_without_a_reward",
+      defaultValue: "Make a pledge without a reward",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Manage your pledge below:"
+
+   - **es**: "Manage your pledge below:"
+   - **de**: "Manage your pledge below:"
+   - **fr**: "Manage your pledge below:"
+   - **it**: "Manage your pledge below:"
+   - **en**: "Manage your pledge below:"
+  */
+  public static func Manage_your_pledge_below_colon() -> String {
+    return localizedString(
+      key: "Manage_your_pledge_below_colon",
+      defaultValue: "Manage your pledge below:",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Manage your reward"
+
+   - **es**: "Manage your reward"
+   - **de**: "Manage your reward"
+   - **fr**: "Manage your reward"
+   - **it**: "Manage your reward"
+   - **en**: "Manage your reward"
+  */
+  public static func Manage_your_reward() -> String {
+    return localizedString(
+      key: "Manage_your_reward",
+      defaultValue: "Manage your reward",
       count: nil,
       substitutions: [:]
     )
@@ -1032,9 +1100,26 @@ public enum Strings {
     )
   }
   /**
+   "Or change your reward by selecting one below:"
+
+   - **es**: "Or change your reward by selecting one below:"
+   - **de**: "Or change your reward by selecting one below:"
+   - **fr**: "Or change your reward by selecting one below:"
+   - **it**: "Or change your reward by selecting one below:"
+   - **en**: "Or change your reward by selecting one below:"
+  */
+  public static func Or_change_your_reward_by_selecting_one_below_colon() -> String {
+    return localizedString(
+      key: "Or_change_your_reward_by_selecting_one_below_colon",
+      defaultValue: "Or change your reward by selecting one below:",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Other payment methods"
 
-   - **es**: "Other payment methods"
+   - **es**: "Otros métodos de pago"
    - **de**: "Weitere Zahlungsmethoden"
    - **fr**: "Autres moyens de paiement"
    - **it**: "Other payment methods"
@@ -1044,6 +1129,40 @@ public enum Strings {
     return localizedString(
       key: "Other_payment_methods",
       defaultValue: "Other payment methods",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Pledge any amount"
+
+   - **es**: "Pledge any amount"
+   - **de**: "Pledge any amount"
+   - **fr**: "Pledge any amount"
+   - **it**: "Pledge any amount"
+   - **en**: "Pledge any amount"
+  */
+  public static func Pledge_any_amount() -> String {
+    return localizedString(
+      key: "Pledge_any_amount",
+      defaultValue: "Pledge any amount",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Pledge now without a reward"
+
+   - **es**: "Pledge now without a reward"
+   - **de**: "Pledge now without a reward"
+   - **fr**: "Pledge now without a reward"
+   - **it**: "Pledge now without a reward"
+   - **en**: "Pledge now without a reward"
+  */
+  public static func Pledge_now_without_a_reward() -> String {
+    return localizedString(
+      key: "Pledge_now_without_a_reward",
+      defaultValue: "Pledge now without a reward",
       count: nil,
       substitutions: [:]
     )
@@ -1100,9 +1219,77 @@ public enum Strings {
     )
   }
   /**
+   "Read more about the campaign  →"
+
+   - **es**: "Read more about the campaign  →"
+   - **de**: "Read more about the campaign  →"
+   - **fr**: "Read more about the campaign  →"
+   - **it**: "Read more about the campaign  →"
+   - **en**: "Read more about the campaign  →"
+  */
+  public static func Read_more_about_the_campaign_arrow() -> String {
+    return localizedString(
+      key: "Read_more_about_the_campaign_arrow",
+      defaultValue: "Read more about the campaign  →",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "%{rewards_count} rewards"
+
+   - **es**: "%{rewards_count} rewards"
+   - **de**: "%{rewards_count} rewards"
+   - **fr**: "%{rewards_count} rewards"
+   - **it**: "%{rewards_count} rewards"
+   - **en**: "%{rewards_count} rewards"
+  */
+  public static func Rewards_count_rewards(rewards_count rewards_count: Int) -> String {
+    return localizedString(
+      key: "Rewards_count_rewards",
+      defaultValue: "%{rewards_count} rewards",
+      count: rewards_count,
+      substitutions: ["rewards_count": Format.wholeNumber(rewards_count)]
+    )
+  }
+  /**
+   "%{rewards_count} rewards:"
+
+   - **es**: "%{rewards_count} rewards:"
+   - **de**: "%{rewards_count} rewards:"
+   - **fr**: "%{rewards_count} rewards:"
+   - **it**: "%{rewards_count} rewards:"
+   - **en**: "%{rewards_count} rewards:"
+  */
+  public static func Rewards_count_rewards_colon(rewards_count rewards_count: Int) -> String {
+    return localizedString(
+      key: "Rewards_count_rewards_colon",
+      defaultValue: "%{rewards_count} rewards:",
+      count: rewards_count,
+      substitutions: ["rewards_count": Format.wholeNumber(rewards_count)]
+    )
+  }
+  /**
+   "Select this reward"
+
+   - **es**: "Select this reward"
+   - **de**: "Select this reward"
+   - **fr**: "Select this reward"
+   - **it**: "Select this reward"
+   - **en**: "Select this reward"
+  */
+  public static func Select_this_reward() -> String {
+    return localizedString(
+      key: "Select_this_reward",
+      defaultValue: "Select this reward",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Shipping"
 
-   - **es**: "Shipping"
+   - **es**: "Envío"
    - **de**: "Versand"
    - **fr**: "Expédition"
    - **it**: "Shipping"
@@ -1119,7 +1306,7 @@ public enum Strings {
   /**
    "Ships to:"
 
-   - **es**: "Ships to:"
+   - **es**: "Envío a:"
    - **de**: "Versand an:"
    - **fr**: "Livraison :"
    - **it**: "Ships to:"
@@ -1153,7 +1340,7 @@ public enum Strings {
   /**
    "Survey"
 
-   - **es**: "Survey"
+   - **es**: "Cuestionario"
    - **de**: "Befragung"
    - **fr**: "Questionnaire"
    - **it**: "Survey"
@@ -1170,7 +1357,7 @@ public enum Strings {
   /**
    "The email associated with this Facebook account is already registered to another Kickstarter user."
 
-   - **es**: "The email associated with this Facebook account is already registered to another Kickstarter user."
+   - **es**: "Esta cuenta de correo electrónico ya está asociada a otro usuario de Kickstarter."
    - **de**: "Diese E-Mail-Adresse ist bereits einem anderen Kickstarter-Nutzer zugeordnet."
    - **fr**: "L'adresse e-mail associée à ce compte Facebook a déjà été enregistrée par un autre utilisateur Kickstarter."
    - **it**: "The email associated with this Facebook account is already registered to another Kickstarter user."
@@ -1187,7 +1374,7 @@ public enum Strings {
   /**
    "This Facebook account is already linked to another Kickstarter user."
 
-   - **es**: "This Facebook account is already linked to another Kickstarter user."
+   - **es**: "Esta cuenta de Facebook ya está asociada a otro usuario de Kickstarter."
    - **de**: "Dieses Facebook-Konto ist bereits einem anderen Kickstarter-Nutzer zugeordnet."
    - **fr**: "Ce compte Facebook est déjà relié à un autre utilisateur Kickstarter."
    - **it**: "This Facebook account is already linked to another Kickstarter user."
@@ -1221,7 +1408,7 @@ public enum Strings {
   /**
    "Your pledge amount:"
 
-   - **es**: "Your pledge amount:"
+   - **es**: "Monto de tu contribución:"
    - **de**: "Dein Beitrag:"
    - **fr**: "Montant engagé :"
    - **it**: "Your pledge amount:"
@@ -1238,7 +1425,7 @@ public enum Strings {
   /**
    "Your shipping destination"
 
-   - **es**: "Your shipping destination"
+   - **es**: "Tu destino de envío"
    - **de**: "Dein Versandziel"
    - **fr**: "Destination d'expédition"
    - **it**: "Your shipping destination"
@@ -1256,7 +1443,7 @@ public enum Strings {
    "You’re a backer!"
 
    - **es**: "¡Eres un patrocinador!"
-   - **de**: "Du gehörst jetzt zu den Unterstützern!"
+   - **de**: "Du unterstützt das Projekt!"
    - **fr**: "Vous êtes contributeur !"
    - **it**: "You’re a backer!"
    - **en**: "You’re a backer!"
@@ -3159,7 +3346,7 @@ public enum Strings {
   /**
    "%{comments_count} comments"
 
-   - **es**: "%{comments_count} comments"
+   - **es**: "%{comments_count} comentarios"
    - **de**: "%{comments_count} Kommentare"
    - **fr**: "%{comments_count} commentaires"
    - **it**: "%{comments_count} comments"
@@ -12393,23 +12580,6 @@ Thank you for your support!"
       defaultValue: "Pledge %{reward_currency} or more",
       count: nil,
       substitutions: ["reward_currency": reward_currency]
-    )
-  }
-  /**
-   "%{rewards_count} rewards"
-
-   - **es**: "%{rewards_count} recompensas"
-   - **de**: "%{rewards_count} Belohnungen"
-   - **fr**: "%{rewards_count} récompenses"
-   - **it**: "%{rewards_count} rewards"
-   - **en**: "%{rewards_count} rewards"
-  */
-  public static func rewards_count_rewards(rewards_count rewards_count: String) -> String {
-    return localizedString(
-      key: "rewards_count_rewards",
-      defaultValue: "%{rewards_count} rewards",
-      count: nil,
-      substitutions: ["rewards_count": rewards_count]
     )
   }
   /**
