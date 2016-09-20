@@ -229,12 +229,24 @@ final class FormatTests: XCTestCase {
       }
     }
 
-    withEnvironment(locale: NSLocale(localeIdentifier: "fr")) {
-      withEnvironment(timeZone: UTC) {
-        XCTAssertEqual(Format.date(secondsInUTC: date), "10 oct. 1983 00:00:00")
+    let ios10 = NSOperatingSystemVersion(majorVersion: 10, minorVersion: 0, patchVersion: 0)
+    if NSProcessInfo().isOperatingSystemAtLeastVersion(ios10) {
+      withEnvironment(locale: NSLocale(localeIdentifier: "fr")) {
+        withEnvironment(timeZone: UTC) {
+          XCTAssertEqual(Format.date(secondsInUTC: date), "10 oct. 1983 à 00:00:00")
+        }
+        withEnvironment(timeZone: EST) {
+          XCTAssertEqual(Format.date(secondsInUTC: date), "9 oct. 1983 à 20:00:00")
+        }
       }
-      withEnvironment(timeZone: EST) {
-        XCTAssertEqual(Format.date(secondsInUTC: date), "9 oct. 1983 20:00:00")
+    } else {
+      withEnvironment(locale: NSLocale(localeIdentifier: "fr")) {
+        withEnvironment(timeZone: UTC) {
+          XCTAssertEqual(Format.date(secondsInUTC: date), "10 oct. 1983 00:00:00")
+        }
+        withEnvironment(timeZone: EST) {
+          XCTAssertEqual(Format.date(secondsInUTC: date), "9 oct. 1983 20:00:00")
+        }
       }
     }
   }

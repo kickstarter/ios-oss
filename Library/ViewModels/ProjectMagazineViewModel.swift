@@ -164,7 +164,7 @@ ProjectMagazineViewModelOutputs {
       .takeWhen(self.managePledgeButtonTappedProperty.signal)
       .map { project in
         NSURL(string: project.urls.web.project)
-          .map { $0.URLByAppendingPathComponent("pledge/edit") }
+          .flatMap { optionalize($0.URLByAppendingPathComponent("pledge/edit")) }
           .map(NSURLRequest.init(URL:))
       }
       .ignoreNil()
@@ -173,7 +173,7 @@ ProjectMagazineViewModelOutputs {
       .takeWhen(self.backProjectButtonTappedProperty.signal)
       .map { project in
         NSURL(string: project.urls.web.project)
-          .map { $0.URLByAppendingPathComponent("pledge/new") }
+          .flatMap { optionalize($0.URLByAppendingPathComponent("pledge/new")) }
           .map(NSURLRequest.init(URL:))
       }
       .ignoreNil()

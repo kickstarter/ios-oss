@@ -656,9 +656,16 @@ private func createPledge(
     )
     .flatMap { env -> SignalProducer<(NSURLRequest, Project), ErrorEnvelope> in
 
-      let url = AppEnvironment.current.apiService.serverConfig.webBaseUrl
-        .URLByAppendingPathComponent(env.checkoutUrl)
-        .URLByAppendingPathComponent("new")
+      #if swift(>=2.3)
+        guard let url = AppEnvironment.current.apiService.serverConfig.webBaseUrl
+          .URLByAppendingPathComponent(env.checkoutUrl)?
+          .URLByAppendingPathComponent("new") else { return .empty }
+      #else
+        let url = AppEnvironment.current.apiService.serverConfig.webBaseUrl
+          .URLByAppendingPathComponent(env.checkoutUrl)
+          .URLByAppendingPathComponent("new")
+      #endif
+
       let request = NSURLRequest(URL: url)
       return SignalProducer(value: (request, project))
   }
@@ -683,9 +690,17 @@ private func createApplePayPledge(
     )
     .flatMap { env -> SignalProducer<SubmitApplePayEnvelope, ErrorEnvelope> in
 
-      let checkoutUrl = AppEnvironment.current.apiService.serverConfig.webBaseUrl
-        .URLByAppendingPathComponent(env.checkoutUrl)
-        .absoluteString
+      #if swift(>=2.3)
+        guard let checkoutUrl = AppEnvironment.current.apiService.serverConfig.webBaseUrl
+        .URLByAppendingPathComponent(env.checkoutUrl)?
+        .absoluteString else {
+        return .empty
+        }
+      #else
+        let checkoutUrl = AppEnvironment.current.apiService.serverConfig.webBaseUrl
+          .URLByAppendingPathComponent(env.checkoutUrl)
+          .absoluteString
+      #endif
 
       return AppEnvironment.current.apiService.submitApplePay(
         checkoutUrl: checkoutUrl,

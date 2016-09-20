@@ -64,6 +64,7 @@ public protocol HelpViewModelType {
 }
 
 public final class HelpViewModel: HelpViewModelType, HelpViewModelInputs, HelpViewModelOutputs {
+  // swiftlint:disable function_body_length
   public init() {
     let context = self.helpContextProperty.signal.ignoreNil()
     let canSendEmail = self.canSendEmailProperty.signal.ignoreNil()
@@ -103,14 +104,27 @@ public final class HelpViewModel: HelpViewModelType, HelpViewModelInputs, HelpVi
 
     context
       .takePairWhen(self.mailComposeCompletionProperty.signal.ignoreNil())
-      .filter { $1 == MFMailComposeResultSent }
+      .filter {
+        #if swift(>=2.3)
+          return $1 == .Sent
+        #else
+          return $1 == MFMailComposeResultSent
+        #endif
+      }
       .observeNext { context, _ in AppEnvironment.current.koala.trackSentContactEmail(context: context) }
 
     context
       .takePairWhen(self.mailComposeCompletionProperty.signal.ignoreNil())
-      .filter { $1 == MFMailComposeResultCancelled }
+      .filter {
+        #if swift(>=2.3)
+          return $1 == .Cancelled
+        #else
+          return $1 == MFMailComposeResultCancelled
+        #endif
+      }
       .observeNext { context, _ in AppEnvironment.current.koala.trackCanceledContactEmail(context: context) }
   }
+  // swiftlint:enable function_body_length
 
   public var inputs: HelpViewModelInputs { return self }
   public var outputs: HelpViewModelOutputs { return self }

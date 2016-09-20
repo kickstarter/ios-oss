@@ -64,7 +64,7 @@ final class UpdateViewModelTests: TestCase {
       let policy = self.vm.inputs.decidePolicyFor(
         navigationAction: MockNavigationAction(
           navigationType: .LinkActivated,
-          request: NSURLRequest(URL: prevUpdateUrl)
+          request: NSURLRequest(URL: optionalize(prevUpdateUrl)!)
         )
       )
 
@@ -73,7 +73,8 @@ final class UpdateViewModelTests: TestCase {
       self.webViewLoadRequest.assertValues(
         [
           "\(self.update.urls.web.update)?client_id=\(self.apiService.serverConfig.apiClientAuth.clientId)",
-          "\(prevUpdateUrl.absoluteString)?client_id=\(self.apiService.serverConfig.apiClientAuth.clientId)"
+          "\((optionalize(prevUpdateUrl)?.absoluteString)!)" +
+            "?client_id=\(self.apiService.serverConfig.apiClientAuth.clientId)"
         ]
       )
 
@@ -99,7 +100,7 @@ final class UpdateViewModelTests: TestCase {
       let policy = self.vm.inputs.decidePolicyFor(
         navigationAction: MockNavigationAction(
           navigationType: .LinkActivated,
-          request: NSURLRequest(URL: anotherProjectUrl)
+          request: NSURLRequest(URL: optionalize(anotherProjectUrl)!)
         )
       )
 

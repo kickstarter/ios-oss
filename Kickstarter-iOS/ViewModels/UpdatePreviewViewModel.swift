@@ -53,6 +53,7 @@ internal final class UpdatePreviewViewModel: UpdatePreviewViewModelInputs,
     let initialRequest = draft
       .takeWhen(self.viewDidLoadProperty.signal)
       .map { AppEnvironment.current.apiService.previewUrl(forDraft: $0) }
+      .ignoreNil()
       .map { AppEnvironment.current.apiService.preparedRequest(forURL: $0) }
 
     let redirectRequest = self.policyForNavigationActionProperty.signal.ignoreNil()

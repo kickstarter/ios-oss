@@ -140,7 +140,8 @@ public final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, Log
     self.onePasswordButtonHidden = self.onePasswordIsAvailable.signal.map(negate)
 
     self.onePasswordFindLoginForURLString = self.onePasswordButtonTappedProperty.signal
-      .map { AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString }
+      .map { optionalize(AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString) }
+      .ignoreNil()
 
     self.emailText = self.prefillEmailProperty.signal.ignoreNil()
     self.passwordText = self.prefillPasswordProperty.signal.ignoreNil()

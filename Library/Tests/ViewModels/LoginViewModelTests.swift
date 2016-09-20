@@ -1,10 +1,11 @@
+import Prelude
 import XCTest
+@testable import Library
 @testable import KsApi
 @testable import ReactiveCocoa
 @testable import ReactiveExtensions
 @testable import ReactiveExtensions_TestHelpers
 @testable import Result
-@testable import Library
 
 final class LoginViewModelTests: TestCase {
   private let vm: LoginViewModelType = LoginViewModel()
@@ -172,7 +173,7 @@ final class LoginViewModelTests: TestCase {
     self.vm.inputs.onePasswordButtonTapped()
 
     self.onePasswordFindLoginForURLString.assertValues(
-      [AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString]
+      [optionalize(AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString)].compact()
     )
 
     self.vm.inputs.onePasswordFoundLogin(email: "nativesquad@gmail.com", password: "hello")

@@ -35,7 +35,7 @@ internal final class DashboardReferrerRowStackView: UIStackView {
     self.viewModel.inputs.configureWith(country: country, referrer: referrer)
   }
 
-  required init?(coder aDecoder: NSCoder) {
+  required init(coder aDecoder: NSCoder) {
     fatalError("init(coder:\(aDecoder)) has not been implemented")
   }
 }

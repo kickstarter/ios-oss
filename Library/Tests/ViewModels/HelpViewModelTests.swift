@@ -94,7 +94,11 @@ internal final class HelpViewModelTests: TestCase {
     XCTAssertEqual([nil, "Settings"], self.trackingClient.properties.map { $0["context"] as! String? })
     XCTAssertEqual([nil, "Contact"], self.trackingClient.properties.map { $0["type"] as! String? })
 
-    self.vm.inputs.mailComposeCompletion(result: MFMailComposeResultSent)
+    #if swift(>=2.3)
+      self.vm.inputs.mailComposeCompletion(result: .Sent)
+    #else
+      self.vm.inputs.mailComposeCompletion(result: MFMailComposeResultSent)
+    #endif
 
     XCTAssertEqual(["Contact Email Open", "Selected Help Option", "Sent Contact Email", "Contact Email Sent"],
                    self.trackingClient.events)
@@ -112,7 +116,11 @@ internal final class HelpViewModelTests: TestCase {
     XCTAssertEqual([nil, "Contact", nil, nil, nil, "Contact"],
                    self.trackingClient.properties.map { $0["type"] as! String? })
 
-    self.vm.inputs.mailComposeCompletion(result: MFMailComposeResultCancelled)
+    #if swift(>=2.3)
+      self.vm.inputs.mailComposeCompletion(result: .Cancelled)
+    #else
+      self.vm.inputs.mailComposeCompletion(result: MFMailComposeResultCancelled)
+    #endif
 
     self.showNoEmailError.assertValueCount(0)
     XCTAssertEqual(["Contact Email Open", "Selected Help Option", "Sent Contact Email",

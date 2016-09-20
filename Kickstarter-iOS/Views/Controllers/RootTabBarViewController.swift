@@ -117,44 +117,43 @@ public final class RootTabBarViewController: UITabBarController {
   // swiftlint:enable cyclomatic_complexity
 
   private func setProfileImage(withData data: ProfileTabBarItemData) {
-    guard let avatarUrl = data.avatarUrl else { return }
+    guard
+      let avatarUrl = data.avatarUrl,
+      let dir = NSSearchPathForDirectoriesInDomains(.CachesDirectory, .UserDomainMask, true).first,
+      let hash = optionalize(avatarUrl.absoluteString)?.hashValue
+      else {
+        return
+    }
 
-    let dir = NSSearchPathForDirectoriesInDomains(.CachesDirectory, .UserDomainMask, true).first
     let style = profileTabBarItemStyle(isLoggedIn: true, isMember: data.isMember)
+    let imagePath = "\(dir)/tabbar-avatar-image-\(hash).dat"
 
-    if let dir = dir {
-      let imagePath = dir + ("/tabbar-avatar-image-\(avatarUrl.absoluteString.hashValue).dat")
+    if let imageData = NSData.init(contentsOfFile: imagePath) {
+      let (defaultImage, selectedImage) = tabbarAvatarImageFromData(imageData)
+      if case let .profile(index) = data.item {
+        self.tabBarItem(atIndex: index)
+          ?|> style
+          ?|> UITabBarItem.lens.image .~ defaultImage
+          ?|> UITabBarItem.lens.selectedImage .~ selectedImage
+      }
+    } else if let url = data.avatarUrl {
+      let sessionConfig = NSURLSessionConfiguration.defaultSessionConfiguration()
+      let session = NSURLSession(configuration: sessionConfig,
+                                 delegate: nil,
+                                 delegateQueue: NSOperationQueue.mainQueue())
+      let dataTask = session.dataTaskWithURL(url) { [weak self] (avatarData, response, error) in
+        guard let avatarData = avatarData else { return }
+        avatarData.writeToFile(imagePath, atomically: true)
 
-      if let imageData = NSData(contentsOfFile: imagePath) {
-        let (defaultImage, selectedImage) = tabbarAvatarImageFromData(imageData)
+        let (defaultImage, selectedImage) = tabbarAvatarImageFromData(avatarData)
         if case let .profile(index) = data.item {
-          self.tabBarItem(atIndex: index)
+          self?.tabBarItem(atIndex: index)
             ?|> style
             ?|> UITabBarItem.lens.image .~ defaultImage
             ?|> UITabBarItem.lens.selectedImage .~ selectedImage
         }
-      } else {
-        if let url = data.avatarUrl {
-          let sessionConfig = NSURLSessionConfiguration.defaultSessionConfiguration()
-          let session = NSURLSession(configuration: sessionConfig,
-                                     delegate: nil,
-                                     delegateQueue: NSOperationQueue.mainQueue())
-          let dataTask = session.dataTaskWithURL(url) { [weak self] (avatarData, response, error) in
-            if let avatarData = avatarData {
-              avatarData.writeToFile(imagePath, atomically: true)
-
-              let (defaultImage, selectedImage) = tabbarAvatarImageFromData(avatarData)
-              if case let .profile(index) = data.item {
-                self?.tabBarItem(atIndex: index)
-                  ?|> style
-                  ?|> UITabBarItem.lens.image .~ defaultImage
-                  ?|> UITabBarItem.lens.selectedImage .~ selectedImage
-              }
-            }
-          }
-          dataTask.resume()
-        }
       }
+      dataTask.resume()
     }
   }
 
@@ -217,5 +216,5 @@ private func strokedRoundImage(fromImage image: UIImage?,
   circle.lineWidth = lineWidth
   circle.stroke()
 
-  return UIGraphicsGetImageFromCurrentImageContext().imageWithRenderingMode(.AlwaysOriginal)
+  return optionalize(UIGraphicsGetImageFromCurrentImageContext())?.imageWithRenderingMode(.AlwaysOriginal)
 }

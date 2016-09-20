@@ -1,5 +1,6 @@
-import XCTest
 import KsApi
+import Prelude
+import XCTest
 @testable import Library
 
 private func KSRAssertMatch(expected: Navigation,
@@ -7,11 +8,11 @@ private func KSRAssertMatch(expected: Navigation,
                               file: StaticString = #file,
                               line: UInt = #line) {
 
-  let base = AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString
-  let url = NSURL(string: "\(base)\(path)")!
+  let match = optionalize(AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString)
+    .flatMap { NSURL(string: "\($0)\(path)") }
+    .flatMap(Navigation.match)
 
-  XCTAssertEqual(expected,
-                 Navigation.match(url), file: file, line: line)
+  XCTAssertEqual(expected, match, file: file, line: line)
 }
 
 public final class NavigationTests: XCTestCase {

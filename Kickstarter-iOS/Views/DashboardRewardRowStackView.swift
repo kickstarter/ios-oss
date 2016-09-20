@@ -37,7 +37,7 @@ internal final class DashboardRewardRowStackView: UIStackView {
     self.vm.inputs.configureWith(country: country, reward: reward, totalPledged: totalPledged)
   }
 
-  required init?(coder aDecoder: NSCoder) {
+  required init(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
 }

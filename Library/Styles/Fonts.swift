@@ -4,14 +4,25 @@ import UIKit
 extension UIFont {
   /// Returns a bolded version of `self`.
   public var bolded: UIFont {
-    return UIFont(descriptor: self.fontDescriptor().fontDescriptorWithSymbolicTraits(.TraitBold),
-                  size: 0.0)
+    #if swift(>=2.3)
+      return self.fontDescriptor().fontDescriptorWithSymbolicTraits(.TraitBold)
+        .map { UIFont(descriptor: $0, size: 0.0) } ?? self
+    #else
+      return UIFont(descriptor: self.fontDescriptor().fontDescriptorWithSymbolicTraits(.TraitBold),
+                    size: 0.0)
+    #endif
+
   }
 
   /// Returns a italicized version of `self`.
   public var italicized: UIFont {
-    return UIFont(descriptor: self.fontDescriptor().fontDescriptorWithSymbolicTraits(.TraitItalic),
-                  size: 0.0)
+    #if swift(>=2.3)
+      return self.fontDescriptor().fontDescriptorWithSymbolicTraits(.TraitItalic)
+        .map { UIFont(descriptor: $0, size: 0.0) } ?? self
+    #else
+      return UIFont(descriptor: self.fontDescriptor().fontDescriptorWithSymbolicTraits(.TraitItalic),
+                    size: 0.0)
+    #endif
   }
 
   /// regular, 17pt font, 22pt leading, -24pt tracking

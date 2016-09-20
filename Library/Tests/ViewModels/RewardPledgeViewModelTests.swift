@@ -80,7 +80,8 @@ internal final class RewardPledgeViewModelTests: TestCase {
     self.vm.outputs.expandRewardDescription.observe(self.expandRewardDescription.observer)
     self.vm.outputs.fulfillmentAndShippingFooterStackViewHidden
       .observe(self.fulfillmentAndShippingFooterStackViewHidden.observer)
-    self.vm.outputs.goToCheckout.map(first).map { $0.URL!.absoluteString }
+    self.vm.outputs.goToCheckout.map(first).map { optionalize(optionalize($0.URL)?.absoluteString) }
+      .ignoreNil()
       .observe(self.goToCheckoutRequest.observer)
     self.vm.outputs.goToCheckout.map(second).observe(self.goToCheckoutProject.observer)
     self.vm.outputs.goToPaymentAuthorization.map { $0.encode() as NSDictionary }

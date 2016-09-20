@@ -28,7 +28,8 @@ public final class CheckoutRacingViewModel: CheckoutRacingViewModelType {
   public init() {
 
     let envelope = initialURLProperty.signal.ignoreNil()
-      .map { $0.absoluteString }
+      .map { optionalize($0.absoluteString) }
+      .ignoreNil()
       .promoteErrors(CheckoutRetryError.self)
       .switchMap { url in
         SignalProducer<(), CheckoutRetryError>(value: ())

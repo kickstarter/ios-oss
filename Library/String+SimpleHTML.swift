@@ -20,17 +20,11 @@ public extension String {
     base base: Attributes,
          bold optionalBold: Attributes? = nil,
               italic optionalItalic: Attributes? = nil) -> NSAttributedString? {
-    let baseFont = base[NSFontAttributeName] ?? UIFont.systemFontOfSize(12.0)
+    let baseFont = (base[NSFontAttributeName] as? UIFont) ?? UIFont.systemFontOfSize(12.0)
 
     // If bold or italic are not specified we can derive them from `font`.
-    let bold = optionalBold ?? [NSFontAttributeName: UIFont(
-      descriptor: baseFont.fontDescriptor().fontDescriptorWithSymbolicTraits([.TraitBold]),
-      size: baseFont.pointSize
-      )]
-    let italic = optionalItalic ?? [NSFontAttributeName: UIFont(
-      descriptor: baseFont.fontDescriptor().fontDescriptorWithSymbolicTraits([.TraitItalic]),
-      size: baseFont.pointSize
-      )]
+    let bold = optionalBold ?? [NSFontAttributeName: baseFont.bolded]
+    let italic = optionalItalic ?? [NSFontAttributeName: baseFont.italicized]
 
     guard let data = self.dataUsingEncoding(NSUTF8StringEncoding) else { return nil }
 

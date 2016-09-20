@@ -473,10 +473,20 @@ private func userSurvey(params: RouteParams) -> Decoded<Navigation> {
 private func parsedParams(url url: NSURL, fromTemplate template: String) -> RouteParams? {
 
   // early out on URL's that are not recognized as kickstarter URL's
-  let isApiURL = url.absoluteString
-    .hasPrefix(AppEnvironment.current.apiService.serverConfig.apiBaseUrl.absoluteString)
-  let isWebURL = url.absoluteString
-    .hasPrefix(AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString)
+  #if swift(>=2.3)
+    let isApiURL = true == AppEnvironment.current.apiService.serverConfig.apiBaseUrl.absoluteString
+      .flatMap { url.absoluteString?.hasPrefix($0) }
+
+    let isWebURL = true == AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString
+      .flatMap { url.absoluteString?.hasPrefix($0) }
+  #else
+    let isApiURL = url.absoluteString
+      .hasPrefix(AppEnvironment.current.apiService.serverConfig.apiBaseUrl.absoluteString)
+
+    let isWebURL = url.absoluteString
+      .hasPrefix(AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString)
+  #endif
+
   guard isApiURL || isWebURL else { return nil }
 
   let templateComponents = template

@@ -29,7 +29,7 @@ public protocol AppDelegateViewModelInputs {
   func applicationContinueUserActivity(userActivity: NSUserActivity) -> Bool
 
   /// Call when the application finishes launching.
-  func applicationDidFinishLaunching(application application: UIApplication,
+  func applicationDidFinishLaunching(application application: UIApplication?,
                                                  launchOptions: [NSObject: AnyObject]?)
 
   /// Call when the application will enter foreground.
@@ -39,7 +39,7 @@ public protocol AppDelegateViewModelInputs {
   func applicationDidEnterBackground()
 
   /// Call to open a url that was sent to the app
-  func applicationOpenUrl(application application: UIApplication, url: NSURL, sourceApplication: String?,
+  func applicationOpenUrl(application application: UIApplication?, url: NSURL, sourceApplication: String?,
                                       annotation: AnyObject) -> Bool
 
   /// Call after having invoked AppEnvironemt.updateCurrentUser with a fresh user.
@@ -268,12 +268,12 @@ AppDelegateViewModelOutputs {
       .switchMap { rawParams -> SignalProducer<DiscoveryParams?, NoError> in
         guard
           let rawParams = rawParams,
-          params = DiscoveryParams.decode(.parse(rawParams)).value
+          let params = DiscoveryParams.decode(.init(rawParams)).value
           else { return .init(value: nil) }
 
         guard
           let rawCategoryParam = rawParams["category_id"],
-          categoryParam = Param.decode(.String(rawCategoryParam)).value
+          let categoryParam = Param.decode(.String(rawCategoryParam)).value
           else { return .init(value: params) }
 
         return AppEnvironment.current.apiService.fetchCategory(param: categoryParam)
@@ -444,9 +444,9 @@ AppDelegateViewModelOutputs {
     return self.continueUserActivityReturnValue.value
   }
 
-  private typealias ApplicationWithOptions = (application: UIApplication, options: [NSObject: AnyObject]?)
+  private typealias ApplicationWithOptions = (application: UIApplication?, options: [NSObject: AnyObject]?)
   private let applicationLaunchOptionsProperty = MutableProperty<ApplicationWithOptions?>(nil)
-  public func applicationDidFinishLaunching(application application: UIApplication,
+  public func applicationDidFinishLaunching(application application: UIApplication?,
                                                         launchOptions: [NSObject: AnyObject]?) {
     self.applicationLaunchOptionsProperty.value = (application, launchOptions)
   }
@@ -482,13 +482,13 @@ AppDelegateViewModelOutputs {
   }
 
   private typealias ApplicationOpenUrl = (
-    application: UIApplication,
+    application: UIApplication?,
     url: NSURL,
     sourceApplication: String?,
     annotation: AnyObject
   )
   private let applicationOpenUrlProperty = MutableProperty<ApplicationOpenUrl?>(nil)
-  public func applicationOpenUrl(application application: UIApplication,
+  public func applicationOpenUrl(application application: UIApplication?,
                                              url: NSURL,
                                              sourceApplication: String?,
                                              annotation: AnyObject) -> Bool {
@@ -552,11 +552,11 @@ private func navigation(fromPushEnvelope envelope: PushEnvelope) -> Navigation? 
       return .project(.id(projectId), .root, refTag: .push)
 
     case .update:
-      guard let projectId = activity.projectId, updateId = activity.updateId else { return nil }
+      guard let projectId = activity.projectId, let updateId = activity.updateId else { return nil }
       return .project(.id(projectId), .update(updateId, .root), refTag: .push)
 
     case .commentPost:
-      guard let projectId = activity.projectId, updateId = activity.updateId else { return nil }
+      guard let projectId = activity.projectId, let updateId = activity.updateId else { return nil }
       return .project(.id(projectId), .update(updateId, .comments), refTag: .push)
 
     case .commentProject:

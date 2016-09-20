@@ -28,7 +28,7 @@ public final class ReferralChartView: UIView {
   public override func drawRect(rect: CGRect) {
     super.drawRect(rect)
 
-    let context = UIGraphicsGetCurrentContext()
+    guard let context = UIGraphicsGetCurrentContext() else { return }
 
     let internalPercentageAngle = CGFloat(-M_PI_2) + self.internalPercentage * CGFloat(2.0 * M_PI)
     let internalAndExternalPercentage = min(self.internalPercentage + self.externalPercentage, 1.0)

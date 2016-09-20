@@ -26,6 +26,7 @@ internal final class HelpWebViewModel: HelpWebViewModelType, HelpWebViewModelInp
     self.webViewLoadRequest = self.helpTypeProperty.signal.ignoreNil()
       .takeWhen(self.viewDidLoadProperty.signal)
       .map { urlForHelpType($0, baseUrl: AppEnvironment.current.apiService.serverConfig.webBaseUrl) }
+      .ignoreNil()
       .map { AppEnvironment.current.apiService.preparedRequest(forURL: $0) }
   }
 
@@ -44,7 +45,7 @@ internal final class HelpWebViewModel: HelpWebViewModelType, HelpWebViewModelInp
   }
 }
 
-private func urlForHelpType(helpType: HelpType, baseUrl: NSURL) -> NSURL {
+private func urlForHelpType(helpType: HelpType, baseUrl: NSURL) -> NSURL? {
   switch helpType {
   case .cookie:
     return baseUrl.URLByAppendingPathComponent("cookies")

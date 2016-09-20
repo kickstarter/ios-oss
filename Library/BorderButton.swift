@@ -92,9 +92,7 @@ public final class BorderButton: UIButton {
     case let (font?, .Default?):
       return font.toUIFont()
     case let (font?, .Medium?):
-      let descriptor = font.toUIFont().fontDescriptor()
-      let mediumDescriptor = descriptor.fontDescriptorWithSymbolicTraits(.TraitBold)
-      return UIFont(descriptor: mediumDescriptor, size: 0.0)
+      return font.toUIFont().bolded
     case (_, _):
       return FontStyle.mismatchedFont
     }
