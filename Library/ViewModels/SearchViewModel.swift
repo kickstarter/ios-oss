@@ -18,6 +18,9 @@ public protocol SearchViewModelInputs {
   /// Call when the user enters a new search term.
   func searchTextChanged(searchText: String)
 
+  /// Call when the user taps the return key.
+  func searchTextEditingDidEnd()
+
   /// Call when the view appears.
   func viewDidAppear()
 
@@ -34,6 +37,9 @@ public protocol SearchViewModelOutputs {
   /// Emits booleans that determines if the search field should be focused or not, and whether that focus
   /// should be animated.
   var changeSearchFieldFocus: Signal<(focused: Bool, animate: Bool), NoError> { get }
+
+  /// Emits when the search field should resign focus.
+  var resignFirstResponder: Signal<(), NoError> { get }
 
   /// Emits true when the popular title should be shown, and false otherwise.
   var isPopularTitleVisible: Signal<Bool, NoError> { get }
@@ -117,6 +123,12 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
 
     self.searchFieldText = self.cancelButtonPressedProperty.signal.mapConst("")
 
+    self.resignFirstResponder = Signal
+      .merge(
+        self.searchTextEditingDidEndProperty.signal,
+        self.cancelButtonPressedProperty.signal
+    )
+
     // koala
 
     self.viewDidAppearProperty.signal
@@ -156,6 +168,11 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
     self.searchTextChangedProperty.value = searchText
   }
 
+  private let searchTextEditingDidEndProperty = MutableProperty()
+  public func searchTextEditingDidEnd() {
+    self.searchTextEditingDidEndProperty.value = ()
+  }
+
   private let viewDidAppearProperty = MutableProperty()
   public func viewDidAppear() {
     self.viewDidAppearProperty.value = ()
@@ -169,6 +186,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
   public let changeSearchFieldFocus: Signal<(focused: Bool, animate: Bool), NoError>
   public let isPopularTitleVisible: Signal<Bool, NoError>
   public let projects: Signal<[Project], NoError>
+  public let resignFirstResponder: Signal<(), NoError>
   public let searchFieldText: Signal<String, NoError>
 
   public var inputs: SearchViewModelInputs { return self }

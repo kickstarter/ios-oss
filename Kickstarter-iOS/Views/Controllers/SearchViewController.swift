@@ -36,6 +36,10 @@ internal final class SearchViewController: UITableViewController {
                                    action: #selector(searchTextChanged(_:)),
                                    forControlEvents: .EditingChanged)
 
+    self.searchTextField.addTarget(self,
+                                   action: #selector(searchTextEditingDidEnd),
+                                   forControlEvents: .EditingDidEndOnExit)
+
     self.searchBarContainerView.addGestureRecognizer(
       UITapGestureRecognizer(target: self, action: #selector(searchBarContainerTapped))
     )
@@ -72,6 +76,9 @@ internal final class SearchViewController: UITableViewController {
       |> UITextField.lens.textColor .~ .ksr_text_navy_700
       |> UITextField.lens.placeholder %~ { _ in Strings.tabbar_search() }
 
+    self.tableView
+      |> UITableView.lens.keyboardDismissMode .~ .OnDrag
+
     self.navigationController
       ?|> UINavigationController.lens.navigationBar.barTintColor .~ .whiteColor()
   }
@@ -93,6 +100,7 @@ internal final class SearchViewController: UITableViewController {
     }
 
     self.searchTextField.rac.text = self.viewModel.outputs.searchFieldText
+    self.searchTextField.rac.isFirstResponder = self.viewModel.outputs.resignFirstResponder.mapConst(false)
 
     self.viewModel.outputs.changeSearchFieldFocus
       .observeForControllerAction()
@@ -108,6 +116,7 @@ internal final class SearchViewController: UITableViewController {
         self.searchBarLeadingConstraint.active = true
         self.searchBarTrailingConstraint.active = true
         self.cancelButton.hidden = false
+        self.searchTextField.becomeFirstResponder()
       } else {
         self.searchBarCenterConstraint.active = true
         self.searchBarLeadingConstraint.active = false
@@ -139,6 +148,10 @@ internal final class SearchViewController: UITableViewController {
 
   @objc private func searchTextChanged(textField: UITextField) {
     self.viewModel.inputs.searchTextChanged(textField.text ?? "")
+  }
+
+  @objc private func searchTextEditingDidEnd() {
+    self.viewModel.inputs.searchTextEditingDidEnd()
   }
 
   @objc private func cancelButtonPressed() {

@@ -68,7 +68,7 @@ internal protocol RootViewModelOutputs {
   var profileTabBarItemData: Signal<ProfileTabBarItemData, NoError> { get }
 
   /// Emits a controller that should be scrolled to the top. This requires figuring out what kind of
-  // controller it is, and setting its `contentOffset`.
+  /// controller it is, and setting its `contentOffset`.
   var scrollToTop: Signal<UIViewController, NoError> { get }
 
   /// Emits an index that the tab bar should be switched to.

@@ -17,6 +17,7 @@ internal final class SearchViewModelTests: TestCase {
   private let changeSearchFieldFocusAnimated = TestObserver<Bool, NoError>()
   private let isPopularTitleVisible = TestObserver<Bool, NoError>()
   private let hasProjects = TestObserver<Bool, NoError>()
+  private let resignFirstResponder = TestObserver<(), NoError>()
   private let searchFieldText = TestObserver<String, NoError>()
 
   override func setUp() {
@@ -26,6 +27,7 @@ internal final class SearchViewModelTests: TestCase {
     self.vm.outputs.changeSearchFieldFocus.map(second).observe(self.changeSearchFieldFocusAnimated.observer)
     self.vm.outputs.isPopularTitleVisible.observe(self.isPopularTitleVisible.observer)
     self.vm.outputs.projects.map { !$0.isEmpty }.skipRepeats(==).observe(self.hasProjects.observer)
+    self.vm.outputs.resignFirstResponder.observe(self.resignFirstResponder.observer)
     self.vm.outputs.searchFieldText.observe(self.searchFieldText.observer)
   }
 
@@ -39,11 +41,13 @@ internal final class SearchViewModelTests: TestCase {
 
     self.changeSearchFieldFocusFocused.assertValues([false, true])
     self.changeSearchFieldFocusAnimated.assertValues([false, true])
+    self.resignFirstResponder.assertValueCount(0)
 
     self.vm.inputs.cancelButtonPressed()
 
     self.changeSearchFieldFocusFocused.assertValues([false, true, false])
     self.changeSearchFieldFocusAnimated.assertValues([false, true, true])
+    self.resignFirstResponder.assertValueCount(1)
   }
 
   // Tests a standard flow of searching for projects.
@@ -238,5 +242,16 @@ internal final class SearchViewModelTests: TestCase {
     self.vm.inputs.cancelButtonPressed()
 
     self.searchFieldText.assertValues([""])
+  }
+
+  func testSearchFieldEditingDidEnd() {
+    self.vm.inputs.viewDidAppear()
+    self.vm.inputs.searchFieldDidBeginEditing()
+
+    self.resignFirstResponder.assertValueCount(0)
+
+    self.vm.inputs.searchTextEditingDidEnd()
+
+    self.resignFirstResponder.assertValueCount(1)
   }
 }
