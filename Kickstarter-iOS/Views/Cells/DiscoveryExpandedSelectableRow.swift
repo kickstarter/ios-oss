@@ -8,6 +8,8 @@ internal final class DiscoveryExpandedSelectableRowCell: UITableViewCell, ValueC
   @IBOutlet private weak var circleImageView: UIImageView!
   @IBOutlet private weak var checkImageView: UIImageView!
 
+  private var isSelected: Bool = false
+
   internal func configureWith(value value: (row: SelectableRow, categoryId: Int?)) {
     if let category = value.row.params.category where category.isRoot {
       self.filterTitleLabel.text = RootCategory(categoryId: category.id).allProjectsString()
@@ -29,13 +31,35 @@ internal final class DiscoveryExpandedSelectableRowCell: UITableViewCell, ValueC
 
     self.filterTitleLabel
       |> UILabel.lens.textColor .~ discoverySecondaryColor(forCategoryId: value.categoryId)
-      |> UILabel.lens.font .~ value.row.isSelected ? UIFont.ksr_subhead().bolded : .ksr_subhead()
+      |> UILabel.lens.numberOfLines .~ 2
+
+    self.isSelected = value.row.isSelected
+  }
+
+  override func bindStyles() {
+    super.bindStyles()
 
     self
-      |> UITableViewCell.lens.contentView.layoutMargins .~ .init(top: Styles.grid(2),
-                                                                 left: Styles.grid(4),
-                                                                 bottom: Styles.grid(2),
-                                                                 right: Styles.grid(2))
+      |> baseTableViewCellStyle()
+      |> UITableViewCell.lens.contentView.layoutMargins %~~ { _, cell in
+        cell.traitCollection.isRegularRegular
+          ? .init(top: Styles.grid(2),
+                       left: Styles.grid(6),
+                       bottom: Styles.grid(2),
+                       right: Styles.grid(2))
+          : .init(top: Styles.grid(2),
+                     left: Styles.grid(4),
+                     bottom: Styles.grid(2),
+                     right: Styles.grid(2))
+    }
+  }
+
+  internal func willDisplay() {
+    self.filterTitleLabel
+      |> UILabel.lens.font %~~ { _, label in
+        label.traitCollection.isRegularRegular
+          ? self.isSelected ? UIFont.ksr_subhead(size: 18).bolded : .ksr_subhead(size: 18)
+          : self.isSelected ? UIFont.ksr_subhead().bolded : .ksr_subhead() }
   }
 
   internal func animateIn(delayOffset delayOffset: Int) {

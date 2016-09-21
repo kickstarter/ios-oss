@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0123B4E31D919BC4004C1166 /* DiscoveryFiltersViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0123B4AC1D919BBA004C1166 /* DiscoveryFiltersViewControllerTests.swift */; };
 		013F2FDC1D66243E0066DB77 /* DiscoveryNavigationHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013F2FDB1D66243E0066DB77 /* DiscoveryNavigationHeaderViewModel.swift */; };
 		0146E3231CC0296900082C5B /* FacebookConfirmationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0146E3211CC0296900082C5B /* FacebookConfirmationViewController.swift */; };
 		0148EF911CDD2879000DEFF8 /* ThanksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0148EF8F1CDD2879000DEFF8 /* ThanksViewController.swift */; };
@@ -1519,6 +1520,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0123B4AC1D919BBA004C1166 /* DiscoveryFiltersViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryFiltersViewControllerTests.swift; sourceTree = "<group>"; };
 		013F2FDB1D66243E0066DB77 /* DiscoveryNavigationHeaderViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryNavigationHeaderViewModel.swift; sourceTree = "<group>"; };
 		0146E3211CC0296900082C5B /* FacebookConfirmationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookConfirmationViewController.swift; sourceTree = "<group>"; };
 		0148EF8F1CDD2879000DEFF8 /* ThanksViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThanksViewController.swift; sourceTree = "<group>"; };
@@ -2331,10 +2333,11 @@
 			isa = PBXGroup;
 			children = (
 				A7EDEE7A1D83635400780B34 /* CommentsViewControllerTests.swift */,
+				0123B4AC1D919BBA004C1166 /* DiscoveryFiltersViewControllerTests.swift */,
 				A73778D51D81ABE2004C2A9B /* FundingGraphViewTests.swift */,
 				9D3A6B4B1D8C4F3800FE3926 /* ProjectActivityViewControllerTests.swift */,
-				A73778D71D81C201004C2A9B /* SettingsViewControllerTests.swift */,
 				A73778D91D81D3CC004C2A9B /* RewardsViewControllerTests.swift */,
+				A73778D71D81C201004C2A9B /* SettingsViewControllerTests.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -5048,6 +5051,7 @@
 				015B78BC1D481805003216AC /* HelpWebViewModelTests.swift in Sources */,
 				9D3A6B4C1D8C4F3800FE3926 /* ProjectActivityViewControllerTests.swift in Sources */,
 				A73778DF1D81DC9B004C2A9B /* Combos.swift in Sources */,
+				0123B4E31D919BC4004C1166 /* DiscoveryFiltersViewControllerTests.swift in Sources */,
 				A72D92991CB1F7DA00A88249 /* TestCase.swift in Sources */,
 				A73778DA1D81D3CC004C2A9B /* RewardsViewControllerTests.swift in Sources */,
 				A7EDEE7B1D83635400780B34 /* CommentsViewControllerTests.swift in Sources */,

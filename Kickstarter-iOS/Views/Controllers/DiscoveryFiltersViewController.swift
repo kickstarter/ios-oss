@@ -50,27 +50,27 @@ internal final class DiscoveryFiltersViewController: UIViewController, UITableVi
     super.bindViewModel()
 
     self.viewModel.outputs.animateInView
-      .observeForControllerAction()
+      .observeForUI()
       .observeNext { [weak self] in
         self?.animateIn(categoryId: $0)
     }
 
     self.viewModel.outputs.loadTopRows
-      .observeForControllerAction()
+      .observeForUI()
       .observeNext { [weak self] rows, id in
         self?.dataSource.load(topRows: rows, categoryId: id)
         self?.filtersTableView.reloadData()
     }
 
     self.viewModel.outputs.loadFavoriteRows
-      .observeForControllerAction()
+      .observeForUI()
       .observeNext { [weak self] rows, id in
         self?.dataSource.load(favoriteRows: rows, categoryId: id)
         self?.filtersTableView.reloadData()
     }
 
     self.viewModel.outputs.loadCategoryRows
-      .observeForControllerAction()
+      .observeForUI()
       .observeNext { [weak self] rows, id, selectedRowId in
         self?.dataSource.load(categoryRows: rows, categoryId: id)
         self?.filtersTableView.reloadData()
@@ -108,12 +108,19 @@ internal final class DiscoveryFiltersViewController: UIViewController, UITableVi
   internal func tableView(tableView: UITableView,
                           willDisplayCell cell: UITableViewCell,
                                           forRowAtIndexPath indexPath: NSIndexPath) {
-    guard self.viewModel.outputs.shouldAnimateSelectableCell else { return }
 
-    guard let cell = cell as? DiscoveryExpandedSelectableRowCell else { return }
+    if let cell = cell as? DiscoverySelectableRowCell {
+      cell.willDisplay()
+    } else if let cell = cell as? DiscoveryExpandableRowCell {
+      cell.willDisplay()
+    } else if let cell = cell as? DiscoveryExpandedSelectableRowCell {
+      cell.willDisplay()
 
-    let delay = indexPath.row - (self.dataSource.expandedRow() ?? 0)
-    cell.animateIn(delayOffset: delay)
+      if self.viewModel.outputs.shouldAnimateSelectableCell {
+        let delay = indexPath.row - (self.dataSource.expandedRow() ?? 0)
+        cell.animateIn(delayOffset: delay)
+      }
+    }
   }
 
   private func animateIn(categoryId categoryId: Int?) {

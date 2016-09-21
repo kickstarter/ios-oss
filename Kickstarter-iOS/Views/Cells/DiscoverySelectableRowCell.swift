@@ -5,6 +5,8 @@ import UIKit
 internal final class DiscoverySelectableRowCell: UITableViewCell, ValueCell {
   @IBOutlet private weak var filterTitleLabel: UILabel!
 
+  private var isSelected: Bool = false
+
   func configureWith(value value: (row: SelectableRow, categoryId: Int?)) {
     if value.row.params.staffPicks == true {
       self.filterTitleLabel.text = Strings.Projects_We_Love()
@@ -23,10 +25,18 @@ internal final class DiscoverySelectableRowCell: UITableViewCell, ValueCell {
     self.filterTitleLabel |> discoveryFilterLabelStyle(categoryId: value.categoryId,
                                                        isSelected: value.row.isSelected)
 
+    self.isSelected = value.row.isSelected
+  }
+
+  override func bindStyles() {
+    super.bindStyles()
+
     self
-      |> UITableViewCell.lens.contentView.layoutMargins .~ .init(top: Styles.grid(2),
-                                                                 left: Styles.grid(4),
-                                                                 bottom: Styles.grid(2),
-                                                                 right: Styles.grid(2))
+      |> discoveryFilterRowMarginStyle
+  }
+
+  internal func willDisplay() {
+    self.filterTitleLabel
+      |> discoveryFilterLabelFontStyle(isSelected: self.isSelected)
   }
 }

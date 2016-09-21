@@ -89,12 +89,31 @@ public let discoveryOnboardingSignUpButtonStyle = baseButtonStyle
     Strings.discovery_onboarding_buttons_signup_or_login()
 }
 
+public func discoveryFilterLabelFontStyle<L: UILabelProtocol> (isSelected isSelected: Bool) -> (L -> L) {
+  return L.lens.font %~~ { _, label in
+    label.traitCollection.isRegularRegular
+      ? isSelected ? UIFont.ksr_title1(size: 24).bolded : .ksr_title1(size: 24)
+      : isSelected ? UIFont.ksr_title1(size: 22).bolded : .ksr_title1(size: 22)
+  }
+}
+
 public func discoveryFilterLabelStyle<L: UILabelProtocol> (categoryId categoryId: Int?, isSelected: Bool)
   -> (L -> L) {
-  return
-    L.lens.font .~ isSelected ? UIFont.ksr_title1(size: 22).bolded : .ksr_title1(size: 22)
-      <> L.lens.textColor .~ discoveryPrimaryColor(forCategoryId: categoryId)
+  return L.lens.textColor .~ discoveryPrimaryColor(forCategoryId: categoryId)
       <> L.lens.alpha .~ (categoryId == nil) ? 1.0 : (isSelected ? 1.0 : 0.6)
+}
+
+public let discoveryFilterRowMarginStyle = baseTableViewCellStyle()
+  <> UITableViewCell.lens.contentView.layoutMargins %~~ { _, cell in
+    cell.traitCollection.isRegularRegular
+      ? .init(top: Styles.grid(2),
+                   left: Styles.grid(6),
+                   bottom: Styles.grid(2),
+                   right: Styles.grid(2))
+      : .init(top: Styles.grid(2),
+                 left: Styles.grid(4),
+                 bottom: Styles.grid(2),
+                 right: Styles.grid(2))
 }
 
 public let discoveryOnboardingTitleStyle =
