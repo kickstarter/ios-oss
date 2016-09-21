@@ -170,7 +170,7 @@ internal final class DashboardViewController: UITableViewController {
   }
 
   private func goToProject(project: Project, refTag: RefTag) {
-    let vc = ProjectMagazineViewController.configuredWith(projectOrParam: .left(project), refTag: refTag)
+    let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: refTag)
     let nav = UINavigationController(rootViewController: vc)
     self.presentViewController(nav, animated: true, completion: nil)
   }

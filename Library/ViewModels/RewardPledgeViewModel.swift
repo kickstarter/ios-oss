@@ -186,11 +186,7 @@ RewardPledgeViewModelOutputs {
     }
 
     self.navigationTitle = projectAndReward
-      .map { project, reward in
-        Strings.rewards_title_pledge_reward_currency_or_more(
-          reward_currency: Format.currency(reward.minimum, country: project.country)
-        )
-    }
+      .map(navigationTitle(forProject:reward:))
 
     self.setStripeAppleMerchantIdentifier = applePayCapable
       .filter(isTrue)
@@ -411,6 +407,7 @@ RewardPledgeViewModelOutputs {
     projectAndReward
       .observeNext { [weak self] project, reward in
         self?.rewardViewModel.inputs.configureWith(project: project, reward: reward)
+        self?.rewardViewModel.inputs.boundStyles()
     }
   }
   // swiftlint:enable function_body_length
@@ -710,4 +707,22 @@ private func createApplePayPledge(
         transactionIdentifier: paymentData.tokenData.transactionIdentifier
       )
   }
+}
+
+private func navigationTitle(forProject project: Project, reward: Reward) -> String {
+
+  guard reward == Reward.noReward else {
+    return Strings.rewards_title_pledge_reward_currency_or_more(
+      reward_currency: Format.currency(reward.minimum, country: project.country)
+    )
+  }
+
+  let minPledge = AppEnvironment.current.config?.launchedCountries
+    .filter { $0.countryCode == project.country.countryCode }
+    .first?
+    .minPledge
+
+  return Strings.rewards_title_pledge_reward_currency_or_more(
+    reward_currency: Format.currency(minPledge ?? 1, country: project.country)
+  )
 }

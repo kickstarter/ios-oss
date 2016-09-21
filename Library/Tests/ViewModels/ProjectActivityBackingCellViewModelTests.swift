@@ -323,7 +323,7 @@ internal final class ProjectActivityBackingCellViewModelTests: TestCase {
 
     let activity3 = .template
       |> Activity.lens.category .~ .backing
-      |> Activity.lens.memberData.rewardId .~ 0
+      |> Activity.lens.memberData.rewardId .~ Reward.noReward.id
       |> Activity.lens.project .~ project
 
     self.vm.inputs.configureWith(activity: activity3, project: project)

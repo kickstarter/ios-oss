@@ -130,7 +130,7 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
     self.secondaryLabelText.assertValues([""])
     self.secondaryLabelIsHidden.assertValues([true])
     self.titleAccessibilityHint.assertValues([Strings.Opens_filters()])
-    self.titleAccessibilityLabel.assertValues([Strings.Filtered_by_projects_we_love()])
+    self.titleAccessibilityLabel.assertValues([Strings.Filter_by_projects_we_love()])
 
     self.vm.inputs.titleButtonTapped()
 
@@ -140,8 +140,8 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
     self.secondaryLabelText.assertValues(["", ""])
     self.secondaryLabelIsHidden.assertValues([true])
     self.titleAccessibilityHint.assertValues([Strings.Opens_filters(), Strings.Closes_filters()])
-    self.titleAccessibilityLabel.assertValues([Strings.Filtered_by_projects_we_love(),
-      Strings.Filtered_by_projects_we_love()])
+    self.titleAccessibilityLabel.assertValues([Strings.Filter_by_projects_we_love(),
+      Strings.Filter_by_projects_we_love()])
 
     self.vm.inputs.filtersSelected(row: selectableRow |> SelectableRow.lens.params .~ starredParams)
 
@@ -153,8 +153,8 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
     self.secondaryLabelIsHidden.assertValues([true])
     self.titleAccessibilityHint.assertValues([Strings.Opens_filters(), Strings.Closes_filters(),
       Strings.Opens_filters()])
-    self.titleAccessibilityLabel.assertValues([Strings.Filtered_by_projects_we_love(),
-      Strings.Filtered_by_projects_we_love(), Strings.Filtered_by_starred_projects()])
+    self.titleAccessibilityLabel.assertValues([Strings.Filter_by_projects_we_love(),
+      Strings.Filter_by_projects_we_love(), Strings.Filter_by_starred_projects()])
 
     self.vm.inputs.titleButtonTapped()
 
@@ -166,9 +166,9 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
     self.secondaryLabelIsHidden.assertValues([true])
     self.titleAccessibilityHint.assertValues([Strings.Opens_filters(), Strings.Closes_filters(),
       Strings.Opens_filters(), Strings.Closes_filters()])
-    self.titleAccessibilityLabel.assertValues([Strings.Filtered_by_projects_we_love(),
-      Strings.Filtered_by_projects_we_love(), Strings.Filtered_by_starred_projects(),
-      Strings.Filtered_by_starred_projects()])
+    self.titleAccessibilityLabel.assertValues([Strings.Filter_by_projects_we_love(),
+      Strings.Filter_by_projects_we_love(), Strings.Filter_by_starred_projects(),
+      Strings.Filter_by_starred_projects()])
 
     self.vm.inputs.filtersSelected(row: selectableRow |> SelectableRow.lens.params .~ categoryParams)
 
@@ -180,10 +180,10 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
     self.secondaryLabelIsHidden.assertValues([true])
     self.titleAccessibilityHint.assertValues([Strings.Opens_filters(), Strings.Closes_filters(),
       Strings.Opens_filters(), Strings.Closes_filters(), Strings.Opens_filters()])
-    self.titleAccessibilityLabel.assertValues([Strings.Filtered_by_projects_we_love(),
-      Strings.Filtered_by_projects_we_love(), Strings.Filtered_by_starred_projects(),
-      Strings.Filtered_by_starred_projects(),
-      Strings.Filtered_by_category_name(category_name: categoryParams.category?.name ?? "")])
+    self.titleAccessibilityLabel.assertValues([Strings.Filter_by_projects_we_love(),
+      Strings.Filter_by_projects_we_love(), Strings.Filter_by_starred_projects(),
+      Strings.Filter_by_starred_projects(),
+      Strings.Filter_by_category_name(category_name: categoryParams.category?.name ?? "")])
 
     self.vm.inputs.titleButtonTapped()
 
@@ -196,11 +196,11 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
     self.secondaryLabelIsHidden.assertValues([true])
     self.titleAccessibilityHint.assertValues([Strings.Opens_filters(), Strings.Closes_filters(),
       Strings.Opens_filters(), Strings.Closes_filters(), Strings.Opens_filters(), Strings.Closes_filters()])
-    self.titleAccessibilityLabel.assertValues([Strings.Filtered_by_projects_we_love(),
-      Strings.Filtered_by_projects_we_love(), Strings.Filtered_by_starred_projects(),
-      Strings.Filtered_by_starred_projects(),
-      Strings.Filtered_by_category_name(category_name: categoryParams.category?.name ?? ""),
-      Strings.Filtered_by_category_name(category_name: categoryParams.category?.name ?? "")
+    self.titleAccessibilityLabel.assertValues([Strings.Filter_by_projects_we_love(),
+      Strings.Filter_by_projects_we_love(), Strings.Filter_by_starred_projects(),
+      Strings.Filter_by_starred_projects(),
+      Strings.Filter_by_category_name(category_name: categoryParams.category?.name ?? ""),
+      Strings.Filter_by_category_name(category_name: categoryParams.category?.name ?? "")
     ])
 
     self.vm.inputs.filtersSelected(row: selectableRow |> SelectableRow.lens.params .~ subcategoryParams)
@@ -215,12 +215,12 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
     self.titleAccessibilityHint.assertValues([Strings.Opens_filters(), Strings.Closes_filters(),
       Strings.Opens_filters(), Strings.Closes_filters(), Strings.Opens_filters(), Strings.Closes_filters(),
       Strings.Opens_filters()])
-    self.titleAccessibilityLabel.assertValues([Strings.Filtered_by_projects_we_love(),
-      Strings.Filtered_by_projects_we_love(), Strings.Filtered_by_starred_projects(),
-      Strings.Filtered_by_starred_projects(),
-      Strings.Filtered_by_category_name(category_name: categoryParams.category?.name ?? ""),
-      Strings.Filtered_by_category_name(category_name: categoryParams.category?.name ?? ""),
-      Strings.Filtered_by_subcategory_name_in_category_name(
+    self.titleAccessibilityLabel.assertValues([Strings.Filter_by_projects_we_love(),
+      Strings.Filter_by_projects_we_love(), Strings.Filter_by_starred_projects(),
+      Strings.Filter_by_starred_projects(),
+      Strings.Filter_by_category_name(category_name: categoryParams.category?.name ?? ""),
+      Strings.Filter_by_category_name(category_name: categoryParams.category?.name ?? ""),
+      Strings.Filter_by_subcategory_name_in_category_name(
         subcategory_name: subcategoryParams.category?.name ?? "",
         category_name: subcategoryParams.category?.root?.name ?? "")
       ])

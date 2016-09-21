@@ -18,15 +18,18 @@ internal final class RewardCell: UITableViewCell, ValueCell {
   @IBOutlet private weak var itemsContainerStackView: UIStackView!
   @IBOutlet private weak var itemsHeaderStackView: UIStackView!
   @IBOutlet private weak var itemsStackView: UIStackView!
+  @IBOutlet private weak var manageRewardButton: UIButton!
   @IBOutlet private weak var minimumLabel: UILabel!
   @IBOutlet private weak var minimumStackView: UIStackView!
   @IBOutlet private weak var remainingLabel: UILabel!
   @IBOutlet private weak var remainingStackView: UIStackView!
   @IBOutlet private weak var rewardTitleLabel: UILabel!
   @IBOutlet private weak var rootStackView: UIStackView!
+  @IBOutlet private weak var selectRewardButton: UIButton!
   @IBOutlet private var separatorViews: [UIView]!
   @IBOutlet private weak var statsStackView: UIStackView!
   @IBOutlet private weak var titleDescriptionStackView: UIStackView!
+  @IBOutlet private weak var viewYourPledgeButton: UIButton!
   @IBOutlet private weak var youreABackerCheckmarkImageView: UIImageView!
   @IBOutlet private weak var youreABackerContainerView: UIView!
   @IBOutlet private weak var youreABackerLabel: UILabel!
@@ -42,10 +45,14 @@ internal final class RewardCell: UITableViewCell, ValueCell {
 
     self
       |> baseTableViewCellStyle()
-      |> RewardCell.lens.backgroundColor .~ .whiteColor()
+      |> (UITableViewCell.lens.contentView • UIView.lens.layoutMargins) .~
+        .init(top: Styles.grid(1), left: Styles.grid(2), bottom: Styles.grid(2), right: Styles.grid(2))
 
     self.rootStackView
       |> UIStackView.lens.spacing .~ Styles.grid(4)
+      |> UIStackView.lens.layoutMargins
+        .~ .init(top: Styles.grid(3), left: Styles.grid(4), bottom: Styles.grid(2), right: Styles.grid(4))
+      |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
 
     self.minimumStackView
       |> UIStackView.lens.spacing .~ Styles.grid(1)
@@ -63,7 +70,7 @@ internal final class RewardCell: UITableViewCell, ValueCell {
       |> UIStackView.lens.spacing .~ Styles.gridHalf(1)
 
     self.allGoneContainerView
-      |> roundedStyle()
+      |> roundedStyle(cornerRadius: 2)
       |> UIView.lens.backgroundColor .~ UIColor.ksr_navy_700
       |> UIView.lens.layoutMargins .~ .init(topBottom: Styles.gridHalf(1), leftRight: Styles.grid(1))
 
@@ -73,10 +80,7 @@ internal final class RewardCell: UITableViewCell, ValueCell {
       |> UILabel.lens.text %~ { _ in Strings.All_gone() }
 
     self.cardView
-      |> cardStyle()
-      |> UIView.lens.backgroundColor .~ .ksr_navy_200
-      |> UIView.lens.layer.borderColor .~ UIColor.ksr_grey_400.CGColor
-      |> UIView.lens.layoutMargins .~ .init(all: Styles.grid(4))
+      |> dropShadowStyle()
 
     self.minimumLabel
       |> UILabel.lens.font .~ .ksr_title2(size: 24)
@@ -105,7 +109,7 @@ internal final class RewardCell: UITableViewCell, ValueCell {
     }
 
     self.youreABackerContainerView
-      |> roundedStyle()
+      |> roundedStyle(cornerRadius: 2)
       |> UIView.lens.backgroundColor .~ UIColor.ksr_green_700
       |> UIView.lens.layoutMargins .~ .init(all: Styles.grid(1))
 
@@ -140,6 +144,22 @@ internal final class RewardCell: UITableViewCell, ValueCell {
 
     self.bulletSeparatorViews
       ||> UILabel.lens.textColor .~ .ksr_text_navy_500
+
+    self.selectRewardButton
+      |> greenButtonStyle
+      |> UIButton.lens.userInteractionEnabled .~ false
+
+    self.manageRewardButton
+      |> borderButtonStyle
+      |> UIButton.lens.userInteractionEnabled .~ false
+      |> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.Manage_your_reward() }
+
+    self.viewYourPledgeButton
+      |> borderButtonStyle
+      |> UIButton.lens.userInteractionEnabled .~ false
+      |> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.project_view_button() }
+
+    self.viewModel.inputs.boundStyles()
   }
   // swiftlint:enable function_body_length
 
@@ -148,13 +168,18 @@ internal final class RewardCell: UITableViewCell, ValueCell {
 
     self.allGoneContainerView.rac.hidden = self.viewModel.outputs.allGoneHidden
     self.backersCountLabel.rac.text = self.viewModel.outputs.backersCountLabelText
+    self.cardView.rac.backgroundColor = self.viewModel.outputs.cardViewBackgroundColor
+    self.contentView.rac.backgroundColor = self.viewModel.outputs.contentViewBackgroundColor
     self.conversionLabel.rac.hidden = self.viewModel.outputs.conversionLabelHidden
     self.conversionLabel.rac.text = self.viewModel.outputs.conversionLabelText
     self.conversionLabel.rac.textColor = self.viewModel.outputs.minimumAndConversionLabelsColor
+    self.descriptionLabel.rac.hidden = self.viewModel.outputs.descriptionLabelHidden
     self.descriptionLabel.rac.text = self.viewModel.outputs.descriptionLabelText
     self.footerStackView.rac.alignment = self.viewModel.outputs.footerStackViewAlignment
     self.footerStackView.rac.axis = self.viewModel.outputs.footerStackViewAxis
+    self.footerStackView.rac.hidden = self.viewModel.outputs.footerStackViewHidden
     self.itemsContainerStackView.rac.hidden = self.viewModel.outputs.itemsContainerHidden
+    self.manageRewardButton.rac.hidden = self.viewModel.outputs.manageButtonHidden
     self.minimumLabel.rac.text = self.viewModel.outputs.minimumLabelText
     self.minimumLabel.rac.textColor = self.viewModel.outputs.minimumAndConversionLabelsColor
     self.remainingLabel.rac.text = self.viewModel.outputs.remainingLabelText
@@ -162,7 +187,22 @@ internal final class RewardCell: UITableViewCell, ValueCell {
     self.rewardTitleLabel.rac.hidden = self.viewModel.outputs.titleLabelHidden
     self.rewardTitleLabel.rac.text = self.viewModel.outputs.titleLabelText
     self.rewardTitleLabel.rac.textColor = self.viewModel.outputs.titleLabelTextColor
+    self.selectRewardButton.rac.hidden = self.viewModel.outputs.pledgeButtonHidden
+    self.selectRewardButton.rac.title = self.viewModel.outputs.pledgeButtonTitleText
+    self.viewYourPledgeButton.rac.hidden = self.viewModel.outputs.viewPledgeButtonHidden
     self.youreABackerContainerView.rac.hidden = self.viewModel.outputs.youreABackerViewHidden
+
+    self.viewModel.outputs.cardViewDropShadowHidden
+      .observeForUI()
+      .observeNext { [weak self] hidden in
+        self?.cardView.layer.shadowOpacity = hidden ? 0 : 1
+    }
+
+    self.viewModel.outputs.updateTopMarginsForIsBacking
+      .observeForUI()
+      .observeNext { [weak self] isBacking in
+        self?.contentView.layoutMargins.top = Styles.grid(isBacking ? 3 : 1)
+    }
 
     self.viewModel.outputs.items
       .observeForUI()

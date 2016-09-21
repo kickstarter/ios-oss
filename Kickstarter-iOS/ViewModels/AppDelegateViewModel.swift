@@ -310,7 +310,7 @@ AppDelegateViewModelOutputs {
           .observeForUI()
           .map { project -> (Project, Navigation.Project, [UIViewController]) in
             (project, subpage,
-              [ProjectMagazineViewController.configuredWith(projectOrParam: .left(project), refTag: refTag)])
+              [ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: refTag)])
         }
     }
 

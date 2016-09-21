@@ -49,6 +49,14 @@ internal final class CheckoutViewController: DeprecatedWebViewController {
         self?.webView.stringByEvaluatingJavaScriptFromString(js)
     }
 
+    self.viewModel.outputs.setStripePublishableKey
+      .observeForUI()
+      .observeNext { STPPaymentConfiguration.sharedConfiguration().publishableKey = $0 }
+
+    self.viewModel.outputs.setStripeAppleMerchantIdentifier
+      .observeForUI()
+      .observeNext { STPPaymentConfiguration.sharedConfiguration().appleMerchantIdentifier = $0 }
+
     self.viewModel.outputs.goToSafariBrowser
       .observeForControllerAction()
       .observeNext { [weak self] url in self?.goToSafariBrowser(url: url) }

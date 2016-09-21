@@ -124,7 +124,7 @@ internal final class SearchViewController: UITableViewController {
       return
     }
 
-    let vc = ProjectMagazineViewController.configuredWith(projectOrParam: .left(project), refTag: .search)
+    let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: .search)
     let nav = UINavigationController(rootViewController: vc)
     self.presentViewController(nav, animated: true, completion: nil)
   }

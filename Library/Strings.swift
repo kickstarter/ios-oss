@@ -356,7 +356,7 @@ public enum Strings {
 
    - **es**: "Back this project below:"
    - **de**: "Back this project below:"
-   - **fr**: "Back this project below:"
+   - **fr**: "Je soutiens le projet ci-dessous :"
    - **it**: "Back this project below:"
    - **en**: "Back this project below:"
   */
@@ -381,6 +381,23 @@ public enum Strings {
     return localizedString(
       key: "Backed_by_Friends",
       defaultValue: "Backed by Friends",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Change to this reward"
+
+   - **es**: "Change to this reward"
+   - **de**: "Change to this reward"
+   - **fr**: "Choisir plutôt cette récompense"
+   - **it**: "Change to this reward"
+   - **en**: "Change to this reward"
+  */
+  public static func Change_to_this_reward() -> String {
+    return localizedString(
+      key: "Change_to_this_reward",
+      defaultValue: "Change to this reward",
       count: nil,
       substitutions: [:]
     )
@@ -440,7 +457,7 @@ public enum Strings {
    "Continue to payment"
 
    - **es**: "Continuar a pago"
-   - **de**: "Continue to payment"
+   - **de**: "Weiter zur Zahlung"
    - **fr**: "Continuer vers le paiement"
    - **it**: "Continue to payment"
    - **en**: "Continue to payment"
@@ -524,9 +541,9 @@ public enum Strings {
   /**
    "Earth"
 
-   - **es**: "Earth"
-   - **de**: "Earth"
-   - **fr**: "Earth"
+   - **es**: "Tierra"
+   - **de**: "Erde"
+   - **fr**: "Terre"
    - **it**: "Earth"
    - **en**: "Earth"
   */
@@ -575,9 +592,9 @@ public enum Strings {
   /**
    "Estimated to fulfill:"
 
-   - **es**: "Estimated to fulfill:"
-   - **de**: "Estimated to fulfill:"
-   - **fr**: "Estimated to fulfill:"
+   - **es**: "Fecha de envío:"
+   - **de**: "Versanddatum:"
+   - **fr**: "Livraison prévue :"
    - **it**: "Estimated to fulfill:"
    - **en**: "Estimated to fulfill:"
   */
@@ -590,120 +607,120 @@ public enum Strings {
     )
   }
   /**
-   "Filtered by all projects"
+   "Filter by all projects"
 
-   - **es**: "Filtro: Todos los proyectos"
-   - **de**: "Filter: Alle Projekte"
-   - **fr**: "Filtré : tous les projets"
-   - **it**: "Filtered by all projects"
-   - **en**: "Filtered by all projects"
+   - **es**: "Filter by all projects"
+   - **de**: "Filter by all projects"
+   - **fr**: "Filter by all projects"
+   - **it**: "Filter by all projects"
+   - **en**: "Filter by all projects"
   */
-  public static func Filtered_by_all_projects() -> String {
+  public static func Filter_by_all_projects() -> String {
     return localizedString(
-      key: "Filtered_by_all_projects",
-      defaultValue: "Filtered by all projects",
+      key: "Filter_by_all_projects",
+      defaultValue: "Filter by all projects",
       count: nil,
       substitutions: [:]
     )
   }
   /**
-   "Filtered by %{category_name}"
+   "Filter by %{category_name}"
 
-   - **es**: "Filtro: %{category_name}"
-   - **de**: "Filter: %{category_name}"
-   - **fr**: "Filtré par catégorie : %{category_name}"
-   - **it**: "Filtered by %{category_name}"
-   - **en**: "Filtered by %{category_name}"
+   - **es**: "Filter by %{category_name}"
+   - **de**: "Filter by %{category_name}"
+   - **fr**: "Filter by %{category_name}"
+   - **it**: "Filter by %{category_name}"
+   - **en**: "Filter by %{category_name}"
   */
-  public static func Filtered_by_category_name(category_name category_name: String) -> String {
+  public static func Filter_by_category_name(category_name category_name: String) -> String {
     return localizedString(
-      key: "Filtered_by_category_name",
-      defaultValue: "Filtered by %{category_name}",
+      key: "Filter_by_category_name",
+      defaultValue: "Filter by %{category_name}",
       count: nil,
       substitutions: ["category_name": category_name]
     )
   }
   /**
-   "Filtered by projects backed by friends"
+   "Filter by projects backed by friends"
 
-   - **es**: "Filtro: Proyectos patrocinados por amigos"
-   - **de**: "Filter: Von Freunden unterstützte Projekte"
-   - **fr**: "Filtré : engagements de mes amis"
-   - **it**: "Filtered by projects backed by friends"
-   - **en**: "Filtered by projects backed by friends"
+   - **es**: "Filter by projects backed by friends"
+   - **de**: "Filter by projects backed by friends"
+   - **fr**: "Filter by projects backed by friends"
+   - **it**: "Filter by projects backed by friends"
+   - **en**: "Filter by projects backed by friends"
   */
-  public static func Filtered_by_projects_backed_by_friends() -> String {
+  public static func Filter_by_projects_backed_by_friends() -> String {
     return localizedString(
-      key: "Filtered_by_projects_backed_by_friends",
-      defaultValue: "Filtered by projects backed by friends",
+      key: "Filter_by_projects_backed_by_friends",
+      defaultValue: "Filter by projects backed by friends",
       count: nil,
       substitutions: [:]
     )
   }
   /**
-   "Filtered by projects recommended for you"
+   "Filter by projects recommended for you"
 
-   - **es**: "Filtro: Proyectos recomendados"
-   - **de**: "Filter: Für dich empfohlene Projekte"
-   - **fr**: "Filtré : recommandations"
-   - **it**: "Filtered by projects recommended for you"
-   - **en**: "Filtered by projects recommended for you"
+   - **es**: "Filter by projects recommended for you"
+   - **de**: "Filter by projects recommended for you"
+   - **fr**: "Filter by projects recommended for you"
+   - **it**: "Filter by projects recommended for you"
+   - **en**: "Filter by projects recommended for you"
   */
-  public static func Filtered_by_projects_recommended_for_you() -> String {
+  public static func Filter_by_projects_recommended_for_you() -> String {
     return localizedString(
-      key: "Filtered_by_projects_recommended_for_you",
-      defaultValue: "Filtered by projects recommended for you",
+      key: "Filter_by_projects_recommended_for_you",
+      defaultValue: "Filter by projects recommended for you",
       count: nil,
       substitutions: [:]
     )
   }
   /**
-   "Filtered by projects we love"
+   "Filter by projects we love"
 
-   - **es**: "Filtro: Nuestros favoritos"
-   - **de**: "Filter: Team-Favoriten"
-   - **fr**: "Filtré : Coups de cœur"
-   - **it**: "Filtered by projects we love"
-   - **en**: "Filtered by projects we love"
+   - **es**: "Filter by projects we love"
+   - **de**: "Filter by projects we love"
+   - **fr**: "Filter by projects we love"
+   - **it**: "Filter by projects we love"
+   - **en**: "Filter by projects we love"
   */
-  public static func Filtered_by_projects_we_love() -> String {
+  public static func Filter_by_projects_we_love() -> String {
     return localizedString(
-      key: "Filtered_by_projects_we_love",
-      defaultValue: "Filtered by projects we love",
+      key: "Filter_by_projects_we_love",
+      defaultValue: "Filter by projects we love",
       count: nil,
       substitutions: [:]
     )
   }
   /**
-   "Filtered by starred projects"
+   "Filter by starred projects"
 
-   - **es**: "Filtro: Tus favoritos"
-   - **de**: "Filter: Favoriten"
-   - **fr**: "Filtré : mes projets préférés"
-   - **it**: "Filtered by starred projects"
-   - **en**: "Filtered by starred projects"
+   - **es**: "Filter by starred projects"
+   - **de**: "Filter by starred projects"
+   - **fr**: "Filter by starred projects"
+   - **it**: "Filter by starred projects"
+   - **en**: "Filter by starred projects"
   */
-  public static func Filtered_by_starred_projects() -> String {
+  public static func Filter_by_starred_projects() -> String {
     return localizedString(
-      key: "Filtered_by_starred_projects",
-      defaultValue: "Filtered by starred projects",
+      key: "Filter_by_starred_projects",
+      defaultValue: "Filter by starred projects",
       count: nil,
       substitutions: [:]
     )
   }
   /**
-   "Filtered by %{subcategory_name} in %{category_name}"
+   "Filter by %{subcategory_name} in %{category_name}"
 
-   - **es**: "Filtro: %{subcategory_name} en %{category_name}"
-   - **de**: "Filter: %{subcategory_name} in %{category_name}"
-   - **fr**: "Filtré : %{subcategory_name}, sous %{category_name}"
-   - **it**: "Filtered by %{subcategory_name} in %{category_name}"
-   - **en**: "Filtered by %{subcategory_name} in %{category_name}"
+   - **es**: "Filter by %{subcategory_name} in %{category_name}"
+   - **de**: "Filter by %{subcategory_name} in %{category_name}"
+   - **fr**: "Filter by %{subcategory_name} in %{category_name}"
+   - **it**: "Filter by %{subcategory_name} in %{category_name}"
+   - **en**: "Filter by %{subcategory_name} in %{category_name}"
   */
-  public static func Filtered_by_subcategory_name_in_category_name(subcategory_name subcategory_name: String, category_name: String) -> String {
+  public static func Filter_by_subcategory_name_in_category_name(subcategory_name subcategory_name: String, category_name: String) -> String {
     return localizedString(
-      key: "Filtered_by_subcategory_name_in_category_name",
-      defaultValue: "Filtered by %{subcategory_name} in %{category_name}",
+      key: "Filter_by_subcategory_name_in_category_name",
+      defaultValue: "Filter by %{subcategory_name} in %{category_name}",
       count: nil,
       substitutions: ["subcategory_name": subcategory_name, "category_name": category_name]
     )
@@ -917,7 +934,7 @@ public enum Strings {
 
    - **es**: "Make a pledge without a reward"
    - **de**: "Make a pledge without a reward"
-   - **fr**: "Make a pledge without a reward"
+   - **fr**: "S'engager sans recevoir de récompense"
    - **it**: "Make a pledge without a reward"
    - **en**: "Make a pledge without a reward"
   */
@@ -934,7 +951,7 @@ public enum Strings {
 
    - **es**: "Manage your pledge below:"
    - **de**: "Manage your pledge below:"
-   - **fr**: "Manage your pledge below:"
+   - **fr**: "Gérer l'engagement ci-dessous :"
    - **it**: "Manage your pledge below:"
    - **en**: "Manage your pledge below:"
   */
@@ -951,7 +968,7 @@ public enum Strings {
 
    - **es**: "Manage your reward"
    - **de**: "Manage your reward"
-   - **fr**: "Manage your reward"
+   - **fr**: "Gérer votre récompense"
    - **it**: "Manage your reward"
    - **en**: "Manage your reward"
   */
@@ -1104,7 +1121,7 @@ public enum Strings {
 
    - **es**: "Or change your reward by selecting one below:"
    - **de**: "Or change your reward by selecting one below:"
-   - **fr**: "Or change your reward by selecting one below:"
+   - **fr**: "Ou choisissez une autre récompense ci-dessous :"
    - **it**: "Or change your reward by selecting one below:"
    - **en**: "Or change your reward by selecting one below:"
   */
@@ -1138,7 +1155,7 @@ public enum Strings {
 
    - **es**: "Pledge any amount"
    - **de**: "Pledge any amount"
-   - **fr**: "Pledge any amount"
+   - **fr**: "Montant de mon engagement"
    - **it**: "Pledge any amount"
    - **en**: "Pledge any amount"
   */
@@ -1155,7 +1172,7 @@ public enum Strings {
 
    - **es**: "Pledge now without a reward"
    - **de**: "Pledge now without a reward"
-   - **fr**: "Pledge now without a reward"
+   - **fr**: "S'engager sans recevoir de récompense"
    - **it**: "Pledge now without a reward"
    - **en**: "Pledge now without a reward"
   */
@@ -1223,7 +1240,7 @@ public enum Strings {
 
    - **es**: "Read more about the campaign  →"
    - **de**: "Read more about the campaign  →"
-   - **fr**: "Read more about the campaign  →"
+   - **fr**: "En savoir plus sur la campagne →"
    - **it**: "Read more about the campaign  →"
    - **en**: "Read more about the campaign  →"
   */
@@ -1240,7 +1257,7 @@ public enum Strings {
 
    - **es**: "%{rewards_count} rewards"
    - **de**: "%{rewards_count} rewards"
-   - **fr**: "%{rewards_count} rewards"
+   - **fr**: "%{rewards_count} récompenses"
    - **it**: "%{rewards_count} rewards"
    - **en**: "%{rewards_count} rewards"
   */
@@ -1257,7 +1274,7 @@ public enum Strings {
 
    - **es**: "%{rewards_count} rewards:"
    - **de**: "%{rewards_count} rewards:"
-   - **fr**: "%{rewards_count} rewards:"
+   - **fr**: "%{rewards_count} récompenses :"
    - **it**: "%{rewards_count} rewards:"
    - **en**: "%{rewards_count} rewards:"
   */
@@ -1274,7 +1291,7 @@ public enum Strings {
 
    - **es**: "Select this reward"
    - **de**: "Select this reward"
-   - **fr**: "Select this reward"
+   - **fr**: "Sélectionner cette récompense"
    - **it**: "Select this reward"
    - **en**: "Select this reward"
   */
@@ -1282,6 +1299,40 @@ public enum Strings {
     return localizedString(
       key: "Select_this_reward",
       defaultValue: "Select this reward",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Share this project on Facebook."
+
+   - **es**: "Share this project on Facebook."
+   - **de**: "Share this project on Facebook."
+   - **fr**: "Share this project on Facebook."
+   - **it**: "Share this project on Facebook."
+   - **en**: "Share this project on Facebook."
+  */
+  public static func Share_this_project_on_Facebook() -> String {
+    return localizedString(
+      key: "Share_this_project_on_Facebook",
+      defaultValue: "Share this project on Facebook.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Share this project on Twitter."
+
+   - **es**: "Share this project on Twitter."
+   - **de**: "Share this project on Twitter."
+   - **fr**: "Share this project on Twitter."
+   - **it**: "Share this project on Twitter."
+   - **en**: "Share this project on Twitter."
+  */
+  public static func Share_this_project_on_Twitter() -> String {
+    return localizedString(
+      key: "Share_this_project_on_Twitter",
+      defaultValue: "Share this project on Twitter.",
       count: nil,
       substitutions: [:]
     )
@@ -1316,6 +1367,40 @@ public enum Strings {
     return localizedString(
       key: "Ships_to",
       defaultValue: "Ships to:",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Shows list of subcategories."
+
+   - **es**: "Shows list of subcategories."
+   - **de**: "Shows list of subcategories."
+   - **fr**: "Shows list of subcategories."
+   - **it**: "Shows list of subcategories."
+   - **en**: "Shows list of subcategories."
+  */
+  public static func Shows_list_of_subcategories() -> String {
+    return localizedString(
+      key: "Shows_list_of_subcategories",
+      defaultValue: "Shows list of subcategories.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Signs up with Email."
+
+   - **es**: "Signs up with Email."
+   - **de**: "Signs up with Email."
+   - **fr**: "Signs up with Email."
+   - **it**: "Signs up with Email."
+   - **en**: "Signs up with Email."
+  */
+  public static func Signs_up_with_Email() -> String {
+    return localizedString(
+      key: "Signs_up_with_Email",
+      defaultValue: "Signs up with Email.",
       count: nil,
       substitutions: [:]
     )
@@ -7426,9 +7511,9 @@ public enum Strings {
   /**
    "…more"
 
-   - **es**: "…more"
-   - **de**: "…more"
-   - **fr**: "…more"
+   - **es**: "... leer más"
+   - **de**: "... weiterlesen"
+   - **fr**: "... plus"
    - **it**: "…more"
    - **en**: "…more"
   */
@@ -12308,6 +12393,23 @@ Thank you for your support!"
       defaultValue: "Pledged",
       count: nil,
       substitutions: [:]
+    )
+  }
+  /**
+   "%{project_count} %{category_name} projects"
+
+   - **es**: "%{project_count} %{category_name} projects"
+   - **de**: "%{project_count} %{category_name} projects"
+   - **fr**: "%{project_count} %{category_name} projects"
+   - **it**: "%{project_count} %{category_name} projects"
+   - **en**: "%{project_count} %{category_name} projects"
+  */
+  public static func project_count_category_name_projects(project_count project_count: String, category_name: String) -> String {
+    return localizedString(
+      key: "project_count_category_name_projects",
+      defaultValue: "%{project_count} %{category_name} projects",
+      count: nil,
+      substitutions: ["project_count": project_count, "category_name": category_name]
     )
   }
   /**

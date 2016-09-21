@@ -16,6 +16,11 @@ internal final class ProjectUpdatesViewController: WebViewController {
     self.viewModel.inputs.viewDidLoad()
   }
 
+  internal override func viewWillAppear(animated: Bool) {
+    super.viewWillAppear(animated)
+    self.navigationController?.setNavigationBarHidden(false, animated: animated)
+  }
+
   internal override func bindStyles() {
     super.bindStyles()
 

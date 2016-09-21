@@ -41,8 +41,9 @@ public final class DashboardRewardRowStackViewViewModel: DashboardRewardRowStack
 
     self.topRewardText = countryRewardPledged
       .map { country, reward, _ in
-        return reward.rewardId == 0 ? Strings.dashboard_graphs_rewards_no_reward() :
-          Format.currency(reward.minimum, country: country)
+        reward.rewardId == Reward.noReward.id
+          ? Strings.dashboard_graphs_rewards_no_reward()
+          : Format.currency(reward.minimum, country: country)
     }
   }
 

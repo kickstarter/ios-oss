@@ -728,6 +728,54 @@ internal final class RewardPledgeViewModelTests: TestCase {
       ])
   }
 
+  func testNavigationTitle_NoReward() {
+    let country = Project.Country(
+      countryCode: "ABC",
+      currencyCode: "ABC",
+      currencySymbol: "!@#",
+      maxPledge: 4242,
+      minPledge: 42,
+      trailingCode: false
+    )
+    let reward = Reward.noReward
+    let project = .template |> Project.lens.country .~ country
+
+    let config = .template |> Config.lens.launchedCountries %~ { ($0 ?? []) + [country] }
+
+    withEnvironment(config: config) {
+      self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
+      self.vm.inputs.viewDidLoad()
+
+      self.navigationTitle.assertValues([
+        Strings.rewards_title_pledge_reward_currency_or_more(
+          reward_currency: Format.currency(42, country: project.country)
+        )
+        ])
+    }
+  }
+
+  func testNavigationTitle_NoReward_MissingCountry() {
+    let country = Project.Country(
+      countryCode: "ABC",
+      currencyCode: "ABC",
+      currencySymbol: "!@#",
+      maxPledge: 4242,
+      minPledge: 42,
+      trailingCode: false
+    )
+    let reward = Reward.noReward
+    let project = .template |> Project.lens.country .~ country
+
+    self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
+    self.vm.inputs.viewDidLoad()
+
+    self.navigationTitle.assertValues([
+      Strings.rewards_title_pledge_reward_currency_or_more(
+        reward_currency: Format.currency(1, country: project.country)
+      )
+    ])
+  }
+
   func testPayButtonsEnabled() {
     let reward = Reward.template
     let project = Project.template

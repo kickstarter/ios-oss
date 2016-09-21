@@ -35,6 +35,11 @@ internal final class CommentsViewController: UITableViewController {
     self.viewModel.inputs.viewDidLoad()
   }
 
+  internal override func viewWillAppear(animated: Bool) {
+    super.viewWillAppear(animated)
+    self.navigationController?.setNavigationBarHidden(false, animated: animated)
+  }
+
   internal override func bindStyles() {
     super.bindStyles()
 

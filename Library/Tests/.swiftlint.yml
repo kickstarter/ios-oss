@@ -11,3 +11,9 @@ opt_in_rules:
   - empty_count
 line_length: 110
 reporter: "xcode"
+custom_rules:
+  record_mode_prohibited:
+    name: "Record Mode Prohibited"
+    regex: "recordMode = true"
+    message: "Do not use `recordMode = true`."
+    severity: error

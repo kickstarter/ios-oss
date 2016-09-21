@@ -20,6 +20,8 @@ final class CheckoutViewModelTests: TestCase {
   private let goToWebModal = TestObserver<NSURLRequest, NoError>()
   private let openLoginTout = TestObserver<(), NoError>()
   private let popViewController = TestObserver<(), NoError>()
+  private let setStripeAppleMerchantIdentifier = TestObserver<String, NoError>()
+  private let setStripePublishableKey = TestObserver<String, NoError>()
   private let showFailureAlert = TestObserver<String, NoError>()
   private let webViewLoadRequestIsPrepared = TestObserver<Bool, NoError>()
   private let webViewLoadRequestURL = TestObserver<String, NoError>()
@@ -36,6 +38,8 @@ final class CheckoutViewModelTests: TestCase {
     self.vm.outputs.goToWebModal.observe(self.goToWebModal.observer)
     self.vm.outputs.openLoginTout.observe(self.openLoginTout.observer)
     self.vm.outputs.popViewController.observe(self.popViewController.observer)
+    self.vm.outputs.setStripeAppleMerchantIdentifier.observe(self.setStripeAppleMerchantIdentifier.observer)
+    self.vm.outputs.setStripePublishableKey.observe(self.setStripePublishableKey.observer)
     self.vm.outputs.showFailureAlert.observe(self.showFailureAlert.observer)
     self.vm.outputs.webViewLoadRequest
       .map { AppEnvironment.current.apiService.isPrepared(request: $0) }
@@ -1072,6 +1076,49 @@ final class CheckoutViewModelTests: TestCase {
       self.goToThanks.assertValueCount(1)
     }
   }
+
+  func testSetStripeAppleMerchantIdentifier_NotApplePayCapable() {
+    self.vm.inputs.configureWith(initialRequest: newPledgeRequest(project: .template).prepared(),
+                                 project: .template,
+                                 applePayCapable: false)
+    self.vm.inputs.viewDidLoad()
+
+    self.setStripeAppleMerchantIdentifier.assertValues([])
+  }
+
+  func testSetStripeAppleMerchantIdentifier_ApplePayCapable() {
+    self.vm.inputs.configureWith(initialRequest: newPledgeRequest(project: .template).prepared(),
+                                 project: .template,
+                                 applePayCapable: true)
+    self.vm.inputs.viewDidLoad()
+
+    self.setStripeAppleMerchantIdentifier.assertValues(
+      [PKPaymentAuthorizationViewController.merchantIdentifier]
+    )
+  }
+
+  func testSetStripePublishableKey_NotApplePayCapable() {
+    withEnvironment(config: .template |> Config.lens.stripePublishableKey .~ "deadbeef") {
+      self.vm.inputs.configureWith(initialRequest: newPledgeRequest(project: .template).prepared(),
+                                   project: .template,
+                                   applePayCapable: false)
+      self.vm.inputs.viewDidLoad()
+
+      self.setStripePublishableKey.assertValues([])
+    }
+  }
+
+  func testSetStripePublishableKey_ApplePayCapable() {
+    withEnvironment(config: .template |> Config.lens.stripePublishableKey .~ "deadbeef") {
+      self.vm.inputs.configureWith(initialRequest: newPledgeRequest(project: .template).prepared(),
+                                   project: .template,
+                                   applePayCapable: true)
+      self.vm.inputs.viewDidLoad()
+
+      self.setStripePublishableKey.assertValues(["deadbeef"])
+    }
+  }
+
 }
 
 internal extension NSURLRequest {

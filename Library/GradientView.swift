@@ -1,7 +1,6 @@
 import Foundation
 import UIKit
 
-@IBDesignable
 public final class GradientView: UIView {
 
   public override class func layerClass() -> AnyClass {

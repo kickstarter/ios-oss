@@ -7,7 +7,7 @@ import UIKit
 
 // swiftlint:disable type_body_length
 internal final class RewardPledgeViewController: UIViewController {
-  private let viewModel: RewardPledgeViewModelType = RewardPledgeViewModel()
+  internal let viewModel: RewardPledgeViewModelType = RewardPledgeViewModel()
 
   @IBOutlet private weak var applePayButton: UIButton!
   @IBOutlet private weak var bottomConstraint: NSLayoutConstraint!
@@ -60,13 +60,30 @@ internal final class RewardPledgeViewController: UIViewController {
   @IBOutlet private weak var titleLabel: UILabel!
   @IBOutlet private weak var topStackView: UIStackView!
 
-  internal static func configuredWith(project project: Project,
-                                              reward: Reward) -> RewardPledgeViewController {
-    let vc = Storyboard.RewardPledge.instantiate(RewardPledgeViewController)
-    vc.viewModel.inputs.configureWith(project: project,
-                                      reward: reward,
-                                      applePayCapable: PKPaymentAuthorizationViewController.applePayCapable())
-    return vc
+  internal static func configuredWith(
+    project project: Project,
+            reward: Reward,
+            applePayCapable: Bool = PKPaymentAuthorizationViewController.applePayCapable())
+    -> RewardPledgeViewController {
+
+      let vc = Storyboard.RewardPledge.instantiate(RewardPledgeViewController)
+      vc.viewModel.inputs.configureWith(project: project, reward: reward, applePayCapable: applePayCapable)
+      return vc
+  }
+
+  private var statusBarHidden = true
+  override func prefersStatusBarHidden() -> Bool {
+    return self.statusBarHidden
+  }
+
+  override func preferredStatusBarUpdateAnimation() -> UIStatusBarAnimation {
+    return .Slide
+  }
+
+  internal override func viewWillAppear(animated: Bool) {
+    super.viewWillAppear(animated)
+    self.statusBarHidden = false
+    UIView.animateWithDuration(0.3) { self.setNeedsStatusBarAppearanceUpdate() }
   }
 
   internal override func viewDidLoad() {
@@ -391,11 +408,11 @@ internal final class RewardPledgeViewController: UIViewController {
       .observeNext { [weak self] in self?.goToPaymentAuthorization(request: $0) }
 
     self.viewModel.outputs.setStripePublishableKey
-      .observeForControllerAction()
+      .observeForUI()
       .observeNext { STPPaymentConfiguration.sharedConfiguration().publishableKey = $0 }
 
     self.viewModel.outputs.setStripeAppleMerchantIdentifier
-      .observeForControllerAction()
+      .observeForUI()
       .observeNext { STPPaymentConfiguration.sharedConfiguration().appleMerchantIdentifier = $0 }
 
     self.viewModel.outputs.goToShippingPicker

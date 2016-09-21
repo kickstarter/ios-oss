@@ -11,16 +11,22 @@
         <page name='08-Activities'/>
         <page name='09-Project Activities'/>
         <page name='10-Backing'/>
+        <page name='10-Project Pamphlet'/>
+        <page name='11-Rewards'/>
         <page name='11-Update Draft'/>
         <page name='12-Thanks'/>
         <page name='13-Root Tab'/>
-        <page name='ZZ-Scratch Work'/>
-        <page name='10-Project Magazine'/>
-        <page name='11-Rewards'/>
         <page name='13-Video Player'/>
         <page name='14-Facebook Confirmation'/>
         <page name='15-Search'/>
         <page name='15-Settings'/>
         <page name='16-Debug pushes'/>
+        <page name='17-Reward Pledge'/>
+        <page name='17-WebModal'/>
+        <page name='18-Comments'/>
+        <page name='19-Two Factor'/>
+        <page name='20-Signup'/>
+        <page name='21-Login Tout'/>
+        <page name='ZZ-Scratch Work'/>
     </pages>
 </playground>

@@ -1,7 +1,6 @@
 import UIKit
 import class Foundation.NSCoder
 
-@IBDesignable
 public final class CircleAvatarImageView: UIImageView {
   public override func layoutSubviews() {
     super.layoutSubviews()

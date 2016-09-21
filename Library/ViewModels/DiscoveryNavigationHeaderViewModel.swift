@@ -299,20 +299,20 @@ private func stringsForTitle(params params: DiscoveryParams) -> (filter: String,
 
 private func accessibilityLabelForTitleButton(params params: DiscoveryParams) -> String {
   if params.staffPicks == true {
-    return Strings.Filtered_by_projects_we_love()
+    return Strings.Filter_by_projects_we_love()
   } else if params.starred == true {
-    return Strings.Filtered_by_starred_projects()
+    return Strings.Filter_by_starred_projects()
   } else if params.social == true {
-    return Strings.Filtered_by_projects_backed_by_friends()
+    return Strings.Filter_by_projects_backed_by_friends()
   } else if let category = params.category {
-    return category.isRoot ?
-      Strings.Filtered_by_category_name(category_name: category.name) :
-      Strings.Filtered_by_subcategory_name_in_category_name(subcategory_name: category.name,
+    return category.isRoot
+      ? Strings.Filter_by_category_name(category_name: category.name)
+      : Strings.Filter_by_subcategory_name_in_category_name(subcategory_name: category.name,
                                                             category_name: category.root?.name ?? "")
   } else if params.recommended == true {
-    return Strings.Filtered_by_projects_recommended_for_you()
+    return Strings.Filter_by_projects_recommended_for_you()
   } else {
-    return Strings.Filtered_by_all_projects()
+    return Strings.Filter_by_all_projects()
   }
 }
 

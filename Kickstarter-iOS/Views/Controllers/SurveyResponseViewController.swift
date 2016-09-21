@@ -61,7 +61,7 @@ internal final class SurveyResponseViewController: DeprecatedWebViewController {
   }
 
   private func goToProject(param param: Param, refTag: RefTag?) {
-    let vc = ProjectMagazineViewController.configuredWith(projectOrParam: .right(param), refTag: refTag)
+    let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .right(param), refTag: refTag)
     let nav = UINavigationController(rootViewController: vc)
     self.presentViewController(nav, animated: true, completion: nil)
   }

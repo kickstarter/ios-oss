@@ -71,6 +71,12 @@ public protocol CheckoutViewModelOutputs {
   /// Emits when the view controller should be popped.
   var popViewController: Signal<Void, NoError> { get }
 
+  /// Emits a string to be used to set the Stripe library's apple merchant identifier.
+  var setStripeAppleMerchantIdentifier: Signal<String, NoError> { get }
+
+  /// Emits a string to be used to set the Stripe library's publishable key.
+  var setStripePublishableKey: Signal<String, NoError> { get }
+
   /// Emits when an alert should be shown indicating the pledge was not successful.
   var showFailureAlert: Signal<String, NoError> { get }
 
@@ -223,6 +229,15 @@ public final class CheckoutViewModel: CheckoutViewModelType {
       .map(applePayCheckoutNextJS(forPaymentData:stripeToken:))
       .ignoreNil()
 
+    self.setStripeAppleMerchantIdentifier = applePayCapable
+      .filter(isTrue)
+      .mapConst(PKPaymentAuthorizationViewController.merchantIdentifier)
+
+    self.setStripePublishableKey = applePayCapable
+      .filter(isTrue)
+      .map { _ in AppEnvironment.current.config?.stripePublishableKey }
+      .ignoreNil()
+
     racingRequest
       .observeNext { [weak self] request in
         guard let url = request.URL?.URLByDeletingLastPathComponent else { return }
@@ -337,6 +352,8 @@ public final class CheckoutViewModel: CheckoutViewModelType {
   public let goToWebModal: Signal<NSURLRequest, NoError>
   public let openLoginTout: Signal<Void, NoError>
   public let popViewController: Signal<Void, NoError>
+  public let setStripeAppleMerchantIdentifier: Signal<String, NoError>
+  public let setStripePublishableKey: Signal<String, NoError>
   public var showFailureAlert: Signal<String, NoError> {
     return self.checkoutRacingViewModel.outputs.showFailureAlert
   }
