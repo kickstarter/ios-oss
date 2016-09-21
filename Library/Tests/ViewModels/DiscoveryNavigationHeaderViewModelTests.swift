@@ -343,4 +343,33 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
       Strings.discovery_favorite_categories_buttons_favorite_a11y_label()
       ])
   }
+
+  func testCloseFiltersTracking() {
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.configureWith(params: initialParams)
+
+    self.vm.inputs.titleButtonTapped()
+
+    self.vm.inputs.filtersSelected(row: selectableRow)
+
+    self.vm.inputs.titleButtonTapped()
+
+    XCTAssertEqual([], self.trackingClient.events)
+
+    self.vm.inputs.titleButtonTapped()
+
+    XCTAssertEqual(["Closed Discovery Filter"], self.trackingClient.events)
+
+    self.vm.inputs.titleButtonTapped()
+
+    self.vm.inputs.filtersSelected(row: selectableRow)
+
+    self.vm.inputs.titleButtonTapped()
+
+    XCTAssertEqual(["Closed Discovery Filter"], self.trackingClient.events, "Closed event does not emit")
+
+    self.vm.inputs.titleButtonTapped()
+
+    XCTAssertEqual(["Closed Discovery Filter", "Closed Discovery Filter"], self.trackingClient.events)
+  }
 }

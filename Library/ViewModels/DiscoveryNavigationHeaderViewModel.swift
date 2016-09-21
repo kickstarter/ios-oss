@@ -222,11 +222,11 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
         AppEnvironment.current.userDefaults.hasSeenFavoriteCategoryAlert = true
       })
 
-    Signal.merge(
-      self.filtersSelectedRowProperty.signal.ignoreNil().map { $0.params },
-      paramsAndFiltersAreHidden.filter { $0.filtersAreHidden }.map { $0.params }
-    )
-    .observeNext { AppEnvironment.current.koala.trackDiscoveryModalClosedFilter(params: $0) }
+    paramsAndFiltersAreHidden
+      .takeWhen(self.titleButtonTappedProperty.signal)
+      .filter { $0.filtersAreHidden }
+      .map { $0.params }
+      .observeNext { AppEnvironment.current.koala.trackDiscoveryModalClosedFilter(params: $0) }
   }
   // swiftlint:enable function_body_length
 
