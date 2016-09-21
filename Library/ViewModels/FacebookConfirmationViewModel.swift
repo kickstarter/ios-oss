@@ -110,7 +110,7 @@ FacebookConfirmationViewModelErrors {
 
     self.sendNewsletters = Signal.merge([
       self.sendNewslettersToggledProperty.signal,
-      self.viewDidLoadProperty.signal.map { AppEnvironment.current.countryCode != "DE" }
+      self.viewDidLoadProperty.signal.map { AppEnvironment.current.countryCode == "US" }
     ])
 
     let signupEvent = combineLatest(self.facebookTokenProperty.signal, self.sendNewsletters)

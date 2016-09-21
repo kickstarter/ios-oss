@@ -61,6 +61,18 @@ final class FacebookConfirmationViewModelTests: TestCase {
     }
   }
 
+  func testNewsletterSwitch_whenViewDidLoad_UK() {
+    withEnvironment(countryCode: "UK") {
+      sendNewsletters.assertDidNotEmitValue("Newsletter toggle does not emit")
+
+      vm.inputs.viewDidLoad()
+
+      sendNewsletters.assertValues([false], "Newsletter toggle emits false")
+      XCTAssertEqual(["Facebook Confirm"], trackingClient.events,
+                     "Newsletter toggle is not tracked on intital state")
+    }
+  }
+
   func testNewsletterToggle() {
     vm.inputs.viewDidLoad()
     vm.inputs.sendNewslettersToggled(false)
