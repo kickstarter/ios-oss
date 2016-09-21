@@ -32,8 +32,6 @@ internal final class DashboardViewController: UITableViewController {
     self.navigationItem.rightBarButtonItem = shareButton
 
     self.titleView.delegate = self
-
-    self.viewModel.inputs.viewDidLoad()
   }
 
   override func viewDidAppear(animated: Bool) {

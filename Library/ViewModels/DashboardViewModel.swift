@@ -40,9 +40,6 @@ public protocol DashboardViewModelInputs {
 
   /// Call when the view did appear.
   func viewDidAppear()
-
-  /// Call when the view did load.
-  func viewDidLoad()
 }
 
 public protocol DashboardViewModelOutputs {
@@ -92,7 +89,7 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
 
   // swiftlint:disable function_body_length
   public init() {
-    let projects = self.viewDidLoadProperty.signal
+    let projects = self.viewDidAppearProperty.signal
       .switchMap {
         AppEnvironment.current.apiService.fetchProjects(member: true)
           .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
@@ -235,10 +232,6 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
   private let viewDidAppearProperty = MutableProperty()
   public func viewDidAppear() {
     self.viewDidAppearProperty.value = ()
-  }
-  private let viewDidLoadProperty = MutableProperty()
-  public func viewDidLoad() {
-    self.viewDidLoadProperty.value = ()
   }
 
   public let animateOutProjectsDrawer: Signal<(), NoError>

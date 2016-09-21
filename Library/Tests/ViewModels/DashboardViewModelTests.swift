@@ -45,8 +45,6 @@ internal final class DashboardViewModelTests: TestCase {
     let projects = [Project.template]
 
     withEnvironment(apiService: MockService(fetchProjectsResponse: projects)) {
-      self.vm.inputs.viewDidLoad()
-
       self.focusScreenReaderOnTitleView.assertValueCount(0)
 
       self.vm.inputs.viewDidAppear()
@@ -66,7 +64,7 @@ internal final class DashboardViewModelTests: TestCase {
                                                currentProjectIndex: 0)
 
     withEnvironment(apiService: MockService(fetchProjectsResponse: projects)) {
-      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewDidAppear()
 
       self.project.assertValueCount(0)
       self.updateTitleViewData.assertValueCount(0)
@@ -78,6 +76,24 @@ internal final class DashboardViewModelTests: TestCase {
       self.updateTitleViewData.assertValues([titleViewData], "Update title data")
       XCTAssertEqual(["Dashboard View"], self.trackingClient.events)
       XCTAssertEqual([0], self.trackingClient.properties.map { $0["project_pid"] as! Int? })
+
+      self.fundingStats.assertValueCount(1)
+
+      let updatedProjects = (0...4).map {
+        .template
+          |> Project.lens.id .~ $0
+          |> Project.lens.name %~ { $0 + " (updated)" }
+      }
+
+      withEnvironment(apiService: MockService(fetchProjectsResponse: updatedProjects)) {
+        self.vm.inputs.viewDidAppear()
+        self.scheduler.advance()
+
+        self.project.assertValueCount(2)
+        XCTAssertEqual("\(projects[0].name) (updated)", self.project.values.last!.name)
+
+        self.fundingStats.assertValueCount(2)
+      }
     }
   }
 
@@ -88,7 +104,7 @@ internal final class DashboardViewModelTests: TestCase {
                                                currentProjectIndex: 0)
 
     withEnvironment(apiService: MockService(fetchProjectsResponse: projects)) {
-      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewDidAppear()
 
       self.updateTitleViewData.assertValueCount(0)
 
@@ -118,7 +134,7 @@ internal final class DashboardViewModelTests: TestCase {
 
     withEnvironment(apiService: MockService(fetchProjectsResponse: projects,
       fetchProjectStatsResponse: statsEnvelope)) {
-      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewDidAppear()
 
       self.videoStats.assertValueCount(0)
       self.fundingStats.assertValueCount(0)
@@ -136,7 +152,7 @@ internal final class DashboardViewModelTests: TestCase {
 
       withEnvironment(apiService: MockService(fetchProjectsResponse: projects2,
         fetchProjectStatsResponse: statsEnvelope2)) {
-        self.vm.inputs.viewDidLoad()
+        self.vm.inputs.viewDidAppear()
         self.scheduler.advance()
 
         self.fundingStats.assertValues([[.template], [.template]], "Funding stats emitted.")
@@ -154,7 +170,7 @@ internal final class DashboardViewModelTests: TestCase {
 
     withEnvironment(apiService: MockService(fetchProjectsResponse: projects)) {
       self.vm.inputs.`switch`(toProject: .id(projects.last!.id))
-      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewDidAppear()
       self.scheduler.advance()
 
       self.project.assertValues([projects.last!])
@@ -169,12 +185,12 @@ internal final class DashboardViewModelTests: TestCase {
     let projectData2 = ProjectsDrawerData(project: project2, indexNum: 1, isChecked: false)
 
     let titleViewDataClosed1 = DashboardTitleViewData(drawerState: DrawerState.closed,
-                                               isArrowHidden: false,
-                                               currentProjectIndex: 0)
+                                                      isArrowHidden: false,
+                                                      currentProjectIndex: 0)
 
     let titleViewDataOpen1 = DashboardTitleViewData(drawerState: DrawerState.open,
-                                               isArrowHidden: false,
-                                               currentProjectIndex: 0)
+                                                    isArrowHidden: false,
+                                                    currentProjectIndex: 0)
 
     let titleViewDataClosed2 = DashboardTitleViewData(drawerState: DrawerState.closed,
                                                       isArrowHidden: false,
@@ -185,7 +201,7 @@ internal final class DashboardViewModelTests: TestCase {
                                                     currentProjectIndex: 1)
 
     withEnvironment(apiService: MockService(fetchProjectsResponse: projects)) {
-      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewDidAppear()
       self.scheduler.advance()
 
       self.updateTitleViewData.assertValues([titleViewDataClosed1], "Update title with closed data")
