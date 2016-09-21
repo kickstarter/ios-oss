@@ -241,7 +241,6 @@ UpdateDraftViewModelOutputs {
         addedAttachments,
         removedAttachments
     )
-    removedAttachments.observeNext { print($0) }
 
     self.isAttachmentsSectionHidden = Signal
       .merge(

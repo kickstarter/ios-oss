@@ -72,7 +72,20 @@ public final class Koala {
 
   /// Call when the activities screen is shown.
   public func trackActivities() {
-    self.track(event: "Activities")
+    self.track(event: "Activities", properties: [Koala.DeprecatedKey: true])
+    self.track(event: "Viewed Activity")
+  }
+
+  /// Call when the activities are refreshed.
+  public func trackLoadedNewerActivity() {
+    self.track(event: "Loaded Newer Activity")
+  }
+
+  /// Call when the activities are paginated.
+  ///
+  /// - parameter page: The number of pages that have been loaded.
+  public func trackLoadedOlderActivity(page page: Int) {
+    self.track(event: "Loaded Older Activity", properties: ["page": page])
   }
 
   /// Call when the app launches or enters foreground.

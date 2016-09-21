@@ -104,8 +104,6 @@ public protocol ActivitiesViewModelType {
 
 public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewModelInputs,
 ActivitiesViewModelOutputs {
-  typealias Model = Activity
-
   // swiftlint:disable function_body_length
   public init() {
     let isCloseToBottom = self.willDisplayRowProperty.signal.ignoreNil()
@@ -114,16 +112,15 @@ ActivitiesViewModelOutputs {
       .filter(isTrue)
       .ignoreValues()
 
-    let requestFirstPage = Signal.merge(
-      self.viewWillAppearProperty.signal.take(1),
-      self.userSessionStartedProperty.signal,
-      self.refreshProperty.signal
+    let requestFirstPage = Signal
+      .merge(
+        self.viewWillAppearProperty.signal.take(1),
+        self.userSessionStartedProperty.signal,
+        self.refreshProperty.signal
       )
       .filter { AppEnvironment.current.apiService.isAuthenticated }
 
-    let activities: Signal<[Activity], NoError>
-    let isLoading: Signal<Bool, NoError>
-    (activities, isLoading, _) = paginate(
+    let (activities, isLoading, pageCount) = paginate(
       requestFirstPageWith: requestFirstPage,
       requestNextPageWhen: isCloseToBottom,
       clearOnNewRequest: false,
@@ -136,19 +133,21 @@ ActivitiesViewModelOutputs {
 
     let clearedActivitiesOnSessionEnd = self.userSessionEndedProperty.signal.mapConst([Activity]())
 
-    self.activities = combineLatest(
-        self.viewWillAppearProperty.signal.take(1),
+    self.activities =
+      combineLatest(
+        self.viewWillAppearProperty.signal,
         Signal.merge(activities, clearedActivitiesOnSessionEnd)
       )
-      .map { _, activities in activities }
+      .map(second)
 
     let noActivities = self.activities.filter { $0.isEmpty }
 
-    let isLoggedIn = Signal.merge([
-      self.viewWillAppearProperty.signal,
-      self.userSessionStartedProperty.signal,
-      self.userSessionEndedProperty.signal
-      ])
+    let isLoggedIn = Signal
+      .merge(
+        self.viewWillAppearProperty.signal,
+        self.userSessionStartedProperty.signal,
+        self.userSessionEndedProperty.signal
+      )
       .map { AppEnvironment.current.apiService.isAuthenticated }
 
     self.showLoggedInEmptyState = isLoggedIn
@@ -163,28 +162,33 @@ ActivitiesViewModelOutputs {
     let projectActivities = self.tappedActivityProperty.signal.ignoreNil()
       .filter { $0.category != .update }
 
-    self.goToProject = Signal.merge(
-      self.tappedActivityProjectImage.signal.map { $0?.project },
-      projectActivities.map { $0.project }
+    self.goToProject = Signal
+      .merge(
+        self.tappedActivityProjectImage.signal.map { $0?.project },
+        projectActivities.map { $0.project }
       )
       .ignoreNil()
-      .map { ($0, RefTag.activity) }
+      .map { ($0, .activity) }
 
     self.showFindFriendsSection = isLoggedIn
       .map {
-        (.activity,
-        ($0 == true &&
-        (AppEnvironment.current.currentUser?.facebookConnected ?? false) &&
-        !AppEnvironment.current.userDefaults.hasClosedFindFriendsInActivity))
+        (
+          .activity,
+          $0
+            && AppEnvironment.current.currentUser?.facebookConnected ?? false
+            && !AppEnvironment.current.userDefaults.hasClosedFindFriendsInActivity
+        )
       }
       .skipRepeats(==)
 
     self.showFacebookConnectSection = isLoggedIn
       .map {
-        (.activity,
-        ($0 == true &&
-        !(AppEnvironment.current.currentUser?.facebookConnected ?? false) &&
-        !AppEnvironment.current.userDefaults.hasClosedFacebookConnectInActivity))
+        (
+          .activity,
+          $0
+            && !(AppEnvironment.current.currentUser?.facebookConnected ?? false)
+            && !AppEnvironment.current.userDefaults.hasClosedFacebookConnectInActivity
+        )
       }
       .skipRepeats(==)
 
@@ -203,13 +207,13 @@ ActivitiesViewModelOutputs {
     self.dismissFacebookConnectSectionProperty.signal
       .observeNext {
         AppEnvironment.current.userDefaults.hasClosedFacebookConnectInActivity = true
-        AppEnvironment.current.koala.trackCloseFacebookConnect(source: FriendsSource.activity)
+        AppEnvironment.current.koala.trackCloseFacebookConnect(source: .activity)
     }
 
     self.dismissFindFriendsSectionProperty.signal
       .observeNext {
         AppEnvironment.current.userDefaults.hasClosedFindFriendsInActivity = true
-        AppEnvironment.current.koala.trackCloseFindFriends(source: FriendsSource.activity)
+        AppEnvironment.current.koala.trackCloseFindFriends(source: .activity)
     }
 
     let unansweredSurveyResponse = self.viewWillAppearProperty.signal
@@ -219,9 +223,10 @@ ActivitiesViewModelOutputs {
       }
       .map { $0.first }
 
-    self.unansweredSurveyResponse = Signal.merge(
-      unansweredSurveyResponse,
-      self.userSessionEndedProperty.signal.mapConst(nil)
+    self.unansweredSurveyResponse = Signal
+      .merge(
+        unansweredSurveyResponse,
+        self.userSessionEndedProperty.signal.mapConst(nil)
       )
       .skipRepeats(==)
 
@@ -231,15 +236,21 @@ ActivitiesViewModelOutputs {
       .filter { $0.category == .update }
       .map { ($0.project, $0.update) }
       .flatMap { (project, update) -> SignalProducer<(Project, Update), NoError> in
-        guard let project = project, update = update else {
-          return .empty
-        }
+        guard let project = project, update = update else { return .empty }
         return SignalProducer(value: (project, update))
       }
 
-    self.viewWillAppearProperty.signal
+    self.viewWillAppearProperty.signal.take(1)
       .observeNext { AppEnvironment.current.koala.trackActivities() }
+
+    self.refreshProperty.signal
+      .observeNext { AppEnvironment.current.koala.trackLoadedNewerActivity() }
+
+    pageCount
+      .filter { $0 > 1 }
+      .observeNext { AppEnvironment.current.koala.trackLoadedOlderActivity(page: $0) }
   }
+
   // swiftlint:enable function_body_length
   private let dismissFacebookConnectSectionProperty = MutableProperty()
   public func findFriendsFacebookConnectCellDidDismissHeader() {

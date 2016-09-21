@@ -333,4 +333,54 @@ final class ActivitiesViewModelTests: TestCase {
       self.unansweredSurveyResponse.assertValues([surveyResponse, nil])
     }
   }
+
+  func testKoalaFlow() {
+    let page = [
+      .template,
+      .template |> Activity.lens.category .~ .backing,
+      .template |> Activity.lens.category .~ .success
+    ]
+
+    let page2 = [
+      .template |> Activity.lens.id .~ 40 ,
+      .template |> Activity.lens.id .~ 41 |> Activity.lens.category .~ .backing,
+      .template |> Activity.lens.id .~ 42 |> Activity.lens.category .~ .success
+    ]
+
+    withEnvironment(apiService: MockService(fetchActivitiesResponse: page)) {
+      XCTAssertEqual([], self.trackingClient.events)
+
+      self.vm.inputs.viewWillAppear()
+      self.scheduler.advance()
+
+      XCTAssertEqual(["Activities", "Viewed Activity"], self.trackingClient.events)
+
+      AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
+      self.vm.inputs.userSessionStarted()
+      self.scheduler.advance()
+
+      self.vm.inputs.viewWillAppear()
+      self.scheduler.advance()
+
+      XCTAssertEqual(["Activities", "Viewed Activity"], self.trackingClient.events,
+                     "Activity view emits only once")
+
+      self.vm.inputs.refresh()
+      self.scheduler.advance()
+
+      XCTAssertEqual(["Activities", "Viewed Activity", "Loaded Newer Activity"], self.trackingClient.events)
+
+      withEnvironment(apiService: MockService(fetchActivitiesResponse: page2)) {
+        // Scroll down a bit and advance scheduler
+        self.vm.inputs.willDisplayRow(2, outOf: 3)
+        self.scheduler.advance()
+
+        XCTAssertEqual(["Activities", "Viewed Activity", "Loaded Newer Activity", "Loaded Older Activity"],
+                       self.trackingClient.events)
+        XCTAssertEqual([nil, nil, nil, 2],
+                       self.trackingClient.properties(forKey: "page", as: Int.self),
+                       "Page property tracks.")
+      }
+    }
+  }
 }

@@ -904,6 +904,13 @@
 			remoteGlobalIDString = A70969111D14373400DB39D3;
 			remoteInfo = "Prelude-UIKit-tvOSTests";
 		};
+		805F304E1D91CEB80010B3D0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A73778921D819736004C2A9B /* FBSnapshotTestCase.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = B31987EF1AB782D000B0A900;
+			remoteInfo = "FBSnapshotTestCase iOS";
+		};
 		80762DF21D071BCF0074189D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 80762DE71D071BCF0074189D /* AlamofireImage.xcodeproj */;
@@ -3382,6 +3389,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				805F304F1D91CEB80010B3D0 /* PBXTargetDependency */,
 				A7D1210E1D1770C100F364FD /* PBXTargetDependency */,
 				A75511481C8642B3005355CF /* PBXTargetDependency */,
 			);
@@ -5087,6 +5095,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		805F304F1D91CEB80010B3D0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "FBSnapshotTestCase iOS";
+			targetProxy = 805F304E1D91CEB80010B3D0 /* PBXContainerItemProxy */;
+		};
 		80762E491D071D610074189D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "Alamofire tvOS";

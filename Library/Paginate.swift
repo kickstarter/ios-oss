@@ -60,7 +60,7 @@ public func paginate <Cursor, Value: Equatable, Envelope, ErrorEnvelope, Request
       .switchMap { requestParams in
 
         cursorOnNextPage.map(Either.right)
-          .prefix(value: Either.left(requestParams))
+          .prefix(value: .left(requestParams))
           .switchMap { paramsOrCursor in
 
             paramsOrCursor.ifLeft(requestFromParams, ifRight: requestFromCursor)
@@ -83,11 +83,10 @@ public func paginate <Cursor, Value: Equatable, Envelope, ErrorEnvelope, Request
           .scan([], concater)
       }
       .skip(clearOnNewRequest ? 1 : 0)
-      .skipRepeats(==)
 
     let pageCount = Signal.merge(paginatedValues, requestFirstPage.mapConst([]))
       .scan(0) { accum, values in values.isEmpty ? 0 : accum + 1 }
       .filter { $0 > 0 }
 
-    return (paginatedValues, isLoading.signal, pageCount)
+    return (paginatedValues.skipRepeats(==), isLoading.signal, pageCount)
 }

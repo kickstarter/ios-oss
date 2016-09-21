@@ -157,6 +157,16 @@ final class PaginateTests: TestCase {
     valuesTest.assertValues([[1], [1, 2], [], [0]], "New page of values emits.")
     loadingTest.assertValues([true, false, true, false, true, false, true, false], "Loading finishes.")
 
+    self.nextPageObserver.sendNext()
+
+    valuesTest.assertValues([[1], [1, 2], [], [0]], "New page of values emits.")
+    loadingTest.assertValues([true, false, true, false, true, false, true, false, true], "Loading finishes.")
+
+    self.scheduler.advance()
+
+    valuesTest.assertValues([[1], [1, 2], [], [0], [0, 1]], "New page of values emits.")
+    loadingTest.assertValues([true, false, true, false, true, false, true, false, true, false],
+                             "Loading finishes.")
   }
 
   func testPaginate_DoesntClearOnNewRequest() {
@@ -473,32 +483,32 @@ final class PaginateTests: TestCase {
     self.nextPageObserver.sendNext()
     self.scheduler.advance()
 
-    pageCountLoadedTest.assertValues([1, 2])
+    pageCountLoadedTest.assertValues([1, 2, 3])
 
     self.newRequestObserver.sendNext(0)
     self.scheduler.advance()
 
-    pageCountLoadedTest.assertValues([1, 2, 1])
+    pageCountLoadedTest.assertValues([1, 2, 3, 1])
 
     self.nextPageObserver.sendNext()
     self.scheduler.advance()
 
-    pageCountLoadedTest.assertValues([1, 2, 1, 2])
+    pageCountLoadedTest.assertValues([1, 2, 3, 1, 2])
 
     self.nextPageObserver.sendNext()
     self.scheduler.advance()
 
-    pageCountLoadedTest.assertValues([1, 2, 1, 2, 3])
+    pageCountLoadedTest.assertValues([1, 2, 3, 1, 2, 3])
 
     self.nextPageObserver.sendNext()
     self.scheduler.advance()
 
-    pageCountLoadedTest.assertValues([1, 2, 1, 2, 3])
+    pageCountLoadedTest.assertValues([1, 2, 3, 1, 2, 3, 4])
 
     self.newRequestObserver.sendNext(0)
     self.scheduler.advance()
 
-    pageCountLoadedTest.assertValues([1, 2, 1, 2, 3, 1])
+    pageCountLoadedTest.assertValues([1, 2, 3, 1, 2, 3, 4, 1])
   }
 
   func testPageCount_WhenClearingOnFirstRequest() {
@@ -528,31 +538,31 @@ final class PaginateTests: TestCase {
     self.nextPageObserver.sendNext()
     self.scheduler.advance()
 
-    pageCountLoadedTest.assertValues([1, 2])
+    pageCountLoadedTest.assertValues([1, 2, 3])
 
     self.newRequestObserver.sendNext(0)
     self.scheduler.advance()
 
-    pageCountLoadedTest.assertValues([1, 2, 1])
+    pageCountLoadedTest.assertValues([1, 2, 3, 1])
 
     self.nextPageObserver.sendNext()
     self.scheduler.advance()
 
-    pageCountLoadedTest.assertValues([1, 2, 1, 2])
+    pageCountLoadedTest.assertValues([1, 2, 3, 1, 2])
 
     self.nextPageObserver.sendNext()
     self.scheduler.advance()
 
-    pageCountLoadedTest.assertValues([1, 2, 1, 2, 3])
+    pageCountLoadedTest.assertValues([1, 2, 3, 1, 2, 3])
 
     self.nextPageObserver.sendNext()
     self.scheduler.advance()
 
-    pageCountLoadedTest.assertValues([1, 2, 1, 2, 3])
+    pageCountLoadedTest.assertValues([1, 2, 3, 1, 2, 3, 4])
 
     self.newRequestObserver.sendNext(0)
     self.scheduler.advance()
 
-    pageCountLoadedTest.assertValues([1, 2, 1, 2, 3, 1])
+    pageCountLoadedTest.assertValues([1, 2, 3, 1, 2, 3, 4, 1])
   }
 }
