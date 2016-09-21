@@ -1196,8 +1196,8 @@ private func properties(userActivity userActivity: NSUserActivity) -> [String:An
   let properties: [String: AnyObject?] = [
     "user_activity_type": userActivity.activityType,
     "user_activity_title": userActivity.title,
-    "user_activity_webpage_url": userActivity.webpageURL,
-    "user_activity_keywords": userActivity.keywords,
+    "user_activity_webpage_url": userActivity.webpageURL?.absoluteString,
+    "user_activity_keywords": Array(userActivity.keywords),
   ]
   return properties.compact()
 }

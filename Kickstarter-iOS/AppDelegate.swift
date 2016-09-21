@@ -61,6 +61,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     self.viewModel.outputs.presentViewController
       .observeForUI()
       .observeNext { [weak self] in
+        self?.rootTabBarController?.dismissViewControllerAnimated(true, completion: nil)
         self?.rootTabBarController?.presentViewController($0, animated: true, completion: nil)
     }
 
