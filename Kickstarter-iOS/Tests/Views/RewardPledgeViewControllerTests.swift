@@ -11,6 +11,7 @@ internal final class RewardPledgeViewControllerTests: TestCase {
     |> Project.lens.state .~ .live
   private let cosmicReward = Project.cosmicSurgery.rewards.last!
     |> Reward.lens.shipping.enabled .~ true
+    |> Reward.lens.estimatedDeliveryOn .~ 1506031200
 
   override func setUp() {
     super.setUp()
