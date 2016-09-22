@@ -46,17 +46,14 @@ public protocol DiscoveryNavigationHeaderViewModelOutputs {
   /// Emits params for Discovery view controller when filter selected.
   var notifyDelegateFilterSelectedParams: Signal<DiscoveryParams, NoError> { get }
 
-  /// Emits a font for primary label.
-  var primaryLabelFont: Signal<UIFont, NoError> { get }
+  /// Emits to set the font for primary label and whether it should be bolded or not.
+  var primaryLabelFont: Signal<Bool, NoError> { get }
 
   /// Emits an opacity for primary label.
   var primaryLabelOpacity: Signal<CGFloat, NoError> { get }
 
   /// Emits text for filter label.
   var primaryLabelText: Signal<String, NoError> { get }
-
-  /// Emits a font for secondary label.
-  var secondaryLabelFont: Signal<UIFont, NoError> { get }
 
   /// Emits to show/hide subcategory label.
   var secondaryLabelIsHidden: Signal<Bool, NoError> { get }
@@ -149,15 +146,13 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
 
     self.primaryLabelFont = paramsAndFiltersAreHidden
       .map { params, filtersAreHidden in
-        ((params.category?.isRoot ?? true) && filtersAreHidden) ? UIFont.ksr_callout().bolded :
-          UIFont.ksr_callout() }
+        ((params.category?.isRoot ?? true) && filtersAreHidden)
+    }
 
     self.primaryLabelOpacity = paramsAndFiltersAreHidden.map(first)
       .map { !($0.category?.isRoot ?? true) ? 0.6 : 1.0 }
 
     self.primaryLabelText = strings.map { $0.filter }
-
-    self.secondaryLabelFont = filtersAreHidden.map { $0 ? UIFont.ksr_callout().bolded : UIFont.ksr_callout() }
 
     self.secondaryLabelIsHidden = strings
       .map { $0.subcategory == nil }
@@ -259,10 +254,9 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
   public let favoriteViewIsHidden: Signal<Bool, NoError>
   public let gradientViewCategoryIdForColor: Signal<(categoryId: Int?, isFullScreen: Bool), NoError>
   public let notifyDelegateFilterSelectedParams: Signal<DiscoveryParams, NoError>
-  public let primaryLabelFont: Signal<UIFont, NoError>
+  public let primaryLabelFont: Signal<Bool, NoError>
   public let primaryLabelOpacity: Signal<CGFloat, NoError>
   public let primaryLabelText: Signal<String, NoError>
-  public let secondaryLabelFont: Signal<UIFont, NoError>
   public let secondaryLabelIsHidden: Signal<Bool, NoError>
   public let secondaryLabelText: Signal<String, NoError>
   public let showDiscoveryFilters: Signal<(row: SelectableRow, categories: [KsApi.Category]), NoError>

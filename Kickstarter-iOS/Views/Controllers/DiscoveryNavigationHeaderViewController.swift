@@ -25,15 +25,16 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
   @IBOutlet private weak var secondaryLabel: UILabel!
   @IBOutlet private weak var titleButton: UIButton!
   @IBOutlet private weak var titleStackView: UIStackView!
+  @IBOutlet private weak var outerStackViewTopConstraint: NSLayoutConstraint!
 
   internal weak var delegate: DiscoveryNavigationHeaderViewDelegate?
 
-  internal func configureWith(params params: DiscoveryParams) {
-    self.viewModel.inputs.configureWith(params: params)
+  internal static func instantiate() -> DiscoveryNavigationHeaderViewController {
+    return Storyboard.Discovery.instantiate(DiscoveryNavigationHeaderViewController)
   }
 
-  override func viewWillAppear(animated: Bool) {
-    super.viewWillAppear(animated)
+  internal func configureWith(params params: DiscoveryParams) {
+    self.viewModel.inputs.configureWith(params: params)
   }
 
   override func viewDidLoad() {
@@ -62,37 +63,48 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
     self.heartOutlineImageView.rac.tintColor = self.viewModel.outputs.subviewColor
     self.primaryLabel.rac.text = self.viewModel.outputs.primaryLabelText
     self.primaryLabel.rac.textColor = self.viewModel.outputs.subviewColor
-    self.primaryLabel.rac.font = self.viewModel.outputs.primaryLabelFont
     self.primaryLabel.rac.alpha = self.viewModel.outputs.primaryLabelOpacity
     self.secondaryLabel.rac.text = self.viewModel.outputs.secondaryLabelText
     self.secondaryLabel.rac.hidden = self.viewModel.outputs.secondaryLabelIsHidden
     self.secondaryLabel.rac.textColor = self.viewModel.outputs.subviewColor
-    self.secondaryLabel.rac.font = self.viewModel.outputs.secondaryLabelFont
     self.dividerLabel.rac.hidden = self.viewModel.outputs.dividerIsHidden
     self.dividerLabel.rac.textColor = self.viewModel.outputs.subviewColor
     self.titleButton.rac.accessibilityLabel = self.viewModel.outputs.titleButtonAccessibilityLabel
     self.titleButton.rac.accessibilityHint = self.viewModel.outputs.titleButtonAccessibilityHint
 
+    self.viewModel.outputs.primaryLabelFont
+      .observeForUI()
+      .observeNext { [weak self] isBold in
+        guard let label = self?.primaryLabel else { return }
+
+        label
+          |> UILabel.lens.font %~~ { _, label in
+            label.traitCollection.isRegularRegular
+              ? isBold ? UIFont.ksr_body(size: 18).bolded : UIFont.ksr_body(size: 18)
+              : isBold ? UIFont.ksr_callout().bolded : UIFont.ksr_callout()
+        }
+    }
+
     self.viewModel.outputs.animateArrowToDown
-      .observeForControllerAction()
+      .observeForUI()
       .observeNext { [weak self] in
         self?.animateArrow(toDown: $0)
     }
 
     self.viewModel.outputs.updateFavoriteButton
-      .observeForControllerAction()
+      .observeForUI()
       .observeNext { [weak self] in
         self?.updateFavoriteButton(selected: $0, animated: $1)
     }
 
     self.viewModel.outputs.gradientViewCategoryIdForColor
-      .observeForControllerAction()
+      .observeForUI()
       .observeNext { [weak self] id, isFullScreen in
         self?.setBackgroundGradient(categoryId: id, isFullScreen: isFullScreen)
     }
 
     self.viewModel.outputs.notifyDelegateFilterSelectedParams
-      .observeForControllerAction()
+      .observeForUI()
       .observeNext { [weak self] in
         self?.delegate?.discoveryNavigationHeaderFilterSelectedParams($0)
     }
@@ -110,13 +122,13 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
     }
 
     self.viewModel.outputs.showFavoriteOnboardingAlert
-      .observeForControllerAction()
+      .observeForUI()
       .observeNext { [weak self] in
         self?.showFavoriteCategoriesAlert(categoryName: $0)
     }
 
     self.viewModel.outputs.favoriteViewIsDimmed
-      .observeForControllerAction()
+      .observeForUI()
       .observeNext { [weak self] isDimmed in
         UIView.animateWithDuration(0.2, delay: 0.0, options: .CurveEaseOut, animations: {
           self?.favoriteContainerView.alpha = isDimmed ? 0.4 : 1.0
@@ -145,10 +157,19 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
       |> UILabel.lens.isAccessibilityElement .~ false
 
     self.secondaryLabel
+      |> UILabel.lens.font %~~ { _, label in
+        label.traitCollection.isRegularRegular
+          ? UIFont.ksr_body(size: 18).bolded
+          : UIFont.ksr_callout().bolded
+      }
       |> UILabel.lens.isAccessibilityElement .~ false
 
     self.titleStackView
       |> discoveryNavTitleStackViewStyle
+
+    if self.view.traitCollection.isRegularRegular {
+      self.outerStackViewTopConstraint.constant = -6.0
+    }
   }
 
   private func showDiscoveryFilters(selectedRow selectedRow: SelectableRow, categories: [KsApi.Category]) {

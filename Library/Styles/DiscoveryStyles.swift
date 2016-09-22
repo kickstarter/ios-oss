@@ -141,18 +141,23 @@ public let discoveryProjectCellStyle =
 public func discoverySortPagerButtonStyle <B: UIButtonProtocol> (sort sort: DiscoveryParams.Sort,
                                                                  categoryId: Int?,
                                                                  isLeftMost: Bool,
-                                                                 isRightMost: Bool) -> (B -> B) {
+                                                                 isRightMost: Bool,
+                                                                 isRegularRegular: Bool) -> (B -> B) {
 
   let sortString = string(forSort: sort)
   let titleColor = discoverySecondaryColor(forCategoryId: categoryId)
 
   let normalTitleString = NSAttributedString(string: sortString, attributes: [
-    NSFontAttributeName: UIFont.ksr_subhead(size: 14.0),
+    NSFontAttributeName: isRegularRegular
+      ? UIFont.ksr_subhead(size: 16.0)
+      : UIFont.ksr_subhead(size: 14.0),
     NSForegroundColorAttributeName: titleColor.colorWithAlphaComponent(0.6)
   ])
 
   let selectedTitleString = NSAttributedString(string: sortString, attributes: [
-    NSFontAttributeName: UIFont.ksr_subhead(size: 14.0).bolded,
+    NSFontAttributeName: isRegularRegular
+      ? UIFont.ksr_subhead(size: 16.0).bolded
+      : UIFont.ksr_subhead(size: 14.0).bolded,
     NSForegroundColorAttributeName: titleColor
   ])
 

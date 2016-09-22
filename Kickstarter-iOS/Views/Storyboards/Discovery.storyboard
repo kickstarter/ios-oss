@@ -289,7 +289,7 @@
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C7C-Pq-Mh1" userLabel="Sorts scroll view">
                                 <rect key="frame" x="0.0" y="0.0" width="400" height="50"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rW6-mF-Pz5" userLabel="Sort buttons">
+                                    <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rW6-mF-Pz5" userLabel="Sorts Stack View">
                                         <rect key="frame" x="0.0" y="0.0" width="479" height="50"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pkX-KF-GsJ">
@@ -370,6 +370,8 @@
                         <outlet property="indicatorViewWidthConstraint" destination="dyU-GJ-mou" id="Ei7-xR-f44"/>
                         <outlet property="scrollView" destination="C7C-Pq-Mh1" id="0OO-8B-beN"/>
                         <outlet property="sortsStackView" destination="rW6-mF-Pz5" id="HeL-0W-8P2"/>
+                        <outlet property="sortsStackViewLeadingConstraint" destination="LcI-ns-OX2" id="9U3-Q1-ixt"/>
+                        <outlet property="sortsStackViewTrailingConstraint" destination="Vzv-Kc-u9o" id="prp-Kd-jYy"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gd5-8Y-s7H" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -472,11 +474,11 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="AvP-Jg-11Z" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="CTG-N8-oCA" secondAttribute="trailing" id="1w0-jI-Xbx"/>
                             <constraint firstItem="9CN-EK-zBj" firstAttribute="top" secondItem="AvP-Jg-11Z" secondAttribute="top" id="8xm-2D-pr7"/>
                             <constraint firstAttribute="bottomMargin" secondItem="AvP-Jg-11Z" secondAttribute="bottom" id="B0H-UJ-qJS"/>
                             <constraint firstItem="Uqu-6W-LIK" firstAttribute="leading" secondItem="189-Qu-20l" secondAttribute="leading" id="BhZ-hY-Byg"/>
                             <constraint firstItem="9CN-EK-zBj" firstAttribute="bottom" secondItem="AvP-Jg-11Z" secondAttribute="bottom" id="DFn-av-A3D"/>
-                            <constraint firstItem="AvP-Jg-11Z" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="189-Qu-20l" secondAttribute="leadingMargin" constant="30" id="Fi6-n1-iX0"/>
                             <constraint firstAttribute="trailing" secondItem="H2g-DT-JXM" secondAttribute="trailing" id="K0b-az-zyn"/>
                             <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="AvP-Jg-11Z" secondAttribute="trailing" constant="30" id="KnM-2i-YX8"/>
                             <constraint firstItem="9CN-EK-zBj" firstAttribute="leading" secondItem="AvP-Jg-11Z" secondAttribute="leading" id="MMI-dy-ql8"/>
@@ -502,6 +504,7 @@
                         <outlet property="gradientBackgroundView" destination="H2g-DT-JXM" id="eqS-Qx-RXI"/>
                         <outlet property="heartImageView" destination="DzE-4H-e6W" id="W47-0B-s1t"/>
                         <outlet property="heartOutlineImageView" destination="Ij6-dc-OpY" id="9Zd-Lt-Qsp"/>
+                        <outlet property="outerStackViewTopConstraint" destination="YP3-fh-T5U" id="Cb4-S5-FzH"/>
                         <outlet property="primaryLabel" destination="Xzf-ev-nrc" id="jay-lV-74W"/>
                         <outlet property="secondaryLabel" destination="gOI-JQ-dJe" id="0p8-sw-qr7"/>
                         <outlet property="titleButton" destination="9CN-EK-zBj" id="5eH-Cp-A4r"/>

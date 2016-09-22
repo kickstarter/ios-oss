@@ -10,10 +10,11 @@ import XCTest
 internal final class SortPagerViewModelTests: TestCase {
   private let vm: SortPagerViewModelType = SortPagerViewModel()
 
+  private let createSortButtons = TestObserver<[DiscoveryParams.Sort], NoError>()
+  private let indicatorViewIsHidden = TestObserver<Bool, NoError>()
   private let notifyDelegateOfSelectedSort = TestObserver<DiscoveryParams.Sort, NoError>()
   private let pinSelectedIndicatorToPage = TestObserver<Int, NoError>()
   private let pinSelectedIndicatorAnimated = TestObserver<Bool, NoError>()
-  private let createSortButtons = TestObserver<[DiscoveryParams.Sort], NoError>()
   private let setSelectedButton = TestObserver<Int, NoError>()
   private let updateSortStyleId = TestObserver<Int?, NoError>()
   private let updateSortStyleSorts = TestObserver<[DiscoveryParams.Sort], NoError>()
@@ -22,10 +23,11 @@ internal final class SortPagerViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
+    self.vm.outputs.createSortButtons.observe(self.createSortButtons.observer)
+    self.vm.outputs.indicatorViewIsHidden.observe(self.indicatorViewIsHidden.observer)
     self.vm.outputs.notifyDelegateOfSelectedSort.observe(self.notifyDelegateOfSelectedSort.observer)
     self.vm.outputs.pinSelectedIndicatorToPage.map(first).observe(self.pinSelectedIndicatorToPage.observer)
     self.vm.outputs.pinSelectedIndicatorToPage.map(second).observe(self.pinSelectedIndicatorAnimated.observer)
-    self.vm.outputs.createSortButtons.observe(self.createSortButtons.observer)
     self.vm.outputs.setSelectedButton.observe(self.setSelectedButton.observer)
     self.vm.outputs.updateSortStyle.map(first).observe(self.updateSortStyleId.observer)
     self.vm.outputs.updateSortStyle.map(second).observe(self.updateSortStyleSorts.observer)
@@ -107,9 +109,11 @@ internal final class SortPagerViewModelTests: TestCase {
   func testPinSelectedIndicator() {
     self.vm.inputs.configureWith(sorts: [.magic, .popular, .newest, .endingSoon, .mostFunded])
 
+    self.vm.inputs.viewWillAppear()
+
     self.pinSelectedIndicatorToPage.assertValueCount(0)
 
-    self.vm.inputs.viewWillAppear()
+    self.vm.inputs.viewDidAppear()
 
     self.pinSelectedIndicatorToPage.assertValues([0], "First index emits initially.")
     self.pinSelectedIndicatorAnimated.assertValues([false])
@@ -128,6 +132,75 @@ internal final class SortPagerViewModelTests: TestCase {
     self.vm.inputs.viewWillAppear()
 
     self.pinSelectedIndicatorToPage.assertValues([0, 1], "Indicator does not emit")
+  }
+
+  func testPinSelectedIndicator_On_Rotation() {
+    self.vm.inputs.configureWith(sorts: [.magic, .popular, .newest, .endingSoon, .mostFunded])
+
+    self.indicatorViewIsHidden.assertValueCount(0)
+
+    self.vm.inputs.viewWillAppear()
+
+    self.indicatorViewIsHidden.assertValues([true])
+
+    self.vm.inputs.viewDidAppear()
+
+    self.indicatorViewIsHidden.assertValues([true], "Indicator does not show immediately.")
+
+    self.scheduler.advanceByInterval(0.1)
+
+    self.indicatorViewIsHidden.assertValues([true, false])
+
+    self.pinSelectedIndicatorToPage.assertValues([0], "First index emits initially.")
+    self.pinSelectedIndicatorAnimated.assertValues([false])
+
+    self.vm.inputs.willRotateToInterfaceOrientation()
+
+    self.indicatorViewIsHidden.assertValues([true, false, true])
+
+    self.vm.inputs.didRotateFromInterfaceOrientation()
+
+    self.pinSelectedIndicatorToPage.assertValues([0, 0])
+    self.pinSelectedIndicatorAnimated.assertValues([false, false])
+    self.indicatorViewIsHidden.assertValues([true, false, true], "Indicator is still hidden")
+
+    self.scheduler.advanceByInterval(0.1)
+
+    self.indicatorViewIsHidden.assertValues([true, false, true, false], "Indicator shows after delay.")
+
+    self.vm.inputs.willRotateToInterfaceOrientation()
+
+    self.indicatorViewIsHidden.assertValues([true, false, true, false, true])
+
+    self.vm.inputs.didRotateFromInterfaceOrientation()
+
+    self.pinSelectedIndicatorToPage.assertValues([0, 0, 0])
+    self.pinSelectedIndicatorAnimated.assertValues([false, false, false])
+    self.indicatorViewIsHidden.assertValues([true, false, true, false, true], "Indicator is still hidden")
+
+    self.scheduler.advanceByInterval(0.1)
+
+    self.indicatorViewIsHidden.assertValues([true, false, true, false, true, false],
+                                            "Indicator shows after delay.")
+
+    self.vm.inputs.select(sort: .newest)
+
+    self.pinSelectedIndicatorToPage.assertValues([0, 0, 0, 2])
+    self.pinSelectedIndicatorAnimated.assertValues([false, false, false, true])
+
+    self.vm.inputs.willRotateToInterfaceOrientation()
+
+    self.indicatorViewIsHidden.assertValues([true, false, true, false, true, false, true])
+
+    self.vm.inputs.didRotateFromInterfaceOrientation()
+
+    self.pinSelectedIndicatorToPage.assertValues([0, 0, 0, 2, 2])
+    self.pinSelectedIndicatorAnimated.assertValues([false, false, false, true, false])
+    self.indicatorViewIsHidden.assertValues([true, false, true, false, true, false, true])
+
+    self.scheduler.advanceByInterval(0.1)
+
+    self.indicatorViewIsHidden.assertValues([true, false, true, false, true, false, true, false])
   }
 
   func testNotifyDelegate() {

@@ -101,6 +101,8 @@
 		01EFBCB41C920A7E0094EEC2 /* BorderButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01EFBCB21C920A7E0094EEC2 /* BorderButtonTests.swift */; };
 		01EFBCB61C921EA20094EEC2 /* StylesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01EFBCB51C921EA20094EEC2 /* StylesTests.swift */; };
 		01EFBCB71C921EA20094EEC2 /* StylesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01EFBCB51C921EA20094EEC2 /* StylesTests.swift */; };
+		01F42A501D93284E0084719D /* SortPagerViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01F42A191D9328490084719D /* SortPagerViewControllerTests.swift */; };
+		01F42A521D9332F60084719D /* DiscoveryNavigationHeaderViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01F42A511D9332F60084719D /* DiscoveryNavigationHeaderViewControllerTests.swift */; };
 		01F547ED1D53994B000A98EF /* TabBarItemStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01F547EC1D53994B000A98EF /* TabBarItemStyles.swift */; };
 		01F8ADFC1CEA5B070026F220 /* ThanksProjectsDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01F8ADCE1CEA58AE0026F220 /* ThanksProjectsDataSourceTests.swift */; };
 		01FD71841D36BA2900070BAC /* DashboardProjectsDrawerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FD71831D36BA2900070BAC /* DashboardProjectsDrawerViewModelTests.swift */; };
@@ -406,7 +408,6 @@
 		A73778D31D819E30004C2A9B /* FBSnapshotTestCase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A73778AF1D819736004C2A9B /* FBSnapshotTestCase.framework */; };
 		A73778D61D81ABE2004C2A9B /* FundingGraphViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73778D51D81ABE2004C2A9B /* FundingGraphViewTests.swift */; };
 		A73778D81D81C201004C2A9B /* SettingsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73778D71D81C201004C2A9B /* SettingsViewControllerTests.swift */; };
-		A73778DA1D81D3CC004C2A9B /* ProjectPamphletContentViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73778D91D81D3CC004C2A9B /* ProjectPamphletContentViewControllerTests.swift */; };
 		A73778DD1D81DC69004C2A9B /* TraitController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73778DC1D81DC69004C2A9B /* TraitController.swift */; };
 		A73778DF1D81DC9B004C2A9B /* Combos.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73778DE1D81DC9B004C2A9B /* Combos.swift */; };
 		A73923BC1D272242004524C3 /* Activity.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A73923AB1D272242004524C3 /* Activity.storyboard */; };
@@ -1583,6 +1584,8 @@
 		01EFBCAE1C92036E0094EEC2 /* StyledLabelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyledLabelTests.swift; sourceTree = "<group>"; };
 		01EFBCB21C920A7E0094EEC2 /* BorderButtonTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BorderButtonTests.swift; sourceTree = "<group>"; };
 		01EFBCB51C921EA20094EEC2 /* StylesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StylesTests.swift; sourceTree = "<group>"; };
+		01F42A191D9328490084719D /* SortPagerViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SortPagerViewControllerTests.swift; sourceTree = "<group>"; };
+		01F42A511D9332F60084719D /* DiscoveryNavigationHeaderViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryNavigationHeaderViewControllerTests.swift; sourceTree = "<group>"; };
 		01F547EC1D53994B000A98EF /* TabBarItemStyles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarItemStyles.swift; sourceTree = "<group>"; };
 		01F8ADCE1CEA58AE0026F220 /* ThanksProjectsDataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThanksProjectsDataSourceTests.swift; sourceTree = "<group>"; };
 		01FD71831D36BA2900070BAC /* DashboardProjectsDrawerViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardProjectsDrawerViewModelTests.swift; sourceTree = "<group>"; };
@@ -2342,14 +2345,14 @@
 			children = (
 				A7EDEE7A1D83635400780B34 /* CommentsViewControllerTests.swift */,
 				0123B4AC1D919BBA004C1166 /* DiscoveryFiltersViewControllerTests.swift */,
+				01F42A511D9332F60084719D /* DiscoveryNavigationHeaderViewControllerTests.swift */,
 				A73778D51D81ABE2004C2A9B /* FundingGraphViewTests.swift */,
 				9D3A6B4B1D8C4F3800FE3926 /* ProjectActivityViewControllerTests.swift */,
 				A7CA8C461D8F2F870086A3E9 /* ProjectNavBarViewControllerTests.swift */,
+				A77FD5B41D91FD2C00FFC636 /* RewardPledgeViewControllerTests.swift */,
 				A73778D91D81D3CC004C2A9B /* ProjectPamphletContentViewControllerTests.swift */,
 				A73778D71D81C201004C2A9B /* SettingsViewControllerTests.swift */,
-				A77FD5B41D91FD2C00FFC636 /* RewardPledgeViewControllerTests.swift */,
-				A73778D91D81D3CC004C2A9B /* RewardsViewControllerTests.swift */,
-				A73778D71D81C201004C2A9B /* SettingsViewControllerTests.swift */,
+				01F42A191D9328490084719D /* SortPagerViewControllerTests.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -5057,6 +5060,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A73778D81D81C201004C2A9B /* SettingsViewControllerTests.swift in Sources */,
+				01F42A521D9332F60084719D /* DiscoveryNavigationHeaderViewControllerTests.swift in Sources */,
 				018421F31D2C0DB700CA7566 /* DashboardDataSourceTests.swift in Sources */,
 				A775B54C1CA87C8500BBB587 /* RootViewModelTests.swift in Sources */,
 				80C9F8EC1D4923C4001A2E8E /* UpdatePreviewViewModelTests.swift in Sources */,
@@ -5070,7 +5074,7 @@
 				A73778DF1D81DC9B004C2A9B /* Combos.swift in Sources */,
 				0123B4E31D919BC4004C1166 /* DiscoveryFiltersViewControllerTests.swift in Sources */,
 				A72D92991CB1F7DA00A88249 /* TestCase.swift in Sources */,
-				A73778DA1D81D3CC004C2A9B /* ProjectPamphletContentViewControllerTests.swift in Sources */,
+				01F42A501D93284E0084719D /* SortPagerViewControllerTests.swift in Sources */,
 				A7EDEE7B1D83635400780B34 /* CommentsViewControllerTests.swift in Sources */,
 				A758F43B1D070B8E00169CC0 /* DiscoveryPagesDataSourceTests.swift in Sources */,
 				A734A2651D219CB00080BBD5 /* UpdateViewModelTests.swift in Sources */,

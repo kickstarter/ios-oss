@@ -18,6 +18,13 @@ internal final class SortPagerViewController: UIViewController {
   @IBOutlet private weak var indicatorViewWidthConstraint: NSLayoutConstraint!
   @IBOutlet private weak var scrollView: UIScrollView!
   @IBOutlet private weak var sortsStackView: UIStackView!
+  @IBOutlet private var sortsStackViewLeadingConstraint: NSLayoutConstraint!
+  @IBOutlet private var sortsStackViewTrailingConstraint: NSLayoutConstraint!
+  private var sortsStackViewCenterXConstraint: NSLayoutConstraint?
+
+  internal static func instantiate() -> SortPagerViewController {
+    return Storyboard.Discovery.instantiate(SortPagerViewController)
+  }
 
   internal func configureWith(sorts sorts: [DiscoveryParams.Sort]) {
     self.viewModel.inputs.configureWith(sorts: sorts)
@@ -31,45 +38,61 @@ internal final class SortPagerViewController: UIViewController {
     self.viewModel.inputs.updateStyle(categoryId: categoryId)
   }
 
-  override func viewWillAppear(animated: Bool) {
+  internal override func viewDidLoad() {
+    super.viewDidLoad()
+
+    self.sortsStackViewCenterXConstraint = self.sortsStackView.centerXAnchor
+      .constraintEqualToAnchor(self.view.centerXAnchor)
+  }
+
+  internal override func viewWillAppear(animated: Bool) {
     super.viewWillAppear(animated)
 
     self.viewModel.inputs.viewWillAppear()
   }
 
+  override func viewDidAppear(animated: Bool) {
+    super.viewDidAppear(animated)
+
+    self.viewModel.inputs.viewDidAppear()
+  }
+
   internal override func bindViewModel() {
+    self.indicatorView.rac.hidden = self.viewModel.outputs.indicatorViewIsHidden
+
     self.viewModel.outputs.createSortButtons
-      .observeForControllerAction()
+      .observeForUI()
       .observeNext { [weak self] in
         self?.createSortButtons($0)
     }
 
     self.viewModel.outputs.setSelectedButton
-      .observeForControllerAction()
+      .observeForUI()
       .observeNext { [weak self] in
         self?.selectButton(atIndex: $0)
     }
 
     self.viewModel.outputs.pinSelectedIndicatorToPage
-      .observeForControllerAction()
+      .observeForUI()
       .observeNext { [weak self] page, animated in
         self?.pinSelectedIndicator(toPage: page, animated: animated)
     }
 
     self.viewModel.outputs.updateSortStyle
-      .observeForControllerAction()
+      .observeForUI()
       .observeNext { [weak self] (id, sorts, animated) in
         self?.updateSortStyle(forCategoryId: id, sorts: sorts, animated: animated)
     }
 
     self.viewModel.outputs.notifyDelegateOfSelectedSort
+      .observeForUI()
       .observeNext { [weak self] sort in
         guard let _self = self else { return }
         _self.delegate?.sortPager(_self, selectedSort: sort)
     }
   }
 
-  override func bindStyles() {
+  internal override func bindStyles() {
     super.bindStyles()
 
     self.scrollView
@@ -80,6 +103,25 @@ internal final class SortPagerViewController: UIViewController {
 
     self.borderLineView
       |> discoveryBorderLineStyle
+
+    if self.view.traitCollection.isRegularRegular {
+      self.sortsStackViewCenterXConstraint?.active = true
+      self.sortsStackViewLeadingConstraint.active = false
+      self.sortsStackViewTrailingConstraint.active = false
+    } else {
+      self.sortsStackViewCenterXConstraint?.active = false
+      self.sortsStackViewLeadingConstraint.active = true
+      self.sortsStackViewTrailingConstraint.active = true
+    }
+  }
+
+  override func willRotateToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation,
+                                                 duration: NSTimeInterval) {
+    self.viewModel.inputs.willRotateToInterfaceOrientation()
+  }
+
+  internal override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
+    self.viewModel.inputs.didRotateFromInterfaceOrientation()
   }
 
   private func createSortButtons(sorts: [DiscoveryParams.Sort]) {
@@ -100,12 +142,12 @@ internal final class SortPagerViewController: UIViewController {
     }
   }
 
-  internal func pinSelectedIndicator(toPage page: Int, animated: Bool) {
-    guard let button = self.sortsStackView.arrangedSubviews[page] as? UIButton  else { return }
+  private func pinSelectedIndicator(toPage page: Int, animated: Bool) {
+    guard let button = self.sortsStackView.arrangedSubviews[page] as? UIButton else { return }
 
     let padding = page == 0 ? Styles.grid(2) : Styles.grid(4) - 3
 
-    let leadingConstant = button.frame.origin.x + padding
+    let leadingConstant = self.sortsStackView.frame.origin.x + button.frame.origin.x + padding
     let widthConstant = button.titleLabel?.frame.width ?? button.frame.width
 
     self.indicatorViewLeadingConstraint.constant = leadingConstant
@@ -137,7 +179,8 @@ internal final class SortPagerViewController: UIViewController {
         ?|> discoverySortPagerButtonStyle(sort: sort,
                                           categoryId: categoryId,
                                           isLeftMost: index == 0,
-                                          isRightMost: index == sorts.count - 1)
+                                          isRightMost: index == sorts.count - 1,
+                                          isRegularRegular: view.traitCollection.isRegularRegular)
     }
     self.scrollView.layoutIfNeeded()
 
