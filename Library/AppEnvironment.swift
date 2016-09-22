@@ -203,7 +203,7 @@ public struct AppEnvironment {
 
     let data = userDefaults.dictionaryForKey(environmentStorageKey) ?? [:]
 
-    var service = AppEnvironment.current.apiService
+    var service = current.apiService
     var currentUser: User? = nil
     let config: Config? = data["config"].flatMap(decode)
 
@@ -268,7 +268,12 @@ public struct AppEnvironment {
       currentUser = data["currentUser"].flatMap(decode)
     }
 
-    return Environment(apiService: service, config: config, currentUser: currentUser)
+    return Environment(
+      apiService: service,
+      config: config,
+      currentUser: currentUser,
+      koala: current.koala |> Koala.lens.loggedInUser .~ currentUser
+    )
   }
   // swiftlint:enable function_body_length
 

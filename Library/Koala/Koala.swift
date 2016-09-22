@@ -12,7 +12,7 @@ public final class Koala {
   private let client: TrackingClientType
   private let config: Config?
   private let device: UIDeviceType
-  private let loggedInUser: User?
+  internal let loggedInUser: User?
   private let screen: UIScreenType
 
   /**

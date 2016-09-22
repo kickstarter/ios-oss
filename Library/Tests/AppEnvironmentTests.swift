@@ -85,6 +85,7 @@ final class AppEnvironmentTests: XCTestCase {
   func testFromStorage_WithFullDataStored() {
     let userDefaults = MockKeyValueStore()
     let ubiquitousStore = MockKeyValueStore()
+    let user = User.template
 
     userDefaults.setObject(
       [
@@ -95,7 +96,7 @@ final class AppEnvironmentTests: XCTestCase {
         "apiService.serverConfig.basicHTTPAuth.password": "mundo",
         "apiService.serverConfig.webBaseUrl": "http://ksr.com",
         "apiService.language": "en",
-        "currentUser": User.template.encode()
+        "currentUser": user.encode()
       ],
       forKey: AppEnvironment.environmentStorageKey)
 
@@ -108,7 +109,8 @@ final class AppEnvironmentTests: XCTestCase {
     XCTAssertEqual("mundo", env.apiService.serverConfig.basicHTTPAuth?.password)
     XCTAssertEqual("http://ksr.com", env.apiService.serverConfig.webBaseUrl.absoluteString)
     XCTAssertEqual("en", env.apiService.language)
-    XCTAssertEqual(User.template, env.currentUser)
+    XCTAssertEqual(user, env.currentUser)
+    XCTAssertEqual(user, env.koala.loggedInUser)
 
     let differentEnv = AppEnvironment.fromStorage(ubiquitousStore: MockKeyValueStore(),
                                                   userDefaults: MockKeyValueStore())
