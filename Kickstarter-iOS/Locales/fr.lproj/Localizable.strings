@@ -28,6 +28,7 @@
 "Couldnt_add_attachment" = "Impossible d'ajouter la pièce jointe";
 "Couldnt_remove_attachment" = "Impossible de supprimer la pièce jointe";
 "Discover_more_projects" = "Découvrez plus de projets.";
+"Dismiss" = "Dismiss";
 "Done" = "Terminé";
 "Earth" = "Terre";
 "Email_notifications" = "Notifications par e-mail";
@@ -93,6 +94,7 @@
 "The_email_associated_with_this_Facebook_account_is_already_registered" = "L'adresse e-mail associée à ce compte Facebook a déjà été enregistrée par un autre utilisateur Kickstarter.";
 "This_facebook_account_is_already_linked_to_another_Kickstarter_user" = "Ce compte Facebook est déjà relié à un autre utilisateur Kickstarter.";
 "Unstars_project" = "Supprime le projet des projets préférés.";
+"View" = "View";
 "Your_pledge_amount" = "Montant engagé :";
 "Your_shipping_destination" = "Destination d'expédition";
 "Youre_a_backer" = "Vous êtes contributeur !";
@@ -207,7 +209,11 @@
 "backing_info.pledged_backing_amount" = "Montant engagé : %{backing_amount}";
 "category_promo.explore_category" = "Découvrir la catégorie %{category_name}";
 "category_promo.project_count_live_projects" = "%{project_count} projets actifs";
-"comments_count_comments" = "%{comments_count} commentaires";
+"comments_count_comments.few" = "%{comments_count} comments";
+"comments_count_comments.many" = "%{comments_count} comments";
+"comments_count_comments.one" = "%{comments_count} comment";
+"comments_count_comments.two" = "%{comments_count} comments";
+"comments_count_comments.zero" = "%{comments_count} comments";
 "creator_project_preview.subtitle.days_to_go_percent_funded" = "Plus que %{days_to_go} · Financé à %{percent_funded}";
 "creator_project_preview.subtitle.funded_on_deadline" = "Financé le %{deadline}";
 "creator_project_preview.subtitle.funding_canceled" = "Financement annulé";
@@ -854,7 +860,11 @@
 "project.view_pledge.status.dropped" = "Abandonné";
 "project.view_pledge.status.errored" = "Erreur";
 "project.view_pledge.status.pledged" = "Engagement";
-"project_count_category_name_projects" = "%{project_count} %{category_name} projects";
+"project_count_projects.few" = "%{project_count} projects";
+"project_count_projects.many" = "%{project_count} projects";
+"project_count_projects.one" = "%{project_count} project";
+"project_count_projects.two" = "%{project_count} projects";
+"project_count_projects.zero" = "%{project_count} projects";
 "push_notifications.alert.buttons.close" = "Fermer";
 "push_notifications.alert.buttons.view" = "Afficher";
 "rewards.info.all_gone" = "Épuisé";
@@ -965,4 +975,8 @@
 "update.comments.empty_state.non_backer.message" = "Oh, quel dommage. Soutenez ce projet afin de pouvoir laisser un commentaire.";
 "update.comments.empty_state.non_backer.title" = "Pas de commentaires";
 "update.comments.you" = "Vous";
-"updates_count_updates" = "%{updates_count} actus";
+"updates_count_updates.few" = "%{updates_count} updates";
+"updates_count_updates.many" = "%{updates_count} updates";
+"updates_count_updates.one" = "%{updates_count} update";
+"updates_count_updates.two" = "%{updates_count} updates";
+"updates_count_updates.zero" = "%{updates_count} updates";

@@ -522,6 +522,23 @@ public enum Strings {
     )
   }
   /**
+   "Dismiss"
+
+   - **es**: "Dismiss"
+   - **de**: "Dismiss"
+   - **fr**: "Dismiss"
+   - **it**: "Dismiss"
+   - **en**: "Dismiss"
+  */
+  public static func Dismiss() -> String {
+    return localizedString(
+      key: "Dismiss",
+      defaultValue: "Dismiss",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Done"
 
    - **es**: "Listo"
@@ -1486,6 +1503,23 @@ public enum Strings {
     return localizedString(
       key: "Unstars_project",
       defaultValue: "Unstars project.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "View"
+
+   - **es**: "View"
+   - **de**: "View"
+   - **fr**: "View"
+   - **it**: "View"
+   - **en**: "View"
+  */
+  public static func View() -> String {
+    return localizedString(
+      key: "View",
+      defaultValue: "View",
       count: nil,
       substitutions: [:]
     )
@@ -3431,18 +3465,18 @@ public enum Strings {
   /**
    "%{comments_count} comments"
 
-   - **es**: "%{comments_count} comentarios"
-   - **de**: "%{comments_count} Kommentare"
-   - **fr**: "%{comments_count} commentaires"
+   - **es**: "%{comments_count} comments"
+   - **de**: "%{comments_count} comments"
+   - **fr**: "%{comments_count} comments"
    - **it**: "%{comments_count} comments"
    - **en**: "%{comments_count} comments"
   */
-  public static func comments_count_comments(comments_count comments_count: String) -> String {
+  public static func comments_count_comments(comments_count comments_count: Int) -> String {
     return localizedString(
       key: "comments_count_comments",
       defaultValue: "%{comments_count} comments",
-      count: nil,
-      substitutions: ["comments_count": comments_count]
+      count: comments_count,
+      substitutions: ["comments_count": Format.wholeNumber(comments_count)]
     )
   }
   /**
@@ -12396,20 +12430,20 @@ Thank you for your support!"
     )
   }
   /**
-   "%{project_count} %{category_name} projects"
+   "%{project_count} projects"
 
-   - **es**: "%{project_count} %{category_name} projects"
-   - **de**: "%{project_count} %{category_name} projects"
-   - **fr**: "%{project_count} %{category_name} projects"
-   - **it**: "%{project_count} %{category_name} projects"
-   - **en**: "%{project_count} %{category_name} projects"
+   - **es**: "%{project_count} projects"
+   - **de**: "%{project_count} projects"
+   - **fr**: "%{project_count} projects"
+   - **it**: "%{project_count} projects"
+   - **en**: "%{project_count} projects"
   */
-  public static func project_count_category_name_projects(project_count project_count: String, category_name: String) -> String {
+  public static func project_count_projects(project_count project_count: Int) -> String {
     return localizedString(
-      key: "project_count_category_name_projects",
-      defaultValue: "%{project_count} %{category_name} projects",
-      count: nil,
-      substitutions: ["project_count": project_count, "category_name": category_name]
+      key: "project_count_projects",
+      defaultValue: "%{project_count} projects",
+      count: project_count,
+      substitutions: ["project_count": Format.wholeNumber(project_count)]
     )
   }
   /**
@@ -13993,18 +14027,18 @@ Thank you for your support!"
   /**
    "%{updates_count} updates"
 
-   - **es**: "%{updates_count} actualizaciones"
-   - **de**: "%{updates_count} Updates"
-   - **fr**: "%{updates_count} actus"
+   - **es**: "%{updates_count} updates"
+   - **de**: "%{updates_count} updates"
+   - **fr**: "%{updates_count} updates"
    - **it**: "%{updates_count} updates"
    - **en**: "%{updates_count} updates"
   */
-  public static func updates_count_updates(updates_count updates_count: String) -> String {
+  public static func updates_count_updates(updates_count updates_count: Int) -> String {
     return localizedString(
       key: "updates_count_updates",
       defaultValue: "%{updates_count} updates",
-      count: nil,
-      substitutions: ["updates_count": updates_count]
+      count: updates_count,
+      substitutions: ["updates_count": Format.wholeNumber(updates_count)]
     )
   }
 }

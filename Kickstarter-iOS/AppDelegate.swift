@@ -182,13 +182,13 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     let alert = UIAlertController(title: nil, message: message, preferredStyle: .Alert)
 
     alert.addAction(
-      UIAlertAction(title: Strings.general_alert_buttons_ok(), style: .Default) { [weak self] _ in
+      UIAlertAction(title: Strings.View(), style: .Default) { [weak self] _ in
         self?.viewModel.inputs.openRemoteNotificationTappedOk()
       }
     )
 
     alert.addAction(
-      UIAlertAction(title: Strings.general_navigation_buttons_cancel(), style: .Cancel, handler: nil)
+      UIAlertAction(title: Strings.Dismiss(), style: .Cancel, handler: nil)
     )
 
     self.rootTabBarController?.presentViewController(alert, animated: true, completion: nil)
