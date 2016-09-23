@@ -23,6 +23,7 @@ internal final class MessageDialogViewController: UIViewController {
 
     let vc = Storyboard.Messages.instantiate(MessageDialogViewController)
     vc.viewModel.inputs.configureWith(messageSubject: messageSubject, context: context)
+    vc.modalPresentationStyle = .FormSheet
     return vc
   }
 

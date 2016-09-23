@@ -251,6 +251,50 @@ final class FormatTests: XCTestCase {
     }
   }
 
+  func testDateWithDateFormat() {
+    let date = 434592000.0 // Oct 10 1983 in UTC
+    let UTC = NSTimeZone(abbreviation: "UTC")!
+    let EST = NSTimeZone(abbreviation: "EST")!
+    let format = "MMM yyyy"
+
+    withEnvironment(locale: NSLocale(localeIdentifier: "en")) {
+      withEnvironment(timeZone: UTC) {
+        XCTAssertEqual(Format.date(secondsInUTC: date, dateFormat: format), "Oct 1983")
+      }
+
+      withEnvironment(timeZone: EST) {
+        XCTAssertEqual(Format.date(secondsInUTC: date, dateFormat: format), "Oct 1983")
+      }
+    }
+
+    withEnvironment(locale: NSLocale(localeIdentifier: "de")) {
+      withEnvironment(timeZone: UTC) {
+        XCTAssertEqual(Format.date(secondsInUTC: date, dateFormat: format), "Okt. 1983")
+      }
+      withEnvironment(timeZone: EST) {
+        XCTAssertEqual(Format.date(secondsInUTC: date, dateFormat: format), "Okt. 1983")
+      }
+    }
+
+    withEnvironment(locale: NSLocale(localeIdentifier: "es")) {
+      withEnvironment(timeZone: UTC) {
+        XCTAssertEqual(Format.date(secondsInUTC: date, dateFormat: format), "oct 1983")
+      }
+      withEnvironment(timeZone: EST) {
+        XCTAssertEqual(Format.date(secondsInUTC: date, dateFormat: format), "oct 1983")
+      }
+    }
+
+    withEnvironment(locale: NSLocale(localeIdentifier: "fr")) {
+      withEnvironment(timeZone: UTC) {
+        XCTAssertEqual(Format.date(secondsInUTC: date, dateFormat: format), "oct. 1983")
+      }
+      withEnvironment(timeZone: EST) {
+        XCTAssertEqual(Format.date(secondsInUTC: date, dateFormat: format), "oct. 1983")
+      }
+    }
+  }
+
   func testDuration() {
     let thirtyMins = NSDate().timeIntervalSince1970 + 60 * 30 + 1
     let oneDay = NSDate().timeIntervalSince1970 + 60 * 60 * 24 + 1

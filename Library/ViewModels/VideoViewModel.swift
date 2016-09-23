@@ -50,6 +50,9 @@ public protocol VideoViewModelOutputs {
   /// Emits for testing when the video start stat is incremented.
   var incrementVideoStart: Signal<VoidEnvelope, NoError> { get }
 
+  var notifyDelegateThatVideoDidFinish: Signal<(), NoError> { get }
+  var notifyDelegateThatVideoDidStart: Signal<(), NoError> { get }
+
   /// Emits when the video should be paused.
   var pauseVideo: Signal<Void, NoError> { get }
 
@@ -172,7 +175,10 @@ public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, 
 
     self.videoOverlayViewHidden = self.playButtonHidden
 
-    self.videoViewHidden = self.projectImageHidden.map { !$0 }
+    self.videoViewHidden = self.projectImageHidden.map(negate)
+
+    self.notifyDelegateThatVideoDidFinish = reachedEndOfVideo.ignoreValues()
+    self.notifyDelegateThatVideoDidStart = self.playButtonTappedProperty.signal
 
     project
       .takeWhen(videoCompleted)
@@ -235,6 +241,8 @@ public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, 
   public let configurePlayerWithURL: Signal<NSURL, NoError>
   public let incrementVideoCompletion: Signal<VoidEnvelope, NoError>
   public let incrementVideoStart: Signal<VoidEnvelope, NoError>
+  public let notifyDelegateThatVideoDidFinish: Signal<(), NoError>
+  public let notifyDelegateThatVideoDidStart: Signal<(), NoError>
   public let pauseVideo: Signal<Void, NoError>
   public let playVideo: Signal<Void, NoError>
   public var playButtonHidden: Signal<Bool, NoError>

@@ -4,7 +4,12 @@ import Prelude
 import Social
 import UIKit
 
+internal protocol ProjectNavBarViewControllerDelegate: class {
+  func projectNavBarControllerDidTapTitle(controller: ProjectNavBarViewController)
+}
+
 internal final class ProjectNavBarViewController: UIViewController {
+  internal var delegate: ProjectNavBarViewControllerDelegate?
   private let viewModel: ProjectNavBarViewModelType = ProjectNavBarViewModel()
   private let shareViewModel: ShareViewModelType = ShareViewModel()
 
@@ -25,12 +30,23 @@ internal final class ProjectNavBarViewController: UIViewController {
     self.viewModel.inputs.projectImageIsVisible(visible)
   }
 
+  internal func projectVideoDidFinish() {
+    self.viewModel.inputs.projectVideoDidFinish()
+  }
+
+  internal func projectVideoDidStart() {
+    self.viewModel.inputs.projectVideoDidStart()
+  }
+
   internal override func viewDidLoad() {
     super.viewDidLoad()
 
     self.closeButton.addTarget(self, action: #selector(closeButtonTapped), forControlEvents: .TouchUpInside)
     self.shareButton.addTarget(self, action: #selector(shareButtonTapped), forControlEvents: .TouchUpInside)
     self.starButton.addTarget(self, action: #selector(starButtonTapped), forControlEvents: .TouchUpInside)
+    self.projectNameLabel.addGestureRecognizer(
+      UITapGestureRecognizer(target: self, action: #selector(projectNameTapped))
+    )
 
     NSNotificationCenter
       .defaultCenter()
@@ -86,6 +102,7 @@ internal final class ProjectNavBarViewController: UIViewController {
       |> UILabel.lens.numberOfLines .~ 2
       |> UILabel.lens.minimumScaleFactor .~ 0.8
       |> UILabel.lens.adjustsFontSizeToFitWidth .~ true
+      |> UILabel.lens.userInteractionEnabled .~ true
 
     self.shareButton
       |> UIButton.lens.title(forState: .Normal) .~ nil
@@ -103,6 +120,7 @@ internal final class ProjectNavBarViewController: UIViewController {
   }
   // swiftlint:enable function_body_length
 
+  // swiftlint:disable function_body_length
   internal override func bindViewModel() {
     super.bindViewModel()
 
@@ -131,20 +149,28 @@ internal final class ProjectNavBarViewController: UIViewController {
     self.viewModel.outputs.categoryHiddenAndAnimate
       .observeForUI()
       .observeNext { [weak self] hidden, animate in
-        guard let _self = self else { return }
+        UIView.animateWithDuration(animate ? 0.2 : 0) {
+          self?.categoryButton.alpha = hidden ? 0 : 1
+        }
+    }
 
-        UIView.transitionWithView(
-          _self.view,
-          duration: animate ? 0.2 : 0,
-          options: [.BeginFromCurrentState],
-          animations: {
-            _self.categoryButton.alpha = hidden ? 0 : 1
-            _self.closeButton.tintColor = hidden ? .ksr_text_navy_700 : .whiteColor()
-            _self.shareButton.tintColor = hidden ? .ksr_text_navy_700 : .whiteColor()
-            _self.starButton.tintColor = hidden ? .ksr_text_navy_700 : .whiteColor()
-            _self.navContainerView.backgroundColor = hidden ? .whiteColor() : .clearColor()
-            _self.projectNameLabel.alpha = hidden ? 1 : 0
-          }, completion: nil)
+    self.viewModel.outputs.titleHiddenAndAnimate
+      .observeForUI()
+      .observeNext { [weak self] hidden, animate in
+        UIView.animateWithDuration(animate ? 0.2 : 0) {
+          self?.projectNameLabel.alpha = hidden ? 0 : 1
+        }
+    }
+
+    self.viewModel.outputs.backgroundOpaqueAndAnimate
+      .observeForUI()
+      .observeNext { [weak self] opaque, animate in
+        UIView.animateWithDuration(animate ? 0.2 : 0) {
+          self?.closeButton.tintColor = opaque ? .ksr_text_navy_700 : .whiteColor()
+          self?.shareButton.tintColor = opaque ? .ksr_text_navy_700 : .whiteColor()
+          self?.starButton.tintColor = opaque ? .ksr_text_navy_700 : .whiteColor()
+          self?.navContainerView.backgroundColor = opaque ? .whiteColor() : .clearColor()
+        }
     }
 
     self.shareViewModel.outputs.showShareSheet
@@ -155,6 +181,7 @@ internal final class ProjectNavBarViewController: UIViewController {
       .observeForControllerAction()
       .observeNext { [weak self] in self?.showShareCompose($0) }
   }
+  // swiftlint:enable function_body_length
 
   private func showProjectStarredPrompt(message message: String) {
     let alert = UIAlertController.alert(nil, message: message, handler: nil)
@@ -202,5 +229,9 @@ internal final class ProjectNavBarViewController: UIViewController {
 
   @objc private func starButtonTapped() {
     self.viewModel.inputs.starButtonTapped()
+  }
+
+  @objc private func projectNameTapped() {
+    self.delegate?.projectNavBarControllerDidTapTitle(self)
   }
 }

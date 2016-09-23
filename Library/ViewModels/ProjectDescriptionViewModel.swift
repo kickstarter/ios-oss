@@ -10,33 +10,23 @@ public protocol ProjectDescriptionViewModelInputs {
 
   /// Call when the webview needs to decide a policy for a navigation action. Returns the decision policy.
   func decidePolicyFor(navigationAction navigationAction: WKNavigationActionProtocol)
-    -> WKNavigationActionPolicy
-
-  /// Call when the `expandDescription` method is called on the view.
-  func expandDescription()
-
-  /// Call when the webview's content size changes.
-  func observedWebViewContentSizeChange(contentSize: CGSize)
-
-  /// Call when a header/footer is transfered to the view.
-  func transferredHeaderAndFooter(atContentOffset contentOffset: CGPoint?)
-
-  /// Call when the view appears.
-  func viewDidAppear()
 
   /// Call when the view loads.
   func viewDidLoad()
-
-  /// Call when the web view finishes navigation.
-  func webViewDidFinishNavigation()
 }
 
 public protocol ProjectDescriptionViewModelOutputs {
-  /// Emits a boolean that determines if the footer should be hidden.
-  var footerHidden: Signal<Bool, NoError> { get }
+  /// Can be returned from the web view's policy decision delegate method.
+  var decidedPolicyForNavigationAction: WKNavigationActionPolicy { get }
 
-  /// Emits when the footer and header should be laid out.
-  var layoutFooterAndHeader: Signal<(descriptionExpanded: Bool, contentOffset: CGPoint?), NoError> { get }
+  /// Emits when we should go back to the project.
+  var goBackToProject: Signal<(), NoError> { get }
+
+  /// Emits when we should navigate to the message dialog.
+  var goToMessageDialog: Signal<(MessageSubject, Koala.MessageDialogContext), NoError> { get }
+
+  /// Emits when we should open a safari browser with the URL.
+  var goToSafariBrowser: Signal<NSURL, NoError> { get }
 
   /// Emits a url request that should be loaded into the webview.
   var loadWebViewRequest: Signal<NSURLRequest, NoError> { get }
@@ -53,57 +43,49 @@ ProjectDescriptionViewModelInputs, ProjectDescriptionViewModelOutputs {
   public init() {
     let project = combineLatest(self.projectProperty.signal.ignoreNil(), self.viewDidLoadProperty.signal)
       .map(first)
-
-    let observedWebViewContentSizeChange = self.observedWebViewContentSizeChangeProperty.signal
-      .skipRepeats()
-      .ignoreValues()
+    let navigationAction = self.policyForNavigationActionProperty.signal.ignoreNil()
+    let navigationActionLink = navigationAction
+      .filter { $0.navigationType == .LinkActivated }
+    let navigation = navigationActionLink
+      .map { Navigation.match($0.request) }
 
     let projectDescriptionRequest = project
       .map {
-        (NSURL(string: $0.urls.web.project)?.URLByAppendingPathComponent("description"))
+        NSURL(string: $0.urls.web.project)?.URLByAppendingPathComponent("description")
       }
       .ignoreNil()
-      .map { AppEnvironment.current.apiService.preparedRequest(forURL: $0) }
 
     self.loadWebViewRequest = projectDescriptionRequest
-      .takeWhen(self.viewDidAppearProperty.signal.take(1))
+      .map { AppEnvironment.current.apiService.preparedRequest(forURL: $0) }
 
-    let descriptionExpanded = Signal.merge(
-      self.viewDidLoadProperty.signal.mapConst(false),
-      self.expandDescriptionProperty.signal.mapConst(true)
-    )
-
-    let transferredHeaderAndFooter = descriptionExpanded
-      .takePairWhen(self.transferredHeaderAndFooterOffsetProperty.signal)
-      .map { (descriptionExpanded: $0, contentOffset: $1) }
-      .skipRepeats { lhs, rhs in lhs.0 == rhs.0 && lhs.1 == rhs.1 }
-
-    self.layoutFooterAndHeader = Signal.merge(
-      // Layout when the description is expanded
-      self.expandDescriptionProperty.signal.map { (true, nil) },
-
-      // Layout when the header/footer are transferred over
-      transferredHeaderAndFooter,
-
-      // Layout when the webview finishes loading
-      self.webViewDidFinishNavigationProperty.signal.take(1).map { (false, nil) },
-
-      // Layout when the content size of the webview has changed
-      descriptionExpanded.takeWhen(observedWebViewContentSizeChange).map { ($0, nil) }
-    )
-
-    self.footerHidden = Signal.merge(
-      self.viewDidLoadProperty.signal.mapConst(true),
-      observedWebViewContentSizeChange.mapConst(false)
-    )
-
-    self.policyDecisionProperty <~ self.policyForNavigationActionProperty.signal.ignoreNil()
+    self.policyDecisionProperty <~ navigationAction
       .map { $0.request.URL?.path?.containsString("/description") == true ? .Allow : .Cancel }
-  }
 
-  private let transferredHeaderAndFooterOffsetProperty = MutableProperty<CGPoint?>(nil)
-  public func transferredHeaderAndFooter(atContentOffset contentOffset: CGPoint?) {
-    self.transferredHeaderAndFooterOffsetProperty.value = contentOffset
+    let possiblyGoToMessageDialog = combineLatest(project, navigation)
+      .map { (project, navigation) -> (MessageSubject, Koala.MessageDialogContext)? in
+        guard navigation.map(isMessageCreator(navigation:)) == true else { return nil }
+        return (MessageSubject.project(project), Koala.MessageDialogContext.projectPage)
+      }
+
+    self.goToMessageDialog = possiblyGoToMessageDialog.ignoreNil()
+
+    let possiblyGoBackToProject = combineLatest(project, navigation)
+      .map { (project, navigation) -> Project? in
+        guard
+          case let (.project(param, .root, _))? = navigation
+          where String(project.id) == param.slug || project.slug == param.slug
+          else { return nil }
+
+        return project
+    }
+
+    self.goBackToProject = possiblyGoBackToProject.ignoreNil().ignoreValues()
+
+    self.goToSafariBrowser = zip(navigationActionLink, possiblyGoToMessageDialog, possiblyGoBackToProject)
+      .filter { $1 == nil && $2 == nil }
+      .filter { navigationAction, _, _ in navigationAction.navigationType == .LinkActivated }
+      .map { navigationAction, _, _ in navigationAction.request.URL }
+      .ignoreNil()
   }
 
   private let projectProperty = MutableProperty<Project?>(nil)
@@ -113,25 +95,8 @@ ProjectDescriptionViewModelInputs, ProjectDescriptionViewModelOutputs {
 
   private let policyForNavigationActionProperty = MutableProperty<WKNavigationActionProtocol?>(nil)
   private let policyDecisionProperty = MutableProperty(WKNavigationActionPolicy.Allow)
-  public func decidePolicyFor(navigationAction navigationAction: WKNavigationActionProtocol)
-    -> WKNavigationActionPolicy {
-      self.policyForNavigationActionProperty.value = navigationAction
-      return self.policyDecisionProperty.value
-  }
-
-  private let expandDescriptionProperty = MutableProperty()
-  public func expandDescription() {
-    self.expandDescriptionProperty.value = ()
-  }
-
-  private let observedWebViewContentSizeChangeProperty = MutableProperty(CGSize.zero)
-  public func observedWebViewContentSizeChange(contentSize: CGSize) {
-    self.observedWebViewContentSizeChangeProperty.value = contentSize
-  }
-
-  private let viewDidAppearProperty = MutableProperty()
-  public func viewDidAppear() {
-    self.viewDidAppearProperty.value = ()
+  public func decidePolicyFor(navigationAction navigationAction: WKNavigationActionProtocol) {
+    self.policyForNavigationActionProperty.value = navigationAction
   }
 
   private let viewDidLoadProperty = MutableProperty()
@@ -139,15 +104,19 @@ ProjectDescriptionViewModelInputs, ProjectDescriptionViewModelOutputs {
     self.viewDidLoadProperty.value = ()
   }
 
-  private let webViewDidFinishNavigationProperty = MutableProperty()
-  public func webViewDidFinishNavigation() {
-    self.webViewDidFinishNavigationProperty.value = ()
+  public var decidedPolicyForNavigationAction: WKNavigationActionPolicy {
+    return self.policyDecisionProperty.value
   }
-
-  public let footerHidden: Signal<Bool, NoError>
-  public let layoutFooterAndHeader: Signal<(descriptionExpanded: Bool, contentOffset: CGPoint?), NoError>
+  public let goBackToProject: Signal<(), NoError>
+  public let goToMessageDialog: Signal<(MessageSubject, Koala.MessageDialogContext), NoError>
+  public let goToSafariBrowser: Signal<NSURL, NoError>
   public let loadWebViewRequest: Signal<NSURLRequest, NoError>
 
   public var inputs: ProjectDescriptionViewModelInputs { return self }
   public var outputs: ProjectDescriptionViewModelOutputs { return self }
+}
+
+private func isMessageCreator(navigation navigation: Navigation) -> Bool {
+  guard case .project(_, .messageCreator, _) = navigation else { return false }
+  return true
 }

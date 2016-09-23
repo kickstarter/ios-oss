@@ -1,61 +1,26 @@
 import KsApi
 import Library
 import Prelude
+import SafariServices
 import UIKit
-
-private let contentSizeKeyPath = "contentSize"
 
 internal final class ProjectDescriptionViewController: WebViewController {
   private let viewModel: ProjectDescriptionViewModelType = ProjectDescriptionViewModel()
 
-  private var headerView: UIView?
-  private var footerView: UIView?
-
-  internal func configureWith(project project: Project) {
-    self.viewModel.inputs.configureWith(project: project)
-  }
-
-  internal func expandDescription() {
-    self.viewModel.inputs.expandDescription()
-  }
-
-  internal func transfer(headerView headerView: UIView?,
-                                    footerView: UIView?,
-                                    previousContentOffset: CGPoint?) {
-    self.headerView = headerView
-    self.footerView = footerView
-    self.footerView?.hidden = true
-
-    if let headerView = headerView, footerView = footerView {
-      self.webView.scrollView.addSubview(headerView)
-      self.webView.scrollView.addSubview(footerView)
-      self.viewModel.inputs.transferredHeaderAndFooter(atContentOffset: previousContentOffset)
-    }
+  internal static func configuredWith(project project: Project) -> ProjectDescriptionViewController {
+    let vc = ProjectDescriptionViewController()
+    vc.viewModel.inputs.configureWith(project: project)
+    return vc
   }
 
   override func viewDidLoad() {
     super.viewDidLoad()
     self.viewModel.inputs.viewDidLoad()
-    self.webView.scrollView.addObserver(self, forKeyPath: contentSizeKeyPath, options: [], context: nil)
   }
 
-  override func viewDidAppear(animated: Bool) {
-    super.viewDidAppear(animated)
-    self.viewModel.inputs.viewDidAppear()
-  }
-
-  override func observeValueForKeyPath(keyPath: String?,
-                                       ofObject object: AnyObject?,
-                                                change: [String : AnyObject]?,
-                                                context: UnsafeMutablePointer<Void>) {
-
-    if keyPath == contentSizeKeyPath {
-      self.viewModel.inputs.observedWebViewContentSizeChange(self.webView.scrollView.contentSize)
-    }
-  }
-
-  deinit {
-    self.webView.scrollView.removeObserver(self, forKeyPath: contentSizeKeyPath)
+  internal override func viewWillAppear(animated: Bool) {
+    super.viewWillAppear(animated)
+    self.navigationController?.setNavigationBarHidden(false, animated: animated)
   }
 
   override func bindStyles() {
@@ -65,76 +30,40 @@ internal final class ProjectDescriptionViewController: WebViewController {
       |> baseControllerStyle()
       |> (WebViewController.lens.webView.scrollView • UIScrollView.lens.delaysContentTouches) .~ false
       |> (WebViewController.lens.webView.scrollView • UIScrollView.lens.canCancelContentTouches) .~ true
-      |> (WebViewController.lens.webView.scrollView • UIScrollView.lens.delaysContentTouches) .~ false
-      |> (WebViewController.lens.webView.scrollView • UIScrollView.lens.clipsToBounds) .~ false
   }
 
   override func bindViewModel() {
     super.bindViewModel()
+
+    self.viewModel.outputs.goToMessageDialog
+      .observeForControllerAction()
+      .observeNext { [weak self] in self?.goToMessageDialog(subject: $0, context: $1) }
+
+    self.viewModel.outputs.goBackToProject
+      .observeForControllerAction()
+      .observeNext { [weak self] _ in
+        self?.navigationController?.popViewControllerAnimated(true)
+    }
+
+    self.viewModel.outputs.goToSafariBrowser
+      .observeForControllerAction()
+      .observeNext { [weak self] in
+        self?.goToSafariBrowser(url: $0)
+    }
 
     self.viewModel.outputs.loadWebViewRequest
       .observeForControllerAction()
       .observeNext { [weak self] in
         self?.webView.loadRequest($0)
     }
-
-    self.viewModel.outputs.layoutFooterAndHeader
-      .observeForControllerAction()
-      .observeNext { [weak self] descriptionExpanded, contentOffset in
-        self?.layoutFooterAndHeader(descriptionExpanded: descriptionExpanded, contentOffset: contentOffset)
-    }
-
-    self.footerView?.rac.hidden = self.viewModel.outputs.footerHidden
-  }
-
-  private func layoutFooterAndHeader(descriptionExpanded descriptionExpanded: Bool,
-                                                         contentOffset: CGPoint?) {
-
-    guard let headerView = self.headerView, footerView = self.footerView else { return }
-
-    headerView.frame.size = headerView.systemLayoutSizeFittingSize(
-      CGSize(width: self.view.frame.width, height: 0),
-      withHorizontalFittingPriority: UILayoutPriorityRequired,
-      verticalFittingPriority: UILayoutPriorityDefaultLow
-    )
-    headerView.frame.origin = .zero
-
-    footerView.frame.size = footerView.systemLayoutSizeFittingSize(
-      CGSize(width: self.view.frame.width, height: 0),
-      withHorizontalFittingPriority: UILayoutPriorityRequired,
-      verticalFittingPriority: UILayoutPriorityDefaultLow
-    )
-
-    let script = "document.body.style.padding = '\(Int(headerView.frame.height))px 0px 0px 0px';"
-    self.webView.evaluateJavaScript(script) { _, _ in
-
-      if descriptionExpanded {
-        self.webView.scrollView.contentInset.bottom = footerView.frame.height
-      } else {
-        self.webView.scrollView.contentInset.bottom = 800 + footerView.frame.height + headerView.frame.height
-          - self.webView.scrollView.contentSize.height
-      }
-
-      footerView.frame.origin.y = self.webView.scrollView.contentSize.height
-        + self.webView.scrollView.contentInset.bottom
-        - footerView.frame.height
-      footerView.hidden = false
-    }
-
-    if let contentOffset = contentOffset {
-      self.webView.scrollView.contentOffset = contentOffset
-    }
   }
 
   internal func webView(webView: WKWebView,
                         decidePolicyForNavigationAction navigationAction: WKNavigationAction,
-                                                        decisionHandler: (WKNavigationActionPolicy) -> Void) {
+                        decisionHandler: (WKNavigationActionPolicy) -> Void) {
 
-    decisionHandler(self.viewModel.inputs.decidePolicyFor(navigationAction: navigationAction))
-  }
-
-  internal func webView(webView: WKWebView, didFinishNavigation navigation: WKNavigation!) {
-    self.viewModel.inputs.webViewDidFinishNavigation()
+    self.viewModel.inputs.decidePolicyFor(navigationAction: navigationAction)
+    decisionHandler(self.viewModel.outputs.decidedPolicyForNavigationAction)
   }
 
   internal func scrollViewWillBeginDragging(scrollView: UIScrollView) {
@@ -143,5 +72,28 @@ internal final class ProjectDescriptionViewController: WebViewController {
     if self.webView.scrollView.decelerationRate != UIScrollViewDecelerationRateNormal {
       self.webView.scrollView.decelerationRate = UIScrollViewDecelerationRateNormal
     }
+  }
+
+  private func goToMessageDialog(subject subject: MessageSubject, context: Koala.MessageDialogContext) {
+    let vc = MessageDialogViewController.configuredWith(messageSubject: subject, context: context)
+    vc.delegate = self
+    self.presentViewController(UINavigationController(rootViewController: vc),
+                               animated: true,
+                               completion: nil)
+  }
+
+  private func goToSafariBrowser(url url: NSURL) {
+    let controller = SFSafariViewController(URL: url)
+    controller.modalPresentationStyle = .OverFullScreen
+    self.presentViewController(controller, animated: true, completion: nil)
+  }
+}
+
+extension ProjectDescriptionViewController: MessageDialogViewControllerDelegate {
+  internal func messageDialogWantsDismissal(dialog: MessageDialogViewController) {
+    dialog.dismissViewControllerAnimated(true, completion: nil)
+  }
+
+  internal func messageDialog(dialog: MessageDialogViewController, postedMessage message: Message) {
   }
 }

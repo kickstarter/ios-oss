@@ -8,7 +8,13 @@ import UIKit
 private let durationKeyPath = "currentItem.duration"
 private let rateKeyPath = "rate"
 
+internal protocol VideoViewControllerDelegate: class {
+  func videoViewControllerDidFinish(controller: VideoViewController)
+  func videoViewControllerDidStart(controller: VideoViewController)
+}
+
 internal final class VideoViewController: UIViewController {
+  internal weak var delegate: VideoViewControllerDelegate?
   private let viewModel: VideoViewModelType = VideoViewModel()
   private var playerController: AVPlayerViewController!
   private var timeObserver: AnyObject?
@@ -18,8 +24,10 @@ internal final class VideoViewController: UIViewController {
   @IBOutlet private weak var videoOverlayView: UIView!
   @IBOutlet private weak var videoContainerView: UIView!
 
-  internal func configureWith(project project: Project) {
-    self.viewModel.inputs.configureWith(project: project)
+  internal static func configuredWith(project project: Project) -> VideoViewController {
+    let vc = Storyboard.Video.instantiate(VideoViewController)
+    vc.viewModel.inputs.configureWith(project: project)
+    return vc
   }
 
   internal override func viewDidLoad() {
@@ -61,6 +69,7 @@ internal final class VideoViewController: UIViewController {
       |> UIView.lens.alpha .~ 0.1
   }
 
+  // swiftlint:disable function_body_length
   internal override func bindViewModel() {
     super.bindViewModel()
 
@@ -78,6 +87,20 @@ internal final class VideoViewController: UIViewController {
       .observeForControllerAction()
       .observeNext { [weak self] url in
         self?.configurePlayer(withURL: url)
+    }
+
+    self.viewModel.outputs.notifyDelegateThatVideoDidFinish
+      .observeForUI()
+      .observeNext { [weak self] in
+        guard let _self = self else { return }
+        self?.delegate?.videoViewControllerDidFinish(_self)
+    }
+
+    self.viewModel.outputs.notifyDelegateThatVideoDidStart
+      .observeForUI()
+      .observeNext { [weak self] in
+        guard let _self = self else { return }
+        self?.delegate?.videoViewControllerDidStart(_self)
     }
 
     self.viewModel.outputs.pauseVideo
@@ -117,6 +140,7 @@ internal final class VideoViewController: UIViewController {
         self?.playerController.player?.seekToTime(kCMTimeZero)
     }
   }
+  // swiftlint:enable function_body_length
 
   func addCompletionObserver(atTime time: CMTime) {
     guard let player = self.playerController.player else { return }

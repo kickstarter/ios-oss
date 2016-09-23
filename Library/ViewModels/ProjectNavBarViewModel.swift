@@ -7,6 +7,8 @@ public protocol ProjectNavBarViewModelInputs {
   func categoryButtonTapped()
   func configureWith(project project: Project)
   func projectImageIsVisible(visible: Bool)
+  func projectVideoDidFinish()
+  func projectVideoDidStart()
   func starButtonTapped()
   func userSessionEnded()
   func userSessionStarted()
@@ -14,6 +16,8 @@ public protocol ProjectNavBarViewModelInputs {
 }
 
 public protocol ProjectNavBarViewModelOutputs {
+  var backgroundOpaqueAndAnimate: Signal<(opaque: Bool, animate: Bool), NoError> { get }
+
   /// Emits the color of the category button's background.
   var categoryButtonBackgroundColor: Signal<UIColor, NoError> { get }
 
@@ -43,6 +47,8 @@ public protocol ProjectNavBarViewModelOutputs {
 
   /// Emits a boolean that determines if the star button is selected.
   var starButtonSelected: Signal<Bool, NoError> { get }
+
+  var titleHiddenAndAnimate: Signal<(hidden: Bool, animate: Bool), NoError> { get }
 }
 
 public protocol ProjectNavBarViewModelType {
@@ -144,11 +150,43 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
 
     self.projectName = project.map(Project.lens.name.view)
 
+    let videoIsPlaying = Signal.merge(
+      self.viewDidLoadProperty.signal.mapConst(false),
+      self.projectVideoDidStartProperty.signal.mapConst(true),
+      self.projectVideoDidFinishProperty.signal.mapConst(false)
+    )
+
+
+
     self.categoryHiddenAndAnimate = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst((false, false)),
-      self.projectImageIsVisibleProperty.signal.map { (!$0, true) }
+
+      combineLatest(self.projectImageIsVisibleProperty.signal, videoIsPlaying)
+        .map { projectImageIsVisible, videoIsPlaying in
+          (videoIsPlaying ? true : !projectImageIsVisible, true)
+      }
       )
       .skipRepeats { $0.hidden == $1.hidden }
+
+    self.titleHiddenAndAnimate = Signal.merge(
+      self.viewDidLoadProperty.signal.mapConst((true, false)),
+
+      combineLatest(self.projectImageIsVisibleProperty.signal, videoIsPlaying)
+        .map { projectImageIsVisible, videoIsPlaying in
+          (projectImageIsVisible, true)
+      }
+      )
+      .skipRepeats { $0.hidden == $1.hidden }
+
+    self.backgroundOpaqueAndAnimate = Signal.merge(
+      self.viewDidLoadProperty.signal.mapConst((false, false)),
+
+      combineLatest(self.projectImageIsVisibleProperty.signal, videoIsPlaying)
+        .map { projectImageIsVisible, videoIsPlaying in
+          (videoIsPlaying ? true : !projectImageIsVisible, true)
+      }
+      )
+      .skipRepeats { $0.opaque == $1.opaque }
 
     projectOnStarToggleSuccess
       .observeNext { AppEnvironment.current.koala.trackProjectStar($0) }
@@ -163,6 +201,16 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
   private let projectImageIsVisibleProperty = MutableProperty(false)
   public func projectImageIsVisible(visible: Bool) {
     self.projectImageIsVisibleProperty.value = visible
+  }
+
+  private let projectVideoDidFinishProperty = MutableProperty()
+  public func projectVideoDidFinish() {
+    self.projectVideoDidFinishProperty.value = ()
+  }
+
+  private let projectVideoDidStartProperty = MutableProperty()
+  public func projectVideoDidStart() {
+    self.projectVideoDidStartProperty.value = ()
   }
 
   public func categoryButtonTapped() {
@@ -188,6 +236,7 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
     self.viewDidLoadProperty.value = ()
   }
 
+  public let backgroundOpaqueAndAnimate: Signal<(opaque: Bool, animate: Bool), NoError>
   public let categoryButtonBackgroundColor: Signal<UIColor, NoError>
   public let categoryButtonText: Signal<String, NoError>
   public let categoryButtonTintColor: Signal<UIColor, NoError>
@@ -198,6 +247,7 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
   public let showProjectStarredPrompt: Signal<String, NoError>
   public let starButtonAccessibilityHint: Signal<String, NoError>
   public let starButtonSelected: Signal<Bool, NoError>
+  public let titleHiddenAndAnimate: Signal<(hidden: Bool, animate: Bool), NoError>
 
   public var inputs: ProjectNavBarViewModelInputs { return self }
   public var outputs: ProjectNavBarViewModelOutputs { return self }

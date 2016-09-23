@@ -65,6 +65,21 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     self.youreABackerLabelHidden.assertValues([true])
   }
 
+  func testYoureABackerLabelHidden_NotABacker_VideoInteraction() {
+    let project = .template |> Project.lens.personalization.isBacking .~ false
+    self.vm.inputs.configureWith(project: project)
+
+    self.youreABackerLabelHidden.assertValues([true])
+
+    self.vm.inputs.videoDidStart()
+
+    self.youreABackerLabelHidden.assertValues([true])
+
+    self.vm.inputs.videoDidFinish()
+
+    self.youreABackerLabelHidden.assertValues([true])
+  }
+
   func testYoureABackerLabelHidden_LoggedOut() {
     let project = .template |> Project.lens.personalization.isBacking .~ nil
     self.vm.inputs.configureWith(project: project)
@@ -77,6 +92,21 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: project)
 
     self.youreABackerLabelHidden.assertValues([false])
+  }
+
+  func testYoureABackerLabelHidden_Backer_VideoInteraction() {
+    let project = .template |> Project.lens.personalization.isBacking .~ true
+    self.vm.inputs.configureWith(project: project)
+
+    self.youreABackerLabelHidden.assertValues([false])
+
+    self.vm.inputs.videoDidStart()
+
+    self.youreABackerLabelHidden.assertValues([false, true])
+
+    self.vm.inputs.videoDidFinish()
+
+    self.youreABackerLabelHidden.assertValues([false, true, false])
   }
 
   func testCreatorImageUrl() {

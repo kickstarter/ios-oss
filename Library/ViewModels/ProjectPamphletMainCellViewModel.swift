@@ -6,6 +6,18 @@ import Result
 public protocol ProjectPamphletMainCellViewModelInputs {
   /// Call with the project provided to the view controller.
   func configureWith(project project: Project)
+
+  /// Call when the creator button is tapped.
+  func creatorButtonTapped()
+
+  /// Call when the delegate has been set on the cell.
+  func delegateDidSet()
+
+  /// Call when the read more button is tapped.
+  func readMoreButtonTapped()
+
+  func videoDidFinish()
+  func videoDidStart()
 }
 
 public protocol ProjectPamphletMainCellViewModelOutputs {
@@ -14,6 +26,9 @@ public protocol ProjectPamphletMainCellViewModelOutputs {
 
   /// Emits a string to use for the backers title label.
   var backersTitleLabelText: Signal<String, NoError> { get }
+
+  /// Emits a project when the video player controller should be configured.
+  var configureVideoPlayerController: Signal<Project, NoError> { get }
 
   /// Emits a boolean that determines if the conversion labels should be hidden.
   var conversionLabelHidden: Signal<Bool, NoError> { get }
@@ -32,6 +47,12 @@ public protocol ProjectPamphletMainCellViewModelOutputs {
 
   /// Emits the text for the deadline title label.
   var deadlineTitleLabelText: Signal<String, NoError> { get }
+
+  /// Emits the project when we should go to the campaign view for the project.
+  var notifyDelegateToGoToCampaign: Signal<Project, NoError> { get }
+
+  /// Emits the project when we should go to the creator's view for the project.
+  var notifyDelegateToGoToCreator: Signal<Project, NoError> { get }
 
   /// Emits the text for the pledged subtitle label.
   var pledgedSubtitleLabelText: Signal<String, NoError> { get }
@@ -90,12 +111,22 @@ ProjectPamphletMainCellViewModelInputs, ProjectPamphletMainCellViewModelOutputs 
 
     self.projectImageUrl = project.map { NSURL(string: $0.photo.full) }
 
-    self.youreABackerLabelHidden = project.map { $0.personalization.isBacking != true }
+    let videoIsPlaying = Signal.merge(
+      project.take(1).mapConst(false),
+      self.videoDidStartProperty.signal.mapConst(true),
+      self.videoDidFinishProperty.signal.mapConst(false)
+    )
+
+    self.youreABackerLabelHidden = combineLatest(project, videoIsPlaying)
+      .map { project, videoIsPlaying in
+        project.personalization.isBacking != true || videoIsPlaying
+      }
+      .skipRepeats()
 
     self.backersTitleLabelText = project.map { Format.wholeNumber($0.stats.backersCount) }
 
     let deadlineTitleAndSubtitle = project.map {
-      return Format.duration(secondsInUTC: $0.dates.deadline, useToGo: true) ?? ("", "")
+      return Format.duration(secondsInUTC: $0.dates.deadline, useToGo: true)
     }
 
     self.deadlineTitleLabelText = deadlineTitleAndSubtitle.map(first)
@@ -159,6 +190,16 @@ ProjectPamphletMainCellViewModelInputs, ProjectPamphletMainCellViewModelOutputs 
     self.progressPercentage = project
       .map(Project.lens.stats.fundingProgress.view)
       .map(clamp(0, 1))
+
+    self.notifyDelegateToGoToCampaign = project
+      .takeWhen(self.readMoreButtonTappedProperty.signal)
+
+    self.notifyDelegateToGoToCreator = project
+      .takeWhen(self.creatorButtonTappedProperty.signal)
+
+    self.configureVideoPlayerController = combineLatest(project, self.delegateDidSetProperty.signal)
+      .map(first)
+      .take(1)
   }
   // swiftlint:enable function_body_length
 
@@ -167,14 +208,42 @@ ProjectPamphletMainCellViewModelInputs, ProjectPamphletMainCellViewModelOutputs 
     self.projectProperty.value = project
   }
 
+  private let creatorButtonTappedProperty = MutableProperty()
+  public func creatorButtonTapped() {
+    self.creatorButtonTappedProperty.value = ()
+  }
+
+  private let delegateDidSetProperty = MutableProperty()
+  public func delegateDidSet() {
+    self.delegateDidSetProperty.value = ()
+  }
+
+  private let readMoreButtonTappedProperty = MutableProperty()
+  public func readMoreButtonTapped() {
+    self.readMoreButtonTappedProperty.value = ()
+  }
+
+  private let videoDidFinishProperty = MutableProperty()
+  public func videoDidFinish() {
+    self.videoDidFinishProperty.value = ()
+  }
+
+  private let videoDidStartProperty = MutableProperty()
+  public func videoDidStart() {
+    self.videoDidStartProperty.value = ()
+  }
+
   public let allStatsStackViewAccessibilityValue: Signal<String, NoError>
   public let backersTitleLabelText: Signal<String, NoError>
+  public let configureVideoPlayerController: Signal<Project, NoError>
   public let conversionLabelHidden: Signal<Bool, NoError>
   public let conversionLabelText: Signal<String, NoError>
   public let creatorImageUrl: Signal<NSURL?, NoError>
   public let creatorLabelText: Signal<String, NoError>
   public let deadlineSubtitleLabelText: Signal<String, NoError>
   public let deadlineTitleLabelText: Signal<String, NoError>
+  public let notifyDelegateToGoToCampaign: Signal<Project, NoError>
+  public let notifyDelegateToGoToCreator: Signal<Project, NoError>
   public let pledgedSubtitleLabelText: Signal<String, NoError>
   public let pledgedTitleLabelText: Signal<String, NoError>
   public let progressPercentage: Signal<Float, NoError>

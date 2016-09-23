@@ -30,6 +30,8 @@ internal final class ProjectPamphletViewController: UIViewController {
 
     self.navBarController = self.childViewControllers
       .flatMap { $0 as? ProjectNavBarViewController }.first
+    self.navBarController.delegate = self
+
     self.contentController = self.childViewControllers
       .flatMap { $0 as? ProjectPamphletContentViewController }.first
     self.contentController.delegate = self
@@ -67,5 +69,21 @@ internal final class ProjectPamphletViewController: UIViewController {
 extension ProjectPamphletViewController: ProjectPamphletContentViewControllerDelegate {
   func projectPamphletContent(controller: ProjectPamphletContentViewController, imageIsVisible: Bool) {
     self.navBarController.setProjectImageIsVisible(imageIsVisible)
+  }
+}
+
+extension ProjectPamphletViewController: VideoViewControllerDelegate {
+  internal func videoViewControllerDidFinish(controller: VideoViewController) {
+    self.navBarController.projectVideoDidFinish()
+  }
+
+  internal func videoViewControllerDidStart(controller: VideoViewController) {
+    self.navBarController.projectVideoDidStart()
+  }
+}
+
+extension ProjectPamphletViewController: ProjectNavBarViewControllerDelegate {
+  func projectNavBarControllerDidTapTitle(controller: ProjectNavBarViewController) {
+    self.contentController.tableView.setContentOffset(.zero, animated: true)
   }
 }

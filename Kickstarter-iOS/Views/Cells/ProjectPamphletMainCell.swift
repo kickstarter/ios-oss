@@ -3,14 +3,29 @@ import Library
 import Prelude
 import UIKit
 
+internal protocol ProjectPamphletMainCellDelegate: VideoViewControllerDelegate {
+  func projectPamphletMainCell(cell: ProjectPamphletMainCell, addChildController child: UIViewController)
+  func projectPamphletMainCell(cell: ProjectPamphletMainCell, goToCampaignForProject project: Project)
+  func projectPamphletMainCell(cell: ProjectPamphletMainCell, goToCreatorForProject project: Project)
+}
+
 internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
+  internal weak var delegate: ProjectPamphletMainCellDelegate? {
+    didSet {
+      self.viewModel.inputs.delegateDidSet()
+    }
+  }
   private let viewModel: ProjectPamphletMainCellViewModelType = ProjectPamphletMainCellViewModel()
+
+  private weak var videoController: VideoViewController?
+
 
   @IBOutlet private weak var backersSubtitleLabel: UILabel!
   @IBOutlet private weak var backersTitleLabel: UILabel!
   @IBOutlet private weak var blurbAndReadMoreStackView: UIStackView!
   @IBOutlet private weak var contentStackView: UIStackView!
   @IBOutlet private weak var conversionLabel: UILabel!
+  @IBOutlet private weak var creatorButton: UIButton!
   @IBOutlet private weak var creatorImageView: UIImageView!
   @IBOutlet private weak var creatorLabel: UILabel!
   @IBOutlet private weak var creatorStackView: UIStackView!
@@ -22,23 +37,33 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
   @IBOutlet private weak var pledgedTitleLabel: UILabel!
   @IBOutlet private weak var projectBlurbLabel: UILabel!
   @IBOutlet private weak var projectImageContainerView: UIView!
-  @IBOutlet private weak var projectImageOverlayView: UIView!
-  @IBOutlet private weak var projectImageView: UIImageView!
   @IBOutlet private weak var projectNameAndCreatorStackView: UIStackView!
   @IBOutlet private weak var projectNameLabel: UILabel!
   @IBOutlet private weak var progressBarAndStatsStackView: UIStackView!
   @IBOutlet private weak var readMoreButton: UIButton!
+  @IBOutlet private var videoContainerHeightConstraint: NSLayoutConstraint!
   @IBOutlet private weak var youreABackerContainerView: UIView!
   @IBOutlet private weak var youreABackerLabel: UILabel!
+
+  internal override func awakeFromNib() {
+    super.awakeFromNib()
+
+    self.creatorButton.addTarget(self,
+                                 action: #selector(creatorButtonTapped),
+                                 forControlEvents: .TouchUpInside)
+    self.readMoreButton.addTarget(self,
+                                  action: #selector(readMoreButtonTapped),
+                                  forControlEvents: .TouchUpInside)
+  }
 
   internal func configureWith(value project: Project) {
     self.viewModel.inputs.configureWith(project: project)
   }
 
-  internal func scrollContentOffset(offset: CGPoint) {
-    let scaleFactor = max(1, 1 - 2 * offset.y / self.projectImageContainerView.bounds.height)
+  internal func scrollContentOffset(offset: CGFloat) {
+    let scaleFactor = max(1, 1 - 2 * offset / self.projectImageContainerView.bounds.height)
     let scale = CGAffineTransformMakeScale(scaleFactor, scaleFactor)
-    let translate = CGAffineTransformMakeTranslation(0, max(0, offset.y / 4))
+    let translate = CGAffineTransformMakeTranslation(0, max(0, offset / 4))
     self.projectImageContainerView.transform = CGAffineTransformConcat(translate, scale)
   }
 
@@ -103,10 +128,6 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       |> UILabel.lens.textColor .~ .ksr_text_navy_500
       |> UILabel.lens.numberOfLines .~ 0
 
-    self.projectImageView
-      |> UIImageView.lens.clipsToBounds .~ true
-      |> UIImageView.lens.contentMode .~ .ScaleAspectFill
-
     self.projectNameAndCreatorStackView
       |> UIStackView.lens.spacing .~ Styles.grid(2)
 
@@ -151,17 +172,29 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     self.projectBlurbLabel.rac.text = self.viewModel.outputs.projectBlurbLabelText
     self.youreABackerContainerView.rac.hidden = self.viewModel.outputs.youreABackerLabelHidden
 
+    self.viewModel.outputs.configureVideoPlayerController
+      .observeForUI()
+      .observeNext { [weak self] in self?.configureVideoPlayerController(forProject: $0) }
+
     self.viewModel.outputs.creatorImageUrl
       .observeForUI()
       .on(next: { [weak self] _ in self?.creatorImageView.image = nil })
       .ignoreNil()
       .observeNext { [weak self] in self?.creatorImageView.af_setImageWithURL($0) }
 
-    self.viewModel.outputs.projectImageUrl
-      .observeForUI()
-      .on(next: { [weak self] _ in self?.projectImageView.image = nil })
-      .ignoreNil()
-      .observeNext { [weak self] in self?.projectImageView.af_setImageWithURL($0) }
+    self.viewModel.outputs.notifyDelegateToGoToCampaign
+      .observeForControllerAction()
+      .observeNext { [weak self] in
+        guard let _self = self else { return }
+        self?.delegate?.projectPamphletMainCell(_self, goToCampaignForProject: $0)
+    }
+
+    self.viewModel.outputs.notifyDelegateToGoToCreator
+      .observeForControllerAction()
+      .observeNext { [weak self] in
+        guard let _self = self else { return }
+        self?.delegate?.projectPamphletMainCell(_self, goToCreatorForProject: $0)
+    }
 
     self.viewModel.outputs.progressPercentage
       .observeForUI()
@@ -170,6 +203,54 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
         self?.fundingProgressBarView.layer.anchorPoint = CGPoint(x: CGFloat(anchorX), y: 0.5)
         self?.fundingProgressBarView.transform = CGAffineTransformMakeScale(CGFloat(progress), 1.0)
     }
+  }
 
+  private func configureVideoPlayerController(forProject project: Project) {
+    let vc = VideoViewController.configuredWith(project: project)
+    vc.delegate = self
+    vc.view.translatesAutoresizingMaskIntoConstraints = false
+    self.projectImageContainerView.addSubview(vc.view)
+
+    NSLayoutConstraint.activateConstraints([
+      vc.view.topAnchor.constraintEqualToAnchor(self.projectImageContainerView.topAnchor),
+      vc.view.leadingAnchor.constraintEqualToAnchor(self.projectImageContainerView.leadingAnchor),
+      vc.view.bottomAnchor.constraintEqualToAnchor(self.projectImageContainerView.bottomAnchor),
+      vc.view.trailingAnchor.constraintEqualToAnchor(self.projectImageContainerView.trailingAnchor),
+    ])
+
+    self.delegate?.projectPamphletMainCell(self, addChildController: vc)
+    self.videoController = vc
+  }
+
+  @objc private func readMoreButtonTapped() {
+    self.viewModel.inputs.readMoreButtonTapped()
+  }
+
+  @objc private func creatorButtonTapped() {
+    self.viewModel.inputs.creatorButtonTapped()
+  }
+}
+
+extension ProjectPamphletMainCell: VideoViewControllerDelegate {
+  internal func videoViewControllerDidFinish(controller: VideoViewController) {
+    self.delegate?.videoViewControllerDidFinish(controller)
+    self.viewModel.inputs.videoDidFinish()
+
+    self.videoContainerHeightConstraint.constant = 0
+    self.setNeedsUpdateConstraints()
+    UIView.animateWithDuration(0.3) {
+      self.layoutIfNeeded()
+    }
+  }
+
+  internal func videoViewControllerDidStart(controller: VideoViewController) {
+    self.delegate?.videoViewControllerDidStart(controller)
+    self.viewModel.inputs.videoDidStart()
+
+    self.videoContainerHeightConstraint.constant = -10
+    self.setNeedsUpdateConstraints()
+    UIView.animateWithDuration(0.3) {
+      self.layoutIfNeeded()
+    }
   }
 }

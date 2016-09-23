@@ -97,10 +97,38 @@ public enum Format {
                                        timeStyle: NSDateFormatterStyle = .MediumStyle,
                                        env: Environment = AppEnvironment.current) -> String {
 
-    let formatter = DateFormatterConfig(dateStyle: dateStyle,
-                                        locale: env.locale,
-                                        timeStyle: timeStyle,
-                                        timeZone: env.timeZone).formatter()
+    let formatter = DateFormatterConfig.cachedFormatter(
+      forConfig: .init(
+        dateFormat: nil,
+        dateStyle: dateStyle,
+        locale: env.locale,
+        timeStyle: timeStyle,
+        timeZone: env.timeZone
+      )
+    )
+
+    return formatter.stringFromDate(NSDate(timeIntervalSince1970: seconds))
+  }
+
+  /**
+   Format a date into a string.
+
+   - parameter secondsInUTC: Seconds represention of the date as measured from UTC.
+   - parameter dateFormat: A format string.
+
+   - returns: A formatted string.
+   */
+  public static func date(secondsInUTC seconds: NSTimeInterval,
+                                       dateFormat: String) -> String {
+
+    let formatter = DateFormatterConfig.cachedFormatter(
+      forConfig: .init(dateFormat: dateFormat,
+        dateStyle: nil,
+        locale: AppEnvironment.current.locale,
+        timeStyle: nil,
+        timeZone: AppEnvironment.current.timeZone
+      )
+    )
 
     return formatter.stringFromDate(NSDate(timeIntervalSince1970: seconds))
   }
@@ -216,17 +244,25 @@ public enum Format {
 private let defaultThresholdInDays = 30 // days
 
 private struct DateFormatterConfig {
-  private let dateStyle: NSDateFormatterStyle
+  private let dateFormat: String?
+  private let dateStyle: NSDateFormatterStyle?
   private let locale: NSLocale
-  private let timeStyle: NSDateFormatterStyle
+  private let timeStyle: NSDateFormatterStyle?
   private let timeZone: NSTimeZone
 
   private func formatter() -> NSDateFormatter {
     let formatter = NSDateFormatter()
+    if let dateFormat = self.dateFormat {
+      formatter.dateFormat = dateFormat
+    }
     formatter.timeZone = self.timeZone
     formatter.locale = self.locale
-    formatter.dateStyle = self.dateStyle
-    formatter.timeStyle = self.timeStyle
+    if let dateStyle = self.dateStyle {
+      formatter.dateStyle = dateStyle
+    }
+    if let timeStyle = self.timeStyle {
+      formatter.timeStyle = timeStyle
+    }
     return formatter
   }
 
@@ -242,16 +278,18 @@ private struct DateFormatterConfig {
 extension DateFormatterConfig: Hashable {
   private var hashValue: Int {
     return
-      self.dateStyle.hashValue
+      (self.dateFormat?.hashValue ?? 0)
+        ^ (self.dateStyle?.hashValue ?? 0)
         ^ self.locale.hashValue
-        ^ self.timeStyle.hashValue
+        ^ (self.timeStyle?.hashValue ?? 0)
         ^ self.timeZone.hashValue
   }
 }
 
 private func == (lhs: DateFormatterConfig, rhs: DateFormatterConfig) -> Bool {
   return
-    lhs.dateStyle == rhs.dateStyle
+    lhs.dateFormat == rhs.dateFormat
+      && lhs.dateStyle == rhs.dateStyle
       && lhs.locale == rhs.locale
       && lhs.timeStyle == rhs.timeStyle
       && lhs.timeZone == rhs.timeZone

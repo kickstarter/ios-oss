@@ -9,6 +9,8 @@ import XCTest
 final class ProjectNavBarViewModelTests: TestCase {
   private let vm: ProjectNavBarViewModelType = ProjectNavBarViewModel()
 
+  private let backgroundAnimate = TestObserver<Bool, NoError>()
+  private let backgroundOpaque = TestObserver<Bool, NoError>()
   private let categoryButtonBackgroundColor = TestObserver<UIColor, NoError>()
   private let categoryButtonText = TestObserver<String, NoError>()
   private let categoryButtonTintColor = TestObserver<UIColor, NoError>()
@@ -20,10 +22,14 @@ final class ProjectNavBarViewModelTests: TestCase {
   private let showProjectStarredPrompt = TestObserver<String, NoError>()
   private let starButtonAccessibilityHint = TestObserver<String, NoError>()
   private let starButtonSelected = TestObserver<Bool, NoError>()
+  private let titleAnimate = TestObserver<Bool, NoError>()
+  private let titleHidden = TestObserver<Bool, NoError>()
 
   internal override func setUp() {
     super.setUp()
 
+    self.vm.outputs.backgroundOpaqueAndAnimate.map(second).observe(self.backgroundAnimate.observer)
+    self.vm.outputs.backgroundOpaqueAndAnimate.map(first).observe(self.backgroundOpaque.observer)
     self.vm.outputs.categoryButtonBackgroundColor.observe(self.categoryButtonBackgroundColor.observer)
     self.vm.outputs.categoryButtonText.observe(self.categoryButtonText.observer)
     self.vm.outputs.categoryButtonTintColor.observe(self.categoryButtonTintColor.observer)
@@ -35,10 +41,59 @@ final class ProjectNavBarViewModelTests: TestCase {
     self.vm.outputs.showProjectStarredPrompt.observe(self.showProjectStarredPrompt.observer)
     self.vm.outputs.starButtonSelected.observe(self.starButtonSelected.observer)
     self.vm.outputs.starButtonAccessibilityHint.observe(self.starButtonAccessibilityHint.observer)
+    self.vm.outputs.titleHiddenAndAnimate.map(second).observe(self.titleAnimate.observer)
+    self.vm.outputs.titleHiddenAndAnimate.map(first).observe(self.titleHidden.observer)
+  }
+
+  func testBackgroundOpaqueAndAnimate() {
+    self.vm.inputs.configureWith(project: .template)
+    self.vm.inputs.viewDidLoad()
+
+    self.backgroundOpaque.assertValues([false])
+    self.backgroundAnimate.assertValues([false])
+
+    // scroll image off screen
+    self.vm.inputs.projectImageIsVisible(false)
+
+    self.backgroundOpaque.assertValues([false, true])
+    self.backgroundAnimate.assertValues([false, true])
+
+    // scroll image back on screen
+    self.vm.inputs.projectImageIsVisible(true)
+
+    self.backgroundOpaque.assertValues([false, true, false])
+    self.backgroundAnimate.assertValues([false, true, true])
+
+    // start video
+    self.vm.inputs.projectVideoDidStart()
+
+    self.backgroundOpaque.assertValues([false, true, false, true])
+    self.backgroundAnimate.assertValues([false, true, true, true])
+
+    // scroll image off screen
+    self.vm.inputs.projectImageIsVisible(false)
+
+    self.backgroundOpaque.assertValues([false, true, false, true])
+    self.backgroundAnimate.assertValues([false, true, true, true])
+
+    // scroll image back on screen
+    self.vm.inputs.projectImageIsVisible(true)
+
+    self.backgroundOpaque.assertValues([false, true, false, true])
+    self.backgroundAnimate.assertValues([false, true, true, true])
+
+    // finish video
+    self.vm.inputs.projectVideoDidFinish()
+
+    self.backgroundOpaque.assertValues([false, true, false, true, false])
+    self.backgroundAnimate.assertValues([false, true, true, true, true])
   }
 
   func testCategoryButtonBackgroundColor() {
+    self.vm.inputs.configureWith(project: .template)
+    self.vm.inputs.viewDidLoad()
 
+    self.categoryButtonBackgroundColor.assertValueCount(1)
   }
 
   func testCategoryButtonText() {
@@ -46,6 +101,50 @@ final class ProjectNavBarViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     self.categoryButtonText.assertValues(["Some Category"])
+  }
+
+  func testCategoryHiddenAndAnimate() {
+    self.vm.inputs.configureWith(project: .template)
+    self.vm.inputs.viewDidLoad()
+
+    self.categoryHidden.assertValues([false])
+    self.categoryAnimate.assertValues([false])
+
+    // scroll image off screen
+    self.vm.inputs.projectImageIsVisible(false)
+
+    self.categoryHidden.assertValues([false, true])
+    self.categoryAnimate.assertValues([false, true])
+
+    // scroll image back on screen
+    self.vm.inputs.projectImageIsVisible(true)
+
+    self.categoryHidden.assertValues([false, true, false])
+    self.categoryAnimate.assertValues([false, true, true])
+
+    // start video
+    self.vm.inputs.projectVideoDidStart()
+
+    self.categoryHidden.assertValues([false, true, false, true])
+    self.categoryAnimate.assertValues([false, true, true, true])
+
+    // scroll image off screen
+    self.vm.inputs.projectImageIsVisible(false)
+
+    self.categoryHidden.assertValues([false, true, false, true])
+    self.categoryAnimate.assertValues([false, true, true, true])
+
+    // scroll image back on screen
+    self.vm.inputs.projectImageIsVisible(true)
+
+    self.categoryHidden.assertValues([false, true, false, true])
+    self.categoryAnimate.assertValues([false, true, true, true])
+
+    // finish video
+    self.vm.inputs.projectVideoDidFinish()
+
+    self.categoryHidden.assertValues([false, true, false, true, false])
+    self.categoryAnimate.assertValues([false, true, true, true, true])
   }
 
   // Tests the flow of a logged out user trying to star a project, and then going through the login flow.
@@ -196,5 +295,49 @@ final class ProjectNavBarViewModelTests: TestCase {
     //    self.scheduler.advance()
     //
     //    self.starButtonSelected.assertValues([false, true, false, true, false])
+  }
+
+  func testTitleHiddenAndAnimate() {
+    self.vm.inputs.configureWith(project: .template)
+    self.vm.inputs.viewDidLoad()
+
+    self.titleHidden.assertValues([true])
+    self.titleAnimate.assertValues([false])
+
+    // scroll image off screen
+    self.vm.inputs.projectImageIsVisible(false)
+
+    self.titleHidden.assertValues([true, false])
+    self.titleAnimate.assertValues([false, true])
+
+    // scroll image back on screen
+    self.vm.inputs.projectImageIsVisible(true)
+
+    self.titleHidden.assertValues([true, false, true])
+    self.titleAnimate.assertValues([false, true, true])
+
+    // start video
+    self.vm.inputs.projectVideoDidStart()
+
+    self.titleHidden.assertValues([true, false, true])
+    self.titleAnimate.assertValues([false, true, true])
+
+    // scroll image off screen
+    self.vm.inputs.projectImageIsVisible(false)
+
+    self.titleHidden.assertValues([true, false, true, false])
+    self.titleAnimate.assertValues([false, true, true, true])
+
+    // scroll image back on screen
+    self.vm.inputs.projectImageIsVisible(true)
+
+    self.titleHidden.assertValues([true, false, true, false, true])
+    self.titleAnimate.assertValues([false, true, true, true, true])
+
+    // finish video
+    self.vm.inputs.projectVideoDidFinish()
+
+    self.titleHidden.assertValues([true, false, true, false, true])
+    self.titleAnimate.assertValues([false, true, true, true, true])
   }
 }

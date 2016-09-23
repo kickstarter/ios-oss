@@ -5,13 +5,20 @@ import SafariServices
 internal final class ProjectCreatorViewController: WebViewController {
   private let viewModel: ProjectCreatorViewModelType = ProjectCreatorViewModel()
 
-  internal func configureWith(project project: Project) {
-    self.viewModel.inputs.configureWith(project: project)
+  internal static func configuredWith(project project: Project) -> ProjectCreatorViewController {
+    let vc = ProjectCreatorViewController()
+    vc.viewModel.inputs.configureWith(project: project)
+    return vc
   }
 
   internal override func viewDidLoad() {
     super.viewDidLoad()
     self.viewModel.inputs.viewDidLoad()
+  }
+
+  internal override func viewWillAppear(animated: Bool) {
+    super.viewWillAppear(animated)
+    self.navigationController?.setNavigationBarHidden(false, animated: animated)
   }
 
   internal override func bindViewModel() {
