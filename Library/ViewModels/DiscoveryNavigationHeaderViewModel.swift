@@ -136,11 +136,11 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
 
     let dismissFiltersSignal = Signal.merge(
       self.filtersSelectedRowProperty.signal.ignoreValues(),
-      paramsAndFiltersAreHidden.filter { $0.filtersAreHidden }.ignoreValues()
+      paramsAndFiltersAreHidden.filter { $0.filtersAreHidden }.skip(1).ignoreValues()
     )
 
     self.dismissDiscoveryFilters = dismissFiltersSignal
-      .delay(0.4, onScheduler: AppEnvironment.current.scheduler)
+      .ksr_debounce(0.4, onScheduler: AppEnvironment.current.scheduler)
 
     self.notifyDelegateFilterSelectedParams = currentParams.skip(1)
 

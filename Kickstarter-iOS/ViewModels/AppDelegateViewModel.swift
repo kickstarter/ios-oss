@@ -220,7 +220,7 @@ AppDelegateViewModelOutputs {
     }
 
     self.presentRemoteNotificationAlert = pushEnvelopeAndIsActive
-      .filter { _, isActive in isActive }
+      .filter(second)
       .map { env, _ in env.aps.alert }
 
     let explicitlyOpenedNotification = pushEnvelopeAndIsActive

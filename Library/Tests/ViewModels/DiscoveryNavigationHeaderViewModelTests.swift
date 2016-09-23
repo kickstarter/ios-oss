@@ -13,6 +13,7 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
   private let animateArrowToDown = TestObserver<Bool, NoError>()
   private let dividerIsHidden = TestObserver<Bool, NoError>()
   private let primaryLabelText = TestObserver<String, NoError>()
+  private let dismissDiscoveryFilters = TestObserver<(), NoError>()
   private let notifyDelegateFilterSelectedParams = TestObserver<DiscoveryParams, NoError>()
   private let secondaryLabelText = TestObserver<String, NoError>()
   private let secondaryLabelIsHidden = TestObserver<Bool, NoError>()
@@ -41,6 +42,7 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
     super.setUp()
 
     self.vm.outputs.animateArrowToDown.observe(self.animateArrowToDown.observer)
+    self.vm.outputs.dismissDiscoveryFilters.observe(self.dismissDiscoveryFilters.observer)
     self.vm.outputs.dividerIsHidden.observe(self.dividerIsHidden.observer)
     self.vm.outputs.primaryLabelText.observe(self.primaryLabelText.observer)
     self.vm.outputs.notifyDelegateFilterSelectedParams
@@ -79,6 +81,9 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
 
       self.showDiscoveryFiltersRow.assertValueCount(0)
 
+      scheduler.advanceByInterval(0.4 + AppEnvironment.current.apiDelayInterval)
+      self.dismissDiscoveryFilters.assertValueCount(0)
+
       self.vm.inputs.titleButtonTapped()
 
       self.showDiscoveryFiltersRow.assertValues([initialRow])
@@ -87,6 +92,9 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
       self.vm.inputs.filtersSelected(row: starredRow)
 
       self.showDiscoveryFiltersRow.assertValues([initialRow], "Show Filters does not emit on selection.")
+
+      scheduler.advanceByInterval(0.4 + AppEnvironment.current.apiDelayInterval)
+      self.dismissDiscoveryFilters.assertValueCount(1)
 
       self.vm.inputs.titleButtonTapped()
 
