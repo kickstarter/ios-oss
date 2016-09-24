@@ -55,9 +55,7 @@ public protocol DiscoveryViewModelType {
 
 public final class DiscoveryViewModel: DiscoveryViewModelType, DiscoveryViewModelInputs,
 DiscoveryViewModelOutputs {
-  private static let defaultParams = .defaults
-    |> DiscoveryParams.lens.staffPicks .~ true
-    |> DiscoveryParams.lens.includePOTD .~ true
+  private static let defaultParams = .defaults |> DiscoveryParams.lens.includePOTD .~ true
 
   // swiftlint:disable function_body_length
   public init() {

@@ -10,7 +10,6 @@ internal final class DiscoveryNavigationHeaderViewControllerTests: TestCase {
 // swiftlint:ensable type_name
 
   let initialParams = .defaults
-    |> DiscoveryParams.lens.staffPicks .~ true
     |> DiscoveryParams.lens.includePOTD .~ true
 
   let cultureParams = .defaults |> DiscoveryParams.lens.category .~ .art

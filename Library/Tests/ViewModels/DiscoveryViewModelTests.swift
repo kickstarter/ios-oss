@@ -18,10 +18,7 @@ internal final class DiscoveryViewModelTests: TestCase {
   private let selectSortPage = TestObserver<DiscoveryParams.Sort, NoError>()
   private let updateSortPagerStyle = TestObserver<Int?, NoError>()
 
-  let initialParams = .defaults
-    |> DiscoveryParams.lens.staffPicks .~ true
-    |> DiscoveryParams.lens.includePOTD .~ true
-
+  let initialParams = .defaults |> DiscoveryParams.lens.includePOTD .~ true
   let categoryParams = .defaults |> DiscoveryParams.lens.category .~ .art
   let subcategoryParams = .defaults |> DiscoveryParams.lens.category .~ .documentary
   let starredParams = .defaults |> DiscoveryParams.lens.starred .~ true

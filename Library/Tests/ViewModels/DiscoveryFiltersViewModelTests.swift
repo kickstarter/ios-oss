@@ -13,13 +13,11 @@ private let expandableRowTemplate = ExpandableRow(isExpanded: false,
                                                   params: .defaults,
                                                   selectableRows: [])
 
-private let staffPicksRow = selectableRowTemplate
-  |> SelectableRow.lens.params.staffPicks .~ true
-  |> SelectableRow.lens.params.includePOTD .~ true
+private let allProjectsRow = selectableRowTemplate |> SelectableRow.lens.params.includePOTD .~ true
+private let staffPicksRow = selectableRowTemplate |> SelectableRow.lens.params.staffPicks .~ true
 private let starredRow = selectableRowTemplate |> SelectableRow.lens.params.starred .~ true
 private let socialRow = selectableRowTemplate |> SelectableRow.lens.params.social .~ true
 private let recommendedRow = selectableRowTemplate |> SelectableRow.lens.params.recommended .~ true
-private let everythingRow = selectableRowTemplate
 private let artSelectableRow = selectableRowTemplate |> SelectableRow.lens.params.category .~ .art
 private let documentarySelectableRow = selectableRowTemplate
   |> SelectableRow.lens.params.category .~ .documentary
@@ -68,7 +66,7 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
   }
 
   func testAnimateIn_Default() {
-    self.vm.configureWith(selectedRow: staffPicksRow, categories: categories)
+    self.vm.configureWith(selectedRow: allProjectsRow, categories: categories)
     self.vm.inputs.viewDidLoad()
 
     self.animateInView.assertValueCount(0)
@@ -101,7 +99,7 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
   }
 
   func testKoalaEventsTrack() {
-    self.vm.configureWith(selectedRow: staffPicksRow, categories: categories)
+    self.vm.configureWith(selectedRow: allProjectsRow, categories: categories)
     self.vm.inputs.viewDidLoad()
 
     XCTAssertEqual(["Viewed Discovery Filters", "Discover Switch Modal"], self.trackingClient.events)
@@ -121,14 +119,14 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
   }
 
   func testTopFilters_Logged_Out() {
-    self.vm.inputs.configureWith(selectedRow: staffPicksRow, categories: categories)
+    self.vm.inputs.configureWith(selectedRow: allProjectsRow, categories: categories)
 
     self.loadTopRows.assertValueCount(0)
 
     self.vm.inputs.viewDidLoad()
 
     self.loadTopRows.assertValues(
-      [[staffPicksRow |> SelectableRow.lens.isSelected .~ true, everythingRow]],
+      [[allProjectsRow |> SelectableRow.lens.isSelected .~ true, staffPicksRow]],
       "The top filter rows load immediately with the first one selected."
     )
 
@@ -138,10 +136,10 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
   func testTopFilters_Logged_In() {
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
 
-    self.vm.inputs.configureWith(selectedRow: staffPicksRow, categories: categories)
+    self.vm.inputs.configureWith(selectedRow: allProjectsRow, categories: categories)
     self.vm.inputs.viewDidLoad()
     self.loadTopRows.assertValues(
-      [[staffPicksRow |> SelectableRow.lens.isSelected .~ true, starredRow, recommendedRow, everythingRow]],
+      [[allProjectsRow |> SelectableRow.lens.isSelected .~ true, staffPicksRow, starredRow, recommendedRow]],
       "The top filter rows load immediately with the first one selected."
     )
     self.loadTopRowsInitialId.assertValues([nil])
@@ -152,15 +150,15 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
       AccessTokenEnvelope(accessToken: "deadbeef", user: .template |> User.lens.social .~ true)
     )
 
-    self.vm.inputs.configureWith(selectedRow: staffPicksRow, categories: categories)
+    self.vm.inputs.configureWith(selectedRow: allProjectsRow, categories: categories)
     self.vm.inputs.viewDidLoad()
     self.loadTopRows.assertValues(
       [
-        [ staffPicksRow |> SelectableRow.lens.isSelected .~ true,
+        [ allProjectsRow |> SelectableRow.lens.isSelected .~ true,
+          staffPicksRow,
           starredRow,
           recommendedRow,
           socialRow,
-          everythingRow
         ]
       ],
       "The top filter rows load immediately with the first one selected."
@@ -172,12 +170,12 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
     self.vm.inputs.configureWith(selectedRow: artSelectableRow, categories: categories)
     self.vm.inputs.viewDidLoad()
 
-    self.loadTopRows.assertValues([[staffPicksRow, everythingRow]])
+    self.loadTopRows.assertValues([[allProjectsRow, staffPicksRow]])
     self.loadTopRowsInitialId.assertValues([1])
   }
 
   func testExpandingCategoryFilters() {
-    self.vm.inputs.configureWith(selectedRow: staffPicksRow, categories: categories)
+    self.vm.inputs.configureWith(selectedRow: allProjectsRow, categories: categories)
 
     self.loadCategoryRows.assertValueCount(0)
 
@@ -258,12 +256,12 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
   }
 
   func testTappingSelectableRow() {
-    self.vm.inputs.configureWith(selectedRow: staffPicksRow, categories: categories)
+    self.vm.inputs.configureWith(selectedRow: allProjectsRow, categories: categories)
     self.vm.inputs.viewDidLoad()
 
-    self.vm.inputs.tapped(selectableRow: staffPicksRow)
+    self.vm.inputs.tapped(selectableRow: allProjectsRow)
 
-    self.notifyDelegateOfSelectedRow.assertValues([staffPicksRow],
+    self.notifyDelegateOfSelectedRow.assertValues([allProjectsRow],
                                                   "The tapped row emits.")
   }
 
@@ -286,7 +284,7 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
       illustrationWithParentHavingNoCount // <-- important for the subcategory to go after the root category
     ]
 
-    self.vm.inputs.configureWith(selectedRow: staffPicksRow, categories: particularOrderOfCategories)
+    self.vm.inputs.configureWith(selectedRow: allProjectsRow, categories: particularOrderOfCategories)
     self.vm.inputs.viewDidLoad()
 
     let counts = self.loadCategoryRows.values
@@ -299,7 +297,7 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
   }
 
   func testFavoriteRows_Without_Favorites() {
-    self.vm.inputs.configureWith(selectedRow: staffPicksRow, categories: categories)
+    self.vm.inputs.configureWith(selectedRow: allProjectsRow, categories: categories)
     self.vm.inputs.viewDidLoad()
 
     self.loadFavoriteRows.assertValueCount(0, "Favorite rows does not emit without favorites set.")
@@ -308,7 +306,7 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
   func testFavoriteRows_With_Favorites() {
     self.ubiquitousStore.favoriteCategoryIds = [1, 30]
 
-    self.vm.inputs.configureWith(selectedRow: staffPicksRow, categories: categories)
+    self.vm.inputs.configureWith(selectedRow: allProjectsRow, categories: categories)
 
     self.loadFavoriteRows.assertValueCount(0)
 

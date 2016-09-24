@@ -246,9 +246,8 @@ private func toggleExpansion(row rowToToggle: ExpandableRow,
 private func topFilters(forUser user: User?) -> [DiscoveryParams] {
   var filters: [DiscoveryParams] = []
 
-  filters.append(.defaults
-    |> DiscoveryParams.lens.staffPicks .~ true
-    |> DiscoveryParams.lens.includePOTD .~ true)
+  filters.append(.defaults |> DiscoveryParams.lens.includePOTD .~ true)
+  filters.append(.defaults |> DiscoveryParams.lens.staffPicks .~ true)
 
   if user != nil {
     filters.append(.defaults |> DiscoveryParams.lens.starred .~ true)
@@ -258,8 +257,6 @@ private func topFilters(forUser user: User?) -> [DiscoveryParams] {
   if user?.social == true {
     filters.append(.defaults |> DiscoveryParams.lens.social .~ true)
   }
-
-  filters.append(.defaults)
 
   return filters
 }

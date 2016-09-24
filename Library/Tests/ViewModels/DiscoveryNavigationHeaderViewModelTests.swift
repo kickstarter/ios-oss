@@ -29,7 +29,6 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
   private let updateFavoriteButtonAnimated = TestObserver<Bool, NoError>()
 
   let initialParams = .defaults
-    |> DiscoveryParams.lens.staffPicks .~ true
     |> DiscoveryParams.lens.includePOTD .~ true
 
   let categoryParams = .defaults |> DiscoveryParams.lens.category .~ .art
@@ -134,62 +133,62 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
 
     self.animateArrowToDown.assertValues([true])
     self.dividerIsHidden.assertValues([true])
-    self.primaryLabelText.assertValues([Strings.Projects_We_Love()])
+    self.primaryLabelText.assertValues([Strings.All_Projects()])
     self.secondaryLabelText.assertValues([""])
     self.secondaryLabelIsHidden.assertValues([true])
     self.titleAccessibilityHint.assertValues([Strings.Opens_filters()])
-    self.titleAccessibilityLabel.assertValues([Strings.Filter_by_projects_we_love()])
+    self.titleAccessibilityLabel.assertValues([Strings.Filter_by_all_projects()])
 
     self.vm.inputs.titleButtonTapped()
 
     self.animateArrowToDown.assertValues([true, false])
     self.dividerIsHidden.assertValues([true])
-    self.primaryLabelText.assertValues([Strings.Projects_We_Love(), Strings.Projects_We_Love()])
+    self.primaryLabelText.assertValues([Strings.All_Projects(), Strings.All_Projects()])
     self.secondaryLabelText.assertValues(["", ""])
     self.secondaryLabelIsHidden.assertValues([true])
     self.titleAccessibilityHint.assertValues([Strings.Opens_filters(), Strings.Closes_filters()])
-    self.titleAccessibilityLabel.assertValues([Strings.Filter_by_projects_we_love(),
-      Strings.Filter_by_projects_we_love()])
+    self.titleAccessibilityLabel.assertValues([Strings.Filter_by_all_projects(),
+      Strings.Filter_by_all_projects()])
 
     self.vm.inputs.filtersSelected(row: selectableRow |> SelectableRow.lens.params .~ starredParams)
 
     self.animateArrowToDown.assertValues([true, false, true])
     self.dividerIsHidden.assertValues([true])
-    self.primaryLabelText.assertValues([Strings.Projects_We_Love(), Strings.Projects_We_Love(),
+    self.primaryLabelText.assertValues([Strings.All_Projects(), Strings.All_Projects(),
       Strings.discovery_saved()])
     self.secondaryLabelText.assertValues(["", "", ""])
     self.secondaryLabelIsHidden.assertValues([true])
     self.titleAccessibilityHint.assertValues([Strings.Opens_filters(), Strings.Closes_filters(),
       Strings.Opens_filters()])
-    self.titleAccessibilityLabel.assertValues([Strings.Filter_by_projects_we_love(),
-      Strings.Filter_by_projects_we_love(), Strings.Filter_by_starred_projects()])
+    self.titleAccessibilityLabel.assertValues([Strings.Filter_by_all_projects(),
+      Strings.Filter_by_all_projects(), Strings.Filter_by_starred_projects()])
 
     self.vm.inputs.titleButtonTapped()
 
     self.animateArrowToDown.assertValues([true, false, true, false])
     self.dividerIsHidden.assertValues([true])
-    self.primaryLabelText.assertValues([Strings.Projects_We_Love(), Strings.Projects_We_Love(),
+    self.primaryLabelText.assertValues([Strings.All_Projects(), Strings.All_Projects(),
       Strings.discovery_saved(), Strings.discovery_saved()])
     self.secondaryLabelText.assertValues(["", "", "", ""])
     self.secondaryLabelIsHidden.assertValues([true])
     self.titleAccessibilityHint.assertValues([Strings.Opens_filters(), Strings.Closes_filters(),
       Strings.Opens_filters(), Strings.Closes_filters()])
-    self.titleAccessibilityLabel.assertValues([Strings.Filter_by_projects_we_love(),
-      Strings.Filter_by_projects_we_love(), Strings.Filter_by_starred_projects(),
+    self.titleAccessibilityLabel.assertValues([Strings.Filter_by_all_projects(),
+      Strings.Filter_by_all_projects(), Strings.Filter_by_starred_projects(),
       Strings.Filter_by_starred_projects()])
 
     self.vm.inputs.filtersSelected(row: selectableRow |> SelectableRow.lens.params .~ categoryParams)
 
     self.animateArrowToDown.assertValues([true, false, true, false, true])
     self.dividerIsHidden.assertValues([true])
-    self.primaryLabelText.assertValues([Strings.Projects_We_Love(), Strings.Projects_We_Love(),
+    self.primaryLabelText.assertValues([Strings.All_Projects(), Strings.All_Projects(),
       Strings.discovery_saved(), Strings.discovery_saved(), Strings.All_Art_Projects()])
     self.secondaryLabelText.assertValues(["", "", "", "", ""])
     self.secondaryLabelIsHidden.assertValues([true])
     self.titleAccessibilityHint.assertValues([Strings.Opens_filters(), Strings.Closes_filters(),
       Strings.Opens_filters(), Strings.Closes_filters(), Strings.Opens_filters()])
-    self.titleAccessibilityLabel.assertValues([Strings.Filter_by_projects_we_love(),
-      Strings.Filter_by_projects_we_love(), Strings.Filter_by_starred_projects(),
+    self.titleAccessibilityLabel.assertValues([Strings.Filter_by_all_projects(),
+      Strings.Filter_by_all_projects(), Strings.Filter_by_starred_projects(),
       Strings.Filter_by_starred_projects(),
       Strings.Filter_by_category_name(category_name: categoryParams.category?.name ?? "")])
 
@@ -197,15 +196,15 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
 
     self.animateArrowToDown.assertValues([true, false, true, false, true, false])
     self.dividerIsHidden.assertValues([true])
-    self.primaryLabelText.assertValues([Strings.Projects_We_Love(), Strings.Projects_We_Love(),
+    self.primaryLabelText.assertValues([Strings.All_Projects(), Strings.All_Projects(),
       Strings.discovery_saved(), Strings.discovery_saved(), Strings.All_Art_Projects(),
       Strings.All_Art_Projects()])
     self.secondaryLabelText.assertValues(["", "", "", "", "", ""])
     self.secondaryLabelIsHidden.assertValues([true])
     self.titleAccessibilityHint.assertValues([Strings.Opens_filters(), Strings.Closes_filters(),
       Strings.Opens_filters(), Strings.Closes_filters(), Strings.Opens_filters(), Strings.Closes_filters()])
-    self.titleAccessibilityLabel.assertValues([Strings.Filter_by_projects_we_love(),
-      Strings.Filter_by_projects_we_love(), Strings.Filter_by_starred_projects(),
+    self.titleAccessibilityLabel.assertValues([Strings.Filter_by_all_projects(),
+      Strings.Filter_by_all_projects(), Strings.Filter_by_starred_projects(),
       Strings.Filter_by_starred_projects(),
       Strings.Filter_by_category_name(category_name: categoryParams.category?.name ?? ""),
       Strings.Filter_by_category_name(category_name: categoryParams.category?.name ?? "")
@@ -215,7 +214,7 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
 
     self.animateArrowToDown.assertValues([true, false, true, false, true, false, true])
     self.dividerIsHidden.assertValues([true, false])
-    self.primaryLabelText.assertValues([Strings.Projects_We_Love(), Strings.Projects_We_Love(),
+    self.primaryLabelText.assertValues([Strings.All_Projects(), Strings.All_Projects(),
       Strings.discovery_saved(), Strings.discovery_saved(), Strings.All_Art_Projects(),
       Strings.All_Art_Projects(), "Film & Video"])
     self.secondaryLabelText.assertValues(["", "", "", "", "", "", "Documentary"])
@@ -223,8 +222,8 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
     self.titleAccessibilityHint.assertValues([Strings.Opens_filters(), Strings.Closes_filters(),
       Strings.Opens_filters(), Strings.Closes_filters(), Strings.Opens_filters(), Strings.Closes_filters(),
       Strings.Opens_filters()])
-    self.titleAccessibilityLabel.assertValues([Strings.Filter_by_projects_we_love(),
-      Strings.Filter_by_projects_we_love(), Strings.Filter_by_starred_projects(),
+    self.titleAccessibilityLabel.assertValues([Strings.Filter_by_all_projects(),
+      Strings.Filter_by_all_projects(), Strings.Filter_by_starred_projects(),
       Strings.Filter_by_starred_projects(),
       Strings.Filter_by_category_name(category_name: categoryParams.category?.name ?? ""),
       Strings.Filter_by_category_name(category_name: categoryParams.category?.name ?? ""),
