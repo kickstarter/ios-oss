@@ -48,6 +48,9 @@ public protocol RewardPledgeViewModelInputs {
   /// Call from the Stripe callback method once a stripe token has been created.
   func stripeCreatedToken(stripeToken stripeToken: String?, error: NSError?) -> PKPaymentAuthorizationStatus
 
+  /// Call when the user starts a session.
+  func userSessionStarted()
+
   /// Call when the view loads.
   func viewDidLoad()
 }
@@ -85,6 +88,9 @@ public protocol RewardPledgeViewModelOutputs {
 
   /// Emits when the checkout screen should be shown to the user.
   var goToCheckout: Signal<(NSURLRequest, Project), NoError> { get }
+
+  /// Emits when the login tout should be shown to the user.
+  var goToLoginTout: Signal<(), NoError> { get }
 
   /// Emits a payment request object that is to be used to present a payment authorization controller.
   var goToPaymentAuthorization: Signal<PKPaymentRequest, NoError> { get }
@@ -153,6 +159,7 @@ public protocol RewardPledgeViewModelType {
   var outputs: RewardPledgeViewModelOutputs { get }
 }
 
+// swiftlint:disable type_body_length
 public final class RewardPledgeViewModel: RewardPledgeViewModelType, RewardPledgeViewModelInputs,
 RewardPledgeViewModelOutputs {
 
@@ -176,6 +183,13 @@ RewardPledgeViewModelOutputs {
       .map(first)
     let reward = projectAndReward
       .map(second)
+
+    let currentUser = Signal.merge([
+      self.viewDidLoadProperty.signal,
+      self.userSessionStartedProperty.signal
+      ])
+      .map { AppEnvironment.current.currentUser }
+      .skipRepeats(==)
 
     let shippingRules = projectAndReward
       .switchMap { project, reward in
@@ -300,6 +314,50 @@ RewardPledgeViewModelOutputs {
       .map { pledgeAmount, reward in pledgeAmount >= reward.minimum }
       .skipRepeats()
 
+    let paymentMethodTapped = Signal.merge(
+      self.continueToPaymentsButtonTappedProperty.signal,
+      self.differentPaymentMethodButtonTappedProperty.signal
+    )
+
+    let loggedOutUserTappedApplePayButton = currentUser
+      .takeWhen(self.applePayButtonTappedProperty.signal)
+      .filter { $0 == nil }
+
+    let loggedOutUserTappedPaymentMethodButton = currentUser
+      .takeWhen(paymentMethodTapped)
+      .filter { $0 == nil }
+
+    let loggedInUserTappedApplePayButton = currentUser
+      .takeWhen(self.applePayButtonTappedProperty.signal)
+      .filter { $0 != nil }
+      .ignoreValues()
+
+    let applePayEventAfterLogin = Signal.merge(
+      loggedOutUserTappedApplePayButton.mapConst(true),
+      loggedOutUserTappedPaymentMethodButton.mapConst(false)
+      )
+      .takeWhen(currentUser.filter(isNotNil))
+      .filter(isTrue)
+      .ignoreValues()
+
+    let paymentMethodEventAfterLogin = Signal.merge(
+      loggedOutUserTappedApplePayButton.mapConst(true),
+      loggedOutUserTappedPaymentMethodButton.mapConst(false)
+      )
+      .takeWhen(currentUser.filter(isNotNil))
+      .filter(isFalse)
+      .ignoreValues()
+
+    let loggedInUserTappedPaymentMethodButton = currentUser
+      .takeWhen(paymentMethodTapped)
+      .filter { $0 != nil }
+      .ignoreValues()
+
+    self.goToLoginTout = Signal.merge(
+      loggedOutUserTappedApplePayButton,
+      loggedOutUserTappedPaymentMethodButton
+      ).ignoreValues()
+
     self.goToPaymentAuthorization = combineLatest(
       projectAndReward,
       pledgeAmount,
@@ -307,13 +365,8 @@ RewardPledgeViewModelOutputs {
       self.setStripeAppleMerchantIdentifier
       )
       .map { ($0.0, $0.1, $1, $2, $3) }
-      .takeWhen(self.applePayButtonTappedProperty.signal)
+      .takeWhen(Signal.merge(applePayEventAfterLogin, loggedInUserTappedApplePayButton))
       .map(paymentRequest(forProject:reward:pledgeAmount:selectedShippingRule:merchantIdentifier:))
-
-    let paymentMethodTapped = Signal.merge(
-      self.continueToPaymentsButtonTappedProperty.signal,
-      self.differentPaymentMethodButtonTappedProperty.signal
-    )
 
     let createApplePayPledgeEvent = combineLatest(
       projectAndReward,
@@ -343,7 +396,7 @@ RewardPledgeViewModelOutputs {
       pledgeAmount,
       selectedShipping
       )
-      .takeWhen(paymentMethodTapped)
+      .takeWhen(Signal.merge(paymentMethodEventAfterLogin, loggedInUserTappedPaymentMethodButton))
       .map { ($0.0, $0.1, $1, $2) }
       .switchMap { project, reward, amount, shipping in
         createPledge(project: project, reward: reward, amount: amount, shipping: shipping)
@@ -486,6 +539,11 @@ RewardPledgeViewModelOutputs {
       return self.paymentAuthorizationStatusProperty.value
   }
 
+  private let userSessionStartedProperty = MutableProperty()
+  public func userSessionStarted() {
+    self.userSessionStartedProperty.value = ()
+  }
+
   private let viewDidLoadProperty = MutableProperty()
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
@@ -508,6 +566,7 @@ RewardPledgeViewModelOutputs {
   public let expandRewardDescription: Signal<(), NoError>
   public let fulfillmentAndShippingFooterStackViewHidden: Signal<Bool, NoError>
   public let goToCheckout: Signal<(NSURLRequest, Project), NoError>
+  public let goToLoginTout: Signal<(), NoError>
   public let goToPaymentAuthorization: Signal<PKPaymentRequest, NoError>
   public let goToShippingPicker: Signal<(Project, [ShippingRule], ShippingRule), NoError>
   public let goToThanks: Signal<Project, NoError>
@@ -540,6 +599,7 @@ RewardPledgeViewModelOutputs {
   public var inputs: RewardPledgeViewModelInputs { return self }
   public var outputs: RewardPledgeViewModelOutputs { return self }
 }
+// swiftlint:enable type_body_length
 
 private func paymentRequest(forProject project: Project,
                                        reward: Reward,

@@ -116,6 +116,12 @@ internal final class RewardPledgeViewController: UIViewController {
       forControlEvents: [.EditingDidEndOnExit, .EditingDidEnd]
     )
 
+    NSNotificationCenter
+      .defaultCenter()
+      .addObserverForName(CurrentUserNotifications.sessionStarted, object: nil, queue: nil) { [weak self] _ in
+        self?.viewModel.inputs.userSessionStarted()
+    }
+
     self.viewModel.inputs.viewDidLoad()
   }
 
@@ -449,6 +455,10 @@ internal final class RewardPledgeViewController: UIViewController {
         self?.goToCheckout(initialRequest: initialRequest, project: project)
     }
 
+    self.viewModel.outputs.goToLoginTout
+      .observeForControllerAction()
+      .observeNext { [weak self] in self?.goToLoginTout() }
+
     self.viewModel.outputs.goToThanks
       .observeForControllerAction()
       .observeNext { [weak self] project in self?.goToThanks(project: project) }
@@ -477,6 +487,13 @@ internal final class RewardPledgeViewController: UIViewController {
   private func goToCheckout(initialRequest initialRequest: NSURLRequest, project: Project) {
     let vc = CheckoutViewController.configuredWith(initialRequest: initialRequest, project: project)
     self.navigationController?.pushViewController(vc, animated: true)
+  }
+
+  private func goToLoginTout() {
+    let vc = LoginToutViewController.configuredWith(loginIntent: .backProject)
+    self.presentViewController(UINavigationController(rootViewController: vc),
+                               animated: true,
+                               completion: nil)
   }
 
   private func goToWebModal(request request: NSURLRequest) {

@@ -155,17 +155,9 @@ extension ProjectPamphletContentViewController: VideoViewControllerDelegate {
 
   internal func videoViewControllerDidFinish(controller: VideoViewController) {
     self.delegate.videoViewControllerDidFinish(controller)
-    self.tableView.contentInset.top = 0
-    UIView.animateWithDuration(0.75) {
-      self.tableView.contentOffset.y = max(0, self.tableView.contentOffset.y)
-    }
   }
 
   internal func videoViewControllerDidStart(controller: VideoViewController) {
     self.delegate.videoViewControllerDidStart(controller)
-    self.tableView.contentInset.top = 50
-    UIView.animateWithDuration(0.75) {
-      self.tableView.contentOffset.y = -50
-    }
   }
 }

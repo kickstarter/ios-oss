@@ -121,7 +121,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       |> UIView.lens.backgroundColor .~ .ksr_navy_400
 
     self.fundingProgressBarView
-      |> UIView.lens.backgroundColor .~ .ksr_green_700
+      |> UIView.lens.backgroundColor .~ .ksr_green_500
 
     self.projectBlurbLabel
       |> UILabel.lens.font .~ .ksr_body(size: 15)
@@ -140,14 +140,14 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       |> UIStackView.lens.spacing .~ Styles.grid(2)
 
     self.readMoreButton
-      |> UIButton.lens.titleColor(forState: .Normal) .~ .ksr_text_green_700
-      |> UIButton.lens.titleColor(forState: .Highlighted) .~ .ksr_text_navy_700
+      |> UIButton.lens.titleColor(forState: .Normal) .~ .ksr_text_navy_700
+      |> UIButton.lens.titleColor(forState: .Highlighted) .~ .ksr_text_navy_500
       |> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 15)
       |> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.Read_more_about_the_campaign_arrow() }
 
     self.youreABackerContainerView
       |> roundedStyle(cornerRadius: 2)
-      |> UIView.lens.backgroundColor .~ .ksr_green_700
+      |> UIView.lens.backgroundColor .~ .ksr_green_500
       |> UIView.lens.layoutMargins .~ .init(topBottom: Styles.grid(1), leftRight: Styles.gridHalf(3))
 
     self.youreABackerLabel
@@ -236,7 +236,7 @@ extension ProjectPamphletMainCell: VideoViewControllerDelegate {
     self.delegate?.videoViewControllerDidFinish(controller)
     self.viewModel.inputs.videoDidFinish()
 
-    self.videoContainerHeightConstraint.constant = 0
+    self.videoContainerHeightConstraint.constant = -10
     self.setNeedsUpdateConstraints()
     UIView.animateWithDuration(0.3) {
       self.layoutIfNeeded()
@@ -247,9 +247,9 @@ extension ProjectPamphletMainCell: VideoViewControllerDelegate {
     self.delegate?.videoViewControllerDidStart(controller)
     self.viewModel.inputs.videoDidStart()
 
-    self.videoContainerHeightConstraint.constant = -10
+    self.videoContainerHeightConstraint.constant = 0
     self.setNeedsUpdateConstraints()
-    UIView.animateWithDuration(0.3) {
+    UIView.animateWithDuration(0.5) {
       self.layoutIfNeeded()
     }
   }

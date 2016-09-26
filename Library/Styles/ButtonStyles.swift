@@ -3,7 +3,7 @@ import Prelude_UIKit
 import UIKit
 
 public let baseButtonStyle =
-  roundedStyle()
+  roundedStyle(cornerRadius: 2)
     <> UIButton.lens.titleLabel.font %~~ { _, button in
       button.traitCollection.verticalSizeClass == .Compact
         ? .ksr_callout(size: 12)

@@ -110,13 +110,15 @@ internal final class RewardCell: UITableViewCell, ValueCell {
 
     self.youreABackerContainerView
       |> roundedStyle(cornerRadius: 2)
-      |> UIView.lens.backgroundColor .~ UIColor.ksr_green_700
-      |> UIView.lens.layoutMargins .~ .init(all: Styles.grid(1))
+      |> UIView.lens.backgroundColor .~ UIColor.ksr_green_500
+      |> UIView.lens.layoutMargins .~ .init(all: Styles.gridHalf(3))
 
     self.youreABackerLabel
-      |> UILabel.lens.font .~ .ksr_headline(size: Styles.grid(2))
+      |> UILabel.lens.font .~ .ksr_headline(size: 12)
       |> UILabel.lens.textColor .~ .whiteColor()
-      |> UILabel.lens.text %~ { _ in Strings.Youre_a_backer() }
+      |> UILabel.lens.text %~ { _ in
+        localizedString(key: "Your_reward", defaultValue: "Your reward")
+    }
 
     self.youreABackerStackView
       |> UIStackView.lens.layoutMargins .~ self.allGoneContainerView.layoutMargins
@@ -128,22 +130,22 @@ internal final class RewardCell: UITableViewCell, ValueCell {
       |> UIImageView.lens.tintColor .~ .whiteColor()
 
     self.remainingLabel
-      |> UILabel.lens.font .~ .ksr_caption1()
-      |> UILabel.lens.textColor .~ .ksr_text_navy_500
+      |> UILabel.lens.font .~ .ksr_headline(size: 12)
+      |> UILabel.lens.textColor .~ .ksr_text_navy_600
 
     self.remainingStackView
       |> UIStackView.lens.alignment .~ .Center
       |> UIStackView.lens.spacing .~ self.statsStackView.spacing
 
     self.backersCountLabel
-      |> UILabel.lens.font .~ .ksr_caption1()
-      |> UILabel.lens.textColor .~ .ksr_text_navy_500
+      |> UILabel.lens.font .~ .ksr_headline(size: 12)
+      |> UILabel.lens.textColor .~ .ksr_text_navy_600
 
     self.separatorViews
       ||> separatorStyle
 
     self.bulletSeparatorViews
-      ||> UILabel.lens.textColor .~ .ksr_text_navy_500
+      ||> UILabel.lens.textColor .~ .ksr_text_navy_600
 
     self.selectRewardButton
       |> greenButtonStyle

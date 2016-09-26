@@ -67,8 +67,8 @@ final class ProjectNavBarViewModelTests: TestCase {
     // start video
     self.vm.inputs.projectVideoDidStart()
 
-    self.backgroundOpaque.assertValues([false, true, false, true])
-    self.backgroundAnimate.assertValues([false, true, true, true])
+    self.backgroundOpaque.assertValues([false, true, false])
+    self.backgroundAnimate.assertValues([false, true, true])
 
     // scroll image off screen
     self.vm.inputs.projectImageIsVisible(false)
@@ -79,8 +79,8 @@ final class ProjectNavBarViewModelTests: TestCase {
     // scroll image back on screen
     self.vm.inputs.projectImageIsVisible(true)
 
-    self.backgroundOpaque.assertValues([false, true, false, true])
-    self.backgroundAnimate.assertValues([false, true, true, true])
+    self.backgroundOpaque.assertValues([false, true, false, true, false])
+    self.backgroundAnimate.assertValues([false, true, true, true, true])
 
     // finish video
     self.vm.inputs.projectVideoDidFinish()

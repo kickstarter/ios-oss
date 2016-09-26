@@ -41,6 +41,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
   private let fulfillmentAndShippingFooterStackViewHidden = TestObserver<Bool, NoError>()
   private let goToCheckoutRequest = TestObserver<String, NoError>() // todo
   private let goToCheckoutProject = TestObserver<Project, NoError>() // todo
+  private let goToLoginTout = TestObserver<(), NoError>()
   private let goToPaymentAuthorization = TestObserver<NSDictionary, NoError>()
   private let goToShippingPickerProject = TestObserver<Project, NoError>()
   private let goToShippingPickerShippingRules = TestObserver<[ShippingRule], NoError>()
@@ -84,6 +85,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
       .ignoreNil()
       .observe(self.goToCheckoutRequest.observer)
     self.vm.outputs.goToCheckout.map(second).observe(self.goToCheckoutProject.observer)
+    self.vm.outputs.goToLoginTout.observe(self.goToLoginTout.observer)
     self.vm.outputs.goToPaymentAuthorization.map { $0.encode() as NSDictionary }
       .observe(self.goToPaymentAuthorization.observer)
     self.vm.outputs.goToShippingPicker.map(first).observe(self.goToShippingPickerProject.observer)
@@ -107,6 +109,13 @@ internal final class RewardPledgeViewModelTests: TestCase {
     self.vm.outputs.showAlert.observe(self.showAlert.observer)
     self.vm.outputs.titleLabelHidden.observe(self.titleLabelHidden.observer)
     self.vm.outputs.titleLabelText.observe(self.titleLabelText.observer)
+
+    AppEnvironment.pushEnvironment(currentUser: .template)
+  }
+
+  override func tearDown() {
+    AppEnvironment.popEnvironment()
+    super.tearDown()
   }
 
   func testApplePayButtonHidden_ApplePayCapable() {
@@ -338,11 +347,6 @@ internal final class RewardPledgeViewModelTests: TestCase {
       self.goToPaymentAuthorization.assertValues([paymentRequest])
       self.goToCheckoutRequest.assertValueCount(0)
       self.goToCheckoutProject.assertValues([])
-
-      self.vm.inputs.differentPaymentMethodButtonTapped()
-
-      self.goToCheckoutRequest.assertValueCount(1)
-      self.goToCheckoutProject.assertValues([project])
     }
   }
 
@@ -384,11 +388,6 @@ internal final class RewardPledgeViewModelTests: TestCase {
       self.goToPaymentAuthorization.assertValues([paymentRequest])
       self.goToCheckoutRequest.assertValueCount(0)
       self.goToCheckoutProject.assertValues([])
-
-      self.vm.inputs.differentPaymentMethodButtonTapped()
-
-      self.goToCheckoutRequest.assertValueCount(1)
-      self.goToCheckoutProject.assertValues([project])
     }
   }
 
@@ -432,11 +431,6 @@ internal final class RewardPledgeViewModelTests: TestCase {
       self.goToPaymentAuthorization.assertValues([paymentRequest])
       self.goToCheckoutRequest.assertValueCount(0)
       self.goToCheckoutProject.assertValues([])
-
-      self.vm.inputs.differentPaymentMethodButtonTapped()
-
-      self.goToCheckoutRequest.assertValueCount(1)
-      self.goToCheckoutProject.assertValues([project])
     }
   }
 
@@ -489,11 +483,6 @@ internal final class RewardPledgeViewModelTests: TestCase {
         self.goToPaymentAuthorization.assertValues([paymentRequest])
         self.goToCheckoutRequest.assertValueCount(0)
         self.goToCheckoutProject.assertValues([])
-
-        self.vm.inputs.differentPaymentMethodButtonTapped()
-
-        self.goToCheckoutRequest.assertValueCount(1)
-        self.goToCheckoutProject.assertValues([project])
     }
   }
 
@@ -547,11 +536,6 @@ internal final class RewardPledgeViewModelTests: TestCase {
         self.goToPaymentAuthorization.assertValues([paymentRequest])
         self.goToCheckoutRequest.assertValueCount(0)
         self.goToCheckoutProject.assertValues([])
-
-        self.vm.inputs.differentPaymentMethodButtonTapped()
-
-        self.goToCheckoutRequest.assertValueCount(1)
-        self.goToCheckoutProject.assertValues([project])
     }
   }
 
@@ -607,11 +591,6 @@ internal final class RewardPledgeViewModelTests: TestCase {
         self.goToPaymentAuthorization.assertValues([paymentRequest])
         self.goToCheckoutRequest.assertValueCount(0)
         self.goToCheckoutProject.assertValues([])
-
-        self.vm.inputs.differentPaymentMethodButtonTapped()
-
-        self.goToCheckoutRequest.assertValueCount(1)
-        self.goToCheckoutProject.assertValues([project])
     }
   }
 
@@ -640,6 +619,129 @@ internal final class RewardPledgeViewModelTests: TestCase {
     XCTAssertEqual(PKPaymentAuthorizationStatus.Success.rawValue, status.rawValue)
 
     self.goToThanks.assertValues([project])
+  }
+
+  func testApplePay_LoggedOutFlow() {
+    withEnvironment(currentUser: nil) {
+      let project = Project.template
+      self.vm.inputs.configureWith(project: project, reward: .template, applePayCapable: true)
+      self.vm.inputs.viewDidLoad()
+      self.scheduler.advance()
+
+      self.applePayButtonHidden.assertValues([false])
+
+      self.vm.inputs.applePayButtonTapped()
+
+      self.goToPaymentAuthorization.assertValueCount(0)
+      self.goToLoginTout.assertValueCount(1)
+
+      withEnvironment(currentUser: .template) {
+        self.vm.inputs.userSessionStarted()
+
+        self.goToPaymentAuthorization.assertValueCount(1)
+        self.goToLoginTout.assertValueCount(1)
+
+        self.vm.inputs.paymentAuthorizationWillAuthorizePayment()
+        self.vm.inputs.paymentAuthorization(
+          didAuthorizePayment: .init(
+            tokenData: .init(
+              paymentMethodData: .init(displayName: "AmEx", network: "AmEx", type: .Credit),
+              transactionIdentifier: "apple_pay_deadbeef"
+            )
+          )
+        )
+        self.vm.inputs.paymentAuthorizationDidFinish()
+        let status = self.vm.inputs.stripeCreatedToken(stripeToken: "stripe_deadbeef", error: nil)
+
+        XCTAssertEqual(PKPaymentAuthorizationStatus.Success.rawValue, status.rawValue)
+
+        self.goToThanks.assertValues([project])
+      }
+    }
+  }
+
+  func testGoToCheckout_ContinueToPaymentMethod() {
+    let project = Project.template
+
+    self.vm.inputs.configureWith(project: project, reward: .template, applePayCapable: false)
+    self.vm.inputs.viewDidLoad()
+    self.scheduler.advance()
+
+    self.continueToPaymentsButtonHidden.assertValues([false])
+    self.differentPaymentMethodButtonHidden.assertValues([true])
+
+    self.vm.inputs.continueToPaymentsButtonTapped()
+
+    self.goToCheckoutProject.assertValues([project])
+    self.goToCheckoutRequest.assertValueCount(1)
+  }
+
+  func testGoToCheckout_LoggedOut_ContinueToPaymentMethod() {
+    let project = Project.template
+
+    withEnvironment(currentUser: nil) {
+      self.vm.inputs.configureWith(project: project, reward: .template, applePayCapable: false)
+      self.vm.inputs.viewDidLoad()
+      self.scheduler.advance()
+
+      self.continueToPaymentsButtonHidden.assertValues([false])
+      self.differentPaymentMethodButtonHidden.assertValues([true])
+
+      self.vm.inputs.continueToPaymentsButtonTapped()
+
+      self.goToCheckoutProject.assertValues([])
+      self.goToCheckoutRequest.assertValueCount(0)
+      self.goToLoginTout.assertValueCount(1)
+
+      withEnvironment(currentUser: .template) {
+        self.vm.inputs.userSessionStarted()
+
+        self.goToCheckoutProject.assertValues([project])
+        self.goToCheckoutRequest.assertValueCount(1)
+      }
+    }
+  }
+
+  func testGoToCheckout_DifferentPaymentMethod() {
+    let project = Project.template
+
+    self.vm.inputs.configureWith(project: project, reward: .template, applePayCapable: true)
+    self.vm.inputs.viewDidLoad()
+    self.scheduler.advance()
+
+    self.continueToPaymentsButtonHidden.assertValues([true])
+    self.differentPaymentMethodButtonHidden.assertValues([false])
+
+    self.vm.inputs.differentPaymentMethodButtonTapped()
+
+    self.goToCheckoutProject.assertValues([project])
+    self.goToCheckoutRequest.assertValueCount(1)
+  }
+
+  func testGoToCheckout_LoggedOut_DifferentPaymentMethod() {
+    let project = Project.template
+
+    withEnvironment(currentUser: nil) {
+      self.vm.inputs.configureWith(project: project, reward: .template, applePayCapable: true)
+      self.vm.inputs.viewDidLoad()
+      self.scheduler.advance()
+
+      self.continueToPaymentsButtonHidden.assertValues([true])
+      self.differentPaymentMethodButtonHidden.assertValues([false])
+
+      self.vm.inputs.differentPaymentMethodButtonTapped()
+
+      self.goToCheckoutProject.assertValues([])
+      self.goToCheckoutRequest.assertValueCount(0)
+      self.goToLoginTout.assertValueCount(1)
+
+      withEnvironment(currentUser: .template) {
+        self.vm.inputs.userSessionStarted()
+
+        self.goToCheckoutProject.assertValues([project])
+        self.goToCheckoutRequest.assertValueCount(1)
+      }
+    }
   }
 
   func testGoToShippingPickerFlow() {

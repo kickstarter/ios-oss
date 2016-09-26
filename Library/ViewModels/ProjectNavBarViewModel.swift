@@ -120,9 +120,8 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
       .merge(configuredProject, projectOnStarToggle, projectOnStarToggleSuccess, revertStarToggle)
 
     self.categoryButtonBackgroundColor = configuredProject.map {
-        discoveryGradientColors(forCategoryId: $0.category.rootId)
+        discoveryGradientColors(forCategoryId: $0.category.rootId).0.colorWithAlphaComponent(0.8)
       }
-      .map(first)
       .skipRepeats()
 
     self.categoryButtonText = configuredProject.map(Project.lens.category.name.view)
@@ -170,21 +169,13 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
 
     self.titleHiddenAndAnimate = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst((true, false)),
-
-      combineLatest(self.projectImageIsVisibleProperty.signal, videoIsPlaying)
-        .map { projectImageIsVisible, videoIsPlaying in
-          (projectImageIsVisible, true)
-      }
+      self.projectImageIsVisibleProperty.signal.map { ($0, true) }
       )
       .skipRepeats { $0.hidden == $1.hidden }
 
     self.backgroundOpaqueAndAnimate = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst((false, false)),
-
-      combineLatest(self.projectImageIsVisibleProperty.signal, videoIsPlaying)
-        .map { projectImageIsVisible, videoIsPlaying in
-          (videoIsPlaying ? true : !projectImageIsVisible, true)
-      }
+      self.projectImageIsVisibleProperty.signal.map { (!$0, true) }
       )
       .skipRepeats { $0.opaque == $1.opaque }
 

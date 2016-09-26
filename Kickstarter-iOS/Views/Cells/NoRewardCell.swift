@@ -44,7 +44,7 @@ internal final class NoRewardCell: UITableViewCell, ValueCell {
 
     self.pledgeButton
       |> greenButtonStyle
-      |> UIButton.lens.userInteractionEnabled .~ true
+      |> UIButton.lens.userInteractionEnabled .~ false
       |> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.Pledge_now_without_a_reward() }
 
     self.pledgeCurrencyLabel
