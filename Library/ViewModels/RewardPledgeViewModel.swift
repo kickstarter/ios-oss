@@ -9,6 +9,8 @@ public protocol RewardPledgeViewModelInputs {
   /// Call when the apple pay button is tapped.
   func applePayButtonTapped()
 
+  func cancelPledgeButtonTapped()
+
   /// Call when the shipping picker has notified us that shipping has changed.
   func change(shippingRule shippingRule: ShippingRule)
 
@@ -17,6 +19,8 @@ public protocol RewardPledgeViewModelInputs {
 
   /// Call when the "continue to payments" button is tapped.
   func continueToPaymentsButtonTapped()
+
+  func continueToUpdatePledgeTapped()
 
   /// Call when the description label is tapped.
   func descriptionLabelTapped()
@@ -111,6 +115,8 @@ public protocol RewardPledgeViewModelOutputs {
   /// Emits a boolean that determines if the itemization stack view is hidden.
   var itemsContainerHidden: Signal<Bool, NoError> { get }
 
+  var managePledgeButtonsStackViewHidden: Signal<Bool, NoError> { get }
+
   /// Emits a string to be put into the minimum pledge label.
   var minimumLabelText: Signal<String, NoError> { get }
 
@@ -119,6 +125,8 @@ public protocol RewardPledgeViewModelOutputs {
 
   /// Emits a boolean that determines if the pay button is enabled.
   var payButtonsEnabled: Signal<Bool, NoError> { get }
+
+  var pledgeButtonsStackViewHidden: Signal<Bool, NoError> { get }
 
   /// Emits a string to be put into the currency label.
   var pledgeCurrencyLabelText: Signal<String, NoError> { get }
@@ -288,18 +296,31 @@ RewardPledgeViewModelOutputs {
     self.pledgeCurrencyLabelText = project
       .map(currencyLabel(forProject:))
 
-    let initialPledgeTextFieldText = reward
-      .map { $0.minimum }
+    let initialPledgeTextFieldText = projectAndReward
+      .map { (project, reward) -> Int in
+        guard let backing = project.personalization.backing
+          where userIsBacking(reward: reward, inProject: project) else {
+
+            return reward == Reward.noReward
+              ? project.country.minPledge ?? 1
+              : reward.minimum
+        }
+
+        return backing.amount - (backing.shippingAmount ?? 0)
+    }
 
     let pledgeAmount = Signal.merge(
       initialPledgeTextFieldText,
       self.pledgeTextChangedProperty.signal.map { Int($0) ?? 0 }
       )
 
-    let pledgeTextFieldWhenReturnWithBadAmount = combineLatest(pledgeAmount, reward)
+    let pledgeTextFieldWhenReturnWithBadAmount = combineLatest(
+      pledgeAmount,
+      projectAndReward.map(minAndMaxPledgeAmount(forProject:reward:))
+      )
       .takeWhen(self.pledgeTextFieldDidEndEditingProperty.signal)
-      .filter { pledgeAmount, reward in pledgeAmount < reward.minimum }
-      .map { _, reward in reward.minimum }
+      .filter { pledgeAmount, minAndMax in pledgeAmount < minAndMax.0 || pledgeAmount > minAndMax.1 }
+      .map { _, minAndMax in minAndMax.0 }
 
     self.pledgeTextFieldText = Signal.merge(
       initialPledgeTextFieldText,
@@ -309,9 +330,9 @@ RewardPledgeViewModelOutputs {
 
     self.payButtonsEnabled = combineLatest(
       Signal.merge(pledgeAmount, pledgeTextFieldWhenReturnWithBadAmount),
-      reward
+      projectAndReward.map(minAndMaxPledgeAmount(forProject:reward:))
       )
-      .map { pledgeAmount, reward in pledgeAmount >= reward.minimum }
+      .map { pledgeAmount, minAndMax in pledgeAmount >= minAndMax.0 && pledgeAmount <= minAndMax.1 }
       .skipRepeats()
 
     let paymentMethodTapped = Signal.merge(
@@ -403,7 +424,36 @@ RewardPledgeViewModelOutputs {
           .materialize()
     }
 
-    self.goToCheckout = createPledgeEvent.values()
+    let cancelPledge = project
+      .takeWhen(self.cancelPledgeButtonTappedProperty.signal)
+      .map { project -> (NSURLRequest, Project)? in
+        guard let request = NSURL(string: project.urls.web.project)
+          .flatMap({ optionalize($0.URLByAppendingPathComponent("pledge")) })
+          .flatMap({ optionalize($0.URLByAppendingPathComponent("destroy")) })
+          .flatMap({ optionalize(NSURLRequest(URL: $0)) }) else {
+          return nil
+        }
+        return (request, project)
+      }
+      .ignoreNil()
+
+    let updatePledgeEvent = combineLatest(
+      projectAndReward,
+      pledgeAmount,
+      selectedShipping
+      )
+      .takeWhen(self.continueToUpdatePledgeTappedProperty.signal)
+      .map { ($0.0, $0.1, $1, $2) }
+      .switchMap { project, reward, amount, shipping in
+        updatePledge(project: project, reward: reward, amount: amount, shipping: shipping)
+          .materialize()
+    }
+
+    self.goToCheckout = Signal.merge(
+      createPledgeEvent.values(),
+      cancelPledge,
+      updatePledgeEvent.values()
+      )
 
     self.goToWebModal = project
       .takeWhen(self.disclaimerButtonTappedProperty.signal)
@@ -419,6 +469,9 @@ RewardPledgeViewModelOutputs {
       )
       .map { $0.errorMessages.first }
       .ignoreNil()
+
+    self.managePledgeButtonsStackViewHidden = project.map { $0.personalization.isBacking != true }
+    self.pledgeButtonsStackViewHidden = project.map { $0.personalization.isBacking == true }
 
     project
       .takeWhen(self.paymentAuthorizationWillAuthorizeProperty.signal)
@@ -470,6 +523,11 @@ RewardPledgeViewModelOutputs {
     self.applePayButtonTappedProperty.value = ()
   }
 
+  private let cancelPledgeButtonTappedProperty = MutableProperty()
+  public func cancelPledgeButtonTapped() {
+    self.cancelPledgeButtonTappedProperty.value = ()
+  }
+
   private let changedShippingRuleProperty = MutableProperty<ShippingRule?>(nil)
   public func change(shippingRule shippingRule: ShippingRule) {
     self.changedShippingRuleProperty.value = shippingRule
@@ -483,6 +541,11 @@ RewardPledgeViewModelOutputs {
   private let continueToPaymentsButtonTappedProperty = MutableProperty()
   public func continueToPaymentsButtonTapped() {
     self.continueToPaymentsButtonTappedProperty.value = ()
+  }
+
+  private let continueToUpdatePledgeTappedProperty = MutableProperty()
+  public func continueToUpdatePledgeTapped() {
+    self.continueToUpdatePledgeTappedProperty.value = ()
   }
 
   private let differentPaymentMethodButtonTappedProperty = MutableProperty()
@@ -575,11 +638,13 @@ RewardPledgeViewModelOutputs {
     return self.rewardViewModel.outputs.items
   }
   public let itemsContainerHidden: Signal<Bool, NoError>
+  public let managePledgeButtonsStackViewHidden: Signal<Bool, NoError>
   public var minimumLabelText: Signal<String, NoError> {
     return self.rewardViewModel.outputs.minimumLabelText
   }
   public let navigationTitle: Signal<String, NoError>
   public let payButtonsEnabled: Signal<Bool, NoError>
+  public let pledgeButtonsStackViewHidden: Signal<Bool, NoError>
   public let pledgeCurrencyLabelText: Signal<String, NoError>
   public let pledgeTextFieldText: Signal<String, NoError>
   public let readMoreContainerViewHidden: Signal<Bool, NoError>
@@ -715,12 +780,43 @@ private func createPledge(
 
       #if swift(>=2.3)
         guard let url = AppEnvironment.current.apiService.serverConfig.webBaseUrl
-          .URLByAppendingPathComponent(env.checkoutUrl)?
-          .URLByAppendingPathComponent("new") else { return .empty }
+        .URLByAppendingPathComponent(env.checkoutUrl)?
+        .URLByAppendingPathComponent("new") else { return .empty }
       #else
-        let url = AppEnvironment.current.apiService.serverConfig.webBaseUrl
-          .URLByAppendingPathComponent(env.checkoutUrl)
-          .URLByAppendingPathComponent("new")
+        guard let url = env.newCheckoutUrl
+          .map({ AppEnvironment.current.apiService.serverConfig.webBaseUrl.URLByAppendingPathComponent($0) })
+        else { return .empty }
+      #endif
+
+      let request = NSURLRequest(URL: url)
+      return SignalProducer(value: (request, project))
+  }
+}
+
+private func updatePledge(
+  project project: Project,
+          reward: Reward?,
+          amount: Int,
+          shipping: ShippingRule?) -> SignalProducer<(NSURLRequest, Project), ErrorEnvelope> {
+
+  let totalAmount = Double(amount) + (shipping?.cost ?? 0)
+
+  return AppEnvironment.current.apiService.updatePledge(
+    project: project,
+    amount: totalAmount,
+    reward: reward,
+    shippingLocation: shipping?.location,
+    tappedReward: true
+    )
+    .flatMap { env -> SignalProducer<(NSURLRequest, Project), ErrorEnvelope> in
+
+      #if swift(>=2.3)
+        guard let url = AppEnvironment.current.apiService.serverConfig.webBaseUrl
+        .URLByAppendingPathComponent(env.checkoutUrl)? else { return .empty }
+      #else
+        guard let url = env.newCheckoutUrl
+          .map({ AppEnvironment.current.apiService.serverConfig.webBaseUrl.URLByAppendingPathComponent($0) })
+        else { return .empty }
       #endif
 
       let request = NSURLRequest(URL: url)
@@ -754,9 +850,9 @@ private func createApplePayPledge(
         return .empty
         }
       #else
-        let checkoutUrl = AppEnvironment.current.apiService.serverConfig.webBaseUrl
-          .URLByAppendingPathComponent(env.checkoutUrl)
-          .absoluteString
+        guard let checkoutUrl = env.newCheckoutUrl
+          .map({ AppEnvironment.current.apiService.serverConfig.webBaseUrl.URLByAppendingPathComponent($0) })?
+          .absoluteString else { return .empty }
       #endif
 
       return AppEnvironment.current.apiService.submitApplePay(
@@ -771,18 +867,31 @@ private func createApplePayPledge(
 
 private func navigationTitle(forProject project: Project, reward: Reward) -> String {
 
-  guard reward == Reward.noReward else {
-    return Strings.rewards_title_pledge_reward_currency_or_more(
-      reward_currency: Format.currency(reward.minimum, country: project.country)
-    )
+  guard project.personalization.isBacking != true else {
+    return reward == Reward.noReward
+      ? localizedString(key: "Manage_your_pledge", defaultValue: "Manage your pledge")
+      : localizedString(key: "Manage_your_reward", defaultValue: "Manage your reward")
   }
 
-  let minPledge = AppEnvironment.current.config?.launchedCountries
-    .filter { $0.countryCode == project.country.countryCode }
-    .first?
-    .minPledge
+  guard reward != Reward.noReward else {
+    return localizedString(key: "Make_a_pledge_without_a_reward",
+                           defaultValue: "Make a pledge without a reward")
+  }
 
   return Strings.rewards_title_pledge_reward_currency_or_more(
-    reward_currency: Format.currency(minPledge ?? 1, country: project.country)
+    reward_currency: Format.currency(reward.minimum, country: project.country)
+  )
+}
+
+private func userIsBacking(reward reward: Reward, inProject project: Project) -> Bool {
+  return project.personalization.backing?.rewardId == reward.id
+    || project.personalization.backing?.reward?.id == reward.id
+}
+
+private func minAndMaxPledgeAmount(forProject project: Project, reward: Reward) -> (min: Int, max: Int) {
+
+  return (
+    min: (reward == Reward.noReward ? (project.country.minPledge ?? 1) : reward.minimum),
+    max: project.country.maxPledge ?? 10_000
   )
 }

@@ -8,6 +8,13 @@ import XCPlayground
 
 let project = Project.cosmicSurgery
   |> Project.lens.stats.staticUsdRate .~ 1.32
+  |> Project.lens.personalization.isBacking .~ true
+  |> Project.lens.personalization.backing .~ (
+    .template
+      |> Backing.lens.reward .~ Project.cosmicSurgery.rewards.last
+      |> Backing.lens.shippingAmount .~ 10
+      |> Backing.lens.amount .~ 700
+)
 
 AppEnvironment.replaceCurrentEnvironment(
   apiService: MockService(

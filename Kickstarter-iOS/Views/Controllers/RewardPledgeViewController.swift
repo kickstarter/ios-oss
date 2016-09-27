@@ -11,12 +11,15 @@ internal final class RewardPledgeViewController: UIViewController {
 
   @IBOutlet private weak var applePayButton: UIButton!
   @IBOutlet private weak var bottomConstraint: NSLayoutConstraint!
+  @IBOutlet private weak var cancelPledgeButton: UIButton!
   @IBOutlet private weak var cardInnerView: UIView!
   @IBOutlet private weak var cardPanelView: UIView!
   @IBOutlet private weak var cardView: UIView!
+  @IBOutlet private weak var changePaymentMethodButton: UIButton!
   @IBOutlet private weak var checkmarkBadgeView: UIView!
   @IBOutlet private weak var checkmarkImageView: UIImageView!
   @IBOutlet private weak var continueToPaymentButton: UIButton!
+  @IBOutlet private weak var continueToUpdatePaymentButton: UIButton!
   @IBOutlet private weak var conversionLabel: UILabel!
   @IBOutlet private weak var countryLabel: UILabel!
   @IBOutlet private weak var descriptionLabel: UILabel!
@@ -32,10 +35,11 @@ internal final class RewardPledgeViewController: UIViewController {
   @IBOutlet private weak var estimatedToFulfillLabel: UILabel!
   @IBOutlet private weak var fulfillmentAndShippingFooterStackView: UIStackView!
   @IBOutlet private weak var itemsStackView: UIStackView!
+  @IBOutlet private weak var manageButtonsStackView: UIStackView!
   @IBOutlet private weak var middleStackView: UIStackView!
   @IBOutlet private weak var minimumAndConversionStackView: UIStackView!
   @IBOutlet private weak var minimumPledgeLabel: UILabel!
-  @IBOutlet private weak var payButtonsStackView: UIStackView!
+  @IBOutlet private weak var pledgeButtonsStackView: UIStackView!
   @IBOutlet private weak var pledgeContainerView: UIView!
   @IBOutlet private weak var pledgeCurrencyLabel: UILabel!
   @IBOutlet private weak var pledgeInputTitleLabel: UILabel!
@@ -89,23 +93,29 @@ internal final class RewardPledgeViewController: UIViewController {
   internal override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.shippingDestinationButton.addTarget(
-      self, action: #selector(shippingButtonTapped), forControlEvents: .TouchUpInside
+    self.applePayButton.addTarget(
+      self, action: #selector(applePayButtonTapped), forControlEvents: .TouchUpInside
     )
-    self.disclaimerButton.addTarget(
-      self, action: #selector(disclaimerButtonTapped), forControlEvents: .TouchUpInside
+    self.cancelPledgeButton.addTarget(
+      self, action: #selector(cancelPledgeButtonTapped), forControlEvents: .TouchUpInside
+    )
+    self.changePaymentMethodButton.addTarget(
+      self, action: #selector(changePaymentMethodButtonTapped), forControlEvents: .TouchUpInside
     )
     self.continueToPaymentButton.addTarget(
       self, action: #selector(continueWithPaymentButtonTapped), forControlEvents: .TouchUpInside
     )
-    self.differentPaymentMethodButton.addTarget(
-      self, action: #selector(differentPaymentMethodTapped), forControlEvents: .TouchUpInside
-    )
-    self.applePayButton.addTarget(
-      self, action: #selector(applePayButtonTapped), forControlEvents: .TouchUpInside
+    self.continueToUpdatePaymentButton.addTarget(
+      self, action: #selector(continueToUpdatePaymentButtonTapped), forControlEvents: .TouchUpInside
     )
     self.descriptionLabel.addGestureRecognizer(
       UITapGestureRecognizer(target: self, action: #selector(descriptionLabelTapped))
+    )
+    self.differentPaymentMethodButton.addTarget(
+      self, action: #selector(differentPaymentMethodTapped), forControlEvents: .TouchUpInside
+    )
+    self.disclaimerButton.addTarget(
+      self, action: #selector(disclaimerButtonTapped), forControlEvents: .TouchUpInside
     )
     self.pledgeTextField.addTarget(
       self, action: #selector(pledgedTextFieldChanged), forControlEvents: .EditingChanged
@@ -114,6 +124,9 @@ internal final class RewardPledgeViewController: UIViewController {
       self,
       action: #selector(pledgedTextFieldDoneEditing),
       forControlEvents: [.EditingDidEndOnExit, .EditingDidEnd]
+    )
+    self.shippingDestinationButton.addTarget(
+      self, action: #selector(shippingButtonTapped), forControlEvents: .TouchUpInside
     )
 
     NSNotificationCenter
@@ -140,6 +153,12 @@ internal final class RewardPledgeViewController: UIViewController {
         image(named: "apple-pay-button-content", tintColor: .whiteColor())
     }
 
+    self.cancelPledgeButton
+      |> borderButtonStyle
+      |> UIButton.lens.title(forState: .Normal) %~ { _ in
+        localizedString(key: "Cancel_your_pledge", defaultValue: "Cancel your pledge")
+    }
+
     self.cardInnerView
       |> cardStyle(cornerRadius: 4)
       |> UIView.lens.layer.borderColor .~ UIColor.ksr_green_700.CGColor
@@ -156,6 +175,12 @@ internal final class RewardPledgeViewController: UIViewController {
       |> UIView.lens.layer.shadowColor .~ UIColor.ksr_dropShadow.CGColor
       |> UIView.lens.backgroundColor .~ .clearColor()
 
+    self.changePaymentMethodButton
+      |> borderButtonStyle
+      |> UIButton.lens.title(forState: .Normal) %~ { _ in
+        localizedString(key: "Change_payment_method", defaultValue: "Change payment method")
+    }
+
     self.checkmarkBadgeView
       |> UIView.lens.layer.cornerRadius %~~ { _, badge in badge.frame.width / 2 }
       |> UIView.lens.layer.masksToBounds .~ true
@@ -170,6 +195,12 @@ internal final class RewardPledgeViewController: UIViewController {
     self.continueToPaymentButton
       |> greenButtonStyle
       |> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.Continue_to_payment() }
+
+    self.continueToUpdatePaymentButton
+      |> greenButtonStyle
+      |> UIButton.lens.title(forState: .Normal) %~ { _ in
+        localizedString(key: "Continue_to_update_pledge", defaultValue: "Continue to update pledge")
+    }
 
     self.conversionLabel
       |> UILabel.lens.font .~ UIFont.ksr_caption1().italicized
@@ -242,6 +273,9 @@ internal final class RewardPledgeViewController: UIViewController {
     self.itemsStackView
       |> UIStackView.lens.spacing .~ Styles.grid(2)
 
+    self.manageButtonsStackView
+      |> UIStackView.lens.spacing .~ Styles.grid(2)
+
     self.middleStackView
       |> UIStackView.lens.spacing .~ Styles.grid(4)
       |> UIStackView.lens.layoutMargins .~ .init(topBottom: 0, leftRight: Styles.grid(4))
@@ -273,7 +307,7 @@ internal final class RewardPledgeViewController: UIViewController {
       |> UILabel.lens.font .~ .ksr_headline(size: 14)
       |> UILabel.lens.text %~ { _ in Strings.ellipsis_more() }
 
-    self.payButtonsStackView
+    self.pledgeButtonsStackView
       |> UIStackView.lens.spacing .~ Styles.grid(2)
 
     self.pledgeContainerView
@@ -384,7 +418,10 @@ internal final class RewardPledgeViewController: UIViewController {
       .observeForUI()
       .observeNext { [weak self] in
         self?.applePayButton.enabled = $0
+        self?.cancelPledgeButton.enabled = $0
+        self?.changePaymentMethodButton.enabled = $0
         self?.continueToPaymentButton.enabled = $0
+        self?.continueToUpdatePaymentButton.enabled = $0
         self?.differentPaymentMethodButton.enabled = $0
     }
 
@@ -398,8 +435,10 @@ internal final class RewardPledgeViewController: UIViewController {
     self.estimatedDeliveryDateLabel.rac.text = self.viewModel.outputs.estimatedDeliveryDateLabelText
     self.fulfillmentAndShippingFooterStackView.rac.hidden
       = self.viewModel.outputs.fulfillmentAndShippingFooterStackViewHidden
+    self.manageButtonsStackView.rac.hidden = self.viewModel.outputs.managePledgeButtonsStackViewHidden
     self.minimumPledgeLabel.rac.text = self.viewModel.outputs.minimumLabelText
     self.navigationItem.rac.title = self.viewModel.outputs.navigationTitle
+    self.pledgeButtonsStackView.rac.hidden = self.viewModel.outputs.pledgeButtonsStackViewHidden
     self.pledgeCurrencyLabel.rac.text = self.viewModel.outputs.pledgeCurrencyLabelText
     self.pledgeTextField.rac.text = self.viewModel.outputs.pledgeTextFieldText
     self.readMoreContainerView.rac.hidden = self.viewModel.outputs.readMoreContainerViewHidden
@@ -584,6 +623,18 @@ internal final class RewardPledgeViewController: UIViewController {
   @objc private func pledgedTextFieldDoneEditing() {
     self.viewModel.inputs.pledgeTextFieldDidEndEditing()
     self.pledgeTextField.resignFirstResponder()
+  }
+
+  @objc private func continueToUpdatePaymentButtonTapped() {
+    self.viewModel.inputs.continueToUpdatePledgeTapped()
+  }
+
+  @objc private func changePaymentMethodButtonTapped() {
+    self.viewModel.inputs.continueToUpdatePledgeTapped()
+  }
+
+  @objc private func cancelPledgeButtonTapped() {
+    self.viewModel.inputs.cancelPledgeButtonTapped()
   }
 
   private func animateTextViewConstraint(change: Keyboard.Change) {

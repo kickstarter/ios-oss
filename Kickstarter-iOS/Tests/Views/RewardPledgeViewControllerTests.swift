@@ -103,4 +103,30 @@ internal final class RewardPledgeViewControllerTests: TestCase {
       }
     }
   }
+
+  func testManagePledge() {
+    let reward = self.cosmicReward |> Reward.lens.rewardsItems .~ []
+    let project = self.cosmicSurgery
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.reward .~ reward
+          |> Backing.lens.amount .~ reward.minimum + 10
+          |> Backing.lens.shippingAmount .~ 10
+    )
+
+    Language.allLanguages.forEach { language in
+      withEnvironment(language: language) {
+        let vc = RewardPledgeViewController.configuredWith(
+          project: project, reward: reward, applePayCapable: false
+        )
+        let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
+        parent.view.frame.size.height += 100
+
+        self.scheduler.run()
+
+        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)")
+      }
+    }
+  }
 }

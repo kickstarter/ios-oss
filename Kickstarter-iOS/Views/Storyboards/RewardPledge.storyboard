@@ -16,20 +16,20 @@
                         <viewControllerLayoutGuide type="bottom" id="arh-iv-jXh"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="1cJ-Ma-9F5">
-                        <rect key="frame" x="0.0" y="0.0" width="400" height="800"/>
+                        <rect key="frame" x="0.0" y="0.0" width="400" height="900"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="a0d-eK-Yei">
-                                <rect key="frame" x="0.0" y="0.0" width="400" height="800"/>
+                                <rect key="frame" x="0.0" y="0.0" width="400" height="900"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yil-nf-4Ss">
-                                        <rect key="frame" x="8" y="8" width="384" height="524"/>
+                                        <rect key="frame" x="8" y="8" width="384" height="626"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="C2f-Es-FaN">
-                                                <rect key="frame" x="0.0" y="0.0" width="384" height="524"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="384" height="626"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fJb-oy-BtY">
-                                                        <rect key="frame" x="-8" y="224" width="400" height="300"/>
+                                                        <rect key="frame" x="-8" y="224" width="400" height="402"/>
                                                         <color key="backgroundColor" white="0.89916487069999995" alpha="1" colorSpace="calibratedWhite"/>
                                                     </view>
                                                 </subviews>
@@ -48,7 +48,7 @@
                                         </constraints>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="asd-PP-se6">
-                                        <rect key="frame" x="0.0" y="0.0" width="400" height="683"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="400" height="659"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="1wb-RZ-2NF">
                                                 <rect key="frame" x="0.0" y="0.0" width="400" height="232"/>
@@ -176,7 +176,7 @@
                                                 </constraints>
                                             </view>
                                             <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="uii-rB-YFM">
-                                                <rect key="frame" x="0.0" y="233" width="400" height="370"/>
+                                                <rect key="frame" x="0.0" y="233" width="400" height="346"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="SPH-Lm-mu3">
                                                         <rect key="frame" x="0.0" y="0.0" width="400" height="197"/>
@@ -256,7 +256,7 @@
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="$" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sYS-i3-ZNG">
                                                                                 <rect key="frame" x="0.0" y="0.0" width="11" height="34"/>
                                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                                 <nil key="highlightedColor"/>
                                                                             </label>
                                                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="mB4-Db-WOA">
@@ -305,17 +305,47 @@
                                                             </button>
                                                         </subviews>
                                                     </stackView>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="kO7-gw-ayN">
+                                                        <rect key="frame" x="0.0" y="244" width="400" height="102"/>
+                                                        <subviews>
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TAW-tz-oCP">
+                                                                <rect key="frame" x="0.0" y="0.0" width="400" height="34"/>
+                                                                <state key="normal" title="Continue to update reward">
+                                                                    <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                                </state>
+                                                            </button>
+                                                            <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rX4-39-xZD" userLabel="Spacer">
+                                                                <rect key="frame" x="0.0" y="34" width="400" height="0.0"/>
+                                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="height" id="WFn-nV-ocs"/>
+                                                                </constraints>
+                                                            </view>
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nZx-Jq-MSk">
+                                                                <rect key="frame" x="0.0" y="34" width="400" height="34"/>
+                                                                <state key="normal" title="Change payment method">
+                                                                    <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                                </state>
+                                                            </button>
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zpA-Ap-b5C">
+                                                                <rect key="frame" x="0.0" y="68" width="400" height="34"/>
+                                                                <state key="normal" title="Cancel pledge">
+                                                                    <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                                </state>
+                                                            </button>
+                                                        </subviews>
+                                                    </stackView>
                                                 </subviews>
                                             </stackView>
                                             <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Whq-Hf-7E0">
-                                                <rect key="frame" x="0.0" y="603" width="400" height="1"/>
+                                                <rect key="frame" x="0.0" y="579" width="400" height="1"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="1" id="b4v-pL-Ehl"/>
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oEr-IX-PkW" userLabel="Disclaimer container">
-                                                <rect key="frame" x="0.0" y="604" width="400" height="79"/>
+                                                <rect key="frame" x="0.0" y="580" width="400" height="79"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="kxm-JD-mrO">
                                                         <rect key="frame" x="8" y="8" width="384" height="63"/>
@@ -403,7 +433,7 @@
                                                 <rect key="frame" x="44" y="0.0" width="54" height="21"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
@@ -456,16 +486,19 @@
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="400" height="800"/>
+                    <size key="freeformSize" width="400" height="900"/>
                     <connections>
                         <outlet property="applePayButton" destination="YIg-Ok-6gs" id="IX2-LH-xWN"/>
                         <outlet property="bottomConstraint" destination="GMs-eB-CVQ" id="L20-X2-auF"/>
+                        <outlet property="cancelPledgeButton" destination="zpA-Ap-b5C" id="YQC-cj-fhC"/>
                         <outlet property="cardInnerView" destination="C2f-Es-FaN" id="qKJ-9o-vL9"/>
                         <outlet property="cardPanelView" destination="fJb-oy-BtY" id="O1D-TS-5dz"/>
                         <outlet property="cardView" destination="yil-nf-4Ss" id="mTV-Qg-0u7"/>
+                        <outlet property="changePaymentMethodButton" destination="nZx-Jq-MSk" id="3qh-gU-ULc"/>
                         <outlet property="checkmarkBadgeView" destination="BT3-zF-Xbr" id="WWM-Vh-oCf"/>
                         <outlet property="checkmarkImageView" destination="HYj-qM-gqW" id="R2b-bI-Td9"/>
                         <outlet property="continueToPaymentButton" destination="Qpn-rd-vnI" id="mNh-fa-QTh"/>
+                        <outlet property="continueToUpdatePaymentButton" destination="TAW-tz-oCP" id="Q0G-2V-uyU"/>
                         <outlet property="conversionLabel" destination="UpD-PP-TdU" id="oxO-oE-4OA"/>
                         <outlet property="countryLabel" destination="RO6-hx-bEJ" id="Sca-94-aZU"/>
                         <outlet property="descriptionLabel" destination="bgU-kl-VIB" id="8A5-MQ-TaQ"/>
@@ -481,10 +514,11 @@
                         <outlet property="estimatedToFulfillLabel" destination="PU6-pA-xys" id="m6m-CN-SjQ"/>
                         <outlet property="fulfillmentAndShippingFooterStackView" destination="3vY-22-vP7" id="M2A-pC-FGB"/>
                         <outlet property="itemsStackView" destination="8pi-ZO-gyG" id="skI-Pa-iS4"/>
+                        <outlet property="manageButtonsStackView" destination="kO7-gw-ayN" id="1p4-Pl-qi5"/>
                         <outlet property="middleStackView" destination="uii-rB-YFM" id="vhY-6B-YwY"/>
                         <outlet property="minimumAndConversionStackView" destination="wMe-4O-Fqr" id="akN-ob-xIZ"/>
                         <outlet property="minimumPledgeLabel" destination="rK7-y6-0y2" id="vyb-u4-rhj"/>
-                        <outlet property="payButtonsStackView" destination="TO4-sj-xuO" id="PeO-Le-25E"/>
+                        <outlet property="pledgeButtonsStackView" destination="TO4-sj-xuO" id="Nns-95-J3c"/>
                         <outlet property="pledgeContainerView" destination="ShU-8t-T2D" id="zzv-px-pa9"/>
                         <outlet property="pledgeCurrencyLabel" destination="sYS-i3-ZNG" id="7v7-Wr-gb9"/>
                         <outlet property="pledgeInputStackView" destination="Xxz-0f-coc" id="rSc-Cb-uRz"/>

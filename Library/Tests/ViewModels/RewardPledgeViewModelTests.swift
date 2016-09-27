@@ -817,69 +817,100 @@ internal final class RewardPledgeViewModelTests: TestCase {
       ])
   }
 
-  func testNavigationTitle() {
-    let reward = Reward.template
+  func testNavigationTitle_NonBacker_NoReward() {
+    let reward = Reward.noReward
+    let project = Project.template
+    self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
+    self.vm.inputs.viewDidLoad()
+
+    self.navigationTitle.assertValues(["Make a pledge without a reward"])
+  }
+
+  func testNavigationTitle_NonBacker_Reward() {
+    let reward = .template |> Reward.lens.minimum .~ 50
     let project = Project.template
     self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
     self.vm.inputs.viewDidLoad()
 
     self.navigationTitle.assertValues([
       Strings.rewards_title_pledge_reward_currency_or_more(
-        reward_currency: Format.currency(reward.minimum, country: project.country)
+        reward_currency: Format.currency(50, country: project.country)
       )
       ])
   }
 
-  func testNavigationTitle_NoReward() {
-    let country = Project.Country(
-      countryCode: "ABC",
-      currencyCode: "ABC",
-      currencySymbol: "!@#",
-      maxPledge: 4242,
-      minPledge: 42,
-      trailingCode: false
+  func testNavigationTitle_Backer_ManageSameReward() {
+    let reward = .template |> Reward.lens.minimum .~ 50
+    let project = .template
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.reward .~ reward
     )
-    let reward = Reward.noReward
-    let project = .template |> Project.lens.country .~ country
-
-    let config = .template |> Config.lens.launchedCountries %~ { ($0 ?? []) + [country] }
-
-    withEnvironment(config: config) {
-      self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
-      self.vm.inputs.viewDidLoad()
-
-      self.navigationTitle.assertValues([
-        Strings.rewards_title_pledge_reward_currency_or_more(
-          reward_currency: Format.currency(42, country: project.country)
-        )
-        ])
-    }
-  }
-
-  func testNavigationTitle_NoReward_MissingCountry() {
-    let country = Project.Country(
-      countryCode: "ABC",
-      currencyCode: "ABC",
-      currencySymbol: "!@#",
-      maxPledge: 4242,
-      minPledge: 42,
-      trailingCode: false
-    )
-    let reward = Reward.noReward
-    let project = .template |> Project.lens.country .~ country
-
     self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
     self.vm.inputs.viewDidLoad()
 
-    self.navigationTitle.assertValues([
-      Strings.rewards_title_pledge_reward_currency_or_more(
-        reward_currency: Format.currency(1, country: project.country)
-      )
-    ])
+    self.navigationTitle.assertValues(["Manage your reward"])
   }
 
-  func testPayButtonsEnabled() {
-    let reward = Reward.template
+  func testNavigationTitle_Backer_ManageDifferentReward() {
+    let reward = .template |> Reward.lens.minimum .~ 50
+    let project = .template
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.reward .~ (reward |> Reward.lens.id %~ { $0 + 1 })
+    )
+    self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
+    self.vm.inputs.viewDidLoad()
+
+    self.navigationTitle.assertValues(["Manage your reward"])
+  }
+
+  func testNavigationTitle_BackerWithNoReward_ManageDifferentReward() {
+    let reward = .template |> Reward.lens.minimum .~ 50
+    let project = .template
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.reward .~ Reward.noReward
+    )
+    self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
+    self.vm.inputs.viewDidLoad()
+
+    self.navigationTitle.assertValues(["Manage your reward"])
+  }
+
+  func testNavigationTitle_BackerWithNoReward_ManageNoReward() {
+    let reward = Reward.noReward
+    let project = .template
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.reward .~ Reward.noReward
+    )
+    self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
+    self.vm.inputs.viewDidLoad()
+
+    self.navigationTitle.assertValues(["Manage your pledge"])
+  }
+
+  func testNavigationTitle_BackerWithReward_ManageNoReward() {
+    let reward = Reward.noReward
+    let project = .template
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.reward .~ .template
+    )
+    self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
+    self.vm.inputs.viewDidLoad()
+
+    self.navigationTitle.assertValues(["Manage your pledge"])
+  }
+
+  func testPayButtonsEnabled_WithReward() {
+    let reward = .template |> Reward.lens.minimum .~ 42
     let project = Project.template
     self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
     self.vm.inputs.viewDidLoad()
@@ -891,6 +922,35 @@ internal final class RewardPledgeViewModelTests: TestCase {
     self.payButtonsEnabled.assertValues([true])
 
     self.vm.inputs.pledgeTextFieldChanged(String(reward.minimum - 1))
+
+    self.payButtonsEnabled.assertValues([true, false])
+
+    self.vm.inputs.pledgeTextFieldChanged(String(project.country.maxPledge! + 1))
+
+    self.payButtonsEnabled.assertValues([true, false])
+
+    self.vm.inputs.pledgeTextFieldDidEndEditing()
+
+    self.payButtonsEnabled.assertValues([true, false, true])
+  }
+
+  func testPayButtonsEnabled_NoReward() {
+    let reward = Reward.noReward
+    let project = .template |> Project.lens.country .~ .DK
+    self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
+    self.vm.inputs.viewDidLoad()
+
+    self.payButtonsEnabled.assertValues([true])
+
+    self.vm.inputs.pledgeTextFieldChanged(String(reward.minimum + 10))
+
+    self.payButtonsEnabled.assertValues([true])
+
+    self.vm.inputs.pledgeTextFieldChanged(String(reward.minimum - 1))
+
+    self.payButtonsEnabled.assertValues([true, false])
+
+    self.vm.inputs.pledgeTextFieldChanged(String(project.country.maxPledge! + 1))
 
     self.payButtonsEnabled.assertValues([true, false])
 
@@ -1013,6 +1073,78 @@ internal final class RewardPledgeViewModelTests: TestCase {
 
     self.pledgeTextFieldText.assertValues([String(reward.minimum), String(reward.minimum)],
                                           "Pledge field is reset when done editing with invalid value.")
+  }
+
+  func testPledgeTextFieldText_ManageReward_NoShipping() {
+    let reward = .template |> Reward.lens.minimum .~ 42
+    let project = .template
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.amount .~ reward.minimum
+          |> Backing.lens.shippingAmount .~ nil
+          |> Backing.lens.reward .~ reward
+
+    )
+    self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
+    self.vm.inputs.viewDidLoad()
+
+    self.pledgeTextFieldText.assertValues([String(reward.minimum)],
+                                          "Sets initial value of pledge text field.")
+  }
+
+  func testPledgeTextFieldText_ManageReward_PledgedExtra_NoShipping() {
+    let reward = .template |> Reward.lens.minimum .~ 42
+    let project = .template
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.amount .~ reward.minimum + 10
+          |> Backing.lens.shippingAmount .~ nil
+          |> Backing.lens.reward .~ reward
+
+    )
+    self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
+    self.vm.inputs.viewDidLoad()
+
+    self.pledgeTextFieldText.assertValues([String(reward.minimum + 10)],
+                                          "Sets initial value of pledge text field.")
+  }
+
+  func testPledgeTextFieldText_ManageReward_WithShipping() {
+    let reward = .template |> Reward.lens.minimum .~ 42
+    let project = .template
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.amount .~ reward.minimum + 10
+          |> Backing.lens.shippingAmount .~ 10
+          |> Backing.lens.reward .~ reward
+
+    )
+    self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
+    self.vm.inputs.viewDidLoad()
+
+    self.pledgeTextFieldText.assertValues([String(reward.minimum)],
+                                          "Sets initial value of pledge text field.")
+  }
+
+  func testPledgeTextFieldText_ManageReward_PledgedExtra_WithShipping() {
+    let reward = .template |> Reward.lens.minimum .~ 42
+    let project = .template
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.amount .~ reward.minimum + 20 + 10
+          |> Backing.lens.shippingAmount .~ 10
+          |> Backing.lens.reward .~ reward
+
+    )
+    self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
+    self.vm.inputs.viewDidLoad()
+
+    self.pledgeTextFieldText.assertValues([String(reward.minimum + 20)],
+                                          "Sets initial value of pledge text field.")
   }
 
   func testReadMoreContainerViewHidden() {
