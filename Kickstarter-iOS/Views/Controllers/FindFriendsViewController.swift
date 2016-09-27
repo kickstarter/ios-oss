@@ -57,11 +57,6 @@ internal final class FindFriendsViewController: UITableViewController {
         self?.showFollowAllConfirmationAlert(count: count)
     }
 
-    self.viewModel.outputs.title
-      .observeForControllerAction()
-      .observeNext { [weak self] text in self?.title = text
-    }
-
     self.viewModel.outputs.showErrorAlert
       .observeForControllerAction()
       .observeNext { [weak self] error in
@@ -73,6 +68,14 @@ internal final class FindFriendsViewController: UITableViewController {
     }
   }
 
+  override func bindStyles() {
+    super.bindStyles()
+
+    self
+      |> baseTableControllerStyle()
+      |> UIViewController.lens.title %~ { _ in Strings.Follow_friends() }
+  }
+
   override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell,
                           forRowAtIndexPath indexPath: NSIndexPath) {
 
@@ -81,6 +84,9 @@ internal final class FindFriendsViewController: UITableViewController {
     } else if let fbConnectCell = cell as? FindFriendsFacebookConnectCell
       where fbConnectCell.delegate == nil {
       fbConnectCell.delegate = self
+    } else if let friendFollowCell = cell as? FindFriendsFriendFollowCell
+      where friendFollowCell.delegate == nil {
+      friendFollowCell.delegate = self
     }
 
     self.viewModel.inputs.willDisplayRow(self.dataSource.itemIndexAt(indexPath),
@@ -119,5 +125,11 @@ extension FindFriendsViewController: FindFriendsFacebookConnectCellDelegate {
 
   func findFriendsFacebookConnectCellShowErrorAlert(alert: AlertError) {
     self.viewModel.inputs.findFriendsFacebookConnectCellShowErrorAlert(alert)
+  }
+}
+
+extension FindFriendsViewController: FindFriendsFriendFollowCellDelegate {
+  func findFriendsFriendFollowCell(cell: FindFriendsFriendFollowCell, updatedFriend: User) {
+    self.viewModel.inputs.updateFriend(updatedFriend)
   }
 }

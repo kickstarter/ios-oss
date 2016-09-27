@@ -23,6 +23,7 @@ final class FindFriendsFriendFollowCellViewModelTests: TestCase {
   let hideFollowButton = TestObserver<Bool, NoError>()
   let hideUnfollowButton = TestObserver<Bool, NoError>()
   let hideProjectsCreated = TestObserver<Bool, NoError>()
+  let notifyDelegateFriendUpdated = TestObserver<User, NoError>()
 
   override func setUp() {
     super.setUp()
@@ -37,6 +38,7 @@ final class FindFriendsFriendFollowCellViewModelTests: TestCase {
     vm.outputs.hideFollowButton.observe(hideFollowButton.observer)
     vm.outputs.hideUnfollowButton.observe(hideUnfollowButton.observer)
     vm.outputs.hideProjectsCreated.observe(hideProjectsCreated.observer)
+    vm.outputs.notifyDelegateFriendUpdated.observe(notifyDelegateFriendUpdated.observer)
   }
 
   func testFriendDetails_Complete() {
@@ -113,6 +115,7 @@ final class FindFriendsFriendFollowCellViewModelTests: TestCase {
     enableFollowButton.assertValues([false], "Enable Follow Button does not emit")
     enableUnfollowButton.assertValues([true, false, true],
                                       "Enable Unfollow Button emits false/true with loader")
+    notifyDelegateFriendUpdated.assertValueCount(0)
     XCTAssertEqual(["Facebook Friend Unfollow"], self.trackingClient.events)
     XCTAssertEqual(["activity"], self.trackingClient.properties.map { $0["source"] as! String? })
 
@@ -122,6 +125,7 @@ final class FindFriendsFriendFollowCellViewModelTests: TestCase {
     hideUnfollowButton.assertValues([false, true], "Hide Unfollow Button")
     enableFollowButton.assertValues([false, true], "Enable Follow Button")
     enableUnfollowButton.assertValues([true, false, true, false], "Disable Unfollow Button")
+    notifyDelegateFriendUpdated.assertValues([friend])
 
     vm.inputs.followButtonTapped()
 
@@ -130,6 +134,7 @@ final class FindFriendsFriendFollowCellViewModelTests: TestCase {
     enableFollowButton.assertValues([false, true, false, true],
                                     "Enable Follow Button emits false/true with loader")
     enableUnfollowButton.assertValues([true, false, true, false], "Unfollow Button does not change")
+    notifyDelegateFriendUpdated.assertValues([friend])
     XCTAssertEqual(["Facebook Friend Unfollow", "Facebook Friend Follow"], self.trackingClient.events)
     XCTAssertEqual(["activity", "activity"], self.trackingClient.properties.map { $0["source"] as! String? })
 
@@ -139,6 +144,7 @@ final class FindFriendsFriendFollowCellViewModelTests: TestCase {
     hideUnfollowButton.assertValues([false, true, false], "Show Unfollow Button")
     enableFollowButton.assertValues([false, true, false, true, false], "Disable Follow Button")
     enableUnfollowButton.assertValues([true, false, true, false, true], "Enable Unfollow Button")
+    notifyDelegateFriendUpdated.assertValues([friend, friend])
 
     vm.inputs.unfollowButtonTapped()
 
@@ -147,6 +153,7 @@ final class FindFriendsFriendFollowCellViewModelTests: TestCase {
     enableFollowButton.assertValues([false, true, false, true, false], "Enable Follow Button does not emit")
     enableUnfollowButton.assertValues([true, false, true, false, true, false, true],
                                       "Enable Unfollow Button emits false/true with loader")
+    notifyDelegateFriendUpdated.assertValues([friend, friend])
     XCTAssertEqual(["Facebook Friend Unfollow", "Facebook Friend Follow", "Facebook Friend Unfollow"],
                    self.trackingClient.events)
     XCTAssertEqual(["activity", "activity", "activity"],
@@ -159,6 +166,7 @@ final class FindFriendsFriendFollowCellViewModelTests: TestCase {
     enableFollowButton.assertValues([false, true, false, true, false, true], "Enable Follow Button")
     enableUnfollowButton.assertValues([true, false, true, false, true, false, true, false],
                                       "Disable Unfollow Button")
+    notifyDelegateFriendUpdated.assertValues([friend, friend, friend])
   }
 
   func testFollowing_NonFriend() {
@@ -244,120 +252,6 @@ final class FindFriendsFriendFollowCellViewModelTests: TestCase {
                    self.trackingClient.properties.map { $0["source"] as! String? })
   }
 
-  func testRetainFriendStatusOnReuse_After_Following() {
-    let friend = User.template
-      |> User.lens.name .~ "Zed"
-      |> User.lens.id .~ 200
-      |> User.lens.isFriend .~ false
-
-    hideFollowButton.assertValueCount(0)
-    hideUnfollowButton.assertValueCount(0)
-    enableFollowButton.assertValueCount(0)
-    enableUnfollowButton.assertValueCount(0)
-
-    vm.inputs.configureWith(friend: friend, source: FriendsSource.activity)
-
-    hideFollowButton.assertValues([false], "Show Follow Button")
-    hideUnfollowButton.assertValues([true], "Hide Unfollow Button")
-    enableFollowButton.assertValues([true], "Enable Follow Button")
-    enableUnfollowButton.assertValues([false], "Disable Unfollow Button")
-
-    vm.inputs.followButtonTapped()
-
-    hideFollowButton.assertValues([false], "Follow Button does not change")
-    hideUnfollowButton.assertValues([true], "Unfollow Button does not change")
-    enableFollowButton.assertValues([true, false, true],
-                                    "Enable Unfollow Button emits false/true with loader")
-    enableUnfollowButton.assertValues([false], "Enable Unfollow Button does not emit")
-
-    scheduler.advance()
-
-    hideFollowButton.assertValues([false, true], "Hide Follow Button")
-    hideUnfollowButton.assertValues([true, false], "Show Unfollow Button")
-    enableFollowButton.assertValues([true, false, true, false], "Disable Follow Button")
-    enableUnfollowButton.assertValues([false, true], "Enable Unfollow Button")
-
-    let vm2: FindFriendsFriendFollowCellViewModelType = FindFriendsFriendFollowCellViewModel()
-    let hideFollowButton2 = TestObserver<Bool, NoError>()
-    let hideUnfollowButton2 = TestObserver<Bool, NoError>()
-    let enableFollowButton2 = TestObserver<Bool, NoError>()
-    let enableUnfollowButton2 = TestObserver<Bool, NoError>()
-    vm2.outputs.hideFollowButton.observe(hideFollowButton2.observer)
-    vm2.outputs.hideUnfollowButton.observe(hideUnfollowButton2.observer)
-    vm2.outputs.enableFollowButton.observe(enableFollowButton2.observer)
-    vm2.outputs.enableUnfollowButton.observe(enableUnfollowButton2.observer)
-
-    hideFollowButton2.assertValueCount(0)
-    hideUnfollowButton2.assertValueCount(0)
-    enableFollowButton2.assertValueCount(0)
-    enableUnfollowButton2.assertValueCount(0)
-
-    vm2.inputs.configureWith(friend: friend, source: FriendsSource.activity)
-
-    hideFollowButton2.assertValues([true], "Hide Follow Button")
-    hideUnfollowButton2.assertValues([false], "Show Unfollow Button")
-    enableFollowButton2.assertValues([false], "Disable Follow Button")
-    enableUnfollowButton2.assertValues([true], "Enable Unfollow Button")
-  }
-
-  func testRetainFriendStatusOnReuse_After_Unfollowing() {
-    let friend = User.template
-      |> User.lens.name .~ "Nerd"
-      |> User.lens.id .~ 208
-      |> User.lens.isFriend .~ true
-
-    hideFollowButton.assertValueCount(0)
-    hideUnfollowButton.assertValueCount(0)
-    enableFollowButton.assertValueCount(0)
-    enableUnfollowButton.assertValueCount(0)
-
-    vm.inputs.configureWith(friend: friend, source: FriendsSource.activity)
-
-    hideFollowButton.assertValues([true], "Hide Follow Button")
-    hideUnfollowButton.assertValues([false], "Show Unfollow Button")
-    enableFollowButton.assertValues([false], "Disable Follow Button")
-    enableUnfollowButton.assertValues([true], "Enable Unfollow Button")
-
-    vm.inputs.unfollowButtonTapped()
-
-    hideFollowButton.assertValues([true], "Follow Button does not change")
-    hideUnfollowButton.assertValues([false], "Unfollow Button does not change")
-    enableFollowButton.assertValues([false], "Enable Follow Button does not emit")
-    enableUnfollowButton.assertValues([true, false, true],
-                                      "Enable Unfollow Button emits false/true with loader")
-    XCTAssertEqual(["Facebook Friend Unfollow"], self.trackingClient.events)
-    XCTAssertEqual(["activity"], self.trackingClient.properties.map { $0["source"] as! String? })
-
-    scheduler.advance()
-
-    hideFollowButton.assertValues([true, false], "Show Follow Button")
-    hideUnfollowButton.assertValues([false, true], "Hide Unfollow Button")
-    enableFollowButton.assertValues([false, true], "Enable Follow Button")
-    enableUnfollowButton.assertValues([true, false, true, false], "Disable Unfollow Button")
-
-    let vm2: FindFriendsFriendFollowCellViewModelType = FindFriendsFriendFollowCellViewModel()
-    let hideFollowButton2 = TestObserver<Bool, NoError>()
-    let hideUnfollowButton2 = TestObserver<Bool, NoError>()
-    let enableFollowButton2 = TestObserver<Bool, NoError>()
-    let enableUnfollowButton2 = TestObserver<Bool, NoError>()
-    vm2.outputs.hideFollowButton.observe(hideFollowButton2.observer)
-    vm2.outputs.hideUnfollowButton.observe(hideUnfollowButton2.observer)
-    vm2.outputs.enableFollowButton.observe(enableFollowButton2.observer)
-    vm2.outputs.enableUnfollowButton.observe(enableUnfollowButton2.observer)
-
-    hideFollowButton2.assertValueCount(0)
-    hideUnfollowButton2.assertValueCount(0)
-    enableFollowButton2.assertValueCount(0)
-    enableUnfollowButton2.assertValueCount(0)
-
-    vm2.inputs.configureWith(friend: friend, source: FriendsSource.activity)
-
-    hideFollowButton2.assertValues([false], "Show Follow Button")
-    hideUnfollowButton2.assertValues([true], "Hide Unfollow Button")
-    enableFollowButton2.assertValues([true], "Enable Follow Button")
-    enableUnfollowButton2.assertValues([false], "Disable Unfollow Button")
-  }
-
   func testFollowFriend_WithError() {
     let error = ErrorEnvelope(
       errorMessages: ["Something went wrong."],
@@ -403,6 +297,8 @@ final class FindFriendsFriendFollowCellViewModelTests: TestCase {
       enableUnfollowButton.assertValues([false], "Enable Unfollow Button does not emit")
       XCTAssertEqual(["Facebook Friend Follow"], self.trackingClient.events, "Tracking does not change")
       XCTAssertEqual(["activity"], self.trackingClient.properties.map { $0["source"] as! String? })
+
+      notifyDelegateFriendUpdated.assertValueCount(0)
     }
   }
 
@@ -451,6 +347,8 @@ final class FindFriendsFriendFollowCellViewModelTests: TestCase {
       enableUnfollowButton.assertValues([true, false, true], "Unfollow Button remains enabled")
       XCTAssertEqual(["Facebook Friend Unfollow"], self.trackingClient.events, "Tracking does not change")
       XCTAssertEqual(["activity"], self.trackingClient.properties.map { $0["source"] as! String? })
+
+      notifyDelegateFriendUpdated.assertValueCount(0)
     }
   }
 }

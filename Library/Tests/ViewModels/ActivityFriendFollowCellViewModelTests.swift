@@ -96,10 +96,6 @@ final class ActivityFriendFollowCellViewModelTests: TestCase {
     hideFollowButton.assertValues([false], "Follow Button does not change")
     XCTAssertEqual(["Facebook Friend Follow"], self.trackingClient.events)
     XCTAssertEqual(["activity"], self.trackingClient.properties.map { $0["source"] as! String? })
-
-    scheduler.advance()
-
-    hideFollowButton.assertValues([false, true], "Hide Follow Button")
   }
 
   func testRetainFriendStatusOnReuse_After_Following() {
@@ -119,17 +115,5 @@ final class ActivityFriendFollowCellViewModelTests: TestCase {
 
     vm.inputs.followButtonTapped()
     scheduler.advance()
-
-    hideFollowButton.assertValues([false, true], "Hide Follow Button")
-
-    let vm2: ActivityFriendFollowCellViewModel = ActivityFriendFollowCellViewModel()
-    let hideFollowButton2 = TestObserver<Bool, NoError>()
-    vm2.outputs.hideFollowButton.observe(hideFollowButton2.observer)
-
-    hideFollowButton2.assertValueCount(0)
-
-    vm2.inputs.configureWith(activity: activity)
-
-    hideFollowButton2.assertValues([true], "Hide Follow Button")
   }
 }

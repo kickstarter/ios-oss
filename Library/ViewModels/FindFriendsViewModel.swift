@@ -29,6 +29,9 @@ public protocol FindFriendsViewModelInputs {
   /// Call when should display "Follow all friends?" confirmation alert
   func findFriendsStatsCellShowFollowAllFriendsAlert(friendCount friendCount: Int)
 
+  /// Call when friend status updates from a FriendFollowCell.
+  func updateFriend(updatedFriend: User)
+
   /// Call when view loads
   func viewDidLoad()
 
@@ -57,9 +60,6 @@ public protocol FindFriendsViewModelOutputs {
 
   /// Emits the current user and the source that presented the controller.
   var stats: Signal<(FriendStatsEnvelope, FriendsSource), NoError> { get }
-
-  /// Emits a title for the view controller navigation bar
-  var title: Signal<String, NoError> { get }
 }
 
 public protocol FindFriendsViewModelType {
@@ -72,13 +72,25 @@ public final class FindFriendsViewModel: FindFriendsViewModelType, FindFriendsVi
 
   // swiftlint:disable function_body_length
   public init() {
+    let source = self.configureWithProperty.signal
+
+    let followAll = self.confirmFollowAllFriendsProperty.signal
+      .switchMap {
+        AppEnvironment.current.apiService.followAllFriends()
+          .demoteErrors()
+      }
+
     let shouldShowFacebookConnect = Signal.merge(
       self.viewDidLoadProperty.signal,
       self.userFacebookConnectedProperty.signal
       )
       .map { !(AppEnvironment.current.currentUser?.facebookConnected ?? false) }
 
-    let requestFirstPageWith = shouldShowFacebookConnect.filter(isFalse).ignoreValues()
+    let requestFirstPageWith = Signal.merge(
+      shouldShowFacebookConnect.filter(isFalse).ignoreValues(),
+      followAll.ignoreValues()
+    )
+
     let requestNextPageWhen = self.willDisplayRowProperty.signal.ignoreNil()
       .map { row, total in row >= total - 3 }
       .skipRepeats()
@@ -97,6 +109,22 @@ public final class FindFriendsViewModel: FindFriendsViewModelType, FindFriendsVi
         $0.map { AppEnvironment.current.apiService.fetchFriends(paginationUrl: $0) } ?? .empty
     })
 
+    let friendToUpdate = Signal.merge(
+      self.viewDidLoadProperty.signal.take(1).signal.mapConst(nil),
+      self.updateFriendProperty.signal
+    )
+
+    let updatedFriends = combineLatest(friends, friendToUpdate)
+      .map { currentFriends, updatedFriend in
+        currentFriends
+          .map { friend in
+            friend == updatedFriend ? updatedFriend : friend
+          }
+          .compact()
+    }
+
+    self.friends = combineLatest(updatedFriends, source)
+
     self.goToDiscovery = self.discoverButtonTappedProperty.signal
       .map {
         DiscoveryParams.defaults
@@ -104,18 +132,11 @@ public final class FindFriendsViewModel: FindFriendsViewModelType, FindFriendsVi
           |> DiscoveryParams.lens.sort .~ .magic
     }
 
-    self.title = self.viewDidLoadProperty.signal
-      .map(Strings.social_following_navigation_title_follow_your_friends)
-
     self.showFollowAllFriendsAlert = self.showFollowAllFriendsAlertProperty.signal
 
     self.showErrorAlert = self.showFacebookConnectErrorAlertProperty.signal.ignoreNil()
 
-    let source = self.configureWithProperty.signal
-
     self.showFacebookConnect = combineLatest(source, shouldShowFacebookConnect)
-
-    self.friends = combineLatest(friends, source)
 
     let statsEvent = shouldShowFacebookConnect
       .filter(isFalse)
@@ -132,15 +153,12 @@ public final class FindFriendsViewModel: FindFriendsViewModelType, FindFriendsVi
       .observeNext { AppEnvironment.current.koala.trackFindFriendsView(source: $0) }
 
     source
-      .takeWhen(self.confirmFollowAllFriendsProperty.signal)
-      .observeNext {
-        AppEnvironment.current.apiService.followAllFriends()
-        AppEnvironment.current.koala.trackFriendFollowAll(source: $0)
-    }
-
-    source
       .takeWhen(self.declineFollowAllFriendsProperty.signal)
       .observeNext { AppEnvironment.current.koala.trackDeclineFriendFollowAll(source: $0) }
+
+    source
+      .takeWhen(followAll)
+      .observeNext { AppEnvironment.current.koala.trackFriendFollowAll(source: $0) }
   }
   // swiftlint:enable function_body_length
 
@@ -166,6 +184,10 @@ public final class FindFriendsViewModel: FindFriendsViewModelType, FindFriendsVi
   public func findFriendsFacebookConnectCellShowErrorAlert(alert: AlertError) {
     showFacebookConnectErrorAlertProperty.value = alert
   }
+  private let updateFriendProperty = MutableProperty<User?>(nil)
+  public func updateFriend(updatedFriend: User) {
+    self.updateFriendProperty.value = updatedFriend
+  }
   private let viewDidLoadProperty = MutableProperty()
   public func viewDidLoad() {
     viewDidLoadProperty.value = ()
@@ -183,7 +205,6 @@ public final class FindFriendsViewModel: FindFriendsViewModelType, FindFriendsVi
     self.willDisplayRowProperty.value = (row, totalRows)
   }
 
-  public let title: Signal<String, NoError>
   public let friends: Signal<([User], FriendsSource), NoError>
   public let showFacebookConnect: Signal<(FriendsSource, Bool), NoError>
   public let goToDiscovery: Signal<DiscoveryParams, NoError>

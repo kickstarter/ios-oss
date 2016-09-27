@@ -1,17 +1,27 @@
 import KsApi
-import Foundation
+import Prelude
 import ReactiveCocoa
 import Result
-import Prelude
 
 public protocol ActivityFriendFollowCellViewModelInputs {
+  /// Call to configure activity with Activity.
   func configureWith(activity activity: Activity)
+
+  /// Call when follow button is tapped.
   func followButtonTapped()
 }
 
 public protocol ActivityFriendFollowCellViewModelOutputs {
+  /// Emits a NSURL to the friend image.
   var friendImageURL: Signal<NSURL?, NoError> { get }
+
+  /// Emits whether to hide the follow button.
   var hideFollowButton: Signal<Bool, NoError> { get }
+
+  /// Emits to notify delegate that a friend was updated.
+  var notifyDelegateFriendUpdated: Signal<Activity, NoError> { get }
+
+  /// Emits text for title label.
   var title: Signal<String, NoError> { get }
 }
 
@@ -22,7 +32,7 @@ ActivityFriendFollowCellViewModelOutputs {
     let friend = self.activityProperty.signal.ignoreNil()
       .map(Activity.lens.user.view)
       .ignoreNil()
-      .map(cached(friend:))
+      .on(next: { print("configured with friend \($0.name) and is friend = \($0.isFriend)")})
 
     self.friendImageURL = friend.map { NSURL.init(string: $0.avatar.medium) }
 
@@ -37,13 +47,13 @@ ActivityFriendFollowCellViewModelOutputs {
         .materialize()
     }
 
-    let updatedFriendToFollowed = followFriendEvent
-      .values()
-      .on(next: cache(friend:))
+    self.notifyDelegateFriendUpdated = self.activityProperty.signal.ignoreNil()
+      .takePairWhen(followFriendEvent.values())
+      .map { activity, friend in
+        activity |> Activity.lens.user .~ friend
+    }
 
-    let friendStatusChanged = Signal.merge(friend, updatedFriendToFollowed)
-
-    self.hideFollowButton = friendStatusChanged
+    self.hideFollowButton = friend
       .map { $0.isFriend ?? false }
       .skipRepeats()
 
@@ -55,31 +65,16 @@ ActivityFriendFollowCellViewModelOutputs {
   public func configureWith(activity activity: Activity) {
     self.activityProperty.value = activity
   }
-
   private let followButtonTappedProperty = MutableProperty()
   public func followButtonTapped() {
     self.followButtonTappedProperty.value = ()
   }
 
   public let friendImageURL: Signal<NSURL?, NoError>
-  public let title: Signal<String, NoError>
   public let hideFollowButton: Signal<Bool, NoError>
+  public let notifyDelegateFriendUpdated: Signal<Activity, NoError>
+  public let title: Signal<String, NoError>
 
   public var inputs: ActivityFriendFollowCellViewModelInputs { return self }
   public var outputs: ActivityFriendFollowCellViewModelOutputs { return self }
-}
-
-private func cacheKey(forFriend friend: User) -> String {
-  return "activities_friend_follow_view_model_friend_\(friend.id)"
-}
-
-private func cached(friend friend: User) -> User {
-  let key = cacheKey(forFriend: friend)
-  let isFriend = AppEnvironment.current.cache[key] as? Bool
-  return friend |> User.lens.isFriend .~ (isFriend ?? friend.isFriend)
-}
-
-private func cache(friend friend: User) {
-  let key = cacheKey(forFriend: friend)
-  AppEnvironment.current.cache[key] = true
 }

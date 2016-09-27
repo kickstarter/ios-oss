@@ -146,6 +146,24 @@ public class ValueCellDataSource: NSObject, UICollectionViewDataSource, UITableV
   }
 
   /**
+   Replaces a row with a value.
+
+   - parameter value:     A value to replace the row with.
+   - parameter cellClass: The type of cell associated with the value.
+   - parameter section:   The section for the row.
+   - parameter row:       The row to replace.
+   */
+  public final func set <
+    Cell: ValueCell,
+    Value: Any
+    where
+    Cell.Value == Value>
+    (value value: Value, cellClass: Cell.Type, inSection section: Int, row: Int) {
+
+    self.values[section][row] = (value, Cell.defaultReusableId)
+  }
+
+  /**
    - parameter indexPath: An index path to retrieve a value.
 
    - returns: The value at the index path given.

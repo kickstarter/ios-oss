@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="16A239m" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="3ir-xv-YhI">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="3ir-xv-YhI">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
@@ -22,127 +22,93 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="181"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="UTl-0e-fPS" userLabel="Outermost Stats Stack View">
-                                            <rect key="frame" x="24" y="24" width="327" height="128"/>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cjq-X4-Bih">
+                                            <rect key="frame" x="187" y="45" width="1" height="24"/>
+                                            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="24" id="R5y-u6-B9C"/>
+                                                <constraint firstAttribute="width" constant="1" id="bGE-b0-Qzb"/>
+                                            </constraints>
+                                        </view>
+                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="UTl-0e-fPS" userLabel="Outermost Stats Stack View">
+                                            <rect key="frame" x="8" y="8" width="359" height="165"/>
                                             <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" spacing="14" translatesAutoresizingMaskIntoConstraints="NO" id="YI6-hF-zT1" userLabel="Stats Stack View">
-                                                    <rect key="frame" x="0.0" y="0.0" width="327" height="68"/>
+                                                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="YI6-hF-zT1" userLabel="Stats Stack View">
+                                                    <rect key="frame" x="0.0" y="0.0" width="359" height="97"/>
                                                     <subviews>
-                                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="dkb-CI-X1M" userLabel="Friends Stack View">
-                                                            <rect key="frame" x="0.0" y="10" width="100" height="48"/>
+                                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="dkb-CI-X1M" userLabel="Friends Stack View">
+                                                            <rect key="frame" x="0.0" y="0.0" width="174" height="97"/>
                                                             <subviews>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="202" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IZg-yq-Iiq" customClass="StyledLabel" customModule="Library">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="100" height="21"/>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="202" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IZg-yq-Iiq">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="174" height="73"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                     <nil key="highlightedColor"/>
-                                                                    <userDefinedRuntimeAttributes>
-                                                                        <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Headline"/>
-                                                                        <userDefinedRuntimeAttribute type="string" keyPath="_color" value="Black"/>
-                                                                    </userDefinedRuntimeAttributes>
                                                                 </label>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Friends" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1PD-I8-AZB" customClass="StyledLabel" customModule="Library">
-                                                                    <rect key="frame" x="0.0" y="27" width="100" height="21"/>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Friends" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1PD-I8-AZB">
+                                                                    <rect key="frame" x="0.0" y="76" width="174" height="21"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                     <nil key="highlightedColor"/>
-                                                                    <userDefinedRuntimeAttributes>
-                                                                        <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Subhead"/>
-                                                                        <userDefinedRuntimeAttribute type="string" keyPath="_color" value="Black"/>
-                                                                    </userDefinedRuntimeAttributes>
                                                                 </label>
                                                             </subviews>
-                                                            <constraints>
-                                                                <constraint firstItem="1PD-I8-AZB" firstAttribute="width" secondItem="dkb-CI-X1M" secondAttribute="width" id="nRO-Mj-sXX"/>
-                                                                <constraint firstItem="IZg-yq-Iiq" firstAttribute="width" secondItem="dkb-CI-X1M" secondAttribute="width" id="vLo-zX-0lS"/>
-                                                            </constraints>
                                                         </stackView>
-                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sTU-6O-U2y" userLabel="Divider View">
-                                                            <rect key="frame" x="114" y="0.0" width="99" height="68"/>
+                                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="o97-8g-xQm" userLabel="Backed Projects Stack View">
+                                                            <rect key="frame" x="186" y="0.0" width="173" height="97"/>
                                                             <subviews>
-                                                                <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="V0H-Qb-an0">
-                                                                    <rect key="frame" x="49" y="0.0" width="1" height="6"/>
-                                                                    <color key="backgroundColor" red="0.57857875631313127" green="0.57857875631313127" blue="0.57857875631313127" alpha="1" colorSpace="calibratedRGB"/>
-                                                                    <constraints>
-                                                                        <constraint firstAttribute="width" constant="1" id="oPC-2M-oqh"/>
-                                                                    </constraints>
-                                                                </view>
-                                                            </subviews>
-                                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                            <constraints>
-                                                                <constraint firstItem="V0H-Qb-an0" firstAttribute="top" secondItem="sTU-6O-U2y" secondAttribute="top" id="Csm-8i-vOw"/>
-                                                                <constraint firstItem="V0H-Qb-an0" firstAttribute="centerX" secondItem="sTU-6O-U2y" secondAttribute="centerX" id="OrD-5B-pKd"/>
-                                                                <constraint firstItem="V0H-Qb-an0" firstAttribute="height" secondItem="sTU-6O-U2y" secondAttribute="height" id="uaC-GE-BfM"/>
-                                                            </constraints>
-                                                        </view>
-                                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="o97-8g-xQm" userLabel="Backed Projects Stack View">
-                                                            <rect key="frame" x="227" y="0.0" width="100" height="68"/>
-                                                            <subviews>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3,841" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="47i-yE-rkw" customClass="StyledLabel" customModule="Library">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="100" height="21"/>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="3,841" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="47i-yE-rkw">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="173" height="73"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                     <nil key="highlightedColor"/>
-                                                                    <userDefinedRuntimeAttributes>
-                                                                        <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Headline"/>
-                                                                        <userDefinedRuntimeAttribute type="string" keyPath="_color" value="Black"/>
-                                                                    </userDefinedRuntimeAttributes>
                                                                 </label>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Backed projects" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cBy-sV-kkw" customClass="StyledLabel" customModule="Library">
-                                                                    <rect key="frame" x="0.0" y="27" width="100" height="41"/>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Backed projects" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cBy-sV-kkw">
+                                                                    <rect key="frame" x="0.0" y="76" width="173" height="21"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                     <nil key="highlightedColor"/>
-                                                                    <userDefinedRuntimeAttributes>
-                                                                        <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Subhead"/>
-                                                                        <userDefinedRuntimeAttribute type="string" keyPath="_color" value="Black"/>
-                                                                    </userDefinedRuntimeAttributes>
                                                                 </label>
                                                             </subviews>
-                                                            <constraints>
-                                                                <constraint firstItem="cBy-sV-kkw" firstAttribute="width" secondItem="o97-8g-xQm" secondAttribute="width" id="8Eb-3V-lER"/>
-                                                                <constraint firstItem="47i-yE-rkw" firstAttribute="width" secondItem="o97-8g-xQm" secondAttribute="width" id="v6T-iI-ZuQ"/>
-                                                            </constraints>
                                                         </stackView>
                                                     </subviews>
                                                     <constraints>
-                                                        <constraint firstItem="V0H-Qb-an0" firstAttribute="height" secondItem="YI6-hF-zT1" secondAttribute="height" id="AEI-Fa-t6L"/>
+                                                        <constraint firstItem="dkb-CI-X1M" firstAttribute="top" secondItem="YI6-hF-zT1" secondAttribute="top" id="PGW-K2-pW6"/>
                                                     </constraints>
                                                 </stackView>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="vDC-z1-n0V" customClass="BorderButton" customModule="Library">
-                                                    <rect key="frame" x="0.0" y="84" width="327" height="44"/>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="vDC-z1-n0V">
+                                                    <rect key="frame" x="0.0" y="121" width="359" height="44"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="44" id="nPj-J5-djO"/>
                                                     </constraints>
                                                     <inset key="contentEdgeInsets" minX="8" minY="0.0" maxX="8" maxY="0.0"/>
                                                     <state key="normal" title="Follow all 202 friends"/>
-                                                    <userDefinedRuntimeAttributes>
-                                                        <userDefinedRuntimeAttribute type="string" keyPath="_color" value="Blue"/>
-                                                        <userDefinedRuntimeAttribute type="string" keyPath="_borderColor" value="Clear"/>
-                                                        <userDefinedRuntimeAttribute type="string" keyPath="_titleColorNormal" value="White"/>
-                                                        <userDefinedRuntimeAttribute type="string" keyPath="_titleColorHighlighted" value="Gray"/>
-                                                        <userDefinedRuntimeAttribute type="string" keyPath="_titleFontStyle" value="Subhead"/>
-                                                    </userDefinedRuntimeAttributes>
-                                                    <connections>
-                                                        <action selector="followAllButtonTapped:" destination="ySV-qH-9sh" eventType="touchUpInside" id="iuZ-lc-h1D"/>
-                                                    </connections>
                                                 </button>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="leadingMargin" secondItem="YI6-hF-zT1" secondAttribute="leading" id="CZC-ew-Vae"/>
+                                                <constraint firstAttribute="topMargin" secondItem="YI6-hF-zT1" secondAttribute="top" id="LqC-sp-lV0"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="YI6-hF-zT1" secondAttribute="trailing" id="Rqf-Cs-txn"/>
+                                            </constraints>
                                         </stackView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="UTl-0e-fPS" firstAttribute="top" secondItem="0ad-Qs-ahI" secondAttribute="topMargin" constant="16" id="ICx-dR-obH"/>
-                                        <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="UTl-0e-fPS" secondAttribute="bottom" constant="16" id="VgV-qB-yWp"/>
-                                        <constraint firstItem="UTl-0e-fPS" firstAttribute="leading" secondItem="0ad-Qs-ahI" secondAttribute="leadingMargin" constant="16" id="oiI-c3-2Ad"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="UTl-0e-fPS" secondAttribute="trailing" constant="16" id="ymB-gG-uTG"/>
+                                        <constraint firstItem="UTl-0e-fPS" firstAttribute="top" secondItem="0ad-Qs-ahI" secondAttribute="topMargin" id="ICx-dR-obH"/>
+                                        <constraint firstItem="cjq-X4-Bih" firstAttribute="centerY" secondItem="YI6-hF-zT1" secondAttribute="centerY" id="RNo-E3-wU7"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="UTl-0e-fPS" secondAttribute="bottom" id="VgV-qB-yWp"/>
+                                        <constraint firstItem="UTl-0e-fPS" firstAttribute="leading" secondItem="0ad-Qs-ahI" secondAttribute="leadingMargin" id="oiI-c3-2Ad"/>
+                                        <constraint firstItem="cjq-X4-Bih" firstAttribute="centerX" secondItem="0ad-Qs-ahI" secondAttribute="centerX" id="s7a-Il-qj6"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="UTl-0e-fPS" secondAttribute="trailing" id="ymB-gG-uTG"/>
                                     </constraints>
                                 </tableViewCellContentView>
-                                <color key="backgroundColor" red="0.86111108319999996" green="0.97082921529999999" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <edgeInsets key="layoutMargins" top="16" left="16" bottom="16" right="16"/>
                                 <connections>
                                     <outlet property="backedProjectsCountLabel" destination="47i-yE-rkw" id="BD7-3g-5Mr"/>
+                                    <outlet property="backedProjectsLabel" destination="cBy-sV-kkw" id="NFS-e0-a1i"/>
+                                    <outlet property="bulletSeparatorView" destination="cjq-X4-Bih" id="DhE-3f-sTK"/>
                                     <outlet property="followAllButton" destination="vDC-z1-n0V" id="rvX-NB-FIr"/>
-                                    <outlet property="friendCountLabel" destination="IZg-yq-Iiq" id="Tvg-hs-NTn"/>
+                                    <outlet property="friendsCountLabel" destination="IZg-yq-Iiq" id="i7c-Qn-2Om"/>
+                                    <outlet property="friendsLabel" destination="1PD-I8-AZB" id="zES-5B-ZYK"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="FindFriendsFriendFollowCell" rowHeight="100" id="Ltx-Pe-78v" userLabel="Friend Cell" customClass="FindFriendsFriendFollowCell" customModule="Kickstarter_Framework" customModuleProvider="target">
@@ -160,106 +126,72 @@
                                             </constraints>
                                         </view>
                                         <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="MLU-qf-b92">
-                                            <rect key="frame" x="8" y="8" width="359" height="73"/>
+                                            <rect key="frame" x="8" y="8" width="359" height="71"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="zack-sears" translatesAutoresizingMaskIntoConstraints="NO" id="qnB-Mz-bGC" customClass="CircleAvatarImageView" customModule="Library">
-                                                    <rect key="frame" x="0.0" y="7" width="60" height="60"/>
+                                                    <rect key="frame" x="0.0" y="6" width="60" height="60"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="60" id="3QS-c4-z90"/>
                                                         <constraint firstAttribute="width" secondItem="qnB-Mz-bGC" secondAttribute="height" multiplier="1:1" id="vah-JM-Rbp"/>
                                                     </constraints>
                                                 </imageView>
-                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="pSU-8p-qlV">
-                                                    <rect key="frame" x="72" y="0.0" width="102" height="73"/>
+                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="pSU-8p-qlV">
+                                                    <rect key="frame" x="72" y="0.0" width="102" height="71"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Some guy" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JeV-tQ-YIl" customClass="StyledLabel" customModule="Library">
-                                                            <rect key="frame" x="0.0" y="0.0" width="77" height="21"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                            <nil key="highlightedColor"/>
-                                                            <userDefinedRuntimeAttributes>
-                                                                <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Footnote"/>
-                                                                <userDefinedRuntimeAttribute type="string" keyPath="_color" value="Black"/>
-                                                                <userDefinedRuntimeAttribute type="string" keyPath="_weight" value="Medium"/>
-                                                            </userDefinedRuntimeAttributes>
-                                                        </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Brooklyn, NY" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jqG-T2-tdL" customClass="StyledLabel" customModule="Library">
-                                                            <rect key="frame" x="0.0" y="26" width="100" height="21"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                            <nil key="highlightedColor"/>
-                                                            <userDefinedRuntimeAttributes>
-                                                                <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Caption1"/>
-                                                                <userDefinedRuntimeAttribute type="string" keyPath="_color" value="GrayDark"/>
-                                                            </userDefinedRuntimeAttributes>
-                                                        </label>
-                                                        <stackView opaque="NO" contentMode="scaleToFill" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="Vj1-JC-55L">
-                                                            <rect key="frame" x="0.0" y="52" width="102" height="21"/>
+                                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="cwd-Ka-lbR">
+                                                            <rect key="frame" x="0.0" y="0.0" width="100" height="44"/>
                                                             <subviews>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1,000 backed" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RRc-eG-DSa" customClass="StyledLabel" customModule="Library">
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Some guy" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JeV-tQ-YIl">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="77" height="21"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Brooklyn, NY" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jqG-T2-tdL">
+                                                                    <rect key="frame" x="0.0" y="23" width="100" height="21"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                            </subviews>
+                                                        </stackView>
+                                                        <stackView opaque="NO" contentMode="scaleToFill" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="Vj1-JC-55L">
+                                                            <rect key="frame" x="0.0" y="50" width="102" height="21"/>
+                                                            <subviews>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1,000 backed" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RRc-eG-DSa">
                                                                     <rect key="frame" x="0.0" y="0.0" width="90" height="21"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                     <nil key="highlightedColor"/>
-                                                                    <userDefinedRuntimeAttributes>
-                                                                        <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Footnote"/>
-                                                                        <userDefinedRuntimeAttribute type="string" keyPath="_color" value="Black"/>
-                                                                    </userDefinedRuntimeAttributes>
                                                                 </label>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="1 created" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TWI-wp-Kfi" customClass="StyledLabel" customModule="Library">
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="1 created" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TWI-wp-Kfi">
                                                                     <rect key="frame" x="102" y="0.0" width="0.0" height="21"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                     <nil key="highlightedColor"/>
-                                                                    <userDefinedRuntimeAttributes>
-                                                                        <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Footnote"/>
-                                                                        <userDefinedRuntimeAttribute type="string" keyPath="_color" value="Black"/>
-                                                                    </userDefinedRuntimeAttributes>
                                                                 </label>
                                                             </subviews>
                                                         </stackView>
                                                     </subviews>
                                                 </stackView>
                                                 <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="9qs-oP-aoV">
-                                                    <rect key="frame" x="186" y="15" width="173" height="44"/>
+                                                    <rect key="frame" x="186" y="14" width="173" height="44"/>
                                                     <subviews>
-                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sL7-Yr-Ljj" customClass="BorderButton" customModule="Library">
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sL7-Yr-Ljj">
                                                             <rect key="frame" x="0.0" y="0.0" width="76" height="44"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="44" id="xOv-pL-YNx"/>
                                                             </constraints>
                                                             <inset key="contentEdgeInsets" minX="16" minY="0.0" maxX="16" maxY="0.0"/>
                                                             <state key="normal" title="Follow"/>
-                                                            <userDefinedRuntimeAttributes>
-                                                                <userDefinedRuntimeAttribute type="string" keyPath="_color" value="Blue"/>
-                                                                <userDefinedRuntimeAttribute type="string" keyPath="_borderColor" value="Clear"/>
-                                                                <userDefinedRuntimeAttribute type="string" keyPath="_titleColorNormal" value="White"/>
-                                                                <userDefinedRuntimeAttribute type="string" keyPath="_titleColorHighlighted" value="GrayLight"/>
-                                                                <userDefinedRuntimeAttribute type="string" keyPath="_titleFontStyle" value="Footnote"/>
-                                                                <userDefinedRuntimeAttribute type="string" keyPath="normalLocalizedKey" value="social_following.friend.buttons.follow"/>
-                                                            </userDefinedRuntimeAttributes>
-                                                            <connections>
-                                                                <action selector="followButtonTapped:" destination="Ltx-Pe-78v" eventType="touchUpInside" id="H4m-NN-Cpt"/>
-                                                            </connections>
                                                         </button>
-                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="HAe-75-PHH" customClass="BorderButton" customModule="Library">
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="HAe-75-PHH">
                                                             <rect key="frame" x="76" y="0.0" width="97" height="44"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="44" id="Mhz-yi-akA"/>
                                                             </constraints>
                                                             <inset key="contentEdgeInsets" minX="16" minY="0.0" maxX="16" maxY="0.0"/>
                                                             <state key="normal" title="Following"/>
-                                                            <userDefinedRuntimeAttributes>
-                                                                <userDefinedRuntimeAttribute type="string" keyPath="_color" value="GrayLight"/>
-                                                                <userDefinedRuntimeAttribute type="string" keyPath="_borderColor" value="Clear"/>
-                                                                <userDefinedRuntimeAttribute type="string" keyPath="_titleColorNormal" value="GrayDark"/>
-                                                                <userDefinedRuntimeAttribute type="string" keyPath="_titleColorHighlighted" value="GrayDark"/>
-                                                                <userDefinedRuntimeAttribute type="string" keyPath="_titleFontStyle" value="Footnote"/>
-                                                                <userDefinedRuntimeAttribute type="string" keyPath="normalLocalizedKey" value="social_following.friend.buttons.following"/>
-                                                            </userDefinedRuntimeAttributes>
-                                                            <connections>
-                                                                <action selector="unfollowButtonTapped:" destination="Ltx-Pe-78v" eventType="touchUpInside" id="r9d-TI-dYC"/>
-                                                            </connections>
                                                         </button>
                                                     </subviews>
                                                 </stackView>
@@ -295,77 +227,57 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Abj-86-lVQ">
-                                            <rect key="frame" x="321" y="8" width="46" height="30"/>
-                                            <state key="normal" title="Button">
+                                            <rect key="frame" x="337" y="8" width="30" height="30"/>
+                                            <state key="normal">
                                                 <color key="titleColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             </state>
-                                            <connections>
-                                                <action selector="closeButtonTapped:" destination="9Vt-9F-2Mp" eventType="touchUpInside" id="8hE-89-UBa"/>
-                                            </connections>
                                         </button>
-                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="3me-Wq-2g0">
-                                            <rect key="frame" x="36" y="24" width="303" height="146"/>
+                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="3me-Wq-2g0">
+                                            <rect key="frame" x="8" y="8" width="359" height="156"/>
                                             <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="QUU-La-sfv">
-                                                    <rect key="frame" x="0.0" y="0.0" width="303" height="87"/>
+                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="QUU-La-sfv">
+                                                    <rect key="frame" x="0.0" y="0.0" width="359" height="88"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Friends Recommend the Best Projects" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KOC-28-Z5S" customClass="StyledLabel" customModule="Library">
-                                                            <rect key="frame" x="5" y="0.0" width="293" height="21"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Friends Recommend the Best Projects" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KOC-28-Z5S">
+                                                            <rect key="frame" x="33" y="0.0" width="293" height="21"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
-                                                            <userDefinedRuntimeAttributes>
-                                                                <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Subhead"/>
-                                                                <userDefinedRuntimeAttribute type="string" keyPath="_weight" value="Medium"/>
-                                                                <userDefinedRuntimeAttribute type="string" keyPath="_color" value="Black"/>
-                                                                <userDefinedRuntimeAttribute type="string" keyPath="localizedKey" value="social_following.header.friends_recommend_the_best_projects"/>
-                                                            </userDefinedRuntimeAttributes>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Connect with Facebook to follow your friends and get notified whenever they launch or back a new project." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EQb-ga-DsL" customClass="StyledLabel" customModule="Library">
-                                                            <rect key="frame" x="2" y="26" width="299" height="61"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Connect with Facebook to follow your friends and get notified whenever they launch or back a new project." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EQb-ga-DsL">
+                                                            <rect key="frame" x="1" y="27" width="358" height="61"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
-                                                            <userDefinedRuntimeAttributes>
-                                                                <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Caption1"/>
-                                                                <userDefinedRuntimeAttribute type="string" keyPath="_color" value="Black"/>
-                                                                <userDefinedRuntimeAttribute type="string" keyPath="localizedKey" value="social_following.header.connect_with_facebook_to_follow"/>
-                                                            </userDefinedRuntimeAttributes>
                                                         </label>
                                                     </subviews>
                                                 </stackView>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8iH-eM-TfY" customClass="BorderButton" customModule="Library">
-                                                    <rect key="frame" x="0.0" y="102" width="303" height="44"/>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8iH-eM-TfY">
+                                                    <rect key="frame" x="0.0" y="112" width="359" height="44"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="44" id="NiL-CU-9Ez"/>
                                                     </constraints>
                                                     <state key="normal" title="Connect with Facebook"/>
-                                                    <userDefinedRuntimeAttributes>
-                                                        <userDefinedRuntimeAttribute type="string" keyPath="_color" value="FacebookBlue"/>
-                                                        <userDefinedRuntimeAttribute type="string" keyPath="_borderColor" value="Clear"/>
-                                                        <userDefinedRuntimeAttribute type="string" keyPath="_titleColorNormal" value="White"/>
-                                                    </userDefinedRuntimeAttributes>
-                                                    <connections>
-                                                        <action selector="facebookConnectButtonTapped:" destination="9Vt-9F-2Mp" eventType="touchUpInside" id="IAI-r5-f0j"/>
-                                                    </connections>
                                                 </button>
                                             </subviews>
                                         </stackView>
                                     </subviews>
-                                    <color key="backgroundColor" red="0.86111108319999996" green="0.97082921529999999" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <constraints>
                                         <constraint firstAttribute="trailingMargin" secondItem="Abj-86-lVQ" secondAttribute="trailing" id="4Zq-fA-Zxw"/>
                                         <constraint firstItem="Abj-86-lVQ" firstAttribute="top" secondItem="yHZ-jB-hHI" secondAttribute="topMargin" id="CBN-DJ-4uC"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="3me-Wq-2g0" secondAttribute="trailing" constant="28" id="QUK-6H-1lK"/>
-                                        <constraint firstItem="3me-Wq-2g0" firstAttribute="leading" secondItem="yHZ-jB-hHI" secondAttribute="leadingMargin" constant="28" id="Zkw-Eu-dyH"/>
-                                        <constraint firstItem="3me-Wq-2g0" firstAttribute="top" secondItem="yHZ-jB-hHI" secondAttribute="topMargin" constant="16" id="amW-OA-D5H"/>
-                                        <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="3me-Wq-2g0" secondAttribute="bottom" constant="16" id="laA-lv-ua4"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="3me-Wq-2g0" secondAttribute="trailing" id="QUK-6H-1lK"/>
+                                        <constraint firstItem="3me-Wq-2g0" firstAttribute="leading" secondItem="yHZ-jB-hHI" secondAttribute="leadingMargin" id="Zkw-Eu-dyH"/>
+                                        <constraint firstItem="3me-Wq-2g0" firstAttribute="top" secondItem="yHZ-jB-hHI" secondAttribute="topMargin" id="amW-OA-D5H"/>
+                                        <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="3me-Wq-2g0" secondAttribute="bottom" id="laA-lv-ua4"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <edgeInsets key="layoutMargins" top="16" left="16" bottom="16" right="16"/>
                                 <connections>
                                     <outlet property="closeButton" destination="Abj-86-lVQ" id="FKY-Aj-bYd"/>
                                     <outlet property="facebookConnectButton" destination="8iH-eM-TfY" id="vgi-rT-wzJ"/>
+                                    <outlet property="subtitleLabel" destination="EQb-ga-DsL" id="L4I-0w-CAt"/>
+                                    <outlet property="titleLabel" destination="KOC-28-Z5S" id="OBh-v1-b5N"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -374,7 +286,7 @@
                             <outlet property="delegate" destination="3ir-xv-YhI" id="kKL-gk-3sS"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Follow your friends!" id="6FA-85-bp3"/>
+                    <navigationItem key="navigationItem" id="6FA-85-bp3"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bZS-hO-REq" userLabel="First Responder" sceneMemberID="firstResponder"/>

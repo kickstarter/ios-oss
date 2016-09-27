@@ -55,10 +55,6 @@ public final class FindFriendsStatsCellViewModel: FindFriendsStatsCellViewModelT
     self.notifyDelegateShowFollowAllFriendsAlert = remoteFriendCount
       .map { $0 }
       .takeWhen(self.followAllButtonTappedProperty.signal)
-
-    self.configureWithSourceProperty.signal
-      .takeWhen(self.followAllButtonTappedProperty.signal)
-      .observeNext { AppEnvironment.current.koala.trackFriendFollowAll(source: $0) }
   }
 
   public var inputs: FindFriendsStatsCellViewModelInputs { return self }

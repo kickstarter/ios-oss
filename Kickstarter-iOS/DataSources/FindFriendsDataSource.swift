@@ -1,24 +1,25 @@
-import Library
 import KsApi
+import Library
+import Prelude
 import UIKit
 
 internal final class FindFriendsDataSource: ValueCellDataSource {
   private enum Section: Int {
-    case FacebookConnect
-    case Stats
-    case Friends
+    case facebookConnect
+    case stats
+    case friends
   }
 
   internal func facebookConnect(source source: FriendsSource, visible: Bool) {
     self.set(values: visible ? [source] : [],
              cellClass: FindFriendsFacebookConnectCell.self,
-             inSection: Section.FacebookConnect.rawValue)
+             inSection: Section.facebookConnect.rawValue)
   }
 
   internal func stats(stats stats: FriendStatsEnvelope, source: FriendsSource) {
     self.set(values: [(stats, source)],
              cellClass: FindFriendsStatsCell.self,
-             inSection: Section.Stats.rawValue)
+             inSection: Section.stats.rawValue)
   }
 
   internal func friends(friends: [User], source: FriendsSource) {
@@ -26,7 +27,7 @@ internal final class FindFriendsDataSource: ValueCellDataSource {
 
     self.set(values: friendAndSource,
              cellClass: FindFriendsFriendFollowCell.self,
-             inSection: Section.Friends.rawValue)
+             inSection: Section.friends.rawValue)
   }
 
   override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {

@@ -11,7 +11,6 @@ import Prelude
 final class FindFriendsViewModelTests: TestCase {
   let vm: FindFriendsViewModelType = FindFriendsViewModel()
 
-  let title = TestObserver<String, NoError>()
   let friends = TestObserver<[User], NoError>()
   let showFacebookConnect = TestObserver<Bool, NoError>()
   let goToDiscovery = TestObserver<DiscoveryParams, NoError>()
@@ -24,7 +23,6 @@ final class FindFriendsViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
-    vm.outputs.title.observe(title.observer)
     vm.outputs.friends.map { $0.0 }.observe(friends.observer)
     vm.outputs.showFacebookConnect.map { $0.1 }.observe(showFacebookConnect.observer)
     vm.outputs.goToDiscovery.observe(goToDiscovery.observer)
@@ -64,16 +62,6 @@ final class FindFriendsViewModelTests: TestCase {
                    self.trackingClient.events)
     XCTAssertEqual(["find-friends", "activity", "discovery", "settings"],
                    self.trackingClient.properties.map { $0["source"] as! String? })
-  }
-
-  func testTitle() {
-    vm.inputs.configureWith(source: FriendsSource.findFriends)
-
-    title.assertValueCount(0)
-
-    vm.inputs.viewDidLoad()
-
-    title.assertValues([Strings.Follow_friends()])
   }
 
   func testGoToDiscovery() {

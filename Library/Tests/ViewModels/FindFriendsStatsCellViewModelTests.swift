@@ -66,6 +66,5 @@ final class FindFriendsStatsCellViewModelTests: TestCase {
     vm.inputs.followAllButtonTapped()
 
     showFollowAllFriendsAlert.assertValues([1000], "Show Follow All Friends alert with friend count")
-    XCTAssertEqual(["Facebook Friend Follow All"], self.trackingClient.events)
   }
 }

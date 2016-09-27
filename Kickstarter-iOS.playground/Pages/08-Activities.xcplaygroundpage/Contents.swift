@@ -6,7 +6,7 @@ import UIKit
 import XCPlayground
 @testable import Kickstarter_Framework
 
-let activities = [.update, .backing, .follow, .launch, .success, .failure, .suspension]
+let activities = [.follow, .update, .backing, .launch, .success, .failure, .suspension]
   .map {
     .template
       |> Activity.lens.project .~ .cosmicSurgery

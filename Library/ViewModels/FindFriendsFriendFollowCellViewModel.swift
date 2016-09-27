@@ -40,6 +40,9 @@ public protocol FindFriendsFriendFollowCellViewModelOutputs {
   /// Emits friend's name
   var name: Signal<String, NoError> { get }
 
+  /// Emits to notify delegate that a friend was updated.
+  var notifyDelegateFriendUpdated: Signal<User, NoError> { get }
+
   /// Emits number of projects backed text
   var projectsBackedText: Signal<String, NoError> { get }
 
@@ -56,9 +59,7 @@ public final class FindFriendsFriendFollowCellViewModel: FindFriendsFriendFollow
   FindFriendsFriendFollowCellViewModelInputs, FindFriendsFriendFollowCellViewModelOutputs {
   // swiftlint:disable function_body_length
   public init() {
-    let friend = self.configureWithFriendProperty.signal
-      .ignoreNil()
-      .map(cached(friend:))
+    let friend = self.configureWithFriendProperty.signal.ignoreNil()
 
     self.imageURL = friend.map { NSURL.init(string: $0.avatar.medium) }
 
@@ -107,21 +108,20 @@ public final class FindFriendsFriendFollowCellViewModel: FindFriendsFriendFollow
               isLoadingUnfollowRequest.value = false
           })
           .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
+          .mapConst(user |> User.lens.isFriend .~ false)
           .materialize()
     }
 
-    let updatedFriendToFollowed = followFriendEvent
-      .values()
-      .on(next: { cache(friend: $0, isFriend: true) })
+    self.notifyDelegateFriendUpdated = Signal.merge(
+      followFriendEvent.values(),
+      unfollowFriendEvent.values()
+    )
 
-    let updatedFriendToUnfollowed = friend
-      .takeWhen(unfollowFriendEvent.values())
-      .map(User.lens.isFriend .~ false)
-      .on(next: { cache(friend: $0, isFriend: false) })
-
-    let friendStatusChanged = Signal.merge(friend, updatedFriendToFollowed, updatedFriendToUnfollowed)
-
-    let isFollowed = friendStatusChanged.map { $0.isFriend ?? false }
+    let isFollowed = Signal.merge(
+      friend,
+      self.notifyDelegateFriendUpdated
+      )
+      .map { $0.isFriend ?? false }
 
     self.hideFollowButton = isFollowed.skipRepeats()
 
@@ -178,22 +178,8 @@ public final class FindFriendsFriendFollowCellViewModel: FindFriendsFriendFollow
   public let imageURL: Signal<NSURL?, NoError>
   public let location: Signal<String, NoError>
   public let name: Signal<String, NoError>
+  public let notifyDelegateFriendUpdated: Signal<User, NoError>
   public let projectsBackedText: Signal<String, NoError>
   public let projectsCreatedText: Signal<String, NoError>
   public let hideProjectsCreated: Signal<Bool, NoError>
-}
-
-private func cacheKey(forFriend friend: User) -> String {
-  return "find_friends_follow_view_model_friend_\(friend.id)"
-}
-
-private func cached(friend friend: User) -> User {
-  let key = cacheKey(forFriend: friend)
-  let isFriend = AppEnvironment.current.cache[key] as? Bool
-  return friend |> User.lens.isFriend .~ (isFriend ?? friend.isFriend)
-}
-
-private func cache(friend friend: User, isFriend: Bool) {
-  let key = cacheKey(forFriend: friend)
-  AppEnvironment.current.cache[key] = isFriend
 }

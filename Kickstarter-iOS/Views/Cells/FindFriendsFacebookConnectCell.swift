@@ -1,7 +1,8 @@
-import UIKit
-import Library
-import ReactiveCocoa
 import FBSDKLoginKit
+import Library
+import Prelude
+import ReactiveCocoa
+import UIKit
 
 protocol FindFriendsFacebookConnectCellDelegate: class {
   func findFriendsFacebookConnectCellDidFacebookConnectUser()
@@ -12,7 +13,9 @@ protocol FindFriendsFacebookConnectCellDelegate: class {
 internal final class FindFriendsFacebookConnectCell: UITableViewCell, ValueCell {
 
   @IBOutlet private weak var closeButton: UIButton!
-  @IBOutlet private weak var facebookConnectButton: BorderButton!
+  @IBOutlet private weak var facebookConnectButton: UIButton!
+  @IBOutlet private weak var subtitleLabel: UILabel!
+  @IBOutlet private weak var titleLabel: UILabel!
 
   internal weak var delegate: FindFriendsFacebookConnectCellDelegate?
 
@@ -26,8 +29,12 @@ internal final class FindFriendsFacebookConnectCell: UITableViewCell, ValueCell 
     return manager
   }()
 
+  internal func configureWith(value source: FriendsSource) {
+    self.viewModel.inputs.configureWith(source: source)
+  }
+
   // swiftlint:disable function_body_length
-  override func bindViewModel() {
+  internal override func bindViewModel() {
     self.closeButton.rac.hidden = self.viewModel.outputs.hideCloseButton
 
     self.viewModel.outputs.attemptFacebookLogin
@@ -65,8 +72,35 @@ internal final class FindFriendsFacebookConnectCell: UITableViewCell, ValueCell 
   }
   // swiftlint:enable function_body_length
 
-  func configureWith(value source: FriendsSource) {
-    self.viewModel.inputs.configureWith(source: source)
+  internal override func bindStyles() {
+    super.bindStyles()
+
+    self.titleLabel
+      |> UILabel.lens.font .~ .ksr_title3()
+      |> UILabel.lens.textColor .~ .ksr_text_navy_900
+      |> UILabel.lens.text %~ { _ in Strings.Discover_more_projects() }
+
+    self.subtitleLabel
+      |> UILabel.lens.font .~ .ksr_subhead()
+      |> UILabel.lens.textColor .~ .ksr_text_navy_600
+      |> UILabel.lens.text %~ { _ in Strings.Connect_with_Facebook_to_follow_friends_and_get_notified() }
+
+    self.closeButton
+      |> UIButton.lens.targets .~ [(self, action: #selector(closeButtonTapped), .TouchUpInside)]
+
+    self.facebookConnectButton
+      |> facebookButtonStyle
+      |> UIButton.lens.targets .~ [(self, action: #selector(facebookConnectButtonTapped), .TouchUpInside)]
+      |> UIButton.lens.title(forState: .Normal) %~ { _ in
+        Strings.general_social_buttons_connect_with_facebook()
+    }
+
+    self
+      |> UITableViewCell.lens.selectionStyle .~ .None
+      |> UITableViewCell.lens.contentView.layoutMargins .~ .init(top: Styles.grid(4),
+                                                                 left: Styles.grid(4),
+                                                                 bottom: Styles.grid(4),
+                                                                 right: Styles.grid(4))
   }
 
   // MARK: Facebook Login
@@ -83,11 +117,11 @@ internal final class FindFriendsFacebookConnectCell: UITableViewCell, ValueCell 
     }
   }
 
-  @IBAction func closeButtonTapped(sender: AnyObject) {
+  @objc func closeButtonTapped() {
     self.viewModel.inputs.closeButtonTapped()
   }
 
-  @IBAction func facebookConnectButtonTapped(sender: AnyObject) {
+  @objc func facebookConnectButtonTapped() {
     self.viewModel.inputs.facebookConnectButtonTapped()
   }
 }

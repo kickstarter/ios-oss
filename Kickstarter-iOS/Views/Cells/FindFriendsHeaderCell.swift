@@ -1,20 +1,27 @@
-import UIKit
 import Library
+import Prelude
 import ReactiveCocoa
+import UIKit
 
-protocol FindFriendsHeaderCellDelegate {
+protocol FindFriendsHeaderCellDelegate: class {
   func findFriendsHeaderCellDismissHeader()
   func findFriendsHeaderCellGoToFriends()
 }
 
 internal final class FindFriendsHeaderCell: UITableViewCell, ValueCell {
 
-  @IBOutlet private weak var findFriendsButton: BorderButton!
   @IBOutlet private weak var closeButton: UIButton!
+  @IBOutlet private weak var findFriendsButton: UIButton!
+  @IBOutlet private weak var subtitleLabel: UILabel!
+  @IBOutlet private weak var titleLabel: UILabel!
 
-  internal var delegate: FindFriendsHeaderCellDelegate?
+  internal weak var delegate: FindFriendsHeaderCellDelegate?
 
   private let viewModel: FindFriendsHeaderCellViewModelType = FindFriendsHeaderCellViewModel()
+
+  func configureWith(value source: FriendsSource) {
+    self.viewModel.inputs.configureWith(source: source)
+  }
 
   override func bindViewModel() {
     self.viewModel.outputs.notifyDelegateGoToFriends
@@ -28,15 +35,39 @@ internal final class FindFriendsHeaderCell: UITableViewCell, ValueCell {
     }
   }
 
-  func configureWith(value source: FriendsSource) {
-    self.viewModel.inputs.configureWith(source: source)
+  internal override func bindStyles() {
+    super.bindStyles()
+
+    self.titleLabel
+      |> UILabel.lens.font .~ .ksr_title3()
+      |> UILabel.lens.textColor .~ .ksr_text_navy_900
+      |> UILabel.lens.text %~ { _ in Strings.Discover_more_projects() }
+
+    self.subtitleLabel
+      |> UILabel.lens.font .~ .ksr_subhead()
+      |> UILabel.lens.textColor .~ .ksr_text_navy_600
+      |> UILabel.lens.text %~ { _ in Strings.Follow_your_Facebook_friends_and_get_notified() }
+
+    self.closeButton
+      |> UIButton.lens.targets .~ [(self, action: #selector(closeButtonTapped), .TouchUpInside)]
+
+    self.findFriendsButton
+      |> greenButtonStyle
+      |> UIButton.lens.targets .~ [(self, action: #selector(findFriendsButtonTapped), .TouchUpInside)]
+      |> UIButton.lens.title(forState: .Normal) %~ { _ in
+        Strings.social_following_header_button_find_your_friends()
+    }
+
+    self
+      |> baseTableViewCellStyle()
+      |> UITableViewCell.lens.contentView.layoutMargins .~ .init(all: Styles.grid(4))
   }
 
-  @IBAction func closeButtonTapped(sender: AnyObject) {
+  @objc func closeButtonTapped() {
     self.viewModel.inputs.closeButtonTapped()
   }
 
-  @IBAction func findFriendsButtonTapped(sender: AnyObject) {
+  @objc func findFriendsButtonTapped() {
     self.viewModel.inputs.findFriendsButtonTapped()
   }
 }
