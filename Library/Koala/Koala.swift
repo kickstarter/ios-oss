@@ -1,9 +1,10 @@
 // swiftlint:disable file_length
 // swiftlint:disable type_body_length
 import CoreTelephony
-import UIKit
 import KsApi
+import PassKit
 import Prelude
+import UIKit
 
 public final class Koala {
   internal static let DeprecatedKey = "DEPRECATED"
@@ -14,6 +15,7 @@ public final class Koala {
   private let device: UIDeviceType
   internal let loggedInUser: User?
   private let screen: UIScreenType
+  private let distinctId: String
 
   /**
    Determines the place from which the message dialog was presented.
@@ -61,13 +63,15 @@ public final class Koala {
               config: Config? = nil,
               device: UIDeviceType = UIDevice.currentDevice(),
               loggedInUser: User? = nil,
-              screen: UIScreenType = UIScreen.mainScreen()) {
+              screen: UIScreenType = UIScreen.mainScreen(),
+              distinctId: String = (UIDevice.currentDevice().identifierForVendor ?? NSUUID()).UUIDString) {
     self.bundle = bundle
     self.client = client
     self.config = config
     self.device = device
     self.loggedInUser = loggedInUser
     self.screen = screen
+    self.distinctId = distinctId
   }
 
   /// Call when the activities screen is shown.
@@ -1070,10 +1074,15 @@ public final class Koala {
     props["app_version"] = self.bundle.infoDictionary?["CFBundleVersion"]
     props["app_release"] = self.bundle.infoDictionary?["CFBundleShortVersionString"]
     props["model"] = Koala.deviceModel
+    props["distinct_id"] = self.distinctId
+    props["device_fingerprint"] = self.distinctId
+    props["iphone_uuid"] = self.distinctId
     props["os"] = self.device.systemName
     props["os_version"] = self.device.systemVersion
     props["screen_width"] = UInt(self.screen.bounds.width)
     props["screen_height"] = UInt(self.screen.bounds.height)
+    props["device_orientation"] = Koala.deviceOrientation
+    props["preferred_content_size_category"] = UIApplication.sharedApplication().preferredContentSizeCategory
 
     props["koala_lib"] = "iphone"
 
@@ -1089,6 +1098,9 @@ public final class Koala {
     props["user_logged_in"] = loggedInUser != nil
     props["user_country"] = self.loggedInUser?.location?.country ?? self.config?.countryCode
 
+    props["apple_pay_capable"] = PKPaymentAuthorizationViewController.applePayCapable()
+    props["apple_pay_device"] = PKPaymentAuthorizationViewController.applePayDevice()
+
     return props
   }
 
@@ -1099,6 +1111,25 @@ public final class Koala {
     sysctlbyname("hw.machine", &machine, &size, nil, 0)
     return String.fromCString(machine)
   }()
+
+  private static var deviceOrientation: String {
+    switch UIDevice.currentDevice().orientation {
+    case .FaceDown:
+      return "Face Down"
+    case .FaceUp:
+      return "Face Up"
+    case .LandscapeLeft:
+      return "Landscape Left"
+    case .LandscapeRight:
+      return "Landscape Right"
+    case .Portrait:
+      return "Portrait"
+    case .PortraitUpsideDown:
+      return "Portrait Upside Down"
+    case .Unknown:
+      return "Unknown"
+    }
+  }
 
   private var deviceFormat: String {
     switch self.device.userInterfaceIdiom {
@@ -1122,7 +1153,7 @@ private func properties(project project: Project,
                                 loggedInUser: User?,
                                 prefix: String = "project_") -> [String:AnyObject] {
 
-  var props = [String:AnyObject]()
+  var props: [String:AnyObject] = [:]
 
   props["backers_count"] = project.stats.backersCount
   props["country"] = project.country.countryCode
@@ -1182,7 +1213,7 @@ private func properties(comment comment: Comment, prefix: String = "comment_") -
 
 private func properties(user user: User, prefix: String = "user_") -> [String:AnyObject] {
 
-  var properties = [String:AnyObject]()
+  var properties: [String:AnyObject] = [:]
 
   properties["uid"] = user.id
   properties["backed_projects_count"] = user.stats.backedProjectsCount
@@ -1268,27 +1299,28 @@ private func properties(shareContext shareContext: ShareContext,
 
 private func shareTypeProperty(shareType: String?) -> String {
   #if os(iOS)
-  guard let shareType = shareType else { return "" }
+    guard let shareType = shareType else { return "" }
 
-  if shareType == UIActivityTypePostToFacebook {
-    return "facebook"
-  } else if shareType == UIActivityTypeMessage {
-    return "message"
-  } else if shareType == UIActivityTypeMail {
-    return "email"
-  } else if shareType == UIActivityTypeCopyToPasteboard {
-    return "copy link"
-  } else if shareType == UIActivityTypePostToTwitter {
-    return "twitter"
-  } else if shareType == "com.apple.mobilenotes.SharingExtension" {
-    return "notes"
-  } else if shareType == SafariActivityType {
-    return "safari"
-  } else {
-    return shareType
-  }
+    switch shareType {
+    case UIActivityTypePostToFacebook:
+      return "facebook"
+    case UIActivityTypeMessage:
+      return "message"
+    case UIActivityTypeMail:
+      return "email"
+    case UIActivityTypeCopyToPasteboard:
+      return "copy link"
+    case UIActivityTypePostToTwitter:
+      return "twitter"
+    case "com.apple.mobilenotes.SharingExtension":
+      return "notes"
+    case SafariActivityType:
+      return "safari"
+    default:
+      return shareType
+    }
   #else
-  return ""
+    return ""
   #endif
 }
 
@@ -1298,13 +1330,13 @@ extension Koala {
     public static let loggedInUser = Lens<Koala, User?>(
       view: { $0.loggedInUser },
       set: { Koala(bundle: $1.bundle, client: $1.client, config: $1.config, device: $1.device,
-        loggedInUser: $0, screen: $1.screen) }
+        loggedInUser: $0, screen: $1.screen, distinctId: $1.distinctId) }
     )
 
     public static let config = Lens<Koala, Config?>(
       view: { $0.config },
       set: { Koala(bundle: $1.bundle, client: $1.client, config: $0, device: $1.device,
-        loggedInUser: $1.loggedInUser, screen: $1.screen) }
+        loggedInUser: $1.loggedInUser, screen: $1.screen, distinctId: $1.distinctId) }
     )
   }
 }
