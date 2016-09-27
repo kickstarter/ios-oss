@@ -200,8 +200,14 @@ RewardPledgeViewModelOutputs {
       .skipRepeats(==)
 
     let shippingRules = projectAndReward
-      .switchMap { project, reward in
-        AppEnvironment.current.apiService.fetchRewardShippingRules(projectId: project.id, rewardId: reward.id)
+      .switchMap { (project, reward) -> SignalProducer<[ShippingRule], NoError> in
+        guard reward != Reward.noReward else {
+          return SignalProducer<[ShippingRule], NoError>(value: [])
+        }
+
+        return AppEnvironment.current.apiService.fetchRewardShippingRules(
+          projectId: project.id, rewardId: reward.id
+          )
           .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
           .map(ShippingRulesEnvelope.lens.shippingRules.view)
           .demoteErrors()
@@ -270,7 +276,7 @@ RewardPledgeViewModelOutputs {
     )
 
     self.readMoreContainerViewHidden = Signal.merge(
-      self.viewDidLoadProperty.signal.mapConst(false),
+      reward.map { $0 == Reward.noReward },
       self.descriptionLabelTappedProperty.signal.mapConst(true)
     )
 
@@ -868,9 +874,13 @@ private func createApplePayPledge(
 private func navigationTitle(forProject project: Project, reward: Reward) -> String {
 
   guard project.personalization.isBacking != true else {
-    return reward == Reward.noReward
-      ? localizedString(key: "Manage_your_pledge", defaultValue: "Manage your pledge")
-      : localizedString(key: "Manage_your_reward", defaultValue: "Manage your reward")
+    if reward == Reward.noReward {
+      return localizedString(key: "Manage_your_pledge", defaultValue: "Manage your pledge")
+    } else if userIsBacking(reward: reward, inProject: project) {
+      return localizedString(key: "Manage_your_reward", defaultValue: "Manage your reward")
+    } else {
+      return localizedString(key: "Select_this_reward_instead", defaultValue: "Select this reward instead")
+    }
   }
 
   guard reward != Reward.noReward else {
@@ -884,8 +894,8 @@ private func navigationTitle(forProject project: Project, reward: Reward) -> Str
 }
 
 private func userIsBacking(reward reward: Reward, inProject project: Project) -> Bool {
-  return project.personalization.backing?.rewardId == reward.id
-    || project.personalization.backing?.reward?.id == reward.id
+  return project.personalization.backing?.reward?.id == reward.id
+    || project.personalization.backing?.rewardId == reward.id
 }
 
 private func minAndMaxPledgeAmount(forProject project: Project, reward: Reward) -> (min: Int, max: Int) {

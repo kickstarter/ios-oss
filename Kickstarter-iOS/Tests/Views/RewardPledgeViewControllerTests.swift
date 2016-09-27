@@ -129,4 +129,42 @@ internal final class RewardPledgeViewControllerTests: TestCase {
       }
     }
   }
+
+  func testPledge_NoReward_NoApplePay() {
+    let reward = Reward.noReward
+    let project = self.cosmicSurgery |> Project.lens.country .~ .US
+
+    Language.allLanguages.forEach { language in
+      withEnvironment(language: language) {
+        let vc = RewardPledgeViewController.configuredWith(
+          project: project, reward: reward, applePayCapable: false
+        )
+        let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
+        parent.view.frame.size.height += 100
+
+        self.scheduler.run()
+
+        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)")
+      }
+    }
+  }
+
+  func testPledge_NoReward_ApplePay() {
+    let reward = Reward.noReward
+    let project = self.cosmicSurgery |> Project.lens.country .~ .US
+
+    Language.allLanguages.forEach { language in
+      withEnvironment(language: language) {
+        let vc = RewardPledgeViewController.configuredWith(
+          project: project, reward: reward, applePayCapable: true
+        )
+        let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
+        parent.view.frame.size.height += 100
+
+        self.scheduler.run()
+
+        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)")
+      }
+    }
+  }
 }

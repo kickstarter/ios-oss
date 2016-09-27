@@ -76,11 +76,13 @@ RewardCellViewModelOutputs {
 
     self.minimumLabelText = projectAndReward
       .map { project, reward in
-        Format.currency(reward.minimum, country: project.country)
+        reward == Reward.noReward
+          ? Format.currency(project.country.minPledge ?? 1, country: project.country)
+          : Format.currency(reward.minimum, country: project.country)
     }
 
     self.descriptionLabelText = reward
-      .map { $0.description }
+      .map { $0 == Reward.noReward ? "" : $0.description }
 
     self.remainingStackViewHidden = projectAndReward
       .map { project, reward in
@@ -99,10 +101,16 @@ RewardCellViewModelOutputs {
     }
 
     self.titleLabelHidden = reward
-      .map { $0.title == nil }
+      .map { $0.title == nil && $0 != Reward.noReward }
 
     self.titleLabelText = reward
-      .map { $0.title ?? "" }
+      .map {
+        $0 == Reward.noReward
+          // swiftlint:disable line_length
+          ? localizedString(key: "Id_just_like_to_support_the_project", defaultValue: "I’d just like to support the project.")
+          // swiftlint:enable line_length
+          : ($0.title ?? "")
+    }
 
     self.titleLabelTextColor = projectAndReward
       .map { project, reward in
@@ -164,7 +172,9 @@ RewardCellViewModelOutputs {
     }
 
     self.pledgeButtonTitleText = project.map {
-      $0.personalization.isBacking == true ? Strings.Change_to_this_reward() : Strings.Select_this_reward()
+      $0.personalization.isBacking == true
+        ? localizedString(key: "Select_this_reward_instead", defaultValue: "Select this reward instead")
+        : Strings.Select_this_reward()
     }
 
     let tappable = zip(project, reward, youreABacker)

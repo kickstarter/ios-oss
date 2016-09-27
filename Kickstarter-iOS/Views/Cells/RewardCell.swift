@@ -162,7 +162,9 @@ internal final class RewardCell: UITableViewCell, ValueCell {
     self.viewYourPledgeButton
       |> borderButtonStyle
       |> UIButton.lens.userInteractionEnabled .~ false
-      |> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.project_view_button() }
+      |> UIButton.lens.title(forState: .Normal) %~ { _ in
+        localizedString(key: "View_your_reward", defaultValue: "View your reward")
+    }
 
     self.viewModel.inputs.boundStyles()
   }

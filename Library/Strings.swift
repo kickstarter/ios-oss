@@ -354,8 +354,8 @@ public enum Strings {
   /**
    "Back this project below:"
 
-   - **es**: "Back this project below:"
-   - **de**: "Back this project below:"
+   - **es**: "Patrocina este proyecto:"
+   - **de**: "Dieses Projekt unterstützen:"
    - **fr**: "Je soutiens le projet ci-dessous :"
    - **it**: "Back this project below:"
    - **en**: "Back this project below:"
@@ -381,23 +381,6 @@ public enum Strings {
     return localizedString(
       key: "Backed_by_Friends",
       defaultValue: "Backed by Friends",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "Change to this reward"
-
-   - **es**: "Change to this reward"
-   - **de**: "Change to this reward"
-   - **fr**: "Choisir plutôt cette récompense"
-   - **it**: "Change to this reward"
-   - **en**: "Change to this reward"
-  */
-  public static func Change_to_this_reward() -> String {
-    return localizedString(
-      key: "Change_to_this_reward",
-      defaultValue: "Change to this reward",
       count: nil,
       substitutions: [:]
     )
@@ -524,9 +507,9 @@ public enum Strings {
   /**
    "Dismiss"
 
-   - **es**: "Dismiss"
-   - **de**: "Dismiss"
-   - **fr**: "Dismiss"
+   - **es**: "Descartar"
+   - **de**: "Verwerfen"
+   - **fr**: "Ignorer"
    - **it**: "Dismiss"
    - **en**: "Dismiss"
   */
@@ -624,11 +607,28 @@ public enum Strings {
     )
   }
   /**
+   "Explore projects"
+
+   - **es**: "Explora proyectos"
+   - **de**: "Projekte erkunden"
+   - **fr**: "Découvrir des projets"
+   - **it**: "Explore projects"
+   - **en**: "Explore projects"
+  */
+  public static func Explore_projects() -> String {
+    return localizedString(
+      key: "Explore_projects",
+      defaultValue: "Explore projects",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Filter by all projects"
 
-   - **es**: "Filter by all projects"
-   - **de**: "Filter by all projects"
-   - **fr**: "Filter by all projects"
+   - **es**: "Filtro: Todos los proyectos"
+   - **de**: "Filter: Alle Projekte"
+   - **fr**: "Filtrer : tous les projets"
    - **it**: "Filter by all projects"
    - **en**: "Filter by all projects"
   */
@@ -643,9 +643,9 @@ public enum Strings {
   /**
    "Filter by %{category_name}"
 
-   - **es**: "Filter by %{category_name}"
-   - **de**: "Filter by %{category_name}"
-   - **fr**: "Filter by %{category_name}"
+   - **es**: "Filtro: %{category_name}"
+   - **de**: "Filter: %{category_name}"
+   - **fr**: "Filtrer par catégorie : %{category_name}"
    - **it**: "Filter by %{category_name}"
    - **en**: "Filter by %{category_name}"
   */
@@ -660,9 +660,9 @@ public enum Strings {
   /**
    "Filter by projects backed by friends"
 
-   - **es**: "Filter by projects backed by friends"
-   - **de**: "Filter by projects backed by friends"
-   - **fr**: "Filter by projects backed by friends"
+   - **es**: "Filtro: Proyectos patrocinados por amigos"
+   - **de**: "Filter: Von Freunden unterstützte Projekte"
+   - **fr**: "Filtrer : engagements de mes amis"
    - **it**: "Filter by projects backed by friends"
    - **en**: "Filter by projects backed by friends"
   */
@@ -677,9 +677,9 @@ public enum Strings {
   /**
    "Filter by projects recommended for you"
 
-   - **es**: "Filter by projects recommended for you"
-   - **de**: "Filter by projects recommended for you"
-   - **fr**: "Filter by projects recommended for you"
+   - **es**: "Filtro: Proyectos recomendados"
+   - **de**: "Filter: Für dich empfohlene Projekte"
+   - **fr**: "Filtrer : recommandations"
    - **it**: "Filter by projects recommended for you"
    - **en**: "Filter by projects recommended for you"
   */
@@ -694,9 +694,9 @@ public enum Strings {
   /**
    "Filter by projects we love"
 
-   - **es**: "Filter by projects we love"
-   - **de**: "Filter by projects we love"
-   - **fr**: "Filter by projects we love"
+   - **es**: "Filtro: Nuestros favoritos"
+   - **de**: "Filter: Team-Favoriten"
+   - **fr**: "Filtrer : Coups de cœur"
    - **it**: "Filter by projects we love"
    - **en**: "Filter by projects we love"
   */
@@ -711,9 +711,9 @@ public enum Strings {
   /**
    "Filter by starred projects"
 
-   - **es**: "Filter by starred projects"
-   - **de**: "Filter by starred projects"
-   - **fr**: "Filter by starred projects"
+   - **es**: "Filtro: Tus favoritos"
+   - **de**: "Filter: Favoriten"
+   - **fr**: "Filtrer : mes projets préférés"
    - **it**: "Filter by starred projects"
    - **en**: "Filter by starred projects"
   */
@@ -728,9 +728,9 @@ public enum Strings {
   /**
    "Filter by %{subcategory_name} in %{category_name}"
 
-   - **es**: "Filter by %{subcategory_name} in %{category_name}"
-   - **de**: "Filter by %{subcategory_name} in %{category_name}"
-   - **fr**: "Filter by %{subcategory_name} in %{category_name}"
+   - **es**: "Filtro: %{subcategory_name} en %{category_name}"
+   - **de**: "Filter: %{subcategory_name} in %{category_name}"
+   - **fr**: "Filtrer : %{subcategory_name}, sous %{category_name}"
    - **it**: "Filter by %{subcategory_name} in %{category_name}"
    - **en**: "Filter by %{subcategory_name} in %{category_name}"
   */
@@ -755,6 +755,40 @@ public enum Strings {
     return localizedString(
       key: "Find_Facebook_Friends",
       defaultValue: "Find Facebook friends",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Find and follow friends"
+
+   - **es**: "Encontrar y seguir a amigos"
+   - **de**: "Freunde finden und folgen"
+   - **fr**: "Retrouver et suivre mes amis"
+   - **it**: "Find and follow friends"
+   - **en**: "Find and follow friends"
+  */
+  public static func Find_and_follow_friends() -> String {
+    return localizedString(
+      key: "Find_and_follow_friends",
+      defaultValue: "Find and follow friends",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Find projects you’ll love and help bring creative ideas to life."
+
+   - **es**: "Aquí encuentras proyectos a tu gusto - ¡tu contribución ayudará a hacerlos realidad!"
+   - **de**: "Finde Projekte, die zu dir passen und hilf mit bei der Umsetzung neuer, kreativer Ideen."
+   - **fr**: "Découvrez de beaux projets et participez à la concrétisation d'idées créatives."
+   - **it**: "Find projects you’ll love and help bring creative ideas to life."
+   - **en**: "Find projects you’ll love and help bring creative ideas to life."
+  */
+  public static func Find_projects_youll_love_and_help_bring() -> String {
+    return localizedString(
+      key: "Find_projects_youll_love_and_help_bring",
+      defaultValue: "Find projects you’ll love and help bring creative ideas to life.",
       count: nil,
       substitutions: [:]
     )
@@ -811,6 +845,23 @@ public enum Strings {
     )
   }
   /**
+   "Follow your Facebook friends and keep up with the projects they back and launch."
+
+   - **es**: "Sigue a tus amigos de Facebook y entérate cuando patrocinan o publican un proyecto."
+   - **de**: "Folge deinen Facebook-Freunden - wir halten dich auf dem Laufenden, wenn sie ein Projekt unterstützen oder veröffentlichen."
+   - **fr**: "Suivez vos amis Facebook, les projets qu'ils soutiennent et les campagnes qu'ils lancent."
+   - **it**: "Follow your Facebook friends and keep up with the projects they back and launch."
+   - **en**: "Follow your Facebook friends and keep up with the projects they back and launch."
+  */
+  public static func Follow_your_Facebook_friends_and_keep_up_with_the_projects() -> String {
+    return localizedString(
+      key: "Follow_your_Facebook_friends_and_keep_up_with_the_projects",
+      defaultValue: "Follow your Facebook friends and keep up with the projects they back and launch.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Following"
 
    - **es**: "Siguiendo"
@@ -862,6 +913,23 @@ public enum Strings {
     )
   }
   /**
+   "I’d just like to support the project."
+
+   - **es**: "I’d just like to support the project."
+   - **de**: "I’d just like to support the project."
+   - **fr**: "I’d just like to support the project."
+   - **it**: "I’d just like to support the project."
+   - **en**: "I’d just like to support the project."
+  */
+  public static func Id_just_like_to_support_the_project() -> String {
+    return localizedString(
+      key: "Id_just_like_to_support_the_project",
+      defaultValue: "I’d just like to support the project.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "It’s a way to bring creative projects to life."
 
    - **es**: "Es una plataforma para dar vida a proyectos creativos."
@@ -874,6 +942,43 @@ public enum Strings {
     return localizedString(
       key: "Its_a_way_to_bring_creative_projects_to_life",
       defaultValue: "It’s a way to bring creative projects to life.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "It’s better
+with friends."
+
+   - **es**: "Todo en la vida es mejor con amigos ..."
+   - **de**: "Gemeinsam mehr erreichen"
+   - **fr**: "On est mieux ensemble."
+   - **it**: "It’s better
+with friends."
+   - **en**: "It’s better
+with friends."
+  */
+  public static func Its_better_with_friends() -> String {
+    return localizedString(
+      key: "Its_better_with_friends",
+      defaultValue: "It’s better\nwith friends.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Just for you."
+
+   - **es**: "Sólo para ti."
+   - **de**: "Nur für dich."
+   - **fr**: "Rien que pour vous."
+   - **it**: "Just for you."
+   - **en**: "Just for you."
+  */
+  public static func Just_for_you() -> String {
+    return localizedString(
+      key: "Just_for_you",
+      defaultValue: "Just for you.",
       count: nil,
       substitutions: [:]
     )
@@ -949,8 +1054,8 @@ public enum Strings {
   /**
    "Make a pledge without a reward"
 
-   - **es**: "Make a pledge without a reward"
-   - **de**: "Make a pledge without a reward"
+   - **es**: "Contribuir sin recompensa"
+   - **de**: "Ohne Belohnung unterstützen"
    - **fr**: "S'engager sans recevoir de récompense"
    - **it**: "Make a pledge without a reward"
    - **en**: "Make a pledge without a reward"
@@ -964,10 +1069,27 @@ public enum Strings {
     )
   }
   /**
+   "Manage your pledge"
+
+   - **es**: "Manage your pledge"
+   - **de**: "Manage your pledge"
+   - **fr**: "Manage your pledge"
+   - **it**: "Manage your pledge"
+   - **en**: "Manage your pledge"
+  */
+  public static func Manage_your_pledge() -> String {
+    return localizedString(
+      key: "Manage_your_pledge",
+      defaultValue: "Manage your pledge",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Manage your pledge below:"
 
-   - **es**: "Manage your pledge below:"
-   - **de**: "Manage your pledge below:"
+   - **es**: "Administra tu contribución:"
+   - **de**: "Deinen Beitrag verwalten:"
    - **fr**: "Gérer l'engagement ci-dessous :"
    - **it**: "Manage your pledge below:"
    - **en**: "Manage your pledge below:"
@@ -983,8 +1105,8 @@ public enum Strings {
   /**
    "Manage your reward"
 
-   - **es**: "Manage your reward"
-   - **de**: "Manage your reward"
+   - **es**: "Administra tu recompensa"
+   - **de**: "Belohnung verwalten"
    - **fr**: "Gérer votre récompense"
    - **it**: "Manage your reward"
    - **en**: "Manage your reward"
@@ -993,6 +1115,23 @@ public enum Strings {
     return localizedString(
       key: "Manage_your_reward",
       defaultValue: "Manage your reward",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Once you back a project, we’ll share personalized recommendations in this space."
+
+   - **es**: "Tu patrocinio de un proyecto nos ayuda a hacerte recomendaciones personalizadas."
+   - **de**: "Wenn du ein Projekt unterstützt, werden wir dir hier maßgeschneiderte Empfehlungen machen."
+   - **fr**: "Une fois que vous aurez soutenu un projet, des recommandations personnalisées s'afficheront ici."
+   - **it**: "Once you back a project, we’ll share personalized recommendations in this space."
+   - **en**: "Once you back a project, we’ll share personalized recommendations in this space."
+  */
+  public static func Once_you_back_a_project_well_share() -> String {
+    return localizedString(
+      key: "Once_you_back_a_project_well_share",
+      defaultValue: "Once you back a project, we’ll share personalized recommendations in this space.",
       count: nil,
       substitutions: [:]
     )
@@ -1134,18 +1273,18 @@ public enum Strings {
     )
   }
   /**
-   "Or change your reward by selecting one below:"
+   "Or select a different reward below:"
 
-   - **es**: "Or change your reward by selecting one below:"
-   - **de**: "Or change your reward by selecting one below:"
-   - **fr**: "Ou choisissez une autre récompense ci-dessous :"
-   - **it**: "Or change your reward by selecting one below:"
-   - **en**: "Or change your reward by selecting one below:"
+   - **es**: "Or select a different reward below:"
+   - **de**: "Or select a different reward below:"
+   - **fr**: "Or select a different reward below:"
+   - **it**: "Or select a different reward below:"
+   - **en**: "Or select a different reward below:"
   */
-  public static func Or_change_your_reward_by_selecting_one_below_colon() -> String {
+  public static func Or_select_a_different_reward_below_colon() -> String {
     return localizedString(
-      key: "Or_change_your_reward_by_selecting_one_below_colon",
-      defaultValue: "Or change your reward by selecting one below:",
+      key: "Or_select_a_different_reward_below_colon",
+      defaultValue: "Or select a different reward below:",
       count: nil,
       substitutions: [:]
     )
@@ -1168,18 +1307,18 @@ public enum Strings {
     )
   }
   /**
-   "Pledge any amount"
+   "Pledge any amount to help bring this project to life."
 
-   - **es**: "Pledge any amount"
-   - **de**: "Pledge any amount"
-   - **fr**: "Montant de mon engagement"
-   - **it**: "Pledge any amount"
-   - **en**: "Pledge any amount"
+   - **es**: "Pledge any amount to help bring this project to life."
+   - **de**: "Pledge any amount to help bring this project to life."
+   - **fr**: "Pledge any amount to help bring this project to life."
+   - **it**: "Pledge any amount to help bring this project to life."
+   - **en**: "Pledge any amount to help bring this project to life."
   */
-  public static func Pledge_any_amount() -> String {
+  public static func Pledge_any_amount_to_help_bring_this_project_to_life() -> String {
     return localizedString(
-      key: "Pledge_any_amount",
-      defaultValue: "Pledge any amount",
+      key: "Pledge_any_amount_to_help_bring_this_project_to_life",
+      defaultValue: "Pledge any amount to help bring this project to life.",
       count: nil,
       substitutions: [:]
     )
@@ -1187,8 +1326,8 @@ public enum Strings {
   /**
    "Pledge now without a reward"
 
-   - **es**: "Pledge now without a reward"
-   - **de**: "Pledge now without a reward"
+   - **es**: "Contribuir sin recompensa"
+   - **de**: "Ohne Belohnung unterstützen"
    - **fr**: "S'engager sans recevoir de récompense"
    - **it**: "Pledge now without a reward"
    - **en**: "Pledge now without a reward"
@@ -1236,6 +1375,28 @@ public enum Strings {
     )
   }
   /**
+   "Pursue
+daring ideas."
+
+   - **es**: "Pursue
+daring ideas."
+   - **de**: "Pursue
+daring ideas."
+   - **fr**: "Des idées audacieuses."
+   - **it**: "Pursue
+daring ideas."
+   - **en**: "Pursue
+daring ideas."
+  */
+  public static func Pursue_daring_ideas() -> String {
+    return localizedString(
+      key: "Pursue_daring_ideas",
+      defaultValue: "Pursue\ndaring ideas.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Push notifications"
 
    - **es**: "Notificaciones Push"
@@ -1255,8 +1416,8 @@ public enum Strings {
   /**
    "Read more about the campaign  →"
 
-   - **es**: "Read more about the campaign  →"
-   - **de**: "Read more about the campaign  →"
+   - **es**: "Leer más sobre esta campaña  →"
+   - **de**: "Mehr über diese Kampagne lesen  →"
    - **fr**: "En savoir plus sur la campagne →"
    - **it**: "Read more about the campaign  →"
    - **en**: "Read more about the campaign  →"
@@ -1272,8 +1433,8 @@ public enum Strings {
   /**
    "%{rewards_count} rewards"
 
-   - **es**: "%{rewards_count} rewards"
-   - **de**: "%{rewards_count} rewards"
+   - **es**: "%{rewards_count} recompensas"
+   - **de**: "%{rewards_count} Belohnungen"
    - **fr**: "%{rewards_count} récompenses"
    - **it**: "%{rewards_count} rewards"
    - **en**: "%{rewards_count} rewards"
@@ -1289,8 +1450,8 @@ public enum Strings {
   /**
    "%{rewards_count} rewards:"
 
-   - **es**: "%{rewards_count} rewards:"
-   - **de**: "%{rewards_count} rewards:"
+   - **es**: "%{rewards_count} recompensas:"
+   - **de**: "%{rewards_count} Belohnungen:"
    - **fr**: "%{rewards_count} récompenses :"
    - **it**: "%{rewards_count} rewards:"
    - **en**: "%{rewards_count} rewards:"
@@ -1306,8 +1467,8 @@ public enum Strings {
   /**
    "Select this reward"
 
-   - **es**: "Select this reward"
-   - **de**: "Select this reward"
+   - **es**: "Seleccionar esta recompensa"
+   - **de**: "Diese Belohnung wählen"
    - **fr**: "Sélectionner cette récompense"
    - **it**: "Select this reward"
    - **en**: "Select this reward"
@@ -1321,11 +1482,28 @@ public enum Strings {
     )
   }
   /**
+   "Select this reward instead"
+
+   - **es**: "Select this reward instead"
+   - **de**: "Select this reward instead"
+   - **fr**: "Select this reward instead"
+   - **it**: "Select this reward instead"
+   - **en**: "Select this reward instead"
+  */
+  public static func Select_this_reward_instead() -> String {
+    return localizedString(
+      key: "Select_this_reward_instead",
+      defaultValue: "Select this reward instead",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Share this project on Facebook."
 
-   - **es**: "Share this project on Facebook."
-   - **de**: "Share this project on Facebook."
-   - **fr**: "Share this project on Facebook."
+   - **es**: "Compartir este proyecto en Facebook."
+   - **de**: "Teile dieses Projekt auf Facebook."
+   - **fr**: "Partagez ce projet sur Facebook."
    - **it**: "Share this project on Facebook."
    - **en**: "Share this project on Facebook."
   */
@@ -1340,9 +1518,9 @@ public enum Strings {
   /**
    "Share this project on Twitter."
 
-   - **es**: "Share this project on Twitter."
-   - **de**: "Share this project on Twitter."
-   - **fr**: "Share this project on Twitter."
+   - **es**: "Compartir este proyecto en Twitter."
+   - **de**: "Teile dieses Projekt auf Twitter."
+   - **fr**: "Partagez ce projet sur Twitter."
    - **it**: "Share this project on Twitter."
    - **en**: "Share this project on Twitter."
   */
@@ -1391,9 +1569,9 @@ public enum Strings {
   /**
    "Shows list of subcategories."
 
-   - **es**: "Shows list of subcategories."
-   - **de**: "Shows list of subcategories."
-   - **fr**: "Shows list of subcategories."
+   - **es**: "Mostrar lista de subcategorías."
+   - **de**: "Unterkategorien anzeigen."
+   - **fr**: "Affiche la liste des sous-catégories."
    - **it**: "Shows list of subcategories."
    - **en**: "Shows list of subcategories."
   */
@@ -1408,9 +1586,9 @@ public enum Strings {
   /**
    "Signs up with Email."
 
-   - **es**: "Signs up with Email."
-   - **de**: "Signs up with Email."
-   - **fr**: "Signs up with Email."
+   - **es**: "Registro con correo electrónico."
+   - **de**: "Mit E-Mail-Adresse registrieren."
+   - **fr**: "Inscription avec l'adresse e-mail."
    - **it**: "Signs up with Email."
    - **en**: "Signs up with Email."
   */
@@ -1418,6 +1596,26 @@ public enum Strings {
     return localizedString(
       key: "Signs_up_with_Email",
       defaultValue: "Signs up with Email.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Something 
+caught your eye?"
+
+   - **es**: "¿Un proyecto te llamó la atención?"
+   - **de**: "Du hast ein Auge auf ein Projekt geworfen?"
+   - **fr**: "Quelque chose a retenu votre attention ?"
+   - **it**: "Something 
+caught your eye?"
+   - **en**: "Something 
+caught your eye?"
+  */
+  public static func Something_caught_your_eye() -> String {
+    return localizedString(
+      key: "Something_caught_your_eye",
+      defaultValue: "Something \ncaught your eye?",
       count: nil,
       substitutions: [:]
     )
@@ -1452,6 +1650,23 @@ public enum Strings {
     return localizedString(
       key: "Survey",
       defaultValue: "Survey",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Tap the star on each project page to save it. We’ll remind you 48 hours before the project ends."
+
+   - **es**: "Simplemente márcalo con asterisco, entonces te mandaremos una notificación 48 horas antes de que termine."
+   - **de**: "Klicke einfach auf den Stern, um es zu markieren. Wir werden dir 48 Stunden vor Ablauf des Projekts eine Benachrichtigung schicken."
+   - **fr**: "Cliquez sur l'étoile qui apparaît sur la page du projet pour l'ajouter à vos favoris. Nous vous enverrons un petit rappel 48 heures avant la fin de la campagne."
+   - **it**: "Tap the star on each project page to save it. We’ll remind you 48 hours before the project ends."
+   - **en**: "Tap the star on each project page to save it. We’ll remind you 48 hours before the project ends."
+  */
+  public static func Tap_the_star_on_each_project_page_to_save_it() -> String {
+    return localizedString(
+      key: "Tap_the_star_on_each_project_page_to_save_it",
+      defaultValue: "Tap the star on each project page to save it. We’ll remind you 48 hours before the project ends.",
       count: nil,
       substitutions: [:]
     )
@@ -1510,9 +1725,9 @@ public enum Strings {
   /**
    "View"
 
-   - **es**: "View"
-   - **de**: "View"
-   - **fr**: "View"
+   - **es**: "Ver"
+   - **de**: "Anzeigen"
+   - **fr**: "Afficher"
    - **it**: "View"
    - **en**: "View"
   */
@@ -1520,6 +1735,40 @@ public enum Strings {
     return localizedString(
       key: "View",
       defaultValue: "View",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "View your reward"
+
+   - **es**: "View your reward"
+   - **de**: "View your reward"
+   - **fr**: "View your reward"
+   - **it**: "View your reward"
+   - **en**: "View your reward"
+  */
+  public static func View_your_reward() -> String {
+    return localizedString(
+      key: "View_your_reward",
+      defaultValue: "View your reward",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "You backed this project."
+
+   - **es**: "You backed this project."
+   - **de**: "You backed this project."
+   - **fr**: "You backed this project."
+   - **it**: "You backed this project."
+   - **en**: "You backed this project."
+  */
+  public static func You_backed_this_project() -> String {
+    return localizedString(
+      key: "You_backed_this_project",
+      defaultValue: "You backed this project.",
       count: nil,
       substitutions: [:]
     )
@@ -1537,6 +1786,23 @@ public enum Strings {
     return localizedString(
       key: "Your_pledge_amount",
       defaultValue: "Your pledge amount:",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Your reward"
+
+   - **es**: "Tu recompensa"
+   - **de**: "Deine Belohnung"
+   - **fr**: "Votre récompense"
+   - **it**: "Your reward"
+   - **en**: "Your reward"
+  */
+  public static func Your_reward() -> String {
+    return localizedString(
+      key: "Your_reward",
+      defaultValue: "Your reward",
       count: nil,
       substitutions: [:]
     )
@@ -3465,9 +3731,9 @@ public enum Strings {
   /**
    "%{comments_count} comments"
 
-   - **es**: "%{comments_count} comments"
-   - **de**: "%{comments_count} comments"
-   - **fr**: "%{comments_count} comments"
+   - **es**: "%{comments_count} commentarios"
+   - **de**: "%{comments_count} Kommentare"
+   - **fr**: "%{comments_count} commentaires"
    - **it**: "%{comments_count} comments"
    - **en**: "%{comments_count} comments"
   */
@@ -12432,9 +12698,9 @@ Thank you for your support!"
   /**
    "%{project_count} projects"
 
-   - **es**: "%{project_count} projects"
-   - **de**: "%{project_count} projects"
-   - **fr**: "%{project_count} projects"
+   - **es**: "%{project_count} proyectos"
+   - **de**: "%{project_count} Projekte"
+   - **fr**: "%{project_count} projets"
    - **it**: "%{project_count} projects"
    - **en**: "%{project_count} projects"
   */
@@ -14027,9 +14293,9 @@ Thank you for your support!"
   /**
    "%{updates_count} updates"
 
-   - **es**: "%{updates_count} updates"
-   - **de**: "%{updates_count} updates"
-   - **fr**: "%{updates_count} updates"
+   - **es**: "%{updates_count} actualizaciones"
+   - **de**: "%{updates_count} Updates"
+   - **fr**: "%{updates_count} actus"
    - **it**: "%{updates_count} updates"
    - **en**: "%{updates_count} updates"
   */

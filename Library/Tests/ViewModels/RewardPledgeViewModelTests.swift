@@ -881,12 +881,28 @@ internal final class RewardPledgeViewModelTests: TestCase {
     self.navigationTitle.assertValues(["Manage your reward"])
   }
 
+  func testNavigationTitle_BackerWithReward_ManageDifferentReward() {
+    let reward = .template |> Reward.lens.minimum .~ 50
+    let project = .template
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.rewardId .~ 42
+          |> Backing.lens.reward .~ (reward |> Reward.lens.id .~ 42)
+    )
+    self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
+    self.vm.inputs.viewDidLoad()
+
+    self.navigationTitle.assertValues(["Select this reward instead"])
+  }
+
   func testNavigationTitle_BackerWithNoReward_ManageNoReward() {
     let reward = Reward.noReward
     let project = .template
       |> Project.lens.personalization.isBacking .~ true
       |> Project.lens.personalization.backing .~ (
         .template
+          |> Backing.lens.rewardId .~ 0
           |> Backing.lens.reward .~ Reward.noReward
     )
     self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
@@ -1156,6 +1172,13 @@ internal final class RewardPledgeViewModelTests: TestCase {
     self.vm.inputs.descriptionLabelTapped()
 
     self.readMoreContainerViewHidden.assertValues([false, true])
+  }
+
+  func testReadMoreContainerViewHidden_NoReward() {
+    self.vm.inputs.configureWith(project: .template, reward: Reward.noReward, applePayCapable: false)
+    self.vm.inputs.viewDidLoad()
+
+    self.readMoreContainerViewHidden.assertValues([true])
   }
 
   func testSetStripeAppleMerchantIdentifier_NotApplePayCapable() {

@@ -13,12 +13,17 @@ internal final class PledgeTitleCell: UITableViewCell, ValueCell {
     self.pledgeTitleLabel.textColor = discoveryPrimaryColor(forCategoryId: project.category.rootId)
     self.separatorView.backgroundColor = strokeColor(forCategoryId: project.category.rootId)
 
-    if project.personalization.isBacking == true {
+    switch (project.personalization.isBacking, project.state) {
+    case (true?, .live):
       self.pledgeTitleLabel.font = .ksr_headline(size: 16)
       self.pledgeTitleLabel.text = Strings.Manage_your_pledge_below_colon()
-    } else {
+    case (_, .live):
       self.pledgeTitleLabel.font = .ksr_headline(size: 17)
       self.pledgeTitleLabel.text = Strings.Back_this_project_below_colon()
+    default:
+      self.pledgeTitleLabel.font = .ksr_headline(size: 16)
+      self.pledgeTitleLabel.text = localizedString(key: "You_backed_this_project",
+                                                   defaultValue: "You backed this project.")
     }
   }
 

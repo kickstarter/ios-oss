@@ -520,58 +520,35 @@
                                     <outlet property="separatorView" destination="kWH-nF-hHR" id="PT4-FH-ITc"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NoRewardCell" rowHeight="100" id="DhR-5a-tzD" customClass="NoRewardCell" customModule="Kickstarter_Framework" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="734" width="400" height="100"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NoRewardCell" rowHeight="120" id="DhR-5a-tzD" customClass="NoRewardCell" customModule="Kickstarter_Framework" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="734" width="400" height="120"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="DhR-5a-tzD" id="TzW-Q9-jdh">
-                                    <rect key="frame" x="0.0" y="0.0" width="400" height="100"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="400" height="120"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TMD-S6-ZmK">
-                                            <rect key="frame" x="80" y="-14" width="240" height="128"/>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TMD-S6-ZmK">
+                                            <rect key="frame" x="8" y="8" width="384" height="96"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </view>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="05f-q7-M3e">
-                                            <rect key="frame" x="8" y="8" width="384" height="77"/>
+                                            <rect key="frame" x="8" y="8" width="384" height="96"/>
                                             <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="rsX-Dm-eLb">
-                                                    <rect key="frame" x="0.0" y="0.0" width="384" height="42"/>
-                                                    <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Make a pledge without a reward" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RQa-bx-VFN">
-                                                            <rect key="frame" x="0.0" y="0.0" width="384" height="21"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                        <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0LG-Yr-zi3">
-                                                            <rect key="frame" x="0.0" y="21" width="384" height="21"/>
-                                                            <subviews>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="$" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sc4-3j-0CV">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="11" height="21"/>
-                                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                                    <nil key="highlightedColor"/>
-                                                                </label>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pledge any amount" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yvw-pJ-nLK">
-                                                                    <rect key="frame" x="11" y="0.0" width="373" height="21"/>
-                                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                                    <nil key="highlightedColor"/>
-                                                                </label>
-                                                            </subviews>
-                                                        </stackView>
-                                                    </subviews>
-                                                </stackView>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3Lh-kt-9eV">
-                                                    <rect key="frame" x="0.0" y="42" width="384" height="1"/>
-                                                    <color key="backgroundColor" white="0.90000000000000002" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="1" id="Xsv-Bp-KJW"/>
-                                                    </constraints>
-                                                </view>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Make a pledge without a reward" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RQa-bx-VFN">
+                                                    <rect key="frame" x="0.0" y="0.0" width="384" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pledge any amount to help bring this project to life." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wg6-zQ-Bar">
+                                                    <rect key="frame" x="0.0" y="21" width="384" height="41"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="km0-oB-XbV">
-                                                    <rect key="frame" x="0.0" y="43" width="384" height="34"/>
-                                                    <state key="normal" title="Pledge now without a reward">
+                                                    <rect key="frame" x="0.0" y="62" width="384" height="34"/>
+                                                    <state key="normal" title="Pledge without a reward">
                                                         <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     </state>
                                                 </button>
@@ -591,18 +568,14 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="cardView" destination="TMD-S6-ZmK" id="NwR-Px-FYk"/>
-                                    <outlet property="pledgeAmountLabel" destination="Yvw-pJ-nLK" id="oOD-TU-yJa"/>
-                                    <outlet property="pledgeAmountStackView" destination="0LG-Yr-zi3" id="KJq-LF-F7B"/>
                                     <outlet property="pledgeButton" destination="km0-oB-XbV" id="Gbs-6r-Z14"/>
-                                    <outlet property="pledgeCurrencyLabel" destination="sc4-3j-0CV" id="dWz-wL-Sod"/>
-                                    <outlet property="pledgeTitleAndAmountStackView" destination="rsX-Dm-eLb" id="V58-dh-nVI"/>
+                                    <outlet property="pledgeSubtitleLabel" destination="wg6-zQ-Bar" id="UiT-7P-Foe"/>
                                     <outlet property="pledgeTitleLabel" destination="RQa-bx-VFN" id="X10-dD-HP3"/>
                                     <outlet property="rootStackView" destination="05f-q7-M3e" id="2B8-Zt-jyq"/>
-                                    <outlet property="separatorView" destination="3Lh-kt-9eV" id="qea-8z-PbI"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="RewardsTitleCell" rowHeight="50" id="am6-Tp-KDq" customClass="RewardsTitleCell" customModule="Kickstarter_Framework" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="834" width="400" height="50"/>
+                                <rect key="frame" x="0.0" y="854" width="400" height="50"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="am6-Tp-KDq" id="qt8-mK-iTk">
                                     <rect key="frame" x="0.0" y="0.0" width="400" height="50"/>
@@ -627,7 +600,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="RewardCell" rowHeight="420" id="bc2-18-8el" customClass="RewardCell" customModule="Kickstarter_Framework" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="884" width="400" height="420"/>
+                                <rect key="frame" x="0.0" y="904" width="400" height="420"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="bc2-18-8el" id="7Ot-r5-Y85">
                                     <rect key="frame" x="0.0" y="0.0" width="400" height="420"/>

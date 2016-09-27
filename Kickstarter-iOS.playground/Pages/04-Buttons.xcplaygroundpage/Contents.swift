@@ -51,4 +51,4 @@ buttonsStyles.forEach { styles in
 let frame = parent.view.frame
 XCPlaygroundPage.currentPage.liveView = parent
 parent.view.frame = frame
- 
+
