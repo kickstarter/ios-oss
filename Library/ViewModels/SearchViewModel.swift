@@ -102,7 +102,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       }
     }
 
-    let (searchResults, _, page) = paginate(
+    let (projects, isLoading, page) = paginate(
       requestFirstPageWith: requestFirstPageWith,
       requestNextPageWhen: isCloseToBottom,
       clearOnNewRequest: true,
@@ -111,7 +111,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       requestFromParams: requestFromParamsWithDebounce,
       requestFromCursor: { AppEnvironment.current.apiService.fetchDiscovery(paginationUrl: $0) })
 
-    self.projects = combineLatest(self.isPopularTitleVisible, popular, .merge(clears, searchResults))
+    self.projects = combineLatest(self.isPopularTitleVisible, popular, .merge(clears, projects))
       .map { showPopular, popular, searchResults in showPopular ? popular : searchResults }
       .skipRepeats(==)
 
@@ -135,8 +135,13 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       .take(1)
       .observeNext { AppEnvironment.current.koala.trackProjectSearchView() }
 
+    let hasResults = combineLatest(projects, isLoading)
+      .filter(negate • second)
+      .map(first)
+      .map { !$0.isEmpty }
+
     combineLatest(query, page)
-      .takePairWhen(searchResults.map { !$0.isEmpty })
+      .takePairWhen(hasResults)
       .map(unpack)
       .filter { query, _, _ in !query.isEmpty }
       .observeNext { query, page, hasResults in

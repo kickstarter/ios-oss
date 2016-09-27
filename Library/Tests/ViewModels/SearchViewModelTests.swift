@@ -126,7 +126,8 @@ internal final class SearchViewModelTests: TestCase {
         "Discover Search", "Viewed Search", "Discover Search Results", "Loaded Search Results",
         "Discover Search Results Load More", "Loaded More Search Results"
       ],
-      trackingClient.events)  }
+      trackingClient.events)
+  }
 
   // Confirms that clearing search during an in-flight search doesn't cause search results and popular
   // projects to get mixed up.
@@ -253,5 +254,58 @@ internal final class SearchViewModelTests: TestCase {
     self.vm.inputs.searchTextEditingDidEnd()
 
     self.resignFirstResponder.assertValueCount(1)
+  }
+
+  func testSlowTyping() {
+    let apiDelay = 2.0
+    let debounceDelay = 1.0
+
+    withEnvironment(apiDelayInterval: apiDelay, debounceInterval: debounceDelay) {
+      self.vm.inputs.viewDidAppear()
+      self.scheduler.advanceByInterval(apiDelay)
+
+      self.vm.inputs.searchFieldDidBeginEditing()
+
+      XCTAssertEqual(["Discover Search", "Viewed Search"], self.trackingClient.events)
+
+      self.vm.inputs.searchTextChanged("d")
+      self.scheduler.advanceByInterval(apiDelay + debounceDelay)
+
+      XCTAssertEqual(
+        ["Discover Search", "Viewed Search", "Discover Search Results", "Loaded Search Results"],
+        self.trackingClient.events)
+
+      self.vm.inputs.searchTextChanged("do")
+      self.scheduler.advanceByInterval(apiDelay + debounceDelay)
+
+      XCTAssertEqual(
+        [
+          "Discover Search", "Viewed Search", "Discover Search Results", "Loaded Search Results",
+          "Discover Search Results", "Loaded Search Results"
+        ],
+        self.trackingClient.events)
+
+      self.vm.inputs.searchTextChanged("dog")
+      self.scheduler.advanceByInterval(apiDelay + debounceDelay)
+
+      XCTAssertEqual(
+        [
+          "Discover Search", "Viewed Search", "Discover Search Results", "Loaded Search Results",
+          "Discover Search Results", "Loaded Search Results", "Discover Search Results",
+          "Loaded Search Results"
+        ],
+        self.trackingClient.events)
+
+      self.vm.inputs.searchTextChanged("dogs")
+      self.scheduler.advanceByInterval(apiDelay + debounceDelay)
+
+      XCTAssertEqual(
+        [
+          "Discover Search", "Viewed Search", "Discover Search Results", "Loaded Search Results",
+          "Discover Search Results", "Loaded Search Results", "Discover Search Results",
+          "Loaded Search Results", "Discover Search Results", "Loaded Search Results"
+        ],
+        self.trackingClient.events)
+    }
   }
 }
