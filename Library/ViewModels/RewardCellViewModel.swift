@@ -82,15 +82,21 @@ RewardCellViewModelOutputs {
     self.descriptionLabelText = reward
       .map { $0.description }
 
-    self.remainingStackViewHidden = reward
-      .map { $0.limit == nil }
+    self.remainingStackViewHidden = projectAndReward
+      .map { project, reward in
+        reward.limit == nil || project.state != .live
+    }
 
     self.remainingLabelText = reward
       .map { $0.remaining ?? 0 }
       .map { Strings.left_left(left: Format.wholeNumber($0)) }
 
-    self.minimumAndConversionLabelsColor = reward
-      .map { $0.remaining == 0 ? .ksr_text_navy_500 : .ksr_text_green_700 }
+    self.minimumAndConversionLabelsColor = projectAndReward
+      .map { project, reward in
+        reward.remaining != 0 || userIsBacking(reward: reward, inProject: project)
+          ? .ksr_text_green_700
+          : .ksr_text_navy_500
+    }
 
     self.titleLabelHidden = reward
       .map { $0.title == nil }
@@ -98,13 +104,16 @@ RewardCellViewModelOutputs {
     self.titleLabelText = reward
       .map { $0.title ?? "" }
 
-    self.titleLabelTextColor = reward
-      .map { $0.remaining == 0 ? .ksr_text_navy_500 : .ksr_text_navy_700 }
+    self.titleLabelTextColor = projectAndReward
+      .map { project, reward in
+        reward.remaining != 0 || userIsBacking(reward: reward, inProject: project)
+          ? .ksr_text_navy_700
+          : .ksr_text_navy_500
+    }
 
     let youreABacker = projectAndReward
       .map { project, reward in
-        project.personalization.backing?.rewardId == reward.id
-          || project.personalization.backing?.reward?.id == reward.id
+        userIsBacking(reward: reward, inProject: project)
       }
 
     self.youreABackerViewHidden = youreABacker
@@ -124,7 +133,7 @@ RewardCellViewModelOutputs {
 
     self.allGoneHidden = projectAndReward
       .map { project, reward in
-        reward.remaining != 0 || project.personalization.backing?.rewardId == reward.id
+        reward.remaining != 0 || userIsBacking(reward: reward, inProject: project)
       }
 
     self.contentViewBackgroundColor = project
@@ -219,4 +228,9 @@ RewardCellViewModelOutputs {
 
 private func needsConversion(projectCountry projectCountry: Project.Country, userCountry: String?) -> Bool {
   return userCountry == "US" && projectCountry != .US
+}
+
+private func userIsBacking(reward reward: Reward, inProject project: Project) -> Bool {
+  return project.personalization.backing?.rewardId == reward.id
+    || project.personalization.backing?.reward?.id == reward.id
 }

@@ -51,7 +51,7 @@ internal final class RewardCell: UITableViewCell, ValueCell {
     self.rootStackView
       |> UIStackView.lens.spacing .~ Styles.grid(4)
       |> UIStackView.lens.layoutMargins
-        .~ .init(top: Styles.grid(3), left: Styles.grid(4), bottom: Styles.grid(2), right: Styles.grid(4))
+        .~ .init(top: Styles.grid(3), left: Styles.grid(2), bottom: Styles.grid(2), right: Styles.grid(2))
       |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
 
     self.minimumStackView
@@ -65,6 +65,11 @@ internal final class RewardCell: UITableViewCell, ValueCell {
 
     self.footerStackView
       |> UIStackView.lens.spacing .~ Styles.grid(2)
+
+    [self.minimumStackView, self.titleDescriptionStackView,
+     self.itemsContainerStackView, self.footerStackView]
+      ||> UIStackView.lens.layoutMargins .~ .init(topBottom: 0, leftRight: Styles.grid(2))
+      ||> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
 
     self.statsStackView
       |> UIStackView.lens.spacing .~ Styles.gridHalf(1)
@@ -111,7 +116,7 @@ internal final class RewardCell: UITableViewCell, ValueCell {
     self.youreABackerContainerView
       |> roundedStyle(cornerRadius: 2)
       |> UIView.lens.backgroundColor .~ UIColor.ksr_green_500
-      |> UIView.lens.layoutMargins .~ .init(all: Styles.gridHalf(3))
+      |> UIView.lens.layoutMargins .~ .init(topBottom: Styles.grid(1), leftRight: Styles.gridHalf(3))
 
     self.youreABackerLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 12)
@@ -121,8 +126,6 @@ internal final class RewardCell: UITableViewCell, ValueCell {
     }
 
     self.youreABackerStackView
-      |> UIStackView.lens.layoutMargins .~ self.allGoneContainerView.layoutMargins
-      |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
       |> UIStackView.lens.spacing .~ Styles.gridHalf(1)
       |> UIStackView.lens.alignment .~ .Center
 

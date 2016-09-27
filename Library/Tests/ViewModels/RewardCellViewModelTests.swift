@@ -195,7 +195,7 @@ final class RewardCellViewModelTests: TestCase {
       reward: .template
     )
 
-    self.contentViewBackgroundColor.assertValues([UIColor.ksr_red_100.colorWithAlphaComponent(0.6)])
+    self.contentViewBackgroundColor.assertValues([UIColor.ksr_red_100.colorWithAlphaComponent(0.65)])
 
     self.vm.inputs.configureWith(
       project: .template |> Project.lens.category .~ .filmAndVideo,
@@ -203,8 +203,8 @@ final class RewardCellViewModelTests: TestCase {
     )
 
     self.contentViewBackgroundColor.assertValues([
-      UIColor.ksr_red_100.colorWithAlphaComponent(0.6),
-      UIColor.ksr_beige_400.colorWithAlphaComponent(0.6),
+      UIColor.ksr_red_100.colorWithAlphaComponent(0.65),
+      UIColor.ksr_beige_400.colorWithAlphaComponent(0.65),
       ])
 
     self.vm.inputs.configureWith(
@@ -213,9 +213,9 @@ final class RewardCellViewModelTests: TestCase {
     )
 
     self.contentViewBackgroundColor.assertValues([
-      UIColor.ksr_red_100.colorWithAlphaComponent(0.6),
-      UIColor.ksr_beige_400.colorWithAlphaComponent(0.6),
-      UIColor.ksr_violet_200.colorWithAlphaComponent(0.6),
+      UIColor.ksr_red_100.colorWithAlphaComponent(0.65),
+      UIColor.ksr_beige_400.colorWithAlphaComponent(0.65),
+      UIColor.ksr_violet_200.colorWithAlphaComponent(0.65),
       ])
   }
 
@@ -430,6 +430,13 @@ final class RewardCellViewModelTests: TestCase {
     )
 
     self.remainingStackViewHidden.assertValues([true, false])
+
+    self.vm.inputs.configureWith(
+      project: .template |> Project.lens.state .~ .successful,
+      reward: .template |> Reward.lens.limit .~ 100
+    )
+
+    self.remainingStackViewHidden.assertValues([true, false, true])
   }
 
   func testRemainingLabel() {

@@ -78,6 +78,8 @@ public protocol ProjectPamphletMainCellViewModelOutputs {
   /// Emits a string that should be put into the project state label.
   var projectStateLabelText: Signal<String, NoError> { get }
 
+  var projectStateLabelTextColor: Signal<UIColor, NoError> { get }
+
   /// Emits a boolean that determines if the "you're a backer" label should be hidden.
   var youreABackerLabelHidden: Signal<Bool, NoError> { get }
 }
@@ -108,6 +110,10 @@ ProjectPamphletMainCellViewModelInputs, ProjectPamphletMainCellViewModelOutputs 
     self.projectStateLabelText = project
       .filter { $0.state != .live }
       .map(fundingStatus(forProject:))
+
+    self.projectStateLabelTextColor = project
+      .filter { $0.state != .live }
+      .map { $0.state == .successful ? UIColor.ksr_text_green_700 : UIColor.ksr_text_navy_500 }
 
     self.projectImageUrl = project.map { NSURL(string: $0.photo.full) }
 
@@ -252,6 +258,7 @@ ProjectPamphletMainCellViewModelInputs, ProjectPamphletMainCellViewModelOutputs 
   public let projectNameLabelText: Signal<String, NoError>
   public let projectStateLabelHidden: Signal<Bool, NoError>
   public let projectStateLabelText: Signal<String, NoError>
+  public let projectStateLabelTextColor: Signal<UIColor, NoError>
   public let youreABackerLabelHidden: Signal<Bool, NoError>
 
   public var inputs: ProjectPamphletMainCellViewModelInputs { return self }

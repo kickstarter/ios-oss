@@ -6,10 +6,12 @@ import UIKit
 internal final class PledgeTitleCell: UITableViewCell, ValueCell {
 
   @IBOutlet private weak var pledgeTitleLabel: UILabel!
+  @IBOutlet private weak var separatorView: UIView!
 
   func configureWith(value project: Project) {
     self.contentView.backgroundColor = Library.backgroundColor(forCategoryId: project.category.rootId)
     self.pledgeTitleLabel.textColor = discoveryPrimaryColor(forCategoryId: project.category.rootId)
+    self.separatorView.backgroundColor = strokeColor(forCategoryId: project.category.rootId)
 
     if project.personalization.isBacking == true {
       self.pledgeTitleLabel.font = .ksr_headline(size: 16)
@@ -31,5 +33,6 @@ internal final class PledgeTitleCell: UITableViewCell, ValueCell {
 
     self.pledgeTitleLabel
       |> UILabel.lens.numberOfLines .~ 0
+
   }
 }

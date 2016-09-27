@@ -3,6 +3,8 @@ import Library
 import Prelude
 import UIKit
 
+private let mainContentOverhang: CGFloat = 10
+
 internal protocol ProjectPamphletMainCellDelegate: VideoViewControllerDelegate {
   func projectPamphletMainCell(cell: ProjectPamphletMainCell, addChildController child: UIViewController)
   func projectPamphletMainCell(cell: ProjectPamphletMainCell, goToCampaignForProject project: Project)
@@ -41,12 +43,15 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
   @IBOutlet private weak var projectNameLabel: UILabel!
   @IBOutlet private weak var progressBarAndStatsStackView: UIStackView!
   @IBOutlet private weak var readMoreButton: UIButton!
+  @IBOutlet private weak var stateLabel: UILabel!
   @IBOutlet private var videoContainerHeightConstraint: NSLayoutConstraint!
   @IBOutlet private weak var youreABackerContainerView: UIView!
   @IBOutlet private weak var youreABackerLabel: UILabel!
 
   internal override func awakeFromNib() {
     super.awakeFromNib()
+
+    self.videoContainerHeightConstraint.constant = -mainContentOverhang
 
     self.creatorButton.addTarget(self,
                                  action: #selector(creatorButtonTapped),
@@ -123,6 +128,9 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     self.fundingProgressBarView
       |> UIView.lens.backgroundColor .~ .ksr_green_500
 
+    self.pledgedTitleLabel
+      |> UILabel.lens.textColor .~ .ksr_text_green_700
+
     self.projectBlurbLabel
       |> UILabel.lens.font .~ .ksr_body(size: 15)
       |> UILabel.lens.textColor .~ .ksr_text_navy_500
@@ -144,6 +152,11 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       |> UIButton.lens.titleColor(forState: .Highlighted) .~ .ksr_text_navy_500
       |> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 15)
       |> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.Read_more_about_the_campaign_arrow() }
+      |> UIButton.lens.contentEdgeInsets .~ .init(topBottom: -1, leftRight: 0)
+
+    self.stateLabel
+      |> UILabel.lens.font .~ .ksr_headline(size: 12)
+      |> UILabel.lens.numberOfLines .~ 2
 
     self.youreABackerContainerView
       |> roundedStyle(cornerRadius: 2)
@@ -170,6 +183,9 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     self.pledgedTitleLabel.rac.text = self.viewModel.outputs.pledgedTitleLabelText
     self.projectNameLabel.rac.text = self.viewModel.outputs.projectNameLabelText
     self.projectBlurbLabel.rac.text = self.viewModel.outputs.projectBlurbLabelText
+    self.stateLabel.rac.hidden = self.viewModel.outputs.projectStateLabelHidden
+    self.stateLabel.rac.text = self.viewModel.outputs.projectStateLabelText
+    self.stateLabel.rac.textColor = self.viewModel.outputs.projectStateLabelTextColor
     self.youreABackerContainerView.rac.hidden = self.viewModel.outputs.youreABackerLabelHidden
 
     self.viewModel.outputs.configureVideoPlayerController
@@ -233,24 +249,14 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
 
 extension ProjectPamphletMainCell: VideoViewControllerDelegate {
   internal func videoViewControllerDidFinish(controller: VideoViewController) {
+    self.videoContainerHeightConstraint.constant = -mainContentOverhang
     self.delegate?.videoViewControllerDidFinish(controller)
     self.viewModel.inputs.videoDidFinish()
-
-    self.videoContainerHeightConstraint.constant = -10
-    self.setNeedsUpdateConstraints()
-    UIView.animateWithDuration(0.3) {
-      self.layoutIfNeeded()
-    }
   }
 
   internal func videoViewControllerDidStart(controller: VideoViewController) {
+    self.videoContainerHeightConstraint.constant = mainContentOverhang
     self.delegate?.videoViewControllerDidStart(controller)
     self.viewModel.inputs.videoDidStart()
-
-    self.videoContainerHeightConstraint.constant = 0
-    self.setNeedsUpdateConstraints()
-    UIView.animateWithDuration(0.5) {
-      self.layoutIfNeeded()
-    }
   }
 }

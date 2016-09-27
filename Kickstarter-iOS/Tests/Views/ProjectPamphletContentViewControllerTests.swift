@@ -25,6 +25,23 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
     AppEnvironment.popEnvironment()
   }
 
+  func testAllCategoryGroups() {
+    let project = self.cosmicSurgery
+      |> Project.lens.rewards .~ [self.cosmicSurgery.rewards.first!]
+      |> Project.lens.state .~ .live
+
+    [Category.art, Category.filmAndVideo, Category.games].forEach { category in
+      let categorizedProject = project |> Project.lens.category .~ category
+      let vc = ProjectPamphletViewController.configuredWith(
+        projectOrParam: .left(categorizedProject), refTag: nil
+      )
+      let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
+      parent.view.frame.size.height = 1_000
+
+      FBSnapshotVerifyView(vc.view, identifier: "category_\(category.slug)")
+    }
+  }
+
   func testNonBacker_LiveProject() {
     let project = self.cosmicSurgery
       |> Project.lens.state .~ .live
@@ -49,7 +66,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       withEnvironment(language: language) {
         let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
-        parent.view.frame.size.height = 1_700
+        parent.view.frame.size.height = 1_750
 
         FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)")
       }
@@ -83,6 +100,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
   func testBacker_SuccessfulProject() {
     let project = self.cosmicSurgery
       |> Project.lens.rewards %~ { rewards in [rewards[0], rewards[2]] }
+      |> Project.lens.dates.stateChangedAt .~ 1234567890.0
       |> Project.lens.state .~ .successful
       |> Project.lens.personalization.isBacking .~ true
       |> Project.lens.personalization.backing %~~ { _, project in
@@ -121,5 +139,21 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
     parent.view.frame.size.height = 1_000
 
     FBSnapshotVerifyView(vc.view)
+  }
+
+  func testFailedProject() {
+    let project = self.cosmicSurgery
+      |> Project.lens.dates.stateChangedAt .~ 1234567890.0
+      |> Project.lens.state .~ .failed
+
+    Language.allLanguages.forEach { language in
+      withEnvironment(language: language) {
+        let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
+        let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
+        parent.view.frame.size.height = 1_700
+
+        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)")
+      }
+    }
   }
 }
