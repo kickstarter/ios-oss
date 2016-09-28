@@ -1101,6 +1101,8 @@ public final class Koala {
     props["apple_pay_capable"] = PKPaymentAuthorizationViewController.applePayCapable()
     props["apple_pay_device"] = PKPaymentAuthorizationViewController.applePayDevice()
 
+    props["time"] = NSDate().timeIntervalSince1970
+
     return props
   }
 
