@@ -1772,6 +1772,7 @@
 		A73379441D0E36A600C91445 /* Colors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		A73379471D0E36CA00C91445 /* Fonts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
 		A733795F1D0EDFEE00C91445 /* UIViewController-Preparation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController-Preparation.swift"; sourceTree = "<group>"; };
+		A734A2161D9BF8B800E05454 /* Hockey.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Hockey.entitlements; sourceTree = "<group>"; };
 		A734A2641D219CB00080BBD5 /* UpdateViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateViewModelTests.swift; sourceTree = "<group>"; };
 		A734A2661D21A1790080BBD5 /* WKNavigationActionProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WKNavigationActionProtocol.swift; sourceTree = "<group>"; };
 		A73778921D819736004C2A9B /* FBSnapshotTestCase.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FBSnapshotTestCase.xcodeproj; path = "Frameworks/ios-snapshot-test-case/FBSnapshotTestCase.xcodeproj"; sourceTree = "<group>"; };
@@ -2977,6 +2978,7 @@
 		A7D1F9461C850B7C000D41D5 /* Kickstarter-iOS */ = {
 			isa = PBXGroup;
 			children = (
+				A734A2161D9BF8B800E05454 /* Hockey.entitlements */,
 				80AB97B61D6281D60051C9D1 /* KickDebug.entitlements */,
 				A7E1C4EE1D18C8B2002D6DE3 /* Kickstarter-iOS-Bridging-Header.h */,
 				A7D1F9551C850B7C000D41D5 /* Info.plist */,
@@ -5315,9 +5317,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "app-icon-beta";
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = "Kickstarter-iOS/KickDebug.entitlements";
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_ENTITLEMENTS = "Kickstarter-iOS/Hockey.entitlements";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Kickstarter of New York";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Kickstarter of New York";
 				DEFINES_MODULE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5334,7 +5336,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstarter.beta;
 				PRODUCT_MODULE_NAME = Kickstarter_iOS;
 				PRODUCT_NAME = KickBeta;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "1ac3dcfe-2fdf-4ae9-a6b1-3d1cca53500e";
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "Kickstarter-iOS/Kickstarter-iOS-Bridging-Header.h";
 				SWIFT_VERSION = 2.3;
