@@ -60,6 +60,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
 
   func testNonBacker_SuccessfulProject() {
     let project = self.cosmicSurgery
+      |> Project.lens.dates.stateChangedAt .~ 1234567890.0
       |> Project.lens.state .~ .successful
 
     Language.allLanguages.forEach { language in
