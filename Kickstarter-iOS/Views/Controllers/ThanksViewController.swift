@@ -52,6 +52,7 @@ internal final class ThanksViewController: UIViewController, UICollectionViewDel
       |> UILabel.lens.textColor .~ .whiteColor()
       |> UILabel.lens.font .~ UIFont.ksr_title2().bolded
       |> UILabel.lens.text %~ { _ in Strings.project_checkout_share_exclamation() }
+      |> UILabel.lens.isAccessibilityElement .~ false
 
     self.backedLabel |> UILabel.lens.textColor .~ .ksr_text_navy_900
 
@@ -63,10 +64,12 @@ internal final class ThanksViewController: UIViewController, UICollectionViewDel
     self.facebookButton
       |> facebookThanksButtonStyle
       |> UIButton.lens.targets .~ [(self, #selector(facebookButtonTapped), .TouchUpInside)]
+      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.Share_this_project_on_Facebook() }
 
     self.twitterButton
       |> twitterButtonStyle
       |> UIButton.lens.targets .~ [(self, #selector(twitterButtonTapped), .TouchUpInside)]
+      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.Share_this_project_on_Twitter() }
 
     self.shareMoreButton
       |> borderButtonStyle
