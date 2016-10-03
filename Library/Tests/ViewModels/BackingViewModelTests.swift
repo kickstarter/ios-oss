@@ -328,7 +328,7 @@ internal final class BackingViewModelTests: TestCase {
 
       self.vm.inputs.messageCreatorTapped()
 
-      self.goToMessageCreatorSubject.assertValues([.backing(backing)])
+      self.goToMessageCreatorSubject.assertValues([.project(project)])
       self.goToMessageCreatorContext.assertValues([.backerModel])
     }
   }

@@ -80,47 +80,49 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
 
   // swiftlint:disable function_body_length
   public init() {
-    let projectAndBacker = combineLatest(
+    let projectAndBackerAndBackerIsCurrentUser = combineLatest(
       self.projectAndBackerProperty.signal.ignoreNil(),
       self.viewDidLoadProperty.signal
       )
       .map(first)
-      .map { (project, backer) -> (Project, User) in
-        guard let backer = backer ?? AppEnvironment.current.currentUser else {
+      .map { (project, backer) -> (Project, User, Bool) in
+        let currentUser = AppEnvironment.current.currentUser
+
+        guard let backer = backer ?? currentUser else {
           fatalError("Backer was not supplied.")
         }
-        return (project, backer)
+        return (project, backer, currentUser == backer)
     }
 
-    let projectAndBacking = projectAndBacker
-      .switchMap { project, backer in
+    let projectAndBackingAndBackerIsCurrentUser = projectAndBackerAndBackerIsCurrentUser
+      .switchMap { project, backer, backerIsCurrentUser in
         AppEnvironment.current.apiService.fetchBacking(forProject: project, forUser: backer)
           .demoteErrors()
-          .map { (project, $0) }
+          .map { (project, $0, backerIsCurrentUser) }
     }
 
-    let project = projectAndBacking.map(first)
-    let backing = projectAndBacking.map(second)
+    let project = projectAndBackingAndBackerIsCurrentUser.map(first)
+    let backing = projectAndBackingAndBackerIsCurrentUser.map(second)
     let reward = backing.map { $0.reward }.ignoreNil()
 
     self.backerSequence = backing
       .map { Strings.backer_modal_backer_number(backer_number: Format.wholeNumber($0.sequence)) }
     self.backerSequenceAccessibilityLabel = self.backerSequence
 
-    let backer = projectAndBacker.map(second)
+    let backer = projectAndBackerAndBackerIsCurrentUser.map(second)
 
     self.backerName = backer.map { $0.name }
     self.backerNameAccessibilityLabel = self.backerName
 
     self.backerAvatarURL = backer.map { NSURL(string: $0.avatar.small) }
 
-    self.backerPledgeStatus = projectAndBacking
-      .map { Strings.backer_modal_status_backing_status( backing_status: statusString($1.status)) }
+    self.backerPledgeStatus = backing
+      .map { Strings.backer_modal_status_backing_status( backing_status: statusString($0.status)) }
 
     self.backerPledgeStatusAccessibilityLabel = self.backerPledgeStatus
 
-    self.backerPledgeAmountAndDate = projectAndBacking
-      .map { project, backing in
+    self.backerPledgeAmountAndDate = projectAndBackingAndBackerIsCurrentUser
+      .map { project, backing, _ in
         Strings.backer_modal_pledge_amount_on_pledge_date(
           pledge_amount: Format.currency(backing.amount, country: project.country),
           pledge_date: Format.date(
@@ -144,15 +146,21 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
     self.backerShippingDescription = reward.map { $0.shipping.summary }.ignoreNil()
     self.backerShippingDescriptionAccessibilityLabel = self.backerShippingDescription
 
-    self.backerShippingAmount = projectAndBacking
-      .map { project, backing in Format.currency(backing.shippingAmount ?? 0, country: project.country) }
+    self.backerShippingAmount = projectAndBackingAndBackerIsCurrentUser
+      .map { project, backing, _ in Format.currency(backing.shippingAmount ?? 0, country: project.country) }
     self.backerShippingAmountAccessibilityLabel = self.backerShippingAmount
 
-    self.goToMessages = projectAndBacking.takeWhen(self.viewMessagesTappedProperty.signal)
+    self.goToMessages = projectAndBackingAndBackerIsCurrentUser
+      .map { project, backing, _ in (project, backing) }
+      .takeWhen(self.viewMessagesTappedProperty.signal)
 
-    self.goToMessageCreator = backing
+    self.goToMessageCreator = projectAndBackingAndBackerIsCurrentUser
       .takeWhen(self.messageCreatorTappedProperty.signal)
-      .map { (MessageSubject.backing($0), .backerModel) }
+      .map { project, backing, backerIsCurrentUser in
+        backerIsCurrentUser
+          ? (MessageSubject.project(project), .backerModel)
+          : (MessageSubject.backing(backing), .backerModel)
+    }
 
     project
       .takeWhen(self.viewDidLoadProperty.signal)
