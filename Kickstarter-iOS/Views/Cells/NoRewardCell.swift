@@ -36,10 +36,7 @@ internal final class NoRewardCell: UITableViewCell, ValueCell {
     self.pledgeSubtitleLabel
       |> UILabel.lens.textColor .~ .ksr_text_navy_500
       |> UILabel.lens.font .~ .ksr_body(size: 13)
-      |> UILabel.lens.text %~ { _ in
-        localizedString(key: "Pledge_any_amount_to_help_bring_this_project_to_life",
-                        defaultValue: "Pledge any amount to help bring this project to life.")
-    }
+      |> UILabel.lens.text %~ { _ in Strings.Pledge_any_amount_to_help_bring_this_project_to_life() }
 
     self.pledgeTitleLabel
       |> UILabel.lens.textColor .~ .ksr_text_navy_700

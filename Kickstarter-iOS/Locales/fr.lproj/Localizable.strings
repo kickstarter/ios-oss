@@ -51,7 +51,7 @@
 "Following" = "Projets soutenus par mes amis";
 "Got_it_your_survey_response_has_been_submitted" = "Merci ! Vos réponses au questionnaire ont bien été envoyées.";
 "Home" = "Accueil";
-"Id_just_like_to_support_the_project" = "I’d just like to support the project.";
+"Id_just_like_to_support_the_project" = "Je souhaite simplement soutenir le projet.";
 "Its_a_way_to_bring_creative_projects_to_life" = "C'est un outil qui permet de donner vie à des projets créatifs.";
 "Its_better_with_friends" = "On est mieux ensemble.";
 "Just_for_you" = "Rien que pour vous.";
@@ -60,7 +60,7 @@
 "Kickstarter_is_not_a_store" = "Kickstarter n'est pas un magasin.";
 "Learn_more_about_accountability" = "En savoir plus sur la responsabilité";
 "Make_a_pledge_without_a_reward" = "S'engager sans recevoir de récompense";
-"Manage_your_pledge" = "Manage your pledge";
+"Manage_your_pledge" = "Gérer mon engagement";
 "Manage_your_pledge_below_colon" = "Gérer l'engagement ci-dessous :";
 "Manage_your_reward" = "Gérer votre récompense";
 "Once_you_back_a_project_well_share" = "Une fois que vous aurez soutenu un projet, des recommandations personnalisées s'afficheront ici.";
@@ -72,9 +72,9 @@
 "Opens_project" = "Ouvre le projet.";
 "Opens_rewards" = "Ouvre les récompenses.";
 "Opens_update" = "Ouvre l'actu.";
-"Or_select_a_different_reward_below_colon" = "Or select a different reward below:";
+"Or_select_a_different_reward_below_colon" = "Ou sélectionner une autre récompense ci-dessous :";
 "Other_payment_methods" = "Autres moyens de paiement";
-"Pledge_any_amount_to_help_bring_this_project_to_life" = "Pledge any amount to help bring this project to life.";
+"Pledge_any_amount_to_help_bring_this_project_to_life" = "Choisissez le montant de votre engagement à soutenir ce projet.";
 "Pledge_now_without_a_reward" = "S'engager sans recevoir de récompense";
 "Popular" = "Tendances";
 "Projects_We_Love" = "Nos coups de cœur";
@@ -92,7 +92,7 @@
 "Rewards_count_rewards_colon.two" = "%{rewards_count} récompenses :";
 "Rewards_count_rewards_colon.zero" = "%{rewards_count} récompenses :";
 "Select_this_reward" = "Sélectionner cette récompense";
-"Select_this_reward_instead" = "Select this reward instead";
+"Select_this_reward_instead" = "Choisir cette récompense";
 "Share_this_project_on_Facebook" = "Partagez ce projet sur Facebook.";
 "Share_this_project_on_Twitter" = "Partagez ce projet sur Twitter.";
 "Shipping" = "Expédition";
@@ -107,8 +107,8 @@
 "This_facebook_account_is_already_linked_to_another_Kickstarter_user" = "Ce compte Facebook est déjà relié à un autre utilisateur Kickstarter.";
 "Unstars_project" = "Supprime le projet des projets préférés.";
 "View" = "Afficher";
-"View_your_reward" = "View your reward";
-"You_backed_this_project" = "You backed this project.";
+"View_your_reward" = "Afficher ma récompense";
+"You_backed_this_project" = "Vous avez soutenu ce projet.";
 "Your_pledge_amount" = "Montant engagé :";
 "Your_reward" = "Votre récompense";
 "Your_shipping_destination" = "Destination d'expédition";
@@ -617,7 +617,7 @@
 "invalid_api_client_alert.message" = "On dirait que vous utilisez une ancienne version de l'application. Veuillez la mettre à jour depuis l'App Store pour continuer à l'utiliser.";
 "invalid_api_client_alert.title" = "Veuillez mettre à jour";
 "invalid_api_client_alert.upgrade" = "Mise à jour";
-"left_left" = "%{left} left";
+"left_left" = "%{left} récompense(s) restante(s)";
 "login.buttons.forgot_password" = "Mot de passe oublié ?";
 "login.buttons.forgot_password_html" = "<u>Mot de passe oublié ?</u>";
 "login.buttons.log_in" = "Connexion";

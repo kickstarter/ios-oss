@@ -915,9 +915,9 @@ public enum Strings {
   /**
    "I’d just like to support the project."
 
-   - **es**: "I’d just like to support the project."
-   - **de**: "I’d just like to support the project."
-   - **fr**: "I’d just like to support the project."
+   - **es**: "Sólo quiero apoyar este proyecto."
+   - **de**: "Ich möchte das Projekt einfach nur unterstützen."
+   - **fr**: "Je souhaite simplement soutenir le projet."
    - **it**: "I’d just like to support the project."
    - **en**: "I’d just like to support the project."
   */
@@ -1071,9 +1071,9 @@ with friends."
   /**
    "Manage your pledge"
 
-   - **es**: "Manage your pledge"
+   - **es**: "Administra tu contribución"
    - **de**: "Manage your pledge"
-   - **fr**: "Manage your pledge"
+   - **fr**: "Gérer mon engagement"
    - **it**: "Manage your pledge"
    - **en**: "Manage your pledge"
   */
@@ -1275,9 +1275,9 @@ with friends."
   /**
    "Or select a different reward below:"
 
-   - **es**: "Or select a different reward below:"
+   - **es**: "También puedes seleccionar una de las siguientes recompensas:"
    - **de**: "Or select a different reward below:"
-   - **fr**: "Or select a different reward below:"
+   - **fr**: "Ou sélectionner une autre récompense ci-dessous :"
    - **it**: "Or select a different reward below:"
    - **en**: "Or select a different reward below:"
   */
@@ -1309,9 +1309,9 @@ with friends."
   /**
    "Pledge any amount to help bring this project to life."
 
-   - **es**: "Pledge any amount to help bring this project to life."
+   - **es**: "Puedes contribuir un monto de libre selección para apoyar este proyecto."
    - **de**: "Pledge any amount to help bring this project to life."
-   - **fr**: "Pledge any amount to help bring this project to life."
+   - **fr**: "Choisissez le montant de votre engagement à soutenir ce projet."
    - **it**: "Pledge any amount to help bring this project to life."
    - **en**: "Pledge any amount to help bring this project to life."
   */
@@ -1378,10 +1378,8 @@ with friends."
    "Pursue
 daring ideas."
 
-   - **es**: "Pursue
-daring ideas."
-   - **de**: "Pursue
-daring ideas."
+   - **es**: "Un universo de geniales ideas."
+   - **de**: "Zündende Ideen."
    - **fr**: "Des idées audacieuses."
    - **it**: "Pursue
 daring ideas."
@@ -1484,9 +1482,9 @@ daring ideas."
   /**
    "Select this reward instead"
 
-   - **es**: "Select this reward instead"
+   - **es**: "Selecciona esta recompensa"
    - **de**: "Select this reward instead"
-   - **fr**: "Select this reward instead"
+   - **fr**: "Choisir cette récompense"
    - **it**: "Select this reward instead"
    - **en**: "Select this reward instead"
   */
@@ -1742,9 +1740,9 @@ caught your eye?"
   /**
    "View your reward"
 
-   - **es**: "View your reward"
+   - **es**: "Mostrar recompensa"
    - **de**: "View your reward"
-   - **fr**: "View your reward"
+   - **fr**: "Afficher ma récompense"
    - **it**: "View your reward"
    - **en**: "View your reward"
   */
@@ -1759,9 +1757,9 @@ caught your eye?"
   /**
    "You backed this project."
 
-   - **es**: "You backed this project."
+   - **es**: "Patrocinaste este proyecto."
    - **de**: "You backed this project."
-   - **fr**: "You backed this project."
+   - **fr**: "Vous avez soutenu ce projet."
    - **it**: "You backed this project."
    - **en**: "You backed this project."
   */
@@ -8576,9 +8574,9 @@ caught your eye?"
   /**
    "%{left} left"
 
-   - **es**: "%{left} left"
+   - **es**: "%{left} restante/s"
    - **de**: "%{left} verbleibend"
-   - **fr**: "%{left} left"
+   - **fr**: "%{left} récompense(s) restante(s)"
    - **it**: "%{left} left"
    - **en**: "%{left} left"
   */

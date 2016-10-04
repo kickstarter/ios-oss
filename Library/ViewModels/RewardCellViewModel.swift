@@ -106,9 +106,7 @@ RewardCellViewModelOutputs {
     self.titleLabelText = reward
       .map {
         $0 == Reward.noReward
-          // swiftlint:disable line_length
-          ? localizedString(key: "Id_just_like_to_support_the_project", defaultValue: "I’d just like to support the project.")
-          // swiftlint:enable line_length
+          ? Strings.Id_just_like_to_support_the_project()
           : ($0.title ?? "")
     }
 
@@ -173,7 +171,7 @@ RewardCellViewModelOutputs {
 
     self.pledgeButtonTitleText = project.map {
       $0.personalization.isBacking == true
-        ? localizedString(key: "Select_this_reward_instead", defaultValue: "Select this reward instead")
+        ? Strings.Select_this_reward_instead()
         : Strings.Select_this_reward()
     }
 

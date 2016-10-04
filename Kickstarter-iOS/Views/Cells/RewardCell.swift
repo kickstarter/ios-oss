@@ -121,9 +121,7 @@ internal final class RewardCell: UITableViewCell, ValueCell {
     self.youreABackerLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 12)
       |> UILabel.lens.textColor .~ .whiteColor()
-      |> UILabel.lens.text %~ { _ in
-        localizedString(key: "Your_reward", defaultValue: "Your reward")
-    }
+      |> UILabel.lens.text %~ { _ in Strings.Your_reward() }
 
     self.youreABackerStackView
       |> UIStackView.lens.spacing .~ Styles.gridHalf(1)
@@ -162,9 +160,7 @@ internal final class RewardCell: UITableViewCell, ValueCell {
     self.viewYourPledgeButton
       |> borderButtonStyle
       |> UIButton.lens.userInteractionEnabled .~ false
-      |> UIButton.lens.title(forState: .Normal) %~ { _ in
-        localizedString(key: "View_your_reward", defaultValue: "View your reward")
-    }
+      |> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.View_your_reward() }
 
     self.viewModel.inputs.boundStyles()
   }

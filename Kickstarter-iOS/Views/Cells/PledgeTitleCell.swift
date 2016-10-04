@@ -22,8 +22,7 @@ internal final class PledgeTitleCell: UITableViewCell, ValueCell {
       self.pledgeTitleLabel.text = Strings.Back_this_project_below_colon()
     default:
       self.pledgeTitleLabel.font = .ksr_headline(size: 16)
-      self.pledgeTitleLabel.text = localizedString(key: "You_backed_this_project",
-                                                   defaultValue: "You backed this project.")
+      self.pledgeTitleLabel.text = Strings.You_backed_this_project()
     }
   }
 

@@ -875,17 +875,17 @@ private func navigationTitle(forProject project: Project, reward: Reward) -> Str
 
   guard project.personalization.isBacking != true else {
     if reward == Reward.noReward {
-      return localizedString(key: "Manage_your_pledge", defaultValue: "Manage your pledge")
+
+      return Strings.Manage_your_pledge()
     } else if userIsBacking(reward: reward, inProject: project) {
-      return localizedString(key: "Manage_your_reward", defaultValue: "Manage your reward")
+      return Strings.Manage_your_reward()
     } else {
-      return localizedString(key: "Select_this_reward_instead", defaultValue: "Select this reward instead")
+      return Strings.Select_this_reward_instead()
     }
   }
 
   guard reward != Reward.noReward else {
-    return localizedString(key: "Make_a_pledge_without_a_reward",
-                           defaultValue: "Make a pledge without a reward")
+    return Strings.Make_a_pledge_without_a_reward()
   }
 
   return Strings.rewards_title_pledge_reward_currency_or_more(

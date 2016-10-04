@@ -14,8 +14,7 @@ internal final class RewardsTitleCell: UITableViewCell, ValueCell {
     switch (project.personalization.isBacking, project.state) {
     case (true?, .live):
       self.rewardsTitleLabel.font = .ksr_caption1(size: 14)
-      self.rewardsTitleLabel.text = localizedString(key: "Or_select_a_different_reward_below_colon",
-                                                    defaultValue: "Or select a different reward below:")
+      self.rewardsTitleLabel.text = Strings.Or_select_a_different_reward_below_colon()
     case (_, .live):
       self.rewardsTitleLabel.font = .ksr_headline(size: 17)
       self.rewardsTitleLabel.text = Strings.Rewards_count_rewards_colon(
