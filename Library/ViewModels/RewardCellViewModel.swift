@@ -64,7 +64,7 @@ RewardCellViewModelOutputs {
         needsConversion(projectCountry: p.country, userCountry: AppEnvironment.current.config?.countryCode)
       }
       .map { project, reward in
-        Format.currency(Int(Float(reward.minimum) * project.stats.staticUsdRate), country: .US)
+        Format.currency(Int(ceil(Float(reward.minimum) * project.stats.staticUsdRate)), country: .US)
       }
       .map(Strings.rewards_title_about_amount_usd(reward_amount:))
 

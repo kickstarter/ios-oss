@@ -232,7 +232,7 @@ final class RewardCellViewModelTests: TestCase {
   }
 
   func testConversionLabel_US_User_NonUS_Project() {
-    let project = .template |> Project.lens.country .~ .GB |> Project.lens.stats.staticUsdRate .~ 2
+    let project = .template |> Project.lens.country .~ .GB |> Project.lens.stats.staticUsdRate .~ 1.0026
     let reward = .template |> Reward.lens.minimum .~ 1_000
 
     withEnvironment(config: .template |> Config.lens.countryCode .~ "US") {
@@ -240,8 +240,8 @@ final class RewardCellViewModelTests: TestCase {
 
       self.conversionLabelHidden.assertValues([false], "US user viewing non-US project sees conversion.")
       self.conversionLabelText.assertValues([
-        Strings.rewards_title_about_amount_usd(reward_amount: Format.currency(2_000, country: .US))
-        ])
+        Strings.rewards_title_about_amount_usd(reward_amount: Format.currency(1_003, country: .US))
+        ], "Conversion label rounds up.")
     }
   }
 
@@ -445,7 +445,6 @@ final class RewardCellViewModelTests: TestCase {
       reward: .template
         |> Reward.lens.limit .~ 1_000
         |> Reward.lens.remaining .~ 1_000
-
     )
 
     self.remainingLabelText.assertValues(["1,000 left"])
