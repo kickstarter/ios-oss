@@ -120,6 +120,7 @@ public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, 
       .take(1)
 
     let videoPaused = combineLatest(rateCurrentTime, duration)
+      .skip(1)
       .filter { rateCurrentTime, duration in rateCurrentTime.0 == pauseRate && rateCurrentTime.1 != duration }
 
     let videoResumed = rateCurrentTime
