@@ -209,29 +209,27 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
       |> Project.lens.personalization.friends .~ manyFriends
 
     self.vm.inputs.configureWith(project: projectNoSocial)
-    self.socialImageURL.assertValues([])
-    self.socialLabelText.assertValues([])
+    self.socialImageURL.assertValues([nil])
+    self.socialLabelText.assertValues([""])
     self.socialStackViewHidden.assertValues([true])
 
     self.vm.inputs.configureWith(project: projectNoFriends)
-    self.socialImageURL.assertValues([])
-    self.socialLabelText.assertValues([])
+    self.socialImageURL.assertValues([nil, nil])
+    self.socialLabelText.assertValues(["", ""])
     self.socialStackViewHidden.assertValues([true])
 
     self.vm.inputs.configureWith(project: projectOneFriend)
-    self.socialImageURL.assertValues([oneFriend[0].avatar.medium])
+    self.socialImageURL.assertValues([nil, nil, oneFriend[0].avatar.medium])
     self.socialLabelText.assertValues(
-      [
-        Strings.project_social_friend_is_backer(friend_name: oneFriend[0].name ?? "")
-      ]
+      [ "", "", Strings.project_social_friend_is_backer(friend_name: oneFriend[0].name ?? "") ]
     )
     self.socialStackViewHidden.assertValues([true, false])
 
     self.vm.inputs.configureWith(project: projectTwoFriends)
-    self.socialImageURL.assertValues([oneFriend[0].avatar.medium, twoFriends[0].avatar.medium],
+    self.socialImageURL.assertValues([nil, nil, oneFriend[0].avatar.medium, twoFriends[0].avatar.medium],
                                      "First friend's avatar emits.")
     self.socialLabelText.assertValues(
-      [
+      [ "", "",
         Strings.project_social_friend_is_backer(friend_name: oneFriend.first?.name ?? ""),
         Strings.project_social_friend_and_friend_are_backers(friend_name: twoFriends[0].name,
           second_friend_name: twoFriends[1].name)
@@ -240,10 +238,10 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.socialStackViewHidden.assertValues([true, false])
 
     self.vm.inputs.configureWith(project: projectManyFriends)
-    self.socialImageURL.assertValues([oneFriend[0].avatar.medium, twoFriends[0].avatar.medium,
+    self.socialImageURL.assertValues([nil, nil, oneFriend[0].avatar.medium, twoFriends[0].avatar.medium,
       manyFriends[0].avatar.medium], "First friend's avatar emits.")
     self.socialLabelText.assertValues(
-      [
+      [ "", "",
         Strings.project_social_friend_is_backer(friend_name: oneFriend.first?.name ?? ""),
         Strings.project_social_friend_and_friend_are_backers(friend_name: twoFriends[0].name,
           second_friend_name: twoFriends[1].name),
@@ -266,21 +264,24 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(project: live)
     self.projectStateStackViewHidden.assertValues([true])
+    self.projectStateSubtitleLabelText.assertValueCount(1, "Empty subtitle string emits.")
     self.projectStatsStackViewHidden.assertValues([false])
 
     self.vm.inputs.configureWith(project: canceled)
-    self.projectStateIconHidden.assertValues([true])
-    self.projectStateSubtitleLabelText.assertValueCount(1)
-    self.projectStateTitleLabelText.assertValues([Strings.discovery_baseball_card_status_banner_canceled()])
+    self.projectStateIconHidden.assertValues([true, true])
+    self.projectStateSubtitleLabelText.assertValueCount(2)
+    self.projectStateTitleLabelText.assertValues(["",
+      Strings.discovery_baseball_card_status_banner_canceled()])
     self.projectStateTitleLabelColor.assertValues([navyColor])
     self.projectStateStackViewHidden.assertValues([true, false])
     self.projectStatsStackViewHidden.assertValues([false, true])
 
     self.vm.inputs.configureWith(project: failed)
-    self.projectStateIconHidden.assertValues([true])
-    self.projectStateSubtitleLabelText.assertValueCount(2)
+    self.projectStateIconHidden.assertValues([true, true, true])
+    self.projectStateSubtitleLabelText.assertValueCount(3)
     self.projectStateTitleLabelText.assertValues(
       [
+        "",
         Strings.discovery_baseball_card_status_banner_canceled(),
         Strings.dashboard_creator_project_funding_unsuccessful()
       ]
@@ -290,10 +291,11 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.projectStatsStackViewHidden.assertValues([false, true])
 
     self.vm.inputs.configureWith(project: successful)
-    self.projectStateIconHidden.assertValues([true, false])
-    self.projectStateSubtitleLabelText.assertValueCount(3)
+    self.projectStateIconHidden.assertValues([true, true, true, false])
+    self.projectStateSubtitleLabelText.assertValueCount(4)
     self.projectStateTitleLabelText.assertValues(
       [
+        "",
         Strings.discovery_baseball_card_status_banner_canceled(),
         Strings.dashboard_creator_project_funding_unsuccessful(),
         Strings.project_status_funded()
@@ -304,10 +306,11 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.projectStatsStackViewHidden.assertValues([false, true])
 
     self.vm.inputs.configureWith(project: suspended)
-    self.projectStateIconHidden.assertValues([true, false, true])
-    self.projectStateSubtitleLabelText.assertValueCount(4)
+    self.projectStateIconHidden.assertValues([true, true, true, false, true])
+    self.projectStateSubtitleLabelText.assertValueCount(5)
     self.projectStateTitleLabelText.assertValues(
       [
+        "",
         Strings.discovery_baseball_card_status_banner_canceled(),
         Strings.dashboard_creator_project_funding_unsuccessful(),
         Strings.project_status_funded(),

@@ -120,12 +120,14 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
     let project = self.projectProperty.signal.ignoreNil()
 
     self.backersTitleLabelText = project
-      .filter { $0.state == .live }
-      .map { Format.wholeNumber($0.stats.backersCount) }
+      .map { $0.state == .live ? Format.wholeNumber($0.stats.backersCount) : "" }
 
     let deadlineTitleAndSubtitle = project
-      .filter { $0.state == .live }
-      .map { Format.duration(secondsInUTC: $0.dates.deadline, useToGo: true) ?? ("", "") }
+      .map {
+        $0.state == .live
+          ? Format.duration(secondsInUTC: $0.dates.deadline, useToGo: true) ?? ("", "")
+          : ("", "")
+    }
 
     self.deadlineTitleLabelText = deadlineTitleAndSubtitle.map(first)
     self.deadlineSubtitleLabelText = deadlineTitleAndSubtitle.map(second)
@@ -143,8 +145,7 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
     self.metadataData = project.map(postcardMetadata(forProject:)).ignoreNil()
 
     self.percentFundedTitleLabelText = project
-      .filter { $0.state == .live }
-      .map { Format.percentage($0.stats.percentFunded) }
+      .map { $0.state == .live ? Format.percentage($0.stats.percentFunded) : "" }
 
     self.progressPercentage = project
       .map(Project.lens.stats.fundingProgress.view)
@@ -156,36 +157,31 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
       .map(projectAttributedNameAndBlurb)
 
     self.projectStateIconHidden = project
-      .filter { $0.state != .live }
       .map { $0.state != .successful }
-      .skipRepeats()
 
     self.projectStateStackViewHidden = project.map { $0.state == .live }.skipRepeats()
 
     self.projectStateSubtitleLabelText = project
-      .filter { $0.state != .live }
       .map {
-        Format.date(secondsInUTC: $0.dates.stateChangedAt, dateStyle: .MediumStyle, timeStyle: .NoStyle)
+        $0.state != .live
+          ? Format.date(secondsInUTC: $0.dates.stateChangedAt, dateStyle: .MediumStyle, timeStyle: .NoStyle)
+          : ""
     }
 
     self.projectStateTitleLabelColor = project
-      .filter { $0.state != .live }
       .map { $0.state == .successful ? .ksr_text_green_700 : .ksr_text_navy_700 }
       .skipRepeats()
 
     self.projectStateTitleLabelText = project
-      .filter { $0.state != .live }
       .map(fundingStatusText(forProject:))
 
     self.projectStatsStackViewHidden = self.projectStateStackViewHidden.map(negate)
 
     self.socialImageURL = project
       .map { $0.personalization.friends?.first.flatMap { NSURL(string: $0.avatar.medium) } }
-      .ignoreNil()
 
     self.socialLabelText = project
-      .map { $0.personalization.friends.flatMap(socialText(forFriends:)) }
-      .ignoreNil()
+      .map { $0.personalization.friends.flatMap(socialText(forFriends:)) ?? "" }
 
     self.socialStackViewHidden = project
       .map { $0.personalization.friends == nil || $0.personalization.friends?.count ?? 0 == 0 }
@@ -213,12 +209,12 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
   public let progressPercentage: Signal<Float, NoError>
   public let projectImageURL: Signal<NSURL?, NoError>
   public let projectNameAndBlurbLabelText: Signal<NSAttributedString, NoError>
-  public var projectStateIconHidden: Signal<Bool, NoError>
+  public let projectStateIconHidden: Signal<Bool, NoError>
   public let projectStateStackViewHidden: Signal<Bool, NoError>
   public let projectStatsStackViewHidden: Signal<Bool, NoError>
   public let projectStateSubtitleLabelText: Signal<String, NoError>
   public let projectStateTitleLabelText: Signal<String, NoError>
-  public var projectStateTitleLabelColor: Signal<UIColor, NoError>
+  public let projectStateTitleLabelColor: Signal<UIColor, NoError>
   public let socialImageURL: Signal<NSURL?, NoError>
   public let socialLabelText: Signal<String, NoError>
   public let socialStackViewHidden: Signal<Bool, NoError>

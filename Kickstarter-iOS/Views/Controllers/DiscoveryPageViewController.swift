@@ -46,7 +46,6 @@ internal final class DiscoveryPageViewController: UITableViewController {
 
     self
       |> baseTableControllerStyle(estimatedRowHeight: 200.0)
-      |> DiscoveryPageViewController.lens.view.backgroundColor .~ .clearColor()
   }
 
   internal override func bindViewModel() {
