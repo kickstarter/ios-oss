@@ -287,6 +287,9 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
       Strings.discovery_favorite_categories_buttons_unfavorite_a11y_label()
       ])
 
+    XCTAssertEqual(["Added Favorite Category", "Discover Category Favorite"], self.trackingClient.events)
+    XCTAssertEqual([1, 1], self.trackingClient.properties(forKey: "category_id", as: Int.self))
+
     self.vm.inputs.titleButtonTapped()
 
     self.favoriteViewIsHidden.assertValues([true, false])
@@ -311,6 +314,11 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
       Strings.discovery_favorite_categories_buttons_unfavorite_a11y_label()
       ])
 
+    XCTAssertEqual(["Added Favorite Category", "Discover Category Favorite", "Closed Discovery Filter"],
+                   self.trackingClient.events)
+    XCTAssertEqual([nil, nil, 1],
+                   self.trackingClient.properties(forKey: "discover_category_id", as: Int.self))
+
     self.vm.inputs.favoriteButtonTapped()
 
     self.favoriteViewIsHidden.assertValues([true, false])
@@ -323,6 +331,12 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
       Strings.discovery_favorite_categories_buttons_unfavorite_a11y_label(),
       Strings.discovery_favorite_categories_buttons_favorite_a11y_label()
     ])
+
+    XCTAssertEqual([
+      "Added Favorite Category", "Discover Category Favorite", "Closed Discovery Filter",
+      "Removed Favorite Category", "Discover Category Favorite"],
+                   self.trackingClient.events)
+    XCTAssertEqual([1, 1, nil, 1, 1], self.trackingClient.properties(forKey: "category_id", as: Int.self))
 
     self.vm.inputs.titleButtonTapped()
 

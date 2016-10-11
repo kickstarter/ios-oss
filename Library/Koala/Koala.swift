@@ -137,6 +137,8 @@ public final class Koala {
     self.track(event: "Attempting 1password Login")
   }
 
+  // MARK: Discovery Events
+
   /**
    Call when a discovery search is made, including pagination.
 
@@ -155,6 +157,20 @@ public final class Koala {
 
   public func trackDiscoveryViewed(params params: DiscoveryParams) {
     self.track(event: "Viewed Discovery", properties: properties(params: params))
+  }
+
+  public func trackDiscoveryFavoritedCategory(params params: DiscoveryParams, isFavorited: Bool) {
+    let props = params.category.map(properties) ?? [:]
+    let deprecatedProps = props.withAllValuesFrom(
+      ["toggle_to": isFavorited, Koala.DeprecatedKey: true]
+    )
+
+    self.track(event: isFavorited ? "Added Favorite Category" : "Removed Favorite Category",
+               properties: props)
+
+    // Deprecated event
+    self.track(event: "Discover Category Favorite",
+               properties: deprecatedProps)
   }
 
   /// Call when the discovery filters appear

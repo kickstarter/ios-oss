@@ -217,6 +217,12 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
         AppEnvironment.current.userDefaults.hasSeenFavoriteCategoryAlert = true
       })
 
+    currentParams
+      .takePairWhen(categoryIdOnFavoriteTap.map(isFavoriteCategoryStored(withId:)))
+      .observeNext {
+        AppEnvironment.current.koala.trackDiscoveryFavoritedCategory(params: $0, isFavorited: $1)
+    }
+
     paramsAndFiltersAreHidden
       .takeWhen(self.titleButtonTappedProperty.signal)
       .filter { $0.filtersAreHidden }
