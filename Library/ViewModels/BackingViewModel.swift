@@ -5,7 +5,7 @@ import ReactiveExtensions
 import Result
 
 public protocol BackingViewModelInputs {
-  /// Configures the view model with a project
+  /// Configures the view model with a project.
   func configureWith(project project: Project, backer: User?)
 
   /// Call when the "Message creator" button is pressed.
@@ -19,56 +19,62 @@ public protocol BackingViewModelInputs {
 }
 
 public protocol BackingViewModelOutputs {
-  /// Emits the backer avatar to be displayed
+  /// Emits the backer avatar to be displayed.
   var backerAvatarURL: Signal<NSURL?, NoError> { get }
 
-  /// Emits the backer name to be displayed
+  /// Emits the backer name to be displayed.
   var backerName: Signal<String, NoError> { get }
 
-  /// Emits the accessibility label for the backer name
+  /// Emits the accessibility label for the backer name.
   var backerNameAccessibilityLabel: Signal<String, NoError> { get }
 
-  /// Emits the backer's pledge amount and date
+  /// Emits the backer's pledge amount and date.
   var backerPledgeAmountAndDate: Signal<String, NoError> { get }
 
-  /// Emits the accessibility label for backer's pledge amount and date
+  /// Emits the accessibility label for backer's pledge amount and date.
   var backerPledgeAmountAndDateAccessibilityLabel: Signal<String, NoError> { get }
 
-  /// Emits the backer's pledge status
+  /// Emits the backer's pledge status.
   var backerPledgeStatus: Signal<String, NoError> { get }
 
-  /// Emits the accessibility label for backer's pledge status
+  /// Emits the accessibility label for backer's pledge status.
   var backerPledgeStatusAccessibilityLabel: Signal<String, NoError> { get }
 
-  /// Emits the backer reward description to display
+  /// Emits the backer reward description to display.
   var backerRewardDescription: Signal<String, NoError> { get }
 
-  /// Emits the accessibility label for backer reward description
+  /// Emits the accessibility label for backer reward description.
   var backerRewardDescriptionAccessibilityLabel: Signal<String, NoError> { get }
 
-  /// Emits the backer sequence to be displayed
+  /// Emits the backer sequence to be displayed.
   var backerSequence: Signal<String, NoError> { get }
 
-  /// Emits the accessibility label for backer sequence
+  /// Emits the accessibility label for backer sequence.
   var backerSequenceAccessibilityLabel: Signal<String, NoError> { get }
 
-  /// Emits the backer's shipping amount
+  /// Emits the backer's shipping amount.
   var backerShippingAmount: Signal<String, NoError> { get }
 
-  /// Emits the accessibility label for backer's shipping amount
+  /// Emits the accessibility label for backer's shipping amount.
   var backerShippingAmountAccessibilityLabel: Signal<String, NoError> { get }
 
-  /// Emits the backer's description of shipping
+  /// Emits the backer's description of shipping.
   var backerShippingDescription: Signal<String, NoError> { get }
 
-  /// Emits the accessibility label for backer's description of shipping
+  /// Emits the accessibility label for backer's description of shipping.
   var backerShippingDescriptionAccessibilityLabel: Signal<String, NoError> { get }
+
+  /// Emits with the project when should go to message creator screen.
+  var goToMessageCreator: Signal<(MessageSubject, Koala.MessageDialogContext), NoError> { get }
 
   /// Emits with the project when should go to messages screen.
   var goToMessages: Signal<(Project, Backing), NoError> { get }
 
-  /// Emits with the project when should go to message creator screen.
-  var goToMessageCreator: Signal<(MessageSubject, Koala.MessageDialogContext), NoError> { get }
+  /// Emits a boolean that determines if the actions stackview should be hidden.
+  var hideActionsStackView: Signal<Bool, NoError> { get }
+
+  /// Emits the button title for messaging a backer or creator.
+  var messageButtonTitleText: Signal<String, NoError> { get }
 }
 
 public protocol BackingViewModelType {
@@ -162,6 +168,18 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
           : (MessageSubject.backing(backing), .backerModel)
     }
 
+    self.messageButtonTitleText = projectAndBackerAndBackerIsCurrentUser
+      .map { project, _, backerIsCurrentUser in
+        project.creator == AppEnvironment.current.currentUser
+          ? localizedString(key: "Message_backer", defaultValue:  "Message backer")
+          : localizedString(key: "Message_creator", defaultValue: "Message creator")
+    }
+
+    self.hideActionsStackView = projectAndBackerAndBackerIsCurrentUser
+      .map { project, _, backerIsCurrentUser in
+        !backerIsCurrentUser && project.creator != AppEnvironment.current.currentUser
+    }
+
     project
       .takeWhen(self.viewDidLoadProperty.signal)
       .observeNext { AppEnvironment.current.koala.trackViewedPledge(forProject: $0) }
@@ -203,8 +221,10 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
   public let backerShippingAmountAccessibilityLabel: Signal<String, NoError>
   public let backerShippingDescription: Signal<String, NoError>
   public let backerShippingDescriptionAccessibilityLabel: Signal<String, NoError>
-  public let goToMessages: Signal<(Project, Backing), NoError>
   public let goToMessageCreator: Signal<(MessageSubject, Koala.MessageDialogContext), NoError>
+  public let goToMessages: Signal<(Project, Backing), NoError>
+  public let hideActionsStackView: Signal<Bool, NoError>
+  public let messageButtonTitleText: Signal<String, NoError>
 
   public var inputs: BackingViewModelInputs { return self }
   public var outputs: BackingViewModelOutputs { return self }

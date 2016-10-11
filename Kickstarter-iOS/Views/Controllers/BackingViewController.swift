@@ -34,6 +34,7 @@ internal final class BackingViewController: UIViewController {
 
   internal override func viewDidLoad() {
     super.viewDidLoad()
+
     self.messageCreatorButton
       |> UIButton.lens.targets .~ [(self, #selector(messageCreatorTapped), .TouchUpInside)]
 
@@ -67,20 +68,18 @@ internal final class BackingViewController: UIViewController {
     self.backerAvatarImageView |> UIImageView.lens.accessibilityElementsHidden .~ true
 
     self.messageCreatorButton
-      |> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.social_message_creator() }
       |> greenButtonStyle
-      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.social_message_creator() }
-      |> UIButton.lens.accessibilityHint %~ {  _ in "Opens message creator." }
+      |> UIButton.lens.accessibilityHint %~ {  _ in
+        localizedString(key: "Opens_message_composer", defaultValue: "Opens message composer.")
+    }
 
     self.pledgedLabel
       |> UILabel.lens.font .~ .ksr_headline()
       |> UILabel.lens.text %~ { _ in Strings.backer_modal_pledged_title() }
-      |> UILabel.lens.accessibilityLabel %~ { _ in Strings.backer_modal_pledged_title() }
 
     self.rewardLabel
       |> UILabel.lens.font .~ .ksr_headline()
       |> UILabel.lens.text %~ { _ in Strings.backer_modal_reward_title() }
-      |> UILabel.lens.accessibilityLabel %~ { _ in Strings.backer_modal_reward_title() }
 
     self.rewardSeperatorView |> separatorStyle
 
@@ -91,20 +90,18 @@ internal final class BackingViewController: UIViewController {
     self.shippingLabel
       |> UILabel.lens.font .~ .ksr_headline()
       |> UILabel.lens.text %~ { _ in Strings.backer_modal_shipping_title() }
-      |> UILabel.lens.accessibilityLabel %~ { _ in Strings.backer_modal_shipping_title() }
 
     self.shippingSeperatorView |> separatorStyle
 
     self.viewMessagesButton
       |> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.backer_modal_view_messages() }
       |> neutralButtonStyle
-      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.backer_modal_view_messages() }
-      |> UIButton.lens.accessibilityHint %~ {  _ in "Opens messages." }
+      |> UIButton.lens.accessibilityHint %~ { _ in Strings.accessibility_dashboard_buttons_messages_hint() }
   }
 
   internal override func bindViewModel() {
     super.bindViewModel()
-
+    self.actionsStackView.rac.hidden = self.viewModel.outputs.hideActionsStackView
     self.backerNameLabel.rac.text = self.viewModel.outputs.backerName
     self.backerNameLabel.rac.accessibilityLabel = self.viewModel.outputs.backerNameAccessibilityLabel
     self.backerPledgeAmountAndDateLabel.rac.text = self.viewModel.outputs.backerPledgeAmountAndDate
@@ -125,6 +122,7 @@ internal final class BackingViewController: UIViewController {
     self.backerShippingDescriptionLabel.rac.text = self.viewModel.outputs.backerShippingDescription
     self.backerShippingDescriptionLabel.rac.accessibilityLabel =
       self.viewModel.outputs.backerShippingDescriptionAccessibilityLabel
+    self.messageCreatorButton.rac.title = self.viewModel.outputs.messageButtonTitleText
 
     self.viewModel.outputs.backerAvatarURL
       .observeForControllerAction()

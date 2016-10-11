@@ -24,11 +24,13 @@ internal final class BackingViewModelTests: TestCase {
   internal let backerShippingAmountAccessibilityLabel = TestObserver<String, NoError>()
   internal let backerShippingDescription = TestObserver<String, NoError>()
   internal let backerShippingDescriptionAccessibilityLabel = TestObserver<String, NoError>()
-  internal let goToMessagesBacking = TestObserver<Backing, NoError>()
-  internal let goToMessagesProject = TestObserver<Project, NoError>()
   internal let goToMessageCreatorSubject = TestObserver<MessageSubject, NoError>()
   internal let goToMessageCreatorContext = TestObserver<Koala.MessageDialogContext, NoError>()
+  internal let goToMessagesBacking = TestObserver<Backing, NoError>()
+  internal let goToMessagesProject = TestObserver<Project, NoError>()
+  internal let hideActionsStackView = TestObserver<Bool, NoError>()
   internal let presentMessageDialog = TestObserver<MessageThread, NoError>()
+  internal let messageButtonTitleText = TestObserver<String, NoError>()
 
   override func setUp() {
     super.setUp()
@@ -53,11 +55,13 @@ internal final class BackingViewModelTests: TestCase {
     self.vm.outputs.backerShippingDescription.observe(backerShippingDescription.observer)
     self.vm.outputs.backerShippingDescriptionAccessibilityLabel
       .observe(backerShippingDescriptionAccessibilityLabel.observer)
-    self.vm.outputs.goToMessages.map(first).observe(goToMessagesProject.observer)
-    self.vm.outputs.goToMessages.map(second).observe(goToMessagesBacking.observer)
     self.vm.outputs.goToMessageCreator.map(first).observe(goToMessageCreatorSubject.observer)
     self.vm.outputs.goToMessageCreator.map(second).observe(goToMessageCreatorContext.observer)
-  }
+    self.vm.outputs.goToMessages.map(first).observe(goToMessagesProject.observer)
+    self.vm.outputs.goToMessages.map(second).observe(goToMessagesBacking.observer)
+    self.vm.outputs.hideActionsStackView.observe(hideActionsStackView.observer)
+    self.vm.outputs.messageButtonTitleText.observe(messageButtonTitleText.observer)
+     }
 
   func testBackerAvatarURL() {
     withEnvironment(currentUser: .template |> User.lens.avatar.small .~ "http://www.image.com/lit.jpg") {
@@ -330,6 +334,50 @@ internal final class BackingViewModelTests: TestCase {
 
       self.goToMessageCreatorSubject.assertValues([.project(project)])
       self.goToMessageCreatorContext.assertValues([.backerModel])
+    }
+  }
+
+  func testCurrentUserIsCreator() {
+    let creator = .template |> User.lens.id .~ 42
+    let project = .template
+      |> Project.lens.creator .~ creator
+
+    withEnvironment(currentUser: creator) {
+      self.vm.inputs.configureWith(project: project, backer: nil)
+
+      self.vm.inputs.viewDidLoad()
+
+      self.hideActionsStackView.assertValues([false], "Shows actions stack view")
+    }
+  }
+
+  func testCurrentUserIsBacker() {
+    let project = Project.template
+    let backer = .template |> User.lens.id .~ 20
+
+    withEnvironment(currentUser: backer) {
+      self.vm.inputs.configureWith(project: project, backer: backer)
+
+      self.vm.inputs.viewDidLoad()
+
+      self.hideActionsStackView.assertValues([false], "Shows actions stack view")
+    }
+  }
+
+  func testCurrentUserIsCollaborator() {
+    let creator = .template |> User.lens.id .~ 42
+    let project = .template
+      |> Project.lens.creator .~ creator
+    let backing = Backing.template
+    let backer = .template |> User.lens.id .~ 199
+    let collaborator = .template |> User.lens.id .~ 99
+
+    withEnvironment(apiService: MockService(fetchBackingResponse: backing), currentUser: collaborator) {
+      self.vm.inputs.configureWith(project: project, backer: backer)
+
+      self.vm.inputs.viewDidLoad()
+
+      self.hideActionsStackView.assertValues([true], "Hides actions stack view for non-creator/non-backer")
     }
   }
 
