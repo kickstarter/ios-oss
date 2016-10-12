@@ -52,14 +52,14 @@ internal final class DiscoveryPageViewController: UITableViewController {
     super.bindViewModel()
 
     self.viewModel.outputs.activitiesForSample
-      .observeForControllerAction()
+      .observeForUI()
       .observeNext { [weak self] activities in
         self?.dataSource.load(activities: activities)
         self?.tableView.reloadData()
     }
 
     self.viewModel.outputs.asyncReloadData
-      .observeForControllerAction()
+      .observeForUI()
       .observeNext { [weak self] in
         dispatch_async(dispatch_get_main_queue()) {
           self?.tableView.reloadData()
@@ -75,14 +75,14 @@ internal final class DiscoveryPageViewController: UITableViewController {
       .observeNext { [weak self] project, update in self?.goTo(project: project, update: update) }
 
     self.viewModel.outputs.projects
-      .observeForControllerAction()
+      .observeForUI()
       .observeNext { [weak self] projects in
         self?.dataSource.load(projects: projects)
         self?.tableView.reloadData()
     }
 
     self.viewModel.outputs.showOnboarding
-      .observeForControllerAction()
+      .observeForUI()
       .observeNext { [weak self] in
         self?.dataSource.show(onboarding: $0)
         self?.tableView.reloadData()

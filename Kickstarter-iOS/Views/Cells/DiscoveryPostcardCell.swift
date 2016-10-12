@@ -8,15 +8,12 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
   private let viewModel: DiscoveryPostcardViewModelType = DiscoveryPostcardViewModel()
 
   @IBOutlet private weak var cardView: UIView!
-  @IBOutlet private weak var backersStackView: UIStackView!
   @IBOutlet private weak var backersSubtitleLabel: UILabel!
   @IBOutlet private weak var backersTitleLabel: UILabel!
-  @IBOutlet private weak var deadlineStackView: UIStackView!
   @IBOutlet private weak var deadlineSubtitleLabel: UILabel!
   @IBOutlet private weak var deadlineTitleLabel: UILabel!
   @IBOutlet private weak var fundingProgressBarView: UIView!
   @IBOutlet private weak var fundingProgressContainerView: UIView!
-  @IBOutlet private weak var fundingStackView: UIStackView!
   @IBOutlet private weak var fundingSubtitleLabel: UILabel!
   @IBOutlet private weak var fundingTitleLabel: UILabel!
   @IBOutlet private weak var metadataView: UIView!
@@ -52,9 +49,6 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
       |> DiscoveryPostcardCell.lens.accessibilityHint %~ { _ in
         Strings.dashboard_tout_accessibility_hint_opens_project()
     }
-
-    [self.backersStackView, self.deadlineStackView, self.fundingStackView]
-      ||> UIStackView.lens.spacing .~ Styles.grid(1)
 
     self.backersSubtitleLabel
       |> postcardStatsSubtitleStyle
