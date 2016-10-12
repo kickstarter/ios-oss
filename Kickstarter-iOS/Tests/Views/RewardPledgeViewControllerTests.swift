@@ -15,7 +15,6 @@ internal final class RewardPledgeViewControllerTests: TestCase {
 
   override func setUp() {
     super.setUp()
-
     UIView.setAnimationsEnabled(false)
 
     AppEnvironment.pushEnvironment(

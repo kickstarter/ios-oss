@@ -10,6 +10,7 @@ internal final class NoRewardCell: UITableViewCell, ValueCell {
   @IBOutlet private weak var pledgeTitleLabel: UILabel!
   @IBOutlet private weak var pledgeSubtitleLabel: UILabel!
   @IBOutlet private weak var rootStackView: UIStackView!
+  @IBOutlet private weak var copyStackView: UIStackView!
 
   internal func configureWith(value project: Project) {
     self.contentView.backgroundColor = Library.backgroundColor(forCategoryId: project.category.rootId)
@@ -31,7 +32,9 @@ internal final class NoRewardCell: UITableViewCell, ValueCell {
     self.pledgeButton
       |> greenButtonStyle
       |> UIButton.lens.userInteractionEnabled .~ false
-      |> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.Pledge_now_without_a_reward() }
+      |> UIButton.lens.title(forState: .Normal) %~ { _ in
+        localizedString(key: "Pledge_without_a_reward", defaultValue: "Pledge without a reward")
+    }
 
     self.pledgeSubtitleLabel
       |> UILabel.lens.textColor .~ .ksr_text_navy_500
@@ -47,6 +50,11 @@ internal final class NoRewardCell: UITableViewCell, ValueCell {
       |> UIStackView.lens.spacing .~ Styles.grid(3)
       |> UIStackView.lens.layoutMargins .~
         .init(top: Styles.grid(4), left: Styles.grid(2), bottom: Styles.grid(2), right: Styles.grid(2))
+      |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+
+    self.copyStackView
+      |> UIStackView.lens.spacing .~ Styles.grid(3)
+      |> UIStackView.lens.layoutMargins .~ .init(topBottom: 0, leftRight: Styles.grid(2))
       |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
   }
   // swiftlint:enable function_body_length

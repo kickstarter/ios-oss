@@ -94,11 +94,7 @@ RewardCellViewModelOutputs {
       .map { Strings.left_left(left: Format.wholeNumber($0)) }
 
     self.minimumAndConversionLabelsColor = projectAndReward
-      .map { project, reward in
-        reward.remaining != 0 || userIsBacking(reward: reward, inProject: project)
-          ? .ksr_text_green_700
-          : .ksr_text_navy_500
-    }
+      .map(minimumRewardAmountTextColor(project:reward:))
 
     self.titleLabelHidden = reward
       .map { $0.title == nil && $0 != Reward.noReward }
@@ -232,6 +228,25 @@ RewardCellViewModelOutputs {
 
   public var inputs: RewardCellViewModelInputs { return self }
   public var outputs: RewardCellViewModelOutputs { return self }
+}
+
+private func minimumRewardAmountTextColor(project project: Project, reward: Reward) -> UIColor {
+   if (project.state == .live && reward.remaining == 0 &&
+    userIsBacking(reward: reward, inProject: project)) {
+      return .ksr_text_green_700
+  } else if (project.state != .live && reward.remaining == 0 &&
+    userIsBacking(reward: reward, inProject: project)) {
+      return .ksr_text_navy_700
+  } else if (project.state == .live && reward.remaining == 0) ||
+    (project.state != .live && reward.remaining == 0) {
+      return .ksr_text_navy_500
+  } else if project.state == .live {
+      return .ksr_text_green_700
+  } else if project.state != .live {
+      return .ksr_text_navy_700
+  } else {
+      return .ksr_text_navy_700
+  }
 }
 
 private func needsConversion(projectCountry projectCountry: Project.Country, userCountry: String?) -> Bool {

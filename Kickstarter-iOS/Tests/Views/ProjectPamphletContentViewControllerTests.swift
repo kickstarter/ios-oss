@@ -13,7 +13,6 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
 
   override func setUp() {
     super.setUp()
-
     AppEnvironment.pushEnvironment(
       config: .template |> Config.lens.countryCode .~ self.cosmicSurgery.country.countryCode,
       mainBundle: NSBundle.framework

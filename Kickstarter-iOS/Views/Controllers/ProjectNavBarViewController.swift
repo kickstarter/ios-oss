@@ -86,6 +86,7 @@ internal final class ProjectNavBarViewController: UIViewController {
       |> UIButton.lens.backgroundColor(forState: .Highlighted) .~ .init(white: 0, alpha: 0.1)
       |> UIButton.lens.adjustsImageWhenHighlighted .~ true
       |> UIButton.lens.adjustsImageWhenDisabled .~ true
+      |> UIButton.lens.userInteractionEnabled .~ false
 
     self.closeButton
       |> UIButton.lens.title(forState: .Normal) .~ nil

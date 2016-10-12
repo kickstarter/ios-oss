@@ -16,10 +16,12 @@ internal final class PledgeTitleCell: UITableViewCell, ValueCell {
     switch (project.personalization.isBacking, project.state) {
     case (true?, .live):
       self.pledgeTitleLabel.font = .ksr_headline(size: 16)
-      self.pledgeTitleLabel.text = Strings.Manage_your_pledge_below_colon()
+      self.pledgeTitleLabel.text = localizedString(
+        key: "Manage_your_pledge", defaultValue: "Manage your pledge")
     case (_, .live):
       self.pledgeTitleLabel.font = .ksr_headline(size: 17)
-      self.pledgeTitleLabel.text = Strings.Back_this_project_below_colon()
+      self.pledgeTitleLabel.text = localizedString(
+        key: "Back_this_project_below", defaultValue: "Back this project below")
     default:
       self.pledgeTitleLabel.font = .ksr_headline(size: 16)
       self.pledgeTitleLabel.text = Strings.You_backed_this_project()

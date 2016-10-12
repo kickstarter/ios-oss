@@ -401,6 +401,7 @@ final class RewardCellViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: project, reward: reward)
 
     self.minimumLabelText.assertValues([Format.currency(reward.minimum, country: project.country)])
+
     self.minimumAndConversionLabelsColor.assertValues([.ksr_text_green_700])
   }
 
@@ -413,7 +414,107 @@ final class RewardCellViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: project, reward: reward)
 
     self.minimumLabelText.assertValues([Format.currency(reward.minimum, country: project.country)])
+
     self.minimumAndConversionLabelsColor.assertValues([.ksr_text_navy_500])
+  }
+
+  func testMinimumLabel_AllGoneUserIsNonBackerLiveProject() {
+    let reward = .template
+      |> Reward.lens.minimum .~ 1_000
+      |> Reward.lens.remaining .~ 0
+    let project = .template
+      |> Project.lens.state .~ .live
+
+    withEnvironment(currentUser: .template) {
+      self.vm.inputs.configureWith(project: project, reward: reward)
+
+      self.minimumLabelText.assertValues([Format.currency(reward.minimum, country: project.country)])
+
+      self.minimumAndConversionLabelsColor.assertValues([.ksr_text_navy_500])
+    }
+  }
+
+  func testMinimumLabel_AllGoneUserIsNonBackerNonLiveProject() {
+    let reward = .template
+      |> Reward.lens.minimum .~ 1_000
+      |> Reward.lens.remaining .~ 0
+    let project = .template
+      |> Project.lens.state .~ .successful
+
+    withEnvironment(currentUser: .template) {
+      self.vm.inputs.configureWith(project: project, reward: reward)
+
+      self.minimumLabelText.assertValues([Format.currency(reward.minimum, country: project.country)])
+
+      self.minimumAndConversionLabelsColor.assertValues([.ksr_text_navy_500])
+    }
+  }
+
+  func testMinimumLabel_AllGoneUserIsBackerLiveProject() {
+
+    let reward = .template
+      |> Reward.lens.minimum .~ 1_000
+      |> Reward.lens.remaining .~ 0
+    let project = .template
+      |> Project.lens.state .~ .live
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.reward .~ reward
+    )
+
+    withEnvironment(currentUser: .template) {
+      self.vm.inputs.configureWith(project: project, reward: reward)
+
+      self.minimumLabelText.assertValues([Format.currency(reward.minimum, country: project.country)])
+
+      self.minimumAndConversionLabelsColor.assertValues([.ksr_text_green_700])
+    }
+  }
+
+  func testMinimumLabel_AllGoneUserIsBackerNonLiveProject() {
+    let reward = .template
+      |> Reward.lens.minimum .~ 1_000
+      |> Reward.lens.remaining .~ 0
+    let project = .template
+      |> Project.lens.state .~ .successful
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.reward .~ reward
+    )
+
+    withEnvironment(currentUser: .template) {
+      self.vm.inputs.configureWith(project: project, reward: reward)
+
+      self.minimumLabelText.assertValues([Format.currency(reward.minimum, country: project.country)])
+
+      self.minimumAndConversionLabelsColor.assertValues([.ksr_text_navy_700])
+    }
+  }
+
+  func testMinimumLabel_LiveProject() {
+    let project = .template
+      |> Project.lens.state .~ .live
+    let reward = Reward.template
+
+    self.vm.inputs.configureWith(project: project, reward: reward)
+
+    self.minimumLabelText.assertValues([Format.currency(reward.minimum, country: project.country)])
+
+    self.minimumAndConversionLabelsColor.assertValues([.ksr_text_green_700])
+  }
+
+  func testMinimumLabel_NonLiveProject() {
+    let project = .template
+      |> Project.lens.state .~ .successful
+    let reward = Reward.template
+
+    self.vm.inputs.configureWith(project: project, reward: reward)
+
+    self.minimumLabelText.assertValues([Format.currency(reward.minimum, country: project.country)])
+
+    self.minimumAndConversionLabelsColor.assertValues([.ksr_text_navy_700])
   }
 
   func testRemainingStackView() {

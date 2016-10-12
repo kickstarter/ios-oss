@@ -27,7 +27,6 @@ final class ProjectNavBarViewModelTests: TestCase {
 
   internal override func setUp() {
     super.setUp()
-
     self.vm.outputs.backgroundOpaqueAndAnimate.map(second).observe(self.backgroundAnimate.observer)
     self.vm.outputs.backgroundOpaqueAndAnimate.map(first).observe(self.backgroundOpaque.observer)
     self.vm.outputs.categoryButtonBackgroundColor.observe(self.categoryButtonBackgroundColor.observer)
