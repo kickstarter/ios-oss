@@ -8,6 +8,7 @@ import XCTest
 import Prelude
 
 internal final class ProfileProjectCellViewModelTests: TestCase {
+  let cellAccessibilityLabel = TestObserver<String, NoError>()
   let vm = ProfileProjectCellViewModel()
   let projectName = TestObserver<String, NoError>()
   let photoURL = TestObserver<NSURL?, NoError>()
@@ -19,6 +20,7 @@ internal final class ProfileProjectCellViewModelTests: TestCase {
 
   internal override func setUp() {
     super.setUp()
+    self.vm.outputs.cellAccessibilityLabel.observe(cellAccessibilityLabel.observer)
     self.vm.outputs.projectName.observe(projectName.observer)
     self.vm.outputs.photoURL.observe(photoURL.observer)
     self.vm.outputs.progress.observe(progress.observer)
@@ -66,6 +68,7 @@ internal final class ProfileProjectCellViewModelTests: TestCase {
     self.vm.inputs.project(project)
 
     self.projectName.assertValues([project.name], "Project name emitted.")
+    self.cellAccessibilityLabel.assertValues(["\(project.name) \(project.state.rawValue)"])
     self.photoURL.assertValues([NSURL(string: project.photo.full)], "Project photo emitted.")
   }
 }

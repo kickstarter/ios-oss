@@ -47,9 +47,12 @@ internal final class ProfileHeaderViewModelTests: TestCase {
 
       self.vm.inputs.user(user)
 
-      self.backedProjectsCountLabel.assertValues([String(user.stats.backedProjectsCount ?? 0)],
+      self.backedProjectsCountLabel.assertValues(
+        ["Backed projects \(user.stats.backedProjectsCount ?? 0)"],
                                                  "Backed projects count emitted.")
-      self.createdProjectsCountLabel.assertValues([String(user.stats.createdProjectsCount ?? 0)],
+
+      self.createdProjectsCountLabel.assertValues(
+        ["Created projects \((user.stats.createdProjectsCount ?? 0))"],
                                                   "Created projects count emitted.")
 
       self.createdProjectsCountLabelHidden.assertValues([false], "Created labels are not hidden.")
@@ -63,12 +66,12 @@ internal final class ProfileHeaderViewModelTests: TestCase {
 
     self.vm.inputs.user(user)
 
-    self.backedProjectsCountLabel.assertValues([String(user.stats.backedProjectsCount ?? 0)],
+    self.backedProjectsCountLabel.assertValues(["Backed projects \((user.stats.backedProjectsCount ?? 0))"],
                                                "Backed projects count emits.")
     self.createdProjectsCountLabelHidden.assertValues([true])
 
     self.createdProjectsLabelHidden.assertValues([true], "Created labels are hidden.")
-    self.createdProjectsCountLabel.assertValues(["0"])
+    self.createdProjectsCountLabel.assertValues(["Created projects 0"])
     self.dividerViewHidden.assertValues([true])
   }
 }

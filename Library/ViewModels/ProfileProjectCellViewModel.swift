@@ -9,6 +9,9 @@ public protocol ProfileProjectCellViewModelInputs {
 }
 
 public protocol ProfileProjectCellViewModelOutputs {
+  /// Emits project name and state for screen reader.
+  var cellAccessibilityLabel: Signal<String, NoError> { get }
+
   /// Emits the project name to be displayed.
   var projectName: Signal<String, NoError> { get }
 
@@ -50,6 +53,8 @@ public final class ProfileProjectCellViewModel: ProfileProjectCellViewModelType,
       $0.state == .successful ? .ksr_green_400 : .ksr_navy_600
     }
     self.stateHidden = project.map { $0.state == .live }
+
+    self.cellAccessibilityLabel = project.map { "\($0.name) \($0.state.rawValue)" }
   }
 
   private let projectProperty = MutableProperty<Project?>(nil)
@@ -57,6 +62,7 @@ public final class ProfileProjectCellViewModel: ProfileProjectCellViewModelType,
     self.projectProperty.value = project
   }
 
+  public let cellAccessibilityLabel: Signal<String, NoError>
   public let projectName: Signal<String, NoError>
   public let photoURL: Signal<NSURL?, NoError>
   public let progress: Signal<Float, NoError>

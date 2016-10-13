@@ -2,6 +2,7 @@ import Foundation
 import UIKit
 import Library
 import KsApi
+import Prelude
 
 internal final class ProfileProjectCell: UICollectionViewCell, ValueCell {
   private let viewModel: ProfileProjectCellViewModelType = ProfileProjectCellViewModel()
@@ -17,8 +18,18 @@ internal final class ProfileProjectCell: UICollectionViewCell, ValueCell {
     self.viewModel.inputs.project(value)
   }
 
+  internal override func bindStyles() {
+    super.bindStyles()
+
+    self
+      |> UICollectionViewCell.lens.isAccessibilityElement .~ true
+      |> UICollectionViewCell.lens.accessibilityHint %~ { _ in Strings.Opens_project() }
+      |> UICollectionViewCell.lens.accessibilityTraits .~ UIAccessibilityTraitButton
+  }
+
   internal override func bindViewModel() {
     self.projectNameLabel.rac.text = self.viewModel.outputs.projectName
+    self.rac.accessibilityLabel = self.viewModel.outputs.cellAccessibilityLabel
 
     self.viewModel.outputs.photoURL
       .observeForUI()

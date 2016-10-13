@@ -42,12 +42,22 @@ public final class ProfileHeaderViewModel: ProfileHeaderViewModelType,
   ProfileHeaderViewModelInputs, ProfileHeaderViewModelOutputs {
   public init() {
     let user = userProperty.signal.ignoreNil()
-
     self.avatarURL = user.map { NSURL(string: $0.avatar.large ?? $0.avatar.medium) }
-    self.backedProjectsCountLabel = user.map { Format.wholeNumber($0.stats.backedProjectsCount ?? 0) }
-    self.createdProjectsCountLabel = user.map { Format.wholeNumber($0.stats.createdProjectsCount ?? 0) }
+    self.backedProjectsCountLabel = user
+      .map { user in
+        localizedString(
+          key: "Backed_projects_projects_count",
+          defaultValue: "Backed projects \(Format.wholeNumber(user.stats.backedProjectsCount ?? 0))"
+        )
+    }
+    self.createdProjectsCountLabel = user
+      .map { user in
+        localizedString(
+          key: "Created_projects_projects_count",
+          defaultValue: "Created projects \(Format.wholeNumber(user.stats.createdProjectsCount ?? 0))"
+        )
+    }
     self.userName = user.map { $0.name }
-
     self.createdProjectsCountLabelHidden = user.map { !$0.isCreator }
     self.createdProjectsLabelHidden = user.map { !$0.isCreator }
     self.dividerViewHidden = user.map { !$0.isCreator }
