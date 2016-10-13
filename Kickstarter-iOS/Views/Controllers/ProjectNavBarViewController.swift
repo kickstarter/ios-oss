@@ -94,7 +94,7 @@ internal final class ProjectNavBarViewController: UIViewController {
       |> UIButton.lens.image(forState: .Normal) .~ image(named: "close-icon")
 
     self.navContainerView
-      |> UIView.lens.layoutMargins .~ .init(topBottom: 0, leftRight: Styles.grid(3))
+      |> UIView.lens.layoutMargins .~ .init(topBottom: 0, leftRight: Styles.gridHalf(1))
 
     self.projectNameLabel
       |> UILabel.lens.font .~ .ksr_body(size: 14)
