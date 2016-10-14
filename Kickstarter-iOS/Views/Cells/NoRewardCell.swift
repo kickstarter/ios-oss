@@ -22,8 +22,11 @@ internal final class NoRewardCell: UITableViewCell, ValueCell {
 
     self
       |> baseTableViewCellStyle()
-      |> (UITableViewCell.lens.contentView • UIView.lens.layoutMargins) .~
-        .init(top: Styles.grid(1), left: Styles.grid(2), bottom: Styles.grid(2), right: Styles.grid(2))
+      |> (UITableViewCell.lens.contentView • UIView.lens.layoutMargins) %~~ { _, cell in
+        cell.traitCollection.isRegularRegular
+          ? .init(top: Styles.grid(1), left: Styles.grid(16), bottom: Styles.grid(2), right: Styles.grid(16))
+          : .init(top: Styles.grid(1), left: Styles.grid(2), bottom: Styles.grid(2), right: Styles.grid(2))
+    }
 
     self.cardView
       |> dropShadowStyle()
@@ -32,9 +35,7 @@ internal final class NoRewardCell: UITableViewCell, ValueCell {
     self.pledgeButton
       |> greenButtonStyle
       |> UIButton.lens.userInteractionEnabled .~ false
-      |> UIButton.lens.title(forState: .Normal) %~ { _ in
-        localizedString(key: "Pledge_without_a_reward", defaultValue: "Pledge without a reward")
-    }
+      |> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.Pledge_without_a_reward() }
 
     self.pledgeSubtitleLabel
       |> UILabel.lens.textColor .~ .ksr_text_navy_500

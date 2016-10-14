@@ -45,16 +45,14 @@ public final class ProfileHeaderViewModel: ProfileHeaderViewModelType,
     self.avatarURL = user.map { NSURL(string: $0.avatar.large ?? $0.avatar.medium) }
     self.backedProjectsCountLabel = user
       .map { user in
-        localizedString(
-          key: "Backed_projects_projects_count",
-          defaultValue: "Backed projects \(Format.wholeNumber(user.stats.backedProjectsCount ?? 0))"
+        Strings.Backed_projects_projects_count(
+          project_count: Format.wholeNumber(user.stats.backedProjectsCount ?? 0)
         )
     }
     self.createdProjectsCountLabel = user
       .map { user in
-        localizedString(
-          key: "Created_projects_projects_count",
-          defaultValue: "Created projects \(Format.wholeNumber(user.stats.createdProjectsCount ?? 0))"
+        Strings.Created_projects_projects_count(
+          projects_count: Format.wholeNumber(user.stats.createdProjectsCount ?? 0)
         )
     }
     self.userName = user.map { $0.name }

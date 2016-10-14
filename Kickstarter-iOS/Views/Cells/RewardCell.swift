@@ -2,7 +2,13 @@ import KsApi
 import Library
 import Prelude
 
+internal protocol RewardCellDelegate: class {
+  /// Called when the reward cell needs to perform an expansion animation.
+  func rewardCellWantsExpansion(cell: RewardCell)
+}
+
 internal final class RewardCell: UITableViewCell, ValueCell {
+  internal var delegate: RewardCellDelegate?
   private let viewModel: RewardCellViewModelType = RewardCellViewModel()
 
   @IBOutlet private weak var allGoneContainerView: UIView!
@@ -35,8 +41,22 @@ internal final class RewardCell: UITableViewCell, ValueCell {
   @IBOutlet private weak var youreABackerLabel: UILabel!
   @IBOutlet private weak var youreABackerStackView: UIStackView!
 
-  func configureWith(value value: (Project, Reward)) {
-    self.viewModel.inputs.configureWith(project: value.0, reward: value.1)
+  internal override func awakeFromNib() {
+    super.awakeFromNib()
+
+    let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapped))
+    tapRecognizer.cancelsTouchesInView = false
+    tapRecognizer.delaysTouchesBegan = false
+    tapRecognizer.delaysTouchesEnded = false
+    self.addGestureRecognizer(tapRecognizer)
+  }
+
+  @objc private func tapped() {
+    self.viewModel.inputs.tapped()
+  }
+
+  internal func configureWith(value value: (Project, Either<Reward, Backing>)) {
+    self.viewModel.inputs.configureWith(project: value.0, rewardOrBacking: value.1)
   }
 
   // swiftlint:disable function_body_length
@@ -45,8 +65,12 @@ internal final class RewardCell: UITableViewCell, ValueCell {
 
     self
       |> baseTableViewCellStyle()
-      |> (UITableViewCell.lens.contentView • UIView.lens.layoutMargins) .~
-        .init(top: Styles.grid(1), left: Styles.grid(2), bottom: Styles.grid(2), right: Styles.grid(2))
+      |> (UITableViewCell.lens.contentView • UIView.lens.layoutMargins) %~~ { _, cell in
+        cell.traitCollection.isRegularRegular
+          ? .init(top: Styles.grid(2), left: Styles.grid(16), bottom: Styles.grid(4), right: Styles.grid(16))
+          : .init(top: Styles.grid(1), left: Styles.grid(2), bottom: Styles.grid(2), right: Styles.grid(2))
+      }
+      |> UIView.lens.contentMode .~ .Top
 
     self.rootStackView
       |> UIStackView.lens.spacing .~ Styles.grid(4)
@@ -121,7 +145,6 @@ internal final class RewardCell: UITableViewCell, ValueCell {
     self.youreABackerLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 12)
       |> UILabel.lens.textColor .~ .whiteColor()
-      |> UILabel.lens.text %~ { _ in Strings.Your_reward() }
 
     self.youreABackerStackView
       |> UIStackView.lens.spacing .~ Styles.gridHalf(1)
@@ -155,17 +178,18 @@ internal final class RewardCell: UITableViewCell, ValueCell {
     self.manageRewardButton
       |> borderButtonStyle
       |> UIButton.lens.userInteractionEnabled .~ false
-      |> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.Manage_your_reward() }
+      |> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.Manage_your_pledge() }
 
     self.viewYourPledgeButton
       |> borderButtonStyle
       |> UIButton.lens.userInteractionEnabled .~ false
-      |> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.View_your_reward() }
+      |> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.View_your_pledge() }
 
     self.viewModel.inputs.boundStyles()
   }
   // swiftlint:enable function_body_length
 
+  // swiftlint:disable function_body_length
   internal override func bindViewModel() {
     super.bindViewModel()
 
@@ -194,11 +218,18 @@ internal final class RewardCell: UITableViewCell, ValueCell {
     self.selectRewardButton.rac.title = self.viewModel.outputs.pledgeButtonTitleText
     self.viewYourPledgeButton.rac.hidden = self.viewModel.outputs.viewPledgeButtonHidden
     self.youreABackerContainerView.rac.hidden = self.viewModel.outputs.youreABackerViewHidden
+    self.youreABackerLabel.rac.text = self.viewModel.outputs.youreABackerLabelText
 
     self.viewModel.outputs.cardViewDropShadowHidden
       .observeForUI()
       .observeNext { [weak self] hidden in
         self?.cardView.layer.shadowOpacity = hidden ? 0 : 1
+    }
+
+    self.viewModel.outputs.notifyDelegateRewardCellWantsExpansion
+      .observeForUI()
+      .observeNext { [weak self] in
+        self.doIfSome { $0.delegate?.rewardCellWantsExpansion($0) }
     }
 
     self.viewModel.outputs.updateTopMarginsForIsBacking
@@ -211,6 +242,7 @@ internal final class RewardCell: UITableViewCell, ValueCell {
       .observeForUI()
       .observeNext { [weak self] in self?.load(items: $0) }
   }
+  // swiftlint:enable function_body_length
 
   private func load(items items: [String]) {
     self.itemsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }

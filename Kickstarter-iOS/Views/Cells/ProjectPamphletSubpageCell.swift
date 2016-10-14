@@ -63,8 +63,11 @@ internal final class ProjectPamphletSubpageCell: UITableViewCell, ValueCell {
 
     self
       |> baseTableViewCellStyle()
-      |> ProjectPamphletSubpageCell.lens.contentView.layoutMargins .~
-        .init(topBottom: Styles.gridHalf(5), leftRight: Styles.gridHalf(7))
+      |> ProjectPamphletSubpageCell.lens.contentView.layoutMargins %~~ { _, cell in
+        cell.traitCollection.isRegularRegular
+          ? .init(topBottom: Styles.gridHalf(5), leftRight: Styles.grid(16))
+          : .init(topBottom: Styles.gridHalf(5), leftRight: Styles.gridHalf(7))
+    }
 
     self.countContainerView
       |> UIView.lens.layoutMargins .~ .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))

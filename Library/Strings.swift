@@ -352,18 +352,18 @@ public enum Strings {
     )
   }
   /**
-   "Back this project below:"
+   "Back this project below"
 
    - **es**: "Patrocina este proyecto:"
-   - **de**: "Dieses Projekt unterstützen:"
-   - **fr**: "Je soutiens le projet ci-dessous :"
-   - **it**: "Back this project below:"
-   - **en**: "Back this project below:"
+   - **de**: "Back this project below"
+   - **fr**: "Je soutiens ce projet"
+   - **it**: "Back this project below"
+   - **en**: "Back this project below"
   */
-  public static func Back_this_project_below_colon() -> String {
+  public static func Back_this_project_below() -> String {
     return localizedString(
-      key: "Back_this_project_below_colon",
-      defaultValue: "Back this project below:",
+      key: "Back_this_project_below",
+      defaultValue: "Back this project below",
       count: nil,
       substitutions: [:]
     )
@@ -381,6 +381,57 @@ public enum Strings {
     return localizedString(
       key: "Backed_by_Friends",
       defaultValue: "Backed by Friends",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Backed projects %{project_count}"
+
+   - **es**: "Proyectos patrocinados: %{project_count}"
+   - **de**: "Backed projects %{project_count}"
+   - **fr**: "Projets soutenus : %{project_count}"
+   - **it**: "Backed projects %{project_count}"
+   - **en**: "Backed projects %{project_count}"
+  */
+  public static func Backed_projects_projects_count(project_count project_count: String) -> String {
+    return localizedString(
+      key: "Backed_projects_projects_count",
+      defaultValue: "Backed projects %{project_count}",
+      count: nil,
+      substitutions: ["project_count": project_count]
+    )
+  }
+  /**
+   "Cancel your pledge"
+
+   - **es**: "Cancela tu contribución"
+   - **de**: "Deinen Beitrag zurückziehen"
+   - **fr**: "Annuler mon engagement"
+   - **it**: "Cancel your pledge"
+   - **en**: "Cancel your pledge"
+  */
+  public static func Cancel_your_pledge() -> String {
+    return localizedString(
+      key: "Cancel_your_pledge",
+      defaultValue: "Cancel your pledge",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Change payment method"
+
+   - **es**: "Cambiar método de pago"
+   - **de**: "Zahlungsmethode ändern"
+   - **fr**: "Changer de moyen de paiement"
+   - **it**: "Change payment method"
+   - **en**: "Change payment method"
+  */
+  public static func Change_payment_method() -> String {
+    return localizedString(
+      key: "Change_payment_method",
+      defaultValue: "Change payment method",
       count: nil,
       substitutions: [:]
     )
@@ -420,6 +471,23 @@ public enum Strings {
     )
   }
   /**
+   "Complete payment"
+
+   - **es**: "Complete payment"
+   - **de**: "Complete payment"
+   - **fr**: "Complete payment"
+   - **it**: "Complete payment"
+   - **en**: "Complete payment"
+  */
+  public static func Complete_payment() -> String {
+    return localizedString(
+      key: "Complete_payment",
+      defaultValue: "Complete payment",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Connect with Facebook to follow friends and get notified when they back or launch projects."
 
    - **es**: "Si te conectas via Facebook puedes seguir a tus amigos y te avisaremos cada vez que publican o patrocinan un proyecto."
@@ -449,6 +517,23 @@ public enum Strings {
     return localizedString(
       key: "Continue_to_payment",
       defaultValue: "Continue to payment",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Continue to update pledge"
+
+   - **es**: "Continuar a Actualizar contribución"
+   - **de**: "Weiter zu Beitrag aktualisieren"
+   - **fr**: "Continuer la modification de mon engagement"
+   - **it**: "Continue to update pledge"
+   - **en**: "Continue to update pledge"
+  */
+  public static func Continue_to_update_pledge() -> String {
+    return localizedString(
+      key: "Continue_to_update_pledge",
+      defaultValue: "Continue to update pledge",
       count: nil,
       substitutions: [:]
     )
@@ -485,6 +570,23 @@ public enum Strings {
       defaultValue: "Couldn't remove attachment",
       count: nil,
       substitutions: [:]
+    )
+  }
+  /**
+   "Created projects %{projects_count}"
+
+   - **es**: "Proyectos creados: %{projects_count}"
+   - **de**: "Created projects %{projects_count}"
+   - **fr**: "Projets créés : %{projects_count}"
+   - **it**: "Created projects %{projects_count}"
+   - **en**: "Created projects %{projects_count}"
+  */
+  public static func Created_projects_projects_count(projects_count projects_count: String) -> String {
+    return localizedString(
+      key: "Created_projects_projects_count",
+      defaultValue: "Created projects %{projects_count}",
+      count: nil,
+      substitutions: ["projects_count": projects_count]
     )
   }
   /**
@@ -879,6 +981,23 @@ public enum Strings {
     )
   }
   /**
+   "Follows %{friend_name}."
+
+   - **es**: "Sigue a %{friend_name}."
+   - **de**: "Follows %{friend_name}."
+   - **fr**: "Abonnement aux actus de %{friend_name}."
+   - **it**: "Follows %{friend_name}."
+   - **en**: "Follows %{friend_name}."
+  */
+  public static func Follows_friend_name(friend_name friend_name: String) -> String {
+    return localizedString(
+      key: "Follows_friend_name",
+      defaultValue: "Follows %{friend_name}.",
+      count: nil,
+      substitutions: ["friend_name": friend_name]
+    )
+  }
+  /**
    "Got it! Your survey response has been submitted."
 
    - **es**: "¡Listo! Hemos recibido tus respuestas a nuestro cuestionario."
@@ -1072,7 +1191,7 @@ with friends."
    "Manage your pledge"
 
    - **es**: "Administra tu contribución"
-   - **de**: "Manage your pledge"
+   - **de**: "Meinen Beitrag verwalten"
    - **fr**: "Gérer mon engagement"
    - **it**: "Manage your pledge"
    - **en**: "Manage your pledge"
@@ -1086,18 +1205,18 @@ with friends."
     )
   }
   /**
-   "Manage your pledge below:"
+   "Manage your pledge below"
 
    - **es**: "Administra tu contribución:"
-   - **de**: "Deinen Beitrag verwalten:"
-   - **fr**: "Gérer l'engagement ci-dessous :"
-   - **it**: "Manage your pledge below:"
-   - **en**: "Manage your pledge below:"
+   - **de**: "Manage your pledge below"
+   - **fr**: "Gérer mon engagement"
+   - **it**: "Manage your pledge below"
+   - **en**: "Manage your pledge below"
   */
-  public static func Manage_your_pledge_below_colon() -> String {
+  public static func Manage_your_pledge_below() -> String {
     return localizedString(
-      key: "Manage_your_pledge_below_colon",
-      defaultValue: "Manage your pledge below:",
+      key: "Manage_your_pledge_below",
+      defaultValue: "Manage your pledge below",
       count: nil,
       substitutions: [:]
     )
@@ -1115,6 +1234,40 @@ with friends."
     return localizedString(
       key: "Manage_your_reward",
       defaultValue: "Manage your reward",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Message backer"
+
+   - **es**: "Message backer"
+   - **de**: "Message backer"
+   - **fr**: "Envoyer un message au contributeur"
+   - **it**: "Message backer"
+   - **en**: "Message backer"
+  */
+  public static func Message_backer() -> String {
+    return localizedString(
+      key: "Message_backer",
+      defaultValue: "Message backer",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Message creator"
+
+   - **es**: "Message creator"
+   - **de**: "Message creator"
+   - **fr**: "Envoyer un message au créateur"
+   - **it**: "Message creator"
+   - **en**: "Message creator"
+  */
+  public static func Message_creator() -> String {
+    return localizedString(
+      key: "Message_creator",
+      defaultValue: "Message creator",
       count: nil,
       substitutions: [:]
     )
@@ -1205,6 +1358,23 @@ with friends."
     )
   }
   /**
+   "Opens message composer."
+
+   - **es**: "Abre plantilla de mensaje."
+   - **de**: "Opens message composer."
+   - **fr**: "Ouvre l'éditeur de messages."
+   - **it**: "Opens message composer."
+   - **en**: "Opens message composer."
+  */
+  public static func Opens_message_composer() -> String {
+    return localizedString(
+      key: "Opens_message_composer",
+      defaultValue: "Opens message composer.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Opens pledge info."
 
    - **es**: "Abre info sobre contribución."
@@ -1276,7 +1446,7 @@ with friends."
    "Or select a different reward below:"
 
    - **es**: "También puedes seleccionar una de las siguientes recompensas:"
-   - **de**: "Or select a different reward below:"
+   - **de**: "Oder eine andere Belohnung wählen:"
    - **fr**: "Ou sélectionner une autre récompense ci-dessous :"
    - **it**: "Or select a different reward below:"
    - **en**: "Or select a different reward below:"
@@ -1307,10 +1477,44 @@ with friends."
     )
   }
   /**
+   "Please enter an amount of %{amount} or less."
+
+   - **es**: "Please enter an amount of %{amount} or less."
+   - **de**: "Please enter an amount of %{amount} or less."
+   - **fr**: "Please enter an amount of %{amount} or less."
+   - **it**: "Please enter an amount of %{amount} or less."
+   - **en**: "Please enter an amount of %{amount} or less."
+  */
+  public static func Please_enter_an_amount_of_amount_or_less(amount amount: String) -> String {
+    return localizedString(
+      key: "Please_enter_an_amount_of_amount_or_less",
+      defaultValue: "Please enter an amount of %{amount} or less.",
+      count: nil,
+      substitutions: ["amount": amount]
+    )
+  }
+  /**
+   "Please enter an amount of %{amount} or more."
+
+   - **es**: "Please enter an amount of %{amount} or more."
+   - **de**: "Please enter an amount of %{amount} or more."
+   - **fr**: "Please enter an amount of %{amount} or more."
+   - **it**: "Please enter an amount of %{amount} or more."
+   - **en**: "Please enter an amount of %{amount} or more."
+  */
+  public static func Please_enter_an_amount_of_amount_or_more(amount amount: String) -> String {
+    return localizedString(
+      key: "Please_enter_an_amount_of_amount_or_more",
+      defaultValue: "Please enter an amount of %{amount} or more.",
+      count: nil,
+      substitutions: ["amount": amount]
+    )
+  }
+  /**
    "Pledge any amount to help bring this project to life."
 
    - **es**: "Puedes contribuir un monto de libre selección para apoyar este proyecto."
-   - **de**: "Pledge any amount to help bring this project to life."
+   - **de**: "Du kannst jeden beliebigen Betrag eingeben, um das Projekt zu unterstützen."
    - **fr**: "Choisissez le montant de votre engagement à soutenir ce projet."
    - **it**: "Pledge any amount to help bring this project to life."
    - **en**: "Pledge any amount to help bring this project to life."
@@ -1324,18 +1528,18 @@ with friends."
     )
   }
   /**
-   "Pledge now without a reward"
+   "Pledge without a reward"
 
    - **es**: "Contribuir sin recompensa"
-   - **de**: "Ohne Belohnung unterstützen"
-   - **fr**: "S'engager sans recevoir de récompense"
-   - **it**: "Pledge now without a reward"
-   - **en**: "Pledge now without a reward"
+   - **de**: "Pledge without a reward"
+   - **fr**: "Engagement sans récompense"
+   - **it**: "Pledge without a reward"
+   - **en**: "Pledge without a reward"
   */
-  public static func Pledge_now_without_a_reward() -> String {
+  public static func Pledge_without_a_reward() -> String {
     return localizedString(
-      key: "Pledge_now_without_a_reward",
-      defaultValue: "Pledge now without a reward",
+      key: "Pledge_without_a_reward",
+      defaultValue: "Pledge without a reward",
       count: nil,
       substitutions: [:]
     )
@@ -1483,7 +1687,7 @@ daring ideas."
    "Select this reward instead"
 
    - **es**: "Selecciona esta recompensa"
-   - **de**: "Select this reward instead"
+   - **de**: "Diese Belohnung auswählen"
    - **fr**: "Choisir cette récompense"
    - **it**: "Select this reward instead"
    - **en**: "Select this reward instead"
@@ -1670,6 +1874,23 @@ caught your eye?"
     )
   }
   /**
+   "Thank you for supporting this project."
+
+   - **es**: "Gracias por apoyar este proyecto."
+   - **de**: "Vielen Dank für deine Unterstützung dieses Projekts."
+   - **fr**: "Merci pour votre soutien."
+   - **it**: "Thank you for supporting this project."
+   - **en**: "Thank you for supporting this project."
+  */
+  public static func Thank_you_for_supporting_this_project() -> String {
+    return localizedString(
+      key: "Thank_you_for_supporting_this_project",
+      defaultValue: "Thank you for supporting this project.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "The email associated with this Facebook account is already registered to another Kickstarter user."
 
    - **es**: "Esta cuenta de correo electrónico ya está asociada a otro usuario de Kickstarter."
@@ -1704,6 +1925,23 @@ caught your eye?"
     )
   }
   /**
+   "Unfollows %{friend_name}."
+
+   - **es**: "Dejar de seguir a %{friend_name}."
+   - **de**: "Unfollows %{friend_name}."
+   - **fr**: "Désabonnement des actus de %{friend_name}."
+   - **it**: "Unfollows %{friend_name}."
+   - **en**: "Unfollows %{friend_name}."
+  */
+  public static func Unfollows_friend_name(friend_name friend_name: String) -> String {
+    return localizedString(
+      key: "Unfollows_friend_name",
+      defaultValue: "Unfollows %{friend_name}.",
+      count: nil,
+      substitutions: ["friend_name": friend_name]
+    )
+  }
+  /**
    "Unstars project."
 
    - **es**: "Remueve proyecto de favoritos."
@@ -1716,6 +1954,23 @@ caught your eye?"
     return localizedString(
       key: "Unstars_project",
       defaultValue: "Unstars project.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Update pledge"
+
+   - **es**: "Update pledge"
+   - **de**: "Update pledge"
+   - **fr**: "Update pledge"
+   - **it**: "Update pledge"
+   - **en**: "Update pledge"
+  */
+  public static func Update_pledge() -> String {
+    return localizedString(
+      key: "Update_pledge",
+      defaultValue: "Update pledge",
       count: nil,
       substitutions: [:]
     )
@@ -1738,10 +1993,27 @@ caught your eye?"
     )
   }
   /**
+   "View your pledge"
+
+   - **es**: "Revisa tu contribución"
+   - **de**: "Deinen Finanzierungsbeitrag ansehen"
+   - **fr**: "Afficher mon engagement"
+   - **it**: "View your pledge"
+   - **en**: "View your pledge"
+  */
+  public static func View_your_pledge() -> String {
+    return localizedString(
+      key: "View_your_pledge",
+      defaultValue: "View your pledge",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "View your reward"
 
    - **es**: "Mostrar recompensa"
-   - **de**: "View your reward"
+   - **de**: "Belohnung ansehen"
    - **fr**: "Afficher ma récompense"
    - **it**: "View your reward"
    - **en**: "View your reward"
@@ -1758,7 +2030,7 @@ caught your eye?"
    "You backed this project."
 
    - **es**: "Patrocinaste este proyecto."
-   - **de**: "You backed this project."
+   - **de**: "Du hast dieses Projekt unterstützt."
    - **fr**: "Vous avez soutenu ce projet."
    - **it**: "You backed this project."
    - **en**: "You backed this project."
@@ -1767,6 +2039,23 @@ caught your eye?"
     return localizedString(
       key: "You_backed_this_project",
       defaultValue: "You backed this project.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Your pledge"
+
+   - **es**: "Tu contribución"
+   - **de**: "Dein Beitrag"
+   - **fr**: "Mon engagement"
+   - **it**: "Your pledge"
+   - **en**: "Your pledge"
+  */
+  public static func Your_pledge() -> String {
+    return localizedString(
+      key: "Your_pledge",
+      defaultValue: "Your pledge",
       count: nil,
       substitutions: [:]
     )

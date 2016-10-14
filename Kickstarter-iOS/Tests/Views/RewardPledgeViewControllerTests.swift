@@ -35,22 +35,22 @@ internal final class RewardPledgeViewControllerTests: TestCase {
     AppEnvironment.popEnvironment()
   }
 
-  func testPledge_AllLanguages() {
+  func testPledge() {
     let project = self.cosmicSurgery
     let reward = self.cosmicReward |> Reward.lens.rewardsItems .~ []
 
-    let devices = [Device.phone4inch, Device.phone4_7inch]
-    let languages = Language.allLanguages
-    combos(languages, devices).forEach { language, device in
+    combos(Language.allLanguages, [false, true]).forEach { language, applePayCapable in
       withEnvironment(language: language) {
 
-        let vc = RewardPledgeViewController.configuredWith(project: project, reward: reward)
-        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
+        let vc = RewardPledgeViewController.configuredWith(
+          project: project, reward: reward, applePayCapable: applePayCapable
+        )
+        let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
         parent.view.frame.size.height -= 64
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_apple_pay_\(applePayCapable)")
       }
     }
   }
@@ -84,26 +84,44 @@ internal final class RewardPledgeViewControllerTests: TestCase {
     FBSnapshotVerifyView(vc.view)
   }
 
-  func testPledge_NoApplePay() {
+  func testPledgeSmallDevice() {
     let project = self.cosmicSurgery
-    let reward = self.cosmicReward |> Reward.lens.rewardsItems .~ []
+    let reward = self.cosmicReward
+      |> Reward.lens.rewardsItems .~ []
 
-    Language.allLanguages.forEach { language in
+    [false, true].forEach { applePayCapable in
+      let vc = RewardPledgeViewController.configuredWith(
+        project: project, reward: reward, applePayCapable: applePayCapable
+      )
+      let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
+      parent.view.frame.size.height -= 64
+
+      self.scheduler.run()
+
+      FBSnapshotVerifyView(vc.view, identifier: "apple_pay_\(applePayCapable)")
+    }
+  }
+
+  func testPledge_NoReward() {
+    let reward = Reward.noReward
+    let project = self.cosmicSurgery |> Project.lens.country .~ .US
+
+    combos(Language.allLanguages, [false, true]).forEach { language, applePayCapable in
       withEnvironment(language: language) {
         let vc = RewardPledgeViewController.configuredWith(
-          project: project, reward: reward, applePayCapable: false
+          project: project, reward: reward, applePayCapable: applePayCapable
         )
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
-        parent.view.frame.size.height -= 64
+        parent.view.frame.size.height += 100
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)")
+        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_apple_pay_\(applePayCapable)")
       }
     }
   }
 
-  func testManagePledge() {
+  func testManageReward() {
     let reward = self.cosmicReward |> Reward.lens.rewardsItems .~ []
     let project = self.cosmicSurgery
       |> Project.lens.personalization.isBacking .~ true
@@ -129,9 +147,15 @@ internal final class RewardPledgeViewControllerTests: TestCase {
     }
   }
 
-  func testPledge_NoReward_NoApplePay() {
+  func testManagePledge() {
     let reward = Reward.noReward
-    let project = self.cosmicSurgery |> Project.lens.country .~ .US
+    let project = self.cosmicSurgery
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.reward .~ reward
+          |> Backing.lens.amount .~ 10
+    )
 
     Language.allLanguages.forEach { language in
       withEnvironment(language: language) {
@@ -139,31 +163,89 @@ internal final class RewardPledgeViewControllerTests: TestCase {
           project: project, reward: reward, applePayCapable: false
         )
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
-        parent.view.frame.size.height += 100
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)")
+        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)")
       }
     }
   }
 
-  func testPledge_NoReward_ApplePay() {
+  func testManagePledge_ApplePayCapable() {
     let reward = Reward.noReward
-    let project = self.cosmicSurgery |> Project.lens.country .~ .US
+    let project = self.cosmicSurgery
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.reward .~ reward
+          |> Backing.lens.amount .~ 10
+    )
 
-    Language.allLanguages.forEach { language in
+    let vc = RewardPledgeViewController.configuredWith(
+      project: project, reward: reward, applePayCapable: true
+    )
+    let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
+
+    self.scheduler.run()
+
+    FBSnapshotVerifyView(parent.view)
+  }
+
+  func testChangeReward() {
+    let newReward = self.cosmicReward
+      |> Reward.lens.id .~ 42
+      |> Reward.lens.minimum .~ 42
+      |> Reward.lens.rewardsItems .~ []
+    let oldReward = self.cosmicReward
+      |> Reward.lens.rewardsItems .~ []
+    let project = self.cosmicSurgery
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.reward .~ oldReward
+          |> Backing.lens.amount .~ oldReward.minimum + 10
+          |> Backing.lens.shippingAmount .~ 10
+    )
+
+    combos(Language.allLanguages, [true, false]).forEach { language, applePayCapable in
       withEnvironment(language: language) {
         let vc = RewardPledgeViewController.configuredWith(
-          project: project, reward: reward, applePayCapable: true
+          project: project, reward: newReward, applePayCapable: applePayCapable
         )
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
         parent.view.frame.size.height += 100
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)")
+        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_apple_pay_\(applePayCapable)")
       }
     }
+  }
+
+  func testChangeReward_ApplePayCapable() {
+    let newReward = self.cosmicReward
+      |> Reward.lens.id .~ 42
+      |> Reward.lens.minimum .~ 42
+      |> Reward.lens.rewardsItems .~ []
+    let oldReward = self.cosmicReward
+      |> Reward.lens.rewardsItems .~ []
+    let project = self.cosmicSurgery
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.reward .~ oldReward
+          |> Backing.lens.amount .~ oldReward.minimum + 10
+          |> Backing.lens.shippingAmount .~ 10
+    )
+
+    let vc = RewardPledgeViewController.configuredWith(
+      project: project, reward: newReward, applePayCapable: true
+    )
+    let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
+    parent.view.frame.size.height += 100
+
+    self.scheduler.run()
+
+    FBSnapshotVerifyView(parent.view)
   }
 }

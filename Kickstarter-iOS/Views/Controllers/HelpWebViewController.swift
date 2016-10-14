@@ -14,6 +14,13 @@ internal final class HelpWebViewController: WebViewController {
   internal override func viewDidLoad() {
     super.viewDidLoad()
 
+    self.navigationItem.leftBarButtonItem = UIBarButtonItem(
+      title: Strings.general_navigation_buttons_close(),
+      style: .Plain,
+      target: self,
+      action: #selector(closeButtonTapped)
+    )
+
     self.viewModel.inputs.viewDidLoad()
   }
 
@@ -21,5 +28,9 @@ internal final class HelpWebViewController: WebViewController {
     self.viewModel.outputs.webViewLoadRequest
       .observeForControllerAction()
       .observeNext { [weak self] in self?.webView.loadRequest($0) }
+  }
+
+  @objc private func closeButtonTapped() {
+    self.dismissViewControllerAnimated(true, completion: nil)
   }
 }

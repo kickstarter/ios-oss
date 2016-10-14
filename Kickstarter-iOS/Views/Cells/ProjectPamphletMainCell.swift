@@ -132,7 +132,11 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       |> UILabel.lens.textColor .~ .ksr_text_green_700
 
     self.projectBlurbLabel
-      |> UILabel.lens.font .~ .ksr_body(size: 15)
+      |> UILabel.lens.font %~~ { _, label in
+        label.traitCollection.isRegularRegular
+          ? .ksr_body(size: 18)
+          : .ksr_body(size: 15)
+      }
       |> UILabel.lens.textColor .~ .ksr_text_navy_500
       |> UILabel.lens.numberOfLines .~ 0
 
@@ -140,7 +144,11 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       |> UIStackView.lens.spacing .~ Styles.grid(2)
 
     self.projectNameLabel
-      |> UILabel.lens.font .~ .ksr_title3(size: 20)
+      |> UILabel.lens.font %~~ { _, label in
+        label.traitCollection.isRegularRegular
+          ? .ksr_title3(size: 28)
+          : .ksr_title3(size: 20)
+      }
       |> UILabel.lens.textColor .~ .ksr_text_navy_700
       |> UILabel.lens.numberOfLines .~ 0
 

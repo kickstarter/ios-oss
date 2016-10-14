@@ -51,7 +51,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
   private let itemsContainerHidden = TestObserver<Bool, NoError>()
   private let minimumLabelText = TestObserver<String, NoError>()
   private let navigationTitle = TestObserver<String, NoError>()
-  private let payButtonsEnabled = TestObserver<Bool, NoError>()
+  private let orLabelHidden = TestObserver<Bool, NoError>()
   private let pledgeCurrencyLabelText = TestObserver<String, NoError>()
   private let pledgeTextFieldText = TestObserver<String, NoError>()
   private let readMoreContainerViewHidden = TestObserver<Bool, NoError>()
@@ -97,7 +97,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
     self.vm.outputs.itemsContainerHidden.observe(self.itemsContainerHidden.observer)
     self.vm.outputs.minimumLabelText.observe(self.minimumLabelText.observer)
     self.vm.outputs.navigationTitle.observe(self.navigationTitle.observer)
-    self.vm.outputs.payButtonsEnabled.observe(self.payButtonsEnabled.observer)
+    self.vm.outputs.orLabelHidden.observe(self.orLabelHidden.observer)
     self.vm.outputs.pledgeCurrencyLabelText.observe(self.pledgeCurrencyLabelText.observer)
     self.vm.outputs.pledgeTextFieldText.observe(self.pledgeTextFieldText.observer)
     self.vm.outputs.readMoreContainerViewHidden.observe(self.readMoreContainerViewHidden.observer)
@@ -925,54 +925,9 @@ internal final class RewardPledgeViewModelTests: TestCase {
     self.navigationTitle.assertValues(["Manage your pledge"])
   }
 
-  func testPayButtonsEnabled_WithReward() {
-    let reward = .template |> Reward.lens.minimum .~ 42
-    let project = Project.template
-    self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
-    self.vm.inputs.viewDidLoad()
-
-    self.payButtonsEnabled.assertValues([true])
-
-    self.vm.inputs.pledgeTextFieldChanged(String(reward.minimum + 10))
-
-    self.payButtonsEnabled.assertValues([true])
-
-    self.vm.inputs.pledgeTextFieldChanged(String(reward.minimum - 1))
-
-    self.payButtonsEnabled.assertValues([true, false])
-
-    self.vm.inputs.pledgeTextFieldChanged(String(project.country.maxPledge! + 1))
-
-    self.payButtonsEnabled.assertValues([true, false])
-
-    self.vm.inputs.pledgeTextFieldDidEndEditing()
-
-    self.payButtonsEnabled.assertValues([true, false, true])
-  }
-
-  func testPayButtonsEnabled_NoReward() {
-    let reward = Reward.noReward
-    let project = .template |> Project.lens.country .~ .DK
-    self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
-    self.vm.inputs.viewDidLoad()
-
-    self.payButtonsEnabled.assertValues([true])
-
-    self.vm.inputs.pledgeTextFieldChanged(String(reward.minimum + 10))
-
-    self.payButtonsEnabled.assertValues([true])
-
-    self.vm.inputs.pledgeTextFieldChanged(String(reward.minimum - 1))
-
-    self.payButtonsEnabled.assertValues([true, false])
-
-    self.vm.inputs.pledgeTextFieldChanged(String(project.country.maxPledge! + 1))
-
-    self.payButtonsEnabled.assertValues([true, false])
-
-    self.vm.inputs.pledgeTextFieldDidEndEditing()
-
-    self.payButtonsEnabled.assertValues([true, false, true])
+  func testOrLabelHidden() {
+    //todo
+    //orLabelHidden
   }
 
   func testPledgeCurrencyLabelText_USProject_USBacker() {
@@ -1251,6 +1206,61 @@ internal final class RewardPledgeViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     self.shippingLocationsLabelText.assertValues([shippingSummary])
+  }
+
+  func testShowAlert_WithReward() {
+    withEnvironment(currentUser: .template) {
+      let dkCountry = Project.Country(countryCode: "DK", currencyCode: "DKK", currencySymbol: "kr",
+                                      maxPledge: nil, minPledge: nil, trailingCode: true)
+      let project = .template
+        |> Project.lens.country .~ dkCountry
+      let reward = .template
+        |> Reward.lens.minimum .~ 20
+
+      self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
+      self.vm.inputs.viewDidLoad()
+      self.scheduler.advance()
+
+      self.vm.inputs.pledgeTextFieldChanged("1")
+      self.vm.inputs.continueToPaymentsButtonTapped()
+
+      self.showAlert.assertValues(["Please enter an amount of kr20 DKK or more."])
+
+      self.vm.inputs.pledgeTextFieldChanged("100000")
+      self.vm.inputs.continueToPaymentsButtonTapped()
+
+      self.showAlert.assertValues([
+        "Please enter an amount of kr20 DKK or more.",
+        "Please enter an amount of kr50,000 DKK or less."
+        ])
+    }
+  }
+
+  func testShowAlert_WithNoReward() {
+    withEnvironment(currentUser: .template) {
+      let dkCountry = Project.Country(countryCode: "DK", currencyCode: "DKK", currencySymbol: "kr",
+                                      maxPledge: nil, minPledge: nil, trailingCode: true)
+      let project = .template
+        |> Project.lens.country .~ dkCountry
+      let reward = Reward.noReward
+
+      self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
+      self.vm.inputs.viewDidLoad()
+      self.scheduler.advance()
+
+      self.vm.inputs.pledgeTextFieldChanged("1")
+      self.vm.inputs.continueToPaymentsButtonTapped()
+
+      self.showAlert.assertValues(["Please enter an amount of kr5 DKK or more."])
+
+      self.vm.inputs.pledgeTextFieldChanged("100000")
+      self.vm.inputs.continueToPaymentsButtonTapped()
+
+      self.showAlert.assertValues([
+        "Please enter an amount of kr5 DKK or more.",
+        "Please enter an amount of kr50,000 DKK or less."
+        ])
+    }
   }
 
   func testTitleLabel_WithTitle() {

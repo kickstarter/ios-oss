@@ -2,6 +2,7 @@ import Prelude
 import Result
 
 private let flushInterval = 60.0
+private let chunkSize = 7
 
 public final class KoalaTrackingClient: TrackingClientType {
   private let endpoint: Endpoint
@@ -74,8 +75,6 @@ public final class KoalaTrackingClient: TrackingClientType {
     dispatch_async(self.queue) {
       if self.buffer.isEmpty { return }
 
-      let chunkSize = 50
-
       while !self.buffer.isEmpty {
         guard
           let result = KoalaTrackingClient.base64Payload(Array(self.buffer.prefix(chunkSize)))
@@ -119,6 +118,11 @@ public final class KoalaTrackingClient: TrackingClientType {
   }
 
   private func koalaURL(dataString: String) -> NSURL? {
+    #if DEBUG
+      if dataString.characters.count >= 10_000 {
+        print("[Koala Error] Base64 payload is longer than 10,000 characters.")
+      }
+    #endif
     return NSURL(string: "\(self.endpoint.base)?data=\(dataString)")
   }
 

@@ -7,7 +7,7 @@ public protocol ProjectPamphletContentViewModelInputs {
   func configureWith(project project: Project)
   func tappedComments()
   func tappedPledgeAnyAmount()
-  func tapped(reward reward: Reward)
+  func tapped(rewardOrBacking rewardOrBacking: Either<Reward, Backing>)
   func tappedUpdates()
   func viewDidLayoutSubviews(contentSize contentSize: CGSize)
   func viewDidLoad()
@@ -36,17 +36,19 @@ ProjectPamphletContentViewModelInputs, ProjectPamphletContentViewModelOutputs {
     self.loadProjectIntoDataSource = combineLatest(project, self.viewDidLoadProperty.signal)
       .map(first)
 
-    let rewardTapped = Signal.merge(
-      self.tappedRewardProperty.signal.ignoreNil(),
-      self.tappedPledgeAnyAmountProperty.signal.mapConst(Reward.noReward)
+    let rewardOrBackingTapped = Signal.merge(
+      self.tappedRewardOrBackingProperty.signal.ignoreNil(),
+      self.tappedPledgeAnyAmountProperty.signal.mapConst(.left(Reward.noReward))
     )
-    self.goToRewardPledge = project
-      .takePairWhen(rewardTapped)
-      .filter { project, reward in project.state == .live && reward.remaining != 0 }
 
-    self.goToBacking = project.takePairWhen(rewardTapped)
-      .filter(shouldGoToBacking(forProject:reward:))
-      .map(first)
+    self.goToRewardPledge = project
+      .takePairWhen(rewardOrBackingTapped)
+      .map(goToRewardPledgeData(forProject:rewardOrBacking:))
+      .ignoreNil()
+
+    self.goToBacking = project.takePairWhen(rewardOrBackingTapped)
+      .map(goToBackingData(forProject:rewardOrBacking:))
+      .ignoreNil()
 
     self.goToComments = project
       .takeWhen(self.tappedCommentsProperty.signal)
@@ -70,9 +72,9 @@ ProjectPamphletContentViewModelInputs, ProjectPamphletContentViewModelOutputs {
     self.tappedPledgeAnyAmountProperty.value = ()
   }
 
-  private let tappedRewardProperty = MutableProperty<Reward?>(nil)
-  public func tapped(reward reward: Reward) {
-    self.tappedRewardProperty.value = reward
+  private let tappedRewardOrBackingProperty = MutableProperty<Either<Reward, Backing>?>(nil)
+  public func tapped(rewardOrBacking rewardOrBacking: Either<Reward, Backing>) {
+    self.tappedRewardOrBackingProperty.value = rewardOrBacking
   }
 
   private let tappedUpdatesProperty = MutableProperty()
@@ -100,10 +102,35 @@ ProjectPamphletContentViewModelInputs, ProjectPamphletContentViewModelOutputs {
   public var outputs: ProjectPamphletContentViewModelOutputs { return self }
 }
 
-private func shouldGoToBacking(forProject project: Project, reward: Reward) -> Bool {
-  return project.state != .live
-    && (
-      reward == project.personalization.backing?.reward
-        || reward.id == project.personalization.backing?.rewardId
-  )
+private func reward(forBacking backing: Backing, inProject project: Project) -> Reward? {
+
+  return backing.reward
+    ?? project.rewards.filter { $0.id == backing.rewardId }.first
+}
+
+private func goToRewardPledgeData(forProject project: Project, rewardOrBacking: Either<Reward, Backing>)
+  -> (Project, Reward)? {
+
+    guard project.state == .live else { return nil }
+
+    switch rewardOrBacking {
+    case let .left(reward):
+      return (project, reward)
+
+    case let .right(backing):
+      guard let reward = reward(forBacking: backing, inProject: project) else {
+        return nil
+      }
+      return (project, reward)
+    }
+}
+
+private func goToBackingData(forProject project: Project, rewardOrBacking: Either<Reward, Backing>)
+  -> Project? {
+
+    guard project.state != .live && rewardOrBacking.right != nil else {
+      return nil
+    }
+
+    return project
 }

@@ -69,9 +69,7 @@ internal final class BackingViewController: UIViewController {
 
     self.messageCreatorButton
       |> greenButtonStyle
-      |> UIButton.lens.accessibilityHint %~ {  _ in
-        localizedString(key: "Opens_message_composer", defaultValue: "Opens message composer.")
-    }
+      |> UIButton.lens.accessibilityHint %~ {  _ in Strings.Opens_message_composer() }
 
     self.pledgedLabel
       |> UILabel.lens.font .~ .ksr_headline()

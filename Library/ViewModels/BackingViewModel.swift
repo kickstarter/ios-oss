@@ -171,8 +171,8 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
     self.messageButtonTitleText = projectAndBackerAndBackerIsCurrentUser
       .map { project, _, backerIsCurrentUser in
         project.creator == AppEnvironment.current.currentUser
-          ? localizedString(key: "Message_backer", defaultValue:  "Message backer")
-          : localizedString(key: "Message_creator", defaultValue: "Message creator")
+          ? Strings.Message_backer()
+          : Strings.Message_creator()
     }
 
     self.hideActionsStackView = projectAndBackerAndBackerIsCurrentUser

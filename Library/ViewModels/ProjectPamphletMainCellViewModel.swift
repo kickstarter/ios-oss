@@ -160,7 +160,7 @@ ProjectPamphletMainCellViewModelInputs, ProjectPamphletMainCellViewModelOutputs 
     self.pledgedTitleLabelText = projectAndNeedsConversion.map { project, needsConversion in
       needsConversion
         ? Format.currency(project.stats.pledgedUsd, country: .US)
-        : Format.currency(project.stats.pledgedUsd, country: project.country)
+        : Format.currency(project.stats.pledged, country: project.country)
     }
 
     self.pledgedSubtitleLabelText = projectAndNeedsConversion.map { project, needsConversion in

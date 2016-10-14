@@ -1,5 +1,6 @@
 import KsApi
 import Library
+import Prelude
 
 internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
   internal enum Section: Int {
@@ -28,23 +29,22 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
     if project.personalization.isBacking != true && project.state == .live {
       self.set(values: [project], cellClass: PledgeTitleCell.self, inSection: Section.pledgeTitle.rawValue)
       self.set(values: [project], cellClass: NoRewardCell.self, inSection: Section.calloutReward.rawValue)
-    } else if let reward = backingReward(fromProject: project)
-      where project.personalization.isBacking == true {
+    } else if let backing = project.personalization.backing {
 
       self.set(values: [project], cellClass: PledgeTitleCell.self, inSection: Section.pledgeTitle.rawValue)
-      self.set(values: [(project, reward)],
+      self.set(values: [(project, .right(backing))],
                cellClass: RewardCell.self,
                inSection: Section.calloutReward.rawValue)
     }
 
-    let rewards = project.rewards
+    let rewardData = project.rewards
       .filter { $0.id != 0 && $0.id != project.personalization.backing?.rewardId }
       .sort()
-      .map { (project, $0) }
+      .map { (project, Either<Reward, Backing>.left($0)) }
 
-    if !rewards.isEmpty {
+    if !rewardData.isEmpty {
       self.set(values: [project], cellClass: RewardsTitleCell.self, inSection: Section.rewardsTitle.rawValue)
-      self.set(values: rewards, cellClass: RewardCell.self, inSection: Section.rewards.rawValue)
+      self.set(values: rewardData, cellClass: RewardCell.self, inSection: Section.rewards.rawValue)
     }
   }
 
@@ -74,7 +74,7 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
   internal override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
 
     switch (cell, value) {
-    case let (cell as RewardCell, value as (Project, Reward)):
+    case let (cell as RewardCell, value as (Project, Either<Reward, Backing>)):
       cell.configureWith(value: value)
     case let (cell as ProjectPamphletMainCell, value as Project):
       cell.configureWith(value: value)
@@ -93,14 +93,13 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
 }
 
 private func backingReward(fromProject project: Project) -> Reward? {
-  guard let reward = project.personalization.backing?.reward else {
-    return project.rewards
-      .filter {
-        $0.id == project.personalization.backing?.rewardId
-          || $0.id == project.personalization.backing?.reward?.id
-      }
-      .first
+
+  guard let backing = project.personalization.backing else {
+    return nil
   }
 
-  return reward
+  return project.rewards
+    .filter { $0.id == backing.rewardId || $0.id == backing.reward?.id }
+    .first
+    .coalesceWith(.noReward)
 }

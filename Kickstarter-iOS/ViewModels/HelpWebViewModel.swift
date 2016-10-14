@@ -49,6 +49,8 @@ private func urlForHelpType(helpType: HelpType, baseUrl: NSURL) -> NSURL? {
   switch helpType {
   case .cookie:
     return baseUrl.URLByAppendingPathComponent("cookies")
+  case .contact:
+    return nil
   case .faq:
     return baseUrl.URLByAppendingPathComponent("help/faq/kickstarter+basics")
   case .howItWorks:
@@ -57,7 +59,7 @@ private func urlForHelpType(helpType: HelpType, baseUrl: NSURL) -> NSURL? {
     return baseUrl.URLByAppendingPathComponent("privacy")
   case .terms:
     return baseUrl.URLByAppendingPathComponent("terms-of-use")
-  default:
-    return baseUrl
+  case .trust:
+    return baseUrl.URLByAppendingPathComponent("trust")
   }
 }

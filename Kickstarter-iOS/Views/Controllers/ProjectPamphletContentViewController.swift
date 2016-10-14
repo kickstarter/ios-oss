@@ -68,8 +68,8 @@ internal final class ProjectPamphletContentViewController: UITableViewController
   }
 
   internal override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-    if let (_, reward) = self.dataSource[indexPath] as? (Project, Reward) {
-      self.viewModel.inputs.tapped(reward: reward)
+    if let (_, rewardOrBacking) = self.dataSource[indexPath] as? (Project, Either<Reward, Backing>) {
+      self.viewModel.inputs.tapped(rewardOrBacking: rewardOrBacking)
     } else if self.dataSource.indexPathIsPledgeAnyAmountCell(indexPath) {
       self.viewModel.inputs.tappedPledgeAnyAmount()
     } else if self.dataSource.indexPathIsCommentsSubpage(indexPath) {
@@ -84,6 +84,8 @@ internal final class ProjectPamphletContentViewController: UITableViewController
                                    forRowAtIndexPath indexPath: NSIndexPath) {
 
     if let cell = cell as? ProjectPamphletMainCell {
+      cell.delegate = self
+    } else if let cell = cell as? RewardCell {
       cell.delegate = self
     }
   }
@@ -171,6 +173,14 @@ extension ProjectPamphletContentViewController: VideoViewControllerDelegate {
       cell?.contentView.layoutIfNeeded()
     }
 
+    self.tableView.beginUpdates()
+    self.tableView.endUpdates()
+  }
+}
+
+extension ProjectPamphletContentViewController: RewardCellDelegate {
+  internal func rewardCellWantsExpansion(cell: RewardCell) {
+    cell.contentView.setNeedsUpdateConstraints()
     self.tableView.beginUpdates()
     self.tableView.endUpdates()
   }

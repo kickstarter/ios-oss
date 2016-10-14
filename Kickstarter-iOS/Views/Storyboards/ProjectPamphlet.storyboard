@@ -625,7 +625,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PYb-0r-e38">
-                                            <rect key="frame" x="8" y="8" width="384" height="268"/>
+                                            <rect key="frame" x="8" y="8" width="384" height="336"/>
                                             <color key="backgroundColor" white="0.89916487069999995" alpha="1" colorSpace="calibratedWhite"/>
                                         </view>
                                         <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="o1n-JV-uJr">

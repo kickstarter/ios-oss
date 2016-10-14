@@ -5,7 +5,8 @@ import Result
 
 public protocol RewardCellViewModelInputs {
   func boundStyles()
-  func configureWith(project project: Project, reward: Reward)
+  func configureWith(project project: Project, rewardOrBacking: Either<Reward, Backing>)
+  func tapped()
 }
 
 public protocol RewardCellViewModelOutputs {
@@ -26,6 +27,7 @@ public protocol RewardCellViewModelOutputs {
   var manageButtonHidden: Signal<Bool, NoError> { get }
   var minimumAndConversionLabelsColor: Signal<UIColor, NoError> { get }
   var minimumLabelText: Signal<String, NoError> { get }
+  var notifyDelegateRewardCellWantsExpansion: Signal<(), NoError> { get }
   var pledgeButtonHidden: Signal<Bool, NoError> { get }
   var pledgeButtonTitleText: Signal<String, NoError> { get }
   var remainingStackViewHidden: Signal<Bool, NoError> { get }
@@ -35,6 +37,7 @@ public protocol RewardCellViewModelOutputs {
   var titleLabelTextColor: Signal<UIColor, NoError> { get }
   var updateTopMarginsForIsBacking: Signal<Bool, NoError> { get }
   var viewPledgeButtonHidden: Signal<Bool, NoError> { get }
+  var youreABackerLabelText: Signal<String, NoError> { get }
   var youreABackerViewHidden: Signal<Bool, NoError> { get }
 }
 
@@ -48,23 +51,37 @@ RewardCellViewModelOutputs {
 
   // swiftlint:disable function_body_length
   public init() {
-    let projectAndReward = self.projectAndRewardProperty.signal.ignoreNil()
-    let project = projectAndReward.map(first)
-    let reward = projectAndReward.map(second)
+    let projectAndRewardOrBacking = self.projectAndRewardOrBackingProperty.signal.ignoreNil()
+    let project = projectAndRewardOrBacking.map(first)
+    let rewardOrBacking = projectAndRewardOrBacking.map(second)
+    let reward = projectAndRewardOrBacking
+      .map { project, rewardOrBacking -> Reward in
+        rewardOrBacking.left
+          ?? rewardOrBacking.right?.reward
+          ?? backingReward(fromProject: project)
+          ?? Reward.noReward
+    }
+    let projectAndReward = zip(project, reward)
 
     self.backersCountLabelText = reward
       .map { Strings.general_backer_count_backers(backer_count: $0.backersCount ?? 0) }
 
     self.conversionLabelHidden = project.map {
       !needsConversion(projectCountry: $0.country, userCountry: AppEnvironment.current.config?.countryCode)
-      }
+    }
 
-    self.conversionLabelText = projectAndReward
+    self.conversionLabelText = projectAndRewardOrBacking
       .filter { p, _ in
         needsConversion(projectCountry: p.country, userCountry: AppEnvironment.current.config?.countryCode)
       }
-      .map { project, reward in
-        Format.currency(Int(ceil(Float(reward.minimum) * project.stats.staticUsdRate)), country: .US)
+      .map { project, rewardOrBacking in
+        switch rewardOrBacking {
+        case let .left(reward):
+          let min = minPledgeAmount(forProject: project, reward: reward)
+          return Format.currency(max(1, Int(Float(min) * project.stats.staticUsdRate)), country: .US)
+        case let .right(backing):
+          return Format.currency(Int(ceil(Float(backing.amount) * project.stats.staticUsdRate)), country: .US)
+        }
       }
       .map(Strings.rewards_title_about_amount_usd(reward_amount:))
 
@@ -74,11 +91,15 @@ RewardCellViewModelOutputs {
     self.footerStackViewAlignment = projectAndReward
       .map { _, _ in AppEnvironment.current.language == .en ? .Center : .Leading }
 
-    self.minimumLabelText = projectAndReward
-      .map { project, reward in
-        reward == Reward.noReward
-          ? Format.currency(project.country.minPledge ?? 1, country: project.country)
-          : Format.currency(reward.minimum, country: project.country)
+    self.minimumLabelText = projectAndRewardOrBacking
+      .map { project, rewardOrBacking in
+        switch rewardOrBacking {
+        case let .left(reward):
+          let min = minPledgeAmount(forProject: project, reward: reward)
+          return Format.currency(min, country: project.country)
+        case let .right(backing):
+          return Format.currency(backing.amount, country: project.country)
+        }
     }
 
     self.descriptionLabelText = reward
@@ -99,16 +120,12 @@ RewardCellViewModelOutputs {
     self.titleLabelHidden = reward
       .map { $0.title == nil && $0 != Reward.noReward }
 
-    self.titleLabelText = reward
-      .map {
-        $0 == Reward.noReward
-          ? Strings.Id_just_like_to_support_the_project()
-          : ($0.title ?? "")
-    }
+    self.titleLabelText = projectAndReward
+      .map(rewardTitle(project:reward:))
 
     self.titleLabelTextColor = projectAndReward
       .map { project, reward in
-        reward.remaining != 0 || userIsBacking(reward: reward, inProject: project)
+        reward.remaining != 0 || userIsBacking(reward: reward, inProject: project) || project.state != .live
           ? .ksr_text_navy_700
           : .ksr_text_navy_500
     }
@@ -121,8 +138,23 @@ RewardCellViewModelOutputs {
     self.youreABackerViewHidden = youreABacker
       .map(negate)
 
-    self.itemsContainerHidden = reward
-      .map { $0.rewardsItems.isEmpty || $0.remaining == 0 }
+    self.youreABackerLabelText = project
+      .map { $0.personalization.backing?.reward == nil }
+      .skipRepeats()
+      .map { noRewardBacking in
+        noRewardBacking
+          ? Strings.Your_pledge()
+          : Strings.Your_reward()
+    }
+
+    let rewardItemsIsEmpty = reward
+      .map { $0.rewardsItems.isEmpty }
+
+    self.itemsContainerHidden = Signal.merge(
+      reward.map { $0.remaining == 0 || $0.rewardsItems.isEmpty },
+      rewardItemsIsEmpty.takeWhen(self.tappedProperty.signal)
+      )
+      .skipRepeats()
 
     self.items = reward
       .map { reward in
@@ -133,10 +165,18 @@ RewardCellViewModelOutputs {
       }
     }
 
+    let rewardIsCollapsed = projectAndReward
+      .map { project, reward in
+        reward.remaining == 0
+          && !userIsBacking(reward: reward, inProject: project)
+          && project.state == .live
+    }
+
     self.allGoneHidden = projectAndReward
       .map { project, reward in
-        reward.remaining != 0 || userIsBacking(reward: reward, inProject: project)
-      }
+        reward.remaining != 0
+          || userIsBacking(reward: reward, inProject: project)
+    }
 
     self.contentViewBackgroundColor = project
       .map { backgroundColor(forCategoryId: $0.category.rootId) }
@@ -144,8 +184,13 @@ RewardCellViewModelOutputs {
     let allGoneAndNotABacker = zip(reward, youreABacker)
       .map { reward, youreABacker in reward.remaining == 0 && !youreABacker }
 
-    self.descriptionLabelHidden = allGoneAndNotABacker
-    self.footerStackViewHidden = allGoneAndNotABacker
+    self.descriptionLabelHidden = Signal.merge(
+      rewardIsCollapsed,
+      self.tappedProperty.signal.mapConst(false)
+    )
+
+    self.footerStackViewHidden = zip(rewardIsCollapsed, reward)
+      .map { rewardIsCollapsed, reward in rewardIsCollapsed || reward == .noReward }
 
     self.updateTopMarginsForIsBacking = combineLatest(youreABacker, self.boundStylesProperty.signal)
       .map(first)
@@ -185,6 +230,11 @@ RewardCellViewModelOutputs {
     self.cardViewBackgroundColor = combineLatest(allGoneAndNotABacker, self.boundStylesProperty.signal)
       .map(first)
       .map { $0 ? .ksr_grey_100 : .whiteColor() }
+
+    self.notifyDelegateRewardCellWantsExpansion = allGoneAndNotABacker
+      .takeWhen(self.tappedProperty.signal)
+      .filter(isTrue)
+      .ignoreValues()
   }
   // swiftlint:enable function_body_length
 
@@ -193,9 +243,14 @@ RewardCellViewModelOutputs {
     self.boundStylesProperty.value = ()
   }
 
-  private let projectAndRewardProperty = MutableProperty<(Project, Reward)?>(nil)
-  public func configureWith(project project: Project, reward: Reward) {
-    self.projectAndRewardProperty.value = (project, reward)
+  private let projectAndRewardOrBackingProperty = MutableProperty<(Project, Either<Reward, Backing>)?>(nil)
+  public func configureWith(project project: Project, rewardOrBacking: Either<Reward, Backing>) {
+    self.projectAndRewardOrBackingProperty.value = (project, rewardOrBacking)
+  }
+
+  private let tappedProperty = MutableProperty()
+  public func tapped() {
+    self.tappedProperty.value = ()
   }
 
   public let allGoneHidden: Signal<Bool, NoError>
@@ -215,6 +270,7 @@ RewardCellViewModelOutputs {
   public let manageButtonHidden: Signal<Bool, NoError>
   public let minimumAndConversionLabelsColor: Signal<UIColor, NoError>
   public let minimumLabelText: Signal<String, NoError>
+  public let notifyDelegateRewardCellWantsExpansion: Signal<(), NoError>
   public let pledgeButtonHidden: Signal<Bool, NoError>
   public let pledgeButtonTitleText: Signal<String, NoError>
   public let remainingStackViewHidden: Signal<Bool, NoError>
@@ -224,6 +280,7 @@ RewardCellViewModelOutputs {
   public let titleLabelTextColor: Signal<UIColor, NoError>
   public let updateTopMarginsForIsBacking: Signal<Bool, NoError>
   public let viewPledgeButtonHidden: Signal<Bool, NoError>
+  public let youreABackerLabelText: Signal<String, NoError>
   public let youreABackerViewHidden: Signal<Bool, NoError>
 
   public var inputs: RewardCellViewModelInputs { return self }
@@ -256,4 +313,45 @@ private func needsConversion(projectCountry projectCountry: Project.Country, use
 private func userIsBacking(reward reward: Reward, inProject project: Project) -> Bool {
   return project.personalization.backing?.rewardId == reward.id
     || project.personalization.backing?.reward?.id == reward.id
+    || (project.personalization.backing?.reward == nil && reward == Reward.noReward)
+}
+
+private func backingReward(fromProject project: Project) -> Reward? {
+
+  guard let backing = project.personalization.backing else {
+    return nil
+  }
+
+  return project.rewards
+    .filter { $0.id == backing.rewardId || $0.id == backing.reward?.id }
+    .first
+    .coalesceWith(.noReward)
+}
+
+private func minPledgeAmount(forProject project: Project, reward: Reward?) -> Int {
+
+  // The country on the project cannot be trusted to have the min/max values, so first try looking
+  // up the country in our launched countries array that we get back from the server config.
+  let country = AppEnvironment.current.launchedCountries.countries
+    .filter { $0 == project.country }
+    .first
+    .coalesceWith(project.country)
+
+  switch reward {
+  case .None, .Some(Reward.noReward):
+    return country.minPledge ?? 1
+  case let .Some(reward):
+    return reward.minimum
+  }
+}
+
+private func rewardTitle(project project: Project, reward: Reward) -> String {
+
+  guard project.personalization.isBacking == true else {
+    return reward == Reward.noReward
+      ? Strings.Id_just_like_to_support_the_project()
+      : (reward.title ?? "")
+  }
+
+  return reward.title ?? Strings.Thank_you_for_supporting_this_project()
 }

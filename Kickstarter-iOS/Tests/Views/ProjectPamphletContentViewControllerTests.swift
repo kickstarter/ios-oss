@@ -29,15 +29,18 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       |> Project.lens.rewards .~ [self.cosmicSurgery.rewards.first!]
       |> Project.lens.state .~ .live
 
-    [Category.art, Category.filmAndVideo, Category.games].forEach { category in
+    let categories = [Category.art, Category.filmAndVideo, Category.games]
+    let devices = [Device.phone4_7inch, Device.pad]
+
+    combos(categories, devices).forEach { category, device in
       let categorizedProject = project |> Project.lens.category .~ category
       let vc = ProjectPamphletViewController.configuredWith(
         projectOrParam: .left(categorizedProject), refTag: nil
       )
-      let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
-      parent.view.frame.size.height = 1_000
+      let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
+      parent.view.frame.size.height = device == .pad ? 1_400 : 1_000
 
-      FBSnapshotVerifyView(vc.view, identifier: "category_\(category.slug)")
+      FBSnapshotVerifyView(vc.view, identifier: "category_\(category.slug)_device_\(device)")
     }
   }
 
@@ -46,13 +49,13 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       |> Project.lens.state .~ .live
       |> Project.lens.stats.pledged .~ self.cosmicSurgery.stats.goal * 3/4
 
-    Language.allLanguages.forEach { language in
+    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
       withEnvironment(language: language) {
         let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
-        let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
-        parent.view.frame.size.height = 2_200
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
+        parent.view.frame.size.height = device == .pad ? 2_300 : 2_200
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)")
+        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
       }
     }
   }
@@ -81,16 +84,41 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       |> Project.lens.personalization.isBacking .~ true
       |> Project.lens.personalization.backing %~~ { _, project in
         .template
+          |> Backing.lens.amount .~ (project.rewards.first!.minimum + 5)
           |> Backing.lens.rewardId .~ project.rewards.first?.id
           |> Backing.lens.reward .~ project.rewards.first
     }
 
-    Language.allLanguages.forEach { language in
+    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
       withEnvironment(language: language) {
 
         let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
+        parent.view.frame.size.height = device == .pad ? 1_600 : 1_350
+
+        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+      }
+    }
+  }
+
+  func testBacker_LiveProject_NoReward() {
+    let project = self.cosmicSurgery
+      |> Project.lens.rewards %~ { rewards in [rewards[0]] }
+      |> Project.lens.state .~ .live
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing %~~ { _, project in
+        .template
+          |> Backing.lens.amount .~ 5
+          |> Backing.lens.rewardId .~ nil
+          |> Backing.lens.reward .~ nil
+    }
+
+    Language.allLanguages.forEach { language in
+      withEnvironment(apiService: MockService(fetchProjectResponse: project), language: language) {
+
+        let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
-        parent.view.frame.size.height = 1_350
+        parent.view.frame.size.height = 1_200
 
         FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)")
       }
@@ -105,18 +133,19 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       |> Project.lens.personalization.isBacking .~ true
       |> Project.lens.personalization.backing %~~ { _, project in
         .template
+          |> Backing.lens.amount .~ (project.rewards.first!.minimum + 5)
           |> Backing.lens.rewardId .~ project.rewards.first?.id
           |> Backing.lens.reward .~ project.rewards.first
     }
 
-    Language.allLanguages.forEach { language in
+    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
       withEnvironment(language: language) {
 
         let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
-        let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
-        parent.view.frame.size.height = 1_300
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
+        parent.view.frame.size.height = device == .pad ? 1_600 : 1_350
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)")
+        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
       }
     }
   }
@@ -130,6 +159,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       |> Project.lens.personalization.isBacking .~ true
       |> Project.lens.personalization.backing %~~ { _, project in
         .template
+          |> Backing.lens.amount .~ (project.rewards.first!.minimum + 5)
           |> Backing.lens.rewardId .~ project.rewards.first?.id
           |> Backing.lens.reward .~ project.rewards.first
     }
