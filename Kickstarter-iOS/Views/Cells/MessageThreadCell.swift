@@ -39,6 +39,7 @@ internal final class MessageThreadCell: UITableViewCell, ValueCell {
     self.replyIndicator?.rac.hidden = self.viewModel.outputs.replyIndicatorHidden
     self.projectNameLabel.rac.text = self.viewModel.outputs.projectName
     self.dateLabel.rac.text = self.viewModel.outputs.date
+    self.dateLabel.rac.accessibilityLabel = self.viewModel.outputs.dateAccessibilityLabel
     self.unreadIndicatorView?.rac.hidden = self.viewModel.outputs.unreadIndicatorHidden
     self.bodyLabel.rac.text = self.viewModel.outputs.messageBody
   }

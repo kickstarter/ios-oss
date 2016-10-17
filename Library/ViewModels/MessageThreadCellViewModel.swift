@@ -9,6 +9,7 @@ public protocol MessageThreadCellViewModelInputs {
 
 public protocol MessageThreadCellViewModelOutputs {
   var date: Signal<String, NoError> { get }
+  var dateAccessibilityLabel: Signal<String, NoError> { get }
   var messageBody: Signal<String, NoError> { get }
   var participantAvatarURL: Signal<NSURL?, NoError> { get }
   var participantName: Signal<String, NoError> { get }
@@ -30,6 +31,10 @@ public final class MessageThreadCellViewModel: MessageThreadCellViewModelType,
 
     self.date = messageThread.map {
       Format.date(secondsInUTC: $0.lastMessage.createdAt, dateStyle: .ShortStyle, timeStyle: .NoStyle)
+    }
+
+    self.dateAccessibilityLabel = messageThread.map {
+      Format.date(secondsInUTC: $0.lastMessage.createdAt, dateStyle: .LongStyle, timeStyle: .NoStyle)
     }
 
     self.messageBody = messageThread.map {
@@ -61,6 +66,7 @@ public final class MessageThreadCellViewModel: MessageThreadCellViewModelType,
   }
 
   public let date: Signal<String, NoError>
+  public let dateAccessibilityLabel: Signal<String, NoError>
   public let messageBody: Signal<String, NoError>
   public let participantAvatarURL: Signal<NSURL?, NoError>
   public let participantName: Signal<String, NoError>

@@ -8,6 +8,7 @@ final class MessageThreadCellViewModelTests: TestCase {
   private let vm: MessageThreadCellViewModelType = MessageThreadCellViewModel()
 
   private let date = TestObserver<String, NoError>()
+  private let dateAccessibilityLabel = TestObserver<String, NoError>()
   private let messageBody = TestObserver<String, NoError>()
   private let participantAvatarURL = TestObserver<NSURL?, NoError>()
   private let participantName = TestObserver<String, NoError>()
@@ -19,6 +20,7 @@ final class MessageThreadCellViewModelTests: TestCase {
     super.setUp()
 
     self.vm.outputs.date.observe(self.date.observer)
+    self.vm.outputs.dateAccessibilityLabel.observe(self.dateAccessibilityLabel.observer)
     self.vm.outputs.messageBody.observe(self.messageBody.observer)
     self.vm.outputs.participantAvatarURL.observe(self.participantAvatarURL.observer)
     self.vm.outputs.participantName.observe(self.participantName.observer)
@@ -32,6 +34,7 @@ final class MessageThreadCellViewModelTests: TestCase {
     self.vm.inputs.configureWith(messageThread: thread)
 
     self.date.assertValueCount(1)
+    self.dateAccessibilityLabel.assertValueCount(1)
     self.messageBody.assertValues([thread.lastMessage.body])
     self.participantAvatarURL.assertValueCount(1)
     self.participantName.assertValues([thread.participant.name])

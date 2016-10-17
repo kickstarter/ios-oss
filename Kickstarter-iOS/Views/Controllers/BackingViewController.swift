@@ -53,7 +53,7 @@ internal final class BackingViewController: UIViewController {
     super.bindStyles()
 
     self.actionsStackView
-      |> UIStackView.lens.axis %~ {_ in AppEnvironment.current.language == .en ? .Horizontal : .Vertical }
+      |> UIStackView.lens.axis %~ { _ in AppEnvironment.current.language == .en ? .Horizontal : .Vertical }
 
     self
       |> baseControllerStyle()

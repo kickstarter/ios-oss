@@ -1,5 +1,6 @@
-import Library
 import KsApi
+import Library
+import Prelude
 import ReactiveExtensions
 import UIKit
 
@@ -24,9 +25,9 @@ internal final class MessageCell: UITableViewCell, ValueCell {
   }
 
   internal override func bindViewModel() {
-
     self.nameLabel.rac.text = self.viewModel.outputs.name
     self.timestampLabel.rac.text = self.viewModel.outputs.timestamp
+    self.timestampLabel.rac.accessibilityLabel = self.viewModel.outputs.timestampAccessibilityLabel
     self.bodyTextView.rac.text = self.viewModel.outputs.body
 
     self.viewModel.outputs.avatarURL

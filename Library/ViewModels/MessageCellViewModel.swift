@@ -10,6 +10,7 @@ public protocol MessageCellViewModelOutputs {
   var avatarURL: Signal<NSURL?, NoError> { get }
   var name: Signal<String, NoError> { get }
   var timestamp: Signal<String, NoError> { get }
+  var timestampAccessibilityLabel: Signal<String, NoError> { get }
   var body: Signal<String, NoError> { get }
 }
 
@@ -32,6 +33,10 @@ MessageCellViewModelOutputs {
       Format.date(secondsInUTC: $0.createdAt, dateStyle: .ShortStyle, timeStyle: .ShortStyle)
     }
 
+    self.timestampAccessibilityLabel = message.map {
+      Format.date(secondsInUTC: $0.createdAt, dateStyle: .LongStyle, timeStyle: .ShortStyle)
+    }
+
     self.body = message.map { $0.body }
   }
 
@@ -43,6 +48,7 @@ MessageCellViewModelOutputs {
   public let avatarURL: Signal<NSURL?, NoError>
   public let name: Signal<String, NoError>
   public let timestamp: Signal<String, NoError>
+  public var timestampAccessibilityLabel: Signal<String, NoError>
   public let body: Signal<String, NoError>
 
   public var inputs: MessageCellViewModelInputs { return self }
