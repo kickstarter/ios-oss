@@ -1118,6 +1118,26 @@ internal final class RewardPledgeViewModelTests: TestCase {
                                           "Sets initial value of pledge text field.")
   }
 
+  func testPledgeTextFieldText_Pledge_NoReward() {
+    let reward = Reward.noReward
+    let project = .template |> Project.lens.country .~ .US
+
+    self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
+    self.vm.inputs.viewDidLoad()
+
+    self.pledgeTextFieldText.assertValues(["10"])
+  }
+
+  func testPledgeTextFieldText_Pledge_NoReward_DK() {
+    let reward = Reward.noReward
+    let project = .template |> Project.lens.country .~ .DK
+
+    self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
+    self.vm.inputs.viewDidLoad()
+
+    self.pledgeTextFieldText.assertValues(["50"])
+  }
+
   func testReadMoreContainerViewHidden() {
     self.vm.inputs.configureWith(project: .template, reward: .template, applePayCapable: false)
     self.vm.inputs.viewDidLoad()
