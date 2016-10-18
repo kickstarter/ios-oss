@@ -21,6 +21,10 @@ public final class SafariActivity: UIActivity {
     return "Safari"
   }
 
+  public override func activityImage() -> UIImage? {
+    return image(named: "safari-icon-full")
+  }
+
   public override func canPerformWithActivityItems(activityItems: [AnyObject]) -> Bool {
     let urls = activityItems.filter { $0 is NSURL && ($0 as? NSURL)?.host != nil }
     return !urls.isEmpty
