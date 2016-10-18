@@ -138,9 +138,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
 extension DiscoveryPageViewController: ActivitySampleBackingCellDelegate, ActivitySampleFollowCellDelegate,
   ActivitySampleProjectCellDelegate {
   internal func goToActivity() {
-    guard let root = self.tabBarController as? RootTabBarViewController else {
-      return
-    }
+    guard let root = self.tabBarController as? RootTabBarViewController else { return }
     root.switchToActivities()
   }
 }

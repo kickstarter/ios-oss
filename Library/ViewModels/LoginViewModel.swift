@@ -105,6 +105,7 @@ public final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, Log
 
     let tryLogin = Signal.merge(
       self.loginButtonPressedProperty.signal,
+      self.passwordTextFieldDoneEditingProperty.signal,
       combineLatest(self.prefillEmailProperty.signal, self.prefillPasswordProperty.signal).ignoreValues()
     )
 

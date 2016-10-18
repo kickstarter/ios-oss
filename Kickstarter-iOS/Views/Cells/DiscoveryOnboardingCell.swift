@@ -28,8 +28,8 @@ internal final class DiscoveryOnboardingCell: UITableViewCell, ValueCell {
       |> baseTableViewCellStyle()
       |> DiscoveryOnboardingCell.lens.contentView.layoutMargins %~~ { layoutMargins, cell in
         cell.traitCollection.isRegularRegular
-          ? .init(topBottom: Styles.grid(6), leftRight: Styles.grid(16))
-          : .init(topBottom: Styles.grid(8), leftRight: layoutMargins.left)
+          ? .init(topBottom: Styles.grid(8), leftRight: Styles.grid(16))
+          : .init(topBottom: Styles.grid(6), leftRight: layoutMargins.left)
     }
 
     self.loginButton |> discoveryOnboardingSignUpButtonStyle

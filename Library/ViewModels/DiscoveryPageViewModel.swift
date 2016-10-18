@@ -75,6 +75,10 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
 
   // swiftlint:disable function_body_length
   public init() {
+    let currentUser = self.viewDidAppearProperty.signal
+      .map { AppEnvironment.current.currentUser }
+      .skipRepeats(==)
+
     let paramsChanged = combineLatest(
       self.sortProperty.signal.ignoreNil(),
       self.selectedFilterProperty.signal.ignoreNil()
@@ -92,10 +96,10 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       self.viewDidDisappearProperty.signal.mapConst(false)
       ).skipRepeats()
 
-    let requestFirstPageWith = combineLatest(paramsChanged, isVisible)
-      .filter { _, visible in visible }
-      .map { params, _ in params }
-      .skipRepeats()
+    let requestFirstPageWith = combineLatest(currentUser, paramsChanged, isVisible)
+      .filter { _, _, visible in visible }
+      .skipRepeats { lhs, rhs in lhs.0 == rhs.0 && lhs.1 == rhs.1 }
+      .map(second)
 
     let paginatedProjects: Signal<[Project], NoError>
     let pageCount: Signal<Int, NoError>

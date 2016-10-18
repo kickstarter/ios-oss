@@ -5,7 +5,7 @@ import Prelude_UIKit
 import UIKit
 
 internal protocol DiscoveryNavigationHeaderViewDelegate: class {
-  /// Call to update param s when filter selected.
+  /// Call to update params when filter selected.
   func discoveryNavigationHeaderFilterSelectedParams(params: DiscoveryParams)
 }
 

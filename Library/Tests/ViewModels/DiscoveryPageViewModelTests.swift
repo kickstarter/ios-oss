@@ -395,6 +395,26 @@ internal final class DiscoveryPageViewModelTests: TestCase {
                                           "Activities are cleared out when logging out.")
   }
 
+  func testRefreshProjectsForCurrentUser() {
+    self.vm.inputs.configureWith(sort: .magic)
+    self.vm.inputs.viewWillAppear()
+    self.vm.inputs.viewDidAppear()
+    self.vm.inputs.selectedFilter(.defaults)
+
+    self.scheduler.advance()
+
+    self.hasAddedProjects.assertValues([true], "Projects added for logged out user.")
+
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "cafebeef", user: User.template))
+    self.vm.inputs.viewWillAppear()
+    self.vm.inputs.viewDidAppear()
+    self.hasAddedProjects.assertValues([true, false], "Previous projects cleared.")
+
+    self.scheduler.advance()
+
+    self.hasAddedProjects.assertValues([true, false, true], "New projects added for logged in user.")
+  }
+
   func testShowOnboarding_LoggedOutOnMagic() {
     self.vm.inputs.configureWith(sort: .magic)
     self.vm.inputs.viewWillAppear()

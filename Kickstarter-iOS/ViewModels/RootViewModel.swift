@@ -137,6 +137,7 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
       .takeWhen(self.switchToLoginProperty.signal)
       .filter { isFalse($1) }
       .map(first)
+
     let switchToProfile = combineLatest(vcCount, loginState)
       .takeWhen(self.switchToProfileProperty.signal)
       .filter { isTrue($1) }

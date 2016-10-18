@@ -71,9 +71,8 @@ final class LoginViewModelTests: TestCase {
     self.isFormValid.assertValues([false, true], "Form is valid")
 
     self.vm.inputs.passwordTextFieldDoneEditing()
-    self.dismissKeyboard.assertValueCount(1, "Keyboard is dismissed")
 
-    self.vm.inputs.loginButtonPressed()
+    self.dismissKeyboard.assertValueCount(1, "Keyboard is dismissed")
     self.logIntoEnvironment.assertValueCount(1, "Log into environment.")
     XCTAssertEqual(["User Login", "Viewed Login", "Logged In", "Login"], trackingClient.events,
                    "Koala login is tracked")

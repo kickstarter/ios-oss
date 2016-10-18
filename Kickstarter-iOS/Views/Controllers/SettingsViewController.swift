@@ -479,6 +479,14 @@ internal final class SettingsViewController: UIViewController {
     NSNotificationCenter.defaultCenter().postNotification(
       NSNotification(name: CurrentUserNotifications.sessionEnded, object: nil)
     )
+
+    self.view.window?.rootViewController
+      .flatMap { $0 as? RootTabBarViewController }
+      .doIfSome { root in
+        UIView.transitionWithView(root.view, duration: 0.3, options: [.TransitionCrossDissolve], animations: {
+          root.switchToDiscovery(params: nil)
+        }, completion: nil)
+    }
   }
 
   private func showOptInPrompt(newsletter: String) {
