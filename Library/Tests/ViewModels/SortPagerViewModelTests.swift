@@ -222,5 +222,13 @@ internal final class SortPagerViewModelTests: TestCase {
 
     self.notifyDelegateOfSelectedSort.assertValues([.magic, .popular, .mostFunded],
                                                    "Tapping sort button notifies the delegate.")
+
+    self.vm.inputs.viewWillAppear()
+    self.vm.inputs.viewDidAppear()
+
+    self.notifyDelegateOfSelectedSort.assertValues(
+      [.magic, .popular, .mostFunded],
+      "Navigating away and coming back to sorts does not re-emit."
+    )
   }
 }

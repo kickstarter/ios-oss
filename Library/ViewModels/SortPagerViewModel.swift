@@ -102,7 +102,7 @@ SortPagerViewModelOutputs {
     )
 
     self.notifyDelegateOfSelectedSort = combineLatest(
-      sorts,
+      sorts.take(1),
       self.sortButtonTappedIndexProperty.signal.ignoreNil()
       )
       .map { sorts, sortIndex in sorts[sortIndex] }
