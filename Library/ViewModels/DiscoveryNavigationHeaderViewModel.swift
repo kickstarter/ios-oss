@@ -91,6 +91,7 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
   // swiftlint:disable function_body_length
   public init() {
     let categories = self.viewDidLoadProperty.signal
+      .ksr_debounce(1.0, onScheduler: AppEnvironment.current.scheduler)
       .switchMap {
         AppEnvironment.current.apiService.fetchCategories()
           .demoteErrors()

@@ -215,6 +215,8 @@ final class AppDelegateViewModelTests: TestCase {
     vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
                                             launchOptions: [:])
 
+    self.scheduler.advanceByInterval(5.0)
+
     updateCurrentUserInEnvironment.assertValues([env.user])
     postNotificationName.assertDidNotEmitValue()
 
@@ -251,6 +253,7 @@ final class AppDelegateViewModelTests: TestCase {
 
       vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
                                               launchOptions: [:])
+      self.scheduler.advanceByInterval(5.0)
 
       updateCurrentUserInEnvironment.assertDidNotEmitValue()
       self.forceLogout.assertValueCount(1)
@@ -502,8 +505,9 @@ final class AppDelegateViewModelTests: TestCase {
     withEnvironment(currentUser: .template) {
       self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
                                                    launchOptions: [:])
-
       self.vm.inputs.didRegisterForRemoteNotifications(withDeviceTokenData: NSData())
+      self.scheduler.advanceByInterval(5.0)
+
       self.pushTokenSuccessfullyRegistered.assertValueCount(1)
     }
   }

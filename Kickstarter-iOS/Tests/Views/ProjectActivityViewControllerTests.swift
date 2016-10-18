@@ -100,7 +100,9 @@ private let baseActivity =
     |> Activity.lens.memberData.backing .~ (
       .template
         |> Backing.lens.amount .~ 25
-      )
+        |> Backing.lens.backerId .~ user.id
+        |> Backing.lens.backer .~ user
+)
 
 private let backingActivity =
   baseActivity

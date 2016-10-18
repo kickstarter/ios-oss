@@ -135,6 +135,7 @@ AppDelegateViewModelOutputs {
       .merge(
         self.applicationWillEnterForegroundProperty.signal,
         self.applicationLaunchOptionsProperty.signal.ignoreValues()
+          .ksr_debounce(5.0, onScheduler: AppEnvironment.current.scheduler)
       )
       .filter { _ in AppEnvironment.current.apiService.isAuthenticated }
       .switchMap { _ in AppEnvironment.current.apiService.fetchUserSelf().materialize() }
@@ -192,6 +193,7 @@ AppDelegateViewModelOutputs {
 
     self.pushTokenSuccessfullyRegistered = self.deviceTokenDataProperty.signal
       .map(deviceToken(fromData:))
+      .ksr_debounce(5.0, onScheduler: AppEnvironment.current.scheduler)
       .switchMap {
         AppEnvironment.current.apiService.register(pushToken: $0)
           .demoteErrors()

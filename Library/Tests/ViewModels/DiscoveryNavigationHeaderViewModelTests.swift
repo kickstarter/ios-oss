@@ -79,10 +79,9 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
       self.vm.inputs.configureWith(params: initialParams)
 
       self.showDiscoveryFiltersRow.assertValueCount(0)
-
-      scheduler.advanceByInterval(0.4 + AppEnvironment.current.apiDelayInterval)
       self.dismissDiscoveryFilters.assertValueCount(0)
 
+      self.scheduler.advanceByInterval(1.0)
       self.vm.inputs.titleButtonTapped()
 
       self.showDiscoveryFiltersRow.assertValues([initialRow])
