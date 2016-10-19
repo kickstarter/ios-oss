@@ -43,6 +43,11 @@ internal final class ThanksViewController: UIViewController, UICollectionViewDel
     self.viewModel.inputs.viewDidLoad()
   }
 
+  override func viewWillAppear(animated: Bool) {
+    super.viewWillAppear(animated)
+    self.navigationItem.setHidesBackButton(true, animated: animated)
+  }
+
   override func bindStyles() {
     super.bindStyles()
 
@@ -91,10 +96,10 @@ internal final class ThanksViewController: UIViewController, UICollectionViewDel
     self.twitterButton.rac.hidden = self.viewModel.outputs.twitterButtonIsHidden
     self.backedLabel.rac.attributedText = self.viewModel.outputs.backedProjectText
 
-    self.viewModel.outputs.dismissViewController
+    self.viewModel.outputs.dismissToRootViewController
     .observeForControllerAction()
       .observeNext { [weak self] in
-        self?.dismissViewControllerAnimated(true, completion: nil)
+        self?.view.window?.rootViewController?.dismissViewControllerAnimated(true, completion: nil)
     }
 
     self.viewModel.outputs.goToDiscovery
@@ -160,8 +165,11 @@ internal final class ThanksViewController: UIViewController, UICollectionViewDel
   // swiftlint:enable function_body_length
 
   private func goToDiscovery(params params: DiscoveryParams) {
-    self.dismissViewControllerAnimated(true, completion: nil)
-    // go to discovery
+    self.view.window?.rootViewController
+      .flatMap { $0 as? RootTabBarViewController }
+      .doIfSome { $0.switchToDiscovery(params: params) }
+
+    self.view.window?.rootViewController?.dismissViewControllerAnimated(true, completion: nil)
   }
 
   private func goToAppStore(link link: String) {

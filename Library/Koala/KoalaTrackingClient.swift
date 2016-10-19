@@ -2,7 +2,7 @@ import Prelude
 import Result
 
 private let flushInterval = 60.0
-private let chunkSize = 7
+private let chunkSize = 5
 
 public final class KoalaTrackingClient: TrackingClientType {
   private let endpoint: Endpoint

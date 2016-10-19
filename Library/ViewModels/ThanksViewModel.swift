@@ -47,7 +47,7 @@ public protocol ThanksViewModelInputs {
 
 public protocol ThanksViewModelOutputs {
   /// Emits when view controller should dismiss
-  var dismissViewController: Signal<(), NoError> { get }
+  var dismissToRootViewController: Signal<(), NoError> { get }
 
   /// Emits DiscoveryParams when should go to Discovery
   var goToDiscovery: Signal<DiscoveryParams, NoError> { get }
@@ -139,7 +139,7 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
     self.goToAppStoreRating = self.rateNowButtonTappedProperty.signal
       .map { AppEnvironment.current.config?.iTunesLink ?? "" }
 
-    self.dismissViewController = self.closeButtonTappedProperty.signal
+    self.dismissToRootViewController = self.closeButtonTappedProperty.signal
 
     self.goToDiscovery = self.categoryCellTappedProperty.signal.ignoreNil()
       .map { DiscoveryParams.defaults |> DiscoveryParams.lens.category .~ $0 }
@@ -283,7 +283,7 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
   }
 
   // MARK: ThanksViewModelOutputs
-  public let dismissViewController: Signal<(), NoError>
+  public let dismissToRootViewController: Signal<(), NoError>
   public let goToDiscovery: Signal<DiscoveryParams, NoError>
   public let goToAppStoreRating: Signal<String, NoError>
   public let backedProjectText: Signal<NSAttributedString, NoError>

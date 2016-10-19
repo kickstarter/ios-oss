@@ -20,7 +20,7 @@ final class ThanksViewModelTests: TestCase {
   let showGamesNewsletterAlert = TestObserver<(), NoError>()
   let showGamesNewsletterOptInAlert = TestObserver<String, NoError>()
   let showRecommendations = TestObserver<[Project], NoError>()
-  let dismissViewController = TestObserver<(), NoError>()
+  let dismissToRootViewController = TestObserver<(), NoError>()
   let postUserUpdatedNotification = TestObserver<String, NoError>()
   let updateUserInEnvironment = TestObserver<User, NoError>()
   let facebookButtonIsHidden = TestObserver<Bool, NoError>()
@@ -39,7 +39,7 @@ final class ThanksViewModelTests: TestCase {
     vm.outputs.showGamesNewsletterAlert.observe(showGamesNewsletterAlert.observer)
     vm.outputs.showGamesNewsletterOptInAlert.observe(showGamesNewsletterOptInAlert.observer)
     vm.outputs.showRecommendations.map { projects, _ in projects }.observe(showRecommendations.observer)
-    vm.outputs.dismissViewController.observe(dismissViewController.observer)
+    vm.outputs.dismissToRootViewController.observe(dismissToRootViewController.observer)
     vm.outputs.postUserUpdatedNotification.map { note in note.name }
       .observe(postUserUpdatedNotification.observer)
     vm.outputs.updateUserInEnvironment.observe(updateUserInEnvironment.observer)
@@ -47,13 +47,13 @@ final class ThanksViewModelTests: TestCase {
     vm.outputs.twitterButtonIsHidden.observe(twitterButtonIsHidden.observer)
   }
 
-  func testDismissViewController() {
+  func testdismissToRootViewController() {
     vm.inputs.project(.template)
     vm.inputs.viewDidLoad()
 
     vm.inputs.closeButtonTapped()
 
-    dismissViewController.assertValueCount(1)
+    dismissToRootViewController.assertValueCount(1)
     XCTAssertEqual([], trackingClient.events, "No Koala tracking emitted")
   }
 
