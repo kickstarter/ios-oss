@@ -12,8 +12,12 @@ import Prelude
  - returns: The localized string. If the key does not exist the `defaultValue` will be returned,
  and if that is not specified an empty string will be returned.
  */
-public func localizedString(key key: String, defaultValue: String = "", count: Int? = nil,
-substitutions: [String:String] = [:], env: Environment = AppEnvironment.current) -> String {
+public func localizedString(key key: String,
+                                defaultValue: String = "",
+                                count: Int? = nil,
+                                substitutions: [String:String] = [:],
+                                env: Environment = AppEnvironment.current,
+                                bundle: NSBundleType = stringsBundle) -> String {
 
   // When a `count` is provided we need to augment the key with a pluralization suffix.
   let augmentedKey = count
@@ -21,8 +25,8 @@ substitutions: [String:String] = [:], env: Environment = AppEnvironment.current)
     .coalesceWith(key)
 
   let lprojName = lprojFileNameForLanguage(env.language)
-  let localized = env.mainBundle.pathForResource(lprojName, ofType: "lproj")
-    .flatMap { env.mainBundle.dynamicType.create(path: $0) }
+  let localized = bundle.pathForResource(lprojName, ofType: "lproj")
+    .flatMap(bundle.dynamicType.create(path:))
     .flatMap { $0.localizedStringForKey(augmentedKey, value: nil, table: nil) }
     .filter {
       // NB: `localizedStringForKey` has the annoying habit of returning the key when the key doesn't exist.
@@ -56,9 +60,12 @@ private func keySuffixForCount(count: Int) -> String {
 }
 
 // Performs simple string interpolation on keys of the form `%{key}`.
-internal func substitute(string: String, with substitutions: [String: String]) -> String {
+private func substitute(string: String, with substitutions: [String: String]) -> String {
 
   return substitutions.reduce(string) { accum, sub in
     return accum.stringByReplacingOccurrencesOfString("%{\(sub.0)}", withString: sub.1)
   }
 }
+
+private class Pin {}
+private let stringsBundle = NSBundle(forClass: Pin.self)

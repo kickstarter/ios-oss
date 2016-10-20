@@ -8,6 +8,28 @@ public enum Language: String {
   case fr
 
   public static let allLanguages: [Language] = [.de, .en, .es, .fr]
+
+  public init?(languageString language: String) {
+    switch language.lowercaseString {
+    case "de":  self = .de
+    case "en":  self = .en
+    case "es":  self = .es
+    case "fr":  self = .fr
+    default:    return nil
+    }
+  }
+
+  public init?(languageStrings languages: [String]) {
+    guard let language = languages
+      .lazy
+      .map({ String($0.characters.prefix(2)) })
+      .flatMap(Language.init(languageString:))
+      .first else {
+        return nil
+    }
+
+    self = language
+  }
 }
 
 extension Language: Equatable {}

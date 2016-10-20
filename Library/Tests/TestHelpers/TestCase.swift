@@ -37,7 +37,7 @@ internal class TestCase: FBSnapshotTestCase {
       koala: Koala(client: self.trackingClient, loggedInUser: nil),
       language: .en,
       launchedCountries: .init(),
-      locale: .currentLocale(),
+      locale: .init(localeIdentifier: "en_US"),
       mainBundle: mainBundle,
       reachability: .init(value: .wifi),
       scheduler: self.scheduler,

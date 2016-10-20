@@ -92,7 +92,7 @@ public struct Environment {
     facebookAppDelegate: FacebookAppDelegateProtocol = FBSDKApplicationDelegate.sharedInstance(),
     isVoiceOverRunning: () -> Bool = UIAccessibilityIsVoiceOverRunning,
     koala: Koala = Koala(client: KoalaTrackingClient(endpoint: .production)),
-    language: Language = .en,
+    language: Language = Language(languageStrings: NSLocale.preferredLanguages()) ?? Language.en,
     launchedCountries: LaunchedCountries = .init(),
     locale: NSLocale = .currentLocale(),
     mainBundle: NSBundleType = NSBundle.mainBundle(),

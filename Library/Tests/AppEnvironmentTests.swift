@@ -14,7 +14,7 @@ final class AppEnvironmentTests: XCTestCase {
     AppEnvironment.pushEnvironment(language: .es)
     XCTAssertEqual(Language.es, AppEnvironment.current.language)
 
-    AppEnvironment.pushEnvironment(Environment())
+    AppEnvironment.pushEnvironment(Environment(language: .en))
     XCTAssertEqual(Language.en, AppEnvironment.current.language)
 
     AppEnvironment.popEnvironment()
@@ -39,6 +39,8 @@ final class AppEnvironmentTests: XCTestCase {
 
     AppEnvironment.popEnvironment()
     XCTAssertEqual(AppEnvironment.current.language, Language.es)
+
+    AppEnvironment.popEnvironment()
   }
 
   func testPersistenceKey() {
@@ -108,7 +110,6 @@ final class AppEnvironmentTests: XCTestCase {
     XCTAssertEqual("hola", env.apiService.serverConfig.basicHTTPAuth?.username)
     XCTAssertEqual("mundo", env.apiService.serverConfig.basicHTTPAuth?.password)
     XCTAssertEqual("http://ksr.com", env.apiService.serverConfig.webBaseUrl.absoluteString)
-    XCTAssertEqual("en", env.apiService.language)
     XCTAssertEqual(user, env.currentUser)
     XCTAssertEqual(user, env.koala.loggedInUser)
 

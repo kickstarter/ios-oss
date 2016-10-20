@@ -387,9 +387,9 @@ final class FormatTests: XCTestCase {
       XCTAssertEqual("30 minutes ago", Format.relative(secondsInUTC: minutesAgo))
       XCTAssertEqual("in 30 minutes", Format.relative(secondsInUTC: inMinutes))
       XCTAssertEqual("1 hour ago", Format.relative(secondsInUTC: hoursAgo))
-      XCTAssertEqual("in 1 hours", Format.relative(secondsInUTC: inHours))
+      XCTAssertEqual("in 1 hour", Format.relative(secondsInUTC: inHours))
       XCTAssertEqual("yesterday", Format.relative(secondsInUTC: yesterday))
-      XCTAssertEqual("in 1 days", Format.relative(secondsInUTC: tomorrow))
+      XCTAssertEqual("in 1 day", Format.relative(secondsInUTC: tomorrow))
       XCTAssertEqual("2 days ago", Format.relative(secondsInUTC: daysAgo))
       XCTAssertEqual("in 2 days", Format.relative(secondsInUTC: inDays))
       XCTAssertEqual(Format.date(secondsInUTC: awhileAgo, timeStyle: .NoStyle),
@@ -402,9 +402,9 @@ final class FormatTests: XCTestCase {
       XCTAssertEqual("30 mins ago", Format.relative(secondsInUTC: minutesAgo, abbreviate: true))
       XCTAssertEqual("in 30 mins", Format.relative(secondsInUTC: inMinutes, abbreviate: true))
       XCTAssertEqual("1 hr ago", Format.relative(secondsInUTC: hoursAgo, abbreviate: true))
-      XCTAssertEqual("in 1 hrs", Format.relative(secondsInUTC: inHours, abbreviate: true))
+      XCTAssertEqual("in 1 hr", Format.relative(secondsInUTC: inHours, abbreviate: true))
       XCTAssertEqual("yesterday", Format.relative(secondsInUTC: yesterday, abbreviate: true))
-      XCTAssertEqual("in 1 days", Format.relative(secondsInUTC: tomorrow, abbreviate: true))
+      XCTAssertEqual("in 1 day", Format.relative(secondsInUTC: tomorrow, abbreviate: true))
       XCTAssertEqual("2 days ago", Format.relative(secondsInUTC: daysAgo, abbreviate: true))
       XCTAssertEqual("in 2 days", Format.relative(secondsInUTC: inDays, abbreviate: true))
       XCTAssertEqual(Format.date(secondsInUTC: awhileAgo, timeStyle: .NoStyle),

@@ -7,7 +7,7 @@ final class EnvironmentTests: XCTestCase {
     let env = Environment()
 
     XCTAssertEqual(env.calendar, NSCalendar.currentCalendar())
-    XCTAssertEqual(env.language, Language.en)
+    XCTAssertEqual(env.language, Language(languageStrings: NSLocale.preferredLanguages()))
     XCTAssertEqual(env.timeZone, NSTimeZone.localTimeZone())
     XCTAssertEqual(env.locale, NSLocale.currentLocale())
     XCTAssertEqual(env.countryCode, "US")

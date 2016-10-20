@@ -232,7 +232,7 @@ public struct AppEnvironment {
           basicHTTPAuth: service.serverConfig.basicHTTPAuth
         ),
         oauthToken: service.oauthToken,
-        language: service.language
+        language: current.language.rawValue
       )
     }
 
@@ -250,7 +250,7 @@ public struct AppEnvironment {
           basicHTTPAuth: service.serverConfig.basicHTTPAuth
         ),
         oauthToken: service.oauthToken,
-        language: service.language
+        language: current.language.rawValue
       )
     }
 
@@ -266,7 +266,7 @@ public struct AppEnvironment {
           basicHTTPAuth: BasicHTTPAuth(username: username, password: password)
         ),
         oauthToken: service.oauthToken,
-        language: service.language
+        language: current.language.rawValue
       )
     }
 
