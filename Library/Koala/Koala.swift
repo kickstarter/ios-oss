@@ -760,14 +760,28 @@ public final class Koala {
     props["ref_tag"] = refTag?.stringTag
     props["referrer_credit"] = cookieRefTag?.stringTag
 
-    self.track(event: "Project Page", properties: props)
+    // Deprecated event
+    self.track(event: "Project Page", properties: props.withAllValuesFrom([Koala.DeprecatedKey: true]))
+
+    self.track(event: "Viewed Project Page", properties: props)
+  }
+
+  public func trackClosedProjectPage(project: Project, gestureType: GestureType) {
+    self.track(event: "Closed Project Page",
+               properties: properties(project: project, loggedInUser: self.loggedInUser))
   }
 
   public func trackProjectStar(project: Project) {
     guard let isStarred = project.personalization.isStarred else { return }
 
-    let event = isStarred ? "Project Star" : "Project Unstar"
-    self.track(event: event, properties: properties(project: project, loggedInUser: self.loggedInUser))
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+
+    // Deprecated event
+    self.track(event: isStarred ? "Project Star" : "Project Unstar",
+               properties: props.withAllValuesFrom([Koala.DeprecatedKey: true]))
+
+    self.track(event: isStarred ? "Starred Project" : "Unstarred Project",
+               properties: props)
   }
 
   // MARK: Profile Events

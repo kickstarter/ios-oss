@@ -17,6 +17,7 @@ final class ProjectNavBarViewModelTests: TestCase {
   private let categoryButtonTitleColor = TestObserver<UIColor, NoError>()
   private let categoryHidden = TestObserver<Bool, NoError>()
   private let categoryAnimate = TestObserver<Bool, NoError>()
+  private let dismissViewController = TestObserver<(), NoError>()
   private let goToLoginTout = TestObserver<(), NoError>()
   private let projectName = TestObserver<String, NoError>()
   private let showProjectStarredPrompt = TestObserver<String, NoError>()
@@ -35,6 +36,7 @@ final class ProjectNavBarViewModelTests: TestCase {
     self.vm.outputs.categoryButtonTitleColor.observe(self.categoryButtonTitleColor.observer)
     self.vm.outputs.categoryHiddenAndAnimate.map(first).observe(self.categoryHidden.observer)
     self.vm.outputs.categoryHiddenAndAnimate.map(second).observe(self.categoryAnimate.observer)
+    self.vm.outputs.dismissViewController.observe(self.dismissViewController.observer)
     self.vm.outputs.goToLoginTout.observe(self.goToLoginTout.observer)
     self.vm.outputs.projectName.observe(self.projectName.observer)
     self.vm.outputs.showProjectStarredPrompt.observe(self.showProjectStarredPrompt.observer)
@@ -146,6 +148,17 @@ final class ProjectNavBarViewModelTests: TestCase {
     self.categoryAnimate.assertValues([false, true, true, true, true])
   }
 
+  func testDismissViewController() {
+    self.vm.inputs.configureWith(project: .template)
+    self.vm.inputs.viewDidLoad()
+
+    self.dismissViewController.assertValueCount(0)
+
+    self.vm.inputs.closeButtonTapped()
+
+    self.dismissViewController.assertValueCount(1)
+  }
+
   // Tests the flow of a logged out user trying to star a project, and then going through the login flow.
   func testLoggedOutUser_StarsProject() {
     let project = .template |> Project.lens.personalization.isStarred .~ false
@@ -174,7 +187,8 @@ final class ProjectNavBarViewModelTests: TestCase {
       self.starButtonSelected.assertValues([false, true],
                                            "Star stays selected after API request.")
       self.showProjectStarredPrompt.assertValueCount(1, "The star prompt shows.")
-      XCTAssertEqual(["Project Star"], trackingClient.events, "A star koala event is tracked.")
+      XCTAssertEqual(["Project Star", "Starred Project"],
+                     trackingClient.events, "A star koala event is tracked.")
     }
   }
 
@@ -198,7 +212,8 @@ final class ProjectNavBarViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.showProjectStarredPrompt.assertValueCount(1, "The star prompt shows.")
-      XCTAssertEqual(["Project Star"], trackingClient.events, "A star koala event is tracked.")
+      XCTAssertEqual(["Project Star", "Starred Project"],
+                     trackingClient.events, "A star koala event is tracked.")
 
       let untoggleStarResponse = .template
         |> StarEnvelope.lens.project .~ (project |> Project.lens.personalization.isStarred .~ false)
@@ -215,7 +230,8 @@ final class ProjectNavBarViewModelTests: TestCase {
                                              "The star button stays unselected.")
 
         self.showProjectStarredPrompt.assertValueCount(1, "The star prompt only showed for starring.")
-        XCTAssertEqual(["Project Star", "Project Unstar"], self.trackingClient.events,
+        XCTAssertEqual(["Project Star", "Starred Project", "Project Unstar", "Unstarred Project"],
+                       self.trackingClient.events,
                        "An unstar koala event is tracked.")
       }
     }
@@ -242,7 +258,7 @@ final class ProjectNavBarViewModelTests: TestCase {
         0, "The star prompt doesn't show cause it's less than 48hrs."
       )
 
-      XCTAssertEqual(["Project Star"], self.trackingClient.events,
+      XCTAssertEqual(["Project Star", "Starred Project"], self.trackingClient.events,
                      "A star koala event is tracked.")
     }
   }
@@ -263,7 +279,7 @@ final class ProjectNavBarViewModelTests: TestCase {
 
       self.showProjectStarredPrompt.assertValueCount(0, "The star prompt does not show.")
 
-      XCTAssertEqual(["Project Unstar"], self.trackingClient.events,
+      XCTAssertEqual(["Project Unstar", "Unstarred Project"], self.trackingClient.events,
                      "An unstar koala event is tracked.")
     }
   }

@@ -96,12 +96,12 @@ final class KoalaTests: XCTestCase {
     let project = Project.template
 
     koala.trackProjectShow(project, refTag: .discovery, cookieRefTag: .recommended)
-    XCTAssertEqual(1, client.properties.count)
+    XCTAssertEqual(2, client.properties.count)
 
     let properties = client.properties.last!
     let event = client.events.last!
 
-    XCTAssertEqual("Project Page", event)
+    XCTAssertEqual("Viewed Project Page", event)
     XCTAssertEqual(project.stats.backersCount, properties["project_backers_count"] as? Int)
     XCTAssertEqual(project.country.countryCode, properties["project_country"] as? String)
     XCTAssertEqual(project.country.currencyCode, properties["project_currency"] as? String)
@@ -139,7 +139,7 @@ final class KoalaTests: XCTestCase {
     let koala = Koala(client: client, loggedInUser: loggedInUser)
 
     koala.trackProjectShow(project, refTag: nil, cookieRefTag: nil)
-    XCTAssertEqual(1, client.properties.count)
+    XCTAssertEqual(2, client.properties.count)
 
     let properties = client.properties.last!
 
@@ -157,7 +157,7 @@ final class KoalaTests: XCTestCase {
     let koala = Koala(client: client, loggedInUser: loggedInUser)
 
     koala.trackProjectShow(project, refTag: nil, cookieRefTag: nil)
-    XCTAssertEqual(1, client.properties.count)
+    XCTAssertEqual(2, client.properties.count)
 
     let properties = client.properties.last!
 
@@ -175,7 +175,7 @@ final class KoalaTests: XCTestCase {
     let koala = Koala(client: client, loggedInUser: loggedInUser)
 
     koala.trackProjectShow(project, refTag: nil, cookieRefTag: nil)
-    XCTAssertEqual(1, client.properties.count)
+    XCTAssertEqual(2, client.properties.count)
 
     let properties = client.properties.last!
 
@@ -193,7 +193,7 @@ final class KoalaTests: XCTestCase {
     let koala = Koala(client: client, loggedInUser: loggedInUser)
 
     koala.trackProjectShow(project, refTag: nil, cookieRefTag: nil)
-    XCTAssertEqual(1, client.properties.count)
+    XCTAssertEqual(2, client.properties.count)
 
     let properties = client.properties.last!
 

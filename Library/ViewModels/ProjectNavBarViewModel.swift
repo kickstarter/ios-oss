@@ -5,6 +5,7 @@ import Result
 
 public protocol ProjectNavBarViewModelInputs {
   func categoryButtonTapped()
+  func closeButtonTapped()
   func configureWith(project project: Project)
   func projectImageIsVisible(visible: Bool)
   func projectVideoDidFinish()
@@ -30,8 +31,11 @@ public protocol ProjectNavBarViewModelOutputs {
   /// Emits the color of the category button's title.
   var categoryButtonTitleColor: Signal<UIColor, NoError> { get }
 
-  // Emits two booleans that determine if the category is hidden, and if that change should be animated.
+  /// Emits two booleans that determine if the category is hidden, and if that change should be animated.
   var categoryHiddenAndAnimate: Signal<(hidden: Bool, animate: Bool), NoError> { get }
+
+  /// Emits when the controller should be dismissed.
+  var dismissViewController: Signal<(), NoError> { get }
 
   /// Emits when the login tout should be shown to the user.
   var goToLoginTout: Signal<(), NoError> { get }
@@ -155,8 +159,6 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
       self.projectVideoDidFinishProperty.signal.mapConst(false)
     )
 
-
-
     self.categoryHiddenAndAnimate = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst((false, false)),
 
@@ -179,6 +181,12 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
       )
       .skipRepeats { $0.opaque == $1.opaque }
 
+    self.dismissViewController = self.closeButtonTappedProperty.signal
+
+    project
+      .takeWhen(self.closeButtonTappedProperty.signal)
+      .observeNext { AppEnvironment.current.koala.trackClosedProjectPage($0, gestureType: .tap) }
+
     projectOnStarToggleSuccess
       .observeNext { AppEnvironment.current.koala.trackProjectStar($0) }
   }
@@ -187,6 +195,11 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
   private let projectProperty = MutableProperty<Project?>(nil)
   public func configureWith(project project: Project) {
     self.projectProperty.value = project
+  }
+
+  private let closeButtonTappedProperty = MutableProperty()
+  public func closeButtonTapped() {
+    self.closeButtonTappedProperty.value = ()
   }
 
   private let projectImageIsVisibleProperty = MutableProperty(false)
@@ -233,6 +246,7 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
   public let categoryButtonTintColor: Signal<UIColor, NoError>
   public let categoryButtonTitleColor: Signal<UIColor, NoError>
   public let categoryHiddenAndAnimate: Signal<(hidden: Bool, animate: Bool), NoError>
+  public let dismissViewController: Signal<(), NoError>
   public let goToLoginTout: Signal<(), NoError>
   public let projectName: Signal<String, NoError>
   public let showProjectStarredPrompt: Signal<String, NoError>

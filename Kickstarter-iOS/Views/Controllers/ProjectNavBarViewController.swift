@@ -174,6 +174,12 @@ internal final class ProjectNavBarViewController: UIViewController {
         }
     }
 
+    self.viewModel.outputs.dismissViewController
+      .observeForUI()
+      .observeNext { [weak self] in
+        self?.dismissViewControllerAnimated(true, completion: nil)
+    }
+
     self.shareViewModel.outputs.showShareSheet
       .observeForControllerAction()
       .observeNext { [weak self] in self?.showShareSheet($0) }
@@ -221,7 +227,7 @@ internal final class ProjectNavBarViewController: UIViewController {
   }
 
   @objc private func closeButtonTapped() {
-    self.dismissViewControllerAnimated(true, completion: nil)
+    self.viewModel.inputs.closeButtonTapped()
   }
 
   @objc private func shareButtonTapped() {

@@ -97,11 +97,12 @@ final class ProjectPamphletViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewWillAppear(animated: true)
 
-    XCTAssertEqual(["Project Page"], self.trackingClient.events, "A project page koala event is tracked.")
-    XCTAssertEqual([RefTag.category.stringTag],
+    XCTAssertEqual(["Project Page", "Viewed Project Page"],
+                   self.trackingClient.events, "A project page koala event is tracked.")
+    XCTAssertEqual([RefTag.category.stringTag, RefTag.category.stringTag],
                    self.trackingClient.properties.flatMap { $0["ref_tag"] as? String },
                    "The ref tag is tracked in the koala event.")
-    XCTAssertEqual([RefTag.category.stringTag],
+    XCTAssertEqual([RefTag.category.stringTag, RefTag.category.stringTag],
                    self.trackingClient.properties.flatMap { $0["referrer_credit"] as? String },
                    "The referral credit is tracked in the koala event.")
     XCTAssertEqual(1, self.cookieStorage.cookies?.count,
@@ -118,14 +119,20 @@ final class ProjectPamphletViewModelTests: TestCase {
     newVm.inputs.viewDidLoad()
     newVm.inputs.viewWillAppear(animated: true)
 
-    XCTAssertEqual(["Project Page", "Project Page"],
+    XCTAssertEqual(["Project Page", "Viewed Project Page", "Project Page", "Viewed Project Page"],
                    self.trackingClient.events, "A project page koala event is tracked.")
-    XCTAssertEqual([RefTag.category.stringTag, RefTag.recommended.stringTag],
-                   self.trackingClient.properties.flatMap { $0["ref_tag"] as? String },
-                   "The new ref tag is tracked in koala event.")
-    XCTAssertEqual([RefTag.category.stringTag, RefTag.category.stringTag],
-                   self.trackingClient.properties.flatMap { $0["referrer_credit"] as? String },
-                   "The referrer credit did not change, and is still category.")
+    XCTAssertEqual(
+      [RefTag.category.stringTag, RefTag.category.stringTag, RefTag.recommended.stringTag,
+        RefTag.recommended.stringTag],
+      self.trackingClient.properties.flatMap { $0["ref_tag"] as? String },
+      "The new ref tag is tracked in koala event."
+    )
+    XCTAssertEqual(
+      [RefTag.category.stringTag, RefTag.category.stringTag, RefTag.category.stringTag,
+        RefTag.category.stringTag],
+      self.trackingClient.properties.flatMap { $0["referrer_credit"] as? String },
+      "The referrer credit did not change, and is still category."
+    )
     XCTAssertEqual(1, self.cookieStorage.cookies?.count,
                    "A single cookie has been set.")
   }
