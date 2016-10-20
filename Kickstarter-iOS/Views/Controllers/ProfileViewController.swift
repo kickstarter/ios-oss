@@ -87,7 +87,16 @@ internal final class ProfileViewController: UICollectionViewController {
   }
 
   private func goToSettings() {
-    self.navigationController?.pushViewController(SettingsViewController.instantiate(), animated: true)
+    let vc = SettingsViewController.instantiate()
+
+    if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+      let nav = UINavigationController(rootViewController: vc)
+      nav.modalPresentationStyle = .FormSheet
+      self.presentViewController(nav, animated: true, completion: nil)
+
+    } else {
+      self.navigationController?.pushViewController(vc, animated: true)
+    }
   }
 
   private func present(project project: Project, refTag: RefTag) {

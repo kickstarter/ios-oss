@@ -84,6 +84,10 @@ internal final class SettingsViewController: UIViewController {
     self.helpViewModel.inputs.configureWith(helpContext: .settings)
     self.helpViewModel.inputs.canSendEmail(MFMailComposeViewController.canSendMail())
 
+    if let _ = self.presentingViewController {
+      self.navigationItem.leftBarButtonItem = .close(self, selector: #selector(closeButtonPressed))
+    }
+
     self.betaFeedbackButton.addTarget(self,
                                       action: #selector(betaFeedbackButtonTapped),
                                       forControlEvents: .TouchUpInside)
@@ -476,6 +480,8 @@ internal final class SettingsViewController: UIViewController {
 
   private func logout() {
     AppEnvironment.logout()
+    self.dismissViewControllerAnimated(true, completion: nil)
+
     NSNotificationCenter.defaultCenter().postNotification(
       NSNotification(name: CurrentUserNotifications.sessionEnded, object: nil)
     )
@@ -600,6 +606,10 @@ internal final class SettingsViewController: UIViewController {
 
   @objc private func betaFeedbackButtonTapped() {
     self.viewModel.inputs.betaFeedbackButtonTapped()
+  }
+
+  @objc private func closeButtonPressed() {
+    self.dismissViewControllerAnimated(true, completion: nil)
   }
 
   @objc private func betaDebugPushNotificationsButtonTapped() {
