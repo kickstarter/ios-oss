@@ -295,7 +295,11 @@ RewardPledgeViewModelOutputs {
       )
       .map { project, shippingRule in
         Strings.plus_shipping_cost(
-          shipping_cost: Format.currency(Int(shippingRule.cost), country: project.country)
+          shipping_cost: Format.currency(
+            Int(shippingRule.cost),
+            country: project.country,
+            omitCurrencyCode: !projectNeedsCurrencyCode(project)
+          )
         )
     }
 
@@ -787,19 +791,17 @@ private func defaultShippingRule(fromShippingRules shippingRules: [ShippingRule]
   return shippingRuleInUSA ?? shippingRules.first
 }
 
+private func projectNeedsCurrencyCode(project: Project) -> Bool {
+  return (project.country.countryCode != "US" || AppEnvironment.current.config?.countryCode != "US")
+    && project.country.currencySymbol == "$"
+}
+
 private func currencyLabel(forProject project: Project) -> String {
-  guard project.country.countryCode != "US" || AppEnvironment.current.config?.countryCode != "US" else {
+  guard projectNeedsCurrencyCode(project) else {
     return project.country.currencySymbol
   }
 
-  let projectCurrencySymbolIsAmbiguous = 1 != AppEnvironment.current.config?.launchedCountries
-    .distincts { $0.currencyCode == $1.currencyCode }
-    .filter { $0.currencySymbol == project.country.currencySymbol }
-    .count
-
-  return projectCurrencySymbolIsAmbiguous
-    ? "\(project.country.currencyCode) \(project.country.currencySymbol)"
-    : project.country.currencySymbol
+  return "\(project.country.currencyCode) \(project.country.currencySymbol)"
 }
 
 private func backingErrorMesage(forProject project: Project, amount: Int, reward: Reward?) -> String? {

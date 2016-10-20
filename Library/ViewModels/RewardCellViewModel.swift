@@ -53,7 +53,6 @@ RewardCellViewModelOutputs {
   public init() {
     let projectAndRewardOrBacking = self.projectAndRewardOrBackingProperty.signal.ignoreNil()
     let project = projectAndRewardOrBacking.map(first)
-    let rewardOrBacking = projectAndRewardOrBacking.map(second)
     let reward = projectAndRewardOrBacking
       .map { project, rewardOrBacking -> Reward in
         rewardOrBacking.left
@@ -96,7 +95,11 @@ RewardCellViewModelOutputs {
         switch rewardOrBacking {
         case let .left(reward):
           let min = minPledgeAmount(forProject: project, reward: reward)
-          return Format.currency(min, country: project.country)
+          let currency = Format.currency(min, country: project.country)
+          return reward == Reward.noReward
+            ? Strings.rewards_title_pledge_reward_currency_or_more(reward_currency: currency)
+            : currency
+
         case let .right(backing):
           return Format.currency(backing.amount, country: project.country)
         }

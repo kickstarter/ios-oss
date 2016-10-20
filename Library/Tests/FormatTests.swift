@@ -88,6 +88,9 @@ final class FormatTests: XCTestCase {
         XCTAssertEqual(Format.currency(1_000, country: .GB), "£1,000")
         XCTAssertEqual(Format.currency(1_000, country: .DK), "kr1,000 DKK")
         XCTAssertEqual(Format.currency(1_000, country: .DE), "€1,000")
+
+        XCTAssertEqual(Format.currency(1_000, country: .CA, omitCurrencyCode: true), "$1,000")
+        XCTAssertEqual(Format.currency(1_000, country: .CA, omitCurrencyCode: false), "$1,000 CAD")
       }
 
       withEnvironment(countryCode: "CA") {

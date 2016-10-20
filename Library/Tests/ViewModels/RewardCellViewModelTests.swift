@@ -554,6 +554,15 @@ final class RewardCellViewModelTests: TestCase {
     self.minimumAndConversionLabelsColor.assertValues([.ksr_text_navy_500])
   }
 
+  func testMinimumLabel_NoReward() {
+    let project = Project.template
+    let reward = Reward.noReward
+
+    self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
+
+    self.minimumLabelText.assertValues(["Pledge $1 or more"])
+  }
+
   func testNotifyDelegateRewardCellWantsExpansion_NotSoldOut() {
     self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(.template))
 

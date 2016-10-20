@@ -248,4 +248,24 @@ internal final class RewardPledgeViewControllerTests: TestCase {
 
     FBSnapshotVerifyView(parent.view)
   }
+
+  func testAmbigiousCurrencies() {
+    let project = self.cosmicSurgery
+      |> Project.lens.stats.staticUsdRate .~ 1.2
+    let reward = self.cosmicReward
+      |> Reward.lens.rewardsItems .~ []
+
+    AppEnvironment.current.launchedCountries.countries.forEach { country in
+
+      let vc = RewardPledgeViewController.configuredWith(
+        project: project |> Project.lens.country .~ country, reward: reward, applePayCapable: false
+      )
+      let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
+      parent.view.frame.size.height -= 64
+
+      self.scheduler.run()
+
+      FBSnapshotVerifyView(vc.view, identifier: "country_\(country.countryCode)")
+    }
+  }
 }

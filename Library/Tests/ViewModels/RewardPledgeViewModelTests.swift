@@ -817,6 +817,15 @@ internal final class RewardPledgeViewModelTests: TestCase {
       ])
   }
 
+  func testMinimumLabelText_NoReward() {
+    let reward = Reward.noReward
+    let project = Project.template
+    self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
+    self.vm.inputs.viewDidLoad()
+
+    self.minimumLabelText.assertValues(["Pledge $1 or more"])
+  }
+
   func testNavigationTitle_NonBacker_NoReward() {
     let reward = Reward.noReward
     let project = Project.template
@@ -1187,6 +1196,57 @@ internal final class RewardPledgeViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
 
       self.setStripePublishableKey.assertValues(["deadbeef"])
+    }
+  }
+
+  func testShippingAmountLabelText_USUser_CAProject() {
+    let apiService = MockService(fetchShippingRulesResponse: shippingRules)
+    let config = .template |> Config.lens.countryCode .~ "US"
+    let project = .template |> Project.lens.country .~ .CA
+
+    withEnvironment(apiService: apiService, config: config) {
+      self.vm.inputs.configureWith(project: project, reward: .template, applePayCapable: false)
+      self.vm.inputs.viewDidLoad()
+
+      self.shippingAmountLabelText.assertValues([""])
+
+      self.scheduler.advance()
+
+      self.shippingAmountLabelText.assertValues(["", "+$1 CAD"])
+    }
+  }
+
+  func testShippingAmountLabelText_CAUser_CAProject() {
+    let apiService = MockService(fetchShippingRulesResponse: shippingRules)
+    let config = .template |> Config.lens.countryCode .~ "CA"
+    let project = .template |> Project.lens.country .~ .CA
+
+    withEnvironment(apiService: apiService, config: config) {
+      self.vm.inputs.configureWith(project: project, reward: .template, applePayCapable: false)
+      self.vm.inputs.viewDidLoad()
+
+      self.shippingAmountLabelText.assertValues([""])
+
+      self.scheduler.advance()
+
+      self.shippingAmountLabelText.assertValues(["", "+$2 CAD"])
+    }
+  }
+
+  func testShippingAmountLabelText_USUser_DKProject() {
+    let apiService = MockService(fetchShippingRulesResponse: shippingRules)
+    let config = .template |> Config.lens.countryCode .~ "US"
+    let project = .template |> Project.lens.country .~ .DK
+
+    withEnvironment(apiService: apiService, config: config) {
+      self.vm.inputs.configureWith(project: project, reward: .template, applePayCapable: false)
+      self.vm.inputs.viewDidLoad()
+
+      self.shippingAmountLabelText.assertValues([""])
+
+      self.scheduler.advance()
+
+      self.shippingAmountLabelText.assertValues(["", "+kr1"])
     }
   }
 

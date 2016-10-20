@@ -54,12 +54,15 @@ public enum Format {
 
    - parameter amount: The amount to format.
    - parameter country: The country that currency is in.
+   - parameter omitCurrencyCode: Pass true if you want to force the currency code to be omitted when trying
+                                 to disambiguate currencies.
    - parameter env: (optional) An environment to use for locality.
 
    - returns: A formatted string.
    */
   public static func currency(amount: Int,
                               country: Project.Country,
+                              omitCurrencyCode: Bool = false,
                               env: Environment = AppEnvironment.current) -> String {
 
     let formatter = NumberFormatterConfig.cachedFormatter(
@@ -71,7 +74,7 @@ public enum Format {
     let string = formatter.stringFromNumber(amount) ?? country.currencySymbol + String(amount)
 
     // Sometimes we need to append a country code in order to disambiguate a currency
-    if env.launchedCountries.currencyNeedsCode(country.currencySymbol) {
+    if !omitCurrencyCode && env.launchedCountries.currencyNeedsCode(country.currencySymbol) {
       // USD for US backers does not need to be disambiguated.
       if env.countryCode != "US" || country.countryCode != "US" {
         // NB: The space " " here is a non-breaking space
