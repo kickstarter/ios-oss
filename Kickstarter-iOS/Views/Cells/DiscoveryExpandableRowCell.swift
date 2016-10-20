@@ -30,6 +30,7 @@ internal final class DiscoveryExpandableRowCell: UITableViewCell, ValueCell {
 
     self
       |> discoveryFilterRowMarginStyle
+      |> UITableViewCell.lens.accessibilityTraits .~ UIAccessibilityTraitButton
 
     self.projectsCountLabel
       |> UILabel.lens.font %~~ { _, label in
