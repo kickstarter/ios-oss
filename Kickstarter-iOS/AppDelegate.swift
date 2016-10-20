@@ -50,9 +50,9 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         )
     }
 
-    self.viewModel.outputs.updateEnvironment
+    self.viewModel.outputs.updateConfigInEnvironment
       .observeForUI()
-      .observeNext { config, koala in AppEnvironment.replaceCurrentEnvironment(config: config, koala: koala) }
+      .observeNext { AppEnvironment.updateConfig($0) }
 
     self.viewModel.outputs.postNotification
       .observeForUI()

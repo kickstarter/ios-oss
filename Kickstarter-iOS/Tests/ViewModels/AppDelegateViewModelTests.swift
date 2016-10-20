@@ -26,7 +26,7 @@ final class AppDelegateViewModelTests: TestCase {
   let registerUserNotificationSettings = TestObserver<(), NoError>()
   let unregisterForRemoteNotifications = TestObserver<(), NoError>()
   let updateCurrentUserInEnvironment = TestObserver<User, NoError>()
-  let updateEnvironment = TestObserver<(Config, Koala), NoError>()
+  let updateConfigInEnvironment = TestObserver<Config, NoError>()
 
   override func setUp() {
     super.setUp()
@@ -47,7 +47,7 @@ final class AppDelegateViewModelTests: TestCase {
     vm.outputs.registerUserNotificationSettings.observe(self.registerUserNotificationSettings.observer)
     vm.outputs.unregisterForRemoteNotifications.observe(self.unregisterForRemoteNotifications.observer)
     vm.outputs.updateCurrentUserInEnvironment.observe(self.updateCurrentUserInEnvironment.observer)
-    vm.outputs.updateEnvironment.observe(self.updateEnvironment.observer)
+    vm.outputs.updateConfigInEnvironment.observe(self.updateConfigInEnvironment.observer)
   }
 
   func testConfigureHockey_BetaApp_LoggedOut() {
@@ -298,12 +298,18 @@ final class AppDelegateViewModelTests: TestCase {
   }
 
   func testConfig() {
-    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
-                                                 launchOptions: [:])
-    self.updateEnvironment.assertValueCount(1)
+    let config1 = Config.template |> Config.lens.countryCode .~ "US"
+    withEnvironment(apiService: MockService(fetchConfigResponse: config1)) {
+      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+                                                   launchOptions: [:])
+      self.updateConfigInEnvironment.assertValues([config1])
+    }
 
-    self.vm.inputs.applicationWillEnterForeground()
-    self.updateEnvironment.assertValueCount(2)
+    let config2 = Config.template |> Config.lens.countryCode .~ "GB"
+    withEnvironment(apiService: MockService(fetchConfigResponse: config2)) {
+      self.vm.inputs.applicationWillEnterForeground()
+      self.updateConfigInEnvironment.assertValues([config1, config2])
+    }
   }
 
   func testPresentViewController() {

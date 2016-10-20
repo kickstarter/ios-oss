@@ -117,7 +117,7 @@ public protocol AppDelegateViewModelOutputs {
   var updateCurrentUserInEnvironment: Signal<User, NoError> { get }
 
   /// Emits a config value that should be updated in the environment.
-  var updateEnvironment: Signal<(Config, Koala), NoError> { get }
+  var updateConfigInEnvironment: Signal<Config, NoError> { get }
 }
 
 public protocol AppDelegateViewModelType {
@@ -148,14 +148,11 @@ AppDelegateViewModelOutputs {
       .filter { $0.ksrCode == .AccessTokenInvalid }
       .ignoreValues()
 
-    self.updateEnvironment = Signal.merge([
+    self.updateConfigInEnvironment = Signal.merge([
       self.applicationWillEnterForegroundProperty.signal,
       self.applicationLaunchOptionsProperty.signal.ignoreValues()
       ])
       .switchMap { AppEnvironment.current.apiService.fetchConfig().demoteErrors() }
-      .map { config in
-        (config, AppEnvironment.current.koala |> Koala.lens.config .~ config)
-    }
 
     self.postNotification = self.currentUserUpdatedInEnvironmentProperty.signal
       .mapConst(NSNotification(name: CurrentUserNotifications.userUpdated, object: nil))
@@ -531,7 +528,7 @@ AppDelegateViewModelOutputs {
   public let synchronizeUbiquitousStore: Signal<(), NoError>
   public let unregisterForRemoteNotifications: Signal<(), NoError>
   public let updateCurrentUserInEnvironment: Signal<User, NoError>
-  public let updateEnvironment: Signal<(Config, Koala), NoError>
+  public let updateConfigInEnvironment: Signal<Config, NoError>
 }
 
 private func deviceToken(fromData data: NSData) -> String {

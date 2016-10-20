@@ -45,6 +45,13 @@ public struct AppEnvironment {
     )
   }
 
+  public static func updateConfig(config: Config) {
+    replaceCurrentEnvironment(
+      config: config,
+      koala: AppEnvironment.current.koala |> Koala.lens.config .~ config
+    )
+  }
+
   // Invoke when you want to end the user's session.
   public static func logout() {
     let storage = AppEnvironment.current.cookieStorage
