@@ -288,7 +288,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
 
     self.expandRewardDescription.assertValueCount(0)
 
-    self.vm.inputs.descriptionLabelTapped()
+    self.vm.inputs.expandDescriptionTapped()
 
     self.expandRewardDescription.assertValueCount(1)
   }
@@ -801,7 +801,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
 
     self.itemsContainerHidden.assertValues([true])
 
-    self.vm.inputs.descriptionLabelTapped()
+    self.vm.inputs.expandDescriptionTapped()
 
     self.itemsContainerHidden.assertValues([true, false])
   }
@@ -1153,7 +1153,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
 
     self.readMoreContainerViewHidden.assertValues([false])
 
-    self.vm.inputs.descriptionLabelTapped()
+    self.vm.inputs.expandDescriptionTapped()
 
     self.readMoreContainerViewHidden.assertValues([false, true])
   }

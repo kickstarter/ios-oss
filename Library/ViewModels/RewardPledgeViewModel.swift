@@ -24,14 +24,14 @@ public protocol RewardPledgeViewModelInputs {
   /// Call when the change payment method button is tapped.
   func changePaymentMethodButtonTapped()
 
-  /// Call when the description label is tapped.
-  func descriptionLabelTapped()
-
   /// Call when the "different payment method" button is tapped.
   func differentPaymentMethodButtonTapped()
 
   /// Call when the disclaimer button is tapped.
   func disclaimerButtonTapped()
+
+  /// Call when anything is tapped that should expand the reward's description.
+  func expandDescriptionTapped()
 
   /// Call from the payment authorization delegate method.
   func paymentAuthorizationDidFinish()
@@ -310,12 +310,12 @@ RewardPledgeViewModelOutputs {
 
     self.readMoreContainerViewHidden = Signal.merge(
       reward.map { $0 == Reward.noReward },
-      self.descriptionLabelTappedProperty.signal.mapConst(true)
+      self.expandDescriptionTappedProperty.signal.mapConst(true)
     )
 
     self.itemsContainerHidden = self.readMoreContainerViewHidden.map(negate)
 
-    self.expandRewardDescription = self.descriptionLabelTappedProperty.signal
+    self.expandRewardDescription = self.expandDescriptionTappedProperty.signal
 
     self.shippingLocationsLabelText = reward
       .map { $0.shipping.summary }
@@ -598,6 +598,11 @@ RewardPledgeViewModelOutputs {
     self.disclaimerButtonTappedProperty.value = ()
   }
 
+  private let expandDescriptionTappedProperty = MutableProperty()
+  public func expandDescriptionTapped() {
+    self.expandDescriptionTappedProperty.value = ()
+  }
+
   private let paymentAuthorizationFinishedProperty = MutableProperty()
   public func paymentAuthorizationDidFinish() {
     self.paymentAuthorizationFinishedProperty.value = ()
@@ -621,11 +626,6 @@ RewardPledgeViewModelOutputs {
   private let pledgeTextFieldDidEndEditingProperty = MutableProperty()
   public func pledgeTextFieldDidEndEditing() {
     self.pledgeTextFieldDidEndEditingProperty.value = ()
-  }
-
-  private let descriptionLabelTappedProperty = MutableProperty()
-  public func descriptionLabelTapped() {
-    self.descriptionLabelTappedProperty.value = ()
   }
 
   private let shippingButtonTappedProperty = MutableProperty()

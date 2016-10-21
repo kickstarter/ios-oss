@@ -63,7 +63,7 @@ internal final class RewardPledgeViewControllerTests: TestCase {
     let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
     parent.view.frame.size.height = 870
 
-    vc.viewModel.inputs.descriptionLabelTapped()
+    vc.viewModel.inputs.expandDescriptionTapped()
     self.scheduler.run()
 
     FBSnapshotVerifyView(vc.view)

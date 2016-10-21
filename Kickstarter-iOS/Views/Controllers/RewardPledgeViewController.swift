@@ -106,7 +106,7 @@ internal final class RewardPledgeViewController: UIViewController {
       self, action: #selector(continueWithPaymentButtonTapped), forControlEvents: .TouchUpInside
     )
     self.descriptionLabel.addGestureRecognizer(
-      UITapGestureRecognizer(target: self, action: #selector(descriptionLabelTapped))
+      UITapGestureRecognizer(target: self, action: #selector(expandRewardDescriptionTapped))
     )
     self.differentPaymentMethodButton.addTarget(
       self, action: #selector(differentPaymentMethodTapped), forControlEvents: .TouchUpInside
@@ -122,8 +122,14 @@ internal final class RewardPledgeViewController: UIViewController {
       action: #selector(pledgedTextFieldDoneEditing),
       forControlEvents: [.EditingDidEndOnExit, .EditingDidEnd]
     )
+    self.readMoreContainerView.addGestureRecognizer(
+      UITapGestureRecognizer(target: self, action: #selector(expandRewardDescriptionTapped))
+    )
     self.shippingDestinationButton.addTarget(
       self, action: #selector(shippingButtonTapped), forControlEvents: .TouchUpInside
+    )
+    self.titleLabel.addGestureRecognizer(
+      UITapGestureRecognizer(target: self, action: #selector(expandRewardDescriptionTapped))
     )
     self.updatePledgeButton.addTarget(
       self, action: #selector(updatePledgeButtonTapped), forControlEvents: .TouchUpInside
@@ -286,7 +292,7 @@ internal final class RewardPledgeViewController: UIViewController {
 
     self.readMoreContainerView
       |> UIView.lens.backgroundColor .~ .clearColor()
-      |> UIView.lens.userInteractionEnabled .~ false
+      |> UIView.lens.userInteractionEnabled .~ true
 
     self.readMoreGradientView.backgroundColor = .clearColor()
     self.readMoreGradientView.startPoint = .zero
@@ -395,6 +401,7 @@ internal final class RewardPledgeViewController: UIViewController {
       |> UILabel.lens.font .~ UIFont.ksr_title3(size: 17)
       |> UILabel.lens.textColor .~ UIColor.ksr_text_navy_900
       |> UILabel.lens.numberOfLines .~ 0
+      |> UILabel.lens.userInteractionEnabled .~ true
 
     self.topStackView
       |> UIStackView.lens.layoutMargins .~ .init(topBottom: 0, leftRight: Styles.grid(4))
@@ -592,8 +599,8 @@ internal final class RewardPledgeViewController: UIViewController {
     self.viewModel.inputs.applePayButtonTapped()
   }
 
-  @objc private func descriptionLabelTapped() {
-    self.viewModel.inputs.descriptionLabelTapped()
+  @objc private func expandRewardDescriptionTapped() {
+    self.viewModel.inputs.expandDescriptionTapped()
   }
 
   @IBAction private func closeButtonTapped() {

@@ -115,12 +115,12 @@ private func goToRewardPledgeData(forProject project: Project, rewardOrBacking: 
 
     switch rewardOrBacking {
     case let .left(reward):
+      guard reward.remaining != .Some(0) else { return nil }
       return (project, reward)
 
     case let .right(backing):
-      guard let reward = reward(forBacking: backing, inProject: project) else {
-        return nil
-      }
+      guard let reward = reward(forBacking: backing, inProject: project) else { return nil }
+
       return (project, reward)
     }
 }
