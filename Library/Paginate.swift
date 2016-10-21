@@ -23,6 +23,7 @@ import ReactiveExtensions
  - parameter requestNextPageWhen:  A signal that emits whenever next page of values should be fetched.
  - parameter clearOnNewRequest:    A boolean that determines if results should be cleared when a new request
                                    is made, i.e. an empty array will immediately be emitted.
+ - parameter skipRepeats:          A boolean that determines if results can be repeated.
  - parameter valuesFromEnvelope:   A function to get an array of values from the results envelope.
  - parameter cursorFromEnvelope:   A function to get the cursor for the next page from a results envelope.
  - parameter requestFromParams:    A function to get a request for values from a params value.
@@ -40,6 +41,7 @@ public func paginate <Cursor, Value: Equatable, Envelope, ErrorEnvelope, Request
   requestFirstPageWith requestFirstPage: Signal<RequestParams, NoError>,
   requestNextPageWhen  requestNextPage: Signal<(), NoError>,
                        clearOnNewRequest: Bool,
+                       skipRepeats: Bool = true,
                        valuesFromEnvelope: (Envelope -> [Value]),
                        cursorFromEnvelope: (Envelope -> Cursor),
                        requestFromParams: (RequestParams -> SignalProducer<Envelope, ErrorEnvelope>),
@@ -88,5 +90,9 @@ public func paginate <Cursor, Value: Equatable, Envelope, ErrorEnvelope, Request
       .scan(0) { accum, values in values.isEmpty ? 0 : accum + 1 }
       .filter { $0 > 0 }
 
-    return (paginatedValues.skipRepeats(==), isLoading.signal, pageCount)
+    return (
+      (skipRepeats ? paginatedValues.skipRepeats(==) : paginatedValues),
+      isLoading.signal,
+      pageCount
+    )
 }

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <scenes>
+        <!--Empty States View Controller-->
+        <scene sceneID="9Ut-3f-3EZ">
+            <objects>
+                <viewController storyboardIdentifier="EmptyStatesViewController" modalPresentationStyle="overCurrentContext" id="yBW-Hp-DOp" customClass="EmptyStatesViewController" customModule="Kickstarter_Framework" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Goe-yN-7We"/>
+                        <viewControllerLayoutGuide type="bottom" id="o39-TJ-AtZ"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="gsX-SX-pIR">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="H97-t9-cog" userLabel="Gradient View" customClass="GradientView" customModule="Library">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jzx-2h-bfj" userLabel="Background Strip View">
+                                <rect key="frame" x="0.0" y="623" width="375" height="44"/>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ppz-U1-Bpd">
+                                <rect key="frame" x="16" y="623" width="343" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="bsN-1n-2a5"/>
+                                </constraints>
+                                <state key="normal" title="Explore projects"/>
+                            </button>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="lOp-6q-Smj" userLabel="Headline Stack View">
+                                <rect key="frame" x="0.0" y="546" width="375" height="77"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pursue daring ideas." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ahd-4h-0WP">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="20"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Find projects you'll love and help bring creative ideas to life." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FVp-09-5kw">
+                                        <rect key="frame" x="0.0" y="36" width="375" height="41"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Jzx-2h-bfj" firstAttribute="top" secondItem="ppz-U1-Bpd" secondAttribute="top" id="Bbi-U8-RfY"/>
+                            <constraint firstAttribute="trailing" secondItem="H97-t9-cog" secondAttribute="trailing" id="DGj-Qv-1aM"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="ppz-U1-Bpd" secondAttribute="trailing" id="Dye-2a-Ad9"/>
+                            <constraint firstItem="Jzx-2h-bfj" firstAttribute="leading" secondItem="gsX-SX-pIR" secondAttribute="leading" id="Fq5-oi-POl"/>
+                            <constraint firstAttribute="trailing" secondItem="lOp-6q-Smj" secondAttribute="trailing" id="MMR-mY-VgY"/>
+                            <constraint firstItem="lOp-6q-Smj" firstAttribute="bottom" secondItem="Jzx-2h-bfj" secondAttribute="top" id="XBB-v8-sft"/>
+                            <constraint firstItem="Jzx-2h-bfj" firstAttribute="bottom" secondItem="H97-t9-cog" secondAttribute="bottom" id="YWn-gY-BbC"/>
+                            <constraint firstItem="H97-t9-cog" firstAttribute="leading" secondItem="gsX-SX-pIR" secondAttribute="leading" id="ZNW-qW-Ajn"/>
+                            <constraint firstItem="H97-t9-cog" firstAttribute="top" secondItem="gsX-SX-pIR" secondAttribute="topMargin" id="dK9-eZ-Kvv"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="ppz-U1-Bpd" secondAttribute="bottom" id="daV-8T-sjF"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="H97-t9-cog" secondAttribute="bottom" id="ePz-6A-u86"/>
+                            <constraint firstAttribute="trailing" secondItem="Jzx-2h-bfj" secondAttribute="trailing" id="k6F-C2-8c6"/>
+                            <constraint firstItem="lOp-6q-Smj" firstAttribute="leading" secondItem="gsX-SX-pIR" secondAttribute="leading" id="n2o-7Z-v6M"/>
+                            <constraint firstItem="ppz-U1-Bpd" firstAttribute="leading" secondItem="gsX-SX-pIR" secondAttribute="leadingMargin" id="rg4-CT-D36"/>
+                        </constraints>
+                    </view>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                    <connections>
+                        <outlet property="backgroundGradientView" destination="H97-t9-cog" id="lcj-jr-v7L"/>
+                        <outlet property="backgroundStripView" destination="Jzx-2h-bfj" id="F9l-HI-UNz"/>
+                        <outlet property="headlineStackView" destination="lOp-6q-Smj" id="o8J-JB-38a"/>
+                        <outlet property="mainButton" destination="ppz-U1-Bpd" id="vVC-r8-PoV"/>
+                        <outlet property="mainButtonBottomLayoutConstraint" destination="daV-8T-sjF" id="20E-az-C60"/>
+                        <outlet property="stripViewTopLayoutConstraint" destination="Bbi-U8-RfY" id="HiQ-BY-yNl"/>
+                        <outlet property="subtitleLabel" destination="FVp-09-5kw" id="xJI-0o-gj0"/>
+                        <outlet property="titleLabel" destination="Ahd-4h-0WP" id="UIw-07-ozk"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="pLc-GC-bNW" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1536.5" y="-693.5"/>
+        </scene>
+    </scenes>
+</document>

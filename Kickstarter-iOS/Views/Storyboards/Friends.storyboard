@@ -9,7 +9,7 @@
         <!--FindFriendsViewController-->
         <scene sceneID="zpH-iI-Tnd">
             <objects>
-                <tableViewController storyboardIdentifier="FindFriendsViewController" title="FindFriendsViewController" id="3ir-xv-YhI" customClass="FindFriendsViewController" customModule="Kickstarter_Framework" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="FindFriendsViewController" title="FindFriendsViewController" extendedLayoutIncludesOpaqueBars="YES" id="3ir-xv-YhI" customClass="FindFriendsViewController" customModule="Kickstarter_Framework" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="100" sectionHeaderHeight="28" sectionFooterHeight="28" id="koP-bZ-7wD">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

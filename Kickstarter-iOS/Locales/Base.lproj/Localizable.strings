@@ -20,7 +20,9 @@
 "Ask_me_anything" = "Ask me anything";
 "Back_this_project_below" = "Back this project below";
 "Backed_by_Friends" = "Backed by Friends";
+"Backed_by_people_you_follow" = "Backed by people you follow";
 "Backed_projects_projects_count" = "Backed projects %{project_count}";
+"Bring_new_ideas_to_life" = "Bring new ideas to life.";
 "Cancel_your_pledge" = "Cancel your pledge";
 "Change_payment_method" = "Change payment method";
 "Closes_filters" = "Closes filters.";
@@ -50,8 +52,10 @@
 "Find_Facebook_Friends" = "Find Facebook friends";
 "Find_and_follow_friends" = "Find and follow friends";
 "Find_projects_youll_love_and_help_bring" = "Find projects you’ll love and help bring creative ideas to life.";
+"Find_projects_youll_love_in_art_design_film" = "Find projects you’ll love in art, design, film, games, music, and more. Once you back a project, you’ll see all your activity here.";
 "First_created" = "First created";
 "Follow_friends" = "Follow friends";
+"Follow_more_friends" = "Follow more friends";
 "Follow_your_Facebook_friends_and_get_notified" = "Follow your Facebook friends and get notified when they back or launch projects.";
 "Follow_your_Facebook_friends_and_keep_up_with_the_projects" = "Follow your Facebook friends and keep up with the projects they back and launch.";
 "Following" = "Following";
@@ -72,6 +76,7 @@
 "Manage_your_reward" = "Manage your reward";
 "Message_backer" = "Message backer";
 "Message_creator" = "Message creator";
+"No_pledges_from_friends_yet" = "No pledges \nfrom friends yet.";
 "Once_you_back_a_project_well_share" = "Once you back a project, we’ll share personalized recommendations in this space.";
 "Opens_comments" = "Opens comments.";
 "Opens_email_composer" = "Opens email composer.";
@@ -111,7 +116,7 @@
 "Ships_to" = "Ships to:";
 "Shows_list_of_subcategories" = "Shows list of subcategories.";
 "Signs_up_with_Email" = "Signs up with Email.";
-"Something_caught_your_eye" = "Something \ncaught your eye?";
+"Something_catch_your_eye" = "Something \ncatch your eye?";
 "Stars_projects" = "Stars project.";
 "Survey" = "Survey";
 "Tap_the_star_on_each_project_page_to_save_it" = "Tap the star on each project page to save it. We’ll remind you 48 hours before the project ends.";
@@ -125,6 +130,7 @@
 "View_your_pledge" = "View your pledge";
 "View_your_reward" = "View your reward";
 "You_backed_this_project" = "You backed this project.";
+"Your_friends_havent_backed_any_projects_yet" = "Your friends haven’t backed any projects yet, but once they do, you’ll see them listed here.";
 "Your_pledge" = "Your pledge";
 "Your_pledge_amount" = "Your pledge amount:";
 "Your_reward" = "Your reward";

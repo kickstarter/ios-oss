@@ -43,8 +43,8 @@ public protocol DiscoveryPageViewModelOutputs {
   /// Hopefully in the future we can remove this when we can resolve postcard display issues.
   var asyncReloadData: Signal<Void, NoError> { get }
 
-  /// Emits when we should focus on the first visible project
-  var focusScreenReaderOnFirstProject: Signal<(), NoError> { get }
+  /// Emits when we should dismiss the empty state controller.
+  var dismissEmptyState: Signal<(), NoError> { get }
 
   /// Emits a project and ref tag that we should go to.
   var goToProject: Signal<(Project, RefTag), NoError> { get }
@@ -60,6 +60,9 @@ public protocol DiscoveryPageViewModelOutputs {
 
   /// Emits a bool to allow status bar tap to scroll the table view to the top.
   var setScrollsToTop: Signal<Bool, NoError> { get }
+
+  /// Emits to show the empty state controller.
+  var showEmptyState: Signal<EmptyState, NoError> { get }
 
   /// Emits a boolean that determines of the onboarding should be shown.
   var showOnboarding: Signal<Bool, NoError> { get }
@@ -106,7 +109,8 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
     (paginatedProjects, self.projectsAreLoading, pageCount) = paginate(
       requestFirstPageWith: requestFirstPageWith,
       requestNextPageWhen: isCloseToBottom,
-      clearOnNewRequest: true,
+      clearOnNewRequest: false,
+      skipRepeats: false,
       valuesFromEnvelope: { $0.projects },
       cursorFromEnvelope: { $0.urls.api.moreProjects },
       requestFromParams: { AppEnvironment.current.apiService.fetchDiscovery(params: $0) },
@@ -121,6 +125,15 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       .skipRepeats(==)
 
     self.asyncReloadData = self.projects.take(1).ignoreValues()
+
+    self.showEmptyState = paramsChanged
+      .takeWhen(paginatedProjects.filter { $0.isEmpty })
+      .map(emptyState(forParams:))
+      .ignoreNil()
+
+    self.dismissEmptyState = paramsChanged
+      .ignoreValues()
+      .skip(1)
 
     let fetchActivityEvent = self.viewWillAppearProperty.signal
       .filter { _ in AppEnvironment.current.currentUser != nil }
@@ -190,21 +203,6 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
         AppEnvironment.current.koala.trackDiscovery(params: params, page: page)
     }
 
-    let focusFirstProjectWhenProjectsLoad = pageCount
-      .takeWhen(paginatedProjects)
-      .filter { $0 == 1 }
-      .ignoreValues()
-
-    let focusFirstProjectWhenViewAppears = paginatedProjects
-      .takeWhen(self.viewDidAppearProperty.signal)
-      .filter { !$0.isEmpty }
-      .ignoreValues()
-
-    self.focusScreenReaderOnFirstProject = Signal.merge(
-      focusFirstProjectWhenProjectsLoad,
-      focusFirstProjectWhenViewAppears
-    )
-
     self.setScrollsToTop = Signal.merge(
       self.viewDidAppearProperty.signal.mapConst(true),
       self.viewDidDisappearProperty.signal.mapConst(false)
@@ -247,12 +245,13 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
 
   public let activitiesForSample: Signal<[Activity], NoError>
   public var asyncReloadData: Signal<Void, NoError>
-  public let focusScreenReaderOnFirstProject: Signal<(), NoError>
+  public let dismissEmptyState: Signal<(), NoError>
   public let goToProject: Signal<(Project, RefTag), NoError>
   public let goToProjectUpdate: Signal<(Project, Update), NoError>
   public let projects: Signal<[Project], NoError>
   public let projectsAreLoading: Signal<Bool, NoError>
   public let setScrollsToTop: Signal<Bool, NoError>
+  public let showEmptyState: Signal<EmptyState, NoError>
   public let showOnboarding: Signal<Bool, NoError>
 
   public var inputs: DiscoveryPageViewModelInputs { return self }
@@ -281,4 +280,16 @@ private func refTag(fromParams params: DiscoveryParams, project: Project) -> Ref
     return .social
   }
   return RefTag.discovery
+}
+
+private func emptyState(forParams params: DiscoveryParams) -> EmptyState? {
+  if params.starred == .Some(true) {
+    return .starred
+  } else if params.recommended == .Some(true) {
+    return .recommended
+  } else if params.social == .Some(true) {
+    return AppEnvironment.current.currentUser?.social == .Some(true) ? .socialNoPledges : .socialDisabled
+  }
+
+  return nil
 }

@@ -27,6 +27,12 @@ internal final class FindFriendsViewController: UITableViewController {
     self.viewModel.inputs.viewDidLoad()
   }
 
+  override func viewWillAppear(animated: Bool) {
+    super.viewWillAppear(animated)
+
+    self.navigationController?.setNavigationBarHidden(false, animated: animated)
+  }
+
   override func bindViewModel() {
     super.bindViewModel()
 
@@ -74,6 +80,9 @@ internal final class FindFriendsViewController: UITableViewController {
     self
       |> baseTableControllerStyle()
       |> UIViewController.lens.title %~ { _ in Strings.Follow_friends() }
+
+    self.navigationController?.navigationBar
+      ?|> baseNavigationBarStyle
   }
 
   override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell,

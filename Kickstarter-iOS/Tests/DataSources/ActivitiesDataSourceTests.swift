@@ -85,19 +85,4 @@ final class ActivitiesDataSourceTests: XCTestCase {
 
     XCTAssertEqual("PaddingCell", self.dataSource.reusableId(item: 5, section: section))
   }
-
-  func testEmptyState() {
-    let section = ActivitiesDataSource.Section.emptyState.rawValue
-
-    self.dataSource.emptyState(visible: true)
-
-    XCTAssertEqual(section + 1, self.dataSource.numberOfSectionsInTableView(tableView))
-    XCTAssertEqual(1, self.dataSource.tableView(tableView, numberOfRowsInSection: section))
-    XCTAssertEqual("ActivityEmptyStateCell", self.dataSource.reusableId(item: 0, section: section))
-
-    self.dataSource.emptyState(visible: false)
-
-    XCTAssertEqual(section + 1, self.dataSource.numberOfSectionsInTableView(tableView))
-    XCTAssertEqual(0, self.dataSource.tableView(tableView, numberOfRowsInSection: section))
-  }
 }

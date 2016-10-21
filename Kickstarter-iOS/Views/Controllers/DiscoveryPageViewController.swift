@@ -7,6 +7,8 @@ internal final class DiscoveryPageViewController: UITableViewController {
   private let viewModel: DiscoveryPageViewModelType = DiscoveryPageViewModel()
   private let dataSource = DiscoveryProjectsDataSource()
 
+  private weak var emptyStatesController: EmptyStatesViewController?
+
   internal static func configuredWith(sort sort: DiscoveryParams.Sort) -> DiscoveryPageViewController {
     let vc = Storyboard.DiscoveryPage.instantiate(DiscoveryPageViewController)
     vc.viewModel.inputs.configureWith(sort: sort)
@@ -48,6 +50,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
       |> baseTableControllerStyle(estimatedRowHeight: 200.0)
   }
 
+  // swiftlint:disable function_body_length
   internal override func bindViewModel() {
     super.bindViewModel()
 
@@ -93,7 +96,24 @@ internal final class DiscoveryPageViewController: UITableViewController {
       .observeNext { [weak self] in
         self?.tableView ?|> UIScrollView.lens.scrollsToTop .~ $0
     }
+
+    self.viewModel.outputs.showEmptyState
+      .observeForControllerAction()
+      .observeNext { [weak self] emptyState in
+        self?.showEmptyState(emptyState)
+    }
+
+    self.viewModel.outputs.dismissEmptyState
+      .observeForControllerAction()
+      .observeNext { [weak self] in
+        self?.emptyStatesController?.dismissViewControllerAnimated(false, completion: nil)
+
+        if let discovery = self?.parentViewController?.parentViewController as? DiscoveryViewController {
+          discovery.setSortsEnabled(true)
+        }
+    }
   }
+  // swiftlint:enable function_body_length
 
   internal override func tableView(tableView: UITableView,
                                    willDisplayCell cell: UITableViewCell,
@@ -133,6 +153,22 @@ internal final class DiscoveryPageViewController: UITableViewController {
     let vc = UpdateViewController.configuredWith(project: project, update: update)
     self.navigationController?.pushViewController(vc, animated: true)
   }
+
+  private func showEmptyState(emptyState: EmptyState) {
+    guard emptyStatesController == nil else { return }
+
+    let vc = EmptyStatesViewController.configuredWith(emptyState: emptyState)
+    self.emptyStatesController = vc
+    vc.delegate = self
+    self.definesPresentationContext = true
+    vc.modalTransitionStyle = .CrossDissolve
+    vc.modalPresentationStyle = .OverCurrentContext
+    self.presentViewController(vc, animated: true, completion: nil)
+
+    if let discovery = self.parentViewController?.parentViewController as? DiscoveryViewController {
+      discovery.setSortsEnabled(false)
+    }
+  }
 }
 
 extension DiscoveryPageViewController: ActivitySampleBackingCellDelegate, ActivitySampleFollowCellDelegate,
@@ -148,5 +184,21 @@ extension DiscoveryPageViewController: DiscoveryOnboardingCellDelegate {
     let loginTout = LoginToutViewController.configuredWith(loginIntent: .discoveryOnboarding)
     let nav = UINavigationController(rootViewController: loginTout)
     self.presentViewController(nav, animated: true, completion: nil)
+  }
+}
+
+extension DiscoveryPageViewController: EmptyStatesViewControllerDelegate {
+  func emptyStatesViewController(viewController: EmptyStatesViewController,
+                                 goToDiscoveryWithParams params: DiscoveryParams?) {
+    viewController.dismissViewControllerAnimated(false, completion: nil)
+
+    self.view.window?.rootViewController
+      .flatMap { $0 as? RootTabBarViewController }
+      .doIfSome { $0.switchToDiscovery(params: params) }
+  }
+
+  func emptyStatesViewControllerGoToFriends() {
+    let vc = FindFriendsViewController.configuredWith(source: .discovery)
+    self.navigationController?.pushViewController(vc, animated: true)
   }
 }

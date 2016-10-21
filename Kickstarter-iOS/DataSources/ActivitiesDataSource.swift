@@ -9,13 +9,6 @@ internal final class ActivitiesDataSource: ValueCellDataSource {
     case facebookConnect
     case findFriends
     case activities
-    case emptyState
-  }
-
-  internal func emptyState(visible visible: Bool) {
-    self.set(values: visible ? [()] : [],
-             cellClass: ActivityEmptyStateCell.self,
-             inSection: Section.emptyState.rawValue)
   }
 
   internal func facebookConnect(source source: FriendsSource, visible: Bool) {
@@ -107,8 +100,6 @@ internal final class ActivitiesDataSource: ValueCellDataSource {
     case let (cell as ActivityNegativeStateChangeCell, value as Activity):
       cell.configureWith(value: value)
     case let (cell as ActivityLaunchCell, value as Activity):
-      cell.configureWith(value: value)
-    case let (cell as ActivityEmptyStateCell, value as Void):
       cell.configureWith(value: value)
     case let (cell as FindFriendsFacebookConnectCell, value as FriendsSource):
       cell.configureWith(value: value)

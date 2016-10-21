@@ -15,6 +15,9 @@ public protocol DiscoveryViewModelInputs {
   /// Call when the SortPagerViewController wants to switch to a specific sort.
   func sortPagerSelected(sort sort: DiscoveryParams.Sort)
 
+  /// Call to disable/enable the sorts when an empty state is displayed/dismissed.
+  func setSortsEnabled(enabled: Bool)
+
   /// Call from the controller's viewDidLoad.
   func viewDidLoad()
 
@@ -44,6 +47,9 @@ public protocol DiscoveryViewModelOutputs {
   /// Emits a sort that should be passed on to the sort pager view controller.
   var selectSortPage: Signal<DiscoveryParams.Sort, NoError> { get }
 
+  /// Emits to disable/enable the sorts when an empty state is displayed/dismissed.
+  var sortsAreEnabled: Signal<Bool, NoError> { get }
+
   /// Emits a category id to update the sort pager view controller style.
   var updateSortPagerStyle: Signal<Int?, NoError> { get }
 }
@@ -72,6 +78,7 @@ DiscoveryViewModelOutputs {
       .skipRepeats()
 
     self.configureNavigationHeader = currentParams
+
     self.loadFilterIntoDataSource = currentParams
 
     let swipeToSort = self.willTransitionToPageProperty.signal
@@ -103,6 +110,8 @@ DiscoveryViewModelOutputs {
       .map { $0.category?.root?.id }
       .skipRepeats(==)
 
+    self.sortsAreEnabled = self.setSortsEnabledProperty.signal.ignoreNil()
+
     self.sortPagerSelectedSortProperty.signal.ignoreNil()
       .skipRepeats(==)
       .observeNext { AppEnvironment.current.koala.trackDiscoverySelectedSort(nextSort: $0, gesture: .tap) }
@@ -128,6 +137,10 @@ DiscoveryViewModelOutputs {
   public func sortPagerSelected(sort sort: DiscoveryParams.Sort) {
     self.sortPagerSelectedSortProperty.value = sort
   }
+  private let setSortsEnabledProperty = MutableProperty<Bool?>(nil)
+  public func setSortsEnabled(enabled: Bool) {
+    self.setSortsEnabledProperty.value = enabled
+  }
   private let willTransitionToPageProperty = MutableProperty<Int>(0)
   public func willTransition(toPage nextPage: Int) {
     self.willTransitionToPageProperty.value = nextPage
@@ -147,6 +160,7 @@ DiscoveryViewModelOutputs {
   public let loadFilterIntoDataSource: Signal<DiscoveryParams, NoError>
   public let navigateToSort: Signal<(DiscoveryParams.Sort, UIPageViewControllerNavigationDirection), NoError>
   public let selectSortPage: Signal<DiscoveryParams.Sort, NoError>
+  public let sortsAreEnabled: Signal<Bool, NoError>
   public let updateSortPagerStyle: Signal<Int?, NoError>
 
   public var inputs: DiscoveryViewModelInputs { return self }

@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		0123B4E31D919BC4004C1166 /* DiscoveryFiltersViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0123B4AC1D919BBA004C1166 /* DiscoveryFiltersViewControllerTests.swift */; };
+		013744AE1D95AC2300E50C78 /* EmptyStatesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013744AC1D95AC1400E50C78 /* EmptyStatesViewController.swift */; };
+		013744C11D999BE200E50C78 /* EmptyStates.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 013744C01D999BE200E50C78 /* EmptyStates.storyboard */; };
+		013744F81D99A39B00E50C78 /* EmptyStatesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013744F71D99A39B00E50C78 /* EmptyStatesViewModel.swift */; };
+		013744F91D99A3AE00E50C78 /* EmptyStatesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013744F71D99A39B00E50C78 /* EmptyStatesViewModel.swift */; };
+		013744FB1D99FE6A00E50C78 /* EmptyStatesViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013744FA1D99FE6A00E50C78 /* EmptyStatesViewControllerTests.swift */; };
 		013F2FDC1D66243E0066DB77 /* DiscoveryNavigationHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013F2FDB1D66243E0066DB77 /* DiscoveryNavigationHeaderViewModel.swift */; };
 		0146E3231CC0296900082C5B /* FacebookConfirmationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0146E3211CC0296900082C5B /* FacebookConfirmationViewController.swift */; };
 		0148EF911CDD2879000DEFF8 /* ThanksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0148EF8F1CDD2879000DEFF8 /* ThanksViewController.swift */; };
@@ -44,6 +49,7 @@
 		0170E7701D25C55200E2CCE4 /* ProjectActivityCommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D2546F71D23101E0053844D /* ProjectActivityCommentCell.swift */; };
 		017508161D67A4E300BB1863 /* DiscoveryNavigationHeaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 017508151D67A4E300BB1863 /* DiscoveryNavigationHeaderViewController.swift */; };
 		017508781D68C9E900BB1863 /* DiscoveryNavigationHeaderViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 017508771D68C9E900BB1863 /* DiscoveryNavigationHeaderViewModelTests.swift */; };
+		0176984F1DB9796800EE58BA /* EmptyStatesViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0176984E1DB9796800EE58BA /* EmptyStatesViewModelTests.swift */; };
 		0176E13B1C9742FD009CA092 /* UIBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0176E13A1C9742FD009CA092 /* UIBarButtonItem.swift */; };
 		017E88B31CD29C9D003FE5D6 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01D31A371CCA786A0037A178 /* FBSDKLoginKit.framework */; };
 		017E88B41CD29CA1003FE5D6 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01D31A361CCA786A0037A178 /* FBSDKCoreKit.framework */; };
@@ -340,7 +346,6 @@
 		A71F59E91D2424CA00909BE3 /* CacheProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71F59E71D2424CA00909BE3 /* CacheProtocol.swift */; };
 		A7208C3E1CCAC86800E3DAB3 /* FacebookAppDelegateProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7208C3D1CCAC86800E3DAB3 /* FacebookAppDelegateProtocol.swift */; };
 		A7208C3F1CCAC86800E3DAB3 /* FacebookAppDelegateProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7208C3D1CCAC86800E3DAB3 /* FacebookAppDelegateProtocol.swift */; };
-		A7208C961CCBD76300E3DAB3 /* ActivityEmptyStateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7208C941CCBD76300E3DAB3 /* ActivityEmptyStateCell.swift */; };
 		A7208CC41CCBDA7900E3DAB3 /* ActivitiesDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7208CC31CCBDA7900E3DAB3 /* ActivitiesDataSourceTests.swift */; };
 		A721DF621C8CF503000CB97C /* TrackingClientType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A721DF611C8CF503000CB97C /* TrackingClientType.swift */; };
 		A721DF631C8CF503000CB97C /* TrackingClientType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A721DF611C8CF503000CB97C /* TrackingClientType.swift */; };
@@ -1520,6 +1525,10 @@
 
 /* Begin PBXFileReference section */
 		0123B4AC1D919BBA004C1166 /* DiscoveryFiltersViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryFiltersViewControllerTests.swift; sourceTree = "<group>"; };
+		013744AC1D95AC1400E50C78 /* EmptyStatesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmptyStatesViewController.swift; sourceTree = "<group>"; };
+		013744C01D999BE200E50C78 /* EmptyStates.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = EmptyStates.storyboard; sourceTree = "<group>"; };
+		013744F71D99A39B00E50C78 /* EmptyStatesViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmptyStatesViewModel.swift; sourceTree = "<group>"; };
+		013744FA1D99FE6A00E50C78 /* EmptyStatesViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmptyStatesViewControllerTests.swift; sourceTree = "<group>"; };
 		013F2FDB1D66243E0066DB77 /* DiscoveryNavigationHeaderViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryNavigationHeaderViewModel.swift; sourceTree = "<group>"; };
 		0146E3211CC0296900082C5B /* FacebookConfirmationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookConfirmationViewController.swift; sourceTree = "<group>"; };
 		0148EF8F1CDD2879000DEFF8 /* ThanksViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThanksViewController.swift; sourceTree = "<group>"; };
@@ -1547,6 +1556,7 @@
 		0169F9871D6F51C400C8D5C5 /* DiscoveryFiltersViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryFiltersViewModel.swift; sourceTree = "<group>"; };
 		017508151D67A4E300BB1863 /* DiscoveryNavigationHeaderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryNavigationHeaderViewController.swift; sourceTree = "<group>"; };
 		017508771D68C9E900BB1863 /* DiscoveryNavigationHeaderViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryNavigationHeaderViewModelTests.swift; sourceTree = "<group>"; };
+		0176984E1DB9796800EE58BA /* EmptyStatesViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmptyStatesViewModelTests.swift; sourceTree = "<group>"; };
 		0176E13A1C9742FD009CA092 /* UIBarButtonItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIBarButtonItem.swift; sourceTree = "<group>"; };
 		017E88B91CD2A609003FE5D6 /* UIActivityViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIActivityViewController.swift; sourceTree = "<group>"; };
 		018421F21D2C0DB700CA7566 /* DashboardDataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardDataSourceTests.swift; sourceTree = "<group>"; };
@@ -1729,7 +1739,6 @@
 		A71F59E41D240CAF00909BE3 /* NavigationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationTests.swift; sourceTree = "<group>"; };
 		A71F59E71D2424CA00909BE3 /* CacheProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CacheProtocol.swift; sourceTree = "<group>"; };
 		A7208C3D1CCAC86800E3DAB3 /* FacebookAppDelegateProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookAppDelegateProtocol.swift; sourceTree = "<group>"; };
-		A7208C941CCBD76300E3DAB3 /* ActivityEmptyStateCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityEmptyStateCell.swift; sourceTree = "<group>"; };
 		A7208CC31CCBDA7900E3DAB3 /* ActivitiesDataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivitiesDataSourceTests.swift; sourceTree = "<group>"; };
 		A721DF611C8CF503000CB97C /* TrackingClientType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackingClientType.swift; sourceTree = "<group>"; };
 		A721DF641C8CF5A3000CB97C /* KoalaTrackingClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = KoalaTrackingClient.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -2338,6 +2347,7 @@
 			children = (
 				A7EDEE7A1D83635400780B34 /* CommentsViewControllerTests.swift */,
 				0123B4AC1D919BBA004C1166 /* DiscoveryFiltersViewControllerTests.swift */,
+				013744FA1D99FE6A00E50C78 /* EmptyStatesViewControllerTests.swift */,
 				01F42A511D9332F60084719D /* DiscoveryNavigationHeaderViewControllerTests.swift */,
 				A73778D51D81ABE2004C2A9B /* FundingGraphViewTests.swift */,
 				9D3A6B4B1D8C4F3800FE3926 /* ProjectActivityViewControllerTests.swift */,
@@ -2371,6 +2381,7 @@
 				A75798C21D6A24CD0063CEEC /* DebugPushNotifications.storyboard */,
 				A73923AF1D272242004524C3 /* Discovery.storyboard */,
 				59AE35AF1D67631B00A310E6 /* DiscoveryPage.storyboard */,
+				013744C01D999BE200E50C78 /* EmptyStates.storyboard */,
 				A73923B01D272242004524C3 /* Friends.storyboard */,
 				01940B2D1D46A9AD0074FCE3 /* Help.storyboard */,
 				A73923B11D272242004524C3 /* LaunchScreen.storyboard */,
@@ -2379,6 +2390,7 @@
 				A73923B41D272242004524C3 /* Messages.storyboard */,
 				A73923B51D272242004524C3 /* Profile.storyboard */,
 				A73923B71D272242004524C3 /* ProjectActivity.storyboard */,
+				A78838731D8A2EFF0081E94D /* ProjectPamphlet.storyboard */,
 				A78852381D6CC5DE00617930 /* RewardPledge.storyboard */,
 				A73923B81D272242004524C3 /* Search.storyboard */,
 				A73923B91D272242004524C3 /* Settings.storyboard */,
@@ -2387,7 +2399,6 @@
 				A73923BB1D272242004524C3 /* UpdateDraft.storyboard */,
 				59673C8A1D50EC920035AFD9 /* Video.storyboard */,
 				9D89B7E71D6BA71F0021F6FF /* WebModal.storyboard */,
-				A78838731D8A2EFF0081E94D /* ProjectPamphlet.storyboard */,
 			);
 			path = Storyboards;
 			sourceTree = "<group>";
@@ -2452,7 +2463,6 @@
 		A751A51C1C85EAD8009C5DEA /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				A7208C941CCBD76300E3DAB3 /* ActivityEmptyStateCell.swift */,
 				A75AB2241C8B407F002FC3E6 /* ActivityFriendBackingCell.swift */,
 				A762EFF11C8CC663005581A4 /* ActivityFriendFollowCell.swift */,
 				A715ACEF1CE7F3D300605F02 /* ActivityLaunchCell.swift */,
@@ -2529,6 +2539,7 @@
 				017508151D67A4E300BB1863 /* DiscoveryNavigationHeaderViewController.swift */,
 				A72C3AA81D00F96C0075227E /* DiscoveryPageViewController.swift */,
 				A751A51E1C85EC0B009C5DEA /* DiscoveryViewController.swift */,
+				013744AC1D95AC1400E50C78 /* EmptyStatesViewController.swift */,
 				0146E3211CC0296900082C5B /* FacebookConfirmationViewController.swift */,
 				A7CC14341D00E73D00035C52 /* FindFriendsViewController.swift */,
 				01940B271D467EC60074FCE3 /* HelpWebViewController.swift */,
@@ -2703,6 +2714,7 @@
 				A72C3A9A1D00F6E60075227E /* DiscoveryPageViewModelTests.swift */,
 				596109FE1D6B8AA100C8206A /* DiscoveryPostcardViewModelTests.swift */,
 				A7830CE31D005C3F00B5B6AE /* DiscoveryViewModelTests.swift */,
+				0176984E1DB9796800EE58BA /* EmptyStatesViewModelTests.swift */,
 				A7830CE41D005C3F00B5B6AE /* FacebookConfirmationViewModelTests.swift */,
 				A7CC14251D00E70900035C52 /* FindFriendsFaceookConnectCellViewModelTests.swift */,
 				A7CC14261D00E70900035C52 /* FindFriendsFriendFollowCellViewModelTests.swift */,
@@ -3282,6 +3294,7 @@
 				A72C3A911D00F6C70075227E /* DiscoveryPageViewModel.swift */,
 				595F82631D679346008B8C56 /* DiscoveryPostcardViewModel.swift */,
 				A7F441981D005A9400FE6FC5 /* DiscoveryViewModel.swift */,
+				013744F71D99A39B00E50C78 /* EmptyStatesViewModel.swift */,
 				A7F441991D005A9400FE6FC5 /* FacebookConfirmationViewModel.swift */,
 				A7CC13CE1D00E6CF00035C52 /* FindFriendsFacebookConnectCellViewModel.swift */,
 				A7CC13CF1D00E6CF00035C52 /* FindFriendsFriendFollowCellViewModel.swift */,
@@ -4171,6 +4184,7 @@
 				A73923C51D272242004524C3 /* Messages.storyboard in Resources */,
 				01AFE30E1D5A97FB0094C263 /* Main.storyboard in Resources */,
 				A757EA6C1D19F93400A5C978 /* 1Password.xcassets in Resources */,
+				013744C11D999BE200E50C78 /* EmptyStates.storyboard in Resources */,
 				9D89B7E81D6BA71F0021F6FF /* WebModal.storyboard in Resources */,
 				A7D120D71D15A7B400F364FD /* Assets.xcassets in Resources */,
 				80EAEF051D243C4E008C2353 /* Backing.storyboard in Resources */,
@@ -4263,6 +4277,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				013744F81D99A39B00E50C78 /* EmptyStatesViewModel.swift in Sources */,
 				0156B3751D0F7524000C4252 /* ActivityFriendFollowCellViewModel.swift in Sources */,
 				013F2FDC1D66243E0066DB77 /* DiscoveryNavigationHeaderViewModel.swift in Sources */,
 				A79BF81F1D11F6AF004C0445 /* Strings.swift in Sources */,
@@ -4456,6 +4471,7 @@
 				A75511971C8645A0005355CF /* LanguageTests.swift in Sources */,
 				A761275E1C93052400EDCCB9 /* CGColorRef.swift in Sources */,
 				A755119C1C8645A0005355CF /* UILabel+IBClearTests.swift in Sources */,
+				0176984F1DB9796800EE58BA /* EmptyStatesViewModelTests.swift in Sources */,
 				A7830CFE1D005C3F00B5B6AE /* CommentCellViewModelTests.swift in Sources */,
 				5981BE681D7F86C8002E49F1 /* CommentsEmptyStateCellViewModelTests.swift in Sources */,
 				59392C211D70A117001C99A4 /* ProjectUpdatesViewModelTests.swift in Sources */,
@@ -4695,6 +4711,7 @@
 				A757EB2C1D1AD89E00A5C978 /* DiscoveryStyles.swift in Sources */,
 				A7F441B21D005A9400FE6FC5 /* ActivityFriendFollowCellViewModel.swift in Sources */,
 				A709697F1D143D1300DB39D3 /* AlertError.swift in Sources */,
+				013744F91D99A3AE00E50C78 /* EmptyStatesViewModel.swift in Sources */,
 				A7CA8C0F1D8F241A0086A3E9 /* ProjectNavBarViewModel.swift in Sources */,
 				A707BAD91CFFAB9400653B2F /* LoginIntent.swift in Sources */,
 				01A7A4C11C9690220036E553 /* UITextField+LocalizedPlaceholderKey.swift in Sources */,
@@ -4863,7 +4880,6 @@
 				014A8DEB1CE3C350003BF51C /* ThanksProjectsDataSource.swift in Sources */,
 				A74FFDF01CE3E33300C7BCB9 /* MessageDialogViewController.swift in Sources */,
 				9D525F101D4158BA003CAE04 /* ProjectActivityDateCell.swift in Sources */,
-				A7208C961CCBD76300E3DAB3 /* ActivityEmptyStateCell.swift in Sources */,
 				5981BE431D7F59DE002E49F1 /* CommentsEmptyStateCell.swift in Sources */,
 				A747A7DF1D454E8500AF199A /* ProjectPamphletContentViewController.swift in Sources */,
 				A762EFF31C8CC663005581A4 /* ActivityFriendFollowCell.swift in Sources */,
@@ -4909,6 +4925,7 @@
 				A7CC14401D00E74F00035C52 /* FindFriendsHeaderCell.swift in Sources */,
 				A7A051E61CD12D9A005AF5E2 /* CommentsDataSource.swift in Sources */,
 				A71003DA1CDCFA2500B4F4D7 /* MessageThreadsViewController.swift in Sources */,
+				013744AE1D95AC2300E50C78 /* EmptyStatesViewController.swift in Sources */,
 				A72C3AB71D00FB1F0075227E /* DiscoveryExpandedSelectableRow.swift in Sources */,
 				80EAEF071D243FC7008C2353 /* BackingViewController.swift in Sources */,
 				A7B1EBB31D90496A00BEE8B3 /* NoRewardCell.swift in Sources */,
@@ -5077,6 +5094,7 @@
 				A7CA8C471D8F2F870086A3E9 /* ProjectNavBarViewControllerTests.swift in Sources */,
 				A7DC83921C9DB9BC00BB2B44 /* (null) in Sources */,
 				9D525F121D417FD7003CAE04 /* ProjectActivitiesDataSourceTests.swift in Sources */,
+				013744FB1D99FE6A00E50C78 /* EmptyStatesViewControllerTests.swift in Sources */,
 				A7E3A0B91D96CDFD00F83738 /* ProjectPamphletContentViewControllerTests.swift in Sources */,
 				A73778DD1D81DC69004C2A9B /* TraitController.swift in Sources */,
 			);

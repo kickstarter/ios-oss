@@ -20,7 +20,9 @@
 "Ask_me_anything" = "Frage stellen";
 "Back_this_project_below" = "Back this project below";
 "Backed_by_Friends" = "Von Freunden unterstützt";
+"Backed_by_people_you_follow" = "Backed by people you follow";
 "Backed_projects_projects_count" = "Backed projects %{project_count}";
+"Bring_new_ideas_to_life" = "Bring new ideas to life.";
 "Cancel_your_pledge" = "Deinen Beitrag zurückziehen";
 "Change_payment_method" = "Zahlungsmethode ändern";
 "Closes_filters" = "Filter schließen.";
@@ -50,8 +52,10 @@
 "Find_Facebook_Friends" = "Finde Freunde auf Facebook";
 "Find_and_follow_friends" = "Freunde finden und folgen";
 "Find_projects_youll_love_and_help_bring" = "Finde Projekte, die zu dir passen und hilf mit bei der Umsetzung neuer, kreativer Ideen.";
+"Find_projects_youll_love_in_art_design_film" = "Find projects you’ll love in art, design, film, games, music, and more. Once you back a project, you’ll see all your activity here.";
 "First_created" = "Erstes Projekt";
 "Follow_friends" = "Freunden folgen";
+"Follow_more_friends" = "Follow more friends";
 "Follow_your_Facebook_friends_and_get_notified" = "Folge deinen Freunden und wir werden dich benachrichtigen, sobald sie ein Projekt unterstützen oder veröffentlichen.";
 "Follow_your_Facebook_friends_and_keep_up_with_the_projects" = "Folge deinen Facebook-Freunden - wir halten dich auf dem Laufenden, wenn sie ein Projekt unterstützen oder veröffentlichen.";
 "Following" = "Abonniert";
@@ -72,6 +76,7 @@
 "Manage_your_reward" = "Belohnung verwalten";
 "Message_backer" = "Message backer";
 "Message_creator" = "Message creator";
+"No_pledges_from_friends_yet" = "No pledges \nfrom friends yet.";
 "Once_you_back_a_project_well_share" = "Wenn du ein Projekt unterstützt, werden wir dir hier maßgeschneiderte Empfehlungen machen.";
 "Opens_comments" = "Öffnet Kommentare.";
 "Opens_email_composer" = "Öffnet E-Mail-Vorlage.";
@@ -111,7 +116,7 @@
 "Ships_to" = "Versand an:";
 "Shows_list_of_subcategories" = "Unterkategorien anzeigen.";
 "Signs_up_with_Email" = "Mit E-Mail-Adresse registrieren.";
-"Something_caught_your_eye" = "Du hast ein Auge auf ein Projekt geworfen?";
+"Something_catch_your_eye" = "Something \ncatch your eye?";
 "Stars_projects" = "Markiert Projekt als Favoriten.";
 "Survey" = "Befragung";
 "Tap_the_star_on_each_project_page_to_save_it" = "Klicke einfach auf den Stern, um es zu markieren. Wir werden dir 48 Stunden vor Ablauf des Projekts eine Benachrichtigung schicken.";
@@ -125,6 +130,7 @@
 "View_your_pledge" = "Deinen Finanzierungsbeitrag ansehen";
 "View_your_reward" = "Belohnung ansehen";
 "You_backed_this_project" = "Du hast dieses Projekt unterstützt.";
+"Your_friends_havent_backed_any_projects_yet" = "Your friends haven’t backed any projects yet, but once they do, you’ll see them listed here.";
 "Your_pledge" = "Dein Beitrag";
 "Your_pledge_amount" = "Dein Beitrag:";
 "Your_reward" = "Deine Belohnung";

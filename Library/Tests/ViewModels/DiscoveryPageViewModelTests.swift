@@ -11,28 +11,30 @@ internal final class DiscoveryPageViewModelTests: TestCase {
   private let vm: DiscoveryPageViewModelType = DiscoveryPageViewModel()
 
   private let activitiesForSample = TestObserver<[Activity], NoError>()
-  private let asyncReloadData = TestObserver<Void, NoError>()
-  private let focusScreenReaderOnFirstProject = TestObserver<(), NoError>()
+  private let asyncReloadData = TestObserver<(), NoError>()
+  private let dismissEmptyState = TestObserver<(), NoError>()
   private let goToProject = TestObserver<Project, NoError>()
   private let goToRefTag = TestObserver<RefTag, NoError>()
   private let goToProjectUpdate = TestObserver<Update, NoError>()
   private let hasAddedProjects = TestObserver<Bool, NoError>()
   private let hasRemovedProjects = TestObserver<Bool, NoError>()
   private let projectsAreLoading = TestObserver<Bool, NoError>()
-  private let showOnboarding = TestObserver<Bool, NoError>()
   private let setScrollsToTop = TestObserver<Bool, NoError>()
+  private let showEmptyState = TestObserver<EmptyState, NoError>()
+  private let showOnboarding = TestObserver<Bool, NoError>()
 
   internal override func setUp() {
     super.setUp()
 
     self.vm.outputs.activitiesForSample.observe(self.activitiesForSample.observer)
     self.vm.outputs.asyncReloadData.observe(self.asyncReloadData.observer)
-    self.vm.outputs.focusScreenReaderOnFirstProject.observe(self.focusScreenReaderOnFirstProject.observer)
+    self.vm.outputs.dismissEmptyState.observe(self.dismissEmptyState.observer)
     self.vm.outputs.goToProject.map { $0.0 }.observe(self.goToProject.observer)
     self.vm.outputs.goToProject.map { $0.1 }.observe(self.goToRefTag.observer)
     self.vm.outputs.goToProjectUpdate.map { $0.1 }.observe(self.goToProjectUpdate.observer)
-    self.vm.outputs.showOnboarding.observe(self.showOnboarding.observer)
     self.vm.outputs.setScrollsToTop.observe(self.setScrollsToTop.observer)
+    self.vm.outputs.showEmptyState.observe(self.showEmptyState.observer)
+    self.vm.outputs.showOnboarding.observe(self.showOnboarding.observer)
 
     self.vm.outputs.projects
       .map { $0.count }
@@ -396,6 +398,9 @@ internal final class DiscoveryPageViewModelTests: TestCase {
   }
 
   func testRefreshProjectsForCurrentUser() {
+    let projectEnv = .template
+      |> DiscoveryEnvelope.lens.projects .~ (1...7).map { .template |> Project.lens.id .~ $0 }
+
     self.vm.inputs.configureWith(sort: .magic)
     self.vm.inputs.viewWillAppear()
     self.vm.inputs.viewDidAppear()
@@ -405,14 +410,18 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
     self.hasAddedProjects.assertValues([true], "Projects added for logged out user.")
 
-    AppEnvironment.login(AccessTokenEnvelope(accessToken: "cafebeef", user: User.template))
-    self.vm.inputs.viewWillAppear()
-    self.vm.inputs.viewDidAppear()
-    self.hasAddedProjects.assertValues([true, false], "Previous projects cleared.")
+    self.vm.inputs.viewDidDisappear(animated: false)
 
-    self.scheduler.advance()
+    withEnvironment(apiService: MockService(fetchDiscoveryResponse: projectEnv)) {
+      AppEnvironment.login(AccessTokenEnvelope(accessToken: "cafebeef", user: User.template))
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.viewDidAppear()
+      self.hasAddedProjects.assertValues([true], "Previous projects not cleared.")
 
-    self.hasAddedProjects.assertValues([true, false, true], "New projects added for logged in user.")
+      self.scheduler.advance()
+
+      self.hasAddedProjects.assertValues([true, true], "New projects added for logged in user.")
+    }
   }
 
   func testShowOnboarding_LoggedOutOnMagic() {
@@ -444,30 +453,6 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     }
   }
 
-  func testFocusScreenReaderOnFirstProject() {
-    self.vm.inputs.configureWith(sort: .magic)
-    self.vm.inputs.viewWillAppear()
-    self.vm.inputs.viewDidAppear()
-    self.vm.inputs.selectedFilter(.defaults)
-
-    self.focusScreenReaderOnFirstProject.assertValueCount(0)
-
-    self.scheduler.advance()
-
-    self.focusScreenReaderOnFirstProject.assertValueCount(1)
-
-    self.vm.inputs.viewDidDisappear(animated: true)
-    self.vm.inputs.viewWillAppear()
-    self.vm.inputs.viewDidAppear()
-
-    self.focusScreenReaderOnFirstProject.assertValueCount(2)
-
-    self.vm.inputs.willDisplayRow(9, outOf: 10)
-    self.scheduler.advance()
-
-    self.focusScreenReaderOnFirstProject.assertValueCount(2)
-  }
-
   func testScrollsToTop() {
     self.vm.inputs.configureWith(sort: .magic)
 
@@ -480,5 +465,110 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     self.vm.inputs.viewDidDisappear(animated: true)
 
     self.setScrollsToTop.assertValues([true, false])
+  }
+
+  func testEmptyStates() {
+    let projectEnv = .template
+      |> DiscoveryEnvelope.lens.projects .~ [Project]()
+
+    let projectEnvWithProjects = .template
+      |> DiscoveryEnvelope.lens.projects .~ (1...4).map { .template |> Project.lens.id .~ $0 }
+
+    self.vm.inputs.configureWith(sort: .magic)
+    self.vm.inputs.viewDidAppear()
+    self.scheduler.advance()
+
+    withEnvironment(apiService: MockService(fetchDiscoveryResponse: projectEnv)) {
+      self.vm.inputs.selectedFilter(.defaults |> DiscoveryParams.lens.starred .~ true)
+
+      self.showEmptyState.assertValueCount(0)
+
+      self.scheduler.advance()
+
+      self.showEmptyState.assertValues([.starred])
+      self.dismissEmptyState.assertValueCount(0)
+
+      // switch to another empty state
+      self.vm.inputs.selectedFilter(.defaults |> DiscoveryParams.lens.recommended .~ true)
+
+      self.dismissEmptyState.assertValueCount(1)
+
+      self.scheduler.advance()
+
+      self.showEmptyState.assertValues([.starred, .recommended])
+
+      // switch to non-empty state
+      withEnvironment(apiService: MockService(fetchDiscoveryResponse: projectEnvWithProjects)) {
+        self.vm.inputs.selectedFilter(.defaults |> DiscoveryParams.lens.social .~ true)
+
+        self.dismissEmptyState.assertValueCount(2)
+
+        self.scheduler.advance()
+
+        self.showEmptyState.assertValues([.starred, .recommended], "Show empty state does not emit.")
+
+        // switch back to empty state
+        withEnvironment(apiService: MockService(fetchDiscoveryResponse: projectEnv)) {
+          self.vm.inputs.selectedFilter(.defaults |> DiscoveryParams.lens.starred .~ true)
+
+          self.dismissEmptyState.assertValueCount(3)
+
+          self.scheduler.advance()
+
+          self.showEmptyState.assertValues([.starred, .recommended, .starred])
+        }
+      }
+    }
+  }
+
+  func testEmptyStates_Social() {
+    let projectEnv = .template
+      |> DiscoveryEnvelope.lens.projects .~ [Project]()
+
+    let antisocialUser = .template |> User.lens.social .~ false
+    let socialUser = .template |> User.lens.social .~ true
+
+    self.vm.inputs.configureWith(sort: .magic)
+    self.vm.inputs.viewDidAppear()
+    self.scheduler.advance()
+
+    withEnvironment(apiService: MockService(fetchDiscoveryResponse: projectEnv)) {
+      AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: User.template))
+
+      self.vm.inputs.selectedFilter(.defaults |> DiscoveryParams.lens.social .~ true)
+
+      self.showEmptyState.assertValueCount(0)
+
+      self.scheduler.advance()
+
+      self.showEmptyState.assertValues([.socialDisabled], "Emits .socialDisabled for nil social.")
+      self.dismissEmptyState.assertValueCount(0)
+
+      withEnvironment(currentUser: antisocialUser) {
+        self.vm.inputs.selectedFilter(.defaults |> DiscoveryParams.lens.recommended .~ true)
+        self.scheduler.advance()
+
+        self.dismissEmptyState.assertValueCount(1)
+
+        self.vm.inputs.selectedFilter(.defaults |> DiscoveryParams.lens.social .~ true)
+        self.scheduler.advance()
+
+        self.showEmptyState.assertValues([.socialDisabled, .recommended, .socialDisabled],
+                                         "Emits .socialDisabled for false social.")
+        self.dismissEmptyState.assertValueCount(2)
+
+        self.vm.inputs.viewDidDisappear(animated: true)
+
+        // User enables social on the pushed Friends screen, then navigates back.
+        withEnvironment(currentUser: socialUser) {
+          self.vm.inputs.viewDidAppear()
+          self.scheduler.advance()
+
+          self.showEmptyState.assertValues([.socialDisabled, .recommended, .socialDisabled, .socialNoPledges],
+                                           "Emits .socialNoPledges for true social.")
+          self.dismissEmptyState.assertValueCount(2)
+        }
+      }
+    }
   }
 }

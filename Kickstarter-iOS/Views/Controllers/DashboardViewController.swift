@@ -42,7 +42,9 @@ internal final class DashboardViewController: UITableViewController {
 
   override func bindStyles() {
     self |> baseTableControllerStyle(estimatedRowHeight: 200.0)
-    self.navigationController?.navigationBar ?|> UINavigationBar.lens.translucent .~ false
+
+    self.navigationController?.navigationBar
+      ?|> baseNavigationBarStyle
   }
 
   // swiftlint:disable function_body_length

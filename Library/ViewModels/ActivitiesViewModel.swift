@@ -23,9 +23,6 @@ public protocol ActitiviesViewModelInputs {
   /// Call when an alert should be shown.
   func findFriendsFacebookConnectCellShowErrorAlert(alert: AlertError)
 
-  /// Call when the login button is pressed in the logged-out empty state.
-  func loginButtonPressed()
-
   /// Call when the feed should be refreshed, e.g. pull-to-refresh.
   func refresh()
 
@@ -44,8 +41,11 @@ public protocol ActitiviesViewModelInputs {
   /// Call when a user session has started.
   func userSessionStarted()
 
-  /// Call when the view appears.
-  func viewWillAppear()
+  /// Call when the view did load.
+  func viewDidLoad()
+
+  /// Call when the view will appear with animated property.
+  func viewWillAppear(animated animated: Bool)
 
   /**
    Call from the controller's `tableView:willDisplayCell:forRowAtIndexPath` method.
@@ -66,6 +66,9 @@ public protocol ActivitiesViewModelOutputs {
   /// Emits when should remove Find Friends section.
   var deleteFindFriendsSection: Signal<(), NoError> { get }
 
+  /// Emits when we should dismiss the empty state controller.
+  var dismissEmptyState: Signal<(), NoError> { get }
+
   /// Emits when should transition to Friends view with source (.Activity).
   var goToFriends: Signal<FriendsSource, NoError> { get }
 
@@ -81,6 +84,9 @@ public protocol ActivitiesViewModelOutputs {
   /// Emits a boolean that indicates if the activities are refreshing.
   var isRefreshing: Signal<Bool, NoError> { get }
 
+  /// Emits `true` when logged-in, `false` when logged-out, when we should show the empty state controller.
+  var showEmptyStateIsLoggedIn: Signal<Bool, NoError> { get }
+
   /// Emits an AlertError to be displayed.
   var showFacebookConnectErrorAlert: Signal<AlertError, NoError> { get }
 
@@ -89,12 +95,6 @@ public protocol ActivitiesViewModelOutputs {
 
   /// Emits whether Find Friends header cell should show with the .Activity source.
   var showFindFriendsSection: Signal<(FriendsSource, Bool), NoError> { get }
-
-  /// Emits `true` when the logged-in empty state should be shown, and `false` when it should be hidden.
-  var showLoggedInEmptyState: Signal<Bool, NoError> { get }
-
-  /// Emits `true` when the logged-out empty state should be shown, and `false` when it should be hidden.
-  var showLoggedOutEmptyState: Signal<Bool, NoError> { get }
 
   /// Emits a non-`nil` survey response if there is an unanswered one available, and `nil` otherwise.
   var unansweredSurveyResponse: Signal<SurveyResponse?, NoError> { get }
@@ -110,23 +110,24 @@ ActivitiesViewModelOutputs {
   // swiftlint:disable function_body_length
   public init() {
     let isCloseToBottom = self.willDisplayRowProperty.signal.ignoreNil()
-      .map { row, total in row >= total - 3 }
+      .map { row, total in total > 3 && row >= total - 2 }
       .skipRepeats()
       .filter(isTrue)
       .ignoreValues()
 
     let requestFirstPage = Signal
       .merge(
-        self.viewWillAppearProperty.signal.take(1),
         self.userSessionStartedProperty.signal,
+        self.viewWillAppearProperty.signal.ignoreNil().filter(isFalse).take(1).ignoreValues(),
         self.refreshProperty.signal
-      )
-      .filter { AppEnvironment.current.apiService.isAuthenticated }
+        )
+        .filter { AppEnvironment.current.apiService.isAuthenticated }
 
     let (activities, isLoading, pageCount) = paginate(
       requestFirstPageWith: requestFirstPage,
       requestNextPageWhen: isCloseToBottom,
       clearOnNewRequest: false,
+      skipRepeats: false,
       valuesFromEnvelope: { $0.activities },
       cursorFromEnvelope: { $0.urls.api.moreActivities },
       requestFromParams: { _ in AppEnvironment.current.apiService.fetchActivities(count: nil) },
@@ -137,7 +138,7 @@ ActivitiesViewModelOutputs {
     let clearedActivitiesOnSessionEnd = self.userSessionEndedProperty.signal.mapConst([Activity]())
 
     let activityToUpdate = Signal.merge(
-      self.viewWillAppearProperty.signal.take(1).signal.mapConst(nil),
+      self.viewWillAppearProperty.signal.ignoreNil().take(1).mapConst(nil),
       self.updateActivityProperty.signal
     )
 
@@ -151,29 +152,43 @@ ActivitiesViewModelOutputs {
       }
 
     self.activities = combineLatest(
-        self.viewWillAppearProperty.signal.take(1),
+        self.viewWillAppearProperty.signal.ignoreNil().take(1),
         Signal.merge(clearedActivitiesOnSessionEnd, updatedActivities)
       )
       .map(second)
 
-    let noActivities = self.activities.filter { $0.isEmpty }
-
-    let isLoggedIn = Signal
+    let currentUser = Signal
       .merge(
-        self.viewWillAppearProperty.signal,
+        self.viewDidLoadProperty.signal,
         self.userSessionStartedProperty.signal,
         self.userSessionEndedProperty.signal
       )
-      .map { AppEnvironment.current.apiService.isAuthenticated }
+      .map { AppEnvironment.current.currentUser }
 
-    self.showLoggedInEmptyState = isLoggedIn
-      .takeWhen(noActivities)
-      .skipRepeats()
+    let loggedInForEmptyState = self.activities
+      .filter { AppEnvironment.current.currentUser != nil && $0.isEmpty }
+      .skipRepeats(==)
+      .mapConst(true)
 
-    self.showLoggedOutEmptyState = isLoggedIn
-      .map(negate)
-      .skipWhile(isFalse)
-      .skipRepeats()
+    let loggedOutForEmptyState = currentUser
+      .takeWhen(self.viewWillAppearProperty.signal.ignoreNil())
+      .skipRepeats(==)
+      .filter(isNil)
+      .mapConst(false)
+
+    self.showEmptyStateIsLoggedIn = Signal.merge(
+      loggedInForEmptyState,
+      loggedOutForEmptyState
+      )
+
+    self.dismissEmptyState = self.activities
+      .combinePrevious([])
+      .filter { previousActivities, currentActivities in
+        previousActivities.isEmpty
+          && !currentActivities.isEmpty
+          && AppEnvironment.current.currentUser != nil
+      }
+      .ignoreValues()
 
     let projectActivities = self.tappedActivityProperty.signal.ignoreNil()
       .filter { $0.category != .update }
@@ -186,22 +201,24 @@ ActivitiesViewModelOutputs {
       .ignoreNil()
       .map { ($0, .activity) }
 
-    self.showFindFriendsSection = isLoggedIn
+    self.showFindFriendsSection = currentUser
+      .takeWhen(self.viewWillAppearProperty.signal.ignoreNil())
       .map {
         (
           .activity,
-          $0
+          $0 != nil
             && AppEnvironment.current.currentUser?.facebookConnected ?? false
             && !AppEnvironment.current.userDefaults.hasClosedFindFriendsInActivity
         )
       }
       .skipRepeats(==)
 
-    self.showFacebookConnectSection = isLoggedIn
+    self.showFacebookConnectSection = currentUser
+      .takeWhen(self.viewWillAppearProperty.signal.ignoreNil())
       .map {
         (
           .activity,
-          $0
+          $0 != nil
             && !(AppEnvironment.current.currentUser?.facebookConnected ?? false)
             && !AppEnvironment.current.userDefaults.hasClosedFacebookConnectInActivity
         )
@@ -232,7 +249,7 @@ ActivitiesViewModelOutputs {
         AppEnvironment.current.koala.trackCloseFindFriends(source: .activity)
     }
 
-    let unansweredSurveyResponse = self.viewWillAppearProperty.signal
+    let unansweredSurveyResponse = self.viewWillAppearProperty.signal.ignoreValues()
       .switchMap {
         AppEnvironment.current.apiService.fetchUnansweredSurveyResponses()
           .demoteErrors()
@@ -256,8 +273,10 @@ ActivitiesViewModelOutputs {
         return SignalProducer(value: (project, update))
       }
 
-    self.viewWillAppearProperty.signal.take(1)
-      .observeNext { AppEnvironment.current.koala.trackActivities() }
+    self.viewWillAppearProperty.signal
+      .ignoreNil()
+      .filter(isFalse)
+      .observeNext { _ in AppEnvironment.current.koala.trackActivities() }
 
     self.refreshProperty.signal
       .observeNext { AppEnvironment.current.koala.trackLoadedNewerActivity() }
@@ -284,33 +303,13 @@ ActivitiesViewModelOutputs {
   public func findFriendsFacebookConnectCellShowErrorAlert(alert: AlertError) {
     showFacebookConnectErrorAlertProperty.value = alert
   }
-  private let viewWillAppearProperty = MutableProperty(())
-  public func viewWillAppear() {
-    self.viewWillAppearProperty.value = ()
-  }
-  private let loginButtonPressedProperty = MutableProperty(())
-  public func loginButtonPressed() {
-    self.loginButtonPressedProperty.value = ()
-  }
-  private let userFacebookConnectedProperty = MutableProperty()
-  public func findFriendsFacebookConnectCellDidFacebookConnectUser() {
-    userFacebookConnectedProperty.value = ()
-  }
-  private let userSessionStartedProperty = MutableProperty(())
-  public func userSessionStarted() {
-    self.userSessionStartedProperty.value = ()
-  }
-  private let userSessionEndedProperty = MutableProperty(())
-  public func userSessionEnded() {
-    self.userSessionEndedProperty.value = ()
+  private let viewWillAppearProperty = MutableProperty<Bool?>(nil)
+  public func viewWillAppear(animated animated: Bool) {
+    self.viewWillAppearProperty.value = animated
   }
   private let refreshProperty = MutableProperty()
   public func refresh() {
     self.refreshProperty.value = ()
-  }
-  private let willDisplayRowProperty = MutableProperty<(row: Int, total: Int)?>(nil)
-  public func willDisplayRow(row: Int, outOf totalRows: Int) {
-    self.willDisplayRowProperty.value = (row, totalRows)
   }
   private let tappedActivityProjectImage = MutableProperty<Activity?>(nil)
   public func activityUpdateCellTappedProjectImage(activity activity: Activity) {
@@ -328,17 +327,41 @@ ActivitiesViewModelOutputs {
   public func updateActivity(activity: Activity) {
     self.updateActivityProperty.value = activity
   }
+  private let userFacebookConnectedProperty = MutableProperty()
+  public func findFriendsFacebookConnectCellDidFacebookConnectUser() {
+    userFacebookConnectedProperty.value = ()
+  }
+  private let userSessionStartedProperty = MutableProperty(())
+  public func userSessionStarted() {
+    self.userSessionStartedProperty.value = ()
+  }
+  private let userSessionEndedProperty = MutableProperty(())
+  public func userSessionEnded() {
+    self.userSessionEndedProperty.value = ()
+  }
+  private let viewDidDisappearProperty = MutableProperty()
+  public func viewDidDisappear() {
+    self.viewDidDisappearProperty.value = ()
+  }
+  private let viewDidLoadProperty = MutableProperty()
+  public func viewDidLoad() {
+    self.viewDidLoadProperty.value = ()
+  }
+  private let willDisplayRowProperty = MutableProperty<(row: Int, total: Int)?>(nil)
+  public func willDisplayRow(row: Int, outOf totalRows: Int) {
+    self.willDisplayRowProperty.value = (row, totalRows)
+  }
 
   public let activities: Signal<[Activity], NoError>
   public let deleteFacebookConnectSection: Signal<(), NoError>
   public let deleteFindFriendsSection: Signal<(), NoError>
-  public let showLoggedInEmptyState: Signal<Bool, NoError>
-  public let showLoggedOutEmptyState: Signal<Bool, NoError>
+  public let dismissEmptyState: Signal<(), NoError>
   public let isRefreshing: Signal<Bool, NoError>
   public let goToFriends: Signal<FriendsSource, NoError>
   public let goToProject: Signal<(Project, RefTag), NoError>
   public let goToSurveyResponse: Signal<SurveyResponse, NoError>
   public let goToUpdate: Signal<(Project, Update), NoError>
+  public let showEmptyStateIsLoggedIn: Signal<Bool, NoError>
   public let showFindFriendsSection: Signal<(FriendsSource, Bool), NoError>
   public let showFacebookConnectSection: Signal<(FriendsSource, Bool), NoError>
   public let showFacebookConnectErrorAlert: Signal<AlertError, NoError>

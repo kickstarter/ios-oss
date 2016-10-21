@@ -35,7 +35,9 @@ public let baseNavigationBarStyle =
   UINavigationBar.lens.titleTextAttributes .~ [
     NSForegroundColorAttributeName: UIColor.ksr_text_navy_700,
     NSFontAttributeName: UIFont.ksr_callout()
-]
+  ]
+  <> UINavigationBar.lens.translucent .~ false
+  <> UINavigationBar.lens.barTintColor .~ .ksr_grey_100
 
 public func baseTableViewCellStyle <TVC: UITableViewCellProtocol> () -> (TVC -> TVC) {
 

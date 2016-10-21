@@ -139,7 +139,8 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
     self.vm.inputs.configureWith(selectedRow: allProjectsRow, categories: categories)
     self.vm.inputs.viewDidLoad()
     self.loadTopRows.assertValues(
-      [[allProjectsRow |> SelectableRow.lens.isSelected .~ true, staffPicksRow, starredRow, recommendedRow]],
+      [[allProjectsRow |> SelectableRow.lens.isSelected .~ true, staffPicksRow, starredRow, recommendedRow,
+        socialRow]],
       "The top filter rows load immediately with the first one selected."
     )
     self.loadTopRowsInitialId.assertValues([nil])

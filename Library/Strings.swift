@@ -386,6 +386,23 @@ public enum Strings {
     )
   }
   /**
+   "Backed by people you follow"
+
+   - **es**: "Backed by people you follow"
+   - **de**: "Backed by people you follow"
+   - **fr**: "Backed by people you follow"
+   - **it**: "Backed by people you follow"
+   - **en**: "Backed by people you follow"
+  */
+  public static func Backed_by_people_you_follow() -> String {
+    return localizedString(
+      key: "Backed_by_people_you_follow",
+      defaultValue: "Backed by people you follow",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Backed projects %{project_count}"
 
    - **es**: "Proyectos patrocinados: %{project_count}"
@@ -400,6 +417,23 @@ public enum Strings {
       defaultValue: "Backed projects %{project_count}",
       count: nil,
       substitutions: ["project_count": project_count]
+    )
+  }
+  /**
+   "Bring new ideas to life."
+
+   - **es**: "Bring new ideas to life."
+   - **de**: "Bring new ideas to life."
+   - **fr**: "De nouvelles idées qui voient le jour."
+   - **it**: "Bring new ideas to life."
+   - **en**: "Bring new ideas to life."
+  */
+  public static func Bring_new_ideas_to_life() -> String {
+    return localizedString(
+      key: "Bring_new_ideas_to_life",
+      defaultValue: "Bring new ideas to life.",
+      count: nil,
+      substitutions: [:]
     )
   }
   /**
@@ -473,9 +507,9 @@ public enum Strings {
   /**
    "Complete payment"
 
-   - **es**: "Complete payment"
+   - **es**: "Completar pago"
    - **de**: "Complete payment"
-   - **fr**: "Complete payment"
+   - **fr**: "Payer"
    - **it**: "Complete payment"
    - **en**: "Complete payment"
   */
@@ -896,6 +930,23 @@ public enum Strings {
     )
   }
   /**
+   "Find projects you’ll love in art, design, film, games, music, and more. Once you back a project, you’ll see all your activity here."
+
+   - **es**: "Find projects you’ll love in art, design, film, games, music, and more. Once you back a project, you’ll see all your activity here."
+   - **de**: "Find projects you’ll love in art, design, film, games, music, and more. Once you back a project, you’ll see all your activity here."
+   - **fr**: "Découvrez des projets que vous allez adorer : art, design, cinéma, jeux, musique et plus encore. L'activité des projets que vous soutenez s'affichera ici."
+   - **it**: "Find projects you’ll love in art, design, film, games, music, and more. Once you back a project, you’ll see all your activity here."
+   - **en**: "Find projects you’ll love in art, design, film, games, music, and more. Once you back a project, you’ll see all your activity here."
+  */
+  public static func Find_projects_youll_love_in_art_design_film() -> String {
+    return localizedString(
+      key: "Find_projects_youll_love_in_art_design_film",
+      defaultValue: "Find projects you’ll love in art, design, film, games, music, and more. Once you back a project, you’ll see all your activity here.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "First created"
 
    - **es**: "Primer proyecto creado"
@@ -925,6 +976,23 @@ public enum Strings {
     return localizedString(
       key: "Follow_friends",
       defaultValue: "Follow friends",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Follow more friends"
+
+   - **es**: "Follow more friends"
+   - **de**: "Follow more friends"
+   - **fr**: "Suivre plus d'amis"
+   - **it**: "Follow more friends"
+   - **en**: "Follow more friends"
+  */
+  public static func Follow_more_friends() -> String {
+    return localizedString(
+      key: "Follow_more_friends",
+      defaultValue: "Follow more friends",
       count: nil,
       substitutions: [:]
     )
@@ -1241,7 +1309,7 @@ with friends."
   /**
    "Message backer"
 
-   - **es**: "Message backer"
+   - **es**: "Enviar mensaje a patrocinador"
    - **de**: "Message backer"
    - **fr**: "Envoyer un message au contributeur"
    - **it**: "Message backer"
@@ -1258,7 +1326,7 @@ with friends."
   /**
    "Message creator"
 
-   - **es**: "Message creator"
+   - **es**: "Enviar mensaje al creador"
    - **de**: "Message creator"
    - **fr**: "Envoyer un message au créateur"
    - **it**: "Message creator"
@@ -1268,6 +1336,29 @@ with friends."
     return localizedString(
       key: "Message_creator",
       defaultValue: "Message creator",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "No pledges 
+from friends yet."
+
+   - **es**: "No pledges 
+from friends yet."
+   - **de**: "No pledges 
+from friends yet."
+   - **fr**: "Mes amis 
+n'ont rien soutenu."
+   - **it**: "No pledges 
+from friends yet."
+   - **en**: "No pledges 
+from friends yet."
+  */
+  public static func No_pledges_from_friends_yet() -> String {
+    return localizedString(
+      key: "No_pledges_from_friends_yet",
+      defaultValue: "No pledges \nfrom friends yet.",
       count: nil,
       substitutions: [:]
     )
@@ -1481,7 +1572,7 @@ with friends."
 
    - **es**: "Please enter an amount of %{amount} or less."
    - **de**: "Please enter an amount of %{amount} or less."
-   - **fr**: "Please enter an amount of %{amount} or less."
+   - **fr**: "Veuillez saisir un montant de %{amount} ou moins."
    - **it**: "Please enter an amount of %{amount} or less."
    - **en**: "Please enter an amount of %{amount} or less."
   */
@@ -1498,7 +1589,7 @@ with friends."
 
    - **es**: "Please enter an amount of %{amount} or more."
    - **de**: "Please enter an amount of %{amount} or more."
-   - **fr**: "Please enter an amount of %{amount} or more."
+   - **fr**: "Veuillez saisir un montant de %{amount} ou plus."
    - **it**: "Please enter an amount of %{amount} or more."
    - **en**: "Please enter an amount of %{amount} or more."
   */
@@ -1804,20 +1895,22 @@ daring ideas."
   }
   /**
    "Something 
-caught your eye?"
+catch your eye?"
 
-   - **es**: "¿Un proyecto te llamó la atención?"
-   - **de**: "Du hast ein Auge auf ein Projekt geworfen?"
+   - **es**: "Something 
+catch your eye?"
+   - **de**: "Something 
+catch your eye?"
    - **fr**: "Quelque chose a retenu votre attention ?"
    - **it**: "Something 
-caught your eye?"
+catch your eye?"
    - **en**: "Something 
-caught your eye?"
+catch your eye?"
   */
-  public static func Something_caught_your_eye() -> String {
+  public static func Something_catch_your_eye() -> String {
     return localizedString(
-      key: "Something_caught_your_eye",
-      defaultValue: "Something \ncaught your eye?",
+      key: "Something_catch_your_eye",
+      defaultValue: "Something \ncatch your eye?",
       count: nil,
       substitutions: [:]
     )
@@ -1963,7 +2056,7 @@ caught your eye?"
 
    - **es**: "Update pledge"
    - **de**: "Update pledge"
-   - **fr**: "Update pledge"
+   - **fr**: "Modifier mon engagement"
    - **it**: "Update pledge"
    - **en**: "Update pledge"
   */
@@ -2039,6 +2132,23 @@ caught your eye?"
     return localizedString(
       key: "You_backed_this_project",
       defaultValue: "You backed this project.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Your friends haven’t backed any projects yet, but once they do, you’ll see them listed here."
+
+   - **es**: "Your friends haven’t backed any projects yet, but once they do, you’ll see them listed here."
+   - **de**: "Your friends haven’t backed any projects yet, but once they do, you’ll see them listed here."
+   - **fr**: "Vos amis n'ont encore rien soutenu, mais dès qu'ils s'y seront mis, leurs engagements s'afficheront ici."
+   - **it**: "Your friends haven’t backed any projects yet, but once they do, you’ll see them listed here."
+   - **en**: "Your friends haven’t backed any projects yet, but once they do, you’ll see them listed here."
+  */
+  public static func Your_friends_havent_backed_any_projects_yet() -> String {
+    return localizedString(
+      key: "Your_friends_havent_backed_any_projects_yet",
+      defaultValue: "Your friends haven’t backed any projects yet, but once they do, you’ll see them listed here.",
       count: nil,
       substitutions: [:]
     )

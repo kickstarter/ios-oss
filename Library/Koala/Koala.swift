@@ -1089,6 +1089,17 @@ public final class Koala {
     self.track(event: "Apple Pay Canceled", properties: props)
   }
 
+  // MARK: Empty State Events
+  public func trackEmptyStateViewed(type type: EmptyState) {
+    self.track(event: "Viewed Empty State",
+               properties: ["type": type.rawValue])
+  }
+
+  public func trackEmptyStateButtonTapped(type type: EmptyState) {
+    self.track(event: "Tapped Empty State Button",
+               properties: ["type": type.rawValue])
+  }
+
   // Private tracking method that merges in default properties.
   private func track(event event: String, properties: [String:AnyObject] = [:]) {
     self.client.track(

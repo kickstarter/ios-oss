@@ -5,8 +5,10 @@ import ReactiveCocoa
 import UIKit
 
 internal final class ActivitiesViewController: UITableViewController {
-  let viewModel: ActivitiesViewModelType = ActivitiesViewModel()
-  let dataSource = ActivitiesDataSource()
+  private let viewModel: ActivitiesViewModelType = ActivitiesViewModel()
+  private let dataSource = ActivitiesDataSource()
+
+  private weak var emptyStatesController: EmptyStatesViewController?
 
   internal static func instantiate() -> ActivitiesViewController {
     return Storyboard.Activity.instantiate(ActivitiesViewController)
@@ -30,19 +32,27 @@ internal final class ActivitiesViewController: UITableViewController {
     super.viewDidLoad()
 
     self.tableView.dataSource = dataSource
+
+    self.viewModel.inputs.viewDidLoad()
   }
 
   internal override func viewWillAppear(animated: Bool) {
     super.viewWillAppear(animated)
-    self.viewModel.inputs.viewWillAppear()
+
+    self.viewModel.inputs.viewWillAppear(animated: animated)
   }
 
   internal override func bindStyles() {
     super.bindStyles()
 
-    self |> baseTableControllerStyle(estimatedRowHeight: 300.0)
+    self
+      |> baseTableControllerStyle(estimatedRowHeight: 300.0)
+
     self.navigationItem
       |> UINavigationItem.lens.title %~ { _ in Strings.activity_navigation_title_activity() }
+
+    self.navigationController?.navigationBar
+      ?|> baseNavigationBarStyle
   }
 
   // swiftlint:disable function_body_length
@@ -70,21 +80,19 @@ internal final class ActivitiesViewController: UITableViewController {
         self?.tableView.reloadData()
     }
 
-    Signal.merge(
-      self.viewModel.outputs.showLoggedOutEmptyState,
-      self.viewModel.outputs.showLoggedInEmptyState
-      )
+    self.viewModel.outputs.showEmptyStateIsLoggedIn
       .observeForControllerAction()
-      .observeNext { [weak self] visible in
-        self?.dataSource.emptyState(visible: visible)
-        self?.tableView.reloadData()
+      .observeNext { [weak self] isLoggedIn in
+        self?.showEmptyState(isLoggedIn: isLoggedIn)
     }
 
-    self.viewModel.outputs.isRefreshing
+    self.viewModel.outputs.dismissEmptyState
       .observeForControllerAction()
-      .observeNext { [weak control = self.refreshControl] in
-        $0 ? control?.beginRefreshing() : control?.endRefreshing()
+      .observeNext { [weak self] in
+        self?.emptyStatesController?.dismissViewControllerAnimated(false, completion: nil)
     }
+
+    self.refreshControl?.rac.refreshing = self.viewModel.outputs.isRefreshing
 
     self.viewModel.outputs.goToProject
       .observeForControllerAction()
@@ -195,6 +203,17 @@ internal final class ActivitiesViewController: UITableViewController {
     self.navigationController?.pushViewController(vc, animated: true)
   }
 
+  private func showEmptyState(isLoggedIn isLoggedIn: Bool) {
+    if self.emptyStatesController == nil {
+      let vc = EmptyStatesViewController.configuredWith(emptyState: .activity)
+      self.emptyStatesController = vc
+      vc.delegate = self
+      self.definesPresentationContext = true
+      vc.modalPresentationStyle = .OverCurrentContext
+      self.presentViewController(vc, animated: false, completion: nil)
+    }
+  }
+
   private func deleteFacebookSection() {
     self.tableView.beginUpdates()
 
@@ -252,4 +271,15 @@ extension ActivitiesViewController: ActivityFriendFollowCellDelegate {
   func activityFriendFollowCell(cell: ActivityFriendFollowCell, updatedActivity: Activity) {
     self.viewModel.inputs.updateActivity(updatedActivity)
   }
+}
+
+extension ActivitiesViewController: EmptyStatesViewControllerDelegate {
+  func emptyStatesViewController(viewController: EmptyStatesViewController,
+                                 goToDiscoveryWithParams params: DiscoveryParams?) {
+
+    guard let tabController = self.tabBarController as? RootTabBarViewController else { return }
+    tabController.switchToDiscovery(params: params)
+  }
+
+  func emptyStatesViewControllerGoToFriends() {}
 }

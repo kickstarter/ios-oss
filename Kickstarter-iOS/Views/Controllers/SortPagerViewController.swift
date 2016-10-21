@@ -124,6 +124,18 @@ internal final class SortPagerViewController: UIViewController {
     self.viewModel.inputs.didRotateFromInterfaceOrientation()
   }
 
+  internal func setSortPagerEnabled(isEnabled: Bool) {
+    self.view.userInteractionEnabled = isEnabled
+
+    self.scrollView.alpha = isEnabled ? 1.0 : 0.0
+
+    if isEnabled {
+      self.borderLineView |> discoveryBorderLineStyle
+    } else {
+      self.borderLineView |> UIView.lens.alpha .~ 0.0
+    }
+  }
+
   private func createSortButtons(sorts: [DiscoveryParams.Sort]) {
     self.sortsStackView
       |> UIStackView.lens.arrangedSubviews .~ sorts.enumerate().map { idx, sort in

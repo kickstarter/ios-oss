@@ -1,6 +1,7 @@
-import UIKit
-import Library
 import KsApi
+import Library
+import Prelude
+import UIKit
 
 internal final class ProfileViewController: UICollectionViewController {
   private let dataSource = ProfileDataSource()
@@ -68,6 +69,13 @@ internal final class ProfileViewController: UICollectionViewController {
         self?.dataSource.emptyState(visible: visible)
         self?.collectionView?.reloadData()
     }
+  }
+
+  override func bindStyles() {
+    super.bindStyles()
+
+    self.navigationController?.navigationBar
+      ?|> baseNavigationBarStyle
   }
 
   @IBAction private func settingsTapped() {

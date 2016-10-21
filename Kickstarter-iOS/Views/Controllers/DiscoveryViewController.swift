@@ -75,13 +75,23 @@ internal final class DiscoveryViewController: UIViewController {
         }
 
         self?.pageViewController.setViewControllers(
-          [controller], direction: direction, animated: true, completion: nil
+          [controller], direction: direction, animated: false, completion: nil
         )
+    }
+
+    self.viewModel.outputs.sortsAreEnabled
+      .observeForUI()
+      .observeNext { [weak self] in
+        self?.sortPagerViewController.setSortPagerEnabled($0)
     }
   }
 
   internal func filter(with params: DiscoveryParams) {
     self.viewModel.inputs.filter(withParams: params)
+  }
+
+  internal func setSortsEnabled(enabled: Bool) {
+    self.viewModel.inputs.setSortsEnabled(enabled)
   }
 
   private func configurePagerDataSource(sorts: [DiscoveryParams.Sort]) {

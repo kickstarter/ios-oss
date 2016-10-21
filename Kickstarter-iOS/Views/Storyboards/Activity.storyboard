@@ -9,7 +9,7 @@
         <!--Activities View Controller-->
         <scene sceneID="3xy-hf-S1V">
             <objects>
-                <tableViewController storyboardIdentifier="ActivitiesViewController" id="tvn-h8-peN" customClass="ActivitiesViewController" customModule="Kickstarter_Framework" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="ActivitiesViewController" definesPresentationContext="YES" id="tvn-h8-peN" customClass="ActivitiesViewController" customModule="Kickstarter_Framework" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="2ep-oh-IdZ">
                         <rect key="frame" x="0.0" y="0.0" width="400" height="2800"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -535,63 +535,8 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <edgeInsets key="layoutMargins" top="16" left="16" bottom="16" right="16"/>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="ActivityEmptyStateCell" rowHeight="300" id="yU1-Yr-SzU" userLabel="Empty state" customClass="ActivityEmptyStateCell" customModule="Kickstarter_Framework" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="1392" width="400" height="300"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="yU1-Yr-SzU" id="0ag-zx-q1C">
-                                    <rect key="frame" x="0.0" y="0.0" width="400" height="300"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="UDt-NE-Fa4">
-                                            <rect key="frame" x="32" y="64" width="336" height="144"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Activity empty" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bv9-kK-LQT" customClass="StyledLabel" customModule="Library">
-                                                    <rect key="frame" x="113" y="0.0" width="110" height="21"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                    <userDefinedRuntimeAttributes>
-                                                        <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Title3"/>
-                                                        <userDefinedRuntimeAttribute type="string" keyPath="_color" value="TextDefault"/>
-                                                        <userDefinedRuntimeAttribute type="string" keyPath="_weight" value="Medium"/>
-                                                    </userDefinedRuntimeAttributes>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="When you back a project or follow a friend, their activity will show up here." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Joz-wC-je2" customClass="StyledLabel" customModule="Library">
-                                                    <rect key="frame" x="3" y="45" width="331" height="41"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                    <userDefinedRuntimeAttributes>
-                                                        <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Body"/>
-                                                        <userDefinedRuntimeAttribute type="string" keyPath="_color" value="TextDefault"/>
-                                                    </userDefinedRuntimeAttributes>
-                                                </label>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="R72-jl-YgS" customClass="BorderButton" customModule="Library">
-                                                    <rect key="frame" x="96" y="110" width="144" height="34"/>
-                                                    <inset key="contentEdgeInsets" minX="8" minY="8" maxX="8" maxY="8"/>
-                                                    <state key="normal" title="Discovery projects"/>
-                                                    <userDefinedRuntimeAttributes>
-                                                        <userDefinedRuntimeAttribute type="string" keyPath="_color" value="Green"/>
-                                                        <userDefinedRuntimeAttribute type="string" keyPath="_borderColor" value="Clear"/>
-                                                        <userDefinedRuntimeAttribute type="string" keyPath="_titleColorNormal" value="White"/>
-                                                        <userDefinedRuntimeAttribute type="string" keyPath="_titleFontStyle" value="Subhead"/>
-                                                    </userDefinedRuntimeAttributes>
-                                                </button>
-                                            </subviews>
-                                        </stackView>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstItem="UDt-NE-Fa4" firstAttribute="top" secondItem="0ag-zx-q1C" secondAttribute="topMargin" id="L41-eZ-nrB"/>
-                                        <constraint firstItem="UDt-NE-Fa4" firstAttribute="leading" secondItem="0ag-zx-q1C" secondAttribute="leadingMargin" id="NGH-zx-AS2"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="UDt-NE-Fa4" secondAttribute="trailing" id="fLP-ol-xUx"/>
-                                        <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="UDt-NE-Fa4" secondAttribute="bottom" id="lRN-bV-Rvm"/>
-                                    </constraints>
-                                    <edgeInsets key="layoutMargins" top="64" left="32" bottom="64" right="32"/>
-                                </tableViewCellContentView>
-                                <edgeInsets key="layoutMargins" top="16" left="16" bottom="16" right="16"/>
-                            </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="FindFriendsFacebookConnectCell" rowHeight="280" id="lJH-K2-kWl" userLabel="Facebook Connect Cell" customClass="FindFriendsFacebookConnectCell" customModule="Kickstarter_Framework" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="1692" width="400" height="280"/>
+                                <rect key="frame" x="0.0" y="1392" width="400" height="280"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="lJH-K2-kWl" id="R6r-9U-xhE">
                                     <rect key="frame" x="0.0" y="0.0" width="400" height="280"/>
@@ -657,7 +602,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="HalfPaddingCell" rowHeight="16" id="8bF-yD-Jff" userLabel="---paddingHalf---" customClass="PaddingCell" customModule="Kickstarter_Framework" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="1972" width="400" height="16"/>
+                                <rect key="frame" x="0.0" y="1672" width="400" height="16"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8bF-yD-Jff" id="t9o-63-Z1E">
                                     <rect key="frame" x="0.0" y="0.0" width="400" height="16"/>
@@ -682,7 +627,7 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="FindFriendsHeaderCell" rowHeight="280" id="02F-G4-hOr" customClass="FindFriendsHeaderCell" customModule="Kickstarter_Framework" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="1988" width="400" height="280"/>
+                                <rect key="frame" x="0.0" y="1688" width="400" height="280"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="02F-G4-hOr" id="RKb-PD-7pu">
                                     <rect key="frame" x="0.0" y="0.0" width="400" height="280"/>
@@ -748,7 +693,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="Padding6" rowHeight="32" id="wiZ-Nf-CUq" userLabel="---padding---">
-                                <rect key="frame" x="0.0" y="2268" width="400" height="32"/>
+                                <rect key="frame" x="0.0" y="1968" width="400" height="32"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="wiZ-Nf-CUq" id="vxB-ko-orl">
                                     <rect key="frame" x="0.0" y="0.0" width="400" height="32"/>
@@ -760,7 +705,7 @@
                                 <edgeInsets key="layoutMargins" top="16" left="16" bottom="16" right="16"/>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ActivitySurveyResponseCell" rowHeight="190" id="jye-9W-L1r" customClass="ActivitySurveyResponseCell" customModule="Kickstarter_Framework" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="2300" width="400" height="190"/>
+                                <rect key="frame" x="0.0" y="2000" width="400" height="190"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="jye-9W-L1r" id="lv4-G3-ls6">
                                     <rect key="frame" x="0.0" y="0.0" width="400" height="190"/>
