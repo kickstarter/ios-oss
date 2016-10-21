@@ -17,7 +17,7 @@ internal final class DiscoverySelectableRowCell: UITableViewCell, ValueCell {
       self.filterTitleLabel
         |> UILabel.lens.accessibilityLabel %~ { _ in Strings.Filter_by_starred_projects() }
     } else if value.row.params.social == true {
-      self.filterTitleLabel.text = Strings.Following()
+      self.filterTitleLabel.text = Strings.Backed_by_people_you_follow()
       self.filterTitleLabel
         |> UILabel.lens.accessibilityLabel %~ { _ in Strings.Filter_by_projects_backed_by_friends() }
     } else if let category = value.row.params.category {
