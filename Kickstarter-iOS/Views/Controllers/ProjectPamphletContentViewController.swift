@@ -93,17 +93,32 @@ internal final class ProjectPamphletContentViewController: UITableViewController
   private func goToRewardPledge(project project: Project, reward: Reward) {
     let vc = RewardPledgeViewController.configuredWith(project: project, reward: reward)
     let nav = UINavigationController(rootViewController: vc)
+    nav.modalPresentationStyle = UIModalPresentationStyle.FormSheet
     self.presentViewController(nav, animated: true, completion: nil)
   }
 
   private func goToBacking(project project: Project) {
     let vc = BackingViewController.configuredWith(project: project, backer: nil)
-    self.navigationController?.pushViewController(vc, animated: true)
+
+    if self.traitCollection.userInterfaceIdiom == .Pad {
+      let nav = UINavigationController(rootViewController: vc)
+      nav.modalPresentationStyle = UIModalPresentationStyle.FormSheet
+      self.presentViewController(nav, animated: true, completion: nil)
+    } else {
+      self.navigationController?.pushViewController(vc, animated: true)
+    }
   }
 
   private func goToComments(project project: Project) {
     let vc = CommentsViewController.configuredWith(project: project, update: nil)
-    self.navigationController?.pushViewController(vc, animated: true)
+
+    if self.traitCollection.userInterfaceIdiom == .Pad {
+      let nav = UINavigationController(rootViewController: vc)
+      nav.modalPresentationStyle = UIModalPresentationStyle.FormSheet
+      self.presentViewController(nav, animated: true, completion: nil)
+    } else {
+      self.navigationController?.pushViewController(vc, animated: true)
+    }
   }
 
   private func goToUpdates(project project: Project) {
@@ -131,10 +146,8 @@ extension ProjectPamphletContentViewController: ProjectPamphletMainCellDelegate 
   internal func projectPamphletMainCell(cell: ProjectPamphletMainCell,
                                         goToCampaignForProject project: Project) {
 
-    self.navigationController?.pushViewController(
-      ProjectDescriptionViewController.configuredWith(project: project),
-      animated: true
-    )
+    let vc = ProjectDescriptionViewController.configuredWith(project: project)
+    self.navigationController?.pushViewController(vc, animated: true)
   }
 
   internal func projectPamphletMainCell(cell: ProjectPamphletMainCell,
@@ -146,10 +159,15 @@ extension ProjectPamphletContentViewController: ProjectPamphletMainCellDelegate 
   internal func projectPamphletMainCell(cell: ProjectPamphletMainCell,
                                         goToCreatorForProject project: Project) {
 
-    self.navigationController?.pushViewController(
-      ProjectCreatorViewController.configuredWith(project: project),
-      animated: true
-    )
+    let vc = ProjectCreatorViewController.configuredWith(project: project)
+
+    if self.traitCollection.userInterfaceIdiom == .Pad {
+      let nav = UINavigationController(rootViewController: vc)
+      nav.modalPresentationStyle = UIModalPresentationStyle.FormSheet
+      self.presentViewController(nav, animated: true, completion: nil)
+    } else {
+      self.navigationController?.pushViewController(vc, animated: true)
+    }
   }
 }
 

@@ -42,6 +42,10 @@ internal final class BackingViewController: UIViewController {
       |> UIButton.lens.targets .~ [(self, #selector(viewMessagesTapped), .TouchUpInside)]
 
     self.viewModel.inputs.viewDidLoad()
+
+    if self.traitCollection.userInterfaceIdiom == .Pad {
+      self.navigationItem.leftBarButtonItem = .close(self, selector: #selector(closeButtonTapped))
+    }
   }
 
   internal override func viewWillAppear(animated: Bool) {
@@ -162,11 +166,14 @@ internal final class BackingViewController: UIViewController {
   private func goToMessageCreator(messageSubject messageSubject: MessageSubject,
                                                  context: Koala.MessageDialogContext) {
     let vc = MessageDialogViewController.configuredWith(messageSubject: messageSubject, context: context)
-    vc.modalPresentationStyle = .FormSheet
+    let nav = UINavigationController(rootViewController: vc)
+    nav.modalPresentationStyle = .FormSheet
     vc.delegate = self
-    self.presentViewController(UINavigationController(rootViewController: vc),
-                               animated: true,
-                               completion: nil)
+    self.presentViewController(nav, animated: true, completion: nil)
+  }
+
+  @objc private func closeButtonTapped() {
+    self.dismissViewControllerAnimated(true, completion: nil)
   }
 }
 

@@ -28,6 +28,7 @@ internal final class ProjectDescriptionViewController: WebViewController {
 
     self
       |> baseControllerStyle()
+      |> WebViewController.lens.title %~ { _ in Strings.project_menu_buttons_campaign() }
       |> (WebViewController.lens.webView.scrollView • UIScrollView.lens.delaysContentTouches) .~ false
       |> (WebViewController.lens.webView.scrollView • UIScrollView.lens.canCancelContentTouches) .~ true
   }

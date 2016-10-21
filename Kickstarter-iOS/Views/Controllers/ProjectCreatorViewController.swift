@@ -1,5 +1,6 @@
 import KsApi
 import Library
+import Prelude
 import SafariServices
 
 internal final class ProjectCreatorViewController: WebViewController {
@@ -14,11 +15,24 @@ internal final class ProjectCreatorViewController: WebViewController {
   internal override func viewDidLoad() {
     super.viewDidLoad()
     self.viewModel.inputs.viewDidLoad()
+
+    self.navigationItem.title = Strings.project_subpages_menu_buttons_creator()
+
+    if self.traitCollection.userInterfaceIdiom == .Pad {
+      self.navigationItem.leftBarButtonItem = .close(self, selector: #selector(closeButtonTapped))
+    }
   }
 
   internal override func viewWillAppear(animated: Bool) {
     super.viewWillAppear(animated)
     self.navigationController?.setNavigationBarHidden(false, animated: animated)
+  }
+
+  internal override func bindStyles() {
+    super.bindStyles()
+
+    self
+      |> baseControllerStyle()
   }
 
   internal override func bindViewModel() {
@@ -47,17 +61,20 @@ internal final class ProjectCreatorViewController: WebViewController {
 
   private func goToMessageDialog(subject subject: MessageSubject, context: Koala.MessageDialogContext) {
     let vc = MessageDialogViewController.configuredWith(messageSubject: subject, context: context)
-    vc.modalPresentationStyle = .FormSheet
     vc.delegate = self
-    self.presentViewController(UINavigationController(rootViewController: vc),
-                               animated: true,
-                               completion: nil)
+    let nav = UINavigationController(rootViewController: vc)
+    nav.modalPresentationStyle = .FormSheet
+    self.presentViewController(nav, animated: true, completion: nil)
   }
 
   private func goToSafariBrowser(url url: NSURL) {
     let controller = SFSafariViewController(URL: url)
     controller.modalPresentationStyle = .OverFullScreen
     self.presentViewController(controller, animated: true, completion: nil)
+  }
+
+  @objc private func closeButtonTapped() {
+    self.dismissViewControllerAnimated(true, completion: nil)
   }
 }
 

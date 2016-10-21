@@ -33,6 +33,12 @@ internal final class CommentsViewController: UITableViewController {
     }
 
     self.viewModel.inputs.viewDidLoad()
+
+    self.navigationItem.title = Strings.project_menu_buttons_comments()
+
+    if self.traitCollection.userInterfaceIdiom == .Pad {
+      self.navigationItem.leftBarButtonItem = .close(self, selector: #selector(closeButtonTapped))
+    }
   }
 
   internal override func viewWillAppear(animated: Bool) {
@@ -118,11 +124,10 @@ internal final class CommentsViewController: UITableViewController {
     let dialog = CommentDialogViewController
       .configuredWith(project: project, update: update, recipient: nil,
                       context: update == nil ? .projectComments : .updateComments)
-    dialog.modalPresentationStyle = .FormSheet
     dialog.delegate = self
-    self.presentViewController(UINavigationController(rootViewController: dialog),
-                               animated: true,
-                               completion: nil)
+    let nav = UINavigationController(rootViewController: dialog)
+    nav.modalPresentationStyle = .FormSheet
+    self.presentViewController(nav, animated: true, completion: nil)
   }
 
   internal func presentLoginTout() {
@@ -138,6 +143,10 @@ internal final class CommentsViewController: UITableViewController {
 
   @IBAction internal func refresh() {
     self.viewModel.inputs.refresh()
+  }
+
+  @objc private func closeButtonTapped() {
+    self.dismissViewControllerAnimated(true, completion: nil)
   }
 }
 

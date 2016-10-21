@@ -66,10 +66,21 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
   }
 
   internal func scrollContentOffset(offset: CGFloat) {
-    let scaleFactor = max(1, 1 - 2 * offset / self.projectImageContainerView.bounds.height)
-    let scale = CGAffineTransformMakeScale(scaleFactor, scaleFactor)
-    let translate = CGAffineTransformMakeTranslation(0, max(0, offset / 4))
-    self.projectImageContainerView.transform = CGAffineTransformConcat(translate, scale)
+
+    let height = self.projectImageContainerView.bounds.height
+    let translation = offset / 2
+
+    let scale: CGFloat
+    if offset < 0 {
+      scale = (height + abs(offset)) / height
+    } else {
+      scale = max(1, 1 - 0.5 * offset / height)
+    }
+
+    self.projectImageContainerView.transform = CGAffineTransform(
+      a: scale, b: 0,
+      c: 0, d: scale,
+      tx: 0, ty: translation)
   }
 
   // swiftlint:disable function_body_length
