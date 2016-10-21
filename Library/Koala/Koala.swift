@@ -575,11 +575,6 @@ public final class Koala {
                properties: properties(project: project, loggedInUser: self.loggedInUser))
   }
 
-  public func trackDashboardProjectModalView(project project: Project) {
-    self.track(event: "Dashboard Project Modal",
-               properties: properties(project: project, loggedInUser: self.loggedInUser))
-  }
-
   public func trackDashboardSeeAllRewards(project project: Project) {
     self.track(event: "Showed All Rewards",
                properties: properties(project: project, loggedInUser: self.loggedInUser))
@@ -596,17 +591,23 @@ public final class Koala {
   }
 
   public func trackDashboardSwitchProject(project: Project) {
-    self.track(event: "Switched Projects",
-               properties: properties(project: project, loggedInUser: self.loggedInUser))
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+
+    self.track(event: "Switched Projects", properties: props)
 
     // deprecated
     self.track(event: "Creator Project Navigate",
-               properties: properties(project: project, loggedInUser: self.loggedInUser))
+               properties: props.withAllValuesFrom([Koala.DeprecatedKey: true]))
   }
 
   public func trackDashboardView(project project: Project) {
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+
+    self.track(event: "Viewed Project Dashboard", properties: props)
+
+    // deprecated
     self.track(event: "Dashboard View",
-               properties: properties(project: project, loggedInUser: self.loggedInUser))
+               properties: props.withAllValuesFrom([Koala.DeprecatedKey: true]))
   }
 
   // MARK: Project activity

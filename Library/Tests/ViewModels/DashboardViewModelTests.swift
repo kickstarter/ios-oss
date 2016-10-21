@@ -74,8 +74,8 @@ internal final class DashboardViewModelTests: TestCase {
 
       self.project.assertValues([.template |> Project.lens.id .~ 0])
       self.updateTitleViewData.assertValues([titleViewData], "Update title data")
-      XCTAssertEqual(["Dashboard View"], self.trackingClient.events)
-      XCTAssertEqual([0], self.trackingClient.properties.map { $0["project_pid"] as! Int? })
+      XCTAssertEqual(["Viewed Project Dashboard", "Dashboard View"], self.trackingClient.events)
+      XCTAssertEqual([0, 0], self.trackingClient.properties.map { $0["project_pid"] as! Int? })
 
       self.fundingStats.assertValueCount(1)
 
@@ -213,8 +213,9 @@ internal final class DashboardViewModelTests: TestCase {
       self.presentProjectsDrawer.assertValues([[projectData1, projectData2]])
       self.dismissProjectsDrawer.assertValueCount(0)
       self.animateOutProjectsDrawer.assertValueCount(0)
-      XCTAssertEqual(["Dashboard View", "Showed Project Switcher"], self.trackingClient.events)
-      XCTAssertEqual([1, 1], self.trackingClient.properties.map { $0["project_pid"] as! Int? })
+      XCTAssertEqual(["Viewed Project Dashboard", "Dashboard View", "Showed Project Switcher"],
+                     self.trackingClient.events)
+      XCTAssertEqual([1, 1, 1], self.trackingClient.properties.map { $0["project_pid"] as! Int? })
 
       self.vm.inputs.showHideProjectsDrawer()
 
@@ -222,9 +223,10 @@ internal final class DashboardViewModelTests: TestCase {
         "Update title with closed data")
       self.animateOutProjectsDrawer.assertValueCount(1)
       self.dismissProjectsDrawer.assertValueCount(0)
-      XCTAssertEqual(["Dashboard View", "Showed Project Switcher", "Closed Project Switcher"],
+      XCTAssertEqual(["Viewed Project Dashboard", "Dashboard View", "Showed Project Switcher",
+        "Closed Project Switcher"],
                      self.trackingClient.events)
-      XCTAssertEqual([1, 1, 1], self.trackingClient.properties.map { $0["project_pid"] as! Int? })
+      XCTAssertEqual([1, 1, 1, 1], self.trackingClient.properties.map { $0["project_pid"] as! Int? })
 
       self.vm.inputs.dashboardProjectsDrawerDidAnimateOut()
 
@@ -235,9 +237,9 @@ internal final class DashboardViewModelTests: TestCase {
       self.updateTitleViewData.assertValues([titleViewDataClosed1, titleViewDataOpen1, titleViewDataClosed1,
         titleViewDataOpen1], "Update title with open data")
       self.presentProjectsDrawer.assertValues([[projectData1, projectData2], [projectData1, projectData2]])
-      XCTAssertEqual(["Dashboard View", "Showed Project Switcher", "Closed Project Switcher",
-        "Showed Project Switcher"], self.trackingClient.events)
-      XCTAssertEqual([1, 1, 1, 1], self.trackingClient.properties.map { $0["project_pid"] as! Int? })
+      XCTAssertEqual(["Viewed Project Dashboard", "Dashboard View", "Showed Project Switcher",
+        "Closed Project Switcher", "Showed Project Switcher"], self.trackingClient.events)
+      XCTAssertEqual([1, 1, 1, 1, 1], self.trackingClient.properties.map { $0["project_pid"] as! Int? })
 
       self.vm.inputs.`switch`(toProject: .id(project2.id))
 
@@ -245,10 +247,11 @@ internal final class DashboardViewModelTests: TestCase {
         titleViewDataOpen1, titleViewDataClosed2], "Update title with closed data")
       self.animateOutProjectsDrawer.assertValueCount(2, "Animate out drawer emits")
       self.dismissProjectsDrawer.assertValueCount(1, "Dismiss drawer does not emit")
-      XCTAssertEqual(["Dashboard View", "Showed Project Switcher", "Closed Project Switcher",
-        "Showed Project Switcher", "Closed Project Switcher", "Switched Projects",
+      XCTAssertEqual(["Viewed Project Dashboard", "Dashboard View", "Showed Project Switcher",
+        "Closed Project Switcher", "Showed Project Switcher", "Closed Project Switcher", "Switched Projects",
         "Creator Project Navigate"], self.trackingClient.events)
-      XCTAssertEqual([1, 1, 1, 1, 4, 4, 4], self.trackingClient.properties.map { $0["project_pid"] as! Int? })
+      XCTAssertEqual([1, 1, 1, 1, 1, 4, 4, 4],
+                     self.trackingClient.properties.map { $0["project_pid"] as! Int? })
 
       self.vm.inputs.dashboardProjectsDrawerDidAnimateOut()
 
@@ -262,11 +265,10 @@ internal final class DashboardViewModelTests: TestCase {
         [projectData1, projectData2]])
       self.animateOutProjectsDrawer.assertValueCount(2, "Animate out drawer emits")
       self.dismissProjectsDrawer.assertValueCount(2, "Dismiss drawer does not emit")
-      XCTAssertEqual(["Dashboard View", "Showed Project Switcher", "Closed Project Switcher",
-        "Showed Project Switcher", "Closed Project Switcher", "Switched Projects",
-        "Creator Project Navigate",
-        "Showed Project Switcher"], self.trackingClient.events)
-      XCTAssertEqual([1, 1, 1, 1, 4, 4, 4, 4],
+      XCTAssertEqual(["Viewed Project Dashboard", "Dashboard View", "Showed Project Switcher",
+        "Closed Project Switcher", "Showed Project Switcher", "Closed Project Switcher", "Switched Projects",
+        "Creator Project Navigate", "Showed Project Switcher"], self.trackingClient.events)
+      XCTAssertEqual([1, 1, 1, 1, 1, 4, 4, 4, 4],
                      self.trackingClient.properties.map { $0["project_pid"] as! Int? })
     }
   }

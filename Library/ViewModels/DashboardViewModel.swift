@@ -190,10 +190,6 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
     self.focusScreenReaderOnTitleView = self.viewDidAppearProperty.signal
 
     self.project
-      .takeWhen(self.projectContextCellTappedProperty.signal)
-      .observeNext { AppEnvironment.current.koala.trackDashboardProjectModalView(project: $0) }
-
-    self.project
       .take(1)
       .observeNext { AppEnvironment.current.koala.trackDashboardView(project: $0) }
 
