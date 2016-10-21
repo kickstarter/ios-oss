@@ -108,7 +108,6 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
 
     self.contentStackView
       |> UIStackView.lens.layoutMargins %~~ { _, stackView in
-
         stackView.traitCollection.isRegularRegular
           ? .init(topBottom: Styles.grid(6), leftRight: Styles.grid(16))
           : .init(top: Styles.grid(4), left: Styles.grid(4), bottom: Styles.grid(3), right: Styles.grid(4))
@@ -120,6 +119,11 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       |> UILabel.lens.textColor .~ .ksr_text_navy_500
       |> UILabel.lens.font .~ UIFont.ksr_caption2().italicized
       |> UILabel.lens.numberOfLines .~ 2
+
+    self.creatorButton
+      |> UIButton.lens.accessibilityHint %~ { _ in
+        localizedString(key: "Opens_creator_profile", defaultValue: "Opens creator profile.")
+      }
 
     self.creatorImageView
       |> UIImageView.lens.clipsToBounds .~ true
@@ -195,13 +199,14 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     self.backersTitleLabel.rac.text = self.viewModel.outputs.backersTitleLabelText
     self.conversionLabel.rac.hidden = self.viewModel.outputs.conversionLabelHidden
     self.conversionLabel.rac.text = self.viewModel.outputs.conversionLabelText
+    self.creatorButton.rac.accessibilityLabel = self.viewModel.outputs.creatorLabelText
     self.creatorLabel.rac.text = self.viewModel.outputs.creatorLabelText
     self.deadlineSubtitleLabel.rac.text = self.viewModel.outputs.deadlineSubtitleLabelText
     self.deadlineTitleLabel.rac.text = self.viewModel.outputs.deadlineTitleLabelText
     self.pledgeSubtitleLabel.rac.text = self.viewModel.outputs.pledgedSubtitleLabelText
     self.pledgedTitleLabel.rac.text = self.viewModel.outputs.pledgedTitleLabelText
-    self.projectNameLabel.rac.text = self.viewModel.outputs.projectNameLabelText
     self.projectBlurbLabel.rac.text = self.viewModel.outputs.projectBlurbLabelText
+    self.projectNameLabel.rac.text = self.viewModel.outputs.projectNameLabelText
     self.stateLabel.rac.hidden = self.viewModel.outputs.projectStateLabelHidden
     self.stateLabel.rac.text = self.viewModel.outputs.projectStateLabelText
     self.stateLabel.rac.textColor = self.viewModel.outputs.projectStateLabelTextColor

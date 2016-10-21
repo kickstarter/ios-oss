@@ -87,11 +87,13 @@ internal final class ProjectNavBarViewController: UIViewController {
       |> UIButton.lens.adjustsImageWhenHighlighted .~ true
       |> UIButton.lens.adjustsImageWhenDisabled .~ true
       |> UIButton.lens.userInteractionEnabled .~ false
+      |> UIButton.lens.accessibilityTraits .~ UIAccessibilityTraitStaticText
 
     self.closeButton
       |> UIButton.lens.title(forState: .Normal) .~ nil
       |> UIButton.lens.tintColor .~ .whiteColor()
       |> UIButton.lens.image(forState: .Normal) .~ image(named: "close-icon")
+      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.accessibility_projects_buttons_close() }
 
     self.navContainerView
       |> UIView.lens.layoutMargins .~ .init(topBottom: 0, leftRight: Styles.gridHalf(1))
