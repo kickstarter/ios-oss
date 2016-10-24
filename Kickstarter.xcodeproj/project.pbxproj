@@ -169,6 +169,12 @@
 		5981BF1C1D81BA6D002E49F1 /* ActivitySuccessViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5981BF1A1D81BA6D002E49F1 /* ActivitySuccessViewModelTests.swift */; };
 		5981BF4E1D81CE1C002E49F1 /* ActivityUpdateViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5981BF4D1D81CE1C002E49F1 /* ActivityUpdateViewModelTests.swift */; };
 		5981BF4F1D81CE1C002E49F1 /* ActivityUpdateViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5981BF4D1D81CE1C002E49F1 /* ActivityUpdateViewModelTests.swift */; };
+		59885A941DB6DC4700F65825 /* LoginToutViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59885A5D1DB6DC2900F65825 /* LoginToutViewControllerTests.swift */; };
+		59885A961DB6E04100F65825 /* LoginViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59885A951DB6E04100F65825 /* LoginViewControllerTests.swift */; };
+		59885A981DB6E2A900F65825 /* TwoFactorViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59885A971DB6E2A900F65825 /* TwoFactorViewControllerTests.swift */; };
+		59885A9A1DB6EA5700F65825 /* SignupViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59885A991DB6EA5700F65825 /* SignupViewControllerTests.swift */; };
+		59885A9C1DB6ED6800F65825 /* FacebookConfirmationViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59885A9B1DB6ED6800F65825 /* FacebookConfirmationViewControllerTests.swift */; };
+		59885A9E1DB6EFD900F65825 /* ResetPasswordViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59885A9D1DB6EFD900F65825 /* ResetPasswordViewControllerTests.swift */; };
 		598D96B41D41790C003F3F66 /* ActivitySampleBackingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598D96821D417905003F3F66 /* ActivitySampleBackingCell.swift */; };
 		598D96B61D426D80003F3F66 /* ActivitySampleFollowCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598D96B51D426D80003F3F66 /* ActivitySampleFollowCell.swift */; };
 		598D96B81D426F70003F3F66 /* ActivitySampleProjectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598D96B71D426F70003F3F66 /* ActivitySampleProjectCell.swift */; };
@@ -1629,6 +1635,12 @@
 		5981BE671D7F86C8002E49F1 /* CommentsEmptyStateCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsEmptyStateCellViewModelTests.swift; sourceTree = "<group>"; };
 		5981BF1A1D81BA6D002E49F1 /* ActivitySuccessViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivitySuccessViewModelTests.swift; sourceTree = "<group>"; };
 		5981BF4D1D81CE1C002E49F1 /* ActivityUpdateViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityUpdateViewModelTests.swift; sourceTree = "<group>"; };
+		59885A5D1DB6DC2900F65825 /* LoginToutViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginToutViewControllerTests.swift; sourceTree = "<group>"; };
+		59885A951DB6E04100F65825 /* LoginViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewControllerTests.swift; sourceTree = "<group>"; };
+		59885A971DB6E2A900F65825 /* TwoFactorViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwoFactorViewControllerTests.swift; sourceTree = "<group>"; };
+		59885A991DB6EA5700F65825 /* SignupViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupViewControllerTests.swift; sourceTree = "<group>"; };
+		59885A9B1DB6ED6800F65825 /* FacebookConfirmationViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookConfirmationViewControllerTests.swift; sourceTree = "<group>"; };
+		59885A9D1DB6EFD900F65825 /* ResetPasswordViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResetPasswordViewControllerTests.swift; sourceTree = "<group>"; };
 		598D96821D417905003F3F66 /* ActivitySampleBackingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivitySampleBackingCell.swift; sourceTree = "<group>"; };
 		598D96B51D426D80003F3F66 /* ActivitySampleFollowCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivitySampleFollowCell.swift; sourceTree = "<group>"; };
 		598D96B71D426F70003F3F66 /* ActivitySampleProjectCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivitySampleProjectCell.swift; sourceTree = "<group>"; };
@@ -2353,6 +2365,12 @@
 				01F42A511D9332F60084719D /* DiscoveryNavigationHeaderViewControllerTests.swift */,
 				A73778D51D81ABE2004C2A9B /* FundingGraphViewTests.swift */,
 				9D3A6B4B1D8C4F3800FE3926 /* ProjectActivityViewControllerTests.swift */,
+				59885A5D1DB6DC2900F65825 /* LoginToutViewControllerTests.swift */,
+				59885A951DB6E04100F65825 /* LoginViewControllerTests.swift */,
+				59885A971DB6E2A900F65825 /* TwoFactorViewControllerTests.swift */,
+				59885A991DB6EA5700F65825 /* SignupViewControllerTests.swift */,
+				59885A9D1DB6EFD900F65825 /* ResetPasswordViewControllerTests.swift */,
+				59885A9B1DB6ED6800F65825 /* FacebookConfirmationViewControllerTests.swift */,
 				A7CA8C461D8F2F870086A3E9 /* ProjectNavBarViewControllerTests.swift */,
 				A77FD5B41D91FD2C00FFC636 /* RewardPledgeViewControllerTests.swift */,
 				A73778D91D81D3CC004C2A9B /* ProjectPamphletContentViewControllerTests.swift */,
@@ -5070,6 +5088,7 @@
 				018421F31D2C0DB700CA7566 /* DashboardDataSourceTests.swift in Sources */,
 				A775B54C1CA87C8500BBB587 /* RootViewModelTests.swift in Sources */,
 				80C9F8EC1D4923C4001A2E8E /* UpdatePreviewViewModelTests.swift in Sources */,
+				59885A9C1DB6ED6800F65825 /* FacebookConfirmationViewControllerTests.swift in Sources */,
 				A758F4041D0702CF00169CC0 /* DiscoveryFiltersDataSourceTests.swift in Sources */,
 				A77519121C8CADE20022F175 /* AppDelegateViewModelTests.swift in Sources */,
 				599604001CE6286900E1B1EC /* ProfileDataSourceTests.swift in Sources */,
@@ -5079,24 +5098,29 @@
 				9D3A6B4C1D8C4F3800FE3926 /* ProjectActivityViewControllerTests.swift in Sources */,
 				A73778DF1D81DC9B004C2A9B /* Combos.swift in Sources */,
 				0123B4E31D919BC4004C1166 /* DiscoveryFiltersViewControllerTests.swift in Sources */,
+				59885A961DB6E04100F65825 /* LoginViewControllerTests.swift in Sources */,
 				A72D92991CB1F7DA00A88249 /* TestCase.swift in Sources */,
 				01F42A501D93284E0084719D /* SortPagerViewControllerTests.swift in Sources */,
 				A7EDEE7B1D83635400780B34 /* CommentsViewControllerTests.swift in Sources */,
 				A758F43B1D070B8E00169CC0 /* DiscoveryPagesDataSourceTests.swift in Sources */,
 				A734A2651D219CB00080BBD5 /* UpdateViewModelTests.swift in Sources */,
+				59885A9A1DB6EA5700F65825 /* SignupViewControllerTests.swift in Sources */,
 				A70119451CD92261009F8F65 /* CommentsDataSourceTests.swift in Sources */,
 				A7D1F9931C850CB2000D41D5 /* KickstarterTests.swift in Sources */,
 				01F8ADFC1CEA5B070026F220 /* ThanksProjectsDataSourceTests.swift in Sources */,
 				A7E8FAEF1CD6806800DBF142 /* SearchDataSourceTests.swift in Sources */,
 				018422CD1D2C493D00CA7566 /* DashboardProjectsDrawerDataSourceTests.swift in Sources */,
+				59885A941DB6DC4700F65825 /* LoginToutViewControllerTests.swift in Sources */,
 				A72D92301CB1E08800A88249 /* XCTestCase+AppEnvironment.swift in Sources */,
 				A73778D61D81ABE2004C2A9B /* FundingGraphViewTests.swift in Sources */,
 				A757ED201D1C181D00A5C978 /* DiscoveryProjectsDataSourceTest.swift in Sources */,
 				0156B3851D107273000C4252 /* FindFriendsDataSourceTests.swift in Sources */,
 				9DE6C0891C9B5FCA00FCC7B1 /* (null) in Sources */,
+				59885A9E1DB6EFD900F65825 /* ResetPasswordViewControllerTests.swift in Sources */,
 				A7208CC41CCBDA7900E3DAB3 /* ActivitiesDataSourceTests.swift in Sources */,
 				A7CA8C471D8F2F870086A3E9 /* ProjectNavBarViewControllerTests.swift in Sources */,
 				A7DC83921C9DB9BC00BB2B44 /* (null) in Sources */,
+				59885A981DB6E2A900F65825 /* TwoFactorViewControllerTests.swift in Sources */,
 				9D525F121D417FD7003CAE04 /* ProjectActivitiesDataSourceTests.swift in Sources */,
 				013744FB1D99FE6A00E50C78 /* EmptyStatesViewControllerTests.swift in Sources */,
 				A7E3A0B91D96CDFD00F83738 /* ProjectPamphletContentViewControllerTests.swift in Sources */,

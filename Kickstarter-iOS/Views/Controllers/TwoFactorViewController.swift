@@ -27,15 +27,21 @@ internal final class TwoFactorViewController: UIViewController {
 
   internal override func bindStyles() {
     super.bindStyles()
-    self
 
+    self
       |> twoFactorControllerStyle
+      |> UIViewController.lens.view.layoutMargins %~~ { _, view in
+        view.traitCollection.isRegularRegular ? .init(all: Styles.grid(20)) : .init(all: Styles.grid(3))
+    }
 
     self.codeTextField
       |> tfaCodeFieldStyle
 
     self.formBackgroundView
       |> cardStyle()
+      |> UIView.lens.layoutMargins %~~ { _, view in
+        view.traitCollection.isRegularRegular ? .init(all: Styles.grid(10)) : .init(all: Styles.grid(3))
+    }
 
     self.formStackView
       |> UIStackView.lens.spacing .~ Styles.grid(5)

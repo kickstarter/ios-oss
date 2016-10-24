@@ -12,6 +12,7 @@ internal final class LoginViewController: UIViewController {
   @IBOutlet private weak var loginButton: UIButton!
   @IBOutlet private weak var onePasswordButton: UIButton!
   @IBOutlet private weak var passwordTextField: UITextField!
+  @IBOutlet private weak var rootStackView: UIStackView!
 
   internal let viewModel: LoginViewModelType = LoginViewModel()
 
@@ -72,6 +73,8 @@ internal final class LoginViewController: UIViewController {
     self.formBackgroundView |> cardStyle()
 
     self.onePasswordButton |> onePasswordButtonStyle
+
+    self.rootStackView |> loginRootStackViewStyle
   }
 
   override func bindViewModel() {

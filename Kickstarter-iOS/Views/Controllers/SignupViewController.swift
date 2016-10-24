@@ -16,6 +16,7 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
   @IBOutlet private weak var newsletterLabel: UILabel!
   @IBOutlet private weak var newsletterSwitch: UISwitch!
   @IBOutlet private weak var passwordTextField: UITextField!
+  @IBOutlet private weak var rootStackView: UIStackView!
   @IBOutlet private weak var signupButton: UIButton!
 
   internal static func instantiate() -> SignupViewController {
@@ -57,6 +58,9 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
 
     self.passwordTextField
       |> passwordFieldStyle
+
+    self.rootStackView
+      |> loginRootStackViewStyle
 
     self.signupButton
       |> signupButtonStyle

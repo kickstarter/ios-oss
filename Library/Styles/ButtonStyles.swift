@@ -45,11 +45,6 @@ public let facebookButtonStyle = baseButtonStyle
   <> UIButton.lens.imageEdgeInsets .~ .init(top: 0, left: 0, bottom: 0, right: 24.0)
   <> UIButton.lens.image(forState: .Normal) %~ { _ in image(named: "fb-logo-white") }
 
-public let facebookLoginButtonStyle = facebookButtonStyle
-  <> UIButton.lens.title(forState: .Normal) %~ { _ in
-    Strings.login_tout_buttons_log_in_with_facebook()
-}
-
 public let facebookThanksButtonStyle = facebookButtonStyle
   <> UIButton.lens.title(forState: .Normal) %~ { _ in
     Strings.project_checkout_share_buttons_share()

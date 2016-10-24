@@ -18,15 +18,14 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="UHD-eb-qXC">
-                                <rect key="frame" x="0.0" y="157" width="400" height="274"/>
+                                <rect key="frame" x="0.0" y="74" width="400" height="274"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="1tl-3X-f58">
                                         <rect key="frame" x="0.0" y="0.0" width="400" height="70"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="DI6-Zp-Yoj">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DI6-Zp-Yoj">
                                                 <rect key="frame" x="0.0" y="0.0" width="400" height="44"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="width" constant="300" id="j2Y-9T-Wkx"/>
                                                     <constraint firstAttribute="height" constant="44" id="wYA-Q6-Bw3"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
@@ -34,16 +33,6 @@
                                                 <state key="normal" title="Log in with Facebook">
                                                     <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                 </state>
-                                                <variation key="default">
-                                                    <mask key="constraints">
-                                                        <exclude reference="j2Y-9T-Wkx"/>
-                                                    </mask>
-                                                </variation>
-                                                <variation key="heightClass=compact">
-                                                    <mask key="constraints">
-                                                        <include reference="j2Y-9T-Wkx"/>
-                                                    </mask>
-                                                </variation>
                                                 <connections>
                                                     <action selector="facebookLoginButtonPressed:" destination="jyD-hR-XbB" eventType="touchUpInside" id="lED-xT-rnp"/>
                                                 </connections>
@@ -62,10 +51,10 @@
                                             <rect key="frame" x="0.0" y="0.0" width="520" height="70"/>
                                         </variation>
                                     </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" distribution="fillProportionally" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="eRD-uK-yiP">
+                                    <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="eRD-uK-yiP">
                                         <rect key="frame" x="0.0" y="100" width="400" height="100"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tcm-YK-ZfH">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tcm-YK-ZfH">
                                                 <rect key="frame" x="0.0" y="0.0" width="400" height="44"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="44" id="IVh-ao-BJi"/>
@@ -78,7 +67,7 @@
                                                     <action selector="loginButtonPressed:" destination="jyD-hR-XbB" eventType="touchUpInside" id="946-dn-Y7w"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ytH-Nw-2z0">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ytH-Nw-2z0">
                                                 <rect key="frame" x="0.0" y="56" width="400" height="44"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="44" id="rmm-8H-xbE"/>
@@ -136,10 +125,8 @@
                     <connections>
                         <outlet property="fbDisclaimer" destination="npz-Cl-wqX" id="iQh-wC-YCl"/>
                         <outlet property="fbLoginButton" destination="DI6-Zp-Yoj" id="jrl-tE-eBz"/>
-                        <outlet property="fbLoginStackView" destination="1tl-3X-f58" id="kz0-C7-Ulv"/>
                         <outlet property="helpButton" destination="RUt-ea-H2e" id="3Uh-Ol-5W8"/>
                         <outlet property="loginButton" destination="tcm-YK-ZfH" id="qe9-86-RTl"/>
-                        <outlet property="loginSignupButtonsStackView" destination="eRD-uK-yiP" id="x2p-vd-fCG"/>
                         <outlet property="rootStackView" destination="UHD-eb-qXC" id="aZl-hb-zFS"/>
                         <outlet property="signupButton" destination="ytH-Nw-2z0" id="kt8-oh-pu8"/>
                     </connections>
@@ -163,16 +150,16 @@
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uSk-gc-no0">
                                 <rect key="frame" x="20" y="24" width="360" height="576"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="c1T-P7-B9x" userLabel="Root Stack View">
+                                    <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="c1T-P7-B9x" userLabel="Root Stack View">
                                         <rect key="frame" x="0.0" y="0.0" width="360" height="518"/>
                                         <subviews>
-                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="Pl5-Tj-kxT" userLabel="Form Stack View">
+                                            <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="Pl5-Tj-kxT" userLabel="Form Stack View">
                                                 <rect key="frame" x="0.0" y="0.0" width="360" height="450"/>
                                                 <subviews>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="694-m2-31k">
+                                                    <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="694-m2-31k">
                                                         <rect key="frame" x="0.0" y="0.0" width="360" height="394"/>
                                                         <subviews>
-                                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="Dxd-YT-w74" userLabel="Form Stack View">
+                                                            <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" distribution="equalSpacing" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="Dxd-YT-w74" userLabel="Form Stack View">
                                                                 <rect key="frame" x="0.0" y="0.0" width="360" height="394"/>
                                                                 <subviews>
                                                                     <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7da-7V-Iuo" userLabel="Name">
@@ -265,11 +252,11 @@
                                                                             <constraint firstAttribute="height" constant="1" id="mxs-Qc-68J"/>
                                                                         </constraints>
                                                                     </view>
-                                                                    <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="oz6-o1-b4r" userLabel="Newsletter">
+                                                                    <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" alignment="center" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="oz6-o1-b4r" userLabel="Newsletter">
                                                                         <rect key="frame" x="0.0" y="339" width="360" height="55"/>
                                                                         <subviews>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" misplaced="YES" text="Receive our weekly newsletter and other occasional updates." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dlM-gc-tkW">
-                                                                                <rect key="frame" x="12" y="12" width="271" height="31"/>
+                                                                                <rect key="frame" x="12" y="13" width="271" height="31"/>
                                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                                 <nil key="highlightedColor"/>
@@ -294,7 +281,7 @@
                                                             <constraint firstAttribute="trailing" secondItem="Dxd-YT-w74" secondAttribute="trailing" id="wuu-a2-vEp"/>
                                                         </constraints>
                                                     </view>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JvF-DM-f0p">
+                                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JvF-DM-f0p">
                                                         <rect key="frame" x="0.0" y="418" width="360" height="32"/>
                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                         <state key="normal" title="Sign up">
@@ -306,7 +293,7 @@
                                                     </button>
                                                 </subviews>
                                             </stackView>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="oGE-sx-XVa">
+                                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="oGE-sx-XVa">
                                                 <rect key="frame" x="0.0" y="474" width="360" height="44"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="44" id="A6T-ky-9Vy"/>
@@ -345,6 +332,7 @@
                         <outlet property="newsletterLabel" destination="dlM-gc-tkW" id="OkY-kH-jDr"/>
                         <outlet property="newsletterSwitch" destination="vep-Pb-kEj" id="7Mc-bw-ybR"/>
                         <outlet property="passwordTextField" destination="8uO-cR-S3j" id="Oxc-Li-6Lg"/>
+                        <outlet property="rootStackView" destination="c1T-P7-B9x" id="8Bk-6A-RGD"/>
                         <outlet property="signupButton" destination="JvF-DM-f0p" id="7MA-5L-B7X"/>
                     </connections>
                 </viewController>
@@ -463,6 +451,7 @@
                         <outlet property="loginButton" destination="yb8-7t-B6f" id="YV7-rz-Jjv"/>
                         <outlet property="onePasswordButton" destination="sED-DC-oIo" id="SHk-Ii-46O"/>
                         <outlet property="passwordTextField" destination="A3g-DY-QEE" id="mia-c7-Dw0"/>
+                        <outlet property="rootStackView" destination="WAW-aN-vGd" id="NCz-Te-tZj"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FQx-n3-9wT" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -628,6 +617,7 @@
                         <outlet property="emailTextField" destination="ZTV-f1-Bmn" id="IL9-O8-Sme"/>
                         <outlet property="emailTextFieldBackgroundView" destination="zPd-xP-EN2" id="IRO-89-XVG"/>
                         <outlet property="resetPasswordButton" destination="LxO-w8-eBE" id="Mig-6i-174"/>
+                        <outlet property="rootStackView" destination="5eq-ej-7WQ" id="eBL-UA-XoA"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TZ5-3t-VLA" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -757,6 +747,7 @@
                         <outlet property="loginLabel" destination="7LL-th-UNn" id="cXm-4k-CXd"/>
                         <outlet property="newsletterLabel" destination="6Ha-q6-wmd" id="xXn-hq-sw4"/>
                         <outlet property="newsletterSwitch" destination="j4R-JY-GCT" id="m6S-Ak-7lf"/>
+                        <outlet property="rootStackView" destination="o6G-gP-3eh" id="UfY-Ev-fwZ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yrH-NO-Pt4" userLabel="First Responder" sceneMemberID="firstResponder"/>

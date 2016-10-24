@@ -199,9 +199,10 @@ internal final class ProjectNavBarViewController: UIViewController {
 
   private func goToLoginTout() {
     let vc = LoginToutViewController.configuredWith(loginIntent: .starProject)
-    self.presentViewController(UINavigationController(rootViewController: vc),
-                               animated: true,
-                               completion: nil)
+    let nav = UINavigationController(rootViewController: vc)
+    nav.modalPresentationStyle = .FormSheet
+
+    self.presentViewController(nav, animated: true, completion: nil)
   }
 
   private func showShareSheet(controller: UIActivityViewController) {

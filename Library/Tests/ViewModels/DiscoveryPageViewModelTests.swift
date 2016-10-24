@@ -397,7 +397,29 @@ internal final class DiscoveryPageViewModelTests: TestCase {
                                           "Activities are cleared out when logging out.")
   }
 
-  func testRefreshProjectsForCurrentUser() {
+  func testRefreshProjects_ModalLogin() {
+    let projectEnv = .template
+      |> DiscoveryEnvelope.lens.projects .~ (1...7).map { .template |> Project.lens.id .~ $0 }
+
+    self.vm.inputs.configureWith(sort: .magic)
+    self.vm.inputs.viewWillAppear()
+    self.vm.inputs.viewDidAppear()
+    self.vm.inputs.selectedFilter(.defaults)
+
+    self.scheduler.advance()
+    self.hasAddedProjects.assertValues([true], "Projects added for logged out user.")
+
+    withEnvironment(apiService: MockService(fetchDiscoveryResponse: projectEnv)) {
+      AppEnvironment.login(AccessTokenEnvelope(accessToken: "cafebeef", user: User.template))
+      self.vm.inputs.userSessionStarted()
+      self.hasAddedProjects.assertValues([true], "Previous projects not cleared.")
+
+      self.scheduler.advance()
+      self.hasAddedProjects.assertValues([true, true], "New projects added for logged in user.")
+    }
+  }
+
+  func testRefreshProjects_TabLogin() {
     let projectEnv = .template
       |> DiscoveryEnvelope.lens.projects .~ (1...7).map { .template |> Project.lens.id .~ $0 }
 
@@ -416,6 +438,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       AppEnvironment.login(AccessTokenEnvelope(accessToken: "cafebeef", user: User.template))
       self.vm.inputs.viewWillAppear()
       self.vm.inputs.viewDidAppear()
+      self.vm.inputs.userSessionStarted()
       self.hasAddedProjects.assertValues([true], "Previous projects not cleared.")
 
       self.scheduler.advance()

@@ -132,9 +132,10 @@ internal final class CommentsViewController: UITableViewController {
 
   internal func presentLoginTout() {
     let login = LoginToutViewController.configuredWith(loginIntent: .generic)
-    self.presentViewController(UINavigationController(rootViewController: login),
-                               animated: true,
-                               completion: nil)
+    let nav = UINavigationController(rootViewController: login)
+    nav.modalPresentationStyle = .FormSheet
+
+    self.presentViewController(nav, animated: true, completion: nil)
   }
 
   @IBAction func commentButtonPressed() {

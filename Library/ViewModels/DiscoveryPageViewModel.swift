@@ -17,6 +17,12 @@ public protocol DiscoveryPageViewModelInputs {
   /// Call when the user taps on a project.
   func tapped(project project: Project)
 
+  /// Call when the controller has received a user session ended notification.
+  func userSessionEnded()
+
+  /// Call when the controller has received a user session started notification.
+  func userSessionStarted()
+
   /// Call when the view appears.
   func viewDidAppear()
 
@@ -78,7 +84,11 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
 
   // swiftlint:disable function_body_length
   public init() {
-    let currentUser = self.viewDidAppearProperty.signal
+    let currentUser = Signal.merge(
+      self.userSessionStartedProperty.signal,
+      self.userSessionEndedProperty.signal,
+      self.viewDidAppearProperty.signal
+    )
       .map { AppEnvironment.current.currentUser }
       .skipRepeats(==)
 
@@ -188,13 +198,8 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       )
       .skipRepeats(==)
 
-    self.showOnboarding = combineLatest(
-      self.viewWillAppearProperty.signal,
-      self.sortProperty.signal.ignoreNil()
-      )
-      .map { _, sort in
-        return AppEnvironment.current.currentUser == nil && sort == .magic
-      }
+    self.showOnboarding = combineLatest(currentUser, self.sortProperty.signal.ignoreNil())
+      .map { $0 == nil && $1 == .magic }
       .skipRepeats()
 
     requestFirstPageWith
@@ -225,6 +230,14 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
   private let tappedProject = MutableProperty<Project?>(nil)
   public func tapped(project project: Project) {
     self.tappedProject.value = project
+  }
+  private let userSessionStartedProperty = MutableProperty()
+  public func userSessionStarted() {
+    self.userSessionStartedProperty.value = ()
+  }
+  private let userSessionEndedProperty = MutableProperty()
+  public func userSessionEnded() {
+    self.userSessionEndedProperty.value = ()
   }
   private let viewDidAppearProperty = MutableProperty()
   public func viewDidAppear() {

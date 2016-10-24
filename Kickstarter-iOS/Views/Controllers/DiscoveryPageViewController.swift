@@ -23,6 +23,16 @@ internal final class DiscoveryPageViewController: UITableViewController {
     super.viewDidLoad()
 
     self.tableView.dataSource = self.dataSource
+
+    NSNotificationCenter.defaultCenter()
+      .addObserverForName(CurrentUserNotifications.sessionStarted, object: nil, queue: nil) { [weak self] _ in
+        self?.viewModel.inputs.userSessionStarted()
+    }
+
+    NSNotificationCenter.defaultCenter()
+      .addObserverForName(CurrentUserNotifications.sessionEnded, object: nil, queue: nil) { [weak self] _ in
+        self?.viewModel.inputs.userSessionEnded()
+    }
   }
 
   internal override func viewWillAppear(animated: Bool) {
@@ -183,6 +193,8 @@ extension DiscoveryPageViewController: DiscoveryOnboardingCellDelegate {
   internal func discoveryOnboardingTappedSignUpLoginButton() {
     let loginTout = LoginToutViewController.configuredWith(loginIntent: .discoveryOnboarding)
     let nav = UINavigationController(rootViewController: loginTout)
+    nav.modalPresentationStyle = .FormSheet
+
     self.presentViewController(nav, animated: true, completion: nil)
   }
 }

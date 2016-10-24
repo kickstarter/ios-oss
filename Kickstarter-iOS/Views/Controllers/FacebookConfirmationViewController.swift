@@ -17,6 +17,7 @@ internal final class FacebookConfirmationViewController: UIViewController,
   @IBOutlet private weak var loginLabel: UILabel!
   @IBOutlet private weak var newsletterLabel: UILabel!
   @IBOutlet private weak var newsletterSwitch: UISwitch!
+  @IBOutlet private weak var rootStackView: UIStackView!
 
   private let viewModel: FacebookConfirmationViewModelType = FacebookConfirmationViewModel()
   private let helpViewModel = HelpViewModel()
@@ -52,6 +53,7 @@ internal final class FacebookConfirmationViewController: UIViewController,
     self.loginLabel |> fbWrongAccountLabelStyle
     self.navigationItem.title = Strings.signup_navbar_title()
     self.newsletterLabel |> newsletterLabelStyle
+    self.rootStackView |> loginRootStackViewStyle
   }
 
   // swiftlint:disable function_body_length

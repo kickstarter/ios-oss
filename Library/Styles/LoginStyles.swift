@@ -7,9 +7,11 @@ public let createNewAccountButtonStyle = greenButtonStyle
 
 public let disclaimerButtonStyle =
     UIButton.lens.titleColor(forState: .Normal) .~ .ksr_text_navy_500
-      <> UIButton.lens.titleLabel.font .~ .ksr_footnote()
+      <> UIButton.lens.titleLabel.font %~~ { _, label in
+        label.traitCollection.isRegularRegular ? .ksr_footnote(size: 14.0) : .ksr_footnote()
+      }
       <> UIButton.lens.titleLabel.textAlignment .~ .Center
-      <> UIButton.lens.contentEdgeInsets .~ .init(top: 0, left: 16, bottom: 0, right: 16)
+      <> UIButton.lens.contentEdgeInsets .~ .init(topBottom: 0, leftRight: Styles.grid(3))
       <> UIButton.lens.title(forState: .Normal) %~ { _ in
         Strings.login_tout_disclaimer_by_signing_up_you_agree_to_terms()
       }
@@ -23,6 +25,11 @@ public let emailFieldStyle = formFieldStyle
   <> UITextField.lens.placeholder %~ { _ in Strings.login_placeholder_email() }
   <> UITextField.lens.keyboardType .~ .EmailAddress
 
+public let fbLoginButtonStyle = facebookButtonStyle
+  <> UIButton.lens.title(forState: .Normal) %~ { _ in
+    Strings.login_tout_buttons_log_in_with_facebook()
+}
+
 public let fbConfirmationMessageLabelStyle = UILabel.lens.textColor .~ .ksr_text_navy_900
   <> UILabel.lens.font .~ .ksr_body()
   <> UILabel.lens.text %~ { _ in Strings.Youre_about_to_create_a_new_Kickstarter_account() }
@@ -32,16 +39,14 @@ public let fbConfirmEmailLabelStyle =  UILabel.lens.textColor .~ .ksr_text_navy_
   <> UILabel.lens.textAlignment .~ .Left
   <> UILabel.lens.adjustsFontSizeToFitWidth .~ true
 
-public let fbDisclaimerLabelStyle = UILabel.lens.font .~ .ksr_footnote()
+public let fbDisclaimerLabelStyle =
+  UILabel.lens.font %~~ { _, label in
+    label.traitCollection.isRegularRegular ? .ksr_footnote(size: 14.0) : .ksr_footnote()
+  }
   <> UILabel.lens.textColor .~ .ksr_text_navy_500
   <> UILabel.lens.textAlignment .~ .Center
   <> UILabel.lens.text %~ { _ in
     Strings.discovery_facebook_connect_hero_we_will_never_post_anything_on_facebook()
-}
-
-public let fbLoginStackViewStyle =
-  UIStackView.lens.alignment %~~ { _, stack in
-    stack.traitCollection.horizontalSizeClass == .Compact ? .Fill : .Center
 }
 
 public let fbWrongAccountLabelStyle = UILabel.lens.font .~ .ksr_caption1()
@@ -61,11 +66,6 @@ public let loginButtonStyle = greenButtonStyle
 public let loginControllerStyle = baseControllerStyle()
   <> UIViewController.lens.title %~ { _ in
     Strings.login_navbar_title()
-}
-
-public let loginSignupButtonsStackViewStyle =
-  UIStackView.lens.axis %~~ { _, stack in
-    stack.traitCollection.verticalSizeClass ==  .Compact ? .Horizontal : .Vertical
 }
 
 public let loginWithEmailButtonStyle = borderButtonStyle
@@ -94,7 +94,9 @@ public let resetPasswordControllerStyle = baseControllerStyle()
 public let loginRootStackViewStyle =
   UIStackView.lens.layoutMarginsRelativeArrangement .~ true
     <> UIStackView.lens.layoutMargins %~~ { _, stack in
-      stack.traitCollection.horizontalSizeClass == .Compact ? .init(all: 16.0) : .init(all: 64.0)
+      stack.traitCollection.isRegularRegular
+        ? .init(topBottom: Styles.grid(10), leftRight: Styles.grid(20))
+        : .init(topBottom: Styles.grid(2), leftRight: Styles.grid(3))
 }
 
 public let signupButtonStyle = greenButtonStyle

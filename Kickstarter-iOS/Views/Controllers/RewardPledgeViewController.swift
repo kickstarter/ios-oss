@@ -521,9 +521,10 @@ internal final class RewardPledgeViewController: UIViewController {
 
   private func goToLoginTout() {
     let vc = LoginToutViewController.configuredWith(loginIntent: .backProject)
-    self.presentViewController(UINavigationController(rootViewController: vc),
-                               animated: true,
-                               completion: nil)
+    let nav = UINavigationController(rootViewController: vc)
+    nav.modalPresentationStyle = .FormSheet
+
+    self.presentViewController(nav, animated: true, completion: nil)
   }
 
   private func goToTrustAndSafety() {

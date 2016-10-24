@@ -9,6 +9,7 @@ internal final class ResetPasswordViewController: UIViewController {
   @IBOutlet private weak var emailTextFieldBackgroundView: UIView!
   @IBOutlet private weak var emailTextField: UITextField!
   @IBOutlet private weak var resetPasswordButton: BorderButton!
+  @IBOutlet private weak var rootStackView: UIStackView!
 
   private let viewModel: ResetPasswordViewModelType = ResetPasswordViewModel()
 
@@ -30,6 +31,7 @@ internal final class ResetPasswordViewController: UIViewController {
     self.emailTextField |> emailFieldStyle
     self.emailTextFieldBackgroundView |> cardStyle()
     self.resetPasswordButton |> resetPasswordButtonStyle
+    self.rootStackView |> loginRootStackViewStyle
   }
 
   override func bindViewModel() {

@@ -10,10 +10,8 @@ import FBSDKLoginKit
 internal final class LoginToutViewController: UIViewController, MFMailComposeViewControllerDelegate {
   @IBOutlet private weak var fbDisclaimer: UILabel!
   @IBOutlet private weak var fbLoginButton: UIButton!
-  @IBOutlet private weak var fbLoginStackView: UIStackView!
   @IBOutlet private weak var helpButton: UIButton!
   @IBOutlet private weak var loginButton: UIButton!
-  @IBOutlet private weak var loginSignupButtonsStackView: UIStackView!
   @IBOutlet private weak var signupButton: UIButton!
   @IBOutlet private weak var rootStackView: UIStackView!
 
@@ -59,11 +57,9 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
     self |> baseControllerStyle()
 
     self.fbDisclaimer |> fbDisclaimerLabelStyle
-    self.fbLoginButton |> facebookLoginButtonStyle
-    self.fbLoginStackView |> fbLoginStackViewStyle
+    self.fbLoginButton |> fbLoginButtonStyle
     self.helpButton |> disclaimerButtonStyle
     self.loginButton |> loginWithEmailButtonStyle
-    self.loginSignupButtonsStackView |> loginSignupButtonsStackViewStyle
     self.rootStackView |> loginRootStackViewStyle
     self.signupButton |> signupWithEmailButtonStyle
   }

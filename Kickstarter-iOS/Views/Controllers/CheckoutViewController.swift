@@ -142,9 +142,10 @@ internal final class CheckoutViewController: DeprecatedWebViewController {
 
   private func openLoginTout() {
     let vc = LoginToutViewController.configuredWith(loginIntent: .backProject)
-    self.presentViewController(UINavigationController(rootViewController: vc),
-                               animated: true,
-                               completion: nil)
+    let nav = UINavigationController(rootViewController: vc)
+    nav.modalPresentationStyle = .FormSheet
+
+    self.presentViewController(nav, animated: true, completion: nil)
   }
 
   private func popViewController() {
