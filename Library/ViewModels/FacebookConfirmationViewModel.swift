@@ -143,9 +143,14 @@ FacebookConfirmationViewModelErrors {
 
     self.viewDidLoadProperty.signal.observeNext { AppEnvironment.current.koala.trackFacebookConfirmation() }
 
-    self.logIntoEnvironment.observeNext { _ in AppEnvironment.current.koala.trackFacebookLoginSuccess() }
+    self.environmentLoggedInProperty.signal
+      .observeNext { _ in AppEnvironment.current.koala.trackLoginSuccess(authType: Koala.AuthType.facebook) }
 
-    self.showSignupError.observeNext { _ in AppEnvironment.current.koala.trackFacebookLoginError() }
+    self.showSignupError
+      .observeNext { _ in AppEnvironment.current.koala.trackSignupError(authType: Koala.AuthType.facebook) }
+
+    signupEvent.values()
+      .observeNext { _ in AppEnvironment.current.koala.trackSignupSuccess(authType: Koala.AuthType.facebook) }
 
     self.sendNewslettersToggledProperty.signal
       .observeNext { AppEnvironment.current.koala.trackSignupNewsletterToggle($0) }

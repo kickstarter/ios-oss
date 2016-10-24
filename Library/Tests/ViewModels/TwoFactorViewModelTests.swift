@@ -35,7 +35,8 @@ final class TwoFactorViewModelTests: TestCase {
   func testKoala_viewEvents() {
     vm.inputs.viewWillAppear()
 
-    XCTAssertEqual(["Two-factor Authentication Confirm View"], trackingClient.events)
+    XCTAssertEqual(["Two-factor Authentication Confirm View", "Viewed Two-Factor Confirmation"],
+                   trackingClient.events)
   }
 
   func testFormIsValid_forEmailPasswordFlow() {
@@ -90,7 +91,9 @@ final class TwoFactorViewModelTests: TestCase {
 
     isLoading.assertValues([true, false])
     logIntoEnvironment.assertValueCount(1, "Log into environment.")
-    XCTAssertEqual(["Two-factor Authentication Confirm View", "Logged In", "Login"], trackingClient.events)
+    XCTAssertEqual(["Two-factor Authentication Confirm View", "Viewed Two-Factor Confirmation", "Login",
+      "Logged In"], trackingClient.events)
+    XCTAssertEqual("Email", trackingClient.properties.last!["auth_type"] as? String)
 
     vm.inputs.environmentLoggedIn()
 
@@ -107,8 +110,9 @@ final class TwoFactorViewModelTests: TestCase {
 
     isLoading.assertValues([true, false])
     logIntoEnvironment.assertValueCount(1, "Log into environment.")
-    XCTAssertEqual(["Two-factor Authentication Confirm View", "Logged In With Facebook", "Facebook Login"],
-                   trackingClient.events)
+    XCTAssertEqual(["Two-factor Authentication Confirm View", "Viewed Two-Factor Confirmation", "Login",
+      "Logged In"], trackingClient.events)
+    XCTAssertEqual("Facebook", trackingClient.properties.last!["auth_type"] as? String)
 
     vm.inputs.environmentLoggedIn()
 
@@ -134,7 +138,9 @@ final class TwoFactorViewModelTests: TestCase {
       logIntoEnvironment.assertValueCount(0, "Did not log into environment.")
       showError.assertValues(["The code provided does not match."], "Code does not match error emitted")
 
-      XCTAssertEqual(["Two-factor Authentication Confirm View", "Errored User Login"], trackingClient.events)
+      XCTAssertEqual(["Two-factor Authentication Confirm View", "Viewed Two-Factor Confirmation",
+        "Errored User Login", "Errored Login"], trackingClient.events)
+      XCTAssertEqual("Email", trackingClient.properties.last!["auth_type"] as? String)
     }
   }
 
@@ -156,7 +162,9 @@ final class TwoFactorViewModelTests: TestCase {
       logIntoEnvironment.assertValueCount(0, "Did not log into environment.")
       showError.assertValues(["The code provided does not match."], "Code does not match error emitted")
 
-      XCTAssertEqual(["Two-factor Authentication Confirm View", "Errored User Login"], trackingClient.events)
+      XCTAssertEqual(["Two-factor Authentication Confirm View", "Viewed Two-Factor Confirmation",
+        "Errored User Login", "Errored Login"], trackingClient.events)
+      XCTAssertEqual("Facebook", trackingClient.properties.last!["auth_type"] as? String)
     }
   }
 
@@ -178,7 +186,9 @@ final class TwoFactorViewModelTests: TestCase {
       logIntoEnvironment.assertValueCount(0, "Did not log into environment.")
       showError.assertValues(["Unable to login."], "Login errored")
 
-      XCTAssertEqual(["Two-factor Authentication Confirm View", "Errored User Login"], trackingClient.events)
+      XCTAssertEqual(["Two-factor Authentication Confirm View", "Viewed Two-Factor Confirmation",
+        "Errored User Login", "Errored Login"], trackingClient.events)
+      XCTAssertEqual("Email", trackingClient.properties.last!["auth_type"] as? String)
     }
   }
 
@@ -200,7 +210,9 @@ final class TwoFactorViewModelTests: TestCase {
       logIntoEnvironment.assertValueCount(0, "Did not log into environment.")
       showError.assertValues(["Unable to login."], "Errored user login")
 
-      XCTAssertEqual(["Two-factor Authentication Confirm View", "Errored User Login"], trackingClient.events)
+      XCTAssertEqual(["Two-factor Authentication Confirm View", "Viewed Two-Factor Confirmation",
+        "Errored User Login", "Errored Login"], trackingClient.events)
+      XCTAssertEqual("Facebook", trackingClient.properties.last!["auth_type"] as? String)
     }
   }
 
@@ -221,8 +233,8 @@ final class TwoFactorViewModelTests: TestCase {
       showError.assertValueCount(0, "No error was emitted")
       resendSuccess.assertValueCount(1, "Code resent successfully")
 
-      XCTAssertEqual(["Two-factor Authentication Confirm View", "Two-factor Authentication Resend Code"],
-                     trackingClient.events)
+      XCTAssertEqual(["Two-factor Authentication Confirm View", "Viewed Two-Factor Confirmation",
+        "Two-factor Authentication Resend Code", "Resent Two-Factor Code"], trackingClient.events)
     }
   }
 
@@ -243,8 +255,8 @@ final class TwoFactorViewModelTests: TestCase {
       showError.assertValueCount(0, "No error was emitted")
       resendSuccess.assertValueCount(1, "Code resent successfully")
 
-      XCTAssertEqual(["Two-factor Authentication Confirm View", "Two-factor Authentication Resend Code"],
-                     trackingClient.events)
+      XCTAssertEqual(["Two-factor Authentication Confirm View", "Viewed Two-Factor Confirmation",
+        "Two-factor Authentication Resend Code", "Resent Two-Factor Code"], trackingClient.events)
     }
   }
 
@@ -265,8 +277,8 @@ final class TwoFactorViewModelTests: TestCase {
       showError.assertValueCount(0, "No error was emitted")
       resendSuccess.assertValueCount(0, "Code was not resent")
 
-      XCTAssertEqual(["Two-factor Authentication Confirm View", "Two-factor Authentication Resend Code"],
-                     trackingClient.events)
+      XCTAssertEqual(["Two-factor Authentication Confirm View", "Viewed Two-Factor Confirmation",
+        "Two-factor Authentication Resend Code", "Resent Two-Factor Code"], trackingClient.events)
     }
   }
 
@@ -287,8 +299,8 @@ final class TwoFactorViewModelTests: TestCase {
       showError.assertValueCount(0, "No error was emitted")
       resendSuccess.assertValueCount(0, "Code was not resent")
 
-      XCTAssertEqual(["Two-factor Authentication Confirm View", "Two-factor Authentication Resend Code"],
-                     trackingClient.events)
+      XCTAssertEqual(["Two-factor Authentication Confirm View", "Viewed Two-Factor Confirmation",
+        "Two-factor Authentication Resend Code", "Resent Two-Factor Code"], trackingClient.events)
     }
   }
 }

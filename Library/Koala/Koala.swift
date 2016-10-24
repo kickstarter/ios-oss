@@ -17,6 +17,22 @@ public final class Koala {
   private let screen: UIScreenType
   private let distinctId: String
 
+
+  /// Determines the authentication type for login or signup events.
+  public enum AuthType {
+    case email
+    case facebook
+
+    var trackingString: String {
+      switch self {
+      case .email:
+        return "Email"
+      case .facebook:
+        return "Facebook"
+      }
+    }
+  }
+
   /**
    Determines the place from which the message dialog was presented.
 
@@ -134,7 +150,10 @@ public final class Koala {
   }
 
   public func trackAttemptingOnePasswordLogin() {
-    self.track(event: "Attempting 1password Login")
+    // Deprecated event
+    self.track(event: "Attempting 1password Login", properties: [Koala.DeprecatedKey: true])
+
+    self.track(event: "Triggered 1Password")
   }
 
   // MARK: Discovery Events
@@ -240,21 +259,17 @@ public final class Koala {
 
   // MARK: Login Events
   public func trackLoginTout(intent intent: LoginIntent) {
-
-    let intentTrackingString: String
-    switch intent {
-    case .activity:             intentTrackingString = "activity"
-    case .backProject:          intentTrackingString = "pledge"
-    case .discoveryOnboarding:  intentTrackingString = "discovery_onboarding"
-    case .favoriteCategory:     intentTrackingString = "favorite_category"
-    case .generic:              intentTrackingString = "generic"
-    case .loginTab:             intentTrackingString = "login_tab"
-    case .messageCreator:       intentTrackingString = "new_message"
-    case .starProject:          intentTrackingString = "star"
-    }
-
+    // Deprecated event
     self.track(event: "Application Login or Signup",
-               properties: ["intent": intentTrackingString, "context": intentTrackingString])
+               properties: [
+                "intent": intent.trackingString,
+                "context": intent.trackingString,
+                Koala.DeprecatedKey: true
+      ]
+    )
+
+    self.track(event: "Viewed Login Signup",
+               properties: ["intent": intent.trackingString, "context": intent.trackingString])
   }
 
   public func trackLoginFormView(onePasswordIsAvailable onePasswordIsAvailable: Bool) {
@@ -268,53 +283,70 @@ public final class Koala {
                properties: ["1password_extension_available": onePasswordIsAvailable])
   }
 
-  public func trackLoginSuccess() {
-    self.track(event: "Logged In")
-    self.track(event: "Login")
+  public func trackLoginSuccess(authType authType: AuthType) {
+    // Deprecated event
+    self.track(event: "Login", properties: [Koala.DeprecatedKey: true])
+
+    self.track(event: "Logged In", properties: ["auth_type": authType.trackingString])
   }
 
-  public func trackLoginError() {
-    self.track(event: "Errored User Login")
+  public func trackLoginError(authType authType: AuthType) {
+    // Deprecated event
+    self.track(event: "Errored User Login", properties: [Koala.DeprecatedKey: true])
+
+    self.track(event: "Errored Login", properties: ["auth_type": authType.trackingString])
   }
 
   public func trackResetPassword() {
-    self.track(event: "Forgot Password View")
+    // Deprecated event
+    self.track(event: "Forgot Password View", properties: [Koala.DeprecatedKey: true])
+
+    self.track(event: "Viewed Forgot Password")
   }
 
   public func trackResetPasswordSuccess() {
-    self.track(event: "Forgot Password Requested")
+    // Deprecated event
+    self.track(event: "Forgot Password Requested", properties: [Koala.DeprecatedKey: true])
+
+    self.track(event: "Requested Password Reset")
   }
 
   public func trackResetPasswordError() {
-    self.track(event: "Forgot Password Errored")
+    // Deprecated event
+    self.track(event: "Forgot Password Errored", properties: [Koala.DeprecatedKey: true])
+
+    self.track(event: "Errored Forgot Password")
   }
 
   public func trackFacebookConfirmation() {
-    self.track(event: "Facebook Confirm")
-  }
+    // Deprecated event
+    self.track(event: "Facebook Confirm", properties: [Koala.DeprecatedKey: true])
 
-  public func trackFacebookLoginSuccess() {
-    self.track(event: "Logged In With Facebook")
-    self.track(event: "Facebook Login")
-  }
-
-  public func trackFacebookLoginError() {
-    self.track(event: "Errored Facebook Login")
+    self.track(event: "Viewed Facebook Signup")
   }
 
   public func trackTfa() {
-    self.track(event: "Two-factor Authentication Confirm View")
+    // Deprecated event
+    self.track(event: "Two-factor Authentication Confirm View", properties: [Koala.DeprecatedKey: true])
+
+    self.track(event: "Viewed Two-Factor Confirmation")
   }
 
   public func trackTfaResendCode() {
-    self.track(event: "Two-factor Authentication Resend Code")
+    // Deprecated event
+    self.track(event: "Two-factor Authentication Resend Code", properties: [Koala.DeprecatedKey: true])
+
+    self.track(event: "Resent Two-Factor Code")
   }
 
   // MARK: Signup
 
   // Call when an error is returned after attempting to signup.
-  public func trackSignupError() {
-    self.track(event: "Errored User Signup")
+  public func trackSignupError(authType authType: AuthType) {
+    // Deprecated event
+    self.track(event: "Errored User Signup", properties: [Koala.DeprecatedKey: true])
+
+    self.track(event: "Errored Signup", properties: ["auth_type": authType.trackingString])
   }
 
   // Call when the user toggles the signup form's newsletter toggle.
@@ -323,13 +355,19 @@ public final class Koala {
   }
 
   // Call when the user has successfully signed up for a new account.
-  public func trackSignupSuccess() {
-    self.track(event: "New User")
+  public func trackSignupSuccess(authType authType: AuthType) {
+    // Deprecated event
+    self.track(event: "New User", properties: [Koala.DeprecatedKey: true])
+
+    self.track(event: "Signed Up", properties: ["auth_type": authType.trackingString])
   }
 
   // Call once when the signup view loads.
   public func trackSignupView() {
-    self.track(event: "User Signup")
+    // Deprecated event
+    self.track(event: "User Signup", properties: [Koala.DeprecatedKey: true])
+
+    self.track(event: "Viewed Signup")
   }
 
   // MARK: Comments Events

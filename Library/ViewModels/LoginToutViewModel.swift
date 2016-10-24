@@ -142,7 +142,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
       .ignoreValues()
 
     self.logIntoEnvironment
-      .observeNext { _ in AppEnvironment.current.koala.trackFacebookLoginSuccess() }
+      .observeNext { _ in AppEnvironment.current.koala.trackLoginSuccess(authType: Koala.AuthType.facebook) }
 
     self.showFacebookErrorAlert = Signal.merge(
       facebookTokenFailAlert,
@@ -150,7 +150,8 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
       genericFacebookErrorAlert
     )
 
-    self.showFacebookErrorAlert.observeNext { _ in AppEnvironment.current.koala.trackFacebookLoginError() }
+    self.showFacebookErrorAlert
+      .observeNext { _ in AppEnvironment.current.koala.trackLoginError(authType: Koala.AuthType.facebook) }
 
     self.loginIntentProperty.producer.ignoreNil()
       .takeWhen(viewWillAppearProperty.signal.take(1))

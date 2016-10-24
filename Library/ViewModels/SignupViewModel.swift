@@ -134,17 +134,17 @@ public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, 
       .mapConst(NSNotification(name: CurrentUserNotifications.sessionStarted, object: nil))
 
     self.environmentLoggedInProperty.signal
-      .observeNext { AppEnvironment.current.koala.trackLoginSuccess() }
+      .observeNext { AppEnvironment.current.koala.trackLoginSuccess(authType: Koala.AuthType.email) }
 
     self.showError
-      .observeNext { _ in AppEnvironment.current.koala.trackSignupError() }
+      .observeNext { _ in AppEnvironment.current.koala.trackSignupError(authType: Koala.AuthType.email) }
 
     self.weeklyNewsletterChangedProperty.signal
       .ignoreNil()
       .observeNext { AppEnvironment.current.koala.trackSignupNewsletterToggle($0) }
 
     signupEvent.values()
-      .observeNext { _ in AppEnvironment.current.koala.trackSignupSuccess() }
+      .observeNext { _ in AppEnvironment.current.koala.trackSignupSuccess(authType: Koala.AuthType.email) }
 
     self.viewDidLoadProperty.signal
       .observeNext { AppEnvironment.current.koala.trackSignupView() }

@@ -74,8 +74,9 @@ final class LoginViewModelTests: TestCase {
 
     self.dismissKeyboard.assertValueCount(1, "Keyboard is dismissed")
     self.logIntoEnvironment.assertValueCount(1, "Log into environment.")
-    XCTAssertEqual(["User Login", "Viewed Login", "Logged In", "Login"], trackingClient.events,
+    XCTAssertEqual(["User Login", "Viewed Login", "Login", "Logged In"], trackingClient.events,
                    "Koala login is tracked")
+    XCTAssertEqual("Email", trackingClient.properties.last!["auth_type"] as? String)
 
     self.vm.inputs.environmentLoggedIn()
     self.postNotificationName.assertValues([CurrentUserNotifications.sessionStarted],
@@ -101,7 +102,9 @@ final class LoginViewModelTests: TestCase {
       self.vm.inputs.loginButtonPressed()
 
       self.logIntoEnvironment.assertValueCount(0, "Did not log into environment.")
-      XCTAssertEqual(["User Login", "Viewed Login", "Errored User Login"], trackingClient.events)
+      XCTAssertEqual(["User Login", "Viewed Login", "Errored User Login", "Errored Login"],
+                     trackingClient.events)
+      XCTAssertEqual("Email", trackingClient.properties.last!["auth_type"] as? String)
       self.showError.assertValues(["Unable to log in."], "Login errored")
       self.tfaChallenge.assertValueCount(0, "TFA challenge did not happen")
     }
@@ -123,7 +126,9 @@ final class LoginViewModelTests: TestCase {
       self.vm.inputs.loginButtonPressed()
 
       self.logIntoEnvironment.assertValueCount(0, "Did not log into environment.")
-      XCTAssertEqual(["User Login", "Viewed Login", "Errored User Login"], trackingClient.events)
+      XCTAssertEqual(["User Login", "Viewed Login", "Errored User Login", "Errored Login"],
+                     trackingClient.events)
+      XCTAssertEqual("Email", trackingClient.properties.last!["auth_type"] as? String)
       self.showError.assertValues([Strings.login_errors_unable_to_log_in()], "Login errored")
       self.tfaChallenge.assertValueCount(0, "TFA challenge did not happen")
     }
@@ -180,9 +185,8 @@ final class LoginViewModelTests: TestCase {
     self.emailText.assertValues(["nativesquad@gmail.com"])
     self.passwordText.assertValues(["hello"])
     self.logIntoEnvironment.assertValueCount(1, "Log into environment.")
-    XCTAssertEqual(["User Login", "Viewed Login", "Logged In", "Login", "Attempting 1password Login"],
-                   self.trackingClient.events,
-                   "Koala login is tracked")
+    XCTAssertEqual(["User Login", "Viewed Login", "Login", "Logged In", "Attempting 1password Login",
+      "Triggered 1Password"], self.trackingClient.events, "Koala login is tracked")
 
     self.vm.inputs.environmentLoggedIn()
     self.postNotificationName.assertValues([CurrentUserNotifications.sessionStarted],
@@ -207,7 +211,8 @@ final class LoginViewModelTests: TestCase {
       self.vm.inputs.onePasswordFoundLogin(email: "nativesquad@gmail.com", password: "hello")
 
       self.logIntoEnvironment.assertValueCount(0, "Did not log into environment.")
-      XCTAssertEqual(["User Login", "Viewed Login", "Attempting 1password Login"], self.trackingClient.events,
+      XCTAssertEqual(["User Login", "Viewed Login", "Attempting 1password Login", "Triggered 1Password"],
+                     self.trackingClient.events,
                      "Tfa Challenge error was not tracked")
       self.showError.assertValueCount(0, "Login error did not happen")
       self.tfaChallenge.assertValues(["nativesquad@gmail.com"],

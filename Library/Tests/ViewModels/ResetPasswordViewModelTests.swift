@@ -34,7 +34,7 @@ final class ResetPasswordViewModelTests: TestCase {
   func testViewDidLoadTracking() {
     self.vm.inputs.viewDidLoad()
 
-    XCTAssertEqual(["Forgot Password View"], trackingClient.events)
+    XCTAssertEqual(["Forgot Password View", "Viewed Forgot Password"], trackingClient.events)
   }
 
   func testFormIsValid() {
@@ -105,7 +105,8 @@ final class ResetPasswordViewModelTests: TestCase {
         email: "lisa@kickstarter.com")
       ]
     )
-    XCTAssertEqual(["Forgot Password View", "Forgot Password Requested"], trackingClient.events)
+    XCTAssertEqual(["Forgot Password View", "Viewed Forgot Password", "Forgot Password Requested",
+      "Requested Password Reset"], trackingClient.events)
   }
 
   func testResetConfirmation() {

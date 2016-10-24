@@ -154,10 +154,10 @@ public final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, Log
       .observeNext { AppEnvironment.current.koala.trackLoginFormView(onePasswordIsAvailable: $0) }
 
     self.logIntoEnvironment
-      .observeNext { _ in AppEnvironment.current.koala.trackLoginSuccess() }
+      .observeNext { _ in AppEnvironment.current.koala.trackLoginSuccess(authType: Koala.AuthType.email) }
 
     self.showError
-      .observeNext { _ in AppEnvironment.current.koala.trackLoginError() }
+      .observeNext { _ in AppEnvironment.current.koala.trackLoginError(authType: Koala.AuthType.email) }
   }
 
   public var inputs: LoginViewModelInputs { return self }

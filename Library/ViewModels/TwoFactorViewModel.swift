@@ -139,17 +139,22 @@ public final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMode
 
     self.facebookTokenProperty.signal.ignoreValues()
       .takeWhen(self.logIntoEnvironment)
-      .observeNext { AppEnvironment.current.koala.trackFacebookLoginSuccess() }
+      .observeNext { AppEnvironment.current.koala.trackLoginSuccess(authType: Koala.AuthType.facebook) }
 
     self.passwordProperty.signal.ignoreValues()
       .takeWhen(self.logIntoEnvironment)
-      .observeNext { AppEnvironment.current.koala.trackLoginSuccess() }
+      .observeNext { AppEnvironment.current.koala.trackLoginSuccess(authType: Koala.AuthType.email) }
 
     self.resendPressedProperty.signal
       .observeNext { AppEnvironment.current.koala.trackTfaResendCode() }
 
-    loginEvent.errors()
-      .observeNext { _ in AppEnvironment.current.koala.trackLoginError() }
+    self.facebookTokenProperty.signal
+      .takeWhen(self.showError)
+      .observeNext { _ in AppEnvironment.current.koala.trackLoginError(authType: Koala.AuthType.facebook) }
+
+    self.emailProperty.signal
+      .takeWhen(self.showError)
+      .observeNext { _ in AppEnvironment.current.koala.trackLoginError(authType: Koala.AuthType.email) }
   }
   // swiftlint:enable function_body_length
 
