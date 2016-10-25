@@ -74,7 +74,11 @@ internal final class FindFriendsStatsCell: UITableViewCell, ValueCell {
 
     self
       |> baseTableViewCellStyle()
-      |> UITableViewCell.lens.contentView.layoutMargins .~ .init(all: Styles.grid(4))
+      |> UITableViewCell.lens.contentView.layoutMargins %~~ { _, cell in
+        cell.traitCollection.isRegularRegular
+          ? .init(topBottom: Styles.grid(4), leftRight: Styles.grid(20))
+          : .init(all: Styles.grid(4))
+    }
   }
 
   @objc func followAllButtonTapped() {

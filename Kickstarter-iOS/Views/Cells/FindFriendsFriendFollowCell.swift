@@ -86,7 +86,7 @@ internal final class FindFriendsFriendFollowCell: UITableViewCell, ValueCell {
       |> UILabel.lens.font .~ .ksr_footnote()
 
     self.followButton
-      |> greenButtonStyle
+      |> navyButtonStyle
       |> UIButton.lens.targets .~ [(self, action: #selector(followButtonTapped), .TouchUpInside)]
       |> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.social_following_friend_buttons_follow() }
 
@@ -99,7 +99,11 @@ internal final class FindFriendsFriendFollowCell: UITableViewCell, ValueCell {
 
     self
       |> baseTableViewCellStyle()
-      |> UITableViewCell.lens.contentView.layoutMargins .~ .init(all: Styles.grid(2))
+      |> UITableViewCell.lens.contentView.layoutMargins %~~ { _, cell in
+        cell.traitCollection.isRegularRegular
+          ? .init(topBottom: Styles.grid(2), leftRight: Styles.grid(20))
+          : .init(all: Styles.grid(2))
+    }
   }
 
   @objc func followButtonTapped() {
