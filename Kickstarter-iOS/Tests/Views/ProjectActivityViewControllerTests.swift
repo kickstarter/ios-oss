@@ -23,8 +23,8 @@ internal final class ProjectActivityViewControllerTests: TestCase {
   }
 
   override func tearDown() {
-    AppEnvironment.popEnvironment()
     super.tearDown()
+    AppEnvironment.popEnvironment()
   }
 
   func testPad() {

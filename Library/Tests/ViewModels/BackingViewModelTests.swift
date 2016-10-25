@@ -31,6 +31,7 @@ internal final class BackingViewModelTests: TestCase {
   internal let hideActionsStackView = TestObserver<Bool, NoError>()
   internal let presentMessageDialog = TestObserver<MessageThread, NoError>()
   internal let messageButtonTitleText = TestObserver<String, NoError>()
+  internal let rootStackViewAxis = TestObserver<UILayoutConstraintAxis, NoError>()
 
   override func setUp() {
     super.setUp()
@@ -61,6 +62,7 @@ internal final class BackingViewModelTests: TestCase {
     self.vm.outputs.goToMessages.map(second).observe(goToMessagesBacking.observer)
     self.vm.outputs.hideActionsStackView.observe(hideActionsStackView.observer)
     self.vm.outputs.messageButtonTitleText.observe(messageButtonTitleText.observer)
+    self.vm.outputs.rootStackViewAxis.observe(rootStackViewAxis.observer)
      }
 
   func testBackerAvatarURL() {
@@ -341,8 +343,9 @@ internal final class BackingViewModelTests: TestCase {
     let creator = .template |> User.lens.id .~ 42
     let project = .template
       |> Project.lens.creator .~ creator
+    let backing = Backing.template
 
-    withEnvironment(currentUser: creator) {
+    withEnvironment(apiService: MockService(fetchBackingResponse: backing), currentUser: creator) {
       self.vm.inputs.configureWith(project: project, backer: nil)
 
       self.vm.inputs.viewDidLoad()
@@ -354,8 +357,9 @@ internal final class BackingViewModelTests: TestCase {
   func testCurrentUserIsBacker() {
     let project = Project.template
     let backer = .template |> User.lens.id .~ 20
+    let backing = Backing.template
 
-    withEnvironment(currentUser: backer) {
+    withEnvironment(apiService: MockService(fetchBackingResponse: backing), currentUser: backer) {
       self.vm.inputs.configureWith(project: project, backer: backer)
 
       self.vm.inputs.viewDidLoad()
@@ -394,6 +398,19 @@ internal final class BackingViewModelTests: TestCase {
 
       XCTAssertEqual([nil, true],
                      self.trackingClient.properties(forKey: Koala.DeprecatedKey, as: Bool.self))
+    }
+  }
+
+  func testRootStackViewAxis() {
+    let project = Project.template
+    let backer = .template |> User.lens.id .~ 20
+
+    withEnvironment(currentUser: backer, language: .de) {
+      self.vm.inputs.configureWith(project: project, backer: backer)
+
+      self.vm.inputs.viewDidLoad()
+
+      self.rootStackViewAxis.assertValues([UILayoutConstraintAxis.Vertical])
     }
   }
 }

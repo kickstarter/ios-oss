@@ -56,9 +56,6 @@ internal final class BackingViewController: UIViewController {
   internal override func bindStyles() {
     super.bindStyles()
 
-    self.actionsStackView
-      |> UIStackView.lens.axis %~ { _ in AppEnvironment.current.language == .en ? .Horizontal : .Vertical }
-
     self
       |> baseControllerStyle()
       |> UIViewController.lens.title %~ { _ in Strings.project_view_button() }
@@ -104,6 +101,7 @@ internal final class BackingViewController: UIViewController {
   internal override func bindViewModel() {
     super.bindViewModel()
     self.actionsStackView.rac.hidden = self.viewModel.outputs.hideActionsStackView
+    self.actionsStackView.rac.axis = self.viewModel.outputs.rootStackViewAxis
     self.backerNameLabel.rac.text = self.viewModel.outputs.backerName
     self.backerNameLabel.rac.accessibilityLabel = self.viewModel.outputs.backerNameAccessibilityLabel
     self.backerPledgeAmountAndDateLabel.rac.text = self.viewModel.outputs.backerPledgeAmountAndDate

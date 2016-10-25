@@ -75,6 +75,9 @@ public protocol BackingViewModelOutputs {
 
   /// Emits the button title for messaging a backer or creator.
   var messageButtonTitleText: Signal<String, NoError> { get }
+
+  /// Emits the axis of the stackview.
+  var rootStackViewAxis: Signal<UILayoutConstraintAxis, NoError> { get }
 }
 
 public protocol BackingViewModelType {
@@ -180,6 +183,9 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
         !backerIsCurrentUser && project.creator != AppEnvironment.current.currentUser
     }
 
+    self.rootStackViewAxis = projectAndBackingAndBackerIsCurrentUser
+      .map { _ in AppEnvironment.current.language == .en ? .Horizontal : .Vertical }
+
     project
       .takeWhen(self.viewDidLoadProperty.signal)
       .observeNext { AppEnvironment.current.koala.trackViewedPledge(forProject: $0) }
@@ -225,6 +231,7 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
   public let goToMessages: Signal<(Project, Backing), NoError>
   public let hideActionsStackView: Signal<Bool, NoError>
   public let messageButtonTitleText: Signal<String, NoError>
+  public let rootStackViewAxis: Signal<UILayoutConstraintAxis, NoError>
 
   public var inputs: BackingViewModelInputs { return self }
   public var outputs: BackingViewModelOutputs { return self }

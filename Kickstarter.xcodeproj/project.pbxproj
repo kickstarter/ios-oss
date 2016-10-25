@@ -899,6 +899,7 @@
 		A7FA38D91D9068AD0041FC9C /* RewardsTitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FA38D81D9068AD0041FC9C /* RewardsTitleCell.swift */; };
 		A7FC8C061C8F1DEA00C3B49B /* CircleAvatarImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FC8C051C8F1DEA00C3B49B /* CircleAvatarImageView.swift */; };
 		A7FC8C071C8F1DEA00C3B49B /* CircleAvatarImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FC8C051C8F1DEA00C3B49B /* CircleAvatarImageView.swift */; };
+		D7086F3C1DB7FBA40087E5EB /* BackingViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7086F3B1DB7FBA40087E5EB /* BackingViewControllerTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -2132,6 +2133,7 @@
 		A7FA38A31D9068940041FC9C /* PledgeTitleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PledgeTitleCell.swift; sourceTree = "<group>"; };
 		A7FA38D81D9068AD0041FC9C /* RewardsTitleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RewardsTitleCell.swift; sourceTree = "<group>"; };
 		A7FC8C051C8F1DEA00C3B49B /* CircleAvatarImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleAvatarImageView.swift; sourceTree = "<group>"; };
+		D7086F3B1DB7FBA40087E5EB /* BackingViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackingViewControllerTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2360,6 +2362,7 @@
 			isa = PBXGroup;
 			children = (
 				A7EDEE7A1D83635400780B34 /* CommentsViewControllerTests.swift */,
+				D7086F3B1DB7FBA40087E5EB /* BackingViewControllerTests.swift */,
 				0123B4AC1D919BBA004C1166 /* DiscoveryFiltersViewControllerTests.swift */,
 				013744FA1D99FE6A00E50C78 /* EmptyStatesViewControllerTests.swift */,
 				01F42A511D9332F60084719D /* DiscoveryNavigationHeaderViewControllerTests.swift */,
@@ -5092,6 +5095,7 @@
 				A758F4041D0702CF00169CC0 /* DiscoveryFiltersDataSourceTests.swift in Sources */,
 				A77519121C8CADE20022F175 /* AppDelegateViewModelTests.swift in Sources */,
 				599604001CE6286900E1B1EC /* ProfileDataSourceTests.swift in Sources */,
+				D7086F3C1DB7FBA40087E5EB /* BackingViewControllerTests.swift in Sources */,
 				A72D943B1CB3477000A88249 /* MockBundle.swift in Sources */,
 				A77FD5B51D91FD2C00FFC636 /* RewardPledgeViewControllerTests.swift in Sources */,
 				015B78BC1D481805003216AC /* HelpWebViewModelTests.swift in Sources */,
