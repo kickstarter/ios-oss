@@ -1,5 +1,7 @@
-import Library
 import KsApi
+import Library
+import Prelude
+import ReactiveExtensions
 import UIKit
 
 internal final class MessageThreadCell: UITableViewCell, ValueCell {
@@ -15,6 +17,16 @@ internal final class MessageThreadCell: UITableViewCell, ValueCell {
 
   func configureWith(value value: MessageThread) {
     self.viewModel.inputs.configureWith(messageThread: value)
+  }
+
+  internal override func bindStyles() {
+      self
+        |> baseTableViewCellStyle()
+        |> MessageThreadCell.lens.contentView.layoutMargins %~~ { layoutMargins, cell in
+          cell.traitCollection.isRegularRegular
+            ? .init(topBottom: Styles.grid(6), leftRight: Styles.grid(16))
+            : layoutMargins
+      }
   }
 
   internal override func bindViewModel() {

@@ -24,6 +24,16 @@ internal final class MessageCell: UITableViewCell, ValueCell {
     self.viewModel.inputs.configureWith(message: message)
   }
 
+  internal override func bindStyles() {
+    self
+      |> baseTableViewCellStyle()
+      |> MessageCell.lens.contentView.layoutMargins %~~ { layoutMargins, cell in
+        cell.traitCollection.isRegularRegular
+          ? .init(topBottom: Styles.grid(6), leftRight: Styles.grid(16))
+          : layoutMargins
+    }
+  }
+
   internal override func bindViewModel() {
     self.nameLabel.rac.text = self.viewModel.outputs.name
     self.timestampLabel.rac.text = self.viewModel.outputs.timestamp
