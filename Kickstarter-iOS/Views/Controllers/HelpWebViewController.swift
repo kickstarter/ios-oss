@@ -14,12 +14,14 @@ internal final class HelpWebViewController: WebViewController {
   internal override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.navigationItem.leftBarButtonItem = UIBarButtonItem(
-      title: Strings.general_navigation_buttons_close(),
-      style: .Plain,
-      target: self,
-      action: #selector(closeButtonTapped)
-    )
+    if self.navigationController?.viewControllers.count == .Some(1) {
+      self.navigationItem.leftBarButtonItem = UIBarButtonItem(
+        title: Strings.general_navigation_buttons_close(),
+        style: .Plain,
+        target: self,
+        action: #selector(closeButtonTapped)
+      )
+    }
 
     self.viewModel.inputs.viewDidLoad()
   }
