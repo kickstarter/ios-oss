@@ -1,8 +1,9 @@
-import UIKit
 import Library
+import Prelude
 import ReactiveExtensions
 import ReactiveCocoa
 import KsApi
+import UIKit
 
 protocol ActivityUpdateCellDelegate {
   /// Call with the activity value when navigating to the activity's project.
@@ -48,6 +49,39 @@ internal final class ActivityUpdateCell: UITableViewCell, ValueCell {
       .observeNext { [weak self] activity in
         self?.delegate?.activityUpdateCellTappedProjectImage(activity: activity)
     }
+  }
+
+  override func bindStyles() {
+    super.bindStyles()
+
+    self
+      |> baseTableViewCellStyle()
+      |> UITableViewCell.lens.backgroundColor .~ .whiteColor()
+      |> UITableViewCell.lens.contentView.layoutMargins %~~ { _, cell in
+        cell.traitCollection.isRegularRegular
+          ? .init(topBottom: Styles.grid(4), leftRight: Styles.grid(20))
+          : .init(topBottom: Styles.grid(3), leftRight: Styles.grid(4))
+    }
+
+    self.projectNameLabel
+      |> UILabel.lens.font .~ .ksr_headline(size: 14)
+      |> UILabel.lens.textColor .~ .ksr_text_navy_600
+
+    self.updateSequenceLabel
+      |> UILabel.lens.font .~ UIFont.ksr_footnote().bolded
+      |> UILabel.lens.textColor .~ .ksr_text_green_700
+
+    self.timestampLabel
+      |> UILabel.lens.font .~ .ksr_footnote()
+      |> UILabel.lens.textColor .~ .ksr_text_navy_500
+
+    self.titleLabel
+      |> UILabel.lens.font .~ .ksr_title1(size: 22)
+      |> UILabel.lens.textColor .~ .ksr_text_navy_700
+
+    self.bodyLabel
+      |> UILabel.lens.font .~ .ksr_subhead()
+      |> UILabel.lens.textColor .~ .ksr_text_navy_600
   }
 
   internal func configureWith(value value: Activity) {

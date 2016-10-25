@@ -96,11 +96,13 @@ internal final class FindFriendsFacebookConnectCell: UITableViewCell, ValueCell 
     }
 
     self
-      |> UITableViewCell.lens.selectionStyle .~ .None
-      |> UITableViewCell.lens.contentView.layoutMargins .~ .init(top: Styles.grid(4),
-                                                                 left: Styles.grid(4),
-                                                                 bottom: Styles.grid(4),
-                                                                 right: Styles.grid(4))
+      |> baseTableViewCellStyle()
+      |> UITableViewCell.lens.backgroundColor .~ .whiteColor()
+      |> UITableViewCell.lens.contentView.layoutMargins %~~ { _, cell in
+        cell.traitCollection.isRegularRegular
+          ? .init(topBottom: Styles.grid(6), leftRight: Styles.grid(20))
+          : .init(all: Styles.grid(4))
+    }
   }
 
   // MARK: Facebook Login

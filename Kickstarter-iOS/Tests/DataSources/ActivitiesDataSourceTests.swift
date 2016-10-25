@@ -73,16 +73,16 @@ final class ActivitiesDataSourceTests: XCTestCase {
     XCTAssertEqual(updateActivity, self.dataSource[testItemSection: (0, section)] as? Activity)
     XCTAssertEqual("ActivityUpdateCell", self.dataSource.reusableId(item: 0, section: section))
 
-    XCTAssertEqual("PaddingCell", self.dataSource.reusableId(item: 1, section: section))
+    XCTAssertEqual("HalfPaddingCell", self.dataSource.reusableId(item: 1, section: section))
 
     XCTAssertEqual(backingActivity, self.dataSource[testItemSection: (2, section)] as? Activity)
     XCTAssertEqual("ActivityFriendBackingCell", self.dataSource.reusableId(item: 2, section: section))
 
-    XCTAssertEqual("PaddingCell", self.dataSource.reusableId(item: 3, section: section))
+    XCTAssertEqual("HalfPaddingCell", self.dataSource.reusableId(item: 3, section: section))
 
     XCTAssertEqual(successActivity, self.dataSource[testItemSection: (4, section)] as? Activity)
     XCTAssertEqual("ActivitySuccessCell", self.dataSource.reusableId(item: 4, section: section))
 
-    XCTAssertEqual("PaddingCell", self.dataSource.reusableId(item: 5, section: section))
+    XCTAssertEqual("HalfPaddingCell", self.dataSource.reusableId(item: 5, section: section))
   }
 }

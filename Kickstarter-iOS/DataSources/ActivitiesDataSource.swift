@@ -51,7 +51,7 @@ internal final class ActivitiesDataSource: ValueCellDataSource {
       self.set(values: [response],
                cellClass: ActivitySurveyResponseCell.self,
                inSection: Section.survey.rawValue)
-      self.appendStaticRow(cellIdentifier: "PaddingCell", toSection: Section.survey.rawValue)
+      self.appendStaticRow(cellIdentifier: "HalfPaddingCell", toSection: Section.survey.rawValue)
     } else {
       self.set(values: [],
                cellClass: ActivitySurveyResponseCell.self,
@@ -82,7 +82,7 @@ internal final class ActivitiesDataSource: ValueCellDataSource {
         assertionFailure("Unsupported activity: \(activity)")
       }
 
-      self.appendStaticRow(cellIdentifier: "PaddingCell", toSection: section)
+      self.appendStaticRow(cellIdentifier: "HalfPaddingCell", toSection: section)
     }
   }
 

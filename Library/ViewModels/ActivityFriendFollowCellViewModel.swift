@@ -22,7 +22,7 @@ public protocol ActivityFriendFollowCellViewModelOutputs {
   var notifyDelegateFriendUpdated: Signal<Activity, NoError> { get }
 
   /// Emits text for title label.
-  var title: Signal<String, NoError> { get }
+  var title: Signal<NSAttributedString, NoError> { get }
 }
 
 public final class ActivityFriendFollowCellViewModel: ActivityFriendFollowCellViewModelInputs,
@@ -34,10 +34,11 @@ ActivityFriendFollowCellViewModelOutputs {
       .ignoreNil()
       .on(next: { print("configured with friend \($0.name) and is friend = \($0.isFriend)")})
 
-    self.friendImageURL = friend.map { NSURL.init(string: $0.avatar.medium) }
+    self.friendImageURL = friend.map { NSURL.init(string: $0.avatar.small) }
 
     self.title = friend.map {
-      Strings.activity_user_name_is_now_following_you(user_name: $0.name ?? "")
+      let string = Strings.activity_user_name_is_now_following_you(user_name: "<b>\($0.name ?? "")</b>")
+      return string.simpleHtmlAttributedString(font: UIFont.ksr_subhead()) ?? NSAttributedString(string: "")
     }
 
     let followFriendEvent = friend.takeWhen(self.followButtonTappedProperty.signal)
@@ -73,7 +74,7 @@ ActivityFriendFollowCellViewModelOutputs {
   public let friendImageURL: Signal<NSURL?, NoError>
   public let hideFollowButton: Signal<Bool, NoError>
   public let notifyDelegateFriendUpdated: Signal<Activity, NoError>
-  public let title: Signal<String, NoError>
+  public let title: Signal<NSAttributedString, NoError>
 
   public var inputs: ActivityFriendFollowCellViewModelInputs { return self }
   public var outputs: ActivityFriendFollowCellViewModelOutputs { return self }

@@ -52,7 +52,7 @@ internal final class FindFriendsHeaderCell: UITableViewCell, ValueCell {
       |> UIButton.lens.targets .~ [(self, action: #selector(closeButtonTapped), .TouchUpInside)]
 
     self.findFriendsButton
-      |> greenButtonStyle
+      |> navyButtonStyle
       |> UIButton.lens.targets .~ [(self, action: #selector(findFriendsButtonTapped), .TouchUpInside)]
       |> UIButton.lens.title(forState: .Normal) %~ { _ in
         Strings.social_following_header_button_find_your_friends()
@@ -60,7 +60,12 @@ internal final class FindFriendsHeaderCell: UITableViewCell, ValueCell {
 
     self
       |> baseTableViewCellStyle()
-      |> UITableViewCell.lens.contentView.layoutMargins .~ .init(all: Styles.grid(4))
+      |> UITableViewCell.lens.backgroundColor .~ .whiteColor()
+      |> UITableViewCell.lens.contentView.layoutMargins %~~ { _, cell in
+        cell.traitCollection.isRegularRegular
+          ? .init(topBottom: Styles.grid(6), leftRight: Styles.grid(20))
+          : .init(all: Styles.grid(4))
+      }
   }
 
   @objc func closeButtonTapped() {

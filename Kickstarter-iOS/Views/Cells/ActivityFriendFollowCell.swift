@@ -22,8 +22,8 @@ internal final class ActivityFriendFollowCell: UITableViewCell, ValueCell {
   }
 
   override func bindViewModel() {
-    self.friendLabel.rac.text = self.viewModel.outputs.title
     self.followButton.rac.hidden = self.viewModel.outputs.hideFollowButton
+    self.friendLabel.rac.attributedText = self.viewModel.outputs.title
 
     self.viewModel.outputs.friendImageURL
       .observeForUI()
@@ -48,10 +48,19 @@ internal final class ActivityFriendFollowCell: UITableViewCell, ValueCell {
     super.bindStyles()
 
     self
-      |> UITableViewCell.lens.selectionStyle .~ .None
+      |> baseTableViewCellStyle()
+      |> UITableViewCell.lens.backgroundColor .~ .whiteColor()
+      |> UITableViewCell.lens.contentView.layoutMargins %~~ { _, cell in
+        cell.traitCollection.isRegularRegular
+          ? .init(topBottom: Styles.grid(4), leftRight: Styles.grid(20))
+          : .init(topBottom: Styles.grid(3), leftRight: Styles.grid(4))
+    }
+
+    self.friendLabel
+      |> UILabel.lens.textColor .~ .ksr_text_navy_700
 
     self.followButton
-      |> greenButtonStyle
+      |> navyButtonStyle
       |> UIButton.lens.targets .~ [(self, action: #selector(followButtonTapped), .TouchUpInside)]
       |> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.social_following_friend_buttons_follow() }
   }

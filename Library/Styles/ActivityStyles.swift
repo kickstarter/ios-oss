@@ -14,4 +14,8 @@ public let activityRespondNowButtonStyle = blackButtonStyle
 public let activitySurveyTableViewCellStyle =
   baseTableViewCellStyle()
     <> UITableViewCell.lens.backgroundColor .~ .ksr_orange_400
-    <> UITableViewCell.lens.contentView.layoutMargins .~ .init(topBottom: 32.0, leftRight: 16.0)
+    <> UITableViewCell.lens.contentView.layoutMargins %~~ { _, cell in
+      cell.traitCollection.isRegularRegular
+        ? .init(topBottom: Styles.grid(6), leftRight: Styles.grid(20))
+        : .init(all: Styles.grid(4))
+}

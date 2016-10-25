@@ -8,11 +8,6 @@ internal final class ActivityNegativeStateChangeCell: UITableViewCell, ValueCell
   @IBOutlet private weak var messageLabel: UILabel!
   @IBOutlet private weak var projectImageView: UIImageView!
 
-  override func awakeFromNib() {
-    super.awakeFromNib()
-    self.backgroundColor = .ksr_grey_500
-  }
-
   func configureWith(value activity: Activity) {
     switch activity.category {
     case .failure:
@@ -36,5 +31,22 @@ internal final class ActivityNegativeStateChangeCell: UITableViewCell, ValueCell
     if let url = (activity.project?.photo.med).flatMap(NSURL.init(string:)) {
       self.projectImageView.af_setImageWithURL(url)
     }
+  }
+
+  override func bindStyles() {
+    super.bindStyles()
+
+    self
+      |> baseTableViewCellStyle()
+      |> UITableViewCell.lens.backgroundColor .~ .whiteColor()
+      |> UITableViewCell.lens.contentView.layoutMargins %~~ { _, cell in
+        cell.traitCollection.isRegularRegular
+          ? .init(topBottom: Styles.grid(3), leftRight: Styles.grid(20))
+          : .init(topBottom: Styles.grid(3), leftRight: Styles.grid(4))
+    }
+
+    self.messageLabel
+      |> UILabel.lens.font .~ .ksr_headline(size: 14)
+      |> UILabel.lens.textColor .~ .ksr_text_navy_700
   }
 }

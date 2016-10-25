@@ -1,9 +1,10 @@
-import UIKit
-import Library
-import ReactiveCocoa
 import AlamofireImage
 import CoreImage
 import KsApi
+import Library
+import Prelude
+import ReactiveCocoa
+import UIKit
 
 internal final class ActivitySuccessCell: UITableViewCell, ValueCell {
   private let viewModel: ActivitySuccessViewModelType = ActivitySuccessViewModel()
@@ -34,5 +35,16 @@ internal final class ActivitySuccessCell: UITableViewCell, ValueCell {
 
   func configureWith(value value: Activity) {
     self.viewModel.inputs.configureWith(activity: value)
+  }
+
+  override func bindStyles() {
+    super.bindStyles()
+
+    self
+      |> UITableViewCell.lens.contentView.layoutMargins %~~ { _, cell in
+        cell.traitCollection.isRegularRegular
+          ? .init(topBottom: Styles.grid(10), leftRight: Styles.grid(20))
+          : .init(all: Styles.grid(4))
+    }
   }
 }

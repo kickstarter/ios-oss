@@ -195,7 +195,8 @@ internal final class ActivitiesViewController: UITableViewController {
   private func goToSurveyResponse(surveyResponse surveyResponse: SurveyResponse) {
     let vc = SurveyResponseViewController.configuredWith(surveyResponse: surveyResponse)
     let nav = UINavigationController(rootViewController: vc)
-    self.navigationController?.presentViewController(nav, animated: true, completion: nil)
+    nav.modalPresentationStyle = .FormSheet
+    self.presentViewController(nav, animated: true, completion: nil)
   }
 
   private func goToUpdate(project project: Project, update: Update) {

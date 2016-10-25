@@ -11,7 +11,7 @@ public protocol ActivityFriendBackingViewModelOutputs {
   var cellAccessibilityValue: Signal<String, NoError> { get }
   var creatorName: Signal<String, NoError> { get }
   var friendImageURL: Signal<NSURL?, NoError> { get }
-  var friendTitle: Signal<String, NoError> { get }
+  var friendTitle: Signal<NSAttributedString, NoError> { get }
   var projectImageURL: Signal<NSURL?, NoError> { get }
   var projectName: Signal<String, NoError> { get }
 }
@@ -32,8 +32,13 @@ ActivityFriendBackingViewModelInputs, ActivityFriendBackingViewModelOutputs {
 
     self.friendTitle = activity
       .map { activity in
-        guard let categoryId = activity.project?.category.rootId else { return "" }
-        return string(forCategoryId: categoryId, friendName: activity.user?.name ?? "")
+        guard let categoryId = activity.project?.category.rootId else {
+          return NSAttributedString(string: "")
+        }
+
+        let title = string(forCategoryId: categoryId, friendName: "<b>\(activity.user?.name ?? "")</b>")
+        return title.simpleHtmlAttributedString(font: .ksr_subhead(size: 14))
+          ?? NSAttributedString(string: "")
     }
 
     self.projectName = activity.map { $0.project?.name ?? "" }
@@ -42,7 +47,7 @@ ActivityFriendBackingViewModelInputs, ActivityFriendBackingViewModelOutputs {
 
     self.creatorName = activity.map { $0.project?.creator.name ?? "" }
 
-    self.cellAccessibilityLabel = self.friendTitle
+    self.cellAccessibilityLabel = self.friendTitle.map { $0.string }
     self.cellAccessibilityValue = self.projectName
   }
 
@@ -52,7 +57,7 @@ ActivityFriendBackingViewModelInputs, ActivityFriendBackingViewModelOutputs {
   }
 
   public let friendImageURL: Signal<NSURL?, NoError>
-  public let friendTitle: Signal<String, NoError>
+  public let friendTitle: Signal<NSAttributedString, NoError>
   public let projectName: Signal<String, NoError>
   public let projectImageURL: Signal<NSURL?, NoError>
   public let creatorName: Signal<String, NoError>

@@ -1,5 +1,6 @@
-import Library
 import KsApi
+import Library
+import Prelude
 import UIKit
 
 internal final class ActivityLaunchCell: UITableViewCell, ValueCell {
@@ -16,6 +17,17 @@ internal final class ActivityLaunchCell: UITableViewCell, ValueCell {
     self.projectImageView.af_cancelImageRequest()
     if let url = (activity.project?.photo.med).flatMap(NSURL.init(string:)) {
       self.projectImageView.af_setImageWithURL(url)
+    }
+  }
+
+  override func bindStyles() {
+    super.bindStyles()
+
+    self
+      |> UITableViewCell.lens.contentView.layoutMargins %~~ { _, cell in
+        cell.traitCollection.isRegularRegular
+          ? .init(topBottom: Styles.grid(12), leftRight: Styles.grid(20))
+          : .init(topBottom: Styles.grid(10), leftRight: Styles.grid(4))
     }
   }
 }

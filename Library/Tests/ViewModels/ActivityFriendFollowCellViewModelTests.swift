@@ -21,12 +21,12 @@ final class ActivityFriendFollowCellViewModelTests: TestCase {
 
     vm.outputs.hideFollowButton.observe(hideFollowButton.observer)
     vm.outputs.friendImageURL.map { $0?.absoluteString }.observe(friendImageURL.observer)
-    vm.outputs.title.observe(title.observer)
+    vm.outputs.title.map { $0.string }.observe(title.observer)
   }
 
   func testFriendDetails_Complete() {
     let user = User.template
-      |> User.lens.avatar.medium .~ "http://coolpic.com/cool.jpg"
+      |> User.lens.avatar.small .~ "http://coolpic.com/cool.jpg"
       |> User.lens.name .~ "Squiggles McTwiddle"
 
     let activity = Activity.template
@@ -59,7 +59,7 @@ final class ActivityFriendFollowCellViewModelTests: TestCase {
 
   func testFriendFollowing_Friend() {
     let user = User.template
-      |> User.lens.avatar.medium .~ "http://coolpic.com/cool.jpg"
+      |> User.lens.avatar.small .~ "http://coolpic.com/cool.jpg"
       |> User.lens.isFriend .~ true
       |> User.lens.name .~ "Squiggles McTwiddle"
 
@@ -100,7 +100,7 @@ final class ActivityFriendFollowCellViewModelTests: TestCase {
 
   func testRetainFriendStatusOnReuse_After_Following() {
     let user = User.template
-      |> User.lens.avatar.medium .~ "http://coolpic.com/cool.jpg"
+      |> User.lens.avatar.small .~ "http://coolpic.com/cool.jpg"
       |> User.lens.isFriend .~ false
       |> User.lens.name .~ "Squiggles McTwiddle"
 
