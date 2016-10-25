@@ -93,7 +93,7 @@ internal final class DiscoveryFiltersViewController: UIViewController, UITableVi
 
     self.filtersTableView
       |> UITableView.lens.rowHeight .~ UITableViewAutomaticDimension
-      |> UITableView.lens.estimatedRowHeight .~ 44.0
+      |> UITableView.lens.estimatedRowHeight .~ 55.0
       |> UITableView.lens.backgroundColor .~ .clearColor()
   }
 
