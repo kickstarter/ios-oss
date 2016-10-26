@@ -6,6 +6,7 @@ import UIKit
 internal final class DiscoveryPageViewController: UITableViewController {
   private let viewModel: DiscoveryPageViewModelType = DiscoveryPageViewModel()
   private let dataSource = DiscoveryProjectsDataSource()
+  private let loadingIndicatorView = UIActivityIndicatorView()
 
   private weak var emptyStatesController: EmptyStatesViewController?
 
@@ -21,6 +22,8 @@ internal final class DiscoveryPageViewController: UITableViewController {
 
   internal override func viewDidLoad() {
     super.viewDidLoad()
+
+    self.tableView.addSubview(self.loadingIndicatorView)
 
     self.tableView.dataSource = self.dataSource
 
@@ -53,16 +56,29 @@ internal final class DiscoveryPageViewController: UITableViewController {
     self.viewModel.inputs.viewDidDisappear(animated: animated)
   }
 
+  internal override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+
+    self.loadingIndicatorView.center = self.tableView.center
+  }
+
   internal override func bindStyles() {
     super.bindStyles()
 
     self
       |> baseTableControllerStyle(estimatedRowHeight: 200.0)
+
+    self.loadingIndicatorView
+      |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
+      |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .White
+      |> UIActivityIndicatorView.lens.color .~ .ksr_navy_900
   }
 
   // swiftlint:disable function_body_length
   internal override func bindViewModel() {
     super.bindViewModel()
+
+    self.loadingIndicatorView.rac.animating = self.viewModel.outputs.projectsAreLoading
 
     self.viewModel.outputs.activitiesForSample
       .observeForUI()
