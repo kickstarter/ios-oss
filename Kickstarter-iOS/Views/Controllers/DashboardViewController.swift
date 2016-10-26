@@ -166,9 +166,11 @@ internal final class DashboardViewController: UITableViewController {
   private func goToPostUpdate(project: Project) {
     let vc = UpdateDraftViewController.configuredWith(project: project)
     vc.delegate = self
-    self.presentViewController(UINavigationController(rootViewController: vc),
-                               animated: true,
-                               completion: nil)
+
+    let nav = UINavigationController(rootViewController: vc)
+    nav.modalPresentationStyle = .FormSheet
+
+    self.presentViewController(nav, animated: true, completion: nil)
   }
 
   private func goToProject(project: Project, refTag: RefTag) {
