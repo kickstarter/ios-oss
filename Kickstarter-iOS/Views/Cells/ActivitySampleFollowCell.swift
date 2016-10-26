@@ -34,10 +34,7 @@ internal final class ActivitySampleFollowCell: UITableViewCell, ValueCell {
     super.bindStyles()
 
     self
-      |> baseTableViewCellStyle()
-      |> ActivitySampleFollowCell.lens.contentView.layoutMargins
-      .~ .init(top: Styles.grid(4), left: Styles.grid(2), bottom: Styles.grid(3), right: Styles.grid(2))
-      |> UITableViewCell.lens.backgroundColor .~ .clearColor()
+      |> activitySampleCellStyle
 
     self.activityStackView
       |> activitySampleStackViewStyle

@@ -34,10 +34,7 @@ internal final class ActivitySampleBackingCell: UITableViewCell, ValueCell {
     super.bindStyles()
 
     self
-      |> baseTableViewCellStyle()
-      |> ActivitySampleBackingCell.lens.contentView.layoutMargins
-      .~ .init(top: Styles.grid(4), left: Styles.grid(2), bottom: Styles.grid(3), right: Styles.grid(2))
-      |> UITableViewCell.lens.backgroundColor .~ .clearColor()
+      |> activitySampleCellStyle
       |> UITableViewCell.lens.accessibilityHint %~ { _ in
         Strings.dashboard_tout_accessibility_hint_opens_project()
     }

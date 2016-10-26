@@ -36,13 +36,7 @@ internal final class ActivitySampleProjectCell: UITableViewCell, ValueCell {
     super.bindStyles()
 
     self
-      |> baseTableViewCellStyle()
-      |> ActivitySampleProjectCell.lens.contentView.layoutMargins
-      .~ .init(top: Styles.grid(4), left: Styles.grid(2), bottom: Styles.grid(3), right: Styles.grid(2))
-      |> UITableViewCell.lens.backgroundColor .~ .clearColor()
-      |> UITableViewCell.lens.accessibilityHint %~ { _ in
-        Strings.dashboard_tout_accessibility_hint_opens_project()
-    }
+      |> activitySampleCellStyle
 
     self.activityTitleLabel
       |> activitySampleTitleLabelStyle
@@ -72,6 +66,7 @@ internal final class ActivitySampleProjectCell: UITableViewCell, ValueCell {
   internal override func bindViewModel() {
     super.bindViewModel()
 
+    self.rac.accessibilityHint = self.viewModel.outputs.cellAccessibilityHint
     self.projectSubtitleLabel.rac.text = self.viewModel.outputs.projectSubtitleText
     self.projectTitleLabel.rac.text = self.viewModel.outputs.projectTitleText
 

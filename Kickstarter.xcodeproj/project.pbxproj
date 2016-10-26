@@ -117,6 +117,7 @@
 		59019FB61D21A47700EAEC9D /* DashboardReferrerRowStackViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59019FB51D21A47700EAEC9D /* DashboardReferrerRowStackViewViewModel.swift */; };
 		59019FB71D21A47700EAEC9D /* DashboardReferrerRowStackViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59019FB51D21A47700EAEC9D /* DashboardReferrerRowStackViewViewModel.swift */; };
 		59019FBA1D21ABD200EAEC9D /* DashboardReferrerRowStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59019FB81D21ABD200EAEC9D /* DashboardReferrerRowStackView.swift */; };
+		59235ED91DC0149B0067F4AD /* DiscoveryPageViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59235ED81DC0149B0067F4AD /* DiscoveryPageViewControllerTests.swift */; };
 		59322F071CD27B1000C90CC6 /* ProfileDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59322F051CD27B1000C90CC6 /* ProfileDataSource.swift */; };
 		59392BEC1D7094B0001C99A4 /* ProjectUpdatesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59392BEB1D7094B0001C99A4 /* ProjectUpdatesViewController.swift */; };
 		59392C1E1D7095B3001C99A4 /* ProjectUpdatesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59392C1D1D7095B3001C99A4 /* ProjectUpdatesViewModel.swift */; };
@@ -1606,6 +1607,7 @@
 		01FD71EB1D3808E500070BAC /* BarButtonItemStyles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarButtonItemStyles.swift; sourceTree = "<group>"; };
 		59019FB51D21A47700EAEC9D /* DashboardReferrerRowStackViewViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardReferrerRowStackViewViewModel.swift; sourceTree = "<group>"; };
 		59019FB81D21ABD200EAEC9D /* DashboardReferrerRowStackView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardReferrerRowStackView.swift; sourceTree = "<group>"; };
+		59235ED81DC0149B0067F4AD /* DiscoveryPageViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryPageViewControllerTests.swift; sourceTree = "<group>"; };
 		59322F051CD27B1000C90CC6 /* ProfileDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileDataSource.swift; sourceTree = "<group>"; };
 		59392BEB1D7094B0001C99A4 /* ProjectUpdatesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectUpdatesViewController.swift; sourceTree = "<group>"; };
 		59392C1D1D7095B3001C99A4 /* ProjectUpdatesViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectUpdatesViewModel.swift; sourceTree = "<group>"; };
@@ -2372,6 +2374,7 @@
 				9D3A6B4B1D8C4F3800FE3926 /* ProjectActivityViewControllerTests.swift */,
 				59885A5D1DB6DC2900F65825 /* LoginToutViewControllerTests.swift */,
 				59885A951DB6E04100F65825 /* LoginViewControllerTests.swift */,
+				59235ED81DC0149B0067F4AD /* DiscoveryPageViewControllerTests.swift */,
 				59F0C0961DBEC8DE0007E0A7 /* DashboardViewControllerTests.swift */,
 				59885A971DB6E2A900F65825 /* TwoFactorViewControllerTests.swift */,
 				59885A991DB6EA5700F65825 /* SignupViewControllerTests.swift */,
@@ -5106,6 +5109,7 @@
 				9D3A6B4C1D8C4F3800FE3926 /* ProjectActivityViewControllerTests.swift in Sources */,
 				A73778DF1D81DC9B004C2A9B /* Combos.swift in Sources */,
 				0123B4E31D919BC4004C1166 /* DiscoveryFiltersViewControllerTests.swift in Sources */,
+				59235ED91DC0149B0067F4AD /* DiscoveryPageViewControllerTests.swift in Sources */,
 				59885A961DB6E04100F65825 /* LoginViewControllerTests.swift in Sources */,
 				A72D92991CB1F7DA00A88249 /* TestCase.swift in Sources */,
 				01F42A501D93284E0084719D /* SortPagerViewControllerTests.swift in Sources */,

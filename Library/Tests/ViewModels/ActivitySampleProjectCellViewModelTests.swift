@@ -9,6 +9,7 @@ import XCTest
 
 internal final class ActivitySampleProjectCellViewModelTests: TestCase {
   internal let vm = ActivitySampleProjectCellViewModel()
+  internal let cellAccessibilityHint = TestObserver<String, NoError>()
   internal let goToActivity = TestObserver<Void, NoError>()
   internal let projectSubtitleText = TestObserver<String, NoError>()
   internal let projectTitleText = TestObserver<String, NoError>()
@@ -16,6 +17,8 @@ internal final class ActivitySampleProjectCellViewModelTests: TestCase {
 
   internal override func setUp() {
     super.setUp()
+
+    self.vm.outputs.cellAccessibilityHint.observe(self.cellAccessibilityHint.observer)
     self.vm.outputs.goToActivity.observe(self.goToActivity.observer)
     self.vm.outputs.projectImageURL.map { $0?.absoluteString }.observe(self.projectImage.observer)
     self.vm.outputs.projectSubtitleText.observe(self.projectSubtitleText.observer)
@@ -39,6 +42,7 @@ internal final class ActivitySampleProjectCellViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(activity: activity)
 
+    self.cellAccessibilityHint.assertValues([Strings.Opens_project()])
     self.projectImage.assertValues([project.photo.med])
     self.projectSubtitleText.assertValues([Strings.activity_funding_canceled()])
     self.projectTitleText.assertValues([project.name])
@@ -52,6 +56,7 @@ internal final class ActivitySampleProjectCellViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(activity: activity)
 
+    self.cellAccessibilityHint.assertValues([Strings.Opens_project()])
     self.projectImage.assertValues([project.photo.med])
     self.projectSubtitleText.assertValues([Strings.activity_project_was_not_successfully_funded()])
     self.projectTitleText.assertValues([project.name])
@@ -67,6 +72,7 @@ internal final class ActivitySampleProjectCellViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(activity: activity)
 
+    self.cellAccessibilityHint.assertValues([Strings.Opens_project()])
     self.projectImage.assertValues([project.photo.med])
     self.projectSubtitleText.assertValues(
       [Strings.activity_user_name_launched_project(user_name: user.name)]
@@ -82,6 +88,7 @@ internal final class ActivitySampleProjectCellViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(activity: activity)
 
+    self.cellAccessibilityHint.assertValues([Strings.Opens_project()])
     self.projectImage.assertValues([project.photo.med])
     self.projectSubtitleText.assertValues([Strings.activity_successfully_funded()])
     self.projectTitleText.assertValues([project.name])
@@ -102,6 +109,8 @@ internal final class ActivitySampleProjectCellViewModelTests: TestCase {
       |> Activity.lens.update .~ update
 
     self.vm.inputs.configureWith(activity: activity)
+
+    self.cellAccessibilityHint.assertValues([Strings.Opens_update()])
     self.projectImage.assertValues([project.photo.med])
     self.projectTitleText.assertValues([project.name])
     self.projectSubtitleText.assertValues(

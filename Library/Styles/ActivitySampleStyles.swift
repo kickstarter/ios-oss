@@ -7,6 +7,14 @@ public let activitySampleBackingTitleLabelStyle =
     <> UILabel.lens.numberOfLines .~ 2
     <> UILabel.lens.lineBreakMode .~ .ByTruncatingTail
 
+public let activitySampleCellStyle = baseTableViewCellStyle()
+  <> UITableViewCell.lens.backgroundColor .~ .clearColor()
+  <> UITableViewCell.lens.contentView.layoutMargins %~~ { _, view in
+    view.traitCollection.isRegularRegular
+      ? .init(top: Styles.grid(4), left: Styles.grid(30), bottom: Styles.grid(3), right: Styles.grid(30))
+      : .init(top: Styles.grid(4), left: Styles.grid(2), bottom: Styles.grid(3), right: Styles.grid(2))
+}
+
 public let activitySampleFriendFollowLabelStyle =
   UILabel.lens.textColor .~ .ksr_text_navy_700
     <> UILabel.lens.numberOfLines .~ 2

@@ -13,6 +13,9 @@ public protocol ActivitySampleProjectCellViewModelInputs {
 }
 
 public protocol ActivitySampleProjectCellViewModelOutputs {
+  /// Emits the cell accessibility hint for voiceover.
+  var cellAccessibilityHint: Signal<String, NoError> { get }
+
   /// Emits when should go to activities screen.
   var goToActivity: Signal<Void, NoError> { get }
 
@@ -36,6 +39,9 @@ public final class ActivitySampleProjectCellViewModel: ActivitySampleProjectCell
 
   public init() {
     let activity = self.activityProperty.signal.ignoreNil()
+
+    self.cellAccessibilityHint = activity
+      .map { $0.category == .update ? Strings.Opens_update() : Strings.Opens_project() }
 
     self.goToActivity = self.seeAllActivityTappedProperty.signal
 
@@ -76,6 +82,7 @@ public final class ActivitySampleProjectCellViewModel: ActivitySampleProjectCell
     self.seeAllActivityTappedProperty.value = ()
   }
 
+  public let cellAccessibilityHint: Signal<String, NoError>
   public let goToActivity: Signal<Void, NoError>
   public let projectImageURL: Signal<NSURL?, NoError>
   public let projectSubtitleText: Signal<String, NoError>
