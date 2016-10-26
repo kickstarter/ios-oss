@@ -98,7 +98,7 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
     }
 
     let projectsAndSelected = projects
-      .switchMap { [switchToProject = switchToProjectProperty.producer] projects in
+      .switchMap { [switchToProject = self.switchToProjectProperty.producer] projects in
         switchToProject
           .map { param in
             find(projectForParam: param, in: projects) ?? projects.first

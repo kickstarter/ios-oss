@@ -43,7 +43,7 @@ public final class DashboardRewardRowStackViewViewModel: DashboardRewardRowStack
       .map { country, reward, _ in
         reward.rewardId == Reward.noReward.id
           ? Strings.dashboard_graphs_rewards_no_reward()
-          : Format.currency(reward.minimum, country: country)
+          : Format.currency(reward.minimum ?? 0, country: country)
     }
   }
 

@@ -10,7 +10,9 @@ internal final class DashboardContextCell: UITableViewCell, ValueCell {
   @IBOutlet private weak var separatorView: UIView!
   @IBOutlet private weak var viewProjectButton: UIButton!
 
-  internal func configureWith(value value: Project) {
+  internal override func bindStyles() {
+    super.bindStyles()
+
     self
       |> dashboardContextCellStyle
       |> UITableViewCell.lens.selectionStyle .~ .Gray
@@ -18,17 +20,22 @@ internal final class DashboardContextCell: UITableViewCell, ValueCell {
       |> UITableViewCell.lens.accessibilityHint %~ { _ in
         Strings.dashboard_tout_accessibility_hint_opens_project() }
 
-    self.containerView |> containerViewBackgroundStyle
+    self.containerView
+      |> containerViewBackgroundStyle
 
     self.projectNameLabel
       |> dashboardStatTitleLabelStyle
-      |> UILabel.lens.text .~ value.name
 
-    self.separatorView |> separatorStyle
+    self.separatorView
+      |> separatorStyle
 
     self.viewProjectButton
       |> dashboardViewProjectButtonStyle
       |> UIButton.lens.userInteractionEnabled .~ false
       |> UIButton.lens.accessibilityElementsHidden .~ true
+  }
+
+  internal func configureWith(value value: Project) {
+    self.projectNameLabel.text = value.name
   }
 }

@@ -17,7 +17,9 @@ internal final class DashboardRewardRowStackView: UIStackView {
 
     super.init(frame: frame)
 
-    self |> dashboardStatsRowStackViewStyle
+    self
+      |> dashboardStatsRowStackViewStyle
+      |> UIStackView.lens.layoutMargins .~ .init(top: 0, left: Styles.grid(1), bottom: 0, right: 0)
 
     self.rewardsLabel
       |> dashboardColumnTextLabelStyle

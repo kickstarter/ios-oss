@@ -43,11 +43,15 @@ internal final class DashboardRewardsCell: UITableViewCell, ValueCell {
   }
 
   internal override func bindStyles() {
-    self |> baseTableViewCellStyle()
+    self
+      |> baseTableViewCellStyle()
 
-    self.containerView |> UIView.lens.backgroundColor .~ .whiteColor()
+    self.containerView
+      |> UIView.lens.backgroundColor .~ .whiteColor()
+      |> dashboardCardStyle
 
-    self.rewardsTitle |> dashboardRewardTitleLabelStyle
+    self.rewardsTitle
+      |> dashboardRewardTitleLabelStyle
 
     self.topRewardsButton
       |> dashboardColumnTitleButtonStyle

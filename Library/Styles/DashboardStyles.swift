@@ -144,7 +144,7 @@ public let dashboardRewardSeeAllButtonStyle = textOnlyButtonStyle
   <> UIButton.lens.titleColor(forState: .Normal) .~ .ksr_navy_700
 
 public let dashboardReferrersCumulativeStackViewStyle =
-  UIStackView.lens.layoutMargins .~ .init(topBottom: 0, leftRight: 24)
+  UIStackView.lens.layoutMargins .~ .init(topBottom: 0, leftRight: Styles.grid(4))
     <> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
 
 public let dashboardStatsRowStackViewStyle =
@@ -173,7 +173,7 @@ public let dashboardVideoGraphPercentageLabelStyle =
 
 public let dashboardVideoInternalPlaysProgressViewStyle =
   UIView.lens.backgroundColor .~ .ksr_green_500
-    <> UIView.lens.layer.borderColor .~ UIColor.ksr_green_400.CGColor
+    <> UIView.lens.layer.borderColor .~ UIColor.ksr_green_700.CGColor
     <> UIView.lens.layer.borderWidth .~ 1
 
 public let dashboardVideoPlaysTitleLabelStyle = dashboardCellTitleLabelStyle
@@ -187,3 +187,4 @@ public let dashboardViewProjectButtonStyle = dashboardGrayTextBorderButtonStyle
   <> UIButton.lens.backgroundColor(forState: .Normal) .~ .whiteColor()
   <> UIButton.lens.titleColor(forState: .Normal) .~ .ksr_navy_700
   <> UIButton.lens.contentEdgeInsets .~ .init(topBottom: 8, leftRight: 16)
+  <> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.View() }

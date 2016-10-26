@@ -52,14 +52,14 @@ internal final class DashboardViewController: UITableViewController {
     super.bindViewModel()
 
     self.viewModel.outputs.fundingData
-      .observeForControllerAction()
+      .observeForUI()
       .observeNext { [weak self] stats, project in
         self?.dataSource.load(fundingDateStats: stats, project: project)
         self?.tableView.reloadData()
     }
 
     self.viewModel.outputs.project
-      .observeForControllerAction()
+      .observeForUI()
       .observeNext { [weak self] project in
         self?.dataSource.load(project: project)
         self?.tableView.reloadData()
@@ -69,21 +69,21 @@ internal final class DashboardViewController: UITableViewController {
     }
 
     self.viewModel.outputs.referrerData
-      .observeForControllerAction()
+      .observeForUI()
       .observeNext { [weak self] (cumulative, project, referrers) in
         self?.dataSource.load(cumulative: cumulative, project: project, referrers: referrers)
         self?.tableView.reloadData()
     }
 
     self.viewModel.outputs.rewardData
-      .observeForControllerAction()
+      .observeForUI()
       .observeNext { [weak self] (stats, project) in
         self?.dataSource.load(rewardStats: stats, project: project)
         self?.tableView.reloadData()
     }
 
     self.viewModel.outputs.videoStats
-      .observeForControllerAction()
+      .observeForUI()
       .observeNext { [weak self] videoStats in
         self?.dataSource.load(videoStats: videoStats)
         self?.tableView.reloadData()

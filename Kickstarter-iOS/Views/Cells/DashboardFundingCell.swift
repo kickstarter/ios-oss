@@ -14,6 +14,7 @@ internal final class DashboardFundingCell: UITableViewCell, ValueCell {
   @IBOutlet private weak var graphAxisSeparatorView: UIView!
   @IBOutlet private weak var graphBackgroundView: UIView!
   @IBOutlet private weak var graphView: FundingGraphView!
+  @IBOutlet private weak var graphViewHeightConstraint: NSLayoutConstraint!
   @IBOutlet private weak var graphXAxisStackView: UIStackView!
   @IBOutlet private weak var graphYAxisBottomLabel: UILabel!
   @IBOutlet private weak var graphYAxisMiddleLabel: UILabel!
@@ -21,6 +22,7 @@ internal final class DashboardFundingCell: UITableViewCell, ValueCell {
   @IBOutlet private weak var launchDateLabel: UILabel!
   @IBOutlet private weak var pledgedSubtitleLabel: UILabel!
   @IBOutlet private weak var pledgedTitleLabel: UILabel!
+  @IBOutlet private weak var rootStackView: UIStackView!
   @IBOutlet private var separatorViews: [UIView]!
   @IBOutlet private weak var statsStackView: UIStackView!
   @IBOutlet private weak var timeRemainingSubtitleLabel: UILabel!
@@ -54,10 +56,22 @@ internal final class DashboardFundingCell: UITableViewCell, ValueCell {
     self.pledgedTitleLabel
       |> dashboardStatTitleLabelStyle
       |> UILabel.lens.textColor .~ .ksr_text_green_700
+
+    self.rootStackView
+      |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+      |> UIStackView.lens.layoutMargins %~~ { _, stack in
+        stack.traitCollection.isRegularRegular
+          ? .init(topBottom: Styles.grid(4), leftRight: Styles.grid(12))
+          : .init(all: 0.0)
+    }
+
     self.separatorViews ||> separatorStyle
     self.statsStackView |> dashboardFundingStatsStackView
     self.timeRemainingSubtitleLabel |> dashboardStatSubtitleLabelStyle
     self.timeRemainingTitleLabel |> dashboardStatTitleLabelStyle
+
+    self.graphViewHeightConstraint.constant = self.traitCollection.isRegularRegular
+      ? Styles.grid(40) : Styles.grid(30)
   }
 
   internal override func bindViewModel() {
