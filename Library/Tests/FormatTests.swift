@@ -346,13 +346,17 @@ final class FormatTests: XCTestCase {
 
   func testDurationUsingToGo() {
     let thirtyMins = NSDate().timeIntervalSince1970 + 60 * 30 + 1
-    let oneDay = NSDate().timeIntervalSince1970 + 60 * 60 * 24 + 1
     let oneAndAHalfDays = NSDate().timeIntervalSince1970 + 60 * 60 * 24 * 1.5 + 1
+    let oneDay = NSDate().timeIntervalSince1970 + 60 * 60 * 24 + 1
+    let oneMinute = NSDate().timeIntervalSince1970 + 60 + 1
     let sixDays = NSDate().timeIntervalSince1970 + 60 * 60 * 24 * 6 + 1
     let sixDaysPast = NSDate().timeIntervalSince1970 - 60 * 60 * 24 * 6 + 1
 
     XCTAssertEqual("30", Format.duration(secondsInUTC: thirtyMins, useToGo: true).time)
     XCTAssertEqual("minutes to go", Format.duration(secondsInUTC: thirtyMins, useToGo: true).unit)
+
+    XCTAssertEqual("1", Format.duration(secondsInUTC: oneMinute, useToGo: true).time)
+    XCTAssertEqual("minute to go", Format.duration(secondsInUTC: oneMinute, useToGo: true).unit)
 
     XCTAssertEqual("24", Format.duration(secondsInUTC: oneDay, useToGo: true).time)
     XCTAssertEqual("hours to go", Format.duration(secondsInUTC: oneDay, useToGo: true).unit)
