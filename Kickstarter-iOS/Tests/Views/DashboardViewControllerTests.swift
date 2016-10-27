@@ -101,8 +101,9 @@ private let cumulativeStats = .template
   |> ProjectStatsEnvelope.CumulativeStats.lens.averagePledge .~ 5
 
 private let cosmicSurgery = .cosmicSurgery
+  |> Project.lens.dates.launchedAt .~ 1477494745
   |> Project.lens.stats.pledged .~ cumulativeStats.pledged
-  |> Project.lens.memberData.lastUpdatePublishedAt .~ NSDate().timeIntervalSince1970
+  |> Project.lens.memberData.lastUpdatePublishedAt .~ 1477581146
   |> Project.lens.memberData.unreadMessagesCount .~ 42
   |> Project.lens.memberData.unseenActivityCount .~ 1_299
   |> Project.lens.memberData.permissions .~ [.post, .viewPledges]
