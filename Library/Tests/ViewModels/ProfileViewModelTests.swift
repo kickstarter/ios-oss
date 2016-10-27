@@ -37,7 +37,7 @@ internal final class ProfileViewModelTests: TestCase {
     self.vm.inputs.projectTapped(project)
 
     self.goToProject.assertValues([project], "Project emmitted.")
-    self.goToRefTag.assertValues([.users], "RefTag =users emitted.")
+    self.goToRefTag.assertValues([.profileBacked], "RefTag =profile_backed emitted.")
   }
 
   func testUserWithBackedProjectsWithProfileViewTracking() {

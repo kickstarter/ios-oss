@@ -9,9 +9,11 @@ public enum RefTag {
   case categoryWithSort(DiscoveryParams.Sort)
   case city
   case dashboard
+  case dashboardActivity
   case discovery
   case discoveryPotd
   case messageThread
+  case profileBacked
   case push
   case recommended
   case recommendedWithSort(DiscoveryParams.Sort)
@@ -19,7 +21,6 @@ public enum RefTag {
   case social
   case thanks
   case unrecognized(String)
-  case users
 
   /**
    Create a RefTag value from a code string. If a ref tag cannot be matched, an `.unrecognized` tag is
@@ -43,9 +44,11 @@ public enum RefTag {
     case "category_popular":          self = .categoryWithSort(.popular)
     case "city":                      self = .city
     case "dashboard":                 self = .dashboard
+    case "dashboard_activity":        self = .dashboardActivity
     case "discovery":                 self = .discovery
     case "discovery_potd":            self = .discoveryPotd
     case "message_thread":            self = .messageThread
+    case "profile_backed":            self = .profileBacked
     case "push":                      self = .push
     case "recommended":               self = .recommended
     case "recommended_ending_soon":   self = .recommendedWithSort(.endingSoon)
@@ -56,7 +59,6 @@ public enum RefTag {
     case "search":                    self = .search
     case "social":                    self = .social
     case "thanks":                    self = .thanks
-    case "users":                     self = .users
     default:                          self = .unrecognized(code)
     }
   }
@@ -79,12 +81,16 @@ public enum RefTag {
       return "city"
     case .dashboard:
       return "dashboard"
+    case .dashboardActivity:
+      return "dashboard_activity"
     case .discovery:
       return "discovery"
     case .discoveryPotd:
       return "discovery_potd"
     case .messageThread:
       return "message_thread"
+    case .profileBacked:
+      return "profile_backed"
     case .push:
       return "push"
     case .recommended:
@@ -97,8 +103,6 @@ public enum RefTag {
       return "social"
     case .thanks:
       return "thanks"
-    case .users:
-      return "users"
     case let .unrecognized(code):
       return code
     }
@@ -110,9 +114,10 @@ extension RefTag: Equatable {
 public func == (lhs: RefTag, rhs: RefTag) -> Bool {
   switch (lhs, rhs) {
   case (.activity, .activity), (.category, .category), (.categoryFeatured, .categoryFeatured),
-    (.activitySample, .activitySample), (.city, .city), (.dashboard, .dashboard), (.discovery, .discovery),
-    (.discoveryPotd, .discoveryPotd), (.messageThread, .messageThread), (.recommended, .recommended),
-    (.search, .search), (.social, .social), (.thanks, .thanks), (.users, .users):
+    (.activitySample, .activitySample), (.city, .city), (.dashboard, .dashboard),
+    (.dashboardActivity, .dashboardActivity), (.discovery, .discovery), (.discoveryPotd, .discoveryPotd),
+    (.messageThread, .messageThread), (.profileBacked, .profileBacked), (.push, .push),
+    (.recommended, .recommended), (.search, .search), (.social, .social), (.thanks, .thanks):
     return true
   case let (.categoryWithSort(lhs), .categoryWithSort(rhs)):
     return lhs == rhs

@@ -89,7 +89,7 @@ public final class ProfileViewModel: ProfileViewModelType, ProfileViewModelInput
     self.goToSettings = settingsButtonTappedProperty.signal
 
     self.goToProject = projectTappedProperty.signal.ignoreNil()
-      .map { ($0, RefTag.users) }
+      .map { ($0, RefTag.profileBacked) }
 
     self.viewWillAppearProperty.signal.filter(isFalse)
       .observeNext { _ in AppEnvironment.current.koala.trackProfileView() }

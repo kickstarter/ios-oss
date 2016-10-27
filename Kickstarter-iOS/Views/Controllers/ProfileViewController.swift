@@ -108,7 +108,7 @@ internal final class ProfileViewController: UICollectionViewController {
   }
 
   private func present(project project: Project, refTag: RefTag) {
-    let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: .dashboard)
+    let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: refTag)
     let nav = UINavigationController(rootViewController: vc)
     self.presentViewController(nav, animated: true, completion: nil)
   }

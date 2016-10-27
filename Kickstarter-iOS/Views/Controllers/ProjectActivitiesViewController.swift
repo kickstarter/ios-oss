@@ -103,7 +103,8 @@ internal final class ProjectActivitiesViewController: UITableViewController {
   }
 
   internal func goToProject(project project: Project) {
-    let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: .dashboard)
+    let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project),
+                                                          refTag: .dashboardActivity)
     let nav = UINavigationController(rootViewController: vc)
     self.presentViewController(nav, animated: true, completion: nil)
   }
