@@ -102,6 +102,7 @@ private let cumulativeStats = .template
 
 private let cosmicSurgery = .cosmicSurgery
   |> Project.lens.dates.launchedAt .~ 1477494745
+  |> Project.lens.dates.deadline .~ 1480187443
   |> Project.lens.stats.pledged .~ cumulativeStats.pledged
   |> Project.lens.memberData.lastUpdatePublishedAt .~ 1477581146
   |> Project.lens.memberData.unreadMessagesCount .~ 42

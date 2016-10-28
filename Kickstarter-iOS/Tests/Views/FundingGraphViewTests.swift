@@ -23,7 +23,6 @@ internal final class FundingGraphViewTests: TestCase {
   }
 
   func testGoalLabelLanguages() {
-    let project = .template |> Project.lens.stats.goal .~ 22_000
     let graphView = FundingGraphView(frame: CGRect(x: 0, y: 0, width: 300, height: 225))
     let stats = [3_000, 4_000, 5_000, 7_000, 8_000, 13_000, 14_000, 15_000, 17_000, 18_000]
 
@@ -45,9 +44,6 @@ internal final class FundingGraphViewTests: TestCase {
   }
 
   func testGraphStates() {
-    let project = .template
-      |> Project.lens.stats.goal .~ 22_000
-
     let graphView = FundingGraphView(frame: CGRect(x: 0, y: 0, width: 300, height: 225))
 
     let underFundedStats = [
@@ -97,6 +93,11 @@ internal final class FundingGraphViewTests: TestCase {
     }
   }
 }
+
+private let project = .template
+  |> Project.lens.stats.goal .~ 22_000
+  |> Project.lens.dates.launchedAt .~ 1477494745
+  |> Project.lens.dates.deadline .~ 1480187443
 
 private func fundingStats(forProject project: Project, pledgeValues: [Int])
   -> [ProjectStatsEnvelope.FundingDateStats] {
