@@ -8,8 +8,8 @@ internal final class MessageThreadsViewController: UITableViewController {
   private let viewModel: MessageThreadsViewModelType = MessageThreadsViewModel()
   private let dataSource = MessageThreadsDataSource()
 
-  @IBOutlet private weak var mailboxLabel: UILabel!
   @IBOutlet private weak var footerView: UIView!
+  @IBOutlet private weak var mailboxLabel: UILabel!
 
   internal static func configuredWith(project project: Project?) -> MessageThreadsViewController {
     let vc = Storyboard.Messages.instantiate(MessageThreadsViewController)
@@ -81,13 +81,28 @@ internal final class MessageThreadsViewController: UITableViewController {
   private func showMailboxChooserActionSheet() {
     let alert = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
 
-    alert.addAction(UIAlertAction(title: "Inbox", style: .Default) { [weak self] _ in
-      self?.viewModel.inputs.switchTo(mailbox: .inbox)
-    })
-    alert.addAction(UIAlertAction(title: "Sent", style: .Default) { [weak self] _ in
-      self?.viewModel.inputs.switchTo(mailbox: .sent)
-    })
-    alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+    alert.addAction(
+      UIAlertAction(title: Strings.messages_navigation_inbox(), style: .Default) { [weak self] _ in
+        self?.viewModel.inputs.switchTo(mailbox: .inbox)
+      }
+    )
+
+    alert.addAction(
+      UIAlertAction(title: Strings.messages_navigation_sent(), style: .Default) { [weak self] _ in
+        self?.viewModel.inputs.switchTo(mailbox: .sent)
+      }
+    )
+
+    alert.addAction(
+      UIAlertAction(title: Strings.general_navigation_buttons_cancel(), style: .Cancel, handler: nil)
+    )
+
+    if self.traitCollection.userInterfaceIdiom == .Pad {
+      alert.modalPresentationStyle = .Popover
+      let popover = alert.popoverPresentationController
+      popover?.sourceView = self.mailboxLabel
+      popover?.sourceRect = self.mailboxLabel.bounds
+    }
 
     self.presentViewController(alert, animated: true, completion: nil)
   }

@@ -196,7 +196,9 @@ internal final class DashboardViewController: UITableViewController {
 
     if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
       controller.modalPresentationStyle = .Popover
+      controller.popoverPresentationController?.barButtonItem = self.navigationItem.rightBarButtonItem
       self.presentViewController(controller, animated: true, completion: nil)
+
     } else {
       self.presentViewController(controller, animated: true, completion: nil)
     }
