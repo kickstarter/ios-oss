@@ -37,6 +37,9 @@ public struct Environment {
   /// The currently logged in user.
   public let currentUser: User?
 
+  /// A type that exposes how to capture dates as measured from # of seconds since 1970.
+  public let dateType: DateProtocol.Type
+
   /// The amount of time to debounce signals by. Default value is `0.3`.
   public let debounceInterval: NSTimeInterval
 
@@ -88,6 +91,7 @@ public struct Environment {
     cookieStorage: NSHTTPCookieStorageType = NSHTTPCookieStorage.sharedHTTPCookieStorage(),
     countryCode: String = "US",
     currentUser: User? = nil,
+    dateType: DateProtocol.Type = NSDate.self,
     debounceInterval: NSTimeInterval = 0.3,
     facebookAppDelegate: FacebookAppDelegateProtocol = FBSDKApplicationDelegate.sharedInstance(),
     isVoiceOverRunning: () -> Bool = UIAccessibilityIsVoiceOverRunning,
@@ -111,6 +115,7 @@ public struct Environment {
     self.cookieStorage = cookieStorage
     self.countryCode = countryCode
     self.currentUser = currentUser
+    self.dateType = dateType
     self.debounceInterval = debounceInterval
     self.facebookAppDelegate = facebookAppDelegate
     self.isVoiceOverRunning = isVoiceOverRunning
@@ -137,6 +142,7 @@ public struct Environment {
       self.cookieStorage,
       self.countryCode,
       self.currentUser,
+      self.dateType,
       self.debounceInterval,
       self.facebookAppDelegate,
       self.isVoiceOverRunning,

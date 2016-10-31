@@ -13,6 +13,7 @@ internal class TestCase: FBSnapshotTestCase {
   internal let cache = MockCache()
   internal let config = Config.config
   internal let cookieStorage = MockCookieStorage()
+  internal let dateType = MockDate.self
   internal let facebookAppDelegate = MockFacebookAppDelegate()
   internal let mainBundle = MockBundle()
   internal let scheduler = TestScheduler()
@@ -31,6 +32,7 @@ internal class TestCase: FBSnapshotTestCase {
       cookieStorage: self.cookieStorage,
       countryCode: "US",
       currentUser: nil,
+      dateType: dateType,
       debounceInterval: 0.0,
       facebookAppDelegate: self.facebookAppDelegate,
       isVoiceOverRunning: { false },

@@ -84,32 +84,34 @@ internal final class DashboardFundingCellViewModelTests: TestCase {
   }
 
   func testFundingGraphDataEmits() {
+    let now = self.dateType.init()
+
     let stat1 = .template
-      |> ProjectStatsEnvelope.FundingDateStats.lens.date .~ 1468421287 - 60 * 60 * 24 * 4
+      |> ProjectStatsEnvelope.FundingDateStats.lens.date .~ now.timeIntervalSince1970 - 60 * 60 * 24 * 4
       |> ProjectStatsEnvelope.FundingDateStats.lens.cumulativePledged .~ 500
 
     let stat2 = .template
-      |> ProjectStatsEnvelope.FundingDateStats.lens.date .~ 1468421287 - 60 * 60 * 24 * 3
+      |> ProjectStatsEnvelope.FundingDateStats.lens.date .~ now.timeIntervalSince1970 - 60 * 60 * 24 * 3
       |> ProjectStatsEnvelope.FundingDateStats.lens.cumulativePledged .~ 700
 
     let stat3 = .template
-      |> ProjectStatsEnvelope.FundingDateStats.lens.date .~ 1468421287 - 60 * 60 * 24 * 2
+      |> ProjectStatsEnvelope.FundingDateStats.lens.date .~ now.timeIntervalSince1970 - 60 * 60 * 24 * 2
       |> ProjectStatsEnvelope.FundingDateStats.lens.cumulativePledged .~ 1_500
 
     let stat4 = .template
-      |> ProjectStatsEnvelope.FundingDateStats.lens.date .~ 1468421287 - 60 * 60 * 24 * 1
+      |> ProjectStatsEnvelope.FundingDateStats.lens.date .~ now.timeIntervalSince1970 - 60 * 60 * 24 * 1
       |> ProjectStatsEnvelope.FundingDateStats.lens.cumulativePledged .~ 2_200
 
     let stat5 = .template
-      |> ProjectStatsEnvelope.FundingDateStats.lens.date .~ 1468421287
+      |> ProjectStatsEnvelope.FundingDateStats.lens.date .~ now.timeIntervalSince1970
       |> ProjectStatsEnvelope.FundingDateStats.lens.cumulativePledged .~ 3_500
 
     let fundingDateStats = [stat1, stat2, stat3, stat4, stat5]
 
     let project = .template
-      |> Project.lens.dates.deadline .~ 1468421287
-      |> Project.lens.dates.launchedAt .~ 1468421287 - 60 * 60 * 24 * 5
-      |> Project.lens.dates.stateChangedAt .~ 1468421287
+      |> Project.lens.dates.deadline .~ now.timeIntervalSince1970
+      |> Project.lens.dates.launchedAt .~ now.timeIntervalSince1970 - 60 * 60 * 24 * 5
+      |> Project.lens.dates.stateChangedAt .~ now.timeIntervalSince1970
 
     self.vm.inputs.configureWith(fundingDateStats: fundingDateStats, project: project)
 
@@ -119,11 +121,13 @@ internal final class DashboardFundingCellViewModelTests: TestCase {
   }
 
   func testProjectDataEmits() {
+    let now = self.dateType.init()
+
     let fundingDateStats = [ProjectStatsEnvelope.FundingDateStats.template]
 
     let project = .template
       |> Project.lens.stats.backersCount .~ 2_000
-      |> Project.lens.dates.deadline .~ NSDate().timeIntervalSince1970 + 60.0 * 60.0 * 24.0
+      |> Project.lens.dates.deadline .~ now.timeIntervalSince1970 + 60.0 * 60.0 * 24.0
       |> Project.lens.stats.goal .~ 50_000
       |> Project.lens.stats.pledged .~ 5_000
 
@@ -135,6 +139,6 @@ internal final class DashboardFundingCellViewModelTests: TestCase {
     self.launchDateText.assertValueCount(1)
     self.pledgedText.assertValues(["$5,000"])
     self.timeRemainingSubtitleText.assertValues(["hours to go"])
-    self.timeRemainingTitleText.assertValues(["23"])
+    self.timeRemainingTitleText.assertValues(["24"])
   }
 }

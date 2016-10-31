@@ -110,7 +110,7 @@ public enum Format {
       )
     )
 
-    return formatter.stringFromDate(NSDate(timeIntervalSince1970: seconds))
+    return formatter.stringFromDate(env.dateType.init(timeIntervalSince1970: seconds).date)
   }
 
   /**
@@ -133,7 +133,7 @@ public enum Format {
       )
     )
 
-    return formatter.stringFromDate(NSDate(timeIntervalSince1970: seconds))
+    return formatter.stringFromDate(AppEnvironment.current.dateType.init(timeIntervalSince1970: seconds).date)
   }
 
   /**
@@ -155,8 +155,8 @@ public enum Format {
                  env: Environment = AppEnvironment.current) -> (time: String, unit: String) {
 
     let components = env.calendar.components([.Day, .Hour, .Minute, .Second],
-                                             fromDate: NSDate(),
-                                             toDate: NSDate(timeIntervalSince1970: seconds),
+                                             fromDate: env.dateType.init().date,
+                                             toDate: env.dateType.init(timeIntervalSince1970: seconds).date,
                                              options: [])
 
     let string: String
@@ -166,10 +166,10 @@ public enum Format {
     } else if components.day == 1 || components.hour > 0 {
       let format = abbreviate ? Strings.dates_time_hours_abbreviated : Strings.dates_time_hours
       string = format(time_count: components.day * 24 + components.hour)
-    } else if components.minute >= 0 && components.second >= 0 {
+    } else if components.minute > 0 && components.second >= 0 {
       let format = abbreviate ? Strings.dates_time_minutes_abbreviated : Strings.dates_time_minutes
       string = format(time_count: components.minute)
-    } else if components.second < 0 {
+    } else if components.second <= 0 {
       string = "0 " + Strings.discovery_baseball_card_deadline_units_secs()
     } else {
       string = ""
@@ -210,8 +210,8 @@ public enum Format {
                  env: Environment = AppEnvironment.current) -> String {
 
     let components = env.calendar.components([.Day, .Hour, .Minute, .Second],
-                                             fromDate: NSDate(timeIntervalSince1970: seconds),
-                                             toDate: NSDate(),
+                                             fromDate: env.dateType.init(timeIntervalSince1970: seconds).date,
+                                             toDate: env.dateType.init().date,
                                              options: [])
 
     if abs(components.day) > thresholdInDays {

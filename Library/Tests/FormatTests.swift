@@ -3,7 +3,7 @@ import KsApi
 @testable import Library
 
 // swiftlint:disable function_body_length
-final class FormatTests: XCTestCase {
+final class FormatTests: TestCase {
 
   func testWholeNumber() {
     withEnvironment(locale: NSLocale(localeIdentifier: "en")) {
@@ -299,11 +299,12 @@ final class FormatTests: XCTestCase {
   }
 
   func testDuration() {
-    let thirtyMins = NSDate().timeIntervalSince1970 + 60 * 30 + 1
-    let oneDay = NSDate().timeIntervalSince1970 + 60 * 60 * 24 + 1
-    let oneAndAHalfDays = NSDate().timeIntervalSince1970 + 60 * 60 * 24 * 1.5 + 1
-    let sixDays = NSDate().timeIntervalSince1970 + 60 * 60 * 24 * 6 + 1
-    let sixDaysPast = NSDate().timeIntervalSince1970 - 60 * 60 * 24 * 6 + 1
+    let now = self.dateType.init()
+    let thirtyMins = now.timeIntervalSince1970 + 60 * 30
+    let oneDay = now.timeIntervalSince1970 + 60 * 60 * 24
+    let oneAndAHalfDays = now.timeIntervalSince1970 + 60 * 60 * 24 * 1.5
+    let sixDays = now.timeIntervalSince1970 + 60 * 60 * 24 * 6
+    let sixDaysPast = now.timeIntervalSince1970 - 60 * 60 * 24 * 6
 
     XCTAssertEqual("30", Format.duration(secondsInUTC: thirtyMins).time)
     XCTAssertEqual("minutes", Format.duration(secondsInUTC: thirtyMins).unit)
@@ -322,11 +323,12 @@ final class FormatTests: XCTestCase {
   }
 
   func testDurationAbbreviated() {
-    let thirtyMins = NSDate().timeIntervalSince1970 + 60 * 30 + 1
-    let oneDay = NSDate().timeIntervalSince1970 + 60 * 60 * 24 + 1
-    let oneAndAHalfDays = NSDate().timeIntervalSince1970 + 60 * 60 * 24 * 1.5 + 1
-    let sixDays = NSDate().timeIntervalSince1970 + 60 * 60 * 24 * 6 + 1
-    let sixDaysPast = NSDate().timeIntervalSince1970 - 60 * 60 * 24 * 6 + 1
+    let now = self.dateType.init()
+    let thirtyMins = now.timeIntervalSince1970 + 60 * 30
+    let oneDay = now.timeIntervalSince1970 + 60 * 60 * 24
+    let oneAndAHalfDays = now.timeIntervalSince1970 + 60 * 60 * 24 * 1.5
+    let sixDays = now.timeIntervalSince1970 + 60 * 60 * 24 * 6
+    let sixDaysPast = now.timeIntervalSince1970 - 60 * 60 * 24 * 6
 
     XCTAssertEqual("30", Format.duration(secondsInUTC: thirtyMins, abbreviate: true).time)
     XCTAssertEqual("mins", Format.duration(secondsInUTC: thirtyMins, abbreviate: true).unit)
@@ -345,12 +347,13 @@ final class FormatTests: XCTestCase {
   }
 
   func testDurationUsingToGo() {
-    let thirtyMins = NSDate().timeIntervalSince1970 + 60 * 30 + 1
-    let oneAndAHalfDays = NSDate().timeIntervalSince1970 + 60 * 60 * 24 * 1.5 + 1
-    let oneDay = NSDate().timeIntervalSince1970 + 60 * 60 * 24 + 1
-    let oneMinute = NSDate().timeIntervalSince1970 + 60 + 1
-    let sixDays = NSDate().timeIntervalSince1970 + 60 * 60 * 24 * 6 + 1
-    let sixDaysPast = NSDate().timeIntervalSince1970 - 60 * 60 * 24 * 6 + 1
+    let now = self.dateType.init()
+    let thirtyMins = now.timeIntervalSince1970 + 60 * 30
+    let oneMinute = now.timeIntervalSince1970 + 60
+    let oneDay = now.timeIntervalSince1970 + 60 * 60 * 24
+    let oneAndAHalfDays = now.timeIntervalSince1970 + 60 * 60 * 24 * 1.5
+    let sixDays = now.timeIntervalSince1970 + 60 * 60 * 24 * 6
+    let sixDaysPast = now.timeIntervalSince1970 - 60 * 60 * 24 * 6
 
     XCTAssertEqual("30", Format.duration(secondsInUTC: thirtyMins, useToGo: true).time)
     XCTAssertEqual("minutes to go", Format.duration(secondsInUTC: thirtyMins, useToGo: true).unit)
@@ -372,18 +375,19 @@ final class FormatTests: XCTestCase {
   }
 
   func testRelative() {
-    let justNow = NSDate().timeIntervalSince1970 - 30
-    let rightNow = NSDate().timeIntervalSince1970 + 31
-    let minutesAgo = NSDate().timeIntervalSince1970 - 60 * 30
-    let inMinutes = NSDate().timeIntervalSince1970 + 60 * 31
-    let hoursAgo = NSDate().timeIntervalSince1970 - 60 * 60
-    let inHours = NSDate().timeIntervalSince1970 + 60 * 61
-    let yesterday = NSDate().timeIntervalSince1970 - 60 * 60 * 24
-    let tomorrow = NSDate().timeIntervalSince1970 + 60 * 61 * 24
-    let daysAgo = NSDate().timeIntervalSince1970 - 60 * 60 * 24 * 2
-    let inDays = NSDate().timeIntervalSince1970 + 60 * 61 * 24 * 2
-    let awhileAgo = NSDate().timeIntervalSince1970 - 60 * 60 * 24 * 31
-    let inAwhile = NSDate().timeIntervalSince1970 - 60 * 60 * 24 * 32
+    let now = self.dateType.init()
+    let justNow = now.timeIntervalSince1970 - 30
+    let rightNow = now.timeIntervalSince1970 + 30
+    let minutesAgo = now.timeIntervalSince1970 - 60 * 30
+    let inMinutes = now.timeIntervalSince1970 + 60 * 30
+    let hoursAgo = now.timeIntervalSince1970 - 60 * 60
+    let inHours = now.timeIntervalSince1970 + 60 * 60
+    let yesterday = now.timeIntervalSince1970 - 60 * 60 * 24
+    let tomorrow = now.timeIntervalSince1970 + 60 * 60 * 24
+    let daysAgo = now.timeIntervalSince1970 - 60 * 60 * 24 * 2
+    let inDays = now.timeIntervalSince1970 + 60 * 60 * 24 * 2
+    let awhileAgo = now.timeIntervalSince1970 - 60 * 60 * 24 * 30 - 60 * 60 * 24
+    let inAwhile = now.timeIntervalSince1970 + 60 * 60 * 24 * 30 + 60 * 60 * 24
 
     withEnvironment(locale: NSLocale(localeIdentifier: "en"), language: .en, mainBundle: MockBundle()) {
       XCTAssertEqual("just now", Format.relative(secondsInUTC: justNow))

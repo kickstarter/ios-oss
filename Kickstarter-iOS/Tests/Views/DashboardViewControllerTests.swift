@@ -1,12 +1,16 @@
-import Library
 import Prelude
 @testable import Kickstarter_Framework
 @testable import KsApi
+@testable import Library
 
 internal final class DashboardViewControllerTests: TestCase {
 
   override func setUp() {
     super.setUp()
+
+    let project = cosmicSurgery
+      |> Project.lens.dates.launchedAt .~ self.dateType.init().timeIntervalSince1970 - 60 * 60 * 24 * 14
+      |> Project.lens.dates.deadline .~ self.dateType.init().timeIntervalSince1970 + 60 * 60 * 24 * 14
 
     AppEnvironment.pushEnvironment(
       apiService: MockService(
@@ -17,9 +21,9 @@ internal final class DashboardViewControllerTests: TestCase {
           |> ProjectStatsEnvelope.lens.videoStats .~ videoStats
           |> ProjectStatsEnvelope.lens.fundingDistribution .~ fundingStats,
 
-        fetchProjectsResponse: [cosmicSurgery]
+        fetchProjectsResponse: [project]
       ),
-      currentUser: cosmicSurgery.creator,
+      currentUser: project.creator,
       mainBundle: NSBundle.framework
     )
 
@@ -27,6 +31,7 @@ internal final class DashboardViewControllerTests: TestCase {
   }
 
   func testView() {
+
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
       withEnvironment(language: language) {
         let controller = DashboardViewController.instantiate()
@@ -101,8 +106,6 @@ private let cumulativeStats = .template
   |> ProjectStatsEnvelope.CumulativeStats.lens.averagePledge .~ 5
 
 private let cosmicSurgery = .cosmicSurgery
-  |> Project.lens.dates.launchedAt .~ 1477494745
-  |> Project.lens.dates.deadline .~ 1480187443
   |> Project.lens.stats.pledged .~ cumulativeStats.pledged
   |> Project.lens.memberData.lastUpdatePublishedAt .~ 1477581146
   |> Project.lens.memberData.unreadMessagesCount .~ 42

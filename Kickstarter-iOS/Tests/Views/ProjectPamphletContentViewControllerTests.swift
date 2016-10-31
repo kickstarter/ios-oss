@@ -1,18 +1,26 @@
 // swiftlint:disable type_name
-import Library
 import Prelude
 import Result
 import XCTest
 @testable import Kickstarter_Framework
 @testable import KsApi
+@testable import Library
 
 internal final class ProjectPamphletContentViewControllerTests: TestCase {
-  private let cosmicSurgery = Project.cosmicSurgery
-    |> Project.lens.photo.full .~ ""
-    |> (Project.lens.creator.avatar • User.Avatar.lens.small) .~ ""
+  private var cosmicSurgery: Project!
 
   override func setUp() {
     super.setUp()
+
+    let deadline = self.dateType.init().timeIntervalSince1970 + 60.0 * 60.0 * 24.0 * 14.0
+    let launchedAt = self.dateType.init().timeIntervalSince1970 - 60.0 * 60.0 * 24.0 * 14.0
+    let project = Project.cosmicSurgery
+      |> Project.lens.photo.full .~ ""
+      |> (Project.lens.creator.avatar • User.Avatar.lens.small) .~ ""
+      |> Project.lens.dates.deadline .~ deadline
+      |> Project.lens.dates.launchedAt .~ launchedAt
+    self.cosmicSurgery = project
+
     AppEnvironment.pushEnvironment(
       config: .template |> Config.lens.countryCode .~ self.cosmicSurgery.country.countryCode,
       mainBundle: NSBundle.framework
@@ -25,6 +33,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
   }
 
   func testAllCategoryGroups() {
+
     let project = self.cosmicSurgery
       |> Project.lens.rewards .~ [self.cosmicSurgery.rewards.first!]
       |> Project.lens.state .~ .live

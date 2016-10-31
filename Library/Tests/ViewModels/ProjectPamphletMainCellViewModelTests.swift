@@ -191,11 +191,11 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
 
   func testDeadlineLabels() {
     let project = .template
-      |> Project.lens.dates.deadline .~ NSDate().timeIntervalSince1970 + 60*60*24*4
+      |> Project.lens.dates.deadline .~ self.dateType.init().timeIntervalSince1970 + 60 * 60 * 24 * 4
 
     self.vm.inputs.configureWith(project: project)
 
-    self.deadlineTitleLabelText.assertValues(["3"])
+    self.deadlineTitleLabelText.assertValues(["4"])
     self.deadlineSubtitleLabelText.assertValues(["days to go"])
   }
 
