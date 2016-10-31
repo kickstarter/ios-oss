@@ -44,27 +44,27 @@ public final class RootTabBarViewController: UITabBarController {
     super.bindViewModel()
 
     self.viewModel.outputs.setViewControllers
-      .observeForControllerAction()
+      .observeForUI()
       .observeNext { [weak self] in self?.setViewControllers($0, animated: false) }
 
     self.viewModel.outputs.selectedIndex
-      .observeForControllerAction()
+      .observeForUI()
       .observeNext { [weak self] in self?.selectedIndex = $0 }
 
     self.viewModel.outputs.scrollToTop
-      .observeForControllerAction()
+      .observeForUI()
       .observeNext(scrollToTop)
 
     self.viewModel.outputs.tabBarItemsData
-      .observeForControllerAction()
+      .observeForUI()
       .observeNext { [weak self] in self?.setTabBarItemStyles(withData: $0) }
 
     self.viewModel.outputs.profileTabBarItemData
-      .observeForControllerAction()
+      .observeForUI()
       .observeNext { [weak self] in self?.setProfileImage(withData: $0) }
 
     self.viewModel.outputs.filterDiscovery
-      .observeForControllerAction()
+      .observeForUI()
       .observeNext { $0.filter(with: $1) }
 
     self.viewModel.outputs.switchDashboardProject

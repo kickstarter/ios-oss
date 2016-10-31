@@ -63,7 +63,6 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
     self.heartOutlineImageView.rac.tintColor = self.viewModel.outputs.subviewColor
     self.primaryLabel.rac.text = self.viewModel.outputs.primaryLabelText
     self.primaryLabel.rac.textColor = self.viewModel.outputs.subviewColor
-    self.primaryLabel.rac.alpha = self.viewModel.outputs.primaryLabelOpacity
     self.secondaryLabel.rac.text = self.viewModel.outputs.secondaryLabelText
     self.secondaryLabel.rac.hidden = self.viewModel.outputs.secondaryLabelIsHidden
     self.secondaryLabel.rac.textColor = self.viewModel.outputs.subviewColor
@@ -71,6 +70,24 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
     self.dividerLabel.rac.textColor = self.viewModel.outputs.subviewColor
     self.titleButton.rac.accessibilityLabel = self.viewModel.outputs.titleButtonAccessibilityLabel
     self.titleButton.rac.accessibilityHint = self.viewModel.outputs.titleButtonAccessibilityHint
+
+    self.viewModel.outputs.primaryLabelOpacityAnimated
+      .observeForUI()
+      .observeNext { [weak self] (alpha, animated) in
+        UIView.animateWithDuration(animated ? 0.2 : 0.0, delay: 0.0, options: .CurveEaseOut, animations: {
+          self?.primaryLabel.alpha = alpha
+          },
+          completion: nil)
+    }
+
+    self.viewModel.outputs.arrowOpacityAnimated
+      .observeForUI()
+      .observeNext { [weak self] (alpha, animated) in
+        UIView.animateWithDuration(animated ? 0.2 : 0.0, delay: 0.0, options: .CurveEaseOut, animations: {
+          self?.arrowImageView.alpha = alpha
+          },
+          completion: nil)
+    }
 
     self.viewModel.outputs.primaryLabelFont
       .observeForUI()

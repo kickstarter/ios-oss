@@ -11,7 +11,11 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
   private let vm: DiscoveryNavigationHeaderViewModelType = DiscoveryNavigationHeaderViewModel()
 
   private let animateArrowToDown = TestObserver<Bool, NoError>()
+  private let arrowOpacity = TestObserver<CGFloat, NoError>()
+  private let arrowOpacityAnimated = TestObserver<Bool, NoError>()
   private let dividerIsHidden = TestObserver<Bool, NoError>()
+  private let primaryLabelOpacity = TestObserver<CGFloat, NoError>()
+  private let primaryLabelOpacityAnimated = TestObserver<Bool, NoError>()
   private let primaryLabelText = TestObserver<String, NoError>()
   private let dismissDiscoveryFilters = TestObserver<(), NoError>()
   private let notifyDelegateFilterSelectedParams = TestObserver<DiscoveryParams, NoError>()
@@ -41,8 +45,12 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
     super.setUp()
 
     self.vm.outputs.animateArrowToDown.observe(self.animateArrowToDown.observer)
+    self.vm.outputs.arrowOpacityAnimated.map(first).observe(self.arrowOpacity.observer)
+    self.vm.outputs.arrowOpacityAnimated.map(second).observe(self.arrowOpacityAnimated.observer)
     self.vm.outputs.dismissDiscoveryFilters.observe(self.dismissDiscoveryFilters.observer)
     self.vm.outputs.dividerIsHidden.observe(self.dividerIsHidden.observer)
+    self.vm.outputs.primaryLabelOpacityAnimated.map(first).observe(self.primaryLabelOpacity.observer)
+    self.vm.outputs.primaryLabelOpacityAnimated.map(second).observe(self.primaryLabelOpacityAnimated.observer)
     self.vm.outputs.primaryLabelText.observe(self.primaryLabelText.observer)
     self.vm.outputs.notifyDelegateFilterSelectedParams
       .observe(self.notifyDelegateFilterSelectedParams.observer)
@@ -118,8 +126,15 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
   }
 
   func testTitleData() {
+    self.arrowOpacity.assertValueCount(0)
+    self.primaryLabelOpacity.assertValueCount(0)
+
     self.vm.inputs.viewDidLoad()
 
+    self.arrowOpacity.assertValues([0.0])
+    self.arrowOpacityAnimated.assertValues([false])
+    self.primaryLabelOpacity.assertValues([0.0])
+    self.primaryLabelOpacityAnimated.assertValues([false])
     self.animateArrowToDown.assertValueCount(0)
     self.dividerIsHidden.assertValueCount(0)
     self.primaryLabelText.assertValueCount(0)
@@ -130,6 +145,10 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(params: initialParams)
 
+    self.arrowOpacity.assertValues([0.0, 1.0])
+    self.arrowOpacityAnimated.assertValues([false, true])
+    self.primaryLabelOpacity.assertValues([0.0, 1.0])
+    self.primaryLabelOpacityAnimated.assertValues([false, true])
     self.animateArrowToDown.assertValues([true])
     self.dividerIsHidden.assertValues([true])
     self.primaryLabelText.assertValues([Strings.All_Projects()])
@@ -140,6 +159,10 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
 
     self.vm.inputs.titleButtonTapped()
 
+    self.arrowOpacity.assertValues([0.0, 1.0])
+    self.arrowOpacityAnimated.assertValues([false, true])
+    self.primaryLabelOpacity.assertValues([0.0, 1.0, 1.0])
+    self.primaryLabelOpacityAnimated.assertValues([false, true, true])
     self.animateArrowToDown.assertValues([true, false])
     self.dividerIsHidden.assertValues([true])
     self.primaryLabelText.assertValues([Strings.All_Projects(), Strings.All_Projects()])
@@ -151,6 +174,10 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
 
     self.vm.inputs.filtersSelected(row: selectableRow |> SelectableRow.lens.params .~ starredParams)
 
+    self.arrowOpacity.assertValues([0.0, 1.0])
+    self.arrowOpacityAnimated.assertValues([false, true])
+    self.primaryLabelOpacity.assertValues([0.0, 1.0, 1.0, 1.0])
+    self.primaryLabelOpacityAnimated.assertValues([false, true, true, true])
     self.animateArrowToDown.assertValues([true, false, true])
     self.dividerIsHidden.assertValues([true])
     self.primaryLabelText.assertValues([Strings.All_Projects(), Strings.All_Projects(),
@@ -164,6 +191,10 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
 
     self.vm.inputs.titleButtonTapped()
 
+    self.arrowOpacity.assertValues([0.0, 1.0])
+    self.arrowOpacityAnimated.assertValues([false, true])
+    self.primaryLabelOpacity.assertValues([0.0, 1.0, 1.0, 1.0, 1.0])
+    self.primaryLabelOpacityAnimated.assertValues([false, true, true, true, true])
     self.animateArrowToDown.assertValues([true, false, true, false])
     self.dividerIsHidden.assertValues([true])
     self.primaryLabelText.assertValues([Strings.All_Projects(), Strings.All_Projects(),
@@ -178,6 +209,10 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
 
     self.vm.inputs.filtersSelected(row: selectableRow |> SelectableRow.lens.params .~ categoryParams)
 
+    self.arrowOpacity.assertValues([0.0, 1.0])
+    self.arrowOpacityAnimated.assertValues([false, true])
+    self.primaryLabelOpacity.assertValues([0.0, 1.0, 1.0, 1.0, 1.0, 1.0])
+    self.primaryLabelOpacityAnimated.assertValues([false, true, true, true, true, true])
     self.animateArrowToDown.assertValues([true, false, true, false, true])
     self.dividerIsHidden.assertValues([true])
     self.primaryLabelText.assertValues([Strings.All_Projects(), Strings.All_Projects(),
@@ -193,6 +228,10 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
 
     self.vm.inputs.titleButtonTapped()
 
+    self.arrowOpacity.assertValues([0.0, 1.0])
+    self.arrowOpacityAnimated.assertValues([false, true])
+    self.primaryLabelOpacity.assertValues([0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0])
+    self.primaryLabelOpacityAnimated.assertValues([false, true, true, true, true, true, true])
     self.animateArrowToDown.assertValues([true, false, true, false, true, false])
     self.dividerIsHidden.assertValues([true])
     self.primaryLabelText.assertValues([Strings.All_Projects(), Strings.All_Projects(),
@@ -211,6 +250,10 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
 
     self.vm.inputs.filtersSelected(row: selectableRow |> SelectableRow.lens.params .~ subcategoryParams)
 
+    self.arrowOpacity.assertValues([0.0, 1.0])
+    self.arrowOpacityAnimated.assertValues([false, true])
+    self.primaryLabelOpacity.assertValues([0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.6])
+    self.primaryLabelOpacityAnimated.assertValues([false, true, true, true, true, true, true, true])
     self.animateArrowToDown.assertValues([true, false, true, false, true, false, true])
     self.dividerIsHidden.assertValues([true, false])
     self.primaryLabelText.assertValues([Strings.All_Projects(), Strings.All_Projects(),

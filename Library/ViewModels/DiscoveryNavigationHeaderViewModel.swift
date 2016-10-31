@@ -25,6 +25,9 @@ public protocol DiscoveryNavigationHeaderViewModelOutputs {
   /// Emits to animate arrow image down or up.
   var animateArrowToDown: Signal<Bool, NoError> { get }
 
+  /// Emits opacity for arrow and whether to animate the change, used for launch transition.
+  var arrowOpacityAnimated: Signal<(CGFloat, Bool), NoError> { get }
+
   /// Emits whether divider label is hidden.
   var dividerIsHidden: Signal<Bool, NoError> { get }
 
@@ -49,8 +52,8 @@ public protocol DiscoveryNavigationHeaderViewModelOutputs {
   /// Emits to set the font for primary label and whether it should be bolded or not.
   var primaryLabelFont: Signal<Bool, NoError> { get }
 
-  /// Emits an opacity for primary label.
-  var primaryLabelOpacity: Signal<CGFloat, NoError> { get }
+  /// Emits an opacity for primary label and whether to animate the change.
+  var primaryLabelOpacityAnimated: Signal<(CGFloat, Bool), NoError> { get }
 
   /// Emits text for filter label.
   var primaryLabelText: Signal<String, NoError> { get }
@@ -150,8 +153,12 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
         ((params.category?.isRoot ?? true) && filtersAreHidden)
     }
 
-    self.primaryLabelOpacity = paramsAndFiltersAreHidden.map(first)
-      .map { !($0.category?.isRoot ?? true) ? 0.6 : 1.0 }
+    self.primaryLabelOpacityAnimated = Signal.merge(
+      self.viewDidLoadProperty.signal.mapConst((0.0, false)),
+      paramsAndFiltersAreHidden
+        .map(first)
+        .map { ($0.category?.isRoot == .Some(false) ? 0.6 : 1.0, true) }
+    )
 
     self.primaryLabelText = strings.map { $0.filter }
 
@@ -160,6 +167,11 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
       .skipRepeats()
 
     self.secondaryLabelText = strings.map { $0.subcategory ?? "" }
+
+    self.arrowOpacityAnimated = Signal.merge(
+      self.viewDidLoadProperty.signal.mapConst((0.0, false)),
+      self.secondaryLabelText.signal.mapConst((1.0, true)).take(1)
+    )
 
     let categoriesWithParams = combineLatest(categories, (Signal.merge(
       self.paramsProperty.signal.ignoreNil().map { SelectableRow(isSelected: true, params: $0) },
@@ -254,6 +266,7 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
   }
 
   public let animateArrowToDown: Signal<Bool, NoError>
+  public let arrowOpacityAnimated: Signal<(CGFloat, Bool), NoError>
   public let dividerIsHidden: Signal<Bool, NoError>
   public let dismissDiscoveryFilters: Signal<(), NoError>
   public let favoriteButtonAccessibilityLabel: Signal<String, NoError>
@@ -262,7 +275,7 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
   public let gradientViewCategoryIdForColor: Signal<(categoryId: Int?, isFullScreen: Bool), NoError>
   public let notifyDelegateFilterSelectedParams: Signal<DiscoveryParams, NoError>
   public let primaryLabelFont: Signal<Bool, NoError>
-  public let primaryLabelOpacity: Signal<CGFloat, NoError>
+  public let primaryLabelOpacityAnimated: Signal<(CGFloat, Bool), NoError>
   public let primaryLabelText: Signal<String, NoError>
   public let secondaryLabelIsHidden: Signal<Bool, NoError>
   public let secondaryLabelText: Signal<String, NoError>
