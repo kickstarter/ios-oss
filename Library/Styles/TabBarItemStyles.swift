@@ -11,6 +11,7 @@ private let paddingY: CGFloat = 6.0
 
 private let baseTabBarItemStyle = UITabBarItem.lens.title .~ nil
   <> UITabBarItem.lens.imageInsets .~ .init(top: paddingY, left: 0.0, bottom: -paddingY, right: 0.0)
+  <> UITabBarItem.lens.titlePositionAdjustment .~ UIOffset(horizontal: 0, vertical: 9_999_999)
 
 public func activityTabBarItemStyle(isMember isMember: Bool) -> (UITabBarItem) -> UITabBarItem {
   let offset: CGFloat = isMember ? 4.0 : 9.0
@@ -18,14 +19,14 @@ public func activityTabBarItemStyle(isMember isMember: Bool) -> (UITabBarItem) -
   return baseTabBarItemStyle
     <> UITabBarItem.lens.image .~ image(named: "tabbar-icon-activity")
     <> UITabBarItem.lens.selectedImage .~ image(named: "tabbar-icon-activity-selected")
-    <> UITabBarItem.lens.accessibilityLabel %~ { _ in Strings.tabbar_activity() }
+    <> UITabBarItem.lens.title %~ { _ in Strings.tabbar_activity() }
     <> UITabBarItem.lens.imageInsets .~ .init(top: paddingY, left: -offset, bottom: -paddingY, right: offset)
 }
 
 public let dashboardTabBarItemStyle = baseTabBarItemStyle
   <> UITabBarItem.lens.image .~ image(named: "tabbar-icon-dashboard")
   <> UITabBarItem.lens.selectedImage .~ image(named: "tabbar-icon-dashboard-selected")
-  <> UITabBarItem.lens.accessibilityLabel %~ { _ in Strings.tabbar_dashboard() }
+  <> UITabBarItem.lens.title %~ { _ in Strings.tabbar_dashboard() }
 
 public func homeTabBarItemStyle(isMember isMember: Bool) -> (UITabBarItem) -> UITabBarItem {
   let offset: CGFloat = isMember ? 4.0 : 13.0
@@ -33,7 +34,7 @@ public func homeTabBarItemStyle(isMember isMember: Bool) -> (UITabBarItem) -> UI
   return baseTabBarItemStyle
     <> UITabBarItem.lens.image .~ image(named: "tabbar-icon-home")
     <> UITabBarItem.lens.selectedImage .~ image(named: "tabbar-icon-home-selected")
-    <> UITabBarItem.lens.accessibilityLabel %~ { _ in Strings.tabbar_discover() }
+    <> UITabBarItem.lens.title %~ { _ in Strings.tabbar_discover() }
     <> UITabBarItem.lens.imageInsets .~ .init(top: paddingY, left: -offset, bottom: -paddingY, right: offset)
 }
 
@@ -47,11 +48,11 @@ public func profileTabBarItemStyle(isLoggedIn isLoggedIn: Bool, isMember: Bool)
   return baseTabBarItemStyle
     <> UITabBarItem.lens.image .~ image(named: imageName)
     <> UITabBarItem.lens.selectedImage .~ image(named: "tabbar-icon-profile-selected")
-    <> UITabBarItem.lens.accessibilityLabel .~ accLabel
+    <> UITabBarItem.lens.title .~ accLabel
     <> UITabBarItem.lens.imageInsets .~ .init(top: paddingY, left: offset, bottom: -paddingY, right: -offset)
 }
 
 public let searchTabBarItemStyle = baseTabBarItemStyle
   <> UITabBarItem.lens.image .~ image(named: "tabbar-icon-search")
   <> UITabBarItem.lens.selectedImage .~ image(named: "tabbar-icon-search-selected")
-  <> UITabBarItem.lens.accessibilityLabel %~ { _ in Strings.tabbar_search() }
+  <> UITabBarItem.lens.title %~ { _ in Strings.tabbar_search() }
