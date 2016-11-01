@@ -105,9 +105,9 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
       return string.simpleHtmlAttributedString(font: UIFont.ksr_subhead(), bold: UIFont.ksr_subhead().bolded)
         ?? NSAttributedString(string: "")
       }
-      .takeWhen(viewDidLoadProperty.signal)
+      .takeWhen(self.viewDidLoadProperty.signal)
 
-    self.goToProject = projectTappedProperty.signal.ignoreNil()
+    self.goToProject = self.projectTappedProperty.signal.ignoreNil()
       .map { ($0, RefTag.thanks) }
 
     let shouldShowGamesAlert = project
@@ -119,10 +119,10 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
 
     self.showGamesNewsletterAlert = shouldShowGamesAlert
       .filter(isTrue)
-      .takeWhen(viewDidLoadProperty.signal)
+      .takeWhen(self.viewDidLoadProperty.signal)
       .ignoreValues()
 
-    self.showGamesNewsletterOptInAlert = gamesNewsletterSignupButtonTappedProperty.signal
+    self.showGamesNewsletterOptInAlert = self.gamesNewsletterSignupButtonTappedProperty.signal
       .filter { AppEnvironment.current.countryCode == "DE" }
       .map (Strings.profile_settings_newsletter_games)
 
@@ -132,7 +132,7 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
         !AppEnvironment.current.userDefaults.hasSeenAppRating &&
         AppEnvironment.current.config?.iTunesLink != nil
       }
-      .takeWhen(viewDidLoadProperty.signal)
+      .takeWhen(self.viewDidLoadProperty.signal)
       .ignoreValues()
       .on(next: { AppEnvironment.current.userDefaults.hasSeenAppRating = true })
 
@@ -160,7 +160,7 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
 
     self.showRecommendations = zip(projects, rootCategory)
 
-    self.updateUserInEnvironment = gamesNewsletterSignupButtonTappedProperty.signal
+    self.updateUserInEnvironment = self.gamesNewsletterSignupButtonTappedProperty.signal
       .map { AppEnvironment.current.currentUser ?? nil }
       .ignoreNil()
       .switchMap { user in
@@ -169,7 +169,7 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
           .demoteErrors()
     }
 
-    self.postUserUpdatedNotification = userUpdatedProperty.signal
+    self.postUserUpdatedNotification = self.userUpdatedProperty.signal
       .mapConst(NSNotification(name: CurrentUserNotifications.userUpdated, object: nil))
 
     self.showGamesNewsletterAlert
@@ -213,6 +213,12 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
       .takeWhen(self.goToProject)
       .observeNext { project in
         AppEnvironment.current.koala.trackCheckoutFinishJumpToProject(project: project)
+    }
+
+    project
+      .takeWhen(self.showRatingAlert)
+      .observeNext { project in
+        AppEnvironment.current.koala.trackTriggeredAppStoreRatingDialog(project: project)
     }
   }
   // swiftlint:enable function_body_length

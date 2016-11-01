@@ -54,7 +54,6 @@ final class ThanksViewModelTests: TestCase {
     vm.inputs.closeButtonTapped()
 
     dismissToRootViewController.assertValueCount(1)
-    XCTAssertEqual([], trackingClient.events, "No Koala tracking emitted")
   }
 
   func testGoToDiscovery() {
@@ -78,7 +77,8 @@ final class ThanksViewModelTests: TestCase {
       vm.inputs.categoryCellTapped(.illustration)
 
       goToDiscovery.assertValues([.illustration])
-      XCTAssertEqual(["Checkout Finished Discover More"], trackingClient.events)
+      XCTAssertEqual(["Triggered App Store Rating Dialog", "Checkout Finished Discover More"],
+                     self.trackingClient.events)
     }
   }
 
@@ -101,6 +101,7 @@ final class ThanksViewModelTests: TestCase {
 
       showRatingAlert.assertValueCount(1, "Rating Alert emits when view did load")
       showGamesNewsletterAlert.assertValueCount(0, "Games alert does not emit")
+      XCTAssertEqual(["Triggered App Store Rating Dialog"], self.trackingClient.events)
     }
   }
 
@@ -206,11 +207,16 @@ final class ThanksViewModelTests: TestCase {
       vm.inputs.viewDidLoad()
 
       showRatingAlert.assertValueCount(1, "Rating alert shows on first viewing")
+      XCTAssertEqual(["Triggered App Store Rating Dialog"], self.trackingClient.events)
 
       vm.inputs.rateNowButtonTapped()
 
       XCTAssertEqual(true, AppEnvironment.current.userDefaults.hasSeenAppRating, "Rating pref saved")
-      XCTAssertEqual(["Checkout Finished Alert App Store Rating Rate Now"], trackingClient.events)
+      XCTAssertEqual(
+        ["Triggered App Store Rating Dialog", "Accepted App Store Rating Dialog",
+         "Checkout Finished Alert App Store Rating Rate Now"],
+        self.trackingClient.events
+      )
       goToAppStoreRating.assertValueCount(1, "Proceed to app store")
     }
   }
@@ -221,11 +227,16 @@ final class ThanksViewModelTests: TestCase {
       vm.inputs.viewDidLoad()
 
       showRatingAlert.assertValueCount(1, "Rating alert shows on first viewing")
+      XCTAssertEqual(["Triggered App Store Rating Dialog"], self.trackingClient.events)
 
       vm.inputs.rateRemindLaterButtonTapped()
 
       XCTAssertEqual(false, AppEnvironment.current.userDefaults.hasSeenAppRating, "Rating pref saved")
-      XCTAssertEqual(["Checkout Finished Alert App Store Rating Remind Later"], trackingClient.events)
+      XCTAssertEqual(
+        ["Triggered App Store Rating Dialog", "Delayed App Store Rating Dialog",
+         "Checkout Finished Alert App Store Rating Remind Later"],
+        self.trackingClient.events
+      )
     }
   }
 
@@ -235,11 +246,16 @@ final class ThanksViewModelTests: TestCase {
       vm.inputs.viewDidLoad()
 
       showRatingAlert.assertValueCount(1, "Rating alert shows on first viewing")
+      XCTAssertEqual(["Triggered App Store Rating Dialog"], self.trackingClient.events)
 
       vm.inputs.rateNoThanksButtonTapped()
 
       XCTAssertEqual(true, AppEnvironment.current.userDefaults.hasSeenAppRating, "Rating pref saved")
-      XCTAssertEqual(["Checkout Finished Alert App Store Rating No Thanks"], trackingClient.events)
+      XCTAssertEqual(
+        ["Triggered App Store Rating Dialog", "Dismissed App Store Rating Dialog",
+         "Checkout Finished Alert App Store Rating No Thanks"],
+        self.trackingClient.events
+      )
     }
   }
 
@@ -562,7 +578,8 @@ final class ThanksViewModelTests: TestCase {
 
       goToProject.assertValues([project])
       goToRefTag.assertValues([.thanks])
-      XCTAssertEqual(["Checkout Finished Discover Open Project"], trackingClient.events)
+      XCTAssertEqual(["Triggered App Store Rating Dialog", "Checkout Finished Discover Open Project"],
+                     self.trackingClient.events)
     }
   }
 

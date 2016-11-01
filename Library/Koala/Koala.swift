@@ -581,17 +581,37 @@ public final class Koala {
   }
 
   public func trackCheckoutFinishAppStoreRatingAlertRateNow(project project: Project) {
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+
+    self.track(event: "Accepted App Store Rating Dialog", properties: props)
+
+    // Deprecated event
     self.track(event: "Checkout Finished Alert App Store Rating Rate Now",
-               properties: properties(project: project, loggedInUser: self.loggedInUser))
+               properties: props.withAllValuesFrom([Koala.DeprecatedKey: true]))
   }
 
   public func trackCheckoutFinishAppStoreRatingAlertRemindLater(project project: Project) {
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+
+    self.track(event: "Delayed App Store Rating Dialog", properties: props)
+
+    // Deprecated event
     self.track(event: "Checkout Finished Alert App Store Rating Remind Later",
-               properties: properties(project: project, loggedInUser: self.loggedInUser))
+               properties: props.withAllValuesFrom([Koala.DeprecatedKey: true]))
   }
 
   public func trackCheckoutFinishAppStoreRatingAlertNoThanks(project project: Project) {
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+
+    self.track(event: "Dismissed App Store Rating Dialog", properties: props)
+
+    // Deprecated event
     self.track(event: "Checkout Finished Alert App Store Rating No Thanks",
+               properties: props.withAllValuesFrom([Koala.DeprecatedKey: true]))
+  }
+
+  public func trackTriggeredAppStoreRatingDialog(project project: Project) {
+    self.track(event: "Triggered App Store Rating Dialog",
                properties: properties(project: project, loggedInUser: self.loggedInUser))
   }
 
