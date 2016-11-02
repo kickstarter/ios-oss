@@ -441,9 +441,6 @@ RewardPledgeViewModelOutputs {
         .materialize()
     }
 
-    self.goToThanks = project
-      .takeWhen(createApplePayPledgeEvent.values())
-
     self.goToTrustAndSafety = self.disclaimerButtonTappedProperty.signal
 
     let createPledgeEvent = combineLatest(
@@ -490,12 +487,26 @@ RewardPledgeViewModelOutputs {
           .materialize()
     }
 
+    let completedPledge = Signal.merge(
+      updatePledgeEvent.values().filter { request, _ in request == nil }.ignoreValues(),
+      createApplePayPledgeEvent.values().ignoreValues()
+    )
+
+    self.goToThanks = project
+      .takeWhen(completedPledge)
+
+    let updatedPledgeNeedsNewCheckout = updatePledgeEvent.values()
+      .flatMap { request, project -> SignalProducer<(NSURLRequest, Project), NoError> in
+        guard let request = request else { return .empty }
+        return SignalProducer(value: (request, project))
+    }
+
     self.goToCheckout = Signal.merge(
       createPledgeEvent.values(),
       cancelPledge,
-      updatePledgeEvent.values(),
-      changePaymentMethodEvent.values()
-      )
+      changePaymentMethodEvent.values(),
+      updatedPledgeNeedsNewCheckout
+    )
 
     self.showAlert = Signal.merge(
       createPledgeEvent.errors(),
@@ -865,7 +876,7 @@ private func updatePledge(
   project project: Project,
           reward: Reward?,
           amount: Int,
-          shipping: ShippingRule?) -> SignalProducer<(NSURLRequest, Project), ErrorEnvelope> {
+          shipping: ShippingRule?) -> SignalProducer<(NSURLRequest?, Project), ErrorEnvelope> {
 
   if let errorMessage = backingErrorMesage(forProject: project, amount: amount, reward: reward) {
     return SignalProducer(
@@ -882,18 +893,17 @@ private func updatePledge(
     shippingLocation: shipping?.location,
     tappedReward: true
     )
-    .flatMap { env -> SignalProducer<(NSURLRequest, Project), ErrorEnvelope> in
+    .flatMap { env -> SignalProducer<(NSURLRequest?, Project), ErrorEnvelope> in
 
       #if swift(>=2.3)
-        guard let url = AppEnvironment.current.apiService.serverConfig.webBaseUrl
-        .URLByAppendingPathComponent(env.checkoutUrl)? else { return .empty }
+        let url = AppEnvironment.current.apiService.serverConfig.webBaseUrl
+          .URLByAppendingPathComponent(env.checkoutUrl)
       #else
-        guard let url = env.newCheckoutUrl
+        let url = env.newCheckoutUrl
           .map({ AppEnvironment.current.apiService.serverConfig.webBaseUrl.URLByAppendingPathComponent($0) })
-        else { return .empty }
       #endif
 
-      let request = NSURLRequest(URL: url)
+      let request = url.map(NSURLRequest.init(URL:))
       return SignalProducer(value: (request, project))
   }
 }

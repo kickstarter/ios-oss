@@ -30,6 +30,8 @@ internal final class RewardPledgeViewModelTests: TestCase {
   private let vm: RewardPledgeViewModelType = RewardPledgeViewModel()
 
   private let applePayButtonHidden = TestObserver<Bool, NoError>()
+  private let cancelPledgeButtonHidden = TestObserver<Bool, NoError>()
+  private let changePaymentMethodButtonHidden = TestObserver<Bool, NoError>()
   private let continueToPaymentsButtonHidden = TestObserver<Bool, NoError>()
   private let conversionLabelHidden = TestObserver<Bool, NoError>()
   private let conversionLabelText = TestObserver<String, NoError>()
@@ -63,6 +65,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
   private let showAlert = TestObserver<String, NoError>() // todo
   private let titleLabelHidden = TestObserver<Bool, NoError>()
   private let titleLabelText = TestObserver<String, NoError>()
+  private let updatePledgeButtonHidden = TestObserver<Bool, NoError>()
 
   // todo koala tracking testing
 
@@ -70,6 +73,8 @@ internal final class RewardPledgeViewModelTests: TestCase {
     super.setUp()
 
     self.vm.outputs.applePayButtonHidden.observe(self.applePayButtonHidden.observer)
+    self.vm.outputs.cancelPledgeButtonHidden.observe(self.cancelPledgeButtonHidden.observer)
+    self.vm.outputs.changePaymentMethodButtonHidden.observe(self.changePaymentMethodButtonHidden.observer)
     self.vm.outputs.continueToPaymentsButtonHidden.observe(self.continueToPaymentsButtonHidden.observer)
     self.vm.outputs.conversionLabelHidden.observe(self.conversionLabelHidden.observer)
     self.vm.outputs.conversionLabelText.observe(self.conversionLabelText.observer)
@@ -109,6 +114,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
     self.vm.outputs.showAlert.observe(self.showAlert.observer)
     self.vm.outputs.titleLabelHidden.observe(self.titleLabelHidden.observer)
     self.vm.outputs.titleLabelText.observe(self.titleLabelText.observer)
+    self.vm.outputs.updatePledgeButtonHidden.observe(self.updatePledgeButtonHidden.observer)
 
     AppEnvironment.pushEnvironment(currentUser: .template)
   }
@@ -741,6 +747,151 @@ internal final class RewardPledgeViewModelTests: TestCase {
         self.goToCheckoutProject.assertValues([project])
         self.goToCheckoutRequest.assertValueCount(1)
       }
+    }
+  }
+
+  func testGoToCheckout_ChangeReward_NeedsPaymentsUpdate() {
+    let oldReward = Reward.template
+      |> Reward.lens.id .~ 1
+    let newReward = Reward.template
+      |> Reward.lens.id .~ 2
+    let project = .template
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.reward .~ oldReward
+          |> Backing.lens.rewardId .~ oldReward.id
+    )
+
+    self.vm.inputs.configureWith(project: project, reward: newReward, applePayCapable: true)
+    self.vm.inputs.viewDidLoad()
+    self.scheduler.advance()
+
+    self.applePayButtonHidden.assertValues([true])
+    self.cancelPledgeButtonHidden.assertValues([true])
+    self.changePaymentMethodButtonHidden.assertValues([true])
+    self.continueToPaymentsButtonHidden.assertValues([true])
+    self.differentPaymentMethodButtonHidden.assertValues([true])
+    self.updatePledgeButtonHidden.assertValues([false])
+
+    // Updating pledge response comes back with a checkout url when we need a further webview checkout step
+    let updatePledgeResponse = UpdatePledgeEnvelope(
+      newCheckoutUrl: "http://kickstarter.com/checkout", status: 200
+    )
+
+    withEnvironment(apiService: MockService(updatePledgeResponse: updatePledgeResponse)) {
+      self.vm.inputs.updatePledgeButtonTapped()
+
+      self.goToCheckoutProject.assertValues([project])
+      self.goToCheckoutRequest.assertValueCount(1)
+      self.goToThanks.assertValues([])
+    }
+  }
+
+  func testGoToCheckout_ManageReward_NeedsPaymentsUpdate() {
+    let reward = Reward.template
+    let project = .template
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.amount .~ reward.minimum
+          |> Backing.lens.shippingAmount .~ 0
+          |> Backing.lens.reward .~ reward
+          |> Backing.lens.rewardId .~ reward.id
+    )
+
+    self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: true)
+    self.vm.inputs.viewDidLoad()
+    self.scheduler.advance()
+
+    self.applePayButtonHidden.assertValues([true])
+    self.cancelPledgeButtonHidden.assertValues([false])
+    self.changePaymentMethodButtonHidden.assertValues([false])
+    self.continueToPaymentsButtonHidden.assertValues([true])
+    self.differentPaymentMethodButtonHidden.assertValues([true])
+    self.updatePledgeButtonHidden.assertValues([false])
+
+    // Updating pledge response comes back with a checkout url when we need a further webview checkout step
+    let updatePledgeResponse = UpdatePledgeEnvelope(
+      newCheckoutUrl: "http://kickstarter.com/checkout", status: 200
+    )
+
+    withEnvironment(apiService: MockService(updatePledgeResponse: updatePledgeResponse)) {
+      self.vm.inputs.updatePledgeButtonTapped()
+
+      self.goToCheckoutProject.assertValues([project])
+      self.goToCheckoutRequest.assertValueCount(1)
+      self.goToThanks.assertValues([])
+    }
+  }
+
+  func testGoToThanks_ChangeReward() {
+    let oldReward = Reward.template
+      |> Reward.lens.id .~ 1
+    let newReward = Reward.template
+      |> Reward.lens.id .~ 2
+    let project = .template
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.reward .~ oldReward
+          |> Backing.lens.rewardId .~ oldReward.id
+    )
+
+    self.vm.inputs.configureWith(project: project, reward: newReward, applePayCapable: true)
+    self.vm.inputs.viewDidLoad()
+    self.scheduler.advance()
+
+    self.applePayButtonHidden.assertValues([true])
+    self.updatePledgeButtonHidden.assertValues([false])
+    self.cancelPledgeButtonHidden.assertValues([true])
+    self.continueToPaymentsButtonHidden.assertValues([true])
+    self.differentPaymentMethodButtonHidden.assertValues([true])
+
+    // Updating pledge response comes back with no checkout url when everything completed successfully
+    let updatePledgeResponse = UpdatePledgeEnvelope(newCheckoutUrl: nil, status: 200)
+
+    withEnvironment(apiService: MockService(updatePledgeResponse: updatePledgeResponse)) {
+      self.vm.inputs.updatePledgeButtonTapped()
+
+      self.goToCheckoutProject.assertValues([])
+      self.goToCheckoutRequest.assertValueCount(0)
+      self.goToThanks.assertValues([project])
+    }
+  }
+
+  func testGoToThanks_ManageReward() {
+    let reward = Reward.template
+    let project = .template
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.amount .~ reward.minimum
+          |> Backing.lens.shippingAmount .~ 0
+          |> Backing.lens.reward .~ reward
+          |> Backing.lens.rewardId .~ reward.id
+    )
+
+    self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: true)
+    self.vm.inputs.viewDidLoad()
+    self.scheduler.advance()
+
+    self.applePayButtonHidden.assertValues([true])
+    self.cancelPledgeButtonHidden.assertValues([false])
+    self.changePaymentMethodButtonHidden.assertValues([false])
+    self.continueToPaymentsButtonHidden.assertValues([true])
+    self.differentPaymentMethodButtonHidden.assertValues([true])
+    self.updatePledgeButtonHidden.assertValues([false])
+
+    // Updating pledge response comes back with no checkout url when everything completed successfully
+    let updatePledgeResponse = UpdatePledgeEnvelope(newCheckoutUrl: nil, status: 200)
+
+    withEnvironment(apiService: MockService(updatePledgeResponse: updatePledgeResponse)) {
+      self.vm.inputs.updatePledgeButtonTapped()
+
+      self.goToCheckoutProject.assertValues([])
+      self.goToCheckoutRequest.assertValueCount(0)
+      self.goToThanks.assertValues([project])
     }
   }
 
