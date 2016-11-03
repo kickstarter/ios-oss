@@ -42,6 +42,9 @@ public protocol AppDelegateViewModelInputs {
   func applicationOpenUrl(application application: UIApplication?, url: NSURL, sourceApplication: String?,
                                       annotation: AnyObject) -> Bool
 
+  /// Call when the aplication receives memory warning from the system.
+  func applicationDidReceiveMemoryWarning()
+
   /// Call after having invoked AppEnvironemt.updateCurrentUser with a fresh user.
   func currentUserUpdatedInEnvironment()
 
@@ -59,6 +62,9 @@ public protocol AppDelegateViewModelInputs {
 
   /// Call when the controller has received a user session started notification.
   func userSessionStarted()
+
+  /// Call when the app has crashed
+  func crashManagerDidFinishSendingCrashReport()
 }
 
 public protocol AppDelegateViewModelOutputs {
@@ -398,6 +404,12 @@ AppDelegateViewModelOutputs {
     self.applicationDidEnterBackgroundProperty.signal
       .observeNext { AppEnvironment.current.koala.trackAppClose() }
 
+    self.applicationDidReceiveMemoryWarningProperty.signal
+      .observeNext { AppEnvironment.current.koala.trackMemoryWarning() }
+
+    self.crashManagerDidFinishSendingCrashReportProperty.signal
+      .observeNext { AppEnvironment.current.koala.trackCrashedApp() }
+
     self.configureHockey = Signal.merge(
       self.applicationLaunchOptionsProperty.signal.ignoreValues(),
       self.userSessionStartedProperty.signal,
@@ -460,6 +472,11 @@ AppDelegateViewModelOutputs {
     self.applicationDidEnterBackgroundProperty.value = ()
   }
 
+  private let applicationDidReceiveMemoryWarningProperty = MutableProperty()
+  public func applicationDidReceiveMemoryWarning() {
+    self.applicationDidReceiveMemoryWarningProperty.value = ()
+  }
+
   private let currentUserUpdatedInEnvironmentProperty = MutableProperty()
   public func currentUserUpdatedInEnvironment() {
     self.currentUserUpdatedInEnvironmentProperty.value = ()
@@ -478,6 +495,11 @@ AppDelegateViewModelOutputs {
   private let deviceTokenDataProperty = MutableProperty(NSData())
   public func didRegisterForRemoteNotifications(withDeviceTokenData data: NSData) {
     self.deviceTokenDataProperty.value = data
+  }
+
+  private let crashManagerDidFinishSendingCrashReportProperty = MutableProperty()
+  public func crashManagerDidFinishSendingCrashReport() {
+    self.crashManagerDidFinishSendingCrashReportProperty.value = ()
   }
 
   private typealias ApplicationOpenUrl = (

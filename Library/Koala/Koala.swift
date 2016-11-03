@@ -36,6 +36,31 @@ public final class Koala {
   }
 
   /**
+   Determines the place from which the external link was presented.
+
+   - projectCreator: The creator profile, usually seen by pressing the creator's name on the project page.
+   - projectDescription: The project description page.
+   - projectUpdates: The project updates page.
+
+   **/
+  public enum ExternalLinkContext {
+    case projectCreator
+    case projectDescription
+    case projectUpdates
+
+    var trackingString: String {
+      switch self {
+      case .projectCreator:
+        return "project_creator"
+      case .projectDescription:
+        return "project_description"
+      case .projectUpdates:
+        return "project_updates"
+      }
+    }
+  }
+
+  /**
    Determines the place from which the message dialog was presented.
 
    - backerModel:     The backing view, usually seen by pressing "View pledge" on the project page.
@@ -235,6 +260,14 @@ public final class Koala {
   public func trackAppClose() {
     self.track(event: "App Close", properties: deprecatedProps)
     self.track(event: "Closed App")
+  }
+
+  public func trackMemoryWarning() {
+    self.track(event: "App Memory Warning")
+  }
+
+  public func trackCrashedApp() {
+    self.track(event: "Crashed App")
   }
 
   public func trackNotificationOpened() {
@@ -1033,6 +1066,13 @@ public final class Koala {
                properties: props)
   }
 
+  public func trackOpenedExternalLink(project project: Project, context: ExternalLinkContext ) {
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(["context": context.trackingString])
+
+    self.track(event: "Opened External Link", properties: props)
+  }
+
   // MARK: Profile Events
   public func trackProfileView() {
     // deprecated
@@ -1397,7 +1437,6 @@ public final class Koala {
     let props = properties(project: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(properties(reward: reward))
       .withAllValuesFrom(["pledge_context": pledgeContext.trackingString])
-
     self.track(event: "Apple Pay Canceled", properties: props.withAllValuesFrom(deprecatedProps))
 
     self.track(event: "Canceled Apple Pay", properties: props)

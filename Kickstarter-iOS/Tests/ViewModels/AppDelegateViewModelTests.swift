@@ -199,6 +199,28 @@ final class AppDelegateViewModelTests: TestCase {
                    trackingClient.events)
   }
 
+  func testKoala_MemoryWarning() {
+    XCTAssertEqual([], trackingClient.events)
+
+    vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+                                           launchOptions: [:])
+    XCTAssertEqual(["App Open", "Opened App"], trackingClient.events)
+
+    vm.inputs.applicationDidReceiveMemoryWarning()
+    XCTAssertEqual(["App Open", "Opened App", "App Memory Warning"], trackingClient.events)
+  }
+
+  func testKoala_AppCrash() {
+    XCTAssertEqual([], trackingClient.events)
+
+    vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+                                            launchOptions: [:])
+    XCTAssertEqual(["App Open", "Opened App"], trackingClient.events)
+
+    vm.inputs.crashManagerDidFinishSendingCrashReport()
+    XCTAssertEqual(["App Open", "Opened App", "Crashed App"], trackingClient.events)
+  }
+
   func testCurrentUserUpdating_NothingHappensWhenLoggedOut() {
     vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
                                             launchOptions: [:])

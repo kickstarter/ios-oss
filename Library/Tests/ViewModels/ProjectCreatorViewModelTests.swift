@@ -76,6 +76,8 @@ final class ProjectCreatorViewModelTests: TestCase {
     )
 
     self.goToSafariBrowser.assertValues([NSURL(string: "http://www.google.com")!])
+    XCTAssertEqual(["Opened External Link"], self.trackingClient.events)
+    XCTAssertEqual(["project_creator"], self.trackingClient.properties(forKey: "context"))
   }
 
   func testLoadWebViewRequest() {

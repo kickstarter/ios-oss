@@ -63,6 +63,12 @@ ProjectCreatorViewModelOutputs {
       .filter { !isMessageCreator(request: $0.request) }
       .map { $0.request.URL }
       .ignoreNil()
+
+    project
+      .takeWhen(self.goToSafariBrowser)
+      .observeNext {
+        AppEnvironment.current.koala.trackOpenedExternalLink(project: $0, context: .projectCreator)
+    }
   }
 
   private let projectProperty = MutableProperty<Project?>(nil)

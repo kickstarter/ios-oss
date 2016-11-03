@@ -86,6 +86,12 @@ ProjectDescriptionViewModelInputs, ProjectDescriptionViewModelOutputs {
       .filter { navigationAction, _, _ in navigationAction.navigationType == .LinkActivated }
       .map { navigationAction, _, _ in navigationAction.request.URL }
       .ignoreNil()
+
+    project
+      .takeWhen(self.goToSafariBrowser)
+      .observeNext {
+        AppEnvironment.current.koala.trackOpenedExternalLink(project: $0, context: .projectDescription)
+    }
   }
 
   private let projectProperty = MutableProperty<Project?>(nil)

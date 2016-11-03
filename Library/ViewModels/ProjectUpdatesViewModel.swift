@@ -78,8 +78,7 @@ ProjectUpdatesViewModelOutputs {
       .map { $0.request.URL }
       .ignoreNil()
 
-    self.goToUpdate = project
-      .takePairWhen(goToUpdateRequest)
+    self.goToUpdate = project.takePairWhen(goToUpdateRequest)
       .map { ($0, $1) }
 
     self.goToUpdateComments = goToCommentsRequest
@@ -90,6 +89,10 @@ ProjectUpdatesViewModelOutputs {
 
     self.webViewLoadRequest = Signal.merge(initialUpdatesIndexLoadRequest, anotherIndexRequest)
       .map { AppEnvironment.current.apiService.preparedRequest(forURL: $0) }
+
+    project.takeWhen(self.goToSafariBrowser)
+      .observeNext {
+        AppEnvironment.current.koala.trackOpenedExternalLink(project: $0, context: .projectUpdates)}
   }
 
   private let projectProperty = MutableProperty<Project?>(nil)

@@ -95,6 +95,8 @@ final class ProjectDescriptionViewModelTests: TestCase {
 
     XCTAssertEqual(WKNavigationActionPolicy.Cancel.rawValue,
                    self.vm.outputs.decidedPolicyForNavigationAction.rawValue)
+    XCTAssertEqual(["Opened External Link"], self.trackingClient.events)
+    XCTAssertEqual(["project_description"], self.trackingClient.properties(forKey: "context"))
 
     self.loadWebViewRequest.assertValueCount(1)
     self.goBackToProject.assertValueCount(0)

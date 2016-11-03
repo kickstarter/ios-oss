@@ -39,6 +39,8 @@ final class ProjectUpdatesViewModelTests: TestCase {
     )
 
     self.goToSafariBrowser.assertValues([googleURL])
+    XCTAssertEqual(["Opened External Link"], self.trackingClient.events)
+    XCTAssertEqual(["project_updates"], self.trackingClient.properties(forKey: "context"))
   }
 
   func testGoToUpdate() {

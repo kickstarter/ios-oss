@@ -96,8 +96,10 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     self.viewModel.outputs.configureHockey
       .observeForUI()
-      .observeNext { data in
+      .observeNext { [weak self] data in
+        guard let _self = self else { return }
         let manager = BITHockeyManager.sharedHockeyManager()
+        manager.delegate = _self
         manager.configureWithIdentifier(data.appIdentifier)
         manager.crashManager.crashManagerStatus = .AutoSend
         manager.disableUpdateManager = data.disableUpdates
@@ -178,6 +180,10 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     }
   }
 
+  internal func applicationDidReceiveMemoryWarning(application: UIApplication) {
+    self.viewModel.inputs.applicationDidReceiveMemoryWarning()
+  }
+
   private func presentRemoteNotificationAlert(message: String) {
     let alert = UIAlertController(title: nil, message: message, preferredStyle: .Alert)
 
@@ -192,5 +198,11 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     )
 
     self.rootTabBarController?.presentViewController(alert, animated: true, completion: nil)
+  }
+}
+
+extension AppDelegate : BITHockeyManagerDelegate {
+  func crashManagerDidFinishSendingCrashReport(crashManager: BITCrashManager!) {
+    self.viewModel.inputs.crashManagerDidFinishSendingCrashReport()
   }
 }
