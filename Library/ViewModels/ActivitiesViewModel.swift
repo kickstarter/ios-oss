@@ -238,16 +238,10 @@ ActivitiesViewModelOutputs {
       .mapConst(.activity)
 
     self.dismissFacebookConnectSectionProperty.signal
-      .observeNext {
-        AppEnvironment.current.userDefaults.hasClosedFacebookConnectInActivity = true
-        AppEnvironment.current.koala.trackCloseFacebookConnect(source: .activity)
-    }
+      .observeNext { AppEnvironment.current.userDefaults.hasClosedFacebookConnectInActivity = true }
 
     self.dismissFindFriendsSectionProperty.signal
-      .observeNext {
-        AppEnvironment.current.userDefaults.hasClosedFindFriendsInActivity = true
-        AppEnvironment.current.koala.trackCloseFindFriends(source: .activity)
-    }
+      .observeNext { AppEnvironment.current.userDefaults.hasClosedFindFriendsInActivity = true }
 
     let unansweredSurveyResponse = self.viewWillAppearProperty.signal.ignoreValues()
       .switchMap {

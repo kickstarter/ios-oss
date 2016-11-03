@@ -45,18 +45,17 @@ public final class FindFriendsHeaderCellViewModel: FindFriendsHeaderCellViewMode
 
   private let closeButtonTappedProperty = MutableProperty()
   public func closeButtonTapped() {
-    closeButtonTappedProperty.value = ()
+    self.closeButtonTappedProperty.value = ()
   }
   private let configureWithProperty = MutableProperty<FriendsSource>(FriendsSource.activity)
   public func configureWith(source source: FriendsSource) {
-    configureWithProperty.value = source
+    self.configureWithProperty.value = source
   }
   private let findFriendsButtonTappedProperty = MutableProperty()
   public func findFriendsButtonTapped() {
-    findFriendsButtonTappedProperty.value = ()
+    self.findFriendsButtonTappedProperty.value = ()
   }
 
   public let notifyDelegateGoToFriends: Signal<(), NoError>
   public let notifyDelegateToDismissHeader: Signal<(), NoError>
-
 }

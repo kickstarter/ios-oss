@@ -167,8 +167,8 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
       .takeWhen(self.messageCreatorTappedProperty.signal)
       .map { project, backing, backerIsCurrentUser in
         backerIsCurrentUser
-          ? (MessageSubject.project(project), .backerModel)
-          : (MessageSubject.backing(backing), .backerModel)
+          ? (MessageSubject.project(project), .backerModal)
+          : (MessageSubject.backing(backing), .backerModal)
     }
 
     self.messageButtonTitleText = projectAndBackerAndBackerIsCurrentUser
@@ -186,9 +186,7 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
     self.rootStackViewAxis = projectAndBackingAndBackerIsCurrentUser
       .map { _ in AppEnvironment.current.language == .en ? .Horizontal : .Vertical }
 
-    project
-      .takeWhen(self.viewDidLoadProperty.signal)
-      .observeNext { AppEnvironment.current.koala.trackViewedPledge(forProject: $0) }
+    project.observeNext { AppEnvironment.current.koala.trackViewedPledge(forProject: $0) }
   }
   // swiftlint:enable function_body_length
 

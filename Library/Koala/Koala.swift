@@ -19,7 +19,6 @@ public final class Koala {
   private let screen: UIScreenType
   private let distinctId: String
 
-
   /// Determines the authentication type for login or signup events.
   public enum AuthType {
     case email
@@ -27,10 +26,8 @@ public final class Koala {
 
     var trackingString: String {
       switch self {
-      case .email:
-        return "Email"
-      case .facebook:
-        return "Facebook"
+      case .email:      return "Email"
+      case .facebook:   return "Facebook"
       }
     }
   }
@@ -63,14 +60,14 @@ public final class Koala {
   /**
    Determines the place from which the message dialog was presented.
 
-   - backerModel:     The backing view, usually seen by pressing "View pledge" on the project page.
+   - backerModal:     The backing view, usually seen by pressing "View pledge" on the project page.
    - creatorActivity: The creator's activity feed.
    - messages:        The messages inbox.
    - projectMessages: The messages inbox for a particular project of a creator's.
    - projectPage:     The project page.
    */
   public enum MessageDialogContext: String, Equatable {
-    case backerModel = "backer_modal"
+    case backerModal = "backer_modal"
     case creatorActivity = "creator_activity"
     case messages = "messages"
     case projectMessages = "project_messages"
@@ -84,10 +81,55 @@ public final class Koala {
    - projectComments: The comments screen for a project.
    - updateComments:  The comments screen for an update.
    */
-  public enum CommentDialogContext: String {
-    case projectActivity = "project_activity"
-    case projectComments = "project_comments"
-    case updateComments = "update_comments"
+  public enum CommentDialogContext {
+    case projectActivity
+    case projectComments
+    case updateComments
+
+    var trackingString: String {
+      switch self {
+      case .projectActivity:  return "project_activity"
+      case .projectComments:  return "project_comments"
+      case .updateComments:   return "update_comments"
+      }
+    }
+  }
+
+
+  /**
+   Determines the type of comment in which the dialog was presented for.
+
+   - project: A project comment.
+   - update: An update comment.
+   */
+  public enum CommentDialogType {
+    case project
+    case update
+
+    var trackingString: String {
+      switch self {
+      case .project:  return "project"
+      case .update:   return "update"
+      }
+    }
+  }
+
+  /**
+   Determines the place from which the comments were presented.
+
+   - project: The comments for a project.
+   - update: The comments for an update.
+   */
+  public enum CommentsContext {
+    case project
+    case update
+
+    var trackingString: String {
+      switch self {
+      case .project:  return "project"
+      case .update:   return "update"
+      }
+    }
   }
 
   /// Determines which gesture was used.
@@ -301,7 +343,7 @@ public final class Koala {
 
   public func trackAttemptingOnePasswordLogin() {
     // Deprecated event
-    self.track(event: "Attempting 1password Login", properties: [Koala.DeprecatedKey: true])
+    self.track(event: "Attempting 1password Login", properties: deprecatedProps)
 
     self.track(event: "Triggered 1Password")
   }
@@ -525,56 +567,56 @@ public final class Koala {
 
   public func trackLoginSuccess(authType authType: AuthType) {
     // Deprecated event
-    self.track(event: "Login", properties: [Koala.DeprecatedKey: true])
+    self.track(event: "Login", properties: deprecatedProps)
 
     self.track(event: "Logged In", properties: ["auth_type": authType.trackingString])
   }
 
   public func trackLoginError(authType authType: AuthType) {
     // Deprecated event
-    self.track(event: "Errored User Login", properties: [Koala.DeprecatedKey: true])
+    self.track(event: "Errored User Login", properties: deprecatedProps)
 
     self.track(event: "Errored Login", properties: ["auth_type": authType.trackingString])
   }
 
   public func trackResetPassword() {
     // Deprecated event
-    self.track(event: "Forgot Password View", properties: [Koala.DeprecatedKey: true])
+    self.track(event: "Forgot Password View", properties: deprecatedProps)
 
     self.track(event: "Viewed Forgot Password")
   }
 
   public func trackResetPasswordSuccess() {
     // Deprecated event
-    self.track(event: "Forgot Password Requested", properties: [Koala.DeprecatedKey: true])
+    self.track(event: "Forgot Password Requested", properties: deprecatedProps)
 
     self.track(event: "Requested Password Reset")
   }
 
   public func trackResetPasswordError() {
     // Deprecated event
-    self.track(event: "Forgot Password Errored", properties: [Koala.DeprecatedKey: true])
+    self.track(event: "Forgot Password Errored", properties: deprecatedProps)
 
     self.track(event: "Errored Forgot Password")
   }
 
   public func trackFacebookConfirmation() {
     // Deprecated event
-    self.track(event: "Facebook Confirm", properties: [Koala.DeprecatedKey: true])
+    self.track(event: "Facebook Confirm", properties: deprecatedProps)
 
     self.track(event: "Viewed Facebook Signup")
   }
 
   public func trackTfa() {
     // Deprecated event
-    self.track(event: "Two-factor Authentication Confirm View", properties: [Koala.DeprecatedKey: true])
+    self.track(event: "Two-factor Authentication Confirm View", properties: deprecatedProps)
 
     self.track(event: "Viewed Two-Factor Confirmation")
   }
 
   public func trackTfaResendCode() {
     // Deprecated event
-    self.track(event: "Two-factor Authentication Resend Code", properties: [Koala.DeprecatedKey: true])
+    self.track(event: "Two-factor Authentication Resend Code", properties: deprecatedProps)
 
     self.track(event: "Resent Two-Factor Code")
   }
@@ -584,7 +626,7 @@ public final class Koala {
   // Call when an error is returned after attempting to signup.
   public func trackSignupError(authType authType: AuthType) {
     // Deprecated event
-    self.track(event: "Errored User Signup", properties: [Koala.DeprecatedKey: true])
+    self.track(event: "Errored User Signup", properties: deprecatedProps)
 
     self.track(event: "Errored Signup", properties: ["auth_type": authType.trackingString])
   }
@@ -592,7 +634,7 @@ public final class Koala {
   // Call when the user has successfully signed up for a new account.
   public func trackSignupSuccess(authType authType: AuthType) {
     // Deprecated event
-    self.track(event: "New User", properties: [Koala.DeprecatedKey: true])
+    self.track(event: "New User", properties: deprecatedProps)
 
     self.track(event: "Signed Up", properties: ["auth_type": authType.trackingString])
   }
@@ -600,44 +642,46 @@ public final class Koala {
   // Call once when the signup view loads.
   public func trackSignupView() {
     // Deprecated event
-    self.track(event: "User Signup", properties: [Koala.DeprecatedKey: true])
+    self.track(event: "User Signup", properties: deprecatedProps)
 
     self.track(event: "Viewed Signup")
   }
 
   // MARK: Comments Events
-  public func trackLoadNewerComments(project project: Project) {
+  public func trackLoadNewerComments(project project: Project, update: Update?, context: CommentsContext) {
     let props = properties(project: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(update.map { properties(update: $0) } ?? [:])
+      .withAllValuesFrom(["context": context.trackingString])
 
-    self.track(event: "Project Comment Load New",
-               properties: props.withAllValuesFrom(deprecatedProps))
+    // Deprecated events
+    switch context {
+    case .project:
+      self.track(event: "Project Comment Load New", properties: props.withAllValuesFrom(deprecatedProps))
+    case .update:
+      self.track(event: "Update Comment Load New", properties: props.withAllValuesFrom(deprecatedProps))
+    }
 
-    self.track(event: "Loaded Newer Project Comments", properties: props)
+    self.track(event: "Loaded Newer Comments", properties: props)
   }
 
-  public func trackLoadNewerComments(update update: Update, project: Project) {
+  public func trackLoadOlderComments(project project: Project,
+                                             update: Update?,
+                                             page: Int,
+                                             context: CommentsContext) {
+
     let props = properties(project: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(properties(update: update))
+      .withAllValuesFrom(update.map { properties(update: $0) } ?? [:])
+      .withAllValuesFrom(["page_count": page, "context": context.trackingString])
 
-    self.track(event: "Update Comment Load New", properties: props)
-  }
+    // Deprecated events
+    switch context {
+    case .project:
+      self.track(event: "Project Comment Load Older", properties: props.withAllValuesFrom(deprecatedProps))
+    case .update:
+      self.track(event: "Update Comment Load Older", properties: props.withAllValuesFrom(deprecatedProps))
+    }
 
-  public func trackLoadOlderComments(project project: Project, page: Int) {
-    let props = properties(project: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(["page_count": page])
-
-    self.track(event: "Project Comment Load Older",
-               properties: props.withAllValuesFrom(deprecatedProps))
-
-    self.track(event: "Loaded Older Project Comments", properties: props)
-  }
-
-  public func trackLoadOlderComments(update update: Update, project: Project, page: Int) {
-    let props = properties(project: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(properties(update: update))
-      .withAllValuesFrom(["page_count": page])
-
-    self.track(event: "Update Comment Load Older", properties: props)
+    self.track(event: "Loaded Older Comments", properties: props)
   }
 
   public func trackOpenedCommentEditor(project project: Project,
@@ -647,7 +691,11 @@ public final class Koala {
     let props = properties(project: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(update.map { properties(update: $0) } ?? [:])
       .withAllValuesFrom(
-        ["context": context.rawValue, "type": update == nil ? "project" : "update"]
+        [
+          "context": context.trackingString,
+          "type": update == nil
+            ? CommentDialogType.project.trackingString : CommentDialogType.update.trackingString
+        ]
     )
 
     self.track(event: "Opened Comment Editor", properties: props)
@@ -660,7 +708,11 @@ public final class Koala {
     let props = properties(project: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(update.map { properties(update: $0) } ?? [:])
       .withAllValuesFrom(
-        ["context": context.rawValue, "type": update == nil ? "project" : "update"]
+        [
+          "context": context.trackingString,
+          "type": update == nil
+            ? CommentDialogType.project.trackingString : CommentDialogType.update.trackingString
+        ]
     )
 
     self.track(event: "Canceled Comment Editor", properties: props)
@@ -672,7 +724,11 @@ public final class Koala {
     let props = properties(project: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(update.map { properties(update: $0) } ?? [:])
       .withAllValuesFrom(
-        ["context": context.rawValue, "type": update == nil ? "project" : "update"]
+        [
+          "context": context.trackingString,
+          "type": update == nil
+            ? CommentDialogType.project.trackingString : CommentDialogType.update.trackingString
+        ]
     )
 
     self.track(event: "Posted Comment", properties: props)
@@ -695,20 +751,20 @@ public final class Koala {
     self.track(event: "Update Comment Create", properties: props)
   }
 
-  public func trackCommentsView(project project: Project) {
+  public func trackCommentsView(project project: Project, update: Update?, context: CommentsContext) {
     let props = properties(project: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(update.map { properties(update: $0) } ?? [:])
+      .withAllValuesFrom(["context": context.trackingString])
 
-    self.track(event: "Project Comment View",
-               properties: props.withAllValuesFrom(deprecatedProps))
+    // Deprecated events
+    switch context {
+    case .project:
+      self.track(event: "Project Comment View", properties: props.withAllValuesFrom(deprecatedProps))
+    case .update:
+      self.track(event: "Update Comment View", properties: props.withAllValuesFrom(deprecatedProps))
+    }
 
-    self.track(event: "Viewed Project Comments", properties: props)
-  }
-
-  public func trackCommentsView(update update: Update, project: Project) {
-    let props = properties(project: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(properties(update: update))
-
-    self.track(event: "Update Comment View", properties: props)
+    self.track(event: "Viewed Comments", properties: props)
   }
 
   /**
@@ -822,7 +878,7 @@ public final class Koala {
 
     // Deprecated event
     self.track(event: "Checkout Finished Alert App Store Rating Rate Now",
-               properties: props.withAllValuesFrom([Koala.DeprecatedKey: true]))
+               properties: props.withAllValuesFrom(deprecatedProps))
   }
 
   public func trackCheckoutFinishAppStoreRatingAlertRemindLater(project project: Project) {
@@ -832,7 +888,7 @@ public final class Koala {
 
     // Deprecated event
     self.track(event: "Checkout Finished Alert App Store Rating Remind Later",
-               properties: props.withAllValuesFrom([Koala.DeprecatedKey: true]))
+               properties: props.withAllValuesFrom(deprecatedProps))
   }
 
   public func trackCheckoutFinishAppStoreRatingAlertNoThanks(project project: Project) {
@@ -842,7 +898,7 @@ public final class Koala {
 
     // Deprecated event
     self.track(event: "Checkout Finished Alert App Store Rating No Thanks",
-               properties: props.withAllValuesFrom([Koala.DeprecatedKey: true]))
+               properties: props.withAllValuesFrom(deprecatedProps))
   }
 
   public func trackTriggeredAppStoreRatingDialog(project project: Project) {
@@ -1253,8 +1309,7 @@ public final class Koala {
     var props = updateDraftProperties(project: project)
     self.track(event: "Previewed Update", properties: props)
 
-    props[Koala.DeprecatedKey] = true
-    self.track(event: "Update Preview", properties: props)
+    self.track(event: "Update Preview", properties: props.withAllValuesFrom(deprecatedProps))
   }
 
   public func trackTriggeredPublishConfirmationModal(forProject project: Project) {
@@ -1277,8 +1332,7 @@ public final class Koala {
     props["type"] = isPublic ? "public" : "backers_only"
     self.track(event: "Published Update", properties: props)
 
-    props[Koala.DeprecatedKey] = true
-    self.track(event: "Update Published", properties: props)
+    self.track(event: "Update Published", properties: props.withAllValuesFrom(deprecatedProps))
   }
 
   private func updateDraftProperties(project project: Project) -> [String: AnyObject] {
@@ -1289,7 +1343,7 @@ public final class Koala {
 
   // MARK: Pledge screen events
   public func trackViewedPledge(forProject project: Project) {
-    self.track(event: "Viewed Pledge",
+    self.track(event: "Viewed Pledge Info",
                properties: properties(project: project, loggedInUser: self.loggedInUser))
 
     // Deprecated event

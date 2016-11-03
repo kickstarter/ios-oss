@@ -335,7 +335,7 @@ internal final class BackingViewModelTests: TestCase {
       self.vm.inputs.messageCreatorTapped()
 
       self.goToMessageCreatorSubject.assertValues([.project(project)])
-      self.goToMessageCreatorContext.assertValues([.backerModel])
+      self.goToMessageCreatorContext.assertValues([.backerModal])
     }
   }
 
@@ -393,7 +393,7 @@ internal final class BackingViewModelTests: TestCase {
 
       self.vm.inputs.viewDidLoad()
 
-      XCTAssertEqual(["Viewed Pledge", "Modal Dialog View"],
+      XCTAssertEqual(["Viewed Pledge Info", "Modal Dialog View"],
                      self.trackingClient.events, "Koala pledge view tracked")
 
       XCTAssertEqual([nil, true],

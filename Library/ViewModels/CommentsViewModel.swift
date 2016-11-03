@@ -150,33 +150,26 @@ CommentsViewModelOutputs {
       .takeWhen(self.viewDidLoadProperty.signal)
       .take(1)
       .observeNext { project, update in
-        if let update = update {
-          AppEnvironment.current.koala.trackCommentsView(update: update, project: project)
-        } else {
-          AppEnvironment.current.koala.trackCommentsView(project: project)
-        }
+        AppEnvironment.current.koala.trackCommentsView(
+          project: project, update: update, context: update == nil ? .project : .update
+        )
     }
 
     combineLatest(project, update)
       .takeWhen(pageCount.skip(1).filter { $0 == 1 })
       .observeNext { project, update in
-        if let update = update {
-          AppEnvironment.current.koala.trackLoadNewerComments(update: update, project: project)
-        } else {
-          AppEnvironment.current.koala.trackLoadNewerComments(project: project)
-        }
+        AppEnvironment.current.koala.trackLoadNewerComments(
+          project: project, update: update, context: update == nil ? .project : .update
+        )
     }
 
     combineLatest(project, update)
       .takePairWhen(pageCount.skip(1).filter { $0 > 1 })
       .map(unpack)
       .observeNext { project, update, pageCount in
-        if let update = update {
-          AppEnvironment.current.koala
-            .trackLoadOlderComments(update: update, project: project, page: pageCount)
-        } else {
-          AppEnvironment.current.koala.trackLoadOlderComments(project: project, page: pageCount)
-        }
+        AppEnvironment.current.koala.trackLoadOlderComments(
+          project: project, update: update, page: pageCount, context: update == nil ? .project : .update
+        )
     }
   }
   // swiftlint:enable function_body_length

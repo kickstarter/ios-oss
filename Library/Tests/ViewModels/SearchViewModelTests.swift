@@ -31,6 +31,57 @@ internal final class SearchViewModelTests: TestCase {
     self.vm.outputs.searchFieldText.observe(self.searchFieldText.observer)
   }
 
+  func testCancelSearchField_WithTextChange() {
+    self.vm.inputs.viewDidAppear()
+    self.vm.inputs.searchFieldDidBeginEditing()
+    self.vm.inputs.searchTextChanged("a")
+    self.vm.inputs.cancelButtonPressed()
+
+    XCTAssertEqual(["Discover Search", "Viewed Search", "Cleared Search Term"], self.trackingClient.events)
+
+    self.vm.inputs.searchFieldDidBeginEditing()
+    self.vm.inputs.cancelButtonPressed()
+
+    XCTAssertEqual(["Discover Search", "Viewed Search", "Cleared Search Term"],
+                   self.trackingClient.events,
+                   "Cancel event not tracked for empty search term.")
+  }
+
+  func testCancelSearchField_WithFocusChange() {
+    self.vm.inputs.viewDidAppear()
+    self.vm.inputs.searchFieldDidBeginEditing()
+    self.vm.inputs.searchTextChanged("a")
+
+    self.scheduler.advance()
+
+    XCTAssertEqual(["Discover Search", "Viewed Search", "Discover Search Results", "Loaded Search Results"],
+                   self.trackingClient.events)
+
+    self.vm.inputs.searchTextEditingDidEnd()
+
+    XCTAssertEqual(["Discover Search", "Viewed Search", "Discover Search Results", "Loaded Search Results"],
+                   self.trackingClient.events, "No additional events tracked on focus change.")
+
+    self.vm.inputs.searchFieldDidBeginEditing()
+    self.vm.inputs.cancelButtonPressed()
+
+    XCTAssertEqual(
+      ["Discover Search", "Viewed Search", "Discover Search Results", "Loaded Search Results",
+        "Cleared Search Term"],
+      self.trackingClient.events, "Cancel event tracked."
+    )
+  }
+
+  func testCancelSearchField_WithoutTextChange() {
+    self.vm.inputs.viewDidAppear()
+    self.vm.inputs.searchFieldDidBeginEditing()
+    self.vm.inputs.cancelButtonPressed()
+
+    XCTAssertEqual(["Discover Search", "Viewed Search"],
+                   self.trackingClient.events,
+                   "Canceling empty search does not trigger koala event.")
+  }
+
   func testChangeSearchFieldFocus() {
     self.vm.inputs.viewDidAppear()
 
@@ -50,11 +101,20 @@ internal final class SearchViewModelTests: TestCase {
     self.resignFirstResponder.assertValueCount(1)
   }
 
+  func testClearSearchText() {
+    self.vm.inputs.viewDidAppear()
+    self.vm.inputs.searchFieldDidBeginEditing()
+    self.vm.inputs.searchTextChanged("b")
+    self.vm.inputs.clearSearchText()
+
+    XCTAssertEqual(["Discover Search", "Viewed Search", "Cleared Search Term"], self.trackingClient.events)
+  }
+
   // Tests a standard flow of searching for projects.
   func testFlow() {
     self.hasProjects.assertDidNotEmitValue("No projects before view is visible.")
     self.isPopularTitleVisible.assertDidNotEmitValue("Popular title is not visible before view is visible.")
-    XCTAssertEqual([], trackingClient.events, "No events tracked before view is visible.")
+    XCTAssertEqual([], self.trackingClient.events, "No events tracked before view is visible.")
 
     self.vm.inputs.viewDidAppear()
 
@@ -64,7 +124,7 @@ internal final class SearchViewModelTests: TestCase {
 
     self.hasProjects.assertValues([true], "Projects emitted immediately upon view appearing.")
     self.isPopularTitleVisible.assertValues([true], "Popular title visible upon view appearing.")
-    XCTAssertEqual(["Discover Search", "Viewed Search"], trackingClient.events,
+    XCTAssertEqual(["Discover Search", "Viewed Search"], self.trackingClient.events,
                    "The search view event tracked upon view appearing.")
     XCTAssertEqual([true, nil],
                    self.trackingClient.properties(forKey: Koala.DeprecatedKey, as: Bool.self))
@@ -81,11 +141,11 @@ internal final class SearchViewModelTests: TestCase {
     self.isPopularTitleVisible.assertValues([true, false],
                                             "Popular title visibility still not emit after time has passed.")
     XCTAssertEqual(["Discover Search", "Viewed Search", "Discover Search Results", "Loaded Search Results"],
-                   trackingClient.events,
+                   self.trackingClient.events,
                    "A koala event is tracked for the search results.")
     XCTAssertEqual([true, nil, true, nil],
                    self.trackingClient.properties(forKey: Koala.DeprecatedKey, as: Bool.self))
-    XCTAssertEqual("skull graphic tee", trackingClient.properties.last!["search_term"] as? String)
+    XCTAssertEqual("skull graphic tee", self.trackingClient.properties.last!["search_term"] as? String)
 
     self.vm.inputs.willDisplayRow(7, outOf: 10)
     self.scheduler.advance()
@@ -95,11 +155,11 @@ internal final class SearchViewModelTests: TestCase {
         "Discover Search", "Viewed Search", "Discover Search Results", "Loaded Search Results",
         "Discover Search Results Load More", "Loaded More Search Results"
       ],
-      trackingClient.events,
+      self.trackingClient.events,
       "A koala event is tracked for the search results.")
     XCTAssertEqual([true, nil, true, nil, true, nil],
                    self.trackingClient.properties(forKey: Koala.DeprecatedKey, as: Bool.self))
-    XCTAssertEqual("skull graphic tee", trackingClient.properties.last!["search_term"] as? String)
+    XCTAssertEqual("skull graphic tee", self.trackingClient.properties.last!["search_term"] as? String)
 
     self.vm.inputs.searchTextChanged("")
     self.scheduler.advance()
@@ -113,7 +173,7 @@ internal final class SearchViewModelTests: TestCase {
         "Discover Search", "Viewed Search", "Discover Search Results", "Loaded Search Results",
         "Discover Search Results Load More", "Loaded More Search Results"
       ],
-      trackingClient.events)
+      self.trackingClient.events)
 
     self.vm.inputs.viewDidAppear()
 
@@ -126,7 +186,7 @@ internal final class SearchViewModelTests: TestCase {
         "Discover Search", "Viewed Search", "Discover Search Results", "Loaded Search Results",
         "Discover Search Results Load More", "Loaded More Search Results"
       ],
-      trackingClient.events)
+      self.trackingClient.events)
   }
 
   // Confirms that clearing search during an in-flight search doesn't cause search results and popular
@@ -164,7 +224,7 @@ internal final class SearchViewModelTests: TestCase {
                                "Doesn't search for projects after time enough time passes.")
       projects.assertLastValue(popularProjects, "Brings back popular projects immediately.")
 
-      XCTAssertEqual(["Discover Search", "Viewed Search"], trackingClient.events)
+      XCTAssertEqual(["Discover Search", "Viewed Search"], self.trackingClient.events)
     }
   }
 
@@ -243,6 +303,7 @@ internal final class SearchViewModelTests: TestCase {
     self.vm.inputs.cancelButtonPressed()
 
     self.searchFieldText.assertValues([""])
+    XCTAssertEqual(["Discover Search", "Viewed Search", "Cleared Search Term"], self.trackingClient.events)
   }
 
   func testSearchFieldEditingDidEnd() {

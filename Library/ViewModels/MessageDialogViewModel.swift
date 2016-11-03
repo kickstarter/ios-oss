@@ -128,7 +128,6 @@ MessageDialogViewModelOutputs {
     )
 
     combineLatest(project, self.contextProperty.signal.ignoreNil())
-      .takeWhen(self.viewDidLoadProperty.signal)
       .observeNext { AppEnvironment.current.koala.trackViewedMessageEditor(project: $0, context: $1) }
 
     combineLatest(project, self.contextProperty.signal.ignoreNil())

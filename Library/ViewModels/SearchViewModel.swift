@@ -150,6 +150,12 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
 
     self.clearSearchTextProperty.signal
       .observeNext { AppEnvironment.current.koala.trackClearedSearchTerm() }
+
+    query.combinePrevious()
+      .map(first)
+      .takeWhen(self.cancelButtonPressedProperty.signal)
+      .filter { !$0.isEmpty }
+      .observeNext { _ in AppEnvironment.current.koala.trackClearedSearchTerm() }
   }
   // swiftlint:enable function_body_length
 
