@@ -122,7 +122,8 @@ internal final class ProjectNavBarViewController: UIViewController {
       |> UIButton.lens.image(forState: .Normal) .~ image(named: "star-icon")
       |> UIButton.lens.image(forState: .Highlighted) .~ image(named: "star-filled-icon")
       |> UIButton.lens.image(forState: .Selected) .~ image(named: "star-filled-icon")
-      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.accessibility_projects_buttons_star() }
+      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.Save_this_project()}
+
   }
   // swiftlint:enable function_body_length
 

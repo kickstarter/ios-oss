@@ -13,9 +13,9 @@ internal final class DiscoverySelectableRowCell: UITableViewCell, ValueCell {
       self.filterTitleLabel
         |> UILabel.lens.accessibilityLabel %~ { _ in Strings.Filter_by_projects_we_love() }
     } else if value.row.params.starred == true {
-      self.filterTitleLabel.text = Strings.discovery_saved()
+      self.filterTitleLabel.text = Strings.Saved()
       self.filterTitleLabel
-        |> UILabel.lens.accessibilityLabel %~ { _ in Strings.Filter_by_starred_projects() }
+        |> UILabel.lens.accessibilityLabel %~ { _ in Strings.Filter_by_saved_projects() }
     } else if value.row.params.social == true {
       self.filterTitleLabel.text = Strings.Backed_by_people_you_follow()
       self.filterTitleLabel

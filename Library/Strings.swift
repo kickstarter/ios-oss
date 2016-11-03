@@ -879,6 +879,23 @@ public enum Strings {
     )
   }
   /**
+   "Filter by saved projects"
+
+   - **es**: "Filter by saved projects"
+   - **de**: "Filter by saved projects"
+   - **fr**: "Filter by saved projects"
+   - **it**: "Filter by saved projects"
+   - **en**: "Filter by saved projects"
+  */
+  public static func Filter_by_saved_projects() -> String {
+    return localizedString(
+      key: "Filter_by_saved_projects",
+      defaultValue: "Filter by saved projects",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Filter by starred projects"
 
    - **es**: "Filtro: Tus favoritos"
@@ -1285,6 +1302,23 @@ with friends."
     return localizedString(
       key: "Learn_more_about_accountability",
       defaultValue: "Learn more about accountability",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Log in to save this project and we’ll remind you about it before it ends."
+
+   - **es**: "Log in to save this project and we’ll remind you about it before it ends."
+   - **de**: "Log in to save this project and we’ll remind you about it before it ends."
+   - **fr**: "Log in to save this project and we’ll remind you about it before it ends."
+   - **it**: "Log in to save this project and we’ll remind you about it before it ends."
+   - **en**: "Log in to save this project and we’ll remind you about it before it ends."
+  */
+  public static func Log_in_to_save_this_project_and_we_ll_remind_you() -> String {
+    return localizedString(
+      key: "Log_in_to_save_this_project_and_we_ll_remind_you",
+      defaultValue: "Log in to save this project and we’ll remind you about it before it ends.",
       count: nil,
       substitutions: [:]
     )
@@ -1824,6 +1858,91 @@ daring ideas."
     )
   }
   /**
+   "Save"
+
+   - **es**: "Save"
+   - **de**: "Save"
+   - **fr**: "Save"
+   - **it**: "Save"
+   - **en**: "Save"
+  */
+  public static func Save() -> String {
+    return localizedString(
+      key: "Save",
+      defaultValue: "Save",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Save this project"
+
+   - **es**: "Save this project"
+   - **de**: "Save this project"
+   - **fr**: "Save this project"
+   - **it**: "Save this project"
+   - **en**: "Save this project"
+  */
+  public static func Save_this_project() -> String {
+    return localizedString(
+      key: "Save_this_project",
+      defaultValue: "Save this project",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Saved"
+
+   - **es**: "Saved"
+   - **de**: "Saved"
+   - **fr**: "Saved"
+   - **it**: "Saved"
+   - **en**: "Saved"
+  */
+  public static func Saved() -> String {
+    return localizedString(
+      key: "Saved",
+      defaultValue: "Saved",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Saved projects"
+
+   - **es**: "Saved projects"
+   - **de**: "Saved projects"
+   - **fr**: "Saved projects"
+   - **it**: "Saved projects"
+   - **en**: "Saved projects"
+  */
+  public static func Saved_projects() -> String {
+    return localizedString(
+      key: "Saved_projects",
+      defaultValue: "Saved projects",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Saves project."
+
+   - **es**: "Saves project."
+   - **de**: "Saves project."
+   - **fr**: "Saves project."
+   - **it**: "Saves project."
+   - **en**: "Saves project."
+  */
+  public static func Saves_project() -> String {
+    return localizedString(
+      key: "Saves_project",
+      defaultValue: "Saves project.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Select this reward"
 
    - **es**: "Seleccionar esta recompensa"
@@ -2099,6 +2218,23 @@ catch your eye?"
     )
   }
   /**
+   "Unsaves project."
+
+   - **es**: "Unsaves project."
+   - **de**: "Unsaves project."
+   - **fr**: "Unsaves project."
+   - **it**: "Unsaves project."
+   - **en**: "Unsaves project."
+  */
+  public static func Unsaves_project() -> String {
+    return localizedString(
+      key: "Unsaves_project",
+      defaultValue: "Unsaves project.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Unstars project."
 
    - **es**: "Remueve proyecto de favoritos."
@@ -2184,6 +2320,23 @@ catch your eye?"
     )
   }
   /**
+   "When you save a project we’ll send you a reminder 48 hours before it ends"
+
+   - **es**: "When you save a project we’ll send you a reminder 48 hours before it ends"
+   - **de**: "When you save a project we’ll send you a reminder 48 hours before it ends"
+   - **fr**: "When you save a project we’ll send you a reminder 48 hours before it ends"
+   - **it**: "When you save a project we’ll send you a reminder 48 hours before it ends"
+   - **en**: "When you save a project we’ll send you a reminder 48 hours before it ends"
+  */
+  public static func When_you_save_a_project_we_ll_send_you_a_reminder() -> String {
+    return localizedString(
+      key: "When_you_save_a_project_we_ll_send_you_a_reminder",
+      defaultValue: "When you save a project we’ll send you a reminder 48 hours before it ends",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "You backed this project."
 
    - **es**: "Patrocinaste este proyecto."
@@ -2196,6 +2349,23 @@ catch your eye?"
     return localizedString(
       key: "You_backed_this_project",
       defaultValue: "You backed this project.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "You saved this project."
+
+   - **es**: "You saved this project."
+   - **de**: "You saved this project."
+   - **fr**: "You saved this project."
+   - **it**: "You saved this project."
+   - **en**: "You saved this project."
+  */
+  public static func You_saved_this_project() -> String {
+    return localizedString(
+      key: "You_saved_this_project",
+      defaultValue: "You saved this project.",
       count: nil,
       substitutions: [:]
     )

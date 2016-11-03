@@ -298,7 +298,7 @@ private func stringsForTitle(params params: DiscoveryParams) -> (filter: String,
   if params.staffPicks == true {
     filterText = Strings.Projects_We_Love()
   } else if params.starred == true {
-    filterText = Strings.discovery_saved()
+    filterText = Strings.Saved()
   } else if params.social == true {
     filterText = Strings.Following()
   } else if let category = params.category {
@@ -316,7 +316,7 @@ private func accessibilityLabelForTitleButton(params params: DiscoveryParams) ->
   if params.staffPicks == true {
     return Strings.Filter_by_projects_we_love()
   } else if params.starred == true {
-    return Strings.Filter_by_starred_projects()
+    return Strings.Filter_by_saved_projects()
   } else if params.social == true {
     return Strings.Filter_by_projects_backed_by_friends()
   } else if let category = params.category {

@@ -149,7 +149,7 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
       .skipRepeats()
 
     self.starButtonAccessibilityHint = self.starButtonSelected
-      .map { starred in starred ? Strings.Unstars_project() : Strings.Stars_projects() }
+      .map { starred in starred ? Strings.Unsaves_project() : Strings.Saves_project() }
 
     self.projectName = project.map(Project.lens.name.view)
 

@@ -49,6 +49,7 @@
 "Filter_by_projects_backed_by_friends" = "Filter: Von Freunden unterstützte Projekte";
 "Filter_by_projects_recommended_for_you" = "Filter: Für dich empfohlene Projekte";
 "Filter_by_projects_we_love" = "Filter: Team-Favoriten";
+"Filter_by_saved_projects" = "Filter by saved projects";
 "Filter_by_starred_projects" = "Filter: Favoriten";
 "Filter_by_subcategory_name_in_category_name" = "Filter: %{subcategory_name} in %{category_name}";
 "Filter_name_project_count_live_projects.few" = "%{filter_name}: %{project_count} Live-Projekte";
@@ -77,6 +78,7 @@
 "Kickstarter_if_funded" = "Kickstarter (bei Finanzierung)";
 "Kickstarter_is_not_a_store" = "Kickstarter ist kein Geschäft.";
 "Learn_more_about_accountability" = "Weitere Informationen zur Rechenschaftspflicht";
+"Log_in_to_save_this_project_and_we_ll_remind_you" = "Log in to save this project and we’ll remind you about it before it ends.";
 "Make_a_pledge_without_a_reward" = "Ohne Belohnung unterstützen";
 "Manage_your_pledge" = "Meinen Beitrag verwalten";
 "Manage_your_pledge_below" = "Manage your pledge below";
@@ -116,6 +118,11 @@
 "Rewards_count_rewards_colon.one" = "%{rewards_count} Belohnung:";
 "Rewards_count_rewards_colon.two" = "%{rewards_count} Belohnungen:";
 "Rewards_count_rewards_colon.zero" = "%{rewards_count} Belohnungen:";
+"Save" = "Save";
+"Save_this_project" = "Save this project";
+"Saved" = "Saved";
+"Saved_projects" = "Saved projects";
+"Saves_project" = "Saves project.";
 "Select_this_reward" = "Diese Belohnung wählen";
 "Select_this_reward_instead" = "Diese Belohnung auswählen";
 "Share_this_project_on_Facebook" = "Teile dieses Projekt auf Facebook.";
@@ -132,12 +139,15 @@
 "The_email_associated_with_this_Facebook_account_is_already_registered" = "Diese E-Mail-Adresse ist bereits einem anderen Kickstarter-Nutzer zugeordnet.";
 "This_facebook_account_is_already_linked_to_another_Kickstarter_user" = "Dieses Facebook-Konto ist bereits einem anderen Kickstarter-Nutzer zugeordnet.";
 "Unfollows_friend_name" = "%{friend_name} nicht mehr folgen.";
+"Unsaves_project" = "Unsaves project.";
 "Unstars_project" = "Entfernt Markierung als Favoriten.";
 "Update_pledge" = "Beitrag aktualisieren";
 "View" = "Anzeigen";
 "View_your_pledge" = "Deinen Finanzierungsbeitrag ansehen";
 "View_your_reward" = "Belohnung ansehen";
+"When_you_save_a_project_we_ll_send_you_a_reminder" = "When you save a project we’ll send you a reminder 48 hours before it ends";
 "You_backed_this_project" = "Du hast dieses Projekt unterstützt.";
+"You_saved_this_project" = "You saved this project.";
 "Your_friends_havent_backed_any_projects_yet" = "Deine Freunde haben bisher noch kein Projekt unterstützt. Aber sobald sie das tun, wird es hier angezeigt.";
 "Your_pledge" = "Dein Beitrag";
 "Your_pledge_amount" = "Dein Beitrag:";

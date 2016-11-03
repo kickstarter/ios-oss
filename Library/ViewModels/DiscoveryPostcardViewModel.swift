@@ -34,7 +34,7 @@ private enum PostcardMetadataType {
                                   iconAndTextColor: .ksr_text_navy_700)
     case .starred:
       return PostcardMetadataData(iconImage: image(named: "metadata-starred"),
-                                  labelText: Strings.discovery_baseball_card_metadata_starred(),
+                                  labelText: Strings.You_saved_this_project(),
                                   iconAndTextColor: .ksr_text_navy_700)
     }
   }

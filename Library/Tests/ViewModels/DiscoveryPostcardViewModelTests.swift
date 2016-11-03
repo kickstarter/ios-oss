@@ -104,14 +104,14 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
       self.metadataLabelText.assertValues(
         [
           Strings.discovery_baseball_card_metadata_backer(),
-          Strings.discovery_baseball_card_metadata_starred()
+          Strings.You_saved_this_project()
         ], "Starred metadata takes precedence.")
 
       self.vm.inputs.configureWith(project: backedStarredAndPotdProject)
       self.metadataLabelText.assertValues(
         [
           Strings.discovery_baseball_card_metadata_backer(),
-          Strings.discovery_baseball_card_metadata_starred(),
+          Strings.You_saved_this_project(),
           Strings.discovery_baseball_card_metadata_backer()
         ], "Backed metadata takes precedence.")
 
@@ -119,7 +119,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
       self.metadataLabelText.assertValues(
         [
           Strings.discovery_baseball_card_metadata_backer(),
-          Strings.discovery_baseball_card_metadata_starred(),
+          Strings.You_saved_this_project(),
           Strings.discovery_baseball_card_metadata_backer(),
           Strings.discovery_baseball_card_metadata_featured_project(
             category_name: featuredProject.category.name
@@ -130,7 +130,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
       self.metadataLabelText.assertValues(
         [
           Strings.discovery_baseball_card_metadata_backer(),
-          Strings.discovery_baseball_card_metadata_starred(),
+          Strings.You_saved_this_project(),
           Strings.discovery_baseball_card_metadata_backer(),
           Strings.discovery_baseball_card_metadata_featured_project(
             category_name: featuredProject.category.name
