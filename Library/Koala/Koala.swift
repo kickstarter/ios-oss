@@ -72,6 +72,30 @@ public final class Koala {
   }
 
   /**
+   Determines the place from which the newsletter toggle was presented.
+
+   - facebook: The Facebook confirmation signup screen.
+   - settings: The settings screen.
+   - signup: The signup screen.
+   - thanks: The thanks page games modal.
+   */
+  public enum NewsletterContext {
+    case facebookSignup
+    case settings
+    case signup
+    case thanks
+
+    var trackingString: String {
+      switch self {
+      case .facebookSignup:   return "facebook_signup"
+      case .settings:         return "settings"
+      case .signup:           return "signup"
+      case .thanks:           return "thanks"
+      }
+    }
+  }
+
+  /**
    Describes a flow of pledging.
 
    - changeReward: changing your current reward to a different reward
@@ -532,11 +556,6 @@ public final class Koala {
     self.track(event: "Errored Signup", properties: ["auth_type": authType.trackingString])
   }
 
-  // Call when the user toggles the signup form's newsletter toggle.
-  public func trackSignupNewsletterToggle(sendNewsletters: Bool) {
-    self.track(event: "Signup Newsletter Toggle", properties: ["send_newsletters": sendNewsletters])
-  }
-
   // Call when the user has successfully signed up for a new account.
   public func trackSignupSuccess(authType authType: AuthType) {
     // Deprecated event
@@ -798,18 +817,6 @@ public final class Koala {
                properties: properties(project: project, loggedInUser: self.loggedInUser))
   }
 
-  /**
-   Tracks an event for toggling a newsletter preference.
-
-   - parameter sendNewsletter: The boolean determining whether the newsletter should be sent or not.
-   - parameter project: The referring project from which a newsletter preference is set (e.g. Thanks screen).
-   */
-  public func trackNewsletterToggle(sendNewsletter: Bool, project: Project?) {
-    let props = project.flatMap { properties(project: $0, loggedInUser: self.loggedInUser) } ?? [:]
-    self.track(event: sendNewsletter ? "Newsletter Subscribe" : "Newsletter Unsubscribe",
-               properties: props)
-  }
-
   // MARK: Dashboard
   public func trackDashboardClosedProjectSwitcher(onProject project: Project) {
     self.track(event: "Closed Project Switcher",
@@ -1046,12 +1053,39 @@ public final class Koala {
     self.track(event: "Canceled Logout", properties: ["context": "modal"])
   }
 
-  public func trackChangeEmailNotification(type notificationType: String) {
-    self.track(event: "Changed Email Notifications", properties: ["type": notificationType])
+  public func trackChangeEmailNotification(type type: String, on: Bool) {
+    self.track(event: on ? "Enabled Email Notifications" : "Disabled Email Notifications",
+               properties: ["type": type])
   }
 
-  public func trackChangeNewsletter(type newsletterType: String) {
-    self.track(event: "Changed Newsletter Subscription", properties: ["type": newsletterType])
+  /**
+   Tracks an event for toggling a newsletter preference.
+
+   - parameter newsletterType: The newsletter type.
+   - parameter sendNewsletter: The boolean determining whether the newsletter should be sent or not.
+   - parameter project: The referring project from which a newsletter preference is set (e.g. Thanks screen).
+   - parameter context: The context from which the newsletter preference is set.
+   */
+  public func trackChangeNewsletter(newsletterType newsletter: Newsletter,
+                                                   sendNewsletter: Bool,
+                                                   project: Project?,
+                                                   context: NewsletterContext) {
+
+    let props = project.flatMap { properties(project: $0, loggedInUser: self.loggedInUser) } ?? [:]
+      .withAllValuesFrom(["context": context.trackingString, "type": newsletter.trackingString])
+
+    self.track(event: sendNewsletter ? "Subscribed To Newsletter" : "Unsubscribed From Newsletter",
+               properties: props)
+
+    // Deprecated events
+    switch context {
+    case .signup, .facebookSignup:
+      self.track(event: "Signup Newsletter Toggle", properties: ["send_newsletters": sendNewsletter])
+    case .thanks:
+      self.track(event: sendNewsletter ? "Newsletter Subscribe" : "Newsletter Unsubscribe", properties: props)
+    case .settings:
+      return
+    }
   }
 
   public func trackChangeProjectNotification(project: ProjectNotification.Project) {
@@ -1059,8 +1093,9 @@ public final class Koala {
     self.track(event: "Changed Project Notifications", properties: props)
   }
 
-  public func trackChangePushNotification(type notificationType: String) {
-    self.track(event: "Changed Push Notifications", properties: ["type": notificationType])
+  public func trackChangePushNotification(type type: String, on: Bool) {
+    self.track(event: on ? "Enabled Push Notifications" : "Disabled Push Notifications",
+               properties: ["type": type])
   }
 
   public func trackConfirmLogoutModal() {

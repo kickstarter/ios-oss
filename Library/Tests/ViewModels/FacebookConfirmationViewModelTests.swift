@@ -77,17 +77,24 @@ final class FacebookConfirmationViewModelTests: TestCase {
     vm.inputs.viewDidLoad()
     vm.inputs.sendNewslettersToggled(false)
 
-    sendNewsletters.assertValues([true, false], "Newsletter toggle is on")
-    XCTAssertEqual(["Facebook Confirm", "Viewed Facebook Signup", "Signup Newsletter Toggle"],
-                   trackingClient.events,
-                   "Newsletter toggle is tracked")
+    sendNewsletters.assertValues([true, false], "Newsletter is toggled off")
+    XCTAssertEqual(
+      ["Facebook Confirm", "Viewed Facebook Signup", "Unsubscribed From Newsletter",
+       "Signup Newsletter Toggle"],
+      self.trackingClient.events,
+      "Newsletter toggle is tracked"
+    )
     XCTAssertEqual(false, trackingClient.properties.last!["send_newsletters"] as? Bool)
 
     vm.inputs.sendNewslettersToggled(true)
 
-    sendNewsletters.assertValues([true, false, true], "Newsletter toggle is off")
-    XCTAssertEqual(["Facebook Confirm", "Viewed Facebook Signup", "Signup Newsletter Toggle",
-      "Signup Newsletter Toggle"], trackingClient.events, "Newsletter toggle is tracked")
+    sendNewsletters.assertValues([true, false, true], "Newsletter is toggled on")
+    XCTAssertEqual(
+      ["Facebook Confirm", "Viewed Facebook Signup", "Unsubscribed From Newsletter",
+       "Signup Newsletter Toggle", "Subscribed To Newsletter", "Signup Newsletter Toggle"],
+      self.trackingClient.events,
+      "Newsletter toggle is tracked"
+    )
     XCTAssertEqual(true, trackingClient.properties.last!["send_newsletters"] as? Bool)
   }
 
@@ -121,8 +128,12 @@ final class FacebookConfirmationViewModelTests: TestCase {
     scheduler.advance()
 
     logIntoEnvironment.assertValueCount(1, "Account successfully created")
-    XCTAssertEqual(["Facebook Confirm", "Viewed Facebook Signup", "Signup Newsletter Toggle", "New User",
-      "Signed Up"], trackingClient.events, "Koala login is tracked")
+    XCTAssertEqual(
+      ["Facebook Confirm", "Viewed Facebook Signup", "Subscribed To Newsletter", "Signup Newsletter Toggle",
+       "New User", "Signed Up"],
+      self.trackingClient.events,
+      "Koala login is tracked"
+    )
     XCTAssertEqual("Facebook", trackingClient.properties.last!["auth_type"] as? String)
 
     vm.inputs.environmentLoggedIn()
@@ -130,8 +141,12 @@ final class FacebookConfirmationViewModelTests: TestCase {
     postNotification.assertValues([CurrentUserNotifications.sessionStarted],
                                   "Login notification posted.")
 
-    XCTAssertEqual(["Facebook Confirm", "Viewed Facebook Signup", "Signup Newsletter Toggle", "New User",
-      "Signed Up", "Login", "Logged In"], trackingClient.events, "Login tracked.")
+    XCTAssertEqual(
+      ["Facebook Confirm", "Viewed Facebook Signup", "Subscribed To Newsletter", "Signup Newsletter Toggle",
+       "New User", "Signed Up", "Login", "Logged In"],
+      self.trackingClient.events,
+      "Login tracked."
+    )
     XCTAssertEqual("Facebook", trackingClient.properties.last!["auth_type"] as? String)
   }
 

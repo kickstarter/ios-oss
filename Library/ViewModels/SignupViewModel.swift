@@ -141,7 +141,11 @@ public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, 
 
     self.weeklyNewsletterChangedProperty.signal
       .ignoreNil()
-      .observeNext { AppEnvironment.current.koala.trackSignupNewsletterToggle($0) }
+      .observeNext {
+        AppEnvironment.current.koala.trackChangeNewsletter(
+          newsletterType: .weekly, sendNewsletter: $0, project: nil, context: .signup
+        )
+    }
 
     signupEvent.values()
       .observeNext { _ in AppEnvironment.current.koala.trackSignupSuccess(authType: Koala.AuthType.email) }

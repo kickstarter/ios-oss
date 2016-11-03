@@ -165,13 +165,17 @@ internal final class SignupViewModelTests: TestCase {
     XCTAssertEqual(["User Signup", "Viewed Signup"], self.trackingClient.events)
 
     self.vm.inputs.weeklyNewsletterChanged(true)
-    XCTAssertEqual(["User Signup", "Viewed Signup", "Signup Newsletter Toggle"], self.trackingClient.events)
+    XCTAssertEqual(["User Signup", "Viewed Signup", "Subscribed To Newsletter", "Signup Newsletter Toggle"],
+                   self.trackingClient.events)
     XCTAssertEqual([true],
                    self.trackingClient.properties.flatMap { $0["send_newsletters"] as? Bool })
 
     self.vm.inputs.weeklyNewsletterChanged(false)
-    XCTAssertEqual(["User Signup", "Viewed Signup", "Signup Newsletter Toggle", "Signup Newsletter Toggle"],
-                   self.trackingClient.events)
+    XCTAssertEqual(
+      ["User Signup", "Viewed Signup", "Subscribed To Newsletter", "Signup Newsletter Toggle",
+       "Unsubscribed From Newsletter", "Signup Newsletter Toggle"],
+      self.trackingClient.events
+    )
     XCTAssertEqual([true, false],
                    self.trackingClient.properties.flatMap { $0["send_newsletters"] as? Bool })
   }

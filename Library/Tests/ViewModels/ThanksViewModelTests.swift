@@ -311,7 +311,7 @@ final class ThanksViewModelTests: TestCase {
 
       updateUserInEnvironment.assertValueCount(1)
       showGamesNewsletterOptInAlert.assertValueCount(0, "Opt-in alert does not emit")
-      XCTAssertEqual(["Newsletter Subscribe"], trackingClient.events)
+      XCTAssertEqual(["Subscribed To Newsletter", "Newsletter Subscribe"], trackingClient.events)
 
       vm.inputs.userUpdated()
 
@@ -330,7 +330,7 @@ final class ThanksViewModelTests: TestCase {
       vm.inputs.gamesNewsletterSignupButtonTapped()
 
       showGamesNewsletterOptInAlert.assertValues(["Kickstarter Loves Games"], "Opt-in alert emits with title")
-      XCTAssertEqual(["Newsletter Subscribe"], trackingClient.events)
+      XCTAssertEqual(["Subscribed To Newsletter", "Newsletter Subscribe"], trackingClient.events)
     }
   }
 

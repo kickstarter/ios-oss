@@ -213,38 +213,24 @@ public final class SettingsViewModel: SettingsViewModelType, SettingsViewModelIn
       .map { Strings.profile_project_count_projects_backed(project_count: $0.stats.backedProjectsCount ?? 0) }
 
     // Koala
-    Signal.merge(
-      self.backingsTappedProperty.signal.mapConst(Notification.backings.type),
-      self.commentsTappedProperty.signal.mapConst(Notification.comments.type),
-      self.followerTappedProperty.signal.mapConst(Notification.follower.type),
-      self.friendActivityTappedProperty.signal.mapConst(Notification.friendActivity.type),
-      self.postLikesTappedProperty.signal.mapConst(Notification.postLikes.type),
-      self.updatesTappedProperty.signal.mapConst(Notification.updates.type)
-    )
-      .observeNext {
-        AppEnvironment.current.koala.trackChangeEmailNotification(type: $0)
-    }
-
-    Signal.merge(
-      self.gamesNewsletterTappedProperty.signal.mapConst(Newsletter.games.rawValue),
-      self.happeningNewsletterTappedProperty.signal.mapConst(Newsletter.happening.rawValue),
-      self.promoNewsletterTappedProperty.signal.mapConst(Newsletter.promo.rawValue),
-      self.weeklyNewsletterTappedProperty.signal.mapConst(Newsletter.weekly.rawValue)
-      )
-      .observeNext {
-        AppEnvironment.current.koala.trackChangeNewsletter(type: $0)
-    }
-
-    Signal.merge(
-      self.mobileBackingsTappedProperty.signal.mapConst(Notification.mobileBackings.type),
-      self.mobileCommentsTappedProperty.signal.mapConst(Notification.mobileComments.type),
-      self.mobileFollowerTappedProperty.signal.mapConst(Notification.mobileFollower.type),
-      self.mobileFriendActivityTappedProperty.signal.mapConst(Notification.mobileFriendActivity.type),
-      self.mobilePostLikesTappedProperty.signal.mapConst(Notification.mobilePostLikes.type),
-      self.mobileUpdatesTappedProperty.signal.mapConst(Notification.mobileUpdates.type)
-      )
-      .observeNext {
-        AppEnvironment.current.koala.trackChangePushNotification(type: $0)
+    userAttributeChanged
+      .observeNext { attribute, on in
+        switch attribute {
+        case let .newsletter(newsletter):
+          AppEnvironment.current.koala.trackChangeNewsletter(
+            newsletterType: newsletter, sendNewsletter: on, project: nil, context: .settings
+          )
+        case let .notification(notification):
+          switch notification {
+          case .mobileBackings, .mobileComments, .mobileFollower, .mobileFriendActivity, .mobilePostLikes,
+               .mobileUpdates:
+            AppEnvironment.current.koala.trackChangePushNotification(type: notification.trackingString,
+                                                                     on: on)
+          case .backings, .comments, .follower, .friendActivity, .postLikes, .updates:
+            AppEnvironment.current.koala.trackChangeEmailNotification(type: notification.trackingString,
+                                                                      on: on)
+          }
+        }
     }
 
     self.logoutCanceledProperty.signal
@@ -428,26 +414,6 @@ private enum UserAttribute {
   }
 }
 
-private enum Newsletter: String {
-  case games
-  case happening
-  case promo
-  case weekly
-
-  private var displayableName: String {
-    switch self {
-    case .games:
-      return Strings.profile_settings_newsletter_games()
-    case .happening:
-      return Strings.profile_settings_newsletter_happening()
-    case .promo:
-      return Strings.profile_settings_newsletter_promo()
-    case .weekly:
-      return Strings.profile_settings_newsletter_weekly()
-    }
-  }
-}
-
 private enum Notification {
   case backings
   case comments
@@ -462,8 +428,7 @@ private enum Notification {
   case postLikes
   case updates
 
-  // Notification types for event tracking.
-  private var type: String {
+  private var trackingString: String {
     switch self {
     case .backings, .mobileBackings:                return "New pledges"
     case .comments, .mobileComments:                return "New comments"

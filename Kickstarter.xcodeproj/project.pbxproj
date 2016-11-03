@@ -216,6 +216,8 @@
 		59D1E6591D1866F800896A4C /* DashboardVideoCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D1E6571D1866F800896A4C /* DashboardVideoCellViewModel.swift */; };
 		59D1E6791D189EFE00896A4C /* DashboardVideoCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D1E6731D18968300896A4C /* DashboardVideoCellViewModelTests.swift */; };
 		59D1E67A1D189EFF00896A4C /* DashboardVideoCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D1E6731D18968300896A4C /* DashboardVideoCellViewModelTests.swift */; };
+		59E877381DC9419700BCD1F7 /* Newsletter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59E877371DC9419700BCD1F7 /* Newsletter.swift */; };
+		59E877391DC9419700BCD1F7 /* Newsletter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59E877371DC9419700BCD1F7 /* Newsletter.swift */; };
 		59F0C0971DBEC8DE0007E0A7 /* DashboardViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59F0C0961DBEC8DE0007E0A7 /* DashboardViewControllerTests.swift */; };
 		59F368C71D245BE8005404DC /* DashboardReferrerRowStackViewViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59F368C61D245BE8005404DC /* DashboardReferrerRowStackViewViewModelTests.swift */; };
 		59F368C81D245BE8005404DC /* DashboardReferrerRowStackViewViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59F368C61D245BE8005404DC /* DashboardReferrerRowStackViewViewModelTests.swift */; };
@@ -1675,6 +1677,7 @@
 		59D1E6241D1865AC00896A4C /* DashboardVideoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardVideoCell.swift; sourceTree = "<group>"; };
 		59D1E6571D1866F800896A4C /* DashboardVideoCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardVideoCellViewModel.swift; sourceTree = "<group>"; };
 		59D1E6731D18968300896A4C /* DashboardVideoCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardVideoCellViewModelTests.swift; sourceTree = "<group>"; };
+		59E877371DC9419700BCD1F7 /* Newsletter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Newsletter.swift; sourceTree = "<group>"; };
 		59F0C0961DBEC8DE0007E0A7 /* DashboardViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardViewControllerTests.swift; sourceTree = "<group>"; };
 		59F368C61D245BE8005404DC /* DashboardReferrerRowStackViewViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardReferrerRowStackViewViewModelTests.swift; sourceTree = "<group>"; };
 		8001D4971D41568C009E6667 /* UpdateDraftStyles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateDraftStyles.swift; sourceTree = "<group>"; };
@@ -2936,6 +2939,7 @@
 				A7C725831C85D36D005A016B /* LaunchedCountries.swift */,
 				A7C725841C85D36D005A016B /* LocalizedString.swift */,
 				A707BAD41CFFAB9400653B2F /* LoginIntent.swift */,
+				59E877371DC9419700BCD1F7 /* Newsletter.swift */,
 				80E26A121D500C6A007B3022 /* Navigation.swift */,
 				A707BAD51CFFAB9400653B2F /* Notifications.swift */,
 				A7C725911C85D36D005A016B /* NSBundleType.swift */,
@@ -4447,6 +4451,7 @@
 				A7CC13D51D00E6CF00035C52 /* FindFriendsFriendFollowCellViewModel.swift in Sources */,
 				598D96C51D42A3E3003F3F66 /* ActivitySampleFollowCellViewModel.swift in Sources */,
 				598D96BA1D426FD8003F3F66 /* ActivitySampleBackingCellViewModel.swift in Sources */,
+				59E877381DC9419700BCD1F7 /* Newsletter.swift in Sources */,
 				A755116C1C8642C3005355CF /* UIPress-Extensions.swift in Sources */,
 				A7EDEE571D83453F00780B34 /* PKPaymentAuthorizationViewController.swift in Sources */,
 				01A7A4C01C9690220036E553 /* UITextField+LocalizedPlaceholderKey.swift in Sources */,
@@ -4714,6 +4719,7 @@
 				A76126BA1C90C94000EDCCB9 /* UIView-Extensions.swift in Sources */,
 				A75511B81C8647D9005355CF /* UIButton+LocalizedKey.swift in Sources */,
 				A75C811F1D210C4700B5AD03 /* ProjectActivityItemProvider.swift in Sources */,
+				59E877391DC9419700BCD1F7 /* Newsletter.swift in Sources */,
 				59B0E07F1D147F340081D2DC /* DashboardStyles.swift in Sources */,
 				A74900191D00E23000BC3BE7 /* SignupViewModel.swift in Sources */,
 				A710573C1DC2B2DF00A69552 /* SharedFunctions.swift in Sources */,

@@ -200,7 +200,12 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
     project
       .takeWhen(self.gamesNewsletterSignupButtonTappedProperty.signal)
       .observeNext { project in
-        AppEnvironment.current.koala.trackNewsletterToggle(true, project: project)
+        AppEnvironment.current.koala.trackChangeNewsletter(
+          newsletterType: .games,
+          sendNewsletter: true,
+          project: project,
+          context: .thanks
+        )
     }
 
     project

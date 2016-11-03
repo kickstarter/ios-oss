@@ -153,6 +153,10 @@ FacebookConfirmationViewModelErrors {
       .observeNext { _ in AppEnvironment.current.koala.trackSignupSuccess(authType: Koala.AuthType.facebook) }
 
     self.sendNewslettersToggledProperty.signal
-      .observeNext { AppEnvironment.current.koala.trackSignupNewsletterToggle($0) }
+      .observeNext {
+        AppEnvironment.current.koala.trackChangeNewsletter(
+          newsletterType: .weekly, sendNewsletter: $0, project: nil, context: .facebookSignup
+        )
+    }
   }
 }

@@ -211,7 +211,7 @@ internal final class SettingsViewModelTests: TestCase {
 
     self.vm.inputs.gamesNewsletterTapped(on: true)
     self.gamesNewsletterOn.assertValues([false, true], "Games newsletter toggled on.")
-    XCTAssertEqual(["Settings View", "Viewed Settings", "Changed Newsletter Subscription"],
+    XCTAssertEqual(["Settings View", "Viewed Settings", "Subscribed To Newsletter"],
                    self.trackingClient.events)
 
     self.vm.inputs.happeningNewsletterTapped(on: true)
@@ -234,10 +234,10 @@ internal final class SettingsViewModelTests: TestCase {
 
     self.vm.inputs.weeklyNewsletterTapped(on: false)
     self.weeklyNewsletterOn.assertValues([false, true, false], "Weekly newsletter toggled off.")
-    XCTAssertEqual(["Settings View", "Viewed Settings", "Changed Newsletter Subscription",
-      "Changed Newsletter Subscription", "Changed Newsletter Subscription", "Changed Newsletter Subscription",
-      "Changed Newsletter Subscription", "Changed Newsletter Subscription", "Changed Newsletter Subscription",
-      "Changed Newsletter Subscription"], self.trackingClient.events)
+    XCTAssertEqual(["Settings View", "Viewed Settings", "Subscribed To Newsletter",
+      "Subscribed To Newsletter", "Subscribed To Newsletter", "Subscribed To Newsletter",
+      "Unsubscribed From Newsletter", "Unsubscribed From Newsletter", "Unsubscribed From Newsletter",
+      "Unsubscribed From Newsletter"], self.trackingClient.events)
   }
 
   func testOptInPromptNotShown() {
@@ -273,8 +273,8 @@ internal final class SettingsViewModelTests: TestCase {
     self.updatesSelected.assertValues([false, true], "Project update notifications toggled on.")
     self.mobileUpdatesSelected.assertValues([false, true])
 
-    XCTAssertEqual(["Settings View", "Viewed Settings", "Changed Email Notifications",
-      "Changed Push Notifications"], self.trackingClient.events)
+    XCTAssertEqual(["Settings View", "Viewed Settings", "Enabled Email Notifications",
+      "Enabled Push Notifications"], self.trackingClient.events)
   }
 
   func testLogoutFlow() {
@@ -332,8 +332,8 @@ internal final class SettingsViewModelTests: TestCase {
     self.mobileFollowerSelected.assertValues([false, true])
     self.mobileFriendActivitySelected.assertValues([false, true])
 
-    XCTAssertEqual(["Settings View", "Viewed Settings", "Changed Email Notifications",
-      "Changed Email Notifications", "Changed Push Notifications", "Changed Push Notifications"],
+    XCTAssertEqual(["Settings View", "Viewed Settings", "Enabled Email Notifications",
+      "Enabled Email Notifications", "Enabled Push Notifications", "Enabled Push Notifications"],
       self.trackingClient.events)
 
     self.vm.inputs.mobileFollowerTapped(selected: false)
@@ -342,9 +342,9 @@ internal final class SettingsViewModelTests: TestCase {
     self.mobileFollowerSelected.assertValues([false, true, false], "Mobile social notifications toggled off.")
     self.mobileFriendActivitySelected.assertValues([false, true, false])
 
-    XCTAssertEqual(["Settings View", "Viewed Settings", "Changed Email Notifications",
-      "Changed Email Notifications", "Changed Push Notifications", "Changed Push Notifications",
-      "Changed Push Notifications", "Changed Push Notifications"], self.trackingClient.events)
+    XCTAssertEqual(["Settings View", "Viewed Settings", "Enabled Email Notifications",
+      "Enabled Email Notifications", "Enabled Push Notifications", "Enabled Push Notifications",
+      "Disabled Push Notifications", "Disabled Push Notifications"], self.trackingClient.events)
   }
 
   func testUpdateError() {
