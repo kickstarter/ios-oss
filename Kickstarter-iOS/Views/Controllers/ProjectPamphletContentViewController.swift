@@ -175,24 +175,10 @@ extension ProjectPamphletContentViewController: VideoViewControllerDelegate {
 
   internal func videoViewControllerDidFinish(controller: VideoViewController) {
     self.delegate.videoViewControllerDidFinish(controller)
-    self.animateMainCellLayout()
   }
 
   internal func videoViewControllerDidStart(controller: VideoViewController) {
     self.delegate.videoViewControllerDidStart(controller)
-    self.animateMainCellLayout()
-  }
-
-  private func animateMainCellLayout() {
-    let cell = self.tableView.cellForRowAtIndexPath(self.dataSource.indexPathForMainCell())
-    cell?.setNeedsUpdateConstraints()
-
-    UIView.animateWithDuration(0.3) {
-      cell?.contentView.layoutIfNeeded()
-    }
-
-    self.tableView.beginUpdates()
-    self.tableView.endUpdates()
   }
 }
 

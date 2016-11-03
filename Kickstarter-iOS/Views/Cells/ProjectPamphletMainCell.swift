@@ -3,8 +3,6 @@ import Library
 import Prelude
 import UIKit
 
-private let mainContentOverhang: CGFloat = 10
-
 internal protocol ProjectPamphletMainCellDelegate: VideoViewControllerDelegate {
   func projectPamphletMainCell(cell: ProjectPamphletMainCell, addChildController child: UIViewController)
   func projectPamphletMainCell(cell: ProjectPamphletMainCell, goToCampaignForProject project: Project)
@@ -45,14 +43,11 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
   @IBOutlet private weak var readMoreButton: UIButton!
   @IBOutlet private weak var stateLabel: UILabel!
   @IBOutlet private weak var statsStackView: UIStackView!
-  @IBOutlet private var videoContainerHeightConstraint: NSLayoutConstraint!
   @IBOutlet private weak var youreABackerContainerView: UIView!
   @IBOutlet private weak var youreABackerLabel: UILabel!
 
   internal override func awakeFromNib() {
     super.awakeFromNib()
-
-    self.videoContainerHeightConstraint.constant = -mainContentOverhang
 
     self.creatorButton.addTarget(self,
                                  action: #selector(creatorButtonTapped),
@@ -281,13 +276,11 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
 
 extension ProjectPamphletMainCell: VideoViewControllerDelegate {
   internal func videoViewControllerDidFinish(controller: VideoViewController) {
-    self.videoContainerHeightConstraint.constant = -mainContentOverhang
     self.delegate?.videoViewControllerDidFinish(controller)
     self.viewModel.inputs.videoDidFinish()
   }
 
   internal func videoViewControllerDidStart(controller: VideoViewController) {
-    self.videoContainerHeightConstraint.constant = mainContentOverhang
     self.delegate?.videoViewControllerDidStart(controller)
     self.viewModel.inputs.videoDidStart()
   }

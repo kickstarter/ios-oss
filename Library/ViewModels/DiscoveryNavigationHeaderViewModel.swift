@@ -94,12 +94,13 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
   // swiftlint:disable function_body_length
   public init() {
     let categories = self.viewDidLoadProperty.signal
-      .ksr_debounce(1.0, onScheduler: AppEnvironment.current.scheduler)
       .switchMap {
         AppEnvironment.current.apiService.fetchCategories()
+          .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
+          .map { $0.categories }
+          .prefix(value: [])
           .demoteErrors()
       }
-      .map { $0.categories }
 
     let currentParams = Signal.merge(
       self.paramsProperty.signal.ignoreNil(),

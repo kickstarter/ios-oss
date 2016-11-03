@@ -193,17 +193,17 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="9Zg-pJ-3Gp">
-                                            <rect key="frame" x="0.0" y="0.0" width="400" height="566"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="400" height="576"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="c4t-rV-CPH">
-                                                    <rect key="frame" x="0.0" y="0.0" width="400" height="215"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="400" height="225"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" secondItem="c4t-rV-CPH" secondAttribute="width" multiplier="9:16" constant="-10" id="cIl-Ca-wNM"/>
+                                                        <constraint firstAttribute="height" secondItem="c4t-rV-CPH" secondAttribute="width" multiplier="9:16" id="cIl-Ca-wNM"/>
                                                     </constraints>
                                                 </view>
                                                 <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WVg-rp-7iQ">
-                                                    <rect key="frame" x="0.0" y="215" width="400" height="351"/>
+                                                    <rect key="frame" x="0.0" y="225" width="400" height="351"/>
                                                     <subviews>
                                                         <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="NSf-54-XoV">
                                                             <rect key="frame" x="0.0" y="0.0" width="400" height="351"/>
@@ -261,7 +261,7 @@
                                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Project successfully funded on April 29, 2016" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bU0-0V-UXq">
                                                                             <rect key="frame" x="0.0" y="0.0" width="400" height="21"/>
                                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                             <nil key="highlightedColor"/>
                                                                         </label>
                                                                         <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Zwn-vv-vEB">
@@ -359,7 +359,7 @@
                                             </subviews>
                                         </stackView>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bsh-KF-tvK">
-                                            <rect key="frame" x="0.0" y="197" width="134" height="37"/>
+                                            <rect key="frame" x="0.0" y="207" width="134" height="37"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You're a backer" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qEg-D4-mSw">
                                                     <rect key="frame" x="8" y="8" width="118" height="21"/>
@@ -419,7 +419,6 @@
                                     <outlet property="readMoreButton" destination="Tpe-RH-aPN" id="BUU-5A-52d"/>
                                     <outlet property="stateLabel" destination="bU0-0V-UXq" id="MYf-TT-MmK"/>
                                     <outlet property="statsStackView" destination="nyR-j4-b7u" id="fB8-Vd-EVY"/>
-                                    <outlet property="videoContainerHeightConstraint" destination="cIl-Ca-wNM" id="Hce-FS-3Eq"/>
                                     <outlet property="youreABackerContainerView" destination="Bsh-KF-tvK" id="nl2-AR-tfZ"/>
                                     <outlet property="youreABackerLabel" destination="qEg-D4-mSw" id="jdz-2i-31z"/>
                                 </connections>

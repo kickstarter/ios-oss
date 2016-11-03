@@ -354,18 +354,23 @@ RewardPledgeViewModelOutputs {
         return backing.amount - (backing.shippingAmount ?? 0)
     }
 
-    let pledgeAmount = Signal.merge(
+    let userEnteredPledgeAmount = Signal.merge(
       initialPledgeTextFieldText,
       self.pledgeTextChangedProperty.signal.map { Int($0) ?? 0 }
       )
 
     let pledgeTextFieldWhenReturnWithBadAmount = combineLatest(
-      pledgeAmount,
+      userEnteredPledgeAmount,
       projectAndReward.map(minAndMaxPledgeAmount(forProject:reward:))
       )
       .takeWhen(self.pledgeTextFieldDidEndEditingProperty.signal)
       .filter { pledgeAmount, minAndMax in pledgeAmount < minAndMax.0 || pledgeAmount > minAndMax.1 }
       .map { _, minAndMax in minAndMax.0 }
+
+    let pledgeAmount = Signal.merge(
+      userEnteredPledgeAmount,
+      pledgeTextFieldWhenReturnWithBadAmount
+    )
 
     self.pledgeTextFieldText = Signal.merge(
       initialPledgeTextFieldText,

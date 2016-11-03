@@ -991,6 +991,54 @@ internal final class RewardPledgeViewModelTests: TestCase {
     }
   }
 
+  func testGoToCheckout_AfterValidationError() {
+    withEnvironment(currentUser: .template) {
+      let dkCountry = Project.Country(countryCode: "DK", currencyCode: "DKK", currencySymbol: "kr",
+                                      maxPledge: nil, minPledge: nil, trailingCode: true)
+      let project = .template
+        |> Project.lens.country .~ dkCountry
+      let reward = .template
+        |> Reward.lens.minimum .~ 20
+
+      self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
+      self.vm.inputs.viewDidLoad()
+      self.scheduler.advance()
+
+      XCTAssertEqual(["Reward Checkout", "Selected Reward"], self.trackingClient.events)
+
+      self.vm.inputs.pledgeTextFieldChanged("1")
+
+      XCTAssertEqual(
+        ["Reward Checkout", "Selected Reward", "Checkout Amount Changed", "Changed Pledge Amount"],
+        self.trackingClient.events
+      )
+
+      self.vm.inputs.continueToPaymentsButtonTapped()
+      self.vm.inputs.pledgeTextFieldDidEndEditing()
+
+      self.showAlert.assertValues(["Please enter an amount of kr20 DKK or more."])
+      XCTAssertEqual(
+        ["Reward Checkout", "Selected Reward", "Checkout Amount Changed", "Changed Pledge Amount",
+          "Errored Reward Pledge Button Click", "Clicked Reward Pledge Button"],
+        self.trackingClient.events
+      )
+
+      self.vm.inputs.continueToPaymentsButtonTapped()
+      self.vm.inputs.pledgeTextFieldDidEndEditing()
+
+      self.showAlert.assertValues(["Please enter an amount of kr20 DKK or more."])
+      XCTAssertEqual(
+        ["Reward Checkout", "Selected Reward", "Checkout Amount Changed", "Changed Pledge Amount",
+          "Errored Reward Pledge Button Click", "Clicked Reward Pledge Button",
+          "Clicked Reward Pledge Button"],
+        self.trackingClient.events
+      )
+
+      self.goToCheckoutProject.assertValues([project])
+      self.goToCheckoutRequest.assertValueCount(1)
+    }
+  }
+
   func testGoToThanks_ChangeReward() {
     let oldReward = Reward.template
       |> Reward.lens.id .~ 1
