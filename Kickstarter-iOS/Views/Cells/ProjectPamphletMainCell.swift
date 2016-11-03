@@ -44,6 +44,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
   @IBOutlet private weak var progressBarAndStatsStackView: UIStackView!
   @IBOutlet private weak var readMoreButton: UIButton!
   @IBOutlet private weak var stateLabel: UILabel!
+  @IBOutlet private weak var statsStackView: UIStackView!
   @IBOutlet private var videoContainerHeightConstraint: NSLayoutConstraint!
   @IBOutlet private weak var youreABackerContainerView: UIView!
   @IBOutlet private weak var youreABackerLabel: UILabel!
@@ -90,6 +91,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     self
       |> baseTableViewCellStyle()
       |> UITableViewCell.lens.clipsToBounds .~ false
+      |> UITableViewCell.lens.accessibilityElements .~ self.subviews
 
     self.backersSubtitleLabel
       |> UILabel.lens.text %~ { _ in Strings.dashboard_tout_backers() }
@@ -181,6 +183,9 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       |> UILabel.lens.font .~ .ksr_headline(size: 12)
       |> UILabel.lens.numberOfLines .~ 2
 
+    self.statsStackView
+      |> UIStackView.lens.isAccessibilityElement .~ true
+
     self.youreABackerContainerView
       |> roundedStyle(cornerRadius: 2)
       |> UIView.lens.backgroundColor .~ .ksr_green_500
@@ -193,6 +198,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
   }
   // swiftlint:enable function_body_length
 
+  // swiftlint:disable function_body_length
   internal override func bindViewModel() {
     super.bindViewModel()
 
@@ -210,6 +216,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     self.stateLabel.rac.hidden = self.viewModel.outputs.projectStateLabelHidden
     self.stateLabel.rac.text = self.viewModel.outputs.projectStateLabelText
     self.stateLabel.rac.textColor = self.viewModel.outputs.projectStateLabelTextColor
+    self.statsStackView.rac.accessibilityLabel = self.viewModel.outputs.statsStackViewAccessibilityLabel
     self.youreABackerContainerView.rac.hidden = self.viewModel.outputs.youreABackerLabelHidden
 
     self.viewModel.outputs.configureVideoPlayerController
@@ -244,6 +251,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
         self?.fundingProgressBarView.transform = CGAffineTransformMakeScale(CGFloat(progress), 1.0)
     }
   }
+  // swiftlint:enable function_body_length
 
   private func configureVideoPlayerController(forProject project: Project) {
     let vc = VideoViewController.configuredWith(project: project)

@@ -63,6 +63,7 @@ internal final class ProjectPamphletSubpageCell: UITableViewCell, ValueCell {
 
     self
       |> baseTableViewCellStyle()
+      |> ProjectPamphletSubpageCell.lens.accessibilityTraits .~ UIAccessibilityTraitButton
       |> ProjectPamphletSubpageCell.lens.contentView.layoutMargins %~~ { _, cell in
         cell.traitCollection.isRegularRegular
           ? .init(topBottom: Styles.gridHalf(5), leftRight: Styles.grid(16))

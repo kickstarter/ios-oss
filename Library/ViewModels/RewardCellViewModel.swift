@@ -238,6 +238,17 @@ RewardCellViewModelOutputs {
       .takeWhen(self.tappedProperty.signal)
       .filter(isTrue)
       .ignoreValues()
+      .take(1)
+
+    projectAndReward
+      .takeWhen(self.notifyDelegateRewardCellWantsExpansion)
+      .observeNext { project, reward in
+        AppEnvironment.current.koala.trackExpandedUnavailableReward(
+          reward,
+          project: project,
+          pledgeContext: pledgeContext(forProject: project, reward: reward)
+        )
+    }
   }
   // swiftlint:enable function_body_length
 
@@ -313,12 +324,6 @@ private func needsConversion(projectCountry projectCountry: Project.Country, use
   return userCountry == "US" && projectCountry != .US
 }
 
-private func userIsBacking(reward reward: Reward, inProject project: Project) -> Bool {
-  return project.personalization.backing?.rewardId == reward.id
-    || project.personalization.backing?.reward?.id == reward.id
-    || (project.personalization.backing?.reward == nil && reward == Reward.noReward)
-}
-
 private func backingReward(fromProject project: Project) -> Reward? {
 
   guard let backing = project.personalization.backing else {
@@ -329,23 +334,6 @@ private func backingReward(fromProject project: Project) -> Reward? {
     .filter { $0.id == backing.rewardId || $0.id == backing.reward?.id }
     .first
     .coalesceWith(.noReward)
-}
-
-private func minPledgeAmount(forProject project: Project, reward: Reward?) -> Int {
-
-  // The country on the project cannot be trusted to have the min/max values, so first try looking
-  // up the country in our launched countries array that we get back from the server config.
-  let country = AppEnvironment.current.launchedCountries.countries
-    .filter { $0 == project.country }
-    .first
-    .coalesceWith(project.country)
-
-  switch reward {
-  case .None, .Some(Reward.noReward):
-    return country.minPledge ?? 1
-  case let .Some(reward):
-    return reward.minimum
-  }
 }
 
 private func rewardTitle(project project: Project, reward: Reward) -> String {

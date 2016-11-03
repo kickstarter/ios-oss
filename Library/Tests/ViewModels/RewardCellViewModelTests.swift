@@ -566,9 +566,12 @@ final class RewardCellViewModelTests: TestCase {
   func testNotifyDelegateRewardCellWantsExpansion_NotSoldOut() {
     self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(.template))
 
+    XCTAssertEqual([], self.trackingClient.events)
+
     self.vm.inputs.tapped()
 
     self.notifyDelegateRewardCellWantsExpansion.assertValueCount(0)
+    XCTAssertEqual([], self.trackingClient.events)
   }
 
   func testNotifyDelegateRewardCellWantsExpansion_SoldOut() {
@@ -576,9 +579,12 @@ final class RewardCellViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(reward))
 
+    XCTAssertEqual([], self.trackingClient.events)
+
     self.vm.inputs.tapped()
 
     self.notifyDelegateRewardCellWantsExpansion.assertValueCount(1)
+    XCTAssertEqual(["Expanded Unavailable Reward"], self.trackingClient.events)
   }
 
   func testRemainingStackView() {

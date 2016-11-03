@@ -9,29 +9,29 @@ final class CheckoutRacingViewModelTests: TestCase {
   private let vm: CheckoutRacingViewModelType = CheckoutRacingViewModel()
 
   private let goToThanks = TestObserver<Void, NoError>()
-  private let showFailureAlert = TestObserver<String, NoError>()
+  private let showAlert = TestObserver<String, NoError>()
 
   override func setUp() {
     super.setUp()
 
     self.vm.outputs.goToThanks.observe(self.goToThanks.observer)
-    self.vm.outputs.showFailureAlert.observe(self.showFailureAlert.observer)
+    self.vm.outputs.showAlert.observe(self.showAlert.observer)
   }
 
   func testApiError() {
     withEnvironment(apiService: MockService(fetchCheckoutError: .couldNotParseJSON)) {
       self.vm.inputs.configureWith(url: racingURL())
       self.goToThanks.assertDidNotEmitValue()
-      self.showFailureAlert.assertDidNotEmitValue()
+      self.showAlert.assertDidNotEmitValue()
 
       // Attempts up to 10 times, with one second delay before each attempt
       self.scheduler.advanceByInterval(9)
       self.goToThanks.assertDidNotEmitValue()
-      self.showFailureAlert.assertDidNotEmitValue()
+      self.showAlert.assertDidNotEmitValue()
 
       self.scheduler.advanceByInterval(1)
       self.goToThanks.assertDidNotEmitValue()
-      self.showFailureAlert.assertValues([Strings.project_checkout_finalizing_timeout_message()])
+      self.showAlert.assertValues([Strings.project_checkout_finalizing_timeout_message()])
     }
   }
 
@@ -39,16 +39,16 @@ final class CheckoutRacingViewModelTests: TestCase {
     withEnvironment(apiService: MockService(fetchCheckoutResponse: .authorizing)) {
       self.vm.inputs.configureWith(url: racingURL())
       self.goToThanks.assertDidNotEmitValue()
-      self.showFailureAlert.assertDidNotEmitValue()
+      self.showAlert.assertDidNotEmitValue()
 
       self.scheduler.advanceByInterval(1)
       self.goToThanks.assertDidNotEmitValue()
-      self.showFailureAlert.assertDidNotEmitValue()
+      self.showAlert.assertDidNotEmitValue()
 
       withEnvironment(apiService: MockService(fetchCheckoutResponse: .successful)) {
         self.scheduler.advanceByInterval(1)
         self.goToThanks.assertValueCount(1)
-        self.showFailureAlert.assertDidNotEmitValue()
+        self.showAlert.assertDidNotEmitValue()
       }
     }
   }
@@ -58,11 +58,11 @@ final class CheckoutRacingViewModelTests: TestCase {
     withEnvironment(apiService: MockService(fetchCheckoutResponse: envelope)) {
       self.vm.inputs.configureWith(url: racingURL())
       self.goToThanks.assertDidNotEmitValue()
-      self.showFailureAlert.assertDidNotEmitValue()
+      self.showAlert.assertDidNotEmitValue()
 
       self.scheduler.advanceByInterval(1)
       self.goToThanks.assertDidNotEmitValue()
-      self.showFailureAlert.assertValues([envelope.stateReason])
+      self.showAlert.assertValues([envelope.stateReason])
     }
   }
 
@@ -73,11 +73,11 @@ final class CheckoutRacingViewModelTests: TestCase {
       // Attempts up to 10 times, with one second delay before each attempt
       self.scheduler.advanceByInterval(9)
       self.goToThanks.assertDidNotEmitValue()
-      self.showFailureAlert.assertDidNotEmitValue()
+      self.showAlert.assertDidNotEmitValue()
 
       self.scheduler.advanceByInterval(1)
       self.goToThanks.assertDidNotEmitValue()
-      self.showFailureAlert.assertValues([Strings.project_checkout_finalizing_timeout_message()])
+      self.showAlert.assertValues([Strings.project_checkout_finalizing_timeout_message()])
     }
   }
 
@@ -85,16 +85,16 @@ final class CheckoutRacingViewModelTests: TestCase {
     withEnvironment(apiService: MockService(fetchCheckoutResponse: .verifying)) {
       self.vm.inputs.configureWith(url: racingURL())
       self.goToThanks.assertDidNotEmitValue()
-      self.showFailureAlert.assertDidNotEmitValue()
+      self.showAlert.assertDidNotEmitValue()
 
       self.scheduler.advanceByInterval(1)
       self.goToThanks.assertDidNotEmitValue()
-      self.showFailureAlert.assertDidNotEmitValue()
+      self.showAlert.assertDidNotEmitValue()
 
       withEnvironment(apiService: MockService(fetchCheckoutResponse: .successful)) {
         self.scheduler.advanceByInterval(1)
         self.goToThanks.assertValueCount(1)
-        self.showFailureAlert.assertDidNotEmitValue()
+        self.showAlert.assertDidNotEmitValue()
       }
     }
   }
@@ -103,11 +103,11 @@ final class CheckoutRacingViewModelTests: TestCase {
     withEnvironment(apiService: MockService(fetchCheckoutResponse: .successful)) {
       self.vm.inputs.configureWith(url: racingURL())
       self.goToThanks.assertDidNotEmitValue()
-        self.showFailureAlert.assertDidNotEmitValue()
+        self.showAlert.assertDidNotEmitValue()
 
       self.scheduler.advanceByInterval(1)
       self.goToThanks.assertValueCount(1)
-      self.showFailureAlert.assertDidNotEmitValue()
+      self.showAlert.assertDidNotEmitValue()
     }
   }
 }

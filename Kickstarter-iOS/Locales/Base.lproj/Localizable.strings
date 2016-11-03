@@ -26,6 +26,7 @@
 "Cancel_your_pledge" = "Cancel your pledge";
 "Change_payment_method" = "Change payment method";
 "Closes_filters" = "Closes filters.";
+"Collapses_subcategories" = "Collapses subcategories.";
 "Collections" = "Collections";
 "Complete_payment" = "Complete payment";
 "Connect_with_Facebook_to_follow_friends_and_get_notified" = "Connect with Facebook to follow friends and get notified when they back or launch projects.";
@@ -41,6 +42,7 @@
 "Email_notifications" = "Email notifications";
 "Ending_soon" = "Ending Soon";
 "Estimated_to_fulfill" = "Estimated to fulfill:";
+"Expands_subcategories" = "Expands subcategories.";
 "Explore_projects" = "Explore projects";
 "Filter_by_all_projects" = "Filter by all projects";
 "Filter_by_category_name" = "Filter by %{category_name}";
@@ -49,6 +51,11 @@
 "Filter_by_projects_we_love" = "Filter by projects we love";
 "Filter_by_starred_projects" = "Filter by starred projects";
 "Filter_by_subcategory_name_in_category_name" = "Filter by %{subcategory_name} in %{category_name}";
+"Filter_name_project_count_live_projects.few" = "%{filter_name}: %{project_count} live projects";
+"Filter_name_project_count_live_projects.many" = "%{filter_name}: %{project_count} live projects";
+"Filter_name_project_count_live_projects.one" = "%{filter_name}: %{project_count} live project";
+"Filter_name_project_count_live_projects.two" = "%{filter_name}: %{project_count} live projects";
+"Filter_name_project_count_live_projects.zero" = "%{filter_name}: %{project_count} live projects";
 "Find_Facebook_Friends" = "Find Facebook friends";
 "Find_and_follow_friends" = "Find and follow friends";
 "Find_projects_youll_love_and_help_bring" = "Find projects you’ll love and help bring creative ideas to life.";
@@ -76,6 +83,7 @@
 "Manage_your_reward" = "Manage your reward";
 "Message_backer" = "Message backer";
 "Message_creator" = "Message creator";
+"No_comments_yet" = "No comments yet.";
 "No_pledges_from_friends_yet" = "No pledges \nfrom friends yet.";
 "Once_you_back_a_project_well_share" = "Once you back a project, we’ll share personalized recommendations in this space.";
 "Opens_comments" = "Opens comments.";

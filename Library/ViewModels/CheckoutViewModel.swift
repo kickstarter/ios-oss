@@ -7,19 +7,15 @@ import ReactiveCocoa
 import ReactiveExtensions
 import Result
 
-private struct RequestData {
-  private let request: NSURLRequest
-  private let navigation: Navigation?
-  private let shouldStartLoad: Bool
-  private let webViewNavigationType: UIWebViewNavigationType
-}
-
 public protocol CheckoutViewModelInputs {
   /// Call when the back button is tapped.
   func cancelButtonTapped()
 
   /// Call with the data passed to the view.
-  func configureWith(initialRequest initialRequest: NSURLRequest, project: Project, applePayCapable: Bool)
+  func configureWith(initialRequest initialRequest: NSURLRequest,
+                                    project: Project,
+                                    reward: Reward,
+                                    applePayCapable: Bool)
 
   /// Call when the failure alert OK button is tapped.
   func failureAlertButtonTapped()
@@ -77,8 +73,8 @@ public protocol CheckoutViewModelOutputs {
   /// Emits a string to be used to set the Stripe library's publishable key.
   var setStripePublishableKey: Signal<String, NoError> { get }
 
-  /// Emits when an alert should be shown indicating the pledge was not successful.
-  var showFailureAlert: Signal<String, NoError> { get }
+  /// Emits when an alert should be shown.
+  var showAlert: Signal<String, NoError> { get }
 
   /// Emits a request that should be loaded into the webview.
   var webViewLoadRequest: Signal<NSURLRequest, NoError> { get }
@@ -96,18 +92,14 @@ public final class CheckoutViewModel: CheckoutViewModelType {
   // swiftlint:disable function_body_length
   // swiftlint:disable cyclomatic_complexity
   public init() {
-    let initialRequestAndProjectAndApplePayCapable = self.initialRequestAndProjectAndApplePayCapableProperty
-      .signal
-      .ignoreNil()
+    let configData = self.configDataProperty.signal.ignoreNil()
       .takeWhen(self.viewDidLoadProperty.signal)
-
-    let applePayCapable = initialRequestAndProjectAndApplePayCapable
-      .map { _, _, applePayCapable in applePayCapable }
 
     let userSessionStarted = self.userSessionStartedProperty.signal
 
-    let initialRequest = initialRequestAndProjectAndApplePayCapable
-      .map(first)
+    let applePayCapable = configData.map { $0.applePayCapable }
+    let initialRequest = configData.map { $0.initialRequest }
+    let project = configData.map { $0.project }
 
     let requestData = self.shouldStartLoadProperty.signal.ignoreNil()
       .map { request, navigationType -> RequestData in
@@ -191,8 +183,7 @@ public final class CheckoutViewModel: CheckoutViewModelType {
       self.checkoutRacingViewModel.outputs.goToThanks
     )
 
-    self.goToThanks = initialRequestAndProjectAndApplePayCapable
-      .map(second)
+    self.goToThanks = project
       .takeWhen(thanksRequestOrRacingSuccessful)
 
     self.goToWebModal = modalRequestOrSafariRequest
@@ -244,34 +235,44 @@ public final class CheckoutViewModel: CheckoutViewModelType {
         self?.checkoutRacingViewModel.inputs.configureWith(url: url)
     }
 
-    checkoutCancelled
-      .observeNext { AppEnvironment.current.koala.trackCheckoutCancel() }
-
-    let project = initialRequestAndProjectAndApplePayCapable
-      .map(second)
-
-    project
+    configData
       .takeWhen(self.paymentAuthorizationWillAuthorizeProperty.signal)
       .observeNext {
-        AppEnvironment.current.koala.trackShowApplePaySheet(project: $0, context: .web)
+        AppEnvironment.current.koala.trackShowApplePaySheet(
+          project: $0.project,
+          reward: $0.reward,
+          pledgeContext: $0.pledgeContext
+        )
     }
 
-    project
+    configData
       .takeWhen(self.didAuthorizePaymentProperty.signal)
       .observeNext {
-        AppEnvironment.current.koala.trackApplePayAuthorizedPayment(project: $0, context: .web)
+        AppEnvironment.current.koala.trackApplePayAuthorizedPayment(
+          project: $0.project,
+          reward: $0.reward,
+          pledgeContext: $0.pledgeContext
+        )
     }
 
-    project
+    configData
       .takeWhen(self.stripeTokenAndErrorProperty.signal.filter(isNotNil • first))
       .observeNext {
-        AppEnvironment.current.koala.trackStripeTokenCreatedForApplePay(project: $0, context: .web)
+        AppEnvironment.current.koala.trackStripeTokenCreatedForApplePay(
+          project: $0.project,
+          reward: $0.reward,
+          pledgeContext: $0.pledgeContext
+        )
     }
 
-    project
+    configData
       .takeWhen(self.stripeTokenAndErrorProperty.signal.filter(isNotNil • second))
       .observeNext {
-        AppEnvironment.current.koala.trackStripeTokenErroredForApplePay(project: $0, context: .web)
+        AppEnvironment.current.koala.trackStripeTokenErroredForApplePay(
+          project: $0.project,
+          reward: $0.reward,
+          pledgeContext: $0.pledgeContext
+        )
     }
 
     let applePaySuccessful = Signal.merge(
@@ -279,12 +280,33 @@ public final class CheckoutViewModel: CheckoutViewModelType {
       self.didAuthorizePaymentProperty.signal.mapConst(true)
     )
 
-    combineLatest(project, applePaySuccessful)
+    combineLatest(configData, applePaySuccessful)
       .takeWhen(self.paymentAuthorizationFinishedProperty.signal)
-      .observeNext { project, successful in
-        successful
-          ? AppEnvironment.current.koala.trackApplePayFinished(project: project, context: .web)
-          : AppEnvironment.current.koala.trackApplePaySheetCanceled(project: project, context: .web)
+      .observeNext { configData, successful in
+
+        if successful {
+          AppEnvironment.current.koala.trackApplePayFinished(
+            project: configData.project,
+            reward: configData.reward,
+            pledgeContext: configData.pledgeContext
+          )
+        } else {
+          AppEnvironment.current.koala.trackApplePaySheetCanceled(
+            project: configData.project,
+            reward: configData.reward,
+            pledgeContext: configData.pledgeContext
+          )
+        }
+    }
+
+    configData
+      .takeWhen(checkoutCancelled)
+      .observeNext {
+        AppEnvironment.current.koala.trackCheckoutCancel(
+          project: $0.project,
+          reward: $0.reward,
+          pledgeContext: $0.pledgeContext
+        )
     }
   }
   // swiftlint:enable cyclomatic_complexity
@@ -293,12 +315,16 @@ public final class CheckoutViewModel: CheckoutViewModelType {
   private let cancelButtonTappedProperty = MutableProperty()
   public func cancelButtonTapped() { self.cancelButtonTappedProperty.value = () }
 
-  private let initialRequestAndProjectAndApplePayCapableProperty
-    = MutableProperty<(NSURLRequest, Project, Bool)?>(nil)
+  private let configDataProperty = MutableProperty<ConfigData?>(nil)
   public func configureWith(initialRequest initialRequest: NSURLRequest,
                                            project: Project,
+                                           reward: Reward,
                                            applePayCapable: Bool) {
-    self.initialRequestAndProjectAndApplePayCapableProperty.value = (initialRequest, project, applePayCapable)
+
+    self.configDataProperty.value = ConfigData(initialRequest: initialRequest,
+                                               project: project,
+                                               reward: reward,
+                                               applePayCapable: applePayCapable)
   }
 
   private let failureAlertButtonTappedProperty = MutableProperty()
@@ -354,8 +380,8 @@ public final class CheckoutViewModel: CheckoutViewModelType {
   public let popViewController: Signal<Void, NoError>
   public let setStripeAppleMerchantIdentifier: Signal<String, NoError>
   public let setStripePublishableKey: Signal<String, NoError>
-  public var showFailureAlert: Signal<String, NoError> {
-    return self.checkoutRacingViewModel.outputs.showFailureAlert
+  public var showAlert: Signal<String, NoError> {
+    return self.checkoutRacingViewModel.outputs.showAlert
   }
   public let webViewLoadRequest: Signal<NSURLRequest, NoError>
 
@@ -440,4 +466,22 @@ private func prepared(request baseRequest: NSURLRequest, applePayCapable: Bool) 
   request.allHTTPHeaderFields = (request.allHTTPHeaderFields ?? [:]).withAllValuesFrom(applePayHeader)
 
   return request
+}
+
+private struct ConfigData {
+  private let initialRequest: NSURLRequest
+  private let project: Project
+  private let reward: Reward
+  private let applePayCapable: Bool
+
+  private var pledgeContext: Koala.PledgeContext {
+    return Library.pledgeContext(forProject: self.project, reward: self.reward)
+  }
+}
+
+private struct RequestData {
+  private let request: NSURLRequest
+  private let navigation: Navigation?
+  private let shouldStartLoad: Bool
+  private let webViewNavigationType: UIWebViewNavigationType
 }

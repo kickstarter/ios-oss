@@ -388,9 +388,9 @@ public enum Strings {
   /**
    "Backed by people you follow"
 
-   - **es**: "Backed by people you follow"
-   - **de**: "Backed by people you follow"
-   - **fr**: "Backed by people you follow"
+   - **es**: "Patrocinados por gente a la que sigues"
+   - **de**: "Unterstützt von Leuten, denen du folgst"
+   - **fr**: "Soutenus par les personnes que vous suivez"
    - **it**: "Backed by people you follow"
    - **en**: "Backed by people you follow"
   */
@@ -406,7 +406,7 @@ public enum Strings {
    "Backed projects %{project_count}"
 
    - **es**: "Proyectos patrocinados: %{project_count}"
-   - **de**: "Backed projects %{project_count}"
+   - **de**: "Unterstützte Projekte: %{project_count}"
    - **fr**: "Projets soutenus : %{project_count}"
    - **it**: "Backed projects %{project_count}"
    - **en**: "Backed projects %{project_count}"
@@ -422,8 +422,8 @@ public enum Strings {
   /**
    "Bring new ideas to life."
 
-   - **es**: "Bring new ideas to life."
-   - **de**: "Bring new ideas to life."
+   - **es**: "Nuevas ideas se vuelven realidad - ¡gracias a tu ayuda!"
+   - **de**: "Neue Ideen werden Wirklichkeit."
    - **fr**: "De nouvelles idées qui voient le jour."
    - **it**: "Bring new ideas to life."
    - **en**: "Bring new ideas to life."
@@ -488,6 +488,23 @@ public enum Strings {
     )
   }
   /**
+   "Collapses subcategories."
+
+   - **es**: "Muestra menos subcategorías."
+   - **de**: "Reduziert die Anzeige der Unterkategorien."
+   - **fr**: "Masque les sous-catégories."
+   - **it**: "Collapses subcategories."
+   - **en**: "Collapses subcategories."
+  */
+  public static func Collapses_subcategories() -> String {
+    return localizedString(
+      key: "Collapses_subcategories",
+      defaultValue: "Collapses subcategories.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Collections"
 
    - **es**: "Colecciones"
@@ -508,7 +525,7 @@ public enum Strings {
    "Complete payment"
 
    - **es**: "Completar pago"
-   - **de**: "Complete payment"
+   - **de**: "Zahlung abschließen"
    - **fr**: "Payer"
    - **it**: "Complete payment"
    - **en**: "Complete payment"
@@ -610,7 +627,7 @@ public enum Strings {
    "Created projects %{projects_count}"
 
    - **es**: "Proyectos creados: %{projects_count}"
-   - **de**: "Created projects %{projects_count}"
+   - **de**: "Erstellte Projekte: %{projects_count}"
    - **fr**: "Projets créés : %{projects_count}"
    - **it**: "Created projects %{projects_count}"
    - **en**: "Created projects %{projects_count}"
@@ -738,6 +755,23 @@ public enum Strings {
     return localizedString(
       key: "Estimated_to_fulfill",
       defaultValue: "Estimated to fulfill:",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Expands subcategories."
+
+   - **es**: "Muestra más subcategorías."
+   - **de**: "Erweitert die Anzeige der Unterkategorien."
+   - **fr**: "Développe les sous-catégories."
+   - **it**: "Expands subcategories."
+   - **en**: "Expands subcategories."
+  */
+  public static func Expands_subcategories() -> String {
+    return localizedString(
+      key: "Expands_subcategories",
+      defaultValue: "Expands subcategories.",
       count: nil,
       substitutions: [:]
     )
@@ -879,6 +913,23 @@ public enum Strings {
     )
   }
   /**
+   "%{filter_name}: %{project_count} live projects"
+
+   - **es**: "%{filter_name}: %{project_count} proyectos activos"
+   - **de**: "%{filter_name}: %{project_count} Live-Projekte"
+   - **fr**: "%{filter_name} : %{project_count} projets en cours"
+   - **it**: "%{filter_name}: %{project_count} live projects"
+   - **en**: "%{filter_name}: %{project_count} live projects"
+  */
+  public static func Filter_name_project_count_live_projects(filter_name filter_name: String, project_count: Int) -> String {
+    return localizedString(
+      key: "Filter_name_project_count_live_projects",
+      defaultValue: "%{filter_name}: %{project_count} live projects",
+      count: project_count,
+      substitutions: ["filter_name": filter_name, "project_count": Format.wholeNumber(project_count)]
+    )
+  }
+  /**
    "Find Facebook friends"
 
    - **es**: "Encuentra amigos en Facebook"
@@ -932,8 +983,8 @@ public enum Strings {
   /**
    "Find projects you’ll love in art, design, film, games, music, and more. Once you back a project, you’ll see all your activity here."
 
-   - **es**: "Find projects you’ll love in art, design, film, games, music, and more. Once you back a project, you’ll see all your activity here."
-   - **de**: "Find projects you’ll love in art, design, film, games, music, and more. Once you back a project, you’ll see all your activity here."
+   - **es**: "Proyectos a tu gusto - en arte, diseño, cine, juegos, música y otras categorías. Una vez que hayas patrocinado un proyecto, verás todas las actividades pertinentes aquí."
+   - **de**: "Finde Projekte nach deinem Geschmack - in Kunst, Design, Film, Spiele, Musik und vielen anderen Kategorien. Wenn du ein Projekt unterstützt hast, wird deren Aktivität hier angezeigt."
    - **fr**: "Découvrez des projets que vous allez adorer : art, design, cinéma, jeux, musique et plus encore. L'activité des projets que vous soutenez s'affichera ici."
    - **it**: "Find projects you’ll love in art, design, film, games, music, and more. Once you back a project, you’ll see all your activity here."
    - **en**: "Find projects you’ll love in art, design, film, games, music, and more. Once you back a project, you’ll see all your activity here."
@@ -983,8 +1034,8 @@ public enum Strings {
   /**
    "Follow more friends"
 
-   - **es**: "Follow more friends"
-   - **de**: "Follow more friends"
+   - **es**: "Seguir a más amigos"
+   - **de**: "Folge noch mehr Freunden"
    - **fr**: "Suivre plus d'amis"
    - **it**: "Follow more friends"
    - **en**: "Follow more friends"
@@ -1052,7 +1103,7 @@ public enum Strings {
    "Follows %{friend_name}."
 
    - **es**: "Sigue a %{friend_name}."
-   - **de**: "Follows %{friend_name}."
+   - **de**: "%{friend_name} folgen."
    - **fr**: "Abonnement aux actus de %{friend_name}."
    - **it**: "Follows %{friend_name}."
    - **en**: "Follows %{friend_name}."
@@ -1310,7 +1361,7 @@ with friends."
    "Message backer"
 
    - **es**: "Enviar mensaje a patrocinador"
-   - **de**: "Message backer"
+   - **de**: "Nachricht an Unterstützer senden"
    - **fr**: "Envoyer un message au contributeur"
    - **it**: "Message backer"
    - **en**: "Message backer"
@@ -1327,7 +1378,7 @@ with friends."
    "Message creator"
 
    - **es**: "Enviar mensaje al creador"
-   - **de**: "Message creator"
+   - **de**: "Nachricht an Projektgründer senden"
    - **fr**: "Envoyer un message au créateur"
    - **it**: "Message creator"
    - **en**: "Message creator"
@@ -1341,13 +1392,28 @@ with friends."
     )
   }
   /**
+   "No comments yet."
+
+   - **es**: "No comments yet."
+   - **de**: "No comments yet."
+   - **fr**: "No comments yet."
+   - **it**: "No comments yet."
+   - **en**: "No comments yet."
+  */
+  public static func No_comments_yet() -> String {
+    return localizedString(
+      key: "No_comments_yet",
+      defaultValue: "No comments yet.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "No pledges 
 from friends yet."
 
-   - **es**: "No pledges 
-from friends yet."
-   - **de**: "No pledges 
-from friends yet."
+   - **es**: "No hay contribuciones de amigos todavía."
+   - **de**: "Es gibt noch keine Beiträge von Freunden."
    - **fr**: "Mes amis 
 n'ont rien soutenu."
    - **it**: "No pledges 
@@ -1452,7 +1518,7 @@ from friends yet."
    "Opens message composer."
 
    - **es**: "Abre plantilla de mensaje."
-   - **de**: "Opens message composer."
+   - **de**: "Öffnet Nachrichten-Vorlage."
    - **fr**: "Ouvre l'éditeur de messages."
    - **it**: "Opens message composer."
    - **en**: "Opens message composer."
@@ -1570,8 +1636,8 @@ from friends yet."
   /**
    "Please enter an amount of %{amount} or less."
 
-   - **es**: "Please enter an amount of %{amount} or less."
-   - **de**: "Please enter an amount of %{amount} or less."
+   - **es**: "Ingresa un monto de contribución de %{amount} o menor."
+   - **de**: "Bitte gib einen Finanzierungsbeitrag von %{amount} oder weniger ein."
    - **fr**: "Veuillez saisir un montant de %{amount} ou moins."
    - **it**: "Please enter an amount of %{amount} or less."
    - **en**: "Please enter an amount of %{amount} or less."
@@ -1587,8 +1653,8 @@ from friends yet."
   /**
    "Please enter an amount of %{amount} or more."
 
-   - **es**: "Please enter an amount of %{amount} or more."
-   - **de**: "Please enter an amount of %{amount} or more."
+   - **es**: "Ingresa un monto de contribución de %{amount} o más."
+   - **de**: "Bitte gib einen Finanzierungsbeitrag von mindestens %{amount} ein."
    - **fr**: "Veuillez saisir un montant de %{amount} ou plus."
    - **it**: "Please enter an amount of %{amount} or more."
    - **en**: "Please enter an amount of %{amount} or more."
@@ -1622,7 +1688,7 @@ from friends yet."
    "Pledge without a reward"
 
    - **es**: "Contribuir sin recompensa"
-   - **de**: "Pledge without a reward"
+   - **de**: "Ohne Belohnung unterstützen"
    - **fr**: "Engagement sans récompense"
    - **it**: "Pledge without a reward"
    - **en**: "Pledge without a reward"
@@ -1897,10 +1963,8 @@ daring ideas."
    "Something 
 catch your eye?"
 
-   - **es**: "Something 
-catch your eye?"
-   - **de**: "Something 
-catch your eye?"
+   - **es**: "¿Algo que te haya llamado la atención?"
+   - **de**: "Etwas interessantes gefunden?"
    - **fr**: "Quelque chose a retenu votre attention ?"
    - **it**: "Something 
 catch your eye?"
@@ -2021,7 +2085,7 @@ catch your eye?"
    "Unfollows %{friend_name}."
 
    - **es**: "Dejar de seguir a %{friend_name}."
-   - **de**: "Unfollows %{friend_name}."
+   - **de**: "%{friend_name} nicht mehr folgen."
    - **fr**: "Désabonnement des actus de %{friend_name}."
    - **it**: "Unfollows %{friend_name}."
    - **en**: "Unfollows %{friend_name}."
@@ -2054,8 +2118,8 @@ catch your eye?"
   /**
    "Update pledge"
 
-   - **es**: "Update pledge"
-   - **de**: "Update pledge"
+   - **es**: "Actualizar contribución"
+   - **de**: "Beitrag aktualisieren"
    - **fr**: "Modifier mon engagement"
    - **it**: "Update pledge"
    - **en**: "Update pledge"
@@ -2139,8 +2203,8 @@ catch your eye?"
   /**
    "Your friends haven’t backed any projects yet, but once they do, you’ll see them listed here."
 
-   - **es**: "Your friends haven’t backed any projects yet, but once they do, you’ll see them listed here."
-   - **de**: "Your friends haven’t backed any projects yet, but once they do, you’ll see them listed here."
+   - **es**: "Tus amigos todavía no han hecho contribuciones, pero en cuanto lo hagan, se verán reflejadas aquí."
+   - **de**: "Deine Freunde haben bisher noch kein Projekt unterstützt. Aber sobald sie das tun, wird es hier angezeigt."
    - **fr**: "Vos amis n'ont encore rien soutenu, mais dès qu'ils s'y seront mis, leurs engagements s'afficheront ici."
    - **it**: "Your friends haven’t backed any projects yet, but once they do, you’ll see them listed here."
    - **en**: "Your friends haven’t backed any projects yet, but once they do, you’ll see them listed here."

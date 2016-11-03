@@ -12,8 +12,8 @@ public protocol CheckoutRacingViewModelInputs {
 }
 
 public protocol CheckoutRacingViewModelOutputs {
-  /// Emits when an alert should be shown indicating the pledge was not successful.
-  var showFailureAlert: Signal<String, NoError> { get }
+  /// Emits when an alert should be shown.
+  var showAlert: Signal<String, NoError> { get }
 
   /// Emits when the checkout's state is successful.
   var goToThanks: Signal<Void, NoError> { get }
@@ -71,7 +71,7 @@ public final class CheckoutRacingViewModel: CheckoutRacingViewModelType {
     let timedOutError = envelope.errors()
       .mapConst(Strings.project_checkout_finalizing_timeout_message())
 
-    self.showFailureAlert = Signal.merge(failedCheckoutError, timedOutError)
+    self.showAlert = Signal.merge(failedCheckoutError, timedOutError)
   }
 
   private let initialURLProperty = MutableProperty<NSURL?>(nil)
@@ -80,7 +80,7 @@ public final class CheckoutRacingViewModel: CheckoutRacingViewModelType {
   }
 
   public let goToThanks: Signal<Void, NoError>
-  public let showFailureAlert: Signal<String, NoError>
+  public let showAlert: Signal<String, NoError>
 
   public var inputs: CheckoutRacingViewModelInputs { return self }
   public var outputs: CheckoutRacingViewModelOutputs { return self }

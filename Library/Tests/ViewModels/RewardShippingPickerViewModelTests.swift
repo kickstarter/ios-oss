@@ -29,6 +29,7 @@ internal final class RewardShippingPickerViewModelTests: TestCase {
   private let vm: RewardShippingPickerViewModelType = RewardShippingPickerViewModel()
 
   private let dataSource = TestObserver<[String], NoError>()
+  private let doneButtonAccessibilityHint = TestObserver<String, NoError>()
   private let notifyDelegateChoseShippingRule = TestObserver<ShippingRule, NoError>()
   private let notifyDelegateToCancel = TestObserver<(), NoError>()
   private let selectRow = TestObserver<Int, NoError>()
@@ -37,6 +38,7 @@ internal final class RewardShippingPickerViewModelTests: TestCase {
     super.setUp()
 
     self.vm.outputs.dataSource.observe(self.dataSource.observer)
+    self.vm.outputs.doneButtonAccessibilityHint.observe(self.doneButtonAccessibilityHint.observer)
     self.vm.outputs.notifyDelegateChoseShippingRule.observe(self.notifyDelegateChoseShippingRule.observer)
     self.vm.outputs.notifyDelegateToCancel.observe(self.notifyDelegateToCancel.observer)
     self.vm.outputs.selectRow.observe(self.selectRow.observer)
@@ -56,6 +58,18 @@ internal final class RewardShippingPickerViewModelTests: TestCase {
         "United States +$1"
       ]
     ])
+  }
+
+  func testDoneButtonAccessibilityHint() {
+    let selectedShippingRule = shippingRules.first!
+
+    self.vm.inputs.configureWith(project: .template,
+                                 shippingRules: shippingRules,
+                                 selectedShippingRule: selectedShippingRule)
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewWillAppear()
+
+    self.doneButtonAccessibilityHint.assertValues(["Chooses United States for shipping."])
   }
 
   func testNotifyDelegateChoseShippingRule_MakeNoChoice() {

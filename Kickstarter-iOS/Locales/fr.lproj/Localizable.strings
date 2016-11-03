@@ -20,12 +20,13 @@
 "Ask_me_anything" = "Posez-moi une question !";
 "Back_this_project_below" = "Je soutiens ce projet";
 "Backed_by_Friends" = "Soutenu par mes amis";
-"Backed_by_people_you_follow" = "Backed by people you follow";
+"Backed_by_people_you_follow" = "Soutenus par les personnes que vous suivez";
 "Backed_projects_projects_count" = "Projets soutenus : %{project_count}";
 "Bring_new_ideas_to_life" = "De nouvelles idées qui voient le jour.";
 "Cancel_your_pledge" = "Annuler mon engagement";
 "Change_payment_method" = "Changer de moyen de paiement";
 "Closes_filters" = "Ferme les filtres.";
+"Collapses_subcategories" = "Masque les sous-catégories.";
 "Collections" = "Collections";
 "Complete_payment" = "Payer";
 "Connect_with_Facebook_to_follow_friends_and_get_notified" = "Si vous vous connectez avec votre compte Facebook, vous pourrez suivre vos amis et recevoir des notifications chaque fois qu'ils lancent ou soutiennent de nouveaux projets.";
@@ -41,6 +42,7 @@
 "Email_notifications" = "Notifications par e-mail";
 "Ending_soon" = "Campagnes bientôt terminées";
 "Estimated_to_fulfill" = "Livraison prévue :";
+"Expands_subcategories" = "Développe les sous-catégories.";
 "Explore_projects" = "Découvrir des projets";
 "Filter_by_all_projects" = "Filtrer : tous les projets";
 "Filter_by_category_name" = "Filtrer par catégorie : %{category_name}";
@@ -49,6 +51,11 @@
 "Filter_by_projects_we_love" = "Filtrer : Coups de cœur";
 "Filter_by_starred_projects" = "Filtrer : mes projets préférés";
 "Filter_by_subcategory_name_in_category_name" = "Filtrer : %{subcategory_name}, sous %{category_name}";
+"Filter_name_project_count_live_projects.few" = "%{filter_name} : %{project_count} projets en cours";
+"Filter_name_project_count_live_projects.many" = "%{filter_name} : %{project_count} projets en cours";
+"Filter_name_project_count_live_projects.one" = "%{filter_name} : %{project_count} projet en cours";
+"Filter_name_project_count_live_projects.two" = "%{filter_name} : %{project_count} projets en cours";
+"Filter_name_project_count_live_projects.zero" = "%{filter_name} : %{project_count} projets en cours";
 "Find_Facebook_Friends" = "Retrouver mes amis Facebook";
 "Find_and_follow_friends" = "Retrouver et suivre mes amis";
 "Find_projects_youll_love_and_help_bring" = "Découvrez de beaux projets et participez à la concrétisation d'idées créatives.";
@@ -76,6 +83,7 @@
 "Manage_your_reward" = "Gérer votre récompense";
 "Message_backer" = "Envoyer un message au contributeur";
 "Message_creator" = "Envoyer un message au créateur";
+"No_comments_yet" = "No comments yet.";
 "No_pledges_from_friends_yet" = "Mes amis \nn'ont rien soutenu.";
 "Once_you_back_a_project_well_share" = "Une fois que vous aurez soutenu un projet, des recommandations personnalisées s'afficheront ici.";
 "Opens_comments" = "Ouvre les commentaires.";

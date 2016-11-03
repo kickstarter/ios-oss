@@ -65,7 +65,8 @@ internal final class RewardCell: UITableViewCell, ValueCell {
 
     self
       |> baseTableViewCellStyle()
-      |> (UITableViewCell.lens.contentView • UIView.lens.layoutMargins) %~~ { _, cell in
+      |> RewardCell.lens.accessibilityTraits .~ UIAccessibilityTraitButton
+      |> (RewardCell.lens.contentView • UIView.lens.layoutMargins) %~~ { _, cell in
         cell.traitCollection.isRegularRegular
           ? .init(top: Styles.grid(2), left: Styles.grid(16), bottom: Styles.grid(4), right: Styles.grid(16))
           : .init(top: Styles.grid(1), left: Styles.grid(2), bottom: Styles.grid(2), right: Styles.grid(2))

@@ -106,6 +106,7 @@ private func reward(forBacking backing: Backing, inProject project: Project) -> 
 
   return backing.reward
     ?? project.rewards.filter { $0.id == backing.rewardId }.first
+    ?? Reward.noReward
 }
 
 private func goToRewardPledgeData(forProject project: Project, rewardOrBacking: Either<Reward, Backing>)

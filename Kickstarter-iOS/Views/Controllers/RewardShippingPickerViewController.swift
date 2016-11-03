@@ -84,6 +84,8 @@ internal final class RewardShippingPickerViewController: UIViewController {
   internal override func bindViewModel() {
     super.bindViewModel()
 
+    self.doneButton.rac.accessibilityHint = self.viewModel.outputs.doneButtonAccessibilityHint
+
     self.viewModel.outputs.dataSource
       .observeForControllerAction()
       .observeNext { [weak self] in

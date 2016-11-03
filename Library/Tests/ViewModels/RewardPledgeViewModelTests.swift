@@ -38,6 +38,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
   private let countryLabelText = TestObserver<String, NoError>()
   private let descriptionLabelText = TestObserver<String, NoError>()
   private let differentPaymentMethodButtonHidden = TestObserver<Bool, NoError>()
+  private let dismissViewController = TestObserver<(), NoError>()
   private let estimatedDeliveryDateLabelText = TestObserver<String, NoError>()
   private let expandRewardDescription = TestObserver<(), NoError>()
   private let fulfillmentAndShippingFooterStackViewHidden = TestObserver<Bool, NoError>()
@@ -82,6 +83,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
     self.vm.outputs.descriptionLabelText.observe(self.descriptionLabelText.observer)
     self.vm.outputs.differentPaymentMethodButtonHidden
       .observe(self.differentPaymentMethodButtonHidden.observer)
+    self.vm.outputs.dismissViewController.observe(self.dismissViewController.observer)
     self.vm.outputs.estimatedDeliveryDateLabelText.observe(self.estimatedDeliveryDateLabelText.observer)
     self.vm.outputs.expandRewardDescription.observe(self.expandRewardDescription.observer)
     self.vm.outputs.fulfillmentAndShippingFooterStackViewHidden
@@ -278,6 +280,20 @@ internal final class RewardPledgeViewModelTests: TestCase {
     self.differentPaymentMethodButtonHidden.assertValues([true])
   }
 
+  func testDismissViewController() {
+    self.vm.inputs.configureWith(project: .template, reward: .template, applePayCapable: false)
+    self.vm.inputs.viewDidLoad()
+
+    self.dismissViewController.assertValueCount(0)
+    XCTAssertEqual(["Reward Checkout", "Selected Reward"], self.trackingClient.events)
+
+    self.vm.inputs.closeButtonTapped()
+
+    self.dismissViewController.assertValueCount(1)
+
+    XCTAssertEqual(["Reward Checkout", "Selected Reward", "Closed Reward"], self.trackingClient.events)
+  }
+
   func testEstimatedDeliveryDateLabelText() {
     let reward = .template |> Reward.lens.estimatedDeliveryOn .~ NSDate().timeIntervalSince1970
     self.vm.inputs.configureWith(project: .template, reward: reward, applePayCapable: false)
@@ -290,13 +306,22 @@ internal final class RewardPledgeViewModelTests: TestCase {
 
   func testExpandRewardDescription() {
     self.vm.inputs.configureWith(project: .template, reward: .template, applePayCapable: false)
+
+    XCTAssertEqual([], self.trackingClient.events)
+
     self.vm.inputs.viewDidLoad()
 
     self.expandRewardDescription.assertValueCount(0)
+    XCTAssertEqual(["Reward Checkout", "Selected Reward"], self.trackingClient.events)
 
     self.vm.inputs.expandDescriptionTapped()
 
     self.expandRewardDescription.assertValueCount(1)
+
+    XCTAssertEqual(["Reward Checkout", "Selected Reward", "Expanded Reward Description"],
+                   self.trackingClient.events)
+    XCTAssertEqual(["new_pledge", "new_pledge", "new_pledge"],
+                   self.trackingClient.properties(forKey: "pledge_context", as: String.self))
   }
 
   func testFulfillmentAndShippingFooterStackViewHidden_ShippingEnabled() {
@@ -600,6 +625,42 @@ internal final class RewardPledgeViewModelTests: TestCase {
     }
   }
 
+  func testApplePay_CancelFlow() {
+    let project = Project.template
+    self.vm.inputs.configureWith(project: project, reward: .template, applePayCapable: true)
+    self.vm.inputs.viewDidLoad()
+    self.scheduler.advance()
+
+    self.applePayButtonHidden.assertValues([false])
+    XCTAssertEqual(["Reward Checkout", "Selected Reward"], self.trackingClient.events)
+
+    self.vm.inputs.applePayButtonTapped()
+    self.vm.inputs.paymentAuthorizationWillAuthorizePayment()
+
+    XCTAssertEqual(
+      ["Reward Checkout", "Selected Reward", "Clicked Reward Pledge Button", "Apple Pay Show Sheet",
+        "Showed Apple Pay Sheet"],
+      self.trackingClient.events
+    )
+
+    self.vm.inputs.paymentAuthorizationDidFinish()
+
+    XCTAssertEqual(
+      ["Reward Checkout", "Selected Reward", "Clicked Reward Pledge Button", "Apple Pay Show Sheet",
+        "Showed Apple Pay Sheet", "Apple Pay Canceled", "Canceled Apple Pay"],
+      self.trackingClient.events
+    )
+    XCTAssertEqual(
+      ["new_pledge", "new_pledge", "new_pledge", "new_pledge", "new_pledge", "new_pledge",
+        "new_pledge"],
+      self.trackingClient.properties(forKey: "pledge_context", as: String.self)
+    )
+    XCTAssertEqual([nil, nil, "apple_pay", nil, nil, nil, nil],
+                   self.trackingClient.properties(forKey: "type", as: String.self))
+    XCTAssertEqual([nil, nil, "Reward Selection", nil, nil, nil, nil],
+                   self.trackingClient.properties(forKey: "context", as: String.self))
+  }
+
   func testApplePay_SuccessfulFlow() {
     let project = Project.template
     self.vm.inputs.configureWith(project: project, reward: .template, applePayCapable: true)
@@ -607,9 +668,16 @@ internal final class RewardPledgeViewModelTests: TestCase {
     self.scheduler.advance()
 
     self.applePayButtonHidden.assertValues([false])
+    XCTAssertEqual(["Reward Checkout", "Selected Reward"], self.trackingClient.events)
 
     self.vm.inputs.applePayButtonTapped()
     self.vm.inputs.paymentAuthorizationWillAuthorizePayment()
+
+    XCTAssertEqual(
+      ["Reward Checkout", "Selected Reward", "Clicked Reward Pledge Button", "Apple Pay Show Sheet",
+        "Showed Apple Pay Sheet"],
+      self.trackingClient.events
+    )
 
     self.vm.inputs.paymentAuthorization(
       didAuthorizePayment: .init(
@@ -619,12 +687,110 @@ internal final class RewardPledgeViewModelTests: TestCase {
         )
       )
     )
-    self.vm.inputs.paymentAuthorizationDidFinish()
+
+    XCTAssertEqual(
+      ["Reward Checkout", "Selected Reward", "Clicked Reward Pledge Button", "Apple Pay Show Sheet",
+        "Showed Apple Pay Sheet", "Apple Pay Authorized", "Authorized Apple Pay"],
+      self.trackingClient.events
+    )
+
+    XCTAssertEqual(
+      ["Reward Checkout", "Selected Reward", "Clicked Reward Pledge Button", "Apple Pay Show Sheet",
+        "Showed Apple Pay Sheet", "Apple Pay Authorized", "Authorized Apple Pay"],
+      self.trackingClient.events
+    )
+
     let status = self.vm.inputs.stripeCreatedToken(stripeToken: "stripe_deadbeef", error: nil)
+
+    XCTAssertEqual(
+      ["Reward Checkout", "Selected Reward", "Clicked Reward Pledge Button", "Apple Pay Show Sheet",
+        "Showed Apple Pay Sheet", "Apple Pay Authorized", "Authorized Apple Pay",
+        "Apple Pay Stripe Token Created", "Created Apple Pay Stripe Token"],
+      self.trackingClient.events
+    )
 
     XCTAssertEqual(PKPaymentAuthorizationStatus.Success.rawValue, status.rawValue)
 
+    self.vm.inputs.paymentAuthorizationDidFinish()
+
     self.goToThanks.assertValues([project])
+
+    XCTAssertEqual(
+      ["Reward Checkout", "Selected Reward", "Clicked Reward Pledge Button", "Apple Pay Show Sheet",
+        "Showed Apple Pay Sheet", "Apple Pay Authorized", "Authorized Apple Pay",
+        "Apple Pay Stripe Token Created", "Created Apple Pay Stripe Token", "Apple Pay Finished"],
+      self.trackingClient.events
+    )
+
+    XCTAssertEqual(
+      ["new_pledge", "new_pledge", "new_pledge", "new_pledge", "new_pledge", "new_pledge", "new_pledge",
+        "new_pledge", "new_pledge", "new_pledge"],
+      self.trackingClient.properties(forKey: "pledge_context", as: String.self)
+    )
+  }
+
+  func testApplePay_StripeErrorFlow() {
+    let project = Project.template
+    self.vm.inputs.configureWith(project: project, reward: .template, applePayCapable: true)
+    self.vm.inputs.viewDidLoad()
+    self.scheduler.advance()
+
+    self.applePayButtonHidden.assertValues([false])
+    XCTAssertEqual(["Reward Checkout", "Selected Reward"], self.trackingClient.events)
+
+    self.vm.inputs.applePayButtonTapped()
+    self.vm.inputs.paymentAuthorizationWillAuthorizePayment()
+
+    XCTAssertEqual(
+      ["Reward Checkout", "Selected Reward", "Clicked Reward Pledge Button", "Apple Pay Show Sheet",
+        "Showed Apple Pay Sheet"],
+      self.trackingClient.events
+    )
+
+    self.vm.inputs.paymentAuthorization(
+      didAuthorizePayment: .init(
+        tokenData: .init(
+          paymentMethodData: .init(displayName: "AmEx", network: "AmEx", type: .Credit),
+          transactionIdentifier: "apple_pay_deadbeef"
+        )
+      )
+    )
+
+    XCTAssertEqual(
+      ["Reward Checkout", "Selected Reward", "Clicked Reward Pledge Button", "Apple Pay Show Sheet",
+        "Showed Apple Pay Sheet", "Apple Pay Authorized", "Authorized Apple Pay"],
+      self.trackingClient.events
+    )
+
+    let status = self.vm.inputs.stripeCreatedToken(
+      stripeToken: nil, error: NSError(domain: "deadbeef", code: 1, userInfo: nil)
+    )
+
+    XCTAssertEqual(
+      ["Reward Checkout", "Selected Reward", "Clicked Reward Pledge Button", "Apple Pay Show Sheet",
+        "Showed Apple Pay Sheet", "Apple Pay Authorized", "Authorized Apple Pay",
+        "Apple Pay Stripe Token Errored", "Errored Apple Pay Stripe Token"],
+      self.trackingClient.events
+    )
+
+    XCTAssertEqual(PKPaymentAuthorizationStatus.Failure.rawValue, status.rawValue)
+
+    self.vm.inputs.paymentAuthorizationDidFinish()
+
+    XCTAssertEqual(
+      ["Reward Checkout", "Selected Reward", "Clicked Reward Pledge Button", "Apple Pay Show Sheet",
+        "Showed Apple Pay Sheet", "Apple Pay Authorized", "Authorized Apple Pay",
+        "Apple Pay Stripe Token Errored", "Errored Apple Pay Stripe Token", "Apple Pay Canceled",
+        "Canceled Apple Pay"],
+      self.trackingClient.events
+    )
+    XCTAssertEqual(
+      ["new_pledge", "new_pledge", "new_pledge", "new_pledge", "new_pledge", "new_pledge", "new_pledge",
+        "new_pledge", "new_pledge", "new_pledge", "new_pledge"],
+      self.trackingClient.properties(forKey: "pledge_context", as: String.self)
+    )
+
+    self.goToThanks.assertValues([])
   }
 
   func testApplePay_LoggedOutFlow() {
@@ -913,8 +1079,17 @@ internal final class RewardPledgeViewModelTests: TestCase {
         self.goToShippingPickerProject.assertValues([project])
         self.goToShippingPickerShippingRules.assertValues([shippingRules])
         self.goToShippingPickerSelectedShippingRule.assertValues([defaultShippingRule])
+        XCTAssertEqual(["Reward Checkout", "Selected Reward"], self.trackingClient.events)
 
         self.vm.inputs.change(shippingRule: otherShippingRule)
+
+        XCTAssertEqual(
+          ["Reward Checkout", "Selected Reward", "Checkout Location Changed",
+            "Selected Shipping Destination"],
+          self.trackingClient.events
+        )
+        XCTAssertEqual(["new_pledge", "new_pledge", "new_pledge", "new_pledge"],
+                       self.trackingClient.properties(forKey: "pledge_context", as: String.self))
 
         self.vm.inputs.shippingButtonTapped()
 
@@ -1178,32 +1353,58 @@ internal final class RewardPledgeViewModelTests: TestCase {
 
   func testPledgeTextFieldText() {
     let project = Project.template
-    let reward = .template |> Reward.lens.minimum .~ 42
+    let reward = .template
+      |> Reward.lens.minimum .~ 42
+      |> Reward.lens.id .~ 24
     self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
     self.vm.inputs.viewDidLoad()
 
     self.pledgeTextFieldText.assertValues([String(reward.minimum)],
                                           "Sets initial value of pledge text field.")
+    XCTAssertEqual(["Reward Checkout", "Selected Reward"], self.trackingClient.events)
 
     self.vm.inputs.pledgeTextFieldChanged("48")
 
     self.pledgeTextFieldText.assertValues([String(reward.minimum)],
                                           "Pledge field isn't set while editing.")
+    XCTAssertEqual(["Reward Checkout", "Selected Reward", "Checkout Amount Changed", "Changed Pledge Amount"],
+                   self.trackingClient.events)
 
     self.vm.inputs.pledgeTextFieldDidEndEditing()
 
     self.pledgeTextFieldText.assertValues([String(reward.minimum)],
                                           "Pledge field isn't set when done editing with valid value.")
+    XCTAssertEqual(["Reward Checkout", "Selected Reward", "Checkout Amount Changed", "Changed Pledge Amount"],
+                   self.trackingClient.events)
 
     self.vm.inputs.pledgeTextFieldChanged("20")
 
     self.pledgeTextFieldText.assertValues([String(reward.minimum)],
                                           "Pledge field isn't set while editing.")
+    XCTAssertEqual(
+      ["Reward Checkout", "Selected Reward", "Checkout Amount Changed", "Changed Pledge Amount",
+        "Checkout Amount Changed", "Changed Pledge Amount"],
+      self.trackingClient.events
+    )
 
     self.vm.inputs.pledgeTextFieldDidEndEditing()
 
     self.pledgeTextFieldText.assertValues([String(reward.minimum), String(reward.minimum)],
                                           "Pledge field is reset when done editing with invalid value.")
+
+    XCTAssertEqual(
+      ["Reward Checkout", "Selected Reward", "Checkout Amount Changed", "Changed Pledge Amount",
+        "Checkout Amount Changed", "Changed Pledge Amount"],
+      self.trackingClient.events
+    )
+    XCTAssertEqual(
+      ["new_pledge", "new_pledge", "new_pledge", "new_pledge", "new_pledge", "new_pledge"],
+      self.trackingClient.properties(forKey: "pledge_context", as: String.self)
+    )
+    XCTAssertEqual(
+      [reward.id, reward.id, reward.id, reward.id, reward.id, reward.id],
+      self.trackingClient.properties(forKey: "backer_reward_id", as: Int.self)
+    )
   }
 
   func testPledgeTextFieldText_ManageReward_NoShipping() {
@@ -1278,6 +1479,24 @@ internal final class RewardPledgeViewModelTests: TestCase {
                                           "Sets initial value of pledge text field.")
   }
 
+  func testPledgeTextFieldText_ManageNoReward() {
+    let reward = Reward.noReward
+    let project = .template
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.amount .~ 123
+          |> Backing.lens.shippingAmount .~ nil
+          |> Backing.lens.reward .~ nil
+          |> Backing.lens.rewardId .~ nil
+
+    )
+    self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
+    self.vm.inputs.viewDidLoad()
+
+    self.pledgeTextFieldText.assertValues(["123"], "Sets initial value of pledge text field.")
+  }
+
   func testPledgeTextFieldText_Pledge_NoReward() {
     let reward = Reward.noReward
     let project = .template |> Project.lens.country .~ .US
@@ -1285,7 +1504,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
     self.vm.inputs.viewDidLoad()
 
-    self.pledgeTextFieldText.assertValues(["10"])
+    self.pledgeTextFieldText.assertValues(["1"])
   }
 
   func testPledgeTextFieldText_Pledge_NoReward_DK() {
@@ -1295,7 +1514,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
     self.vm.inputs.viewDidLoad()
 
-    self.pledgeTextFieldText.assertValues(["50"])
+    self.pledgeTextFieldText.assertValues(["5"])
   }
 
   func testReadMoreContainerViewHidden() {
@@ -1452,18 +1671,53 @@ internal final class RewardPledgeViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
       self.scheduler.advance()
 
+      XCTAssertEqual(["Reward Checkout", "Selected Reward"], self.trackingClient.events)
+
       self.vm.inputs.pledgeTextFieldChanged("1")
+
+      XCTAssertEqual(
+        ["Reward Checkout", "Selected Reward", "Checkout Amount Changed", "Changed Pledge Amount"],
+        self.trackingClient.events
+      )
+
       self.vm.inputs.continueToPaymentsButtonTapped()
 
       self.showAlert.assertValues(["Please enter an amount of kr20 DKK or more."])
+      XCTAssertEqual(
+        ["Reward Checkout", "Selected Reward", "Checkout Amount Changed", "Changed Pledge Amount",
+        "Errored Reward Pledge Button Click", "Clicked Reward Pledge Button"],
+        self.trackingClient.events
+      )
 
       self.vm.inputs.pledgeTextFieldChanged("100000")
+
+      XCTAssertEqual(
+        ["Reward Checkout", "Selected Reward", "Checkout Amount Changed", "Changed Pledge Amount",
+          "Errored Reward Pledge Button Click", "Clicked Reward Pledge Button", "Checkout Amount Changed",
+          "Changed Pledge Amount"],
+        self.trackingClient.events
+      )
+
       self.vm.inputs.continueToPaymentsButtonTapped()
 
       self.showAlert.assertValues([
         "Please enter an amount of kr20 DKK or more.",
         "Please enter an amount of kr50,000 DKK or less."
         ])
+
+      XCTAssertEqual(
+        ["Reward Checkout", "Selected Reward", "Checkout Amount Changed", "Changed Pledge Amount",
+          "Errored Reward Pledge Button Click", "Clicked Reward Pledge Button", "Checkout Amount Changed",
+          "Changed Pledge Amount", "Errored Reward Pledge Button Click",
+          "Clicked Reward Pledge Button"],
+        self.trackingClient.events
+      )
+
+      XCTAssertEqual(
+        [nil, nil, nil, nil, "MINIMUM_AMOUNT", "payment_methods", nil, nil,
+          "MAXIMUM_AMOUNT", "payment_methods"],
+        self.trackingClient.properties(forKey: "type", as: String.self)
+      )
     }
   }
 
@@ -1512,5 +1766,69 @@ internal final class RewardPledgeViewModelTests: TestCase {
 
     self.titleLabelText.assertValues([""])
     self.titleLabelHidden.assertValues([true])
+  }
+
+  func testTrackChangedPledgeAmount_Pledging() {
+    let project = Project.template
+    let reward = Reward.template
+    self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
+    self.vm.inputs.viewDidLoad()
+
+    XCTAssertEqual(["Reward Checkout", "Selected Reward"], self.trackingClient.events)
+
+    self.vm.inputs.pledgeTextFieldChanged("48")
+
+    XCTAssertEqual(
+      ["Reward Checkout", "Selected Reward", "Checkout Amount Changed", "Changed Pledge Amount"],
+      self.trackingClient.events
+    )
+    XCTAssertEqual(["new_pledge", "new_pledge", "new_pledge", "new_pledge"],
+                   self.trackingClient.properties(forKey: "pledge_context", as: String.self))
+  }
+
+  func testTrackChangedPledgeAmount_ManagingPledge() {
+    let reward = .template |> Reward.lens.minimum .~ 50
+    let project = .template
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.reward .~ reward
+    )
+    self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
+    self.vm.inputs.viewDidLoad()
+
+    XCTAssertEqual(["Reward Checkout", "Selected Reward"], self.trackingClient.events)
+
+    self.vm.inputs.pledgeTextFieldChanged("48")
+
+    XCTAssertEqual(["Reward Checkout", "Selected Reward", "Checkout Amount Changed", "Changed Pledge Amount"],
+                   self.trackingClient.events)
+    XCTAssertEqual(["manage_reward", "manage_reward", "manage_reward", "manage_reward"],
+                   self.trackingClient.properties(forKey: "pledge_context", as: String.self))
+  }
+
+  func testTrackChangedPledgeAmount_ManagingReward() {
+    let newReward = .template
+      |> Reward.lens.minimum .~ 50
+      |> Reward.lens.id .~ 42
+    let oldReward = .template
+      |> Reward.lens.id .~ 24
+    let project = .template
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.reward .~ oldReward
+    )
+    self.vm.inputs.configureWith(project: project, reward: newReward, applePayCapable: false)
+    self.vm.inputs.viewDidLoad()
+
+    XCTAssertEqual(["Reward Checkout", "Selected Reward"], self.trackingClient.events)
+
+    self.vm.inputs.pledgeTextFieldChanged("48")
+
+    XCTAssertEqual(["Reward Checkout", "Selected Reward", "Checkout Amount Changed", "Changed Pledge Amount"],
+                   self.trackingClient.events)
+    XCTAssertEqual(["change_reward", "change_reward", "change_reward", "change_reward"],
+                   self.trackingClient.properties(forKey: "pledge_context", as: String.self))
   }
 }

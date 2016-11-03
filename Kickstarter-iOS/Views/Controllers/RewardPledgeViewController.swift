@@ -157,7 +157,8 @@ internal final class RewardPledgeViewController: UIViewController {
       |> UIButton.lens.backgroundColor .~ .blackColor()
       |> UIButton.lens.image(forState: .Normal) %~ { _ in
         image(named: "apple-pay-button-content", tintColor: .whiteColor())
-    }
+      }
+      |> UIButton.lens.accessibilityLabel .~ "Apple Pay"
 
     self.cancelPledgeButton
       |> borderButtonStyle
@@ -225,6 +226,13 @@ internal final class RewardPledgeViewController: UIViewController {
       |> UIButton.lens.layer.borderColor .~ UIColor.ksr_grey_500.CGColor
       |> UIButton.lens.titleColor(forState: .Normal) .~ .ksr_text_green_700
       |> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.Other_payment_methods() }
+
+    self.disclaimerButton
+      |> UIButton.lens.accessibilityLabel %~ { _ in
+        Strings.Kickstarter_is_not_a_store()
+          + " " + Strings.Its_a_way_to_bring_creative_projects_to_life()
+          + " " + Strings.Learn_more_about_accountability()
+    }
 
     self.disclaimerContainerView
       |> UIView.lens.layoutMargins .~ .init(topBottom: 0, leftRight: Styles.grid(4))
@@ -392,6 +400,10 @@ internal final class RewardPledgeViewController: UIViewController {
 
     self.shippingDestinationButton
       |> UIButton.lens.backgroundColor(forState: .Highlighted) .~ UIColor.ksr_navy_200
+      |> UIButton.lens.isAccessibilityElement .~ true
+      |> UIButton.lens.accessibilityHint %~ { _ in
+        localizedString(key: "Opens_shipping_options", defaultValue: "Opens shipping options.")
+    }
 
     self.shippingStackView
       |> UIStackView.lens.spacing .~ Styles.gridHalf(1)
@@ -409,6 +421,7 @@ internal final class RewardPledgeViewController: UIViewController {
       |> UIStackView.lens.spacing .~ Styles.grid(3)
 
     self.navigationItem.leftBarButtonItem?.image = image(named: "close-icon", tintColor: .ksr_navy_600)
+    self.navigationItem.leftBarButtonItem?.accessibilityLabel = Strings.general_navigation_buttons_close()
   }
   // swiftlint:enable function_body_length
 
@@ -463,6 +476,10 @@ internal final class RewardPledgeViewController: UIViewController {
       .observeForUI()
       .observeNext { [weak self] in self?.load(items: $0) }
 
+    self.viewModel.outputs.dismissViewController
+      .observeForControllerAction()
+      .observeNext { [weak self] in self?.dismissViewControllerAnimated(true, completion: nil) }
+
     self.viewModel.outputs.expandRewardDescription
       .observeForUI()
       .observeNext { [weak self] in
@@ -482,9 +499,9 @@ internal final class RewardPledgeViewController: UIViewController {
     }
 
     self.viewModel.outputs.goToCheckout
-      .observeForUI()
-      .observeNext { [weak self] initialRequest, project in
-        self?.goToCheckout(initialRequest: initialRequest, project: project)
+      .observeForControllerAction()
+      .observeNext { [weak self] initialRequest, project, reward in
+        self?.goToCheckout(initialRequest: initialRequest, project: project, reward: reward)
     }
 
     self.viewModel.outputs.goToLoginTout
@@ -514,8 +531,13 @@ internal final class RewardPledgeViewController: UIViewController {
   }
   // swiftlint:enable function_body_length
 
-  private func goToCheckout(initialRequest initialRequest: NSURLRequest, project: Project) {
-    let vc = CheckoutViewController.configuredWith(initialRequest: initialRequest, project: project)
+  private func goToCheckout(initialRequest initialRequest: NSURLRequest,
+                                           project: Project,
+                                           reward: Reward) {
+
+    let vc = CheckoutViewController.configuredWith(initialRequest: initialRequest,
+                                                   project: project,
+                                                   reward: reward)
     self.navigationController?.pushViewController(vc, animated: true)
   }
 
@@ -605,7 +627,7 @@ internal final class RewardPledgeViewController: UIViewController {
   }
 
   @IBAction private func closeButtonTapped() {
-    self.dismissViewControllerAnimated(true, completion: nil)
+    self.viewModel.inputs.closeButtonTapped()
   }
 
   @objc private func pledgedTextFieldChanged() {

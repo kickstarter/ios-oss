@@ -29,6 +29,9 @@ public protocol RewardShippingPickerViewModelOutputs {
   /// Emits an array of strings to be used as the picker's data source.
   var dataSource: Signal<[String], NoError> { get }
 
+  /// Emits an accessibility hint for the done button.
+  var doneButtonAccessibilityHint: Signal<String, NoError> { get }
+
   /// Emits a shipping rule when the delegate should be notified that the user has chosen a shipping rule.
   var notifyDelegateChoseShippingRule: Signal<ShippingRule, NoError> { get }
 
@@ -76,14 +79,25 @@ RewardShippingPickerViewModelInputs, RewardShippingPickerViewModelOutputs {
 
     let selectedRow = Signal.merge(self.pickerSelectedRowProperty.signal, self.selectRow)
 
-    self.notifyDelegateChoseShippingRule = combineLatest(
+    let currentShippingRule = combineLatest(
       projectAndSortedShippingRulesAndSelectedShippingRule.map(second),
       selectedRow
       )
       .map { shippingRules, idx in shippingRules[idx] }
+
+    self.notifyDelegateChoseShippingRule = currentShippingRule
       .takeWhen(self.doneButtonTappedProperty.signal)
 
     self.notifyDelegateToCancel = self.cancelButtonTappedProperty.signal
+
+    self.doneButtonAccessibilityHint = currentShippingRule
+      .map { shippingRule in
+        localizedString(
+          key: "Chooses_location_for_shipping",
+          defaultValue: "Chooses %{location} for shipping.",
+          substitutions: ["location": shippingRule.location.displayableName]
+        )
+    }
   }
 
   private let cancelButtonTappedProperty = MutableProperty()
@@ -121,6 +135,7 @@ RewardShippingPickerViewModelInputs, RewardShippingPickerViewModelOutputs {
   }
 
   public let dataSource: Signal<[String], NoError>
+  public let doneButtonAccessibilityHint: Signal<String, NoError>
   public let notifyDelegateChoseShippingRule: Signal<ShippingRule, NoError>
   public let notifyDelegateToCancel: Signal<(), NoError>
   public let selectRow: Signal<Int, NoError>

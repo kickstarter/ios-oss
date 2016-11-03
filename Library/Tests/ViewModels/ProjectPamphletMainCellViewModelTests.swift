@@ -10,7 +10,7 @@ import XCTest
 final class ProjectPamphletMainCellViewModelTests: TestCase {
   private let vm: ProjectPamphletMainCellViewModelType = ProjectPamphletMainCellViewModel()
 
-  private let allStatsStackViewAccessibilityValue = TestObserver<String, NoError>()
+  private let statsStackViewAccessibilityLabel = TestObserver<String, NoError>()
   private let backersTitleLabelText = TestObserver<String, NoError>()
   private let conversionLabelHidden = TestObserver<Bool, NoError>()
   private let conversionLabelText = TestObserver<String, NoError>()
@@ -31,8 +31,8 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.allStatsStackViewAccessibilityValue
-      .observe(self.allStatsStackViewAccessibilityValue.observer)
+    self.vm.outputs.statsStackViewAccessibilityLabel
+      .observe(self.statsStackViewAccessibilityLabel.observer)
     self.vm.outputs.backersTitleLabelText.observe(self.backersTitleLabelText.observer)
     self.vm.outputs.conversionLabelHidden.observe(self.conversionLabelHidden.observer)
     self.vm.outputs.conversionLabelText.observe(self.conversionLabelText.observer)
@@ -51,11 +51,13 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     self.vm.outputs.youreABackerLabelHidden.observe(self.youreABackerLabelHidden.observer)
   }
 
-  func testAllStatsStackViewAccessibilityValue() {
+  func testStatsStackViewAccessibilityLabel() {
     let project = Project.template
     self.vm.inputs.configureWith(project: project)
 
-    self.allStatsStackViewAccessibilityValue.assertValueCount(1)
+    self.statsStackViewAccessibilityLabel.assertValues(
+      ["$1,000 of $2,000 goal, 10 backers so far, 47 days to go to go"]
+    )
   }
 
   func testYoureABackerLabelHidden_NotABacker() {

@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="GbK-FV-Iaj">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="16A313a" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="GbK-FV-Iaj">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
@@ -418,6 +418,7 @@
                                     <outlet property="projectNameLabel" destination="ZSq-HZ-9jj" id="ZKp-Pq-F43"/>
                                     <outlet property="readMoreButton" destination="Tpe-RH-aPN" id="BUU-5A-52d"/>
                                     <outlet property="stateLabel" destination="bU0-0V-UXq" id="MYf-TT-MmK"/>
+                                    <outlet property="statsStackView" destination="nyR-j4-b7u" id="fB8-Vd-EVY"/>
                                     <outlet property="videoContainerHeightConstraint" destination="cIl-Ca-wNM" id="Hce-FS-3Eq"/>
                                     <outlet property="youreABackerContainerView" destination="Bsh-KF-tvK" id="nl2-AR-tfZ"/>
                                     <outlet property="youreABackerLabel" destination="qEg-D4-mSw" id="jdz-2i-31z"/>

@@ -6,6 +6,8 @@ import PassKit
 import Prelude
 import UIKit
 
+private let deprecatedProps = [Koala.DeprecatedKey: true]
+
 public final class Koala {
   internal static let DeprecatedKey = "DEPRECATED"
 
@@ -63,15 +65,106 @@ public final class Koala {
     case updateComments = "update_comments"
   }
 
-  public enum CheckoutContext: String {
-    case native
-    case web
-  }
-
   /// Determines which gesture was used.
   public enum GestureType: String {
     case swipe = "swipe"
     case tap = "tap"
+  }
+
+  /**
+   Describes a flow of pledging.
+
+   - changeReward: changing your current reward to a different reward
+   - manageReward: changing the details of the current reward you are backing (e.g. amount, shipping)
+   - newPledge:    pledging to the project without an existing backing
+   */
+  public enum PledgeContext {
+    case changeReward
+    case manageReward
+    case newPledge
+
+    var trackingString: String {
+      switch self {
+      case .changeReward: return "change_reward"
+      case .manageReward: return "manage_reward"
+      case .newPledge:    return "new_pledge"
+      }
+    }
+  }
+
+  /**
+   Describes the buttons the user can click on in the reward pledge screen.
+
+   - applePay:            The user clicked the apple pay button.
+   - cancel:              The user clicked the cancel pledge button.
+   - changePaymentMethod: The user clicked the change payment method button.
+   - paymentMethods:      The user clicked the payment methods button.
+   - updatePledge:        The user clicked the update pledge button.
+   */
+  public enum ClickedRewardPledgeButtonType {
+    case applePay
+    case cancel
+    case changePaymentMethod
+    case paymentMethods
+    case updatePledge
+
+    private var trackingString: String {
+      switch self {
+      case .applePay:             return "apple_pay"
+      case .cancel:               return "cancel"
+      case .changePaymentMethod:  return "change_payment_method"
+      case .paymentMethods:       return "payment_methods"
+      case .updatePledge:         return "update_pledge"
+      }
+    }
+  }
+
+  /**
+   Describes the types of errors that can occur when trying to click a reward pledge button.
+
+   - maximumAmount: A pledge amount was entered that is greater than what the project can handle.
+   - minimumAmount: A pledge amount was entered that is less than the minimum the project requires.
+   */
+  public enum ErroredRewardPledgeButtonClickType {
+    case maximumAmount
+    case minimumAmount
+
+    private var trackingString: String {
+      switch self {
+      case .maximumAmount:  return "MAXIMUM_AMOUNT"
+      case .minimumAmount:  return "MINIMUM_AMOUNT"
+      }
+    }
+  }
+
+  /**
+   Describes the types of payment methods that can be used.
+   */
+  public enum PaymentMethod {
+    case applePay
+
+    private var trackingString: String {
+      switch self {
+      case .applePay: return "apple_pay"
+      }
+    }
+  }
+
+  /**
+   Describes the pages where checkout events can occur.
+   */
+  public enum CheckoutPageContext {
+    case paymentsPage
+    case projectPage
+    case rewardSelection
+
+    private var trackingString: String {
+      switch self {
+      case .paymentsPage:     return "Payments Page"
+      case .projectPage:      return "Project Page"
+      case .rewardSelection:  return "Reward Selection"
+      }
+    }
   }
 
   public init(bundle: NSBundleType = NSBundle.mainBundle(),
@@ -92,7 +185,7 @@ public final class Koala {
 
   /// Call when the activities screen is shown.
   public func trackActivities() {
-    self.track(event: "Activities", properties: [Koala.DeprecatedKey: true])
+    self.track(event: "Activities", properties: deprecatedProps)
     self.track(event: "Viewed Activity")
   }
 
@@ -110,13 +203,13 @@ public final class Koala {
 
   /// Call when the app launches or enters foreground.
   public func trackAppOpen() {
-    self.track(event: "App Open", properties: [Koala.DeprecatedKey: true])
+    self.track(event: "App Open", properties: deprecatedProps)
     self.track(event: "Opened App")
   }
 
   /// Call when the app enters the background.
   public func trackAppClose() {
-    self.track(event: "App Close", properties: [Koala.DeprecatedKey: true])
+    self.track(event: "App Close", properties: deprecatedProps)
     self.track(event: "Closed App")
   }
 
@@ -126,7 +219,7 @@ public final class Koala {
     ]
 
     self.track(event: "Notification Opened",
-               properties: props.withAllValuesFrom([Koala.DeprecatedKey: true]))
+               properties: props.withAllValuesFrom(deprecatedProps))
 
     self.track(event: "Opened Notification", properties: props)
   }
@@ -135,7 +228,7 @@ public final class Koala {
     let props: [String: AnyObject] = [:].withAllValuesFrom(queryParams)
 
     self.track(event: "Smart App Banner Opened",
-               properties: props.withAllValuesFrom([Koala.DeprecatedKey: true]))
+               properties: props.withAllValuesFrom(deprecatedProps))
 
     self.track(event: "Opened App Banner", properties: props)
   }
@@ -144,7 +237,7 @@ public final class Koala {
     let props = properties(userActivity: userActivity)
 
     self.track(event: "Continue User Activity",
-               properties: props.withAllValuesFrom([Koala.DeprecatedKey: true]))
+               properties: props.withAllValuesFrom(deprecatedProps))
 
     self.track(event: "Opened Deep Link", properties: props)
   }
@@ -171,7 +264,7 @@ public final class Koala {
 
     // Deprecated event
     self.track(event: "Discover List View",
-               properties: props.withAllValuesFrom([Koala.DeprecatedKey: true]))
+               properties: props.withAllValuesFrom(deprecatedProps))
   }
 
   public func trackDiscoveryViewed(params params: DiscoveryParams) {
@@ -200,7 +293,7 @@ public final class Koala {
 
     // Deprecated event
     self.track(event: "Discover Switch Modal",
-               properties: props.withAllValuesFrom([Koala.DeprecatedKey: true]))
+               properties: props.withAllValuesFrom(deprecatedProps))
   }
 
   /**
@@ -217,7 +310,7 @@ public final class Koala {
 
     // Deprecated event
     self.track(event: "Discover Modal Selected Filter",
-               properties: properties(params: params).withAllValuesFrom([Koala.DeprecatedKey: true]))
+               properties: properties(params: params).withAllValuesFrom(deprecatedProps))
   }
 
   /**
@@ -252,9 +345,99 @@ public final class Koala {
   }
 
   // MARK: Checkout Events
-  public func trackCheckoutCancel() {
-    self.track(event: "Checkout Cancel", properties: [Koala.DeprecatedKey: true])
-    self.track(event: "Canceled Checkout")
+  public func trackCheckoutCancel(project project: Project,
+                                          reward: Reward,
+                                          pledgeContext: PledgeContext) {
+
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(properties(reward: reward))
+      .withAllValuesFrom(["pledge_context": pledgeContext.trackingString])
+
+    self.track(event: "Checkout Cancel", properties: props.withAllValuesFrom(deprecatedProps))
+    self.track(event: "Canceled Checkout", properties: props)
+  }
+
+  public func trackClickedRewardPledgeButton(project project: Project,
+                                                     reward: Reward,
+                                                     buttonType: ClickedRewardPledgeButtonType,
+                                                     pageContext: CheckoutPageContext,
+                                                     pledgeContext: PledgeContext) {
+
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(properties(reward: reward))
+      .withAllValuesFrom([
+        "pledge_context": pledgeContext.trackingString,
+        "type": buttonType.trackingString,
+        "context": pageContext.trackingString
+        ])
+
+    self.track(event: "Clicked Reward Pledge Button", properties: props)
+  }
+
+  public func trackClickedRewardPledgeButton(project project: Project,
+                                                     reward: Reward,
+                                                     errorText: String,
+                                                     errorType: ErroredRewardPledgeButtonClickType,
+                                                     paymentMethod: PaymentMethod?,
+                                                     pageContext: CheckoutPageContext,
+                                                     pledgeContext: PledgeContext) {
+
+    var extraProps = [
+      "error_text": errorText,
+      "type": errorType.trackingString,
+      "pledge_context": pledgeContext.trackingString,
+      "context": pageContext.trackingString
+    ]
+    extraProps["payment_method"] = paymentMethod?.trackingString
+
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(properties(reward: reward))
+      .withAllValuesFrom(extraProps)
+
+    self.track(event: "Errored Reward Pledge Button Click", properties: props)
+  }
+
+  public func trackChangedPledgeAmount(project: Project, reward: Reward, pledgeContext: PledgeContext) {
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(properties(reward: reward))
+      .withAllValuesFrom(["pledge_context": pledgeContext.trackingString])
+
+    self.track(event: "Checkout Amount Changed", properties: props.withAllValuesFrom(deprecatedProps))
+
+    self.track(event: "Changed Pledge Amount", properties: props)
+  }
+
+  public func trackSelectedShippingDestination(project: Project,
+                                               reward: Reward,
+                                               pledgeContext: PledgeContext) {
+
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(properties(reward: reward))
+      .withAllValuesFrom(["pledge_context": pledgeContext.trackingString])
+
+    self.track(event: "Checkout Location Changed", properties: props.withAllValuesFrom(deprecatedProps))
+
+    self.track(event: "Selected Shipping Destination", properties: props)
+  }
+
+  public func trackSelectedReward(project project: Project, reward: Reward, pledgeContext: PledgeContext) {
+
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(properties(reward: reward))
+      .withAllValuesFrom(["pledge_context": pledgeContext.trackingString])
+
+    self.track(event: "Reward Checkout", properties: props.withAllValuesFrom(deprecatedProps))
+
+    self.track(event: "Selected Reward", properties: props)
+  }
+
+  public func trackClosedReward(project project: Project, reward: Reward, pledgeContext: PledgeContext) {
+
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(properties(reward: reward))
+      .withAllValuesFrom(["pledge_context": pledgeContext.trackingString])
+
+    self.track(event: "Closed Reward", properties: props)
   }
 
   // MARK: Login Events
@@ -375,7 +558,7 @@ public final class Koala {
     let props = properties(project: project, loggedInUser: self.loggedInUser)
 
     self.track(event: "Project Comment Load New",
-               properties: props.withAllValuesFrom([Koala.DeprecatedKey: true]))
+               properties: props.withAllValuesFrom(deprecatedProps))
 
     self.track(event: "Loaded Newer Project Comments", properties: props)
   }
@@ -392,7 +575,7 @@ public final class Koala {
       .withAllValuesFrom(["page_count": page])
 
     self.track(event: "Project Comment Load Older",
-               properties: props.withAllValuesFrom([Koala.DeprecatedKey: true]))
+               properties: props.withAllValuesFrom(deprecatedProps))
 
     self.track(event: "Loaded Older Project Comments", properties: props)
   }
@@ -446,7 +629,7 @@ public final class Koala {
   public func trackCommentCreate(comment comment: Comment, project: Project) {
     let props = properties(project: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(properties(comment: comment))
-      .withAllValuesFrom([Koala.DeprecatedKey: true])
+      .withAllValuesFrom(deprecatedProps)
 
     self.track(event: "Project Comment Create", properties: props)
   }
@@ -455,7 +638,7 @@ public final class Koala {
     let props = properties(project: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(properties(update: update))
       .withAllValuesFrom(properties(comment: comment))
-      .withAllValuesFrom([Koala.DeprecatedKey: true])
+      .withAllValuesFrom(deprecatedProps)
 
     self.track(event: "Update Comment Create", properties: props)
   }
@@ -464,7 +647,7 @@ public final class Koala {
     let props = properties(project: project, loggedInUser: self.loggedInUser)
 
     self.track(event: "Project Comment View",
-               properties: props.withAllValuesFrom([Koala.DeprecatedKey: true]))
+               properties: props.withAllValuesFrom(deprecatedProps))
 
     self.track(event: "Viewed Project Comments", properties: props)
   }
@@ -490,7 +673,7 @@ public final class Koala {
     let deprecatedEvent = shareContext.isThanksContext ? "Checkout Show Share Sheet"
       : shareContext.update != nil ? "Update Show Share Sheet"
       : "Project Show Share Sheet"
-    self.track(event: deprecatedEvent, properties: props.withAllValuesFrom([Koala.DeprecatedKey: true]))
+    self.track(event: deprecatedEvent, properties: props.withAllValuesFrom(deprecatedProps))
   }
 
   /**
@@ -508,7 +691,7 @@ public final class Koala {
     let deprecatedEvent = shareContext.isThanksContext ? "Checkout Cancel Share Sheet"
       : shareContext.update != nil ? "Update Cancel Share Sheet"
       : "Project Cancel Share Sheet"
-    self.track(event: deprecatedEvent, properties: props.withAllValuesFrom([Koala.DeprecatedKey: true]))
+    self.track(event: deprecatedEvent, properties: props.withAllValuesFrom(deprecatedProps))
   }
 
   /**
@@ -528,7 +711,7 @@ public final class Koala {
     let deprecatedEvent = shareContext.isThanksContext ? "Checkout Show Share"
       : shareContext.update != nil ? "Update Show Share"
       : "Project Show Share"
-    self.track(event: deprecatedEvent, properties: props.withAllValuesFrom([Koala.DeprecatedKey: true]))
+    self.track(event: deprecatedEvent, properties: props.withAllValuesFrom(deprecatedProps))
   }
 
   /**
@@ -548,7 +731,7 @@ public final class Koala {
     let deprecatedEvent = shareContext.isThanksContext ? "Checkout Cancel Share"
       : shareContext.update != nil ? "Update Cancel Share"
       : "Project Cancel Share"
-    self.track(event: deprecatedEvent, properties: props.withAllValuesFrom([Koala.DeprecatedKey: true]))
+    self.track(event: deprecatedEvent, properties: props.withAllValuesFrom(deprecatedProps))
   }
 
   /**
@@ -567,7 +750,7 @@ public final class Koala {
     let deprecatedEvent = shareContext.isThanksContext ? "Checkout Share"
       : shareContext.update != nil ? "Update Share"
       : "Project Share"
-    self.track(event: deprecatedEvent, properties: props.withAllValuesFrom([Koala.DeprecatedKey: true]))
+    self.track(event: deprecatedEvent, properties: props.withAllValuesFrom(deprecatedProps))
   }
 
   public func trackCheckoutFinishJumpToDiscovery(project project: Project) {
@@ -655,7 +838,7 @@ public final class Koala {
 
     // deprecated
     self.track(event: "Creator Project Navigate",
-               properties: props.withAllValuesFrom([Koala.DeprecatedKey: true]))
+               properties: props.withAllValuesFrom(deprecatedProps))
   }
 
   public func trackDashboardView(project project: Project) {
@@ -665,7 +848,7 @@ public final class Koala {
 
     // deprecated
     self.track(event: "Dashboard View",
-               properties: props.withAllValuesFrom([Koala.DeprecatedKey: true]))
+               properties: props.withAllValuesFrom(deprecatedProps))
   }
 
   // MARK: Project activity
@@ -675,7 +858,7 @@ public final class Koala {
     self.track(event: "Viewed Project Activity", properties: props)
     // deprecated
     self.track(event: "Creator Activity View",
-               properties: props.withAllValuesFrom([Koala.DeprecatedKey: true]))
+               properties: props.withAllValuesFrom(deprecatedProps))
   }
 
   public func trackLoadedNewerProjectActivity(project project: Project) {
@@ -684,7 +867,7 @@ public final class Koala {
     self.track(event: "Loaded Newer Project Activity", properties: props)
     // deprecated
     self.track(event: "Creator Activity View Load Newer",
-               properties: props.withAllValuesFrom([Koala.DeprecatedKey: true]))
+               properties: props.withAllValuesFrom(deprecatedProps))
   }
 
   public func trackLoadedOlderProjectActivity(project project: Project, page: Int) {
@@ -694,7 +877,7 @@ public final class Koala {
     self.track(event: "Loaded Older Project Activity", properties: props)
     // deprecated
     self.track(event: "Creator Activity View Load Older",
-               properties: props.withAllValuesFrom([Koala.DeprecatedKey: true]))
+               properties: props.withAllValuesFrom(deprecatedProps))
   }
 
   // MARK: Messages
@@ -710,10 +893,10 @@ public final class Koala {
     }
 
     // deprecated
-    let deprecatedProps = props.withAllValuesFrom([Koala.DeprecatedKey: true])
+    let _deprecatedProps = props.withAllValuesFrom(deprecatedProps)
     self.track(event: "Message Threads View",
-               properties: deprecatedProps.withAllValuesFrom(["mailbox": mailbox.rawValue]))
-    self.track(event: "Message Inbox View", properties: deprecatedProps)
+               properties: _deprecatedProps.withAllValuesFrom(["mailbox": mailbox.rawValue]))
+    self.track(event: "Message Inbox View", properties: _deprecatedProps)
   }
 
   public func trackViewedMessageSearch(project project: Project?) {
@@ -725,10 +908,10 @@ public final class Koala {
   public func trackViewedMessageSearchResults(term term: String, project: Project?, hasResults: Bool) {
     let props = (project.flatMap { properties(project: $0, loggedInUser: self.loggedInUser) } ?? [:])
       .withAllValuesFrom(["term": term])
-    let deprecatedProps = props.withAllValuesFrom([Koala.DeprecatedKey: true])
+    let _deprecatedProps = props.withAllValuesFrom(deprecatedProps)
 
-    self.track(event: "Message Threads Search", properties: deprecatedProps)
-    self.track(event: "Message Inbox Search", properties: deprecatedProps)
+    self.track(event: "Message Threads Search", properties: _deprecatedProps)
+    self.track(event: "Message Inbox Search", properties: _deprecatedProps)
 
     self.track(event: "Viewed Message Search Results",
                properties: props.withAllValuesFrom(["has_results": hasResults]))
@@ -745,7 +928,7 @@ public final class Koala {
     let props = properties(project: project, loggedInUser: self.loggedInUser)
 
     self.track(event: "Message Thread View",
-               properties: props.withAllValuesFrom([Koala.DeprecatedKey: true]))
+               properties: props.withAllValuesFrom(deprecatedProps))
 
     self.track(event: "Viewed Message Thread", properties: props)
   }
@@ -768,7 +951,7 @@ public final class Koala {
       .withAllValuesFrom(["message_type": "single", "context": context.rawValue])
 
     self.track(event: "Message Sent",
-               properties: props.withAllValuesFrom([Koala.DeprecatedKey: true]))
+               properties: props.withAllValuesFrom(deprecatedProps))
 
     self.track(event: "Sent Message", properties: props)
   }
@@ -776,7 +959,7 @@ public final class Koala {
   // MARK: Search Events
   /// Call once when the search view is initially shown.
   public func trackProjectSearchView() {
-    self.track(event: "Discover Search", properties: [Koala.DeprecatedKey: true])
+    self.track(event: "Discover Search", properties: deprecatedProps)
 
     self.track(event: "Viewed Search")
   }
@@ -820,7 +1003,7 @@ public final class Koala {
     props["referrer_credit"] = cookieRefTag?.stringTag
 
     // Deprecated event
-    self.track(event: "Project Page", properties: props.withAllValuesFrom([Koala.DeprecatedKey: true]))
+    self.track(event: "Project Page", properties: props.withAllValuesFrom(deprecatedProps))
 
     self.track(event: "Viewed Project Page", properties: props)
   }
@@ -837,7 +1020,7 @@ public final class Koala {
 
     // Deprecated event
     self.track(event: isStarred ? "Project Star" : "Project Unstar",
-               properties: props.withAllValuesFrom([Koala.DeprecatedKey: true]))
+               properties: props.withAllValuesFrom(deprecatedProps))
 
     self.track(event: isStarred ? "Starred Project" : "Unstarred Project",
                properties: props)
@@ -846,7 +1029,7 @@ public final class Koala {
   // MARK: Profile Events
   public func trackProfileView() {
     // deprecated
-    self.track(event: "Profile View My", properties: [Koala.DeprecatedKey: true])
+    self.track(event: "Profile View My", properties: deprecatedProps)
 
     self.track(event: "Viewed Profile")
   }
@@ -854,7 +1037,7 @@ public final class Koala {
   // MARK: Settings Events
   public func trackAppStoreRatingOpen() {
     // deprecated
-    self.track(event: "App Store Rating Open", properties: [Koala.DeprecatedKey: true])
+    self.track(event: "App Store Rating Open", properties: deprecatedProps)
 
     self.track(event: "Opened App Store Listing")
   }
@@ -890,7 +1073,7 @@ public final class Koala {
 
   public func trackSettingsView() {
     // deprecated
-    self.track(event: "Settings View", properties: [Koala.DeprecatedKey: true])
+    self.track(event: "Settings View", properties: deprecatedProps)
 
     self.track(event: "Viewed Settings")
   }
@@ -1050,7 +1233,7 @@ public final class Koala {
 
   public func trackOpenedContactEmail(context context: HelpContext) {
     // deprecated
-    self.track(event: "Contact Email Open", properties: [Koala.DeprecatedKey: true])
+    self.track(event: "Contact Email Open", properties: deprecatedProps)
   }
 
   public func trackSelectedHelpOption(context context: HelpContext, type: HelpType) {
@@ -1064,7 +1247,7 @@ public final class Koala {
                properties: ["context": context.trackingString])
 
     // deprecated
-    self.track(event: "Contact Email Sent", properties: [Koala.DeprecatedKey: true])
+    self.track(event: "Contact Email Sent", properties: deprecatedProps)
   }
 
   public func trackShowedHelpMenu(context context: HelpContext) {
@@ -1074,7 +1257,7 @@ public final class Koala {
   // MARK: Video events
   public func trackVideoCompleted(forProject project: Project) {
     // deprecated
-    self.track(event: "Project Video Complete", properties: [Koala.DeprecatedKey: true])
+    self.track(event: "Project Video Complete", properties: deprecatedProps)
 
     self.track(event: "Completed Project Video",
                properties: properties(project: project, loggedInUser: self.loggedInUser))
@@ -1082,7 +1265,7 @@ public final class Koala {
 
   public func trackVideoPaused(forProject project: Project) {
     // deprecated
-    self.track(event: "Project Video Pause", properties: [Koala.DeprecatedKey: true])
+    self.track(event: "Project Video Pause", properties: deprecatedProps)
 
     self.track(event: "Paused Project Video",
                properties: properties(project: project, loggedInUser: self.loggedInUser))
@@ -1090,7 +1273,7 @@ public final class Koala {
 
   public func trackVideoResume(forProject project: Project) {
     // deprecated
-    self.track(event: "Project Video Resume", properties: [Koala.DeprecatedKey: true])
+    self.track(event: "Project Video Resume", properties: deprecatedProps)
 
     self.track(event: "Resumed Project Video",
                properties: properties(project: project, loggedInUser: self.loggedInUser))
@@ -1098,7 +1281,7 @@ public final class Koala {
 
   public func trackVideoStart(forProject project: Project) {
     // deprecated
-    self.track(event: "Project Video Start", properties: [Koala.DeprecatedKey: true])
+    self.track(event: "Project Video Start", properties: deprecatedProps)
 
     self.track(event: "Started Project Video",
                properties: properties(project: project, loggedInUser: self.loggedInUser))
@@ -1106,46 +1289,83 @@ public final class Koala {
 
   // MARK: Apple Pay events
 
-  public func trackShowApplePaySheet(project project: Project, context: CheckoutContext) {
-    let props = properties(project: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(["context": context.rawValue])
+  public func trackShowApplePaySheet(project project: Project,
+                                             reward: Reward,
+                                             pledgeContext: PledgeContext) {
 
-    self.track(event: "Apple Pay Show Sheet", properties: props)
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(properties(reward: reward))
+      .withAllValuesFrom(["pledge_context": pledgeContext.trackingString])
+
+    // deprecated
+    self.track(event: "Apple Pay Show Sheet",
+               properties: props.withAllValuesFrom(deprecatedProps))
+
+    self.track(event: "Showed Apple Pay Sheet", properties: props)
   }
 
-  public func trackApplePayAuthorizedPayment(project project: Project, context: CheckoutContext) {
-    let props = properties(project: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(["context": context.rawValue])
+  public func trackApplePayAuthorizedPayment(project project: Project,
+                                                     reward: Reward,
+                                                     pledgeContext: PledgeContext) {
 
-    self.track(event: "Apple Pay Authorized", properties: props)
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(properties(reward: reward))
+      .withAllValuesFrom(["pledge_context": pledgeContext.trackingString])
+
+    // deprecated
+    self.track(event: "Apple Pay Authorized", properties: props.withAllValuesFrom(deprecatedProps))
+
+    self.track(event: "Authorized Apple Pay", properties: props)
   }
 
-  public func trackStripeTokenCreatedForApplePay(project project: Project, context: CheckoutContext) {
-    let props = properties(project: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(["context": context.rawValue])
+  public func trackStripeTokenCreatedForApplePay(project project: Project,
+                                                         reward: Reward,
+                                                         pledgeContext: PledgeContext) {
 
-    self.track(event: "Apple Pay Stripe Token Created", properties: props)
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(properties(reward: reward))
+      .withAllValuesFrom(["pledge_context": pledgeContext.trackingString])
+
+    self.track(event: "Apple Pay Stripe Token Created", properties: props.withAllValuesFrom(deprecatedProps))
+
+    self.track(event: "Created Apple Pay Stripe Token", properties: props)
   }
 
-  public func trackStripeTokenErroredForApplePay(project project: Project, context: CheckoutContext) {
-    let props = properties(project: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(["context": context.rawValue])
+  public func trackStripeTokenErroredForApplePay(project project: Project,
+                                                         reward: Reward,
+                                                         pledgeContext: PledgeContext) {
 
-    self.track(event: "Apple Pay Stripe Token Errored", properties: props)
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(properties(reward: reward))
+      .withAllValuesFrom(["pledge_context": pledgeContext.trackingString])
+
+    self.track(event: "Apple Pay Stripe Token Errored", properties: props.withAllValuesFrom(deprecatedProps))
+
+    self.track(event: "Errored Apple Pay Stripe Token", properties: props)
   }
 
-  public func trackApplePayFinished(project project: Project, context: CheckoutContext) {
-    let props = properties(project: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(["context": context.rawValue])
+  public func trackApplePayFinished(project project: Project,
+                                            reward: Reward,
+                                            pledgeContext: PledgeContext) {
 
-    self.track(event: "Apple Pay Finished", properties: props)
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(properties(reward: reward))
+      .withAllValuesFrom(["pledge_context": pledgeContext.trackingString])
+
+    self.track(event: "Apple Pay Finished", properties: props.withAllValuesFrom(deprecatedProps))
   }
 
-  public func trackApplePaySheetCanceled(project project: Project, context: CheckoutContext) {
-    let props = properties(project: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(["context": context.rawValue])
+  public func trackApplePaySheetCanceled(project project: Project,
+                                                 reward: Reward,
+                                                 pledgeContext: PledgeContext) {
 
-    self.track(event: "Apple Pay Canceled", properties: props)
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(properties(reward: reward))
+      .withAllValuesFrom(["pledge_context": pledgeContext.trackingString])
+
+    self.track(event: "Apple Pay Canceled", properties: props.withAllValuesFrom(deprecatedProps))
+
+    self.track(event: "Canceled Apple Pay", properties: props)
   }
 
   // MARK: Empty State Events
@@ -1157,6 +1377,24 @@ public final class Koala {
   public func trackEmptyStateButtonTapped(type type: EmptyState) {
     self.track(event: "Tapped Empty State Button",
                properties: ["type": type.rawValue])
+  }
+
+  public func trackExpandedRewardDescription(reward: Reward, project: Project, pledgeContext: PledgeContext) {
+
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(properties(reward: reward))
+      .withAllValuesFrom(["pledge_context": pledgeContext.trackingString])
+
+    self.track(event: "Expanded Reward Description", properties: props)
+  }
+
+  public func trackExpandedUnavailableReward(reward: Reward, project: Project, pledgeContext: PledgeContext) {
+
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(properties(reward: reward))
+      .withAllValuesFrom(["pledge_context": pledgeContext.trackingString])
+
+    self.track(event: "Expanded Unavailable Reward", properties: props)
   }
 
   // Private tracking method that merges in default properties.
@@ -1184,7 +1422,8 @@ public final class Koala {
     props["device_orientation"] = Koala.deviceOrientation
     props["preferred_content_size_category"] = UIApplication.sharedApplication().preferredContentSizeCategory
 
-    props["koala_lib"] = "iphone"
+    props["mp_lib"] = "kickstarter_ios"
+    props["koala_lib"] = "kickstarter_ios"
 
     props["client_type"] = "native"
     props["device_format"] = self.deviceFormat
@@ -1399,6 +1638,22 @@ private func properties(shareContext shareContext: ShareContext,
   return result
 }
 
+private func properties(reward reward: Reward, prefix: String = "backer_reward_") -> [String:AnyObject] {
+  guard reward != Reward.noReward else { return [:] }
+
+  var result: [String:AnyObject] = [:]
+
+  result["id"] = reward.id
+  result["is_limited_quantity"] = reward.limit == nil
+  // result["is_limited_time"] = // implement when reward scheduling is supported
+  result["minimum"] = reward.minimum
+  result["shipping_enabled"] = reward.shipping.enabled
+  result["shipping_preference"] = reward.shipping.preference?.trackingString
+  result["has_items"] = !reward.rewardsItems.isEmpty
+
+  return result.prefixedKeys(prefix)
+}
+
 private func shareTypeProperty(shareType: String?) -> String {
   #if os(iOS)
     guard let shareType = shareType else { return "" }
@@ -1443,3 +1698,13 @@ extension Koala {
   }
 }
 // swiftlint:enable type_name
+
+extension Reward.Shipping.Preference {
+  private var trackingString: String {
+    switch self {
+    case .none:         return "none"
+    case .restricted:   return "restricted"
+    case .unrestricted: return "unrestricted"
+    }
+  }
+}

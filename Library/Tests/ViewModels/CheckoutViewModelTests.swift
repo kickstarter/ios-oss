@@ -22,7 +22,7 @@ final class CheckoutViewModelTests: TestCase {
   private let popViewController = TestObserver<(), NoError>()
   private let setStripeAppleMerchantIdentifier = TestObserver<String, NoError>()
   private let setStripePublishableKey = TestObserver<String, NoError>()
-  private let showFailureAlert = TestObserver<String, NoError>()
+  private let showAlert = TestObserver<String, NoError>()
   private let webViewLoadRequestIsPrepared = TestObserver<Bool, NoError>()
   private let webViewLoadRequestURL = TestObserver<String, NoError>()
 
@@ -40,7 +40,7 @@ final class CheckoutViewModelTests: TestCase {
     self.vm.outputs.popViewController.observe(self.popViewController.observer)
     self.vm.outputs.setStripeAppleMerchantIdentifier.observe(self.setStripeAppleMerchantIdentifier.observer)
     self.vm.outputs.setStripePublishableKey.observe(self.setStripePublishableKey.observer)
-    self.vm.outputs.showFailureAlert.observe(self.showFailureAlert.observer)
+    self.vm.outputs.showAlert.observe(self.showAlert.observer)
     self.vm.outputs.webViewLoadRequest
       .map { AppEnvironment.current.apiService.isPrepared(request: $0) }
       .observe(self.webViewLoadRequestIsPrepared.observer)
@@ -63,6 +63,7 @@ final class CheckoutViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(initialRequest: newPledgeRequest(project: project).prepared(),
                                  project: project,
+                                 reward: .template,
                                  applePayCapable: false)
     self.vm.inputs.viewDidLoad()
 
@@ -86,6 +87,8 @@ final class CheckoutViewModelTests: TestCase {
     self.popViewController.assertValueCount(1)
     XCTAssertEqual(["Checkout Cancel", "Canceled Checkout"],
                    self.trackingClient.events, "Cancel event and its deprecated version are tracked")
+    XCTAssertEqual(["new_pledge", "new_pledge"],
+                   self.trackingClient.properties(forKey: "pledge_context", as: String.self))
   }
 
   func testCancelPledge() {
@@ -95,6 +98,7 @@ final class CheckoutViewModelTests: TestCase {
 
       self.vm.inputs.configureWith(initialRequest: editPledgeRequest(project: project).prepared(),
                                    project: project,
+                                   reward: .template,
                                    applePayCapable: false)
       self.vm.inputs.viewDidLoad()
 
@@ -147,11 +151,13 @@ final class CheckoutViewModelTests: TestCase {
       // 4: Redirect to project, view controller popped
       self.popViewController.assertDidNotEmitValue()
       XCTAssertEqual([], self.trackingClient.events)
+      XCTAssertEqual([], self.trackingClient.properties(forKey: "type", as: String.self))
 
       XCTAssertFalse(
         self.vm.inputs.shouldStartLoad(withRequest: projectRequest(project: project), navigationType: .Other)
       )
-      XCTAssertEqual(["Checkout Cancel", "Canceled Checkout"], self.trackingClient.events)
+      XCTAssertEqual(["Checkout Cancel", "Canceled Checkout"],
+                     self.trackingClient.events)
       self.popViewController.assertValueCount(1)
     }
 
@@ -165,6 +171,7 @@ final class CheckoutViewModelTests: TestCase {
 
       self.vm.inputs.configureWith(initialRequest: editPledgeRequest(project: project).prepared(),
                                    project: project,
+                                   reward: .template,
                                    applePayCapable: false)
       self.vm.inputs.viewDidLoad()
 
@@ -266,6 +273,7 @@ final class CheckoutViewModelTests: TestCase {
 
       self.vm.inputs.configureWith(initialRequest: newPledgeRequest(project: project).prepared(),
                                    project: project,
+                                   reward: .template,
                                    applePayCapable: false)
       self.vm.inputs.viewDidLoad()
 
@@ -368,6 +376,7 @@ final class CheckoutViewModelTests: TestCase {
 
       self.vm.inputs.configureWith(initialRequest: newPledgeRequest(project: project).prepared(),
                                    project: project,
+                                   reward: .template,
                                    applePayCapable: false)
       self.vm.inputs.viewDidLoad()
 
@@ -467,6 +476,7 @@ final class CheckoutViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(initialRequest: newPledgeRequest(project: project).prepared(),
                                  project: project,
+                                 reward: .template,
                                  applePayCapable: false)
     self.vm.inputs.viewDidLoad()
 
@@ -561,6 +571,7 @@ final class CheckoutViewModelTests: TestCase {
 
       self.vm.inputs.configureWith(initialRequest: editPledgeRequest(project: project).prepared(),
                                    project: project,
+                                   reward: .template,
                                    applePayCapable: false)
       self.vm.inputs.viewDidLoad()
 
@@ -619,6 +630,7 @@ final class CheckoutViewModelTests: TestCase {
     let project = Project.template
     self.vm.inputs.configureWith(initialRequest: newPledgeRequest(project: project).prepared(),
                                  project: project,
+                                 reward: .template,
                                  applePayCapable: false)
     self.vm.inputs.viewDidLoad()
 
@@ -651,6 +663,7 @@ final class CheckoutViewModelTests: TestCase {
 
       self.vm.inputs.configureWith(initialRequest: newPledgeRequest(project: project).prepared(),
                                    project: project,
+                                   reward: .template,
                                    applePayCapable: false)
       self.vm.inputs.viewDidLoad()
 
@@ -738,11 +751,11 @@ final class CheckoutViewModelTests: TestCase {
           navigationType: .Other
         )
       )
-      self.showFailureAlert.assertValueCount(0)
+      self.showAlert.assertValueCount(0)
 
       self.scheduler.advanceByInterval(1)
       self.goToThanks.assertValueCount(0)
-      self.showFailureAlert.assertValues([failedEnvelope.stateReason])
+      self.showAlert.assertValues([failedEnvelope.stateReason])
 
       // 6: Alert dismissed, pop view controller
       self.popViewController.assertValueCount(0)
@@ -762,6 +775,7 @@ final class CheckoutViewModelTests: TestCase {
 
       self.vm.inputs.configureWith(initialRequest: newPledgeRequest(project: project).prepared(),
                                    project: project,
+                                   reward: .template,
                                    applePayCapable: false)
       self.vm.inputs.viewDidLoad()
 
@@ -851,7 +865,7 @@ final class CheckoutViewModelTests: TestCase {
       )
 
       self.scheduler.advanceByInterval(1)
-      self.showFailureAlert.assertValueCount(0)
+      self.showAlert.assertValueCount(0)
       self.goToThanks.assertValueCount(1)
     }
 
@@ -863,6 +877,7 @@ final class CheckoutViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(initialRequest: newPledgeRequest(project: project).prepared(),
                                  project: project,
+                                 reward: .template,
                                  applePayCapable: false)
     self.vm.inputs.viewDidLoad()
 
@@ -907,6 +922,7 @@ final class CheckoutViewModelTests: TestCase {
 
       self.vm.inputs.configureWith(initialRequest: newPledgeRequest(project: project).prepared(),
                                    project: project,
+                                   reward: .template,
                                    applePayCapable: true)
       self.vm.inputs.viewDidLoad()
 
@@ -994,13 +1010,8 @@ final class CheckoutViewModelTests: TestCase {
 
       self.vm.inputs.paymentAuthorizationWillAuthorizePayment()
 
-      XCTAssertEqual(["Apple Pay Show Sheet"], self.trackingClient.events)
+      XCTAssertEqual(["Apple Pay Show Sheet", "Showed Apple Pay Sheet"], self.trackingClient.events)
 
-      self.vm.inputs.paymentAuthorizationDidFinish()
-
-      XCTAssertEqual(["Apple Pay Show Sheet", "Apple Pay Canceled"], self.trackingClient.events)
-
-      self.vm.inputs.paymentAuthorizationWillAuthorizePayment()
       self.vm.inputs.paymentAuthorization(
         didAuthorizePayment: .init(
           tokenData: .init(
@@ -1011,28 +1022,28 @@ final class CheckoutViewModelTests: TestCase {
       )
 
       XCTAssertEqual(
-        [
-          "Apple Pay Show Sheet", "Apple Pay Canceled", "Apple Pay Show Sheet", "Apple Pay Authorized"
-        ],
+        ["Apple Pay Show Sheet", "Showed Apple Pay Sheet", "Apple Pay Authorized", "Authorized Apple Pay"],
         self.trackingClient.events)
 
       self.vm.inputs.stripeCreatedToken(stripeToken: "stripe_deadbeef", error: nil)
 
       XCTAssertEqual(
-        [
-          "Apple Pay Show Sheet", "Apple Pay Canceled", "Apple Pay Show Sheet", "Apple Pay Authorized",
-          "Apple Pay Stripe Token Created"
-        ],
+        ["Apple Pay Show Sheet", "Showed Apple Pay Sheet", "Apple Pay Authorized", "Authorized Apple Pay",
+          "Apple Pay Stripe Token Created", "Created Apple Pay Stripe Token"],
         self.trackingClient.events)
 
       self.vm.inputs.paymentAuthorizationDidFinish()
 
       XCTAssertEqual(
-        [
-          "Apple Pay Show Sheet", "Apple Pay Canceled", "Apple Pay Show Sheet", "Apple Pay Authorized",
-          "Apple Pay Stripe Token Created", "Apple Pay Finished"
-        ],
-        self.trackingClient.events)
+        ["Apple Pay Show Sheet", "Showed Apple Pay Sheet", "Apple Pay Authorized", "Authorized Apple Pay",
+          "Apple Pay Stripe Token Created", "Created Apple Pay Stripe Token", "Apple Pay Finished"],
+        self.trackingClient.events
+      )
+
+      XCTAssertEqual(
+        ["new_pledge", "new_pledge", "new_pledge", "new_pledge", "new_pledge", "new_pledge", "new_pledge"],
+        self.trackingClient.properties(forKey: "pledge_context", as: String.self)
+      )
 
       self.evaluateJavascript.assertValues([
         "window.checkout_apple_pay_next({\"apple_pay_token\":{\"transaction_identifier\":" +
@@ -1061,6 +1072,12 @@ final class CheckoutViewModelTests: TestCase {
       XCTAssertTrue(
         self.vm.inputs.shouldStartLoad(withRequest: paymentsRequest().prepared(), navigationType: .Other)
       )
+      XCTAssertEqual(
+        ["Apple Pay Show Sheet", "Showed Apple Pay Sheet", "Apple Pay Authorized", "Authorized Apple Pay",
+          "Apple Pay Stripe Token Created", "Created Apple Pay Stripe Token", "Apple Pay Finished",
+        ],
+        self.trackingClient.events
+      )
 
       // 7: Redirect to thanks
       self.goToThanks.assertDidNotEmitValue()
@@ -1080,6 +1097,7 @@ final class CheckoutViewModelTests: TestCase {
   func testSetStripeAppleMerchantIdentifier_NotApplePayCapable() {
     self.vm.inputs.configureWith(initialRequest: newPledgeRequest(project: .template).prepared(),
                                  project: .template,
+                                 reward: .template,
                                  applePayCapable: false)
     self.vm.inputs.viewDidLoad()
 
@@ -1089,6 +1107,7 @@ final class CheckoutViewModelTests: TestCase {
   func testSetStripeAppleMerchantIdentifier_ApplePayCapable() {
     self.vm.inputs.configureWith(initialRequest: newPledgeRequest(project: .template).prepared(),
                                  project: .template,
+                                 reward: .template,
                                  applePayCapable: true)
     self.vm.inputs.viewDidLoad()
 
@@ -1101,6 +1120,7 @@ final class CheckoutViewModelTests: TestCase {
     withEnvironment(config: .template |> Config.lens.stripePublishableKey .~ "deadbeef") {
       self.vm.inputs.configureWith(initialRequest: newPledgeRequest(project: .template).prepared(),
                                    project: .template,
+                                   reward: .template,
                                    applePayCapable: false)
       self.vm.inputs.viewDidLoad()
 
@@ -1112,6 +1132,7 @@ final class CheckoutViewModelTests: TestCase {
     withEnvironment(config: .template |> Config.lens.stripePublishableKey .~ "deadbeef") {
       self.vm.inputs.configureWith(initialRequest: newPledgeRequest(project: .template).prepared(),
                                    project: .template,
+                                   reward: .template,
                                    applePayCapable: true)
       self.vm.inputs.viewDidLoad()
 

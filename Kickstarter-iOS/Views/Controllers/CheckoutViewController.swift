@@ -11,13 +11,15 @@ internal final class CheckoutViewController: DeprecatedWebViewController {
   private weak var loginToutViewController: UIViewController? = nil
   private let viewModel: CheckoutViewModelType = CheckoutViewModel()
 
-  internal static func configuredWith(initialRequest initialRequest: NSURLRequest, project: Project)
-    -> CheckoutViewController {
+  internal static func configuredWith(initialRequest initialRequest: NSURLRequest,
+                                                     project: Project,
+                                                     reward: Reward) -> CheckoutViewController {
 
       let vc = Storyboard.Checkout.instantiate(CheckoutViewController)
       vc.viewModel.inputs.configureWith(
         initialRequest: initialRequest,
         project: project,
+        reward: reward,
         applePayCapable: PKPaymentAuthorizationViewController.applePayCapable()
       )
       return vc
@@ -77,9 +79,9 @@ internal final class CheckoutViewController: DeprecatedWebViewController {
       .observeForControllerAction()
       .observeNext { [weak self] _ in self?.popViewController() }
 
-    self.viewModel.outputs.showFailureAlert
+    self.viewModel.outputs.showAlert
       .observeForControllerAction()
-      .observeNext { [weak self] message in self?.showFailureAlert(message: message) }
+      .observeNext { [weak self] message in self?.showAlert(message: message) }
 
     self.viewModel.outputs.webViewLoadRequest
       .observeForControllerAction()
@@ -152,7 +154,7 @@ internal final class CheckoutViewController: DeprecatedWebViewController {
     self.navigationController?.popToRootViewControllerAnimated(true)
   }
 
-  private func showFailureAlert(message message: String) {
+  private func showAlert(message message: String) {
     self.presentViewController(
       UIAlertController.alert(
         message: message,

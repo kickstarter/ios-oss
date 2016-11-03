@@ -94,6 +94,9 @@ internal final class ProjectNavBarViewController: UIViewController {
       |> UIButton.lens.tintColor .~ .whiteColor()
       |> UIButton.lens.image(forState: .Normal) .~ image(named: "close-icon")
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.accessibility_projects_buttons_close() }
+      |> UIButton.lens.accessibilityHint %~ { _ in
+        localizedString(key: "Closes_project", defaultValue: "Closes project.")
+    }
 
     self.navContainerView
       |> UIView.lens.layoutMargins .~ .init(topBottom: 0, leftRight: Styles.gridHalf(1))
@@ -119,7 +122,7 @@ internal final class ProjectNavBarViewController: UIViewController {
       |> UIButton.lens.image(forState: .Normal) .~ image(named: "star-icon")
       |> UIButton.lens.image(forState: .Highlighted) .~ image(named: "star-filled-icon")
       |> UIButton.lens.image(forState: .Selected) .~ image(named: "star-filled-icon")
-      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.project_accessibility_button_star_label() }
+      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.accessibility_projects_buttons_star() }
   }
   // swiftlint:enable function_body_length
 

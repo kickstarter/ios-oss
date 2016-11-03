@@ -22,7 +22,7 @@ public protocol ProjectPamphletMainCellViewModelInputs {
 
 public protocol ProjectPamphletMainCellViewModelOutputs {
   /// Emits a string to use for the stats stack view accessibility value.
-  var allStatsStackViewAccessibilityValue: Signal<String, NoError> { get }
+  var statsStackViewAccessibilityLabel: Signal<String, NoError> { get }
 
   /// Emits a string to use for the backers title label.
   var backersTitleLabelText: Signal<String, NoError> { get }
@@ -175,7 +175,7 @@ ProjectPamphletMainCellViewModelInputs, ProjectPamphletMainCellViewModelOutputs 
       )
     }
 
-    self.allStatsStackViewAccessibilityValue = project
+    self.statsStackViewAccessibilityLabel = project
       .map { project in
 
         let pledged = Format.currency(project.stats.pledged, country: project.country)
@@ -239,7 +239,7 @@ ProjectPamphletMainCellViewModelInputs, ProjectPamphletMainCellViewModelOutputs 
     self.videoDidStartProperty.value = ()
   }
 
-  public let allStatsStackViewAccessibilityValue: Signal<String, NoError>
+  public let statsStackViewAccessibilityLabel: Signal<String, NoError>
   public let backersTitleLabelText: Signal<String, NoError>
   public let configureVideoPlayerController: Signal<Project, NoError>
   public let conversionLabelHidden: Signal<Bool, NoError>

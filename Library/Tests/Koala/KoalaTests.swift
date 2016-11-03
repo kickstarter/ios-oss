@@ -31,7 +31,7 @@ final class KoalaTests: XCTestCase {
     XCTAssertEqual(screen.bounds.width, properties?["screen_width"] as? CGFloat)
     XCTAssertEqual(screen.bounds.height, properties?["screen_height"] as? CGFloat)
 
-    XCTAssertEqual("iphone", properties?["koala_lib"] as? String)
+    XCTAssertEqual("kickstarter_ios", properties?["mp_lib"] as? String)
     XCTAssertEqual("native", properties?["client_type"] as? String)
     XCTAssertEqual("phone", properties?["device_format"] as? String)
     XCTAssertEqual("ios", properties?["client_platform"] as? String)
