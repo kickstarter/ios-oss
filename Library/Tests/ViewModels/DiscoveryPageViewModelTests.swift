@@ -229,19 +229,19 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     self.vm.inputs.tapped(project: project)
 
     self.goToProject.assertValues([project])
-    self.goToRefTag.assertValues([.discovery], "Go to the project with discovery ref tag.")
+    self.goToRefTag.assertValues([.discoveryWithSort(.magic)], "Go to the project with discovery ref tag.")
 
     self.vm.inputs.selectedFilter(.defaults |> DiscoveryParams.lens.category .~ Category.art)
     self.vm.inputs.tapped(project: project)
 
     self.goToProject.assertValues([project, project])
-    self.goToRefTag.assertValues([.discovery, .categoryWithSort(.magic)],
+    self.goToRefTag.assertValues([.discoveryWithSort(.magic), .categoryWithSort(.magic)],
                                  "Go to the project with the category sort ref tag.")
 
     self.vm.inputs.tapped(project: potd)
 
     self.goToProject.assertValues([project, project, potd])
-    self.goToRefTag.assertValues([.discovery, .categoryWithSort(.magic), .discoveryPotd],
+    self.goToRefTag.assertValues([.discoveryWithSort(.magic), .categoryWithSort(.magic), .discoveryPotd],
                                  "Go to the project with the POTD ref tag.")
 
     self.vm.inputs.selectedFilter(.defaults |> DiscoveryParams.lens.staffPicks .~ true)
@@ -249,7 +249,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
     self.goToProject.assertValues([project, project, potd, project])
     self.goToRefTag.assertValues(
-      [.discovery, .categoryWithSort(.magic), .discoveryPotd, .recommendedWithSort(.magic)],
+      [.discoveryWithSort(.magic), .categoryWithSort(.magic), .discoveryPotd, .recommendedWithSort(.magic)],
       "Go to the project with the recommended sort ref tag."
     )
 
@@ -258,8 +258,8 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
     self.goToProject.assertValues([project, project, potd, project, project])
     self.goToRefTag.assertValues(
-      [.discovery, .categoryWithSort(.magic), .discoveryPotd, .recommendedWithSort(.magic), .social],
-      "Go to the project with the social ref tag."
+      [.discoveryWithSort(.magic), .categoryWithSort(.magic), .discoveryPotd, .recommendedWithSort(.magic),
+       .socialWithSort(.magic)], "Go to the project with the social ref tag."
     )
 
     let activityProject = Project.template
@@ -268,9 +268,16 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     self.vm.inputs.tapped(activity: activity)
     self.goToProject.assertValues([project, project, potd, project, project, activityProject])
     self.goToRefTag.assertValues(
-      [.discovery, .categoryWithSort(.magic), .discoveryPotd, .recommendedWithSort(.magic), .social,
-        .activitySample],
-      "Go to the project with the social ref tag."
+      [.discoveryWithSort(.magic), .categoryWithSort(.magic), .discoveryPotd, .recommendedWithSort(.magic),
+       .socialWithSort(.magic), .activitySample], "Go to the project with the social ref tag."
+    )
+
+    self.vm.inputs.configureWith(sort: .endingSoon)
+    self.vm.inputs.tapped(project: project)
+    self.goToProject.assertValues([project, project, potd, project, project, activityProject, project])
+    self.goToRefTag.assertValues(
+      [.discoveryWithSort(.magic), .categoryWithSort(.magic), .discoveryPotd, .recommendedWithSort(.magic),
+        .socialWithSort(.magic), .activitySample, .socialWithSort(.endingSoon)], "Sort changes on ref tag."
     )
   }
 

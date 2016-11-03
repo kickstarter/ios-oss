@@ -12,13 +12,17 @@ public enum RefTag {
   case dashboardActivity
   case discovery
   case discoveryPotd
+  case discoveryWithSort(DiscoveryParams.Sort)
   case messageThread
   case profileBacked
   case push
   case recommended
   case recommendedWithSort(DiscoveryParams.Sort)
+  case recsWithSort(DiscoveryParams.Sort)
   case search
   case social
+  case socialWithSort(DiscoveryParams.Sort)
+  case starredWithSort(DiscoveryParams.Sort)
   case thanks
   case unrecognized(String)
 
@@ -30,6 +34,7 @@ public enum RefTag {
 
    - returns: A ref tag.
    */
+  // swiftlint:disable function_body_length
   // swiftlint:disable cyclomatic_complexity
   public init(code: String) {
     switch code {
@@ -38,7 +43,7 @@ public enum RefTag {
     case "category_featured":         self = .categoryFeatured
     case "discovery_activity_sample": self = .activitySample
     case "category_ending_soon":      self = .categoryWithSort(.endingSoon)
-    case "category":                  self = .categoryWithSort(.magic)
+    case "category_home":             self = .categoryWithSort(.magic)
     case "category_most_funded":      self = .categoryWithSort(.mostFunded)
     case "category_newest":           self = .categoryWithSort(.newest)
     case "category_popular":          self = .categoryWithSort(.popular)
@@ -46,23 +51,44 @@ public enum RefTag {
     case "dashboard":                 self = .dashboard
     case "dashboard_activity":        self = .dashboardActivity
     case "discovery":                 self = .discovery
+    case "discovery_ending_soon":     self = .discoveryWithSort(.endingSoon)
+    case "discovery_home":            self = .discoveryWithSort(.magic)
+    case "discovery_most_funded":     self = .discoveryWithSort(.mostFunded)
+    case "discovery_newest":          self = .discoveryWithSort(.newest)
+    case "discovery_popular":         self = .discoveryWithSort(.popular)
     case "discovery_potd":            self = .discoveryPotd
     case "message_thread":            self = .messageThread
     case "profile_backed":            self = .profileBacked
     case "push":                      self = .push
     case "recommended":               self = .recommended
     case "recommended_ending_soon":   self = .recommendedWithSort(.endingSoon)
-    case "recommended":               self = .recommendedWithSort(.magic)
+    case "recommended_home":          self = .recommendedWithSort(.magic)
     case "recommended_most_funded":   self = .recommendedWithSort(.mostFunded)
     case "recommended_newest":        self = .recommendedWithSort(.newest)
     case "recommended_popular":       self = .recommendedWithSort(.popular)
+    case "recs_ending_soon":          self = .recsWithSort(.endingSoon)
+    case "recs_home":                 self = .recsWithSort(.magic)
+    case "recs_most_funded":          self = .recsWithSort(.mostFunded)
+    case "recs_newest":               self = .recsWithSort(.newest)
+    case "recs_popular":              self = .recsWithSort(.popular)
     case "search":                    self = .search
     case "social":                    self = .social
+    case "social_ending_soon":        self = .socialWithSort(.endingSoon)
+    case "social_home":               self = .socialWithSort(.magic)
+    case "social_most_funded":        self = .socialWithSort(.mostFunded)
+    case "social_newest":             self = .socialWithSort(.newest)
+    case "social_popular":            self = .socialWithSort(.popular)
+    case "starred_ending_soon":       self = .starredWithSort(.endingSoon)
+    case "starred_home":              self = .starredWithSort(.magic)
+    case "starred_most_funded":       self = .starredWithSort(.mostFunded)
+    case "starred_newest":            self = .starredWithSort(.newest)
+    case "starred_popular":           self = .starredWithSort(.popular)
     case "thanks":                    self = .thanks
     default:                          self = .unrecognized(code)
     }
   }
   // swiftlint:enable cyclomatic_complexity
+  // swiftlint:enable function_body_length
 
   /// A string representation of the ref tag that can be used in analytics tracking, cookies, etc...
   public var stringTag: String {
@@ -87,6 +113,8 @@ public enum RefTag {
       return "discovery"
     case .discoveryPotd:
       return "discovery_potd"
+    case let .discoveryWithSort(sort):
+      return "discovery" + sortRefTagSuffix(sort)
     case .messageThread:
       return "message_thread"
     case .profileBacked:
@@ -97,10 +125,16 @@ public enum RefTag {
       return "recommended"
     case let .recommendedWithSort(sort):
       return "recommended" + sortRefTagSuffix(sort)
+    case let .recsWithSort(sort):
+      return "recs" + sortRefTagSuffix(sort)
     case .search:
       return "search"
     case .social:
       return "social"
+    case let .socialWithSort(sort):
+      return "social" + sortRefTagSuffix(sort)
+    case let .starredWithSort(sort):
+      return "starred" + sortRefTagSuffix(sort)
     case .thanks:
       return "thanks"
     case let .unrecognized(code):
@@ -121,7 +155,15 @@ public func == (lhs: RefTag, rhs: RefTag) -> Bool {
     return true
   case let (.categoryWithSort(lhs), .categoryWithSort(rhs)):
     return lhs == rhs
+  case let (.discoveryWithSort(lhs), .discoveryWithSort(rhs)):
+    return lhs == rhs
   case let (.recommendedWithSort(lhs), .recommendedWithSort(rhs)):
+    return lhs == rhs
+  case let (.recsWithSort(lhs), .recsWithSort(rhs)):
+    return lhs == rhs
+  case let (.socialWithSort(lhs), .socialWithSort(rhs)):
+    return lhs == rhs
+  case let (.starredWithSort(lhs), .starredWithSort(rhs)):
     return lhs == rhs
   case let (.unrecognized(lhs), .unrecognized(rhs)):
     return lhs == rhs
@@ -147,7 +189,7 @@ private func sortRefTagSuffix(sort: DiscoveryParams.Sort) -> String {
   case .endingSoon:
     return "_ending_soon"
   case .magic:
-    return ""
+    return "_home"
   case .mostFunded:
     return "_most_funded"
   case .newest:

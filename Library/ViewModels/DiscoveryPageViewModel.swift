@@ -287,12 +287,16 @@ private func refTag(fromParams params: DiscoveryParams, project: Project) -> Ref
     return .discoveryPotd
   } else if params.category != nil {
     return .categoryWithSort(params.sort ?? .magic)
-  } else if params.staffPicks == true {
+  } else if params.recommended == .Some(true) {
+    return .recsWithSort(params.sort ?? .magic)
+  } else if params.staffPicks == .Some(true) {
     return .recommendedWithSort(params.sort ?? .magic)
-  } else if params.social == true {
-    return .social
+  } else if params.social == .Some(true) {
+    return .socialWithSort(params.sort ?? .magic)
+  } else if params.starred == .Some(true) {
+    return .starredWithSort(params.sort ?? .magic)
   }
-  return RefTag.discovery
+  return RefTag.discoveryWithSort(params.sort ?? .magic)
 }
 
 private func emptyState(forParams params: DiscoveryParams) -> EmptyState? {
