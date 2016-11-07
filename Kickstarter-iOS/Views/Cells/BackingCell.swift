@@ -26,7 +26,6 @@ internal final class BackingCell: UITableViewCell, ValueCell {
     }
   }
 
-
   override func bindViewModel() {
     self.pledgedLabel.rac.text = self.viewModel.outputs.pledged
     self.rewardLabel.rac.text = self.viewModel.outputs.reward

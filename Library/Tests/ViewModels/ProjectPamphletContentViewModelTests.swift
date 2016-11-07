@@ -139,7 +139,6 @@ final class ProjectPamphletContentViewModelTests: TestCase {
     self.goToRewardPledgeReward.assertValues([reward])
   }
 
-
   func testGoToRewardPledge_LiveProject_BackingNoReward_TapAnotherReward() {
     let reward = Reward.template
     let project = Project.template

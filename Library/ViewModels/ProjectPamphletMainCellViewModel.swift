@@ -175,23 +175,8 @@ ProjectPamphletMainCellViewModelInputs, ProjectPamphletMainCellViewModelOutputs 
       )
     }
 
-    self.statsStackViewAccessibilityLabel = project
-      .map { project in
-
-        let pledged = Format.currency(project.stats.pledged, country: project.country)
-        let goal = Format.currency(project.stats.goal, country: project.country)
-        let backersCount = project.stats.backersCount
-        let (time, unit) = Format.duration(secondsInUTC: project.dates.deadline, useToGo: true)
-        let timeLeft = time + " " + unit
-
-        return project.state == .live
-          ? Strings.dashboard_graphs_funding_accessibility_live_stat_value(
-            pledged: pledged, goal: goal, backers_count: backersCount, time_left: timeLeft
-            )
-          : Strings.dashboard_graphs_funding_accessibility_non_live_stat_value(
-            pledged: pledged, goal: goal, backers_count: backersCount, time_left: timeLeft
-        )
-    }
+    self.statsStackViewAccessibilityLabel = projectAndNeedsConversion
+      .map(statsStackViewAccessibilityLabel(forProject:needsConversion:))
 
     self.progressPercentage = project
       .map(Project.lens.stats.fundingProgress.view)
@@ -263,6 +248,28 @@ ProjectPamphletMainCellViewModelInputs, ProjectPamphletMainCellViewModelOutputs 
 
   public var inputs: ProjectPamphletMainCellViewModelInputs { return self }
   public var outputs: ProjectPamphletMainCellViewModelOutputs { return self }
+}
+
+private func statsStackViewAccessibilityLabel(forProject project: Project, needsConversion: Bool) -> String {
+
+  let pledged = needsConversion
+    ? Format.currency(project.stats.pledged, country: project.country)
+    : Format.currency(project.stats.pledgedUsd, country: .US)
+  let goal = needsConversion
+    ? Format.currency(project.stats.goal, country: project.country)
+    : Format.currency(project.stats.goalUsd, country: .US)
+
+  let backersCount = project.stats.backersCount
+  let (time, unit) = Format.duration(secondsInUTC: project.dates.deadline, useToGo: true)
+  let timeLeft = time + " " + unit
+
+  return project.state == .live
+    ? Strings.dashboard_graphs_funding_accessibility_live_stat_value(
+      pledged: pledged, goal: goal, backers_count: backersCount, time_left: timeLeft
+      )
+    : Strings.dashboard_graphs_funding_accessibility_non_live_stat_value(
+      pledged: pledged, goal: goal, backers_count: backersCount, time_left: timeLeft
+  )
 }
 
 private func fundingStatus(forProject project: Project) -> String {

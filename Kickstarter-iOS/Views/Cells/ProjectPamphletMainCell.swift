@@ -19,7 +19,6 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
 
   private weak var videoController: VideoViewController?
 
-
   @IBOutlet private weak var backersSubtitleLabel: UILabel!
   @IBOutlet private weak var backersTitleLabel: UILabel!
   @IBOutlet private weak var blurbAndReadMoreStackView: UIStackView!

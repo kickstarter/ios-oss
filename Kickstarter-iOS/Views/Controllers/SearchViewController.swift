@@ -82,7 +82,6 @@ internal final class SearchViewController: UITableViewController {
     self.navigationController
       ?|> UINavigationController.lens.navigationBar.barTintColor .~ .whiteColor()
 
-
     self.navigationController?.navigationBar
       ?|> baseNavigationBarStyle
   }

@@ -5,7 +5,6 @@ import Prelude
 import Result
 import XCTest
 
-
 internal final class SortPagerViewControllerTests: TestCase {
   private let sorts: [DiscoveryParams.Sort] = [.magic, .popular, .newest, .endingSoon, .mostFunded]
 

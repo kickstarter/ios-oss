@@ -52,11 +52,22 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
   }
 
   func testStatsStackViewAccessibilityLabel() {
-    let project = Project.template
+    let project = .template
+      |> Project.lens.dates.deadline .~ self.dateType.init().timeIntervalSince1970 + 60 * 60 * 24 * 10
     self.vm.inputs.configureWith(project: project)
 
     self.statsStackViewAccessibilityLabel.assertValues(
-      ["$1,000 of $2,000 goal, 10 backers so far, 47 days to go to go"]
+      ["$1,000 of $2,000 goal, 10 backers so far, 10 days to go to go"]
+    )
+
+    let nonUSProject = project
+      |> Project.lens.country .~ .GB
+      |> Project.lens.stats.staticUsdRate .~ 1.2
+    self.vm.inputs.configureWith(project: nonUSProject)
+
+    self.statsStackViewAccessibilityLabel.assertValues(
+      [ "$1,000 of $2,000 goal, 10 backers so far, 10 days to go to go",
+        "£1,000 of £2,000 goal, 10 backers so far, 10 days to go to go" ]
     )
   }
 

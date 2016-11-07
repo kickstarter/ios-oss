@@ -95,7 +95,6 @@ public final class Koala {
     }
   }
 
-
   /**
    Determines the type of comment in which the dialog was presented for.
 
