@@ -53,7 +53,7 @@ internal final class SearchViewController: UITableViewController {
     super.bindStyles()
 
     self
-      |> baseTableControllerStyle(estimatedRowHeight: 160)
+      |> baseTableControllerStyle(estimatedRowHeight: 86)
       |> SearchViewController.lens.view.backgroundColor .~ .ksr_grey_200
 
     self.cancelButton
