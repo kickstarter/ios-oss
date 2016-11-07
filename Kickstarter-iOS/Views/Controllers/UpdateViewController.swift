@@ -9,6 +9,8 @@ internal final class UpdateViewController: WebViewController {
 
   private let closeButton = UIBarButtonItem()
 
+  @IBOutlet private weak var shareButton: UIBarButtonItem!
+
   internal static func configuredWith(project project: Project, update: Update) -> UpdateViewController {
     let vc = Storyboard.Update.instantiate(UpdateViewController)
     vc.viewModel.inputs.configureWith(project: project, update: update)
@@ -40,6 +42,11 @@ internal final class UpdateViewController: WebViewController {
 
     self.closeButton |> closeBarButtonItemStyle
       |> UIBarButtonItem.lens.targetAction .~ (self, #selector(dismiss))
+
+    self.shareButton
+      |> UIBarButtonItem.lens.accessibilityLabel %~ { _ in
+        localizedString(key: "Share_update", defaultValue: "Share update")
+    }
   }
 
   internal override func bindViewModel() {
