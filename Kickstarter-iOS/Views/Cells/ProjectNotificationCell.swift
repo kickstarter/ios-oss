@@ -14,12 +14,26 @@ internal final class ProjectNotificationCell: UITableViewCell, ValueCell {
   internal weak var delegate: ProjectNotificationCellDelegate?
 
   @IBOutlet private weak var nameLabel: UILabel!
-  @IBOutlet private weak var notificationSwitch: UISwitch!
+  private let notificationSwitch: UISwitch = UISwitch()
   @IBOutlet private weak var separatorView: UIView!
+
+ internal override func awakeFromNib() {
+    super.awakeFromNib()
+
+    self.notificationSwitch.addTarget(
+      self,
+      action: #selector(notificationTapped),
+      forControlEvents: UIControlEvents.ValueChanged
+    )
+    self.accessoryView = self.notificationSwitch
+  }
 
   internal override func bindStyles() {
     super.bindStyles()
-    self |> baseTableViewCellStyle()
+
+    self
+      |> baseTableViewCellStyle()
+
     self.nameLabel |> settingsSectionLabelStyle
     self.separatorView |> separatorStyle
   }
@@ -41,7 +55,7 @@ internal final class ProjectNotificationCell: UITableViewCell, ValueCell {
     self.viewModel.inputs.configureWith(notification: value)
   }
 
-  @IBAction private func notificationTapped(notificationSwitch: UISwitch) {
-    self.viewModel.inputs.notificationTapped(on: notificationSwitch.on)
+  @objc private func notificationTapped(notificationSwitch: UISwitch) {
+    self.viewModel.inputs.notificationTapped(on: self.notificationSwitch.on)
   }
 }
