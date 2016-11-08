@@ -93,6 +93,12 @@ internal final class CheckoutViewController: DeprecatedWebViewController {
       .observeForControllerAction()
       .observeNext { [weak self] in self?.goToPaymentAuthorization(request: $0) }
 
+    self.viewModel.outputs.dismissViewController
+      .observeForControllerAction()
+      .observeNext { [weak self] in
+        self?.dismissViewControllerAnimated(true, completion: nil)
+    }
+
     NSNotificationCenter.defaultCenter()
       .addObserverForName(CurrentUserNotifications.sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()

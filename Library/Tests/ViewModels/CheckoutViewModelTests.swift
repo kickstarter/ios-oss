@@ -13,6 +13,7 @@ final class CheckoutViewModelTests: TestCase {
   private let vm: CheckoutViewModelType = CheckoutViewModel()
 
   private let closeLoginTout = TestObserver<(), NoError>()
+  private let dismissViewController = TestObserver<(), NoError>()
   private let evaluateJavascript = TestObserver<String, NoError>()
   private let goToPaymentAuthorization = TestObserver<NSDictionary, NoError>()
   private let goToSafariBrowser = TestObserver<NSURL, NoError>()
@@ -30,6 +31,7 @@ final class CheckoutViewModelTests: TestCase {
     super.setUp()
 
     self.vm.outputs.closeLoginTout.observe(self.closeLoginTout.observer)
+    self.vm.outputs.dismissViewController.observe(self.dismissViewController.observer)
     self.vm.outputs.evaluateJavascript.observe(self.evaluateJavascript.observer)
     self.vm.outputs.goToPaymentAuthorization.map { $0.encode() as NSDictionary }
       .observe(self.goToPaymentAuthorization.observer)
@@ -61,25 +63,15 @@ final class CheckoutViewModelTests: TestCase {
   func testCancelButtonPopsViewController() {
     let project = Project.template
 
-    self.vm.inputs.configureWith(initialRequest: newPledgeRequest(project: project).prepared(),
+    self.vm.inputs.configureWith(initialRequest: newPaymentsRequest().prepared(),
                                  project: project,
                                  reward: .template,
                                  applePayCapable: false)
     self.vm.inputs.viewDidLoad()
 
-    // 1: Show reward and shipping form
-    self.webViewLoadRequestIsPrepared.assertValues([true])
-    self.webViewLoadRequestURL.assertValues([newPledgeURL(project: project)])
-
-    XCTAssertTrue(
-      self.vm.inputs.shouldStartLoad(
-        withRequest: newPledgeRequest(project: project).prepared(),
-        navigationType: .Other
-      )
-    )
     XCTAssertTrue(self.vm.inputs.shouldStartLoad(withRequest: stripeRequest(), navigationType: .Other))
 
-    // 2: Cancel button tapped
+    // 1: Cancel button tapped
     self.popViewController.assertDidNotEmitValue()
     XCTAssertEqual([], self.trackingClient.events)
 
@@ -89,6 +81,52 @@ final class CheckoutViewModelTests: TestCase {
                    self.trackingClient.events, "Cancel event and its deprecated version are tracked")
     XCTAssertEqual(["new_pledge", "new_pledge"],
                    self.trackingClient.properties(forKey: "pledge_context", as: String.self))
+  }
+
+  func testNewPledgeRequestDismissesViewController() {
+    let project = Project.template
+
+    self.webViewLoadRequestURL.assertDidNotEmitValue()
+
+    // 1: Open new payments form
+    self.vm.inputs.configureWith(initialRequest: newPaymentsRequest().prepared(),
+                                 project: project,
+                                 reward: .template,
+                                 applePayCapable: false)
+    self.vm.inputs.viewDidLoad()
+
+    self.webViewLoadRequestURL.assertValues([newPaymentsURL()])
+
+    XCTAssertFalse(
+      self.vm.inputs.shouldStartLoad(withRequest: newPaymentsRequest(), navigationType: .Other),
+      "Not prepared"
+    )
+
+    XCTAssertTrue(
+      self.vm.inputs.shouldStartLoad(
+        withRequest: newPaymentsRequest().prepared(),
+        navigationType: .Other)
+    )
+
+    self.webViewLoadRequestIsPrepared.assertValues([true, true])
+    self.webViewLoadRequestURL.assertValues(
+      [newPaymentsURL(), newPaymentsURL()]
+    )
+
+    XCTAssertTrue(self.vm.inputs.shouldStartLoad(withRequest: stripeRequest(), navigationType: .Other))
+
+    // 2: Web view should not attempt to load the new pledge request
+    XCTAssertFalse(
+      self.vm.inputs.shouldStartLoad(
+        withRequest: newPledgeRequest(project: project).prepared(),
+        navigationType: .Other
+      )
+    )
+
+    self.webViewLoadRequestURL.assertValues([newPaymentsURL(), newPaymentsURL()])
+
+    // 3: If we requested new pledge, the view controller should be dismissed
+    self.dismissViewController.assertValueCount(1)
   }
 
   func testCancelPledge() {
@@ -256,7 +294,7 @@ final class CheckoutViewModelTests: TestCase {
         self.vm.inputs.shouldStartLoad(
           withRequest: thanksRequest(
             project: project, racing: false),
-            navigationType: .Other
+          navigationType: .Other
         ),
         "Not prepared"
       )
@@ -271,78 +309,45 @@ final class CheckoutViewModelTests: TestCase {
     withEnvironment(currentUser: .template) {
       self.webViewLoadRequestURL.assertDidNotEmitValue()
 
-      self.vm.inputs.configureWith(initialRequest: newPledgeRequest(project: project).prepared(),
+      // 1: Open new payments form
+      self.vm.inputs.configureWith(initialRequest: newPaymentsRequest().prepared(),
                                    project: project,
                                    reward: .template,
                                    applePayCapable: false)
       self.vm.inputs.viewDidLoad()
 
-      // 1: Show reward and shipping form
-      self.webViewLoadRequestIsPrepared.assertValues([true])
-      self.webViewLoadRequestURL.assertValues([newPledgeURL(project: project)])
-
-      XCTAssertTrue(
-        self.vm.inputs.shouldStartLoad(
-          withRequest: newPledgeRequest(project: project).prepared(),
-          navigationType: .Other
-        )
-      )
-      XCTAssertTrue(self.vm.inputs.shouldStartLoad(withRequest: stripeRequest(), navigationType: .Other))
-
-      // 2: Submit reward and shipping form
-      self.webViewLoadRequestURL.assertValueCount(1)
-
-      XCTAssertFalse(
-        self.vm.inputs.shouldStartLoad(
-          withRequest: pledgeRequest(project: project),
-          navigationType: .FormSubmitted
-        ),
-        "Not prepared"
-      )
-
-      self.webViewLoadRequestIsPrepared.assertValues([true, true])
-      self.webViewLoadRequestURL.assertValues(
-        [newPledgeURL(project: project), pledgeURL(project: project)]
-      )
-
-      XCTAssertTrue(
-        self.vm.inputs.shouldStartLoad(
-          withRequest: pledgeRequest(project: project).prepared(),
-          navigationType: .Other
-        )
-      )
-
-      // 3: Redirect to new payments form
-      self.webViewLoadRequestURL.assertValueCount(2)
+      self.webViewLoadRequestURL.assertValues([newPaymentsURL()])
 
       XCTAssertFalse(
         self.vm.inputs.shouldStartLoad(withRequest: newPaymentsRequest(), navigationType: .Other),
         "Not prepared"
       )
 
-      self.webViewLoadRequestIsPrepared.assertValues([true, true, true])
-      self.webViewLoadRequestURL.assertValues(
-        [newPledgeURL(project: project), pledgeURL(project: project), newPaymentsURL()]
+      XCTAssertTrue(
+        self.vm.inputs.shouldStartLoad(
+          withRequest: newPaymentsRequest().prepared(),
+          navigationType: .Other)
       )
 
-      XCTAssertTrue(
-        self.vm.inputs.shouldStartLoad(withRequest: newPaymentsRequest().prepared(), navigationType: .Other)
+      self.webViewLoadRequestIsPrepared.assertValues([true, true])
+      self.webViewLoadRequestURL.assertValues(
+        [newPaymentsURL(), newPaymentsURL()]
       )
+
       XCTAssertTrue(self.vm.inputs.shouldStartLoad(withRequest: stripeRequest(), navigationType: .Other))
 
-      // 4: Pledge with new card
-      self.webViewLoadRequestURL.assertValueCount(3)
+      // 2: Pledge with new card
+      self.webViewLoadRequestURL.assertValueCount(2)
 
       XCTAssertFalse(
         self.vm.inputs.shouldStartLoad(withRequest: paymentsRequest(), navigationType: .FormSubmitted),
         "Not prepared"
       )
 
-      self.webViewLoadRequestIsPrepared.assertValues([true, true, true, true])
+      self.webViewLoadRequestIsPrepared.assertValues([true, true, true])
       self.webViewLoadRequestURL.assertValues(
         [
-          newPledgeURL(project: project),
-          pledgeURL(project: project),
+          newPaymentsURL(),
           newPaymentsURL(),
           paymentsURL()
         ]
@@ -352,9 +357,9 @@ final class CheckoutViewModelTests: TestCase {
         self.vm.inputs.shouldStartLoad(withRequest: paymentsRequest().prepared(), navigationType: .Other)
       )
 
-      // 5: Redirect to thanks
+      // 3: Redirect to thanks
       self.goToThanks.assertDidNotEmitValue()
-      self.webViewLoadRequestURL.assertValueCount(4)
+      self.webViewLoadRequestURL.assertValueCount(3)
 
       XCTAssertFalse(
         self.vm.inputs.shouldStartLoad(
@@ -374,77 +379,45 @@ final class CheckoutViewModelTests: TestCase {
     withEnvironment(currentUser: .template) {
       self.webViewLoadRequestURL.assertDidNotEmitValue()
 
-      self.vm.inputs.configureWith(initialRequest: newPledgeRequest(project: project).prepared(),
+      // 1: Open new payments form
+      self.vm.inputs.configureWith(initialRequest: newPaymentsRequest().prepared(),
                                    project: project,
                                    reward: .template,
                                    applePayCapable: false)
       self.vm.inputs.viewDidLoad()
 
-      // 1: Show reward and shipping form
-      self.webViewLoadRequestIsPrepared.assertValues([true])
-      self.webViewLoadRequestURL.assertValues([newPledgeURL(project: project)])
-
-      XCTAssertTrue(
-        self.vm.inputs.shouldStartLoad(
-          withRequest: newPledgeRequest(project: project).prepared(),
-          navigationType: .Other
-        )
-      )
-      XCTAssertTrue(self.vm.inputs.shouldStartLoad(withRequest: stripeRequest(), navigationType: .Other))
-
-      // 2: Submit reward and shipping form
-      self.webViewLoadRequestURL.assertValueCount(1)
-
-      XCTAssertFalse(
-        self.vm.inputs.shouldStartLoad(
-          withRequest: pledgeRequest(project: project),
-          navigationType: .FormSubmitted
-        ),
-        "Not prepared"
-      )
-
-      self.webViewLoadRequestIsPrepared.assertValues([true, true])
-      self.webViewLoadRequestURL.assertValues(
-        [newPledgeURL(project: project), pledgeURL(project: project)]
-      )
-
-      XCTAssertTrue(
-        self.vm.inputs.shouldStartLoad(
-          withRequest: pledgeRequest(project: project).prepared(),
-          navigationType: .Other
-        )
-      )
-
-      // 3: Redirect to new payments form
-      self.webViewLoadRequestURL.assertValueCount(2)
+      self.webViewLoadRequestURL.assertValues([newPaymentsURL()])
 
       XCTAssertFalse(
         self.vm.inputs.shouldStartLoad(withRequest: newPaymentsRequest(), navigationType: .Other),
         "Not prepared"
       )
 
-      self.webViewLoadRequestIsPrepared.assertValues([true, true, true])
-      self.webViewLoadRequestURL.assertValues(
-        [newPledgeURL(project: project), pledgeURL(project: project), newPaymentsURL()]
-      )
-
       XCTAssertTrue(
-        self.vm.inputs.shouldStartLoad(withRequest: newPaymentsRequest().prepared(), navigationType: .Other)
+        self.vm.inputs.shouldStartLoad(
+          withRequest: newPaymentsRequest().prepared(),
+          navigationType: .Other)
       )
 
-      // 4: Pledge with stored card
-      self.webViewLoadRequestURL.assertValueCount(3)
+      self.webViewLoadRequestIsPrepared.assertValues([true, true])
+      self.webViewLoadRequestURL.assertValues(
+        [newPaymentsURL(), newPaymentsURL()]
+      )
+
+      XCTAssertTrue(self.vm.inputs.shouldStartLoad(withRequest: stripeRequest(), navigationType: .Other))
+
+      // 2: Pledge with stored card
+      self.webViewLoadRequestURL.assertValueCount(2)
 
       XCTAssertFalse(
         self.vm.inputs.shouldStartLoad(withRequest: useStoredCardRequest(), navigationType: .FormSubmitted),
         "Not prepared"
       )
 
-      self.webViewLoadRequestIsPrepared.assertValues([true, true, true, true])
+      self.webViewLoadRequestIsPrepared.assertValues([true, true, true])
       self.webViewLoadRequestURL.assertValues(
         [
-          newPledgeURL(project: project),
-          pledgeURL(project: project),
+          newPaymentsURL(),
           newPaymentsURL(),
           useStoredCardURL()
         ]
@@ -454,9 +427,9 @@ final class CheckoutViewModelTests: TestCase {
         self.vm.inputs.shouldStartLoad(withRequest: useStoredCardRequest().prepared(), navigationType: .Other)
       )
 
-      // 5: Redirect to thanks
+      // 3: Redirect to thanks
       self.goToThanks.assertDidNotEmitValue()
-      self.webViewLoadRequestURL.assertValueCount(4)
+      self.webViewLoadRequestURL.assertValueCount(3)
 
       XCTAssertFalse(
         self.vm.inputs.shouldStartLoad(
@@ -474,7 +447,7 @@ final class CheckoutViewModelTests: TestCase {
   func testLoginDuringCheckout() {
     let project = Project.template
 
-    self.vm.inputs.configureWith(initialRequest: newPledgeRequest(project: project).prepared(),
+    self.vm.inputs.configureWith(initialRequest: newPaymentsRequest().prepared(),
                                  project: project,
                                  reward: .template,
                                  applePayCapable: false)
@@ -482,11 +455,11 @@ final class CheckoutViewModelTests: TestCase {
 
     // 1: Show reward and shipping form
     self.webViewLoadRequestIsPrepared.assertValues([true])
-    self.webViewLoadRequestURL.assertValues([newPledgeURL(project: project)])
+    self.webViewLoadRequestURL.assertValues([newPaymentsURL()])
 
     XCTAssertTrue(
       self.vm.inputs.shouldStartLoad(
-        withRequest: newPledgeRequest(project: project).prepared(),
+        withRequest: newPaymentsRequest().prepared(),
         navigationType: .Other
       )
     )
@@ -505,7 +478,7 @@ final class CheckoutViewModelTests: TestCase {
 
     self.webViewLoadRequestIsPrepared.assertValues([true, true])
     self.webViewLoadRequestURL.assertValues(
-      [newPledgeURL(project: project), pledgeURL(project: project)]
+      [newPaymentsURL(), pledgeURL(project: project)]
     )
 
     XCTAssertTrue(
@@ -530,7 +503,7 @@ final class CheckoutViewModelTests: TestCase {
 
     // 5: Attempt pledge request again
     self.webViewLoadRequestURL.assertValues(
-      [newPledgeURL(project: project), pledgeURL(project: project), pledgeURL(project: project)],
+      [newPaymentsURL(), pledgeURL(project: project), pledgeURL(project: project)],
       "Attempt pledge request again, now that user is logged in"
     )
 
@@ -547,7 +520,7 @@ final class CheckoutViewModelTests: TestCase {
 
     self.webViewLoadRequestURL.assertValues(
       [
-        newPledgeURL(project: project),
+        newPaymentsURL(),
         pledgeURL(project: project),
         pledgeURL(project: project),
         newPaymentsURL()
@@ -628,14 +601,14 @@ final class CheckoutViewModelTests: TestCase {
 
   func testModalRequests() {
     let project = Project.template
-    self.vm.inputs.configureWith(initialRequest: newPledgeRequest(project: project).prepared(),
+    self.vm.inputs.configureWith(initialRequest: newPaymentsRequest().prepared(),
                                  project: project,
                                  reward: .template,
                                  applePayCapable: false)
     self.vm.inputs.viewDidLoad()
 
     XCTAssertTrue(
-      self.vm.inputs.shouldStartLoad(withRequest: newPledgeRequest(project: project).prepared(),
+      self.vm.inputs.shouldStartLoad(withRequest: newPaymentsRequest().prepared(),
         navigationType: .Other)
     )
     self.goToWebModal.assertValueCount(0)
@@ -661,77 +634,45 @@ final class CheckoutViewModelTests: TestCase {
     withEnvironment(apiService: MockService(fetchCheckoutResponse: failedEnvelope), currentUser: .template) {
       self.webViewLoadRequestURL.assertDidNotEmitValue()
 
-      self.vm.inputs.configureWith(initialRequest: newPledgeRequest(project: project).prepared(),
+      // 1: Open new payments form
+      self.vm.inputs.configureWith(initialRequest: newPaymentsRequest().prepared(),
                                    project: project,
                                    reward: .template,
                                    applePayCapable: false)
       self.vm.inputs.viewDidLoad()
 
-      // 1: Show reward and shipping form
-      self.webViewLoadRequestIsPrepared.assertValues([true])
-      self.webViewLoadRequestURL.assertValues([newPledgeURL(project: project)])
-
-      XCTAssertTrue(
-        self.vm.inputs.shouldStartLoad(
-          withRequest: newPledgeRequest(project: project).prepared(),
-          navigationType: .Other
-        )
-      )
-      XCTAssertTrue(self.vm.inputs.shouldStartLoad(withRequest: stripeRequest(), navigationType: .Other))
-
-      // 2: Submit reward and shipping form
-      self.webViewLoadRequestURL.assertValueCount(1)
-
-      XCTAssertFalse(
-        self.vm.inputs.shouldStartLoad(
-          withRequest: pledgeRequest(project: project),
-          navigationType: .FormSubmitted
-        ),
-        "Not prepared"
-      )
-
-      self.webViewLoadRequestIsPrepared.assertValues([true, true])
-      self.webViewLoadRequestURL.assertValues(
-        [newPledgeURL(project: project), pledgeURL(project: project)]
-      )
-
-      XCTAssertTrue(
-        self.vm.inputs.shouldStartLoad(
-          withRequest: pledgeRequest(project: project).prepared(),
-          navigationType: .Other
-        )
-      )
-
-      // 3: Redirect to new payments form
-      self.webViewLoadRequestURL.assertValueCount(2)
+      self.webViewLoadRequestURL.assertValues([newPaymentsURL()])
 
       XCTAssertFalse(
         self.vm.inputs.shouldStartLoad(withRequest: newPaymentsRequest(), navigationType: .Other),
         "Not prepared"
       )
 
-      self.webViewLoadRequestIsPrepared.assertValues([true, true, true])
-      self.webViewLoadRequestURL.assertValues(
-        [newPledgeURL(project: project), pledgeURL(project: project), newPaymentsURL()]
-      )
-
       XCTAssertTrue(
-        self.vm.inputs.shouldStartLoad(withRequest: newPaymentsRequest().prepared(), navigationType: .Other)
+        self.vm.inputs.shouldStartLoad(
+          withRequest: newPaymentsRequest().prepared(),
+          navigationType: .Other)
       )
 
-      // 4: Pledge with stored card
-      self.webViewLoadRequestURL.assertValueCount(3)
+      self.webViewLoadRequestIsPrepared.assertValues([true, true])
+      self.webViewLoadRequestURL.assertValues(
+        [newPaymentsURL(), newPaymentsURL()]
+      )
+
+      XCTAssertTrue(self.vm.inputs.shouldStartLoad(withRequest: stripeRequest(), navigationType: .Other))
+
+      // 2: Pledge with stored card
+      self.webViewLoadRequestURL.assertValueCount(2)
 
       XCTAssertFalse(
         self.vm.inputs.shouldStartLoad(withRequest: useStoredCardRequest(), navigationType: .FormSubmitted),
         "Not prepared"
       )
 
-      self.webViewLoadRequestIsPrepared.assertValues([true, true, true, true])
+      self.webViewLoadRequestIsPrepared.assertValues([true, true, true])
       self.webViewLoadRequestURL.assertValues(
         [
-          newPledgeURL(project: project),
-          pledgeURL(project: project),
+          newPaymentsURL(),
           newPaymentsURL(),
           useStoredCardURL()
         ]
@@ -741,9 +682,9 @@ final class CheckoutViewModelTests: TestCase {
         self.vm.inputs.shouldStartLoad(withRequest: useStoredCardRequest().prepared(), navigationType: .Other)
       )
 
-      // 5: Checkout is racing, delay a second to check status (failed!), then display failure alert.
+      // 3: Checkout is racing, delay a second to check status (failed!), then display failure alert.
       self.goToThanks.assertDidNotEmitValue()
-      self.webViewLoadRequestURL.assertValueCount(4)
+      self.webViewLoadRequestURL.assertValueCount(3)
 
       XCTAssertFalse(
         self.vm.inputs.shouldStartLoad(
@@ -757,7 +698,7 @@ final class CheckoutViewModelTests: TestCase {
       self.goToThanks.assertValueCount(0)
       self.showAlert.assertValues([failedEnvelope.stateReason])
 
-      // 6: Alert dismissed, pop view controller
+      // 4: Alert dismissed, pop view controller
       self.popViewController.assertValueCount(0)
 
       self.vm.inputs.failureAlertButtonTapped()
@@ -773,77 +714,45 @@ final class CheckoutViewModelTests: TestCase {
     withEnvironment(apiService: MockService(fetchCheckoutResponse: envelope), currentUser: .template) {
       self.webViewLoadRequestURL.assertDidNotEmitValue()
 
-      self.vm.inputs.configureWith(initialRequest: newPledgeRequest(project: project).prepared(),
+      // 1: Open new payments form
+      self.vm.inputs.configureWith(initialRequest: newPaymentsRequest().prepared(),
                                    project: project,
                                    reward: .template,
                                    applePayCapable: false)
       self.vm.inputs.viewDidLoad()
 
-      // 1: Show reward and shipping form
-      self.webViewLoadRequestIsPrepared.assertValues([true])
-      self.webViewLoadRequestURL.assertValues([newPledgeURL(project: project)])
-
-      XCTAssertTrue(
-        self.vm.inputs.shouldStartLoad(
-          withRequest: newPledgeRequest(project: project).prepared(),
-          navigationType: .Other
-        )
-      )
-      XCTAssertTrue(self.vm.inputs.shouldStartLoad(withRequest: stripeRequest(), navigationType: .Other))
-
-      // 2: Submit reward and shipping form
-      self.webViewLoadRequestURL.assertValueCount(1)
-
-      XCTAssertFalse(
-        self.vm.inputs.shouldStartLoad(
-          withRequest: pledgeRequest(project: project),
-          navigationType: .FormSubmitted
-        ),
-        "Not prepared"
-      )
-
-      self.webViewLoadRequestIsPrepared.assertValues([true, true])
-      self.webViewLoadRequestURL.assertValues(
-        [newPledgeURL(project: project), pledgeURL(project: project)]
-      )
-
-      XCTAssertTrue(
-        self.vm.inputs.shouldStartLoad(
-          withRequest: pledgeRequest(project: project).prepared(),
-          navigationType: .Other
-        )
-      )
-
-      // 3: Redirect to new payments form
-      self.webViewLoadRequestURL.assertValueCount(2)
+      self.webViewLoadRequestURL.assertValues([newPaymentsURL()])
 
       XCTAssertFalse(
         self.vm.inputs.shouldStartLoad(withRequest: newPaymentsRequest(), navigationType: .Other),
         "Not prepared"
       )
 
-      self.webViewLoadRequestIsPrepared.assertValues([true, true, true])
-      self.webViewLoadRequestURL.assertValues(
-        [newPledgeURL(project: project), pledgeURL(project: project), newPaymentsURL()]
-      )
-
       XCTAssertTrue(
-        self.vm.inputs.shouldStartLoad(withRequest: newPaymentsRequest().prepared(), navigationType: .Other)
+        self.vm.inputs.shouldStartLoad(
+          withRequest: newPaymentsRequest().prepared(),
+          navigationType: .Other)
       )
 
-      // 4: Pledge with stored card
-      self.webViewLoadRequestURL.assertValueCount(3)
+      self.webViewLoadRequestIsPrepared.assertValues([true, true])
+      self.webViewLoadRequestURL.assertValues(
+        [newPaymentsURL(), newPaymentsURL()]
+      )
+
+      XCTAssertTrue(self.vm.inputs.shouldStartLoad(withRequest: stripeRequest(), navigationType: .Other))
+
+      // 2: Pledge with stored card
+      self.webViewLoadRequestURL.assertValueCount(2)
 
       XCTAssertFalse(
         self.vm.inputs.shouldStartLoad(withRequest: useStoredCardRequest(), navigationType: .FormSubmitted),
         "Not prepared"
       )
 
-      self.webViewLoadRequestIsPrepared.assertValues([true, true, true, true])
+      self.webViewLoadRequestIsPrepared.assertValues([true, true, true])
       self.webViewLoadRequestURL.assertValues(
         [
-          newPledgeURL(project: project),
-          pledgeURL(project: project),
+          newPaymentsURL(),
           newPaymentsURL(),
           useStoredCardURL()
         ]
@@ -853,9 +762,9 @@ final class CheckoutViewModelTests: TestCase {
         self.vm.inputs.shouldStartLoad(withRequest: useStoredCardRequest().prepared(), navigationType: .Other)
       )
 
-      // 5: Checkout is racing, delay a second to check status (successful!), then go to thanks.
+      // 3: Checkout is racing, delay a second to check status (successful!), then go to thanks.
       self.goToThanks.assertDidNotEmitValue()
-      self.webViewLoadRequestURL.assertValueCount(4)
+      self.webViewLoadRequestURL.assertValueCount(3)
 
       XCTAssertFalse(
         self.vm.inputs.shouldStartLoad(
@@ -875,22 +784,33 @@ final class CheckoutViewModelTests: TestCase {
   func testProjectRequestPopsViewController() {
     let project = Project.template
 
-    self.vm.inputs.configureWith(initialRequest: newPledgeRequest(project: project).prepared(),
+    self.webViewLoadRequestURL.assertDidNotEmitValue()
+
+    // 1: Open new payments form
+    self.vm.inputs.configureWith(initialRequest: newPaymentsRequest().prepared(),
                                  project: project,
                                  reward: .template,
                                  applePayCapable: false)
     self.vm.inputs.viewDidLoad()
 
-    // 1: Show reward and shipping form
-    self.webViewLoadRequestIsPrepared.assertValues([true])
-    self.webViewLoadRequestURL.assertValues([newPledgeURL(project: project)])
+    self.webViewLoadRequestURL.assertValues([newPaymentsURL()])
+
+    XCTAssertFalse(
+      self.vm.inputs.shouldStartLoad(withRequest: newPaymentsRequest(), navigationType: .Other),
+      "Not prepared"
+    )
 
     XCTAssertTrue(
       self.vm.inputs.shouldStartLoad(
-        withRequest: newPledgeRequest(project: project).prepared(),
-        navigationType: .Other
-      )
+        withRequest: newPaymentsRequest().prepared(),
+        navigationType: .Other)
     )
+
+    self.webViewLoadRequestIsPrepared.assertValues([true, true])
+    self.webViewLoadRequestURL.assertValues(
+      [newPaymentsURL(), newPaymentsURL()]
+    )
+
     XCTAssertTrue(self.vm.inputs.shouldStartLoad(withRequest: stripeRequest(), navigationType: .Other))
 
     // 2: Project link clicked
@@ -920,67 +840,35 @@ final class CheckoutViewModelTests: TestCase {
     withEnvironment(currentUser: .template) {
       self.webViewLoadRequestURL.assertDidNotEmitValue()
 
-      self.vm.inputs.configureWith(initialRequest: newPledgeRequest(project: project).prepared(),
+      // 1: Open new payments form
+      self.vm.inputs.configureWith(initialRequest: newPaymentsRequest().prepared(),
                                    project: project,
                                    reward: .template,
                                    applePayCapable: true)
       self.vm.inputs.viewDidLoad()
 
-      // 1: Show reward and shipping form
-      self.webViewLoadRequestIsPrepared.assertValues([true])
-      self.webViewLoadRequestURL.assertValues([newPledgeURL(project: project)])
-
-      XCTAssertTrue(
-        self.vm.inputs.shouldStartLoad(
-          withRequest: newPledgeRequest(project: project).prepared(),
-          navigationType: .Other
-        )
-      )
-      XCTAssertTrue(self.vm.inputs.shouldStartLoad(withRequest: stripeRequest(), navigationType: .Other))
-
-      // 2: Submit reward and shipping form
-      self.webViewLoadRequestURL.assertValueCount(1)
-
-      XCTAssertFalse(
-        self.vm.inputs.shouldStartLoad(
-          withRequest: pledgeRequest(project: project),
-          navigationType: .FormSubmitted
-        ),
-        "Not prepared"
-      )
-
-      self.webViewLoadRequestIsPrepared.assertValues([true, true])
-      self.webViewLoadRequestURL.assertValues(
-        [newPledgeURL(project: project), pledgeURL(project: project)]
-      )
-
-      XCTAssertTrue(
-        self.vm.inputs.shouldStartLoad(
-          withRequest: pledgeRequest(project: project).prepared(),
-          navigationType: .Other
-        )
-      )
-
-      // 3: Redirect to new payments form
-      self.webViewLoadRequestURL.assertValueCount(2)
+      self.webViewLoadRequestURL.assertValues([newPaymentsURL()])
 
       XCTAssertFalse(
         self.vm.inputs.shouldStartLoad(withRequest: newPaymentsRequest(), navigationType: .Other),
         "Not prepared"
       )
 
-      self.webViewLoadRequestIsPrepared.assertValues([true, true, true])
-      self.webViewLoadRequestURL.assertValues(
-        [newPledgeURL(project: project), pledgeURL(project: project), newPaymentsURL()]
+      XCTAssertTrue(
+        self.vm.inputs.shouldStartLoad(
+          withRequest: newPaymentsRequest().prepared(),
+          navigationType: .Other)
       )
 
-      XCTAssertTrue(
-        self.vm.inputs.shouldStartLoad(withRequest: newPaymentsRequest().prepared(), navigationType: .Other)
+      self.webViewLoadRequestIsPrepared.assertValues([true, true])
+      self.webViewLoadRequestURL.assertValues(
+        [newPaymentsURL(), newPaymentsURL()]
       )
+
       XCTAssertTrue(self.vm.inputs.shouldStartLoad(withRequest: stripeRequest(), navigationType: .Other))
 
-      // 4: Pledge with apple pay
-      self.webViewLoadRequestURL.assertValueCount(3)
+      // 2: Pledge with apple pay
+      self.webViewLoadRequestURL.assertValueCount(2)
 
       XCTAssertFalse(
         self.vm.inputs.shouldStartLoad(
@@ -995,16 +883,15 @@ final class CheckoutViewModelTests: TestCase {
         "Apple Pay url not allowed"
       )
 
-      self.webViewLoadRequestIsPrepared.assertValues([true, true, true])
+      self.webViewLoadRequestIsPrepared.assertValues([true, true])
       self.webViewLoadRequestURL.assertValues(
         [
-          newPledgeURL(project: project),
-          pledgeURL(project: project),
+          newPaymentsURL(),
           newPaymentsURL()
         ]
       )
 
-      // 5: Apple Pay sheet
+      // 3: Apple Pay sheet
 
       self.goToPaymentAuthorization.assertValueCount(1)
 
@@ -1048,22 +935,21 @@ final class CheckoutViewModelTests: TestCase {
       self.evaluateJavascript.assertValues([
         "window.checkout_apple_pay_next({\"apple_pay_token\":{\"transaction_identifier\":" +
           "\"apple_pay_deadbeef\",\"payment_instrument_name\":\"AmEx 1111\",\"payment_network\":\"AmEx\"}," +
-          "\"stripe_token\":{\"id\":\"stripe_deadbeef\"}});"
+        "\"stripe_token\":{\"id\":\"stripe_deadbeef\"}});"
         ])
 
-      // 6: Submit payment form
-      self.webViewLoadRequestURL.assertValueCount(3)
+      // 4: Submit payment form
+      self.webViewLoadRequestURL.assertValueCount(2)
 
       XCTAssertFalse(
         self.vm.inputs.shouldStartLoad(withRequest: paymentsRequest(), navigationType: .FormSubmitted),
         "Not prepared"
       )
 
-      self.webViewLoadRequestIsPrepared.assertValues([true, true, true, true])
+      self.webViewLoadRequestIsPrepared.assertValues([true, true, true])
       self.webViewLoadRequestURL.assertValues(
         [
-          newPledgeURL(project: project),
-          pledgeURL(project: project),
+          newPaymentsURL(),
           newPaymentsURL(),
           paymentsURL()
         ]
@@ -1079,9 +965,9 @@ final class CheckoutViewModelTests: TestCase {
         self.trackingClient.events
       )
 
-      // 7: Redirect to thanks
+      // 5: Redirect to thanks
       self.goToThanks.assertDidNotEmitValue()
-      self.webViewLoadRequestURL.assertValueCount(4)
+      self.webViewLoadRequestURL.assertValueCount(3)
 
       XCTAssertFalse(
         self.vm.inputs.shouldStartLoad(
@@ -1149,9 +1035,9 @@ internal extension NSURLRequest {
 }
 
 private func applePayUrlRequest(project project: Project,
-                                 amount: Int,
-                                 reward: Reward,
-                                 location: Location) -> NSURLRequest {
+                                        amount: Int,
+                                        reward: Reward,
+                                        location: Location) -> NSURLRequest {
 
   let payload = [
     "country_code": project.country.countryCode,

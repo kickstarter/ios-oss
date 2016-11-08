@@ -46,6 +46,9 @@ public protocol CheckoutViewModelOutputs {
   /// Emits when the login tout should be closed.
   var closeLoginTout: Signal<Void, NoError> { get }
 
+  /// Emits when the modal view controller should be dismissed.
+  var dismissViewController: Signal<Void, NoError> { get }
+
   /// Emits a string that should be evaluated as javascript in the webview.
   var evaluateJavascript: Signal<String, NoError> { get }
 
@@ -200,6 +203,14 @@ public final class CheckoutViewModel: CheckoutViewModelType {
       )
 
     self.popViewController = Signal.merge(checkoutCancelled, self.failureAlertButtonTappedProperty.signal)
+
+    self.dismissViewController = requestData
+      .filter { requestData in
+        if let navigation = requestData.navigation,
+          case .project(_, .pledge(.new), _) = navigation { return true }
+        return false
+      }
+      .ignoreValues()
 
     self.shouldStartLoadResponseProperty <~ requestData
       .map { $0.shouldStartLoad }
@@ -371,6 +382,7 @@ public final class CheckoutViewModel: CheckoutViewModelType {
   }
 
   public let closeLoginTout: Signal<Void, NoError>
+  public let dismissViewController: Signal<Void, NoError>
   public let evaluateJavascript: Signal<String, NoError>
   public let goToPaymentAuthorization: Signal<PKPaymentRequest, NoError>
   public let goToSafariBrowser: Signal<NSURL, NoError>
@@ -413,7 +425,6 @@ private func isNavigationLoadedByWebView(navigation navigation: Navigation?) -> 
     .project(_, .pledge(.changeMethod), _),
     .project(_, .pledge(.destroy), _),
     .project(_, .pledge(.edit), _),
-    .project(_, .pledge(.new), _),
     .project(_, .pledge(.root), _):
     return true
   default:
