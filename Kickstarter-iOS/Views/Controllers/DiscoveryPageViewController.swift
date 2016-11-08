@@ -218,11 +218,11 @@ extension DiscoveryPageViewController: DiscoveryOnboardingCellDelegate {
 extension DiscoveryPageViewController: EmptyStatesViewControllerDelegate {
   func emptyStatesViewController(viewController: EmptyStatesViewController,
                                  goToDiscoveryWithParams params: DiscoveryParams?) {
-    viewController.dismissViewControllerAnimated(false, completion: nil)
-
-    self.view.window?.rootViewController
-      .flatMap { $0 as? RootTabBarViewController }
-      .doIfSome { $0.switchToDiscovery(params: params) }
+    viewController.dismissViewControllerAnimated(false) { [weak self] in
+      self?.view.window?.rootViewController
+        .flatMap { $0 as? RootTabBarViewController }
+        .doIfSome { $0.switchToDiscovery(params: params) }
+    }
   }
 
   func emptyStatesViewControllerGoToFriends() {

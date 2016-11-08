@@ -75,7 +75,7 @@ internal final class DiscoveryViewController: UIViewController {
         }
 
         self?.pageViewController.setViewControllers(
-          [controller], direction: direction, animated: false, completion: nil
+          [controller], direction: direction, animated: true, completion: nil
         )
     }
 
