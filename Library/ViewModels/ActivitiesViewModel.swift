@@ -118,12 +118,12 @@ ActivitiesViewModelOutputs {
     let requestFirstPage = Signal
       .merge(
         self.userSessionStartedProperty.signal,
-        self.viewWillAppearProperty.signal.ignoreNil().filter(isFalse).take(1).ignoreValues(),
+        self.viewWillAppearProperty.signal.ignoreNil().filter(isFalse).ignoreValues(),
         self.refreshProperty.signal
         )
-        .filter { AppEnvironment.current.apiService.isAuthenticated }
+        .filter { AppEnvironment.current.currentUser != nil }
 
-    let (activities, isLoading, pageCount) = paginate(
+    let (paginatedActivities, isLoading, pageCount) = paginate(
       requestFirstPageWith: requestFirstPage,
       requestNextPageWhen: isCloseToBottom,
       clearOnNewRequest: false,
@@ -131,7 +131,11 @@ ActivitiesViewModelOutputs {
       valuesFromEnvelope: { $0.activities },
       cursorFromEnvelope: { $0.urls.api.moreActivities },
       requestFromParams: { _ in AppEnvironment.current.apiService.fetchActivities(count: nil) },
-      requestFromCursor: { AppEnvironment.current.apiService.fetchActivities(paginationUrl: $0) })
+      requestFromCursor: { AppEnvironment.current.apiService.fetchActivities(paginationUrl: $0) }
+    )
+
+    let activities = paginatedActivities
+      .scan([]) { acc, next in (acc + next).distincts().sort { $0.id > $1.id } }
 
     self.isRefreshing = isLoading
 
@@ -151,11 +155,7 @@ ActivitiesViewModelOutputs {
           .compact()
       }
 
-    self.activities = combineLatest(
-        self.viewWillAppearProperty.signal.ignoreNil().take(1),
-        Signal.merge(clearedActivitiesOnSessionEnd, updatedActivities)
-      )
-      .map(second)
+    self.activities = Signal.merge(clearedActivitiesOnSessionEnd, updatedActivities)
 
     let currentUser = Signal
       .merge(
@@ -332,10 +332,6 @@ ActivitiesViewModelOutputs {
   private let userSessionEndedProperty = MutableProperty(())
   public func userSessionEnded() {
     self.userSessionEndedProperty.value = ()
-  }
-  private let viewDidDisappearProperty = MutableProperty()
-  public func viewDidDisappear() {
-    self.viewDidDisappearProperty.value = ()
   }
   private let viewDidLoadProperty = MutableProperty()
   public func viewDidLoad() {

@@ -28,7 +28,7 @@ internal final class ActivitiesViewController: UITableViewController {
     }
   }
 
-  override func viewDidLoad() {
+  internal override func viewDidLoad() {
     super.viewDidLoad()
 
     self.tableView.dataSource = dataSource
@@ -46,7 +46,7 @@ internal final class ActivitiesViewController: UITableViewController {
     super.bindStyles()
 
     self
-      |> baseTableControllerStyle(estimatedRowHeight: 300.0)
+      |> baseTableControllerStyle(estimatedRowHeight: 80.0)
 
     self.navigationItem
       |> UINavigationItem.lens.title %~ { _ in Strings.activity_navigation_title_activity() }
@@ -150,8 +150,8 @@ internal final class ActivitiesViewController: UITableViewController {
   // swiftlint:enable function_body_length
 
   internal override func tableView(tableView: UITableView,
-                          willDisplayCell cell: UITableViewCell,
-                                          forRowAtIndexPath indexPath: NSIndexPath) {
+                                   willDisplayCell cell: UITableViewCell,
+                                   forRowAtIndexPath indexPath: NSIndexPath) {
 
     if let cell = cell as? ActivityUpdateCell where cell.delegate == nil {
       cell.delegate = self

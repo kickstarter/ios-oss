@@ -53,45 +53,45 @@ final class ActivitiesViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewWillAppear(animated: false)
 
-    activitiesPresent.assertValues([], "No activities shown")
-    showEmptyStateIsLoggedIn.assertValues([false], "Logged-out empty state emits.")
+    self.activitiesPresent.assertValues([], "No activities shown for logged-out user.")
+    self.showEmptyStateIsLoggedIn.assertValues([false], "Logged-out empty state emits.")
 
     self.vm.inputs.viewWillAppear(animated: false)
 
-    activitiesPresent.assertValues([], "No activities shown")
-    showEmptyStateIsLoggedIn.assertValues([false], "Empty state does not emit again.")
-    dismissEmptyState.assertValueCount(0, "Dismiss empty state does not emit.")
+    self.activitiesPresent.assertValues([], "No activities shown for logged-out user.")
+    self.showEmptyStateIsLoggedIn.assertValues([false], "Logged-out empty state does not emit again.")
+    self.dismissEmptyState.assertValueCount(0, "Dismiss empty state does not emit.")
 
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: User.template))
-    self.vm.inputs.userSessionStarted()
-    self.vm.inputs.viewWillAppear(animated: false)
+    withEnvironment(apiService: MockService(fetchActivitiesResponse: [activity1, activity2])) {
+      self.vm.inputs.userSessionStarted()
+      self.vm.inputs.viewWillAppear(animated: false)
 
-    self.scheduler.advance()
+      self.scheduler.advance()
 
-    activitiesPresent.assertValues([true], "Activities load after session starts and view appears.")
-    showEmptyStateIsLoggedIn.assertValues([false], "Empty state does not emit.")
-    dismissEmptyState.assertValueCount(1, "Dismiss empty state emits.")
+      self.activitiesPresent.assertValues([true], "Activities load after session starts and view appears.")
+      self.showEmptyStateIsLoggedIn.assertValues([false], "Empty state does not emit.")
+      self.dismissEmptyState.assertValueCount(1, "Dismiss empty state emits.")
 
-    self.vm.inputs.viewWillAppear(animated: false)
+      self.vm.inputs.viewWillAppear(animated: false)
 
-    activitiesPresent.assertValues([true], "Activities does not emit.")
-    showEmptyStateIsLoggedIn.assertValues([false], "Empty state does not emit.")
-    dismissEmptyState.assertValueCount(1, "Dismiss empty state does not emit.")
+      self.activitiesPresent.assertValues([true], "Activities do not emit.")
+      self.showEmptyStateIsLoggedIn.assertValues([false], "Empty state does not emit.")
+      self.dismissEmptyState.assertValueCount(1, "Dismiss empty state does not emit.")
+    }
 
     AppEnvironment.logout()
     self.vm.inputs.userSessionEnded()
-    self.scheduler.advance()
 
-    activitiesPresent.assertValues([true, false], "Activities does not emit.")
-
-    showEmptyStateIsLoggedIn.assertValues([false], "Empty state does not emit.")
-    dismissEmptyState.assertValueCount(1, "Dismiss empty state does not emit.")
+    self.activitiesPresent.assertValues([true, false], "Activities are cleared.")
+    self.showEmptyStateIsLoggedIn.assertValues([false], "Empty logged-in state does not emit.")
+    self.dismissEmptyState.assertValueCount(1, "Dismiss empty state does not emit.")
 
     self.vm.inputs.viewWillAppear(animated: false)
 
-    activitiesPresent.assertValues([true, false], "Activities does not emit again.")
-    showEmptyStateIsLoggedIn.assertValues([false, false], "Logged-out empty state does emit again.")
-    dismissEmptyState.assertValueCount(1, "Dismiss empty state does not emit.")
+    self.activitiesPresent.assertValues([true, false], "Activities are still cleared.")
+    self.showEmptyStateIsLoggedIn.assertValues([false, false], "Logged-out empty state emits again.")
+    self.dismissEmptyState.assertValueCount(1, "Dismiss empty state does not emit.")
   }
 
   // Tests the flow of logging in with a user that has no activities and making sure the correct
@@ -177,29 +177,31 @@ final class ActivitiesViewModelTests: TestCase {
   }
 
   func testRefreshActivities() {
-    self.vm.inputs.viewDidLoad()
 
-    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: User.template))
-    self.vm.inputs.userSessionStarted()
-    self.vm.inputs.viewWillAppear(animated: false)
-    self.scheduler.advance()
+    withEnvironment(apiService: MockService(fetchActivitiesResponse: [activity1, activity2]),
+                    currentUser: .template) {
 
-    activitiesPresent.assertValues([true], "Activities load immediately after session starts.")
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.userSessionStarted()
+      self.vm.inputs.viewWillAppear(animated: false)
+      self.scheduler.advance()
 
-    self.vm.inputs.willDisplayRow(9, outOf: 10)
-    self.scheduler.advance()
+      self.activitiesPresent.assertValues([true], "Activities load immediately after session starts.")
 
-    activitiesPresent.assertValues([true, true], "Activities load immediately after session starts.")
+      self.vm.inputs.willDisplayRow(9, outOf: 10)
+      self.scheduler.advance()
 
-    self.vm.inputs.refresh()
-    self.scheduler.advance()
+      self.activitiesPresent.assertValues([true, true], "New activities emit on pagination.")
 
-    activitiesPresent.assertValues([true, true, true], "Activities emit on refresh.")
+      // New fetchActivitiesResponse
+      withEnvironment(apiService: MockService(fetchActivitiesResponse: [activity1, activity2, activity3])) {
 
-    self.vm.inputs.refresh()
-    self.scheduler.advance()
+        self.vm.inputs.refresh()
+        self.scheduler.advance()
 
-    activitiesPresent.assertValues([true, true, true, true], "Activities emit on user updated.")
+        self.activitiesPresent.assertValues([true, true, true], "New activities emit on refresh.")
+      }
+    }
   }
 
   func testGoToProject() {
@@ -426,4 +428,8 @@ final class ActivitiesViewModelTests: TestCase {
       }
     }
   }
+
+  private let activity1 = .template |> Activity.lens.id .~ 1
+  private let activity2 = .template |> Activity.lens.id .~ 2
+  private let activity3 = .template |> Activity.lens.id .~ 3
 }
