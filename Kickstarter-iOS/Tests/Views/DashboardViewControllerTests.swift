@@ -39,8 +39,6 @@ internal final class DashboardViewControllerTests: TestCase {
 
         parent.view.frame.size.height = device == .pad ? 2_150 : 2_000
 
-        controller.viewDidAppear(false)
-
         self.scheduler.run()
 
         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")

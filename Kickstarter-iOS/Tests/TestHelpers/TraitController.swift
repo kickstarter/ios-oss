@@ -92,5 +92,8 @@ internal func traitControllers(device device: Device = .phone4_7inch,
     let allTraits = UITraitCollection.init(traitsFromCollections: [traits, additionalTraits])
     parent.setOverrideTraitCollection(allTraits, forChildViewController: child)
 
+    parent.beginAppearanceTransition(true, animated: false)
+    parent.endAppearanceTransition()
+
     return (parent, child)
 }

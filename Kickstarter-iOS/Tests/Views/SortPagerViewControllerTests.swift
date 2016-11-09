@@ -23,12 +23,10 @@ internal final class SortPagerViewControllerTests: TestCase {
     Language.allLanguages.forEach { language in
       withEnvironment(language: language) {
         let controller = SortPagerViewController.instantiate()
+        controller.configureWith(sorts: sorts)
+
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
         parent.view.frame.size.height = 50
-
-        controller.configureWith(sorts: sorts)
-        controller.viewWillAppear(false)
-        controller.viewDidAppear(false)
 
         self.scheduler.advanceByInterval(0.1)
 
@@ -41,12 +39,11 @@ internal final class SortPagerViewControllerTests: TestCase {
     Language.allLanguages.forEach { language in
       withEnvironment(language: language) {
         let controller = SortPagerViewController.instantiate()
+        controller.configureWith(sorts: sorts)
+
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
         parent.view.frame.size.height = 50
 
-        controller.configureWith(sorts: sorts)
-        controller.viewWillAppear(false)
-        controller.viewDidAppear(false)
         controller.updateStyle(categoryId: 1)
 
         self.scheduler.advanceByInterval(0.1)
@@ -60,12 +57,11 @@ internal final class SortPagerViewControllerTests: TestCase {
     Language.allLanguages.forEach { language in
       withEnvironment(language: language) {
         let controller = SortPagerViewController.instantiate()
+        controller.configureWith(sorts: sorts)
+
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
         parent.view.frame.size.height = 50
 
-        controller.configureWith(sorts: sorts)
-        controller.viewWillAppear(false)
-        controller.viewDidAppear(false)
         controller.updateStyle(categoryId: 11)
 
         self.scheduler.advanceByInterval(0.1)
@@ -79,12 +75,11 @@ internal final class SortPagerViewControllerTests: TestCase {
     Language.allLanguages.forEach { language in
       withEnvironment(language: language) {
         let controller = SortPagerViewController.instantiate()
+        controller.configureWith(sorts: sorts)
+
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
         parent.view.frame.size.height = 50
 
-        controller.configureWith(sorts: sorts)
-        controller.viewWillAppear(false)
-        controller.viewDidAppear(false)
         controller.updateStyle(categoryId: 12)
 
         self.scheduler.advanceByInterval(0.1)
@@ -98,12 +93,10 @@ internal final class SortPagerViewControllerTests: TestCase {
     Language.allLanguages.forEach { language in
       withEnvironment(language: language) {
         let controller = SortPagerViewController.instantiate()
+        controller.configureWith(sorts: sorts)
+
         let (parent, _) = traitControllers(device: .pad, orientation: .portrait, child: controller)
         parent.view.frame.size.height = 50
-
-        controller.configureWith(sorts: sorts)
-        controller.viewWillAppear(false)
-        controller.viewDidAppear(false)
 
         self.scheduler.advanceByInterval(0.1)
 
@@ -116,12 +109,10 @@ internal final class SortPagerViewControllerTests: TestCase {
     Language.allLanguages.forEach { language in
       withEnvironment(language: language) {
         let controller = SortPagerViewController.instantiate()
+        controller.configureWith(sorts: sorts)
+
         let (parent, _) = traitControllers(device: .pad, orientation: .landscape, child: controller)
         parent.view.frame.size.height = 50
-
-        controller.configureWith(sorts: sorts)
-        controller.viewWillAppear(false)
-        controller.viewDidAppear(false)
 
         self.scheduler.advanceByInterval(0.1)
 
@@ -134,12 +125,11 @@ internal final class SortPagerViewControllerTests: TestCase {
     Language.allLanguages.forEach { language in
       withEnvironment(language: language) {
         let controller = SortPagerViewController.instantiate()
+        controller.configureWith(sorts: sorts)
+
         let (parent, _) = traitControllers(device: .pad, orientation: .portrait, child: controller)
         parent.view.frame.size.height = 50
 
-        controller.configureWith(sorts: sorts)
-        controller.viewWillAppear(false)
-        controller.viewDidAppear(false)
         controller.updateStyle(categoryId: 1)
 
         self.scheduler.advanceByInterval(0.1)
@@ -153,12 +143,11 @@ internal final class SortPagerViewControllerTests: TestCase {
     Language.allLanguages.forEach { language in
       withEnvironment(language: language) {
         let controller = SortPagerViewController.instantiate()
+        controller.configureWith(sorts: sorts)
+
         let (parent, _) = traitControllers(device: .pad, orientation: .portrait, child: controller)
         parent.view.frame.size.height = 50
 
-        controller.configureWith(sorts: sorts)
-        controller.viewWillAppear(false)
-        controller.viewDidAppear(false)
         controller.updateStyle(categoryId: 11)
 
         self.scheduler.advanceByInterval(0.1)
@@ -172,12 +161,11 @@ internal final class SortPagerViewControllerTests: TestCase {
     Language.allLanguages.forEach { language in
       withEnvironment(language: language) {
         let controller = SortPagerViewController.instantiate()
+        controller.configureWith(sorts: sorts)
+
         let (parent, _) = traitControllers(device: .pad, orientation: .portrait, child: controller)
         parent.view.frame.size.height = 50
 
-        controller.configureWith(sorts: sorts)
-        controller.viewWillAppear(false)
-        controller.viewDidAppear(false)
         controller.updateStyle(categoryId: 12)
 
         self.scheduler.advanceByInterval(0.1)

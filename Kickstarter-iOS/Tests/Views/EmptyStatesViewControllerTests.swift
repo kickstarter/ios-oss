@@ -25,8 +25,6 @@ internal final class EmptyStatesViewControllerTests: TestCase {
         let controller = EmptyStatesViewController.configuredWith(emptyState: emptyState)
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
 
-        controller.viewWillAppear(false)
-
         FBSnapshotVerifyView(parent.view, identifier: "_\(emptyState.rawValue)_lang_\(language)")
       }
     }
@@ -39,8 +37,6 @@ internal final class EmptyStatesViewControllerTests: TestCase {
       withEnvironment(language: language) {
         let controller = EmptyStatesViewController.configuredWith(emptyState: emptyState)
         let (parent, _) = traitControllers(device: .pad, orientation: .portrait, child: controller)
-
-        controller.viewWillAppear(false)
 
         FBSnapshotVerifyView(parent.view, identifier: "_\(emptyState.rawValue)_lang_\(language)")
       }

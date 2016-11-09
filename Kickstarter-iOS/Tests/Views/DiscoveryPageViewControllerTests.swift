@@ -29,8 +29,6 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
           let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
           parent.view.frame.size.height = 250
 
-          controller.viewWillAppear(false)
-
           self.scheduler.run()
 
           FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
@@ -50,9 +48,6 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
         parent.view.frame.size.height = 210
 
         controller.change(filter: magicParams)
-        controller.viewWillAppear(false)
-        controller.viewDidAppear(false)
-
         self.scheduler.run()
 
         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
