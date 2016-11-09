@@ -202,15 +202,21 @@ public final class CheckoutViewModel: CheckoutViewModelType {
       self.cancelButtonTappedProperty.signal
       )
 
-    self.popViewController = Signal.merge(checkoutCancelled, self.failureAlertButtonTappedProperty.signal)
+    self.popViewController = Signal.merge(
+      self.failureAlertButtonTappedProperty.signal,
+      self.cancelButtonTappedProperty.signal
+    )
 
-    self.dismissViewController = requestData
-      .filter { requestData in
-        if let navigation = requestData.navigation,
-          case .project(_, .pledge(.new), _) = navigation { return true }
-        return false
-      }
-      .ignoreValues()
+    self.dismissViewController = Signal.merge(
+      requestData
+        .filter { requestData in
+          if let navigation = requestData.navigation,
+            case .project(_, .pledge(.new), _) = navigation { return true }
+          return false
+        }
+        .ignoreValues(),
+      projectRequest
+    )
 
     self.shouldStartLoadResponseProperty <~ requestData
       .map { $0.shouldStartLoad }

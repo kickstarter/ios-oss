@@ -186,8 +186,8 @@ final class CheckoutViewModelTests: TestCase {
         [editPledgeURL(project: project), cancelPledgeURL(project: project), pledgeURL(project: project)]
       )
 
-      // 4: Redirect to project, view controller popped
-      self.popViewController.assertDidNotEmitValue()
+      // 4: Redirect to project, view controller dismissed
+      self.dismissViewController.assertDidNotEmitValue()
       XCTAssertEqual([], self.trackingClient.events)
       XCTAssertEqual([], self.trackingClient.properties(forKey: "type", as: String.self))
 
@@ -196,7 +196,7 @@ final class CheckoutViewModelTests: TestCase {
       )
       XCTAssertEqual(["Checkout Cancel", "Canceled Checkout"],
                      self.trackingClient.events)
-      self.popViewController.assertValueCount(1)
+      self.dismissViewController.assertValueCount(1)
     }
 
     self.evaluateJavascript.assertValueCount(0, "No javascript was evaluated.")
@@ -781,7 +781,7 @@ final class CheckoutViewModelTests: TestCase {
     self.evaluateJavascript.assertValueCount(0, "No javascript was evaluated.")
   }
 
-  func testProjectRequestPopsViewController() {
+  func testProjectRequestDismissesViewController() {
     let project = Project.template
 
     self.webViewLoadRequestURL.assertDidNotEmitValue()
@@ -814,7 +814,7 @@ final class CheckoutViewModelTests: TestCase {
     XCTAssertTrue(self.vm.inputs.shouldStartLoad(withRequest: stripeRequest(), navigationType: .Other))
 
     // 2: Project link clicked
-    self.popViewController.assertDidNotEmitValue()
+    self.dismissViewController.assertDidNotEmitValue()
     XCTAssertEqual([], self.trackingClient.events)
 
     XCTAssertFalse(
@@ -824,7 +824,7 @@ final class CheckoutViewModelTests: TestCase {
       )
     )
 
-    self.popViewController.assertValueCount(1)
+    self.dismissViewController.assertValueCount(1)
     XCTAssertEqual(["Checkout Cancel", "Canceled Checkout"],
                    self.trackingClient.events, "Cancel event and its deprecated version are tracked")
   }
