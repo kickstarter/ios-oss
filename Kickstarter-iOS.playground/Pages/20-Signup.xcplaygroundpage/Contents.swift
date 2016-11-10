@@ -2,7 +2,7 @@ import Library
 import XCPlayground
 @testable import Kickstarter_Framework
 
-// Instantiate the Two Factor view controller.
+// Instantiate the Signup view controller.
 initialize()
 let controller = Storyboard.Login.instantiate(SignupViewController.self)
 

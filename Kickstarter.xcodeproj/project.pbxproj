@@ -198,6 +198,7 @@
 		599604001CE6286900E1B1EC /* ProfileDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 599603FF1CE6286900E1B1EC /* ProfileDataSourceTests.swift */; };
 		59AE35B01D67631B00A310E6 /* DiscoveryPage.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 59AE35AF1D67631B00A310E6 /* DiscoveryPage.storyboard */; };
 		59AE35E21D67643100A310E6 /* DiscoveryPostcardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59AE35E11D67643100A310E6 /* DiscoveryPostcardCell.swift */; };
+		59AFCCEF1DD3D0B9004A200E /* FindFriendsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59AFCCEE1DD3D0B9004A200E /* FindFriendsViewControllerTests.swift */; };
 		59B0DFC51D11AC850081D2DC /* DashboardDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B0DFC31D11AC850081D2DC /* DashboardDataSource.swift */; };
 		59B0DFFE1D11B2E50081D2DC /* DashboardContextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B0DFFC1D11B2E50081D2DC /* DashboardContextCell.swift */; };
 		59B0E0001D11EAC70081D2DC /* DashboardViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B0DFFF1D11EAC70081D2DC /* DashboardViewModelTests.swift */; };
@@ -1671,6 +1672,7 @@
 		599603FF1CE6286900E1B1EC /* ProfileDataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileDataSourceTests.swift; sourceTree = "<group>"; };
 		59AE35AF1D67631B00A310E6 /* DiscoveryPage.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = DiscoveryPage.storyboard; sourceTree = "<group>"; };
 		59AE35E11D67643100A310E6 /* DiscoveryPostcardCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryPostcardCell.swift; sourceTree = "<group>"; };
+		59AFCCEE1DD3D0B9004A200E /* FindFriendsViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindFriendsViewControllerTests.swift; sourceTree = "<group>"; };
 		59B0DFC31D11AC850081D2DC /* DashboardDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardDataSource.swift; sourceTree = "<group>"; };
 		59B0DFFC1D11B2E50081D2DC /* DashboardContextCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardContextCell.swift; sourceTree = "<group>"; };
 		59B0DFFF1D11EAC70081D2DC /* DashboardViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardViewModelTests.swift; sourceTree = "<group>"; };
@@ -2393,6 +2395,7 @@
 				59885A951DB6E04100F65825 /* LoginViewControllerTests.swift */,
 				59235ED81DC0149B0067F4AD /* DiscoveryPageViewControllerTests.swift */,
 				59F0C0961DBEC8DE0007E0A7 /* DashboardViewControllerTests.swift */,
+				59AFCCEE1DD3D0B9004A200E /* FindFriendsViewControllerTests.swift */,
 				59885A971DB6E2A900F65825 /* TwoFactorViewControllerTests.swift */,
 				59885A991DB6EA5700F65825 /* SignupViewControllerTests.swift */,
 				59885A9D1DB6EFD900F65825 /* ResetPasswordViewControllerTests.swift */,
@@ -5145,6 +5148,7 @@
 				A77519121C8CADE20022F175 /* AppDelegateViewModelTests.swift in Sources */,
 				599604001CE6286900E1B1EC /* ProfileDataSourceTests.swift in Sources */,
 				D7086F3C1DB7FBA40087E5EB /* BackingViewControllerTests.swift in Sources */,
+				59AFCCEF1DD3D0B9004A200E /* FindFriendsViewControllerTests.swift in Sources */,
 				A72D943B1CB3477000A88249 /* MockBundle.swift in Sources */,
 				A77FD5B51D91FD2C00FFC636 /* RewardPledgeViewControllerTests.swift in Sources */,
 				015B78BC1D481805003216AC /* HelpWebViewModelTests.swift in Sources */,

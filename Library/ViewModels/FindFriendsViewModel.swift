@@ -46,7 +46,7 @@ public protocol FindFriendsViewModelOutputs {
   /// Emits DiscoveryParams when should go to Discovery
   var goToDiscovery: Signal<DiscoveryParams, NoError> { get }
 
-  /// Emits bool whether friends are loading or not
+  /// Emits a boolean that determines if friends are currently loading.
   var isLoading: Signal<Bool, NoError> { get }
 
   /// Emits when error alert should show with AlertError
@@ -97,8 +97,7 @@ public final class FindFriendsViewModel: FindFriendsViewModelType, FindFriendsVi
       .filter(isTrue)
       .ignoreValues()
 
-    let friends: Signal<[User], NoError>
-    (friends, self.isLoading, _) = paginate(
+    let (friends, isLoading, _) = paginate(
       requestFirstPageWith: requestFirstPageWith,
       requestNextPageWhen: requestNextPageWhen,
       clearOnNewRequest: false,
@@ -132,6 +131,8 @@ public final class FindFriendsViewModel: FindFriendsViewModelType, FindFriendsVi
           |> DiscoveryParams.lens.sort .~ .magic
     }
 
+    self.isLoading = isLoading
+
     self.showFollowAllFriendsAlert = self.showFollowAllFriendsAlertProperty.signal
 
     self.showErrorAlert = self.showFacebookConnectErrorAlertProperty.signal.ignoreNil()
@@ -164,25 +165,25 @@ public final class FindFriendsViewModel: FindFriendsViewModelType, FindFriendsVi
 
   private let configureWithProperty = MutableProperty<FriendsSource>(FriendsSource.findFriends)
   public func configureWith(source source: FriendsSource) {
-    configureWithProperty.value = source
+    self.configureWithProperty.value = source
   }
   private let confirmFollowAllFriendsProperty = MutableProperty()
   public func confirmFollowAllFriends() {
-    confirmFollowAllFriendsProperty.value = ()
+    self.confirmFollowAllFriendsProperty.value = ()
   }
   private let declineFollowAllFriendsProperty = MutableProperty()
   public func declineFollowAllFriends() {
-    declineFollowAllFriendsProperty.value = ()
+    self.declineFollowAllFriendsProperty.value = ()
   }
   public func findFriendsFacebookConnectCellDidDismissHeader() {}
 
   private let userFacebookConnectedProperty = MutableProperty()
   public func findFriendsFacebookConnectCellDidFacebookConnectUser() {
-    userFacebookConnectedProperty.value = ()
+    self.userFacebookConnectedProperty.value = ()
   }
   private let showFacebookConnectErrorAlertProperty = MutableProperty<AlertError?>(nil)
   public func findFriendsFacebookConnectCellShowErrorAlert(alert: AlertError) {
-    showFacebookConnectErrorAlertProperty.value = alert
+    self.showFacebookConnectErrorAlertProperty.value = alert
   }
   private let updateFriendProperty = MutableProperty<User?>(nil)
   public func updateFriend(updatedFriend: User) {
@@ -190,15 +191,15 @@ public final class FindFriendsViewModel: FindFriendsViewModelType, FindFriendsVi
   }
   private let viewDidLoadProperty = MutableProperty()
   public func viewDidLoad() {
-    viewDidLoadProperty.value = ()
+    self.viewDidLoadProperty.value = ()
   }
   private let discoverButtonTappedProperty = MutableProperty()
   public func discoverButtonTapped() {
-    discoverButtonTappedProperty.value = ()
+    self.discoverButtonTappedProperty.value = ()
   }
   private let showFollowAllFriendsAlertProperty = MutableProperty<Int>(0)
   public func findFriendsStatsCellShowFollowAllFriendsAlert(friendCount friendCount: Int) {
-    showFollowAllFriendsAlertProperty.value = friendCount
+    self.showFollowAllFriendsAlertProperty.value = friendCount
   }
   private let willDisplayRowProperty = MutableProperty<(row: Int, total: Int)?>(nil)
   public func willDisplayRow(row: Int, outOf totalRows: Int) {

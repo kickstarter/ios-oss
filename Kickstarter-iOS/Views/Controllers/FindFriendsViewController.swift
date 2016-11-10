@@ -37,34 +37,34 @@ internal final class FindFriendsViewController: UITableViewController {
     super.bindViewModel()
 
     self.viewModel.outputs.friends
-      .observeForControllerAction()
+      .observeForUI()
       .observeNext { [weak self] (friends, source) in
         self?.dataSource.friends(friends, source: source)
         self?.tableView.reloadData()
     }
 
     self.viewModel.outputs.stats
-      .observeForControllerAction()
+      .observeForUI()
       .observeNext { [weak self] (stats, source) in
         self?.dataSource.stats(stats: stats, source: source)
         self?.tableView.reloadData()
     }
 
     self.viewModel.outputs.showFacebookConnect
-      .observeForControllerAction()
+      .observeForUI()
       .observeNext { [weak self] (source, visible) in
         self?.dataSource.facebookConnect(source: source, visible: visible)
         self?.tableView.reloadData()
     }
 
     self.viewModel.outputs.showFollowAllFriendsAlert
-      .observeForControllerAction()
+      .observeForUI()
       .observeNext { [weak self] count in
         self?.showFollowAllConfirmationAlert(count: count)
     }
 
     self.viewModel.outputs.showErrorAlert
-      .observeForControllerAction()
+      .observeForUI()
       .observeNext { [weak self] error in
       self?.presentViewController(
         UIAlertController.alertController(forError: error),

@@ -36,4 +36,3 @@ let (parent, _) = playgroundControllers(device: .pad, orientation: .portrait, ch
 let frame = parent.view.frame |> CGRect.lens.size.height .~ 1_800
 XCPlaygroundPage.currentPage.liveView = parent
 parent.view.frame = frame
-

@@ -93,6 +93,7 @@ public final class FindFriendsFriendFollowCellViewModel: FindFriendsFriendFollow
               isLoadingFollowRequest.value = false
           })
           .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
+          .mapConst(user |> User.lens.isFriend .~ true)
           .materialize()
     }
 

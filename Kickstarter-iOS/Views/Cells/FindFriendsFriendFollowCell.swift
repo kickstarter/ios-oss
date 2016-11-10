@@ -92,6 +92,7 @@ internal final class FindFriendsFriendFollowCell: UITableViewCell, ValueCell {
 
     self.unfollowButton
       |> lightNavyButtonStyle
+      |> UIButton.lens.titleColor(forState: .Normal) .~ .ksr_text_navy_600
       |> UIButton.lens.targets .~ [(self, action: #selector(unfollowButtonTapped), .TouchUpInside)]
       |> UIButton.lens.title(forState: .Normal) %~ { _ in
         Strings.social_following_friend_buttons_following()
