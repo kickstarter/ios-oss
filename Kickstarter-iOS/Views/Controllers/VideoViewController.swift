@@ -153,6 +153,12 @@ internal final class VideoViewController: UIViewController {
   }
 
   internal func configurePlayer(withURL url: NSURL) {
+    do {
+      try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+    } catch let error as NSError {
+      print("Audio playback error: \(error.localizedDescription)")
+    }
+
     self.playerController.player = AVPlayer(URL: url)
 
     self.playerController.player?.addObserver(self, forKeyPath: durationKeyPath, options: .New, context: nil)
