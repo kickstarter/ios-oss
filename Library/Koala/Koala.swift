@@ -133,8 +133,15 @@ public final class Koala {
 
   /// Determines which gesture was used.
   public enum GestureType: String {
-    case swipe = "swipe"
-    case tap = "tap"
+    case swipe
+    case tap
+
+    private var trackingString: String {
+      switch self {
+      case .swipe:  return "swipe"
+      case .tap:    return "tap"
+      }
+    }
   }
 
   /**
@@ -438,7 +445,7 @@ public final class Koala {
   public func trackDiscoverySelectedSort(nextSort sort: DiscoveryParams.Sort, gesture: GestureType) {
     self.track(event: "Selected Discovery Sort", properties: [
       "discover_sort": sort.rawValue,
-      "gesture_type": gesture.rawValue
+      "gesture_type": gesture.trackingString
       ])
   }
 
@@ -1103,9 +1110,20 @@ public final class Koala {
     self.track(event: "Viewed Project Page", properties: props)
   }
 
+  public func trackSwipedProject(project: Project, refTag: RefTag?) {
+
+    var props = properties(project: project, loggedInUser: self.loggedInUser)
+    props["ref_tag"] = refTag?.stringTag
+
+    self.track(event: "Swiped Project", properties: props)
+    self.track(event: "Project Navigate", properties: props)
+  }
+
   public func trackClosedProjectPage(project: Project, gestureType: GestureType) {
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(["gesture_type": gestureType.trackingString])
     self.track(event: "Closed Project Page",
-               properties: properties(project: project, loggedInUser: self.loggedInUser))
+               properties: props)
   }
 
   public func trackProjectStar(project: Project) {

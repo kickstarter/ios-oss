@@ -53,7 +53,7 @@ public protocol DiscoveryPageViewModelOutputs {
   var dismissEmptyState: Signal<(), NoError> { get }
 
   /// Emits a project and ref tag that we should go to.
-  var goToProject: Signal<(Project, RefTag), NoError> { get }
+  var goToProject: Signal<(Project, [Project], RefTag), NoError> { get }
 
   /// Emits a project and update when should go to update.
   var goToProjectUpdate: Signal<(Project, Update), NoError> { get }
@@ -155,14 +155,18 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
 
     let activitySampleTapped = self.tappedActivity.signal.ignoreNil()
       .filter { $0.category != .update }
-      .map { $0.project }.ignoreNil()
+      .map { $0.project }
+      .ignoreNil()
       .map { ($0, RefTag.activitySample) }
 
     let projectCardTapped = paramsChanged
       .takePairWhen(self.tappedProject.signal.ignoreNil())
       .map { params, project in (project, refTag(fromParams: params, project: project)) }
 
-    self.goToProject = Signal.merge(activitySampleTapped, projectCardTapped)
+    self.goToProject = self.projects
+      .takePairWhen(.merge(activitySampleTapped, projectCardTapped))
+      .map(unpack)
+      .map { projects, project, refTag in (project, projects, refTag) }
 
     self.goToProjectUpdate = self.tappedActivity.signal.ignoreNil()
       .filter { $0.category == .update }
@@ -173,7 +177,8 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
         return SignalProducer(value: (project, update))
     }
 
-    let activities = fetchActivityEvent.values().map { $0.activities }
+    let activities = fetchActivityEvent.values()
+      .map { $0.activities }
       .skipRepeats(==)
       .map { $0.filter { activity in hasNotSeen(activity: activity) } }
       .on(next: { activities in saveSeen(activities: activities) })
@@ -185,7 +190,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       paramsChanged.mapConst(true),
       self.goToProject.mapConst(false),
       self.goToProjectUpdate.mapConst(false),
-      self.viewDidDisappearProperty.signal.filter { animated in !animated }.mapConst(false),
+      self.viewDidDisappearProperty.signal.filter(isFalse),
       self.viewDidAppearProperty.signal.mapConst(true)
       )
       .takeWhen(self.viewDidDisappearProperty.signal)
@@ -259,7 +264,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
   public let activitiesForSample: Signal<[Activity], NoError>
   public var asyncReloadData: Signal<Void, NoError>
   public let dismissEmptyState: Signal<(), NoError>
-  public let goToProject: Signal<(Project, RefTag), NoError>
+  public let goToProject: Signal<(Project, [Project], RefTag), NoError>
   public let goToProjectUpdate: Signal<(Project, Update), NoError>
   public let projects: Signal<[Project], NoError>
   public let projectsAreLoading: Signal<Bool, NoError>

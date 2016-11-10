@@ -4,11 +4,11 @@ import Prelude
 import UIKit
 
 internal final class DiscoveryPageViewController: UITableViewController {
-  private let viewModel: DiscoveryPageViewModelType = DiscoveryPageViewModel()
-  private let dataSource = DiscoveryProjectsDataSource()
-  private let loadingIndicatorView = UIActivityIndicatorView()
-
   private weak var emptyStatesController: EmptyStatesViewController?
+  private let dataSource = DiscoveryProjectsDataSource()
+  private let transitionAnimator = ProjectNavigatorTransitionAnimator()
+  private let loadingIndicatorView = UIActivityIndicatorView()
+  private let viewModel: DiscoveryPageViewModelType = DiscoveryPageViewModel()
 
   internal static func configuredWith(sort sort: DiscoveryParams.Sort) -> DiscoveryPageViewController {
     let vc = Storyboard.DiscoveryPage.instantiate(DiscoveryPageViewController)
@@ -97,7 +97,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
 
     self.viewModel.outputs.goToProject
       .observeForControllerAction()
-      .observeNext { [weak self] in self?.goTo(project: $0, refTag: $1) }
+      .observeNext { [weak self] in self?.goTo(project: $0, initialPlaylist: $1, refTag: $2) }
 
     self.viewModel.outputs.goToProjectUpdate
       .observeForControllerAction()
@@ -169,10 +169,15 @@ internal final class DiscoveryPageViewController: UITableViewController {
     }
   }
 
-  private func goTo(project project: Project, refTag: RefTag) {
-    let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: refTag)
-    let nav = UINavigationController(rootViewController: vc)
-    self.presentViewController(nav, animated: true, completion: nil)
+  private func goTo(project project: Project, initialPlaylist: [Project], refTag: RefTag) {
+
+    let vc = ProjectNavigatorViewController.configuredWith(project: project,
+                                                           refTag: refTag,
+                                                           initialPlaylist: initialPlaylist,
+                                                           navigatorDelegate: self,
+                                                           transitionAnimator: self.transitionAnimator)
+    vc.transitioningDelegate = self
+    self.presentViewController(vc, animated: true, completion: nil)
   }
 
   private func goTo(project project: Project, update: Update) {
@@ -228,5 +233,30 @@ extension DiscoveryPageViewController: EmptyStatesViewControllerDelegate {
   func emptyStatesViewControllerGoToFriends() {
     let vc = FindFriendsViewController.configuredWith(source: .discovery)
     self.navigationController?.pushViewController(vc, animated: true)
+  }
+}
+
+extension DiscoveryPageViewController: ProjectNavigatorDelegate {
+}
+
+extension DiscoveryPageViewController: UIViewControllerTransitioningDelegate {
+  internal func animationControllerForDismissedController(dismissed: UIViewController)
+    -> UIViewControllerAnimatedTransitioning? {
+
+      return self.transitionAnimator
+  }
+
+  func animationControllerForPresentedController(
+    presented: UIViewController,
+    presentingController presenting: UIViewController,
+    sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+
+    return self.transitionAnimator
+  }
+
+  func interactionControllerForDismissal(animator: UIViewControllerAnimatedTransitioning)
+    -> UIViewControllerInteractiveTransitioning? {
+
+      return self.transitionAnimator.isInFlight ? self.transitionAnimator : nil
   }
 }

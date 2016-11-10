@@ -9,8 +9,9 @@ public protocol ProjectPamphletContentViewModelInputs {
   func tappedPledgeAnyAmount()
   func tapped(rewardOrBacking rewardOrBacking: Either<Reward, Backing>)
   func tappedUpdates()
-  func viewDidLayoutSubviews(contentSize contentSize: CGSize)
+  func viewDidAppear(animated animated: Bool)
   func viewDidLoad()
+  func viewWillAppear(animated animated: Bool)
 }
 
 public protocol ProjectPamphletContentViewModelOutputs {
@@ -18,6 +19,7 @@ public protocol ProjectPamphletContentViewModelOutputs {
   var goToComments: Signal<Project, NoError> { get }
   var goToRewardPledge: Signal<(Project, Reward), NoError> { get }
   var goToUpdates: Signal<Project, NoError> { get }
+  var loadMinimalProjectIntoDataSource: Signal<Project, NoError> { get }
   var loadProjectIntoDataSource: Signal<Project, NoError> { get }
 }
 
@@ -30,30 +32,40 @@ public final class ProjectPamphletContentViewModel: ProjectPamphletContentViewMo
 ProjectPamphletContentViewModelInputs, ProjectPamphletContentViewModelOutputs {
 
   public init() {
-    let project = combineLatest(self.projectProperty.signal.ignoreNil(), self.viewDidLoadProperty.signal)
+    let projectOnViewDidLoad = combineLatest(
+      self.projectProperty.signal.ignoreNil(),
+      self.viewDidLoadProperty.signal
+      )
       .map(first)
 
-    self.loadProjectIntoDataSource = combineLatest(project, self.viewDidLoadProperty.signal)
+    let projectOnViewDidAppear = combineLatest(
+      self.projectProperty.signal.ignoreNil(),
+      self.viewDidAppearAnimated.signal.take(1)
+      )
       .map(first)
+
+    self.loadProjectIntoDataSource = projectOnViewDidAppear
+
+    self.loadMinimalProjectIntoDataSource = .empty
 
     let rewardOrBackingTapped = Signal.merge(
       self.tappedRewardOrBackingProperty.signal.ignoreNil(),
       self.tappedPledgeAnyAmountProperty.signal.mapConst(.left(Reward.noReward))
     )
 
-    self.goToRewardPledge = project
+    self.goToRewardPledge = projectOnViewDidLoad
       .takePairWhen(rewardOrBackingTapped)
       .map(goToRewardPledgeData(forProject:rewardOrBacking:))
       .ignoreNil()
 
-    self.goToBacking = project.takePairWhen(rewardOrBackingTapped)
+    self.goToBacking = projectOnViewDidLoad.takePairWhen(rewardOrBackingTapped)
       .map(goToBackingData(forProject:rewardOrBacking:))
       .ignoreNil()
 
-    self.goToComments = project
+    self.goToComments = projectOnViewDidLoad
       .takeWhen(self.tappedCommentsProperty.signal)
 
-    self.goToUpdates = project
+    self.goToUpdates = projectOnViewDidLoad
       .takeWhen(self.tappedUpdatesProperty.signal)
   }
 
@@ -82,9 +94,9 @@ ProjectPamphletContentViewModelInputs, ProjectPamphletContentViewModelOutputs {
     self.tappedUpdatesProperty.value = ()
   }
 
-  private let viewDidLayoutSubviewsContentSizeProperty = MutableProperty(CGSize.zero)
-  public func viewDidLayoutSubviews(contentSize contentSize: CGSize) {
-    self.viewDidLayoutSubviewsContentSizeProperty.value = contentSize
+  private let viewDidAppearAnimated = MutableProperty(false)
+  public func viewDidAppear(animated animated: Bool) {
+    self.viewDidAppearAnimated.value = animated
   }
 
   private let viewDidLoadProperty = MutableProperty()
@@ -92,10 +104,16 @@ ProjectPamphletContentViewModelInputs, ProjectPamphletContentViewModelOutputs {
     self.viewDidLoadProperty.value = ()
   }
 
+  private let viewWillAppearAnimated = MutableProperty(false)
+  public func viewWillAppear(animated animated: Bool) {
+    self.viewWillAppearAnimated.value = animated
+  }
+
   public let goToBacking: Signal<Project, NoError>
   public let goToComments: Signal<Project, NoError>
   public let goToRewardPledge: Signal<(Project, Reward), NoError>
   public let goToUpdates: Signal<Project, NoError>
+  public let loadMinimalProjectIntoDataSource: Signal<Project, NoError>
   public let loadProjectIntoDataSource: Signal<Project, NoError>
 
   public var inputs: ProjectPamphletContentViewModelInputs { return self }

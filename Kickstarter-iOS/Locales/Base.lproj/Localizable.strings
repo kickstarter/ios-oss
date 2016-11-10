@@ -22,10 +22,14 @@
 "Backed_by_Friends" = "Backed by Friends";
 "Backed_by_people_you_follow" = "Backed by people you follow";
 "Backed_projects_projects_count" = "Backed projects %{project_count}";
+"Become_a_backer_to_leave_a_comment" = "Become a backer to leave a comment.";
 "Bring_new_ideas_to_life" = "Bring new ideas to life.";
 "Cancel_your_pledge" = "Cancel your pledge";
 "Change_payment_method" = "Change payment method";
+"Chooses_location_for_shipping" = "Chooses %{location} for shipping.";
+"Close_project" = "Close project";
 "Closes_filters" = "Closes filters.";
+"Closes_project" = "Closes project.";
 "Collapses_subcategories" = "Collapses subcategories.";
 "Collections" = "Collections";
 "Complete_payment" = "Complete payment";
@@ -50,7 +54,6 @@
 "Filter_by_projects_recommended_for_you" = "Filter by projects recommended for you";
 "Filter_by_projects_we_love" = "Filter by projects we love";
 "Filter_by_saved_projects" = "Filter by saved projects";
-"Filter_by_starred_projects" = "Filter by starred projects";
 "Filter_by_subcategory_name_in_category_name" = "Filter by %{subcategory_name} in %{category_name}";
 "Filter_name_project_count_live_projects.few" = "%{filter_name}: %{project_count} live projects";
 "Filter_name_project_count_live_projects.many" = "%{filter_name}: %{project_count} live projects";
@@ -78,6 +81,7 @@
 "Kickstarter_if_funded" = "Kickstarter (if funded)";
 "Kickstarter_is_not_a_store" = "Kickstarter is not a store.";
 "Learn_more_about_accountability" = "Learn more about accountability";
+"Log_in_to_leave_a_comment" = "Log in to leave a comment.";
 "Log_in_to_save_this_project_and_we_ll_remind_you" = "Log in to save this project and we’ll remind you about it before it ends.";
 "Make_a_pledge_without_a_reward" = "Make a pledge without a reward";
 "Manage_your_pledge" = "Manage your pledge";
@@ -89,6 +93,7 @@
 "No_pledges_from_friends_yet" = "No pledges \nfrom friends yet.";
 "Once_you_back_a_project_well_share" = "Once you back a project, we’ll share personalized recommendations in this space.";
 "Opens_comments" = "Opens comments.";
+"Opens_creator_profile" = "Opens creator profile.";
 "Opens_email_composer" = "Opens email composer.";
 "Opens_filters" = "Opens filters.";
 "Opens_help_sheet" = "Opens help sheet.";
@@ -96,6 +101,7 @@
 "Opens_pledge_info" = "Opens pledge info.";
 "Opens_project" = "Opens project.";
 "Opens_rewards" = "Opens rewards.";
+"Opens_shipping_options" = "Opens shipping options.";
 "Opens_update" = "Opens update.";
 "Or_select_a_different_reward_below_colon" = "Or select a different reward below:";
 "Other_payment_methods" = "Other payment methods";
@@ -127,12 +133,12 @@
 "Select_this_reward_instead" = "Select this reward instead";
 "Share_this_project_on_Facebook" = "Share this project on Facebook.";
 "Share_this_project_on_Twitter" = "Share this project on Twitter.";
+"Share_update" = "Share update";
 "Shipping" = "Shipping";
 "Ships_to" = "Ships to:";
 "Shows_list_of_subcategories" = "Shows list of subcategories.";
 "Signs_up_with_Email" = "Signs up with Email.";
 "Something_catch_your_eye" = "Something \ncatch your eye?";
-"Stars_projects" = "Stars project.";
 "Survey" = "Survey";
 "Tap_the_star_on_each_project_page_to_save_it" = "Tap the star on each project page to save it. We’ll remind you 48 hours before the project ends.";
 "Thank_you_for_supporting_this_project" = "Thank you for supporting this project.";
@@ -140,7 +146,6 @@
 "This_facebook_account_is_already_linked_to_another_Kickstarter_user" = "This Facebook account is already linked to another Kickstarter user.";
 "Unfollows_friend_name" = "Unfollows %{friend_name}.";
 "Unsaves_project" = "Unsaves project.";
-"Unstars_project" = "Unstars project.";
 "Update_pledge" = "Update pledge";
 "View" = "View";
 "View_your_pledge" = "View your pledge";

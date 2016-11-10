@@ -26,16 +26,10 @@
                                 </connections>
                             </containerView>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bdk-Xa-fm9">
-                                <rect key="frame" x="0.0" y="20" width="400" height="55"/>
+                                <rect key="frame" x="0.0" y="0.0" width="400" height="55"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="55" id="Mpa-HP-9KU"/>
-                                    <constraint firstAttribute="height" constant="55" placeholder="YES" id="P8T-Qm-uQ3"/>
                                 </constraints>
-                                <variation key="default">
-                                    <mask key="constraints">
-                                        <exclude reference="P8T-Qm-uQ3"/>
-                                    </mask>
-                                </variation>
                                 <connections>
                                     <segue destination="Tne-VL-OCU" kind="embed" id="Zw0-Ot-rWA"/>
                                 </connections>
@@ -47,9 +41,9 @@
                             <constraint firstItem="8kV-D7-hHo" firstAttribute="top" secondItem="tIm-aj-d8Q" secondAttribute="bottom" id="8FY-Rt-Ar2"/>
                             <constraint firstItem="tIm-aj-d8Q" firstAttribute="leading" secondItem="Y4L-8W-arN" secondAttribute="leading" id="HU6-02-QPk"/>
                             <constraint firstItem="tIm-aj-d8Q" firstAttribute="top" secondItem="Y4L-8W-arN" secondAttribute="top" id="KC9-ey-3fk"/>
-                            <constraint firstItem="bdk-Xa-fm9" firstAttribute="top" secondItem="H1H-ol-RCO" secondAttribute="bottom" id="Kl7-x3-ipD"/>
                             <constraint firstItem="bdk-Xa-fm9" firstAttribute="leading" secondItem="Y4L-8W-arN" secondAttribute="leading" id="eEt-q9-Snv"/>
                             <constraint firstAttribute="trailing" secondItem="tIm-aj-d8Q" secondAttribute="trailing" id="qTt-pv-zBK"/>
+                            <constraint firstItem="bdk-Xa-fm9" firstAttribute="top" secondItem="Y4L-8W-arN" secondAttribute="top" id="qnD-sd-f2N"/>
                         </constraints>
                     </view>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
@@ -143,22 +137,14 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="wp1-vn-dj9" firstAttribute="top" secondItem="HAt-cG-1HE" secondAttribute="bottom" id="8v7-1L-TFq"/>
                             <constraint firstAttribute="trailing" secondItem="jxM-Ay-art" secondAttribute="trailing" id="KQT-o1-UDj"/>
+                            <constraint firstAttribute="bottom" secondItem="HAt-cG-1HE" secondAttribute="bottom" id="N9z-00-wWH"/>
                             <constraint firstItem="jxM-Ay-art" firstAttribute="leading" secondItem="ed4-VA-c6v" secondAttribute="leading" id="PFE-sj-SVP"/>
                             <constraint firstItem="HAt-cG-1HE" firstAttribute="leading" secondItem="ed4-VA-c6v" secondAttribute="leading" id="WT4-Z9-AJi"/>
-                            <constraint firstItem="HAt-cG-1HE" firstAttribute="top" secondItem="WJY-K4-S0r" secondAttribute="bottom" id="Xgg-GD-Wcz"/>
-                            <constraint firstAttribute="topMargin" secondItem="HAt-cG-1HE" secondAttribute="top" id="d7e-s6-q3x"/>
+                            <constraint firstAttribute="top" secondItem="HAt-cG-1HE" secondAttribute="top" id="XrY-Ag-cQm"/>
                             <constraint firstAttribute="trailing" secondItem="HAt-cG-1HE" secondAttribute="trailing" id="e2y-7V-KgJ"/>
-                            <constraint firstAttribute="bottomMargin" secondItem="HAt-cG-1HE" secondAttribute="bottom" id="hsY-vQ-Z3i"/>
                             <constraint firstItem="jxM-Ay-art" firstAttribute="top" secondItem="ed4-VA-c6v" secondAttribute="top" id="p5j-Im-MUi"/>
                         </constraints>
-                        <variation key="default">
-                            <mask key="constraints">
-                                <exclude reference="d7e-s6-q3x"/>
-                                <exclude reference="hsY-vQ-Z3i"/>
-                            </mask>
-                        </variation>
                     </view>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="400" height="55"/>

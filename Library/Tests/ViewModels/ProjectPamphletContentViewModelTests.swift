@@ -36,6 +36,8 @@ final class ProjectPamphletContentViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(project: project)
     self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewWillAppear(animated: true)
+    self.vm.inputs.viewDidAppear(animated: true)
 
     self.vm.inputs.tapped(rewardOrBacking: .right(backing))
 
@@ -47,6 +49,8 @@ final class ProjectPamphletContentViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(project: project)
     self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewWillAppear(animated: true)
+    self.vm.inputs.viewDidAppear(animated: true)
 
     self.vm.inputs.tappedComments()
 
@@ -59,6 +63,8 @@ final class ProjectPamphletContentViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(project: project)
     self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewWillAppear(animated: true)
+    self.vm.inputs.viewDidAppear(animated: true)
 
     self.vm.inputs.tapped(rewardOrBacking: .left(reward))
 
@@ -72,6 +78,8 @@ final class ProjectPamphletContentViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(project: project)
     self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewWillAppear(animated: true)
+    self.vm.inputs.viewDidAppear(animated: true)
 
     self.vm.inputs.tapped(rewardOrBacking: .left(reward))
 
@@ -86,6 +94,8 @@ final class ProjectPamphletContentViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(project: project)
     self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewWillAppear(animated: true)
+    self.vm.inputs.viewDidAppear(animated: true)
 
     self.vm.inputs.tapped(rewardOrBacking: .left(reward))
 
@@ -101,6 +111,8 @@ final class ProjectPamphletContentViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(project: project)
     self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewWillAppear(animated: true)
+    self.vm.inputs.viewDidAppear(animated: true)
 
     self.vm.inputs.tapped(rewardOrBacking: .right(backing))
 
@@ -116,6 +128,8 @@ final class ProjectPamphletContentViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(project: project)
     self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewWillAppear(animated: true)
+    self.vm.inputs.viewDidAppear(animated: true)
 
     self.vm.inputs.tapped(rewardOrBacking: .right(backing))
 
@@ -132,6 +146,8 @@ final class ProjectPamphletContentViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(project: project)
     self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewWillAppear(animated: true)
+    self.vm.inputs.viewDidAppear(animated: true)
 
     self.vm.inputs.tapped(rewardOrBacking: .right(backing))
 
@@ -150,6 +166,8 @@ final class ProjectPamphletContentViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(project: project)
     self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewWillAppear(animated: true)
+    self.vm.inputs.viewDidAppear(animated: true)
 
     self.vm.inputs.tapped(rewardOrBacking: .left(reward))
 
@@ -168,6 +186,8 @@ final class ProjectPamphletContentViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(project: project)
     self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewWillAppear(animated: true)
+    self.vm.inputs.viewDidAppear(animated: true)
 
     self.vm.inputs.tapped(rewardOrBacking: .left(reward))
 
@@ -182,6 +202,8 @@ final class ProjectPamphletContentViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(project: project)
     self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewWillAppear(animated: true)
+    self.vm.inputs.viewDidAppear(animated: true)
 
     self.vm.inputs.tapped(rewardOrBacking: .left(reward))
 
@@ -196,6 +218,8 @@ final class ProjectPamphletContentViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(project: project)
     self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewWillAppear(animated: true)
+    self.vm.inputs.viewDidAppear(animated: true)
 
     self.vm.inputs.tapped(rewardOrBacking: .left(reward))
 
@@ -212,6 +236,8 @@ final class ProjectPamphletContentViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(project: project)
     self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewWillAppear(animated: true)
+    self.vm.inputs.viewDidAppear(animated: true)
 
     self.vm.inputs.tapped(rewardOrBacking: .right(backing))
 
@@ -228,6 +254,8 @@ final class ProjectPamphletContentViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(project: project)
     self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewWillAppear(animated: true)
+    self.vm.inputs.viewDidAppear(animated: true)
 
     self.vm.inputs.tapped(rewardOrBacking: .right(backing))
 
@@ -240,6 +268,8 @@ final class ProjectPamphletContentViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(project: project)
     self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewWillAppear(animated: true)
+    self.vm.inputs.viewDidAppear(animated: true)
 
     self.vm.inputs.tappedUpdates()
 
@@ -251,6 +281,8 @@ final class ProjectPamphletContentViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(project: project)
     self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewWillAppear(animated: true)
+    self.vm.inputs.viewDidAppear(animated: true)
 
     self.loadProjectIntoDataSource.assertValues([project])
   }

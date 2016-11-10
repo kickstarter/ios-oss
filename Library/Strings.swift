@@ -355,7 +355,7 @@ public enum Strings {
    "Back this project below"
 
    - **es**: "Patrocina este proyecto:"
-   - **de**: "Back this project below"
+   - **de**: "Folgendes Projekt unterstützen"
    - **fr**: "Je soutiens ce projet"
    - **it**: "Back this project below"
    - **en**: "Back this project below"
@@ -420,6 +420,23 @@ public enum Strings {
     )
   }
   /**
+   "Become a backer to leave a comment."
+
+   - **es**: "Conviértete en patrocinador y deja un comentario."
+   - **de**: "Become a backer to leave a comment."
+   - **fr**: "Soutenez ce projet pour laisser un commentaire."
+   - **it**: "Become a backer to leave a comment."
+   - **en**: "Become a backer to leave a comment."
+  */
+  public static func Become_a_backer_to_leave_a_comment() -> String {
+    return localizedString(
+      key: "Become_a_backer_to_leave_a_comment",
+      defaultValue: "Become a backer to leave a comment.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Bring new ideas to life."
 
    - **es**: "Nuevas ideas se vuelven realidad - ¡gracias a tu ayuda!"
@@ -471,6 +488,40 @@ public enum Strings {
     )
   }
   /**
+   "Chooses %{location} for shipping."
+
+   - **es**: "Destino determinado: %{location}."
+   - **de**: "Legt %{location} als Versandort fest."
+   - **fr**: "Sélectionne %{location} pour la livraison."
+   - **it**: "Chooses %{location} for shipping."
+   - **en**: "Chooses %{location} for shipping."
+  */
+  public static func Chooses_location_for_shipping(location location: String) -> String {
+    return localizedString(
+      key: "Chooses_location_for_shipping",
+      defaultValue: "Chooses %{location} for shipping.",
+      count: nil,
+      substitutions: ["location": location]
+    )
+  }
+  /**
+   "Close project"
+
+   - **es**: "Cerrar proyecto"
+   - **de**: "Projekt schließen"
+   - **fr**: "Fermer le projet"
+   - **it**: "Close project"
+   - **en**: "Close project"
+  */
+  public static func Close_project() -> String {
+    return localizedString(
+      key: "Close_project",
+      defaultValue: "Close project",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Closes filters."
 
    - **es**: "Cierra filtros."
@@ -483,6 +534,23 @@ public enum Strings {
     return localizedString(
       key: "Closes_filters",
       defaultValue: "Closes filters.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Closes project."
+
+   - **es**: "Closes project."
+   - **de**: "Closes project."
+   - **fr**: "Closes project."
+   - **it**: "Closes project."
+   - **en**: "Closes project."
+  */
+  public static func Closes_project() -> String {
+    return localizedString(
+      key: "Closes_project",
+      defaultValue: "Closes project.",
       count: nil,
       substitutions: [:]
     )
@@ -881,9 +949,9 @@ public enum Strings {
   /**
    "Filter by saved projects"
 
-   - **es**: "Filter by saved projects"
-   - **de**: "Filter by saved projects"
-   - **fr**: "Filter by saved projects"
+   - **es**: "Filtro: Proyectos guardados"
+   - **de**: "Filter: Gespeicherte Projekte"
+   - **fr**: "Filtrer : mes projets enregistrés"
    - **it**: "Filter by saved projects"
    - **en**: "Filter by saved projects"
   */
@@ -891,23 +959,6 @@ public enum Strings {
     return localizedString(
       key: "Filter_by_saved_projects",
       defaultValue: "Filter by saved projects",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "Filter by starred projects"
-
-   - **es**: "Filtro: Tus favoritos"
-   - **de**: "Filter: Favoriten"
-   - **fr**: "Filtrer : mes projets préférés"
-   - **it**: "Filter by starred projects"
-   - **en**: "Filter by starred projects"
-  */
-  public static func Filter_by_starred_projects() -> String {
-    return localizedString(
-      key: "Filter_by_starred_projects",
-      defaultValue: "Filter by starred projects",
       count: nil,
       substitutions: [:]
     )
@@ -1307,11 +1358,28 @@ with friends."
     )
   }
   /**
+   "Log in to leave a comment."
+
+   - **es**: "Inicia sesión para dejar un comentario."
+   - **de**: "Log in to leave a comment."
+   - **fr**: "Connectez-vous pour laisser un commentaire."
+   - **it**: "Log in to leave a comment."
+   - **en**: "Log in to leave a comment."
+  */
+  public static func Log_in_to_leave_a_comment() -> String {
+    return localizedString(
+      key: "Log_in_to_leave_a_comment",
+      defaultValue: "Log in to leave a comment.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Log in to save this project and we’ll remind you about it before it ends."
 
-   - **es**: "Log in to save this project and we’ll remind you about it before it ends."
-   - **de**: "Log in to save this project and we’ll remind you about it before it ends."
-   - **fr**: "Log in to save this project and we’ll remind you about it before it ends."
+   - **es**: "Inicia sesión para guardar este proyecto y te lo recordamos antes de que finalice."
+   - **de**: "Melde dich an, um dieses Projekt zu speichern. Wir senden dir eine Benachrichtigung vor Ablauf des Projekts."
+   - **fr**: "Connectez-vous pour enregistrer ce projet et nous vous enverrons un rappel avant la fin de sa campagne."
    - **it**: "Log in to save this project and we’ll remind you about it before it ends."
    - **en**: "Log in to save this project and we’ll remind you about it before it ends."
   */
@@ -1361,7 +1429,7 @@ with friends."
    "Manage your pledge below"
 
    - **es**: "Administra tu contribución:"
-   - **de**: "Manage your pledge below"
+   - **de**: "Folgenden Beitrag verwalten"
    - **fr**: "Gérer mon engagement"
    - **it**: "Manage your pledge below"
    - **en**: "Manage your pledge below"
@@ -1428,9 +1496,9 @@ with friends."
   /**
    "No comments yet."
 
-   - **es**: "No comments yet."
-   - **de**: "No comments yet."
-   - **fr**: "No comments yet."
+   - **es**: "No hay comentarios todavia."
+   - **de**: "Bisher noch keine Kommentare."
+   - **fr**: "Pas de commentaires."
    - **it**: "No comments yet."
    - **en**: "No comments yet."
   */
@@ -1493,6 +1561,23 @@ from friends yet."
     return localizedString(
       key: "Opens_comments",
       defaultValue: "Opens comments.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Opens creator profile."
+
+   - **es**: "Opens creator profile."
+   - **de**: "Opens creator profile."
+   - **fr**: "Opens creator profile."
+   - **it**: "Opens creator profile."
+   - **en**: "Opens creator profile."
+  */
+  public static func Opens_creator_profile() -> String {
+    return localizedString(
+      key: "Opens_creator_profile",
+      defaultValue: "Opens creator profile.",
       count: nil,
       substitutions: [:]
     )
@@ -1612,6 +1697,23 @@ from friends yet."
     return localizedString(
       key: "Opens_rewards",
       defaultValue: "Opens rewards.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Opens shipping options."
+
+   - **es**: "Abre las opciones de envío."
+   - **de**: "Öffnet Versandoptionen."
+   - **fr**: "Ouvre les options de livraison."
+   - **it**: "Opens shipping options."
+   - **en**: "Opens shipping options."
+  */
+  public static func Opens_shipping_options() -> String {
+    return localizedString(
+      key: "Opens_shipping_options",
+      defaultValue: "Opens shipping options.",
       count: nil,
       substitutions: [:]
     )
@@ -1860,9 +1962,9 @@ daring ideas."
   /**
    "Save"
 
-   - **es**: "Save"
-   - **de**: "Save"
-   - **fr**: "Save"
+   - **es**: "Guardar"
+   - **de**: "Speichern"
+   - **fr**: "Enregistrer"
    - **it**: "Save"
    - **en**: "Save"
   */
@@ -1877,9 +1979,9 @@ daring ideas."
   /**
    "Save this project"
 
-   - **es**: "Save this project"
+   - **es**: "Guardar este proyecto"
    - **de**: "Save this project"
-   - **fr**: "Save this project"
+   - **fr**: "Enregistrer ce projet"
    - **it**: "Save this project"
    - **en**: "Save this project"
   */
@@ -1894,9 +1996,9 @@ daring ideas."
   /**
    "Saved"
 
-   - **es**: "Saved"
+   - **es**: "Guardado"
    - **de**: "Saved"
-   - **fr**: "Saved"
+   - **fr**: "Projets enregistrés"
    - **it**: "Saved"
    - **en**: "Saved"
   */
@@ -1911,9 +2013,9 @@ daring ideas."
   /**
    "Saved projects"
 
-   - **es**: "Saved projects"
+   - **es**: "Proyectos guardados"
    - **de**: "Saved projects"
-   - **fr**: "Saved projects"
+   - **fr**: "Projets enregistrés"
    - **it**: "Saved projects"
    - **en**: "Saved projects"
   */
@@ -1928,9 +2030,9 @@ daring ideas."
   /**
    "Saves project."
 
-   - **es**: "Saves project."
+   - **es**: "Guarda este proyecto."
    - **de**: "Saves project."
-   - **fr**: "Saves project."
+   - **fr**: "Enregistre le projet."
    - **it**: "Saves project."
    - **en**: "Saves project."
   */
@@ -2006,6 +2108,23 @@ daring ideas."
     return localizedString(
       key: "Share_this_project_on_Twitter",
       defaultValue: "Share this project on Twitter.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Share update"
+
+   - **es**: "Compartir"
+   - **de**: "Share update"
+   - **fr**: "Share update"
+   - **it**: "Share update"
+   - **en**: "Share update"
+  */
+  public static func Share_update() -> String {
+    return localizedString(
+      key: "Share_update",
+      defaultValue: "Share update",
       count: nil,
       substitutions: [:]
     )
@@ -2094,23 +2213,6 @@ catch your eye?"
     return localizedString(
       key: "Something_catch_your_eye",
       defaultValue: "Something \ncatch your eye?",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "Stars project."
-
-   - **es**: "Marca proyecto como favorito."
-   - **de**: "Markiert Projekt als Favoriten."
-   - **fr**: "Ajoute le projet aux projets préférés."
-   - **it**: "Stars project."
-   - **en**: "Stars project."
-  */
-  public static func Stars_projects() -> String {
-    return localizedString(
-      key: "Stars_projects",
-      defaultValue: "Stars project.",
       count: nil,
       substitutions: [:]
     )
@@ -2220,9 +2322,9 @@ catch your eye?"
   /**
    "Unsaves project."
 
-   - **es**: "Unsaves project."
+   - **es**: "Deshacer "guardar proyecto"."
    - **de**: "Unsaves project."
-   - **fr**: "Unsaves project."
+   - **fr**: "Annule l'enregistrement du projet."
    - **it**: "Unsaves project."
    - **en**: "Unsaves project."
   */
@@ -2230,23 +2332,6 @@ catch your eye?"
     return localizedString(
       key: "Unsaves_project",
       defaultValue: "Unsaves project.",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "Unstars project."
-
-   - **es**: "Remueve proyecto de favoritos."
-   - **de**: "Entfernt Markierung als Favoriten."
-   - **fr**: "Supprime le projet des projets préférés."
-   - **it**: "Unstars project."
-   - **en**: "Unstars project."
-  */
-  public static func Unstars_project() -> String {
-    return localizedString(
-      key: "Unstars_project",
-      defaultValue: "Unstars project.",
       count: nil,
       substitutions: [:]
     )
@@ -2322,9 +2407,9 @@ catch your eye?"
   /**
    "When you save a project we’ll send you a reminder 48 hours before it ends"
 
-   - **es**: "When you save a project we’ll send you a reminder 48 hours before it ends"
+   - **es**: "Cuando guardes un proyecto, te enviaremos un recordatorio por correo electrónico 48 horas antes de que finalice"
    - **de**: "When you save a project we’ll send you a reminder 48 hours before it ends"
-   - **fr**: "When you save a project we’ll send you a reminder 48 hours before it ends"
+   - **fr**: "Pour chaque projet que vous enregistrez, nous vous enverrons un rappel 48 heures avant la fin de sa campagne."
    - **it**: "When you save a project we’ll send you a reminder 48 hours before it ends"
    - **en**: "When you save a project we’ll send you a reminder 48 hours before it ends"
   */
@@ -2356,9 +2441,9 @@ catch your eye?"
   /**
    "You saved this project."
 
-   - **es**: "You saved this project."
+   - **es**: "Uno de tus proyectos guardados."
    - **de**: "You saved this project."
-   - **fr**: "You saved this project."
+   - **fr**: "Vous avez enregistré ce projet."
    - **it**: "You saved this project."
    - **en**: "You saved this project."
   */

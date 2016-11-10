@@ -3,7 +3,13 @@ import Library
 import Prelude
 import UIKit
 
+internal protocol ProjectPamphletViewControllerDelegate: class {
+  func projectPamphlet(controller: ProjectPamphletViewController,
+                       panGestureRecognizerDidChange recognizer: UIPanGestureRecognizer)
+}
+
 internal final class ProjectPamphletViewController: UIViewController {
+  internal weak var delegate: ProjectPamphletViewControllerDelegate?
   private let viewModel: ProjectPamphletViewModelType = ProjectPamphletViewModel()
 
   private var navBarController: ProjectNavBarViewController!
@@ -17,12 +23,12 @@ internal final class ProjectPamphletViewController: UIViewController {
       return vc
   }
 
-  override func prefersStatusBarHidden() -> Bool {
+  internal override func prefersStatusBarHidden() -> Bool {
     return self.viewModel.outputs.prefersStatusBarHidden
   }
 
-  override func preferredStatusBarUpdateAnimation() -> UIStatusBarAnimation {
-    return .Slide
+  internal override func preferredStatusBarUpdateAnimation() -> UIStatusBarAnimation {
+    return .Fade
   }
 
   internal override func viewDidLoad() {
@@ -42,6 +48,11 @@ internal final class ProjectPamphletViewController: UIViewController {
   internal override func viewWillAppear(animated: Bool) {
     super.viewWillAppear(animated)
     self.viewModel.inputs.viewWillAppear(animated: animated)
+  }
+
+  internal override func viewDidAppear(animated: Bool) {
+    super.viewDidAppear(animated)
+    self.viewModel.inputs.viewDidAppear(animated: animated)
   }
 
   internal override func bindViewModel() {
@@ -67,8 +78,16 @@ internal final class ProjectPamphletViewController: UIViewController {
 }
 
 extension ProjectPamphletViewController: ProjectPamphletContentViewControllerDelegate {
-  func projectPamphletContent(controller: ProjectPamphletContentViewController, imageIsVisible: Bool) {
+  internal func projectPamphletContent(controller: ProjectPamphletContentViewController,
+                                       imageIsVisible: Bool) {
     self.navBarController.setProjectImageIsVisible(imageIsVisible)
+  }
+
+  internal func projectPamphletContent(
+    controller: ProjectPamphletContentViewController,
+    scrollViewPanGestureRecognizerDidChange recognizer: UIPanGestureRecognizer) {
+
+      self.delegate?.projectPamphlet(self, panGestureRecognizerDidChange: recognizer)
   }
 }
 

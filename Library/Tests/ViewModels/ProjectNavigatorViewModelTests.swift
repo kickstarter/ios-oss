@@ -1,0 +1,333 @@
+@testable import KsApi
+@testable import Library
+@testable import ReactiveExtensions_TestHelpers
+import Prelude
+import ReactiveCocoa
+import Result
+import UIKit
+import XCTest
+
+internal final class ProjectNavigatorViewModelTests: TestCase {
+  private let vm: ProjectNavigatorViewModelType = ProjectNavigatorViewModel()
+
+  private let cancelInteractiveTransition = TestObserver<(), NoError>()
+  private let dismissViewController = TestObserver<(), NoError>()
+  private let finishInteractiveTransition = TestObserver<(), NoError>()
+  private let setInitialPagerViewController = TestObserver<(), NoError>()
+  private let setNeedsStatusBarAppearanceUpdate = TestObserver<(), NoError>()
+  private let setTransitionAnimatorIsInFlight = TestObserver<Bool, NoError>()
+  private let updateInteractiveTransition = TestObserver<CGFloat, NoError>()
+  private let updateDataSourcePlaylist = TestObserver<[Project], NoError>()
+  private let updateDataSourceProject = TestObserver<Project?, NoError>()
+
+  override func setUp() {
+    super.setUp()
+
+    self.vm.outputs.cancelInteractiveTransition.observe(self.cancelInteractiveTransition.observer)
+    self.vm.outputs.dismissViewController.observe(self.dismissViewController.observer)
+    self.vm.outputs.finishInteractiveTransition.observe(self.finishInteractiveTransition.observer)
+    self.vm.outputs.setInitialPagerViewController.observe(self.setInitialPagerViewController.observer)
+    self.vm.outputs.setNeedsStatusBarAppearanceUpdate.observe(self.setNeedsStatusBarAppearanceUpdate.observer)
+    self.vm.outputs.setTransitionAnimatorIsInFlight.observe(self.setTransitionAnimatorIsInFlight.observer)
+    self.vm.outputs.updateInteractiveTransition.observe(self.updateInteractiveTransition.observer)
+    self.vm.outputs.updateDataSourcePlaylist.map(first).observe(self.updateDataSourceProject.observer)
+    self.vm.outputs.updateDataSourcePlaylist.map(second).observe(self.updateDataSourcePlaylist.observer)
+  }
+
+  func testTransitionLifecycle_ScrollDown_BackUp() {
+    self.vm.inputs.configureWith(project: .template, initialPlaylist: [], refTag: nil)
+    self.vm.inputs.viewDidLoad()
+
+    self.cancelInteractiveTransition.assertValueCount(0)
+    self.dismissViewController.assertValueCount(0)
+    self.finishInteractiveTransition.assertValueCount(0)
+    self.updateInteractiveTransition.assertValueCount(0)
+    self.setTransitionAnimatorIsInFlight.assertValues([])
+
+    self.vm.inputs.panning(contentOffset: CGPoint(x: 0, y: 20),
+                           translation: CGPoint(x: 0, y: -20),
+                           velocity: CGPoint(x: 0, y: -20),
+                           isDragging: true)
+
+    self.cancelInteractiveTransition.assertValueCount(0)
+    self.dismissViewController.assertValueCount(0)
+    self.finishInteractiveTransition.assertValueCount(0)
+    self.updateInteractiveTransition.assertValueCount(0)
+    self.setTransitionAnimatorIsInFlight.assertValues([false])
+
+    self.vm.inputs.panning(contentOffset: CGPoint(x: 0, y: 0),
+                           translation: CGPoint(x: 0, y: 0),
+                           velocity: CGPoint(x: 0, y: 20),
+                           isDragging: true)
+
+    self.cancelInteractiveTransition.assertValueCount(0)
+    self.dismissViewController.assertValueCount(0)
+    self.finishInteractiveTransition.assertValueCount(0)
+    self.updateInteractiveTransition.assertValueCount(0)
+    self.setTransitionAnimatorIsInFlight.assertValues([false])
+
+    self.vm.inputs.panning(contentOffset: CGPoint(x: 0, y: 0),
+                           translation: CGPoint(x: 0, y: 0),
+                           velocity: CGPoint(x: 0, y: 0),
+                           isDragging: false)
+
+    self.cancelInteractiveTransition.assertValueCount(0)
+    self.dismissViewController.assertValueCount(0)
+    self.finishInteractiveTransition.assertValueCount(0)
+    self.updateInteractiveTransition.assertValueCount(0)
+    self.setTransitionAnimatorIsInFlight.assertValues([false])
+  }
+
+  func testTransitionLifecycle_ScrollDown_BackUp_Overscroll() {
+    self.vm.inputs.configureWith(project: .template, initialPlaylist: [], refTag: nil)
+    self.vm.inputs.viewDidLoad()
+
+    self.cancelInteractiveTransition.assertValueCount(0)
+    self.dismissViewController.assertValueCount(0)
+    self.finishInteractiveTransition.assertValueCount(0)
+    self.updateInteractiveTransition.assertValueCount(0)
+    self.setTransitionAnimatorIsInFlight.assertValues([])
+
+    self.vm.inputs.panning(contentOffset: CGPoint(x: 0, y: 20),
+                           translation: CGPoint(x: 0, y: -20),
+                           velocity: CGPoint(x: 0, y: -20),
+                           isDragging: true)
+
+    self.cancelInteractiveTransition.assertValueCount(0)
+    self.dismissViewController.assertValueCount(0)
+    self.finishInteractiveTransition.assertValueCount(0)
+    self.updateInteractiveTransition.assertValueCount(0)
+    self.setTransitionAnimatorIsInFlight.assertValues([false])
+
+    self.vm.inputs.panning(contentOffset: CGPoint(x: 0, y: 0),
+                           translation: CGPoint(x: 0, y: 0),
+                           velocity: CGPoint(x: 0, y: 20),
+                           isDragging: true)
+
+    self.cancelInteractiveTransition.assertValueCount(0)
+    self.dismissViewController.assertValueCount(0)
+    self.finishInteractiveTransition.assertValueCount(0)
+    self.updateInteractiveTransition.assertValueCount(0)
+    self.setTransitionAnimatorIsInFlight.assertValues([false])
+
+    self.vm.inputs.panning(contentOffset: CGPoint(x: 0, y: -20),
+                           translation: CGPoint(x: 0, y: 20),
+                           velocity: CGPoint(x: 0, y: 20),
+                           isDragging: true)
+
+    self.cancelInteractiveTransition.assertValueCount(0)
+    self.dismissViewController.assertValueCount(1)
+    self.finishInteractiveTransition.assertValueCount(0)
+    self.updateInteractiveTransition.assertValueCount(1)
+    self.setTransitionAnimatorIsInFlight.assertValues([false, true])
+
+    self.vm.inputs.panning(contentOffset: CGPoint(x: 0, y: -40),
+                           translation: CGPoint(x: 0, y: 40),
+                           velocity: CGPoint(x: 0, y: 20),
+                           isDragging: true)
+
+    self.cancelInteractiveTransition.assertValueCount(0)
+    self.dismissViewController.assertValueCount(1)
+    self.finishInteractiveTransition.assertValueCount(0)
+    self.updateInteractiveTransition.assertValueCount(2)
+    self.setTransitionAnimatorIsInFlight.assertValues([false, true])
+
+    self.vm.inputs.panning(contentOffset: CGPoint(x: 0, y: -40),
+                           translation: CGPoint(x: 0, y: 40),
+                           velocity: CGPoint(x: 0, y: 20),
+                           isDragging: false)
+
+    self.cancelInteractiveTransition.assertValueCount(0)
+    self.dismissViewController.assertValueCount(1)
+    self.finishInteractiveTransition.assertValueCount(1)
+    self.updateInteractiveTransition.assertValueCount(2)
+    self.setTransitionAnimatorIsInFlight.assertValues([false, true, false])
+  }
+
+  func testTransitionLifecycle_Overscroll_Cancel() {
+    self.vm.inputs.configureWith(project: .template, initialPlaylist: [], refTag: nil)
+    self.vm.inputs.viewDidLoad()
+
+    self.cancelInteractiveTransition.assertValueCount(0)
+    self.dismissViewController.assertValueCount(0)
+    self.finishInteractiveTransition.assertValueCount(0)
+    self.updateInteractiveTransition.assertValueCount(0)
+    self.setTransitionAnimatorIsInFlight.assertValues([])
+
+    self.vm.inputs.panning(contentOffset: CGPoint(x: 0, y: -20),
+                           translation: CGPoint(x: 0, y: 20),
+                           velocity: CGPoint(x: 0, y: 20),
+                           isDragging: true)
+
+    self.cancelInteractiveTransition.assertValueCount(0)
+    self.dismissViewController.assertValueCount(1)
+    self.finishInteractiveTransition.assertValueCount(0)
+    self.updateInteractiveTransition.assertValueCount(1)
+    self.setTransitionAnimatorIsInFlight.assertValues([true])
+
+    self.vm.inputs.panning(contentOffset: CGPoint(x: 0, y: -10),
+                           translation: CGPoint(x: 0, y: 10),
+                           velocity: CGPoint(x: 0, y: -10),
+                           isDragging: true)
+
+    self.cancelInteractiveTransition.assertValueCount(0)
+    self.dismissViewController.assertValueCount(1)
+    self.finishInteractiveTransition.assertValueCount(0)
+    self.updateInteractiveTransition.assertValueCount(2)
+    self.setTransitionAnimatorIsInFlight.assertValues([true])
+
+    self.vm.inputs.panning(contentOffset: CGPoint(x: 0, y: -10),
+                           translation: CGPoint(x: 0, y: 10),
+                           velocity: CGPoint(x: 0, y: -10),
+                           isDragging: false)
+
+    self.cancelInteractiveTransition.assertValueCount(1)
+    self.dismissViewController.assertValueCount(1)
+    self.finishInteractiveTransition.assertValueCount(0)
+    self.updateInteractiveTransition.assertValueCount(2)
+    self.setTransitionAnimatorIsInFlight.assertValues([true, false])
+  }
+
+  func testTransitionLifecycle_Overscroll_ScrollBack() {
+    self.vm.inputs.configureWith(project: .template, initialPlaylist: [], refTag: nil)
+    self.vm.inputs.viewDidLoad()
+
+    self.cancelInteractiveTransition.assertValueCount(0)
+    self.dismissViewController.assertValueCount(0)
+    self.finishInteractiveTransition.assertValueCount(0)
+    self.updateInteractiveTransition.assertValueCount(0)
+    self.setTransitionAnimatorIsInFlight.assertValues([])
+
+    self.vm.inputs.panning(contentOffset: CGPoint(x: 0, y: -20),
+                           translation: CGPoint(x: 0, y: 20),
+                           velocity: CGPoint(x: 0, y: 20),
+                           isDragging: true)
+
+    self.cancelInteractiveTransition.assertValueCount(0)
+    self.dismissViewController.assertValueCount(1)
+    self.finishInteractiveTransition.assertValueCount(0)
+    self.updateInteractiveTransition.assertValueCount(1)
+    self.setTransitionAnimatorIsInFlight.assertValues([true])
+
+    self.vm.inputs.panning(contentOffset: CGPoint(x: 0, y: 0),
+                           translation: CGPoint(x: 0, y: 20),
+                           velocity: CGPoint(x: 0, y: -20),
+                           isDragging: true)
+
+    self.cancelInteractiveTransition.assertValueCount(0)
+    self.dismissViewController.assertValueCount(1)
+    self.finishInteractiveTransition.assertValueCount(0)
+    self.updateInteractiveTransition.assertValueCount(2)
+    self.setTransitionAnimatorIsInFlight.assertValues([true])
+
+    self.vm.inputs.panning(contentOffset: CGPoint(x: 0, y: 20),
+                           translation: CGPoint(x: 0, y: -20),
+                           velocity: CGPoint(x: 0, y: -20),
+                           isDragging: true)
+
+    self.cancelInteractiveTransition.assertValueCount(1)
+    self.dismissViewController.assertValueCount(1)
+    self.finishInteractiveTransition.assertValueCount(0)
+    self.updateInteractiveTransition.assertValueCount(2)
+    self.setTransitionAnimatorIsInFlight.assertValues([true, false])
+
+    self.vm.inputs.panning(contentOffset: CGPoint(x: 0, y: 20),
+                           translation: CGPoint(x: 0, y: -20),
+                           velocity: CGPoint(x: 0, y: -20),
+                           isDragging: false)
+
+    self.cancelInteractiveTransition.assertValueCount(1)
+    self.dismissViewController.assertValueCount(1)
+    self.finishInteractiveTransition.assertValueCount(0)
+    self.updateInteractiveTransition.assertValueCount(2)
+    self.setTransitionAnimatorIsInFlight.assertValues([true, false])
+  }
+
+  // This test exercises a particular bug experienced if you are not careful with the transition phases.
+  // It does the following:
+  //   - Pull down a bit to start dismissing
+  //   - Scroll back up to precisely contentOffset=0 to cancel dismissal
+  //   - Transition phase is in weird state where it cannot dismiss.
+  func testTransitionLifecycle_Bug() {
+    self.vm.inputs.configureWith(project: .template, initialPlaylist: [], refTag: nil)
+    self.vm.inputs.viewDidLoad()
+
+    self.cancelInteractiveTransition.assertValueCount(0)
+    self.dismissViewController.assertValueCount(0)
+    self.finishInteractiveTransition.assertValueCount(0)
+    self.updateInteractiveTransition.assertValueCount(0)
+    self.setTransitionAnimatorIsInFlight.assertValueCount(0)
+
+    self.vm.inputs.panning(contentOffset: CGPoint(x: 0, y: -20),
+                           translation: CGPoint(x: 0, y: 20),
+                           velocity: CGPoint(x: 0, y: 20),
+                           isDragging: true)
+
+    self.cancelInteractiveTransition.assertValueCount(0)
+    self.dismissViewController.assertValueCount(1)
+    self.finishInteractiveTransition.assertValueCount(0)
+    self.updateInteractiveTransition.assertValueCount(1)
+    self.setTransitionAnimatorIsInFlight.assertValues([true])
+
+    self.vm.inputs.panning(contentOffset: CGPoint(x: 0, y: 0),
+                           translation: CGPoint(x: 0, y: 0),
+                           velocity: CGPoint(x: 0, y: -20),
+                           isDragging: true)
+
+    self.cancelInteractiveTransition.assertValueCount(0)
+    self.dismissViewController.assertValueCount(1)
+    self.finishInteractiveTransition.assertValueCount(0)
+    self.updateInteractiveTransition.assertValueCount(2)
+    self.setTransitionAnimatorIsInFlight.assertValues([true])
+
+    self.vm.inputs.panning(contentOffset: CGPoint(x: 0, y: 20),
+                           translation: CGPoint(x: 0, y: -20),
+                           velocity: CGPoint(x: 0, y: -20),
+                           isDragging: true)
+
+    self.cancelInteractiveTransition.assertValueCount(1)
+    self.dismissViewController.assertValueCount(1)
+    self.finishInteractiveTransition.assertValueCount(0)
+    self.updateInteractiveTransition.assertValueCount(2)
+    self.setTransitionAnimatorIsInFlight.assertValues([true, false])
+
+    self.vm.inputs.panning(contentOffset: CGPoint(x: 0, y: 20),
+                           translation: CGPoint(x: 0, y: -20),
+                           velocity: CGPoint(x: 0, y: 0),
+                           isDragging: false)
+
+    self.cancelInteractiveTransition.assertValueCount(1)
+    self.dismissViewController.assertValueCount(1)
+    self.finishInteractiveTransition.assertValueCount(0)
+    self.updateInteractiveTransition.assertValueCount(2)
+    self.setTransitionAnimatorIsInFlight.assertValues([true, false])
+  }
+
+  func testSetNeedsStatusBarAppearanceUpdate() {
+    let project = Project.template
+    let playlist = (0...4).map { idx in .template |> Project.lens.id .~ idx + 42 }
+
+    self.vm.inputs.configureWith(project: project, initialPlaylist: playlist, refTag: nil)
+    self.vm.inputs.viewDidLoad()
+
+    self.setNeedsStatusBarAppearanceUpdate.assertValueCount(0)
+
+    self.vm.inputs.willTransition(toPage: 1)
+
+    self.setNeedsStatusBarAppearanceUpdate.assertValueCount(0)
+
+    self.vm.inputs.pageTransition(completed: true)
+
+    self.setNeedsStatusBarAppearanceUpdate.assertValueCount(1)
+  }
+
+  func testSetInitialPagerViewController() {
+    self.vm.inputs.configureWith(project: .template, initialPlaylist: [], refTag: nil)
+
+    self.setInitialPagerViewController.assertValueCount(0)
+
+    self.vm.inputs.viewDidLoad()
+
+    self.setInitialPagerViewController.assertValueCount(1)
+  }
+}

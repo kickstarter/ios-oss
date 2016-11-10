@@ -5,6 +5,8 @@ import Prelude_UIKit
 
 internal protocol ProjectPamphletContentViewControllerDelegate: VideoViewControllerDelegate {
   func projectPamphletContent(controller: ProjectPamphletContentViewController, imageIsVisible: Bool)
+  func projectPamphletContent(controller: ProjectPamphletContentViewController,
+                              scrollViewPanGestureRecognizerDidChange recognizer: UIPanGestureRecognizer)
 }
 
 internal final class ProjectPamphletContentViewController: UITableViewController {
@@ -19,8 +21,23 @@ internal final class ProjectPamphletContentViewController: UITableViewController
 
   internal override func viewDidLoad() {
     super.viewDidLoad()
+
     self.tableView.dataSource = dataSource
+    self.tableView.panGestureRecognizer.addTarget(
+      self, action: #selector(scrollViewPanGestureRecognizerDidChange(_:))
+    )
+
     self.viewModel.inputs.viewDidLoad()
+  }
+
+  internal override func viewWillAppear(animated: Bool) {
+    super.viewWillAppear(animated)
+    self.viewModel.inputs.viewWillAppear(animated: animated)
+  }
+
+  internal override func viewDidAppear(animated: Bool) {
+    super.viewDidAppear(animated)
+    self.viewModel.inputs.viewDidAppear(animated: animated)
   }
 
   internal override func bindStyles() {
@@ -43,6 +60,13 @@ internal final class ProjectPamphletContentViewController: UITableViewController
         self?.tableView.reloadData()
     }
 
+    self.viewModel.outputs.loadMinimalProjectIntoDataSource
+      .observeForUI()
+      .observeNext { [weak self] project in
+        self?.dataSource.loadMinimal(project: project)
+        self?.tableView.reloadData()
+    }
+
     self.viewModel.outputs.goToBacking
       .observeForControllerAction()
       .observeNext { [weak self] in self?.goToBacking(project: $0) }
@@ -60,11 +84,6 @@ internal final class ProjectPamphletContentViewController: UITableViewController
       .observeNext { [weak self] project, reward in
         self?.goToRewardPledge(project: project, reward: reward)
     }
-  }
-
-  internal override func viewDidLayoutSubviews() {
-    super.viewDidLayoutSubviews()
-    self.viewModel.inputs.viewDidLayoutSubviews(contentSize: self.tableView.contentSize)
   }
 
   internal override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -128,17 +147,32 @@ internal final class ProjectPamphletContentViewController: UITableViewController
 
   override func scrollViewDidScroll(scrollView: UIScrollView) {
 
-    guard let cell = self.tableView.cellForRowAtIndexPath(self.dataSource.indexPathForMainCell()),
-      let mainCell = cell as? ProjectPamphletMainCell else {
-        return
+    guard self.scrollingIsAllowed(scrollView) else {
+      scrollView.contentOffset = .zero
+      return
     }
 
-    mainCell.scrollContentOffset(scrollView.contentOffset.y + scrollView.contentInset.top)
+    if let
+      cell = self.tableView.cellForRowAtIndexPath(self.dataSource.indexPathForMainCell()),
+      mainCell = cell as? ProjectPamphletMainCell {
+        mainCell.scrollContentOffset(scrollView.contentOffset.y + scrollView.contentInset.top)
+    }
 
     self.delegate.projectPamphletContent(
       self,
       imageIsVisible: scrollView.contentOffset.y < scrollView.bounds.width * 9/16
     )
+  }
+
+  @objc private func scrollViewPanGestureRecognizerDidChange(recognizer: UIPanGestureRecognizer) {
+    self.delegate.projectPamphletContent(self, scrollViewPanGestureRecognizerDidChange: recognizer)
+  }
+
+  private func scrollingIsAllowed(scrollView: UIScrollView) -> Bool {
+    return self.presentingViewController?.presentedViewController?.isBeingDismissed() != .Some(true)
+      && (!scrollView.tracking || scrollView.contentOffset.y >= 0)
+    // swiftlint:disable:previous force_unwrapping
+    // NB: this ^ shouldn't be necessary, looks like a bug in swiftlint.
   }
 }
 

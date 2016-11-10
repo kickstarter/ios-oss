@@ -10,6 +10,8 @@ public protocol ProjectPamphletViewModelInputs {
   /// Call when the view loads.
   func viewDidLoad()
 
+  func viewDidAppear(animated animated: Bool)
+
   /// Call when the view will appear, and pass the animated parameter.
   func viewWillAppear(animated animated: Bool)
 }
@@ -95,6 +97,11 @@ ProjectPamphletViewModelOutputs {
   private let viewDidLoadProperty = MutableProperty()
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
+  }
+
+  private let viewDidAppearAnimated = MutableProperty(false)
+  public func viewDidAppear(animated animated: Bool) {
+    self.viewDidAppearAnimated.value = animated
   }
 
   private let viewWillAppearAnimated = MutableProperty(false)

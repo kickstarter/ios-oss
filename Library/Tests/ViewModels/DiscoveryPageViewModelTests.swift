@@ -14,6 +14,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
   private let asyncReloadData = TestObserver<(), NoError>()
   private let dismissEmptyState = TestObserver<(), NoError>()
   private let goToProject = TestObserver<Project, NoError>()
+  private let goToPlaylist = TestObserver<[Project], NoError>()
   private let goToRefTag = TestObserver<RefTag, NoError>()
   private let goToProjectUpdate = TestObserver<Update, NoError>()
   private let hasAddedProjects = TestObserver<Bool, NoError>()
@@ -29,8 +30,9 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     self.vm.outputs.activitiesForSample.observe(self.activitiesForSample.observer)
     self.vm.outputs.asyncReloadData.observe(self.asyncReloadData.observer)
     self.vm.outputs.dismissEmptyState.observe(self.dismissEmptyState.observer)
-    self.vm.outputs.goToProject.map { $0.0 }.observe(self.goToProject.observer)
-    self.vm.outputs.goToProject.map { $0.1 }.observe(self.goToRefTag.observer)
+    self.vm.outputs.goToProject.map(first).observe(self.goToProject.observer)
+    self.vm.outputs.goToProject.map(second).observe(self.goToPlaylist.observer)
+    self.vm.outputs.goToProject.map(third).observe(self.goToRefTag.observer)
     self.vm.outputs.goToProjectUpdate.map { $0.1 }.observe(self.goToProjectUpdate.observer)
     self.vm.outputs.setScrollsToTop.observe(self.setScrollsToTop.observer)
     self.vm.outputs.showEmptyState.observe(self.showEmptyState.observer)
@@ -220,65 +222,72 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     let potd = project
       |> Project.lens.id %~ { $0 + 1 }
       |> Project.lens.dates.potdAt .~ potdAt
-
-    self.vm.inputs.configureWith(sort: .magic)
-    self.vm.inputs.viewDidAppear()
-    self.vm.inputs.selectedFilter(.defaults)
-    self.scheduler.advance()
-
-    self.vm.inputs.tapped(project: project)
-
-    self.goToProject.assertValues([project])
-    self.goToRefTag.assertValues([.discoveryWithSort(.magic)], "Go to the project with discovery ref tag.")
-
-    self.vm.inputs.selectedFilter(.defaults |> DiscoveryParams.lens.category .~ Category.art)
-    self.vm.inputs.tapped(project: project)
-
-    self.goToProject.assertValues([project, project])
-    self.goToRefTag.assertValues([.discoveryWithSort(.magic), .categoryWithSort(.magic)],
-                                 "Go to the project with the category sort ref tag.")
-
-    self.vm.inputs.tapped(project: potd)
-
-    self.goToProject.assertValues([project, project, potd])
-    self.goToRefTag.assertValues([.discoveryWithSort(.magic), .categoryWithSort(.magic), .discoveryPotd],
-                                 "Go to the project with the POTD ref tag.")
-
-    self.vm.inputs.selectedFilter(.defaults |> DiscoveryParams.lens.staffPicks .~ true)
-    self.vm.inputs.tapped(project: project)
-
-    self.goToProject.assertValues([project, project, potd, project])
-    self.goToRefTag.assertValues(
-      [.discoveryWithSort(.magic), .categoryWithSort(.magic), .discoveryPotd, .recommendedWithSort(.magic)],
-      "Go to the project with the recommended sort ref tag."
+    let discoveryEnvelope = .template
+      |> DiscoveryEnvelope.lens.projects .~ (
+        (0...2).map { id in .template |> Project.lens.id .~ 100 + id }
     )
 
-    self.vm.inputs.selectedFilter(.defaults |> DiscoveryParams.lens.social .~ true)
-    self.vm.inputs.tapped(project: project)
+    withEnvironment(apiService: MockService(fetchDiscoveryResponse: discoveryEnvelope)) {
+      self.vm.inputs.configureWith(sort: .magic)
+      self.vm.inputs.viewDidAppear()
+      self.vm.inputs.selectedFilter(.defaults)
+      self.scheduler.advance()
 
-    self.goToProject.assertValues([project, project, potd, project, project])
-    self.goToRefTag.assertValues(
-      [.discoveryWithSort(.magic), .categoryWithSort(.magic), .discoveryPotd, .recommendedWithSort(.magic),
-       .socialWithSort(.magic)], "Go to the project with the social ref tag."
-    )
+      self.vm.inputs.tapped(project: project)
 
-    let activityProject = Project.template
-    let activity = .template |> Activity.lens.project .~ activityProject
+      self.goToProject.assertValues([project])
+      self.goToPlaylist.assertValues([discoveryEnvelope.projects])
+      self.goToRefTag.assertValues([.discoveryWithSort(.magic)], "Go to the project with discovery ref tag.")
 
-    self.vm.inputs.tapped(activity: activity)
-    self.goToProject.assertValues([project, project, potd, project, project, activityProject])
-    self.goToRefTag.assertValues(
-      [.discoveryWithSort(.magic), .categoryWithSort(.magic), .discoveryPotd, .recommendedWithSort(.magic),
-       .socialWithSort(.magic), .activitySample], "Go to the project with the social ref tag."
-    )
+      self.vm.inputs.selectedFilter(.defaults |> DiscoveryParams.lens.category .~ Category.art)
+      self.vm.inputs.tapped(project: project)
 
-    self.vm.inputs.configureWith(sort: .endingSoon)
-    self.vm.inputs.tapped(project: project)
-    self.goToProject.assertValues([project, project, potd, project, project, activityProject, project])
-    self.goToRefTag.assertValues(
-      [.discoveryWithSort(.magic), .categoryWithSort(.magic), .discoveryPotd, .recommendedWithSort(.magic),
-        .socialWithSort(.magic), .activitySample, .socialWithSort(.endingSoon)], "Sort changes on ref tag."
-    )
+      self.goToProject.assertValues([project, project])
+      self.goToRefTag.assertValues([.discoveryWithSort(.magic), .categoryWithSort(.magic)],
+        "Go to the project with the category sort ref tag.")
+
+      self.vm.inputs.tapped(project: potd)
+
+      self.goToProject.assertValues([project, project, potd])
+      self.goToRefTag.assertValues([.discoveryWithSort(.magic), .categoryWithSort(.magic), .discoveryPotd],
+        "Go to the project with the POTD ref tag.")
+
+      self.vm.inputs.selectedFilter(.defaults |> DiscoveryParams.lens.staffPicks .~ true)
+      self.vm.inputs.tapped(project: project)
+
+      self.goToProject.assertValues([project, project, potd, project])
+      self.goToRefTag.assertValues(
+        [.discoveryWithSort(.magic), .categoryWithSort(.magic), .discoveryPotd, .recommendedWithSort(.magic)],
+        "Go to the project with the recommended sort ref tag."
+      )
+
+      self.vm.inputs.selectedFilter(.defaults |> DiscoveryParams.lens.social .~ true)
+      self.vm.inputs.tapped(project: project)
+
+      self.goToProject.assertValues([project, project, potd, project, project])
+      self.goToRefTag.assertValues(
+        [.discoveryWithSort(.magic), .categoryWithSort(.magic), .discoveryPotd, .recommendedWithSort(.magic),
+          .socialWithSort(.magic)], "Go to the project with the social ref tag."
+      )
+
+      let activityProject = Project.template
+      let activity = .template |> Activity.lens.project .~ activityProject
+
+      self.vm.inputs.tapped(activity: activity)
+      self.goToProject.assertValues([project, project, potd, project, project, activityProject])
+      self.goToRefTag.assertValues(
+        [.discoveryWithSort(.magic), .categoryWithSort(.magic), .discoveryPotd, .recommendedWithSort(.magic),
+          .socialWithSort(.magic), .activitySample], "Go to the project with the social ref tag."
+      )
+
+      self.vm.inputs.configureWith(sort: .endingSoon)
+      self.vm.inputs.tapped(project: project)
+      self.goToProject.assertValues([project, project, potd, project, project, activityProject, project])
+      self.goToRefTag.assertValues(
+        [.discoveryWithSort(.magic), .categoryWithSort(.magic), .discoveryPotd, .recommendedWithSort(.magic),
+          .socialWithSort(.magic), .activitySample, .socialWithSort(.endingSoon)], "Sort changes on ref tag."
+      )
+    }
   }
 
   func testGoToProjectUpdate() {
@@ -343,8 +352,10 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: User.template))
 
     withEnvironment(apiService: MockService(fetchActivitiesResponse: [activity])) {
+      self.vm.inputs.configureWith(sort: .magic)
       self.vm.inputs.viewWillAppear()
       self.vm.inputs.viewDidAppear()
+      self.vm.inputs.selectedFilter(.defaults)
       self.scheduler.advance()
 
       self.activitiesForSample.assertValues([[activity]], "Activity sample is shown.")

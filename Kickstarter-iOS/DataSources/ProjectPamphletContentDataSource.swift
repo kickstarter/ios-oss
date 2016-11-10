@@ -12,6 +12,10 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
     case rewards
   }
 
+  internal func loadMinimal(project project: Project) {
+    self.set(values: [project], cellClass: ProjectPamphletMainCell.self, inSection: Section.main.rawValue)
+  }
+
   internal func load(project project: Project) {
     self.clearValues()
 
