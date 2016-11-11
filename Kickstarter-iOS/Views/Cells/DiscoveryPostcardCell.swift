@@ -113,12 +113,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
       |> UIStackView.lens.spacing .~ Styles.grid(1)
 
     self.projectStatsStackView
-      |> UIStackView.lens.spacing .~ Styles.grid(3)
-      |> UIStackView.lens.layoutMargins %~~ { _, stackView in
-        stackView.traitCollection.isRegularRegular
-          ? .init(topBottom: 0, leftRight: Styles.grid(4))
-          : .init(all: 0)
-      }
+      |> UIStackView.lens.spacing .~ Styles.grid(4)
       |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
 
     self.socialAvatarImageView

@@ -36,9 +36,33 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
     }
   }
 
+  func testView_Card_NoMetadata() {
+    let discoveryResponse = .template
+      |> DiscoveryEnvelope.lens.projects .~ [anomalisaNoPhoto]
+
+    combos(Language.allLanguages, [Device.phone4inch, Device.phone4_7inch, Device.pad]).forEach {
+      language, device in
+
+        withEnvironment(apiService: MockService(fetchActivitiesResponse: [],
+          fetchDiscoveryResponse: discoveryResponse), currentUser: User.template, language: language) {
+
+            let controller = DiscoveryPageViewController.configuredWith(sort: .magic)
+            let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+            parent.view.frame.size.height = device == .pad ? 500 : 450
+
+            controller.change(filter: magicParams)
+
+            self.scheduler.run()
+
+            controller.tableView.layoutIfNeeded()
+            controller.tableView.reloadData()
+
+            FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+      }
+    }
+  }
+
   func testView_Onboarding() {
-    let magicParams = .defaults
-      |> DiscoveryParams.lens.sort .~ .magic
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
       withEnvironment(language: language, currentUser: nil) {
@@ -60,9 +84,17 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
     super.tearDown()
   }
 
+  private let anomalisaNoPhoto = .anomalisa
+    |> Project.lens.id .~ 1111
+    |> Project.lens.photo.full .~ ""
+
   private let brandoNoAvatar = .brando
     |> User.lens.avatar.medium .~ ""
 
   private let cosmicSurgeryNoPhoto = .cosmicSurgery
+    |> Project.lens.id .~ 2222
     |> Project.lens.photo.full .~ ""
+
+  private let magicParams = .defaults
+    |> DiscoveryParams.lens.sort .~ .magic
 }
