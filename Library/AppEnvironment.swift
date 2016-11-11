@@ -221,9 +221,6 @@ public struct AppEnvironment {
     if let oauthToken = data["apiService.oauthToken.token"] as? String {
       // If there is an oauth token stored in the defaults, then we can authenticate our api service
       service = service.login(OauthToken(token: oauthToken))
-    } else if let oauthToken = ubiquitousStore.stringForKey(oauthTokenStorageKey) {
-      // Otherwise if there is a token in the ubiquitous defaults we can use it
-      service = service.login(OauthToken(token: oauthToken))
     }
 
     // Try restoring the client id for the api service
@@ -306,6 +303,5 @@ public struct AppEnvironment {
     ]
 
     userDefaults.setObject(data.compact(), forKey: environmentStorageKey)
-    ubiquitousStore.setObject(env.apiService.oauthToken?.token, forKey: oauthTokenStorageKey)
   }
 }
