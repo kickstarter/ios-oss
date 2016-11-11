@@ -9,7 +9,7 @@ public protocol DateProtocol {
 }
 
 extension NSDate: DateProtocol {
-  public var date: NSDate {
+  @nonobjc public var date: NSDate {
     return self
   }
 }
