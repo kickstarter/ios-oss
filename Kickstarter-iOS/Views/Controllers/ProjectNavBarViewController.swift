@@ -9,7 +9,7 @@ internal protocol ProjectNavBarViewControllerDelegate: class {
 }
 
 internal final class ProjectNavBarViewController: UIViewController {
-  internal var delegate: ProjectNavBarViewControllerDelegate?
+  internal weak var delegate: ProjectNavBarViewControllerDelegate?
   private let viewModel: ProjectNavBarViewModelType = ProjectNavBarViewModel()
   private let shareViewModel: ShareViewModelType = ShareViewModel()
 

@@ -8,8 +8,8 @@ internal protocol ProjectNavigatorDelegate: class {
 
 internal final class ProjectNavigatorViewController: UIPageViewController {
 
-  private let transitionAnimator: ProjectNavigatorTransitionAnimator?
-  private let navigatorDelegate: ProjectNavigatorDelegate?
+  private weak var transitionAnimator: ProjectNavigatorTransitionAnimator?
+  private weak var navigatorDelegate: ProjectNavigatorDelegate?
   private let pageDataSource: ProjectNavigatorPagesDataSource!
   private let viewModel: ProjectNavigatorViewModelType = ProjectNavigatorViewModel()
 
