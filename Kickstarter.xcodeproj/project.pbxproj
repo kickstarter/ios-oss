@@ -914,7 +914,11 @@
 		A7FA38D91D9068AD0041FC9C /* RewardsTitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FA38D81D9068AD0041FC9C /* RewardsTitleCell.swift */; };
 		A7FC8C061C8F1DEA00C3B49B /* CircleAvatarImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FC8C051C8F1DEA00C3B49B /* CircleAvatarImageView.swift */; };
 		A7FC8C071C8F1DEA00C3B49B /* CircleAvatarImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FC8C051C8F1DEA00C3B49B /* CircleAvatarImageView.swift */; };
+		D70347901DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D703478F1DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift */; };
+		D70347911DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D703478F1DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift */; };
 		D7086F3C1DB7FBA40087E5EB /* BackingViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7086F3B1DB7FBA40087E5EB /* BackingViewControllerTests.swift */; };
+		D7A9BE131DC125B800422B31 /* DiscoveryExpandableRowCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A9BE121DC125B800422B31 /* DiscoveryExpandableRowCellViewModelTests.swift */; };
+		D7A9BE141DC125B800422B31 /* DiscoveryExpandableRowCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A9BE121DC125B800422B31 /* DiscoveryExpandableRowCellViewModelTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -2160,7 +2164,9 @@
 		A7FA38A31D9068940041FC9C /* PledgeTitleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PledgeTitleCell.swift; sourceTree = "<group>"; };
 		A7FA38D81D9068AD0041FC9C /* RewardsTitleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RewardsTitleCell.swift; sourceTree = "<group>"; };
 		A7FC8C051C8F1DEA00C3B49B /* CircleAvatarImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleAvatarImageView.swift; sourceTree = "<group>"; };
+		D703478F1DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryExpandableRowCellViewModel.swift; sourceTree = "<group>"; };
 		D7086F3B1DB7FBA40087E5EB /* BackingViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackingViewControllerTests.swift; sourceTree = "<group>"; };
+		D7A9BE121DC125B800422B31 /* DiscoveryExpandableRowCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryExpandableRowCellViewModelTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2767,6 +2773,7 @@
 				017508771D68C9E900BB1863 /* DiscoveryNavigationHeaderViewModelTests.swift */,
 				A72C3A9A1D00F6E60075227E /* DiscoveryPageViewModelTests.swift */,
 				596109FE1D6B8AA100C8206A /* DiscoveryPostcardViewModelTests.swift */,
+				D7A9BE121DC125B800422B31 /* DiscoveryExpandableRowCellViewModelTests.swift */,
 				A7830CE31D005C3F00B5B6AE /* DiscoveryViewModelTests.swift */,
 				0176984E1DB9796800EE58BA /* EmptyStatesViewModelTests.swift */,
 				A7830CE41D005C3F00B5B6AE /* FacebookConfirmationViewModelTests.swift */,
@@ -3331,6 +3338,7 @@
 			isa = PBXGroup;
 			children = (
 				A7F4418E1D005A9400FE6FC5 /* ActivitiesViewModel.swift */,
+				D703478F1DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift */,
 				A7F4418F1D005A9400FE6FC5 /* ActivityFriendBackingViewModel.swift */,
 				A7F441901D005A9400FE6FC5 /* ActivityFriendFollowCellViewModel.swift */,
 				598D96B91D426FD8003F3F66 /* ActivitySampleBackingCellViewModel.swift */,
@@ -4434,6 +4442,7 @@
 				A75511641C8642C3005355CF /* NSBundleType.swift in Sources */,
 				A75511651C8642C3005355CF /* String+SimpleHTML.swift in Sources */,
 				A7F441C31D005A9400FE6FC5 /* FacebookConfirmationViewModel.swift in Sources */,
+				D70347901DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift in Sources */,
 				0199545F1D2D818E00BC1390 /* DashboardProjectsDrawerViewModel.swift in Sources */,
 				A76126B91C90C94000EDCCB9 /* UIView-Extensions.swift in Sources */,
 				A77D7B071CBAAF5D0077586B /* Paginate.swift in Sources */,
@@ -4631,6 +4640,7 @@
 				A7CC14321D00E70900035C52 /* FindFriendsViewModelTests.swift in Sources */,
 				A7A978AE1D71E99900ABA1D6 /* RewardShippingPickerViewModelTests.swift in Sources */,
 				A7A29F4A1CC3DE5F002BE580 /* ValueCellDataSourceTests.swift in Sources */,
+				D7A9BE131DC125B800422B31 /* DiscoveryExpandableRowCellViewModelTests.swift in Sources */,
 				A7830D2A1D005C3F00B5B6AE /* ThanksViewModelTests.swift in Sources */,
 				A7830D001D005C3F00B5B6AE /* CommentDialogViewModelTests.swift in Sources */,
 				0156B1FC1D074285000C4252 /* ActivityFriendFollowCellViewModelTests.swift in Sources */,
@@ -4668,6 +4678,7 @@
 				A75A9DC01D6F3A3000603D1D /* RewardShippingPickerViewModel.swift in Sources */,
 				A7F441BC1D005A9400FE6FC5 /* CommentDialogViewModel.swift in Sources */,
 				A796FF581D425A4C00CD58AA /* ProjectStyles.swift in Sources */,
+				D70347911DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift in Sources */,
 				018422BC1D2C483400CA7566 /* DashboardTitleViewViewModel.swift in Sources */,
 				A75511AD1C8647D9005355CF /* AssetImageGeneratorType.swift in Sources */,
 				80D73B271D50F1A90099231F /* Navigation.swift in Sources */,
@@ -4851,6 +4862,7 @@
 				01C7CDC41D1A571700D9E0D1 /* DashboardRewardsCellViewModelTests.swift in Sources */,
 				A7CA8C451D8F25D30086A3E9 /* ProjectNavBarViewModelTests.swift in Sources */,
 				01C7CDC01D14BBF200D9E0D1 /* DashboardRewardRowStackViewViewModelTests.swift in Sources */,
+				D7A9BE141DC125B800422B31 /* DiscoveryExpandableRowCellViewModelTests.swift in Sources */,
 				A7CC14331D00E70900035C52 /* FindFriendsViewModelTests.swift in Sources */,
 				A75511F11C865321005355CF /* MockBundle.swift in Sources */,
 				A7830D051D005C3F00B5B6AE /* DiscoveryViewModelTests.swift in Sources */,

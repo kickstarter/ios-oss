@@ -95,6 +95,9 @@ internal final class DiscoveryFiltersViewController: UIViewController, UITableVi
       |> UITableView.lens.rowHeight .~ UITableViewAutomaticDimension
       |> UITableView.lens.estimatedRowHeight .~ 55.0
       |> UITableView.lens.backgroundColor .~ .clearColor()
+
+    self.closeButton
+      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.Closes_filters() }
   }
 
   internal func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {

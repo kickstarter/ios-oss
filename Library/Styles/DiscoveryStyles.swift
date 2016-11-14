@@ -15,7 +15,7 @@ public enum CategoryGroup {
     case .art, .crafts, .design, .fashion, .theater:
       self = .culture
     case .dance, .food, .games, .music, .tech:
-    self = .entertainment
+      self = .entertainment
     case .comics, .film, .journalism, .photography, .publishing:
       self = .story
     case .unrecognized:
