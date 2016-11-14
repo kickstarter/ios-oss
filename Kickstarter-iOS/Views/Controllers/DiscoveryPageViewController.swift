@@ -94,7 +94,11 @@ internal final class DiscoveryPageViewController: UITableViewController {
         }
     }
 
-    self.viewModel.outputs.goToProject
+    self.viewModel.outputs.goToActivityProject
+      .observeForControllerAction()
+      .observeNext { [weak self] in self?.goTo(project: $0, refTag: $1) }
+
+    self.viewModel.outputs.goToProjectPlaylist
       .observeForControllerAction()
       .observeNext { [weak self] in self?.goTo(project: $0, initialPlaylist: $1, refTag: $2) }
 
@@ -168,8 +172,12 @@ internal final class DiscoveryPageViewController: UITableViewController {
     }
   }
 
-  private func goTo(project project: Project, initialPlaylist: [Project], refTag: RefTag) {
+  private func goTo(project project: Project, refTag: RefTag) {
+    let vc = ProjectNavigatorViewController.configuredWith(project: project, refTag: refTag)
+    self.presentViewController(vc, animated: true, completion: nil)
+  }
 
+  private func goTo(project project: Project, initialPlaylist: [Project], refTag: RefTag) {
     let vc = ProjectNavigatorViewController.configuredWith(project: project,
                                                            refTag: refTag,
                                                            initialPlaylist: initialPlaylist,

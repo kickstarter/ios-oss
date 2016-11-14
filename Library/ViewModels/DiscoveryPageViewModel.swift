@@ -52,8 +52,11 @@ public protocol DiscoveryPageViewModelOutputs {
   /// Emits when we should dismiss the empty state controller.
   var dismissEmptyState: Signal<(), NoError> { get }
 
-  /// Emits a project and ref tag that we should go to.
-  var goToProject: Signal<(Project, [Project], RefTag), NoError> { get }
+  /// Emits a project and ref tag that we should go to from the activity sample.
+  var goToActivityProject: Signal<(Project, RefTag), NoError> { get }
+
+  /// Emits a project, playlist, ref tag that we should go to from discovery.
+  var goToProjectPlaylist: Signal<(Project, [Project], RefTag), NoError> { get }
 
   /// Emits a project and update when should go to update.
   var goToProjectUpdate: Signal<(Project, Update), NoError> { get }
@@ -163,8 +166,10 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       .takePairWhen(self.tappedProject.signal.ignoreNil())
       .map { params, project in (project, refTag(fromParams: params, project: project)) }
 
-    self.goToProject = self.projects
-      .takePairWhen(.merge(activitySampleTapped, projectCardTapped))
+    self.goToActivityProject = activitySampleTapped
+
+    self.goToProjectPlaylist = self.projects
+      .takePairWhen(projectCardTapped)
       .map(unpack)
       .map { projects, project, refTag in (project, projects, refTag) }
 
@@ -188,7 +193,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
 
     let clearActivitySampleOnNavigate = Signal.merge(
       paramsChanged.mapConst(true),
-      self.goToProject.mapConst(false),
+      self.goToActivityProject.mapConst(false),
       self.goToProjectUpdate.mapConst(false),
       self.viewDidDisappearProperty.signal.filter(isFalse),
       self.viewDidAppearProperty.signal.mapConst(true)
@@ -264,7 +269,8 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
   public let activitiesForSample: Signal<[Activity], NoError>
   public var asyncReloadData: Signal<Void, NoError>
   public let dismissEmptyState: Signal<(), NoError>
-  public let goToProject: Signal<(Project, [Project], RefTag), NoError>
+  public var goToActivityProject: Signal<(Project, RefTag), NoError>
+  public let goToProjectPlaylist: Signal<(Project, [Project], RefTag), NoError>
   public let goToProjectUpdate: Signal<(Project, Update), NoError>
   public let projects: Signal<[Project], NoError>
   public let projectsAreLoading: Signal<Bool, NoError>
