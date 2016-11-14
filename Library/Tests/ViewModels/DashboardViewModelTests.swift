@@ -41,17 +41,162 @@ internal final class DashboardViewModelTests: TestCase {
     self.vm.outputs.focusScreenReaderOnTitleView.observe(self.focusScreenReaderOnTitleView.observer)
   }
 
+  func testDashboardTracking() {
+    let project1 = .template |> Project.lens.id .~ 0
+    let project2 = .template |> Project.lens.id .~ 1
+    let projects = [project1, project2]
+
+    withEnvironment(apiService: MockService(fetchProjectsResponse: projects)) {
+      self.vm.inputs.viewWillAppear(animated: false)
+
+      self.project.assertValueCount(0)
+      XCTAssertEqual([], self.trackingClient.events)
+
+      self.scheduler.advance()
+
+      // View tracks on first appearance
+      XCTAssertEqual(["Viewed Project Dashboard", "Dashboard View"], self.trackingClient.events)
+      XCTAssertEqual([0, 0], self.trackingClient.properties(forKey: "project_pid", as: Int.self))
+
+      self.vm.inputs.viewWillAppear(animated: true)
+      self.scheduler.advance()
+
+      // View doesn't track on appearing animated
+      XCTAssertEqual(["Viewed Project Dashboard", "Dashboard View"], self.trackingClient.events)
+      XCTAssertEqual([0, 0], self.trackingClient.properties(forKey: "project_pid", as: Int.self))
+
+      self.vm.inputs.viewWillAppear(animated: false)
+      self.scheduler.advance()
+
+      // View tracks on unanimated appearance
+      XCTAssertEqual(["Viewed Project Dashboard", "Dashboard View", "Viewed Project Dashboard",
+        "Dashboard View"], self.trackingClient.events)
+      XCTAssertEqual([0, 0, 0, 0], self.trackingClient.properties(forKey: "project_pid", as: Int.self))
+
+      self.vm.inputs.showHideProjectsDrawer()
+
+      // Showed project switcher
+      XCTAssertEqual(["Viewed Project Dashboard", "Dashboard View", "Viewed Project Dashboard",
+        "Dashboard View", "Showed Project Switcher"], self.trackingClient.events)
+      XCTAssertEqual([0, 0, 0, 0, 0], self.trackingClient.properties(forKey: "project_pid", as: Int.self))
+
+      self.vm.inputs.`switch`(toProject: .id(project2.id))
+
+      // Switched project. Don't track Dash view or closed switcher.
+      XCTAssertEqual(["Viewed Project Dashboard", "Dashboard View", "Viewed Project Dashboard",
+        "Dashboard View", "Showed Project Switcher", "Switched Projects", "Creator Project Navigate"],
+                     self.trackingClient.events)
+      XCTAssertEqual([0, 0, 0, 0, 0, 1, 1],
+                     self.trackingClient.properties(forKey: "project_pid", as: Int.self))
+
+      self.vm.inputs.viewWillAppear(animated: true)
+
+      // Don't track Dashboard View on animated viewing
+      XCTAssertEqual(["Viewed Project Dashboard", "Dashboard View", "Viewed Project Dashboard",
+        "Dashboard View", "Showed Project Switcher", "Switched Projects", "Creator Project Navigate"],
+                     self.trackingClient.events)
+      XCTAssertEqual([0, 0, 0, 0, 0, 1, 1],
+                     self.trackingClient.properties(forKey: "project_pid", as: Int.self))
+
+      self.vm.inputs.viewWillAppear(animated: false)
+      self.scheduler.advance()
+
+      // Track new project next time view appears unanimated
+      XCTAssertEqual(["Viewed Project Dashboard", "Dashboard View", "Viewed Project Dashboard",
+        "Dashboard View", "Showed Project Switcher", "Switched Projects", "Creator Project Navigate",
+        "Viewed Project Dashboard", "Dashboard View"], self.trackingClient.events)
+      XCTAssertEqual([0, 0, 0, 0, 0, 1, 1, 1, 1],
+                     self.trackingClient.properties(forKey: "project_pid", as: Int.self))
+
+      self.vm.inputs.viewWillAppear(animated: false)
+      self.scheduler.advance()
+
+      // Track View next time view appears unanimated
+      XCTAssertEqual(["Viewed Project Dashboard", "Dashboard View", "Viewed Project Dashboard",
+        "Dashboard View", "Showed Project Switcher", "Switched Projects", "Creator Project Navigate",
+        "Viewed Project Dashboard", "Dashboard View", "Viewed Project Dashboard", "Dashboard View"],
+                     self.trackingClient.events)
+      XCTAssertEqual([0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1],
+                     self.trackingClient.properties(forKey: "project_pid", as: Int.self))
+
+      self.vm.inputs.showHideProjectsDrawer()
+
+      // Showed project switcher.
+      XCTAssertEqual(["Viewed Project Dashboard", "Dashboard View", "Viewed Project Dashboard",
+        "Dashboard View", "Showed Project Switcher", "Switched Projects", "Creator Project Navigate",
+        "Viewed Project Dashboard", "Dashboard View", "Viewed Project Dashboard", "Dashboard View",
+        "Showed Project Switcher"], self.trackingClient.events)
+      XCTAssertEqual([0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1],
+                     self.trackingClient.properties(forKey: "project_pid", as: Int.self))
+
+      self.vm.inputs.showHideProjectsDrawer()
+
+      // Closed project switcher.
+      XCTAssertEqual(["Viewed Project Dashboard", "Dashboard View", "Viewed Project Dashboard",
+        "Dashboard View", "Showed Project Switcher", "Switched Projects", "Creator Project Navigate",
+        "Viewed Project Dashboard", "Dashboard View", "Viewed Project Dashboard", "Dashboard View",
+        "Showed Project Switcher", "Closed Project Switcher"], self.trackingClient.events)
+      XCTAssertEqual([0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1],
+                     self.trackingClient.properties(forKey: "project_pid", as: Int.self))
+
+      self.vm.inputs.showHideProjectsDrawer()
+
+      // Showed project switcher.
+      XCTAssertEqual(["Viewed Project Dashboard", "Dashboard View", "Viewed Project Dashboard",
+        "Dashboard View", "Showed Project Switcher", "Switched Projects", "Creator Project Navigate",
+        "Viewed Project Dashboard", "Dashboard View", "Viewed Project Dashboard", "Dashboard View",
+        "Showed Project Switcher", "Closed Project Switcher", "Showed Project Switcher"],
+                     self.trackingClient.events)
+      XCTAssertEqual([0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+                     self.trackingClient.properties(forKey: "project_pid", as: Int.self))
+
+      self.vm.inputs.showHideProjectsDrawer()
+
+      // Closed project switcher.
+      XCTAssertEqual(["Viewed Project Dashboard", "Dashboard View", "Viewed Project Dashboard",
+        "Dashboard View", "Showed Project Switcher", "Switched Projects", "Creator Project Navigate",
+        "Viewed Project Dashboard", "Dashboard View", "Viewed Project Dashboard", "Dashboard View",
+        "Showed Project Switcher", "Closed Project Switcher", "Showed Project Switcher",
+        "Closed Project Switcher"], self.trackingClient.events)
+      XCTAssertEqual([0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+                     self.trackingClient.properties(forKey: "project_pid", as: Int.self))
+
+      // Showed project switcher.
+      self.vm.inputs.showHideProjectsDrawer()
+
+      XCTAssertEqual(["Viewed Project Dashboard", "Dashboard View", "Viewed Project Dashboard",
+        "Dashboard View", "Showed Project Switcher", "Switched Projects", "Creator Project Navigate",
+        "Viewed Project Dashboard", "Dashboard View", "Viewed Project Dashboard", "Dashboard View",
+        "Showed Project Switcher", "Closed Project Switcher", "Showed Project Switcher",
+        "Closed Project Switcher", "Showed Project Switcher"], self.trackingClient.events)
+      XCTAssertEqual([0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+                     self.trackingClient.properties(forKey: "project_pid", as: Int.self))
+
+      self.vm.inputs.`switch`(toProject: .id(project1.id))
+
+      // Switch projects.
+      XCTAssertEqual(["Viewed Project Dashboard", "Dashboard View", "Viewed Project Dashboard",
+        "Dashboard View", "Showed Project Switcher", "Switched Projects", "Creator Project Navigate",
+        "Viewed Project Dashboard", "Dashboard View", "Viewed Project Dashboard", "Dashboard View",
+        "Showed Project Switcher", "Closed Project Switcher", "Showed Project Switcher",
+        "Closed Project Switcher", "Showed Project Switcher", "Switched Projects",
+        "Creator Project Navigate"], self.trackingClient.events)
+      XCTAssertEqual([0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0],
+                     self.trackingClient.properties(forKey: "project_pid", as: Int.self))
+    }
+  }
+
   func testScreenReaderFocus() {
     let projects = [Project.template]
 
     withEnvironment(apiService: MockService(fetchProjectsResponse: projects)) {
       self.focusScreenReaderOnTitleView.assertValueCount(0)
 
-      self.vm.inputs.viewDidAppear()
+      self.vm.inputs.viewWillAppear(animated: false)
 
       self.focusScreenReaderOnTitleView.assertValueCount(1)
 
-      self.vm.inputs.viewDidAppear()
+      self.vm.inputs.viewWillAppear(animated: false)
 
       self.focusScreenReaderOnTitleView.assertValueCount(2)
     }
@@ -64,7 +209,7 @@ internal final class DashboardViewModelTests: TestCase {
                                                currentProjectIndex: 0)
 
     withEnvironment(apiService: MockService(fetchProjectsResponse: projects)) {
-      self.vm.inputs.viewDidAppear()
+      self.vm.inputs.viewWillAppear(animated: false)
 
       self.project.assertValueCount(0)
       self.updateTitleViewData.assertValueCount(0)
@@ -75,7 +220,7 @@ internal final class DashboardViewModelTests: TestCase {
       self.project.assertValues([.template |> Project.lens.id .~ 0])
       self.updateTitleViewData.assertValues([titleViewData], "Update title data")
       XCTAssertEqual(["Viewed Project Dashboard", "Dashboard View"], self.trackingClient.events)
-      XCTAssertEqual([0, 0], self.trackingClient.properties.map { $0["project_pid"] as! Int? })
+      XCTAssertEqual([0, 0], self.trackingClient.properties(forKey: "project_pid", as: Int.self))
 
       self.fundingStats.assertValueCount(1)
 
@@ -86,7 +231,7 @@ internal final class DashboardViewModelTests: TestCase {
       }
 
       withEnvironment(apiService: MockService(fetchProjectsResponse: updatedProjects)) {
-        self.vm.inputs.viewDidAppear()
+        self.vm.inputs.viewWillAppear(animated: false)
         self.scheduler.advance()
 
         self.project.assertValueCount(2)
@@ -104,7 +249,7 @@ internal final class DashboardViewModelTests: TestCase {
                                                currentProjectIndex: 0)
 
     withEnvironment(apiService: MockService(fetchProjectsResponse: projects)) {
-      self.vm.inputs.viewDidAppear()
+      self.vm.inputs.viewWillAppear(animated: false)
 
       self.updateTitleViewData.assertValueCount(0)
 
@@ -134,7 +279,7 @@ internal final class DashboardViewModelTests: TestCase {
 
     withEnvironment(apiService: MockService(fetchProjectsResponse: projects,
       fetchProjectStatsResponse: statsEnvelope)) {
-      self.vm.inputs.viewDidAppear()
+      self.vm.inputs.viewWillAppear(animated: false)
 
       self.videoStats.assertValueCount(0)
       self.fundingStats.assertValueCount(0)
@@ -152,7 +297,7 @@ internal final class DashboardViewModelTests: TestCase {
 
       withEnvironment(apiService: MockService(fetchProjectsResponse: projects2,
         fetchProjectStatsResponse: statsEnvelope2)) {
-        self.vm.inputs.viewDidAppear()
+        self.vm.inputs.viewWillAppear(animated: false)
         self.scheduler.advance()
 
         self.fundingStats.assertValues([[.template], [.template]], "Funding stats emitted.")
@@ -170,7 +315,7 @@ internal final class DashboardViewModelTests: TestCase {
 
     withEnvironment(apiService: MockService(fetchProjectsResponse: projects)) {
       self.vm.inputs.`switch`(toProject: .id(projects.last!.id))
-      self.vm.inputs.viewDidAppear()
+      self.vm.inputs.viewWillAppear(animated: false)
       self.scheduler.advance()
 
       self.project.assertValues([projects.last!])
@@ -201,7 +346,7 @@ internal final class DashboardViewModelTests: TestCase {
                                                     currentProjectIndex: 1)
 
     withEnvironment(apiService: MockService(fetchProjectsResponse: projects)) {
-      self.vm.inputs.viewDidAppear()
+      self.vm.inputs.viewWillAppear(animated: false)
       self.scheduler.advance()
 
       self.updateTitleViewData.assertValues([titleViewDataClosed1], "Update title with closed data")
@@ -215,7 +360,7 @@ internal final class DashboardViewModelTests: TestCase {
       self.animateOutProjectsDrawer.assertValueCount(0)
       XCTAssertEqual(["Viewed Project Dashboard", "Dashboard View", "Showed Project Switcher"],
                      self.trackingClient.events)
-      XCTAssertEqual([1, 1, 1], self.trackingClient.properties.map { $0["project_pid"] as! Int? })
+      XCTAssertEqual([1, 1, 1], self.trackingClient.properties(forKey: "project_pid", as: Int.self))
 
       self.vm.inputs.showHideProjectsDrawer()
 
@@ -226,7 +371,7 @@ internal final class DashboardViewModelTests: TestCase {
       XCTAssertEqual(["Viewed Project Dashboard", "Dashboard View", "Showed Project Switcher",
         "Closed Project Switcher"],
                      self.trackingClient.events)
-      XCTAssertEqual([1, 1, 1, 1], self.trackingClient.properties.map { $0["project_pid"] as! Int? })
+      XCTAssertEqual([1, 1, 1, 1], self.trackingClient.properties(forKey: "project_pid", as: Int.self))
 
       self.vm.inputs.dashboardProjectsDrawerDidAnimateOut()
 
@@ -239,7 +384,7 @@ internal final class DashboardViewModelTests: TestCase {
       self.presentProjectsDrawer.assertValues([[projectData1, projectData2], [projectData1, projectData2]])
       XCTAssertEqual(["Viewed Project Dashboard", "Dashboard View", "Showed Project Switcher",
         "Closed Project Switcher", "Showed Project Switcher"], self.trackingClient.events)
-      XCTAssertEqual([1, 1, 1, 1, 1], self.trackingClient.properties.map { $0["project_pid"] as! Int? })
+      XCTAssertEqual([1, 1, 1, 1, 1], self.trackingClient.properties(forKey: "project_pid", as: Int.self))
 
       self.vm.inputs.`switch`(toProject: .id(project2.id))
 
@@ -248,10 +393,10 @@ internal final class DashboardViewModelTests: TestCase {
       self.animateOutProjectsDrawer.assertValueCount(2, "Animate out drawer emits")
       self.dismissProjectsDrawer.assertValueCount(1, "Dismiss drawer does not emit")
       XCTAssertEqual(["Viewed Project Dashboard", "Dashboard View", "Showed Project Switcher",
-        "Closed Project Switcher", "Showed Project Switcher", "Closed Project Switcher", "Switched Projects",
+        "Closed Project Switcher", "Showed Project Switcher", "Switched Projects",
         "Creator Project Navigate"], self.trackingClient.events)
-      XCTAssertEqual([1, 1, 1, 1, 1, 4, 4, 4],
-                     self.trackingClient.properties.map { $0["project_pid"] as! Int? })
+      XCTAssertEqual([1, 1, 1, 1, 1, 4, 4],
+                     self.trackingClient.properties(forKey: "project_pid", as: Int.self))
 
       self.vm.inputs.dashboardProjectsDrawerDidAnimateOut()
 
@@ -266,10 +411,19 @@ internal final class DashboardViewModelTests: TestCase {
       self.animateOutProjectsDrawer.assertValueCount(2, "Animate out drawer emits")
       self.dismissProjectsDrawer.assertValueCount(2, "Dismiss drawer does not emit")
       XCTAssertEqual(["Viewed Project Dashboard", "Dashboard View", "Showed Project Switcher",
-        "Closed Project Switcher", "Showed Project Switcher", "Closed Project Switcher", "Switched Projects",
+        "Closed Project Switcher", "Showed Project Switcher", "Switched Projects",
         "Creator Project Navigate", "Showed Project Switcher"], self.trackingClient.events)
+      XCTAssertEqual([1, 1, 1, 1, 1, 4, 4, 4],
+                     self.trackingClient.properties(forKey: "project_pid", as: Int.self))
+
+      self.vm.inputs.showHideProjectsDrawer()
+
+      XCTAssertEqual(["Viewed Project Dashboard", "Dashboard View", "Showed Project Switcher",
+        "Closed Project Switcher", "Showed Project Switcher", "Switched Projects",
+        "Creator Project Navigate", "Showed Project Switcher", "Closed Project Switcher"],
+                     self.trackingClient.events)
       XCTAssertEqual([1, 1, 1, 1, 1, 4, 4, 4, 4],
-                     self.trackingClient.properties.map { $0["project_pid"] as! Int? })
+                     self.trackingClient.properties(forKey: "project_pid", as: Int.self))
     }
   }
 }

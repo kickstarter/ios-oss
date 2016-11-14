@@ -25,8 +25,8 @@ internal final class SearchViewController: UITableViewController {
     self.tableView.dataSource = self.dataSource
   }
 
-  internal override func viewDidAppear(animated: Bool) {
-    super.viewDidAppear(animated)
+  internal override func viewWillAppear(animated: Bool) {
+    super.viewWillAppear(animated)
 
     self.cancelButton.addTarget(self,
                                 action: #selector(cancelButtonPressed),
@@ -46,7 +46,7 @@ internal final class SearchViewController: UITableViewController {
 
     self.searchTextField.delegate = self
 
-    self.viewModel.inputs.viewDidAppear()
+    self.viewModel.inputs.viewWillAppear(animated: animated)
   }
 
   internal override func bindStyles() {

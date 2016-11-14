@@ -34,10 +34,10 @@ internal final class DashboardViewController: UITableViewController {
     self.titleView.delegate = self
   }
 
-  override func viewDidAppear(animated: Bool) {
-    super.viewDidAppear(animated)
+  override func viewWillAppear(animated: Bool) {
+    super.viewWillAppear(animated)
 
-    self.viewModel.inputs.viewDidAppear()
+    self.viewModel.inputs.viewWillAppear(animated: animated)
   }
 
   override func bindStyles() {

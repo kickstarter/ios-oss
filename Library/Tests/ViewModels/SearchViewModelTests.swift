@@ -32,7 +32,7 @@ internal final class SearchViewModelTests: TestCase {
   }
 
   func testCancelSearchField_WithTextChange() {
-    self.vm.inputs.viewDidAppear()
+    self.vm.inputs.viewWillAppear(animated: false)
     self.vm.inputs.searchFieldDidBeginEditing()
     self.vm.inputs.searchTextChanged("a")
     self.vm.inputs.cancelButtonPressed()
@@ -48,7 +48,7 @@ internal final class SearchViewModelTests: TestCase {
   }
 
   func testCancelSearchField_WithFocusChange() {
-    self.vm.inputs.viewDidAppear()
+    self.vm.inputs.viewWillAppear(animated: false)
     self.vm.inputs.searchFieldDidBeginEditing()
     self.vm.inputs.searchTextChanged("a")
 
@@ -73,7 +73,7 @@ internal final class SearchViewModelTests: TestCase {
   }
 
   func testCancelSearchField_WithoutTextChange() {
-    self.vm.inputs.viewDidAppear()
+    self.vm.inputs.viewWillAppear(animated: false)
     self.vm.inputs.searchFieldDidBeginEditing()
     self.vm.inputs.cancelButtonPressed()
 
@@ -83,7 +83,7 @@ internal final class SearchViewModelTests: TestCase {
   }
 
   func testChangeSearchFieldFocus() {
-    self.vm.inputs.viewDidAppear()
+    self.vm.inputs.viewWillAppear(animated: false)
 
     self.changeSearchFieldFocusFocused.assertValues([false])
     self.changeSearchFieldFocusAnimated.assertValues([false])
@@ -102,7 +102,7 @@ internal final class SearchViewModelTests: TestCase {
   }
 
   func testClearSearchText() {
-    self.vm.inputs.viewDidAppear()
+    self.vm.inputs.viewWillAppear(animated: false)
     self.vm.inputs.searchFieldDidBeginEditing()
     self.vm.inputs.searchTextChanged("b")
     self.vm.inputs.clearSearchText()
@@ -116,7 +116,7 @@ internal final class SearchViewModelTests: TestCase {
     self.isPopularTitleVisible.assertDidNotEmitValue("Popular title is not visible before view is visible.")
     XCTAssertEqual([], self.trackingClient.events, "No events tracked before view is visible.")
 
-    self.vm.inputs.viewDidAppear()
+    self.vm.inputs.viewWillAppear(animated: false)
 
     self.isPopularTitleVisible.assertValues([])
 
@@ -175,7 +175,7 @@ internal final class SearchViewModelTests: TestCase {
       ],
       self.trackingClient.events)
 
-    self.vm.inputs.viewDidAppear()
+    self.vm.inputs.viewWillAppear(animated: false)
 
     self.hasProjects.assertValues([true, false, true, false, true],
                              "Leaving view and coming back doesn't load more projects.")
@@ -184,7 +184,7 @@ internal final class SearchViewModelTests: TestCase {
     XCTAssertEqual(
       [
         "Discover Search", "Viewed Search", "Discover Search Results", "Loaded Search Results",
-        "Discover Search Results Load More", "Loaded More Search Results"
+        "Discover Search Results Load More", "Loaded More Search Results", "Discover Search", "Viewed Search"
       ],
       self.trackingClient.events)
   }
@@ -199,7 +199,7 @@ internal final class SearchViewModelTests: TestCase {
       let projects = TestObserver<[Int], NoError>()
       self.vm.outputs.projects.map { $0.map { $0.id } }.observe(projects.observer)
 
-      self.vm.inputs.viewDidAppear()
+      self.vm.inputs.viewWillAppear(animated: false)
       self.scheduler.advanceByInterval(apiDelay)
 
       self.hasProjects.assertValues([true], "Popular projects emit immediately.")
@@ -238,7 +238,7 @@ internal final class SearchViewModelTests: TestCase {
       let projects = TestObserver<[Int], NoError>()
       self.vm.outputs.projects.map { $0.map { $0.id } }.observe(projects.observer)
 
-      self.vm.inputs.viewDidAppear()
+      self.vm.inputs.viewWillAppear(animated: false)
       self.scheduler.advanceByInterval(apiDelay)
 
       self.hasProjects.assertValues([true], "Popular projects load immediately.")
@@ -291,7 +291,7 @@ internal final class SearchViewModelTests: TestCase {
   }
 
   func testSearchFieldText() {
-    self.vm.inputs.viewDidAppear()
+    self.vm.inputs.viewWillAppear(animated: false)
     self.vm.inputs.searchFieldDidBeginEditing()
 
     self.searchFieldText.assertValues([])
@@ -307,7 +307,7 @@ internal final class SearchViewModelTests: TestCase {
   }
 
   func testSearchFieldEditingDidEnd() {
-    self.vm.inputs.viewDidAppear()
+    self.vm.inputs.viewWillAppear(animated: false)
     self.vm.inputs.searchFieldDidBeginEditing()
 
     self.resignFirstResponder.assertValueCount(0)
@@ -322,7 +322,7 @@ internal final class SearchViewModelTests: TestCase {
     let debounceDelay = 1.0
 
     withEnvironment(apiDelayInterval: apiDelay, debounceInterval: debounceDelay) {
-      self.vm.inputs.viewDidAppear()
+      self.vm.inputs.viewWillAppear(animated: false)
       self.scheduler.advanceByInterval(apiDelay)
 
       self.vm.inputs.searchFieldDidBeginEditing()

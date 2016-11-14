@@ -21,11 +21,11 @@ public protocol SearchViewModelInputs {
   /// Call when the user taps the return key.
   func searchTextEditingDidEnd()
 
+  /// Call when the view will appear.
+  func viewWillAppear(animated animated: Bool)
+
   /// Call when a project is tapped.
   func tapped(project project: Project)
-
-  /// Call when the view appears.
-  func viewDidAppear()
 
   /**
    Call from the controller's `tableView:willDisplayCell:forRowAtIndexPath` method.
@@ -66,15 +66,17 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
 
   // swiftlint:disable function_body_length
   public init() {
+    let viewWillAppearNotAnimated = self.viewWillAppearAnimatedProperty.signal.filter(isFalse).ignoreValues()
+
     let query = Signal
       .merge(
         self.searchTextChangedProperty.signal,
-        self.viewDidAppearProperty.signal.map(const("")).take(1),
+        viewWillAppearNotAnimated.mapConst("").take(1),
         self.cancelButtonPressedProperty.signal.mapConst(""),
         self.clearSearchTextProperty.signal.mapConst("")
       )
 
-    let popular = self.viewDidAppearProperty.signal
+    let popular = viewWillAppearNotAnimated
       .switchMap {
         AppEnvironment.current.apiService
           .fetchDiscovery(params: .defaults |> DiscoveryParams.lens.sort .~ .popular)
@@ -122,7 +124,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       .skipRepeats(==)
 
     self.changeSearchFieldFocus = Signal.merge(
-      self.viewDidAppearProperty.signal.mapConst((false, false)),
+      viewWillAppearNotAnimated.mapConst((false, false)),
       self.cancelButtonPressedProperty.signal.mapConst((false, true)),
       self.searchFieldDidBeginEditingProperty.signal.mapConst((true, true))
     )
@@ -137,8 +139,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
 
     // koala
 
-    self.viewDidAppearProperty.signal
-      .take(1)
+    viewWillAppearNotAnimated
       .observeNext { AppEnvironment.current.koala.trackProjectSearchView() }
 
     let hasResults = combineLatest(projects, isLoading)
@@ -194,14 +195,14 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
     self.searchTextEditingDidEndProperty.value = ()
   }
 
+  private let viewWillAppearAnimatedProperty = MutableProperty(false)
+  public func viewWillAppear(animated animated: Bool) {
+    self.viewWillAppearAnimatedProperty.value = animated
+  }
+
   private let tappedProjectProperty = MutableProperty<Project?>(nil)
   public func tapped(project project: Project) {
     self.tappedProjectProperty.value = project
-  }
-
-  private let viewDidAppearProperty = MutableProperty()
-  public func viewDidAppear() {
-    self.viewDidAppearProperty.value = ()
   }
 
   private let willDisplayRowProperty = MutableProperty<(row: Int, total: Int)?>(nil)

@@ -38,8 +38,8 @@ public protocol DashboardViewModelInputs {
   /// Call when to show or hide the projects drawer.
   func showHideProjectsDrawer()
 
-  /// Call when the view did appear.
-  func viewDidAppear()
+  /// Call when the view will appear.
+  func viewWillAppear(animated animated: Bool)
 }
 
 public protocol DashboardViewModelOutputs {
@@ -89,7 +89,7 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
 
   // swiftlint:disable function_body_length
   public init() {
-    let projects = self.viewDidAppearProperty.signal
+    let projects = self.viewWillAppearAnimatedProperty.signal.filter(isFalse).ignoreValues()
       .switchMap {
         AppEnvironment.current.apiService.fetchProjects(member: true)
           .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
@@ -138,7 +138,7 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
 
     let drawerStateProjectsAndSelectedProject = Signal.merge(
       projectsAndSelected.map { ($0, $1, false) },
-      projectsAndSelected.takeWhen(showHideProjectsDrawerProperty.signal).map { ($0, $1, true) }
+      projectsAndSelected.takeWhen(self.showHideProjectsDrawerProperty.signal).map { ($0, $1, true) }
       )
       .scan(nil) { (data, projectsProjectToggle) -> (DrawerState, [Project], Project)? in
 
@@ -187,24 +187,46 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
       .takeWhen(self.projectContextCellTappedProperty.signal)
       .map { project, projects in (project, projects, RefTag.dashboard) }
 
-    self.focusScreenReaderOnTitleView = self.viewDidAppearProperty.signal
+    self.focusScreenReaderOnTitleView = self.viewWillAppearAnimatedProperty.signal.ignoreValues()
 
-    self.project
-      .take(1)
+    let projectForTrackingViews = Signal.merge(
+      projects.map { $0.first }.ignoreNil().take(1),
+      self.project
+        .takeWhen(self.viewWillAppearAnimatedProperty.signal.filter(isFalse))
+    )
+
+    projectForTrackingViews
       .observeNext { AppEnvironment.current.koala.trackDashboardView(project: $0) }
 
     self.project
-      .takeWhen(updateDrawerStateToOpen.filter(isTrue))
+      .takeWhen(self.presentProjectsDrawer)
       .observeNext { AppEnvironment.current.koala.trackDashboardShowProjectSwitcher(onProject: $0) }
 
-    self.project
-      .takeWhen(updateDrawerStateToOpen.filter(isFalse))
-      .observeNext { AppEnvironment.current.koala.trackDashboardClosedProjectSwitcher(onProject: $0) }
+    let drawerHasClosedAndShouldTrack = Signal.merge(
+      self.showHideProjectsDrawerProperty.signal.map { (drawerState: true, shouldTrack: true) },
+      self.switchToProjectProperty.signal.map { _ in (drawerState: true, shouldTrack: false) }
+    )
+      .scan(nil) { (data, toggledStateAndShouldTrack) -> (DrawerState, Bool)? in
+        let (drawerState, shouldTrack) = toggledStateAndShouldTrack
+        return drawerState
+          ? ((data?.0.toggled ?? DrawerState.closed), shouldTrack)
+          : (DrawerState.closed, shouldTrack)
+      }
+      .ignoreNil()
+      .filter { drawerState, _ in drawerState == .open }
+      .map { _, shouldTrack in shouldTrack }
 
     self.project
-      .skip(1)
-      .takeWhen(updateDrawerStateToOpen.filter(isFalse))
-      .skipRepeats()
+      .takePairWhen(drawerHasClosedAndShouldTrack)
+      .filter { _, shouldTrack in shouldTrack }
+      .observeNext { project, _ in
+        AppEnvironment.current.koala.trackDashboardClosedProjectSwitcher(onProject: project)
+    }
+
+    projects
+      .takePairWhen(self.switchToProjectProperty.signal)
+      .map { projects, param in find(projectForParam: param, in: projects) }
+      .ignoreNil()
       .observeNext { AppEnvironment.current.koala.trackDashboardSwitchProject($0) }
   }
   // swiftlint:enable function_body_length
@@ -225,9 +247,9 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
   public func dashboardProjectsDrawerDidAnimateOut() {
     self.projectsDrawerDidAnimateOutProperty.value = ()
   }
-  private let viewDidAppearProperty = MutableProperty()
-  public func viewDidAppear() {
-    self.viewDidAppearProperty.value = ()
+  private let viewWillAppearAnimatedProperty = MutableProperty(false)
+  public func viewWillAppear(animated animated: Bool) {
+    self.viewWillAppearAnimatedProperty.value = animated
   }
 
   public let animateOutProjectsDrawer: Signal<(), NoError>
