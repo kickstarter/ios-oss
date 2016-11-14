@@ -650,6 +650,8 @@ internal final class RewardPledgeViewController: UIViewController {
   }
 
   private func animateTextViewConstraint(change: Keyboard.Change) {
+    guard self.view.window != nil else { return }
+
     UIView.animateWithDuration(change.duration, delay: 0.0, options: change.options, animations: {
       self.bottomConstraint.constant = self.view.frame.height - change.frame.minY
       self.scrollView.contentOffset.y += self.bottomConstraint.constant
