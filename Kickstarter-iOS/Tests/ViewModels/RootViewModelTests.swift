@@ -17,7 +17,6 @@ final class RootViewModelTests: TestCase {
   let scrollToTopControllerName = TestObserver<String, NoError>()
   let switchDashboardProject = TestObserver<Param, NoError>()
   let tabBarItemsData = TestObserver<TabBarItemsData, NoError>()
-  let profileItemData = TestObserver<ProfileTabBarItemData, NoError>()
 
   override func setUp() {
     super.setUp()
@@ -36,7 +35,6 @@ final class RootViewModelTests: TestCase {
       .observe(self.scrollToTopControllerName.observer)
 
     self.vm.outputs.tabBarItemsData.observe(self.tabBarItemsData.observer)
-    self.vm.outputs.profileTabBarItemData.observe(self.profileItemData.observer)
   }
 
   func testSetViewControllers() {
@@ -196,21 +194,34 @@ final class RootViewModelTests: TestCase {
   }
 
   func testTabBarItemStyles() {
-    let items = [
-      TabBarItem.home(index: 0),
+    let user = .template |> User.lens.avatar.small .~ "http://image.com/image"
+    let creator = .template
+      |> User.lens.stats.memberProjectsCount .~ 1
+      |> User.lens.avatar.small .~ "http://image.com/image2"
+
+    let items: [TabBarItem] = [
+      .home(index: 0),
       .activity(index: 1),
       .search(index: 2),
-      .profile(index: 3)
+      .profile(avatarUrl: nil, index: 3)
     ]
-    let itemsMember = [
-      TabBarItem.home(index: 0),
+
+    let itemsLoggedIn: [TabBarItem] = [
+      .home(index: 0),
+      .activity(index: 1),
+      .search(index: 2),
+      .profile(avatarUrl: NSURL(string: user.avatar.small), index: 3)
+    ]
+    let itemsMember: [TabBarItem] = [
+      .home(index: 0),
       .activity(index: 1),
       .search(index: 2),
       .dashboard(index: 3),
-      .profile(index: 4)
+      .profile(avatarUrl: NSURL(string: creator.avatar.small), index: 4)
     ]
+
     let tabData = TabBarItemsData(items: items, isLoggedIn: false, isMember: false)
-    let tabDataLoggedIn = TabBarItemsData(items: items, isLoggedIn: true, isMember: false)
+    let tabDataLoggedIn = TabBarItemsData(items: itemsLoggedIn, isLoggedIn: true, isMember: false)
     let tabDataMember = TabBarItemsData(items: itemsMember, isLoggedIn: true, isMember: true)
 
     self.tabBarItemsData.assertValueCount(0)
@@ -219,58 +230,24 @@ final class RootViewModelTests: TestCase {
 
     self.tabBarItemsData.assertValues([tabData])
 
-    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
     self.vm.inputs.userSessionStarted()
 
     self.tabBarItemsData.assertValues([tabData, tabDataLoggedIn])
 
+    self.vm.inputs.currentUserUpdated()
+
+    self.tabBarItemsData.assertValues([tabData, tabDataLoggedIn, tabDataLoggedIn])
+
     AppEnvironment.logout()
     self.vm.inputs.userSessionEnded()
 
-    self.tabBarItemsData.assertValues([tabData, tabDataLoggedIn, tabData])
+    self.tabBarItemsData.assertValues([tabData, tabDataLoggedIn, tabDataLoggedIn, tabData])
 
-    let creator = .template |> User.lens.stats.memberProjectsCount .~ 1
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: creator))
     self.vm.inputs.userSessionStarted()
 
-    self.tabBarItemsData.assertValues([tabData, tabDataLoggedIn, tabData, tabDataMember])
-  }
-
-  func testProfileTabBarItem() {
-    let user = .template |> User.lens.avatar.small .~ "http://image.com/image"
-    let creator = .template
-      |> User.lens.stats.memberProjectsCount .~ 1
-      |> User.lens.avatar.small .~ "http://image.com/image2"
-
-    let data = ProfileTabBarItemData(avatarUrl: NSURL(string: user.avatar.small),
-                                     isMember: false,
-                                     item: TabBarItem.profile(index: 3))
-    let dataMember = ProfileTabBarItemData(avatarUrl: NSURL(string: creator.avatar.small),
-                                     isMember: true,
-                                     item: TabBarItem.profile(index: 4))
-
-    AppEnvironment.logout()
-    self.vm.inputs.userSessionEnded()
-    self.vm.inputs.viewDidLoad()
-
-    self.profileItemData.assertValueCount(0)
-
-    // logged in avatar
-    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
-    self.vm.inputs.userSessionStarted()
-
-    self.profileItemData.assertValues([data])
-
-    AppEnvironment.logout()
-    self.vm.inputs.userSessionEnded()
-
-    self.profileItemData.assertValues([data], "Profile image does not emit on logout")
-
-    // logged in avatar member
-    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: creator))
-    self.vm.inputs.userSessionStarted()
-
-    self.profileItemData.assertValues([data, dataMember])
+    self.tabBarItemsData.assertValues([tabData, tabDataLoggedIn, tabDataLoggedIn, tabData, tabDataMember])
   }
 }
 

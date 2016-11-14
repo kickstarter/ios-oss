@@ -5,12 +5,6 @@ import ReactiveCocoa
 import Result
 import UIKit
 
-internal struct ProfileTabBarItemData {
-  internal let avatarUrl: NSURL?
-  internal let isMember: Bool
-  internal let item: TabBarItem
-}
-
 internal struct TabBarItemsData {
   internal let items: [TabBarItem]
   internal let isLoggedIn: Bool
@@ -21,7 +15,7 @@ internal enum TabBarItem {
   case activity(index: Int)
   case dashboard(index: Int)
   case home(index: Int)
-  case profile(index: Int)
+  case profile(avatarUrl: NSURL?, index: Int)
   case search(index: Int)
 }
 
@@ -63,9 +57,6 @@ internal protocol RootViewModelInputs {
 internal protocol RootViewModelOutputs {
   /// Emits when the discovery VC should filter with specific params.
   var filterDiscovery: Signal<(DiscoveryViewController, DiscoveryParams), NoError> { get }
-
-  /// Emits profile tab bar item data to style it when a user logs in.
-  var profileTabBarItemData: Signal<ProfileTabBarItemData, NoError> { get }
 
   /// Emits a controller that should be scrolled to the top. This requires figuring out what kind of
   /// controller it is, and setting its `contentOffset`.
@@ -187,16 +178,9 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
       .takePairWhen(selectedTabAgain)
       .map { vcs, idx in vcs[idx] }
 
-    self.tabBarItemsData = combineLatest(userState, self.viewDidLoadProperty.signal)
+    self.tabBarItemsData = combineLatest(currentUser, self.viewDidLoadProperty.signal)
       .map(first)
-      .map(tabData(isLoggedIn:isMember:))
-
-    self.profileTabBarItemData = currentUser.ignoreNil()
-      .map { (user: $0, isMember: ($0.stats.memberProjectsCount ?? 0) > 0) }
-      .map { ProfileTabBarItemData(avatarUrl: NSURL(string: $0.user.avatar.small),
-                                   isMember: $0.isMember,
-                                   item: $0.isMember ? .profile(index: 4) : .profile(index: 3))
-    }
+      .map(tabData(forUser:))
   }
   // swiftlint:enable function_body_length
 
@@ -247,7 +231,6 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
   }
 
   internal let filterDiscovery: Signal<(DiscoveryViewController, DiscoveryParams), NoError>
-  internal let profileTabBarItemData: Signal<ProfileTabBarItemData, NoError>
   internal let scrollToTop: Signal<UIViewController, NoError>
   internal let selectedIndex: Signal<Int, NoError>
   internal let setViewControllers: Signal<[UIViewController], NoError>
@@ -258,14 +241,17 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
   internal var outputs: RootViewModelOutputs { return self }
 }
 
-private func tabData(isLoggedIn isLoggedIn: Bool, isMember: Bool) -> TabBarItemsData {
+private func tabData(forUser user: User?) -> TabBarItemsData {
+  let isMember = (user?.stats.memberProjectsCount ?? 0) > 0
 
-  let items: [TabBarItem] = isMember ?
-    [.home(index: 0), .activity(index: 1), .search(index: 2), .dashboard(index: 3), .profile(index: 4)] :
-    [.home(index: 0), .activity(index: 1), .search(index: 2), .profile(index: 3)]
+  let items: [TabBarItem] = isMember
+    ? [.home(index: 0), .activity(index: 1), .search(index: 2), .dashboard(index: 3),
+       .profile(avatarUrl: (user?.avatar.small).flatMap(NSURL.init(string:)), index: 4)]
+    : [.home(index: 0), .activity(index: 1), .search(index: 2),
+       .profile(avatarUrl: (user?.avatar.small).flatMap(NSURL.init(string:)), index: 3)]
 
   return TabBarItemsData(items: items,
-                         isLoggedIn: isLoggedIn,
+                         isLoggedIn: user != nil,
                          isMember: isMember)
 }
 
@@ -274,13 +260,6 @@ func == (lhs: TabBarItemsData, rhs: TabBarItemsData) -> Bool {
   return lhs.items == rhs.items &&
          lhs.isLoggedIn == rhs.isLoggedIn &&
          lhs.isMember == rhs.isMember
-}
-
-extension ProfileTabBarItemData: Equatable {}
-func == (lhs: ProfileTabBarItemData, rhs: ProfileTabBarItemData) -> Bool {
-  return lhs.avatarUrl == rhs.avatarUrl &&
-         lhs.isMember == rhs.isMember &&
-         lhs.item == rhs.item
 }
 
 // swiftlint:disable cyclomatic_complexity
@@ -294,7 +273,7 @@ func == (lhs: TabBarItem, rhs: TabBarItem) -> Bool {
   case let (.home(lhs), .home(rhs)):
     return lhs == rhs
   case let (.profile(lhs), .profile(rhs)):
-    return lhs == rhs
+    return lhs.avatarUrl == rhs.avatarUrl && lhs.index == rhs.index
   case let (.search(lhs), .search(rhs)):
     return lhs == rhs
   default: return false
