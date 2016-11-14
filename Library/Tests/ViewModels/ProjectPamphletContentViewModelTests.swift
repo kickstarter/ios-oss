@@ -15,6 +15,7 @@ final class ProjectPamphletContentViewModelTests: TestCase {
   private let goToRewardPledgeReward = TestObserver<Reward, NoError>()
   private let goToUpdates = TestObserver<Project, NoError>()
   private let loadProjectIntoDataSource = TestObserver<Project, NoError>()
+  private let loadMinimalProjectIntoDataSource = TestObserver<Project, NoError>()
 
   override func setUp() {
     super.setUp()
@@ -25,6 +26,7 @@ final class ProjectPamphletContentViewModelTests: TestCase {
     self.vm.outputs.goToRewardPledge.map(second).observe(self.goToRewardPledgeReward.observer)
     self.vm.outputs.goToUpdates.observe(self.goToUpdates.observer)
     self.vm.outputs.loadProjectIntoDataSource.observe(self.loadProjectIntoDataSource.observer)
+    self.vm.outputs.loadMinimalProjectIntoDataSource.observe(self.loadMinimalProjectIntoDataSource.observer)
   }
 
   func testGoToBacking() {
@@ -276,14 +278,68 @@ final class ProjectPamphletContentViewModelTests: TestCase {
     self.goToUpdates.assertValues([project])
   }
 
-  func testLoadProjectIntoDataSource() {
+  func testLoadProjectIntoDataSource_WhenPresentingProject() {
     let project = Project.template
 
     self.vm.inputs.configureWith(project: project)
     self.vm.inputs.viewDidLoad()
+
+    self.loadProjectIntoDataSource.assertValues([], "Nothing emits immediately.")
+    self.loadMinimalProjectIntoDataSource.assertValues([], "Nothing emits immediately.")
+
+    // Begin presentation. When presenting the project `animated` will be false since it is embedded in the
+    // navigator controller.
+    self.vm.inputs.viewWillAppear(animated: false)
+
+    self.loadProjectIntoDataSource.assertValues([project], "Load the full project into the data source.")
+    self.loadMinimalProjectIntoDataSource.assertValues([], "Do not load the minimal version of the project.")
+
+    // End presentation.
+    self.vm.inputs.viewDidAppear(animated: false)
+
+    self.loadProjectIntoDataSource.assertValues([project], "Nothing new emits when the view is done.")
+    self.loadMinimalProjectIntoDataSource.assertValues([], "Nothing new emits when the view is done.")
+
+    // Simulate a new version of the project coming through
+    self.vm.inputs.configureWith(project: project)
+
+    self.loadProjectIntoDataSource.assertValues(
+      [project, project], "The new project is loaded into data source"
+    )
+    self.loadMinimalProjectIntoDataSource.assertValues([], "Nothing new emits when the view is done.")
+  }
+
+  func testLoadProjectIntoDataSource_Swipping() {
+    let project = Project.template
+
+    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.viewDidLoad()
+
+    self.loadProjectIntoDataSource.assertValues([], "Nothing emits immediately.")
+    self.loadMinimalProjectIntoDataSource.assertValues([], "Nothing emits immediately.")
+
+    // When swiping the project `animated` will be true.
     self.vm.inputs.viewWillAppear(animated: true)
+
+    self.loadProjectIntoDataSource.assertValues([], "The full project does not load into the data source.")
+    self.loadMinimalProjectIntoDataSource.assertValues(
+      [project], "The minimal version of the project loads into the data source."
+    )
+
     self.vm.inputs.viewDidAppear(animated: true)
 
-    self.loadProjectIntoDataSource.assertValues([project])
+    self.loadProjectIntoDataSource.assertValues([project], "Nothing new emits when the view is done.")
+    self.loadMinimalProjectIntoDataSource.assertValues([project], "Nothing new emits when the view is done.")
+
+    // Swipe the project again
+    self.vm.inputs.viewWillAppear(animated: true)
+
+    self.loadProjectIntoDataSource.assertValues([project], "Nothing new emits.")
+    self.loadMinimalProjectIntoDataSource.assertValues([project], "Nothing new emits.")
+
+    self.vm.inputs.viewDidAppear(animated: true)
+
+    self.loadProjectIntoDataSource.assertValues([project], "Nothing new emits.")
+    self.loadMinimalProjectIntoDataSource.assertValues([project], "Nothing new emits.")
   }
 }

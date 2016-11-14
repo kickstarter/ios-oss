@@ -15,8 +15,9 @@ internal final class SortPagerViewControllerTests: TestCase {
   }
 
   override func tearDown() {
-    super.tearDown()
     AppEnvironment.popEnvironment()
+    UIView.setAnimationsEnabled(true)
+    super.tearDown()
   }
 
   func testSortView() {

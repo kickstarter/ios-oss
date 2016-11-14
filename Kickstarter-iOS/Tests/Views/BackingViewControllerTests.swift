@@ -19,8 +19,9 @@ internal final class BackingViewControllerTests: TestCase {
   }
 
   override func tearDown() {
-    super.tearDown()
     AppEnvironment.popEnvironment()
+    UIView.setAnimationsEnabled(true)
+    super.tearDown()
   }
 
   func testCurrentUserIsBacker() {

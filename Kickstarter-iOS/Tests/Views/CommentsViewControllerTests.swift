@@ -12,6 +12,11 @@ internal final class CommentsViewControllerTests: TestCase {
     UIView.setAnimationsEnabled(false)
   }
 
+  override func tearDown() {
+    UIView.setAnimationsEnabled(true)
+    super.tearDown()
+  }
+
   func testView() {
     let backer = User.brando
       |> User.lens.avatar.large .~ ""

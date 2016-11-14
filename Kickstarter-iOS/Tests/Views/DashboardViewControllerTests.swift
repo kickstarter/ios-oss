@@ -30,6 +30,12 @@ internal final class DashboardViewControllerTests: TestCase {
     UIView.setAnimationsEnabled(false)
   }
 
+  override func tearDown() {
+    AppEnvironment.popEnvironment()
+    UIView.setAnimationsEnabled(true)
+    super.tearDown()
+  }
+
   func testView() {
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
@@ -44,11 +50,6 @@ internal final class DashboardViewControllerTests: TestCase {
         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
       }
     }
-  }
-
-  override func tearDown() {
-    AppEnvironment.popEnvironment()
-    super.tearDown()
   }
 }
 

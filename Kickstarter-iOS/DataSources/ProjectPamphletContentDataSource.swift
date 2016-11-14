@@ -13,7 +13,7 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
   }
 
   internal func loadMinimal(project project: Project) {
-    self.set(values: [project], cellClass: ProjectPamphletMainCell.self, inSection: Section.main.rawValue)
+    self.set(values: [project], cellClass: ProjectPamphletMinimalCell.self, inSection: Section.main.rawValue)
   }
 
   internal func load(project project: Project) {
@@ -81,6 +81,8 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
     case let (cell as RewardCell, value as (Project, Either<Reward, Backing>)):
       cell.configureWith(value: value)
     case let (cell as ProjectPamphletMainCell, value as Project):
+      cell.configureWith(value: value)
+    case let (cell as ProjectPamphletMinimalCell, value as Project):
       cell.configureWith(value: value)
     case let (cell as ProjectPamphletSubpageCell, value as ProjectPamphletSubpage):
       cell.configureWith(value: value)

@@ -32,40 +32,48 @@ public final class ProjectPamphletContentViewModel: ProjectPamphletContentViewMo
 ProjectPamphletContentViewModelInputs, ProjectPamphletContentViewModelOutputs {
 
   public init() {
-    let projectOnViewDidLoad = combineLatest(
+    let project = combineLatest(
       self.projectProperty.signal.ignoreNil(),
       self.viewDidLoadProperty.signal
       )
       .map(first)
 
-    let projectOnViewDidAppear = combineLatest(
-      self.projectProperty.signal.ignoreNil(),
-      self.viewDidAppearAnimated.signal.take(1)
+    self.loadProjectIntoDataSource = combineLatest(
+      project,
+
+      Signal.merge(
+        self.viewDidAppearAnimatedProperty.signal.filter(isTrue),
+        self.viewWillAppearAnimatedProperty.signal.filter(isFalse)
+        )
+        .take(1)
       )
       .map(first)
 
-    self.loadProjectIntoDataSource = projectOnViewDidAppear
-
-    self.loadMinimalProjectIntoDataSource = .empty
+    self.loadMinimalProjectIntoDataSource = project
+      .takePairWhen(self.viewWillAppearAnimatedProperty.signal)
+      .take(1)
+      .filter(second)
+      .map(first)
 
     let rewardOrBackingTapped = Signal.merge(
       self.tappedRewardOrBackingProperty.signal.ignoreNil(),
       self.tappedPledgeAnyAmountProperty.signal.mapConst(.left(Reward.noReward))
     )
 
-    self.goToRewardPledge = projectOnViewDidLoad
+    self.goToRewardPledge = project
       .takePairWhen(rewardOrBackingTapped)
       .map(goToRewardPledgeData(forProject:rewardOrBacking:))
       .ignoreNil()
 
-    self.goToBacking = projectOnViewDidLoad.takePairWhen(rewardOrBackingTapped)
+    self.goToBacking = project
+      .takePairWhen(rewardOrBackingTapped)
       .map(goToBackingData(forProject:rewardOrBacking:))
       .ignoreNil()
 
-    self.goToComments = projectOnViewDidLoad
+    self.goToComments = project
       .takeWhen(self.tappedCommentsProperty.signal)
 
-    self.goToUpdates = projectOnViewDidLoad
+    self.goToUpdates = project
       .takeWhen(self.tappedUpdatesProperty.signal)
   }
 
@@ -94,9 +102,9 @@ ProjectPamphletContentViewModelInputs, ProjectPamphletContentViewModelOutputs {
     self.tappedUpdatesProperty.value = ()
   }
 
-  private let viewDidAppearAnimated = MutableProperty(false)
+  private let viewDidAppearAnimatedProperty = MutableProperty(false)
   public func viewDidAppear(animated animated: Bool) {
-    self.viewDidAppearAnimated.value = animated
+    self.viewDidAppearAnimatedProperty.value = animated
   }
 
   private let viewDidLoadProperty = MutableProperty()
@@ -104,9 +112,9 @@ ProjectPamphletContentViewModelInputs, ProjectPamphletContentViewModelOutputs {
     self.viewDidLoadProperty.value = ()
   }
 
-  private let viewWillAppearAnimated = MutableProperty(false)
+  private let viewWillAppearAnimatedProperty = MutableProperty(false)
   public func viewWillAppear(animated animated: Bool) {
-    self.viewWillAppearAnimated.value = animated
+    self.viewWillAppearAnimatedProperty.value = animated
   }
 
   public let goToBacking: Signal<Project, NoError>

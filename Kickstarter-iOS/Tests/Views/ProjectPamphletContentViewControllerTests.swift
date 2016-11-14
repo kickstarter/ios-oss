@@ -24,11 +24,14 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       config: .template |> Config.lens.countryCode .~ self.cosmicSurgery.country.countryCode,
       mainBundle: NSBundle.framework
     )
+
+    UIView.setAnimationsEnabled(false)
   }
 
   override func tearDown() {
-    super.tearDown()
     AppEnvironment.popEnvironment()
+    UIView.setAnimationsEnabled(true)
+    super.tearDown()
   }
 
   func testAllCategoryGroups() {
@@ -192,6 +195,49 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
 
         FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)")
       }
+    }
+  }
+
+  func testMinimalProjectRendering() {
+    let project = self.cosmicSurgery
+
+    [Device.phone4_7inch, Device.pad].forEach { device in
+      let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
+      let (parent, _) = traitControllers(
+        device: device, orientation: .portrait, child: vc, handleAppearanceTransition: false
+      )
+
+      parent.beginAppearanceTransition(true, animated: true)
+
+      FBSnapshotVerifyView(vc.view, identifier: "device_\(device)")
+    }
+  }
+
+  func testMinimalAndFullProjectOverlap() {
+    let project = self.cosmicSurgery
+
+    [Device.phone4_7inch, Device.pad].forEach { device in
+      let minimal = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
+      let (minimalParent, _) = traitControllers(
+        device: device, orientation: .portrait, child: minimal, handleAppearanceTransition: false
+      )
+      let full = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
+      let (fullParent, _) = traitControllers(
+        device: device, orientation: .portrait, child: full, handleAppearanceTransition: false
+      )
+
+      minimalParent.beginAppearanceTransition(true, animated: true)
+
+      fullParent.beginAppearanceTransition(true, animated: true)
+      fullParent.endAppearanceTransition()
+
+      let snapshotView = UIView(frame: fullParent.view.frame)
+      fullParent.view.alpha = 0.5
+      minimalParent.view.alpha = 0.5
+      snapshotView.addSubview(fullParent.view)
+      snapshotView.addSubview(minimalParent.view)
+
+      FBSnapshotVerifyView(snapshotView, identifier: "device_\(device)")
     }
   }
 }

@@ -12,6 +12,12 @@ internal final class FindFriendsViewControllerTests: TestCase {
     UIView.setAnimationsEnabled(false)
   }
 
+  override func tearDown() {
+    AppEnvironment.popEnvironment()
+    UIView.setAnimationsEnabled(true)
+    super.tearDown()
+  }
+
   func testView_ShowFacebookConnect() {
     combos(Language.allLanguages, [Device.phone4_7inch]).forEach { language, device in
       withEnvironment(language: language) {
@@ -64,10 +70,5 @@ internal final class FindFriendsViewControllerTests: TestCase {
         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
       }
     }
-  }
-
-  override func tearDown() {
-    AppEnvironment.popEnvironment()
-    super.tearDown()
   }
 }

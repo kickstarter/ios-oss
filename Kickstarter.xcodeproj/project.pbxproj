@@ -349,6 +349,8 @@
 		A71003E31CDD077200B4F4D7 /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71003E11CDD077200B4F4D7 /* MessageCell.swift */; };
 		A710573B1DC2B2DF00A69552 /* SharedFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A710573A1DC2B2DF00A69552 /* SharedFunctions.swift */; };
 		A710573C1DC2B2DF00A69552 /* SharedFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A710573A1DC2B2DF00A69552 /* SharedFunctions.swift */; };
+		A71199F91DD8E42A0072D478 /* ProjectPamphletMinimalCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71199F81DD8E42A0072D478 /* ProjectPamphletMinimalCell.swift */; };
+		A7119A301DD8ECC50072D478 /* UIImageView+URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7119A2F1DD8ECC50072D478 /* UIImageView+URL.swift */; };
 		A71404391CAF215900A2795B /* KeyValueStoreType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71404381CAF215900A2795B /* KeyValueStoreType.swift */; };
 		A714043A1CAF215900A2795B /* KeyValueStoreType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71404381CAF215900A2795B /* KeyValueStoreType.swift */; };
 		A71545211DD0D96B00A2F186 /* ProjectNavigatorViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A715451F1DD0D93000A2F186 /* ProjectNavigatorViewModelTests.swift */; };
@@ -1765,6 +1767,8 @@
 		A71003DE1CDD06E600B4F4D7 /* MessageThreadCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageThreadCell.swift; sourceTree = "<group>"; };
 		A71003E11CDD077200B4F4D7 /* MessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageCell.swift; sourceTree = "<group>"; };
 		A710573A1DC2B2DF00A69552 /* SharedFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharedFunctions.swift; sourceTree = "<group>"; };
+		A71199F81DD8E42A0072D478 /* ProjectPamphletMinimalCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectPamphletMinimalCell.swift; sourceTree = "<group>"; };
+		A7119A2F1DD8ECC50072D478 /* UIImageView+URL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageView+URL.swift"; sourceTree = "<group>"; };
 		A71404381CAF215900A2795B /* KeyValueStoreType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = KeyValueStoreType.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		A715451F1DD0D93000A2F186 /* ProjectNavigatorViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectNavigatorViewModelTests.swift; sourceTree = "<group>"; };
 		A715ACC11CE7ED3600605F02 /* ActivityNegativeStateChangeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityNegativeStateChangeCell.swift; sourceTree = "<group>"; };
@@ -2549,6 +2553,7 @@
 				A773531E1D5E8AEF0017E239 /* MostPopularSearchProjectCell.swift */,
 				A7B1EBB21D90496A00BEE8B3 /* NoRewardCell.swift */,
 				A74382041D3458C900040A95 /* PaddingCell.swift */,
+				A7FA38A31D9068940041FC9C /* PledgeTitleCell.swift */,
 				599603D21CE5220900E1B1EC /* ProfileEmptyStateCell.swift */,
 				59B6B7091CCEBC1000953319 /* ProfileProjectCell.swift */,
 				9D9F57CB1D131AF200CE81DE /* ProjectActivityBackingCell.swift */,
@@ -2562,13 +2567,13 @@
 				A75A29291CE0B7EA00D35E5C /* ProjectBannerCell.swift */,
 				597073B01D07281800B00444 /* ProjectNotificationCell.swift */,
 				A7CA8BB61D8F14260086A3E9 /* ProjectPamphletMainCell.swift */,
+				A71199F81DD8E42A0072D478 /* ProjectPamphletMinimalCell.swift */,
 				A79F52FF1D8F50CE00C051B8 /* ProjectPamphletSubpageCell.swift */,
 				A747A8ED1D45899F00AF199A /* RewardCell.swift */,
+				A7FA38D81D9068AD0041FC9C /* RewardsTitleCell.swift */,
 				A75CFA7C1CCE56C4004CD5FA /* SearchProjectCell.swift */,
 				014A8E1A1CE3CE34003BF51C /* ThanksCategoryCell.swift */,
 				014A8E171CE3CD86003BF51C /* ThanksProjectCell.swift */,
-				A7FA38A31D9068940041FC9C /* PledgeTitleCell.swift */,
-				A7FA38D81D9068AD0041FC9C /* RewardsTitleCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -2953,8 +2958,8 @@
 				A7C725831C85D36D005A016B /* LaunchedCountries.swift */,
 				A7C725841C85D36D005A016B /* LocalizedString.swift */,
 				A707BAD41CFFAB9400653B2F /* LoginIntent.swift */,
-				59E877371DC9419700BCD1F7 /* Newsletter.swift */,
 				80E26A121D500C6A007B3022 /* Navigation.swift */,
+				59E877371DC9419700BCD1F7 /* Newsletter.swift */,
 				A707BAD51CFFAB9400653B2F /* Notifications.swift */,
 				A7C725911C85D36D005A016B /* NSBundleType.swift */,
 				A78537F71CB5803B00385B73 /* NSHTTPCookieStorageType.swift */,
@@ -2985,6 +2990,7 @@
 				0151AE871C8F60370067F1BE /* UIColor.swift */,
 				A78537BB1CB5416700385B73 /* UIDeviceType.swift */,
 				A7C725951C85D36D005A016B /* UIGestureRecognizer-Extensions.swift */,
+				A7119A2F1DD8ECC50072D478 /* UIImageView+URL.swift */,
 				A7C725961C85D36D005A016B /* UILabel+IBClear.swift */,
 				A7C725971C85D36D005A016B /* UILabel+LocalizedKey.swift */,
 				A7C725981C85D36D005A016B /* UILabel+SimpleHTML.swift */,
@@ -4392,6 +4398,7 @@
 				59673CBF1D50EE9B0035AFD9 /* VideoViewModel.swift in Sources */,
 				9D10B91B1D35407C008B8045 /* String+Truncate.swift in Sources */,
 				A72E75971CC313A400983066 /* ValueCell.swift in Sources */,
+				A7119A301DD8ECC50072D478 /* UIImageView+URL.swift in Sources */,
 				A75511601C8642C3005355CF /* GradientView.swift in Sources */,
 				A7CC13D31D00E6CF00035C52 /* FindFriendsFacebookConnectCellViewModel.swift in Sources */,
 				A75511611C8642C3005355CF /* Language.swift in Sources */,
@@ -4946,6 +4953,7 @@
 				A7E315C61C88AAA8000DD85A /* DiscoveryProjectsDataSource.swift in Sources */,
 				59673CBD1D50ED380035AFD9 /* VideoViewController.swift in Sources */,
 				0146E3231CC0296900082C5B /* FacebookConfirmationViewController.swift in Sources */,
+				A71199F91DD8E42A0072D478 /* ProjectPamphletMinimalCell.swift in Sources */,
 				0170E7701D25C55200E2CCE4 /* ProjectActivityCommentCell.swift in Sources */,
 				9D14FF901D133351005F4ABB /* ProjectActivityNegativeStateChangeCell.swift in Sources */,
 				015A07461D247564007AE210 /* UpdateDraftViewController.swift in Sources */,

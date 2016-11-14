@@ -15,7 +15,8 @@ internal enum Orientation {
 internal func traitControllers(device device: Device = .phone4_7inch,
                                          orientation: Orientation = .portrait,
                                          child: UIViewController = UIViewController(),
-                                         additionalTraits: UITraitCollection = .init())
+                                         additionalTraits: UITraitCollection = .init(),
+                                         handleAppearanceTransition: Bool = true)
   -> (parent: UIViewController, child: UIViewController) {
 
     let parent = UIViewController()
@@ -92,8 +93,10 @@ internal func traitControllers(device device: Device = .phone4_7inch,
     let allTraits = UITraitCollection.init(traitsFromCollections: [traits, additionalTraits])
     parent.setOverrideTraitCollection(allTraits, forChildViewController: child)
 
-    parent.beginAppearanceTransition(true, animated: false)
-    parent.endAppearanceTransition()
+    if handleAppearanceTransition {
+      parent.beginAppearanceTransition(true, animated: false)
+      parent.endAppearanceTransition()
+    }
 
     return (parent, child)
 }

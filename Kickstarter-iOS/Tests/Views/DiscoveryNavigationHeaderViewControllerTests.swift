@@ -26,8 +26,9 @@ internal final class DiscoveryNavigationHeaderViewControllerTests: TestCase {
   }
 
   override func tearDown() {
-    super.tearDown()
     AppEnvironment.popEnvironment()
+    UIView.setAnimationsEnabled(true)
+    super.tearDown()
   }
 
   func testDiscoveryNavigationHeaderView() {

@@ -9,9 +9,14 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
 
   override func setUp() {
     super.setUp()
-
     AppEnvironment.pushEnvironment(mainBundle: NSBundle.framework)
     UIView.setAnimationsEnabled(false)
+  }
+
+  override func tearDown() {
+    AppEnvironment.popEnvironment()
+    UIView.setAnimationsEnabled(true)
+    super.tearDown()
   }
 
   func testView_Activity_Backing() {
@@ -80,11 +85,6 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
       }
     }
-  }
-
-  override func tearDown() {
-    AppEnvironment.popEnvironment()
-    super.tearDown()
   }
 
   private let anomalisaNoPhoto = .anomalisa

@@ -13,8 +13,9 @@ internal final class EmptyStatesViewControllerTests: TestCase {
   }
 
   override func tearDown() {
-    super.tearDown()
     AppEnvironment.popEnvironment()
+    UIView.setAnimationsEnabled(true)
+    super.tearDown()
   }
 
   func testEmptyStates() {

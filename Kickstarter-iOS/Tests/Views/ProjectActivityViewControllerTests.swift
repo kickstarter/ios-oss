@@ -20,11 +20,14 @@ internal final class ProjectActivityViewControllerTests: TestCase {
       currentUser: Project.cosmicSurgery.creator,
       mainBundle: NSBundle.framework
     )
+
+    UIView.setAnimationsEnabled(false)
   }
 
   override func tearDown() {
-    super.tearDown()
     AppEnvironment.popEnvironment()
+    UIView.setAnimationsEnabled(true)
+    super.tearDown()
   }
 
   func testPad() {

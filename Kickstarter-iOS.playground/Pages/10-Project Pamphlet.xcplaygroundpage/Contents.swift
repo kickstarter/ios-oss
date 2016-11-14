@@ -31,8 +31,10 @@ AppEnvironment.replaceCurrentEnvironment(
 initialize()
 let controller = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
 
-let (parent, _) = playgroundControllers(device: .pad, orientation: .portrait, child: controller)
+let (parent, _) = playgroundControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
 
-let frame = parent.view.frame |> CGRect.lens.size.height .~ 1_800
+let frame = parent.view.frame// |> CGRect.lens.size.height .~ 1_800
 XCPlaygroundPage.currentPage.liveView = parent
 parent.view.frame = frame
+
+
