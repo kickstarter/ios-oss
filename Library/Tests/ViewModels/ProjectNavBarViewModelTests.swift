@@ -148,6 +148,24 @@ final class ProjectNavBarViewModelTests: TestCase {
     self.categoryAnimate.assertValues([false, true, true, true, true])
   }
 
+  func testCategoryHiddenAndAnimate_PlayVideoWithoutScrolling() {
+    self.vm.inputs.configureWith(project: .template)
+    self.vm.inputs.viewDidLoad()
+
+    self.categoryHidden.assertValues([false])
+    self.categoryAnimate.assertValues([false])
+
+    self.vm.inputs.projectVideoDidStart()
+
+    self.categoryHidden.assertValues([false, true])
+    self.categoryAnimate.assertValues([false, true])
+
+    self.vm.inputs.projectVideoDidFinish()
+
+    self.categoryHidden.assertValues([false, true, false])
+    self.categoryAnimate.assertValues([false, true, true])
+  }
+
   func testDismissViewController() {
     self.vm.inputs.configureWith(project: .template)
     self.vm.inputs.viewDidLoad()

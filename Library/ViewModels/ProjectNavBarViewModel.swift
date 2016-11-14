@@ -159,13 +159,20 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
       self.projectVideoDidFinishProperty.signal.mapConst(false)
     )
 
+    let projectImageIsVisible = Signal.merge(
+      self.projectImageIsVisibleProperty.signal,
+      self.viewDidLoadProperty.signal.mapConst(true)
+      )
+      .skipRepeats()
+
     self.categoryHiddenAndAnimate = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst((false, false)),
 
-      combineLatest(self.projectImageIsVisibleProperty.signal, videoIsPlaying)
+      combineLatest(projectImageIsVisible, videoIsPlaying)
         .map { projectImageIsVisible, videoIsPlaying in
           (videoIsPlaying ? true : !projectImageIsVisible, true)
-      }
+        }
+        .skip(1)
       )
       .skipRepeats { $0.hidden == $1.hidden }
 
