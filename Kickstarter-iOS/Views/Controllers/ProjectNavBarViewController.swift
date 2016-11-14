@@ -21,8 +21,8 @@ internal final class ProjectNavBarViewController: UIViewController {
   @IBOutlet private weak var shareButton: UIButton!
   @IBOutlet private weak var starButton: UIButton!
 
-  internal func configureWith(project project: Project) {
-    self.viewModel.inputs.configureWith(project: project)
+  internal func configureWith(project project: Project, refTag: RefTag?) {
+    self.viewModel.inputs.configureWith(project: project, refTag: refTag)
     self.shareViewModel.inputs.configureWith(shareContext: .project(project))
   }
 

@@ -101,9 +101,8 @@ internal final class MessagesViewController: UITableViewController {
   }
 
   private func goTo(project project: Project, refTag: RefTag) {
-    let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: refTag)
-    let nav = UINavigationController(rootViewController: vc)
-    self.presentViewController(nav, animated: true, completion: nil)
+    let vc = ProjectNavigatorViewController.configuredWith(project: project, refTag: refTag)
+    self.presentViewController(vc, animated: true, completion: nil)
   }
 
   private func goToBacking(project project: Project, user: User) {

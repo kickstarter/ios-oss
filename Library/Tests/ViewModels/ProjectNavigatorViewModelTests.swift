@@ -17,8 +17,6 @@ internal final class ProjectNavigatorViewModelTests: TestCase {
   private let setNeedsStatusBarAppearanceUpdate = TestObserver<(), NoError>()
   private let setTransitionAnimatorIsInFlight = TestObserver<Bool, NoError>()
   private let updateInteractiveTransition = TestObserver<CGFloat, NoError>()
-  private let updateDataSourcePlaylist = TestObserver<[Project], NoError>()
-  private let updateDataSourceProject = TestObserver<Project?, NoError>()
 
   override func setUp() {
     super.setUp()
@@ -30,12 +28,10 @@ internal final class ProjectNavigatorViewModelTests: TestCase {
     self.vm.outputs.setNeedsStatusBarAppearanceUpdate.observe(self.setNeedsStatusBarAppearanceUpdate.observer)
     self.vm.outputs.setTransitionAnimatorIsInFlight.observe(self.setTransitionAnimatorIsInFlight.observer)
     self.vm.outputs.updateInteractiveTransition.observe(self.updateInteractiveTransition.observer)
-    self.vm.outputs.updateDataSourcePlaylist.map(first).observe(self.updateDataSourceProject.observer)
-    self.vm.outputs.updateDataSourcePlaylist.map(second).observe(self.updateDataSourcePlaylist.observer)
   }
 
   func testTransitionLifecycle_ScrollDown_BackUp() {
-    self.vm.inputs.configureWith(project: .template, initialPlaylist: [], refTag: nil)
+    self.vm.inputs.configureWith(project: .template, refTag: .category)
     self.vm.inputs.viewDidLoad()
 
     self.cancelInteractiveTransition.assertValueCount(0)
@@ -79,7 +75,7 @@ internal final class ProjectNavigatorViewModelTests: TestCase {
   }
 
   func testTransitionLifecycle_ScrollDown_BackUp_Overscroll() {
-    self.vm.inputs.configureWith(project: .template, initialPlaylist: [], refTag: nil)
+    self.vm.inputs.configureWith(project: .template, refTag: .category)
     self.vm.inputs.viewDidLoad()
 
     self.cancelInteractiveTransition.assertValueCount(0)
@@ -145,7 +141,7 @@ internal final class ProjectNavigatorViewModelTests: TestCase {
   }
 
   func testTransitionLifecycle_Overscroll_Cancel() {
-    self.vm.inputs.configureWith(project: .template, initialPlaylist: [], refTag: nil)
+    self.vm.inputs.configureWith(project: .template, refTag: .category)
     self.vm.inputs.viewDidLoad()
 
     self.cancelInteractiveTransition.assertValueCount(0)
@@ -189,7 +185,7 @@ internal final class ProjectNavigatorViewModelTests: TestCase {
   }
 
   func testTransitionLifecycle_Overscroll_ScrollBack() {
-    self.vm.inputs.configureWith(project: .template, initialPlaylist: [], refTag: nil)
+    self.vm.inputs.configureWith(project: .template, refTag: .category)
     self.vm.inputs.viewDidLoad()
 
     self.cancelInteractiveTransition.assertValueCount(0)
@@ -249,7 +245,7 @@ internal final class ProjectNavigatorViewModelTests: TestCase {
   //   - Scroll back up to precisely contentOffset=0 to cancel dismissal
   //   - Transition phase is in weird state where it cannot dismiss.
   func testTransitionLifecycle_Bug() {
-    self.vm.inputs.configureWith(project: .template, initialPlaylist: [], refTag: nil)
+    self.vm.inputs.configureWith(project: .template, refTag: .category)
     self.vm.inputs.viewDidLoad()
 
     self.cancelInteractiveTransition.assertValueCount(0)
@@ -304,15 +300,15 @@ internal final class ProjectNavigatorViewModelTests: TestCase {
   }
 
   func testSetNeedsStatusBarAppearanceUpdate() {
-    let project = Project.template
     let playlist = (0...4).map { idx in .template |> Project.lens.id .~ idx + 42 }
+    let project = playlist.first!
 
-    self.vm.inputs.configureWith(project: project, initialPlaylist: playlist, refTag: nil)
+    self.vm.inputs.configureWith(project: project, refTag: .category)
     self.vm.inputs.viewDidLoad()
 
     self.setNeedsStatusBarAppearanceUpdate.assertValueCount(0)
 
-    self.vm.inputs.willTransition(toPage: 1)
+    self.vm.inputs.willTransition(toProject: playlist[1])
 
     self.setNeedsStatusBarAppearanceUpdate.assertValueCount(0)
 
@@ -322,7 +318,7 @@ internal final class ProjectNavigatorViewModelTests: TestCase {
   }
 
   func testSetInitialPagerViewController() {
-    self.vm.inputs.configureWith(project: .template, initialPlaylist: [], refTag: nil)
+    self.vm.inputs.configureWith(project: .template, refTag: .category)
 
     self.setInitialPagerViewController.assertValueCount(0)
 

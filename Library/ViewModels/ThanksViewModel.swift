@@ -62,7 +62,7 @@ public protocol ThanksViewModelOutputs {
   var facebookButtonIsHidden: Signal<Bool, NoError> { get }
 
   /// Emits project when should go to Project page
-  var goToProject: Signal<(Project, RefTag), NoError> { get }
+  var goToProject: Signal<(Project, [Project], RefTag), NoError> { get }
 
   /// Emits when should show rating alert
   var showRatingAlert: Signal <(), NoError> { get }
@@ -106,9 +106,6 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
         ?? NSAttributedString(string: "")
       }
       .takeWhen(self.viewDidLoadProperty.signal)
-
-    self.goToProject = self.projectTappedProperty.signal.ignoreNil()
-      .map { ($0, RefTag.thanks) }
 
     let shouldShowGamesAlert = project
       .map { project in
@@ -159,6 +156,11 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
       .filter { projects in !projects.isEmpty }
 
     self.showRecommendations = zip(projects, rootCategory)
+
+    self.goToProject = self.showRecommendations
+      .map(first)
+      .takePairWhen(self.projectTappedProperty.signal.ignoreNil())
+      .map { projects, project in (project, projects, RefTag.thanks) }
 
     self.updateUserInEnvironment = self.gamesNewsletterSignupButtonTappedProperty.signal
       .map { AppEnvironment.current.currentUser ?? nil }
@@ -299,7 +301,7 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
   public let goToAppStoreRating: Signal<String, NoError>
   public let backedProjectText: Signal<NSAttributedString, NoError>
   public let facebookButtonIsHidden: Signal<Bool, NoError>
-  public let goToProject: Signal<(Project, RefTag), NoError>
+  public let goToProject: Signal<(Project, [Project], RefTag), NoError>
   public let showRatingAlert: Signal<(), NoError>
   public let showGamesNewsletterAlert: Signal<(), NoError>
   public let showGamesNewsletterOptInAlert: Signal<String, NoError>

@@ -25,6 +25,7 @@ public enum RefTag {
   case starredWithSort(DiscoveryParams.Sort)
   case thanks
   case unrecognized(String)
+  case update
 
   /**
    Create a RefTag value from a code string. If a ref tag cannot be matched, an `.unrecognized` tag is
@@ -84,6 +85,7 @@ public enum RefTag {
     case "starred_newest":            self = .starredWithSort(.newest)
     case "starred_popular":           self = .starredWithSort(.popular)
     case "thanks":                    self = .thanks
+    case "update":                    self = .update
     default:                          self = .unrecognized(code)
     }
   }
@@ -139,6 +141,8 @@ public enum RefTag {
       return "thanks"
     case let .unrecognized(code):
       return code
+    case .update:
+      return "update"
     }
   }
 }
@@ -151,7 +155,8 @@ public func == (lhs: RefTag, rhs: RefTag) -> Bool {
     (.activitySample, .activitySample), (.city, .city), (.dashboard, .dashboard),
     (.dashboardActivity, .dashboardActivity), (.discovery, .discovery), (.discoveryPotd, .discoveryPotd),
     (.messageThread, .messageThread), (.profileBacked, .profileBacked), (.push, .push),
-    (.recommended, .recommended), (.search, .search), (.social, .social), (.thanks, .thanks):
+    (.recommended, .recommended), (.search, .search), (.social, .social), (.thanks, .thanks),
+    (.update, .update):
     return true
   case let (.categoryWithSort(lhs), .categoryWithSort(rhs)):
     return lhs == rhs

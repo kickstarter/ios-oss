@@ -14,6 +14,7 @@ final class ThanksViewModelTests: TestCase {
   let backedProjectText = TestObserver<String, NoError>()
   let goToDiscovery = TestObserver<KsApi.Category, NoError>()
   let goToProject = TestObserver<Project, NoError>()
+  let goToProjects = TestObserver<[Project], NoError>()
   let goToRefTag = TestObserver<RefTag, NoError>()
   let showRatingAlert = TestObserver<(), NoError>()
   let goToAppStoreRating = TestObserver<String, NoError>()
@@ -33,7 +34,8 @@ final class ThanksViewModelTests: TestCase {
     vm.outputs.goToDiscovery.map { params in params.category ?? Category.filmAndVideo }
       .observe(goToDiscovery.observer)
     vm.outputs.goToProject.map { $0.0 }.observe(goToProject.observer)
-    vm.outputs.goToProject.map { $0.1 }.observe(goToRefTag.observer)
+    vm.outputs.goToProject.map { $0.1 }.observe(goToProjects.observer)
+    vm.outputs.goToProject.map { $0.2 }.observe(goToRefTag.observer)
     vm.outputs.showRatingAlert.observe(showRatingAlert.observer)
     vm.outputs.goToAppStoreRating.observe(goToAppStoreRating.observer)
     vm.outputs.showGamesNewsletterAlert.observe(showGamesNewsletterAlert.observer)
@@ -577,6 +579,7 @@ final class ThanksViewModelTests: TestCase {
       vm.inputs.projectTapped(project)
 
       goToProject.assertValues([project])
+      goToProjects.assertValueCount(1)
       goToRefTag.assertValues([.thanks])
       XCTAssertEqual(["Triggered App Store Rating Dialog", "Checkout Finished Discover Open Project"],
                      self.trackingClient.events)

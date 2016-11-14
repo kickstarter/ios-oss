@@ -8,9 +8,9 @@ internal final class ProjectNavigatorPagesDataSource: NSObject, UIPageViewContro
   private let refTag: RefTag
   private var viewControllers: [UIViewController?] = []
 
-  init(refTag: RefTag, initialPlaylist: [Project], initialProject: Project) {
+  init(refTag: RefTag, initialPlaylist: [Project]?, initialProject: Project) {
     self.initialProject = initialProject
-    self.playlist = initialPlaylist
+    self.playlist = initialPlaylist ?? [initialProject]
     self.refTag = refTag
 
     super.init()
@@ -45,6 +45,10 @@ internal final class ProjectNavigatorPagesDataSource: NSObject, UIPageViewContro
 
   internal func indexFor(controller controller: UIViewController) -> Int? {
     return self.viewControllers.indexOf { $0 == controller }
+  }
+
+  internal func projectFor(controller controller: UIViewController) -> Project? {
+    return self.indexFor(controller: controller).map { self.playlist[$0] }
   }
 
   internal func pageViewController(

@@ -6,7 +6,7 @@ import Result
 public protocol ProjectNavBarViewModelInputs {
   func categoryButtonTapped()
   func closeButtonTapped()
-  func configureWith(project project: Project)
+  func configureWith(project project: Project, refTag: RefTag?)
   func projectImageIsVisible(visible: Bool)
   func projectVideoDidFinish()
   func projectVideoDidStart()
@@ -65,11 +65,14 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
 
   // swiftlint:disable function_body_length
   public init() {
-    let configuredProject = combineLatest(
-      self.projectProperty.signal.ignoreNil(),
+    let configuredProjectAndRefTag = combineLatest(
+      self.projectAndRefTagProperty.signal.ignoreNil(),
       self.viewDidLoadProperty.signal
       )
       .map(first)
+
+    let configuredProject = configuredProjectAndRefTag.map(first)
+    let configuredRefTag = configuredProjectAndRefTag.map(second)
 
     let currentUser = Signal.merge([
       self.viewDidLoadProperty.signal,
@@ -190,18 +193,20 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
 
     self.dismissViewController = self.closeButtonTappedProperty.signal
 
-    project
+    combineLatest(project, configuredRefTag)
       .takeWhen(self.closeButtonTappedProperty.signal)
-      .observeNext { AppEnvironment.current.koala.trackClosedProjectPage($0, gestureType: .tap) }
+      .observeNext { project, refTag in
+        AppEnvironment.current.koala.trackClosedProjectPage(project, refTag: refTag, gestureType: .tap)
+    }
 
     projectOnStarToggleSuccess
       .observeNext { AppEnvironment.current.koala.trackProjectStar($0) }
   }
   // swiftlint:enable function_body_length
 
-  private let projectProperty = MutableProperty<Project?>(nil)
-  public func configureWith(project project: Project) {
-    self.projectProperty.value = project
+  private let projectAndRefTagProperty = MutableProperty<(Project, RefTag?)?>(nil)
+  public func configureWith(project project: Project, refTag: RefTag?) {
+    self.projectAndRefTagProperty.value = (project, refTag)
   }
 
   private let closeButtonTappedProperty = MutableProperty()

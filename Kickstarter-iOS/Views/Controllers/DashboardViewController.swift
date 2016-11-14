@@ -117,8 +117,8 @@ internal final class DashboardViewController: UITableViewController {
 
     self.viewModel.outputs.goToProject
       .observeForControllerAction()
-      .observeNext { [weak self] (project, reftag) in
-        self?.goToProject(project, refTag: reftag)
+      .observeNext { [weak self] project, projects, reftag in
+        self?.goToProject(project, projects: projects, refTag: reftag)
     }
 
     self.viewModel.outputs.focusScreenReaderOnTitleView
@@ -173,10 +173,12 @@ internal final class DashboardViewController: UITableViewController {
     self.presentViewController(nav, animated: true, completion: nil)
   }
 
-  private func goToProject(project: Project, refTag: RefTag) {
-    let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: refTag)
-    let nav = UINavigationController(rootViewController: vc)
-    self.presentViewController(nav, animated: true, completion: nil)
+  private func goToProject(project: Project, projects: [Project], refTag: RefTag) {
+    let vc = ProjectNavigatorViewController.configuredWith(project: project,
+                                                           refTag: refTag,
+                                                           initialPlaylist: projects,
+                                                           navigatorDelegate: self)
+    self.presentViewController(vc, animated: true, completion: nil)
   }
 
   private func presentProjectsDrawer(data data: [ProjectsDrawerData]) {
@@ -270,4 +272,7 @@ extension DashboardViewController: DashboardTitleViewDelegate {
   func dashboardTitleViewShowHideProjectsDrawer() {
     self.viewModel.inputs.showHideProjectsDrawer()
   }
+}
+
+extension DashboardViewController: ProjectNavigatorDelegate {
 }

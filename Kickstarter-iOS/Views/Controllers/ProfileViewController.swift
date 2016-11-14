@@ -53,8 +53,8 @@ internal final class ProfileViewController: UICollectionViewController {
 
     self.viewModel.outputs.goToProject
       .observeForControllerAction()
-      .observeNext { [weak self] project, refTag in
-        self?.present(project: project, refTag: refTag)
+      .observeNext { [weak self] project, projects, refTag in
+        self?.present(project: project, projects: projects, refTag: refTag)
     }
 
     self.viewModel.outputs.goToSettings
@@ -107,10 +107,12 @@ internal final class ProfileViewController: UICollectionViewController {
     }
   }
 
-  private func present(project project: Project, refTag: RefTag) {
-    let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: refTag)
-    let nav = UINavigationController(rootViewController: vc)
-    self.presentViewController(nav, animated: true, completion: nil)
+  private func present(project project: Project, projects: [Project], refTag: RefTag) {
+    let vc = ProjectNavigatorViewController.configuredWith(project: project,
+                                                           refTag: refTag,
+                                                           initialPlaylist: projects,
+                                                           navigatorDelegate: self)
+    self.presentViewController(vc, animated: true, completion: nil)
   }
 
   internal override func collectionView(collectionView: UICollectionView,
@@ -132,4 +134,7 @@ internal final class ProfileViewController: UICollectionViewController {
   @objc private func refresh() {
     self.viewModel.inputs.refresh()
   }
+}
+
+extension ProfileViewController: ProjectNavigatorDelegate {
 }

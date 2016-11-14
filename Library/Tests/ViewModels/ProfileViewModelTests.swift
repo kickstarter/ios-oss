@@ -13,6 +13,7 @@ internal final class ProfileViewModelTests: TestCase {
   let user = TestObserver<User, NoError>()
   let hasBackedProjects = TestObserver<Bool, NoError>()
   let goToProject = TestObserver<Project, NoError>()
+  let goToProjects = TestObserver<[Project], NoError>()
   let goToRefTag = TestObserver<RefTag, NoError>()
   let goToSettings = TestObserver<Void, NoError>()
   let showEmptyState = TestObserver<Bool, NoError>()
@@ -22,7 +23,8 @@ internal final class ProfileViewModelTests: TestCase {
     self.vm.outputs.user.observe(user.observer)
     self.vm.outputs.backedProjects.map { !$0.isEmpty }.observe(hasBackedProjects.observer)
     self.vm.outputs.goToProject.map { $0.0 }.observe(goToProject.observer)
-    self.vm.outputs.goToProject.map { $0.1 }.observe(goToRefTag.observer)
+    self.vm.outputs.goToProject.map { $0.1 }.observe(goToProjects.observer)
+    self.vm.outputs.goToProject.map { $0.2 }.observe(goToRefTag.observer)
     self.vm.outputs.goToSettings.observe(goToSettings.observer)
     self.vm.outputs.showEmptyState.observe(showEmptyState.observer)
   }
@@ -34,10 +36,18 @@ internal final class ProfileViewModelTests: TestCase {
 
   func testProjectCellTapped() {
     let project = Project.template
-    self.vm.inputs.projectTapped(project)
+    let projects = (1...3).map { .template |> Project.lens.id .~ $0 }
+    let response = .template |> DiscoveryEnvelope.lens.projects .~ projects
 
-    self.goToProject.assertValues([project], "Project emmitted.")
-    self.goToRefTag.assertValues([.profileBacked], "RefTag =profile_backed emitted.")
+    withEnvironment(apiService: MockService(fetchDiscoveryResponse: response)) {
+      self.vm.inputs.viewWillAppear(true)
+      self.scheduler.advance()
+      self.vm.inputs.projectTapped(project)
+
+      self.goToProject.assertValues([project], "Project emmitted.")
+      self.goToProjects.assertValues([projects])
+      self.goToRefTag.assertValues([.profileBacked], "RefTag =profile_backed emitted.")
+    }
   }
 
   func testUserWithBackedProjectsWithProfileViewTracking() {

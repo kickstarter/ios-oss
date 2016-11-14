@@ -18,7 +18,7 @@ public protocol ProjectPamphletViewModelInputs {
 
 public protocol ProjectPamphletViewModelOutputs {
   /// Emits a project that should be used to configure all children view controllers.
-  var configureChildViewControllersWithProject: Signal<Project, NoError> { get }
+  var configureChildViewControllersWithProject: Signal<(Project, RefTag?), NoError> { get }
 
   /// Return this value from the view's `prefersStatusBarHidden` method.
   var prefersStatusBarHidden: Bool { get }
@@ -56,7 +56,10 @@ ProjectPamphletViewModelOutputs {
           .ignoreNil()
     }
 
-    self.configureChildViewControllersWithProject = project
+    self.configureChildViewControllersWithProject = combineLatest(
+      project,
+      self.refTagProperty.signal
+      )
 
     self.prefersStatusBarHiddenProperty <~ self.viewWillAppearAnimated.signal.mapConst(true)
 
@@ -109,7 +112,7 @@ ProjectPamphletViewModelOutputs {
     self.viewWillAppearAnimated.value = animated
   }
 
-  public let configureChildViewControllersWithProject: Signal<Project, NoError>
+  public let configureChildViewControllersWithProject: Signal<(Project, RefTag?), NoError>
   private let prefersStatusBarHiddenProperty = MutableProperty(false)
   public var prefersStatusBarHidden: Bool {
     return self.prefersStatusBarHiddenProperty.value

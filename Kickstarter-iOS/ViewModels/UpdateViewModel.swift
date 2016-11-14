@@ -22,7 +22,7 @@ internal protocol UpdateViewModelOutputs {
   var goToComments: Signal<Update, NoError> { get }
 
   /// Emits when we should go to the project.
-  var goToProject: Signal<(Project, RefTag?), NoError> { get }
+  var goToProject: Signal<(Project, RefTag), NoError> { get }
 
   /// Emits the title of the controller.
   var title: Signal<String, NoError> { get }
@@ -91,7 +91,7 @@ internal final class UpdateViewModel: UpdateViewModelType, UpdateViewModelInputs
 
     self.goToProject = self.projectProperty.signal.ignoreNil()
       .takePairWhen(projectParamAndRefTag)
-      .switchMap { (project, projectParamAndRefTag) -> SignalProducer<(Project, RefTag?), NoError> in
+      .switchMap { (project, projectParamAndRefTag) -> SignalProducer<(Project, RefTag), NoError> in
 
         let (projectParam, refTag) = projectParamAndRefTag
         let producer: SignalProducer<Project, NoError>
@@ -105,7 +105,7 @@ internal final class UpdateViewModel: UpdateViewModelType, UpdateViewModelInputs
             .demoteErrors()
         }
 
-        return producer.map { ($0, refTag) }
+        return producer.map { ($0, refTag ?? RefTag.update) }
       }
   }
   // swiftlint:enable function_body_length
@@ -131,7 +131,7 @@ internal final class UpdateViewModel: UpdateViewModelType, UpdateViewModelInputs
   }
 
   internal let goToComments: Signal<Update, NoError>
-  internal let goToProject: Signal<(Project, RefTag?), NoError>
+  internal let goToProject: Signal<(Project, RefTag), NoError>
   internal let title: Signal<String, NoError>
   internal let webViewLoadRequest: Signal<NSURLRequest, NoError>
 

@@ -33,7 +33,7 @@ public protocol ProfileViewModelOutputs {
   var endRefreshing: Signal<Void, NoError> { get }
 
   /// Emits the project and ref tag when should go to project page.
-  var goToProject: Signal<(Project, RefTag), NoError > { get }
+  var goToProject: Signal<(Project, [Project], RefTag), NoError > { get }
 
   /// Emits when settings should be shown.
   var goToSettings: Signal<Void, NoError> { get }
@@ -88,8 +88,9 @@ public final class ProfileViewModel: ProfileViewModelType, ProfileViewModelInput
 
     self.goToSettings = settingsButtonTappedProperty.signal
 
-    self.goToProject = projectTappedProperty.signal.ignoreNil()
-      .map { ($0, RefTag.profileBacked) }
+    self.goToProject = self.backedProjects
+      .takePairWhen(self.projectTappedProperty.signal.ignoreNil())
+      .map { projects, project in (project, projects, RefTag.profileBacked) }
 
     self.viewWillAppearProperty.signal.filter(isFalse)
       .observeNext { _ in AppEnvironment.current.koala.trackProfileView() }
@@ -123,7 +124,7 @@ public final class ProfileViewModel: ProfileViewModelType, ProfileViewModelInput
   public let user: Signal<User, NoError>
   public let backedProjects: Signal<[Project], NoError>
   public let endRefreshing: Signal<Void, NoError>
-  public let goToProject: Signal<(Project, RefTag), NoError>
+  public let goToProject: Signal<(Project, [Project], RefTag), NoError>
   public let goToSettings: Signal<Void, NoError>
   public let showEmptyState: Signal<Bool, NoError>
 

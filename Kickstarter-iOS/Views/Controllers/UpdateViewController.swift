@@ -81,10 +81,9 @@ internal final class UpdateViewController: WebViewController {
     self.navigationController?.pushViewController(vc, animated: true)
   }
 
-  private func goTo(project project: Project, refTag: RefTag?) {
-    let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: refTag)
-    let nav = UINavigationController(rootViewController: vc)
-    self.presentViewController(nav, animated: true, completion: nil)
+  private func goTo(project project: Project, refTag: RefTag) {
+    let vc = ProjectNavigatorViewController.configuredWith(project: project, refTag: refTag)
+    self.presentViewController(vc, animated: true, completion: nil)
   }
 
   private func showShareSheet(activityController: UIActivityViewController) {

@@ -21,6 +21,9 @@ public protocol SearchViewModelInputs {
   /// Call when the user taps the return key.
   func searchTextEditingDidEnd()
 
+  /// Call when a project is tapped.
+  func tapped(project project: Project)
+
   /// Call when the view appears.
   func viewDidAppear()
 
@@ -38,14 +41,17 @@ public protocol SearchViewModelOutputs {
   /// should be animated.
   var changeSearchFieldFocus: Signal<(focused: Bool, animate: Bool), NoError> { get }
 
-  /// Emits when the search field should resign focus.
-  var resignFirstResponder: Signal<(), NoError> { get }
+  /// Emits a project, playlist and ref tag when the projet navigator should be opened.
+  var goToProject: Signal<(Project, [Project], RefTag), NoError> { get }
 
   /// Emits true when the popular title should be shown, and false otherwise.
   var isPopularTitleVisible: Signal<Bool, NoError> { get }
 
   /// Emits an array of projects when they should be shown on the screen.
   var projects: Signal<[Project], NoError> { get }
+
+  /// Emits when the search field should resign focus.
+  var resignFirstResponder: Signal<(), NoError> { get }
 
   /// Emits a string that should be filled into the search field.
   var searchFieldText: Signal<String, NoError> { get }
@@ -151,6 +157,10 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
     self.clearSearchTextProperty.signal
       .observeNext { AppEnvironment.current.koala.trackClearedSearchTerm() }
 
+    self.goToProject = self.projects
+      .takePairWhen(self.tappedProjectProperty.signal.ignoreNil())
+      .map { projects, project in (project, projects, RefTag.search) }
+
     query.combinePrevious()
       .map(first)
       .takeWhen(self.cancelButtonPressedProperty.signal)
@@ -184,6 +194,11 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
     self.searchTextEditingDidEndProperty.value = ()
   }
 
+  private let tappedProjectProperty = MutableProperty<Project?>(nil)
+  public func tapped(project project: Project) {
+    self.tappedProjectProperty.value = project
+  }
+
   private let viewDidAppearProperty = MutableProperty()
   public func viewDidAppear() {
     self.viewDidAppearProperty.value = ()
@@ -195,6 +210,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
   }
 
   public let changeSearchFieldFocus: Signal<(focused: Bool, animate: Bool), NoError>
+  public let goToProject: Signal<(Project, [Project], RefTag), NoError>
   public let isPopularTitleVisible: Signal<Bool, NoError>
   public let projects: Signal<[Project], NoError>
   public let resignFirstResponder: Signal<(), NoError>

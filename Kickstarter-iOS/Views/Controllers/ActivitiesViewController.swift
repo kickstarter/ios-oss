@@ -7,7 +7,6 @@ import UIKit
 internal final class ActivitiesViewController: UITableViewController {
   private let viewModel: ActivitiesViewModelType = ActivitiesViewModel()
   private let dataSource = ActivitiesDataSource()
-
   private weak var emptyStatesController: EmptyStatesViewController?
 
   internal static func instantiate() -> ActivitiesViewController {
@@ -182,9 +181,9 @@ internal final class ActivitiesViewController: UITableViewController {
   }
 
   private func present(project project: Project, refTag: RefTag) {
-    let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: refTag)
-    let nav = UINavigationController(rootViewController: vc)
-    self.presentViewController(nav, animated: true, completion: nil)
+
+    let vc = ProjectNavigatorViewController.configuredWith(project: project, refTag: refTag)
+    self.presentViewController(vc, animated: true, completion: nil)
   }
 
   private func goToFriends(source source: FriendsSource) {

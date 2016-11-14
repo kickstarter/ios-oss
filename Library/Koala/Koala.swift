@@ -1119,11 +1119,12 @@ public final class Koala {
     self.track(event: "Project Navigate", properties: props)
   }
 
-  public func trackClosedProjectPage(project: Project, gestureType: GestureType) {
-    let props = properties(project: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(["gesture_type": gestureType.trackingString])
-    self.track(event: "Closed Project Page",
-               properties: props)
+  public func trackClosedProjectPage(project: Project, refTag: RefTag?, gestureType: GestureType) {
+    var props = properties(project: project, loggedInUser: self.loggedInUser)
+    props["gesture_type"] = gestureType.trackingString
+    props["ref_tag"] = refTag?.stringTag
+
+    self.track(event: "Closed Project Page", properties: props)
   }
 
   public func trackProjectStar(project: Project) {

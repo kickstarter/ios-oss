@@ -8,40 +8,46 @@ internal protocol ProjectNavigatorDelegate: class {
 
 internal final class ProjectNavigatorViewController: UIPageViewController {
 
-  private weak var transitionAnimator: ProjectNavigatorTransitionAnimator?
+  private let transitionAnimator = ProjectNavigatorTransitionAnimator()
   private weak var navigatorDelegate: ProjectNavigatorDelegate?
   private let pageDataSource: ProjectNavigatorPagesDataSource!
   private let viewModel: ProjectNavigatorViewModelType = ProjectNavigatorViewModel()
 
+  internal static func configuredWith(project project: Project, refTag: RefTag)
+    -> ProjectNavigatorViewController {
+
+      return self.configuredWith(project: project,
+                                 refTag: refTag,
+                                 initialPlaylist: nil,
+                                 navigatorDelegate: nil)
+  }
+
   internal static func configuredWith(
     project project: Project,
             refTag: RefTag,
-            initialPlaylist: [Project],
-            navigatorDelegate: ProjectNavigatorDelegate,
-            transitionAnimator: ProjectNavigatorTransitionAnimator) -> UIViewController {
+            initialPlaylist: [Project]? = nil,
+            navigatorDelegate: ProjectNavigatorDelegate?) -> ProjectNavigatorViewController {
 
     let vc = ProjectNavigatorViewController(
       initialProject: project,
       initialPlaylist: initialPlaylist,
       refTag: refTag,
-      navigatorDelegate: navigatorDelegate,
-      transitionAnimator: transitionAnimator
+      navigatorDelegate: navigatorDelegate
     )
-    vc.viewModel.inputs.configureWith(project: project, initialPlaylist: initialPlaylist, refTag: refTag)
+    vc.transitioningDelegate = vc
     return vc
   }
 
   private init(initialProject: Project,
-               initialPlaylist: [Project],
+               initialPlaylist: [Project]?,
                refTag: RefTag,
-               navigatorDelegate: ProjectNavigatorDelegate,
-               transitionAnimator: ProjectNavigatorTransitionAnimator) {
+               navigatorDelegate: ProjectNavigatorDelegate?) {
 
     self.pageDataSource = ProjectNavigatorPagesDataSource(refTag: refTag,
                                                           initialPlaylist: initialPlaylist,
                                                           initialProject: initialProject)
-    self.transitionAnimator = transitionAnimator
     self.navigatorDelegate = navigatorDelegate
+    self.viewModel.inputs.configureWith(project: initialProject, refTag: refTag)
 
     super.init(transitionStyle: .Scroll,
                navigationOrientation: .Horizontal,
@@ -71,7 +77,7 @@ internal final class ProjectNavigatorViewController: UIPageViewController {
     self.viewModel.outputs.cancelInteractiveTransition
       .observeForControllerAction()
       .observeNext { [weak self] in
-        self?.transitionAnimator?.cancelInteractiveTransition()
+        self?.transitionAnimator.cancelInteractiveTransition()
     }
 
     self.viewModel.outputs.dismissViewController
@@ -83,13 +89,13 @@ internal final class ProjectNavigatorViewController: UIPageViewController {
     self.viewModel.outputs.finishInteractiveTransition
       .observeForControllerAction()
       .observeNext { [weak self] in
-        self?.transitionAnimator?.finishInteractiveTransition()
+        self?.transitionAnimator.finishInteractiveTransition()
     }
 
     self.viewModel.outputs.setTransitionAnimatorIsInFlight
       .observeForUI()
       .observeNext { [weak self] in
-        self?.transitionAnimator?.isInFlight = $0
+        self?.transitionAnimator.isInFlight = $0
     }
 
     self.viewModel.outputs.setNeedsStatusBarAppearanceUpdate
@@ -100,7 +106,7 @@ internal final class ProjectNavigatorViewController: UIPageViewController {
       .observeForControllerAction()
       .observeNext { [weak self] translation in
         guard let _self = self else { return }
-        self?.transitionAnimator?.updateInteractiveTransition(translation / _self.view.bounds.height)
+        self?.transitionAnimator.updateInteractiveTransition(translation / _self.view.bounds.height)
     }
   }
 
@@ -157,12 +163,34 @@ extension ProjectNavigatorViewController: UIPageViewControllerDelegate {
 
     guard let nav = pendingViewControllers.first as? UINavigationController,
       vc = nav.viewControllers.first as? ProjectPamphletViewController,
-      idx = self.pageDataSource.indexFor(controller: nav) else {
+      project = self.pageDataSource.projectFor(controller: nav) else {
       return
     }
 
     vc.delegate = self
 
-    self.viewModel.inputs.willTransition(toPage: idx)
+    self.viewModel.inputs.willTransition(toProject: project)
+  }
+}
+
+extension ProjectNavigatorViewController: UIViewControllerTransitioningDelegate {
+  internal func animationControllerForDismissedController(dismissed: UIViewController)
+    -> UIViewControllerAnimatedTransitioning? {
+
+      return self.transitionAnimator
+  }
+
+  func animationControllerForPresentedController(
+    presented: UIViewController,
+    presentingController presenting: UIViewController,
+    sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+
+    return self.transitionAnimator
+  }
+
+  func interactionControllerForDismissal(animator: UIViewControllerAnimatedTransitioning)
+    -> UIViewControllerInteractiveTransitioning? {
+
+      return self.transitionAnimator.isInFlight ? self.transitionAnimator : nil
   }
 }

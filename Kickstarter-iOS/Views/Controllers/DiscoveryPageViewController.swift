@@ -6,7 +6,6 @@ import UIKit
 internal final class DiscoveryPageViewController: UITableViewController {
   private weak var emptyStatesController: EmptyStatesViewController?
   private let dataSource = DiscoveryProjectsDataSource()
-  private let transitionAnimator = ProjectNavigatorTransitionAnimator()
   private let loadingIndicatorView = UIActivityIndicatorView()
   private let viewModel: DiscoveryPageViewModelType = DiscoveryPageViewModel()
 
@@ -174,9 +173,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
     let vc = ProjectNavigatorViewController.configuredWith(project: project,
                                                            refTag: refTag,
                                                            initialPlaylist: initialPlaylist,
-                                                           navigatorDelegate: self,
-                                                           transitionAnimator: self.transitionAnimator)
-    vc.transitioningDelegate = self
+                                                           navigatorDelegate: self)
     self.presentViewController(vc, animated: true, completion: nil)
   }
 
@@ -237,26 +234,4 @@ extension DiscoveryPageViewController: EmptyStatesViewControllerDelegate {
 }
 
 extension DiscoveryPageViewController: ProjectNavigatorDelegate {
-}
-
-extension DiscoveryPageViewController: UIViewControllerTransitioningDelegate {
-  internal func animationControllerForDismissedController(dismissed: UIViewController)
-    -> UIViewControllerAnimatedTransitioning? {
-
-      return self.transitionAnimator
-  }
-
-  func animationControllerForPresentedController(
-    presented: UIViewController,
-    presentingController presenting: UIViewController,
-    sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-
-    return self.transitionAnimator
-  }
-
-  func interactionControllerForDismissal(animator: UIViewControllerAnimatedTransitioning)
-    -> UIViewControllerInteractiveTransitioning? {
-
-      return self.transitionAnimator.isInFlight ? self.transitionAnimator : nil
-  }
 }

@@ -47,7 +47,7 @@ final class ProjectNavBarViewModelTests: TestCase {
   }
 
   func testBackgroundOpaqueAndAnimate() {
-    self.vm.inputs.configureWith(project: .template)
+    self.vm.inputs.configureWith(project: .template, refTag: nil)
     self.vm.inputs.viewDidLoad()
 
     self.backgroundOpaque.assertValues([false])
@@ -91,21 +91,24 @@ final class ProjectNavBarViewModelTests: TestCase {
   }
 
   func testCategoryButtonBackgroundColor() {
-    self.vm.inputs.configureWith(project: .template)
+    self.vm.inputs.configureWith(project: .template, refTag: nil)
     self.vm.inputs.viewDidLoad()
 
     self.categoryButtonBackgroundColor.assertValueCount(1)
   }
 
   func testCategoryButtonText() {
-    self.vm.inputs.configureWith(project: .template |> Project.lens.category.name .~ "Some Category")
+    self.vm.inputs.configureWith(
+      project: .template |> Project.lens.category.name .~ "Some Category",
+      refTag: nil
+    )
     self.vm.inputs.viewDidLoad()
 
     self.categoryButtonText.assertValues(["Some Category"])
   }
 
   func testCategoryHiddenAndAnimate() {
-    self.vm.inputs.configureWith(project: .template)
+    self.vm.inputs.configureWith(project: .template, refTag: nil)
     self.vm.inputs.viewDidLoad()
 
     self.categoryHidden.assertValues([false])
@@ -167,7 +170,7 @@ final class ProjectNavBarViewModelTests: TestCase {
   }
 
   func testDismissViewController() {
-    self.vm.inputs.configureWith(project: .template)
+    self.vm.inputs.configureWith(project: .template, refTag: nil)
     self.vm.inputs.viewDidLoad()
 
     self.dismissViewController.assertValueCount(0)
@@ -185,7 +188,7 @@ final class ProjectNavBarViewModelTests: TestCase {
 
     withEnvironment(apiService: MockService(toggleStarResponse: toggleStarResponse)) {
       self.starButtonSelected.assertDidNotEmitValue("No values emitted at first.")
-      self.vm.inputs.configureWith(project: project)
+      self.vm.inputs.configureWith(project: project, refTag: nil)
       self.vm.inputs.viewDidLoad()
 
       self.starButtonSelected.assertValues([false], "Star button is not selected at first")
@@ -219,7 +222,7 @@ final class ProjectNavBarViewModelTests: TestCase {
       |> StarEnvelope.lens.project .~ (project |> Project.lens.personalization.isStarred .~ true)
 
     withEnvironment(apiService: MockService(toggleStarResponse: toggleStarResponse)) {
-      self.vm.inputs.configureWith(project: project)
+      self.vm.inputs.configureWith(project: project, refTag: nil)
       self.vm.inputs.viewDidLoad()
 
       self.starButtonSelected.assertValues([false], "Star button is not selected at first")
@@ -267,7 +270,7 @@ final class ProjectNavBarViewModelTests: TestCase {
       |> StarEnvelope.lens.project .~ (project |> Project.lens.personalization.isStarred .~ true)
 
     withEnvironment(apiService: MockService(toggleStarResponse: toggleStarResponse)) {
-      self.vm.inputs.configureWith(project: project)
+      self.vm.inputs.configureWith(project: project, refTag: nil)
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.starButtonTapped()
       self.scheduler.advance()
@@ -290,7 +293,7 @@ final class ProjectNavBarViewModelTests: TestCase {
       |> StarEnvelope.lens.project .~ (project |> Project.lens.personalization.isStarred .~ false)
 
     withEnvironment(apiService: MockService(toggleStarResponse: toggleStarResponse)) {
-      self.vm.inputs.configureWith(project: project)
+      self.vm.inputs.configureWith(project: project, refTag: nil)
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.starButtonTapped()
       self.scheduler.advance()
@@ -307,7 +310,7 @@ final class ProjectNavBarViewModelTests: TestCase {
 
     let project = .template |> Project.lens.personalization.isStarred .~ false
 
-    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.configureWith(project: project, refTag: nil)
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.starButtonTapped()
 
@@ -331,7 +334,7 @@ final class ProjectNavBarViewModelTests: TestCase {
   }
 
   func testTitleHiddenAndAnimate() {
-    self.vm.inputs.configureWith(project: .template)
+    self.vm.inputs.configureWith(project: .template, refTag: nil)
     self.vm.inputs.viewDidLoad()
 
     self.titleHidden.assertValues([true])

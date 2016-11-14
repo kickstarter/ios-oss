@@ -102,6 +102,12 @@ internal final class SearchViewController: UITableViewController {
         self?.tableView.reloadData()
     }
 
+    self.viewModel.outputs.goToProject
+      .observeForControllerAction()
+      .observeNext { [weak self] project, projects, refTag in
+        self?.goTo(project: project, projects: projects, refTag: refTag)
+    }
+
     self.searchTextField.rac.text = self.viewModel.outputs.searchFieldText
     self.searchTextField.rac.isFirstResponder = self.viewModel.outputs.resignFirstResponder.mapConst(false)
 
@@ -110,6 +116,14 @@ internal final class SearchViewController: UITableViewController {
       .observeNext { [weak self] in
         self?.changeSearchFieldFocus(focus: $0, animated: $1)
     }
+  }
+
+  private func goTo(project project: Project, projects: [Project], refTag: RefTag) {
+    let vc = ProjectNavigatorViewController.configuredWith(project: project,
+                                                           refTag: refTag,
+                                                           initialPlaylist: projects,
+                                                           navigatorDelegate: self)
+    self.presentViewController(vc, animated: true, completion: nil)
   }
 
   private func changeSearchFieldFocus(focus focus: Bool, animated: Bool) {
@@ -136,9 +150,7 @@ internal final class SearchViewController: UITableViewController {
       return
     }
 
-    let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: .search)
-    let nav = UINavigationController(rootViewController: vc)
-    self.presentViewController(nav, animated: true, completion: nil)
+    self.viewModel.inputs.tapped(project: project)
   }
 
   internal override func tableView(tableView: UITableView,
@@ -175,4 +187,7 @@ extension SearchViewController: UITextFieldDelegate {
     self.viewModel.inputs.clearSearchText()
     return true
   }
+}
+
+extension SearchViewController: ProjectNavigatorDelegate {
 }

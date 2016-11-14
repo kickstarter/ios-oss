@@ -60,9 +60,9 @@ internal final class ProjectPamphletViewController: UIViewController {
 
     self.viewModel.outputs.configureChildViewControllersWithProject
       .observeForUI()
-      .observeNext { [weak self] in
-        self?.contentController.configureWith(project: $0)
-        self?.navBarController.configureWith(project: $0)
+      .observeNext { [weak self] project, refTag in
+        self?.contentController.configureWith(project: project)
+        self?.navBarController.configureWith(project: project, refTag: refTag)
     }
 
     self.viewModel.outputs.setNavigationBarHiddenAnimated

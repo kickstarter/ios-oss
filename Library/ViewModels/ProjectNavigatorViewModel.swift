@@ -5,7 +5,7 @@ import Result
 
 public protocol ProjectNavigatorViewModelInputs {
   /// Call with the config data give to the view.
-  func configureWith(project project: Project, initialPlaylist: [Project], refTag: RefTag?)
+  func configureWith(project project: Project, refTag: RefTag)
 
   /// Call when the UIPageViewController finishes transitioning.
   func pageTransition(completed completed: Bool)
@@ -19,8 +19,8 @@ public protocol ProjectNavigatorViewModelInputs {
   /// Call when the view loads.
   func viewDidLoad()
 
-  /// Call when the UIPageViewController begins a transition sequence.
-  func willTransition(toPage nextPage: Int)
+  /// Call when the UIPageViewController begins a transition sequence to a project.
+  func willTransition(toProject project: Project)
 }
 
 public protocol ProjectNavigatorViewModelOutputs {
@@ -42,9 +42,6 @@ public protocol ProjectNavigatorViewModelOutputs {
   /// Emits when the transition animator needs to have its `isInFlight` property updated.
   var setTransitionAnimatorIsInFlight: Signal<Bool, NoError> { get }
 
-  /// Emits when the data source's playlist and project needs to be updated.
-  var updateDataSourcePlaylist: Signal<(Project?, [Project]), NoError> { get }
-
   /// Emits when the transition animator should be updated.
   var updateInteractiveTransition: Signal<CGFloat, NoError> { get }
 }
@@ -65,13 +62,15 @@ ProjectNavigatorViewModelInputs, ProjectNavigatorViewModelOutputs {
       )
       .map(first)
 
-    self.updateDataSourcePlaylist = configData
-      .map { ($0.project, $0.initialPlaylist) }
-
-    let swipedToPage = self.willTransitionToPageProperty.signal
+    let swipedToProject = self.willTransitionToProjectProperty.signal.ignoreNil()
       .takeWhen(self.pageTransitionCompletedProperty.signal.filter(isTrue))
 
-    self.setNeedsStatusBarAppearanceUpdate = swipedToPage.ignoreValues()
+    let currentProject = Signal.merge(
+      configData.map { $0.project },
+      swipedToProject
+    )
+
+    self.setNeedsStatusBarAppearanceUpdate = swipedToProject.ignoreValues()
 
     let panningData = self.panningDataProperty.signal.ignoreNil()
 
@@ -124,26 +123,25 @@ ProjectNavigatorViewModelInputs, ProjectNavigatorViewModelOutputs {
       .skipRepeats()
 
     configData
-      .takePairWhen(swipedToPage)
-      .observeNext { configData, idx in
-        AppEnvironment.current.koala.trackSwipedProject(
-          configData.initialPlaylist[idx],
-          refTag: configData.refTag
-        )
+      .takePairWhen(swipedToProject)
+      .observeNext { configData, project in
+        AppEnvironment.current.koala.trackSwipedProject(project, refTag: configData.refTag)
     }
 
-    configData
+    combineLatest(configData, currentProject)
       .takeWhen(self.finishInteractiveTransition)
-      .observeNext { data in
-        AppEnvironment.current.koala.trackClosedProjectPage(data.project, gestureType: .swipe)
+      .observeNext { configData, project in
+        AppEnvironment.current.koala.trackClosedProjectPage(
+          project,
+          refTag: configData.refTag,
+          gestureType: .swipe
+        )
     }
   }
 
   private let configDataProperty = MutableProperty<ConfigData?>(nil)
-  public func configureWith(project project: Project, initialPlaylist: [Project], refTag: RefTag?) {
-    self.configDataProperty.value = ConfigData(
-      initialPlaylist: initialPlaylist, project: project, refTag: refTag
-    )
+  public func configureWith(project project: Project, refTag: RefTag) {
+    self.configDataProperty.value = ConfigData(project: project, refTag: refTag)
   }
 
   private let pageTransitionCompletedProperty = MutableProperty(false)
@@ -156,9 +154,9 @@ ProjectNavigatorViewModelInputs, ProjectNavigatorViewModelOutputs {
     self.viewDidLoadProperty.value = ()
   }
 
-  private let willTransitionToPageProperty = MutableProperty<Int>(0)
-  public func willTransition(toPage nextPage: Int) {
-    self.willTransitionToPageProperty.value = nextPage
+  private let willTransitionToProjectProperty = MutableProperty<Project?>(nil)
+  public func willTransition(toProject project: Project) {
+    self.willTransitionToProjectProperty.value = project
   }
 
   private let panningDataProperty = MutableProperty<PanningData?>(nil)
@@ -179,16 +177,14 @@ ProjectNavigatorViewModelInputs, ProjectNavigatorViewModelOutputs {
   public let setNeedsStatusBarAppearanceUpdate: Signal<(), NoError>
   public let setTransitionAnimatorIsInFlight: Signal<Bool, NoError>
   public let updateInteractiveTransition: Signal<CGFloat, NoError>
-  public let updateDataSourcePlaylist: Signal<(Project?, [Project]), NoError>
 
   public var inputs: ProjectNavigatorViewModelInputs { return self }
   public var outputs: ProjectNavigatorViewModelOutputs { return self }
 }
 
 private struct ConfigData {
-  private let initialPlaylist: [Project]
   private let project: Project
-  private let refTag: RefTag?
+  private let refTag: RefTag
 }
 
 private struct PanningData {

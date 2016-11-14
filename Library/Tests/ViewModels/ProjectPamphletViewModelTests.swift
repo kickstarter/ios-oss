@@ -10,6 +10,7 @@ final class ProjectPamphletViewModelTests: TestCase {
   private let vm: ProjectPamphletViewModelType = ProjectPamphletViewModel()
 
   private let configureChildViewControllersWithProject = TestObserver<Project, NoError>()
+  private let configureChildViewControllersWithRefTag = TestObserver<RefTag?, NoError>()
   private let setNavigationBarHidden = TestObserver<Bool, NoError>()
   private let setNavigationBarAnimated = TestObserver<Bool, NoError>()
   private let setNeedsStatusBarAppearanceUpdate = TestObserver<(), NoError>()
@@ -17,8 +18,10 @@ final class ProjectPamphletViewModelTests: TestCase {
   internal override func setUp() {
     super.setUp()
 
-    self.vm.outputs.configureChildViewControllersWithProject
+    self.vm.outputs.configureChildViewControllersWithProject.map(first)
       .observe(self.configureChildViewControllersWithProject.observer)
+    self.vm.outputs.configureChildViewControllersWithProject.map(second)
+      .observe(self.configureChildViewControllersWithRefTag.observer)
     self.vm.outputs.setNavigationBarHiddenAnimated.map(first)
       .observe(self.setNavigationBarHidden.observer)
     self.vm.outputs.setNavigationBarHiddenAnimated.map(second)
@@ -28,15 +31,18 @@ final class ProjectPamphletViewModelTests: TestCase {
 
   func testConfigureChildViewControllersWithProject_ConfiguredWithProject() {
     let project = Project.template
-    self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: nil)
+    let refTag = RefTag.category
+    self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: refTag)
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewWillAppear(animated: true)
 
     self.configureChildViewControllersWithProject.assertValues([project])
+    self.configureChildViewControllersWithRefTag.assertValues([refTag])
 
     self.scheduler.advance()
 
     self.configureChildViewControllersWithProject.assertValues([project, project])
+    self.configureChildViewControllersWithRefTag.assertValues([refTag, refTag])
   }
 
   func testConfigureChildViewControllersWithProject_ConfiguredWithParam() {
@@ -47,10 +53,12 @@ final class ProjectPamphletViewModelTests: TestCase {
     self.vm.inputs.viewWillAppear(animated: true)
 
     self.configureChildViewControllersWithProject.assertValues([])
+    self.configureChildViewControllersWithRefTag.assertValues([])
 
     self.scheduler.advance()
 
     self.configureChildViewControllersWithProject.assertValues([project])
+    self.configureChildViewControllersWithRefTag.assertValues([nil])
   }
 
   func testStatusBar() {
