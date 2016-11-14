@@ -25,7 +25,8 @@ let baseButtonsStyles: [UIButton -> UIButton] = [
   neutralButtonStyle   <> UIButton.lens.title(forState: .Normal) .~ "Neutral button",
   borderButtonStyle    <> UIButton.lens.title(forState: .Normal) .~ "Border button",
   blackButtonStyle     <> UIButton.lens.title(forState: .Normal) .~ "Black button",
-  textOnlyButtonStyle  <> UIButton.lens.title(forState: .Normal) .~ "Text only button"
+  textOnlyButtonStyle  <> UIButton.lens.title(forState: .Normal) .~ "Text only button",
+  greenBorderButtonStyle <> UIButton.lens.title(forState: .Normal) .~ "Green border button"
 ]
 
 let buttonsStyles: [[UIButton -> UIButton]] = baseButtonsStyles.map { [$0, $0 <> disabled()] }

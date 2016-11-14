@@ -20,7 +20,11 @@ internal final class RewardsTitleCell: UITableViewCell, ValueCell {
       self.rewardsTitleLabel.text = Strings.Rewards_count_rewards_colon(
         rewards_count: project.rewards.filter { $0 != .noReward }.count
       )
-
+    case (true?, _):
+      self.rewardsTitleLabel.font = .ksr_subhead(size: 14)
+      self.rewardsTitleLabel.text = Strings.Rewards_count_rewards(
+        rewards_count: project.rewards.filter { $0 != .noReward }.count
+      )
     default:
       self.rewardsTitleLabel.font = .ksr_headline(size: 14)
       self.rewardsTitleLabel.text = Strings.Rewards_count_rewards(

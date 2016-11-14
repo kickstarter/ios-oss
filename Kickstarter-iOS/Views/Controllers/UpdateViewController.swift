@@ -44,9 +44,7 @@ internal final class UpdateViewController: WebViewController {
       |> UIBarButtonItem.lens.targetAction .~ (self, #selector(dismiss))
 
     self.shareButton
-      |> UIBarButtonItem.lens.accessibilityLabel %~ { _ in
-        localizedString(key: "Share_update", defaultValue: "Share update")
-    }
+      |> UIBarButtonItem.lens.accessibilityLabel %~ { _ in Strings.Share_update() }
   }
 
   internal override func bindViewModel() {

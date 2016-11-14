@@ -20,13 +20,16 @@ internal final class MessageThreadCell: UITableViewCell, ValueCell {
   }
 
   internal override func bindStyles() {
-      self
-        |> baseTableViewCellStyle()
-        |> MessageThreadCell.lens.contentView.layoutMargins %~~ { layoutMargins, cell in
-          cell.traitCollection.isRegularRegular
-            ? .init(topBottom: Styles.grid(6), leftRight: Styles.grid(16))
-            : layoutMargins
-      }
+    super.bindStyles()
+
+    self
+      |> baseTableViewCellStyle()
+      |> MessageThreadCell.lens.backgroundColor .~ .whiteColor()
+      |> MessageThreadCell.lens.contentView.layoutMargins %~~ { layoutMargins, cell in
+        cell.traitCollection.isRegularRegular
+          ? .init(topBottom: Styles.grid(6), leftRight: Styles.grid(16))
+          : layoutMargins
+    }
   }
 
   internal override func bindViewModel() {

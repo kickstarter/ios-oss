@@ -18,14 +18,18 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
   private let creatorLabelText = TestObserver<String, NoError>()
   private let deadlineSubtitleLabelText = TestObserver<String, NoError>()
   private let deadlineTitleLabelText = TestObserver<String, NoError>()
+  private let fundingProgressBarViewBackgroundColor = TestObserver<UIColor, NoError>()
   private let pledgedSubtitleLabelText = TestObserver<String, NoError>()
   private let pledgedTitleLabelText = TestObserver<String, NoError>()
+  private let pledgedTitleLabelTextColor = TestObserver<UIColor, NoError>()
   private let progressPercentage = TestObserver<Float, NoError>()
   private let projectBlurbLabelText = TestObserver<String, NoError>()
   private let projectImageUrl = TestObserver<String?, NoError>()
   private let projectNameLabelText = TestObserver<String, NoError>()
-  private let projectStateLabelHidden = TestObserver<Bool, NoError>()
   private let projectStateLabelText = TestObserver<String, NoError>()
+  private let projectStateLabelTextColor = TestObserver<UIColor, NoError>()
+  private let projectUnsuccessfulLabelTextColor = TestObserver<UIColor, NoError>()
+  private let stateLabelHidden = TestObserver<Bool, NoError>()
   private let youreABackerLabelHidden = TestObserver<Bool, NoError>()
 
   override func setUp() {
@@ -40,14 +44,19 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     self.vm.outputs.creatorLabelText.observe(self.creatorLabelText.observer)
     self.vm.outputs.deadlineSubtitleLabelText.observe(self.deadlineSubtitleLabelText.observer)
     self.vm.outputs.deadlineTitleLabelText.observe(self.deadlineTitleLabelText.observer)
+    self.vm.outputs.fundingProgressBarViewBackgroundColor
+      .observe(self.fundingProgressBarViewBackgroundColor.observer)
     self.vm.outputs.pledgedSubtitleLabelText.observe(self.pledgedSubtitleLabelText.observer)
     self.vm.outputs.pledgedTitleLabelText.observe(self.pledgedTitleLabelText.observer)
+    self.vm.outputs.pledgedTitleLabelTextColor.observe(self.pledgedTitleLabelTextColor.observer)
     self.vm.outputs.progressPercentage.observe(self.progressPercentage.observer)
     self.vm.outputs.projectBlurbLabelText.observe(self.projectBlurbLabelText.observer)
     self.vm.outputs.projectImageUrl.map { $0?.absoluteString }.observe(self.projectImageUrl.observer)
     self.vm.outputs.projectNameLabelText.observe(self.projectNameLabelText.observer)
-    self.vm.outputs.projectStateLabelHidden.observe(self.projectStateLabelHidden.observer)
     self.vm.outputs.projectStateLabelText.observe(self.projectStateLabelText.observer)
+    self.vm.outputs.projectStateLabelTextColor.observe(self.projectStateLabelTextColor.observer)
+    self.vm.outputs.projectUnsuccessfulLabelTextColor.observe(self.projectUnsuccessfulLabelTextColor.observer)
+    self.vm.outputs.stateLabelHidden.observe(self.stateLabelHidden.observer)
     self.vm.outputs.youreABackerLabelHidden.observe(self.youreABackerLabelHidden.observer)
   }
 
@@ -212,6 +221,42 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     self.deadlineSubtitleLabelText.assertValues(["days to go"])
   }
 
+  func testFundingProgressBarViewBackgroundColor_UnsuccessfulProject() {
+    let project = .template
+      |> Project.lens.state .~ .failed
+
+    self.vm.inputs.configureWith(project: project)
+
+    self.fundingProgressBarViewBackgroundColor.assertValues([UIColor.ksr_navy_500])
+  }
+
+  func testFundingProgressBarViewBackgroundColor_SuccessfulProject() {
+    let project = .template
+      |> Project.lens.state .~ .successful
+
+    self.vm.inputs.configureWith(project: project)
+
+    self.fundingProgressBarViewBackgroundColor.assertValues([UIColor.ksr_green_500])
+  }
+
+  func testPledgedTitleLabelTextColor_SucessfulProject() {
+    let project = .template
+      |> Project.lens.state .~ .successful
+
+    self.vm.inputs.configureWith(project: project)
+
+    self.pledgedTitleLabelTextColor.assertValues([UIColor.ksr_text_green_700])
+  }
+
+  func testPledgedTitleLabelTextColor_UnsuccessfulProject() {
+    let project = .template
+      |> Project.lens.state .~ .canceled
+
+    self.vm.inputs.configureWith(project: project)
+
+    self.pledgedTitleLabelTextColor.assertValues([UIColor.ksr_text_navy_500])
+  }
+
   func testPledgedLabels_WhenConversionNotNeeded() {
     let project = .template
       |> Project.lens.country .~ .US
@@ -284,5 +329,53 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: project)
 
     self.progressPercentage.assertValues([1.0])
+  }
+
+  func testProjectStateLabelTextColor_SuccessfulProject() {
+    let project = .template
+      |> Project.lens.state .~ .successful
+    self.vm.inputs.configureWith(project: project)
+
+    self.projectStateLabelTextColor.assertValues([UIColor.ksr_text_green_700])
+  }
+
+  func testProjectStateLabelTextColor_UnsuccessfulProject() {
+    let project = .template
+      |> Project.lens.state .~ .failed
+    self.vm.inputs.configureWith(project: project)
+
+    self.projectStateLabelTextColor.assertValues([UIColor.ksr_text_navy_500])
+  }
+
+  func testProjectUnsuccessfulLabelTextColor_SuccessfulProjects() {
+    let project = .template
+      |> Project.lens.state .~ .failed
+    self.vm.inputs.configureWith(project: project)
+
+    self.projectUnsuccessfulLabelTextColor.assertValues([UIColor.ksr_text_navy_500])
+  }
+
+  func testProjectUnsuccessfulLabelTextColor_UnsuccessfulProjects() {
+    let project = .template
+      |> Project.lens.state .~ .failed
+    self.vm.inputs.configureWith(project: project)
+
+    self.projectUnsuccessfulLabelTextColor.assertValues([UIColor.ksr_text_navy_500])
+  }
+
+  func testStateLabelHidden_LiveProject() {
+    let project = .template
+      |> Project.lens.state .~ .live
+    self.vm.inputs.configureWith(project: project)
+
+    self.stateLabelHidden.assertValues([true])
+  }
+
+  func testStateLabelHidden_NonLiveProject() {
+    let project = .template
+      |> Project.lens.state .~ .successful
+    self.vm.inputs.configureWith(project: project)
+
+    self.stateLabelHidden.assertValues([false])
   }
 }

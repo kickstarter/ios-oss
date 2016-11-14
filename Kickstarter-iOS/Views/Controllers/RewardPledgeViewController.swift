@@ -401,9 +401,7 @@ internal final class RewardPledgeViewController: UIViewController {
     self.shippingDestinationButton
       |> UIButton.lens.backgroundColor(forState: .Highlighted) .~ UIColor.ksr_navy_200
       |> UIButton.lens.isAccessibilityElement .~ true
-      |> UIButton.lens.accessibilityHint %~ { _ in
-        localizedString(key: "Opens_shipping_options", defaultValue: "Opens shipping options.")
-    }
+      |> UIButton.lens.accessibilityHint %~ { _ in Strings.Opens_shipping_options() }
 
     self.shippingStackView
       |> UIStackView.lens.spacing .~ Styles.gridHalf(1)

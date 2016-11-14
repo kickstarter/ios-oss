@@ -42,11 +42,14 @@ public protocol ProjectPamphletMainCellViewModelOutputs {
   /// Emits text to be put into the creator label.
   var creatorLabelText: Signal<String, NoError> { get }
 
-  /// Emits the text for the deadine subtitle label.
+  /// Emits the text for the deadline subtitle label.
   var deadlineSubtitleLabelText: Signal<String, NoError> { get }
 
   /// Emits the text for the deadline title label.
   var deadlineTitleLabelText: Signal<String, NoError> { get }
+
+  /// Emits the background color of the funding progress bar view.
+  var fundingProgressBarViewBackgroundColor: Signal<UIColor, NoError> { get }
 
   /// Emits the project when we should go to the campaign view for the project.
   var notifyDelegateToGoToCampaign: Signal<Project, NoError> { get }
@@ -60,6 +63,9 @@ public protocol ProjectPamphletMainCellViewModelOutputs {
   /// Emits the text for the pledged title label.
   var pledgedTitleLabelText: Signal<String, NoError> { get }
 
+  /// Emits the text color of the pledged title label.
+  var pledgedTitleLabelTextColor: Signal<UIColor, NoError> { get }
+
   /// Emits a percentage between 0.0 and 1.0 that can be used to render the funding progress bar.
   var progressPercentage: Signal<Float, NoError> { get }
 
@@ -72,13 +78,17 @@ public protocol ProjectPamphletMainCellViewModelOutputs {
   /// Emits text to be put into the project name label.
   var projectNameLabelText: Signal<String, NoError> { get }
 
-  /// Emits a boolean that determines if the project state label should be hidden.
-  var projectStateLabelHidden: Signal<Bool, NoError> { get }
-
   /// Emits a string that should be put into the project state label.
   var projectStateLabelText: Signal<String, NoError> { get }
 
+  /// Emits the text color of the project state label.
   var projectStateLabelTextColor: Signal<UIColor, NoError> { get }
+
+  /// Emits the text color of the backer and deadline title label.
+  var projectUnsuccessfulLabelTextColor: Signal<UIColor, NoError> { get }
+
+  /// Emits a boolean that determines if the project state label should be hidden.
+  var stateLabelHidden: Signal<Bool, NoError> { get }
 
   /// Emits a boolean that determines if the "you're a backer" label should be hidden.
   var youreABackerLabelHidden: Signal<Bool, NoError> { get }
@@ -105,7 +115,7 @@ ProjectPamphletMainCellViewModelInputs, ProjectPamphletMainCellViewModelOutputs 
 
     self.creatorImageUrl = project.map { NSURL(string: $0.creator.avatar.small) }
 
-    self.projectStateLabelHidden = project.map { $0.state == .live }
+    self.stateLabelHidden = project.map { $0.state == .live }
 
     self.projectStateLabelText = project
       .filter { $0.state != .live }
@@ -114,6 +124,18 @@ ProjectPamphletMainCellViewModelInputs, ProjectPamphletMainCellViewModelOutputs 
     self.projectStateLabelTextColor = project
       .filter { $0.state != .live }
       .map { $0.state == .successful ? UIColor.ksr_text_green_700 : UIColor.ksr_text_navy_500 }
+
+    self.fundingProgressBarViewBackgroundColor = project
+      .filter { $0.state != .live }
+      .map { $0.state == .successful ? UIColor.ksr_green_500 : UIColor.ksr_navy_500 }
+
+    self.projectUnsuccessfulLabelTextColor = project
+      .map { $0.state == .successful || $0.state == .live ?
+        UIColor.ksr_text_navy_700 : UIColor.ksr_text_navy_500 }
+
+    self.pledgedTitleLabelTextColor = project
+      .map { $0.state == .successful  || $0.state == .live ?
+        UIColor.ksr_text_green_700 : UIColor.ksr_text_navy_500 }
 
     self.projectImageUrl = project.map { NSURL(string: $0.photo.full) }
 
@@ -224,7 +246,6 @@ ProjectPamphletMainCellViewModelInputs, ProjectPamphletMainCellViewModelOutputs 
     self.videoDidStartProperty.value = ()
   }
 
-  public let statsStackViewAccessibilityLabel: Signal<String, NoError>
   public let backersTitleLabelText: Signal<String, NoError>
   public let configureVideoPlayerController: Signal<Project, NoError>
   public let conversionLabelHidden: Signal<Bool, NoError>
@@ -233,17 +254,21 @@ ProjectPamphletMainCellViewModelInputs, ProjectPamphletMainCellViewModelOutputs 
   public let creatorLabelText: Signal<String, NoError>
   public let deadlineSubtitleLabelText: Signal<String, NoError>
   public let deadlineTitleLabelText: Signal<String, NoError>
+  public let fundingProgressBarViewBackgroundColor: Signal<UIColor, NoError>
   public let notifyDelegateToGoToCampaign: Signal<Project, NoError>
   public let notifyDelegateToGoToCreator: Signal<Project, NoError>
   public let pledgedSubtitleLabelText: Signal<String, NoError>
   public let pledgedTitleLabelText: Signal<String, NoError>
+  public let pledgedTitleLabelTextColor: Signal<UIColor, NoError>
   public let progressPercentage: Signal<Float, NoError>
   public let projectBlurbLabelText: Signal<String, NoError>
   public let projectImageUrl: Signal<NSURL?, NoError>
   public let projectNameLabelText: Signal<String, NoError>
-  public let projectStateLabelHidden: Signal<Bool, NoError>
   public let projectStateLabelText: Signal<String, NoError>
   public let projectStateLabelTextColor: Signal<UIColor, NoError>
+  public let projectUnsuccessfulLabelTextColor: Signal<UIColor, NoError>
+  public let stateLabelHidden: Signal<Bool, NoError>
+  public let statsStackViewAccessibilityLabel: Signal<String, NoError>
   public let youreABackerLabelHidden: Signal<Bool, NoError>
 
   public var inputs: ProjectPamphletMainCellViewModelInputs { return self }
@@ -280,17 +305,13 @@ private func fundingStatus(forProject project: Project) -> String {
   switch project.state {
   case .canceled:
     return Strings.discovery_baseball_card_status_banner_canceled_date(date: date)
-
   case .failed:
     return Strings.creator_project_preview_subtitle_funding_unsuccessful_on_deadline(deadline: date)
-
   case .successful:
     return Strings.project_status_project_was_successfully_funded_on_deadline(deadline: date)
-
   case .suspended:
     return Strings.discovery_baseball_card_status_banner_suspended_date(date: date)
-
   case .live, .purged, .started, .submitted:
     return ""
   }
-}
+ }

@@ -92,11 +92,7 @@ RewardShippingPickerViewModelInputs, RewardShippingPickerViewModelOutputs {
 
     self.doneButtonAccessibilityHint = currentShippingRule
       .map { shippingRule in
-        localizedString(
-          key: "Chooses_location_for_shipping",
-          defaultValue: "Chooses %{location} for shipping.",
-          substitutions: ["location": shippingRule.location.displayableName]
-        )
+        Strings.Chooses_location_for_shipping(location: shippingRule.location.displayableName)
     }
   }
 

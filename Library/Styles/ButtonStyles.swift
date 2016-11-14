@@ -34,6 +34,15 @@ public let borderButtonStyle = baseButtonStyle
   <> UIButton.lens.layer.borderColor .~ UIColor.ksr_grey_500.CGColor
   <> UIButton.lens.layer.borderWidth .~ 1.0
 
+public let greenBorderButtonStyle = baseButtonStyle
+  <> UIButton.lens.titleColor(forState: .Normal) .~ .ksr_green_700
+  <> UIButton.lens.backgroundColor(forState: .Normal) .~ .whiteColor()
+  <> UIButton.lens.titleColor(forState: .Highlighted) .~ .whiteColor()
+  <> UIButton.lens.backgroundColor(forState: .Highlighted) .~ .ksr_green_400
+  <> UIButton.lens.titleColor(forState: .Disabled) .~ UIColor.ksr_green_700.colorWithAlphaComponent(0.5)
+  <> UIButton.lens.layer.borderColor .~ UIColor.ksr_green_700.CGColor
+  <> UIButton.lens.layer.borderWidth .~ 1.0
+
 public let facebookButtonStyle = baseButtonStyle
   <> UIButton.lens.titleColor(forState: .Normal) .~ .whiteColor()
   <> UIButton.lens.backgroundColor(forState: .Normal) .~ .ksr_facebookBlue

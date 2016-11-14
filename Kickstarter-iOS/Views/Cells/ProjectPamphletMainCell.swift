@@ -96,7 +96,6 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       ||> UILabel.lens.numberOfLines .~ 2
 
     [self.backersTitleLabel, self.deadlineTitleLabel, self.pledgedTitleLabel]
-      ||> UILabel.lens.textColor .~ .ksr_text_navy_700
       ||> UILabel.lens.font .~ .ksr_headline(size: 13)
 
     self.blurbAndReadMoreStackView
@@ -135,12 +134,6 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
 
     self.fundingProgressContainerView
       |> UIView.lens.backgroundColor .~ .ksr_navy_400
-
-    self.fundingProgressBarView
-      |> UIView.lens.backgroundColor .~ .ksr_green_500
-
-    self.pledgedTitleLabel
-      |> UILabel.lens.textColor .~ .ksr_text_green_700
 
     self.projectBlurbLabel
       |> UILabel.lens.font %~~ { _, label in
@@ -197,19 +190,24 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     super.bindViewModel()
 
     self.backersTitleLabel.rac.text = self.viewModel.outputs.backersTitleLabelText
+    self.backersTitleLabel.rac.textColor = self.viewModel.outputs.projectUnsuccessfulLabelTextColor
     self.conversionLabel.rac.hidden = self.viewModel.outputs.conversionLabelHidden
     self.conversionLabel.rac.text = self.viewModel.outputs.conversionLabelText
     self.creatorButton.rac.accessibilityLabel = self.viewModel.outputs.creatorLabelText
     self.creatorLabel.rac.text = self.viewModel.outputs.creatorLabelText
     self.deadlineSubtitleLabel.rac.text = self.viewModel.outputs.deadlineSubtitleLabelText
     self.deadlineTitleLabel.rac.text = self.viewModel.outputs.deadlineTitleLabelText
+    self.deadlineTitleLabel.rac.textColor = self.viewModel.outputs.projectUnsuccessfulLabelTextColor
+    self.fundingProgressBarView.rac.backgroundColor =
+      self.viewModel.outputs.fundingProgressBarViewBackgroundColor
     self.pledgeSubtitleLabel.rac.text = self.viewModel.outputs.pledgedSubtitleLabelText
     self.pledgedTitleLabel.rac.text = self.viewModel.outputs.pledgedTitleLabelText
+    self.pledgedTitleLabel.rac.textColor = self.viewModel.outputs.pledgedTitleLabelTextColor
     self.projectBlurbLabel.rac.text = self.viewModel.outputs.projectBlurbLabelText
     self.projectNameLabel.rac.text = self.viewModel.outputs.projectNameLabelText
-    self.stateLabel.rac.hidden = self.viewModel.outputs.projectStateLabelHidden
     self.stateLabel.rac.text = self.viewModel.outputs.projectStateLabelText
     self.stateLabel.rac.textColor = self.viewModel.outputs.projectStateLabelTextColor
+    self.stateLabel.rac.hidden = self.viewModel.outputs.stateLabelHidden
     self.statsStackView.rac.accessibilityLabel = self.viewModel.outputs.statsStackViewAccessibilityLabel
     self.youreABackerContainerView.rac.hidden = self.viewModel.outputs.youreABackerLabelHidden
 

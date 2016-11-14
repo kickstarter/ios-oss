@@ -178,7 +178,7 @@ internal final class RewardCell: UITableViewCell, ValueCell {
       |> UIButton.lens.isAccessibilityElement .~ false
 
     self.manageRewardButton
-      |> borderButtonStyle
+      |> greenBorderButtonStyle
       |> UIButton.lens.userInteractionEnabled .~ false
       |> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.Manage_your_pledge() }
       |> UIButton.lens.isAccessibilityElement .~ false

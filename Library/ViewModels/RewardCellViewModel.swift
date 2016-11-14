@@ -302,21 +302,23 @@ RewardCellViewModelOutputs {
 }
 
 private func minimumRewardAmountTextColor(project project: Project, reward: Reward) -> UIColor {
-   if (project.state == .live && reward.remaining == 0 &&
+  if project.state != .successful && project.state != .live && reward.remaining == 0 {
+    return .ksr_text_navy_700
+  } else if (project.state == .live && reward.remaining == 0 &&
     userIsBacking(reward: reward, inProject: project)) {
-      return .ksr_text_green_700
+    return .ksr_text_green_700
   } else if (project.state != .live && reward.remaining == 0 &&
     userIsBacking(reward: reward, inProject: project)) {
-      return .ksr_text_navy_700
+    return .ksr_text_navy_700
   } else if (project.state == .live && reward.remaining == 0) ||
     (project.state != .live && reward.remaining == 0) {
-      return .ksr_text_navy_500
+    return .ksr_text_navy_500
   } else if project.state == .live {
-      return .ksr_text_green_700
+    return .ksr_text_green_700
   } else if project.state != .live {
-      return .ksr_text_navy_700
+    return .ksr_text_navy_700
   } else {
-      return .ksr_text_navy_700
+    return .ksr_text_navy_700
   }
 }
 
