@@ -152,7 +152,7 @@ final class ProjectNavBarViewModelTests: TestCase {
   }
 
   func testCategoryHiddenAndAnimate_PlayVideoWithoutScrolling() {
-    self.vm.inputs.configureWith(project: .template)
+    self.vm.inputs.configureWith(project: .template, refTag: nil)
     self.vm.inputs.viewDidLoad()
 
     self.categoryHidden.assertValues([false])
