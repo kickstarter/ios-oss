@@ -57,6 +57,7 @@ public let forgotPasswordButtonStyle =
   UIButton.lens.titleLabel.font .~ .ksr_subhead()
     <> UIButton.lens.titleColor(forState: .Normal) .~ .ksr_text_navy_500
     <> UIButton.lens.titleColor(forState: .Highlighted) .~ .blackColor()
+    <> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.login_buttons_forgot_password() }
 
 public let loginButtonStyle = greenButtonStyle
   <> UIButton.lens.title(forState: .Normal) %~ { _ in

@@ -25,7 +25,7 @@ public protocol ProfileProjectCellViewModelOutputs {
   var progressHidden: Signal<Bool, NoError> { get }
 
   /// Emits the state of the project to be displayed.
-  var state: Signal<String, NoError> { get }
+  var stateLabelText: Signal<String, NoError> { get }
 
   /// Emits the background color to be displayed for the project's state banner.
   var stateBackgroundColor: Signal<UIColor, NoError> { get }
@@ -48,7 +48,7 @@ public final class ProfileProjectCellViewModel: ProfileProjectCellViewModelType,
     self.photoURL = project.map { NSURL(string: $0.photo.full) }
     self.progress = project.map { $0.stats.fundingProgress }
     self.progressHidden = project.map { $0.state != .live }
-    self.state = project.map { $0.state.rawValue }
+    self.stateLabelText = project.map(stateString(forProject:))
     self.stateBackgroundColor = project.map {
       $0.state == .successful ? .ksr_green_400 : .ksr_navy_600
     }
@@ -67,10 +67,25 @@ public final class ProfileProjectCellViewModel: ProfileProjectCellViewModelType,
   public let photoURL: Signal<NSURL?, NoError>
   public let progress: Signal<Float, NoError>
   public let progressHidden: Signal<Bool, NoError>
-  public let state: Signal<String, NoError>
+  public let stateLabelText: Signal<String, NoError>
   public let stateBackgroundColor: Signal<UIColor, NoError>
   public let stateHidden: Signal<Bool, NoError>
 
   public var inputs: ProfileProjectCellViewModelInputs { return self }
   public var outputs: ProfileProjectCellViewModelOutputs { return self }
+}
+
+private func stateString(forProject project: Project) -> String {
+  switch project.state {
+  case .canceled:
+    return Strings.profile_projects_status_canceled()
+  case .successful:
+    return Strings.profile_projects_status_successful()
+  case .suspended:
+    return Strings.profile_projects_status_suspended()
+  case .failed:
+    return Strings.profile_projects_status_unsuccessful()
+  default:
+    return ""
+  }
 }

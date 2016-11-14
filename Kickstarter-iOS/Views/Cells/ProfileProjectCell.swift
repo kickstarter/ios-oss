@@ -53,6 +53,6 @@ internal final class ProfileProjectCell: UICollectionViewCell, ValueCell {
 
     self.stateBannerView.rac.hidden = self.viewModel.outputs.stateHidden
     self.stateBannerView.rac.backgroundColor = self.viewModel.outputs.stateBackgroundColor
-    self.stateLabel.rac.text = self.viewModel.outputs.state
+    self.stateLabel.rac.text = self.viewModel.outputs.stateLabelText
   }
 }

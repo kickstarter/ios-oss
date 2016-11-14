@@ -4,6 +4,9 @@ import Prelude
 import UIKit
 
 internal final class ProfileViewController: UICollectionViewController {
+  @IBOutlet private weak var messagesButton: UIBarButtonItem!
+  @IBOutlet private weak var settingsButton: UIBarButtonItem!
+
   private let dataSource = ProfileDataSource()
   private let viewModel: ProfileViewModelType = ProfileViewModel()
   private let refreshControl = UIRefreshControl()
@@ -74,8 +77,17 @@ internal final class ProfileViewController: UICollectionViewController {
   override func bindStyles() {
     super.bindStyles()
 
+    self.messagesButton
+      |> UIBarButtonItem.lens.title %~ { _ in Strings.profile_buttons_messages() }
+
     self.navigationController?.navigationBar
       ?|> baseNavigationBarStyle
+
+    self.navigationItem
+      |> UINavigationItem.lens.title %~ { _ in Strings.tabbar_profile() }
+
+    self.settingsButton
+      |> UIBarButtonItem.lens.title %~ { _ in Strings.profile_settings_navbar_title() }
   }
 
   @IBAction private func settingsTapped() {
