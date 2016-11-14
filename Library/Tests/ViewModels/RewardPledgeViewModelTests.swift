@@ -810,8 +810,12 @@ internal final class RewardPledgeViewModelTests: TestCase {
       withEnvironment(currentUser: .template) {
         self.vm.inputs.userSessionStarted()
 
-        self.goToPaymentAuthorization.assertValueCount(1)
+        self.goToPaymentAuthorization.assertValueCount(0, "Apple Pay flow does not start immediately.")
         self.goToLoginTout.assertValueCount(1)
+
+        self.scheduler.advanceByInterval(1)
+
+        self.goToPaymentAuthorization.assertValueCount(1, "Apple Pay flow starts after waiting a bit.")
 
         self.vm.inputs.paymentAuthorizationWillAuthorizePayment()
         self.vm.inputs.paymentAuthorization(

@@ -403,6 +403,8 @@ RewardPledgeViewModelOutputs {
       .takeWhen(currentUser.filter(isNotNil))
       .filter(isTrue)
       .ignoreValues()
+      // introduce a small delay for this event since the login tout takes a moment to dismiss...
+      .ksr_debounce(1, onScheduler: AppEnvironment.current.scheduler)
 
     let paymentMethodEventAfterLogin = Signal.merge(
       loggedOutUserTappedApplePayButton.mapConst(true),
