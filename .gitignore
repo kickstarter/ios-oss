@@ -68,3 +68,6 @@ fastlane/screenshots
 
 # Ignore config files
 */Configs/*.config
+
+# FBSnapshot failures
+Screenshots/FailureDiffs/*
