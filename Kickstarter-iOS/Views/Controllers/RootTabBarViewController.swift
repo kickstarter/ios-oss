@@ -92,6 +92,20 @@ public final class RootTabBarViewController: UITabBarController {
     self.viewModel.inputs.switchToSearch()
   }
 
+  public func switchToMessageThread(messageThread: MessageThread) {
+    self.switchToProfile()
+
+    guard let profileNav = self.selectedViewController as? UINavigationController,
+      profileVC = profileNav.viewControllers.first as? ProfileViewController else {
+        return
+    }
+
+    let threadsVC = MessageThreadsViewController.configuredWith(project: nil)
+    let messageThreadVC = MessagesViewController.configuredWith(messageThread: messageThread)
+
+    profileNav.setViewControllers([profileVC, threadsVC, messageThreadVC], animated: true)
+  }
+
   // swiftlint:disable:next cyclomatic_complexity
   // swiftlint:disable:next function_body_length
   private func setTabBarItemStyles(withData data: TabBarItemsData) {

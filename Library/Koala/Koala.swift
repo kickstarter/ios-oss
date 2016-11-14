@@ -1324,7 +1324,7 @@ public final class Koala {
   }
 
   public func trackPreviewedUpdate(forProject project: Project) {
-    var props = updateDraftProperties(project: project)
+    let props = updateDraftProperties(project: project)
     self.track(event: "Previewed Update", properties: props)
 
     self.track(event: "Update Preview", properties: props.withAllValuesFrom(deprecatedProps))

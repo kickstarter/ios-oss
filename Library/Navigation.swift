@@ -6,6 +6,7 @@ import KsApi
 
 public enum Navigation {
   case checkout(Int, Navigation.Checkout)
+  case messages(messageThreadId: Int)
   case signup
   case tab(Tab)
   case project(Param, Navigation.Project, refTag: RefTag?)
@@ -72,6 +73,8 @@ public func == (lhs: Navigation, rhs: Navigation) -> Bool {
   switch (lhs, rhs) {
   case let (.checkout(lhsId, lhsCheckout), .checkout(rhsId, rhsCheckout)):
     return lhsId == rhsId && lhsCheckout == rhsCheckout
+  case let (.messages(lhs), .messages(rhs)):
+    return lhs == rhs
   case (.signup, .signup):
     return true
   case let (.tab(lhs), .tab(rhs)):
@@ -209,7 +212,7 @@ extension Navigation {
   }
 }
 
-private let routes = [
+private let routes: [String:RouteParams -> Decoded<Navigation>] = [
   "/activity": activity,
   "/authorize": authorize,
   "/checkouts/:checkout_param/payments": paymentsRoot,
@@ -220,6 +223,7 @@ private let routes = [
   "/discover/advanced": discovery(),
   "/discover/categories/:category_id": discovery(),
   "/discover/categories/:parent_category_id/:category_id": discovery(),
+  "/messages/:message_thread_id": messages,
   "/profile/:user_param": me,
   "/search": search,
   "/signup": signup,
@@ -277,6 +281,11 @@ private func activity(_: RouteParams) -> Decoded<Navigation> {
 
 private func authorize(_: RouteParams) -> Decoded<Navigation> {
   return .Success(.tab(.login))
+}
+
+private func messages(params: RouteParams) -> Decoded<Navigation> {
+  return curry(Navigation.messages)
+    <^> (params <| "message_thread_id" >>- stringToInt)
 }
 
 private func paymentsNew(params: RouteParams) -> Decoded<Navigation> {

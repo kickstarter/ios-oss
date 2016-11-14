@@ -378,7 +378,7 @@ final class AppDelegateViewModelTests: TestCase {
                                         sourceApplication: nil,
                                         annotation: 1)
 
-      self.presentViewController.assertValues([1, 2, 2, 3])
+      self.presentViewController.assertValues([1, 2, 2, 2])
 
       let updateCommentsUrl =
         updateUrl + "/comments"
@@ -387,7 +387,7 @@ final class AppDelegateViewModelTests: TestCase {
                                         sourceApplication: nil,
                                         annotation: 1)
 
-      self.presentViewController.assertValues([1, 2, 2, 3, 4])
+      self.presentViewController.assertValues([1, 2, 2, 2, 3])
     }
   }
 
@@ -764,6 +764,23 @@ final class AppDelegateViewModelTests: TestCase {
       self.goToDashboard.assertValueCount(idx + 1)
       self.goToDashboard.assertLastValue(param)
     }
+  }
+
+  func testOpenNotification_PostLike() {
+
+    let pushData: [String:AnyObject] = [
+      "aps": [
+        "alert": "Blob liked your update: Important message..."
+      ],
+      "post": [
+        "id": 1,
+        "project_id": 2
+      ]
+    ]
+
+    self.vm.inputs.didReceive(remoteNotification: pushData, applicationIsActive: false)
+
+    self.presentViewController.assertValues([2])
   }
 
   func testOpenNotification_UnrecognizedActivityType() {

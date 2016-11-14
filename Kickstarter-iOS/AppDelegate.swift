@@ -77,6 +77,10 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
       .observeForUI()
       .observeNext { [weak self] in self?.rootTabBarController?.switchToDashboard(project: $0) }
 
+    self.viewModel.outputs.goToMessageThread
+      .observeForUI()
+      .observeNext { [weak self] in self?.goToMessageThread($0) }
+
     self.viewModel.outputs.registerUserNotificationSettings
       .observeForUI()
       .observeNext {
@@ -198,6 +202,10 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     )
 
     self.rootTabBarController?.presentViewController(alert, animated: true, completion: nil)
+  }
+
+  private func goToMessageThread(messageThread: MessageThread) {
+    self.rootTabBarController?.switchToMessageThread(messageThread)
   }
 }
 

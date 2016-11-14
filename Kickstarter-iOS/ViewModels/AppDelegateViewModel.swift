@@ -92,6 +92,9 @@ public protocol AppDelegateViewModelOutputs {
   /// Emits when the root view controller should navigate to the login screen.
   var goToLogin: Signal<(), NoError> { get }
 
+  /// Emits a message thread when we should navigate to it.
+  var goToMessageThread: Signal<MessageThread, NoError> { get }
+
   /// Emits when the root view controller should navigate to the user's profile.
   var goToProfile: Signal<(), NoError> { get }
 
@@ -131,6 +134,7 @@ public protocol AppDelegateViewModelType {
   var outputs: AppDelegateViewModelOutputs { get }
 }
 
+// swiftlint:disable:next type_body_length
 public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateViewModelInputs,
 AppDelegateViewModelOutputs {
 
@@ -299,6 +303,18 @@ AppDelegateViewModelOutputs {
       .filter { $0 == .tab(.login) }
       .ignoreValues()
 
+    self.goToMessageThread = deepLink
+      .map { navigation -> Int? in
+        guard case let .messages(messageThreadId) = navigation else { return nil }
+        return .Some(messageThreadId)
+      }
+      .ignoreNil()
+      .switchMap {
+        AppEnvironment.current.apiService.fetchMessageThread(messageThreadId: $0)
+          .demoteErrors()
+          .map { env in env.messageThread }
+    }
+
     self.goToProfile = deepLink
       .filter { $0 == .tab(.me) }
       .ignoreValues()
@@ -364,9 +380,12 @@ AppDelegateViewModelOutputs {
           .demoteErrors()
           .observeForUI()
           .map { update -> (Project, Update, Navigation.Project.Update, [UIViewController]) in
-            (project, update, updateSubpage, vcs + [
-              ProjectUpdatesViewController.configuredWith(project: project),
-              UpdateViewController.configuredWith(project: project, update: update)])
+            (
+              project,
+              update,
+              updateSubpage,
+              vcs + [UpdateViewController.configuredWith(project: project, update: update)]
+            )
         }
     }
 
@@ -540,6 +559,7 @@ AppDelegateViewModelOutputs {
   public let goToDashboard: Signal<Param?, NoError>
   public let goToDiscovery: Signal<DiscoveryParams?, NoError>
   public let goToLogin: Signal<(), NoError>
+  public let goToMessageThread: Signal<MessageThread, NoError>
   public let goToProfile: Signal<(), NoError>
   public let goToSearch: Signal<(), NoError>
   public let postNotification: Signal<NSNotification, NoError>
@@ -603,13 +623,16 @@ private func navigation(fromPushEnvelope envelope: PushEnvelope) -> Navigation? 
     return .project(.id(project.id), .root, refTag: .push)
   }
 
-  if let _ = envelope.message {
-    // todo
-    if envelope.forCreator == true { } else { }
+  if let message = envelope.message {
+    return .messages(messageThreadId: message.messageThreadId)
   }
 
   if let survey = envelope.survey {
     return .user(.slug("self"), .survey(survey.id))
+  }
+
+  if let update = envelope.update {
+    return .project(.id(update.projectId), .update(update.id, .root), refTag: .push)
   }
 
   return nil

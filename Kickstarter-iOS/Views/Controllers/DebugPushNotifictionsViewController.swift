@@ -96,168 +96,202 @@ internal final class DebugPushNotificationsViewController: UIViewController {
   }
 }
 
+private let backingPushData: [String:AnyObject] = [
+  "aps": [
+    "alert": "Blob McBlobby backed Double Fine Adventure."
+  ],
+  "activity": [
+    "category": "backing",
+    "id": 1,
+    "project_id": 1929840910
+  ]
+]
+
+private let updatePushData: [String:AnyObject] = [
+  "aps": [
+    "alert": "Update #6 posted by Double Fine Adventure."
+  ],
+  "activity": [
+    "category": "update",
+    "id": 1,
+    "project_id": 1929840910,
+    "update_id": 190349
+  ]
+]
+
+private let successPushData: [String:AnyObject] = [
+  "aps": [
+    "alert": "Double Fine Adventure has been successfully funded!"
+  ],
+  "activity": [
+    "category": "success",
+    "id": 1,
+    "project_id": 1929840910
+  ]
+]
+
+private let failurePushData: [String:AnyObject] = [
+  "aps": [
+    "alert": "Double Fine Adventure was not successfully funded."
+  ],
+  "activity": [
+    "category": "failure",
+    "id": 1,
+    "project_id": 1929840910
+  ]
+]
+
+private let cancellationPushData: [String:AnyObject] = [
+  "aps": [
+    "alert": "Double Fine Adventure has been canceled."
+  ],
+  "activity": [
+    "category": "cancellation",
+    "id": 1,
+    "project_id": 1929840910
+  ]
+]
+
+private let followPushData: [String:AnyObject] = [
+  "aps": [
+    "alert": "Blob McBlobby is following you on Kickstarter!"
+  ],
+  "activity": [
+    "category": "follow",
+    "id": 1
+  ]
+]
+
+private let messagePushData: [String:AnyObject] = [
+  "aps": [
+    "alert": "Chinati Foundation sent you a message about Robert Irwin Project."
+  ],
+  "message": [
+    "message_thread_id": 15112157,
+    "project_id": 684720856
+  ]
+]
+
+private let surveyPushData: [String:AnyObject] = [
+  "aps": [
+    "alert": "Response needed! Get your reward for backing Help Me Transform This Pile of Wood.",
+  ],
+  "survey": [
+    "id": 15182605,
+    "project_id": 820501933
+  ]
+]
+
+private let backingForCreatorPushData: [String:AnyObject] = [
+  "aps": [
+    "alert": "New backer! Blob has pledged $50 to Help Me Transform This Pile Of Wood."
+  ],
+  "activity": [
+    "category": "backing",
+    "id": 1,
+    "project_id": 820501933
+  ],
+  "for_creator": true
+]
+
+private let messageForCreatorPushData: [String:AnyObject] = [
+  "aps": [
+    "alert": "Blob McBlobby sent you a message about Help Me Transform This Pile Of Wood."
+  ],
+  "message": [
+    "message_thread_id": 1,
+    "project_id": 820501933
+  ],
+  "for_creator": true
+]
+
+private let failureForCreatorPushData: [String:AnyObject] = [
+  "aps": [
+    "alert": "Help Me Transform This Pile Of Wood was not successfully funded."
+  ],
+  "activity": [
+    "category": "failure",
+    "id": 1,
+    "project_id": 820501933
+  ],
+  "for_creator": true
+]
+
+private let successForCreatorPushData: [String:AnyObject] = [
+  "aps": [
+    "alert": "Help Me Transform This Pile Of Wood has been successfully funded!"
+  ],
+  "activity": [
+    "category": "success",
+    "id": 1,
+    "project_id": 820501933
+  ],
+  "for_creator": true
+]
+
+private let cancellationForCreatorPushData: [String:AnyObject] = [
+  "aps": [
+    "alert": "Help Me Transform This Pile Of Wood has been canceled."
+  ],
+  "activity": [
+    "category": "cancellation",
+    "id": 1,
+    "project_id": 820501933
+  ],
+  "for_creator": true
+]
+
+private let projectCommentForCreatorPushData: [String:AnyObject] = [
+  "aps": [
+    "alert": "New comment! Blob has commented on Help Me Transform This Pile Of Wood."
+  ],
+  "activity": [
+    "category": "comment-project",
+    "id": 1,
+    "project_id": 820501933
+  ],
+  "for_creator": true
+]
+
+private let updateCommentForCreatorPushData: [String:AnyObject] = [
+  "aps": [
+    "alert": "New comment! Blob has commented on update #10."
+  ],
+  "activity": [
+    "category": "comment-post",
+    "id": 1,
+    "project_id": 820501933,
+    "update_id": 1393331
+  ],
+  "for_creator": true
+]
+
+private let postLikeForCreatorPushData: [String:AnyObject] = [
+  "aps": [
+    "alert": "Blob liked your update: Important message from Tim..."
+  ],
+  "post": [
+    "id": 175622,
+    "project_id": 1929840910
+  ],
+  "for_creator": true
+]
+
 private let allPushData: [[String:AnyObject]] = [
-  [
-    "aps": [
-      "alert": "Blob McBlobby backed Double Fine Adventure."
-    ],
-    "activity": [
-      "category": "backing",
-      "id": 1,
-      "project_id": 1929840910
-    ]
-  ],
-
-  [
-    "aps": [
-      "alert": "Update #6 posted by Double Fine Adventure."
-    ],
-    "activity": [
-      "category": "update",
-      "id": 1,
-      "project_id": 1929840910,
-      "update_id": 190349
-    ]
-  ],
-
-  [
-    "aps": [
-      "alert": "Double Fine Adventure has been successfully funded!"
-    ],
-    "activity": [
-      "category": "success",
-      "id": 1,
-      "project_id": 1929840910
-    ]
-  ],
-
-  [
-    "aps": [
-      "alert": "Double Fine Adventure was not successfully funded."
-    ],
-    "activity": [
-      "category": "failure",
-      "id": 1,
-      "project_id": 1929840910
-    ]
-  ],
-
-  [
-    "aps": [
-      "alert": "Double Fine Adventure has been canceled."
-    ],
-    "activity": [
-      "category": "cancellation",
-      "id": 1,
-      "project_id": 1929840910
-    ]
-  ],
-
-  [
-    "aps": [
-      "alert": "Blob McBlobby is following you on Kickstarter!"
-    ],
-    "activity": [
-      "category": "follow",
-      "id": 1
-    ]
-  ],
-
-  [
-    "aps": [
-      "alert": "Blob McBlobby sent you a message about Blobs Around The Globe."
-    ],
-    "message": [
-      "message_thread_id": 1,
-      "project_id": 1
-    ]
-  ],
-
-  [
-    "aps": [
-      "alert": "Response needed! Get your reward for backing Double Fine Adventure.",
-    ],
-    "survey": [
-      "project_id": 1929840910
-    ]
-  ],
-
-  [
-    "aps": [
-      "alert": "New backer! Blob has pledged $50 to Help Me Transform This Pile Of Wood."
-    ],
-    "activity": [
-      "category": "backing",
-      "id": 1,
-      "project_id": 820501933
-    ],
-    "for_creator": true
-  ],
-
-  [
-    "aps": [
-      "alert": "Blob McBlobby sent you a message about Help Me Transform This Pile Of Wood."
-    ],
-    "message": [
-      "message_thread_id": 1,
-      "project_id": 820501933
-    ],
-    "for_creator": true
-  ],
-
-  [
-    "aps": [
-      "alert": "Help Me Transform This Pile Of Wood was not successfully funded."
-    ],
-    "activity": [
-      "category": "failure",
-      "id": 1,
-      "project_id": 820501933
-    ]
-  ],
-
-  [
-    "aps": [
-      "alert": "Help Me Transform This Pile Of Wood has been successfully funded!"
-    ],
-    "activity": [
-      "category": "success",
-      "id": 1,
-      "project_id": 820501933
-    ]
-  ],
-
-  [
-    "aps": [
-      "alert": "Help Me Transform This Pile Of Wood has been canceled."
-    ],
-    "activity": [
-      "category": "cancellation",
-      "id": 1,
-      "project_id": 820501933
-    ]
-  ],
-
-  [
-    "aps": [
-      "alert": "New comment! Blob has commented on Help Me Transform This Pile Of Wood."
-    ],
-    "activity": [
-      "category": "comment-project",
-      "id": 1,
-      "project_id": 820501933
-    ]
-  ],
-
-  [
-    "aps": [
-      "alert": "New comment! Blob has commented on update #10."
-    ],
-    "activity": [
-      "category": "comment-post",
-      "id": 1,
-      "project_id": 820501933,
-      "update_id": 1393331
-    ]
-  ],
+  backingPushData,
+  updatePushData,
+  successPushData,
+  failurePushData,
+  cancellationPushData,
+  followPushData,
+  messagePushData,
+  surveyPushData,
+  backingForCreatorPushData,
+  messageForCreatorPushData,
+  failureForCreatorPushData,
+  successForCreatorPushData,
+  cancellationForCreatorPushData,
+  projectCommentForCreatorPushData,
+  updateCommentForCreatorPushData,
+  postLikeForCreatorPushData,
 ]

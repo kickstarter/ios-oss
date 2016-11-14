@@ -90,10 +90,16 @@ MessagesViewModelOutputs {
       backingOrThread,
       backingOrThread.takeWhen(self.messageSentProperty.signal)
       )
-      .switchMap { backingOrThread in
-        backingOrThread.ifLeft(AppEnvironment.current.apiService.fetchMessageThread(backing:),
-          ifRight: AppEnvironment.current.apiService.fetchMessageThread(messageThread:))
+      .switchMap { backingOrThread -> SignalProducer<MessageThreadEnvelope, NoError> in
+
+        switch backingOrThread {
+        case let .left(backing):
+          return AppEnvironment.current.apiService.fetchMessageThread(backing: backing)
             .demoteErrors()
+        case let .right(thread):
+          return AppEnvironment.current.apiService.fetchMessageThread(messageThreadId: thread.id)
+            .demoteErrors()
+        }
     }
 
     self.messages = messageThreadEnvelope
