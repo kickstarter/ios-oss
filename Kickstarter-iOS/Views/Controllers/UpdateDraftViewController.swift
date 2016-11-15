@@ -240,7 +240,7 @@ internal final class UpdateDraftViewController: UIViewController {
 
   private func animateBottomConstraint(change: Keyboard.Change) {
     UIView.animateWithDuration(change.duration, delay: 0.0, options: change.options, animations: {
-      self.bottomConstraint.constant = self.view.frame.height - change.frame.minY
+      self.bottomConstraint.constant = self.view.frame.maxY - change.frame.minY
       }, completion: nil)
   }
 
