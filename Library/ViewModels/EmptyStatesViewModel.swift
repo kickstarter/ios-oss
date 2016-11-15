@@ -13,10 +13,13 @@ public enum EmptyState: String {
 
 public protocol EmptyStatesViewModelInputs {
   /// Call to configure with the view controller that needs an empty state.
-  func configureWith(emptyState emptyState: EmptyState)
+  func configureWith(emptyState emptyState: EmptyState?)
 
   /// Call when main button is tapped.
   func mainButtonTapped()
+
+  /// Call to set the empty state if it is not known at the time of instanciation.
+  func setEmptyState(emptyState: EmptyState)
 
   /// Call when the view controller's viewWillAppear method is called.
   func viewWillAppear()
@@ -76,8 +79,11 @@ public final class EmptyStatesViewModel: EmptyStatesViewModelType, EmptyStatesVi
 
   // swiftlint:disable function_body_length
   public init() {
-    let emptyState = self.emptyStateProperty.signal.ignoreNil()
-      .takeWhen(self.viewWillAppearProperty.signal)
+    let emptyState = combineLatest(
+      self.emptyStateProperty.signal.ignoreNil(),
+      self.viewWillAppearProperty.signal.take(1)
+    )
+    .map(first)
 
     self.backgroundGradientColorId = emptyState
       .map { $0 == .activity ? RootCategory.comics.rawValue : nil }
@@ -141,12 +147,15 @@ public final class EmptyStatesViewModel: EmptyStatesViewModelType, EmptyStatesVi
   // swiftlint:enable function_body_length
 
   private let emptyStateProperty = MutableProperty<EmptyState?>(nil)
-  public func configureWith(emptyState emptyState: EmptyState) {
+  public func configureWith(emptyState emptyState: EmptyState?) {
     self.emptyStateProperty.value = emptyState
   }
   private let mainButtonTappedProperty = MutableProperty()
   public func mainButtonTapped() {
     self.mainButtonTappedProperty.value = ()
+  }
+  public func setEmptyState(emptyState: EmptyState) {
+    self.emptyStateProperty.value = emptyState
   }
   private let viewWillAppearProperty = MutableProperty()
   public func viewWillAppear() {

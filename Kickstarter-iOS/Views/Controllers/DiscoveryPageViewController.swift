@@ -4,9 +4,10 @@ import Prelude
 import UIKit
 
 internal final class DiscoveryPageViewController: UITableViewController {
-  private weak var emptyStatesController: EmptyStatesViewController?
+  private var emptyStatesController: EmptyStatesViewController?
   private let dataSource = DiscoveryProjectsDataSource()
   private let loadingIndicatorView = UIActivityIndicatorView()
+
   private let viewModel: DiscoveryPageViewModelType = DiscoveryPageViewModel()
 
   internal static func configuredWith(sort sort: DiscoveryParams.Sort) -> DiscoveryPageViewController {
@@ -35,6 +36,19 @@ internal final class DiscoveryPageViewController: UITableViewController {
       .addObserverForName(CurrentUserNotifications.sessionEnded, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionEnded()
     }
+
+    let emptyVC = EmptyStatesViewController.configuredWith(emptyState: nil)
+    self.emptyStatesController = emptyVC
+    emptyVC.delegate = self
+    self.addChildViewController(emptyVC)
+    self.view.addSubview(emptyVC.view)
+    NSLayoutConstraint.activateConstraints([
+      emptyVC.view.topAnchor.constraintEqualToAnchor(self.view.topAnchor),
+      emptyVC.view.leadingAnchor.constraintEqualToAnchor(self.view.leadingAnchor),
+      emptyVC.view.bottomAnchor.constraintEqualToAnchor(self.view.bottomAnchor),
+      emptyVC.view.trailingAnchor.constraintEqualToAnchor(self.view.trailingAnchor),
+      ])
+    emptyVC.didMoveToParentViewController(self)
   }
 
   internal override func viewWillAppear(animated: Bool) {
@@ -127,15 +141,16 @@ internal final class DiscoveryPageViewController: UITableViewController {
     }
 
     self.viewModel.outputs.showEmptyState
-      .observeForControllerAction()
+      .observeForUI()
       .observeNext { [weak self] emptyState in
         self?.showEmptyState(emptyState)
     }
 
-    self.viewModel.outputs.dismissEmptyState
-      .observeForControllerAction()
+    self.viewModel.outputs.hideEmptyState
+      .observeForUI()
       .observeNext { [weak self] in
-        self?.emptyStatesController?.dismissViewControllerAnimated(false, completion: nil)
+        self?.emptyStatesController?.view.alpha = 0
+        self?.emptyStatesController?.view.hidden = true
 
         if let discovery = self?.parentViewController?.parentViewController as? DiscoveryViewController {
           discovery.setSortsEnabled(true)
@@ -191,15 +206,14 @@ internal final class DiscoveryPageViewController: UITableViewController {
   }
 
   private func showEmptyState(emptyState: EmptyState) {
-    guard emptyStatesController == nil else { return }
+    guard let emptyVC = self.emptyStatesController else { return }
 
-    let vc = EmptyStatesViewController.configuredWith(emptyState: emptyState)
-    self.emptyStatesController = vc
-    vc.delegate = self
-    self.definesPresentationContext = true
-    vc.modalTransitionStyle = .CrossDissolve
-    vc.modalPresentationStyle = .OverCurrentContext
-    self.presentViewController(vc, animated: true, completion: nil)
+    emptyVC.setEmptyState(emptyState)
+    emptyVC.view.hidden = false
+    self.view.bringSubviewToFront(emptyVC.view)
+    UIView.animateWithDuration(0.3) {
+      self.emptyStatesController?.view.alpha = 1.0
+    }
 
     if let discovery = self.parentViewController?.parentViewController as? DiscoveryViewController {
       discovery.setSortsEnabled(false)
@@ -228,11 +242,10 @@ extension DiscoveryPageViewController: DiscoveryOnboardingCellDelegate {
 extension DiscoveryPageViewController: EmptyStatesViewControllerDelegate {
   func emptyStatesViewController(viewController: EmptyStatesViewController,
                                  goToDiscoveryWithParams params: DiscoveryParams?) {
-    viewController.dismissViewControllerAnimated(false) { [weak self] in
-      self?.view.window?.rootViewController
-        .flatMap { $0 as? RootTabBarViewController }
-        .doIfSome { $0.switchToDiscovery(params: params) }
-    }
+
+    self.view.window?.rootViewController
+      .flatMap { $0 as? RootTabBarViewController }
+      .doIfSome { $0.switchToDiscovery(params: params) }
   }
 
   func emptyStatesViewControllerGoToFriends() {

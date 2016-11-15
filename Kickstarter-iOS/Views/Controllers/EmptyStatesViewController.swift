@@ -24,7 +24,7 @@ internal final class EmptyStatesViewController: UIViewController {
 
   private let viewModel: EmptyStatesViewModelType = EmptyStatesViewModel()
 
-  internal static func configuredWith(emptyState emptyState: EmptyState) -> EmptyStatesViewController {
+  internal static func configuredWith(emptyState emptyState: EmptyState?) -> EmptyStatesViewController {
     let vc = Storyboard.EmptyStates.instantiate(EmptyStatesViewController)
     vc.viewModel.inputs.configureWith(emptyState: emptyState)
     return vc
@@ -116,17 +116,22 @@ internal final class EmptyStatesViewController: UIViewController {
         ? .init(top: 0, left: Styles.grid(4), bottom: Styles.grid(5), right: Styles.grid(4))
         : .init(top: 0, left: Styles.grid(2), bottom: Styles.grid(3), right: Styles.grid(2))
 
+    if self.traitCollection.isRegularRegular {
+      self.titleLabel |> UILabel.lens.font .~ UIFont.ksr_headline(size: 46).bolded
+      self.subtitleLabel |> UILabel.lens.font .~ .ksr_callout(size: 22)
+    } else if self.traitCollection.isVerticallyCompact {
+      self.titleLabel |> UILabel.lens.font .~ UIFont.ksr_headline(size: 26).bolded
+      self.subtitleLabel |> UILabel.lens.font .~ .ksr_callout(size: 13)
+    } else {
+      self.titleLabel |> UILabel.lens.font .~ UIFont.ksr_headline(size: 36).bolded
+      self.subtitleLabel |> UILabel.lens.font .~ .ksr_callout()
+    }
+
     self.titleLabel
-      |> UILabel.lens.font .~ self.traitCollection.isRegularRegular
-        ? UIFont.ksr_headline(size: 46).bolded
-        : UIFont.ksr_headline(size: 36).bolded
       |> UILabel.lens.textAlignment .~ .Left
       |> UILabel.lens.numberOfLines .~ 0
 
     self.subtitleLabel
-      |> UILabel.lens.font .~ self.traitCollection.isRegularRegular
-        ? .ksr_callout(size: 22)
-        : .ksr_callout()
       |> UILabel.lens.textAlignment .~ .Left
       |> UILabel.lens.numberOfLines .~ 0
 
@@ -141,6 +146,10 @@ internal final class EmptyStatesViewController: UIViewController {
     self.mainButton
       |> baseButtonStyle
       |> UIButton.lens.layer.borderWidth .~ 1.0
+  }
+
+  internal func setEmptyState(emptyState: EmptyState) {
+    self.viewModel.inputs.setEmptyState(emptyState)
   }
 
   @objc func mainButtonTapped() {

@@ -7,7 +7,8 @@ import UIKit
 internal final class ActivitiesViewController: UITableViewController {
   private let viewModel: ActivitiesViewModelType = ActivitiesViewModel()
   private let dataSource = ActivitiesDataSource()
-  private weak var emptyStatesController: EmptyStatesViewController?
+
+  private var emptyStatesController: EmptyStatesViewController?
 
   internal static func instantiate() -> ActivitiesViewController {
     return Storyboard.Activity.instantiate(ActivitiesViewController)
@@ -27,10 +28,21 @@ internal final class ActivitiesViewController: UITableViewController {
     }
   }
 
+  internal override func viewDidLayoutSubviews() {
+    self.emptyStatesController?.view.frame = self.view.bounds
+  }
+
   internal override func viewDidLoad() {
     super.viewDidLoad()
 
     self.tableView.dataSource = dataSource
+
+    let emptyVC = EmptyStatesViewController.configuredWith(emptyState: .activity)
+    self.emptyStatesController = emptyVC
+    emptyVC.delegate = self
+    self.addChildViewController(emptyVC)
+    self.view.addSubview(emptyVC.view)
+    emptyVC.didMoveToParentViewController(self)
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -59,36 +71,41 @@ internal final class ActivitiesViewController: UITableViewController {
     super.bindViewModel()
 
     self.viewModel.outputs.activities
-      .observeForControllerAction()
+      .observeForUI()
       .observeNext { [weak self] activities in
         self?.dataSource.load(activities: activities)
         self?.tableView.reloadData()
     }
 
     self.viewModel.outputs.showFacebookConnectSection
-      .observeForControllerAction()
+      .observeForUI()
       .observeNext { [weak self] source, shouldShow in
         self?.dataSource.facebookConnect(source: source, visible: shouldShow)
         self?.tableView.reloadData()
     }
 
     self.viewModel.outputs.showFindFriendsSection
-      .observeForControllerAction()
+      .observeForUI()
       .observeNext { [weak self] source, shouldShow in
         self?.dataSource.findFriends(source: source, visible: shouldShow)
         self?.tableView.reloadData()
     }
 
     self.viewModel.outputs.showEmptyStateIsLoggedIn
-      .observeForControllerAction()
-      .observeNext { [weak self] isLoggedIn in
-        self?.showEmptyState(isLoggedIn: isLoggedIn)
+      .observeForUI()
+      .observeNext { [weak self] _ in
+        self?.tableView.bounces = false
+        if let emptyVC = self?.emptyStatesController {
+          self?.emptyStatesController?.view.hidden = false
+          self?.view.bringSubviewToFront(emptyVC.view)
+        }
     }
 
-    self.viewModel.outputs.dismissEmptyState
-      .observeForControllerAction()
+    self.viewModel.outputs.hideEmptyState
+      .observeForUI()
       .observeNext { [weak self] in
-        self?.emptyStatesController?.dismissViewControllerAnimated(false, completion: nil)
+        self?.tableView.bounces = true
+        self?.emptyStatesController?.view.hidden = true
     }
 
     self.refreshControl?.rac.refreshing = self.viewModel.outputs.isRefreshing
@@ -100,13 +117,13 @@ internal final class ActivitiesViewController: UITableViewController {
     }
 
     self.viewModel.outputs.deleteFacebookConnectSection
-      .observeForControllerAction()
+      .observeForUI()
       .observeNext { [weak self] in
         self?.deleteFacebookSection()
     }
 
     self.viewModel.outputs.deleteFindFriendsSection
-      .observeForControllerAction()
+      .observeForUI()
       .observeNext { [weak self] in
         self?.deleteFindFriendsSection()
     }
@@ -128,7 +145,7 @@ internal final class ActivitiesViewController: UITableViewController {
     }
 
     self.viewModel.outputs.unansweredSurveyResponse
-      .observeForControllerAction()
+      .observeForUI()
       .observeNext { [weak self] in
         self?.dataSource.load(surveyResponse: $0)
         self?.tableView.reloadData()
@@ -201,17 +218,6 @@ internal final class ActivitiesViewController: UITableViewController {
   private func goToUpdate(project project: Project, update: Update) {
     let vc = UpdateViewController.configuredWith(project: project, update: update)
     self.navigationController?.pushViewController(vc, animated: true)
-  }
-
-  private func showEmptyState(isLoggedIn isLoggedIn: Bool) {
-    if self.emptyStatesController == nil {
-      let vc = EmptyStatesViewController.configuredWith(emptyState: .activity)
-      self.emptyStatesController = vc
-      vc.delegate = self
-      self.definesPresentationContext = true
-      vc.modalPresentationStyle = .OverCurrentContext
-      self.presentViewController(vc, animated: false, completion: nil)
-    }
   }
 
   private func deleteFacebookSection() {

@@ -12,7 +12,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
   private let activitiesForSample = TestObserver<[Activity], NoError>()
   private let asyncReloadData = TestObserver<(), NoError>()
-  private let dismissEmptyState = TestObserver<(), NoError>()
+  private let hideEmptyState = TestObserver<(), NoError>()
   private let goToActivityProject = TestObserver<Project, NoError>()
   private let goToActivityProjectRefTag = TestObserver<RefTag, NoError>()
   private let goToPlaylist = TestObserver<[Project], NoError>()
@@ -31,7 +31,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
     self.vm.outputs.activitiesForSample.observe(self.activitiesForSample.observer)
     self.vm.outputs.asyncReloadData.observe(self.asyncReloadData.observer)
-    self.vm.outputs.dismissEmptyState.observe(self.dismissEmptyState.observer)
+    self.vm.outputs.hideEmptyState.observe(self.hideEmptyState.observer)
     self.vm.outputs.goToActivityProject.map(first).observe(self.goToActivityProject.observer)
     self.vm.outputs.goToActivityProject.map(second).observe(self.goToActivityProjectRefTag.observer)
     self.vm.outputs.goToProjectPlaylist.map(first).observe(self.goToPlaylistProject.observer)
@@ -537,12 +537,12 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.showEmptyState.assertValues([.starred])
-      self.dismissEmptyState.assertValueCount(0)
+      self.hideEmptyState.assertValueCount(0)
 
       // switch to another empty state
       self.vm.inputs.selectedFilter(.defaults |> DiscoveryParams.lens.recommended .~ true)
 
-      self.dismissEmptyState.assertValueCount(1)
+      self.hideEmptyState.assertValueCount(1)
 
       self.scheduler.advance()
 
@@ -552,7 +552,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       withEnvironment(apiService: MockService(fetchDiscoveryResponse: projectEnvWithProjects)) {
         self.vm.inputs.selectedFilter(.defaults |> DiscoveryParams.lens.social .~ true)
 
-        self.dismissEmptyState.assertValueCount(2)
+        self.hideEmptyState.assertValueCount(2)
 
         self.scheduler.advance()
 
@@ -562,7 +562,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
         withEnvironment(apiService: MockService(fetchDiscoveryResponse: projectEnv)) {
           self.vm.inputs.selectedFilter(.defaults |> DiscoveryParams.lens.starred .~ true)
 
-          self.dismissEmptyState.assertValueCount(3)
+          self.hideEmptyState.assertValueCount(3)
 
           self.scheduler.advance()
 
@@ -593,20 +593,20 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.showEmptyState.assertValues([.socialDisabled], "Emits .socialDisabled for nil social.")
-      self.dismissEmptyState.assertValueCount(0)
+      self.hideEmptyState.assertValueCount(0)
 
       withEnvironment(currentUser: antisocialUser) {
         self.vm.inputs.selectedFilter(.defaults |> DiscoveryParams.lens.recommended .~ true)
         self.scheduler.advance()
 
-        self.dismissEmptyState.assertValueCount(1)
+        self.hideEmptyState.assertValueCount(1)
 
         self.vm.inputs.selectedFilter(.defaults |> DiscoveryParams.lens.social .~ true)
         self.scheduler.advance()
 
         self.showEmptyState.assertValues([.socialDisabled, .recommended, .socialDisabled],
                                          "Emits .socialDisabled for false social.")
-        self.dismissEmptyState.assertValueCount(2)
+        self.hideEmptyState.assertValueCount(2)
 
         self.vm.inputs.viewDidDisappear(animated: true)
 
@@ -617,7 +617,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
           self.showEmptyState.assertValues([.socialDisabled, .recommended, .socialDisabled, .socialNoPledges],
                                            "Emits .socialNoPledges for true social.")
-          self.dismissEmptyState.assertValueCount(2)
+          self.hideEmptyState.assertValueCount(2)
         }
       }
     }

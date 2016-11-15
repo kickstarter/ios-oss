@@ -16,7 +16,7 @@ final class ActivitiesViewModelTests: TestCase {
   private let showRefTag = TestObserver<RefTag, NoError>()
   private let deleteFacebookConnectSection = TestObserver<(), NoError>()
   private let deleteFindFriendsSection = TestObserver<(), NoError>()
-  private let dismissEmptyState = TestObserver<(), NoError>()
+  private let hideEmptyState = TestObserver<(), NoError>()
   private let goToFriends = TestObserver<FriendsSource, NoError>()
   private let showEmptyStateIsLoggedIn = TestObserver<Bool, NoError>()
   private let showFacebookConnectSection = TestObserver<Bool, NoError>()
@@ -30,7 +30,7 @@ final class ActivitiesViewModelTests: TestCase {
     super.setUp()
 
     self.vm.outputs.activities.map { !$0.isEmpty }.observe(self.activitiesPresent.observer)
-    self.vm.outputs.dismissEmptyState.observe(self.dismissEmptyState.observer)
+    self.vm.outputs.hideEmptyState.observe(self.hideEmptyState.observer)
     self.vm.outputs.isRefreshing.observe(self.isRefreshing.observer)
     self.vm.outputs.goToProject.map { $0.0 }.observe(self.goToProject.observer)
     self.vm.outputs.goToProject.map { $0.1 }.observe(self.showRefTag.observer)
@@ -60,7 +60,7 @@ final class ActivitiesViewModelTests: TestCase {
 
     self.activitiesPresent.assertValues([], "No activities shown for logged-out user.")
     self.showEmptyStateIsLoggedIn.assertValues([false], "Logged-out empty state does not emit again.")
-    self.dismissEmptyState.assertValueCount(0, "Dismiss empty state does not emit.")
+    self.hideEmptyState.assertValueCount(1, "Dismiss empty state emits.")
 
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: User.template))
     withEnvironment(apiService: MockService(fetchActivitiesResponse: [activity1, activity2])) {
@@ -71,13 +71,13 @@ final class ActivitiesViewModelTests: TestCase {
 
       self.activitiesPresent.assertValues([true], "Activities load after session starts and view appears.")
       self.showEmptyStateIsLoggedIn.assertValues([false], "Empty state does not emit.")
-      self.dismissEmptyState.assertValueCount(1, "Dismiss empty state emits.")
+      self.hideEmptyState.assertValueCount(2, "Dismiss empty state emits.")
 
       self.vm.inputs.viewWillAppear(animated: false)
 
-      self.activitiesPresent.assertValues([true], "Activities do not emit.")
+      self.activitiesPresent.assertValues([true], "Same activities do not emit again.")
       self.showEmptyStateIsLoggedIn.assertValues([false], "Empty state does not emit.")
-      self.dismissEmptyState.assertValueCount(1, "Dismiss empty state does not emit.")
+      self.hideEmptyState.assertValueCount(2, "Dismiss empty state does not emit.")
     }
 
     AppEnvironment.logout()
@@ -85,13 +85,25 @@ final class ActivitiesViewModelTests: TestCase {
 
     self.activitiesPresent.assertValues([true, false], "Activities are cleared.")
     self.showEmptyStateIsLoggedIn.assertValues([false], "Empty logged-in state does not emit.")
-    self.dismissEmptyState.assertValueCount(1, "Dismiss empty state does not emit.")
+    self.hideEmptyState.assertValueCount(2, "Dismiss empty state does not emit.")
 
     self.vm.inputs.viewWillAppear(animated: false)
 
     self.activitiesPresent.assertValues([true, false], "Activities are still cleared.")
     self.showEmptyStateIsLoggedIn.assertValues([false, false], "Logged-out empty state emits again.")
-    self.dismissEmptyState.assertValueCount(1, "Dismiss empty state does not emit.")
+    self.hideEmptyState.assertValueCount(2, "Dismiss empty state does not emit.")
+
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeefffffff", user: User.brando))
+    withEnvironment(apiService: MockService(fetchActivitiesResponse: [])) {
+      self.vm.inputs.userSessionStarted()
+      self.vm.inputs.viewWillAppear(animated: false)
+
+      self.scheduler.advance()
+
+      self.activitiesPresent.assertValues([true, false, false], "Emits empty activities.")
+      self.showEmptyStateIsLoggedIn.assertValues([false, false, true], "Logged-in empty state emits.")
+      self.hideEmptyState.assertValueCount(2, "Dismiss empty state does not emit.")
+    }
   }
 
   // Tests the flow of logging in with a user that has no activities and making sure the correct
@@ -116,19 +128,22 @@ final class ActivitiesViewModelTests: TestCase {
       // However, it would be better if the logged-out empty state could have dismissed first.
       // For now, the view controller won't present another empty state if this modal exists already.
       showEmptyStateIsLoggedIn.assertValues([false, true], "Logged in empty state emits.")
-      dismissEmptyState.assertValueCount(0, "Dismiss empty state does not emit.")
+      hideEmptyState.assertValueCount(1, "Dismiss empty state emits on view load.")
 
       self.vm.inputs.viewWillAppear(animated: false)
 
       activitiesPresent.assertValues([false], "Activities does not emit.")
       showEmptyStateIsLoggedIn.assertValues([false, true], "Logged in empty state does not emit again.")
-      dismissEmptyState.assertValueCount(0, "Dismiss empty state does not emit.")
+      hideEmptyState.assertValueCount(1, "Dismiss empty state does not emit.")
     }
   }
 
   // Tests that activities are cleared if the user is logged out for any reason.
   func testInvalidatedTokenFlow_ActivitiesClearAfterSessionCleared() {
     self.vm.inputs.viewDidLoad()
+
+    hideEmptyState.assertValueCount(1, "Dismiss empty state emits.")
+
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: User.template))
     self.vm.inputs.userSessionStarted()
     self.vm.inputs.viewWillAppear(animated: false)
@@ -137,7 +152,7 @@ final class ActivitiesViewModelTests: TestCase {
 
     activitiesPresent.assertValues([true], "Activities show right away.")
     showEmptyStateIsLoggedIn.assertValueCount(0, "Empty state does not emit.")
-    dismissEmptyState.assertValueCount(1, "Dismiss empty state emits.")
+    hideEmptyState.assertValueCount(2, "Dismiss empty state emits.")
 
     AppEnvironment.logout()
     self.vm.inputs.userSessionEnded()
@@ -150,13 +165,13 @@ final class ActivitiesViewModelTests: TestCase {
 
     activitiesPresent.assertValues([true, false], "Activities clear right away.")
     showEmptyStateIsLoggedIn.assertValues([false], "Logged out empty state emits.")
-    dismissEmptyState.assertValueCount(1, "Dismiss empty state does not emit.")
+    hideEmptyState.assertValueCount(2, "Dismiss empty state does not emit.")
 
     self.vm.inputs.viewWillAppear(animated: false)
 
     activitiesPresent.assertValues([true, false], "Activities does not emit again.")
     showEmptyStateIsLoggedIn.assertValues([false], "Logged out empty state does not emit again.")
-    dismissEmptyState.assertValueCount(1, "Dismiss empty state does not emit.")
+    hideEmptyState.assertValueCount(2, "Dismiss empty state does not emit.")
   }
 
   // Tests the flow:

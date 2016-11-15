@@ -67,7 +67,7 @@ public protocol ActivitiesViewModelOutputs {
   var deleteFindFriendsSection: Signal<(), NoError> { get }
 
   /// Emits when we should dismiss the empty state controller.
-  var dismissEmptyState: Signal<(), NoError> { get }
+  var hideEmptyState: Signal<(), NoError> { get }
 
   /// Emits when should transition to Friends view with source (.Activity).
   var goToFriends: Signal<FriendsSource, NoError> { get }
@@ -120,7 +120,7 @@ ActivitiesViewModelOutputs {
         self.userSessionStartedProperty.signal,
         self.viewWillAppearProperty.signal.ignoreNil().filter(isFalse).ignoreValues(),
         self.refreshProperty.signal
-        )
+      )
         .filter { AppEnvironment.current.currentUser != nil }
 
     let (paginatedActivities, isLoading, pageCount) = paginate(
@@ -135,7 +135,11 @@ ActivitiesViewModelOutputs {
     )
 
     let activities = paginatedActivities
-      .scan([]) { acc, next in (acc + next).distincts().sort { $0.id > $1.id } }
+      .scan([Activity]()) { acc, next in
+        !next.isEmpty
+          ? (acc + next).distincts().sort { $0.id > $1.id }
+          : next
+    }
 
     self.isRefreshing = isLoading
 
@@ -181,14 +185,16 @@ ActivitiesViewModelOutputs {
       loggedOutForEmptyState
       )
 
-    self.dismissEmptyState = self.activities
-      .combinePrevious([])
-      .filter { previousActivities, currentActivities in
-        previousActivities.isEmpty
-          && !currentActivities.isEmpty
-          && AppEnvironment.current.currentUser != nil
-      }
-      .ignoreValues()
+    self.hideEmptyState = Signal.merge(
+      self.viewDidLoadProperty.signal.ignoreValues(),
+      self.activities
+        .combinePrevious([])
+        .filter { previousActivities, currentActivities in
+          previousActivities.isEmpty
+            && !currentActivities.isEmpty
+            && AppEnvironment.current.currentUser != nil
+        }.ignoreValues()
+    )
 
     let projectActivities = self.tappedActivityProperty.signal.ignoreNil()
       .filter { $0.category != .update }
@@ -345,7 +351,7 @@ ActivitiesViewModelOutputs {
   public let activities: Signal<[Activity], NoError>
   public let deleteFacebookConnectSection: Signal<(), NoError>
   public let deleteFindFriendsSection: Signal<(), NoError>
-  public let dismissEmptyState: Signal<(), NoError>
+  public let hideEmptyState: Signal<(), NoError>
   public let isRefreshing: Signal<Bool, NoError>
   public let goToFriends: Signal<FriendsSource, NoError>
   public let goToProject: Signal<(Project, RefTag), NoError>

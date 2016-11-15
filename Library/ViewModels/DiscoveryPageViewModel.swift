@@ -50,7 +50,7 @@ public protocol DiscoveryPageViewModelOutputs {
   var asyncReloadData: Signal<Void, NoError> { get }
 
   /// Emits when we should dismiss the empty state controller.
-  var dismissEmptyState: Signal<(), NoError> { get }
+  var hideEmptyState: Signal<(), NoError> { get }
 
   /// Emits a project and ref tag that we should go to from the activity sample.
   var goToActivityProject: Signal<(Project, RefTag), NoError> { get }
@@ -144,9 +144,10 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       .map(emptyState(forParams:))
       .ignoreNil()
 
-    self.dismissEmptyState = paramsChanged
-      .ignoreValues()
-      .skip(1)
+    self.hideEmptyState = Signal.merge(
+      self.viewWillAppearProperty.signal.take(1),
+      paramsChanged.skip(1).ignoreValues()
+    )
 
     let fetchActivityEvent = self.viewWillAppearProperty.signal
       .filter { _ in AppEnvironment.current.currentUser != nil }
@@ -268,7 +269,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
 
   public let activitiesForSample: Signal<[Activity], NoError>
   public var asyncReloadData: Signal<Void, NoError>
-  public let dismissEmptyState: Signal<(), NoError>
+  public let hideEmptyState: Signal<(), NoError>
   public var goToActivityProject: Signal<(Project, RefTag), NoError>
   public let goToProjectPlaylist: Signal<(Project, [Project], RefTag), NoError>
   public let goToProjectUpdate: Signal<(Project, Update), NoError>
