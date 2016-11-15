@@ -22,6 +22,11 @@
 "Backed_by_Friends" = "Patrocinados por amigos";
 "Backed_by_people_you_follow" = "Patrocinados por gente a la que sigues";
 "Backed_projects_projects_count" = "Proyectos patrocinados: %{project_count}";
+"Backers_count_separator_backers.few" = "%{backers_count}\npatrocinadores";
+"Backers_count_separator_backers.many" = "%{backers_count}\npatrocinadores";
+"Backers_count_separator_backers.one" = "%{backers_count}\npatrocinador";
+"Backers_count_separator_backers.two" = "%{backers_count}\npatrocinadores";
+"Backers_count_separator_backers.zero" = "%{backers_count}\npatrocinadores";
 "Become_a_backer_to_leave_a_comment" = "Conviértete en patrocinador y deja un comentario.";
 "Bring_new_ideas_to_life" = "Nuevas ideas se vuelven realidad - ¡gracias a tu ayuda!";
 "Cancel_your_pledge" = "Cancela tu contribución";
@@ -29,7 +34,7 @@
 "Chooses_location_for_shipping" = "Destino determinado: %{location}.";
 "Close_project" = "Cerrar proyecto";
 "Closes_filters" = "Cierra filtros.";
-"Closes_project" = "Closes project.";
+"Closes_project" = "Cierra el proyecto.";
 "Collapses_subcategories" = "Muestra menos subcategorías.";
 "Collections" = "Colecciones";
 "Complete_payment" = "Completar pago";
@@ -93,7 +98,7 @@
 "No_pledges_from_friends_yet" = "No hay contribuciones de amigos todavía.";
 "Once_you_back_a_project_well_share" = "Tu patrocinio de un proyecto nos ayuda a hacerte recomendaciones personalizadas.";
 "Opens_comments" = "Abre comentarios.";
-"Opens_creator_profile" = "Opens creator profile.";
+"Opens_creator_profile" = "Abre el perfil del creador.";
 "Opens_email_composer" = "Abre plantilla de correo.";
 "Opens_filters" = "Abre filtros.";
 "Opens_help_sheet" = "Abre hoja de ayuda.";

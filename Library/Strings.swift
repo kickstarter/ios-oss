@@ -420,6 +420,29 @@ public enum Strings {
     )
   }
   /**
+   "%{backers_count}
+backers"
+
+   - **es**: "%{backers_count}
+patrocinadores"
+   - **de**: "%{backers_count}
+Unterstützer"
+   - **fr**: "%{backers_count}
+contributeurs"
+   - **it**: "%{backers_count}
+backers"
+   - **en**: "%{backers_count}
+backers"
+  */
+  public static func Backers_count_separator_backers(backers_count backers_count: Int) -> String {
+    return localizedString(
+      key: "Backers_count_separator_backers",
+      defaultValue: "%{backers_count}\nbackers",
+      count: backers_count,
+      substitutions: ["backers_count": Format.wholeNumber(backers_count)]
+    )
+  }
+  /**
    "Become a backer to leave a comment."
 
    - **es**: "Conviértete en patrocinador y deja un comentario."
@@ -541,9 +564,9 @@ public enum Strings {
   /**
    "Closes project."
 
-   - **es**: "Closes project."
-   - **de**: "Closes project."
-   - **fr**: "Closes project."
+   - **es**: "Cierra el proyecto."
+   - **de**: "Schließt das Projekt."
+   - **fr**: "Ferme le projet."
    - **it**: "Closes project."
    - **en**: "Closes project."
   */
@@ -1568,9 +1591,9 @@ from friends yet."
   /**
    "Opens creator profile."
 
-   - **es**: "Opens creator profile."
-   - **de**: "Opens creator profile."
-   - **fr**: "Opens creator profile."
+   - **es**: "Abre el perfil del creador."
+   - **de**: "Öffnet das Profil des Projektgründers."
+   - **fr**: "Ouvre le profil du créateur."
    - **it**: "Opens creator profile."
    - **en**: "Opens creator profile."
   */
@@ -1855,74 +1878,6 @@ from friends yet."
     )
   }
   /**
-   "Project canceled"
-
-   - **es**: "Project canceled"
-   - **de**: "Project canceled"
-   - **fr**: "Project canceled"
-   - **it**: "Project canceled"
-   - **en**: "Project canceled"
-  */
-  public static func Project_canceled() -> String {
-    return localizedString(
-      key: "Project_canceled",
-      defaultValue: "Project canceled",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "Project successfully funded"
-
-   - **es**: "Project successfully funded"
-   - **de**: "Project successfully funded"
-   - **fr**: "Project successfully funded"
-   - **it**: "Project successfully funded"
-   - **en**: "Project successfully funded"
-  */
-  public static func Project_successfully_funded() -> String {
-    return localizedString(
-      key: "Project_successfully_funded",
-      defaultValue: "Project successfully funded",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "Project suspended"
-
-   - **es**: "Project suspended"
-   - **de**: "Project suspended"
-   - **fr**: "Project suspended"
-   - **it**: "Project suspended"
-   - **en**: "Project suspended"
-  */
-  public static func Project_suspended() -> String {
-    return localizedString(
-      key: "Project_suspended",
-      defaultValue: "Project suspended",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "Project unsuccessfully funded"
-
-   - **es**: "Project unsuccessfully funded"
-   - **de**: "Project unsuccessfully funded"
-   - **fr**: "Project unsuccessfully funded"
-   - **it**: "Project unsuccessfully funded"
-   - **en**: "Project unsuccessfully funded"
-  */
-  public static func Project_unsuccessfully_funded() -> String {
-    return localizedString(
-      key: "Project_unsuccessfully_funded",
-      defaultValue: "Project unsuccessfully funded",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
    "Projects We Love"
 
    - **es**: "Nuestros Favoritos"
@@ -2185,7 +2140,7 @@ daring ideas."
 
    - **es**: "Compartir"
    - **de**: "Teilen"
-   - **fr**: "Share update"
+   - **fr**: "Partager"
    - **it**: "Share update"
    - **en**: "Share update"
   */

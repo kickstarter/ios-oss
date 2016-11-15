@@ -24,6 +24,9 @@ public protocol ProjectPamphletMainCellViewModelOutputs {
   /// Emits a string to use for the stats stack view accessibility value.
   var statsStackViewAccessibilityLabel: Signal<String, NoError> { get }
 
+  /// Emits a string to use for the backer subtitle label.
+  var backersSubtitleLabelText: Signal<String, NoError> { get }
+
   /// Emits a string to use for the backers title label.
   var backersTitleLabelText: Signal<String, NoError> { get }
 
@@ -151,7 +154,14 @@ ProjectPamphletMainCellViewModelInputs, ProjectPamphletMainCellViewModelOutputs 
       }
       .skipRepeats()
 
-    self.backersTitleLabelText = project.map { Format.wholeNumber($0.stats.backersCount) }
+    let backersTitleAndSubtitleText = project.map { project -> (String?, String?) in
+      let string = Strings.Backers_count_separator_backers(backers_count: project.stats.backersCount)
+      let parts = string.characters.split("\n").map(String.init)
+      return (parts.first, parts.last)
+    }
+
+    self.backersTitleLabelText = backersTitleAndSubtitleText.map { title, _ in title ?? "" }
+    self.backersSubtitleLabelText =  backersTitleAndSubtitleText.map { _, subtitle in subtitle ?? "" }
 
     let deadlineTitleAndSubtitle = project.map {
       return Format.duration(secondsInUTC: $0.dates.deadline, useToGo: true)
@@ -246,6 +256,7 @@ ProjectPamphletMainCellViewModelInputs, ProjectPamphletMainCellViewModelOutputs 
     self.videoDidStartProperty.value = ()
   }
 
+  public let backersSubtitleLabelText: Signal<String, NoError>
   public let backersTitleLabelText: Signal<String, NoError>
   public let configureVideoPlayerController: Signal<Project, NoError>
   public let conversionLabelHidden: Signal<Bool, NoError>

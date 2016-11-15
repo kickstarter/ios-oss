@@ -84,11 +84,8 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
 
     self
       |> baseTableViewCellStyle()
-      |> UITableViewCell.lens.clipsToBounds .~ false
+      |> UITableViewCell.lens.clipsToBounds .~ true
       |> UITableViewCell.lens.accessibilityElements .~ self.subviews
-
-    self.backersSubtitleLabel
-      |> UILabel.lens.text %~ { _ in Strings.dashboard_tout_backers() }
 
     [self.backersSubtitleLabel, self.deadlineSubtitleLabel, self.pledgeSubtitleLabel]
       ||> UILabel.lens.textColor .~ .ksr_text_navy_500
@@ -189,6 +186,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
   internal override func bindViewModel() {
     super.bindViewModel()
 
+    self.backersSubtitleLabel.rac.text = self.viewModel.outputs.backersSubtitleLabelText
     self.backersTitleLabel.rac.text = self.viewModel.outputs.backersTitleLabelText
     self.backersTitleLabel.rac.textColor = self.viewModel.outputs.projectUnsuccessfulLabelTextColor
     self.conversionLabel.rac.hidden = self.viewModel.outputs.conversionLabelHidden

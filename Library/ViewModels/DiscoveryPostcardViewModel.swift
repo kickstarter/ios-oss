@@ -49,6 +49,9 @@ public protocol DiscoveryPostcardViewModelOutputs {
   /// Emits a string to use for the backers title label.
   var backersTitleLabelText: Signal<String, NoError> { get }
 
+  /// Emits a string to use for the backers subtitle label.
+  var backersSubtitleLabelText: Signal<String, NoError> { get }
+
   /// Emits the cell label to be read aloud by voiceover.
   var cellAccessibilityLabel: Signal<String, NoError> { get }
 
@@ -119,8 +122,14 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
   public init() {
     let project = self.projectProperty.signal.ignoreNil()
 
-    self.backersTitleLabelText = project
-      .map { $0.state == .live ? Format.wholeNumber($0.stats.backersCount) : "" }
+    let backersTitleAndSubtitleText = project.map { project -> (String?, String?) in
+      let string = Strings.Backers_count_separator_backers(backers_count: project.stats.backersCount)
+      let parts = string.characters.split("\n").map(String.init)
+      return (parts.first, parts.last)
+    }
+
+    self.backersTitleLabelText = backersTitleAndSubtitleText.map { title, _ in title ?? "" }
+    self.backersSubtitleLabelText = backersTitleAndSubtitleText.map { _, subtitle in subtitle ?? "" }
 
     let deadlineTitleAndSubtitle = project
       .map {
@@ -199,6 +208,7 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
   }
 
   public let backersTitleLabelText: Signal<String, NoError>
+  public let backersSubtitleLabelText: Signal<String, NoError>
   public let cellAccessibilityLabel: Signal<String, NoError>
   public let cellAccessibilityValue: Signal<String, NoError>
   public let deadlineSubtitleLabelText: Signal<String, NoError>

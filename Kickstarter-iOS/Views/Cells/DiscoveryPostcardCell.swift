@@ -140,6 +140,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
     self.rac.accessibilityLabel = self.viewModel.outputs.cellAccessibilityLabel
     self.rac.accessibilityValue = self.viewModel.outputs.cellAccessibilityValue
     self.backersTitleLabel.rac.text = self.viewModel.outputs.backersTitleLabelText
+    self.backersSubtitleLabel.rac.text = self.viewModel.outputs.backersSubtitleLabelText
     self.deadlineSubtitleLabel.rac.text = self.viewModel.outputs.deadlineSubtitleLabelText
     self.deadlineTitleLabel.rac.text = self.viewModel.outputs.deadlineTitleLabelText
     self.fundingTitleLabel.rac.text = self.viewModel.outputs.percentFundedTitleLabelText

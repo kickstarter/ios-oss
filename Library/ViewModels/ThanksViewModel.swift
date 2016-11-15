@@ -343,6 +343,7 @@ private func relatedProjects(toProject project: Project, inCategory category: Ks
       .uncollect()
 
     return SignalProducer.concat(recommendedProjects, similarToProjects, staffPickProjects)
+      .filter { $0.id != project.id }
       .uniqueValues { $0.id }
       .take(3)
       .collect()

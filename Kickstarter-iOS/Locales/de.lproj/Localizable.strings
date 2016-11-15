@@ -22,6 +22,11 @@
 "Backed_by_Friends" = "Von Freunden unterstützt";
 "Backed_by_people_you_follow" = "Unterstützt von Leuten, denen du folgst";
 "Backed_projects_projects_count" = "Unterstützte Projekte: %{project_count}";
+"Backers_count_separator_backers.few" = "%{backers_count}\nUnterstützer";
+"Backers_count_separator_backers.many" = "%{backers_count}\nUnterstützer";
+"Backers_count_separator_backers.one" = "%{backers_count}\nUnterstützer";
+"Backers_count_separator_backers.two" = "%{backers_count}\nUnterstützer";
+"Backers_count_separator_backers.zero" = "%{backers_count}\nUnterstützer";
 "Become_a_backer_to_leave_a_comment" = "Werde Unterstützer, um einen Kommentar zu hinterlassen.";
 "Bring_new_ideas_to_life" = "Neue Ideen werden Wirklichkeit.";
 "Cancel_your_pledge" = "Deinen Beitrag zurückziehen";
@@ -29,7 +34,7 @@
 "Chooses_location_for_shipping" = "Legt %{location} als Versandort fest.";
 "Close_project" = "Projekt schließen";
 "Closes_filters" = "Filter schließen.";
-"Closes_project" = "Closes project.";
+"Closes_project" = "Schließt das Projekt.";
 "Collapses_subcategories" = "Reduziert die Anzeige der Unterkategorien.";
 "Collections" = "Sammlungen";
 "Complete_payment" = "Zahlung abschließen";
@@ -93,7 +98,7 @@
 "No_pledges_from_friends_yet" = "Es gibt noch keine Beiträge von Freunden.";
 "Once_you_back_a_project_well_share" = "Wenn du ein Projekt unterstützt, werden wir dir hier maßgeschneiderte Empfehlungen machen.";
 "Opens_comments" = "Öffnet Kommentare.";
-"Opens_creator_profile" = "Opens creator profile.";
+"Opens_creator_profile" = "Öffnet das Profil des Projektgründers.";
 "Opens_email_composer" = "Öffnet E-Mail-Vorlage.";
 "Opens_filters" = "Öffnet Filter.";
 "Opens_help_sheet" = "Öffnet die Hilfe-Seite.";

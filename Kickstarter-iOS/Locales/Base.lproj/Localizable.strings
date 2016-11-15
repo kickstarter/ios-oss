@@ -22,6 +22,11 @@
 "Backed_by_Friends" = "Backed by Friends";
 "Backed_by_people_you_follow" = "Backed by people you follow";
 "Backed_projects_projects_count" = "Backed projects %{project_count}";
+"Backers_count_separator_backers.few" = "%{backers_count}\nbackers";
+"Backers_count_separator_backers.many" = "%{backers_count}\nbackers";
+"Backers_count_separator_backers.one" = "%{backers_count}\nbacker";
+"Backers_count_separator_backers.two" = "%{backers_count}\nbackers";
+"Backers_count_separator_backers.zero" = "%{backers_count}\nbackers";
 "Become_a_backer_to_leave_a_comment" = "Become a backer to leave a comment.";
 "Bring_new_ideas_to_life" = "Bring new ideas to life.";
 "Cancel_your_pledge" = "Cancel your pledge";
