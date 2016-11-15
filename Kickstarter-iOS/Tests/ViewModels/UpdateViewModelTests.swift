@@ -61,12 +61,16 @@ final class UpdateViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     withEnvironment(apiService: MockService(fetchUpdateResponse: prevUpdate)) {
-      let policy = self.vm.inputs.decidePolicyFor(
-        navigationAction: MockNavigationAction(
-          navigationType: .LinkActivated,
-          request: NSURLRequest(URL: optionalize(prevUpdateUrl)!)
-        )
+
+      let request = NSURLRequest(URL: optionalize(prevUpdateUrl)!)
+      let navigationAction = WKNavigationActionData(
+        navigationType: .LinkActivated,
+        request: request,
+        sourceFrame: WKFrameInfoData(mainFrame: true, request: request),
+        targetFrame: WKFrameInfoData(mainFrame: true, request: request)
       )
+
+      let policy = self.vm.inputs.decidePolicyFor(navigationAction: navigationAction)
 
       XCTAssertEqual(WKNavigationActionPolicy.Cancel.rawValue, policy.rawValue)
 
@@ -97,12 +101,16 @@ final class UpdateViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     withEnvironment(apiService: MockService(fetchProjectResponse: anotherProject)) {
-      let policy = self.vm.inputs.decidePolicyFor(
-        navigationAction: MockNavigationAction(
-          navigationType: .LinkActivated,
-          request: NSURLRequest(URL: optionalize(anotherProjectUrl)!)
-        )
+
+      let request = NSURLRequest(URL: optionalize(anotherProjectUrl)!)
+      let navigationAction = WKNavigationActionData(
+        navigationType: .LinkActivated,
+        request: request,
+        sourceFrame: WKFrameInfoData(mainFrame: true, request: request),
+        targetFrame: WKFrameInfoData(mainFrame: true, request: request)
       )
+
+      let policy = self.vm.inputs.decidePolicyFor(navigationAction: navigationAction)
 
       XCTAssertEqual(WKNavigationActionPolicy.Cancel.rawValue, policy.rawValue)
 

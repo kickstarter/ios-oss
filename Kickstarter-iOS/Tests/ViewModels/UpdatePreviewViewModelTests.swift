@@ -42,12 +42,15 @@ final class UpdatePreviewViewModelTests: TestCase {
     )
 
     let redirectUrl = "https://www.kickstarter.com/projects/smashmouth/somebody-once-told-me/posts/1"
-    let policy = self.vm.inputs.decidePolicyFor(
-      navigationAction: MockNavigationAction(
-        navigationType: .Other,
-        request: NSURLRequest(URL: NSURL(string: redirectUrl)!)
-      )
+    let request = NSURLRequest(URL: NSURL(string: redirectUrl)!)
+    let navigationAction = WKNavigationActionData(
+      navigationType: .Other,
+      request: request,
+      sourceFrame: WKFrameInfoData(mainFrame: true, request: request),
+      targetFrame: WKFrameInfoData(mainFrame: true, request: request)
     )
+
+    let policy = self.vm.inputs.decidePolicyFor(navigationAction: navigationAction)
 
     XCTAssertEqual(WKNavigationActionPolicy.Allow.rawValue, policy.rawValue)
     self.webViewLoadRequest.assertValues(

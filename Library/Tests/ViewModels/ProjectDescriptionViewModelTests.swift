@@ -34,12 +34,16 @@ final class ProjectDescriptionViewModelTests: TestCase {
 
     self.loadWebViewRequest.assertValueCount(1)
 
-    self.vm.inputs.decidePolicyFor(
-      navigationAction: MockNavigationAction(
-        navigationType: .LinkActivated,
-        request: NSURLRequest(URL: NSURL(string: project.urls.web.project)!)
-      )
+    let request = NSURLRequest(URL: NSURL(string: project.urls.web.project)!)
+
+    let navigationAction = WKNavigationActionData(
+      navigationType: .LinkActivated,
+      request: request,
+      sourceFrame: WKFrameInfoData(mainFrame: true, request: request),
+      targetFrame: WKFrameInfoData(mainFrame: true, request: request)
     )
+
+    self.vm.inputs.decidePolicyFor(navigationAction: navigationAction)
 
     XCTAssertEqual(WKNavigationActionPolicy.Cancel.rawValue,
                    self.vm.outputs.decidedPolicyForNavigationAction.rawValue)
@@ -60,12 +64,15 @@ final class ProjectDescriptionViewModelTests: TestCase {
 
     self.loadWebViewRequest.assertValueCount(1)
 
-    self.vm.inputs.decidePolicyFor(
-      navigationAction: MockNavigationAction(
-        navigationType: .LinkActivated,
-        request: NSURLRequest(URL: NSURL(string: project.urls.web.project + "/messages/new")!)
-      )
+    let request = NSURLRequest(URL: NSURL(string: project.urls.web.project + "/messages/new")!)
+    let navigationAction = WKNavigationActionData(
+      navigationType: .LinkActivated,
+      request: request,
+      sourceFrame: WKFrameInfoData(mainFrame: true, request: request),
+      targetFrame: WKFrameInfoData(mainFrame: true, request: request)
     )
+
+    self.vm.inputs.decidePolicyFor(navigationAction: navigationAction)
 
     XCTAssertEqual(WKNavigationActionPolicy.Cancel.rawValue,
                    self.vm.outputs.decidedPolicyForNavigationAction.rawValue)
@@ -86,12 +93,15 @@ final class ProjectDescriptionViewModelTests: TestCase {
 
     self.loadWebViewRequest.assertValueCount(1)
 
-    self.vm.inputs.decidePolicyFor(
-      navigationAction: MockNavigationAction(
-        navigationType: .LinkActivated,
-        request: NSURLRequest(URL: NSURL(string: "https://www.somewhere.com/else")!)
-      )
+    let request = NSURLRequest(URL: NSURL(string: "https://www.somewhere.com/else")!)
+    let navigationAction = WKNavigationActionData(
+      navigationType: .LinkActivated,
+      request: request,
+      sourceFrame: WKFrameInfoData(mainFrame: true, request: request),
+      targetFrame: WKFrameInfoData(mainFrame: true, request: request)
     )
+
+    self.vm.inputs.decidePolicyFor(navigationAction: navigationAction)
 
     XCTAssertEqual(WKNavigationActionPolicy.Cancel.rawValue,
                    self.vm.outputs.decidedPolicyForNavigationAction.rawValue)
@@ -112,15 +122,46 @@ final class ProjectDescriptionViewModelTests: TestCase {
 
     self.loadWebViewRequest.assertValueCount(1)
 
-    self.vm.inputs.decidePolicyFor(
-      navigationAction: MockNavigationAction(
-        navigationType: .Other,
-        request: NSURLRequest(URL: NSURL(string: project.urls.web.project + "/description")!)
-      )
+    let request = NSURLRequest(URL: NSURL(string: project.urls.web.project + "/description")!)
+    let navigationAction = WKNavigationActionData(
+      navigationType: .Other,
+      request: request,
+      sourceFrame: WKFrameInfoData(mainFrame: true, request: request),
+      targetFrame: WKFrameInfoData(mainFrame: true, request: request)
     )
+
+    self.vm.inputs.decidePolicyFor(navigationAction: navigationAction)
 
     XCTAssertEqual(WKNavigationActionPolicy.Allow.rawValue,
                    self.vm.outputs.decidedPolicyForNavigationAction.rawValue)
+
+    self.loadWebViewRequest.assertValueCount(1)
+    self.goBackToProject.assertValueCount(0)
+    self.goToMessageDialog.assertValueCount(0)
+    self.goToSafariBrowser.assertValueCount(0)
+  }
+
+  func testIFrameRequest() {
+    let project = Project.template
+
+    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.viewDidLoad()
+
+    self.loadWebViewRequest.assertValueCount(1)
+
+    let request = NSURLRequest(URL: NSURL(string: "https://www.youtube.com/watch")!)
+    let navigationAction = WKNavigationActionData(
+      navigationType: .Other,
+      request: request,
+      sourceFrame: WKFrameInfoData(mainFrame: true, request: request),
+      targetFrame: WKFrameInfoData(mainFrame: false, request: request)
+    )
+
+    self.vm.inputs.decidePolicyFor(navigationAction: navigationAction)
+
+    XCTAssertEqual(WKNavigationActionPolicy.Allow.rawValue,
+                   self.vm.outputs.decidedPolicyForNavigationAction.rawValue,
+                   "Loading non-main frame requests permitted, e.g. youtube.")
 
     self.loadWebViewRequest.assertValueCount(1)
     self.goBackToProject.assertValueCount(0)

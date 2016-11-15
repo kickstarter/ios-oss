@@ -2,6 +2,7 @@ import Prelude
 import ReactiveCocoa
 import Result
 import XCTest
+import WebKit
 @testable import KsApi
 @testable import Library
 @testable import ReactiveExtensions_TestHelpers
@@ -31,12 +32,16 @@ final class ProjectUpdatesViewModelTests: TestCase {
 
     self.goToSafariBrowser.assertValues([])
 
-    self.vm.inputs.decidePolicy(
-      forNavigationAction: MockNavigationAction(
-        navigationType: .LinkActivated,
-        request: .init(URL: googleURL)
-      )
+    let request = NSURLRequest(URL: googleURL)
+    let navigationAction = WKNavigationActionData(
+      navigationType: .LinkActivated,
+      request: request,
+      sourceFrame: WKFrameInfoData.init(mainFrame: true, request: request),
+      targetFrame: WKFrameInfoData.init(mainFrame: true, request: request)
     )
+
+    XCTAssertEqual(WKNavigationActionPolicy.Cancel.rawValue,
+                   self.vm.inputs.decidePolicy(forNavigationAction: navigationAction).rawValue)
 
     self.goToSafariBrowser.assertValues([googleURL])
     XCTAssertEqual(["Opened External Link"], self.trackingClient.events)
@@ -53,12 +58,16 @@ final class ProjectUpdatesViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: project)
     self.vm.inputs.viewDidLoad()
 
-    self.vm.inputs.decidePolicy(
-      forNavigationAction: MockNavigationAction(
-        navigationType: .LinkActivated,
-        request: .init(URL: NSURL(string: "\(project.urls.web.updates!)/\(updateId)")!)
-      )
+    let request = NSURLRequest(URL: NSURL(string: "\(project.urls.web.updates!)/\(updateId)")!)
+    let navigationAction = WKNavigationActionData(
+      navigationType: .LinkActivated,
+      request: request,
+      sourceFrame: WKFrameInfoData.init(mainFrame: true, request: request),
+      targetFrame: WKFrameInfoData.init(mainFrame: true, request: request)
     )
+
+    XCTAssertEqual(WKNavigationActionPolicy.Cancel.rawValue,
+                   self.vm.inputs.decidePolicy(forNavigationAction: navigationAction).rawValue)
 
     self.goToUpdateId.assertValues([updateId])
   }
@@ -73,12 +82,16 @@ final class ProjectUpdatesViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: project)
     self.vm.inputs.viewDidLoad()
 
-    self.vm.inputs.decidePolicy(
-      forNavigationAction: MockNavigationAction(
-        navigationType: .LinkActivated,
-        request: .init(URL: NSURL(string: "\(project.urls.web.updates!)/\(updateId)/comments")!)
-      )
+    let request = NSURLRequest(URL: NSURL(string: "\(project.urls.web.updates!)/\(updateId)/comments")!)
+    let navigationAction = WKNavigationActionData(
+      navigationType: .LinkActivated,
+      request: request,
+      sourceFrame: WKFrameInfoData.init(mainFrame: true, request: request),
+      targetFrame: WKFrameInfoData.init(mainFrame: true, request: request)
     )
+
+    XCTAssertEqual(WKNavigationActionPolicy.Cancel.rawValue,
+                   self.vm.inputs.decidePolicy(forNavigationAction: navigationAction).rawValue)
 
     self.goToUpdateCommentId.assertValues([updateId])
   }
@@ -86,25 +99,42 @@ final class ProjectUpdatesViewModelTests: TestCase {
   func testWebViewLoadRequests() {
     let project = Project.template
       |> (Project.lens.urls.web • Project.UrlsEnvelope.WebEnvelope.lens.updates)
-        .~ "https://www.kickstarter.com/projects/shrimp/ijc/posts"
+      .~ "https://www.kickstarter.com/projects/shrimp/ijc/posts"
 
     let updatesIndexRequest = AppEnvironment.current.apiService.preparedRequest(
       forURL: NSURL(string: project.urls.web.updates!)!
     )
 
-    let updateRequest = NSURLRequest(URL: NSURL(string: "\(project.urls.web.updates!)/1")!)
+    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.viewDidLoad()
+
+    self.webViewLoadRequest.assertValues([updatesIndexRequest])
+  }
+
+  func testIFrameRequest() {
+    let project = Project.template
+      |> (Project.lens.urls.web • Project.UrlsEnvelope.WebEnvelope.lens.updates)
+      .~ "https://www.kickstarter.com/projects/shrimp/ijc/posts"
+
+    let updatesIndexRequest = AppEnvironment.current.apiService.preparedRequest(
+      forURL: NSURL(string: project.urls.web.updates!)!
+    )
 
     self.vm.inputs.configureWith(project: project)
     self.vm.inputs.viewDidLoad()
 
     self.webViewLoadRequest.assertValues([updatesIndexRequest])
 
-    self.vm.inputs.decidePolicy(
-      forNavigationAction: MockNavigationAction(
-        navigationType: .LinkActivated,
-        request: updateRequest
-      )
+    let updateRequest = NSURLRequest(URL: NSURL(string: "https://www.youtube.com/watch")!)
+    let navigationAction = WKNavigationActionData(
+      navigationType: .LinkActivated,
+      request: updateRequest,
+      sourceFrame: WKFrameInfoData.init(mainFrame: true, request: updateRequest),
+      targetFrame: WKFrameInfoData.init(mainFrame: false, request: updateRequest)
     )
+
+    XCTAssertEqual(WKNavigationActionPolicy.Allow.rawValue,
+                   self.vm.inputs.decidePolicy(forNavigationAction: navigationAction).rawValue)
 
     self.webViewLoadRequest.assertValues([updatesIndexRequest], "Update loaded in VC, not web view.")
   }

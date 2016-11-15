@@ -10,7 +10,7 @@ internal protocol UpdateViewModelInputs {
   func configureWith(project project: Project, update: Update)
 
   /// Call when the webview needs to decide a policy for a navigation action. Returns the decision policy.
-  func decidePolicyFor(navigationAction navigationAction: WKNavigationActionProtocol)
+  func decidePolicyFor(navigationAction navigationAction: WKNavigationActionData)
     -> WKNavigationActionPolicy
 
   /// Call when the view loads.
@@ -75,7 +75,11 @@ internal final class UpdateViewModel: UpdateViewModelType, UpdateViewModelInputs
       .map { Strings.activity_project_update_update_count(update_count: Format.wholeNumber($0.sequence)) }
 
     self.policyDecisionProperty <~ self.policyForNavigationActionProperty.signal.ignoreNil()
-      .map { $0.navigationType == .Other ? .Allow : .Cancel }
+      .map { action in
+        action.navigationType == .Other || action.targetFrame?.mainFrame == .Some(false)
+          ? .Allow
+          : .Cancel
+    }
 
     let commentsRequest = self.policyForNavigationActionProperty.signal.ignoreNil()
       .filter { $0.navigationType == .LinkActivated }
@@ -117,9 +121,9 @@ internal final class UpdateViewModel: UpdateViewModelType, UpdateViewModelInputs
     self.projectProperty.value = project
   }
 
-  private let policyForNavigationActionProperty = MutableProperty<WKNavigationActionProtocol?>(nil)
+  private let policyForNavigationActionProperty = MutableProperty<WKNavigationActionData?>(nil)
   private let policyDecisionProperty = MutableProperty(WKNavigationActionPolicy.Allow)
-  internal func decidePolicyFor(navigationAction navigationAction: WKNavigationActionProtocol)
+  internal func decidePolicyFor(navigationAction navigationAction: WKNavigationActionData)
     -> WKNavigationActionPolicy {
       self.policyForNavigationActionProperty.value = navigationAction
       return self.policyDecisionProperty.value

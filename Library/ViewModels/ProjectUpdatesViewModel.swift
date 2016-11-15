@@ -10,7 +10,7 @@ public protocol ProjectUpdatesViewModelInputs {
 
   /// Call with the navigation action given to the webview's delegate method. Returns the policy that can
   /// be returned from the delegate method.
-  func decidePolicy(forNavigationAction action: WKNavigationActionProtocol) -> WKNavigationActionPolicy
+  func decidePolicy(forNavigationAction action: WKNavigationActionData) -> WKNavigationActionPolicy
 
   /// Call when the view loads.
   func viewDidLoad()
@@ -38,6 +38,7 @@ public protocol ProjectUpdatesViewModelType {
 public final class ProjectUpdatesViewModel: ProjectUpdatesViewModelType, ProjectUpdatesViewModelInputs,
 ProjectUpdatesViewModelOutputs {
 
+  // swiftlint:disable:next function_body_length
   public init() {
     let navigationAction = self.navigationAction.signal.ignoreNil()
 
@@ -66,7 +67,11 @@ ProjectUpdatesViewModelOutputs {
       }
 
     self.decidedPolicy <~ navigationAction
-      .map { $0.navigationType == .Other ? .Allow : .Cancel }
+      .map { action in
+        action.navigationType == .Other || action.targetFrame?.mainFrame == .Some(false)
+          ? .Allow
+          : .Cancel
+    }
 
     self.goToSafariBrowser = navigationAction
       .filter {
@@ -79,7 +84,6 @@ ProjectUpdatesViewModelOutputs {
       .ignoreNil()
 
     self.goToUpdate = project.takePairWhen(goToUpdateRequest)
-      .map { ($0, $1) }
 
     self.goToUpdateComments = goToCommentsRequest
       .switchMap { projectParam, updateId in
@@ -90,18 +94,20 @@ ProjectUpdatesViewModelOutputs {
     self.webViewLoadRequest = Signal.merge(initialUpdatesIndexLoadRequest, anotherIndexRequest)
       .map { AppEnvironment.current.apiService.preparedRequest(forURL: $0) }
 
-    project.takeWhen(self.goToSafariBrowser)
+    project
+      .takeWhen(self.goToSafariBrowser)
       .observeNext {
-        AppEnvironment.current.koala.trackOpenedExternalLink(project: $0, context: .projectUpdates)}
+        AppEnvironment.current.koala.trackOpenedExternalLink(project: $0, context: .projectUpdates)
+    }
   }
 
   private let projectProperty = MutableProperty<Project?>(nil)
   public func configureWith(project project: Project) {
     self.projectProperty.value = project
   }
-  private let navigationAction = MutableProperty<WKNavigationActionProtocol?>(nil)
+  private let navigationAction = MutableProperty<WKNavigationActionData?>(nil)
   private let decidedPolicy = MutableProperty(WKNavigationActionPolicy.Cancel)
-  public func decidePolicy(forNavigationAction action: WKNavigationActionProtocol)
+  public func decidePolicy(forNavigationAction action: WKNavigationActionData)
     -> WKNavigationActionPolicy {
       self.navigationAction.value = action
       return self.decidedPolicy.value

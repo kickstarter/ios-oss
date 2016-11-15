@@ -66,6 +66,8 @@ internal final class ProjectUpdatesViewController: WebViewController {
   internal func webView(webView: WKWebView,
                         decidePolicyForNavigationAction navigationAction: WKNavigationAction,
                                                         decisionHandler: (WKNavigationActionPolicy) -> Void) {
-    decisionHandler(self.viewModel.inputs.decidePolicy(forNavigationAction: navigationAction))
+    decisionHandler(
+      self.viewModel.inputs.decidePolicy(forNavigationAction: .init(navigationAction: navigationAction))
+    )
   }
 }

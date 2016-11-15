@@ -52,7 +52,9 @@ internal final class UpdatePreviewViewController: WebViewController {
                         decidePolicyForNavigationAction navigationAction: WKNavigationAction,
                                                         decisionHandler: (WKNavigationActionPolicy) -> Void) {
 
-    decisionHandler(self.viewModel.inputs.decidePolicyFor(navigationAction: navigationAction))
+    decisionHandler(
+      self.viewModel.inputs.decidePolicyFor(navigationAction: .init(navigationAction: navigationAction))
+    )
   }
 
   @objc private func publishButtonTapped() {

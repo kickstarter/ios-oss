@@ -9,7 +9,7 @@ public protocol ProjectDescriptionViewModelInputs {
   func configureWith(project project: Project)
 
   /// Call when the webview needs to decide a policy for a navigation action. Returns the decision policy.
-  func decidePolicyFor(navigationAction navigationAction: WKNavigationActionProtocol)
+  func decidePolicyFor(navigationAction navigationAction: WKNavigationActionData)
 
   /// Call when the view loads.
   func viewDidLoad()
@@ -59,7 +59,7 @@ ProjectDescriptionViewModelInputs, ProjectDescriptionViewModelOutputs {
       .map { AppEnvironment.current.apiService.preparedRequest(forURL: $0) }
 
     self.policyDecisionProperty <~ navigationAction
-      .map { $0.request.URL?.path?.containsString("/description") == true ? .Allow : .Cancel }
+      .map { action in allowed(navigationAction: action) ? .Allow : .Cancel }
 
     let possiblyGoToMessageDialog = combineLatest(project, navigation)
       .map { (project, navigation) -> (MessageSubject, Koala.MessageDialogContext)? in
@@ -98,10 +98,8 @@ ProjectDescriptionViewModelInputs, ProjectDescriptionViewModelOutputs {
   public func configureWith(project project: Project) {
     self.projectProperty.value = project
   }
-
-  private let policyForNavigationActionProperty = MutableProperty<WKNavigationActionProtocol?>(nil)
-  private let policyDecisionProperty = MutableProperty(WKNavigationActionPolicy.Allow)
-  public func decidePolicyFor(navigationAction navigationAction: WKNavigationActionProtocol) {
+  private let policyForNavigationActionProperty = MutableProperty<WKNavigationActionData?>(nil)
+  public func decidePolicyFor(navigationAction navigationAction: WKNavigationActionData) {
     self.policyForNavigationActionProperty.value = navigationAction
   }
 
@@ -110,6 +108,7 @@ ProjectDescriptionViewModelInputs, ProjectDescriptionViewModelOutputs {
     self.viewDidLoadProperty.value = ()
   }
 
+  private let policyDecisionProperty = MutableProperty(WKNavigationActionPolicy.Allow)
   public var decidedPolicyForNavigationAction: WKNavigationActionPolicy {
     return self.policyDecisionProperty.value
   }
@@ -125,4 +124,9 @@ ProjectDescriptionViewModelInputs, ProjectDescriptionViewModelOutputs {
 private func isMessageCreator(navigation navigation: Navigation) -> Bool {
   guard case .project(_, .messageCreator, _) = navigation else { return false }
   return true
+}
+
+private func allowed(navigationAction action: WKNavigationActionData) -> Bool {
+  return action.request.URL?.path?.containsString("/description") == .Some(true)
+    || action.targetFrame?.mainFrame == .Some(false)
 }

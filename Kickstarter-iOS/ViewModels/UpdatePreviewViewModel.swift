@@ -8,7 +8,7 @@ internal protocol UpdatePreviewViewModelInputs {
   func configureWith(draft draft: UpdateDraft)
 
   /// Call when the webview needs to decide a policy for a navigation action. Returns the decision policy.
-  func decidePolicyFor(navigationAction navigationAction: WKNavigationActionProtocol)
+  func decidePolicyFor(navigationAction navigationAction: WKNavigationActionData)
     -> WKNavigationActionPolicy
 
   /// Call when the publish button is tapped.
@@ -67,7 +67,11 @@ internal final class UpdatePreviewViewModel: UpdatePreviewViewModelInputs,
     self.webViewLoadRequest = Signal.merge(initialRequest, redirectRequest)
 
     self.policyDecisionProperty <~ self.policyForNavigationActionProperty.signal.ignoreNil()
-      .map { $0.navigationType == .Other ? .Allow : .Cancel }
+      .map { action in
+        action.navigationType == .Other || action.targetFrame?.mainFrame == .Some(false)
+          ? .Allow
+          : .Cancel
+    }
 
     let projectEvent = draft
       .switchMap {
@@ -128,9 +132,9 @@ internal final class UpdatePreviewViewModel: UpdatePreviewViewModelInputs,
   }
   // swiftlint:enable function_body_length
 
-  private let policyForNavigationActionProperty = MutableProperty<WKNavigationActionProtocol?>(nil)
+  private let policyForNavigationActionProperty = MutableProperty<WKNavigationActionData?>(nil)
   private let policyDecisionProperty = MutableProperty(WKNavigationActionPolicy.Allow)
-  internal func decidePolicyFor(navigationAction navigationAction: WKNavigationActionProtocol)
+  internal func decidePolicyFor(navigationAction navigationAction: WKNavigationActionData)
     -> WKNavigationActionPolicy {
       self.policyForNavigationActionProperty.value = navigationAction
       return self.policyDecisionProperty.value

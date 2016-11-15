@@ -63,16 +63,8 @@ internal final class ProjectDescriptionViewController: WebViewController {
                         decidePolicyForNavigationAction navigationAction: WKNavigationAction,
                         decisionHandler: (WKNavigationActionPolicy) -> Void) {
 
-    self.viewModel.inputs.decidePolicyFor(navigationAction: navigationAction)
+    self.viewModel.inputs.decidePolicyFor(navigationAction: .init(navigationAction: navigationAction))
     decisionHandler(self.viewModel.outputs.decidedPolicyForNavigationAction)
-  }
-
-  internal func scrollViewWillBeginDragging(scrollView: UIScrollView) {
-    // NB: Hack to get scroll view to use normal deceleration. If we set this in `viewDidLoad` it will
-    // not hold. Doing it here causes it to stick for some reason.
-    if self.webView.scrollView.decelerationRate != UIScrollViewDecelerationRateNormal {
-      self.webView.scrollView.decelerationRate = UIScrollViewDecelerationRateNormal
-    }
   }
 
   private func goToMessageDialog(subject subject: MessageSubject, context: Koala.MessageDialogContext) {

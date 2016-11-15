@@ -71,7 +71,9 @@ internal final class UpdateViewController: WebViewController {
                         decidePolicyForNavigationAction navigationAction: WKNavigationAction,
                         decisionHandler: (WKNavigationActionPolicy) -> Void) {
 
-    decisionHandler(self.viewModel.inputs.decidePolicyFor(navigationAction: navigationAction))
+    decisionHandler(
+      self.viewModel.inputs.decidePolicyFor(navigationAction: .init(navigationAction: navigationAction))
+    )
   }
 
   private func goToComments(forUpdate update: Update) {
