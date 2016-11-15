@@ -4,10 +4,6 @@ import Prelude
 import ReactiveCocoa
 import UIKit
 
-internal protocol FindFriendsFriendFollowCellDelegate: class {
-  func findFriendsFriendFollowCell(cell: FindFriendsFriendFollowCell, updatedFriend: User)
-}
-
 internal final class FindFriendsFriendFollowCell: UITableViewCell, ValueCell {
 
   @IBOutlet private weak var avatarImageView: CircleAvatarImageView!
@@ -19,8 +15,6 @@ internal final class FindFriendsFriendFollowCell: UITableViewCell, ValueCell {
   @IBOutlet private weak var unfollowButton: UIButton!
 
   private let viewModel: FindFriendsFriendFollowCellViewModelType = FindFriendsFriendFollowCellViewModel()
-
-  internal weak var delegate: FindFriendsFriendFollowCellDelegate?
 
   func configureWith(value value: (friend: User, source: FriendsSource)) {
     self.viewModel.inputs.configureWith(friend: value.friend, source: value.source)
@@ -56,13 +50,6 @@ internal final class FindFriendsFriendFollowCell: UITableViewCell, ValueCell {
       .ignoreNil()
       .observeNext { [weak avatarImageView] url in
         avatarImageView?.af_setImageWithURL(url, imageTransition: .CrossDissolve(0.2))
-    }
-
-    self.viewModel.outputs.notifyDelegateFriendUpdated
-      .observeForUI()
-      .observeNext { [weak self] in
-        guard let _self = self else { return }
-        _self.delegate?.findFriendsFriendFollowCell(_self, updatedFriend: $0)
     }
   }
 

@@ -40,9 +40,6 @@ public protocol FindFriendsFriendFollowCellViewModelOutputs {
   /// Emits friend's name
   var name: Signal<String, NoError> { get }
 
-  /// Emits to notify delegate that a friend was updated.
-  var notifyDelegateFriendUpdated: Signal<User, NoError> { get }
-
   /// Emits number of projects backed text
   var projectsBackedText: Signal<String, NoError> { get }
 
@@ -60,6 +57,7 @@ public final class FindFriendsFriendFollowCellViewModel: FindFriendsFriendFollow
   // swiftlint:disable function_body_length
   public init() {
     let friend = self.configureWithFriendProperty.signal.ignoreNil()
+      .map(cached(friend:))
 
     self.imageURL = friend.map { NSURL.init(string: $0.avatar.medium) }
 
@@ -113,15 +111,13 @@ public final class FindFriendsFriendFollowCellViewModel: FindFriendsFriendFollow
           .materialize()
     }
 
-    self.notifyDelegateFriendUpdated = Signal.merge(
-      followFriendEvent.values(),
-      unfollowFriendEvent.values()
-    )
+    let updatedFriendToFollowed = followFriendEvent.values()
+      .on(next: { cache(friend: $0, isFriend: true) })
 
-    let isFollowed = Signal.merge(
-      friend,
-      self.notifyDelegateFriendUpdated
-      )
+    let updatedFriendToUnfollowed = unfollowFriendEvent.values()
+      .on(next: { cache(friend: $0, isFriend: false) })
+
+    let isFollowed = Signal.merge(friend, updatedFriendToFollowed, updatedFriendToUnfollowed)
       .map { $0.isFriend ?? false }
 
     self.hideFollowButton = isFollowed.skipRepeats()
@@ -179,8 +175,28 @@ public final class FindFriendsFriendFollowCellViewModel: FindFriendsFriendFollow
   public let imageURL: Signal<NSURL?, NoError>
   public let location: Signal<String, NoError>
   public let name: Signal<String, NoError>
-  public let notifyDelegateFriendUpdated: Signal<User, NoError>
   public let projectsBackedText: Signal<String, NoError>
   public let projectsCreatedText: Signal<String, NoError>
   public let hideProjectsCreated: Signal<Bool, NoError>
+}
+
+internal let findFriendsCacheKey: String = "find_friends_follow_view_model"
+
+private func cached(friend friend: User) -> User {
+  if let friendCache = AppEnvironment.current.cache[findFriendsCacheKey] as? [Int:Bool] {
+    let isFriend = friendCache[friend.id] ?? friend.isFriend
+    return friend |> User.lens.isFriend .~ isFriend
+  } else {
+    return friend |> User.lens.isFriend .~ friend.isFriend
+  }
+}
+
+private func cache(friend friend: User, isFriend: Bool) {
+  AppEnvironment.current.cache[findFriendsCacheKey] =
+    AppEnvironment.current.cache[findFriendsCacheKey] ?? [Int:Bool]()
+
+  var cache = AppEnvironment.current.cache[findFriendsCacheKey] as? [Int:Bool]
+  cache?[friend.id] = isFriend
+
+  AppEnvironment.current.cache[findFriendsCacheKey] = cache
 }

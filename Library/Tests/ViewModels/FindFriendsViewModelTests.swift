@@ -188,35 +188,52 @@ final class FindFriendsViewModelTests: TestCase {
   }
 
   func testFollowAllFriendsFlow() {
-    withEnvironment(currentUser: User.template) {
-      vm.inputs.configureWith(source: FriendsSource.activity)
-      vm.inputs.viewDidLoad()
+    let friendsResponse = FindFriendsEnvelope.template
+    let user = .template
+      |> User.lens.facebookConnected .~ true
 
-      XCTAssertEqual(["Find Friends View"], trackingClient.events)
+    withEnvironment(apiService: MockService(fetchFriendsResponse: friendsResponse), currentUser: user) {
+      self.vm.inputs.configureWith(source: FriendsSource.activity)
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.willDisplayRow(0, outOf: 2)
+
+      self.scheduler.advance()
+
+      self.friends.assertValues([friendsResponse.users], "Initial friends load.")
+      XCTAssertEqual(["Find Friends View"], self.trackingClient.events)
       XCTAssertEqual(["activity"], self.trackingClient.properties.map { $0["source"] as! String? })
 
-      vm.inputs.findFriendsStatsCellShowFollowAllFriendsAlert(friendCount: 1000)
+      self.vm.inputs.findFriendsStatsCellShowFollowAllFriendsAlert(friendCount: 1000)
 
-      showFollowAllFriendsAlert.assertValues([1000], "Show Follow All Friends alert with friend count")
+      self.showFollowAllFriendsAlert.assertValues([1000], "Show Follow All Friends alert with friend count")
 
-      vm.inputs.declineFollowAllFriends()
+      self.vm.inputs.declineFollowAllFriends()
 
-      XCTAssertEqual(["Find Friends View", "Facebook Friend Decline Follow All"], trackingClient.events)
+      XCTAssertEqual(["Find Friends View", "Facebook Friend Decline Follow All"], self.trackingClient.events)
       XCTAssertEqual(["activity", "activity"],
                      self.trackingClient.properties.map { $0["source"] as! String? })
 
-      vm.inputs.findFriendsStatsCellShowFollowAllFriendsAlert(friendCount: 1000)
+      self.vm.inputs.findFriendsStatsCellShowFollowAllFriendsAlert(friendCount: 1000)
 
-      showFollowAllFriendsAlert.assertValues([1000, 1000])
+      self.showFollowAllFriendsAlert.assertValues([1000, 1000])
 
-      vm.inputs.confirmFollowAllFriends()
+      self.vm.inputs.confirmFollowAllFriends()
 
-      XCTAssertEqual(["Find Friends View", "Facebook Friend Decline Follow All",
-        "Facebook Friend Follow All"],
-                     trackingClient.events)
+      XCTAssertEqual(
+        ["Find Friends View", "Facebook Friend Decline Follow All", "Facebook Friend Follow All"],
+        self.trackingClient.events
+      )
       XCTAssertEqual(["activity", "activity", "activity"],
                      self.trackingClient.properties.map { $0["source"] as! String? })
 
+      // Test the 2 second "Follow all" debounce.
+      self.scheduler.advanceByInterval(1)
+
+      self.friends.assertValues([friendsResponse.users, []], "Friend list clears.")
+
+      self.scheduler.advanceByInterval(1)
+
+      self.friends.assertValues([friendsResponse.users, [], friendsResponse.users], "Updated friends emit.")
     }
   }
 

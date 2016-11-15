@@ -77,6 +77,7 @@ public final class FindFriendsViewModel: FindFriendsViewModelType, FindFriendsVi
     let followAll = self.confirmFollowAllFriendsProperty.signal
       .switchMap {
         AppEnvironment.current.apiService.followAllFriends()
+          .on(next: { _ in AppEnvironment.current.cache[findFriendsCacheKey] = [Int:Bool]() })
           .demoteErrors()
       }
 
@@ -88,11 +89,11 @@ public final class FindFriendsViewModel: FindFriendsViewModelType, FindFriendsVi
 
     let requestFirstPageWith = Signal.merge(
       shouldShowFacebookConnect.filter(isFalse).ignoreValues(),
-      followAll.ignoreValues()
+      followAll.ignoreValues().ksr_debounce(2, onScheduler: AppEnvironment.current.scheduler)
     )
 
     let requestNextPageWhen = self.willDisplayRowProperty.signal.ignoreNil()
-      .map { row, total in row >= total - 3 }
+      .map { row, total in row >= total - 3 && total > 1 }
       .skipRepeats()
       .filter(isTrue)
       .ignoreValues()
@@ -100,7 +101,7 @@ public final class FindFriendsViewModel: FindFriendsViewModelType, FindFriendsVi
     let (friends, isLoading, _) = paginate(
       requestFirstPageWith: requestFirstPageWith,
       requestNextPageWhen: requestNextPageWhen,
-      clearOnNewRequest: false,
+      clearOnNewRequest: true,
       valuesFromEnvelope: { $0.users },
       cursorFromEnvelope: { $0.urls.api.moreUsers },
       requestFromParams: { AppEnvironment.current.apiService.fetchFriends() },
@@ -108,21 +109,10 @@ public final class FindFriendsViewModel: FindFriendsViewModelType, FindFriendsVi
         $0.map { AppEnvironment.current.apiService.fetchFriends(paginationUrl: $0) } ?? .empty
     })
 
-    let friendToUpdate = Signal.merge(
-      self.viewDidLoadProperty.signal.take(1).signal.mapConst(nil),
-      self.updateFriendProperty.signal
+    self.friends = combineLatest(
+      Signal.merge(friends, followAll.mapConst([])).skipRepeats(==),
+      source
     )
-
-    let updatedFriends = combineLatest(friends, friendToUpdate)
-      .map { currentFriends, updatedFriend in
-        currentFriends
-          .map { friend in
-            friend == updatedFriend ? updatedFriend : friend
-          }
-          .compact()
-    }
-
-    self.friends = combineLatest(updatedFriends, source)
 
     self.goToDiscovery = self.discoverButtonTappedProperty.signal
       .map {
