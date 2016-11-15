@@ -82,13 +82,20 @@ public final class DashboardActionCellViewModel: DashboardActionCellViewModelInp
     self.goToPostUpdate = project.takeWhen(self.postUpdateTappedProperty.signal)
 
     self.lastUpdatePublishedAt = project
-      .map {
-        if let lastUpdatePublishedAt = $0.memberData.lastUpdatePublishedAt {
+      .map { project in
+        if let lastUpdatePublishedAt = project.memberData.lastUpdatePublishedAt {
           return Strings.dashboard_post_update_button_subtitle_last_updated_on_date(
             date: Format.date(secondsInUTC: lastUpdatePublishedAt, timeStyle: .NoStyle)
           )
         }
-        return Strings.dashboard_post_update_button_subtitle_you_have_not_posted_an_update_yet()
+
+        if .Some(project.creator) == AppEnvironment.current.currentUser {
+          return Strings.dashboard_post_update_button_subtitle_you_have_not_posted_an_update_yet()
+        } else {
+          return localizedString(
+            key: "No_one_has_posted_an_update_yet", defaultValue: "No one has posted an update yet."
+          )
+        }
     }
 
     self.postUpdateButtonAccessibilityValue = self.lastUpdatePublishedAt

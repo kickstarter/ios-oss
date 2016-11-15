@@ -94,6 +94,31 @@ internal final class DashboardActionCellViewModelTests: TestCase {
     self.lastUpdatePublishedAt.assertValues(["Last updated on \(formattedDate)."])
   }
 
+  func testLastUpdatePublishedAtEmits_CollaboratorNoUpdates() {
+    let collaborator = .template
+      |> User.lens.id .~ 9
+    let project = Project.template
+
+    withEnvironment(currentUser: collaborator) {
+      vm.inputs.configureWith(project: project)
+
+      self.lastUpdatePublishedAt.assertValues(["No one has posted an update yet."])
+    }
+  }
+
+  func testLastUpdatePublishedAtEmits_CreatorNoUpdates() {
+    let creator = .template |> User.lens.id .~ 42
+    let project = .template |> Project.lens.creator .~ creator
+
+    withEnvironment(currentUser: creator) {
+      vm.inputs.configureWith(project: project)
+
+      self.lastUpdatePublishedAt.assertValues(
+        [Strings.dashboard_post_update_button_subtitle_you_have_not_posted_an_update_yet()]
+      )
+    }
+  }
+
   func testPermissionsWithCreator() {
     let creator = .template |> User.lens.id .~ 42
     let project = .template

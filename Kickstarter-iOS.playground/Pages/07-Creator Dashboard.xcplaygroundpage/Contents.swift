@@ -62,6 +62,7 @@ let cumulativeStats = .template
 
 let cosmicSurgery = .cosmicSurgery
   |> Project.lens.stats.pledged .~ cumulativeStats.pledged
+  |> Project.lens.creator.id .~ 10
 
 let stats = [
   3_000, 4_000, 5_000, 7_000, 8_000,
@@ -96,9 +97,10 @@ AppEnvironment.replaceCurrentEnvironment(
         |> Project.lens.rewards .~ rewards
     ]
   ),
+
   currentUser: cosmicSurgery.creator,
-  language: .de,
-  locale: NSLocale(localeIdentifier: "de"),
+  language: .en,
+  locale: NSLocale(localeIdentifier: "en"),
   mainBundle: NSBundle.framework
 )
 
