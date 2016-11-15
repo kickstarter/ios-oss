@@ -1855,6 +1855,74 @@ from friends yet."
     )
   }
   /**
+   "Project canceled"
+
+   - **es**: "Project canceled"
+   - **de**: "Project canceled"
+   - **fr**: "Project canceled"
+   - **it**: "Project canceled"
+   - **en**: "Project canceled"
+  */
+  public static func Project_canceled() -> String {
+    return localizedString(
+      key: "Project_canceled",
+      defaultValue: "Project canceled",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Project successfully funded"
+
+   - **es**: "Project successfully funded"
+   - **de**: "Project successfully funded"
+   - **fr**: "Project successfully funded"
+   - **it**: "Project successfully funded"
+   - **en**: "Project successfully funded"
+  */
+  public static func Project_successfully_funded() -> String {
+    return localizedString(
+      key: "Project_successfully_funded",
+      defaultValue: "Project successfully funded",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Project suspended"
+
+   - **es**: "Project suspended"
+   - **de**: "Project suspended"
+   - **fr**: "Project suspended"
+   - **it**: "Project suspended"
+   - **en**: "Project suspended"
+  */
+  public static func Project_suspended() -> String {
+    return localizedString(
+      key: "Project_suspended",
+      defaultValue: "Project suspended",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Project unsuccessfully funded"
+
+   - **es**: "Project unsuccessfully funded"
+   - **de**: "Project unsuccessfully funded"
+   - **fr**: "Project unsuccessfully funded"
+   - **it**: "Project unsuccessfully funded"
+   - **en**: "Project unsuccessfully funded"
+  */
+  public static func Project_unsuccessfully_funded() -> String {
+    return localizedString(
+      key: "Project_unsuccessfully_funded",
+      defaultValue: "Project unsuccessfully funded",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Projects We Love"
 
    - **es**: "Nuestros Favoritos"

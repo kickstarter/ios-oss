@@ -110,6 +110,10 @@
 "Pledge_any_amount_to_help_bring_this_project_to_life" = "Choisissez le montant de votre engagement à soutenir ce projet.";
 "Pledge_without_a_reward" = "Engagement sans récompense";
 "Popular" = "Tendances";
+"Project_canceled" = "Project canceled";
+"Project_successfully_funded" = "Project successfully funded";
+"Project_suspended" = "Project suspended";
+"Project_unsuccessfully_funded" = "Project unsuccessfully funded";
 "Projects_We_Love" = "Nos coups de cœur";
 "Pursue_daring_ideas" = "Des idées audacieuses.";
 "Push_notifications" = "Notifications push";

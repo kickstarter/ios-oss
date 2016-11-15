@@ -6,7 +6,7 @@ import Result
 
 public enum ProjectActivitiesGoTo {
   case backing(Project, User)
-  case comments(Project, Update?)
+  case comments(Project?, Update?)
   case project(Project)
   case sendMessage(Backing, Koala.MessageDialogContext)
   case sendReply(Project, Update?, Comment)
@@ -117,8 +117,10 @@ public final class ProjectActivitiesViewModel: ProjectActivitiesViewModelType,
         case .backing, .backingAmount, .backingCanceled, .backingReward:
           guard let user = activity.user else { return .empty }
           return .init(value: .backing(project, user))
-        case .commentPost, .commentProject:
-          return .init(value: .comments(project, activity.update))
+        case .commentProject:
+          return .init(value: .comments(project, nil))
+        case .commentPost:
+          return .init(value: .comments(nil, activity.update))
         case .launch, .success, .cancellation, .failure, .suspension:
           return .init(value: .project(project))
         case .update:

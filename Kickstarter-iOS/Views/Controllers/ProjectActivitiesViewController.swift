@@ -97,7 +97,7 @@ internal final class ProjectActivitiesViewController: UITableViewController {
     self.navigationController?.pushViewController(vc, animated: true)
   }
 
-  internal func goToComments(project project: Project, update: Update?) {
+  internal func goToComments(project project: Project?, update: Update?) {
     let vc = CommentsViewController.configuredWith(project: project, update: update)
     self.navigationController?.pushViewController(vc, animated: true)
   }

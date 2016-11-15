@@ -5,6 +5,9 @@ import Prelude_UIKit
 import UIKit
 
 internal protocol CommentsEmptyStateCellDelegate: class {
+  /// Call when we should navigate back to the project.
+  func commentEmptyStateCellGoBackToProject()
+
   /// Call when we should navigate to the comment dialog.
   func commentEmptyStateCellGoToCommentDialog()
 
@@ -16,6 +19,7 @@ internal final class CommentsEmptyStateCell: UITableViewCell, ValueCell {
   internal weak var delegate: CommentsEmptyStateCellDelegate?
   private let viewModel: CommentsEmptyStateCellViewModelType = CommentsEmptyStateCellViewModel()
 
+  @IBOutlet private weak var backProjectButton: UIButton!
   @IBOutlet private weak var leaveACommentButton: UIButton!
   @IBOutlet private weak var loginButton: UIButton!
   @IBOutlet private weak var rootStackView: UIStackView!
@@ -24,6 +28,10 @@ internal final class CommentsEmptyStateCell: UITableViewCell, ValueCell {
 
   internal override func awakeFromNib() {
     super.awakeFromNib()
+
+    self.backProjectButton.addTarget(self,
+                                     action: #selector(backProjectTapped),
+                                     forControlEvents: .TouchUpInside)
 
     self.leaveACommentButton.addTarget(self,
                                        action: #selector(leaveACommentTapped),
@@ -44,11 +52,15 @@ internal final class CommentsEmptyStateCell: UITableViewCell, ValueCell {
       |> borderButtonStyle
       |> UIButton.lens.title(forState: .Normal) %~ { _ in
         Strings.project_comments_empty_state_backer_button()
-    }
+      }
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.general_navigation_buttons_comment() }
       |> UIButton.lens.accessibilityHint %~ { _ in
         Strings.accessibility_dashboard_buttons_post_update_hint()
     }
+
+    self.backProjectButton
+      |> borderButtonStyle
+      |> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.project_back_button() }
 
     self.loginButton
       |> borderButtonStyle
@@ -66,13 +78,15 @@ internal final class CommentsEmptyStateCell: UITableViewCell, ValueCell {
     self.titleLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 18.0)
       |> UILabel.lens.textColor .~ .ksr_text_navy_700
-      |> UILabel.lens.text %~ { _ in Strings.project_comments_empty_state_backer_title() }
+      |> UILabel.lens.text %~ { _ in Strings.No_comments_yet() }
   }
 
   internal override func bindViewModel() {
     super.bindViewModel()
 
+    self.backProjectButton.rac.hidden = self.viewModel.outputs.backProjectButtonHidden
     self.subtitleLabel.rac.text = self.viewModel.outputs.subtitleText
+    self.subtitleLabel.rac.hidden = self.viewModel.outputs.subtitleIsHidden
     self.loginButton.rac.hidden = self.viewModel.outputs.loginButtonHidden
     self.leaveACommentButton.rac.hidden = self.viewModel.outputs.leaveACommentButtonHidden
 
@@ -83,10 +97,18 @@ internal final class CommentsEmptyStateCell: UITableViewCell, ValueCell {
     self.viewModel.outputs.goToLoginTout
       .observeForUI()
       .observeNext { [weak self] in self?.delegate?.commentEmptyStateCellGoToLoginTout() }
+
+    self.viewModel.outputs.goBackToProject
+      .observeForUI()
+      .observeNext { [weak self] in self?.delegate?.commentEmptyStateCellGoBackToProject() }
   }
 
   internal func configureWith(value value: (Project, Update?)) {
     self.viewModel.inputs.configureWith(project: value.0, update: value.1)
+  }
+
+  @objc private func backProjectTapped() {
+    self.viewModel.inputs.backProjectTapped()
   }
 
   @objc private func loginTapped() {

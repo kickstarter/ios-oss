@@ -35,6 +35,7 @@ final class ProjectPamphletViewModelTests: TestCase {
     self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: refTag)
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewWillAppear(animated: true)
+    self.vm.inputs.viewDidAppear(animated: true)
 
     self.configureChildViewControllersWithProject.assertValues([project])
     self.configureChildViewControllersWithRefTag.assertValues([refTag])
@@ -51,6 +52,7 @@ final class ProjectPamphletViewModelTests: TestCase {
     self.vm.inputs.configureWith(projectOrParam: .right(.id(project.id)), refTag: nil)
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewWillAppear(animated: true)
+    self.vm.inputs.viewDidAppear(animated: true)
 
     self.configureChildViewControllersWithProject.assertValues([])
     self.configureChildViewControllersWithRefTag.assertValues([])
@@ -69,6 +71,7 @@ final class ProjectPamphletViewModelTests: TestCase {
     XCTAssertFalse(self.vm.outputs.prefersStatusBarHidden)
 
     self.vm.inputs.viewWillAppear(animated: true)
+    self.vm.inputs.viewDidAppear(animated: true)
 
     self.setNeedsStatusBarAppearanceUpdate.assertValueCount(1)
     XCTAssertTrue(self.vm.outputs.prefersStatusBarHidden)
@@ -82,16 +85,19 @@ final class ProjectPamphletViewModelTests: TestCase {
     self.setNavigationBarAnimated.assertValues([false])
 
     self.vm.inputs.viewWillAppear(animated: true)
+    self.vm.inputs.viewDidAppear(animated: true)
 
     self.setNavigationBarHidden.assertValues([true])
     self.setNavigationBarAnimated.assertValues([false])
 
     self.vm.inputs.viewWillAppear(animated: true)
+    self.vm.inputs.viewDidAppear(animated: true)
 
     self.setNavigationBarHidden.assertValues([true, true])
     self.setNavigationBarAnimated.assertValues([false, true])
 
     self.vm.inputs.viewWillAppear(animated: false)
+    self.vm.inputs.viewDidAppear(animated: true)
 
     self.setNavigationBarHidden.assertValues([true, true, true])
     self.setNavigationBarAnimated.assertValues([false, true, false])
@@ -104,6 +110,7 @@ final class ProjectPamphletViewModelTests: TestCase {
     self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .category)
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewWillAppear(animated: true)
+    self.vm.inputs.viewDidAppear(animated: true)
 
     XCTAssertEqual(["Project Page", "Viewed Project Page"],
                    self.trackingClient.events, "A project page koala event is tracked.")
@@ -126,6 +133,7 @@ final class ProjectPamphletViewModelTests: TestCase {
     newVm.inputs.configureWith(projectOrParam: .left(project), refTag: .recommended)
     newVm.inputs.viewDidLoad()
     newVm.inputs.viewWillAppear(animated: true)
+    newVm.inputs.viewDidAppear(animated: true)
 
     XCTAssertEqual(["Project Page", "Viewed Project Page", "Project Page", "Viewed Project Page"],
                    self.trackingClient.events, "A project page koala event is tracked.")

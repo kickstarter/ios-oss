@@ -44,7 +44,7 @@ internal final class ProjectPamphletContentViewController: UITableViewController
     super.bindStyles()
 
     self
-      |> baseTableControllerStyle(estimatedRowHeight: 300)
+      |> baseTableControllerStyle(estimatedRowHeight: 450)
       |> (UITableViewController.lens.tableView • UITableView.lens.delaysContentTouches) .~ false
       |> (UITableViewController.lens.tableView • UITableView.lens.canCancelContentTouches) .~ true
       |> UITableViewController.lens.view.backgroundColor .~ .clearColor()

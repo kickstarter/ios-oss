@@ -55,7 +55,6 @@ internal final class CommentsViewController: UITableViewController {
 
     self.commentBarButton
       |> UIBarButtonItem.lens.title %~ { _ in Strings.general_navigation_buttons_comment() }
-      |> UIBarButtonItem.lens.accessibilityLabel %~ { _ in Strings.general_navigation_buttons_comment() }
       |> UIBarButtonItem.lens.accessibilityHint %~ { _ in
         Strings.accessibility_dashboard_buttons_post_update_hint()
     }
@@ -162,6 +161,10 @@ extension CommentsViewController: CommentDialogDelegate {
 }
 
 extension CommentsViewController: CommentsEmptyStateCellDelegate {
+  internal func commentEmptyStateCellGoBackToProject() {
+    self.navigationController?.popViewControllerAnimated(true)
+  }
+
   internal func commentEmptyStateCellGoToCommentDialog() {
     self.viewModel.inputs.commentButtonPressed()
   }

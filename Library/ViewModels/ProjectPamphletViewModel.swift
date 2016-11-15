@@ -38,6 +38,7 @@ public protocol ProjectPamphletViewModelType {
 public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, ProjectPamphletViewModelInputs,
 ProjectPamphletViewModelOutputs {
 
+  // swiftlint:disable:next function_body_length
   public init() {
     let projectOrParam = combineLatest(
       self.projectOrParamProperty.signal.ignoreNil(),
@@ -45,16 +46,26 @@ ProjectPamphletViewModelOutputs {
       )
       .map(first)
 
-    let project = projectOrParam
-      .map { p in (p.left, p.ifLeft({ Param.id($0.id) }, ifRight: id)) }
-      .switchMap { project, param -> SignalProducer<Project, NoError> in
+    let projectOrParamAndIndex = combineLatest(
+      projectOrParam,
+      self.viewDidAppearAnimated.signal.scan(0, { accum, _ in accum + 1 })
+      )
+
+    let freshProject = projectOrParamAndIndex
+      .map { p, idx in (p.left, p.ifLeft({ Param.id($0.id) }, ifRight: id), idx) }
+      .switchMap { project, param, idx -> SignalProducer<Project, NoError> in
+
         AppEnvironment.current.apiService.fetchProject(param: param)
           .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
           .demoteErrors()
           .wrapInOptional()
-          .prefix(value: project)
           .ignoreNil()
     }
+
+    let project = Signal.merge(
+      projectOrParam.map { $0.left }.ignoreNil(),
+      freshProject
+      )
 
     self.configureChildViewControllersWithProject = combineLatest(
       project,
@@ -78,6 +89,7 @@ ProjectPamphletViewModelOutputs {
       .map { $0 ?? $1 }
 
     combineLatest(project, self.refTagProperty.signal, cookieRefTag)
+      .takeWhen(self.viewDidAppearAnimated.signal)
       .take(1)
       .observeNext { project, refTag, cookieRefTag in
         AppEnvironment.current.koala.trackProjectShow(project, refTag: refTag, cookieRefTag: cookieRefTag)
