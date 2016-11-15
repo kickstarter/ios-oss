@@ -1534,6 +1534,23 @@ with friends."
     )
   }
   /**
+   "No one has posted an update yet."
+
+   - **es**: "No one has posted an update yet."
+   - **de**: "No one has posted an update yet."
+   - **fr**: "No one has posted an update yet."
+   - **it**: "No one has posted an update yet."
+   - **en**: "No one has posted an update yet."
+  */
+  public static func No_one_has_posted_an_update_yet() -> String {
+    return localizedString(
+      key: "No_one_has_posted_an_update_yet",
+      defaultValue: "No one has posted an update yet.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "No pledges 
 from friends yet."
 
