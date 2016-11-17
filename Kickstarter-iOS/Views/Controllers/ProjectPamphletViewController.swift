@@ -103,6 +103,6 @@ extension ProjectPamphletViewController: VideoViewControllerDelegate {
 
 extension ProjectPamphletViewController: ProjectNavBarViewControllerDelegate {
   func projectNavBarControllerDidTapTitle(controller: ProjectNavBarViewController) {
-    self.contentController.tableView.setContentOffset(.zero, animated: true)
+    self.contentController.tableView.scrollToTop()
   }
 }

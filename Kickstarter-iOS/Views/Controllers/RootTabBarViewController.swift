@@ -179,13 +179,12 @@ extension RootTabBarViewController: UITabBarControllerDelegate {
 }
 
 private func scrollToTop(viewController: UIViewController) {
-  // Try finding a scroll view inside `viewController`.
-  guard let scrollView = (viewController.view as? UIScrollView) ??
-    ((viewController as? UINavigationController)?.viewControllers.first?.view as? UIScrollView) else {
-      return
-  }
 
-  scrollView.setContentOffset(CGPoint(x: 0.0, y: -scrollView.contentInset.top), animated: true)
+  if let scrollView = (viewController.view as? UIScrollView) ??
+    ((viewController as? UINavigationController)?.viewControllers.first?.view as? UIScrollView) {
+
+    scrollView.scrollToTop()
+  }
 }
 
 private func tabbarAvatarImageFromData(data: NSData) -> (defaultImage: UIImage?, selectedImage: UIImage?) {
