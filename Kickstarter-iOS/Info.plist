@@ -26,6 +26,16 @@
 				<string>fb69103156693</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>com.kickstarter.kickstarter</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>ksr</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>9999</string>

@@ -124,4 +124,12 @@ public final class NavigationTests: XCTestCase {
     KSRAssertMatch(.user(.slug("self"), .survey(3)),
                    "/users/self/surveys/3")
   }
+
+  func testRecognizesKsrUrlScheme() {
+    let projectRoute = Navigation
+      .match(NSURL(string: "ksr://www.kickstarter.com/projects/creator/project")!)
+
+    XCTAssertNotNil(projectRoute)
+    XCTAssertEqual(.project(.slug("project"), .root, refTag: nil), projectRoute)
+  }
 }

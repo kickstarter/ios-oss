@@ -489,11 +489,11 @@ private func parsedParams(url url: NSURL, fromTemplate template: String) -> Rout
     let isWebURL = true == AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString
       .flatMap { url.absoluteString?.hasPrefix($0) }
   #else
-    let isApiURL = url.absoluteString
-      .hasPrefix(AppEnvironment.current.apiService.serverConfig.apiBaseUrl.absoluteString)
+    let isApiURL = zip(url.host, AppEnvironment.current.apiService.serverConfig.apiBaseUrl.host)
+      .map { $0.hasPrefix($1) } == .Some(true)
 
-    let isWebURL = url.absoluteString
-      .hasPrefix(AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString)
+    let isWebURL = zip(url.host, AppEnvironment.current.apiService.serverConfig.webBaseUrl.host)
+      .map { $0.hasPrefix($1) } == .Some(true)
   #endif
 
   guard isApiURL || isWebURL else { return nil }
@@ -540,4 +540,20 @@ private func oneToBool(string: String?) -> Decoded<Bool?> {
 
 private func stringToInt(string: String) -> Decoded<Int> {
   return Int(string).map(Decoded.Success) ?? .Failure(.Custom("Could not parse string into int."))
+}
+
+/**
+ Zips two optionals, returning a tuple of values if both are present and `nil` otherwise. This function
+ is analagous to `zip` on sequences if you think of optionals as sequences with at most one element.
+
+ - parameter a: An optional.
+ - parameter b: An optional.
+
+ - returns: An optional tuple.
+ */
+private func zip <A, B> (a: A?, _ b: B?) -> (A, B)? {
+  if let a = a, b = b {
+    return (a, b)
+  }
+  return nil
 }
