@@ -96,7 +96,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       ||> UILabel.lens.font .~ .ksr_headline(size: 13)
 
     self.blurbAndReadMoreStackView
-      |> UIStackView.lens.spacing .~ Styles.grid(3)
+      |> UIStackView.lens.spacing .~ 0
 
     self.contentStackView
       |> UIStackView.lens.layoutMargins %~~ { _, stackView in
@@ -161,7 +161,10 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       |> UIButton.lens.titleColor(forState: .Highlighted) .~ .ksr_text_navy_500
       |> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 15)
       |> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.Read_more_about_the_campaign_arrow() }
-      |> UIButton.lens.contentEdgeInsets .~ .init(topBottom: -1, leftRight: 0)
+      |> UIButton.lens.contentEdgeInsets .~ .init(top: Styles.grid(3) - 1,
+                                                  left: 0,
+                                                  bottom: Styles.grid(4) - 1,
+                                                  right: 0)
 
     self.stateLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 12)
