@@ -37,10 +37,9 @@ internal final class ProfileViewModelTests: TestCase {
   func testProjectCellTapped() {
     let project = Project.template
     let projects = (1...3).map { .template |> Project.lens.id .~ $0 }
-    let response = .template |> DiscoveryEnvelope.lens.projects .~ projects
 
-    withEnvironment(apiService: MockService(fetchDiscoveryResponse: response)) {
-      self.vm.inputs.viewWillAppear(true)
+    withEnvironment(apiService: MockService(fetchUserProjectsBackedResponse: projects)) {
+      self.vm.inputs.viewWillAppear(false)
       self.scheduler.advance()
       self.vm.inputs.projectTapped(project)
 
@@ -50,61 +49,83 @@ internal final class ProfileViewModelTests: TestCase {
     }
   }
 
-  func testUserWithBackedProjectsWithProfileViewTracking() {
-    let currentUser = User.template
+  func testUser_WithBackedProjects() {
+    let user = User.template
+    let projects = (1...3).map { .template |> Project.lens.id .~ $0 }
+    let projectsWithNewProject = (1...4).map { .template |> Project.lens.id .~ $0 }
 
-    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: currentUser))
-    self.vm.inputs.viewWillAppear(false)
-    self.scheduler.advance()
+    withEnvironment(apiService: MockService(fetchUserProjectsBackedResponse: projects),
+                    currentUser: user) {
 
-    self.user.assertValues([currentUser, currentUser], "Current user immediately emmitted and refreshed.")
-    self.hasBackedProjects.assertValues([true])
-    self.showEmptyState.assertValues([false])
+      self.vm.inputs.viewWillAppear(false)
+      self.scheduler.advance()
 
-    XCTAssertEqual(["Profile View My", "Viewed Profile"], trackingClient.events)
+      self.user.assertValues([user], "Current user emmitted.")
+      self.hasBackedProjects.assertValues([true])
+      self.showEmptyState.assertValues([false])
+
+      XCTAssertEqual(["Profile View My", "Viewed Profile"], trackingClient.events)
+
+      self.vm.inputs.viewWillAppear(false)
+      self.scheduler.advance()
+
+      self.user.assertValues([user, user], "Current user emmitted.")
+      self.hasBackedProjects.assertValues([true])
+      self.showEmptyState.assertValues([false])
+
+      XCTAssertEqual(["Profile View My", "Viewed Profile", "Profile View My", "Viewed Profile"],
+                     trackingClient.events)
+
+      self.vm.inputs.viewWillAppear(true)
+      self.scheduler.advance()
+
+      self.user.assertValues([user, user, user], "Current user emmitted.")
+      self.hasBackedProjects.assertValues([true])
+      self.showEmptyState.assertValues([false])
+
+      XCTAssertEqual(["Profile View My", "Viewed Profile", "Profile View My", "Viewed Profile"],
+                     trackingClient.events, "Viewed Profile tracking does not emit.")
+
+      // Come back after backing a project.
+      withEnvironment(apiService: MockService(fetchUserProjectsBackedResponse: projectsWithNewProject),
+                      currentUser: user) {
+
+        self.vm.inputs.viewWillAppear(false)
+        self.scheduler.advance()
+
+        self.user.assertValues([user, user, user, user], "Current user emmitted.")
+        self.hasBackedProjects.assertValues([true, true])
+        self.showEmptyState.assertValues([false, false])
+
+        XCTAssertEqual(["Profile View My", "Viewed Profile", "Profile View My", "Viewed Profile",
+          "Profile View My", "Viewed Profile"], trackingClient.events)
+
+      }
+    }
   }
 
-  func testUserWithBackedProjectsWithoutProfileViewTracking() {
-    let currentUser = User.template
-
-    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: currentUser))
-    self.vm.inputs.viewWillAppear(true)
-    self.scheduler.advance()
-
-    self.user.assertValues([currentUser, currentUser], "Current user immediately emmitted and refreshed.")
-    self.hasBackedProjects.assertValues([true])
-    self.showEmptyState.assertValues([false])
-
-    XCTAssertEqual([], trackingClient.events)
-  }
-
-  func testUserWithNoProjectsWithViewWillAppearAnimatedFalse() {
-    let response = .template |> DiscoveryEnvelope.lens.projects .~ []
-
-    withEnvironment(apiService: MockService(fetchDiscoveryResponse: response)) {
+  func testUser_WithNoProjects() {
+    withEnvironment(apiService: MockService(fetchUserProjectsBackedResponse: [])) {
       AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
 
       self.vm.inputs.viewWillAppear(false)
+
+      self.hasBackedProjects.assertValueCount(0)
+      self.showEmptyState.assertValueCount(0)
+      XCTAssertEqual(["Profile View My", "Viewed Profile"], trackingClient.events)
 
       self.scheduler.advance()
 
       self.hasBackedProjects.assertValues([false])
       self.showEmptyState.assertValues([true], "Empty state is shown for user with 0 backed projects.")
-    }
-  }
-
-  func testUserWithNoProjectsWithViewWillAppearAnimatedTrue() {
-    let response = .template |> DiscoveryEnvelope.lens.projects .~ []
-
-    withEnvironment(apiService: MockService(fetchDiscoveryResponse: response)) {
-      AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
 
       self.vm.inputs.viewWillAppear(true)
 
       self.scheduler.advance()
 
-      self.hasBackedProjects.assertValues([false])
-      self.showEmptyState.assertValues([true], "Empty state is shown for user with 0 backed projects.")
+      self.hasBackedProjects.assertValues([false], "Backed projects does not emit.")
+      self.showEmptyState.assertValues([true], "Empty state does not emit.")
+      XCTAssertEqual(["Profile View My", "Viewed Profile"], trackingClient.events)
     }
   }
 }

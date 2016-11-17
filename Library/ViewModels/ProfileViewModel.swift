@@ -50,14 +50,9 @@ public protocol ProfileViewModelType {
 public final class ProfileViewModel: ProfileViewModelType, ProfileViewModelInputs, ProfileViewModelOutputs {
   public init() {
     let requestFirstPageWith = Signal.merge(
-      viewWillAppearProperty.signal.ignoreValues().take(1),
+      viewWillAppearProperty.signal.filter(isFalse).ignoreValues(),
       refreshProperty.signal
-      )
-      .map {
-        DiscoveryParams.defaults
-          |> DiscoveryParams.lens.backed .~ true
-          <> DiscoveryParams.lens.sort .~ .endingSoon
-    }
+    )
 
     let requestNextPageWhen = self.willDisplayRowProperty.signal.ignoreNil()
       .map { row, total in row >= total - 3 }
@@ -72,8 +67,8 @@ public final class ProfileViewModel: ProfileViewModelType, ProfileViewModelInput
       clearOnNewRequest: false,
       valuesFromEnvelope: { $0.projects },
       cursorFromEnvelope: { $0.urls.api.moreProjects },
-      requestFromParams: { AppEnvironment.current.apiService.fetchDiscovery(params: $0) },
-      requestFromCursor: { AppEnvironment.current.apiService.fetchDiscovery(paginationUrl: $0) })
+      requestFromParams: { _ in AppEnvironment.current.apiService.fetchUserProjectsBacked() },
+      requestFromCursor: { AppEnvironment.current.apiService.fetchUserProjectsBacked(paginationUrl: $0) })
 
     self.endRefreshing = isLoading.filter(isFalse).ignoreValues()
 
