@@ -1748,7 +1748,7 @@ private func properties(category category: KsApi.Category) -> [String:AnyObject]
 
   result["category_is_root"] = category.isRoot
   result["category_root_id"] = category.rootId
-  result["category_root_name"] = category.isRoot
+  result["category_root_name"] = category.root?.name
 
   let parentProperties = category.parent.map(properties(category:)) ?? [:]
 
