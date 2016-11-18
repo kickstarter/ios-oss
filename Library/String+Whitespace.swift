@@ -1,6 +1,9 @@
 import Foundation
 
 extension String {
+  // Non-breaking space character.
+  public static let nbsp = " "
+
   /**
    Returns a new string with all spaces converted into non-breaking spaces.
 

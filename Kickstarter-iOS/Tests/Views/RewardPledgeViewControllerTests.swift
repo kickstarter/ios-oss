@@ -256,17 +256,24 @@ internal final class RewardPledgeViewControllerTests: TestCase {
     let reward = self.cosmicReward
       |> Reward.lens.rewardsItems .~ []
 
-    AppEnvironment.current.launchedCountries.countries.forEach { country in
+    let launchedCountries = AppEnvironment.current.launchedCountries.countries
+    let currentUserCountries = ["US", "GB"]
+    combos(launchedCountries, currentUserCountries).forEach { country, currentUserCountry in
+      withEnvironment(countryCode: currentUserCountry) {
 
-      let vc = RewardPledgeViewController.configuredWith(
-        project: project |> Project.lens.country .~ country, reward: reward, applePayCapable: false
-      )
-      let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
-      parent.view.frame.size.height -= 64
+        let vc = RewardPledgeViewController.configuredWith(
+          project: project |> Project.lens.country .~ country, reward: reward, applePayCapable: false
+        )
+        let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
+        parent.view.frame.size.height -= 64
 
-      self.scheduler.run()
+        self.scheduler.run()
 
-      FBSnapshotVerifyView(vc.view, identifier: "country_\(country.countryCode)")
+        FBSnapshotVerifyView(
+          vc.view,
+          identifier: "country_\(country.countryCode)_current_user_country_\(currentUserCountry)"
+        )
+      }
     }
   }
 }

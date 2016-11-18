@@ -1,3 +1,4 @@
+"About_reward_amount" = "About %{reward_amount}";
 "All_Art_Projects" = "Tous les projets de la catégorie Art";
 "All_Comics_Projects" = "Tous les projets de la catégorie Bande dessinée";
 "All_Crafts_Projects" = "Tous les projets de la catégorie Artisanat";
@@ -95,7 +96,7 @@
 "Message_backer" = "Envoyer un message au contributeur";
 "Message_creator" = "Envoyer un message au créateur";
 "No_comments_yet" = "Pas de commentaires.";
-"No_one_has_posted_an_update_yet" = "No one has posted an update yet.";
+"No_one_has_posted_an_update_yet" = "Pas d'actus publiées pour le moment.";
 "No_pledges_from_friends_yet" = "Mes amis \nn'ont rien soutenu.";
 "Once_you_back_a_project_well_share" = "Une fois que vous aurez soutenu un projet, des recommandations personnalisées s'afficheront ici.";
 "Opens_comments" = "Ouvre les commentaires.";

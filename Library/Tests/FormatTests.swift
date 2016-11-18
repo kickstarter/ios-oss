@@ -84,28 +84,28 @@ final class FormatTests: TestCase {
     withEnvironment(locale: NSLocale(localeIdentifier: "en")) {
       withEnvironment(countryCode: "US") {
         XCTAssertEqual(Format.currency(1_000, country: .US), "$1,000")
-        XCTAssertEqual(Format.currency(1_000, country: .CA), "$1,000 CAD")
+        XCTAssertEqual(Format.currency(1_000, country: .CA), "CA$ 1,000")
         XCTAssertEqual(Format.currency(1_000, country: .GB), "£1,000")
-        XCTAssertEqual(Format.currency(1_000, country: .DK), "kr1,000 DKK")
+        XCTAssertEqual(Format.currency(1_000, country: .DK), "DKK 1,000")
         XCTAssertEqual(Format.currency(1_000, country: .DE), "€1,000")
 
-        XCTAssertEqual(Format.currency(1_000, country: .CA, omitCurrencyCode: true), "$1,000")
-        XCTAssertEqual(Format.currency(1_000, country: .CA, omitCurrencyCode: false), "$1,000 CAD")
+        XCTAssertEqual(Format.currency(1_000, country: .CA, omitCurrencyCode: true), "CA$ 1,000")
+        XCTAssertEqual(Format.currency(1_000, country: .CA, omitCurrencyCode: false), "CA$ 1,000")
       }
 
       withEnvironment(countryCode: "CA") {
-        XCTAssertEqual(Format.currency(1_000, country: .US), "$1,000 USD")
-        XCTAssertEqual(Format.currency(1_000, country: .CA), "$1,000 CAD")
+        XCTAssertEqual(Format.currency(1_000, country: .US), "US$ 1,000")
+        XCTAssertEqual(Format.currency(1_000, country: .CA), "CA$ 1,000")
         XCTAssertEqual(Format.currency(1_000, country: .GB), "£1,000")
-        XCTAssertEqual(Format.currency(1_000, country: .DK), "kr1,000 DKK")
+        XCTAssertEqual(Format.currency(1_000, country: .DK), "DKK 1,000")
         XCTAssertEqual(Format.currency(1_000, country: .DE), "€1,000")
       }
 
       withEnvironment(countryCode: "GB") {
-        XCTAssertEqual(Format.currency(1_000, country: .US), "$1,000 USD")
-        XCTAssertEqual(Format.currency(1_000, country: .CA), "$1,000 CAD")
+        XCTAssertEqual(Format.currency(1_000, country: .US), "US$ 1,000")
+        XCTAssertEqual(Format.currency(1_000, country: .CA), "CA$ 1,000")
         XCTAssertEqual(Format.currency(1_000, country: .GB), "£1,000")
-        XCTAssertEqual(Format.currency(1_000, country: .DK), "kr1,000 DKK")
+        XCTAssertEqual(Format.currency(1_000, country: .DK), "DKK 1,000")
         XCTAssertEqual(Format.currency(1_000, country: .DE), "€1,000")
       }
     }
@@ -113,25 +113,25 @@ final class FormatTests: TestCase {
     withEnvironment(locale: NSLocale(localeIdentifier: "es")) {
       withEnvironment(countryCode: "US") {
         XCTAssertEqual(Format.currency(1_000, country: .US), "1.000 $")
-        XCTAssertEqual(Format.currency(1_000, country: .CA), "1.000 $ CAD")
+        XCTAssertEqual(Format.currency(1_000, country: .CA), "1.000 CA$")
         XCTAssertEqual(Format.currency(1_000, country: .GB), "1.000 £")
-        XCTAssertEqual(Format.currency(1_000, country: .DK), "1.000 kr DKK")
+        XCTAssertEqual(Format.currency(1_000, country: .DK), "1.000 DKK")
         XCTAssertEqual(Format.currency(1_000, country: .DE), "1.000 €")
       }
 
       withEnvironment(countryCode: "CA") {
-        XCTAssertEqual(Format.currency(1_000, country: .US), "1.000 $ USD")
-        XCTAssertEqual(Format.currency(1_000, country: .CA), "1.000 $ CAD")
+        XCTAssertEqual(Format.currency(1_000, country: .US), "1.000 US$")
+        XCTAssertEqual(Format.currency(1_000, country: .CA), "1.000 CA$")
         XCTAssertEqual(Format.currency(1_000, country: .GB), "1.000 £")
-        XCTAssertEqual(Format.currency(1_000, country: .DK), "1.000 kr DKK")
+        XCTAssertEqual(Format.currency(1_000, country: .DK), "1.000 DKK")
         XCTAssertEqual(Format.currency(1_000, country: .DE), "1.000 €")
       }
 
       withEnvironment(countryCode: "GB") {
-        XCTAssertEqual(Format.currency(1_000, country: .US), "1.000 $ USD")
-        XCTAssertEqual(Format.currency(1_000, country: .CA), "1.000 $ CAD")
+        XCTAssertEqual(Format.currency(1_000, country: .US), "1.000 US$")
+        XCTAssertEqual(Format.currency(1_000, country: .CA), "1.000 CA$")
         XCTAssertEqual(Format.currency(1_000, country: .GB), "1.000 £")
-        XCTAssertEqual(Format.currency(1_000, country: .DK), "1.000 kr DKK")
+        XCTAssertEqual(Format.currency(1_000, country: .DK), "1.000 DKK")
         XCTAssertEqual(Format.currency(1_000, country: .DE), "1.000 €")
       }
     }
@@ -139,25 +139,25 @@ final class FormatTests: TestCase {
     withEnvironment(locale: NSLocale(localeIdentifier: "fr")) {
       withEnvironment(countryCode: "US") {
         XCTAssertEqual(Format.currency(1_000, country: .US), "1 000 $")
-        XCTAssertEqual(Format.currency(1_000, country: .CA), "1 000 $ CAD")
+        XCTAssertEqual(Format.currency(1_000, country: .CA), "1 000 CA$")
         XCTAssertEqual(Format.currency(1_000, country: .GB), "1 000 £")
-        XCTAssertEqual(Format.currency(1_000, country: .DK), "1 000 kr DKK")
+        XCTAssertEqual(Format.currency(1_000, country: .DK), "1 000 DKK")
         XCTAssertEqual(Format.currency(1_000, country: .DE), "1 000 €")
       }
 
       withEnvironment(countryCode: "CA") {
-        XCTAssertEqual(Format.currency(1_000, country: .US), "1 000 $ USD")
-        XCTAssertEqual(Format.currency(1_000, country: .CA), "1 000 $ CAD")
+        XCTAssertEqual(Format.currency(1_000, country: .US), "1 000 US$")
+        XCTAssertEqual(Format.currency(1_000, country: .CA), "1 000 CA$")
         XCTAssertEqual(Format.currency(1_000, country: .GB), "1 000 £")
-        XCTAssertEqual(Format.currency(1_000, country: .DK), "1 000 kr DKK")
+        XCTAssertEqual(Format.currency(1_000, country: .DK), "1 000 DKK")
         XCTAssertEqual(Format.currency(1_000, country: .DE), "1 000 €")
       }
 
       withEnvironment(countryCode: "GB") {
-        XCTAssertEqual(Format.currency(1_000, country: .US), "1 000 $ USD")
-        XCTAssertEqual(Format.currency(1_000, country: .CA), "1 000 $ CAD")
+        XCTAssertEqual(Format.currency(1_000, country: .US), "1 000 US$")
+        XCTAssertEqual(Format.currency(1_000, country: .CA), "1 000 CA$")
         XCTAssertEqual(Format.currency(1_000, country: .GB), "1 000 £")
-        XCTAssertEqual(Format.currency(1_000, country: .DK), "1 000 kr DKK")
+        XCTAssertEqual(Format.currency(1_000, country: .DK), "1 000 DKK")
         XCTAssertEqual(Format.currency(1_000, country: .DE), "1 000 €")
       }
     }
@@ -165,35 +165,35 @@ final class FormatTests: TestCase {
     withEnvironment(locale: NSLocale(localeIdentifier: "de")) {
       withEnvironment(countryCode: "US") {
         XCTAssertEqual(Format.currency(1_000, country: .US), "1.000 $")
-        XCTAssertEqual(Format.currency(1_000, country: .CA), "1.000 $ CAD")
+        XCTAssertEqual(Format.currency(1_000, country: .CA), "1.000 CA$")
         XCTAssertEqual(Format.currency(1_000, country: .GB), "1.000 £")
-        XCTAssertEqual(Format.currency(1_000, country: .DK), "1.000 kr DKK")
+        XCTAssertEqual(Format.currency(1_000, country: .DK), "1.000 DKK")
         XCTAssertEqual(Format.currency(1_000, country: .DE), "1.000 €")
       }
 
       withEnvironment(countryCode: "CA") {
-        XCTAssertEqual(Format.currency(1_000, country: .US), "1.000 $ USD")
-        XCTAssertEqual(Format.currency(1_000, country: .CA), "1.000 $ CAD")
+        XCTAssertEqual(Format.currency(1_000, country: .US), "1.000 US$")
+        XCTAssertEqual(Format.currency(1_000, country: .CA), "1.000 CA$")
         XCTAssertEqual(Format.currency(1_000, country: .GB), "1.000 £")
-        XCTAssertEqual(Format.currency(1_000, country: .DK), "1.000 kr DKK")
+        XCTAssertEqual(Format.currency(1_000, country: .DK), "1.000 DKK")
         XCTAssertEqual(Format.currency(1_000, country: .DE), "1.000 €")
       }
 
       withEnvironment(countryCode: "GB") {
-        XCTAssertEqual(Format.currency(1_000, country: .US), "1.000 $ USD")
-        XCTAssertEqual(Format.currency(1_000, country: .CA), "1.000 $ CAD")
+        XCTAssertEqual(Format.currency(1_000, country: .US), "1.000 US$")
+        XCTAssertEqual(Format.currency(1_000, country: .CA), "1.000 CA$")
         XCTAssertEqual(Format.currency(1_000, country: .GB), "1.000 £")
-        XCTAssertEqual(Format.currency(1_000, country: .DK), "1.000 kr DKK")
+        XCTAssertEqual(Format.currency(1_000, country: .DK), "1.000 DKK")
         XCTAssertEqual(Format.currency(1_000, country: .DE), "1.000 €")
       }
     }
 
     withEnvironment(locale: NSLocale(localeIdentifier: "dk")) {
       withEnvironment(countryCode: "DK") {
-        XCTAssertEqual(Format.currency(1_000, country: .US), "$ 1000 USD")
-        XCTAssertEqual(Format.currency(1_000, country: .CA), "$ 1000 CAD")
+        XCTAssertEqual(Format.currency(1_000, country: .US), "US$ 1000")
+        XCTAssertEqual(Format.currency(1_000, country: .CA), "CA$ 1000")
         XCTAssertEqual(Format.currency(1_000, country: .GB), "£ 1000")
-        XCTAssertEqual(Format.currency(1_000, country: .DK), "kr 1000 DKK")
+        XCTAssertEqual(Format.currency(1_000, country: .DK), "DKK 1000")
         XCTAssertEqual(Format.currency(1_000, country: .DE), "€ 1000")
       }
     }

@@ -339,7 +339,7 @@ RewardPledgeViewModelOutputs {
       .map { !$0.shipping.enabled }
 
     self.pledgeCurrencyLabelText = project
-      .map(currencyLabel(forProject:))
+      .map { currencySymbol(forCountry: $0.country).trimmed() }
 
     let initialPledgeTextFieldText = projectAndReward
       .map { project, reward -> Int in
@@ -934,14 +934,6 @@ private func defaultShippingRule(fromShippingRules shippingRules: [ShippingRule]
 private func projectNeedsCurrencyCode(project: Project) -> Bool {
   return (project.country.countryCode != "US" || AppEnvironment.current.config?.countryCode != "US")
     && project.country.currencySymbol == "$"
-}
-
-private func currencyLabel(forProject project: Project) -> String {
-  guard projectNeedsCurrencyCode(project) else {
-    return project.country.currencySymbol
-  }
-
-  return "\(project.country.currencyCode) \(project.country.currencySymbol)"
 }
 
 private func backingError(forProject project: Project, amount: Int, reward: Reward?) -> PledgeError? {

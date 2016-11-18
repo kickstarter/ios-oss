@@ -72,3 +72,33 @@ internal func minPledgeAmount(forProject project: Project, reward: Reward?) -> I
 
   return minAndMaxPledgeAmount(forProject: project, reward: reward).min
 }
+
+/**
+ Returns the full currency symbol for a country. Special logic is added around prefixing currency symbols
+ with country/currency codes based on a variety of factors.
+
+ - parameter country: The country.
+
+ - returns: The currency symbol that can be used for currency display.
+ */
+public func currencySymbol(forCountry country: Project.Country) -> String {
+
+  guard AppEnvironment.current.launchedCountries.currencyNeedsCode(country.currencySymbol) else {
+    // Currencies that dont have ambigious currencies can just use their symbol.
+    return country.currencySymbol
+  }
+
+  if country == .US && AppEnvironment.current.countryCode == "US" {
+    // US people looking at US projects just get the currency symbol
+    return country.currencySymbol
+  } else if country == .SG {
+    // Singapore projects get a special currency prefix
+    return "\(String.nbsp)S\(country.currencySymbol)\(String.nbsp)"
+  } else if country.currencySymbol == "kr" || country.currencySymbol == "Fr" {
+    // Kroner projects use the currency code prefix
+    return "\(String.nbsp)\(country.currencyCode)\(String.nbsp)"
+  } else {
+    // Everything else uses the country code prefix.
+    return "\(String.nbsp)\(country.countryCode)\(country.currencySymbol)\(String.nbsp)"
+  }
+}

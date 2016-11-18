@@ -12,6 +12,23 @@
 // swiftlint:disable type_body_length
 public enum Strings {
   /**
+   "About %{reward_amount}"
+
+   - **es**: "About %{reward_amount}"
+   - **de**: "About %{reward_amount}"
+   - **fr**: "About %{reward_amount}"
+   - **it**: "About %{reward_amount}"
+   - **en**: "About %{reward_amount}"
+  */
+  public static func About_reward_amount(reward_amount reward_amount: String) -> String {
+    return localizedString(
+      key: "About_reward_amount",
+      defaultValue: "About %{reward_amount}",
+      count: nil,
+      substitutions: ["reward_amount": reward_amount]
+    )
+  }
+  /**
    "All Art Projects"
 
    - **es**: "Todos los proyectos de la categoría Arte"
@@ -1538,7 +1555,7 @@ with friends."
 
    - **es**: "No one has posted an update yet."
    - **de**: "No one has posted an update yet."
-   - **fr**: "No one has posted an update yet."
+   - **fr**: "Pas d'actus publiées pour le moment."
    - **it**: "No one has posted an update yet."
    - **en**: "No one has posted an update yet."
   */
