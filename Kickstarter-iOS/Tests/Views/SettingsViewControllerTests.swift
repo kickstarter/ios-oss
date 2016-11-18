@@ -7,6 +7,16 @@ import XCTest
 
 internal final class SettingsViewControllerTests: TestCase {
 
+  override func setUp() {
+    super.setUp()
+    UIView.setAnimationsEnabled(false)
+  }
+
+  override func tearDown() {
+    UIView.setAnimationsEnabled(true)
+    super.tearDown()
+  }
+
   func testNonCreator() {
     let currentUser = .template |> User.lens.stats.backedProjectsCount .~ 1234
 
@@ -53,6 +63,18 @@ internal final class SettingsViewControllerTests: TestCase {
 
         FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)")
       }
+    }
+  }
+
+  func testNonRelease() {
+    let bundle = MockBundle(bundleIdentifier: "com.kickstarter.kickstarter.beta")
+
+    withEnvironment(mainBundle: bundle) {
+      let vc = SettingsViewController.instantiate()
+      let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
+      parent.view.frame.size.height = 1_450
+
+      FBSnapshotVerifyView(vc.view)
     }
   }
 }

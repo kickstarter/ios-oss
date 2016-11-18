@@ -384,7 +384,7 @@ internal final class SettingsViewController: UIViewController {
     }
 
     self.backingsButton.rac.selected = self.viewModel.outputs.backingsSelected
-    self.betaToolsStackView.rac.hidden = self.viewModel.outputs.betaToolsHidden.mapConst(false)
+    self.betaToolsStackView.rac.hidden = self.viewModel.outputs.betaToolsHidden
     self.commentsButton.rac.selected = self.viewModel.outputs.commentsSelected
     self.creatorStackView.rac.hidden = self.viewModel.outputs.creatorNotificationsHidden
     self.followerButton.rac.selected = self.viewModel.outputs.followerSelected
