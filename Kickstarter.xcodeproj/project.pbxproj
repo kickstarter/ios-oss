@@ -918,6 +918,8 @@
 		A7FC8C071C8F1DEA00C3B49B /* CircleAvatarImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FC8C051C8F1DEA00C3B49B /* CircleAvatarImageView.swift */; };
 		D02667CA1DE30A1F00D41AE1 /* KsLive.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D02667AE1DE309AE00D41AE1 /* KsLive.framework */; };
 		D02667CB1DE30A1F00D41AE1 /* KsLive.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D02667AE1DE309AE00D41AE1 /* KsLive.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D0F21CC31DE3180A004C384C /* OpenTok.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0F21CC21DE3180A004C384C /* OpenTok.framework */; };
+		D0F21CC41DE3180A004C384C /* OpenTok.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D0F21CC21DE3180A004C384C /* OpenTok.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D70347901DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D703478F1DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift */; };
 		D70347911DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D703478F1DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift */; };
 		D7086F3C1DB7FBA40087E5EB /* BackingViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7086F3B1DB7FBA40087E5EB /* BackingViewControllerTests.swift */; };
@@ -1545,6 +1547,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				A73924011D272312004524C3 /* Kickstarter_Framework.framework in Embed Frameworks */,
+				D0F21CC41DE3180A004C384C /* OpenTok.framework in Embed Frameworks */,
 				A7C1910A1D183196001ECC79 /* Prelude_UIKit.framework in Embed Frameworks */,
 				A7BE4F231D05C14700353EF9 /* Prelude.framework in Embed Frameworks */,
 				80762E431D071CB70074189D /* AlamofireImage.framework in Embed Frameworks */,
@@ -2192,6 +2195,7 @@
 		A7FA38D81D9068AD0041FC9C /* RewardsTitleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RewardsTitleCell.swift; sourceTree = "<group>"; };
 		A7FC8C051C8F1DEA00C3B49B /* CircleAvatarImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleAvatarImageView.swift; sourceTree = "<group>"; };
 		D026678A1DE309AD00D41AE1 /* KsLive.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = KsLive.xcodeproj; path = Frameworks/KsLive/KsLive.xcodeproj; sourceTree = "<group>"; };
+		D0F21CC21DE3180A004C384C /* OpenTok.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenTok.framework; path = Frameworks/KsLive/Frameworks/OpenTok.framework; sourceTree = "<group>"; };
 		D703478F1DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryExpandableRowCellViewModel.swift; sourceTree = "<group>"; };
 		D7086F3B1DB7FBA40087E5EB /* BackingViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackingViewControllerTests.swift; sourceTree = "<group>"; };
 		D7A9BE121DC125B800422B31 /* DiscoveryExpandableRowCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryExpandableRowCellViewModelTests.swift; sourceTree = "<group>"; };
@@ -2267,6 +2271,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D02667CA1DE30A1F00D41AE1 /* KsLive.framework in Frameworks */,
+				D0F21CC31DE3180A004C384C /* OpenTok.framework in Frameworks */,
 				A73924001D27230B004524C3 /* Kickstarter_Framework.framework in Frameworks */,
 				A7722F401D2D3B6B0049BCDC /* FBSDKCoreKit.framework in Frameworks */,
 				A7722F411D2D3B6C0049BCDC /* FBSDKLoginKit.framework in Frameworks */,
@@ -2512,6 +2517,7 @@
 		A7424F421C84F43300FDC1E4 /* iOS */ = {
 			isa = PBXGroup;
 			children = (
+				D0F21CC21DE3180A004C384C /* OpenTok.framework */,
 				01D31A361CCA786A0037A178 /* FBSDKCoreKit.framework */,
 				01D31A371CCA786A0037A178 /* FBSDKLoginKit.framework */,
 				A75F71621D897E4C0091258A /* Stripe.framework */,
