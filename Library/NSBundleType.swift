@@ -24,7 +24,7 @@ extension NSBundleType {
   }
 
   public var version: String {
-    return String(self.infoDictionary?["CFBundleVersion"] as? Int) ?? "0"
+    return self.infoDictionary?["CFBundleVersion"] as? String ?? "0"
   }
 
   public var isAlpha: Bool {

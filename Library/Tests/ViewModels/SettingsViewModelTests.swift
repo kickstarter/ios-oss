@@ -389,10 +389,36 @@ internal final class SettingsViewModelTests: TestCase {
     self.updateCurrentUser.assertValueCount(4, "User should be updated.")
   }
 
-  func testVersionTextEmits() {
-    self.vm.inputs.viewDidLoad()
-    XCTAssertEqual(["Settings View", "Viewed Settings"], self.trackingClient.events)
-    self.versionText.assertValues(["Version \(self.mainBundle.shortVersionString)"],
-                              "Build version string emitted.")
+  func testVersionText_Alpha() {
+    withEnvironment(mainBundle: MockBundle(bundleIdentifier: KickstarterBundleIdentifier.alpha.rawValue)) {
+      self.vm.inputs.viewDidLoad()
+
+      XCTAssertEqual(["Settings View", "Viewed Settings"], self.trackingClient.events)
+      self.versionText.assertValues(
+        ["Version \(self.mainBundle.shortVersionString) #\(self.mainBundle.version)"],
+        "Build version string emitted with build number.")
+    }
+  }
+
+  func testVersionText_Beta() {
+    withEnvironment(mainBundle: MockBundle(bundleIdentifier: KickstarterBundleIdentifier.beta.rawValue)) {
+      self.vm.inputs.viewDidLoad()
+
+      XCTAssertEqual(["Settings View", "Viewed Settings"], self.trackingClient.events)
+      self.versionText.assertValues(
+        ["Version \(self.mainBundle.shortVersionString) #\(self.mainBundle.version)"],
+        "Build version string emitted with build number.")
+    }
+  }
+
+  func testVersionText_Release() {
+    withEnvironment(mainBundle: MockBundle(bundleIdentifier: KickstarterBundleIdentifier.release.rawValue)) {
+      self.vm.inputs.viewDidLoad()
+
+      XCTAssertEqual(["Settings View", "Viewed Settings"], self.trackingClient.events)
+      self.versionText.assertValues(
+        ["Version \(self.mainBundle.shortVersionString)"],
+        "Build version string emitted without build number.")
+    }
   }
 }

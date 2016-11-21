@@ -204,9 +204,13 @@ public final class SettingsViewModel: SettingsViewModelType, SettingsViewModelIn
 
     self.versionText = viewDidLoadProperty.signal
       .map {
-        Strings.profile_settings_version_number(
-            version_number: AppEnvironment.current.mainBundle.shortVersionString
-        )
+        let versionString = Strings.profile_settings_version_number(
+          version_number: AppEnvironment.current.mainBundle.shortVersionString
+          )
+        let build = AppEnvironment.current.mainBundle.isRelease
+          ? ""
+          : " #\(AppEnvironment.current.mainBundle.version)"
+        return "\(versionString)\(build)"
     }
 
     self.betaToolsHidden = self.viewDidLoadProperty.signal

@@ -308,7 +308,8 @@ internal final class SettingsViewController: UIViewController {
 
     self.versionLabel
       |> UILabel.lens.textColor .~ .ksr_navy_600
-      |> UILabel.lens.font .~ .ksr_subhead()
+      |> UILabel.lens.font .~ .ksr_caption1()
+      |> UILabel.lens.numberOfLines .~ 0
 
     self.wereAllEarsTitleLabel
       |> settingsTitleLabelStyle
