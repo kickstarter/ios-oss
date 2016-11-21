@@ -1,4 +1,4 @@
-"About_reward_amount" = "About %{reward_amount}";
+"About_reward_amount" = "Ungefähr %{reward_amount}";
 "All_Art_Projects" = "Alle Projekte der Kategorie Kunst";
 "All_Comics_Projects" = "Alle Projekte der Kategorie Comics";
 "All_Crafts_Projects" = "Alle Projekte der Kategorie Kunsthandwerk";
@@ -956,7 +956,7 @@
 "rewards.select_label.select" = "Auswählen";
 "rewards.selected_label.you_selected" = "Deine Auswahl";
 "rewards.shipping_preferences.location.unrestricted" = "Weltweiter Versand";
-"rewards.title.about_amount_usd" = "Ungef'hr %{reward_amount} USD";
+"rewards.title.about_amount_usd" = "Ungefähr %{reward_amount} USD";
 "rewards.title.pledge_reward_currency_or_more" = "Trage %{reward_currency} oder mehr bei";
 "search.by_creator" = "von %{creator_name}";
 "search.most_popular" = "Publikumslieblinge";

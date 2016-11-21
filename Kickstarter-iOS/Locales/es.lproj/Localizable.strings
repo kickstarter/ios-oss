@@ -1,4 +1,4 @@
-"About_reward_amount" = "About %{reward_amount}";
+"About_reward_amount" = "Aprox. %{reward_amount}";
 "All_Art_Projects" = "Todos los proyectos de la categoría Arte";
 "All_Comics_Projects" = "Todos los proyectos de la categoría Comics";
 "All_Crafts_Projects" = "Todos los proyectos de la categoría Artesanías";
@@ -21,7 +21,7 @@
 "Ask_me_anything" = "¡Pregúntame!";
 "Back_this_project_below" = "Patrocina este proyecto:";
 "Backed_by_Friends" = "Patrocinados por amigos";
-"Backed_by_people_you_follow" = "Patrocinados por gente a la que sigues";
+"Backed_by_people_you_follow" = "Patrocinados por gente que sigues";
 "Backed_projects_projects_count" = "Proyectos patrocinados: %{project_count}";
 "Backers_count_separator_backers.few" = "%{backers_count}\npatrocinadores";
 "Backers_count_separator_backers.many" = "%{backers_count}\npatrocinadores";
@@ -96,7 +96,7 @@
 "Message_backer" = "Enviar mensaje a patrocinador";
 "Message_creator" = "Enviar mensaje al creador";
 "No_comments_yet" = "No hay comentarios todavia.";
-"No_one_has_posted_an_update_yet" = "No one has posted an update yet.";
+"No_one_has_posted_an_update_yet" = "Todavía no se han publicado actualizaciones.";
 "No_pledges_from_friends_yet" = "No hay contribuciones de amigos todavía.";
 "Once_you_back_a_project_well_share" = "Tu patrocinio de un proyecto nos ayuda a hacerte recomendaciones personalizadas.";
 "Opens_comments" = "Abre comentarios.";
@@ -807,7 +807,7 @@
 "profile.settings.newsletter.promo" = "Novedades y eventos de Kickstarter";
 "profile.settings.newsletter.title" = "Boletines informativos";
 "profile.settings.newsletter.weekly" = "Nuestros Favoritos";
-"profile.settings.rating.message" = "Gracias por usar la aplicación de Kickstarter.\nSi tienes un momento, ¿te importaría calificar tu experiencia?\n¡Te lo agradeceríamos!";
+"profile.settings.rating.message" = "Gracias por usar la aplicación de Kickstarter.\nSi tienes un momento, ¿podrías calificar tu experiencia?\n¡Te lo agradeceríamos!";
 "profile.settings.rating.option.message_if_you_enjoy_using_Kickstarter" = "Si es así, ¿tendrías un momento para calificarla en Play Store?";
 "profile.settings.rating.option.no_thanks" = "No, gracias";
 "profile.settings.rating.option.rate_now" = "Califícala ahora";
