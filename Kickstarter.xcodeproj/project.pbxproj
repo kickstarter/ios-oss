@@ -916,6 +916,8 @@
 		A7FA38D91D9068AD0041FC9C /* RewardsTitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FA38D81D9068AD0041FC9C /* RewardsTitleCell.swift */; };
 		A7FC8C061C8F1DEA00C3B49B /* CircleAvatarImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FC8C051C8F1DEA00C3B49B /* CircleAvatarImageView.swift */; };
 		A7FC8C071C8F1DEA00C3B49B /* CircleAvatarImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FC8C051C8F1DEA00C3B49B /* CircleAvatarImageView.swift */; };
+		D02667CA1DE30A1F00D41AE1 /* KsLive.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D02667AE1DE309AE00D41AE1 /* KsLive.framework */; };
+		D02667CB1DE30A1F00D41AE1 /* KsLive.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D02667AE1DE309AE00D41AE1 /* KsLive.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D70347901DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D703478F1DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift */; };
 		D70347911DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D703478F1DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift */; };
 		D7086F3C1DB7FBA40087E5EB /* BackingViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7086F3B1DB7FBA40087E5EB /* BackingViewControllerTests.swift */; };
@@ -1512,6 +1514,27 @@
 			remoteGlobalIDString = CA43C5F81BB358F200C180DA;
 			remoteInfo = "KsApi-tvOS";
 		};
+		D02667AD1DE309AE00D41AE1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D026678A1DE309AD00D41AE1 /* KsLive.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D08607201D6B8283004DFD5E;
+			remoteInfo = KsLive;
+		};
+		D02667AF1DE309AE00D41AE1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D026678A1DE309AD00D41AE1 /* KsLive.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D086072A1D6B8283004DFD5E;
+			remoteInfo = KsLiveTests;
+		};
+		D02667CC1DE30A1F00D41AE1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D026678A1DE309AD00D41AE1 /* KsLive.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = D086071F1D6B8283004DFD5E;
+			remoteInfo = KsLive;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -1528,6 +1551,7 @@
 				80762E3F1D071CAA0074189D /* Alamofire.framework in Embed Frameworks */,
 				A7BE4F221D05C14100353EF9 /* Curry.framework in Embed Frameworks */,
 				A7BE4F211D05C13200353EF9 /* Argo.framework in Embed Frameworks */,
+				D02667CB1DE30A1F00D41AE1 /* KsLive.framework in Embed Frameworks */,
 				A76E0AF61D00D09B00EC525A /* Result.framework in Embed Frameworks */,
 				A76E0ADA1D00D06800EC525A /* ReactiveExtensions.framework in Embed Frameworks */,
 				A76E0AC41D00D04400EC525A /* ReactiveCocoa.framework in Embed Frameworks */,
@@ -2167,6 +2191,7 @@
 		A7FA38A31D9068940041FC9C /* PledgeTitleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PledgeTitleCell.swift; sourceTree = "<group>"; };
 		A7FA38D81D9068AD0041FC9C /* RewardsTitleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RewardsTitleCell.swift; sourceTree = "<group>"; };
 		A7FC8C051C8F1DEA00C3B49B /* CircleAvatarImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleAvatarImageView.swift; sourceTree = "<group>"; };
+		D026678A1DE309AD00D41AE1 /* KsLive.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = KsLive.xcodeproj; path = Frameworks/KsLive/KsLive.xcodeproj; sourceTree = "<group>"; };
 		D703478F1DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryExpandableRowCellViewModel.swift; sourceTree = "<group>"; };
 		D7086F3B1DB7FBA40087E5EB /* BackingViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackingViewControllerTests.swift; sourceTree = "<group>"; };
 		D7A9BE121DC125B800422B31 /* DiscoveryExpandableRowCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryExpandableRowCellViewModelTests.swift; sourceTree = "<group>"; };
@@ -2241,6 +2266,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D02667CA1DE30A1F00D41AE1 /* KsLive.framework in Frameworks */,
 				A73924001D27230B004524C3 /* Kickstarter_Framework.framework in Frameworks */,
 				A7722F401D2D3B6B0049BCDC /* FBSDKCoreKit.framework in Frameworks */,
 				A7722F411D2D3B6C0049BCDC /* FBSDKLoginKit.framework in Frameworks */,
@@ -3294,6 +3320,7 @@
 				A7BE4EEB1D05C10200353EF9 /* Argo.xcodeproj */,
 				A7BE4F031D05C10600353EF9 /* Curry.xcodeproj */,
 				A7D1F8E41C84FB55000D41D5 /* KsApi.xcodeproj */,
+				D026678A1DE309AD00D41AE1 /* KsLive.xcodeproj */,
 				A7BE4F121D05C10B00353EF9 /* Prelude.xcodeproj */,
 				A76E0AAF1D00D02300EC525A /* ReactiveCocoa.xcodeproj */,
 				A76E0AC51D00D05F00EC525A /* ReactiveExtensions.xcodeproj */,
@@ -3430,6 +3457,15 @@
 				9D89B7E41D6B8DB90021F6FF /* WebModalViewModel.swift */,
 			);
 			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		D026678B1DE309AD00D41AE1 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D02667AE1DE309AE00D41AE1 /* KsLive.framework */,
+				D02667B01DE309AE00D41AE1 /* KsLiveTests.xctest */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -3597,6 +3633,7 @@
 			);
 			dependencies = (
 				A73923FF1D272302004524C3 /* PBXTargetDependency */,
+				D02667CD1DE30A1F00D41AE1 /* PBXTargetDependency */,
 			);
 			name = "Kickstarter-iOS";
 			productName = Kickstarter;
@@ -3757,6 +3794,10 @@
 				{
 					ProductGroup = A7D1F8E51C84FB55000D41D5 /* Products */;
 					ProjectRef = A7D1F8E41C84FB55000D41D5 /* KsApi.xcodeproj */;
+				},
+				{
+					ProductGroup = D026678B1DE309AD00D41AE1 /* Products */;
+					ProjectRef = D026678A1DE309AD00D41AE1 /* KsLive.xcodeproj */;
 				},
 				{
 					ProductGroup = A7BE4F131D05C10B00353EF9 /* Products */;
@@ -4224,6 +4265,20 @@
 			fileType = wrapper.cfbundle;
 			path = "KsApi-tvOSTests.xctest";
 			remoteRef = A7D1F8F11C84FB55000D41D5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		D02667AE1DE309AE00D41AE1 /* KsLive.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = KsLive.framework;
+			remoteRef = D02667AD1DE309AE00D41AE1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		D02667B01DE309AE00D41AE1 /* KsLiveTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = KsLiveTests.xctest;
+			remoteRef = D02667AF1DE309AE00D41AE1 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -5347,6 +5402,11 @@
 			name = "KsApi-tvOS";
 			targetProxy = A7E315901C8882EA000DD85A /* PBXContainerItemProxy */;
 		};
+		D02667CD1DE30A1F00D41AE1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = KsLive;
+			targetProxy = D02667CC1DE30A1F00D41AE1 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
@@ -5433,18 +5493,23 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Kickstarter of New York";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Kickstarter of New York";
 				DEFINES_MODULE = YES;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Frameworks/HockeySDK/iOS/HockeySDK.embeddedframework",
 					"$(PROJECT_DIR)/Frameworks/FBSDK/iOS",
+					"$(PROJECT_DIR)/Frameworks/KsLive/Frameworks",
+					"$(PROJECT_DIR)/Frameworks",
 				);
 				"FRAMEWORK_SEARCH_PATHS[sdk=iphone*]" = (
 					"$(SYMROOT)/Release$(EFFECTIVE_PLATFORM_NAME)",
 					"$(PROJECT_DIR)/Frameworks/HockeySDK/iOS/HockeySDK.embeddedframework",
 					"$(PROJECT_DIR)/Frameworks/FBSDK/iOS",
+					"$(PROJECT_DIR)/Frameworks/KsLive/Frameworks",
 				);
+				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "Kickstarter-iOS/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstarter.beta;
 				PRODUCT_MODULE_NAME = Kickstarter_iOS;
 				PRODUCT_NAME = KickBeta;
@@ -5488,6 +5553,8 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Frameworks/FBSDK/iOS",
+					"$(PROJECT_DIR)/Frameworks/KsLive/Frameworks",
+					"$(PROJECT_DIR)/Frameworks",
 				);
 				"FRAMEWORK_SEARCH_PATHS[sdk=appletv*]" = (
 					"$(SYMROOT)/Release$(EFFECTIVE_PLATFORM_NAME)",
@@ -5557,6 +5624,7 @@
 					"$(PROJECT_DIR)/Frameworks/HockeySDK/iOS/HockeySDK.embeddedframework",
 					"$(PROJECT_DIR)/Frameworks",
 					"$(PROJECT_DIR)/Frameworks/Stripe",
+					"$(PROJECT_DIR)/Frameworks/KsLive/Frameworks",
 				);
 				IBSC_COMPILER_AUTO_ACTIVATE_CUSTOM_FONTS = NO;
 				IBSC_ERRORS = NO;
@@ -5587,6 +5655,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Frameworks/FBSDK/tvOS",
+					"$(PROJECT_DIR)/Frameworks/KsLive/Frameworks",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Kickstarter-tvOS/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -5624,6 +5693,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Frameworks/FBSDK",
 					"$(PROJECT_DIR)/Frameworks/FBSDK/tvOS",
+					"$(PROJECT_DIR)/Frameworks/KsLive/Frameworks",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Kickstarter-tvOS/Supporting Files/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -5691,6 +5761,8 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Frameworks/FBSDK/iOS",
+					"$(PROJECT_DIR)/Frameworks/KsLive/Frameworks",
+					"$(PROJECT_DIR)/Frameworks",
 				);
 				"FRAMEWORK_SEARCH_PATHS[sdk=appletv*]" = (
 					"$(PROJECT_DIR)/Frameworks/HockeySDK/tvOS/HockeySDK.embeddedframework",
@@ -5726,6 +5798,8 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Frameworks/FBSDK/iOS",
+					"$(PROJECT_DIR)/Frameworks/KsLive/Frameworks",
+					"$(PROJECT_DIR)/Frameworks",
 				);
 				"FRAMEWORK_SEARCH_PATHS[sdk=appletv*]" = (
 					"$(PROJECT_DIR)/Frameworks/HockeySDK/tvOS/HockeySDK.embeddedframework",
@@ -5815,6 +5889,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Frameworks/FBSDK",
 					"$(PROJECT_DIR)/Frameworks/FBSDK/tvOS",
+					"$(PROJECT_DIR)/Frameworks/KsLive/Frameworks",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Kickstarter-tvOS/Supporting Files/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -5841,6 +5916,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Frameworks/FBSDK",
 					"$(PROJECT_DIR)/Frameworks/FBSDK/tvOS",
+					"$(PROJECT_DIR)/Frameworks/KsLive/Frameworks",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Kickstarter-tvOS/Supporting Files/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -5906,6 +5982,7 @@
 					"$(PROJECT_DIR)/Frameworks/HockeySDK/iOS/HockeySDK.embeddedframework",
 					"$(PROJECT_DIR)/Frameworks",
 					"$(PROJECT_DIR)/Frameworks/Stripe",
+					"$(PROJECT_DIR)/Frameworks/KsLive/Frameworks",
 				);
 				IBSC_COMPILER_AUTO_ACTIVATE_CUSTOM_FONTS = NO;
 				IBSC_ERRORS = NO;
@@ -5942,6 +6019,7 @@
 					"$(PROJECT_DIR)/Frameworks/HockeySDK/iOS/HockeySDK.embeddedframework",
 					"$(PROJECT_DIR)/Frameworks",
 					"$(PROJECT_DIR)/Frameworks/Stripe",
+					"$(PROJECT_DIR)/Frameworks/KsLive/Frameworks",
 				);
 				IBSC_COMPILER_AUTO_ACTIVATE_CUSTOM_FONTS = NO;
 				IBSC_ERRORS = NO;
@@ -6018,18 +6096,23 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEFINES_MODULE = YES;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Frameworks/HockeySDK/iOS/HockeySDK.embeddedframework",
 					"$(PROJECT_DIR)/Frameworks/FBSDK/iOS",
+					"$(PROJECT_DIR)/Frameworks/KsLive/Frameworks",
+					"$(PROJECT_DIR)/Frameworks",
 				);
 				"FRAMEWORK_SEARCH_PATHS[sdk=iphone*]" = (
 					"$(PROJECT_DIR)/Frameworks/HockeySDK/iOS/HockeySDK.embeddedframework",
 					"$(PROJECT_DIR)/Frameworks/Stripe/",
 					"$(PROJECT_DIR)/Frameworks/FBSDK/iOS",
+					"$(PROJECT_DIR)/Frameworks/KsLive/Frameworks",
 				);
+				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "Kickstarter-iOS/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstarter.alpha;
 				PRODUCT_MODULE_NAME = Kickstarter_iOS;
 				PRODUCT_NAME = KickDebug;
@@ -6051,17 +6134,22 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				DEFINES_MODULE = YES;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Frameworks/HockeySDK/iOS/HockeySDK.embeddedframework",
 					"$(PROJECT_DIR)/Frameworks/FBSDK/iOS",
+					"$(PROJECT_DIR)/Frameworks/KsLive/Frameworks",
+					"$(PROJECT_DIR)/Frameworks",
 				);
 				"FRAMEWORK_SEARCH_PATHS[sdk=iphone*]" = (
 					"$(PROJECT_DIR)/Frameworks/HockeySDK/iOS/HockeySDK.embeddedframework",
 					"$(PROJECT_DIR)/Frameworks/FBSDK/iOS",
+					"$(PROJECT_DIR)/Frameworks/KsLive/Frameworks",
 				);
+				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "Kickstarter-iOS/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstarter;
 				PRODUCT_MODULE_NAME = Kickstarter_iOS;
 				PROVISIONING_PROFILE = "";
@@ -6136,6 +6224,7 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				"FRAMEWORK_SEARCH_PATHS[sdk=iphone*]" = "$(PROJECT_DIR)/Frameworks/HockeySDK/iOS/HockeySDK.embeddedframework";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -6218,6 +6307,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Frameworks/FBSDK/tvOS",
+					"$(PROJECT_DIR)/Frameworks/KsLive/Frameworks",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Kickstarter-tvOS/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -6235,6 +6325,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Frameworks/FBSDK/tvOS",
+					"$(PROJECT_DIR)/Frameworks/KsLive/Frameworks",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Kickstarter-tvOS/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
