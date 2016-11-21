@@ -241,19 +241,14 @@ RewardPledgeViewModelOutputs {
       .map { _ in AppEnvironment.current.config?.stripePublishableKey }
       .ignoreNil()
 
-    self.applePayButtonHidden = combineLatest(applePayCapable, projectAndReward)
-      .map(unpack)
-      .map { applePayCapable, project, reward in
-        !applePayCapable
-          || project.personalization.isBacking == .Some(true)
-    }
+    self.applePayButtonHidden = combineLatest(applePayCapable, project)
+      .map(applePayButtonHiddenFor(applePayCapable:project:))
 
     self.differentPaymentMethodButtonHidden = self.applePayButtonHidden
 
-    self.continueToPaymentsButtonHidden = combineLatest(applePayCapable, projectAndReward)
-      .map(unpack)
-      .map { applePayCapable, project, reward in
-        applePayCapable
+    self.continueToPaymentsButtonHidden = combineLatest(applePayCapable, project)
+      .map { applePayCapable, project in
+        !applePayButtonHiddenFor(applePayCapable: applePayCapable, project: project)
           || project.personalization.isBacking == .Some(true)
       }
 
@@ -1130,4 +1125,10 @@ private enum PledgeError: ErrorType {
     case .other:          return nil
     }
   }
+}
+
+private func applePayButtonHiddenFor(applePayCapable applePayCapable: Bool, project: Project) -> Bool {
+  return !applePayCapable
+    || project.personalization.isBacking == .Some(true)
+    || AppEnvironment.current.config?.applePayCountries.indexOf(project.country.countryCode) == nil
 }

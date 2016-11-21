@@ -56,6 +56,27 @@ internal final class RewardPledgeViewControllerTests: TestCase {
     }
   }
 
+  func testPledge_ApplePayCapable_UnsupportedCountry() {
+    let unsupportedCountry = Project.Country(countryCode: "ZZ",
+                                             currencyCode: "ZZD",
+                                             currencySymbol: "µ",
+                                             maxPledge: 10_000,
+                                             minPledge: 1,
+                                             trailingCode: true)
+    let project = self.cosmicSurgery
+      |> Project.lens.country .~ unsupportedCountry
+    let reward = self.cosmicReward |> Reward.lens.rewardsItems .~ []
+
+    let vc = RewardPledgeViewController.configuredWith(
+      project: project, reward: reward, applePayCapable: true
+    )
+    let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
+
+    self.scheduler.run()
+
+    FBSnapshotVerifyView(parent.view)
+  }
+
   func testExpandReward() {
     let project = self.cosmicSurgery
     let reward = self.cosmicReward

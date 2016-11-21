@@ -8,8 +8,9 @@ final class KoalaTests: XCTestCase {
   func testDefaultProperties() {
     let bundle = MockBundle()
     let client = MockTrackingClient()
-    let config = Config(abExperiments: [:], appId: 1, countryCode: "GB", features: [:], iTunesLink: "itunes",
-                        launchedCountries: [], locale: "en", stripePublishableKey: "")
+    let config = Config.template
+      |> Config.lens.countryCode .~ "GB"
+      |> Config.lens.locale .~ "en"
     let device = MockDevice(userInterfaceIdiom: .Phone)
     let screen = MockScreen()
     let koala = Koala(bundle: bundle, client: client, config: config, device: device, loggedInUser: nil,

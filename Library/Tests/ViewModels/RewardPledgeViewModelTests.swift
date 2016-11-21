@@ -140,6 +140,22 @@ internal final class RewardPledgeViewModelTests: TestCase {
     self.applePayButtonHidden.assertValues([true])
   }
 
+  func testApplePayButtonHidden_UnsupportedApplePayCountry() {
+    let unsupportedCountry = Project.Country(countryCode: "ZZ",
+                                             currencyCode: "ZZD",
+                                             currencySymbol: "µ",
+                                             maxPledge: 10_000,
+                                             minPledge: 1,
+                                             trailingCode: true)
+    let project = .template
+      |> Project.lens.country .~ unsupportedCountry
+
+    self.vm.inputs.configureWith(project: project, reward: .template, applePayCapable: true)
+    self.vm.inputs.viewDidLoad()
+
+    self.applePayButtonHidden.assertValues([true])
+  }
+
   func testContinueToPaymentsButtonHidden_ApplePayCapable() {
     self.vm.inputs.configureWith(project: .template, reward: .template, applePayCapable: true)
     self.vm.inputs.viewDidLoad()
