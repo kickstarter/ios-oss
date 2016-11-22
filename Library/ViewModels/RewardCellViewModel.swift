@@ -82,7 +82,7 @@ RewardCellViewModelOutputs {
           return Format.currency(Int(ceil(Float(backing.amount) * project.stats.staticUsdRate)), country: .US)
         }
       }
-      .map(Strings.rewards_title_about_amount_usd(reward_amount:))
+      .map(Strings.About_reward_amount(reward_amount:))
 
     self.footerStackViewAxis = projectAndReward
       .map { _, _ in AppEnvironment.current.language == .en ? .Horizontal : .Vertical }

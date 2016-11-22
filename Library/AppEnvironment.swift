@@ -88,8 +88,8 @@ public struct AppEnvironment {
 
   // Replace the current environment with a new environment.
   public static func replaceCurrentEnvironment(env: Environment) {
-    popEnvironment()
     pushEnvironment(env)
+    stack.removeAtIndex(stack.count - 2)
   }
 
   // Pushes a new environment onto the stack that changes only a subset of the current global dependencies.

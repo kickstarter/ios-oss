@@ -12,6 +12,23 @@
 // swiftlint:disable type_body_length
 public enum Strings {
   /**
+   "About %{reward_amount}"
+
+   - **es**: "Aprox. %{reward_amount}"
+   - **de**: "Ungefähr %{reward_amount}"
+   - **fr**: "Environ %{reward_amount}"
+   - **it**: "About %{reward_amount}"
+   - **en**: "About %{reward_amount}"
+  */
+  public static func About_reward_amount(reward_amount reward_amount: String) -> String {
+    return localizedString(
+      key: "About_reward_amount",
+      defaultValue: "About %{reward_amount}",
+      count: nil,
+      substitutions: ["reward_amount": reward_amount]
+    )
+  }
+  /**
    "All Art Projects"
 
    - **es**: "Todos los proyectos de la categoría Arte"
@@ -388,7 +405,7 @@ public enum Strings {
   /**
    "Backed by people you follow"
 
-   - **es**: "Patrocinados por gente a la que sigues"
+   - **es**: "Patrocinados por gente que sigues"
    - **de**: "Unterstützt von Leuten, denen du folgst"
    - **fr**: "Soutenus par les personnes que vous suivez"
    - **it**: "Backed by people you follow"
@@ -1536,9 +1553,9 @@ with friends."
   /**
    "No one has posted an update yet."
 
-   - **es**: "No one has posted an update yet."
+   - **es**: "Todavía no se han publicado actualizaciones."
    - **de**: "No one has posted an update yet."
-   - **fr**: "No one has posted an update yet."
+   - **fr**: "Pas d'actus publiées pour le moment."
    - **it**: "No one has posted an update yet."
    - **en**: "No one has posted an update yet."
   */
@@ -7702,7 +7719,7 @@ catch your eye?"
 
    - **es**: "%{time_left} más"
    - **de**: "%{time_left} zum Ziel"
-   - **fr**: "%{time_left} restant(e)s"
+   - **fr**: "Plus que %{time_left}"
    - **it**: "%{time_left} to go"
    - **en**: "%{time_left} to go"
   */
@@ -8348,7 +8365,7 @@ catch your eye?"
 
    - **es**: "Recomendaciones"
    - **de**: "Empfehlungen für dich"
-   - **fr**: "Nos recommandations"
+   - **fr**: "Rien que pour vous"
    - **it**: "Recommended for you"
    - **en**: "Recommended for you"
   */
@@ -11476,7 +11493,7 @@ If you have a moment, would you mind rating your experience?
 We'd appreciate it!"
 
    - **es**: "Gracias por usar la aplicación de Kickstarter.
-Si tienes un momento, ¿te importaría calificar tu experiencia?
+Si tienes un momento, ¿podrías calificar tu experiencia?
 ¡Te lo agradeceríamos!"
    - **de**: "Danke für die Nutzung der Kickstarter App.
 Falls du einen Moment Zeit hast, könntest du deine Erfahrung bewerten?
@@ -13710,7 +13727,7 @@ Thank you for your support!"
    "About %{reward_amount} USD"
 
    - **es**: "Aprox. %{reward_amount} USD"
-   - **de**: "Ungef'hr %{reward_amount} USD"
+   - **de**: "Ungefähr %{reward_amount} USD"
    - **fr**: "Environ %{reward_amount} USD"
    - **it**: "About %{reward_amount} USD"
    - **en**: "About %{reward_amount} USD"

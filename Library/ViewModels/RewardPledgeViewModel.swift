@@ -241,19 +241,14 @@ RewardPledgeViewModelOutputs {
       .map { _ in AppEnvironment.current.config?.stripePublishableKey }
       .ignoreNil()
 
-    self.applePayButtonHidden = combineLatest(applePayCapable, projectAndReward)
-      .map(unpack)
-      .map { applePayCapable, project, reward in
-        !applePayCapable
-          || project.personalization.isBacking == .Some(true)
-    }
+    self.applePayButtonHidden = combineLatest(applePayCapable, project)
+      .map(applePayButtonHiddenFor(applePayCapable:project:))
 
     self.differentPaymentMethodButtonHidden = self.applePayButtonHidden
 
-    self.continueToPaymentsButtonHidden = combineLatest(applePayCapable, projectAndReward)
-      .map(unpack)
-      .map { applePayCapable, project, reward in
-        applePayCapable
+    self.continueToPaymentsButtonHidden = combineLatest(applePayCapable, project)
+      .map { applePayCapable, project in
+        !applePayButtonHiddenFor(applePayCapable: applePayCapable, project: project)
           || project.personalization.isBacking == .Some(true)
       }
 
@@ -339,7 +334,7 @@ RewardPledgeViewModelOutputs {
       .map { !$0.shipping.enabled }
 
     self.pledgeCurrencyLabelText = project
-      .map(currencyLabel(forProject:))
+      .map { currencySymbol(forCountry: $0.country).trimmed() }
 
     let initialPledgeTextFieldText = projectAndReward
       .map { project, reward -> Int in
@@ -936,14 +931,6 @@ private func projectNeedsCurrencyCode(project: Project) -> Bool {
     && project.country.currencySymbol == "$"
 }
 
-private func currencyLabel(forProject project: Project) -> String {
-  guard projectNeedsCurrencyCode(project) else {
-    return project.country.currencySymbol
-  }
-
-  return "\(project.country.currencyCode) \(project.country.currencySymbol)"
-}
-
 private func backingError(forProject project: Project, amount: Int, reward: Reward?) -> PledgeError? {
 
   let (min, max) = minAndMaxPledgeAmount(forProject: project, reward: reward)
@@ -1138,4 +1125,10 @@ private enum PledgeError: ErrorType {
     case .other:          return nil
     }
   }
+}
+
+private func applePayButtonHiddenFor(applePayCapable applePayCapable: Bool, project: Project) -> Bool {
+  return !applePayCapable
+    || project.personalization.isBacking == .Some(true)
+    || AppEnvironment.current.config?.applePayCountries.indexOf(project.country.countryCode) == nil
 }

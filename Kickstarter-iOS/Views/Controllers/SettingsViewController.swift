@@ -308,7 +308,8 @@ internal final class SettingsViewController: UIViewController {
 
     self.versionLabel
       |> UILabel.lens.textColor .~ .ksr_navy_600
-      |> UILabel.lens.font .~ .ksr_subhead()
+      |> UILabel.lens.font .~ .ksr_caption1()
+      |> UILabel.lens.numberOfLines .~ 0
 
     self.wereAllEarsTitleLabel
       |> settingsTitleLabelStyle
@@ -328,9 +329,9 @@ internal final class SettingsViewController: UIViewController {
       .observeForControllerAction()
       .observeNext { [weak self] _ in self?.goToManageProjectNotifications() }
 
-    self.viewModel.outputs.logout
+    self.viewModel.outputs.logoutWithParams
       .observeForControllerAction()
-      .observeNext { [weak self] in self?.logout() }
+      .observeNext { [weak self] in self?.logout(params: $0) }
 
     self.viewModel.outputs.showConfirmLogoutPrompt
       .observeForControllerAction()
@@ -384,7 +385,7 @@ internal final class SettingsViewController: UIViewController {
     }
 
     self.backingsButton.rac.selected = self.viewModel.outputs.backingsSelected
-    self.betaToolsStackView.rac.hidden = self.viewModel.outputs.betaToolsHidden.mapConst(false)
+    self.betaToolsStackView.rac.hidden = self.viewModel.outputs.betaToolsHidden
     self.commentsButton.rac.selected = self.viewModel.outputs.commentsSelected
     self.creatorStackView.rac.hidden = self.viewModel.outputs.creatorNotificationsHidden
     self.followerButton.rac.selected = self.viewModel.outputs.followerSelected
@@ -478,20 +479,19 @@ internal final class SettingsViewController: UIViewController {
     self.presentViewController(logoutAlert, animated: true, completion: nil)
   }
 
-  private func logout() {
+  private func logout(params params: DiscoveryParams) {
     AppEnvironment.logout()
-    self.dismissViewControllerAnimated(true, completion: nil)
-
-    NSNotificationCenter.defaultCenter().postNotification(
-      NSNotification(name: CurrentUserNotifications.sessionEnded, object: nil)
-    )
 
     self.view.window?.rootViewController
       .flatMap { $0 as? RootTabBarViewController }
       .doIfSome { root in
         UIView.transitionWithView(root.view, duration: 0.3, options: [.TransitionCrossDissolve], animations: {
-          root.switchToDiscovery(params: nil)
-        }, completion: nil)
+          root.switchToDiscovery(params: params)
+          }, completion: { _ in
+            NSNotificationCenter.defaultCenter().postNotification(
+              NSNotification(name: CurrentUserNotifications.sessionEnded, object: nil)
+            )
+        })
     }
   }
 

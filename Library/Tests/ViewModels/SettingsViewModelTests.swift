@@ -22,7 +22,7 @@ internal final class SettingsViewModelTests: TestCase {
   let goToFindFriends = TestObserver<Void, NoError>()
   let goToManageProjectNotifications = TestObserver<Void, NoError>()
   let happeningNewsletterOn = TestObserver<Bool, NoError>()
-  let logout = TestObserver<Void, NoError>()
+  let logoutWithParams = TestObserver<DiscoveryParams, NoError>()
   let mobileBackingsSelected = TestObserver<Bool, NoError>()
   let mobileCommentsSelected = TestObserver<Bool, NoError>()
   let mobileFollowerSelected = TestObserver<Bool, NoError>()
@@ -54,7 +54,7 @@ internal final class SettingsViewModelTests: TestCase {
     self.vm.outputs.goToFindFriends.observe(self.goToFindFriends.observer)
     self.vm.outputs.goToManageProjectNotifications.observe(self.goToManageProjectNotifications.observer)
     self.vm.outputs.happeningNewsletterOn.observe(self.happeningNewsletterOn.observer)
-    self.vm.outputs.logout.observe(self.logout.observer)
+    self.vm.outputs.logoutWithParams.observe(self.logoutWithParams.observer)
     self.vm.outputs.mobileBackingsSelected.observe(self.mobileBackingsSelected.observer)
     self.vm.outputs.mobileCommentsSelected.observe(self.mobileCommentsSelected.observer)
     self.vm.outputs.mobileFollowerSelected.observe(self.mobileFollowerSelected.observer)
@@ -278,21 +278,24 @@ internal final class SettingsViewModelTests: TestCase {
   }
 
   func testLogoutFlow() {
+    let params = .defaults
+      |> DiscoveryParams.lens.includePOTD .~ true
+      |> DiscoveryParams.lens.sort .~ .magic
+
     let user = User.template
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.logoutTapped()
     self.showConfirmLogoutPrompt.assertValueCount(1, "Show confirm logout prompt.")
-    self.logout.assertDidNotEmitValue("User should not be logged out yet.")
 
     self.vm.inputs.logoutCanceled()
-    self.logout.assertDidNotEmitValue("User canceled prompt.")
 
     self.vm.inputs.logoutTapped()
     self.showConfirmLogoutPrompt.assertValueCount(2, "Show prompt again.")
+    self.logoutWithParams.assertValueCount(0, "Logout did not emit.")
 
     self.vm.inputs.logoutConfirmed()
-    self.logout.assertValueCount(1, "User logged out.")
+    self.logoutWithParams.assertValues([params], "User logged out.")
 
     XCTAssertEqual(["Settings View", "Viewed Settings", "Triggered Logout Modal", "Canceled Logout",
       "Triggered Logout Modal", "Confirmed Logout"], self.trackingClient.events)
@@ -386,10 +389,36 @@ internal final class SettingsViewModelTests: TestCase {
     self.updateCurrentUser.assertValueCount(4, "User should be updated.")
   }
 
-  func testVersionTextEmits() {
-    self.vm.inputs.viewDidLoad()
-    XCTAssertEqual(["Settings View", "Viewed Settings"], self.trackingClient.events)
-    self.versionText.assertValues(["Version \(self.mainBundle.shortVersionString)"],
-                              "Build version string emitted.")
+  func testVersionText_Alpha() {
+    withEnvironment(mainBundle: MockBundle(bundleIdentifier: KickstarterBundleIdentifier.alpha.rawValue)) {
+      self.vm.inputs.viewDidLoad()
+
+      XCTAssertEqual(["Settings View", "Viewed Settings"], self.trackingClient.events)
+      self.versionText.assertValues(
+        ["Version \(self.mainBundle.shortVersionString) #\(self.mainBundle.version)"],
+        "Build version string emitted with build number.")
+    }
+  }
+
+  func testVersionText_Beta() {
+    withEnvironment(mainBundle: MockBundle(bundleIdentifier: KickstarterBundleIdentifier.beta.rawValue)) {
+      self.vm.inputs.viewDidLoad()
+
+      XCTAssertEqual(["Settings View", "Viewed Settings"], self.trackingClient.events)
+      self.versionText.assertValues(
+        ["Version \(self.mainBundle.shortVersionString) #\(self.mainBundle.version)"],
+        "Build version string emitted with build number.")
+    }
+  }
+
+  func testVersionText_Release() {
+    withEnvironment(mainBundle: MockBundle(bundleIdentifier: KickstarterBundleIdentifier.release.rawValue)) {
+      self.vm.inputs.viewDidLoad()
+
+      XCTAssertEqual(["Settings View", "Viewed Settings"], self.trackingClient.events)
+      self.versionText.assertValues(
+        ["Version \(self.mainBundle.shortVersionString)"],
+        "Build version string emitted without build number.")
+    }
   }
 }

@@ -307,9 +307,7 @@ final class RewardCellViewModelTests: TestCase {
       self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
 
       self.conversionLabelHidden.assertValues([false], "US user viewing non-US project sees conversion.")
-      self.conversionLabelText.assertValues([
-        Strings.rewards_title_about_amount_usd(reward_amount: Format.currency(1, country: .US))
-        ], "Conversion label rounds up.")
+      self.conversionLabelText.assertValues(["About $1"], "Conversion label rounds up.")
     }
   }
 
@@ -327,9 +325,7 @@ final class RewardCellViewModelTests: TestCase {
 
       self.conversionLabelHidden.assertValues([false],
                                               "US user viewing non-US project sees conversion.")
-      self.conversionLabelText.assertValues([
-        Strings.rewards_title_about_amount_usd(reward_amount: Format.currency(2, country: .US))
-        ], "Conversion label rounds up.")
+      self.conversionLabelText.assertValues(["About $2"], "Conversion label rounds up.")
     }
   }
 

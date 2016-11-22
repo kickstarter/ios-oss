@@ -60,7 +60,7 @@ internal final class ProfileViewModelTests: TestCase {
       self.vm.inputs.viewWillAppear(false)
       self.scheduler.advance()
 
-      self.user.assertValues([user], "Current user emmitted.")
+      self.user.assertValues([user, user], "Current user emmitted.")
       self.hasBackedProjects.assertValues([true])
       self.showEmptyState.assertValues([false])
 
@@ -69,7 +69,7 @@ internal final class ProfileViewModelTests: TestCase {
       self.vm.inputs.viewWillAppear(false)
       self.scheduler.advance()
 
-      self.user.assertValues([user, user], "Current user emmitted.")
+      self.user.assertValues([user, user, user, user], "Current user emmitted.")
       self.hasBackedProjects.assertValues([true])
       self.showEmptyState.assertValues([false])
 
@@ -79,7 +79,7 @@ internal final class ProfileViewModelTests: TestCase {
       self.vm.inputs.viewWillAppear(true)
       self.scheduler.advance()
 
-      self.user.assertValues([user, user, user], "Current user emmitted.")
+      self.user.assertValues([user, user, user, user, user, user], "Current user emmitted.")
       self.hasBackedProjects.assertValues([true])
       self.showEmptyState.assertValues([false])
 
@@ -93,7 +93,7 @@ internal final class ProfileViewModelTests: TestCase {
         self.vm.inputs.viewWillAppear(false)
         self.scheduler.advance()
 
-        self.user.assertValues([user, user, user, user], "Current user emmitted.")
+        self.user.assertValues([user, user, user, user, user, user, user, user], "Current user emmitted.")
         self.hasBackedProjects.assertValues([true, true])
         self.showEmptyState.assertValues([false, false])
 

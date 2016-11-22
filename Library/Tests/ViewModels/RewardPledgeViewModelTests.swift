@@ -140,6 +140,22 @@ internal final class RewardPledgeViewModelTests: TestCase {
     self.applePayButtonHidden.assertValues([true])
   }
 
+  func testApplePayButtonHidden_UnsupportedApplePayCountry() {
+    let unsupportedCountry = Project.Country(countryCode: "ZZ",
+                                             currencyCode: "ZZD",
+                                             currencySymbol: "µ",
+                                             maxPledge: 10_000,
+                                             minPledge: 1,
+                                             trailingCode: true)
+    let project = .template
+      |> Project.lens.country .~ unsupportedCountry
+
+    self.vm.inputs.configureWith(project: project, reward: .template, applePayCapable: true)
+    self.vm.inputs.viewDidLoad()
+
+    self.applePayButtonHidden.assertValues([true])
+  }
+
   func testContinueToPaymentsButtonHidden_ApplePayCapable() {
     self.vm.inputs.configureWith(project: .template, reward: .template, applePayCapable: true)
     self.vm.inputs.viewDidLoad()
@@ -179,9 +195,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
 
       self.conversionLabelHidden.assertValues([false], "US user viewing non-US project sees conversion.")
-      self.conversionLabelText.assertValues([
-        Strings.rewards_title_about_amount_usd(reward_amount: Format.currency(2_000, country: .US))
-        ])
+      self.conversionLabelText.assertValues(["About $2,000"])
     }
   }
 
@@ -1020,7 +1034,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
       self.vm.inputs.continueToPaymentsButtonTapped()
       self.vm.inputs.pledgeTextFieldDidEndEditing()
 
-      self.showAlert.assertValues(["Please enter an amount of kr20 DKK or more."])
+      self.showAlert.assertValues(["Please enter an amount of DKK 20 or more."])
       XCTAssertEqual(
         ["Reward Checkout", "Selected Reward", "Checkout Amount Changed", "Changed Pledge Amount",
           "Errored Reward Pledge Button Click", "Clicked Reward Pledge Button"],
@@ -1030,7 +1044,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
       self.vm.inputs.continueToPaymentsButtonTapped()
       self.vm.inputs.pledgeTextFieldDidEndEditing()
 
-      self.showAlert.assertValues(["Please enter an amount of kr20 DKK or more."])
+      self.showAlert.assertValues(["Please enter an amount of DKK 20 or more."])
       XCTAssertEqual(
         ["Reward Checkout", "Selected Reward", "Checkout Amount Changed", "Changed Pledge Amount",
           "Errored Reward Pledge Button Click", "Clicked Reward Pledge Button",
@@ -1348,31 +1362,27 @@ internal final class RewardPledgeViewModelTests: TestCase {
   }
 
   func testPledgeCurrencyLabelText_CAProject_USBacker() {
-    withEnvironment(config: .template |> Config.lens.countryCode .~ "US") {
+    withEnvironment(countryCode: "US") {
       let project = .template |> Project.lens.country .~ .CA
       self.vm.inputs.configureWith(project: project, reward: .template, applePayCapable: false)
       self.vm.inputs.viewDidLoad()
 
-      self.pledgeCurrencyLabelText.assertValues([
-        Project.Country.CA.currencyCode + " " + Project.Country.CA.currencySymbol
-        ])
+      self.pledgeCurrencyLabelText.assertValues(["CA$"])
     }
   }
 
   func testPledgeCurrencyLabelText_USProject_NonUSBacker() {
-    withEnvironment(config: .template |> Config.lens.countryCode .~ "GB") {
+    withEnvironment(countryCode: "GB") {
       let project = .template |> Project.lens.country .~ .US
       self.vm.inputs.configureWith(project: project, reward: .template, applePayCapable: false)
       self.vm.inputs.viewDidLoad()
 
-      self.pledgeCurrencyLabelText.assertValues([
-        Project.Country.US.currencyCode + " " + Project.Country.US.currencySymbol
-      ])
+      self.pledgeCurrencyLabelText.assertValues(["US$"])
     }
   }
 
   func testPledgeCurrencyLabelText_GBProject_NonUSBacker() {
-    withEnvironment(config: .template |> Config.lens.countryCode .~ "GB") {
+    withEnvironment(countryCode: "GB") {
       let project = .template |> Project.lens.country .~ .GB
       self.vm.inputs.configureWith(project: project, reward: .template, applePayCapable: false)
       self.vm.inputs.viewDidLoad()
@@ -1382,7 +1392,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
   }
 
   func testPledgeCurrencyLabelText_FRProject_NonUSBacker() {
-    withEnvironment(config: .template |> Config.lens.countryCode .~ "GB") {
+    withEnvironment(countryCode: "GB") {
       let project = .template |> Project.lens.country .~ .FR
       self.vm.inputs.configureWith(project: project, reward: .template, applePayCapable: false)
       self.vm.inputs.viewDidLoad()
@@ -1392,14 +1402,12 @@ internal final class RewardPledgeViewModelTests: TestCase {
   }
 
   func testPledgeCurrencyLabelText_CAProject_NonUSBacker() {
-    withEnvironment(config: .template |> Config.lens.countryCode .~ "GB") {
+    withEnvironment(countryCode: "GB") {
       let project = .template |> Project.lens.country .~ .CA
       self.vm.inputs.configureWith(project: project, reward: .template, applePayCapable: false)
       self.vm.inputs.viewDidLoad()
 
-      self.pledgeCurrencyLabelText.assertValues([
-        Project.Country.CA.currencyCode + " " + Project.Country.CA.currencySymbol
-        ])
+      self.pledgeCurrencyLabelText.assertValues(["CA$"])
     }
   }
 
@@ -1634,7 +1642,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.shippingAmountLabelText.assertValues(["", "+$1 CAD"])
+      self.shippingAmountLabelText.assertValues(["", "+CA$ 1"])
     }
   }
 
@@ -1651,7 +1659,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.shippingAmountLabelText.assertValues(["", "+$2 CAD"])
+      self.shippingAmountLabelText.assertValues(["", "+CA$ 2"])
     }
   }
 
@@ -1668,7 +1676,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.shippingAmountLabelText.assertValues(["", "+kr1"])
+      self.shippingAmountLabelText.assertValues(["", "+DKK 1"])
     }
   }
 
@@ -1734,7 +1742,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
 
       self.vm.inputs.continueToPaymentsButtonTapped()
 
-      self.showAlert.assertValues(["Please enter an amount of kr20 DKK or more."])
+      self.showAlert.assertValues(["Please enter an amount of DKK 20 or more."])
       XCTAssertEqual(
         ["Reward Checkout", "Selected Reward", "Checkout Amount Changed", "Changed Pledge Amount",
         "Errored Reward Pledge Button Click", "Clicked Reward Pledge Button"],
@@ -1753,8 +1761,8 @@ internal final class RewardPledgeViewModelTests: TestCase {
       self.vm.inputs.continueToPaymentsButtonTapped()
 
       self.showAlert.assertValues([
-        "Please enter an amount of kr20 DKK or more.",
-        "Please enter an amount of kr50,000 DKK or less."
+        "Please enter an amount of DKK 20 or more.",
+        "Please enter an amount of DKK 50,000 or less."
         ])
 
       XCTAssertEqual(
@@ -1788,14 +1796,14 @@ internal final class RewardPledgeViewModelTests: TestCase {
       self.vm.inputs.pledgeTextFieldChanged("1")
       self.vm.inputs.continueToPaymentsButtonTapped()
 
-      self.showAlert.assertValues(["Please enter an amount of kr5 DKK or more."])
+      self.showAlert.assertValues(["Please enter an amount of DKK 5 or more."])
 
       self.vm.inputs.pledgeTextFieldChanged("100000")
       self.vm.inputs.continueToPaymentsButtonTapped()
 
       self.showAlert.assertValues([
-        "Please enter an amount of kr5 DKK or more.",
-        "Please enter an amount of kr50,000 DKK or less."
+        "Please enter an amount of DKK 5 or more.",
+        "Please enter an amount of DKK 50,000 or less."
         ])
     }
   }

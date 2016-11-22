@@ -68,21 +68,13 @@ public enum Format {
     let formatter = NumberFormatterConfig.cachedFormatter(
       forConfig: .defaultCurrencyConfig
         |> NumberFormatterConfig.lens.locale .~ env.locale
-        |> NumberFormatterConfig.lens.currencySymbol .~ country.currencySymbol
+        |> NumberFormatterConfig.lens.currencySymbol .~ currencySymbol(forCountry: country)
     )
 
-    let string = formatter.stringFromNumber(amount) ?? country.currencySymbol + String(amount)
-
-    // Sometimes we need to append a country code in order to disambiguate a currency
-    if !omitCurrencyCode && env.launchedCountries.currencyNeedsCode(country.currencySymbol) {
-      // USD for US backers does not need to be disambiguated.
-      if env.countryCode != "US" || country.countryCode != "US" {
-        // NB: The space " " here is a non-breaking space
-        return string + " " + country.currencyCode
-      }
-    }
-
-    return string
+    return formatter.stringFromNumber(amount)?
+      .trimmed()
+      .stringByReplacingOccurrencesOfString(String.nbsp + String.nbsp, withString: String.nbsp)
+      ?? country.currencySymbol + String(amount)
   }
 
   /**

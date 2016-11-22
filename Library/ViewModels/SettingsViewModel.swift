@@ -46,7 +46,7 @@ public protocol SettingsViewModelOutputs {
   var goToFindFriends: Signal<Void, NoError> { get }
   var goToManageProjectNotifications: Signal<Void, NoError> { get }
   var happeningNewsletterOn: Signal<Bool, NoError> { get }
-  var logout: Signal<Void, NoError> { get }
+  var logoutWithParams: Signal<DiscoveryParams, NoError> { get }
   var manageProjectNotificationsButtonAccessibilityHint: Signal<String, NoError> { get }
   var mobileBackingsSelected: Signal<Bool, NoError> { get }
   var mobileCommentsSelected: Signal<Bool, NoError> { get }
@@ -162,7 +162,11 @@ public final class SettingsViewModel: SettingsViewModelType, SettingsViewModelIn
         )
     }
 
-    self.logout = self.logoutConfirmedProperty.signal
+    self.logoutWithParams = self.logoutConfirmedProperty.signal
+      .map { .defaults
+        |> DiscoveryParams.lens.includePOTD .~ true
+        |> DiscoveryParams.lens.sort .~ .magic
+    }
 
     self.showOptInPrompt = newsletterOn
       .filter { _, on in AppEnvironment.current.config?.countryCode == "DE" && on }
@@ -200,9 +204,13 @@ public final class SettingsViewModel: SettingsViewModelType, SettingsViewModelIn
 
     self.versionText = viewDidLoadProperty.signal
       .map {
-        Strings.profile_settings_version_number(
-            version_number: AppEnvironment.current.mainBundle.shortVersionString
-        )
+        let versionString = Strings.profile_settings_version_number(
+          version_number: AppEnvironment.current.mainBundle.shortVersionString
+          )
+        let build = AppEnvironment.current.mainBundle.isRelease
+          ? ""
+          : " #\(AppEnvironment.current.mainBundle.version)"
+        return "\(versionString)\(build)"
     }
 
     self.betaToolsHidden = self.viewDidLoadProperty.signal
@@ -359,7 +367,7 @@ public final class SettingsViewModel: SettingsViewModelType, SettingsViewModelIn
   public let goToFindFriends: Signal<Void, NoError>
   public let goToManageProjectNotifications: Signal<Void, NoError>
   public let happeningNewsletterOn: Signal<Bool, NoError>
-  public let logout: Signal<Void, NoError>
+  public let logoutWithParams: Signal<DiscoveryParams, NoError>
   public var manageProjectNotificationsButtonAccessibilityHint: Signal<String, NoError>
   public let mobileBackingsSelected: Signal<Bool, NoError>
   public let mobileCommentsSelected: Signal<Bool, NoError>
