@@ -1543,6 +1543,16 @@ public final class Koala {
     self.track(event: "Expanded Unavailable Reward", properties: props)
   }
 
+  public func trackPerformedShortcutItem(shortcutItem: ShortcutItem, availableShortcutItems: [ShortcutItem]) {
+    self.track(
+      event: "Performed Shortcut",
+      properties: [
+        "type": shortcutItem.typeString,
+        "context": availableShortcutItems.map { $0.typeString }.joinWithSeparator(",")
+      ]
+    )
+  }
+
   // Private tracking method that merges in default properties.
   private func track(event event: String, properties: [String:AnyObject] = [:]) {
     self.client.track(

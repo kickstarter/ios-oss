@@ -149,7 +149,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       paramsChanged.skip(1).ignoreValues()
     )
 
-    let fetchActivityEvent = self.viewWillAppearProperty.signal
+    let fetchActivityEvent = self.viewDidAppearProperty.signal
       .filter { _ in AppEnvironment.current.currentUser != nil }
       .switchMap { _ in
         AppEnvironment.current.apiService.fetchActivities(count: 1)

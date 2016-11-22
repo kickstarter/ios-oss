@@ -81,6 +81,10 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
       .observeForUI()
       .observeNext { [weak self] in self?.goToMessageThread($0) }
 
+    self.viewModel.outputs.goToSearch
+      .observeForUI()
+      .observeNext { [weak self] in self?.rootTabBarController?.switchToSearch() }
+
     self.viewModel.outputs.registerUserNotificationSettings
       .observeForUI()
       .observeNext {
@@ -119,6 +123,12 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         AppEnvironment.current.ubiquitousStore.synchronize()
     }
 
+    self.viewModel.outputs.setApplicationShortcutItems
+      .observeForUI()
+      .observeNext { shortcutItems in
+        UIApplication.sharedApplication().shortcutItems = shortcutItems.map { $0.applicationShortcutItem }
+    }
+
     NSNotificationCenter
       .defaultCenter()
       .addObserverForName(CurrentUserNotifications.sessionStarted, object: nil, queue: nil) { [weak self] _ in
@@ -136,7 +146,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     self.viewModel.inputs
       .applicationDidFinishLaunching(application: application, launchOptions: launchOptions)
 
-    return true
+    return self.viewModel.outputs.applicationDidFinishLaunchingReturnValue
   }
   // swiftlint:enable function_body_length
 
@@ -186,6 +196,14 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 
   internal func applicationDidReceiveMemoryWarning(application: UIApplication) {
     self.viewModel.inputs.applicationDidReceiveMemoryWarning()
+  }
+
+  internal func application(application: UIApplication,
+                            performActionForShortcutItem shortcutItem: UIApplicationShortcutItem,
+                                                         completionHandler: (Bool) -> Void) {
+
+    self.viewModel.inputs.applicationPerformActionForShortcutItem(shortcutItem)
+    completionHandler(true)
   }
 
   private func presentRemoteNotificationAlert(message: String) {

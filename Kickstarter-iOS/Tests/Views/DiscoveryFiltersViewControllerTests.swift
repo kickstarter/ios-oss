@@ -80,7 +80,6 @@ internal final class DiscoveryFiltersViewControllerTests: TestCase {
   func testDefaultRow_Selected_View() {
     let staffPicksRow = selectableRowTemplate
       |> SelectableRow.lens.params.staffPicks .~ true
-      |> SelectableRow.lens.params.includePOTD .~ true
 
     Language.allLanguages.forEach { language in
       withEnvironment(language: language) {
@@ -97,7 +96,6 @@ internal final class DiscoveryFiltersViewControllerTests: TestCase {
   func testDefaultRow_Selected_iPad_View() {
     let staffPicksRow = selectableRowTemplate
       |> SelectableRow.lens.params.staffPicks .~ true
-      |> SelectableRow.lens.params.includePOTD .~ true
 
     Language.allLanguages.forEach { language in
       withEnvironment(language: language) {
