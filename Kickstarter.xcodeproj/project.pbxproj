@@ -353,8 +353,6 @@
 		A71404391CAF215900A2795B /* KeyValueStoreType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71404381CAF215900A2795B /* KeyValueStoreType.swift */; };
 		A714043A1CAF215900A2795B /* KeyValueStoreType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71404381CAF215900A2795B /* KeyValueStoreType.swift */; };
 		A71545211DD0D96B00A2F186 /* ProjectNavigatorViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A715451F1DD0D93000A2F186 /* ProjectNavigatorViewModelTests.swift */; };
-		A715ACC31CE7ED3600605F02 /* ActivityNegativeStateChangeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A715ACC11CE7ED3600605F02 /* ActivityNegativeStateChangeCell.swift */; };
-		A715ACF11CE7F3D300605F02 /* ActivityLaunchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A715ACEF1CE7F3D300605F02 /* ActivityLaunchCell.swift */; };
 		A7169BF61DDD064200480C0D /* UIScrollView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7169BF51DDD064200480C0D /* UIScrollView+Extensions.swift */; };
 		A7169BF71DDD064200480C0D /* UIScrollView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7169BF51DDD064200480C0D /* UIScrollView+Extensions.swift */; };
 		A7180BAA1CCED598001711CA /* CommentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7180BA81CCED598001711CA /* CommentsViewController.swift */; };
@@ -599,7 +597,7 @@
 		A761275F1C93052400EDCCB9 /* CGColorRef.swift in Sources */ = {isa = PBXBuildFile; fileRef = A761275D1C93052400EDCCB9 /* CGColorRef.swift */; };
 		A76127C01C93100C00EDCCB9 /* Library.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A755113C1C8642B3005355CF /* Library.framework */; };
 		A762EFF31C8CC663005581A4 /* ActivityFriendFollowCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A762EFF11C8CC663005581A4 /* ActivityFriendFollowCell.swift */; };
-		A762F01D1C8CD2B3005581A4 /* ActivitySuccessCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A762F01B1C8CD2B3005581A4 /* ActivitySuccessCell.swift */; };
+		A762F01D1C8CD2B3005581A4 /* ActivityProjectStatusCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A762F01B1C8CD2B3005581A4 /* ActivityProjectStatusCell.swift */; };
 		A7698B2A1D00602800953FD3 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7698B291D00602800953FD3 /* LoginViewModel.swift */; };
 		A7698B2B1D00602800953FD3 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7698B291D00602800953FD3 /* LoginViewModel.swift */; };
 		A76AD3531D70979900143034 /* HockeySDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = A7B694291C87A04C00C49A4F /* HockeySDKResources.bundle */; };
@@ -1776,8 +1774,6 @@
 		A71199F81DD8E42A0072D478 /* ProjectPamphletMinimalCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectPamphletMinimalCell.swift; sourceTree = "<group>"; };
 		A71404381CAF215900A2795B /* KeyValueStoreType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = KeyValueStoreType.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		A715451F1DD0D93000A2F186 /* ProjectNavigatorViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectNavigatorViewModelTests.swift; sourceTree = "<group>"; };
-		A715ACC11CE7ED3600605F02 /* ActivityNegativeStateChangeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityNegativeStateChangeCell.swift; sourceTree = "<group>"; };
-		A715ACEF1CE7F3D300605F02 /* ActivityLaunchCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityLaunchCell.swift; sourceTree = "<group>"; };
 		A7169BF51DDD064200480C0D /* UIScrollView+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIScrollView+Extensions.swift"; sourceTree = "<group>"; };
 		A7180BA81CCED598001711CA /* CommentsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsViewController.swift; sourceTree = "<group>"; };
 		A71F59E41D240CAF00909BE3 /* NavigationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationTests.swift; sourceTree = "<group>"; };
@@ -1918,7 +1914,7 @@
 		A76126A61C90C94000EDCCB9 /* UITableView-Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableView-Extensions.swift"; sourceTree = "<group>"; };
 		A761275D1C93052400EDCCB9 /* CGColorRef.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGColorRef.swift; sourceTree = "<group>"; };
 		A762EFF11C8CC663005581A4 /* ActivityFriendFollowCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityFriendFollowCell.swift; sourceTree = "<group>"; };
-		A762F01B1C8CD2B3005581A4 /* ActivitySuccessCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivitySuccessCell.swift; sourceTree = "<group>"; };
+		A762F01B1C8CD2B3005581A4 /* ActivityProjectStatusCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityProjectStatusCell.swift; sourceTree = "<group>"; };
 		A7698B291D00602800953FD3 /* LoginViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		A76E0AAF1D00D02300EC525A /* ReactiveCocoa.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactiveCocoa.xcodeproj; path = Frameworks/KsApi/Frameworks/ReactiveExtensions/Frameworks/ReactiveCocoa/ReactiveCocoa.xcodeproj; sourceTree = "<group>"; };
 		A76E0AC51D00D05F00EC525A /* ReactiveExtensions.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactiveExtensions.xcodeproj; path = Frameworks/KsApi/Frameworks/ReactiveExtensions/ReactiveExtensions.xcodeproj; sourceTree = "<group>"; };
@@ -2528,12 +2524,10 @@
 			children = (
 				A75AB2241C8B407F002FC3E6 /* ActivityFriendBackingCell.swift */,
 				A762EFF11C8CC663005581A4 /* ActivityFriendFollowCell.swift */,
-				A715ACEF1CE7F3D300605F02 /* ActivityLaunchCell.swift */,
-				A715ACC11CE7ED3600605F02 /* ActivityNegativeStateChangeCell.swift */,
 				598D96821D417905003F3F66 /* ActivitySampleBackingCell.swift */,
 				598D96B51D426D80003F3F66 /* ActivitySampleFollowCell.swift */,
 				598D96B71D426F70003F3F66 /* ActivitySampleProjectCell.swift */,
-				A762F01B1C8CD2B3005581A4 /* ActivitySuccessCell.swift */,
+				A762F01B1C8CD2B3005581A4 /* ActivityProjectStatusCell.swift */,
 				A757E9BD1D19C34600A5C978 /* ActivitySurveyResponseCell.swift */,
 				A75AB2211C8A85D1002FC3E6 /* ActivityUpdateCell.swift */,
 				A75A29261CE0B7DD00D35E5C /* BackingCell.swift */,
@@ -3342,7 +3336,6 @@
 			isa = PBXGroup;
 			children = (
 				A7F4418E1D005A9400FE6FC5 /* ActivitiesViewModel.swift */,
-				D703478F1DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift */,
 				A7F4418F1D005A9400FE6FC5 /* ActivityFriendBackingViewModel.swift */,
 				A7F441901D005A9400FE6FC5 /* ActivityFriendFollowCellViewModel.swift */,
 				598D96B91D426FD8003F3F66 /* ActivitySampleBackingCellViewModel.swift */,
@@ -3371,6 +3364,7 @@
 				59D1E6571D1866F800896A4C /* DashboardVideoCellViewModel.swift */,
 				9D9F580E1D131B4000CE81DE /* DashboardViewModel.swift */,
 				A78851901D6C900000617930 /* DeprecatedWebViewModel.swift */,
+				D703478F1DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift */,
 				0169F9871D6F51C400C8D5C5 /* DiscoveryFiltersViewModel.swift */,
 				013F2FDB1D66243E0066DB77 /* DiscoveryNavigationHeaderViewModel.swift */,
 				A72C3A911D00F6C70075227E /* DiscoveryPageViewModel.swift */,
@@ -5048,7 +5042,7 @@
 				A72A4FF11D00A18600894A36 /* ProfileEmptyStateCell.swift in Sources */,
 				A749001F1D00E27100BC3BE7 /* SignupViewController.swift in Sources */,
 				59B0DFFE1D11B2E50081D2DC /* DashboardContextCell.swift in Sources */,
-				A762F01D1C8CD2B3005581A4 /* ActivitySuccessCell.swift in Sources */,
+				A762F01D1C8CD2B3005581A4 /* ActivityProjectStatusCell.swift in Sources */,
 				A773531F1D5E8AEF0017E239 /* MostPopularSearchProjectCell.swift in Sources */,
 				A77352ED1D5E70FC0017E239 /* MostPopularCell.swift in Sources */,
 				59D1E6261D1865AC00896A4C /* DashboardVideoCell.swift in Sources */,
@@ -5063,7 +5057,6 @@
 				A7808BBE1D6240B9001CF96A /* ProjectCreatorViewController.swift in Sources */,
 				015B78851D47FF51003216AC /* MFMailComposeViewController.swift in Sources */,
 				A757EA6B1D19F93400A5C978 /* OnePasswordExtension.m in Sources */,
-				A715ACC31CE7ED3600605F02 /* ActivityNegativeStateChangeCell.swift in Sources */,
 				A757EAEE1D19FAFA00A5C978 /* ProjectActivitiesDataSource.swift in Sources */,
 				018F1F841C8E182200643DAA /* LoginViewController.swift in Sources */,
 				597073A01D07277100B00444 /* ProjectNotificationsDataSource.swift in Sources */,
@@ -5077,7 +5070,6 @@
 				A745D1411CAAB48F00C12802 /* LoginToutViewController.swift in Sources */,
 				9D14FF8E1D133351005F4ABB /* ProjectActivityEmptyStateCell.swift in Sources */,
 				A72C39F51D00F27E0075227E /* SettingsViewController.swift in Sources */,
-				A715ACF11CE7F3D300605F02 /* ActivityLaunchCell.swift in Sources */,
 				017508161D67A4E300BB1863 /* DiscoveryNavigationHeaderViewController.swift in Sources */,
 				A78012651D2EEA620027396E /* ReferralChartView.swift in Sources */,
 				597073B21D07281800B00444 /* ProjectNotificationCell.swift in Sources */,

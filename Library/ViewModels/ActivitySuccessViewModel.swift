@@ -28,11 +28,7 @@ ActivitySuccessViewModelOutputs {
 
     self.projectImageURL = project.map { $0.photo.full }.map(NSURL.init(string:))
 
-    self.projectName = project.map {
-      Strings.activity_project_state_change_project_was_successfully_funded(
-        project_name: $0.name
-      )
-    }
+    self.projectName = project.map { $0.name }
 
     self.fundingDate = project.map {
       Format.date(secondsInUTC: $0.dates.stateChangedAt, dateStyle: .MediumStyle, timeStyle: .NoStyle)
