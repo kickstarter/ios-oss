@@ -7,7 +7,7 @@ import ReactiveCocoa
 import UIKit
 
 internal final class ActivityProjectStatusCell: UITableViewCell, ValueCell {
-  private let viewModel: ActivitySuccessViewModelType = ActivitySuccessViewModel()
+  private let viewModel: ActivityyProjectStatusViewModelType = ActivityyProjectStatusViewModel()
 
   @IBOutlet private weak var cardView: UIView!
   @IBOutlet private weak var fundingProgressBarView: UIView!
@@ -21,6 +21,10 @@ internal final class ActivityProjectStatusCell: UITableViewCell, ValueCell {
 
   override func bindViewModel() {
     self.projectNameLabel.rac.text = self.viewModel.outputs.projectName
+    self.metadataBackgroundView.rac.backgroundColor = self.viewModel.outputs.metadataBackgroundColor
+    self.metadataLabel.rac.text = self.viewModel.outputs.metadataText
+    self.fundingProgressBarView.rac.backgroundColor = self.viewModel.outputs.fundingBarColor
+    self.fundingProgressLabel.rac.attributedText = self.viewModel.outputs.percentFundedText
 
     self.viewModel.outputs.projectImageURL
       .observeForUI()
@@ -31,6 +35,14 @@ internal final class ActivityProjectStatusCell: UITableViewCell, ValueCell {
       .ignoreNil()
       .observeNext { [weak projectImageView] url in
         projectImageView?.af_setImageWithURL(url, imageTransition: .CrossDissolve(0.2))
+    }
+
+    self.viewModel.outputs.fundingProgressPercentage
+      .observeForUI()
+      .observeNext { [weak self] progress in
+        let anchorX = progress == 0 ? 0 : 0.5 / progress
+        self?.fundingProgressBarView.layer.anchorPoint = CGPoint(x: CGFloat(anchorX), y: 0.5)
+        self?.fundingProgressBarView.transform = CGAffineTransformMakeScale(CGFloat(progress), 1.0)
     }
   }
 
@@ -52,19 +64,11 @@ internal final class ActivityProjectStatusCell: UITableViewCell, ValueCell {
     self.cardView
       |> dropShadowStyle()
 
-    self.fundingProgressBarView
-      |> UIView.lens.backgroundColor .~ .ksr_green_400
-
     self.fundingProgressContainerView
-      |> UIView.lens.backgroundColor .~ .ksr_navy_500
-
-    self.fundingProgressLabel
-      |> UILabel.lens.font .~ .ksr_caption1()
-      |> UILabel.lens.textColor .~ .ksr_text_navy_500
+      |> UIView.lens.backgroundColor .~ .ksr_navy_400
 
     self.metadataBackgroundView
       |> UIView.lens.layer.cornerRadius .~ 2.0
-      |> UIView.lens.backgroundColor .~ .ksr_green_700
       |> UIView.lens.layoutMargins .~ .init(all: Styles.grid(1))
 
     self.metadataLabel
