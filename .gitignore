@@ -71,3 +71,6 @@ fastlane/screenshots
 
 # FBSnapshot failures
 Screenshots/FailureDiffs/*
+
+# AppCode
+.idea

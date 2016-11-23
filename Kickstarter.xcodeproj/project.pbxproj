@@ -923,6 +923,11 @@
 		D0872B6A1DE4801500EE7DDA /* LiveStreamContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0872B691DE4801500EE7DDA /* LiveStreamContainerViewController.swift */; };
 		D0872B6C1DE4803800EE7DDA /* LiveStreamContainerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0872B6B1DE4803800EE7DDA /* LiveStreamContainerViewModel.swift */; };
 		D0872B6D1DE4803800EE7DDA /* LiveStreamContainerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0872B6B1DE4803800EE7DDA /* LiveStreamContainerViewModel.swift */; };
+		D0872B6F1DE482ED00EE7DDA /* LiveStreamCountdownViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0872B6E1DE482ED00EE7DDA /* LiveStreamCountdownViewController.swift */; };
+		D0872B711DE4831900EE7DDA /* LiveStreamCountdownViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0872B701DE4831900EE7DDA /* LiveStreamCountdownViewModel.swift */; };
+		D0872B721DE4831900EE7DDA /* LiveStreamCountdownViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0872B701DE4831900EE7DDA /* LiveStreamCountdownViewModel.swift */; };
+		D0872B741DE4930D00EE7DDA /* LiveStreamCountdownViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0872B731DE4930D00EE7DDA /* LiveStreamCountdownViewModelTests.swift */; };
+		D0872B751DE4930D00EE7DDA /* LiveStreamCountdownViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0872B731DE4930D00EE7DDA /* LiveStreamCountdownViewModelTests.swift */; };
 		D0F21CC31DE3180A004C384C /* OpenTok.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0F21CC21DE3180A004C384C /* OpenTok.framework */; };
 		D0F21CC41DE3180A004C384C /* OpenTok.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D0F21CC21DE3180A004C384C /* OpenTok.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D70347901DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D703478F1DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift */; };
@@ -2204,6 +2209,9 @@
 		D0872B311DE47FB300EE7DDA /* LiveStream.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LiveStream.storyboard; sourceTree = "<group>"; };
 		D0872B691DE4801500EE7DDA /* LiveStreamContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamContainerViewController.swift; sourceTree = "<group>"; };
 		D0872B6B1DE4803800EE7DDA /* LiveStreamContainerViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamContainerViewModel.swift; sourceTree = "<group>"; };
+		D0872B6E1DE482ED00EE7DDA /* LiveStreamCountdownViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamCountdownViewController.swift; sourceTree = "<group>"; };
+		D0872B701DE4831900EE7DDA /* LiveStreamCountdownViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamCountdownViewModel.swift; sourceTree = "<group>"; };
+		D0872B731DE4930D00EE7DDA /* LiveStreamCountdownViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamCountdownViewModelTests.swift; sourceTree = "<group>"; };
 		D0F21CC21DE3180A004C384C /* OpenTok.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenTok.framework; path = Frameworks/KsLive/Frameworks/OpenTok.framework; sourceTree = "<group>"; };
 		D703478F1DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryExpandableRowCellViewModel.swift; sourceTree = "<group>"; };
 		D7086F3B1DB7FBA40087E5EB /* BackingViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackingViewControllerTests.swift; sourceTree = "<group>"; };
@@ -2650,6 +2658,7 @@
 				A7CC14341D00E73D00035C52 /* FindFriendsViewController.swift */,
 				01940B271D467EC60074FCE3 /* HelpWebViewController.swift */,
 				D0872B691DE4801500EE7DDA /* LiveStreamContainerViewController.swift */,
+				D0872B6E1DE482ED00EE7DDA /* LiveStreamCountdownViewController.swift */,
 				A7F761761C85FACB005405ED /* LoginToutViewController.swift */,
 				018F1F821C8E182200643DAA /* LoginViewController.swift */,
 				A74FFDEE1CE3E33300C7BCB9 /* MessageDialogViewController.swift */,
@@ -2816,11 +2825,11 @@
 				59D1E6731D18968300896A4C /* DashboardVideoCellViewModelTests.swift */,
 				59B0DFFF1D11EAC70081D2DC /* DashboardViewModelTests.swift */,
 				A78851C31D6C91C600617930 /* DeprecatedWebViewModelTests.swift */,
+				D7A9BE121DC125B800422B31 /* DiscoveryExpandableRowCellViewModelTests.swift */,
 				A72C3A991D00F6E60075227E /* DiscoveryFiltersViewModelTests.swift */,
 				017508771D68C9E900BB1863 /* DiscoveryNavigationHeaderViewModelTests.swift */,
 				A72C3A9A1D00F6E60075227E /* DiscoveryPageViewModelTests.swift */,
 				596109FE1D6B8AA100C8206A /* DiscoveryPostcardViewModelTests.swift */,
-				D7A9BE121DC125B800422B31 /* DiscoveryExpandableRowCellViewModelTests.swift */,
 				A7830CE31D005C3F00B5B6AE /* DiscoveryViewModelTests.swift */,
 				0176984E1DB9796800EE58BA /* EmptyStatesViewModelTests.swift */,
 				A7830CE41D005C3F00B5B6AE /* FacebookConfirmationViewModelTests.swift */,
@@ -2830,6 +2839,7 @@
 				A7CC14281D00E70900035C52 /* FindFriendsStatsCellViewModelTests.swift */,
 				A7CC14291D00E70900035C52 /* FindFriendsViewModelTests.swift */,
 				01940B7F1D46DCC30074FCE3 /* HelpViewModelTests.swift */,
+				D0872B731DE4930D00EE7DDA /* LiveStreamCountdownViewModelTests.swift */,
 				A7830CE51D005C3F00B5B6AE /* LoginToutViewModelTests.swift */,
 				A7830CE61D005C3F00B5B6AE /* LoginViewModelTests.swift */,
 				A7830CE71D005C3F00B5B6AE /* MessageCellViewModelTests.swift */,
@@ -3430,6 +3440,7 @@
 				A7CC13D21D00E6CF00035C52 /* FindFriendsViewModel.swift */,
 				01940B251D42DC1A0074FCE3 /* HelpViewModel.swift */,
 				D0872B6B1DE4803800EE7DDA /* LiveStreamContainerViewModel.swift */,
+				D0872B701DE4831900EE7DDA /* LiveStreamCountdownViewModel.swift */,
 				A7F4419A1D005A9400FE6FC5 /* LoginToutViewModel.swift */,
 				A7698B291D00602800953FD3 /* LoginViewModel.swift */,
 				A7F4419B1D005A9400FE6FC5 /* MessageCellViewModel.swift */,
@@ -4561,6 +4572,7 @@
 				A72AFFDA1CD7ED6B008F052B /* Keyboard.swift in Sources */,
 				A718885D1DE0DDCE0094856D /* ShortcutItem.swift in Sources */,
 				9D25472D1D23135F0053844D /* ProjectActivityCommentCellViewModel.swift in Sources */,
+				D0872B711DE4831900EE7DDA /* LiveStreamCountdownViewModel.swift in Sources */,
 				A755116A1C8642C3005355CF /* UILabel+LocalizedKey.swift in Sources */,
 				A755116B1C8642C3005355CF /* UILabel+SimpleHTML.swift in Sources */,
 				A721DF621C8CF503000CB97C /* TrackingClientType.swift in Sources */,
@@ -4735,6 +4747,7 @@
 				9DA8C3C31D3D4860000BB2F9 /* String+WhitespaceTests.swift in Sources */,
 				597073C31D07626700B00444 /* ProjectNotificationCellViewModelTests.swift in Sources */,
 				9D9F58171D13240B00CE81DE /* ProjectActivitiesViewModelTests.swift in Sources */,
+				D0872B741DE4930D00EE7DDA /* LiveStreamCountdownViewModelTests.swift in Sources */,
 				01EFBCB61C921EA20094EEC2 /* StylesTests.swift in Sources */,
 				A7830D021D005C3F00B5B6AE /* CommentsViewModelTests.swift in Sources */,
 				A7830D0E1D005C3F00B5B6AE /* MessageDialogViewModelTests.swift in Sources */,
@@ -4857,6 +4870,7 @@
 				A734A2681D21A1790080BBD5 /* WKNavigationActionProtocol.swift in Sources */,
 				593AC6021D33F517002613F4 /* DashboardFundingCellViewModel.swift in Sources */,
 				A707BADB1CFFAB9400653B2F /* Notifications.swift in Sources */,
+				D0872B721DE4831900EE7DDA /* LiveStreamCountdownViewModel.swift in Sources */,
 				A7F441C81D005A9400FE6FC5 /* MessageCellViewModel.swift in Sources */,
 				A72C3A981D00F6C70075227E /* SortPagerViewModel.swift in Sources */,
 				A72C3A311D00F28C0075227E /* SettingsViewModel.swift in Sources */,
@@ -4993,6 +5007,7 @@
 				A77D7B361CBAC5F90077586B /* PaginateTests.swift in Sources */,
 				A7830CFF1D005C3F00B5B6AE /* CommentCellViewModelTests.swift in Sources */,
 				59D1E67A1D189EFF00896A4C /* DashboardVideoCellViewModelTests.swift in Sources */,
+				D0872B751DE4930D00EE7DDA /* LiveStreamCountdownViewModelTests.swift in Sources */,
 				A7CC142D1D00E70900035C52 /* FindFriendsFriendFollowCellViewModelTests.swift in Sources */,
 				A7830D011D005C3F00B5B6AE /* CommentDialogViewModelTests.swift in Sources */,
 				01EFBCB11C9203750094EEC2 /* UIColorTests.swift in Sources */,
@@ -5128,6 +5143,7 @@
 				A749001F1D00E27100BC3BE7 /* SignupViewController.swift in Sources */,
 				59B0DFFE1D11B2E50081D2DC /* DashboardContextCell.swift in Sources */,
 				A762F01D1C8CD2B3005581A4 /* ActivitySuccessCell.swift in Sources */,
+				D0872B6F1DE482ED00EE7DDA /* LiveStreamCountdownViewController.swift in Sources */,
 				A773531F1D5E8AEF0017E239 /* MostPopularSearchProjectCell.swift in Sources */,
 				A77352ED1D5E70FC0017E239 /* MostPopularCell.swift in Sources */,
 				59D1E6261D1865AC00896A4C /* DashboardVideoCell.swift in Sources */,
