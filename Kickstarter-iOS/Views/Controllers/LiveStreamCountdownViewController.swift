@@ -10,9 +10,12 @@ internal final class LiveStreamCountdownViewController: UIViewController {
   @IBOutlet private weak var countdownContainerStackView: UIStackView!
   @IBOutlet private weak var countdownStackView: UIStackView!
   @IBOutlet private var countdownLabels: [UILabel]?
+  @IBOutlet private weak var dashLabel: UILabel!
   @IBOutlet private weak var daysLabel: UILabel!
   @IBOutlet private weak var gradientView: GradientView!
   @IBOutlet private weak var hoursLabel: UILabel!
+  @IBOutlet private weak var introLabel: UILabel!
+  @IBOutlet private weak var creatorNameLabel: UILabel!
   @IBOutlet private weak var liveStreamTitle: UILabel!
   @IBOutlet private weak var liveStreamParagraph: UILabel!
   @IBOutlet private weak var minutesLabel: UILabel!
@@ -20,7 +23,9 @@ internal final class LiveStreamCountdownViewController: UIViewController {
   @IBOutlet private weak var secondsLabel: UILabel!
   @IBOutlet private weak var separator: UIImageView!
   @IBOutlet private weak var subscribeButton: UIButton!
-  @IBOutlet private weak var detailsStackViewTopConstraint: NSLayoutConstraint!
+  @IBOutlet private weak var detailsContainerStackView: UIStackView!
+  @IBOutlet private weak var detailsContainerStackViewTopConstraint: NSLayoutConstraint!
+  @IBOutlet private weak var detailsStackView: UIStackView!
 
   private let viewModel: LiveStreamCountdownViewModelType = LiveStreamCountdownViewModel()
   private var timerProducer: Disposable?
@@ -46,7 +51,8 @@ internal final class LiveStreamCountdownViewController: UIViewController {
       |> UIImageView.lens.contentMode .~ .ScaleAspectFill
 
     self.countdownStackView
-      |> UIStackView.lens.alignment .~ .Center
+      |> UIStackView.lens.alignment .~ .Top
+      |> UIStackView.lens.distribution .~ .FillProportionally
 
     self.countdownContainerStackView
       |> UIStackView.lens.alignment .~ .Center
@@ -67,6 +73,17 @@ internal final class LiveStreamCountdownViewController: UIViewController {
         |> UILabel.lens.textColor .~ .whiteColor()
         |> UILabel.lens.font .~ .ksr_title1(size: 24)
     }
+
+    self.detailsContainerStackView
+      |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+      |> UIStackView.lens.layoutMargins .~ UIEdgeInsets(
+        top: 0, left: Styles.grid(4), bottom: Styles.grid(4), right: Styles.grid(4))
+
+    self.detailsStackView
+      |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+      |> UIStackView.lens.layoutMargins .~ UIEdgeInsets(top: Styles.grid(8))
+
+    self.detailsContainerStackViewTopConstraint.constant = -Styles.grid(4)
   }
 
   internal override func bindViewModel() {
