@@ -24,8 +24,8 @@ public protocol ActivityyProjectStatusViewModelType {
   var outputs: ActivityyProjectStatusViewModelOutputs { get }
 }
 
-public final class ActivityyProjectStatusViewModel: ActivityyProjectStatusViewModelType, ActivityyProjectStatusViewModelInputs,
-ActivityyProjectStatusViewModelOutputs {
+public final class ActivityyProjectStatusViewModel: ActivityyProjectStatusViewModelType,
+  ActivityyProjectStatusViewModelInputs, ActivityyProjectStatusViewModelOutputs {
 
   public init() {
     let activity = self.activityProperty.signal.ignoreNil()
@@ -106,7 +106,6 @@ private func progressBarColor(forActivityCategory category: Activity.Category) -
     return .ksr_green_400
   }
 }
-
 
 private func metadataColor(forActivityCategory category: Activity.Category) -> UIColor {
   switch category {
