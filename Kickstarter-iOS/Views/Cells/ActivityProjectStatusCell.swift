@@ -7,7 +7,7 @@ import ReactiveCocoa
 import UIKit
 
 internal final class ActivityProjectStatusCell: UITableViewCell, ValueCell {
-  private let viewModel: ActivityyProjectStatusViewModelType = ActivityyProjectStatusViewModel()
+  private let viewModel: ActivityProjectStatusViewModelType = ActivityProjectStatusViewModel()
 
   @IBOutlet private weak var cardView: UIView!
   @IBOutlet private weak var fundingProgressBarView: UIView!

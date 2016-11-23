@@ -3,11 +3,11 @@ import Prelude
 import ReactiveCocoa
 import Result
 
-public protocol ActivityyProjectStatusViewModelInputs {
+public protocol ActivityProjectStatusViewModelInputs {
   func configureWith(activity activity: Activity)
 }
 
-public protocol ActivityyProjectStatusViewModelOutputs {
+public protocol ActivityProjectStatusViewModelOutputs {
   var fundingBarColor: Signal<UIColor, NoError> { get }
 
   /// Emits a percentage between 0.0 and 1.0 that can be used to render the funding progress bar.
@@ -19,13 +19,13 @@ public protocol ActivityyProjectStatusViewModelOutputs {
   var projectName: Signal<String, NoError> { get }
 }
 
-public protocol ActivityyProjectStatusViewModelType {
-  var inputs: ActivityyProjectStatusViewModelInputs { get }
-  var outputs: ActivityyProjectStatusViewModelOutputs { get }
+public protocol ActivityProjectStatusViewModelType {
+  var inputs: ActivityProjectStatusViewModelInputs { get }
+  var outputs: ActivityProjectStatusViewModelOutputs { get }
 }
 
-public final class ActivityyProjectStatusViewModel: ActivityyProjectStatusViewModelType,
-  ActivityyProjectStatusViewModelInputs, ActivityyProjectStatusViewModelOutputs {
+public final class ActivityProjectStatusViewModel: ActivityProjectStatusViewModelType,
+  ActivityProjectStatusViewModelInputs, ActivityProjectStatusViewModelOutputs {
 
   public init() {
     let activity = self.activityProperty.signal.ignoreNil()
@@ -92,8 +92,8 @@ public final class ActivityyProjectStatusViewModel: ActivityyProjectStatusViewMo
   public let projectImageURL: Signal<NSURL?, NoError>
   public let projectName: Signal<String, NoError>
 
-  public var inputs: ActivityyProjectStatusViewModelInputs { return self }
-  public var outputs: ActivityyProjectStatusViewModelOutputs { return self }
+  public var inputs: ActivityProjectStatusViewModelInputs { return self }
+  public var outputs: ActivityProjectStatusViewModelOutputs { return self }
 }
 
 private func progressBarColor(forActivityCategory category: Activity.Category) -> UIColor {
