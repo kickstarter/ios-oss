@@ -35,7 +35,7 @@ final class UpdatePreviewViewModelTests: TestCase {
     self.vm.inputs.configureWith(draft: draft)
     self.vm.inputs.viewDidLoad()
 
-    let previewUrl = "https://***REMOVED***/projects/2/updates/1/preview"
+    let previewUrl = "https://\(Secrets.Server.Api.production)/projects/2/updates/1/preview"
     let query = "client_id=\(self.apiService.serverConfig.apiClientAuth.clientId)"
     self.webViewLoadRequest.assertValues(
       ["\(previewUrl)?\(query)"]
