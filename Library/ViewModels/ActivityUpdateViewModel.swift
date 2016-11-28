@@ -33,11 +33,8 @@ public protocol ActivityUpdateViewModelOutputs {
   /// Emits the project name to be displayed.
   var projectName: Signal<String, NoError> { get }
 
-  /// Emits the update sequence title to be displayed.
-  var sequenceTitle: Signal<String, NoError> { get }
-
-  /// Emits the timestamp to be displayed.
-  var timestamp: Signal<String, NoError> { get }
+  /// Emits an attributed string for the update sequence title.
+  var sequenceTitle: Signal<NSAttributedString, NoError> { get }
 
   /// Emits the update title to be displayed.
   var title: Signal<String, NoError> { get }
@@ -66,16 +63,47 @@ ActivityUpdateViewModelOutputs {
 
     self.title = update.map { $0.title }
 
-    self.sequenceTitle = update
-      .map { Strings.activity_project_update_update_count(update_count: Format.wholeNumber($0.sequence)) }
+    self.sequenceTitle = activity
+      .map {
+        let updateNum = Format.wholeNumber($0.update?.sequence ?? 1)
+        let time = Format.relative(secondsInUTC: $0.createdAt)
+        let fullString = Strings.dashboard_activity_update_number_posted_time_count_days_ago(space: " ",
+          update_number: updateNum,
+          time_count_days_ago: time)
 
-    self.timestamp = activity
-      .map { Format.date(secondsInUTC: $0.createdAt, dateStyle: .MediumStyle, timeStyle: .NoStyle) }
+        let attributedString = fullString.simpleHtmlAttributedString(
+          base: [
+            NSFontAttributeName: UIFont.ksr_footnote(),
+            NSForegroundColorAttributeName: UIColor.ksr_text_navy_500
+          ],
+          bold: [
+            NSFontAttributeName: UIFont.ksr_headline(size: 13.0),
+            NSForegroundColorAttributeName: UIColor.ksr_text_green_700
+          ])
+          ?? NSAttributedString(string: "")
+
+        let mutableString = NSMutableAttributedString(attributedString: attributedString)
+
+        let timeNumber = time.componentsSeparatedByCharactersInSet(
+          NSCharacterSet.decimalDigitCharacterSet().invertedSet).first
+
+        if let timeRange = mutableString.string.rangeOfString(time), let timeNumber = timeNumber {
+          let timeStartIndex = mutableString.string.startIndex.distanceTo(timeRange.startIndex)
+          let timeNumberStartIndex = time.startIndex.distanceTo(timeNumber.startIndex)
+
+          mutableString.addAttributes([
+            NSFontAttributeName: UIFont.ksr_headline(size: 13.0)],
+            range: NSRange(location: timeStartIndex + timeNumberStartIndex,
+              length: timeNumber.characters.count))
+        }
+
+        return mutableString
+    }
 
     self.notifyDelegateTappedProjectImage = activity
       .takeWhen(self.tappedProjectImageProperty.signal)
 
-    self.cellAccessibilityLabel = self.sequenceTitle
+    self.cellAccessibilityLabel = self.sequenceTitle.map { $0.string }
     self.cellAccessibilityValue = self.title
   }
 
@@ -95,8 +123,7 @@ ActivityUpdateViewModelOutputs {
   public let projectButtonAccessibilityLabel: Signal<String, NoError>
   public let projectImageURL: Signal<NSURL?, NoError>
   public let projectName: Signal<String, NoError>
-  public let sequenceTitle: Signal<String, NoError>
-  public let timestamp: Signal<String, NoError>
+  public let sequenceTitle: Signal<NSAttributedString, NoError>
   public let title: Signal<String, NoError>
 
   public var inputs: ActivityUpdateViewModelInputs { return self }

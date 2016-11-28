@@ -11,6 +11,8 @@ internal protocol ActivityFriendFollowCellDelegate: class {
 internal final class ActivityFriendFollowCell: UITableViewCell, ValueCell {
   private let viewModel: ActivityFriendFollowCellViewModel = ActivityFriendFollowCellViewModel()
 
+  @IBOutlet private weak var cardView: UIView!
+  @IBOutlet private weak var containerView: UIView!
   @IBOutlet private weak var friendImageView: UIImageView!
   @IBOutlet private weak var friendLabel: UILabel!
   @IBOutlet private weak var followButton: UIButton!
@@ -49,12 +51,17 @@ internal final class ActivityFriendFollowCell: UITableViewCell, ValueCell {
 
     self
       |> baseTableViewCellStyle()
-      |> UITableViewCell.lens.backgroundColor .~ .whiteColor()
       |> UITableViewCell.lens.contentView.layoutMargins %~~ { _, cell in
         cell.traitCollection.isRegularRegular
-          ? .init(topBottom: Styles.grid(4), leftRight: Styles.grid(20))
-          : .init(topBottom: Styles.grid(3), leftRight: Styles.grid(4))
+          ? .init(topBottom: Styles.grid(10), leftRight: Styles.grid(20))
+          : .init(all: Styles.grid(2))
     }
+
+    self.cardView
+      |> dropShadowStyle()
+
+    self.containerView
+      |> UIView.lens.layoutMargins .~ .init(topBottom: Styles.grid(3), leftRight: Styles.grid(2))
 
     self.friendLabel
       |> UILabel.lens.textColor .~ .ksr_text_navy_700
@@ -63,6 +70,8 @@ internal final class ActivityFriendFollowCell: UITableViewCell, ValueCell {
       |> navyButtonStyle
       |> UIButton.lens.targets .~ [(self, action: #selector(followButtonTapped), .TouchUpInside)]
       |> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.social_following_friend_buttons_follow() }
+      |> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 12)
+      |> UIButton.lens.contentEdgeInsets .~ .init(topBottom: 8, leftRight: 16)
   }
 
   @objc private func followButtonTapped() {

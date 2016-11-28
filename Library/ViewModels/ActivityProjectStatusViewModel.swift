@@ -4,18 +4,30 @@ import ReactiveCocoa
 import Result
 
 public protocol ActivityProjectStatusViewModelInputs {
+  /// Call to configure with an Activity.
   func configureWith(activity activity: Activity)
 }
 
 public protocol ActivityProjectStatusViewModelOutputs {
+  /// Emits a color for the funding progress bar.
   var fundingBarColor: Signal<UIColor, NoError> { get }
 
   /// Emits a percentage between 0.0 and 1.0 that can be used to render the funding progress bar.
   var fundingProgressPercentage: Signal<Float, NoError> { get }
+
+  /// Emits a color for metadata view background.
   var metadataBackgroundColor: Signal<UIColor, NoError> { get }
+
+  /// Emits text for the metadata label.
   var metadataText: Signal<String, NoError> { get }
+
+  /// Emits an attributed string for percent funded label.
   var percentFundedText: Signal<NSAttributedString, NoError> { get }
+
+  /// Emits a url to the project image.
   var projectImageURL: Signal<NSURL?, NoError> { get }
+
+  /// Emits text for the project name label.
   var projectName: Signal<String, NoError> { get }
 }
 
@@ -50,28 +62,32 @@ public final class ActivityProjectStatusViewModel: ActivityProjectStatusViewMode
         friendName: creator?.name ?? "")
     }
 
-    self.percentFundedText = project
+    self.percentFundedText = activity
       .map {
-        let percentage = Format.percentage($0.stats.percentFunded)
-        let funded = Strings.percentage_funded(percentage: percentage)
+        if let project = $0.project {
+          let percentage = Format.percentage(project.stats.percentFunded)
+          let funded = Strings.percentage_funded(percentage: percentage)
 
-        let fundedAttributedString = NSMutableAttributedString(string: funded, attributes: [
-          NSFontAttributeName: UIFont.ksr_caption1(),
-          NSForegroundColorAttributeName: UIColor.ksr_navy_500
-        ])
+          let fundedAttributedString = NSMutableAttributedString(string: funded, attributes: [
+            NSFontAttributeName: UIFont.ksr_caption1(),
+            NSForegroundColorAttributeName: UIColor.ksr_navy_500
+          ])
 
-        if let percentRange = funded.rangeOfString(percentage) {
-          let percentStartIndex = funded.startIndex.distanceTo(percentRange.startIndex)
-          fundedAttributedString.addAttributes([
-            NSFontAttributeName: UIFont.ksr_headline(size: 12.0),
-            NSForegroundColorAttributeName:
-              ($0.state == .canceled
-              || $0.state == .failed
-              || $0.state == .suspended) ? UIColor.ksr_text_navy_500 : UIColor.ksr_green_500
-          ], range: NSRange(location: percentStartIndex, length: percentage.characters.count))
+          if let percentRange = fundedAttributedString.string.rangeOfString(percentage) {
+            let percentStartIndex = fundedAttributedString.string.startIndex.distanceTo(percentRange.startIndex)
+            fundedAttributedString.addAttributes([
+              NSFontAttributeName: UIFont.ksr_headline(size: 12.0),
+              NSForegroundColorAttributeName:
+                ($0.category == .cancellation
+                || $0.category == .failure
+                || $0.category == .suspension) ? UIColor.ksr_text_navy_500 : UIColor.ksr_green_500
+            ], range: NSRange(location: percentStartIndex, length: percentage.characters.count))
+          }
+
+          return fundedAttributedString
         }
 
-        return fundedAttributedString
+        return NSAttributedString(string: "")
     }
 
     self.projectImageURL = project.map { $0.photo.full }.map(NSURL.init(string:))
