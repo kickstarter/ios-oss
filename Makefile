@@ -32,7 +32,7 @@ test-all:
 	PLATFORM=tvOS $(MAKE) test
 	PLATFORM=tvOS TARGET=Library $(MAKE) test
 
-test: build
+test: dependencies
 	$(XCODEBUILD) test $(BUILD_FLAGS) $(XCPRETTY)
 
 clean:
