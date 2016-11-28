@@ -24,6 +24,9 @@ internal protocol UpdateViewModelOutputs {
   /// Emits when we should go to the project.
   var goToProject: Signal<(Project, RefTag), NoError> { get }
 
+  /// Emits when we should open a safari browser with the URL.
+  var goToSafariBrowser: Signal<NSURL, NoError> { get }
+
   /// Emits the title of the controller.
   var title: Signal<String, NoError> { get }
 
@@ -48,7 +51,9 @@ internal final class UpdateViewModel: UpdateViewModelType, UpdateViewModelInputs
       .ignoreNil()
       .map { AppEnvironment.current.apiService.preparedRequest(forURL: $0) }
 
-    let anotherUpdateLoadRequest = self.policyForNavigationActionProperty.signal.ignoreNil()
+    let navigationAction = self.policyForNavigationActionProperty.signal.ignoreNil()
+
+    let anotherUpdateLoadRequest = navigationAction
       .filter {
         $0.navigationType == .LinkActivated && Navigation.Project.updateWithRequest($0.request) != nil
       }
@@ -74,35 +79,41 @@ internal final class UpdateViewModel: UpdateViewModelType, UpdateViewModelInputs
       .map(first)
       .map { Strings.activity_project_update_update_count(update_count: Format.wholeNumber($0.sequence)) }
 
-    self.policyDecisionProperty <~ self.policyForNavigationActionProperty.signal.ignoreNil()
+    self.policyDecisionProperty <~ navigationAction
       .map { action in
         action.navigationType == .Other || action.targetFrame?.mainFrame == .Some(false)
           ? .Allow
           : .Cancel
     }
 
-    let commentsRequest = self.policyForNavigationActionProperty.signal.ignoreNil()
-      .filter { $0.navigationType == .LinkActivated }
-      .filter { Navigation.Project.updateCommentsWithRequest($0.request) != nil }
+    let possiblyGoToComments = currentUpdate
+      .takePairWhen(navigationAction)
+      .map { update, action -> Update? in
+        if action.navigationType == .LinkActivated
+          && Navigation.Project.updateCommentsWithRequest(action.request) != nil {
+          return update
+        }
+        return nil
+    }
 
-    self.goToComments = currentUpdate
-      .takeWhen(commentsRequest)
+    self.goToComments = possiblyGoToComments.ignoreNil()
 
-    let projectParamAndRefTag = self.policyForNavigationActionProperty.signal.ignoreNil()
-      .filter { $0.navigationType == .LinkActivated }
-      .map { Navigation.Project.withRequest($0.request) }
-      .ignoreNil()
+    let possiblyGoToProject = navigationAction
+      .map { action in
+        action.navigationType == .LinkActivated
+          ? Navigation.Project.withRequest(action.request)
+          : nil
+    }
 
     self.goToProject = self.projectProperty.signal.ignoreNil()
-      .takePairWhen(projectParamAndRefTag)
+      .takePairWhen(possiblyGoToProject)
       .switchMap { (project, projectParamAndRefTag) -> SignalProducer<(Project, RefTag), NoError> in
 
-        let (projectParam, refTag) = projectParamAndRefTag
+        guard let (projectParam, refTag) = projectParamAndRefTag else { return .empty }
+
         let producer: SignalProducer<Project, NoError>
 
-        if projectParam == .id(project.id) ||
-          projectParam == .slug(project.slug) {
-
+        if projectParam == .id(project.id) || projectParam == .slug(project.slug) {
           producer = SignalProducer(value: project)
         } else {
           producer = AppEnvironment.current.apiService.fetchProject(param: projectParam)
@@ -111,6 +122,19 @@ internal final class UpdateViewModel: UpdateViewModelType, UpdateViewModelInputs
 
         return producer.map { ($0, refTag ?? RefTag.update) }
       }
+
+    self.goToSafariBrowser = zip(navigationAction, possiblyGoToProject, possiblyGoToComments)
+      .filter { action, goToProject, goToComments in
+        action.navigationType == .LinkActivated && goToProject == nil && goToComments == nil
+      }
+      .map { action, _, _ in action.request.URL }
+      .ignoreNil()
+
+    self.projectProperty.signal.ignoreNil()
+      .takeWhen(self.goToSafariBrowser)
+      .observeNext {
+        AppEnvironment.current.koala.trackOpenedExternalLink(project: $0, context: .projectUpdate)
+    }
   }
   // swiftlint:enable function_body_length
 
@@ -136,6 +160,7 @@ internal final class UpdateViewModel: UpdateViewModelType, UpdateViewModelInputs
 
   internal let goToComments: Signal<Update, NoError>
   internal let goToProject: Signal<(Project, RefTag), NoError>
+  internal let goToSafariBrowser: Signal<NSURL, NoError>
   internal let title: Signal<String, NoError>
   internal let webViewLoadRequest: Signal<NSURLRequest, NoError>
 

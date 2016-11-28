@@ -17,6 +17,7 @@ final class UpdateViewModelTests: TestCase {
 
   private let goToComments = TestObserver<Update, NoError>()
   private let goToProject = TestObserver<Project, NoError>()
+  private let goToSafariBrowser = TestObserver<NSURL, NoError>()
   private let title = TestObserver<String, NoError>()
   private let webViewLoadRequest = TestObserver<String?, NoError>()
 
@@ -25,6 +26,7 @@ final class UpdateViewModelTests: TestCase {
 
     self.vm.outputs.goToComments.observe(self.goToComments.observer)
     self.vm.outputs.goToProject.map { $0.0 }.observe(self.goToProject.observer)
+    self.vm.outputs.goToSafariBrowser.observe(self.goToSafariBrowser.observer)
     self.vm.outputs.title.observe(self.title.observer)
     self.vm.outputs.webViewLoadRequest.map { $0.URL?.absoluteString }
       .observe(self.webViewLoadRequest.observer)
@@ -121,5 +123,62 @@ final class UpdateViewModelTests: TestCase {
     self.webViewLoadRequest.assertValues(
       ["\(self.update.urls.web.update)?client_id=\(self.apiService.serverConfig.apiClientAuth.clientId)"]
     )
+  }
+
+  func testGoToComments() {
+    self.vm.inputs.configureWith(project: self.project, update: self.update)
+    self.vm.inputs.viewDidLoad()
+
+    let commentsRequest = NSURL(string: self.update.urls.web.update)
+      .map { $0.URLByAppendingPathComponent("comments") }
+      .flatMap(NSURLRequest.init(URL:))!
+
+    let navigationAction = WKNavigationActionData(
+      navigationType: .LinkActivated,
+      request: commentsRequest,
+      sourceFrame: WKFrameInfoData(mainFrame: true, request: commentsRequest),
+      targetFrame: WKFrameInfoData(mainFrame: true, request: commentsRequest)
+    )
+
+    XCTAssertEqual(WKNavigationActionPolicy.Cancel.rawValue,
+                   self.vm.inputs.decidePolicyFor(navigationAction: navigationAction).rawValue)
+    self.goToComments.assertValues([self.update])
+  }
+
+  func testGoToSafariBrowser() {
+    self.vm.inputs.configureWith(project: self.project, update: self.update)
+    self.vm.inputs.viewDidLoad()
+
+    let updateRequest = NSURLRequest(URL: NSURL(string: self.update.urls.web.update)!)
+    var navigationAction = WKNavigationActionData(
+      navigationType: .Other,
+      request: updateRequest,
+      sourceFrame: WKFrameInfoData(mainFrame: true, request: updateRequest),
+      targetFrame: WKFrameInfoData(mainFrame: true, request: updateRequest)
+    )
+
+    XCTAssertEqual(WKNavigationActionPolicy.Allow.rawValue,
+                   self.vm.inputs.decidePolicyFor(navigationAction: navigationAction).rawValue)
+    self.webViewLoadRequest.assertValueCount(1)
+
+    let outsideUrl = NSURL(string: "http://www.wikipedia.com")!
+    let outsideRequest = NSURLRequest(URL: outsideUrl)
+
+    navigationAction = WKNavigationActionData(
+      navigationType: .LinkActivated,
+      request: outsideRequest,
+      sourceFrame: WKFrameInfoData(mainFrame: true, request: outsideRequest),
+      targetFrame: WKFrameInfoData(mainFrame: true, request: outsideRequest)
+    )
+
+    XCTAssertEqual(WKNavigationActionPolicy.Cancel.rawValue,
+                   self.vm.inputs.decidePolicyFor(navigationAction: navigationAction).rawValue)
+    self.goToComments.assertValueCount(0)
+    self.goToProject.assertValueCount(0)
+    self.webViewLoadRequest.assertValueCount(1)
+    self.goToSafariBrowser.assertValues([outsideUrl])
+
+    XCTAssertEqual(["Opened External Link"], self.trackingClient.events)
+    XCTAssertEqual(["project_update"], self.trackingClient.properties(forKey: "context"))
   }
 }
