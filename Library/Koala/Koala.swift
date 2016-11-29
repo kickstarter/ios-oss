@@ -43,6 +43,7 @@ public final class Koala {
   public enum ExternalLinkContext {
     case projectCreator
     case projectDescription
+    case projectUpdate
     case projectUpdates
 
     var trackingString: String {
@@ -51,6 +52,8 @@ public final class Koala {
         return "project_creator"
       case .projectDescription:
         return "project_description"
+      case .projectUpdate:
+        return "project_update"
       case .projectUpdates:
         return "project_updates"
       }
@@ -1541,6 +1544,16 @@ public final class Koala {
       .withAllValuesFrom(["pledge_context": pledgeContext.trackingString])
 
     self.track(event: "Expanded Unavailable Reward", properties: props)
+  }
+
+  public func trackPerformedShortcutItem(shortcutItem: ShortcutItem, availableShortcutItems: [ShortcutItem]) {
+    self.track(
+      event: "Performed Shortcut",
+      properties: [
+        "type": shortcutItem.typeString,
+        "context": availableShortcutItems.map { $0.typeString }.joinWithSeparator(",")
+      ]
+    )
   }
 
   // Private tracking method that merges in default properties.

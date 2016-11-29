@@ -70,10 +70,8 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
       initialTopFilters,
       initialSelectedRowWithCategories.map(first)
       )
-      .map { params, selectedRow in
-        params.map {
-          SelectableRow(isSelected: $0 == selectedRow.params, params: $0)
-        }
+      .map { params, selectedRow -> [SelectableRow] in
+        params.map { p in SelectableRow(isSelected: p == selectedRow.params, params: p) }
     }
 
     let categoryId = self.initialSelectedRowWithCategoriesProperty.signal.ignoreNil()

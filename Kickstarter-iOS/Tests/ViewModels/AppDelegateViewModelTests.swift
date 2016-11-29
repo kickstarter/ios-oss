@@ -11,43 +11,45 @@ import Result
 final class AppDelegateViewModelTests: TestCase {
   let vm: AppDelegateViewModelType = AppDelegateViewModel()
 
-  let configureHockey = TestObserver<HockeyConfigData, NoError>()
-  let forceLogout = TestObserver<(), NoError>()
-  let goToActivity = TestObserver<(), NoError>()
-  let goToDashboard = TestObserver<Param?, NoError>()
-  let goToDiscovery = TestObserver<DiscoveryParams?, NoError>()
-  let goToLogin = TestObserver<(), NoError>()
-  let goToProfile = TestObserver<(), NoError>()
-  let goToSearch = TestObserver<(), NoError>()
-  let postNotificationName = TestObserver<String, NoError>()
-  let presentRemoteNotificationAlert = TestObserver<String, NoError>()
-  let presentViewController = TestObserver<Int, NoError>()
-  let pushTokenSuccessfullyRegistered = TestObserver<(), NoError>()
-  let registerUserNotificationSettings = TestObserver<(), NoError>()
-  let unregisterForRemoteNotifications = TestObserver<(), NoError>()
-  let updateCurrentUserInEnvironment = TestObserver<User, NoError>()
-  let updateConfigInEnvironment = TestObserver<Config, NoError>()
+  private let configureHockey = TestObserver<HockeyConfigData, NoError>()
+  private let forceLogout = TestObserver<(), NoError>()
+  private let goToActivity = TestObserver<(), NoError>()
+  private let goToDashboard = TestObserver<Param?, NoError>()
+  private let goToDiscovery = TestObserver<DiscoveryParams?, NoError>()
+  private let goToLogin = TestObserver<(), NoError>()
+  private let goToProfile = TestObserver<(), NoError>()
+  private let goToSearch = TestObserver<(), NoError>()
+  private let postNotificationName = TestObserver<String, NoError>()
+  private let presentRemoteNotificationAlert = TestObserver<String, NoError>()
+  private let presentViewController = TestObserver<Int, NoError>()
+  private let pushTokenSuccessfullyRegistered = TestObserver<(), NoError>()
+  private let registerUserNotificationSettings = TestObserver<(), NoError>()
+  private let setApplicationShortcutItems = TestObserver<[ShortcutItem], NoError>()
+  private let unregisterForRemoteNotifications = TestObserver<(), NoError>()
+  private let updateCurrentUserInEnvironment = TestObserver<User, NoError>()
+  private let updateConfigInEnvironment = TestObserver<Config, NoError>()
 
   override func setUp() {
     super.setUp()
 
-    vm.outputs.configureHockey.observe(self.configureHockey.observer)
-    vm.outputs.forceLogout.observe(self.forceLogout.observer)
-    vm.outputs.goToActivity.observe(self.goToActivity.observer)
-    vm.outputs.goToDashboard.observe(self.goToDashboard.observer)
-    vm.outputs.goToDiscovery.observe(self.goToDiscovery.observer)
-    vm.outputs.goToLogin.observe(self.goToLogin.observer)
-    vm.outputs.goToProfile.observe(self.goToProfile.observer)
-    vm.outputs.goToSearch.observe(self.goToSearch.observer)
-    vm.outputs.postNotification.map { $0.name }.observe(self.postNotificationName.observer)
-    vm.outputs.presentRemoteNotificationAlert.observe(presentRemoteNotificationAlert.observer)
-    vm.outputs.presentViewController.map { ($0 as! UINavigationController).viewControllers.count }
+    self.vm.outputs.configureHockey.observe(self.configureHockey.observer)
+    self.vm.outputs.forceLogout.observe(self.forceLogout.observer)
+    self.vm.outputs.goToActivity.observe(self.goToActivity.observer)
+    self.vm.outputs.goToDashboard.observe(self.goToDashboard.observer)
+    self.vm.outputs.goToDiscovery.observe(self.goToDiscovery.observer)
+    self.vm.outputs.goToLogin.observe(self.goToLogin.observer)
+    self.vm.outputs.goToProfile.observe(self.goToProfile.observer)
+    self.vm.outputs.goToSearch.observe(self.goToSearch.observer)
+    self.vm.outputs.postNotification.map { $0.name }.observe(self.postNotificationName.observer)
+    self.vm.outputs.presentRemoteNotificationAlert.observe(presentRemoteNotificationAlert.observer)
+    self.vm.outputs.presentViewController.map { ($0 as! UINavigationController).viewControllers.count }
       .observe(self.presentViewController.observer)
-    vm.outputs.pushTokenSuccessfullyRegistered.observe(self.pushTokenSuccessfullyRegistered.observer)
-    vm.outputs.registerUserNotificationSettings.observe(self.registerUserNotificationSettings.observer)
-    vm.outputs.unregisterForRemoteNotifications.observe(self.unregisterForRemoteNotifications.observer)
-    vm.outputs.updateCurrentUserInEnvironment.observe(self.updateCurrentUserInEnvironment.observer)
-    vm.outputs.updateConfigInEnvironment.observe(self.updateConfigInEnvironment.observer)
+    self.vm.outputs.pushTokenSuccessfullyRegistered.observe(self.pushTokenSuccessfullyRegistered.observer)
+    self.vm.outputs.registerUserNotificationSettings.observe(self.registerUserNotificationSettings.observer)
+    self.vm.outputs.setApplicationShortcutItems.observe(self.setApplicationShortcutItems.observer)
+    self.vm.outputs.unregisterForRemoteNotifications.observe(self.unregisterForRemoteNotifications.observer)
+    self.vm.outputs.updateCurrentUserInEnvironment.observe(self.updateCurrentUserInEnvironment.observer)
+    self.vm.outputs.updateConfigInEnvironment.observe(self.updateConfigInEnvironment.observer)
   }
 
   func testConfigureHockey_BetaApp_LoggedOut() {
@@ -249,6 +251,7 @@ final class AppDelegateViewModelTests: TestCase {
 
     vm.inputs.applicationDidEnterBackground()
     vm.inputs.applicationWillEnterForeground()
+    self.scheduler.advanceByInterval(5.0)
 
     updateCurrentUserInEnvironment.assertValues([env.user, env.user])
     postNotificationName.assertValues([CurrentUserNotifications.userUpdated])
@@ -262,7 +265,6 @@ final class AppDelegateViewModelTests: TestCase {
   }
 
   func testInvalidAccessToken() {
-    let token = OauthToken(token: "deadbeef")
     let error = ErrorEnvelope(
       errorMessages: ["invalid deadbeef"],
       ksrCode: .AccessTokenInvalid,
@@ -270,7 +272,7 @@ final class AppDelegateViewModelTests: TestCase {
       exception: nil
     )
 
-    withEnvironment(apiService: MockService(oauthToken: token, fetchUserSelfError: error)) {
+    withEnvironment(apiService: MockService(fetchUserSelfError: error), currentUser: .template) {
       self.forceLogout.assertValueCount(0)
 
       vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
@@ -840,6 +842,278 @@ final class AppDelegateViewModelTests: TestCase {
 
     XCTAssertFalse(self.vm.outputs.continueUserActivityReturnValue.value)
     XCTAssertEqual(["App Open", "Opened App"], self.trackingClient.events)
+  }
+
+  func testSetApplicationShortcutItems() {
+    self.setApplicationShortcutItems.assertValues([])
+
+    self.vm.inputs.applicationDidFinishLaunching(application: .sharedApplication(), launchOptions: [:])
+
+    self.setApplicationShortcutItems.assertValues([])
+
+    self.scheduler.advanceByInterval(5)
+
+    self.setApplicationShortcutItems.assertValues([[.projectOfTheDay, .projectsWeLove, .search]])
+
+    self.vm.inputs.applicationDidEnterBackground()
+    self.vm.inputs.applicationWillEnterForeground()
+    self.scheduler.advanceByInterval(5)
+
+    self.setApplicationShortcutItems.assertValues(
+      [
+        [.projectOfTheDay, .projectsWeLove, .search],
+        [.projectOfTheDay, .projectsWeLove, .search]
+      ]
+    )
+  }
+
+  func testSetApplicationShortcutItems_LoggedInUser_NonMember() {
+    let currentUser = .template
+      |> User.lens.stats.memberProjectsCount .~ 0
+
+    withEnvironment(apiService: MockService(fetchUserSelfResponse: currentUser), currentUser: currentUser) {
+      self.setApplicationShortcutItems.assertValues([])
+
+      self.vm.inputs.applicationDidFinishLaunching(application: .sharedApplication(), launchOptions: [:])
+
+      self.setApplicationShortcutItems.assertValues([])
+
+      self.scheduler.advanceByInterval(5)
+
+      self.setApplicationShortcutItems.assertValues([
+        [.projectOfTheDay, .recommendedForYou, .projectsWeLove, .search]
+      ])
+    }
+  }
+
+  func testSetApplicationShortcutItems_LoggedInUser_Member() {
+    let currentUser = .template
+      |> User.lens.stats.memberProjectsCount .~ 2
+
+    withEnvironment(apiService: MockService(fetchUserSelfResponse: currentUser), currentUser: currentUser) {
+      self.setApplicationShortcutItems.assertValues([])
+
+      self.vm.inputs.applicationDidFinishLaunching(application: .sharedApplication(), launchOptions: [:])
+
+      self.setApplicationShortcutItems.assertValues([])
+
+      self.scheduler.advanceByInterval(5)
+
+      self.setApplicationShortcutItems.assertValues([
+        [.creatorDashboard, .projectOfTheDay, .recommendedForYou, .projectsWeLove]
+      ])
+    }
+  }
+
+  func testPerformShortcutItem_CreatorDashboard() {
+    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+                                                 launchOptions: [:])
+
+    self.goToDashboard.assertValueCount(0)
+
+    self.vm.inputs.applicationPerformActionForShortcutItem(
+      ShortcutItem.creatorDashboard.applicationShortcutItem
+    )
+
+    self.goToDashboard.assertValueCount(1)
+  }
+
+  func testLaunchShortcutItem_CreatorDashboard() {
+    self.vm.inputs.applicationDidFinishLaunching(
+      application: UIApplication.sharedApplication(),
+      launchOptions: [
+        UIApplicationLaunchOptionsShortcutItemKey: ShortcutItem.creatorDashboard.applicationShortcutItem
+      ]
+    )
+
+    self.goToDashboard.assertValueCount(1)
+    XCTAssertFalse(self.vm.outputs.applicationDidFinishLaunchingReturnValue)
+  }
+
+  func testPerformShortcutItem_ProjectOfTheDay() {
+    let potd = .template
+      |> Project.lens.dates.potdAt .~ NSDate().timeIntervalSince1970
+    let env = .template |> DiscoveryEnvelope.lens.projects .~ [potd]
+
+    withEnvironment(apiService: MockService(fetchDiscoveryResponse: env)) {
+      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+                                                   launchOptions: [:])
+
+      self.presentViewController.assertValueCount(0)
+
+      self.vm.inputs.applicationPerformActionForShortcutItem(
+        ShortcutItem.projectOfTheDay.applicationShortcutItem
+      )
+
+      self.presentViewController.assertValueCount(1)
+    }
+  }
+
+  func testLaunchShortcutItem_ProjectOfTheDay() {
+    let potd = .template
+      |> Project.lens.dates.potdAt .~ NSDate().timeIntervalSince1970
+    let env = .template |> DiscoveryEnvelope.lens.projects .~ [potd]
+
+    withEnvironment(apiService: MockService(fetchDiscoveryResponse: env)) {
+      self.vm.inputs.applicationDidFinishLaunching(
+        application: UIApplication.sharedApplication(),
+        launchOptions: [
+          UIApplicationLaunchOptionsShortcutItemKey: ShortcutItem.projectOfTheDay.applicationShortcutItem
+        ]
+      )
+
+      self.presentViewController.assertValueCount(1)
+      XCTAssertFalse(self.vm.outputs.applicationDidFinishLaunchingReturnValue)
+    }
+  }
+
+  func testPerformShortcutItem_ProjectsWeLove() {
+    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+                                                 launchOptions: [:])
+
+    self.goToDiscovery.assertValueCount(0)
+
+    self.vm.inputs.applicationPerformActionForShortcutItem(
+      ShortcutItem.projectsWeLove.applicationShortcutItem
+    )
+
+    let params = .defaults
+      |> DiscoveryParams.lens.staffPicks .~ true
+      |> DiscoveryParams.lens.sort .~ .magic
+    self.goToDiscovery.assertValues([params])
+  }
+
+  func testLaunchShortcutItem_ProjectsWeLove() {
+    self.vm.inputs.applicationDidFinishLaunching(
+      application: UIApplication.sharedApplication(),
+      launchOptions: [
+        UIApplicationLaunchOptionsShortcutItemKey: ShortcutItem.projectsWeLove.applicationShortcutItem
+      ]
+    )
+
+    let params = .defaults
+      |> DiscoveryParams.lens.staffPicks .~ true
+      |> DiscoveryParams.lens.sort .~ .magic
+    self.goToDiscovery.assertValues([params])
+    XCTAssertFalse(self.vm.outputs.applicationDidFinishLaunchingReturnValue)
+  }
+
+  func testPerformShortcutItem_RecommendedForYou() {
+    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+                                                 launchOptions: [:])
+
+    self.goToDiscovery.assertValueCount(0)
+
+    self.vm.inputs.applicationPerformActionForShortcutItem(
+      ShortcutItem.recommendedForYou.applicationShortcutItem
+    )
+
+    let params = .defaults
+      |> DiscoveryParams.lens.recommended .~ true
+      |> DiscoveryParams.lens.sort .~ .magic
+    self.goToDiscovery.assertValues([params])
+  }
+
+  func testLaunchShortcutItem_RecommendedForYou() {
+    self.vm.inputs.applicationDidFinishLaunching(
+      application: UIApplication.sharedApplication(),
+      launchOptions: [
+        UIApplicationLaunchOptionsShortcutItemKey: ShortcutItem.recommendedForYou.applicationShortcutItem
+      ]
+    )
+
+    let params = .defaults
+      |> DiscoveryParams.lens.recommended .~ true
+      |> DiscoveryParams.lens.sort .~ .magic
+    self.goToDiscovery.assertValues([params])
+    XCTAssertFalse(self.vm.outputs.applicationDidFinishLaunchingReturnValue)
+  }
+
+  func testPerformShortcutItem_Search() {
+    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+                                                 launchOptions: [:])
+
+    self.goToSearch.assertValueCount(0)
+
+    self.vm.inputs.applicationPerformActionForShortcutItem(ShortcutItem.search.applicationShortcutItem)
+
+    self.goToSearch.assertValueCount(1)
+  }
+
+  func testLaunchShortcutItem_Search() {
+    self.vm.inputs.applicationDidFinishLaunching(
+      application: UIApplication.sharedApplication(),
+      launchOptions: [
+        UIApplicationLaunchOptionsShortcutItemKey: ShortcutItem.search.applicationShortcutItem
+      ]
+    )
+
+    self.goToSearch.assertValueCount(1)
+    XCTAssertFalse(self.vm.outputs.applicationDidFinishLaunchingReturnValue)
+  }
+
+  func testPerformShortcutItem_KoalaTracking() {
+    // Launch app and wait for shortcuts to be set
+    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+                                                 launchOptions: [:])
+    self.scheduler.advanceByInterval(5)
+
+    // Perform a shortcut item
+    self.vm.inputs.applicationPerformActionForShortcutItem(
+      ShortcutItem.projectsWeLove.applicationShortcutItem
+    )
+
+    XCTAssertEqual(["App Open", "Opened App", "Performed Shortcut"], self.trackingClient.events)
+    XCTAssertEqual([nil, nil, "projects_we_love"],
+                   self.trackingClient.properties(forKey: "type", as: String.self))
+    XCTAssertEqual([nil, nil, "project_of_the_day,projects_we_love,search"],
+                   self.trackingClient.properties(forKey: "context", as: String.self))
+
+    withEnvironment(currentUser: .template) {
+      // Login with a user and wait for shortcuts to be set
+      self.vm.inputs.userSessionStarted()
+      self.scheduler.advanceByInterval(5)
+
+      XCTAssertEqual(["App Open", "Opened App", "Performed Shortcut"],
+                     self.trackingClient.events,
+                     "Nothing new is tracked.")
+
+      // Perform shortcut item
+      self.vm.inputs.applicationPerformActionForShortcutItem(
+        ShortcutItem.recommendedForYou.applicationShortcutItem
+      )
+
+      XCTAssertEqual(["App Open", "Opened App", "Performed Shortcut", "Performed Shortcut"],
+                     self.trackingClient.events)
+      XCTAssertEqual(
+        [nil, nil, "projects_we_love", "recommended_for_you"],
+        self.trackingClient.properties(forKey: "type", as: String.self)
+      )
+      XCTAssertEqual(
+        [nil, nil, "project_of_the_day,projects_we_love,search",
+          "project_of_the_day,recommended_for_you,projects_we_love,search"],
+        self.trackingClient.properties(forKey: "context", as: String.self)
+      )
+    }
+  }
+
+  func testLaunchShortcutItem_KoalaTracking() {
+    self.vm.inputs.applicationDidFinishLaunching(
+      application: UIApplication.sharedApplication(),
+      launchOptions: [
+        UIApplicationLaunchOptionsShortcutItemKey: ShortcutItem.projectsWeLove.applicationShortcutItem
+      ]
+    )
+
+    XCTAssertEqual(["App Open", "Opened App"], self.trackingClient.events)
+
+    self.scheduler.advanceByInterval(5)
+
+    XCTAssertEqual(["App Open", "Opened App", "Performed Shortcut"], self.trackingClient.events)
+    XCTAssertEqual([nil, nil, "projects_we_love"],
+                   self.trackingClient.properties(forKey: "type", as: String.self))
+    XCTAssertEqual([nil, nil, "project_of_the_day,projects_we_love,search"],
+                   self.trackingClient.properties(forKey: "context", as: String.self))
   }
 }
 

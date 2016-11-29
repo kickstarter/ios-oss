@@ -356,6 +356,7 @@
 		A7169BF61DDD064200480C0D /* UIScrollView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7169BF51DDD064200480C0D /* UIScrollView+Extensions.swift */; };
 		A7169BF71DDD064200480C0D /* UIScrollView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7169BF51DDD064200480C0D /* UIScrollView+Extensions.swift */; };
 		A7180BAA1CCED598001711CA /* CommentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7180BA81CCED598001711CA /* CommentsViewController.swift */; };
+		A718885D1DE0DDCE0094856D /* ShortcutItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A718885C1DE0DDCE0094856D /* ShortcutItem.swift */; };
 		A71F59E51D240CAF00909BE3 /* NavigationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71F59E41D240CAF00909BE3 /* NavigationTests.swift */; };
 		A71F59E61D240CAF00909BE3 /* NavigationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71F59E41D240CAF00909BE3 /* NavigationTests.swift */; };
 		A71F59E81D2424CA00909BE3 /* CacheProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71F59E71D2424CA00909BE3 /* CacheProtocol.swift */; };
@@ -1776,6 +1777,7 @@
 		A715451F1DD0D93000A2F186 /* ProjectNavigatorViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectNavigatorViewModelTests.swift; sourceTree = "<group>"; };
 		A7169BF51DDD064200480C0D /* UIScrollView+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIScrollView+Extensions.swift"; sourceTree = "<group>"; };
 		A7180BA81CCED598001711CA /* CommentsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsViewController.swift; sourceTree = "<group>"; };
+		A718885C1DE0DDCE0094856D /* ShortcutItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShortcutItem.swift; sourceTree = "<group>"; };
 		A71F59E41D240CAF00909BE3 /* NavigationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationTests.swift; sourceTree = "<group>"; };
 		A71F59E71D2424CA00909BE3 /* CacheProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CacheProtocol.swift; sourceTree = "<group>"; };
 		A7208C3D1CCAC86800E3DAB3 /* FacebookAppDelegateProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookAppDelegateProtocol.swift; sourceTree = "<group>"; };
@@ -2980,6 +2982,7 @@
 				A72C3A8B1D00F6A80075227E /* SelectableRow.swift */,
 				A75C81251D210F1F00B5AD03 /* ShareContext.swift */,
 				A710573A1DC2B2DF00A69552 /* SharedFunctions.swift */,
+				A718885C1DE0DDCE0094856D /* ShortcutItem.swift */,
 				A7A882BE1D31745500E9046E /* SimpleHTMLLabel.swift */,
 				8024FE4A1D6376BF0067A1F6 /* Storyboard.swift */,
 				A7C725921C85D36D005A016B /* String+SimpleHTML.swift */,
@@ -4477,6 +4480,7 @@
 				A7CC13D91D00E6CF00035C52 /* FindFriendsStatsCellViewModel.swift in Sources */,
 				018422BB1D2C483000CA7566 /* DashboardTitleViewViewModel.swift in Sources */,
 				A72AFFDA1CD7ED6B008F052B /* Keyboard.swift in Sources */,
+				A718885D1DE0DDCE0094856D /* ShortcutItem.swift in Sources */,
 				9D25472D1D23135F0053844D /* ProjectActivityCommentCellViewModel.swift in Sources */,
 				A755116A1C8642C3005355CF /* UILabel+LocalizedKey.swift in Sources */,
 				A755116B1C8642C3005355CF /* UILabel+SimpleHTML.swift in Sources */,
