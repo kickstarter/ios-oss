@@ -19,6 +19,10 @@ internal final class ActivityProjectStatusCell: UITableViewCell, ValueCell {
   @IBOutlet private weak var projectNameLabel: UILabel!
   @IBOutlet private weak var textBackgroundView: UIView!
 
+  func configureWith(value value: Activity) {
+    self.viewModel.inputs.configureWith(activity: value)
+  }
+
   override func bindViewModel() {
     self.projectNameLabel.rac.text = self.viewModel.outputs.projectName
     self.metadataBackgroundView.rac.backgroundColor = self.viewModel.outputs.metadataBackgroundColor
@@ -44,10 +48,6 @@ internal final class ActivityProjectStatusCell: UITableViewCell, ValueCell {
         self?.fundingProgressBarView.layer.anchorPoint = CGPoint(x: CGFloat(anchorX), y: 0.5)
         self?.fundingProgressBarView.transform = CGAffineTransformMakeScale(CGFloat(progress), 1.0)
     }
-  }
-
-  func configureWith(value value: Activity) {
-    self.viewModel.inputs.configureWith(activity: value)
   }
 
   override func bindStyles() {

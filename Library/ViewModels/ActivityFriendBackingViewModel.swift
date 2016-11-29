@@ -1,9 +1,11 @@
 import KsApi
+import Prelude
 import ReactiveCocoa
 import Result
 
 public protocol ActivityFriendBackingViewModelInputs {
-  func activity(activity: Activity)
+  /// Call to configure with an Activity.
+  func configureWith(activity activity: Activity)
 }
 
 public protocol ActivityFriendBackingViewModelOutputs {
@@ -12,7 +14,20 @@ public protocol ActivityFriendBackingViewModelOutputs {
   var creatorName: Signal<String, NoError> { get }
   var friendImageURL: Signal<NSURL?, NoError> { get }
   var friendTitle: Signal<NSAttributedString, NoError> { get }
+
+  /// Emits a color for the funding progress bar.
+  var fundingBarColor: Signal<UIColor, NoError> { get }
+
+  /// Emits a percentage between 0.0 and 1.0 that can be used to render the funding progress bar.
+  var fundingProgressPercentage: Signal<Float, NoError> { get }
+
+  /// Emits an attributed string for percent funded label.
+  var percentFundedText: Signal<NSAttributedString, NoError> { get }
+
+  /// Emits a url to the project image.
   var projectImageURL: Signal<NSURL?, NoError> { get }
+
+  /// Emits text for the project name label.
   var projectName: Signal<String, NoError> { get }
 }
 
@@ -26,6 +41,7 @@ ActivityFriendBackingViewModelInputs, ActivityFriendBackingViewModelOutputs {
 
   public init() {
     let activity = self.activityProperty.signal.ignoreNil()
+    let project = activity.map { $0.project }.ignoreNil()
 
     self.friendImageURL = activity
       .map { ($0.user?.avatar.medium).flatMap(NSURL.init) }
@@ -37,8 +53,52 @@ ActivityFriendBackingViewModelInputs, ActivityFriendBackingViewModelOutputs {
         }
 
         let title = string(forCategoryId: categoryId, friendName: "<b>\(activity.user?.name ?? "")</b>")
-        return title.simpleHtmlAttributedString(font: .ksr_subhead(size: 14))
+        return title.simpleHtmlAttributedString(
+          base: [
+            NSFontAttributeName: UIFont.ksr_subhead(size: 14),
+            NSForegroundColorAttributeName: UIColor.ksr_text_navy_500
+          ],
+          bold: [
+            NSFontAttributeName: UIFont.ksr_subhead(size: 14),
+            NSForegroundColorAttributeName: UIColor.ksr_text_navy_700
+          ])
           ?? NSAttributedString(string: "")
+    }
+
+    self.fundingBarColor = activity.map {
+      return progressBarColor(forActivityCategory: $0.category)
+    }
+
+    self.fundingProgressPercentage = project
+      .map(Project.lens.stats.fundingProgress.view)
+      .map(clamp(0, 1))
+
+    self.percentFundedText = activity
+      .map {
+        if let project = $0.project {
+          let percentage = Format.percentage(project.stats.percentFunded)
+          let funded = Strings.percentage_funded(percentage: percentage)
+
+          let fundedAttributedString = NSMutableAttributedString(string: funded, attributes: [
+            NSFontAttributeName: UIFont.ksr_caption1(),
+            NSForegroundColorAttributeName: UIColor.ksr_navy_500
+            ])
+
+          if let percentRange = fundedAttributedString.string.rangeOfString(percentage) {
+            let percentStartIndex = fundedAttributedString.string.startIndex.distanceTo(percentRange.startIndex)
+            fundedAttributedString.addAttributes([
+              NSFontAttributeName: UIFont.ksr_headline(size: 12.0),
+              NSForegroundColorAttributeName:
+                ($0.category == .cancellation
+                  || $0.category == .failure
+                  || $0.category == .suspension) ? UIColor.ksr_text_navy_500 : UIColor.ksr_green_500
+              ], range: NSRange(location: percentStartIndex, length: percentage.characters.count))
+          }
+
+          return fundedAttributedString
+        }
+
+        return NSAttributedString(string: "")
     }
 
     self.projectName = activity.map { $0.project?.name ?? "" }
@@ -52,12 +112,15 @@ ActivityFriendBackingViewModelInputs, ActivityFriendBackingViewModelOutputs {
   }
 
   private let activityProperty = MutableProperty<Activity?>(nil)
-  public func activity(activity: Activity) {
+  public func configureWith(activity activity: Activity) {
     self.activityProperty.value = activity
   }
 
   public let friendImageURL: Signal<NSURL?, NoError>
   public let friendTitle: Signal<NSAttributedString, NoError>
+  public let fundingBarColor: Signal<UIColor, NoError>
+  public let fundingProgressPercentage: Signal<Float, NoError>
+  public let percentFundedText: Signal<NSAttributedString, NoError>
   public let projectName: Signal<String, NoError>
   public let projectImageURL: Signal<NSURL?, NoError>
   public let creatorName: Signal<String, NoError>
@@ -66,6 +129,17 @@ ActivityFriendBackingViewModelInputs, ActivityFriendBackingViewModelOutputs {
 
   public var inputs: ActivityFriendBackingViewModelInputs { return self }
   public var outputs: ActivityFriendBackingViewModelOutputs { return self }
+}
+
+private func progressBarColor(forActivityCategory category: Activity.Category) -> UIColor {
+  switch category {
+  case .cancellation, .failure, .suspension:
+    return .ksr_navy_500
+  case .launch, .success:
+    return .ksr_green_400
+  default:
+    return .ksr_green_400
+  }
 }
 
 // swiftlint:disable cyclomatic_complexity
