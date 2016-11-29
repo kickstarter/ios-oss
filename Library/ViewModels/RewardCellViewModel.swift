@@ -115,7 +115,7 @@ RewardCellViewModelOutputs {
 
     self.remainingLabelText = reward
       .map { $0.remaining ?? 0 }
-      .map { Strings.left_left(left: Format.wholeNumber($0)) }
+      .map { Strings.Left_count_left(left_count: $0) }
 
     self.minimumAndConversionLabelsColor = projectAndReward
       .map(minimumRewardAmountTextColor(project:reward:))
