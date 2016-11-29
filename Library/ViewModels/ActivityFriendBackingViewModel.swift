@@ -53,7 +53,7 @@ ActivityFriendBackingViewModelInputs, ActivityFriendBackingViewModelOutputs {
           return NSAttributedString(string: "")
         }
 
-        let title = string(forCategoryId: categoryId, friendName: "<b>\(activity.user?.name ?? "")</b>")
+        let title = string(forCategoryId: categoryId, friendName: activity.user?.name ?? "")
         return title.simpleHtmlAttributedString(
           base: [
             NSFontAttributeName: UIFont.ksr_subhead(size: 14),
@@ -62,6 +62,10 @@ ActivityFriendBackingViewModelInputs, ActivityFriendBackingViewModelOutputs {
           bold: [
             NSFontAttributeName: UIFont.ksr_subhead(size: 14),
             NSForegroundColorAttributeName: UIColor.ksr_text_navy_700
+          ],
+          italic: [
+            NSFontAttributeName: UIFont.ksr_subhead(size: 14),
+            NSForegroundColorAttributeName: color(forCategoryId: categoryId)
           ])
           ?? NSAttributedString(string: "")
     }
@@ -143,25 +147,39 @@ private func progressBarColor(forActivityCategory category: Activity.Category) -
   }
 }
 
+public func color(forCategoryId id: Int?) -> UIColor {
+  let group = CategoryGroup(categoryId: id)
+  switch group {
+  case .none:
+    return .ksr_navy_700
+  case .culture:
+    return .ksr_red_400
+  case .entertainment:
+    return .ksr_violet_500
+  case .story:
+    return .ksr_forest_600
+  }
+}
+
 // swiftlint:disable cyclomatic_complexity
 private func string(forCategoryId id: Int, friendName: String) -> String {
   let root = RootCategory(categoryId: id)
   switch root {
-  case .art:          return Strings.activity_friend_backed_art_project(friend_name: friendName)
-  case .comics:       return Strings.activity_friend_backed_comics_project(friend_name: friendName)
-  case .dance:        return Strings.activity_friend_backed_dance_project(friend_name: friendName)
-  case .design:       return Strings.activity_friend_backed_design_project(friend_name: friendName)
-  case .fashion:      return Strings.activity_friend_backed_fashion_project(friend_name: friendName)
-  case .food:         return Strings.activity_friend_backed_food_project(friend_name: friendName)
-  case .film:         return Strings.activity_friend_backed_film_project(friend_name: friendName)
-  case .games:        return Strings.activity_friend_backed_games_project(friend_name: friendName)
-  case .journalism:   return Strings.activity_friend_backed_journalism_project(friend_name: friendName)
-  case .music:        return Strings.activity_friend_backed_music_project(friend_name: friendName)
-  case .photography:  return Strings.activity_friend_backed_photography_project(friend_name: friendName)
-  case .tech:         return Strings.activity_friend_backed_tech_project(friend_name: friendName)
-  case .theater:      return Strings.activity_friend_backed_theater_project(friend_name: friendName)
-  case .publishing:   return Strings.activity_friend_backed_publishing_project(friend_name: friendName)
-  case .crafts:       return Strings.activity_friend_backed_crafts_project(friend_name: friendName)
+  case .art:          return Strings.Friend_backed_art_project(friend_name: friendName)
+  case .comics:       return Strings.Friend_backed_comics_project(friend_name: friendName)
+  case .dance:        return Strings.Friend_backed_dance_project(friend_name: friendName)
+  case .design:       return Strings.Friend_backed_design_project(friend_name: friendName)
+  case .fashion:      return Strings.Friend_backed_fashion_project(friend_name: friendName)
+  case .food:         return Strings.Friend_backed_food_project(friend_name: friendName)
+  case .film:         return Strings.Friend_backed_film_project(friend_name: friendName)
+  case .games:        return Strings.Friend_backed_games_project(friend_name: friendName)
+  case .journalism:   return Strings.Friend_backed_journalism_project(friend_name: friendName)
+  case .music:        return Strings.Friend_backed_music_project(friend_name: friendName)
+  case .photography:  return Strings.Friend_backed_photography_project(friend_name: friendName)
+  case .tech:         return Strings.Friend_backed_tech_project(friend_name: friendName)
+  case .theater:      return Strings.Friend_backed_theater_project(friend_name: friendName)
+  case .publishing:   return Strings.Friend_backed_publishing_project(friend_name: friendName)
+  case .crafts:       return Strings.Friend_backed_crafts_project(friend_name: friendName)
   case .unrecognized: return ""
   }
 }
