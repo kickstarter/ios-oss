@@ -1,9 +1,7 @@
-#!/usr/bin/env xcrun swift
-
 import Foundation
 
 let endpoint: String? =
-  "https://***REMOVED***/v1/app/android/config?client_id=***REMOVED***&all_locales=true"
+  "https://\(Secrets.Server.Api.production)/v1/app/ios/config?client_id=\(Secrets.ApiClient.production)&all_locales=true"
 
 extension Dictionary {
   public func withAllValuesFrom(other: Dictionary) -> Dictionary {

@@ -43,6 +43,7 @@ public final class Koala {
   public enum ExternalLinkContext {
     case projectCreator
     case projectDescription
+    case projectUpdate
     case projectUpdates
 
     var trackingString: String {
@@ -51,6 +52,8 @@ public final class Koala {
         return "project_creator"
       case .projectDescription:
         return "project_description"
+      case .projectUpdate:
+        return "project_update"
       case .projectUpdates:
         return "project_updates"
       }
