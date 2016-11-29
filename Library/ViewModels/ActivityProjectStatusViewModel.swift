@@ -68,14 +68,14 @@ public final class ActivityProjectStatusViewModel: ActivityProjectStatusViewMode
           let percentage = Format.percentage(project.stats.percentFunded)
           let funded = Strings.percentage_funded(percentage: percentage)
 
-          let fundedAttributedString = NSMutableAttributedString(string: funded, attributes: [
+          let mutableString = NSMutableAttributedString(string: funded, attributes: [
             NSFontAttributeName: UIFont.ksr_caption1(),
             NSForegroundColorAttributeName: UIColor.ksr_navy_500
           ])
 
-          if let percentRange = fundedAttributedString.string.rangeOfString(percentage) {
-            let percentStartIndex = fundedAttributedString.string.startIndex.distanceTo(percentRange.startIndex)
-            fundedAttributedString.addAttributes([
+          if let percentRange = mutableString.string.rangeOfString(percentage) {
+            let percentStartIndex = mutableString.string.startIndex.distanceTo(percentRange.startIndex)
+            mutableString.addAttributes([
               NSFontAttributeName: UIFont.ksr_headline(size: 12.0),
               NSForegroundColorAttributeName:
                 ($0.category == .cancellation
@@ -84,7 +84,7 @@ public final class ActivityProjectStatusViewModel: ActivityProjectStatusViewMode
             ], range: NSRange(location: percentStartIndex, length: percentage.characters.count))
           }
 
-          return fundedAttributedString
+          return mutableString
         }
 
         return NSAttributedString(string: "")

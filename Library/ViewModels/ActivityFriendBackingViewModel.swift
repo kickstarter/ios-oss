@@ -39,6 +39,7 @@ public protocol ActivityFriendBackingViewModelType {
 public final class ActivityFriendBackingViewModel: ActivityFriendBackingViewModelType,
 ActivityFriendBackingViewModelInputs, ActivityFriendBackingViewModelOutputs {
 
+  // swiftlint:disable:next function_body_length
   public init() {
     let activity = self.activityProperty.signal.ignoreNil()
     let project = activity.map { $0.project }.ignoreNil()
@@ -79,14 +80,14 @@ ActivityFriendBackingViewModelInputs, ActivityFriendBackingViewModelOutputs {
           let percentage = Format.percentage(project.stats.percentFunded)
           let funded = Strings.percentage_funded(percentage: percentage)
 
-          let fundedAttributedString = NSMutableAttributedString(string: funded, attributes: [
+          let mutableString = NSMutableAttributedString(string: funded, attributes: [
             NSFontAttributeName: UIFont.ksr_caption1(),
             NSForegroundColorAttributeName: UIColor.ksr_navy_500
             ])
 
-          if let percentRange = fundedAttributedString.string.rangeOfString(percentage) {
-            let percentStartIndex = fundedAttributedString.string.startIndex.distanceTo(percentRange.startIndex)
-            fundedAttributedString.addAttributes([
+          if let percentRange = mutableString.string.rangeOfString(percentage) {
+            let percentStartIndex = mutableString.string.startIndex.distanceTo(percentRange.startIndex)
+            mutableString.addAttributes([
               NSFontAttributeName: UIFont.ksr_headline(size: 12.0),
               NSForegroundColorAttributeName:
                 ($0.category == .cancellation
@@ -95,7 +96,7 @@ ActivityFriendBackingViewModelInputs, ActivityFriendBackingViewModelOutputs {
               ], range: NSRange(location: percentStartIndex, length: percentage.characters.count))
           }
 
-          return fundedAttributedString
+          return mutableString
         }
 
         return NSAttributedString(string: "")
