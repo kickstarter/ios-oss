@@ -45,7 +45,7 @@ ActivityFriendBackingViewModelInputs, ActivityFriendBackingViewModelOutputs {
     let project = activity.map { $0.project }.ignoreNil()
 
     self.friendImageURL = activity
-      .map { ($0.user?.avatar.medium).flatMap(NSURL.init) }
+      .map { ($0.user?.avatar.small).flatMap(NSURL.init) }
 
     self.friendTitle = activity
       .map { activity in
