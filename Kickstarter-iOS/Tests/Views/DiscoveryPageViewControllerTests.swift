@@ -82,7 +82,9 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
         controller.change(filter: magicParams)
         self.scheduler.run()
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+        FBSnapshotVerifyView(
+          parent.view, identifier: "lang_\(language)_device_\(device)", tolerance: 0.015
+        )
       }
     }
   }

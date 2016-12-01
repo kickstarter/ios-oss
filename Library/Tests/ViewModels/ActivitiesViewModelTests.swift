@@ -361,9 +361,20 @@ final class ActivitiesViewModelTests: TestCase {
 
       self.unansweredSurveyResponse.assertValues([surveyResponse])
 
+      // Tap to see survey response.
       self.vm.inputs.tappedRespondNow(forSurveyResponse: surveyResponse)
-
       self.goToSurveyResponse.assertValues([surveyResponse])
+
+      // Exited survey full screen.
+      self.vm.inputs.viewWillAppear(animated: true)
+      self.unansweredSurveyResponse.assertValues([surveyResponse], "Same unanswered survey emits.")
+
+      self.vm.inputs.tappedRespondNow(forSurveyResponse: surveyResponse)
+      self.goToSurveyResponse.assertValues([surveyResponse, surveyResponse])
+
+      // Exited survey modal.
+      self.vm.inputs.surveyResponseViewControllerDismissed()
+      self.unansweredSurveyResponse.assertValues([surveyResponse], "Same unanswered survey emits.")
     }
   }
 

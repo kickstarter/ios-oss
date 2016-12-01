@@ -2,6 +2,8 @@ disabled_rules:
   - function_parameter_count
   - nesting
   - variable_name
+  - weak_delegate
+  - trailing_comma
 opt_in_rules:
   - empty_count
   - force_unwrapping

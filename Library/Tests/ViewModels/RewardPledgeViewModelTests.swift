@@ -52,10 +52,12 @@ internal final class RewardPledgeViewModelTests: TestCase {
   private let goToThanks = TestObserver<Project, NoError>()
   private let items = TestObserver<[String], NoError>()
   private let itemsContainerHidden = TestObserver<Bool, NoError>()
+  private let loadingOverlayIsHidden = TestObserver<Bool, NoError>()
   private let minimumLabelText = TestObserver<String, NoError>()
   private let navigationTitle = TestObserver<String, NoError>()
   private let orLabelHidden = TestObserver<Bool, NoError>()
   private let pledgeCurrencyLabelText = TestObserver<String, NoError>()
+  private let pledgeIsLoading = TestObserver<Bool, NoError>()
   private let pledgeTextFieldText = TestObserver<String, NoError>()
   private let readMoreContainerViewHidden = TestObserver<Bool, NoError>()
   private let setStripeAppleMerchantIdentifier = TestObserver<String, NoError>()
@@ -102,10 +104,12 @@ internal final class RewardPledgeViewModelTests: TestCase {
     self.vm.outputs.goToThanks.observe(self.goToThanks.observer)
     self.vm.outputs.items.observe(self.items.observer)
     self.vm.outputs.itemsContainerHidden.observe(self.itemsContainerHidden.observer)
+    self.vm.outputs.loadingOverlayIsHidden.observe(self.loadingOverlayIsHidden.observer)
     self.vm.outputs.minimumLabelText.observe(self.minimumLabelText.observer)
     self.vm.outputs.navigationTitle.observe(self.navigationTitle.observer)
     self.vm.outputs.orLabelHidden.observe(self.orLabelHidden.observer)
     self.vm.outputs.pledgeCurrencyLabelText.observe(self.pledgeCurrencyLabelText.observer)
+    self.vm.outputs.pledgeIsLoading.observe(self.pledgeIsLoading.observer)
     self.vm.outputs.pledgeTextFieldText.observe(self.pledgeTextFieldText.observer)
     self.vm.outputs.readMoreContainerViewHidden.observe(self.readMoreContainerViewHidden.observer)
     self.vm.outputs.setStripeAppleMerchantIdentifier.observe(self.setStripeAppleMerchantIdentifier.observer)
@@ -642,6 +646,9 @@ internal final class RewardPledgeViewModelTests: TestCase {
   func testApplePay_CancelFlow() {
     let project = Project.template
     self.vm.inputs.configureWith(project: project, reward: .template, applePayCapable: true)
+
+    self.loadingOverlayIsHidden.assertValueCount(0)
+
     self.vm.inputs.viewDidLoad()
     self.scheduler.advance()
 
@@ -673,6 +680,9 @@ internal final class RewardPledgeViewModelTests: TestCase {
                    self.trackingClient.properties(forKey: "type", as: String.self))
     XCTAssertEqual([nil, nil, "Reward Selection", nil, nil, nil, nil],
                    self.trackingClient.properties(forKey: "context", as: String.self))
+
+    self.pledgeIsLoading.assertValueCount(0)
+    self.loadingOverlayIsHidden.assertValues([true])
   }
 
   func testApplePay_SuccessfulFlow() {
@@ -682,6 +692,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
     self.scheduler.advance()
 
     self.applePayButtonHidden.assertValues([false])
+    self.loadingOverlayIsHidden.assertValues([true])
     XCTAssertEqual(["Reward Checkout", "Selected Reward"], self.trackingClient.events)
 
     self.vm.inputs.applePayButtonTapped()
@@ -714,7 +725,15 @@ internal final class RewardPledgeViewModelTests: TestCase {
       self.trackingClient.events
     )
 
+    self.pledgeIsLoading.assertValueCount(0)
+    self.loadingOverlayIsHidden.assertValues([true])
+
     let status = self.vm.inputs.stripeCreatedToken(stripeToken: "stripe_deadbeef", error: nil)
+
+    self.scheduler.advance()
+
+    self.pledgeIsLoading.assertValues([true, false])
+    self.loadingOverlayIsHidden.assertValues([true, false, true])
 
     XCTAssertEqual(
       ["Reward Checkout", "Selected Reward", "Clicked Reward Pledge Button", "Apple Pay Show Sheet",
@@ -726,6 +745,8 @@ internal final class RewardPledgeViewModelTests: TestCase {
     XCTAssertEqual(PKPaymentAuthorizationStatus.Success.rawValue, status.rawValue)
 
     self.vm.inputs.paymentAuthorizationDidFinish()
+
+    self.scheduler.advance()
 
     self.goToThanks.assertValues([project])
 
@@ -750,6 +771,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
     self.scheduler.advance()
 
     self.applePayButtonHidden.assertValues([false])
+    self.loadingOverlayIsHidden.assertValues([true])
     XCTAssertEqual(["Reward Checkout", "Selected Reward"], self.trackingClient.events)
 
     self.vm.inputs.applePayButtonTapped()
@@ -805,6 +827,8 @@ internal final class RewardPledgeViewModelTests: TestCase {
     )
 
     self.goToThanks.assertValues([])
+    self.pledgeIsLoading.assertValueCount(0)
+    self.loadingOverlayIsHidden.assertValues([true])
   }
 
   func testApplePay_LoggedOutFlow() {
@@ -815,6 +839,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.applePayButtonHidden.assertValues([false])
+      self.loadingOverlayIsHidden.assertValues([true])
 
       self.vm.inputs.applePayButtonTapped()
 
@@ -841,8 +866,16 @@ internal final class RewardPledgeViewModelTests: TestCase {
           )
         )
         self.vm.inputs.paymentAuthorizationDidFinish()
+
+        self.pledgeIsLoading.assertValueCount(0)
+        self.loadingOverlayIsHidden.assertValues([true])
+
         let status = self.vm.inputs.stripeCreatedToken(stripeToken: "stripe_deadbeef", error: nil)
 
+        self.scheduler.advance()
+
+        self.pledgeIsLoading.assertValues([true, false])
+        self.loadingOverlayIsHidden.assertValues([true, false, true])
         XCTAssertEqual(PKPaymentAuthorizationStatus.Success.rawValue, status.rawValue)
 
         self.goToThanks.assertValues([project])
@@ -859,11 +892,19 @@ internal final class RewardPledgeViewModelTests: TestCase {
 
     self.continueToPaymentsButtonHidden.assertValues([false])
     self.differentPaymentMethodButtonHidden.assertValues([true])
+    self.loadingOverlayIsHidden.assertValues([true])
+    self.pledgeIsLoading.assertValueCount(0)
 
     self.vm.inputs.continueToPaymentsButtonTapped()
 
+    self.loadingOverlayIsHidden.assertValues([true, false])
+
+    self.scheduler.advance()
+
     self.goToCheckoutProject.assertValues([project])
     self.goToCheckoutRequest.assertValueCount(1)
+    self.pledgeIsLoading.assertValues([true, false])
+    self.loadingOverlayIsHidden.assertValues([true, false, true])
   }
 
   func testGoToCheckout_LoggedOut_ContinueToPaymentMethod() {
@@ -876,18 +917,27 @@ internal final class RewardPledgeViewModelTests: TestCase {
 
       self.continueToPaymentsButtonHidden.assertValues([false])
       self.differentPaymentMethodButtonHidden.assertValues([true])
+      self.loadingOverlayIsHidden.assertValues([true])
 
       self.vm.inputs.continueToPaymentsButtonTapped()
 
       self.goToCheckoutProject.assertValues([])
       self.goToCheckoutRequest.assertValueCount(0)
       self.goToLoginTout.assertValueCount(1)
+      self.pledgeIsLoading.assertValueCount(0)
+      self.loadingOverlayIsHidden.assertValues([true])
 
       withEnvironment(currentUser: .template) {
         self.vm.inputs.userSessionStarted()
 
+        self.loadingOverlayIsHidden.assertValues([true, false])
+
+        self.scheduler.advance()
+
         self.goToCheckoutProject.assertValues([project])
         self.goToCheckoutRequest.assertValueCount(1)
+        self.pledgeIsLoading.assertValues([true, false])
+        self.loadingOverlayIsHidden.assertValues([true, false, true])
       }
     }
   }
@@ -901,11 +951,19 @@ internal final class RewardPledgeViewModelTests: TestCase {
 
     self.continueToPaymentsButtonHidden.assertValues([true])
     self.differentPaymentMethodButtonHidden.assertValues([false])
+    self.loadingOverlayIsHidden.assertValues([true])
+    self.pledgeIsLoading.assertValueCount(0)
 
     self.vm.inputs.differentPaymentMethodButtonTapped()
 
+    self.loadingOverlayIsHidden.assertValues([true, false])
+
+    self.scheduler.advance()
+
     self.goToCheckoutProject.assertValues([project])
     self.goToCheckoutRequest.assertValueCount(1)
+    self.pledgeIsLoading.assertValues([true, false])
+    self.loadingOverlayIsHidden.assertValues([true, false, true])
   }
 
   func testGoToCheckout_LoggedOut_DifferentPaymentMethod() {
@@ -918,18 +976,27 @@ internal final class RewardPledgeViewModelTests: TestCase {
 
       self.continueToPaymentsButtonHidden.assertValues([true])
       self.differentPaymentMethodButtonHidden.assertValues([false])
+      self.loadingOverlayIsHidden.assertValues([true])
 
       self.vm.inputs.differentPaymentMethodButtonTapped()
 
       self.goToCheckoutProject.assertValues([])
       self.goToCheckoutRequest.assertValueCount(0)
       self.goToLoginTout.assertValueCount(1)
+      self.pledgeIsLoading.assertValueCount(0)
+      self.loadingOverlayIsHidden.assertValues([true])
 
       withEnvironment(currentUser: .template) {
         self.vm.inputs.userSessionStarted()
 
+        self.loadingOverlayIsHidden.assertValues([true, false])
+
+        self.scheduler.advance()
+
         self.goToCheckoutProject.assertValues([project])
         self.goToCheckoutRequest.assertValueCount(1)
+        self.pledgeIsLoading.assertValues([true, false])
+        self.loadingOverlayIsHidden.assertValues([true, false, true])
       }
     }
   }
@@ -956,7 +1023,9 @@ internal final class RewardPledgeViewModelTests: TestCase {
     self.changePaymentMethodButtonHidden.assertValues([true])
     self.continueToPaymentsButtonHidden.assertValues([true])
     self.differentPaymentMethodButtonHidden.assertValues([true])
+    self.loadingOverlayIsHidden.assertValues([true])
     self.updatePledgeButtonHidden.assertValues([false])
+    self.pledgeIsLoading.assertValueCount(0)
 
     // Updating pledge response comes back with a checkout url when we need a further webview checkout step
     let updatePledgeResponse = UpdatePledgeEnvelope(
@@ -966,9 +1035,15 @@ internal final class RewardPledgeViewModelTests: TestCase {
     withEnvironment(apiService: MockService(updatePledgeResponse: updatePledgeResponse)) {
       self.vm.inputs.updatePledgeButtonTapped()
 
+      self.loadingOverlayIsHidden.assertValues([true, false])
+
+      self.scheduler.advance()
+
       self.goToCheckoutProject.assertValues([project])
       self.goToCheckoutRequest.assertValueCount(1)
       self.goToThanks.assertValues([])
+      self.pledgeIsLoading.assertValues([true, false])
+      self.loadingOverlayIsHidden.assertValues([true, false, true])
     }
   }
 
@@ -993,7 +1068,9 @@ internal final class RewardPledgeViewModelTests: TestCase {
     self.changePaymentMethodButtonHidden.assertValues([false])
     self.continueToPaymentsButtonHidden.assertValues([true])
     self.differentPaymentMethodButtonHidden.assertValues([true])
+    self.loadingOverlayIsHidden.assertValues([true])
     self.updatePledgeButtonHidden.assertValues([false])
+    self.pledgeIsLoading.assertValueCount(0)
 
     // Updating pledge response comes back with a checkout url when we need a further webview checkout step
     let updatePledgeResponse = UpdatePledgeEnvelope(
@@ -1003,9 +1080,15 @@ internal final class RewardPledgeViewModelTests: TestCase {
     withEnvironment(apiService: MockService(updatePledgeResponse: updatePledgeResponse)) {
       self.vm.inputs.updatePledgeButtonTapped()
 
+      self.loadingOverlayIsHidden.assertValues([true, false])
+
+      self.scheduler.advance()
+
       self.goToCheckoutProject.assertValues([project])
       self.goToCheckoutRequest.assertValueCount(1)
       self.goToThanks.assertValues([])
+      self.pledgeIsLoading.assertValues([true, false])
+      self.loadingOverlayIsHidden.assertValues([true, false, true])
     }
   }
 
@@ -1022,6 +1105,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
       self.scheduler.advance()
 
+      self.loadingOverlayIsHidden.assertValues([true])
       XCTAssertEqual(["Reward Checkout", "Selected Reward"], self.trackingClient.events)
 
       self.vm.inputs.pledgeTextFieldChanged("1")
@@ -1031,29 +1115,49 @@ internal final class RewardPledgeViewModelTests: TestCase {
         self.trackingClient.events
       )
 
+      self.pledgeIsLoading.assertValueCount(0)
+      self.loadingOverlayIsHidden.assertValues([true])
+
       self.vm.inputs.continueToPaymentsButtonTapped()
       self.vm.inputs.pledgeTextFieldDidEndEditing()
 
-      self.showAlert.assertValues(["Please enter an amount of DKK 20 or more."])
       XCTAssertEqual(
         ["Reward Checkout", "Selected Reward", "Checkout Amount Changed", "Changed Pledge Amount",
-          "Errored Reward Pledge Button Click", "Clicked Reward Pledge Button"],
+          "Clicked Reward Pledge Button"],
         self.trackingClient.events
       )
+      self.loadingOverlayIsHidden.assertValues([true, false])
 
-      self.vm.inputs.continueToPaymentsButtonTapped()
-      self.vm.inputs.pledgeTextFieldDidEndEditing()
+      self.scheduler.advance()
 
       self.showAlert.assertValues(["Please enter an amount of DKK 20 or more."])
       XCTAssertEqual(
         ["Reward Checkout", "Selected Reward", "Checkout Amount Changed", "Changed Pledge Amount",
-          "Errored Reward Pledge Button Click", "Clicked Reward Pledge Button",
+          "Clicked Reward Pledge Button", "Errored Reward Pledge Button Click"],
+        self.trackingClient.events
+      )
+      self.pledgeIsLoading.assertValues([true, false])
+      self.loadingOverlayIsHidden.assertValues([true, false, true])
+
+      self.vm.inputs.continueToPaymentsButtonTapped()
+      self.vm.inputs.pledgeTextFieldDidEndEditing()
+
+      self.loadingOverlayIsHidden.assertValues([true, false, true, false])
+
+      self.scheduler.advance()
+
+      self.showAlert.assertValues(["Please enter an amount of DKK 20 or more."])
+      XCTAssertEqual(
+        ["Reward Checkout", "Selected Reward", "Checkout Amount Changed", "Changed Pledge Amount",
+          "Clicked Reward Pledge Button", "Errored Reward Pledge Button Click",
           "Clicked Reward Pledge Button"],
         self.trackingClient.events
       )
 
       self.goToCheckoutProject.assertValues([project])
       self.goToCheckoutRequest.assertValueCount(1)
+      self.pledgeIsLoading.assertValues([true, false, true, false])
+      self.loadingOverlayIsHidden.assertValues([true, false, true, false, true])
     }
   }
 
@@ -1079,6 +1183,8 @@ internal final class RewardPledgeViewModelTests: TestCase {
     self.cancelPledgeButtonHidden.assertValues([true])
     self.continueToPaymentsButtonHidden.assertValues([true])
     self.differentPaymentMethodButtonHidden.assertValues([true])
+    self.loadingOverlayIsHidden.assertValues([true])
+    self.pledgeIsLoading.assertValueCount(0)
 
     // Updating pledge response comes back with no checkout url when everything completed successfully
     let updatePledgeResponse = UpdatePledgeEnvelope(newCheckoutUrl: nil, status: 200)
@@ -1086,9 +1192,15 @@ internal final class RewardPledgeViewModelTests: TestCase {
     withEnvironment(apiService: MockService(updatePledgeResponse: updatePledgeResponse)) {
       self.vm.inputs.updatePledgeButtonTapped()
 
+      self.loadingOverlayIsHidden.assertValues([true, false])
+
+      self.scheduler.advance()
+
       self.goToCheckoutProject.assertValues([])
       self.goToCheckoutRequest.assertValueCount(0)
       self.goToThanks.assertValues([project])
+      self.pledgeIsLoading.assertValues([true, false])
+      self.loadingOverlayIsHidden.assertValues([true, false, true])
     }
   }
 
@@ -1114,6 +1226,8 @@ internal final class RewardPledgeViewModelTests: TestCase {
     self.continueToPaymentsButtonHidden.assertValues([true])
     self.differentPaymentMethodButtonHidden.assertValues([true])
     self.updatePledgeButtonHidden.assertValues([false])
+    self.loadingOverlayIsHidden.assertValues([true])
+    self.pledgeIsLoading.assertValueCount(0)
 
     // Updating pledge response comes back with no checkout url when everything completed successfully
     let updatePledgeResponse = UpdatePledgeEnvelope(newCheckoutUrl: nil, status: 200)
@@ -1121,9 +1235,15 @@ internal final class RewardPledgeViewModelTests: TestCase {
     withEnvironment(apiService: MockService(updatePledgeResponse: updatePledgeResponse)) {
       self.vm.inputs.updatePledgeButtonTapped()
 
+      self.loadingOverlayIsHidden.assertValues([true, false])
+
+      self.scheduler.advance()
+
       self.goToCheckoutProject.assertValues([])
       self.goToCheckoutRequest.assertValueCount(0)
       self.goToThanks.assertValues([project])
+      self.pledgeIsLoading.assertValues([true, false])
+      self.loadingOverlayIsHidden.assertValues([true, false, true])
     }
   }
 
@@ -1742,10 +1862,18 @@ internal final class RewardPledgeViewModelTests: TestCase {
 
       self.vm.inputs.continueToPaymentsButtonTapped()
 
+      XCTAssertEqual(
+        ["Reward Checkout", "Selected Reward", "Checkout Amount Changed", "Changed Pledge Amount",
+          "Clicked Reward Pledge Button"],
+        self.trackingClient.events
+      )
+
+      self.scheduler.advance()
+
       self.showAlert.assertValues(["Please enter an amount of DKK 20 or more."])
       XCTAssertEqual(
         ["Reward Checkout", "Selected Reward", "Checkout Amount Changed", "Changed Pledge Amount",
-        "Errored Reward Pledge Button Click", "Clicked Reward Pledge Button"],
+        "Clicked Reward Pledge Button", "Errored Reward Pledge Button Click"],
         self.trackingClient.events
       )
 
@@ -1753,12 +1881,21 @@ internal final class RewardPledgeViewModelTests: TestCase {
 
       XCTAssertEqual(
         ["Reward Checkout", "Selected Reward", "Checkout Amount Changed", "Changed Pledge Amount",
-          "Errored Reward Pledge Button Click", "Clicked Reward Pledge Button", "Checkout Amount Changed",
+          "Clicked Reward Pledge Button", "Errored Reward Pledge Button Click", "Checkout Amount Changed",
           "Changed Pledge Amount"],
         self.trackingClient.events
       )
 
       self.vm.inputs.continueToPaymentsButtonTapped()
+
+      XCTAssertEqual(
+        ["Reward Checkout", "Selected Reward", "Checkout Amount Changed", "Changed Pledge Amount",
+          "Clicked Reward Pledge Button", "Errored Reward Pledge Button Click", "Checkout Amount Changed",
+          "Changed Pledge Amount", "Clicked Reward Pledge Button"],
+        self.trackingClient.events
+      )
+
+      self.scheduler.advance()
 
       self.showAlert.assertValues([
         "Please enter an amount of DKK 20 or more.",
@@ -1767,15 +1904,14 @@ internal final class RewardPledgeViewModelTests: TestCase {
 
       XCTAssertEqual(
         ["Reward Checkout", "Selected Reward", "Checkout Amount Changed", "Changed Pledge Amount",
-          "Errored Reward Pledge Button Click", "Clicked Reward Pledge Button", "Checkout Amount Changed",
-          "Changed Pledge Amount", "Errored Reward Pledge Button Click",
-          "Clicked Reward Pledge Button"],
+          "Clicked Reward Pledge Button", "Errored Reward Pledge Button Click", "Checkout Amount Changed",
+          "Changed Pledge Amount", "Clicked Reward Pledge Button", "Errored Reward Pledge Button Click"],
         self.trackingClient.events
       )
 
       XCTAssertEqual(
-        [nil, nil, nil, nil, "MINIMUM_AMOUNT", "payment_methods", nil, nil,
-          "MAXIMUM_AMOUNT", "payment_methods"],
+        [nil, nil, nil, nil, "payment_methods", "MINIMUM_AMOUNT", nil, nil, "payment_methods",
+          "MAXIMUM_AMOUNT"],
         self.trackingClient.properties(forKey: "type", as: String.self)
       )
     }
@@ -1796,10 +1932,14 @@ internal final class RewardPledgeViewModelTests: TestCase {
       self.vm.inputs.pledgeTextFieldChanged("1")
       self.vm.inputs.continueToPaymentsButtonTapped()
 
+      self.scheduler.advance()
+
       self.showAlert.assertValues(["Please enter an amount of DKK 5 or more."])
 
       self.vm.inputs.pledgeTextFieldChanged("100000")
       self.vm.inputs.continueToPaymentsButtonTapped()
+
+      self.scheduler.advance()
 
       self.showAlert.assertValues([
         "Please enter an amount of DKK 5 or more.",

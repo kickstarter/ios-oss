@@ -264,6 +264,26 @@ final class AppDelegateViewModelTests: TestCase {
     )
   }
 
+  func testCurrentUserUpdating_WithLegacyUserDefaultsUser() {
+    // No current user in the environment, but the api has an oauth token. This can happen when an oauth
+    // token is resurrected from the legacy user defaults.
+    withEnvironment(apiService: MockService(oauthToken: OauthToken(token: "deadbeef"))) {
+
+      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+                                              launchOptions: [:])
+
+      self.scheduler.advanceByInterval(5.0)
+
+      self.updateCurrentUserInEnvironment.assertValues([.template])
+      self.postNotificationName.assertDidNotEmitValue()
+
+      self.vm.inputs.currentUserUpdatedInEnvironment()
+
+      self.updateCurrentUserInEnvironment.assertValues([.template])
+      self.postNotificationName.assertValues([CurrentUserNotifications.userUpdated])
+    }
+  }
+
   func testInvalidAccessToken() {
     let error = ErrorEnvelope(
       errorMessages: ["invalid deadbeef"],
@@ -435,8 +455,21 @@ final class AppDelegateViewModelTests: TestCase {
 
     let params = .defaults
       |> DiscoveryParams.lens.sort .~ .newest
-      |> DiscoveryParams.lens.staffPicks .~ true
     self.goToDiscovery.assertValues([params])
+  }
+
+  func testGoToDiscovery_NoParams() {
+    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+                                                 launchOptions: [:])
+
+    self.goToDiscovery.assertValues([])
+
+    self.vm.inputs.applicationOpenUrl(application: UIApplication.sharedApplication(),
+                                      url: NSURL(string: "https://www.kickstarter.com/discover")!,
+                                      sourceApplication: nil,
+                                      annotation: 1)
+
+    self.goToDiscovery.assertValues([nil])
   }
 
   func testGoToDiscoveryWithCategory() {
@@ -798,6 +831,7 @@ final class AppDelegateViewModelTests: TestCase {
       self.vm.inputs.didReceive(remoteNotification: pushData, applicationIsActive: false)
 
       self.goToDashboard.assertValueCount(0)
+      self.goToDiscovery.assertValueCount(0)
       self.presentViewController.assertValueCount(0)
     }
   }

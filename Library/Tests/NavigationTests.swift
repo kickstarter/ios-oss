@@ -91,11 +91,9 @@ public final class NavigationTests: XCTestCase {
     KSRAssertMatch(.signup,
                    "/signup")
 
-    KSRAssertMatch(.tab(.discovery(["staff_picks": "true", "sort": "newest"])),
-                   "/discover?sort=newest")
+    KSRAssertMatch(.tab(.discovery(["sort": "newest"])), "/discover?sort=newest")
 
-    KSRAssertMatch(.tab(.discovery([:])),
-                   "/discover/advanced")
+    KSRAssertMatch(.tab(.discovery(nil)), "/discover/advanced")
 
     KSRAssertMatch(.tab(.discovery(["category_id": "a"])),
                    "/discover/categories/a")

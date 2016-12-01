@@ -41,7 +41,7 @@ internal final class UpdateDraftViewController: UIViewController {
     self |> baseControllerStyle()
 
     self.navigationController?.navigationBar ?|> baseNavigationBarStyle
-    self.navigationItem.backBarButtonItem ?|> updateDraftBackBarButtonItemStyle
+    self.navigationItem.backBarButtonItem = UIBarButtonItem.back(nil, selector: nil)
 
     self.closeBarButtonItem |> updateDraftCloseBarButtonItemStyle
     self.previewBarButtonItem |> updateDraftPreviewBarButtonItemStyle

@@ -34,6 +34,8 @@ internal final class RewardPledgeViewController: UIViewController {
   @IBOutlet private weak var estimatedToFulfillLabel: UILabel!
   @IBOutlet private weak var fulfillmentAndShippingFooterStackView: UIStackView!
   @IBOutlet private weak var itemsStackView: UIStackView!
+  @IBOutlet private weak var loadingIndicatorView: UIActivityIndicatorView!
+  @IBOutlet private weak var loadingOverlayView: UIView!
   @IBOutlet private weak var middleStackView: UIStackView!
   @IBOutlet private weak var minimumAndConversionStackView: UIStackView!
   @IBOutlet private weak var minimumPledgeLabel: UILabel!
@@ -281,6 +283,14 @@ internal final class RewardPledgeViewController: UIViewController {
     self.itemsStackView
       |> UIStackView.lens.spacing .~ Styles.grid(2)
 
+    self.loadingIndicatorView
+      |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
+      |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .White
+      |> UIActivityIndicatorView.lens.color .~ .ksr_navy_900
+
+    self.loadingOverlayView
+      |> UIView.lens.backgroundColor .~ UIColor(white: 1.0, alpha: 0.99)
+
     self.middleStackView
       |> UIStackView.lens.spacing .~ Styles.grid(4)
       |> UIStackView.lens.layoutMargins .~ .init(topBottom: 0, leftRight: Styles.grid(4))
@@ -439,6 +449,8 @@ internal final class RewardPledgeViewController: UIViewController {
     self.estimatedDeliveryDateLabel.rac.text = self.viewModel.outputs.estimatedDeliveryDateLabelText
     self.fulfillmentAndShippingFooterStackView.rac.hidden
       = self.viewModel.outputs.fulfillmentAndShippingFooterStackViewHidden
+    self.loadingIndicatorView.rac.animating = self.viewModel.outputs.pledgeIsLoading
+    self.loadingOverlayView.rac.hidden = self.viewModel.outputs.loadingOverlayIsHidden
     self.minimumPledgeLabel.rac.text = self.viewModel.outputs.minimumLabelText
     self.navigationItem.rac.title = self.viewModel.outputs.navigationTitle
     self.orLabel.rac.hidden = self.viewModel.outputs.orLabelHidden

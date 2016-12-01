@@ -119,6 +119,16 @@ final class AppEnvironmentTests: XCTestCase {
     XCTAssertEqual(nil, differentEnv.currentUser)
   }
 
+  func testFromStorage_LegacyUserDefaults() {
+    let userDefaults = MockKeyValueStore()
+    userDefaults.setObject("deadbeef", forKey: "com.kickstarter.access_token")
+    let env = AppEnvironment.fromStorage(ubiquitousStore: MockKeyValueStore(), userDefaults: userDefaults)
+
+    XCTAssertEqual("deadbeef", env.apiService.oauthToken?.token)
+    XCTAssertTrue(env.apiService.isAuthenticated)
+    XCTAssertNil(userDefaults.objectForKey("com.kickstarter.access_token"))
+  }
+
   func testSaveEnvironment() {
     let apiService = MockService(
       serverConfig: ServerConfig(

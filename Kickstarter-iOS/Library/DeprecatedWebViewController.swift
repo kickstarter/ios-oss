@@ -41,7 +41,7 @@ internal class DeprecatedWebViewController: UIViewController {
 
     self.activityIndicator
       |> UIActivityIndicatorView.lens.translatesAutoresizingMaskIntoConstraints .~ false
-      |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .WhiteLarge
+      |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .White
       |> UIActivityIndicatorView.lens.color .~ .ksr_navy_900
 
     self.loadingOverlayView
