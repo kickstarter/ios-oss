@@ -159,9 +159,9 @@ AppDelegateViewModelOutputs {
       )
       .ksr_debounce(5.0, onScheduler: AppEnvironment.current.scheduler)
       .switchMap { _ -> SignalProducer<Event<User?, ErrorEnvelope>, NoError> in
-        AppEnvironment.current.currentUser == nil
-          ? SignalProducer(value: .Next(nil))
-          : AppEnvironment.current.apiService.fetchUserSelf().wrapInOptional().materialize()
+        AppEnvironment.current.apiService.isAuthenticated || AppEnvironment.current.currentUser != nil
+          ? AppEnvironment.current.apiService.fetchUserSelf().wrapInOptional().materialize()
+          : SignalProducer(value: .Next(nil))
     }
 
     self.updateCurrentUserInEnvironment = currentUserEvent

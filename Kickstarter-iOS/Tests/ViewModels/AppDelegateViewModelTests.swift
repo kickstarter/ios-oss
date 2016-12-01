@@ -264,6 +264,26 @@ final class AppDelegateViewModelTests: TestCase {
     )
   }
 
+  func testCurrentUserUpdating_WithLegacyUserDefaultsUser() {
+    // No current user in the environment, but the api has an oauth token. This can happen when an oauth
+    // token is resurrected from the legacy user defaults.
+    withEnvironment(apiService: MockService(oauthToken: OauthToken(token: "deadbeef"))) {
+
+      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+                                              launchOptions: [:])
+
+      self.scheduler.advanceByInterval(5.0)
+
+      self.updateCurrentUserInEnvironment.assertValues([.template])
+      self.postNotificationName.assertDidNotEmitValue()
+
+      self.vm.inputs.currentUserUpdatedInEnvironment()
+
+      self.updateCurrentUserInEnvironment.assertValues([.template])
+      self.postNotificationName.assertValues([CurrentUserNotifications.userUpdated])
+    }
+  }
+
   func testInvalidAccessToken() {
     let error = ErrorEnvelope(
       errorMessages: ["invalid deadbeef"],
