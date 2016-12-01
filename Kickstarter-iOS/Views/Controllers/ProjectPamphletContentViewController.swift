@@ -11,7 +11,7 @@ internal protocol ProjectPamphletContentViewControllerDelegate: VideoViewControl
 
 internal final class ProjectPamphletContentViewController: UITableViewController {
   private let dataSource = ProjectPamphletContentDataSource()
-  internal weak var delegate: ProjectPamphletContentViewControllerDelegate!
+  internal weak var delegate: ProjectPamphletContentViewControllerDelegate?
   private let viewModel: ProjectPamphletContentViewModelType = ProjectPamphletContentViewModel()
   private var navBarController: ProjectNavBarViewController!
 
@@ -158,14 +158,14 @@ internal final class ProjectPamphletContentViewController: UITableViewController
         mainCell.scrollContentOffset(scrollView.contentOffset.y + scrollView.contentInset.top)
     }
 
-    self.delegate.projectPamphletContent(
+    self.delegate?.projectPamphletContent(
       self,
       imageIsVisible: scrollView.contentOffset.y < scrollView.bounds.width * 9/16
     )
   }
 
   @objc private func scrollViewPanGestureRecognizerDidChange(recognizer: UIPanGestureRecognizer) {
-    self.delegate.projectPamphletContent(self, scrollViewPanGestureRecognizerDidChange: recognizer)
+    self.delegate?.projectPamphletContent(self, scrollViewPanGestureRecognizerDidChange: recognizer)
   }
 
   private func scrollingIsAllowed(scrollView: UIScrollView) -> Bool {
@@ -208,11 +208,11 @@ extension ProjectPamphletContentViewController: ProjectPamphletMainCellDelegate 
 extension ProjectPamphletContentViewController: VideoViewControllerDelegate {
 
   internal func videoViewControllerDidFinish(controller: VideoViewController) {
-    self.delegate.videoViewControllerDidFinish(controller)
+    self.delegate?.videoViewControllerDidFinish(controller)
   }
 
   internal func videoViewControllerDidStart(controller: VideoViewController) {
-    self.delegate.videoViewControllerDidStart(controller)
+    self.delegate?.videoViewControllerDidStart(controller)
   }
 }
 
