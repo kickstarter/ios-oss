@@ -41,7 +41,8 @@ ActivitySurveyResponseCellViewModelInputs, ActivitySurveyResponseCellViewModelOu
     self.creatorNameText = project.map { $0.creator.name }
 
     self.surveyLabelText = project.map {
-      let text = Strings.Information_requested_to_deliver_your_reward_for_project_by_creator(project_name: $0.name, creator_name: $0.creator.name)
+      let text = Strings.Creator_name_needs_some_information_to_deliver_your_reward_for_project_name(
+        creator_name: $0.creator.name, project_name: $0.name)
 
       return text.simpleHtmlAttributedString(
         base: [

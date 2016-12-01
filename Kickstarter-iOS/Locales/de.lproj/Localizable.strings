@@ -47,6 +47,7 @@
 "Couldnt_add_attachment" = "Anhang konnte nicht hinzugefügt werden";
 "Couldnt_remove_attachment" = "Anhang konnte nicht entfernt werden";
 "Created_projects_projects_count" = "Erstellte Projekte: %{projects_count}";
+"Creator_name_needs_some_information_to_deliver_your_reward_for_project_name" = "<b>%{creator_name}</b> needs some information to deliver your reward for <b>%{project_name}</b>.";
 "Discover_more_projects" = "Erkunde mehr Projekte.";
 "Dismiss" = "Verwerfen";
 "Done" = "Fertig!";
@@ -98,7 +99,6 @@
 "Got_it_your_survey_response_has_been_submitted" = "Alles klar! Deine Antwort auf die Befragung wurde übermittelt.";
 "Home" = "Home";
 "Id_just_like_to_support_the_project" = "Ich möchte das Projekt einfach nur unterstützen.";
-"Information_requested_to_deliver_your_reward_for_project_by_creator" = "Information requested to deliver your reward for <b>%{project_name}</b> by <b>%{creator_name}</b>";
 "Its_a_way_to_bring_creative_projects_to_life" = "Es ist eine Plattform, um kreative Projekte ins Leben zu rufen.";
 "Its_better_with_friends" = "Gemeinsam mehr erreichen";
 "Just_for_you" = "Nur für dich.";

@@ -47,6 +47,7 @@
 "Couldnt_add_attachment" = "Couldn't add attachment";
 "Couldnt_remove_attachment" = "Couldn't remove attachment";
 "Created_projects_projects_count" = "Created projects %{projects_count}";
+"Creator_name_needs_some_information_to_deliver_your_reward_for_project_name" = "<b>%{creator_name}</b> needs some information to deliver your reward for <b>%{project_name}</b>.";
 "Discover_more_projects" = "Discover more projects.";
 "Dismiss" = "Dismiss";
 "Done" = "Done";
@@ -98,7 +99,6 @@
 "Got_it_your_survey_response_has_been_submitted" = "Got it! Your survey response has been submitted.";
 "Home" = "Home";
 "Id_just_like_to_support_the_project" = "I’d just like to support the project.";
-"Information_requested_to_deliver_your_reward_for_project_by_creator" = "Information requested to deliver your reward for <b>%{project_name}</b> by <b>%{creator_name}</b>";
 "Its_a_way_to_bring_creative_projects_to_life" = "It’s a way to bring creative projects to life.";
 "Its_better_with_friends" = "It’s better\nwith friends.";
 "Just_for_you" = "Just for you.";

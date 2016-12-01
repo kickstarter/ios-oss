@@ -783,6 +783,23 @@ backers"
     )
   }
   /**
+   "<b>%{creator_name}</b> needs some information to deliver your reward for <b>%{project_name}</b>."
+
+   - **es**: "<b>%{creator_name}</b> needs some information to deliver your reward for <b>%{project_name}</b>."
+   - **de**: "<b>%{creator_name}</b> needs some information to deliver your reward for <b>%{project_name}</b>."
+   - **fr**: "<b>%{creator_name}</b> needs some information to deliver your reward for <b>%{project_name}</b>."
+   - **it**: "<b>%{creator_name}</b> needs some information to deliver your reward for <b>%{project_name}</b>."
+   - **en**: "<b>%{creator_name}</b> needs some information to deliver your reward for <b>%{project_name}</b>."
+  */
+  public static func Creator_name_needs_some_information_to_deliver_your_reward_for_project_name(creator_name creator_name: String, project_name: String) -> String {
+    return localizedString(
+      key: "Creator_name_needs_some_information_to_deliver_your_reward_for_project_name",
+      defaultValue: "<b>%{creator_name}</b> needs some information to deliver your reward for <b>%{project_name}</b>.",
+      count: nil,
+      substitutions: ["creator_name": creator_name, "project_name": project_name]
+    )
+  }
+  /**
    "Discover more projects."
 
    - **es**: "Descubre más proyectos."
@@ -1579,23 +1596,6 @@ backers"
       defaultValue: "I’d just like to support the project.",
       count: nil,
       substitutions: [:]
-    )
-  }
-  /**
-   "Information requested to deliver your reward for <b>%{project_name}</b> by <b>%{creator_name}</b>"
-
-   - **es**: "Information requested to deliver your reward for <b>%{project_name}</b> by <b>%{creator_name}</b>"
-   - **de**: "Information requested to deliver your reward for <b>%{project_name}</b> by <b>%{creator_name}</b>"
-   - **fr**: "Besoin d'informations pour vous livrer votre récompense du projet <b>%{project_name}</b> par <b>%{creator_name}</b>"
-   - **it**: "Information requested to deliver your reward for <b>%{project_name}</b> by <b>%{creator_name}</b>"
-   - **en**: "Information requested to deliver your reward for <b>%{project_name}</b> by <b>%{creator_name}</b>"
-  */
-  public static func Information_requested_to_deliver_your_reward_for_project_by_creator(project_name project_name: String, creator_name: String) -> String {
-    return localizedString(
-      key: "Information_requested_to_deliver_your_reward_for_project_by_creator",
-      defaultValue: "Information requested to deliver your reward for <b>%{project_name}</b> by <b>%{creator_name}</b>",
-      count: nil,
-      substitutions: ["project_name": project_name, "creator_name": creator_name]
     )
   }
   /**
