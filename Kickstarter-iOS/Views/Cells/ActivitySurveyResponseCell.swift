@@ -37,7 +37,10 @@ internal final class ActivitySurveyResponseCell: UITableViewCell, ValueCell {
       |> UITableViewCell.lens.contentView.layoutMargins %~~ { _, cell in
         cell.traitCollection.isRegularRegular
           ? .init(topBottom: Styles.grid(10), leftRight: Styles.grid(20))
-          : .init(all: Styles.grid(2))
+          : .init(top: Styles.grid(3), left: Styles.grid(2), bottom: Styles.gridHalf(3),
+                  right: Styles.grid(2))
+        // if the survey is not the first one, the top padding should be gridHalf(3)
+        // so need an isFirst bool passed in?
     }
 
     self.cardView
@@ -51,9 +54,19 @@ internal final class ActivitySurveyResponseCell: UITableViewCell, ValueCell {
       |> UILabel.lens.textColor .~ .ksr_text_navy_700
 
     self.respondNowButton
-      |> textOnlyButtonStyle
+      |> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 12)
+      |> UIButton.lens.backgroundColor(forState: .Normal) .~ .clearColor()
+      |> UIButton.lens.titleColor(forState: .Normal) .~ .ksr_green_700
+      |> UIButton.lens.titleColor(forState: .Highlighted) .~ .ksr_navy_700
       |> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.discovery_survey_button_respond_now() }
-    // add the icon
+      |> UIButton.lens.tintColor .~ .ksr_green_700
+      |> UIButton.lens.imageEdgeInsets .~ .init(top: 0, left: 0, bottom: 0, right: Styles.grid(4))
+      |> UIButton.lens.image(forState: .Normal) %~ { _ in Library.image(named: "respond-icon") }
+      |> UIButton.lens.contentEdgeInsets %~~ { _, button in
+        button.traitCollection.verticalSizeClass == .Compact
+          ? .init(top: Styles.grid(3), left: 0, bottom: Styles.grid(1), right: 0)
+          : .init(top: Styles.grid(3), left: 0, bottom: Styles.grid(1), right: 0)
+    }
 
     self.topLineView
       |> UIView.lens.backgroundColor .~ .ksr_green_500

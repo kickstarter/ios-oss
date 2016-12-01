@@ -676,47 +676,35 @@
                                                         <constraint firstAttribute="height" constant="2" id="e8S-o5-1ey"/>
                                                     </constraints>
                                                 </view>
-                                                <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="59Z-qI-nGP">
-                                                    <rect key="frame" x="8" y="20" width="368" height="144"/>
+                                                <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="Biw-Cv-poS">
+                                                    <rect key="frame" x="8" y="20" width="368" height="143"/>
                                                     <subviews>
-                                                        <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="Biw-Cv-poS">
-                                                            <rect key="frame" x="0.0" y="0.0" width="368" height="114"/>
+                                                        <stackView opaque="NO" contentMode="scaleToFill" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="08U-ar-dhC">
+                                                            <rect key="frame" x="0.0" y="0.0" width="368" height="24"/>
                                                             <subviews>
-                                                                <stackView opaque="NO" contentMode="scaleToFill" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="08U-ar-dhC">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="368" height="24"/>
-                                                                    <subviews>
-                                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="zack-sears" translatesAutoresizingMaskIntoConstraints="NO" id="ait-r7-lig" customClass="CircleAvatarImageView" customModule="Library">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
-                                                                            <constraints>
-                                                                                <constraint firstAttribute="width" secondItem="ait-r7-lig" secondAttribute="height" multiplier="1:1" id="4Tb-Ok-2y0"/>
-                                                                                <constraint firstAttribute="width" constant="24" id="5QN-oe-2gH"/>
-                                                                            </constraints>
-                                                                        </imageView>
-                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Count Dracula" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.69999998807907104" translatesAutoresizingMaskIntoConstraints="NO" id="Yj4-xs-6Oi">
-                                                                            <rect key="frame" x="30" y="0.0" width="338" height="24"/>
-                                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
-                                                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                                            <nil key="highlightedColor"/>
-                                                                        </label>
-                                                                    </subviews>
-                                                                </stackView>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Information requested to deliver your reward for Something by Someone." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eM4-Bs-N5a">
-                                                                    <rect key="frame" x="0.0" y="48" width="368" height="41"/>
-                                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="zack-sears" translatesAutoresizingMaskIntoConstraints="NO" id="ait-r7-lig" customClass="CircleAvatarImageView" customModule="Library">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="width" secondItem="ait-r7-lig" secondAttribute="height" multiplier="1:1" id="4Tb-Ok-2y0"/>
+                                                                        <constraint firstAttribute="width" constant="24" id="5QN-oe-2gH"/>
+                                                                    </constraints>
+                                                                </imageView>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Count Dracula" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.69999998807907104" translatesAutoresizingMaskIntoConstraints="NO" id="Yj4-xs-6Oi">
+                                                                    <rect key="frame" x="30" y="0.0" width="338" height="24"/>
+                                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
-                                                                <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7yF-Px-W1J" userLabel="Divider Line">
-                                                                    <rect key="frame" x="0.0" y="113" width="368" height="1"/>
-                                                                    <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95294117647058818" alpha="1" colorSpace="calibratedRGB"/>
-                                                                    <constraints>
-                                                                        <constraint firstAttribute="height" constant="1" id="K9d-Ur-0fv"/>
-                                                                    </constraints>
-                                                                </view>
                                                             </subviews>
                                                         </stackView>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Information requested to deliver your reward for Something by Someone." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eM4-Bs-N5a">
+                                                            <rect key="frame" x="0.0" y="48" width="368" height="41"/>
+                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
                                                         <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Op9-Hz-y39">
-                                                            <rect key="frame" x="0.0" y="114" width="368" height="30"/>
+                                                            <rect key="frame" x="0.0" y="113" width="368" height="30"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                                             <state key="normal" title="Respond now">
                                                                 <color key="titleColor" red="0.031372549020000001" green="0.070588235289999995" blue="0.27058823529999998" alpha="1" colorSpace="calibratedRGB"/>
@@ -724,16 +712,26 @@
                                                         </button>
                                                     </subviews>
                                                 </stackView>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7yF-Px-W1J" userLabel="Divider Line">
+                                                    <rect key="frame" x="0.0" y="136" width="384" height="1"/>
+                                                    <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95294117647058818" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="1" id="K9d-Ur-0fv"/>
+                                                    </constraints>
+                                                </view>
                                             </subviews>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <constraints>
+                                                <constraint firstItem="7yF-Px-W1J" firstAttribute="leading" secondItem="9FR-kr-r2X" secondAttribute="leading" id="57Z-3z-N2p"/>
                                                 <constraint firstItem="U0K-GN-MuG" firstAttribute="leading" secondItem="9FR-kr-r2X" secondAttribute="leading" id="770-Zj-pE5"/>
                                                 <constraint firstAttribute="trailing" secondItem="U0K-GN-MuG" secondAttribute="trailing" id="ASK-Dt-72b"/>
-                                                <constraint firstItem="59Z-qI-nGP" firstAttribute="leading" secondItem="9FR-kr-r2X" secondAttribute="leadingMargin" id="ZiE-aj-LST"/>
-                                                <constraint firstItem="59Z-qI-nGP" firstAttribute="top" secondItem="U0K-GN-MuG" secondAttribute="bottom" constant="18" id="l83-EX-9eA"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="59Z-qI-nGP" secondAttribute="trailing" id="qWM-yt-0qr"/>
+                                                <constraint firstItem="Biw-Cv-poS" firstAttribute="top" secondItem="U0K-GN-MuG" secondAttribute="bottom" constant="18" id="N7u-fo-BJK"/>
+                                                <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="Biw-Cv-poS" secondAttribute="bottom" id="TA6-g2-j3P"/>
+                                                <constraint firstAttribute="trailing" secondItem="7yF-Px-W1J" secondAttribute="trailing" id="W0y-1i-yki"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="Biw-Cv-poS" secondAttribute="trailing" id="bPd-oD-k5d"/>
+                                                <constraint firstAttribute="leadingMargin" secondItem="Biw-Cv-poS" secondAttribute="leading" id="i5Q-hX-2aU"/>
                                                 <constraint firstItem="U0K-GN-MuG" firstAttribute="top" secondItem="9FR-kr-r2X" secondAttribute="top" id="wIt-Oa-maZ"/>
-                                                <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="59Z-qI-nGP" secondAttribute="bottom" id="znh-17-VAg"/>
+                                                <constraint firstItem="7yF-Px-W1J" firstAttribute="top" secondItem="Op9-Hz-y39" secondAttribute="top" id="y9P-e4-c6h"/>
                                             </constraints>
                                         </view>
                                     </subviews>

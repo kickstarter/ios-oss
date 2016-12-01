@@ -15,20 +15,12 @@ internal final class ActivitiesDataSource: ValueCellDataSource {
     self.set(values: visible ? [source] : [],
              cellClass: FindFriendsFacebookConnectCell.self,
              inSection: Section.facebookConnect.rawValue)
-
-    if visible {
-      self.appendStaticRow(cellIdentifier: "HalfPaddingCell", toSection: Section.facebookConnect.rawValue)
-    }
   }
 
   internal func findFriends(source source: FriendsSource, visible: Bool) {
     self.set(values: visible ? [source] : [],
              cellClass: FindFriendsHeaderCell.self,
              inSection: Section.findFriends.rawValue)
-
-    if visible {
-      self.appendStaticRow(cellIdentifier: "HalfPaddingCell", toSection: Section.findFriends.rawValue)
-    }
   }
 
   internal func removeFacebookConnectRows() -> [NSIndexPath] {
@@ -51,7 +43,6 @@ internal final class ActivitiesDataSource: ValueCellDataSource {
       self.set(values: [response],
                cellClass: ActivitySurveyResponseCell.self,
                inSection: Section.survey.rawValue)
-      self.appendStaticRow(cellIdentifier: "HalfPaddingCell", toSection: Section.survey.rawValue)
     } else {
       self.set(values: [],
                cellClass: ActivitySurveyResponseCell.self,

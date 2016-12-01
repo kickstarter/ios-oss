@@ -1,4 +1,5 @@
 "About_reward_amount" = "About %{reward_amount}";
+"Add_attachments" = "Add attachments…";
 "All_Art_Projects" = "All Art Projects";
 "All_Comics_Projects" = "All Comics Projects";
 "All_Crafts_Projects" = "All Crafts Projects";
@@ -170,7 +171,7 @@
 "Saves_project" = "Saves project.";
 "Select_this_reward" = "Select this reward";
 "Select_this_reward_instead" = "Select this reward instead";
-"Share_an_update_about_your_project" = "Share an update about your project...";
+"Share_an_update_about_your_project" = "Share an update about your project…";
 "Share_this_project_on_Facebook" = "Share this project on Facebook.";
 "Share_this_project_on_Twitter" = "Share this project on Twitter.";
 "Share_update" = "Share update";

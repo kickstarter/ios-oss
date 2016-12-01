@@ -38,7 +38,7 @@ ActivitySurveyResponseCellViewModelInputs, ActivitySurveyResponseCellViewModelOu
 
     self.creatorImageURL = project.map { NSURL.init(string: $0.creator.avatar.small) }
 
-    self.creatorNameText = project.map { $0.name }
+    self.creatorNameText = project.map { $0.creator.name }
 
     self.surveyLabelText = project.map {
       let text = Strings.Information_requested_to_deliver_your_reward_for_project_by_creator(project_name: $0.name, creator_name: $0.creator.name)

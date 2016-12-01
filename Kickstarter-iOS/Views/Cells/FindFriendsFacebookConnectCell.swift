@@ -101,7 +101,8 @@ internal final class FindFriendsFacebookConnectCell: UITableViewCell, ValueCell 
       |> UITableViewCell.lens.contentView.layoutMargins %~~ { _, cell in
         cell.traitCollection.isRegularRegular
           ? .init(topBottom: Styles.grid(6), leftRight: Styles.grid(20))
-          : .init(all: Styles.grid(4))
+          : .init(top: Styles.gridHalf(3), left: Styles.grid(2), bottom: Styles.gridHalf(3),
+                  right: Styles.grid(2))
     }
   }
 
