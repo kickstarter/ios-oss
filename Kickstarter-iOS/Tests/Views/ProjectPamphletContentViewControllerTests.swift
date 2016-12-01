@@ -18,6 +18,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       |> (Project.lens.creator.avatar • User.Avatar.lens.small) .~ ""
       |> Project.lens.dates.deadline .~ deadline
       |> Project.lens.dates.launchedAt .~ launchedAt
+
     self.cosmicSurgery = project
 
     AppEnvironment.pushEnvironment(
@@ -90,8 +91,18 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
   }
 
   func testBacker_LiveProject() {
+    let endsAt = AppEnvironment.current.dateType.init()
+      .dateByAddingTimeInterval(60*60*24*3)
+      .timeIntervalSince1970
+
     let project = self.cosmicSurgery
-      |> Project.lens.rewards %~ { rewards in [rewards[0], rewards[2]] }
+      |> Project.lens.rewards %~ { rewards in
+        [
+          rewards[0]
+            |> Reward.lens.endsAt .~ endsAt,
+          rewards[2]
+        ]
+      }
       |> Project.lens.state .~ .live
       |> Project.lens.stats.pledged .~ self.cosmicSurgery.stats.goal * 3/4
       |> Project.lens.personalization.isBacking .~ true

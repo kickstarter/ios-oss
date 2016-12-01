@@ -29,6 +29,23 @@ public enum Strings {
     )
   }
   /**
+   "Add attachments…"
+
+   - **es**: "Add attachments…"
+   - **de**: "Add attachments…"
+   - **fr**: "Add attachments…"
+   - **it**: "Add attachments…"
+   - **en**: "Add attachments…"
+  */
+  public static func Add_attachments() -> String {
+    return localizedString(
+      key: "Add_attachments",
+      defaultValue: "Add attachments…",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "All Art Projects"
 
    - **es**: "Todos los proyectos de la categoría Arte"
@@ -364,6 +381,23 @@ public enum Strings {
     return localizedString(
       key: "Ask_me_anything",
       defaultValue: "Ask me anything",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Back"
+
+   - **es**: "Atrás"
+   - **de**: "Zurück"
+   - **fr**: "Retour"
+   - **it**: "Back"
+   - **en**: "Back"
+  */
+  public static func Back() -> String {
+    return localizedString(
+      key: "Back",
+      defaultValue: "Back",
       count: nil,
       substitutions: [:]
     )
@@ -1225,6 +1259,278 @@ backers"
     )
   }
   /**
+   "<b>%{friend_name}</b> backed an <i>Art</i> project."
+
+   - **es**: "<b>%{friend_name}</b> backed an <i>Art</i> project."
+   - **de**: "<b>%{friend_name}</b> backed an <i>Art</i> project."
+   - **fr**: "<b>%{friend_name}</b> backed an <i>Art</i> project."
+   - **it**: "<b>%{friend_name}</b> backed an <i>Art</i> project."
+   - **en**: "<b>%{friend_name}</b> backed an <i>Art</i> project."
+  */
+  public static func Friend_backed_art_project(friend_name friend_name: String) -> String {
+    return localizedString(
+      key: "Friend_backed_art_project",
+      defaultValue: "<b>%{friend_name}</b> backed an <i>Art</i> project.",
+      count: nil,
+      substitutions: ["friend_name": friend_name]
+    )
+  }
+  /**
+   "<b>%{friend_name}</b> backed a <i>Comics</i> project."
+
+   - **es**: "<b>%{friend_name}</b> backed a <i>Comics</i> project."
+   - **de**: "<b>%{friend_name}</b> backed a <i>Comics</i> project."
+   - **fr**: "<b>%{friend_name}</b> backed a <i>Comics</i> project."
+   - **it**: "<b>%{friend_name}</b> backed a <i>Comics</i> project."
+   - **en**: "<b>%{friend_name}</b> backed a <i>Comics</i> project."
+  */
+  public static func Friend_backed_comics_project(friend_name friend_name: String) -> String {
+    return localizedString(
+      key: "Friend_backed_comics_project",
+      defaultValue: "<b>%{friend_name}</b> backed a <i>Comics</i> project.",
+      count: nil,
+      substitutions: ["friend_name": friend_name]
+    )
+  }
+  /**
+   "<b>%{friend_name}</b> backed a <i>Crafts</i> project."
+
+   - **es**: "<b>%{friend_name}</b> backed a <i>Crafts</i> project."
+   - **de**: "<b>%{friend_name}</b> backed a <i>Crafts</i> project."
+   - **fr**: "<b>%{friend_name}</b> backed a <i>Crafts</i> project."
+   - **it**: "<b>%{friend_name}</b> backed a <i>Crafts</i> project."
+   - **en**: "<b>%{friend_name}</b> backed a <i>Crafts</i> project."
+  */
+  public static func Friend_backed_crafts_project(friend_name friend_name: String) -> String {
+    return localizedString(
+      key: "Friend_backed_crafts_project",
+      defaultValue: "<b>%{friend_name}</b> backed a <i>Crafts</i> project.",
+      count: nil,
+      substitutions: ["friend_name": friend_name]
+    )
+  }
+  /**
+   "<b>%{friend_name}</b> backed a <i>Dance</i> project."
+
+   - **es**: "<b>%{friend_name}</b> backed a <i>Dance</i> project."
+   - **de**: "<b>%{friend_name}</b> backed a <i>Dance</i> project."
+   - **fr**: "<b>%{friend_name}</b> backed a <i>Dance</i> project."
+   - **it**: "<b>%{friend_name}</b> backed a <i>Dance</i> project."
+   - **en**: "<b>%{friend_name}</b> backed a <i>Dance</i> project."
+  */
+  public static func Friend_backed_dance_project(friend_name friend_name: String) -> String {
+    return localizedString(
+      key: "Friend_backed_dance_project",
+      defaultValue: "<b>%{friend_name}</b> backed a <i>Dance</i> project.",
+      count: nil,
+      substitutions: ["friend_name": friend_name]
+    )
+  }
+  /**
+   "<b>%{friend_name}</b> backed a <i>Design</i> project."
+
+   - **es**: "<b>%{friend_name}</b> backed a <i>Design</i> project."
+   - **de**: "<b>%{friend_name}</b> backed a <i>Design</i> project."
+   - **fr**: "<b>%{friend_name}</b> backed a <i>Design</i> project."
+   - **it**: "<b>%{friend_name}</b> backed a <i>Design</i> project."
+   - **en**: "<b>%{friend_name}</b> backed a <i>Design</i> project."
+  */
+  public static func Friend_backed_design_project(friend_name friend_name: String) -> String {
+    return localizedString(
+      key: "Friend_backed_design_project",
+      defaultValue: "<b>%{friend_name}</b> backed a <i>Design</i> project.",
+      count: nil,
+      substitutions: ["friend_name": friend_name]
+    )
+  }
+  /**
+   "<b>%{friend_name}</b> backed a <i>Fashion</i> project."
+
+   - **es**: "<b>%{friend_name}</b> backed a <i>Fashion</i> project."
+   - **de**: "<b>%{friend_name}</b> backed a <i>Fashion</i> project."
+   - **fr**: "<b>%{friend_name}</b> backed a <i>Fashion</i> project."
+   - **it**: "<b>%{friend_name}</b> backed a <i>Fashion</i> project."
+   - **en**: "<b>%{friend_name}</b> backed a <i>Fashion</i> project."
+  */
+  public static func Friend_backed_fashion_project(friend_name friend_name: String) -> String {
+    return localizedString(
+      key: "Friend_backed_fashion_project",
+      defaultValue: "<b>%{friend_name}</b> backed a <i>Fashion</i> project.",
+      count: nil,
+      substitutions: ["friend_name": friend_name]
+    )
+  }
+  /**
+   "<b>%{friend_name}</b> backed a <i>Film & Video</i> project."
+
+   - **es**: "<b>%{friend_name}</b> backed a <i>Film & Video</i> project."
+   - **de**: "<b>%{friend_name}</b> backed a <i>Film & Video</i> project."
+   - **fr**: "<b>%{friend_name}</b> backed a <i>Film & Video</i> project."
+   - **it**: "<b>%{friend_name}</b> backed a <i>Film & Video</i> project."
+   - **en**: "<b>%{friend_name}</b> backed a <i>Film & Video</i> project."
+  */
+  public static func Friend_backed_film_project(friend_name friend_name: String) -> String {
+    return localizedString(
+      key: "Friend_backed_film_project",
+      defaultValue: "<b>%{friend_name}</b> backed a <i>Film & Video</i> project.",
+      count: nil,
+      substitutions: ["friend_name": friend_name]
+    )
+  }
+  /**
+   "<b>%{friend_name}</b> backed a <i>Food</i> project."
+
+   - **es**: "<b>%{friend_name}</b> backed a <i>Food</i> project."
+   - **de**: "<b>%{friend_name}</b> backed a <i>Food</i> project."
+   - **fr**: "<b>%{friend_name}</b> backed a <i>Food</i> project."
+   - **it**: "<b>%{friend_name}</b> backed a <i>Food</i> project."
+   - **en**: "<b>%{friend_name}</b> backed a <i>Food</i> project."
+  */
+  public static func Friend_backed_food_project(friend_name friend_name: String) -> String {
+    return localizedString(
+      key: "Friend_backed_food_project",
+      defaultValue: "<b>%{friend_name}</b> backed a <i>Food</i> project.",
+      count: nil,
+      substitutions: ["friend_name": friend_name]
+    )
+  }
+  /**
+   "<b>%{friend_name}</b> backed a <i>Games</i> project."
+
+   - **es**: "<b>%{friend_name}</b> backed a <i>Games</i> project."
+   - **de**: "<b>%{friend_name}</b> backed a <i>Games</i> project."
+   - **fr**: "<b>%{friend_name}</b> backed a <i>Games</i> project."
+   - **it**: "<b>%{friend_name}</b> backed a <i>Games</i> project."
+   - **en**: "<b>%{friend_name}</b> backed a <i>Games</i> project."
+  */
+  public static func Friend_backed_games_project(friend_name friend_name: String) -> String {
+    return localizedString(
+      key: "Friend_backed_games_project",
+      defaultValue: "<b>%{friend_name}</b> backed a <i>Games</i> project.",
+      count: nil,
+      substitutions: ["friend_name": friend_name]
+    )
+  }
+  /**
+   "<b>%{friend_name}</b> backed a <i>Journalism</i> project."
+
+   - **es**: "<b>%{friend_name}</b> backed a <i>Journalism</i> project."
+   - **de**: "<b>%{friend_name}</b> backed a <i>Journalism</i> project."
+   - **fr**: "<b>%{friend_name}</b> backed a <i>Journalism</i> project."
+   - **it**: "<b>%{friend_name}</b> backed a <i>Journalism</i> project."
+   - **en**: "<b>%{friend_name}</b> backed a <i>Journalism</i> project."
+  */
+  public static func Friend_backed_journalism_project(friend_name friend_name: String) -> String {
+    return localizedString(
+      key: "Friend_backed_journalism_project",
+      defaultValue: "<b>%{friend_name}</b> backed a <i>Journalism</i> project.",
+      count: nil,
+      substitutions: ["friend_name": friend_name]
+    )
+  }
+  /**
+   "<b>%{friend_name}</b> backed a <i>Music</i> project."
+
+   - **es**: "<b>%{friend_name}</b> backed a <i>Music</i> project."
+   - **de**: "<b>%{friend_name}</b> backed a <i>Music</i> project."
+   - **fr**: "<b>%{friend_name}</b> backed a <i>Music</i> project."
+   - **it**: "<b>%{friend_name}</b> backed a <i>Music</i> project."
+   - **en**: "<b>%{friend_name}</b> backed a <i>Music</i> project."
+  */
+  public static func Friend_backed_music_project(friend_name friend_name: String) -> String {
+    return localizedString(
+      key: "Friend_backed_music_project",
+      defaultValue: "<b>%{friend_name}</b> backed a <i>Music</i> project.",
+      count: nil,
+      substitutions: ["friend_name": friend_name]
+    )
+  }
+  /**
+   "<b>%{friend_name}</b> backed a <i>Photography</i> project."
+
+   - **es**: "<b>%{friend_name}</b> backed a <i>Photography</i> project."
+   - **de**: "<b>%{friend_name}</b> backed a <i>Photography</i> project."
+   - **fr**: "<b>%{friend_name}</b> backed a <i>Photography</i> project."
+   - **it**: "<b>%{friend_name}</b> backed a <i>Photography</i> project."
+   - **en**: "<b>%{friend_name}</b> backed a <i>Photography</i> project."
+  */
+  public static func Friend_backed_photography_project(friend_name friend_name: String) -> String {
+    return localizedString(
+      key: "Friend_backed_photography_project",
+      defaultValue: "<b>%{friend_name}</b> backed a <i>Photography</i> project.",
+      count: nil,
+      substitutions: ["friend_name": friend_name]
+    )
+  }
+  /**
+   "<b>%{friend_name}</b> backed a <i>Publishing</i> project."
+
+   - **es**: "<b>%{friend_name}</b> backed a <i>Publishing</i> project."
+   - **de**: "<b>%{friend_name}</b> backed a <i>Publishing</i> project."
+   - **fr**: "<b>%{friend_name}</b> backed a <i>Publishing</i> project."
+   - **it**: "<b>%{friend_name}</b> backed a <i>Publishing</i> project."
+   - **en**: "<b>%{friend_name}</b> backed a <i>Publishing</i> project."
+  */
+  public static func Friend_backed_publishing_project(friend_name friend_name: String) -> String {
+    return localizedString(
+      key: "Friend_backed_publishing_project",
+      defaultValue: "<b>%{friend_name}</b> backed a <i>Publishing</i> project.",
+      count: nil,
+      substitutions: ["friend_name": friend_name]
+    )
+  }
+  /**
+   "<b>%{friend_name}</b> backed a <i>Technology</i> project."
+
+   - **es**: "<b>%{friend_name}</b> backed a <i>Technology</i> project."
+   - **de**: "<b>%{friend_name}</b> backed a <i>Technology</i> project."
+   - **fr**: "<b>%{friend_name}</b> backed a <i>Technology</i> project."
+   - **it**: "<b>%{friend_name}</b> backed a <i>Technology</i> project."
+   - **en**: "<b>%{friend_name}</b> backed a <i>Technology</i> project."
+  */
+  public static func Friend_backed_tech_project(friend_name friend_name: String) -> String {
+    return localizedString(
+      key: "Friend_backed_tech_project",
+      defaultValue: "<b>%{friend_name}</b> backed a <i>Technology</i> project.",
+      count: nil,
+      substitutions: ["friend_name": friend_name]
+    )
+  }
+  /**
+   "<b>%{friend_name}</b> backed a <i>Theater</i> project."
+
+   - **es**: "<b>%{friend_name}</b> backed a <i>Theater</i> project."
+   - **de**: "<b>%{friend_name}</b> backed a <i>Theater</i> project."
+   - **fr**: "<b>%{friend_name}</b> backed a <i>Theater</i> project."
+   - **it**: "<b>%{friend_name}</b> backed a <i>Theater</i> project."
+   - **en**: "<b>%{friend_name}</b> backed a <i>Theater</i> project."
+  */
+  public static func Friend_backed_theater_project(friend_name friend_name: String) -> String {
+    return localizedString(
+      key: "Friend_backed_theater_project",
+      defaultValue: "<b>%{friend_name}</b> backed a <i>Theater</i> project.",
+      count: nil,
+      substitutions: ["friend_name": friend_name]
+    )
+  }
+  /**
+   "%{friend_name} launched a project!"
+
+   - **es**: "¡%{friend_name} publicó un proyecto!"
+   - **de**: "%{friend_name} launched a project!"
+   - **fr**: "%{friend_name} a lancé un projet !"
+   - **it**: "%{friend_name} launched a project!"
+   - **en**: "%{friend_name} launched a project!"
+  */
+  public static func Friend_name_launched_a_project(friend_name friend_name: String) -> String {
+    return localizedString(
+      key: "Friend_name_launched_a_project",
+      defaultValue: "%{friend_name} launched a project!",
+      count: nil,
+      substitutions: ["friend_name": friend_name]
+    )
+  }
+  /**
    "Got it! Your survey response has been submitted."
 
    - **es**: "¡Listo! Hemos recibido tus respuestas a nuestro cuestionario."
@@ -1273,6 +1579,23 @@ backers"
       defaultValue: "I’d just like to support the project.",
       count: nil,
       substitutions: [:]
+    )
+  }
+  /**
+   "Information requested to deliver your reward for <b>%{project_name}</b> by <b>%{creator_name}</b>"
+
+   - **es**: "Information requested to deliver your reward for <b>%{project_name}</b> by <b>%{creator_name}</b>"
+   - **de**: "Information requested to deliver your reward for <b>%{project_name}</b> by <b>%{creator_name}</b>"
+   - **fr**: "Besoin d'informations pour vous livrer votre récompense du projet <b>%{project_name}</b> par <b>%{creator_name}</b>"
+   - **it**: "Information requested to deliver your reward for <b>%{project_name}</b> by <b>%{creator_name}</b>"
+   - **en**: "Information requested to deliver your reward for <b>%{project_name}</b> by <b>%{creator_name}</b>"
+  */
+  public static func Information_requested_to_deliver_your_reward_for_project_by_creator(project_name project_name: String, creator_name: String) -> String {
+    return localizedString(
+      key: "Information_requested_to_deliver_your_reward_for_project_by_creator",
+      defaultValue: "Information requested to deliver your reward for <b>%{project_name}</b> by <b>%{creator_name}</b>",
+      count: nil,
+      substitutions: ["project_name": project_name, "creator_name": creator_name]
     )
   }
   /**
@@ -1395,6 +1718,23 @@ with friends."
       defaultValue: "Learn more about accountability",
       count: nil,
       substitutions: [:]
+    )
+  }
+  /**
+   "%{left_count} left"
+
+   - **es**: "%{left_count} restantes"
+   - **de**: "%{left_count} übrig"
+   - **fr**: "%{left_count} restantes"
+   - **it**: "%{left_count} left"
+   - **en**: "%{left_count} left"
+  */
+  public static func Left_count_left(left_count left_count: Int) -> String {
+    return localizedString(
+      key: "Left_count_left",
+      defaultValue: "%{left_count} left",
+      count: left_count,
+      substitutions: ["left_count": Format.wholeNumber(left_count)]
     )
   }
   /**
@@ -1554,7 +1894,7 @@ with friends."
    "No one has posted an update yet."
 
    - **es**: "Todavía no se han publicado actualizaciones."
-   - **de**: "No one has posted an update yet."
+   - **de**: "Es wurden noch keine Updates gepostet."
    - **fr**: "Pas d'actus publiées pour le moment."
    - **it**: "No one has posted an update yet."
    - **en**: "No one has posted an update yet."
@@ -1912,6 +2252,40 @@ from friends yet."
     )
   }
   /**
+   "Project Cancelled."
+
+   - **es**: "Proyecto cancelado."
+   - **de**: "Project Cancelled."
+   - **fr**: "Projet annulé."
+   - **it**: "Project Cancelled."
+   - **en**: "Project Cancelled."
+  */
+  public static func Project_Cancelled() -> String {
+    return localizedString(
+      key: "Project_Cancelled",
+      defaultValue: "Project Cancelled.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Project Suspended."
+
+   - **es**: "Proyecto suspendido."
+   - **de**: "Project Suspended."
+   - **fr**: "Projet suspendu."
+   - **it**: "Project Suspended."
+   - **en**: "Project Suspended."
+  */
+  public static func Project_Suspended() -> String {
+    return localizedString(
+      key: "Project_Suspended",
+      defaultValue: "Project Suspended.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Projects We Love"
 
    - **es**: "Nuestros Favoritos"
@@ -1924,6 +2298,23 @@ from friends yet."
     return localizedString(
       key: "Projects_We_Love",
       defaultValue: "Projects We Love",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Public comment"
+
+   - **es**: "Comentario público"
+   - **de**: "Public comment"
+   - **fr**: "Commentaire public"
+   - **it**: "Public comment"
+   - **en**: "Public comment"
+  */
+  public static func Public_comment() -> String {
+    return localizedString(
+      key: "Public_comment",
+      defaultValue: "Public comment",
       count: nil,
       substitutions: [:]
     )
@@ -1980,6 +2371,40 @@ daring ideas."
       defaultValue: "Read more about the campaign  →",
       count: nil,
       substitutions: [:]
+    )
+  }
+  /**
+   "Recommended"
+
+   - **es**: "Recomendados"
+   - **de**: "Empfehlungen"
+   - **fr**: "Rien que pour vous"
+   - **it**: "Recommended"
+   - **en**: "Recommended"
+  */
+  public static func Recommended() -> String {
+    return localizedString(
+      key: "Recommended",
+      defaultValue: "Recommended",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "%{reward_survey_count} Reward Surveys"
+
+   - **es**: "%{reward_survey_count} Reward Surveys"
+   - **de**: "%{reward_survey_count} Reward Surveys"
+   - **fr**: "%{reward_survey_count} questionnaires"
+   - **it**: "%{reward_survey_count} Reward Surveys"
+   - **en**: "%{reward_survey_count} Reward Surveys"
+  */
+  public static func Reward_Surveys(reward_survey_count reward_survey_count: Int) -> String {
+    return localizedString(
+      key: "Reward_Surveys",
+      defaultValue: "%{reward_survey_count} Reward Surveys",
+      count: reward_survey_count,
+      substitutions: ["reward_survey_count": Format.wholeNumber(reward_survey_count)]
     )
   }
   /**
@@ -2131,6 +2556,23 @@ daring ideas."
     return localizedString(
       key: "Select_this_reward_instead",
       defaultValue: "Select this reward instead",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Share an update about your project…"
+
+   - **es**: "Share an update about your project…"
+   - **de**: "Share an update about your project…"
+   - **fr**: "Parlez de votre projet dans une actu."
+   - **it**: "Share an update about your project…"
+   - **en**: "Share an update about your project…"
+  */
+  public static func Share_an_update_about_your_project() -> String {
+    return localizedString(
+      key: "Share_an_update_about_your_project",
+      defaultValue: "Share an update about your project…",
       count: nil,
       substitutions: [:]
     )
@@ -2360,6 +2802,23 @@ catch your eye?"
     )
   }
   /**
+   "%{time_left} left"
+
+   - **es**: "%{time_left} restantes"
+   - **de**: "%{time_left} übrig"
+   - **fr**: "Plus que %{time_left}"
+   - **it**: "%{time_left} left"
+   - **en**: "%{time_left} left"
+  */
+  public static func Time_left_left(time_left time_left: String) -> String {
+    return localizedString(
+      key: "Time_left_left",
+      defaultValue: "%{time_left} left",
+      count: nil,
+      substitutions: ["time_left": time_left]
+    )
+  }
+  /**
    "Unfollows %{friend_name}."
 
    - **es**: "Dejar de seguir a %{friend_name}."
@@ -2389,6 +2848,23 @@ catch your eye?"
     return localizedString(
       key: "Unsaves_project",
       defaultValue: "Unsaves project.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Unsuccessfully Funded."
+
+   - **es**: "Unsuccessfully Funded."
+   - **de**: "Unsuccessfully Funded."
+   - **fr**: "Non financé."
+   - **it**: "Unsuccessfully Funded."
+   - **en**: "Unsuccessfully Funded."
+  */
+  public static func Unsuccessfully_Funded() -> String {
+    return localizedString(
+      key: "Unsuccessfully_Funded",
+      defaultValue: "Unsuccessfully Funded.",
       count: nil,
       substitutions: [:]
     )
@@ -2474,6 +2950,23 @@ catch your eye?"
     return localizedString(
       key: "When_you_save_a_project_we_ll_send_you_a_reminder",
       defaultValue: "When you save a project we’ll send you a reminder 48 hours before it ends",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "You Launched!"
+
+   - **es**: "You Launched!"
+   - **de**: "You Launched!"
+   - **fr**: "Projet lancé !"
+   - **it**: "You Launched!"
+   - **en**: "You Launched!"
+  */
+  public static func You_Launched() -> String {
+    return localizedString(
+      key: "You_Launched",
+      defaultValue: "You Launched!",
       count: nil,
       substitutions: [:]
     )
@@ -9347,23 +9840,6 @@ catch your eye?"
     )
   }
   /**
-   "%{left} left"
-
-   - **es**: "%{left} restante/s"
-   - **de**: "%{left} verbleibend"
-   - **fr**: "%{left} récompense(s) restante(s)"
-   - **it**: "%{left} left"
-   - **en**: "%{left} left"
-  */
-  public static func left_left(left left: String) -> String {
-    return localizedString(
-      key: "left_left",
-      defaultValue: "%{left} left",
-      count: nil,
-      substitutions: ["left": left]
-    )
-  }
-  /**
    "Forgot your password?"
 
    - **es**: "¿Olvidaste tu contraseña?"
@@ -10895,7 +11371,7 @@ Let's change that!"
   /**
    "%{time_left} to go"
 
-   - **es**: "%{time_left} restante(s)"
+   - **es**: "%{time_left} restantes"
    - **de**: "%{time_left} verbleibend"
    - **fr**: "Plus que %{time_left}"
    - **it**: "%{time_left} to go"

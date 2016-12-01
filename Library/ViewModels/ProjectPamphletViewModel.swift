@@ -58,8 +58,6 @@ ProjectPamphletViewModelOutputs {
         AppEnvironment.current.apiService.fetchProject(param: param)
           .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
           .demoteErrors()
-          .wrapInOptional()
-          .ignoreNil()
     }
 
     let project = Signal.merge(

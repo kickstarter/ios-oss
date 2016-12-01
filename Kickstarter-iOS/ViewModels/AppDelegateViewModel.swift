@@ -814,7 +814,7 @@ extension ShortcutItem {
     case .recommendedForYou:
       return .init(
         type: self.typeString,
-        localizedTitle: localizedString(key: "Recommended", defaultValue: "Recommended"),
+        localizedTitle: Strings.Recommended(),
         localizedSubtitle: nil,
         icon: UIApplicationShortcutIcon(templateImageName: "shortcut-icon-heart"),
         userInfo: nil
