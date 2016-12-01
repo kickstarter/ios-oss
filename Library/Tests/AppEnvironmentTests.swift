@@ -126,6 +126,7 @@ final class AppEnvironmentTests: XCTestCase {
 
     XCTAssertEqual("deadbeef", env.apiService.oauthToken?.token)
     XCTAssertTrue(env.apiService.isAuthenticated)
+    XCTAssertNil(userDefaults.objectForKey("com.kickstarter.access_token"))
   }
 
   func testSaveEnvironment() {
