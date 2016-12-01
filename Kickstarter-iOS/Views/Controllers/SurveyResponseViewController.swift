@@ -4,7 +4,13 @@ import Prelude
 import Social
 import UIKit
 
+internal protocol SurveyResponseViewControllerDelegate: class {
+  /// Called when the delegate should notify the parent that self was dismissed.
+  func surveyResponseViewControllerDismissed()
+}
+
 internal final class SurveyResponseViewController: DeprecatedWebViewController {
+  internal weak var delegate: SurveyResponseViewControllerDelegate?
   private let viewModel: SurveyResponseViewModelType = SurveyResponseViewModel()
 
   internal static func configuredWith(surveyResponse surveyResponse: SurveyResponse)
@@ -33,6 +39,11 @@ internal final class SurveyResponseViewController: DeprecatedWebViewController {
       .observeForControllerAction()
       .observeNext { [weak self] in
         self?.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+
+        // iPad provision
+        if self?.traitCollection.userInterfaceIdiom == .Pad {
+          self?.delegate?.surveyResponseViewControllerDismissed()
+        }
     }
 
     self.viewModel.outputs.goToProject
