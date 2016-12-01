@@ -31,12 +31,17 @@ public class ClearNavigationBar: UINavigationBar {
       |> UINavigationBar.lens.shadowImage .~ UIImage()
 
     self.setBackgroundImage(UIImage(), forBarMetrics: .Default)
+
     self.addSubview(self.backgroundGradientView)
   }
 
   public override func layoutSubviews() {
     super.layoutSubviews()
     self.backgroundGradientView.frame = self.bounds
+
+    if self.subviews.indexOf(self.backgroundGradientView) != 0 {
+      self.sendSubviewToBack(self.backgroundGradientView)
+    }
   }
 
   lazy var backgroundGradientView: GradientView = {

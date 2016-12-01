@@ -14,7 +14,6 @@ internal final class LiveStreamCountdownViewController: UIViewController {
   @IBOutlet private weak var countdownStackView: UIStackView!
   @IBOutlet private var countdownLabels: [UILabel]?
   @IBOutlet private weak var creatorNameLabel: UILabel!
-  @IBOutlet private weak var dashLabel: UILabel!
   @IBOutlet private weak var daysLabel: UILabel!
   @IBOutlet private weak var detailsContainerStackView: UIStackView!
   @IBOutlet private weak var detailsContainerStackViewTopConstraint: NSLayoutConstraint!
@@ -28,7 +27,6 @@ internal final class LiveStreamCountdownViewController: UIViewController {
   @IBOutlet private weak var minutesLabel: UILabel!
   @IBOutlet private weak var projectImageView: UIImageView!
   @IBOutlet private weak var secondsLabel: UILabel!
-  @IBOutlet private weak var separator: UIImageView!
   @IBOutlet private weak var subscribeActivityIndicatorView: UIActivityIndicatorView!
   @IBOutlet private weak var subscribeButton: UIButton!
 
@@ -75,7 +73,7 @@ internal final class LiveStreamCountdownViewController: UIViewController {
     self.countdownContainerStackView
       |> UIStackView.lens.alignment .~ .Center
       |> UIStackView.lens.spacing .~ Styles.grid(6)
-      |> UIStackView.lens.distribution .~ .FillProportionally
+      |> UIStackView.lens.distribution .~ .Fill
 
     self.countdownLabels?.forEach { label in
       label
@@ -135,6 +133,7 @@ internal final class LiveStreamCountdownViewController: UIViewController {
 
     self.activityIndicatorView
       |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .Gray
+      |> UIActivityIndicatorView.lens.animating .~ true
 
     self.subscribeButton.semanticContentAttribute = .ForceRightToLeft
   }
@@ -143,14 +142,14 @@ internal final class LiveStreamCountdownViewController: UIViewController {
     return true
   }
 
+  internal override func preferredStatusBarStyle() -> UIStatusBarStyle {
+    return .LightContent
+  }
+
   internal override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
     self.subscribeButton.layer.cornerRadius = self.subscribeButton.frame.size.height / 2
     self.creatorAvatar.layer.cornerRadius = self.creatorAvatar.frame.size.height / 2
-  }
-
-  internal override func preferredStatusBarStyle() -> UIStatusBarStyle {
-    return .LightContent
   }
 
   internal override func bindViewModel() {
@@ -240,6 +239,7 @@ internal final class LiveStreamCountdownViewController: UIViewController {
     self.activityIndicatorView.rac.hidden = self.viewModel.outputs.showActivityIndicator
       .observeForUI()
       .map(negate)
+    
     self.detailsStackView.rac.hidden = self.viewModel.outputs.showActivityIndicator
       .observeForUI()
 
@@ -254,8 +254,15 @@ internal final class LiveStreamCountdownViewController: UIViewController {
 
     self.viewModel.outputs.toggleSubscribe
       .observeForUI()
-      .observeNext { [weak self] in
+      .observeNext { //[weak self] in
         //toggle subscribe
+    }
+
+    self.viewModel.outputs.pushLiveStreamViewController.observeNext { [weak self] in
+      let liveStreamContainerViewController = LiveStreamContainerViewController
+        .configuredWith(project: $0, event: $1)
+
+      self?.navigationController?.pushViewController(liveStreamContainerViewController, animated: true)
     }
   }
 

@@ -31,6 +31,7 @@ public protocol LiveStreamCountdownViewModelOutputs {
   var introText: Signal<String, NoError> { get }
   var minutesString: Signal<(String, String), NoError> { get }
   var projectImageUrl: Signal<NSURL, NoError> { get }
+  var pushLiveStreamViewController: Signal<(Project, LiveStreamEvent), NoError> { get }
   var retrieveEventInfo: Signal<String, NoError> { get }
   var secondsString: Signal<(String, String), NoError> { get }
   var showActivityIndicator: Signal<Bool, NoError> { get }
@@ -54,12 +55,9 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
 
     // TODO: replace with project's live stream date once we have that in the model
     let components = NSDateComponents()
-    components.year = 2017
-    components.day = 5
-    components.month = 1
-    components.hour = 8
+    components.second = 10
 
-    let date = NSCalendar.currentCalendar().dateFromComponents(components)!
+    let date = NSCalendar.currentCalendar().dateByAddingComponents(components, toDate: NSDate(), options: [])!
 
     let dateComponents = combineLatest(
       project.mapConst(date),
@@ -139,6 +137,16 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
     )
 
     self.toggleSubscribe = self.subscribeButtonTappedProperty.signal
+
+    self.pushLiveStreamViewController = combineLatest(
+      self.projectProperty.signal.ignoreNil(),
+      self.liveStreamEventProperty.signal.ignoreNil(),
+      self.nowProperty.signal.ignoreNil()
+      ).filter { _, event, now in
+        return event.stream.startDate.compare(now) == NSComparisonResult.OrderedSame ||
+               now.earlierDate(event.stream.startDate) == event.stream.startDate
+      }.map { project, event, _ in (project, event) }
+      .take(1)
   }
 
   private let closeButtonTappedProperty = MutableProperty()
@@ -187,6 +195,7 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
   public let introText: Signal<String, NoError>
   public let minutesString: Signal<(String, String), NoError>
   public let projectImageUrl: Signal<NSURL, NoError>
+  public let pushLiveStreamViewController: Signal<(Project, LiveStreamEvent), NoError>
   public let retrieveEventInfo: Signal<String, NoError>
   public let secondsString: Signal<(String, String), NoError>
   public let showActivityIndicator: Signal<Bool, NoError>
