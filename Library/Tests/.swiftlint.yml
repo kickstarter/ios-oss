@@ -7,6 +7,8 @@ disabled_rules:
   - force_cast
   - type_body_length
   - function_body_length
+  - weak_delegate
+  - trailing_comma
 opt_in_rules:
   - empty_count
 line_length: 110

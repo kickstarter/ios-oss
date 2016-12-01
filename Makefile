@@ -9,7 +9,7 @@ BRANCH ?= master
 DIST_BRANCH = $(RELEASE)-dist
 
 ifeq ($(PLATFORM),iOS)
-	DESTINATION ?= 'platform=iOS Simulator,name=iPhone 6'
+	DESTINATION ?= 'platform=iOS Simulator,name=iPhone 6,OS=9.3'
 endif
 ifeq ($(PLATFORM),tvOS)
 	DESTINATION ?= 'platform=tvOS Simulator,name=Apple TV 1080p'

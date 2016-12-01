@@ -6,6 +6,8 @@ import XCTest
 @testable import Kickstarter_Framework
 @testable import KsApi
 
+private let tolerance: CGFloat = 0.0001
+
 internal final class RewardPledgeViewControllerTests: TestCase {
   private let cosmicSurgery = Project.cosmicSurgery
     |> Project.lens.state .~ .live
@@ -51,7 +53,9 @@ internal final class RewardPledgeViewControllerTests: TestCase {
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_apple_pay_\(applePayCapable)")
+        FBSnapshotVerifyView(
+          vc.view, identifier: "lang_\(language)_apple_pay_\(applePayCapable)", tolerance: tolerance
+        )
       }
     }
   }
@@ -74,7 +78,7 @@ internal final class RewardPledgeViewControllerTests: TestCase {
 
     self.scheduler.run()
 
-    FBSnapshotVerifyView(parent.view)
+    FBSnapshotVerifyView(parent.view, tolerance: tolerance)
   }
 
   func testExpandReward() {
@@ -88,7 +92,7 @@ internal final class RewardPledgeViewControllerTests: TestCase {
     vc.viewModel.inputs.expandDescriptionTapped()
     self.scheduler.run()
 
-    FBSnapshotVerifyView(vc.view)
+    FBSnapshotVerifyView(vc.view, tolerance: tolerance)
   }
 
   func testPledge_NoShipping() {
@@ -120,7 +124,7 @@ internal final class RewardPledgeViewControllerTests: TestCase {
 
       self.scheduler.run()
 
-      FBSnapshotVerifyView(vc.view, identifier: "apple_pay_\(applePayCapable)")
+      FBSnapshotVerifyView(vc.view, identifier: "apple_pay_\(applePayCapable)", tolerance: tolerance)
     }
   }
 
@@ -164,7 +168,7 @@ internal final class RewardPledgeViewControllerTests: TestCase {
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)")
+        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)", tolerance: tolerance)
       }
     }
   }
@@ -239,7 +243,9 @@ internal final class RewardPledgeViewControllerTests: TestCase {
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_apple_pay_\(applePayCapable)")
+        FBSnapshotVerifyView(
+          parent.view, identifier: "lang_\(language)_apple_pay_\(applePayCapable)", tolerance: tolerance
+        )
       }
     }
   }
@@ -268,7 +274,7 @@ internal final class RewardPledgeViewControllerTests: TestCase {
 
     self.scheduler.run()
 
-    FBSnapshotVerifyView(parent.view)
+    FBSnapshotVerifyView(parent.view, tolerance: tolerance)
   }
 
   func testAmbigiousCurrencies() {
@@ -292,7 +298,8 @@ internal final class RewardPledgeViewControllerTests: TestCase {
 
         FBSnapshotVerifyView(
           vc.view,
-          identifier: "country_\(country.countryCode)_current_user_country_\(currentUserCountry)"
+          identifier: "country_\(country.countryCode)_current_user_country_\(currentUserCountry)",
+          tolerance: tolerance
         )
       }
     }

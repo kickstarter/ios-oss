@@ -51,7 +51,9 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
       parent.view.frame.size.height = device == .pad ? 1_400 : 1_000
 
-      FBSnapshotVerifyView(vc.view, identifier: "category_\(category.slug)_device_\(device)")
+      FBSnapshotVerifyView(
+        vc.view, identifier: "category_\(category.slug)_device_\(device)", tolerance: 0.0001
+      )
     }
   }
 
@@ -66,7 +68,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
         parent.view.frame.size.height = device == .pad ? 2_300 : 2_200
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)", tolerance: 0.0001)
       }
     }
   }
@@ -82,7 +84,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
         parent.view.frame.size.height = 1_750
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)")
+        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)", tolerance: 0.0001)
       }
     }
   }
@@ -107,7 +109,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
         parent.view.frame.size.height = device == .pad ? 1_600 : 1_350
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)", tolerance: 0.0001)
       }
     }
   }
@@ -131,7 +133,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
         parent.view.frame.size.height = 1_200
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)")
+        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)", tolerance: 0.0001)
       }
     }
   }
@@ -156,7 +158,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
         parent.view.frame.size.height = device == .pad ? 1_600 : 1_350
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)", tolerance: 0.0001)
       }
     }
   }
@@ -179,7 +181,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
     let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
     parent.view.frame.size.height = 1_000
 
-    FBSnapshotVerifyView(vc.view)
+    FBSnapshotVerifyView(vc.view, tolerance: 0.0001)
   }
 
   func testFailedProject() {
@@ -193,7 +195,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
         parent.view.frame.size.height = 1_700
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)")
+        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)", tolerance: 0.0001)
       }
     }
   }

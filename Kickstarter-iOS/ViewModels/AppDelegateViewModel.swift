@@ -297,8 +297,8 @@ AppDelegateViewModelOutputs {
       .ignoreNil()
 
     self.goToDiscovery = deepLink
-      .map { link -> Optional<[String: String]?> in
-        guard case let .tab(.discovery(rawParams)) = link else { return .None }
+      .map { link -> [String: String]?? in
+        guard case let .tab(.discovery(rawParams)) = link else { return nil }
         return .Some(rawParams)
       }
       .ignoreNil()
@@ -364,8 +364,8 @@ AppDelegateViewModelOutputs {
     }
 
     self.goToDashboard = deepLink
-      .map { link -> Optional<Param?> in
-        guard case let .tab(.dashboard(param)) = link else { return .None }
+      .map { link -> Param?? in
+        guard case let .tab(.dashboard(param)) = link else { return nil }
         return .Some(param)
       }
       .ignoreNil()

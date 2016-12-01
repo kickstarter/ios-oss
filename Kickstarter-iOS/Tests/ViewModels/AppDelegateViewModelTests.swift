@@ -435,8 +435,21 @@ final class AppDelegateViewModelTests: TestCase {
 
     let params = .defaults
       |> DiscoveryParams.lens.sort .~ .newest
-      |> DiscoveryParams.lens.staffPicks .~ true
     self.goToDiscovery.assertValues([params])
+  }
+
+  func testGoToDiscovery_NoParams() {
+    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+                                                 launchOptions: [:])
+
+    self.goToDiscovery.assertValues([])
+
+    self.vm.inputs.applicationOpenUrl(application: UIApplication.sharedApplication(),
+                                      url: NSURL(string: "https://www.kickstarter.com/discover")!,
+                                      sourceApplication: nil,
+                                      annotation: 1)
+
+    self.goToDiscovery.assertValues([nil])
   }
 
   func testGoToDiscoveryWithCategory() {
@@ -798,6 +811,7 @@ final class AppDelegateViewModelTests: TestCase {
       self.vm.inputs.didReceive(remoteNotification: pushData, applicationIsActive: false)
 
       self.goToDashboard.assertValueCount(0)
+      self.goToDiscovery.assertValueCount(0)
       self.presentViewController.assertValueCount(0)
     }
   }
