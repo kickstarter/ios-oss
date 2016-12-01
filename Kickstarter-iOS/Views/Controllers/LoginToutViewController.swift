@@ -160,15 +160,18 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
   private func goToHelpType(helpType: HelpType) {
     let vc = HelpWebViewController.configuredWith(helpType: helpType)
     self.navigationController?.pushViewController(vc, animated: true)
+    self.navigationItem.backBarButtonItem = UIBarButtonItem.back(nil, selector: nil)
   }
 
   private func pushLoginViewController() {
     self.navigationController?.pushViewController(LoginViewController.instantiate(), animated: true)
+    self.navigationItem.backBarButtonItem = UIBarButtonItem.back(nil, selector: nil)
   }
 
   private func pushTwoFactorViewController(facebookAccessToken token: String) {
     let vc = TwoFactorViewController.configuredWith(facebookAccessToken: token)
     self.navigationController?.pushViewController(vc, animated: true)
+    self.navigationItem.backBarButtonItem = UIBarButtonItem.back(nil, selector: nil)
   }
 
   private func pushFacebookConfirmationController(facebookUser user: ErrorEnvelope.FacebookUser?,
@@ -176,10 +179,12 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
     let vc = FacebookConfirmationViewController
       .configuredWith(facebookUserEmail: user?.email ?? "", facebookAccessToken: token)
     self.navigationController?.pushViewController(vc, animated: true)
+    self.navigationItem.backBarButtonItem = UIBarButtonItem.back(nil, selector: nil)
   }
 
   private func pushSignupViewController() {
     self.navigationController?.pushViewController(SignupViewController.instantiate(), animated: true)
+    self.navigationItem.backBarButtonItem = UIBarButtonItem.back(nil, selector: nil)
   }
 
   private func showHelpSheet(helpTypes helpTypes: [HelpType]) {
