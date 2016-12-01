@@ -60,6 +60,25 @@ internal final class RewardPledgeViewControllerTests: TestCase {
     }
   }
 
+  func testPledge_Loading() {
+    let project = self.cosmicSurgery
+    let reward = self.cosmicReward |> Reward.lens.rewardsItems .~ []
+
+    withEnvironment(currentUser: .template) {
+      let vc = RewardPledgeViewController.configuredWith(
+        project: project, reward: reward, applePayCapable: false
+      )
+      let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
+      parent.view.frame.size.height -= 64
+
+      self.scheduler.advance()
+
+      vc.viewModel.inputs.continueToPaymentsButtonTapped()
+
+      FBSnapshotVerifyView(vc.view, identifier: "lang_en_apple_pay_false", tolerance: tolerance)
+    }
+  }
+
   func testPledge_ApplePayCapable_UnsupportedCountry() {
     let unsupportedCountry = Project.Country(countryCode: "ZZ",
                                              currencyCode: "ZZD",
