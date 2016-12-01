@@ -33,6 +33,35 @@
                             </visualEffectView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="SnY-YI-3wc">
                                 <rect key="frame" x="0.0" y="240" width="600" height="360"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7rB-eO-gWg">
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="360"/>
+                                        <subviews>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jSK-4e-X7a">
+                                                <rect key="frame" x="0.0" y="0.0" width="300" height="360"/>
+                                            </imageView>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hBo-a9-bYC">
+                                                <rect key="frame" x="300" y="0.0" width="42" height="360"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SJN-qW-Fjy">
+                                                <rect key="frame" x="342" y="0.0" width="258" height="360"/>
+                                                <state key="normal" title="Button"/>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="LI3-IO-dUp">
+                                        <rect key="frame" x="0.0" y="360" width="600" height="0.0"/>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TgX-hH-ACY">
+                                        <rect key="frame" x="0.0" y="360" width="600" height="0.0"/>
+                                    </stackView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="7rB-eO-gWg" firstAttribute="height" secondItem="SnY-YI-3wc" secondAttribute="height" id="bHl-yL-Xu5"/>
+                                </constraints>
                             </stackView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8U9-xl-EOQ">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="240"/>
@@ -91,14 +120,20 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="creatorAvatarImageView" destination="jSK-4e-X7a" id="AcB-Cs-3WC"/>
+                        <outlet property="creatorAvatarLabel" destination="hBo-a9-bYC" id="FLg-iY-Tbb"/>
                         <outlet property="detailsContainerStackView" destination="SnY-YI-3wc" id="VZR-tS-6Hp"/>
+                        <outlet property="detailsStackView" destination="LI3-IO-dUp" id="Ffv-jR-yot"/>
                         <outlet property="loaderActivityIndicatorView" destination="T3H-jR-xFr" id="qL8-U6-z5k"/>
                         <outlet property="loaderButton" destination="uVS-27-nSi" id="cmw-1a-loF"/>
                         <outlet property="loaderContainerStackView" destination="Qs3-Rv-KJp" id="nFf-Um-isU"/>
                         <outlet property="loaderLabel" destination="1Ox-58-NLf" id="d0g-SE-ccE"/>
                         <outlet property="loaderStackView" destination="YcM-fY-s2G" id="G5y-SP-zti"/>
                         <outlet property="loaderView" destination="8U9-xl-EOQ" id="xLh-4z-T8W"/>
+                        <outlet property="numberWatchingButton" destination="SJN-qW-Fjy" id="67n-gN-1Um"/>
                         <outlet property="projectImageView" destination="F4c-N8-hgG" id="2ER-41-HGg"/>
+                        <outlet property="subscribeStackView" destination="TgX-hH-ACY" id="Jdx-3l-fuj"/>
+                        <outlet property="titleStackView" destination="7rB-eO-gWg" id="2Ul-rH-emF"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Awk-0a-gYP" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -330,7 +365,7 @@
                         <outlet property="activityIndicatorView" destination="Ebh-jj-Oqf" id="8n1-aL-bJH"/>
                         <outlet property="countdownContainerStackView" destination="8cl-WZ-Se6" id="3Xy-mH-Saw"/>
                         <outlet property="countdownStackView" destination="its-Qi-Eay" id="E7q-fC-tlG"/>
-                        <outlet property="creatorAvatar" destination="OF4-sY-ZSi" id="Uip-nL-ABF"/>
+                        <outlet property="creatorAvatarImageView" destination="OF4-sY-ZSi" id="c0u-zi-bzs"/>
                         <outlet property="creatorAvatarWidthConstraint" destination="old-Ce-Pzh" id="8OR-ka-DXw"/>
                         <outlet property="creatorNameLabel" destination="B4C-Rb-amv" id="E5y-Zw-j2n"/>
                         <outlet property="daysLabel" destination="Vka-62-5HH" id="3H0-vV-ZHJ"/>
@@ -341,8 +376,8 @@
                         <outlet property="gradientView" destination="etz-hY-KCu" id="PDB-wL-yAR"/>
                         <outlet property="hoursLabel" destination="BCI-ve-pv8" id="aUu-7r-yKF"/>
                         <outlet property="introLabel" destination="cgW-AV-Kjh" id="l5X-eN-7ke"/>
-                        <outlet property="liveStreamParagraph" destination="cgz-cS-mwt" id="FMM-nj-9Ok"/>
-                        <outlet property="liveStreamTitle" destination="6sm-6c-Nzd" id="hpL-U4-zJ0"/>
+                        <outlet property="liveStreamParagraphLabel" destination="cgz-cS-mwt" id="oFv-IS-b4j"/>
+                        <outlet property="liveStreamTitleLabel" destination="6sm-6c-Nzd" id="13F-j2-Asr"/>
                         <outlet property="minutesLabel" destination="4ca-B3-KXj" id="lRT-3s-hcd"/>
                         <outlet property="projectImageView" destination="BNt-cT-Ize" id="XOp-Si-uXt"/>
                         <outlet property="secondsLabel" destination="d3a-lr-yae" id="Nf5-u7-jXt"/>

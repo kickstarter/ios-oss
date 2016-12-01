@@ -7,14 +7,25 @@ import KsLive
 
 internal final class LiveStreamContainerViewController: UIViewController {
 
+  @IBOutlet private weak var creatorAvatarImageView: UIImageView!
+  @IBOutlet private weak var creatorAvatarLabel: UILabel!
   @IBOutlet private weak var detailsContainerStackView: UIStackView!
   @IBOutlet private weak var projectImageView: UIImageView!
+  @IBOutlet private weak var liveStreamTitleLabel: UILabel!
+  @IBOutlet private weak var liveStreamParagraphLabel: UILabel!
   @IBOutlet private weak var loaderContainerStackView: UIStackView!
   @IBOutlet private weak var loaderView: UIView!
   @IBOutlet private weak var loaderStackView: UIStackView!
   @IBOutlet private weak var loaderLabel: UILabel!
   @IBOutlet private weak var loaderActivityIndicatorView: UIActivityIndicatorView!
   @IBOutlet private weak var loaderButton: UIButton!
+  @IBOutlet private weak var titleStackView: UIStackView!
+  @IBOutlet private weak var detailsStackView: UIStackView!
+  @IBOutlet private weak var subscribeButton: UIButton!
+  @IBOutlet private weak var subscribeLabel: UILabel!
+  @IBOutlet private weak var subscribeStackView: UIStackView!
+  @IBOutlet private weak var numberWatchingButton: UIButton!
+
 
   private let viewModel: LiveStreamContainerViewModelType = LiveStreamContainerViewModel()
   private var liveStreamViewController: LiveStreamViewController?

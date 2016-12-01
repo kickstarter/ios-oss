@@ -7,7 +7,7 @@ import KsLive
 
 internal final class LiveStreamCountdownViewController: UIViewController {
   @IBOutlet private weak var activityIndicatorView: UIActivityIndicatorView!
-  @IBOutlet private weak var creatorAvatar: UIImageView!
+  @IBOutlet private weak var creatorAvatarImageView: UIImageView!
   @IBOutlet private weak var creatorAvatarWidthConstraint: NSLayoutConstraint!
   @IBOutlet private var countdownColons: [UILabel]?
   @IBOutlet private weak var countdownContainerStackView: UIStackView!
@@ -22,8 +22,8 @@ internal final class LiveStreamCountdownViewController: UIViewController {
   @IBOutlet private weak var gradientView: GradientView!
   @IBOutlet private weak var hoursLabel: UILabel!
   @IBOutlet private weak var introLabel: UILabel!
-  @IBOutlet private weak var liveStreamTitle: UILabel!
-  @IBOutlet private weak var liveStreamParagraph: UILabel!
+  @IBOutlet private weak var liveStreamTitleLabel: UILabel!
+  @IBOutlet private weak var liveStreamParagraphLabel: UILabel!
   @IBOutlet private weak var minutesLabel: UILabel!
   @IBOutlet private weak var projectImageView: UIImageView!
   @IBOutlet private weak var secondsLabel: UILabel!
