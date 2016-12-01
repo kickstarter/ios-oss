@@ -25,8 +25,7 @@ internal final class SettingsViewControllerTests: TestCase {
         withEnvironment(
           apiService: MockService(fetchUserSelfResponse: currentUser),
           currentUser: currentUser,
-          language: language,
-          mainBundle: NSBundle.framework) {
+          language: language) {
 
             let vc = SettingsViewController.instantiate()
             let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
@@ -46,8 +45,7 @@ internal final class SettingsViewControllerTests: TestCase {
       withEnvironment(
         apiService: MockService(fetchUserSelfResponse: currentUser),
         currentUser: currentUser,
-        language: language,
-        mainBundle: NSBundle.framework) {
+        language: language) {
 
           let vc = SettingsViewController.instantiate()
           let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
@@ -67,8 +65,7 @@ internal final class SettingsViewControllerTests: TestCase {
       withEnvironment(
         apiService: MockService(fetchUserSelfResponse: currentUser),
         currentUser: currentUser,
-        language: language,
-        mainBundle: NSBundle.framework) {
+        language: language) {
 
           let vc = SettingsViewController.instantiate()
           let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
