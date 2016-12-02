@@ -105,7 +105,8 @@ internal final class FindFriendsFacebookConnectCell: UITableViewCell, ValueCell 
     self.closeButton
       |> UIButton.lens.tintColor .~ .ksr_navy_700
       |> UIButton.lens.targets .~ [(self, action: #selector(closeButtonTapped), .TouchUpInside)]
-      |> UIButton.lens.contentEdgeInsets .~ .init(top: Styles.grid(1), left: Styles.grid(3), bottom: Styles.grid(3), right: Styles.grid(2))
+      |> UIButton.lens.contentEdgeInsets .~ .init(top: Styles.grid(1), left: Styles.grid(3),
+                                                  bottom: Styles.grid(3), right: Styles.grid(2))
 
     self.facebookConnectButton
       |> facebookButtonStyle
