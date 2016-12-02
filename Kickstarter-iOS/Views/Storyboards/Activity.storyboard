@@ -12,7 +12,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="ActivitiesViewController" definesPresentationContext="YES" id="tvn-h8-peN" customClass="ActivitiesViewController" customModule="Kickstarter_Framework" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="2ep-oh-IdZ">
-                        <rect key="frame" x="0.0" y="0.0" width="400" height="2800"/>
+                        <rect key="frame" x="0.0" y="0.0" width="400" height="1900"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.94901960784313721" green="0.94901960784313721" blue="0.94901960784313721" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
@@ -486,74 +486,95 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <edgeInsets key="layoutMargins" top="16" left="16" bottom="16" right="16"/>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="FindFriendsFacebookConnectCell" rowHeight="280" id="lJH-K2-kWl" userLabel="Facebook Connect Cell" customClass="FindFriendsFacebookConnectCell" customModule="Kickstarter_Framework" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="1116" width="400" height="280"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="FindFriendsFacebookConnectCell" rowHeight="150" id="lJH-K2-kWl" userLabel="Facebook Connect Cell" customClass="FindFriendsFacebookConnectCell" customModule="Kickstarter_Framework" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="1116" width="400" height="150"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="lJH-K2-kWl" id="R6r-9U-xhE">
-                                    <rect key="frame" x="0.0" y="0.0" width="400" height="280"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="400" height="150"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9xM-7l-cFl">
-                                            <rect key="frame" x="356" y="0.0" width="44" height="44"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="44" id="SnY-6v-2tv"/>
-                                                <constraint firstAttribute="width" constant="44" id="s5N-Hf-PMh"/>
-                                            </constraints>
-                                            <state key="normal" image="close-icon">
-                                                <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                            </state>
-                                        </button>
-                                        <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="Z0r-XM-y2x">
-                                            <rect key="frame" x="16" y="16" width="368" height="156"/>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ixh-Vp-gzP">
+                                            <rect key="frame" x="16" y="16" width="368" height="118"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </view>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kgs-en-3FB">
+                                            <rect key="frame" x="16" y="16" width="368" height="118"/>
                                             <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" alignment="center" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="hdi-fv-wM7">
-                                                    <rect key="frame" x="0.0" y="0.0" width="368" height="88"/>
-                                                    <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" misplaced="YES" text="Discover more projects." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H9b-Qe-5eB">
-                                                            <rect key="frame" x="94" y="0.0" width="182" height="21"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Connect with Facebook to follow your friends and get notified whenever they launch or back a new project." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c9R-7T-nhY">
-                                                            <rect key="frame" x="0.0" y="27" width="368" height="61"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                    </subviews>
-                                                </stackView>
-                                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X9G-oS-Rvz">
-                                                    <rect key="frame" x="0.0" y="112" width="368" height="44"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="44" id="HUl-P6-YMg"/>
-                                                    </constraints>
-                                                    <state key="normal" title="Connect with Facebook"/>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9xM-7l-cFl">
+                                                    <rect key="frame" x="356" y="0.0" width="12" height="22"/>
+                                                    <state key="normal" image="close-icon">
+                                                        <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </state>
                                                 </button>
+                                                <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" distribution="fillProportionally" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="Z0r-XM-y2x">
+                                                    <rect key="frame" x="8" y="8" width="352" height="102"/>
+                                                    <subviews>
+                                                        <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" alignment="center" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="hdi-fv-wM7">
+                                                            <rect key="frame" x="0.0" y="0.0" width="352" height="69"/>
+                                                            <subviews>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" misplaced="YES" text="Discover more projects." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H9b-Qe-5eB">
+                                                                    <rect key="frame" x="86" y="0.0" width="182" height="21"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Connect with Facebook to follow your friends and get notified whenever they launch or back a new project." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c9R-7T-nhY">
+                                                                    <rect key="frame" x="2" y="27" width="350" height="43"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                            </subviews>
+                                                        </stackView>
+                                                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X9G-oS-Rvz">
+                                                            <rect key="frame" x="0.0" y="81" width="352" height="21"/>
+                                                            <state key="normal" title="Connect with Facebook"/>
+                                                        </button>
+                                                    </subviews>
+                                                    <constraints>
+                                                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="hdi-fv-wM7" secondAttribute="bottom" id="4o2-4i-oE3"/>
+                                                        <constraint firstAttribute="trailing" secondItem="hdi-fv-wM7" secondAttribute="trailing" id="9vX-19-F1z"/>
+                                                        <constraint firstItem="hdi-fv-wM7" firstAttribute="leading" secondItem="Z0r-XM-y2x" secondAttribute="leading" id="NJD-x0-m1i"/>
+                                                        <constraint firstItem="hdi-fv-wM7" firstAttribute="top" secondItem="Z0r-XM-y2x" secondAttribute="top" id="ln5-j4-pyc"/>
+                                                    </constraints>
+                                                </stackView>
                                             </subviews>
-                                        </stackView>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstItem="9xM-7l-cFl" firstAttribute="top" secondItem="Kgs-en-3FB" secondAttribute="top" id="9GO-wX-NsA"/>
+                                                <constraint firstAttribute="topMargin" secondItem="Z0r-XM-y2x" secondAttribute="top" id="bLe-ZW-Rhm"/>
+                                                <constraint firstItem="Z0r-XM-y2x" firstAttribute="leading" secondItem="Kgs-en-3FB" secondAttribute="leadingMargin" id="bc8-6f-6kr"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="Z0r-XM-y2x" secondAttribute="bottom" id="ggG-pN-7a1"/>
+                                                <constraint firstItem="Z0r-XM-y2x" firstAttribute="trailing" secondItem="Kgs-en-3FB" secondAttribute="trailingMargin" id="h9n-dU-GV7"/>
+                                                <constraint firstAttribute="trailing" secondItem="9xM-7l-cFl" secondAttribute="trailing" id="oPI-jB-iqv"/>
+                                            </constraints>
+                                        </view>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="trailingMargin" secondItem="Z0r-XM-y2x" secondAttribute="trailing" id="8kx-mH-lSV"/>
-                                        <constraint firstItem="9xM-7l-cFl" firstAttribute="top" secondItem="R6r-9U-xhE" secondAttribute="top" id="cFb-wV-bPj"/>
-                                        <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="Z0r-XM-y2x" secondAttribute="bottom" id="cWs-eZ-qNs"/>
-                                        <constraint firstItem="Z0r-XM-y2x" firstAttribute="top" secondItem="R6r-9U-xhE" secondAttribute="topMargin" id="hnu-X1-CfZ"/>
-                                        <constraint firstAttribute="leadingMargin" secondItem="Z0r-XM-y2x" secondAttribute="leading" id="ud5-RG-2SF"/>
-                                        <constraint firstAttribute="trailing" secondItem="9xM-7l-cFl" secondAttribute="trailing" id="wjY-am-yC5"/>
+                                        <constraint firstItem="Ixh-Vp-gzP" firstAttribute="top" secondItem="R6r-9U-xhE" secondAttribute="topMargin" id="8SA-zZ-28Y"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="Ixh-Vp-gzP" secondAttribute="bottom" id="Ei5-9t-4nk"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="Kgs-en-3FB" secondAttribute="trailing" id="PqK-tg-dXh"/>
+                                        <constraint firstItem="Kgs-en-3FB" firstAttribute="top" secondItem="R6r-9U-xhE" secondAttribute="topMargin" id="UWi-nU-7vg"/>
+                                        <constraint firstItem="Ixh-Vp-gzP" firstAttribute="leading" secondItem="R6r-9U-xhE" secondAttribute="leadingMargin" id="ixb-rW-Agw"/>
+                                        <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="Kgs-en-3FB" secondAttribute="bottom" id="iyH-dU-SRo"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="Ixh-Vp-gzP" secondAttribute="trailing" id="uE5-JU-Alq"/>
+                                        <constraint firstItem="Kgs-en-3FB" firstAttribute="leading" secondItem="R6r-9U-xhE" secondAttribute="leadingMargin" id="xBJ-p6-lu7"/>
                                     </constraints>
                                     <edgeInsets key="layoutMargins" top="16" left="16" bottom="16" right="16"/>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <edgeInsets key="layoutMargins" top="16" left="16" bottom="16" right="16"/>
                                 <connections>
+                                    <outlet property="cardView" destination="Ixh-Vp-gzP" id="4ta-wz-cIx"/>
                                     <outlet property="closeButton" destination="9xM-7l-cFl" id="rSa-8D-LUI"/>
+                                    <outlet property="containerView" destination="Kgs-en-3FB" id="JXf-6y-5QI"/>
                                     <outlet property="facebookConnectButton" destination="X9G-oS-Rvz" id="BLM-4n-jug"/>
                                     <outlet property="subtitleLabel" destination="c9R-7T-nhY" id="8zL-H8-3mw"/>
                                     <outlet property="titleLabel" destination="H9b-Qe-5eB" id="rGu-sY-mLM"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="HalfPaddingCell" rowHeight="16" id="8bF-yD-Jff" userLabel="---paddingHalf---" customClass="PaddingCell" customModule="Kickstarter_Framework" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="1396" width="400" height="16"/>
+                                <rect key="frame" x="0.0" y="1266" width="400" height="16"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8bF-yD-Jff" id="t9o-63-Z1E">
                                     <rect key="frame" x="0.0" y="0.0" width="400" height="16"/>
@@ -577,74 +598,95 @@
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="FindFriendsHeaderCell" rowHeight="280" id="02F-G4-hOr" customClass="FindFriendsHeaderCell" customModule="Kickstarter_Framework" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="1412" width="400" height="280"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="FindFriendsHeaderCell" rowHeight="150" id="02F-G4-hOr" customClass="FindFriendsHeaderCell" customModule="Kickstarter_Framework" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="1282" width="400" height="150"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="02F-G4-hOr" id="RKb-PD-7pu">
-                                    <rect key="frame" x="0.0" y="0.0" width="400" height="280"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="400" height="150"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cx3-nx-9Qa">
-                                            <rect key="frame" x="356" y="0.0" width="44" height="44"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="44" id="U26-4f-mbj"/>
-                                                <constraint firstAttribute="width" constant="44" id="k2f-aQ-dU9"/>
-                                            </constraints>
-                                            <state key="normal" image="close-icon">
-                                                <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                            </state>
-                                        </button>
-                                        <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="t5p-fC-cbe">
-                                            <rect key="frame" x="16" y="16" width="368" height="136"/>
+                                        <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4uz-WG-jdc">
+                                            <rect key="frame" x="16" y="16" width="368" height="248"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </view>
+                                        <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ovn-au-z4S">
+                                            <rect key="frame" x="16" y="16" width="368" height="111.5"/>
                                             <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" alignment="center" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="m9K-RX-jxu">
-                                                    <rect key="frame" x="0.0" y="0.0" width="368" height="68"/>
-                                                    <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" misplaced="YES" text="Discover more projects." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nSV-9t-IRL">
-                                                            <rect key="frame" x="94" y="0.0" width="182" height="21"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Follow your Facebook friends and get notified when they back or launch projects." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2qh-0C-k4g">
-                                                            <rect key="frame" x="8" y="27" width="353" height="41"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                    </subviews>
-                                                </stackView>
-                                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="voe-Sf-Dp0">
-                                                    <rect key="frame" x="0.0" y="92" width="368" height="44"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="44" id="N0K-wm-aF6"/>
-                                                    </constraints>
-                                                    <state key="normal" title="Find your friends"/>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cx3-nx-9Qa">
+                                                    <rect key="frame" x="356" y="0.0" width="12" height="22"/>
+                                                    <state key="normal" image="close-icon">
+                                                        <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    </state>
                                                 </button>
+                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" alignment="center" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="t5p-fC-cbe">
+                                                    <rect key="frame" x="8" y="8" width="352" height="89"/>
+                                                    <subviews>
+                                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="m9K-RX-jxu">
+                                                            <rect key="frame" x="0.0" y="0.0" width="352" height="47"/>
+                                                            <subviews>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" misplaced="YES" text="Discover more projects." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nSV-9t-IRL">
+                                                                    <rect key="frame" x="86" y="0.0" width="182" height="21"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Follow your Facebook friends and get notified when they back or launch projects." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2qh-0C-k4g">
+                                                                    <rect key="frame" x="0.0" y="27" width="352" height="21"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                            </subviews>
+                                                        </stackView>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="voe-Sf-Dp0">
+                                                            <rect key="frame" x="118" y="59" width="116" height="30"/>
+                                                            <state key="normal" title="Find your friends"/>
+                                                        </button>
+                                                    </subviews>
+                                                    <constraints>
+                                                        <constraint firstAttribute="trailing" secondItem="m9K-RX-jxu" secondAttribute="trailing" id="7Or-Wr-M7U"/>
+                                                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="m9K-RX-jxu" secondAttribute="bottom" id="UTK-7a-ZkF"/>
+                                                        <constraint firstItem="m9K-RX-jxu" firstAttribute="leading" secondItem="t5p-fC-cbe" secondAttribute="leading" id="gC5-gh-3hi"/>
+                                                        <constraint firstItem="m9K-RX-jxu" firstAttribute="top" secondItem="t5p-fC-cbe" secondAttribute="top" id="sR9-C5-dFD"/>
+                                                    </constraints>
+                                                </stackView>
                                             </subviews>
-                                        </stackView>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="Cx3-nx-9Qa" secondAttribute="trailing" id="0T0-Hg-yXw"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="t5p-fC-cbe" secondAttribute="trailing" id="1fr-iZ-xbm"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="t5p-fC-cbe" secondAttribute="bottom" id="8db-YX-HI9"/>
+                                                <constraint firstItem="t5p-fC-cbe" firstAttribute="leading" secondItem="Ovn-au-z4S" secondAttribute="leadingMargin" id="FCm-c8-IuM"/>
+                                                <constraint firstItem="t5p-fC-cbe" firstAttribute="top" secondItem="Ovn-au-z4S" secondAttribute="topMargin" id="TuC-Tm-fy2"/>
+                                                <constraint firstItem="Cx3-nx-9Qa" firstAttribute="top" secondItem="Ovn-au-z4S" secondAttribute="top" id="j9b-E5-60w"/>
+                                            </constraints>
+                                        </view>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="t5p-fC-cbe" firstAttribute="top" secondItem="RKb-PD-7pu" secondAttribute="topMargin" id="AYU-kk-nA2"/>
-                                        <constraint firstItem="t5p-fC-cbe" firstAttribute="leading" secondItem="RKb-PD-7pu" secondAttribute="leadingMargin" id="LFf-GY-V3f"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="t5p-fC-cbe" secondAttribute="trailing" id="Vbr-RC-N04"/>
-                                        <constraint firstAttribute="trailing" secondItem="Cx3-nx-9Qa" secondAttribute="trailing" id="j4R-NZ-F79"/>
-                                        <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="t5p-fC-cbe" secondAttribute="bottom" id="mS3-8V-yNJ"/>
-                                        <constraint firstItem="Cx3-nx-9Qa" firstAttribute="top" secondItem="RKb-PD-7pu" secondAttribute="top" id="xJ0-aU-fKs"/>
+                                        <constraint firstItem="Ovn-au-z4S" firstAttribute="top" secondItem="RKb-PD-7pu" secondAttribute="topMargin" id="Lrh-bB-bQn"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="4uz-WG-jdc" secondAttribute="trailing" id="ObM-50-NMJ"/>
+                                        <constraint firstItem="4uz-WG-jdc" firstAttribute="leading" secondItem="RKb-PD-7pu" secondAttribute="leadingMargin" id="TcM-QS-bth"/>
+                                        <constraint firstItem="Ovn-au-z4S" firstAttribute="leading" secondItem="RKb-PD-7pu" secondAttribute="leadingMargin" id="WC0-0s-1U3"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="Ovn-au-z4S" secondAttribute="trailing" id="iAN-dW-f5E"/>
+                                        <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="Ovn-au-z4S" secondAttribute="bottom" id="oC4-vt-r9H"/>
+                                        <constraint firstItem="4uz-WG-jdc" firstAttribute="top" secondItem="RKb-PD-7pu" secondAttribute="topMargin" id="owB-6v-ePT"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="4uz-WG-jdc" secondAttribute="bottom" id="vKG-gO-ab5"/>
                                     </constraints>
                                     <edgeInsets key="layoutMargins" top="16" left="16" bottom="16" right="16"/>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <edgeInsets key="layoutMargins" top="16" left="16" bottom="16" right="16"/>
                                 <connections>
+                                    <outlet property="cardView" destination="4uz-WG-jdc" id="ivb-TF-cVw"/>
                                     <outlet property="closeButton" destination="Cx3-nx-9Qa" id="ASX-lI-4M3"/>
+                                    <outlet property="containerView" destination="Ovn-au-z4S" id="Rf8-jE-ZhG"/>
                                     <outlet property="findFriendsButton" destination="voe-Sf-Dp0" id="q5s-b4-TS0"/>
                                     <outlet property="subtitleLabel" destination="2qh-0C-k4g" id="vMY-A2-PBX"/>
                                     <outlet property="titleLabel" destination="nSV-9t-IRL" id="jyb-9a-pMm"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="Padding6" rowHeight="32" id="wiZ-Nf-CUq" userLabel="---padding---">
-                                <rect key="frame" x="0.0" y="1692" width="400" height="32"/>
+                                <rect key="frame" x="0.0" y="1432" width="400" height="32"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="wiZ-Nf-CUq" id="vxB-ko-orl">
                                     <rect key="frame" x="0.0" y="0.0" width="400" height="32"/>
@@ -656,7 +698,7 @@
                                 <edgeInsets key="layoutMargins" top="16" left="16" bottom="16" right="16"/>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ActivitySurveyResponseCell" rowHeight="190" id="jye-9W-L1r" customClass="ActivitySurveyResponseCell" customModule="Kickstarter_Framework" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="1724" width="400" height="190"/>
+                                <rect key="frame" x="0.0" y="1464" width="400" height="190"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="jye-9W-L1r" id="lv4-G3-ls6">
                                     <rect key="frame" x="0.0" y="0.0" width="400" height="190"/>
@@ -768,7 +810,7 @@
                     <navigationItem key="navigationItem" id="UYl-3m-Ykk"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="400" height="2800"/>
+                    <size key="freeformSize" width="400" height="1900"/>
                     <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="ifw-fv-O5y">
                         <autoresizingMask key="autoresizingMask"/>
                         <connections>
