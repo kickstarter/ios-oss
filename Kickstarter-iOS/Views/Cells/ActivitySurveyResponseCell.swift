@@ -17,6 +17,7 @@ internal final class ActivitySurveyResponseCell: UITableViewCell, ValueCell {
   @IBOutlet private weak var creatorImageView: CircleAvatarImageView!
   @IBOutlet private weak var creatorNameLabel: UILabel!
   @IBOutlet private weak var respondNowButton: UIButton!
+  @IBOutlet private weak var rewardSurveysCountLabel: UILabel!
   @IBOutlet private weak var surveyLabel: UILabel!
   @IBOutlet private weak var topLineView: UIView!
 
@@ -27,8 +28,9 @@ internal final class ActivitySurveyResponseCell: UITableViewCell, ValueCell {
                                     forControlEvents: .TouchUpInside)
   }
 
-  internal func configureWith(value surveyResponse: SurveyResponse) {
-    self.viewModel.inputs.configureWith(surveyResponse: surveyResponse)
+  internal func configureWith(value value: (surveyResponse: SurveyResponse, count: Int, position: Int)) {
+    self.viewModel.inputs.configureWith(surveyResponse: value.surveyResponse, count: value.count,
+                                        position: value.position)
   }
 
   internal override func bindStyles() {
@@ -65,12 +67,18 @@ internal final class ActivitySurveyResponseCell: UITableViewCell, ValueCell {
           : .init(top: Styles.grid(3), left: 0, bottom: Styles.grid(1), right: 0)
     }
 
+    self.rewardSurveysCountLabel
+      |> UILabel.lens.font .~ .ksr_headline(size: 13)
+      |> UILabel.lens.textColor .~ .ksr_green_700
+
     self.topLineView
       |> UIView.lens.backgroundColor .~ .ksr_green_500
   }
 
   internal override func bindViewModel() {
     self.creatorNameLabel.rac.text = self.viewModel.outputs.creatorNameText
+    self.rewardSurveysCountLabel.rac.text = self.viewModel.outputs.rewardSurveysCountText
+    self.rewardSurveysCountLabel.rac.hidden = self.viewModel.outputs.rewardSurveysCountIsHidden
     self.surveyLabel.rac.attributedText = self.viewModel.outputs.surveyLabelText
 
     self.viewModel.outputs.creatorImageURL

@@ -1,10 +1,11 @@
 import KsApi
+import Prelude
 import ReactiveCocoa
 import Result
 
 public protocol ActivitySurveyResponseCellViewModelInputs {
   /// Call to configure with survey response.
-  func configureWith(surveyResponse surveyResponse: SurveyResponse)
+  func configureWith(surveyResponse surveyResponse: SurveyResponse, count: Int, position: Int)
 
   /// Call when respond now button is tapped.
   func respondNowButtonTapped()
@@ -20,6 +21,12 @@ public protocol ActivitySurveyResponseCellViewModelOutputs {
   /// Emits the survey response for the delegate to respond to the survey.
   var notifyDelegateToRespondToSurvey: Signal<SurveyResponse, NoError> { get }
 
+  /// Emits whether reward surveys count label is hidden.
+  var rewardSurveysCountIsHidden: Signal<Bool, NoError> { get }
+
+  /// Emits text for reward surveys count label.
+  var rewardSurveysCountText: Signal<String, NoError> { get }
+
   /// Emits text for the survey label.
   var surveyLabelText: Signal<NSAttributedString, NoError> { get }
 }
@@ -33,8 +40,8 @@ public final class ActivitySurveyResponseCellViewModel: ActivitySurveyResponseCe
 ActivitySurveyResponseCellViewModelInputs, ActivitySurveyResponseCellViewModelOutputs {
 
   public init() {
-    let surveyResponse = self.surveyResponseProperty.signal.ignoreNil()
-    let project = surveyResponse.map { $0.project }.ignoreNil()
+    let surveyResponseAndCountAndPosition = self.surveyResponseCountPositionProperty.signal.ignoreNil()
+    let project = surveyResponseAndCountAndPosition.map { $0.0.project }.ignoreNil()
 
     self.creatorImageURL = project.map { NSURL.init(string: $0.creator.avatar.small) }
 
@@ -56,13 +63,22 @@ ActivitySurveyResponseCellViewModelInputs, ActivitySurveyResponseCellViewModelOu
         ?? NSAttributedString(string: "")
     }
 
-    self.notifyDelegateToRespondToSurvey = surveyResponse
+    self.notifyDelegateToRespondToSurvey = surveyResponseAndCountAndPosition
+      .map(first)
       .takeWhen(self.respondNowButtonTappedProperty.signal)
+
+    self.rewardSurveysCountIsHidden = surveyResponseAndCountAndPosition.map { _, count, position in
+      count <= 1 || (count > 1 && position != 0)
+    }
+
+    self.rewardSurveysCountText = surveyResponseAndCountAndPosition
+      .map(second)
+      .map { Strings.Reward_Surveys(reward_survey_count: $0) }
   }
 
-  private let surveyResponseProperty = MutableProperty<SurveyResponse?>(nil)
-  public func configureWith(surveyResponse surveyResponse: SurveyResponse) {
-    self.surveyResponseProperty.value = surveyResponse
+  private let surveyResponseCountPositionProperty = MutableProperty<(SurveyResponse, Int, Int)?>(nil)
+  public func configureWith(surveyResponse surveyResponse: SurveyResponse, count: Int, position: Int) {
+    self.surveyResponseCountPositionProperty.value = (surveyResponse, count, position)
   }
   private let respondNowButtonTappedProperty = MutableProperty()
   public func respondNowButtonTapped() {
@@ -72,6 +88,8 @@ ActivitySurveyResponseCellViewModelInputs, ActivitySurveyResponseCellViewModelOu
   public let creatorImageURL: Signal<NSURL?, NoError>
   public let creatorNameText: Signal<String, NoError>
   public let notifyDelegateToRespondToSurvey: Signal<SurveyResponse, NoError>
+  public let rewardSurveysCountIsHidden: Signal<Bool, NoError>
+  public var rewardSurveysCountText: Signal<String, NoError>
   public let surveyLabelText: Signal<NSAttributedString, NoError>
 
   public var inputs: ActivitySurveyResponseCellViewModelInputs { return self }

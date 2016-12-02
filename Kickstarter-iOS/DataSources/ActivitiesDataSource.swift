@@ -5,7 +5,7 @@ import UIKit
 
 internal final class ActivitiesDataSource: ValueCellDataSource {
   internal enum Section: Int {
-    case survey
+    case surveys
     case facebookConnect
     case findFriends
     case activities
@@ -37,17 +37,14 @@ internal final class ActivitiesDataSource: ValueCellDataSource {
             NSIndexPath(forRow: 1, inSection: Section.findFriends.rawValue)]
   }
 
-  internal func load(surveyResponse surveyResponse: SurveyResponse?) {
-
-    if let response = surveyResponse {
-      self.set(values: [response],
-               cellClass: ActivitySurveyResponseCell.self,
-               inSection: Section.survey.rawValue)
-    } else {
-      self.set(values: [],
-               cellClass: ActivitySurveyResponseCell.self,
-               inSection: Section.survey.rawValue)
+  internal func load(surveys surveys: [SurveyResponse]) {
+    let surveysWithPosition = surveys.enumerate().map { idx, survey in
+      (surveyResponse: survey, count: surveys.count, position: idx)
     }
+
+    self.set(values: surveysWithPosition,
+               cellClass: ActivitySurveyResponseCell.self,
+               inSection: Section.surveys.rawValue)
   }
 
   internal func load(activities activities: [Activity]) {
@@ -86,7 +83,7 @@ internal final class ActivitiesDataSource: ValueCellDataSource {
       cell.configureWith(value: value)
     case let (cell as FindFriendsHeaderCell, value as FriendsSource):
       cell.configureWith(value: value)
-    case let (cell as ActivitySurveyResponseCell, value as SurveyResponse):
+    case let (cell as ActivitySurveyResponseCell, value as (SurveyResponse, Int, Int)):
       cell.configureWith(value: value)
     case (is StaticTableViewCell, is Void):
       return

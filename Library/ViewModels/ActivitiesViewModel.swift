@@ -100,7 +100,7 @@ public protocol ActivitiesViewModelOutputs {
   var showFindFriendsSection: Signal<(FriendsSource, Bool), NoError> { get }
 
   /// Emits a non-`nil` survey response if there is an unanswered one available, and `nil` otherwise.
-  var unansweredSurveyResponse: Signal<SurveyResponse?, NoError> { get }
+  var unansweredSurveys: Signal<[SurveyResponse], NoError> { get }
 }
 
 public protocol ActivitiesViewModelType {
@@ -252,7 +252,7 @@ ActivitiesViewModelOutputs {
     self.dismissFindFriendsSectionProperty.signal
       .observeNext { AppEnvironment.current.userDefaults.hasClosedFindFriendsInActivity = true }
 
-    let unansweredSurveyResponse = Signal.merge(
+    self.unansweredSurveys = Signal.merge(
       self.viewWillAppearProperty.signal.ignoreValues(),
       self.surveyResponseViewControllerDismissedProperty.signal
       )
@@ -260,14 +260,12 @@ ActivitiesViewModelOutputs {
         AppEnvironment.current.apiService.fetchUnansweredSurveyResponses()
           .demoteErrors()
       }
-      .map { $0.first }
-
-    self.unansweredSurveyResponse = Signal
-      .merge(
-        unansweredSurveyResponse,
-        self.userSessionEndedProperty.signal.mapConst(nil)
-      )
-      .skipRepeats(==)
+//      .map { if let first = $0.first {
+//        return $0 + [first]
+//      } else {
+//        return $0
+//      }
+//    }
 
     self.goToSurveyResponse = self.tappedSurveyResponseProperty.signal.ignoreNil()
 
@@ -371,7 +369,7 @@ ActivitiesViewModelOutputs {
   public let showFindFriendsSection: Signal<(FriendsSource, Bool), NoError>
   public let showFacebookConnectSection: Signal<(FriendsSource, Bool), NoError>
   public let showFacebookConnectErrorAlert: Signal<AlertError, NoError>
-  public let unansweredSurveyResponse: Signal<SurveyResponse?, NoError>
+  public let unansweredSurveys: Signal<[SurveyResponse], NoError>
 
   public var inputs: ActitiviesViewModelInputs { return self }
   public var outputs: ActivitiesViewModelOutputs { return self }

@@ -154,10 +154,10 @@ internal final class ActivitiesViewController: UITableViewController {
         )
     }
 
-    self.viewModel.outputs.unansweredSurveyResponse
+    self.viewModel.outputs.unansweredSurveys
       .observeForUI()
       .observeNext { [weak self] in
-        self?.dataSource.load(surveyResponse: $0)
+        self?.dataSource.load(surveys: $0)
         self?.tableView.reloadData()
     }
 
