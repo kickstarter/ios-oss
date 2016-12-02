@@ -6,6 +6,7 @@ import Result
 public protocol ProjectPamphletContentViewModelInputs {
   func configureWith(project project: Project)
   func tappedComments()
+  func tappedLiveStream()
   func tappedPledgeAnyAmount()
   func tapped(rewardOrBacking rewardOrBacking: Either<Reward, Backing>)
   func tappedUpdates()
@@ -17,6 +18,7 @@ public protocol ProjectPamphletContentViewModelInputs {
 public protocol ProjectPamphletContentViewModelOutputs {
   var goToBacking: Signal<Project, NoError> { get }
   var goToComments: Signal<Project, NoError> { get }
+  var goToLiveStream: Signal<Project, NoError> { get }
   var goToRewardPledge: Signal<(Project, Reward), NoError> { get }
   var goToUpdates: Signal<Project, NoError> { get }
   var loadMinimalProjectIntoDataSource: Signal<Project, NoError> { get }
@@ -75,6 +77,9 @@ ProjectPamphletContentViewModelInputs, ProjectPamphletContentViewModelOutputs {
 
     self.goToUpdates = project
       .takeWhen(self.tappedUpdatesProperty.signal)
+
+    self.goToLiveStream = project
+      .takeWhen(self.tappedLiveStreamProperty.signal)
   }
 
   private let projectProperty = MutableProperty<Project?>(nil)
@@ -85,6 +90,11 @@ ProjectPamphletContentViewModelInputs, ProjectPamphletContentViewModelOutputs {
   private let tappedCommentsProperty = MutableProperty()
   public func tappedComments() {
     self.tappedCommentsProperty.value = ()
+  }
+
+  private let tappedLiveStreamProperty = MutableProperty()
+  public func tappedLiveStream() {
+    self.tappedLiveStreamProperty.value = ()
   }
 
   private let tappedPledgeAnyAmountProperty = MutableProperty()
@@ -119,6 +129,7 @@ ProjectPamphletContentViewModelInputs, ProjectPamphletContentViewModelOutputs {
 
   public let goToBacking: Signal<Project, NoError>
   public let goToComments: Signal<Project, NoError>
+  public let goToLiveStream: Signal<Project, NoError>
   public let goToRewardPledge: Signal<(Project, Reward), NoError>
   public let goToUpdates: Signal<Project, NoError>
   public let loadMinimalProjectIntoDataSource: Signal<Project, NoError>

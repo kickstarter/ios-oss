@@ -2,6 +2,7 @@ import KsApi
 import Library
 import Prelude
 import Prelude_UIKit
+import KsLive
 
 internal protocol ProjectPamphletContentViewControllerDelegate: VideoViewControllerDelegate {
   func projectPamphletContent(controller: ProjectPamphletContentViewController, imageIsVisible: Bool)
@@ -75,6 +76,10 @@ internal final class ProjectPamphletContentViewController: UITableViewController
       .observeForControllerAction()
       .observeNext { [weak self] in self?.goToComments(project: $0) }
 
+    self.viewModel.outputs.goToLiveStream
+      .observeForControllerAction()
+      .observeNext { [weak self] in self?.goToLiveStream(project: $0) }
+
     self.viewModel.outputs.goToUpdates
       .observeForControllerAction()
       .observeNext { [weak self] in self?.goToUpdates(project: $0) }
@@ -91,6 +96,8 @@ internal final class ProjectPamphletContentViewController: UITableViewController
       self.viewModel.inputs.tapped(rewardOrBacking: rewardOrBacking)
     } else if self.dataSource.indexPathIsPledgeAnyAmountCell(indexPath) {
       self.viewModel.inputs.tappedPledgeAnyAmount()
+    } else if self.dataSource.indexPathIsLiveStreamSubpage(indexPath) {
+      self.viewModel.inputs.tappedLiveStream()
     } else if self.dataSource.indexPathIsCommentsSubpage(indexPath) {
       self.viewModel.inputs.tappedComments()
     } else if self.dataSource.indexPathIsUpdatesSubpage(indexPath) {
@@ -138,6 +145,14 @@ internal final class ProjectPamphletContentViewController: UITableViewController
     } else {
       self.navigationController?.pushViewController(vc, animated: true)
     }
+  }
+
+  private func goToLiveStream(project project: Project) {
+    let vc = LiveStreamCountdownViewController.configuredWith(project: project)
+    let nav = UINavigationController.init(navigationBarClass: ClearNavigationBar.self, toolbarClass: nil)
+    nav.viewControllers = [vc]
+
+    self.presentViewController(nav, animated: true, completion: nil)
   }
 
   private func goToUpdates(project project: Project) {

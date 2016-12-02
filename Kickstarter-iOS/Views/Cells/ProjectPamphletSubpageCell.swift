@@ -3,59 +3,19 @@ import Library
 import Prelude
 import UIKit
 
-internal enum ProjectPamphletSubpage {
-  case comments(Int, Bool)
-  case updates(Int, Bool)
-
-  internal var count: Int {
-    switch self {
-    case let .comments(count, _): return count
-    case let .updates(count, _):  return count
-    }
-  }
-
-  internal var isFirstInSection: Bool {
-    switch self {
-    case let .comments(_, isFirstInSection): return isFirstInSection
-    case let .updates(_, isFirstInSection):  return isFirstInSection
-    }
-  }
-
-  internal var isComments: Bool {
-    switch self {
-    case .comments: return true
-    case .updates:  return false
-    }
-  }
-
-  internal var isUpdates: Bool {
-    switch self {
-    case .comments: return false
-    case .updates:  return true
-    }
-  }
-}
-
 internal final class ProjectPamphletSubpageCell: UITableViewCell, ValueCell {
-
   @IBOutlet private weak var countContainerView: UIView!
   @IBOutlet private weak var countLabel: UILabel!
+  @IBOutlet private weak var liveNowImageView: UIImageView!
   @IBOutlet private weak var rootStackView: UIStackView!
   @IBOutlet private weak var separatorView: UIView!
   @IBOutlet private weak var subpageLabel: UILabel!
   @IBOutlet private weak var topGradientView: GradientView!
 
-  internal func configureWith(value subpage: ProjectPamphletSubpage) {
-    switch subpage {
-    case .comments:
-      self.subpageLabel.text = Strings.project_menu_buttons_comments()
-    case .updates:
-      self.subpageLabel.text = Strings.project_menu_buttons_updates()
-    }
+  private let viewModel: ProjectPamphletSubpageCellViewModelType = ProjectPamphletSubpageCellViewModel()
 
-    self.countLabel.text = Format.wholeNumber(subpage.count)
-    self.topGradientView.hidden = !subpage.isFirstInSection
-    self.separatorView.hidden = !subpage.isFirstInSection
+  internal func configureWith(value subpage: ProjectPamphletSubpage) {
+    self.viewModel.inputs.configureWith(subpage: subpage)
   }
 
   internal override func bindStyles() {
@@ -72,22 +32,21 @@ internal final class ProjectPamphletSubpageCell: UITableViewCell, ValueCell {
 
     self.countContainerView
       |> UIView.lens.layoutMargins .~ .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
-      |> UIView.lens.backgroundColor .~ .ksr_navy_300
       |> roundedStyle()
+      |> UIView.lens.layer.borderWidth .~ 1
 
     self.countLabel
-      |> UILabel.lens.textColor .~ .ksr_text_navy_700
       |> UILabel.lens.font .~ .ksr_headline(size: 13)
 
     self.rootStackView
+      |> UIStackView.lens.spacing .~ Styles.grid(1)
       |> UIStackView.lens.alignment .~ .Center
-      |> UIStackView.lens.distribution .~ .EqualSpacing
+      |> UIStackView.lens.distribution .~ .Fill
 
     self.separatorView
       |> separatorStyle
 
     self.subpageLabel
-      |> UILabel.lens.textColor .~ .ksr_text_navy_700
       |> UILabel.lens.font .~ .ksr_body(size: 14)
 
     self.topGradientView.startPoint = CGPoint(x: 0, y: 0)
@@ -96,6 +55,25 @@ internal final class ProjectPamphletSubpageCell: UITableViewCell, ValueCell {
       (UIColor.init(white: 0, alpha: 0.1), 0),
       (UIColor.init(white: 0, alpha: 0), 1)
     ])
+  }
+
+  internal override func bindViewModel() {
+    super.bindViewModel()
+
+    self.countLabel.rac.text = self.viewModel.outputs.countLabelText
+    self.countLabel.rac.textColor = self.viewModel.outputs.countLabelTextColor
+    self.countContainerView.rac.backgroundColor = self.viewModel.outputs.countLabelBackgroundColor
+
+    self.viewModel.outputs.countLabelBorderColor.observeNext { [weak self] in
+      self?.countContainerView.layer.borderColor = $0.CGColor
+    }
+
+    self.liveNowImageView.rac.hidden = self.viewModel.outputs.liveNowImageViewHidden
+    self.topGradientView.rac.hidden = self.viewModel.outputs.topGradientViewHidden
+    self.separatorView.rac.hidden = self.viewModel.outputs.separatorViewHidden
+
+    self.subpageLabel.rac.text = self.viewModel.outputs.labelText
+    self.subpageLabel.rac.textColor = self.viewModel.outputs.labelTextColor
   }
 
   internal override func layoutSubviews() {
