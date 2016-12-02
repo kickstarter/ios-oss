@@ -110,6 +110,16 @@ internal final class ActivitiesViewController: UITableViewController {
 
     self.refreshControl?.rac.refreshing = self.viewModel.outputs.isRefreshing
 
+    self.viewModel.outputs.isRefreshing
+      .observeForUI()
+      .observeNext { [weak self] in
+        if !$0 {
+          self?.tableView.contentInset.top = Styles.gridHalf(3)
+          self?.tableView.setContentOffset(CGPoint(x: 0, y: -(self?.tableView.contentInset.top ?? 0)),
+            animated: false)
+        }
+    }
+
     self.viewModel.outputs.goToProject
       .observeForControllerAction()
       .observeNext { [weak self] project, refTag in

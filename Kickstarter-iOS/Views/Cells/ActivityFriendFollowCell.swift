@@ -54,8 +54,7 @@ internal final class ActivityFriendFollowCell: UITableViewCell, ValueCell {
       |> UITableViewCell.lens.contentView.layoutMargins %~~ { _, cell in
         cell.traitCollection.isRegularRegular
           ? .init(topBottom: Styles.grid(10), leftRight: Styles.grid(20))
-          : .init(top: Styles.gridHalf(3), left: Styles.grid(2), bottom: Styles.gridHalf(3),
-                  right: Styles.grid(2))
+          : .init(topBottom: Styles.gridHalf(3), leftRight: Styles.grid(2))
     }
 
     self.cardView
