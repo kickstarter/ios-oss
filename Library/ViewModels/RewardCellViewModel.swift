@@ -11,7 +11,6 @@ public protocol RewardCellViewModelInputs {
 
 public protocol RewardCellViewModelOutputs {
   var allGoneHidden: Signal<Bool, NoError> { get }
-  var backersCountLabelText: Signal<String, NoError> { get }
   var cardViewBackgroundColor: Signal<UIColor, NoError> { get }
   var cardViewDropShadowHidden: Signal<Bool, NoError> { get }
   var contentViewBackgroundColor: Signal<UIColor, NoError> { get }
@@ -19,9 +18,8 @@ public protocol RewardCellViewModelOutputs {
   var conversionLabelText: Signal<String, NoError> { get }
   var descriptionLabelHidden: Signal<Bool, NoError> { get }
   var descriptionLabelText: Signal<String, NoError> { get }
-  var footerStackViewAlignment: Signal<UIStackViewAlignment, NoError> { get }
-  var footerStackViewHidden: Signal<Bool, NoError> { get }
-  var footerStackViewAxis: Signal<UILayoutConstraintAxis, NoError> { get }
+  var footerLabelText: Signal<String, NoError> { get }
+  var footerViewHidden: Signal<Bool, NoError> { get }
   var items: Signal<[String], NoError> { get }
   var itemsContainerHidden: Signal<Bool, NoError> { get }
   var manageButtonHidden: Signal<Bool, NoError> { get }
@@ -30,8 +28,6 @@ public protocol RewardCellViewModelOutputs {
   var notifyDelegateRewardCellWantsExpansion: Signal<(), NoError> { get }
   var pledgeButtonHidden: Signal<Bool, NoError> { get }
   var pledgeButtonTitleText: Signal<String, NoError> { get }
-  var remainingStackViewHidden: Signal<Bool, NoError> { get }
-  var remainingLabelText: Signal<String, NoError> { get }
   var titleLabelHidden: Signal<Bool, NoError> { get }
   var titleLabelText: Signal<String, NoError> { get }
   var titleLabelTextColor: Signal<UIColor, NoError> { get }
@@ -62,9 +58,6 @@ RewardCellViewModelOutputs {
     }
     let projectAndReward = zip(project, reward)
 
-    self.backersCountLabelText = reward
-      .map { Strings.general_backer_count_backers(backer_count: $0.backersCount ?? 0) }
-
     self.conversionLabelHidden = project.map {
       !needsConversion(projectCountry: $0.country, userCountry: AppEnvironment.current.config?.countryCode)
     }
@@ -84,12 +77,6 @@ RewardCellViewModelOutputs {
       }
       .map(Strings.About_reward_amount(reward_amount:))
 
-    self.footerStackViewAxis = projectAndReward
-      .map { _, _ in AppEnvironment.current.language == .en ? .Horizontal : .Vertical }
-
-    self.footerStackViewAlignment = projectAndReward
-      .map { _, _ in AppEnvironment.current.language == .en ? .Center : .Leading }
-
     self.minimumLabelText = projectAndRewardOrBacking
       .map { project, rewardOrBacking in
         switch rewardOrBacking {
@@ -107,15 +94,6 @@ RewardCellViewModelOutputs {
 
     self.descriptionLabelText = reward
       .map { $0 == Reward.noReward ? "" : $0.description }
-
-    self.remainingStackViewHidden = projectAndReward
-      .map { project, reward in
-        reward.limit == nil || project.state != .live
-    }
-
-    self.remainingLabelText = reward
-      .map { $0.remaining ?? 0 }
-      .map { Strings.left_left(left: Format.wholeNumber($0)) }
 
     self.minimumAndConversionLabelsColor = projectAndReward
       .map(minimumRewardAmountTextColor(project:reward:))
@@ -192,9 +170,6 @@ RewardCellViewModelOutputs {
       self.tappedProperty.signal.mapConst(false)
     )
 
-    self.footerStackViewHidden = zip(rewardIsCollapsed, reward)
-      .map { rewardIsCollapsed, reward in rewardIsCollapsed || reward == .noReward }
-
     self.updateTopMarginsForIsBacking = combineLatest(youreABacker, self.boundStylesProperty.signal)
       .map(first)
 
@@ -224,6 +199,9 @@ RewardCellViewModelOutputs {
         (project.state == .live && reward.remaining != 0) || youreABacker
     }
 
+    self.footerViewHidden = zip(rewardIsCollapsed, reward)
+      .map { rewardIsCollapsed, reward in rewardIsCollapsed || reward == .noReward }
+
     self.cardViewDropShadowHidden = combineLatest(
       tappable.map(negate),
       self.boundStylesProperty.signal
@@ -239,6 +217,9 @@ RewardCellViewModelOutputs {
       .filter(isTrue)
       .ignoreValues()
       .take(1)
+
+    self.footerLabelText = projectAndReward
+      .map(footerString(project:reward:))
 
     projectAndReward
       .takeWhen(self.notifyDelegateRewardCellWantsExpansion)
@@ -268,7 +249,6 @@ RewardCellViewModelOutputs {
   }
 
   public let allGoneHidden: Signal<Bool, NoError>
-  public let backersCountLabelText: Signal<String, NoError>
   public let cardViewBackgroundColor: Signal<UIColor, NoError>
   public let cardViewDropShadowHidden: Signal<Bool, NoError>
   public let contentViewBackgroundColor: Signal<UIColor, NoError>
@@ -276,9 +256,8 @@ RewardCellViewModelOutputs {
   public let conversionLabelText: Signal<String, NoError>
   public let descriptionLabelHidden: Signal<Bool, NoError>
   public let descriptionLabelText: Signal<String, NoError>
-  public let footerStackViewAlignment: Signal<UIStackViewAlignment, NoError>
-  public let footerStackViewHidden: Signal<Bool, NoError>
-  public let footerStackViewAxis: Signal<UILayoutConstraintAxis, NoError>
+  public let footerLabelText: Signal<String, NoError>
+  public let footerViewHidden: Signal<Bool, NoError>
   public let items: Signal<[String], NoError>
   public let itemsContainerHidden: Signal<Bool, NoError>
   public let manageButtonHidden: Signal<Bool, NoError>
@@ -287,8 +266,6 @@ RewardCellViewModelOutputs {
   public let notifyDelegateRewardCellWantsExpansion: Signal<(), NoError>
   public let pledgeButtonHidden: Signal<Bool, NoError>
   public let pledgeButtonTitleText: Signal<String, NoError>
-  public let remainingStackViewHidden: Signal<Bool, NoError>
-  public let remainingLabelText: Signal<String, NoError>
   public let titleLabelHidden: Signal<Bool, NoError>
   public let titleLabelText: Signal<String, NoError>
   public let titleLabelTextColor: Signal<UIColor, NoError>
@@ -347,4 +324,32 @@ private func rewardTitle(project project: Project, reward: Reward) -> String {
   }
 
   return reward.title ?? Strings.Thank_you_for_supporting_this_project()
+}
+
+private func footerString(project project: Project, reward: Reward) -> String {
+  var parts: [String] = []
+
+  if let endsAt = reward.endsAt
+    where project.state == .live
+      && endsAt > 0
+      && endsAt >= AppEnvironment.current.dateType.init().timeIntervalSince1970 {
+
+    let (time, unit) = Format.duration(secondsInUTC: min(endsAt, project.dates.deadline),
+                                       abbreviate: true,
+                                       useToGo: false)
+
+    parts.append(Strings.Time_left_left(time_left: time + " " + unit))
+  }
+
+  if let remaining = reward.remaining where reward.limit != nil && project.state == .live {
+    parts.append(Strings.Left_count_left(left_count: remaining))
+  }
+
+  if let backersCount = reward.backersCount {
+    parts.append(Strings.general_backer_count_backers(backer_count: backersCount))
+  }
+
+  return parts
+    .map { part in part.nonBreakingSpaced() }
+    .joinWithSeparator(" • ")
 }

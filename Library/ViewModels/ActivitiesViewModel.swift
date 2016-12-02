@@ -26,6 +26,9 @@ public protocol ActitiviesViewModelInputs {
   /// Call when the feed should be refreshed, e.g. pull-to-refresh.
   func refresh()
 
+  /// Call when the SurveyResponseViewController has been dismissed.
+  func surveyResponseViewControllerDismissed()
+
   /// Call when an activity is tapped.
   func tappedActivity(activity: Activity)
 
@@ -249,7 +252,10 @@ ActivitiesViewModelOutputs {
     self.dismissFindFriendsSectionProperty.signal
       .observeNext { AppEnvironment.current.userDefaults.hasClosedFindFriendsInActivity = true }
 
-    let unansweredSurveyResponse = self.viewWillAppearProperty.signal.ignoreValues()
+    let unansweredSurveyResponse = Signal.merge(
+      self.viewWillAppearProperty.signal.ignoreValues(),
+      self.surveyResponseViewControllerDismissedProperty.signal
+      )
       .switchMap {
         AppEnvironment.current.apiService.fetchUnansweredSurveyResponses()
           .demoteErrors()
@@ -310,6 +316,10 @@ ActivitiesViewModelOutputs {
   private let refreshProperty = MutableProperty()
   public func refresh() {
     self.refreshProperty.value = ()
+  }
+  private let surveyResponseViewControllerDismissedProperty = MutableProperty()
+  public func surveyResponseViewControllerDismissed() {
+    self.surveyResponseViewControllerDismissedProperty.value = ()
   }
   private let tappedActivityProjectImage = MutableProperty<Activity?>(nil)
   public func activityUpdateCellTappedProjectImage(activity activity: Activity) {

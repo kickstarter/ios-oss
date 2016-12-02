@@ -167,7 +167,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="ProjectPamphletContentViewController" id="8BT-Sh-bBd" customClass="ProjectPamphletContentViewController" customModule="Kickstarter_Framework" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="381" sectionHeaderHeight="28" sectionFooterHeight="28" id="lny-Ga-DTZ">
-                        <rect key="frame" x="0.0" y="0.0" width="400" height="1400"/>
+                        <rect key="frame" x="0.0" y="0.0" width="400" height="1800"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -666,7 +666,7 @@
                                             <color key="backgroundColor" white="0.89916487069999995" alpha="1" colorSpace="calibratedWhite"/>
                                         </view>
                                         <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="o1n-JV-uJr">
-                                            <rect key="frame" x="8" y="8" width="384" height="353"/>
+                                            <rect key="frame" x="8" y="8" width="384" height="400"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="gyo-0U-zvy">
                                                     <rect key="frame" x="0.0" y="0.0" width="384" height="91"/>
@@ -774,68 +774,46 @@
                                                         </stackView>
                                                     </subviews>
                                                 </stackView>
-                                                <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Sj1-hM-mqc">
-                                                    <rect key="frame" x="0.0" y="237" width="384" height="14"/>
+                                                <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2HT-4L-rZE">
+                                                    <rect key="frame" x="0.0" y="237" width="384" height="61"/>
                                                     <subviews>
-                                                        <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="YXZ-oQ-aTw">
-                                                            <rect key="frame" x="0.0" y="0.0" width="384" height="14"/>
-                                                            <subviews>
-                                                                <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Fm4-cM-Wue">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="48" height="14"/>
-                                                                    <subviews>
-                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="543 left" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="35Z-Et-LR6">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="42" height="14"/>
-                                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
-                                                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                                            <nil key="highlightedColor"/>
-                                                                        </label>
-                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="•" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TMu-7y-cRB">
-                                                                            <rect key="frame" x="42" y="0.0" width="6" height="14"/>
-                                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
-                                                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                                            <nil key="highlightedColor"/>
-                                                                        </label>
-                                                                    </subviews>
-                                                                </stackView>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="300 backers" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L4F-zt-AMD">
-                                                                    <rect key="frame" x="48" y="0.0" width="66" height="14"/>
-                                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
-                                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                                    <nil key="highlightedColor"/>
-                                                                </label>
-                                                                <view contentMode="scaleToFill" horizontalHuggingPriority="1" verticalHuggingPriority="1" horizontalCompressionResistancePriority="1" verticalCompressionResistancePriority="1" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wJh-7m-SF2" userLabel="Filler">
-                                                                    <rect key="frame" x="113" y="7" width="271" height="1"/>
-                                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                                    <constraints>
-                                                                        <constraint firstAttribute="height" constant="1" id="69e-9v-ggu"/>
-                                                                    </constraints>
-                                                                </view>
-                                                            </subviews>
-                                                        </stackView>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="30 days left • 543 left • 3,000 backers" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H2p-lE-T7C">
+                                                            <rect key="frame" x="20" y="20" width="384" height="21"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
                                                     </subviews>
-                                                </stackView>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="trailingMargin" secondItem="H2p-lE-T7C" secondAttribute="trailing" id="15x-a6-Itj"/>
+                                                        <constraint firstItem="H2p-lE-T7C" firstAttribute="top" secondItem="2HT-4L-rZE" secondAttribute="topMargin" id="ZtL-KW-p87"/>
+                                                        <constraint firstItem="H2p-lE-T7C" firstAttribute="leading" secondItem="2HT-4L-rZE" secondAttribute="leadingMargin" id="aih-aL-QT0"/>
+                                                        <constraint firstAttribute="bottomMargin" secondItem="H2p-lE-T7C" secondAttribute="bottom" id="w8q-7P-EIc"/>
+                                                    </constraints>
+                                                </view>
                                                 <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EUr-hA-73b">
-                                                    <rect key="frame" x="0.0" y="251" width="384" height="34"/>
+                                                    <rect key="frame" x="0.0" y="298" width="384" height="34"/>
                                                     <state key="normal" title="Select this reward">
                                                         <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     </state>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y7R-Qf-KEw">
-                                                    <rect key="frame" x="0.0" y="285" width="384" height="34"/>
+                                                    <rect key="frame" x="0.0" y="332" width="384" height="34"/>
                                                     <state key="normal" title="Manage your reward">
                                                         <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     </state>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N9b-DF-Rp4">
-                                                    <rect key="frame" x="0.0" y="319" width="384" height="34"/>
+                                                    <rect key="frame" x="0.0" y="366" width="384" height="34"/>
                                                     <state key="normal" title="View your pledge">
                                                         <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     </state>
                                                 </button>
                                             </subviews>
                                         </stackView>
-                                        <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eBu-vx-gVX">
-                                            <rect key="frame" x="8" y="-7" width="108" height="30"/>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eBu-vx-gVX">
+                                            <rect key="frame" x="8" y="-97" width="108" height="210"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="FVl-ud-ryO">
                                                     <rect key="frame" x="8" y="8" width="92" height="14"/>
@@ -878,12 +856,12 @@
                                 <connections>
                                     <outlet property="allGoneContainerView" destination="vcO-BW-Vtn" id="uAF-Z3-Npm"/>
                                     <outlet property="allGoneLabel" destination="dRI-UA-0kb" id="7jd-QZ-TWG"/>
-                                    <outlet property="backersCountLabel" destination="L4F-zt-AMD" id="s7a-Ff-VLh"/>
                                     <outlet property="cardView" destination="PYb-0r-e38" id="NQr-Ow-d4f"/>
                                     <outlet property="checkmarkImageView" destination="U2O-wN-1PT" id="cFP-n9-T6a"/>
                                     <outlet property="conversionLabel" destination="huA-3e-RdV" id="bEN-8t-mwN"/>
                                     <outlet property="descriptionLabel" destination="5mC-Is-30T" id="N5s-Uw-S1v"/>
-                                    <outlet property="footerStackView" destination="Sj1-hM-mqc" id="whD-w1-BQC"/>
+                                    <outlet property="footerLabel" destination="H2p-lE-T7C" id="JIo-gb-Aes"/>
+                                    <outlet property="footerView" destination="2HT-4L-rZE" id="Iyn-lD-yIM"/>
                                     <outlet property="includesTitleLabel" destination="fuW-xP-PxK" id="omK-6M-Csb"/>
                                     <outlet property="itemsContainerStackView" destination="dWl-9J-OFx" id="RXd-0i-R25"/>
                                     <outlet property="itemsHeaderStackView" destination="Igz-J1-q2X" id="DKU-Hy-m3Y"/>
@@ -891,12 +869,9 @@
                                     <outlet property="manageRewardButton" destination="Y7R-Qf-KEw" id="8Xj-sV-82R"/>
                                     <outlet property="minimumLabel" destination="zdZ-Sb-LKa" id="e9V-yk-7oS"/>
                                     <outlet property="minimumStackView" destination="gyo-0U-zvy" id="pMo-zj-EZ8"/>
-                                    <outlet property="remainingLabel" destination="35Z-Et-LR6" id="eCf-Al-lOj"/>
-                                    <outlet property="remainingStackView" destination="Fm4-cM-Wue" id="8IS-Wj-pTa"/>
                                     <outlet property="rewardTitleLabel" destination="x0w-Et-w1x" id="ocB-oq-fj4"/>
                                     <outlet property="rootStackView" destination="o1n-JV-uJr" id="6aC-uX-ONm"/>
                                     <outlet property="selectRewardButton" destination="EUr-hA-73b" id="85s-Rm-6QH"/>
-                                    <outlet property="statsStackView" destination="YXZ-oQ-aTw" id="Jv6-3y-KJN"/>
                                     <outlet property="titleDescriptionStackView" destination="uXw-Me-h72" id="NdL-rf-PYR"/>
                                     <outlet property="viewYourPledgeButton" destination="N9b-DF-Rp4" id="x1O-yu-S40"/>
                                     <outlet property="youreABackerCheckmarkImageView" destination="U2O-wN-1PT" id="k25-dc-I8g"/>
@@ -904,7 +879,6 @@
                                     <outlet property="youreABackerLabel" destination="dtd-7I-2ig" id="4Ib-j1-qrM"/>
                                     <outlet property="youreABackerStackView" destination="FVl-ud-ryO" id="3Lc-VF-EzX"/>
                                     <outletCollection property="separatorViews" destination="FjD-db-abp" collectionClass="NSMutableArray" id="JdQ-mq-Z1y"/>
-                                    <outletCollection property="bulletSeparatorViews" destination="TMu-7y-cRB" collectionClass="NSMutableArray" id="VP6-Sf-f98"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -913,6 +887,8 @@
                             <outlet property="delegate" destination="8BT-Sh-bBd" id="EjB-Gb-Vu5"/>
                         </connections>
                     </tableView>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="400" height="1800"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ctX-7F-Hfg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

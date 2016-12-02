@@ -132,6 +132,9 @@ public protocol RewardPledgeViewModelOutputs {
   /// Emits a boolean that determines if the itemization stack view is hidden.
   var itemsContainerHidden: Signal<Bool, NoError> { get }
 
+  /// Emits whether loading overlay view should be hidden.
+  var loadingOverlayIsHidden: Signal<Bool, NoError> { get }
+
   /// Emits a string to be put into the minimum pledge label.
   var minimumLabelText: Signal<String, NoError> { get }
 
@@ -143,6 +146,9 @@ public protocol RewardPledgeViewModelOutputs {
 
   /// Emits a string to be put into the currency label.
   var pledgeCurrencyLabelText: Signal<String, NoError> { get }
+
+  /// Emits a bool whether a pledge is loading for the indicator view.
+  var pledgeIsLoading: Signal<Bool, NoError> { get }
 
   /// Emits a string to be put into the pledge text field.
   var pledgeTextFieldText: Signal<String, NoError> { get }
@@ -429,6 +435,14 @@ RewardPledgeViewModelOutputs {
       .takeWhen(Signal.merge(applePayEventAfterLogin, loggedInUserTappedApplePayButton))
       .map(paymentRequest(forProject:reward:pledgeAmount:selectedShippingRule:merchantIdentifier:))
 
+    let isLoading = MutableProperty(false)
+    self.pledgeIsLoading = isLoading.signal
+
+    self.loadingOverlayIsHidden = Signal.merge(
+      self.viewDidLoadProperty.signal.mapConst(true),
+      self.pledgeIsLoading.map(negate)
+    )
+
     let createApplePayPledgeEvent = combineLatest(
       projectAndReward,
       pledgeAmount,
@@ -446,6 +460,8 @@ RewardPledgeViewModelOutputs {
           paymentData: paymentData,
           stripeToken: stripeToken
         )
+        .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
+        .on(started: { isLoading.value = true }, terminated: { isLoading.value = false })
         .materialize()
     }
 
@@ -460,7 +476,9 @@ RewardPledgeViewModelOutputs {
       .map { ($0.0, $0.1, $1, $2) }
       .switchMap { project, reward, amount, shipping in
         createPledge(project: project, reward: reward, amount: amount, shipping: shipping)
+          .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
           .map { ($0, project, reward) }
+          .on(started: { isLoading.value = true }, terminated: { isLoading.value = false })
           .materialize()
     }
 
@@ -486,7 +504,9 @@ RewardPledgeViewModelOutputs {
       .map { ($0.0, $0.1, $1, $2) }
       .switchMap { project, reward, amount, shipping in
         updatePledge(project: project, reward: reward, amount: amount, shipping: shipping)
+          .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
           .map { ($0, project, reward) }
+          .on(started: { isLoading.value = true }, terminated: { isLoading.value = false })
           .materialize()
     }
 
@@ -494,7 +514,9 @@ RewardPledgeViewModelOutputs {
       .takeWhen(self.changePaymentMethodButtonTappedProperty.signal)
       .switchMap { project, reward in
         changePaymentMethod(project: project)
+          .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
           .map { ($0, project, reward) }
+          .on(started: { isLoading.value = true }, terminated: { isLoading.value = false })
           .materialize()
     }
 
@@ -818,12 +840,14 @@ RewardPledgeViewModelOutputs {
     return self.rewardViewModel.outputs.items
   }
   public let itemsContainerHidden: Signal<Bool, NoError>
+  public let loadingOverlayIsHidden: Signal<Bool, NoError>
   public var minimumLabelText: Signal<String, NoError> {
     return self.rewardViewModel.outputs.minimumLabelText
   }
   public let navigationTitle: Signal<String, NoError>
   public let orLabelHidden: Signal<Bool, NoError>
   public let pledgeCurrencyLabelText: Signal<String, NoError>
+  public let pledgeIsLoading: Signal<Bool, NoError>
   public let pledgeTextFieldText: Signal<String, NoError>
   public let readMoreContainerViewHidden: Signal<Bool, NoError>
   public let setStripeAppleMerchantIdentifier: Signal<String, NoError>

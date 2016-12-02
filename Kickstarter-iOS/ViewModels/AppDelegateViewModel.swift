@@ -159,9 +159,9 @@ AppDelegateViewModelOutputs {
       )
       .ksr_debounce(5.0, onScheduler: AppEnvironment.current.scheduler)
       .switchMap { _ -> SignalProducer<Event<User?, ErrorEnvelope>, NoError> in
-        AppEnvironment.current.currentUser == nil
-          ? SignalProducer(value: .Next(nil))
-          : AppEnvironment.current.apiService.fetchUserSelf().wrapInOptional().materialize()
+        AppEnvironment.current.apiService.isAuthenticated || AppEnvironment.current.currentUser != nil
+          ? AppEnvironment.current.apiService.fetchUserSelf().wrapInOptional().materialize()
+          : SignalProducer(value: .Next(nil))
     }
 
     self.updateCurrentUserInEnvironment = currentUserEvent
@@ -297,8 +297,8 @@ AppDelegateViewModelOutputs {
       .ignoreNil()
 
     self.goToDiscovery = deepLink
-      .map { link -> Optional<[String: String]?> in
-        guard case let .tab(.discovery(rawParams)) = link else { return .None }
+      .map { link -> [String: String]?? in
+        guard case let .tab(.discovery(rawParams)) = link else { return nil }
         return .Some(rawParams)
       }
       .ignoreNil()
@@ -364,8 +364,8 @@ AppDelegateViewModelOutputs {
     }
 
     self.goToDashboard = deepLink
-      .map { link -> Optional<Param?> in
-        guard case let .tab(.dashboard(param)) = link else { return .None }
+      .map { link -> Param?? in
+        guard case let .tab(.dashboard(param)) = link else { return nil }
         return .Some(param)
       }
       .ignoreNil()
@@ -814,7 +814,7 @@ extension ShortcutItem {
     case .recommendedForYou:
       return .init(
         type: self.typeString,
-        localizedTitle: localizedString(key: "Recommended", defaultValue: "Recommended"),
+        localizedTitle: Strings.Recommended(),
         localizedSubtitle: nil,
         icon: UIApplicationShortcutIcon(templateImageName: "shortcut-icon-heart"),
         userInfo: nil

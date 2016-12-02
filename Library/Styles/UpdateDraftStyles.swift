@@ -8,9 +8,6 @@ public let updateDraftCloseBarButtonItemStyle = closeBarButtonItemStyle
 public let updateDraftPreviewBarButtonItemStyle = doneBarButtonItemStyle
   <> UIBarButtonItem.lens.title %~ { _ in Strings.general_navigation_buttons_preview() }
 
-public let updateDraftBackBarButtonItemStyle = plainBarButtonItemStyle
-  <> UIBarButtonItem.lens.title %~ { _ in "Back" }
-
 public let updateTitleTextFieldStyle = formFieldStyle
   <> UITextField.lens.font %~ { _ in .ksr_title1(size: 22) }
   <> UITextField.lens.placeholder %~ { _ in Strings.dashboard_post_update_compose_placeholder_title() }

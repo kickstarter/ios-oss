@@ -28,13 +28,20 @@ internal final class MessageThreadsViewController: UITableViewController {
   }
 
   internal override func bindStyles() {
+    super.bindStyles()
+
+    self |> baseTableControllerStyle()
+
     self.mailboxLabel
       |> UILabel.lens.font .~ UIFont.ksr_callout().bolded
       |> UILabel.lens.textColor .~ .ksr_navy_700
   }
 
   internal override func bindViewModel() {
+    super.bindViewModel()
+
     self.mailboxLabel.rac.text = self.viewModel.outputs.mailboxName
+    self.navigationItem.rac.title = self.viewModel.outputs.mailboxName
     self.refreshControl?.rac.refreshing = self.viewModel.outputs.refreshControlEndRefreshing.mapConst(false)
     self.tableView.tableFooterView?.rac.hidden = self.viewModel.outputs.loadingFooterIsHidden
 

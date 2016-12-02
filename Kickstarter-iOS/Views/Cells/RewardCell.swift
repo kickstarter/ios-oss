@@ -13,13 +13,12 @@ internal final class RewardCell: UITableViewCell, ValueCell {
 
   @IBOutlet private weak var allGoneContainerView: UIView!
   @IBOutlet private weak var allGoneLabel: UILabel!
-  @IBOutlet private weak var backersCountLabel: UILabel!
-  @IBOutlet private var bulletSeparatorViews: [UILabel]!
   @IBOutlet private weak var cardView: UIView!
   @IBOutlet private weak var checkmarkImageView: UIImageView!
   @IBOutlet private weak var conversionLabel: UILabel!
   @IBOutlet private weak var descriptionLabel: UILabel!
-  @IBOutlet private weak var footerStackView: UIStackView!
+  @IBOutlet private weak var footerLabel: UILabel!
+  @IBOutlet private weak var footerView: UIView!
   @IBOutlet private weak var includesTitleLabel: UILabel!
   @IBOutlet private weak var itemsContainerStackView: UIStackView!
   @IBOutlet private weak var itemsHeaderStackView: UIStackView!
@@ -27,13 +26,10 @@ internal final class RewardCell: UITableViewCell, ValueCell {
   @IBOutlet private weak var manageRewardButton: UIButton!
   @IBOutlet private weak var minimumLabel: UILabel!
   @IBOutlet private weak var minimumStackView: UIStackView!
-  @IBOutlet private weak var remainingLabel: UILabel!
-  @IBOutlet private weak var remainingStackView: UIStackView!
   @IBOutlet private weak var rewardTitleLabel: UILabel!
   @IBOutlet private weak var rootStackView: UIStackView!
   @IBOutlet private weak var selectRewardButton: UIButton!
   @IBOutlet private var separatorViews: [UIView]!
-  @IBOutlet private weak var statsStackView: UIStackView!
   @IBOutlet private weak var titleDescriptionStackView: UIStackView!
   @IBOutlet private weak var viewYourPledgeButton: UIButton!
   @IBOutlet private weak var youreABackerCheckmarkImageView: UIImageView!
@@ -88,16 +84,9 @@ internal final class RewardCell: UITableViewCell, ValueCell {
     [self.itemsContainerStackView, self.itemsHeaderStackView, self.itemsStackView]
       ||> UIStackView.lens.spacing .~ Styles.grid(2)
 
-    self.footerStackView
-      |> UIStackView.lens.spacing .~ Styles.grid(2)
-
-    [self.minimumStackView, self.titleDescriptionStackView,
-     self.itemsContainerStackView, self.footerStackView]
+    [self.minimumStackView, self.titleDescriptionStackView, self.itemsContainerStackView ]
       ||> UIStackView.lens.layoutMargins .~ .init(topBottom: 0, leftRight: Styles.grid(2))
       ||> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
-
-    self.statsStackView
-      |> UIStackView.lens.spacing .~ Styles.gridHalf(1)
 
     self.allGoneContainerView
       |> roundedStyle(cornerRadius: 2)
@@ -154,23 +143,16 @@ internal final class RewardCell: UITableViewCell, ValueCell {
     self.checkmarkImageView
       |> UIImageView.lens.tintColor .~ .whiteColor()
 
-    self.remainingLabel
+    self.footerLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 12)
       |> UILabel.lens.textColor .~ .ksr_text_navy_600
 
-    self.remainingStackView
-      |> UIStackView.lens.alignment .~ .Center
-      |> UIStackView.lens.spacing .~ self.statsStackView.spacing
-
-    self.backersCountLabel
-      |> UILabel.lens.font .~ .ksr_headline(size: 12)
-      |> UILabel.lens.textColor .~ .ksr_text_navy_600
+    self.footerView
+      |> UIView.lens.layoutMargins .~ .init(topBottom: 0, leftRight: Styles.grid(2))
+      |> UIView.lens.backgroundColor .~ .clearColor()
 
     self.separatorViews
       ||> separatorStyle
-
-    self.bulletSeparatorViews
-      ||> UILabel.lens.textColor .~ .ksr_text_navy_600
 
     self.selectRewardButton
       |> greenButtonStyle
@@ -198,7 +180,6 @@ internal final class RewardCell: UITableViewCell, ValueCell {
     super.bindViewModel()
 
     self.allGoneContainerView.rac.hidden = self.viewModel.outputs.allGoneHidden
-    self.backersCountLabel.rac.text = self.viewModel.outputs.backersCountLabelText
     self.cardView.rac.backgroundColor = self.viewModel.outputs.cardViewBackgroundColor
     self.contentView.rac.backgroundColor = self.viewModel.outputs.contentViewBackgroundColor
     self.conversionLabel.rac.hidden = self.viewModel.outputs.conversionLabelHidden
@@ -206,15 +187,12 @@ internal final class RewardCell: UITableViewCell, ValueCell {
     self.conversionLabel.rac.textColor = self.viewModel.outputs.minimumAndConversionLabelsColor
     self.descriptionLabel.rac.hidden = self.viewModel.outputs.descriptionLabelHidden
     self.descriptionLabel.rac.text = self.viewModel.outputs.descriptionLabelText
-    self.footerStackView.rac.alignment = self.viewModel.outputs.footerStackViewAlignment
-    self.footerStackView.rac.axis = self.viewModel.outputs.footerStackViewAxis
-    self.footerStackView.rac.hidden = self.viewModel.outputs.footerStackViewHidden
+    self.footerLabel.rac.text = self.viewModel.outputs.footerLabelText
+    self.footerView.rac.hidden = self.viewModel.outputs.footerViewHidden
     self.itemsContainerStackView.rac.hidden = self.viewModel.outputs.itemsContainerHidden
     self.manageRewardButton.rac.hidden = self.viewModel.outputs.manageButtonHidden
     self.minimumLabel.rac.text = self.viewModel.outputs.minimumLabelText
     self.minimumLabel.rac.textColor = self.viewModel.outputs.minimumAndConversionLabelsColor
-    self.remainingLabel.rac.text = self.viewModel.outputs.remainingLabelText
-    self.remainingStackView.rac.hidden = self.viewModel.outputs.remainingStackViewHidden
     self.rewardTitleLabel.rac.hidden = self.viewModel.outputs.titleLabelHidden
     self.rewardTitleLabel.rac.text = self.viewModel.outputs.titleLabelText
     self.rewardTitleLabel.rac.textColor = self.viewModel.outputs.titleLabelTextColor

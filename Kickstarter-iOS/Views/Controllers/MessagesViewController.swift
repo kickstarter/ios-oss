@@ -1,8 +1,11 @@
-import Library
 import KsApi
+import Library
+import Prelude
 import UIKit
 
 internal final class MessagesViewController: UITableViewController {
+  @IBOutlet private weak var replyBarButtonItem: UIBarButtonItem!
+
   private let viewModel: MessagesViewModelType = MessagesViewModel()
   private let dataSource = MessagesDataSource()
 
@@ -22,7 +25,7 @@ internal final class MessagesViewController: UITableViewController {
     return Storyboard.Messages.instantiate(MessagesViewController)
   }
 
-  override func viewDidLoad() {
+  internal override func viewDidLoad() {
     super.viewDidLoad()
 
     self.tableView.rowHeight = UITableViewAutomaticDimension
@@ -31,7 +34,16 @@ internal final class MessagesViewController: UITableViewController {
     self.viewModel.inputs.viewDidLoad()
   }
 
-  override func bindViewModel() {
+  internal override func bindStyles() {
+    super.bindStyles()
+
+    self.replyBarButtonItem
+      |> UIBarButtonItem.lens.title %~ { _ in Strings.general_navigation_buttons_reply() }
+  }
+
+  internal override func bindViewModel() {
+    super.bindViewModel()
+
     self.viewModel.outputs.project
       .observeForControllerAction()
       .observeNext { [weak self] in

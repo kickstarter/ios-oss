@@ -219,10 +219,10 @@ private let routes: [String:RouteParams -> Decoded<Navigation>] = [
   "/checkouts/:checkout_param/payments/new": paymentsNew,
   "/checkouts/:checkout_param/payments/apple-pay": paymentsApplePay,
   "/checkouts/:checkout_param/payments/use_stored_card": paymentsUseStoredCard,
-  "/discover": discovery(defaults: ["staff_picks": "true"]),
-  "/discover/advanced": discovery(),
-  "/discover/categories/:category_id": discovery(),
-  "/discover/categories/:parent_category_id/:category_id": discovery(),
+  "/discover": discovery,
+  "/discover/advanced": discovery,
+  "/discover/categories/:category_id": discovery,
+  "/discover/categories/:parent_category_id/:category_id": discovery,
   "/messages/:message_thread_id": messages,
   "/profile/:user_param": me,
   "/search": search,
@@ -315,20 +315,22 @@ private func paymentsUseStoredCard(params: RouteParams) -> Decoded<Navigation> {
     <*> .Success(.payments(.useStoredCard))
 }
 
-private func discovery(defaults defaults: [String: String] = [:]) -> (RouteParams) -> Decoded<Navigation> {
-  return { routeParams in
-    guard case let .Object(object) = routeParams
+private func discovery(params: RouteParams) -> Decoded<Navigation> {
+  guard case let .Object(object) = params
+    else { return .Failure(.Custom("Failed to extact discovery params")) }
+
+  var discoveryParams: [String:String] = [:]
+  for (key, value) in object {
+    guard case let .String(stringValue) = value
       else { return .Failure(.Custom("Failed to extact discovery params")) }
-
-    var discoveryParams: [String:String] = defaults
-    for (key, value) in object {
-      guard case let .String(stringValue) = value
-        else { return .Failure(.Custom("Failed to extact discovery params")) }
-      discoveryParams[key] = stringValue
-    }
-
-    return .Success(.tab(.discovery(discoveryParams)))
+    discoveryParams[key] = stringValue
   }
+
+  guard discoveryParams != [:] else {
+    return .Success(.tab(.discovery(nil)))
+  }
+
+  return .Success(.tab(.discovery(discoveryParams)))
 }
 
 private func me(_: RouteParams) -> Decoded<Navigation> {

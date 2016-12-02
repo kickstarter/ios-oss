@@ -13,6 +13,7 @@ public let plainBarButtonItemStyle = baseBarButtonItemStyle
 
 public let doneBarButtonItemStyle = baseBarButtonItemStyle
   <> UIBarButtonItem.lens.style .~ .Done
+  <> UIBarButtonItem.lens.title %~ { _ in Strings.Done() }
   <> UIBarButtonItem.lens.titleTextAttributes(forState: .Normal) .~ [
     NSFontAttributeName: UIFont.ksr_headline(size: 15)
 ]

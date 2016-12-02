@@ -47,7 +47,7 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
     }
 
     let rewardData = project.rewards
-      .filter { $0.id != 0 && $0.id != project.personalization.backing?.rewardId }
+      .filter { isMainReward(reward: $0, project: project) }
       .sort()
       .map { (project, Either<Reward, Backing>.left($0)) }
 
@@ -117,4 +117,20 @@ private func backingReward(fromProject project: Project) -> Reward? {
     .filter { $0.id == backing.rewardId || $0.id == backing.reward?.id }
     .first
     .coalesceWith(.noReward)
+}
+
+// Determines if a reward belongs in the main list of rewards.
+private func isMainReward(reward reward: Reward, project: Project) -> Bool {
+  // Don't show the no-reward reward
+  guard reward.id != 0 else { return false }
+  // Don't show the reward the user is backing
+  guard .Some(reward.id) != project.personalization.backing?.rewardId else { return false }
+  // Show all rewards when the project isn't live
+  guard project.state != .live else { return true }
+
+  let now = AppEnvironment.current.dateType.init().timeIntervalSince1970
+  let startsAt = reward.startsAt ?? 0
+  let endsAt = reward.endsAt ?? now
+
+  return startsAt <= now && now <= endsAt
 }

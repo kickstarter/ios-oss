@@ -210,8 +210,11 @@ internal final class ActivitiesViewController: UITableViewController {
 
   private func goToSurveyResponse(surveyResponse surveyResponse: SurveyResponse) {
     let vc = SurveyResponseViewController.configuredWith(surveyResponse: surveyResponse)
+    vc.delegate = self
+
     let nav = UINavigationController(rootViewController: vc)
     nav.modalPresentationStyle = .FormSheet
+
     self.presentViewController(nav, animated: true, completion: nil)
   }
 
@@ -288,4 +291,10 @@ extension ActivitiesViewController: EmptyStatesViewControllerDelegate {
   }
 
   func emptyStatesViewControllerGoToFriends() {}
+}
+
+extension ActivitiesViewController: SurveyResponseViewControllerDelegate {
+  func surveyResponseViewControllerDismissed() {
+    self.viewModel.inputs.surveyResponseViewControllerDismissed()
+  }
 }
