@@ -72,29 +72,40 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
         )
     }
 
-    self.daysString = dateComponents
-      .map { $0.day }
+    let days = dateComponents
+      .map { $0.day >= 0 ? $0.day : 0  }
       .skipRepeats()
-      .filter { $0 >= 0 }
+
+    let hours = dateComponents
+      .map { $0.hour >= 0 ? $0.hour : 0  }
+      .skipRepeats()
+
+    let minutes = dateComponents
+      .map { $0.minute >= 0 ? $0.minute : 0  }
+      .skipRepeats()
+
+    let seconds = dateComponents
+      .map { $0.second >= 0 ? $0.second : 0  }
+      .skipRepeats()
+
+    self.daysString = days
       .map { (String(format: "%02d", $0), "days") }
 
-    self.hoursString = dateComponents
-      .map { $0.hour }
-      .skipRepeats()
-      .filter { $0 >= 0 }
+    self.hoursString = hours
       .map { (String(format: "%02d", $0), "hours") }
 
-    self.minutesString = dateComponents
-      .map { $0.minute }
-      .skipRepeats()
-      .filter { $0 >= 0 }
+    self.minutesString = minutes
       .map { (String(format: "%02d", $0), "minutes") }
 
-    self.secondsString = dateComponents
-      .map { $0.second }
-      .skipRepeats()
-      .filter { $0 >= 0 }
+    self.secondsString = seconds
       .map { (String(format: "%02d", $0), "seconds") }
+
+    let countdownEnded = combineLatest(
+      days.filter { $0 == 0 },
+      hours.filter { $0 == 0 },
+      minutes.filter { $0 == 0 },
+      seconds.filter { $0 == 0 }
+    ).ignoreValues()
 
     self.projectImageUrl = project
       .map { NSURL(string: $0.photo.full) }
@@ -141,11 +152,8 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
     self.pushLiveStreamViewController = combineLatest(
       self.projectProperty.signal.ignoreNil(),
       self.liveStreamEventProperty.signal.ignoreNil(),
-      self.nowProperty.signal.ignoreNil()
-      ).filter { _, event, now in
-        return event.stream.startDate.compare(now) == NSComparisonResult.OrderedSame ||
-               now.earlierDate(event.stream.startDate) == event.stream.startDate
-      }.map { project, event, _ in (project, event) }
+      countdownEnded
+      ).map { project, event, _ in (project, event) }
       .take(1)
   }
 

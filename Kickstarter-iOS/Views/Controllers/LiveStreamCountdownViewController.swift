@@ -111,18 +111,18 @@ internal final class LiveStreamCountdownViewController: UIViewController {
       |> UILabel.lens.font .~ .ksr_subhead(size: 14)
       |> UILabel.lens.textColor .~ .ksr_navy_600
 
-    self.creatorAvatar
+    self.creatorAvatarImageView
       |> UIImageView.lens.layer.masksToBounds .~ true
 
     self.creatorNameLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 14)
       |> UILabel.lens.textColor .~ .ksr_navy_700
 
-    self.liveStreamTitle
+    self.liveStreamTitleLabel
       |> UILabel.lens.font .~ UIFont.ksr_title3()
       |> UILabel.lens.textColor .~ .ksr_navy_700
 
-    self.liveStreamParagraph
+    self.liveStreamParagraphLabel
       |> UILabel.lens.font .~ UIFont.ksr_subhead()
       |> UILabel.lens.textColor .~ .ksr_navy_600
 
@@ -149,7 +149,7 @@ internal final class LiveStreamCountdownViewController: UIViewController {
   internal override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
     self.subscribeButton.layer.cornerRadius = self.subscribeButton.frame.size.height / 2
-    self.creatorAvatar.layer.cornerRadius = self.creatorAvatar.frame.size.height / 2
+    self.creatorAvatarImageView.layer.cornerRadius = self.creatorAvatarImageView.frame.size.height / 2
   }
 
   internal override func bindViewModel() {
@@ -187,8 +187,8 @@ internal final class LiveStreamCountdownViewController: UIViewController {
 
     self.introLabel.rac.text = self.viewModel.outputs.introText.observeForUI()
     self.creatorNameLabel.rac.text = self.viewModel.outputs.creatorName.observeForUI()
-    self.liveStreamTitle.rac.text = self.viewModel.outputs.title.observeForUI()
-    self.liveStreamParagraph.rac.text = self.viewModel.outputs.description.observeForUI()
+    self.liveStreamTitleLabel.rac.text = self.viewModel.outputs.title.observeForUI()
+    self.liveStreamParagraphLabel.rac.text = self.viewModel.outputs.description.observeForUI()
 
     self.viewModel.outputs.projectImageUrl
       .observeForUI()
@@ -197,8 +197,8 @@ internal final class LiveStreamCountdownViewController: UIViewController {
 
     self.viewModel.outputs.creatorAvatarUrl
       .observeForUI()
-      .on(next: { [weak self] image in self?.creatorAvatar.image = nil })
-      .observeNext { [weak self] in self?.creatorAvatar.af_setImageWithURL($0) }
+      .on(next: { [weak self] image in self?.creatorAvatarImageView.image = nil })
+      .observeNext { [weak self] in self?.creatorAvatarImageView.af_setImageWithURL($0) }
 
     self.viewModel.outputs.categoryId
       .observeForUI()
@@ -224,7 +224,7 @@ internal final class LiveStreamCountdownViewController: UIViewController {
 
     self.viewModel.outputs.retrieveEventInfo
       .observeForUI()
-      .on(next: { [weak self] image in self?.creatorAvatar.image = nil })
+      .on(next: { [weak self] image in self?.creatorAvatarImageView.image = nil })
       .observeNext { [weak self] in
       KsLiveApp.retrieveEvent($0).startWithResult {
         switch $0 {
@@ -258,7 +258,9 @@ internal final class LiveStreamCountdownViewController: UIViewController {
         //toggle subscribe
     }
 
-    self.viewModel.outputs.pushLiveStreamViewController.observeNext { [weak self] in
+    self.viewModel.outputs.pushLiveStreamViewController
+      .observeForControllerAction()
+      .observeNext { [weak self] in
       let liveStreamContainerViewController = LiveStreamContainerViewController
         .configuredWith(project: $0, event: $1)
 
@@ -271,7 +273,20 @@ internal final class LiveStreamCountdownViewController: UIViewController {
   }
 
   private func attributedCountdownString(prefix: String, suffix: String) -> NSAttributedString {
-    let prefixAttributes = [NSFontAttributeName : UIFont.ksr_title1(size: 24)]
+
+    let fontDescriptorAttributes = [
+      UIFontDescriptorFeatureSettingsAttribute: [
+        [
+          UIFontFeatureTypeIdentifierKey: kNumberSpacingType,
+          UIFontFeatureSelectorIdentifierKey: kMonospacedNumbersSelector
+        ]
+      ]
+    ]
+    let fontDescriptor = UIFont.ksr_title1(size: 24)
+      .fontDescriptor()
+      .fontDescriptorByAddingAttributes(fontDescriptorAttributes)
+
+    let prefixAttributes = [NSFontAttributeName : UIFont(descriptor: fontDescriptor, size: 24)]
     let suffixAttributes = [NSFontAttributeName : UIFont.ksr_headline(size: 14)]
 
     let prefix = NSMutableAttributedString(string: prefix, attributes: prefixAttributes)
