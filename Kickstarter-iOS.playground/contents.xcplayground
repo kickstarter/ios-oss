@@ -1,32 +1,33 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <playground version='6.0' target-platform='ios' display-mode='raw'>
     <pages>
-        <page name='01-Introduction'/>
-        <page name='02-Strings'/>
-        <page name='03-Color Palettes'/>
-        <page name='04-Buttons'/>
-        <page name='05-Typography'/>
-        <page name='06-Discovery'/>
-        <page name='07-Creator Dashboard'/>
-        <page name='08-Activities'/>
-        <page name='09-Project Activities'/>
-        <page name='10-Backing'/>
-        <page name='11-Project Pamphlet'/>
-        <page name='12-Rewards'/>
-        <page name='13-Update Draft'/>
-        <page name='14-Thanks'/>
-        <page name='15-Root Tab'/>
-        <page name='16-Video Player'/>
-        <page name='17-Facebook Confirmation'/>
-        <page name='18-Search'/>
-        <page name='19-Settings'/>
-        <page name='20-Debug pushes'/>
-        <page name='21-Reward Pledge'/>
-        <page name='22-WebModal'/>
-        <page name='23-Comments'/>
-        <page name='24-Two Factor'/>
-        <page name='25-Signup'/>
-        <page name='26-Login Tout'/>
-        <page name='ZZ-Scratch Work'/>
+        <page name='_Introduction'/>
+        <page name='_ScratchWork'/>
+        <page name='Activities'/>
+        <page name='Backing'/>
+        <page name='Buttons'/>
+        <page name='Color Palettes'/>
+        <page name='Comments'/>
+        <page name='CreatorDashboard'/>
+        <page name='DebugPushes'/>
+        <page name='Discovery'/>
+        <page name='FacebookConfirmation'/>
+        <page name='FindFriends'/>
+        <page name='LoginTout'/>
+        <page name='ProjectActivities'/>
+        <page name='ProjectPamphlet'/>
+        <page name='RewardPledge'/>
+        <page name='Rewards'/>
+        <page name='RootTab'/>
+        <page name='Search'/>
+        <page name='Settings'/>
+        <page name='Signup'/>
+        <page name='Strings'/>
+        <page name='Thanks'/>
+        <page name='TwoFactor'/>
+        <page name='Typography'/>
+        <page name='UpdateDraft'/>
+        <page name='VideoPlayer'/>
+        <page name='WebModal'/>
     </pages>
 </playground>
