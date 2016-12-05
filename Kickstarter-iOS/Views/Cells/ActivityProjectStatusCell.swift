@@ -57,7 +57,8 @@ internal final class ActivityProjectStatusCell: UITableViewCell, ValueCell {
       |> baseTableViewCellStyle()
       |> UITableViewCell.lens.contentView.layoutMargins %~~ { _, cell in
         cell.traitCollection.isRegularRegular
-          ? .init(topBottom: Styles.grid(10), leftRight: Styles.grid(20))
+          ? .init(top: Styles.gridHalf(7), left: Styles.grid(30), bottom: Styles.grid(2),
+                  right: Styles.grid(30))
           : .init(top: Styles.gridHalf(6), left: Styles.grid(2), bottom: Styles.gridHalf(3),
                   right: Styles.grid(2))
     }

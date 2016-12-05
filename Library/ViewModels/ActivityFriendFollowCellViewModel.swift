@@ -32,7 +32,6 @@ ActivityFriendFollowCellViewModelOutputs {
     let friend = self.activityProperty.signal.ignoreNil()
       .map(Activity.lens.user.view)
       .ignoreNil()
-      .on(next: { print("configured with friend \($0.name) and is friend = \($0.isFriend)")})
 
     self.friendImageURL = friend.map { NSURL.init(string: $0.avatar.small) }
 

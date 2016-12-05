@@ -62,7 +62,7 @@ internal final class ActivityUpdateCell: UITableViewCell, ValueCell {
       |> baseTableViewCellStyle()
       |> UITableViewCell.lens.contentView.layoutMargins %~~ { _, cell in
         cell.traitCollection.isRegularRegular
-          ? .init(topBottom: Styles.grid(10), leftRight: Styles.grid(20))
+          ? .init(topBottom: Styles.grid(2), leftRight: Styles.grid(30))
           : .init(topBottom: Styles.gridHalf(3), leftRight: Styles.grid(2))
     }
 
