@@ -57,7 +57,7 @@ internal final class ActivitiesViewController: UITableViewController {
     super.bindStyles()
 
     self
-      |> baseTableControllerStyle(estimatedRowHeight: 80.0)
+      |> baseTableControllerStyle(estimatedRowHeight: 200.0)
 
     self.navigationItem
       |> UINavigationItem.lens.title %~ { _ in Strings.activity_navigation_title_activity() }

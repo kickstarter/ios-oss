@@ -68,12 +68,14 @@ ActivitySurveyResponseCellViewModelInputs, ActivitySurveyResponseCellViewModelOu
       .takeWhen(self.respondNowButtonTappedProperty.signal)
 
     self.rewardSurveysCountIsHidden = surveyResponseAndCountAndPosition.map { _, count, position in
-      count <= 1 || (count > 1 && position != 0)
+      count > 1 && position != 0
     }
 
     self.rewardSurveysCountText = surveyResponseAndCountAndPosition
       .map(second)
-      .map { Strings.Reward_Surveys(reward_survey_count: $0) }
+      .map { Strings.Reward_Surveys(reward_survey_count: $0)
+        .stringByReplacingOccurrencesOfString("1 ", withString: "")
+    }
   }
 
   private let surveyResponseCountPositionProperty = MutableProperty<(SurveyResponse, Int, Int)?>(nil)

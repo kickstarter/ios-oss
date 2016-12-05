@@ -210,8 +210,23 @@ ActivitiesViewModelOutputs {
       .ignoreNil()
       .map { ($0, .activity) }
 
+    self.unansweredSurveys = Signal.merge(
+      self.viewWillAppearProperty.signal.ignoreNil().filter(isFalse).ignoreValues(),
+      self.surveyResponseViewControllerDismissedProperty.signal
+      )
+      .switchMap {
+        AppEnvironment.current.apiService.fetchUnansweredSurveyResponses()
+          .demoteErrors()
+    }
+    //      .map { if let first = $0.first {
+    //        return $0 + [first]
+    //      } else {
+    //        return $0
+    //      }
+    //    }
+
     self.showFindFriendsSection = currentUser
-      .takeWhen(self.viewWillAppearProperty.signal.ignoreNil())
+      .takeWhen(self.unansweredSurveys)
       .map {
         (
           .activity,
@@ -220,10 +235,10 @@ ActivitiesViewModelOutputs {
             && !AppEnvironment.current.userDefaults.hasClosedFindFriendsInActivity
         )
       }
-      .skipRepeats(==)
+      //.skipRepeats(==)
 
     self.showFacebookConnectSection = currentUser
-      .takeWhen(self.viewWillAppearProperty.signal.ignoreNil())
+      .takeWhen(self.unansweredSurveys)
       .map {
         (
           .activity,
@@ -232,7 +247,7 @@ ActivitiesViewModelOutputs {
             && !AppEnvironment.current.userDefaults.hasClosedFacebookConnectInActivity
         )
       }
-      .skipRepeats(==)
+      //.skipRepeats(==)
 
     self.deleteFacebookConnectSection = self.dismissFacebookConnectSectionProperty.signal
 
@@ -251,21 +266,6 @@ ActivitiesViewModelOutputs {
 
     self.dismissFindFriendsSectionProperty.signal
       .observeNext { AppEnvironment.current.userDefaults.hasClosedFindFriendsInActivity = true }
-
-    self.unansweredSurveys = Signal.merge(
-      self.viewWillAppearProperty.signal.ignoreValues(),
-      self.surveyResponseViewControllerDismissedProperty.signal
-      )
-      .switchMap {
-        AppEnvironment.current.apiService.fetchUnansweredSurveyResponses()
-          .demoteErrors()
-      }
-//      .map { if let first = $0.first {
-//        return $0 + [first]
-//      } else {
-//        return $0
-//      }
-//    }
 
     self.goToSurveyResponse = self.tappedSurveyResponseProperty.signal.ignoreNil()
 

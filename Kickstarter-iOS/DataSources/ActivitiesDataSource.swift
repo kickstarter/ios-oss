@@ -26,15 +26,13 @@ internal final class ActivitiesDataSource: ValueCellDataSource {
   internal func removeFacebookConnectRows() -> [NSIndexPath] {
     self.clearValues(section: Section.facebookConnect.rawValue)
 
-    return [NSIndexPath(forRow: 0, inSection: Section.facebookConnect.rawValue),
-            NSIndexPath(forRow: 1, inSection: Section.facebookConnect.rawValue)]
+    return [NSIndexPath(forRow: 0, inSection: Section.facebookConnect.rawValue)]
   }
 
   internal func removeFindFriendsRows() -> [NSIndexPath] {
     self.clearValues(section: Section.findFriends.rawValue)
 
-    return [NSIndexPath(forRow: 0, inSection: Section.findFriends.rawValue),
-            NSIndexPath(forRow: 1, inSection: Section.findFriends.rawValue)]
+    return [NSIndexPath(forRow: 0, inSection: Section.findFriends.rawValue)]
   }
 
   internal func load(surveys surveys: [SurveyResponse]) {
