@@ -94,12 +94,24 @@ internal final class ProjectActivitiesViewController: UITableViewController {
 
   internal func goToBacking(project project: Project, user: User) {
     let vc = BackingViewController.configuredWith(project: project, backer: user)
-    self.navigationController?.pushViewController(vc, animated: true)
+    if self.traitCollection.userInterfaceIdiom == .Pad {
+      let nav = UINavigationController(rootViewController: vc)
+      nav.modalPresentationStyle = UIModalPresentationStyle.FormSheet
+      self.presentViewController(nav, animated: true, completion: nil)
+    } else {
+      self.navigationController?.pushViewController(vc, animated: true)
+    }
   }
 
   internal func goToComments(project project: Project?, update: Update?) {
     let vc = CommentsViewController.configuredWith(project: project, update: update)
-    self.navigationController?.pushViewController(vc, animated: true)
+    if self.traitCollection.userInterfaceIdiom == .Pad {
+      let nav = UINavigationController(rootViewController: vc)
+      nav.modalPresentationStyle = UIModalPresentationStyle.FormSheet
+      self.presentViewController(nav, animated: true, completion: nil)
+    } else {
+      self.navigationController?.pushViewController(vc, animated: true)
+    }
   }
 
   internal func goToProject(project project: Project) {
