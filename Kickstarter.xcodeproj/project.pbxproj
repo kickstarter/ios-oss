@@ -108,6 +108,7 @@
 		01F219561DC12BF7005DD2E4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 01F219521DC12697005DD2E4 /* LaunchScreen.storyboard */; };
 		01F42A501D93284E0084719D /* SortPagerViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01F42A191D9328490084719D /* SortPagerViewControllerTests.swift */; };
 		01F42A521D9332F60084719D /* DiscoveryNavigationHeaderViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01F42A511D9332F60084719D /* DiscoveryNavigationHeaderViewControllerTests.swift */; };
+		01F4FE0D1DF6095A00BB9DD4 /* ActivitiesViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01F4FE0C1DF6095A00BB9DD4 /* ActivitiesViewControllerTests.swift */; };
 		01F547ED1D53994B000A98EF /* TabBarItemStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01F547EC1D53994B000A98EF /* TabBarItemStyles.swift */; };
 		01F8ADFC1CEA5B070026F220 /* ThanksProjectsDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01F8ADCE1CEA58AE0026F220 /* ThanksProjectsDataSourceTests.swift */; };
 		01FD71841D36BA2900070BAC /* DashboardProjectsDrawerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FD71831D36BA2900070BAC /* DashboardProjectsDrawerViewModelTests.swift */; };
@@ -1617,6 +1618,7 @@
 		01F219521DC12697005DD2E4 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		01F42A191D9328490084719D /* SortPagerViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SortPagerViewControllerTests.swift; sourceTree = "<group>"; };
 		01F42A511D9332F60084719D /* DiscoveryNavigationHeaderViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryNavigationHeaderViewControllerTests.swift; sourceTree = "<group>"; };
+		01F4FE0C1DF6095A00BB9DD4 /* ActivitiesViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivitiesViewControllerTests.swift; sourceTree = "<group>"; };
 		01F547EC1D53994B000A98EF /* TabBarItemStyles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarItemStyles.swift; sourceTree = "<group>"; };
 		01F8ADCE1CEA58AE0026F220 /* ThanksProjectsDataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThanksProjectsDataSourceTests.swift; sourceTree = "<group>"; };
 		01FD71831D36BA2900070BAC /* DashboardProjectsDrawerViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardProjectsDrawerViewModelTests.swift; sourceTree = "<group>"; };
@@ -2392,27 +2394,28 @@
 		A73778D41D81A98E004C2A9B /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				A7EDEE7A1D83635400780B34 /* CommentsViewControllerTests.swift */,
+				01F4FE0C1DF6095A00BB9DD4 /* ActivitiesViewControllerTests.swift */,
 				D7086F3B1DB7FBA40087E5EB /* BackingViewControllerTests.swift */,
+				A7EDEE7A1D83635400780B34 /* CommentsViewControllerTests.swift */,
+				59F0C0961DBEC8DE0007E0A7 /* DashboardViewControllerTests.swift */,
 				0123B4AC1D919BBA004C1166 /* DiscoveryFiltersViewControllerTests.swift */,
-				013744FA1D99FE6A00E50C78 /* EmptyStatesViewControllerTests.swift */,
 				01F42A511D9332F60084719D /* DiscoveryNavigationHeaderViewControllerTests.swift */,
+				59235ED81DC0149B0067F4AD /* DiscoveryPageViewControllerTests.swift */,
+				013744FA1D99FE6A00E50C78 /* EmptyStatesViewControllerTests.swift */,
+				59885A9B1DB6ED6800F65825 /* FacebookConfirmationViewControllerTests.swift */,
+				59AFCCEE1DD3D0B9004A200E /* FindFriendsViewControllerTests.swift */,
 				A73778D51D81ABE2004C2A9B /* FundingGraphViewTests.swift */,
-				9D3A6B4B1D8C4F3800FE3926 /* ProjectActivityViewControllerTests.swift */,
 				59885A5D1DB6DC2900F65825 /* LoginToutViewControllerTests.swift */,
 				59885A951DB6E04100F65825 /* LoginViewControllerTests.swift */,
-				59235ED81DC0149B0067F4AD /* DiscoveryPageViewControllerTests.swift */,
-				59F0C0961DBEC8DE0007E0A7 /* DashboardViewControllerTests.swift */,
-				59AFCCEE1DD3D0B9004A200E /* FindFriendsViewControllerTests.swift */,
-				59885A971DB6E2A900F65825 /* TwoFactorViewControllerTests.swift */,
-				59885A991DB6EA5700F65825 /* SignupViewControllerTests.swift */,
-				59885A9D1DB6EFD900F65825 /* ResetPasswordViewControllerTests.swift */,
-				59885A9B1DB6ED6800F65825 /* FacebookConfirmationViewControllerTests.swift */,
+				9D3A6B4B1D8C4F3800FE3926 /* ProjectActivityViewControllerTests.swift */,
 				A7CA8C461D8F2F870086A3E9 /* ProjectNavBarViewControllerTests.swift */,
-				A77FD5B41D91FD2C00FFC636 /* RewardPledgeViewControllerTests.swift */,
 				A73778D91D81D3CC004C2A9B /* ProjectPamphletContentViewControllerTests.swift */,
+				59885A9D1DB6EFD900F65825 /* ResetPasswordViewControllerTests.swift */,
+				A77FD5B41D91FD2C00FFC636 /* RewardPledgeViewControllerTests.swift */,
 				A73778D71D81C201004C2A9B /* SettingsViewControllerTests.swift */,
+				59885A991DB6EA5700F65825 /* SignupViewControllerTests.swift */,
 				01F42A191D9328490084719D /* SortPagerViewControllerTests.swift */,
+				59885A971DB6E2A900F65825 /* TwoFactorViewControllerTests.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -5188,6 +5191,7 @@
 				A72D92301CB1E08800A88249 /* XCTestCase+AppEnvironment.swift in Sources */,
 				A73778D61D81ABE2004C2A9B /* FundingGraphViewTests.swift in Sources */,
 				A757ED201D1C181D00A5C978 /* DiscoveryProjectsDataSourceTest.swift in Sources */,
+				01F4FE0D1DF6095A00BB9DD4 /* ActivitiesViewControllerTests.swift in Sources */,
 				0156B3851D107273000C4252 /* FindFriendsDataSourceTests.swift in Sources */,
 				9DE6C0891C9B5FCA00FCC7B1 /* (null) in Sources */,
 				59885A9E1DB6EFD900F65825 /* ResetPasswordViewControllerTests.swift in Sources */,

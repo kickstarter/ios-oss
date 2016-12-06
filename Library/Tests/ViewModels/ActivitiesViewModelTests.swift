@@ -24,7 +24,7 @@ final class ActivitiesViewModelTests: TestCase {
   private let showFindFriendsSection = TestObserver<Bool, NoError>()
   private let showFindFriendsSectionSource = TestObserver<FriendsSource, NoError>()
   private let showFacebookConnectErrorAlert = TestObserver<AlertError, NoError>()
-  private let unansweredSurveyResponse = TestObserver<SurveyResponse?, NoError>()
+  private let unansweredSurveyResponse = TestObserver<[SurveyResponse], NoError>()
 
   override func setUp() {
     super.setUp()
@@ -45,7 +45,7 @@ final class ActivitiesViewModelTests: TestCase {
     self.vm.outputs.showFindFriendsSection.map { $0.1 }.observe(self.showFindFriendsSection.observer)
     self.vm.outputs.showFindFriendsSection.map { $0.0 }.observe(self.showFindFriendsSectionSource.observer)
     self.vm.outputs.showFacebookConnectErrorAlert.observe(self.showFacebookConnectErrorAlert.observer)
-    self.vm.outputs.unansweredSurveyResponse.observe(self.unansweredSurveyResponse.observer)
+    self.vm.outputs.unansweredSurveys.observe(self.unansweredSurveyResponse.observer)
   }
 
   // Tests the flow of logging in with a user that has activities.
