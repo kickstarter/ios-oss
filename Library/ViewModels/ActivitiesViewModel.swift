@@ -218,12 +218,6 @@ ActivitiesViewModelOutputs {
         AppEnvironment.current.apiService.fetchUnansweredSurveyResponses()
           .demoteErrors()
     }
-    //      .map { if let first = $0.first {
-    //        return $0 + [first]
-    //      } else {
-    //        return $0
-    //      }
-    //    }
 
     self.showFindFriendsSection = currentUser
       .takeWhen(self.unansweredSurveys)
@@ -235,7 +229,6 @@ ActivitiesViewModelOutputs {
             && !AppEnvironment.current.userDefaults.hasClosedFindFriendsInActivity
         )
       }
-      //.skipRepeats(==)
 
     self.showFacebookConnectSection = currentUser
       .takeWhen(self.unansweredSurveys)
@@ -247,7 +240,6 @@ ActivitiesViewModelOutputs {
             && !AppEnvironment.current.userDefaults.hasClosedFacebookConnectInActivity
         )
       }
-      //.skipRepeats(==)
 
     self.deleteFacebookConnectSection = self.dismissFacebookConnectSectionProperty.signal
 

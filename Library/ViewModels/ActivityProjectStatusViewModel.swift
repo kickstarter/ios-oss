@@ -140,17 +140,16 @@ private func metadataString(forActivityCategory category: Activity.Category,
                                                 isCreatorUser: Bool, friendName: String) -> String {
   switch category {
   case .cancellation:
-    return "Project Cancelled."
+    return Strings.Project_Cancelled()
   case .failure:
-    return "Unsuccessfully Funded."
+    return Strings.Unsuccessfully_Funded()
   case .launch:
-    return isCreatorUser ? "You Launched!" : "\(friendName) launched a project!"
+    return isCreatorUser ? Strings.You_Launched() : Strings.Friend_name_launched_a_project(friend_name: friendName)
   case .success:
-    return "Successfully Funded!"
+    return Strings.activity_successfully_funded()
   case .suspension:
-    "Project Suspended."
+    return Strings.Project_Suspended()
   default:
     return ""
   }
-  return ""
 }

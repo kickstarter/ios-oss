@@ -81,6 +81,9 @@ internal final class ActivityFriendBackingCell: UITableViewCell, ValueCell {
     self.fundingProgressContainerView
       |> UIView.lens.backgroundColor .~ .ksr_navy_400
 
+    self.projectImageView
+      |> UIImageView.lens.clipsToBounds .~ true
+
     self.projectNameLabel
       |> UILabel.lens.font .~ .ksr_title1(size: 18)
       |> UILabel.lens.textColor .~ .ksr_text_navy_700

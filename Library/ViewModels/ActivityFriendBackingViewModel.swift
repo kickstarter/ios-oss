@@ -108,7 +108,7 @@ ActivityFriendBackingViewModelInputs, ActivityFriendBackingViewModelOutputs {
 
     self.projectName = activity.map { $0.project?.name ?? "" }
 
-    self.projectImageURL = activity.map { ($0.project?.photo.med).flatMap(NSURL.init) }
+    self.projectImageURL = activity.map { ($0.project?.photo.small).flatMap(NSURL.init) }
 
     self.creatorName = activity.map { $0.project?.creator.name ?? "" }
 
