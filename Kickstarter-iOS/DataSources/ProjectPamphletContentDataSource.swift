@@ -21,11 +21,10 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
 
     self.set(values: [project], cellClass: ProjectPamphletMainCell.self, inSection: Section.main.rawValue)
 
-    let liveStream = project.liveStreams.isEmpty ? [] : [ProjectPamphletSubpage.liveStream(
-      liveStream: project.liveStreams[0], .first)]
+    let liveStreamSubpages = self.liveStreamSubpageArray(project)
 
-    let values = liveStream + [
-      .comments(project.stats.commentsCount ?? 0, liveStream.isEmpty ? .first : .middle),
+    let values = liveStreamSubpages + [
+      .comments(project.stats.commentsCount ?? 0, liveStreamSubpages.isEmpty ? .first : .middle),
       .updates(project.stats.updatesCount ?? 0, .last)
     ]
 
@@ -55,6 +54,11 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
       self.set(values: [project], cellClass: RewardsTitleCell.self, inSection: Section.rewardsTitle.rawValue)
       self.set(values: rewardData, cellClass: RewardCell.self, inSection: Section.rewards.rawValue)
     }
+  }
+
+  private func liveStreamSubpageArray(project: Project) -> [ProjectPamphletSubpage] {
+    return project.liveStreams.isEmpty ? [] : [ProjectPamphletSubpage.liveStream(
+      liveStream: project.liveStreams[0], .first)]
   }
 
   internal func indexPathForMainCell() -> NSIndexPath {

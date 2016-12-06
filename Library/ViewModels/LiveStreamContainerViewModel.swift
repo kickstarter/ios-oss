@@ -11,8 +11,9 @@ public protocol LiveStreamContainerViewModelType {
 }
 
 public protocol LiveStreamContainerViewModelInputs {
-  func configureWith(project project: Project, event: LiveStreamEvent)
+  func configureWith(project project: Project, event: LiveStreamEvent?)
   func closeButtonTapped()
+  func setLiveStreamEvent(event event: LiveStreamEvent)
   func setLiveStreamViewController(controller controller: LiveStreamViewController)
   func viewDidLayoutSubviews()
   func viewDidLoad()
@@ -85,8 +86,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
   }
 
   private let projectProperty = MutableProperty<Project?>(nil)
-  private let liveStreamEventProperty = MutableProperty<LiveStreamEvent?>(nil)
-  public func configureWith(project project: Project, event: LiveStreamEvent) {
+  public func configureWith(project project: Project, event: LiveStreamEvent?) {
     self.projectProperty.value = project
     self.liveStreamEventProperty.value = event
   }
@@ -100,6 +100,11 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     MutableProperty<LiveVideoViewControllerState?>(nil)
   public func liveVideoViewControllerStateChanged(state state: LiveVideoViewControllerState) {
     self.liveVideoViewControllerStateChangedProperty.value = state
+  }
+
+  private let liveStreamEventProperty = MutableProperty<LiveStreamEvent?>(nil)
+  public func setLiveStreamEvent(event event: LiveStreamEvent) {
+    self.liveStreamEventProperty.value = event
   }
 
   private let liveStreamViewControllerProperty = MutableProperty<LiveStreamViewController?>(nil)

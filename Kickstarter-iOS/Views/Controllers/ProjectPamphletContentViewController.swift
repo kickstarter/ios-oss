@@ -148,7 +148,18 @@ internal final class ProjectPamphletContentViewController: UITableViewController
   }
 
   private func goToLiveStream(project project: Project) {
-    let vc = LiveStreamCountdownViewController.configuredWith(project: project)
+    let lvc = project.liveStreams.first.flatMap { liveStream -> UIViewController in
+      let startDate = NSDate(timeIntervalSince1970: liveStream.startDate)
+
+      if startDate.earlierDate(NSDate()) == startDate {
+        return LiveStreamContainerViewController.configuredWith(project: project, event: nil)
+      }
+
+      return LiveStreamCountdownViewController.configuredWith(project: project)
+    }
+
+    guard let vc = lvc else { return }
+
     let nav = UINavigationController.init(navigationBarClass: ClearNavigationBar.self, toolbarClass: nil)
     nav.viewControllers = [vc]
 

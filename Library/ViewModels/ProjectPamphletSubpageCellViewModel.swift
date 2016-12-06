@@ -34,15 +34,23 @@ ProjectPamphletSubpageCellViewModelInputs, ProjectPamphletSubpageCellViewModelOu
     let liveStreamSubpage = self.subpageProperty.signal.ignoreNil().filter { $0.isLiveStream }
     let updatesSubpage = self.subpageProperty.signal.ignoreNil().filter { $0.isUpdates }
 
+    let liveStreamDetail = liveStreamSubpage.map { subpage -> Project.LiveStream? in
+      if case .liveStream(let detail, _) = subpage {
+        return detail
+      }
+
+      return nil
+    }.ignoreNil()
+
     self.labelText = Signal.merge(
       commentsSubpage.mapConst(Strings.project_menu_buttons_comments()),
-      liveStreamSubpage.mapConst("Live Stream"),
+      liveStreamDetail.map { $0.isLiveNow ? "Live Streaming Now" : "Live Stream" },
       updatesSubpage.mapConst(Strings.project_menu_buttons_updates())
     )
 
     self.labelTextColor = Signal.merge(
       commentsSubpage.mapConst(.ksr_text_navy_700),
-      liveStreamSubpage.mapConst(.ksr_text_green_700),
+      liveStreamDetail.map { $0.isLiveNow ? .ksr_text_green_700 : .ksr_text_navy_700 },
       updatesSubpage.mapConst(.ksr_text_navy_700)
     )
 
@@ -56,27 +64,27 @@ ProjectPamphletSubpageCellViewModelInputs, ProjectPamphletSubpageCellViewModelOu
 
     self.countLabelText = Signal.merge(
       Signal.merge(commentsSubpage, updatesSubpage).map { String($0.count) },
-      liveStreamSubpage.mapConst("Watch Live")
+      liveStreamDetail.map { countLabelTextForLiveStream($0) }
     )
 
     self.countLabelTextColor = Signal.merge(
       Signal.merge(commentsSubpage, updatesSubpage).mapConst(.ksr_text_navy_700),
-      liveStreamSubpage.mapConst(.ksr_text_green_700)
+      liveStreamDetail.map { $0.isLiveNow ? .ksr_text_green_700 : .ksr_text_navy_700 }
     )
 
     self.countLabelBorderColor = Signal.merge(
       Signal.merge(commentsSubpage, updatesSubpage).mapConst(.whiteColor()),
-      liveStreamSubpage.mapConst(.ksr_green_500)
+      liveStreamDetail.map { $0.isLiveNow ? .ksr_green_500 : .whiteColor() }
     )
 
     self.countLabelBackgroundColor = Signal.merge(
       Signal.merge(commentsSubpage, updatesSubpage).mapConst(.ksr_navy_300),
-      liveStreamSubpage.mapConst(.whiteColor())
+      liveStreamDetail.map { $0.isLiveNow ? .whiteColor() : .ksr_navy_300 }
     )
 
     self.liveNowImageViewHidden = Signal.merge(
       Signal.merge(commentsSubpage, updatesSubpage).mapConst(true),
-      liveStreamSubpage.mapConst(false)
+      liveStreamDetail.map { $0.isLiveNow ? false : true }
     )
   }
 
@@ -97,6 +105,46 @@ ProjectPamphletSubpageCellViewModelInputs, ProjectPamphletSubpageCellViewModelOu
 
   public var inputs: ProjectPamphletSubpageCellViewModelInputs { return self }
   public var outputs: ProjectPamphletSubpageCellViewModelOutputs { return self }
+}
+
+private func countLabelTextForLiveStream(liveStream: Project.LiveStream) -> String {
+  if liveStream.isLiveNow {
+    return "Watch live"
+  }
+
+  let now = NSDate()
+  let liveStreamStartDate = NSDate(timeIntervalSince1970: liveStream.startDate)
+
+  if now.earlierDate(liveStreamStartDate) == liveStreamStartDate {
+    return "Replay"
+  }
+
+  let components = NSCalendar.currentCalendar()
+    .components([.Day, .Hour, .Minute, .Second],
+                fromDate: now,
+                toDate: liveStreamStartDate,
+                options: [])
+
+  return ordinalStringForComponents(components)
+}
+
+private func ordinalStringForComponents(components: NSDateComponents) -> String {
+  var ordinal = ""
+
+  if components.day > 0 {
+    ordinal = "\(components.day) day\(components.day > 1 ? "s" : "")"
+  }
+  else if components.hour > 0 {
+    ordinal = "\(components.hour) hour\(components.hour > 1 ? "s" : "")"
+  }
+  else if components.minute > 0 {
+    ordinal = "\(components.minute) minute\(components.minute > 1 ? "s" : "")"
+  }
+  else if components.second > 0 {
+    ordinal = "\(components.second) second\(components.second > 1 ? "s" : "")"
+  }
+
+  return "in \(ordinal)"
 }
 
 public enum ProjectPamphletSubpageCellPosition {

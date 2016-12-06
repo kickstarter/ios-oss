@@ -31,6 +31,7 @@ internal final class LiveStreamCountdownViewController: UIViewController {
   @IBOutlet private weak var subscribeButton: UIButton!
 
   private let viewModel: LiveStreamCountdownViewModelType = LiveStreamCountdownViewModel()
+  private let eventDetailsViewModel: LiveStreamEventDetailsViewModelType = LiveStreamEventDetailsViewModel()
   private var timerProducer: Disposable?
 
   internal static func configuredWith(project project: Project)
@@ -38,6 +39,8 @@ internal final class LiveStreamCountdownViewController: UIViewController {
 
       let vc = Storyboard.LiveStream.instantiate(LiveStreamCountdownViewController)
       vc.viewModel.inputs.configureWith(project: project, now: NSDate())
+      vc.eventDetailsViewModel.inputs.configureWith(project: project, event: nil)
+      vc.eventDetailsViewModel.inputs.fetchLiveStreamEvent()
       return vc
   }
 
@@ -58,6 +61,7 @@ internal final class LiveStreamCountdownViewController: UIViewController {
     self.navigationItem.rightBarButtonItem = shareBarButtonItem
 
     self.viewModel.inputs.viewDidLoad()
+    self.eventDetailsViewModel.inputs.viewDidLoad()
   }
 
   internal override func bindStyles() {
@@ -130,12 +134,12 @@ internal final class LiveStreamCountdownViewController: UIViewController {
       |> greenBorderContainerButtonStyle
       |> UIButton.lens.imageEdgeInsets .~ UIEdgeInsets(right: -Styles.grid(1))
       |> UIButton.lens.tintColor .~ self.subscribeButton.currentTitleColor
+    
+    self.subscribeButton.semanticContentAttribute = .ForceRightToLeft
 
     self.activityIndicatorView
       |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .Gray
       |> UIActivityIndicatorView.lens.animating .~ true
-
-    self.subscribeButton.semanticContentAttribute = .ForceRightToLeft
   }
 
   internal override func prefersStatusBarHidden() -> Bool {
@@ -185,17 +189,18 @@ internal final class LiveStreamCountdownViewController: UIViewController {
         self?.viewModel.inputs.setNow(date: $0)
     }
 
-    self.introLabel.rac.text = self.viewModel.outputs.introText.observeForUI()
-    self.creatorNameLabel.rac.text = self.viewModel.outputs.creatorName.observeForUI()
-    self.liveStreamTitleLabel.rac.text = self.viewModel.outputs.title.observeForUI()
-    self.liveStreamParagraphLabel.rac.text = self.viewModel.outputs.description.observeForUI()
+    self.introLabel.rac.text = self.eventDetailsViewModel.outputs.introText.observeForUI()
+    self.creatorNameLabel.rac.text = self.eventDetailsViewModel.outputs.creatorName.observeForUI()
+    self.liveStreamTitleLabel.rac.text = self.eventDetailsViewModel.outputs.liveStreamTitle.observeForUI()
+    self.liveStreamParagraphLabel.rac.text = self.eventDetailsViewModel.outputs.liveStreamParagraph
+      .observeForUI()
 
     self.viewModel.outputs.projectImageUrl
       .observeForUI()
       .on(next: { [weak self] image in self?.projectImageView.image = nil })
       .observeNext { [weak self] in self?.projectImageView.af_setImageWithURL($0) }
 
-    self.viewModel.outputs.creatorAvatarUrl
+    self.eventDetailsViewModel.outputs.creatorAvatarUrl
       .observeForUI()
       .on(next: { [weak self] image in self?.creatorAvatarImageView.image = nil })
       .observeNext { [weak self] in self?.creatorAvatarImageView.af_setImageWithURL($0) }
@@ -214,9 +219,9 @@ internal final class LiveStreamCountdownViewController: UIViewController {
     }
 
     self.navigationItem.rac.title = self.viewModel.outputs.viewControllerTitle
-    self.subscribeButton.rac.title = self.viewModel.outputs.subscribeButtonText
+    self.subscribeButton.rac.title = self.eventDetailsViewModel.outputs.subscribeButtonText
 
-    self.viewModel.outputs.subscribeButtonImage
+    self.eventDetailsViewModel.outputs.subscribeButtonImage
       .observeForUI()
       .observeNext { [weak self] in
       self?.subscribeButton.setImage($0, forState: .Normal)
@@ -230,29 +235,30 @@ internal final class LiveStreamCountdownViewController: UIViewController {
         switch $0 {
         case .Success(let event):
           self?.viewModel.inputs.setLiveStreamEvent(event: event)
+          self?.eventDetailsViewModel.inputs.setLiveStreamEvent(event: event)
         case .Failure(let error):
           print(error)
         }
       }
     }
 
-    self.activityIndicatorView.rac.hidden = self.viewModel.outputs.showActivityIndicator
+    self.activityIndicatorView.rac.hidden = self.eventDetailsViewModel.outputs.showActivityIndicator
       .observeForUI()
       .map(negate)
     
-    self.detailsStackView.rac.hidden = self.viewModel.outputs.showActivityIndicator
+    self.detailsStackView.rac.hidden = self.eventDetailsViewModel.outputs.showActivityIndicator
       .observeForUI()
 
-    self.subscribeActivityIndicatorView.rac.hidden = self.viewModel.outputs
+    self.subscribeActivityIndicatorView.rac.hidden = self.eventDetailsViewModel.outputs
       .showSubscribeButtonActivityIndicator
       .observeForUI()
       .map(negate)
 
-    self.subscribeButton.rac.hidden = self.viewModel.outputs
+    self.subscribeButton.rac.hidden = self.eventDetailsViewModel.outputs
       .showSubscribeButtonActivityIndicator
       .observeForUI()
 
-    self.viewModel.outputs.toggleSubscribe
+    self.eventDetailsViewModel.outputs.toggleSubscribe
       .observeForUI()
       .observeNext { //[weak self] in
         //toggle subscribe
@@ -282,6 +288,7 @@ internal final class LiveStreamCountdownViewController: UIViewController {
         ]
       ]
     ]
+    
     let fontDescriptor = UIFont.ksr_title1(size: 24)
       .fontDescriptor()
       .fontDescriptorByAddingAttributes(fontDescriptorAttributes)
@@ -307,6 +314,6 @@ internal final class LiveStreamCountdownViewController: UIViewController {
   }
 
   @IBAction internal func subscribe(sender: UIButton) {
-    self.viewModel.inputs.subscribeButtonTapped()
+    self.eventDetailsViewModel.inputs.subscribeButtonTapped()
   }
 }
