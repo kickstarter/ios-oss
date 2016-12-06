@@ -144,7 +144,9 @@ private func metadataString(forActivityCategory category: Activity.Category,
   case .failure:
     return Strings.Unsuccessfully_Funded()
   case .launch:
-    return isCreatorUser ? Strings.You_Launched() : Strings.Friend_name_launched_a_project(friend_name: friendName)
+    return isCreatorUser
+      ? Strings.You_Launched()
+      : Strings.Friend_name_launched_a_project(friend_name: friendName)
   case .success:
     return Strings.activity_successfully_funded()
   case .suspension:
