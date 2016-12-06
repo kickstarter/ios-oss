@@ -196,7 +196,6 @@ public let postcardStatsSubtitleStyle =
         : .ksr_caption1(size: 12)
     }
     <> UILabel.lens.textColor .~ .ksr_text_navy_500
-    <> UILabel.lens.adjustsFontSizeToFitWidth .~ true
 
 public let postcardStatsTitleStyle =
   UILabel.lens.font .~ .ksr_headline(size: 14)

@@ -12,11 +12,13 @@ internal final class BackingCell: UITableViewCell, ValueCell {
   @IBOutlet private weak var rewardLabel: UILabel!
   @IBOutlet private weak var rootStackView: UIStackView!
 
-  func configureWith(value value: (Backing, Project)) {
+  internal func configureWith(value value: (Backing, Project)) {
     self.viewModel.inputs.configureWith(backing: value.0, project: value.1)
   }
 
   internal override func bindStyles() {
+    super.bindStyles()
+
     self
       |> baseTableViewCellStyle()
       |> BackingCell.lens.contentView.layoutMargins %~~ { layoutMargins, cell in
@@ -26,7 +28,9 @@ internal final class BackingCell: UITableViewCell, ValueCell {
     }
   }
 
-  override func bindViewModel() {
+  internal override func bindViewModel() {
+    super.bindViewModel()
+
     self.pledgedLabel.rac.text = self.viewModel.outputs.pledged
     self.rewardLabel.rac.text = self.viewModel.outputs.reward
     self.deliveryLabel.rac.text = self.viewModel.outputs.delivery

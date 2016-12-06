@@ -49,6 +49,7 @@ internal final class NoRewardCell: UITableViewCell, ValueCell {
       |> UILabel.lens.textColor .~ .ksr_text_navy_700
       |> UILabel.lens.font .~ .ksr_title3(size: 16)
       |> UILabel.lens.text %~ { _ in Strings.Make_a_pledge_without_a_reward() }
+      |> UILabel.lens.numberOfLines .~ 0
 
     self.rootStackView
       |> UIStackView.lens.spacing .~ Styles.grid(3)

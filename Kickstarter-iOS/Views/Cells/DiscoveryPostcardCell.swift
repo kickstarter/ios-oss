@@ -53,7 +53,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
     self.backersSubtitleLabel
       |> postcardStatsSubtitleStyle
       |> UILabel.lens.text %~ { _ in Strings.discovery_baseball_card_stats_backers() }
-
+      |> UILabel.lens.adjustsFontSizeToFitWidth .~ true
     [self.backersSubtitleLabel, self.deadlineSubtitleLabel, self.fundingSubtitleLabel]
       ||> postcardStatsSubtitleStyle
 
@@ -67,9 +67,6 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
 
     self.cardView
       |> dropShadowStyle()
-
-    self.deadlineSubtitleLabel
-      |> postcardStatsSubtitleStyle
 
     self.fundingProgressContainerView
       |> UIView.lens.backgroundColor .~ .ksr_navy_400
@@ -114,7 +111,6 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
 
     self.projectStatsStackView
       |> UIStackView.lens.spacing .~ Styles.grid(4)
-      |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
 
     self.socialAvatarImageView
       |> UIImageView.lens.layer.shouldRasterize .~ true

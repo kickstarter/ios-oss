@@ -16,7 +16,16 @@ internal final class ProfileHeaderView: UICollectionReusableView, ValueCell {
     self.viewModel.inputs.user(user)
   }
 
+  internal override func bindStyles() {
+    super.bindStyles()
+
+    [self.backedProjectsLabel, self.createdProjectsLabel]
+      ||> UILabel.lens.adjustsFontSizeToFitWidth .~ true
+  }
+
   internal override func bindViewModel() {
+    super.bindViewModel()
+
     self.backedProjectsLabel.rac.text = self.viewModel.outputs.backedProjectsCountLabel
     self.createdProjectsLabel.rac.text = self.viewModel.outputs.createdProjectsCountLabel
     self.createdProjectsLabel.rac.hidden = self.viewModel.outputs.createdProjectsLabelHidden
