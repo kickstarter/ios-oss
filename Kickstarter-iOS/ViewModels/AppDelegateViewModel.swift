@@ -447,9 +447,7 @@ AppDelegateViewModelOutputs {
       )
       .map { _ in
         let mainBundle = AppEnvironment.current.mainBundle
-        let appIdentifier = mainBundle.isRelease
-          ? HockeyConfigData.releaseAppIdentifier
-          : HockeyConfigData.betaAppIdentifier
+        let appIdentifier = mainBundle.isRelease ? Secrets.HockeyAppId.production : Secrets.HockeyAppId.beta
 
         return HockeyConfigData(
           appIdentifier: appIdentifier,

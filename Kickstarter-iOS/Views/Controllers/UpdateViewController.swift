@@ -83,7 +83,14 @@ internal final class UpdateViewController: WebViewController {
 
   private func goToComments(forUpdate update: Update) {
     let vc = CommentsViewController.configuredWith(update: update)
-    self.navigationController?.pushViewController(vc, animated: true)
+
+    if self.traitCollection.userInterfaceIdiom == .Pad {
+      let nav = UINavigationController(rootViewController: vc)
+      nav.modalPresentationStyle = UIModalPresentationStyle.FormSheet
+      self.presentViewController(nav, animated: true, completion: nil)
+    } else {
+      self.navigationController?.pushViewController(vc, animated: true)
+    }
   }
 
   private func goTo(project project: Project, refTag: RefTag) {
