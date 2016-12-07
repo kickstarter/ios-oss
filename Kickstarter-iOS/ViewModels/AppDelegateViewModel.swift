@@ -11,9 +11,6 @@ public struct HockeyConfigData {
   public let disableUpdates: Bool
   public let userId: String
   public let userName: String
-
-  public static let releaseAppIdentifier = "***REMOVED***"
-  public static let betaAppIdentifier = "***REMOVED***"
 }
 
 extension HockeyConfigData: Equatable {}
