@@ -33,26 +33,26 @@
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cosmic-surgery" translatesAutoresizingMaskIntoConstraints="NO" id="a69-hw-39E" userLabel="Project image">
                                             <rect key="frame" x="8" y="8" width="384" height="197"/>
                                         </imageView>
-                                        <view alpha="0.95999999999999996" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xZe-M3-UVc" userLabel="Text Background View">
-                                            <rect key="frame" x="8" y="106" width="384" height="98.5"/>
+                                        <view alpha="0.95999999999999996" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xZe-M3-UVc" userLabel="Text Background View">
+                                            <rect key="frame" x="8" y="-255" width="384" height="460"/>
                                             <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="YhF-yP-wuS">
-                                                    <rect key="frame" x="8" y="8" width="368" height="83"/>
+                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="YhF-yP-wuS">
+                                                    <rect key="frame" x="8" y="8" width="368" height="58"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" misplaced="YES" text="Bjork Swan Dress was successfully funded!" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2bd-l0-V3a" userLabel="Project name">
-                                                            <rect key="frame" x="0.0" y="0.0" width="368" height="52"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalCompressionResistancePriority="1000" misplaced="YES" text="Bjork Swan Dress " lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2bd-l0-V3a" userLabel="Project name">
+                                                            <rect key="frame" x="0.0" y="0.0" width="368" height="26"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
                                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" alignment="center" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="CGg-rb-rXg" userLabel="Funding Stack View">
-                                                            <rect key="frame" x="0.0" y="58" width="368" height="26"/>
+                                                        <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" alignment="center" spacing="18" translatesAutoresizingMaskIntoConstraints="NO" id="CGg-rb-rXg" userLabel="Funding Stack View">
+                                                            <rect key="frame" x="0.0" y="38" width="368" height="21"/>
                                                             <subviews>
                                                                 <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OZd-cW-cLB">
-                                                                    <rect key="frame" x="0.0" y="12" width="93" height="2"/>
+                                                                    <rect key="frame" x="0.0" y="10" width="71" height="2"/>
                                                                     <subviews>
                                                                         <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FPQ-gl-gFU">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="92.5" height="2"/>
+                                                                            <rect key="frame" x="0.0" y="0.0" width="70.5" height="2"/>
                                                                             <color key="backgroundColor" red="0.1450980392" green="0.79607843140000001" blue="0.40784313729999999" alpha="1" colorSpace="calibratedRGB"/>
                                                                         </view>
                                                                     </subviews>
@@ -66,7 +66,7 @@
                                                                     </constraints>
                                                                 </view>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" horizontalCompressionResistancePriority="1000" misplaced="YES" text="120% funded" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jH5-2y-qF0">
-                                                                    <rect key="frame" x="105" y="3" width="263" height="21"/>
+                                                                    <rect key="frame" x="89" y="0.0" width="279" height="21"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                     <nil key="highlightedColor"/>
@@ -113,7 +113,7 @@
                                         <constraint firstItem="AX7-E6-u6H" firstAttribute="top" secondItem="soh-SV-0mP" secondAttribute="topMargin" constant="-12" id="kff-2A-Oi8"/>
                                         <constraint firstItem="ENh-bG-4l9" firstAttribute="leading" secondItem="AX7-E6-u6H" secondAttribute="leading" constant="6" id="np9-up-eu2"/>
                                         <constraint firstItem="a69-hw-39E" firstAttribute="trailing" secondItem="XOw-uw-7h5" secondAttribute="trailing" id="rdT-Kg-uHP"/>
-                                        <constraint firstItem="xZe-M3-UVc" firstAttribute="height" secondItem="a69-hw-39E" secondAttribute="height" multiplier="1:2" id="vkq-SI-Glj"/>
+                                        <constraint firstItem="xZe-M3-UVc" firstAttribute="height" relation="greaterThanOrEqual" secondItem="a69-hw-39E" secondAttribute="height" multiplier="0.3" id="vkq-SI-Glj"/>
                                         <constraint firstItem="xZe-M3-UVc" firstAttribute="leading" secondItem="XOw-uw-7h5" secondAttribute="leading" id="xWz-ct-H6k"/>
                                     </constraints>
                                 </tableViewCellContentView>

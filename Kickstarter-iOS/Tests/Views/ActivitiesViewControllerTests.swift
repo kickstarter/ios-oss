@@ -5,8 +5,11 @@ import Prelude
 import Result
 import XCTest
 
-internal final class ActivitiesViewControllerTests: TestCase {
+private let creator = .template |> User.lens.avatar.small .~ ""
+private let survey = .template |> SurveyResponse.lens.project .~
+  (.cosmicSurgery |> Project.lens.creator .~ creator)
 
+internal final class ActivitiesViewControllerTests: TestCase {
   override func setUp() {
     super.setUp()
     AppEnvironment.pushEnvironment(mainBundle: NSBundle.framework)
@@ -32,14 +35,21 @@ internal final class ActivitiesViewControllerTests: TestCase {
 
     let update = .template
       |> Activity.lens.id .~ 51
-      |> Activity.lens.project .~ .cosmicSurgery
+      |> Activity.lens.project .~ (.cosmicSurgery
+        |> Project.lens.photo.med .~ ""
+        |> Project.lens.photo.full .~ ""
+      )
       |> Activity.lens.update .~ .template
       |> Activity.lens.createdAt .~ daysAgoDate
       |> Activity.lens.category .~ .update
 
     let backing = .template
       |> Activity.lens.id .~ 62
-      |> Activity.lens.project .~ (.cosmicSurgery |> Project.lens.stats.fundingProgress .~ 0.88)
+      |> Activity.lens.project .~ (.cosmicSurgery
+        |> Project.lens.photo.med .~ ""
+        |> Project.lens.photo.full .~ ""
+        |> Project.lens.stats.fundingProgress .~ 0.88
+      )
       |> Activity.lens.user .~ (.template
         |> User.lens.name .~ "Judith Light"
         |> User.lens.avatar.small .~ ""
@@ -49,6 +59,8 @@ internal final class ActivitiesViewControllerTests: TestCase {
     let launch = .template
       |> Activity.lens.id .~ 73
       |> Activity.lens.project .~ (.cosmicSurgery
+        |> Project.lens.photo.med .~ ""
+        |> Project.lens.photo.full .~ ""
         |> Project.lens.name .~ "A Very Important Project About Kittens and Puppies"
         |> Project.lens.stats.fundingProgress .~ 0
       )
@@ -66,6 +78,8 @@ internal final class ActivitiesViewControllerTests: TestCase {
     let success = .template
       |> Activity.lens.id .~ 45
       |> Activity.lens.project .~ (.cosmicSurgery
+        |> Project.lens.photo.med .~ ""
+        |> Project.lens.photo.full .~ ""
         |> Project.lens.name .~ "Help Me Transform This Pile of Wood"
         |> Project.lens.stats.fundingProgress .~ 1.4
       )
@@ -74,6 +88,8 @@ internal final class ActivitiesViewControllerTests: TestCase {
     let failure = .template
       |> Activity.lens.id .~ 36
       |> Activity.lens.project .~ (.cosmicSurgery
+        |> Project.lens.photo.med .~ ""
+        |> Project.lens.photo.full .~ ""
         |> Project.lens.name .~ "A Mildly Important Project About Arachnids and Worms"
         |> Project.lens.stats.fundingProgress .~ 0.6
       )
@@ -82,6 +98,8 @@ internal final class ActivitiesViewControllerTests: TestCase {
     let canceled = .template
       |> Activity.lens.id .~ 27
       |> Activity.lens.project .~ (.cosmicSurgery
+        |> Project.lens.photo.med .~ ""
+        |> Project.lens.photo.full .~ ""
         |> Project.lens.name .~ "A Not Very Important Project About Pickles"
         |> Project.lens.stats.fundingProgress .~ 0.1
       )
@@ -90,6 +108,8 @@ internal final class ActivitiesViewControllerTests: TestCase {
     let suspended = .template
       |> Activity.lens.id .~ 18
       |> Activity.lens.project .~ (.cosmicSurgery
+        |> Project.lens.photo.med .~ ""
+        |> Project.lens.photo.full .~ ""
         |> Project.lens.name .~ "A Questionably Important Project About Rubber Bands"
         |> Project.lens.stats.fundingProgress .~ 0.04
       )
@@ -100,7 +120,7 @@ internal final class ActivitiesViewControllerTests: TestCase {
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
       withEnvironment(
         apiService: MockService(fetchActivitiesResponse: activities,
-        fetchUnansweredSurveyResponsesResponse: [.template |> SurveyResponse.lens.project .~ .cosmicSurgery]),
+        fetchUnansweredSurveyResponsesResponse: [survey]),
         currentUser: .template |> User.lens.facebookConnected .~ true,
         language: language,
         userDefaults: MockKeyValueStore()
@@ -118,6 +138,7 @@ internal final class ActivitiesViewControllerTests: TestCase {
 
   func testMultipleSurveys_NotFacebookConnected_YouLaunched() {
     let you = .template
+      |> User.lens.avatar.small .~ ""
       |> User.lens.id .~ 355
       |> User.lens.name .~ "Gina B"
 
@@ -125,19 +146,21 @@ internal final class ActivitiesViewControllerTests: TestCase {
       |> Activity.lens.id .~ 73
       |> Activity.lens.project .~ (.cosmicSurgery
         |> Project.lens.creator .~ you
+        |> Project.lens.photo.med .~ ""
+        |> Project.lens.photo.full .~ ""
         |> Project.lens.name .~ "A Very Very Important Project About Kittens and Puppies"
         |> Project.lens.stats.fundingProgress .~ 0.01
       )
       |> Activity.lens.user .~ you
       |> Activity.lens.category .~ .launch
 
-    let survey1 = .template |> SurveyResponse.lens.project .~ .cosmicSurgery
-    let survey2 = .template |> SurveyResponse.lens.project .~ .anomalisa
+    let survey2 = .template |> SurveyResponse.lens.project .~ (.anomalisa
+      |> Project.lens.creator .~ creator)
 
     combos(Language.allLanguages, [Device.phone4_7inch]).forEach { language, device in
       withEnvironment(
         apiService: MockService(fetchActivitiesResponse: [launch],
-          fetchUnansweredSurveyResponsesResponse: [survey1, survey2]),
+          fetchUnansweredSurveyResponsesResponse: [survey, survey2]),
         currentUser: you,
         language: language,
         userDefaults: MockKeyValueStore()
