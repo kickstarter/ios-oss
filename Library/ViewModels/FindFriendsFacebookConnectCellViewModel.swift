@@ -126,9 +126,7 @@ public final class FindFriendsFacebookConnectCellViewModel: FindFriendsFacebookC
 
     let source = configureWithProperty.signal
 
-    self.hideCloseButton = source.map {
-      $0 == FriendsSource.findFriends
-    }
+    self.hideCloseButton = source.map { $0 == FriendsSource.findFriends }
 
     source
       .takeWhen(self.showErrorAlert)

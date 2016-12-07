@@ -210,17 +210,19 @@ ActivitiesViewModelOutputs {
       .ignoreNil()
       .map { ($0, .activity) }
 
-    self.unansweredSurveys = Signal.merge(
+    let surveyEvents = Signal.merge(
       self.viewWillAppearProperty.signal.ignoreNil().filter(isFalse).ignoreValues(),
       self.surveyResponseViewControllerDismissedProperty.signal
       )
       .switchMap {
         AppEnvironment.current.apiService.fetchUnansweredSurveyResponses()
-          .demoteErrors()
+          .materialize()
     }
 
+    self.unansweredSurveys = surveyEvents.values()
+
     self.showFindFriendsSection = currentUser
-      .takeWhen(self.unansweredSurveys)
+      .takeWhen(surveyEvents)
       .map {
         (
           .activity,
@@ -231,7 +233,7 @@ ActivitiesViewModelOutputs {
       }
 
     self.showFacebookConnectSection = currentUser
-      .takeWhen(self.unansweredSurveys)
+      .takeWhen(surveyEvents)
       .map {
         (
           .activity,
