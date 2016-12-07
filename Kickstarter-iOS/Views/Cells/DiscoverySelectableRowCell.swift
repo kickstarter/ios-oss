@@ -30,6 +30,7 @@ internal final class DiscoverySelectableRowCell: UITableViewCell, ValueCell {
     self.filterTitleLabel
       |> discoveryFilterLabelStyle(categoryId: value.categoryId,
                                                        isSelected: value.row.isSelected)
+      |> UILabel.lens.numberOfLines .~ 0
 
     self.isSelected = value.row.isSelected
   }

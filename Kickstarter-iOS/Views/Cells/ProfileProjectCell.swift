@@ -25,6 +25,9 @@ internal final class ProfileProjectCell: UICollectionViewCell, ValueCell {
       |> UICollectionViewCell.lens.isAccessibilityElement .~ true
       |> UICollectionViewCell.lens.accessibilityHint %~ { _ in Strings.Opens_project() }
       |> UICollectionViewCell.lens.accessibilityTraits .~ UIAccessibilityTraitButton
+
+    self.stateLabel
+      |> UILabel.lens.numberOfLines .~ 0
   }
 
   internal override func bindViewModel() {

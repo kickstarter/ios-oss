@@ -92,6 +92,10 @@ internal final class ProjectActivityBackingCell: UITableViewCell, ValueCell {
 
     self.rewardLabel.rac.hidden = self.viewModel.outputs.rewardLabelIsHidden
 
+    self.sendMessageButton.rac.hidden = self.viewModel.outputs.sendMessageButtonAndBulletSeparatorHidden
+
+    self.bulletSeparatorView.rac.hidden = self.viewModel.outputs.sendMessageButtonAndBulletSeparatorHidden
+
     self.viewModel.outputs.reward.observeForUI()
       .observeNext { [weak rewardLabel] title in
         guard let rewardLabel = rewardLabel else { return }

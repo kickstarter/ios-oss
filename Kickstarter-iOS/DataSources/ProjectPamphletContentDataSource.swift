@@ -117,11 +117,11 @@ private func isMainReward(reward reward: Reward, project: Project) -> Bool {
   // Don't show the reward the user is backing
   guard .Some(reward.id) != project.personalization.backing?.rewardId else { return false }
   // Show all rewards when the project isn't live
-  guard project.state != .live else { return true }
+  guard project.state == .live else { return true }
 
   let now = AppEnvironment.current.dateType.init().timeIntervalSince1970
   let startsAt = reward.startsAt ?? 0
-  let endsAt = reward.endsAt ?? now
+  let endsAt = reward.endsAt ?? project.dates.deadline
 
   return startsAt <= now && now <= endsAt
 }

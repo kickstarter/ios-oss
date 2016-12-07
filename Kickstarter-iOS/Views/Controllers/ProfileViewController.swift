@@ -34,6 +34,8 @@ internal final class ProfileViewController: UICollectionViewController {
   }
 
   internal override func bindViewModel() {
+    super.bindViewModel()
+
     self.viewModel.outputs.backedProjects
       .observeForControllerAction()
       .observeNext { [weak self] ps in
@@ -74,7 +76,7 @@ internal final class ProfileViewController: UICollectionViewController {
     }
   }
 
-  override func bindStyles() {
+  internal override func bindStyles() {
     super.bindStyles()
 
     self.messagesButton

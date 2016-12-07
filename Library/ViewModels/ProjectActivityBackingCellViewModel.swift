@@ -55,6 +55,9 @@ public protocol ProjectActivityBackingCellViewModelOutputs {
   /// Emits whether the reward label should be hidden.
   var rewardLabelIsHidden: Signal<Bool, NoError> { get }
 
+  /// Emits whether the send message button should be hidden.
+  var sendMessageButtonAndBulletSeparatorHidden: Signal<Bool, NoError> { get }
+
   /// Emits the activity's title.
   var title: Signal<String, NoError> { get }
 }
@@ -73,8 +76,8 @@ ProjectActivityBackingCellViewModelInputs, ProjectActivityBackingCellViewModelOu
     let activity = activityAndProject.map(first)
     let title = activity.map(title(activity:))
 
-    self.backerImageURL = activity
-      .map { ($0.user?.avatar.medium).flatMap(NSURL.init) }
+    self.backerImageURL = activityAndProject
+      .map { activity, _ in ( activity.user?.avatar.medium).flatMap(NSURL.init) }
 
     self.cellAccessibilityLabel = title.map { title in title.htmlStripped() ?? "" }
 
@@ -129,6 +132,9 @@ ProjectActivityBackingCellViewModelInputs, ProjectActivityBackingCellViewModelOu
 
     self.rewardLabelIsHidden = rewardLabelIsHidden
 
+    self.sendMessageButtonAndBulletSeparatorHidden = activityAndProject
+      .map { .Some($1.creator) != AppEnvironment.current.currentUser }
+
     self.title = title
 
     self.pledgeDetailsSeparatorStackViewIsHidden = zip(
@@ -168,6 +174,7 @@ ProjectActivityBackingCellViewModelInputs, ProjectActivityBackingCellViewModelOu
   public let previousPledgeAmountLabelIsHidden: Signal<Bool, NoError>
   public let reward: Signal<String, NoError>
   public let rewardLabelIsHidden: Signal<Bool, NoError>
+  public var sendMessageButtonAndBulletSeparatorHidden: Signal<Bool, NoError>
   public let title: Signal<String, NoError>
 
   public var inputs: ProjectActivityBackingCellViewModelInputs { return self }

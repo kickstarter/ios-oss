@@ -11,9 +11,6 @@ DIST_BRANCH = $(RELEASE)-dist
 ifeq ($(PLATFORM),iOS)
 	DESTINATION ?= 'platform=iOS Simulator,name=iPhone 6,OS=9.3'
 endif
-ifeq ($(PLATFORM),tvOS)
-	DESTINATION ?= 'platform=tvOS Simulator,name=Apple TV 1080p'
-endif
 
 XCPRETTY :=
 ifneq ($(CIRCLE_ARTIFACTS),)
@@ -29,8 +26,6 @@ build: dependencies
 test-all:
 	PLATFORM=iOS $(MAKE) test
 	PLATFORM=iOS TARGET=Library $(MAKE) test
-	PLATFORM=tvOS $(MAKE) test
-	PLATFORM=tvOS TARGET=Library $(MAKE) test
 
 test: dependencies
 	$(XCODEBUILD) test $(BUILD_FLAGS) $(XCPRETTY)

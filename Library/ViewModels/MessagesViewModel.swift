@@ -68,17 +68,14 @@ MessagesViewModelOutputs {
       .map { AppEnvironment.current.currentUser }
       .ignoreNil()
 
-    self.project = configData.map { $0.left?.project ?? $0.right?.project }
-      .ignoreNil()
-
-    self.backingAndProject = combineLatest(configBacking, self.project, currentUser)
-      .switchMap { (backing, project, user) -> SignalProducer<(Backing, Project), NoError> in
-        if let backing = backing {
-          return SignalProducer(value: (backing, project))
+    self.project = configData
+      .map {
+        switch $0 {
+        case let .left(thread):
+          return thread.project
+        case let .right((project, _)):
+          return project
         }
-        return AppEnvironment.current.apiService.fetchBacking(forProject: project, forUser: user)
-          .map { ($0, project) }
-          .demoteErrors()
     }
 
     let backingOrThread = Signal.merge(
@@ -102,6 +99,25 @@ MessagesViewModelOutputs {
         }
     }
 
+    let participant = messageThreadEnvelope.map { $0.messageThread.participant }
+
+    self.backingAndProject = combineLatest(configBacking, self.project, participant, currentUser)
+      .switchMap { value -> SignalProducer<(Backing, Project), NoError> in
+        let (backing, project, participant, currentUser) = value
+
+        if let backing = backing {
+          return SignalProducer(value: (backing, project))
+        }
+
+        let request = project.personalization.isBacking == .Some(true)
+          ? AppEnvironment.current.apiService.fetchBacking(forProject: project, forUser: currentUser)
+          : AppEnvironment.current.apiService.fetchBacking(forProject: project, forUser: participant)
+
+        return request
+          .map { ($0, project) }
+          .demoteErrors()
+    }
+
     self.messages = messageThreadEnvelope
       .map { $0.messages }
       .sort { $0.id > $1.id }
@@ -110,8 +126,13 @@ MessagesViewModelOutputs {
       .map { ($0.messageThread, .messages) }
       .takeWhen(self.replyButtonPressedProperty.signal)
 
-    self.goToBacking = combineLatest(project, currentUser)
+    self.goToBacking = combineLatest(messageThreadEnvelope, currentUser)
       .takeWhen(self.backingInfoPressedProperty.signal)
+      .map { env, currentUser in
+        env.messageThread.project.personalization.isBacking == .Some(true)
+          ? (env.messageThread.project, currentUser)
+          : (env.messageThread.project, env.messageThread.participant)
+    }
 
     self.goToProject = self.project.takeWhen(self.projectBannerTappedProperty.signal)
       .map { ($0, .messageThread) }

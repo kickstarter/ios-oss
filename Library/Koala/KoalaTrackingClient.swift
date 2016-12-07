@@ -1,3 +1,4 @@
+import KsApi
 import Prelude
 import Result
 
@@ -19,9 +20,9 @@ public final class KoalaTrackingClient: TrackingClientType {
     var base: String {
       switch self {
       case .staging:
-        return "https://***REMOVED***/native/track"
+        return Secrets.KoalaEndpoint.staging
       case .production:
-        return "https://***REMOVED***/native/track"
+        return Secrets.KoalaEndpoint.production
       }
     }
   }

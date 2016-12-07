@@ -22,7 +22,7 @@ public let updateBodyTextViewStyle = UITextView.lens.backgroundColor .~ .clearCo
   <> UITextView.lens.tintColor .~ .ksr_green_700
 
 public let updateBodyPlaceholderTextViewStyle = updateBodyTextViewStyle
-  <> UITextView.lens.text %~ { _ in "Share an update about your project…" }
+  <> UITextView.lens.text %~ { _ in Strings.Share_an_update_about_your_project() }
   <> UITextView.lens.textColor .~ .ksr_text_navy_500
   <> UITextView.lens.userInteractionEnabled .~ false
 
@@ -33,7 +33,7 @@ public let updateBackersOnlyButtonStyle =
       image(named: "update-draft-visibility-backers-only-icon")
     }
     <> UIButton.lens.tintColor .~ .ksr_navy_600
-    <> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.dashboard_post_update_compose_public_label() }
+    <> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.Add_attachments() }
     <> UIButton.lens.title(forState: .Selected) %~ { _ in
       Strings.dashboard_post_update_compose_private_label()
     }
@@ -55,7 +55,9 @@ public let updateAddAttachmentButtonStyle =
 
 public let updateAddAttachmentExpandedButtonStyle =
   UIButton.lens.tintColor .~ .ksr_text_navy_500
-    <> UIButton.lens.title(forState: .Normal) %~ { _ in "Add attachments…" }
+    <> UIButton.lens.title(forState: .Normal) %~ { _ in
+      Strings.dashboard_post_update_compose_attachment_buttons_add_attachment()
+    }
     <> UIButton.lens.titleLabel.font %~ { _ in .ksr_caption1() }
 
 public let updateAttachmentsScrollViewStyle =

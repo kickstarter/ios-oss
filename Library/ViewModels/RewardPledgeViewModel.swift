@@ -670,7 +670,8 @@ RewardPledgeViewModelOutputs {
       self.applePayButtonTappedProperty.signal.mapConst(.applePay),
       self.differentPaymentMethodButtonTappedProperty.signal.mapConst(.paymentMethods),
       self.updatePledgeButtonTappedProperty.signal.mapConst(.updatePledge),
-      self.changePaymentMethodButtonTappedProperty.signal.mapConst(.changePaymentMethod)
+      self.changePaymentMethodButtonTappedProperty.signal.mapConst(.changePaymentMethod),
+      self.cancelPledgeButtonTappedProperty.signal.mapConst(.cancel)
     )
 
     projectAndRewardAndPledgeContext

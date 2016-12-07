@@ -424,7 +424,7 @@ internal final class SettingsViewController: UIViewController {
     let device = UIDevice.currentDevice()
 
     let controller = MFMailComposeViewController()
-    controller.setToRecipients(["***REMOVED***"])
+    controller.setToRecipients([Secrets.fieldReportEmail])
     controller.setSubject("Field report: ")
     controller.setMessageBody(
       "\(userName) | \(userId) | \(version) | \(shortVersion) | " +
