@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="16A313a" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
@@ -296,7 +296,7 @@
                                                 <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="x7P-p0-T4F" userLabel="Project Stack View">
                                                     <rect key="frame" x="0.0" y="0.0" width="364" height="432"/>
                                                     <subviews>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="world-of-tomorrow" translatesAutoresizingMaskIntoConstraints="NO" id="vUL-dU-47D">
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cosmic-surgery" translatesAutoresizingMaskIntoConstraints="NO" id="vUL-dU-47D">
                                                             <rect key="frame" x="0.0" y="0.0" width="364" height="205"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" secondItem="vUL-dU-47D" secondAttribute="width" multiplier="9:16" id="bQM-PQ-9f2"/>
@@ -429,10 +429,10 @@
                                                 </stackView>
                                             </subviews>
                                         </stackView>
-                                        <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KNM-IW-eI1">
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KNM-IW-eI1">
                                             <rect key="frame" x="30" y="-83" width="329.5" height="201"/>
                                             <subviews>
-                                                <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8v0-Ix-KPn">
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8v0-Ix-KPn">
                                                     <rect key="frame" x="0.0" y="0.0" width="329.5" height="201"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </view>
@@ -522,10 +522,10 @@
         </scene>
     </scenes>
     <resources>
+        <image name="cosmic-surgery" width="800" height="600"/>
         <image name="kickstarter-logo" width="149" height="29"/>
         <image name="metadata-potd" width="14" height="12"/>
         <image name="postcard-checkmark" width="12" height="10"/>
-        <image name="world-of-tomorrow" width="800" height="600"/>
         <image name="zack-sears" width="160" height="160"/>
     </resources>
 </document>

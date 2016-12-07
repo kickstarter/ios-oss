@@ -104,12 +104,20 @@ internal final class MessagesViewModelTests: TestCase {
     self.goToRefTag.assertValues([.messageThread])
   }
 
-  func testGoToBacking() {
-    let project = Project.template |> Project.lens.id .~ 42
+  func testGoToBacking_CurrentUserIsBacker() {
+    let project = Project.template
+      |> Project.lens.id .~ 42
+      |> Project.lens.personalization.isBacking .~ true
     let backing = Backing.template
-    let user = User.template
+    let currentUser = User.template
+      |> User.lens.id .~ 42
+    let messageThread = .template
+      |> MessageThread.lens.project .~ project
+      |> MessageThread.lens.participant .~ .template
 
-    withEnvironment(currentUser: user) {
+    let apiService = MockService(fetchMessageThreadResponse: messageThread)
+
+    withEnvironment(apiService: apiService, currentUser: currentUser) {
       self.vm.inputs.configureWith(data: .right((project: project, backing: backing)))
 
       self.vm.inputs.viewDidLoad()
@@ -120,7 +128,34 @@ internal final class MessagesViewModelTests: TestCase {
       self.vm.inputs.backingInfoPressed()
 
       self.goToBackingProject.assertValues([project])
-      self.goToBackingUser.assertValues([user])
+      self.goToBackingUser.assertValues([currentUser])
+    }
+  }
+
+  func testGoToBacking_CurrentUserIsNotBacker() {
+    let project = Project.template
+      |> Project.lens.id .~ 42
+    let backing = Backing.template
+    let currentUser = User.template
+      |> User.lens.id .~ 42
+    let messageThread = .template
+      |> MessageThread.lens.project .~ project
+      |> MessageThread.lens.participant .~ .template
+
+    let apiService = MockService(fetchMessageThreadResponse: messageThread)
+
+    withEnvironment(apiService: apiService, currentUser: currentUser) {
+      self.vm.inputs.configureWith(data: .right((project: project, backing: backing)))
+
+      self.vm.inputs.viewDidLoad()
+
+      self.goToBackingProject.assertDidNotEmitValue()
+      self.goToBackingUser.assertDidNotEmitValue()
+
+      self.vm.inputs.backingInfoPressed()
+
+      self.goToBackingProject.assertValues([project])
+      self.goToBackingUser.assertValues([messageThread.participant])
     }
   }
 

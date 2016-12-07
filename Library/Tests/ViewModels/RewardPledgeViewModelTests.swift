@@ -358,6 +358,32 @@ internal final class RewardPledgeViewModelTests: TestCase {
     self.fulfillmentAndShippingFooterStackViewHidden.assertValues([true])
   }
 
+  func testCancelPledge() {
+    let reward = Reward.template
+    let project = .template
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.reward .~ reward
+    )
+
+    self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
+    self.vm.inputs.viewDidLoad()
+    self.scheduler.advance()
+
+    self.cancelPledgeButtonHidden.assertValues([false])
+
+    self.vm.inputs.cancelPledgeButtonTapped()
+
+    XCTAssertEqual(["Reward Checkout", "Selected Reward", "Clicked Reward Pledge Button"],
+                   self.trackingClient.events)
+    XCTAssertEqual(
+      [nil, nil, "cancel"],
+      self.trackingClient.properties(forKey: "type", as: String.self)
+    )
+
+    self.goToCheckoutProject.assertValues([project])
+  }
+
   func testGoToPaymentAuthorization_NoShipping_NoRewardTitle() {
     let project = Project.template
     let reward = Reward.template
