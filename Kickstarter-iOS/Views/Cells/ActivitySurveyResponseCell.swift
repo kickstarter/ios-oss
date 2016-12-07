@@ -63,7 +63,7 @@ internal final class ActivitySurveyResponseCell: UITableViewCell, ValueCell {
       |> UIButton.lens.image(forState: .Normal) %~ { _ in Library.image(named: "respond-icon") }
       |> UIButton.lens.contentEdgeInsets .~ .init(top: Styles.grid(3), left: 0, bottom: Styles.grid(1),
                                                   right: 0)
-    
+
     self.rewardSurveysCountLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 13)
       |> UILabel.lens.textColor .~ .ksr_green_700
