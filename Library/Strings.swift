@@ -33,7 +33,7 @@ public enum Strings {
 
    - **es**: "Agregar anexos …"
    - **de**: "Anhänge hinzufügen ..."
-   - **fr**: "Add attachments…"
+   - **fr**: "Ajouter des pièces jointes..."
    - **it**: "Add attachments…"
    - **en**: "Add attachments…"
   */
@@ -787,7 +787,7 @@ backers"
 
    - **es**: "<b>%{creator_name}</b> necesita un par de datos para entregarte tu recompensa de <b>%{project_name}</b>."
    - **de**: "<b>%{creator_name}</b> benötigt einige Angaben, um dir deine Belohnung für <b>%{project_name}</b> zustellen zu können."
-   - **fr**: "<b>%{creator_name}</b> needs some information to deliver your reward for <b>%{project_name}</b>."
+   - **fr**: "<b>%{creator_name}</b> a besoin de quelques informations pour vous envoyer votre récompense pour le projet <b>%{project_name}</b>."
    - **it**: "<b>%{creator_name}</b> needs some information to deliver your reward for <b>%{project_name}</b>."
    - **en**: "<b>%{creator_name}</b> needs some information to deliver your reward for <b>%{project_name}</b>."
   */
@@ -1280,7 +1280,7 @@ backers"
 
    - **es**: "<b>%{friend_name}</b> patrocinó un proyecto de <i>Arte</i>."
    - **de**: "<b>%{friend_name}</b> hat ein <i>Kunst-Projekt</i> unterstützt."
-   - **fr**: "<b>%{friend_name}</b> backed an <i>Art</i> project."
+   - **fr**: "<b>%{friend_name}</b> a soutenu un projet <i>artistique</i>."
    - **it**: "<b>%{friend_name}</b> backed an <i>Art</i> project."
    - **en**: "<b>%{friend_name}</b> backed an <i>Art</i> project."
   */
@@ -1297,7 +1297,7 @@ backers"
 
    - **es**: "<b>%{friend_name}</b> patrocinó un proyecto de <i>Comics</i>."
    - **de**: "<b>%{friend_name}</b> hat ein <i>Comics-Projekt</i> unterstützt."
-   - **fr**: "<b>%{friend_name}</b> backed a <i>Comics</i> project."
+   - **fr**: "<b>%{friend_name}</b> a soutenu un projet de <i>BD</i>."
    - **it**: "<b>%{friend_name}</b> backed a <i>Comics</i> project."
    - **en**: "<b>%{friend_name}</b> backed a <i>Comics</i> project."
   */
@@ -1314,7 +1314,7 @@ backers"
 
    - **es**: "<b>%{friend_name}</b> patrocinó un proyecto de <i>Artesanías</i>."
    - **de**: "<b>%{friend_name}</b> hat ein <i>Kunsthandwerk-Projekt</i> unterstützt."
-   - **fr**: "<b>%{friend_name}</b> backed a <i>Crafts</i> project."
+   - **fr**: "<b>%{friend_name}</b> a soutenu un projet <i>d'artisanat</i>."
    - **it**: "<b>%{friend_name}</b> backed a <i>Crafts</i> project."
    - **en**: "<b>%{friend_name}</b> backed a <i>Crafts</i> project."
   */
@@ -1331,7 +1331,7 @@ backers"
 
    - **es**: "<b>%{friend_name}</b> patrocinó un proyecto de <i>Danza</i>."
    - **de**: "<b>%{friend_name}</b> hat ein <i>Tanz-Projekt</i> unterstützt."
-   - **fr**: "<b>%{friend_name}</b> backed a <i>Dance</i> project."
+   - **fr**: "<b>%{friend_name}</b> a soutenu un projet de <i>danse</i>."
    - **it**: "<b>%{friend_name}</b> backed a <i>Dance</i> project."
    - **en**: "<b>%{friend_name}</b> backed a <i>Dance</i> project."
   */
@@ -1348,7 +1348,7 @@ backers"
 
    - **es**: "<b>%{friend_name}</b> patrocinó un proyecto de <i>Diseño</i>."
    - **de**: "<b>%{friend_name}</b> hat ein <i>Design-Projekt</i> unterstützt."
-   - **fr**: "<b>%{friend_name}</b> backed a <i>Design</i> project."
+   - **fr**: "<b>%{friend_name}</b> a soutenu un projet <i>design</i>."
    - **it**: "<b>%{friend_name}</b> backed a <i>Design</i> project."
    - **en**: "<b>%{friend_name}</b> backed a <i>Design</i> project."
   */
@@ -1365,7 +1365,7 @@ backers"
 
    - **es**: "<b>%{friend_name}</b> patrocinó un proyecto de <i>Moda</i>."
    - **de**: "<b>%{friend_name}</b> hat ein <i>Mode-Projekt</i> unterstützt."
-   - **fr**: "<b>%{friend_name}</b> backed a <i>Fashion</i> project."
+   - **fr**: "<b>%{friend_name}</b> a soutenu un projet de <i>mode</i>."
    - **it**: "<b>%{friend_name}</b> backed a <i>Fashion</i> project."
    - **en**: "<b>%{friend_name}</b> backed a <i>Fashion</i> project."
   */
@@ -1382,7 +1382,7 @@ backers"
 
    - **es**: "<b>%{friend_name}</b> patrocinó un proyecto de <i>Cine & Video</i>."
    - **de**: "<b>%{friend_name}</b> hat ein <i>Film & Video-Projekt</i> unterstützt."
-   - **fr**: "<b>%{friend_name}</b> backed a <i>Film & Video</i> project."
+   - **fr**: "<b>%{friend_name}</b> a soutenu un projet <i>cinéma et vidéo</i>."
    - **it**: "<b>%{friend_name}</b> backed a <i>Film & Video</i> project."
    - **en**: "<b>%{friend_name}</b> backed a <i>Film & Video</i> project."
   */
@@ -1399,7 +1399,7 @@ backers"
 
    - **es**: "<b>%{friend_name}</b> patrocinó un proyecto de <i>Comida</i>."
    - **de**: "<b>%{friend_name}</b> hat ein <i>Essen/Trinken-Projekt</i> unterstützt."
-   - **fr**: "<b>%{friend_name}</b> backed a <i>Food</i> project."
+   - **fr**: "<b>%{friend_name}</b> a soutenu un projet <i>gastronomique</i>."
    - **it**: "<b>%{friend_name}</b> backed a <i>Food</i> project."
    - **en**: "<b>%{friend_name}</b> backed a <i>Food</i> project."
   */
@@ -1416,7 +1416,7 @@ backers"
 
    - **es**: "<b>%{friend_name}</b> patrocinó un proyecto de <i>Juegos</i>."
    - **de**: "<b>%{friend_name}</b> hat ein <i>Spiele-Projekt</i> unterstützt."
-   - **fr**: "<b>%{friend_name}</b> backed a <i>Games</i> project."
+   - **fr**: "<b>%{friend_name}</b> a soutenu un projet de <i>jeu</i>."
    - **it**: "<b>%{friend_name}</b> backed a <i>Games</i> project."
    - **en**: "<b>%{friend_name}</b> backed a <i>Games</i> project."
   */
@@ -1433,7 +1433,7 @@ backers"
 
    - **es**: "<b>%{friend_name}</b> patrocinó un proyecto de <i>Periodismo</i>."
    - **de**: "<b>%{friend_name}</b> hat ein <i>Journalismus-Projekt</i> unterstützt."
-   - **fr**: "<b>%{friend_name}</b> backed a <i>Journalism</i> project."
+   - **fr**: "<b>%{friend_name}</b> a soutenu un projet de <i>journalisme</i>."
    - **it**: "<b>%{friend_name}</b> backed a <i>Journalism</i> project."
    - **en**: "<b>%{friend_name}</b> backed a <i>Journalism</i> project."
   */
@@ -1450,7 +1450,7 @@ backers"
 
    - **es**: "<b>%{friend_name}</b> patrocinó un proyecto de <i>Música</i>."
    - **de**: "<b>%{friend_name}</b> hat ein <i>Musik-Projekt</i> unterstützt."
-   - **fr**: "<b>%{friend_name}</b> backed a <i>Music</i> project."
+   - **fr**: "<b>%{friend_name}</b> a soutenu un projet <i>musical</i>."
    - **it**: "<b>%{friend_name}</b> backed a <i>Music</i> project."
    - **en**: "<b>%{friend_name}</b> backed a <i>Music</i> project."
   */
@@ -1467,7 +1467,7 @@ backers"
 
    - **es**: "<b>%{friend_name}</b> patrocinó un proyecto de <i>Fotografía</i>."
    - **de**: "<b>%{friend_name}</b> hat ein <i>Fotografie-Projekt</i> unterstützt."
-   - **fr**: "<b>%{friend_name}</b> backed a <i>Photography</i> project."
+   - **fr**: "<b>%{friend_name}</b> a soutenu un projet de <i>photographie</i>."
    - **it**: "<b>%{friend_name}</b> backed a <i>Photography</i> project."
    - **en**: "<b>%{friend_name}</b> backed a <i>Photography</i> project."
   */
@@ -1484,7 +1484,7 @@ backers"
 
    - **es**: "<b>%{friend_name}</b> patrocinó un proyecto de <i>Publicaciones</i>."
    - **de**: "<b>%{friend_name}</b> hat ein <i>Publishing-Projekt</i> unterstützt."
-   - **fr**: "<b>%{friend_name}</b> backed a <i>Publishing</i> project."
+   - **fr**: "<b>%{friend_name}</b> a soutenu un projet <i>d'édition</i>."
    - **it**: "<b>%{friend_name}</b> backed a <i>Publishing</i> project."
    - **en**: "<b>%{friend_name}</b> backed a <i>Publishing</i> project."
   */
@@ -1501,7 +1501,7 @@ backers"
 
    - **es**: "<b>%{friend_name}</b> patrocinó un proyecto de <i>Tecnología</i>."
    - **de**: "<b>%{friend_name}</b> hat ein <i>Technologie-Projekt</i> unterstützt."
-   - **fr**: "<b>%{friend_name}</b> backed a <i>Technology</i> project."
+   - **fr**: "<b>%{friend_name}</b> a soutenu un projet de <i>technologie</i>."
    - **it**: "<b>%{friend_name}</b> backed a <i>Technology</i> project."
    - **en**: "<b>%{friend_name}</b> backed a <i>Technology</i> project."
   */
@@ -1518,7 +1518,7 @@ backers"
 
    - **es**: "<b>%{friend_name}</b> patrocinó un proyecto de <i>Teatro</i>."
    - **de**: "<b>%{friend_name}</b> hat ein <i>Theater-Projekt</i> unterstützt."
-   - **fr**: "<b>%{friend_name}</b> backed a <i>Theater</i> project."
+   - **fr**: "<b>%{friend_name}</b> a soutenu un projet de <i>théâtre</i>."
    - **it**: "<b>%{friend_name}</b> backed a <i>Theater</i> project."
    - **en**: "<b>%{friend_name}</b> backed a <i>Theater</i> project."
   */
@@ -5303,9 +5303,9 @@ catch your eye?"
   /**
    "<b>Update%{space}#%{update_number}</b> posted %{time_count_days_ago}"
 
-   - **es**: "Actualización <b>%{update_number}</b> publicado el %{time_count_days_ago}"
-   - **de**: "Update <b>%{update_number}</b> vor %{time_count_days_ago} gepostet"
-   - **fr**: "Actu no. <b>%{update_number}</b> publiée il y a %{time_count_days_ago}"
+   - **es**: "<b>Actualización%{space}%{update_number}</b> publicado el %{time_count_days_ago}"
+   - **de**: "<b>Update%{space}%{update_number}</b> vor %{time_count_days_ago} gepostet"
+   - **fr**: "<b>Actu no.%{space}%{update_number}</b> publiée il y a %{time_count_days_ago}"
    - **it**: "<b>Update%{space}#%{update_number}</b> posted %{time_count_days_ago}"
    - **en**: "<b>Update%{space}#%{update_number}</b> posted %{time_count_days_ago}"
   */
