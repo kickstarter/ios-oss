@@ -19,7 +19,7 @@ internal final class ActivityFriendBackingViewModelTests: TestCase {
   }
 
   func testAccessibility() {
-    self.vm.inputs.activity(
+    self.vm.inputs.configureWith(activity:
       .template
         |> Activity.lens.category .~ .backing
         |> Activity.lens.project .~ (.template |> Project.lens.category .~ .games)

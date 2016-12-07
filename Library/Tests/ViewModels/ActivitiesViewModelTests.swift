@@ -359,7 +359,7 @@ final class ActivitiesViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear(animated: false)
 
-      self.unansweredSurveyResponse.assertValues([surveyResponse])
+      self.unansweredSurveyResponse.assertValues([[surveyResponse]])
 
       // Tap to see survey response.
       self.vm.inputs.tappedRespondNow(forSurveyResponse: surveyResponse)
@@ -367,14 +367,15 @@ final class ActivitiesViewModelTests: TestCase {
 
       // Exited survey full screen.
       self.vm.inputs.viewWillAppear(animated: true)
-      self.unansweredSurveyResponse.assertValues([surveyResponse], "Same unanswered survey emits.")
+      self.unansweredSurveyResponse.assertValues([[surveyResponse]], "Survey does not emit again.")
 
       self.vm.inputs.tappedRespondNow(forSurveyResponse: surveyResponse)
       self.goToSurveyResponse.assertValues([surveyResponse, surveyResponse])
 
       // Exited survey modal.
       self.vm.inputs.surveyResponseViewControllerDismissed()
-      self.unansweredSurveyResponse.assertValues([surveyResponse], "Same unanswered survey emits.")
+      self.unansweredSurveyResponse.assertValues([[surveyResponse], [surveyResponse]],
+                                                 "Same unanswered survey emits.")
     }
   }
 
@@ -386,12 +387,13 @@ final class ActivitiesViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear(animated: false)
 
-      self.unansweredSurveyResponse.assertValues([surveyResponse])
+      self.unansweredSurveyResponse.assertValues([[surveyResponse]])
 
       AppEnvironment.logout()
       self.vm.inputs.userSessionEnded()
+      self.vm.inputs.viewWillAppear(animated: false)
 
-      self.unansweredSurveyResponse.assertValues([surveyResponse, nil])
+      self.unansweredSurveyResponse.assertValues([[surveyResponse], [surveyResponse]])
     }
   }
 
