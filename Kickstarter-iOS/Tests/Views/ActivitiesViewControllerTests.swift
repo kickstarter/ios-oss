@@ -15,7 +15,7 @@ internal final class ActivitiesViewControllerTests: TestCase {
 
   override func tearDown() {
     AppEnvironment.popEnvironment()
-    UIView.setAnimationsEnabled(false)
+    UIView.setAnimationsEnabled(true)
     super.tearDown()
   }
 
@@ -26,9 +26,7 @@ internal final class ActivitiesViewControllerTests: TestCase {
       |> Activity.lens.id .~ 84
       |> Activity.lens.user .~ (.template
         |> User.lens.name .~ "Brandon Williams"
-        |> User.lens.avatar.small .~ "https://ksr-ugc.imgix.net/assets/006/258/518/" +
-        "b9033f46095b83119188cf9a66d19356_original.jpg?w=40&h=40&fit=crop&v=1461376829" +
-        "&auto=format&q=92&s=0fcedf8888ca6990408ccde81888899b"
+        |> User.lens.avatar.small .~ ""
       )
       |> Activity.lens.category .~ .follow
 
@@ -44,9 +42,7 @@ internal final class ActivitiesViewControllerTests: TestCase {
       |> Activity.lens.project .~ (.cosmicSurgery |> Project.lens.stats.fundingProgress .~ 0.88)
       |> Activity.lens.user .~ (.template
         |> User.lens.name .~ "Judith Light"
-        |> User.lens.avatar.small .~ "https://ksr-ugc.imgix.net/assets/006/258/518/" +
-        "b9033f46095b83119188cf9a66d19356_original.jpg?w=40&h=40&fit=crop&v=1461376829" +
-        "&auto=format&q=92&s=0fcedf8888ca6990408ccde81888899b"
+        |> User.lens.avatar.small .~ ""
       )
       |> Activity.lens.category .~ .backing
 
@@ -63,9 +59,7 @@ internal final class ActivitiesViewControllerTests: TestCase {
       |> Activity.lens.user .~ (.template
         |> User.lens.name .~ "David Bowie"
         |> User.lens.isFriend .~ true
-        |> User.lens.avatar.small .~ "https://ksr-ugc.imgix.net/assets/006/258/518/" +
-        "b9033f46095b83119188cf9a66d19356_original.jpg?w=40&h=40&fit=crop&v=1461376829" +
-        "&auto=format&q=92&s=0fcedf8888ca6990408ccde81888899b"
+        |> User.lens.avatar.small .~ ""
       )
       |> Activity.lens.category .~ .follow
 
