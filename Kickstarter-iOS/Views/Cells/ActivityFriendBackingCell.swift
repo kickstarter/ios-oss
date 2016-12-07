@@ -90,6 +90,6 @@ internal final class ActivityFriendBackingCell: UITableViewCell, ValueCell {
 
     self.projectTextContainerView
       |> UIView.lens.alpha .~ 0.96
-      |> UIView.lens.layoutMargins .~ .init(all: Styles.grid(2))
+      |> UIView.lens.layoutMargins .~ .init(topBottom: Styles.grid(3) - Styles.gridHalf(1), leftRight: Styles.grid(2))
   }
 }

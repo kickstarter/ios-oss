@@ -254,23 +254,23 @@
                                                         <constraint firstAttribute="height" constant="197" id="SIV-De-YBZ"/>
                                                     </constraints>
                                                 </imageView>
-                                                <view alpha="0.55000000000000004" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9kb-aJ-VGs">
-                                                    <rect key="frame" x="0.0" y="142" width="384" height="98.5"/>
+                                                <view alpha="0.55000000000000004" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9kb-aJ-VGs">
+                                                    <rect key="frame" x="0.0" y="144" width="384" height="96"/>
                                                     <subviews>
-                                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="aKf-SO-ukE">
-                                                            <rect key="frame" x="8" y="8" width="368" height="83"/>
+                                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="aKf-SO-ukE">
+                                                            <rect key="frame" x="8" y="8" width="368" height="84"/>
                                                             <subviews>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="249" verticalCompressionResistancePriority="1000" misplaced="YES" text="Bjork Swan Dress was successfully funded!" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wbb-oQ-LmI" userLabel="Project name">
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalCompressionResistancePriority="1000" misplaced="YES" text="Bjork Swan Dress was successfully funded!" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wbb-oQ-LmI" userLabel="Project name">
                                                                     <rect key="frame" x="0.0" y="0.0" width="368" height="52"/>
                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
-                                                                <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" alignment="center" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="FSZ-eM-Rwq" userLabel="Funding Stack View">
-                                                                    <rect key="frame" x="0.0" y="58" width="368" height="26"/>
+                                                                <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" alignment="center" spacing="18" translatesAutoresizingMaskIntoConstraints="NO" id="FSZ-eM-Rwq" userLabel="Funding Stack View">
+                                                                    <rect key="frame" x="0.0" y="64" width="368" height="21"/>
                                                                     <subviews>
                                                                         <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="u08-la-LL2">
-                                                                            <rect key="frame" x="0.0" y="12" width="257" height="2"/>
+                                                                            <rect key="frame" x="0.0" y="10" width="251" height="2"/>
                                                                             <subviews>
                                                                                 <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8FT-hR-bC3">
                                                                                     <rect key="frame" x="0.0" y="0.0" width="256" height="2"/>
@@ -287,7 +287,7 @@
                                                                             </constraints>
                                                                         </view>
                                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" horizontalCompressionResistancePriority="1000" misplaced="YES" text="120% funded" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tad-xW-b6K">
-                                                                            <rect key="frame" x="269" y="3" width="100" height="21"/>
+                                                                            <rect key="frame" x="269" y="0.0" width="100" height="21"/>
                                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                             <nil key="highlightedColor"/>
@@ -308,7 +308,7 @@
                                             </subviews>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <constraints>
-                                                <constraint firstItem="9kb-aJ-VGs" firstAttribute="height" secondItem="nnG-dK-ciq" secondAttribute="height" multiplier="1:2" id="502-i6-R6v"/>
+                                                <constraint firstItem="9kb-aJ-VGs" firstAttribute="height" relation="greaterThanOrEqual" secondItem="nnG-dK-ciq" secondAttribute="height" multiplier="0.3" id="502-i6-R6v"/>
                                                 <constraint firstItem="L5c-1Y-4qI" firstAttribute="centerY" secondItem="n6p-7T-Lkg" secondAttribute="centerY" id="EC0-xX-2Xa"/>
                                                 <constraint firstItem="9kb-aJ-VGs" firstAttribute="bottom" secondItem="nnG-dK-ciq" secondAttribute="bottom" id="JUs-nK-rIc"/>
                                                 <constraint firstItem="nnG-dK-ciq" firstAttribute="top" secondItem="n6p-7T-Lkg" secondAttribute="bottom" constant="16" id="Mul-pS-yNG"/>

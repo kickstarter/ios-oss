@@ -61,12 +61,9 @@ internal final class ActivitySurveyResponseCell: UITableViewCell, ValueCell {
       |> UIButton.lens.tintColor .~ .ksr_green_700
       |> UIButton.lens.imageEdgeInsets .~ .init(top: 0, left: 0, bottom: 0, right: Styles.grid(4))
       |> UIButton.lens.image(forState: .Normal) %~ { _ in Library.image(named: "respond-icon") }
-      |> UIButton.lens.contentEdgeInsets %~~ { _, button in
-        button.traitCollection.verticalSizeClass == .Compact
-          ? .init(top: Styles.grid(3), left: 0, bottom: Styles.grid(1), right: 0)
-          : .init(top: Styles.grid(3), left: 0, bottom: Styles.grid(1), right: 0)
-    }
-
+      |> UIButton.lens.contentEdgeInsets .~ .init(top: Styles.grid(3), left: 0, bottom: Styles.grid(1),
+                                                  right: 0)
+    
     self.rewardSurveysCountLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 13)
       |> UILabel.lens.textColor .~ .ksr_green_700
