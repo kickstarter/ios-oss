@@ -26,12 +26,6 @@ internal final class ProfileProjectCell: UICollectionViewCell, ValueCell {
 
     self
       |> UICollectionViewCell.lens.backgroundColor .~ .clearColor()
-      |> UICollectionViewCell.lens.preservesSuperviewLayoutMargins .~ false
-      |> UICollectionViewCell.lens.layoutMargins %~~ { _, cell in
-        cell.traitCollection.isRegularRegular
-          ? .init(topBottom: Styles.grid(3), leftRight: Styles.grid(20))
-          : .init(all: Styles.grid(1))
-      }
       |> UICollectionViewCell.lens.isAccessibilityElement .~ true
       |> UICollectionViewCell.lens.accessibilityHint %~ { _ in Strings.Opens_project() }
       |> UICollectionViewCell.lens.accessibilityTraits .~ UIAccessibilityTraitButton

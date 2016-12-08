@@ -37,14 +37,14 @@ internal final class ProfileViewController: UICollectionViewController {
     super.bindViewModel()
 
     self.viewModel.outputs.backedProjects
-      .observeForControllerAction()
+      .observeForUI()
       .observeNext { [weak self] ps in
         self?.dataSource.load(projects: ps)
         self?.collectionView?.reloadData()
       }
 
     self.viewModel.outputs.user
-      .observeForControllerAction()
+      .observeForUI()
       .observeNext { [weak self] u in
         self?.dataSource.load(user: u)
         self?.collectionView?.reloadData()
@@ -65,7 +65,7 @@ internal final class ProfileViewController: UICollectionViewController {
     }
 
     self.viewModel.outputs.showEmptyState
-      .observeForControllerAction()
+      .observeForUI()
       .observeNext { [weak self] visible in
         self?.dataSource.emptyState(visible: visible)
         self?.collectionView?.reloadData()
