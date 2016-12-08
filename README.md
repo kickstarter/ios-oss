@@ -1,6 +1,11 @@
-# Kickstarter for iOS and tvOS
+# Kickstarter for iOS
 
-[![Circle CI](https://circleci.com/gh/kickstarter/ios-oss.svg?style=svg&)](https://circleci.com/gh/kickstarter/ios-oss)
+[![Circle CI](https://circleci.com/gh/kickstarter/ios-oss.svg?style=svg)](https://circleci.com/gh/kickstarter/ios-oss)
+
+Welcome to Kickstarter’s open source iOS app! Come on in, take your shoes off, stay a while—explore how
+Kickstarter’s native squad has built and continues to build the app.
+
+We've also open sourced our [Android app](https://github.com/kickstarter/android-oss), and read more about our journey to open source [here TODO LINK]().
 
 ## Getting Started
 
