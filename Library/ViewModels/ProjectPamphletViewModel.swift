@@ -84,9 +84,7 @@ ProjectPamphletViewModelOutputs {
       self.refTagProperty.signal
       )
       .take(1)
-      .map { a, b in
-        a ?? b
-    }
+      .map { $0 ?? $1 }
 
     combineLatest(project, self.refTagProperty.signal, cookieRefTag)
       .takeWhen(self.viewDidAppearAnimated.signal)
