@@ -121,7 +121,7 @@ private func isMainReward(reward reward: Reward, project: Project) -> Bool {
 
   let now = AppEnvironment.current.dateType.init().timeIntervalSince1970
   let startsAt = reward.startsAt ?? 0
-  let endsAt = reward.endsAt ?? project.dates.deadline
+  let endsAt = (reward.endsAt == .Some(0) ? nil : reward.endsAt) ?? project.dates.deadline
 
   return startsAt <= now && now <= endsAt
 }
