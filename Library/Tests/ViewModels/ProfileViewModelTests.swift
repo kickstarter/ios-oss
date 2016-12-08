@@ -108,25 +108,27 @@ internal final class ProfileViewModelTests: TestCase {
   }
 
   func testUser_WithNoProjects() {
-    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
+    let env = .template |> DiscoveryEnvelope.lens.projects .~ []
 
-    self.vm.inputs.viewWillAppear(false)
+    withEnvironment(apiService: MockService(fetchDiscoveryResponse: env), currentUser: .template) {
+      self.vm.inputs.viewWillAppear(false)
 
-    self.hasBackedProjects.assertValueCount(0)
-    self.showEmptyState.assertValueCount(0)
-    XCTAssertEqual(["Profile View My", "Viewed Profile"], trackingClient.events)
+      self.hasBackedProjects.assertValueCount(0)
+      self.showEmptyState.assertValueCount(0)
+      XCTAssertEqual(["Profile View My", "Viewed Profile"], trackingClient.events)
 
-    self.scheduler.advance()
+      self.scheduler.advance()
 
-    self.hasBackedProjects.assertValues([false])
-    self.showEmptyState.assertValues([true], "Empty state is shown for user with 0 backed projects.")
+      self.hasBackedProjects.assertValues([false])
+      self.showEmptyState.assertValues([true], "Empty state is shown for user with 0 backed projects.")
 
-    self.vm.inputs.viewWillAppear(true)
+      self.vm.inputs.viewWillAppear(true)
 
-    self.scheduler.advance()
+      self.scheduler.advance()
 
-    self.hasBackedProjects.assertValues([false], "Backed projects does not emit.")
-    self.showEmptyState.assertValues([true], "Empty state does not emit.")
-    XCTAssertEqual(["Profile View My", "Viewed Profile"], trackingClient.events)
+      self.hasBackedProjects.assertValues([false], "Backed projects does not emit.")
+      self.showEmptyState.assertValues([true], "Empty state does not emit.")
+      XCTAssertEqual(["Profile View My", "Viewed Profile"], trackingClient.events)
+    }
   }
 }
