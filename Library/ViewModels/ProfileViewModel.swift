@@ -29,8 +29,8 @@ public protocol ProfileViewModelOutputs {
   /// Emits a list of backed projects that should be displayed.
   var backedProjects: Signal<[Project], NoError> { get }
 
-  /// Emits when the pull-to-refresh control should end refreshing.
-  var endRefreshing: Signal<Void, NoError> { get }
+  /// Emits when the pull-to-refresh control is refreshing or not.
+  var isRefreshing: Signal<Bool, NoError> { get }
 
   /// Emits the project and ref tag when should go to project page.
   var goToProject: Signal<(Project, [Project], RefTag), NoError > { get }
@@ -52,7 +52,11 @@ public final class ProfileViewModel: ProfileViewModelType, ProfileViewModelInput
     let requestFirstPageWith = Signal.merge(
       viewWillAppearProperty.signal.filter(isFalse).ignoreValues(),
       refreshProperty.signal
-    )
+      ).map {
+        DiscoveryParams.defaults
+          |> DiscoveryParams.lens.backed .~ true
+          |> DiscoveryParams.lens.sort .~ .endingSoon
+    }
 
     let requestNextPageWhen = self.willDisplayRowProperty.signal.ignoreNil()
       .map { row, total in row >= total - 3 }
@@ -61,19 +65,16 @@ public final class ProfileViewModel: ProfileViewModelType, ProfileViewModelInput
       .ignoreValues()
 
     let isLoading: Signal<Bool, NoError>
-    let backedProjects: Signal<[Project], NoError>
-    (backedProjects, isLoading, _) = paginate(
+    (self.backedProjects, isLoading, _) = paginate(
       requestFirstPageWith: requestFirstPageWith,
       requestNextPageWhen: requestNextPageWhen,
       clearOnNewRequest: false,
       valuesFromEnvelope: { $0.projects },
       cursorFromEnvelope: { $0.urls.api.moreProjects },
-      requestFromParams: { _ in AppEnvironment.current.apiService.fetchUserProjectsBacked() },
-      requestFromCursor: { AppEnvironment.current.apiService.fetchUserProjectsBacked(paginationUrl: $0) })
+      requestFromParams: { AppEnvironment.current.apiService.fetchDiscovery(params: $0) },
+      requestFromCursor: { AppEnvironment.current.apiService.fetchDiscovery(paginationUrl: $0) })
 
-    self.backedProjects = backedProjects.sort { $0.dates.deadline > $1.dates.deadline }
-
-    self.endRefreshing = isLoading.filter(isFalse).ignoreValues()
+    self.isRefreshing = isLoading
 
     self.user = viewWillAppearProperty.signal
       .switchMap { _ in
@@ -121,7 +122,7 @@ public final class ProfileViewModel: ProfileViewModelType, ProfileViewModelInput
 
   public let user: Signal<User, NoError>
   public let backedProjects: Signal<[Project], NoError>
-  public let endRefreshing: Signal<Void, NoError>
+  public let isRefreshing: Signal<Bool, NoError>
   public let goToProject: Signal<(Project, [Project], RefTag), NoError>
   public let goToSettings: Signal<Void, NoError>
   public let showEmptyState: Signal<Bool, NoError>

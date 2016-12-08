@@ -8,6 +8,8 @@ internal final class ProfileProjectCell: UICollectionViewCell, ValueCell {
   private let viewModel: ProfileProjectCellViewModelType = ProfileProjectCellViewModel()
 
   @IBOutlet private weak var cardView: UIView!
+  @IBOutlet private weak var metadataBackgroundView: UIView!
+  @IBOutlet private weak var metadataLabel: UILabel!
   @IBOutlet private weak var projectNameLabel: UILabel!
   @IBOutlet private weak var projectImageView: UIImageView!
   @IBOutlet private weak var progressView: UIView!
@@ -37,6 +39,10 @@ internal final class ProfileProjectCell: UICollectionViewCell, ValueCell {
     self.cardView
       |> dropShadowStyle()
 
+    self.metadataLabel
+      |> UILabel.lens.textColor .~ .whiteColor()
+      |> UILabel.lens.font .~ .ksr_headline(size: 12)
+
     self.projectNameLabel
       |> UILabel.lens.textColor .~ .ksr_text_navy_700
       |> UILabel.lens.font .~ .ksr_callout(size: 15)
@@ -48,6 +54,9 @@ internal final class ProfileProjectCell: UICollectionViewCell, ValueCell {
   }
 
   internal override func bindViewModel() {
+    self.metadataLabel.rac.text = self.viewModel.outputs.metadataText
+    self.metadataLabel.rac.hidden = self.viewModel.outputs.metadataIsHidden
+    self.metadataBackgroundView.rac.hidden = self.viewModel.outputs.metadataIsHidden
     self.projectNameLabel.rac.text = self.viewModel.outputs.projectName
     self.rac.accessibilityLabel = self.viewModel.outputs.cellAccessibilityLabel
 
@@ -66,9 +75,11 @@ internal final class ProfileProjectCell: UICollectionViewCell, ValueCell {
     self.viewModel.outputs.progress
       .observeForUI()
       .observeNext { [weak element = progressBarView] progress in
-        let anchorX = (progress <= 0 || progress > 1.0) ? 0.5 : 0.5 / progress
-        element?.layer.anchorPoint = CGPoint(x: CGFloat(anchorX), y: 0.5)
-        let scaleX = progress >= 1.0 ? 1.0 : (0.5 / progress)
+        if progress < 1.0 {
+          let anchorX = progress == 0 ? 0 : 0.5 / progress
+          element?.layer.anchorPoint = CGPoint(x: CGFloat(anchorX), y: 0.5)
+        }
+        let scaleX = progress >= 1.0 ? 1.0 : progress
         element?.transform = CGAffineTransformMakeScale(CGFloat(scaleX), 1.0)
     }
 

@@ -50,11 +50,7 @@ internal final class ProfileViewController: UICollectionViewController {
         self?.collectionView?.reloadData()
     }
 
-    self.viewModel.outputs.endRefreshing
-      .observeForControllerAction()
-      .observeNext { [weak self] in
-        self?.refreshControl.endRefreshing()
-    }
+    self.refreshControl.rac.refreshing = self.viewModel.outputs.isRefreshing
 
     self.viewModel.outputs.goToProject
       .observeForControllerAction()
