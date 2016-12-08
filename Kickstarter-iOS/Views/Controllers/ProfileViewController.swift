@@ -21,7 +21,7 @@ internal final class ProfileViewController: UICollectionViewController {
     self.collectionView?.backgroundColor = .ksr_grey_100
 
     if let layout = self.collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
-      layout.itemSize = CGSize(width: 160, height: 220)
+      layout.itemSize = CGSize(width: 178, height: 220)
     }
 
     self.refreshControl.addTarget(self, action: #selector(refresh), forControlEvents: .ValueChanged)

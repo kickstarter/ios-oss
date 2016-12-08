@@ -61,7 +61,8 @@ public final class ProfileViewModel: ProfileViewModelType, ProfileViewModelInput
       .ignoreValues()
 
     let isLoading: Signal<Bool, NoError>
-    (self.backedProjects, isLoading, _) = paginate(
+    let backedProjects: Signal<[Project], NoError>
+    (backedProjects, isLoading, _) = paginate(
       requestFirstPageWith: requestFirstPageWith,
       requestNextPageWhen: requestNextPageWhen,
       clearOnNewRequest: false,
@@ -69,6 +70,8 @@ public final class ProfileViewModel: ProfileViewModelType, ProfileViewModelInput
       cursorFromEnvelope: { $0.urls.api.moreProjects },
       requestFromParams: { _ in AppEnvironment.current.apiService.fetchUserProjectsBacked() },
       requestFromCursor: { AppEnvironment.current.apiService.fetchUserProjectsBacked(paginationUrl: $0) })
+
+    self.backedProjects = backedProjects.sort { $0.dates.deadline > $1.dates.deadline }
 
     self.endRefreshing = isLoading.filter(isFalse).ignoreValues()
 

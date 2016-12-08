@@ -1,12 +1,13 @@
 import Foundation
-import UIKit
-import Library
 import KsApi
+import Library
 import Prelude
+import UIKit
 
 internal final class ProfileProjectCell: UICollectionViewCell, ValueCell {
   private let viewModel: ProfileProjectCellViewModelType = ProfileProjectCellViewModel()
 
+  @IBOutlet private weak var cardView: UIView!
   @IBOutlet private weak var projectNameLabel: UILabel!
   @IBOutlet private weak var projectImageView: UIImageView!
   @IBOutlet private weak var progressView: UIView!
@@ -22,11 +23,27 @@ internal final class ProfileProjectCell: UICollectionViewCell, ValueCell {
     super.bindStyles()
 
     self
+      |> UICollectionViewCell.lens.backgroundColor .~ .clearColor()
+      |> UICollectionViewCell.lens.preservesSuperviewLayoutMargins .~ false
+      |> UICollectionViewCell.lens.layoutMargins %~~ { _, cell in
+        cell.traitCollection.isRegularRegular
+          ? .init(topBottom: Styles.grid(3), leftRight: Styles.grid(20))
+          : .init(all: Styles.grid(1))
+      }
       |> UICollectionViewCell.lens.isAccessibilityElement .~ true
       |> UICollectionViewCell.lens.accessibilityHint %~ { _ in Strings.Opens_project() }
       |> UICollectionViewCell.lens.accessibilityTraits .~ UIAccessibilityTraitButton
 
+    self.cardView
+      |> dropShadowStyle()
+
+    self.projectNameLabel
+      |> UILabel.lens.textColor .~ .ksr_text_navy_700
+      |> UILabel.lens.font .~ .ksr_callout(size: 15)
+
     self.stateLabel
+      |> UILabel.lens.textColor .~ .whiteColor()
+      |> UILabel.lens.font .~ .ksr_headline(size: 12)
       |> UILabel.lens.numberOfLines .~ 0
   }
 
@@ -49,9 +66,10 @@ internal final class ProfileProjectCell: UICollectionViewCell, ValueCell {
     self.viewModel.outputs.progress
       .observeForUI()
       .observeNext { [weak element = progressBarView] progress in
-        let anchorX = progress == 0 ? 0 : 0.5 / progress
+        let anchorX = (progress <= 0 || progress > 1.0) ? 0.5 : 0.5 / progress
         element?.layer.anchorPoint = CGPoint(x: CGFloat(anchorX), y: 0.5)
-        element?.transform = CGAffineTransformMakeScale(CGFloat(progress), 1.0)
+        let scaleX = progress >= 1.0 ? 1.0 : (0.5 / progress)
+        element?.transform = CGAffineTransformMakeScale(CGFloat(scaleX), 1.0)
     }
 
     self.stateBannerView.rac.hidden = self.viewModel.outputs.stateHidden

@@ -19,6 +19,21 @@ internal final class ProfileHeaderView: UICollectionReusableView, ValueCell {
   internal override func bindStyles() {
     super.bindStyles()
 
+    self.backedProjectsLabel
+      |> UILabel.lens.textColor .~ .ksr_text_navy_600
+      |> UILabel.lens.font .~ .ksr_subhead(size: 13)
+
+    self.createdProjectsLabel
+      |> UILabel.lens.textColor .~ .ksr_text_navy_600
+      |> UILabel.lens.font .~ .ksr_subhead(size: 13)
+
+    self.dividerView
+      |> UIView.lens.backgroundColor .~ .ksr_navy_400
+
+    self.nameLabel
+      |> UILabel.lens.textColor .~ .ksr_text_navy_700
+      |> UILabel.lens.font .~ .ksr_headline(size: 16)
+
     [self.backedProjectsLabel, self.createdProjectsLabel]
       ||> UILabel.lens.adjustsFontSizeToFitWidth .~ true
   }
