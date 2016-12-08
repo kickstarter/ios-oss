@@ -33,27 +33,6 @@ be done with a `make` command:
 We make heavy use of the following projects, and so it can be helpful to be
 familiar with them:
 
-### 1st party
-
-* [![Circle CI](https://circleci.com/gh/kickstarter/Kickstarter-Prelude.svg?style=svg)](https://circleci.com/gh/kickstarter/Kickstarter-Prelude)
-[Prelude](https://github.com/kickstarter/Kickstarter-Prelude): Foundation of
-types and functions we feel are missing from the Swift standard library.
-
-* [![CircleCI](https://circleci.com/gh/kickstarter/ios-ksapi.svg?style=svg)](https://circleci.com/gh/kickstarter/ios-ksapi)
-[KsApi](https://github.com/kickstarter/ios-ksapi): Models and reactive
-networking layer for fetching data from Kickstarter’s API.
-
-* [![Circle CI](https://circleci.com/gh/kickstarter/Kickstarter-ReactiveExtensions.svg?style=svg&)](https://circleci.com/gh/kickstarter/Kickstarter-ReactiveExtensions)
-[ReactiveExtensions](https://github.com/kickstarter/Kickstarter-ReactiveExtensions):
-A collection of operators we like to add to ReactiveCocoa.
-
-### 3rd party
-
-* [AlamofireImage](https://github.com/Alamofire/AlamofireImage)
-* [Argo](https://github.com/thoughtbot/Argo)
-* [FBSnapshotTestCase](https://github.com/facebook/ios-snapshot-test-case)
-* [ReactiveCocoa](https://github.com/ReactiveCocoa/ReactiveCocoa)
-
 ## Some fun things to explore
 
 If you’re just looking for a quick glance at a few things we’re particularly
@@ -79,6 +58,33 @@ as a pure mapping of input signals to output signals, and [test](https://github.
 them heavily, including tests for localization, accessibility and event
 tracking.
 
+## Documentation
+
+While we’re at it, why not share our docs? Check out the
+[native docs](https://github.com/kickstarter/native-docs) we have written so far
+for more documentation.
+
+### 1st party
+
+* [![Circle CI](https://circleci.com/gh/kickstarter/Kickstarter-Prelude.svg?style=svg)](https://circleci.com/gh/kickstarter/Kickstarter-Prelude)
+[Prelude](https://github.com/kickstarter/Kickstarter-Prelude): Foundation of
+types and functions we feel are missing from the Swift standard library.
+
+* [![CircleCI](https://circleci.com/gh/kickstarter/ios-ksapi.svg?style=svg)](https://circleci.com/gh/kickstarter/ios-ksapi)
+[KsApi](https://github.com/kickstarter/ios-ksapi): Models and reactive
+networking layer for fetching data from Kickstarter’s API.
+
+* [![Circle CI](https://circleci.com/gh/kickstarter/Kickstarter-ReactiveExtensions.svg?style=svg&)](https://circleci.com/gh/kickstarter/Kickstarter-ReactiveExtensions)
+[ReactiveExtensions](https://github.com/kickstarter/Kickstarter-ReactiveExtensions):
+A collection of operators we like to add to ReactiveCocoa.
+
+### 3rd party
+
+* [AlamofireImage](https://github.com/Alamofire/AlamofireImage)
+* [Argo](https://github.com/thoughtbot/Argo)
+* [FBSnapshotTestCase](https://github.com/facebook/ios-snapshot-test-case)
+* [ReactiveCocoa](https://github.com/ReactiveCocoa/ReactiveCocoa)
+
 ## Contributing
 
 We intend for this project to be an educational resource: we are excited to
@@ -98,12 +104,6 @@ product, for our community, in a safe and open space. We work as we live, as
 kind and considerate human beings who learn and grow from giving and receiving
 positive, constructive feedback. We reserve the right to delete or ban any
 behavior violating this base foundation of respect.
-
-## Documentation
-
-While we’re at it, why not share our docs? Check out the
-[native docs](https://github.com/kickstarter/native-docs) we have written so far
-for more documentation.
 
 ## License
 
