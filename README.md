@@ -108,6 +108,6 @@ for more documentation.
 
 ## License
 
-Copyright Kickstarter 2016, [PBC](https://www.kickstarter.com/charter).
+Copyright © 2016 Kickstarter, [PBC](https://www.kickstarter.com/charter).
 
 Kickstarter for iOS is released under the [Apache 2.0 License](https://www.apache.org/licenses/LICENSE-2.0).
