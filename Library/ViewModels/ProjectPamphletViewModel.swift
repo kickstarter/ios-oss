@@ -84,7 +84,9 @@ ProjectPamphletViewModelOutputs {
       self.refTagProperty.signal
       )
       .take(1)
-      .map { $0 ?? $1 }
+      .map { a, b in
+        a ?? b
+    }
 
     combineLatest(project, self.refTagProperty.signal, cookieRefTag)
       .takeWhen(self.viewDidAppearAnimated.signal)
@@ -135,6 +137,7 @@ ProjectPamphletViewModelOutputs {
 }
 
 private let cookieSeparator = Character("?")
+private let escapedCookieSeparator = Character("%3F")
 
 // Extracts the ref tag stored in cookies for a particular project. Returns `nil` if no such cookie has
 // been previously set.
@@ -143,14 +146,27 @@ private func cookieRefTagFor(project project: Project) -> RefTag? {
   return AppEnvironment.current.cookieStorage.cookies?
     .filter { cookie in cookie.name == cookieName(project) }
     .first
-    .flatMap { cookie in cookie.value.characters.split(cookieSeparator).first }
-    .flatMap(String.init)
+    .flatMap(refTagName(fromCookie:))
     .flatMap(RefTag.init(code:))
 }
 
 // Derives the name of the ref cookie from the project.
 private func cookieName(project: Project) -> String {
   return "ref_\(project.id)"
+}
+
+private func refTagName(fromCookie cookie: NSHTTPCookie) -> String? {
+  let firstPass = cookie.value.characters.split(cookieSeparator)
+  if let name = firstPass.first where firstPass.count == 2 {
+    return String(name)
+  }
+
+  let secondPass = cookie.value.characters.split(escapedCookieSeparator)
+  if let name = secondPass.first where secondPass.count == 2 {
+    return String(name)
+  }
+
+  return nil
 }
 
 // Constructs a cookie from a ref tag and project.
