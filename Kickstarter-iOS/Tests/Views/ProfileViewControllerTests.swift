@@ -69,4 +69,3 @@ internal final class ProfileViewControllerTests: TestCase {
     }
   }
 }
-
