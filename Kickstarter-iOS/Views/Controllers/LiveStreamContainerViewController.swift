@@ -2,6 +2,7 @@ import KsApi
 import Library
 import Prelude
 import ReactiveCocoa
+import Result
 import UIKit
 import KsLive
 
@@ -9,6 +10,7 @@ internal final class LiveStreamContainerViewController: UIViewController {
 
   @IBOutlet private weak var creatorAvatarImageView: UIImageView!
   @IBOutlet private weak var creatorAvatarLabel: UILabel!
+  @IBOutlet private weak var creatorAvatarLiveDotImageView: UIImageView!
   @IBOutlet private weak var detailsContainerStackView: UIStackView!
   @IBOutlet private weak var projectImageView: UIImageView!
   @IBOutlet private weak var liveStreamTitleLabel: UILabel!
@@ -64,6 +66,21 @@ internal final class LiveStreamContainerViewController: UIViewController {
 
     self.navigationItem.leftBarButtonItem = closeBarButtonItem
     self.navigationItem.rightBarButtonItem = shareBarButtonItem
+
+    self.navBarTitleStackViewBackgroundView.addSubview(self.navBarTitleStackView)
+    self.navBarTitleStackView.addArrangedSubview(self.navBarLiveDotImageView)
+    self.navBarTitleStackView.addArrangedSubview(self.navBarTitleLabel)
+
+    self.navBarTitleStackView.leadingAnchor.constraintEqualToAnchor(
+      self.navBarTitleStackViewBackgroundView.leadingAnchor).active = true
+    self.navBarTitleStackView.topAnchor.constraintEqualToAnchor(
+      self.navBarTitleStackViewBackgroundView.topAnchor).active = true
+    self.navBarTitleStackView.trailingAnchor.constraintEqualToAnchor(
+      self.navBarTitleStackViewBackgroundView.trailingAnchor).active = true
+    self.navBarTitleStackView.bottomAnchor.constraintEqualToAnchor(
+      self.navBarTitleStackViewBackgroundView.bottomAnchor).active = true
+
+    self.navigationItem.titleView = navBarTitleStackViewBackgroundView
 
     self.viewModel.inputs.viewDidLoad()
     self.eventDetailsViewModel.inputs.viewDidLoad()
@@ -168,17 +185,43 @@ internal final class LiveStreamContainerViewController: UIViewController {
     self.subscribeLabel
       |> UILabel.lens.font .~ UIFont.ksr_headline(size: 13)
       |> UILabel.lens.textColor .~ .whiteColor()
+      |> UILabel.lens.adjustsFontSizeToFitWidth .~ true
 
     self.subscribeButton
       |> whiteBorderContainerButtonStyle
       |> UIButton.lens.imageEdgeInsets .~ UIEdgeInsets(right: -Styles.grid(1))
       |> UIButton.lens.tintColor .~ self.subscribeButton.currentTitleColor
+      |> UIButton.lens.contentEdgeInsets .~ .init(topBottom: 10.0, leftRight: Styles.grid(2))
 
     self.subscribeButton.semanticContentAttribute = .ForceRightToLeft
 
     self.detailsLoadingActivityIndicatorView
       |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .White
       |> UIActivityIndicatorView.lens.animating .~ true
+
+    self.navBarTitleStackViewBackgroundView
+      |> UIView.lens.layer.cornerRadius .~ 2
+      |> UIView.lens.layer.masksToBounds .~ true
+      |> UIView.lens.backgroundColor .~ UIColor.blackColor().colorWithAlphaComponent(0.5)
+
+    self.navBarTitleStackView
+      |> UIStackView.lens.axis .~ .Horizontal
+      |> UIStackView.lens.alignment .~ .Center
+      |> UIStackView.lens.distribution .~ .Fill
+      |> UIStackView.lens.translatesAutoresizingMaskIntoConstraints .~ false
+      |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+      |> UIStackView.lens.spacing .~ Styles.grid(1)
+      |> UIStackView.lens.layoutMargins .~ .init(leftRight: Styles.grid(2))
+
+    self.navBarLiveDotImageView
+      |> UIImageView.lens.image .~ UIImage(named: "live_dot")
+      |> UIImageView.lens.contentMode .~ .ScaleAspectFit
+      |> UIImageView.lens.contentHuggingPriorityForAxis(.Horizontal) .~ UILayoutPriorityDefaultHigh
+
+    self.navBarTitleLabel
+      |> UILabel.lens.font .~ .ksr_headline(size: 13)
+      |> UILabel.lens.textColor .~ .whiteColor()
+      |> UILabel.lens.textAlignment .~ .Center
   }
 
   internal override func bindViewModel() {
@@ -268,8 +311,21 @@ internal final class LiveStreamContainerViewController: UIViewController {
       .observeForUI()
       .on(next: { [weak self] image in self?.creatorAvatarImageView.image = nil })
       .observeNext { [weak self] in self?.creatorAvatarImageView.af_setImageWithURL($0) }
-    
-    self.creatorAvatarLabel.rac.text = self.eventDetailsViewModel.outputs.introText.observeForUI()
+
+    let isLive: Signal<Bool, NoError> = self.viewModel.outputs.liveStreamState
+      .observeForUI()
+      .map {
+      if case .live(_, _) = $0 { return true }
+
+      return false
+    }
+
+    self.navBarLiveDotImageView.rac.hidden = isLive.map(negate)
+    self.creatorAvatarLiveDotImageView.rac.hidden = isLive.map(negate)
+    self.numberWatchingButton.rac.hidden = isLive.map(negate)
+
+    self.navBarTitleLabel.rac.text = self.viewModel.outputs.titleViewText
+
     self.liveStreamTitleLabel.rac.text = self.eventDetailsViewModel.outputs.liveStreamTitle.observeForUI()
     self.liveStreamParagraphLabel.rac.text = self.eventDetailsViewModel.outputs.liveStreamParagraph
       .observeForUI()
@@ -328,6 +384,12 @@ internal final class LiveStreamContainerViewController: UIViewController {
     self.numberWatchingButton.layer.cornerRadius = self.numberWatchingButton.frame.size.height / 2
     self.subscribeButton.layer.cornerRadius = self.subscribeButton.frame.size.height / 2
     self.creatorAvatarImageView.layer.cornerRadius = self.creatorAvatarImageView.frame.size.width / 2
+
+    let titleSize = self.navBarTitleLabel.sizeThatFits(CGSize(width: CGFloat.max, height: CGFloat.max))
+    self.navBarTitleStackViewBackgroundView.frame = CGRect(
+      origin:self.navBarTitleStackViewBackgroundView.frame.origin,
+      size: CGSize(width: Styles.grid(4) + titleSize.width, height: Styles.grid(5))
+    )
   }
 
   internal override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator
@@ -356,6 +418,13 @@ internal final class LiveStreamContainerViewController: UIViewController {
                   width: self.view.bounds.size.width,
                   height: self.view.bounds.size.height * (landscape ? 1 : 0.4))
   }
+
+  // MARK: Subviews
+
+  lazy var navBarTitleStackViewBackgroundView = { UIView() }()
+  lazy var navBarTitleStackView = { UIStackView() }()
+  lazy var navBarLiveDotImageView = { UIImageView() }()
+  lazy var navBarTitleLabel = { UILabel() }()
 
   // MARK: Actions
 
@@ -393,11 +462,12 @@ extension LiveStreamContainerViewController: LiveStreamViewControllerDelegate {
 
   }
 
-  internal func playbackStateChanged(controller: LiveVideoViewController, state: LiveVideoViewControllerState) {
-    self.viewModel.inputs.liveVideoViewControllerStateChanged(state: state)
-  }
-
   internal func numberOfPeopleWatchingChanged(controller: LiveStreamViewController, numberOfPeople: Int) {
     self.eventDetailsViewModel.inputs.setNumberOfPeopleWatching(numberOfPeople: numberOfPeople)
+  }
+
+  internal func liveStreamStateChanged(controller: LiveStreamViewController, state: LiveStreamViewControllerState) {
+    self.viewModel.inputs.liveStreamViewControllerStateChanged(state: state)
+    self.eventDetailsViewModel.inputs.liveStreamViewControllerStateChanged(state: state)
   }
 }

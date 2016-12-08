@@ -119,32 +119,9 @@ private func countLabelTextForLiveStream(liveStream: Project.LiveStream) -> Stri
     return "Replay"
   }
 
-  let components = NSCalendar.currentCalendar()
-    .components([.Day, .Hour, .Minute, .Second],
-                fromDate: now,
-                toDate: liveStreamStartDate,
-                options: [])
+  let (time, unit) = Format.duration(secondsInUTC: liveStream.startDate, abbreviate: true, useToGo: false)
 
-  return ordinalStringForComponents(components)
-}
-
-private func ordinalStringForComponents(components: NSDateComponents) -> String {
-  var ordinal = ""
-
-  if components.day > 0 {
-    ordinal = "\(components.day) day\(components.day > 1 ? "s" : "")"
-  }
-  else if components.hour > 0 {
-    ordinal = "\(components.hour) hour\(components.hour > 1 ? "s" : "")"
-  }
-  else if components.minute > 0 {
-    ordinal = "\(components.minute) minute\(components.minute > 1 ? "s" : "")"
-  }
-  else if components.second > 0 {
-    ordinal = "\(components.second) second\(components.second > 1 ? "s" : "")"
-  }
-
-  return "in \(ordinal)"
+  return "in \(time) \(unit)"
 }
 
 public enum ProjectPamphletSubpageCellPosition {

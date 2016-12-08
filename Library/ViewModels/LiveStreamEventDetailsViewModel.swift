@@ -13,6 +13,7 @@ public protocol LiveStreamEventDetailsViewModelType {
 public protocol LiveStreamEventDetailsViewModelInputs {
   func configureWith(project project: Project, event: LiveStreamEvent?)
   func fetchLiveStreamEvent()
+  func liveStreamViewControllerStateChanged(state state: LiveStreamViewControllerState)
   func subscribeButtonTapped()
   func setLiveStreamEvent(event event: LiveStreamEvent)
   func setNumberOfPeopleWatching(numberOfPeople numberOfPeople: Int)
@@ -51,10 +52,23 @@ public class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewModelTyp
       self.liveStreamEventProperty.signal.ignoreNil().map { $0.stream.isSubscribed }
     )
 
-    self.introText = self.liveStreamEventProperty.signal.ignoreNil().mapConst("is live now")
+    self.introText = combineLatest(
+      self.liveStreamViewControllerStateChangedProperty.signal.ignoreNil(),
+      self.liveStreamEventProperty.signal.ignoreNil()
+    ).map {
+      if case .live = $0 { "is live now" }
+      if case .replay = $0 {
+        return "was live " + (Format.relative(secondsInUTC: $1.stream.startDate.timeIntervalSince1970,
+        abbreviate: true))
+      }
+
+      return ""
+    }
+    
     self.creatorAvatarUrl = self.liveStreamEventProperty.signal.ignoreNil()
       .map { NSURL(string: $0.creator.avatar) }
       .ignoreNil()
+
     self.creatorName = self.liveStreamEventProperty.signal.ignoreNil().map { $0.creator.name }
     self.liveStreamTitle = self.liveStreamEventProperty.signal.ignoreNil().map { $0.stream.projectName }
     self.liveStreamParagraph = self.liveStreamEventProperty.signal.ignoreNil().map { $0.stream.description }
@@ -106,6 +120,12 @@ public class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewModelTyp
   private let fetchLiveStreamEventProperty = MutableProperty()
   public func fetchLiveStreamEvent() {
     self.fetchLiveStreamEventProperty.value = ()
+  }
+
+  private let liveStreamViewControllerStateChangedProperty =
+    MutableProperty<LiveStreamViewControllerState?>(nil)
+  public func liveStreamViewControllerStateChanged(state state: LiveStreamViewControllerState) {
+    self.liveStreamViewControllerStateChangedProperty.value = state
   }
 
   private let liveStreamEventProperty = MutableProperty<LiveStreamEvent?>(nil)

@@ -18,7 +18,7 @@ public protocol LiveStreamContainerViewModelInputs {
   func viewDidLayoutSubviews()
   func viewDidLoad()
   func viewWillTransitionToSizeWithCoordinator(coordinator coordinator: UIViewControllerTransitionCoordinator)
-  func liveVideoViewControllerStateChanged(state state: LiveVideoViewControllerState)
+  func liveStreamViewControllerStateChanged(state state: LiveStreamViewControllerState)
 }
 
 public protocol LiveStreamContainerViewModelOutputs {
@@ -27,6 +27,7 @@ public protocol LiveStreamContainerViewModelOutputs {
   var layoutLiveStreamView: Signal<UIView, NoError> { get }
   var layoutLiveStreamViewWithCoordinator: Signal<(UIView, UIViewControllerTransitionCoordinator), NoError> { get }
   var liveStreamViewController: Signal<LiveStreamViewController, NoError> { get }
+  var liveStreamState: Signal<LiveStreamViewControllerState, NoError> { get }
   var loaderText: Signal<String, NoError> { get }
   var projectImageUrl: Signal<NSURL, NoError> { get }
   var showVideoView: Signal<Bool, NoError> { get }
@@ -65,17 +66,35 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
         .signal.ignoreNil())
       .map { ($0.view, $1) }
 
-    self.loaderText = project.mapConst("The live stream will start soon")
+    self.liveStreamState = Signal.merge(
+      self.liveStreamViewControllerStateChangedProperty.signal.ignoreNil(),
+      project.mapConst(.loading)
+    )
+
+    self.loaderText = liveStreamState.map {
+        if case .live(playbackState: .loading, _) = $0 { return "The live stream will start soon" }
+        if case .greenRoom = $0 { return "The live stream will start soon" }
+        if case .replay(playbackState: .loading, _, _) = $0 { return "Replay will start soon" }
+
+        return "Connecting"
+    }
 
     self.projectImageUrl = project
       .map { NSURL(string: $0.photo.full) }
       .ignoreNil()
 
-    self.titleViewText = Signal.empty
+    self.titleViewText = liveStreamState.map {
+      if case .live(_, _) = $0 { return "Live" }
+      if case .greenRoom = $0 { return "Starting soon" }
+      if case .replay(_, _, _) = $0 { return "Recorded Live" }
+
+      return "Loading"
+    }
 
     self.showVideoView = combineLatest(
-        self.liveVideoViewControllerStateChangedProperty.signal.ignoreNil().map {
-          if case .Playing = $0 { return true }
+        self.liveStreamViewControllerStateChangedProperty.signal.ignoreNil().map {
+          if case .live(playbackState: .playing, _) = $0 { return true }
+          if case .replay(playbackState: .playing, _, _) = $0 { return true }
           
           return false
         },
@@ -96,10 +115,10 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     self.closeButtonTappedProperty.value = ()
   }
 
-  private let liveVideoViewControllerStateChangedProperty =
-    MutableProperty<LiveVideoViewControllerState?>(nil)
-  public func liveVideoViewControllerStateChanged(state state: LiveVideoViewControllerState) {
-    self.liveVideoViewControllerStateChangedProperty.value = state
+  private let liveStreamViewControllerStateChangedProperty =
+    MutableProperty<LiveStreamViewControllerState?>(nil)
+  public func liveStreamViewControllerStateChanged(state state: LiveStreamViewControllerState) {
+    self.liveStreamViewControllerStateChangedProperty.value = state
   }
 
   private let liveStreamEventProperty = MutableProperty<LiveStreamEvent?>(nil)
@@ -133,6 +152,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
   public let layoutLiveStreamView: Signal<UIView, NoError>
   public let layoutLiveStreamViewWithCoordinator: Signal<(UIView, UIViewControllerTransitionCoordinator), NoError>
   public let liveStreamViewController: Signal<LiveStreamViewController, NoError>
+  public let liveStreamState: Signal<LiveStreamViewControllerState, NoError>
   public let loaderText: Signal<String, NoError>
   public let projectImageUrl: Signal<NSURL, NoError>
   public let showVideoView: Signal<Bool, NoError>

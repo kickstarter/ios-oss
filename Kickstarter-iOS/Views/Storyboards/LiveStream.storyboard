@@ -40,16 +40,36 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7rB-eO-gWg">
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="90"/>
                                         <subviews>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="jSK-4e-X7a">
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zyx-cn-REu">
                                                 <rect key="frame" x="0.0" y="0.0" width="90" height="90"/>
+                                                <subviews>
+                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="jSK-4e-X7a">
+                                                        <rect key="frame" x="0.0" y="0.0" width="90" height="90"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" secondItem="jSK-4e-X7a" secondAttribute="height" multiplier="1:1" id="0Id-43-mxK"/>
+                                                        </constraints>
+                                                    </imageView>
+                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="live_waves" translatesAutoresizingMaskIntoConstraints="NO" id="ZW7-eZ-NGd">
+                                                        <rect key="frame" x="0.0" y="0.0" width="240" height="90"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" secondItem="ZW7-eZ-NGd" secondAttribute="height" multiplier="1:1" id="nk4-tf-SNB"/>
+                                                        </constraints>
+                                                    </imageView>
+                                                </subviews>
                                                 <constraints>
-                                                    <constraint firstAttribute="width" secondItem="jSK-4e-X7a" secondAttribute="height" multiplier="1:1" id="0Id-43-mxK"/>
+                                                    <constraint firstItem="jSK-4e-X7a" firstAttribute="leading" secondItem="zyx-cn-REu" secondAttribute="leading" id="3jA-mU-zCF"/>
+                                                    <constraint firstItem="jSK-4e-X7a" firstAttribute="top" secondItem="zyx-cn-REu" secondAttribute="top" id="3zG-VW-dNw"/>
+                                                    <constraint firstItem="ZW7-eZ-NGd" firstAttribute="top" secondItem="jSK-4e-X7a" secondAttribute="top" constant="-2" id="59b-oK-f3N"/>
+                                                    <constraint firstItem="ZW7-eZ-NGd" firstAttribute="width" secondItem="jSK-4e-X7a" secondAttribute="width" multiplier="0.28" id="73X-aC-z4j"/>
+                                                    <constraint firstItem="jSK-4e-X7a" firstAttribute="trailing" secondItem="zyx-cn-REu" secondAttribute="trailing" id="KUc-Xf-eaf"/>
+                                                    <constraint firstItem="jSK-4e-X7a" firstAttribute="bottom" secondItem="zyx-cn-REu" secondAttribute="bottom" id="YuS-jq-xMc"/>
+                                                    <constraint firstItem="ZW7-eZ-NGd" firstAttribute="leading" secondItem="jSK-4e-X7a" secondAttribute="leading" constant="-2" id="cnq-IC-bhr"/>
                                                 </constraints>
-                                            </imageView>
+                                            </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hBo-a9-bYC">
                                                 <rect key="frame" x="90" y="0.0" width="464" height="90"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SJN-qW-Fjy">
@@ -71,13 +91,13 @@
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="N8q-rg-LC3">
                                                 <rect key="frame" x="0.0" y="0.0" width="600" height="21"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s7E-p7-ZXS">
                                                 <rect key="frame" x="0.0" y="21" width="600" height="19"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hHW-1g-ljS" userLabel="Spacer">
@@ -88,17 +108,17 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TgX-hH-ACY">
                                         <rect key="frame" x="0.0" y="340" width="600" height="21"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ifN-Cc-dio">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="752" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ifN-Cc-dio">
                                                 <rect key="frame" x="0.0" y="0.0" width="526" height="21"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hJj-R4-rUD">
+                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" horizontalCompressionResistancePriority="752" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hJj-R4-rUD">
                                                 <rect key="frame" x="526" y="0.0" width="54" height="21"/>
                                                 <state key="normal" title="Button"/>
                                             </button>
-                                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" horizontalCompressionResistancePriority="748" misplaced="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="NM2-Ql-kqW">
+                                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" horizontalCompressionResistancePriority="748" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="NM2-Ql-kqW">
                                                 <rect key="frame" x="580" y="0.0" width="20" height="21"/>
                                             </activityIndicatorView>
                                         </subviews>
@@ -120,7 +140,7 @@
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Ox-58-NLf">
                                                         <rect key="frame" x="279" y="0.0" width="42" height="21"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" animating="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="T3H-jR-xFr">
@@ -171,6 +191,7 @@
                     <connections>
                         <outlet property="creatorAvatarImageView" destination="jSK-4e-X7a" id="AcB-Cs-3WC"/>
                         <outlet property="creatorAvatarLabel" destination="hBo-a9-bYC" id="FLg-iY-Tbb"/>
+                        <outlet property="creatorAvatarLiveDotImageView" destination="ZW7-eZ-NGd" id="4Kk-4M-Shr"/>
                         <outlet property="detailsContainerStackView" destination="SnY-YI-3wc" id="VZR-tS-6Hp"/>
                         <outlet property="detailsLoadingActivityIndicatorView" destination="waB-eH-keY" id="c2b-M6-9UQ"/>
                         <outlet property="detailsStackView" destination="LI3-IO-dUp" id="Ffv-jR-yot"/>
@@ -454,6 +475,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="live_waves" width="10" height="11"/>
         <image name="rectangle_separator" width="20" height="4"/>
         <image name="zack-sears" width="160" height="160"/>
     </resources>
