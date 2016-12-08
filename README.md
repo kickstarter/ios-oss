@@ -20,9 +20,9 @@ release.
 ## Deploying
 
 Beta and iTunes deployments happen by pushing to the remote `beta-dist` and
-`itunes-dist` branches respectively, which triggers CircleCI to create *.ipa and
-*.dSYM files and upload them to the appropriate service. This process can be
-done with a `make` command:
+`itunes-dist` branches respectively, which triggers CircleCI to create `*.ipa`
+and `*.dSYM` files and upload them to the appropriate service. This process can
+be done with a `make` command:
 
 * `make deploy`: deploy `master` to beta users
 * `BRANCH=feature make deploy`: deploy `feature` branch to beta users
