@@ -1,7 +1,11 @@
 import FBSDKCoreKit
 import Foundation
 import HockeySDK
-import KsApi
+#if DEBUG
+  @testable import KsApi
+#else
+  import KsApi
+#endif
 import Kickstarter_Framework
 import Library
 import Prelude
@@ -33,6 +37,12 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     // NB: We have to push this shared instance directly because somehow we get two different shared
     //     instances if we use the one from `Environment.init`.
     AppEnvironment.replaceCurrentEnvironment(facebookAppDelegate: FBSDKApplicationDelegate.sharedInstance())
+
+    #if DEBUG
+      if Secrets.isOSS {
+        AppEnvironment.replaceCurrentEnvironment(apiService: MockService())
+      }
+    #endif
 
     self.viewModel.outputs.updateCurrentUserInEnvironment
       .observeForUI()

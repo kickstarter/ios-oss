@@ -35,7 +35,7 @@ clean:
 
 dependencies: submodules configs
 
-bootstrap: hooks
+bootstrap: hooks dependencies
 	brew update
 	brew unlink swiftlint || true
 	brew install swiftlint
