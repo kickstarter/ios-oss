@@ -39,7 +39,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     AppEnvironment.replaceCurrentEnvironment(facebookAppDelegate: FBSDKApplicationDelegate.sharedInstance())
 
     #if DEBUG
-      if !Secrets.isOSS {
+      if Secrets.isOSS {
         AppEnvironment.replaceCurrentEnvironment(apiService: MockService())
       }
     #endif
