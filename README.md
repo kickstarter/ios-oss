@@ -1,6 +1,6 @@
 # Kickstarter for iOS and tvOS
 
-[![Circle CI](https://circleci.com/gh/kickstarter/kickstarter-tv.svg?style=svg&circle-token=2b61f76d12b127455820924f347fd9e6697da9dc)](https://circleci.com/gh/kickstarter/kickstarter-tv)
+[![Circle CI](https://circleci.com/gh/kickstarter/ios-oss.svg?style=svg&)](https://circleci.com/gh/kickstarter/ios-oss)
 
 ## Getting Started
 
@@ -24,9 +24,9 @@ We make heavy use of the following projects, and so it can be helpful to be fami
 
 ### 1st party
 
-* [![Circle CI](https://circleci.com/gh/kickstarter/Kickstarter-Prelude.svg?style=svg&circle-token=ddbeef5e5b970496ddf6d7c81d60367eee16aa32)](https://circleci.com/gh/kickstarter/Kickstarter-Prelude) [Prelude](https://github.com/kickstarter/Kickstarter-Prelude): Foundation of types and functions missing from the Swift standard library.
+* [![Circle CI](https://circleci.com/gh/kickstarter/Kickstarter-Prelude.svg?style=svg)](https://circleci.com/gh/kickstarter/Kickstarter-Prelude) [Prelude](https://github.com/kickstarter/Kickstarter-Prelude): Foundation of types and functions missing from the Swift standard library.
 * [![CircleCI](https://circleci.com/gh/kickstarter/ios-ksapi.svg?style=svg)](https://circleci.com/gh/kickstarter/ios-ksapi) [KsApi](https://github.com/kickstarter/ios-ksapi): A reactive networking layer for fetching data from Kickstarter's API.
-* [![Circle CI](https://circleci.com/gh/kickstarter/Kickstarter-ReactiveExtensions.svg?style=svg&circle-token=87cb6246722fd8b503516bcdcf84e64256f86470)](https://circleci.com/gh/kickstarter/Kickstarter-ReactiveExtensions) [ReactiveExtensions](https://github.com/kickstarter/Kickstarter-ReactiveExtensions): A collection of operators missing from Reactive Cocoa.
+* [![Circle CI](https://circleci.com/gh/kickstarter/Kickstarter-ReactiveExtensions.svg?style=svg&)](https://circleci.com/gh/kickstarter/Kickstarter-ReactiveExtensions) [ReactiveExtensions](https://github.com/kickstarter/Kickstarter-ReactiveExtensions): A collection of operators missing from Reactive Cocoa.
 
 ### 3rd party
 
