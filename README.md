@@ -14,8 +14,7 @@ and read more about our journey to open source [here TODO LINK]().
 1. [Download](https://developer.apple.com/xcode/download/) the newest Xcode
 release.
 1. Clone this repository.
-1. Run `make bootstrap` to install tools.
-1. Run `make dependencies` to install library dependencies.
+1. Run `make bootstrap` to install tools and dependencies.
 1. Run `make test-all` to build and run tests on all platforms.
 
 ## Deploying
