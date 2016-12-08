@@ -6,7 +6,7 @@ Welcome to Kickstarter’s open source iOS app! Come on in, take your shoes off,
 stay a while—explore how Kickstarter’s native squad has built and continues to
 build the app.
 
-We've also open sourced our [Android app](https://github.com/kickstarter/android-oss),
+We’ve also open sourced our [Android app](https://github.com/kickstarter/android-oss),
 and read more about our journey to open source [here TODO LINK]().
 
 ## Getting Started
@@ -21,9 +21,9 @@ release.
 ## Deploying
 
 Beta and iTunes deployments happen by pushing to the remote `beta-dist` and
-`itunes-dist` branches respectively, which triggers CircleCI to create ipa and
-dsym files and upload them to the appropriate service. This process can be done
-with a `make` command:
+`itunes-dist` branches respectively, which triggers CircleCI to create *.ipa and
+*.dSYM files and upload them to the appropriate service. This process can be
+done with a `make` command:
 
 * `make deploy`: deploy `master` to beta users
 * `BRANCH=feature make deploy`: deploy `feature` branch to beta users
@@ -42,7 +42,7 @@ types and functions we feel are missing from the Swift standard library.
 
 * [![CircleCI](https://circleci.com/gh/kickstarter/ios-ksapi.svg?style=svg)](https://circleci.com/gh/kickstarter/ios-ksapi)
 [KsApi](https://github.com/kickstarter/ios-ksapi): Models and reactive
-networking layer for fetching data from Kickstarter's API.
+networking layer for fetching data from Kickstarter’s API.
 
 * [![Circle CI](https://circleci.com/gh/kickstarter/Kickstarter-ReactiveExtensions.svg?style=svg&)](https://circleci.com/gh/kickstarter/Kickstarter-ReactiveExtensions)
 [ReactiveExtensions](https://github.com/kickstarter/Kickstarter-ReactiveExtensions):
@@ -70,15 +70,15 @@ a backer viewing a project in French
 
 * We use Swift Playgrounds for [iterative development and styling](https://youtu.be/A0VaIKK2ijM?t=26m47s).
 Most major screens in the app get a corresponding playground where we can see a
-wide variety of devices, languages and data in real-time. Browse our collection of
+wide variety of devices, languages and data in real time. Browse our collection of
 playgrounds [here](https://github.com/kickstarter/ios-oss/tree/master/Kickstarter-iOS.playground/Pages).
 
 * [We use view models](https://www.youtube.com/watch?v=EpTlqx6NjYo&t=276s) as
-a light-weight way to isolate side-effects and embrace a functional core. We
+a lightweight way to isolate side effects and embrace a functional core. We
 write [these](https://github.com/kickstarter/ios-oss/tree/readme-update/Library/ViewModels)
 as a pure mapping of input signals to output signals, and [test](https://github.com/kickstarter/ios-oss/tree/readme-update/Library/Tests/ViewModels)
 them heavily, including tests for localization, accessibility and event
-trakcing.
+tracking.
 
 ## Contributing
 
@@ -87,7 +87,7 @@ share our wins, mistakes, and methodology of iOS development as we work
 in the open. Our primary focus is to continue improving the app for our users in
 line with our roadmap.
 
-The best way to submit feedback and report bugs is to open a Github issue.
+The best way to submit feedback and report bugs is to open a GitHub issue.
 Please be sure to include your operating system, device, version number, and
 steps to reproduce reported bugs. Keep in mind that all participants will be
 expected to follow our code of conduct.
@@ -102,12 +102,12 @@ behavior violating this base foundation of respect.
 
 ## Documentation
 
-While we're at it, why not share our docs? Check out the
+While we’re at it, why not share our docs? Check out the
 [native docs](https://github.com/kickstarter/native-docs) we have written so far
 for more documentation.
 
 ## License
 
-Copyright Kickstarter, [PBC](https://www.kickstarter.com/charter).
+Copyright Kickstarter 2016, [PBC](https://www.kickstarter.com/charter).
 
 Kickstarter for iOS is released under the [Apache 2.0 License](https://www.apache.org/licenses/LICENSE-2.0).
