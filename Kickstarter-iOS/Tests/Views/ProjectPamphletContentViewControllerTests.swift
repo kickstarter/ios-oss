@@ -102,8 +102,11 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       |> Project.lens.rewards %~ { rewards in
         [
           rewards[0]
+            |> Reward.lens.startsAt .~ 0
             |> Reward.lens.endsAt .~ endsAt,
           rewards[2]
+            |> Reward.lens.startsAt .~ 0
+            |> Reward.lens.endsAt .~ 0
         ]
       }
       |> Project.lens.state .~ .live
