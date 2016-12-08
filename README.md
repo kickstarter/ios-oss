@@ -17,22 +17,6 @@ release.
 1. Run `make bootstrap` to install tools and dependencies.
 1. Run `make test-all` to build and run tests on all platforms.
 
-## Deploying
-
-Beta and iTunes deployments happen by pushing to the remote `beta-dist` and
-`itunes-dist` branches respectively, which triggers CircleCI to create `*.ipa`
-and `*.dSYM` files and upload them to the appropriate service. This process can
-be done with a `make` command:
-
-* `make deploy`: deploy `master` to beta users
-* `BRANCH=feature make deploy`: deploy `feature` branch to beta users
-* `RELEASE=itunes make deploy`: deploy `master` to iTunes connect
-
-## Dependencies
-
-We make heavy use of the following projects, and so it can be helpful to be
-familiar with them:
-
 ## Some fun things to explore
 
 If you’re just looking for a quick glance at a few things we’re particularly
@@ -63,6 +47,11 @@ tracking.
 While we’re at it, why not share our docs? Check out the
 [native docs](https://github.com/kickstarter/native-docs) we have written so far
 for more documentation.
+
+## Dependencies
+
+We make heavy use of the following projects, and so it can be helpful to be
+familiar with them:
 
 ### 1st party
 
