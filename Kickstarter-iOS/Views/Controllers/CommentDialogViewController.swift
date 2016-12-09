@@ -1,5 +1,6 @@
 import UIKit
 import KsApi
+import Prelude
 import ReactiveCocoa
 import Result
 import ReactiveExtensions
@@ -15,6 +16,7 @@ internal final class CommentDialogViewController: UIViewController {
   internal weak var delegate: CommentDialogDelegate?
 
   @IBOutlet private weak var bottomConstraint: NSLayoutConstraint!
+  @IBOutlet private weak var cancelButton: UIBarButtonItem!
   @IBOutlet private weak var titleLabel: UILabel!
   @IBOutlet private weak var subtitleLabel: UILabel!
   @IBOutlet private weak var bodyTextView: UITextView!
@@ -39,7 +41,24 @@ internal final class CommentDialogViewController: UIViewController {
     return vc
   }
 
-  override func bindViewModel() {
+  internal override func bindStyles() {
+    super.bindStyles()
+
+    self.postButton
+      |> UIBarButtonItem.lens.title %~ { _ in Strings.social_buttons_post() }
+
+    self.titleLabel
+      |> UILabel.lens.text %~ { _ in Strings.Public_comment() }
+
+    self.cancelButton
+      |> UIBarButtonItem.lens.title %~ { _ in
+        Strings.dashboard_post_update_compose_attachment_buttons_cancel()
+    }
+  }
+
+  internal override func bindViewModel() {
+    super.bindViewModel()
+
     self.bodyTextView.rac.text = self.viewModel.outputs.bodyTextViewText
     self.postButton.rac.enabled = self.viewModel.outputs.postButtonEnabled
     self.subtitleLabel.rac.text = self.viewModel.outputs.subtitle

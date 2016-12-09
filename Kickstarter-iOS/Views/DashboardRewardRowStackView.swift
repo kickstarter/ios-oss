@@ -24,6 +24,7 @@ internal final class DashboardRewardRowStackView: UIStackView {
     self.rewardsLabel
       |> dashboardColumnTextLabelStyle
       |> UILabel.lens.font .~ UIFont.ksr_subhead().bolded
+      |> UILabel.lens.numberOfLines .~ 0
 
     self.pledgedLabel |> dashboardColumnTextLabelStyle
     self.backersLabel |> dashboardColumnTextLabelStyle

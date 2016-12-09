@@ -1,7 +1,7 @@
 import Foundation
 
 let endpoint: String? =
-  "https://\(Secrets.Server.Api.production)/v1/app/ios/config?client_id=\(Secrets.ApiClient.production)&all_locales=true"
+  "https://\(Secrets.Api.Endpoint.production)/v1/app/ios/config?client_id=\(Secrets.Api.Client.production)&all_locales=true"
 
 extension Dictionary {
   public func withAllValuesFrom(other: Dictionary) -> Dictionary {

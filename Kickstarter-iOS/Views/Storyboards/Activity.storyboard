@@ -360,16 +360,16 @@
                                                     <rect key="frame" x="0.0" y="58" width="368" height="57"/>
                                                     <subviews>
                                                         <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="xub-YJ-v4c">
-                                                            <rect key="frame" x="0.0" y="19" width="250" height="20"/>
+                                                            <rect key="frame" x="0.0" y="11" width="250" height="37"/>
                                                             <subviews>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cosmic Surgery" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.80000000000000004" translatesAutoresizingMaskIntoConstraints="NO" id="vrG-dK-htn">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="250" height="0.0"/>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Cosmic Surgery" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.80000000000000004" translatesAutoresizingMaskIntoConstraints="NO" id="vrG-dK-htn">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="250" height="17"/>
                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="by Alma Haser" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P3B-b5-xfM">
-                                                                    <rect key="frame" x="0.0" y="6" width="250" height="14"/>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="by Alma Haser" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P3B-b5-xfM">
+                                                                    <rect key="frame" x="0.0" y="23" width="250" height="14"/>
                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                                     <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                                     <nil key="highlightedColor"/>
@@ -423,7 +423,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="400" height="380"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="world-of-tomorrow" translatesAutoresizingMaskIntoConstraints="NO" id="YEW-km-DyF">
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cosmic-surgery" translatesAutoresizingMaskIntoConstraints="NO" id="YEW-km-DyF">
                                             <rect key="frame" x="8" y="8" width="80" height="45"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" secondItem="YEW-km-DyF" secondAttribute="height" multiplier="16:9" id="f67-Ou-Bas"/>
@@ -767,7 +767,6 @@
     <resources>
         <image name="close-icon" width="12" height="12"/>
         <image name="cosmic-surgery" width="800" height="600"/>
-        <image name="world-of-tomorrow" width="800" height="600"/>
         <image name="zack-sears" width="160" height="160"/>
     </resources>
 </document>

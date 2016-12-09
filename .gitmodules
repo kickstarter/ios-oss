@@ -1,6 +1,3 @@
-[submodule "Frameworks/KsApi"]
-	path = Frameworks/KsApi
-	url = https://github.com/kickstarter/Kickstarter-KsApi.git
 [submodule "Frameworks/AlamofireImage"]
 	path = Frameworks/AlamofireImage
 	url = https://github.com/Alamofire/AlamofireImage.git
@@ -13,3 +10,6 @@
 [submodule "Frameworks/KsLive"]
 	path = Frameworks/KsLive
 	url = https://github.com/kickstarter/kickstarter-live-ios.git
+[submodule "Frameworks/ios-ksapi"]
+	path = Frameworks/ios-ksapi
+	url = https://github.com/kickstarter/ios-ksapi

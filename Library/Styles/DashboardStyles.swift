@@ -28,7 +28,8 @@ public let dashboardColumnTitleButtonStyle =
   UIButton.lens.titleLabel.font .~ UIFont.ksr_caption1().bolded
     <> UIButton.lens.titleColor(forState: .Normal) .~ .ksr_navy_700
     <> UIButton.lens.titleColor(forState: .Highlighted) .~ .ksr_grey_100
-    <> UIButton.lens.contentEdgeInsets .~ .init(top: 12.0, left: 0.0, bottom: 0.0, right: 0.0)
+    <> UIButton.lens.contentEdgeInsets .~
+    .init(top: Styles.grid(2), left: 0, bottom: Styles.grid(1), right: 0)
     <> UIButton.lens.contentHorizontalAlignment .~ .Left
 
 public let dashboardColumnTextLabelStyle =
@@ -115,7 +116,7 @@ public let dashboardReferrersShowMoreButtonStyle = dashboardGreenTextBorderButto
 
 public let dashboardReferrersSourceLabelStyle = dashboardColumnTextLabelStyle
   <> UILabel.lens.font .~ .ksr_headline(size: 14)
-  <> UILabel.lens.numberOfLines .~ 2
+  <> UILabel.lens.numberOfLines .~ 0
 
 public let dashboardReferrersTitleLabelStyle = dashboardCellTitleLabelStyle
   <> UILabel.lens.text %~ { _ in Strings.dashboard_graphs_referrers_title_referrers() }

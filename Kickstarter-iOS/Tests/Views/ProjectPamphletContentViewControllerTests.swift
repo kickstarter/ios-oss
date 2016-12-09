@@ -75,8 +75,11 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
   }
 
   func testNonBacker_SuccessfulProject() {
+    let deadline = self.dateType.init().dateByAddingTimeInterval(-100).timeIntervalSince1970
+
     let project = self.cosmicSurgery
-      |> Project.lens.dates.stateChangedAt .~ 1234567890.0
+      |> Project.lens.dates.stateChangedAt .~ deadline
+      |> Project.lens.dates.deadline .~ deadline
       |> Project.lens.state .~ .successful
 
     Language.allLanguages.forEach { language in
@@ -150,9 +153,12 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
   }
 
   func testBacker_SuccessfulProject() {
+    let deadline = self.dateType.init().dateByAddingTimeInterval(-100).timeIntervalSince1970
+
     let project = self.cosmicSurgery
       |> Project.lens.rewards %~ { rewards in [rewards[0], rewards[2]] }
-      |> Project.lens.dates.stateChangedAt .~ 1234567890.0
+      |> Project.lens.dates.stateChangedAt .~ deadline
+      |> Project.lens.dates.deadline .~ deadline
       |> Project.lens.state .~ .successful
       |> Project.lens.personalization.isBacking .~ true
       |> Project.lens.personalization.backing %~~ { _, project in
