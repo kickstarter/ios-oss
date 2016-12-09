@@ -210,38 +210,40 @@ ActivitiesViewModelOutputs {
       .ignoreNil()
       .map { ($0, .activity) }
 
-    let surveyEvents = Signal.merge(
-      self.viewWillAppearProperty.signal.ignoreNil().filter(isFalse).ignoreValues(),
-      self.surveyResponseViewControllerDismissedProperty.signal
+    let surveyEvents = currentUser
+      .filter { $0 != nil }
+      .takeWhen(Signal.merge(
+        self.viewWillAppearProperty.signal.ignoreNil().filter(isFalse).ignoreValues(),
+        self.surveyResponseViewControllerDismissedProperty.signal
+        )
       )
-      .switchMap {
+      .switchMap { _ in
         AppEnvironment.current.apiService.fetchUnansweredSurveyResponses()
           .materialize()
     }
 
     self.unansweredSurveys = surveyEvents.values()
 
-    self.showFindFriendsSection = currentUser
-      .takeWhen(surveyEvents)
-      .map {
-        (
-          .activity,
-          $0 != nil
-            && AppEnvironment.current.currentUser?.facebookConnected ?? false
-            && !AppEnvironment.current.userDefaults.hasClosedFindFriendsInActivity
-        )
-      }
+    let surveyValuesOrErrors = Signal.merge(surveyEvents.values().ignoreValues(),
+                                            surveyEvents.errors().ignoreValues())
 
-    self.showFacebookConnectSection = currentUser
-      .takeWhen(surveyEvents)
+    self.showFindFriendsSection = surveyValuesOrErrors
       .map {
         (
           .activity,
-          $0 != nil
-            && !(AppEnvironment.current.currentUser?.facebookConnected ?? false)
-            && !AppEnvironment.current.userDefaults.hasClosedFacebookConnectInActivity
+          AppEnvironment.current.currentUser?.facebookConnected ?? false
+          && !AppEnvironment.current.userDefaults.hasClosedFindFriendsInActivity
         )
-      }
+    }
+
+    self.showFacebookConnectSection = surveyValuesOrErrors
+      .map {
+        (
+          .activity,
+          !(AppEnvironment.current.currentUser?.facebookConnected ?? false)
+          && !AppEnvironment.current.userDefaults.hasClosedFacebookConnectInActivity
+        )
+    }
 
     self.deleteFacebookConnectSection = self.dismissFacebookConnectSectionProperty.signal
 

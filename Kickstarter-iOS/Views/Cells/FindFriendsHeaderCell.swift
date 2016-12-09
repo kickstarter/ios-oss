@@ -41,12 +41,7 @@ internal final class FindFriendsHeaderCell: UITableViewCell, ValueCell {
     super.bindStyles()
 
     self
-      |> baseTableViewCellStyle()
-      |> UITableViewCell.lens.contentView.layoutMargins %~~ { _, cell in
-        cell.traitCollection.isRegularRegular
-          ? .init(topBottom: Styles.grid(2), leftRight: Styles.grid(30))
-          : .init(topBottom: Styles.gridHalf(3), leftRight: Styles.grid(2))
-    }
+      |> feedTableViewCellStyle
 
     self.cardView
       |> dropShadowStyle()

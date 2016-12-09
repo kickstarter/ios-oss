@@ -83,6 +83,13 @@ public func dropShadowStyle <V: UIViewProtocol> (
       <> V.lens.layer.shadowOffset .~ offset
 }
 
+public let feedTableViewCellStyle = baseTableViewCellStyle()
+  <> UITableViewCell.lens.contentView.layoutMargins %~~ { _, cell in
+    cell.traitCollection.isRegularRegular
+      ? .init(topBottom: Styles.grid(2), leftRight: Styles.grid(30))
+      : .init(topBottom: Styles.gridHalf(3), leftRight: Styles.grid(2))
+}
+
 public let formFieldStyle =
   UITextField.lens.font .~ .ksr_body()
     <> UITextField.lens.textColor .~ .ksr_text_navy_900
