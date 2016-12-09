@@ -65,10 +65,10 @@ ProjectPamphletViewModelOutputs {
       freshProject
       )
 
-    self.configureChildViewControllersWithProject = combineLatest(
-      project,
-      self.refTagProperty.signal
-      )
+    let refTag = self.refTagProperty.signal
+      .map { $0.map(cleanUp(refTag:)) }
+
+    self.configureChildViewControllersWithProject = combineLatest(project, refTag)
 
     self.prefersStatusBarHiddenProperty <~ self.viewWillAppearAnimated.signal.mapConst(true)
 
@@ -81,12 +81,12 @@ ProjectPamphletViewModelOutputs {
 
     let cookieRefTag = combineLatest(
       project.map(cookieRefTagFor(project:)),
-      self.refTagProperty.signal
+      refTag
       )
       .take(1)
       .map { $0 ?? $1 }
 
-    combineLatest(project, self.refTagProperty.signal, cookieRefTag)
+    combineLatest(project, refTag, cookieRefTag)
       .takeWhen(self.viewDidAppearAnimated.signal)
       .take(1)
       .observeNext { project, refTag, cookieRefTag in
@@ -134,8 +134,8 @@ ProjectPamphletViewModelOutputs {
   public var outputs: ProjectPamphletViewModelOutputs { return self }
 }
 
-private let cookieSeparator = Character("?")
-private let escapedCookieSeparator = Character("%3F")
+private let cookieSeparator = "?"
+private let escapedCookieSeparator = "%3F"
 
 // Extracts the ref tag stored in cookies for a particular project. Returns `nil` if no such cookie has
 // been previously set.
@@ -153,18 +153,32 @@ private func cookieName(project: Project) -> String {
   return "ref_\(project.id)"
 }
 
+// Tries to extract the name of the ref tag from a cookie. It has to do double work in case the cookie
+// is accidentally encoded with a `%3F` instead of a `?`.
 private func refTagName(fromCookie cookie: NSHTTPCookie) -> String? {
-  let firstPass = cookie.value.characters.split(cookieSeparator)
-  if let name = firstPass.first where firstPass.count == 2 {
-    return String(name)
-  }
 
-  let secondPass = cookie.value.characters.split(escapedCookieSeparator)
+  return cleanUp(refTagString: cookie.value)
+}
+
+// Tries to remove cruft from a ref tag.
+private func cleanUp(refTag refTag: RefTag) -> RefTag {
+  return RefTag(code: cleanUp(refTagString: refTag.stringTag))
+}
+
+// Tries to remove cruft from a ref tag string.
+private func cleanUp(refTagString refTagString: String) -> String {
+
+  let secondPass = refTagString.componentsSeparatedByString(escapedCookieSeparator)
   if let name = secondPass.first where secondPass.count == 2 {
     return String(name)
   }
 
-  return nil
+  let firstPass = refTagString.componentsSeparatedByString(cookieSeparator)
+  if let name = firstPass.first where firstPass.count == 2 {
+    return String(name)
+  }
+
+  return refTagString
 }
 
 // Constructs a cookie from a ref tag and project.
