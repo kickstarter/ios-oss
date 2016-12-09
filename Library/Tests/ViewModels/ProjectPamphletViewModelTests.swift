@@ -156,7 +156,9 @@ final class ProjectPamphletViewModelTests: TestCase {
   func testTracksRefTag_WithBadData() {
     let project = Project.template
 
-    self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: RefTag.unrecognized("category%3F1232"))
+    self.vm.inputs.configureWith(
+      projectOrParam: .left(project), refTag: RefTag.unrecognized("category%3F1232")
+    )
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewWillAppear(animated: true)
     self.vm.inputs.viewDidAppear(animated: true)
