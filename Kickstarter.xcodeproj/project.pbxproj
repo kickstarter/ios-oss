@@ -73,6 +73,7 @@
 		01D31A3A1CCA786A0037A178 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01D31A361CCA786A0037A178 /* FBSDKCoreKit.framework */; };
 		01D31A3F1CCA786A0037A178 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01D31A371CCA786A0037A178 /* FBSDKLoginKit.framework */; };
 		01DEFB961CB44A5D003709C0 /* TwoFactorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01DEFB941CB44A5D003709C0 /* TwoFactorViewController.swift */; };
+		01EC3B991DFA0679003A673C /* ProfileViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01EC3B981DFA0679003A673C /* ProfileViewControllerTests.swift */; };
 		01EFBC891C91FB770094EEC2 /* UIColorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01EFBC881C91FB770094EEC2 /* UIColorTests.swift */; };
 		01EFBCAF1C92036E0094EEC2 /* StyledLabelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01EFBCAE1C92036E0094EEC2 /* StyledLabelTests.swift */; };
 		01EFBCB31C920A7E0094EEC2 /* BorderButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01EFBCB21C920A7E0094EEC2 /* BorderButtonTests.swift */; };
@@ -1183,6 +1184,7 @@
 		01D31A371CCA786A0037A178 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = Frameworks/FBSDK/iOS/FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		01D31A421CCA78A00037A178 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = Frameworks/FBSDK/tvOS/FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		01DEFB941CB44A5D003709C0 /* TwoFactorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = TwoFactorViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		01EC3B981DFA0679003A673C /* ProfileViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewControllerTests.swift; sourceTree = "<group>"; };
 		01EFBC881C91FB770094EEC2 /* UIColorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorTests.swift; sourceTree = "<group>"; };
 		01EFBCAE1C92036E0094EEC2 /* StyledLabelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyledLabelTests.swift; sourceTree = "<group>"; };
 		01EFBCB21C920A7E0094EEC2 /* BorderButtonTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BorderButtonTests.swift; sourceTree = "<group>"; };
@@ -1855,6 +1857,7 @@
 				A73778D51D81ABE2004C2A9B /* FundingGraphViewTests.swift */,
 				59885A5D1DB6DC2900F65825 /* LoginToutViewControllerTests.swift */,
 				59885A951DB6E04100F65825 /* LoginViewControllerTests.swift */,
+				01EC3B981DFA0679003A673C /* ProfileViewControllerTests.swift */,
 				9D3A6B4B1D8C4F3800FE3926 /* ProjectActivityViewControllerTests.swift */,
 				A7CA8C461D8F2F870086A3E9 /* ProjectNavBarViewControllerTests.swift */,
 				A73778D91D81D3CC004C2A9B /* ProjectPamphletContentViewControllerTests.swift */,
@@ -4214,6 +4217,7 @@
 				599604001CE6286900E1B1EC /* ProfileDataSourceTests.swift in Sources */,
 				D7086F3C1DB7FBA40087E5EB /* BackingViewControllerTests.swift in Sources */,
 				59AFCCEF1DD3D0B9004A200E /* FindFriendsViewControllerTests.swift in Sources */,
+				01EC3B991DFA0679003A673C /* ProfileViewControllerTests.swift in Sources */,
 				A72D943B1CB3477000A88249 /* MockBundle.swift in Sources */,
 				A77FD5B51D91FD2C00FFC636 /* RewardPledgeViewControllerTests.swift in Sources */,
 				015B78BC1D481805003216AC /* HelpWebViewModelTests.swift in Sources */,

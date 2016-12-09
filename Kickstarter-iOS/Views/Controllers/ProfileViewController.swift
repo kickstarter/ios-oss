@@ -21,7 +21,7 @@ internal final class ProfileViewController: UICollectionViewController {
     self.collectionView?.backgroundColor = .ksr_grey_100
 
     if let layout = self.collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
-      layout.itemSize = CGSize(width: 160, height: 220)
+      layout.itemSize = CGSize(width: 178, height: 220)
     }
 
     self.refreshControl.addTarget(self, action: #selector(refresh), forControlEvents: .ValueChanged)
@@ -37,24 +37,20 @@ internal final class ProfileViewController: UICollectionViewController {
     super.bindViewModel()
 
     self.viewModel.outputs.backedProjects
-      .observeForControllerAction()
+      .observeForUI()
       .observeNext { [weak self] ps in
         self?.dataSource.load(projects: ps)
         self?.collectionView?.reloadData()
       }
 
     self.viewModel.outputs.user
-      .observeForControllerAction()
+      .observeForUI()
       .observeNext { [weak self] u in
         self?.dataSource.load(user: u)
         self?.collectionView?.reloadData()
     }
 
-    self.viewModel.outputs.endRefreshing
-      .observeForControllerAction()
-      .observeNext { [weak self] in
-        self?.refreshControl.endRefreshing()
-    }
+    self.refreshControl.rac.refreshing = self.viewModel.outputs.isRefreshing
 
     self.viewModel.outputs.goToProject
       .observeForControllerAction()
@@ -69,7 +65,7 @@ internal final class ProfileViewController: UICollectionViewController {
     }
 
     self.viewModel.outputs.showEmptyState
-      .observeForControllerAction()
+      .observeForUI()
       .observeNext { [weak self] visible in
         self?.dataSource.emptyState(visible: visible)
         self?.collectionView?.reloadData()
