@@ -23,7 +23,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" alignment="top" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="lCq-XA-K79" userLabel="Columns">
-                                            <rect key="frame" x="16" y="20" width="418" height="112"/>
+                                            <rect key="frame" x="16" y="20" width="418" height="200"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="zack-sears" translatesAutoresizingMaskIntoConstraints="NO" id="pUn-zS-70c" customClass="CircleAvatarImageView" customModule="Library">
                                                     <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
@@ -33,16 +33,16 @@
                                                     </constraints>
                                                 </imageView>
                                                 <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="feW-2M-Rpb">
-                                                    <rect key="frame" x="60" y="0.0" width="358" height="112"/>
+                                                    <rect key="frame" x="60" y="0.0" width="358" height="200"/>
                                                     <subviews>
                                                         <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" distribution="equalSpacing" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="FB8-wJ-DU6">
-                                                            <rect key="frame" x="0.0" y="0.0" width="358" height="100"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="358" height="71"/>
                                                             <subviews>
                                                                 <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" distribution="equalSpacing" alignment="top" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="r4B-jn-6Kc">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="358" height="78"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="358" height="57"/>
                                                                     <subviews>
                                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Zack Sears" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SZ1-p2-Ltk">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="86" height="21"/>
+                                                                            <rect key="frame" x="0.0" y="0.0" width="86" height="0.0"/>
                                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                             <nil key="highlightedColor"/>
@@ -52,7 +52,7 @@
                                                                             </userDefinedRuntimeAttributes>
                                                                         </label>
                                                                         <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3ET-R2-24I">
-                                                                            <rect key="frame" x="0.0" y="25" width="37" height="25"/>
+                                                                            <rect key="frame" x="0.0" y="4" width="37" height="25"/>
                                                                             <subviews>
                                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" text="You" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uwt-lE-S07">
                                                                                     <rect key="frame" x="4" y="2" width="29" height="21"/>
@@ -81,7 +81,7 @@
                                                                             </userDefinedRuntimeAttributes>
                                                                         </view>
                                                                         <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3ZL-S5-lKl">
-                                                                            <rect key="frame" x="0.0" y="53" width="66" height="25"/>
+                                                                            <rect key="frame" x="0.0" y="33" width="66" height="25"/>
                                                                             <subviews>
                                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" text="Creator" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pEU-fP-32V">
                                                                                     <rect key="frame" x="4" y="2" width="58" height="21"/>
@@ -112,7 +112,7 @@
                                                                     </subviews>
                                                                 </stackView>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Apr 20, 2016" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lZg-7v-hQH">
-                                                                    <rect key="frame" x="0.0" y="80" width="358" height="21"/>
+                                                                    <rect key="frame" x="0.0" y="59" width="358" height="12"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                     <nil key="highlightedColor"/>
@@ -123,13 +123,14 @@
                                                                 </label>
                                                             </subviews>
                                                         </stackView>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IZJ-76-ABU">
-                                                            <rect key="frame" x="0.0" y="112" width="358" height="0.0"/>
-                                                            <string key="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec ullamcorper diam. Maecenas eu nibh ex. Nunc consequat ligula ex, aliquam egestas arcu luctus vitae. Nam massa est, elementum vitae urna quis, suscipit vestibulum ligula. Nulla eu fermentum ipsum. Cras tortor elit, commodo sed hendrerit ut, posuere et urna. Proin vel malesuada purus. Etiam vitae iaculis ante. Sed a orci a felis faucibus semper.</string>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
+                                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="DKf-bM-GCO">
+                                                            <rect key="frame" x="0.0" y="83" width="358" height="117"/>
+                                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                                            <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES" address="YES" calendarEvent="YES"/>
+                                                        </textView>
                                                     </subviews>
                                                 </stackView>
                                             </subviews>
@@ -157,7 +158,7 @@
                                     <outlet property="authorAndTimestampStackView" destination="FB8-wJ-DU6" id="4zp-pS-Rvr"/>
                                     <outlet property="authorStackView" destination="r4B-jn-6Kc" id="U8X-3P-QUM"/>
                                     <outlet property="avatarImageView" destination="pUn-zS-70c" id="4vv-Gn-5FW"/>
-                                    <outlet property="bodyLabel" destination="IZJ-76-ABU" id="Jnl-GK-LG0"/>
+                                    <outlet property="bodyTextView" destination="DKf-bM-GCO" id="nQF-uy-OOU"/>
                                     <outlet property="commentStackView" destination="feW-2M-Rpb" id="wEF-Nu-bt8"/>
                                     <outlet property="creatorLabel" destination="pEU-fP-32V" id="2WN-Gc-afb"/>
                                     <outlet property="creatorView" destination="3ZL-S5-lKl" id="sze-g3-qOo"/>

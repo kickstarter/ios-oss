@@ -9,7 +9,7 @@ internal final class CommentCell: UITableViewCell, ValueCell {
   @IBOutlet private weak var authorAndTimestampStackView: UIStackView!
   @IBOutlet private weak var authorStackView: UIStackView!
   @IBOutlet private weak var avatarImageView: UIImageView!
-  @IBOutlet private weak var bodyLabel: UILabel!
+  @IBOutlet private weak var bodyTextView: UITextView!
   @IBOutlet private weak var commentStackView: UIStackView!
   @IBOutlet private weak var creatorLabel: UILabel!
   @IBOutlet private weak var creatorView: UIView!
@@ -27,6 +27,11 @@ internal final class CommentCell: UITableViewCell, ValueCell {
       |> baseTableViewCellStyle()
       |> CommentCell.lens.contentView.layoutMargins .~
       .init(topBottom: Styles.grid(3), leftRight: Styles.grid(2))
+
+    self.bodyTextView
+      |> UITextView.lens.scrollEnabled .~ false
+      |> UITextView.lens.textContainerInset .~ UIEdgeInsetsZero
+      |> UITextView.lens.textContainer.lineFragmentPadding .~ 0
 
     self.authorAndTimestampStackView
       |> UIStackView.lens.spacing .~ Styles.gridHalf(1)
@@ -82,9 +87,19 @@ internal final class CommentCell: UITableViewCell, ValueCell {
         self?.avatarImageView.af_setImageWithURL(url)
     }
 
-    self.bodyLabel.rac.text = self.viewModel.outputs.body
-    self.bodyLabel.rac.textColor = self.viewModel.outputs.bodyColor
-    self.bodyLabel.rac.font = self.viewModel.outputs.bodyFont
+    self.viewModel.outputs.bodyColor
+      .observeForUI()
+      .observeNext { [weak self] color in
+        self?.bodyTextView.textColor = color
+    }
+
+    self.viewModel.outputs.bodyFont
+      .observeForUI()
+      .observeNext { [weak self] font in
+        self?.bodyTextView.font = font
+    }
+
+    self.bodyTextView.rac.text = self.viewModel.outputs.body
     self.creatorView.rac.hidden = self.viewModel.outputs.creatorHidden
     self.nameLabel.rac.text = self.viewModel.outputs.name
     self.timestampLabel.rac.text = self.viewModel.outputs.timestamp

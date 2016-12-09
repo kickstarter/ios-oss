@@ -45,7 +45,7 @@ deployment:
       - >
         ipa distribute:hockeyapp
         --token                     "$HOCKEY_APP_TOKEN"
-        --identifier                "***REMOVED***"
+        --identifier                "$HOCKEY_BETA_APP_ID"
         --file                      "KickBeta.ipa"
         --dsym                      "KickBeta.app.dSYM.zip"
         --notes                     "CircleCI build $CIRCLE_BUILD_NUM"
@@ -72,7 +72,7 @@ deployment:
       - >
         ipa distribute:hockeyapp
         --token                     "$HOCKEY_APP_TOKEN"
-        --identifier                "***REMOVED***"
+        --identifier                "$HOCKEY_RELEASE_APP_ID"
         --file                      "Kickstarter.ipa"
         --dsym                      "Kickstarter.app.dSYM.zip"
         --notes                     "CircleCI build $CIRCLE_BUILD_NUM"

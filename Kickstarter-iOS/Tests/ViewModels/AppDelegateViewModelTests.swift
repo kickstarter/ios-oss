@@ -61,7 +61,7 @@ final class AppDelegateViewModelTests: TestCase {
 
       self.configureHockey.assertValues([
         HockeyConfigData(
-          appIdentifier: HockeyConfigData.betaAppIdentifier,
+          appIdentifier: Secrets.HockeyAppId.beta,
           disableUpdates: false,
           userId: "0",
           userName: "anonymous"
@@ -80,7 +80,7 @@ final class AppDelegateViewModelTests: TestCase {
 
         self.configureHockey.assertValues([
           HockeyConfigData(
-            appIdentifier: HockeyConfigData.betaAppIdentifier,
+            appIdentifier: Secrets.HockeyAppId.beta,
             disableUpdates: false,
             userId: String(currentUser.id),
             userName: currentUser.name
@@ -97,7 +97,7 @@ final class AppDelegateViewModelTests: TestCase {
 
       self.configureHockey.assertValues([
         HockeyConfigData(
-          appIdentifier: HockeyConfigData.releaseAppIdentifier,
+          appIdentifier: Secrets.HockeyAppId.production,
           disableUpdates: true,
           userId: "0",
           userName: "anonymous"
@@ -116,7 +116,7 @@ final class AppDelegateViewModelTests: TestCase {
 
         self.configureHockey.assertValues([
           HockeyConfigData(
-            appIdentifier: HockeyConfigData.releaseAppIdentifier,
+            appIdentifier: Secrets.HockeyAppId.production,
             disableUpdates: true,
             userId: String(currentUser.id),
             userName: currentUser.name
@@ -135,7 +135,7 @@ final class AppDelegateViewModelTests: TestCase {
 
       self.configureHockey.assertValues([
         HockeyConfigData(
-          appIdentifier: HockeyConfigData.releaseAppIdentifier,
+          appIdentifier: Secrets.HockeyAppId.production,
           disableUpdates: true,
           userId: "0",
           userName: "anonymous"
@@ -147,13 +147,13 @@ final class AppDelegateViewModelTests: TestCase {
 
       self.configureHockey.assertValues([
         HockeyConfigData(
-          appIdentifier: HockeyConfigData.releaseAppIdentifier,
+          appIdentifier: Secrets.HockeyAppId.production,
           disableUpdates: true,
           userId: "0",
           userName: "anonymous"
         ),
         HockeyConfigData(
-          appIdentifier: HockeyConfigData.releaseAppIdentifier,
+          appIdentifier: Secrets.HockeyAppId.production,
           disableUpdates: true,
           userId: String(currentUser.id),
           userName: currentUser.name
@@ -165,19 +165,19 @@ final class AppDelegateViewModelTests: TestCase {
 
       self.configureHockey.assertValues([
         HockeyConfigData(
-          appIdentifier: HockeyConfigData.releaseAppIdentifier,
+          appIdentifier: Secrets.HockeyAppId.production,
           disableUpdates: true,
           userId: "0",
           userName: "anonymous"
         ),
         HockeyConfigData(
-          appIdentifier: HockeyConfigData.releaseAppIdentifier,
+          appIdentifier: Secrets.HockeyAppId.production,
           disableUpdates: true,
           userId: String(currentUser.id),
           userName: currentUser.name
         ),
         HockeyConfigData(
-          appIdentifier: HockeyConfigData.releaseAppIdentifier,
+          appIdentifier: Secrets.HockeyAppId.production,
           disableUpdates: true,
           userId: "0",
           userName: "anonymous"
