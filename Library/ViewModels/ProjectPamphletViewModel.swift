@@ -144,7 +144,7 @@ private func cookieRefTagFor(project project: Project) -> RefTag? {
   return AppEnvironment.current.cookieStorage.cookies?
     .filter { cookie in cookie.name == cookieName(project) }
     .first
-    .flatMap(refTagName(fromCookie:))
+    .map(refTagName(fromCookie:))
     .flatMap(RefTag.init(code:))
 }
 
@@ -155,7 +155,7 @@ private func cookieName(project: Project) -> String {
 
 // Tries to extract the name of the ref tag from a cookie. It has to do double work in case the cookie
 // is accidentally encoded with a `%3F` instead of a `?`.
-private func refTagName(fromCookie cookie: NSHTTPCookie) -> String? {
+private func refTagName(fromCookie cookie: NSHTTPCookie) -> String {
 
   return cleanUp(refTagString: cookie.value)
 }
