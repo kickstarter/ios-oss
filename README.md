@@ -36,7 +36,7 @@ Most major screens in the app get a corresponding playground where we can see a
 wide variety of devices, languages and data in real time. Browse our collection of
 playgrounds [here](https://github.com/kickstarter/ios-oss/tree/master/Kickstarter-iOS.playground/Pages).
 
-* [We use view models](https://www.youtube.com/watch?v=EpTlqx6NjYo&t=276s) as
+* [We use view models](https://www.youtube.com/watch?v=EpTlqx6NjYo) as
 a lightweight way to isolate side effects and embrace a functional core. We
 write [these](https://github.com/kickstarter/ios-oss/tree/readme-update/Library/ViewModels)
 as a pure mapping of input signals to output signals, and [test](https://github.com/kickstarter/ios-oss/tree/readme-update/Library/Tests/ViewModels)
