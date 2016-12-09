@@ -35,6 +35,8 @@ internal final class ActivitiesViewController: UITableViewController {
   internal override func viewDidLoad() {
     super.viewDidLoad()
 
+    self.tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: Styles.gridHalf(3)))
+
     self.tableView.dataSource = dataSource
 
     let emptyVC = EmptyStatesViewController.configuredWith(emptyState: .activity)
@@ -109,16 +111,6 @@ internal final class ActivitiesViewController: UITableViewController {
     }
 
     self.refreshControl?.rac.refreshing = self.viewModel.outputs.isRefreshing
-
-    self.viewModel.outputs.isRefreshing
-      .observeForUI()
-      .observeNext { [weak self] in
-        if !$0 {
-          self?.tableView.contentInset.top = Styles.gridHalf(3)
-          self?.tableView.setContentOffset(CGPoint(x: 0, y: -(self?.tableView.contentInset.top ?? 0)),
-            animated: false)
-        }
-    }
 
     self.viewModel.outputs.goToProject
       .observeForControllerAction()
