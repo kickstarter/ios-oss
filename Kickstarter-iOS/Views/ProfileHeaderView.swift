@@ -28,7 +28,7 @@ internal final class ProfileHeaderView: UICollectionReusableView, ValueCell {
       |> UILabel.lens.font .~ .ksr_subhead(size: 12)
 
     self.dividerView
-      |> UIView.lens.backgroundColor .~ .ksr_navy_400
+      |> separatorStyle
 
     self.nameLabel
       |> UILabel.lens.textColor .~ .ksr_text_navy_700

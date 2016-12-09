@@ -52,11 +52,11 @@ public final class ProfileViewModel: ProfileViewModelType, ProfileViewModelInput
     let requestFirstPageWith = Signal.merge(
       viewWillAppearProperty.signal.filter(isFalse).ignoreValues(),
       refreshProperty.signal
-      ).map {
+      ).mapConst(
         DiscoveryParams.defaults
           |> DiscoveryParams.lens.backed .~ true
           |> DiscoveryParams.lens.sort .~ .endingSoon
-    }
+    )
 
     let requestNextPageWhen = self.willDisplayRowProperty.signal.ignoreNil()
       .map { row, total in row >= total - 3 }

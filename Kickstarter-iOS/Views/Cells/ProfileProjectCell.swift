@@ -69,12 +69,9 @@ internal final class ProfileProjectCell: UICollectionViewCell, ValueCell {
     self.viewModel.outputs.progress
       .observeForUI()
       .observeNext { [weak element = progressBarView] progress in
-        if progress < 1.0 {
-          let anchorX = progress == 0 ? 0 : 0.5 / progress
-          element?.layer.anchorPoint = CGPoint(x: CGFloat(anchorX), y: 0.5)
-        }
-        let scaleX = progress >= 1.0 ? 1.0 : progress
-        element?.transform = CGAffineTransformMakeScale(CGFloat(scaleX), 1.0)
+        let anchorX = progress == 0 ? 0 : 0.5 / progress
+        element?.layer.anchorPoint = CGPoint(x: CGFloat(anchorX), y: 0.5)
+        element?.transform = CGAffineTransformMakeScale(CGFloat(min(progress, 1.0)), 1.0)
     }
 
     self.stateBannerView.rac.hidden = self.viewModel.outputs.stateHidden
