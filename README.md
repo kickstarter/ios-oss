@@ -23,7 +23,7 @@ and read more about our journey to open source [here TODO LINK]().
 If you’re just looking for a quick glance at a few things we’re particularly
 proud of, look no further:
 
-* The [`Screenshots`](https://github.com/kickstarter/ios-oss/tree/readme-update/Screenshots/_64)
+* The [`Screenshots`](https://github.com/kickstarter/ios-oss/tree/master/Screenshots/_64)
 directory holds nearly 500 screenshots of various screens in every language,
 device and edge-case state that we like to make sure stays true. For example,
 a backer viewing a project in French
@@ -38,8 +38,8 @@ playgrounds [here](https://github.com/kickstarter/ios-oss/tree/master/Kickstarte
 
 * [We use view models](https://www.youtube.com/watch?v=EpTlqx6NjYo) as
 a lightweight way to isolate side effects and embrace a functional core. We
-write [these](https://github.com/kickstarter/ios-oss/tree/readme-update/Library/ViewModels)
-as a pure mapping of input signals to output signals, and [test](https://github.com/kickstarter/ios-oss/tree/readme-update/Library/Tests/ViewModels)
+write [these](https://github.com/kickstarter/ios-oss/tree/master/Library/ViewModels)
+as a pure mapping of input signals to output signals, and [test](https://github.com/kickstarter/ios-oss/tree/master/Library/Tests/ViewModels)
 them heavily, including tests for localization, accessibility and event
 tracking.
 
