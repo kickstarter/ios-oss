@@ -4,7 +4,7 @@ import ReactiveCocoa
 import Result
 
 public protocol ActivitySurveyResponseCellViewModelInputs {
-  /// Call to configure with survey response.
+  /// Call to configure with survey response, number of surveys, and the cell's position in the survey stack.
   func configureWith(surveyResponse surveyResponse: SurveyResponse, count: Int, position: Int)
 
   /// Call when respond now button is tapped.

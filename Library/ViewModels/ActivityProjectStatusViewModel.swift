@@ -43,17 +43,13 @@ public final class ActivityProjectStatusViewModel: ActivityProjectStatusViewMode
     let activity = self.activityProperty.signal.ignoreNil()
     let project = activity.map { $0.project }.ignoreNil()
 
-    self.fundingBarColor = activity.map {
-      return progressBarColor(forActivityCategory: $0.category)
-    }
+    self.fundingBarColor = activity.map { progressBarColor(forActivityCategory: $0.category) }
 
     self.fundingProgressPercentage = project
       .map(Project.lens.stats.fundingProgress.view)
       .map(clamp(0, 1))
 
-    self.metadataBackgroundColor = activity.map {
-      return metadataColor(forActivityCategory: $0.category)
-    }
+    self.metadataBackgroundColor = activity.map { metadataColor(forActivityCategory: $0.category) }
 
     self.metadataText = activity.map {
       let creator = $0.project?.creator

@@ -10,7 +10,7 @@ let creator = .template |> User.lens.avatar.small .~ ""
 let survey = .template |> SurveyResponse.lens.project .~
   (.cosmicSurgery |> Project.lens.creator .~ creator)
 
-let daysAgoDate = NSDate().timeIntervalSince1970 - 60 * 60 * 24 * 2
+let daysAgoDate = NSDate().timeIntervalSince1970 - 60 * 60 * 24 * 4
 
 let follow = .template
   |> Activity.lens.id .~ 85
@@ -22,7 +22,7 @@ let follow = .template
 let update = .template
   |> Activity.lens.id .~ 51
   |> Activity.lens.project .~ .cosmicSurgery
-  |> Activity.lens.update .~ .template
+  |> Activity.lens.update .~ (.template |> Update.lens.sequence .~ 4)
   |> Activity.lens.createdAt .~ daysAgoDate
   |> Activity.lens.category .~ .update
 
