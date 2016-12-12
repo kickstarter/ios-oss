@@ -211,12 +211,12 @@ ActivitiesViewModelOutputs {
       .map { ($0, .activity) }
 
     let surveyEvents = currentUser
-      .filter { $0 != nil }
       .takeWhen(Signal.merge(
         self.viewWillAppearProperty.signal.ignoreNil().filter(isFalse).ignoreValues(),
         self.surveyResponseViewControllerDismissedProperty.signal
         )
       )
+      .filter { $0 != nil }
       .switchMap { _ in
         AppEnvironment.current.apiService.fetchUnansweredSurveyResponses()
           .materialize()

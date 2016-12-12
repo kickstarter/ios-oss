@@ -404,7 +404,6 @@ final class ActivitiesViewModelTests: TestCase {
       self.vm.inputs.userSessionEnded()
       self.vm.inputs.viewWillAppear(animated: false)
 
-      // Discuss: this shouldn't emit again b/c current user is nil.
       self.unansweredSurveyResponse.assertValues([[surveyResponse]])
     }
   }
