@@ -152,4 +152,55 @@ final class ProjectPamphletViewModelTests: TestCase {
     XCTAssertEqual(1, self.cookieStorage.cookies?.count,
                    "A single cookie has been set.")
   }
+
+  func testTracksRefTag_WithBadData() {
+    let project = Project.template
+
+    self.vm.inputs.configureWith(
+      projectOrParam: .left(project), refTag: RefTag.unrecognized("category%3F1232")
+    )
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewWillAppear(animated: true)
+    self.vm.inputs.viewDidAppear(animated: true)
+
+    XCTAssertEqual(["Project Page", "Viewed Project Page"],
+                   self.trackingClient.events, "A project page koala event is tracked.")
+    XCTAssertEqual([RefTag.category.stringTag, RefTag.category.stringTag],
+                   self.trackingClient.properties.flatMap { $0["ref_tag"] as? String },
+                   "The ref tag is tracked in the koala event.")
+    XCTAssertEqual([RefTag.category.stringTag, RefTag.category.stringTag],
+                   self.trackingClient.properties.flatMap { $0["referrer_credit"] as? String },
+                   "The referral credit is tracked in the koala event.")
+    XCTAssertEqual(1, self.cookieStorage.cookies?.count,
+                   "A single cookie is set")
+    XCTAssertEqual("ref_\(project.id)", self.cookieStorage.cookies?.last?.name,
+                   "A referral cookie is set for the project.")
+    XCTAssertEqual("category?",
+                   (self.cookieStorage.cookies?.last?.value.characters.prefix(9)).map(String.init),
+                   "A referral cookie is set for the category ref tag.")
+
+    // Start up another view model with the same project
+    let newVm: ProjectPamphletViewModelType = ProjectPamphletViewModel()
+    newVm.inputs.configureWith(projectOrParam: .left(project), refTag: .recommended)
+    newVm.inputs.viewDidLoad()
+    newVm.inputs.viewWillAppear(animated: true)
+    newVm.inputs.viewDidAppear(animated: true)
+
+    XCTAssertEqual(["Project Page", "Viewed Project Page", "Project Page", "Viewed Project Page"],
+                   self.trackingClient.events, "A project page koala event is tracked.")
+    XCTAssertEqual(
+      [RefTag.category.stringTag, RefTag.category.stringTag, RefTag.recommended.stringTag,
+        RefTag.recommended.stringTag],
+      self.trackingClient.properties.flatMap { $0["ref_tag"] as? String },
+      "The new ref tag is tracked in koala event."
+    )
+    XCTAssertEqual(
+      [RefTag.category.stringTag, RefTag.category.stringTag, RefTag.category.stringTag,
+        RefTag.category.stringTag],
+      self.trackingClient.properties.flatMap { $0["referrer_credit"] as? String },
+      "The referrer credit did not change, and is still category."
+    )
+    XCTAssertEqual(1, self.cookieStorage.cookies?.count,
+                   "A single cookie has been set.")
+  }
 }
