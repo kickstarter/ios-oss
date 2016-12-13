@@ -43,6 +43,11 @@ public class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewModelTyp
   LiveStreamEventDetailsViewModelInputs, LiveStreamEventDetailsViewModelOutputs {
 
   public init () {
+    let event = combineLatest(
+      self.liveStreamEventProperty.signal.ignoreNil(),
+      self.viewDidLoadProperty.signal)
+      .map(first)
+
     let project = combineLatest(
       self.projectProperty.signal.ignoreNil(),
       self.viewDidLoadProperty.signal)
@@ -50,13 +55,13 @@ public class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewModelTyp
 
     self.subscribed = Signal.merge(
       self.subscribedProperty.signal,
-      self.liveStreamEventProperty.signal.ignoreNil()
+      event
         .map { $0.user.isSubscribed }
     )
 
     self.introText = combineLatest(
       self.liveStreamViewControllerStateChangedProperty.signal.ignoreNil(),
-      self.liveStreamEventProperty.signal.ignoreNil()
+      event
     ).map {
       if case .live = $0 { "is live now" }
       if case .replay = $0 {
@@ -68,7 +73,7 @@ public class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewModelTyp
     }
 
     self.availableForText = combineLatest(
-      self.liveStreamEventProperty.signal.ignoreNil(),
+      event,
       self.viewDidLoadProperty.signal)
       .map(first)
       .map { event -> String? in
@@ -81,13 +86,13 @@ public class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewModelTyp
         return "Available for \(time) more \(units)"
       }.ignoreNil()
     
-    self.creatorAvatarUrl = self.liveStreamEventProperty.signal.ignoreNil()
+    self.creatorAvatarUrl = event
       .map { NSURL(string: $0.creator.avatar) }
       .ignoreNil()
 
-    self.creatorName = self.liveStreamEventProperty.signal.ignoreNil().map { $0.creator.name }
-    self.liveStreamTitle = self.liveStreamEventProperty.signal.ignoreNil().map { $0.stream.projectName }
-    self.liveStreamParagraph = self.liveStreamEventProperty.signal.ignoreNil().map { $0.stream.description }
+    self.creatorName = event.map { $0.creator.name }
+    self.liveStreamTitle = event.map { $0.stream.projectName }
+    self.liveStreamParagraph = event.map { $0.stream.description }
 
     self.retrieveEventInfo = combineLatest(
       project.map { $0.liveStreams.first }.ignoreNil().map { $0.id },
@@ -108,7 +113,7 @@ public class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewModelTyp
 
     self.showActivityIndicator = Signal.merge(
       self.retrieveEventInfo.mapConst(true),
-      self.liveStreamEventProperty.signal.ignoreNil().mapConst(false)
+      event.mapConst(false)
     )
 
     self.showSubscribeButtonActivityIndicator = Signal.merge(
@@ -117,7 +122,7 @@ public class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewModelTyp
     )
 
     self.toggleSubscribe = combineLatest(
-      self.liveStreamEventProperty.signal.ignoreNil().map { String($0.id) },
+      event.map { String($0.id) },
       self.subscribed
     ).takeWhen(self.subscribeButtonTappedProperty.signal)
 

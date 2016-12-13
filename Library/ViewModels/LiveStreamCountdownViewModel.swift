@@ -83,11 +83,10 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
       .map { (String(format: "%02d", $0), "seconds") }
 
     let countdownEnded = combineLatest(
-      days.filter { $0 == 0 },
-      hours.filter { $0 == 0 },
-      minutes.filter { $0 == 0 },
-      seconds.filter { $0 == 0 }
-    ).ignoreValues()
+      project.mapConst(date),
+      self.nowProperty.signal.ignoreNil()
+      )
+      .filter { $0.earlierDate($1) == $0 }
 
     self.projectImageUrl = project
       .map { NSURL(string: $0.photo.full) }
