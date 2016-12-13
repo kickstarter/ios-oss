@@ -5,7 +5,7 @@ import UIKit
 
 internal final class ActivitiesDataSource: ValueCellDataSource {
   internal enum Section: Int {
-    case survey
+    case surveys
     case facebookConnect
     case findFriends
     case activities
@@ -15,48 +15,34 @@ internal final class ActivitiesDataSource: ValueCellDataSource {
     self.set(values: visible ? [source] : [],
              cellClass: FindFriendsFacebookConnectCell.self,
              inSection: Section.facebookConnect.rawValue)
-
-    if visible {
-      self.appendStaticRow(cellIdentifier: "HalfPaddingCell", toSection: Section.facebookConnect.rawValue)
-    }
   }
 
   internal func findFriends(source source: FriendsSource, visible: Bool) {
     self.set(values: visible ? [source] : [],
              cellClass: FindFriendsHeaderCell.self,
              inSection: Section.findFriends.rawValue)
-
-    if visible {
-      self.appendStaticRow(cellIdentifier: "HalfPaddingCell", toSection: Section.findFriends.rawValue)
-    }
   }
 
   internal func removeFacebookConnectRows() -> [NSIndexPath] {
     self.clearValues(section: Section.facebookConnect.rawValue)
 
-    return [NSIndexPath(forRow: 0, inSection: Section.facebookConnect.rawValue),
-            NSIndexPath(forRow: 1, inSection: Section.facebookConnect.rawValue)]
+    return [NSIndexPath(forRow: 0, inSection: Section.facebookConnect.rawValue)]
   }
 
   internal func removeFindFriendsRows() -> [NSIndexPath] {
     self.clearValues(section: Section.findFriends.rawValue)
 
-    return [NSIndexPath(forRow: 0, inSection: Section.findFriends.rawValue),
-            NSIndexPath(forRow: 1, inSection: Section.findFriends.rawValue)]
+    return [NSIndexPath(forRow: 0, inSection: Section.findFriends.rawValue)]
   }
 
-  internal func load(surveyResponse surveyResponse: SurveyResponse?) {
-
-    if let response = surveyResponse {
-      self.set(values: [response],
-               cellClass: ActivitySurveyResponseCell.self,
-               inSection: Section.survey.rawValue)
-      self.appendStaticRow(cellIdentifier: "HalfPaddingCell", toSection: Section.survey.rawValue)
-    } else {
-      self.set(values: [],
-               cellClass: ActivitySurveyResponseCell.self,
-               inSection: Section.survey.rawValue)
+  internal func load(surveys surveys: [SurveyResponse]) {
+    let surveysWithPosition = surveys.enumerate().map { idx, survey in
+      (surveyResponse: survey, count: surveys.count, position: idx)
     }
+
+    self.set(values: surveysWithPosition,
+             cellClass: ActivitySurveyResponseCell.self,
+             inSection: Section.surveys.rawValue)
   }
 
   internal func load(activities activities: [Activity]) {
@@ -72,17 +58,11 @@ internal final class ActivitiesDataSource: ValueCellDataSource {
         self.appendRow(value: activity, cellClass: ActivityUpdateCell.self, toSection: section)
       case .follow:
         self.appendRow(value: activity, cellClass: ActivityFriendFollowCell.self, toSection: section)
-      case .success:
-        self.appendRow(value: activity, cellClass: ActivitySuccessCell.self, toSection: section)
-      case .failure, .cancellation, .suspension:
-        self.appendRow(value: activity, cellClass: ActivityNegativeStateChangeCell.self, toSection: section)
-      case .launch:
-        self.appendRow(value: activity, cellClass: ActivityLaunchCell.self, toSection: section)
+      case .cancellation, .failure, .launch, .success, .suspension:
+        self.appendRow(value: activity, cellClass: ActivityProjectStatusCell.self, toSection: section)
       default:
         assertionFailure("Unsupported activity: \(activity)")
       }
-
-      self.appendStaticRow(cellIdentifier: "HalfPaddingCell", toSection: section)
     }
   }
 
@@ -95,17 +75,13 @@ internal final class ActivitiesDataSource: ValueCellDataSource {
       cell.configureWith(value: activity)
     case let (cell as ActivityFriendFollowCell, activity as Activity):
       cell.configureWith(value: activity)
-    case let (cell as ActivitySuccessCell, activity as Activity):
+    case let (cell as ActivityProjectStatusCell, activity as Activity):
       cell.configureWith(value: activity)
-    case let (cell as ActivityNegativeStateChangeCell, value as Activity):
-      cell.configureWith(value: value)
-    case let (cell as ActivityLaunchCell, value as Activity):
-      cell.configureWith(value: value)
     case let (cell as FindFriendsFacebookConnectCell, value as FriendsSource):
       cell.configureWith(value: value)
     case let (cell as FindFriendsHeaderCell, value as FriendsSource):
       cell.configureWith(value: value)
-    case let (cell as ActivitySurveyResponseCell, value as SurveyResponse):
+    case let (cell as ActivitySurveyResponseCell, value as (SurveyResponse, Int, Int)):
       cell.configureWith(value: value)
     case (is StaticTableViewCell, is Void):
       return

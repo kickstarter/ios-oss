@@ -12,7 +12,9 @@ protocol FindFriendsFacebookConnectCellDelegate: class {
 
 internal final class FindFriendsFacebookConnectCell: UITableViewCell, ValueCell {
 
+  @IBOutlet private weak var cardView: UIView!
   @IBOutlet private weak var closeButton: UIButton!
+  @IBOutlet private weak var containerView: UIView!
   @IBOutlet private weak var facebookConnectButton: UIButton!
   @IBOutlet private weak var subtitleLabel: UILabel!
   @IBOutlet private weak var titleLabel: UILabel!
@@ -75,33 +77,39 @@ internal final class FindFriendsFacebookConnectCell: UITableViewCell, ValueCell 
   internal override func bindStyles() {
     super.bindStyles()
 
+    self
+      |> feedTableViewCellStyle
+
+    self.cardView
+      |> dropShadowStyle()
+
+    self.containerView
+      |> UIView.lens.layoutMargins .~ .init(all: Styles.grid(2))
+
     self.titleLabel
-      |> UILabel.lens.font .~ .ksr_title3()
-      |> UILabel.lens.textColor .~ .ksr_text_navy_900
+      |> UILabel.lens.font .~ .ksr_headline(size: 14)
+      |> UILabel.lens.textColor .~ .ksr_text_navy_700
       |> UILabel.lens.text %~ { _ in Strings.Discover_more_projects() }
 
     self.subtitleLabel
-      |> UILabel.lens.font .~ .ksr_subhead()
+      |> UILabel.lens.font .~ .ksr_subhead(size: 12)
       |> UILabel.lens.textColor .~ .ksr_text_navy_600
       |> UILabel.lens.text %~ { _ in Strings.Connect_with_Facebook_to_follow_friends_and_get_notified() }
 
     self.closeButton
+      |> UIButton.lens.tintColor .~ .ksr_navy_700
       |> UIButton.lens.targets .~ [(self, action: #selector(closeButtonTapped), .TouchUpInside)]
+      |> UIButton.lens.contentEdgeInsets .~ .init(top: Styles.grid(1), left: Styles.grid(3),
+                                                  bottom: Styles.grid(3), right: Styles.grid(2))
 
     self.facebookConnectButton
       |> facebookButtonStyle
+      |> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 12)
       |> UIButton.lens.targets .~ [(self, action: #selector(facebookConnectButtonTapped), .TouchUpInside)]
+      |> UIButton.lens.contentEdgeInsets .~ .init(topBottom: 8)
+      |> UIButton.lens.titleEdgeInsets .~ .init(left: Styles.grid(1))
       |> UIButton.lens.title(forState: .Normal) %~ { _ in
         Strings.general_social_buttons_connect_with_facebook()
-    }
-
-    self
-      |> baseTableViewCellStyle()
-      |> UITableViewCell.lens.backgroundColor .~ .whiteColor()
-      |> UITableViewCell.lens.contentView.layoutMargins %~~ { _, cell in
-        cell.traitCollection.isRegularRegular
-          ? .init(topBottom: Styles.grid(6), leftRight: Styles.grid(20))
-          : .init(all: Styles.grid(4))
     }
   }
 

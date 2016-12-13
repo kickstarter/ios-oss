@@ -151,7 +151,7 @@
 "Recommended" = "Recommended";
 "Reward_Surveys.few" = "%{reward_survey_count} Reward Surveys";
 "Reward_Surveys.many" = "%{reward_survey_count} Reward Surveys";
-"Reward_Surveys.one" = "%{reward_survey_count} Reward Survey";
+"Reward_Surveys.one" = "Reward Survey";
 "Reward_Surveys.two" = "%{reward_survey_count} Reward Surveys";
 "Reward_Surveys.zero" = "%{reward_survey_count} Reward Surveys";
 "Rewards_count_rewards.few" = "%{rewards_count} rewards";

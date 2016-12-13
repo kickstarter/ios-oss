@@ -24,7 +24,7 @@ final class ActivitiesViewModelTests: TestCase {
   private let showFindFriendsSection = TestObserver<Bool, NoError>()
   private let showFindFriendsSectionSource = TestObserver<FriendsSource, NoError>()
   private let showFacebookConnectErrorAlert = TestObserver<AlertError, NoError>()
-  private let unansweredSurveyResponse = TestObserver<SurveyResponse?, NoError>()
+  private let unansweredSurveyResponse = TestObserver<[SurveyResponse], NoError>()
 
   override func setUp() {
     super.setUp()
@@ -45,7 +45,7 @@ final class ActivitiesViewModelTests: TestCase {
     self.vm.outputs.showFindFriendsSection.map { $0.1 }.observe(self.showFindFriendsSection.observer)
     self.vm.outputs.showFindFriendsSection.map { $0.0 }.observe(self.showFindFriendsSectionSource.observer)
     self.vm.outputs.showFacebookConnectErrorAlert.observe(self.showFacebookConnectErrorAlert.observer)
-    self.vm.outputs.unansweredSurveyResponse.observe(self.unansweredSurveyResponse.observer)
+    self.vm.outputs.unansweredSurveys.observe(self.unansweredSurveyResponse.observer)
   }
 
   // Tests the flow of logging in with a user that has activities.
@@ -234,28 +234,30 @@ final class ActivitiesViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewWillAppear(animated: false)
 
-    showFacebookConnectSection.assertValues([false])
+    showFacebookConnectSection.assertValueCount(0)
 
     self.goToFriends.assertValueCount(0)
 
-    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: User.template))
-    self.vm.inputs.userSessionStarted()
-    self.scheduler.advance()
-    self.vm.inputs.viewWillAppear(animated: false)
+    withEnvironment(apiService: MockService(fetchUnansweredSurveyResponsesResponse: []),
+                    currentUser: .template) {
+      self.vm.inputs.userSessionStarted()
+      self.scheduler.advance()
+      self.vm.inputs.viewWillAppear(animated: false)
 
-    showFacebookConnectSection.assertValues([false, true], "Show Facebook Connect Section after log in")
+      showFacebookConnectSection.assertValues([true], "Show Facebook Connect Section after log in")
 
-    self.vm.inputs.findFriendsFacebookConnectCellDidFacebookConnectUser()
+      self.vm.inputs.findFriendsFacebookConnectCellDidFacebookConnectUser()
 
-    self.goToFriends.assertValues([FriendsSource.activity])
+      self.goToFriends.assertValues([FriendsSource.activity])
 
-    self.vm.inputs.viewWillAppear(animated: false)
+      self.vm.inputs.viewWillAppear(animated: false)
 
-    self.goToFriends.assertValueCount(1)
+      self.goToFriends.assertValueCount(1)
 
-    self.vm.inputs.findFriendsHeaderCellGoToFriends()
+      self.vm.inputs.findFriendsHeaderCellGoToFriends()
 
-    self.goToFriends.assertValues([FriendsSource.activity, FriendsSource.activity])
+      self.goToFriends.assertValues([FriendsSource.activity, FriendsSource.activity])
+    }
   }
 
   func testFacebookSection() {
@@ -266,14 +268,16 @@ final class ActivitiesViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewWillAppear(animated: false)
 
-    self.showFacebookConnectSectionSource.assertValues([FriendsSource.activity])
-    self.showFacebookConnectSection.assertValues([false], "Don't show Facebook Connect Section")
+    self.showFacebookConnectSectionSource.assertValueCount(0)
+    self.showFacebookConnectSection.assertValueCount(0)
 
     // logged in && Facebook connected
     let user = User.template |> User.lens.facebookConnected .~ true
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
     self.vm.inputs.userSessionStarted()
     self.scheduler.advance()
+
+    self.vm.inputs.viewWillAppear(animated: false)
 
     self.showFacebookConnectSectionSource.assertValues([FriendsSource.activity])
     self.showFacebookConnectSection.assertValues([false], "Don't show Facebook Connect Section")
@@ -310,13 +314,14 @@ final class ActivitiesViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewWillAppear(animated: false)
 
-    self.showFindFriendsSectionSource.assertValues([FriendsSource.activity])
-    self.showFindFriendsSection.assertValues([false], "Don't show Facebook Connect Section")
+    self.showFindFriendsSectionSource.assertValueCount(0)
+    self.showFindFriendsSection.assertValueCount(0)
 
     // logged in && not Facebook connected
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: User.template))
     self.vm.inputs.userSessionStarted()
     self.scheduler.advance()
+    self.vm.inputs.viewWillAppear(animated: false)
 
     self.showFindFriendsSectionSource.assertValues([FriendsSource.activity])
     self.showFindFriendsSection.assertValues([false], "Don't show Find Friends Section")
@@ -355,11 +360,17 @@ final class ActivitiesViewModelTests: TestCase {
   func testSurveys() {
     let surveyResponse = SurveyResponse.template
 
-    withEnvironment(apiService: MockService(fetchUnansweredSurveyResponsesResponse: [surveyResponse])) {
-      self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewWillAppear(animated: false)
+
+    self.unansweredSurveyResponse.assertValueCount(0, "Survey does not emit when logged out.")
+
+    withEnvironment(apiService: MockService(fetchUnansweredSurveyResponsesResponse: [surveyResponse]),
+      currentUser: .template) {
+      self.vm.inputs.userSessionStarted()
       self.vm.inputs.viewWillAppear(animated: false)
 
-      self.unansweredSurveyResponse.assertValues([surveyResponse])
+      self.unansweredSurveyResponse.assertValues([[surveyResponse]])
 
       // Tap to see survey response.
       self.vm.inputs.tappedRespondNow(forSurveyResponse: surveyResponse)
@@ -367,18 +378,19 @@ final class ActivitiesViewModelTests: TestCase {
 
       // Exited survey full screen.
       self.vm.inputs.viewWillAppear(animated: true)
-      self.unansweredSurveyResponse.assertValues([surveyResponse], "Same unanswered survey emits.")
+      self.unansweredSurveyResponse.assertValues([[surveyResponse]], "Survey does not emit again.")
 
       self.vm.inputs.tappedRespondNow(forSurveyResponse: surveyResponse)
       self.goToSurveyResponse.assertValues([surveyResponse, surveyResponse])
 
       // Exited survey modal.
       self.vm.inputs.surveyResponseViewControllerDismissed()
-      self.unansweredSurveyResponse.assertValues([surveyResponse], "Same unanswered survey emits.")
+      self.unansweredSurveyResponse.assertValues([[surveyResponse], [surveyResponse]],
+                                                 "Same unanswered survey emits.")
     }
   }
 
-  func testSurveyClearsAfterLogOut() {
+  func testSurvey_DoesntEmitAfterLogOut() {
     let surveyResponse = SurveyResponse.template
 
     withEnvironment(apiService: MockService(fetchUnansweredSurveyResponsesResponse: [surveyResponse])) {
@@ -386,12 +398,13 @@ final class ActivitiesViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear(animated: false)
 
-      self.unansweredSurveyResponse.assertValues([surveyResponse])
+      self.unansweredSurveyResponse.assertValues([[surveyResponse]])
 
       AppEnvironment.logout()
       self.vm.inputs.userSessionEnded()
+      self.vm.inputs.viewWillAppear(animated: false)
 
-      self.unansweredSurveyResponse.assertValues([surveyResponse, nil])
+      self.unansweredSurveyResponse.assertValues([[surveyResponse]])
     }
   }
 

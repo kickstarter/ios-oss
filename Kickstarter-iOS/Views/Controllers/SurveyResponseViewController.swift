@@ -39,11 +39,7 @@ internal final class SurveyResponseViewController: DeprecatedWebViewController {
       .observeForControllerAction()
       .observeNext { [weak self] in
         self?.navigationController?.dismissViewControllerAnimated(true, completion: nil)
-
-        // iPad provision
-        if self?.traitCollection.userInterfaceIdiom == .Pad {
-          self?.delegate?.surveyResponseViewControllerDismissed()
-        }
+        self?.delegate?.surveyResponseViewControllerDismissed()
     }
 
     self.viewModel.outputs.goToProject
