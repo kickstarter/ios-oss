@@ -231,15 +231,16 @@ internal final class LiveStreamCountdownViewController: UIViewController {
       .observeForUI()
       .on(next: { [weak self] image in self?.creatorAvatarImageView.image = nil })
       .observeNext { [weak self] in
-      KsLiveApp.retrieveEvent($0).startWithResult {
-        switch $0 {
-        case .Success(let event):
-          self?.viewModel.inputs.setLiveStreamEvent(event: event)
-          self?.eventDetailsViewModel.inputs.setLiveStreamEvent(event: event)
-        case .Failure(let error):
-          print(error)
+        guard let userId = AppEnvironment.current.currentUser?.id else { return }
+        KsLiveApp.retrieveEvent($0, uid: String(userId)).startWithResult {
+          switch $0 {
+          case .Success(let event):
+            self?.viewModel.inputs.setLiveStreamEvent(event: event)
+            self?.eventDetailsViewModel.inputs.setLiveStreamEvent(event: event)
+          case .Failure(let error):
+            print(error)
+          }
         }
-      }
     }
 
     self.activityIndicatorView.rac.hidden = self.eventDetailsViewModel.outputs.showActivityIndicator
@@ -260,8 +261,16 @@ internal final class LiveStreamCountdownViewController: UIViewController {
 
     self.eventDetailsViewModel.outputs.toggleSubscribe
       .observeForUI()
-      .observeNext { //[weak self] in
-        //toggle subscribe
+      .observeNext { [weak self] in
+        guard let userId = AppEnvironment.current.currentUser?.id else { return }
+        KsLiveApp.subscribe($0.0, uid: String(userId), subscribe: $0.1).startWithResult {
+          switch $0 {
+          case .Success(let result):
+            self?.eventDetailsViewModel.inputs.setSubcribed(subscribed: result)
+          case .Failure(let error):
+            print(error)
+          }
+        }
     }
 
     self.viewModel.outputs.pushLiveStreamViewController

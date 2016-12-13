@@ -8,6 +8,7 @@ import KsLive
 
 internal final class LiveStreamContainerViewController: UIViewController {
 
+  @IBOutlet private weak var availableForLabel: UILabel!
   @IBOutlet private weak var creatorAvatarImageView: UIImageView!
   @IBOutlet private weak var creatorAvatarLabel: UILabel!
   @IBOutlet private weak var creatorAvatarLiveDotImageView: UIImageView!
@@ -129,6 +130,9 @@ internal final class LiveStreamContainerViewController: UIViewController {
         bottom: Styles.grid(5),
         right: Styles.grid(4))
 
+    self.availableForLabel
+      |> UILabel.lens.font .~ UIFont.ksr_footnote(size: 11).italicized
+      |> UILabel.lens.textColor .~ .whiteColor()
 
     self.titleDetailsSeparator
       |> UIView.lens.backgroundColor .~ UIColor.whiteColor().colorWithAlphaComponent(0.2)
@@ -154,7 +158,7 @@ internal final class LiveStreamContainerViewController: UIViewController {
 
     self.creatorAvatarLabel
       |> UILabel.lens.textColor .~ .whiteColor()
-      |> UILabel.lens.font .~ UIFont.ksr_footnote()
+      |> UILabel.lens.font .~ .ksr_footnote()
 
     self.creatorAvatarImageView
       |> UIImageView.lens.layer.masksToBounds .~ true
@@ -186,6 +190,10 @@ internal final class LiveStreamContainerViewController: UIViewController {
       |> UILabel.lens.font .~ UIFont.ksr_headline(size: 13)
       |> UILabel.lens.textColor .~ .whiteColor()
       |> UILabel.lens.adjustsFontSizeToFitWidth .~ true
+
+    self.subscribeActivityIndicatorView
+      |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .White
+      |> UIActivityIndicatorView.lens.animating .~ true
 
     self.subscribeButton
       |> whiteBorderContainerButtonStyle
@@ -287,7 +295,8 @@ internal final class LiveStreamContainerViewController: UIViewController {
       .observeForUI()
       .on(next: { [weak self] image in self?.creatorAvatarImageView.image = nil })
       .observeNext { [weak self] in
-        KsLiveApp.retrieveEvent($0).startWithResult {
+        guard let userId = AppEnvironment.current.currentUser?.id else { return }
+        KsLiveApp.retrieveEvent($0, uid: String(userId)).startWithResult {
           switch $0 {
           case .Success(let event):
             self?.viewModel.inputs.setLiveStreamEvent(event: event)
@@ -315,14 +324,23 @@ internal final class LiveStreamContainerViewController: UIViewController {
     let isLive: Signal<Bool, NoError> = self.viewModel.outputs.liveStreamState
       .observeForUI()
       .map {
-      if case .live(_, _) = $0 { return true }
+      if case .live = $0 { return true }
 
       return false
+    }
+
+    let isReplay: Signal<Bool, NoError> = self.viewModel.outputs.liveStreamState
+      .observeForUI()
+      .map {
+        if case .replay = $0 { return true }
+
+        return false
     }
 
     self.navBarLiveDotImageView.rac.hidden = isLive.map(negate)
     self.creatorAvatarLiveDotImageView.rac.hidden = isLive.map(negate)
     self.numberWatchingButton.rac.hidden = isLive.map(negate)
+    self.availableForLabel.rac.hidden = isReplay.map(negate)
 
     self.navBarTitleLabel.rac.text = self.viewModel.outputs.titleViewText
 
@@ -338,6 +356,8 @@ internal final class LiveStreamContainerViewController: UIViewController {
       .observeNext { [weak self] in
         self?.subscribeButton.setImage($0, forState: .Normal)
     }
+
+    self.availableForLabel.rac.text = self.eventDetailsViewModel.outputs.availableForText
 
     self.detailsLoadingActivityIndicatorView.rac.hidden = self.eventDetailsViewModel.outputs
       .showActivityIndicator
@@ -358,8 +378,16 @@ internal final class LiveStreamContainerViewController: UIViewController {
 
     self.eventDetailsViewModel.outputs.toggleSubscribe
       .observeForUI()
-      .observeNext { //[weak self] in
-        //toggle subscribe
+      .observeNext { [weak self] in
+        guard let userId = AppEnvironment.current.currentUser?.id else { return }
+        KsLiveApp.subscribe($0.0, uid: String(userId), subscribe: $0.1).startWithResult {
+          switch $0 {
+          case .Success(let result):
+            self?.eventDetailsViewModel.inputs.setSubcribed(subscribed: result)
+          case .Failure(let error):
+            print(error)
+          }
+        }
     }
   }
   
@@ -437,7 +465,7 @@ internal final class LiveStreamContainerViewController: UIViewController {
   }
 
   @IBAction internal func subscribe(sender: UIButton) {
-    
+    self.eventDetailsViewModel.inputs.subscribeButtonTapped()
   }
 }
 
@@ -453,15 +481,6 @@ private func attributedIntroTextString(prefix: String, suffix: String) -> NSAttr
 }
 
 extension LiveStreamContainerViewController: LiveStreamViewControllerDelegate {
-  internal func didRequestUserAuth(liveStreamViewController: LiveStreamViewController) {
-
-  }
-
-  internal func didPerformAction(liveStreamViewController: LiveStreamViewController,
-                                 item: LiveStreamAssociatedItem) {
-
-  }
-
   internal func numberOfPeopleWatchingChanged(controller: LiveStreamViewController, numberOfPeople: Int) {
     self.eventDetailsViewModel.inputs.setNumberOfPeopleWatching(numberOfPeople: numberOfPeople)
   }

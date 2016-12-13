@@ -22,6 +22,7 @@ public protocol LiveStreamEventDetailsViewModelInputs {
 }
 
 public protocol LiveStreamEventDetailsViewModelOutputs {
+  var availableForText: Signal<String, NoError> { get }
   var creatorAvatarUrl: Signal<NSURL, NoError> { get }
   var creatorName: Signal<String, NoError> { get }
   var introText: Signal<String, NoError> { get }
@@ -35,7 +36,7 @@ public protocol LiveStreamEventDetailsViewModelOutputs {
   var subscribeButtonImage: Signal<UIImage?, NoError> { get }
   var subscribed: Signal<Bool, NoError> { get }
   var subscribeLabelText: Signal<String, NoError> { get }
-  var toggleSubscribe: Signal<(), NoError> { get }
+  var toggleSubscribe: Signal<(String, Bool), NoError> { get }
 }
 
 public class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewModelType,
@@ -49,7 +50,8 @@ public class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewModelTyp
 
     self.subscribed = Signal.merge(
       self.subscribedProperty.signal,
-      self.liveStreamEventProperty.signal.ignoreNil().map { $0.stream.isSubscribed }
+      self.liveStreamEventProperty.signal.ignoreNil()
+        .map { $0.user.isSubscribed }
     )
 
     self.introText = combineLatest(
@@ -64,6 +66,20 @@ public class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewModelTyp
 
       return ""
     }
+
+    self.availableForText = combineLatest(
+      self.liveStreamEventProperty.signal.ignoreNil(),
+      self.viewDidLoadProperty.signal)
+      .map(first)
+      .map { event -> String? in
+        guard let availableDate = NSCalendar.currentCalendar()
+          .dateByAddingUnit(.Day, value: 2, toDate: event.stream.startDate, options: [])?.timeIntervalSince1970
+          else { return nil }
+
+        let (time, units) = Format.duration(secondsInUTC: availableDate, abbreviate: false)
+
+        return "Available for \(time) more \(units)"
+      }.ignoreNil()
     
     self.creatorAvatarUrl = self.liveStreamEventProperty.signal.ignoreNil()
       .map { NSURL(string: $0.creator.avatar) }
@@ -100,7 +116,10 @@ public class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewModelTyp
       self.subscribeButtonTappedProperty.signal.mapConst(true)
     )
 
-    self.toggleSubscribe = self.subscribeButtonTappedProperty.signal
+    self.toggleSubscribe = combineLatest(
+      self.liveStreamEventProperty.signal.ignoreNil().map { String($0.id) },
+      self.subscribed
+    ).takeWhen(self.subscribeButtonTappedProperty.signal)
 
     self.numberOfPeopleWatchingText = self.numberOfPeopleWatchingProperty.signal.ignoreNil()
       .map { String($0) }
@@ -148,6 +167,7 @@ public class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewModelTyp
     self.subscribeButtonTappedProperty.value = ()
   }
 
+  public let availableForText: Signal<String, NoError>
   public let creatorAvatarUrl: Signal<NSURL, NoError>
   public let creatorName: Signal<String, NoError>
   public let introText: Signal<String, NoError>
@@ -161,7 +181,7 @@ public class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewModelTyp
   public let subscribeButtonImage: Signal<UIImage?, NoError>
   public let subscribed: Signal<Bool, NoError>
   public let subscribeLabelText: Signal<String, NoError>
-  public let toggleSubscribe: Signal<(), NoError>
+  public let toggleSubscribe: Signal<(String, Bool), NoError>
 
   public var inputs: LiveStreamEventDetailsViewModelInputs { return self }
   public var outputs: LiveStreamEventDetailsViewModelOutputs { return self }
