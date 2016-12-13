@@ -14,9 +14,7 @@ let daysAgoDate = NSDate().timeIntervalSince1970 - 60 * 60 * 24 * 4
 
 let follow = .template
   |> Activity.lens.id .~ 85
-  |> Activity.lens.user .~ (.template
-    |> User.lens.name .~ "Brandon Williams"
-  )
+  |> Activity.lens.user .~ (.template |> User.lens.name .~ "Brandon Williams")
   |> Activity.lens.category .~ .follow
 
 let update = .template
@@ -28,59 +26,61 @@ let update = .template
 
 let backing = .template
   |> Activity.lens.id .~ 62
-  |> Activity.lens.project .~ (.cosmicSurgery
-    |> Project.lens.stats.fundingProgress .~ 0.88
-  )
-  |> Activity.lens.user .~ (.template
-    |> User.lens.name .~ "Judith Light"
-  )
+  |> Activity.lens.project .~ (.cosmicSurgery |> Project.lens.stats.fundingProgress .~ 0.88)
+  |> Activity.lens.user .~ (.template |> User.lens.name .~ "Judith Light")
   |> Activity.lens.category .~ .backing
 
 let launch = .template
   |> Activity.lens.id .~ 73
-  |> Activity.lens.project .~ (.cosmicSurgery
-    |> Project.lens.name .~ "A Very Important Project About Kittens and Puppies"
-    |> Project.lens.stats.fundingProgress .~ 0
+  |> Activity.lens.project .~ (
+    .cosmicSurgery
+      |> Project.lens.name .~ "A Very Important Project About Kittens and Puppies"
+      |> Project.lens.stats.fundingProgress .~ 0
   )
   |> Activity.lens.category .~ .launch
 
 let following = .template
   |> Activity.lens.id .~ 0
-  |> Activity.lens.user .~ (.template
-    |> User.lens.name .~ "David Bowie"
-    |> User.lens.isFriend .~ true
+  |> Activity.lens.user .~ (
+    .template
+      |> User.lens.name .~ "David Bowie"
+      |> User.lens.isFriend .~ true
   )
   |> Activity.lens.category .~ .follow
 
 let success = .template
   |> Activity.lens.id .~ 45
-  |> Activity.lens.project .~ (.cosmicSurgery
-    |> Project.lens.name .~ "Help Me Transform This Pile of Wood"
-    |> Project.lens.stats.fundingProgress .~ 1.4
+  |> Activity.lens.project .~ (
+    .cosmicSurgery
+      |> Project.lens.name .~ "Help Me Transform This Pile of Wood"
+      |> Project.lens.stats.fundingProgress .~ 1.4
   )
   |> Activity.lens.category .~ .success
 
 let failure = .template
   |> Activity.lens.id .~ 36
-  |> Activity.lens.project .~ (.cosmicSurgery
-    |> Project.lens.name .~ "A Mildly Important Project About Arachnids and Worms"
-    |> Project.lens.stats.fundingProgress .~ 0.6
+  |> Activity.lens.project .~ (
+    .cosmicSurgery
+      |> Project.lens.name .~ "A Mildly Important Project About Arachnids and Worms"
+      |> Project.lens.stats.fundingProgress .~ 0.6
   )
   |> Activity.lens.category .~ .failure
 
 let canceled = .template
   |> Activity.lens.id .~ 27
-  |> Activity.lens.project .~ (.cosmicSurgery
-    |> Project.lens.name .~ "A Not Very Important Project About Pickles"
-    |> Project.lens.stats.fundingProgress .~ 0.1
+  |> Activity.lens.project .~ (
+    .cosmicSurgery
+      |> Project.lens.name .~ "A Not Very Important Project About Pickles"
+      |> Project.lens.stats.fundingProgress .~ 0.1
   )
   |> Activity.lens.category .~ .cancellation
 
 let suspended = .template
   |> Activity.lens.id .~ 18
-  |> Activity.lens.project .~ (.cosmicSurgery
-    |> Project.lens.name .~ "A Questionably Important Project About Rubber Bands"
-    |> Project.lens.stats.fundingProgress .~ 0.04
+  |> Activity.lens.project .~ (
+    .cosmicSurgery
+      |> Project.lens.name .~ "A Questionably Important Project About Rubber Bands"
+      |> Project.lens.stats.fundingProgress .~ 0.04
   )
   |> Activity.lens.category .~ .suspension
 

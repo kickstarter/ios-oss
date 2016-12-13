@@ -9,10 +9,13 @@ public protocol ActivityFriendBackingViewModelInputs {
 }
 
 public protocol ActivityFriendBackingViewModelOutputs {
+  /// Emits an a11y label for the cell.
   var cellAccessibilityLabel: Signal<String, NoError> { get }
-  var cellAccessibilityValue: Signal<String, NoError> { get }
-  var creatorName: Signal<String, NoError> { get }
+
+  /// Emits an NSURL for the friend avatar image view.
   var friendImageURL: Signal<NSURL?, NoError> { get }
+
+  /// Emits an attributed string for the "friend backed" label.
   var friendTitle: Signal<NSAttributedString, NoError> { get }
 
   /// Emits a color for the funding progress bar.
@@ -70,9 +73,7 @@ ActivityFriendBackingViewModelInputs, ActivityFriendBackingViewModelOutputs {
           ?? NSAttributedString(string: "")
     }
 
-    self.fundingBarColor = activity.map {
-      return progressBarColor(forActivityCategory: $0.category)
-    }
+    self.fundingBarColor = activity.map { progressBarColor(forActivityCategory: $0.category) }
 
     self.fundingProgressPercentage = project
       .map(Project.lens.stats.fundingProgress.view)
@@ -84,10 +85,8 @@ ActivityFriendBackingViewModelInputs, ActivityFriendBackingViewModelOutputs {
 
     self.projectImageURL = activity.map { ($0.project?.photo.full).flatMap(NSURL.init) }
 
-    self.creatorName = activity.map { $0.project?.creator.name ?? "" }
-
-    self.cellAccessibilityLabel = self.friendTitle.map { $0.string }
-    self.cellAccessibilityValue = self.projectName
+    self.cellAccessibilityLabel = combineLatest(self.friendTitle, self.projectName)
+      .map { "\($0.string), \($1)" }
   }
 
   private let activityProperty = MutableProperty<Activity?>(nil)
@@ -102,9 +101,7 @@ ActivityFriendBackingViewModelInputs, ActivityFriendBackingViewModelOutputs {
   public let percentFundedText: Signal<NSAttributedString, NoError>
   public let projectName: Signal<String, NoError>
   public let projectImageURL: Signal<NSURL?, NoError>
-  public let creatorName: Signal<String, NoError>
   public let cellAccessibilityLabel: Signal<String, NoError>
-  public let cellAccessibilityValue: Signal<String, NoError>
 
   public var inputs: ActivityFriendBackingViewModelInputs { return self }
   public var outputs: ActivityFriendBackingViewModelOutputs { return self }

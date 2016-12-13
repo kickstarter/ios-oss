@@ -34,6 +34,8 @@ internal final class ActivitySurveyResponseCell: UITableViewCell, ValueCell {
   }
 
   internal override func bindStyles() {
+    super.bindStyles()
+
     self
       |> feedTableViewCellStyle
 
@@ -68,6 +70,8 @@ internal final class ActivitySurveyResponseCell: UITableViewCell, ValueCell {
   }
 
   internal override func bindViewModel() {
+    super.bindViewModel()
+
     self.creatorNameLabel.rac.text = self.viewModel.outputs.creatorNameText
     self.rewardSurveysCountLabel.rac.text = self.viewModel.outputs.rewardSurveysCountText
     self.rewardSurveysCountLabel.rac.hidden = self.viewModel.outputs.rewardSurveysCountIsHidden

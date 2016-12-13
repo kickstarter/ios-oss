@@ -41,8 +41,8 @@ internal final class ActivitiesDataSource: ValueCellDataSource {
     }
 
     self.set(values: surveysWithPosition,
-               cellClass: ActivitySurveyResponseCell.self,
-               inSection: Section.surveys.rawValue)
+             cellClass: ActivitySurveyResponseCell.self,
+             inSection: Section.surveys.rawValue)
   }
 
   internal func load(activities activities: [Activity]) {

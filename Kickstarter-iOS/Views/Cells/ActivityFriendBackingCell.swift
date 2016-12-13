@@ -24,7 +24,6 @@ internal final class ActivityFriendBackingCell: UITableViewCell, ValueCell {
 
   override func bindViewModel() {
     self.rac.accessibilityLabel = self.viewModel.outputs.cellAccessibilityLabel
-    self.rac.accessibilityValue = self.viewModel.outputs.cellAccessibilityValue
     self.friendTitleLabel.rac.attributedText = self.viewModel.outputs.friendTitle
     self.fundingProgressBarView.rac.backgroundColor = self.viewModel.outputs.fundingBarColor
     self.fundingProgressLabel.rac.attributedText = self.viewModel.outputs.percentFundedText
@@ -66,6 +65,7 @@ internal final class ActivityFriendBackingCell: UITableViewCell, ValueCell {
 
     self
       |> feedTableViewCellStyle
+      |> UITableViewCell.lens.accessibilityTraits .~ UIAccessibilityTraitButton
 
     self.cardView
       |> dropShadowStyle()

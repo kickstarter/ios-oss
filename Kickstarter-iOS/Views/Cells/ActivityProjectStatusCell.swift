@@ -19,11 +19,13 @@ internal final class ActivityProjectStatusCell: UITableViewCell, ValueCell {
   @IBOutlet private weak var projectNameLabel: UILabel!
   @IBOutlet private weak var textBackgroundView: UIView!
 
-  func configureWith(value value: Activity) {
+  internal func configureWith(value value: Activity) {
     self.viewModel.inputs.configureWith(activity: value)
   }
 
-  override func bindViewModel() {
+  internal override func bindViewModel() {
+    super.bindViewModel()
+
     self.projectNameLabel.rac.text = self.viewModel.outputs.projectName
     self.metadataBackgroundView.rac.backgroundColor = self.viewModel.outputs.metadataBackgroundColor
     self.metadataLabel.rac.text = self.viewModel.outputs.metadataText
@@ -50,7 +52,7 @@ internal final class ActivityProjectStatusCell: UITableViewCell, ValueCell {
     }
   }
 
-  override func bindStyles() {
+  internal override func bindStyles() {
     super.bindStyles()
 
     self
