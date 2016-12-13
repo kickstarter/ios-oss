@@ -78,33 +78,7 @@ ActivityFriendBackingViewModelInputs, ActivityFriendBackingViewModelOutputs {
       .map(Project.lens.stats.fundingProgress.view)
       .map(clamp(0, 1))
 
-    self.percentFundedText = activity
-      .map {
-        if let project = $0.project {
-          let percentage = Format.percentage(project.stats.percentFunded)
-          let funded = Strings.percentage_funded(percentage: percentage)
-
-          let mutableString = NSMutableAttributedString(string: funded, attributes: [
-            NSFontAttributeName: UIFont.ksr_caption1(),
-            NSForegroundColorAttributeName: UIColor.ksr_navy_500
-            ])
-
-          if let percentRange = mutableString.string.rangeOfString(percentage) {
-            let percentStartIndex = mutableString.string.startIndex.distanceTo(percentRange.startIndex)
-            mutableString.addAttributes([
-              NSFontAttributeName: UIFont.ksr_headline(size: 12.0),
-              NSForegroundColorAttributeName:
-                ($0.category == .cancellation
-                  || $0.category == .failure
-                  || $0.category == .suspension) ? UIColor.ksr_text_navy_500 : UIColor.ksr_green_500
-              ], range: NSRange(location: percentStartIndex, length: percentage.characters.count))
-          }
-
-          return mutableString
-        }
-
-        return NSAttributedString(string: "")
-    }
+    self.percentFundedText = activity.map(percentFundedString(forActivity:))
 
     self.projectName = activity.map { $0.project?.name ?? "" }
 
