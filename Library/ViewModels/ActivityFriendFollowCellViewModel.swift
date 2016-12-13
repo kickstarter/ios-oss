@@ -18,9 +18,6 @@ public protocol ActivityFriendFollowCellViewModelOutputs {
   /// Emits whether to hide the follow button.
   var hideFollowButton: Signal<Bool, NoError> { get }
 
-  /// Emits to notify delegate that a friend was updated.
-  var notifyDelegateFriendUpdated: Signal<Activity, NoError> { get }
-
   /// Emits text for title label.
   var title: Signal<NSAttributedString, NoError> { get }
 }
@@ -32,6 +29,7 @@ ActivityFriendFollowCellViewModelOutputs {
     let friend = self.activityProperty.signal.ignoreNil()
       .map(Activity.lens.user.view)
       .ignoreNil()
+      .map(cached(friend:))
 
     self.friendImageURL = friend.map { NSURL.init(string: $0.avatar.small) }
 
@@ -54,13 +52,10 @@ ActivityFriendFollowCellViewModelOutputs {
         .materialize()
     }
 
-    self.notifyDelegateFriendUpdated = self.activityProperty.signal.ignoreNil()
-      .takePairWhen(followFriendEvent.values())
-      .map { activity, friend in
-        activity |> Activity.lens.user .~ friend
-    }
+    let followFriendSuccess = followFriendEvent.values()
+      .on(next: { cache(friend: $0, isFriend: true) })
 
-    self.hideFollowButton = friend
+    self.hideFollowButton = Signal.merge(friend, followFriendSuccess)
       .map { $0.isFriend ?? false }
       .skipRepeats()
 
@@ -79,9 +74,29 @@ ActivityFriendFollowCellViewModelOutputs {
 
   public let friendImageURL: Signal<NSURL?, NoError>
   public let hideFollowButton: Signal<Bool, NoError>
-  public let notifyDelegateFriendUpdated: Signal<Activity, NoError>
   public let title: Signal<NSAttributedString, NoError>
 
   public var inputs: ActivityFriendFollowCellViewModelInputs { return self }
   public var outputs: ActivityFriendFollowCellViewModelOutputs { return self }
+}
+
+internal let activityFriendFollowCacheKey: String = "activity_friend_follow_view_model"
+
+private func cached(friend friend: User) -> User {
+  if let friendCache = AppEnvironment.current.cache[activityFriendFollowCacheKey] as? [Int:Bool] {
+    let isFriend = friendCache[friend.id] ?? friend.isFriend
+    return friend |> User.lens.isFriend .~ isFriend
+  } else {
+    return friend |> User.lens.isFriend .~ friend.isFriend
+  }
+}
+
+private func cache(friend friend: User, isFriend: Bool) {
+  AppEnvironment.current.cache[activityFriendFollowCacheKey] =
+    AppEnvironment.current.cache[activityFriendFollowCacheKey] ?? [Int:Bool]()
+
+  var cache = AppEnvironment.current.cache[activityFriendFollowCacheKey] as? [Int:Bool]
+  cache?[friend.id] = isFriend
+
+  AppEnvironment.current.cache[activityFriendFollowCacheKey] = cache
 }

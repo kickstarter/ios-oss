@@ -35,9 +35,6 @@ public protocol ActitiviesViewModelInputs {
   /// Call when the respond button is tapped in a survey cell.
   func tappedRespondNow(forSurveyResponse surveyResponse: SurveyResponse)
 
-  /// Call when to update an activity, e.g. friend following.
-  func updateActivity(activity: Activity)
-
   /// Call when a user session ends.
   func userSessionEnded()
 
@@ -148,10 +145,8 @@ ActivitiesViewModelOutputs {
 
     let clearedActivitiesOnSessionEnd = self.userSessionEndedProperty.signal.mapConst([Activity]())
 
-    let activityToUpdate = Signal.merge(
-      self.viewWillAppearProperty.signal.ignoreNil().take(1).mapConst(nil),
-      self.updateActivityProperty.signal
-    )
+    let activityToUpdate: Signal<Activity?, NoError> = self.viewWillAppearProperty.signal.ignoreNil()
+      .take(1).mapConst(nil)
 
     let updatedActivities = combineLatest(activities, activityToUpdate)
       .map { currentActivities, updatedActivity in
@@ -326,10 +321,6 @@ ActivitiesViewModelOutputs {
   private let tappedActivityProperty = MutableProperty<Activity?>(nil)
   public func tappedActivity(activity: Activity) {
     self.tappedActivityProperty.value = activity
-  }
-  private let updateActivityProperty = MutableProperty<Activity?>(nil)
-  public func updateActivity(activity: Activity) {
-    self.updateActivityProperty.value = activity
   }
   private let userFacebookConnectedProperty = MutableProperty()
   public func findFriendsFacebookConnectCellDidFacebookConnectUser() {

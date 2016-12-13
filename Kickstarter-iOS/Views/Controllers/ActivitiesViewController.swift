@@ -179,8 +179,6 @@ internal final class ActivitiesViewController: UITableViewController {
       cell.delegate = self
     } else if let cell = cell as? ActivitySurveyResponseCell where cell.delegate == nil {
       cell.delegate = self
-    } else if let cell = cell as? ActivityFriendFollowCell where cell.delegate == nil {
-      cell.delegate = self
     }
 
     self.viewModel.inputs.willDisplayRow(self.dataSource.itemIndexAt(indexPath),
@@ -275,12 +273,6 @@ extension ActivitiesViewController: FindFriendsFacebookConnectCellDelegate {
 extension ActivitiesViewController: ActivitySurveyResponseCellDelegate {
   func activityTappedRespondNow(forSurveyResponse surveyResponse: SurveyResponse) {
     self.viewModel.inputs.tappedRespondNow(forSurveyResponse: surveyResponse)
-  }
-}
-
-extension ActivitiesViewController: ActivityFriendFollowCellDelegate {
-  func activityFriendFollowCell(cell: ActivityFriendFollowCell, updatedActivity: Activity) {
-    self.viewModel.inputs.updateActivity(updatedActivity)
   }
 }
 

@@ -138,6 +138,7 @@ internal final class ActivitiesViewControllerTests: TestCase {
         FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
       }
     }
+
   }
 
   func testMultipleSurveys_NotFacebookConnected_YouLaunched() {
@@ -173,5 +174,6 @@ internal final class ActivitiesViewControllerTests: TestCase {
         FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
       }
     }
+
   }
 }
