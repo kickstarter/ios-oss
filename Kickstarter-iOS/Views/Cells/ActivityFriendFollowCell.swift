@@ -35,7 +35,7 @@ internal final class ActivityFriendFollowCell: UITableViewCell, ValueCell {
       })
       .ignoreNil()
       .observeNext { [weak friendImageView] url in
-        friendImageView?.af_setImageWithURL(url, imageTransition: .CrossDissolve(0.2))
+        friendImageView?.ksr_setImageWithURL(url)
     }
 
     self.viewModel.outputs.notifyDelegateFriendUpdated
@@ -66,7 +66,8 @@ internal final class ActivityFriendFollowCell: UITableViewCell, ValueCell {
       |> UIButton.lens.targets .~ [(self, action: #selector(followButtonTapped), .TouchUpInside)]
       |> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.social_following_friend_buttons_follow() }
       |> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 12)
-      |> UIButton.lens.contentEdgeInsets .~ .init(topBottom: 8, leftRight: 16)
+      |> UIButton.lens.contentEdgeInsets .~ .init(topBottom: Styles.gridHalf(3),
+                                                  leftRight: Styles.gridHalf(5))
   }
 
   @objc private func followButtonTapped() {

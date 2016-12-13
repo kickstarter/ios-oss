@@ -41,7 +41,9 @@ ActivitySurveyResponseCellViewModelInputs, ActivitySurveyResponseCellViewModelOu
 
   public init() {
     let surveyResponseAndCountAndPosition = self.surveyResponseCountPositionProperty.signal.ignoreNil()
-    let project = surveyResponseAndCountAndPosition.map { $0.0.project }.ignoreNil()
+    let project = surveyResponseAndCountAndPosition
+      .map { surveyResponse, _, _ in surveyResponse.project }
+      .ignoreNil()
 
     self.creatorImageURL = project.map { NSURL.init(string: $0.creator.avatar.small) }
 
@@ -49,7 +51,8 @@ ActivitySurveyResponseCellViewModelInputs, ActivitySurveyResponseCellViewModelOu
 
     self.surveyLabelText = project.map {
       let text = Strings.Creator_name_needs_some_information_to_deliver_your_reward_for_project_name(
-        creator_name: $0.creator.name, project_name: $0.name)
+        creator_name: $0.creator.name, project_name: $0.name
+      )
 
       return text.simpleHtmlAttributedString(
         base: [
@@ -72,10 +75,7 @@ ActivitySurveyResponseCellViewModelInputs, ActivitySurveyResponseCellViewModelOu
     }
 
     self.rewardSurveysCountText = surveyResponseAndCountAndPosition
-      .map(second)
-      .map { Strings.Reward_Surveys(reward_survey_count: $0)
-        .stringByReplacingOccurrencesOfString("1 ", withString: "")
-    }
+      .map { _, count, _ in Strings.Reward_Surveys(reward_survey_count: count) }
   }
 
   private let surveyResponseCountPositionProperty = MutableProperty<(SurveyResponse, Int, Int)?>(nil)

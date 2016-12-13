@@ -29,7 +29,6 @@ internal final class ActivityUpdateCell: UITableViewCell, ValueCell {
 
   internal override func bindViewModel() {
     self.rac.accessibilityLabel = self.viewModel.outputs.cellAccessibilityLabel
-    self.rac.accessibilityValue = self.viewModel.outputs.cellAccessibilityValue
     self.projectNameLabel.rac.text = self.viewModel.outputs.projectName
     self.updateSequenceLabel.rac.attributedText = self.viewModel.outputs.sequenceTitle
     self.titleLabel.rac.text = self.viewModel.outputs.title
@@ -60,6 +59,7 @@ internal final class ActivityUpdateCell: UITableViewCell, ValueCell {
 
     self
       |> feedTableViewCellStyle
+      |> UITableViewCell.lens.accessibilityTraits .~ UIAccessibilityTraitButton
 
     self.cardView
       |> dropShadowStyle()

@@ -38,7 +38,7 @@ internal final class ActivityFriendBackingCell: UITableViewCell, ValueCell {
       })
       .ignoreNil()
       .observeNext { [weak friendImageView] url in
-        friendImageView?.af_setImageWithURL(url, imageTransition: .CrossDissolve(0.2))
+        friendImageView?.ksr_setImageWithURL(url)
     }
 
     self.viewModel.outputs.fundingProgressPercentage
@@ -57,7 +57,7 @@ internal final class ActivityFriendBackingCell: UITableViewCell, ValueCell {
       })
       .ignoreNil()
       .observeNext { [weak projectImageView] url in
-        projectImageView?.af_setImageWithURL(url, imageTransition: .CrossDissolve(0.2))
+        projectImageView?.ksr_setImageWithURL(url)
     }
   }
 

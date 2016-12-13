@@ -49,7 +49,7 @@ internal final class FindFriendsFriendFollowCell: UITableViewCell, ValueCell {
         })
       .ignoreNil()
       .observeNext { [weak avatarImageView] url in
-        avatarImageView?.af_setImageWithURL(url, imageTransition: .CrossDissolve(0.2))
+        avatarImageView?.ksr_setImageWithURL(url)
     }
   }
 

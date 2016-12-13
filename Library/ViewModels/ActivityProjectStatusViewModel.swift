@@ -53,38 +53,14 @@ public final class ActivityProjectStatusViewModel: ActivityProjectStatusViewMode
 
     self.metadataText = activity.map {
       let creator = $0.project?.creator
-      return metadataString(forActivityCategory: $0.category,
+      return metadataString(
+        forActivityCategory: $0.category,
         isCreatorUser: AppEnvironment.current.currentUser == creator,
-        friendName: creator?.name ?? "")
+        friendName: creator?.name ?? ""
+      )
     }
 
-    self.percentFundedText = activity
-      .map {
-        if let project = $0.project {
-          let percentage = Format.percentage(project.stats.percentFunded)
-          let funded = Strings.percentage_funded(percentage: percentage)
-
-          let mutableString = NSMutableAttributedString(string: funded, attributes: [
-            NSFontAttributeName: UIFont.ksr_caption1(),
-            NSForegroundColorAttributeName: UIColor.ksr_navy_500
-          ])
-
-          if let percentRange = mutableString.string.rangeOfString(percentage) {
-            let percentStartIndex = mutableString.string.startIndex.distanceTo(percentRange.startIndex)
-            mutableString.addAttributes([
-              NSFontAttributeName: UIFont.ksr_headline(size: 12.0),
-              NSForegroundColorAttributeName:
-                ($0.category == .cancellation
-                || $0.category == .failure
-                || $0.category == .suspension) ? UIColor.ksr_text_navy_500 : UIColor.ksr_green_500
-            ], range: NSRange(location: percentStartIndex, length: percentage.characters.count))
-          }
-
-          return mutableString
-        }
-
-        return NSAttributedString(string: "")
-    }
+    self.percentFundedText = activity.map(percentFundedString(forActivity:))
 
     self.projectImageURL = project.map { $0.photo.full }.map(NSURL.init(string:))
 
@@ -150,4 +126,29 @@ private func metadataString(forActivityCategory category: Activity.Category,
   default:
     return ""
   }
+}
+
+private func percentFundedString(forActivity activity: Activity) -> NSAttributedString {
+  guard let project = activity.project else { return NSAttributedString(string: "") }
+
+  let percentage = Format.percentage(project.stats.percentFunded)
+  let funded = Strings.percentage_funded(percentage: percentage)
+
+  let mutableString = NSMutableAttributedString(string: funded, attributes: [
+    NSFontAttributeName: UIFont.ksr_caption1(),
+    NSForegroundColorAttributeName: UIColor.ksr_navy_500
+    ])
+
+  if let percentRange = mutableString.string.rangeOfString(percentage) {
+    let percentStartIndex = mutableString.string.startIndex.distanceTo(percentRange.startIndex)
+    mutableString.addAttributes([
+      NSFontAttributeName: UIFont.ksr_headline(size: 12.0),
+      NSForegroundColorAttributeName:
+        (activity.category == .cancellation
+          || activity.category == .failure
+          || activity.category == .suspension) ? UIColor.ksr_text_navy_500 : UIColor.ksr_green_500
+      ], range: NSRange(location: percentStartIndex, length: percentage.characters.count))
+  }
+
+  return mutableString
 }

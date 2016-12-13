@@ -38,7 +38,7 @@ internal final class ActivityProjectStatusCell: UITableViewCell, ValueCell {
       })
       .ignoreNil()
       .observeNext { [weak projectImageView] url in
-        projectImageView?.af_setImageWithURL(url, imageTransition: .CrossDissolve(0.2))
+        projectImageView?.ksr_setImageWithURL(url)
     }
 
     self.viewModel.outputs.fundingProgressPercentage

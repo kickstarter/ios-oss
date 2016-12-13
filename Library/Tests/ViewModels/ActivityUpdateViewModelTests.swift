@@ -44,10 +44,12 @@ internal final class ActivityUpdateViewModelTests: TestCase {
     self.projectImageURL.assertValues([project.photo.med])
     self.projectName.assertValues([project.name])
     self.sequenceTitle.assertValues([
-      Strings.dashboard_activity_update_number_posted_time_count_days_ago(space: " ",
+      Strings.dashboard_activity_update_number_posted_time_count_days_ago(
+        space: " ",
         update_number: Format.wholeNumber(activity.update?.sequence ?? 1),
         time_count_days_ago: Format.relative(secondsInUTC: activity.createdAt)
-      ).htmlStripped() ?? ""])
+      ).htmlStripped()
+    ])
     self.title.assertValues([update.title])
   }
 

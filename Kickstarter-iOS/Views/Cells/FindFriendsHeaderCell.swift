@@ -64,12 +64,15 @@ internal final class FindFriendsHeaderCell: UITableViewCell, ValueCell {
       |> UIButton.lens.targets .~ [(self, action: #selector(closeButtonTapped), .TouchUpInside)]
       |> UIButton.lens.contentEdgeInsets .~ .init(top: Styles.grid(1), left: Styles.grid(3),
                                                   bottom: Styles.grid(3), right: Styles.grid(2))
+      |> UIButton.lens.accessibilityLabel %~ { _ in
+        Strings.social_following_header_accessibility_button_close_find_friends_header_label()
+    }
 
     self.findFriendsButton
       |> navyButtonStyle
       |> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 12)
       |> UIButton.lens.targets .~ [(self, action: #selector(findFriendsButtonTapped), .TouchUpInside)]
-      |> UIButton.lens.contentEdgeInsets .~ .init(topBottom: 8, leftRight: 24)
+      |> UIButton.lens.contentEdgeInsets .~ .init(topBottom: Styles.gridHalf(3), leftRight: Styles.grid(4))
       |> UIButton.lens.title(forState: .Normal) %~ { _ in
         Strings.social_following_header_button_find_your_friends()
     }

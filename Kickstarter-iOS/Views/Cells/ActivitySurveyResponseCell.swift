@@ -81,7 +81,7 @@ internal final class ActivitySurveyResponseCell: UITableViewCell, ValueCell {
         })
       .ignoreNil()
       .observeNext { [weak creatorImageView] url in
-        creatorImageView?.af_setImageWithURL(url, imageTransition: .CrossDissolve(0.2))
+        creatorImageView?.ksr_setImageWithURL(url)
     }
 
     self.viewModel.outputs.notifyDelegateToRespondToSurvey
