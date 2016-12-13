@@ -79,6 +79,6 @@ lint:
 	swiftlint lint --reporter json
 
 strings:
-	cat Frameworks/KsApi/Frameworks/native-secrets/ios/Secrets.swift bin/strings.swift | swift -
+	cat Frameworks/ios-ksapi/Frameworks/native-secrets/ios/Secrets.swift bin/strings.swift | swift -
 
 .PHONY: test-all test clean dependencies submodules deploy lint strings

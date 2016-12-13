@@ -17,7 +17,6 @@ public enum Strings {
    - **es**: "Aprox. %{reward_amount}"
    - **de**: "Ungefähr %{reward_amount}"
    - **fr**: "Environ %{reward_amount}"
-   - **it**: "About %{reward_amount}"
    - **en**: "About %{reward_amount}"
   */
   public static func About_reward_amount(reward_amount reward_amount: String) -> String {
@@ -34,7 +33,6 @@ public enum Strings {
    - **es**: "Agregar anexos …"
    - **de**: "Anhänge hinzufügen ..."
    - **fr**: "Ajouter des pièces jointes..."
-   - **it**: "Add attachments…"
    - **en**: "Add attachments…"
   */
   public static func Add_attachments() -> String {
@@ -51,7 +49,6 @@ public enum Strings {
    - **es**: "Todos los proyectos de la categoría Arte"
    - **de**: "Alle Projekte der Kategorie Kunst"
    - **fr**: "Tous les projets de la catégorie Art"
-   - **it**: "All Art Projects"
    - **en**: "All Art Projects"
   */
   public static func All_Art_Projects() -> String {
@@ -68,7 +65,6 @@ public enum Strings {
    - **es**: "Todos los proyectos de la categoría Comics"
    - **de**: "Alle Projekte der Kategorie Comics"
    - **fr**: "Tous les projets de la catégorie Bande dessinée"
-   - **it**: "All Comics Projects"
    - **en**: "All Comics Projects"
   */
   public static func All_Comics_Projects() -> String {
@@ -85,7 +81,6 @@ public enum Strings {
    - **es**: "Todos los proyectos de la categoría Artesanías"
    - **de**: "Alle Projekte der Kategorie Kunsthandwerk"
    - **fr**: "Tous les projets de la catégorie Artisanat"
-   - **it**: "All Crafts Projects"
    - **en**: "All Crafts Projects"
   */
   public static func All_Crafts_Projects() -> String {
@@ -102,7 +97,6 @@ public enum Strings {
    - **es**: "Todos los proyectos de la categoría Danza"
    - **de**: "Alle Projekte der Kategorie Tanz"
    - **fr**: "Tous les projets de la catégorie Danse"
-   - **it**: "All Dance Projects"
    - **en**: "All Dance Projects"
   */
   public static func All_Dance_Projects() -> String {
@@ -119,7 +113,6 @@ public enum Strings {
    - **es**: "Todos los proyectos de la categoría Diseño"
    - **de**: "Alle Projekte der Kategorie Design"
    - **fr**: "Tous les projets de la catégorie Design"
-   - **it**: "All Design Projects"
    - **en**: "All Design Projects"
   */
   public static func All_Design_Projects() -> String {
@@ -136,7 +129,6 @@ public enum Strings {
    - **es**: "Todos los proyectos de la categoría Moda"
    - **de**: "Alle Projekte der Kategorie Mode"
    - **fr**: "Tous les projets de la catégorie Mode"
-   - **it**: "All Fashion Projects"
    - **en**: "All Fashion Projects"
   */
   public static func All_Fashion_Projects() -> String {
@@ -153,7 +145,6 @@ public enum Strings {
    - **es**: "Todos los proyectos de la categoría Cine y Video"
    - **de**: "Alle Projekte der Kategorie Film & Video"
    - **fr**: "Tous les projets de la catégorie Cinéma et vidéo"
-   - **it**: "All Film & Video Projects"
    - **en**: "All Film & Video Projects"
   */
   public static func All_Film_Projects() -> String {
@@ -170,7 +161,6 @@ public enum Strings {
    - **es**: "Todos los proyectos de la categoría Comida"
    - **de**: "Alle Projekte der Kategorie Essen"
    - **fr**: "Tous les projets de la catégorie Gastronomie"
-   - **it**: "All Food Projects"
    - **en**: "All Food Projects"
   */
   public static func All_Food_Projects() -> String {
@@ -187,7 +177,6 @@ public enum Strings {
    - **es**: "Todos los proyectos de la categoría Juegos"
    - **de**: "Alle Projekte der Kategorie Spiele"
    - **fr**: "Tous les projets de la catégorie Jeux"
-   - **it**: "All Games Projects"
    - **en**: "All Games Projects"
   */
   public static func All_Games_Projects() -> String {
@@ -204,7 +193,6 @@ public enum Strings {
    - **es**: "Todos los proyectos de la categoría Periodismo"
    - **de**: "Alle Projekte der Kategorie Journalismus"
    - **fr**: "Tous les projets de la catégorie Journalisme"
-   - **it**: "All Journalism Projects"
    - **en**: "All Journalism Projects"
   */
   public static func All_Journalism_Projects() -> String {
@@ -221,7 +209,6 @@ public enum Strings {
    - **es**: "Todos los proyectos de la categoría Música"
    - **de**: "Alle Projekte der Kategorie Musik"
    - **fr**: "Tous les projets de la catégorie Musique"
-   - **it**: "All Music Projects"
    - **en**: "All Music Projects"
   */
   public static func All_Music_Projects() -> String {
@@ -238,7 +225,6 @@ public enum Strings {
    - **es**: "Todos los proyectos de la categoría Fotografía"
    - **de**: "Alle Projekte der Kategorie Fotografie"
    - **fr**: "Tous les projets de la catégorie Photographie"
-   - **it**: "All Photography Projects"
    - **en**: "All Photography Projects"
   */
   public static func All_Photography_Projects() -> String {
@@ -255,7 +241,6 @@ public enum Strings {
    - **es**: "Todos los proyectos"
    - **de**: "Alle Projekte"
    - **fr**: "Tous les projets"
-   - **it**: "All Projects"
    - **en**: "All Projects"
   */
   public static func All_Projects() -> String {
@@ -272,7 +257,6 @@ public enum Strings {
    - **es**: "Todos los proyectos de la categoría Editorial"
    - **de**: "Alle Projekte der Kategorie Publishing"
    - **fr**: "Tous les projets de la catégorie Édition"
-   - **it**: "All Publishing Projects"
    - **en**: "All Publishing Projects"
   */
   public static func All_Publishing_Projects() -> String {
@@ -289,7 +273,6 @@ public enum Strings {
    - **es**: "Todos los proyectos de la categoría Tecnología"
    - **de**: "Alle Projekte der Kategorie Technologie"
    - **fr**: "Tous les projets de la catégorie Technologie"
-   - **it**: "All Technology Projects"
    - **en**: "All Technology Projects"
   */
   public static func All_Tech_Projects() -> String {
@@ -306,7 +289,6 @@ public enum Strings {
    - **es**: "Todos los proyectos de la categoría Teatro"
    - **de**: "Alle Projekte der Kategorie Theater"
    - **fr**: "Tous les projets de la catégorie Théâtre"
-   - **it**: "All Theater Projects"
    - **en**: "All Theater Projects"
   */
   public static func All_Theater_Projects() -> String {
@@ -323,7 +305,6 @@ public enum Strings {
    - **es**: "¡Recompensas agotadas!"
    - **de**: "Alle weg"
    - **fr**: "Épuisé"
-   - **it**: "All gone"
    - **en**: "All gone"
   */
   public static func All_gone() -> String {
@@ -340,7 +321,6 @@ public enum Strings {
    - **es**: "Monto actual: %{amount}, monto previo: %{previous_amount}"
    - **de**: "Jetziger Betrag: %{amount}, vorheriger Betrag: %{previous_amount}"
    - **fr**: "Montant : %{amount}, montant précédant : %{previous_amount}"
-   - **it**: "Amount: %{amount}, previous amount: %{previous_amount}"
    - **en**: "Amount: %{amount}, previous amount: %{previous_amount}"
   */
   public static func Amount_previous_amount(amount amount: String, previous_amount: String) -> String {
@@ -357,7 +337,6 @@ public enum Strings {
    - **es**: "Monto: %{amount}, %{reward}"
    - **de**: "Betrag: %{amount}, %{reward}"
    - **fr**: "Montant : %{amount}, %{reward}"
-   - **it**: "Amount: %{amount}, %{reward}"
    - **en**: "Amount: %{amount}, %{reward}"
   */
   public static func Amount_reward(amount amount: String, reward: String) -> String {
@@ -374,7 +353,6 @@ public enum Strings {
    - **es**: "¡Pregúntame!"
    - **de**: "Frage stellen"
    - **fr**: "Posez-moi une question !"
-   - **it**: "Ask me anything"
    - **en**: "Ask me anything"
   */
   public static func Ask_me_anything() -> String {
@@ -391,7 +369,6 @@ public enum Strings {
    - **es**: "Atrás"
    - **de**: "Zurück"
    - **fr**: "Retour"
-   - **it**: "Back"
    - **en**: "Back"
   */
   public static func Back() -> String {
@@ -408,7 +385,6 @@ public enum Strings {
    - **es**: "Patrocina este proyecto:"
    - **de**: "Folgendes Projekt unterstützen"
    - **fr**: "Je soutiens ce projet"
-   - **it**: "Back this project below"
    - **en**: "Back this project below"
   */
   public static func Back_this_project_below() -> String {
@@ -425,7 +401,6 @@ public enum Strings {
    - **es**: "Patrocinados por amigos"
    - **de**: "Von Freunden unterstützt"
    - **fr**: "Soutenu par mes amis"
-   - **it**: "Backed by Friends"
    - **en**: "Backed by Friends"
   */
   public static func Backed_by_Friends() -> String {
@@ -442,7 +417,6 @@ public enum Strings {
    - **es**: "Patrocinados por gente que sigues"
    - **de**: "Unterstützt von Leuten, denen du folgst"
    - **fr**: "Soutenus par les personnes que vous suivez"
-   - **it**: "Backed by people you follow"
    - **en**: "Backed by people you follow"
   */
   public static func Backed_by_people_you_follow() -> String {
@@ -459,7 +433,6 @@ public enum Strings {
    - **es**: "Proyectos patrocinados: %{project_count}"
    - **de**: "Unterstützte Projekte: %{project_count}"
    - **fr**: "Projets soutenus : %{project_count}"
-   - **it**: "Backed projects %{project_count}"
    - **en**: "Backed projects %{project_count}"
   */
   public static func Backed_projects_projects_count(project_count project_count: String) -> String {
@@ -480,8 +453,6 @@ patrocinadores"
 Unterstützer"
    - **fr**: "%{backers_count}
 contributeurs"
-   - **it**: "%{backers_count}
-backers"
    - **en**: "%{backers_count}
 backers"
   */
@@ -499,7 +470,6 @@ backers"
    - **es**: "Conviértete en patrocinador y deja un comentario."
    - **de**: "Werde Unterstützer, um einen Kommentar zu hinterlassen."
    - **fr**: "Soutenez ce projet pour laisser un commentaire."
-   - **it**: "Become a backer to leave a comment."
    - **en**: "Become a backer to leave a comment."
   */
   public static func Become_a_backer_to_leave_a_comment() -> String {
@@ -516,7 +486,6 @@ backers"
    - **es**: "Nuevas ideas se vuelven realidad - ¡gracias a tu ayuda!"
    - **de**: "Neue Ideen werden Wirklichkeit."
    - **fr**: "De nouvelles idées qui voient le jour."
-   - **it**: "Bring new ideas to life."
    - **en**: "Bring new ideas to life."
   */
   public static func Bring_new_ideas_to_life() -> String {
@@ -533,7 +502,6 @@ backers"
    - **es**: "Cancela tu contribución"
    - **de**: "Deinen Beitrag zurückziehen"
    - **fr**: "Annuler mon engagement"
-   - **it**: "Cancel your pledge"
    - **en**: "Cancel your pledge"
   */
   public static func Cancel_your_pledge() -> String {
@@ -550,7 +518,6 @@ backers"
    - **es**: "Cambiar método de pago"
    - **de**: "Zahlungsmethode ändern"
    - **fr**: "Changer de moyen de paiement"
-   - **it**: "Change payment method"
    - **en**: "Change payment method"
   */
   public static func Change_payment_method() -> String {
@@ -567,7 +534,6 @@ backers"
    - **es**: "Destino determinado: %{location}."
    - **de**: "Legt %{location} als Versandort fest."
    - **fr**: "Sélectionne %{location} pour la livraison."
-   - **it**: "Chooses %{location} for shipping."
    - **en**: "Chooses %{location} for shipping."
   */
   public static func Chooses_location_for_shipping(location location: String) -> String {
@@ -584,7 +550,6 @@ backers"
    - **es**: "Cerrar proyecto"
    - **de**: "Projekt schließen"
    - **fr**: "Fermer le projet"
-   - **it**: "Close project"
    - **en**: "Close project"
   */
   public static func Close_project() -> String {
@@ -601,7 +566,6 @@ backers"
    - **es**: "Cierra filtros."
    - **de**: "Filter schließen."
    - **fr**: "Ferme les filtres."
-   - **it**: "Closes filters."
    - **en**: "Closes filters."
   */
   public static func Closes_filters() -> String {
@@ -618,7 +582,6 @@ backers"
    - **es**: "Cierra el proyecto."
    - **de**: "Schließt das Projekt."
    - **fr**: "Ferme le projet."
-   - **it**: "Closes project."
    - **en**: "Closes project."
   */
   public static func Closes_project() -> String {
@@ -635,7 +598,6 @@ backers"
    - **es**: "Muestra menos subcategorías."
    - **de**: "Reduziert die Anzeige der Unterkategorien."
    - **fr**: "Masque les sous-catégories."
-   - **it**: "Collapses subcategories."
    - **en**: "Collapses subcategories."
   */
   public static func Collapses_subcategories() -> String {
@@ -652,7 +614,6 @@ backers"
    - **es**: "Colecciones"
    - **de**: "Sammlungen"
    - **fr**: "Collections"
-   - **it**: "Collections"
    - **en**: "Collections"
   */
   public static func Collections() -> String {
@@ -669,7 +630,6 @@ backers"
    - **es**: "Completar pago"
    - **de**: "Zahlung abschließen"
    - **fr**: "Payer"
-   - **it**: "Complete payment"
    - **en**: "Complete payment"
   */
   public static func Complete_payment() -> String {
@@ -686,7 +646,6 @@ backers"
    - **es**: "Si te conectas via Facebook puedes seguir a tus amigos y te avisaremos cada vez que publican o patrocinan un proyecto."
    - **de**: "Verknüpfe dein Konto mit Facebook - du kannst deinen Freunden folgen und wirst benachrichtigt, sobald sie ein Projekt veröffentlichen oder unterstützen."
    - **fr**: "Si vous vous connectez avec votre compte Facebook, vous pourrez suivre vos amis et recevoir des notifications chaque fois qu'ils lancent ou soutiennent de nouveaux projets."
-   - **it**: "Connect with Facebook to follow friends and get notified when they back or launch projects."
    - **en**: "Connect with Facebook to follow friends and get notified when they back or launch projects."
   */
   public static func Connect_with_Facebook_to_follow_friends_and_get_notified() -> String {
@@ -703,7 +662,6 @@ backers"
    - **es**: "Continuar a pago"
    - **de**: "Weiter zur Zahlung"
    - **fr**: "Continuer vers le paiement"
-   - **it**: "Continue to payment"
    - **en**: "Continue to payment"
   */
   public static func Continue_to_payment() -> String {
@@ -720,7 +678,6 @@ backers"
    - **es**: "Continuar a Actualizar contribución"
    - **de**: "Weiter zu Beitrag aktualisieren"
    - **fr**: "Continuer la modification de mon engagement"
-   - **it**: "Continue to update pledge"
    - **en**: "Continue to update pledge"
   */
   public static func Continue_to_update_pledge() -> String {
@@ -737,7 +694,6 @@ backers"
    - **es**: "No se pudo añadir el anexo"
    - **de**: "Anhang konnte nicht hinzugefügt werden"
    - **fr**: "Impossible d'ajouter la pièce jointe"
-   - **it**: "Couldn't add attachment"
    - **en**: "Couldn't add attachment"
   */
   public static func Couldnt_add_attachment() -> String {
@@ -754,7 +710,6 @@ backers"
    - **es**: "No se pudo remover el anexo"
    - **de**: "Anhang konnte nicht entfernt werden"
    - **fr**: "Impossible de supprimer la pièce jointe"
-   - **it**: "Couldn't remove attachment"
    - **en**: "Couldn't remove attachment"
   */
   public static func Couldnt_remove_attachment() -> String {
@@ -771,7 +726,6 @@ backers"
    - **es**: "Proyectos creados: %{projects_count}"
    - **de**: "Erstellte Projekte: %{projects_count}"
    - **fr**: "Projets créés : %{projects_count}"
-   - **it**: "Created projects %{projects_count}"
    - **en**: "Created projects %{projects_count}"
   */
   public static func Created_projects_projects_count(projects_count projects_count: String) -> String {
@@ -788,7 +742,6 @@ backers"
    - **es**: "<b>%{creator_name}</b> necesita un par de datos para entregarte tu recompensa de <b>%{project_name}</b>."
    - **de**: "<b>%{creator_name}</b> benötigt einige Angaben, um dir deine Belohnung für <b>%{project_name}</b> zustellen zu können."
    - **fr**: "<b>%{creator_name}</b> a besoin de quelques informations pour vous envoyer votre récompense pour le projet <b>%{project_name}</b>."
-   - **it**: "<b>%{creator_name}</b> needs some information to deliver your reward for <b>%{project_name}</b>."
    - **en**: "<b>%{creator_name}</b> needs some information to deliver your reward for <b>%{project_name}</b>."
   */
   public static func Creator_name_needs_some_information_to_deliver_your_reward_for_project_name(creator_name creator_name: String, project_name: String) -> String {
@@ -805,7 +758,6 @@ backers"
    - **es**: "Descubre más proyectos."
    - **de**: "Erkunde mehr Projekte."
    - **fr**: "Découvrez plus de projets."
-   - **it**: "Discover more projects."
    - **en**: "Discover more projects."
   */
   public static func Discover_more_projects() -> String {
@@ -822,7 +774,6 @@ backers"
    - **es**: "Descartar"
    - **de**: "Verwerfen"
    - **fr**: "Ignorer"
-   - **it**: "Dismiss"
    - **en**: "Dismiss"
   */
   public static func Dismiss() -> String {
@@ -839,7 +790,6 @@ backers"
    - **es**: "Listo"
    - **de**: "Fertig!"
    - **fr**: "Terminé"
-   - **it**: "Done"
    - **en**: "Done"
   */
   public static func Done() -> String {
@@ -856,7 +806,6 @@ backers"
    - **es**: "Tierra"
    - **de**: "Erde"
    - **fr**: "Terre"
-   - **it**: "Earth"
    - **en**: "Earth"
   */
   public static func Earth() -> String {
@@ -873,7 +822,6 @@ backers"
    - **es**: "Notificaciones por correo electrónico"
    - **de**: "Benachrichtigung per E-Mail"
    - **fr**: "Notifications par e-mail"
-   - **it**: "Email notifications"
    - **en**: "Email notifications"
   */
   public static func Email_notifications() -> String {
@@ -890,7 +838,6 @@ backers"
    - **es**: "Finaliza pronto"
    - **de**: "Endet bald"
    - **fr**: "Campagnes bientôt terminées"
-   - **it**: "Ending Soon"
    - **en**: "Ending Soon"
   */
   public static func Ending_soon() -> String {
@@ -907,7 +854,6 @@ backers"
    - **es**: "Fecha de envío:"
    - **de**: "Versanddatum:"
    - **fr**: "Livraison prévue :"
-   - **it**: "Estimated to fulfill:"
    - **en**: "Estimated to fulfill:"
   */
   public static func Estimated_to_fulfill() -> String {
@@ -924,7 +870,6 @@ backers"
    - **es**: "Muestra más subcategorías."
    - **de**: "Erweitert die Anzeige der Unterkategorien."
    - **fr**: "Développe les sous-catégories."
-   - **it**: "Expands subcategories."
    - **en**: "Expands subcategories."
   */
   public static func Expands_subcategories() -> String {
@@ -941,7 +886,6 @@ backers"
    - **es**: "Explora proyectos"
    - **de**: "Projekte erkunden"
    - **fr**: "Découvrir des projets"
-   - **it**: "Explore projects"
    - **en**: "Explore projects"
   */
   public static func Explore_projects() -> String {
@@ -958,7 +902,6 @@ backers"
    - **es**: "Filtro: Todos los proyectos"
    - **de**: "Filter: Alle Projekte"
    - **fr**: "Filtrer : tous les projets"
-   - **it**: "Filter by all projects"
    - **en**: "Filter by all projects"
   */
   public static func Filter_by_all_projects() -> String {
@@ -975,7 +918,6 @@ backers"
    - **es**: "Filtro: %{category_name}"
    - **de**: "Filter: %{category_name}"
    - **fr**: "Filtrer par catégorie : %{category_name}"
-   - **it**: "Filter by %{category_name}"
    - **en**: "Filter by %{category_name}"
   */
   public static func Filter_by_category_name(category_name category_name: String) -> String {
@@ -992,7 +934,6 @@ backers"
    - **es**: "Filtro: Proyectos patrocinados por amigos"
    - **de**: "Filter: Von Freunden unterstützte Projekte"
    - **fr**: "Filtrer : engagements de mes amis"
-   - **it**: "Filter by projects backed by friends"
    - **en**: "Filter by projects backed by friends"
   */
   public static func Filter_by_projects_backed_by_friends() -> String {
@@ -1009,7 +950,6 @@ backers"
    - **es**: "Filtro: Proyectos recomendados"
    - **de**: "Filter: Für dich empfohlene Projekte"
    - **fr**: "Filtrer : recommandations"
-   - **it**: "Filter by projects recommended for you"
    - **en**: "Filter by projects recommended for you"
   */
   public static func Filter_by_projects_recommended_for_you() -> String {
@@ -1026,7 +966,6 @@ backers"
    - **es**: "Filtro: Nuestros favoritos"
    - **de**: "Filter: Team-Favoriten"
    - **fr**: "Filtrer : Coups de cœur"
-   - **it**: "Filter by projects we love"
    - **en**: "Filter by projects we love"
   */
   public static func Filter_by_projects_we_love() -> String {
@@ -1043,7 +982,6 @@ backers"
    - **es**: "Filtro: Proyectos guardados"
    - **de**: "Filter: Gespeicherte Projekte"
    - **fr**: "Filtrer : mes projets enregistrés"
-   - **it**: "Filter by saved projects"
    - **en**: "Filter by saved projects"
   */
   public static func Filter_by_saved_projects() -> String {
@@ -1060,7 +998,6 @@ backers"
    - **es**: "Filtro: %{subcategory_name} en %{category_name}"
    - **de**: "Filter: %{subcategory_name} in %{category_name}"
    - **fr**: "Filtrer : %{subcategory_name}, sous %{category_name}"
-   - **it**: "Filter by %{subcategory_name} in %{category_name}"
    - **en**: "Filter by %{subcategory_name} in %{category_name}"
   */
   public static func Filter_by_subcategory_name_in_category_name(subcategory_name subcategory_name: String, category_name: String) -> String {
@@ -1077,7 +1014,6 @@ backers"
    - **es**: "%{filter_name}: %{project_count} proyectos activos"
    - **de**: "%{filter_name}: %{project_count} Live-Projekte"
    - **fr**: "%{filter_name} : %{project_count} projets en cours"
-   - **it**: "%{filter_name}: %{project_count} live projects"
    - **en**: "%{filter_name}: %{project_count} live projects"
   */
   public static func Filter_name_project_count_live_projects(filter_name filter_name: String, project_count: Int) -> String {
@@ -1094,7 +1030,6 @@ backers"
    - **es**: "Encuentra amigos en Facebook"
    - **de**: "Finde Freunde auf Facebook"
    - **fr**: "Retrouver mes amis Facebook"
-   - **it**: "Find Facebook friends"
    - **en**: "Find Facebook friends"
   */
   public static func Find_Facebook_Friends() -> String {
@@ -1111,7 +1046,6 @@ backers"
    - **es**: "Encontrar y seguir a amigos"
    - **de**: "Freunde finden und folgen"
    - **fr**: "Retrouver et suivre mes amis"
-   - **it**: "Find and follow friends"
    - **en**: "Find and follow friends"
   */
   public static func Find_and_follow_friends() -> String {
@@ -1128,7 +1062,6 @@ backers"
    - **es**: "Aquí encuentras proyectos a tu gusto - ¡tu contribución ayudará a hacerlos realidad!"
    - **de**: "Finde Projekte, die zu dir passen und hilf mit bei der Umsetzung neuer, kreativer Ideen."
    - **fr**: "Découvrez de beaux projets et participez à la concrétisation d'idées créatives."
-   - **it**: "Find projects you’ll love and help bring creative ideas to life."
    - **en**: "Find projects you’ll love and help bring creative ideas to life."
   */
   public static func Find_projects_youll_love_and_help_bring() -> String {
@@ -1145,7 +1078,6 @@ backers"
    - **es**: "Proyectos a tu gusto - en arte, diseño, cine, juegos, música y otras categorías. Una vez que hayas patrocinado un proyecto, verás todas las actividades pertinentes aquí."
    - **de**: "Finde Projekte nach deinem Geschmack - in Kunst, Design, Film, Spiele, Musik und vielen anderen Kategorien. Wenn du ein Projekt unterstützt hast, wird deren Aktivität hier angezeigt."
    - **fr**: "Découvrez des projets que vous allez adorer : art, design, cinéma, jeux, musique et plus encore. L'activité des projets que vous soutenez s'affichera ici."
-   - **it**: "Find projects you’ll love in art, design, film, games, music, and more. Once you back a project, you’ll see all your activity here."
    - **en**: "Find projects you’ll love in art, design, film, games, music, and more. Once you back a project, you’ll see all your activity here."
   */
   public static func Find_projects_youll_love_in_art_design_film() -> String {
@@ -1162,7 +1094,6 @@ backers"
    - **es**: "Primer proyecto creado"
    - **de**: "Erstes Projekt"
    - **fr**: "Premier projet créé"
-   - **it**: "First created"
    - **en**: "First created"
   */
   public static func First_created() -> String {
@@ -1179,7 +1110,6 @@ backers"
    - **es**: "Seguir a amigos"
    - **de**: "Freunden folgen"
    - **fr**: "Suivez vos amis"
-   - **it**: "Follow friends"
    - **en**: "Follow friends"
   */
   public static func Follow_friends() -> String {
@@ -1196,7 +1126,6 @@ backers"
    - **es**: "Seguir a más amigos"
    - **de**: "Folge noch mehr Freunden"
    - **fr**: "Suivre plus d'amis"
-   - **it**: "Follow more friends"
    - **en**: "Follow more friends"
   */
   public static func Follow_more_friends() -> String {
@@ -1213,7 +1142,6 @@ backers"
    - **es**: "Sigue a tus amigos y te avisaremos cuando publican o patrocinan un proyecto."
    - **de**: "Folge deinen Freunden und wir werden dich benachrichtigen, sobald sie ein Projekt unterstützen oder veröffentlichen."
    - **fr**: "Rejoignez-les et découvrez ensemble de nouveaux projets."
-   - **it**: "Follow your Facebook friends and get notified when they back or launch projects."
    - **en**: "Follow your Facebook friends and get notified when they back or launch projects."
   */
   public static func Follow_your_Facebook_friends_and_get_notified() -> String {
@@ -1230,7 +1158,6 @@ backers"
    - **es**: "Sigue a tus amigos de Facebook y entérate cuando patrocinan o publican un proyecto."
    - **de**: "Folge deinen Facebook-Freunden - wir halten dich auf dem Laufenden, wenn sie ein Projekt unterstützen oder veröffentlichen."
    - **fr**: "Suivez vos amis Facebook, les projets qu'ils soutiennent et les campagnes qu'ils lancent."
-   - **it**: "Follow your Facebook friends and keep up with the projects they back and launch."
    - **en**: "Follow your Facebook friends and keep up with the projects they back and launch."
   */
   public static func Follow_your_Facebook_friends_and_keep_up_with_the_projects() -> String {
@@ -1247,7 +1174,6 @@ backers"
    - **es**: "Siguiendo"
    - **de**: "Abonniert"
    - **fr**: "Projets soutenus par mes amis"
-   - **it**: "Following"
    - **en**: "Following"
   */
   public static func Following() -> String {
@@ -1264,7 +1190,6 @@ backers"
    - **es**: "Sigue a %{friend_name}."
    - **de**: "%{friend_name} folgen."
    - **fr**: "Abonnement aux actus de %{friend_name}."
-   - **it**: "Follows %{friend_name}."
    - **en**: "Follows %{friend_name}."
   */
   public static func Follows_friend_name(friend_name friend_name: String) -> String {
@@ -1281,7 +1206,6 @@ backers"
    - **es**: "<b>%{friend_name}</b> patrocinó un proyecto de <i>Arte</i>."
    - **de**: "<b>%{friend_name}</b> hat ein <i>Kunst-Projekt</i> unterstützt."
    - **fr**: "<b>%{friend_name}</b> a soutenu un projet <i>artistique</i>."
-   - **it**: "<b>%{friend_name}</b> backed an <i>Art</i> project."
    - **en**: "<b>%{friend_name}</b> backed an <i>Art</i> project."
   */
   public static func Friend_backed_art_project(friend_name friend_name: String) -> String {
@@ -1298,7 +1222,6 @@ backers"
    - **es**: "<b>%{friend_name}</b> patrocinó un proyecto de <i>Comics</i>."
    - **de**: "<b>%{friend_name}</b> hat ein <i>Comics-Projekt</i> unterstützt."
    - **fr**: "<b>%{friend_name}</b> a soutenu un projet de <i>BD</i>."
-   - **it**: "<b>%{friend_name}</b> backed a <i>Comics</i> project."
    - **en**: "<b>%{friend_name}</b> backed a <i>Comics</i> project."
   */
   public static func Friend_backed_comics_project(friend_name friend_name: String) -> String {
@@ -1315,7 +1238,6 @@ backers"
    - **es**: "<b>%{friend_name}</b> patrocinó un proyecto de <i>Artesanías</i>."
    - **de**: "<b>%{friend_name}</b> hat ein <i>Kunsthandwerk-Projekt</i> unterstützt."
    - **fr**: "<b>%{friend_name}</b> a soutenu un projet <i>d'artisanat</i>."
-   - **it**: "<b>%{friend_name}</b> backed a <i>Crafts</i> project."
    - **en**: "<b>%{friend_name}</b> backed a <i>Crafts</i> project."
   */
   public static func Friend_backed_crafts_project(friend_name friend_name: String) -> String {
@@ -1332,7 +1254,6 @@ backers"
    - **es**: "<b>%{friend_name}</b> patrocinó un proyecto de <i>Danza</i>."
    - **de**: "<b>%{friend_name}</b> hat ein <i>Tanz-Projekt</i> unterstützt."
    - **fr**: "<b>%{friend_name}</b> a soutenu un projet de <i>danse</i>."
-   - **it**: "<b>%{friend_name}</b> backed a <i>Dance</i> project."
    - **en**: "<b>%{friend_name}</b> backed a <i>Dance</i> project."
   */
   public static func Friend_backed_dance_project(friend_name friend_name: String) -> String {
@@ -1349,7 +1270,6 @@ backers"
    - **es**: "<b>%{friend_name}</b> patrocinó un proyecto de <i>Diseño</i>."
    - **de**: "<b>%{friend_name}</b> hat ein <i>Design-Projekt</i> unterstützt."
    - **fr**: "<b>%{friend_name}</b> a soutenu un projet <i>design</i>."
-   - **it**: "<b>%{friend_name}</b> backed a <i>Design</i> project."
    - **en**: "<b>%{friend_name}</b> backed a <i>Design</i> project."
   */
   public static func Friend_backed_design_project(friend_name friend_name: String) -> String {
@@ -1366,7 +1286,6 @@ backers"
    - **es**: "<b>%{friend_name}</b> patrocinó un proyecto de <i>Moda</i>."
    - **de**: "<b>%{friend_name}</b> hat ein <i>Mode-Projekt</i> unterstützt."
    - **fr**: "<b>%{friend_name}</b> a soutenu un projet de <i>mode</i>."
-   - **it**: "<b>%{friend_name}</b> backed a <i>Fashion</i> project."
    - **en**: "<b>%{friend_name}</b> backed a <i>Fashion</i> project."
   */
   public static func Friend_backed_fashion_project(friend_name friend_name: String) -> String {
@@ -1383,7 +1302,6 @@ backers"
    - **es**: "<b>%{friend_name}</b> patrocinó un proyecto de <i>Cine & Video</i>."
    - **de**: "<b>%{friend_name}</b> hat ein <i>Film & Video-Projekt</i> unterstützt."
    - **fr**: "<b>%{friend_name}</b> a soutenu un projet <i>cinéma et vidéo</i>."
-   - **it**: "<b>%{friend_name}</b> backed a <i>Film & Video</i> project."
    - **en**: "<b>%{friend_name}</b> backed a <i>Film & Video</i> project."
   */
   public static func Friend_backed_film_project(friend_name friend_name: String) -> String {
@@ -1400,7 +1318,6 @@ backers"
    - **es**: "<b>%{friend_name}</b> patrocinó un proyecto de <i>Comida</i>."
    - **de**: "<b>%{friend_name}</b> hat ein <i>Essen/Trinken-Projekt</i> unterstützt."
    - **fr**: "<b>%{friend_name}</b> a soutenu un projet <i>gastronomique</i>."
-   - **it**: "<b>%{friend_name}</b> backed a <i>Food</i> project."
    - **en**: "<b>%{friend_name}</b> backed a <i>Food</i> project."
   */
   public static func Friend_backed_food_project(friend_name friend_name: String) -> String {
@@ -1417,7 +1334,6 @@ backers"
    - **es**: "<b>%{friend_name}</b> patrocinó un proyecto de <i>Juegos</i>."
    - **de**: "<b>%{friend_name}</b> hat ein <i>Spiele-Projekt</i> unterstützt."
    - **fr**: "<b>%{friend_name}</b> a soutenu un projet de <i>jeu</i>."
-   - **it**: "<b>%{friend_name}</b> backed a <i>Games</i> project."
    - **en**: "<b>%{friend_name}</b> backed a <i>Games</i> project."
   */
   public static func Friend_backed_games_project(friend_name friend_name: String) -> String {
@@ -1434,7 +1350,6 @@ backers"
    - **es**: "<b>%{friend_name}</b> patrocinó un proyecto de <i>Periodismo</i>."
    - **de**: "<b>%{friend_name}</b> hat ein <i>Journalismus-Projekt</i> unterstützt."
    - **fr**: "<b>%{friend_name}</b> a soutenu un projet de <i>journalisme</i>."
-   - **it**: "<b>%{friend_name}</b> backed a <i>Journalism</i> project."
    - **en**: "<b>%{friend_name}</b> backed a <i>Journalism</i> project."
   */
   public static func Friend_backed_journalism_project(friend_name friend_name: String) -> String {
@@ -1451,7 +1366,6 @@ backers"
    - **es**: "<b>%{friend_name}</b> patrocinó un proyecto de <i>Música</i>."
    - **de**: "<b>%{friend_name}</b> hat ein <i>Musik-Projekt</i> unterstützt."
    - **fr**: "<b>%{friend_name}</b> a soutenu un projet <i>musical</i>."
-   - **it**: "<b>%{friend_name}</b> backed a <i>Music</i> project."
    - **en**: "<b>%{friend_name}</b> backed a <i>Music</i> project."
   */
   public static func Friend_backed_music_project(friend_name friend_name: String) -> String {
@@ -1468,7 +1382,6 @@ backers"
    - **es**: "<b>%{friend_name}</b> patrocinó un proyecto de <i>Fotografía</i>."
    - **de**: "<b>%{friend_name}</b> hat ein <i>Fotografie-Projekt</i> unterstützt."
    - **fr**: "<b>%{friend_name}</b> a soutenu un projet de <i>photographie</i>."
-   - **it**: "<b>%{friend_name}</b> backed a <i>Photography</i> project."
    - **en**: "<b>%{friend_name}</b> backed a <i>Photography</i> project."
   */
   public static func Friend_backed_photography_project(friend_name friend_name: String) -> String {
@@ -1485,7 +1398,6 @@ backers"
    - **es**: "<b>%{friend_name}</b> patrocinó un proyecto de <i>Publicaciones</i>."
    - **de**: "<b>%{friend_name}</b> hat ein <i>Publishing-Projekt</i> unterstützt."
    - **fr**: "<b>%{friend_name}</b> a soutenu un projet <i>d'édition</i>."
-   - **it**: "<b>%{friend_name}</b> backed a <i>Publishing</i> project."
    - **en**: "<b>%{friend_name}</b> backed a <i>Publishing</i> project."
   */
   public static func Friend_backed_publishing_project(friend_name friend_name: String) -> String {
@@ -1502,7 +1414,6 @@ backers"
    - **es**: "<b>%{friend_name}</b> patrocinó un proyecto de <i>Tecnología</i>."
    - **de**: "<b>%{friend_name}</b> hat ein <i>Technologie-Projekt</i> unterstützt."
    - **fr**: "<b>%{friend_name}</b> a soutenu un projet de <i>technologie</i>."
-   - **it**: "<b>%{friend_name}</b> backed a <i>Technology</i> project."
    - **en**: "<b>%{friend_name}</b> backed a <i>Technology</i> project."
   */
   public static func Friend_backed_tech_project(friend_name friend_name: String) -> String {
@@ -1519,7 +1430,6 @@ backers"
    - **es**: "<b>%{friend_name}</b> patrocinó un proyecto de <i>Teatro</i>."
    - **de**: "<b>%{friend_name}</b> hat ein <i>Theater-Projekt</i> unterstützt."
    - **fr**: "<b>%{friend_name}</b> a soutenu un projet de <i>théâtre</i>."
-   - **it**: "<b>%{friend_name}</b> backed a <i>Theater</i> project."
    - **en**: "<b>%{friend_name}</b> backed a <i>Theater</i> project."
   */
   public static func Friend_backed_theater_project(friend_name friend_name: String) -> String {
@@ -1536,7 +1446,6 @@ backers"
    - **es**: "¡%{friend_name} publicó un proyecto!"
    - **de**: "%{friend_name} hat ein Projekt veröffentlicht!"
    - **fr**: "%{friend_name} a lancé un projet !"
-   - **it**: "%{friend_name} launched a project!"
    - **en**: "%{friend_name} launched a project!"
   */
   public static func Friend_name_launched_a_project(friend_name friend_name: String) -> String {
@@ -1553,7 +1462,6 @@ backers"
    - **es**: "¡Listo! Hemos recibido tus respuestas a nuestro cuestionario."
    - **de**: "Alles klar! Deine Antwort auf die Befragung wurde übermittelt."
    - **fr**: "Merci ! Vos réponses au questionnaire ont bien été envoyées."
-   - **it**: "Got it! Your survey response has been submitted."
    - **en**: "Got it! Your survey response has been submitted."
   */
   public static func Got_it_your_survey_response_has_been_submitted() -> String {
@@ -1570,7 +1478,6 @@ backers"
    - **es**: "Inicio"
    - **de**: "Home"
    - **fr**: "Accueil"
-   - **it**: "Home"
    - **en**: "Home"
   */
   public static func Home() -> String {
@@ -1587,7 +1494,6 @@ backers"
    - **es**: "Sólo quiero apoyar este proyecto."
    - **de**: "Ich möchte das Projekt einfach nur unterstützen."
    - **fr**: "Je souhaite simplement soutenir le projet."
-   - **it**: "I’d just like to support the project."
    - **en**: "I’d just like to support the project."
   */
   public static func Id_just_like_to_support_the_project() -> String {
@@ -1604,7 +1510,6 @@ backers"
    - **es**: "Es una plataforma para dar vida a proyectos creativos."
    - **de**: "Es ist eine Plattform, um kreative Projekte ins Leben zu rufen."
    - **fr**: "C'est un outil qui permet de donner vie à des projets créatifs."
-   - **it**: "It’s a way to bring creative projects to life."
    - **en**: "It’s a way to bring creative projects to life."
   */
   public static func Its_a_way_to_bring_creative_projects_to_life() -> String {
@@ -1622,8 +1527,6 @@ with friends."
    - **es**: "Todo en la vida es mejor con amigos ..."
    - **de**: "Gemeinsam mehr erreichen"
    - **fr**: "On est mieux ensemble."
-   - **it**: "It’s better
-with friends."
    - **en**: "It’s better
 with friends."
   */
@@ -1641,7 +1544,6 @@ with friends."
    - **es**: "Sólo para ti."
    - **de**: "Nur für dich."
    - **fr**: "Rien que pour vous."
-   - **it**: "Just for you."
    - **en**: "Just for you."
   */
   public static func Just_for_you() -> String {
@@ -1658,7 +1560,6 @@ with friends."
    - **es**: "Leer más"
    - **de**: "Mehr lesen"
    - **fr**: "Plus"
-   - **it**: "Keep reading"
    - **en**: "Keep reading"
   */
   public static func Keep_reading() -> String {
@@ -1675,7 +1576,6 @@ with friends."
    - **es**: "Kickstarter (si financiación es exitosa)"
    - **de**: "Kickstarter (bei Finanzierung)"
    - **fr**: "Kickstarter (si le projet est financé)"
-   - **it**: "Kickstarter (if funded)"
    - **en**: "Kickstarter (if funded)"
   */
   public static func Kickstarter_if_funded() -> String {
@@ -1692,7 +1592,6 @@ with friends."
    - **es**: "Kickstarter no es una tienda."
    - **de**: "Kickstarter ist kein Geschäft."
    - **fr**: "Kickstarter n'est pas un magasin."
-   - **it**: "Kickstarter is not a store."
    - **en**: "Kickstarter is not a store."
   */
   public static func Kickstarter_is_not_a_store() -> String {
@@ -1709,7 +1608,6 @@ with friends."
    - **es**: "Más información sobre las responsabilidades"
    - **de**: "Weitere Informationen zur Rechenschaftspflicht"
    - **fr**: "En savoir plus sur la responsabilité"
-   - **it**: "Learn more about accountability"
    - **en**: "Learn more about accountability"
   */
   public static func Learn_more_about_accountability() -> String {
@@ -1726,7 +1624,6 @@ with friends."
    - **es**: "%{left_count} restantes"
    - **de**: "%{left_count} übrig"
    - **fr**: "%{left_count} restantes"
-   - **it**: "%{left_count} left"
    - **en**: "%{left_count} left"
   */
   public static func Left_count_left(left_count left_count: Int) -> String {
@@ -1743,7 +1640,6 @@ with friends."
    - **es**: "Inicia sesión para dejar un comentario."
    - **de**: "Melde dich an, um einen Kommentar zu hinterlassen."
    - **fr**: "Connectez-vous pour laisser un commentaire."
-   - **it**: "Log in to leave a comment."
    - **en**: "Log in to leave a comment."
   */
   public static func Log_in_to_leave_a_comment() -> String {
@@ -1760,7 +1656,6 @@ with friends."
    - **es**: "Inicia sesión para guardar este proyecto y te lo recordamos antes de que finalice."
    - **de**: "Melde dich an, um dieses Projekt zu speichern. Wir senden dir eine Benachrichtigung vor Ablauf des Projekts."
    - **fr**: "Connectez-vous pour enregistrer ce projet et nous vous enverrons un rappel avant la fin de sa campagne."
-   - **it**: "Log in to save this project and we’ll remind you about it before it ends."
    - **en**: "Log in to save this project and we’ll remind you about it before it ends."
   */
   public static func Log_in_to_save_this_project_and_we_ll_remind_you() -> String {
@@ -1777,7 +1672,6 @@ with friends."
    - **es**: "Contribuir sin recompensa"
    - **de**: "Ohne Belohnung unterstützen"
    - **fr**: "S'engager sans recevoir de récompense"
-   - **it**: "Make a pledge without a reward"
    - **en**: "Make a pledge without a reward"
   */
   public static func Make_a_pledge_without_a_reward() -> String {
@@ -1794,7 +1688,6 @@ with friends."
    - **es**: "Administra tu contribución"
    - **de**: "Meinen Beitrag verwalten"
    - **fr**: "Gérer mon engagement"
-   - **it**: "Manage your pledge"
    - **en**: "Manage your pledge"
   */
   public static func Manage_your_pledge() -> String {
@@ -1811,7 +1704,6 @@ with friends."
    - **es**: "Administra tu contribución:"
    - **de**: "Folgenden Beitrag verwalten"
    - **fr**: "Gérer mon engagement"
-   - **it**: "Manage your pledge below"
    - **en**: "Manage your pledge below"
   */
   public static func Manage_your_pledge_below() -> String {
@@ -1828,7 +1720,6 @@ with friends."
    - **es**: "Administra tu recompensa"
    - **de**: "Belohnung verwalten"
    - **fr**: "Gérer votre récompense"
-   - **it**: "Manage your reward"
    - **en**: "Manage your reward"
   */
   public static func Manage_your_reward() -> String {
@@ -1845,7 +1736,6 @@ with friends."
    - **es**: "Enviar mensaje a patrocinador"
    - **de**: "Nachricht an Unterstützer senden"
    - **fr**: "Envoyer un message au contributeur"
-   - **it**: "Message backer"
    - **en**: "Message backer"
   */
   public static func Message_backer() -> String {
@@ -1862,7 +1752,6 @@ with friends."
    - **es**: "Enviar mensaje al creador"
    - **de**: "Nachricht an Projektgründer senden"
    - **fr**: "Envoyer un message au créateur"
-   - **it**: "Message creator"
    - **en**: "Message creator"
   */
   public static func Message_creator() -> String {
@@ -1879,7 +1768,6 @@ with friends."
    - **es**: "No hay comentarios todavia."
    - **de**: "Bisher noch keine Kommentare."
    - **fr**: "Pas de commentaires."
-   - **it**: "No comments yet."
    - **en**: "No comments yet."
   */
   public static func No_comments_yet() -> String {
@@ -1896,7 +1784,6 @@ with friends."
    - **es**: "Todavía no se han publicado actualizaciones."
    - **de**: "Es wurden noch keine Updates gepostet."
    - **fr**: "Pas d'actus publiées pour le moment."
-   - **it**: "No one has posted an update yet."
    - **en**: "No one has posted an update yet."
   */
   public static func No_one_has_posted_an_update_yet() -> String {
@@ -1915,8 +1802,6 @@ from friends yet."
    - **de**: "Es gibt noch keine Beiträge von Freunden."
    - **fr**: "Mes amis 
 n'ont rien soutenu."
-   - **it**: "No pledges 
-from friends yet."
    - **en**: "No pledges 
 from friends yet."
   */
@@ -1934,7 +1819,6 @@ from friends yet."
    - **es**: "Tu patrocinio de un proyecto nos ayuda a hacerte recomendaciones personalizadas."
    - **de**: "Wenn du ein Projekt unterstützt, werden wir dir hier maßgeschneiderte Empfehlungen machen."
    - **fr**: "Une fois que vous aurez soutenu un projet, des recommandations personnalisées s'afficheront ici."
-   - **it**: "Once you back a project, we’ll share personalized recommendations in this space."
    - **en**: "Once you back a project, we’ll share personalized recommendations in this space."
   */
   public static func Once_you_back_a_project_well_share() -> String {
@@ -1951,7 +1835,6 @@ from friends yet."
    - **es**: "Abre comentarios."
    - **de**: "Öffnet Kommentare."
    - **fr**: "Ouvre les commentaires."
-   - **it**: "Opens comments."
    - **en**: "Opens comments."
   */
   public static func Opens_comments() -> String {
@@ -1968,7 +1851,6 @@ from friends yet."
    - **es**: "Abre el perfil del creador."
    - **de**: "Öffnet das Profil des Projektgründers."
    - **fr**: "Ouvre le profil du créateur."
-   - **it**: "Opens creator profile."
    - **en**: "Opens creator profile."
   */
   public static func Opens_creator_profile() -> String {
@@ -1985,7 +1867,6 @@ from friends yet."
    - **es**: "Abre plantilla de correo."
    - **de**: "Öffnet E-Mail-Vorlage."
    - **fr**: "Ouvre l'éditeur d'e-mail."
-   - **it**: "Opens email composer."
    - **en**: "Opens email composer."
   */
   public static func Opens_email_composer() -> String {
@@ -2002,7 +1883,6 @@ from friends yet."
    - **es**: "Abre filtros."
    - **de**: "Öffnet Filter."
    - **fr**: "Ouvre les filtres."
-   - **it**: "Opens filters."
    - **en**: "Opens filters."
   */
   public static func Opens_filters() -> String {
@@ -2019,7 +1899,6 @@ from friends yet."
    - **es**: "Abre hoja de ayuda."
    - **de**: "Öffnet die Hilfe-Seite."
    - **fr**: "Ouvre la page d'aide."
-   - **it**: "Opens help sheet."
    - **en**: "Opens help sheet."
   */
   public static func Opens_help_sheet() -> String {
@@ -2036,7 +1915,6 @@ from friends yet."
    - **es**: "Abre plantilla de mensaje."
    - **de**: "Öffnet Nachrichten-Vorlage."
    - **fr**: "Ouvre l'éditeur de messages."
-   - **it**: "Opens message composer."
    - **en**: "Opens message composer."
   */
   public static func Opens_message_composer() -> String {
@@ -2053,7 +1931,6 @@ from friends yet."
    - **es**: "Abre info sobre contribución."
    - **de**: "Öffnet Info zu Beitrag."
    - **fr**: "Ouvre les infos sur l'engagement."
-   - **it**: "Opens pledge info."
    - **en**: "Opens pledge info."
   */
   public static func Opens_pledge_info() -> String {
@@ -2070,7 +1947,6 @@ from friends yet."
    - **es**: "Abre proyecto."
    - **de**: "Öffnet Projektseite."
    - **fr**: "Ouvre le projet."
-   - **it**: "Opens project."
    - **en**: "Opens project."
   */
   public static func Opens_project() -> String {
@@ -2087,7 +1963,6 @@ from friends yet."
    - **es**: "Abre recompensas."
    - **de**: "Öffnet Belohnungen."
    - **fr**: "Ouvre les récompenses."
-   - **it**: "Opens rewards."
    - **en**: "Opens rewards."
   */
   public static func Opens_rewards() -> String {
@@ -2104,7 +1979,6 @@ from friends yet."
    - **es**: "Abre las opciones de envío."
    - **de**: "Öffnet Versandoptionen."
    - **fr**: "Ouvre les options de livraison."
-   - **it**: "Opens shipping options."
    - **en**: "Opens shipping options."
   */
   public static func Opens_shipping_options() -> String {
@@ -2121,7 +1995,6 @@ from friends yet."
    - **es**: "Abre actualización."
    - **de**: "Öffnet Update."
    - **fr**: "Ouvre l'actu."
-   - **it**: "Opens update."
    - **en**: "Opens update."
   */
   public static func Opens_update() -> String {
@@ -2138,7 +2011,6 @@ from friends yet."
    - **es**: "También puedes seleccionar una de las siguientes recompensas:"
    - **de**: "Oder eine andere Belohnung wählen:"
    - **fr**: "Ou sélectionner une autre récompense ci-dessous :"
-   - **it**: "Or select a different reward below:"
    - **en**: "Or select a different reward below:"
   */
   public static func Or_select_a_different_reward_below_colon() -> String {
@@ -2155,7 +2027,6 @@ from friends yet."
    - **es**: "Otros métodos de pago"
    - **de**: "Weitere Zahlungsmethoden"
    - **fr**: "Autres moyens de paiement"
-   - **it**: "Other payment methods"
    - **en**: "Other payment methods"
   */
   public static func Other_payment_methods() -> String {
@@ -2172,7 +2043,6 @@ from friends yet."
    - **es**: "Ingresa un monto de contribución de %{amount} o menor."
    - **de**: "Bitte gib einen Finanzierungsbeitrag von %{amount} oder weniger ein."
    - **fr**: "Veuillez saisir un montant de %{amount} ou moins."
-   - **it**: "Please enter an amount of %{amount} or less."
    - **en**: "Please enter an amount of %{amount} or less."
   */
   public static func Please_enter_an_amount_of_amount_or_less(amount amount: String) -> String {
@@ -2189,7 +2059,6 @@ from friends yet."
    - **es**: "Ingresa un monto de contribución de %{amount} o más."
    - **de**: "Bitte gib einen Finanzierungsbeitrag von mindestens %{amount} ein."
    - **fr**: "Veuillez saisir un montant de %{amount} ou plus."
-   - **it**: "Please enter an amount of %{amount} or more."
    - **en**: "Please enter an amount of %{amount} or more."
   */
   public static func Please_enter_an_amount_of_amount_or_more(amount amount: String) -> String {
@@ -2206,7 +2075,6 @@ from friends yet."
    - **es**: "Puedes contribuir un monto de libre selección para apoyar este proyecto."
    - **de**: "Du kannst jeden beliebigen Betrag eingeben, um das Projekt zu unterstützen."
    - **fr**: "Choisissez le montant de votre engagement à soutenir ce projet."
-   - **it**: "Pledge any amount to help bring this project to life."
    - **en**: "Pledge any amount to help bring this project to life."
   */
   public static func Pledge_any_amount_to_help_bring_this_project_to_life() -> String {
@@ -2223,7 +2091,6 @@ from friends yet."
    - **es**: "Contribuir sin recompensa"
    - **de**: "Ohne Belohnung unterstützen"
    - **fr**: "Engagement sans récompense"
-   - **it**: "Pledge without a reward"
    - **en**: "Pledge without a reward"
   */
   public static func Pledge_without_a_reward() -> String {
@@ -2240,7 +2107,6 @@ from friends yet."
    - **es**: "Popular"
    - **de**: "Beliebt"
    - **fr**: "Tendances"
-   - **it**: "Popular"
    - **en**: "Popular"
   */
   public static func Popular() -> String {
@@ -2257,7 +2123,6 @@ from friends yet."
    - **es**: "Proyecto cancelado."
    - **de**: "Projekt abgebrochen."
    - **fr**: "Projet annulé."
-   - **it**: "Project Cancelled."
    - **en**: "Project Cancelled."
   */
   public static func Project_Cancelled() -> String {
@@ -2274,7 +2139,6 @@ from friends yet."
    - **es**: "Proyecto suspendido."
    - **de**: "Projekt ausgesetzt."
    - **fr**: "Projet suspendu."
-   - **it**: "Project Suspended."
    - **en**: "Project Suspended."
   */
   public static func Project_Suspended() -> String {
@@ -2291,7 +2155,6 @@ from friends yet."
    - **es**: "Nuestros Favoritos"
    - **de**: "Team-Favoriten"
    - **fr**: "Nos coups de cœur"
-   - **it**: "Projects We Love"
    - **en**: "Projects We Love"
   */
   public static func Projects_We_Love() -> String {
@@ -2308,7 +2171,6 @@ from friends yet."
    - **es**: "Comentario público"
    - **de**: "Öffentlicher Kommentar"
    - **fr**: "Commentaire public"
-   - **it**: "Public comment"
    - **en**: "Public comment"
   */
   public static func Public_comment() -> String {
@@ -2326,8 +2188,6 @@ daring ideas."
    - **es**: "Un universo de geniales ideas."
    - **de**: "Zündende Ideen."
    - **fr**: "Des idées audacieuses."
-   - **it**: "Pursue
-daring ideas."
    - **en**: "Pursue
 daring ideas."
   */
@@ -2345,7 +2205,6 @@ daring ideas."
    - **es**: "Notificaciones Push"
    - **de**: "Push-Benachrichtigungen"
    - **fr**: "Notifications push"
-   - **it**: "Push notifications"
    - **en**: "Push notifications"
   */
   public static func Push_notifications() -> String {
@@ -2362,7 +2221,6 @@ daring ideas."
    - **es**: "Leer más sobre esta campaña  →"
    - **de**: "Mehr über diese Kampagne lesen  →"
    - **fr**: "En savoir plus sur la campagne →"
-   - **it**: "Read more about the campaign  →"
    - **en**: "Read more about the campaign  →"
   */
   public static func Read_more_about_the_campaign_arrow() -> String {
@@ -2379,7 +2237,6 @@ daring ideas."
    - **es**: "Recomendados"
    - **de**: "Empfehlungen"
    - **fr**: "Rien que pour vous"
-   - **it**: "Recommended"
    - **en**: "Recommended"
   */
   public static func Recommended() -> String {
@@ -2396,7 +2253,6 @@ daring ideas."
    - **es**: "%{reward_survey_count} cuestionarios"
    - **de**: "%{reward_survey_count} Befragungen"
    - **fr**: "%{reward_survey_count} questionnaires"
-   - **it**: "%{reward_survey_count} Reward Surveys"
    - **en**: "%{reward_survey_count} Reward Surveys"
   */
   public static func Reward_Surveys(reward_survey_count reward_survey_count: Int) -> String {
@@ -2413,7 +2269,6 @@ daring ideas."
    - **es**: "%{rewards_count} recompensas"
    - **de**: "%{rewards_count} Belohnungen"
    - **fr**: "%{rewards_count} récompenses"
-   - **it**: "%{rewards_count} rewards"
    - **en**: "%{rewards_count} rewards"
   */
   public static func Rewards_count_rewards(rewards_count rewards_count: Int) -> String {
@@ -2430,7 +2285,6 @@ daring ideas."
    - **es**: "%{rewards_count} recompensas:"
    - **de**: "%{rewards_count} Belohnungen:"
    - **fr**: "%{rewards_count} récompenses :"
-   - **it**: "%{rewards_count} rewards:"
    - **en**: "%{rewards_count} rewards:"
   */
   public static func Rewards_count_rewards_colon(rewards_count rewards_count: Int) -> String {
@@ -2447,7 +2301,6 @@ daring ideas."
    - **es**: "Guardar"
    - **de**: "Speichern"
    - **fr**: "Enregistrer"
-   - **it**: "Save"
    - **en**: "Save"
   */
   public static func Save() -> String {
@@ -2464,7 +2317,6 @@ daring ideas."
    - **es**: "Guardar este proyecto"
    - **de**: "Dieses Projekt speichern"
    - **fr**: "Enregistrer ce projet"
-   - **it**: "Save this project"
    - **en**: "Save this project"
   */
   public static func Save_this_project() -> String {
@@ -2481,7 +2333,6 @@ daring ideas."
    - **es**: "Guardado"
    - **de**: "Gespeichert"
    - **fr**: "Projets enregistrés"
-   - **it**: "Saved"
    - **en**: "Saved"
   */
   public static func Saved() -> String {
@@ -2498,7 +2349,6 @@ daring ideas."
    - **es**: "Proyectos guardados"
    - **de**: "Gespeicherte Projekte"
    - **fr**: "Projets enregistrés"
-   - **it**: "Saved projects"
    - **en**: "Saved projects"
   */
   public static func Saved_projects() -> String {
@@ -2515,7 +2365,6 @@ daring ideas."
    - **es**: "Guarda este proyecto."
    - **de**: "Speichert dieses Projekt."
    - **fr**: "Enregistre le projet."
-   - **it**: "Saves project."
    - **en**: "Saves project."
   */
   public static func Saves_project() -> String {
@@ -2532,7 +2381,6 @@ daring ideas."
    - **es**: "Seleccionar esta recompensa"
    - **de**: "Diese Belohnung wählen"
    - **fr**: "Sélectionner cette récompense"
-   - **it**: "Select this reward"
    - **en**: "Select this reward"
   */
   public static func Select_this_reward() -> String {
@@ -2549,7 +2397,6 @@ daring ideas."
    - **es**: "Selecciona esta recompensa"
    - **de**: "Diese Belohnung auswählen"
    - **fr**: "Choisir cette récompense"
-   - **it**: "Select this reward instead"
    - **en**: "Select this reward instead"
   */
   public static func Select_this_reward_instead() -> String {
@@ -2566,7 +2413,6 @@ daring ideas."
    - **es**: "Comparte una actualización de tu proyecto …"
    - **de**: "Teile einen Update zu deinem Projekt …"
    - **fr**: "Parlez de votre projet dans une actu."
-   - **it**: "Share an update about your project…"
    - **en**: "Share an update about your project…"
   */
   public static func Share_an_update_about_your_project() -> String {
@@ -2583,7 +2429,6 @@ daring ideas."
    - **es**: "Compartir este proyecto en Facebook."
    - **de**: "Teile dieses Projekt auf Facebook."
    - **fr**: "Partagez ce projet sur Facebook."
-   - **it**: "Share this project on Facebook."
    - **en**: "Share this project on Facebook."
   */
   public static func Share_this_project_on_Facebook() -> String {
@@ -2600,7 +2445,6 @@ daring ideas."
    - **es**: "Compartir este proyecto en Twitter."
    - **de**: "Teile dieses Projekt auf Twitter."
    - **fr**: "Partagez ce projet sur Twitter."
-   - **it**: "Share this project on Twitter."
    - **en**: "Share this project on Twitter."
   */
   public static func Share_this_project_on_Twitter() -> String {
@@ -2617,7 +2461,6 @@ daring ideas."
    - **es**: "Compartir"
    - **de**: "Teilen"
    - **fr**: "Partager"
-   - **it**: "Share update"
    - **en**: "Share update"
   */
   public static func Share_update() -> String {
@@ -2634,7 +2477,6 @@ daring ideas."
    - **es**: "Envío"
    - **de**: "Versand"
    - **fr**: "Expédition"
-   - **it**: "Shipping"
    - **en**: "Shipping"
   */
   public static func Shipping() -> String {
@@ -2651,7 +2493,6 @@ daring ideas."
    - **es**: "Envío a:"
    - **de**: "Versand an:"
    - **fr**: "Livraison :"
-   - **it**: "Ships to:"
    - **en**: "Ships to:"
   */
   public static func Ships_to() -> String {
@@ -2668,7 +2509,6 @@ daring ideas."
    - **es**: "Mostrar lista de subcategorías."
    - **de**: "Unterkategorien anzeigen."
    - **fr**: "Affiche la liste des sous-catégories."
-   - **it**: "Shows list of subcategories."
    - **en**: "Shows list of subcategories."
   */
   public static func Shows_list_of_subcategories() -> String {
@@ -2685,7 +2525,6 @@ daring ideas."
    - **es**: "Registro con correo electrónico."
    - **de**: "Mit E-Mail-Adresse registrieren."
    - **fr**: "Inscription avec l'adresse e-mail."
-   - **it**: "Signs up with Email."
    - **en**: "Signs up with Email."
   */
   public static func Signs_up_with_Email() -> String {
@@ -2703,8 +2542,6 @@ catch your eye?"
    - **es**: "¿Algo que te haya llamado la atención?"
    - **de**: "Etwas interessantes gefunden?"
    - **fr**: "Quelque chose a retenu votre attention ?"
-   - **it**: "Something 
-catch your eye?"
    - **en**: "Something 
 catch your eye?"
   */
@@ -2722,7 +2559,6 @@ catch your eye?"
    - **es**: "Cuestionario"
    - **de**: "Befragung"
    - **fr**: "Questionnaire"
-   - **it**: "Survey"
    - **en**: "Survey"
   */
   public static func Survey() -> String {
@@ -2739,7 +2575,6 @@ catch your eye?"
    - **es**: "Simplemente márcalo con asterisco, entonces te mandaremos una notificación 48 horas antes de que termine."
    - **de**: "Klicke einfach auf den Stern, um es zu markieren. Wir werden dir 48 Stunden vor Ablauf des Projekts eine Benachrichtigung schicken."
    - **fr**: "Cliquez sur l'étoile qui apparaît sur la page du projet pour l'ajouter à vos favoris. Nous vous enverrons un petit rappel 48 heures avant la fin de la campagne."
-   - **it**: "Tap the star on each project page to save it. We’ll remind you 48 hours before the project ends."
    - **en**: "Tap the star on each project page to save it. We’ll remind you 48 hours before the project ends."
   */
   public static func Tap_the_star_on_each_project_page_to_save_it() -> String {
@@ -2756,7 +2591,6 @@ catch your eye?"
    - **es**: "Gracias por apoyar este proyecto."
    - **de**: "Vielen Dank für deine Unterstützung dieses Projekts."
    - **fr**: "Merci pour votre soutien."
-   - **it**: "Thank you for supporting this project."
    - **en**: "Thank you for supporting this project."
   */
   public static func Thank_you_for_supporting_this_project() -> String {
@@ -2773,7 +2607,6 @@ catch your eye?"
    - **es**: "Esta cuenta de correo electrónico ya está asociada a otro usuario de Kickstarter."
    - **de**: "Diese E-Mail-Adresse ist bereits einem anderen Kickstarter-Nutzer zugeordnet."
    - **fr**: "L'adresse e-mail associée à ce compte Facebook a déjà été enregistrée par un autre utilisateur Kickstarter."
-   - **it**: "The email associated with this Facebook account is already registered to another Kickstarter user."
    - **en**: "The email associated with this Facebook account is already registered to another Kickstarter user."
   */
   public static func The_email_associated_with_this_Facebook_account_is_already_registered() -> String {
@@ -2790,7 +2623,6 @@ catch your eye?"
    - **es**: "Esta cuenta de Facebook ya está asociada a otro usuario de Kickstarter."
    - **de**: "Dieses Facebook-Konto ist bereits einem anderen Kickstarter-Nutzer zugeordnet."
    - **fr**: "Ce compte Facebook est déjà relié à un autre utilisateur Kickstarter."
-   - **it**: "This Facebook account is already linked to another Kickstarter user."
    - **en**: "This Facebook account is already linked to another Kickstarter user."
   */
   public static func This_facebook_account_is_already_linked_to_another_Kickstarter_user() -> String {
@@ -2807,7 +2639,6 @@ catch your eye?"
    - **es**: "%{time_left} restantes"
    - **de**: "%{time_left} übrig"
    - **fr**: "Plus que %{time_left}"
-   - **it**: "%{time_left} left"
    - **en**: "%{time_left} left"
   */
   public static func Time_left_left(time_left time_left: String) -> String {
@@ -2824,7 +2655,6 @@ catch your eye?"
    - **es**: "Dejar de seguir a %{friend_name}."
    - **de**: "%{friend_name} nicht mehr folgen."
    - **fr**: "Désabonnement des actus de %{friend_name}."
-   - **it**: "Unfollows %{friend_name}."
    - **en**: "Unfollows %{friend_name}."
   */
   public static func Unfollows_friend_name(friend_name friend_name: String) -> String {
@@ -2841,7 +2671,6 @@ catch your eye?"
    - **es**: "Deshacer "guardar proyecto"."
    - **de**: "Macht Speichern dieses Projektes rückgängig."
    - **fr**: "Annule l'enregistrement du projet."
-   - **it**: "Unsaves project."
    - **en**: "Unsaves project."
   */
   public static func Unsaves_project() -> String {
@@ -2858,7 +2687,6 @@ catch your eye?"
    - **es**: "Financiación falló."
    - **de**: "Finanzierung fehlgeschlagen."
    - **fr**: "Non financé."
-   - **it**: "Unsuccessfully Funded."
    - **en**: "Unsuccessfully Funded."
   */
   public static func Unsuccessfully_Funded() -> String {
@@ -2875,7 +2703,6 @@ catch your eye?"
    - **es**: "Actualizar contribución"
    - **de**: "Beitrag aktualisieren"
    - **fr**: "Modifier mon engagement"
-   - **it**: "Update pledge"
    - **en**: "Update pledge"
   */
   public static func Update_pledge() -> String {
@@ -2892,7 +2719,6 @@ catch your eye?"
    - **es**: "Ver"
    - **de**: "Anzeigen"
    - **fr**: "Afficher"
-   - **it**: "View"
    - **en**: "View"
   */
   public static func View() -> String {
@@ -2909,7 +2735,6 @@ catch your eye?"
    - **es**: "Revisa tu contribución"
    - **de**: "Deinen Finanzierungsbeitrag ansehen"
    - **fr**: "Afficher mon engagement"
-   - **it**: "View your pledge"
    - **en**: "View your pledge"
   */
   public static func View_your_pledge() -> String {
@@ -2926,7 +2751,6 @@ catch your eye?"
    - **es**: "Mostrar recompensa"
    - **de**: "Belohnung ansehen"
    - **fr**: "Afficher ma récompense"
-   - **it**: "View your reward"
    - **en**: "View your reward"
   */
   public static func View_your_reward() -> String {
@@ -2943,7 +2767,6 @@ catch your eye?"
    - **es**: "Cuando guardes un proyecto, te enviaremos un recordatorio por correo electrónico 48 horas antes de que finalice"
    - **de**: "Wenn du ein Projekt speicherst, senden wir dir 48 Stunden vor Ablauf eine Erinnerungs-E-Mail"
    - **fr**: "Pour chaque projet que vous enregistrez, nous vous enverrons un rappel 48 heures avant la fin de sa campagne."
-   - **it**: "When you save a project we’ll send you a reminder 48 hours before it ends"
    - **en**: "When you save a project we’ll send you a reminder 48 hours before it ends"
   */
   public static func When_you_save_a_project_we_ll_send_you_a_reminder() -> String {
@@ -2960,7 +2783,6 @@ catch your eye?"
    - **es**: "¡Tu proyecto fue publicado!"
    - **de**: "Dein Projekt ist live!"
    - **fr**: "Projet lancé !"
-   - **it**: "You Launched!"
    - **en**: "You Launched!"
   */
   public static func You_Launched() -> String {
@@ -2977,7 +2799,6 @@ catch your eye?"
    - **es**: "Patrocinaste este proyecto."
    - **de**: "Du hast dieses Projekt unterstützt."
    - **fr**: "Vous avez soutenu ce projet."
-   - **it**: "You backed this project."
    - **en**: "You backed this project."
   */
   public static func You_backed_this_project() -> String {
@@ -2994,7 +2815,6 @@ catch your eye?"
    - **es**: "Uno de tus proyectos guardados."
    - **de**: "Du hast dieses Projekt gespeichert."
    - **fr**: "Vous avez enregistré ce projet."
-   - **it**: "You saved this project."
    - **en**: "You saved this project."
   */
   public static func You_saved_this_project() -> String {
@@ -3011,7 +2831,6 @@ catch your eye?"
    - **es**: "Tus amigos todavía no han hecho contribuciones, pero en cuanto lo hagan, se verán reflejadas aquí."
    - **de**: "Deine Freunde haben bisher noch kein Projekt unterstützt. Aber sobald sie das tun, wird es hier angezeigt."
    - **fr**: "Vos amis n'ont encore rien soutenu, mais dès qu'ils s'y seront mis, leurs engagements s'afficheront ici."
-   - **it**: "Your friends haven’t backed any projects yet, but once they do, you’ll see them listed here."
    - **en**: "Your friends haven’t backed any projects yet, but once they do, you’ll see them listed here."
   */
   public static func Your_friends_havent_backed_any_projects_yet() -> String {
@@ -3028,7 +2847,6 @@ catch your eye?"
    - **es**: "Tu contribución"
    - **de**: "Dein Beitrag"
    - **fr**: "Mon engagement"
-   - **it**: "Your pledge"
    - **en**: "Your pledge"
   */
   public static func Your_pledge() -> String {
@@ -3045,7 +2863,6 @@ catch your eye?"
    - **es**: "Monto de tu contribución:"
    - **de**: "Dein Beitrag:"
    - **fr**: "Montant engagé :"
-   - **it**: "Your pledge amount:"
    - **en**: "Your pledge amount:"
   */
   public static func Your_pledge_amount() -> String {
@@ -3062,7 +2879,6 @@ catch your eye?"
    - **es**: "Tu recompensa"
    - **de**: "Deine Belohnung"
    - **fr**: "Votre récompense"
-   - **it**: "Your reward"
    - **en**: "Your reward"
   */
   public static func Your_reward() -> String {
@@ -3079,7 +2895,6 @@ catch your eye?"
    - **es**: "Tu destino de envío"
    - **de**: "Dein Versandziel"
    - **fr**: "Destination d'expédition"
-   - **it**: "Your shipping destination"
    - **en**: "Your shipping destination"
   */
   public static func Your_shipping_destination() -> String {
@@ -3096,7 +2911,6 @@ catch your eye?"
    - **es**: "¡Eres un patrocinador!"
    - **de**: "Du unterstützt das Projekt!"
    - **fr**: "Vous êtes contributeur !"
-   - **it**: "You’re a backer!"
    - **en**: "You’re a backer!"
   */
   public static func Youre_a_backer() -> String {
@@ -3113,7 +2927,6 @@ catch your eye?"
    - **es**: "Estás a punto de crear una nueva cuenta de Kickstarter usando el correo electrónico associado a tu cuenta de Facebook. Por favor confírmalo antes de proceder."
    - **de**: "Du wirst hiermit ein neues Kickstarter-Konto mit deiner Facebook-E-Mail-Adresse anlegen. Bitte bestätige diesen Vorgang."
    - **fr**: "Vous êtes sur le point de créer un nouveau compte Kickstarter avec l'adresse e-mail que vous utilisez sur Facebook. Veuillez confirmer avant de continuer."
-   - **it**: "You're about to create a new Kickstarter account with the email address you use for Facebook. Please confirm that it’s correct before proceeding."
    - **en**: "You're about to create a new Kickstarter account with the email address you use for Facebook. Please confirm that it’s correct before proceeding."
   */
   public static func Youre_about_to_create_a_new_Kickstarter_account() -> String {
@@ -3130,7 +2943,6 @@ catch your eye?"
    - **es**: "Actividad"
    - **de**: "Aktivität"
    - **fr**: "Activité"
-   - **it**: "Activity"
    - **en**: "Activity"
   */
   public static func accessibility_dashboard_buttons_activity() -> String {
@@ -3147,7 +2959,6 @@ catch your eye?"
    - **es**: "Abre actividades."
    - **de**: "Öffnet Sparte Aktivität."
    - **fr**: "Ouvre l'activité."
-   - **it**: "Opens activity."
    - **en**: "Opens activity."
   */
   public static func accessibility_dashboard_buttons_activity_hint() -> String {
@@ -3164,7 +2975,6 @@ catch your eye?"
    - **es**: "Mensajes"
    - **de**: "Nachrichten"
    - **fr**: "Messages"
-   - **it**: "Messages"
    - **en**: "Messages"
   */
   public static func accessibility_dashboard_buttons_messages() -> String {
@@ -3181,7 +2991,6 @@ catch your eye?"
    - **es**: "Abre mensajes."
    - **de**: "Öffnet Nachrichten."
    - **fr**: "Ouvre les messages."
-   - **it**: "Opens messages."
    - **en**: "Opens messages."
   */
   public static func accessibility_dashboard_buttons_messages_hint() -> String {
@@ -3198,7 +3007,6 @@ catch your eye?"
    - **es**: "Abre editor."
    - **de**: "Öffnet Edit-Tool."
    - **fr**: "Ouvre l'éditeur."
-   - **it**: "Opens editor."
    - **en**: "Opens editor."
   */
   public static func accessibility_dashboard_buttons_post_update_hint() -> String {
@@ -3215,7 +3023,6 @@ catch your eye?"
    - **es**: "Actividad"
    - **de**: "Aktivität"
    - **fr**: "Activité"
-   - **it**: "Activity"
    - **en**: "Activity"
   */
   public static func accessibility_discovery_buttons_activity() -> String {
@@ -3232,7 +3039,6 @@ catch your eye?"
    - **es**: "Cerrar"
    - **de**: "Schließen"
    - **fr**: "Fermer"
-   - **it**: "Close"
    - **en**: "Close"
   */
   public static func accessibility_discovery_buttons_close() -> String {
@@ -3249,7 +3055,6 @@ catch your eye?"
    - **es**: "Panel del creador"
    - **de**: "Projektgründer-Dashboard"
    - **fr**: "Tableau de bord du créateur"
-   - **it**: "Creator dashboard"
    - **en**: "Creator dashboard"
   */
   public static func accessibility_discovery_buttons_creator_dashboard() -> String {
@@ -3266,7 +3071,6 @@ catch your eye?"
    - **es**: "Descubre"
    - **de**: "Entdecken"
    - **fr**: "Découvrir"
-   - **it**: "Discovery"
    - **en**: "Discovery"
   */
   public static func accessibility_discovery_buttons_discovery() -> String {
@@ -3283,7 +3087,6 @@ catch your eye?"
    - **es**: "Abre una lista de proyectos."
    - **de**: "Öffnet eine Liste von Projekten."
    - **fr**: "Une liste de projet s'ouvre."
-   - **it**: "Opens list of projects."
    - **en**: "Opens list of projects."
   */
   public static func accessibility_discovery_buttons_discovery_hint_opens_projects() -> String {
@@ -3300,7 +3103,6 @@ catch your eye?"
    - **es**: "Iniciar sesión"
    - **de**: "Anmelden"
    - **fr**: "Connexion"
-   - **it**: "Log in"
    - **en**: "Log in"
   */
   public static func accessibility_discovery_buttons_log_in() -> String {
@@ -3317,7 +3119,6 @@ catch your eye?"
    - **es**: "Buscar"
    - **de**: "Suche"
    - **fr**: "Rechercher"
-   - **it**: "Search"
    - **en**: "Search"
   */
   public static func accessibility_discovery_buttons_search() -> String {
@@ -3334,7 +3135,6 @@ catch your eye?"
    - **es**: "Perfil de usuario"
    - **de**: "Benutzerprofil"
    - **fr**: "Profil d'utilisateur"
-   - **it**: "User profile"
    - **en**: "User profile"
   */
   public static func accessibility_discovery_buttons_user_profile() -> String {
@@ -3351,7 +3151,6 @@ catch your eye?"
    - **es**: "Cerrar"
    - **de**: "Schließen"
    - **fr**: "Fermer"
-   - **it**: "Close"
    - **en**: "Close"
   */
   public static func accessibility_projects_buttons_close() -> String {
@@ -3368,7 +3167,6 @@ catch your eye?"
    - **es**: "Cerrar reproductor de video"
    - **de**: "Video-Player schließen"
    - **fr**: "Fermer le lecteur vidéo"
-   - **it**: "Close video player"
    - **en**: "Close video player"
   */
   public static func accessibility_projects_buttons_close_video_player() -> String {
@@ -3385,7 +3183,6 @@ catch your eye?"
    - **es**: "Pausar video"
    - **de**: "Video anhalten"
    - **fr**: "Pause"
-   - **it**: "Pause video"
    - **en**: "Pause video"
   */
   public static func accessibility_projects_buttons_pause_video() -> String {
@@ -3402,7 +3199,6 @@ catch your eye?"
    - **es**: "Reproducir video"
    - **de**: "Video abspielen"
    - **fr**: "Lecture"
-   - **it**: "Play video"
    - **en**: "Play video"
   */
   public static func accessibility_projects_buttons_play_video() -> String {
@@ -3419,7 +3215,6 @@ catch your eye?"
    - **es**: "Favoritos"
    - **de**: "Favoriten"
    - **fr**: "Projets préférés"
-   - **it**: "Star"
    - **en**: "Star"
   */
   public static func accessibility_projects_buttons_star() -> String {
@@ -3436,7 +3231,6 @@ catch your eye?"
    - **es**: "Añade este proyecto a tus favoritos."
    - **de**: "Fügt Projekt zu Favoriten hinzu."
    - **fr**: "Ce projet sera ajouté à ma liste de projets préférés."
-   - **it**: "Favorites this project."
    - **en**: "Favorites this project."
   */
   public static func accessibility_projects_buttons_star_hint_favorites_this_project() -> String {
@@ -3453,7 +3247,6 @@ catch your eye?"
    - **es**: "Recibirás una notificación 48 horas antes de que finalice el proyecto."
    - **de**: "Sendet dir eine Benachrichtigung 48 Stunden vor Ablauf des Projekts."
    - **fr**: "Vous recevrez un rappel 48 heures avant la fin de cette campagne."
-   - **it**: "Reminds you 48 hours before this project ends."
    - **en**: "Reminds you 48 hours before this project ends."
   */
   public static func accessibility_projects_buttons_star_hint_reminds_you() -> String {
@@ -3470,7 +3263,6 @@ catch your eye?"
    - **es**: "por %{creator_name}"
    - **de**: "von %{creator_name}"
    - **fr**: "par %{creator_name}"
-   - **it**: "by %{creator_name}"
    - **en**: "by %{creator_name}"
   */
   public static func activity_by_creator(creator_name creator_name: String) -> String {
@@ -3487,7 +3279,6 @@ catch your eye?"
    - **es**: "%{user_name} ajustó su contribución:"
    - **de**: "Beitrag von %{user_name} wurde geändert:"
    - **fr**: "%{user_name} a ajusté son engagement"
-   - **it**: "%{user_name} adjusted their pledge:"
    - **en**: "%{user_name} adjusted their pledge:"
   */
   public static func activity_creator_actions_user_name_adjusted_their_pledge(user_name user_name: String) -> String {
@@ -3504,7 +3295,6 @@ catch your eye?"
    - **es**: "%{user_name} canceló su contribución:"
    - **de**: "Beitrag von %{user_name} wurde storniert:"
    - **fr**: "%{user_name} a annulé son engagement"
-   - **it**: "%{user_name} canceled their pledge:"
    - **en**: "%{user_name} canceled their pledge:"
   */
   public static func activity_creator_actions_user_name_canceled_their_pledge(user_name user_name: String) -> String {
@@ -3521,7 +3311,6 @@ catch your eye?"
    - **es**: "%{user_name} cambió su recompensa:"
    - **de**: "Belohnung von %{user_name} wurde geändert:"
    - **fr**: "%{user_name} a changé de récompense"
-   - **it**: "%{user_name} changed their reward:"
    - **en**: "%{user_name} changed their reward:"
   */
   public static func activity_creator_actions_user_name_changed_their_reward(user_name user_name: String) -> String {
@@ -3538,7 +3327,6 @@ catch your eye?"
    - **es**: "%{user_name} comentó actualización n° %{update_number}:"
    - **de**: "%{user_name} hat die Aktualisierung Nr. %{update_number} kommentiert:"
    - **fr**: "%{user_name} a laissé un commentaire sur l'actu no. %{update_number}."
-   - **it**: "%{user_name} commented on Update #%{update_number}:"
    - **en**: "%{user_name} commented on Update #%{update_number}:"
   */
   public static func activity_creator_actions_user_name_commented_on_update_number(user_name user_name: String, update_number: String) -> String {
@@ -3555,7 +3343,6 @@ catch your eye?"
    - **es**: "Comentario de %{user_name} en tu proyecto:"
    - **de**: "%{user_name} hat dein Projekt kommentiert:"
    - **fr**: "%{user_name} a laissé un commentaire sur votre projet"
-   - **it**: "%{user_name} commented on your project:"
    - **en**: "%{user_name} commented on your project:"
   */
   public static func activity_creator_actions_user_name_commented_on_your_project(user_name user_name: String) -> String {
@@ -3572,7 +3359,6 @@ catch your eye?"
    - **es**: "%{user_name} contribuyó:"
    - **de**: "Beitrag von %{user_name}:"
    - **fr**: "L'engagement de %{user_name} :"
-   - **it**: "%{user_name} pledged:"
    - **en**: "%{user_name} pledged:"
   */
   public static func activity_creator_actions_user_name_pledged(user_name user_name: String) -> String {
@@ -3589,7 +3375,6 @@ catch your eye?"
    - **es**: "%{user_name} publicó actualización n° %{update_number}:"
    - **de**: "%{user_name} hat die Aktualisierung Nr. %{update_number} gepostet:"
    - **fr**: "%{user_name} a publié l'actu no. %{update_number} :"
-   - **it**: "%{user_name} posted Update #%{update_number}:"
    - **en**: "%{user_name} posted Update #%{update_number}:"
   */
   public static func activity_creator_actions_user_name_posted_update_number(user_name user_name: String, update_number: String) -> String {
@@ -3606,7 +3391,6 @@ catch your eye?"
    - **es**: "Has cambiado la siguiente contribución:"
    - **de**: "Du hast folgenden Beitrag angepasst:"
    - **fr**: "Vous avez ajusté votre engagement :"
-   - **it**: "You adjusted your pledge:"
    - **en**: "You adjusted your pledge:"
   */
   public static func activity_creator_actions_you_adjusted_your_pledge() -> String {
@@ -3623,7 +3407,6 @@ catch your eye?"
    - **es**: "Has cancelado la siguiente contribución:"
    - **de**: "Du hast folgenden Beitrag zurückgezogen:"
    - **fr**: "Vous avez annulé votre engagement :"
-   - **it**: "You canceled your pledge:"
    - **en**: "You canceled your pledge:"
   */
   public static func activity_creator_actions_you_canceled_your_pledge() -> String {
@@ -3640,7 +3423,6 @@ catch your eye?"
    - **es**: "Has cambiado la siguiente recompensa:"
    - **de**: "Du hast folgende Belohnung geändert:"
    - **fr**: "Vous avez changé de récompense :"
-   - **it**: "You changed your reward:"
    - **en**: "You changed your reward:"
   */
   public static func activity_creator_actions_you_changed_your_reward() -> String {
@@ -3657,7 +3439,6 @@ catch your eye?"
    - **es**: "Tu comentario sobre actualización n° %{update_number}:"
    - **de**: "Du hast Aktualisierung Nr. %{update_number} kommentiert:"
    - **fr**: "Vous avez commenté l'actu no. %{update_number}"
-   - **it**: "You commented on Update #%{update_number}:"
    - **en**: "You commented on Update #%{update_number}:"
   */
   public static func activity_creator_actions_you_commented_on_update_number(update_number update_number: String) -> String {
@@ -3674,7 +3455,6 @@ catch your eye?"
    - **es**: "Tú"
    - **de**: "Du"
    - **fr**: "Vous"
-   - **it**: "You"
    - **en**: "You"
   */
   public static func activity_creator_actions_you_commented_on_update_number_pronoun() -> String {
@@ -3691,7 +3471,6 @@ catch your eye?"
    - **es**: "Tu comentario en tu proyecto:"
    - **de**: "Du hast dein Projekt kommentiert:"
    - **fr**: "Vous avez laissé un commentaire sur votre projet."
-   - **it**: "You commented on your project:"
    - **en**: "You commented on your project:"
   */
   public static func activity_creator_actions_you_commented_on_your_project() -> String {
@@ -3708,7 +3487,6 @@ catch your eye?"
    - **es**: "Tú"
    - **de**: "Du"
    - **fr**: "Vous"
-   - **it**: "You"
    - **en**: "You"
   */
   public static func activity_creator_actions_you_commented_on_your_project_pronoun() -> String {
@@ -3725,7 +3503,6 @@ catch your eye?"
    - **es**: "Tu contribución:"
    - **de**: "Dein Beitrag:"
    - **fr**: "Votre engagement :"
-   - **it**: "You pledged:"
    - **en**: "You pledged:"
   */
   public static func activity_creator_actions_you_pledged() -> String {
@@ -3742,7 +3519,6 @@ catch your eye?"
    - **es**: "Publicaste actualización n° %{update_number}:"
    - **de**: "Du hast Aktualisierung Nr. %{update_number} veröffentlicht:"
    - **fr**: "Vous avez publié l'actu no. %{update_number}"
-   - **it**: "You posted Update #%{update_number}:"
    - **en**: "You posted Update #%{update_number}:"
   */
   public static func activity_creator_actions_you_posted_update_number(update_number update_number: String) -> String {
@@ -3759,7 +3535,6 @@ catch your eye?"
    - **es**: "Tú"
    - **de**: "Du"
    - **fr**: "Vous"
-   - **it**: "You"
    - **en**: "You"
   */
   public static func activity_creator_actions_you_posted_update_number_pronoun() -> String {
@@ -3776,7 +3551,6 @@ catch your eye?"
    - **es**: "Info sobre contribución"
    - **de**: "Info zur Unterstützung"
    - **fr**: "Infos sur la contribution"
-   - **it**: "Backing info"
    - **en**: "Backing info"
   */
   public static func activity_creator_buttons_backing_info() -> String {
@@ -3793,7 +3567,6 @@ catch your eye?"
    - **es**: "Comentario"
    - **de**: "Kommentar"
    - **fr**: "Commentaire"
-   - **it**: "Comment"
    - **en**: "Comment"
   */
   public static func activity_creator_buttons_comment() -> String {
@@ -3810,7 +3583,6 @@ catch your eye?"
    - **es**: "Enviar mensaje"
    - **de**: "Nachricht senden"
    - **fr**: "Envoyer un message"
-   - **it**: "Send message"
    - **en**: "Send message"
   */
   public static func activity_creator_buttons_send_message() -> String {
@@ -3827,7 +3599,6 @@ catch your eye?"
    - **es**: "No se pudo cargar actividad"
    - **de**: "Aktivität konnte nicht geladen werden"
    - **fr**: "Chargement impossible"
-   - **it**: "Couldn't load activity"
    - **en**: "Couldn't load activity"
   */
   public static func activity_creator_error_could_not_load_activity() -> String {
@@ -3844,7 +3615,6 @@ catch your eye?"
    - **es**: "Actividad"
    - **de**: "Aktivitäten"
    - **fr**: "Activité"
-   - **it**: "Activity"
    - **en**: "Activity"
   */
   public static func activity_creator_navigation_header_activity() -> String {
@@ -3861,7 +3631,6 @@ catch your eye?"
    - **es**: "Recompensa"
    - **de**: "Belohnung"
    - **fr**: "Récompense"
-   - **it**: "Reward"
    - **en**: "Reward"
   */
   public static func activity_creator_reward() -> String {
@@ -3878,7 +3647,6 @@ catch your eye?"
    - **es**: "Tú"
    - **de**: "Du"
    - **fr**: "Vous"
-   - **it**: "You"
    - **en**: "You"
   */
   public static func activity_creator_you() -> String {
@@ -3895,7 +3663,6 @@ catch your eye?"
    - **es**: "Descubre proyectos"
    - **de**: "Projekte entdecken"
    - **fr**: "Découvrez des projets"
-   - **it**: "Discover projects"
    - **en**: "Discover projects"
   */
   public static func activity_empty_state_logged_in_button() -> String {
@@ -3912,7 +3679,6 @@ catch your eye?"
    - **es**: "Cuando patrocines un proyecto o sigas a un amigo, esta actividad se mostrará aquí."
    - **de**: "Wenn du ein Projekt unterstützt oder einem Freund folgst, werden deren Aktivitäten hier angezeigt."
    - **fr**: "L'activité des projets que vous soutenez ou des amis que vous suivez sera affichée ici."
-   - **it**: "When you back a project or follow a friend, their activity will show up here."
    - **en**: "When you back a project or follow a friend, their activity will show up here."
   */
   public static func activity_empty_state_logged_in_message() -> String {
@@ -3929,7 +3695,6 @@ catch your eye?"
    - **es**: "Aún no hay actividades"
    - **de**: "Noch keine Aktivitäten"
    - **fr**: "Activité vide"
-   - **it**: "Activity empty"
    - **en**: "Activity empty"
   */
   public static func activity_empty_state_logged_in_title() -> String {
@@ -3946,7 +3711,6 @@ catch your eye?"
    - **es**: "Descubre proyectos"
    - **de**: "Projekte entdecken"
    - **fr**: "Découvrez des projets"
-   - **it**: "Discover projects"
    - **en**: "Discover projects"
   */
   public static func activity_empty_state_logged_out_button() -> String {
@@ -3963,7 +3727,6 @@ catch your eye?"
    - **es**: "Cuando patrocines un proyecto o sigas a un amigo, su actividad se verá aquí."
    - **de**: "Wenn du ein Projekt unterstützt oder einem Freund folgst, werden diese Aktivitäten hier angezeigt."
    - **fr**: "L'activité des projets que vous soutenez ou des amis que vous suivez sera affichée ici."
-   - **it**: "When you back a project or follow a friend, their activity will show up here."
    - **en**: "When you back a project or follow a friend, their activity will show up here."
   */
   public static func activity_empty_state_logged_out_message() -> String {
@@ -3980,7 +3743,6 @@ catch your eye?"
    - **es**: "Aún no hay actividades"
    - **de**: "Noch keine Aktivitäten"
    - **fr**: "Activité vide"
-   - **it**: "Activity empty"
    - **en**: "Activity empty"
   */
   public static func activity_empty_state_logged_out_title() -> String {
@@ -3997,7 +3759,6 @@ catch your eye?"
    - **es**: "¿Le quieres seguir también?"
    - **de**: "Ihm/ihr auch folgen?"
    - **fr**: "Suivre cette personne ?"
-   - **it**: "Follow back?"
    - **en**: "Follow back?"
   */
   public static func activity_follow_back() -> String {
@@ -4014,7 +3775,6 @@ catch your eye?"
    - **es**: "%{friend_name} patrocinó un proyecto de Arte."
    - **de**: "%{friend_name} hat ein Kunst-Projekt unterstützt."
    - **fr**: "%{friend_name} a soutenu un projet artistique."
-   - **it**: "%{friend_name} backed an Art project."
    - **en**: "%{friend_name} backed an Art project."
   */
   public static func activity_friend_backed_art_project(friend_name friend_name: String) -> String {
@@ -4031,7 +3791,6 @@ catch your eye?"
    - **es**: "%{friend_name} patrocinó un proyecto de Comics."
    - **de**: "%{friend_name} hat ein Comics-Projekt unterstützt."
    - **fr**: "%{friend_name} a soutenu un projet de BD."
-   - **it**: "%{friend_name} backed a Comics project."
    - **en**: "%{friend_name} backed a Comics project."
   */
   public static func activity_friend_backed_comics_project(friend_name friend_name: String) -> String {
@@ -4048,7 +3807,6 @@ catch your eye?"
    - **es**: "%{friend_name} patrocinó un proyecto de Artesanías."
    - **de**: "%{friend_name} hat ein Kunsthandwerk-Projekt unterstützt."
    - **fr**: "%{friend_name} a soutenu un projet d'artisanat."
-   - **it**: "%{friend_name} backed a Crafts project."
    - **en**: "%{friend_name} backed a Crafts project."
   */
   public static func activity_friend_backed_crafts_project(friend_name friend_name: String) -> String {
@@ -4065,7 +3823,6 @@ catch your eye?"
    - **es**: "%{friend_name} patrocinó un proyecto de Danza."
    - **de**: "%{friend_name} hat ein Tanz-Projekt unterstützt."
    - **fr**: "%{friend_name} a soutenu un projet de danse."
-   - **it**: "%{friend_name} backed a Dance project."
    - **en**: "%{friend_name} backed a Dance project."
   */
   public static func activity_friend_backed_dance_project(friend_name friend_name: String) -> String {
@@ -4082,7 +3839,6 @@ catch your eye?"
    - **es**: "%{friend_name} patrocinó un proyecto de Diseño."
    - **de**: "%{friend_name} hat ein Design-Projekt unterstützt."
    - **fr**: "%{friend_name} a soutenu un projet design."
-   - **it**: "%{friend_name} backed a Design project."
    - **en**: "%{friend_name} backed a Design project."
   */
   public static func activity_friend_backed_design_project(friend_name friend_name: String) -> String {
@@ -4099,7 +3855,6 @@ catch your eye?"
    - **es**: "%{friend_name} patrocinó un proyecto de Moda."
    - **de**: "%{friend_name} hat ein Mode-Projekt unterstützt."
    - **fr**: "%{friend_name} a soutenu un projet de mode."
-   - **it**: "%{friend_name} backed a Fashion project."
    - **en**: "%{friend_name} backed a Fashion project."
   */
   public static func activity_friend_backed_fashion_project(friend_name friend_name: String) -> String {
@@ -4116,7 +3871,6 @@ catch your eye?"
    - **es**: "%{friend_name} patrocinó un proyecto de Cine & Video."
    - **de**: "%{friend_name} hat ein Film & Video-Projekt unterstützt."
    - **fr**: "%{friend_name} a soutenu un projet cinéma et vidéo."
-   - **it**: "%{friend_name} backed a Film & Video project."
    - **en**: "%{friend_name} backed a Film & Video project."
   */
   public static func activity_friend_backed_film_project(friend_name friend_name: String) -> String {
@@ -4133,7 +3887,6 @@ catch your eye?"
    - **es**: "%{friend_name} patrocinó un proyecto de Comida."
    - **de**: "%{friend_name} hat ein Essen/Trinken-Projekt unterstützt."
    - **fr**: "%{friend_name} a soutenu un projet gastronomique."
-   - **it**: "%{friend_name} backed a Food project."
    - **en**: "%{friend_name} backed a Food project."
   */
   public static func activity_friend_backed_food_project(friend_name friend_name: String) -> String {
@@ -4150,7 +3903,6 @@ catch your eye?"
    - **es**: "%{friend_name} patrocinó un proyecto de Juegos."
    - **de**: "%{friend_name} hat ein Spiele-Projekt unterstützt."
    - **fr**: "%{friend_name} a soutenu un projet de jeu."
-   - **it**: "%{friend_name} backed a Games project."
    - **en**: "%{friend_name} backed a Games project."
   */
   public static func activity_friend_backed_games_project(friend_name friend_name: String) -> String {
@@ -4167,7 +3919,6 @@ catch your eye?"
    - **es**: "%{friend_name} patrocinó un proyecto de Periodismo."
    - **de**: "%{friend_name} hat ein Journalismus-Projekt unterstützt."
    - **fr**: "%{friend_name} a soutenu un projet de journalisme."
-   - **it**: "%{friend_name} backed a Journalism project."
    - **en**: "%{friend_name} backed a Journalism project."
   */
   public static func activity_friend_backed_journalism_project(friend_name friend_name: String) -> String {
@@ -4184,7 +3935,6 @@ catch your eye?"
    - **es**: "%{friend_name} patrocinó un proyecto de Música."
    - **de**: "%{friend_name} hat ein Musik-Projekt unterstützt."
    - **fr**: "%{friend_name} a soutenu un projet musical."
-   - **it**: "%{friend_name} backed a Music project."
    - **en**: "%{friend_name} backed a Music project."
   */
   public static func activity_friend_backed_music_project(friend_name friend_name: String) -> String {
@@ -4201,7 +3951,6 @@ catch your eye?"
    - **es**: "%{friend_name} patrocinó un proyecto de Fotografía."
    - **de**: "%{friend_name} hat ein Fotografie-Projekt unterstützt."
    - **fr**: "%{friend_name} a soutenu un projet de photographie."
-   - **it**: "%{friend_name} backed a Photography project."
    - **en**: "%{friend_name} backed a Photography project."
   */
   public static func activity_friend_backed_photography_project(friend_name friend_name: String) -> String {
@@ -4218,7 +3967,6 @@ catch your eye?"
    - **es**: "<b>%{friend_name} contribuyó al proyecto </b> %{project_name} de %{creator_name}"
    - **de**: "<b>%{friend_name} hat das Projekt </b> %{project_name} von %{creator_name} unterstützt"
    - **fr**: "<b>%{friend_name} a soutenu le projet </b> %{project_name} par %{creator_name}"
-   - **it**: "<b>%{friend_name} backed</b> %{project_name} by %{creator_name}"
    - **en**: "<b>%{friend_name} backed</b> %{project_name} by %{creator_name}"
   */
   public static func activity_friend_backed_project_name_by_creator_name(friend_name friend_name: String, project_name: String, creator_name: String) -> String {
@@ -4235,7 +3983,6 @@ catch your eye?"
    - **es**: "%{friend_name} patrocinó un proyecto de Publicaciones."
    - **de**: "%{friend_name} hat ein Publishing-Projekt unterstützt."
    - **fr**: "%{friend_name} a soutenu un projet d'édition."
-   - **it**: "%{friend_name} backed a Publishing project."
    - **en**: "%{friend_name} backed a Publishing project."
   */
   public static func activity_friend_backed_publishing_project(friend_name friend_name: String) -> String {
@@ -4252,7 +3999,6 @@ catch your eye?"
    - **es**: "%{friend_name} patrocinó un proyecto de Tecnología."
    - **de**: "%{friend_name} hat ein Technologie-Projekt unterstützt."
    - **fr**: "%{friend_name} a soutenu un projet de technologie."
-   - **it**: "%{friend_name} backed a Technology project."
    - **en**: "%{friend_name} backed a Technology project."
   */
   public static func activity_friend_backed_tech_project(friend_name friend_name: String) -> String {
@@ -4269,7 +4015,6 @@ catch your eye?"
    - **es**: "%{friend_name} patrocinó un proyecto de Teatro."
    - **de**: "%{friend_name} hat ein Theater-Projekt unterstützt."
    - **fr**: "%{friend_name} a soutenu un projet de théâtre."
-   - **it**: "%{friend_name} backed a Theater project."
    - **en**: "%{friend_name} backed a Theater project."
   */
   public static func activity_friend_backed_theater_project(friend_name friend_name: String) -> String {
@@ -4286,7 +4031,6 @@ catch your eye?"
    - **es**: "Seguir"
    - **de**: "Folgen"
    - **fr**: "S'abonner"
-   - **it**: "Follow"
    - **en**: "Follow"
   */
   public static func activity_friend_follow_buttons_follow() -> String {
@@ -4303,7 +4047,6 @@ catch your eye?"
    - **es**: "Siguiendo"
    - **de**: "Abonniert"
    - **fr**: "Abonné"
-   - **it**: "Following"
    - **en**: "Following"
   */
   public static func activity_friend_follow_buttons_following() -> String {
@@ -4320,7 +4063,6 @@ catch your eye?"
    - **es**: "te sigue"
    - **de**: "folgt dir!"
    - **fr**: "vous suit !"
-   - **it**: "is following you!"
    - **en**: "is following you!"
   */
   public static func activity_friend_follow_is_following_you() -> String {
@@ -4337,7 +4079,6 @@ catch your eye?"
    - **es**: "Financiamiento cancelado."
    - **de**: "Finanzierung abgebrochen."
    - **fr**: "Financement annulé."
-   - **it**: "Funding canceled."
    - **en**: "Funding canceled."
   */
   public static func activity_funding_canceled() -> String {
@@ -4354,7 +4095,6 @@ catch your eye?"
    - **es**: "Actividad"
    - **de**: "Aktivität"
    - **fr**: "Activité"
-   - **it**: "Activity"
    - **en**: "Activity"
   */
   public static func activity_navigation_title_activity() -> String {
@@ -4371,7 +4111,6 @@ catch your eye?"
    - **es**: "Publicó actualización n° %{update_number}: %{update_title}"
    - **de**: "Update Nr. %{update_number}: %{update_title}"
    - **fr**: "Actu no. %{update_number} publiée : %{update_title}"
-   - **it**: "Posted update #%{update_number}: %{update_title}"
    - **en**: "Posted update #%{update_number}: %{update_title}"
   */
   public static func activity_posted_update_number_title(update_number update_number: String, update_title: String) -> String {
@@ -4388,7 +4127,6 @@ catch your eye?"
    - **es**: "%{project_name} por %{creator_name}"
    - **de**: "%{project_name} von %{creator_name}"
    - **fr**: "%{project_name} par %{creator_name}"
-   - **it**: "%{project_name} by %{creator_name}"
    - **en**: "%{project_name} by %{creator_name}"
   */
   public static func activity_project_name_by_creator_name(project_name project_name: String, creator_name: String) -> String {
@@ -4405,7 +4143,6 @@ catch your eye?"
    - **es**: "%{creator_name} ha publicado el proyecto: %{project_name}"
    - **de**: "%{creator_name} hat ein Projekt live gestellt: %{project_name}"
    - **fr**: "%{creator_name} a lancé un projet : %{project_name}"
-   - **it**: "%{creator_name} launched a project: %{project_name}"
    - **en**: "%{creator_name} launched a project: %{project_name}"
   */
   public static func activity_project_state_change_creator_launched_a_project(creator_name creator_name: String, project_name: String) -> String {
@@ -4422,7 +4159,6 @@ catch your eye?"
    - **es**: "Financiado"
    - **de**: "Finanziert"
    - **fr**: "Financé"
-   - **it**: "Funded"
    - **en**: "Funded"
   */
   public static func activity_project_state_change_funded() -> String {
@@ -4439,7 +4175,6 @@ catch your eye?"
    - **es**: "meta"
    - **de**: "Ziel"
    - **fr**: "objectif"
-   - **it**: "goal"
    - **en**: "goal"
   */
   public static func activity_project_state_change_goal() -> String {
@@ -4456,7 +4191,6 @@ catch your eye?"
    - **es**: "Publicado"
    - **de**: "Live"
    - **fr**: "Lancé"
-   - **it**: "Launched"
    - **en**: "Launched"
   */
   public static func activity_project_state_change_launched() -> String {
@@ -4473,7 +4207,6 @@ catch your eye?"
    - **es**: "de %{goal}"
    - **de**: "von %{goal} beigetragen"
    - **fr**: "sur %{goal}"
-   - **it**: "pledged of %{goal}"
    - **en**: "pledged of %{goal}"
   */
   public static func activity_project_state_change_pledged_of_goal(goal goal: String) -> String {
@@ -4490,7 +4223,6 @@ catch your eye?"
    - **es**: "%{project_name} ha sido cancelado por su creador."
    - **de**: "%{project_name} wurde vom Projektgründer abgebrochen."
    - **fr**: "%{project_name} a été annulé par son créateur."
-   - **it**: "%{project_name} was cancelled by the creator."
    - **en**: "%{project_name} was cancelled by the creator."
   */
   public static func activity_project_state_change_project_was_cancelled_by_creator(project_name project_name: String) -> String {
@@ -4507,7 +4239,6 @@ catch your eye?"
    - **es**: "%{project_name} no ha sido financiado exitosamente."
    - **de**: "%{project_name} wurde nicht erfolgreich finanziert."
    - **fr**: "%{project_name} n'a pas été intégralement financé."
-   - **it**: "%{project_name} was not successfully funded."
    - **en**: "%{project_name} was not successfully funded."
   */
   public static func activity_project_state_change_project_was_not_successfully_funded(project_name project_name: String) -> String {
@@ -4524,7 +4255,6 @@ catch your eye?"
    - **es**: "¡%{project_name} fue financiado con éxito!"
    - **de**: "%{project_name} wurde erfolgreich finanziert!"
    - **fr**: "%{project_name} a été intégralement financé !"
-   - **it**: "%{project_name} was successfully funded!"
    - **en**: "%{project_name} was successfully funded!"
   */
   public static func activity_project_state_change_project_was_successfully_funded(project_name project_name: String) -> String {
@@ -4541,7 +4271,6 @@ catch your eye?"
    - **es**: "%{project_name} ha sido suspendido."
    - **de**: "%{project_name} wurde ausgesetzt."
    - **fr**: "%{project_name} a été suspendu."
-   - **it**: "%{project_name} was suspended."
    - **en**: "%{project_name} was suspended."
   */
   public static func activity_project_state_change_project_was_suspended(project_name project_name: String) -> String {
@@ -4558,7 +4287,6 @@ catch your eye?"
    - **es**: "Has publicado el proyecto: %{project_name}"
    - **de**: "Du hast ein Projekt live gestellt: %{project_name}"
    - **fr**: "Vous avez lancé un projet : %{project_name}"
-   - **it**: "You launched a project: %{project_name}"
    - **en**: "You launched a project: %{project_name}"
   */
   public static func activity_project_state_change_you_launched_a_project(project_name project_name: String) -> String {
@@ -4575,7 +4303,6 @@ catch your eye?"
    - **es**: "Actualización n° %{update_count}"
    - **de**: "Update Nr. %{update_count}"
    - **fr**: "Actu no. %{update_count}"
-   - **it**: "Update #%{update_count}"
    - **en**: "Update #%{update_count}"
   */
   public static func activity_project_update_update_count(update_count update_count: String) -> String {
@@ -4592,7 +4319,6 @@ catch your eye?"
    - **es**: "#%{update_count} – Únicamente para patrocinadores"
    - **de**: "Nr. %{update_count} – Nur für Unterstützer"
    - **fr**: "No. %{update_count} – Contributeurs seulement"
-   - **it**: "#%{update_count} – Backer only"
    - **en**: "#%{update_count} – Backer only"
   */
   public static func activity_project_update_update_count_backer_only(update_count update_count: String) -> String {
@@ -4609,7 +4335,6 @@ catch your eye?"
    - **es**: "No se financió con éxito."
    - **de**: "Wurde nicht erfolgreich finanziert."
    - **fr**: "Non financé."
-   - **it**: "Was not successfully funded."
    - **en**: "Was not successfully funded."
   */
   public static func activity_project_was_not_successfully_funded() -> String {
@@ -4626,7 +4351,6 @@ catch your eye?"
    - **es**: "¡Financiado con éxito!"
    - **de**: "Erfolgreich finanziert!"
    - **fr**: "Intégralement financé !"
-   - **it**: "Successfully funded!"
    - **en**: "Successfully funded!"
   */
   public static func activity_successfully_funded() -> String {
@@ -4643,7 +4367,6 @@ catch your eye?"
    - **es**: "¡%{user_name} te sigue!"
    - **de**: "%{user_name} folgt dir!"
    - **fr**: "%{user_name} vous suit !"
-   - **it**: "%{user_name} is now following you!"
    - **en**: "%{user_name} is now following you!"
   */
   public static func activity_user_name_is_now_following_you(user_name user_name: String) -> String {
@@ -4660,7 +4383,6 @@ catch your eye?"
    - **es**: "%{user_name} publicó un proyecto."
    - **de**: "%{user_name} hat ein Projekt veröffentlicht."
    - **fr**: "%{user_name} a lancé un projet."
-   - **it**: "%{user_name} launched a project."
    - **en**: "%{user_name} launched a project."
   */
   public static func activity_user_name_launched_project(user_name user_name: String) -> String {
@@ -4677,7 +4399,6 @@ catch your eye?"
    - **es**: "Patrocinador n° %{backer_number}"
    - **de**: "Unterstützer Nr. %{backer_number}"
    - **fr**: "Contributeur no. %{backer_number}"
-   - **it**: "Backer #%{backer_number}"
    - **en**: "Backer #%{backer_number}"
   */
   public static func backer_modal_backer_number(backer_number backer_number: String) -> String {
@@ -4694,7 +4415,6 @@ catch your eye?"
    - **es**: "Nacional"
    - **de**: "National"
    - **fr**: "National"
-   - **it**: "Domestic"
    - **en**: "Domestic"
   */
   public static func backer_modal_domestic() -> String {
@@ -4711,7 +4431,6 @@ catch your eye?"
    - **es**: "Internacional"
    - **de**: "International"
    - **fr**: "International"
-   - **it**: "International"
    - **en**: "International"
   */
   public static func backer_modal_international() -> String {
@@ -4728,7 +4447,6 @@ catch your eye?"
    - **es**: "ND"
    - **de**: "n. z."
    - **fr**: "Sans objet"
-   - **it**: "N/A"
    - **en**: "N/A"
   */
   public static func backer_modal_missing_location_name() -> String {
@@ -4745,7 +4463,6 @@ catch your eye?"
    - **es**: "ND"
    - **de**: "Nicht verfügbar"
    - **fr**: "Indisponible"
-   - **it**: "N/A"
    - **en**: "N/A"
   */
   public static func backer_modal_not_available() -> String {
@@ -4762,7 +4479,6 @@ catch your eye?"
    - **es**: "%{pledge_amount} el %{pledge_date}"
    - **de**: "%{pledge_amount} am %{pledge_date}"
    - **fr**: "%{pledge_amount} le %{pledge_date}"
-   - **it**: "%{pledge_amount} on %{pledge_date}"
    - **en**: "%{pledge_amount} on %{pledge_date}"
   */
   public static func backer_modal_pledge_amount_on_pledge_date(pledge_amount pledge_amount: String, pledge_date: String) -> String {
@@ -4779,7 +4495,6 @@ catch your eye?"
    - **es**: "Contribuido"
    - **de**: "Beigetragen"
    - **fr**: "Engagement"
-   - **it**: "Pledged"
    - **en**: "Pledged"
   */
   public static func backer_modal_pledged_title() -> String {
@@ -4796,7 +4511,6 @@ catch your eye?"
    - **es**: "%{reward_amount} - %{reward_description}"
    - **de**: "%{reward_amount} - %{reward_description}"
    - **fr**: "%{reward_amount} - %{reward_description}"
-   - **it**: "%{reward_amount} - %{reward_description}"
    - **en**: "%{reward_amount} - %{reward_description}"
   */
   public static func backer_modal_reward_amount_reward_description(reward_amount reward_amount: String, reward_description: String) -> String {
@@ -4813,7 +4527,6 @@ catch your eye?"
    - **es**: "Recompensa"
    - **de**: "Belohnung"
    - **fr**: "Récompense"
-   - **it**: "Reward"
    - **en**: "Reward"
   */
   public static func backer_modal_reward_title() -> String {
@@ -4830,7 +4543,6 @@ catch your eye?"
    - **es**: "Enviar mensaje"
    - **de**: "Nachricht senden"
    - **fr**: "Envoyer un message"
-   - **it**: "Send message"
    - **en**: "Send message"
   */
   public static func backer_modal_send_backer_message_button() -> String {
@@ -4847,7 +4559,6 @@ catch your eye?"
    - **es**: "Enviar mensaje al creador"
    - **de**: "Nachricht an Projektgründer senden"
    - **fr**: "Message au créateur"
-   - **it**: "Message creator"
    - **en**: "Message creator"
   */
   public static func backer_modal_send_creator_message_button() -> String {
@@ -4864,7 +4575,6 @@ catch your eye?"
    - **es**: "Envío"
    - **de**: "Versand"
    - **fr**: "Expédition"
-   - **it**: "Shipping"
    - **en**: "Shipping"
   */
   public static func backer_modal_shipping_title() -> String {
@@ -4881,7 +4591,6 @@ catch your eye?"
    - **es**: "Estado: %{backing_status}"
    - **de**: "Status: %{backing_status}"
    - **fr**: "Statut : %{backing_status}"
-   - **it**: "Status: %{backing_status}"
    - **en**: "Status: %{backing_status}"
   */
   public static func backer_modal_status_backing_status(backing_status backing_status: String) -> String {
@@ -4898,7 +4607,6 @@ catch your eye?"
    - **es**: "Ver mensajes"
    - **de**: "Nachrichten anzeigen"
    - **fr**: "Afficher les messages"
-   - **it**: "View messages"
    - **en**: "View messages"
   */
   public static func backer_modal_view_messages() -> String {
@@ -4915,7 +4623,6 @@ catch your eye?"
    - **es**: "Entrega estimada %{delivery_date}"
    - **de**: "Voraussichtliche Lieferung am %{delivery_date}"
    - **fr**: "Livraison prévue le %{delivery_date}"
-   - **it**: "Estimated delivery %{delivery_date}"
    - **en**: "Estimated delivery %{delivery_date}"
   */
   public static func backing_info_estimated_delivery_date(delivery_date delivery_date: String) -> String {
@@ -4932,7 +4639,6 @@ catch your eye?"
    - **es**: "Info sobre patrocinamiento"
    - **de**: "Infos zur Unterstützung"
    - **fr**: "Infos sur la contribution"
-   - **it**: "Backing info"
    - **en**: "Backing info"
   */
   public static func backing_info_info_button() -> String {
@@ -4949,7 +4655,6 @@ catch your eye?"
    - **es**: "Contribuido: %{backing_amount}"
    - **de**: "Beigetragen: %{backing_amount}"
    - **fr**: "Montant engagé : %{backing_amount}"
-   - **it**: "Pledged: %{backing_amount}"
    - **en**: "Pledged: %{backing_amount}"
   */
   public static func backing_info_pledged_backing_amount(backing_amount backing_amount: String) -> String {
@@ -4966,7 +4671,6 @@ catch your eye?"
    - **es**: "Explorar %{category_name}"
    - **de**: "Erkunde %{category_name}"
    - **fr**: "Découvrir la catégorie %{category_name}"
-   - **it**: "Explore %{category_name}"
    - **en**: "Explore %{category_name}"
   */
   public static func category_promo_explore_category(category_name category_name: String) -> String {
@@ -4983,7 +4687,6 @@ catch your eye?"
    - **es**: "%{project_count} proyectos activos"
    - **de**: "%{project_count} Live-Projekte"
    - **fr**: "%{project_count} projets actifs"
-   - **it**: "%{project_count} live projects"
    - **en**: "%{project_count} live projects"
   */
   public static func category_promo_project_count_live_projects(project_count project_count: String) -> String {
@@ -5000,7 +4703,6 @@ catch your eye?"
    - **es**: "%{comments_count} commentarios"
    - **de**: "%{comments_count} Kommentare"
    - **fr**: "%{comments_count} commentaires"
-   - **it**: "%{comments_count} comments"
    - **en**: "%{comments_count} comments"
   */
   public static func comments_count_comments(comments_count comments_count: Int) -> String {
@@ -5017,7 +4719,6 @@ catch your eye?"
    - **es**: "%{days_to_go} restantes · %{percent_funded} financiado"
    - **de**: "%{days_to_go} zum Ziel - %{percent_funded} finanziert"
    - **fr**: "Plus que %{days_to_go} · Financé à %{percent_funded}"
-   - **it**: "%{days_to_go} to go · %{percent_funded} funded"
    - **en**: "%{days_to_go} to go · %{percent_funded} funded"
   */
   public static func creator_project_preview_subtitle_days_to_go_percent_funded(days_to_go days_to_go: String, percent_funded: String) -> String {
@@ -5034,7 +4735,6 @@ catch your eye?"
    - **es**: "Financiado el %{deadline}"
    - **de**: "Finanziert am %{deadline}"
    - **fr**: "Financé le %{deadline}"
-   - **it**: "Funded on %{deadline}"
    - **en**: "Funded on %{deadline}"
   */
   public static func creator_project_preview_subtitle_funded_on_deadline(deadline deadline: String) -> String {
@@ -5051,7 +4751,6 @@ catch your eye?"
    - **es**: "Financiamiento cancelado"
    - **de**: "Finanzierung abgebrochen"
    - **fr**: "Financement annulé"
-   - **it**: "Funding canceled"
    - **en**: "Funding canceled"
   */
   public static func creator_project_preview_subtitle_funding_canceled() -> String {
@@ -5068,7 +4767,6 @@ catch your eye?"
    - **es**: "Financiamiento sin éxito el %{deadline}"
    - **de**: "Finanzierung fehlgeschlagen am %{deadline}"
    - **fr**: "L'objectif de financement n'a pas été atteint avant le %{deadline}"
-   - **it**: "Funding unsuccessful on %{deadline}"
    - **en**: "Funding unsuccessful on %{deadline}"
   */
   public static func creator_project_preview_subtitle_funding_unsuccessful_on_deadline(deadline deadline: String) -> String {
@@ -5085,7 +4783,6 @@ catch your eye?"
    - **es**: "Proyecto suspendido"
    - **de**: "Projekt ausgesetzt"
    - **fr**: "Projet suspendu"
-   - **it**: "Project suspended"
    - **en**: "Project suspended"
   */
   public static func creator_project_preview_subtitle_project_suspended() -> String {
@@ -5102,7 +4799,6 @@ catch your eye?"
    - **es**: "Compartir proyecto"
    - **de**: "Projekt teilen"
    - **fr**: "Partager ce projet"
-   - **it**: "Share project"
    - **en**: "Share project"
   */
   public static func dashboard_accessibility_label_share_project() -> String {
@@ -5119,7 +4815,6 @@ catch your eye?"
    - **es**: "Info sobre patrocinamiento"
    - **de**: "Infos zur Unterstützung"
    - **fr**: "Infos sur la contribution"
-   - **it**: "Backing info"
    - **en**: "Backing info"
   */
   public static func dashboard_activity_backing_info() -> String {
@@ -5136,7 +4831,6 @@ catch your eye?"
    - **es**: "No se seleccionó ninguna recompensa"
    - **de**: "Keine Belohnung ausgewählt"
    - **fr**: "Pas de récompense sélectionnée"
-   - **it**: "No reward selected"
    - **en**: "No reward selected"
   */
   public static func dashboard_activity_no_reward_selected() -> String {
@@ -5153,7 +4847,6 @@ catch your eye?"
    - **es**: "Info sobre contribución"
    - **de**: "Info zu Finanzierungsbeitrag"
    - **fr**: "Infos sur mon engagement"
-   - **it**: "Pledge info"
    - **en**: "Pledge info"
   */
   public static func dashboard_activity_pledge_info() -> String {
@@ -5170,7 +4863,6 @@ catch your eye?"
    - **es**: "<b>%{project_name}</b>, publicado el %{launch_date}, meta de financiamiento: <b>%{goal}</b>"
    - **de**: "<b>%{project_name}</b> veröffentlicht am %{launch_date}, Finanzierungsziel: <b>%{goal}</b>"
    - **fr**: "<b>%{project_name}</b> lancé le %{launch_date} avec un objectif de <b>%{goal}</b>"
-   - **it**: "<b>%{project_name}</b> launched on %{launch_date} with a goal of raising <b>%{goal}</b>"
    - **en**: "<b>%{project_name}</b> launched on %{launch_date} with a goal of raising <b>%{goal}</b>"
   */
   public static func dashboard_activity_project_name_launched(project_name project_name: String, launch_date: String, goal: String) -> String {
@@ -5187,7 +4879,6 @@ catch your eye?"
    - **es**: "<b>%{project_name}</b> fue cancelado el %{cancellation_date}"
    - **de**: "<b>%{project_name}</b> wurde am %{cancellation_date} abgebrochen"
    - **fr**: "<b>%{project_name}</b> a été annulé le %{cancellation_date}"
-   - **it**: "<b>%{project_name}</b> was canceled on %{cancellation_date}"
    - **en**: "<b>%{project_name}</b> was canceled on %{cancellation_date}"
   */
   public static func dashboard_activity_project_name_was_canceled(project_name project_name: String, cancellation_date: String) -> String {
@@ -5204,7 +4895,6 @@ catch your eye?"
    - **es**: "<b>%{project_name}</b> fue suspendido el %{suspension_date}"
    - **de**: "<b>%{project_name}</b> wurde am %{suspension_date} ausgesetzt"
    - **fr**: "<b>%{project_name}</b> a été suspendu le %{suspension_date}"
-   - **it**: "<b>%{project_name}</b> was suspended on %{suspension_date}"
    - **en**: "<b>%{project_name}</b> was suspended on %{suspension_date}"
   */
   public static func dashboard_activity_project_name_was_suspended(project_name project_name: String, suspension_date: String) -> String {
@@ -5221,7 +4911,6 @@ catch your eye?"
    - **es**: "<b>%{project_name}</b> terminó sin éxito el %{unsuccessful_date}"
    - **de**: "<b>%{project_name}</b> hat das Finanzierungsziel nicht erreicht. Stand: %{unsuccessful_date}"
    - **fr**: "<b>%{project_name}</b> n'a pas atteint son objectif de financement avant le %{unsuccessful_date}"
-   - **it**: "<b>%{project_name}</b> was unsuccessful on %{unsuccessful_date}"
    - **en**: "<b>%{project_name}</b> was unsuccessful on %{unsuccessful_date}"
   */
   public static func dashboard_activity_project_name_was_unsuccessful(project_name project_name: String, unsuccessful_date: String) -> String {
@@ -5238,7 +4927,6 @@ catch your eye?"
    - **es**: "Responder"
    - **de**: "Antworten"
    - **fr**: "Répondre"
-   - **it**: "Reply"
    - **en**: "Reply"
   */
   public static func dashboard_activity_reply() -> String {
@@ -5255,7 +4943,6 @@ catch your eye?"
    - **es**: "<b>Recompensa:</b> %{reward_name}"
    - **de**: "<b>Belohnung:</b> %{reward_name}"
    - **fr**: "<b>Récompense :<b> %{reward_name}"
-   - **it**: "<b>Reward:</b> %{reward_name}"
    - **en**: "<b>Reward:</b> %{reward_name}"
   */
   public static func dashboard_activity_reward_name(reward_name reward_name: String) -> String {
@@ -5272,7 +4959,6 @@ catch your eye?"
    - **es**: "Enviar mensaje"
    - **de**: "Nachricht senden"
    - **fr**: "Envoyer un message"
-   - **it**: "Send message"
    - **en**: "Send message"
   */
   public static func dashboard_activity_send_message() -> String {
@@ -5289,7 +4975,6 @@ catch your eye?"
    - **es**: "Financiamiento exitoso: Se recaudaron <b>%{pledged}</b> gracias a <b>%{backers}</b> el %{deadline}"
    - **de**: "Wurde erfoglreich abgeschlossen: <b>%{pledged}</b> erreicht am %{deadline} dank <b>%{backers}</b>"
    - **fr**: "Financement de <b>%{pledged}</b> réussi le %{deadline} grâce à <b>%{backers}</b>"
-   - **it**: "Successfully raised <b>%{pledged}</b> with <b>%{backers}</b> on %{deadline}"
    - **en**: "Successfully raised <b>%{pledged}</b> with <b>%{backers}</b> on %{deadline}"
   */
   public static func dashboard_activity_successfully_raised_pledged(pledged pledged: String, backers: String, deadline: String) -> String {
@@ -5306,7 +4991,6 @@ catch your eye?"
    - **es**: "<b>Actualización%{space}%{update_number}</b> publicado el %{time_count_days_ago}"
    - **de**: "<b>Update%{space}%{update_number}</b> vor %{time_count_days_ago} gepostet"
    - **fr**: "<b>Actu no.%{space}%{update_number}</b> publiée il y a %{time_count_days_ago}"
-   - **it**: "<b>Update%{space}#%{update_number}</b> posted %{time_count_days_ago}"
    - **en**: "<b>Update%{space}#%{update_number}</b> posted %{time_count_days_ago}"
   */
   public static func dashboard_activity_update_number_posted_time_count_days_ago(space space: String, update_number: String, time_count_days_ago: String) -> String {
@@ -5323,7 +5007,6 @@ catch your eye?"
    - **es**: "<b>%{user_name}</b> ajustó su contribución"
    - **de**: "Der Finanzierungsbeitrag von <b>%{user_name}</b> wurde geändert"
    - **fr**: "<b>%{user_name}</b> a ajusté son engagement"
-   - **it**: "<b>%{user_name}</b> adjusted their pledge"
    - **en**: "<b>%{user_name}</b> adjusted their pledge"
   */
   public static func dashboard_activity_user_name_adjusted_their_pledge(user_name user_name: String) -> String {
@@ -5340,7 +5023,6 @@ catch your eye?"
    - **es**: "<b>%{user_name}</b> canceló su contribución"
    - **de**: "Der Finanzierungsbeitrag von <b>%{user_name}</b> wurde zurückgezogen"
    - **fr**: "<b>%{user_name}</b> a annulé son engagement"
-   - **it**: "<b>%{user_name}</b> canceled their pledge"
    - **en**: "<b>%{user_name}</b> canceled their pledge"
   */
   public static func dashboard_activity_user_name_canceled_their_pledge(user_name user_name: String) -> String {
@@ -5357,7 +5039,6 @@ catch your eye?"
    - **es**: "<b>%{user_name}</b> cambió su recompensa"
    - **de**: "Die Belohnung von <b>%{user_name}</b> wurde geändert"
    - **fr**: "<b>%{user_name}</b> a changé de récompense"
-   - **it**: "<b>%{user_name}</b> changed their reward"
    - **en**: "<b>%{user_name}</b> changed their reward"
   */
   public static func dashboard_activity_user_name_changed_their_reward(user_name user_name: String) -> String {
@@ -5374,7 +5055,6 @@ catch your eye?"
    - **es**: "<b>%{user_name}</b> hizo un comentario sobre la actualización n° %{update_number}"
    - **de**: "<b>%{user_name}</b> hat Update %{update_number} kommentiert"
    - **fr**: "<b>%{user_name}</b> a commenté l'Actu no. %{update_number}"
-   - **it**: "<b>%{user_name}</b> commented on <b>Update%{space}#%{update_number}</b>"
    - **en**: "<b>%{user_name}</b> commented on <b>Update%{space}#%{update_number}</b>"
   */
   public static func dashboard_activity_user_name_commented_on_update_number(user_name user_name: String, space: String, update_number: String) -> String {
@@ -5391,7 +5071,6 @@ catch your eye?"
    - **es**: "<b>%{user_name}</b> hizo un comentario sobre tu proyecto"
    - **de**: "<b>%{user_name}</b> hat dein Projekt kommentiert"
    - **fr**: "<b>%{user_name}</b> a commenté votre projet"
-   - **it**: "<b>%{user_name}</b> commented on your project"
    - **en**: "<b>%{user_name}</b> commented on your project"
   */
   public static func dashboard_activity_user_name_commented_on_your_project(user_name user_name: String) -> String {
@@ -5408,7 +5087,6 @@ catch your eye?"
    - **es**: "<b>%{user_name}</b> hizo una contribución"
    - **de**: "<b>%{user_name}</b> hat einen Finanzierungsbeitrag geleistet"
    - **fr**: "<b>%{user_name}</b> s'est engagé(e)"
-   - **it**: "<b>%{user_name}</b> pledged"
    - **en**: "<b>%{user_name}</b> pledged"
   */
   public static func dashboard_activity_user_name_pledged(user_name user_name: String) -> String {
@@ -5425,7 +5103,6 @@ catch your eye?"
    - **es**: "<b>Has</b> cambiado tu contribución"
    - **de**: "<b>Du</b> hast deinen Finanzierungsbeitrag geändert"
    - **fr**: "<b>Vous</b> avez ajusté votre engagement"
-   - **it**: "<b>You</b> adjusted your pledge"
    - **en**: "<b>You</b> adjusted your pledge"
   */
   public static func dashboard_activity_you_adjusted_your_pledge() -> String {
@@ -5442,7 +5119,6 @@ catch your eye?"
    - **es**: "<b>Has</b> cancelado tu contribución"
    - **de**: "<b>Du</b> hast deinen Finanzierungsbeitrag zurückgezogen"
    - **fr**: "<b>Vous</b> avez annulé votre engagement"
-   - **it**: "<b>You</b> canceled your pledge"
    - **en**: "<b>You</b> canceled your pledge"
   */
   public static func dashboard_activity_you_canceled_your_pledge() -> String {
@@ -5459,7 +5135,6 @@ catch your eye?"
    - **es**: "<b>Has</b> cambiado tu recompensa"
    - **de**: "<b>Du</b> hast deine Belohnung geändert"
    - **fr**: "<b>Vous</b> avez changé de récompense"
-   - **it**: "<b>You</b> changed your reward"
    - **en**: "<b>You</b> changed your reward"
   */
   public static func dashboard_activity_you_changed_your_reward() -> String {
@@ -5476,7 +5151,6 @@ catch your eye?"
    - **es**: "<b>Has</b> hecho un comentario sobre la actualización n° %{update_number}"
    - **de**: "<b>Du</b> hast Update %{update_number} kommentiert"
    - **fr**: "<b>Vous</b> avez commenté l'Actu no. %{update_number}"
-   - **it**: "<b>You</b> commented on <b>Update%{space}#%{update_number}</b>"
    - **en**: "<b>You</b> commented on <b>Update%{space}#%{update_number}</b>"
   */
   public static func dashboard_activity_you_commented_on_update_number(space space: String, update_number: String) -> String {
@@ -5493,7 +5167,6 @@ catch your eye?"
    - **es**: "<b>Has</b> hecho un comentario sobre tu proyecto"
    - **de**: "<b>Du</b> hast dein Projekt kommentiert"
    - **fr**: "<b>Vous</b> avez commenté votre projet"
-   - **it**: "<b>You</b> commented on your project"
    - **en**: "<b>You</b> commented on your project"
   */
   public static func dashboard_activity_you_commented_on_your_project() -> String {
@@ -5510,7 +5183,6 @@ catch your eye?"
    - **es**: "<b>Has</b> hecho una contribución"
    - **de**: "<b>Du</b> hast einen Finanzierungsbeitrag geleistet"
    - **fr**: "<b>Vous</b> vous êtes engagé(e)"
-   - **it**: "<b>You</b> pledged"
    - **en**: "<b>You</b> pledged"
   */
   public static func dashboard_activity_you_pledged() -> String {
@@ -5527,7 +5199,6 @@ catch your eye?"
    - **es**: "Actividad"
    - **de**: "Aktivität"
    - **fr**: "Activité"
-   - **it**: "Activity"
    - **en**: "Activity"
   */
   public static func dashboard_buttons_activity() -> String {
@@ -5544,7 +5215,6 @@ catch your eye?"
    - **es**: "Mensajes"
    - **de**: "Nachrichten"
    - **fr**: "Messages"
-   - **it**: "Messages"
    - **en**: "Messages"
   */
   public static func dashboard_buttons_messages() -> String {
@@ -5561,7 +5231,6 @@ catch your eye?"
    - **es**: "Publicar actualización"
    - **de**: "Update posten"
    - **fr**: "Publier une actu"
-   - **it**: "Post update"
    - **en**: "Post update"
   */
   public static func dashboard_buttons_post_update() -> String {
@@ -5578,7 +5247,6 @@ catch your eye?"
    - **es**: "Compartir"
    - **de**: "Teilen"
    - **fr**: "Partager"
-   - **it**: "Share"
    - **en**: "Share"
   */
   public static func dashboard_buttons_share() -> String {
@@ -5595,7 +5263,6 @@ catch your eye?"
    - **es**: "Actualmente activos"
    - **de**: "Jetzt live"
    - **fr**: "En cours"
-   - **it**: "Currently live"
    - **en**: "Currently live"
   */
   public static func dashboard_creator_project_currently_live() -> String {
@@ -5612,7 +5279,6 @@ catch your eye?"
    - **es**: "Financiado el %{deadline}"
    - **de**: "Finanziert am %{deadline}"
    - **fr**: "Financé le %{deadline}"
-   - **it**: "Funded on %{deadline}"
    - **en**: "Funded on %{deadline}"
   */
   public static func dashboard_creator_project_funded_on_deadline(deadline deadline: String) -> String {
@@ -5629,7 +5295,6 @@ catch your eye?"
    - **es**: "Financiamiento cancelado"
    - **de**: "Finanzierung abgebrochen"
    - **fr**: "Financement annulé"
-   - **it**: "Funding canceled"
    - **en**: "Funding canceled"
   */
   public static func dashboard_creator_project_funding_canceled() -> String {
@@ -5646,7 +5311,6 @@ catch your eye?"
    - **es**: "Financiamiento suspendido"
    - **de**: "Finanzierung ausgesetzt"
    - **fr**: "Financement suspendu"
-   - **it**: "Funding suspended"
    - **en**: "Funding suspended"
   */
   public static func dashboard_creator_project_funding_suspended() -> String {
@@ -5663,7 +5327,6 @@ catch your eye?"
    - **es**: "Financiamiento sin éxito"
    - **de**: "Finanzierung fehlgeschlagen"
    - **fr**: "Financement non réussi"
-   - **it**: "Funding unsuccessful"
    - **en**: "Funding unsuccessful"
   */
   public static func dashboard_creator_project_funding_unsuccessful() -> String {
@@ -5680,7 +5343,6 @@ catch your eye?"
    - **es**: "No se pudieron cargar projectos"
    - **de**: "Projekte konnten nicht geladen werden"
    - **fr**: "Impossible de charger les projets"
-   - **it**: "Couldn't load projects"
    - **en**: "Couldn't load projects"
   */
   public static func dashboard_error_could_not_load_projects() -> String {
@@ -5697,7 +5359,6 @@ catch your eye?"
    - **es**: "%{pledged} de %{goal} recaudado, %{backers_count} patrocinadores hasta ahora, tiempo restante: %{time_left}"
    - **de**: "%{pledged} von %{goal} erreicht, bisher %{backers_count} Unterstützer, noch %{time_left}"
    - **fr**: "%{pledged} engagés sur %{goal}, %{backers_count} contributeurs pour le moment, plus que %{time_left}"
-   - **it**: "%{pledged} of %{goal} goal, %{backers_count} backers so far, %{time_left} to go"
    - **en**: "%{pledged} of %{goal} goal, %{backers_count} backers so far, %{time_left} to go"
   */
   public static func dashboard_graphs_funding_accessibility_live_stat_value(pledged pledged: String, goal: String, backers_count: Int, time_left: String) -> String {
@@ -5714,7 +5375,6 @@ catch your eye?"
    - **es**: "%{pledged} de %{goal} recaudado, %{backers_count} patrocinadores hasta ahora, tiempo restante: %{time_left}"
    - **de**: "%{pledged} von %{goal} erreicht, bisher %{backers_count} Unterstützer, noch %{time_left}"
    - **fr**: "%{pledged} engagés sur %{goal}, %{backers_count} contributeurs, plus que %{time_left}"
-   - **it**: "%{pledged} of %{goal} goal, %{backers_count} backers total, %{time_left} to go"
    - **en**: "%{pledged} of %{goal} goal, %{backers_count} backers total, %{time_left} to go"
   */
   public static func dashboard_graphs_funding_accessibility_non_live_stat_value(pledged pledged: String, goal: String, backers_count: Int, time_left: String) -> String {
@@ -5731,7 +5391,6 @@ catch your eye?"
    - **es**: "Patrocinadores"
    - **de**: "Unterstützer"
    - **fr**: "Contributeurs"
-   - **it**: "Backers"
    - **en**: "Backers"
   */
   public static func dashboard_graphs_funding_backers() -> String {
@@ -5748,7 +5407,6 @@ catch your eye?"
    - **es**: "Meta"
    - **de**: "Finanzierungsziel"
    - **fr**: "Objectif"
-   - **it**: "Goal"
    - **en**: "Goal"
   */
   public static func dashboard_graphs_funding_goal() -> String {
@@ -5765,7 +5423,6 @@ catch your eye?"
    - **es**: "100%"
    - **de**: "100%"
    - **fr**: "100 %"
-   - **it**: "100%"
    - **en**: "100%"
   */
   public static func dashboard_graphs_funding_one_hundred_percent() -> String {
@@ -5782,7 +5439,6 @@ catch your eye?"
    - **es**: "Contribuido"
    - **de**: "Beiträge"
    - **fr**: "Engagements"
-   - **it**: "Pledged"
    - **en**: "Pledged"
   */
   public static func dashboard_graphs_funding_pledged() -> String {
@@ -5799,7 +5455,6 @@ catch your eye?"
    - **es**: "PROGRESO DEL FINANCIAMIENTO"
    - **de**: "FINANZIERUNGS-VERLAUF"
    - **fr**: "PROGRESSION DU FINANCEMENT"
-   - **it**: "FUNDING PROGRESS"
    - **en**: "FUNDING PROGRESS"
   */
   public static func dashboard_graphs_funding_title() -> String {
@@ -5816,7 +5471,6 @@ catch your eye?"
    - **es**: "Progreso del financiamiento"
    - **de**: "Finanzierungsfortschritt"
    - **fr**: "Évolution du financement"
-   - **it**: "Funding Progress"
    - **en**: "Funding Progress"
   */
   public static func dashboard_graphs_funding_title_funding_progress() -> String {
@@ -5833,7 +5487,6 @@ catch your eye?"
    - **es**: "Hoy"
    - **de**: "Heute"
    - **fr**: "Aujourd'hui"
-   - **it**: "Today"
    - **en**: "Today"
   */
   public static func dashboard_graphs_funding_today() -> String {
@@ -5850,7 +5503,6 @@ catch your eye?"
    - **es**: "Total"
    - **de**: "Gesamtbetrag"
    - **fr**: "Total"
-   - **it**: "Total"
    - **en**: "Total"
   */
   public static func dashboard_graphs_funding_total() -> String {
@@ -5867,7 +5519,6 @@ catch your eye?"
    - **es**: "Ayer"
    - **de**: "Gestern"
    - **fr**: "Hier"
-   - **it**: "Yesterday"
    - **en**: "Yesterday"
   */
   public static func dashboard_graphs_funding_yesterday() -> String {
@@ -5884,7 +5535,6 @@ catch your eye?"
    - **es**: "Importe de contribución medio"
    - **de**: "Durchschnittlicher Beitrag"
    - **fr**: "Engagement moyen"
-   - **it**: "Average pledge amount"
    - **en**: "Average pledge amount"
   */
   public static func dashboard_graphs_referrers_average_pledge_amount() -> String {
@@ -5901,7 +5551,6 @@ catch your eye?"
    - **es**: "Patrocinadores"
    - **de**: "Unterstützer"
    - **fr**: "Contributeurs"
-   - **it**: "Backers"
    - **en**: "Backers"
   */
   public static func dashboard_graphs_referrers_backers() -> String {
@@ -5918,7 +5567,6 @@ catch your eye?"
    - **es**: "Por ciento"
    - **de**: "Prozent"
    - **fr**: "Pourcentage"
-   - **it**: "Percent"
    - **en**: "Percent"
   */
   public static func dashboard_graphs_referrers_percent() -> String {
@@ -5935,7 +5583,6 @@ catch your eye?"
    - **es**: "%{percent_external} Externos"
    - **de**: "%{percent_external} Extern"
    - **fr**: "%{percent_external} de sources externes"
-   - **it**: "%{percent_external} External"
    - **en**: "%{percent_external} External"
   */
   public static func dashboard_graphs_referrers_percent_external(percent_external percent_external: String) -> String {
@@ -5952,7 +5599,6 @@ catch your eye?"
    - **es**: "%{percent_kickstarter} Kickstarter"
    - **de**: "%{percent_kickstarter} Kickstarter"
    - **fr**: "%{percent_kickstarter} via Kickstarter"
-   - **it**: "%{percent_kickstarter} Kickstarter"
    - **en**: "%{percent_kickstarter} Kickstarter"
   */
   public static func dashboard_graphs_referrers_percent_kickstarter(percent_kickstarter percent_kickstarter: String) -> String {
@@ -5969,7 +5615,6 @@ catch your eye?"
    - **es**: "Contribuido"
    - **de**: "Beiträge gesamt"
    - **fr**: "Engagements"
-   - **it**: "Pledged"
    - **en**: "Pledged"
   */
   public static func dashboard_graphs_referrers_pledged() -> String {
@@ -5986,7 +5631,6 @@ catch your eye?"
    - **es**: "Contribuciones personalizadas"
    - **de**: "Benutzerdefinierte Beiträge"
    - **fr**: "Montant engagé via des sites référents personnalisés"
-   - **it**: "Pledged via custom"
    - **en**: "Pledged via custom"
   */
   public static func dashboard_graphs_referrers_pledged_via_custom() -> String {
@@ -6003,7 +5647,6 @@ catch your eye?"
    - **es**: "Contribuido a través de externos"
    - **de**: "Externe Beiträge"
    - **fr**: "Engagements externes"
-   - **it**: "Pledged via external"
    - **en**: "Pledged via external"
   */
   public static func dashboard_graphs_referrers_pledged_via_external() -> String {
@@ -6020,7 +5663,6 @@ catch your eye?"
    - **es**: "Contribuido a través de Kickstarter"
    - **de**: "Beiträge über Kickstarter"
    - **fr**: "Montant engagé via Kickstarter"
-   - **it**: "Pledged via Kickstarter"
    - **en**: "Pledged via Kickstarter"
   */
   public static func dashboard_graphs_referrers_pledged_via_kickstarter() -> String {
@@ -6037,7 +5679,6 @@ catch your eye?"
    - **es**: "Mostrar más referer"
    - **de**: "Weitere Referrer anzeigen"
    - **fr**: "Afficher plus de référents"
-   - **it**: "Show more referrers"
    - **en**: "Show more referrers"
   */
   public static func dashboard_graphs_referrers_show_more() -> String {
@@ -6054,7 +5695,6 @@ catch your eye?"
    - **es**: "Fuente"
    - **de**: "Quelle"
    - **fr**: "Source"
-   - **it**: "Source"
    - **en**: "Source"
   */
   public static func dashboard_graphs_referrers_source() -> String {
@@ -6071,7 +5711,6 @@ catch your eye?"
    - **es**: "REFERER"
    - **de**: "Referrer"
    - **fr**: "RÉFÉRENTS"
-   - **it**: "REFERRERS"
    - **en**: "REFERRERS"
   */
   public static func dashboard_graphs_referrers_title() -> String {
@@ -6088,7 +5727,6 @@ catch your eye?"
    - **es**: "Referencias"
    - **de**: "Referrer"
    - **fr**: "Référents"
-   - **it**: "Referrers"
    - **en**: "Referrers"
   */
   public static func dashboard_graphs_referrers_title_referrers() -> String {
@@ -6105,7 +5743,6 @@ catch your eye?"
    - **es**: "Mostrar más"
    - **de**: "Mehr ansehen"
    - **fr**: "Plus de statistiques sur les référents"
-   - **it**: "View more referrer stats"
    - **en**: "View more referrer stats"
   */
   public static func dashboard_graphs_referrers_view_more_referrer_stats() -> String {
@@ -6122,7 +5759,6 @@ catch your eye?"
    - **es**: "Patrocinadores"
    - **de**: "Unterstützer"
    - **fr**: "Contributeurs"
-   - **it**: "Backers"
    - **en**: "Backers"
   */
   public static func dashboard_graphs_rewards_backers() -> String {
@@ -6139,7 +5775,6 @@ catch your eye?"
    - **es**: "Sin recompensa"
    - **de**: "Keine Belohnung"
    - **fr**: "Pas de récompense"
-   - **it**: "No reward"
    - **en**: "No reward"
   */
   public static func dashboard_graphs_rewards_no_reward() -> String {
@@ -6156,7 +5791,6 @@ catch your eye?"
    - **es**: "Por ciento"
    - **de**: "Prozent"
    - **fr**: "Pourcentage"
-   - **it**: "Percent"
    - **en**: "Percent"
   */
   public static func dashboard_graphs_rewards_percent() -> String {
@@ -6173,7 +5807,6 @@ catch your eye?"
    - **es**: "Contribuido"
    - **de**: "Beiträge gesamt"
    - **fr**: "Engagements"
-   - **it**: "Pledged"
    - **en**: "Pledged"
   */
   public static func dashboard_graphs_rewards_pledged() -> String {
@@ -6190,7 +5823,6 @@ catch your eye?"
    - **es**: "Ver todos los niveles de recompensas"
    - **de**: "Alle Belohnungsstufen anzeigen"
    - **fr**: "Tous les niveaux de récompense"
-   - **it**: "See all reward tiers"
    - **en**: "See all reward tiers"
   */
   public static func dashboard_graphs_rewards_see_all() -> String {
@@ -6207,7 +5839,6 @@ catch your eye?"
    - **es**: "RECOMPENSAS"
    - **de**: "BELOHNUNGEN"
    - **fr**: "RÉCOMPENSES"
-   - **it**: "REWARDS"
    - **en**: "REWARDS"
   */
   public static func dashboard_graphs_rewards_title() -> String {
@@ -6224,7 +5855,6 @@ catch your eye?"
    - **es**: "Recompensas"
    - **de**: "Belohnungen"
    - **fr**: "Récompenses"
-   - **it**: "Rewards"
    - **en**: "Rewards"
   */
   public static func dashboard_graphs_rewards_title_rewards() -> String {
@@ -6241,7 +5871,6 @@ catch your eye?"
    - **es**: "Las mejores recompensas"
    - **de**: "Top-Belohnungen"
    - **fr**: "Récompenses les plus populaires"
-   - **it**: "Top Rewards"
    - **en**: "Top Rewards"
   */
   public static func dashboard_graphs_rewards_top_rewards() -> String {
@@ -6258,7 +5887,6 @@ catch your eye?"
    - **es**: "Mostrar más"
    - **de**: "Mehr ansehen"
    - **fr**: "Plus de statistiques sur les récompenses"
-   - **it**: "View more reward stats"
    - **en**: "View more reward stats"
   */
   public static func dashboard_graphs_rewards_view_more_reward_stats() -> String {
@@ -6275,7 +5903,6 @@ catch your eye?"
    - **es**: "%{external_start_count} en sitios externos"
    - **de**: "%{external_start_count} extern"
    - **fr**: "%{external_start_count} en externe"
-   - **it**: "%{external_start_count} off-site"
    - **en**: "%{external_start_count} off-site"
   */
   public static func dashboard_graphs_video_stats_external_start_count_off_site(external_start_count external_start_count: String) -> String {
@@ -6292,7 +5919,6 @@ catch your eye?"
    - **es**: "%{internal_start_count} en Kickstarter"
    - **de**: "%{internal_start_count} auf Kickstarter"
    - **fr**: "%{internal_start_count} sur Kickstarter"
-   - **it**: "%{internal_start_count} on Kickstarter"
    - **en**: "%{internal_start_count} on Kickstarter"
   */
   public static func dashboard_graphs_video_stats_internal_start_count_on_kickstarter(internal_start_count internal_start_count: String) -> String {
@@ -6309,7 +5935,6 @@ catch your eye?"
    - **es**: "en otro lugar"
    - **de**: "außerhalb Kickstarters"
    - **fr**: "hors site"
-   - **it**: "off-site"
    - **en**: "off-site"
   */
   public static func dashboard_graphs_video_stats_off_site() -> String {
@@ -6326,7 +5951,6 @@ catch your eye?"
    - **es**: "en Kickstarter"
    - **de**: "auf Kickstarter"
    - **fr**: "sur Kickstarter"
-   - **it**: "on Kickstarter"
    - **en**: "on Kickstarter"
   */
   public static func dashboard_graphs_video_stats_on_kickstarter() -> String {
@@ -6343,7 +5967,6 @@ catch your eye?"
    - **es**: "%{percent_plays_completed} de reproducciones completadas"
    - **de**: "%{percent_plays_completed} aller Aufrufe wurden bis zum Ende wiedergegeben"
    - **fr**: "%{percent_plays_completed} des personnes qui ont vu la vidéo l'ont regardée jusqu'à la fin"
-   - **it**: "%{percent_plays_completed} of plays completed"
    - **en**: "%{percent_plays_completed} of plays completed"
   */
   public static func dashboard_graphs_video_stats_percent_plays_completed(percent_plays_completed percent_plays_completed: String) -> String {
@@ -6360,7 +5983,6 @@ catch your eye?"
    - **es**: "%{total_start_count} reproducciones"
    - **de**: "%{total_start_count} Aufrufe"
    - **fr**: "%{total_start_count} vues"
-   - **it**: "%{total_start_count} plays"
    - **en**: "%{total_start_count} plays"
   */
   public static func dashboard_graphs_video_stats_total_plays(total_start_count total_start_count: String) -> String {
@@ -6377,7 +5999,6 @@ catch your eye?"
    - **es**: "<b>%{total_start_count}</b> reproducciones"
    - **de**: "<b>%{total_start_count}</b> Aufrufe"
    - **fr**: "<b>%{total_start_count}</b> lectures (total)"
-   - **it**: "<b>%{total_start_count}</b> total plays"
    - **en**: "<b>%{total_start_count}</b> total plays"
   */
   public static func dashboard_graphs_video_stats_total_plays_count(total_start_count total_start_count: Int) -> String {
@@ -6394,7 +6015,6 @@ catch your eye?"
    - **es**: "REPRODUCCIONES DEL VÍDEO"
    - **de**: "Videoaufrufe"
    - **fr**: "LECTURES DE LA VIDÉO"
-   - **it**: "VIDEO PLAYS"
    - **en**: "VIDEO PLAYS"
   */
   public static func dashboard_graphs_video_title() -> String {
@@ -6411,7 +6031,6 @@ catch your eye?"
    - **es**: "Reproducciones de video"
    - **de**: "Video/Aufrufe"
    - **fr**: "Lectures vidéo"
-   - **it**: "Video Plays"
    - **en**: "Video Plays"
   */
   public static func dashboard_graphs_video_title_video_plays() -> String {
@@ -6428,7 +6047,6 @@ catch your eye?"
    - **es**: "Cancelar"
    - **de**: "Abbrechen"
    - **fr**: "Annuler"
-   - **it**: "Cancel"
    - **en**: "Cancel"
   */
   public static func dashboard_post_update_compose_attachment_actionsheets_image_buttons_cancel() -> String {
@@ -6445,7 +6063,6 @@ catch your eye?"
    - **es**: "Eliminar"
    - **de**: "Entfernen"
    - **fr**: "Supprimer"
-   - **it**: "Remove"
    - **en**: "Remove"
   */
   public static func dashboard_post_update_compose_attachment_actionsheets_image_buttons_remove() -> String {
@@ -6462,7 +6079,6 @@ catch your eye?"
    - **es**: "¿Eliminar imagen?"
    - **de**: "Bild entfernen?"
    - **fr**: "Supprimer l'image?"
-   - **it**: "Remove image?"
    - **en**: "Remove image?"
   */
   public static func dashboard_post_update_compose_attachment_actionsheets_image_remove_image() -> String {
@@ -6479,7 +6095,6 @@ catch your eye?"
    - **es**: "Cancelar"
    - **de**: "Abbrechen"
    - **fr**: "Annuler"
-   - **it**: "Cancel"
    - **en**: "Cancel"
   */
   public static func dashboard_post_update_compose_attachment_actionsheets_video_buttons_cancel() -> String {
@@ -6496,7 +6111,6 @@ catch your eye?"
    - **es**: "Eliminar"
    - **de**: "Entfernen"
    - **fr**: "Supprimer"
-   - **it**: "Remove"
    - **en**: "Remove"
   */
   public static func dashboard_post_update_compose_attachment_actionsheets_video_buttons_remove() -> String {
@@ -6513,7 +6127,6 @@ catch your eye?"
    - **es**: "¿Eliminar vídeo?"
    - **de**: "Video entfernen?"
    - **fr**: "Supprimer la vidéo ?"
-   - **it**: "Remove video?"
    - **en**: "Remove video?"
   */
   public static func dashboard_post_update_compose_attachment_actionsheets_video_remove_video() -> String {
@@ -6530,7 +6143,6 @@ catch your eye?"
    - **es**: "¿Seguro de que quieres eliminar esta imagen?"
    - **de**: "Bist du sicher, dass du dieses Bild entfernen möchtest?"
    - **fr**: "Supprimer cette image?"
-   - **it**: "Are you sure you want to remove this image?"
    - **en**: "Are you sure you want to remove this image?"
   */
   public static func dashboard_post_update_compose_attachment_alerts_image_are_you_sure_you_want_to_remove_image() -> String {
@@ -6547,7 +6159,6 @@ catch your eye?"
    - **es**: "Cancelar"
    - **de**: "Abbrechen"
    - **fr**: "Annuler"
-   - **it**: "Cancel"
    - **en**: "Cancel"
   */
   public static func dashboard_post_update_compose_attachment_alerts_image_buttons_cancel() -> String {
@@ -6564,7 +6175,6 @@ catch your eye?"
    - **es**: "Eliminar"
    - **de**: "Entfernen"
    - **fr**: "Supprimer"
-   - **it**: "Remove"
    - **en**: "Remove"
   */
   public static func dashboard_post_update_compose_attachment_alerts_image_buttons_remove() -> String {
@@ -6581,7 +6191,6 @@ catch your eye?"
    - **es**: "Eliminar imagen"
    - **de**: "Bild entfernen"
    - **fr**: "Supprimer l'image"
-   - **it**: "Remove image"
    - **en**: "Remove image"
   */
   public static func dashboard_post_update_compose_attachment_alerts_image_remove_image() -> String {
@@ -6598,7 +6207,6 @@ catch your eye?"
    - **es**: "Agregar anexo"
    - **de**: "Anhang hinzufügen"
    - **fr**: "Ajouter une pièce jointe"
-   - **it**: "Add attachment"
    - **en**: "Add attachment"
   */
   public static func dashboard_post_update_compose_attachment_buttons_add_attachment() -> String {
@@ -6615,7 +6223,6 @@ catch your eye?"
    - **es**: "Cancelar"
    - **de**: "Abbrechen"
    - **fr**: "Annuler"
-   - **it**: "Cancel"
    - **en**: "Cancel"
   */
   public static func dashboard_post_update_compose_attachment_buttons_cancel() -> String {
@@ -6632,7 +6239,6 @@ catch your eye?"
    - **es**: "Elegir del archivo de cámera"
    - **de**: "Aus Camera Roll auswählen"
    - **fr**: "Choisir à partir de l'album photo"
-   - **it**: "Choose from camera roll"
    - **en**: "Choose from camera roll"
   */
   public static func dashboard_post_update_compose_attachment_buttons_choose_from_camera_roll() -> String {
@@ -6649,7 +6255,6 @@ catch your eye?"
    - **es**: "Nueva foto"
    - **de**: "Neues Foto"
    - **fr**: "Nouvelle photo"
-   - **it**: "New photo"
    - **en**: "New photo"
   */
   public static func dashboard_post_update_compose_attachment_buttons_new_photo() -> String {
@@ -6666,7 +6271,6 @@ catch your eye?"
    - **es**: "Anexos"
    - **de**: "Anhänge"
    - **fr**: "Pièces jointes"
-   - **it**: "Attachments"
    - **en**: "Attachments"
   */
   public static func dashboard_post_update_compose_attachments_button() -> String {
@@ -6683,7 +6287,6 @@ catch your eye?"
    - **es**: "Elegir del archivo de cámara"
    - **de**: "Aus Camera Roll auswählen"
    - **fr**: "Choisir à partir de l'album photo"
-   - **it**: "Choose from camera roll"
    - **en**: "Choose from camera roll"
   */
   public static func dashboard_post_update_compose_choose_media_button() -> String {
@@ -6700,7 +6303,6 @@ catch your eye?"
    - **es**: "No se pudo guardar la actualización."
    - **de**: "Update konnte nicht gspeichert werden."
    - **fr**: "Impossible d'enregistrer l'actu."
-   - **it**: "Couldn't save update."
    - **en**: "Couldn't save update."
   */
   public static func dashboard_post_update_compose_error_could_not_save_update() -> String {
@@ -6717,7 +6319,6 @@ catch your eye?"
    - **es**: "Cargando..."
    - **de**: "Ladevorgang läuft..."
    - **fr**: "Chargement en cours..."
-   - **it**: "Loading..."
    - **en**: "Loading..."
   */
   public static func dashboard_post_update_compose_loading() -> String {
@@ -6734,7 +6335,6 @@ catch your eye?"
    - **es**: "Tomar una nueva foto/un nuevo vídeo"
    - **de**: "Neues Foto/Video hinzufügen"
    - **fr**: "Nouvelle photo/vidéo"
-   - **it**: "Take a new photo/video"
    - **en**: "Take a new photo/video"
   */
   public static func dashboard_post_update_compose_new_media_button() -> String {
@@ -6751,7 +6351,6 @@ catch your eye?"
    - **es**: "Sin anexos"
    - **de**: "Keine Anhänge"
    - **fr**: "Pas de pièces jointes"
-   - **it**: "No attachments"
    - **en**: "No attachments"
   */
   public static func dashboard_post_update_compose_no_attachments_placeholder() -> String {
@@ -6768,7 +6367,6 @@ catch your eye?"
    - **es**: "Título"
    - **de**: "Titel"
    - **fr**: "Titre"
-   - **it**: "Title"
    - **en**: "Title"
   */
   public static func dashboard_post_update_compose_placeholder_title() -> String {
@@ -6785,7 +6383,6 @@ catch your eye?"
    - **es**: "Sólo para patrocinadores"
    - **de**: "Nur für Unterstützer"
    - **fr**: "Contributeurs seulement"
-   - **it**: "Backers only"
    - **en**: "Backers only"
   */
   public static func dashboard_post_update_compose_private_label() -> String {
@@ -6802,7 +6399,6 @@ catch your eye?"
    - **es**: "Público"
    - **de**: "Öffentlich"
    - **fr**: "Public"
-   - **it**: "Public"
    - **en**: "Public"
   */
   public static func dashboard_post_update_compose_public_label() -> String {
@@ -6819,7 +6415,6 @@ catch your eye?"
    - **es**: "Actualización n° %{update_number}"
    - **de**: "Update Nr. %{update_number}"
    - **fr**: "Actu no. %{update_number}"
-   - **it**: "Update #%{update_number}"
    - **en**: "Update #%{update_number}"
   */
   public static func dashboard_post_update_compose_update_number(update_number update_number: String) -> String {
@@ -6836,7 +6431,6 @@ catch your eye?"
    - **es**: "Cancelar"
    - **de**: "Abbrechen"
    - **fr**: "Annuler"
-   - **it**: "Cancel"
    - **en**: "Cancel"
   */
   public static func dashboard_post_update_preview_confirmation_alert_cancel_button() -> String {
@@ -6853,7 +6447,6 @@ catch your eye?"
    - **es**: "¡Manos a la obra!"
    - **de**: "Los gehts!"
    - **fr**: "Allons-y !"
-   - **it**: "Let’s do it!"
    - **en**: "Let’s do it!"
   */
   public static func dashboard_post_update_preview_confirmation_alert_confirm_button() -> String {
@@ -6870,7 +6463,6 @@ catch your eye?"
    - **es**: "Algo pasó aquí."
    - **de**: "Da hat etwas nicht geklappt."
    - **fr**: "Un erreur s'est produite."
-   - **it**: "Something went wrong."
    - **en**: "Something went wrong."
   */
   public static func dashboard_post_update_preview_confirmation_alert_error_something_wrong() -> String {
@@ -6887,7 +6479,6 @@ catch your eye?"
    - **es**: "Esto notificará a %{backer_count} patrocinadores que existe una nueva actualización. ¿Seguro de que quieres publicarla?"
    - **de**: "%{backer_count} Unterstützer werden über das neue Update benachrichtigt. Bist du sicher, dass du es veröffentlichen willst?"
    - **fr**: "%{backer_count} contributeurs seront prévenus qu'une nouvelle actu est disponible. Publier quand-même ?"
-   - **it**: "This will notify %{backer_count} backers that a new update is available. Are you sure you want to post?"
    - **en**: "This will notify %{backer_count} backers that a new update is available. Are you sure you want to post?"
   */
   public static func dashboard_post_update_preview_confirmation_alert_this_will_notify_backers_that_a_new_update_is_available(backer_count backer_count: Int) -> String {
@@ -6904,7 +6495,6 @@ catch your eye?"
    - **es**: "¿Listo?"
    - **de**: "Bereit?"
    - **fr**: "Prêt ?"
-   - **it**: "Ready?"
    - **en**: "Ready?"
   */
   public static func dashboard_post_update_preview_confirmation_alert_title() -> String {
@@ -6921,7 +6511,6 @@ catch your eye?"
    - **es**: "Sólo para patrocinadores"
    - **de**: "Nur für Unterstützer"
    - **fr**: "Contributeurs seulement"
-   - **it**: "Backers only"
    - **en**: "Backers only"
   */
   public static func dashboard_post_update_privacy_backers_only() -> String {
@@ -6938,7 +6527,6 @@ catch your eye?"
    - **es**: "Público"
    - **de**: "Öffentlich"
    - **fr**: "Public"
-   - **it**: "Public"
    - **en**: "Public"
   */
   public static func dashboard_post_update_privacy_public() -> String {
@@ -6955,7 +6543,6 @@ catch your eye?"
    - **es**: "Última actualización el %{date}."
    - **de**: "Zuletzt aktualisiert am %{date}."
    - **fr**: "Dernière actu le %{date}."
-   - **it**: "Last updated on %{date}."
    - **en**: "Last updated on %{date}."
   */
   public static func dashboard_post_update_button_subtitle_last_updated_on_date(date date: String) -> String {
@@ -6972,7 +6559,6 @@ catch your eye?"
    - **es**: "Última actualización el %{date} (%{relative_date})."
    - **de**: "Zuletzt aktualisiert am %{date}%(%{relative_date})."
    - **fr**: "Dernière actu le %{date} (%{relative_date})."
-   - **it**: "Last updated on %{date} (%{relative_date})."
    - **en**: "Last updated on %{date} (%{relative_date})."
   */
   public static func dashboard_post_update_button_subtitle_last_updated_on_date_relative_date(date date: String, relative_date: String) -> String {
@@ -6989,7 +6575,6 @@ catch your eye?"
    - **es**: "Aún no has publicado ninguna actualización."
    - **de**: "Du hast noch kein Update veröffentlicht."
    - **fr**: "Vous n'avez pas encore publié d'actus."
-   - **it**: "You haven’t posted an update yet."
    - **en**: "You haven’t posted an update yet."
   */
   public static func dashboard_post_update_button_subtitle_you_have_not_posted_an_update_yet() -> String {
@@ -7006,7 +6591,6 @@ catch your eye?"
    - **es**: "Cierra la lista de proyectos."
    - **de**: "Schließt Projekt-Liste."
    - **fr**: "Ferme la liste de projets."
-   - **it**: "Closes list of projects."
    - **en**: "Closes list of projects."
   */
   public static func dashboard_switcher_accessibility_label_closes_list_of_projects() -> String {
@@ -7023,7 +6607,6 @@ catch your eye?"
    - **es**: "Abre una lista de proyectos."
    - **de**: "Öffnet eine Liste von Projekten."
    - **fr**: "Ouvre une liste de projets."
-   - **it**: "Opens list of projects."
    - **en**: "Opens list of projects."
   */
   public static func dashboard_switcher_accessibility_label_opens_list_of_projects() -> String {
@@ -7040,7 +6623,6 @@ catch your eye?"
    - **es**: "Proyecto n° %{current_project_index}"
    - **de**: "Projekt Nr. %{current_project_index}"
    - **fr**: "Projet no. %{current_project_index}"
-   - **it**: "Project #%{current_project_index}"
    - **en**: "Project #%{current_project_index}"
   */
   public static func dashboard_switcher_project_number(current_project_index current_project_index: String) -> String {
@@ -7057,7 +6639,6 @@ catch your eye?"
    - **es**: "Abre la página de proyecto."
    - **de**: "Öffnet die Projektseite."
    - **fr**: "Ouvre le projet."
-   - **it**: "Opens project."
    - **en**: "Opens project."
   */
   public static func dashboard_tout_accessibility_hint_opens_project() -> String {
@@ -7074,7 +6655,6 @@ catch your eye?"
    - **es**: "patrocinadores"
    - **de**: "Unterstützer"
    - **fr**: "contributeurs"
-   - **it**: "backers"
    - **en**: "backers"
   */
   public static func dashboard_tout_backers() -> String {
@@ -7091,7 +6671,6 @@ catch your eye?"
    - **es**: "contribuido"
    - **de**: "beigetragen"
    - **fr**: "engagés"
-   - **it**: "pledged"
    - **en**: "pledged"
   */
   public static func dashboard_tout_pledged() -> String {
@@ -7108,7 +6687,6 @@ catch your eye?"
    - **es**: "restante"
    - **de**: "zum Ziel"
    - **fr**: "restants"
-   - **it**: "remaining"
    - **en**: "remaining"
   */
   public static func dashboard_tout_remaining() -> String {
@@ -7125,7 +6703,6 @@ catch your eye?"
    - **es**: "En este momento"
    - **de**: "Gerade eben"
    - **fr**: "il y a quelques secondes"
-   - **it**: "just now"
    - **en**: "just now"
   */
   public static func dates_just_now() -> String {
@@ -7142,7 +6719,6 @@ catch your eye?"
    - **es**: "En este momento"
    - **de**: "Gerade eben"
    - **fr**: "à l'instant"
-   - **it**: "right now"
    - **en**: "right now"
   */
   public static func dates_right_now() -> String {
@@ -7159,7 +6735,6 @@ catch your eye?"
    - **es**: "%{time_count} días"
    - **de**: "%{time_count} Tage"
    - **fr**: "%{time_count} jours"
-   - **it**: "%{time_count} days"
    - **en**: "%{time_count} days"
   */
   public static func dates_time_days(time_count time_count: Int) -> String {
@@ -7176,7 +6751,6 @@ catch your eye?"
    - **es**: "%{time_count} días"
    - **de**: "%{time_count} Tage"
    - **fr**: "%{time_count} jours"
-   - **it**: "%{time_count} days"
    - **en**: "%{time_count} days"
   */
   public static func dates_time_days_abbreviated(time_count time_count: Int) -> String {
@@ -7193,7 +6767,6 @@ catch your eye?"
    - **es**: "hace %{time_count} días"
    - **de**: "vor %{time_count} Tagen"
    - **fr**: "il y a %{time_count} jours"
-   - **it**: "%{time_count} days ago"
    - **en**: "%{time_count} days ago"
   */
   public static func dates_time_days_ago(time_count time_count: Int) -> String {
@@ -7210,7 +6783,6 @@ catch your eye?"
    - **es**: "hace %{time_count} días"
    - **de**: "vor %{time_count} Tagen"
    - **fr**: "il y a %{time_count} jours"
-   - **it**: "%{time_count} days ago"
    - **en**: "%{time_count} days ago"
   */
   public static func dates_time_days_ago_abbreviated(time_count time_count: Int) -> String {
@@ -7227,7 +6799,6 @@ catch your eye?"
    - **es**: "%{time_count} horas"
    - **de**: "%{time_count} Stunden"
    - **fr**: "%{time_count} heures"
-   - **it**: "%{time_count} hours"
    - **en**: "%{time_count} hours"
   */
   public static func dates_time_hours(time_count time_count: Int) -> String {
@@ -7244,7 +6815,6 @@ catch your eye?"
    - **es**: "%{time_count} hrs"
    - **de**: "%{time_count} Std"
    - **fr**: "%{time_count} h"
-   - **it**: "%{time_count} hrs"
    - **en**: "%{time_count} hrs"
   */
   public static func dates_time_hours_abbreviated(time_count time_count: Int) -> String {
@@ -7261,7 +6831,6 @@ catch your eye?"
    - **es**: "hace %{time_count} horas"
    - **de**: "vor %{time_count} Stunden"
    - **fr**: "il y a %{time_count} heures"
-   - **it**: "%{time_count} hours ago"
    - **en**: "%{time_count} hours ago"
   */
   public static func dates_time_hours_ago(time_count time_count: Int) -> String {
@@ -7278,7 +6847,6 @@ catch your eye?"
    - **es**: "hace %{time_count} hrs"
    - **de**: "vor %{time_count} Std"
    - **fr**: "il y a %{time_count} h"
-   - **it**: "%{time_count} hrs ago"
    - **en**: "%{time_count} hrs ago"
   */
   public static func dates_time_hours_ago_abbreviated(time_count time_count: Int) -> String {
@@ -7295,7 +6863,6 @@ catch your eye?"
    - **es**: "en %{time_count} días"
    - **de**: "in %{time_count} Tagen"
    - **fr**: "dans %{time_count} jours"
-   - **it**: "in %{time_count} days"
    - **en**: "in %{time_count} days"
   */
   public static func dates_time_in_days(time_count time_count: Int) -> String {
@@ -7312,7 +6879,6 @@ catch your eye?"
    - **es**: "en %{time_count} días"
    - **de**: "in %{time_count} Tagen"
    - **fr**: "dans %{time_count} jours"
-   - **it**: "in %{time_count} days"
    - **en**: "in %{time_count} days"
   */
   public static func dates_time_in_days_abbreviated(time_count time_count: Int) -> String {
@@ -7329,7 +6895,6 @@ catch your eye?"
    - **es**: "en %{time_count} horas"
    - **de**: "in %{time_count} Stunden"
    - **fr**: "dans %{time_count} heures"
-   - **it**: "in %{time_count} hours"
    - **en**: "in %{time_count} hours"
   */
   public static func dates_time_in_hours(time_count time_count: Int) -> String {
@@ -7346,7 +6911,6 @@ catch your eye?"
    - **es**: "en %{time_count} hrs"
    - **de**: "in %{time_count} Std"
    - **fr**: "dans %{time_count} h"
-   - **it**: "in %{time_count} hrs"
    - **en**: "in %{time_count} hrs"
   */
   public static func dates_time_in_hours_abbreviated(time_count time_count: Int) -> String {
@@ -7363,7 +6927,6 @@ catch your eye?"
    - **es**: "en %{time_count} minutos"
    - **de**: "in %{time_count} Minuten"
    - **fr**: "dans %{time_count} minutes"
-   - **it**: "in %{time_count} minutes"
    - **en**: "in %{time_count} minutes"
   */
   public static func dates_time_in_minutes(time_count time_count: Int) -> String {
@@ -7380,7 +6943,6 @@ catch your eye?"
    - **es**: "en %{time_count} mins"
    - **de**: "in %{time_count} Min"
    - **fr**: "dans %{time_count} min"
-   - **it**: "in %{time_count} mins"
    - **en**: "in %{time_count} mins"
   */
   public static func dates_time_in_minutes_abbreviated(time_count time_count: Int) -> String {
@@ -7397,7 +6959,6 @@ catch your eye?"
    - **es**: "%{time_count} minutos"
    - **de**: "%{time_count} Minuten"
    - **fr**: "%{time_count} minutes"
-   - **it**: "%{time_count} minutes"
    - **en**: "%{time_count} minutes"
   */
   public static func dates_time_minutes(time_count time_count: Int) -> String {
@@ -7414,7 +6975,6 @@ catch your eye?"
    - **es**: "%{time_count} mins"
    - **de**: "%{time_count} Min"
    - **fr**: "%{time_count} min"
-   - **it**: "%{time_count} mins"
    - **en**: "%{time_count} mins"
   */
   public static func dates_time_minutes_abbreviated(time_count time_count: Int) -> String {
@@ -7431,7 +6991,6 @@ catch your eye?"
    - **es**: "hace %{time_count} minutos"
    - **de**: "vor %{time_count} Minuten"
    - **fr**: "il y a %{time_count} minutes"
-   - **it**: "%{time_count} minutes ago"
    - **en**: "%{time_count} minutes ago"
   */
   public static func dates_time_minutes_ago(time_count time_count: Int) -> String {
@@ -7448,7 +7007,6 @@ catch your eye?"
    - **es**: "hace %{time_count} mins"
    - **de**: "vor %{time_count} Min"
    - **fr**: "il y a %{time_count} min"
-   - **it**: "%{time_count} mins ago"
    - **en**: "%{time_count} mins ago"
   */
   public static func dates_time_minutes_ago_abbreviated(time_count time_count: Int) -> String {
@@ -7465,7 +7023,6 @@ catch your eye?"
    - **es**: "Ayer"
    - **de**: "Gestern"
    - **fr**: "hier"
-   - **it**: "yesterday"
    - **en**: "yesterday"
   */
   public static func dates_yesterday() -> String {
@@ -7482,7 +7039,6 @@ catch your eye?"
    - **es**: "Clasif. de cambios."
    - **de**: "Sortiert Änderungen."
    - **fr**: "Modifie le tri."
-   - **it**: "Changes sort."
    - **en**: "Changes sort."
   */
   public static func discovery_accessibility_buttons_sort_hint() -> String {
@@ -7499,7 +7055,6 @@ catch your eye?"
    - **es**: "Clasificar por %{sort}"
    - **de**: "Sortiert nach %{sort}"
    - **fr**: "Trier par %{sort}"
-   - **it**: "Sort by %{sort}"
    - **en**: "Sort by %{sort}"
   */
   public static func discovery_accessibility_buttons_sort_label(sort sort: String) -> String {
@@ -7516,7 +7071,6 @@ catch your eye?"
    - **es**: "Proyectos activos"
    - **de**: "Live-Projekte"
    - **fr**: "Projets en cours"
-   - **it**: "Live projects"
    - **en**: "Live projects"
   */
   public static func discovery_accessibility_live_project_count() -> String {
@@ -7533,7 +7087,6 @@ catch your eye?"
    - **es**: "Resumen de actividad"
    - **de**: "Aktivität-Übersicht"
    - **fr**: "Flux d'activité"
-   - **it**: "Activity feed"
    - **en**: "Activity feed"
   */
   public static func discovery_accessibility_toolbar_buttons_activity_label() -> String {
@@ -7550,7 +7103,6 @@ catch your eye?"
    - **es**: "Ordenar por categoría"
    - **de**: "Filter: Kategorie"
    - **fr**: "Filtrer par catégorie"
-   - **it**: "Filter by category"
    - **en**: "Filter by category"
   */
   public static func discovery_accessibility_toolbar_buttons_filter_label() -> String {
@@ -7567,7 +7119,6 @@ catch your eye?"
    - **es**: "Menú Usuario"
    - **de**: "Benutzermenü"
    - **fr**: "Menu utilisateur"
-   - **it**: "User menu"
    - **en**: "User menu"
   */
   public static func discovery_accessibility_toolbar_buttons_user_menu() -> String {
@@ -7584,7 +7135,6 @@ catch your eye?"
    - **es**: "Cancelar"
    - **de**: "Abbrechen"
    - **fr**: "Annuler"
-   - **it**: "Cancel"
    - **en**: "Cancel"
   */
   public static func discovery_activity_sample_alert_buttons_cancel() -> String {
@@ -7601,7 +7151,6 @@ catch your eye?"
    - **es**: "Seguir"
    - **de**: "Folgen"
    - **fr**: "S'abonner"
-   - **it**: "Follow"
    - **en**: "Follow"
   */
   public static func discovery_activity_sample_alert_buttons_follow() -> String {
@@ -7618,7 +7167,6 @@ catch your eye?"
    - **es**: "Seguir a %{friend_name}?"
    - **de**: "%{friend_name} folgen?"
    - **fr**: "Suivre %{friend_name} ?"
-   - **it**: "Follow %{friend_name}?"
    - **en**: "Follow %{friend_name}?"
   */
   public static func discovery_activity_sample_alert_follow_friend_name(friend_name friend_name: String) -> String {
@@ -7635,7 +7183,6 @@ catch your eye?"
    - **es**: "Ver toda la actividad"
    - **de**: "Alle Aktivitäten anzeigen"
    - **fr**: "Toutes les activités"
-   - **it**: "See all activity"
    - **en**: "See all activity"
   */
   public static func discovery_activity_sample_button_see_all_activity() -> String {
@@ -7652,7 +7199,6 @@ catch your eye?"
    - **es**: "Desde tu última visita"
    - **de**: "Seit deinem letzten Besuch"
    - **fr**: "Depuis votre dernière visite"
-   - **it**: "Since your last visit"
    - **en**: "Since your last visit"
   */
   public static func discovery_activity_sample_title_Since_your_last_visit() -> String {
@@ -7669,7 +7215,6 @@ catch your eye?"
    - **es**: "Lo que ocurrió desde tu última visita:"
    - **de**: "Seit deinem letzten Besuch ..."
    - **fr**: "Depuis votre dernière visite..."
-   - **it**: "Since you've been gone..."
    - **en**: "Since you've been gone..."
   */
   public static func discovery_activity_sample_title_since_youve_been_gone() -> String {
@@ -7686,7 +7231,6 @@ catch your eye?"
    - **es**: "Todos en %{scope}"
    - **de**: "Alle in %{scope}"
    - **fr**: "Toute la catégorie %{scope}"
-   - **it**: "All of %{scope}"
    - **en**: "All of %{scope}"
   */
   public static func discovery_all_of_scope(scope scope: String) -> String {
@@ -7703,7 +7247,6 @@ catch your eye?"
    - **es**: "Proyectos patrocinados"
    - **de**: "Unterstützte Projekte"
    - **fr**: "Engagements"
-   - **it**: "Backing"
    - **en**: "Backing"
   */
   public static func discovery_backing() -> String {
@@ -7720,7 +7263,6 @@ catch your eye?"
    - **es**: "Categoría"
    - **de**: "Kategorie"
    - **fr**: "Catégorie"
-   - **it**: "Category"
    - **en**: "Category"
   */
   public static func discovery_baseball_card_accessibility_category_label() -> String {
@@ -7737,7 +7279,6 @@ catch your eye?"
    - **es**: "Ubicación"
    - **de**: "Ort"
    - **fr**: "Lieu"
-   - **it**: "Location"
    - **en**: "Location"
   */
   public static func discovery_baseball_card_accessibility_location_label() -> String {
@@ -7754,7 +7295,6 @@ catch your eye?"
    - **es**: "%{blurb}%{space}<u>Leer%{space}más</u>%{space}"
    - **de**: "%{blurb}%{space}<u>Mehr%{space}lesen</u>%{space}"
    - **fr**: "%{blurb}%{space}<u>Plus</u>%{space}"
-   - **it**: "%{blurb}%{space}<u>Read%{space}more</u>%{space}"
    - **en**: "%{blurb}%{space}<u>Read%{space}more</u>%{space}"
   */
   public static func discovery_baseball_card_blurb_read_more(blurb blurb: String, space: String) -> String {
@@ -7771,7 +7311,6 @@ catch your eye?"
    - **es**: "Compartir"
    - **de**: "Teilen"
    - **fr**: "Partager"
-   - **it**: "Share"
    - **en**: "Share"
   */
   public static func discovery_baseball_card_button_share() -> String {
@@ -7788,7 +7327,6 @@ catch your eye?"
    - **es**: "días"
    - **de**: "Tage"
    - **fr**: "jours"
-   - **it**: "days"
    - **en**: "days"
   */
   public static func discovery_baseball_card_deadline_units_days() -> String {
@@ -7805,7 +7343,6 @@ catch your eye?"
    - **es**: "hrs"
    - **de**: "Std"
    - **fr**: "heures"
-   - **it**: "hours"
    - **en**: "hours"
   */
   public static func discovery_baseball_card_deadline_units_hours() -> String {
@@ -7822,7 +7359,6 @@ catch your eye?"
    - **es**: "mins"
    - **de**: "Min"
    - **fr**: "min"
-   - **it**: "mins"
    - **en**: "mins"
   */
   public static func discovery_baseball_card_deadline_units_mins() -> String {
@@ -7839,7 +7375,6 @@ catch your eye?"
    - **es**: "segs"
    - **de**: "Sek"
    - **fr**: "s"
-   - **it**: "secs"
    - **en**: "secs"
   */
   public static func discovery_baseball_card_deadline_units_secs() -> String {
@@ -7856,7 +7391,6 @@ catch your eye?"
    - **es**: "¡Eres un patrocinador!"
    - **de**: "Du gehörst jetzt zu den Unterstützern!"
    - **fr**: "Vous êtes contributeur !"
-   - **it**: "You’re a backer!"
    - **en**: "You’re a backer!"
   */
   public static func discovery_baseball_card_metadata_backer() -> String {
@@ -7873,7 +7407,6 @@ catch your eye?"
    - **es**: "Presentado en %{category_name}"
    - **de**: "Vorgestellt in %{category_name}"
    - **fr**: "Un projet sélectionné de la catégorie %{category_name}"
-   - **it**: "Featured in %{category_name}"
    - **en**: "Featured in %{category_name}"
   */
   public static func discovery_baseball_card_metadata_featured_project(category_name category_name: String) -> String {
@@ -7890,7 +7423,6 @@ catch your eye?"
    - **es**: "¡Proyecto del día!"
    - **de**: "Projekt des Tages!"
    - **fr**: "Projet du jour !"
-   - **it**: "Project of the Day!"
    - **en**: "Project of the Day!"
   */
   public static func discovery_baseball_card_metadata_potd() -> String {
@@ -7907,7 +7439,6 @@ catch your eye?"
    - **es**: "Proyecto del día"
    - **de**: "Projekt des Tages"
    - **fr**: "Projet du jour "
-   - **it**: "Project of the Day"
    - **en**: "Project of the Day"
   */
   public static func discovery_baseball_card_metadata_project_of_the_Day() -> String {
@@ -7924,7 +7455,6 @@ catch your eye?"
    - **es**: "Entre tus proyectos destacados."
    - **de**: "Gehört zu deinen Favoriten."
    - **fr**: "Mes projets préférés !"
-   - **it**: "You starred this project."
    - **en**: "You starred this project."
   */
   public static func discovery_baseball_card_metadata_starred() -> String {
@@ -7941,7 +7471,6 @@ catch your eye?"
    - **es**: "Leer%{space}más%{space}"
    - **de**: "Mehr%{space}Info%{space}"
    - **fr**: "En savoir%{space}plus%{space}"
-   - **it**: "Read%{space}more%{space}"
    - **en**: "Read%{space}more%{space}"
   */
   public static func discovery_baseball_card_read_more(space space: String) -> String {
@@ -7958,7 +7487,6 @@ catch your eye?"
    - **es**: "%{friend_name}, %{second_friend_name}, y %{remaining_count} más patrocinan este proyecto."
    - **de**: "%{friend_name}, %{second_friend_name}, und %{remaining_count} weitere unterstützen dieses Projekt."
    - **fr**: "%{friend_name}, %{second_friend_name} et %{remaining_count} autres personnes sont contributeurs."
-   - **it**: "%{friend_name}, %{second_friend_name}, and %{remaining_count} more are backers."
    - **en**: "%{friend_name}, %{second_friend_name}, and %{remaining_count} more are backers."
   */
   public static func discovery_baseball_card_social_friends_are_backers(friend_name friend_name: String, second_friend_name: String, remaining_count: Int) -> String {
@@ -7975,7 +7503,6 @@ catch your eye?"
    - **es**: "De momento tiene %{backers_count} patrocinadores, financiado al %{percent_funded}, tiempo restante: %{time_left}"
    - **de**: "Bisher %{backers_count} Unterstützer, %{percent_funded} finanziert, noch %{time_left}"
    - **fr**: "Pour le moment, %{backers_count} contributeurs, projet financé à %{percent_funded}, plus que %{time_left}"
-   - **it**: "%{backers_count} backers so far, %{percent_funded} funded, %{time_left} to go"
    - **en**: "%{backers_count} backers so far, %{percent_funded} funded, %{time_left} to go"
   */
   public static func discovery_baseball_card_stats_accessibility_live_stat_value(backers_count backers_count: Int, percent_funded: String, time_left: String) -> String {
@@ -7992,7 +7519,6 @@ catch your eye?"
    - **es**: "De momento tiene %{backers_count} patrocinadores, financiado al %{percent_funded}, tiempo restante: %{time_left}"
    - **de**: "Gesamt %{backers_count} Unterstützer, %{percent_funded} finanziert, noch %{time_left}"
    - **fr**: "%{backers_count} contributeurs, projet financé à %{percent_funded}, plus que %{time_left}"
-   - **it**: "%{backers_count} backers total, %{percent_funded} funded, %{time_left} to go"
    - **en**: "%{backers_count} backers total, %{percent_funded} funded, %{time_left} to go"
   */
   public static func discovery_baseball_card_stats_accessibility_non_live_stat_value(backers_count backers_count: Int, percent_funded: String, time_left: String) -> String {
@@ -8009,7 +7535,6 @@ catch your eye?"
    - **es**: "patrocinadores"
    - **de**: "Unterstützer"
    - **fr**: "contributeurs"
-   - **it**: "backers"
    - **en**: "backers"
   */
   public static func discovery_baseball_card_stats_backers() -> String {
@@ -8026,7 +7551,6 @@ catch your eye?"
    - **es**: "Conversión: %{pledged} de la meta de %{goal}."
    - **de**: "Umgerechneter Betrag: %{pledged} von %{goal} (Fianzierungsziel)."
    - **fr**: "Conversion de %{pledged} engagés pour un objectif de %{goal}"
-   - **it**: "Converted from %{pledged} pledged of %{goal} goal."
    - **en**: "Converted from %{pledged} pledged of %{goal} goal."
   */
   public static func discovery_baseball_card_stats_convert_from_pledged_of_goal(pledged pledged: String, goal: String) -> String {
@@ -8043,7 +7567,6 @@ catch your eye?"
    - **es**: "financiado"
    - **de**: "finanziert"
    - **fr**: "financé"
-   - **it**: "funded"
    - **en**: "funded"
   */
   public static func discovery_baseball_card_stats_funded() -> String {
@@ -8060,7 +7583,6 @@ catch your eye?"
    - **es**: "de %{goal}"
    - **de**: "von %{goal}"
    - **fr**: "sur %{goal}"
-   - **it**: "pledged of %{goal}"
    - **en**: "pledged of %{goal}"
   */
   public static func discovery_baseball_card_stats_pledged_of_goal(goal goal: String) -> String {
@@ -8077,7 +7599,6 @@ catch your eye?"
    - **es**: "de %{goal}"
    - **de**: "von %{goal}"
    - **fr**: "sur %{goal}"
-   - **it**: "of %{goal}"
    - **en**: "of %{goal}"
   */
   public static func discovery_baseball_card_stats_pledged_of_goal_short(goal goal: String) -> String {
@@ -8094,7 +7615,6 @@ catch your eye?"
    - **es**: "Financiamiento cancelado"
    - **de**: "Finanzierung abgebrochen"
    - **fr**: "Financement annulé"
-   - **it**: "Funding canceled"
    - **en**: "Funding canceled"
   */
   public static func discovery_baseball_card_status_banner_canceled() -> String {
@@ -8111,7 +7631,6 @@ catch your eye?"
    - **es**: "Financiamiento cancelado el %{date}"
    - **de**: "Finanzierung abgebrochen am %{date}"
    - **fr**: "Campagne annulée le %{date}"
-   - **it**: "Funding canceled %{date}"
    - **en**: "Funding canceled %{date}"
   */
   public static func discovery_baseball_card_status_banner_canceled_date(date date: String) -> String {
@@ -8128,7 +7647,6 @@ catch your eye?"
    - **es**: "Financiamiento fallido %{date}"
    - **de**: "Finanzierung fehlgeschlagen %{date}"
    - **fr**: "Non financé %{date}"
-   - **it**: "Funding unsuccessful %{date}"
    - **en**: "Funding unsuccessful %{date}"
   */
   public static func discovery_baseball_card_status_banner_funding_unsuccessful_date(date date: String) -> String {
@@ -8145,7 +7663,6 @@ catch your eye?"
    - **es**: "¡Financiado con éxito!"
    - **de**: "Erfolgreich finanziert!"
    - **fr**: "Intégralement financé !"
-   - **it**: "Successfully funded!"
    - **en**: "Successfully funded!"
   */
   public static func discovery_baseball_card_status_banner_successful() -> String {
@@ -8162,7 +7679,6 @@ catch your eye?"
    - **es**: "Financiado con éxito el %{date}"
    - **de**: "Erfolgreich finanziert am %{date}"
    - **fr**: "Intégralement financé le %{date}"
-   - **it**: "Successfully funded %{date}"
    - **en**: "Successfully funded %{date}"
   */
   public static func discovery_baseball_card_status_banner_successful_date(date date: String) -> String {
@@ -8179,7 +7695,6 @@ catch your eye?"
    - **es**: "Financiamiento suspendido %{date}"
    - **de**: "Finanzierung ausgesetzt %{date}"
    - **fr**: "Financement suspendu %{date}"
-   - **it**: "Funding suspended %{date}"
    - **en**: "Funding suspended %{date}"
   */
   public static func discovery_baseball_card_status_banner_suspended(date date: String) -> String {
@@ -8196,7 +7711,6 @@ catch your eye?"
    - **es**: "Financiamiento suspendido el %{date}"
    - **de**: "Finanzierung ausgesetzt am %{date}"
    - **fr**: "Campagne suspendue le %{date}"
-   - **it**: "Funding suspended %{date}"
    - **en**: "Funding suspended %{date}"
   */
   public static func discovery_baseball_card_status_banner_suspended_date(date date: String) -> String {
@@ -8213,7 +7727,6 @@ catch your eye?"
    - **es**: "%{time_left} más"
    - **de**: "%{time_left} zum Ziel"
    - **fr**: "Plus que %{time_left}"
-   - **it**: "%{time_left} to go"
    - **en**: "%{time_left} to go"
   */
   public static func discovery_baseball_card_time_left_to_go(time_left time_left: String) -> String {
@@ -8230,7 +7743,6 @@ catch your eye?"
    - **es**: "Categoría"
    - **de**: "Kategorie"
    - **fr**: "Catégorie"
-   - **it**: "Category"
    - **en**: "Category"
   */
   public static func discovery_category() -> String {
@@ -8247,7 +7759,6 @@ catch your eye?"
    - **es**: "Descubre proyectos"
    - **de**: "Projekte entdecken"
    - **fr**: "Découvrez des projets"
-   - **it**: "Discover projects"
    - **en**: "Discover projects"
   */
   public static func discovery_empty_states_saved_logged_in_button() -> String {
@@ -8264,7 +7775,6 @@ catch your eye?"
    - **es**: "Cuando agregues un proyecto a tus más destacados, te enviaremos un recordatorio 48 horas antes de que éste finalice."
    - **de**: "Wenn du ein Projekt zu deinen Favoriten hinzufügst, senden wir dir 48 Stunden vor Ablauf eine Erinnerungs-E-Mail."
    - **fr**: "Si vous ajoutez un projet à vos projets préférés, nous vous enverrons un rappel par e-mail 48 heures avant la fin de sa campagne."
-   - **it**: "When you star a project we’ll send you a reminder email 48 hours before it ends."
    - **en**: "When you star a project we’ll send you a reminder email 48 hours before it ends."
   */
   public static func discovery_empty_states_saved_logged_in_message() -> String {
@@ -8281,7 +7791,6 @@ catch your eye?"
    - **es**: "Mis favoritos"
    - **de**: "Meine Favoriten"
    - **fr**: "Mes projets préférés"
-   - **it**: "Starred Projects"
    - **en**: "Starred Projects"
   */
   public static func discovery_empty_states_saved_logged_in_title() -> String {
@@ -8298,7 +7807,6 @@ catch your eye?"
    - **es**: "Iniciar sesión"
    - **de**: "Anmelden"
    - **fr**: "Connexion"
-   - **it**: "Log in"
    - **en**: "Log in"
   */
   public static func discovery_empty_states_saved_logged_out_button() -> String {
@@ -8315,7 +7823,6 @@ catch your eye?"
    - **es**: "Cuando agregues un proyecto a tus más destacados, te enviaremos un recordatorio 48 horas antes de que éste finalice."
    - **de**: "Wenn du ein Projekt zu deinen Favoriten hinzufügst, senden wir dir 48 Stunden vor Ablauf eine Erinnerungs-E-Mail."
    - **fr**: "Si vous ajoutez un projet à vos projets préférés, nous vous enverrons un rappel par e-mail 48 heures avant la fin de sa campagne."
-   - **it**: "When you star a project we’ll send you a reminder email 48 hours before it ends."
    - **en**: "When you star a project we’ll send you a reminder email 48 hours before it ends."
   */
   public static func discovery_empty_states_saved_logged_out_message() -> String {
@@ -8332,7 +7839,6 @@ catch your eye?"
    - **es**: "Mis proyectos favoritos"
    - **de**: "Meine Favoriten"
    - **fr**: "Mes projets préférés"
-   - **it**: "Starred Projects"
    - **en**: "Starred Projects"
   */
   public static func discovery_empty_states_saved_logged_out_title() -> String {
@@ -8349,7 +7855,6 @@ catch your eye?"
    - **es**: "Todos"
    - **de**: "Alle"
    - **fr**: "Tous les projets"
-   - **it**: "Everything"
    - **en**: "Everything"
   */
   public static func discovery_everything() -> String {
@@ -8366,7 +7871,6 @@ catch your eye?"
    - **es**: "Cerrar banner "Conectar via Facebook""
    - **de**: ""Mit Facebook verknüpfen" Banner schließen"
    - **fr**: "Fermer la bannière de connexion Facebook"
-   - **it**: "Close Facebook connect hero"
    - **en**: "Close Facebook connect hero"
   */
   public static func discovery_facebook_connect_hero_accessibility_button_close_facebook_connect_hero_label() -> String {
@@ -8383,7 +7887,6 @@ catch your eye?"
    - **es**: "Descubre más proyectos."
    - **de**: "Noch mehr Projekte erkunden."
    - **fr**: "Découvrez plus de projets."
-   - **it**: "Discover more projects."
    - **en**: "Discover more projects."
   */
   public static func discovery_facebook_connect_hero_get_social_to_discover_more_projects() -> String {
@@ -8400,7 +7903,6 @@ catch your eye?"
    - **es**: "Conéctate via Facebook y sigue a tus amigos - ¡te avisaremos cada vez que publican o patrocinan un proyecto!"
    - **de**: "Verknüpfe dein Konto mit Facebook - du kannst deinen Freunden folgen und wirst benachrichtigt, wenn sie ein Projekt veröffentlichen oder unterstützen."
    - **fr**: "Connectez-vous avec votre compte Facebook pour suivre vos amis et recevoir une notification chaque fois qu'ils soutiennent ou lancent un nouveau projet."
-   - **it**: "Connect with Facebook to follow friends and get notified when they back or launch projects."
    - **en**: "Connect with Facebook to follow friends and get notified when they back or launch projects."
   */
   public static func discovery_facebook_connect_hero_if_you_connect_with_facebook() -> String {
@@ -8417,7 +7919,6 @@ catch your eye?"
    - **es**: "Nunca publicaremos nada en Facebook sin tu permiso"
    - **de**: "Wir werden niemals etwas ohne deine Erlaubnis auf Facebook posten"
    - **fr**: "Nous ne publierons pas sur Facebook sans votre autorisation."
-   - **it**: "We'll never post anything to Facebook without your permission"
    - **en**: "We'll never post anything to Facebook without your permission"
   */
   public static func discovery_facebook_connect_hero_we_will_never_post_anything_on_facebook() -> String {
@@ -8434,7 +7935,6 @@ catch your eye?"
    - **es**: "¡Listo!"
    - **de**: "Alles klar!"
    - **fr**: "Super."
-   - **it**: "Got it."
    - **en**: "Got it."
   */
   public static func discovery_favorite_categories_alert_buttons_got_it() -> String {
@@ -8451,7 +7951,6 @@ catch your eye?"
    - **es**: "¡Perfecto - esta categoría se encuentra ahora entre tus favoritas! Muévelas en el órden que más te gusten, así tendrás un acceso más rápido a ellas."
    - **de**: "Klasse! Diese Kategorie gehört nun zu deinen Favoriten! Du kannst sie nach oben oder unten ziehen, um die Reihenfolge deiner liebsten Kategorien festzulegen und so schneller auf sie zugreifen zu können."
    - **fr**: "Super ! Vous avez ajouté cette catégorie à vos favoris. Faites-les défiler pour accéder plus facilement à celles que vous préférez."
-   - **it**: "Yes! You've saved this as one of your favorite categories."
    - **en**: "Yes! You've saved this as one of your favorite categories."
   */
   public static func discovery_favorite_categories_alert_message() -> String {
@@ -8468,7 +7967,6 @@ catch your eye?"
    - **es**: "Listo"
    - **de**: "Fertig"
    - **fr**: "Terminé"
-   - **it**: "Done"
    - **en**: "Done"
   */
   public static func discovery_favorite_categories_buttons_done() -> String {
@@ -8485,7 +7983,6 @@ catch your eye?"
    - **es**: "Editar"
    - **de**: "Bearbeiten"
    - **fr**: "Modifier"
-   - **it**: "Edit"
    - **en**: "Edit"
   */
   public static func discovery_favorite_categories_buttons_edit() -> String {
@@ -8502,7 +7999,6 @@ catch your eye?"
    - **es**: "Añadir a categorías favoritas"
    - **de**: "Zu Favoriten hinzufügen"
    - **fr**: "Ajout d'une catégorie aux favoris"
-   - **it**: "Add favorite category"
    - **en**: "Add favorite category"
   */
   public static func discovery_favorite_categories_buttons_favorite_a11y_label() -> String {
@@ -8519,7 +8015,6 @@ catch your eye?"
    - **es**: "Eliminar de categorías favoritas"
    - **de**: "Aus Favoriten entfernen"
    - **fr**: "Suppression d'une catégorie des favoris"
-   - **it**: "Remove favorite category"
    - **en**: "Remove favorite category"
   */
   public static func discovery_favorite_categories_buttons_unfavorite_a11y_label() -> String {
@@ -8536,7 +8031,6 @@ catch your eye?"
    - **es**: "Todos en %{category_name}"
    - **de**: "Alle aus %{category_name}"
    - **fr**: "Toute la catégorie %{category_name}"
-   - **it**: "All of %{category_name}"
    - **en**: "All of %{category_name}"
   */
   public static func discovery_filters_all_of_category(category_name category_name: String) -> String {
@@ -8553,7 +8047,6 @@ catch your eye?"
    - **es**: "Categorías"
    - **de**: "Kategorien"
    - **fr**: "Catégories"
-   - **it**: "Categories"
    - **en**: "Categories"
   */
   public static func discovery_filters_categories_title() -> String {
@@ -8570,7 +8063,6 @@ catch your eye?"
    - **es**: "Favoritas"
    - **de**: "Favoriten"
    - **fr**: "Favoris"
-   - **it**: "Favorites"
    - **en**: "Favorites"
   */
   public static func discovery_filters_favorites_title() -> String {
@@ -8587,7 +8079,6 @@ catch your eye?"
    - **es**: "Cerrar banner "Encontrar amigos""
    - **de**: ""Finde deine Freunde" Banner schließen"
    - **fr**: "Fermer la bannière de recherche des amis"
-   - **it**: "Close find friends hero"
    - **en**: "Close find friends hero"
   */
   public static func discovery_find_friends_hero_accessibility_button_close_find_friends_hero_label() -> String {
@@ -8604,7 +8095,6 @@ catch your eye?"
    - **es**: "Encuentra tus amigos"
    - **de**: "Finde deine Freunde"
    - **fr**: "Rechercher vos amis"
-   - **it**: "Find your friends"
    - **en**: "Find your friends"
   */
   public static func discovery_find_friends_hero_button_find_your_friends() -> String {
@@ -8621,7 +8111,6 @@ catch your eye?"
    - **es**: "Sigue a tus amigos y te avisaremos cuando publican o patrocinan un proyecto."
    - **de**: "Folge deinen Freunden und wir werden dich benachrichtigen, sobald sie ein Projekt unterstützen oder veröffentlichen."
    - **fr**: "Suivez vos amis Facebook pour recevoir une notification chaque fois qu'ils soutiennent ou lancent un nouveau projet."
-   - **it**: "Follow your Facebook friends and get notified when they back or launch projects."
    - **en**: "Follow your Facebook friends and get notified when they back or launch projects."
   */
   public static func discovery_find_friends_hero_follow_your_friends_and_we_will_notify_you() -> String {
@@ -8638,7 +8127,6 @@ catch your eye?"
    - **es**: "Descubre más proyectos."
    - **de**: "Noch mehr Projekte erkunden."
    - **fr**: "Découvrez plus de projets."
-   - **it**: "Discover more projects."
    - **en**: "Discover more projects."
   */
   public static func discovery_find_friends_hero_your_friends_are_here() -> String {
@@ -8655,7 +8143,6 @@ catch your eye?"
    - **es**: "Amigos"
    - **de**: "Freunde"
    - **fr**: "Amis"
-   - **it**: "Friends"
    - **en**: "Friends"
   */
   public static func discovery_friends() -> String {
@@ -8672,7 +8159,6 @@ catch your eye?"
    - **es**: "Patrocinados por amigos"
    - **de**: "Von Freunden unterstützt"
    - **fr**: "Projets soutenus par mes amis"
-   - **it**: "Friends Backed"
    - **en**: "Friends Backed"
   */
   public static func discovery_friends_backed() -> String {
@@ -8689,7 +8175,6 @@ catch your eye?"
    - **es**: "Para utilizar esta función, ve a la configuración de tu iPhone y activa los Servicios de Ubicación para Kickstarter."
    - **de**: "Um diese Funktion zu nutzen, aktiviere Ortungsdienste für Kickstarter in deinen iPhone Einstellungen."
    - **fr**: "Pour utiliser cette fonction, veuillez activer le Service de localisation pour Kickstarter dans les Réglages de votre iPhone."
-   - **it**: "To use this feature, go to your iPhone settings and turn Location Services ON for Kickstarter."
    - **en**: "To use this feature, go to your iPhone settings and turn Location Services ON for Kickstarter."
   */
   public static func discovery_location_disabled_state_message() -> String {
@@ -8706,7 +8191,6 @@ catch your eye?"
    - **es**: "Activar servicios de ubicación"
    - **de**: "Ortungsdienste aktivieren"
    - **fr**: "Activer le Service de localisation"
-   - **it**: "Turn on location services"
    - **en**: "Turn on location services"
   */
   public static func discovery_location_disabled_state_title() -> String {
@@ -8723,7 +8207,6 @@ catch your eye?"
    - **es**: "Cerca de ti"
    - **de**: "Projekte in deiner Nähe"
    - **fr**: "Projets à proximité"
-   - **it**: "Nearby"
    - **en**: "Nearby"
   */
   public static func discovery_nearby() -> String {
@@ -8740,7 +8223,6 @@ catch your eye?"
    - **es**: "Más información"
    - **de**: "Weitere Info"
    - **fr**: "En savoir plus"
-   - **it**: "Learn more"
    - **en**: "Learn more"
   */
   public static func discovery_onboarding_buttons_learn_more() -> String {
@@ -8757,7 +8239,6 @@ catch your eye?"
    - **es**: "Iniciar sesión"
    - **de**: "Anmelden"
    - **fr**: "Connexion"
-   - **it**: "Login"
    - **en**: "Login"
   */
   public static func discovery_onboarding_buttons_login() -> String {
@@ -8774,7 +8255,6 @@ catch your eye?"
    - **es**: "Regístrate o Inicia sesión"
    - **de**: "Registrieren oder Anmelden"
    - **fr**: "Inscription ou connexion"
-   - **it**: "Sign up or Log in"
    - **en**: "Sign up or Log in"
   */
   public static func discovery_onboarding_buttons_signup_or_login() -> String {
@@ -8791,7 +8271,6 @@ catch your eye?"
    - **es**: "o"
    - **de**: "oder"
    - **fr**: "ou"
-   - **it**: "or"
    - **en**: "or"
   */
   public static func discovery_onboarding_learn_login_conjunction_or() -> String {
@@ -8808,7 +8287,6 @@ catch your eye?"
    - **es**: "Dale vida a proyectos creativos"
    - **de**: "Du kannst kreative Projekte ins Leben rufen!"
    - **fr**: "Soutenez des projets créatifs"
-   - **it**: "Bring creative projects to life"
    - **en**: "Bring creative projects to life"
   */
   public static func discovery_onboarding_title_bring_creative_projects_to_life() -> String {
@@ -8825,7 +8303,6 @@ catch your eye?"
    - **es**: "Popular"
    - **de**: "Beliebte Projekte"
    - **fr**: "Populaires"
-   - **it**: "Popular"
    - **en**: "Popular"
   */
   public static func discovery_popular() -> String {
@@ -8842,7 +8319,6 @@ catch your eye?"
    - **es**: "Nuestros favoritos"
    - **de**: "Team-Favoriten"
    - **fr**: "Nos sélections"
-   - **it**: "Staff Picks"
    - **en**: "Staff Picks"
   */
   public static func discovery_recommended() -> String {
@@ -8859,7 +8335,6 @@ catch your eye?"
    - **es**: "Recomendaciones"
    - **de**: "Empfehlungen für dich"
    - **fr**: "Rien que pour vous"
-   - **it**: "Recommended for you"
    - **en**: "Recommended for you"
   */
   public static func discovery_recommended_for_you() -> String {
@@ -8876,7 +8351,6 @@ catch your eye?"
    - **es**: "Los más destacados"
    - **de**: "Meine Favoriten"
    - **fr**: "Projets préférés"
-   - **it**: "Starred"
    - **en**: "Starred"
   */
   public static func discovery_saved() -> String {
@@ -8893,7 +8367,6 @@ catch your eye?"
    - **es**: "Cancelar"
    - **de**: "Abbrechen"
    - **fr**: "Annuler"
-   - **it**: "Cancel"
    - **en**: "Cancel"
   */
   public static func discovery_search_cancel() -> String {
@@ -8910,7 +8383,6 @@ catch your eye?"
    - **es**: "Fecha de terminación"
    - **de**: "Enddatum"
    - **fr**: "Date de fin"
-   - **it**: "End Date"
    - **en**: "End Date"
   */
   public static func discovery_sort_types_end_date() -> String {
@@ -8927,7 +8399,6 @@ catch your eye?"
    - **es**: "Arte de magia"
    - **de**: "Zufall"
    - **fr**: "Magie"
-   - **it**: "Magic"
    - **en**: "Magic"
   */
   public static func discovery_sort_types_magic() -> String {
@@ -8944,7 +8415,6 @@ catch your eye?"
    - **es**: "número de patrocinadores"
    - **de**: "Meist unterstüzt"
    - **fr**: "Nombre d'engagements"
-   - **it**: "Most Backed"
    - **en**: "Most Backed"
   */
   public static func discovery_sort_types_most_backed() -> String {
@@ -8961,7 +8431,6 @@ catch your eye?"
    - **es**: "Más financiados"
    - **de**: "Meist finanziert"
    - **fr**: "Financement"
-   - **it**: "Most Funded"
    - **en**: "Most Funded"
   */
   public static func discovery_sort_types_most_funded() -> String {
@@ -8978,7 +8447,6 @@ catch your eye?"
    - **es**: "Más recientes"
    - **de**: "Neueste"
    - **fr**: "Ancienneté"
-   - **it**: "Newest"
    - **en**: "Newest"
   */
   public static func discovery_sort_types_newest() -> String {
@@ -8995,7 +8463,6 @@ catch your eye?"
    - **es**: "Popularidad"
    - **de**: "Beliebtheit"
    - **fr**: "Popularité"
-   - **it**: "Popularity"
    - **en**: "Popularity"
   */
   public static func discovery_sort_types_popularity() -> String {
@@ -9012,7 +8479,6 @@ catch your eye?"
    - **es**: "ordenados por"
    - **de**: "sortiert nach"
    - **fr**: "triés par"
-   - **it**: "sorted by"
    - **en**: "sorted by"
   */
   public static func discovery_sorted_by() -> String {
@@ -9029,7 +8495,6 @@ catch your eye?"
    - **es**: "Responder ahora"
    - **de**: "Jetzt antworten"
    - **fr**: "Répondre"
-   - **it**: "Respond now"
    - **en**: "Respond now"
   */
   public static func discovery_survey_button_respond_now() -> String {
@@ -9046,7 +8511,6 @@ catch your eye?"
    - **es**: "%{creator_name} necesita un par de datos para entregarte tu recompensa de %{project_name}."
    - **de**: "%{creator_name} benötigt einige Angaben, um dir deine Belohnung für %{project_name} zustellen zu können."
    - **fr**: "%{creator_name} a besoin de quelques informations pour vous envoyer votre récompense pour le projet %{project_name}."
-   - **it**: "%{creator_name} needs some info to deliver your reward for %{project_name}."
    - **en**: "%{creator_name} needs some info to deliver your reward for %{project_name}."
   */
   public static func discovery_survey_creator_needs_some_info_to_deliver_reward_for_project(creator_name creator_name: String, project_name: String) -> String {
@@ -9063,7 +8527,6 @@ catch your eye?"
    - **es**: "¡Encuesta sobre recompensas!"
    - **de**: "Befragung zur Belohnung!"
    - **fr**: "Le questionnaire des récompenses !"
-   - **it**: "Reward Survey!"
    - **en**: "Reward Survey!"
   */
   public static func discovery_survey_reward_survey() -> String {
@@ -9080,7 +8543,6 @@ catch your eye?"
    - **es**: "... leer más"
    - **de**: "... weiterlesen"
    - **fr**: "... plus"
-   - **it**: "…more"
    - **en**: "…more"
   */
   public static func ellipsis_more() -> String {
@@ -9097,7 +8559,6 @@ catch your eye?"
    - **es**: "Crear una nueva cuenta"
    - **de**: "Neues Konto einrichten"
    - **fr**: "Créer un nouveau compte"
-   - **it**: "Create new account"
    - **en**: "Create new account"
   */
   public static func facebook_confirmation_button() -> String {
@@ -9114,7 +8575,6 @@ catch your eye?"
    - **es**: "No se pudo iniciar sesión con Facebook."
    - **de**: "Anmeldung über Facebook fehlgeschlagen"
    - **fr**: "La connexion Facebook a échoué."
-   - **it**: "Couldn't log in with Facebook."
    - **en**: "Couldn't log in with Facebook."
   */
   public static func facebook_confirmation_could_not_log_in() -> String {
@@ -9131,7 +8591,6 @@ catch your eye?"
    - **es**: "Antes de crear nueva cuenta, por favor verifica si hemos seleccionado la dirección de correo electrónico correcta de tu perfil de Facebook:"
    - **de**: "Bevor wir dein neues Konto anlegen, überprüfe bitte, dass wir die richtige E-Mail-Adresse von deinem Facebook-Konto erhalten haben:"
    - **fr**: "Avant de créer votre compte, vérifions l'adresse e-mail que nous avons obtenue de votre profil Facebook :"
-   - **it**: "Before we make your new account, please double check that we got the right email address from your Facebook profile:"
    - **en**: "Before we make your new account, please double check that we got the right email address from your Facebook profile:"
   */
   public static func facebook_confirmation_detail() -> String {
@@ -9148,7 +8607,6 @@ catch your eye?"
    - **es**: "Registrarse"
    - **de**: "Registrieren"
    - **fr**: "Inscription"
-   - **it**: "Sign up"
    - **en**: "Sign up"
   */
   public static func facebook_confirmation_navbar_title() -> String {
@@ -9165,7 +8623,6 @@ catch your eye?"
    - **es**: "Descubre proyectos"
    - **de**: "Entdecke neue Projekte"
    - **fr**: "Découvrez des projets"
-   - **it**: "Discover projects"
    - **en**: "Discover projects"
   */
   public static func facebook_confirmation_newsletter_bold() -> String {
@@ -9182,7 +8639,6 @@ catch your eye?"
    - **es**: " con nuestro boletín semanal."
    - **de**: " in unserem wöchentlichen Newsletter."
    - **fr**: " avec notre lettre d'informations hebdomadaire."
-   - **it**: " with our weekly newsletter."
    - **en**: " with our weekly newsletter."
   */
   public static func facebook_confirmation_newsletter_normal() -> String {
@@ -9199,7 +8655,6 @@ catch your eye?"
    - **es**: "¡Bienvenido a Kickstarter!"
    - **de**: "Willkommen bei Kickstarter!"
    - **fr**: "Bienvenue sur Kickstarter !"
-   - **it**: "Welcome to Kickstarter!"
    - **en**: "Welcome to Kickstarter!"
   */
   public static func facebook_confirmation_title() -> String {
@@ -9216,7 +8671,6 @@ catch your eye?"
    - **es**: "Inicia sesión aquí con tu correo electrónico."
    - **de**: "Melde dich hier mit deiner E-Mail-Adresse an."
    - **fr**: "Connectez-vous avec votre adresse e-mail."
-   - **it**: "Log in with your email here."
    - **en**: "Log in with your email here."
   */
   public static func facebook_confirmation_wrong_account_button() -> String {
@@ -9233,7 +8687,6 @@ catch your eye?"
    - **es**: "¿Ya tienes una cuenta de Kickstarter?"
    - **de**: "Du hast bereits ein Kickstarter-Konto?"
    - **fr**: "Vous avez déjà un compte Kickstarter ?"
-   - **it**: "Already have a Kickstarter account?"
    - **en**: "Already have a Kickstarter account?"
   */
   public static func facebook_confirmation_wrong_account_title() -> String {
@@ -9250,7 +8703,6 @@ catch your eye?"
    - **es**: "Ok"
    - **de**: "OK"
    - **fr**: "OK"
-   - **it**: "OK"
    - **en**: "OK"
   */
   public static func forgot_password_buttons_ok() -> String {
@@ -9267,7 +8719,6 @@ catch your eye?"
    - **es**: "Restablecer mi contraseña"
    - **de**: "Passwort zurücksetzen"
    - **fr**: "Réinitialiser mon mot de passe"
-   - **it**: "Reset my password"
    - **en**: "Reset my password"
   */
   public static func forgot_password_buttons_reset_my_password() -> String {
@@ -9284,7 +8735,6 @@ catch your eye?"
    - **es**: "Dinos qué correo electrónico usaste para registrarte y te ayudaremos a iniciar sesión."
    - **de**: "Verrate uns die E-Mail-Adresse, die du bei der Registrierung benutzt hast und wir helfen dir, dich wieder anzumelden."
    - **fr**: "Donnez-nous l'adresse e-mail que vous avez utilisée pour vous inscrire et nous vous aiderons à réinitialiser votre mot de passe."
-   - **it**: "Tell us the email you used to sign up and we’ll get you logged in."
    - **en**: "Tell us the email you used to sign up and we’ll get you logged in."
   */
   public static func forgot_password_detail() -> String {
@@ -9301,7 +8751,6 @@ catch your eye?"
    - **es**: "Lo sentimos, no conocemos esa dirección de correo electrónico. ¿Quieres intentarlo de nuevo?"
    - **de**: "Diese E-Mail-Adresse ist uns leider nicht bekannt. Nochmal versuchen?"
    - **fr**: "Désolé, nous ne connaissons pas cette adresse e-mail. Réessayer ?"
-   - **it**: "Sorry, we don’t know that email address. Try again?"
    - **en**: "Sorry, we don’t know that email address. Try again?"
   */
   public static func forgot_password_error() -> String {
@@ -9318,7 +8767,6 @@ catch your eye?"
    - **es**: "Dirección de correo electrónico"
    - **de**: "E-Mail-Adresse"
    - **fr**: "Adresse e-mail"
-   - **it**: "Email address"
    - **en**: "Email address"
   */
   public static func forgot_password_placeholder_email() -> String {
@@ -9335,7 +8783,6 @@ catch your eye?"
    - **es**: "¿Olvidaste tu contraseña?"
    - **de**: "Passwort vergessen?"
    - **fr**: "Mot de passe oublié ?"
-   - **it**: "Forgot your password?"
    - **en**: "Forgot your password?"
   */
   public static func forgot_password_title() -> String {
@@ -9352,7 +8799,6 @@ catch your eye?"
    - **es**: "Hemos enviado un correo electrónico a %{email} con las instrucciones para restablecer tu contraseña."
    - **de**: "Wir haben eine E-Mail mit einer Anleitung zum Zurücksetzen deines Passworts an %{email} geschickt."
    - **fr**: "Nous avons envoyé un e-mail à %{email} contenant les instructions nécessaires pour réinitialiser votre mot de passe."
-   - **it**: "We’ve sent an email to %{email} with instructions to reset your password."
    - **en**: "We’ve sent an email to %{email} with instructions to reset your password."
   */
   public static func forgot_password_we_sent_an_email_to_email_address_with_instructions_to_reset_your_password(email email: String) -> String {
@@ -9369,7 +8815,6 @@ catch your eye?"
    - **es**: "Kickstarter"
    - **de**: "Kickstarter"
    - **fr**: "Kickstarter"
-   - **it**: "Kickstarter"
    - **en**: "Kickstarter"
   */
   public static func general_accessibility_kickstarter() -> String {
@@ -9386,7 +8831,6 @@ catch your eye?"
    - **es**: "OK"
    - **de**: "OK"
    - **fr**: "OK"
-   - **it**: "OK"
    - **en**: "OK"
   */
   public static func general_alert_buttons_ok() -> String {
@@ -9403,7 +8847,6 @@ catch your eye?"
    - **es**: "%{backer_count} patrocinadores"
    - **de**: "%{backer_count} Unterstützer"
    - **fr**: "%{backer_count} contributeurs"
-   - **it**: "%{backer_count} backers"
    - **en**: "%{backer_count} backers"
   */
   public static func general_backer_count_backers(backer_count backer_count: Int) -> String {
@@ -9420,7 +8863,6 @@ catch your eye?"
    - **es**: "¡Vaya!"
    - **de**: "Huch!"
    - **fr**: "Oups !"
-   - **it**: "Oops!"
    - **en**: "Oops!"
   */
   public static func general_error_oops() -> String {
@@ -9437,7 +8879,6 @@ catch your eye?"
    - **es**: "Algo pasó aquí."
    - **de**: "Da hat etwas nicht geklappt."
    - **fr**: "Un erreur s'est produite."
-   - **it**: "Something went wrong."
    - **en**: "Something went wrong."
   */
   public static func general_error_something_wrong() -> String {
@@ -9454,7 +8895,6 @@ catch your eye?"
    - **es**: "Cargando..."
    - **de**: "Wird geladen ..."
    - **fr**: "Chargement en cours..."
-   - **it**: "Loading..."
    - **en**: "Loading..."
   */
   public static func general_loading() -> String {
@@ -9471,7 +8911,6 @@ catch your eye?"
    - **es**: "Cerrar"
    - **de**: "Schließen"
    - **fr**: "Fermer"
-   - **it**: "Close"
    - **en**: "Close"
   */
   public static func general_navigation_accessibility_button_close_label() -> String {
@@ -9488,7 +8927,6 @@ catch your eye?"
    - **es**: "Menú Ayuda"
    - **de**: "Hilfe-Menü"
    - **fr**: "Menu Aide"
-   - **it**: "Help menu"
    - **en**: "Help menu"
   */
   public static func general_navigation_accessibility_button_help_menu_label() -> String {
@@ -9505,7 +8943,6 @@ catch your eye?"
    - **es**: "Atrás"
    - **de**: "Zurück"
    - **fr**: "Retour"
-   - **it**: "Navigate back"
    - **en**: "Navigate back"
   */
   public static func general_navigation_accessibility_button_navigate_back_label() -> String {
@@ -9522,7 +8959,6 @@ catch your eye?"
    - **es**: "Menú Overflow"
    - **de**: "Overflow-Menu"
    - **fr**: "Sous-menu overflow"
-   - **it**: "Overflow menu"
    - **en**: "Overflow menu"
   */
   public static func general_navigation_accessibility_button_overflow_menu_label() -> String {
@@ -9539,7 +8975,6 @@ catch your eye?"
    - **es**: "Cancelar"
    - **de**: "Abbrechen"
    - **fr**: "Annuler"
-   - **it**: "Cancel"
    - **en**: "Cancel"
   */
   public static func general_navigation_buttons_cancel() -> String {
@@ -9556,7 +8991,6 @@ catch your eye?"
    - **es**: "Cerrar"
    - **de**: "Schließen"
    - **fr**: "Fermer"
-   - **it**: "Close"
    - **en**: "Close"
   */
   public static func general_navigation_buttons_close() -> String {
@@ -9573,7 +9007,6 @@ catch your eye?"
    - **es**: "Comentar"
    - **de**: "Kommentar"
    - **fr**: "Commenter"
-   - **it**: "Comment"
    - **en**: "Comment"
   */
   public static func general_navigation_buttons_comment() -> String {
@@ -9590,7 +9023,6 @@ catch your eye?"
    - **es**: "Listo"
    - **de**: "Fertig"
    - **fr**: "Terminé"
-   - **it**: "Done"
    - **en**: "Done"
   */
   public static func general_navigation_buttons_done() -> String {
@@ -9607,7 +9039,6 @@ catch your eye?"
    - **es**: "Ayuda"
    - **de**: "Hilfe"
    - **fr**: "Aide"
-   - **it**: "Help"
    - **en**: "Help"
   */
   public static func general_navigation_buttons_help() -> String {
@@ -9624,7 +9055,6 @@ catch your eye?"
    - **es**: "OK"
    - **de**: "OK"
    - **fr**: "OK"
-   - **it**: "OK"
    - **en**: "OK"
   */
   public static func general_navigation_buttons_ok() -> String {
@@ -9641,7 +9071,6 @@ catch your eye?"
    - **es**: "Vista previa"
    - **de**: "Vorschau"
    - **fr**: "Aperçu"
-   - **it**: "Preview"
    - **en**: "Preview"
   */
   public static func general_navigation_buttons_preview() -> String {
@@ -9658,7 +9087,6 @@ catch your eye?"
    - **es**: "¡Publicar!"
    - **de**: "Jetzt veröffentlichen!"
    - **fr**: "Publier !"
-   - **it**: "Publish!"
    - **en**: "Publish!"
   */
   public static func general_navigation_buttons_publish() -> String {
@@ -9675,7 +9103,6 @@ catch your eye?"
    - **es**: "Responder"
    - **de**: "Antworten"
    - **fr**: "Répondre"
-   - **it**: "Reply"
    - **en**: "Reply"
   */
   public static func general_navigation_buttons_reply() -> String {
@@ -9692,7 +9119,6 @@ catch your eye?"
    - **es**: "Saltar"
    - **de**: "Überspringen"
    - **fr**: "Ignorer"
-   - **it**: "Skip"
    - **en**: "Skip"
   */
   public static func general_navigation_buttons_skip() -> String {
@@ -9709,7 +9135,6 @@ catch your eye?"
    - **es**: "Conectar con Facebook"
    - **de**: "Mit Facebook verknüpfen"
    - **fr**: "Connexion Facebook"
-   - **it**: "Connect with Facebook"
    - **en**: "Connect with Facebook"
   */
   public static func general_social_buttons_connect_with_facebook() -> String {
@@ -9726,7 +9151,6 @@ catch your eye?"
    - **es**: "Conectar con Twitter"
    - **de**: "MIt Twitter verknüpfen"
    - **fr**: "Connexion Twitter"
-   - **it**: "Connect with Twitter"
    - **en**: "Connect with Twitter"
   */
   public static func general_social_buttons_connect_with_twitter() -> String {
@@ -9743,7 +9167,6 @@ catch your eye?"
    - **es**: "NO"
    - **de**: "NEIN"
    - **fr**: "OFF"
-   - **it**: "OFF"
    - **en**: "OFF"
   */
   public static func general_switch_toggle_off() -> String {
@@ -9760,7 +9183,6 @@ catch your eye?"
    - **es**: "SÍ"
    - **de**: "JA"
    - **fr**: "ON"
-   - **it**: "ON"
    - **en**: "ON"
   */
   public static func general_switch_toggle_on() -> String {
@@ -9777,7 +9199,6 @@ catch your eye?"
    - **es**: "Cancelar"
    - **de**: "Abbrechen"
    - **fr**: "Annuler"
-   - **it**: "Cancel"
    - **en**: "Cancel"
   */
   public static func invalid_api_client_alert_cancel() -> String {
@@ -9794,7 +9215,6 @@ catch your eye?"
    - **es**: "Parece que estás usando una versión muy antigua de esta aplicación. Por favor descarga la última versión de la App Store para continuar usándola."
    - **de**: "Du scheinst eine sehr alte Version der App zu benutzen. Um fortzufahren, installiere bitte die neueste Version aus dem App Store."
    - **fr**: "On dirait que vous utilisez une ancienne version de l'application. Veuillez la mettre à jour depuis l'App Store pour continuer à l'utiliser."
-   - **it**: "You seem to be using a really old version of the app. Please upgrade from the App Store to continue using."
    - **en**: "You seem to be using a really old version of the app. Please upgrade from the App Store to continue using."
   */
   public static func invalid_api_client_alert_message() -> String {
@@ -9811,7 +9231,6 @@ catch your eye?"
    - **es**: "Por favor actualizar"
    - **de**: "Bitte aktualisieren"
    - **fr**: "Veuillez mettre à jour"
-   - **it**: "Please Upgrade"
    - **en**: "Please Upgrade"
   */
   public static func invalid_api_client_alert_title() -> String {
@@ -9828,7 +9247,6 @@ catch your eye?"
    - **es**: "Actualizar"
    - **de**: "Aktualisierung"
    - **fr**: "Mise à jour"
-   - **it**: "Upgrade"
    - **en**: "Upgrade"
   */
   public static func invalid_api_client_alert_upgrade() -> String {
@@ -9845,7 +9263,6 @@ catch your eye?"
    - **es**: "¿Olvidaste tu contraseña?"
    - **de**: "Passwort vergessen?"
    - **fr**: "Mot de passe oublié ?"
-   - **it**: "Forgot your password?"
    - **en**: "Forgot your password?"
   */
   public static func login_buttons_forgot_password() -> String {
@@ -9862,7 +9279,6 @@ catch your eye?"
    - **es**: "<u>¿Olvidaste la contraseña?</u>"
    - **de**: "<u>Passwort vergessen?</u>"
    - **fr**: "<u>Mot de passe oublié ?</u>"
-   - **it**: "<u>Forgot your password?</u>"
    - **en**: "<u>Forgot your password?</u>"
   */
   public static func login_buttons_forgot_password_html() -> String {
@@ -9879,7 +9295,6 @@ catch your eye?"
    - **es**: "Iniciar sesión"
    - **de**: "Anmelden"
    - **fr**: "Connexion"
-   - **it**: "Log in"
    - **en**: "Log in"
   */
   public static func login_buttons_log_in() -> String {
@@ -9896,7 +9311,6 @@ catch your eye?"
    - **es**: "Iniciar con dirección de correo electrónico"
    - **de**: "Mit E-Mail-Adresse anmelden"
    - **fr**: "Connexion avec votre adresse e-mail"
-   - **it**: "Log in with email"
    - **en**: "Log in with email"
   */
   public static func login_buttons_log_in_email() -> String {
@@ -9913,7 +9327,6 @@ catch your eye?"
    - **es**: "1Password"
    - **de**: "1Password"
    - **fr**: "1Password"
-   - **it**: "1Password"
    - **en**: "1Password"
   */
   public static func login_buttons_one_password() -> String {
@@ -9930,7 +9343,6 @@ catch your eye?"
    - **es**: "¿Estos zapatos son nuevos? Si no lo son, ¡lo parecen!"
    - **de**: "Neue Schuhe? Nein? Dabei sehen sie nigelnagelneu aus!"
    - **fr**: "Est-ce une nouvelle paire de chaussures ? Ah non ? Pourtant, elles sont jolies."
-   - **it**: "Are those new shoes? If they’re not new, they look really shiny and beautiful."
    - **en**: "Are those new shoes? If they’re not new, they look really shiny and beautiful."
   */
   public static func login_detail() -> String {
@@ -9947,7 +9359,6 @@ catch your eye?"
    - **es**: "Ok"
    - **de**: "OK"
    - **fr**: "OK"
-   - **it**: "OK"
    - **en**: "OK"
   */
   public static func login_errors_button_ok() -> String {
@@ -9964,7 +9375,6 @@ catch your eye?"
    - **es**: "Credenciales no reconocidas."
    - **de**: "Anmeldedaten nicht erkannt."
    - **fr**: "Vos informations de connexion ne correspondent pas à nos enregistrements."
-   - **it**: "Login does not match any of our records."
    - **en**: "Login does not match any of our records."
   */
   public static func login_errors_does_not_match() -> String {
@@ -9981,7 +9391,6 @@ catch your eye?"
    - **es**: "Error al iniciar sesión"
    - **de**: "Fehler beim Einloggen"
    - **fr**: "Erreur de connexion"
-   - **it**: "Login error"
    - **en**: "Login error"
   */
   public static func login_errors_title() -> String {
@@ -9998,7 +9407,6 @@ catch your eye?"
    - **es**: "No se pudo iniciar sesión."
    - **de**: "Anmeldung fehlgeschlagen."
    - **fr**: "Connexion impossible."
-   - **it**: "Unable to log in."
    - **en**: "Unable to log in."
   */
   public static func login_errors_unable_to_log_in() -> String {
@@ -10015,7 +9423,6 @@ catch your eye?"
    - **es**: "Iniciar sesión"
    - **de**: "Anmelden"
    - **fr**: "Connexion"
-   - **it**: "Log in"
    - **en**: "Log in"
   */
   public static func login_navbar_title() -> String {
@@ -10032,7 +9439,6 @@ catch your eye?"
    - **es**: "Dirección de correo electrónico"
    - **de**: "E-Mail-Adresse"
    - **fr**: "Adresse e-mail"
-   - **it**: "Email address"
    - **en**: "Email address"
   */
   public static func login_placeholder_email() -> String {
@@ -10049,7 +9455,6 @@ catch your eye?"
    - **es**: "Contraseña"
    - **de**: "Passwort"
    - **fr**: "Mot de passe"
-   - **it**: "Password"
    - **en**: "Password"
   */
   public static func login_placeholder_password() -> String {
@@ -10066,7 +9471,6 @@ catch your eye?"
    - **es**: "Qué bueno verte de nuevo."
    - **de**: "Schön, dich wiederzusehen!"
    - **fr**: "Ravis de vous revoir."
-   - **it**: "Nice to see you again."
    - **en**: "Nice to see you again."
   */
   public static func login_title() -> String {
@@ -10083,7 +9487,6 @@ catch your eye?"
    - **es**: "Es necesaria una cuenta de Kickstarter para continuar."
    - **de**: "Zum Fortfahren benötigst Du ein Konto bei Kickstarter."
    - **fr**: "Un compte Kickstarter est requis pour continuer."
-   - **it**: "A Kickstarter account is required to continue."
    - **en**: "A Kickstarter account is required to continue."
   */
   public static func login_tout_back_intent_title() -> String {
@@ -10100,7 +9503,6 @@ catch your eye?"
    - **es**: "Iniciar sesión"
    - **de**: "Anmelden"
    - **fr**: "Connexion"
-   - **it**: "Log in"
    - **en**: "Log in"
   */
   public static func login_tout_back_intent_traditional_login_button() -> String {
@@ -10117,7 +9519,6 @@ catch your eye?"
    - **es**: "Registrar"
    - **de**: "Registrieren"
    - **fr**: "Inscription"
-   - **it**: "Sign up"
    - **en**: "Sign up"
   */
   public static func login_tout_back_intent_traditional_signup_button() -> String {
@@ -10134,7 +9535,6 @@ catch your eye?"
    - **es**: "Utiliza tu dirección de correo electrónico:"
    - **de**: "Benutze deine E-Mail-Adresse:"
    - **fr**: "Utilisez votre adresse e-mail :"
-   - **it**: "Use your email address:"
    - **en**: "Use your email address:"
   */
   public static func login_tout_back_intent_traditional_title() -> String {
@@ -10151,7 +9551,6 @@ catch your eye?"
    - **es**: "Inicia sesión con Facebook"
    - **de**: "Über Facebook anmelden"
    - **fr**: "Connexion Facebook"
-   - **it**: "Log in with Facebook"
    - **en**: "Log in with Facebook"
   */
   public static func login_tout_buttons_log_in_with_facebook() -> String {
@@ -10168,7 +9567,6 @@ catch your eye?"
    - **es**: "Regístrate o inicia sesión con tu cuenta de Facebook o dirección de correo electrónico a continuación:"
    - **de**: "Registriere dich oder melde dich mit deinem Facebook-Konto oder deiner E-Mail-Adresse hier an:"
    - **fr**: "Inscrivez-vous ou connectez-vous ci-dessous avec votre compte Facebook ou votre adresse e-mail  :"
-   - **it**: "Sign up or log in with your Facebook account or email address below:"
    - **en**: "Sign up or log in with your Facebook account or email address below:"
   */
   public static func login_tout_default_intent_title() -> String {
@@ -10185,7 +9583,6 @@ catch your eye?"
    - **es**: "Iniciar sesión"
    - **de**: "Anmelden"
    - **fr**: "Connexion"
-   - **it**: "Log in"
    - **en**: "Log in"
   */
   public static func login_tout_default_intent_traditional_login_button() -> String {
@@ -10202,7 +9599,6 @@ catch your eye?"
    - **es**: "Registrar"
    - **de**: "Registrieren"
    - **fr**: "Inscription"
-   - **it**: "Sign up"
    - **en**: "Sign up"
   */
   public static func login_tout_default_intent_traditional_signup_button() -> String {
@@ -10219,7 +9615,6 @@ catch your eye?"
    - **es**: "Utiliza tu dirección de correo electrónico:"
    - **de**: "Benutze deine E-Mail-Adresse:"
    - **fr**: "Utilisez votre adresse e-mail :"
-   - **it**: "Use your email address:"
    - **en**: "Use your email address:"
   */
   public static func login_tout_default_intent_traditional_title() -> String {
@@ -10236,7 +9631,6 @@ catch your eye?"
    - **es**: "Al registrarte, estás aceptando nuestros términos de uso, nuestra política de privacidad y de cookies."
    - **de**: "Mit der Registrierung stimmst du unseren Nutzungsbedingungen, Datenschutzrichtlinien und Cookie-Richtlinien zu."
    - **fr**: "En vous inscrivant, vous acceptez les Conditions d'utilisation, notre Politique de confidentialité et notre Politique en matière de cookies."
-   - **it**: "By signing up, you agree to our terms of use, privacy policy, and cookie policy."
    - **en**: "By signing up, you agree to our terms of use, privacy policy, and cookie policy."
   */
   public static func login_tout_disclaimer_by_signing_up_you_agree_to_terms() -> String {
@@ -10253,7 +9647,6 @@ catch your eye?"
    - **es**: "Con la registración confirmas tu conformidad con nuestros <u>terms of use</u>, <u>privacy policy</u>, y <u>cookie policy</u>."
    - **de**: "Durch deine Anmeldung erklärst du dich mir unseren <u>terms of use</u>, <u>privacy policy</u>, und <u>cookie policy</u> einverstanden."
    - **fr**: "En vous inscrivant, vous acceptez nos <u>Conditions d'utilisation</u>, notre <u>Politique de confidentialité</u> et notre <u>Politique en matière de cookies</u>."
-   - **it**: "By signing up, you agree to our <u>terms of use</u>, <u>privacy policy</u>, and <u>cookie policy</u>."
    - **en**: "By signing up, you agree to our <u>terms of use</u>, <u>privacy policy</u>, and <u>cookie policy</u>."
   */
   public static func login_tout_disclaimer_by_signing_up_you_agree_to_terms_html() -> String {
@@ -10270,7 +9663,6 @@ catch your eye?"
    - **es**: "Leer más"
    - **de**: "Weiterlesen"
    - **fr**: "En savoir plus"
-   - **it**: "Read more"
    - **en**: "Read more"
   */
   public static func login_tout_disclaimer_read_more() -> String {
@@ -10287,7 +9679,6 @@ catch your eye?"
    - **es**: "Nunca publicaremos nada sin tu consentimiento."
    - **de**: "Wir veröffentlichen niemals etwas ohne deine Zustimmung."
    - **fr**: "Rien ne sera publié sans votre permission."
-   - **it**: "We'll never post anything without your permission."
    - **en**: "We'll never post anything without your permission."
   */
   public static func login_tout_disclaimer_we_never_post_anything_without_permission() -> String {
@@ -10304,7 +9695,6 @@ catch your eye?"
    - **es**: "Ok"
    - **de**: "OK"
    - **fr**: "OK"
-   - **it**: "OK"
    - **en**: "OK"
   */
   public static func login_tout_errors_button_ok() -> String {
@@ -10321,7 +9711,6 @@ catch your eye?"
    - **es**: "¡Inténtalo de nuevo!"
    - **de**: "Versuche es noch einmal!"
    - **fr**: "Réessayons"
-   - **it**: "Let's try that again"
    - **en**: "Let's try that again"
   */
   public static func login_tout_errors_facebook_authorization_exception_button() -> String {
@@ -10338,7 +9727,6 @@ catch your eye?"
    - **es**: "Surgió un problema iniciando sesión."
    - **de**: "Fehler beim Einloggen aufgetreten."
    - **fr**: "Nous avons du mal à ouvrir votre compte."
-   - **it**: "We're having some trouble getting you logged in."
    - **en**: "We're having some trouble getting you logged in."
   */
   public static func login_tout_errors_facebook_authorization_exception_message() -> String {
@@ -10355,7 +9743,6 @@ catch your eye?"
    - **es**: "No se ha podido iniciar sesión con Facebook."
    - **de**: "Anmeldung bei Facebook fehlgeschlagen."
    - **fr**: "La connexion Facebook a échoué."
-   - **it**: "Couldn’t log into Facebook."
    - **en**: "Couldn’t log into Facebook."
   */
   public static func login_tout_errors_facebook_generic_error_message() -> String {
@@ -10372,7 +9759,6 @@ catch your eye?"
    - **es**: "Iniciar sesión con Facebook"
    - **de**: "Facebook-Anmeldung"
    - **fr**: "Connexion Facebook"
-   - **it**: "Facebook login"
    - **en**: "Facebook login"
   */
   public static func login_tout_errors_facebook_generic_error_title() -> String {
@@ -10397,9 +9783,6 @@ Für gewöhnlich kann das Problem behoben werden, indem du in den iOS Einstellun
    - **fr**: "Un problème est survenu pendant la connexion Facebook.
 
 Ce problème peut généralement être résolu en accédant à Réglages iOS > Facebook et en autorisant l'accès pour Kickstarter."
-   - **it**: "There was a problem logging you in with Facebook.
-
-This is commonly fixed by going to iOS Settings > Facebook and toggling access for Kickstarter."
    - **en**: "There was a problem logging you in with Facebook.
 
 This is commonly fixed by going to iOS Settings > Facebook and toggling access for Kickstarter."
@@ -10418,7 +9801,6 @@ This is commonly fixed by going to iOS Settings > Facebook and toggling access f
    - **es**: "Iniciar sesión con Facebook"
    - **de**: "Facebook-Anmeldung"
    - **fr**: "Connexion Facebook"
-   - **it**: "Facebook login"
    - **en**: "Facebook login"
   */
   public static func login_tout_errors_facebook_invalid_token_title() -> String {
@@ -10435,7 +9817,6 @@ This is commonly fixed by going to iOS Settings > Facebook and toggling access f
    - **es**: "Parece que le has denegado a Kickstarter acceso a tu cuenta de Facebook. Para cambiarlo, por favor ve a Configuración > Facebook."
    - **de**: "Es scheint, als hättest du Kickstarter den Zugriff auf dein Facebook-Konto verweigert. Bitte gehe zu Einstellungen > Facebook und erlaube den Zugriff."
    - **fr**: "On dirait que vous avez refusé à Kickstarter l'accès à votre compte Facebook. Veuillez accéder à Paramètres > Facebook pour autoriser l'accès."
-   - **it**: "It seems that you have denied Kickstarter access to your Facebook account. Please go to Settings > Facebook and toggle access."
    - **en**: "It seems that you have denied Kickstarter access to your Facebook account. Please go to Settings > Facebook and toggle access."
   */
   public static func login_tout_errors_facebook_settings_disabled_message() -> String {
@@ -10452,7 +9833,6 @@ This is commonly fixed by going to iOS Settings > Facebook and toggling access f
    - **es**: "Permiso denegado"
    - **de**: "Zugriff verweigert"
    - **fr**: "Autorisation refusée"
-   - **it**: "Permission denied"
    - **en**: "Permission denied"
   */
   public static func login_tout_errors_facebook_settings_disabled_title() -> String {
@@ -10469,7 +9849,6 @@ This is commonly fixed by going to iOS Settings > Facebook and toggling access f
    - **es**: "Por favor, inicia sesión para añadir esta categoría a tus favoritas. Te permitirá fácil acceso a ella a través de la lista de favoritas."
    - **de**: "Bitte anmelden, um diese Kategorie in deine Favoriten aufzunehmen. Du kannst dann von dort aus jederzeit schnell auf sie zugreifen."
    - **fr**: "Veuillez vous connecter pour ajouter cette catégorie à vos favoris et y accéder à tout moment depuis votre liste."
-   - **it**: "Please log in to add this category to your list of favorites."
    - **en**: "Please log in to add this category to your list of favorites."
   */
   public static func login_tout_favorite_category_intent_title() -> String {
@@ -10486,7 +9865,6 @@ This is commonly fixed by going to iOS Settings > Facebook and toggling access f
    - **es**: "Iniciar sesión"
    - **de**: "Anmelden"
    - **fr**: "Connexion"
-   - **it**: "Log in"
    - **en**: "Log in"
   */
   public static func login_tout_favorite_category_intent_traditional_login_button() -> String {
@@ -10503,7 +9881,6 @@ This is commonly fixed by going to iOS Settings > Facebook and toggling access f
    - **es**: "Registrarse"
    - **de**: "Registrieren"
    - **fr**: "Inscription"
-   - **it**: "Sign up"
    - **en**: "Sign up"
   */
   public static func login_tout_favorite_category_intent_traditional_signup_button() -> String {
@@ -10520,7 +9897,6 @@ This is commonly fixed by going to iOS Settings > Facebook and toggling access f
    - **es**: "Iniciar sesión con dirección de correo electrónico:"
    - **de**: "Mit E-Mail-Adresse anmelden:"
    - **fr**: "Vous pouvez utiliser votre adresse e-mail :"
-   - **it**: "Use your email address:"
    - **en**: "Use your email address:"
   */
   public static func login_tout_favorite_category_intent_traditional_title() -> String {
@@ -10537,7 +9913,6 @@ This is commonly fixed by going to iOS Settings > Facebook and toggling access f
    - **es**: "¡Un momentito! Primero tienes que iniciar sesión con tu cuenta de Kickstarter para continuar. Regístrate o inicia sesión con tu dirección de correo electrónico o con tu cuenta de Facebook."
    - **de**: "Hoppla! Um fortzufahren, musst du dich auf Kickstarter einloggen. Du kannst dich unten mit deinem Facebook-Konto oder deiner E-Mail-Adresse anmelden oder dich neu registrieren."
    - **fr**: "Oh là ! Vous devez vous connecter à votre compte Kickstarter pour continuer. Vous pouvez vous connecter ou vous inscrire ci-dessous avec votre adresse e-mail ou votre compte Facebook."
-   - **it**: "Whoa there! You must log in to your Kickstarter account to continue. Sign up or log in with your email address or Facebook account below."
    - **en**: "Whoa there! You must log in to your Kickstarter account to continue. Sign up or log in with your email address or Facebook account below."
   */
   public static func login_tout_generic_intent_title() -> String {
@@ -10554,7 +9929,6 @@ This is commonly fixed by going to iOS Settings > Facebook and toggling access f
    - **es**: "Iniciar sesión"
    - **de**: "Anmelden"
    - **fr**: "Connexion"
-   - **it**: "Log in"
    - **en**: "Log in"
   */
   public static func login_tout_generic_intent_traditional_login_button() -> String {
@@ -10571,7 +9945,6 @@ This is commonly fixed by going to iOS Settings > Facebook and toggling access f
    - **es**: "Registrar"
    - **de**: "Registrieren"
    - **fr**: "Inscription"
-   - **it**: "Sign up"
    - **en**: "Sign up"
   */
   public static func login_tout_generic_intent_traditional_signup_button() -> String {
@@ -10588,7 +9961,6 @@ This is commonly fixed by going to iOS Settings > Facebook and toggling access f
    - **es**: "Utiliza tu dirección de correo electrónico:"
    - **de**: "Benutze deine E-Mail-Adresse:"
    - **fr**: "Utilisez votre adresse e-mail :"
-   - **it**: "Use your email address:"
    - **en**: "Use your email address:"
   */
   public static func login_tout_generic_intent_traditional_title() -> String {
@@ -10605,7 +9977,6 @@ This is commonly fixed by going to iOS Settings > Facebook and toggling access f
    - **es**: "Cancelar"
    - **de**: "Abbrechen"
    - **fr**: "Annuler"
-   - **it**: "Cancel"
    - **en**: "Cancel"
   */
   public static func login_tout_help_sheet_cancel() -> String {
@@ -10622,7 +9993,6 @@ This is commonly fixed by going to iOS Settings > Facebook and toggling access f
    - **es**: "Contacto"
    - **de**: "Kontakt"
    - **fr**: "Contact"
-   - **it**: "Contact"
    - **en**: "Contact"
   */
   public static func login_tout_help_sheet_contact() -> String {
@@ -10639,7 +10009,6 @@ This is commonly fixed by going to iOS Settings > Facebook and toggling access f
    - **es**: "Política de Cookies"
    - **de**: "Cookie-Richtlinien"
    - **fr**: "Politique en matière de cookies"
-   - **it**: "Cookie Policy"
    - **en**: "Cookie Policy"
   */
   public static func login_tout_help_sheet_cookie() -> String {
@@ -10656,7 +10025,6 @@ This is commonly fixed by going to iOS Settings > Facebook and toggling access f
    - **es**: "Cómo funciona Kickstarter"
    - **de**: "Wie Kickstarter funktioniert"
    - **fr**: "Comment fonctionne Kickstarter"
-   - **it**: "How Kickstarter Works"
    - **en**: "How Kickstarter Works"
   */
   public static func login_tout_help_sheet_how_it_works() -> String {
@@ -10673,7 +10041,6 @@ This is commonly fixed by going to iOS Settings > Facebook and toggling access f
    - **es**: "Política de privacidad"
    - **de**: "Datenschutzrichtlinien"
    - **fr**: "Politique de confidentialité"
-   - **it**: "Privacy Policy"
    - **en**: "Privacy Policy"
   */
   public static func login_tout_help_sheet_privacy() -> String {
@@ -10690,7 +10057,6 @@ This is commonly fixed by going to iOS Settings > Facebook and toggling access f
    - **es**: "Condiciones de uso"
    - **de**: "Nutzungsbedingungen"
    - **fr**: "Conditions d'utilisation"
-   - **it**: "Terms of Use"
    - **en**: "Terms of Use"
   */
   public static func login_tout_help_sheet_terms() -> String {
@@ -10707,7 +10073,6 @@ This is commonly fixed by going to iOS Settings > Facebook and toggling access f
    - **es**: "Para enviar un mensaje a un creador, debes iniciar sesión."
    - **de**: "Du musst eingeloggt sein, um eine Nachricht an einen Projektgründer zu senden."
    - **fr**: "Veuillez vous connecter pour écrire à un créateur."
-   - **it**: "To message a creator, you need to be logged in."
    - **en**: "To message a creator, you need to be logged in."
   */
   public static func login_tout_message_creator_intent_title() -> String {
@@ -10724,7 +10089,6 @@ This is commonly fixed by going to iOS Settings > Facebook and toggling access f
    - **es**: "Iniciar sesión"
    - **de**: "Anmelden"
    - **fr**: "Connexion"
-   - **it**: "Log in"
    - **en**: "Log in"
   */
   public static func login_tout_message_creator_intent_traditional_login_button() -> String {
@@ -10741,7 +10105,6 @@ This is commonly fixed by going to iOS Settings > Facebook and toggling access f
    - **es**: "Registrar"
    - **de**: "Registrieren"
    - **fr**: "Inscription"
-   - **it**: "Sign up"
    - **en**: "Sign up"
   */
   public static func login_tout_message_creator_intent_traditional_signup_button() -> String {
@@ -10758,7 +10121,6 @@ This is commonly fixed by going to iOS Settings > Facebook and toggling access f
    - **es**: "Utiliza tu dirección de correo electrónico:"
    - **de**: "Benutze deine E-Mail-Adresse:"
    - **fr**: "Utilisez votre adresse e-mail :"
-   - **it**: "Use your email address:"
    - **en**: "Use your email address:"
   */
   public static func login_tout_message_creator_intent_traditional_title() -> String {
@@ -10775,7 +10137,6 @@ This is commonly fixed by going to iOS Settings > Facebook and toggling access f
    - **es**: "Inicia sesión o regístrate"
    - **de**: "Einloggen oder anmelden"
    - **fr**: "Connexion ou inscription"
-   - **it**: "Log in or sign up"
    - **en**: "Log in or sign up"
   */
   public static func login_tout_navbar_title() -> String {
@@ -10792,7 +10153,6 @@ This is commonly fixed by going to iOS Settings > Facebook and toggling access f
    - **es**: "Inicia sesión para agregar este proyecto a tus favoritos y te mandaremos un recordatorio antes de que finalice."
    - **de**: "Melde dich an, um dieses Projekt zu deinen Favoriten hinzuzufügen. Wir senden dir eine Benachrichtigung vor Ablauf des Projekts."
    - **fr**: "Connectez-vous pour ajouter ce projet à votre liste de projets préférés et nous vous enverrons un rappel avant la fin de sa campagne."
-   - **it**: "Log in to star this project and we’ll remind you about it before it ends."
    - **en**: "Log in to star this project and we’ll remind you about it before it ends."
   */
   public static func login_tout_save_intent_title() -> String {
@@ -10809,7 +10169,6 @@ This is commonly fixed by going to iOS Settings > Facebook and toggling access f
    - **es**: "Iniciar sesión"
    - **de**: "Anmelden"
    - **fr**: "Connexion"
-   - **it**: "Log in"
    - **en**: "Log in"
   */
   public static func login_tout_save_intent_traditional_login_button() -> String {
@@ -10826,7 +10185,6 @@ This is commonly fixed by going to iOS Settings > Facebook and toggling access f
    - **es**: "Registrar"
    - **de**: "Registrieren"
    - **fr**: "Inscription"
-   - **it**: "Sign up"
    - **en**: "Sign up"
   */
   public static func login_tout_save_intent_traditional_signup_button() -> String {
@@ -10843,7 +10201,6 @@ This is commonly fixed by going to iOS Settings > Facebook and toggling access f
    - **es**: "Utiliza tu dirección de correo electrónico:"
    - **de**: "Benutze deine E-Mail-Adresse:"
    - **fr**: "Utilisez votre adresse e-mail :"
-   - **it**: "Use your email address:"
    - **en**: "Use your email address:"
   */
   public static func login_tout_save_intent_traditional_title() -> String {
@@ -10860,7 +10217,6 @@ This is commonly fixed by going to iOS Settings > Facebook and toggling access f
    - **es**: "No se pudieron cargar mensajes"
    - **de**: "Nachrichten konnten nicht geladen werden"
    - **fr**: "Impossible de charger les messages"
-   - **it**: "Couldn't load messages"
    - **en**: "Couldn't load messages"
   */
   public static func messages_could_not_load_messages() -> String {
@@ -10877,7 +10233,6 @@ This is commonly fixed by going to iOS Settings > Facebook and toggling access f
    - **es**: "Lo sentimos, no se pudo publicar tu mensaje."
    - **de**: "Deine Nachricht konnte leider nicht gepostet werden."
    - **fr**: "Désolé, votre message n'a pas pu être publié."
-   - **it**: "Sorry, your message could not be posted."
    - **en**: "Sorry, your message could not be posted."
   */
   public static func messages_dialog_generic_error() -> String {
@@ -10894,7 +10249,6 @@ This is commonly fixed by going to iOS Settings > Facebook and toggling access f
    - **es**: "No le has enviado un mensaje al creador."
    - **de**: "Du hast dem Projektgründer keine Nachricht gesendet."
    - **fr**: "Vous n'avez pas envoyé de messages à ce créateur."
-   - **it**: "You have not sent a message to the creator."
    - **en**: "You have not sent a message to the creator."
   */
   public static func messages_empty_state_message_backer() -> String {
@@ -10911,7 +10265,6 @@ This is commonly fixed by going to iOS Settings > Facebook and toggling access f
    - **es**: "No le has enviado un mensaje a este patrocinador."
    - **de**: "Du hast diesem Unterstützer keine Nachricht gesendet."
    - **fr**: "Vous n'avez pas envoyé de messages à ce contributeur."
-   - **it**: "You have not sent a message to this backer."
    - **en**: "You have not sent a message to this backer."
   */
   public static func messages_empty_state_message_creator() -> String {
@@ -10928,7 +10281,6 @@ This is commonly fixed by going to iOS Settings > Facebook and toggling access f
    - **es**: "No hay mensajes"
    - **de**: "Keine Nachrichten"
    - **fr**: "Pas de messages"
-   - **it**: "No messages"
    - **en**: "No messages"
   */
   public static func messages_empty_state_title() -> String {
@@ -10945,7 +10297,6 @@ This is commonly fixed by going to iOS Settings > Facebook and toggling access f
    - **es**: "Cargando más mensajes"
    - **de**: "Ältere Nachrichten werden geladen"
    - **fr**: "Chargement des messages"
-   - **it**: "Loading more messages"
    - **en**: "Loading more messages"
   */
   public static func messages_loading_more_messages() -> String {
@@ -10962,7 +10313,6 @@ This is commonly fixed by going to iOS Settings > Facebook and toggling access f
    - **es**: "Mi cuenta"
    - **de**: "Ich"
    - **fr**: "Mon compte"
-   - **it**: "Me"
    - **en**: "Me"
   */
   public static func messages_me() -> String {
@@ -10979,7 +10329,6 @@ This is commonly fixed by going to iOS Settings > Facebook and toggling access f
    - **es**: "Bandeja de entrada"
    - **de**: "Posteingang"
    - **fr**: "Boîte de réception"
-   - **it**: "Inbox"
    - **en**: "Inbox"
   */
   public static func messages_navigation_inbox() -> String {
@@ -10996,7 +10345,6 @@ This is commonly fixed by going to iOS Settings > Facebook and toggling access f
    - **es**: "Buscar"
    - **de**: "Suche"
    - **fr**: "Recherche"
-   - **it**: "Search"
    - **en**: "Search"
   */
   public static func messages_navigation_search() -> String {
@@ -11013,7 +10361,6 @@ This is commonly fixed by going to iOS Settings > Facebook and toggling access f
    - **es**: "Enviados"
    - **de**: "Gesendet"
    - **fr**: "Envoyé"
-   - **it**: "Sent"
    - **en**: "Sent"
   */
   public static func messages_navigation_sent() -> String {
@@ -11030,7 +10377,6 @@ This is commonly fixed by going to iOS Settings > Facebook and toggling access f
    - **es**: "Buscar mensajes"
    - **de**: "Nachrichten suchen"
    - **fr**: "Rechercher"
-   - **it**: "Search messages"
    - **en**: "Search messages"
   */
   public static func messages_search_placeholder_search_messages() -> String {
@@ -11047,7 +10393,6 @@ This is commonly fixed by going to iOS Settings > Facebook and toggling access f
    - **es**: "enviado %{sent_date}"
    - **de**: "gesendet %{sent_date}"
    - **fr**: "envoyé le %{sent_date}"
-   - **it**: "sent %{sent_date}"
    - **en**: "sent %{sent_date}"
   */
   public static func messages_sent_date(sent_date sent_date: String) -> String {
@@ -11064,7 +10409,6 @@ This is commonly fixed by going to iOS Settings > Facebook and toggling access f
    - **es**: "%{percentage} financiado"
    - **de**: "%{percentage} finanziert"
    - **fr**: "Financé à %{percentage}"
-   - **it**: "%{percentage} funded"
    - **en**: "%{percentage} funded"
   */
   public static func percentage_funded(percentage percentage: String) -> String {
@@ -11081,7 +10425,6 @@ This is commonly fixed by going to iOS Settings > Facebook and toggling access f
    - **es**: "+%{shipping_cost}"
    - **de**: "+%{shipping_cost}"
    - **fr**: "+ %{shipping_cost}"
-   - **it**: "+%{shipping_cost}"
    - **en**: "+%{shipping_cost}"
   */
   public static func plus_shipping_cost(shipping_cost shipping_cost: String) -> String {
@@ -11098,7 +10441,6 @@ This is commonly fixed by going to iOS Settings > Facebook and toggling access f
    - **es**: "Mensajes"
    - **de**: "Nachrichten"
    - **fr**: "Messages"
-   - **it**: "Messages"
    - **en**: "Messages"
   */
   public static func profile_buttons_messages() -> String {
@@ -11115,7 +10457,6 @@ This is commonly fixed by going to iOS Settings > Facebook and toggling access f
    - **es**: "Configuración"
    - **de**: "Einstellungen"
    - **fr**: "Paramètres"
-   - **it**: "Settings"
    - **en**: "Settings"
   */
   public static func profile_buttons_settings() -> String {
@@ -11132,7 +10473,6 @@ This is commonly fixed by going to iOS Settings > Facebook and toggling access f
    - **es**: "en %{category_count} categorías"
    - **de**: "In %{category_count} Kategorien"
    - **fr**: "%{category_count} catégories soutenues"
-   - **it**: "%{category_count} categories backed"
    - **en**: "%{category_count} categories backed"
   */
   public static func profile_category_count_categories_backed(category_count category_count: Int) -> String {
@@ -11149,7 +10489,6 @@ This is commonly fixed by going to iOS Settings > Facebook and toggling access f
    - **es**: "%{category_name} (%{backed_projects_count})"
    - **de**: "%{category_name} (%{backed_projects_count})"
    - **fr**: "%{category_name} (%{backed_projects_count})"
-   - **it**: "%{category_name} (%{backed_projects_count})"
    - **en**: "%{category_name} (%{backed_projects_count})"
   */
   public static func profile_pie_slice_category_name_backed_projects_count(category_name category_name: String, backed_projects_count: String) -> String {
@@ -11166,7 +10505,6 @@ This is commonly fixed by going to iOS Settings > Facebook and toggling access f
    - **es**: "%{project_count} patrocinados"
    - **de**: "%{project_count} unterstützte Projekte"
    - **fr**: "%{project_count} projets soutenus"
-   - **it**: "%{project_count} projects backed"
    - **en**: "%{project_count} projects backed"
   */
   public static func profile_project_count_projects_backed(project_count project_count: Int) -> String {
@@ -11183,7 +10521,6 @@ This is commonly fixed by going to iOS Settings > Facebook and toggling access f
    - **es**: "%{project_count} PROYECTOS PATROCINADOS"
    - **de**: "HAT %{project_count} PROJEKTE UNTERSTÜTZT"
    - **fr**: "%{project_count} PROJETS SOUTENUS"
-   - **it**: "BACKED %{project_count} PROJECTS"
    - **en**: "BACKED %{project_count} PROJECTS"
   */
   public static func profile_projects_backed_project_count_projects(project_count project_count: Int) -> String {
@@ -11200,7 +10537,6 @@ This is commonly fixed by going to iOS Settings > Facebook and toggling access f
    - **es**: "Proyectos patrocinados"
    - **de**: "Unterstützte Projekte"
    - **fr**: "Projets soutenus"
-   - **it**: "Backed projects"
    - **en**: "Backed projects"
   */
   public static func profile_projects_backed_projects() -> String {
@@ -11217,7 +10553,6 @@ This is commonly fixed by going to iOS Settings > Facebook and toggling access f
    - **es**: "Proyectos creados"
    - **de**: "Erstellte Projekte"
    - **fr**: "Mes projets"
-   - **it**: "Created projects"
    - **en**: "Created projects"
   */
   public static func profile_projects_created_projects() -> String {
@@ -11234,7 +10569,6 @@ This is commonly fixed by going to iOS Settings > Facebook and toggling access f
    - **es**: "Descubre proyectos"
    - **de**: "Projekte entdecken"
    - **fr**: "Découvrez des projets"
-   - **it**: "Discover projects"
    - **en**: "Discover projects"
   */
   public static func profile_projects_empty_state_button() -> String {
@@ -11251,7 +10585,6 @@ This is commonly fixed by going to iOS Settings > Facebook and toggling access f
    - **es**: "Explora proyectos nuevos"
    - **de**: "Erkunde neue Projekte"
    - **fr**: "Découvrir de nouveaux projets"
-   - **it**: "Explore new projects"
    - **en**: "Explore new projects"
   */
   public static func profile_projects_empty_state_button_explore_new_projects() -> String {
@@ -11270,8 +10603,6 @@ Let's change that!"
 ¡Es hora de cambiar esto!"
    - **de**: "Du hast noch keine Projekte unterstützt. Das sollten wir ändern!"
    - **fr**: "Vous n'avez pas encore soutenu de projets. On change ça ?"
-   - **it**: "You haven't backed any projects yet.
-Let's change that!"
    - **en**: "You haven't backed any projects yet.
 Let's change that!"
   */
@@ -11289,7 +10620,6 @@ Let's change that!"
    - **es**: "Todavía no ha contribuido a ningún proyecto"
    - **de**: "Keine unterstützten Projekte"
    - **fr**: "Pas de projets soutenus"
-   - **it**: "No backed projects yet"
    - **en**: "No backed projects yet"
   */
   public static func profile_projects_empty_state_message_no_backed_projects_yet() -> String {
@@ -11306,7 +10636,6 @@ Let's change that!"
    - **es**: "Cancelado"
    - **de**: "Zurückgezogen"
    - **fr**: "Annulé"
-   - **it**: "Canceled"
    - **en**: "Canceled"
   */
   public static func profile_projects_status_canceled() -> String {
@@ -11323,7 +10652,6 @@ Let's change that!"
    - **es**: "Exitoso"
    - **de**: "Erfolgreich"
    - **fr**: "Intégralement financé"
-   - **it**: "Successful"
    - **en**: "Successful"
   */
   public static func profile_projects_status_successful() -> String {
@@ -11340,7 +10668,6 @@ Let's change that!"
    - **es**: "Suspendido"
    - **de**: "Ausgesetzt"
    - **fr**: "Suspendu"
-   - **it**: "Suspended"
    - **en**: "Suspended"
   */
   public static func profile_projects_status_suspended() -> String {
@@ -11357,7 +10684,6 @@ Let's change that!"
    - **es**: "Sin éxito"
    - **de**: "Fehlgeschlagen"
    - **fr**: "Objectif de financement non atteint"
-   - **it**: "Unsuccessful"
    - **en**: "Unsuccessful"
   */
   public static func profile_projects_status_unsuccessful() -> String {
@@ -11374,7 +10700,6 @@ Let's change that!"
    - **es**: "%{time_left} restantes"
    - **de**: "%{time_left} verbleibend"
    - **fr**: "Plus que %{time_left}"
-   - **it**: "%{time_left} to go"
    - **en**: "%{time_left} to go"
   */
   public static func profile_projects_time_left_to_go(time_left time_left: String) -> String {
@@ -11391,7 +10716,6 @@ Let's change that!"
    - **es**: "Contacto"
    - **de**: "Kontakt"
    - **fr**: "Contact"
-   - **it**: "Contact"
    - **en**: "Contact"
   */
   public static func profile_settings_about_contact() -> String {
@@ -11408,7 +10732,6 @@ Let's change that!"
    - **es**: "Política de cookies"
    - **de**: "Cookie-Richtlinien"
    - **fr**: "Politique en matière de cookies"
-   - **it**: "Cookie Policy"
    - **en**: "Cookie Policy"
   */
   public static func profile_settings_about_cookie() -> String {
@@ -11425,7 +10748,6 @@ Let's change that!"
    - **es**: "Preguntas frecuentes"
    - **de**: "Häufig gestellte Fragen"
    - **fr**: "Questions fréquentes"
-   - **it**: "Frequently Asked Questions"
    - **en**: "Frequently Asked Questions"
   */
   public static func profile_settings_about_faq() -> String {
@@ -11442,7 +10764,6 @@ Let's change that!"
    - **es**: "Preguntas frecuentes"
    - **de**: "FAQ"
    - **fr**: "FAQ"
-   - **it**: "FAQ"
    - **en**: "FAQ"
   */
   public static func profile_settings_about_faq_short() -> String {
@@ -11459,7 +10780,6 @@ Let's change that!"
    - **es**: "Cómo funciona Kickstarter"
    - **de**: "Wie Kickstarter funktioniert"
    - **fr**: "Comment fonctionne Kickstarter"
-   - **it**: "How Kickstarter Works"
    - **en**: "How Kickstarter Works"
   */
   public static func profile_settings_about_how_it_works() -> String {
@@ -11476,7 +10796,6 @@ Let's change that!"
    - **es**: "Política de privacidad"
    - **de**: "Datenschutzrichtlinien"
    - **fr**: "Politique de confidentialité"
-   - **it**: "Privacy Policy"
    - **en**: "Privacy Policy"
   */
   public static func profile_settings_about_privacy() -> String {
@@ -11493,7 +10812,6 @@ Let's change that!"
    - **es**: "Condiciones de uso"
    - **de**: "Nutzungsbedingungen"
    - **fr**: "Conditions d'utilisation"
-   - **it**: "Terms of Use"
    - **en**: "Terms of Use"
   */
   public static func profile_settings_about_terms() -> String {
@@ -11510,7 +10828,6 @@ Let's change that!"
    - **es**: "Acerca de"
    - **de**: "Über uns"
    - **fr**: "À propos de Kickstarter"
-   - **it**: "Help"
    - **en**: "Help"
   */
   public static func profile_settings_about_title() -> String {
@@ -11527,7 +10844,6 @@ Let's change that!"
    - **es**: "Subscribir a notificaciones para móvil"
    - **de**: "Mobil-Benachrichtigungen aktivieren"
    - **fr**: "Inscription aux notifications mobiles"
-   - **it**: "Subscribe to mobile notifications"
    - **en**: "Subscribe to mobile notifications"
   */
   public static func profile_settings_accessibility_subscribe_mobile_notifications() -> String {
@@ -11544,7 +10860,6 @@ Let's change that!"
    - **es**: "Subscribir a notificaciones"
    - **de**: "Benachrichtigungen aktivieren"
    - **fr**: "Inscription aux notifications"
-   - **it**: "Subscribe to notifications"
    - **en**: "Subscribe to notifications"
   */
   public static func profile_settings_accessibility_subscribe_notifications() -> String {
@@ -11561,7 +10876,6 @@ Let's change that!"
    - **es**: "Cancelar subscripción a notificaciones para móvil"
    - **de**: "Mobil-Benachrichtigungen deaktivieren"
    - **fr**: "Désinscription des notifications mobiles"
-   - **it**: "Unsubscribe from mobile notifications"
    - **en**: "Unsubscribe from mobile notifications"
   */
   public static func profile_settings_accessibility_unsubscribe_mobile_notifications() -> String {
@@ -11578,7 +10892,6 @@ Let's change that!"
    - **es**: "Cancelar subscripción a notificaciones"
    - **de**: "Benachrichtigungen deaktivieren"
    - **fr**: "Désinscription des notifications"
-   - **it**: "Unsubscribe from notifications"
    - **en**: "Unsubscribe from notifications"
   */
   public static func profile_settings_accessibility_unsubscribe_notifications() -> String {
@@ -11595,7 +10908,6 @@ Let's change that!"
    - **es**: "Administrar notificaciones del proyecto"
    - **de**: "Projektbenachrichtigungen verwalten"
    - **fr**: "Gérer les notifications de projet"
-   - **it**: "Manage project notifications"
    - **en**: "Manage project notifications"
   */
   public static func profile_settings_backer_notifications() -> String {
@@ -11612,7 +10924,6 @@ Let's change that!"
    - **es**: "Actualizaciones del proyecto"
    - **de**: "Projekt-Updates"
    - **fr**: "Actus de projet"
-   - **it**: "Project updates"
    - **en**: "Project updates"
   */
   public static func profile_settings_backer_project_updates() -> String {
@@ -11629,7 +10940,6 @@ Let's change that!"
    - **es**: "Proyectos que patrocinas"
    - **de**: "Deine unterstützten Projekte"
    - **fr**: "Les projets que je soutiens"
-   - **it**: "Projects you back"
    - **en**: "Projects you back"
   */
   public static func profile_settings_backer_title() -> String {
@@ -11646,7 +10956,6 @@ Let's change that!"
    - **es**: "Nuevos comentarios"
    - **de**: "Neue Kommentare"
    - **fr**: "Nouveaux commentaires"
-   - **it**: "New comments"
    - **en**: "New comments"
   */
   public static func profile_settings_creator_comments() -> String {
@@ -11663,7 +10972,6 @@ Let's change that!"
    - **es**: ""Me gusta" nuevos"
    - **de**: "Neue Likes"
    - **fr**: "Nouvelles mentions J'aime"
-   - **it**: "New likes"
    - **en**: "New likes"
   */
   public static func profile_settings_creator_likes() -> String {
@@ -11680,7 +10988,6 @@ Let's change that!"
    - **es**: "Nuevas contribuciones"
    - **de**: "Neue Beiträge"
    - **fr**: "Nouveaux engagements"
-   - **it**: "New pledges"
    - **en**: "New pledges"
   */
   public static func profile_settings_creator_pledges() -> String {
@@ -11697,7 +11004,6 @@ Let's change that!"
    - **es**: "Notificaciones del creador"
    - **de**: "Projektgründer-Meldungen"
    - **fr**: "Notifications du créateur"
-   - **it**: "Creator notifications"
    - **en**: "Creator notifications"
   */
   public static func profile_settings_creator_title() -> String {
@@ -11714,7 +11020,6 @@ Let's change that!"
    - **es**: "No se pudo guardar"
    - **de**: "Konnte nicht gespeichert werden"
    - **fr**: "Enregistrement impossible"
-   - **it**: "Unable to save"
    - **en**: "Unable to save"
   */
   public static func profile_settings_error() -> String {
@@ -11731,7 +11036,6 @@ Let's change that!"
    - **es**: "Cerrar sesión"
    - **de**: "Abmelden"
    - **fr**: "Déconnexion"
-   - **it**: "Log out"
    - **en**: "Log out"
   */
   public static func profile_settings_log_out_button() -> String {
@@ -11748,7 +11052,6 @@ Let's change that!"
    - **es**: "Cancelar"
    - **de**: "Abbrechen"
    - **fr**: "Annuler"
-   - **it**: "Cancel"
    - **en**: "Cancel"
   */
   public static func profile_settings_logout_alert_cancel_button() -> String {
@@ -11765,7 +11068,6 @@ Let's change that!"
    - **es**: "Cerrar sesión"
    - **de**: "Abmelden"
    - **fr**: "Déconnexion"
-   - **it**: "Log out"
    - **en**: "Log out"
   */
   public static func profile_settings_logout_alert_confirm_button() -> String {
@@ -11782,7 +11084,6 @@ Let's change that!"
    - **es**: "¿Estás seguro de que quieres cerrar sesión?"
    - **de**: "Bist du sicher, dass du dich abmelden willst?"
    - **fr**: "Êtes-vous sûr de vouloir vous déconnecter ?"
-   - **it**: "Are you sure you want to log out?"
    - **en**: "Are you sure you want to log out?"
   */
   public static func profile_settings_logout_alert_message() -> String {
@@ -11799,7 +11100,6 @@ Let's change that!"
    - **es**: "Cerrar sesión"
    - **de**: "Abmelden"
    - **fr**: "Déconnexion"
-   - **it**: "Log out"
    - **en**: "Log out"
   */
   public static func profile_settings_logout_alert_title() -> String {
@@ -11816,7 +11116,6 @@ Let's change that!"
    - **es**: "Configuración"
    - **de**: "Einstellungen"
    - **fr**: "Paramètres"
-   - **it**: "Settings"
    - **en**: "Settings"
   */
   public static func profile_settings_navbar_title() -> String {
@@ -11833,7 +11132,6 @@ Let's change that!"
    - **es**: "Notificaciones"
    - **de**: "Benachrichtigungen"
    - **fr**: "Notifications"
-   - **it**: "Notifications"
    - **en**: "Notifications"
   */
   public static func profile_settings_navbar_title_notifications() -> String {
@@ -11850,7 +11148,6 @@ Let's change that!"
    - **es**: "Nos encantan los juegos"
    - **de**: "Wir lieben Spiele"
    - **fr**: "Kickstarter aime les jeux"
-   - **it**: "Kickstarter Loves Games"
    - **en**: "Kickstarter Loves Games"
   */
   public static func profile_settings_newsletter_games() -> String {
@@ -11867,7 +11164,6 @@ Let's change that!"
    - **es**: "Eventos"
    - **de**: "Happening Now"
    - **fr**: "Happening"
-   - **it**: "Happening Now"
    - **en**: "Happening Now"
   */
   public static func profile_settings_newsletter_happening() -> String {
@@ -11884,7 +11180,6 @@ Let's change that!"
    - **es**: "Hemos enviado una confirmación a la dirección de correo electrónico asociada con tu cuenta. Por favor checa tu bandeja de entrada y confirma la subscripción a %{newsletter}."
    - **de**: "Wir haben eine Bestätigung an die mit deinem Konto verbundene E-Mail-Adresse geschickt! Bitte sieh in deinem Posteingang nach und bestätige dein Abo von %{newsletter}."
    - **fr**: "Nous vous avons envoyé un e-mail de confirmation à l'adresse associée à votre compte ! Veuillez ouvrir votre boîte de réception et confirmer votre abonnement à %{newsletter}."
-   - **it**: "We've sent a confirmation email to the address associated with your account! Please check your email in order to confirm that you'd like to subscribe to %{newsletter}."
    - **en**: "We've sent a confirmation email to the address associated with your account! Please check your email in order to confirm that you'd like to subscribe to %{newsletter}."
   */
   public static func profile_settings_newsletter_opt_in_message(newsletter newsletter: String) -> String {
@@ -11901,7 +11196,6 @@ Let's change that!"
    - **es**: "¡Sólo un último paso!"
    - **de**: "Nur noch ein letzter Schritt!"
    - **fr**: "Dernière étape !"
-   - **it**: "One final step!"
    - **en**: "One final step!"
   */
   public static func profile_settings_newsletter_opt_in_title() -> String {
@@ -11918,7 +11212,6 @@ Let's change that!"
    - **es**: "Novedades y eventos de Kickstarter"
    - **de**: "Kickstarter Neuigkeiten und Events"
    - **fr**: "Nouvelles et évènements Kickstarter"
-   - **it**: "Kickstarter News and Events"
    - **en**: "Kickstarter News and Events"
   */
   public static func profile_settings_newsletter_promo() -> String {
@@ -11935,7 +11228,6 @@ Let's change that!"
    - **es**: "Boletines informativos"
    - **de**: "Newsletter"
    - **fr**: "Lettres d'information"
-   - **it**: "Newsletters"
    - **en**: "Newsletters"
   */
   public static func profile_settings_newsletter_title() -> String {
@@ -11952,7 +11244,6 @@ Let's change that!"
    - **es**: "Nuestros Favoritos"
    - **de**: "Unsere Lieblingsprojekte"
    - **fr**: "Nos coups de cœur"
-   - **it**: "Projects We Love"
    - **en**: "Projects We Love"
   */
   public static func profile_settings_newsletter_weekly() -> String {
@@ -11977,9 +11268,6 @@ Wir würden uns sehr darüber freuen!"
    - **fr**: "Merci d'utiliser l'application Kickstarter.
 Auriez-vous une minute pour évaluer votre expérience ?
 Nous vous en serions très reconnaissants !"
-   - **it**: "Thanks for using the Kickstarter app.
-If you have a moment, would you mind rating your experience?
-We'd appreciate it!"
    - **en**: "Thanks for using the Kickstarter app.
 If you have a moment, would you mind rating your experience?
 We'd appreciate it!"
@@ -12002,9 +11290,6 @@ Thank you for your support!"
    - **fr**: "Si l'application Kickstarter vous plaît, pourquoi ne pas prendre le temps de la noter dans le Play Store ?
 
 Merci pour votre soutien !"
-   - **it**: "If you enjoy using the Kickstarter app, would you mind taking a moment to rate it in the Play store?
-
-Thank you for your support!"
    - **en**: "If you enjoy using the Kickstarter app, would you mind taking a moment to rate it in the Play store?
 
 Thank you for your support!"
@@ -12023,7 +11308,6 @@ Thank you for your support!"
    - **es**: "No, gracias"
    - **de**: "Nein, Danke"
    - **fr**: "Non, merci"
-   - **it**: "No, Thanks"
    - **en**: "No, Thanks"
   */
   public static func profile_settings_rating_option_no_thanks() -> String {
@@ -12040,7 +11324,6 @@ Thank you for your support!"
    - **es**: "Califícala ahora"
    - **de**: "Jetzt bewerten"
    - **fr**: "Évaluez l'application"
-   - **it**: "Rate It Now"
    - **en**: "Rate It Now"
   */
   public static func profile_settings_rating_option_rate_now() -> String {
@@ -12057,7 +11340,6 @@ Thank you for your support!"
    - **es**: "Recordarme más tarde"
    - **de**: "Später"
    - **fr**: "Rappelez-moi plus tard"
-   - **it**: "Remind Me Later"
    - **en**: "Remind Me Later"
   */
   public static func profile_settings_rating_option_remind_later() -> String {
@@ -12074,7 +11356,6 @@ Thank you for your support!"
    - **es**: "¿Te gusta la app de Kickstarter?"
    - **de**: "Dir gefällt die App?"
    - **fr**: "Parlez de nous autour de vous"
-   - **it**: "Show us some love"
    - **en**: "Show us some love"
   */
   public static func profile_settings_rating_option_title_show_us_some_love() -> String {
@@ -12091,7 +11372,6 @@ Thank you for your support!"
    - **es**: "¡Califícanos en la App Store!"
    - **de**: "Bewerte uns im App Store!"
    - **fr**: "Évaluez-nous dans l'App Store !"
-   - **it**: "Rate us in the App Store!"
    - **en**: "Rate us in the App Store!"
   */
   public static func profile_settings_rating_rate_us() -> String {
@@ -12108,7 +11388,6 @@ Thank you for your support!"
    - **es**: "¡Califícanos en el Play Store!"
    - **de**: "Bewerte uns im Play Store!"
    - **fr**: "Évaluez-nous dans le Play Store !"
-   - **it**: "Rate us in the Play Store!"
    - **en**: "Rate us in the Play Store!"
   */
   public static func profile_settings_rating_rate_us_play_store() -> String {
@@ -12125,7 +11404,6 @@ Thank you for your support!"
    - **es**: "¡Somos todo oídos!"
    - **de**: "Wir sind ganz Ohr!"
    - **fr**: "Nous sommes tout ouïe !"
-   - **it**: "We’re all ears!"
    - **en**: "We’re all ears!"
   */
   public static func profile_settings_rating_title() -> String {
@@ -12142,7 +11420,6 @@ Thank you for your support!"
    - **es**: "Encontrar amigos"
    - **de**: "Freunde finden"
    - **fr**: "Rechercher mes amis Facebook"
-   - **it**: "Find Facebook friends"
    - **en**: "Find Facebook friends"
   */
   public static func profile_settings_social_find_friends() -> String {
@@ -12159,7 +11436,6 @@ Thank you for your support!"
    - **es**: "Nuevos seguidores"
    - **de**: "Neue Follower"
    - **fr**: "Nouveaux abonnés"
-   - **it**: "New followers"
    - **en**: "New followers"
   */
   public static func profile_settings_social_followers() -> String {
@@ -12176,7 +11452,6 @@ Thank you for your support!"
    - **es**: "Un amigo patrocina un proyecto"
    - **de**: "Ein Freund unterstützt ein Projekt"
    - **fr**: "Un ami soutient un projet"
-   - **it**: "Friend backs a project"
    - **en**: "Friend backs a project"
   */
   public static func profile_settings_social_friend_backs() -> String {
@@ -12193,7 +11468,6 @@ Thank you for your support!"
    - **es**: "Notificaciones de redes sociales"
    - **de**: "Neues aus deinem Netzwerk"
    - **fr**: "Notifications sociales"
-   - **it**: "Social notifications"
    - **en**: "Social notifications"
   */
   public static func profile_settings_social_title() -> String {
@@ -12210,7 +11484,6 @@ Thank you for your support!"
    - **es**: "Versión %{version_number}"
    - **de**: "Version %{version_number}"
    - **fr**: "Version %{version_number}"
-   - **it**: "Version %{version_number}"
    - **en**: "Version %{version_number}"
   */
   public static func profile_settings_version_number(version_number version_number: String) -> String {
@@ -12227,7 +11500,6 @@ Thank you for your support!"
    - **es**: "Compartir este proyecto"
    - **de**: "Andere über dieses Projekt informieren"
    - **fr**: "Partager ce projet"
-   - **it**: "Share this project"
    - **en**: "Share this project"
   */
   public static func project_accessibility_button_share_label() -> String {
@@ -12244,7 +11516,6 @@ Thank you for your support!"
    - **es**: "Añadir este proyecto a favoritos"
    - **de**: "Dieses Projekt zu Favoriten hinzufügen"
    - **fr**: "Ajouter à mes projets préférés"
-   - **it**: "Star this project"
    - **en**: "Star this project"
   */
   public static func project_accessibility_button_star_label() -> String {
@@ -12261,7 +11532,6 @@ Thank you for your support!"
    - **es**: "Patrocinar este proyecto"
    - **de**: "Dieses Projekt unterstützen"
    - **fr**: "Je soutiens ce projet"
-   - **it**: "Back this project"
    - **en**: "Back this project"
   */
   public static func project_back_button() -> String {
@@ -12278,7 +11548,6 @@ Thank you for your support!"
    - **es**: "¡Eres un patrocinador!"
    - **de**: "Du gehörst jetzt zu den Unterstützern!"
    - **fr**: "Vous êtes contributeur !"
-   - **it**: "You’re a backer!"
    - **en**: "You’re a backer!"
   */
   public static func project_backer_title() -> String {
@@ -12295,7 +11564,6 @@ Thank you for your support!"
    - **es**: "<b>¿Preguntas?</b> Encontrarás respuestas en el <u>manual básico del patrocinador</u>."
    - **de**: "<b>Fragen?</b> Einfach im <u>Unterstützer-Einmaleins</u> nachlesen!"
    - **fr**: "<b>Des questions ?</b> Lisez la section <u>Notions de base</u>."
-   - **it**: "<b>Questions?</b> Read the <u>backer 101</u>."
    - **en**: "<b>Questions?</b> Read the <u>backer 101</u>."
   */
   public static func project_checkout_android_pay_backer_101() -> String {
@@ -12312,7 +11580,6 @@ Thank you for your support!"
    - **es**: "Cambiar"
    - **de**: "Ändern"
    - **fr**: "Modifier"
-   - **it**: "Change"
    - **en**: "Change"
   */
   public static func project_checkout_android_pay_change() -> String {
@@ -12329,7 +11596,6 @@ Thank you for your support!"
    - **es**: "Confirmar"
    - **de**: "Bestätigen"
    - **fr**: "Confirmer"
-   - **it**: "Confirm"
    - **en**: "Confirm"
   */
   public static func project_checkout_android_pay_confirm() -> String {
@@ -12346,7 +11612,6 @@ Thank you for your support!"
    - **es**: "Lamentamos no poder procesar el pago con Android Pay en estos momentos. Por favor inténtalo de nuevo."
    - **de**: "Der Zahlungsvorgang mit Android Pay kann im Moment leider nicht bearbeitet werden. Bitte erneut versuchen."
    - **fr**: "Nous sommes désolés, mais nous ne sommes pas en mesure de traiter votre demande Android Pay pour le moment. Veuillez réessayer ultérieurement."
-   - **it**: "We’re sorry but we are unable to process your Android Pay request right now. Please try again."
    - **en**: "We’re sorry but we are unable to process your Android Pay request right now. Please try again."
   */
   public static func project_checkout_android_pay_error_message() -> String {
@@ -12363,7 +11628,6 @@ Thank you for your support!"
    - **es**: "Error de Android Pay"
    - **de**: "Fehler bei Android Pay aufgetreten"
    - **fr**: "Erreur Android Pay"
-   - **it**: "Android Pay error"
    - **en**: "Android Pay error"
   */
   public static func project_checkout_android_pay_error_title() -> String {
@@ -12380,7 +11644,6 @@ Thank you for your support!"
    - **es**: "Método de pago"
    - **de**: "Zahlungmethode"
    - **fr**: "Moyen de paiement"
-   - **it**: "Payment Method"
    - **en**: "Payment Method"
   */
   public static func project_checkout_android_pay_payment_method() -> String {
@@ -12397,7 +11660,6 @@ Thank you for your support!"
    - **es**: "Todavía no se le hará ningún cargo a tu método de pago. Se efectuará un cargo de %{charge_amount} una vez que el proyecto haya sido financiado exitosamente."
    - **de**: "Deine Zahlungsmethode wird jetzt noch nicht belastet. Erst nachdem das Projekt erfolgreich finanziert wurde, wird sie nach Ablauf desselben mit %{charge_amount} belastet."
    - **fr**: "Votre moyen de paiement ne sera pas débité tout de suite. Si le projet est intégralement financé, votre carte sera débitée de %{charge_amount} en fin de campagne."
-   - **it**: "Your payment method will not be charged at this time. If the project is successfully funded, your card will be charged %{charge_amount} when the project ends."
    - **en**: "Your payment method will not be charged at this time. If the project is successfully funded, your card will be charged %{charge_amount} when the project ends."
   */
   public static func project_checkout_android_pay_pledge_disclaimer(charge_amount charge_amount: String) -> String {
@@ -12414,7 +11676,6 @@ Thank you for your support!"
    - **es**: "Todavía no se le hará ningún cargo a tu método de pago. Se efectuará un cargo de %{charge_amount} una vez que el proyecto haya sido financiado exitosamente."
    - **de**: "Deine Zahlungsmethode wird jetzt noch nicht belastet. Erst nachdem das Projekt erfolgreich finanziert wurde, wird sie nach Ablauf desselben mit %{charge_amount} belastet."
    - **fr**: "Votre moyen de paiement ne sera pas débité tout de suite. Si le projet est intégralement financé, votre carte sera débitée de %{charge_amount} en fin de campagne."
-   - **it**: "Your payment method will not be charged at this time. If the project is successfully funded, your card will be charged %{charge_amount} when the project ends."
    - **en**: "Your payment method will not be charged at this time. If the project is successfully funded, your card will be charged %{charge_amount} when the project ends."
   */
   public static func project_checkout_android_pay_pledged_disclaimer(charge_amount charge_amount: String) -> String {
@@ -12431,7 +11692,6 @@ Thank you for your support!"
    - **es**: "Al contribuir, aceptas los <u>terms of use</u> y la <u>privacy policy</u> de Kickstarter."
    - **de**: "Durch Leistung deines Beitrags erklärst du dich mit Kickstarters <u>terms of use</u> und <u>privacy policy</u> einverstanden."
    - **fr**: "En vous engageant, vous acceptez les <u>conditions d'utilisation</u> et la <u>politique de confidentialité</u> de Kickstarter."
-   - **it**: "By pledging you agree to Kickstarter’s <u>terms of use</u> and <u>privacy policy</u>."
    - **en**: "By pledging you agree to Kickstarter’s <u>terms of use</u> and <u>privacy policy</u>."
   */
   public static func project_checkout_android_pay_terms_and_privacy() -> String {
@@ -12448,7 +11708,6 @@ Thank you for your support!"
    - **es**: "Ok"
    - **de**: "OK"
    - **fr**: "OK"
-   - **it**: "OK"
    - **en**: "OK"
   */
   public static func project_checkout_apple_pay_alert_button_ok() -> String {
@@ -12465,7 +11724,6 @@ Thank you for your support!"
    - **es**: "Error"
    - **de**: "Fehler"
    - **fr**: "Erreur"
-   - **it**: "Error"
    - **en**: "Error"
   */
   public static func project_checkout_apple_pay_alert_error() -> String {
@@ -12482,7 +11740,6 @@ Thank you for your support!"
    - **es**: "Patrocinar este proyecto"
    - **de**: "Dieses Projekt unterstützen"
    - **fr**: "Je soutiens ce projet"
-   - **it**: "Back this project"
    - **en**: "Back this project"
   */
   public static func project_checkout_backing_navbar_title() -> String {
@@ -12499,7 +11756,6 @@ Thank you for your support!"
    - **es**: "Volver al proyecto"
    - **de**: "Zurück zum Projekt"
    - **fr**: "Revenir au projet"
-   - **it**: "Return to project"
    - **en**: "Return to project"
   */
   public static func project_checkout_finalizing_failed_button() -> String {
@@ -12516,7 +11772,6 @@ Thank you for your support!"
    - **es**: "Ok"
    - **de**: "OK"
    - **fr**: "OK"
-   - **it**: "OK"
    - **en**: "OK"
   */
   public static func project_checkout_finalizing_timeout_button() -> String {
@@ -12533,7 +11788,6 @@ Thank you for your support!"
    - **es**: "¡Que pena! Parece que está tardando más de lo normal. Te enviaremos un correo electrónico una vez haya finalizado tu contribución."
    - **de**: "Wie peinlich! Dieser Vorgang scheint länger zu dauern als üblich. Wir schicken dir eine E-Mail, sobald dein Finanzierungsbeitrag bearbeitet ist."
    - **fr**: "Nous sommes désolés. On dirait que cette opération prend plus de temps que d'habitude. Nous vous enverrons un e-mail une fois votre engagement finalisé."
-   - **it**: "How embarrassing. This appears to be taking longer than usual. We will email you once your pledge is finalized."
    - **en**: "How embarrassing. This appears to be taking longer than usual. We will email you once your pledge is finalized."
   */
   public static func project_checkout_finalizing_timeout_message() -> String {
@@ -12550,7 +11804,6 @@ Thank you for your support!"
    - **es**: "Procesando"
    - **de**: "Verarbeitung läuft"
    - **fr**: "Traitement en cours"
-   - **it**: "Processing"
    - **en**: "Processing"
   */
   public static func project_checkout_finalizing_title() -> String {
@@ -12567,7 +11820,6 @@ Thank you for your support!"
    - **es**: "Estamos finalizando tu contribución para %{project_name}. ¡Sólo nos tomará un momento!"
    - **de**: "Dein Finanzierungsbeitrag für %{project_name} wird gerade bearbeitet. Das dauert nur einen kurzen Moment!"
    - **fr**: "Nous sommes en train de finaliser votre engagement pour le projet %{project_name}. Merci de patienter quelques instants !"
-   - **it**: "We’re finalizing your pledge to %{project_name}. It’ll be just a moment!"
    - **en**: "We’re finalizing your pledge to %{project_name}. It’ll be just a moment!"
   */
   public static func project_checkout_finalizing_we_are_finalizing_your_pledge_to_project(project_name project_name: String) -> String {
@@ -12584,7 +11836,6 @@ Thank you for your support!"
    - **es**: "No, gracias."
    - **de**: "Nein, danke."
    - **fr**: "Non merci."
-   - **it**: "No thanks."
    - **en**: "No thanks."
   */
   public static func project_checkout_games_alert_no_thanks() -> String {
@@ -12601,7 +11852,6 @@ Thank you for your support!"
    - **es**: "¿Qué tal si pudieras recibir automáticamente lo último acerca de videojuegos por correo electrónico? ¡Trato hecho - nuestro equipo de juegos tienen un boletín hecho a tu medida!"
    - **de**: "Wie wäre es, wenn du die coolsten Games direkt in deine Inbox geliefert bekämst? Kein Problem - unser Games-Team hat einen Newsletter für dich!"
    - **fr**: "Envie de tout savoir sur les jeux les plus cools ? La lettre d'information de notre équipe Jeux est faite pour vous."
-   - **it**: "Want the coolest games delivered to your inbox? Our Games team has a newsletter just for you."
    - **en**: "Want the coolest games delivered to your inbox? Our Games team has a newsletter just for you."
   */
   public static func project_checkout_games_alert_want_the_coolest_games_delivered_to_your_inbox() -> String {
@@ -12618,7 +11868,6 @@ Thank you for your support!"
    - **es**: "¡Claro que sí!"
    - **de**: "Gerne!"
    - **fr**: "Oui !"
-   - **it**: "Yes please!"
    - **en**: "Yes please!"
   */
   public static func project_checkout_games_alert_yes_please() -> String {
@@ -12635,7 +11884,6 @@ Thank you for your support!"
    - **es**: "¿Estás buscando nuevos proyectos? Échales un vistazo a éstos."
    - **de**: "Du suchst weitere Projekte? Schau dir diese doch mal näher an."
    - **fr**: "Vous recherchez plus de projets ? En voici quelques uns."
-   - **it**: "Looking for more projects? Check these out."
    - **en**: "Looking for more projects? Check these out."
   */
   public static func project_checkout_looking_for_more_projects_check_these_out() -> String {
@@ -12652,7 +11900,6 @@ Thank you for your support!"
    - **es**: "Administrar contribución"
    - **de**: "Finanzierungsbeitrag verwalten"
    - **fr**: "Gérer"
-   - **it**: "Manage pledge"
    - **en**: "Manage pledge"
   */
   public static func project_checkout_manage_navbar_title() -> String {
@@ -12669,7 +11916,6 @@ Thank you for your support!"
    - **es**: "Siguiente"
    - **de**: "Weiter"
    - **fr**: "Suivant"
-   - **it**: "Next"
    - **en**: "Next"
   */
   public static func project_checkout_navigation_next() -> String {
@@ -12686,7 +11932,6 @@ Thank you for your support!"
    - **es**: "Ok"
    - **de**: "OK"
    - **fr**: "OK"
-   - **it**: "OK"
    - **en**: "OK"
   */
   public static func project_checkout_share_alert_button_ok() -> String {
@@ -12703,7 +11948,6 @@ Thank you for your support!"
    - **es**: "Este dispositivo no puede enviar correos."
    - **de**: "Dieses Gerät kann keine E-Mails versenden."
    - **fr**: "Impossible d'envoyer un e-mail à partir de cet appareil."
-   - **it**: "This device is not capable of sending email."
    - **en**: "This device is not capable of sending email."
   */
   public static func project_checkout_share_alert_this_device_not_capable_of_sending_email() -> String {
@@ -12720,7 +11964,6 @@ Thank you for your support!"
    - **es**: "Más"
    - **de**: "Mehr"
    - **fr**: "Plus"
-   - **it**: "More"
    - **en**: "More"
   */
   public static func project_checkout_share_buttons_more() -> String {
@@ -12737,7 +11980,6 @@ Thank you for your support!"
    - **es**: "Más opciones para compartir"
    - **de**: "Weitere Optionen"
    - **fr**: "Plus de fonctions de partage"
-   - **it**: "More share options"
    - **en**: "More share options"
   */
   public static func project_checkout_share_buttons_more_share_options() -> String {
@@ -12754,7 +11996,6 @@ Thank you for your support!"
    - **es**: "Compartir"
    - **de**: "Teilen"
    - **fr**: "Partager"
-   - **it**: "Share"
    - **en**: "Share"
   */
   public static func project_checkout_share_buttons_share() -> String {
@@ -12771,7 +12012,6 @@ Thank you for your support!"
    - **es**: "Tweet"
    - **de**: "Twittern"
    - **fr**: "Twitter"
-   - **it**: "Tweet"
    - **en**: "Tweet"
   */
   public static func project_checkout_share_buttons_tweet() -> String {
@@ -12788,7 +12028,6 @@ Thank you for your support!"
    - **es**: "Yu-Juu!"
    - **de**: "Super!"
    - **fr**: "Félicitations !"
-   - **it**: "Woo-hoo!"
    - **en**: "Woo-hoo!"
   */
   public static func project_checkout_share_exclamation() -> String {
@@ -12805,7 +12044,6 @@ Thank you for your support!"
    - **es**: "Ok"
    - **de**: "OK"
    - **fr**: "OK"
-   - **it**: "OK"
    - **en**: "OK"
   */
   public static func project_checkout_share_link_OK() -> String {
@@ -12828,9 +12066,6 @@ Thank you for your support!"
 
 %{project_url}"
    - **fr**: "L'URL du projet a été copiée dans votre presse-papier :
-
-%{project_url}"
-   - **it**: "The project’s URL has been copied to your clipboard:
 
 %{project_url}"
    - **en**: "The project’s URL has been copied to your clipboard:
@@ -12858,9 +12093,6 @@ Thank you for your support!"
 %{update_url}"
    - **fr**: "L'URL de l'actu a été copiée dans votre presse-papier :
 %{update_url}"
-   - **it**: "The update’s URL has been copied to your clipboard:
-
-%{update_url}"
    - **en**: "The update’s URL has been copied to your clipboard:
 
 %{update_url}"
@@ -12879,7 +12111,6 @@ Thank you for your support!"
    - **es**: "%{project_or_update_title}, vía Kickstarter"
    - **de**: "%{project_or_update_title}, über Kickstarter"
    - **fr**: "%{project_or_update_title}, via Kickstarter"
-   - **it**: "%{project_or_update_title}, via Kickstarter"
    - **en**: "%{project_or_update_title}, via Kickstarter"
   */
   public static func project_checkout_share_title_via_kickstarter(project_or_update_title project_or_update_title: String) -> String {
@@ -12896,7 +12127,6 @@ Thank you for your support!"
    - **es**: "Acabo de patrocinar %{project_name} en @Kickstarter"
    - **de**: "Ich unterstütze jetzt %{project_name} auf @Kickstarter"
    - **fr**: "Je viens de soutenir le projet %{project_name} sur @Kickstarter"
-   - **it**: "I just backed %{project_name} on @Kickstarter"
    - **en**: "I just backed %{project_name} on @Kickstarter"
   */
   public static func project_checkout_share_twitter_I_just_backed_project_on_kickstarter(project_name project_name: String) -> String {
@@ -12913,7 +12143,6 @@ Thank you for your support!"
    - **es**: "%{project_or_update_title}, via Kickstarter"
    - **de**: "%{project_or_update_title}, über Kickstarter"
    - **fr**: "%{project_or_update_title}, via Kickstarter"
-   - **it**: "%{project_or_update_title}, via Kickstarter"
    - **en**: "%{project_or_update_title}, via Kickstarter"
   */
   public static func project_checkout_share_twitter_via_kickstarter(project_or_update_title project_or_update_title: String) -> String {
@@ -12930,7 +12159,6 @@ Thank you for your support!"
    - **es**: "Acabas de patrocinar a %{project_name}. ¡Comparte este proyecto con amigos para echarle una mano!"
    - **de**: "Du hast gerade %{project_name} unterstützt. Erzähle deinen Freunden von diesem Projekt, um es weiter zu fördern!"
    - **fr**: "Vous venez de soutenir le projet %{project_name}. Partagez-le avec vos amis pour l'aider à avancer !"
-   - **it**: "You just backed %{project_name}. Share this project with friends to help it along!"
    - **en**: "You just backed %{project_name}. Share this project with friends to help it along!"
   */
   public static func project_checkout_share_you_just_backed_project_share_this_project(project_name project_name: String) -> String {
@@ -12947,7 +12175,6 @@ Thank you for your support!"
    - **es**: "Acabas de patrocinar el proyecto <b>%{project_name}</b>. ¡Compártelo con tus amigos, para que se unan más a la causa!"
    - **de**: "Du gehörst nun zu den Unterstützern des Projekts <b>%{project_name}</b>. Teile es mit deinen Freunden - je mehr Unterstützer, desto besser!"
    - **fr**: "Vous venez de soutenir le projet <b>%{project_name}</b>. Partagez-le avec vos amis pour l'aider à avancer !"
-   - **it**: "You just backed <b>%{project_name}</b>. Share this project with friends to help it along!"
    - **en**: "You just backed <b>%{project_name}</b>. Share this project with friends to help it along!"
   */
   public static func project_checkout_share_you_just_backed_project_share_this_project_html(project_name project_name: String) -> String {
@@ -12964,7 +12191,6 @@ Thank you for your support!"
    - **es**: "Escribe un comentario"
    - **de**: "Hinterlasse einen Kommentar"
    - **fr**: "Rédiger un commentaire"
-   - **it**: "Write a comment"
    - **en**: "Write a comment"
   */
   public static func project_comments_accessibility_button_write() -> String {
@@ -12981,7 +12207,6 @@ Thank you for your support!"
    - **es**: "Deja un comentario"
    - **de**: "Kommentar hinterlassen"
    - **fr**: "Laisser un commentaire"
-   - **it**: "Leave a comment"
    - **en**: "Leave a comment"
   */
   public static func project_comments_empty_state_backer_button() -> String {
@@ -12998,7 +12223,6 @@ Thank you for your support!"
    - **es**: "Ay, ¡qué pena! Pero - ¡tú podrías ser el primer patrocinador que deja un comentario en este proyecto!"
    - **de**: "Oh wie schade. Du könntest der erste Unterstützer sein, der dieses Projekt kommentiert!"
    - **fr**: "Oh, quel dommage. Soyez le premier contributeur à laisser un commentaire sur ce projet."
-   - **it**: "Aw, how sad. Be the first backer to leave a comment on this project."
    - **en**: "Aw, how sad. Be the first backer to leave a comment on this project."
   */
   public static func project_comments_empty_state_backer_message() -> String {
@@ -13015,7 +12239,6 @@ Thank you for your support!"
    - **es**: "No hay comentarios"
    - **de**: "Keine Kommentare"
    - **fr**: "Pas de commentaires"
-   - **it**: "No comments"
    - **en**: "No comments"
   */
   public static func project_comments_empty_state_backer_title() -> String {
@@ -13032,7 +12255,6 @@ Thank you for your support!"
    - **es**: "Ay, ¡qué pena! Hazte patrocinador para dejar un comentario."
    - **de**: "Oh wie schade. Werde Unterstützer um einen Kommentar zu hinterlassen."
    - **fr**: "Oh, quel dommage. Soutenez ce projet afin de pouvoir laisser un commentaire."
-   - **it**: "Aw, how sad. Become a backer to leave a comment."
    - **en**: "Aw, how sad. Become a backer to leave a comment."
   */
   public static func project_comments_empty_state_logged_out_message() -> String {
@@ -13049,7 +12271,6 @@ Thank you for your support!"
    - **es**: "¡Ay qué triste! Por favor inicia sesión para patrocinar este proyecto o para publicar un comentario."
    - **de**: "Ach, wie schade! Wenn du das das Projekt unterstützen oder einen Kommentar hinterlassen möchtest, melde dich bitte an."
    - **fr**: "Oh, quel dommage. Connectez-vous pour contribuer ou pour laisser un commentaire."
-   - **it**: "Aw, how sad. Log in to become a backer or leave a comment."
    - **en**: "Aw, how sad. Log in to become a backer or leave a comment."
   */
   public static func project_comments_empty_state_logged_out_message_log_in() -> String {
@@ -13066,7 +12287,6 @@ Thank you for your support!"
    - **es**: "No hay comentarios"
    - **de**: "Keine Kommentare"
    - **fr**: "Pas de commentaires"
-   - **it**: "No comments"
    - **en**: "No comments"
   */
   public static func project_comments_empty_state_logged_out_title() -> String {
@@ -13083,7 +12303,6 @@ Thank you for your support!"
    - **es**: "Ay, ¡qué pena! Hazte patrocinador para dejar un comentario."
    - **de**: "Oh wie schade. Werde Unterstützer um einen Kommentar zu verfassen."
    - **fr**: "Oh, quel dommage. Soutenez ce projet afin de pouvoir laisser un commentaire."
-   - **it**: "Aw, how sad. Become a backer to leave a comment."
    - **en**: "Aw, how sad. Become a backer to leave a comment."
   */
   public static func project_comments_empty_state_non_backer_message() -> String {
@@ -13100,7 +12319,6 @@ Thank you for your support!"
    - **es**: "No hay comentarios"
    - **de**: "Keine Kommentare"
    - **fr**: "Pas de commentaires"
-   - **it**: "No comments"
    - **en**: "No comments"
   */
   public static func project_comments_empty_state_non_backer_title() -> String {
@@ -13117,7 +12335,6 @@ Thank you for your support!"
    - **es**: "Lo sentimos, no se pudo publicar tu comentario."
    - **de**: "Dein Kommentar konnte leider nicht gepostet werden."
    - **fr**: "Désolé, votre commentaire n'a pas pu être publié."
-   - **it**: "Sorry, your comment could not be posted."
    - **en**: "Sorry, your comment could not be posted."
   */
   public static func project_comments_error_posting() -> String {
@@ -13134,7 +12351,6 @@ Thank you for your support!"
    - **es**: "¡Comentario fue publicado!"
    - **de**: "Kommentar veröffentlicht!"
    - **fr**: "Commentaire publié !"
-   - **it**: "Comment posted!"
    - **en**: "Comment posted!"
   */
   public static func project_comments_posted() -> String {
@@ -13151,7 +12367,6 @@ Thank you for your support!"
    - **es**: "por %{creator_name}"
    - **de**: "von %{creator_name}"
    - **fr**: "par %{creator_name}"
-   - **it**: "by %{creator_name}"
    - **en**: "by %{creator_name}"
   */
   public static func project_creator_by_creator(creator_name creator_name: String) -> String {
@@ -13168,7 +12383,6 @@ Thank you for your support!"
    - **es**: "de %{creator_name}"
    - **de**: "von %{creator_name}"
    - **fr**: "par %{creator_name}"
-   - **it**: "by <u>%{creator_name}</u>"
    - **en**: "by <u>%{creator_name}</u>"
   */
   public static func project_creator_by_creator_html(creator_name creator_name: String) -> String {
@@ -13185,7 +12399,6 @@ Thank you for your support!"
    - **es**: " • Tú eres un patrocinador"
    - **de**: " • Du unterstützt das Projekt"
    - **fr**: " • Vous êtes contributeur"
-   - **it**: " • You're a backer"
    - **en**: " • You're a backer"
   */
   public static func project_creator_youre_a_backer() -> String {
@@ -13202,7 +12415,6 @@ Thank you for your support!"
    - **es**: "Este proyecto será financiado únicamente si se contribuye por lo menos %{goal_currency} hasta %{deadline}."
    - **de**: "Dieses Projekt wird nur finanziert, wenn bis %{deadline} mindestens %{goal_currency} zusammenkommen."
    - **fr**: "Ce projet ne sera financé que si au moins %{goal_currency} sont engagés avant le %{deadline}."
-   - **it**: "This project will only be funded if at least %{goal_currency} is pledged by %{deadline}."
    - **en**: "This project will only be funded if at least %{goal_currency} is pledged by %{deadline}."
   */
   public static func project_disclaimer_goal_not_reached(goal_currency goal_currency: String, deadline: String) -> String {
@@ -13219,7 +12431,6 @@ Thank you for your support!"
    - **es**: "Este proyecto será financiado el  %{deadline}."
    - **de**: "Dieses Projekt wird am %{deadline} finanziert."
    - **fr**: "Ce projet sera financé le %{deadline}."
-   - **it**: "This project will be funded on %{deadline}."
    - **en**: "This project will be funded on %{deadline}."
   */
   public static func project_disclaimer_goal_reached(deadline deadline: String) -> String {
@@ -13236,7 +12447,6 @@ Thank you for your support!"
    - **es**: "Amigos"
    - **de**: "Freunde"
    - **fr**: "Amis"
-   - **it**: "Friends"
    - **en**: "Friends"
   */
   public static func project_friends_backing_title_friends() -> String {
@@ -13253,7 +12463,6 @@ Thank you for your support!"
    - **es**: "Administrar contribución"
    - **de**: "Finanzierungsbeitrag verwalten"
    - **fr**: "Gérer"
-   - **it**: "Manage pledge"
    - **en**: "Manage pledge"
   */
   public static func project_manage_button() -> String {
@@ -13270,7 +12479,6 @@ Thank you for your support!"
    - **es**: "Campaña"
    - **de**: "Kampagne"
    - **fr**: "Campagne"
-   - **it**: "Campaign"
    - **en**: "Campaign"
   */
   public static func project_menu_buttons_campaign() -> String {
@@ -13287,7 +12495,6 @@ Thank you for your support!"
    - **es**: "Comentarios"
    - **de**: "Kommentare"
    - **fr**: "Commentaires"
-   - **it**: "Comments"
    - **en**: "Comments"
   */
   public static func project_menu_buttons_comments() -> String {
@@ -13304,7 +12511,6 @@ Thank you for your support!"
    - **es**: "Actualizaciones"
    - **de**: "Updates"
    - **fr**: "Actus"
-   - **it**: "Updates"
    - **en**: "Updates"
   */
   public static func project_menu_buttons_updates() -> String {
@@ -13321,7 +12527,6 @@ Thank you for your support!"
    - **es**: "Creado por"
    - **de**: "Erstellt von"
    - **fr**: "Créé par"
-   - **it**: "Created by"
    - **en**: "Created by"
   */
   public static func project_menu_created_by() -> String {
@@ -13338,7 +12543,6 @@ Thank you for your support!"
    - **es**: "Explorar este proyecto"
    - **de**: "Projekt erkunden"
    - **fr**: "Découvrir ce projet"
-   - **it**: "Explore this project"
    - **en**: "Explore this project"
   */
   public static func project_menu_explore_this_project() -> String {
@@ -13355,7 +12559,6 @@ Thank you for your support!"
    - **es**: "%{project_title}, via @Kickstarter"
    - **de**: "%{project_title}, via @Kickstarter"
    - **fr**: "%{project_title}, via @Kickstarter"
-   - **it**: "%{project_title}, via @Kickstarter"
    - **en**: "%{project_title}, via @Kickstarter"
   */
   public static func project_share_twitter_message(project_title project_title: String) -> String {
@@ -13372,7 +12575,6 @@ Thank you for your support!"
    - **es**: "%{friend_name} y %{second_friend_name} patrocinan este proyecto."
    - **de**: "%{friend_name} und %{second_friend_name} unterstützen dieses Projekt."
    - **fr**: "%{friend_name} et %{second_friend_name} sont contributeurs."
-   - **it**: "%{friend_name} and %{second_friend_name} are backers."
    - **en**: "%{friend_name} and %{second_friend_name} are backers."
   */
   public static func project_social_friend_and_friend_are_backers(friend_name friend_name: String, second_friend_name: String) -> String {
@@ -13389,7 +12591,6 @@ Thank you for your support!"
    - **es**: "%{friend_name} patrocina este proyecto."
    - **de**: "%{friend_name} unterstützt dieses Projekt."
    - **fr**: "%{friend_name} est contributeur."
-   - **it**: "%{friend_name} is a backer."
    - **en**: "%{friend_name} is a backer."
   */
   public static func project_social_friend_is_backer(friend_name friend_name: String) -> String {
@@ -13406,7 +12607,6 @@ Thank you for your support!"
    - **es**: "%{backer_count} más"
    - **de**: "%{backer_count} weitere"
    - **fr**: "%{backer_count} autres personnes"
-   - **it**: "%{backer_count} more"
    - **en**: "%{backer_count} more"
   */
   public static func project_social_friends_are_backers_and_more_bold(backer_count backer_count: Int) -> String {
@@ -13423,7 +12623,6 @@ Thank you for your support!"
    - **es**: "%{friends} y %{backer_count} personas más patrocinan este proyecto."
    - **de**: "%{friends} und %{backer_count} weitere Personen unterstützen dieses Projekt."
    - **fr**: "%{friends} et %{backer_count} autres personnes sont contributeurs."
-   - **it**: "%{friends} and %{backer_count} more are backers."
    - **en**: "%{friends} and %{backer_count} more are backers."
   */
   public static func project_social_friends_are_backers_and_more_count(friends friends: String, backer_count: Int) -> String {
@@ -13440,7 +12639,6 @@ Thank you for your support!"
    - **es**: ", "
    - **de**: ", "
    - **fr**: ", "
-   - **it**: ", "
    - **en**: ", "
   */
   public static func project_social_friends_separator() -> String {
@@ -13457,7 +12655,6 @@ Thank you for your support!"
    - **es**: "¡Te avisaremos 48 horas antes de que finalice este proyecto !"
    - **de**: "Wir werden dich 48 Stunden vor Ende dieses Projekts daran erinnern!"
    - **fr**: "Nous vous enverrons un rappel 48 heures avant la fin de la campagne de ce projet !"
-   - **it**: "We'll remind you 48 hours before this project ends!"
    - **en**: "We'll remind you 48 hours before this project ends!"
   */
   public static func project_star_confirmation() -> String {
@@ -13474,7 +12671,6 @@ Thank you for your support!"
    - **es**: "Ok"
    - **de**: "OK"
    - **fr**: "OK"
-   - **it**: "OK"
    - **en**: "OK"
   */
   public static func project_star_ok() -> String {
@@ -13491,7 +12687,6 @@ Thank you for your support!"
    - **es**: "¡Financiado!"
    - **de**: "Finanziert!"
    - **fr**: "Financé !"
-   - **it**: "Funded!"
    - **en**: "Funded!"
   */
   public static func project_status_funded() -> String {
@@ -13508,7 +12703,6 @@ Thank you for your support!"
    - **es**: "Financiamiento cancelado"
    - **de**: "Finanzierung abgebrochen"
    - **fr**: "Financement annulé"
-   - **it**: "Funding Canceled"
    - **en**: "Funding Canceled"
   */
   public static func project_status_funding_canceled() -> String {
@@ -13525,7 +12719,6 @@ Thank you for your support!"
    - **es**: "El financiamiento para este proyecto ha sido cancelado por el creador."
    - **de**: "Der Projektgründer hat die Finanzierung für dieses Projekt abgebrochen."
    - **fr**: "Le financement de ce projet a été annulé par son créateur."
-   - **it**: "Funding for this project was canceled by the project creator."
    - **en**: "Funding for this project was canceled by the project creator."
   */
   public static func project_status_funding_project_canceled_by_creator() -> String {
@@ -13542,7 +12735,6 @@ Thank you for your support!"
    - **es**: "El financiamiento para este proyecto ha sido suspendido."
    - **de**: "Die Finanzierung für dieses Projekt wurde ausgesetzt."
    - **fr**: "Le financement de ce projet a été suspendu."
-   - **it**: "Funding for this project was suspended."
    - **en**: "Funding for this project was suspended."
   */
   public static func project_status_funding_project_suspended() -> String {
@@ -13559,7 +12751,6 @@ Thank you for your support!"
    - **es**: "Financiamiento suspendido"
    - **de**: "Finanzierung ausgesetzt"
    - **fr**: "Financement suspendu"
-   - **it**: "Funding Suspended"
    - **en**: "Funding Suspended"
   */
   public static func project_status_funding_suspended() -> String {
@@ -13576,7 +12767,6 @@ Thank you for your support!"
    - **es**: "Financiamiento sin éxito"
    - **de**: "Finanzierung fehlgeschlagen"
    - **fr**: "Financement non réussi"
-   - **it**: "Funding Unsuccessful"
    - **en**: "Funding Unsuccessful"
   */
   public static func project_status_funding_unsuccessful() -> String {
@@ -13593,7 +12783,6 @@ Thank you for your support!"
    - **es**: "La meta de financiamiento de este proyecto no fue alcanzada el %{deadline}."
    - **de**: "Das Finanzierungsziel für dieses Projekt wurde nicht erreicht %{deadline}."
    - **fr**: "L'objectif de financement de ce projet n'a pas été atteint avant le %{deadline}."
-   - **it**: "This project’s funding goal was not reached %{deadline}."
    - **en**: "This project’s funding goal was not reached %{deadline}."
   */
   public static func project_status_project_funding_goal_not_reached(deadline deadline: String) -> String {
@@ -13610,7 +12799,6 @@ Thank you for your support!"
    - **es**: "Este proyecto fue eliminado y es únicamente visible para el equipo de Kickstarter."
    - **de**: "Dieses Projekt wurde gelöscht und ist nur für das Kickstarter-Team sichtbar."
    - **fr**: "Ce projet a été supprimé et n'est visible que pour l'équipe."
-   - **it**: "This project is purged and only visible to staff."
    - **en**: "This project is purged and only visible to staff."
   */
   public static func project_status_project_purged_only_visible_to_staff() -> String {
@@ -13627,7 +12815,6 @@ Thank you for your support!"
    - **es**: "Este proyecto fue financiado con éxito el %{deadline}."
    - **de**: "Dieses Projekt wurde am %{deadline} erfolgreich finanziert."
    - **fr**: "Ce projet a été financé avec succès le %{deadline}."
-   - **it**: "This project was successfully funded on %{deadline}."
    - **en**: "This project was successfully funded on %{deadline}."
   */
   public static func project_status_project_was_successfully_funded_on_deadline(deadline deadline: String) -> String {
@@ -13644,7 +12831,6 @@ Thank you for your support!"
    - **es**: "Campaña"
    - **de**: "Kampagne"
    - **fr**: "Campagne"
-   - **it**: "Campaign"
    - **en**: "Campaign"
   */
   public static func project_subpages_menu_buttons_campaign() -> String {
@@ -13661,7 +12847,6 @@ Thank you for your support!"
    - **es**: "Comentarios"
    - **de**: "Kommentare"
    - **fr**: "Commentaires"
-   - **it**: "Comments"
    - **en**: "Comments"
   */
   public static func project_subpages_menu_buttons_comments() -> String {
@@ -13678,7 +12863,6 @@ Thank you for your support!"
    - **es**: "Creador"
    - **de**: "Projektgründer"
    - **fr**: "Créateur"
-   - **it**: "Creator"
    - **en**: "Creator"
   */
   public static func project_subpages_menu_buttons_creator() -> String {
@@ -13695,7 +12879,6 @@ Thank you for your support!"
    - **es**: "Recompensas"
    - **de**: "Belohnungen"
    - **fr**: "Récompenses"
-   - **it**: "Rewards"
    - **en**: "Rewards"
   */
   public static func project_subpages_menu_buttons_rewards() -> String {
@@ -13712,7 +12895,6 @@ Thank you for your support!"
    - **es**: "Actualizaciones"
    - **de**: "Updates"
    - **fr**: "Actus"
-   - **it**: "Updates"
    - **en**: "Updates"
   */
   public static func project_subpages_menu_buttons_updates() -> String {
@@ -13729,7 +12911,6 @@ Thank you for your support!"
    - **es**: "Se notificarán a los patrocinadores cuando hay actualizaciones del proyecto."
    - **de**: "Unterstützer werden bei neuen Projekt-Updates benachrichtigt."
    - **fr**: "Les contributeurs reçoivent une notification quand de nouvelles actus sont publiées."
-   - **it**: "Backers are notified when there are new project updates."
    - **en**: "Backers are notified when there are new project updates."
   */
   public static func project_updates_empty_state_backer_message() -> String {
@@ -13746,7 +12927,6 @@ Thank you for your support!"
    - **es**: "No hay actualizaciones"
    - **de**: "Keine Updates"
    - **fr**: "Pas d'actus"
-   - **it**: "No updates"
    - **en**: "No updates"
   */
   public static func project_updates_empty_state_backer_title() -> String {
@@ -13763,7 +12943,6 @@ Thank you for your support!"
    - **es**: "Se notificarán a los patrocinadores cuando hay actualizaciones del proyecto."
    - **de**: "Unterstützer werden bei neuen Projekt-Updates benachrichtigt."
    - **fr**: "Les contributeurs reçoivent une notification quand de nouvelles actus sont publiées."
-   - **it**: "Backers are notified when there are new project updates."
    - **en**: "Backers are notified when there are new project updates."
   */
   public static func project_updates_empty_state_logged_out_message() -> String {
@@ -13780,7 +12959,6 @@ Thank you for your support!"
    - **es**: "No hay actualizaciones"
    - **de**: "Keine Updates"
    - **fr**: "Pas d'actus"
-   - **it**: "No updates"
    - **en**: "No updates"
   */
   public static func project_updates_empty_state_logged_out_title() -> String {
@@ -13797,7 +12975,6 @@ Thank you for your support!"
    - **es**: "Se notificarán a los patrocinadores cuando hay actualizaciones del proyecto."
    - **de**: "Unterstützer werden bei neuen Projekt-Updates benachrichtigt."
    - **fr**: "Les contributeurs reçoivent une notification quand de nouvelles actus sont publiées."
-   - **it**: "Backers are notified when there are new project updates."
    - **en**: "Backers are notified when there are new project updates."
   */
   public static func project_updates_empty_state_non_backer_message() -> String {
@@ -13814,7 +12991,6 @@ Thank you for your support!"
    - **es**: "No hay actualizaciones"
    - **de**: "Keine Updates"
    - **fr**: "Pas d'actus"
-   - **it**: "No updates"
    - **en**: "No updates"
   */
   public static func project_updates_empty_state_non_backer_title() -> String {
@@ -13831,7 +13007,6 @@ Thank you for your support!"
    - **es**: "Ver contribución"
    - **de**: "Finanzierungsbeitrag anzeigen"
    - **fr**: "Afficher mon engagement"
-   - **it**: "View pledge"
    - **en**: "View pledge"
   */
   public static func project_view_button() -> String {
@@ -13848,7 +13023,6 @@ Thank you for your support!"
    - **es**: "Incluye"
    - **de**: "Enthält:"
    - **fr**: "Comprend"
-   - **it**: "Includes"
    - **en**: "Includes"
   */
   public static func project_view_pledge_includes() -> String {
@@ -13865,7 +13039,6 @@ Thank you for your support!"
    - **es**: "Cancelada"
    - **de**: "Zurückgezogen"
    - **fr**: "Annulé"
-   - **it**: "Canceled"
    - **en**: "Canceled"
   */
   public static func project_view_pledge_status_canceled() -> String {
@@ -13882,7 +13055,6 @@ Thank you for your support!"
    - **es**: "Recaudada"
    - **de**: "Abgebucht"
    - **fr**: "Fonds collectés"
-   - **it**: "Collected"
    - **en**: "Collected"
   */
   public static func project_view_pledge_status_collected() -> String {
@@ -13899,7 +13071,6 @@ Thank you for your support!"
    - **es**: "Descartada"
    - **de**: "Nicht übernommen"
    - **fr**: "Abandonné"
-   - **it**: "Dropped"
    - **en**: "Dropped"
   */
   public static func project_view_pledge_status_dropped() -> String {
@@ -13916,7 +13087,6 @@ Thank you for your support!"
    - **es**: "Error"
    - **de**: "Fehlerhaft"
    - **fr**: "Erreur"
-   - **it**: "Errored"
    - **en**: "Errored"
   */
   public static func project_view_pledge_status_errored() -> String {
@@ -13933,7 +13103,6 @@ Thank you for your support!"
    - **es**: "Contribuyó"
    - **de**: "Finanzierungsbeitrag:"
    - **fr**: "Engagement"
-   - **it**: "Pledged"
    - **en**: "Pledged"
   */
   public static func project_view_pledge_status_pledged() -> String {
@@ -13950,7 +13119,6 @@ Thank you for your support!"
    - **es**: "%{project_count} proyectos"
    - **de**: "%{project_count} Projekte"
    - **fr**: "%{project_count} projets"
-   - **it**: "%{project_count} projects"
    - **en**: "%{project_count} projects"
   */
   public static func project_count_projects(project_count project_count: Int) -> String {
@@ -13967,7 +13135,6 @@ Thank you for your support!"
    - **es**: "Cerrar"
    - **de**: "Schließen"
    - **fr**: "Fermer"
-   - **it**: "Close"
    - **en**: "Close"
   */
   public static func push_notifications_alert_buttons_close() -> String {
@@ -13984,7 +13151,6 @@ Thank you for your support!"
    - **es**: "Ver"
    - **de**: "Anzeigen"
    - **fr**: "Afficher"
-   - **it**: "View"
    - **en**: "View"
   */
   public static func push_notifications_alert_buttons_view() -> String {
@@ -14001,7 +13167,6 @@ Thank you for your support!"
    - **es**: "¡Recompensas agotadas!"
    - **de**: "Alle weg"
    - **fr**: "Épuisé"
-   - **it**: "All gone"
    - **en**: "All gone"
   */
   public static func rewards_info_all_gone() -> String {
@@ -14018,7 +13183,6 @@ Thank you for your support!"
    - **es**: "%{backer_count} patrocinadores"
    - **de**: "%{backer_count} Unterstützer"
    - **fr**: "%{backer_count} contributeurs"
-   - **it**: "%{backer_count} backers"
    - **en**: "%{backer_count} backers"
   */
   public static func rewards_info_backer_count_backers(backer_count backer_count: Int) -> String {
@@ -14035,7 +13199,6 @@ Thank you for your support!"
    - **es**: "Entrega aproximada"
    - **de**: "Voraussichtliche Lieferung"
    - **fr**: "Livraison prévue"
-   - **it**: "Estimated delivery"
    - **en**: "Estimated delivery"
   */
   public static func rewards_info_estimated_delivery() -> String {
@@ -14052,7 +13215,6 @@ Thank you for your support!"
    - **es**: "Incluye"
    - **de**: "Enthält:"
    - **fr**: "Comprend"
-   - **it**: "Includes"
    - **en**: "Includes"
   */
   public static func rewards_info_includes() -> String {
@@ -14069,7 +13231,6 @@ Thank you for your support!"
    - **es**: "Limitado (quedan %{rewards_remaining} de %{reward_limit})"
    - **de**: "Begrenzt (%{rewards_remaining} von %{reward_limit} übrig)"
    - **fr**: "Stock limité (il en reste %{rewards_remaining} sur %{reward_limit})"
-   - **it**: "Limited (%{rewards_remaining} left of %{reward_limit})"
    - **en**: "Limited (%{rewards_remaining} left of %{reward_limit})"
   */
   public static func rewards_info_limited_rewards_remaining_left_of_reward_limit(rewards_remaining rewards_remaining: String, reward_limit: String) -> String {
@@ -14086,7 +13247,6 @@ Thank you for your support!"
    - **es**: "Envío"
    - **de**: "Versand"
    - **fr**: "Expédition"
-   - **it**: "Shipping"
    - **en**: "Shipping"
   */
   public static func rewards_info_shipping() -> String {
@@ -14103,7 +13263,6 @@ Thank you for your support!"
    - **es**: "Destinos de envío"
    - **de**: "Versandziele"
    - **fr**: "Expédition"
-   - **it**: "Shipping destinations"
    - **en**: "Shipping destinations"
   */
   public static func rewards_info_shipping_destinations() -> String {
@@ -14120,7 +13279,6 @@ Thank you for your support!"
    - **es**: "Envío a"
    - **de**: "Versandziel"
    - **fr**: "Livraison"
-   - **it**: "Ships to"
    - **en**: "Ships to"
   */
   public static func rewards_info_ships_to() -> String {
@@ -14137,7 +13295,6 @@ Thank you for your support!"
    - **es**: "Tiempo restante: {{time}}"
    - **de**: "{{time}} verbleibend"
    - **fr**: "Plus que %{time}"
-   - **it**: "%{time} left"
    - **en**: "%{time} left"
   */
   public static func rewards_info_time_left(time time: String) -> String {
@@ -14154,7 +13311,6 @@ Thank you for your support!"
    - **es**: "Seleccionar"
    - **de**: "Auswählen"
    - **fr**: "Sélectionner"
-   - **it**: "Select"
    - **en**: "Select"
   */
   public static func rewards_select_label_select() -> String {
@@ -14171,7 +13327,6 @@ Thank you for your support!"
    - **es**: "Seleccionaste"
    - **de**: "Deine Auswahl"
    - **fr**: "Votre sélection"
-   - **it**: "You selected"
    - **en**: "You selected"
   */
   public static func rewards_selected_label_you_selected() -> String {
@@ -14188,7 +13343,6 @@ Thank you for your support!"
    - **es**: "Envíos a cualquier lugar del mundo"
    - **de**: "Weltweiter Versand"
    - **fr**: "Livraison dans le monde entier"
-   - **it**: "Shipping anywhere in the world"
    - **en**: "Shipping anywhere in the world"
   */
   public static func rewards_shipping_preferences_location_unrestricted() -> String {
@@ -14205,7 +13359,6 @@ Thank you for your support!"
    - **es**: "Aprox. %{reward_amount} USD"
    - **de**: "Ungefähr %{reward_amount} USD"
    - **fr**: "Environ %{reward_amount} USD"
-   - **it**: "About %{reward_amount} USD"
    - **en**: "About %{reward_amount} USD"
   */
   public static func rewards_title_about_amount_usd(reward_amount reward_amount: String) -> String {
@@ -14222,7 +13375,6 @@ Thank you for your support!"
    - **es**: "Contribuye %{reward_currency} o más"
    - **de**: "Trage %{reward_currency} oder mehr bei"
    - **fr**: "Contribution de %{reward_currency} ou plus"
-   - **it**: "Pledge %{reward_currency} or more"
    - **en**: "Pledge %{reward_currency} or more"
   */
   public static func rewards_title_pledge_reward_currency_or_more(reward_currency reward_currency: String) -> String {
@@ -14239,7 +13391,6 @@ Thank you for your support!"
    - **es**: "de %{creator_name}"
    - **de**: "von %{creator_name}"
    - **fr**: "par %{creator_name}"
-   - **it**: "by %{creator_name}"
    - **en**: "by %{creator_name}"
   */
   public static func search_by_creator(creator_name creator_name: String) -> String {
@@ -14256,7 +13407,6 @@ Thank you for your support!"
    - **es**: "Los más populares"
    - **de**: "Publikumslieblinge"
    - **fr**: "Les tendances"
-   - **it**: "Most Popular"
    - **en**: "Most Popular"
   */
   public static func search_most_popular() -> String {
@@ -14273,7 +13423,6 @@ Thank you for your support!"
    - **es**: "Regístrar"
    - **de**: "Registrieren"
    - **fr**: "Inscription"
-   - **it**: "Sign up"
    - **en**: "Sign up"
   */
   public static func signup_button() -> String {
@@ -14290,7 +13439,6 @@ Thank you for your support!"
    - **es**: "Registro con correo electrónico"
    - **de**: "Mit E-Mail-Adresse registrieren"
    - **fr**: "Inscription avec votre adresse e-mail"
-   - **it**: "Sign up with email"
    - **en**: "Sign up with email"
   */
   public static func signup_button_email() -> String {
@@ -14307,7 +13455,6 @@ Thank you for your support!"
    - **es**: "Algo pasó aquí."
    - **de**: "Da hat etwas nicht geklappt."
    - **fr**: "Un erreur s'est produite."
-   - **it**: "Something went wrong."
    - **en**: "Something went wrong."
   */
   public static func signup_error_something_wrong() -> String {
@@ -14324,7 +13471,6 @@ Thank you for your support!"
    - **es**: "Error de registración"
    - **de**: "Fehler bei Registrierung"
    - **fr**: "Erreur d'inscription"
-   - **it**: "Sign up error"
    - **en**: "Sign up error"
   */
   public static func signup_error_title() -> String {
@@ -14341,7 +13487,6 @@ Thank you for your support!"
    - **es**: "Correo electrónico"
    - **de**: "E-Mail"
    - **fr**: "E-mail"
-   - **it**: "Email"
    - **en**: "Email"
   */
   public static func signup_input_fields_email() -> String {
@@ -14358,7 +13503,6 @@ Thank you for your support!"
    - **es**: "Nombre completo"
    - **de**: "Vollständiger Name"
    - **fr**: "Nom complet"
-   - **it**: "Full name"
    - **en**: "Full name"
   */
   public static func signup_input_fields_full_name() -> String {
@@ -14375,7 +13519,6 @@ Thank you for your support!"
    - **es**: "Contraseña"
    - **de**: "Passwort"
    - **fr**: "Mot de passe"
-   - **it**: "Password"
    - **en**: "Password"
   */
   public static func signup_input_fields_password() -> String {
@@ -14392,7 +13535,6 @@ Thank you for your support!"
    - **es**: "Clave (mínimo 6 caracteres)"
    - **de**: "Passwort (mindestens 6 Zeichen)"
    - **fr**: "Mot de passe (6 caractères minimum)"
-   - **it**: "Password (minimum 6 characters)"
    - **en**: "Password (minimum 6 characters)"
   */
   public static func signup_input_fields_password_min_characters() -> String {
@@ -14409,7 +13551,6 @@ Thank you for your support!"
    - **es**: "Registrar"
    - **de**: "Registrieren"
    - **fr**: "Inscription"
-   - **it**: "Sign up"
    - **en**: "Sign up"
   */
   public static func signup_navbar_title() -> String {
@@ -14426,7 +13567,6 @@ Thank you for your support!"
    - **es**: "Descubre nuevos proyectos con nuestro boletín semanal."
    - **de**: "Endecke neue Projekte in unserem wöchentlichen Newsletter."
    - **fr**: "Découvrez de nouveaux projets grâce à notre lettre d'informations hebdomadaire."
-   - **it**: "Receive our weekly newsletter and other occasional updates."
    - **en**: "Receive our weekly newsletter and other occasional updates."
   */
   public static func signup_newsletter_full() -> String {
@@ -14443,7 +13583,6 @@ Thank you for your support!"
    - **es**: "Cancelar"
    - **de**: "Abbrechen"
    - **fr**: "Annuler"
-   - **it**: "Cancel"
    - **en**: "Cancel"
   */
   public static func social_buttons_cancel() -> String {
@@ -14460,7 +13599,6 @@ Thank you for your support!"
    - **es**: "Publicar"
    - **de**: "Posten"
    - **fr**: "Publier"
-   - **it**: "Post"
    - **en**: "Post"
   */
   public static func social_buttons_post() -> String {
@@ -14477,7 +13615,6 @@ Thank you for your support!"
    - **es**: "Enviar"
    - **de**: "Senden"
    - **fr**: "Envoyer"
-   - **it**: "Send"
    - **en**: "Send"
   */
   public static func social_buttons_send() -> String {
@@ -14494,7 +13631,6 @@ Thank you for your support!"
    - **es**: "No se pudo publicar. Inténtalo de nuevo más tarde."
    - **de**: "Post fehlgeschlagen. Versuche es einfach später nochmal."
    - **fr**: "Publication impossible. Veuillez réessayer plus tard."
-   - **it**: "Couldn't post. Try again later."
    - **en**: "Couldn't post. Try again later."
   */
   public static func social_error_could_not_post_try_again() -> String {
@@ -14511,7 +13647,6 @@ Thank you for your support!"
    - **es**: "No se pudo enviar el mensaje. Inténtalo de nuevo."
    - **de**: "Nachricht nicht versandt. Versuche es erneut."
    - **fr**: "Impossible d'envoyer votre message. Veuillez réessayer plus tard."
-   - **it**: "Couldn't send message. Try again."
    - **en**: "Couldn't send message. Try again."
   */
   public static func social_error_could_not_send_message_backer() -> String {
@@ -14528,7 +13663,6 @@ Thank you for your support!"
    - **es**: "No se pudo enviar el mensaje. Inténtalo de nuevo."
    - **de**: "Nachricht nicht versandt. Versuche es erneut."
    - **fr**: "Impossible d'envoyer votre message. Veuillez réessayer plus tard."
-   - **it**: "Couldn't send message. Try again."
    - **en**: "Couldn't send message. Try again."
   */
   public static func social_error_could_not_send_message_creator() -> String {
@@ -14545,7 +13679,6 @@ Thank you for your support!"
    - **es**: "No hay conexión a internet. Inténtalo de nuevo."
    - **de**: "Keine Internetverbindung. Versuche es später noch einmal."
    - **fr**: "Pas de connexion internet. Veuillez réessayer plus tard."
-   - **it**: "No internet connection. Try again later."
    - **en**: "No internet connection. Try again later."
   */
   public static func social_error_no_internet_connection() -> String {
@@ -14562,7 +13695,6 @@ Thank you for your support!"
    - **es**: "Enviar mensaje al creador"
    - **de**: "Nachricht an Projektgründer senden"
    - **fr**: "Message au créateur"
-   - **it**: "Message creator"
    - **en**: "Message creator"
   */
   public static func social_message_creator() -> String {
@@ -14579,7 +13711,6 @@ Thank you for your support!"
    - **es**: "Mensaje privado"
    - **de**: "Private Nachricht"
    - **fr**: "Message privé"
-   - **it**: "Private message"
    - **en**: "Private message"
   */
   public static func social_private_message() -> String {
@@ -14596,7 +13727,6 @@ Thank you for your support!"
    - **es**: "Comentario público"
    - **de**: "Öffentlicher Kommentar"
    - **fr**: "Commentaire public"
-   - **it**: "Public comment"
    - **en**: "Public comment"
   */
   public static func social_public_comment() -> String {
@@ -14613,7 +13743,6 @@ Thank you for your support!"
    - **es**: "Actualización"
    - **de**: "Update"
    - **fr**: "Actu"
-   - **it**: "Update"
    - **en**: "Update"
   */
   public static func social_update() -> String {
@@ -14630,7 +13759,6 @@ Thank you for your support!"
    - **es**: "Actualización %{update_number}"
    - **de**: "Update Nr. %{update_number}"
    - **fr**: "Actu no. %{update_number}"
-   - **it**: "Update #%{update_number}"
    - **en**: "Update #%{update_number}"
   */
   public static func social_update_number(update_number update_number: String) -> String {
@@ -14647,7 +13775,6 @@ Thank you for your support!"
    - **es**: "Actualización %{update_number}: %{update_title}"
    - **de**: "Aktualisierung %{update_number}: %{update_title}"
    - **fr**: "Actu no. %{update_number} : %{update_title}"
-   - **it**: "Update #%{update_number}: %{update_title}"
    - **en**: "Update #%{update_number}: %{update_title}"
   */
   public static func social_update_sequence_and_title(update_number update_number: String, update_title: String) -> String {
@@ -14664,7 +13791,6 @@ Thank you for your support!"
    - **es**: "¡Checa algunos de los proyectos aquÍ!"
    - **de**: "Schau dir diese Projekte an!"
    - **fr**: "Découvrez des projets !"
-   - **it**: "Check out some projects!"
    - **en**: "Check out some projects!"
   */
   public static func social_following_button_check_out_some_projects() -> String {
@@ -14681,7 +13807,6 @@ Thank you for your support!"
    - **es**: "Seguir"
    - **de**: "Folgen"
    - **fr**: "S'abonner"
-   - **it**: "Follow"
    - **en**: "Follow"
   */
   public static func social_following_friend_buttons_follow() -> String {
@@ -14698,7 +13823,6 @@ Thank you for your support!"
    - **es**: "Siguiendo"
    - **de**: "Abonniert"
    - **fr**: "Abonné"
-   - **it**: "Following"
    - **en**: "Following"
   */
   public static func social_following_friend_buttons_following() -> String {
@@ -14715,7 +13839,6 @@ Thank you for your support!"
    - **es**: "%{backed_count} patrocinados"
    - **de**: "%{backed_count} unterstützt"
    - **fr**: "%{backed_count} projets soutenus"
-   - **it**: "%{backed_count} backed"
    - **en**: "%{backed_count} backed"
   */
   public static func social_following_friend_projects_count_backed(backed_count backed_count: Int) -> String {
@@ -14732,7 +13855,6 @@ Thank you for your support!"
    - **es**: "%{created_count} creados"
    - **de**: "%{created_count} erstellt"
    - **fr**: "%{created_count} projets créés"
-   - **it**: "%{created_count} created"
    - **en**: "%{created_count} created"
   */
   public static func social_following_friend_projects_count_created(created_count created_count: Int) -> String {
@@ -14749,7 +13871,6 @@ Thank you for your support!"
    - **es**: "Cerrar "Conectar con Facebook""
    - **de**: "Facebook-Verknüpfung schließen"
    - **fr**: "Fermer l'en-tête « Connexion Facebook »"
-   - **it**: "Close Facebook connect header"
    - **en**: "Close Facebook connect header"
   */
   public static func social_following_header_accessibility_button_close_facebook_connect_header_label() -> String {
@@ -14766,7 +13887,6 @@ Thank you for your support!"
    - **es**: "Cerrar banner "Encontrar amigos""
    - **de**: ""Finde deine Freunde" Banner schließen"
    - **fr**: "Fermer l'en-tête « Rechercher mes amis »"
-   - **it**: "Close find friends header"
    - **en**: "Close find friends header"
   */
   public static func social_following_header_accessibility_button_close_find_friends_header_label() -> String {
@@ -14783,7 +13903,6 @@ Thank you for your support!"
    - **es**: "Encuentra tus amigos"
    - **de**: "Finde deine Freunde"
    - **fr**: "Rechercher vos amis"
-   - **it**: "Find your friends"
    - **en**: "Find your friends"
   */
   public static func social_following_header_button_find_your_friends() -> String {
@@ -14800,7 +13919,6 @@ Thank you for your support!"
    - **es**: "Conéctate via Facebook y sigue a tus amigos - ¡te avisaremos cada vez que publican o patrocinan un proyecto!"
    - **de**: "Verknüpfe dein Konto mit Facebook - du kannst deinen Freunden folgen und wirst benachrichtigt, wenn sie ein Projekt veröffentlichen oder unterstützen."
    - **fr**: "Connectez-vous avec votre compte Facebook pour suivre vos amis et recevoir une notification chaque fois qu'ils soutiennent ou lancent un nouveau projet."
-   - **it**: "Connect with Facebook to follow friends and get notified when they back or launch projects."
    - **en**: "Connect with Facebook to follow friends and get notified when they back or launch projects."
   */
   public static func social_following_header_connect_with_facebook_to_follow() -> String {
@@ -14817,7 +13935,6 @@ Thank you for your support!"
    - **es**: "Sigue a tus amigos y te avisaremos cuando publican o patrocinan un proyecto."
    - **de**: "Folge deinen Freunden und wir werden dich benachrichtigen, sobald sie ein Projekt unterstützen oder veröffentlichen."
    - **fr**: "Suivez vos amis Facebook pour recevoir une notification chaque fois qu'ils soutiennent ou lancent un nouveau projet."
-   - **it**: "Follow your Facebook friends and get notified when they back or launch projects."
    - **en**: "Follow your Facebook friends and get notified when they back or launch projects."
   */
   public static func social_following_header_connect_with_your_friends_to_find_projects() -> String {
@@ -14834,7 +13951,6 @@ Thank you for your support!"
    - **es**: "Descubre más proyectos."
    - **de**: "Noch mehr Projekte erkunden."
    - **fr**: "Découvrez plus de projets."
-   - **it**: "Discover more projects."
    - **en**: "Discover more projects."
   */
   public static func social_following_header_friends_recommend_the_best_projects() -> String {
@@ -14851,7 +13967,6 @@ Thank you for your support!"
    - **es**: "¡Sigue a tus amigos!"
    - **de**: "Folge deinen Freunden!"
    - **fr**: "Suivez vos amis"
-   - **it**: "Follow friends"
    - **en**: "Follow friends"
   */
   public static func social_following_navigation_title_follow_your_friends() -> String {
@@ -14868,7 +13983,6 @@ Thank you for your support!"
    - **es**: "¡Estupendo - ahora sigues a todos tus amigos!"
    - **de**: "Super! Du folgst jetzt allen deinen Freunden!"
    - **fr**: "Super ! Vous êtes sur le point de suivre tous vos amis."
-   - **it**: "Nice! You're about to follow all of your friends."
    - **en**: "Nice! You're about to follow all of your friends."
   */
   public static func social_following_nice_youre_about_to_follow_all_friends() -> String {
@@ -14885,7 +13999,6 @@ Thank you for your support!"
    - **es**: "Proyectos patrocinados"
    - **de**: "Unterstützte Projekte"
    - **fr**: "projets soutenus"
-   - **it**: "Backed projects"
    - **en**: "Backed projects"
   */
   public static func social_following_stats_backed_projects() -> String {
@@ -14902,7 +14015,6 @@ Thank you for your support!"
    - **es**: "Seguir a %{remote_friends_count} amigos"
    - **de**: "Allen %{remote_friends_count} Freunden folgen"
    - **fr**: "Suivre ces %{remote_friends_count} amis"
-   - **it**: "Follow all %{remote_friends_count} friends"
    - **en**: "Follow all %{remote_friends_count} friends"
   */
   public static func social_following_stats_button_follow_all_friends(remote_friends_count remote_friends_count: Int) -> String {
@@ -14919,7 +14031,6 @@ Thank you for your support!"
    - **es**: "Amigos"
    - **de**: "Freunde"
    - **fr**: "amis"
-   - **it**: "Friends"
    - **en**: "Friends"
   */
   public static func social_following_stats_friends() -> String {
@@ -14955,13 +14066,6 @@ Thank you for your support!"
 
 --------
 "
-   - **it**: "How can we help you? Please try to be as specific as possible.
-
-
-
-
---------
-"
    - **en**: "How can we help you? Please try to be as specific as possible.
 
 
@@ -14984,7 +14088,6 @@ Thank you for your support!"
    - **es**: "Ok"
    - **de**: "OK"
    - **fr**: "OK"
-   - **it**: "OK"
    - **en**: "OK"
   */
   public static func support_email_button_ok() -> String {
@@ -15001,7 +14104,6 @@ Thank you for your support!"
    - **es**: "Escoge la app de correo:"
    - **de**: "Auswahl E-Mail-App:"
    - **fr**: "Choisissez une application e-mail :"
-   - **it**: "Select email application:"
    - **en**: "Select email application:"
   */
   public static func support_email_chooser() -> String {
@@ -15018,7 +14120,6 @@ Thank you for your support!"
    - **es**: "Parece que no tienes una cuenta de correo electrónico en tu dispositivo. Por favor ponte en contacto con nosotros a través de app@kickstarter.com."
    - **de**: "Es sieht so aus, als hättest du keinen E-Mail-Account auf deinem Gerät. Bitte kontaktiere uns unter app@kickstarter.com."
    - **fr**: "On dirait que vous n'avez pas de compte e-mail sur votre appareil. Veuillez nous contacter à l'adresse app@kickstarter.com."
-   - **it**: "Looks like you don’t have an e-mail account on your device. Please contact us at app@kickstarter.com."
    - **en**: "Looks like you don’t have an e-mail account on your device. Please contact us at app@kickstarter.com."
   */
   public static func support_email_noemail_message() -> String {
@@ -15035,7 +14136,6 @@ Thank you for your support!"
    - **es**: "Parece que no tienes una cuenta de correo electrónico en tu dispositivo. Contáctanos en app@kickstarter.com."
    - **de**: "Es sieht so aus, als hättest du keinen E-Mail-Account auf deinem Gerät. Bitte kontaktiere uns unter android@kickstarter.com."
    - **fr**: "On dirait que vous n'avez pas de compte e-mail sur votre appareil. Veuillez nous contacter à l'adresse android@kickstarter.com."
-   - **it**: "Looks like you don’t have an e-mail account on your device. Please contact us at android@kickstarter.com."
    - **en**: "Looks like you don’t have an e-mail account on your device. Please contact us at android@kickstarter.com."
   */
   public static func support_email_noemail_message_android() -> String {
@@ -15052,7 +14152,6 @@ Thank you for your support!"
    - **es**: "Atención al cliente"
    - **de**: "Support"
    - **fr**: "Assistance"
-   - **it**: "Support"
    - **en**: "Support"
   */
   public static func support_email_noemail_title() -> String {
@@ -15069,7 +14168,6 @@ Thank you for your support!"
    - **es**: "Saludos al equipo de atención al cliente de Kickstarter"
    - **de**: "Hallo Kickstarter App Support"
    - **fr**: "Bonjour, Assistance de l'application Kickstarter"
-   - **it**: "Hello Kickstarter App Support"
    - **en**: "Hello Kickstarter App Support"
   */
   public static func support_email_subject() -> String {
@@ -15086,7 +14184,6 @@ Thank you for your support!"
    - **es**: "app@kickstarter.com"
    - **de**: "app@kickstarter.com"
    - **fr**: "app@kickstarter.com"
-   - **it**: "app@kickstarter.com"
    - **en**: "app@kickstarter.com"
   */
   public static func support_email_to() -> String {
@@ -15103,7 +14200,6 @@ Thank you for your support!"
    - **es**: "android@kickstarter.com"
    - **de**: "android@kickstarter.com"
    - **fr**: "android@kickstarter.com"
-   - **it**: "android@kickstarter.com"
    - **en**: "android@kickstarter.com"
   */
   public static func support_email_to_android() -> String {
@@ -15120,7 +14216,6 @@ Thank you for your support!"
    - **es**: "Actividad"
    - **de**: "Aktivität"
    - **fr**: "Activité"
-   - **it**: "Activity"
    - **en**: "Activity"
   */
   public static func tabbar_activity() -> String {
@@ -15137,7 +14232,6 @@ Thank you for your support!"
    - **es**: "Panel de control"
    - **de**: "Dashboard"
    - **fr**: "Tableau de bord"
-   - **it**: "Dashboard"
    - **en**: "Dashboard"
   */
   public static func tabbar_dashboard() -> String {
@@ -15154,7 +14248,6 @@ Thank you for your support!"
    - **es**: "Descubrir"
    - **de**: "Entdecken"
    - **fr**: "Découvrir"
-   - **it**: "Discover"
    - **en**: "Discover"
   */
   public static func tabbar_discover() -> String {
@@ -15171,7 +14264,6 @@ Thank you for your support!"
    - **es**: "Iniciar sesión"
    - **de**: "Anmelden"
    - **fr**: "Connexion"
-   - **it**: "Log in"
    - **en**: "Log in"
   */
   public static func tabbar_login() -> String {
@@ -15188,7 +14280,6 @@ Thank you for your support!"
    - **es**: "Mi cuenta"
    - **de**: "Mein Konto"
    - **fr**: "Mon compte"
-   - **it**: "Me"
    - **en**: "Me"
   */
   public static func tabbar_me() -> String {
@@ -15205,7 +14296,6 @@ Thank you for your support!"
    - **es**: "Perfil"
    - **de**: "Profil"
    - **fr**: "Profil"
-   - **it**: "Profile"
    - **en**: "Profile"
   */
   public static func tabbar_profile() -> String {
@@ -15222,7 +14312,6 @@ Thank you for your support!"
    - **es**: "Búsqueda"
    - **de**: "Suche"
    - **fr**: "Recherche"
-   - **it**: "Search"
    - **en**: "Search"
   */
   public static func tabbar_search() -> String {
@@ -15239,7 +14328,6 @@ Thank you for your support!"
    - **es**: "Buscar proyectos"
    - **de**: "Projekte suchen"
    - **fr**: "Rechercher des projets"
-   - **it**: "Search projects"
    - **en**: "Search projects"
   */
   public static func tabbar_search_projects() -> String {
@@ -15256,7 +14344,6 @@ Thank you for your support!"
    - **es**: "Volver a enviar"
    - **de**: "Erneut senden"
    - **fr**: "Renvoyer"
-   - **it**: "Resend"
    - **en**: "Resend"
   */
   public static func two_factor_buttons_resend() -> String {
@@ -15273,7 +14360,6 @@ Thank you for your support!"
    - **es**: "Enviar"
    - **de**: "Absenden"
    - **fr**: "Envoyer"
-   - **it**: "Submit"
    - **en**: "Submit"
   */
   public static func two_factor_buttons_submit() -> String {
@@ -15290,7 +14376,6 @@ Thank you for your support!"
    - **es**: "Ingresar código"
    - **de**: "Code eingeben"
    - **fr**: "Saisir le code"
-   - **it**: "Enter code"
    - **en**: "Enter code"
   */
   public static func two_factor_code_placeholder() -> String {
@@ -15307,7 +14392,6 @@ Thank you for your support!"
    - **es**: "Este código no existe."
    - **de**: "Dieser Code ist ungültig."
    - **fr**: "Le code fourni ne correspond pas."
-   - **it**: "The code provided does not match."
    - **en**: "The code provided does not match."
   */
   public static func two_factor_error_message() -> String {
@@ -15324,7 +14408,6 @@ Thank you for your support!"
    - **es**: "Por favor ingresa tu código de verificación para poder continuar."
    - **de**: "Bitte gebe deinen Verifizierungscode ein, um fortzufahren."
    - **fr**: "Veuillez saisir votre code de vérification."
-   - **it**: "Please enter your verification code to continue."
    - **en**: "Please enter your verification code to continue."
   */
   public static func two_factor_message() -> String {
@@ -15341,7 +14424,6 @@ Thank you for your support!"
    - **es**: "Verificar"
    - **de**: "Bestätigen"
    - **fr**: "Vérifier"
-   - **it**: "Verify"
    - **en**: "Verify"
   */
   public static func two_factor_title() -> String {
@@ -15358,7 +14440,6 @@ Thank you for your support!"
    - **es**: "Creador"
    - **de**: "Projektgründer"
    - **fr**: "Créateur"
-   - **it**: "Creator"
    - **en**: "Creator"
   */
   public static func update_comments_creator() -> String {
@@ -15375,7 +14456,6 @@ Thank you for your support!"
    - **es**: "Deja un comentario"
    - **de**: "Kommentar verfassen"
    - **fr**: "Laisser un commentaire"
-   - **it**: "Leave a comment"
    - **en**: "Leave a comment"
   */
   public static func update_comments_empty_state_backer_button() -> String {
@@ -15392,7 +14472,6 @@ Thank you for your support!"
    - **es**: "Ay, qué pena. Sé el primer patrocinador en dejar un comentario en este proyecto."
    - **de**: "Oh wie schade! Sei der erste Unterstützer, der dieses Update kommentiert."
    - **fr**: "Oh, quel dommage.  Soyez le premier contributeur à laisser un commentaire sur cette actu."
-   - **it**: "Aw, how sad. Be the first backer to leave a comment on this update."
    - **en**: "Aw, how sad. Be the first backer to leave a comment on this update."
   */
   public static func update_comments_empty_state_backer_message() -> String {
@@ -15409,7 +14488,6 @@ Thank you for your support!"
    - **es**: "No hay comentarios"
    - **de**: "Keine Kommentare"
    - **fr**: "Pas de commentaires"
-   - **it**: "No comments"
    - **en**: "No comments"
   */
   public static func update_comments_empty_state_backer_title() -> String {
@@ -15426,7 +14504,6 @@ Thank you for your support!"
    - **es**: "Deja un comentario"
    - **de**: "Kommentar verfassen"
    - **fr**: "Laisser un commentaire"
-   - **it**: "Leave a comment"
    - **en**: "Leave a comment"
   */
   public static func update_comments_empty_state_logged_out_button() -> String {
@@ -15443,7 +14520,6 @@ Thank you for your support!"
    - **es**: "Ay, qué pena. Hazte patrocinador para dejar un comentario."
    - **de**: "Oh wie Schade. Werde Unterstützer um einen Kommentar zu hinterlassen."
    - **fr**: "Oh, quel dommage. Soutenez ce projet afin de pouvoir laisser un commentaire."
-   - **it**: "Aw, how sad. Become a backer to leave a comment."
    - **en**: "Aw, how sad. Become a backer to leave a comment."
   */
   public static func update_comments_empty_state_logged_out_message() -> String {
@@ -15460,7 +14536,6 @@ Thank you for your support!"
    - **es**: "No hay comentarios"
    - **de**: "Keine Kommentare"
    - **fr**: "Pas de commentaires"
-   - **it**: "No comments"
    - **en**: "No comments"
   */
   public static func update_comments_empty_state_logged_out_title() -> String {
@@ -15477,7 +14552,6 @@ Thank you for your support!"
    - **es**: "Deja un comentario"
    - **de**: "Kommentar verfassen"
    - **fr**: "Laisser un commentaire"
-   - **it**: "Leave a comment"
    - **en**: "Leave a comment"
   */
   public static func update_comments_empty_state_non_backer_button() -> String {
@@ -15494,7 +14568,6 @@ Thank you for your support!"
    - **es**: "Ay, qué pena. Hazte patrocinador para dejar un comentario."
    - **de**: "Oh wie Schade. Werde Unterstützer um einen Kommentar zu hinterlassen."
    - **fr**: "Oh, quel dommage. Soutenez ce projet afin de pouvoir laisser un commentaire."
-   - **it**: "Aw, how sad. Become a backer to leave a comment."
    - **en**: "Aw, how sad. Become a backer to leave a comment."
   */
   public static func update_comments_empty_state_non_backer_message() -> String {
@@ -15511,7 +14584,6 @@ Thank you for your support!"
    - **es**: "No hay comentarios"
    - **de**: "Keine Kommentare"
    - **fr**: "Pas de commentaires"
-   - **it**: "No comments"
    - **en**: "No comments"
   */
   public static func update_comments_empty_state_non_backer_title() -> String {
@@ -15528,7 +14600,6 @@ Thank you for your support!"
    - **es**: "Tú"
    - **de**: "Du"
    - **fr**: "Vous"
-   - **it**: "You"
    - **en**: "You"
   */
   public static func update_comments_you() -> String {
@@ -15545,7 +14616,6 @@ Thank you for your support!"
    - **es**: "%{updates_count} actualizaciones"
    - **de**: "%{updates_count} Updates"
    - **fr**: "%{updates_count} actus"
-   - **it**: "%{updates_count} updates"
    - **en**: "%{updates_count} updates"
   */
   public static func updates_count_updates(updates_count updates_count: Int) -> String {

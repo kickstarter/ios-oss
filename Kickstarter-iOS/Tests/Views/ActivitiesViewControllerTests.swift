@@ -8,11 +8,15 @@ import XCTest
 private let creator = .template |> User.lens.avatar.small .~ ""
 private let survey = .template |> SurveyResponse.lens.project .~
   (.cosmicSurgery |> Project.lens.creator .~ creator)
+private let you = .template
+  |> User.lens.avatar.small .~ ""
+  |> User.lens.id .~ 355
+  |> User.lens.name .~ "Gina B"
 
 internal final class ActivitiesViewControllerTests: TestCase {
   override func setUp() {
     super.setUp()
-    AppEnvironment.pushEnvironment(mainBundle: NSBundle.framework)
+    AppEnvironment.pushEnvironment(currentUser: you, mainBundle: NSBundle.framework)
     UIView.setAnimationsEnabled(false)
   }
 
@@ -137,11 +141,6 @@ internal final class ActivitiesViewControllerTests: TestCase {
   }
 
   func testMultipleSurveys_NotFacebookConnected_YouLaunched() {
-    let you = .template
-      |> User.lens.avatar.small .~ ""
-      |> User.lens.id .~ 355
-      |> User.lens.name .~ "Gina B"
-
     let launch = .template
       |> Activity.lens.id .~ 73
       |> Activity.lens.project .~ (.cosmicSurgery
