@@ -126,6 +126,6 @@ private func updatePostedString(forActivity activity: Activity) -> NSAttributedS
       range: NSRange(location: timeStartIndex + timeNumberStartIndex, length: timeNumber.characters.count)
     )
   }
-  
+
   return mutableString
 }
