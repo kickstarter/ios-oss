@@ -7,7 +7,7 @@ stay a while—explore how Kickstarter’s native squad has built and continues 
 build the app.
 
 We’ve also open sourced our [Android app](https://github.com/kickstarter/android-oss),
-and read more about our journey to open source [here TODO LINK]().
+and read more about our journey to open source [here](https://kickstarter.engineering/open-sourcing-our-android-and-ios-apps-6891be909fcd).
 
 ![Kickstarter for iOS](.github/app.jpg)
 
