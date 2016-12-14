@@ -33,7 +33,7 @@ test: dependencies
 clean:
 	$(XCODEBUILD) clean $(BUILD_FLAGS) $(XCPRETTY)
 
-dependencies: submodules configs
+dependencies: submodules configs secrets
 
 bootstrap: hooks dependencies
 	brew update
@@ -42,8 +42,9 @@ bootstrap: hooks dependencies
 	brew link --overwrite swiftlint
 
 submodules:
-	git submodule sync --recursive
-	git submodule update --init --recursive
+	git submodule sync --recursive || true
+	git submodule update --init --recursive || true
+	git submodule foreach git checkout $(sha1)
 
 configs = $(basename $(wildcard Kickstarter-iOS/Configs/*.example))
 $(configs):
@@ -81,4 +82,8 @@ lint:
 strings:
 	cat Frameworks/ios-ksapi/Frameworks/native-secrets/ios/Secrets.swift bin/strings.swift | swift -
 
-.PHONY: test-all test clean dependencies submodules deploy lint strings
+secrets:
+	mkdir -p Frameworks/ios-ksapi/Frameworks/native-secrets/ios
+	cp -n Configs/Secrets.swift.example Frameworks/ios-ksapi/Frameworks/native-secrets/ios/Secrets.swift || true
+
+.PHONY: test-all test clean dependencies submodules deploy lint secrets strings
