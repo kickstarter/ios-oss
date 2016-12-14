@@ -33,7 +33,7 @@ test: dependencies
 clean:
 	$(XCODEBUILD) clean $(BUILD_FLAGS) $(XCPRETTY)
 
-dependencies: submodules configs
+dependencies: submodules configs secrets
 
 bootstrap: hooks dependencies
 	brew update
@@ -86,4 +86,4 @@ secrets:
 
 	cp -r -n Configs/Secrets.swift.example Frameworks/ios-ksapi/Frameworks/native-secrets/ios/Secrets.swift || true
 
-.PHONY: test-all test clean dependencies submodules deploy lint strings
+.PHONY: test-all test clean dependencies submodules deploy lint secrets strings
