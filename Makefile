@@ -44,9 +44,9 @@ bootstrap: hooks dependencies
 submodules:
 	git submodule sync --recursive || true
 	git submodule update --init --recursive || true
-	git submodule foreach git checkout $(sha1)
-	cd Frameworks/ios-ksapi && git submodule update --init --recursive
-	cd Frameworks/ios-ksapi && git submodule foreach git checkout $(sha1)
+	git submodule foreach --recursive git checkout $(sha1)
+	cd Frameworks/ios-ksapi && git submodule update --init --recursive || true
+	cd Frameworks/ios-ksapi && git submodule foreach git checkout $(sha1) || true
 
 configs = $(basename $(wildcard Kickstarter-iOS/Configs/*.example))
 $(configs):
