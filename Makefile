@@ -83,7 +83,7 @@ strings:
 	cat Frameworks/ios-ksapi/Frameworks/native-secrets/ios/Secrets.swift bin/strings.swift | swift -
 
 secrets:
-
-	cp -r -n Configs/Secrets.swift.example Frameworks/ios-ksapi/Frameworks/native-secrets/ios/Secrets.swift || true
+	mkdir -p Frameworks/ios-ksapi/Frameworks/native-secrets/ios
+	cp -n Configs/Secrets.swift.example Frameworks/ios-ksapi/Frameworks/native-secrets/ios/Secrets.swift || true
 
 .PHONY: test-all test clean dependencies submodules deploy lint secrets strings
