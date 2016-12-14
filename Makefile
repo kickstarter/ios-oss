@@ -45,6 +45,8 @@ submodules:
 	git submodule sync --recursive || true
 	git submodule update --init --recursive || true
 	git submodule foreach git checkout $(sha1)
+	cd Frameworks/ios-ksapi
+	git submodule foreach git checkout $(sha1)
 
 configs = $(basename $(wildcard Kickstarter-iOS/Configs/*.example))
 $(configs):
