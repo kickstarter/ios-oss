@@ -49,7 +49,7 @@ internal final class FindFriendsFriendFollowCell: UITableViewCell, ValueCell {
         })
       .ignoreNil()
       .observeNext { [weak avatarImageView] url in
-        avatarImageView?.af_setImageWithURL(url, imageTransition: .CrossDissolve(0.2))
+        avatarImageView?.ksr_setImageWithURL(url)
     }
   }
 
@@ -74,11 +74,13 @@ internal final class FindFriendsFriendFollowCell: UITableViewCell, ValueCell {
 
     self.followButton
       |> navyButtonStyle
+      |> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 12)
       |> UIButton.lens.targets .~ [(self, action: #selector(followButtonTapped), .TouchUpInside)]
       |> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.social_following_friend_buttons_follow() }
 
     self.unfollowButton
       |> lightNavyButtonStyle
+      |> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 12)
       |> UIButton.lens.titleColor(forState: .Normal) .~ .ksr_text_navy_600
       |> UIButton.lens.targets .~ [(self, action: #selector(unfollowButtonTapped), .TouchUpInside)]
       |> UIButton.lens.title(forState: .Normal) %~ { _ in

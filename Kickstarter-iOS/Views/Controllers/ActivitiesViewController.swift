@@ -35,6 +35,8 @@ internal final class ActivitiesViewController: UITableViewController {
   internal override func viewDidLoad() {
     super.viewDidLoad()
 
+    self.tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: Styles.gridHalf(3)))
+
     self.tableView.dataSource = dataSource
 
     let emptyVC = EmptyStatesViewController.configuredWith(emptyState: .activity)
@@ -57,7 +59,7 @@ internal final class ActivitiesViewController: UITableViewController {
     super.bindStyles()
 
     self
-      |> baseTableControllerStyle(estimatedRowHeight: 80.0)
+      |> baseTableControllerStyle(estimatedRowHeight: 200.0)
 
     self.navigationItem
       |> UINavigationItem.lens.title %~ { _ in Strings.activity_navigation_title_activity() }
@@ -144,10 +146,10 @@ internal final class ActivitiesViewController: UITableViewController {
         )
     }
 
-    self.viewModel.outputs.unansweredSurveyResponse
+    self.viewModel.outputs.unansweredSurveys
       .observeForUI()
       .observeNext { [weak self] in
-        self?.dataSource.load(surveyResponse: $0)
+        self?.dataSource.load(surveys: $0)
         self?.tableView.reloadData()
     }
 
@@ -176,8 +178,6 @@ internal final class ActivitiesViewController: UITableViewController {
     } else if let cell = cell as? FindFriendsHeaderCell where cell.delegate == nil {
       cell.delegate = self
     } else if let cell = cell as? ActivitySurveyResponseCell where cell.delegate == nil {
-      cell.delegate = self
-    } else if let cell = cell as? ActivityFriendFollowCell where cell.delegate == nil {
       cell.delegate = self
     }
 
@@ -273,12 +273,6 @@ extension ActivitiesViewController: FindFriendsFacebookConnectCellDelegate {
 extension ActivitiesViewController: ActivitySurveyResponseCellDelegate {
   func activityTappedRespondNow(forSurveyResponse surveyResponse: SurveyResponse) {
     self.viewModel.inputs.tappedRespondNow(forSurveyResponse: surveyResponse)
-  }
-}
-
-extension ActivitiesViewController: ActivityFriendFollowCellDelegate {
-  func activityFriendFollowCell(cell: ActivityFriendFollowCell, updatedActivity: Activity) {
-    self.viewModel.inputs.updateActivity(updatedActivity)
   }
 }
 

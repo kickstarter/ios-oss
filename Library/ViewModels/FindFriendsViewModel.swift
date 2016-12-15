@@ -127,7 +127,7 @@ public final class FindFriendsViewModel: FindFriendsViewModelType, FindFriendsVi
 
     self.showErrorAlert = self.showFacebookConnectErrorAlertProperty.signal.ignoreNil()
 
-    self.showFacebookConnect = combineLatest(source, shouldShowFacebookConnect)
+    self.showFacebookConnect = shouldShowFacebookConnect.map { (.findFriends, $0) }
 
     let statsEvent = shouldShowFacebookConnect
       .filter(isFalse)

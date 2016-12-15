@@ -35,9 +35,6 @@ public protocol ActitiviesViewModelInputs {
   /// Call when the respond button is tapped in a survey cell.
   func tappedRespondNow(forSurveyResponse surveyResponse: SurveyResponse)
 
-  /// Call when to update an activity, e.g. friend following.
-  func updateActivity(activity: Activity)
-
   /// Call when a user session ends.
   func userSessionEnded()
 
@@ -100,7 +97,7 @@ public protocol ActivitiesViewModelOutputs {
   var showFindFriendsSection: Signal<(FriendsSource, Bool), NoError> { get }
 
   /// Emits a non-`nil` survey response if there is an unanswered one available, and `nil` otherwise.
-  var unansweredSurveyResponse: Signal<SurveyResponse?, NoError> { get }
+  var unansweredSurveys: Signal<[SurveyResponse], NoError> { get }
 }
 
 public protocol ActivitiesViewModelType {
@@ -148,10 +145,8 @@ ActivitiesViewModelOutputs {
 
     let clearedActivitiesOnSessionEnd = self.userSessionEndedProperty.signal.mapConst([Activity]())
 
-    let activityToUpdate = Signal.merge(
-      self.viewWillAppearProperty.signal.ignoreNil().take(1).mapConst(nil),
-      self.updateActivityProperty.signal
-    )
+    let activityToUpdate: Signal<Activity?, NoError> = self.viewWillAppearProperty.signal.ignoreNil()
+      .take(1).mapConst(nil)
 
     let updatedActivities = combineLatest(activities, activityToUpdate)
       .map { currentActivities, updatedActivity in
@@ -210,29 +205,40 @@ ActivitiesViewModelOutputs {
       .ignoreNil()
       .map { ($0, .activity) }
 
-    self.showFindFriendsSection = currentUser
-      .takeWhen(self.viewWillAppearProperty.signal.ignoreNil())
-      .map {
-        (
-          .activity,
-          $0 != nil
-            && AppEnvironment.current.currentUser?.facebookConnected ?? false
-            && !AppEnvironment.current.userDefaults.hasClosedFindFriendsInActivity
+    let surveyEvents = currentUser
+      .takeWhen(Signal.merge(
+        self.viewWillAppearProperty.signal.ignoreNil().filter(isFalse).ignoreValues(),
+        self.surveyResponseViewControllerDismissedProperty.signal
         )
-      }
-      .skipRepeats(==)
+      )
+      .filter { $0 != nil }
+      .switchMap { _ in
+        AppEnvironment.current.apiService.fetchUnansweredSurveyResponses()
+          .materialize()
+    }
 
-    self.showFacebookConnectSection = currentUser
-      .takeWhen(self.viewWillAppearProperty.signal.ignoreNil())
+    self.unansweredSurveys = surveyEvents.values()
+
+    let surveyValuesOrErrors = Signal.merge(surveyEvents.values().ignoreValues(),
+                                            surveyEvents.errors().ignoreValues())
+
+    self.showFindFriendsSection = surveyValuesOrErrors
       .map {
         (
           .activity,
-          $0 != nil
-            && !(AppEnvironment.current.currentUser?.facebookConnected ?? false)
-            && !AppEnvironment.current.userDefaults.hasClosedFacebookConnectInActivity
+          AppEnvironment.current.currentUser?.facebookConnected ?? false
+          && !AppEnvironment.current.userDefaults.hasClosedFindFriendsInActivity
         )
-      }
-      .skipRepeats(==)
+    }
+
+    self.showFacebookConnectSection = surveyValuesOrErrors
+      .map {
+        (
+          .activity,
+          !(AppEnvironment.current.currentUser?.facebookConnected ?? false)
+          && !AppEnvironment.current.userDefaults.hasClosedFacebookConnectInActivity
+        )
+    }
 
     self.deleteFacebookConnectSection = self.dismissFacebookConnectSectionProperty.signal
 
@@ -251,23 +257,6 @@ ActivitiesViewModelOutputs {
 
     self.dismissFindFriendsSectionProperty.signal
       .observeNext { AppEnvironment.current.userDefaults.hasClosedFindFriendsInActivity = true }
-
-    let unansweredSurveyResponse = Signal.merge(
-      self.viewWillAppearProperty.signal.ignoreValues(),
-      self.surveyResponseViewControllerDismissedProperty.signal
-      )
-      .switchMap {
-        AppEnvironment.current.apiService.fetchUnansweredSurveyResponses()
-          .demoteErrors()
-      }
-      .map { $0.first }
-
-    self.unansweredSurveyResponse = Signal
-      .merge(
-        unansweredSurveyResponse,
-        self.userSessionEndedProperty.signal.mapConst(nil)
-      )
-      .skipRepeats(==)
 
     self.goToSurveyResponse = self.tappedSurveyResponseProperty.signal.ignoreNil()
 
@@ -333,10 +322,6 @@ ActivitiesViewModelOutputs {
   public func tappedActivity(activity: Activity) {
     self.tappedActivityProperty.value = activity
   }
-  private let updateActivityProperty = MutableProperty<Activity?>(nil)
-  public func updateActivity(activity: Activity) {
-    self.updateActivityProperty.value = activity
-  }
   private let userFacebookConnectedProperty = MutableProperty()
   public func findFriendsFacebookConnectCellDidFacebookConnectUser() {
     userFacebookConnectedProperty.value = ()
@@ -371,7 +356,7 @@ ActivitiesViewModelOutputs {
   public let showFindFriendsSection: Signal<(FriendsSource, Bool), NoError>
   public let showFacebookConnectSection: Signal<(FriendsSource, Bool), NoError>
   public let showFacebookConnectErrorAlert: Signal<AlertError, NoError>
-  public let unansweredSurveyResponse: Signal<SurveyResponse?, NoError>
+  public let unansweredSurveys: Signal<[SurveyResponse], NoError>
 
   public var inputs: ActitiviesViewModelInputs { return self }
   public var outputs: ActivitiesViewModelOutputs { return self }

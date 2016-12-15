@@ -187,7 +187,7 @@ private func cached(friend friend: User) -> User {
     let isFriend = friendCache[friend.id] ?? friend.isFriend
     return friend |> User.lens.isFriend .~ isFriend
   } else {
-    return friend |> User.lens.isFriend .~ friend.isFriend
+    return friend
   }
 }
 

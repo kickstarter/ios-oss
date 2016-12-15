@@ -336,7 +336,7 @@
 "dashboard.activity.reward_name" = "<b>Belohnung:</b> %{reward_name}";
 "dashboard.activity.send_message" = "Nachricht senden";
 "dashboard.activity.successfully_raised_pledged" = "Wurde erfoglreich abgeschlossen: <b>%{pledged}</b> erreicht am %{deadline} dank <b>%{backers}</b>";
-"dashboard.activity.update_number_posted_time_count_days_ago" = "Update <b>%{update_number}</b> vor %{time_count_days_ago} gepostet";
+"dashboard.activity.update_number_posted_time_count_days_ago" = "<b>Update%{space}%{update_number}</b> vor %{time_count_days_ago} gepostet";
 "dashboard.activity.user_name_adjusted_their_pledge" = "Der Finanzierungsbeitrag von <b>%{user_name}</b> wurde geändert";
 "dashboard.activity.user_name_canceled_their_pledge" = "Der Finanzierungsbeitrag von <b>%{user_name}</b> wurde zurückgezogen";
 "dashboard.activity.user_name_changed_their_reward" = "Die Belohnung von <b>%{user_name}</b> wurde geändert";

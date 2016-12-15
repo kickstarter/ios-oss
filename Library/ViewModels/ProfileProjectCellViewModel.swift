@@ -12,6 +12,12 @@ public protocol ProfileProjectCellViewModelOutputs {
   /// Emits project name and state for screen reader.
   var cellAccessibilityLabel: Signal<String, NoError> { get }
 
+  /// Emits whether metadata should hide or not.
+  var metadataIsHidden: Signal<Bool, NoError> { get }
+
+  /// Emits text for metadata label.
+  var metadataText: Signal<String, NoError> { get }
+
   /// Emits the project name to be displayed.
   var projectName: Signal<String, NoError> { get }
 
@@ -55,6 +61,13 @@ public final class ProfileProjectCellViewModel: ProfileProjectCellViewModelType,
     self.stateHidden = project.map { $0.state == .live }
 
     self.cellAccessibilityLabel = project.map { "\($0.name) \($0.state.rawValue)" }
+
+    self.metadataIsHidden = project.map { $0.state != .live }
+
+    self.metadataText = project
+      .filter { $0.state == .live }
+      .map { Format.duration(secondsInUTC: $0.dates.deadline, useToGo: true) }
+      .map { "\($0.time) \($0.unit)" }
   }
 
   private let projectProperty = MutableProperty<Project?>(nil)
@@ -63,6 +76,8 @@ public final class ProfileProjectCellViewModel: ProfileProjectCellViewModelType,
   }
 
   public let cellAccessibilityLabel: Signal<String, NoError>
+  public let metadataIsHidden: Signal<Bool, NoError>
+  public let metadataText: Signal<String, NoError>
   public let projectName: Signal<String, NoError>
   public let photoURL: Signal<NSURL?, NoError>
   public let progress: Signal<Float, NoError>
