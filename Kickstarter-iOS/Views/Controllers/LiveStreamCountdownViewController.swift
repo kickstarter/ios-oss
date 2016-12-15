@@ -73,7 +73,7 @@ internal final class LiveStreamCountdownViewController: UIViewController {
 
     self.countdownStackView
       |> UIStackView.lens.alignment .~ .Top
-      |> UIStackView.lens.distribution .~ .FillProportionally
+      |> UIStackView.lens.distribution .~ .EqualCentering
 
     self.countdownContainerStackView
       |> UIStackView.lens.alignment .~ .Center
@@ -89,6 +89,7 @@ internal final class LiveStreamCountdownViewController: UIViewController {
 
     self.countdownColons?.forEach { label in
       label
+        |> UILabel.lens.text .~ ":"
         |> UILabel.lens.textAlignment .~ .Center
         |> UILabel.lens.numberOfLines .~ 2
         |> UILabel.lens.textColor .~ .whiteColor()
