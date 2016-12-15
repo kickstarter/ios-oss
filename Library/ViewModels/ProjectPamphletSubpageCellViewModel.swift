@@ -1,4 +1,3 @@
-
 import Prelude
 import ReactiveCocoa
 import Result
@@ -19,7 +18,6 @@ public protocol ProjectPamphletSubpageCellViewModelOutputs {
   var topGradientViewHidden: Signal<Bool, NoError> { get }
   var separatorViewHidden: Signal<Bool, NoError> { get }
 }
-
 
 public protocol ProjectPamphletSubpageCellViewModelType {
   var inputs: ProjectPamphletSubpageCellViewModelInputs { get }
@@ -172,4 +170,3 @@ public enum ProjectPamphletSubpage {
     }
   }
 }
-

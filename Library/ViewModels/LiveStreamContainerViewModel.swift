@@ -25,7 +25,8 @@ public protocol LiveStreamContainerViewModelOutputs {
   var createAndConfigureLiveStreamViewController: Signal<(Project, LiveStreamEvent), NoError> { get }
   var dismiss: Signal<(), NoError> { get }
   var layoutLiveStreamView: Signal<UIView, NoError> { get }
-  var layoutLiveStreamViewWithCoordinator: Signal<(UIView, UIViewControllerTransitionCoordinator), NoError> { get }
+  var layoutLiveStreamViewWithCoordinator: Signal<(UIView,
+    UIViewControllerTransitionCoordinator), NoError> { get }
   var liveStreamViewController: Signal<LiveStreamViewController, NoError> { get }
   var liveStreamState: Signal<LiveStreamViewControllerState, NoError> { get }
   var loaderText: Signal<String, NoError> { get }
@@ -37,12 +38,13 @@ public protocol LiveStreamContainerViewModelOutputs {
 public final class LiveStreamContainerViewModel: LiveStreamContainerViewModelType,
 LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
 
+  //swiftlint:disable function_body_length
   public init() {
     let project = combineLatest(
       self.projectProperty.signal.ignoreNil(),
       self.viewDidLoadProperty.signal)
       .map(first)
-    
+
     self.createAndConfigureLiveStreamViewController = combineLatest(
       self.projectProperty.signal.ignoreNil(),
       self.liveStreamEventProperty.signal.ignoreNil(),
@@ -95,7 +97,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
         self.liveStreamViewControllerStateChangedProperty.signal.ignoreNil().map {
           if case .live(playbackState: .playing, _) = $0 { return true }
           if case .replay(playbackState: .playing, _, _) = $0 { return true }
-          
+
           return false
         },
         self.liveStreamViewController
@@ -143,14 +145,16 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
 
   private let viewWillTransitionToSizeWithCoordinatorProperty =
     MutableProperty<UIViewControllerTransitionCoordinator?>(nil)
-  public func viewWillTransitionToSizeWithCoordinator(coordinator coordinator: UIViewControllerTransitionCoordinator) {
+  public func viewWillTransitionToSizeWithCoordinator(
+    coordinator coordinator: UIViewControllerTransitionCoordinator) {
     self.viewWillTransitionToSizeWithCoordinatorProperty.value = coordinator
   }
 
   public let createAndConfigureLiveStreamViewController: Signal<(Project, LiveStreamEvent), NoError>
   public let dismiss: Signal<(), NoError>
   public let layoutLiveStreamView: Signal<UIView, NoError>
-  public let layoutLiveStreamViewWithCoordinator: Signal<(UIView, UIViewControllerTransitionCoordinator), NoError>
+  public let layoutLiveStreamViewWithCoordinator: Signal<(UIView,
+    UIViewControllerTransitionCoordinator), NoError>
   public let liveStreamViewController: Signal<LiveStreamViewController, NoError>
   public let liveStreamState: Signal<LiveStreamViewControllerState, NoError>
   public let loaderText: Signal<String, NoError>

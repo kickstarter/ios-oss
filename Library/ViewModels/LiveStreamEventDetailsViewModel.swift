@@ -42,6 +42,7 @@ public protocol LiveStreamEventDetailsViewModelOutputs {
 public class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewModelType,
   LiveStreamEventDetailsViewModelInputs, LiveStreamEventDetailsViewModelOutputs {
 
+  //swiftlint:disable function_body_length
   public init () {
     let event = combineLatest(
       self.liveStreamEventProperty.signal.ignoreNil(),
@@ -78,14 +79,15 @@ public class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewModelTyp
       .map(first)
       .map { event -> String? in
         guard let availableDate = NSCalendar.currentCalendar()
-          .dateByAddingUnit(.Day, value: 2, toDate: event.stream.startDate, options: [])?.timeIntervalSince1970
+          .dateByAddingUnit(.Day, value: 2, toDate: event.stream.startDate,
+            options: [])?.timeIntervalSince1970
           else { return nil }
 
         let (time, units) = Format.duration(secondsInUTC: availableDate, abbreviate: false)
 
         return "Available for \(time) more \(units)"
       }.ignoreNil()
-    
+
     self.creatorAvatarUrl = event
       .map { NSURL(string: $0.creator.avatar) }
       .ignoreNil()
@@ -129,6 +131,7 @@ public class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewModelTyp
     self.numberOfPeopleWatchingText = self.numberOfPeopleWatchingProperty.signal.ignoreNil()
       .map { String($0) }
   }
+  //swiftlint:enable function_body_length
 
   private let projectProperty = MutableProperty<Project?>(nil)
   public func configureWith(project project: Project, event: LiveStreamEvent?) {

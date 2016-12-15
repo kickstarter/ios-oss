@@ -25,7 +25,7 @@ internal final class LiveStreamCountdownViewModelTests: XCTestCase {
 
   func testDateComparison() {
     let project = Project.template
-    
+
     self.vm.inputs.configureWith(project: project)
     self.vm.inputs.setNow(nowDate())
     self.vm.inputs.viewDidLoad()

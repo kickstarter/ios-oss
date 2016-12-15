@@ -64,6 +64,7 @@ internal final class LiveStreamCountdownViewController: UIViewController {
     self.eventDetailsViewModel.inputs.viewDidLoad()
   }
 
+  //swiftlint:disable function_body_length
   internal override func bindStyles() {
     super.bindStyles()
 
@@ -134,13 +135,14 @@ internal final class LiveStreamCountdownViewController: UIViewController {
       |> greenBorderContainerButtonStyle
       |> UIButton.lens.imageEdgeInsets .~ UIEdgeInsets(right: -Styles.grid(1))
       |> UIButton.lens.tintColor .~ self.subscribeButton.currentTitleColor
-    
+
     self.subscribeButton.semanticContentAttribute = .ForceRightToLeft
 
     self.activityIndicatorView
       |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .Gray
       |> UIActivityIndicatorView.lens.animating .~ true
   }
+  //swiftlint:enable function_body_length
 
   internal override func prefersStatusBarHidden() -> Bool {
     return true
@@ -156,6 +158,7 @@ internal final class LiveStreamCountdownViewController: UIViewController {
     self.creatorAvatarImageView.layer.cornerRadius = self.creatorAvatarImageView.frame.size.height / 2
   }
 
+  //swiftlint:disable function_body_length
   internal override func bindViewModel() {
     super.bindViewModel()
 
@@ -246,7 +249,7 @@ internal final class LiveStreamCountdownViewController: UIViewController {
     self.activityIndicatorView.rac.hidden = self.eventDetailsViewModel.outputs.showActivityIndicator
       .observeForUI()
       .map(negate)
-    
+
     self.detailsStackView.rac.hidden = self.eventDetailsViewModel.outputs.showActivityIndicator
       .observeForUI()
 
@@ -282,6 +285,7 @@ internal final class LiveStreamCountdownViewController: UIViewController {
       self?.navigationController?.pushViewController(liveStreamContainerViewController, animated: true)
     }
   }
+  //swiftlint:enable function_body_length
 
   deinit {
     self.timerProducer?.dispose()
@@ -297,7 +301,7 @@ internal final class LiveStreamCountdownViewController: UIViewController {
         ]
       ]
     ]
-    
+
     let fontDescriptor = UIFont.ksr_title1(size: 24)
       .fontDescriptor()
       .fontDescriptorByAddingAttributes(fontDescriptorAttributes)

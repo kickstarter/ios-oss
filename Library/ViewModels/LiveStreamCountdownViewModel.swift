@@ -34,6 +34,7 @@ public protocol LiveStreamCountdownViewModelOutputs {
 public final class LiveStreamCountdownViewModel: LiveStreamCountdownViewModelType,
 LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
 
+  //swiftlint:disable function_body_length
   public init() {
     let project = combineLatest(
       self.projectProperty.signal.ignoreNil(),
@@ -106,6 +107,7 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
       ).map { project, event, _ in (project, event) }
       .take(1)
   }
+  //swiftlint:enable function_body_length
 
   private let closeButtonTappedProperty = MutableProperty()
   public func closeButtonTapped() {

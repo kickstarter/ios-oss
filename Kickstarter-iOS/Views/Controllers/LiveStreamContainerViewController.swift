@@ -1,3 +1,4 @@
+//swiftlint:disable file_length
 import KsApi
 import Library
 import Prelude
@@ -6,6 +7,7 @@ import Result
 import UIKit
 import KsLive
 
+//swiftlint:disable type_body_length
 internal final class LiveStreamContainerViewController: UIViewController {
 
   @IBOutlet private weak var availableForLabel: UILabel!
@@ -31,7 +33,6 @@ internal final class LiveStreamContainerViewController: UIViewController {
   @IBOutlet private weak var subscribeLabel: UILabel!
   @IBOutlet private weak var subscribeStackView: UIStackView!
   @IBOutlet private weak var numberWatchingButton: UIButton!
-
 
   private let viewModel: LiveStreamContainerViewModelType = LiveStreamContainerViewModel()
   private let eventDetailsViewModel: LiveStreamEventDetailsViewModelType = LiveStreamEventDetailsViewModel()
@@ -87,6 +88,7 @@ internal final class LiveStreamContainerViewController: UIViewController {
     self.eventDetailsViewModel.inputs.viewDidLoad()
   }
 
+  //swiftlint:disable function_body_length
   internal override func bindStyles() {
     super.bindStyles()
 
@@ -231,7 +233,9 @@ internal final class LiveStreamContainerViewController: UIViewController {
       |> UILabel.lens.textColor .~ .whiteColor()
       |> UILabel.lens.textAlignment .~ .Center
   }
+  //swiftlint:enable function_body_length
 
+  //swiftlint:disable function_body_length
   internal override func bindViewModel() {
     super.bindViewModel()
 
@@ -390,7 +394,8 @@ internal final class LiveStreamContainerViewController: UIViewController {
         }
     }
   }
-  
+  //swiftlint:enable function_body_length
+
   internal override func prefersStatusBarHidden() -> Bool {
     return true
   }
@@ -468,6 +473,7 @@ internal final class LiveStreamContainerViewController: UIViewController {
     self.eventDetailsViewModel.inputs.subscribeButtonTapped()
   }
 }
+//swiftlint:enable type_body_length
 
 private func attributedIntroTextString(prefix: String, suffix: String) -> NSAttributedString {
   let prefixAttributes = [NSFontAttributeName : UIFont.ksr_headline(size: 13)]
@@ -485,7 +491,8 @@ extension LiveStreamContainerViewController: LiveStreamViewControllerDelegate {
     self.eventDetailsViewModel.inputs.setNumberOfPeopleWatching(numberOfPeople: numberOfPeople)
   }
 
-  internal func liveStreamStateChanged(controller: LiveStreamViewController, state: LiveStreamViewControllerState) {
+  internal func liveStreamStateChanged(controller: LiveStreamViewController,
+                                       state: LiveStreamViewControllerState) {
     self.viewModel.inputs.liveStreamViewControllerStateChanged(state: state)
     self.eventDetailsViewModel.inputs.liveStreamViewControllerStateChanged(state: state)
   }
