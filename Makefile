@@ -44,7 +44,6 @@ bootstrap: hooks dependencies
 submodules:
 	git submodule sync --recursive || true
 	git submodule update --init --recursive || true
-	git submodule foreach git checkout $(sha1)
 
 configs = $(basename $(wildcard Kickstarter-iOS/Configs/*.example))
 $(configs):
@@ -83,7 +82,13 @@ strings:
 	cat Frameworks/ios-ksapi/Frameworks/native-secrets/ios/Secrets.swift bin/strings.swift | swift -
 
 secrets:
-	mkdir -p Frameworks/ios-ksapi/Frameworks/native-secrets/ios
-	cp -n Configs/Secrets.swift.example Frameworks/ios-ksapi/Frameworks/native-secrets/ios/Secrets.swift || true
+	-rm -rf Frameworks/ios-ksapi/Frameworks/native-secrets
+	-git clone https://github.com/kickstarter/native-secrets Frameworks/ios-ksapi/Frameworks/native-secrets
+	if [ ! -d Frameworks/ios-ksapi/Frameworks/native-secrets ]; \
+	then \
+		mkdir -p Frameworks/ios-ksapi/Frameworks/native-secrets/ios \
+		&& cp -n Configs/Secrets.swift.example Frameworks/ios-ksapi/Frameworks/native-secrets/ios/Secrets.swift \
+		|| true; \
+	fi
 
 .PHONY: test-all test clean dependencies submodules deploy lint secrets strings
