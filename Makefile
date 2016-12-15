@@ -82,9 +82,13 @@ strings:
 	cat Frameworks/ios-ksapi/Frameworks/native-secrets/ios/Secrets.swift bin/strings.swift | swift -
 
 secrets:
-	git clone https://github.com/kickstarter/native-secrets Frameworks/ios-ksapi/Frameworks/native-secrets \
-		|| mkdir -p Frameworks/ios-ksapi/Frameworks/native-secrets/ios \
+	-rm -rf Frameworks/ios-ksapi/Frameworks/native-secrets
+	-git clone https://github.com/kickstarter/native-secrets Frameworks/ios-ksapi/Frameworks/native-secrets
+	if [ ! -d Frameworks/ios-ksapi/Frameworks/native-secrets ]; \
+	then \
+		mkdir -p Frameworks/ios-ksapi/Frameworks/native-secrets/ios \
 		&& cp -n Configs/Secrets.swift.example Frameworks/ios-ksapi/Frameworks/native-secrets/ios/Secrets.swift \
-		|| true
+		|| true; \
+	fi
 
 .PHONY: test-all test clean dependencies submodules deploy lint secrets strings
