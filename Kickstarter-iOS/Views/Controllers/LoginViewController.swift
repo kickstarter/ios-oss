@@ -35,7 +35,7 @@ internal final class LoginViewController: UIViewController {
                                   forControlEvents: .EditingDidEndOnExit)
     self.emailTextField.addTarget(self,
                                   action: #selector(emailTextFieldChanged(_:)),
-                                  forControlEvents: .EditingChanged)
+                                  forControlEvents: [.EditingDidEndOnExit, .EditingChanged])
     self.passwordTextField.addTarget(self,
                                      action: #selector(passwordTextFieldDoneEditing),
                                      forControlEvents: .EditingDidEndOnExit)
@@ -108,7 +108,7 @@ internal final class LoginViewController: UIViewController {
       .observeForControllerAction()
       .observeNext { [weak self] in
         self?.startResetPasswordViewController()
-      }
+    }
 
     self.viewModel.outputs.showError
       .observeForControllerAction()
