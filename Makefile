@@ -24,8 +24,8 @@ build: dependencies
 	$(XCODEBUILD) $(BUILD_FLAGS) $(XCPRETTY)
 
 test-all:
-	PLATFORM=iOS $(MAKE) test
-	PLATFORM=iOS TARGET=Library $(MAKE) test
+	PLATFORM=iOS "$(MAKE)" test
+	PLATFORM=iOS TARGET=Library "$(MAKE)" test
 
 test: dependencies
 	$(XCODEBUILD) test $(BUILD_FLAGS) $(XCPRETTY)
