@@ -83,7 +83,8 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
       .map { (String(format: "%02d", $0), "seconds") }
 
     let countdownEnded = combineLatest(
-      project.mapConst(date),
+      project.map { $0.liveStreams.first }.ignoreNil()
+        .map { NSDate(timeIntervalSince1970: $0.startDate) },
       self.nowProperty.signal.ignoreNil()
       )
       .filter { $0.earlierDate($1) == $0 }
@@ -94,7 +95,7 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
 
     self.categoryId = project.map { $0.category.rootId }.ignoreNil()
     self.dismiss = self.closeButtonTappedProperty.signal
-    self.viewControllerTitle = viewDidLoadProperty.signal.mapConst("Livestream countdown")
+    self.viewControllerTitle = viewDidLoadProperty.signal.mapConst("Live stream countdown")
 
     self.retrieveEventInfo = project.map { $0.liveStreams.first }.ignoreNil().map { $0.id }
 
