@@ -15,28 +15,29 @@ internal final class LiveStreamContainerViewController: UIViewController {
   @IBOutlet private weak var creatorAvatarLabel: UILabel!
   @IBOutlet private weak var creatorAvatarLiveDotImageView: UIImageView!
   @IBOutlet private weak var detailsContainerStackView: UIStackView!
-  @IBOutlet private weak var projectImageView: UIImageView!
-  @IBOutlet private weak var liveStreamTitleLabel: UILabel!
+  @IBOutlet private weak var detailsLoadingActivityIndicatorView: UIActivityIndicatorView!
+  @IBOutlet private weak var detailsStackView: UIStackView!
   @IBOutlet private weak var liveStreamParagraphLabel: UILabel!
-  @IBOutlet private weak var loaderContainerStackView: UIStackView!
-  @IBOutlet private weak var loaderView: UIView!
-  @IBOutlet private weak var loaderStackView: UIStackView!
-  @IBOutlet private weak var loaderLabel: UILabel!
+  @IBOutlet private weak var liveStreamTitleLabel: UILabel!
   @IBOutlet private weak var loaderActivityIndicatorView: UIActivityIndicatorView!
   @IBOutlet private weak var loaderButton: UIButton!
-  @IBOutlet private weak var titleStackView: UIStackView!
-  @IBOutlet private weak var titleDetailsSeparator: UIView!
-  @IBOutlet private weak var detailsStackView: UIStackView!
-  @IBOutlet private weak var detailsLoadingActivityIndicatorView: UIActivityIndicatorView!
+  @IBOutlet private weak var loaderContainerStackView: UIStackView!
+  @IBOutlet private weak var loaderLabel: UILabel!
+  @IBOutlet private weak var loaderStackView: UIStackView!
+  @IBOutlet private weak var loaderView: UIView!
+  @IBOutlet private weak var numberWatchingButton: UIButton!
+  @IBOutlet private weak var projectImageView: UIImageView!
   @IBOutlet private weak var subscribeActivityIndicatorView: UIActivityIndicatorView!
   @IBOutlet private weak var subscribeButton: UIButton!
   @IBOutlet private weak var subscribeLabel: UILabel!
   @IBOutlet private weak var subscribeStackView: UIStackView!
-  @IBOutlet private weak var numberWatchingButton: UIButton!
+  @IBOutlet private weak var titleDetailsSeparator: UIView!
+  @IBOutlet private weak var titleStackView: UIStackView!
 
-  private let viewModel: LiveStreamContainerViewModelType = LiveStreamContainerViewModel()
   private let eventDetailsViewModel: LiveStreamEventDetailsViewModelType = LiveStreamEventDetailsViewModel()
   private var liveStreamViewController: LiveStreamViewController?
+  private let shareViewModel: ShareViewModelType = ShareViewModel()
+  private let viewModel: LiveStreamContainerViewModelType = LiveStreamContainerViewModel()
 
   internal static func configuredWith(project project: Project, event: LiveStreamEvent?)
     -> LiveStreamContainerViewController {
@@ -60,14 +61,8 @@ internal final class LiveStreamContainerViewController: UIViewController {
       |> UIBarButtonItem.lens.tintColor .~ .whiteColor()
       |> UIBarButtonItem.lens.targetAction .~ (self, #selector(LiveStreamContainerViewController.close(_:)))
 
-    let shareBarButtonItem = UIBarButtonItem()
-      |> shareBarButtonItemStyle
-      |> UIBarButtonItem.lens.tintColor .~ .whiteColor()
-      |> UIBarButtonItem.lens.targetAction .~ (self, #selector(LiveStreamContainerViewController.share(_:)))
-      |> UIBarButtonItem.lens.enabled .~ true
-
     self.navigationItem.leftBarButtonItem = closeBarButtonItem
-    self.navigationItem.rightBarButtonItem = shareBarButtonItem
+    self.navigationItem.rightBarButtonItem = self.shareBarButtonItem
 
     self.navBarTitleStackViewBackgroundView.addSubview(self.navBarTitleStackView)
     self.navBarTitleStackView.addArrangedSubview(self.navBarLiveDotImageView)
@@ -299,8 +294,7 @@ internal final class LiveStreamContainerViewController: UIViewController {
       .observeForUI()
       .on(next: { [weak self] image in self?.creatorAvatarImageView.image = nil })
       .observeNext { [weak self] in
-        guard let userId = AppEnvironment.current.currentUser?.id else { return }
-        KsLiveApp.retrieveEvent($0, uid: String(userId)).startWithResult {
+        KsLiveApp.retrieveEvent($0, uid: AppEnvironment.current.currentUser?.id).startWithResult {
           switch $0 {
           case .Success(let event):
             self?.viewModel.inputs.setLiveStreamEvent(event: event)
@@ -354,6 +348,11 @@ internal final class LiveStreamContainerViewController: UIViewController {
     self.subscribeLabel.rac.text = self.eventDetailsViewModel.outputs.subscribeLabelText
     self.subscribeButton.rac.title = self.eventDetailsViewModel.outputs.subscribeButtonText
     self.numberWatchingButton.rac.title = self.eventDetailsViewModel.outputs.numberOfPeopleWatchingText
+    self.shareBarButtonItem.rac.enabled = self.eventDetailsViewModel.outputs.configureSharing.mapConst(true)
+
+    self.eventDetailsViewModel.outputs.configureSharing.observeNext { [weak self] in
+      self?.shareViewModel.inputs.configureWith(shareContext: ShareContext.liveStream($0, $1))
+    }
 
     self.eventDetailsViewModel.outputs.subscribeButtonImage
       .observeForUI()
@@ -384,7 +383,7 @@ internal final class LiveStreamContainerViewController: UIViewController {
       .observeForUI()
       .observeNext { [weak self] in
         guard let userId = AppEnvironment.current.currentUser?.id else { return }
-        KsLiveApp.subscribe($0.0, uid: String(userId), subscribe: $0.1).startWithResult {
+        KsLiveApp.subscribe($0.0, uid: userId, subscribe: $0.1).startWithResult {
           switch $0 {
           case .Success(let result):
             self?.eventDetailsViewModel.inputs.setSubcribed(subscribed: result)
@@ -393,6 +392,10 @@ internal final class LiveStreamContainerViewController: UIViewController {
           }
         }
     }
+
+    self.shareViewModel.outputs.showShareSheet
+      .observeForControllerAction()
+      .observeNext { [weak self] in self?.showShareSheet($0) }
   }
   //swiftlint:enable function_body_length
 
@@ -452,12 +455,40 @@ internal final class LiveStreamContainerViewController: UIViewController {
                   height: self.view.bounds.size.height * (landscape ? 1 : 0.4))
   }
 
+  private func showShareSheet(controller: UIActivityViewController) {
+    controller.completionWithItemsHandler = { [weak self] in
+      self?.shareViewModel.inputs.shareActivityCompletion(activityType: $0,
+                                                          completed: $1,
+                                                          returnedItems: $2,
+                                                          activityError: $3)
+    }
+
+    if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+      controller.modalPresentationStyle = .Popover
+      controller.popoverPresentationController?.barButtonItem = self.navigationItem.rightBarButtonItem
+      self.presentViewController(controller, animated: true, completion: nil)
+
+    } else {
+      self.presentViewController(controller, animated: true, completion: nil)
+    }
+  }
+
   // MARK: Subviews
 
   lazy var navBarTitleStackViewBackgroundView = { UIView() }()
   lazy var navBarTitleStackView = { UIStackView() }()
   lazy var navBarLiveDotImageView = { UIImageView() }()
   lazy var navBarTitleLabel = { UILabel() }()
+
+  lazy var shareBarButtonItem: UIBarButtonItem = {
+    let shareBarButtonItem = UIBarButtonItem()
+      |> shareBarButtonItemStyle
+      |> UIBarButtonItem.lens.tintColor .~ .whiteColor()
+      |> UIBarButtonItem.lens.targetAction .~ (self, #selector(LiveStreamContainerViewController.share(_:)))
+      |> UIBarButtonItem.lens.enabled .~ false
+
+    return shareBarButtonItem
+  }()
 
   // MARK: Actions
 
@@ -466,7 +497,7 @@ internal final class LiveStreamContainerViewController: UIViewController {
   }
 
   internal func share(sender: UIBarButtonItem) {
-
+    self.shareViewModel.inputs.shareButtonTapped()
   }
 
   @IBAction internal func subscribe(sender: UIButton) {

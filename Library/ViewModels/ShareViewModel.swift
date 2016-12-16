@@ -178,6 +178,8 @@ private func activityItemProvider(forShareContext shareContext: ShareContext) ->
   switch shareContext {
   case let .creatorDashboard(project):
     return ProjectActivityItemProvider(project: project)
+  case let .liveStream(_, liveStreamEvent):
+    return LiveStreamActivityItemProvider(liveStreamEvent: liveStreamEvent)
   case let .project(project):
     return ProjectActivityItemProvider(project: project)
   case let .thanks(project):
@@ -198,6 +200,8 @@ private func shareUrl(forShareContext shareContext: ShareContext) -> NSURL {
     return NSURL(string: project.urls.web.project) ?? NSURL()
   case let .update(_, update):
     return NSURL(string: update.urls.web.update) ?? NSURL()
+  case let .liveStream(_, liveStreamEvent):
+    return NSURL(string: liveStreamEvent.stream.webUrl) ?? NSURL()
   }
 }
 
@@ -234,6 +238,12 @@ private func twitterInitialText(forShareContext shareContext: ShareContext) -> S
   switch shareContext {
   case let .creatorDashboard(project):
     return Strings.project_checkout_share_twitter_via_kickstarter(project_or_update_title: project.name)
+  case let .liveStream(_, liveStreamEvent):
+    return localizedString(
+      key: "Creator_name_is_streaming_live_on_Kickstarter",
+      defaultValue: "%{creator_name} is streaming live on Kickstarter",
+      substitutions: ["creator_name" : liveStreamEvent.creator.name]
+    )
   case let .project(project):
     return Strings.project_checkout_share_twitter_via_kickstarter(project_or_update_title: project.name)
   case let .thanks(project):

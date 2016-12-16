@@ -25,6 +25,7 @@ public protocol LiveStreamEventDetailsViewModelOutputs {
   var availableForText: Signal<String, NoError> { get }
   var creatorAvatarUrl: Signal<NSURL, NoError> { get }
   var creatorName: Signal<String, NoError> { get }
+  var configureSharing: Signal<(Project, LiveStreamEvent), NoError> { get }
   var introText: Signal<String, NoError> { get }
   var liveStreamTitle: Signal<String, NoError> { get }
   var liveStreamParagraph: Signal<String, NoError> { get }
@@ -53,6 +54,11 @@ public class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewModelTyp
       self.projectProperty.signal.ignoreNil(),
       self.viewDidLoadProperty.signal)
       .map(first)
+
+    self.configureSharing = combineLatest(
+      project,
+      event
+    )
 
     self.subscribed = Signal.merge(
       self.subscribedProperty.signal,
@@ -178,6 +184,7 @@ public class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewModelTyp
   public let availableForText: Signal<String, NoError>
   public let creatorAvatarUrl: Signal<NSURL, NoError>
   public let creatorName: Signal<String, NoError>
+  public let configureSharing: Signal<(Project, LiveStreamEvent), NoError>
   public let introText: Signal<String, NoError>
   public let liveStreamTitle: Signal<String, NoError>
   public let liveStreamParagraph: Signal<String, NoError>

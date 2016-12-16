@@ -30,8 +30,9 @@ internal final class LiveStreamCountdownViewController: UIViewController {
   @IBOutlet private weak var subscribeActivityIndicatorView: UIActivityIndicatorView!
   @IBOutlet private weak var subscribeButton: UIButton!
 
-  private let viewModel: LiveStreamCountdownViewModelType = LiveStreamCountdownViewModel()
   private let eventDetailsViewModel: LiveStreamEventDetailsViewModelType = LiveStreamEventDetailsViewModel()
+  private let viewModel: LiveStreamCountdownViewModelType = LiveStreamCountdownViewModel()
+  private let shareViewModel: ShareViewModelType = ShareViewModel()
   private var timerProducer: Disposable?
 
   internal static func configuredWith(project project: Project)
@@ -52,13 +53,8 @@ internal final class LiveStreamCountdownViewController: UIViewController {
       |> UIBarButtonItem.lens.tintColor .~ .whiteColor()
       |> UIBarButtonItem.lens.targetAction .~ (self, #selector(LiveStreamCountdownViewController.close(_:)))
 
-    let shareBarButtonItem = UIBarButtonItem()
-      |> shareBarButtonItemStyle
-      |> UIBarButtonItem.lens.tintColor .~ .whiteColor()
-      |> UIBarButtonItem.lens.targetAction .~ (self, #selector(LiveStreamCountdownViewController.share(_:)))
-
     self.navigationItem.leftBarButtonItem = closeBarButtonItem
-    self.navigationItem.rightBarButtonItem = shareBarButtonItem
+    self.navigationItem.rightBarButtonItem = self.shareBarButtonItem
 
     self.viewModel.inputs.viewDidLoad()
     self.eventDetailsViewModel.inputs.viewDidLoad()
@@ -163,35 +159,32 @@ internal final class LiveStreamCountdownViewController: UIViewController {
   internal override func bindViewModel() {
     super.bindViewModel()
 
-    self.daysLabel.rac.attributedText = self.viewModel.outputs
-      .daysString
+    self.daysLabel.rac.attributedText = self.viewModel.outputs.daysString
       .observeForUI()
-      .map { [weak self] in
-      self?.attributedCountdownString($0, suffix: $1)
-      }.ignoreNil()
+      .map { attributedCountdownString($0, suffix: $1) }
 
     self.hoursLabel.rac.attributedText = self.viewModel.outputs.hoursString
       .observeForUI()
-      .map { [weak self] in
-      self?.attributedCountdownString($0, suffix: $1)
-      }.ignoreNil()
+      .map { attributedCountdownString($0, suffix: $1) }
 
     self.minutesLabel.rac.attributedText = self.viewModel.outputs.minutesString
       .observeForUI()
-      .map { [weak self] in
-      self?.attributedCountdownString($0, suffix: $1)
-      }.ignoreNil()
+      .map { attributedCountdownString($0, suffix: $1) }
 
     self.secondsLabel.rac.attributedText = self.viewModel.outputs.secondsString
       .observeForUI()
-      .map { [weak self] in
-      self?.attributedCountdownString($0, suffix: $1)
-      }.ignoreNil()
+      .map { attributedCountdownString($0, suffix: $1) }
 
     self.timerProducer = timer(1, onScheduler: QueueScheduler(queue: dispatch_get_main_queue()))
       .startWithNext { [weak self] in
         self?.viewModel.inputs.setNow(date: $0)
     }
+
+    self.eventDetailsViewModel.outputs.configureSharing.observeNext { [weak self] in
+      self?.shareViewModel.inputs.configureWith(shareContext: ShareContext.liveStream($0, $1))
+    }
+
+    self.shareBarButtonItem.rac.enabled = self.eventDetailsViewModel.outputs.configureSharing.mapConst(true)
 
     self.introLabel.rac.text = self.eventDetailsViewModel.outputs.introText.observeForUI()
     self.creatorNameLabel.rac.text = self.eventDetailsViewModel.outputs.creatorName.observeForUI()
@@ -236,7 +229,7 @@ internal final class LiveStreamCountdownViewController: UIViewController {
       .on(next: { [weak self] image in self?.creatorAvatarImageView.image = nil })
       .observeNext { [weak self] in
         guard let userId = AppEnvironment.current.currentUser?.id else { return }
-        KsLiveApp.retrieveEvent($0, uid: String(userId)).startWithResult {
+        KsLiveApp.retrieveEvent($0, uid: userId).startWithResult {
           switch $0 {
           case .Success(let event):
             self?.viewModel.inputs.setLiveStreamEvent(event: event)
@@ -267,7 +260,7 @@ internal final class LiveStreamCountdownViewController: UIViewController {
       .observeForUI()
       .observeNext { [weak self] in
         guard let userId = AppEnvironment.current.currentUser?.id else { return }
-        KsLiveApp.subscribe($0.0, uid: String(userId), subscribe: $0.1).startWithResult {
+        KsLiveApp.subscribe($0.0, uid: userId, subscribe: $0.1).startWithResult {
           switch $0 {
           case .Success(let result):
             self?.eventDetailsViewModel.inputs.setSubcribed(subscribed: result)
@@ -285,6 +278,10 @@ internal final class LiveStreamCountdownViewController: UIViewController {
 
       self?.navigationController?.pushViewController(liveStreamContainerViewController, animated: true)
     }
+
+    self.shareViewModel.outputs.showShareSheet
+      .observeForControllerAction()
+      .observeNext { [weak self] in self?.showShareSheet($0) }
   }
   //swiftlint:enable function_body_length
 
@@ -292,29 +289,32 @@ internal final class LiveStreamCountdownViewController: UIViewController {
     self.timerProducer?.dispose()
   }
 
-  private func attributedCountdownString(prefix: String, suffix: String) -> NSAttributedString {
+  lazy var shareBarButtonItem: UIBarButtonItem = {
+    let shareBarButtonItem = UIBarButtonItem()
+      |> shareBarButtonItemStyle
+      |> UIBarButtonItem.lens.tintColor .~ .whiteColor()
+      |> UIBarButtonItem.lens.targetAction .~ (self, #selector(LiveStreamContainerViewController.share(_:)))
+      |> UIBarButtonItem.lens.enabled .~ false
 
-    let fontDescriptorAttributes = [
-      UIFontDescriptorFeatureSettingsAttribute: [
-        [
-          UIFontFeatureTypeIdentifierKey: kNumberSpacingType,
-          UIFontFeatureSelectorIdentifierKey: kMonospacedNumbersSelector
-        ]
-      ]
-    ]
+    return shareBarButtonItem
+  }()
 
-    let fontDescriptor = UIFont.ksr_title1(size: 24)
-      .fontDescriptor()
-      .fontDescriptorByAddingAttributes(fontDescriptorAttributes)
+  private func showShareSheet(controller: UIActivityViewController) {
+    controller.completionWithItemsHandler = { [weak self] in
+      self?.shareViewModel.inputs.shareActivityCompletion(activityType: $0,
+                                                          completed: $1,
+                                                          returnedItems: $2,
+                                                          activityError: $3)
+    }
 
-    let prefixAttributes = [NSFontAttributeName : UIFont(descriptor: fontDescriptor, size: 24)]
-    let suffixAttributes = [NSFontAttributeName : UIFont.ksr_headline(size: 14)]
+    if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+      controller.modalPresentationStyle = .Popover
+      controller.popoverPresentationController?.barButtonItem = self.navigationItem.rightBarButtonItem
+      self.presentViewController(controller, animated: true, completion: nil)
 
-    let prefix = NSMutableAttributedString(string: prefix, attributes: prefixAttributes)
-    let suffix = NSAttributedString(string: "\n\(suffix)", attributes: suffixAttributes)
-    prefix.appendAttributedString(suffix)
-
-    return NSAttributedString(attributedString: prefix)
+    } else {
+      self.presentViewController(controller, animated: true, completion: nil)
+    }
   }
 
   // MARK: Actions
@@ -324,10 +324,34 @@ internal final class LiveStreamCountdownViewController: UIViewController {
   }
 
   internal func share(sender: UIBarButtonItem) {
-
+    self.shareViewModel.inputs.shareButtonTapped()
   }
 
   @IBAction internal func subscribe(sender: UIButton) {
     self.eventDetailsViewModel.inputs.subscribeButtonTapped()
   }
+}
+
+private func attributedCountdownString(prefix: String, suffix: String) -> NSAttributedString {
+  let fontDescriptorAttributes = [
+    UIFontDescriptorFeatureSettingsAttribute: [
+      [
+        UIFontFeatureTypeIdentifierKey: kNumberSpacingType,
+        UIFontFeatureSelectorIdentifierKey: kMonospacedNumbersSelector
+      ]
+    ]
+  ]
+
+  let fontDescriptor = UIFont.ksr_title1(size: 24)
+    .fontDescriptor()
+    .fontDescriptorByAddingAttributes(fontDescriptorAttributes)
+
+  let prefixAttributes = [NSFontAttributeName : UIFont(descriptor: fontDescriptor, size: 24)]
+  let suffixAttributes = [NSFontAttributeName : UIFont.ksr_headline(size: 14)]
+
+  let prefix = NSMutableAttributedString(string: prefix, attributes: prefixAttributes)
+  let suffix = NSAttributedString(string: "\n\(suffix)", attributes: suffixAttributes)
+  prefix.appendAttributedString(suffix)
+
+  return NSAttributedString(attributedString: prefix)
 }
