@@ -362,7 +362,6 @@
 		A75798911D6A201F0063CEEC /* DebugPushNotifictionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75798901D6A201F0063CEEC /* DebugPushNotifictionsViewController.swift */; };
 		A75798C31D6A24CD0063CEEC /* DebugPushNotifications.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A75798C21D6A24CD0063CEEC /* DebugPushNotifications.storyboard */; };
 		A757E9EF1D19C37F00A5C978 /* ActivitySurveyResponseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A757E9BD1D19C34600A5C978 /* ActivitySurveyResponseCell.swift */; };
-		A757EA551D19F6C100A5C978 /* ActivityStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = A757EA541D19F6C100A5C978 /* ActivityStyles.swift */; };
 		A757EA6B1D19F93400A5C978 /* OnePasswordExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = A7E1C4F01D18C8B3002D6DE3 /* OnePasswordExtension.m */; };
 		A757EA6C1D19F93400A5C978 /* 1Password.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A7E1C4F11D18C8B3002D6DE3 /* 1Password.xcassets */; };
 		A757EABD1D19FAEE00A5C978 /* ProjectActivitiesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D9F580C1D131B1200CE81DE /* ProjectActivitiesViewController.swift */; };
