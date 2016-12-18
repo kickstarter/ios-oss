@@ -74,7 +74,7 @@
 "Find_projects_youll_love_and_help_bring" = "Aquí encuentras proyectos a tu gusto - ¡tu contribución ayudará a hacerlos realidad!";
 "Find_projects_youll_love_in_art_design_film" = "Proyectos a tu gusto - en arte, diseño, cine, juegos, música y otras categorías. Una vez que hayas patrocinado un proyecto, verás todas las actividades pertinentes aquí.";
 "First_created" = "Primer proyecto creado";
-"Follow_friends" = "Seguir a amigos";
+"Follow_friends" = "Seguir amigos";
 "Follow_more_friends" = "Seguir a más amigos";
 "Follow_your_Facebook_friends_and_get_notified" = "Sigue a tus amigos y te avisaremos cuando publican o patrocinan un proyecto.";
 "Follow_your_Facebook_friends_and_keep_up_with_the_projects" = "Sigue a tus amigos de Facebook y entérate cuando patrocinan o publican un proyecto.";
@@ -103,7 +103,7 @@
 "Its_better_with_friends" = "Todo en la vida es mejor con amigos ...";
 "Just_for_you" = "Sólo para ti.";
 "Keep_reading" = "Leer más";
-"Kickstarter_if_funded" = "Kickstarter (si financiación es exitosa)";
+"Kickstarter_if_funded" = "Kickstarter (si la financiación es exitosa)";
 "Kickstarter_is_not_a_store" = "Kickstarter no es una tienda.";
 "Learn_more_about_accountability" = "Más información sobre las responsabilidades";
 "Left_count_left.few" = "%{left_count} restantes";
@@ -121,7 +121,7 @@
 "Message_creator" = "Enviar mensaje al creador";
 "No_comments_yet" = "No hay comentarios todavia.";
 "No_one_has_posted_an_update_yet" = "Todavía no se han publicado actualizaciones.";
-"No_pledges_from_friends_yet" = "No hay contribuciones de amigos todavía.";
+"No_pledges_from_friends_yet" = "Todavía no hay contribuciones de amigos.";
 "Once_you_back_a_project_well_share" = "Tu patrocinio de un proyecto nos ayuda a hacerte recomendaciones personalizadas.";
 "Opens_comments" = "Abre comentarios.";
 "Opens_creator_profile" = "Abre el perfil del creador.";
@@ -138,14 +138,14 @@
 "Other_payment_methods" = "Otros métodos de pago";
 "Please_enter_an_amount_of_amount_or_less" = "Ingresa un monto de contribución de %{amount} o menor.";
 "Please_enter_an_amount_of_amount_or_more" = "Ingresa un monto de contribución de %{amount} o más.";
-"Pledge_any_amount_to_help_bring_this_project_to_life" = "Puedes contribuir un monto de libre selección para apoyar este proyecto.";
+"Pledge_any_amount_to_help_bring_this_project_to_life" = "Puedes contribuir un monto de libre elección para apoyar este proyecto.";
 "Pledge_without_a_reward" = "Contribuir sin recompensa";
 "Popular" = "Popular";
 "Project_Cancelled" = "Proyecto cancelado.";
 "Project_Suspended" = "Proyecto suspendido.";
 "Projects_We_Love" = "Nuestros Favoritos";
 "Public_comment" = "Comentario público";
-"Pursue_daring_ideas" = "Un universo de geniales ideas.";
+"Pursue_daring_ideas" = "Un universo de ideas geniales.";
 "Push_notifications" = "Notificaciones Push";
 "Read_more_about_the_campaign_arrow" = "Leer más sobre esta campaña  →";
 "Recommended" = "Recomendados";
@@ -181,7 +181,7 @@
 "Signs_up_with_Email" = "Registro con correo electrónico.";
 "Something_catch_your_eye" = "¿Algo que te haya llamado la atención?";
 "Survey" = "Cuestionario";
-"Tap_the_star_on_each_project_page_to_save_it" = "Simplemente márcalo con asterisco, entonces te mandaremos una notificación 48 horas antes de que termine.";
+"Tap_the_star_on_each_project_page_to_save_it" = "Simplemente márcalo con un asterisco, entonces te mandaremos una notificación 48 horas antes de que termine.";
 "Thank_you_for_supporting_this_project" = "Gracias por apoyar este proyecto.";
 "The_email_associated_with_this_Facebook_account_is_already_registered" = "Esta cuenta de correo electrónico ya está asociada a otro usuario de Kickstarter.";
 "This_facebook_account_is_already_linked_to_another_Kickstarter_user" = "Esta cuenta de Facebook ya está asociada a otro usuario de Kickstarter.";
@@ -255,7 +255,7 @@
 "activity.empty_state.logged_out.button" = "Descubre proyectos";
 "activity.empty_state.logged_out.message" = "Cuando patrocines un proyecto o sigas a un amigo, su actividad se verá aquí.";
 "activity.empty_state.logged_out.title" = "Aún no hay actividades";
-"activity.follow_back" = "¿Le quieres seguir también?";
+"activity.follow_back" = "¿Deseas seguirlo también?";
 "activity.friend_backed_art_project" = "%{friend_name} patrocinó un proyecto de Arte.";
 "activity.friend_backed_comics_project" = "%{friend_name} patrocinó un proyecto de Comics.";
 "activity.friend_backed_crafts_project" = "%{friend_name} patrocinó un proyecto de Artesanías.";
@@ -322,7 +322,7 @@
 "creator_project_preview.subtitle.days_to_go_percent_funded" = "%{days_to_go} restantes · %{percent_funded} financiado";
 "creator_project_preview.subtitle.funded_on_deadline" = "Financiado el %{deadline}";
 "creator_project_preview.subtitle.funding_canceled" = "Financiamiento cancelado";
-"creator_project_preview.subtitle.funding_unsuccessful_on_deadline" = "Financiamiento sin éxito el %{deadline}";
+"creator_project_preview.subtitle.funding_unsuccessful_on_deadline" = "Financiamiento sin éxito al %{deadline}";
 "creator_project_preview.subtitle.project_suspended" = "Proyecto suspendido";
 "dashboard.accessibility_label_share_project" = "Compartir proyecto";
 "dashboard.activity.backing_info" = "Info sobre patrocinamiento";
@@ -387,9 +387,9 @@
 "dashboard.graphs.referrers.pledged_via_custom" = "Contribuciones personalizadas";
 "dashboard.graphs.referrers.pledged_via_external" = "Contribuido a través de externos";
 "dashboard.graphs.referrers.pledged_via_kickstarter" = "Contribuido a través de Kickstarter";
-"dashboard.graphs.referrers.show_more" = "Mostrar más referer";
+"dashboard.graphs.referrers.show_more" = "Mostrar más referente";
 "dashboard.graphs.referrers.source" = "Fuente";
-"dashboard.graphs.referrers.title" = "REFERER";
+"dashboard.graphs.referrers.title" = "REFERENTE";
 "dashboard.graphs.referrers.title_referrers" = "Referencias";
 "dashboard.graphs.referrers.view_more_referrer_stats" = "Mostrar más";
 "dashboard.graphs.rewards.backers" = "Patrocinadores";
@@ -420,13 +420,13 @@
 "dashboard.post_update.compose.attachment.actionsheets.video.buttons.cancel" = "Cancelar";
 "dashboard.post_update.compose.attachment.actionsheets.video.buttons.remove" = "Eliminar";
 "dashboard.post_update.compose.attachment.actionsheets.video.remove_video" = "¿Eliminar vídeo?";
-"dashboard.post_update.compose.attachment.alerts.image.are_you_sure_you_want_to_remove_image" = "¿Seguro de que quieres eliminar esta imagen?";
+"dashboard.post_update.compose.attachment.alerts.image.are_you_sure_you_want_to_remove_image" = "¿Seguro que deseas eliminar esta imagen?";
 "dashboard.post_update.compose.attachment.alerts.image.buttons.cancel" = "Cancelar";
 "dashboard.post_update.compose.attachment.alerts.image.buttons.remove" = "Eliminar";
 "dashboard.post_update.compose.attachment.alerts.image.remove_image" = "Eliminar imagen";
 "dashboard.post_update.compose.attachment.buttons.add_attachment" = "Agregar anexo";
 "dashboard.post_update.compose.attachment.buttons.cancel" = "Cancelar";
-"dashboard.post_update.compose.attachment.buttons.choose_from_camera_roll" = "Elegir del archivo de cámera";
+"dashboard.post_update.compose.attachment.buttons.choose_from_camera_roll" = "Elegir del archivo de cámara";
 "dashboard.post_update.compose.attachment.buttons.new_photo" = "Nueva foto";
 "dashboard.post_update.compose.attachments_button" = "Anexos";
 "dashboard.post_update.compose.choose_media_button" = "Elegir del archivo de cámara";
@@ -621,7 +621,7 @@
 "discovery.facebook_connect_hero.if_you_connect_with_facebook" = "Conéctate via Facebook y sigue a tus amigos - ¡te avisaremos cada vez que publican o patrocinan un proyecto!";
 "discovery.facebook_connect_hero.we_will_never_post_anything_on_facebook" = "Nunca publicaremos nada en Facebook sin tu permiso";
 "discovery.favorite_categories.alert.buttons.got_it" = "¡Listo!";
-"discovery.favorite_categories.alert.message" = "¡Perfecto - esta categoría se encuentra ahora entre tus favoritas! Muévelas en el órden que más te gusten, así tendrás un acceso más rápido a ellas.";
+"discovery.favorite_categories.alert.message" = "¡Perfecto - esta categoría se encuentra ahora entre tus favoritas! Muévelas en el orden que más te gusten, así tendrás un acceso más rápido a ellas.";
 "discovery.favorite_categories.buttons.done" = "Listo";
 "discovery.favorite_categories.buttons.edit" = "Editar";
 "discovery.favorite_categories.buttons.favorite.a11y_label" = "Añadir a categorías favoritas";
@@ -704,7 +704,7 @@
 "general.switch_toggle_off" = "NO";
 "general.switch_toggle_on" = "SÍ";
 "invalid_api_client_alert.cancel" = "Cancelar";
-"invalid_api_client_alert.message" = "Parece que estás usando una versión muy antigua de esta aplicación. Por favor descarga la última versión de la App Store para continuar usándola.";
+"invalid_api_client_alert.message" = "Parece que estás usando una versión muy antigua de esta aplicación. Por favor descarga la última versión en la App Store para continuar usándola.";
 "invalid_api_client_alert.title" = "Por favor actualizar";
 "invalid_api_client_alert.upgrade" = "Actualizar";
 "login.buttons.forgot_password" = "¿Olvidaste tu contraseña?";
@@ -803,7 +803,7 @@
 "profile.projects.empty_state.button" = "Descubre proyectos";
 "profile.projects.empty_state.button_explore_new_projects" = "Explora proyectos nuevos";
 "profile.projects.empty_state.message" = "Aún no has patrocinado ningún proyecto.\n¡Es hora de cambiar esto!";
-"profile.projects.empty_state.message_no_backed_projects_yet" = "Todavía no ha contribuido a ningún proyecto";
+"profile.projects.empty_state.message_no_backed_projects_yet" = "Todavía no ha contribuido ningún proyecto";
 "profile.projects.status.canceled" = "Cancelado";
 "profile.projects.status.successful" = "Exitoso";
 "profile.projects.status.suspended" = "Suspendido";
@@ -838,7 +838,7 @@
 "profile.settings.navbar_title_notifications" = "Notificaciones";
 "profile.settings.newsletter.games" = "Nos encantan los juegos";
 "profile.settings.newsletter.happening" = "Eventos";
-"profile.settings.newsletter.opt_in.message" = "Hemos enviado una confirmación a la dirección de correo electrónico asociada con tu cuenta. Por favor checa tu bandeja de entrada y confirma la subscripción a %{newsletter}.";
+"profile.settings.newsletter.opt_in.message" = "Hemos enviado una confirmación a la dirección de correo electrónico asociada con tu cuenta. Por favor verifica tu bandeja de entrada y confirma la subscripción a %{newsletter}.";
 "profile.settings.newsletter.opt_in.title" = "¡Sólo un último paso!";
 "profile.settings.newsletter.promo" = "Novedades y eventos de Kickstarter";
 "profile.settings.newsletter.title" = "Boletines informativos";
@@ -875,7 +875,7 @@
 "project.checkout.backing.navbar_title" = "Patrocinar este proyecto";
 "project.checkout.finalizing.failed.button" = "Volver al proyecto";
 "project.checkout.finalizing.timeout.button" = "Ok";
-"project.checkout.finalizing.timeout.message" = "¡Que pena! Parece que está tardando más de lo normal. Te enviaremos un correo electrónico una vez haya finalizado tu contribución.";
+"project.checkout.finalizing.timeout.message" = "¡Qué pena! Parece que está tardando más de lo normal. Te enviaremos un correo electrónico una vez que haya finalizado tu contribución.";
 "project.checkout.finalizing.title" = "Procesando";
 "project.checkout.finalizing.we_are_finalizing_your_pledge_to_project" = "Estamos finalizando tu contribución para %{project_name}. ¡Sólo nos tomará un momento!";
 "project.checkout.games_alert.no_thanks" = "No, gracias.";
@@ -885,7 +885,7 @@
 "project.checkout.manage.navbar_title" = "Administrar contribución";
 "project.checkout.navigation.next" = "Siguiente";
 "project.checkout.share.alert.button.ok" = "Ok";
-"project.checkout.share.alert.this_device_not_capable_of_sending_email" = "Este dispositivo no puede enviar correos.";
+"project.checkout.share.alert.this_device_not_capable_of_sending_email" = "Este dispositivo no puede enviar correos electrónicos.";
 "project.checkout.share.buttons.more" = "Más";
 "project.checkout.share.buttons.more_share_options" = "Más opciones para compartir";
 "project.checkout.share.buttons.share" = "Compartir";
@@ -914,7 +914,7 @@
 "project.creator.by_creator_html" = "de %{creator_name}";
 "project.creator.youre_a_backer" = " • Tú eres un patrocinador";
 "project.disclaimer.goal_not_reached" = "Este proyecto será financiado únicamente si se contribuye por lo menos %{goal_currency} hasta %{deadline}.";
-"project.disclaimer.goal_reached" = "Este proyecto será financiado el  %{deadline}.";
+"project.disclaimer.goal_reached" = "Este proyecto será financiado el %{deadline}.";
 "project.friends_backing.title.friends" = "Amigos";
 "project.manage_button" = "Administrar contribución";
 "project.menu.buttons.campaign" = "Campaña";
@@ -1019,7 +1019,7 @@
 "social.update" = "Actualización";
 "social.update_number" = "Actualización %{update_number}";
 "social.update_sequence_and_title" = "Actualización %{update_number}: %{update_title}";
-"social_following.button.check_out_some_projects" = "¡Checa algunos de los proyectos aquÍ!";
+"social_following.button.check_out_some_projects" = "¡Observa algunos de los proyectos aquÍ!";
 "social_following.friend.buttons.follow" = "Seguir";
 "social_following.friend.buttons.following" = "Siguiendo";
 "social_following.friend.projects_count_backed.few" = "%{backed_count} patrocinados";
@@ -1034,7 +1034,7 @@
 "social_following.friend.projects_count_created.zero" = "0 creados";
 "social_following.header.accessibility.button_close_facebook_connect_header.label" = "Cerrar \"Conectar con Facebook\"";
 "social_following.header.accessibility.button_close_find_friends_header.label" = "Cerrar banner \"Encontrar amigos\"";
-"social_following.header.button.find_your_friends" = "Encuentra tus amigos";
+"social_following.header.button.find_your_friends" = "Encuentra a tus amigos";
 "social_following.header.connect_with_facebook_to_follow" = "Conéctate via Facebook y sigue a tus amigos - ¡te avisaremos cada vez que publican o patrocinan un proyecto!";
 "social_following.header.connect_with_your_friends_to_find_projects" = "Sigue a tus amigos y te avisaremos cuando publican o patrocinan un proyecto.";
 "social_following.header.friends_recommend_the_best_projects" = "Descubre más proyectos.";
