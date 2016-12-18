@@ -56,6 +56,8 @@ internal final class LiveStreamCountdownViewController: UIViewController {
     self.navigationItem.leftBarButtonItem = closeBarButtonItem
     self.navigationItem.rightBarButtonItem = self.shareBarButtonItem
 
+    self.navigationController?.delegate = self
+
     self.viewModel.inputs.viewDidLoad()
     self.eventDetailsViewModel.inputs.viewDidLoad()
   }
@@ -160,19 +162,15 @@ internal final class LiveStreamCountdownViewController: UIViewController {
     super.bindViewModel()
 
     self.daysLabel.rac.attributedText = self.viewModel.outputs.daysString
-      .observeForUI()
       .map { attributedCountdownString($0, suffix: $1) }
 
     self.hoursLabel.rac.attributedText = self.viewModel.outputs.hoursString
-      .observeForUI()
       .map { attributedCountdownString($0, suffix: $1) }
 
     self.minutesLabel.rac.attributedText = self.viewModel.outputs.minutesString
-      .observeForUI()
       .map { attributedCountdownString($0, suffix: $1) }
 
     self.secondsLabel.rac.attributedText = self.viewModel.outputs.secondsString
-      .observeForUI()
       .map { attributedCountdownString($0, suffix: $1) }
 
     self.timerProducer = timer(1, onScheduler: QueueScheduler(queue: dispatch_get_main_queue()))
@@ -186,11 +184,10 @@ internal final class LiveStreamCountdownViewController: UIViewController {
 
     self.shareBarButtonItem.rac.enabled = self.eventDetailsViewModel.outputs.configureSharing.mapConst(true)
 
-    self.introLabel.rac.text = self.eventDetailsViewModel.outputs.introText.observeForUI()
-    self.creatorNameLabel.rac.text = self.eventDetailsViewModel.outputs.creatorName.observeForUI()
-    self.liveStreamTitleLabel.rac.text = self.eventDetailsViewModel.outputs.liveStreamTitle.observeForUI()
+    self.introLabel.rac.text = self.eventDetailsViewModel.outputs.introText
+    self.creatorNameLabel.rac.text = self.eventDetailsViewModel.outputs.creatorName
+    self.liveStreamTitleLabel.rac.text = self.eventDetailsViewModel.outputs.liveStreamTitle
     self.liveStreamParagraphLabel.rac.text = self.eventDetailsViewModel.outputs.liveStreamParagraph
-      .observeForUI()
 
     self.viewModel.outputs.projectImageUrl
       .observeForUI()
@@ -241,23 +238,18 @@ internal final class LiveStreamCountdownViewController: UIViewController {
     }
 
     self.activityIndicatorView.rac.hidden = self.eventDetailsViewModel.outputs.showActivityIndicator
-      .observeForUI()
       .map(negate)
 
     self.detailsStackView.rac.hidden = self.eventDetailsViewModel.outputs.showActivityIndicator
-      .observeForUI()
 
     self.subscribeActivityIndicatorView.rac.hidden = self.eventDetailsViewModel.outputs
       .showSubscribeButtonActivityIndicator
-      .observeForUI()
       .map(negate)
 
     self.subscribeButton.rac.hidden = self.eventDetailsViewModel.outputs
       .showSubscribeButtonActivityIndicator
-      .observeForUI()
 
     self.eventDetailsViewModel.outputs.toggleSubscribe
-      .observeForUI()
       .observeNext { [weak self] in
         guard let userId = AppEnvironment.current.currentUser?.id else { return }
         KsLiveApp.subscribe($0.0, uid: userId, subscribe: $0.1).startWithResult {
@@ -354,4 +346,11 @@ private func attributedCountdownString(prefix: String, suffix: String) -> NSAttr
   prefix.appendAttributedString(suffix)
 
   return NSAttributedString(attributedString: prefix)
+}
+
+extension LiveStreamCountdownViewController: UINavigationControllerDelegate {
+  func navigationControllerSupportedInterfaceOrientations(
+    navigationController: UINavigationController) -> UIInterfaceOrientationMask {
+    return .Portrait
+  }
 }

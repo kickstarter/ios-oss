@@ -14,7 +14,6 @@ public protocol LiveStreamContainerViewModelInputs {
   func configureWith(project project: Project, event: LiveStreamEvent?)
   func closeButtonTapped()
   func setLiveStreamEvent(event event: LiveStreamEvent)
-  func setLiveStreamViewController(controller controller: LiveStreamViewController)
   func viewDidLayoutSubviews()
   func viewDidLoad()
   func viewWillTransitionToSizeWithCoordinator(coordinator coordinator: UIViewControllerTransitionCoordinator)
@@ -24,10 +23,6 @@ public protocol LiveStreamContainerViewModelInputs {
 public protocol LiveStreamContainerViewModelOutputs {
   var createAndConfigureLiveStreamViewController: Signal<(Project, LiveStreamEvent), NoError> { get }
   var dismiss: Signal<(), NoError> { get }
-  var layoutLiveStreamView: Signal<UIView, NoError> { get }
-  var layoutLiveStreamViewWithCoordinator: Signal<(UIView,
-    UIViewControllerTransitionCoordinator), NoError> { get }
-  var liveStreamViewController: Signal<LiveStreamViewController, NoError> { get }
   var liveStreamState: Signal<LiveStreamViewControllerState, NoError> { get }
   var loaderText: Signal<String, NoError> { get }
   var projectImageUrl: Signal<NSURL, NoError> { get }
@@ -50,23 +45,6 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       self.liveStreamEventProperty.signal.ignoreNil(),
       self.viewDidLoadProperty.signal
       ).map { a, b, _ in (a, b) }
-
-    self.liveStreamViewController = self.liveStreamViewControllerProperty.signal.ignoreNil()
-
-    self.layoutLiveStreamView = self.liveStreamViewController
-      .map { $0.view }
-      .takeWhen(
-        combineLatest(
-          self.viewDidLoadProperty.signal,
-          self.liveStreamViewController)
-          .mapConst(())
-    )
-
-    self.layoutLiveStreamViewWithCoordinator = combineLatest(
-      self.liveStreamViewController,
-      self.viewWillTransitionToSizeWithCoordinatorProperty
-        .signal.ignoreNil())
-      .map { ($0.view, $1) }
 
     self.liveStreamState = Signal.merge(
       self.liveStreamViewControllerStateChangedProperty.signal.ignoreNil(),
@@ -100,7 +78,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
 
           return false
         },
-        self.liveStreamViewController
+        self.createAndConfigureLiveStreamViewController
     ).map(first)
 
     self.dismiss = self.closeButtonTappedProperty.signal
@@ -128,11 +106,6 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     self.liveStreamEventProperty.value = event
   }
 
-  private let liveStreamViewControllerProperty = MutableProperty<LiveStreamViewController?>(nil)
-  public func setLiveStreamViewController(controller controller: LiveStreamViewController) {
-    self.liveStreamViewControllerProperty.value = controller
-  }
-
   private let viewDidLoadProperty = MutableProperty()
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
@@ -152,10 +125,6 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
 
   public let createAndConfigureLiveStreamViewController: Signal<(Project, LiveStreamEvent), NoError>
   public let dismiss: Signal<(), NoError>
-  public let layoutLiveStreamView: Signal<UIView, NoError>
-  public let layoutLiveStreamViewWithCoordinator: Signal<(UIView,
-    UIViewControllerTransitionCoordinator), NoError>
-  public let liveStreamViewController: Signal<LiveStreamViewController, NoError>
   public let liveStreamState: Signal<LiveStreamViewControllerState, NoError>
   public let loaderText: Signal<String, NoError>
   public let projectImageUrl: Signal<NSURL, NoError>

@@ -25,6 +25,7 @@ internal final class LiveStreamContainerViewController: UIViewController {
   @IBOutlet private weak var loaderLabel: UILabel!
   @IBOutlet private weak var loaderStackView: UIStackView!
   @IBOutlet private weak var loaderView: UIView!
+  @IBOutlet private weak var loaderViewHeightConstraint: NSLayoutConstraint!
   @IBOutlet private weak var numberWatchingButton: UIButton!
   @IBOutlet private weak var projectImageView: UIImageView!
   @IBOutlet private weak var subscribeActivityIndicatorView: UIActivityIndicatorView!
@@ -33,6 +34,7 @@ internal final class LiveStreamContainerViewController: UIViewController {
   @IBOutlet private weak var subscribeStackView: UIStackView!
   @IBOutlet private weak var titleDetailsSeparator: UIView!
   @IBOutlet private weak var titleStackView: UIStackView!
+  @IBOutlet private weak var titleStackViewHeightConstraint: NSLayoutConstraint!
 
   private let eventDetailsViewModel: LiveStreamEventDetailsViewModelType = LiveStreamEventDetailsViewModel()
   private var liveStreamViewController: LiveStreamViewController?
@@ -115,17 +117,15 @@ internal final class LiveStreamContainerViewController: UIViewController {
     self.loaderButton
       |> UIButton.lens.hidden .~ true
 
+    self.titleStackViewHeightConstraint.constant = Styles.grid(14)
+
     self.titleStackView
       |> UIStackView.lens.axis .~ .Horizontal
       |> UIStackView.lens.alignment .~ .Center
       |> UIStackView.lens.distribution .~ .Fill
       |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
       |> UIStackView.lens.spacing .~ Styles.grid(1)
-      |> UIStackView.lens.layoutMargins .~ .init(
-        top: Styles.grid(5),
-        left: Styles.grid(4),
-        bottom: Styles.grid(5),
-        right: Styles.grid(4))
+      |> UIStackView.lens.layoutMargins .~ .init(all: Styles.grid(4))
 
     self.availableForLabel
       |> UILabel.lens.font .~ UIFont.ksr_footnote(size: 11).italicized
@@ -185,8 +185,8 @@ internal final class LiveStreamContainerViewController: UIViewController {
 
     self.subscribeLabel
       |> UILabel.lens.font .~ UIFont.ksr_headline(size: 13)
+      |> UILabel.lens.numberOfLines .~ 2
       |> UILabel.lens.textColor .~ .whiteColor()
-      |> UILabel.lens.adjustsFontSizeToFitWidth .~ true
 
     self.subscribeActivityIndicatorView
       |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .White
@@ -240,41 +240,11 @@ internal final class LiveStreamContainerViewController: UIViewController {
         guard let _self = self else { return }
         let (_, event) = $0
 
-        let liveStreamViewController = LiveStreamViewController(event: event, delegate: _self)
-        _self.viewModel.inputs.setLiveStreamViewController(controller: liveStreamViewController)
+        _self.addChildLiveStreamViewController(LiveStreamViewController(event: event, delegate: _self))
     }
 
-    self.viewModel.outputs.liveStreamViewController
-      .observeForUI()
-      .observeNext { [weak self]  in
-        self?.addChildLiveStreamViewController($0)
-    }
-
-    self.viewModel.outputs.layoutLiveStreamView
-      .observeForUI()
-      .observeNext { [weak self] in
-        self?.layoutLiveStreamView($0)
-    }
-
-    combineLatest(
-      self.viewModel.outputs.liveStreamViewController,
-      self.viewModel.outputs.showVideoView
-    )
-    .observeForUI()
-      .observeNext {
-        $0.0.view.hidden = !$0.1
-    }
-
-    self.viewModel.outputs.layoutLiveStreamViewWithCoordinator
-      .observeForUI()
-      .observeNext { [weak self] in
-        let view = $0
-        $1.animateAlongsideTransition({ (context) in
-          self?.layoutLiveStreamView(view)
-          }, completion: { [weak self] _ in
-            guard let _self = self else { return }
-            _self.navigationController?.setNavigationBarHidden(_self.isLandscape(), animated: true)
-        })
+    self.viewModel.outputs.showVideoView.observeNext { [weak self] in
+      self?.liveStreamViewController?.view.hidden = !$0
     }
 
     self.viewModel.outputs.projectImageUrl
@@ -342,9 +312,8 @@ internal final class LiveStreamContainerViewController: UIViewController {
 
     self.navBarTitleLabel.rac.text = self.viewModel.outputs.titleViewText
 
-    self.liveStreamTitleLabel.rac.text = self.eventDetailsViewModel.outputs.liveStreamTitle.observeForUI()
+    self.liveStreamTitleLabel.rac.text = self.eventDetailsViewModel.outputs.liveStreamTitle
     self.liveStreamParagraphLabel.rac.text = self.eventDetailsViewModel.outputs.liveStreamParagraph
-      .observeForUI()
     self.subscribeLabel.rac.text = self.eventDetailsViewModel.outputs.subscribeLabelText
     self.subscribeButton.rac.title = self.eventDetailsViewModel.outputs.subscribeButtonText
     self.numberWatchingButton.rac.title = self.eventDetailsViewModel.outputs.numberOfPeopleWatchingText
@@ -364,23 +333,18 @@ internal final class LiveStreamContainerViewController: UIViewController {
 
     self.detailsLoadingActivityIndicatorView.rac.hidden = self.eventDetailsViewModel.outputs
       .showActivityIndicator
-      .observeForUI()
       .map(negate)
 
     self.detailsContainerStackView.rac.hidden = self.eventDetailsViewModel.outputs.showActivityIndicator
-      .observeForUI()
 
     self.subscribeActivityIndicatorView.rac.hidden = self.eventDetailsViewModel.outputs
       .showSubscribeButtonActivityIndicator
-      .observeForUI()
       .map(negate)
 
     self.subscribeButton.rac.hidden = self.eventDetailsViewModel.outputs
       .showSubscribeButtonActivityIndicator
-      .observeForUI()
 
     self.eventDetailsViewModel.outputs.toggleSubscribe
-      .observeForUI()
       .observeNext { [weak self] in
         guard let userId = AppEnvironment.current.currentUser?.id else { return }
         KsLiveApp.subscribe($0.0, uid: userId, subscribe: $0.1).startWithResult {
@@ -426,16 +390,27 @@ internal final class LiveStreamContainerViewController: UIViewController {
       origin:self.navBarTitleStackViewBackgroundView.frame.origin,
       size: CGSize(width: Styles.grid(4) + titleSize.width, height: Styles.grid(5))
     )
+
+    self.loaderViewHeightConstraint.constant = self.videoFrame(self.isLandscape()).height
+
+    if let view = self.liveStreamViewController?.view {
+      self.layoutLiveStreamView(view)
+    }
   }
 
   internal override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator
     coordinator: UIViewControllerTransitionCoordinator) {
     super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
 
-    self.viewModel.inputs.viewWillTransitionToSizeWithCoordinator(coordinator: coordinator)
+    coordinator.animateAlongsideTransition({ (context) in
+      if let view = self.liveStreamViewController?.view { self.layoutLiveStreamView(view) }
+      }, completion: { _ in
+        self.navigationController?.setNavigationBarHidden(self.isLandscape(), animated: true)
+    })
   }
 
-  private func addChildLiveStreamViewController(controller: UIViewController) {
+  private func addChildLiveStreamViewController(controller: LiveStreamViewController) {
+    self.liveStreamViewController = controller
     self.addChildViewController(controller)
     controller.didMoveToParentViewController(self)
     self.view.addSubview(controller.view)
