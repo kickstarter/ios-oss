@@ -44,8 +44,8 @@ ActivityFriendBackingViewModelInputs, ActivityFriendBackingViewModelOutputs {
 
   // swiftlint:disable:next function_body_length
   public init() {
-    let activity = self.activityProperty.signal.ignoreNil()
-    let project = activity.map { $0.project }.ignoreNil()
+    let activity = self.activityProperty.signal.skipNil()
+    let project = activity.map { $0.project }.skipNil()
 
     self.friendImageURL = activity
       .map { ($0.user?.avatar.small).flatMap(NSURL.init) }

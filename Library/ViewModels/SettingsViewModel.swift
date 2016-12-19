@@ -83,7 +83,7 @@ public final class SettingsViewModel: SettingsViewModelType, SettingsViewModelIn
           .prefix(value: AppEnvironment.current.currentUser)
           .demoteErrors()
       }
-      .ignoreNil()
+      .skipNil()
 
     let newsletterOn: Signal<(Newsletter, Bool), NoError> = .merge(
       self.gamesNewsletterTappedProperty.signal.map { (.games, $0) },
@@ -172,35 +172,35 @@ public final class SettingsViewModel: SettingsViewModelType, SettingsViewModelIn
       .filter { _, on in AppEnvironment.current.config?.countryCode == "DE" && on }
       .map { newsletter, _ in newsletter.displayableName }
 
-    self.gamesNewsletterOn = self.updateCurrentUser.map { $0.newsletters.games }.ignoreNil().skipRepeats()
+    self.gamesNewsletterOn = self.updateCurrentUser.map { $0.newsletters.games }.skipNil().skipRepeats()
     self.happeningNewsletterOn = self.updateCurrentUser
-      .map { $0.newsletters.happening }.ignoreNil().skipRepeats()
-    self.promoNewsletterOn = self.updateCurrentUser.map { $0.newsletters.promo }.ignoreNil().skipRepeats()
-    self.weeklyNewsletterOn = self.updateCurrentUser.map { $0.newsletters.weekly }.ignoreNil().skipRepeats()
+      .map { $0.newsletters.happening }.skipNil().skipRepeats()
+    self.promoNewsletterOn = self.updateCurrentUser.map { $0.newsletters.promo }.skipNil().skipRepeats()
+    self.weeklyNewsletterOn = self.updateCurrentUser.map { $0.newsletters.weekly }.skipNil().skipRepeats()
 
-    self.backingsSelected = self.updateCurrentUser.map { $0.notifications.backings }.ignoreNil().skipRepeats()
+    self.backingsSelected = self.updateCurrentUser.map { $0.notifications.backings }.skipNil().skipRepeats()
     self.commentsSelected = self.updateCurrentUser
-      .map { $0.notifications.comments }.ignoreNil().skipRepeats()
+      .map { $0.notifications.comments }.skipNil().skipRepeats()
     self.followerSelected = self.updateCurrentUser
-      .map { $0.notifications.follower }.ignoreNil().skipRepeats()
+      .map { $0.notifications.follower }.skipNil().skipRepeats()
     self.friendActivitySelected = self.updateCurrentUser
-      .map { $0.notifications.friendActivity }.ignoreNil().skipRepeats()
+      .map { $0.notifications.friendActivity }.skipNil().skipRepeats()
     self.mobileBackingsSelected = self.updateCurrentUser
-      .map { $0.notifications.mobileBackings }.ignoreNil().skipRepeats()
+      .map { $0.notifications.mobileBackings }.skipNil().skipRepeats()
     self.mobileCommentsSelected = self.updateCurrentUser
-      .map { $0.notifications.mobileComments }.ignoreNil().skipRepeats()
+      .map { $0.notifications.mobileComments }.skipNil().skipRepeats()
     self.mobileFollowerSelected = self.updateCurrentUser
-      .map { $0.notifications.mobileFollower }.ignoreNil().skipRepeats()
+      .map { $0.notifications.mobileFollower }.skipNil().skipRepeats()
     self.mobileFriendActivitySelected = self.updateCurrentUser
-      .map { $0.notifications.mobileFriendActivity }.ignoreNil().skipRepeats()
+      .map { $0.notifications.mobileFriendActivity }.skipNil().skipRepeats()
     self.mobilePostLikesSelected = self.updateCurrentUser
-      .map { $0.notifications.mobilePostLikes }.ignoreNil().skipRepeats()
+      .map { $0.notifications.mobilePostLikes }.skipNil().skipRepeats()
     self.mobileUpdatesSelected = self.updateCurrentUser
-      .map { $0.notifications.mobileUpdates }.ignoreNil().skipRepeats()
+      .map { $0.notifications.mobileUpdates }.skipNil().skipRepeats()
     self.postLikesSelected = self.updateCurrentUser
-      .map { $0.notifications.postLikes }.ignoreNil().skipRepeats()
+      .map { $0.notifications.postLikes }.skipNil().skipRepeats()
     self.updatesSelected = self.updateCurrentUser
-      .map { $0.notifications.updates }.ignoreNil().skipRepeats()
+      .map { $0.notifications.updates }.skipNil().skipRepeats()
 
     self.versionText = viewDidLoadProperty.signal
       .map {
@@ -222,7 +222,7 @@ public final class SettingsViewModel: SettingsViewModelType, SettingsViewModelIn
 
     // Koala
     userAttributeChanged
-      .observeNext { attribute, on in
+      .observeValues { attribute, on in
         switch attribute {
         case let .newsletter(newsletter):
           AppEnvironment.current.koala.trackChangeNewsletter(
@@ -242,18 +242,18 @@ public final class SettingsViewModel: SettingsViewModelType, SettingsViewModelIn
     }
 
     self.logoutCanceledProperty.signal
-      .observeNext { _ in AppEnvironment.current.koala.trackCancelLogoutModal() }
+      .observeValues { _ in AppEnvironment.current.koala.trackCancelLogoutModal() }
 
     self.logoutConfirmedProperty.signal
-      .observeNext { _ in AppEnvironment.current.koala.trackConfirmLogoutModal() }
+      .observeValues { _ in AppEnvironment.current.koala.trackConfirmLogoutModal() }
 
     self.goToAppStoreRating
-      .observeNext { _ in AppEnvironment.current.koala.trackAppStoreRatingOpen() }
+      .observeValues { _ in AppEnvironment.current.koala.trackAppStoreRatingOpen() }
 
     self.showConfirmLogoutPrompt
-      .observeNext { _ in AppEnvironment.current.koala.trackLogoutModal() }
+      .observeValues { _ in AppEnvironment.current.koala.trackLogoutModal() }
 
-    self.viewDidLoadProperty.signal.observeNext { _ in AppEnvironment.current.koala.trackSettingsView() }
+    self.viewDidLoadProperty.signal.observeValues { _ in AppEnvironment.current.koala.trackSettingsView() }
   }
   // swiftlint:enable function_body_length
   // swiftlint:enable cyclomatic_complexity

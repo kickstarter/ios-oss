@@ -56,7 +56,7 @@ public final class DashboardRewardsCellViewModel: DashboardRewardsCellViewModelT
   DashboardRewardsCellViewModelInputs, DashboardRewardsCellViewModelOutputs {
   // swiftlint:disable function_body_length
   public init() {
-    let statsProject = self.statsProjectProperty.signal.ignoreNil()
+    let statsProject = self.statsProjectProperty.signal.skipNil()
 
     let rewards = statsProject
       .map { stats, project in (project.rewards ?? [], stats) }
@@ -115,7 +115,7 @@ public final class DashboardRewardsCellViewModel: DashboardRewardsCellViewModelT
     statsProject
       .map { $1 }
       .takeWhen(self.seeAllTiersButtonTappedProperty.signal)
-      .observeNext { AppEnvironment.current.koala.trackDashboardSeeAllRewards(project: $0) }
+      .observeValues { AppEnvironment.current.koala.trackDashboardSeeAllRewards(project: $0) }
   }
   // swiftlint:enable function_body_length
 

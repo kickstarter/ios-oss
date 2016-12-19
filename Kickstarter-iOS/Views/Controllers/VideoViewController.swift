@@ -129,7 +129,7 @@ internal final class VideoViewController: UIViewController {
         self?.projectImageView.af_cancelImageRequest()
         self?.projectImageView.image = nil
         })
-      .ignoreNil()
+      .skipNil()
       .observeNext { [weak self] url in
         self?.projectImageView.af_setImageWithURL(url)
     }

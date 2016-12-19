@@ -43,15 +43,15 @@ internal final class UpdateViewModel: UpdateViewModelType, UpdateViewModelInputs
 
   // swiftlint:disable function_body_length
   internal init() {
-    let initialUpdate = self.updateProperty.signal.ignoreNil()
+    let initialUpdate = self.updateProperty.signal.skipNil()
 
     let initialUpdateLoadRequest = initialUpdate
       .takeWhen(self.viewDidLoadProperty.signal)
       .map { NSURL(string: $0.urls.web.update) }
-      .ignoreNil()
+      .skipNil()
       .map { AppEnvironment.current.apiService.preparedRequest(forURL: $0) }
 
-    let navigationAction = self.policyForNavigationActionProperty.signal.ignoreNil()
+    let navigationAction = self.policyForNavigationActionProperty.signal.skipNil()
 
     let anotherUpdateLoadRequest = navigationAction
       .filter {
@@ -66,7 +66,7 @@ internal final class UpdateViewModel: UpdateViewModelType, UpdateViewModelInputs
 
     let anotherUpdate = anotherUpdateLoadRequest
       .map(Navigation.Project.updateWithRequest)
-      .ignoreNil()
+      .skipNil()
       .switchMap { project, update in
         return AppEnvironment.current.apiService
           .fetchUpdate(updateId: update, projectParam: project)
@@ -96,7 +96,7 @@ internal final class UpdateViewModel: UpdateViewModelType, UpdateViewModelInputs
         return nil
     }
 
-    self.goToComments = possiblyGoToComments.ignoreNil()
+    self.goToComments = possiblyGoToComments.skipNil()
 
     let possiblyGoToProject = navigationAction
       .map { action in
@@ -105,7 +105,7 @@ internal final class UpdateViewModel: UpdateViewModelType, UpdateViewModelInputs
           : nil
     }
 
-    self.goToProject = self.projectProperty.signal.ignoreNil()
+    self.goToProject = self.projectProperty.signal.skipNil()
       .takePairWhen(possiblyGoToProject)
       .switchMap { (project, projectParamAndRefTag) -> SignalProducer<(Project, RefTag), NoError> in
 
@@ -128,9 +128,9 @@ internal final class UpdateViewModel: UpdateViewModelType, UpdateViewModelInputs
         action.navigationType == .LinkActivated && goToProject == nil && goToComments == nil
       }
       .map { action, _, _ in action.request.URL }
-      .ignoreNil()
+      .skipNil()
 
-    self.projectProperty.signal.ignoreNil()
+    self.projectProperty.signal.skipNil()
       .takeWhen(self.goToSafariBrowser)
       .observeNext {
         AppEnvironment.current.koala.trackOpenedExternalLink(project: $0, context: .projectUpdate)

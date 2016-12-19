@@ -163,7 +163,7 @@ AppDelegateViewModelOutputs {
 
     self.updateCurrentUserInEnvironment = currentUserEvent
       .values()
-      .ignoreNil()
+      .skipNil()
 
     self.forceLogout = currentUserEvent
       .errors()
@@ -179,7 +179,7 @@ AppDelegateViewModelOutputs {
     self.postNotification = self.currentUserUpdatedInEnvironmentProperty.signal
       .mapConst(NSNotification(name: CurrentUserNotifications.userUpdated, object: nil))
 
-    self.applicationLaunchOptionsProperty.signal.ignoreNil()
+    self.applicationLaunchOptionsProperty.signal.skipNil()
       .take(1)
       .observeNext { appOptions in
         AppEnvironment.current.facebookAppDelegate.application(
@@ -188,7 +188,7 @@ AppDelegateViewModelOutputs {
         )
     }
 
-    let openUrl = self.applicationOpenUrlProperty.signal.ignoreNil()
+    let openUrl = self.applicationOpenUrlProperty.signal.skipNil()
 
     self.facebookOpenURLReturnValue <~ openUrl.map {
       AppEnvironment.current.facebookAppDelegate.application(
@@ -219,17 +219,17 @@ AppDelegateViewModelOutputs {
       }
       .ignoreValues()
 
-    let remoteNotificationFromLaunch = self.applicationLaunchOptionsProperty.signal.ignoreNil()
+    let remoteNotificationFromLaunch = self.applicationLaunchOptionsProperty.signal.skipNil()
       .map { _, options in options?[UIApplicationLaunchOptionsRemoteNotificationKey] }
-      .ignoreNil()
+      .skipNil()
 
-    let localNotificationFromLaunch = self.applicationLaunchOptionsProperty.signal.ignoreNil()
+    let localNotificationFromLaunch = self.applicationLaunchOptionsProperty.signal.skipNil()
       .map { _, options in options?[UIApplicationLaunchOptionsLocalNotificationKey] as? UILocalNotification }
       .map { $0?.userInfo as? AnyObject }
-      .ignoreNil()
+      .skipNil()
 
     let notificationAndIsActive = Signal.merge(
-      self.remoteNotificationAndIsActiveProperty.signal.ignoreNil(),
+      self.remoteNotificationAndIsActiveProperty.signal.skipNil(),
       remoteNotificationFromLaunch.map { ($0, false) },
       localNotificationFromLaunch.map { ($0, false) }
     )
@@ -258,7 +258,7 @@ AppDelegateViewModelOutputs {
 
     // Deep links
 
-    let continueUserActivity = applicationContinueUserActivityProperty.signal.ignoreNil()
+    let continueUserActivity = applicationContinueUserActivityProperty.signal.skipNil()
 
     let continueUserActivityWithNavigation = continueUserActivity
       .filter { $0.activityType == NSUserActivityTypeBrowsingWeb }
@@ -274,13 +274,13 @@ AppDelegateViewModelOutputs {
       )
 
     let performShortcutItem = Signal.merge(
-      self.performActionForShortcutItemProperty.signal.ignoreNil(),
+      self.performActionForShortcutItemProperty.signal.skipNil(),
       self.applicationLaunchOptionsProperty.signal
         .map { $0?.options?[UIApplicationLaunchOptionsShortcutItemKey] as? UIApplicationShortcutItem }
-        .ignoreNil()
+        .skipNil()
       )
       .map { ShortcutItem(typeString: $0.type) }
-      .ignoreNil()
+      .skipNil()
 
     let deepLinkFromShortcut = performShortcutItem
       .switchMap(navigation(fromShortcutItem:))
@@ -291,14 +291,14 @@ AppDelegateViewModelOutputs {
         deepLinkFromNotification,
         deepLinkFromShortcut
       )
-      .ignoreNil()
+      .skipNil()
 
     self.goToDiscovery = deepLink
       .map { link -> [String: String]?? in
         guard case let .tab(.discovery(rawParams)) = link else { return nil }
         return .Some(rawParams)
       }
-      .ignoreNil()
+      .skipNil()
       .switchMap { rawParams -> SignalProducer<DiscoveryParams?, NoError> in
         guard
           let rawParams = rawParams,
@@ -333,7 +333,7 @@ AppDelegateViewModelOutputs {
         guard case let .messages(messageThreadId) = navigation else { return nil }
         return .Some(messageThreadId)
       }
-      .ignoreNil()
+      .skipNil()
       .switchMap {
         AppEnvironment.current.apiService.fetchMessageThread(messageThreadId: $0)
           .demoteErrors()
@@ -349,7 +349,7 @@ AppDelegateViewModelOutputs {
         guard case let .project(param, subpage, refTag) = link else { return nil }
         return (param, subpage, refTag)
       }
-      .ignoreNil()
+      .skipNil()
       .switchMap { param, subpage, refTag in
         AppEnvironment.current.apiService.fetchProject(param: param)
           .demoteErrors()
@@ -365,7 +365,7 @@ AppDelegateViewModelOutputs {
         guard case let .tab(.dashboard(param)) = link else { return nil }
         return .Some(param)
       }
-      .ignoreNil()
+      .skipNil()
 
     let projectRootLink = projectLink
       .filter { _, subpage, _ in subpage == .root }
@@ -380,7 +380,7 @@ AppDelegateViewModelOutputs {
         guard case let .user(_, .survey(surveyResponseId)) = link else { return nil }
         return surveyResponseId
       }
-      .ignoreNil()
+      .skipNil()
       .switchMap { surveyResponseId in
         AppEnvironment.current.apiService.fetchSurveyResponse(surveyResponseId: surveyResponseId)
           .demoteErrors()
@@ -399,7 +399,7 @@ AppDelegateViewModelOutputs {
         guard case let .update(id, updateSubpage) = subpage else { return nil }
         return (project, id, updateSubpage, vcs)
       }
-      .ignoreNil()
+      .skipNil()
       .switchMap { project, id, updateSubpage, vcs in
         AppEnvironment.current.apiService.fetchUpdate(updateId: id, projectParam: .id(project.id))
           .demoteErrors()
@@ -424,7 +424,7 @@ AppDelegateViewModelOutputs {
         guard case .comments = subpage else { return nil }
         return vcs + [CommentsViewController.configuredWith(project: project, update: update)]
       }
-      .ignoreNil()
+      .skipNil()
 
     self.presentViewController = Signal
       .merge(
@@ -459,7 +459,7 @@ AppDelegateViewModelOutputs {
       .switchMap(shortcutItems(forUser:))
 
     self.applicationDidFinishLaunchingReturnValueProperty <~ self.applicationLaunchOptionsProperty.signal
-      .ignoreNil()
+      .skipNil()
       .map { _, options in options?[UIApplicationLaunchOptionsShortcutItemKey] == nil }
 
     // Koala
@@ -493,7 +493,7 @@ AppDelegateViewModelOutputs {
 
     openUrl
       .map { NSURLComponents(URL: $0.url, resolvingAgainstBaseURL: false)?.queryItems }
-      .ignoreNil()
+      .skipNil()
       .map { items in Dictionary.keyValuePairs(items.map { ($0.name, $0.value) }).compact() }
       .filter { $0["app_banner"] == "1" }
       .observeNext { AppEnvironment.current.koala.trackOpenedAppBanner($0) }

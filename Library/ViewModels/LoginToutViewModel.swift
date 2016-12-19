@@ -86,7 +86,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
     self.startSignup = self.signupButtonPressedProperty.signal
     self.attemptFacebookLogin = self.facebookLoginButtonPressedProperty.signal
 
-    let tokenString = self.facebookLoginSuccessProperty.signal.ignoreNil()
+    let tokenString = self.facebookLoginSuccessProperty.signal.skipNil()
       .map { $0.token.tokenString ?? "" }
 
     let facebookLogin = tokenString
@@ -124,7 +124,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
       .ignoreValues()
       .mapConst(AlertError.facebookTokenFail)
 
-    let facebookLoginAttemptFailAlert = self.facebookLoginFailProperty.signal.ignoreNil()
+    let facebookLoginAttemptFailAlert = self.facebookLoginFailProperty.signal.skipNil()
       .map { AlertError.facebookLoginAttemptFail(error: $0) }
 
     self.startTwoFactorChallenge = tokenString.takeWhen(tfaRequiredError)
@@ -142,7 +142,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
       .ignoreValues()
 
     self.logIntoEnvironment
-      .observeNext { _ in AppEnvironment.current.koala.trackLoginSuccess(authType: Koala.AuthType.facebook) }
+      .observeValues { _ in AppEnvironment.current.koala.trackLoginSuccess(authType: Koala.AuthType.facebook) }
 
     self.showFacebookErrorAlert = Signal.merge(
       facebookTokenFailAlert,
@@ -151,11 +151,11 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
     )
 
     self.showFacebookErrorAlert
-      .observeNext { _ in AppEnvironment.current.koala.trackLoginError(authType: Koala.AuthType.facebook) }
+      .observeValues { _ in AppEnvironment.current.koala.trackLoginError(authType: Koala.AuthType.facebook) }
 
-    self.loginIntentProperty.producer.ignoreNil()
+    self.loginIntentProperty.producer.skipNil()
       .takeWhen(viewWillAppearProperty.signal.take(1))
-      .observeNext { AppEnvironment.current.koala.trackLoginTout(intent: $0) }
+      .observeValues { AppEnvironment.current.koala.trackLoginTout(intent: $0) }
   }
   // swiftlint:enable function_body_length
 

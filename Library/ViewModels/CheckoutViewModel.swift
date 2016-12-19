@@ -1,5 +1,6 @@
 // swiftlint:disable file_length
 import Argo
+import Runes
 import KsApi
 import PassKit
 import Prelude
@@ -95,7 +96,7 @@ public final class CheckoutViewModel: CheckoutViewModelType {
   // swiftlint:disable function_body_length
   // swiftlint:disable cyclomatic_complexity
   public init() {
-    let configData = self.configDataProperty.signal.ignoreNil()
+    let configData = self.configDataProperty.signal.skipNil()
       .takeWhen(self.viewDidLoadProperty.signal)
 
     let userSessionStarted = self.userSessionStartedProperty.signal
@@ -104,7 +105,7 @@ public final class CheckoutViewModel: CheckoutViewModelType {
     let initialRequest = configData.map { $0.initialRequest }
     let project = configData.map { $0.project }
 
-    let requestData = self.shouldStartLoadProperty.signal.ignoreNil()
+    let requestData = self.shouldStartLoadProperty.signal.skipNil()
       .map { request, navigationType -> RequestData in
         let navigation = Navigation.match(request)
 
@@ -140,7 +141,7 @@ public final class CheckoutViewModel: CheckoutViewModelType {
         return payload
       }
       .map { $0.flatMap(paymentRequest(fromBase64Payload:)) }
-      .ignoreNil()
+      .skipNil()
 
     let modalRequestOrSafariRequest = requestData
       .filter(isModal)
@@ -164,22 +165,22 @@ public final class CheckoutViewModel: CheckoutViewModelType {
         }
         return nil
       }
-      .ignoreNil()
+      .skipNil()
 
     let thanksRequest = thanksRequestOrRacingRequest
       .map { $0.left }
-      .ignoreNil()
+      .skipNil()
       .ignoreValues()
 
     let racingRequest = thanksRequestOrRacingRequest
       .map { $0.right }
-      .ignoreNil()
+      .skipNil()
 
     self.closeLoginTout = userSessionStarted
 
     self.goToSafariBrowser = modalRequestOrSafariRequest
       .map { $0.right?.URL }
-      .ignoreNil()
+      .skipNil()
 
     let thanksRequestOrRacingSuccessful = Signal.merge(
       thanksRequest,
@@ -191,7 +192,7 @@ public final class CheckoutViewModel: CheckoutViewModelType {
 
     self.goToWebModal = modalRequestOrSafariRequest
       .map { $0.left }
-      .ignoreNil()
+      .skipNil()
 
     self.openLoginTout = requestData
       .filter { $0.navigation == .signup }
@@ -227,15 +228,15 @@ public final class CheckoutViewModel: CheckoutViewModelType {
       )
       .map(prepared(request:applePayCapable:))
 
-    let stripeToken = self.stripeTokenAndErrorProperty.signal.map(first).ignoreNil()
+    let stripeToken = self.stripeTokenAndErrorProperty.signal.map(first).skipNil()
 
     self.paymentAuthorizationStatusProperty <~ self.stripeTokenAndErrorProperty.signal
       .map { _, error in error == nil ? .Success : .Failure }
 
-    self.evaluateJavascript = self.didAuthorizePaymentProperty.signal.ignoreNil()
+    self.evaluateJavascript = self.didAuthorizePaymentProperty.signal.skipNil()
       .takePairWhen(stripeToken)
       .map(applePayCheckoutNextJS(forPaymentData:stripeToken:))
-      .ignoreNil()
+      .skipNil()
 
     self.setStripeAppleMerchantIdentifier = applePayCapable
       .filter(isTrue)
@@ -244,17 +245,17 @@ public final class CheckoutViewModel: CheckoutViewModelType {
     self.setStripePublishableKey = applePayCapable
       .filter(isTrue)
       .map { _ in AppEnvironment.current.config?.stripePublishableKey }
-      .ignoreNil()
+      .skipNil()
 
     racingRequest
-      .observeNext { [weak self] request in
+      .observeValues { [weak self] request in
         guard let url = request.URL?.URLByDeletingLastPathComponent else { return }
         self?.checkoutRacingViewModel.inputs.configureWith(url: url)
     }
 
     configData
       .takeWhen(self.paymentAuthorizationWillAuthorizeProperty.signal)
-      .observeNext {
+      .observeValues {
         AppEnvironment.current.koala.trackShowApplePaySheet(
           project: $0.project,
           reward: $0.reward,
@@ -264,7 +265,7 @@ public final class CheckoutViewModel: CheckoutViewModelType {
 
     configData
       .takeWhen(self.didAuthorizePaymentProperty.signal)
-      .observeNext {
+      .observeValues {
         AppEnvironment.current.koala.trackApplePayAuthorizedPayment(
           project: $0.project,
           reward: $0.reward,
@@ -274,7 +275,7 @@ public final class CheckoutViewModel: CheckoutViewModelType {
 
     configData
       .takeWhen(self.stripeTokenAndErrorProperty.signal.filter(isNotNil • first))
-      .observeNext {
+      .observeValues {
         AppEnvironment.current.koala.trackStripeTokenCreatedForApplePay(
           project: $0.project,
           reward: $0.reward,
@@ -284,7 +285,7 @@ public final class CheckoutViewModel: CheckoutViewModelType {
 
     configData
       .takeWhen(self.stripeTokenAndErrorProperty.signal.filter(isNotNil • second))
-      .observeNext {
+      .observeValues {
         AppEnvironment.current.koala.trackStripeTokenErroredForApplePay(
           project: $0.project,
           reward: $0.reward,
@@ -299,7 +300,7 @@ public final class CheckoutViewModel: CheckoutViewModelType {
 
     combineLatest(configData, applePaySuccessful)
       .takeWhen(self.paymentAuthorizationFinishedProperty.signal)
-      .observeNext { configData, successful in
+      .observeValues { configData, successful in
 
         if successful {
           AppEnvironment.current.koala.trackApplePayFinished(
@@ -318,7 +319,7 @@ public final class CheckoutViewModel: CheckoutViewModelType {
 
     configData
       .takeWhen(checkoutCancelled)
-      .observeNext {
+      .observeValues {
         AppEnvironment.current.koala.trackCheckoutCancel(
           project: $0.project,
           reward: $0.reward,

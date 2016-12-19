@@ -37,10 +37,10 @@ public final class WebModalViewModel: WebModalViewModelType {
   public init() {
     self.dismissViewController = self.closeButtonTappedProperty.signal
 
-    self.policyDecisionProperty <~ self.policyForNavigationActionProperty.signal.ignoreNil()
+    self.policyDecisionProperty <~ self.policyForNavigationActionProperty.signal.skipNil()
       .mapConst(.Allow)
 
-    self.webViewLoadRequest = self.requestProperty.signal.ignoreNil()
+    self.webViewLoadRequest = self.requestProperty.signal.skipNil()
       .takeWhen(self.viewDidLoadProperty.signal)
       .map { request in
         AppEnvironment.current.apiService.isPrepared(request: request)

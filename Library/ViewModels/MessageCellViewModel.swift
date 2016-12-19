@@ -23,7 +23,7 @@ public final class MessageCellViewModel: MessageCellViewModelType, MessageCellVi
 MessageCellViewModelOutputs {
 
   public init() {
-    let message = self.messageProperty.signal.ignoreNil()
+    let message = self.messageProperty.signal.skipNil()
 
     self.avatarURL = message.map { NSURL.init(string: $0.sender.avatar.large ?? $0.sender.avatar.medium) }
 

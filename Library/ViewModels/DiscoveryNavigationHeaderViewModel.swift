@@ -96,15 +96,15 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
     let categories = self.viewDidLoadProperty.signal
       .switchMap {
         AppEnvironment.current.apiService.fetchCategories()
-          .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
+          .delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .map { $0.categories }
           .prefix(value: [])
           .demoteErrors()
       }
 
     let currentParams = Signal.merge(
-      self.paramsProperty.signal.ignoreNil(),
-      self.filtersSelectedRowProperty.signal.ignoreNil().map { $0.params }
+      self.paramsProperty.signal.skipNil(),
+      self.filtersSelectedRowProperty.signal.skipNil().map { $0.params }
     )
 
     let paramsAndFiltersAreHidden = Signal.merge(
@@ -116,7 +116,7 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
         return (params: params,
                 filtersAreHidden: filtersAreHidden ? !(data?.filtersAreHidden ?? true) : true)
       }
-      .ignoreNil()
+      .skipNil()
 
     let strings = paramsAndFiltersAreHidden.map(first).map(stringsForTitle)
     let categoryId = paramsAndFiltersAreHidden.map(first).map { $0.category?.root?.id }
@@ -141,13 +141,13 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
 
     let dismissFiltersSignal = Signal.merge(
       self.filtersSelectedRowProperty.signal.ignoreValues(),
-      paramsAndFiltersAreHidden.filter { $0.filtersAreHidden }.skip(1).ignoreValues()
+      paramsAndFiltersAreHidden.filter { $0.filtersAreHidden }.skip(first: 1).ignoreValues()
     )
 
     self.dismissDiscoveryFilters = dismissFiltersSignal
       .ksr_debounce(0.4, onScheduler: AppEnvironment.current.scheduler)
 
-    self.notifyDelegateFilterSelectedParams = currentParams.skip(1)
+    self.notifyDelegateFilterSelectedParams = currentParams.skip(first: 1)
 
     self.primaryLabelFont = paramsAndFiltersAreHidden
       .map { params, filtersAreHidden in
@@ -158,7 +158,7 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
       self.viewDidLoadProperty.signal.mapConst((0.0, false)),
       paramsAndFiltersAreHidden
         .map(first)
-        .map { ($0.category?.isRoot == .Some(false) ? 0.6 : 1.0, true) }
+        .map { ($0.category?.isRoot == .some(false) ? 0.6 : 1.0, true) }
     )
 
     self.primaryLabelText = strings.map { $0.filter }
@@ -171,12 +171,12 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
 
     self.arrowOpacityAnimated = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst((0.0, false)),
-      self.secondaryLabelText.signal.mapConst((1.0, true)).take(1)
+      self.secondaryLabelText.signal.mapConst((1.0, true)).take(first: 1)
     )
 
-    let categoriesWithParams = combineLatest(categories, (Signal.merge(
-      self.paramsProperty.signal.ignoreNil().map { SelectableRow(isSelected: true, params: $0) },
-      self.filtersSelectedRowProperty.signal.ignoreNil()
+    let categoriesWithParams = Signal.combineLatest(categories, (Signal.merge(
+      self.paramsProperty.signal.skipNil().map { SelectableRow(isSelected: true, params: $0) },
+      self.filtersSelectedRowProperty.signal.skipNil()
       )))
       .map { categories, row in (row: row, categories: categories) }
 
@@ -186,12 +186,12 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
     self.subviewColor = primaryColor
 
     let isFullScreen = Signal.merge(
-      self.paramsProperty.signal.ignoreNil().mapConst(false),
+      self.paramsProperty.signal.skipNil().mapConst(false),
       self.showDiscoveryFilters.mapConst(true),
       dismissFiltersSignal.mapConst(false)
     )
 
-    self.gradientViewCategoryIdForColor = combineLatest(categoryId, isFullScreen)
+    self.gradientViewCategoryIdForColor = Signal.combineLatest(categoryId, isFullScreen)
       .map { (categoryId: $0, isFullScreen: $1) }
 
     self.titleButtonAccessibilityHint = self.animateArrowToDown
@@ -204,11 +204,11 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
 
     let categoryIdOnParamsUpdated = currentParams
       .map { $0.category?.id }
-      .ignoreNil()
+      .skipNil()
 
     let categoryIdOnFavoriteTap = categoryIdOnParamsUpdated
       .takeWhen(self.favoriteButtonTappedProperty.signal)
-      .on(next: { toggleStoredFavoriteCategory(withId: $0) })
+      .on(value: { toggleStoredFavoriteCategory(withId: $0) })
 
     self.updateFavoriteButton = Signal.merge(
       categoryIdOnParamsUpdated.map { ($0, false) },
@@ -226,14 +226,14 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
         !AppEnvironment.current.ubiquitousStore.hasSeenFavoriteCategoryAlert ||
         !AppEnvironment.current.userDefaults.hasSeenFavoriteCategoryAlert
       }
-      .on(next: { _ in
+      .on(event: { _ in
         AppEnvironment.current.ubiquitousStore.hasSeenFavoriteCategoryAlert = true
         AppEnvironment.current.userDefaults.hasSeenFavoriteCategoryAlert = true
       })
 
     currentParams
       .takePairWhen(categoryIdOnFavoriteTap.map(isFavoriteCategoryStored(withId:)))
-      .observeNext {
+      .observeValues {
         AppEnvironment.current.koala.trackDiscoveryFavoritedCategory(params: $0, isFavorited: $1)
     }
 
@@ -241,7 +241,7 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
       .takeWhen(self.titleButtonTappedProperty.signal)
       .filter { $0.filtersAreHidden }
       .map { $0.params }
-      .observeNext { AppEnvironment.current.koala.trackDiscoveryModalClosedFilter(params: $0) }
+      .observeValues { AppEnvironment.current.koala.trackDiscoveryModalClosedFilter(params: $0) }
   }
   // swiftlint:enable function_body_length
 

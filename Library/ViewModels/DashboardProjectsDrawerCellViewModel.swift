@@ -35,7 +35,7 @@ public final class DashboardProjectsDrawerCellViewModel: DashboardProjectsDrawer
   DashboardProjectsDrawerCellViewModelInputs, DashboardProjectsDrawerCellViewModelOutputs {
 
   public init() {
-    self.projectNameText = self.projectProperty.signal.ignoreNil().map { $0.name }
+    self.projectNameText = self.projectProperty.signal.skipNil().map { $0.name }
 
     self.projectNumberText = self.orderNumProperty.signal.map {
       Strings.dashboard_switcher_project_number(current_project_index: "\($0 + 1)")

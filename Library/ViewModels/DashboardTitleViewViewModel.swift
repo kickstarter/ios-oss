@@ -44,16 +44,16 @@ public final class DashboardTitleViewViewModel: DashboardTitleViewViewModelType,
   DashboardTitleViewViewModelInputs, DashboardTitleViewViewModelOutputs {
   public init() {
 
-    self.titleText = self.currentProjectIndexProperty.signal.ignoreNil()
+    self.titleText = self.currentProjectIndexProperty.signal.skipNil()
       .map { Strings.dashboard_switcher_project_number(current_project_index: "\($0 + 1)") }
 
-    let isArrowHidden = self.updateDrawerStateHideArrowProperty.signal.ignoreNil().map(second)
+    let isArrowHidden = self.updateDrawerStateHideArrowProperty.signal.skipNil().map(second)
 
     self.titleButtonIsEnabled = isArrowHidden.map(negate).skipRepeats()
 
     self.hideArrow = isArrowHidden
 
-    self.updateArrowState = self.updateDrawerStateHideArrowProperty.signal.ignoreNil()
+    self.updateArrowState = self.updateDrawerStateHideArrowProperty.signal.skipNil()
       .filter { _, hideArrow in !hideArrow }
       .map(first)
 

@@ -56,17 +56,17 @@ MessagesViewModelOutputs {
 
   // swiftlint:disable function_body_length
   public init() {
-    let configData = self.configData.signal.ignoreNil()
+    let configData = self.configData.signal.skipNil()
       .takeWhen(self.viewDidLoadProperty.signal)
 
     let configBacking = configData.map { $0.right?.backing }
 
     let configThread = configData.map { $0.left }
-      .ignoreNil()
+      .skipNil()
 
     let currentUser = self.viewDidLoadProperty.signal
       .map { AppEnvironment.current.currentUser }
-      .ignoreNil()
+      .skipNil()
 
     self.project = configData
       .map {
@@ -79,7 +79,7 @@ MessagesViewModelOutputs {
     }
 
     let backingOrThread = Signal.merge(
-      configBacking.ignoreNil().map(Either.left),
+      configBacking.skipNil().map(Either.left),
       configThread.map(Either.right)
     )
 
@@ -146,7 +146,7 @@ MessagesViewModelOutputs {
 
     combineLatest(project, self.viewDidLoadProperty.signal)
       .take(1)
-      .observeNext { project, _ in
+      .observeValues { project, _ in
         AppEnvironment.current.koala.trackMessageThreadView(project: project)
     }
   }

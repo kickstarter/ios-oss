@@ -174,7 +174,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
         self?.projectImageView.af_cancelImageRequest()
         self?.projectImageView.image = nil
         })
-      .ignoreNil()
+      .skipNil()
       .observeNext { [weak self] url in
         self?.projectImageView.af_setImageWithURL(url)
     }
@@ -185,7 +185,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
         self?.socialAvatarImageView.af_cancelImageRequest()
         self?.socialAvatarImageView.image = nil
         })
-      .ignoreNil()
+      .skipNil()
       .observeNext { [weak self] url in
         self?.socialAvatarImageView.af_setImageWithURL(url)
     }

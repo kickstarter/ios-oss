@@ -1,4 +1,5 @@
 import Argo
+import Runes
 import FBSDKCoreKit
 import Foundation
 import KsApi
@@ -115,7 +116,7 @@ public struct AppEnvironment {
                locale: Locale = AppEnvironment.current.locale as Locale,
                mainBundle: NSBundleType = AppEnvironment.current.mainBundle,
                reachability: SignalProducer<Reachability, NoError> = AppEnvironment.current.reachability,
-               scheduler: DateSchedulerType = AppEnvironment.current.scheduler,
+               scheduler: DateSchedulerProtocol = AppEnvironment.current.scheduler,
                timeZone: TimeZone = AppEnvironment.current.timeZone as TimeZone,
                ubiquitousStore: KeyValueStoreType = AppEnvironment.current.ubiquitousStore,
                userDefaults: KeyValueStoreType = AppEnvironment.current.userDefaults) {
@@ -173,7 +174,7 @@ public struct AppEnvironment {
                locale: Locale = AppEnvironment.current.locale as Locale,
                mainBundle: NSBundleType = AppEnvironment.current.mainBundle,
                reachability: SignalProducer<Reachability, NoError> = AppEnvironment.current.reachability,
-               scheduler: DateSchedulerType = AppEnvironment.current.scheduler,
+               scheduler: DateSchedulerProtocol = AppEnvironment.current.scheduler,
                timeZone: TimeZone = AppEnvironment.current.timeZone as TimeZone,
                ubiquitousStore: KeyValueStoreType = AppEnvironment.current.ubiquitousStore,
                userDefaults: KeyValueStoreType = AppEnvironment.current.userDefaults) {

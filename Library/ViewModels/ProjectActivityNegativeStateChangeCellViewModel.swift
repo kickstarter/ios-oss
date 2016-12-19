@@ -25,7 +25,7 @@ ProjectActivityNegativeStateChangeCellViewModelType, ProjectActivityNegativeStat
 ProjectActivityNegativeStateChangeCellViewModelOutputs {
 
   public init() {
-    let activityAndProject = self.activityAndProjectProperty.signal.ignoreNil()
+    let activityAndProject = self.activityAndProjectProperty.signal.skipNil()
 
     self.title = activityAndProject.map { activity, project in
         switch activity.category {

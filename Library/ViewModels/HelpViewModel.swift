@@ -66,9 +66,9 @@ public protocol HelpViewModelType {
 public final class HelpViewModel: HelpViewModelType, HelpViewModelInputs, HelpViewModelOutputs {
   // swiftlint:disable function_body_length
   public init() {
-    let context = self.helpContextProperty.signal.ignoreNil()
-    let canSendEmail = self.canSendEmailProperty.signal.ignoreNil()
-    let helpTypeTapped = self.helpTypeButtonTappedProperty.signal.ignoreNil()
+    let context = self.helpContextProperty.signal.skipNil()
+    let canSendEmail = self.canSendEmailProperty.signal.skipNil()
+    let helpTypeTapped = self.helpTypeButtonTappedProperty.signal.skipNil()
 
     self.showMailCompose = canSendEmail
       .takePairWhen(helpTypeTapped)
@@ -88,29 +88,29 @@ public final class HelpViewModel: HelpViewModelType, HelpViewModelInputs, HelpVi
 
     context
       .takeWhen(self.showHelpSheetButtonTappedProperty.signal)
-      .observeNext { AppEnvironment.current.koala.trackShowedHelpMenu(context: $0) }
+      .observeValues { AppEnvironment.current.koala.trackShowedHelpMenu(context: $0) }
 
     context
       .takeWhen(self.cancelHelpSheetButtonTappedProperty.signal)
-      .observeNext { AppEnvironment.current.koala.trackCanceledHelpMenu(context: $0) }
+      .observeValues { AppEnvironment.current.koala.trackCanceledHelpMenu(context: $0) }
 
     context
       .takePairWhen(helpTypeTapped)
-      .observeNext { AppEnvironment.current.koala.trackSelectedHelpOption(context: $0, type: $1) }
+      .observeValues { AppEnvironment.current.koala.trackSelectedHelpOption(context: $0, type: $1) }
 
     context
       .takePairWhen(self.showMailCompose)
-      .observeNext { context, _ in AppEnvironment.current.koala.trackOpenedContactEmail(context: context) }
+      .observeValues { context, _ in AppEnvironment.current.koala.trackOpenedContactEmail(context: context) }
 
     context
-      .takePairWhen(self.mailComposeCompletionProperty.signal.ignoreNil())
-      .filter { $1 == .Sent }
-      .observeNext { context, _ in AppEnvironment.current.koala.trackSentContactEmail(context: context) }
+      .takePairWhen(self.mailComposeCompletionProperty.signal.skipNil())
+      .filter { $1 == .sent }
+      .observeValues { context, _ in AppEnvironment.current.koala.trackSentContactEmail(context: context) }
 
     context
-      .takePairWhen(self.mailComposeCompletionProperty.signal.ignoreNil())
-      .filter { $1 == .Cancelled }
-      .observeNext { context, _ in AppEnvironment.current.koala.trackCanceledContactEmail(context: context) }
+      .takePairWhen(self.mailComposeCompletionProperty.signal.skipNil())
+      .filter { $1 == .cancelled }
+      .observeValues { context, _ in AppEnvironment.current.koala.trackCanceledContactEmail(context: context) }
   }
   // swiftlint:enable function_body_length
 

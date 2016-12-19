@@ -40,27 +40,27 @@ ProjectUpdatesViewModelOutputs {
 
   // swiftlint:disable:next function_body_length
   public init() {
-    let navigationAction = self.navigationAction.signal.ignoreNil()
+    let navigationAction = self.navigationAction.signal.skipNil()
 
-    let project = combineLatest(self.projectProperty.signal.ignoreNil(), self.viewDidLoadProperty.signal)
+    let project = combineLatest(self.projectProperty.signal.skipNil(), self.viewDidLoadProperty.signal)
       .map(first)
 
-    let initialUpdatesIndexLoadRequest = project.map { URL(string: $0.urls.web.updates ?? "") }.ignoreNil()
+    let initialUpdatesIndexLoadRequest = project.map { URL(string: $0.urls.web.updates ?? "") }.skipNil()
 
     let anotherIndexRequest = navigationAction
       .filter { $0.navigationType == .LinkActivated && isUpdatesRequest(request: $0.request) }
       .map { $0.request.URL }
-      .ignoreNil()
+      .skipNil()
 
     let goToCommentsRequest = navigationAction
       .filter { isGoToCommentsRequest(request: $0.request) }
       .map { projectUpdateParams(fromRequest: $0.request) }
-      .ignoreNil()
+      .skipNil()
 
     let goToUpdateRequest = navigationAction
       .filter { isGoToUpdateRequest(request: $0.request) }
       .map { projectUpdateParams(fromRequest: $0.request) }
-      .ignoreNil()
+      .skipNil()
       .switchMap { projectParam, updateId in
         AppEnvironment.current.apiService.fetchUpdate(updateId: updateId, projectParam: projectParam)
           .demoteErrors()
@@ -81,7 +81,7 @@ ProjectUpdatesViewModelOutputs {
         !isUpdatesRequest(request: $0.request)
       }
       .map { $0.request.URL }
-      .ignoreNil()
+      .skipNil()
 
     self.goToUpdate = project.takePairWhen(goToUpdateRequest)
 
@@ -96,7 +96,7 @@ ProjectUpdatesViewModelOutputs {
 
     project
       .takeWhen(self.goToSafariBrowser)
-      .observeNext {
+      .observeValues {
         AppEnvironment.current.koala.trackOpenedExternalLink(project: $0, context: .projectUpdates)
     }
   }

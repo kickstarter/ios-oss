@@ -53,23 +53,23 @@ MessageDialogViewModelOutputs {
 
   // swiftlint:disable function_body_length
   public init() {
-    let messageSubject = self.messageSubjectProperty.signal.ignoreNil()
+    let messageSubject = self.messageSubjectProperty.signal.skipNil()
       .takeWhen(self.viewDidLoadProperty.signal)
 
     let projectFromBacking = messageSubject
       .map { $0.backing }
-      .ignoreNil()
+      .skipNil()
       .flatMap {
         AppEnvironment.current.apiService.fetchProject(param: .id($0.projectId)).demoteErrors()
     }
 
     let project = Signal.merge(
       projectFromBacking,
-      messageSubject.map { $0.messageThread?.project }.ignoreNil(),
-      messageSubject.map { $0.project }.ignoreNil()
+      messageSubject.map { $0.messageThread?.project }.skipNil(),
+      messageSubject.map { $0.project }.skipNil()
     )
 
-    let body = self.bodyTextChangedProperty.signal.ignoreNil()
+    let body = self.bodyTextChangedProperty.signal.skipNil()
 
     let bodyIsPresent = body
       .map { !$0.trimmed().isEmpty }
@@ -127,12 +127,12 @@ MessageDialogViewModelOutputs {
       self.notifyPresenterDialogWantsDismissal.mapConst(false)
     )
 
-    combineLatest(project, self.contextProperty.signal.ignoreNil())
-      .observeNext { AppEnvironment.current.koala.trackViewedMessageEditor(project: $0, context: $1) }
+    combineLatest(project, self.contextProperty.signal.skipNil())
+      .observeValues { AppEnvironment.current.koala.trackViewedMessageEditor(project: $0, context: $1) }
 
-    combineLatest(project, self.contextProperty.signal.ignoreNil())
+    combineLatest(project, self.contextProperty.signal.skipNil())
       .takeWhen(self.notifyPresenterCommentWasPostedSuccesfully)
-      .observeNext { AppEnvironment.current.koala.trackMessageSent(project: $0, context: $1) }
+      .observeValues { AppEnvironment.current.koala.trackMessageSent(project: $0, context: $1) }
   }
   // swiftlint:enable function_body_length
 

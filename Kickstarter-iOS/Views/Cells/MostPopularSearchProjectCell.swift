@@ -98,7 +98,7 @@ internal final class MostPopularSearchProjectCell: UITableViewCell, ValueCell {
         self?.projectImageView.image = nil
         self?.projectImageView.af_cancelImageRequest()
       })
-      .ignoreNil()
+      .skipNil()
       .observeNext { [weak self] in
         self?.projectImageView.af_setImageWithURL($0)
     }

@@ -95,7 +95,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       .filter { !$0.isEmpty }
       .map { .defaults |> DiscoveryParams.lens.query .~ $0 }
 
-    let isCloseToBottom = self.willDisplayRowProperty.signal.ignoreNil()
+    let isCloseToBottom = self.willDisplayRowProperty.signal.skipNil()
       .map { row, total in row >= total - 3 }
       .skipRepeats()
       .filter(isTrue)
@@ -140,7 +140,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
     // koala
 
     viewWillAppearNotAnimated
-      .observeNext { AppEnvironment.current.koala.trackProjectSearchView() }
+      .observeValues { AppEnvironment.current.koala.trackProjectSearchView() }
 
     let hasResults = combineLatest(projects, isLoading)
       .filter(negate • second)
@@ -151,22 +151,22 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       .takePairWhen(hasResults)
       .map(unpack)
       .filter { query, _, _ in !query.isEmpty }
-      .observeNext { query, page, hasResults in
+      .observeValues { query, page, hasResults in
         AppEnvironment.current.koala.trackSearchResults(query: query, page: page, hasResults: hasResults)
     }
 
     self.clearSearchTextProperty.signal
-      .observeNext { AppEnvironment.current.koala.trackClearedSearchTerm() }
+      .observeValues { AppEnvironment.current.koala.trackClearedSearchTerm() }
 
     self.goToProject = self.projects
-      .takePairWhen(self.tappedProjectProperty.signal.ignoreNil())
+      .takePairWhen(self.tappedProjectProperty.signal.skipNil())
       .map { projects, project in (project, projects, RefTag.search) }
 
     query.combinePrevious()
       .map(first)
       .takeWhen(self.cancelButtonPressedProperty.signal)
       .filter { !$0.isEmpty }
-      .observeNext { _ in AppEnvironment.current.koala.trackClearedSearchTerm() }
+      .observeValues { _ in AppEnvironment.current.koala.trackClearedSearchTerm() }
   }
   // swiftlint:enable function_body_length
 

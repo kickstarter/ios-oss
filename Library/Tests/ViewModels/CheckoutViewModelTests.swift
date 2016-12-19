@@ -56,7 +56,7 @@ final class CheckoutViewModelTests: TestCase {
         }
         return components.string?.stringByTrimmingCharactersInSet(questionMark)
       }
-      .ignoreNil()
+      .skipNil()
       .observe(self.webViewLoadRequestURL.observer)
   }
 

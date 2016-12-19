@@ -22,7 +22,7 @@ public final class BackingCellViewModel: BackingCellViewModelType, BackingCellVi
 BackingCellViewModelOutputs {
 
   public init() {
-    let backingAndProject = self.backingAndProjectProperty.signal.ignoreNil()
+    let backingAndProject = self.backingAndProjectProperty.signal.skipNil()
     let backing = backingAndProject.map { $0.0 }
 
     self.pledged = backingAndProject.map { backing, project in

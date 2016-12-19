@@ -44,7 +44,7 @@ public final class DashboardVideoCellViewModel: DashboardVideoCellViewModelInput
   DashboardVideoCellViewModelOutputs, DashboardVideoCellViewModelType {
 
   public init() {
-    let videoStats = self.statsProperty.signal.ignoreNil()
+    let videoStats = self.statsProperty.signal.skipNil()
 
     self.completionPercentage = videoStats
       .map {

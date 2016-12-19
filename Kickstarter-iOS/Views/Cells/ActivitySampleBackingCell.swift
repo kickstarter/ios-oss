@@ -67,7 +67,7 @@ internal final class ActivitySampleBackingCell: UITableViewCell, ValueCell {
         self?.backerImageView.af_cancelImageRequest()
         self?.backerImageView.image = nil
         })
-      .ignoreNil()
+      .skipNil()
       .observeNext { [weak self] url in
         self?.backerImageView.af_setImageWithURL(url)
     }

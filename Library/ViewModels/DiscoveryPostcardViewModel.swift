@@ -120,7 +120,7 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
 
   // swiftlint:disable function_body_length
   public init() {
-    let project = self.projectProperty.signal.ignoreNil()
+    let project = self.projectProperty.signal.skipNil()
 
     let backersTitleAndSubtitleText = project.map { project -> (String?, String?) in
       let string = Strings.Backers_count_separator_backers(backers_count: project.stats.backersCount)
@@ -151,7 +151,7 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
       }
       .skipRepeats()
 
-    self.metadataData = project.map(postcardMetadata(forProject:)).ignoreNil()
+    self.metadataData = project.map(postcardMetadata(forProject:)).skipNil()
 
     self.percentFundedTitleLabelText = project
       .map { $0.state == .live ? Format.percentage($0.stats.percentFunded) : "" }

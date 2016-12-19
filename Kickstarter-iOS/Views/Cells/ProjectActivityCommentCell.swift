@@ -51,7 +51,7 @@ internal final class ProjectActivityCommentCell: UITableViewCell, ValueCell {
         self?.authorImageView.af_cancelImageRequest()
         self?.authorImageView.image = nil
         })
-      .ignoreNil()
+      .skipNil()
       .observeNext { [weak self] url in
         self?.authorImageView.af_setImageWithURL(url)
     }

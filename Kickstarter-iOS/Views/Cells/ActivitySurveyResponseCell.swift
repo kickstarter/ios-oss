@@ -83,7 +83,7 @@ internal final class ActivitySurveyResponseCell: UITableViewCell, ValueCell {
         creatorImageView?.af_cancelImageRequest()
         creatorImageView?.image = nil
         })
-      .ignoreNil()
+      .skipNil()
       .observeNext { [weak creatorImageView] url in
         creatorImageView?.ksr_setImageWithURL(url)
     }

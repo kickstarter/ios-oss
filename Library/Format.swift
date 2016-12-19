@@ -12,7 +12,7 @@ public enum Format {
 
    - returns: A formatted string.
    */
-  public static func wholeNumber(x: Int, env: Environment = AppEnvironment.current) -> String {
+  public static func wholeNumber(_ x: Int, env: Environment = AppEnvironment.current) -> String {
     let formatter = NumberFormatterConfig.cachedFormatter(
       forConfig: .defaultWholeNumberConfig
         |> NumberFormatterConfig.lens.locale .~ env.locale
@@ -28,7 +28,7 @@ public enum Format {
 
    - returns: A formatted string.
    */
-  public static func percentage(percentage: Int, env: Environment = AppEnvironment.current) -> String {
+  public static func percentage(_ percentage: Int, env: Environment = AppEnvironment.current) -> String {
     return Format.percentage(Double(percentage) / 100.0, env: env)
   }
 
@@ -40,7 +40,7 @@ public enum Format {
 
    - returns: A formatted string.
    */
-  public static func percentage(percentage: Double, env: Environment = AppEnvironment.current) -> String {
+  public static func percentage(_ percentage: Double, env: Environment = AppEnvironment.current) -> String {
     let formatter = NumberFormatterConfig.cachedFormatter(
       forConfig: .defaultPercentageConfig
         |> NumberFormatterConfig.lens.locale .~ env.locale
@@ -60,7 +60,7 @@ public enum Format {
 
    - returns: A formatted string.
    */
-  public static func currency(amount: Int,
+  public static func currency(_ amount: Int,
                               country: Project.Country,
                               omitCurrencyCode: Bool = false,
                               env: Environment = AppEnvironment.current) -> String {
@@ -71,7 +71,7 @@ public enum Format {
         |> NumberFormatterConfig.lens.currencySymbol .~ currencySymbol(forCountry: country)
     )
 
-    return formatter.stringFromNumber(amount)?
+    return formatter.string(from: amount)?
       .trimmed()
       .stringByReplacingOccurrencesOfString(String.nbsp + String.nbsp, withString: String.nbsp)
       ?? country.currencySymbol + String(amount)
@@ -87,9 +87,9 @@ public enum Format {
 
    - returns: A formatted string.
    */
-  public static func date(secondsInUTC seconds: NSTimeInterval,
-                                       dateStyle: NSDateFormatterStyle = .MediumStyle,
-                                       timeStyle: NSDateFormatterStyle = .MediumStyle,
+  public static func date(secondsInUTC seconds: TimeInterval,
+                                       dateStyle: DateFormatter.Style = .medium,
+                                       timeStyle: DateFormatter.Style = .medium,
                                        env: Environment = AppEnvironment.current) -> String {
 
     let formatter = DateFormatterConfig.cachedFormatter(
@@ -102,7 +102,7 @@ public enum Format {
       )
     )
 
-    return formatter.stringFromDate(env.dateType.init(timeIntervalSince1970: seconds).date)
+    return formatter.string(from: env.dateType.init(timeIntervalSince1970: seconds).date)
   }
 
   /**
@@ -113,7 +113,7 @@ public enum Format {
 
    - returns: A formatted string.
    */
-  public static func date(secondsInUTC seconds: NSTimeInterval,
+  public static func date(secondsInUTC seconds: TimeInterval,
                                        dateFormat: String) -> String {
 
     let formatter = DateFormatterConfig.cachedFormatter(
@@ -125,7 +125,7 @@ public enum Format {
       )
     )
 
-    return formatter.stringFromDate(AppEnvironment.current.dateType.init(timeIntervalSince1970: seconds).date)
+    return formatter.string(from: AppEnvironment.current.dateType.init(timeIntervalSince1970: seconds).date)
   }
 
   /**
@@ -141,7 +141,7 @@ public enum Format {
    */
   // swiftlint:disable valid_docs
   public static func duration(
-    secondsInUTC seconds: NSTimeInterval,
+    secondsInUTC seconds: TimeInterval,
                  abbreviate: Bool = false,
                  useToGo: Bool = false,
                  env: Environment = AppEnvironment.current) -> (time: String, unit: String) {
@@ -196,18 +196,18 @@ public enum Format {
    - returns: A formatted string.
    */
   public static func relative(
-    secondsInUTC seconds: NSTimeInterval,
+    secondsInUTC seconds: TimeInterval,
                  abbreviate: Bool = false,
                  threshold thresholdInDays: Int = defaultThresholdInDays,
                  env: Environment = AppEnvironment.current) -> String {
 
-    let components = env.calendar.components([.Day, .Hour, .Minute, .Second],
+    let components = env.calendar.components([.day, .hour, .minute, .second],
                                              fromDate: env.dateType.init(timeIntervalSince1970: seconds).date,
                                              toDate: env.dateType.init().date,
                                              options: [])
 
     if abs(components.day) > thresholdInDays {
-      return Format.date(secondsInUTC: seconds, dateStyle: .MediumStyle, timeStyle: .NoStyle)
+      return Format.date(secondsInUTC: seconds, dateStyle: .medium, timeStyle: .none)
     } else if components.day > 1 {
       let format = abbreviate ? Strings.dates_time_days_ago_abbreviated : Strings.dates_time_days_ago
       return format(time_count: components.day)
@@ -236,17 +236,17 @@ public enum Format {
   }
 }
 
-private let defaultThresholdInDays = 30 // days
+fileprivate let defaultThresholdInDays = 30 // days
 
-private struct DateFormatterConfig {
-  private let dateFormat: String?
-  private let dateStyle: NSDateFormatterStyle?
-  private let locale: NSLocale
-  private let timeStyle: NSDateFormatterStyle?
-  private let timeZone: NSTimeZone
+fileprivate struct DateFormatterConfig {
+  fileprivate let dateFormat: String?
+  fileprivate let dateStyle: DateFormatter.Style?
+  fileprivate let locale: Locale
+  fileprivate let timeStyle: DateFormatter.Style?
+  fileprivate let timeZone: TimeZone
 
-  private func formatter() -> NSDateFormatter {
-    let formatter = NSDateFormatter()
+  fileprivate func formatter() -> DateFormatter {
+    let formatter = DateFormatter()
     if let dateFormat = self.dateFormat {
       formatter.dateFormat = dateFormat
     }
@@ -261,9 +261,9 @@ private struct DateFormatterConfig {
     return formatter
   }
 
-  private static var formatters: [DateFormatterConfig:NSDateFormatter] = [:]
+  fileprivate static var formatters: [DateFormatterConfig:DateFormatter] = [:]
 
-  private static func cachedFormatter(forConfig config: DateFormatterConfig) -> NSDateFormatter {
+  fileprivate static func cachedFormatter(forConfig config: DateFormatterConfig) -> DateFormatter {
     let formatter = self.formatters[config] ?? config.formatter()
     self.formatters[config] = formatter
     return formatter
@@ -271,7 +271,7 @@ private struct DateFormatterConfig {
 }
 
 extension DateFormatterConfig: Hashable {
-  private var hashValue: Int {
+  fileprivate var hashValue: Int {
     return
       (self.dateFormat?.hashValue ?? 0)
         ^ (self.dateStyle?.hashValue ?? 0)
@@ -281,7 +281,7 @@ extension DateFormatterConfig: Hashable {
   }
 }
 
-private func == (lhs: DateFormatterConfig, rhs: DateFormatterConfig) -> Bool {
+fileprivate func == (lhs: DateFormatterConfig, rhs: DateFormatterConfig) -> Bool {
   return
     lhs.dateFormat == rhs.dateFormat
       && lhs.dateStyle == rhs.dateStyle
@@ -290,16 +290,16 @@ private func == (lhs: DateFormatterConfig, rhs: DateFormatterConfig) -> Bool {
       && lhs.timeZone == rhs.timeZone
 }
 
-private struct NumberFormatterConfig {
-  private let numberStyle: NSNumberFormatterStyle
-  private let roundingMode: NSNumberFormatterRoundingMode
-  private let maximumFractionDigits: Int
-  private let generatesDecimalNumbers: Bool
-  private let locale: NSLocale
-  private let currencySymbol: String
+fileprivate struct NumberFormatterConfig {
+  fileprivate let numberStyle: NumberFormatter.Style
+  fileprivate let roundingMode: NumberFormatter.RoundingMode
+  fileprivate let maximumFractionDigits: Int
+  fileprivate let generatesDecimalNumbers: Bool
+  fileprivate let locale: Locale
+  fileprivate let currencySymbol: String
 
-  private func formatter() -> NSNumberFormatter {
-    let formatter = NSNumberFormatter()
+  fileprivate func formatter() -> NumberFormatter {
+    let formatter = NumberFormatter()
     formatter.numberStyle = self.numberStyle
     formatter.roundingMode = self.roundingMode
     formatter.maximumFractionDigits = self.maximumFractionDigits
@@ -309,30 +309,30 @@ private struct NumberFormatterConfig {
     return formatter
   }
 
-  private static var formatters: [NumberFormatterConfig:NSNumberFormatter] = [:]
+  fileprivate static var formatters: [NumberFormatterConfig:NumberFormatter] = [:]
 
-  private static let defaultWholeNumberConfig = NumberFormatterConfig(numberStyle: .DecimalStyle,
-                                                                      roundingMode: .RoundDown,
+  fileprivate static let defaultWholeNumberConfig = NumberFormatterConfig(numberStyle: .decimal,
+                                                                      roundingMode: .down,
                                                                       maximumFractionDigits: 0,
                                                                       generatesDecimalNumbers: false,
-                                                                      locale: .currentLocale(),
+                                                                      locale: .current,
                                                                       currencySymbol: "$")
 
-  private static let defaultPercentageConfig = NumberFormatterConfig(numberStyle: .PercentStyle,
-                                                                     roundingMode: .RoundDown,
+  fileprivate static let defaultPercentageConfig = NumberFormatterConfig(numberStyle: .percent,
+                                                                     roundingMode: .down,
                                                                      maximumFractionDigits: 0,
                                                                      generatesDecimalNumbers: false,
-                                                                     locale: .currentLocale(),
+                                                                     locale: .current,
                                                                      currencySymbol: "$")
 
-  private static let defaultCurrencyConfig = NumberFormatterConfig(numberStyle: .CurrencyStyle,
-                                                                   roundingMode: .RoundDown,
+  fileprivate static let defaultCurrencyConfig = NumberFormatterConfig(numberStyle: .currency,
+                                                                   roundingMode: .down,
                                                                    maximumFractionDigits: 0,
                                                                    generatesDecimalNumbers: false,
-                                                                   locale: .currentLocale(),
+                                                                   locale: .current,
                                                                    currencySymbol: "$")
 
-  private static func cachedFormatter(forConfig config: NumberFormatterConfig) -> NSNumberFormatter {
+  fileprivate static func cachedFormatter(forConfig config: NumberFormatterConfig) -> NumberFormatter {
     let formatter = self.formatters[config] ?? config.formatter()
     self.formatters[config] = formatter
     return formatter
@@ -340,7 +340,7 @@ private struct NumberFormatterConfig {
 }
 
 extension NumberFormatterConfig: Hashable {
-  private var hashValue: Int {
+  fileprivate var hashValue: Int {
     return
       self.numberStyle.hashValue
         ^ self.roundingMode.hashValue
@@ -351,7 +351,7 @@ extension NumberFormatterConfig: Hashable {
   }
 }
 
-private func == (lhs: NumberFormatterConfig, rhs: NumberFormatterConfig) -> Bool {
+fileprivate func == (lhs: NumberFormatterConfig, rhs: NumberFormatterConfig) -> Bool {
   return
     lhs.numberStyle == rhs.numberStyle
       && lhs.roundingMode == rhs.roundingMode
@@ -363,43 +363,43 @@ private func == (lhs: NumberFormatterConfig, rhs: NumberFormatterConfig) -> Bool
 
 // swiftlint:disable type_name
 extension NumberFormatterConfig {
-  private enum lens {
-    private static let numberStyle = Lens<NumberFormatterConfig, NSNumberFormatterStyle>(
+  fileprivate enum lens {
+    fileprivate static let numberStyle = Lens<NumberFormatterConfig, NumberFormatter.Style>(
       view: { $0.numberStyle },
       set: { .init(numberStyle: $0, roundingMode: $1.roundingMode,
         maximumFractionDigits: $1.maximumFractionDigits, generatesDecimalNumbers: $1.generatesDecimalNumbers,
         locale: $1.locale, currencySymbol: $1.currencySymbol) }
     )
 
-    private static let roundingMode = Lens<NumberFormatterConfig, NSNumberFormatterRoundingMode>(
+    fileprivate static let roundingMode = Lens<NumberFormatterConfig, NumberFormatter.RoundingMode>(
       view: { $0.roundingMode },
       set: { .init(numberStyle: $1.numberStyle, roundingMode: $0,
         maximumFractionDigits: $1.maximumFractionDigits, generatesDecimalNumbers: $1.generatesDecimalNumbers,
         locale: $1.locale, currencySymbol: $1.currencySymbol) }
     )
 
-    private static let maximumFractionDigits = Lens<NumberFormatterConfig, Int>(
+    fileprivate static let maximumFractionDigits = Lens<NumberFormatterConfig, Int>(
       view: { $0.maximumFractionDigits },
       set: { .init(numberStyle: $1.numberStyle, roundingMode: $1.roundingMode, maximumFractionDigits: $0,
         generatesDecimalNumbers: $1.generatesDecimalNumbers, locale: $1.locale,
         currencySymbol: $1.currencySymbol) }
     )
 
-    private static let generatesDecimalNumbers = Lens<NumberFormatterConfig, Bool>(
+    fileprivate static let generatesDecimalNumbers = Lens<NumberFormatterConfig, Bool>(
       view: { $0.generatesDecimalNumbers },
       set: { .init(numberStyle: $1.numberStyle, roundingMode: $1.roundingMode,
         maximumFractionDigits: $1.maximumFractionDigits, generatesDecimalNumbers: $0, locale: $1.locale,
         currencySymbol: $1.currencySymbol) }
     )
 
-    private static let locale = Lens<NumberFormatterConfig, NSLocale>(
+    fileprivate static let locale = Lens<NumberFormatterConfig, Locale>(
       view: { $0.locale },
       set: { .init(numberStyle: $1.numberStyle, roundingMode: $1.roundingMode,
         maximumFractionDigits: $1.maximumFractionDigits, generatesDecimalNumbers: $1.generatesDecimalNumbers,
         locale: $0, currencySymbol: $1.currencySymbol) }
     )
 
-    private static let currencySymbol = Lens<NumberFormatterConfig, String>(
+    fileprivate static let currencySymbol = Lens<NumberFormatterConfig, String>(
       view: { $0.currencySymbol },
       set: { .init(numberStyle: $1.numberStyle, roundingMode: $1.roundingMode,
         maximumFractionDigits: $1.maximumFractionDigits, generatesDecimalNumbers: $1.generatesDecimalNumbers,

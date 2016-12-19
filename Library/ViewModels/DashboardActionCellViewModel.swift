@@ -73,7 +73,7 @@ public final class DashboardActionCellViewModel: DashboardActionCellViewModelInp
   DashboardActionCellViewModelOutputs, DashboardActionCellViewModelType {
 
   public init() {
-    let project = self.projectProperty.signal.ignoreNil()
+    let project = self.projectProperty.signal.skipNil()
 
     self.goToActivity = project.takeWhen(self.activityTappedProperty.signal)
 

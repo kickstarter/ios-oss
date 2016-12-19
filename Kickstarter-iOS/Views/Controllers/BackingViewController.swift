@@ -130,7 +130,7 @@ internal final class BackingViewController: UIViewController {
         backerAvatarImageView?.af_cancelImageRequest()
         backerAvatarImageView?.image = nil
         })
-      .ignoreNil()
+      .skipNil()
       .observeNext { [weak backerAvatarImageView] url in
         backerAvatarImageView?.af_setImageWithURL(url)
     }

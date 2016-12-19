@@ -32,7 +32,7 @@ public final class ActivitySampleBackingCellViewModel: ActivitySampleBackingCell
   ActivitySampleBackingCellViewModelOutputs, ActivitySampleBackingCellViewModelType {
 
   public init() {
-    let activity = self.activityProperty.signal.ignoreNil()
+    let activity = self.activityProperty.signal.skipNil()
 
     self.backingTitleText = activity.map {
       let string = Strings.activity_friend_backed_project_name_by_creator_name(

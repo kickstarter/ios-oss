@@ -56,7 +56,7 @@ public func paginate <Cursor, Value: Equatable, Envelope, ErrorEnvelope, Request
     let isLoading = MutableProperty<Bool>(false)
 
     // Emits the last cursor when nextPage emits
-    let cursorOnNextPage = cursor.producer.ignoreNil().sampleOn(requestNextPage)
+    let cursorOnNextPage = cursor.producer.skipNil().sampleOn(requestNextPage)
 
     let paginatedValues = requestFirstPage
       .switchMap { requestParams in

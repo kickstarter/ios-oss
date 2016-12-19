@@ -86,7 +86,7 @@ public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, 
     )
     let newsletter = Signal.merge(
       self.viewDidLoadProperty.signal.map { AppEnvironment.current.config?.countryCode == "US" },
-      self.weeklyNewsletterChangedProperty.signal.ignoreNil()
+      self.weeklyNewsletterChangedProperty.signal.skipNil()
     )
 
     let nameIsPresent = name.map { !$0.isEmpty }
@@ -134,24 +134,24 @@ public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, 
       .mapConst(Notification(name: CurrentUserNotifications.sessionStarted, object: nil))
 
     self.environmentLoggedInProperty.signal
-      .observeNext { AppEnvironment.current.koala.trackLoginSuccess(authType: Koala.AuthType.email) }
+      .observeValues { AppEnvironment.current.koala.trackLoginSuccess(authType: Koala.AuthType.email) }
 
     self.showError
-      .observeNext { _ in AppEnvironment.current.koala.trackSignupError(authType: Koala.AuthType.email) }
+      .observeValues { _ in AppEnvironment.current.koala.trackSignupError(authType: Koala.AuthType.email) }
 
     self.weeklyNewsletterChangedProperty.signal
-      .ignoreNil()
-      .observeNext {
+      .skipNil()
+      .observeValues {
         AppEnvironment.current.koala.trackChangeNewsletter(
           newsletterType: .weekly, sendNewsletter: $0, project: nil, context: .signup
         )
     }
 
     signupEvent.values()
-      .observeNext { _ in AppEnvironment.current.koala.trackSignupSuccess(authType: Koala.AuthType.email) }
+      .observeValues { _ in AppEnvironment.current.koala.trackSignupSuccess(authType: Koala.AuthType.email) }
 
     self.viewDidLoadProperty.signal
-      .observeNext { AppEnvironment.current.koala.trackSignupView() }
+      .observeValues { AppEnvironment.current.koala.trackSignupView() }
   }
 
   fileprivate let emailChangedProperty = MutableProperty("")

@@ -52,7 +52,7 @@ public final class CommentsEmptyStateCellViewModel: CommentsEmptyStateCellViewMo
 CommentsEmptyStateCellViewModelInputs, CommentsEmptyStateCellViewModelOutputs {
 
   public init() {
-    let project = self.projectAndUpdateProperty.signal.ignoreNil().map(first)
+    let project = self.projectAndUpdateProperty.signal.skipNil().map(first)
 
     let projectData = project.map {
       ProjectEmptyCommentsData(

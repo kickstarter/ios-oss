@@ -35,7 +35,7 @@ internal final class ActivityFriendBackingCell: UITableViewCell, ValueCell {
         friendImageView?.af_cancelImageRequest()
         friendImageView?.image = nil
       })
-      .ignoreNil()
+      .skipNil()
       .observeNext { [weak friendImageView] url in
         friendImageView?.ksr_setImageWithURL(url)
     }
@@ -54,7 +54,7 @@ internal final class ActivityFriendBackingCell: UITableViewCell, ValueCell {
         projectImageView?.af_cancelImageRequest()
         projectImageView?.image = nil
       })
-      .ignoreNil()
+      .skipNil()
       .observeNext { [weak projectImageView] url in
         projectImageView?.ksr_setImageWithURL(url)
     }

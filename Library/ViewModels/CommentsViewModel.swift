@@ -65,13 +65,13 @@ CommentsViewModelOutputs {
   // swiftlint:disable function_body_length
   public init() {
     let projectOrUpdate = combineLatest(
-      self.projectAndUpdateProperty.signal.ignoreNil(),
+      self.projectAndUpdateProperty.signal.skipNil(),
       self.viewDidLoadProperty.signal
       )
       .map(first)
       .flatMap { project, update in
         return SignalProducer(value: project.map(Either.left) ?? update.map(Either.right))
-          .ignoreNil()
+          .skipNil()
     }
 
     let initialProject = projectOrUpdate
@@ -87,9 +87,9 @@ CommentsViewModelOutputs {
       .flatMap { AppEnvironment.current.apiService.fetchProject(project: $0).demoteErrors() }
 
     let project = Signal.merge(initialProject, refreshedProjectOnLogin)
-    let update = self.projectAndUpdateProperty.signal.ignoreNil().map { _, update in update }
+    let update = self.projectAndUpdateProperty.signal.skipNil().map { _, update in update }
 
-    let isCloseToBottom = self.willDisplayRowProperty.signal.ignoreNil()
+    let isCloseToBottom = self.willDisplayRowProperty.signal.skipNil()
       .map { row, total in row >= total - 3 }
       .skipRepeats()
       .filter { isClose in isClose }
@@ -149,7 +149,7 @@ CommentsViewModelOutputs {
     combineLatest(project, update)
       .takeWhen(self.viewDidLoadProperty.signal)
       .take(1)
-      .observeNext { project, update in
+      .observeValues { project, update in
         AppEnvironment.current.koala.trackCommentsView(
           project: project, update: update, context: update == nil ? .project : .update
         )
@@ -157,7 +157,7 @@ CommentsViewModelOutputs {
 
     combineLatest(project, update)
       .takeWhen(pageCount.skip(1).filter { $0 == 1 })
-      .observeNext { project, update in
+      .observeValues { project, update in
         AppEnvironment.current.koala.trackLoadNewerComments(
           project: project, update: update, context: update == nil ? .project : .update
         )
@@ -166,7 +166,7 @@ CommentsViewModelOutputs {
     combineLatest(project, update)
       .takePairWhen(pageCount.skip(1).filter { $0 > 1 })
       .map(unpack)
-      .observeNext { project, update, pageCount in
+      .observeValues { project, update, pageCount in
         AppEnvironment.current.koala.trackLoadOlderComments(
           project: project, update: update, page: pageCount, context: update == nil ? .project : .update
         )

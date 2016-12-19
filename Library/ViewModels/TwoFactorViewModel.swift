@@ -135,26 +135,26 @@ public final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMode
       .mapConst(NSNotification(name: CurrentUserNotifications.sessionStarted, object: nil))
 
     self.viewWillAppearProperty.signal
-      .observeNext { AppEnvironment.current.koala.trackTfa() }
+      .observeValues { AppEnvironment.current.koala.trackTfa() }
 
     self.facebookTokenProperty.signal.ignoreValues()
       .takeWhen(self.logIntoEnvironment)
-      .observeNext { AppEnvironment.current.koala.trackLoginSuccess(authType: Koala.AuthType.facebook) }
+      .observeValues { AppEnvironment.current.koala.trackLoginSuccess(authType: Koala.AuthType.facebook) }
 
     self.passwordProperty.signal.ignoreValues()
       .takeWhen(self.logIntoEnvironment)
-      .observeNext { AppEnvironment.current.koala.trackLoginSuccess(authType: Koala.AuthType.email) }
+      .observeValues { AppEnvironment.current.koala.trackLoginSuccess(authType: Koala.AuthType.email) }
 
     self.resendPressedProperty.signal
-      .observeNext { AppEnvironment.current.koala.trackTfaResendCode() }
+      .observeValues { AppEnvironment.current.koala.trackTfaResendCode() }
 
     self.facebookTokenProperty.signal
       .takeWhen(self.showError)
-      .observeNext { _ in AppEnvironment.current.koala.trackLoginError(authType: Koala.AuthType.facebook) }
+      .observeValues { _ in AppEnvironment.current.koala.trackLoginError(authType: Koala.AuthType.facebook) }
 
     self.emailProperty.signal
       .takeWhen(self.showError)
-      .observeNext { _ in AppEnvironment.current.koala.trackLoginError(authType: Koala.AuthType.email) }
+      .observeValues { _ in AppEnvironment.current.koala.trackLoginError(authType: Koala.AuthType.email) }
   }
   // swiftlint:enable function_body_length
 

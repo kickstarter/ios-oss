@@ -26,7 +26,7 @@ internal final class ProjectActivitySuccessCell: UITableViewCell, ValueCell {
         backgroundImageView?.af_cancelImageRequest()
         backgroundImageView?.image = nil
       })
-      .ignoreNil()
+      .skipNil()
       .observeNext { [weak backgroundImageView] url in
         backgroundImageView?.af_setImageWithURL(url)
     }

@@ -33,7 +33,7 @@ ProjectPamphletContentViewModelInputs, ProjectPamphletContentViewModelOutputs {
 
   public init() {
     let project = combineLatest(
-      self.projectProperty.signal.ignoreNil(),
+      self.projectProperty.signal.skipNil(),
       self.viewDidLoadProperty.signal
       )
       .map(first)
@@ -56,19 +56,19 @@ ProjectPamphletContentViewModelInputs, ProjectPamphletContentViewModelOutputs {
       .map(first)
 
     let rewardOrBackingTapped = Signal.merge(
-      self.tappedRewardOrBackingProperty.signal.ignoreNil(),
+      self.tappedRewardOrBackingProperty.signal.skipNil(),
       self.tappedPledgeAnyAmountProperty.signal.mapConst(.left(Reward.noReward))
     )
 
     self.goToRewardPledge = project
       .takePairWhen(rewardOrBackingTapped)
       .map(goToRewardPledgeData(forProject:rewardOrBacking:))
-      .ignoreNil()
+      .skipNil()
 
     self.goToBacking = project
       .takePairWhen(rewardOrBackingTapped)
       .map(goToBackingData(forProject:rewardOrBacking:))
-      .ignoreNil()
+      .skipNil()
 
     self.goToComments = project
       .takeWhen(self.tappedCommentsProperty.signal)

@@ -46,21 +46,21 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
 
   // swiftlint:disable function_body_length
   public init() {
-    let initialRequest = self.surveyResponseProperty.signal.ignoreNil()
+    let initialRequest = self.surveyResponseProperty.signal.skipNil()
       .takeWhen(self.viewDidLoadProperty.signal)
       .map { surveyResponse -> NSURLRequest? in
         guard let url = NSURL(string: surveyResponse.urls.web.survey) else { return nil }
         return NSURLRequest(URL: url)
       }
-      .ignoreNil()
+      .skipNil()
 
-    let postRequest = self.shouldStartLoadProperty.signal.ignoreNil()
+    let postRequest = self.shouldStartLoadProperty.signal.skipNil()
       .filter { request, navigationType in
         isUnpreparedSurvey(request: request) && navigationType == .FormSubmitted
       }
       .map { request, _ in request }
 
-    let redirectAfterPostRequest = self.shouldStartLoadProperty.signal.ignoreNil()
+    let redirectAfterPostRequest = self.shouldStartLoadProperty.signal.skipNil()
       .filter { request, navigationType in
         isUnpreparedSurvey(request: request) && navigationType == .Other
       }
@@ -71,16 +71,16 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
       self.closeButtonTappedProperty.signal
     )
 
-    self.goToProject = self.shouldStartLoadProperty.signal.ignoreNil()
+    self.goToProject = self.shouldStartLoadProperty.signal.skipNil()
       .map { request, navigationType -> (Param, RefTag?)? in
         if case let (.project(param, .root, refTag))? = Navigation.match(request) {
           return (param, refTag)
         }
         return nil
       }
-      .ignoreNil()
+      .skipNil()
 
-    self.shouldStartLoadResponseProperty <~ self.shouldStartLoadProperty.signal.ignoreNil()
+    self.shouldStartLoadResponseProperty <~ self.shouldStartLoadProperty.signal.skipNil()
       .map { request, navigationType in
         if !AppEnvironment.current.apiService.isPrepared(request: request) {
           return false

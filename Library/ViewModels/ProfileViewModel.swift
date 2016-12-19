@@ -58,7 +58,7 @@ public final class ProfileViewModel: ProfileViewModelType, ProfileViewModelInput
           |> DiscoveryParams.lens.sort .~ .endingSoon
     )
 
-    let requestNextPageWhen = self.willDisplayRowProperty.signal.ignoreNil()
+    let requestNextPageWhen = self.willDisplayRowProperty.signal.skipNil()
       .map { row, total in row >= total - 3 }
       .skipRepeats()
       .filter(isTrue)
@@ -88,11 +88,11 @@ public final class ProfileViewModel: ProfileViewModelType, ProfileViewModelInput
     self.goToSettings = settingsButtonTappedProperty.signal
 
     self.goToProject = self.backedProjects
-      .takePairWhen(self.projectTappedProperty.signal.ignoreNil())
+      .takePairWhen(self.projectTappedProperty.signal.skipNil())
       .map { projects, project in (project, projects, RefTag.profileBacked) }
 
     self.viewWillAppearProperty.signal.filter(isFalse)
-      .observeNext { _ in AppEnvironment.current.koala.trackProfileView() }
+      .observeValues { _ in AppEnvironment.current.koala.trackProfileView() }
   }
 
   fileprivate let projectTappedProperty = MutableProperty<Project?>(nil)

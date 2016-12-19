@@ -23,10 +23,10 @@ internal protocol HelpWebViewModelType {
 
 internal final class HelpWebViewModel: HelpWebViewModelType, HelpWebViewModelInputs, HelpWebViewModelOutputs {
   internal init() {
-    self.webViewLoadRequest = self.helpTypeProperty.signal.ignoreNil()
+    self.webViewLoadRequest = self.helpTypeProperty.signal.skipNil()
       .takeWhen(self.viewDidLoadProperty.signal)
       .map { urlForHelpType($0, baseUrl: AppEnvironment.current.apiService.serverConfig.webBaseUrl) }
-      .ignoreNil()
+      .skipNil()
       .map { AppEnvironment.current.apiService.preparedRequest(forURL: $0) }
   }
 

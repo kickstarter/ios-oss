@@ -27,9 +27,9 @@ public protocol CheckoutRacingViewModelType: CheckoutRacingViewModelInputs, Chec
 public final class CheckoutRacingViewModel: CheckoutRacingViewModelType {
   public init() {
 
-    let envelope = initialURLProperty.signal.ignoreNil()
+    let envelope = initialURLProperty.signal.skipNil()
       .map { $0.absoluteString }
-      .ignoreNil()
+      .skipNil()
       .promoteErrors(CheckoutRetryError.self)
       .switchMap { url in
         SignalProducer<(), CheckoutRetryError>(value: ())

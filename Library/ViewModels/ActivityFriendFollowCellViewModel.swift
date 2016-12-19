@@ -26,15 +26,15 @@ public final class ActivityFriendFollowCellViewModel: ActivityFriendFollowCellVi
 ActivityFriendFollowCellViewModelOutputs {
 
   public init() {
-    let friend = self.activityProperty.signal.ignoreNil()
+    let friend = self.activityProperty.signal.skipNil()
       .map(Activity.lens.user.view)
-      .ignoreNil()
+      .skipNil()
       .map(cached(friend:))
 
     self.friendImageURL = friend.map { NSURL.init(string: $0.avatar.small) }
 
     self.title = friend.map {
-      let string = Strings.activity_user_name_is_now_following_you(user_name: "<b>\($0.name ?? "")</b>")
+      let string = Strings.activity_user_name_is_now_following_you(user_name: "<b>\($0.name)</b>")
       return string.simpleHtmlAttributedString(base: [
         NSFontAttributeName: UIFont.ksr_subhead(size: 14.0),
         NSForegroundColorAttributeName: UIColor.ksr_text_navy_500
@@ -48,19 +48,19 @@ ActivityFriendFollowCellViewModelOutputs {
     let followFriendEvent = friend.takeWhen(self.followButtonTappedProperty.signal)
       .switchMap { user in
         AppEnvironment.current.apiService.followFriend(userId: user.id)
-        .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
+        .delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
         .materialize()
     }
 
     let followFriendSuccess = followFriendEvent.values()
-      .on(next: { cache(friend: $0, isFriend: true) })
+      .on(value: { cache(friend: $0, isFriend: true) })
 
     self.hideFollowButton = Signal.merge(friend, followFriendSuccess)
       .map { $0.isFriend ?? false }
       .skipRepeats()
 
     self.followButtonTappedProperty.signal
-      .observeNext { AppEnvironment.current.koala.trackFriendFollow(source: FriendsSource.activity) }
+      .observeValues { AppEnvironment.current.koala.trackFriendFollow(source: FriendsSource.activity) }
   }
 
   fileprivate let activityProperty = MutableProperty<Activity?>(nil)

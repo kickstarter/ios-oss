@@ -90,7 +90,7 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
   // swiftlint:disable function_body_length
   public init() {
     let projectAndBackerAndBackerIsCurrentUser = combineLatest(
-      self.projectAndBackerProperty.signal.ignoreNil(),
+      self.projectAndBackerProperty.signal.skipNil(),
       self.viewDidLoadProperty.signal
       )
       .map(first)
@@ -112,7 +112,7 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
 
     let project = projectAndBackingAndBackerIsCurrentUser.map(first)
     let backing = projectAndBackingAndBackerIsCurrentUser.map(second)
-    let reward = backing.map { $0.reward }.ignoreNil()
+    let reward = backing.map { $0.reward }.skipNil()
 
     self.backerSequence = backing
       .map { Strings.backer_modal_backer_number(backer_number: Format.wholeNumber($0.sequence)) }
@@ -152,7 +152,7 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
     }
     self.backerRewardDescriptionAccessibilityLabel = self.backerRewardDescription
 
-    self.backerShippingDescription = reward.map { $0.shipping.summary }.ignoreNil()
+    self.backerShippingDescription = reward.map { $0.shipping.summary }.skipNil()
     self.backerShippingDescriptionAccessibilityLabel = self.backerShippingDescription
 
     self.backerShippingAmount = projectAndBackingAndBackerIsCurrentUser
@@ -186,7 +186,7 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
     self.rootStackViewAxis = projectAndBackingAndBackerIsCurrentUser
       .map { _ in AppEnvironment.current.language == .en ? .Horizontal : .Vertical }
 
-    project.observeNext { AppEnvironment.current.koala.trackViewedPledge(forProject: $0) }
+    project.observeValues { AppEnvironment.current.koala.trackViewedPledge(forProject: $0) }
   }
   // swiftlint:enable function_body_length
 

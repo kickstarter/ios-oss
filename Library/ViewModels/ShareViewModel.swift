@@ -53,7 +53,7 @@ public final class ShareViewModel: ShareViewModelType, ShareViewModelInputs, Sha
 
   // swiftlint:disable function_body_length
   public init() {
-    let shareContext = self.shareContextProperty.signal.ignoreNil()
+    let shareContext = self.shareContextProperty.signal.skipNil()
 
     self.showShareSheet = shareContext
       .takeWhen(self.shareButtonTappedProperty.signal)
@@ -71,7 +71,7 @@ public final class ShareViewModel: ShareViewModelType, ShareViewModelInputs, Sha
       self.facebookButtonTappedProperty.signal.mapConst(UIActivityType.postToFacebook),
       self.twitterButtonTappedProperty.signal.mapConst(UIActivityType.postToTwitter)
       )
-      .takePairWhen(self.shareComposeCompletionProperty.signal.ignoreNil())
+      .takePairWhen(self.shareComposeCompletionProperty.signal.skipNil())
       .map { service, result in
         (
           activityType: String?(service),
@@ -83,7 +83,7 @@ public final class ShareViewModel: ShareViewModelType, ShareViewModelInputs, Sha
 
     let shareCompletion = Signal.merge(
       directShareCompletion,
-      self.shareActivityCompletionProperty.signal.ignoreNil()
+      self.shareActivityCompletionProperty.signal.skipNil()
       )
 
     let shareActivityCompletion = shareContext
@@ -94,16 +94,16 @@ public final class ShareViewModel: ShareViewModelType, ShareViewModelInputs, Sha
 
     shareContext
       .takeWhen(self.shareButtonTappedProperty.signal)
-      .observeNext { AppEnvironment.current.koala.trackShowedShareSheet(shareContext: $0) }
+      .observeValues { AppEnvironment.current.koala.trackShowedShareSheet(shareContext: $0) }
 
     canceledShare
       .filter { _, completion in completion.activityType == nil }
       .map(first)
-      .observeNext { AppEnvironment.current.koala.trackCanceledShareSheet(shareContext: $0) }
+      .observeValues { AppEnvironment.current.koala.trackCanceledShareSheet(shareContext: $0) }
 
     shareActivityCompletion
       .filter { _, completion in completion.activityType != nil }
-      .observeNext { shareContext, completion in
+      .observeValues { shareContext, completion in
         AppEnvironment.current.koala.trackShowedShare(
           shareContext: shareContext, shareActivityType: completion.activityType
         )
@@ -117,7 +117,7 @@ public final class ShareViewModel: ShareViewModelType, ShareViewModelInputs, Sha
         SignalProducer(value: $0)
           .delay(1.0, onScheduler: AppEnvironment.current.scheduler)
       }
-      .observeNext { shareContext, completion in
+      .observeValues { shareContext, completion in
         AppEnvironment.current.koala.trackShared(
           shareContext: shareContext, shareActivityType: completion.activityType
         )
@@ -129,7 +129,7 @@ public final class ShareViewModel: ShareViewModelType, ShareViewModelInputs, Sha
         SignalProducer(value: $0)
           .delay(1.0, onScheduler: AppEnvironment.current.scheduler)
       }
-      .observeNext { shareContext, completion in
+      .observeValues { shareContext, completion in
         AppEnvironment.current.koala.trackCanceledShare(
           shareContext: shareContext, shareActivityType: completion.activityType
         )

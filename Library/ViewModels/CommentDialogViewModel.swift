@@ -120,7 +120,7 @@ CommentDialogViewModelOutputs, CommentDialogViewModelErrors {
   public init() {
     let isLoading = MutableProperty(false)
 
-    let configurationData = self.configurationDataProperty.signal.ignoreNil()
+    let configurationData = self.configurationDataProperty.signal.skipNil()
       .takeWhen(self.viewWillAppearProperty.signal)
 
     let project = configurationData
@@ -180,12 +180,12 @@ CommentDialogViewModelOutputs, CommentDialogViewModelErrors {
 
     self.bodyTextViewText = configurationData
       .map { data in data.recipient?.name }
-      .ignoreNil()
+      .skipNil()
       .map { "@\($0): " }
 
     configurationData
       .takeWhen(self.viewWillAppearProperty.signal)
-      .observeNext { data in
+      .observeValues { data in
         AppEnvironment.current.koala.trackOpenedCommentEditor(
           project: data.project, update: data.update, context: data.context
         )
@@ -193,7 +193,7 @@ CommentDialogViewModelOutputs, CommentDialogViewModelErrors {
 
     configurationData
       .takeWhen(self.cancelButtonPressedProperty.signal)
-      .observeNext { data in
+      .observeValues { data in
         AppEnvironment.current.koala.trackCanceledCommentEditor(
           project: data.project, update: data.update, context: data.context
         )
@@ -201,7 +201,7 @@ CommentDialogViewModelOutputs, CommentDialogViewModelErrors {
 
     configurationData
       .takePairWhen(self.notifyPresenterCommentWasPostedSuccesfully)
-      .observeNext { data, comment in
+      .observeValues { data, comment in
         if let update = data.update {
           AppEnvironment.current.koala.trackCommentCreate(
             comment: comment, update: update, project: data.project

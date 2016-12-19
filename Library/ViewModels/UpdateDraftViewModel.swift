@@ -137,7 +137,7 @@ UpdateDraftViewModelOutputs {
   public init() {
     // MARK: Loading
 
-    let project = self.projectProperty.signal.ignoreNil()
+    let project = self.projectProperty.signal.skipNil()
     let draftEvent = combineLatest(self.viewDidLoadProperty.signal, project)
       .map(second)
       .flatMap {
@@ -185,10 +185,10 @@ UpdateDraftViewModelOutputs {
     self.showAttachmentActions = self.addAttachmentButtonTappedProperty.signal
 
     self.showImagePicker = self.addAttachmentSheetButtonTappedProperty.signal
-      .ignoreNil()
+      .skipNil()
 
     let addAttachmentEvent = draft
-      .takePairWhen(self.imagePickedProperty.signal.ignoreNil().map(first))
+      .takePairWhen(self.imagePickedProperty.signal.skipNil().map(first))
       .switchMap { draft, url in
         AppEnvironment.current.apiService.addImage(file: url, toDraft: draft)
           .materialize()
@@ -212,10 +212,10 @@ UpdateDraftViewModelOutputs {
     self.showRemoveAttachmentConfirmation = addedAttachments
       .takePairWhen(self.attachmentTappedProperty.signal)
       .map { attachments, id in attachments.filter { $0.id == id }.first }
-      .ignoreNil()
+      .skipNil()
 
     let removeAttachmentEvent = draft
-      .takePairWhen(self.removeAttachmentProperty.signal.ignoreNil())
+      .takePairWhen(self.removeAttachmentProperty.signal.skipNil())
       .switchMap { (draft, attachment) -> SignalProducer<Event<UpdateDraft.Image, ErrorEnvelope>, NoError> in
         guard case let .image(image) = attachment else { fatalError("Video not supported") }
         return AppEnvironment.current.apiService.delete(image: image, fromDraft: draft)
@@ -343,15 +343,15 @@ UpdateDraftViewModelOutputs {
     // MARK: Koala
 
     project
-      .observeNext { AppEnvironment.current.koala.trackViewedUpdateDraft(forProject: $0) }
+      .observeValues { AppEnvironment.current.koala.trackViewedUpdateDraft(forProject: $0) }
 
     project
       .takeWhen(self.notifyPresenterViewControllerWantsDismissal)
-      .observeNext { AppEnvironment.current.koala.trackClosedUpdateDraft(forProject: $0) }
+      .observeValues { AppEnvironment.current.koala.trackClosedUpdateDraft(forProject: $0) }
 
     project
       .takeWhen(self.goToPreview)
-      .observeNext { AppEnvironment.current.koala.trackPreviewedUpdate(forProject: $0) }
+      .observeValues { AppEnvironment.current.koala.trackPreviewedUpdate(forProject: $0) }
 
     let titleSynced = titleChanged
       .takeWhen(currentDraft)
@@ -359,7 +359,7 @@ UpdateDraftViewModelOutputs {
 
     project
       .takeWhen(titleSynced)
-      .observeNext { AppEnvironment.current.koala.trackEditedUpdateDraftTitle(forProject: $0) }
+      .observeValues { AppEnvironment.current.koala.trackEditedUpdateDraftTitle(forProject: $0) }
 
     let bodySynced = bodyChanged
       .takeWhen(currentDraft)
@@ -367,7 +367,7 @@ UpdateDraftViewModelOutputs {
 
     project
       .takeWhen(bodySynced)
-      .observeNext { AppEnvironment.current.koala.trackEditedUpdateDraftBody(forProject: $0) }
+      .observeValues { AppEnvironment.current.koala.trackEditedUpdateDraftBody(forProject: $0) }
 
     let isBackersOnlySynced = isBackersOnlyChanged
       .takeWhen(currentDraft)
@@ -375,55 +375,55 @@ UpdateDraftViewModelOutputs {
 
     combineLatest(project, self.isBackersOnly)
       .takeWhen(isBackersOnlySynced)
-      .observeNext {
+      .observeValues {
         AppEnvironment.current.koala.trackChangedUpdateDraftVisibility(forProject: $0, isPublic: !$1)
     }
 
     project
       .takeWhen(self.addAttachmentSheetButtonTappedProperty.signal)
-      .observeNext {
+      .observeValues {
         AppEnvironment.current.koala.trackStartedAddUpdateDraftAttachment(forProject: $0)
     }
 
-    combineLatest(project, self.imagePickedProperty.signal.ignoreNil().map(second))
+    combineLatest(project, self.imagePickedProperty.signal.skipNil().map(second))
       .takeWhen(self.attachmentAdded)
-      .observeNext {
+      .observeValues {
         AppEnvironment.current.koala.trackCompletedAddUpdateDraftAttachment(forProject: $0, attachedFrom: $1)
     }
 
     project
       .takeWhen(self.imagePickerCanceledProperty.signal)
-      .observeNext {
+      .observeValues {
         AppEnvironment.current.koala.trackCanceledAddUpdateDraftAttachment(forProject: $0)
     }
 
     project
       .takeWhen(self.showAddAttachmentFailure)
-      .observeNext {
+      .observeValues {
         AppEnvironment.current.koala.trackFailedAddUpdateDraftAttachment(forProject: $0)
     }
 
     project
       .takeWhen(self.attachmentTappedProperty.signal)
-      .observeNext {
+      .observeValues {
         AppEnvironment.current.koala.trackStartedRemoveUpdateDraftAttachment(forProject: $0)
     }
 
     project
       .takeWhen(self.attachmentRemoved)
-      .observeNext {
+      .observeValues {
         AppEnvironment.current.koala.trackCompletedRemoveUpdateDraftAttachment(forProject: $0)
     }
 
     project
       .takeWhen(self.removeAttachmentConfirmationCanceledProperty.signal)
-      .observeNext {
+      .observeValues {
         AppEnvironment.current.koala.trackCanceledRemoveUpdateDraftAttachment(forProject: $0)
     }
 
     project
       .takeWhen(self.showRemoveAttachmentFailure)
-      .observeNext {
+      .observeValues {
         AppEnvironment.current.koala.trackFailedRemoveUpdateDraftAttachment(forProject: $0)
     }
   }

@@ -96,12 +96,12 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       .skipRepeats(==)
 
     let paramsChanged = combineLatest(
-      self.sortProperty.signal.ignoreNil(),
-      self.selectedFilterProperty.signal.ignoreNil()
+      self.sortProperty.signal.skipNil(),
+      self.selectedFilterProperty.signal.skipNil()
       )
       .map(DiscoveryParams.lens.sort.set)
 
-    let isCloseToBottom = self.willDisplayRowProperty.signal.ignoreNil()
+    let isCloseToBottom = self.willDisplayRowProperty.signal.skipNil()
       .map { row, total in row >= total - 3 && row > 0 }
       .skipRepeats()
       .filter(isTrue)
@@ -132,7 +132,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
 
     self.projects = Signal.merge(
       paginatedProjects,
-      self.selectedFilterProperty.signal.ignoreNil().skipRepeats().mapConst([])
+      self.selectedFilterProperty.signal.skipNil().skipRepeats().mapConst([])
       )
       .skipWhile { $0.isEmpty }
       .skipRepeats(==)
@@ -142,7 +142,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
     self.showEmptyState = paramsChanged
       .takeWhen(paginatedProjects.filter { $0.isEmpty })
       .map(emptyState(forParams:))
-      .ignoreNil()
+      .skipNil()
 
     self.hideEmptyState = Signal.merge(
       self.viewWillAppearProperty.signal.take(1),
@@ -157,14 +157,14 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
           .materialize()
     }
 
-    let activitySampleTapped = self.tappedActivity.signal.ignoreNil()
+    let activitySampleTapped = self.tappedActivity.signal.skipNil()
       .filter { $0.category != .update }
       .map { $0.project }
-      .ignoreNil()
+      .skipNil()
       .map { ($0, RefTag.activitySample) }
 
     let projectCardTapped = paramsChanged
-      .takePairWhen(self.tappedProject.signal.ignoreNil())
+      .takePairWhen(self.tappedProject.signal.skipNil())
       .map { params, project in (project, refTag(fromParams: params, project: project)) }
 
     self.goToActivityProject = activitySampleTapped
@@ -174,7 +174,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       .map(unpack)
       .map { projects, project, refTag in (project, projects, refTag) }
 
-    self.goToProjectUpdate = self.tappedActivity.signal.ignoreNil()
+    self.goToProjectUpdate = self.tappedActivity.signal.skipNil()
       .filter { $0.category == .update }
       .flatMap { activity -> SignalProducer<(Project, Update), NoError> in
         guard let project = activity.project, let update = activity.update else {
@@ -209,13 +209,13 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       )
       .skipRepeats(==)
 
-    self.showOnboarding = combineLatest(currentUser, self.sortProperty.signal.ignoreNil())
+    self.showOnboarding = combineLatest(currentUser, self.sortProperty.signal.skipNil())
       .map { $0 == nil && $1 == .magic }
       .skipRepeats()
 
     requestFirstPageWith
       .takePairWhen(pageCount)
-      .observeNext { params, page in
+      .observeValues { params, page in
         AppEnvironment.current.koala.trackDiscovery(params: params, page: page)
     }
 

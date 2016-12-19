@@ -56,7 +56,7 @@ public final class FindFriendsFriendFollowCellViewModel: FindFriendsFriendFollow
   FindFriendsFriendFollowCellViewModelInputs, FindFriendsFriendFollowCellViewModelOutputs {
   // swiftlint:disable function_body_length
   public init() {
-    let friend = self.configureWithFriendProperty.signal.ignoreNil()
+    let friend = self.configureWithFriendProperty.signal.skipNil()
       .map(cached(friend:))
 
     self.imageURL = friend.map { NSURL.init(string: $0.avatar.medium) }
@@ -136,15 +136,15 @@ public final class FindFriendsFriendFollowCellViewModel: FindFriendsFriendFollow
       )
       .skipRepeats()
 
-    let source = self.configureWithSourceProperty.signal.ignoreNil().map { $0 }
+    let source = self.configureWithSourceProperty.signal.skipNil().map { $0 }
 
     source
       .takeWhen(self.followButtonTappedProperty.signal)
-      .observeNext { AppEnvironment.current.koala.trackFriendFollow(source: $0) }
+      .observeValues { AppEnvironment.current.koala.trackFriendFollow(source: $0) }
 
     source
       .takeWhen(self.unfollowButtonTappedProperty.signal)
-      .observeNext { AppEnvironment.current.koala.trackFriendUnfollow(source: $0) }
+      .observeValues { AppEnvironment.current.koala.trackFriendUnfollow(source: $0) }
   }
   // swiftlint:enable function_body_length
 

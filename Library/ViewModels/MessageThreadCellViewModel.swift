@@ -27,7 +27,7 @@ public final class MessageThreadCellViewModel: MessageThreadCellViewModelType,
   MessageThreadCellViewModelInputs, MessageThreadCellViewModelOutputs {
 
   public init() {
-    let messageThread = self.messageThreadProperty.signal.ignoreNil()
+    let messageThread = self.messageThreadProperty.signal.skipNil()
 
     self.date = messageThread.map {
       Format.date(secondsInUTC: $0.lastMessage.createdAt, dateStyle: .ShortStyle, timeStyle: .NoStyle)

@@ -66,7 +66,7 @@ internal final class ActivitySampleFollowCell: UITableViewCell, ValueCell {
         self?.friendImageView.af_cancelImageRequest()
         self?.friendImageView.image = nil
         })
-      .ignoreNil()
+      .skipNil()
       .observeNext { [weak self] url in
         self?.friendImageView.af_setImageWithURL(url)
     }

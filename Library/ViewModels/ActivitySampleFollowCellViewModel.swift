@@ -32,7 +32,7 @@ public final class ActivitySampleFollowCellViewModel: ActivitySampleFollowCellVi
   ActivitySampleFollowCellViewModelOutputs, ActivitySampleFollowCellViewModelType {
 
   public init() {
-    let activity = self.activityProperty.signal.ignoreNil()
+    let activity = self.activityProperty.signal.skipNil()
 
     self.friendFollowText = activity
       .map { Strings.activity_user_name_is_now_following_you(user_name: $0.user?.name ?? "" ) }

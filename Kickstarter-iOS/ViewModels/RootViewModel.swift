@@ -136,17 +136,17 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
 
     let discovery = viewControllers
       .map(first(DiscoveryViewController))
-      .ignoreNil()
+      .skipNil()
 
     self.filterDiscovery =
-      combineLatest(discovery, self.switchToDiscoveryProperty.signal.ignoreNil())
+      combineLatest(discovery, self.switchToDiscoveryProperty.signal.skipNil())
 
     let dashboard = viewControllers
       .map(first(DashboardViewController))
-      .ignoreNil()
+      .skipNil()
 
     self.switchDashboardProject =
-      combineLatest(dashboard, self.switchToDashboardProperty.signal.ignoreNil(),
+      combineLatest(dashboard, self.switchToDashboardProperty.signal.skipNil(),
         loginState)
         .filter { _, _, loginState in
           isTrue(loginState)
@@ -172,7 +172,7 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
 
     let selectedTabAgain = self.selectedIndex.combinePrevious()
       .map { prev, next -> Int? in prev == next ? next : nil }
-      .ignoreNil()
+      .skipNil()
 
     self.scrollToTop = self.setViewControllers
       .takePairWhen(selectedTabAgain)

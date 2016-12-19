@@ -47,7 +47,7 @@ public final class ProjectActivityCommentCellViewModel: ProjectActivityCommentCe
 ProjectActivityCommentCellViewModelInputs, ProjectActivityCommentCellViewModelOutputs {
 
   public init() {
-    let activityAndProject = self.activityAndProjectProperty.signal.ignoreNil()
+    let activityAndProject = self.activityAndProjectProperty.signal.skipNil()
     let activity = activityAndProject.map(first)
 
     self.authorImageURL = activity.map { ($0.user?.avatar.medium).flatMap(NSURL.init) }
@@ -60,7 +60,7 @@ ProjectActivityCommentCellViewModelInputs, ProjectActivityCommentCellViewModelOu
         guard let user = activity.user else { return nil }
         return (project, user)
       }
-      .ignoreNil()
+      .skipNil()
 
     let projectComment = activityAndProject
       .filter { activity, _ in activity.category == .commentProject }

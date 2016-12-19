@@ -40,8 +40,8 @@ public final class ActivityProjectStatusViewModel: ActivityProjectStatusViewMode
   ActivityProjectStatusViewModelInputs, ActivityProjectStatusViewModelOutputs {
 
   public init() {
-    let activity = self.activityProperty.signal.ignoreNil()
-    let project = activity.map { $0.project }.ignoreNil()
+    let activity = self.activityProperty.signal.skipNil()
+    let project = activity.map { $0.project }.skipNil()
 
     self.fundingBarColor = activity.map { progressBarColor(forActivityCategory: $0.category) }
 

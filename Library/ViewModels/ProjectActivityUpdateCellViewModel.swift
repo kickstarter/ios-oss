@@ -40,7 +40,7 @@ public protocol ProjectActivityUpdateCellViewModelType {
 public final class ProjectActivityUpdateCellViewModel: ProjectActivityUpdateCellViewModelType,
 ProjectActivityUpdateCellViewModelInputs, ProjectActivityUpdateCellViewModelOutputs {
   public init() {
-    let activityAndProject = self.activityAndProjectProperty.signal.ignoreNil()
+    let activityAndProject = self.activityAndProjectProperty.signal.skipNil()
     let activity = activityAndProject.map(first)
 
     self.activityTitle = activity.map(updateNumber(activity:))

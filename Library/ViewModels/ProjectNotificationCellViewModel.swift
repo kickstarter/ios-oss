@@ -33,7 +33,7 @@ public final class ProjectNotificationCellViewModel: ProjectNotificationCellView
 
   // swiftlint:disable function_body_length
   public init() {
-    let notification = self.notificationProperty.signal.ignoreNil()
+    let notification = self.notificationProperty.signal.skipNil()
       .map(cached(notification:))
 
     self.name = notification.map { $0.project.name }
@@ -70,7 +70,7 @@ public final class ProjectNotificationCellViewModel: ProjectNotificationCellView
       .map { previous, _ in previous }
 
     Signal.merge(updateEvent.values(), previousNotificationOnError)
-      .observeNext(cache(notification:))
+      .observeValues(cache(notification:))
 
     self.notificationOn = Signal.merge(
       notification,
@@ -82,7 +82,7 @@ public final class ProjectNotificationCellViewModel: ProjectNotificationCellView
 
     notification
       .takeWhen(self.notificationTappedProperty.signal)
-      .observeNext { AppEnvironment.current.koala.trackChangeProjectNotification($0.project) }
+      .observeValues { AppEnvironment.current.koala.trackChangeProjectNotification($0.project) }
   }
   // swiftlint:enable function_body_length
 

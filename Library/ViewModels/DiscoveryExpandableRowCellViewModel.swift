@@ -29,7 +29,7 @@ public final class DiscoveryExpandableRowCellViewModel: DiscoveryExpandableRowCe
 DiscoveryExpandableRowCellInputs, DiscoveryExpandableRowCellOutputs {
 
   public init() {
-    let expandableRowAndCategoryId = self.expandableRowAndCategoryIdProperty.signal.ignoreNil()
+    let expandableRowAndCategoryId = self.expandableRowAndCategoryIdProperty.signal.skipNil()
       .takeWhen(self.willDisplayProperty.signal)
 
     let expandableRow = expandableRowAndCategoryId.map(first)

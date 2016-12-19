@@ -32,7 +32,7 @@ public final class DashboardReferrerRowStackViewViewModel: DashboardReferrerRowS
   DashboardReferrerRowStackViewViewModelOutputs, DashboardReferrerRowStackViewViewModelType {
 
   public init() {
-    let countryReferrer = self.countryReferrerProperty.signal.ignoreNil()
+    let countryReferrer = self.countryReferrerProperty.signal.skipNil()
 
     self.backersText = countryReferrer.map { _, referrer in Format.wholeNumber(referrer.backersCount) }
 

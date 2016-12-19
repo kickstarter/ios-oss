@@ -23,7 +23,7 @@ public final class MostPopularSearchProjectCellViewModel: MostPopularSearchProje
 MostPopularSearchProjectCellViewModelInputs, MostPopularSearchProjectCellViewModelOutputs {
 
   public init() {
-    let project = self.projectProperty.signal.ignoreNil()
+    let project = self.projectProperty.signal.skipNil()
 
     self.fundingLabelText = project.map {
       Strings.percentage_funded(percentage: Format.percentage($0.stats.percentFunded))

@@ -26,7 +26,7 @@ public final class ProjectActivityLaunchCellViewModel: ProjectActivityLaunchCell
 ProjectActivityLaunchCellViewModelInputs, ProjectActivityLaunchCellViewModelOutputs {
 
   public init() {
-    let activityAndProject = self.activityAndProjectProperty.signal.ignoreNil()
+    let activityAndProject = self.activityAndProjectProperty.signal.skipNil()
     let project = activityAndProject.map(second)
 
     self.backgroundImageURL = project.map { $0.photo.med }.map(NSURL.init(string:))

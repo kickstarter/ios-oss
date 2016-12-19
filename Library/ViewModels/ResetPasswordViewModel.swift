@@ -40,7 +40,7 @@ public final class ResetPasswordViewModel: ResetPasswordViewModelType, ResetPass
   public init() {
     self.emailTextFieldBecomeFirstResponder = self.viewDidLoadProperty.signal
 
-    self.setEmailInitial = self.emailProperty.signal.ignoreNil()
+    self.setEmailInitial = self.emailProperty.signal.skipNil()
       .takeWhen(viewDidLoadProperty.signal)
       .take(1)
 
@@ -50,7 +50,7 @@ public final class ResetPasswordViewModel: ResetPasswordViewModelType, ResetPass
       .map(isValidEmail)
       .skipRepeats()
 
-    let resetEvent = self.emailProperty.signal.ignoreNil()
+    let resetEvent = self.emailProperty.signal.skipNil()
       .takeWhen(resetButtonPressedProperty.signal)
       .switchMap { email in
         AppEnvironment.current.apiService.resetPassword(email: email)
@@ -75,8 +75,8 @@ public final class ResetPasswordViewModel: ResetPasswordViewModelType, ResetPass
 
     self.returnToLogin = self.confirmResetButtonPressedProperty.signal
 
-    self.viewDidLoadProperty.signal.observeNext { AppEnvironment.current.koala.trackResetPassword() }
-    self.showResetSuccess.observeNext { _ in AppEnvironment.current.koala.trackResetPasswordSuccess() }
+    self.viewDidLoadProperty.signal.observeValues { AppEnvironment.current.koala.trackResetPassword() }
+    self.showResetSuccess.observeValues { _ in AppEnvironment.current.koala.trackResetPasswordSuccess() }
   }
 
   fileprivate let viewDidLoadProperty = MutableProperty()

@@ -114,7 +114,7 @@ public final class KoalaTrackingClient: TrackingClientType {
 
   fileprivate static func base64Payload(_ payload: [AnyObject]) -> String? {
     return (try? JSONSerialization.dataWithJSONObject(payload, options: []))
-      .map { $0.base64EncodedStringWithOptions([]) }
+      .map { $0.base64EncodedString(options: []) }
   }
 
   fileprivate func koalaURL(_ dataString: String) -> NSURL? {

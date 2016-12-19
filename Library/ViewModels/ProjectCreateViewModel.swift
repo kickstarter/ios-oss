@@ -36,8 +36,8 @@ public final class ProjectCreatorViewModel: ProjectCreatorViewModelType, Project
 ProjectCreatorViewModelOutputs {
 
   public init() {
-    let navigationAction = self.navigationAction.signal.ignoreNil()
-    let project = combineLatest(self.projectProperty.signal.ignoreNil(), self.viewDidLoadProperty.signal)
+    let navigationAction = self.navigationAction.signal.skipNil()
+    let project = combineLatest(self.projectProperty.signal.skipNil(), self.viewDidLoadProperty.signal)
       .map(first)
 
     let messageCreatorRequest = navigationAction
@@ -48,7 +48,7 @@ ProjectCreatorViewModelOutputs {
     self.loadWebViewRequest = project.map {
       URL(string: $0.urls.web.project)?.URLByAppendingPathComponent("creator_bio")
       }
-      .ignoreNil()
+      .skipNil()
       .map { AppEnvironment.current.apiService.preparedRequest(forURL: $0) }
 
     self.decidedPolicy <~ navigationAction
@@ -62,11 +62,11 @@ ProjectCreatorViewModelOutputs {
       .filter { $0.navigationType == .LinkActivated }
       .filter { !isMessageCreator(request: $0.request) }
       .map { $0.request.URL }
-      .ignoreNil()
+      .skipNil()
 
     project
       .takeWhen(self.goToSafariBrowser)
-      .observeNext {
+      .observeValues {
         AppEnvironment.current.koala.trackOpenedExternalLink(project: $0, context: .projectCreator)
     }
   }

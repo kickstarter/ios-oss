@@ -141,19 +141,19 @@ FacebookConfirmationViewModelErrors {
 
     self.showLogin = self.loginButtonPressedProperty.signal
 
-    self.viewDidLoadProperty.signal.observeNext { AppEnvironment.current.koala.trackFacebookConfirmation() }
+    self.viewDidLoadProperty.signal.observeValues { AppEnvironment.current.koala.trackFacebookConfirmation() }
 
     self.environmentLoggedInProperty.signal
-      .observeNext { _ in AppEnvironment.current.koala.trackLoginSuccess(authType: Koala.AuthType.facebook) }
+      .observeValues { _ in AppEnvironment.current.koala.trackLoginSuccess(authType: Koala.AuthType.facebook) }
 
     self.showSignupError
-      .observeNext { _ in AppEnvironment.current.koala.trackSignupError(authType: Koala.AuthType.facebook) }
+      .observeValues { _ in AppEnvironment.current.koala.trackSignupError(authType: Koala.AuthType.facebook) }
 
     signupEvent.values()
-      .observeNext { _ in AppEnvironment.current.koala.trackSignupSuccess(authType: Koala.AuthType.facebook) }
+      .observeValues { _ in AppEnvironment.current.koala.trackSignupSuccess(authType: Koala.AuthType.facebook) }
 
     self.sendNewslettersToggledProperty.signal
-      .observeNext {
+      .observeValues {
         AppEnvironment.current.koala.trackChangeNewsletter(
           newsletterType: .weekly, sendNewsletter: $0, project: nil, context: .facebookSignup
         )

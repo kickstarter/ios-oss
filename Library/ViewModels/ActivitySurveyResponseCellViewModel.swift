@@ -40,10 +40,10 @@ public final class ActivitySurveyResponseCellViewModel: ActivitySurveyResponseCe
 ActivitySurveyResponseCellViewModelInputs, ActivitySurveyResponseCellViewModelOutputs {
 
   public init() {
-    let surveyResponseAndCountAndPosition = self.surveyResponseCountPositionProperty.signal.ignoreNil()
+    let surveyResponseAndCountAndPosition = self.surveyResponseCountPositionProperty.signal.skipNil()
     let project = surveyResponseAndCountAndPosition
       .map { surveyResponse, _, _ in surveyResponse.project }
-      .ignoreNil()
+      .skipNil()
 
     self.creatorImageURL = project.map { NSURL.init(string: $0.creator.avatar.small) }
 

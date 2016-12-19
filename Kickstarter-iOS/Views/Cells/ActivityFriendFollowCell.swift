@@ -27,7 +27,7 @@ internal final class ActivityFriendFollowCell: UITableViewCell, ValueCell {
         friendImageView?.af_cancelImageRequest()
         friendImageView?.image = nil
       })
-      .ignoreNil()
+      .skipNil()
       .observeNext { [weak friendImageView] url in
         friendImageView?.ksr_setImageWithURL(url)
     }

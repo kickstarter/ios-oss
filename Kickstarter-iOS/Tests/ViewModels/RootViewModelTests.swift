@@ -31,7 +31,7 @@ final class RootViewModelTests: TestCase {
 
     self.vm.outputs.scrollToTop
       .map(extractRootName)
-      .ignoreNil()
+      .skipNil()
       .observe(self.scrollToTopControllerName.observer)
 
     self.vm.outputs.tabBarItemsData.observe(self.tabBarItemsData.observer)

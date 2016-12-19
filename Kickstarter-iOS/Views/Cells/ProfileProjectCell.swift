@@ -60,7 +60,7 @@ internal final class ProfileProjectCell: UICollectionViewCell, ValueCell {
         self?.projectImageView.af_cancelImageRequest()
         self?.projectImageView.image = nil
         })
-      .ignoreNil()
+      .skipNil()
       .observeNext { [weak self] url in
         self?.projectImageView.af_setImageWithURL(url)
     }

@@ -38,7 +38,7 @@ public final class ActivitySampleProjectCellViewModel: ActivitySampleProjectCell
   ActivitySampleProjectCellViewModelOutputs, ActivitySampleProjectCellViewModelType {
 
   public init() {
-    let activity = self.activityProperty.signal.ignoreNil()
+    let activity = self.activityProperty.signal.skipNil()
 
     self.cellAccessibilityHint = activity
       .map { $0.category == .update ? Strings.Opens_update() : Strings.Opens_project() }
@@ -49,7 +49,7 @@ public final class ActivitySampleProjectCellViewModel: ActivitySampleProjectCell
       .map { ($0.project?.photo.med).flatMap(NSURL.init) }
 
     self.projectTitleText = activity
-      .map { $0.project?.name }.ignoreNil()
+      .map { $0.project?.name }.skipNil()
 
     self.projectSubtitleText = activity
       .map { activity in

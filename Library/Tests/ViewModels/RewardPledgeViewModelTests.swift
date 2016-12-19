@@ -91,7 +91,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
     self.vm.outputs.fulfillmentAndShippingFooterStackViewHidden
       .observe(self.fulfillmentAndShippingFooterStackViewHidden.observer)
     self.vm.outputs.goToCheckout.map(first).map { $0.URL.absoluteString }
-      .ignoreNil()
+      .skipNil()
       .observe(self.goToCheckoutRequest.observer)
     self.vm.outputs.goToCheckout.map(second).observe(self.goToCheckoutProject.observer)
     self.vm.outputs.goToLoginTout.observe(self.goToLoginTout.observer)

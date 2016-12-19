@@ -109,7 +109,7 @@ public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewM
 ActivitiesViewModelOutputs {
   // swiftlint:disable function_body_length
   public init() {
-    let isCloseToBottom = self.willDisplayRowProperty.signal.ignoreNil()
+    let isCloseToBottom = self.willDisplayRowProperty.signal.skipNil()
       .map { row, total in total > 3 && row >= total - 2 }
       .skipRepeats()
       .filter(isTrue)
@@ -118,7 +118,7 @@ ActivitiesViewModelOutputs {
     let requestFirstPage = Signal
       .merge(
         self.userSessionStartedProperty.signal,
-        self.viewWillAppearProperty.signal.ignoreNil().filter(isFalse).ignoreValues(),
+        self.viewWillAppearProperty.signal.skipNil().filter(isFalse).ignoreValues(),
         self.refreshProperty.signal
       )
         .filter { AppEnvironment.current.currentUser != nil }
@@ -145,7 +145,7 @@ ActivitiesViewModelOutputs {
 
     let clearedActivitiesOnSessionEnd = self.userSessionEndedProperty.signal.mapConst([Activity]())
 
-    let activityToUpdate: Signal<Activity?, NoError> = self.viewWillAppearProperty.signal.ignoreNil()
+    let activityToUpdate: Signal<Activity?, NoError> = self.viewWillAppearProperty.signal.skipNil()
       .take(1).mapConst(nil)
 
     let updatedActivities = combineLatest(activities, activityToUpdate)
@@ -173,7 +173,7 @@ ActivitiesViewModelOutputs {
       .mapConst(true)
 
     let loggedOutForEmptyState = currentUser
-      .takeWhen(self.viewWillAppearProperty.signal.ignoreNil())
+      .takeWhen(self.viewWillAppearProperty.signal.skipNil())
       .skipRepeats(==)
       .filter(isNil)
       .mapConst(false)
@@ -194,7 +194,7 @@ ActivitiesViewModelOutputs {
         }.ignoreValues()
     )
 
-    let projectActivities = self.tappedActivityProperty.signal.ignoreNil()
+    let projectActivities = self.tappedActivityProperty.signal.skipNil()
       .filter { $0.category != .update }
 
     self.goToProject = Signal
@@ -202,12 +202,12 @@ ActivitiesViewModelOutputs {
         self.tappedActivityProjectImage.signal.map { $0?.project },
         projectActivities.map { $0.project }
       )
-      .ignoreNil()
+      .skipNil()
       .map { ($0, .activity) }
 
     let surveyEvents = currentUser
       .takeWhen(Signal.merge(
-        self.viewWillAppearProperty.signal.ignoreNil().filter(isFalse).ignoreValues(),
+        self.viewWillAppearProperty.signal.skipNil().filter(isFalse).ignoreValues(),
         self.surveyResponseViewControllerDismissedProperty.signal
         )
       )
@@ -242,7 +242,7 @@ ActivitiesViewModelOutputs {
 
     self.deleteFacebookConnectSection = self.dismissFacebookConnectSectionProperty.signal
 
-    self.showFacebookConnectErrorAlert = self.showFacebookConnectErrorAlertProperty.signal.ignoreNil()
+    self.showFacebookConnectErrorAlert = self.showFacebookConnectErrorAlertProperty.signal.skipNil()
 
     self.deleteFindFriendsSection = self.dismissFindFriendsSectionProperty.signal
 
@@ -253,14 +253,14 @@ ActivitiesViewModelOutputs {
       .mapConst(.activity)
 
     self.dismissFacebookConnectSectionProperty.signal
-      .observeNext { AppEnvironment.current.userDefaults.hasClosedFacebookConnectInActivity = true }
+      .observeValues { AppEnvironment.current.userDefaults.hasClosedFacebookConnectInActivity = true }
 
     self.dismissFindFriendsSectionProperty.signal
-      .observeNext { AppEnvironment.current.userDefaults.hasClosedFindFriendsInActivity = true }
+      .observeValues { AppEnvironment.current.userDefaults.hasClosedFindFriendsInActivity = true }
 
-    self.goToSurveyResponse = self.tappedSurveyResponseProperty.signal.ignoreNil()
+    self.goToSurveyResponse = self.tappedSurveyResponseProperty.signal.skipNil()
 
-    self.goToUpdate = self.tappedActivityProperty.signal.ignoreNil()
+    self.goToUpdate = self.tappedActivityProperty.signal.skipNil()
       .filter { $0.category == .update }
       .map { ($0.project, $0.update) }
       .flatMap { (project, update) -> SignalProducer<(Project, Update), NoError> in
@@ -269,16 +269,16 @@ ActivitiesViewModelOutputs {
       }
 
     self.viewWillAppearProperty.signal
-      .ignoreNil()
+      .skipNil()
       .filter(isFalse)
-      .observeNext { _ in AppEnvironment.current.koala.trackActivities() }
+      .observeValues { _ in AppEnvironment.current.koala.trackActivities() }
 
     self.refreshProperty.signal
-      .observeNext { AppEnvironment.current.koala.trackLoadedNewerActivity() }
+      .observeValues { AppEnvironment.current.koala.trackLoadedNewerActivity() }
 
     pageCount
       .filter { $0 > 1 }
-      .observeNext { AppEnvironment.current.koala.trackLoadedOlderActivity(page: $0) }
+      .observeValues { AppEnvironment.current.koala.trackLoadedOlderActivity(page: $0) }
   }
 
   // swiftlint:enable function_body_length

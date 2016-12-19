@@ -60,7 +60,7 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
       .map { topFilters(forUser: AppEnvironment.current.currentUser) }
 
     let initialSelectedRowWithCategories = combineLatest(
-      self.initialSelectedRowWithCategoriesProperty.signal.ignoreNil(),
+      self.initialSelectedRowWithCategoriesProperty.signal.skipNil(),
       self.viewDidLoadProperty.signal
       )
       .take(1)
@@ -74,7 +74,7 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
         params.map { p in SelectableRow(isSelected: p == selectedRow.params, params: p) }
     }
 
-    let categoryId = self.initialSelectedRowWithCategoriesProperty.signal.ignoreNil()
+    let categoryId = self.initialSelectedRowWithCategoriesProperty.signal.skipNil()
       .map(first)
       .map { $0.params.category?.rootId }
 
@@ -82,21 +82,21 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
 
     let favoriteRows = initialSelectedRowWithCategories
       .map(favorites(selectedRow:categories:))
-      .ignoreNil()
+      .skipNil()
 
     self.loadFavoriteRows = combineLatest(favoriteRows, categoryId)
       .map { (rows: $0, categoryId: $1) }
 
     let selectedRowId = Signal.merge(
         categoryId,
-        self.tappedExpandableRowProperty.signal.ignoreNil().map { $0.params.category?.rootId }
+        self.tappedExpandableRowProperty.signal.skipNil().map { $0.params.category?.rootId }
       )
 
     let initialRows = initialSelectedRowWithCategories
       .map(expandableRows(selectedRow:categories:))
 
     let expandingRows = combineLatest(
-      self.tappedExpandableRowProperty.signal.ignoreNil(),
+      self.tappedExpandableRowProperty.signal.skipNil(),
       initialRows
       )
       .map(toggleExpansion(row:in:))
@@ -113,7 +113,7 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
       )
       .map { (rows: $1, categoryId: $0.0, selectedRowId: $0.1) }
 
-    self.notifyDelegateOfSelectedRow = self.tappedSelectableRowProperty.signal.ignoreNil()
+    self.notifyDelegateOfSelectedRow = self.tappedSelectableRowProperty.signal.skipNil()
 
     self.shouldAnimateSelectableCellProperty <~ Signal.merge(
       self.tappedExpandableRowProperty.signal.mapConst(true),
@@ -127,13 +127,13 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
       .takeWhen(self.viewWillAppearProperty.signal)
 
     self.viewDidLoadProperty.signal
-      .observeNext { AppEnvironment.current.koala.trackDiscoveryModal() }
+      .observeValues { AppEnvironment.current.koala.trackDiscoveryModal() }
 
     self.notifyDelegateOfSelectedRow
-      .observeNext { AppEnvironment.current.koala.trackDiscoveryModalSelectedFilter(params: $0.params) }
+      .observeValues { AppEnvironment.current.koala.trackDiscoveryModalSelectedFilter(params: $0.params) }
 
-    self.tappedExpandableRowProperty.signal.ignoreNil()
-      .observeNext { AppEnvironment.current.koala.trackDiscoveryModalExpandedFilter(params: $0.params) }
+    self.tappedExpandableRowProperty.signal.skipNil()
+      .observeValues { AppEnvironment.current.koala.trackDiscoveryModalExpandedFilter(params: $0.params) }
   }
   // swiftlint:enable function_body_length
 

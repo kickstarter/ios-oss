@@ -74,7 +74,7 @@ public final class DashboardFundingCellViewModel: DashboardFundingCellViewModelI
 
   // swiftlint:disable function_body_length
   public init() {
-    let statsProject = self.statsProjectProperty.signal.ignoreNil()
+    let statsProject = self.statsProjectProperty.signal.skipNil()
 
     self.backersText = statsProject.map { _, project in Format.wholeNumber(project.stats.backersCount) }
 

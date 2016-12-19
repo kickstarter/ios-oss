@@ -46,7 +46,7 @@ internal final class MessageCell: UITableViewCell, ValueCell {
         self?.avatarImageView.af_cancelImageRequest()
         self?.avatarImageView.image = nil
       })
-      .ignoreNil()
+      .skipNil()
       .observeNext { [weak self] in
         self?.avatarImageView.af_setImageWithURL($0)
     }

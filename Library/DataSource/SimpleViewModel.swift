@@ -23,6 +23,6 @@ public final class SimpleViewModel<Model>: SimpleViewModelInputs, SimpleViewMode
   public let model: Signal<Model, NoError>
 
   public init() {
-    self.model = self.modelProperty.signal.ignoreNil()
+    self.model = self.modelProperty.signal.skipNil()
   }
 }

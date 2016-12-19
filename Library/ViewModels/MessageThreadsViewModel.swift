@@ -59,7 +59,7 @@ MessageThreadsViewModelOutputs {
 
   // swiftlint:disable function_body_length
   public init() {
-    let isCloseToBottom = self.willDisplayRowProperty.signal.ignoreNil()
+    let isCloseToBottom = self.willDisplayRowProperty.signal.skipNil()
       .filter { row, total in total > 1 }
       .map { row, total in row >= total - 3 }
       .skipRepeats()
@@ -67,7 +67,7 @@ MessageThreadsViewModelOutputs {
       .ignoreValues()
 
     let mailbox = Signal.merge(
-      self.switchToMailbox.signal.ignoreNil(),
+      self.switchToMailbox.signal.skipNil(),
       self.viewDidLoadProperty.signal.mapConst(.inbox)
     )
 
@@ -122,7 +122,7 @@ MessageThreadsViewModelOutputs {
 
     self.projectProperty.producer
       .takePairWhen(mailbox)
-      .observeNext { project, mailbox in
+      .observeValues { project, mailbox in
         AppEnvironment.current.koala.trackMessageThreadsView(mailbox: mailbox, project: project)
     }
   }

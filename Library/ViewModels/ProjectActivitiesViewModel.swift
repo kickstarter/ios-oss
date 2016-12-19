@@ -71,9 +71,9 @@ public final class ProjectActivitiesViewModel: ProjectActivitiesViewModelType,
 
   // swiftlint:disable function_body_length
   public init() {
-    let project = self.projectProperty.signal.ignoreNil()
+    let project = self.projectProperty.signal.skipNil()
 
-    let isCloseToBottom = self.willDisplayRowProperty.signal.ignoreNil()
+    let isCloseToBottom = self.willDisplayRowProperty.signal.skipNil()
       .map { row, total in row >= total - 3 }
       .skipRepeats()
       .filter(isTrue)
@@ -111,7 +111,7 @@ public final class ProjectActivitiesViewModel: ProjectActivitiesViewModelType,
       .map { $0.isEmpty }
       .skipRepeats()
 
-    let cellTappedGoTo = self.activityAndProjectCellTappedProperty.signal.ignoreNil()
+    let cellTappedGoTo = self.activityAndProjectCellTappedProperty.signal.skipNil()
       .flatMap { activity, project -> SignalProducer<(ProjectActivitiesGoTo), NoError> in
         switch activity.category {
         case .backing, .backingAmount, .backingCanceled, .backingReward:
@@ -133,21 +133,21 @@ public final class ProjectActivitiesViewModel: ProjectActivitiesViewModelType,
     }
 
     let projectActivityBackingCellGoToBacking =
-      self.projectActivityBackingCellGoToBackingProperty.signal.ignoreNil()
+      self.projectActivityBackingCellGoToBackingProperty.signal.skipNil()
         .map { project, user in ProjectActivitiesGoTo.backing(project, user) }
 
     let projectActivityBackingCellGoToSendMessage =
-      self.projectActivityBackingCellGoToSendMessageProperty.signal.ignoreNil()
+      self.projectActivityBackingCellGoToSendMessageProperty.signal.skipNil()
         .map { project, backing in
           ProjectActivitiesGoTo.sendMessage(backing, Koala.MessageDialogContext.creatorActivity)
     }
 
     let projectActivityCommentCellGoToBacking =
-      self.projectActivityCommentCellGoToBackingProperty.signal.ignoreNil()
+      self.projectActivityCommentCellGoToBackingProperty.signal.skipNil()
         .map { project, user in ProjectActivitiesGoTo.backing(project, user) }
 
     let projectActivityCommentCellGoToSendReply =
-      self.projectActivityCommentCellGoToSendReplyProperty.signal.ignoreNil()
+      self.projectActivityCommentCellGoToSendReplyProperty.signal.skipNil()
         .map { project, update, comment in ProjectActivitiesGoTo.sendReply(project, update, comment) }
 
     self.goTo = Signal.merge(
@@ -161,15 +161,15 @@ public final class ProjectActivitiesViewModel: ProjectActivitiesViewModelType,
     project
       .takeWhen(self.viewDidLoadProperty.signal)
       .take(1)
-      .observeNext { AppEnvironment.current.koala.trackViewedProjectActivity(project: $0) }
+      .observeValues { AppEnvironment.current.koala.trackViewedProjectActivity(project: $0) }
 
     project
       .takeWhen(pageCount.skip(1).filter { $0 == 1 })
-      .observeNext { AppEnvironment.current.koala.trackLoadedNewerProjectActivity(project: $0) }
+      .observeValues { AppEnvironment.current.koala.trackLoadedNewerProjectActivity(project: $0) }
 
     project
       .takePairWhen(pageCount.skip(1).filter { $0 > 1 })
-      .observeNext { project, pageCount in
+      .observeValues { project, pageCount in
         AppEnvironment.current.koala.trackLoadedOlderProjectActivity(project: project, page: pageCount)
     }
   }

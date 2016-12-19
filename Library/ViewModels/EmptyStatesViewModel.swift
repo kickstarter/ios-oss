@@ -80,7 +80,7 @@ public final class EmptyStatesViewModel: EmptyStatesViewModelType, EmptyStatesVi
   // swiftlint:disable function_body_length
   public init() {
     let emptyState = Signal.combineLatest(
-      self.emptyStateProperty.signal.ignoreNil(),
+      self.emptyStateProperty.signal.skipNil(),
       self.viewWillAppearProperty.signal.take(first: 1)
     )
     .map(first)
@@ -90,14 +90,14 @@ public final class EmptyStatesViewModel: EmptyStatesViewModelType, EmptyStatesVi
 
     self.mainButtonBackgroundColor = emptyState
       .map { $0 == .activity
-        ? UIColor.ksr_forest_500.colorWithAlphaComponent(0.1)
-        : UIColor.ksr_green_500.colorWithAlphaComponent(0.1)
+        ? UIColor.ksr_forest_500.withAlphaComponent(0.1)
+        : UIColor.ksr_green_500.withAlphaComponent(0.1)
     }
 
     self.mainButtonBorderColor = emptyState
       .map { $0 == .activity
-        ? UIColor.ksr_forest_500.colorWithAlphaComponent(0.2).CGColor
-        : UIColor.ksr_green_700.colorWithAlphaComponent(0.2).CGColor
+        ? UIColor.ksr_forest_500.withAlphaComponent(0.2).cgColor
+        : UIColor.ksr_green_700.withAlphaComponent(0.2).cgColor
     }
 
     self.mainButtonText = emptyState.map(buttonText(emptyState:))
@@ -119,7 +119,7 @@ public final class EmptyStatesViewModel: EmptyStatesViewModelType, EmptyStatesVi
       .map { $0 == .activity ? 0.45 : 1.0 }
 
     self.backgroundStripViewColor = emptyState
-      .map { $0 == .activity ? .whiteColor() : .ksr_grey_100 }
+      .map { $0 == .activity ? .white : .ksr_grey_100 }
 
     self.notifyDelegateToGoToDiscovery = emptyState
       .takeWhen(self.mainButtonTappedProperty.signal)
@@ -138,11 +138,11 @@ public final class EmptyStatesViewModel: EmptyStatesViewModelType, EmptyStatesVi
       .map { $0 == .activity ? 50.0 + Styles.grid(3) : Styles.grid(3) }
 
     emptyState
-      .observeNext { AppEnvironment.current.koala.trackEmptyStateViewed(type: $0) }
+      .observeValues { AppEnvironment.current.koala.trackEmptyStateViewed(type: $0) }
 
     emptyState
       .takeWhen(self.mainButtonTappedProperty.signal)
-      .observeNext { AppEnvironment.current.koala.trackEmptyStateButtonTapped(type: $0) }
+      .observeValues { AppEnvironment.current.koala.trackEmptyStateButtonTapped(type: $0) }
   }
   // swiftlint:enable function_body_length
 

@@ -68,7 +68,7 @@ public final class FindFriendsFacebookConnectCellViewModel: FindFriendsFacebookC
 
     self.attemptFacebookLogin = self.facebookConnectButtonTappedProperty.signal
 
-    let tokenString = self.facebookLoginSuccessProperty.signal.ignoreNil()
+    let tokenString = self.facebookLoginSuccessProperty.signal.skipNil()
       .map { $0.token.tokenString ?? "" }
 
     let facebookConnect = tokenString
@@ -113,7 +113,7 @@ public final class FindFriendsFacebookConnectCellViewModel: FindFriendsFacebookC
       .filter { $0.ksrCode == .FacebookConnectEmailTaken }
       .map { AlertError.facebookConnectEmailTaken(envelope: $0) }
 
-    let facebookLoginAttemptFailAlert = self.facebookLoginFailProperty.signal.ignoreNil()
+    let facebookLoginAttemptFailAlert = self.facebookLoginFailProperty.signal.skipNil()
       .map { AlertError.facebookLoginAttemptFail(error: $0) }
 
     self.showErrorAlert = Signal.merge([
@@ -130,15 +130,15 @@ public final class FindFriendsFacebookConnectCellViewModel: FindFriendsFacebookC
 
     source
       .takeWhen(self.showErrorAlert)
-      .observeNext { AppEnvironment.current.koala.trackFacebookConnectError(source: $0) }
+      .observeValues { AppEnvironment.current.koala.trackFacebookConnectError(source: $0) }
 
     source
       .takeWhen(self.facebookConnectButtonTappedProperty.signal)
-      .observeNext { AppEnvironment.current.koala.trackFacebookConnect(source: $0) }
+      .observeValues { AppEnvironment.current.koala.trackFacebookConnect(source: $0) }
 
     source
       .takeWhen(self.closeButtonTappedProperty.signal)
-      .observeNext { AppEnvironment.current.koala.trackCloseFacebookConnect(source: $0) }
+      .observeValues { AppEnvironment.current.koala.trackCloseFacebookConnect(source: $0) }
   }
   // swiftlint:enable function_body_length
 

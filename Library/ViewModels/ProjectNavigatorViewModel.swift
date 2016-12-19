@@ -57,12 +57,12 @@ ProjectNavigatorViewModelInputs, ProjectNavigatorViewModelOutputs {
   // swiftlint:disable:next function_body_length
   public init() {
     let configData = combineLatest(
-      self.configDataProperty.signal.ignoreNil(),
+      self.configDataProperty.signal.skipNil(),
       self.viewDidLoadProperty.signal
       )
       .map(first)
 
-    let swipedToProject = self.willTransitionToProjectProperty.signal.ignoreNil()
+    let swipedToProject = self.willTransitionToProjectProperty.signal.skipNil()
       .takeWhen(self.pageTransitionCompletedProperty.signal.filter(isTrue))
 
     let currentProject = Signal.merge(
@@ -72,7 +72,7 @@ ProjectNavigatorViewModelInputs, ProjectNavigatorViewModelOutputs {
 
     self.setNeedsStatusBarAppearanceUpdate = swipedToProject.ignoreValues()
 
-    let panningData = self.panningDataProperty.signal.ignoreNil()
+    let panningData = self.panningDataProperty.signal.skipNil()
 
     let transitionPhase = panningData
       .scan(TransitionPhase.none) { phase, data in
@@ -124,13 +124,13 @@ ProjectNavigatorViewModelInputs, ProjectNavigatorViewModelOutputs {
 
     configData
       .takePairWhen(swipedToProject)
-      .observeNext { configData, project in
+      .observeValues { configData, project in
         AppEnvironment.current.koala.trackSwipedProject(project, refTag: configData.refTag)
     }
 
     combineLatest(configData, currentProject)
       .takeWhen(self.finishInteractiveTransition)
-      .observeNext { configData, project in
+      .observeValues { configData, project in
         AppEnvironment.current.koala.trackClosedProjectPage(
           project,
           refTag: configData.refTag,

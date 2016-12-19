@@ -37,7 +37,7 @@ public final class FindFriendsHeaderCellViewModel: FindFriendsHeaderCellViewMode
 
     self.configureWithProperty.signal
       .takeWhen(self.closeButtonTappedProperty.signal)
-      .observeNext { AppEnvironment.current.koala.trackCloseFindFriends(source: $0) }
+      .observeValues { AppEnvironment.current.koala.trackCloseFindFriends(source: $0) }
   }
 
   public var inputs: FindFriendsHeaderCellViewModelInputs { return self }

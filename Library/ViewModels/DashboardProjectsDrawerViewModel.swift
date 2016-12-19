@@ -50,12 +50,12 @@ public final class DashboardProjectsDrawerViewModel: DashboardProjectsDrawerView
 DashboardProjectsDrawerViewModelInputs, DashboardProjectsDrawerViewModelOutputs {
 
   public init() {
-    self.projectsDrawerData = self.projectsDrawerDataProperty.signal.ignoreNil()
+    self.projectsDrawerData = self.projectsDrawerDataProperty.signal.skipNil()
       .takeWhen(self.viewDidLoadProperty.signal)
 
     self.notifyDelegateToCloseDrawer = self.backgroundTappedProperty.signal
 
-    self.notifyDelegateProjectCellTapped = self.projectCellTappedProperty.signal.ignoreNil()
+    self.notifyDelegateProjectCellTapped = self.projectCellTappedProperty.signal.skipNil()
 
     self.notifyDelegateDidAnimateOut = self.animateOutCompletedProperty.signal
 

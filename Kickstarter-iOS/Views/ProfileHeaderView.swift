@@ -54,7 +54,7 @@ internal final class ProfileHeaderView: UICollectionReusableView, ValueCell {
         self?.avatarImageView.af_cancelImageRequest()
         self?.avatarImageView.image = nil
         })
-      .ignoreNil()
+      .skipNil()
       .observeNext { [weak self] url in
         self?.avatarImageView.af_setImageWithURL(url)
     }

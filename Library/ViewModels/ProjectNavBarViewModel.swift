@@ -66,7 +66,7 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
   // swiftlint:disable function_body_length
   public init() {
     let configuredProjectAndRefTag = combineLatest(
-      self.projectAndRefTagProperty.signal.ignoreNil(),
+      self.projectAndRefTagProperty.signal.skipNil(),
       self.viewDidLoadProperty.signal
       )
       .map(first)
@@ -105,7 +105,7 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
     let projectOnStarToggle = configuredProject
       .takeWhen(.merge(loggedInUserTappedStar, userLoginAfterTappingStar))
       .scan(nil) { accum, project in (accum ?? project) |> toggleStarLens }
-      .ignoreNil()
+      .skipNil()
 
     let projectOnStarToggleAndSuccess = projectOnStarToggle
       .switchMap { project in
@@ -195,12 +195,12 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
 
     combineLatest(project, configuredRefTag)
       .takeWhen(self.closeButtonTappedProperty.signal)
-      .observeNext { project, refTag in
+      .observeValues { project, refTag in
         AppEnvironment.current.koala.trackClosedProjectPage(project, refTag: refTag, gestureType: .tap)
     }
 
     projectOnStarToggleSuccess
-      .observeNext { AppEnvironment.current.koala.trackProjectStar($0) }
+      .observeValues { AppEnvironment.current.koala.trackProjectStar($0) }
   }
   // swiftlint:enable function_body_length
 

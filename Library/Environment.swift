@@ -59,7 +59,7 @@ public struct Environment {
   public let launchedCountries: LaunchedCountries
 
   /// The user’s current locale, which determines how numbers are formatted. Default value is
-  /// `NSLocale.currentLocale()`.
+  /// `Locale.currentLocale()`.
   public let locale: Locale
 
   /// A type that exposes how to interface with an NSBundle. Default value is `NSBundle.mainBundle()`.
@@ -70,9 +70,9 @@ public struct Environment {
 
   /// A scheduler to use for all time-based RAC operators. Default value is
   /// `QueueScheduler.mainQueueScheduler`.
-  public let scheduler: DateSchedulerType
+  public let scheduler: DateSchedulerProtocol
 
-  /// The user’s timezone. Default value is `NSTimeZone.localTimeZone()`.
+  /// The user’s timezone. Default value is `TimeZone.local`.
   public let timeZone: TimeZone
 
   /// A ubiquitous key-value store. Default value is `NSUbiquitousKeyValueStore.defaultStore()`.
@@ -86,9 +86,9 @@ public struct Environment {
     apiDelayInterval: TimeInterval = 0.0,
     assetImageGeneratorType: AssetImageGeneratorType.Type = AVAssetImageGenerator.self,
     cache: CacheProtocol = NSCache(),
-    calendar: Calendar = NSCalendar.currentCalendar(),
+    calendar: Calendar = Calendar.current,
     config: Config? = nil,
-    cookieStorage: NSHTTPCookieStorageType = NSHTTPCookieStorage.sharedHTTPCookieStorage(),
+    cookieStorage: HTTPCookieStorageType = HTTPCookieStorage.sharedHTTPCookieStorage(),
     countryCode: String = "US",
     currentUser: User? = nil,
     dateType: DateProtocol.Type = NSDate.self,
@@ -96,15 +96,15 @@ public struct Environment {
     facebookAppDelegate: FacebookAppDelegateProtocol = FBSDKApplicationDelegate.sharedInstance(),
     isVoiceOverRunning: () -> Bool = UIAccessibilityIsVoiceOverRunning,
     koala: Koala = Koala(client: KoalaTrackingClient(endpoint: .production)),
-    language: Language = Language(languageStrings: NSLocale.preferredLanguages()) ?? Language.en,
+    language: Language = Language(languageStrings: Locale.preferredLanguages()) ?? Language.en,
     launchedCountries: LaunchedCountries = .init(),
     locale: Locale = .currentLocale(),
-    mainBundle: NSBundleType = NSBundle.mainBundle(),
+    mainBundle: NSBundleType = Bundle.mainBundle(),
     reachability: SignalProducer<Reachability, NoError> = Reachability.signalProducer,
-    scheduler: DateSchedulerType = QueueScheduler.mainQueueScheduler,
-    timeZone: TimeZone = .localTimeZone(),
-    ubiquitousStore: KeyValueStoreType = NSUbiquitousKeyValueStore.defaultStore(),
-    userDefaults: KeyValueStoreType = NSUserDefaults.standardUserDefaults()) {
+    scheduler: DateSchedulerProtocol = QueueScheduler.main,
+    timeZone: TimeZone = .local,
+    ubiquitousStore: KeyValueStoreType = NSUbiquitousKeyValueStore.default(),
+    userDefaults: KeyValueStoreType = UserDefaults.standardUserDefaults()) {
 
     self.apiService = apiService
     self.apiDelayInterval = apiDelayInterval

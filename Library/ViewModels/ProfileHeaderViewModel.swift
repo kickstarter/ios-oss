@@ -41,7 +41,7 @@ public protocol ProfileHeaderViewModelType {
 public final class ProfileHeaderViewModel: ProfileHeaderViewModelType,
   ProfileHeaderViewModelInputs, ProfileHeaderViewModelOutputs {
   public init() {
-    let user = userProperty.signal.ignoreNil()
+    let user = userProperty.signal.skipNil()
     self.avatarURL = user.map { URL(string: $0.avatar.large ?? $0.avatar.medium) }
     self.backedProjectsCountLabel = user
       .map { user in

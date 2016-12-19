@@ -92,7 +92,7 @@ public final class FindFriendsViewModel: FindFriendsViewModelType, FindFriendsVi
       followAll.ignoreValues().ksr_debounce(2, onScheduler: AppEnvironment.current.scheduler)
     )
 
-    let requestNextPageWhen = self.willDisplayRowProperty.signal.ignoreNil()
+    let requestNextPageWhen = self.willDisplayRowProperty.signal.skipNil()
       .map { row, total in row >= total - 3 && total > 1 }
       .skipRepeats()
       .filter(isTrue)
@@ -125,7 +125,7 @@ public final class FindFriendsViewModel: FindFriendsViewModelType, FindFriendsVi
 
     self.showFollowAllFriendsAlert = self.showFollowAllFriendsAlertProperty.signal
 
-    self.showErrorAlert = self.showFacebookConnectErrorAlertProperty.signal.ignoreNil()
+    self.showErrorAlert = self.showFacebookConnectErrorAlertProperty.signal.skipNil()
 
     self.showFacebookConnect = shouldShowFacebookConnect.map { (.findFriends, $0) }
 
@@ -141,15 +141,15 @@ public final class FindFriendsViewModel: FindFriendsViewModelType, FindFriendsVi
 
     source
       .takeWhen(self.viewDidLoadProperty.signal)
-      .observeNext { AppEnvironment.current.koala.trackFindFriendsView(source: $0) }
+      .observeValues { AppEnvironment.current.koala.trackFindFriendsView(source: $0) }
 
     source
       .takeWhen(self.declineFollowAllFriendsProperty.signal)
-      .observeNext { AppEnvironment.current.koala.trackDeclineFriendFollowAll(source: $0) }
+      .observeValues { AppEnvironment.current.koala.trackDeclineFriendFollowAll(source: $0) }
 
     source
       .takeWhen(followAll)
-      .observeNext { AppEnvironment.current.koala.trackFriendFollowAll(source: $0) }
+      .observeValues { AppEnvironment.current.koala.trackFriendFollowAll(source: $0) }
   }
   // swiftlint:enable function_body_length
 

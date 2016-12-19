@@ -219,7 +219,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     self.viewModel.outputs.creatorImageUrl
       .observeForUI()
       .on(next: { [weak self] _ in self?.creatorImageView.image = nil })
-      .ignoreNil()
+      .skipNil()
       .observeNext { [weak self] in self?.creatorImageView.af_setImageWithURL($0) }
 
     self.viewModel.outputs.notifyDelegateToGoToCampaign

@@ -31,10 +31,10 @@ public final class DashboardRewardRowStackViewViewModel: DashboardRewardRowStack
   DashboardRewardRowStackViewViewModelInputs, DashboardRewardRowStackViewViewModelOutputs {
 
   public init() {
-    let countryRewardPledged = self.countryRewardPledgedProperty.signal.ignoreNil()
+    let countryRewardPledged = self.countryRewardPledgedProperty.signal.skipNil()
 
     self.backersText = countryRewardPledged.map { _, reward, _ in
-      Format.wholeNumber(reward.backersCount ?? 0)
+      Format.wholeNumber(reward.backersCount)
     }
 
     self.pledgedText = countryRewardPledged.map(pledgedWithPercentText)

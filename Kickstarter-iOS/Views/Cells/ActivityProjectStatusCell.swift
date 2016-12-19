@@ -38,7 +38,7 @@ internal final class ActivityProjectStatusCell: UITableViewCell, ValueCell {
         projectImageView?.af_cancelImageRequest()
         projectImageView?.image = nil
       })
-      .ignoreNil()
+      .skipNil()
       .observeNext { [weak projectImageView] url in
         projectImageView?.ksr_setImageWithURL(url)
     }

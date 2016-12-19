@@ -41,9 +41,9 @@ public final class ProjectDescriptionViewModel: ProjectDescriptionViewModelType,
 ProjectDescriptionViewModelInputs, ProjectDescriptionViewModelOutputs {
 
   public init() {
-    let project = combineLatest(self.projectProperty.signal.ignoreNil(), self.viewDidLoadProperty.signal)
+    let project = combineLatest(self.projectProperty.signal.skipNil(), self.viewDidLoadProperty.signal)
       .map(first)
-    let navigationAction = self.policyForNavigationActionProperty.signal.ignoreNil()
+    let navigationAction = self.policyForNavigationActionProperty.signal.skipNil()
     let navigationActionLink = navigationAction
       .filter { $0.navigationType == .LinkActivated }
     let navigation = navigationActionLink
@@ -53,7 +53,7 @@ ProjectDescriptionViewModelInputs, ProjectDescriptionViewModelOutputs {
       .map {
         URL(string: $0.urls.web.project)?.URLByAppendingPathComponent("description")
       }
-      .ignoreNil()
+      .skipNil()
 
     self.loadWebViewRequest = projectDescriptionRequest
       .map { AppEnvironment.current.apiService.preparedRequest(forURL: $0) }
@@ -67,7 +67,7 @@ ProjectDescriptionViewModelInputs, ProjectDescriptionViewModelOutputs {
         return (MessageSubject.project(project), Koala.MessageDialogContext.projectPage)
       }
 
-    self.goToMessageDialog = possiblyGoToMessageDialog.ignoreNil()
+    self.goToMessageDialog = possiblyGoToMessageDialog.skipNil()
 
     let possiblyGoBackToProject = combineLatest(project, navigation)
       .map { (project, navigation) -> Project? in
@@ -78,17 +78,17 @@ ProjectDescriptionViewModelInputs, ProjectDescriptionViewModelOutputs {
         return project
     }
 
-    self.goBackToProject = possiblyGoBackToProject.ignoreNil().ignoreValues()
+    self.goBackToProject = possiblyGoBackToProject.skipNil().ignoreValues()
 
     self.goToSafariBrowser = zip(navigationActionLink, possiblyGoToMessageDialog, possiblyGoBackToProject)
       .filter { $1 == nil && $2 == nil }
       .filter { navigationAction, _, _ in navigationAction.navigationType == .LinkActivated }
       .map { navigationAction, _, _ in navigationAction.request.URL }
-      .ignoreNil()
+      .skipNil()
 
     project
       .takeWhen(self.goToSafariBrowser)
-      .observeNext {
+      .observeValues {
         AppEnvironment.current.koala.trackOpenedExternalLink(project: $0, context: .projectDescription)
     }
   }

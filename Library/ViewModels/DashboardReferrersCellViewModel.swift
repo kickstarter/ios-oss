@@ -87,7 +87,7 @@ public final class DashboardReferrersCellViewModel: DashboardReferrersCellViewMo
 
   // swiftlint:disable function_body_length
   public init() {
-    let cumulativeProjectStats = cumulativeProjectStatsProperty.signal.ignoreNil()
+    let cumulativeProjectStats = cumulativeProjectStatsProperty.signal.skipNil()
 
     let country = cumulativeProjectStats.map { _, project, _ in project.country }
 
@@ -190,7 +190,7 @@ public final class DashboardReferrersCellViewModel: DashboardReferrersCellViewMo
 
     cumulativeProjectStats
       .takeWhen(self.showMoreReferrersTappedProperty.signal)
-      .observeNext { _, project, _ in
+      .observeValues { _, project, _ in
         AppEnvironment.current.koala.trackDashboardSeeMoreReferrers(project: project)
     }
   }

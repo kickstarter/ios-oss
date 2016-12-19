@@ -28,7 +28,7 @@ public final class CommentCellViewModel: CommentCellViewModelType, CommentCellVi
 CommentCellViewModelOutputs {
 
   public init() {
-    let comment = self.commentProjectViewer.signal.ignoreNil()
+    let comment = self.commentProjectViewer.signal.skipNil()
       .map { comment, _, _ in comment }
 
     self.avatarUrl = comment
@@ -45,7 +45,7 @@ CommentCellViewModelOutputs {
     self.bodyFont = isNotDeleted.skipRepeats()
       .map { $0 ? UIFont.ksr_body(size: 16.0) : UIFont.ksr_body(size: 16.0).italicized }
 
-    self.creatorHidden = self.commentProjectViewer.signal.ignoreNil()
+    self.creatorHidden = self.commentProjectViewer.signal.skipNil()
       .map { comment, project, _ in comment.author.id != project.creator.id }
 
     self.name = comment.map { $0.author.name }
@@ -54,7 +54,7 @@ CommentCellViewModelOutputs {
       Format.date(secondsInUTC: $0.createdAt, dateStyle: .MediumStyle, timeStyle: .ShortStyle)
     }
 
-    self.youHidden = self.commentProjectViewer.signal.ignoreNil()
+    self.youHidden = self.commentProjectViewer.signal.skipNil()
       .map { comment, project, viewer in
         comment.author.id != viewer?.id || comment.author.id == project.creator.id
     }

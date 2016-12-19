@@ -48,15 +48,15 @@ internal final class UpdatePreviewViewModel: UpdatePreviewViewModelInputs,
 
   // swiftlint:disable function_body_length
   internal init() {
-    let draft = self.draftProperty.signal.ignoreNil()
+    let draft = self.draftProperty.signal.skipNil()
 
     let initialRequest = draft
       .takeWhen(self.viewDidLoadProperty.signal)
       .map { AppEnvironment.current.apiService.previewUrl(forDraft: $0) }
-      .ignoreNil()
+      .skipNil()
       .map { AppEnvironment.current.apiService.preparedRequest(forURL: $0) }
 
-    let redirectRequest = self.policyForNavigationActionProperty.signal.ignoreNil()
+    let redirectRequest = self.policyForNavigationActionProperty.signal.skipNil()
       .map { $0.request }
       .filter {
         !AppEnvironment.current.apiService.isPrepared(request: $0)
@@ -66,7 +66,7 @@ internal final class UpdatePreviewViewModel: UpdatePreviewViewModelInputs,
 
     self.webViewLoadRequest = Signal.merge(initialRequest, redirectRequest)
 
-    self.policyDecisionProperty <~ self.policyForNavigationActionProperty.signal.ignoreNil()
+    self.policyDecisionProperty <~ self.policyForNavigationActionProperty.signal.skipNil()
       .map { action in
         action.navigationType == .Other || action.targetFrame?.mainFrame == .Some(false)
           ? .Allow

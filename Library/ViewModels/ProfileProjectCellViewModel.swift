@@ -48,7 +48,7 @@ public protocol ProfileProjectCellViewModelType {
 public final class ProfileProjectCellViewModel: ProfileProjectCellViewModelType,
   ProfileProjectCellViewModelInputs, ProfileProjectCellViewModelOutputs {
   public init() {
-    let project = projectProperty.signal.ignoreNil()
+    let project = projectProperty.signal.skipNil()
 
     self.projectName = project.map { $0.name }
     self.photoURL = project.map { URL(string: $0.photo.full) }

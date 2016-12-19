@@ -44,7 +44,7 @@ internal final class ActivityUpdateCell: UITableViewCell, ValueCell {
         projectImageView?.af_cancelImageRequest()
         projectImageView?.image = nil
       })
-      .ignoreNil()
+      .skipNil()
       .observeNext { [weak projectImageView] url in
         projectImageView?.af_setImageWithURL(url)
     }

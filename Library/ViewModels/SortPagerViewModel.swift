@@ -60,7 +60,7 @@ SortPagerViewModelOutputs {
 
   // swiftlint:disable function_body_length
   public init() {
-    let sorts = self.sortsProperty.signal.ignoreNil()
+    let sorts = self.sortsProperty.signal.skipNil()
       .takeWhen(self.viewWillAppearProperty.signal)
 
     self.createSortButtons = sorts.take(1)
@@ -73,7 +73,7 @@ SortPagerViewModelOutputs {
 
     let selectedPage = combineLatest(
       sorts,
-      self.selectSortProperty.signal.ignoreNil()
+      self.selectSortProperty.signal.skipNil()
       )
       .map { sorts, sort in (sorts.indexOf(sort) ?? 0, sorts.count) }
 
@@ -81,7 +81,7 @@ SortPagerViewModelOutputs {
 
     self.setSelectedButton = Signal.merge(
       pageIndex.take(1),
-      self.sortButtonTappedIndexProperty.signal.ignoreNil(),
+      self.sortButtonTappedIndexProperty.signal.skipNil(),
       selectedPage.map { index, total in index }
       )
       .skipRepeats(==)
@@ -103,7 +103,7 @@ SortPagerViewModelOutputs {
 
     self.notifyDelegateOfSelectedSort = combineLatest(
       sorts.take(1),
-      self.sortButtonTappedIndexProperty.signal.ignoreNil()
+      self.sortButtonTappedIndexProperty.signal.skipNil()
       )
       .map { sorts, sortIndex in sorts[sortIndex] }
 

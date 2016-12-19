@@ -95,7 +95,7 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
 
   // swiftlint:disable function_body_length
   public init() {
-    let project = self.projectProperty.signal.ignoreNil()
+    let project = self.projectProperty.signal.skipNil()
 
     self.backedProjectText = project.map {
       let string = Strings.project_checkout_share_you_just_backed_project_share_this_project_html(
@@ -138,12 +138,12 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
 
     self.dismissToRootViewController = self.closeButtonTappedProperty.signal
 
-    self.goToDiscovery = self.categoryCellTappedProperty.signal.ignoreNil()
+    self.goToDiscovery = self.categoryCellTappedProperty.signal.skipNil()
       .map { DiscoveryParams.defaults |> DiscoveryParams.lens.category .~ $0 }
 
     let rootCategory = project
       .map { $0.category.rootId }
-      .ignoreNil()
+      .skipNil()
       .flatMap {
         return AppEnvironment.current.apiService.fetchCategory(param: .id($0))
           .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
@@ -159,12 +159,12 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
 
     self.goToProject = self.showRecommendations
       .map(first)
-      .takePairWhen(self.projectTappedProperty.signal.ignoreNil())
+      .takePairWhen(self.projectTappedProperty.signal.skipNil())
       .map { projects, project in (project, projects, RefTag.thanks) }
 
     self.updateUserInEnvironment = self.gamesNewsletterSignupButtonTappedProperty.signal
       .map { AppEnvironment.current.currentUser ?? nil }
-      .ignoreNil()
+      .skipNil()
       .switchMap { user in
         AppEnvironment.current.apiService.updateUserSelf(user |> User.lens.newsletters.games .~ true)
           .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
@@ -175,33 +175,33 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
       .mapConst(NSNotification(name: CurrentUserNotifications.userUpdated, object: nil))
 
     self.showGamesNewsletterAlert
-      .observeNext { AppEnvironment.current.userDefaults.hasSeenGamesNewsletterPrompt = true }
+      .observeValues { AppEnvironment.current.userDefaults.hasSeenGamesNewsletterPrompt = true }
 
     self.facebookButtonIsHidden = self.facebookIsAvailableProperty.signal.map(negate)
     self.twitterButtonIsHidden = self.twitterIsAvailableProperty.signal.map(negate)
 
     project
       .takeWhen(self.rateRemindLaterButtonTappedProperty.signal)
-      .observeNext { project in
+      .observeValues { project in
         AppEnvironment.current.userDefaults.hasSeenAppRating = false
         AppEnvironment.current.koala.trackCheckoutFinishAppStoreRatingAlertRemindLater(project: project)
     }
 
     project
       .takeWhen(self.rateNoThanksButtonTappedProperty.signal)
-      .observeNext { project in
+      .observeValues { project in
         AppEnvironment.current.koala.trackCheckoutFinishAppStoreRatingAlertNoThanks(project: project)
     }
 
     project
       .takeWhen(self.goToDiscovery)
-      .observeNext { project in
+      .observeValues { project in
         AppEnvironment.current.koala.trackCheckoutFinishJumpToDiscovery(project: project)
     }
 
     project
       .takeWhen(self.gamesNewsletterSignupButtonTappedProperty.signal)
-      .observeNext { project in
+      .observeValues { project in
         AppEnvironment.current.koala.trackChangeNewsletter(
           newsletterType: .games,
           sendNewsletter: true,
@@ -212,19 +212,19 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
 
     project
       .takeWhen(self.goToAppStoreRating)
-      .observeNext { project in
+      .observeValues { project in
         AppEnvironment.current.koala.trackCheckoutFinishAppStoreRatingAlertRateNow(project: project)
     }
 
     project
       .takeWhen(self.goToProject)
-      .observeNext { project in
+      .observeValues { project in
         AppEnvironment.current.koala.trackCheckoutFinishJumpToProject(project: project)
     }
 
     project
       .takeWhen(self.showRatingAlert)
-      .observeNext { project in
+      .observeValues { project in
         AppEnvironment.current.koala.trackTriggeredAppStoreRatingDialog(project: project)
     }
   }

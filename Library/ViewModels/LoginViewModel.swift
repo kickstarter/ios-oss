@@ -93,20 +93,20 @@ public final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, Log
 
   // swiftlint:disable function_body_length
   public init() {
-    let emailAndPassword = combineLatest(
-      .merge(self.emailChangedProperty.signal.ignoreNil(), self.prefillEmailProperty.signal.ignoreNil()),
-      .merge(self.passwordChangedProperty.signal.ignoreNil(), self.prefillPasswordProperty.signal.ignoreNil())
+    let emailAndPassword = Signal.combineLatest(
+      .merge(self.emailChangedProperty.signal.skipNil(), self.prefillEmailProperty.signal.skipNil()),
+      .merge(self.passwordChangedProperty.signal.skipNil(), self.prefillPasswordProperty.signal.skipNil())
     )
 
     self.emailTextFieldBecomeFirstResponder = self.viewDidLoadProperty.signal
 
-    self.isFormValid = self.viewWillAppearProperty.signal.mapConst(false).take(1)
+    self.isFormValid = self.viewWillAppearProperty.signal.mapConst(false).take(first: 1)
       .mergeWith(emailAndPassword.map(isValid))
 
     let tryLogin = Signal.merge(
       self.loginButtonPressedProperty.signal,
       self.passwordTextFieldDoneEditingProperty.signal,
-      combineLatest(self.prefillEmailProperty.signal, self.prefillPasswordProperty.signal).ignoreValues()
+      Signal.combineLatest(self.prefillEmailProperty.signal, self.prefillPasswordProperty.signal).ignoreValues()
     )
 
     let loginEvent = emailAndPassword
@@ -124,9 +124,10 @@ public final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, Log
 
     self.tfaChallenge = emailAndPassword
       .takeWhen(tfaError)
+      .map { (email: $0, password: $1) }
 
     self.postNotification = self.environmentLoggedInProperty.signal
-      .mapConst(NSNotification(name: CurrentUserNotifications.sessionStarted, object: nil))
+      .mapConst(NSNotification(name: NSNotification.Name(rawValue: CurrentUserNotifications.sessionStarted), object: nil))
     self.dismissKeyboard = self.passwordTextFieldDoneEditingProperty.signal
     self.passwordTextFieldBecomeFirstResponder = self.emailTextFieldDoneEditingProperty.signal
 
@@ -142,22 +143,21 @@ public final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, Log
 
     self.onePasswordFindLoginForURLString = self.onePasswordButtonTappedProperty.signal
       .map { AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString }
-      .ignoreNil()
 
-    self.emailText = self.prefillEmailProperty.signal.ignoreNil()
-    self.passwordText = self.prefillPasswordProperty.signal.ignoreNil()
+    self.emailText = self.prefillEmailProperty.signal.skipNil()
+    self.passwordText = self.prefillPasswordProperty.signal.skipNil()
 
-    combineLatest(self.emailText, self.passwordText)
-      .observeNext { _ in AppEnvironment.current.koala.trackAttemptingOnePasswordLogin() }
+    Signal.combineLatest(self.emailText, self.passwordText)
+      .observeValues { _ in AppEnvironment.current.koala.trackAttemptingOnePasswordLogin() }
 
     self.onePasswordIsAvailable.signal
-      .observeNext { AppEnvironment.current.koala.trackLoginFormView(onePasswordIsAvailable: $0) }
+      .observeValues { AppEnvironment.current.koala.trackLoginFormView(onePasswordIsAvailable: $0) }
 
     self.logIntoEnvironment
-      .observeNext { _ in AppEnvironment.current.koala.trackLoginSuccess(authType: Koala.AuthType.email) }
+      .observeValues { _ in AppEnvironment.current.koala.trackLoginSuccess(authType: Koala.AuthType.email) }
 
     self.showError
-      .observeNext { _ in AppEnvironment.current.koala.trackLoginError(authType: Koala.AuthType.email) }
+      .observeValues { _ in AppEnvironment.current.koala.trackLoginError(authType: Koala.AuthType.email) }
   }
 
   public var inputs: LoginViewModelInputs { return self }

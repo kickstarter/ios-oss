@@ -46,9 +46,9 @@ public final class ActivityUpdateViewModel: ActivityUpdateViewModelType, Activit
 ActivityUpdateViewModelOutputs {
 
   public init() {
-    let activity = self.activityProperty.signal.ignoreNil()
-    let project = activity.map { $0.project }.ignoreNil()
-    let update = activity.map { $0.update }.ignoreNil()
+    let activity = self.activityProperty.signal.skipNil()
+    let project = activity.map { $0.project }.skipNil()
+    let update = activity.map { $0.update }.skipNil()
 
     self.body = update
       .map { $0.body?.htmlStripped()?.truncated(maxLength: 300) ?? "" }

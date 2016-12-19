@@ -89,7 +89,7 @@ public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, 
   public init() {
 
     let project = combineLatest(
-      self.projectProperty.signal.ignoreNil(),
+      self.projectProperty.signal.skipNil(),
       self.viewDidLoadProperty.signal
     )
     .map(first)
@@ -99,8 +99,8 @@ public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, 
       self.viewWillDisappearProperty.signal.mapConst(false)
     )
 
-    let duration = self.durationProperty.signal.ignoreNil().skipRepeats()
-    let rateCurrentTime = self.rateCurrentTimeProperty.signal.ignoreNil().skipRepeats(==)
+    let duration = self.durationProperty.signal.skipNil().skipRepeats()
+    let rateCurrentTime = self.rateCurrentTimeProperty.signal.skipNil().skipRepeats(==)
 
     let completionThreshold = duration
       .map { 0.85 * CMTimeGetSeconds($0) }
@@ -136,7 +136,7 @@ public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, 
       .filter { $0.video != nil }
       .takeWhen(self.playButtonTappedProperty.signal)
       .map { URL(string: $0.video?.high ?? "") }
-      .ignoreNil()
+      .skipNil()
       .skipRepeats()
 
     self.playVideo = self.playButtonTappedProperty.signal
@@ -183,21 +183,21 @@ public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, 
 
     project
       .takeWhen(videoCompleted)
-      .observeNext { AppEnvironment.current.koala.trackVideoCompleted(forProject: $0) }
+      .observeValues { AppEnvironment.current.koala.trackVideoCompleted(forProject: $0) }
 
     combineLatest(project, viewIsVisible)
       .takeWhen(videoPaused)
       .filter { _, isVisible in isVisible }
       .map(first)
-      .observeNext { AppEnvironment.current.koala.trackVideoPaused(forProject: $0) }
+      .observeValues { AppEnvironment.current.koala.trackVideoPaused(forProject: $0) }
 
     project
       .takeWhen(videoResumed)
-      .observeNext { AppEnvironment.current.koala.trackVideoResume(forProject: $0) }
+      .observeValues { AppEnvironment.current.koala.trackVideoResume(forProject: $0) }
 
     project
       .takeWhen(videoStarted)
-      .observeNext { AppEnvironment.current.koala.trackVideoStart(forProject: $0) }
+      .observeValues { AppEnvironment.current.koala.trackVideoStart(forProject: $0) }
   }
   // swiftlint:enable function_body_length
 

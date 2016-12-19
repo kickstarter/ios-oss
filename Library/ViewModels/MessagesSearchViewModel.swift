@@ -99,22 +99,22 @@ MessagesSearchViewModelOutputs {
       isLoading.signal
     ).skipRepeats()
 
-    self.goToMessageThread = self.tappedMessageThreadProperty.signal.ignoreNil()
+    self.goToMessageThread = self.tappedMessageThreadProperty.signal.skipNil()
 
     project
       .takeWhen(self.viewDidLoadProperty.signal)
-      .observeNext { AppEnvironment.current.koala.trackViewedMessageSearch(project: $0) }
+      .observeValues { AppEnvironment.current.koala.trackViewedMessageSearch(project: $0) }
 
     combineLatest(query, project.take(1), self.messageThreads.map { !$0.isEmpty })
       .takeWhen(self.isSearching.filter(isFalse))
       .filter { query, _, _ in !query.isEmpty }
-      .observeNext {
+      .observeValues {
         AppEnvironment.current.koala.trackViewedMessageSearchResults(term: $0, project: $1, hasResults: $2)
     }
 
     project
       .takeWhen(self.clearSearchTextProperty.signal)
-      .observeNext { AppEnvironment.current.koala.trackClearedMessageSearchTerm(project: $0) }
+      .observeValues { AppEnvironment.current.koala.trackClearedMessageSearchTerm(project: $0) }
   }
   // swiftlint:enable function_body_length
 

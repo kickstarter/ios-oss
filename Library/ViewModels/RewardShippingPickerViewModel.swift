@@ -52,7 +52,7 @@ RewardShippingPickerViewModelInputs, RewardShippingPickerViewModelOutputs {
 
   public init() {
     let projectAndShippingRulesAndSelectedShippingRule = combineLatest(
-      self.projectAndShippingRulesAndSelectedShippingRuleProperty.signal.ignoreNil(),
+      self.projectAndShippingRulesAndSelectedShippingRuleProperty.signal.skipNil(),
       self.viewDidLoadProperty.signal
       )
       .map(first)

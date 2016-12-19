@@ -41,7 +41,7 @@ ProjectPamphletViewModelOutputs {
   // swiftlint:disable:next function_body_length
   public init() {
     let projectOrParam = combineLatest(
-      self.projectOrParamProperty.signal.ignoreNil(),
+      self.projectOrParamProperty.signal.skipNil(),
       self.viewDidLoadProperty.signal
       )
       .map(first)
@@ -61,7 +61,7 @@ ProjectPamphletViewModelOutputs {
     }
 
     let project = Signal.merge(
-      projectOrParam.map { $0.left }.ignoreNil(),
+      projectOrParam.map { $0.left }.skipNil(),
       freshProject
       )
 
@@ -89,15 +89,15 @@ ProjectPamphletViewModelOutputs {
     combineLatest(project, refTag, cookieRefTag)
       .takeWhen(self.viewDidAppearAnimated.signal)
       .take(1)
-      .observeNext { project, refTag, cookieRefTag in
+      .observeValues { project, refTag, cookieRefTag in
         AppEnvironment.current.koala.trackProjectShow(project, refTag: refTag, cookieRefTag: cookieRefTag)
     }
 
-    combineLatest(cookieRefTag.ignoreNil(), project)
+    combineLatest(cookieRefTag.skipNil(), project)
       .take(1)
       .map(cookieFrom(refTag:project:))
-      .ignoreNil()
-      .observeNext { AppEnvironment.current.cookieStorage.setCookie($0) }
+      .skipNil()
+      .observeValues { AppEnvironment.current.cookieStorage.setCookie($0) }
   }
 
   fileprivate let projectOrParamProperty = MutableProperty<Either<Project, Param>?>(nil)

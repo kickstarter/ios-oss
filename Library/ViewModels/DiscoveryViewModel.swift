@@ -1,4 +1,5 @@
 import Argo
+import Runes
 import KsApi
 import Prelude
 import ReactiveSwift
@@ -72,7 +73,7 @@ DiscoveryViewModelOutputs {
 
     let currentParams = self.viewWillAppearProperty.signal
       .take(1)
-      .flatMap { [filterWithParams = filterWithParamsProperty.producer.ignoreNil()] _ in
+      .flatMap { [filterWithParams = filterWithParamsProperty.producer.skipNil()] _ in
         filterWithParams.prefix(value: DiscoveryViewModel.defaultParams)
       }
       .skipRepeats()
@@ -88,16 +89,16 @@ DiscoveryViewModelOutputs {
     self.selectSortPage = Signal
       .merge(
         swipeToSort,
-        self.sortPagerSelectedSortProperty.signal.ignoreNil(),
-        currentParams.map { $0.sort }.ignoreNil()
+        self.sortPagerSelectedSortProperty.signal.skipNil(),
+        currentParams.map { $0.sort }.skipNil()
       )
       .skipRepeats()
 
     self.navigateToSort = Signal
       .merge(
         swipeToSort.map { (sort: $0, ignore: true) },
-        self.sortPagerSelectedSortProperty.signal.ignoreNil().map { (sort: $0, ignore: false) },
-        currentParams.map { $0.sort }.ignoreNil().map { (sort: $0, ignore: false) }
+        self.sortPagerSelectedSortProperty.signal.skipNil().map { (sort: $0, ignore: false) },
+        currentParams.map { $0.sort }.skipNil().map { (sort: $0, ignore: false) }
       )
       .skipRepeats(==)
       .combinePrevious((sort: .magic, ignore: true))
@@ -106,22 +107,22 @@ DiscoveryViewModelOutputs {
         (next.sort, sorts.indexOf(next.sort) < sorts.indexOf(previous.sort) ? .Reverse : .Forward)
     }
 
-    self.updateSortPagerStyle = self.filterWithParamsProperty.signal.ignoreNil()
+    self.updateSortPagerStyle = self.filterWithParamsProperty.signal.skipNil()
       .map { $0.category?.root?.id }
       .skipRepeats(==)
 
-    self.sortsAreEnabled = self.setSortsEnabledProperty.signal.ignoreNil()
+    self.sortsAreEnabled = self.setSortsEnabledProperty.signal.skipNil()
 
-    self.sortPagerSelectedSortProperty.signal.ignoreNil()
+    self.sortPagerSelectedSortProperty.signal.skipNil()
       .skipRepeats(==)
-      .observeNext { AppEnvironment.current.koala.trackDiscoverySelectedSort(nextSort: $0, gesture: .tap) }
+      .observeValues { AppEnvironment.current.koala.trackDiscoverySelectedSort(nextSort: $0, gesture: .tap) }
 
     swipeToSort
-      .observeNext { AppEnvironment.current.koala.trackDiscoverySelectedSort(nextSort: $0, gesture: .swipe) }
+      .observeValues { AppEnvironment.current.koala.trackDiscoverySelectedSort(nextSort: $0, gesture: .swipe) }
 
     currentParams
-      .takeWhen(self.viewWillAppearProperty.signal.ignoreNil().filter(isFalse))
-      .observeNext { AppEnvironment.current.koala.trackDiscoveryViewed(params: $0) }
+      .takeWhen(self.viewWillAppearProperty.signal.skipNil().filter(isFalse))
+      .observeValues { AppEnvironment.current.koala.trackDiscoveryViewed(params: $0) }
   }
   // swiftlint:enable function_body_length
 

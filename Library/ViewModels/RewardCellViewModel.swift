@@ -47,7 +47,7 @@ RewardCellViewModelOutputs {
 
   // swiftlint:disable function_body_length
   public init() {
-    let projectAndRewardOrBacking = self.projectAndRewardOrBackingProperty.signal.ignoreNil()
+    let projectAndRewardOrBacking = self.projectAndRewardOrBackingProperty.signal.skipNil()
     let project = projectAndRewardOrBacking.map(first)
     let reward = projectAndRewardOrBacking
       .map { project, rewardOrBacking -> Reward in
@@ -223,7 +223,7 @@ RewardCellViewModelOutputs {
 
     projectAndReward
       .takeWhen(self.notifyDelegateRewardCellWantsExpansion)
-      .observeNext { project, reward in
+      .observeValues { project, reward in
         AppEnvironment.current.koala.trackExpandedUnavailableReward(
           reward,
           project: project,

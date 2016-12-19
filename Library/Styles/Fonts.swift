@@ -69,17 +69,17 @@ extension UIFont {
 
     let defaultSize: CGFloat
     switch style {
-    case UIFontTextStyle.body:         defaultSize = 17
-    case UIFontTextStyle.callout:      defaultSize = 16
-    case UIFontTextStyle.caption1:     defaultSize = 12
-    case UIFontTextStyle.caption2:     defaultSize = 11
-    case UIFontTextStyle.footnote:     defaultSize = 13
-    case UIFontTextStyle.headline:     defaultSize = 17
-    case UIFontTextStyle.subheadline:  defaultSize = 15
-    case UIFontTextStyle.title1:       defaultSize = 28
-    case UIFontTextStyle.title2:       defaultSize = 22
-    case UIFontTextStyle.title3:       defaultSize = 20
-    default:                          defaultSize = 17
+    case UIFontTextStyle.body.rawValue:         defaultSize = 17
+    case UIFontTextStyle.callout.rawValue:      defaultSize = 16
+    case UIFontTextStyle.caption1.rawValue:     defaultSize = 12
+    case UIFontTextStyle.caption2.rawValue:     defaultSize = 11
+    case UIFontTextStyle.footnote.rawValue:     defaultSize = 13
+    case UIFontTextStyle.headline.rawValue:     defaultSize = 17
+    case UIFontTextStyle.subheadline.rawValue:  defaultSize = 15
+    case UIFontTextStyle.title1.rawValue:       defaultSize = 28
+    case UIFontTextStyle.title2.rawValue:       defaultSize = 22
+    case UIFontTextStyle.title3.rawValue:       defaultSize = 20
+    default:                                    defaultSize = 17
     }
 
     let font = UIFont.preferredFont(forTextStyle: UIFontTextStyle(rawValue: style))

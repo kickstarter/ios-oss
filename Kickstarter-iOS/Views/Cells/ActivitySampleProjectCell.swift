@@ -82,7 +82,7 @@ internal final class ActivitySampleProjectCell: UITableViewCell, ValueCell {
         self?.projectImageView.af_cancelImageRequest()
         self?.projectImageView.image = nil
         })
-      .ignoreNil()
+      .skipNil()
       .observeNext { [weak self] url in
         self?.projectImageView.af_setImageWithURL(url)
     }
