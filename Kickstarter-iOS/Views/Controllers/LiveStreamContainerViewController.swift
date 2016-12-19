@@ -275,14 +275,7 @@ internal final class LiveStreamContainerViewController: UIViewController {
         }
     }
 
-    combineLatest(
-      self.eventDetailsViewModel.outputs.creatorName,
-      self.eventDetailsViewModel.outputs.introText
-    )
-    .observeForUI()
-      .observeNext { [weak self] in
-        self?.creatorAvatarLabel.attributedText = attributedIntroTextString($0, suffix: $1)
-    }
+    self.creatorAvatarLabel.rac.attributedText = self.eventDetailsViewModel.outputs.introText
 
     self.eventDetailsViewModel.outputs.creatorAvatarUrl
       .observeForUI()
@@ -480,17 +473,6 @@ internal final class LiveStreamContainerViewController: UIViewController {
   }
 }
 //swiftlint:enable type_body_length
-
-private func attributedIntroTextString(prefix: String, suffix: String) -> NSAttributedString {
-  let prefixAttributes = [NSFontAttributeName : UIFont.ksr_headline(size: 13)]
-  let suffixAttributes = [NSFontAttributeName : UIFont.ksr_body(size: 13)]
-
-  let prefix = NSMutableAttributedString(string: prefix, attributes: prefixAttributes)
-  let suffix = NSAttributedString(string: " \(suffix)", attributes: suffixAttributes)
-  prefix.appendAttributedString(suffix)
-
-  return NSAttributedString(attributedString: prefix)
-}
 
 extension LiveStreamContainerViewController: LiveStreamViewControllerDelegate {
   internal func numberOfPeopleWatchingChanged(controller: LiveStreamViewController, numberOfPeople: Int) {

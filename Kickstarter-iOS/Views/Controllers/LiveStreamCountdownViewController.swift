@@ -13,7 +13,6 @@ internal final class LiveStreamCountdownViewController: UIViewController {
   @IBOutlet private weak var countdownContainerStackView: UIStackView!
   @IBOutlet private weak var countdownStackView: UIStackView!
   @IBOutlet private var countdownLabels: [UILabel]?
-  @IBOutlet private weak var creatorNameLabel: UILabel!
   @IBOutlet private weak var daysLabel: UILabel!
   @IBOutlet private weak var detailsContainerStackView: UIStackView!
   @IBOutlet private weak var detailsContainerStackViewTopConstraint: NSLayoutConstraint!
@@ -111,16 +110,11 @@ internal final class LiveStreamCountdownViewController: UIViewController {
     self.detailsContainerStackViewTopConstraint.constant = -Styles.grid(4)
     self.creatorAvatarWidthConstraint.constant = Styles.grid(10)
 
-    self.introLabel
-      |> UILabel.lens.font .~ .ksr_subhead(size: 14)
-      |> UILabel.lens.textColor .~ .ksr_navy_600
-
     self.creatorAvatarImageView
       |> UIImageView.lens.layer.masksToBounds .~ true
 
-    self.creatorNameLabel
-      |> UILabel.lens.font .~ .ksr_headline(size: 14)
-      |> UILabel.lens.textColor .~ .ksr_navy_700
+    self.introLabel
+      |> UILabel.lens.numberOfLines .~ 2
 
     self.liveStreamTitleLabel
       |> UILabel.lens.font .~ UIFont.ksr_title3()
@@ -184,8 +178,7 @@ internal final class LiveStreamCountdownViewController: UIViewController {
 
     self.shareBarButtonItem.rac.enabled = self.eventDetailsViewModel.outputs.configureSharing.mapConst(true)
 
-    self.introLabel.rac.text = self.eventDetailsViewModel.outputs.introText
-    self.creatorNameLabel.rac.text = self.eventDetailsViewModel.outputs.creatorName
+    self.introLabel.rac.attributedText = self.eventDetailsViewModel.outputs.upcomingIntroText
     self.liveStreamTitleLabel.rac.text = self.eventDetailsViewModel.outputs.liveStreamTitle
     self.liveStreamParagraphLabel.rac.text = self.eventDetailsViewModel.outputs.liveStreamParagraph
 

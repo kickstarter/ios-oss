@@ -72,16 +72,20 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
       .skipRepeats()
 
     self.daysString = days
-      .map { (String(format: "%02d", $0), "days") }
+      .map { (String(format: "%02d", $0), localizedString(
+        key: "dates_day", defaultValue: "days", count: 0)) }
 
     self.hoursString = hours
-      .map { (String(format: "%02d", $0), "hours") }
+      .map { (String(format: "%02d", $0), localizedString(
+        key: "dates_hour", defaultValue: "hours", count: 0)) }
 
     self.minutesString = minutes
-      .map { (String(format: "%02d", $0), "minutes") }
+      .map { (String(format: "%02d", $0), localizedString(
+        key: "dates_minute", defaultValue: "minutes", count: 0)) }
 
     self.secondsString = seconds
-      .map { (String(format: "%02d", $0), "seconds") }
+      .map { (String(format: "%02d", $0), localizedString(
+        key: "dates_second", defaultValue: "seconds", count: 0)) }
 
     let countdownEnded = combineLatest(
       project.map { $0.liveStreams.first }.ignoreNil()
@@ -96,7 +100,9 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
 
     self.categoryId = project.map { $0.category.rootId }.ignoreNil()
     self.dismiss = self.closeButtonTappedProperty.signal
-    self.viewControllerTitle = viewDidLoadProperty.signal.mapConst("Live stream countdown")
+    self.viewControllerTitle = viewDidLoadProperty.signal.mapConst(
+      localizedString(key: "Live_stream_countdown", defaultValue: "Live stream countdown")
+    )
 
     self.retrieveEventInfo = project.map { $0.liveStreams.first }.ignoreNil().map { $0.id }
 

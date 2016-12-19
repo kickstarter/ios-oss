@@ -1,5 +1,6 @@
 #if os(iOS)
 import KsApi
+import KsLive
 import Prelude
 import ReactiveCocoa
 import Result
@@ -239,11 +240,7 @@ private func twitterInitialText(forShareContext shareContext: ShareContext) -> S
   case let .creatorDashboard(project):
     return Strings.project_checkout_share_twitter_via_kickstarter(project_or_update_title: project.name)
   case let .liveStream(_, liveStreamEvent):
-    return localizedString(
-      key: "Creator_name_is_streaming_live_on_Kickstarter",
-      defaultValue: "%{creator_name} is streaming live on Kickstarter",
-      substitutions: ["creator_name" : liveStreamEvent.creator.name]
-    )
+    return twitterInitialText(forLiveStreamEvent: liveStreamEvent)
   case let .project(project):
     return Strings.project_checkout_share_twitter_via_kickstarter(project_or_update_title: project.name)
   case let .thanks(project):
@@ -267,5 +264,33 @@ private func shareComposeController(forShareContext shareContext: ShareContext, 
     }
 
     return controller
+}
+
+private func twitterInitialText(forLiveStreamEvent liveStreamEvent: LiveStreamEvent) -> String {
+  if liveStreamEvent.stream.liveNow {
+    return localizedString(
+      key: "Creator_name_is_streaming_live_on_Kickstarter",
+      defaultValue: "%{creator_name} is streaming live on Kickstarter",
+      substitutions: ["creator_name" : liveStreamEvent.creator.name]
+    )
+  }
+
+  if NSDate().earlierDate(liveStreamEvent.stream.startDate) == liveStreamEvent.stream.startDate {
+    return localizedString(
+      key: "Creator_name_was_streaming_live_on_Kickstarter",
+      defaultValue: "%{creator_name} was streaming live on Kickstarter",
+      substitutions: ["creator_name" : liveStreamEvent.creator.name]
+    )
+  }
+
+  return localizedString(
+    key: "Creator_name_will_be_streaming_live_on_Kickstarter_in_duration",
+    defaultValue: "%{creator_name} will be streaming live on Kickstarter %{in_duration}",
+    substitutions: [
+      "creator_name" : liveStreamEvent.creator.name,
+      "in_duration" : Format.relative(
+        secondsInUTC: liveStreamEvent.stream.startDate.timeIntervalSince1970)
+    ]
+  )
 }
 #endif

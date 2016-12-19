@@ -26,7 +26,7 @@ public protocol LiveStreamEventDetailsViewModelOutputs {
   var creatorAvatarUrl: Signal<NSURL, NoError> { get }
   var creatorName: Signal<String, NoError> { get }
   var configureSharing: Signal<(Project, LiveStreamEvent), NoError> { get }
-  var introText: Signal<String, NoError> { get }
+  var introText: Signal<NSAttributedString, NoError> { get }
   var liveStreamTitle: Signal<String, NoError> { get }
   var liveStreamParagraph: Signal<String, NoError> { get }
   var numberOfPeopleWatchingText: Signal<String, NoError> { get }
@@ -38,6 +38,7 @@ public protocol LiveStreamEventDetailsViewModelOutputs {
   var subscribed: Signal<Bool, NoError> { get }
   var subscribeLabelText: Signal<String, NoError> { get }
   var toggleSubscribe: Signal<(String, Bool), NoError> { get }
+  var upcomingIntroText: Signal<NSAttributedString, NoError> { get }
 }
 
 public class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewModelType,
@@ -69,15 +70,77 @@ public class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewModelTyp
     self.introText = combineLatest(
       self.liveStreamViewControllerStateChangedProperty.signal.ignoreNil(),
       event
-    ).map {
-      if case .live = $0 { "is live now" }
-      if case .replay = $0 {
-        return "was live " + (Format.relative(secondsInUTC: $1.stream.startDate.timeIntervalSince1970,
-        abbreviate: true))
+    ).map { (state, event) -> NSAttributedString? in
+
+      let baseAttributes = [
+        NSFontAttributeName: UIFont.ksr_body(size: 13),
+        NSForegroundColorAttributeName : UIColor.whiteColor()
+      ]
+      let boldAttributes = [
+        NSFontAttributeName: UIFont.ksr_headline(size: 13),
+        NSForegroundColorAttributeName : UIColor.whiteColor()
+      ]
+
+      if case .live = state {
+        let text = localizedString(
+          key: "Creator_name_is_live_now",
+          defaultValue: "<b>%{creator_name}</b> is live now",
+          substitutions: ["creator_name" : event.creator.name]
+        )
+
+        return text.simpleHtmlAttributedString(
+          base: baseAttributes,
+          bold: boldAttributes
+        )
       }
 
-      return ""
-    }
+      if case .replay = state {
+        let text = localizedString(
+          key: "Creator_name_was_live_time_ago",
+          defaultValue: "<b>%{creator_name}</b> was live %{time_ago}",
+          substitutions: [
+            "creator_name" : event.creator.name,
+            "time_ago" : (Format.relative(secondsInUTC: event.stream.startDate.timeIntervalSince1970,
+              abbreviate: true))
+          ]
+        )
+
+        return text.simpleHtmlAttributedString(
+          base: baseAttributes,
+          bold: boldAttributes
+        )
+      }
+
+      return NSAttributedString()
+    }.ignoreNil()
+
+    self.upcomingIntroText = event.map { event -> NSAttributedString? in
+      let paragraphStyle = NSMutableParagraphStyle()
+      paragraphStyle.alignment = .Center
+
+      let baseAttributes = [
+        NSFontAttributeName: UIFont.ksr_subhead(size: 14),
+        NSForegroundColorAttributeName : UIColor.ksr_navy_600,
+        NSParagraphStyleAttributeName : paragraphStyle
+      ]
+
+      let boldAttributes = [
+        NSFontAttributeName: UIFont.ksr_headline(size: 14),
+        NSForegroundColorAttributeName : UIColor.ksr_navy_700,
+        NSParagraphStyleAttributeName : paragraphStyle
+      ]
+
+      let text = localizedString(
+        key: "Upcoming_with_creator_name",
+        defaultValue: "Upcoming with<br/><b>%{creator_name}</b>",
+        substitutions: ["creator_name" : event.creator.name]
+      )
+
+      return text.simpleHtmlAttributedString(
+        base: baseAttributes,
+        bold: boldAttributes
+      )
+    }.ignoreNil()
 
     self.availableForText = combineLatest(
       event,
@@ -91,7 +154,14 @@ public class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewModelTyp
 
         let (time, units) = Format.duration(secondsInUTC: availableDate, abbreviate: false)
 
-        return "Available for \(time) more \(units)"
+        return localizedString(
+          key: "Available_to_watch_for_time_more_units",
+          defaultValue: "Available to watch for %{time} more %{units}",
+          substitutions: [
+            "time" : time,
+            "units" : units
+          ]
+        )
       }.ignoreNil()
 
     self.creatorAvatarUrl = event
@@ -112,11 +182,14 @@ public class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewModelTyp
     }
 
     self.subscribeLabelText = self.subscribed.map {
-      $0 ? "Keep up with future live streams" : "Keep up with future live streams"
+      $0 ? localizedString(
+        key: "Keep_up_with_future_live_streams", defaultValue: "Keep up with future live streams"
+      ) : ""
     }
 
     self.subscribeButtonText = self.subscribed.map {
-      $0 ? "Subscribed" : "Subscribe"
+      $0 ? localizedString(key: "Subscribed", defaultValue: "Subscribed") :
+        localizedString(key: "Subscribe", defaultValue: "Subscribe")
     }
 
     self.showActivityIndicator = Signal.merge(
@@ -185,7 +258,7 @@ public class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewModelTyp
   public let creatorAvatarUrl: Signal<NSURL, NoError>
   public let creatorName: Signal<String, NoError>
   public let configureSharing: Signal<(Project, LiveStreamEvent), NoError>
-  public let introText: Signal<String, NoError>
+  public let introText: Signal<NSAttributedString, NoError>
   public let liveStreamTitle: Signal<String, NoError>
   public let liveStreamParagraph: Signal<String, NoError>
   public let numberOfPeopleWatchingText: Signal<String, NoError>
@@ -197,6 +270,7 @@ public class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewModelTyp
   public let subscribed: Signal<Bool, NoError>
   public let subscribeLabelText: Signal<String, NoError>
   public let toggleSubscribe: Signal<(String, Bool), NoError>
+  public let upcomingIntroText: Signal<NSAttributedString, NoError>
 
   public var inputs: LiveStreamEventDetailsViewModelInputs { return self }
   public var outputs: LiveStreamEventDetailsViewModelOutputs { return self }

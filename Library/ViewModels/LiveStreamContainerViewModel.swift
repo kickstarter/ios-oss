@@ -14,9 +14,7 @@ public protocol LiveStreamContainerViewModelInputs {
   func configureWith(project project: Project, event: LiveStreamEvent?)
   func closeButtonTapped()
   func setLiveStreamEvent(event event: LiveStreamEvent)
-  func viewDidLayoutSubviews()
   func viewDidLoad()
-  func viewWillTransitionToSizeWithCoordinator(coordinator coordinator: UIViewControllerTransitionCoordinator)
   func liveStreamViewControllerStateChanged(state state: LiveStreamViewControllerState)
 }
 
@@ -52,11 +50,17 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     )
 
     self.loaderText = liveStreamState.map {
-        if case .live(playbackState: .loading, _) = $0 { return "The live stream will start soon" }
-        if case .greenRoom = $0 { return "The live stream will start soon" }
-        if case .replay(playbackState: .loading, _, _) = $0 { return "Replay will start soon" }
+        if case .live(playbackState: .loading, _) = $0 { return localizedString(
+          key: "The_live_stream_will_start_soon", defaultValue: "The live stream will start soon")
+        }
+        if case .greenRoom = $0 { return localizedString(
+          key: "The_live_stream_will_start_soon", defaultValue: "The live stream will start soon")
+        }
+        if case .replay(playbackState: .loading, _, _) = $0 { return localizedString(
+          key: "The_replay_will_start_soon", defaultValue: "The replay will start soon")
+        }
 
-        return "Connecting"
+      return localizedString(key: "Loading", defaultValue: "Loading")
     }
 
     self.projectImageUrl = project
@@ -64,11 +68,12 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       .ignoreNil()
 
     self.titleViewText = liveStreamState.map {
-      if case .live(_, _) = $0 { return "Live" }
-      if case .greenRoom = $0 { return "Starting soon" }
-      if case .replay(_, _, _) = $0 { return "Recorded Live" }
+      if case .live(_, _) = $0 { return localizedString(key: "Live", defaultValue: "Live") }
+      if case .greenRoom = $0 { return localizedString(key: "Starting_soon", defaultValue: "Starting soon") }
+      if case .replay(_, _, _) = $0 { return localizedString(
+        key: "Recorded_Live", defaultValue: "Recorded Live") }
 
-      return "Loading"
+      return localizedString(key: "Loading", defaultValue: "Loading")
     }
 
     self.showVideoView = combineLatest(
@@ -109,18 +114,6 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
   private let viewDidLoadProperty = MutableProperty()
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
-  }
-
-  private let viewDidLayoutSubviewsProperty = MutableProperty()
-  public func viewDidLayoutSubviews() {
-    self.viewDidLayoutSubviewsProperty.value = ()
-  }
-
-  private let viewWillTransitionToSizeWithCoordinatorProperty =
-    MutableProperty<UIViewControllerTransitionCoordinator?>(nil)
-  public func viewWillTransitionToSizeWithCoordinator(
-    coordinator coordinator: UIViewControllerTransitionCoordinator) {
-    self.viewWillTransitionToSizeWithCoordinatorProperty.value = coordinator
   }
 
   public let createAndConfigureLiveStreamViewController: Signal<(Project, LiveStreamEvent), NoError>
