@@ -2,21 +2,21 @@
 @testable import Library
 @testable import ReactiveExtensions_TestHelpers
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 import UIKit
 import XCTest
 
 internal final class DiscoveryViewModelTests: TestCase {
-  private let vm: DiscoveryViewModelType = DiscoveryViewModel()
+  fileprivate let vm: DiscoveryViewModelType = DiscoveryViewModel()
 
-  private let configureDataSource = TestObserver<[DiscoveryParams.Sort], NoError>()
-  private let configureNavigationHeader = TestObserver<DiscoveryParams, NoError>()
-  private let loadFilterIntoDataSource = TestObserver<DiscoveryParams, NoError>()
-  private let navigateToSort = TestObserver<DiscoveryParams.Sort, NoError>()
-  private let navigateDirection = TestObserver<UIPageViewControllerNavigationDirection, NoError>()
-  private let selectSortPage = TestObserver<DiscoveryParams.Sort, NoError>()
-  private let updateSortPagerStyle = TestObserver<Int?, NoError>()
+  fileprivate let configureDataSource = TestObserver<[DiscoveryParams.Sort], NoError>()
+  fileprivate let configureNavigationHeader = TestObserver<DiscoveryParams, NoError>()
+  fileprivate let loadFilterIntoDataSource = TestObserver<DiscoveryParams, NoError>()
+  fileprivate let navigateToSort = TestObserver<DiscoveryParams.Sort, NoError>()
+  fileprivate let navigateDirection = TestObserver<UIPageViewControllerNavigationDirection, NoError>()
+  fileprivate let selectSortPage = TestObserver<DiscoveryParams.Sort, NoError>()
+  fileprivate let updateSortPagerStyle = TestObserver<Int?, NoError>()
 
   let initialParams = .defaults |> DiscoveryParams.lens.includePOTD .~ true
   let categoryParams = .defaults |> DiscoveryParams.lens.category .~ .art
@@ -150,7 +150,7 @@ internal final class DiscoveryViewModelTests: TestCase {
 
     self.selectSortPage.assertValues([.popular, .newest, .magic], "Select the magic page in the pager.")
     self.navigateToSort.assertValues([.magic], "Navigate to the magic page.")
-    self.navigateDirection.assertValues([.Reverse], "Navigate backwards to the page.")
+    self.navigateDirection.assertValues([.reverse], "Navigate backwards to the page.")
 
     self.vm.inputs.sortPagerSelected(sort: .magic)
 
@@ -158,7 +158,7 @@ internal final class DiscoveryViewModelTests: TestCase {
                                      "Selecting the same page again emits nothing new.")
     self.navigateToSort.assertValues([.magic],
                                      "Selecting the same page again emits nothing new.")
-    self.navigateDirection.assertValues([.Reverse],
+    self.navigateDirection.assertValues([.reverse],
                                         "Selecting the same page again emits nothing new.")
   }
 

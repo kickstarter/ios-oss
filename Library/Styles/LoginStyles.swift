@@ -36,7 +36,7 @@ public let fbConfirmationMessageLabelStyle = UILabel.lens.textColor .~ .ksr_text
 
 public let fbConfirmEmailLabelStyle =  UILabel.lens.textColor .~ .ksr_text_navy_700
   <> UILabel.lens.font .~ .ksr_headline()
-  <> UILabel.lens.textAlignment .~ .Left
+  <> UILabel.lens.textAlignment .~ .left
   <> UILabel.lens.adjustsFontSizeToFitWidth .~ true
 
 public let fbDisclaimerLabelStyle =
@@ -44,7 +44,7 @@ public let fbDisclaimerLabelStyle =
     label.traitCollection.isRegularRegular ? .ksr_footnote(size: 14.0) : .ksr_footnote()
   }
   <> UILabel.lens.textColor .~ .ksr_text_navy_500
-  <> UILabel.lens.textAlignment .~ .Center
+  <> UILabel.lens.textAlignment .~ .center
   <> UILabel.lens.text %~ { _ in
     Strings.discovery_facebook_connect_hero_we_will_never_post_anything_on_facebook()
 }
@@ -74,9 +74,9 @@ public let loginWithEmailButtonStyle = borderButtonStyle
 
 public let onePasswordButtonStyle =
   UIButton.lens.titleLabel.font .~ .ksr_callout()
-    <> UIButton.lens.titleColor(forState: .Normal) .~ .ksr_onePasswordBlue
-    <> UIButton.lens.titleColor(forState: .Highlighted) .~ .ksr_navy_500
-    <> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.login_buttons_one_password() }
+    <> UIButton.lens.titleColor(forState: .normal) .~ .ksr_onePasswordBlue
+    <> UIButton.lens.titleColor(forState: .highlighted) .~ .ksr_navy_500
+    <> UIButton.lens.title(forState: .normal) %~ { _ in Strings.login_buttons_one_password() }
 
 public let newsletterLabelStyle = UILabel.lens.font .~ .ksr_footnote()
   <> UILabel.lens.textColor .~ .ksr_text_navy_700

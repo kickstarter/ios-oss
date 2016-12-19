@@ -1,19 +1,19 @@
 // swiftlint:disable file_length
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 import UIKit
 
 public protocol UpdateDraftViewModelInputs {
   /// Call when the creator taps "add attachment".
-  func addAttachmentButtonTapped(availableSources availableSources: [AttachmentSource])
+  func addAttachmentButtonTapped(availableSources: [AttachmentSource])
 
   /// Call when the creator taps a selection from the attachment actions sheet.
-  func addAttachmentSheetButtonTapped(action: AttachmentSource)
+  func addAttachmentSheetButtonTapped(_ action: AttachmentSource)
 
   /// Call when a creator taps an attachment to be removed.
-  func attachmentTapped(id id: Int)
+  func attachmentTapped(id: Int)
 
   /// Call when the draft body changes.
   func bodyTextChanged(to body: String)
@@ -22,22 +22,22 @@ public protocol UpdateDraftViewModelInputs {
   func closeButtonTapped()
 
   /// Call with the project provided to the view.
-  func configureWith(project project: Project)
+  func configureWith(project: Project)
 
   /// Call with the image picked by the image picker.
-  func imagePicked(url url: NSURL, fromSource source: AttachmentSource)
+  func imagePicked(url: URL, fromSource source: AttachmentSource)
 
   /// Call when the image picker is canceled.
   func imagePickerCanceled()
 
   /// Call when the creator taps "public"/"backers only".
-  func isBackersOnlyOn(isBackersOnly: Bool)
+  func isBackersOnlyOn(_ isBackersOnly: Bool)
 
   /// Call when the creator taps "preview".
   func previewButtonTapped()
 
   /// Call when attachment removal confirmed.
-  func remove(attachment attachment: UpdateDraft.Attachment)
+  func remove(attachment: UpdateDraft.Attachment)
 
   /// Call when the creator cancels out of the remove attachment flow.
   func removeAttachmentConfirmationCanceled()
@@ -430,82 +430,82 @@ UpdateDraftViewModelOutputs {
   // swiftlint:enable function_body_length
 
   // INPUTS
-  private let addAttachmentButtonTappedProperty = MutableProperty<[AttachmentSource]>([])
-  public func addAttachmentButtonTapped(availableSources availableSources: [AttachmentSource]) {
+  fileprivate let addAttachmentButtonTappedProperty = MutableProperty<[AttachmentSource]>([])
+  public func addAttachmentButtonTapped(availableSources: [AttachmentSource]) {
     self.addAttachmentButtonTappedProperty.value = availableSources
   }
 
-  private let addAttachmentSheetButtonTappedProperty = MutableProperty<AttachmentSource?>(nil)
-  public func addAttachmentSheetButtonTapped(action: AttachmentSource) {
+  fileprivate let addAttachmentSheetButtonTappedProperty = MutableProperty<AttachmentSource?>(nil)
+  public func addAttachmentSheetButtonTapped(_ action: AttachmentSource) {
     self.addAttachmentSheetButtonTappedProperty.value = action
   }
 
-  private let attachmentTappedProperty = MutableProperty(0)
-  public func attachmentTapped(id id: Int) {
+  fileprivate let attachmentTappedProperty = MutableProperty(0)
+  public func attachmentTapped(id: Int) {
     self.attachmentTappedProperty.value = id
   }
 
-  private let bodyTextChangedProperty = MutableProperty("")
+  fileprivate let bodyTextChangedProperty = MutableProperty("")
   public func bodyTextChanged(to body: String) {
     self.bodyTextChangedProperty.value = body
   }
 
-  private let closeButtonTappedProperty = MutableProperty()
+  fileprivate let closeButtonTappedProperty = MutableProperty()
   public func closeButtonTapped() {
     self.closeButtonTappedProperty.value = ()
   }
 
-  private let projectProperty = MutableProperty<Project?>(nil)
-  public func configureWith(project project: Project) {
+  fileprivate let projectProperty = MutableProperty<Project?>(nil)
+  public func configureWith(project: Project) {
     self.projectProperty.value = project
   }
 
-  private let imagePickedProperty = MutableProperty<(NSURL, AttachmentSource)?>(nil)
-  public func imagePicked(url url: NSURL, fromSource source: AttachmentSource) {
+  fileprivate let imagePickedProperty = MutableProperty<(URL, AttachmentSource)?>(nil)
+  public func imagePicked(url: URL, fromSource source: AttachmentSource) {
     self.imagePickedProperty.value = (url, source)
   }
 
-  private let imagePickerCanceledProperty = MutableProperty()
+  fileprivate let imagePickerCanceledProperty = MutableProperty()
   public func imagePickerCanceled() {
     self.imagePickerCanceledProperty.value = ()
   }
 
-  private let isBackersOnlyOnProperty = MutableProperty(false)
-  public func isBackersOnlyOn(isBackersOnly: Bool) {
+  fileprivate let isBackersOnlyOnProperty = MutableProperty(false)
+  public func isBackersOnlyOn(_ isBackersOnly: Bool) {
     self.isBackersOnlyOnProperty.value = isBackersOnly
   }
 
-  private let previewButtonTappedProperty = MutableProperty()
+  fileprivate let previewButtonTappedProperty = MutableProperty()
   public func previewButtonTapped() {
     self.previewButtonTappedProperty.value = ()
   }
 
-  private let removeAttachmentProperty = MutableProperty<UpdateDraft.Attachment?>(nil)
-  public func remove(attachment attachment: UpdateDraft.Attachment) {
+  fileprivate let removeAttachmentProperty = MutableProperty<UpdateDraft.Attachment?>(nil)
+  public func remove(attachment: UpdateDraft.Attachment) {
     self.removeAttachmentProperty.value = attachment
   }
 
-  private let removeAttachmentConfirmationCanceledProperty = MutableProperty()
+  fileprivate let removeAttachmentConfirmationCanceledProperty = MutableProperty()
   public func removeAttachmentConfirmationCanceled() {
     self.removeAttachmentConfirmationCanceledProperty.value = ()
   }
 
-  private let titleTextChangedProperty = MutableProperty("")
+  fileprivate let titleTextChangedProperty = MutableProperty("")
   public func titleTextChanged(to title: String) {
     self.titleTextChangedProperty.value = title
   }
 
-  private let titleTextFieldDoneEditingProperty = MutableProperty()
+  fileprivate let titleTextFieldDoneEditingProperty = MutableProperty()
   public func titleTextFieldDoneEditing() {
     self.titleTextFieldDoneEditingProperty.value = ()
   }
 
-  private let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty()
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
 
-  private let viewWillDisappearProperty = MutableProperty()
+  fileprivate let viewWillDisappearProperty = MutableProperty()
   public func viewWillDisappear() {
     self.viewWillDisappearProperty.value = ()
   }
@@ -545,9 +545,9 @@ public enum AttachmentSource: String {
 
   public init(sourceType: UIImagePickerControllerSourceType) {
     switch sourceType {
-    case .Camera:
+    case .camera:
       self = .camera
-    case .PhotoLibrary:
+    case .photoLibrary:
       self = .cameraRoll
     default:
       fatalError("unsupported source: \(sourceType)")
@@ -566,9 +566,9 @@ public enum AttachmentSource: String {
   public var sourceType: UIImagePickerControllerSourceType {
     switch self {
     case .camera:
-      return .Camera
+      return .camera
     case .cameraRoll:
-      return .PhotoLibrary
+      return .photoLibrary
     }
   }
 }
@@ -588,7 +588,7 @@ private enum SaveAction {
   case preview
 }
 
-private func hasChanged<T: Equatable>(original: Signal<T, NoError>, _ updated: Signal<T, NoError>)
+private func hasChanged<T: Equatable>(_ original: Signal<T, NoError>, _ updated: Signal<T, NoError>)
   -> Signal<Bool, NoError> {
 
     return Signal

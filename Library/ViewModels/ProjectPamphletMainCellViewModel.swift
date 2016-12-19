@@ -1,11 +1,11 @@
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 
 public protocol ProjectPamphletMainCellViewModelInputs {
   /// Call with the project provided to the view controller.
-  func configureWith(project project: Project)
+  func configureWith(project: Project)
 
   /// Call when the creator button is tapped.
   func creatorButtonTapped()
@@ -226,32 +226,32 @@ ProjectPamphletMainCellViewModelInputs, ProjectPamphletMainCellViewModelOutputs 
   }
   // swiftlint:enable function_body_length
 
-  private let projectProperty = MutableProperty<Project?>(nil)
-  public func configureWith(project project: Project) {
+  fileprivate let projectProperty = MutableProperty<Project?>(nil)
+  public func configureWith(project: Project) {
     self.projectProperty.value = project
   }
 
-  private let creatorButtonTappedProperty = MutableProperty()
+  fileprivate let creatorButtonTappedProperty = MutableProperty()
   public func creatorButtonTapped() {
     self.creatorButtonTappedProperty.value = ()
   }
 
-  private let delegateDidSetProperty = MutableProperty()
+  fileprivate let delegateDidSetProperty = MutableProperty()
   public func delegateDidSet() {
     self.delegateDidSetProperty.value = ()
   }
 
-  private let readMoreButtonTappedProperty = MutableProperty()
+  fileprivate let readMoreButtonTappedProperty = MutableProperty()
   public func readMoreButtonTapped() {
     self.readMoreButtonTappedProperty.value = ()
   }
 
-  private let videoDidFinishProperty = MutableProperty()
+  fileprivate let videoDidFinishProperty = MutableProperty()
   public func videoDidFinish() {
     self.videoDidFinishProperty.value = ()
   }
 
-  private let videoDidStartProperty = MutableProperty()
+  fileprivate let videoDidStartProperty = MutableProperty()
   public func videoDidStart() {
     self.videoDidStartProperty.value = ()
   }

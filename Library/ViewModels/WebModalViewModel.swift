@@ -1,5 +1,5 @@
 import KsApi
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 import Result
 import WebKit
@@ -9,10 +9,10 @@ public protocol WebModalViewModelInputs {
   func closeButtonTapped()
 
   /// Call to configure with a request.
-  func configureWith(request request: NSURLRequest)
+  func configureWith(request: URLRequest)
 
   /// Call when the webview needs to decide a policy for a navigation action. Returns the decision policy.
-  func decidePolicyFor(navigationAction navigationAction: WKNavigationActionProtocol)
+  func decidePolicyFor(navigationAction: WKNavigationActionProtocol)
     -> WKNavigationActionPolicy
 
   /// Call when the view loads.
@@ -48,23 +48,23 @@ public final class WebModalViewModel: WebModalViewModelType {
     }
   }
 
-  private let closeButtonTappedProperty = MutableProperty()
+  fileprivate let closeButtonTappedProperty = MutableProperty()
   public func closeButtonTapped() { self.closeButtonTappedProperty.value = () }
 
-  private let requestProperty = MutableProperty<NSURLRequest?>(nil)
-  public func configureWith(request request: NSURLRequest) {
+  fileprivate let requestProperty = MutableProperty<URLRequest?>(nil)
+  public func configureWith(request: URLRequest) {
     self.requestProperty.value = request
   }
 
-  private let policyForNavigationActionProperty = MutableProperty<WKNavigationActionProtocol?>(nil)
-  private let policyDecisionProperty = MutableProperty(WKNavigationActionPolicy.Allow)
-  public func decidePolicyFor(navigationAction navigationAction: WKNavigationActionProtocol)
+  fileprivate let policyForNavigationActionProperty = MutableProperty<WKNavigationActionProtocol?>(nil)
+  fileprivate let policyDecisionProperty = MutableProperty(WKNavigationActionPolicy.Allow)
+  public func decidePolicyFor(navigationAction: WKNavigationActionProtocol)
     -> WKNavigationActionPolicy {
       self.policyForNavigationActionProperty.value = navigationAction
       return self.policyDecisionProperty.value
   }
 
-  private let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty()
   public func viewDidLoad() { self.viewDidLoadProperty.value = () }
 
   public let dismissViewController: Signal<Void, NoError>

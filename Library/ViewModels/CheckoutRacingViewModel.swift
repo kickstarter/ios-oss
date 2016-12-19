@@ -1,14 +1,14 @@
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 import Result
 
-private struct CheckoutRetryError: ErrorType {}
+private struct CheckoutRetryError: Error {}
 
 public protocol CheckoutRacingViewModelInputs {
   /// Configure with the checkout URL.
-  func configureWith(url url: NSURL)
+  func configureWith(url: NSURL)
 }
 
 public protocol CheckoutRacingViewModelOutputs {
@@ -28,7 +28,7 @@ public final class CheckoutRacingViewModel: CheckoutRacingViewModelType {
   public init() {
 
     let envelope = initialURLProperty.signal.ignoreNil()
-      .map { optionalize($0.absoluteString) }
+      .map { $0.absoluteString }
       .ignoreNil()
       .promoteErrors(CheckoutRetryError.self)
       .switchMap { url in
@@ -74,8 +74,8 @@ public final class CheckoutRacingViewModel: CheckoutRacingViewModelType {
     self.showAlert = Signal.merge(failedCheckoutError, timedOutError)
   }
 
-  private let initialURLProperty = MutableProperty<NSURL?>(nil)
-  public func configureWith(url url: NSURL) {
+  fileprivate let initialURLProperty = MutableProperty<NSURL?>(nil)
+  public func configureWith(url: NSURL) {
     self.initialURLProperty.value = url
   }
 

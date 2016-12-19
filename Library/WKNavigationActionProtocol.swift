@@ -11,7 +11,7 @@
     public init(navigationAction: WKNavigationAction) {
       self.navigationAction = navigationAction
       self.navigationType = navigationAction.navigationType
-      self.request = navigationAction.request
+      self.request = navigationAction.request as NSURLRequest
       self.sourceFrame = .init(frameInfo: navigationAction.sourceFrame)
       self.targetFrame = navigationAction.targetFrame.map(WKFrameInfoData.init(frameInfo:))
     }
@@ -35,8 +35,8 @@
 
     public init(frameInfo: WKFrameInfo) {
       self.frameInfo = frameInfo
-      self.mainFrame = frameInfo.mainFrame
-      self.request = frameInfo.request
+      self.mainFrame = frameInfo.isMainFrame
+      self.request = frameInfo.request as NSURLRequest
     }
 
     public init(mainFrame: Bool, request: NSURLRequest) {
@@ -48,16 +48,20 @@
 
   // Deprecated stuff
 
-  @available(*, deprecated, message="Use WKNavigationActionData to handle navigation actions")
+  @available(*, deprecated, message: "Use WKNavigationActionData to handle navigation actions")
   public protocol WKNavigationActionProtocol {
     var navigationType: WKNavigationType { get }
     var request: NSURLRequest { get }
   }
 
-  @available(*, deprecated, message="Use WKNavigationActionData to handle navigation actions")
-  extension WKNavigationAction: WKNavigationActionProtocol {}
+  @available(*, deprecated, message: "Use WKNavigationActionData to handle navigation actions")
+  extension WKNavigationAction: WKNavigationActionProtocol {
+    public var request: NSURLRequest {
+      <#code#>
+    }
+}
 
-  @available(*, deprecated, message="Use WKNavigationActionData to handle navigation actions")
+  @available(*, deprecated, message: "Use WKNavigationActionData to handle navigation actions")
   internal struct MockNavigationAction: WKNavigationActionProtocol {
     internal let navigationType: WKNavigationType
     internal let request: NSURLRequest

@@ -1,11 +1,11 @@
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 
 public protocol RewardCellViewModelInputs {
   func boundStyles()
-  func configureWith(project project: Project, rewardOrBacking: Either<Reward, Backing>)
+  func configureWith(project: Project, rewardOrBacking: Either<Reward, Backing>)
   func tapped()
 }
 
@@ -233,17 +233,17 @@ RewardCellViewModelOutputs {
   }
   // swiftlint:enable function_body_length
 
-  private let boundStylesProperty = MutableProperty()
+  fileprivate let boundStylesProperty = MutableProperty()
   public func boundStyles() {
     self.boundStylesProperty.value = ()
   }
 
-  private let projectAndRewardOrBackingProperty = MutableProperty<(Project, Either<Reward, Backing>)?>(nil)
-  public func configureWith(project project: Project, rewardOrBacking: Either<Reward, Backing>) {
+  fileprivate let projectAndRewardOrBackingProperty = MutableProperty<(Project, Either<Reward, Backing>)?>(nil)
+  public func configureWith(project: Project, rewardOrBacking: Either<Reward, Backing>) {
     self.projectAndRewardOrBackingProperty.value = (project, rewardOrBacking)
   }
 
-  private let tappedProperty = MutableProperty()
+  fileprivate let tappedProperty = MutableProperty()
   public func tapped() {
     self.tappedProperty.value = ()
   }
@@ -278,7 +278,7 @@ RewardCellViewModelOutputs {
   public var outputs: RewardCellViewModelOutputs { return self }
 }
 
-private func minimumRewardAmountTextColor(project project: Project, reward: Reward) -> UIColor {
+private func minimumRewardAmountTextColor(project: Project, reward: Reward) -> UIColor {
   if project.state != .successful && project.state != .live && reward.remaining == 0 {
     return .ksr_text_navy_700
   } else if (project.state == .live && reward.remaining == 0 &&
@@ -299,7 +299,7 @@ private func minimumRewardAmountTextColor(project project: Project, reward: Rewa
   }
 }
 
-private func needsConversion(projectCountry projectCountry: Project.Country, userCountry: String?) -> Bool {
+private func needsConversion(projectCountry: Project.Country, userCountry: String?) -> Bool {
   return userCountry == "US" && projectCountry != .US
 }
 
@@ -315,7 +315,7 @@ private func backingReward(fromProject project: Project) -> Reward? {
     .coalesceWith(.noReward)
 }
 
-private func rewardTitle(project project: Project, reward: Reward) -> String {
+private func rewardTitle(project: Project, reward: Reward) -> String {
 
   guard project.personalization.isBacking == true else {
     return reward == Reward.noReward
@@ -326,11 +326,10 @@ private func rewardTitle(project project: Project, reward: Reward) -> String {
   return reward.title ?? Strings.Thank_you_for_supporting_this_project()
 }
 
-private func footerString(project project: Project, reward: Reward) -> String {
+private func footerString(project: Project, reward: Reward) -> String {
   var parts: [String] = []
 
-  if let endsAt = reward.endsAt
-    where project.state == .live
+  if let endsAt = reward.endsAt, project.state == .live
       && endsAt > 0
       && endsAt >= AppEnvironment.current.dateType.init().timeIntervalSince1970 {
 
@@ -341,7 +340,7 @@ private func footerString(project project: Project, reward: Reward) -> String {
     parts.append(Strings.Time_left_left(time_left: time + " " + unit))
   }
 
-  if let remaining = reward.remaining where reward.limit != nil && project.state == .live {
+  if let remaining = reward.remaining, reward.limit != nil && project.state == .live {
     parts.append(Strings.Left_count_left(left_count: remaining))
   }
 
@@ -351,5 +350,5 @@ private func footerString(project project: Project, reward: Reward) -> String {
 
   return parts
     .map { part in part.nonBreakingSpaced() }
-    .joinWithSeparator(" • ")
+    .joined(separator: " • ")
 }

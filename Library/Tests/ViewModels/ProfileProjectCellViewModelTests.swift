@@ -13,7 +13,7 @@ internal final class ProfileProjectCellViewModelTests: TestCase {
   let metadataIsHidden = TestObserver<Bool, NoError>()
   let metadataText = TestObserver<String, NoError>()
   let projectName = TestObserver<String, NoError>()
-  let photoURL = TestObserver<NSURL?, NoError>()
+  let photoURL = TestObserver<URL?, NoError>()
   let progress = TestObserver<Float, NoError>()
   let progressHidden = TestObserver<Bool, NoError>()
   let stateLabelText = TestObserver<String, NoError>()
@@ -82,6 +82,6 @@ internal final class ProfileProjectCellViewModelTests: TestCase {
 
     self.projectName.assertValues([project.name], "Project name emitted.")
     self.cellAccessibilityLabel.assertValues(["\(project.name) \(project.state.rawValue)"])
-    self.photoURL.assertValues([NSURL(string: project.photo.full)], "Project photo emitted.")
+    self.photoURL.assertValues([URL(string: project.photo.full)], "Project photo emitted.")
   }
 }

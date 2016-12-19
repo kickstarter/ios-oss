@@ -1,12 +1,12 @@
 import KsApi
 import Prelude
 import Result
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 
 public protocol DashboardProjectsDrawerCellViewModelInputs {
   /// Call when configuring cell with Project and order of creation
-  func configureWith(project project: Project, indexNum: Int, isChecked: Bool)
+  func configureWith(project: Project, indexNum: Int, isChecked: Bool)
 }
 
 public protocol DashboardProjectsDrawerCellViewModelOutputs {
@@ -57,10 +57,10 @@ public final class DashboardProjectsDrawerCellViewModel: DashboardProjectsDrawer
   public let projectNumberText: Signal<String, NoError>
   public let isCheckmarkHidden: Signal<Bool, NoError>
 
-  private let projectProperty = MutableProperty<Project?>(nil)
-  private let orderNumProperty = MutableProperty<Int>(0)
-  private let isCheckedProperty = MutableProperty<Bool>(false)
-  public func configureWith(project project: Project, indexNum: Int, isChecked: Bool) {
+  fileprivate let projectProperty = MutableProperty<Project?>(nil)
+  fileprivate let orderNumProperty = MutableProperty<Int>(0)
+  fileprivate let isCheckedProperty = MutableProperty<Bool>(false)
+  public func configureWith(project: Project, indexNum: Int, isChecked: Bool) {
     self.projectProperty.value = project
     self.orderNumProperty.value = indexNum
     self.isCheckedProperty.value = isChecked

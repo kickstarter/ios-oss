@@ -5,7 +5,7 @@ final class StringSimpleHTMLTests: XCTestCase {
 
   func testHtmlParsing() {
 
-    let font = UIFont.systemFontOfSize(12.0)
+    let font = UIFont.systemFont(ofSize: 12.0)
     let html = "<b>Hello</b> <i>Brandon</i>, how are you?"
     let stripped = "Hello Brandon, how are you?"
 
@@ -18,9 +18,9 @@ final class StringSimpleHTMLTests: XCTestCase {
   }
 
   func testHtmlWithAllFontsSpecified() {
-    let font = UIFont.systemFontOfSize(12.0)
-    let bold = UIFont.boldSystemFontOfSize(14.0)
-    let italic = UIFont.italicSystemFontOfSize(16.0)
+    let font = UIFont.systemFont(ofSize: 12.0)
+    let bold = UIFont.boldSystemFont(ofSize: 14.0)
+    let italic = UIFont.italicSystemFont(ofSize: 16.0)
 
     let html = "<b>Hello</b> <i>Brandon</i>, how are you?"
 
@@ -57,7 +57,7 @@ final class StringSimpleHTMLTests: XCTestCase {
   }
 
   func testHtmlWithFallbackFonts() {
-    let font = UIFont.systemFontOfSize(12.0)
+    let font = UIFont.systemFont(ofSize: 12.0)
 
     let html = "<b>Hello</b> <i>Brandon</i>, how are you?"
 

@@ -4,7 +4,7 @@ import UIKit
 
 public final class ProjectActivityItemProvider: UIActivityItemProvider {
 
-  private var project: Project?
+  fileprivate var project: Project?
 
   public convenience init(project: Project) {
     self.init(placeholderItem: project.name)
@@ -12,15 +12,15 @@ public final class ProjectActivityItemProvider: UIActivityItemProvider {
     self.project = project
   }
 
-  public override func activityViewController(activityViewController: UIActivityViewController,
-                                              itemForActivityType activityType: String) -> AnyObject? {
+  public override func activityViewController(_ activityViewController: UIActivityViewController,
+                                              itemForActivityType activityType: UIActivityType) -> Any? {
     if let project = self.project {
-      if activityType == UIActivityTypeMail || activityType == UIActivityTypeMessage {
+      if activityType == UIActivityType.mail || activityType == UIActivityType.message {
         return project.name
-      } else if activityType == UIActivityTypePostToTwitter {
+      } else if activityType == UIActivityType.postToTwitter {
         return Strings.project_checkout_share_twitter_via_kickstarter(project_or_update_title: project.name)
-      } else if activityType == UIActivityTypeCopyToPasteboard ||
-        activityType == UIActivityTypePostToFacebook {
+      } else if activityType == UIActivityType.copyToPasteboard ||
+        activityType == UIActivityType.postToFacebook {
         return project.urls.web.project
       }
     }

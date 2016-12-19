@@ -1,17 +1,17 @@
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 
 public protocol DiscoveryFiltersViewModelInputs {
   /// Call with the row that is selected when the filters appear and array of loaded categories.
-  func configureWith(selectedRow selectedRow: SelectableRow, categories: [KsApi.Category])
+  func configureWith(selectedRow: SelectableRow, categories: [KsApi.Category])
 
   /// Call when an expandable row is tapped.
-  func tapped(expandableRow expandableRow: ExpandableRow)
+  func tapped(expandableRow: ExpandableRow)
 
   /// Call when a selectable row is tapped.
-  func tapped(selectableRow selectableRow: SelectableRow)
+  func tapped(selectableRow: SelectableRow)
 
   /// Call when the view loads.
   func viewDidLoad()
@@ -137,29 +137,29 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
   }
   // swiftlint:enable function_body_length
 
-  private let initialSelectedRowWithCategoriesProperty =
+  fileprivate let initialSelectedRowWithCategoriesProperty =
     MutableProperty<(SelectableRow, [KsApi.Category])?>(nil)
-  public func configureWith(selectedRow selectedRow: SelectableRow, categories: [KsApi.Category]) {
+  public func configureWith(selectedRow: SelectableRow, categories: [KsApi.Category]) {
     self.initialSelectedRowWithCategoriesProperty.value = (selectedRow, categories)
   }
-  private let tappedExpandableRowProperty = MutableProperty<ExpandableRow?>(nil)
-  public func tapped(expandableRow expandableRow: ExpandableRow) {
+  fileprivate let tappedExpandableRowProperty = MutableProperty<ExpandableRow?>(nil)
+  public func tapped(expandableRow: ExpandableRow) {
     self.tappedExpandableRowProperty.value = expandableRow
   }
-  private let tappedSelectableRowProperty = MutableProperty<SelectableRow?>(nil)
-  public func tapped(selectableRow selectableRow: SelectableRow) {
+  fileprivate let tappedSelectableRowProperty = MutableProperty<SelectableRow?>(nil)
+  public func tapped(selectableRow: SelectableRow) {
     self.tappedSelectableRowProperty.value = selectableRow
   }
-  private let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty()
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
-  private let viewWillAppearProperty = MutableProperty()
+  fileprivate let viewWillAppearProperty = MutableProperty()
   public func viewWillAppear() {
     self.viewWillAppearProperty.value = ()
   }
 
-  private let shouldAnimateSelectableCellProperty = MutableProperty(false)
+  fileprivate let shouldAnimateSelectableCellProperty = MutableProperty(false)
   public var shouldAnimateSelectableCell: Bool {
     return self.shouldAnimateSelectableCellProperty.value
   }
@@ -185,18 +185,18 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
 
  - returns: An array of expandable rows with one row expanded.
  */
-private func expandableRows(selectedRow selectedRow: SelectableRow,
+private func expandableRows(selectedRow: SelectableRow,
                                         categories: [KsApi.Category]) -> [ExpandableRow] {
 
   let expandableRows = categories
-    .sort { lhs, _ in !lhs.isRoot }
+    .sorted { lhs, _ in !lhs.isRoot }
     .groupedBy { $0.parent ?? $0 }
     .map { rootCategory, rootWithChildren in
       ExpandableRow(
         isExpanded: false,
         params: .defaults |> DiscoveryParams.lens.category .~ rootCategory,
         selectableRows: rootWithChildren
-          .sort()
+          .sorted()
           .map { childCategory in
             SelectableRow(
               isSelected: childCategory == selectedRow.params.category,
@@ -205,16 +205,16 @@ private func expandableRows(selectedRow selectedRow: SelectableRow,
           }
       )
     }
-    .sort { lhs, rhs in lhs.params.category < rhs.params.category }
+    .sorted { lhs, rhs in lhs.params.category! < rhs.params.category! }
 
   return expandableRows.map { expandableRow in
     return expandableRow
       |> ExpandableRow.lens.isExpanded .~
       expandableRow.selectableRows.lazy.map { $0.params }.contains(selectedRow.params)
       |> ExpandableRow.lens.selectableRows .~
-      expandableRow.selectableRows.sort {
+      expandableRow.selectableRows.sorted {
         if $0.params.category?.isRoot == $1.params.category?.isRoot {
-          return $0.params.category?.name < $1.params.category?.name
+          return ($0.params.category?.name)! < ($1.params.category?.name)!
         }
         return ($0.params.category?.isRoot ?? false) && !($1.params.category?.isRoot ?? false)
     }
@@ -256,7 +256,7 @@ private func topFilters(forUser user: User?) -> [DiscoveryParams] {
   return filters
 }
 
-private func favorites(selectedRow selectedRow: SelectableRow, categories: [KsApi.Category])
+private func favorites(selectedRow: SelectableRow, categories: [KsApi.Category])
   -> [SelectableRow]? {
 
   let faves: [SelectableRow] = categories.flatMap { category in

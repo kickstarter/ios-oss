@@ -1,11 +1,11 @@
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 
 public protocol ActivityFriendBackingViewModelInputs {
   /// Call to configure with an Activity.
-  func configureWith(activity activity: Activity)
+  func configureWith(activity: Activity)
 }
 
 public protocol ActivityFriendBackingViewModelOutputs {
@@ -89,8 +89,8 @@ ActivityFriendBackingViewModelInputs, ActivityFriendBackingViewModelOutputs {
       .map { "\($0.string), \($1)" }
   }
 
-  private let activityProperty = MutableProperty<Activity?>(nil)
-  public func configureWith(activity activity: Activity) {
+  fileprivate let activityProperty = MutableProperty<Activity?>(nil)
+  public func configureWith(activity: Activity) {
     self.activityProperty.value = activity
   }
 

@@ -1,6 +1,6 @@
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 import Result
 
@@ -144,7 +144,7 @@ public final class DashboardFundingCellViewModel: DashboardFundingCellViewModelI
     // swiftlint:enable function_body_length
   }
 
-  private let statsProjectProperty = MutableProperty<([ProjectStatsEnvelope.FundingDateStats], Project)?>(nil)
+  fileprivate let statsProjectProperty = MutableProperty<([ProjectStatsEnvelope.FundingDateStats], Project)?>(nil)
   public func configureWith(fundingDateStats stats: [ProjectStatsEnvelope.FundingDateStats],
                                              project: Project) {
     self.statsProjectProperty.value = (stats, project)
@@ -168,7 +168,7 @@ public final class DashboardFundingCellViewModel: DashboardFundingCellViewModelI
 }
 
 // Returns the tick size relative to the number of ticks in a range.
-private func tickSize(tickCount: Int, range: Double) -> CGFloat {
+private func tickSize(_ tickCount: Int, range: Double) -> CGFloat {
   let unroundedTickSize = range / (Double(tickCount) - 1.0)
   let exponent = ceil(log10(unroundedTickSize) - 1.0)
   let power = pow(10.0, exponent)

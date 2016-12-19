@@ -1,12 +1,12 @@
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 import Result
 
 public protocol ActivitySampleBackingCellViewModelInputs {
   /// Call to configure cell with activity value.
-  func configureWith(activity activity: Activity)
+  func configureWith(activity: Activity)
 
   /// Call when the see all activity button is tapped.
   func seeAllActivityTapped()
@@ -50,12 +50,12 @@ public final class ActivitySampleBackingCellViewModel: ActivitySampleBackingCell
     self.goToActivity = self.seeAllActivityTappedProperty.signal
   }
 
-  private let activityProperty = MutableProperty<Activity?>(nil)
-  public func configureWith(activity activity: Activity) {
+  fileprivate let activityProperty = MutableProperty<Activity?>(nil)
+  public func configureWith(activity: Activity) {
     self.activityProperty.value = activity
   }
 
-  private let seeAllActivityTappedProperty = MutableProperty()
+  fileprivate let seeAllActivityTappedProperty = MutableProperty()
   public func seeAllActivityTapped() {
     self.seeAllActivityTappedProperty.value = ()
   }

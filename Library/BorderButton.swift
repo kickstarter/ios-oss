@@ -17,14 +17,14 @@ public final class BorderButton: UIButton {
 
   public var borderColor: Color? = .GrayDark {
     didSet {
-      self.layer.borderColor = borderColor?.toUIColor().CGColor ?? Color.mismatchedColor.CGColor
+      self.layer.borderColor = borderColor?.toUIColor().cgColor ?? Color.mismatchedColor.cgColor
     }
   }
 
   public var titleColorNormal: Color? = .Black {
     didSet {
       self.setTitleColor(
-        titleColorNormal?.toUIColor() ?? Color.mismatchedColor, forState: UIControlState.Normal
+        titleColorNormal?.toUIColor() ?? Color.mismatchedColor, for: UIControlState()
       )
     }
   }
@@ -32,9 +32,9 @@ public final class BorderButton: UIButton {
   public var titleColorHighlighted: Color? = .GrayLight {
     didSet {
       if let titleColorHighlighted = titleColorHighlighted {
-        self.setTitleColor(titleColorHighlighted.toUIColor(), forState: UIControlState.Highlighted)
+        self.setTitleColor(titleColorHighlighted.toUIColor(), for: UIControlState.highlighted)
       } else {
-        self.setTitleColor(Color.mismatchedColor, forState: UIControlState.Normal)
+        self.setTitleColor(Color.mismatchedColor, for: UIControlState())
       }
     }
   }
@@ -87,7 +87,7 @@ public final class BorderButton: UIButton {
     }
   }
 
-  private var computedTitleFont: UIFont {
+  fileprivate var computedTitleFont: UIFont {
     switch (titleFontStyle, titleWeight) {
     case let (font?, .Default?):
       return font.toUIFont()
@@ -104,7 +104,7 @@ public final class BorderButton: UIButton {
     self.layer.cornerRadius = DefaultCornerRadius
     self.layer.borderWidth = DefaultBorderWidth
 
-    self.titleLabel?.textAlignment = .Center
+    self.titleLabel?.textAlignment = .center
   }
 
   public override init(frame: CGRect) {
@@ -113,7 +113,7 @@ public final class BorderButton: UIButton {
     self.layer.cornerRadius = DefaultCornerRadius
     self.layer.borderWidth = DefaultBorderWidth
 
-    self.titleLabel?.textAlignment = .Center
+    self.titleLabel?.textAlignment = .center
   }
 
 }

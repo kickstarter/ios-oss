@@ -1,5 +1,5 @@
 import XCTest
-import ReactiveCocoa
+import ReactiveSwift
 import UIKit.UIActivity
 @testable import ReactiveExtensions
 @testable import ReactiveExtensions_TestHelpers
@@ -53,8 +53,8 @@ final class FindFriendsFacebookConnectCellViewModelTests: TestCase {
       declinedPermissions: nil,
       appID: "834987809",
       userID: "0000000001",
-      expirationDate: NSDate(),
-      refreshDate: NSDate()
+      expirationDate: Date(),
+      refreshDate: Date()
     )
 
     let result = FBSDKLoginManagerLoginResult(
@@ -128,8 +128,8 @@ final class FindFriendsFacebookConnectCellViewModelTests: TestCase {
       declinedPermissions: nil,
       appID: "834987809",
       userID: "0000000001",
-      expirationDate: NSDate(),
-      refreshDate: NSDate()
+      expirationDate: Date(),
+      refreshDate: Date()
     )
 
     let result = FBSDKLoginManagerLoginResult(
@@ -179,8 +179,8 @@ final class FindFriendsFacebookConnectCellViewModelTests: TestCase {
       declinedPermissions: nil,
       appID: "834987809",
       userID: "0000000001",
-      expirationDate: NSDate(),
-      refreshDate: NSDate()
+      expirationDate: Date(),
+      refreshDate: Date()
     )
 
     let result = FBSDKLoginManagerLoginResult(
@@ -230,8 +230,8 @@ final class FindFriendsFacebookConnectCellViewModelTests: TestCase {
       declinedPermissions: nil,
       appID: "834987809",
       userID: "0000000001",
-      expirationDate: NSDate(),
-      refreshDate: NSDate()
+      expirationDate: Date(),
+      refreshDate: Date()
     )
 
     let result = FBSDKLoginManagerLoginResult(
@@ -283,8 +283,8 @@ final class FindFriendsFacebookConnectCellViewModelTests: TestCase {
       declinedPermissions: nil,
       appID: "834987809",
       userID: "0000000001",
-      expirationDate: NSDate(),
-      refreshDate: NSDate()
+      expirationDate: Date(),
+      refreshDate: Date()
     )
 
     let result = FBSDKLoginManagerLoginResult(

@@ -1,13 +1,13 @@
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 import Result
 
 public protocol LoginViewModelInputs {
 
   /// String value of email textfield text
-  func emailChanged(email: String?)
+  func emailChanged(_ email: String?)
 
   /// Call when email textfield keyboard returns
   func emailTextFieldDoneEditing()
@@ -25,10 +25,10 @@ public protocol LoginViewModelInputs {
   func onePasswordButtonTapped()
 
   /// Call when onepassword finds a login.
-  func onePasswordFoundLogin(email email: String?, password: String?)
+  func onePasswordFoundLogin(email: String?, password: String?)
 
   /// String value of password textfield text
-  func passwordChanged(password: String?)
+  func passwordChanged(_ password: String?)
 
   /// Call when password textfield keyboard returns
   func passwordTextFieldDoneEditing()
@@ -141,7 +141,7 @@ public final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, Log
     self.onePasswordButtonHidden = self.onePasswordIsAvailable.signal.map(negate)
 
     self.onePasswordFindLoginForURLString = self.onePasswordButtonTappedProperty.signal
-      .map { optionalize(AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString) }
+      .map { AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString }
       .ignoreNil()
 
     self.emailText = self.prefillEmailProperty.signal.ignoreNil()
@@ -163,53 +163,53 @@ public final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, Log
   public var inputs: LoginViewModelInputs { return self }
   public var outputs: LoginViewModelOutputs { return self }
 
-  private let viewWillAppearProperty = MutableProperty(())
+  fileprivate let viewWillAppearProperty = MutableProperty(())
   public func viewWillAppear() {
     self.viewWillAppearProperty.value = ()
   }
-  private let emailChangedProperty = MutableProperty<String?>(nil)
-  public func emailChanged(email: String?) {
+  fileprivate let emailChangedProperty = MutableProperty<String?>(nil)
+  public func emailChanged(_ email: String?) {
     self.emailChangedProperty.value = email
   }
-  private let passwordChangedProperty = MutableProperty<String?>(nil)
-  public func passwordChanged(password: String?) {
+  fileprivate let passwordChangedProperty = MutableProperty<String?>(nil)
+  public func passwordChanged(_ password: String?) {
     self.passwordChangedProperty.value = password
   }
-  private let loginButtonPressedProperty = MutableProperty(())
+  fileprivate let loginButtonPressedProperty = MutableProperty(())
   public func loginButtonPressed() {
     self.loginButtonPressedProperty.value = ()
   }
-  private let onePasswordButtonTappedProperty = MutableProperty()
+  fileprivate let onePasswordButtonTappedProperty = MutableProperty()
   public func onePasswordButtonTapped() {
     self.onePasswordButtonTappedProperty.value = ()
   }
-  private let prefillEmailProperty = MutableProperty<String?>(nil)
-  private let prefillPasswordProperty = MutableProperty<String?>(nil)
-  public func onePasswordFoundLogin(email email: String?, password: String?) {
+  fileprivate let prefillEmailProperty = MutableProperty<String?>(nil)
+  fileprivate let prefillPasswordProperty = MutableProperty<String?>(nil)
+  public func onePasswordFoundLogin(email: String?, password: String?) {
     self.prefillEmailProperty.value = email
     self.prefillPasswordProperty.value = password
   }
-  private let onePasswordIsAvailable = MutableProperty(false)
+  fileprivate let onePasswordIsAvailable = MutableProperty(false)
   public func onePassword(isAvailable available: Bool) {
     self.onePasswordIsAvailable.value = available
   }
-  private let emailTextFieldDoneEditingProperty = MutableProperty(())
+  fileprivate let emailTextFieldDoneEditingProperty = MutableProperty(())
   public func emailTextFieldDoneEditing() {
     self.emailTextFieldDoneEditingProperty.value = ()
   }
-  private let passwordTextFieldDoneEditingProperty = MutableProperty(())
+  fileprivate let passwordTextFieldDoneEditingProperty = MutableProperty(())
   public func passwordTextFieldDoneEditing() {
     self.passwordTextFieldDoneEditingProperty.value = ()
   }
-  private let environmentLoggedInProperty = MutableProperty(())
+  fileprivate let environmentLoggedInProperty = MutableProperty(())
   public func environmentLoggedIn() {
     self.environmentLoggedInProperty.value = ()
   }
-  private let resetPasswordPressedProperty = MutableProperty(())
+  fileprivate let resetPasswordPressedProperty = MutableProperty(())
   public func resetPasswordButtonPressed() {
     self.resetPasswordPressedProperty.value = ()
   }
-  private let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty()
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
@@ -229,6 +229,6 @@ public final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, Log
   public let tfaChallenge: Signal<(email: String, password: String), NoError>
 }
 
-private func isValid(email email: String, password: String) -> Bool {
+private func isValid(email: String, password: String) -> Bool {
   return isValidEmail(email) && !password.characters.isEmpty
 }

@@ -17,20 +17,20 @@ public extension String {
    as html.
    */
   public func simpleHtmlAttributedString(
-    base base: Attributes,
+    base: Attributes,
          bold optionalBold: Attributes? = nil,
               italic optionalItalic: Attributes? = nil) -> NSAttributedString? {
-    let baseFont = (base[NSFontAttributeName] as? UIFont) ?? UIFont.systemFontOfSize(12.0)
+    let baseFont = (base[NSFontAttributeName] as? UIFont) ?? UIFont.systemFont(ofSize: 12.0)
 
     // If bold or italic are not specified we can derive them from `font`.
     let bold = optionalBold ?? [NSFontAttributeName: baseFont.bolded]
     let italic = optionalItalic ?? [NSFontAttributeName: baseFont.italicized]
 
-    guard let data = self.dataUsingEncoding(NSUTF8StringEncoding) else { return nil }
+    guard let data = self.data(using: String.Encoding.utf8) else { return nil }
 
     let options: [String:AnyObject] = [
-      NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType,
-      NSCharacterEncodingDocumentAttribute: NSUTF8StringEncoding
+      NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType as AnyObject,
+      NSCharacterEncodingDocumentAttribute: String.Encoding.utf8 as AnyObject
     ]
     guard let string = try? NSMutableAttributedString(data: data, options: options, documentAttributes: nil)
       else {
@@ -40,14 +40,14 @@ public extension String {
     // Sub all bold and italic fonts in the attributed html string
     let stringRange = NSRange(location: 0, length: string.length)
     string.beginEditing()
-    string.enumerateAttribute(NSFontAttributeName, inRange: stringRange, options: []) { value, range, stop in
+    string.enumerateAttribute(NSFontAttributeName, in: stringRange, options: []) { value, range, stop in
 
       guard let htmlFont = value as? UIFont else { return }
       let newAttributes: Attributes
 
-      if htmlFont.fontDescriptor().symbolicTraits.contains(.TraitBold) {
+      if htmlFont.fontDescriptor.symbolicTraits.contains(.traitBold) {
         newAttributes = bold
-      } else if htmlFont.fontDescriptor().symbolicTraits.contains(.TraitItalic) {
+      } else if htmlFont.fontDescriptor.symbolicTraits.contains(.traitItalic) {
         newAttributes = italic
       } else {
         newAttributes = base
@@ -72,7 +72,7 @@ public extension String {
               as html.
    */
   public func simpleHtmlAttributedString(
-    font font: UIFont,
+    font: UIFont,
          bold optionalBold: UIFont? = nil,
               italic optionalItalic: UIFont? = nil) -> NSAttributedString? {
 
@@ -90,20 +90,20 @@ public extension String {
 
    - returns: A string with all HTML stripped.
    */
-  public func htmlStripped(trimWhitespace trimWhitespace: Bool = true) -> String? {
+  public func htmlStripped(trimWhitespace: Bool = true) -> String? {
 
-    guard let data = self.dataUsingEncoding(NSUTF8StringEncoding) else { return nil }
+    guard let data = self.data(using: String.Encoding.utf8) else { return nil }
 
     let options: [String:AnyObject] = [
-      NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType,
-      NSCharacterEncodingDocumentAttribute: NSUTF8StringEncoding
+      NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType as AnyObject,
+      NSCharacterEncodingDocumentAttribute: String.Encoding.utf8 as AnyObject
     ]
 
     let string = try? NSAttributedString(data: data, options: options, documentAttributes: nil)
     let result = string?.string
 
     if trimWhitespace {
-      return result?.stringByTrimmingCharactersInSet(.whitespaceAndNewlineCharacterSet())
+      return result?.trimmingCharacters(in: .whitespacesAndNewlines)
     }
     return result
   }

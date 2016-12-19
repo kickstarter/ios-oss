@@ -1,5 +1,5 @@
 import KsApi
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 import Prelude
 
@@ -8,7 +8,7 @@ public protocol CommentsEmptyStateCellViewModelInputs {
   func backProjectTapped()
 
   /// Call to configure with the project and update.
-  func configureWith(project project: Project, update: Update?)
+  func configureWith(project: Project, update: Update?)
 
   /// Call when the leave a comment button is tapped.
   func leaveACommentTapped()
@@ -84,23 +84,23 @@ CommentsEmptyStateCellViewModelInputs, CommentsEmptyStateCellViewModelOutputs {
     self.goBackToProject = self.backProjectTappedProperty.signal
   }
 
-  private let backProjectTappedProperty = MutableProperty()
+  fileprivate let backProjectTappedProperty = MutableProperty()
   public func backProjectTapped() {
     self.backProjectTappedProperty.value = ()
   }
 
-  private let leaveACommentTappedProperty = MutableProperty()
+  fileprivate let leaveACommentTappedProperty = MutableProperty()
   public func leaveACommentTapped() {
     self.leaveACommentTappedProperty.value = ()
   }
 
-  private let loginTappedProperty = MutableProperty()
+  fileprivate let loginTappedProperty = MutableProperty()
   public func loginTapped() {
     self.loginTappedProperty.value = ()
   }
 
-  private let projectAndUpdateProperty = MutableProperty<(Project, Update?)?>(nil)
-  public func configureWith(project project: Project, update: Update?) {
+  fileprivate let projectAndUpdateProperty = MutableProperty<(Project, Update?)?>(nil)
+  public func configureWith(project: Project, update: Update?) {
     self.projectAndUpdateProperty.value = (project, update)
   }
 
@@ -118,7 +118,7 @@ CommentsEmptyStateCellViewModelInputs, CommentsEmptyStateCellViewModelOutputs {
 }
 
 private struct ProjectEmptyCommentsData {
-  private let isCreator: Bool
-  private let isBacker: Bool
-  private let isLoggedIn: Bool
+  fileprivate let isCreator: Bool
+  fileprivate let isBacker: Bool
+  fileprivate let isLoggedIn: Bool
 }

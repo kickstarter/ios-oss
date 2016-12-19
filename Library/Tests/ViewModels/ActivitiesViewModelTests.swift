@@ -7,24 +7,24 @@ import KsApi
 import Prelude
 
 final class ActivitiesViewModelTests: TestCase {
-  private let vm: ActivitiesViewModelType! = ActivitiesViewModel()
+  fileprivate let vm: ActivitiesViewModelType! = ActivitiesViewModel()
 
-  private let activitiesPresent = TestObserver<Bool, NoError>()
-  private let isRefreshing = TestObserver<Bool, NoError>()
-  private let goToProject = TestObserver<Project, NoError>()
-  private let goToSurveyResponse = TestObserver<SurveyResponse, NoError>()
-  private let showRefTag = TestObserver<RefTag, NoError>()
-  private let deleteFacebookConnectSection = TestObserver<(), NoError>()
-  private let deleteFindFriendsSection = TestObserver<(), NoError>()
-  private let hideEmptyState = TestObserver<(), NoError>()
-  private let goToFriends = TestObserver<FriendsSource, NoError>()
-  private let showEmptyStateIsLoggedIn = TestObserver<Bool, NoError>()
-  private let showFacebookConnectSection = TestObserver<Bool, NoError>()
-  private let showFacebookConnectSectionSource = TestObserver<FriendsSource, NoError>()
-  private let showFindFriendsSection = TestObserver<Bool, NoError>()
-  private let showFindFriendsSectionSource = TestObserver<FriendsSource, NoError>()
-  private let showFacebookConnectErrorAlert = TestObserver<AlertError, NoError>()
-  private let unansweredSurveyResponse = TestObserver<[SurveyResponse], NoError>()
+  fileprivate let activitiesPresent = TestObserver<Bool, NoError>()
+  fileprivate let isRefreshing = TestObserver<Bool, NoError>()
+  fileprivate let goToProject = TestObserver<Project, NoError>()
+  fileprivate let goToSurveyResponse = TestObserver<SurveyResponse, NoError>()
+  fileprivate let showRefTag = TestObserver<RefTag, NoError>()
+  fileprivate let deleteFacebookConnectSection = TestObserver<(), NoError>()
+  fileprivate let deleteFindFriendsSection = TestObserver<(), NoError>()
+  fileprivate let hideEmptyState = TestObserver<(), NoError>()
+  fileprivate let goToFriends = TestObserver<FriendsSource, NoError>()
+  fileprivate let showEmptyStateIsLoggedIn = TestObserver<Bool, NoError>()
+  fileprivate let showFacebookConnectSection = TestObserver<Bool, NoError>()
+  fileprivate let showFacebookConnectSectionSource = TestObserver<FriendsSource, NoError>()
+  fileprivate let showFindFriendsSection = TestObserver<Bool, NoError>()
+  fileprivate let showFindFriendsSectionSource = TestObserver<FriendsSource, NoError>()
+  fileprivate let showFacebookConnectErrorAlert = TestObserver<AlertError, NoError>()
+  fileprivate let unansweredSurveyResponse = TestObserver<[SurveyResponse], NoError>()
 
   override func setUp() {
     super.setUp()
@@ -468,7 +468,7 @@ final class ActivitiesViewModelTests: TestCase {
     }
   }
 
-  private let activity1 = .template |> Activity.lens.id .~ 1
-  private let activity2 = .template |> Activity.lens.id .~ 2
-  private let activity3 = .template |> Activity.lens.id .~ 3
+  fileprivate let activity1 = .template |> Activity.lens.id .~ 1
+  fileprivate let activity2 = .template |> Activity.lens.id .~ 2
+  fileprivate let activity3 = .template |> Activity.lens.id .~ 3
 }

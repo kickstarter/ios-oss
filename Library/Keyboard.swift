@@ -1,33 +1,33 @@
 import Foundation
 import UIKit
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 
 #if os(iOS)
 public final class Keyboard {
-  public typealias Change = (frame: CGRect, duration: NSTimeInterval, options: UIViewAnimationOptions)
+  public typealias Change = (frame: CGRect, duration: TimeInterval, options: UIViewAnimationOptions)
 
   public static let shared = Keyboard()
-  private let (changeSignal, changeObserver) = Signal<Change, NoError>.pipe()
+  fileprivate let (changeSignal, changeObserver) = Signal<Change, NoError>.pipe()
 
   public static var change: Signal<Change, NoError> {
     return self.shared.changeSignal
   }
 
-  private init() {
-    NSNotificationCenter.defaultCenter().addObserver(
-      self, selector: #selector(change(_:)), name: UIKeyboardWillShowNotification, object: nil)
+  fileprivate init() {
+    NotificationCenter.default.addObserver(
+      self, selector: #selector(change(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
 
-    NSNotificationCenter.defaultCenter().addObserver(
-      self, selector: #selector(change(_:)), name: UIKeyboardWillHideNotification, object: nil)
+    NotificationCenter.default.addObserver(
+      self, selector: #selector(change(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
   }
 
-  @objc private func change(notification: NSNotification) {
+  @objc fileprivate func change(_ notification: Notification) {
     guard let userInfo = notification.userInfo,
-      frame = userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue,
-      duration = userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber,
-      curveNumber = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber,
-      curve = UIViewAnimationCurve(rawValue: curveNumber.integerValue)
+      let frame = userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue,
+      let duration = userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber,
+      let curveNumber = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber,
+      let curve = UIViewAnimationCurve(rawValue: curveNumber.intValue)
       else {
         return
     }

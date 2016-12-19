@@ -1,12 +1,12 @@
 import Foundation
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 
 public protocol SignupViewModelInputs {
   /// Call when the user enters a new email address.
-  func emailChanged(email: String)
+  func emailChanged(_ email: String)
 
   /// Call when the user returns from email text field.
   func emailTextFieldReturn()
@@ -15,13 +15,13 @@ public protocol SignupViewModelInputs {
   func environmentLoggedIn()
 
   /// Call when the user enters a new name.
-  func nameChanged(name: String)
+  func nameChanged(_ name: String)
 
   /// Call when the user returns from the name text field.
   func nameTextFieldReturn()
 
   /// Call when the user enters a new password.
-  func passwordChanged(password: String)
+  func passwordChanged(_ password: String)
 
   /// Call when the user returns from the password text field.
   func passwordTextFieldReturn()
@@ -33,7 +33,7 @@ public protocol SignupViewModelInputs {
   func viewDidLoad()
 
   /// Call when the user toggles weekly newsletter.
-  func weeklyNewsletterChanged(weeklyNewsletter: Bool)
+  func weeklyNewsletterChanged(_ weeklyNewsletter: Bool)
 }
 
 public protocol SignupViewModelOutputs {
@@ -131,7 +131,7 @@ public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, 
     self.logIntoEnvironment = signupEvent.values()
 
     self.postNotification = self.environmentLoggedInProperty.signal
-      .mapConst(NSNotification(name: CurrentUserNotifications.sessionStarted, object: nil))
+      .mapConst(Notification(name: CurrentUserNotifications.sessionStarted, object: nil))
 
     self.environmentLoggedInProperty.signal
       .observeNext { AppEnvironment.current.koala.trackLoginSuccess(authType: Koala.AuthType.email) }
@@ -154,53 +154,53 @@ public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, 
       .observeNext { AppEnvironment.current.koala.trackSignupView() }
   }
 
-  private let emailChangedProperty = MutableProperty("")
-  public func emailChanged(email: String) {
+  fileprivate let emailChangedProperty = MutableProperty("")
+  public func emailChanged(_ email: String) {
     self.emailChangedProperty.value = email
   }
 
-  private let emailTextFieldReturnProperty = MutableProperty()
+  fileprivate let emailTextFieldReturnProperty = MutableProperty()
   public func emailTextFieldReturn() {
     self.emailTextFieldReturnProperty.value = ()
   }
 
-  private let environmentLoggedInProperty = MutableProperty()
+  fileprivate let environmentLoggedInProperty = MutableProperty()
   public func environmentLoggedIn() {
     self.environmentLoggedInProperty.value = ()
   }
 
-  private let nameChangedProperty = MutableProperty("")
-  public func nameChanged(name: String) {
+  fileprivate let nameChangedProperty = MutableProperty("")
+  public func nameChanged(_ name: String) {
     self.nameChangedProperty.value = name
   }
 
-  private let nameTextFieldReturnProperty = MutableProperty()
+  fileprivate let nameTextFieldReturnProperty = MutableProperty()
   public func nameTextFieldReturn() {
     self.nameTextFieldReturnProperty.value = ()
   }
 
-  private let passwordChangedProperty = MutableProperty("")
-  public func passwordChanged(password: String) {
+  fileprivate let passwordChangedProperty = MutableProperty("")
+  public func passwordChanged(_ password: String) {
     self.passwordChangedProperty.value = password
   }
 
-  private let passwordTextFieldReturnProperty = MutableProperty()
+  fileprivate let passwordTextFieldReturnProperty = MutableProperty()
   public func passwordTextFieldReturn() {
     self.passwordTextFieldReturnProperty.value = ()
   }
 
-  private let signupButtonPressedProperty = MutableProperty()
+  fileprivate let signupButtonPressedProperty = MutableProperty()
   public func signupButtonPressed() {
     self.signupButtonPressedProperty.value = ()
   }
 
-  private let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty()
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
 
-  private let weeklyNewsletterChangedProperty = MutableProperty<Bool?>(nil)
-  public func weeklyNewsletterChanged(weeklyNewsletter: Bool) {
+  fileprivate let weeklyNewsletterChangedProperty = MutableProperty<Bool?>(nil)
+  public func weeklyNewsletterChanged(_ weeklyNewsletter: Bool) {
     self.weeklyNewsletterChangedProperty.value = weeklyNewsletter
   }
 

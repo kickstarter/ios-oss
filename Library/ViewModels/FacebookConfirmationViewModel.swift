@@ -1,5 +1,5 @@
 import KsApi
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 import Result
 
@@ -7,11 +7,11 @@ public protocol FacebookConfirmationViewModelInputs {
   /// Call when view controller's viewDidLoad() is called
   func viewDidLoad()
   /// Call to set an email address for the user
-  func email(email: String)
+  func email(_ email: String)
   /// Call to set a facebook token for the user
-  func facebookToken(token: String)
+  func facebookToken(_ token: String)
   /// Call when newsletter switch is toggled
-  func sendNewslettersToggled(newsletters: Bool)
+  func sendNewslettersToggled(_ newsletters: Bool)
   /// Call when create new account button is pressed
   func createAccountButtonPressed()
   /// Call when Login with email button is pressed
@@ -55,37 +55,37 @@ FacebookConfirmationViewModelErrors {
   public var errors: FacebookConfirmationViewModelErrors { return self }
 
   // MARK: FacebookConfirmationViewModelInputs
-  private let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty()
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
 
-  private let sendNewslettersToggledProperty = MutableProperty(false)
-  public func sendNewslettersToggled(newsletters: Bool) {
+  fileprivate let sendNewslettersToggledProperty = MutableProperty(false)
+  public func sendNewslettersToggled(_ newsletters: Bool) {
     self.sendNewslettersToggledProperty.value = newsletters
   }
 
-  private let emailProperty = MutableProperty("")
-  public func email(email: String) {
+  fileprivate let emailProperty = MutableProperty("")
+  public func email(_ email: String) {
     self.emailProperty.value = email
   }
 
-  private let facebookTokenProperty = MutableProperty("")
-  public func facebookToken(token: String) {
+  fileprivate let facebookTokenProperty = MutableProperty("")
+  public func facebookToken(_ token: String) {
     self.facebookTokenProperty.value = token
   }
 
-  private let createAccountButtonProperty = MutableProperty()
+  fileprivate let createAccountButtonProperty = MutableProperty()
   public func createAccountButtonPressed() {
     self.createAccountButtonProperty.value = ()
   }
 
-  private let loginButtonPressedProperty = MutableProperty()
+  fileprivate let loginButtonPressedProperty = MutableProperty()
   public func loginButtonPressed() {
     self.loginButtonPressedProperty.value = ()
   }
 
-  private let environmentLoggedInProperty = MutableProperty()
+  fileprivate let environmentLoggedInProperty = MutableProperty()
   public func environmentLoggedIn() {
     self.environmentLoggedInProperty.value = ()
   }

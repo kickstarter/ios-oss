@@ -6,7 +6,7 @@ import PassKit
 
 extension PKPaymentSummaryItem: Decodable {
 
-  public static func decode(json: JSON) -> Decoded<PKPaymentSummaryItem> {
+  public static func decode(_ json: JSON) -> Decoded<PKPaymentSummaryItem> {
     return curry(PKPaymentSummaryItem.init(label:amount:type:))
       <^> json <| "label"
       <*> json <| "amount"
@@ -16,7 +16,7 @@ extension PKPaymentSummaryItem: Decodable {
 
 extension PKPaymentRequest: Decodable {
 
-  private convenience init(countryCode: String, currencyCode: String,
+  fileprivate convenience init(countryCode: String, currencyCode: String,
                           merchantCapabilities: PKMerchantCapability,
                           merchantIdentifier: String, paymentSummaryItems: [PKPaymentSummaryItem],
                           shippingType: PKShippingType, supportedNetworks: [String]) {
@@ -28,10 +28,10 @@ extension PKPaymentRequest: Decodable {
     self.merchantIdentifier = merchantIdentifier
     self.paymentSummaryItems = paymentSummaryItems
     self.shippingType = shippingType
-    self.supportedNetworks = supportedNetworks
+    self.supportedNetworks = supportedNetworks as! [PKPaymentNetwork]
   }
 
-  public static func decode(json: JSON) -> Decoded<PKPaymentRequest> {
+  public static func decode(_ json: JSON) -> Decoded<PKPaymentRequest> {
     let create = curry(PKPaymentRequest.init)
     let snakeCase = create
       <^> json <|  "country_code"
@@ -58,7 +58,7 @@ extension PKPaymentRequest: Decodable {
 }
 
 extension NSDecimalNumber: Decodable {
-  public static func decode(json: JSON) -> Decoded<NSDecimalNumber> {
+  public static func decode(_ json: JSON) -> Decoded<NSDecimalNumber> {
     switch json {
     case let .String(string):
       return .Success(NSDecimalNumber(string: string))
@@ -73,12 +73,12 @@ extension NSDecimalNumber: Decodable {
 extension PKPaymentRequest: EncodableType {
   public func encode() -> [String : AnyObject] {
     var result: [String:AnyObject] = [:]
-    result["countryCode"] = self.countryCode
-    result["currencyCode"] = self.currencyCode
-    result["merchantCapabilities"] = self.merchantCapabilities.rawValue.bitComponents()
-    result["merchantIdentifier"] = self.merchantIdentifier
-    result["supportedNetworks"] = self.supportedNetworks
-    result["shippingType"] = self.shippingType.rawValue
+    result["countryCode"] = self.countryCode as AnyObject?
+    result["currencyCode"] = self.currencyCode as AnyObject?
+    result["merchantCapabilities"] = self.merchantCapabilities.rawValue.bitComponents() as AnyObject?
+    result["merchantIdentifier"] = self.merchantIdentifier as AnyObject?
+    result["supportedNetworks"] = self.supportedNetworks as AnyObject?
+    result["shippingType"] = self.shippingType.rawValue as AnyObject?
     result["paymentSummaryItems"] = self.paymentSummaryItems.map { $0.encode() }
     return result
   }
@@ -87,16 +87,16 @@ extension PKPaymentRequest: EncodableType {
 extension PKPaymentSummaryItem: EncodableType {
   public func encode() -> [String : AnyObject] {
     var result: [String:AnyObject] = [:]
-    result["label"] = self.label
+    result["label"] = self.label as AnyObject?
     result["amount"] = self.amount
-    result["type"] = self.type.rawValue
+    result["type"] = self.type.rawValue as AnyObject?
     return result
   }
 }
 
 // swiftlint:disable cyclomatic_complexity
 extension PKMerchantCapability: Decodable {
-  public static func decode(json: JSON) -> Decoded<PKMerchantCapability> {
+  public static func decode(_ json: JSON) -> Decoded<PKMerchantCapability> {
     switch json {
     case let .String(string):
       switch string {
@@ -137,7 +137,7 @@ extension PKMerchantCapability: Decodable {
 }
 
 extension PKShippingType: Decodable {
-  public static func decode(json: JSON) -> Decoded<PKShippingType> {
+  public static func decode(_ json: JSON) -> Decoded<PKShippingType> {
     switch json {
     case let .String(string):
       switch string {
@@ -174,7 +174,7 @@ extension PKShippingType: Decodable {
 }
 
 extension PKPaymentSummaryItemType: Decodable {
-  public static func decode(json: JSON) -> Decoded<PKPaymentSummaryItemType> {
+  public static func decode(_ json: JSON) -> Decoded<PKPaymentSummaryItemType> {
     switch json {
     case let .String(string):
       switch string {
@@ -207,8 +207,8 @@ extension UInt {
   /**
    - returns: An array of bitmask values for an integer.
    */
-  private func bitComponents() -> [UInt] {
-    let range: Range<UInt> = 0 ..< UInt(8 * sizeof(UInt))
+  fileprivate func bitComponents() -> [UInt] {
+    let range: CountableRange<UInt> = 0 ..< UInt(8 * MemoryLayout<UInt>.size)
     return range
       .map { 1 << $0 }
       .filter { self & $0 != 0 }

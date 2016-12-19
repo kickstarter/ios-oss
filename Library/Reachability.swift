@@ -1,4 +1,4 @@
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 import SystemConfiguration
 
@@ -19,7 +19,7 @@ public enum Reachability {
 private let reachabilityProperty: MutableProperty<Reachability> = {
   guard
     let networkReachability = networkReachability(),
-    reachabilityFlags = reachabilityFlags(forNetworkReachability: networkReachability)
+    let reachabilityFlags = reachabilityFlags(forNetworkReachability: networkReachability)
     else { return MutableProperty(.none) }
 
   guard SCNetworkReachabilitySetCallback(networkReachability, callback, nil)
@@ -29,15 +29,15 @@ private let reachabilityProperty: MutableProperty<Reachability> = {
   return MutableProperty(reachability(forFlags: reachabilityFlags))
 }()
 
-private let queue = dispatch_queue_create("com.kickstarter.reachability", DISPATCH_QUEUE_SERIAL)
+private let queue = DispatchQueue(label: "com.kickstarter.reachability", attributes: [])
 
 private func networkReachability() -> SCNetworkReachability? {
   var zeroAddress = sockaddr_in()
-  zeroAddress.sin_len = UInt8(sizeofValue(zeroAddress))
+  zeroAddress.sin_len = UInt8(MemoryLayout.size(ofValue: zeroAddress))
   zeroAddress.sin_family = sa_family_t(AF_INET)
 
   guard let ref =
-    withUnsafePointer(&zeroAddress, {
+    withUnsafePointer(to: &zeroAddress, {
       SCNetworkReachabilityCreateWithAddress(nil, UnsafePointer($0))
     }) else { return nil }
 
@@ -49,7 +49,7 @@ private func reachabilityFlags(forNetworkReachability networkReachability: SCNet
 
     var reachabilityFlags = SCNetworkReachabilityFlags()
 
-    guard withUnsafeMutablePointer(&reachabilityFlags, {
+    guard withUnsafeMutablePointer(to: &reachabilityFlags, {
       SCNetworkReachabilityGetFlags(networkReachability, UnsafeMutablePointer($0))
     }) else { return nil }
 
@@ -58,19 +58,19 @@ private func reachabilityFlags(forNetworkReachability networkReachability: SCNet
 
 private func reachability(forFlags flags: SCNetworkReachabilityFlags) -> Reachability {
   #if os(iOS)
-  if flags.contains(.IsWWAN) {
+  if flags.contains(.isWWAN) {
     return .wwan
   }
   #endif
-  if flags.contains(.Reachable) {
+  if flags.contains(.reachable) {
     return .wifi
   }
 
   return .none
 }
 
-private func callback(networkReachability: SCNetworkReachability, flags: SCNetworkReachabilityFlags,
-                      info: UnsafeMutablePointer<Void>) {
+private func callback(_ networkReachability: SCNetworkReachability, flags: SCNetworkReachabilityFlags,
+                      info: UnsafeMutableRawPointer) {
 
   reachabilityProperty.value = reachability(forFlags: flags)
 }

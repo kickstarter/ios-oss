@@ -1,13 +1,13 @@
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 
 public protocol ProjectNavBarViewModelInputs {
   func categoryButtonTapped()
   func closeButtonTapped()
-  func configureWith(project project: Project, refTag: RefTag?)
-  func projectImageIsVisible(visible: Bool)
+  func configureWith(project: Project, refTag: RefTag?)
+  func projectImageIsVisible(_ visible: Bool)
   func projectVideoDidFinish()
   func projectVideoDidStart()
   func starButtonTapped()
@@ -204,27 +204,27 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
   }
   // swiftlint:enable function_body_length
 
-  private let projectAndRefTagProperty = MutableProperty<(Project, RefTag?)?>(nil)
-  public func configureWith(project project: Project, refTag: RefTag?) {
+  fileprivate let projectAndRefTagProperty = MutableProperty<(Project, RefTag?)?>(nil)
+  public func configureWith(project: Project, refTag: RefTag?) {
     self.projectAndRefTagProperty.value = (project, refTag)
   }
 
-  private let closeButtonTappedProperty = MutableProperty()
+  fileprivate let closeButtonTappedProperty = MutableProperty()
   public func closeButtonTapped() {
     self.closeButtonTappedProperty.value = ()
   }
 
-  private let projectImageIsVisibleProperty = MutableProperty(false)
-  public func projectImageIsVisible(visible: Bool) {
+  fileprivate let projectImageIsVisibleProperty = MutableProperty(false)
+  public func projectImageIsVisible(_ visible: Bool) {
     self.projectImageIsVisibleProperty.value = visible
   }
 
-  private let projectVideoDidFinishProperty = MutableProperty()
+  fileprivate let projectVideoDidFinishProperty = MutableProperty()
   public func projectVideoDidFinish() {
     self.projectVideoDidFinishProperty.value = ()
   }
 
-  private let projectVideoDidStartProperty = MutableProperty()
+  fileprivate let projectVideoDidStartProperty = MutableProperty()
   public func projectVideoDidStart() {
     self.projectVideoDidStartProperty.value = ()
   }
@@ -232,22 +232,22 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
   public func categoryButtonTapped() {
   }
 
-  private let starButtonTappedProperty = MutableProperty()
+  fileprivate let starButtonTappedProperty = MutableProperty()
   public func starButtonTapped() {
     self.starButtonTappedProperty.value = ()
   }
 
-  private let userSessionEndedProperty = MutableProperty()
+  fileprivate let userSessionEndedProperty = MutableProperty()
   public func userSessionEnded() {
     self.userSessionEndedProperty.value = ()
   }
 
-  private let userSessionStartedProperty = MutableProperty()
+  fileprivate let userSessionStartedProperty = MutableProperty()
   public func userSessionStarted() {
     self.userSessionStartedProperty.value = ()
   }
 
-  private let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty()
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }

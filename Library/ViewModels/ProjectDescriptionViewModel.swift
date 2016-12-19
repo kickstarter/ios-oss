@@ -1,15 +1,15 @@
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 import WebKit
 
 public protocol ProjectDescriptionViewModelInputs {
   /// Call with the project given to the view.
-  func configureWith(project project: Project)
+  func configureWith(project: Project)
 
   /// Call when the webview needs to decide a policy for a navigation action. Returns the decision policy.
-  func decidePolicyFor(navigationAction navigationAction: WKNavigationActionData)
+  func decidePolicyFor(navigationAction: WKNavigationActionData)
 
   /// Call when the view loads.
   func viewDidLoad()
@@ -51,7 +51,7 @@ ProjectDescriptionViewModelInputs, ProjectDescriptionViewModelOutputs {
 
     let projectDescriptionRequest = project
       .map {
-        NSURL(string: $0.urls.web.project)?.URLByAppendingPathComponent("description")
+        URL(string: $0.urls.web.project)?.URLByAppendingPathComponent("description")
       }
       .ignoreNil()
 
@@ -72,8 +72,7 @@ ProjectDescriptionViewModelInputs, ProjectDescriptionViewModelOutputs {
     let possiblyGoBackToProject = combineLatest(project, navigation)
       .map { (project, navigation) -> Project? in
         guard
-          case let (.project(param, .root, _))? = navigation
-          where String(project.id) == param.slug || project.slug == param.slug
+          case let (.project(param, .root, _))? = navigation, String(project.id) == param.slug || project.slug == param.slug
           else { return nil }
 
         return project
@@ -94,21 +93,21 @@ ProjectDescriptionViewModelInputs, ProjectDescriptionViewModelOutputs {
     }
   }
 
-  private let projectProperty = MutableProperty<Project?>(nil)
-  public func configureWith(project project: Project) {
+  fileprivate let projectProperty = MutableProperty<Project?>(nil)
+  public func configureWith(project: Project) {
     self.projectProperty.value = project
   }
-  private let policyForNavigationActionProperty = MutableProperty<WKNavigationActionData?>(nil)
-  public func decidePolicyFor(navigationAction navigationAction: WKNavigationActionData) {
+  fileprivate let policyForNavigationActionProperty = MutableProperty<WKNavigationActionData?>(nil)
+  public func decidePolicyFor(navigationAction: WKNavigationActionData) {
     self.policyForNavigationActionProperty.value = navigationAction
   }
 
-  private let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty()
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
 
-  private let policyDecisionProperty = MutableProperty(WKNavigationActionPolicy.Allow)
+  fileprivate let policyDecisionProperty = MutableProperty(WKNavigationActionPolicy.Allow)
   public var decidedPolicyForNavigationAction: WKNavigationActionPolicy {
     return self.policyDecisionProperty.value
   }
@@ -121,12 +120,12 @@ ProjectDescriptionViewModelInputs, ProjectDescriptionViewModelOutputs {
   public var outputs: ProjectDescriptionViewModelOutputs { return self }
 }
 
-private func isMessageCreator(navigation navigation: Navigation) -> Bool {
+private func isMessageCreator(navigation: Navigation) -> Bool {
   guard case .project(_, .messageCreator, _) = navigation else { return false }
   return true
 }
 
 private func allowed(navigationAction action: WKNavigationActionData) -> Bool {
-  return action.request.URL?.path?.containsString("/description") == .Some(true)
-    || action.targetFrame?.mainFrame == .Some(false)
+  return action.request.url?.path.contains("/description") == .some(true)
+    || action.targetFrame?.mainFrame == .some(false)
 }

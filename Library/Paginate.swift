@@ -1,4 +1,4 @@
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 import Prelude
 import ReactiveExtensions
@@ -42,11 +42,11 @@ public func paginate <Cursor, Value: Equatable, Envelope, ErrorEnvelope, Request
   requestNextPageWhen  requestNextPage: Signal<(), NoError>,
                        clearOnNewRequest: Bool,
                        skipRepeats: Bool = true,
-                       valuesFromEnvelope: (Envelope -> [Value]),
-                       cursorFromEnvelope: (Envelope -> Cursor),
-                       requestFromParams: (RequestParams -> SignalProducer<Envelope, ErrorEnvelope>),
-                       requestFromCursor: (Cursor -> SignalProducer<Envelope, ErrorEnvelope>),
-                       concater: (([Value], [Value]) -> [Value]) = (+))
+                       valuesFromEnvelope: @escaping ((Envelope) -> [Value]),
+                       cursorFromEnvelope: @escaping ((Envelope) -> Cursor),
+                       requestFromParams: ((RequestParams) -> SignalProducer<Envelope, ErrorEnvelope>),
+                       requestFromCursor: ((Cursor) -> SignalProducer<Envelope, ErrorEnvelope>),
+                       concater: @escaping (([Value], [Value]) -> [Value]) = (+))
   ->
   (paginatedValues: Signal<[Value], NoError>,
    isLoading: Signal<Bool, NoError>,

@@ -1,18 +1,18 @@
 import UIKit
 
 public extension UICollectionView {
-  public func registerCellClass <CellClass: UICollectionViewCell> (cellClass: CellClass.Type) {
-    registerClass(cellClass, forCellWithReuseIdentifier: cellClass.description())
+  public func registerCellClass <CellClass: UICollectionViewCell> (_ cellClass: CellClass.Type) {
+    register(cellClass, forCellWithReuseIdentifier: cellClass.description())
   }
 
-  public func registerCellNibForClass(cellClass: AnyClass) {
+  public func registerCellNibForClass(_ cellClass: AnyClass) {
     let classNameWithoutModule = cellClass
       .description()
-      .componentsSeparatedByString(".")
+      .components(separatedBy: ".")
       .dropFirst()
-      .joinWithSeparator(".")
+      .joined(separator: ".")
 
-    registerNib(UINib(nibName: classNameWithoutModule, bundle: nil),
+    register(UINib(nibName: classNameWithoutModule, bundle: nil),
                 forCellWithReuseIdentifier: classNameWithoutModule)
   }
 }

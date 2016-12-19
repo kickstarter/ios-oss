@@ -7,9 +7,9 @@ public final class PKPaymentRequestTests: XCTestCase {
 
   func testDecodingSnakeCase_MinimalData() {
     let json: [String:AnyObject] = [
-      "country_code": "US",
-      "currency_code": "USD",
-      "merchant_identifier": "merchant.test",
+      "country_code": "US" as AnyObject,
+      "currency_code": "USD" as AnyObject,
+      "merchant_identifier": "merchant.test" as AnyObject,
       "payment_summary_items": [
         [
           "label": "The thing",
@@ -35,10 +35,10 @@ public final class PKPaymentRequestTests: XCTestCase {
 
   func testDecodingSnakeCase_FullData() {
     let json: [String:AnyObject] = [
-      "country_code": "US",
-      "currency_code": "USD",
-      "merchant_capabilities": "Capability3DS",
-      "merchant_identifier": "merchant.test",
+      "country_code": "US" as AnyObject,
+      "currency_code": "USD" as AnyObject,
+      "merchant_capabilities": "Capability3DS" as AnyObject,
+      "merchant_identifier": "merchant.test" as AnyObject,
       "payment_summary_items": [
         [
           "label": "The thing",
@@ -127,20 +127,20 @@ public final class PKPaymentRequestTests: XCTestCase {
 
   func testEncoding() {
     let json: [String:AnyObject] = [
-      "countryCode": "US",
-      "currencyCode": "USD",
+      "countryCode": "US" as AnyObject,
+      "currencyCode": "USD" as AnyObject,
       "merchantCapabilities": [
-        PKMerchantCapability.Capability3DS.rawValue, PKMerchantCapability.CapabilityCredit.rawValue
+        PKMerchantCapability.capability3DS.rawValue, PKMerchantCapability.capabilityCredit.rawValue
       ],
       "merchantIdentifier": "merchant.test",
       "paymentSummaryItems": [
         [
           "label": "The thing",
           "amount": 10,
-          "type": PKPaymentSummaryItemType.Pending.rawValue
+          "type": PKPaymentSummaryItemType.pending.rawValue
         ]
       ],
-      "shippingType": PKShippingType.Delivery.rawValue,
+      "shippingType": PKShippingType.delivery.rawValue,
       "supportedNetworks": ["Visa", "MasterCard", "AmEx", "Discover"]
     ]
     let decoded = PKPaymentRequest.decodeJSONDictionary(json)

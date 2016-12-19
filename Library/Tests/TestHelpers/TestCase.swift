@@ -1,6 +1,6 @@
 import AVFoundation
 import FBSnapshotTestCase
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 import XCTest
 @testable import KsApi
@@ -43,7 +43,7 @@ internal class TestCase: FBSnapshotTestCase {
       mainBundle: mainBundle,
       reachability: .init(value: .wifi),
       scheduler: self.scheduler,
-      timeZone: NSTimeZone(name: "GMT")!,
+      timeZone: TimeZone(name: "GMT")!,
       ubiquitousStore: self.ubiquitousStore,
       userDefaults: self.userDefaults
     )

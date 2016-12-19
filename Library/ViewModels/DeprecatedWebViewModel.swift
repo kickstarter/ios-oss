@@ -1,4 +1,4 @@
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 
 public protocol DeprecatedWebViewModelInputs {
@@ -47,22 +47,22 @@ DeprecatedWebViewModelOutputs {
       .skipRepeats(==)
   }
 
-  private let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty()
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
 
-  private let webViewDidFailErrorProperty = MutableProperty<NSError?>(nil)
+  fileprivate let webViewDidFailErrorProperty = MutableProperty<NSError?>(nil)
   public func webViewDidFail(withError error: NSError?) {
     self.webViewDidFailErrorProperty.value = error
   }
 
-  private let webViewDidFinishLoadProperty = MutableProperty()
+  fileprivate let webViewDidFinishLoadProperty = MutableProperty()
   public func webViewDidFinishLoad() {
     self.webViewDidFinishLoadProperty.value = ()
   }
 
-  private let webViewDidStartLoadProperty = MutableProperty()
+  fileprivate let webViewDidStartLoadProperty = MutableProperty()
   public func webViewDidStartLoad() {
     self.webViewDidStartLoadProperty.value = ()
   }

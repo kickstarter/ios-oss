@@ -5,12 +5,12 @@ import UIKit
 public let baseButtonStyle =
   roundedStyle(cornerRadius: 2)
     <> UIButton.lens.titleLabel.font %~~ { _, button in
-      button.traitCollection.verticalSizeClass == .Compact
+      button.traitCollection.verticalSizeClass == .compact
         ? .ksr_callout(size: 12)
         : .ksr_callout(size: 14)
     }
     <> UIButton.lens.contentEdgeInsets %~~ { _, button in
-      button.traitCollection.verticalSizeClass == .Compact
+      button.traitCollection.verticalSizeClass == .compact
         ? .init(topBottom: 10.0, leftRight: 12.0)
         : .init(topBottom: 13.0, leftRight: 16.0)
     }
@@ -81,13 +81,13 @@ public let greenButtonStyle =
 
 public let lightNavyButtonStyle =
   baseButtonStyle
-    <> UIButton.lens.titleColor(forState: .Normal) .~ .ksr_text_navy_700
-    <> UIButton.lens.backgroundColor(forState: .Normal) .~ .ksr_navy_200
-    <> UIButton.lens.titleColor(forState: .Highlighted) .~ .ksr_text_navy_900
-    <> UIButton.lens.backgroundColor(forState: .Highlighted) .~ .ksr_navy_400
-    <> UIButton.lens.titleColor(forState: .Disabled) .~ .init(white: 0.0, alpha: 0.4)
-    <> UIButton.lens.backgroundColor(forState: .Disabled) .~ .ksr_navy_600
-    <> UIButton.lens.layer.borderColor .~ UIColor.ksr_navy_300.CGColor
+    <> UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_navy_700
+    <> UIButton.lens.backgroundColor(forState: .normal) .~ .ksr_navy_200
+    <> UIButton.lens.titleColor(forState: .highlighted) .~ .ksr_text_navy_900
+    <> UIButton.lens.backgroundColor(forState: .highlighted) .~ .ksr_navy_400
+    <> UIButton.lens.titleColor(forState: .disabled) .~ .init(white: 0.0, alpha: 0.4)
+    <> UIButton.lens.backgroundColor(forState: .disabled) .~ .ksr_navy_600
+    <> UIButton.lens.layer.borderColor .~ UIColor.ksr_navy_300.cgColor
     <> UIButton.lens.layer.borderWidth .~ 1.0
 
 public let navyButtonStyle =

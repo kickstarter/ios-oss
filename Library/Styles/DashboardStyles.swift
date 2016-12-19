@@ -3,12 +3,12 @@ import Prelude_UIKit
 import UIKit
 
 public let dashboardActionButtonStyle = UIButton.lens.titleLabel.font .~ .ksr_subhead()
-  <> UIButton.lens.titleColor(forState: .Normal) .~ .ksr_text_navy_600
-  <> UIButton.lens.titleColor(forState: .Highlighted) .~ .ksr_grey_100
+  <> UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_navy_600
+  <> UIButton.lens.titleColor(forState: .highlighted) .~ .ksr_grey_100
 
 public let dashboardActivityButtonStyle =
   dashboardActionButtonStyle
-    <> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.dashboard_buttons_activity() }
+    <> UIButton.lens.title(forState: .normal) %~ { _ in Strings.dashboard_buttons_activity() }
     <> UIButton.lens.accessibilityHint %~ { _ in Strings.accessibility_dashboard_buttons_activity_hint() }
     <> UIButton.lens.accessibilityLabel %~ { _ in Strings.dashboard_buttons_activity() }
 
@@ -17,7 +17,7 @@ public let dashboardCellTitleLabelStyle =
   <> UILabel.lens.font .~ .ksr_title2()
 
 public let dashboardCardStyle = roundedStyle()
-  <> UIView.lens.layer.borderColor .~ UIColor.ksr_navy_300.CGColor
+  <> UIView.lens.layer.borderColor .~ UIColor.ksr_navy_300.cgColor
   <> UIView.lens.layer.borderWidth .~ 1.0
 
 public let dashboardChartCardViewStyle = dashboardCardStyle
@@ -71,7 +71,7 @@ public let dashboardFundingProgressTitleLabelStyle = dashboardCellTitleLabelStyl
 public let dashboardFundingStatsStackView =
   UIStackView.lens.layoutMargins .~ .init(topBottom: 24.0, leftRight: 16.0)
   <> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
-  <> UIStackView.lens.distribution .~ .EqualSpacing
+  <> UIStackView.lens.distribution .~ .equalSpacing
 
 public let dashboardGrayTextBorderButtonStyle = borderButtonStyle
   <> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 12)
@@ -96,7 +96,7 @@ public let dashboardStatSubtitleLabelStyle =
 
 public let dashboardMessagesButtonStyle =
   dashboardActionButtonStyle
-    <> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.dashboard_buttons_messages() }
+    <> UIButton.lens.title(forState: .normal) %~ { _ in Strings.dashboard_buttons_messages() }
     <> UIButton.lens.accessibilityHint %~ { _ in Strings.accessibility_dashboard_buttons_messages_hint() }
     <> UIButton.lens.accessibilityLabel %~ { _ in Strings.dashboard_buttons_messages() }
 
@@ -149,9 +149,9 @@ public let dashboardReferrersCumulativeStackViewStyle =
     <> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
 
 public let dashboardStatsRowStackViewStyle =
-  UIStackView.lens.axis .~ .Horizontal
-    <> UIStackView.lens.alignment .~ .Fill
-    <> UIStackView.lens.distribution .~ .FillEqually
+  UIStackView.lens.axis .~ .horizontal
+    <> UIStackView.lens.alignment .~ .fill
+    <> UIStackView.lens.distribution .~ .fillEqually
     <> UIStackView.lens.spacing .~ 15
     <> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
 
@@ -165,7 +165,7 @@ public let dashboardVideoCompletionPercentageLabelStyle =
 
 public let dashboardVideoExternalPlaysProgressViewStyle =
   UIView.lens.backgroundColor .~ .ksr_orange_400
-    <> UIView.lens.layer.borderColor .~ UIColor.ksr_orange_600.CGColor
+    <> UIView.lens.layer.borderColor .~ UIColor.ksr_orange_600.cgColor
     <> UIView.lens.layer.borderWidth .~ 1
 
 public let dashboardVideoGraphPercentageLabelStyle =
@@ -174,7 +174,7 @@ public let dashboardVideoGraphPercentageLabelStyle =
 
 public let dashboardVideoInternalPlaysProgressViewStyle =
   UIView.lens.backgroundColor .~ .ksr_green_500
-    <> UIView.lens.layer.borderColor .~ UIColor.ksr_green_700.CGColor
+    <> UIView.lens.layer.borderColor .~ UIColor.ksr_green_700.cgColor
     <> UIView.lens.layer.borderWidth .~ 1
 
 public let dashboardVideoPlaysTitleLabelStyle = dashboardCellTitleLabelStyle

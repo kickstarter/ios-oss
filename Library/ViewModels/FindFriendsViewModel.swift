@@ -1,12 +1,12 @@
 import KsApi
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 import Result
 import Prelude
 
 public protocol FindFriendsViewModelInputs {
   /// Call to set where Friends View Controller was loaded from
-  func configureWith(source source: FriendsSource)
+  func configureWith(source: FriendsSource)
 
   /// Call when press OK on Follow All Friends confirmation alert
   func confirmFollowAllFriends()
@@ -24,19 +24,19 @@ public protocol FindFriendsViewModelInputs {
   func findFriendsFacebookConnectCellDidDismissHeader()
 
   /// Call when an alert should be shown.
-  func findFriendsFacebookConnectCellShowErrorAlert(alert: AlertError)
+  func findFriendsFacebookConnectCellShowErrorAlert(_ alert: AlertError)
 
   /// Call when should display "Follow all friends?" confirmation alert
-  func findFriendsStatsCellShowFollowAllFriendsAlert(friendCount friendCount: Int)
+  func findFriendsStatsCellShowFollowAllFriendsAlert(friendCount: Int)
 
   /// Call when friend status updates from a FriendFollowCell.
-  func updateFriend(updatedFriend: User)
+  func updateFriend(_ updatedFriend: User)
 
   /// Call when view loads
   func viewDidLoad()
 
   /// Call when a new row of friends is displayed
-  func willDisplayRow(row: Int, outOf totalRows: Int)
+  func willDisplayRow(_ row: Int, outOf totalRows: Int)
 }
 
 public protocol FindFriendsViewModelOutputs {
@@ -153,46 +153,46 @@ public final class FindFriendsViewModel: FindFriendsViewModelType, FindFriendsVi
   }
   // swiftlint:enable function_body_length
 
-  private let configureWithProperty = MutableProperty<FriendsSource>(FriendsSource.findFriends)
-  public func configureWith(source source: FriendsSource) {
+  fileprivate let configureWithProperty = MutableProperty<FriendsSource>(FriendsSource.findFriends)
+  public func configureWith(source: FriendsSource) {
     self.configureWithProperty.value = source
   }
-  private let confirmFollowAllFriendsProperty = MutableProperty()
+  fileprivate let confirmFollowAllFriendsProperty = MutableProperty()
   public func confirmFollowAllFriends() {
     self.confirmFollowAllFriendsProperty.value = ()
   }
-  private let declineFollowAllFriendsProperty = MutableProperty()
+  fileprivate let declineFollowAllFriendsProperty = MutableProperty()
   public func declineFollowAllFriends() {
     self.declineFollowAllFriendsProperty.value = ()
   }
   public func findFriendsFacebookConnectCellDidDismissHeader() {}
 
-  private let userFacebookConnectedProperty = MutableProperty()
+  fileprivate let userFacebookConnectedProperty = MutableProperty()
   public func findFriendsFacebookConnectCellDidFacebookConnectUser() {
     self.userFacebookConnectedProperty.value = ()
   }
-  private let showFacebookConnectErrorAlertProperty = MutableProperty<AlertError?>(nil)
-  public func findFriendsFacebookConnectCellShowErrorAlert(alert: AlertError) {
+  fileprivate let showFacebookConnectErrorAlertProperty = MutableProperty<AlertError?>(nil)
+  public func findFriendsFacebookConnectCellShowErrorAlert(_ alert: AlertError) {
     self.showFacebookConnectErrorAlertProperty.value = alert
   }
-  private let updateFriendProperty = MutableProperty<User?>(nil)
-  public func updateFriend(updatedFriend: User) {
+  fileprivate let updateFriendProperty = MutableProperty<User?>(nil)
+  public func updateFriend(_ updatedFriend: User) {
     self.updateFriendProperty.value = updatedFriend
   }
-  private let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty()
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
-  private let discoverButtonTappedProperty = MutableProperty()
+  fileprivate let discoverButtonTappedProperty = MutableProperty()
   public func discoverButtonTapped() {
     self.discoverButtonTappedProperty.value = ()
   }
-  private let showFollowAllFriendsAlertProperty = MutableProperty<Int>(0)
-  public func findFriendsStatsCellShowFollowAllFriendsAlert(friendCount friendCount: Int) {
+  fileprivate let showFollowAllFriendsAlertProperty = MutableProperty<Int>(0)
+  public func findFriendsStatsCellShowFollowAllFriendsAlert(friendCount: Int) {
     self.showFollowAllFriendsAlertProperty.value = friendCount
   }
-  private let willDisplayRowProperty = MutableProperty<(row: Int, total: Int)?>(nil)
-  public func willDisplayRow(row: Int, outOf totalRows: Int) {
+  fileprivate let willDisplayRowProperty = MutableProperty<(row: Int, total: Int)?>(nil)
+  public func willDisplayRow(_ row: Int, outOf totalRows: Int) {
     self.willDisplayRowProperty.value = (row, totalRows)
   }
 

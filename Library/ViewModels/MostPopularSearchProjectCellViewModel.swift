@@ -1,10 +1,10 @@
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 
 public protocol MostPopularSearchProjectCellViewModelInputs {
-  func configureWith(project project: Project)
+  func configureWith(project: Project)
 }
 
 public protocol MostPopularSearchProjectCellViewModelOutputs {
@@ -38,8 +38,8 @@ MostPopularSearchProjectCellViewModelInputs, MostPopularSearchProjectCellViewMod
     self.projectNameLabelText = project.map(Project.lens.name.view)
   }
 
-  private let projectProperty = MutableProperty<Project?>(nil)
-  public func configureWith(project project: Project) {
+  fileprivate let projectProperty = MutableProperty<Project?>(nil)
+  public func configureWith(project: Project) {
     self.projectProperty.value = project
   }
 

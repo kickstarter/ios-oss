@@ -1,9 +1,9 @@
 import UIKit
 
 extension UIView {
-  public override class func initialize() {
+  open override class func initialize() {
     struct Static {
-      static var token: dispatch_once_t = 0
+      static var token: Int = 0
     }
 
     // make sure this isn't a subclass
@@ -34,7 +34,7 @@ extension UIView {
     }
   }
 
-  public override func awakeFromNib() {
+  open override func awakeFromNib() {
     super.awakeFromNib()
     self.bindViewModel()
   }
@@ -47,12 +47,12 @@ extension UIView {
 
   public static var defaultReusableId: String {
     return self.description()
-      .componentsSeparatedByString(".")
+      .components(separatedBy: ".")
       .dropFirst()
-      .joinWithSeparator(".")
+      .joined(separator: ".")
   }
 
-  internal func ksr_traitCollectionDidChange(previousTraitCollection: UITraitCollection) {
+  internal func ksr_traitCollectionDidChange(_ previousTraitCollection: UITraitCollection) {
     self.ksr_traitCollectionDidChange(previousTraitCollection)
     self.bindStyles()
   }

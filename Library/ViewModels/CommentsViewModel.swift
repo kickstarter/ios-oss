@@ -1,4 +1,4 @@
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 import Result
 import KsApi
@@ -9,14 +9,14 @@ public protocol CommentsViewModelInputs {
   func commentButtonPressed()
 
   /// Call when the comment dialog has posted a comment.
-  func commentPosted(comment: Comment)
+  func commentPosted(_ comment: Comment)
 
   /// Call when the login button is pressed in the empty state.
   func loginButtonPressed()
 
   /// Call with the project/update that we are viewing comments for. Both can be provided to minimize
   /// the number of API requests made, but it will be assumed we are viewing the comments for the update.
-  func configureWith(project project: Project?, update: Update?)
+  func configureWith(project: Project?, update: Update?)
 
   ///  Call when pull-to-refresh is invoked.
   func refresh()
@@ -28,7 +28,7 @@ public protocol CommentsViewModelInputs {
   func viewDidLoad()
 
   /// Call when a new row is displayed.
-  func willDisplayRow(row: Int, outOf totalRows: Int)
+  func willDisplayRow(_ row: Int, outOf totalRows: Int)
 }
 
 public protocol CommentsViewModelOutputs {
@@ -174,43 +174,43 @@ CommentsViewModelOutputs {
   }
   // swiftlint:enable function_body_length
 
-  private let commentButtonPressedProperty = MutableProperty()
+  fileprivate let commentButtonPressedProperty = MutableProperty()
   public func commentButtonPressed() {
     self.commentButtonPressedProperty.value = ()
   }
 
-  private let commentPostedProperty = MutableProperty<Comment?>(nil)
-  public func commentPosted(comment: Comment) {
+  fileprivate let commentPostedProperty = MutableProperty<Comment?>(nil)
+  public func commentPosted(_ comment: Comment) {
     self.commentPostedProperty.value = comment
   }
 
-  private let loginButtonPressedProperty = MutableProperty()
+  fileprivate let loginButtonPressedProperty = MutableProperty()
   public func loginButtonPressed() {
     self.loginButtonPressedProperty.value = ()
   }
 
-  private let projectAndUpdateProperty = MutableProperty<(Project?, Update?)?>(nil)
-  public func configureWith(project project: Project?, update: Update?) {
+  fileprivate let projectAndUpdateProperty = MutableProperty<(Project?, Update?)?>(nil)
+  public func configureWith(project: Project?, update: Update?) {
     self.projectAndUpdateProperty.value = (project, update)
   }
 
-  private let refreshProperty = MutableProperty()
+  fileprivate let refreshProperty = MutableProperty()
   public func refresh() {
     self.refreshProperty.value = ()
   }
 
-  private let userSessionStartedProperty = MutableProperty()
+  fileprivate let userSessionStartedProperty = MutableProperty()
   public func userSessionStarted() {
     self.userSessionStartedProperty.value = ()
   }
 
-  private let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty()
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
 
-  private let willDisplayRowProperty = MutableProperty<(row: Int, total: Int)?>(nil)
-  public func willDisplayRow(row: Int, outOf totalRows: Int) {
+  fileprivate let willDisplayRowProperty = MutableProperty<(row: Int, total: Int)?>(nil)
+  public func willDisplayRow(_ row: Int, outOf totalRows: Int) {
     self.willDisplayRowProperty.value = (row, totalRows)
   }
 

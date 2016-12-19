@@ -1,7 +1,7 @@
 import Argo
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 import Result
 
@@ -10,19 +10,19 @@ public protocol DiscoveryViewModelInputs {
   func filter(withParams params: DiscoveryParams)
 
   /// Call when the UIPageViewController finishes transitioning.
-  func pageTransition(completed completed: Bool)
+  func pageTransition(completed: Bool)
 
   /// Call when the SortPagerViewController wants to switch to a specific sort.
-  func sortPagerSelected(sort sort: DiscoveryParams.Sort)
+  func sortPagerSelected(sort: DiscoveryParams.Sort)
 
   /// Call to disable/enable the sorts when an empty state is displayed/dismissed.
-  func setSortsEnabled(enabled: Bool)
+  func setSortsEnabled(_ enabled: Bool)
 
   /// Call from the controller's viewDidLoad.
   func viewDidLoad()
 
   /// Call from the controller's viewWillAppear.
-  func viewWillAppear(animated animated: Bool)
+  func viewWillAppear(animated: Bool)
 
   /// Call when the UIPageViewController begins a transition sequence.
   func willTransition(toPage nextPage: Int)
@@ -61,7 +61,7 @@ public protocol DiscoveryViewModelType {
 
 public final class DiscoveryViewModel: DiscoveryViewModelType, DiscoveryViewModelInputs,
 DiscoveryViewModelOutputs {
-  private static let defaultParams = .defaults |> DiscoveryParams.lens.includePOTD .~ true
+  fileprivate static let defaultParams = .defaults |> DiscoveryParams.lens.includePOTD .~ true
 
   // swiftlint:disable function_body_length
   public init() {
@@ -125,32 +125,32 @@ DiscoveryViewModelOutputs {
   }
   // swiftlint:enable function_body_length
 
-  private let filterWithParamsProperty = MutableProperty<DiscoveryParams?>(nil)
+  fileprivate let filterWithParamsProperty = MutableProperty<DiscoveryParams?>(nil)
   public func filter(withParams params: DiscoveryParams) {
     self.filterWithParamsProperty.value = params
   }
-  private let pageTransitionCompletedProperty = MutableProperty(false)
-  public func pageTransition(completed completed: Bool) {
+  fileprivate let pageTransitionCompletedProperty = MutableProperty(false)
+  public func pageTransition(completed: Bool) {
     self.pageTransitionCompletedProperty.value = completed
   }
-  private let sortPagerSelectedSortProperty = MutableProperty<DiscoveryParams.Sort?>(nil)
-  public func sortPagerSelected(sort sort: DiscoveryParams.Sort) {
+  fileprivate let sortPagerSelectedSortProperty = MutableProperty<DiscoveryParams.Sort?>(nil)
+  public func sortPagerSelected(sort: DiscoveryParams.Sort) {
     self.sortPagerSelectedSortProperty.value = sort
   }
-  private let setSortsEnabledProperty = MutableProperty<Bool?>(nil)
-  public func setSortsEnabled(enabled: Bool) {
+  fileprivate let setSortsEnabledProperty = MutableProperty<Bool?>(nil)
+  public func setSortsEnabled(_ enabled: Bool) {
     self.setSortsEnabledProperty.value = enabled
   }
-  private let willTransitionToPageProperty = MutableProperty<Int>(0)
+  fileprivate let willTransitionToPageProperty = MutableProperty<Int>(0)
   public func willTransition(toPage nextPage: Int) {
     self.willTransitionToPageProperty.value = nextPage
   }
-  private let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty()
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
-  private let viewWillAppearProperty = MutableProperty<Bool?>(nil)
-  public func viewWillAppear(animated animated: Bool) {
+  fileprivate let viewWillAppearProperty = MutableProperty<Bool?>(nil)
+  public func viewWillAppear(animated: Bool) {
     self.viewWillAppearProperty.value = animated
   }
 

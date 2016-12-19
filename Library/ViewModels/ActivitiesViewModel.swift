@@ -1,12 +1,12 @@
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 import Result
 
 public protocol ActitiviesViewModelInputs {
   /// Called when the project image in an update activity cell is tapped.
-  func activityUpdateCellTappedProjectImage(activity activity: Activity)
+  func activityUpdateCellTappedProjectImage(activity: Activity)
 
   /// Call when the Find Friends section is dismissed.
   func findFriendsHeaderCellDismissHeader()
@@ -21,7 +21,7 @@ public protocol ActitiviesViewModelInputs {
   func findFriendsFacebookConnectCellDidDismissHeader()
 
   /// Call when an alert should be shown.
-  func findFriendsFacebookConnectCellShowErrorAlert(alert: AlertError)
+  func findFriendsFacebookConnectCellShowErrorAlert(_ alert: AlertError)
 
   /// Call when the feed should be refreshed, e.g. pull-to-refresh.
   func refresh()
@@ -30,7 +30,7 @@ public protocol ActitiviesViewModelInputs {
   func surveyResponseViewControllerDismissed()
 
   /// Call when an activity is tapped.
-  func tappedActivity(activity: Activity)
+  func tappedActivity(_ activity: Activity)
 
   /// Call when the respond button is tapped in a survey cell.
   func tappedRespondNow(forSurveyResponse surveyResponse: SurveyResponse)
@@ -45,7 +45,7 @@ public protocol ActitiviesViewModelInputs {
   func viewDidLoad()
 
   /// Call when the view will appear with animated property.
-  func viewWillAppear(animated animated: Bool)
+  func viewWillAppear(animated: Bool)
 
   /**
    Call from the controller's `tableView:willDisplayCell:forRowAtIndexPath` method.
@@ -53,7 +53,7 @@ public protocol ActitiviesViewModelInputs {
    - parameter row:       The 0-based index of the row displaying.
    - parameter totalRows: The total number of rows in the table view.
    */
-  func willDisplayRow(row: Int, outOf totalRows: Int)
+  func willDisplayRow(_ row: Int, outOf totalRows: Int)
 }
 
 public protocol ActivitiesViewModelOutputs {
@@ -264,7 +264,7 @@ ActivitiesViewModelOutputs {
       .filter { $0.category == .update }
       .map { ($0.project, $0.update) }
       .flatMap { (project, update) -> SignalProducer<(Project, Update), NoError> in
-        guard let project = project, update = update else { return .empty }
+        guard let project = project, let update = update else { return .empty }
         return SignalProducer(value: (project, update))
       }
 
@@ -282,64 +282,64 @@ ActivitiesViewModelOutputs {
   }
 
   // swiftlint:enable function_body_length
-  private let dismissFacebookConnectSectionProperty = MutableProperty()
+  fileprivate let dismissFacebookConnectSectionProperty = MutableProperty()
   public func findFriendsFacebookConnectCellDidDismissHeader() {
     dismissFacebookConnectSectionProperty.value = ()
   }
-  private let dismissFindFriendsSectionProperty = MutableProperty()
+  fileprivate let dismissFindFriendsSectionProperty = MutableProperty()
   public func findFriendsHeaderCellDismissHeader() {
     dismissFindFriendsSectionProperty.value = ()
   }
-  private let goToFriendsProperty = MutableProperty()
+  fileprivate let goToFriendsProperty = MutableProperty()
   public func findFriendsHeaderCellGoToFriends() {
     goToFriendsProperty.value = ()
   }
-  private let showFacebookConnectErrorAlertProperty = MutableProperty<AlertError?>(nil)
-  public func findFriendsFacebookConnectCellShowErrorAlert(alert: AlertError) {
+  fileprivate let showFacebookConnectErrorAlertProperty = MutableProperty<AlertError?>(nil)
+  public func findFriendsFacebookConnectCellShowErrorAlert(_ alert: AlertError) {
     showFacebookConnectErrorAlertProperty.value = alert
   }
-  private let viewWillAppearProperty = MutableProperty<Bool?>(nil)
-  public func viewWillAppear(animated animated: Bool) {
+  fileprivate let viewWillAppearProperty = MutableProperty<Bool?>(nil)
+  public func viewWillAppear(animated: Bool) {
     self.viewWillAppearProperty.value = animated
   }
-  private let refreshProperty = MutableProperty()
+  fileprivate let refreshProperty = MutableProperty()
   public func refresh() {
     self.refreshProperty.value = ()
   }
-  private let surveyResponseViewControllerDismissedProperty = MutableProperty()
+  fileprivate let surveyResponseViewControllerDismissedProperty = MutableProperty()
   public func surveyResponseViewControllerDismissed() {
     self.surveyResponseViewControllerDismissedProperty.value = ()
   }
-  private let tappedActivityProjectImage = MutableProperty<Activity?>(nil)
-  public func activityUpdateCellTappedProjectImage(activity activity: Activity) {
+  fileprivate let tappedActivityProjectImage = MutableProperty<Activity?>(nil)
+  public func activityUpdateCellTappedProjectImage(activity: Activity) {
     self.tappedActivityProjectImage.value = activity
   }
-  private let tappedSurveyResponseProperty = MutableProperty<SurveyResponse?>(nil)
+  fileprivate let tappedSurveyResponseProperty = MutableProperty<SurveyResponse?>(nil)
   public func tappedRespondNow(forSurveyResponse surveyResponse: SurveyResponse) {
     self.tappedSurveyResponseProperty.value = surveyResponse
   }
-  private let tappedActivityProperty = MutableProperty<Activity?>(nil)
-  public func tappedActivity(activity: Activity) {
+  fileprivate let tappedActivityProperty = MutableProperty<Activity?>(nil)
+  public func tappedActivity(_ activity: Activity) {
     self.tappedActivityProperty.value = activity
   }
-  private let userFacebookConnectedProperty = MutableProperty()
+  fileprivate let userFacebookConnectedProperty = MutableProperty()
   public func findFriendsFacebookConnectCellDidFacebookConnectUser() {
     userFacebookConnectedProperty.value = ()
   }
-  private let userSessionStartedProperty = MutableProperty(())
+  fileprivate let userSessionStartedProperty = MutableProperty(())
   public func userSessionStarted() {
     self.userSessionStartedProperty.value = ()
   }
-  private let userSessionEndedProperty = MutableProperty(())
+  fileprivate let userSessionEndedProperty = MutableProperty(())
   public func userSessionEnded() {
     self.userSessionEndedProperty.value = ()
   }
-  private let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty()
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
-  private let willDisplayRowProperty = MutableProperty<(row: Int, total: Int)?>(nil)
-  public func willDisplayRow(row: Int, outOf totalRows: Int) {
+  fileprivate let willDisplayRowProperty = MutableProperty<(row: Int, total: Int)?>(nil)
+  public func willDisplayRow(_ row: Int, outOf totalRows: Int) {
     self.willDisplayRowProperty.value = (row, totalRows)
   }
 

@@ -1,10 +1,10 @@
 import KsApi
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 import Result
 
 public protocol MessageThreadCellViewModelInputs {
-  func configureWith(messageThread messageThread: MessageThread)
+  func configureWith(messageThread: MessageThread)
 }
 
 public protocol MessageThreadCellViewModelOutputs {
@@ -60,8 +60,8 @@ public final class MessageThreadCellViewModel: MessageThreadCellViewModelType,
     self.unreadIndicatorHidden = messageThread.map { $0.unreadMessagesCount == 0 }
   }
 
-  private let messageThreadProperty = MutableProperty<MessageThread?>(nil)
-  public func configureWith(messageThread messageThread: MessageThread) {
+  fileprivate let messageThreadProperty = MutableProperty<MessageThread?>(nil)
+  public func configureWith(messageThread: MessageThread) {
     self.messageThreadProperty.value = messageThread
   }
 

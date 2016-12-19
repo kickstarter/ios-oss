@@ -1,12 +1,12 @@
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 import WebKit
 
 public protocol ProjectCreatorViewModelInputs {
   /// Call with the project given to the view.
-  func configureWith(project project: Project)
+  func configureWith(project: Project)
 
   /// Call with the navigation action given to the webview's delegate method. Returns the policy that can
   /// be returned from the delegate method.
@@ -46,7 +46,7 @@ ProjectCreatorViewModelOutputs {
       .map { $0.request }
 
     self.loadWebViewRequest = project.map {
-      NSURL(string: $0.urls.web.project)?.URLByAppendingPathComponent("creator_bio")
+      URL(string: $0.urls.web.project)?.URLByAppendingPathComponent("creator_bio")
       }
       .ignoreNil()
       .map { AppEnvironment.current.apiService.preparedRequest(forURL: $0) }
@@ -71,20 +71,20 @@ ProjectCreatorViewModelOutputs {
     }
   }
 
-  private let projectProperty = MutableProperty<Project?>(nil)
-  public func configureWith(project project: Project) {
+  fileprivate let projectProperty = MutableProperty<Project?>(nil)
+  public func configureWith(project: Project) {
     self.projectProperty.value = project
   }
 
-  private let navigationAction = MutableProperty<WKNavigationActionProtocol?>(nil)
-  private let decidedPolicy = MutableProperty(WKNavigationActionPolicy.Cancel)
+  fileprivate let navigationAction = MutableProperty<WKNavigationActionProtocol?>(nil)
+  fileprivate let decidedPolicy = MutableProperty(WKNavigationActionPolicy.Cancel)
   public func decidePolicy(forNavigationAction action: WKNavigationActionProtocol)
     -> WKNavigationActionPolicy {
     self.navigationAction.value = action
     return self.decidedPolicy.value
   }
 
-  private let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty()
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
@@ -97,7 +97,7 @@ ProjectCreatorViewModelOutputs {
   public var outputs: ProjectCreatorViewModelOutputs { return self }
 }
 
-private func isMessageCreator(request request: NSURLRequest) -> Bool {
+private func isMessageCreator(request: URLRequest) -> Bool {
   if let nav = Navigation.match(request), case .project(_, .messageCreator, _) = nav { return true }
   return false
 }

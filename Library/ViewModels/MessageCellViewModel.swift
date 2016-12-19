@@ -1,9 +1,9 @@
 import KsApi
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 
 public protocol MessageCellViewModelInputs {
-  func configureWith(message message: Message)
+  func configureWith(message: Message)
 }
 
 public protocol MessageCellViewModelOutputs {
@@ -40,8 +40,8 @@ MessageCellViewModelOutputs {
     self.body = message.map { $0.body }
   }
 
-  private let messageProperty = MutableProperty<Message?>(nil)
-  public func configureWith(message message: Message) {
+  fileprivate let messageProperty = MutableProperty<Message?>(nil)
+  public func configureWith(message: Message) {
     self.messageProperty.value = message
   }
 

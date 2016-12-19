@@ -1,12 +1,12 @@
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 import Result
 
 public protocol BackingViewModelInputs {
   /// Configures the view model with a project.
-  func configureWith(project project: Project, backer: User?)
+  func configureWith(project: Project, backer: User?)
 
   /// Call when the "Message creator" button is pressed.
   func messageCreatorTapped()
@@ -190,22 +190,22 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
   }
   // swiftlint:enable function_body_length
 
-  private let messageCreatorTappedProperty = MutableProperty()
+  fileprivate let messageCreatorTappedProperty = MutableProperty()
   public func messageCreatorTapped() {
     self.messageCreatorTappedProperty.value = ()
   }
 
-  private let projectAndBackerProperty = MutableProperty<(Project, User?)?>(nil)
-  public func configureWith(project project: Project, backer: User?) {
+  fileprivate let projectAndBackerProperty = MutableProperty<(Project, User?)?>(nil)
+  public func configureWith(project: Project, backer: User?) {
     self.projectAndBackerProperty.value = (project, backer)
   }
 
-  private let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty()
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
 
-  private let viewMessagesTappedProperty = MutableProperty()
+  fileprivate let viewMessagesTappedProperty = MutableProperty()
   public func viewMessagesTapped() {
     self.viewMessagesTappedProperty.value = ()
   }
@@ -235,7 +235,7 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
   public var outputs: BackingViewModelOutputs { return self }
 }
 
-private func statusString(forStatus: Backing.Status) -> String {
+private func statusString(_ forStatus: Backing.Status) -> String {
     switch forStatus {
     case .canceled:
       return Strings.project_view_pledge_status_canceled()

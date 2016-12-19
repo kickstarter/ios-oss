@@ -1,5 +1,5 @@
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 import XCTest
 @testable import KsApi
@@ -8,19 +8,19 @@ import XCTest
 @testable import ReactiveExtensions_TestHelpers
 
 internal final class DashboardActionCellViewModelTests: TestCase {
-  private let vm = DashboardActionCellViewModel()
+  fileprivate let vm = DashboardActionCellViewModel()
 
-  private let activityButtonAccessibilityLabel = TestObserver<String, NoError>()
-  private let activityRowHidden = TestObserver<Bool, NoError>()
-  private let goToActivity = TestObserver<Project, NoError>()
-  private let goToMessages = TestObserver<Project, NoError>()
-  private let goToPostUpdate = TestObserver<Project, NoError>()
-  private let lastUpdatePublishedAt = TestObserver<String, NoError>()
-  private let lastUpdatePublishedLabelHidden = TestObserver<Bool, NoError>()
-  private let messagesButtonAccessibilityLabel = TestObserver<String, NoError>()
-  private let messagesRowHidden = TestObserver<Bool, NoError>()
-  private let postUpdateButtonAccessibilityValue = TestObserver<String, NoError>()
-  private let postUpdateButtonHidden = TestObserver<Bool, NoError>()
+  fileprivate let activityButtonAccessibilityLabel = TestObserver<String, NoError>()
+  fileprivate let activityRowHidden = TestObserver<Bool, NoError>()
+  fileprivate let goToActivity = TestObserver<Project, NoError>()
+  fileprivate let goToMessages = TestObserver<Project, NoError>()
+  fileprivate let goToPostUpdate = TestObserver<Project, NoError>()
+  fileprivate let lastUpdatePublishedAt = TestObserver<String, NoError>()
+  fileprivate let lastUpdatePublishedLabelHidden = TestObserver<Bool, NoError>()
+  fileprivate let messagesButtonAccessibilityLabel = TestObserver<String, NoError>()
+  fileprivate let messagesRowHidden = TestObserver<Bool, NoError>()
+  fileprivate let postUpdateButtonAccessibilityValue = TestObserver<String, NoError>()
+  fileprivate let postUpdateButtonHidden = TestObserver<Bool, NoError>()
 
   internal override func setUp() {
     super.setUp()
@@ -40,7 +40,7 @@ internal final class DashboardActionCellViewModelTests: TestCase {
   }
 
   func testAccessibilityElements() {
-    let date = NSDate().timeIntervalSince1970
+    let date = Date().timeIntervalSince1970
     let formattedDate = Format.date(secondsInUTC: date, timeStyle: .NoStyle)
     let project = .template
       |> Project.lens.memberData.lastUpdatePublishedAt .~ date
@@ -85,7 +85,7 @@ internal final class DashboardActionCellViewModelTests: TestCase {
   }
 
   func testLastUpdatePublishedAtEmits() {
-    let date = NSDate().timeIntervalSince1970
+    let date = Date().timeIntervalSince1970
     let formattedDate = Format.date(secondsInUTC: date, timeStyle: .NoStyle)
     let project = .template
       |> Project.lens.memberData.lastUpdatePublishedAt .~ date

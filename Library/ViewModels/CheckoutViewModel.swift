@@ -3,7 +3,7 @@ import Argo
 import KsApi
 import PassKit
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 import Result
 
@@ -12,7 +12,7 @@ public protocol CheckoutViewModelInputs {
   func cancelButtonTapped()
 
   /// Call with the data passed to the view.
-  func configureWith(initialRequest initialRequest: NSURLRequest,
+  func configureWith(initialRequest: URLRequest,
                                     project: Project,
                                     reward: Reward,
                                     applePayCapable: Bool)
@@ -30,10 +30,10 @@ public protocol CheckoutViewModelInputs {
   func paymentAuthorizationWillAuthorizePayment()
 
   /// Call when the webview decides whether to load a request.
-  func shouldStartLoad(withRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool
+  func shouldStartLoad(withRequest request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool
 
   /// Call from the Stripe callback method once a stripe token has been created.
-  func stripeCreatedToken(stripeToken stripeToken: String?, error: NSError?) -> PKPaymentAuthorizationStatus
+  func stripeCreatedToken(stripeToken: String?, error: NSError?) -> PKPaymentAuthorizationStatus
 
   /// Call when a user session has started.
   func userSessionStarted()
@@ -90,7 +90,7 @@ public protocol CheckoutViewModelType: CheckoutViewModelInputs, CheckoutViewMode
 
 public final class CheckoutViewModel: CheckoutViewModelType {
 
-  private let checkoutRacingViewModel: CheckoutRacingViewModelType = CheckoutRacingViewModel()
+  fileprivate let checkoutRacingViewModel: CheckoutRacingViewModelType = CheckoutRacingViewModel()
 
   // swiftlint:disable function_body_length
   // swiftlint:disable cyclomatic_complexity
@@ -329,11 +329,11 @@ public final class CheckoutViewModel: CheckoutViewModelType {
   // swiftlint:enable cyclomatic_complexity
   // swiftlint:enable function_body_length
 
-  private let cancelButtonTappedProperty = MutableProperty()
+  fileprivate let cancelButtonTappedProperty = MutableProperty()
   public func cancelButtonTapped() { self.cancelButtonTappedProperty.value = () }
 
-  private let configDataProperty = MutableProperty<ConfigData?>(nil)
-  public func configureWith(initialRequest initialRequest: NSURLRequest,
+  fileprivate let configDataProperty = MutableProperty<ConfigData?>(nil)
+  public func configureWith(initialRequest: URLRequest,
                                            project: Project,
                                            reward: Reward,
                                            applePayCapable: Bool) {
@@ -344,45 +344,45 @@ public final class CheckoutViewModel: CheckoutViewModelType {
                                                applePayCapable: applePayCapable)
   }
 
-  private let failureAlertButtonTappedProperty = MutableProperty()
+  fileprivate let failureAlertButtonTappedProperty = MutableProperty()
   public func failureAlertButtonTapped() { self.failureAlertButtonTappedProperty.value = () }
 
-  private let didAuthorizePaymentProperty = MutableProperty<PaymentData?>(nil)
+  fileprivate let didAuthorizePaymentProperty = MutableProperty<PaymentData?>(nil)
   public func paymentAuthorization(didAuthorizePayment payment: PaymentData) {
     self.didAuthorizePaymentProperty.value = payment
   }
 
-  private let paymentAuthorizationFinishedProperty = MutableProperty()
+  fileprivate let paymentAuthorizationFinishedProperty = MutableProperty()
   public func paymentAuthorizationDidFinish() {
     self.paymentAuthorizationFinishedProperty.value = ()
   }
 
-  private let paymentAuthorizationWillAuthorizeProperty = MutableProperty()
+  fileprivate let paymentAuthorizationWillAuthorizeProperty = MutableProperty()
   public func paymentAuthorizationWillAuthorizePayment() {
     self.paymentAuthorizationWillAuthorizeProperty.value = ()
   }
 
-  private let shouldStartLoadProperty = MutableProperty<(NSURLRequest, UIWebViewNavigationType)?>(nil)
-  private let shouldStartLoadResponseProperty = MutableProperty(false)
-  public func shouldStartLoad(withRequest request: NSURLRequest,
+  fileprivate let shouldStartLoadProperty = MutableProperty<(URLRequest, UIWebViewNavigationType)?>(nil)
+  fileprivate let shouldStartLoadResponseProperty = MutableProperty(false)
+  public func shouldStartLoad(withRequest request: URLRequest,
                                           navigationType: UIWebViewNavigationType) -> Bool {
     self.shouldStartLoadProperty.value = (request, navigationType)
     return self.shouldStartLoadResponseProperty.value
   }
 
-  private let stripeTokenAndErrorProperty = MutableProperty(String?.None, NSError?.None)
-  private let paymentAuthorizationStatusProperty = MutableProperty(PKPaymentAuthorizationStatus.Failure)
-  public func stripeCreatedToken(stripeToken stripeToken: String?, error: NSError?)
+  fileprivate let stripeTokenAndErrorProperty = MutableProperty(String?.None, NSError?.None)
+  fileprivate let paymentAuthorizationStatusProperty = MutableProperty(PKPaymentAuthorizationStatus.Failure)
+  public func stripeCreatedToken(stripeToken: String?, error: NSError?)
     -> PKPaymentAuthorizationStatus {
 
       self.stripeTokenAndErrorProperty.value = (stripeToken, error)
       return self.paymentAuthorizationStatusProperty.value
   }
 
-  private let userSessionStartedProperty = MutableProperty()
+  fileprivate let userSessionStartedProperty = MutableProperty()
   public func userSessionStarted() { self.userSessionStartedProperty.value = () }
 
-  private let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty()
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
@@ -407,21 +407,21 @@ public final class CheckoutViewModel: CheckoutViewModelType {
   public var outputs: CheckoutViewModelOutputs { return self }
 }
 
-private func isLoadableByWebView(request request: NSURLRequest, navigation: Navigation?) -> Bool {
+private func isLoadableByWebView(request: URLRequest, navigation: Navigation?) -> Bool {
   let preparedWebViewRequest = isNavigationLoadedByWebView(navigation: navigation)
     && AppEnvironment.current.apiService.isPrepared(request: request)
   return preparedWebViewRequest || isStripeRequest(request: request)
 }
 
-private func isModal(requestData requestData: RequestData) -> Bool {
-  guard let url = requestData.request.URL else { return false }
-  guard let components = NSURLComponents(URL: url, resolvingAgainstBaseURL: false) else { return false }
+private func isModal(requestData: RequestData) -> Bool {
+  guard let url = requestData.request.url else { return false }
+  guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false) else { return false }
   guard let queryItems = components.queryItems else { return false }
 
   return queryItems.filter { $0.name == "modal" }.first?.value == "true"
 }
 
-private func isNavigationLoadedByWebView(navigation navigation: Navigation?) -> Bool {
+private func isNavigationLoadedByWebView(navigation: Navigation?) -> Bool {
   guard let nav = navigation else { return false }
   switch nav {
   case
@@ -438,8 +438,8 @@ private func isNavigationLoadedByWebView(navigation navigation: Navigation?) -> 
   }
 }
 
-private func isStripeRequest(request request: NSURLRequest) -> Bool {
-  return request.URL?.host?.hasSuffix("stripe.com") == true
+private func isStripeRequest(request: URLRequest) -> Bool {
+  return request.url?.host?.hasSuffix("stripe.com") == true
 }
 
 private func applePayCheckoutNextJS(forPaymentData paymentData: PaymentData, stripeToken: String)
@@ -458,19 +458,19 @@ private func applePayCheckoutNextJS(forPaymentData paymentData: PaymentData, str
     ]
   ]
 
-  return (try? NSJSONSerialization.dataWithJSONObject(json, options: []))
-    .flatMap { String(data: $0, encoding: NSUTF8StringEncoding) }
+  return (try? JSONSerialization.data(withJSONObject: json, options: []))
+    .flatMap { String(data: $0, encoding: String.Encoding.utf8) }
     .map { json in "window.checkout_apple_pay_next(\(json));" }
 }
 
 private func paymentRequest(fromBase64Payload payload: String) -> PKPaymentRequest? {
 
-  return NSData(base64EncodedString: payload, options: [])
-    .flatMap { try? NSJSONSerialization.JSONObjectWithData($0, options: []) }
+  return Data(base64EncodedString: payload, options: [])
+    .flatMap { try? JSONSerialization.JSONObjectWithData($0, options: []) }
     .flatMap { (decode($0) as Decoded<PKPaymentRequest>).value }
 }
 
-private func prepared(request baseRequest: NSURLRequest, applePayCapable: Bool) -> NSURLRequest {
+private func prepared(request baseRequest: URLRequest, applePayCapable: Bool) -> URLRequest {
 
   var applePayHeader: [String:String] = [:]
   applePayHeader["Kickstarter-Apple-Pay"] = applePayCapable ? "1" : nil
@@ -486,19 +486,19 @@ private func prepared(request baseRequest: NSURLRequest, applePayCapable: Bool) 
 }
 
 private struct ConfigData {
-  private let initialRequest: NSURLRequest
-  private let project: Project
-  private let reward: Reward
-  private let applePayCapable: Bool
+  fileprivate let initialRequest: URLRequest
+  fileprivate let project: Project
+  fileprivate let reward: Reward
+  fileprivate let applePayCapable: Bool
 
-  private var pledgeContext: Koala.PledgeContext {
+  fileprivate var pledgeContext: Koala.PledgeContext {
     return Library.pledgeContext(forProject: self.project, reward: self.reward)
   }
 }
 
 private struct RequestData {
-  private let request: NSURLRequest
-  private let navigation: Navigation?
-  private let shouldStartLoad: Bool
-  private let webViewNavigationType: UIWebViewNavigationType
+  fileprivate let request: URLRequest
+  fileprivate let navigation: Navigation?
+  fileprivate let shouldStartLoad: Bool
+  fileprivate let webViewNavigationType: UIWebViewNavigationType
 }

@@ -4,32 +4,32 @@ import UIKit
 
 internal final class IntTableCell: UITableViewCell, ValueCell {
   internal var value: Int = 0
-  internal func configureWith(value value: Int) {
+  internal func configureWith(value: Int) {
     self.value = value
   }
 }
 
 internal final class IntCollectionCell: UICollectionViewCell, ValueCell {
   internal var value: Int = 0
-  internal func configureWith(value value: Int) {
+  internal func configureWith(value: Int) {
     self.value = value
   }
 }
 
 internal final class IntDataSource: ValueCellDataSource {
-  internal override func registerClasses(tableView tableView: UITableView?) {
+  internal override func registerClasses(tableView: UITableView?) {
     tableView?.registerCellClass(IntTableCell.self)
   }
 
-  internal override func registerClasses(collectionView collectionView: UICollectionView?) {
+  internal override func registerClasses(collectionView: UICollectionView?) {
     collectionView?.registerCellClass(IntCollectionCell.self)
   }
 }
 
 internal final class ValueCellDataSourceTests: XCTestCase {
-  private let dataSource = IntDataSource()
-  private let tableView = UITableView()
-  private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
+  fileprivate let dataSource = IntDataSource()
+  fileprivate let tableView = UITableView()
+  fileprivate let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
 
   override func setUp() {
     super.setUp()
@@ -64,14 +64,14 @@ internal final class ValueCellDataSourceTests: XCTestCase {
   }
 
   func testSubscript_IndexPath() {
-    XCTAssertEqual(1, dataSource[NSIndexPath(forItem: 0, inSection: 0)] as? Int)
-    XCTAssertEqual(2, dataSource[NSIndexPath(forItem: 1, inSection: 0)] as? Int)
-    XCTAssertEqual(1, dataSource[NSIndexPath(forItem: 0, inSection: 1)] as? Int)
-    XCTAssertEqual(2, dataSource[NSIndexPath(forItem: 1, inSection: 1)] as? Int)
-    XCTAssertEqual(3, dataSource[NSIndexPath(forItem: 2, inSection: 1)] as? Int)
-    XCTAssertEqual(1, dataSource[NSIndexPath(forItem: 0, inSection: 5)] as? Int)
-    XCTAssertEqual(2, dataSource[NSIndexPath(forItem: 1, inSection: 5)] as? Int)
-    XCTAssertEqual(3, dataSource[NSIndexPath(forItem: 2, inSection: 5)] as? Int)
+    XCTAssertEqual(1, dataSource[IndexPath(forItem: 0, inSection: 0)] as? Int)
+    XCTAssertEqual(2, dataSource[IndexPath(forItem: 1, inSection: 0)] as? Int)
+    XCTAssertEqual(1, dataSource[IndexPath(forItem: 0, inSection: 1)] as? Int)
+    XCTAssertEqual(2, dataSource[IndexPath(forItem: 1, inSection: 1)] as? Int)
+    XCTAssertEqual(3, dataSource[IndexPath(forItem: 2, inSection: 1)] as? Int)
+    XCTAssertEqual(1, dataSource[IndexPath(forItem: 0, inSection: 5)] as? Int)
+    XCTAssertEqual(2, dataSource[IndexPath(forItem: 1, inSection: 5)] as? Int)
+    XCTAssertEqual(3, dataSource[IndexPath(forItem: 2, inSection: 5)] as? Int)
   }
 
   func testSubscript_ItemSection() {
@@ -90,14 +90,14 @@ internal final class ValueCellDataSourceTests: XCTestCase {
   }
 
   func testItemAtIndex() {
-    XCTAssertEqual(0, dataSource.itemIndexAt(NSIndexPath(forItem: 0, inSection: 0)))
-    XCTAssertEqual(1, dataSource.itemIndexAt(NSIndexPath(forItem: 1, inSection: 0)))
-    XCTAssertEqual(2, dataSource.itemIndexAt(NSIndexPath(forItem: 0, inSection: 1)))
-    XCTAssertEqual(3, dataSource.itemIndexAt(NSIndexPath(forItem: 1, inSection: 1)))
-    XCTAssertEqual(4, dataSource.itemIndexAt(NSIndexPath(forItem: 2, inSection: 1)))
-    XCTAssertEqual(5, dataSource.itemIndexAt(NSIndexPath(forItem: 0, inSection: 5)))
-    XCTAssertEqual(6, dataSource.itemIndexAt(NSIndexPath(forItem: 1, inSection: 5)))
-    XCTAssertEqual(7, dataSource.itemIndexAt(NSIndexPath(forItem: 2, inSection: 5)))
+    XCTAssertEqual(0, dataSource.itemIndexAt(IndexPath(forItem: 0, inSection: 0)))
+    XCTAssertEqual(1, dataSource.itemIndexAt(IndexPath(forItem: 1, inSection: 0)))
+    XCTAssertEqual(2, dataSource.itemIndexAt(IndexPath(forItem: 0, inSection: 1)))
+    XCTAssertEqual(3, dataSource.itemIndexAt(IndexPath(forItem: 1, inSection: 1)))
+    XCTAssertEqual(4, dataSource.itemIndexAt(IndexPath(forItem: 2, inSection: 1)))
+    XCTAssertEqual(5, dataSource.itemIndexAt(IndexPath(forItem: 0, inSection: 5)))
+    XCTAssertEqual(6, dataSource.itemIndexAt(IndexPath(forItem: 1, inSection: 5)))
+    XCTAssertEqual(7, dataSource.itemIndexAt(IndexPath(forItem: 2, inSection: 5)))
   }
 
   func testClearValues() {

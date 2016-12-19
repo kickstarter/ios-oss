@@ -1,17 +1,17 @@
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 
 public protocol MessageDialogViewModelInputs {
   /// Call when the message text changes.
-  func bodyTextChanged(body: String)
+  func bodyTextChanged(_ body: String)
 
   /// Call when the cancel button is pressed.
   func cancelButtonPressed()
 
   /// Call with the backing/message-thread/project that was given to the view.
-  func configureWith(messageSubject messageSubject: MessageSubject, context: Koala.MessageDialogContext)
+  func configureWith(messageSubject: MessageSubject, context: Koala.MessageDialogContext)
 
   /// Call when the post button is pressed.
   func postButtonPressed()
@@ -136,26 +136,26 @@ MessageDialogViewModelOutputs {
   }
   // swiftlint:enable function_body_length
 
-  private let bodyTextChangedProperty = MutableProperty<String?>(nil)
-  public func bodyTextChanged(body: String) {
+  fileprivate let bodyTextChangedProperty = MutableProperty<String?>(nil)
+  public func bodyTextChanged(_ body: String) {
     self.bodyTextChangedProperty.value = body
   }
-  private let cancelButtonPressedProperty = MutableProperty()
+  fileprivate let cancelButtonPressedProperty = MutableProperty()
   public func cancelButtonPressed() {
     self.cancelButtonPressedProperty.value = ()
   }
-  private let messageSubjectProperty = MutableProperty<MessageSubject?>(nil)
-  private let contextProperty = MutableProperty<Koala.MessageDialogContext?>(nil)
-  public func configureWith(messageSubject messageSubject: MessageSubject,
+  fileprivate let messageSubjectProperty = MutableProperty<MessageSubject?>(nil)
+  fileprivate let contextProperty = MutableProperty<Koala.MessageDialogContext?>(nil)
+  public func configureWith(messageSubject: MessageSubject,
                                            context: Koala.MessageDialogContext) {
     self.messageSubjectProperty.value = messageSubject
     self.contextProperty.value = context
   }
-  private let postButtonPressedProperty = MutableProperty()
+  fileprivate let postButtonPressedProperty = MutableProperty()
   public func postButtonPressed() {
     self.postButtonPressedProperty.value = ()
   }
-  private let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty()
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
@@ -172,7 +172,7 @@ MessageDialogViewModelOutputs {
   public var outputs: MessageDialogViewModelOutputs { return self }
 }
 
-func fetchBackerName(backing backing: Backing) -> SignalProducer<String, NoError> {
+func fetchBackerName(backing: Backing) -> SignalProducer<String, NoError> {
   return AppEnvironment.current.apiService.fetchUser(userId: backing.backerId)
     .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
     .demoteErrors()

@@ -1,6 +1,6 @@
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 
 public protocol MessagesViewModelInputs {
@@ -8,10 +8,10 @@ public protocol MessagesViewModelInputs {
   func backingInfoPressed()
 
   /// Configures the view model with either a message thread or a project and a backing.
-  func configureWith(data data: Either<MessageThread, (project: Project, backing: Backing)>)
+  func configureWith(data: Either<MessageThread, (project: Project, backing: Backing)>)
 
   /// Call when the message dialog has told us that a message was successfully posted.
-  func messageSent(message: Message)
+  func messageSent(_ message: Message)
 
   /// Call when the project banner is tapped.
   func projectBannerTapped()
@@ -152,28 +152,28 @@ MessagesViewModelOutputs {
   }
   // swiftlint:enable function_body_length
 
-  private let backingInfoPressedProperty = MutableProperty()
+  fileprivate let backingInfoPressedProperty = MutableProperty()
   public func backingInfoPressed() {
     self.backingInfoPressedProperty.value = ()
   }
-  private let configData = MutableProperty<Either<MessageThread, (project: Project, backing: Backing)>?>(nil)
-  public func configureWith(data data: Either<MessageThread, (project: Project, backing: Backing)>) {
+  fileprivate let configData = MutableProperty<Either<MessageThread, (project: Project, backing: Backing)>?>(nil)
+  public func configureWith(data: Either<MessageThread, (project: Project, backing: Backing)>) {
     self.configData.value = data
   }
 
-  private let messageSentProperty = MutableProperty<Message?>(nil)
-  public func messageSent(message: Message) {
+  fileprivate let messageSentProperty = MutableProperty<Message?>(nil)
+  public func messageSent(_ message: Message) {
     self.messageSentProperty.value = message
   }
-  private let projectBannerTappedProperty = MutableProperty()
+  fileprivate let projectBannerTappedProperty = MutableProperty()
   public func projectBannerTapped() {
     self.projectBannerTappedProperty.value = ()
   }
-  private let replyButtonPressedProperty = MutableProperty()
+  fileprivate let replyButtonPressedProperty = MutableProperty()
   public func replyButtonPressed() {
     self.replyButtonPressedProperty.value = ()
   }
-  private let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty()
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }

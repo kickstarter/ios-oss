@@ -1,4 +1,4 @@
-import ReactiveCocoa
+import ReactiveSwift
 import KsApi
 import Result
 import Prelude
@@ -18,11 +18,11 @@ public protocol CommentDialogViewModelInputs {
   func viewWillDisappear()
 
   /// Call with the project, update (optional), recipient (optional) and context given to the view.
-  func configureWith(project project: Project, update: Update?, recipient: User?,
+  func configureWith(project: Project, update: Update?, recipient: User?,
                              context: Koala.CommentDialogContext)
 
   /// Call when the comment body text changes.
-  func commentBodyChanged(text: String)
+  func commentBodyChanged(_ text: String)
 
   /// Call when the post comment button is pressed.
   func postButtonPressed()
@@ -69,35 +69,35 @@ public protocol CommentDialogViewModelType {
 public final class CommentDialogViewModel: CommentDialogViewModelType, CommentDialogViewModelInputs,
 CommentDialogViewModelOutputs, CommentDialogViewModelErrors {
 
-  private let viewWillAppearProperty = MutableProperty(())
+  fileprivate let viewWillAppearProperty = MutableProperty(())
   public func viewWillAppear() {
     self.viewWillAppearProperty.value = ()
   }
 
-  private let viewWillDisappearProperty = MutableProperty()
+  fileprivate let viewWillDisappearProperty = MutableProperty()
   public func viewWillDisappear() {
     self.viewWillDisappearProperty.value = ()
   }
 
-  private let configurationDataProperty = MutableProperty<CommentDialogData?>(nil)
-  public func configureWith(project project: Project, update: Update?, recipient: User?,
+  fileprivate let configurationDataProperty = MutableProperty<CommentDialogData?>(nil)
+  public func configureWith(project: Project, update: Update?, recipient: User?,
                             context: Koala.CommentDialogContext) {
 
     self.configurationDataProperty.value = CommentDialogData(project: project, update: update,
                                                              recipient: recipient, context: context)
   }
 
-  private let commentBodyProperty = MutableProperty("")
-  public func commentBodyChanged(text: String) {
+  fileprivate let commentBodyProperty = MutableProperty("")
+  public func commentBodyChanged(_ text: String) {
     self.commentBodyProperty.value = text
   }
 
-  private let postButtonPressedProperty = MutableProperty(())
+  fileprivate let postButtonPressedProperty = MutableProperty(())
   public func postButtonPressed() {
     self.postButtonPressedProperty.value = ()
   }
 
-  private let cancelButtonPressedProperty = MutableProperty(())
+  fileprivate let cancelButtonPressedProperty = MutableProperty(())
   public func cancelButtonPressed() {
     self.cancelButtonPressedProperty.value = ()
   }
@@ -217,7 +217,7 @@ CommentDialogViewModelOutputs, CommentDialogViewModelErrors {
   // swiftlint:enable function_body_length
 }
 
-private func postComment(body: String, toUpdateOrComment updateOrComment: Either<Update, Project>)
+private func postComment(_ body: String, toUpdateOrComment updateOrComment: Either<Update, Project>)
   -> SignalProducer<Comment, ErrorEnvelope> {
 
     switch updateOrComment {

@@ -6,9 +6,9 @@ import Prelude
 import Result
 
 internal final class ProjectActivityLaunchCellViewModelTests: TestCase {
-  private let vm: ProjectActivityLaunchCellViewModelType = ProjectActivityLaunchCellViewModel()
+  fileprivate let vm: ProjectActivityLaunchCellViewModelType = ProjectActivityLaunchCellViewModel()
 
-  private let title = TestObserver<String, NoError>()
+  fileprivate let title = TestObserver<String, NoError>()
 
   override func setUp() {
     super.setUp()
@@ -22,7 +22,7 @@ internal final class ProjectActivityLaunchCellViewModelTests: TestCase {
     let country = Project.Country.US
     let goal = 5000
     let projectName = "Sick Skull Graphic Watch"
-    let launchedAt = NSDate().timeIntervalSince1970
+    let launchedAt = Date().timeIntervalSince1970
 
     let project = .template
       |> Project.lens.country .~ country

@@ -1,6 +1,6 @@
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 
 public struct PostcardMetadataData {
@@ -15,7 +15,7 @@ private enum PostcardMetadataType {
   case potd
   case starred
 
-  private func data(forProject project: Project) -> PostcardMetadataData? {
+  fileprivate func data(forProject project: Project) -> PostcardMetadataData? {
     switch self {
     case .backing:
       return PostcardMetadataData(iconImage: image(named: "metadata-backing"),
@@ -42,7 +42,7 @@ private enum PostcardMetadataType {
 
 public protocol DiscoveryPostcardViewModelInputs {
   /// Call with the project provided to the view controller.
-  func configureWith(project project: Project)
+  func configureWith(project: Project)
 }
 
 public protocol DiscoveryPostcardViewModelOutputs {
@@ -202,8 +202,8 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
   }
   // swiftlint:enable function_body_length
 
-  private let projectProperty = MutableProperty<Project?>(nil)
-  public func configureWith(project project: Project) {
+  fileprivate let projectProperty = MutableProperty<Project?>(nil)
+  public func configureWith(project: Project) {
     self.projectProperty.value = project
   }
 

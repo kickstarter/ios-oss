@@ -1,6 +1,6 @@
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 import Result
 
@@ -39,7 +39,7 @@ public protocol DashboardViewModelInputs {
   func showHideProjectsDrawer()
 
   /// Call when the view will appear.
-  func viewWillAppear(animated animated: Bool)
+  func viewWillAppear(animated: Bool)
 }
 
 public protocol DashboardViewModelOutputs {
@@ -231,24 +231,24 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
   }
   // swiftlint:enable function_body_length
 
-  private let showHideProjectsDrawerProperty = MutableProperty()
+  fileprivate let showHideProjectsDrawerProperty = MutableProperty()
   public func showHideProjectsDrawer() {
     self.showHideProjectsDrawerProperty.value = ()
   }
-  private let projectContextCellTappedProperty = MutableProperty()
+  fileprivate let projectContextCellTappedProperty = MutableProperty()
   public func projectContextCellTapped() {
     self.projectContextCellTappedProperty.value = ()
   }
-  private let switchToProjectProperty = MutableProperty<Param?>(nil)
+  fileprivate let switchToProjectProperty = MutableProperty<Param?>(nil)
   public func `switch`(toProject param: Param) {
     self.switchToProjectProperty.value = param
   }
-  private let projectsDrawerDidAnimateOutProperty = MutableProperty()
+  fileprivate let projectsDrawerDidAnimateOutProperty = MutableProperty()
   public func dashboardProjectsDrawerDidAnimateOut() {
     self.projectsDrawerDidAnimateOutProperty.value = ()
   }
-  private let viewWillAppearAnimatedProperty = MutableProperty(false)
-  public func viewWillAppear(animated animated: Bool) {
+  fileprivate let viewWillAppearAnimatedProperty = MutableProperty(false)
+  public func viewWillAppear(animated: Bool) {
     self.viewWillAppearAnimatedProperty.value = animated
   }
 

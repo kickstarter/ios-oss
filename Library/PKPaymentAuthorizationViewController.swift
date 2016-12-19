@@ -8,12 +8,12 @@ extension PKPaymentAuthorizationViewController {
 
   public static var supportedNetworks: [String] {
     return [
-      PKPaymentNetworkAmex, PKPaymentNetworkMasterCard, PKPaymentNetworkVisa, PKPaymentNetworkDiscover
+      PKPaymentNetwork.amex.rawValue, PKPaymentNetwork.masterCard.rawValue, PKPaymentNetwork.visa.rawValue, PKPaymentNetwork.discover.rawValue
     ]
   }
 
   public static func applePayCapable() -> Bool {
-    return PKPaymentAuthorizationViewController.canMakePaymentsUsingNetworks(supportedNetworks)
+    return PKPaymentAuthorizationViewController.canMakePayments(usingNetworks: supportedNetworks as! [PKPaymentNetwork])
   }
 
   public static func applePayDevice() -> Bool {

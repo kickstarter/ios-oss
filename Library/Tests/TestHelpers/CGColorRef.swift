@@ -1,7 +1,7 @@
 import class UIKit.CGColorRef
 import func UIKit.CGColorEqualToColor
 
-extension CGColorRef: Equatable {}
-public func == (lhs: CGColorRef, rhs: CGColorRef) -> Bool {
+extension CGColor: Equatable {}
+public func == (lhs: CGColor, rhs: CGColor) -> Bool {
   return CGColorEqualToColor(lhs, rhs)
 }

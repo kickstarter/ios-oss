@@ -11,18 +11,18 @@ public enum AppKeys: String {
 }
 
 public protocol KeyValueStoreType: class {
-  func setBool(bool: Bool, forKey key: String)
-  func setInteger(int: Int, forKey key: String)
-  func setObject(object: AnyObject?, forKey key: String)
+  func setBool(_ bool: Bool, forKey key: String)
+  func setInteger(_ int: Int, forKey key: String)
+  func setObject(_ object: AnyObject?, forKey key: String)
 
-  func boolForKey(key: String) -> Bool
-  func dictionaryForKey(key: String) -> [String:AnyObject]?
-  func integerForKey(key: String) -> Int
-  func objectForKey(key: String) -> AnyObject?
-  func stringForKey(key: String) -> String?
+  func boolForKey(_ key: String) -> Bool
+  func dictionaryForKey(_ key: String) -> [String:AnyObject]?
+  func integerForKey(_ key: String) -> Int
+  func objectForKey(_ key: String) -> AnyObject?
+  func stringForKey(_ key: String) -> String?
   func synchronize() -> Bool
 
-  func removeObjectForKey(key: String)
+  func removeObjectForKey(_ key: String)
 
   var favoriteCategoryIds: [Int] { get set }
   var hasClosedFacebookConnectInActivity: Bool { get set }
@@ -39,7 +39,7 @@ extension KeyValueStoreType {
       return self.objectForKey(AppKeys.favoriteCategoryIds.rawValue) as? [Int] ?? []
     }
     set {
-      self.setObject(newValue, forKey: AppKeys.favoriteCategoryIds.rawValue)
+      self.setObject(newValue as AnyObject?, forKey: AppKeys.favoriteCategoryIds.rawValue)
     }
   }
 
@@ -48,7 +48,7 @@ extension KeyValueStoreType {
       return self.objectForKey(AppKeys.closedFacebookConnectInActivity.rawValue) as? Bool ?? false
     }
     set {
-      self.setObject(newValue, forKey: AppKeys.closedFacebookConnectInActivity.rawValue)
+      self.setObject(newValue as AnyObject?, forKey: AppKeys.closedFacebookConnectInActivity.rawValue)
     }
   }
 
@@ -57,7 +57,7 @@ extension KeyValueStoreType {
       return self.objectForKey(AppKeys.closedFindFriendsInActivity.rawValue) as? Bool ?? false
     }
     set {
-      self.setObject(newValue, forKey: AppKeys.closedFindFriendsInActivity.rawValue)
+      self.setObject(newValue as AnyObject?, forKey: AppKeys.closedFindFriendsInActivity.rawValue)
     }
   }
 
@@ -98,55 +98,55 @@ extension KeyValueStoreType {
   }
 }
 
-extension NSUserDefaults: KeyValueStoreType {
+extension UserDefaults: KeyValueStoreType {
 }
 
 extension NSUbiquitousKeyValueStore: KeyValueStoreType {
-  public func integerForKey(key: String) -> Int {
-    return Int(longLongForKey(key))
+  public func integerForKey(_ key: String) -> Int {
+    return Int(longLong(forKey: key))
   }
 
-  public func setInteger(int: Int, forKey key: String) {
-    return setLongLong(Int64(int), forKey: key)
+  public func setInteger(_ int: Int, forKey key: String) {
+    return set(Int64(int), forKey: key)
   }
 }
 
 internal class MockKeyValueStore: KeyValueStoreType {
   var store: [String:AnyObject] = [:]
 
-  func setBool(bool: Bool, forKey key: String) {
-    self.store[key] = bool
+  func setBool(_ bool: Bool, forKey key: String) {
+    self.store[key] = bool as AnyObject?
   }
 
-  func setInteger(int: Int, forKey key: String) {
-    self.store[key] = int
+  func setInteger(_ int: Int, forKey key: String) {
+    self.store[key] = int as AnyObject?
   }
 
-  func setObject(object: AnyObject?, forKey key: String) {
+  func setObject(_ object: AnyObject?, forKey key: String) {
     self.store[key] = object
   }
 
-  func boolForKey(key: String) -> Bool {
+  func boolForKey(_ key: String) -> Bool {
     return self.store[key] as? Bool ?? false
   }
 
-  func integerForKey(key: String) -> Int {
+  func integerForKey(_ key: String) -> Int {
     return self.store[key] as? Int ?? 0
   }
 
-  func objectForKey(key: String) -> AnyObject? {
+  func objectForKey(_ key: String) -> AnyObject? {
     return self.store[key]
   }
 
-  func stringForKey(key: String) -> String? {
+  func stringForKey(_ key: String) -> String? {
     return self.objectForKey(key) as? String
   }
 
-  func dictionaryForKey(key: String) -> [String:AnyObject]? {
+  func dictionaryForKey(_ key: String) -> [String:AnyObject]? {
     return self.objectForKey(key) as? [String:AnyObject]
   }
 
-  func removeObjectForKey(key: String) {
+  func removeObjectForKey(_ key: String) {
     self.setObject(nil, forKey: key)
   }
 

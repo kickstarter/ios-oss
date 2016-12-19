@@ -7,10 +7,10 @@ import Result
 
 // swiftlint:disable type_name
 internal final class ProjectActivityNegativeStateChangeCellViewModelTests: TestCase {
-  private let vm: ProjectActivityNegativeStateChangeCellViewModel =
+  fileprivate let vm: ProjectActivityNegativeStateChangeCellViewModel =
     ProjectActivityNegativeStateChangeCellViewModel()
 
-  private let title = TestObserver<String, NoError>()
+  fileprivate let title = TestObserver<String, NoError>()
 
   override func setUp() {
     super.setUp()
@@ -19,7 +19,7 @@ internal final class ProjectActivityNegativeStateChangeCellViewModelTests: TestC
   }
 
   func testTitleForCancelledProject() {
-    let canceledAt = NSDate().timeIntervalSince1970
+    let canceledAt = Date().timeIntervalSince1970
     let projectName = "Sick Skull Graphic Lunchbox"
 
     let project = .template
@@ -40,7 +40,7 @@ internal final class ProjectActivityNegativeStateChangeCellViewModelTests: TestC
   }
 
   func testTitleForFailedProject() {
-    let failedAt = NSDate().timeIntervalSince1970
+    let failedAt = Date().timeIntervalSince1970
     let projectName = "Sick Skull Graphic Lunchbox"
 
     let project = .template
@@ -61,7 +61,7 @@ internal final class ProjectActivityNegativeStateChangeCellViewModelTests: TestC
   }
 
   func testTitleForSuspendedProject() {
-    let suspendedAt = NSDate().timeIntervalSince1970
+    let suspendedAt = Date().timeIntervalSince1970
     let projectName = "Sick Skull Graphic Lunchbox"
 
     let project = .template

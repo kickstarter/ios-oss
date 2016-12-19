@@ -1,7 +1,7 @@
 import XCTest
 @testable import Library
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 @testable import ReactiveExtensions_TestHelpers
 
@@ -9,14 +9,14 @@ final class PaginateTests: TestCase {
 
   let (newRequest, newRequestObserver) = Signal<Int, NoError>.pipe()
   let (nextPage, nextPageObserver) = Signal<(), NoError>.pipe()
-  let requestFromParams: Int -> SignalProducer<[Int], NoError> = { p in .init(value: [p]) }
-  let requestFromCursor: Int -> SignalProducer<[Int], NoError> = { c in .init(value: c <= 2 ? [c] : []) }
-  let valuesFromEnvelope: [Int] -> [Int] = id
-  let cursorFromEnvelope: [Int] -> Int = { ($0.last ?? 0) + 1 }
+  let requestFromParams: (Int) -> SignalProducer<[Int], NoError> = { p in .init(value: [p]) }
+  let requestFromCursor: (Int) -> SignalProducer<[Int], NoError> = { c in .init(value: c <= 2 ? [c] : []) }
+  let valuesFromEnvelope: ([Int]) -> [Int] = id
+  let cursorFromEnvelope: ([Int]) -> Int = { ($0.last ?? 0) + 1 }
 
   func testEmitsEmptyState_ClearOnNewRequest() {
-    let requestFromParams: Int -> SignalProducer<[Int], NoError> = { p in .init(value: []) }
-    let requestFromCursor: Int -> SignalProducer<[Int], NoError> = { c in .init(value: []) }
+    let requestFromParams: (Int) -> SignalProducer<[Int], NoError> = { p in .init(value: []) }
+    let requestFromCursor: (Int) -> SignalProducer<[Int], NoError> = { c in .init(value: []) }
 
     let (values, loading, _) = paginate(
       requestFirstPageWith: newRequest,
@@ -47,8 +47,8 @@ final class PaginateTests: TestCase {
   }
 
   func testEmitsEmptyState_ClearOnNewRequest_With_Repeats() {
-    let requestFromParams: Int -> SignalProducer<[Int], NoError> = { p in .init(value: []) }
-    let requestFromCursor: Int -> SignalProducer<[Int], NoError> = { c in .init(value: []) }
+    let requestFromParams: (Int) -> SignalProducer<[Int], NoError> = { p in .init(value: []) }
+    let requestFromCursor: (Int) -> SignalProducer<[Int], NoError> = { c in .init(value: []) }
 
     let (values, loading, _) = paginate(
       requestFirstPageWith: newRequest,
@@ -80,8 +80,8 @@ final class PaginateTests: TestCase {
   }
 
   func testEmitsEmptyState_DoNotClearOnNewRequest() {
-    let requestFromParams: Int -> SignalProducer<[Int], NoError> = { p in .init(value: []) }
-    let requestFromCursor: Int -> SignalProducer<[Int], NoError> = { c in .init(value: []) }
+    let requestFromParams: (Int) -> SignalProducer<[Int], NoError> = { p in .init(value: []) }
+    let requestFromCursor: (Int) -> SignalProducer<[Int], NoError> = { c in .init(value: []) }
 
     let (values, loading, _) = paginate(
       requestFirstPageWith: newRequest,
@@ -112,8 +112,8 @@ final class PaginateTests: TestCase {
   }
 
   func testEmitsEmptyState_DoNotClearOnNewRequest_With_Repeats() {
-    let requestFromParams: Int -> SignalProducer<[Int], NoError> = { p in .init(value: []) }
-    let requestFromCursor: Int -> SignalProducer<[Int], NoError> = { c in .init(value: []) }
+    let requestFromParams: (Int) -> SignalProducer<[Int], NoError> = { p in .init(value: []) }
+    let requestFromCursor: (Int) -> SignalProducer<[Int], NoError> = { c in .init(value: []) }
 
     let (values, loading, _) = paginate(
       requestFirstPageWith: newRequest,
@@ -526,10 +526,10 @@ final class PaginateTests: TestCase {
   //   * Try loading a different first page of values but the result is empty
   // Confirms that an empty list of values is emitted.
   func testEmptyState_AfterResultSetWasObtained() {
-    let requestFromParams: Int -> SignalProducer<[Int], NoError> = {
+    let requestFromParams: (Int) -> SignalProducer<[Int], NoError> = {
       p in p == 2 ? .init(value: []) : .init(value: [1, 2])
     }
-    let requestFromCursor: Int -> SignalProducer<[Int], NoError> = { c in .init(value: []) }
+    let requestFromCursor: (Int) -> SignalProducer<[Int], NoError> = { c in .init(value: []) }
 
     let (values, _, _) = paginate(
       requestFirstPageWith: newRequest,
@@ -565,11 +565,11 @@ final class PaginateTests: TestCase {
   // Confirms that no additional request is made for the fourth page.
   func testAdditionalPagesAreNotRequestedWhenNoMoreValues() {
     var numberOfRequests = 0
-    let requestFromParams: Int -> SignalProducer<[Int], NoError> = { p in
+    let requestFromParams: (Int) -> SignalProducer<[Int], NoError> = { p in
       numberOfRequests += 1
       return .init(value: [p])
     }
-    let requestFromCursor: Int -> SignalProducer<[Int], NoError> = { c in
+    let requestFromCursor: (Int) -> SignalProducer<[Int], NoError> = { c in
       numberOfRequests += 1
       return .init(value: c <= 2 ? [c] : [])
     }

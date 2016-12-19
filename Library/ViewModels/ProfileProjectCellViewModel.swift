@@ -1,11 +1,11 @@
 import Foundation
 import KsApi
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 
 public protocol ProfileProjectCellViewModelInputs {
   /// Call with a backed project.
-  func project(project: Project)
+  func project(_ project: Project)
 }
 
 public protocol ProfileProjectCellViewModelOutputs {
@@ -51,7 +51,7 @@ public final class ProfileProjectCellViewModel: ProfileProjectCellViewModelType,
     let project = projectProperty.signal.ignoreNil()
 
     self.projectName = project.map { $0.name }
-    self.photoURL = project.map { NSURL(string: $0.photo.full) }
+    self.photoURL = project.map { URL(string: $0.photo.full) }
     self.progress = project.map { $0.stats.fundingProgress }
     self.progressHidden = project.map { $0.state != .live }
     self.stateLabelText = project.map(stateString(forProject:))
@@ -70,8 +70,8 @@ public final class ProfileProjectCellViewModel: ProfileProjectCellViewModelType,
       .map { "\($0.time) \($0.unit)" }
   }
 
-  private let projectProperty = MutableProperty<Project?>(nil)
-  public func project(project: Project) {
+  fileprivate let projectProperty = MutableProperty<Project?>(nil)
+  public func project(_ project: Project) {
     self.projectProperty.value = project
   }
 

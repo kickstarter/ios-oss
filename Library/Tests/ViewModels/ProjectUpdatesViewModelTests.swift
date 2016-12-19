@@ -1,5 +1,5 @@
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 import XCTest
 import WebKit
@@ -8,12 +8,12 @@ import WebKit
 @testable import ReactiveExtensions_TestHelpers
 
 final class ProjectUpdatesViewModelTests: TestCase {
-  private let vm: ProjectUpdatesViewModelType = ProjectUpdatesViewModel()
+  fileprivate let vm: ProjectUpdatesViewModelType = ProjectUpdatesViewModel()
 
-  private let goToSafariBrowser = TestObserver<NSURL, NoError>()
-  private let goToUpdateId = TestObserver<Int, NoError>()
-  private let goToUpdateCommentId = TestObserver<Int, NoError>()
-  private let webViewLoadRequest = TestObserver<NSURLRequest, NoError>()
+  fileprivate let goToSafariBrowser = TestObserver<URL, NoError>()
+  fileprivate let goToUpdateId = TestObserver<Int, NoError>()
+  fileprivate let goToUpdateCommentId = TestObserver<Int, NoError>()
+  fileprivate let webViewLoadRequest = TestObserver<URLRequest, NoError>()
 
   internal override func setUp() {
     super.setUp()
@@ -28,11 +28,11 @@ final class ProjectUpdatesViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: project)
     self.vm.inputs.viewDidLoad()
 
-    let googleURL = NSURL(string: "http://www.google.com")!
+    let googleURL = URL(string: "http://www.google.com")!
 
     self.goToSafariBrowser.assertValues([])
 
-    let request = NSURLRequest(URL: googleURL)
+    let request = URLRequest(url: googleURL)
     let navigationAction = WKNavigationActionData(
       navigationType: .LinkActivated,
       request: request,
@@ -58,7 +58,7 @@ final class ProjectUpdatesViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: project)
     self.vm.inputs.viewDidLoad()
 
-    let request = NSURLRequest(URL: NSURL(string: "\(project.urls.web.updates!)/\(updateId)")!)
+    let request = URLRequest(url: URL(string: "\(project.urls.web.updates!)/\(updateId)")!)
     let navigationAction = WKNavigationActionData(
       navigationType: .LinkActivated,
       request: request,
@@ -82,7 +82,7 @@ final class ProjectUpdatesViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: project)
     self.vm.inputs.viewDidLoad()
 
-    let request = NSURLRequest(URL: NSURL(string: "\(project.urls.web.updates!)/\(updateId)/comments")!)
+    let request = URLRequest(url: URL(string: "\(project.urls.web.updates!)/\(updateId)/comments")!)
     let navigationAction = WKNavigationActionData(
       navigationType: .LinkActivated,
       request: request,
@@ -102,7 +102,7 @@ final class ProjectUpdatesViewModelTests: TestCase {
       .~ "https://www.kickstarter.com/projects/shrimp/ijc/posts"
 
     let updatesIndexRequest = AppEnvironment.current.apiService.preparedRequest(
-      forURL: NSURL(string: project.urls.web.updates!)!
+      forURL: URL(string: project.urls.web.updates!)!
     )
 
     self.vm.inputs.configureWith(project: project)
@@ -117,7 +117,7 @@ final class ProjectUpdatesViewModelTests: TestCase {
       .~ "https://www.kickstarter.com/projects/shrimp/ijc/posts"
 
     let updatesIndexRequest = AppEnvironment.current.apiService.preparedRequest(
-      forURL: NSURL(string: project.urls.web.updates!)!
+      forURL: URL(string: project.urls.web.updates!)!
     )
 
     self.vm.inputs.configureWith(project: project)
@@ -125,7 +125,7 @@ final class ProjectUpdatesViewModelTests: TestCase {
 
     self.webViewLoadRequest.assertValues([updatesIndexRequest])
 
-    let updateRequest = NSURLRequest(URL: NSURL(string: "https://www.youtube.com/watch")!)
+    let updateRequest = URLRequest(url: URL(string: "https://www.youtube.com/watch")!)
     let navigationAction = WKNavigationActionData(
       navigationType: .LinkActivated,
       request: updateRequest,

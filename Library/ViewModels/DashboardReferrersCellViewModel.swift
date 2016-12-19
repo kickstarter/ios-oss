@@ -1,6 +1,6 @@
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 import Result
 
@@ -19,7 +19,7 @@ public protocol DashboardReferrersCellViewModelInputs {
   func backersButtonTapped()
 
   /// Call to configure cell with cumulative and referral stats.
-  func configureWith(cumulative cumulative: ProjectStatsEnvelope.CumulativeStats,
+  func configureWith(cumulative: ProjectStatsEnvelope.CumulativeStats,
                                 project: Project,
                                 referrers: [ProjectStatsEnvelope.ReferrerStats])
 
@@ -196,37 +196,37 @@ public final class DashboardReferrersCellViewModel: DashboardReferrersCellViewMo
   }
   // swiftlint:enable function_body_length
 
-  private let backersButtonTappedProperty = MutableProperty()
+  fileprivate let backersButtonTappedProperty = MutableProperty()
   public func backersButtonTapped() {
     self.backersButtonTappedProperty.value = ()
   }
 
-  private let cumulativeProjectStatsProperty = MutableProperty<(ProjectStatsEnvelope.CumulativeStats,
+  fileprivate let cumulativeProjectStatsProperty = MutableProperty<(ProjectStatsEnvelope.CumulativeStats,
                                                                 Project,
                                                                 [ProjectStatsEnvelope.ReferrerStats])?>(nil)
-  public func configureWith(cumulative cumulative: ProjectStatsEnvelope.CumulativeStats,
+  public func configureWith(cumulative: ProjectStatsEnvelope.CumulativeStats,
                                        project: Project,
                                        referrers: [ProjectStatsEnvelope.ReferrerStats]) {
 
     self.cumulativeProjectStatsProperty.value = (cumulative, project, referrers)
   }
 
-  private let percentButtonTappedProperty = MutableProperty()
+  fileprivate let percentButtonTappedProperty = MutableProperty()
   public func percentButtonTapped() {
     self.percentButtonTappedProperty.value = ()
   }
 
-  private let pledgedButtonTappedProperty = MutableProperty()
+  fileprivate let pledgedButtonTappedProperty = MutableProperty()
   public func pledgedButtonTapped() {
     self.pledgedButtonTappedProperty.value = ()
   }
 
-  private let showMoreReferrersTappedProperty = MutableProperty()
+  fileprivate let showMoreReferrersTappedProperty = MutableProperty()
   public func showMoreReferrersTapped() {
     self.showMoreReferrersTappedProperty.value = ()
   }
 
-  private let sourceButtonTappedProperty = MutableProperty()
+  fileprivate let sourceButtonTappedProperty = MutableProperty()
   public func sourceButtonTapped() {
     self.sourceButtonTappedProperty.value = ()
   }

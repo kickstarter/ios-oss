@@ -1,5 +1,5 @@
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 import XCTest
 @testable import KsApi
@@ -8,29 +8,29 @@ import XCTest
 @testable import ReactiveExtensions_TestHelpers
 
 internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
-  private let vm: DiscoveryNavigationHeaderViewModelType = DiscoveryNavigationHeaderViewModel()
+  fileprivate let vm: DiscoveryNavigationHeaderViewModelType = DiscoveryNavigationHeaderViewModel()
 
-  private let animateArrowToDown = TestObserver<Bool, NoError>()
-  private let arrowOpacity = TestObserver<CGFloat, NoError>()
-  private let arrowOpacityAnimated = TestObserver<Bool, NoError>()
-  private let dividerIsHidden = TestObserver<Bool, NoError>()
-  private let primaryLabelOpacity = TestObserver<CGFloat, NoError>()
-  private let primaryLabelOpacityAnimated = TestObserver<Bool, NoError>()
-  private let primaryLabelText = TestObserver<String, NoError>()
-  private let dismissDiscoveryFilters = TestObserver<(), NoError>()
-  private let notifyDelegateFilterSelectedParams = TestObserver<DiscoveryParams, NoError>()
-  private let secondaryLabelText = TestObserver<String, NoError>()
-  private let secondaryLabelIsHidden = TestObserver<Bool, NoError>()
-  private let titleAccessibilityHint = TestObserver<String, NoError>()
-  private let titleAccessibilityLabel = TestObserver<String, NoError>()
-  private let showDiscoveryFiltersRow = TestObserver<SelectableRow, NoError>()
-  private let showDiscoveryFiltersCats = TestObserver<[KsApi.Category], NoError>()
-  private let favoriteButtonAccessibilityLabel = TestObserver<String, NoError>()
-  private let favoriteViewIsDimmed = TestObserver<Bool, NoError>()
-  private let favoriteViewIsHidden = TestObserver<Bool, NoError>()
-  private let showFavoriteOnboardingAlert = TestObserver<String, NoError>()
-  private let updateFavoriteButtonSelected = TestObserver<Bool, NoError>()
-  private let updateFavoriteButtonAnimated = TestObserver<Bool, NoError>()
+  fileprivate let animateArrowToDown = TestObserver<Bool, NoError>()
+  fileprivate let arrowOpacity = TestObserver<CGFloat, NoError>()
+  fileprivate let arrowOpacityAnimated = TestObserver<Bool, NoError>()
+  fileprivate let dividerIsHidden = TestObserver<Bool, NoError>()
+  fileprivate let primaryLabelOpacity = TestObserver<CGFloat, NoError>()
+  fileprivate let primaryLabelOpacityAnimated = TestObserver<Bool, NoError>()
+  fileprivate let primaryLabelText = TestObserver<String, NoError>()
+  fileprivate let dismissDiscoveryFilters = TestObserver<(), NoError>()
+  fileprivate let notifyDelegateFilterSelectedParams = TestObserver<DiscoveryParams, NoError>()
+  fileprivate let secondaryLabelText = TestObserver<String, NoError>()
+  fileprivate let secondaryLabelIsHidden = TestObserver<Bool, NoError>()
+  fileprivate let titleAccessibilityHint = TestObserver<String, NoError>()
+  fileprivate let titleAccessibilityLabel = TestObserver<String, NoError>()
+  fileprivate let showDiscoveryFiltersRow = TestObserver<SelectableRow, NoError>()
+  fileprivate let showDiscoveryFiltersCats = TestObserver<[KsApi.Category], NoError>()
+  fileprivate let favoriteButtonAccessibilityLabel = TestObserver<String, NoError>()
+  fileprivate let favoriteViewIsDimmed = TestObserver<Bool, NoError>()
+  fileprivate let favoriteViewIsHidden = TestObserver<Bool, NoError>()
+  fileprivate let showFavoriteOnboardingAlert = TestObserver<String, NoError>()
+  fileprivate let updateFavoriteButtonSelected = TestObserver<Bool, NoError>()
+  fileprivate let updateFavoriteButtonAnimated = TestObserver<Bool, NoError>()
 
   let initialParams = .defaults
     |> DiscoveryParams.lens.includePOTD .~ true

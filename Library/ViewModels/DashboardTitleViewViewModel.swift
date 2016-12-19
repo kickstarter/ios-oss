@@ -1,12 +1,12 @@
 import KsApi
 import Prelude
 import Result
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 
 public protocol DashboardTitleViewViewModelInputs {
   /// Call to update the data for the title.
-  func updateData(data: DashboardTitleViewData)
+  func updateData(_ data: DashboardTitleViewData)
 
   /// Call when title button is tapped.
   func titleButtonTapped()
@@ -84,13 +84,13 @@ public final class DashboardTitleViewViewModel: DashboardTitleViewViewModelType,
   public let titleText: Signal<String, NoError>
   public let titleButtonIsEnabled: Signal<Bool, NoError>
 
-  private let currentProjectIndexProperty = MutableProperty<Int?>(nil)
-  private let updateDrawerStateHideArrowProperty = MutableProperty<(DrawerState, Bool)?>(nil)
-  public func updateData(data: DashboardTitleViewData) {
+  fileprivate let currentProjectIndexProperty = MutableProperty<Int?>(nil)
+  fileprivate let updateDrawerStateHideArrowProperty = MutableProperty<(DrawerState, Bool)?>(nil)
+  public func updateData(_ data: DashboardTitleViewData) {
     self.currentProjectIndexProperty.value = data.currentProjectIndex
     self.updateDrawerStateHideArrowProperty.value = (data.drawerState, data.isArrowHidden)
   }
-  private let titleButtonTappedProperty = MutableProperty()
+  fileprivate let titleButtonTappedProperty = MutableProperty()
   public func titleButtonTapped() {
     titleButtonTappedProperty.value = ()
   }

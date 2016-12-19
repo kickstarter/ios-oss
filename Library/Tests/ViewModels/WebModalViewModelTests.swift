@@ -1,5 +1,5 @@
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 import WebKit
 import XCTest
@@ -8,11 +8,11 @@ import XCTest
 @testable import ReactiveExtensions_TestHelpers
 
 internal final class WebModalViewModelTests: TestCase {
-  private let vm: WebModalViewModelType = WebModalViewModel()
+  fileprivate let vm: WebModalViewModelType = WebModalViewModel()
 
-  private let dismissViewController = TestObserver<Void, NoError>()
-  private let webViewLoadRequest = TestObserver<NSURLRequest, NoError>()
-  private let webViewLoadRequestIsPrepared = TestObserver<Bool, NoError>()
+  fileprivate let dismissViewController = TestObserver<Void, NoError>()
+  fileprivate let webViewLoadRequest = TestObserver<URLRequest, NoError>()
+  fileprivate let webViewLoadRequestIsPrepared = TestObserver<Bool, NoError>()
 
   override func setUp() {
     super.setUp()
@@ -51,5 +51,5 @@ internal final class WebModalViewModelTests: TestCase {
     XCTAssertEqual(WKNavigationActionPolicy.Allow.rawValue, decision.rawValue)
   }
 
-  private let request = NSURLRequest(URL: NSURL(string: "https://www.kickstarter.com/projects/tfw/ijc")!)
+  fileprivate let request = URLRequest(url: URL(string: "https://www.kickstarter.com/projects/tfw/ijc")!)
 }

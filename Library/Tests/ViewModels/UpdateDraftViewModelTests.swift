@@ -4,7 +4,7 @@ import UIKit
 @testable import KsApi
 @testable import Library
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 
 final class UpdateDraftViewModelTests: TestCase {

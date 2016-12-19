@@ -1,12 +1,12 @@
 import Foundation
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 
 public protocol ProfileHeaderViewModelInputs {
   /// Call with the logged-in user data.
-  func user(user: User)
+  func user(_ user: User)
 }
 
 public protocol ProfileHeaderViewModelOutputs {
@@ -42,7 +42,7 @@ public final class ProfileHeaderViewModel: ProfileHeaderViewModelType,
   ProfileHeaderViewModelInputs, ProfileHeaderViewModelOutputs {
   public init() {
     let user = userProperty.signal.ignoreNil()
-    self.avatarURL = user.map { NSURL(string: $0.avatar.large ?? $0.avatar.medium) }
+    self.avatarURL = user.map { URL(string: $0.avatar.large ?? $0.avatar.medium) }
     self.backedProjectsCountLabel = user
       .map { user in
         Strings.Backed_projects_projects_count(
@@ -61,8 +61,8 @@ public final class ProfileHeaderViewModel: ProfileHeaderViewModelType,
     self.dividerViewHidden = user.map { !$0.isCreator }
   }
 
-  private let userProperty = MutableProperty<User?>(nil)
-  public func user(user: User) {
+  fileprivate let userProperty = MutableProperty<User?>(nil)
+  public func user(_ user: User) {
     self.userProperty.value = user
   }
 

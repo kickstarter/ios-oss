@@ -1,23 +1,23 @@
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 
 public protocol SortPagerViewModelInputs {
   /// Call with the sorts that the view was configured with.
-  func configureWith(sorts sorts: [DiscoveryParams.Sort])
+  func configureWith(sorts: [DiscoveryParams.Sort])
 
   /// Call when the view controller's didRotateFromInterfaceOrientation method is called.
   func didRotateFromInterfaceOrientation()
 
   /// Call when a sort is selected from outside this view.
-  func select(sort sort: DiscoveryParams.Sort)
+  func select(sort: DiscoveryParams.Sort)
 
   /// Call when a sort button is tapped.
-  func sortButtonTapped(index index: Int)
+  func sortButtonTapped(index: Int)
 
   /// Call when to update the sort style.
-  func updateStyle(categoryId categoryId: Int?)
+  func updateStyle(categoryId: Int?)
 
   /// Call when the view controller's willRotateToInterfaceOrientation method is called.
   func willRotateToInterfaceOrientation()
@@ -123,35 +123,35 @@ SortPagerViewModelOutputs {
   }
   // swiftlint:enable function_body_length
 
-  private let didRotateProperty = MutableProperty()
+  fileprivate let didRotateProperty = MutableProperty()
   public func didRotateFromInterfaceOrientation() {
     self.didRotateProperty.value = ()
   }
-  private let sortsProperty = MutableProperty<[DiscoveryParams.Sort]?>(nil)
-  public func configureWith(sorts sorts: [DiscoveryParams.Sort]) {
+  fileprivate let sortsProperty = MutableProperty<[DiscoveryParams.Sort]?>(nil)
+  public func configureWith(sorts: [DiscoveryParams.Sort]) {
     self.sortsProperty.value = sorts
   }
-  private let selectSortProperty = MutableProperty<DiscoveryParams.Sort?>(nil)
-  public func select(sort sort: DiscoveryParams.Sort) {
+  fileprivate let selectSortProperty = MutableProperty<DiscoveryParams.Sort?>(nil)
+  public func select(sort: DiscoveryParams.Sort) {
     self.selectSortProperty.value = sort
   }
-  private let sortButtonTappedIndexProperty = MutableProperty<Int?>(nil)
-  public func sortButtonTapped(index index: Int) {
+  fileprivate let sortButtonTappedIndexProperty = MutableProperty<Int?>(nil)
+  public func sortButtonTapped(index: Int) {
     self.sortButtonTappedIndexProperty.value = index
   }
-  private let updateStyleProperty = MutableProperty<Int?>(nil)
-  public func updateStyle(categoryId categoryId: Int?) {
+  fileprivate let updateStyleProperty = MutableProperty<Int?>(nil)
+  public func updateStyle(categoryId: Int?) {
     self.updateStyleProperty.value = categoryId
   }
-  private let willRotateProperty = MutableProperty()
+  fileprivate let willRotateProperty = MutableProperty()
   public func willRotateToInterfaceOrientation() {
     self.willRotateProperty.value = ()
   }
-  private let viewDidAppearProperty = MutableProperty()
+  fileprivate let viewDidAppearProperty = MutableProperty()
   public func viewDidAppear() {
     self.viewDidAppearProperty.value = ()
   }
-  private let viewWillAppearProperty = MutableProperty()
+  fileprivate let viewWillAppearProperty = MutableProperty()
   public func viewWillAppear() {
     self.viewWillAppearProperty.value = ()
   }

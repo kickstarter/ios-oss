@@ -1,5 +1,5 @@
 import KsApi
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 import Result
 
@@ -11,7 +11,7 @@ public protocol SurveyResponseViewModelInputs {
   func closeButtonTapped()
 
   /// Call to configure with a survey response.
-  func configureWith(surveyResponse surveyResponse: SurveyResponse)
+  func configureWith(surveyResponse: SurveyResponse)
 
   /// Call when the webview decides whether to load a request.
   func shouldStartLoad(withRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool
@@ -103,26 +103,26 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
   }
   // swiftlint:enable function_body_length
 
-  private let alertButtonTappedProperty = MutableProperty()
+  fileprivate let alertButtonTappedProperty = MutableProperty()
   public func alertButtonTapped() { self.alertButtonTappedProperty.value = () }
 
-  private let closeButtonTappedProperty = MutableProperty()
+  fileprivate let closeButtonTappedProperty = MutableProperty()
   public func closeButtonTapped() { self.closeButtonTappedProperty.value = () }
 
-  private let shouldStartLoadProperty = MutableProperty<(NSURLRequest, UIWebViewNavigationType)?>(nil)
-  private let shouldStartLoadResponseProperty = MutableProperty(false)
+  fileprivate let shouldStartLoadProperty = MutableProperty<(NSURLRequest, UIWebViewNavigationType)?>(nil)
+  fileprivate let shouldStartLoadResponseProperty = MutableProperty(false)
   public func shouldStartLoad(withRequest request: NSURLRequest,
                                           navigationType: UIWebViewNavigationType) -> Bool {
     self.shouldStartLoadProperty.value = (request, navigationType)
     return self.shouldStartLoadResponseProperty.value
   }
 
-  private let surveyResponseProperty = MutableProperty<SurveyResponse?>(nil)
-  public func configureWith(surveyResponse surveyResponse: SurveyResponse) {
+  fileprivate let surveyResponseProperty = MutableProperty<SurveyResponse?>(nil)
+  public func configureWith(surveyResponse: SurveyResponse) {
     self.surveyResponseProperty.value = surveyResponse
   }
 
-  private let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty()
   public func viewDidLoad() { self.viewDidLoadProperty.value = () }
 
   public let dismissViewController: Signal<Void, NoError>
@@ -135,12 +135,12 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
   public var outputs: SurveyResponseViewModelOutputs { return self }
 }
 
-private func isUnpreparedSurvey(request request: NSURLRequest) -> Bool {
-  guard !AppEnvironment.current.apiService.isPrepared(request: request) else { return false }
+private func isUnpreparedSurvey(request: NSURLRequest) -> Bool {
+  guard !AppEnvironment.current.apiService.isPrepared(request: request as URLRequest) else { return false }
   return isSurvey(request: request)
 }
 
-private func isSurvey(request request: NSURLRequest) -> Bool {
+private func isSurvey(request: NSURLRequest) -> Bool {
   guard case (.project(_, .survey(_), _))? = Navigation.match(request) else { return false }
   return true
 }

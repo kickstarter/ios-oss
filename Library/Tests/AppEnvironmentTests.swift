@@ -132,8 +132,8 @@ final class AppEnvironmentTests: XCTestCase {
   func testSaveEnvironment() {
     let apiService = MockService(
       serverConfig: ServerConfig(
-        apiBaseUrl: NSURL(string: "http://api.ksr.com")!,
-        webBaseUrl: NSURL(string: "http://ksr.com")!,
+        apiBaseUrl: URL(string: "http://api.ksr.com")!,
+        webBaseUrl: URL(string: "http://ksr.com")!,
         apiClientAuth: ClientAuth(clientId: "cafebeef"),
         basicHTTPAuth: nil
       ),

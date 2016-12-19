@@ -2,18 +2,18 @@
 @testable import ReactiveExtensions_TestHelpers
 import MessageUI
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 import UIKit
 import XCTest
 
 internal final class HelpViewModelTests: TestCase {
-  private let vm: HelpViewModelType = HelpViewModel()
+  fileprivate let vm: HelpViewModelType = HelpViewModel()
 
-  private let showNoEmailError = TestObserver<UIAlertController, NoError>()
-  private let showHelpSheet = TestObserver<[HelpType], NoError>()
-  private let showMailCompose = TestObserver<(), NoError>()
-  private let showWebHelp = TestObserver<HelpType, NoError>()
+  fileprivate let showNoEmailError = TestObserver<UIAlertController, NoError>()
+  fileprivate let showHelpSheet = TestObserver<[HelpType], NoError>()
+  fileprivate let showMailCompose = TestObserver<(), NoError>()
+  fileprivate let showWebHelp = TestObserver<HelpType, NoError>()
 
   override func setUp() {
     super.setUp()
@@ -94,11 +94,7 @@ internal final class HelpViewModelTests: TestCase {
     XCTAssertEqual([nil, "Settings"], self.trackingClient.properties.map { $0["context"] as! String? })
     XCTAssertEqual([nil, "Contact"], self.trackingClient.properties.map { $0["type"] as! String? })
 
-    #if swift(>=2.3)
-      self.vm.inputs.mailComposeCompletion(result: .Sent)
-    #else
-      self.vm.inputs.mailComposeCompletion(result: MFMailComposeResultSent)
-    #endif
+    self.vm.inputs.mailComposeCompletion(result: .Sent)
 
     XCTAssertEqual(["Contact Email Open", "Selected Help Option", "Sent Contact Email", "Contact Email Sent"],
                    self.trackingClient.events)
@@ -116,11 +112,7 @@ internal final class HelpViewModelTests: TestCase {
     XCTAssertEqual([nil, "Contact", nil, nil, nil, "Contact"],
                    self.trackingClient.properties.map { $0["type"] as! String? })
 
-    #if swift(>=2.3)
-      self.vm.inputs.mailComposeCompletion(result: .Cancelled)
-    #else
-      self.vm.inputs.mailComposeCompletion(result: MFMailComposeResultCancelled)
-    #endif
+    self.vm.inputs.mailComposeCompletion(result: .Cancelled)
 
     self.showNoEmailError.assertValueCount(0)
     XCTAssertEqual(["Contact Email Open", "Selected Help Option", "Sent Contact Email",

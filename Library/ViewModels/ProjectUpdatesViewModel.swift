@@ -1,12 +1,12 @@
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 import WebKit
 
 public protocol ProjectUpdatesViewModelInputs {
   /// Call with the project given to the view.
-  func configureWith(project project: Project)
+  func configureWith(project: Project)
 
   /// Call with the navigation action given to the webview's delegate method. Returns the policy that can
   /// be returned from the delegate method.
@@ -45,7 +45,7 @@ ProjectUpdatesViewModelOutputs {
     let project = combineLatest(self.projectProperty.signal.ignoreNil(), self.viewDidLoadProperty.signal)
       .map(first)
 
-    let initialUpdatesIndexLoadRequest = project.map { NSURL(string: $0.urls.web.updates ?? "") }.ignoreNil()
+    let initialUpdatesIndexLoadRequest = project.map { URL(string: $0.urls.web.updates ?? "") }.ignoreNil()
 
     let anotherIndexRequest = navigationAction
       .filter { $0.navigationType == .LinkActivated && isUpdatesRequest(request: $0.request) }
@@ -101,18 +101,18 @@ ProjectUpdatesViewModelOutputs {
     }
   }
 
-  private let projectProperty = MutableProperty<Project?>(nil)
-  public func configureWith(project project: Project) {
+  fileprivate let projectProperty = MutableProperty<Project?>(nil)
+  public func configureWith(project: Project) {
     self.projectProperty.value = project
   }
-  private let navigationAction = MutableProperty<WKNavigationActionData?>(nil)
-  private let decidedPolicy = MutableProperty(WKNavigationActionPolicy.Cancel)
+  fileprivate let navigationAction = MutableProperty<WKNavigationActionData?>(nil)
+  fileprivate let decidedPolicy = MutableProperty(WKNavigationActionPolicy.Cancel)
   public func decidePolicy(forNavigationAction action: WKNavigationActionData)
     -> WKNavigationActionPolicy {
       self.navigationAction.value = action
       return self.decidedPolicy.value
   }
-  private let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty()
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
@@ -139,17 +139,17 @@ private func projectUpdateParams(fromRequest request: NSURLRequest) -> (projectP
   }
 }
 
-private func isGoToCommentsRequest(request request: NSURLRequest) -> Bool {
+private func isGoToCommentsRequest(request: URLRequest) -> Bool {
   if let nav = Navigation.match(request), case .project(_, .update(_, .comments), _) = nav { return true }
   return false
 }
 
-private func isGoToUpdateRequest(request request: NSURLRequest) -> Bool {
+private func isGoToUpdateRequest(request: URLRequest) -> Bool {
   if let nav = Navigation.match(request), case .project(_, .update(_, .root), _) = nav { return true }
   return false
 }
 
-private func isUpdatesRequest(request request: NSURLRequest) -> Bool {
+private func isUpdatesRequest(request: URLRequest) -> Bool {
   if let nav = Navigation.match(request), case .project(_, .updates, _) = nav { return true }
   return false
 }

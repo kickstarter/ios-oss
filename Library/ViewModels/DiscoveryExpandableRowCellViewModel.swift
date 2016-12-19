@@ -1,10 +1,10 @@
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 
 public protocol DiscoveryExpandableRowCellInputs {
-  func configureWith(row row: ExpandableRow, categoryId: Int?)
+  func configureWith(row: ExpandableRow, categoryId: Int?)
   func willDisplay()
 }
 
@@ -67,12 +67,12 @@ DiscoveryExpandableRowCellInputs, DiscoveryExpandableRowCellOutputs {
 
   }
 
-  private let expandableRowAndCategoryIdProperty = MutableProperty<(ExpandableRow, Int?)?>(nil)
-  public func configureWith(row row: ExpandableRow, categoryId: Int?) {
+  fileprivate let expandableRowAndCategoryIdProperty = MutableProperty<(ExpandableRow, Int?)?>(nil)
+  public func configureWith(row: ExpandableRow, categoryId: Int?) {
     self.expandableRowAndCategoryIdProperty.value = (row, categoryId)
   }
 
-  private let willDisplayProperty = MutableProperty()
+  fileprivate let willDisplayProperty = MutableProperty()
   public func willDisplay() {
     self.willDisplayProperty.value = ()
   }

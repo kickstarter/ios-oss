@@ -1,6 +1,6 @@
 #if os(iOS)
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 import MessageUI
 
@@ -29,16 +29,16 @@ public protocol HelpViewModelInputs {
   func cancelHelpSheetButtonTapped()
 
   /// Call to set whether Mail can be composed.
-  func canSendEmail(canSend: Bool)
+  func canSendEmail(_ canSend: Bool)
 
   /// Call to configure with HelpContext.
-  func configureWith(helpContext helpContext: HelpContext)
+  func configureWith(helpContext: HelpContext)
 
   /// Call when a help button is tapped.
-  func helpTypeButtonTapped(helpType: HelpType)
+  func helpTypeButtonTapped(_ helpType: HelpType)
 
   /// Call when mail compose view controller has closed with a result.
-  func mailComposeCompletion(result result: MFMailComposeResult)
+  func mailComposeCompletion(result: MFMailComposeResult)
 
   /// Call when to show the help sheet from a button tap.
   func showHelpSheetButtonTapped()
@@ -104,24 +104,12 @@ public final class HelpViewModel: HelpViewModelType, HelpViewModelInputs, HelpVi
 
     context
       .takePairWhen(self.mailComposeCompletionProperty.signal.ignoreNil())
-      .filter {
-        #if swift(>=2.3)
-          return $1 == .Sent
-        #else
-          return $1 == MFMailComposeResultSent
-        #endif
-      }
+      .filter { $1 == .Sent }
       .observeNext { context, _ in AppEnvironment.current.koala.trackSentContactEmail(context: context) }
 
     context
       .takePairWhen(self.mailComposeCompletionProperty.signal.ignoreNil())
-      .filter {
-        #if swift(>=2.3)
-          return $1 == .Cancelled
-        #else
-          return $1 == MFMailComposeResultCancelled
-        #endif
-      }
+      .filter { $1 == .Cancelled }
       .observeNext { context, _ in AppEnvironment.current.koala.trackCanceledContactEmail(context: context) }
   }
   // swiftlint:enable function_body_length
@@ -134,28 +122,28 @@ public final class HelpViewModel: HelpViewModelType, HelpViewModelInputs, HelpVi
   public let showMailCompose: Signal<(), NoError>
   public let showWebHelp: Signal<HelpType, NoError>
 
-  private let canSendEmailProperty = MutableProperty<Bool?>(nil)
-  public func canSendEmail(canSend: Bool) {
+  fileprivate let canSendEmailProperty = MutableProperty<Bool?>(nil)
+  public func canSendEmail(_ canSend: Bool) {
     self.canSendEmailProperty.value = canSend
   }
-  private let cancelHelpSheetButtonTappedProperty = MutableProperty()
+  fileprivate let cancelHelpSheetButtonTappedProperty = MutableProperty()
   public func cancelHelpSheetButtonTapped() {
     self.cancelHelpSheetButtonTappedProperty.value = ()
   }
-  private let helpContextProperty = MutableProperty<HelpContext?>(nil)
-  public func configureWith(helpContext helpContext: HelpContext) {
+  fileprivate let helpContextProperty = MutableProperty<HelpContext?>(nil)
+  public func configureWith(helpContext: HelpContext) {
     self.helpContextProperty.value = helpContext
   }
-  private let showHelpSheetButtonTappedProperty = MutableProperty()
+  fileprivate let showHelpSheetButtonTappedProperty = MutableProperty()
   public func showHelpSheetButtonTapped() {
     self.showHelpSheetButtonTappedProperty.value = ()
   }
-  private let helpTypeButtonTappedProperty = MutableProperty<HelpType?>(nil)
-  public func helpTypeButtonTapped(helpType: HelpType) {
+  fileprivate let helpTypeButtonTappedProperty = MutableProperty<HelpType?>(nil)
+  public func helpTypeButtonTapped(_ helpType: HelpType) {
     self.helpTypeButtonTappedProperty.value = helpType
   }
-  private let mailComposeCompletionProperty = MutableProperty<MFMailComposeResult?>(nil)
-  public func mailComposeCompletion(result result: MFMailComposeResult) {
+  fileprivate let mailComposeCompletionProperty = MutableProperty<MFMailComposeResult?>(nil)
+  public func mailComposeCompletion(result: MFMailComposeResult) {
     self.mailComposeCompletionProperty.value = result
   }
 }
@@ -164,12 +152,12 @@ private func noEmailError() -> UIAlertController {
   let alertController = UIAlertController(
     title: Strings.support_email_noemail_title(),
     message: Strings.support_email_noemail_message(),
-    preferredStyle: .Alert
+    preferredStyle: .alert
   )
   alertController.addAction(
     UIAlertAction(
       title: Strings.general_alert_buttons_ok(),
-      style: .Cancel,
+      style: .cancel,
       handler: nil
     )
   )

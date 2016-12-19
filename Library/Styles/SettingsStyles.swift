@@ -3,7 +3,7 @@ import Prelude_UIKit
 import UIKit
 
 public let settingsSectionButtonStyle =
-  UIButton.lens.title(forState: .Normal) .~ nil
+  UIButton.lens.title(forState: .normal) .~ nil
 
 public let settingsSectionLabelStyle =
   UILabel.lens.textColor .~ .ksr_text_navy_700
@@ -21,5 +21,5 @@ public let settingsLogoutButtonStyle = borderButtonStyle
   <> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.profile_settings_log_out_button() }
 
 public let settingsNotificationIconButtonStyle =
-  UIButton.lens.title(forState: .Normal) .~ nil
+  UIButton.lens.title(forState: .normal) .~ nil
     <> UIButton.lens.tintColor .~ .ksr_text_navy_500

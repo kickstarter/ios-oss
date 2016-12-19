@@ -1,6 +1,6 @@
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 
 public protocol MessageThreadsViewModelInputs {
@@ -8,7 +8,7 @@ public protocol MessageThreadsViewModelInputs {
   func mailboxButtonPressed()
 
   /// Call with the project whose message threads we are viewing. If no project is given, then use `nil`.
-  func configureWith(project project: Project?)
+  func configureWith(project: Project?)
 
   /// Call when pull-to-refresh is invoked.
   func refresh()
@@ -17,13 +17,13 @@ public protocol MessageThreadsViewModelInputs {
   func searchButtonPressed()
 
   /// Call when the user has selected a mailbox to switch to.
-  func switchTo(mailbox mailbox: Mailbox)
+  func switchTo(mailbox: Mailbox)
 
   /// Call when the view loads.
   func viewDidLoad()
 
   /// Call when a new row is displayed.
-  func willDisplayRow(row: Int, outOf totalRows: Int)
+  func willDisplayRow(_ row: Int, outOf totalRows: Int)
 }
 
 public protocol MessageThreadsViewModelOutputs {
@@ -128,32 +128,32 @@ MessageThreadsViewModelOutputs {
   }
   // swiftlint:enable function_body_length
 
-  private let mailboxButtonPressedProperty = MutableProperty()
+  fileprivate let mailboxButtonPressedProperty = MutableProperty()
   public func mailboxButtonPressed() {
     self.mailboxButtonPressedProperty.value = ()
   }
-  private let projectProperty = MutableProperty<Project?>(nil)
-  public func configureWith(project project: Project?) {
+  fileprivate let projectProperty = MutableProperty<Project?>(nil)
+  public func configureWith(project: Project?) {
     self.projectProperty.value = project
   }
-  private let refreshProperty = MutableProperty()
+  fileprivate let refreshProperty = MutableProperty()
   public func refresh() {
     self.refreshProperty.value = ()
   }
-  private let searchButtonPressedProperty = MutableProperty()
+  fileprivate let searchButtonPressedProperty = MutableProperty()
   public func searchButtonPressed() {
     self.searchButtonPressedProperty.value = ()
   }
-  private let switchToMailbox = MutableProperty<Mailbox?>(nil)
-  public func switchTo(mailbox mailbox: Mailbox) {
+  fileprivate let switchToMailbox = MutableProperty<Mailbox?>(nil)
+  public func switchTo(mailbox: Mailbox) {
     self.switchToMailbox.value = mailbox
   }
-  private let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty()
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
-  private let willDisplayRowProperty = MutableProperty<(row: Int, total: Int)?>(nil)
-  public func willDisplayRow(row: Int, outOf totalRows: Int) {
+  fileprivate let willDisplayRowProperty = MutableProperty<(row: Int, total: Int)?>(nil)
+  public func willDisplayRow(_ row: Int, outOf totalRows: Int) {
     self.willDisplayRowProperty.value = (row, totalRows)
   }
 

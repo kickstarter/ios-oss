@@ -1,9 +1,9 @@
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 
 public protocol SimpleViewModelInputs {
   associatedtype Model
-  func model(model: Model)
+  func model(_ model: Model)
 }
 
 public protocol SimpleViewModelOutputs {
@@ -15,8 +15,8 @@ public protocol SimpleViewModelOutputs {
 /// for access to that model.
 public final class SimpleViewModel<Model>: SimpleViewModelInputs, SimpleViewModelOutputs {
 
-  private let modelProperty = MutableProperty<Model?>(nil)
-  public func model(model: Model) {
+  fileprivate let modelProperty = MutableProperty<Model?>(nil)
+  public func model(_ model: Model) {
     self.modelProperty.value = model
   }
 

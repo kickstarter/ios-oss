@@ -1,6 +1,6 @@
 import XCTest
 @testable import KsApi
-@testable import ReactiveCocoa
+@testable import ReactiveSwift
 @testable import ReactiveExtensions
 @testable import ReactiveExtensions_TestHelpers
 @testable import Result
@@ -9,17 +9,17 @@ import XCTest
 @testable import FBSDKCoreKit
 
 final class LoginToutViewModelTests: TestCase {
-  private let vm: LoginToutViewModelType = LoginToutViewModel()
-  private let startLogin = TestObserver<(), NoError>()
-  private let startSignup = TestObserver<(), NoError>()
-  private let startFacebookConfirmation = TestObserver<String, NoError>()
-  private let startTwoFactorChallenge = TestObserver<String, NoError>()
-  private let logIntoEnvironment = TestObserver<AccessTokenEnvelope, NoError>()
-  private let postNotification = TestObserver<String, NoError>()
-  private let attemptFacebookLogin = TestObserver<(), NoError>()
-  private let isLoading = TestObserver<Bool, NoError>()
-  private let showFacebookErrorAlert = TestObserver<AlertError, NoError>()
-  private let dismissViewController = TestObserver<(), NoError>()
+  fileprivate let vm: LoginToutViewModelType = LoginToutViewModel()
+  fileprivate let startLogin = TestObserver<(), NoError>()
+  fileprivate let startSignup = TestObserver<(), NoError>()
+  fileprivate let startFacebookConfirmation = TestObserver<String, NoError>()
+  fileprivate let startTwoFactorChallenge = TestObserver<String, NoError>()
+  fileprivate let logIntoEnvironment = TestObserver<AccessTokenEnvelope, NoError>()
+  fileprivate let postNotification = TestObserver<String, NoError>()
+  fileprivate let attemptFacebookLogin = TestObserver<(), NoError>()
+  fileprivate let isLoading = TestObserver<Bool, NoError>()
+  fileprivate let showFacebookErrorAlert = TestObserver<AlertError, NoError>()
+  fileprivate let dismissViewController = TestObserver<(), NoError>()
 
   override func setUp() {
     super.setUp()
@@ -80,8 +80,8 @@ final class LoginToutViewModelTests: TestCase {
       declinedPermissions: nil,
       appID: "834987809",
       userID: "0000000001",
-      expirationDate: NSDate(),
-      refreshDate: NSDate()
+      expirationDate: Date(),
+      refreshDate: Date()
     )
 
     let result = FBSDKLoginManagerLoginResult(
@@ -175,8 +175,8 @@ final class LoginToutViewModelTests: TestCase {
       declinedPermissions: nil,
       appID: "834987809",
       userID: "0000000001",
-      expirationDate: NSDate(),
-      refreshDate: NSDate()
+      expirationDate: Date(),
+      refreshDate: Date()
     )
 
     let result = FBSDKLoginManagerLoginResult(
@@ -217,8 +217,8 @@ final class LoginToutViewModelTests: TestCase {
       declinedPermissions: nil,
       appID: "834987809",
       userID: "0000000001",
-      expirationDate: NSDate(),
-      refreshDate: NSDate()
+      expirationDate: Date(),
+      refreshDate: Date()
     )
 
     let result = FBSDKLoginManagerLoginResult(
@@ -257,8 +257,8 @@ final class LoginToutViewModelTests: TestCase {
       declinedPermissions: nil,
       appID: "834987809",
       userID: "0000000001",
-      expirationDate: NSDate(),
-      refreshDate: NSDate()
+      expirationDate: Date(),
+      refreshDate: Date()
     )
 
     let result = FBSDKLoginManagerLoginResult(
@@ -297,8 +297,8 @@ final class LoginToutViewModelTests: TestCase {
       declinedPermissions: nil,
       appID: "834987809",
       userID: "0000000001",
-      expirationDate: NSDate(),
-      refreshDate: NSDate()
+      expirationDate: Date(),
+      refreshDate: Date()
     )
 
     let result = FBSDKLoginManagerLoginResult(
@@ -340,8 +340,8 @@ final class LoginToutViewModelTests: TestCase {
       declinedPermissions: nil,
       appID: "834987809",
       userID: "0000000001",
-      expirationDate: NSDate(),
-      refreshDate: NSDate()
+      expirationDate: Date(),
+      refreshDate: Date()
     )
 
     let result = FBSDKLoginManagerLoginResult(

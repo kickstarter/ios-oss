@@ -1,13 +1,13 @@
 import Foundation
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 import Result
 
 public protocol ProfileViewModelInputs {
   /// Call when a project cell is tapped.
-  func projectTapped(project: Project)
+  func projectTapped(_ project: Project)
 
   /// Call when pull-to-refresh is invoked.
   func refresh()
@@ -16,10 +16,10 @@ public protocol ProfileViewModelInputs {
   func settingsButtonTapped()
 
   /// Call when the view will appear.
-  func viewWillAppear(animated: Bool)
+  func viewWillAppear(_ animated: Bool)
 
   /// Call when a new row is displayed.
-  func willDisplayRow(row: Int, outOf totalRows: Int)
+  func willDisplayRow(_ row: Int, outOf totalRows: Int)
 }
 
 public protocol ProfileViewModelOutputs {
@@ -95,28 +95,28 @@ public final class ProfileViewModel: ProfileViewModelType, ProfileViewModelInput
       .observeNext { _ in AppEnvironment.current.koala.trackProfileView() }
   }
 
-  private let projectTappedProperty = MutableProperty<Project?>(nil)
-  public func projectTapped(project: Project) {
+  fileprivate let projectTappedProperty = MutableProperty<Project?>(nil)
+  public func projectTapped(_ project: Project) {
     projectTappedProperty.value = project
   }
 
-  private let refreshProperty = MutableProperty()
+  fileprivate let refreshProperty = MutableProperty()
   public func refresh() {
     self.refreshProperty.value = ()
   }
 
-  private let settingsButtonTappedProperty = MutableProperty()
+  fileprivate let settingsButtonTappedProperty = MutableProperty()
   public func settingsButtonTapped() {
     self.settingsButtonTappedProperty.value = ()
   }
 
-  private let viewWillAppearProperty = MutableProperty(false)
-  public func viewWillAppear(animated: Bool) {
+  fileprivate let viewWillAppearProperty = MutableProperty(false)
+  public func viewWillAppear(_ animated: Bool) {
     self.viewWillAppearProperty.value = animated
   }
 
-  private let willDisplayRowProperty = MutableProperty<(row: Int, total: Int)?>(nil)
-  public func willDisplayRow(row: Int, outOf totalRows: Int) {
+  fileprivate let willDisplayRowProperty = MutableProperty<(row: Int, total: Int)?>(nil)
+  public func willDisplayRow(_ row: Int, outOf totalRows: Int) {
     self.willDisplayRowProperty.value = (row, totalRows)
   }
 

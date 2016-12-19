@@ -1,18 +1,18 @@
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 import Result
 
 public protocol DiscoveryNavigationHeaderViewModelInputs {
   /// Call to configure with Discovery params.
-  func configureWith(params params: DiscoveryParams)
+  func configureWith(params: DiscoveryParams)
 
   /// Call when favorite category button is tapped.
   func favoriteButtonTapped()
 
   /// Call when params have been selected from the filters menu.
-  func filtersSelected(row row: SelectableRow)
+  func filtersSelected(row: SelectableRow)
 
   /// Call when title button is tapped.
   func titleButtonTapped()
@@ -245,23 +245,23 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
   }
   // swiftlint:enable function_body_length
 
-  private let paramsProperty = MutableProperty<DiscoveryParams?>(nil)
-  public func configureWith(params params: DiscoveryParams) {
+  fileprivate let paramsProperty = MutableProperty<DiscoveryParams?>(nil)
+  public func configureWith(params: DiscoveryParams) {
     self.paramsProperty.value = params
   }
-  private let favoriteButtonTappedProperty = MutableProperty()
+  fileprivate let favoriteButtonTappedProperty = MutableProperty()
   public func favoriteButtonTapped() {
     self.favoriteButtonTappedProperty.value = ()
   }
-  private let filtersSelectedRowProperty = MutableProperty<SelectableRow?>(nil)
-  public func filtersSelected(row row: SelectableRow) {
+  fileprivate let filtersSelectedRowProperty = MutableProperty<SelectableRow?>(nil)
+  public func filtersSelected(row: SelectableRow) {
     self.filtersSelectedRowProperty.value = row
   }
-  private let titleButtonTappedProperty = MutableProperty()
+  fileprivate let titleButtonTappedProperty = MutableProperty()
   public func titleButtonTapped() {
     self.titleButtonTappedProperty.value = ()
   }
-  private let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty()
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
@@ -291,7 +291,7 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
   public var outputs: DiscoveryNavigationHeaderViewModelOutputs { return self }
 }
 
-private func stringsForTitle(params params: DiscoveryParams) -> (filter: String, subcategory: String?) {
+private func stringsForTitle(params: DiscoveryParams) -> (filter: String, subcategory: String?) {
   let filterText: String
   var subcategoryText: String? = nil
 
@@ -312,7 +312,7 @@ private func stringsForTitle(params params: DiscoveryParams) -> (filter: String,
   return (filter: filterText, subcategory: subcategoryText)
 }
 
-private func accessibilityLabelForTitleButton(params params: DiscoveryParams) -> String {
+private func accessibilityLabelForTitleButton(params: DiscoveryParams) -> String {
   if params.staffPicks == true {
     return Strings.Filter_by_projects_we_love()
   } else if params.starred == true {
@@ -336,19 +336,19 @@ private func string(forCategoryId id: Int) -> String {
 }
 
 private func isFavoriteCategoryStored(withId id: Int) -> Bool {
-  return AppEnvironment.current.ubiquitousStore.favoriteCategoryIds.indexOf(id) != nil ||
-  AppEnvironment.current.userDefaults.favoriteCategoryIds.indexOf(id) != nil
+  return AppEnvironment.current.ubiquitousStore.favoriteCategoryIds.index(of: id) != nil ||
+  AppEnvironment.current.userDefaults.favoriteCategoryIds.index(of: id) != nil
 }
 
 private func toggleStoredFavoriteCategory(withId id: Int) {
-  if let index = AppEnvironment.current.ubiquitousStore.favoriteCategoryIds.indexOf(id) {
-    AppEnvironment.current.ubiquitousStore.favoriteCategoryIds.removeAtIndex(index)
+  if let index = AppEnvironment.current.ubiquitousStore.favoriteCategoryIds.index(of: id) {
+    AppEnvironment.current.ubiquitousStore.favoriteCategoryIds.remove(at: index)
   } else {
     AppEnvironment.current.ubiquitousStore.favoriteCategoryIds.append(id)
   }
 
-  if let index = AppEnvironment.current.userDefaults.favoriteCategoryIds.indexOf(id) {
-    AppEnvironment.current.userDefaults.favoriteCategoryIds.removeAtIndex(index)
+  if let index = AppEnvironment.current.userDefaults.favoriteCategoryIds.index(of: id) {
+    AppEnvironment.current.userDefaults.favoriteCategoryIds.remove(at: index)
   } else {
     AppEnvironment.current.userDefaults.favoriteCategoryIds.append(id)
   }

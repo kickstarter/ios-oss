@@ -306,7 +306,7 @@ extension UpdateDraftViewController: UIImagePickerControllerDelegate, UINavigati
       let imageData = UIImageJPEGRepresentation(image, 0.9),
       let caches = NSSearchPathForDirectoriesInDomains(.CachesDirectory, .UserDomainMask, true).first,
       let file = NSURL(string: caches)?.URLByAppendingPathComponent("\(image.hash).jpg"),
-      let absoluteString = optionalize(file.absoluteString)
+      let absoluteString = file.absoluteString
       else { fatalError() }
 
     imageData.writeToFile(absoluteString, atomically: true)

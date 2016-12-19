@@ -1,9 +1,9 @@
 import KsApi
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 
 public protocol BackingCellViewModelInputs {
-  func configureWith(backing backing: Backing, project: Project)
+  func configureWith(backing: Backing, project: Project)
 }
 public protocol BackingCellViewModelOutputs {
   var pledged: Signal<String, NoError> { get }
@@ -52,8 +52,8 @@ BackingCellViewModelOutputs {
       .map { _, _ in AppEnvironment.current.isVoiceOverRunning() ? .Fill : .Leading }
   }
 
-  private let backingAndProjectProperty = MutableProperty<(Backing, Project)?>(nil)
-  public func configureWith(backing backing: Backing, project: Project) {
+  fileprivate let backingAndProjectProperty = MutableProperty<(Backing, Project)?>(nil)
+  public func configureWith(backing: Backing, project: Project) {
     self.backingAndProjectProperty.value = (backing, project)
   }
 

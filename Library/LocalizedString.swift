@@ -12,7 +12,7 @@ import Prelude
  - returns: The localized string. If the key does not exist the `defaultValue` will be returned,
  and if that is not specified an empty string will be returned.
  */
-public func localizedString(key key: String,
+public func localizedString(key: String,
                                 defaultValue: String = "",
                                 count: Int? = nil,
                                 substitutions: [String:String] = [:],
@@ -26,7 +26,7 @@ public func localizedString(key key: String,
 
   let lprojName = lprojFileNameForLanguage(env.language)
   let localized = bundle.pathForResource(lprojName, ofType: "lproj")
-    .flatMap(bundle.dynamicType.create(path:))
+    .flatMap(type(of: bundle).create(path:))
     .flatMap { $0.localizedStringForKey(augmentedKey, value: nil, table: nil) }
     .filter {
       // NB: `localizedStringForKey` has the annoying habit of returning the key when the key doesn't exist.
@@ -39,12 +39,12 @@ public func localizedString(key key: String,
   return substitute(localized, with: substitutions)
 }
 
-private func lprojFileNameForLanguage(language: Language) -> String {
+private func lprojFileNameForLanguage(_ language: Language) -> String {
   return language.rawValue == "en" ? "Base" : language.rawValue
 }
 
 // Returns the pluralization suffx for a count.
-private func keySuffixForCount(count: Int) -> String {
+private func keySuffixForCount(_ count: Int) -> String {
   switch count {
   case 0:
     return "zero"
@@ -60,12 +60,12 @@ private func keySuffixForCount(count: Int) -> String {
 }
 
 // Performs simple string interpolation on keys of the form `%{key}`.
-private func substitute(string: String, with substitutions: [String: String]) -> String {
+private func substitute(_ string: String, with substitutions: [String: String]) -> String {
 
   return substitutions.reduce(string) { accum, sub in
-    return accum.stringByReplacingOccurrencesOfString("%{\(sub.0)}", withString: sub.1)
+    return accum.replacingOccurrences(of: "%{\(sub.0)}", with: sub.1)
   }
 }
 
 private class Pin {}
-private let stringsBundle = NSBundle(forClass: Pin.self)
+private let stringsBundle = Bundle(for: Pin.self)

@@ -1,20 +1,20 @@
 import Library
 @testable import ReactiveExtensions_TestHelpers
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 @testable import KsApi
 
 final class MessageThreadCellViewModelTests: TestCase {
-  private let vm: MessageThreadCellViewModelType = MessageThreadCellViewModel()
+  fileprivate let vm: MessageThreadCellViewModelType = MessageThreadCellViewModel()
 
-  private let date = TestObserver<String, NoError>()
-  private let dateAccessibilityLabel = TestObserver<String, NoError>()
-  private let messageBody = TestObserver<String, NoError>()
-  private let participantAvatarURL = TestObserver<NSURL?, NoError>()
-  private let participantName = TestObserver<String, NoError>()
-  private let projectName = TestObserver<String, NoError>()
-  private let replyIndicatorHidden = TestObserver<Bool, NoError>()
-  private let unreadIndicatorHidden = TestObserver<Bool, NoError>()
+  fileprivate let date = TestObserver<String, NoError>()
+  fileprivate let dateAccessibilityLabel = TestObserver<String, NoError>()
+  fileprivate let messageBody = TestObserver<String, NoError>()
+  fileprivate let participantAvatarURL = TestObserver<NSURL?, NoError>()
+  fileprivate let participantName = TestObserver<String, NoError>()
+  fileprivate let projectName = TestObserver<String, NoError>()
+  fileprivate let replyIndicatorHidden = TestObserver<Bool, NoError>()
+  fileprivate let unreadIndicatorHidden = TestObserver<Bool, NoError>()
 
   override func setUp() {
     super.setUp()

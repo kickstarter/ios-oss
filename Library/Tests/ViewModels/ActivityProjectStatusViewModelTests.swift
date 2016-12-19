@@ -6,11 +6,11 @@ import XCTest
 @testable import ReactiveExtensions_TestHelpers
 
 internal final class ActivityProjectStatusViewModelTests: TestCase {
-  private let vm: ActivityProjectStatusViewModelType = ActivityProjectStatusViewModel()
-  private let metadataText = TestObserver<String, NoError>()
-  private let percentFundedText = TestObserver<String, NoError>()
-  private let projectImageURL = TestObserver<String?, NoError>()
-  private let projectName = TestObserver<String, NoError>()
+  fileprivate let vm: ActivityProjectStatusViewModelType = ActivityProjectStatusViewModel()
+  fileprivate let metadataText = TestObserver<String, NoError>()
+  fileprivate let percentFundedText = TestObserver<String, NoError>()
+  fileprivate let projectImageURL = TestObserver<String?, NoError>()
+  fileprivate let projectName = TestObserver<String, NoError>()
 
   override func setUp() {
     super.setUp()

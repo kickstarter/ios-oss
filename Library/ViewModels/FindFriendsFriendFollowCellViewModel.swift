@@ -1,12 +1,12 @@
 import KsApi
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 import Result
 import Prelude
 
 public protocol FindFriendsFriendFollowCellViewModelInputs {
   /// Call to set friend and source from whence it comes
-  func configureWith(friend friend: User, source: FriendsSource)
+  func configureWith(friend: User, source: FriendsSource)
 
   /// Call when follow friend button is tapped
   func followButtonTapped()
@@ -151,19 +151,19 @@ public final class FindFriendsFriendFollowCellViewModel: FindFriendsFriendFollow
   public var inputs: FindFriendsFriendFollowCellViewModelInputs { return self }
   public var outputs: FindFriendsFriendFollowCellViewModelOutputs { return self }
 
-  private let configureWithFriendProperty = MutableProperty<User?>(nil)
-  private let configureWithSourceProperty = MutableProperty<FriendsSource?>(nil)
-  public func configureWith(friend friend: User, source: FriendsSource) {
+  fileprivate let configureWithFriendProperty = MutableProperty<User?>(nil)
+  fileprivate let configureWithSourceProperty = MutableProperty<FriendsSource?>(nil)
+  public func configureWith(friend: User, source: FriendsSource) {
     configureWithFriendProperty.value = friend
     configureWithSourceProperty.value = source
   }
 
-  private let followButtonTappedProperty = MutableProperty()
+  fileprivate let followButtonTappedProperty = MutableProperty()
   public func followButtonTapped() {
     followButtonTappedProperty.value = ()
   }
 
-  private let unfollowButtonTappedProperty = MutableProperty()
+  fileprivate let unfollowButtonTappedProperty = MutableProperty()
   public func unfollowButtonTapped() {
     unfollowButtonTappedProperty.value = ()
   }
@@ -182,7 +182,7 @@ public final class FindFriendsFriendFollowCellViewModel: FindFriendsFriendFollow
 
 internal let findFriendsCacheKey: String = "find_friends_follow_view_model"
 
-private func cached(friend friend: User) -> User {
+private func cached(friend: User) -> User {
   if let friendCache = AppEnvironment.current.cache[findFriendsCacheKey] as? [Int:Bool] {
     let isFriend = friendCache[friend.id] ?? friend.isFriend
     return friend |> User.lens.isFriend .~ isFriend
@@ -191,12 +191,12 @@ private func cached(friend friend: User) -> User {
   }
 }
 
-private func cache(friend friend: User, isFriend: Bool) {
+private func cache(friend: User, isFriend: Bool) {
   AppEnvironment.current.cache[findFriendsCacheKey] =
-    AppEnvironment.current.cache[findFriendsCacheKey] ?? [Int:Bool]()
+    AppEnvironment.current.cache[findFriendsCacheKey] ?? [Int:Bool]() as AnyObject?
 
   var cache = AppEnvironment.current.cache[findFriendsCacheKey] as? [Int:Bool]
   cache?[friend.id] = isFriend
 
-  AppEnvironment.current.cache[findFriendsCacheKey] = cache
+  AppEnvironment.current.cache[findFriendsCacheKey] = cache as AnyObject?
 }

@@ -1,7 +1,7 @@
 import AVFoundation
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 import Result
 
@@ -10,7 +10,7 @@ private let pauseRate = 0.0
 
 public protocol VideoViewModelInputs {
   /// Call to configure cell with project value.
-  func configureWith(project project: Project)
+  func configureWith(project: Project)
 
   /// Call when the video playback crosses the completion threshold.
   func crossedCompletionThreshold()
@@ -28,7 +28,7 @@ public protocol VideoViewModelInputs {
   func viewDidAppear()
 
   /// Call when the view did disappear.
-  func viewDidDisappear(animated animated: Bool)
+  func viewDidDisappear(animated: Bool)
 
   /// Call when the view did load.
   func viewDidLoad()
@@ -135,7 +135,7 @@ public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, 
     self.configurePlayerWithURL = project
       .filter { $0.video != nil }
       .takeWhen(self.playButtonTappedProperty.signal)
-      .map { NSURL(string: $0.video?.high ?? "") }
+      .map { URL(string: $0.video?.high ?? "") }
       .ignoreNil()
       .skipRepeats()
 
@@ -156,7 +156,7 @@ public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, 
     self.playButtonHidden = Signal.merge(project.map { $0.video == nil }, elementsHiddenOnPlayback)
       .skipRepeats()
 
-    self.projectImageURL = project.map { NSURL(string: $0.photo.full) }.skipRepeats(==)
+    self.projectImageURL = project.map { URL(string: $0.photo.full) }.skipRepeats(==)
 
     self.seekToBeginning = reachedEndOfVideo.ignoreValues()
 
@@ -201,39 +201,39 @@ public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, 
   }
   // swiftlint:enable function_body_length
 
-  private let crossedCompletionThresholdProperty = MutableProperty()
+  fileprivate let crossedCompletionThresholdProperty = MutableProperty()
   public func crossedCompletionThreshold() {
     self.crossedCompletionThresholdProperty.value = ()
   }
-  private let durationProperty = MutableProperty<CMTime?>(nil)
+  fileprivate let durationProperty = MutableProperty<CMTime?>(nil)
   public func durationChanged(toNew duration: CMTime) {
     self.durationProperty.value = duration
   }
-  private let playButtonTappedProperty = MutableProperty()
+  fileprivate let playButtonTappedProperty = MutableProperty()
   public func playButtonTapped() {
     self.playButtonTappedProperty.value = ()
   }
-  private let projectProperty = MutableProperty<Project?>(nil)
-  public func configureWith(project project: Project) {
+  fileprivate let projectProperty = MutableProperty<Project?>(nil)
+  public func configureWith(project: Project) {
     self.projectProperty.value = project
   }
-  private let rateCurrentTimeProperty = MutableProperty<(Double, CMTime)?>(nil)
+  fileprivate let rateCurrentTimeProperty = MutableProperty<(Double, CMTime)?>(nil)
   public func rateChanged(toNew rate: Double, atTime currentTime: CMTime) {
     self.rateCurrentTimeProperty.value = (rate, currentTime)
   }
-  private let viewDidAppearProperty = MutableProperty()
+  fileprivate let viewDidAppearProperty = MutableProperty()
   public func viewDidAppear() {
     self.viewDidAppearProperty.value = ()
   }
-  private let viewDidDisappearProperty = MutableProperty(false)
-  public func viewDidDisappear(animated animated: Bool) {
+  fileprivate let viewDidDisappearProperty = MutableProperty(false)
+  public func viewDidDisappear(animated: Bool) {
     self.viewDidDisappearProperty.value = animated
   }
-  private let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty()
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
-  private let viewWillDisappearProperty = MutableProperty()
+  fileprivate let viewWillDisappearProperty = MutableProperty()
   public func viewWillDisappear() {
     self.viewWillDisappearProperty.value = ()
   }

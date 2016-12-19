@@ -1,12 +1,12 @@
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 import Result
 
 public protocol ProjectActivityUpdateCellViewModelInputs {
   /// Call to set the activity and project.
-  func configureWith(activity activity: Activity, project: Project)
+  func configureWith(activity: Activity, project: Project)
 }
 
 public protocol ProjectActivityUpdateCellViewModelOutputs {
@@ -71,8 +71,8 @@ ProjectActivityUpdateCellViewModelInputs, ProjectActivityUpdateCellViewModelOutp
     self.updateTitle = activity.map(title(activity:))
   }
 
-  private let activityAndProjectProperty = MutableProperty<(Activity, Project)?>(nil)
-  public func configureWith(activity activity: Activity, project: Project) {
+  fileprivate let activityAndProjectProperty = MutableProperty<(Activity, Project)?>(nil)
+  public func configureWith(activity: Activity, project: Project) {
     self.activityAndProjectProperty.value = (activity, project)
   }
 
@@ -88,7 +88,7 @@ ProjectActivityUpdateCellViewModelInputs, ProjectActivityUpdateCellViewModelOutp
   public var outputs: ProjectActivityUpdateCellViewModelOutputs { return self }
 }
 
-private func updateNumber(activity activity: Activity) -> String {
+private func updateNumber(activity: Activity) -> String {
   guard let update = activity.update else { return "" }
   return Strings.dashboard_activity_update_number_posted_time_count_days_ago(
     space: "\u{00a0}",
@@ -97,7 +97,7 @@ private func updateNumber(activity activity: Activity) -> String {
   )
 }
 
-private func title(activity activity: Activity) -> String {
+private func title(activity: Activity) -> String {
   guard let update = activity.update else { return "" }
   return update.title
 }

@@ -1,5 +1,5 @@
 import KsApi
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 import Result
 import Prelude
@@ -10,16 +10,16 @@ public protocol FindFriendsFacebookConnectCellViewModelInputs {
   func closeButtonTapped()
 
   /// Call to set where Friends View Controller was loaded from
-  func configureWith(source source: FriendsSource)
+  func configureWith(source: FriendsSource)
 
   /// Call when Facebook Connect button is tapped
   func facebookConnectButtonTapped()
 
   /// Call when Facebook login completed with error
-  func facebookLoginFail(error error: NSError?)
+  func facebookLoginFail(error: NSError?)
 
   /// Call when Facebook login completed successfully with a result
-  func facebookLoginSuccess(result result: FBSDKLoginManagerLoginResult)
+  func facebookLoginSuccess(result: FBSDKLoginManagerLoginResult)
 
   /// Call when the current user has been updated in the environment
   func userUpdated()
@@ -88,7 +88,7 @@ public final class FindFriendsFacebookConnectCellViewModel: FindFriendsFacebookC
     self.updateUserInEnvironment = facebookConnect.values()
 
     self.postUserUpdatedNotification = self.userUpdatedProperty.signal
-      .mapConst(NSNotification(name: CurrentUserNotifications.userUpdated, object: nil))
+      .mapConst(Notification(name: CurrentUserNotifications.userUpdated, object: nil))
 
     self.notifyDelegateUserFacebookConnected = self.userUpdatedProperty.signal
 
@@ -145,32 +145,32 @@ public final class FindFriendsFacebookConnectCellViewModel: FindFriendsFacebookC
   public var inputs: FindFriendsFacebookConnectCellViewModelInputs { return self }
   public var outputs: FindFriendsFacebookConnectCellViewModelOutputs { return self }
 
-  private let closeButtonTappedProperty = MutableProperty()
+  fileprivate let closeButtonTappedProperty = MutableProperty()
   public func closeButtonTapped() {
     closeButtonTappedProperty.value = ()
   }
 
-  private let configureWithProperty = MutableProperty<FriendsSource>(FriendsSource.findFriends)
-  public func configureWith(source source: FriendsSource) {
+  fileprivate let configureWithProperty = MutableProperty<FriendsSource>(FriendsSource.findFriends)
+  public func configureWith(source: FriendsSource) {
     configureWithProperty.value = source
   }
 
-  private let facebookConnectButtonTappedProperty = MutableProperty()
+  fileprivate let facebookConnectButtonTappedProperty = MutableProperty()
   public func facebookConnectButtonTapped() {
     facebookConnectButtonTappedProperty.value = ()
   }
 
-  private let facebookLoginFailProperty = MutableProperty<NSError?>(nil)
-  public func facebookLoginFail(error error: NSError?) {
+  fileprivate let facebookLoginFailProperty = MutableProperty<NSError?>(nil)
+  public func facebookLoginFail(error: NSError?) {
     self.facebookLoginFailProperty.value = error
   }
 
-  private let facebookLoginSuccessProperty = MutableProperty<FBSDKLoginManagerLoginResult?>(nil)
-  public func facebookLoginSuccess(result result: FBSDKLoginManagerLoginResult) {
+  fileprivate let facebookLoginSuccessProperty = MutableProperty<FBSDKLoginManagerLoginResult?>(nil)
+  public func facebookLoginSuccess(result: FBSDKLoginManagerLoginResult) {
     self.facebookLoginSuccessProperty.value = result
   }
 
-  private let userUpdatedProperty = MutableProperty()
+  fileprivate let userUpdatedProperty = MutableProperty()
   public func userUpdated() {
     userUpdatedProperty.value = ()
   }

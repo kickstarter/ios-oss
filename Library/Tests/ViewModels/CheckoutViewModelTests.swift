@@ -7,25 +7,25 @@ import KsApi
 import PassKit
 import Prelude
 
-private let questionMark = NSCharacterSet(charactersInString: "?")
+private let questionMark = CharacterSet(charactersIn: "?")
 
 final class CheckoutViewModelTests: TestCase {
-  private let vm: CheckoutViewModelType = CheckoutViewModel()
+  fileprivate let vm: CheckoutViewModelType = CheckoutViewModel()
 
-  private let closeLoginTout = TestObserver<(), NoError>()
-  private let dismissViewController = TestObserver<(), NoError>()
-  private let evaluateJavascript = TestObserver<String, NoError>()
-  private let goToPaymentAuthorization = TestObserver<NSDictionary, NoError>()
-  private let goToSafariBrowser = TestObserver<NSURL, NoError>()
-  private let goToThanks = TestObserver<Project, NoError>()
-  private let goToWebModal = TestObserver<NSURLRequest, NoError>()
-  private let openLoginTout = TestObserver<(), NoError>()
-  private let popViewController = TestObserver<(), NoError>()
-  private let setStripeAppleMerchantIdentifier = TestObserver<String, NoError>()
-  private let setStripePublishableKey = TestObserver<String, NoError>()
-  private let showAlert = TestObserver<String, NoError>()
-  private let webViewLoadRequestIsPrepared = TestObserver<Bool, NoError>()
-  private let webViewLoadRequestURL = TestObserver<String, NoError>()
+  fileprivate let closeLoginTout = TestObserver<(), NoError>()
+  fileprivate let dismissViewController = TestObserver<(), NoError>()
+  fileprivate let evaluateJavascript = TestObserver<String, NoError>()
+  fileprivate let goToPaymentAuthorization = TestObserver<NSDictionary, NoError>()
+  fileprivate let goToSafariBrowser = TestObserver<URL, NoError>()
+  fileprivate let goToThanks = TestObserver<Project, NoError>()
+  fileprivate let goToWebModal = TestObserver<URLRequest, NoError>()
+  fileprivate let openLoginTout = TestObserver<(), NoError>()
+  fileprivate let popViewController = TestObserver<(), NoError>()
+  fileprivate let setStripeAppleMerchantIdentifier = TestObserver<String, NoError>()
+  fileprivate let setStripePublishableKey = TestObserver<String, NoError>()
+  fileprivate let showAlert = TestObserver<String, NoError>()
+  fileprivate let webViewLoadRequestIsPrepared = TestObserver<Bool, NoError>()
+  fileprivate let webViewLoadRequestURL = TestObserver<String, NoError>()
 
   override func setUp() {
     super.setUp()
@@ -1028,16 +1028,16 @@ final class CheckoutViewModelTests: TestCase {
 
 }
 
-internal extension NSURLRequest {
-  internal func prepared() -> NSURLRequest {
+internal extension URLRequest {
+  internal func prepared() -> URLRequest {
     return AppEnvironment.current.apiService.preparedRequest(forRequest: self)
   }
 }
 
-private func applePayUrlRequest(project project: Project,
+private func applePayUrlRequest(project: Project,
                                         amount: Int,
                                         reward: Reward,
-                                        location: Location) -> NSURLRequest {
+                                        location: Location) -> URLRequest {
 
   let payload = [
     "country_code": project.country.countryCode,
@@ -1056,7 +1056,7 @@ private func applePayUrlRequest(project project: Project,
     ]
   ]
 
-  return (try? NSJSONSerialization.dataWithJSONObject(payload, options: []))
+  return (try? JSONSerialization.dataWithJSONObject(payload, options: []))
     .flatMap { String(data: $0.base64EncodedDataWithOptions([]), encoding: NSUTF8StringEncoding) }
     .map { "https://www.kickstarter.com/checkouts/1/payments/apple-pay?payload=\($0)" }
     .flatMap(NSURL.init(string:))
@@ -1064,110 +1064,110 @@ private func applePayUrlRequest(project project: Project,
     .coalesceWith(NSURLRequest())
 }
 
-private func cancelPledgeRequest(project project: Project) -> NSURLRequest {
-  return NSURLRequest(URL: NSURL(string: cancelPledgeURL(project: project))!)
+private func cancelPledgeRequest(project: Project) -> URLRequest {
+  return NSURLRequest(url: NSURL(string: cancelPledgeURL(project: project))! as URL) as URLRequest
 }
 
-private func cancelPledgeURL(project project: Project) -> String {
+private func cancelPledgeURL(project: Project) -> String {
   return "\(project.urls.web.project)/pledge/destroy"
 }
 
-private func changePaymentMethodRequest(project project: Project) -> NSURLRequest {
-  return NSURLRequest(URL: NSURL(string: changePaymentMethodURL(project: project))!)
+private func changePaymentMethodRequest(project: Project) -> URLRequest {
+  return NSURLRequest(url: NSURL(string: changePaymentMethodURL(project: project))! as URL) as URLRequest
 }
 
-private func changePaymentMethodURL(project project: Project) -> String {
+private func changePaymentMethodURL(project: Project) -> String {
   return "\(project.urls.web.project)/pledge/change_method"
 }
 
-private func creatorRequest(project project: Project) -> NSURLRequest {
-  return NSURLRequest(URL: NSURL(string: creatorURL(project: project))!)
+private func creatorRequest(project: Project) -> URLRequest {
+  return NSURLRequest(url: NSURL(string: creatorURL(project: project))! as URL) as URLRequest
 }
 
-private func creatorURL(project project: Project) -> String {
+private func creatorURL(project: Project) -> String {
   return "\(project.urls.web.project)/pledge/big_print?modal=true#creator"
 }
 
-private func editPledgeRequest(project project: Project) -> NSURLRequest {
-  return NSURLRequest(URL: NSURL(string: editPledgeURL(project: project))!)
+private func editPledgeRequest(project: Project) -> URLRequest {
+  return NSURLRequest(url: NSURL(string: editPledgeURL(project: project))! as URL) as URLRequest
 }
 
-private func editPledgeURL(project project: Project) -> String {
+private func editPledgeURL(project: Project) -> String {
   return "\(project.urls.web.project)/pledge/edit"
 }
 
-private func newPaymentsRequest() -> NSURLRequest {
-  return NSURLRequest(URL: NSURL(string: newPaymentsURL())!)
+private func newPaymentsRequest() -> URLRequest {
+  return URLRequest(url: URL(string: newPaymentsURL())!)
 }
 
 private func newPaymentsURL() -> String {
   return "https://www.kickstarter.com/checkouts/1/payments/new"
 }
 
-private func newPledgeRequest(project project: Project) -> NSURLRequest {
-  return NSURLRequest(URL: NSURL(string: newPledgeURL(project: project))!)
+private func newPledgeRequest(project: Project) -> URLRequest {
+  return NSURLRequest(url: NSURL(string: newPledgeURL(project: project))! as URL) as URLRequest
 }
 
-private func newPledgeURL(project project: Project) -> String {
+private func newPledgeURL(project: Project) -> String {
   return "\(project.urls.web.project)/pledge/new"
 }
 
-private func paymentsRequest() -> NSURLRequest {
-  let request = NSMutableURLRequest(URL: NSURL(string: paymentsURL())!)
-  request.HTTPMethod = "POST"
-  return request
+private func paymentsRequest() -> URLRequest {
+  let request = NSMutableURLRequest(url: URL(string: paymentsURL())!)
+  request.httpMethod = "POST"
+  return request as URLRequest
 }
 
 private func paymentsURL() -> String {
   return "https://www.kickstarter.com/checkouts/1/payments"
 }
 
-private func pledgeRequest(project project: Project) -> NSURLRequest {
-  let request = NSMutableURLRequest(URL: NSURL(string: pledgeURL(project: project))!)
-  request.HTTPMethod = "POST"
-  return request
+private func pledgeRequest(project: Project) -> URLRequest {
+  let request = NSMutableURLRequest(url: URL(string: pledgeURL(project: project))!)
+  request.httpMethod = "POST"
+  return request as URLRequest
 }
 
-private func pledgeURL(project project: Project) -> String {
+private func pledgeURL(project: Project) -> String {
   return "\(project.urls.web.project)/pledge"
 }
 
-private func privacyPolicyRequest(project project: Project) -> NSURLRequest {
-  return NSURLRequest(URL:
-    NSURL(string: privacyPolicyURL(project: project))!
-  )
+private func privacyPolicyRequest(project: Project) -> URLRequest {
+  return NSURLRequest(url:
+    NSURL(string: privacyPolicyURL(project: project))! as URL
+  ) as URLRequest
 }
 
-private func privacyPolicyURL(project project: Project) -> String {
+private func privacyPolicyURL(project: Project) -> String {
   return "\(project.urls.web.project)/privacy?modal=true&ref=checkout_payment_sources_page"
 }
 
-private func projectRequest(project project: Project) -> NSURLRequest {
-  return NSURLRequest(URL: NSURL(string: project.urls.web.project)!)
+private func projectRequest(project: Project) -> URLRequest {
+  return NSURLRequest(url: NSURL(string: project.urls.web.project)! as URL) as URLRequest
 }
 
-private func signupRequest() -> NSURLRequest {
-  return NSURLRequest(URL: NSURL(string: "https://www.kickstarter.com/signup?context=checkout&then=%2Ffoo")!)
+private func signupRequest() -> URLRequest {
+  return URLRequest(url: URL(string: "https://www.kickstarter.com/signup?context=checkout&then=%2Ffoo")!)
 }
 
-private func stripeRequest() -> NSURLRequest {
-  return NSURLRequest(URL: NSURL(string: stripeURL())!)
+private func stripeRequest() -> URLRequest {
+  return URLRequest(url: URL(string: stripeURL())!)
 }
 
 private func stripeURL() -> String {
   return "https://js.stripe.com/v2/channel.html"
 }
 
-private func thanksRequest(project project: Project, racing: Bool) -> NSURLRequest {
-  return NSURLRequest(URL: NSURL(string: thanksURL(project: project, racing: racing))!)
+private func thanksRequest(project: Project, racing: Bool) -> URLRequest {
+  return NSURLRequest(url: NSURL(string: thanksURL(project: project, racing: racing))! as URL) as URLRequest
 }
 
-private func thanksURL(project project: Project, racing: Bool) -> String {
+private func thanksURL(project: Project, racing: Bool) -> String {
   return "\(project.urls.web.project)/checkouts/1/thanks\(racing ? "?racing=1" : "")"
 }
 
-private func useStoredCardRequest() -> NSURLRequest {
-  return NSURLRequest(URL: NSURL(string: useStoredCardURL())!)
+private func useStoredCardRequest() -> URLRequest {
+  return URLRequest(url: URL(string: useStoredCardURL())!)
 }
 
 private func useStoredCardURL() -> String {

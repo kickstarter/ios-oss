@@ -1,5 +1,5 @@
 import KsApi
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 import Result
 
@@ -8,7 +8,7 @@ public protocol DashboardActionCellViewModelInputs {
   func activityTapped()
 
   /// Call to configure cell with project value.
-  func configureWith(project project: Project)
+  func configureWith(project: Project)
 
   /// Call when the messages button is tapped.
   func messagesTapped()
@@ -123,23 +123,23 @@ public final class DashboardActionCellViewModel: DashboardActionCellViewModelInp
     self.activityRowHidden = project.map { !$0.memberData.permissions.contains(.viewPledges) }
   }
 
-  private let activityTappedProperty = MutableProperty()
+  fileprivate let activityTappedProperty = MutableProperty()
   public func activityTapped() {
     activityTappedProperty.value = ()
   }
 
-  private let messagesTappedProperty = MutableProperty()
+  fileprivate let messagesTappedProperty = MutableProperty()
   public func messagesTapped() {
     messagesTappedProperty.value = ()
   }
 
-  private let postUpdateTappedProperty = MutableProperty()
+  fileprivate let postUpdateTappedProperty = MutableProperty()
   public func postUpdateTapped() {
     postUpdateTappedProperty.value = ()
   }
 
-  private let projectProperty = MutableProperty<Project?>(nil)
-  public func configureWith(project project: Project) {
+  fileprivate let projectProperty = MutableProperty<Project?>(nil)
+  public func configureWith(project: Project) {
     self.projectProperty.value = project
   }
 

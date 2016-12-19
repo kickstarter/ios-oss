@@ -5,27 +5,27 @@ import UIKit
 public enum Styles {
   public static let cornerRadius: CGFloat = 4.0
 
-  public static func grid(count: Int) -> CGFloat {
+  public static func grid(_ count: Int) -> CGFloat {
     return 6.0 * CGFloat(count)
   }
 
-  public static func gridHalf(count: Int) -> CGFloat {
+  public static func gridHalf(_ count: Int) -> CGFloat {
     return grid(count) / 2.0
   }
 }
 
-public func baseControllerStyle <VC: UIViewControllerProtocol> () -> (VC -> VC) {
+public func baseControllerStyle <VC: UIViewControllerProtocol> () -> ((VC) -> VC) {
   return VC.lens.view.backgroundColor .~ .ksr_grey_200
 }
 
 public func baseTableControllerStyle <TVC: UITableViewControllerProtocol>
-  (estimatedRowHeight estimatedRowHeight: CGFloat = 44.0) -> (TVC -> TVC) {
+  (estimatedRowHeight: CGFloat = 44.0) -> ((TVC) -> TVC) {
   let style = baseControllerStyle()
     <> TVC.lens.tableView.rowHeight .~ UITableViewAutomaticDimension
     <> TVC.lens.tableView.estimatedRowHeight .~ estimatedRowHeight
 
   #if os(iOS)
-    return style <> TVC.lens.tableView.separatorStyle .~ .None
+    return style <> TVC.lens.tableView.separatorStyle .~ .none
   #else
     return style
   #endif
@@ -39,7 +39,7 @@ public let baseNavigationBarStyle =
   <> UINavigationBar.lens.translucent .~ false
   <> UINavigationBar.lens.barTintColor .~ .ksr_grey_100
 
-public func baseTableViewCellStyle <TVC: UITableViewCellProtocol> () -> (TVC -> TVC) {
+public func baseTableViewCellStyle <TVC: UITableViewCellProtocol> () -> ((TVC) -> TVC) {
 
   return
     TVC.lens.contentView.layoutMargins %~~ { _, cell in
@@ -60,7 +60,7 @@ public func baseTableViewCellStyle <TVC: UITableViewCellProtocol> () -> (TVC -> 
 
  - returns: A view transformer that rounds corners, sets background color, and sets border color.
  */
-public func cardStyle <V: UIViewProtocol> (cornerRadius radius: CGFloat = Styles.cornerRadius) -> (V -> V) {
+public func cardStyle <V: UIViewProtocol> (cornerRadius radius: CGFloat = Styles.cornerRadius) -> ((V) -> V) {
 
   return roundedStyle(cornerRadius: radius)
     <> V.lens.layer.borderColor .~ UIColor.ksr_grey_500.CGColor
@@ -72,10 +72,10 @@ public let containerViewBackgroundStyle =
   UIView.lens.backgroundColor .~ .ksr_grey_100
 
 public func dropShadowStyle <V: UIViewProtocol> (
-  radius radius: CGFloat = 2.0,
+  radius: CGFloat = 2.0,
          offset: CGSize = .init(width: 0, height: 1)) -> ((V) -> V) {
   return
-    V.lens.layer.shadowColor .~ UIColor.ksr_dropShadow.CGColor
+    V.lens.layer.shadowColor .~ UIColor.ksr_dropShadow.cgColor
       <> V.lens.layer.shadowOpacity .~ 1
       <> V.lens.layer.shadowRadius .~ radius
       <> V.lens.layer.masksToBounds .~ false
@@ -109,7 +109,7 @@ public let separatorStyle =
 
  - returns: A view transformer that rounds corners.
  */
-public func roundedStyle <V: UIViewProtocol> (cornerRadius r: CGFloat = Styles.cornerRadius) -> (V -> V) {
+public func roundedStyle <V: UIViewProtocol> (cornerRadius r: CGFloat = Styles.cornerRadius) -> ((V) -> V) {
   return V.lens.layer.masksToBounds .~ true
     <> V.lens.layer.cornerRadius .~ r
 }

@@ -1,15 +1,15 @@
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 import Result
 
 public protocol ProjectNotificationCellViewModelInputs {
   /// Call with the initial cell notification value.
-  func configureWith(notification notification: ProjectNotification)
+  func configureWith(notification: ProjectNotification)
 
   /// Call when the notification switch is tapped.
-  func notificationTapped(on on: Bool)
+  func notificationTapped(on: Bool)
 }
 
 public protocol ProjectNotificationCellViewModelOutputs {
@@ -86,13 +86,13 @@ public final class ProjectNotificationCellViewModel: ProjectNotificationCellView
   }
   // swiftlint:enable function_body_length
 
-  private let notificationProperty = MutableProperty<ProjectNotification?>(nil)
-  public func configureWith(notification notification: ProjectNotification) {
+  fileprivate let notificationProperty = MutableProperty<ProjectNotification?>(nil)
+  public func configureWith(notification: ProjectNotification) {
     self.notificationProperty.value = notification
   }
 
-  private let notificationTappedProperty = MutableProperty(false)
-  public func notificationTapped(on on: Bool) {
+  fileprivate let notificationTappedProperty = MutableProperty(false)
+  public func notificationTapped(on: Bool) {
     self.notificationTappedProperty.value = on
   }
 
@@ -108,12 +108,12 @@ private func cacheKey(forNotification notification: ProjectNotification) -> Stri
   return "project_notification_view_model_notification_\(notification.id)"
 }
 
-private func cache(notification notification: ProjectNotification) {
+private func cache(notification: ProjectNotification) {
   let key = cacheKey(forNotification: notification)
   AppEnvironment.current.cache[key] = (notification.email && notification.mobile)
 }
 
-private func cached(notification notification: ProjectNotification) -> ProjectNotification {
+private func cached(notification: ProjectNotification) -> ProjectNotification {
   let key = cacheKey(forNotification: notification)
   let on = AppEnvironment.current.cache[key] as? Bool
   return notification

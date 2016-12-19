@@ -1,11 +1,11 @@
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 
 public protocol ActivityFriendFollowCellViewModelInputs {
   /// Call to configure activity with Activity.
-  func configureWith(activity activity: Activity)
+  func configureWith(activity: Activity)
 
   /// Call when follow button is tapped.
   func followButtonTapped()
@@ -63,11 +63,11 @@ ActivityFriendFollowCellViewModelOutputs {
       .observeNext { AppEnvironment.current.koala.trackFriendFollow(source: FriendsSource.activity) }
   }
 
-  private let activityProperty = MutableProperty<Activity?>(nil)
-  public func configureWith(activity activity: Activity) {
+  fileprivate let activityProperty = MutableProperty<Activity?>(nil)
+  public func configureWith(activity: Activity) {
     self.activityProperty.value = activity
   }
-  private let followButtonTappedProperty = MutableProperty()
+  fileprivate let followButtonTappedProperty = MutableProperty()
   public func followButtonTapped() {
     self.followButtonTappedProperty.value = ()
   }
@@ -82,7 +82,7 @@ ActivityFriendFollowCellViewModelOutputs {
 
 internal let activityFriendFollowCacheKey: String = "activity_friend_follow_view_model"
 
-private func cached(friend friend: User) -> User {
+private func cached(friend: User) -> User {
   if let friendCache = AppEnvironment.current.cache[activityFriendFollowCacheKey] as? [Int:Bool] {
     let isFriend = friendCache[friend.id] ?? friend.isFriend
     return friend |> User.lens.isFriend .~ isFriend
@@ -91,12 +91,12 @@ private func cached(friend friend: User) -> User {
   }
 }
 
-private func cache(friend friend: User, isFriend: Bool) {
+private func cache(friend: User, isFriend: Bool) {
   AppEnvironment.current.cache[activityFriendFollowCacheKey] =
-    AppEnvironment.current.cache[activityFriendFollowCacheKey] ?? [Int:Bool]()
+    AppEnvironment.current.cache[activityFriendFollowCacheKey] ?? [Int:Bool]() as AnyObject?
 
   var cache = AppEnvironment.current.cache[activityFriendFollowCacheKey] as? [Int:Bool]
   cache?[friend.id] = isFriend
 
-  AppEnvironment.current.cache[activityFriendFollowCacheKey] = cache
+  AppEnvironment.current.cache[activityFriendFollowCacheKey] = cache as AnyObject?
 }

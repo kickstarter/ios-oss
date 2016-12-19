@@ -1,7 +1,7 @@
 import AVFoundation
 import Foundation
 import KsApi
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 import FBSDKCoreKit
 
@@ -13,7 +13,7 @@ public struct Environment {
   public let apiService: ServiceType
 
   /// The amount of time to delay API requests by. Used primarily for testing. Default value is `0.0`.
-  public let apiDelayInterval: NSTimeInterval
+  public let apiDelayInterval: TimeInterval
 
   /// A type that exposes how to extract a still image from an AVAsset.
   public let assetImageGeneratorType: AssetImageGeneratorType.Type
@@ -22,7 +22,7 @@ public struct Environment {
   public let cache: CacheProtocol
 
   /// The user's calendar.
-  public let calendar: NSCalendar
+  public let calendar: Calendar
 
   /// A type that holds configuration values we download from the server.
   public let config: Config?
@@ -41,7 +41,7 @@ public struct Environment {
   public let dateType: DateProtocol.Type
 
   /// The amount of time to debounce signals by. Default value is `0.3`.
-  public let debounceInterval: NSTimeInterval
+  public let debounceInterval: TimeInterval
 
   /// A delegate to handle Facebook initialization and incoming url requests
   public let facebookAppDelegate: FacebookAppDelegateProtocol
@@ -60,7 +60,7 @@ public struct Environment {
 
   /// The user’s current locale, which determines how numbers are formatted. Default value is
   /// `NSLocale.currentLocale()`.
-  public let locale: NSLocale
+  public let locale: Locale
 
   /// A type that exposes how to interface with an NSBundle. Default value is `NSBundle.mainBundle()`.
   public let mainBundle: NSBundleType
@@ -73,7 +73,7 @@ public struct Environment {
   public let scheduler: DateSchedulerType
 
   /// The user’s timezone. Default value is `NSTimeZone.localTimeZone()`.
-  public let timeZone: NSTimeZone
+  public let timeZone: TimeZone
 
   /// A ubiquitous key-value store. Default value is `NSUbiquitousKeyValueStore.defaultStore()`.
   public let ubiquitousStore: KeyValueStoreType
@@ -83,26 +83,26 @@ public struct Environment {
 
   public init(
     apiService: ServiceType = Service(),
-    apiDelayInterval: NSTimeInterval = 0.0,
+    apiDelayInterval: TimeInterval = 0.0,
     assetImageGeneratorType: AssetImageGeneratorType.Type = AVAssetImageGenerator.self,
     cache: CacheProtocol = NSCache(),
-    calendar: NSCalendar = NSCalendar.currentCalendar(),
+    calendar: Calendar = NSCalendar.currentCalendar(),
     config: Config? = nil,
     cookieStorage: NSHTTPCookieStorageType = NSHTTPCookieStorage.sharedHTTPCookieStorage(),
     countryCode: String = "US",
     currentUser: User? = nil,
     dateType: DateProtocol.Type = NSDate.self,
-    debounceInterval: NSTimeInterval = 0.3,
+    debounceInterval: TimeInterval = 0.3,
     facebookAppDelegate: FacebookAppDelegateProtocol = FBSDKApplicationDelegate.sharedInstance(),
     isVoiceOverRunning: () -> Bool = UIAccessibilityIsVoiceOverRunning,
     koala: Koala = Koala(client: KoalaTrackingClient(endpoint: .production)),
     language: Language = Language(languageStrings: NSLocale.preferredLanguages()) ?? Language.en,
     launchedCountries: LaunchedCountries = .init(),
-    locale: NSLocale = .currentLocale(),
+    locale: Locale = .currentLocale(),
     mainBundle: NSBundleType = NSBundle.mainBundle(),
     reachability: SignalProducer<Reachability, NoError> = Reachability.signalProducer,
     scheduler: DateSchedulerType = QueueScheduler.mainQueueScheduler,
-    timeZone: NSTimeZone = .localTimeZone(),
+    timeZone: TimeZone = .localTimeZone(),
     ubiquitousStore: KeyValueStoreType = NSUbiquitousKeyValueStore.defaultStore(),
     userDefaults: KeyValueStoreType = NSUserDefaults.standardUserDefaults()) {
 
@@ -131,7 +131,7 @@ public struct Environment {
     self.userDefaults = userDefaults
   }
 
-  private var allGlobals: [Any] {
+  fileprivate var allGlobals: [Any] {
     return [
       self.apiService,
       self.apiDelayInterval,
@@ -162,7 +162,7 @@ public struct Environment {
 
 extension Environment: CustomStringConvertible, CustomDebugStringConvertible {
   public var description: String {
-    return self.allGlobals.map { "\($0.dynamicType)" }.reduce("", combine: +)
+    return self.allGlobals.map { "\(type(of: ($0) as AnyObject))" }.reduce("", +)
   }
 
   public var debugDescription: String {

@@ -127,7 +127,7 @@ public final class RootTabBarViewController: UITabBarController {
           data.isLoggedIn == true,
           let avatarUrl = avatarUrl,
           let dir = NSSearchPathForDirectoriesInDomains(.CachesDirectory, .UserDomainMask, true).first,
-          let hash = optionalize(avatarUrl.absoluteString)?.hashValue
+          let hash = avatarUrl.absoluteString?.hashValue
           else {
             return
         }
@@ -219,5 +219,5 @@ private func strokedRoundImage(fromImage image: UIImage?,
   circle.lineWidth = lineWidth
   circle.stroke()
 
-  return optionalize(UIGraphicsGetImageFromCurrentImageContext())?.imageWithRenderingMode(.AlwaysOriginal)
+  return UIGraphicsGetImageFromCurrentImageContext()?.imageWithRenderingMode(.AlwaysOriginal)
 }

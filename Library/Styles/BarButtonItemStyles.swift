@@ -6,15 +6,15 @@ public let baseBarButtonItemStyle =
   UIBarButtonItem.lens.tintColor .~ .ksr_navy_700
 
 public let plainBarButtonItemStyle = baseBarButtonItemStyle
-  <> UIBarButtonItem.lens.style .~ .Plain
-  <> UIBarButtonItem.lens.titleTextAttributes(forState: .Normal) .~ [
+  <> UIBarButtonItem.lens.style .~ .plain
+  <> UIBarButtonItem.lens.titleTextAttributes(forState: .normal) .~ [
     NSFontAttributeName: UIFont.ksr_subhead(size: 15)
 ]
 
 public let doneBarButtonItemStyle = baseBarButtonItemStyle
-  <> UIBarButtonItem.lens.style .~ .Done
+  <> UIBarButtonItem.lens.style .~ .done
   <> UIBarButtonItem.lens.title %~ { _ in Strings.Done() }
-  <> UIBarButtonItem.lens.titleTextAttributes(forState: .Normal) .~ [
+  <> UIBarButtonItem.lens.titleTextAttributes(forState: .normal) .~ [
     NSFontAttributeName: UIFont.ksr_headline(size: 15)
 ]
 

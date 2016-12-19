@@ -3,7 +3,7 @@ import UIKit
 
 public final class GradientView: UIView {
 
-  public override class func layerClass() -> AnyClass {
+  public override class var layerClass : AnyClass {
     return CAGradientLayer.self
   }
 
@@ -44,15 +44,15 @@ public final class GradientView: UIView {
     self.setGradient([(self.startColor, 0.0), (self.endColor, 1.0)])
   }
 
-  public func setGradient(points: [(color: UIColor?, location: Float)]) -> Void {
-    self.backgroundColor = .clearColor()
+  public func setGradient(_ points: [(color: UIColor?, location: Float)]) -> Void {
+    self.backgroundColor = .clear
 
     self.gradientLayer?.colors = points.map { point in
-      point.color?.CGColor ?? UIColor.clearColor().CGColor
+      point.color?.cgColor ?? UIColor.clear.cgColor
     }
 
     self.gradientLayer?.locations = points.map { point in
-      NSNumber(float: point.location)
+      NSNumber(value: point.location as Float)
     }
   }
 }

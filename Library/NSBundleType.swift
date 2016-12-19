@@ -8,9 +8,9 @@ public enum KickstarterBundleIdentifier: String {
 
 public protocol NSBundleType {
   var bundleIdentifier: String? { get }
-  static func create(path path: String) -> NSBundleType?
-  func pathForResource(name: String?, ofType ext: String?) -> String?
-  func localizedStringForKey(key: String, value: String?, table tableName: String?) -> String
+  static func create(path: String) -> NSBundleType?
+  func pathForResource(_ name: String?, ofType ext: String?) -> String?
+  func localizedStringForKey(_ key: String, value: String?, table tableName: String?) -> String
   var infoDictionary: [String:AnyObject]? { get }
 }
 
@@ -40,30 +40,30 @@ extension NSBundleType {
   }
 }
 
-extension NSBundle: NSBundleType {
-  public static func create(path path: String) -> NSBundleType? {
-    return NSBundle(path: path)
+extension Bundle: NSBundleType {
+  public static func create(path: String) -> NSBundleType? {
+    return Bundle(path: path)
   }
 }
 
 public struct LanguageDoubler: NSBundleType {
-  private static let mainBundle = NSBundle.mainBundle()
+  fileprivate static let mainBundle = Bundle.main
 
   public init() {
   }
 
   public let bundleIdentifier: String? = "com.language.doubler"
 
-  public static func create(path path: String) -> NSBundleType? {
+  public static func create(path: String) -> NSBundleType? {
     return DoublerBundle(path: path)
   }
 
-  public func localizedStringForKey(key: String, value: String?, table tableName: String?) -> String {
-    return LanguageDoubler.mainBundle.localizedStringForKey(key, value: value, table: tableName)
+  public func localizedStringForKey(_ key: String, value: String?, table tableName: String?) -> String {
+    return LanguageDoubler.mainBundle.localizedString(forKey: key, value: value, table: tableName)
   }
 
-  public func pathForResource(name: String?, ofType ext: String?) -> String? {
-    return LanguageDoubler.mainBundle.pathForResource(name, ofType: ext)
+  public func pathForResource(_ name: String?, ofType ext: String?) -> String? {
+    return LanguageDoubler.mainBundle.path(forResource: name, ofType: ext)
   }
 
   public var infoDictionary: [String : AnyObject]? {
@@ -71,12 +71,12 @@ public struct LanguageDoubler: NSBundleType {
   }
 }
 
-public final class DoublerBundle: NSBundle {
-  public override func localizedStringForKey(key: String,
+public final class DoublerBundle: Bundle {
+  public override func localizedString(forKey key: String,
                                              value: String?,
                                              table tableName: String?) -> String {
 
-    let s = super.localizedStringForKey(key, value: value, table: tableName)
+    let s = super.localizedString(forKey: key, value: value, table: tableName)
     return "\(s) \(s)"
   }
 }

@@ -1,12 +1,12 @@
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 import Result
 
 public protocol ProjectActivityNegativeStateChangeCellViewModelInputs {
   /// Call to set the activity and project.
-  func configureWith(activity activity: Activity, project: Project)
+  func configureWith(activity: Activity, project: Project)
 }
 
 public protocol ProjectActivityNegativeStateChangeCellViewModelOutputs {
@@ -54,8 +54,8 @@ ProjectActivityNegativeStateChangeCellViewModelOutputs {
     }
   }
 
-  private let activityAndProjectProperty = MutableProperty<(Activity, Project)?>(nil)
-  public func configureWith(activity activity: Activity, project: Project) {
+  fileprivate let activityAndProjectProperty = MutableProperty<(Activity, Project)?>(nil)
+  public func configureWith(activity: Activity, project: Project) {
     self.activityAndProjectProperty.value = (activity, project)
   }
 

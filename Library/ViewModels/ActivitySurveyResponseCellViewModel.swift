@@ -1,11 +1,11 @@
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 
 public protocol ActivitySurveyResponseCellViewModelInputs {
   /// Call to configure with survey response, number of surveys, and the cell's position in the survey stack.
-  func configureWith(surveyResponse surveyResponse: SurveyResponse, count: Int, position: Int)
+  func configureWith(surveyResponse: SurveyResponse, count: Int, position: Int)
 
   /// Call when respond now button is tapped.
   func respondNowButtonTapped()
@@ -78,11 +78,11 @@ ActivitySurveyResponseCellViewModelInputs, ActivitySurveyResponseCellViewModelOu
       .map { _, count, _ in Strings.Reward_Surveys(reward_survey_count: count) }
   }
 
-  private let surveyResponseCountPositionProperty = MutableProperty<(SurveyResponse, Int, Int)?>(nil)
-  public func configureWith(surveyResponse surveyResponse: SurveyResponse, count: Int, position: Int) {
+  fileprivate let surveyResponseCountPositionProperty = MutableProperty<(SurveyResponse, Int, Int)?>(nil)
+  public func configureWith(surveyResponse: SurveyResponse, count: Int, position: Int) {
     self.surveyResponseCountPositionProperty.value = (surveyResponse, count, position)
   }
-  private let respondNowButtonTappedProperty = MutableProperty()
+  fileprivate let respondNowButtonTappedProperty = MutableProperty()
   public func respondNowButtonTapped() {
     self.respondNowButtonTappedProperty.value = ()
   }

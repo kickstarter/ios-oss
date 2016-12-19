@@ -6,10 +6,10 @@ import Prelude
 import Result
 
 internal final class ProjectActivitySuccessViewModelTests: TestCase {
-  private let vm: ProjectActivitySuccessCellViewModelType = ProjectActivitySuccessCellViewModel()
+  fileprivate let vm: ProjectActivitySuccessCellViewModelType = ProjectActivitySuccessCellViewModel()
 
-  private let backgroundImage = TestObserver<String?, NoError>()
-  private let title = TestObserver<String, NoError>()
+  fileprivate let backgroundImage = TestObserver<String?, NoError>()
+  fileprivate let title = TestObserver<String, NoError>()
 
   override func setUp() {
     super.setUp()
@@ -35,7 +35,7 @@ internal final class ProjectActivitySuccessViewModelTests: TestCase {
   func testTitle() {
     let country = Project.Country.US
     let backersCount = 12345
-    let deadline = NSDate().timeIntervalSince1970
+    let deadline = Date().timeIntervalSince1970
     let pledged = 5000
 
     let project = .template

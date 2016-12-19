@@ -1,6 +1,6 @@
 import Foundation
 import KsApi
-import ReactiveCocoa
+import ReactiveSwift
 import KsApi
 import Result
 import Prelude
@@ -16,16 +16,16 @@ public protocol SearchViewModelInputs {
   func searchFieldDidBeginEditing()
 
   /// Call when the user enters a new search term.
-  func searchTextChanged(searchText: String)
+  func searchTextChanged(_ searchText: String)
 
   /// Call when the user taps the return key.
   func searchTextEditingDidEnd()
 
   /// Call when the view will appear.
-  func viewWillAppear(animated animated: Bool)
+  func viewWillAppear(animated: Bool)
 
   /// Call when a project is tapped.
-  func tapped(project project: Project)
+  func tapped(project: Project)
 
   /**
    Call from the controller's `tableView:willDisplayCell:forRowAtIndexPath` method.
@@ -33,7 +33,7 @@ public protocol SearchViewModelInputs {
    - parameter row:       The 0-based index of the row displaying.
    - parameter totalRows: The total number of rows in the table view.
    */
-  func willDisplayRow(row: Int, outOf totalRows: Int)
+  func willDisplayRow(_ row: Int, outOf totalRows: Int)
 }
 
 public protocol SearchViewModelOutputs {
@@ -170,43 +170,43 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
   }
   // swiftlint:enable function_body_length
 
-  private let cancelButtonPressedProperty = MutableProperty()
+  fileprivate let cancelButtonPressedProperty = MutableProperty()
   public func cancelButtonPressed() {
     self.cancelButtonPressedProperty.value = ()
   }
 
-  private let clearSearchTextProperty = MutableProperty()
+  fileprivate let clearSearchTextProperty = MutableProperty()
   public func clearSearchText() {
     self.clearSearchTextProperty.value = ()
   }
 
-  private let searchFieldDidBeginEditingProperty = MutableProperty()
+  fileprivate let searchFieldDidBeginEditingProperty = MutableProperty()
   public func searchFieldDidBeginEditing() {
     self.searchFieldDidBeginEditingProperty.value = ()
   }
 
-  private let searchTextChangedProperty = MutableProperty("")
-  public func searchTextChanged(searchText: String) {
+  fileprivate let searchTextChangedProperty = MutableProperty("")
+  public func searchTextChanged(_ searchText: String) {
     self.searchTextChangedProperty.value = searchText
   }
 
-  private let searchTextEditingDidEndProperty = MutableProperty()
+  fileprivate let searchTextEditingDidEndProperty = MutableProperty()
   public func searchTextEditingDidEnd() {
     self.searchTextEditingDidEndProperty.value = ()
   }
 
-  private let viewWillAppearAnimatedProperty = MutableProperty(false)
-  public func viewWillAppear(animated animated: Bool) {
+  fileprivate let viewWillAppearAnimatedProperty = MutableProperty(false)
+  public func viewWillAppear(animated: Bool) {
     self.viewWillAppearAnimatedProperty.value = animated
   }
 
-  private let tappedProjectProperty = MutableProperty<Project?>(nil)
-  public func tapped(project project: Project) {
+  fileprivate let tappedProjectProperty = MutableProperty<Project?>(nil)
+  public func tapped(project: Project) {
     self.tappedProjectProperty.value = project
   }
 
-  private let willDisplayRowProperty = MutableProperty<(row: Int, total: Int)?>(nil)
-  public func willDisplayRow(row: Int, outOf totalRows: Int) {
+  fileprivate let willDisplayRowProperty = MutableProperty<(row: Int, total: Int)?>(nil)
+  public func willDisplayRow(_ row: Int, outOf totalRows: Int) {
     self.willDisplayRowProperty.value = (row, totalRows)
   }
 

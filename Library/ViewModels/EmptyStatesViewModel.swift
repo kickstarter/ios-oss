@@ -1,6 +1,6 @@
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 
 public enum EmptyState: String {
@@ -13,13 +13,13 @@ public enum EmptyState: String {
 
 public protocol EmptyStatesViewModelInputs {
   /// Call to configure with the view controller that needs an empty state.
-  func configureWith(emptyState emptyState: EmptyState?)
+  func configureWith(emptyState: EmptyState?)
 
   /// Call when main button is tapped.
   func mainButtonTapped()
 
   /// Call to set the empty state if it is not known at the time of instanciation.
-  func setEmptyState(emptyState: EmptyState)
+  func setEmptyState(_ emptyState: EmptyState)
 
   /// Call when the view controller's viewWillAppear method is called.
   func viewWillAppear()
@@ -79,9 +79,9 @@ public final class EmptyStatesViewModel: EmptyStatesViewModelType, EmptyStatesVi
 
   // swiftlint:disable function_body_length
   public init() {
-    let emptyState = combineLatest(
+    let emptyState = Signal.combineLatest(
       self.emptyStateProperty.signal.ignoreNil(),
-      self.viewWillAppearProperty.signal.take(1)
+      self.viewWillAppearProperty.signal.take(first: 1)
     )
     .map(first)
 
@@ -146,18 +146,18 @@ public final class EmptyStatesViewModel: EmptyStatesViewModelType, EmptyStatesVi
   }
   // swiftlint:enable function_body_length
 
-  private let emptyStateProperty = MutableProperty<EmptyState?>(nil)
-  public func configureWith(emptyState emptyState: EmptyState?) {
+  fileprivate let emptyStateProperty = MutableProperty<EmptyState?>(nil)
+  public func configureWith(emptyState: EmptyState?) {
     self.emptyStateProperty.value = emptyState
   }
-  private let mainButtonTappedProperty = MutableProperty()
+  fileprivate let mainButtonTappedProperty = MutableProperty()
   public func mainButtonTapped() {
     self.mainButtonTappedProperty.value = ()
   }
-  public func setEmptyState(emptyState: EmptyState) {
+  public func setEmptyState(_ emptyState: EmptyState) {
     self.emptyStateProperty.value = emptyState
   }
-  private let viewWillAppearProperty = MutableProperty()
+  fileprivate let viewWillAppearProperty = MutableProperty()
   public func viewWillAppear() {
     self.viewWillAppearProperty.value = ()
   }
@@ -181,7 +181,7 @@ public final class EmptyStatesViewModel: EmptyStatesViewModelType, EmptyStatesVi
   public var outputs: EmptyStatesViewModelOutputs { return self }
 }
 
-private func textForSubtitle(emptyState emptyState: EmptyState) -> String {
+private func textForSubtitle(emptyState: EmptyState) -> String {
   switch emptyState {
   case .activity:
     return Strings.Find_projects_youll_love_in_art_design_film()
@@ -196,7 +196,7 @@ private func textForSubtitle(emptyState emptyState: EmptyState) -> String {
   }
 }
 
-private func textForTitle(emptyState emptyState: EmptyState) -> String {
+private func textForTitle(emptyState: EmptyState) -> String {
   switch emptyState {
   case .activity:
     return Strings.Bring_new_ideas_to_life()
@@ -211,7 +211,7 @@ private func textForTitle(emptyState emptyState: EmptyState) -> String {
   }
 }
 
-private func buttonText(emptyState emptyState: EmptyState) -> String {
+private func buttonText(emptyState: EmptyState) -> String {
   switch emptyState {
   case .socialDisabled:
     return Strings.Find_and_follow_friends()

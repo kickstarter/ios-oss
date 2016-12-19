@@ -64,8 +64,8 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
   }
 
   func testMetadata() {
-    let featuredAt = AppEnvironment.current.calendar.startOfDayForDate(NSDate()).timeIntervalSince1970
-    let potdAt = AppEnvironment.current.calendar.startOfDayForDate(NSDate()).timeIntervalSince1970
+    let featuredAt = AppEnvironment.current.calendar.startOfDayForDate(Date()).timeIntervalSince1970
+    let potdAt = AppEnvironment.current.calendar.startOfDayForDate(Date()).timeIntervalSince1970
 
     let backedProject = .template
       |> Project.lens.personalization.isBacking .~ true

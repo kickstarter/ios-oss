@@ -29,20 +29,20 @@ extension CacheProtocol {
 extension NSCache: CacheProtocol {
   public subscript(key: String) -> AnyObject? {
     get {
-      return objectForKey(key)
+      return object(forKey: key)
     }
     set {
       if let newValue = newValue {
         setObject(newValue, forKey: key)
       } else {
-        removeObjectForKey(key)
+        removeObject(forKey: key)
       }
     }
   }
 }
 
 internal final class MockCache: CacheProtocol {
-  private var cache: [String: AnyObject] = [:]
+  fileprivate var cache: [String: AnyObject] = [:]
 
   subscript(key: String) -> AnyObject? {
     get {

@@ -1,4 +1,4 @@
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 import Result
 import KsApi
@@ -7,7 +7,7 @@ public protocol ResetPasswordViewModelInputs {
   /// Call when the view loads
   func viewDidLoad()
   /// Call when email textfield input is entered
-  func emailChanged(email: String?)
+  func emailChanged(_ email: String?)
   /// Call when reset button is pressed
   func resetButtonPressed()
   /// Call when OK button is pressed on reset confirmation popup
@@ -79,22 +79,22 @@ public final class ResetPasswordViewModel: ResetPasswordViewModelType, ResetPass
     self.showResetSuccess.observeNext { _ in AppEnvironment.current.koala.trackResetPasswordSuccess() }
   }
 
-  private let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty()
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
 
-  private let emailProperty = MutableProperty<String?>(nil)
-  public func emailChanged(email: String?) {
+  fileprivate let emailProperty = MutableProperty<String?>(nil)
+  public func emailChanged(_ email: String?) {
     self.emailProperty.value = email
   }
 
-  private let resetButtonPressedProperty = MutableProperty()
+  fileprivate let resetButtonPressedProperty = MutableProperty()
   public func resetButtonPressed() {
     self.resetButtonPressedProperty.value = ()
   }
 
-  private let confirmResetButtonPressedProperty = MutableProperty()
+  fileprivate let confirmResetButtonPressedProperty = MutableProperty()
   public func confirmResetButtonPressed() {
     self.confirmResetButtonPressedProperty.value = ()
   }

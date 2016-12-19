@@ -1,7 +1,7 @@
 import FBSDKLoginKit
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 
 public protocol LoginToutViewModelInputs {
@@ -12,13 +12,13 @@ public protocol LoginToutViewModelInputs {
   func facebookLoginButtonPressed()
 
   /// Call when Facebook login completed with error
-  func facebookLoginFail(error error: NSError?)
+  func facebookLoginFail(error: NSError?)
 
   /// Call when Facebook login completed successfully with a result
-  func facebookLoginSuccess(result result: FBSDKLoginManagerLoginResult)
+  func facebookLoginSuccess(result: FBSDKLoginManagerLoginResult)
 
   /// Call to set the reason the user is attempting to log in
-  func loginIntent(intent: LoginIntent)
+  func loginIntent(_ intent: LoginIntent)
 
   /// Call when login button is pressed
   func loginButtonPressed()
@@ -31,7 +31,7 @@ public protocol LoginToutViewModelInputs {
 
   /// Call when the view appears with a boolean telling us whether or not this controller was presented,
   /// i.e. it's presentingViewController is non-`nil`.
-  func view(isPresented isPresented: Bool)
+  func view(isPresented: Bool)
 
   /// Call when the view controller's viewWillAppear() method is called
   func viewWillAppear()
@@ -134,7 +134,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
       .map { token, error in (error.facebookUser ?? nil, token) }
 
     self.postNotification = self.environmentLoggedInProperty.signal
-      .mapConst(NSNotification(name: CurrentUserNotifications.sessionStarted, object: nil))
+      .mapConst(Notification(name: CurrentUserNotifications.sessionStarted, object: nil))
 
     self.dismissViewController = self.viewIsPresentedProperty.signal
       .filter(isTrue)
@@ -162,45 +162,45 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
   public var inputs: LoginToutViewModelInputs { return self }
   public var outputs: LoginToutViewModelOutputs { return self }
 
-  private var viewWillAppearProperty = MutableProperty()
+  fileprivate var viewWillAppearProperty = MutableProperty()
   public func viewWillAppear() {
     self.viewWillAppearProperty.value = ()
   }
-  private let loginIntentProperty = MutableProperty<LoginIntent?>(.loginTab)
-  public func loginIntent(intent: LoginIntent) {
+  fileprivate let loginIntentProperty = MutableProperty<LoginIntent?>(.loginTab)
+  public func loginIntent(_ intent: LoginIntent) {
     self.loginIntentProperty.value = intent
   }
-  private let loginButtonPressedProperty = MutableProperty()
+  fileprivate let loginButtonPressedProperty = MutableProperty()
   public func loginButtonPressed() {
     self.loginButtonPressedProperty.value = ()
   }
-  private let signupButtonPressedProperty = MutableProperty()
+  fileprivate let signupButtonPressedProperty = MutableProperty()
   public func signupButtonPressed() {
     self.signupButtonPressedProperty.value = ()
   }
-  private let facebookLoginButtonPressedProperty = MutableProperty()
+  fileprivate let facebookLoginButtonPressedProperty = MutableProperty()
   public func facebookLoginButtonPressed() {
     self.facebookLoginButtonPressedProperty.value = ()
   }
-  private let facebookLoginSuccessProperty = MutableProperty<FBSDKLoginManagerLoginResult?>(nil)
-  public func facebookLoginSuccess(result result: FBSDKLoginManagerLoginResult) {
+  fileprivate let facebookLoginSuccessProperty = MutableProperty<FBSDKLoginManagerLoginResult?>(nil)
+  public func facebookLoginSuccess(result: FBSDKLoginManagerLoginResult) {
     self.facebookLoginSuccessProperty.value = result
   }
-  private let facebookLoginFailProperty = MutableProperty<NSError?>(nil)
-  public func facebookLoginFail(error error: NSError?) {
+  fileprivate let facebookLoginFailProperty = MutableProperty<NSError?>(nil)
+  public func facebookLoginFail(error: NSError?) {
     self.facebookLoginFailProperty.value = error
   }
-  private let environmentLoggedInProperty = MutableProperty()
+  fileprivate let environmentLoggedInProperty = MutableProperty()
   public func environmentLoggedIn() {
     self.environmentLoggedInProperty.value = ()
   }
 
-  private let userSessionStartedProperty = MutableProperty()
+  fileprivate let userSessionStartedProperty = MutableProperty()
   public func userSessionStarted() {
     self.userSessionStartedProperty.value = ()
   }
-  private let viewIsPresentedProperty = MutableProperty<Bool>(false)
-  public func view(isPresented isPresented: Bool) {
+  fileprivate let viewIsPresentedProperty = MutableProperty<Bool>(false)
+  public func view(isPresented: Bool) {
     self.viewIsPresentedProperty.value = isPresented
   }
 

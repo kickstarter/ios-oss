@@ -2,14 +2,14 @@ import XCTest
 @testable import Library
 @testable import ReactiveExtensions_TestHelpers
 @testable import KsApi
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 import Prelude
 
 final class CommentCellViewModelTest: TestCase {
   let vm: CommentCellViewModelType = CommentCellViewModel()
 
-  let avatarUrl = TestObserver<NSURL?, NoError>()
+  let avatarUrl = TestObserver<URL?, NoError>()
   let body = TestObserver<String, NoError>()
   let bodyColor = TestObserver<UIColor, NoError>()
   let bodyFont = TestObserver<UIFont, NoError>()

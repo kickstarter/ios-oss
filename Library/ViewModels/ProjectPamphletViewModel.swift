@@ -1,19 +1,19 @@
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 
 public protocol ProjectPamphletViewModelInputs {
   /// Call with the project given to the view controller.
-  func configureWith(projectOrParam projectOrParam: Either<Project, Param>, refTag: RefTag?)
+  func configureWith(projectOrParam: Either<Project, Param>, refTag: RefTag?)
 
   /// Call when the view loads.
   func viewDidLoad()
 
-  func viewDidAppear(animated animated: Bool)
+  func viewDidAppear(animated: Bool)
 
   /// Call when the view will appear, and pass the animated parameter.
-  func viewWillAppear(animated animated: Bool)
+  func viewWillAppear(animated: Bool)
 }
 
 public protocol ProjectPamphletViewModelOutputs {
@@ -100,30 +100,30 @@ ProjectPamphletViewModelOutputs {
       .observeNext { AppEnvironment.current.cookieStorage.setCookie($0) }
   }
 
-  private let projectOrParamProperty = MutableProperty<Either<Project, Param>?>(nil)
-  private let refTagProperty = MutableProperty<RefTag?>(nil)
-  public func configureWith(projectOrParam projectOrParam: Either<Project, Param>, refTag: RefTag?) {
+  fileprivate let projectOrParamProperty = MutableProperty<Either<Project, Param>?>(nil)
+  fileprivate let refTagProperty = MutableProperty<RefTag?>(nil)
+  public func configureWith(projectOrParam: Either<Project, Param>, refTag: RefTag?) {
     self.projectOrParamProperty.value = projectOrParam
     self.refTagProperty.value = refTag
   }
 
-  private let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty()
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
 
-  private let viewDidAppearAnimated = MutableProperty(false)
-  public func viewDidAppear(animated animated: Bool) {
+  fileprivate let viewDidAppearAnimated = MutableProperty(false)
+  public func viewDidAppear(animated: Bool) {
     self.viewDidAppearAnimated.value = animated
   }
 
-  private let viewWillAppearAnimated = MutableProperty(false)
-  public func viewWillAppear(animated animated: Bool) {
+  fileprivate let viewWillAppearAnimated = MutableProperty(false)
+  public func viewWillAppear(animated: Bool) {
     self.viewWillAppearAnimated.value = animated
   }
 
   public let configureChildViewControllersWithProject: Signal<(Project, RefTag?), NoError>
-  private let prefersStatusBarHiddenProperty = MutableProperty(false)
+  fileprivate let prefersStatusBarHiddenProperty = MutableProperty(false)
   public var prefersStatusBarHidden: Bool {
     return self.prefersStatusBarHiddenProperty.value
   }
@@ -139,7 +139,7 @@ private let escapedCookieSeparator = "%3F"
 
 // Extracts the ref tag stored in cookies for a particular project. Returns `nil` if no such cookie has
 // been previously set.
-private func cookieRefTagFor(project project: Project) -> RefTag? {
+private func cookieRefTagFor(project: Project) -> RefTag? {
 
   return AppEnvironment.current.cookieStorage.cookies?
     .filter { cookie in cookie.name == cookieName(project) }
@@ -149,32 +149,32 @@ private func cookieRefTagFor(project project: Project) -> RefTag? {
 }
 
 // Derives the name of the ref cookie from the project.
-private func cookieName(project: Project) -> String {
+private func cookieName(_ project: Project) -> String {
   return "ref_\(project.id)"
 }
 
 // Tries to extract the name of the ref tag from a cookie. It has to do double work in case the cookie
 // is accidentally encoded with a `%3F` instead of a `?`.
-private func refTagName(fromCookie cookie: NSHTTPCookie) -> String {
+private func refTagName(fromCookie cookie: HTTPCookie) -> String {
 
   return cleanUp(refTagString: cookie.value)
 }
 
 // Tries to remove cruft from a ref tag.
-private func cleanUp(refTag refTag: RefTag) -> RefTag {
+private func cleanUp(refTag: RefTag) -> RefTag {
   return RefTag(code: cleanUp(refTagString: refTag.stringTag))
 }
 
 // Tries to remove cruft from a ref tag string.
-private func cleanUp(refTagString refTagString: String) -> String {
+private func cleanUp(refTagString: String) -> String {
 
-  let secondPass = refTagString.componentsSeparatedByString(escapedCookieSeparator)
-  if let name = secondPass.first where secondPass.count == 2 {
+  let secondPass = refTagString.components(separatedBy: escapedCookieSeparator)
+  if let name = secondPass.first, secondPass.count == 2 {
     return String(name)
   }
 
-  let firstPass = refTagString.componentsSeparatedByString(cookieSeparator)
-  if let name = firstPass.first where firstPass.count == 2 {
+  let firstPass = refTagString.components(separatedBy: cookieSeparator)
+  if let name = firstPass.first, firstPass.count == 2 {
     return String(name)
   }
 
@@ -182,7 +182,7 @@ private func cleanUp(refTagString refTagString: String) -> String {
 }
 
 // Constructs a cookie from a ref tag and project.
-private func cookieFrom(refTag refTag: RefTag, project: Project) -> NSHTTPCookie? {
+private func cookieFrom(refTag: RefTag, project: Project) -> HTTPCookie? {
 
   let timestamp = Int(NSDate().timeIntervalSince1970)
 
@@ -194,5 +194,5 @@ private func cookieFrom(refTag refTag: RefTag, project: Project) -> NSHTTPCookie
   properties[NSHTTPCookieVersion] = 0
   properties[NSHTTPCookieExpires] = NSDate(timeIntervalSince1970: project.dates.deadline)
 
-  return NSHTTPCookie(properties: properties)
+  return HTTPCookie(properties: properties as! [HTTPCookiePropertyKey : Any])
 }

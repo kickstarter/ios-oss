@@ -4,21 +4,21 @@ import XCTest
 @testable import ReactiveExtensions
 @testable import ReactiveExtensions_TestHelpers
 import KsApi
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 @testable import Library
 import Prelude
 
 // swiftlint:disable function_body_length
 internal final class SearchViewModelTests: TestCase {
-  private let vm: SearchViewModelType! = SearchViewModel()
+  fileprivate let vm: SearchViewModelType! = SearchViewModel()
 
-  private let changeSearchFieldFocusFocused = TestObserver<Bool, NoError>()
-  private let changeSearchFieldFocusAnimated = TestObserver<Bool, NoError>()
-  private let isPopularTitleVisible = TestObserver<Bool, NoError>()
-  private let hasProjects = TestObserver<Bool, NoError>()
-  private let resignFirstResponder = TestObserver<(), NoError>()
-  private let searchFieldText = TestObserver<String, NoError>()
+  fileprivate let changeSearchFieldFocusFocused = TestObserver<Bool, NoError>()
+  fileprivate let changeSearchFieldFocusAnimated = TestObserver<Bool, NoError>()
+  fileprivate let isPopularTitleVisible = TestObserver<Bool, NoError>()
+  fileprivate let hasProjects = TestObserver<Bool, NoError>()
+  fileprivate let resignFirstResponder = TestObserver<(), NoError>()
+  fileprivate let searchFieldText = TestObserver<String, NoError>()
 
   override func setUp() {
     super.setUp()

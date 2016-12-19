@@ -10,10 +10,10 @@ final class StylesTests: XCTestCase {
     XCTAssertNotNil(headline)
     XCTAssertNil(head, "Not valid name")
 
-    let headlineFont = UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)
+    let headlineFont = UIFont.preferredFont(forTextStyle: UIFontTextStyle.headline)
     XCTAssertEqual(FontStyle.Headline.toUIFont(), headlineFont)
 
-    let captionFont = UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1)
+    let captionFont = UIFont.preferredFont(forTextStyle: UIFontTextStyle.caption1)
     XCTAssertNotEqual(FontStyle.Headline.toUIFont(), captionFont)
   }
 

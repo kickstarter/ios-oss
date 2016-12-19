@@ -4,33 +4,33 @@ import UIKit
 // and uses `SimpleViewModel` for its data.
 public final class SimpleDataSource <
   Cell: ValueCell,
-  Value: Any
+  Value: Any>: ValueCellDataSource
   where
-  Cell.Value == Value>: ValueCellDataSource {
+  Cell.Value == Value {
 
   public override init() {
   }
 
-  public override func registerClasses(collectionView collectionView: UICollectionView?) {
+  public override func registerClasses(collectionView: UICollectionView?) {
     collectionView?.registerCellNibForClass(Cell.self)
   }
 
-  public override func registerClasses(tableView tableView: UITableView?) {
+  public override func registerClasses(tableView: UITableView?) {
     tableView?.registerCellNibForClass(Cell.self)
   }
 
-  public func reload(values: [Value]) {
+  public func reload(_ values: [Value]) {
     self.set(values: values, cellClass: Cell.self, inSection: 0)
   }
 
   public override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
-    if let cell = cell as? Cell, value = value as? Cell.Value {
+    if let cell = cell as? Cell, let value = value as? Cell.Value {
       cell.configureWith(value: value)
     }
   }
 
   public override func configureCell(collectionCell cell: UICollectionViewCell, withValue value: Any) {
-    if let cell = cell as? Cell, value = value as? Cell.Value {
+    if let cell = cell as? Cell, let value = value as? Cell.Value {
       cell.configureWith(value: value)
     }
   }

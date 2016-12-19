@@ -5,7 +5,7 @@ import UIKit
 public let activitySampleBackingTitleLabelStyle =
   UILabel.lens.textColor .~ .ksr_text_navy_700
     <> UILabel.lens.numberOfLines .~ 2
-    <> UILabel.lens.lineBreakMode .~ .ByTruncatingTail
+    <> UILabel.lens.lineBreakMode .~ .byTruncatingTail
 
 public let activitySampleCellStyle = baseTableViewCellStyle()
   <> UITableViewCell.lens.backgroundColor .~ .clearColor()
@@ -18,19 +18,19 @@ public let activitySampleCellStyle = baseTableViewCellStyle()
 public let activitySampleFriendFollowLabelStyle =
   UILabel.lens.textColor .~ .ksr_text_navy_700
     <> UILabel.lens.numberOfLines .~ 2
-    <> UILabel.lens.lineBreakMode .~ .ByTruncatingTail
+    <> UILabel.lens.lineBreakMode .~ .byTruncatingTail
     <> UILabel.lens.font .~ .ksr_subhead()
 
 public let activitySampleProjectSubtitleLabelStyle =
   UILabel.lens.textColor .~ .ksr_text_navy_700
     <> UILabel.lens.numberOfLines .~ 2
-    <> UILabel.lens.lineBreakMode .~ .ByTruncatingTail
+    <> UILabel.lens.lineBreakMode .~ .byTruncatingTail
     <> UILabel.lens.font .~ .ksr_subhead()
 
 public let activitySampleProjectTitleLabelStyle =
   UILabel.lens.textColor .~ .ksr_text_navy_700
     <> UILabel.lens.numberOfLines .~ 2
-    <> UILabel.lens.lineBreakMode .~ .ByTruncatingTail
+    <> UILabel.lens.lineBreakMode .~ .byTruncatingTail
     <> UILabel.lens.font .~ UIFont.ksr_subhead().bolded
 
 public let activitySampleSeeAllActivityButtonStyle =
@@ -52,5 +52,5 @@ public let activitySampleTitleLabelStyle =
   UILabel.lens.font .~ .ksr_footnote()
     <> UILabel.lens.textColor .~ .ksr_text_navy_500
     <> UILabel.lens.numberOfLines .~ 1
-    <> UILabel.lens.lineBreakMode .~ .ByTruncatingTail
+    <> UILabel.lens.lineBreakMode .~ .byTruncatingTail
     <> UILabel.lens.text %~ { _ in Strings.discovery_activity_sample_title_Since_your_last_visit() }

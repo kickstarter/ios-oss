@@ -1,7 +1,7 @@
 // swiftlint:disable file_length
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 import Result
 
@@ -13,17 +13,17 @@ public protocol ThanksViewModelInputs {
   func closeButtonTapped()
 
   /// Call when category cell is tapped
-  func categoryCellTapped(category: KsApi.Category)
+  func categoryCellTapped(_ category: KsApi.Category)
 
   /// Call with a boolean that determines if facebook is available on this device, i.e.
   /// SLComposeViewController.isAvailableForServiceType(SLServiceTypeFacebook)
-  func facebookIsAvailable(available: Bool)
+  func facebookIsAvailable(_ available: Bool)
 
   /// Call to set project
-  func project(project: Project)
+  func project(_ project: Project)
 
   /// Call when project cell is tapped
-  func projectTapped(project: Project)
+  func projectTapped(_ project: Project)
 
   /// Call when signup button is tapped on games newsletter alert
   func gamesNewsletterSignupButtonTapped()
@@ -39,7 +39,7 @@ public protocol ThanksViewModelInputs {
 
   /// Call with a boolean that determines if twitter is available on this device, i.e.
   /// SLComposeViewController.isAvailableForServiceType(SLServiceTypeTwitter)
-  func twitterIsAvailable(available: Bool)
+  func twitterIsAvailable(_ available: Bool)
 
   /// Call when the current user has been updated in the environment
   func userUpdated()
@@ -235,62 +235,62 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
   public var outputs: ThanksViewModelOutputs { return self }
 
   // MARK: ThanksViewModelInputs
-  private let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty()
   public func viewDidLoad() {
     viewDidLoadProperty.value = ()
   }
 
-  private let closeButtonTappedProperty = MutableProperty()
+  fileprivate let closeButtonTappedProperty = MutableProperty()
   public func closeButtonTapped() {
     closeButtonTappedProperty.value = ()
   }
 
-  private let categoryCellTappedProperty = MutableProperty<KsApi.Category?>(nil)
-  public func categoryCellTapped(category: KsApi.Category) {
+  fileprivate let categoryCellTappedProperty = MutableProperty<KsApi.Category?>(nil)
+  public func categoryCellTapped(_ category: KsApi.Category) {
     categoryCellTappedProperty.value = category
   }
 
-  private let projectProperty = MutableProperty<Project?>(nil)
-  public func project(project: Project) {
+  fileprivate let projectProperty = MutableProperty<Project?>(nil)
+  public func project(_ project: Project) {
     projectProperty.value = project
   }
 
-  private let projectTappedProperty = MutableProperty<Project?>(nil)
-  public func projectTapped(project: Project) {
+  fileprivate let projectTappedProperty = MutableProperty<Project?>(nil)
+  public func projectTapped(_ project: Project) {
     projectTappedProperty.value = project
   }
 
-  private let gamesNewsletterSignupButtonTappedProperty = MutableProperty()
+  fileprivate let gamesNewsletterSignupButtonTappedProperty = MutableProperty()
   public func gamesNewsletterSignupButtonTapped() {
     gamesNewsletterSignupButtonTappedProperty.value = ()
   }
 
-  private let facebookIsAvailableProperty = MutableProperty(false)
-  public func facebookIsAvailable(available: Bool) {
+  fileprivate let facebookIsAvailableProperty = MutableProperty(false)
+  public func facebookIsAvailable(_ available: Bool) {
     self.facebookIsAvailableProperty.value = available
   }
 
-  private let rateNowButtonTappedProperty = MutableProperty()
+  fileprivate let rateNowButtonTappedProperty = MutableProperty()
   public func rateNowButtonTapped() {
     rateNowButtonTappedProperty.value = ()
   }
 
-  private let rateRemindLaterButtonTappedProperty = MutableProperty()
+  fileprivate let rateRemindLaterButtonTappedProperty = MutableProperty()
   public func rateRemindLaterButtonTapped() {
     rateRemindLaterButtonTappedProperty.value = ()
   }
 
-  private let rateNoThanksButtonTappedProperty = MutableProperty()
+  fileprivate let rateNoThanksButtonTappedProperty = MutableProperty()
   public func rateNoThanksButtonTapped() {
     rateNoThanksButtonTappedProperty.value = ()
   }
 
-  private let twitterIsAvailableProperty = MutableProperty(false)
-  public func twitterIsAvailable(available: Bool) {
+  fileprivate let twitterIsAvailableProperty = MutableProperty(false)
+  public func twitterIsAvailable(_ available: Bool) {
     self.twitterIsAvailableProperty.value = available
   }
 
-  private let userUpdatedProperty = MutableProperty()
+  fileprivate let userUpdatedProperty = MutableProperty()
   public func userUpdated() {
     userUpdatedProperty.value = ()
   }

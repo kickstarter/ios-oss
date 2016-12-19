@@ -1,6 +1,6 @@
 import PassKit
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 import Result
 import XCTest
@@ -16,7 +16,7 @@ private let locations: [Location] = [
 ]
 
 private let shippingRules = locations
-  .enumerate()
+  .enumerated()
   .map { idx, location in
     .template
       |> ShippingRule.lens.location .~ location
@@ -24,51 +24,51 @@ private let shippingRules = locations
 }
 
 private let sortedShippingRules = shippingRules
-  .sort { lhs, rhs in lhs.location.displayableName < rhs.location.displayableName }
+  .sorted { lhs, rhs in lhs.location.displayableName < rhs.location.displayableName }
 
 internal final class RewardPledgeViewModelTests: TestCase {
-  private let vm: RewardPledgeViewModelType = RewardPledgeViewModel()
+  fileprivate let vm: RewardPledgeViewModelType = RewardPledgeViewModel()
 
-  private let applePayButtonHidden = TestObserver<Bool, NoError>()
-  private let cancelPledgeButtonHidden = TestObserver<Bool, NoError>()
-  private let changePaymentMethodButtonHidden = TestObserver<Bool, NoError>()
-  private let continueToPaymentsButtonHidden = TestObserver<Bool, NoError>()
-  private let conversionLabelHidden = TestObserver<Bool, NoError>()
-  private let conversionLabelText = TestObserver<String, NoError>()
-  private let countryLabelText = TestObserver<String, NoError>()
-  private let descriptionLabelText = TestObserver<String, NoError>()
-  private let differentPaymentMethodButtonHidden = TestObserver<Bool, NoError>()
-  private let dismissViewController = TestObserver<(), NoError>()
-  private let estimatedDeliveryDateLabelText = TestObserver<String, NoError>()
-  private let expandRewardDescription = TestObserver<(), NoError>()
-  private let fulfillmentAndShippingFooterStackViewHidden = TestObserver<Bool, NoError>()
-  private let goToCheckoutRequest = TestObserver<String, NoError>() // todo
-  private let goToCheckoutProject = TestObserver<Project, NoError>() // todo
-  private let goToLoginTout = TestObserver<(), NoError>()
-  private let goToPaymentAuthorization = TestObserver<NSDictionary, NoError>()
-  private let goToShippingPickerProject = TestObserver<Project, NoError>()
-  private let goToShippingPickerShippingRules = TestObserver<[ShippingRule], NoError>()
-  private let goToShippingPickerSelectedShippingRule = TestObserver<ShippingRule, NoError>()
-  private let goToThanks = TestObserver<Project, NoError>()
-  private let items = TestObserver<[String], NoError>()
-  private let itemsContainerHidden = TestObserver<Bool, NoError>()
-  private let loadingOverlayIsHidden = TestObserver<Bool, NoError>()
-  private let minimumLabelText = TestObserver<String, NoError>()
-  private let navigationTitle = TestObserver<String, NoError>()
-  private let orLabelHidden = TestObserver<Bool, NoError>()
-  private let pledgeCurrencyLabelText = TestObserver<String, NoError>()
-  private let pledgeIsLoading = TestObserver<Bool, NoError>()
-  private let pledgeTextFieldText = TestObserver<String, NoError>()
-  private let readMoreContainerViewHidden = TestObserver<Bool, NoError>()
-  private let setStripeAppleMerchantIdentifier = TestObserver<String, NoError>()
-  private let setStripePublishableKey = TestObserver<String, NoError>()
-  private let shippingAmountLabelText = TestObserver<String, NoError>()
-  private let shippingInputStackViewHidden = TestObserver<Bool, NoError>()
-  private let shippingLocationsLabelText = TestObserver<String, NoError>()
-  private let showAlert = TestObserver<String, NoError>() // todo
-  private let titleLabelHidden = TestObserver<Bool, NoError>()
-  private let titleLabelText = TestObserver<String, NoError>()
-  private let updatePledgeButtonHidden = TestObserver<Bool, NoError>()
+  fileprivate let applePayButtonHidden = TestObserver<Bool, NoError>()
+  fileprivate let cancelPledgeButtonHidden = TestObserver<Bool, NoError>()
+  fileprivate let changePaymentMethodButtonHidden = TestObserver<Bool, NoError>()
+  fileprivate let continueToPaymentsButtonHidden = TestObserver<Bool, NoError>()
+  fileprivate let conversionLabelHidden = TestObserver<Bool, NoError>()
+  fileprivate let conversionLabelText = TestObserver<String, NoError>()
+  fileprivate let countryLabelText = TestObserver<String, NoError>()
+  fileprivate let descriptionLabelText = TestObserver<String, NoError>()
+  fileprivate let differentPaymentMethodButtonHidden = TestObserver<Bool, NoError>()
+  fileprivate let dismissViewController = TestObserver<(), NoError>()
+  fileprivate let estimatedDeliveryDateLabelText = TestObserver<String, NoError>()
+  fileprivate let expandRewardDescription = TestObserver<(), NoError>()
+  fileprivate let fulfillmentAndShippingFooterStackViewHidden = TestObserver<Bool, NoError>()
+  fileprivate let goToCheckoutRequest = TestObserver<String, NoError>() // todo
+  fileprivate let goToCheckoutProject = TestObserver<Project, NoError>() // todo
+  fileprivate let goToLoginTout = TestObserver<(), NoError>()
+  fileprivate let goToPaymentAuthorization = TestObserver<NSDictionary, NoError>()
+  fileprivate let goToShippingPickerProject = TestObserver<Project, NoError>()
+  fileprivate let goToShippingPickerShippingRules = TestObserver<[ShippingRule], NoError>()
+  fileprivate let goToShippingPickerSelectedShippingRule = TestObserver<ShippingRule, NoError>()
+  fileprivate let goToThanks = TestObserver<Project, NoError>()
+  fileprivate let items = TestObserver<[String], NoError>()
+  fileprivate let itemsContainerHidden = TestObserver<Bool, NoError>()
+  fileprivate let loadingOverlayIsHidden = TestObserver<Bool, NoError>()
+  fileprivate let minimumLabelText = TestObserver<String, NoError>()
+  fileprivate let navigationTitle = TestObserver<String, NoError>()
+  fileprivate let orLabelHidden = TestObserver<Bool, NoError>()
+  fileprivate let pledgeCurrencyLabelText = TestObserver<String, NoError>()
+  fileprivate let pledgeIsLoading = TestObserver<Bool, NoError>()
+  fileprivate let pledgeTextFieldText = TestObserver<String, NoError>()
+  fileprivate let readMoreContainerViewHidden = TestObserver<Bool, NoError>()
+  fileprivate let setStripeAppleMerchantIdentifier = TestObserver<String, NoError>()
+  fileprivate let setStripePublishableKey = TestObserver<String, NoError>()
+  fileprivate let shippingAmountLabelText = TestObserver<String, NoError>()
+  fileprivate let shippingInputStackViewHidden = TestObserver<Bool, NoError>()
+  fileprivate let shippingLocationsLabelText = TestObserver<String, NoError>()
+  fileprivate let showAlert = TestObserver<String, NoError>() // todo
+  fileprivate let titleLabelHidden = TestObserver<Bool, NoError>()
+  fileprivate let titleLabelText = TestObserver<String, NoError>()
+  fileprivate let updatePledgeButtonHidden = TestObserver<Bool, NoError>()
 
   // todo koala tracking testing
 
@@ -90,7 +90,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
     self.vm.outputs.expandRewardDescription.observe(self.expandRewardDescription.observer)
     self.vm.outputs.fulfillmentAndShippingFooterStackViewHidden
       .observe(self.fulfillmentAndShippingFooterStackViewHidden.observer)
-    self.vm.outputs.goToCheckout.map(first).map { optionalize(optionalize($0.URL)?.absoluteString) }
+    self.vm.outputs.goToCheckout.map(first).map { $0.URL.absoluteString }
       .ignoreNil()
       .observe(self.goToCheckoutRequest.observer)
     self.vm.outputs.goToCheckout.map(second).observe(self.goToCheckoutProject.observer)
@@ -313,7 +313,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
   }
 
   func testEstimatedDeliveryDateLabelText() {
-    let reward = .template |> Reward.lens.estimatedDeliveryOn .~ NSDate().timeIntervalSince1970
+    let reward = .template |> Reward.lens.estimatedDeliveryOn .~ Date().timeIntervalSince1970
     self.vm.inputs.configureWith(project: .template, reward: reward, applePayCapable: false)
     self.vm.inputs.viewDidLoad()
 

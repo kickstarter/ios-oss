@@ -7,14 +7,14 @@ import Result
 import WebKit
 
 final class SurveyResponseViewModelTests: TestCase {
-  private let vm: SurveyResponseViewModelType = SurveyResponseViewModel()
+  fileprivate let vm: SurveyResponseViewModelType = SurveyResponseViewModel()
 
-  private let dismissViewController = TestObserver<Void, NoError>()
-  private let goToProjectParam = TestObserver<Param, NoError>()
-  private let showAlert = TestObserver<String, NoError>()
-  private let title = TestObserver<String, NoError>()
-  private let webViewLoadRequestIsPrepared = TestObserver<Bool, NoError>()
-  private let webViewLoadRequest = TestObserver<NSURLRequest, NoError>()
+  fileprivate let dismissViewController = TestObserver<Void, NoError>()
+  fileprivate let goToProjectParam = TestObserver<Param, NoError>()
+  fileprivate let showAlert = TestObserver<String, NoError>()
+  fileprivate let title = TestObserver<String, NoError>()
+  fileprivate let webViewLoadRequestIsPrepared = TestObserver<Bool, NoError>()
+  fileprivate let webViewLoadRequest = TestObserver<URLRequest, NoError>()
 
   override func setUp() {
     super.setUp()
@@ -52,7 +52,7 @@ final class SurveyResponseViewModelTests: TestCase {
 
     XCTAssertFalse(
       self.vm.inputs.shouldStartLoad(
-        withRequest: NSURLRequest(URL: NSURL(string: project.urls.web.project)!),
+        withRequest: URLRequest(URL: URL(string: project.urls.web.project)!),
         navigationType: .LinkClicked
       )
     )
@@ -128,13 +128,13 @@ final class SurveyResponseViewModelTests: TestCase {
   }
 }
 
-private func surveyRequest(project project: Project, prepared: Bool, method: KsApi.Method) -> NSURLRequest {
+private func surveyRequest(project: Project, prepared: Bool, method: KsApi.Method) -> URLRequest {
   let url = "\(project.urls.web.project)/surveys/1"
-  let request = NSMutableURLRequest(URL: NSURL(string: url)!)
-  request.HTTPMethod = method.rawValue
+  let request = NSMutableURLRequest(url: URL(string: url)!)
+  request.httpMethod = method.rawValue
   if prepared {
     return AppEnvironment.current.apiService.preparedRequest(forRequest: request)
   } else {
-    return request
+    return request as URLRequest
   }
 }

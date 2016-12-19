@@ -1,11 +1,11 @@
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 
 public protocol ActivityUpdateViewModelInputs {
   /// Call to configure with the activity.
-  func configureWith(activity activity: Activity)
+  func configureWith(activity: Activity)
 
   /// Call when the project image is tapped.
   func tappedProjectImage()
@@ -69,11 +69,11 @@ ActivityUpdateViewModelOutputs {
       .map { project, postedText in "\(project.name) \(postedText.string)" }
   }
 
-  private let activityProperty = MutableProperty<Activity?>(nil)
-  public func configureWith(activity activity: Activity) {
+  fileprivate let activityProperty = MutableProperty<Activity?>(nil)
+  public func configureWith(activity: Activity) {
     self.activityProperty.value = activity
   }
-  private let tappedProjectImageProperty = MutableProperty()
+  fileprivate let tappedProjectImageProperty = MutableProperty()
   public func tappedProjectImage() {
     self.tappedProjectImageProperty.value = ()
   }
@@ -91,7 +91,7 @@ ActivityUpdateViewModelOutputs {
   public var outputs: ActivityUpdateViewModelOutputs { return self }
 }
 
-private let decimalCharacterSet = NSCharacterSet.decimalDigitCharacterSet().invertedSet
+private let decimalCharacterSet = NSCharacterSet.decimalDigitCharacterSet.invertedSet
 
 private func updatePostedString(forActivity activity: Activity) -> NSAttributedString {
   let updateNum = Format.wholeNumber(activity.update?.sequence ?? 1)

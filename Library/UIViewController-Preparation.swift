@@ -4,9 +4,9 @@ import Prelude
 import Prelude_UIKit
 
 extension UIViewController {
-  public override class func initialize() {
+  open override class func initialize() {
     struct Static {
-      static var token: dispatch_once_t = 0
+      static var token: Int = 0
     }
 
     // make sure this isn't a subclass
@@ -38,7 +38,7 @@ extension UIViewController {
     }
   }
 
-  internal func ksr_viewDidLoad(animated: Bool) {
+  internal func ksr_viewDidLoad(_ animated: Bool) {
     self.ksr_viewDidLoad(animated)
     self.bindViewModel()
   }
@@ -55,7 +55,7 @@ extension UIViewController {
   public func bindStyles() {
   }
 
-  public func ksr_traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
+  public func ksr_traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
     self.ksr_traitCollectionDidChange(previousTraitCollection)
     self.bindStyles()
   }
@@ -63,10 +63,10 @@ extension UIViewController {
 
 extension UIViewController {
   public static var defaultNib: String {
-    return self.description().componentsSeparatedByString(".").dropFirst().joinWithSeparator(".")
+    return self.description().components(separatedBy: ".").dropFirst().joined(separator: ".")
   }
 
   public static var storyboardIdentifier: String {
-    return self.description().componentsSeparatedByString(".").dropFirst().joinWithSeparator(".")
+    return self.description().components(separatedBy: ".").dropFirst().joined(separator: ".")
   }
 }

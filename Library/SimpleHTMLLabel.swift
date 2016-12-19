@@ -1,12 +1,12 @@
 import Prelude
 import Prelude_UIKit
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 import Result
 import UIKit
 
-private let defaultFont = UIFont.systemFontOfSize(12)
-private let defaultColor = UIColor.blackColor()
+private let defaultFont = UIFont.systemFont(ofSize: 12)
+private let defaultColor = UIColor.black
 
 public protocol SimpleHTMLLabelProtocol: UILabelProtocol {
   var baseAttributes: [String:AnyObject] { get set }
@@ -105,7 +105,7 @@ public final class SimpleHTMLLabel: UILabel, SimpleHTMLLabelProtocol {
     self.updateAttributedText()
   }
 
-  private func updateAttributedText() {
+  fileprivate func updateAttributedText() {
     self.attributedText = self.html.simpleHtmlAttributedString(
       base: self.baseAttributes,
       bold: self.baseAttributes.withAllValuesFrom(self.boldAttributes),
@@ -188,7 +188,7 @@ extension LensHolder where Object: SimpleHTMLLabelProtocol {
 }
 
 private enum Associations {
-  private static var html = 0
+  fileprivate static var html = 0
 }
 
 public extension Rac where Object: SimpleHTMLLabel {

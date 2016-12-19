@@ -1,11 +1,11 @@
 import Foundation
 import KsApi
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 import UIKit
 
 public protocol CommentCellViewModelInputs {
-  func comment(comment: Comment, project: Project, viewer: User?)
+  func comment(_ comment: Comment, project: Project, viewer: User?)
 }
 
 public protocol CommentCellViewModelOutputs {
@@ -33,7 +33,7 @@ CommentCellViewModelOutputs {
 
     self.avatarUrl = comment
       .map { $0.author.avatar.large ?? $0.author.avatar.medium }
-      .map { NSURL(string: $0) }
+      .map { URL(string: $0) }
 
     self.body = comment.map { $0.body }
 
@@ -60,8 +60,8 @@ CommentCellViewModelOutputs {
     }
   }
 
-  private let commentProjectViewer = MutableProperty<(Comment, Project, User?)?>(nil)
-  public func comment(comment: Comment, project: Project, viewer: User?) {
+  fileprivate let commentProjectViewer = MutableProperty<(Comment, Project, User?)?>(nil)
+  public func comment(_ comment: Comment, project: Project, viewer: User?) {
     self.commentProjectViewer.value = (comment, project, viewer)
   }
 

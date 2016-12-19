@@ -1,6 +1,6 @@
 import Foundation
 import KsApi
-import ReactiveCocoa
+import ReactiveSwift
 import KsApi
 import Result
 import Prelude
@@ -10,13 +10,13 @@ public protocol MessagesSearchViewModelInputs {
   func clearSearchText()
 
   /// Call with the (optional) project given to the view.
-  func configureWith(project project: Project?)
+  func configureWith(project: Project?)
 
   /// Call when the search text changes.
-  func searchTextChanged(searchText: String?)
+  func searchTextChanged(_ searchText: String?)
 
   /// Call when a message thread is tapped.
-  func tappedMessageThread(messageThread: MessageThread)
+  func tappedMessageThread(_ messageThread: MessageThread)
 
   /// Call when the view loads.
   func viewDidLoad()
@@ -118,31 +118,31 @@ MessagesSearchViewModelOutputs {
   }
   // swiftlint:enable function_body_length
 
-  private let clearSearchTextProperty = MutableProperty()
+  fileprivate let clearSearchTextProperty = MutableProperty()
   public func clearSearchText() {
     self.clearSearchTextProperty.value = ()
   }
-  private let projectProperty = MutableProperty<Project?>(nil)
-  public func configureWith(project project: Project?) {
+  fileprivate let projectProperty = MutableProperty<Project?>(nil)
+  public func configureWith(project: Project?) {
     self.projectProperty.value = project
   }
-  private let searchTextChangedProperty = MutableProperty<String>("")
-  public func searchTextChanged(searchText: String?) {
+  fileprivate let searchTextChangedProperty = MutableProperty<String>("")
+  public func searchTextChanged(_ searchText: String?) {
     self.searchTextChangedProperty.value = searchText ?? ""
   }
-  private let tappedMessageThreadProperty = MutableProperty<MessageThread?>(nil)
-  public func tappedMessageThread(messageThread: MessageThread) {
+  fileprivate let tappedMessageThreadProperty = MutableProperty<MessageThread?>(nil)
+  public func tappedMessageThread(_ messageThread: MessageThread) {
     self.tappedMessageThreadProperty.value = messageThread
   }
-  private let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty()
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
-  private let viewWillAppearProperty = MutableProperty()
+  fileprivate let viewWillAppearProperty = MutableProperty()
   public func viewWillAppear() {
     self.viewWillAppearProperty.value = ()
   }
-  private let viewWillDisappearProperty = MutableProperty()
+  fileprivate let viewWillDisappearProperty = MutableProperty()
   public func viewWillDisappear() {
     self.viewWillDisappearProperty.value = ()
   }

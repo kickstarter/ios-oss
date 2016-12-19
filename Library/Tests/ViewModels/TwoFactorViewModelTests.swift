@@ -1,5 +1,5 @@
 import XCTest
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 @testable import KsApi
 @testable import ReactiveExtensions_TestHelpers
