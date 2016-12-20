@@ -51,7 +51,7 @@ public protocol LoginToutViewModelOutputs {
   var logIntoEnvironment: Signal<AccessTokenEnvelope, NoError> { get }
 
   /// Emits when a login success notification should be posted.
-  var postNotification: Signal<NSNotification, NoError> { get }
+  var postNotification: Signal<Notification, NoError> { get }
 
   /// Emits when should show Facebook error alert with AlertError
   var showFacebookErrorAlert: Signal<AlertError, NoError> { get }
@@ -210,7 +210,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
   public let startFacebookConfirmation: Signal<(ErrorEnvelope.FacebookUser?, String), NoError>
   public let startTwoFactorChallenge: Signal<String, NoError>
   public let logIntoEnvironment: Signal<AccessTokenEnvelope, NoError>
-  public let postNotification: Signal<NSNotification, NoError>
+  public let postNotification: Signal<Notification, NoError>
   public let isLoading: Signal<Bool, NoError>
   public let attemptFacebookLogin: Signal<(), NoError>
   public let showFacebookErrorAlert: Signal<AlertError, NoError>
