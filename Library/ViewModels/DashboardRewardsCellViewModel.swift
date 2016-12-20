@@ -59,13 +59,13 @@ public final class DashboardRewardsCellViewModel: DashboardRewardsCellViewModelT
     let statsProject = self.statsProjectProperty.signal.skipNil()
 
     let rewards = statsProject
-      .map { stats, project in (project.rewards ?? [], stats) }
+      .map { stats, project in (project.rewards, stats) }
       .map(allRewardsStats(rewards:stats:))
 
     let initialSort = rewards.sort { $0.pledged > $1.pledged }
 
     let sortedByTop = rewards
-      .sort { $0.minimum > $1.minimum }
+      .sort { ($0.minimum ?? 0) > ($1.minimum ?? 0) }
       .takeWhen(self.topRewardsButtonTappedProperty.signal)
 
     let sortedByBackers = rewards
@@ -159,7 +159,7 @@ private func allRewardsStats(rewards: [Reward],
     let zeroPledgedStats = rewards.filter { !statsIds.contains($0.id) }
       .map {
         return .zero
-          |> ProjectStatsEnvelope.RewardStats.lens.backersCount .~ $0.backersCount! ?? 0
+          |> ProjectStatsEnvelope.RewardStats.lens.backersCount .~ ($0.backersCount ?? 0)
           |> ProjectStatsEnvelope.RewardStats.lens.id .~ $0.id
           |> ProjectStatsEnvelope.RewardStats.lens.minimum .~ $0.minimum
     }
