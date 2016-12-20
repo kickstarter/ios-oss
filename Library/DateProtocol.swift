@@ -2,7 +2,7 @@ import Foundation
 
 public protocol DateProtocol {
   var date: Date { get }
-  func dateByAddingTimeInterval(_: TimeInterval) -> Self
+  func addingTimeInterval(_: TimeInterval) -> Self
   init()
   init(timeIntervalSince1970: TimeInterval)
   var timeIntervalSince1970: TimeInterval { get }
@@ -33,7 +33,7 @@ internal struct MockDate: DateProtocol {
     return Date(timeIntervalSince1970: self.time)
   }
 
-  internal func dateByAddingTimeInterval(_ interval: TimeInterval) -> MockDate {
+  internal func addingTimeInterval(_ interval: TimeInterval) -> MockDate {
     return MockDate(timeIntervalSince1970: self.time + interval)
   }
 }
