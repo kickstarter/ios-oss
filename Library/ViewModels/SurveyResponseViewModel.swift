@@ -50,19 +50,19 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
       .takeWhen(self.viewDidLoadProperty.signal)
       .map { surveyResponse -> URLRequest? in
         guard let url = URL(string: surveyResponse.urls.web.survey) else { return nil }
-        return URLRequest(URL: url)
+        return URLRequest(url: url)
       }
       .skipNil()
 
     let postRequest = self.shouldStartLoadProperty.signal.skipNil()
       .filter { request, navigationType in
-        isUnpreparedSurvey(request: request) && navigationType == .FormSubmitted
+        isUnpreparedSurvey(request: request) && navigationType == .formSubmitted
       }
       .map { request, _ in request }
 
     let redirectAfterPostRequest = self.shouldStartLoadProperty.signal.skipNil()
       .filter { request, navigationType in
-        isUnpreparedSurvey(request: request) && navigationType == .Other
+        isUnpreparedSurvey(request: request) && navigationType == .other
       }
       .map { request, _ in request }
 

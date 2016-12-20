@@ -231,7 +231,7 @@ public final class CheckoutViewModel: CheckoutViewModelType {
     let stripeToken = self.stripeTokenAndErrorProperty.signal.map(first).skipNil()
 
     self.paymentAuthorizationStatusProperty <~ self.stripeTokenAndErrorProperty.signal
-      .map { _, error in error == nil ? .Success : .failure }
+      .map { _, error in error == nil ? .success : .failure }
 
     self.evaluateJavascript = self.didAuthorizePaymentProperty.signal.skipNil()
       .takePairWhen(stripeToken)
@@ -249,7 +249,7 @@ public final class CheckoutViewModel: CheckoutViewModelType {
 
     racingRequest
       .observeValues { [weak self] request in
-        guard let url = request.url?.URLByDeletingLastPathComponent else { return }
+        guard let url = request.url?.deletingLastPathComponent() else { return }
         self?.checkoutRacingViewModel.inputs.configureWith(url: url)
     }
 
@@ -371,7 +371,7 @@ public final class CheckoutViewModel: CheckoutViewModelType {
     return self.shouldStartLoadResponseProperty.value
   }
 
-  fileprivate let stripeTokenAndErrorProperty = MutableProperty(String?.none, NSError?.None)
+  fileprivate let stripeTokenAndErrorProperty = MutableProperty(String?.none, NSError?.none)
   fileprivate let paymentAuthorizationStatusProperty = MutableProperty(PKPaymentAuthorizationStatus.failure)
   public func stripeCreatedToken(stripeToken: String?, error: NSError?)
     -> PKPaymentAuthorizationStatus {
@@ -466,8 +466,8 @@ private func applePayCheckoutNextJS(forPaymentData paymentData: PaymentData, str
 
 private func paymentRequest(fromBase64Payload payload: String) -> PKPaymentRequest? {
 
-  return Data(base64EncodedString: payload, options: [])
-    .flatMap { try? JSONSerialization.JSONObjectWithData($0, options: []) }
+  return Data(base64Encoded: payload, options: [])
+    .flatMap { try? JSONSerialization.jsonObject(with: $0, options: []) }
     .flatMap { (decode($0) as Decoded<PKPaymentRequest>).value }
 }
 
@@ -476,11 +476,7 @@ private func prepared(request baseRequest: URLRequest, applePayCapable: Bool) ->
   var applePayHeader: [String:String] = [:]
   applePayHeader["Kickstarter-Apple-Pay"] = applePayCapable ? "1" : nil
 
-  guard let request = AppEnvironment.current.apiService.preparedRequest(forRequest: baseRequest).mutableCopy()
-    as? NSMutableURLRequest else {
-      return baseRequest
-  }
-
+  var request = AppEnvironment.current.apiService.preparedRequest(forRequest: baseRequest)
   request.allHTTPHeaderFields = (request.allHTTPHeaderFields ?? [:]).withAllValuesFrom(applePayHeader)
 
   return request

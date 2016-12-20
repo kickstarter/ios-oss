@@ -32,8 +32,8 @@ public final class Keyboard {
         return
     }
 
-    self.changeObserver.sendNext((
-      frame.CGRectValue(),
+    self.changeObserver.send(value: (
+      frame.cgRectValue,
       duration.doubleValue,
       UIViewAnimationOptions(rawValue: UInt(curve.rawValue))
     ))

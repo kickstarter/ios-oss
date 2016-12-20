@@ -57,7 +57,7 @@ DiscoveryExpandableRowCellInputs, DiscoveryExpandableRowCellOutputs {
       .map { Format.wholeNumber($0.params.category?.projectsCount ?? 0) }
 
     self.projectsCountLabelHidden = expandableRow
-      .map { $0.params.category?.projectsCount == .Some(0) }
+      .map { $0.params.category?.projectsCount == .some(0) }
 
     self.projectsCountLabelTextColor = categoryId
       .map(discoverySecondaryColor(forCategoryId:))

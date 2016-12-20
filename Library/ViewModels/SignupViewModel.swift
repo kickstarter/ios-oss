@@ -97,18 +97,18 @@ public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, 
     self.emailTextFieldBecomeFirstResponder = self.nameTextFieldReturnProperty.signal
     self.passwordTextFieldBecomeFirstResponder = self.emailTextFieldReturnProperty.signal
 
-    self.isSignupButtonEnabled = combineLatest(nameIsPresent, emailIsPresent, passwordIsPresent)
+    self.isSignupButtonEnabled = Signal.combineLatest(nameIsPresent, emailIsPresent, passwordIsPresent)
       .map { $0 && $1 && $2 }
       .skipRepeats()
 
-    self.setWeeklyNewsletterState = newsletter.take(1)
+    self.setWeeklyNewsletterState = newsletter.take(first: 1)
 
     let attemptSignup = Signal.merge(
       self.passwordTextFieldReturnProperty.signal,
       self.signupButtonPressedProperty.signal
     )
 
-    let signupEvent = combineLatest(name, email, password, newsletter)
+    let signupEvent = Signal.combineLatest(name, email, password, newsletter)
       .takeWhen(attemptSignup)
       .switchMap { name, email, password, newsletter in
         AppEnvironment.current.apiService.signup(
@@ -117,7 +117,7 @@ public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, 
           password: password,
           passwordConfirmation: password,
           sendNewsletters: newsletter)
-          .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
+          .delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
       }
 
@@ -131,7 +131,7 @@ public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, 
     self.logIntoEnvironment = signupEvent.values()
 
     self.postNotification = self.environmentLoggedInProperty.signal
-      .mapConst(Notification(name: CurrentUserNotifications.sessionStarted, object: nil))
+      .mapConst(Notification(name: Notification.Name(rawValue: CurrentUserNotifications.sessionStarted), object: nil) as NSNotification)
 
     self.environmentLoggedInProperty.signal
       .observeValues { AppEnvironment.current.koala.trackLoginSuccess(authType: Koala.AuthType.email) }

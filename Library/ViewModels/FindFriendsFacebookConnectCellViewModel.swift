@@ -42,7 +42,7 @@ public protocol FindFriendsFacebookConnectCellViewModelOutputs {
   var notifyDelegateUserFacebookConnected: Signal<(), NoError> { get }
 
   /// Emits when a user updated notification should be posted
-  var postUserUpdatedNotification: Signal<NSNotification, NoError> { get }
+  var postUserUpdatedNotification: Signal<Notification, NoError> { get }
 
   /// Emits when should error alert with AlertError
   var showErrorAlert: Signal<AlertError, NoError> { get }
@@ -179,7 +179,7 @@ public final class FindFriendsFacebookConnectCellViewModel: FindFriendsFacebookC
   public let isLoading: Signal<Bool, NoError>
   public let notifyDelegateToDismissHeader: Signal<(), NoError>
   public let notifyDelegateUserFacebookConnected: Signal<(), NoError>
-  public let postUserUpdatedNotification: Signal<NSNotification, NoError>
+  public let postUserUpdatedNotification: Signal<Notification, NoError>
   public let updateUserInEnvironment: Signal<User, NoError>
   public let showErrorAlert: Signal<AlertError, NoError>
   public let hideCloseButton: Signal<Bool, NoError>

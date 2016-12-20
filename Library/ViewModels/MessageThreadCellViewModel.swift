@@ -38,7 +38,7 @@ public final class MessageThreadCellViewModel: MessageThreadCellViewModelType,
     }
 
     self.messageBody = messageThread.map {
-      $0.lastMessage.body.stringByReplacingOccurrencesOfString("\n", withString: " ")
+      $0.lastMessage.body.replacingOccurrences(of: "\n", with: " ")
     }
 
     self.participantAvatarURL = messageThread.map { URL(string: $0.participant.avatar.medium) }

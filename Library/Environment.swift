@@ -91,7 +91,7 @@ public struct Environment {
     cookieStorage: NSHTTPCookieStorageType = HTTPCookieStorage.shared,
     countryCode: String = "US",
     currentUser: User? = nil,
-    dateType: DateProtocol.Type = NSDate.self,
+    dateType: DateProtocol.Type = Date.self,
     debounceInterval: TimeInterval = 0.3,
     facebookAppDelegate: FacebookAppDelegateProtocol = FBSDKApplicationDelegate.sharedInstance(),
     isVoiceOverRunning: @escaping () -> Bool = UIAccessibilityIsVoiceOverRunning,

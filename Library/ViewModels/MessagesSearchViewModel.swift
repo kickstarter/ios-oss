@@ -105,7 +105,7 @@ MessagesSearchViewModelOutputs {
       .takeWhen(self.viewDidLoadProperty.signal)
       .observeValues { AppEnvironment.current.koala.trackViewedMessageSearch(project: $0) }
 
-    combineLatest(query, project.take(first: 1), self.messageThreads.map { !$0.isEmpty })
+    Signal.combineLatest(query, project.take(first: 1), self.messageThreads.map { !$0.isEmpty })
       .takeWhen(self.isSearching.filter(isFalse))
       .filter { query, _, _ in !query.isEmpty }
       .observeValues {

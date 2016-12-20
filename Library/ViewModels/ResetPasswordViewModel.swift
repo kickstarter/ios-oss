@@ -42,7 +42,7 @@ public final class ResetPasswordViewModel: ResetPasswordViewModelType, ResetPass
 
     self.setEmailInitial = self.emailProperty.signal.skipNil()
       .takeWhen(viewDidLoadProperty.signal)
-      .take(1)
+      .take(first: 1)
 
     self.formIsValid = self.viewDidLoadProperty.signal
       .flatMap { [email = emailProperty.producer] _ in email }

@@ -71,7 +71,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
     let query = Signal
       .merge(
         self.searchTextChangedProperty.signal,
-        viewWillAppearNotAnimated.mapConst("").take(1),
+        viewWillAppearNotAnimated.mapConst("").take(first: 1),
         self.cancelButtonPressedProperty.signal.mapConst(""),
         self.clearSearchTextProperty.signal.mapConst("")
       )
@@ -80,14 +80,14 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       .switchMap {
         AppEnvironment.current.apiService
           .fetchDiscovery(params: .defaults |> DiscoveryParams.lens.sort .~ .popular)
-          .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
+          .delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .demoteErrors()
       }
       .map { $0.projects }
 
     let clears = query.mapConst([Project]())
 
-    self.isPopularTitleVisible = combineLatest(query, popular)
+    self.isPopularTitleVisible = Signal.combineLatest(query, popular)
       .map { query, _ in query.isEmpty }
       .skipRepeats()
 
@@ -119,7 +119,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       requestFromParams: requestFromParamsWithDebounce,
       requestFromCursor: { AppEnvironment.current.apiService.fetchDiscovery(paginationUrl: $0) })
 
-    self.projects = combineLatest(self.isPopularTitleVisible, popular, .merge(clears, projects))
+    self.projects = Signal.combineLatest(self.isPopularTitleVisible, popular, .merge(clears, projects))
       .map { showPopular, popular, searchResults in showPopular ? popular : searchResults }
       .skipRepeats(==)
 
@@ -142,12 +142,12 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
     viewWillAppearNotAnimated
       .observeValues { AppEnvironment.current.koala.trackProjectSearchView() }
 
-    let hasResults = combineLatest(projects, isLoading)
+    let hasResults = Signal.combineLatest(projects, isLoading)
       .filter(negate • second)
       .map(first)
       .map { !$0.isEmpty }
 
-    combineLatest(query, page)
+    Signal.combineLatest(query, page)
       .takePairWhen(hasResults)
       .map(unpack)
       .filter { query, _, _ in !query.isEmpty }

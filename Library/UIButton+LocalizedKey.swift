@@ -6,8 +6,7 @@ public extension UIButton {
   */
   public var normalLocalizedKey: String {
     set(key) {
-      self.setTitle(localizedString(key: key, defaultValue: self.title(for: UIControlState()) ?? ""),
-        for: UIControlState())
+      self.setTitle(localizedString(key: key, defaultValue: self.title(for: []) ?? ""), for: [])
     }
     get {
       return ""

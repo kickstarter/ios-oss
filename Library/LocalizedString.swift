@@ -25,7 +25,7 @@ public func localizedString(key: String,
     .coalesceWith(key)
 
   let lprojName = lprojFileNameForLanguage(env.language)
-  let localized = bundle.pathForResource(lprojName, ofType: "lproj")
+  let localized = bundle.path(forResource: lprojName, ofType: "lproj")
     .flatMap(type(of: bundle).create(path:))
     .flatMap { $0.localizedStringForKey(augmentedKey, value: nil, table: nil) }
     .filter {

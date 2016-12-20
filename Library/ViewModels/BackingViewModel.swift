@@ -89,7 +89,7 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
 
   // swiftlint:disable function_body_length
   public init() {
-    let projectAndBackerAndBackerIsCurrentUser = combineLatest(
+    let projectAndBackerAndBackerIsCurrentUser = Signal.combineLatest(
       self.projectAndBackerProperty.signal.skipNil(),
       self.viewDidLoadProperty.signal
       )
@@ -136,14 +136,14 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
           pledge_amount: Format.currency(backing.amount, country: project.country),
           pledge_date: Format.date(
             secondsInUTC: backing.pledgedAt,
-            dateStyle: .LongStyle,
-            timeStyle: .NoStyle
+            dateStyle: .long,
+            timeStyle: .none
           )
         )
     }
     self.backerPledgeAmountAndDateAccessibilityLabel = self.backerPledgeAmountAndDate.map { "Pledged " + $0 }
 
-    self.backerRewardDescription = combineLatest(project, reward)
+    self.backerRewardDescription = Signal.combineLatest(project, reward)
       .map { project, reward in
         Strings.backer_modal_reward_amount_reward_description(
           reward_amount: Format.currency(reward.minimum, country: project.country),
@@ -184,7 +184,7 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
     }
 
     self.rootStackViewAxis = projectAndBackingAndBackerIsCurrentUser
-      .map { _ in AppEnvironment.current.language == .en ? .Horizontal : .Vertical }
+      .map { _ in AppEnvironment.current.language == .en ? .horizontal : .vertical }
 
     project.observeValues { AppEnvironment.current.koala.trackViewedPledge(forProject: $0) }
   }

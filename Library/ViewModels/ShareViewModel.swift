@@ -64,7 +64,7 @@ public final class ShareViewModel: ShareViewModelType, ShareViewModelInputs, Sha
       self.twitterButtonTappedProperty.signal.mapConst(SLServiceTypeTwitter)
       )
 
-    self.showShareCompose = combineLatest(shareContext, directShareService)
+    self.showShareCompose = Signal.combineLatest(shareContext, directShareService)
       .map(shareComposeController(forShareContext:serviceType:))
 
     let directShareCompletion = Signal.merge(

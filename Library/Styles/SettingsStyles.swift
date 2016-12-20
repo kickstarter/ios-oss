@@ -16,9 +16,9 @@ public let settingsTitleLabelStyle =
 
 public let settingsLogoutButtonStyle = borderButtonStyle
   <> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 15)
-  <> UIButton.lens.titleColor(forState: .Normal) .~ .ksr_text_navy_700
-  <> UIButton.lens.titleColor(forState: .Highlighted) .~ .ksr_text_navy_500
-  <> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.profile_settings_log_out_button() }
+  <> UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_navy_700
+  <> UIButton.lens.titleColor(forState: .highlighted) .~ .ksr_text_navy_500
+  <> UIButton.lens.title(forState: .normal) %~ { _ in Strings.profile_settings_log_out_button() }
 
 public let settingsNotificationIconButtonStyle =
   UIButton.lens.title(forState: .normal) .~ nil

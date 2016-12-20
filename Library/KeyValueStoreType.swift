@@ -112,17 +112,17 @@ extension NSUbiquitousKeyValueStore: KeyValueStoreType {
 }
 
 internal class MockKeyValueStore: KeyValueStoreType {
-  var store: [String:AnyObject] = [:]
+  var store: [String:Any] = [:]
 
   func setBool(_ bool: Bool, forKey key: String) {
-    self.store[key] = bool as AnyObject?
+    self.store[key] = bool
   }
 
   func setInteger(_ int: Int, forKey key: String) {
-    self.store[key] = int as AnyObject?
+    self.store[key] = int
   }
 
-  func set(_ value: Any?, forKey defaultName: String) {
+  func set(_ value: Any?, forKey key: String) {
     self.store[key] = object
   }
 
@@ -134,7 +134,7 @@ internal class MockKeyValueStore: KeyValueStoreType {
     return self.store[key] as? Int ?? 0
   }
 
-  func object(forKey defaultName: String) -> Any? {
+  func object(forKey key: String) -> Any? {
     return self.store[key]
   }
 
@@ -142,8 +142,8 @@ internal class MockKeyValueStore: KeyValueStoreType {
     return self.object(forKey: key) as? String
   }
 
-  func dictionary(forKey defaultName: String) -> [String : Any]? {
-    return self.object(forKey: key) as? [String:AnyObject]
+  func dictionary(forKey key: String) -> [String:Any]? {
+    return self.object(forKey: key) as? [String:Any]
   }
 
   func removeObjectForKey(_ key: String) {

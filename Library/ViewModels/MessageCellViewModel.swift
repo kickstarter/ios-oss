@@ -30,11 +30,11 @@ MessageCellViewModelOutputs {
     self.name = message.map { $0.sender.name }
 
     self.timestamp = message.map {
-      Format.date(secondsInUTC: $0.createdAt, dateStyle: .ShortStyle, timeStyle: .ShortStyle)
+      Format.date(secondsInUTC: $0.createdAt, dateStyle: .short, timeStyle: .short)
     }
 
     self.timestampAccessibilityLabel = message.map {
-      Format.date(secondsInUTC: $0.createdAt, dateStyle: .LongStyle, timeStyle: .ShortStyle)
+      Format.date(secondsInUTC: $0.createdAt, dateStyle: .long, timeStyle: .short)
     }
 
     self.body = message.map { $0.body }

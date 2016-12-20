@@ -38,7 +38,7 @@ public final class WebModalViewModel: WebModalViewModelType {
     self.dismissViewController = self.closeButtonTappedProperty.signal
 
     self.policyDecisionProperty <~ self.policyForNavigationActionProperty.signal.skipNil()
-      .mapConst(.Allow)
+      .mapConst(.allow)
 
     self.webViewLoadRequest = self.requestProperty.signal.skipNil()
       .takeWhen(self.viewDidLoadProperty.signal)
@@ -57,7 +57,7 @@ public final class WebModalViewModel: WebModalViewModelType {
   }
 
   fileprivate let policyForNavigationActionProperty = MutableProperty<WKNavigationActionProtocol?>(nil)
-  fileprivate let policyDecisionProperty = MutableProperty(WKNavigationActionPolicy.Allow)
+  fileprivate let policyDecisionProperty = MutableProperty(WKNavigationActionPolicy.allow)
   public func decidePolicyFor(navigationAction: WKNavigationActionProtocol)
     -> WKNavigationActionPolicy {
       self.policyForNavigationActionProperty.value = navigationAction

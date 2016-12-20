@@ -1032,7 +1032,7 @@ private func updatePledge(
     .flatMap { env -> SignalProducer<URLRequest?, PledgeError> in
 
       let request = env.newCheckoutUrl
-        .map(AppEnvironment.current.apiService.serverConfig.webBaseUrl.appendingPathComponent)
+        .flatMap(AppEnvironment.current.apiService.serverConfig.webBaseUrl.appendingPathComponent)
         .map(URLRequest.init(url:))
 
       return SignalProducer(value: request)

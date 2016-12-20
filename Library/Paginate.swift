@@ -44,7 +44,7 @@ public func paginate <Cursor, Value: Equatable, Envelope, ErrorEnvelope, Request
                        skipRepeats: Bool = true,
                        valuesFromEnvelope: @escaping ((Envelope) -> [Value]),
                        cursorFromEnvelope: @escaping ((Envelope) -> Cursor),
-                       requestFromParams: ((RequestParams) -> SignalProducer<Envelope, ErrorEnvelope>),
+                       requestFromParams: @escaping ((RequestParams) -> SignalProducer<Envelope, ErrorEnvelope>),
                        requestFromCursor: @escaping ((Cursor) -> SignalProducer<Envelope, ErrorEnvelope>),
                        concater: @escaping (([Value], [Value]) -> [Value]) = (+))
   ->
@@ -56,7 +56,7 @@ public func paginate <Cursor, Value: Equatable, Envelope, ErrorEnvelope, Request
     let isLoading = MutableProperty<Bool>(false)
 
     // Emits the last cursor when nextPage emits
-    let cursorOnNextPage = cursor.producer.skipNil().sample(requestNextPage)
+    let cursorOnNextPage = cursor.producer.skipNil().sample(on: requestNextPage)
 
     let paginatedValues = requestFirstPage
       .switchMap { requestParams in

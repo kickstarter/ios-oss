@@ -116,7 +116,7 @@ ProjectActivityBackingCellViewModelInputs, ProjectActivityBackingCellViewModelOu
 
     self.previousPledgeAmountLabelIsHidden = previousPledgeAmountLabelIsHidden.skipRepeats()
 
-    let pledgeAmountsStackViewIsHidden = zip(
+    let pledgeAmountsStackViewIsHidden = Signal.zip(
       pledgeAmountLabelIsHidden,
       previousPledgeAmountLabelIsHidden
       )
@@ -133,11 +133,11 @@ ProjectActivityBackingCellViewModelInputs, ProjectActivityBackingCellViewModelOu
     self.rewardLabelIsHidden = rewardLabelIsHidden
 
     self.sendMessageButtonAndBulletSeparatorHidden = activityAndProject
-      .map { .Some($1.creator) != AppEnvironment.current.currentUser }
+      .map { .some($1.creator) != AppEnvironment.current.currentUser }
 
     self.title = title
 
-    self.pledgeDetailsSeparatorStackViewIsHidden = zip(
+    self.pledgeDetailsSeparatorStackViewIsHidden = Signal.zip(
       pledgeAmountsStackViewIsHidden,
       rewardLabelIsHidden
       )

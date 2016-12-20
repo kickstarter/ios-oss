@@ -64,7 +64,7 @@ CommentsViewModelOutputs {
 
   // swiftlint:disable function_body_length
   public init() {
-    let projectOrUpdate = combineLatest(
+    let projectOrUpdate = Signal.combineLatest(
       self.projectAndUpdateProperty.signal.skipNil(),
       self.viewDidLoadProperty.signal
       )
@@ -119,16 +119,16 @@ CommentsViewModelOutputs {
       },
       requestFromCursor: { AppEnvironment.current.apiService.fetchComments(paginationUrl: $0) })
 
-    self.dataSource = combineLatest(comments, project, user)
+    self.dataSource = Signal.combineLatest(comments, project, user)
       .skipRepeats { lhs, rhs in lhs.0.isEmpty && rhs.0.isEmpty }
 
     self.commentsAreLoading = isLoading
 
-    self.emptyStateVisible = combineLatest(comments, project, update)
+    self.emptyStateVisible = Signal.combineLatest(comments, project, update)
       .filter { comments, _, _ in comments.isEmpty }
       .map { _, project, update in (project, update) }
 
-    let userCanComment = combineLatest(comments, project)
+    let userCanComment = Signal.combineLatest(comments, project)
       .map { comments, project in !comments.isEmpty && canComment(onProject: project) }
       .skipRepeats()
 
@@ -138,7 +138,7 @@ CommentsViewModelOutputs {
       )
       .skipRepeats()
 
-    self.presentPostCommentDialog = combineLatest(project, update)
+    self.presentPostCommentDialog = Signal.combineLatest(project, update)
       .takeWhen(
         Signal.merge(self.commentButtonPressedProperty.signal, self.userSessionStartedProperty.signal)
       )
@@ -146,25 +146,25 @@ CommentsViewModelOutputs {
     self.openLoginTout = self.loginButtonPressedProperty.signal
     self.closeLoginTout = self.userSessionStartedProperty.signal
 
-    combineLatest(project, update)
+    Signal.combineLatest(project, update)
       .takeWhen(self.viewDidLoadProperty.signal)
-      .take(1)
+      .take(first: 1)
       .observeValues { project, update in
         AppEnvironment.current.koala.trackCommentsView(
           project: project, update: update, context: update == nil ? .project : .update
         )
     }
 
-    combineLatest(project, update)
-      .takeWhen(pageCount.skip(1).filter { $0 == 1 })
+    Signal.combineLatest(project, update)
+      .takeWhen(pageCount.skip(first: 1).filter { $0 == 1 })
       .observeValues { project, update in
         AppEnvironment.current.koala.trackLoadNewerComments(
           project: project, update: update, context: update == nil ? .project : .update
         )
     }
 
-    combineLatest(project, update)
-      .takePairWhen(pageCount.skip(1).filter { $0 > 1 })
+    Signal.combineLatest(project, update)
+      .takePairWhen(pageCount.skip(first: 1).filter { $0 > 1 })
       .map(unpack)
       .observeValues { project, update, pageCount in
         AppEnvironment.current.koala.trackLoadOlderComments(

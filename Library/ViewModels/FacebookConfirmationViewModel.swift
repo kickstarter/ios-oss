@@ -26,7 +26,7 @@ public protocol FacebookConfirmationViewModelOutputs {
   /// Emits whether to send newsletters with login
   var sendNewsletters: Signal<Bool, NoError> { get }
   /// Emits when a login success notification should be posted.
-  var postNotification: Signal<NSNotification, NoError> { get }
+  var postNotification: Signal<Notification, NoError> { get }
   /// Emits an access token envelope that can be used to update the environment.
   var logIntoEnvironment: Signal<AccessTokenEnvelope, NoError> { get }
   /// Emits to show the Login with Email flow
@@ -94,7 +94,7 @@ FacebookConfirmationViewModelErrors {
   public let displayEmail: Signal<String, NoError>
   public let sendNewsletters: Signal<Bool, NoError>
   public let logIntoEnvironment: Signal<AccessTokenEnvelope, NoError>
-  public let postNotification: Signal<NSNotification, NoError>
+  public let postNotification: Signal<Notification, NoError>
   public let showLogin: Signal<(), NoError>
   public let isLoading: Signal<Bool, NoError>
 
@@ -113,7 +113,7 @@ FacebookConfirmationViewModelErrors {
       self.viewDidLoadProperty.signal.map { AppEnvironment.current.countryCode == "US" }
     ])
 
-    let signupEvent = combineLatest(self.facebookTokenProperty.signal, self.sendNewsletters)
+    let signupEvent = Signal.combineLatest(self.facebookTokenProperty.signal, self.sendNewsletters)
       .takeWhen(self.createAccountButtonProperty.signal)
       .switchMap { token, newsletter in
         AppEnvironment.current.apiService.signup(facebookAccessToken: token, sendNewsletters: newsletter)
@@ -124,14 +124,14 @@ FacebookConfirmationViewModelErrors {
             terminated: {
               isLoading.value = false
           })
-          .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
+          .delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
     }
 
     self.logIntoEnvironment = signupEvent.values()
 
     self.postNotification = self.environmentLoggedInProperty.signal
-      .mapConst(NSNotification(name: CurrentUserNotifications.sessionStarted, object: nil))
+      .mapConst(Notification(name: Notification.Name(rawValue: CurrentUserNotifications.sessionStarted), object: nil))
 
     self.showSignupError = signupEvent.errors()
       .map { error in
