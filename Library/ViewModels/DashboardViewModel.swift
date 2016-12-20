@@ -157,7 +157,7 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
         DashboardTitleViewData(
           drawerState: drawerState,
           isArrowHidden: projects.count <= 1,
-          currentProjectIndex: projects.indexOf(selectedProject) ?? 0
+          currentProjectIndex: projects.index(of: selectedProject) ?? 0
         )
     }
 
@@ -171,7 +171,7 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
         projects.map { project in
           ProjectsDrawerData(
             project: project,
-            indexNum: projects.indexOf(project) ?? 0,
+            indexNum: projects.index(of: project) ?? 0,
             isChecked: project == selectedProject
           )
         }
@@ -183,14 +183,14 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
 
     self.dismissProjectsDrawer = self.projectsDrawerDidAnimateOutProperty.signal
 
-    self.goToProject = combineLatest(self.project, projects)
+    self.goToProject = Signal.combineLatest(self.project, projects)
       .takeWhen(self.projectContextCellTappedProperty.signal)
       .map { project, projects in (project, projects, RefTag.dashboard) }
 
     self.focusScreenReaderOnTitleView = self.viewWillAppearAnimatedProperty.signal.ignoreValues()
 
     let projectForTrackingViews = Signal.merge(
-      projects.map { $0.first }.skipNil().take(1),
+      projects.map { $0.first }.skipNil().take(first: 1),
       self.project
         .takeWhen(self.viewWillAppearAnimatedProperty.signal.filter(isFalse))
     )
