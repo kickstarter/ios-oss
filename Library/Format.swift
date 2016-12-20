@@ -73,8 +73,8 @@ public enum Format {
 
     return formatter.string(from: NSNumber(value: amount))?
       .trimmed()
-      .stringByReplacingOccurrencesOfString(String.nbsp + String.nbsp, withString: String.nbsp)
-      ?? country.currencySymbol + String(amount)
+      .replacingOccurrences(of: String.nbsp + String.nbsp, with: String.nbsp)
+      ?? (country.currencySymbol + String(amount))
   }
 
   /**
@@ -146,32 +146,38 @@ public enum Format {
                  useToGo: Bool = false,
                  env: Environment = AppEnvironment.current) -> (time: String, unit: String) {
 
-    let components = env.calendar.components([.day, .hour, .minute, .second],
-                                             from: env.dateType.init().date,
-                                             to: env.dateType.init(timeIntervalSince1970: seconds).date)
+    let components = env.calendar.dateComponents([.day, .hour, .minute, .second],
+                                                 from: env.dateType.init().date,
+                                                 to: env.dateType.init(timeIntervalSince1970: seconds).date)
+
+    let (day, hour, minute, second) = (components.day ?? 0, components.hour ?? 0, components.minute ?? 0, components.second ?? 0)
 
     let string: String
-    if components.day > 1 {
-      let format = abbreviate ? Strings.dates_time_days_abbreviated : Strings.dates_time_days
-      string = format(time_count: components.day)
-    } else if components.day == 1 || components.hour > 0 {
-      let format = abbreviate ? Strings.dates_time_hours_abbreviated : Strings.dates_time_hours
-      string = format(time_count: components.day * 24 + components.hour)
-    } else if components.minute > 0 && components.second >= 0 {
-      let format = abbreviate ? Strings.dates_time_minutes_abbreviated : Strings.dates_time_minutes
-      string = format(time_count: components.minute)
-    } else if components.second <= 0 {
+    if day > 1 {
+      string = abbreviate
+        ? Strings.dates_time_days_abbreviated(time_count: day)
+        : Strings.dates_time_days(time_count: day)
+    } else if day == 1 || hour > 0 {
+      let count = day * 24 + hour
+      string = abbreviate
+        ? Strings.dates_time_hours_abbreviated(time_count: count)
+        : Strings.dates_time_hours(time_count: count)
+    } else if minute > 0 && second >= 0 {
+      string = abbreviate
+        ? Strings.dates_time_minutes_abbreviated(time_count: minute)
+        : Strings.dates_time_minutes(time_count: minute)
+    } else if second <= 0 {
       string = "0 " + Strings.discovery_baseball_card_deadline_units_secs()
     } else {
       string = ""
     }
 
-    let split = string.componentsSeparatedBy(" ")
+    let split = string.components(separatedBy: " ")
     guard split.count >= 1 else { return ("", "") }
 
     let result = (
       time: split.first ?? "",
-      unit: split.suffixFrom(1).joinWithSeparator(" ")
+      unit: split.suffix(from: 1).joined(separator: " ")
     )
 
     if useToGo {
@@ -200,34 +206,42 @@ public enum Format {
                  threshold thresholdInDays: Int = defaultThresholdInDays,
                  env: Environment = AppEnvironment.current) -> String {
 
-    let components = env.calendar.components([.day, .hour, .minute, .second],
-                                             from: env.dateType.init(timeIntervalSince1970: seconds).date,
-                                             to: env.dateType.init().date)
+    let components = env.calendar.dateComponents([.day, .hour, .minute, .second],
+                                                 from: env.dateType.init(timeIntervalSince1970: seconds).date,
+                                                 to: env.dateType.init().date)
 
-    if abs(components.day) > thresholdInDays {
+    let (day, hour, minute, second) = (components.day ?? 0, components.hour ?? 0, components.minute ?? 0, components.second ?? 0)
+
+    if abs(day) > thresholdInDays {
       return Format.date(secondsInUTC: seconds, dateStyle: .medium, timeStyle: .none)
-    } else if components.day > 1 {
-      let format = abbreviate ? Strings.dates_time_days_ago_abbreviated : Strings.dates_time_days_ago
-      return format(time_count: components.day)
-    } else if components.day == 1 {
+    } else if day > 1 {
+      return abbreviate
+        ? Strings.dates_time_days_ago_abbreviated(time_count: day)
+        : Strings.dates_time_days_ago(time_count: day)
+    } else if day == 1 {
       return Strings.dates_yesterday()
-    } else if components.hour > 0 {
-      let format = abbreviate ? Strings.dates_time_hours_ago_abbreviated : Strings.dates_time_hours_ago
-      return format(time_count: components.hour)
-    } else if components.minute > 0 {
-      let format = abbreviate ? Strings.dates_time_minutes_ago_abbreviated : Strings.dates_time_minutes_ago
-      return format(time_count: components.minute)
-    } else if components.second > 0 {
+    } else if hour > 0 {
+      return abbreviate
+        ? Strings.dates_time_hours_ago_abbreviated(time_count: hour)
+        : Strings.dates_time_hours_ago(time_count: hour)
+    } else if minute > 0 {
+      return abbreviate
+        ? Strings.dates_time_minutes_ago_abbreviated(time_count: minute)
+        : Strings.dates_time_minutes_ago(time_count: minute)
+    } else if second > 0 {
       return Strings.dates_just_now()
-    } else if components.day < 0 {
-      let format = abbreviate ? Strings.dates_time_in_days_abbreviated : Strings.dates_time_in_days
-      return format(time_count: -components.day)
-    } else if components.hour < 0 {
-      let format = abbreviate ? Strings.dates_time_in_hours_abbreviated : Strings.dates_time_in_hours
-      return format(time_count: -components.hour)
-    } else if components.minute < 0 {
-      let format = abbreviate ? Strings.dates_time_in_minutes_abbreviated : Strings.dates_time_in_minutes
-      return format(time_count: -components.minute)
+    } else if day < 0 {
+      return abbreviate
+        ? Strings.dates_time_in_days_abbreviated(time_count: -day)
+        : Strings.dates_time_in_days(time_count: -day)
+    } else if hour < 0 {
+      return abbreviate
+        ? Strings.dates_time_in_hours_abbreviated(time_count: -hour)
+        : Strings.dates_time_in_hours(time_count: -hour)
+    } else if minute < 0 {
+      return abbreviate
+        ? Strings.dates_time_in_minutes_abbreviated(time_count: -minute)
+        : Strings.dates_time_in_minutes(time_count: -minute)
     } else {
       return Strings.dates_right_now()
     }
