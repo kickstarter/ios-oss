@@ -13,12 +13,12 @@ public enum AppKeys: String {
 public protocol KeyValueStoreType: class {
   func setBool(_ bool: Bool, forKey key: String)
   func setInteger(_ int: Int, forKey key: String)
-  func setObject(_ object: AnyObject?, forKey key: String)
+  func set(_ value: Any?, forKey defaultName: String)
 
   func boolForKey(_ key: String) -> Bool
-  func dictionaryForKey(_ key: String) -> [String:AnyObject]?
+  func dictionary(forKey defaultName: String) -> [String : Any]?
   func integerForKey(_ key: String) -> Int
-  func objectForKey(_ key: String) -> AnyObject?
+  func object(forKey defaultName: String) -> Any?
   func stringForKey(_ key: String) -> String?
   func synchronize() -> Bool
 
@@ -36,28 +36,28 @@ public protocol KeyValueStoreType: class {
 extension KeyValueStoreType {
   public var favoriteCategoryIds: [Int] {
     get {
-      return self.objectForKey(AppKeys.favoriteCategoryIds.rawValue) as? [Int] ?? []
+      return self.object(forKey: AppKeys.favoriteCategoryIds.rawValue) as? [Int] ?? []
     }
     set {
-      self.setObject(newValue as AnyObject?, forKey: AppKeys.favoriteCategoryIds.rawValue)
+      self.set(newValue, forKey: AppKeys.favoriteCategoryIds.rawValue)
     }
   }
 
   public var hasClosedFacebookConnectInActivity: Bool {
     get {
-      return self.objectForKey(AppKeys.closedFacebookConnectInActivity.rawValue) as? Bool ?? false
+      return self.object(forKey: AppKeys.closedFacebookConnectInActivity.rawValue) as? Bool ?? false
     }
     set {
-      self.setObject(newValue as AnyObject?, forKey: AppKeys.closedFacebookConnectInActivity.rawValue)
+      self.set(newValue, forKey: AppKeys.closedFacebookConnectInActivity.rawValue)
     }
   }
 
   public var hasClosedFindFriendsInActivity: Bool {
     get {
-      return self.objectForKey(AppKeys.closedFindFriendsInActivity.rawValue) as? Bool ?? false
+      return self.object(forKey: AppKeys.closedFindFriendsInActivity.rawValue) as? Bool ?? false
     }
     set {
-      self.setObject(newValue as AnyObject?, forKey: AppKeys.closedFindFriendsInActivity.rawValue)
+      self.set(newValue, forKey: AppKeys.closedFindFriendsInActivity.rawValue)
     }
   }
 
@@ -122,7 +122,7 @@ internal class MockKeyValueStore: KeyValueStoreType {
     self.store[key] = int as AnyObject?
   }
 
-  func setObject(_ object: AnyObject?, forKey key: String) {
+  func set(_ value: Any?, forKey defaultName: String) {
     self.store[key] = object
   }
 
@@ -134,20 +134,20 @@ internal class MockKeyValueStore: KeyValueStoreType {
     return self.store[key] as? Int ?? 0
   }
 
-  func objectForKey(_ key: String) -> AnyObject? {
+  func object(forKey defaultName: String) -> Any? {
     return self.store[key]
   }
 
   func stringForKey(_ key: String) -> String? {
-    return self.objectForKey(key) as? String
+    return self.object(forKey: key) as? String
   }
 
-  func dictionaryForKey(_ key: String) -> [String:AnyObject]? {
-    return self.objectForKey(key) as? [String:AnyObject]
+  func dictionary(forKey defaultName: String) -> [String : Any]? {
+    return self.object(forKey: key) as? [String:AnyObject]
   }
 
   func removeObjectForKey(_ key: String) {
-    self.setObject(nil, forKey: key)
+    self.set(nil, forKey: key)
   }
 
   func synchronize() -> Bool {
