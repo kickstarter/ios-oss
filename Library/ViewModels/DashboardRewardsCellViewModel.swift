@@ -82,7 +82,7 @@ public final class DashboardRewardsCellViewModel: DashboardRewardsCellViewModelT
       sortedByPledged
     )
 
-    let allRewardsRowData = combineLatest(
+    let allRewardsRowData = Signal.combineLatest(
       statsProject.map { $1 },
       allRewards
       )
@@ -98,7 +98,7 @@ public final class DashboardRewardsCellViewModel: DashboardRewardsCellViewModelT
     self.hideSeeAllTiersButton = allTiersButtonIsHidden.skipRepeats()
 
     // if more than 6 rewards, truncate at 4
-    self.rewardsRowData = combineLatest(allRewardsRowData, allTiersButtonIsHidden)
+    self.rewardsRowData = Signal.combineLatest(allRewardsRowData, allTiersButtonIsHidden)
       .map { rowData, isHidden in
         let rewardCount = rowData.rewardsStats.count
         let maxRewards = isHidden ? rowData.rewardsStats :
