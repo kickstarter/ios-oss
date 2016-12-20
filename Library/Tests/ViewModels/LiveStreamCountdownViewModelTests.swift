@@ -8,7 +8,7 @@ import XCTest
 @testable import Library
 @testable import ReactiveExtensions_TestHelpers
 
-internal final class LiveStreamCountdownViewModelTests: XCTestCase {
+internal final class LiveStreamCountdownViewModelTests: TestCase {
   private let vm: LiveStreamCountdownViewModelType = LiveStreamCountdownViewModel()
 
   private let categoryId = TestObserver<Int, NoError>()

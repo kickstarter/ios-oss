@@ -8,7 +8,7 @@ import Prelude
 @testable import Library
 @testable import ReactiveExtensions_TestHelpers
 
-internal final class ProjectPamphletSubpageCellViewModelTests: XCTestCase {
+internal final class ProjectPamphletSubpageCellViewModelTests: TestCase {
   private let vm: ProjectPamphletSubpageCellViewModelType = ProjectPamphletSubpageCellViewModel()
 
   private let countLabelBackgroundColor = TestObserver<UIColor, NoError>()
