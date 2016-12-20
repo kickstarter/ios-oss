@@ -35,7 +35,7 @@ ProjectActivityLaunchCellViewModelInputs, ProjectActivityLaunchCellViewModelOutp
       Strings.dashboard_activity_project_name_launched(
         project_name: project.name,
         launch_date: Format.date(secondsInUTC: project.dates.launchedAt,
-          dateStyle: .LongStyle, timeStyle: .NoStyle).nonBreakingSpaced(),
+          dateStyle: .long, timeStyle: .none).nonBreakingSpaced(),
         goal: Format.currency(project.stats.goal, country: project.country).nonBreakingSpaced()
       )
     }
