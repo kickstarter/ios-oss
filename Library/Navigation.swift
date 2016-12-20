@@ -499,12 +499,12 @@ private func parsedParams(url: URL, fromTemplate template: String) -> RouteParam
   guard isApiURL || isWebURL else { return nil }
 
   let templateComponents = template
-    .componentsSeparatedByString("/")
+    .components(separatedBy: "/")
     .filter { $0 != "" }
   let urlComponents = url
     .path
-    .componentsSeparatedByString("/")
-    .filter { $0 != "" && !$0.hasPrefix("?") } ?? []
+    .components(separatedBy: "/")
+    .filter { $0 != "" && !$0.hasPrefix("?") }
 
   guard templateComponents.count == urlComponents.count else { return nil }
 
@@ -531,7 +531,7 @@ private func parsedParams(url: URL, fromTemplate template: String) -> RouteParam
     object[key] = .string(value)
   }
 
-  return .Object(object)
+  return .object(object)
 }
 
 private func oneToBool(_ string: String?) -> Decoded<Bool?> {
@@ -539,7 +539,7 @@ private func oneToBool(_ string: String?) -> Decoded<Bool?> {
 }
 
 private func stringToInt(_ string: String) -> Decoded<Int> {
-  return Int(string).map(Decoded.success) ?? .Failure(.Custom("Could not parse string into int."))
+  return Int(string).map(Decoded.success) ?? .failure(.custom("Could not parse string into int."))
 }
 
 /**
