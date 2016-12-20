@@ -31,10 +31,7 @@ private func swizzle(_ vc: UIViewController.Type) {
 
 extension UIViewController {
   open override class func initialize() {
-    struct Static {
-      static var token: Int = 0
-    }
-
+    
     // make sure this isn't a subclass
     guard self === UIViewController.self else { return }
 

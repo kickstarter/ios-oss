@@ -27,7 +27,7 @@ public func localizedString(key: String,
   let lprojName = lprojFileNameForLanguage(env.language)
   let localized = bundle.path(forResource: lprojName, ofType: "lproj")
     .flatMap(type(of: bundle).create(path:))
-    .flatMap { $0.localizedStringForKey(augmentedKey, value: nil, table: nil) }
+    .flatMap { $0.localizedString(forKey: augmentedKey, value: nil, table: nil) }
     .filter {
       // NB: `localizedStringForKey` has the annoying habit of returning the key when the key doesn't exist.
       // We filter those out and hope that we never use a value that is equal to its key.

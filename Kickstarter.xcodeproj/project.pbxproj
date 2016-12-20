@@ -241,7 +241,7 @@
 		A7180BAA1CCED598001711CA /* CommentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7180BA81CCED598001711CA /* CommentsViewController.swift */; };
 		A718885D1DE0DDCE0094856D /* ShortcutItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A718885C1DE0DDCE0094856D /* ShortcutItem.swift */; };
 		A71F59E51D240CAF00909BE3 /* NavigationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71F59E41D240CAF00909BE3 /* NavigationTests.swift */; };
-		A71F59E81D2424CA00909BE3 /* CacheProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71F59E71D2424CA00909BE3 /* CacheProtocol.swift */; };
+		A71F59E81D2424CA00909BE3 /* KSCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71F59E71D2424CA00909BE3 /* KSCache.swift */; };
 		A7208C3E1CCAC86800E3DAB3 /* FacebookAppDelegateProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7208C3D1CCAC86800E3DAB3 /* FacebookAppDelegateProtocol.swift */; };
 		A7208CC41CCBDA7900E3DAB3 /* ActivitiesDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7208CC31CCBDA7900E3DAB3 /* ActivitiesDataSourceTests.swift */; };
 		A721DF621C8CF503000CB97C /* TrackingClientType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A721DF611C8CF503000CB97C /* TrackingClientType.swift */; };
@@ -1346,7 +1346,7 @@
 		A7180BA81CCED598001711CA /* CommentsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsViewController.swift; sourceTree = "<group>"; };
 		A718885C1DE0DDCE0094856D /* ShortcutItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShortcutItem.swift; sourceTree = "<group>"; };
 		A71F59E41D240CAF00909BE3 /* NavigationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationTests.swift; sourceTree = "<group>"; };
-		A71F59E71D2424CA00909BE3 /* CacheProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CacheProtocol.swift; sourceTree = "<group>"; };
+		A71F59E71D2424CA00909BE3 /* KSCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KSCache.swift; sourceTree = "<group>"; };
 		A7208C3D1CCAC86800E3DAB3 /* FacebookAppDelegateProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookAppDelegateProtocol.swift; sourceTree = "<group>"; };
 		A7208CC31CCBDA7900E3DAB3 /* ActivitiesDataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivitiesDataSourceTests.swift; sourceTree = "<group>"; };
 		A721DF611C8CF503000CB97C /* TrackingClientType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackingClientType.swift; sourceTree = "<group>"; };
@@ -2400,7 +2400,6 @@
 				A7C725791C85D36D005A016B /* AssetImageGeneratorType.swift */,
 				A7C7257A1C85D36D005A016B /* AVPlayerView.swift */,
 				0151AEB91C8F811C0067F1BE /* BorderButton.swift */,
-				A71F59E71D2424CA00909BE3 /* CacheProtocol.swift */,
 				9DBF80DE1D666CAC007F2843 /* CheckoutModels.swift */,
 				A7FC8C051C8F1DEA00C3B49B /* CircleAvatarImageView.swift */,
 				A7D121081D15B08200F364FD /* CountBadgeView.swift */,
@@ -2416,6 +2415,7 @@
 				A76078091CAEE0A6001B39D0 /* IsValidEmail.swift */,
 				A72AFFD91CD7ED6B008F052B /* Keyboard.swift */,
 				A71404381CAF215900A2795B /* KeyValueStoreType.swift */,
+				A71F59E71D2424CA00909BE3 /* KSCache.swift */,
 				A7C725821C85D36D005A016B /* Language.swift */,
 				A7C725831C85D36D005A016B /* LaunchedCountries.swift */,
 				A7C725841C85D36D005A016B /* LocalizedString.swift */,
@@ -3482,7 +3482,7 @@
 				A7808BF01D625C6A001CF96A /* ProjectCreateViewModel.swift in Sources */,
 				A755115E1C8642C3005355CF /* Environment.swift in Sources */,
 				A7F441D11D005A9400FE6FC5 /* MessageThreadsViewModel.swift in Sources */,
-				A71F59E81D2424CA00909BE3 /* CacheProtocol.swift in Sources */,
+				A71F59E81D2424CA00909BE3 /* KSCache.swift in Sources */,
 				A757EB2B1D1AD89E00A5C978 /* DiscoveryStyles.swift in Sources */,
 				A707BAD61CFFAB9400653B2F /* HelpType.swift in Sources */,
 				80E8EAC81D3EC65A007BDA4B /* Image.swift in Sources */,

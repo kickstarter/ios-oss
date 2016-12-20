@@ -85,7 +85,7 @@ ActivityFriendBackingViewModelInputs, ActivityFriendBackingViewModelOutputs {
 
     self.projectImageURL = activity.map { ($0.project?.photo.full).flatMap(URL.init) }
 
-    self.cellAccessibilityLabel = combineLatest(self.friendTitle, self.projectName)
+    self.cellAccessibilityLabel = Signal.combineLatest(self.friendTitle, self.projectName)
       .map { "\($0.string), \($1)" }
   }
 

@@ -23,7 +23,7 @@ public final class CountBadgeView: UIView {
   public override func bindStyles() {
     let required = UILayoutPriorityRequired
 
-    self
+    _ = self
       |> roundedStyle(cornerRadius: floor(self.bounds.size.height / 2.0))
       |> CountBadgeView.lens.backgroundColor .~ .ksr_navy_400
       |> CountBadgeView.lens.layoutMargins .~ .init(topBottom: 4.0, leftRight: 8.0)
@@ -31,7 +31,7 @@ public final class CountBadgeView: UIView {
       |> CountBadgeView.lens.contentCompressionResistancePriorityForAxis(.horizontal) .~ required
       |> CountBadgeView.lens.translatesAutoresizingMaskIntoConstraints .~ false
 
-    self.label
+    _ = self.label
       |> UILabel.lens.font .~ .ksr_footnote()
       |> UILabel.lens.textColor .~ .ksr_text_navy_700
       |> UILabel.lens.contentHuggingPriorityForAxis(.horizontal) .~ required

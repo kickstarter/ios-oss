@@ -74,10 +74,10 @@ public final class ShareViewModel: ShareViewModelType, ShareViewModelInputs, Sha
       .takePairWhen(self.shareComposeCompletionProperty.signal.skipNil())
       .map { service, result in
         (
-          activityType: String?(service),
-          completed: result == .Done,
-          returnedItems: [AnyObject]?.None,
-          activityError: NSError?.None
+          activityType: service.rawValue,
+          completed: result == .done,
+          returnedItems: [AnyObject]?.none,
+          activityError: NSError?.none
         )
     }
 

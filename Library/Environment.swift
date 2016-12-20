@@ -19,7 +19,7 @@ public struct Environment {
   public let assetImageGeneratorType: AssetImageGeneratorType.Type
 
   /// A type that stores a cached dictionary.
-  public let cache: CacheProtocol
+  public let cache: KSCache
 
   /// The user's calendar.
   public let calendar: Calendar
@@ -85,7 +85,7 @@ public struct Environment {
     apiService: ServiceType = Service(),
     apiDelayInterval: TimeInterval = 0.0,
     assetImageGeneratorType: AssetImageGeneratorType.Type = AVAssetImageGenerator.self,
-    cache: CacheProtocol = NSCache(),
+    cache: KSCache = KSCache(),
     calendar: Calendar = Calendar.current,
     config: Config? = nil,
     cookieStorage: NSHTTPCookieStorageType = HTTPCookieStorage.shared,
@@ -102,7 +102,7 @@ public struct Environment {
     mainBundle: NSBundleType = Bundle.main,
     reachability: SignalProducer<Reachability, NoError> = Reachability.signalProducer,
     scheduler: DateSchedulerProtocol = QueueScheduler.main,
-    timeZone: TimeZone = .local,
+    timeZone: TimeZone = .current,
     ubiquitousStore: KeyValueStoreType = NSUbiquitousKeyValueStore.default(),
     userDefaults: KeyValueStoreType = UserDefaults.standard) {
 

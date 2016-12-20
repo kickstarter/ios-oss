@@ -100,7 +100,7 @@ public struct AppEnvironment {
                // swiftlint:disable line_length
                assetImageGeneratorType: AssetImageGeneratorType.Type = AppEnvironment.current.assetImageGeneratorType,
                // swiftlint:enable line_length
-               cache: CacheProtocol = AppEnvironment.current.cache,
+               cache: KSCache = KSCache(),
                calendar: Calendar = AppEnvironment.current.calendar as Calendar,
                config: Config? = AppEnvironment.current.config,
                cookieStorage: NSHTTPCookieStorageType = AppEnvironment.current.cookieStorage,
@@ -158,7 +158,7 @@ public struct AppEnvironment {
                // swiftlint:disable line_length
                assetImageGeneratorType: AssetImageGeneratorType.Type = AppEnvironment.current.assetImageGeneratorType,
                // swiftlint:enable line_length
-               cache: CacheProtocol = AppEnvironment.current.cache,
+               cache: KSCache = KSCache(),
                calendar: Calendar = AppEnvironment.current.calendar as Calendar,
                config: Config? = AppEnvironment.current.config,
                cookieStorage: NSHTTPCookieStorageType = AppEnvironment.current.cookieStorage,
@@ -213,7 +213,7 @@ public struct AppEnvironment {
   public static func fromStorage(ubiquitousStore: KeyValueStoreType,
                                                     userDefaults: KeyValueStoreType) -> Environment {
 
-    let data = userDefaults.dictionaryForKey(environmentStorageKey) ?? [:]
+    let data = userDefaults.dictionary(forKey: environmentStorageKey) ?? [:]
 
     var service = current.apiService
     var currentUser: User? = nil
@@ -308,12 +308,12 @@ public struct AppEnvironment {
       "currentUser": env.currentUser?.encode()
     ]
 
-    userDefaults.setObject(data, forKey: environmentStorageKey)
+    userDefaults.set(data, forKey: environmentStorageKey)
   }
 }
 
 private func legacyOauthToken(forUserDefaults userDefaults: KeyValueStoreType) -> String? {
-  return userDefaults.objectForKey("com.kickstarter.access_token") as? String
+  return userDefaults.object("com.kickstarter.access_token") as? String
 }
 
 private func removeLegacyOauthToken(fromUserDefaults userDefaults: KeyValueStoreType) {
