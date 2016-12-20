@@ -400,9 +400,9 @@ final class FormatTests: TestCase {
       XCTAssertEqual("in 1 day", Format.relative(secondsInUTC: tomorrow))
       XCTAssertEqual("2 days ago", Format.relative(secondsInUTC: daysAgo))
       XCTAssertEqual("in 2 days", Format.relative(secondsInUTC: inDays))
-      XCTAssertEqual(Format.date(secondsInUTC: awhileAgo, timeStyle: .NoStyle),
+      XCTAssertEqual(Format.date(secondsInUTC: awhileAgo, timeStyle: .none),
                      Format.relative(secondsInUTC: awhileAgo))
-      XCTAssertEqual(Format.date(secondsInUTC: inAwhile, timeStyle: .NoStyle),
+      XCTAssertEqual(Format.date(secondsInUTC: inAwhile, timeStyle: .none),
                      Format.relative(secondsInUTC: inAwhile))
 
       XCTAssertEqual("just now", Format.relative(secondsInUTC: justNow, abbreviate: true))
@@ -415,9 +415,9 @@ final class FormatTests: TestCase {
       XCTAssertEqual("in 1 day", Format.relative(secondsInUTC: tomorrow, abbreviate: true))
       XCTAssertEqual("2 days ago", Format.relative(secondsInUTC: daysAgo, abbreviate: true))
       XCTAssertEqual("in 2 days", Format.relative(secondsInUTC: inDays, abbreviate: true))
-      XCTAssertEqual(Format.date(secondsInUTC: awhileAgo, timeStyle: .NoStyle),
+      XCTAssertEqual(Format.date(secondsInUTC: awhileAgo, timeStyle: .none),
                      Format.relative(secondsInUTC: awhileAgo, abbreviate: true))
-      XCTAssertEqual(Format.date(secondsInUTC: inAwhile, timeStyle: .NoStyle),
+      XCTAssertEqual(Format.date(secondsInUTC: inAwhile, timeStyle: .none),
                      Format.relative(secondsInUTC: inAwhile, abbreviate: true))
     }
 

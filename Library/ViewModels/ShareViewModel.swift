@@ -58,6 +58,7 @@ public final class ShareViewModel: ShareViewModelType, ShareViewModelInputs, Sha
     self.showShareSheet = shareContext
       .takeWhen(self.shareButtonTappedProperty.signal)
       .map(activityController(forShareContext:))
+      .skipNil()
 
     let directShareService = Signal.merge(
       self.facebookButtonTappedProperty.signal.mapConst(SLServiceTypeFacebook),
@@ -187,39 +188,34 @@ private func activityItemProvider(forShareContext shareContext: ShareContext) ->
   }
 }
 
-private func shareUrl(forShareContext shareContext: ShareContext) -> URL {
+private func shareUrl(forShareContext shareContext: ShareContext) -> URL? {
 
   switch shareContext {
   case let .creatorDashboard(project):
-    return URL(string: project.urls.web.project) ?? URL()
+    return URL(string: project.urls.web.project)
   case let .project(project):
-    return URL(string: project.urls.web.project) ?? URL()
+    return URL(string: project.urls.web.project)
   case let .thanks(project):
-    return URL(string: project.urls.web.project) ?? URL()
+    return URL(string: project.urls.web.project)
   case let .update(_, update):
-    return URL(string: update.urls.web.update) ?? URL()
+    return URL(string: update.urls.web.update)
   }
 }
 
-private func excludedActivityTypes(forShareContext shareContext: ShareContext) -> [String] {
+private func excludedActivityTypes(forShareContext shareContext: ShareContext) -> [UIActivityType] {
 
   switch shareContext {
   case let .update(_, update) where !update.isPublic:
-    return [
-      UIActivityType.mail.rawValue,
-      UIActivityType.message.rawValue,
-      UIActivityType.postToFacebook.rawValue,
-      UIActivityType.postToTwitter.rawValue,
-      UIActivityType.postToWeibo.rawValue
-    ]
+    return [.mail, .message, .postToFacebook, .postToTwitter,.postToWeibo]
   default:
     return []
   }
 }
 
-private func activityController(forShareContext shareContext: ShareContext) -> UIActivityViewController {
+private func activityController(forShareContext shareContext: ShareContext) -> UIActivityViewController? {
+  guard let url = shareUrl(forShareContext: shareContext) else { return nil }
+
   let provider = activityItemProvider(forShareContext: shareContext)
-  let url = shareUrl(forShareContext: shareContext)
 
   let controller = UIActivityViewController(activityItems: [provider, url],
                                             applicationActivities: [SafariActivity(url: url)])
@@ -250,7 +246,7 @@ private func shareComposeController(forShareContext shareContext: ShareContext, 
 
     let controller = SLComposeViewController(forServiceType: serviceType)
 
-    controller?.add(shareUrl(forShareContext: shareContext))
+    shareUrl(forShareContext: shareContext).doIfSome { controller?.add($0) }
 
     if serviceType == SLServiceTypeTwitter {
       controller?.setInitialText(twitterInitialText(forShareContext: shareContext))

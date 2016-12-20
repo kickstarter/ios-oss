@@ -51,7 +51,7 @@ CommentCellViewModelOutputs {
     self.name = comment.map { $0.author.name }
 
     self.timestamp = comment.map {
-      Format.date(secondsInUTC: $0.createdAt, dateStyle: .MediumStyle, timeStyle: .ShortStyle)
+      Format.date(secondsInUTC: $0.createdAt, dateStyle: .medium, timeStyle: .short)
     }
 
     self.youHidden = self.commentProjectViewer.signal.skipNil()

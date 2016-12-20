@@ -35,7 +35,7 @@ BackingCellViewModelOutputs {
     self.delivery = backing.map { backing in
       backing.reward?.estimatedDeliveryOn.map {
         Strings.backing_info_estimated_delivery_date(
-            delivery_date: Format.date(secondsInUTC: $0, dateStyle: .ShortStyle, timeStyle: .NoStyle))
+            delivery_date: Format.date(secondsInUTC: $0, dateStyle: .short, timeStyle: .none))
       }
     }
     .map { $0 ?? "" }
@@ -43,13 +43,13 @@ BackingCellViewModelOutputs {
     self.deliveryAccessibilityLabel = backing.map { backing in
       backing.reward?.estimatedDeliveryOn.map {
         Strings.backing_info_estimated_delivery_date(
-          delivery_date: Format.date(secondsInUTC: $0, dateStyle: .LongStyle, timeStyle: .NoStyle))
+          delivery_date: Format.date(secondsInUTC: $0, dateStyle: .long, timeStyle: .none))
       }
     }
       .map { $0 ?? "" }
 
     self.rootStackViewAlignment = backingAndProject
-      .map { _, _ in AppEnvironment.current.isVoiceOverRunning() ? .Fill : .Leading }
+      .map { _, _ in AppEnvironment.current.isVoiceOverRunning() ? .fill : .leading }
   }
 
   fileprivate let backingAndProjectProperty = MutableProperty<(Backing, Project)?>(nil)

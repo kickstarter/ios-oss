@@ -41,7 +41,7 @@ internal final class DashboardActionCellViewModelTests: TestCase {
 
   func testAccessibilityElements() {
     let date = Date().timeIntervalSince1970
-    let formattedDate = Format.date(secondsInUTC: date, timeStyle: .NoStyle)
+    let formattedDate = Format.date(secondsInUTC: date, timeStyle: .none)
     let project = .template
       |> Project.lens.memberData.lastUpdatePublishedAt .~ date
       |> Project.lens.memberData.unreadMessagesCount .~ 10
@@ -86,7 +86,7 @@ internal final class DashboardActionCellViewModelTests: TestCase {
 
   func testLastUpdatePublishedAtEmits() {
     let date = Date().timeIntervalSince1970
-    let formattedDate = Format.date(secondsInUTC: date, timeStyle: .NoStyle)
+    let formattedDate = Format.date(secondsInUTC: date, timeStyle: .none)
     let project = .template
       |> Project.lens.memberData.lastUpdatePublishedAt .~ date
 

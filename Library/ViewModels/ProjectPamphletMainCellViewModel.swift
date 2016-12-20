@@ -310,8 +310,8 @@ private func statsStackViewAccessibilityLabel(forProject project: Project, needs
 
 private func fundingStatus(forProject project: Project) -> String {
   let date = Format.date(secondsInUTC: project.dates.stateChangedAt,
-                         dateStyle: .MediumStyle,
-                         timeStyle: .NoStyle)
+                         dateStyle: .medium,
+                         timeStyle: .none)
 
   switch project.state {
   case .canceled:

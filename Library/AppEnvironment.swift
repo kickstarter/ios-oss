@@ -313,7 +313,7 @@ public struct AppEnvironment {
 }
 
 private func legacyOauthToken(forUserDefaults userDefaults: KeyValueStoreType) -> String? {
-  return userDefaults.object("com.kickstarter.access_token") as? String
+  return userDefaults.object(forKey: "com.kickstarter.access_token") as? String
 }
 
 private func removeLegacyOauthToken(fromUserDefaults userDefaults: KeyValueStoreType) {

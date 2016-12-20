@@ -72,8 +72,8 @@ public final class FindFriendsFriendFollowCellViewModel: FindFriendsFriendFollow
     self.hideProjectsCreated = friend.map { $0.stats.createdProjectsCount == 0 }
 
     self.projectsCreatedText = friend
-      .filter { $0.stats.createdProjectsCount > 0 }
       .map { $0.stats.createdProjectsCount ?? 0 }
+      .filter { $0 > 0 }
       .map(Strings.social_following_friend_projects_count_created(created_count:))
 
     let isLoadingFollowRequest = MutableProperty(false)
@@ -90,7 +90,7 @@ public final class FindFriendsFriendFollowCellViewModel: FindFriendsFriendFollow
             terminated: {
               isLoadingFollowRequest.value = false
           })
-          .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
+          .delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .mapConst(user |> User.lens.isFriend .~ true)
           .materialize()
     }
@@ -106,7 +106,7 @@ public final class FindFriendsFriendFollowCellViewModel: FindFriendsFriendFollow
             terminated: {
               isLoadingUnfollowRequest.value = false
           })
-          .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
+          .delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .mapConst(user |> User.lens.isFriend .~ false)
           .materialize()
     }

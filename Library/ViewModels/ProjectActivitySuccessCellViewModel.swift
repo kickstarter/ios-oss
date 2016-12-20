@@ -36,8 +36,8 @@ ProjectActivitySuccessCellViewModelInputs, ProjectActivitySuccessCellViewModelOu
         pledged: Format.currency(project.stats.pledged, country: project.country).nonBreakingSpaced(),
         backers: Strings.general_backer_count_backers(backer_count: project.stats.backersCount)
           .nonBreakingSpaced(),
-        deadline: Format.date(secondsInUTC: project.dates.deadline, dateStyle: .LongStyle,
-          timeStyle: .NoStyle).nonBreakingSpaced()
+        deadline: Format.date(secondsInUTC: project.dates.deadline, dateStyle: .long,
+          timeStyle: .none).nonBreakingSpaced()
       )
     }
   }

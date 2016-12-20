@@ -99,7 +99,7 @@ public final class ProjectActivitiesViewModel: ProjectActivitiesViewModelType,
       requestFromCursor: { AppEnvironment.current.apiService.fetchProjectActivities(paginationUrl: $0) }
     )
 
-    self.projectActivityData = combineLatest(activities, project)
+    self.projectActivityData = Signal.combineLatest(activities, project)
       .map { activities, project in
         ProjectActivityData(
           activities: activities,
@@ -160,15 +160,15 @@ public final class ProjectActivitiesViewModel: ProjectActivitiesViewModelType,
 
     project
       .takeWhen(self.viewDidLoadProperty.signal)
-      .take(1)
+      .take(first: 1)
       .observeValues { AppEnvironment.current.koala.trackViewedProjectActivity(project: $0) }
 
     project
-      .takeWhen(pageCount.skip(1).filter { $0 == 1 })
+      .takeWhen(pageCount.skip(first: 1).filter { $0 == 1 })
       .observeValues { AppEnvironment.current.koala.trackLoadedNewerProjectActivity(project: $0) }
 
     project
-      .takePairWhen(pageCount.skip(1).filter { $0 > 1 })
+      .takePairWhen(pageCount.skip(first: 1).filter { $0 > 1 })
       .observeValues { project, pageCount in
         AppEnvironment.current.koala.trackLoadedOlderProjectActivity(project: project, page: pageCount)
     }

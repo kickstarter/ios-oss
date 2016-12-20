@@ -33,7 +33,7 @@ internal final class ProjectActivityNegativeStateChangeCellViewModelTests: TestC
     self.vm.inputs.configureWith(activity: activity, project: project)
     let expected = Strings.dashboard_activity_project_name_was_canceled(
       project_name: projectName,
-      cancellation_date: Format.date(secondsInUTC: canceledAt, dateStyle: .LongStyle, timeStyle: .NoStyle)
+      cancellation_date: Format.date(secondsInUTC: canceledAt, dateStyle: .long, timeStyle: .none)
         .nonBreakingSpaced()
     )
     self.title.assertValues([expected], "Emits title indicating the project was cancelled")
@@ -54,7 +54,7 @@ internal final class ProjectActivityNegativeStateChangeCellViewModelTests: TestC
     self.vm.inputs.configureWith(activity: activity, project: project)
     let expected = Strings.dashboard_activity_project_name_was_unsuccessful(
       project_name: projectName,
-      unsuccessful_date: Format.date(secondsInUTC: failedAt, dateStyle: .LongStyle, timeStyle: .NoStyle)
+      unsuccessful_date: Format.date(secondsInUTC: failedAt, dateStyle: .long, timeStyle: .none)
         .nonBreakingSpaced()
     )
     self.title.assertValues([expected], "Emits title indicating the project was unsuccessful")
@@ -75,7 +75,7 @@ internal final class ProjectActivityNegativeStateChangeCellViewModelTests: TestC
     self.vm.inputs.configureWith(activity: activity, project: project)
     let expected = Strings.dashboard_activity_project_name_was_suspended(
       project_name: projectName,
-      suspension_date: Format.date(secondsInUTC: suspendedAt, dateStyle: .LongStyle, timeStyle: .NoStyle)
+      suspension_date: Format.date(secondsInUTC: suspendedAt, dateStyle: .long, timeStyle: .none)
         .nonBreakingSpaced()
     )
     self.title.assertValues([expected], "Emits title indicating the project was suspended")

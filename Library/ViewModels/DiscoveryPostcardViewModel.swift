@@ -134,7 +134,7 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
     let deadlineTitleAndSubtitle = project
       .map {
         $0.state == .live
-          ? Format.duration(secondsInUTC: $0.dates.deadline, useToGo: true) ?? ("", "")
+          ? Format.duration(secondsInUTC: $0.dates.deadline, useToGo: true) 
           : ("", "")
     }
 
@@ -173,7 +173,7 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
     self.projectStateSubtitleLabelText = project
       .map {
         $0.state != .live
-          ? Format.date(secondsInUTC: $0.dates.stateChangedAt, dateStyle: .MediumStyle, timeStyle: .NoStyle)
+          ? Format.date(secondsInUTC: $0.dates.stateChangedAt, dateStyle: .medium, timeStyle: .none)
           : ""
     }
 

@@ -72,7 +72,7 @@ DiscoveryViewModelOutputs {
     self.configureSortPager = self.configurePagerDataSource
 
     let currentParams = self.viewWillAppearProperty.signal
-      .take(1)
+      .take(first: 1)
       .flatMap { [filterWithParams = filterWithParamsProperty.producer.skipNil()] _ in
         filterWithParams.prefix(value: DiscoveryViewModel.defaultParams)
       }
@@ -104,7 +104,9 @@ DiscoveryViewModelOutputs {
       .combinePrevious((sort: .magic, ignore: true))
       .filter { previous, next in !next.ignore }
       .map { previous, next in
-        (next.sort, sorts.indexOf(next.sort) < sorts.indexOf(previous.sort) ? .Reverse : .Forward)
+        let lhs = sorts.index(of: next.sort) ?? -1
+        let rhs = sorts.index(of: previous.sort) ?? 9999
+        return (next.sort, lhs < rhs ? .reverse : .forward)
     }
 
     self.updateSortPagerStyle = self.filterWithParamsProperty.signal.skipNil()

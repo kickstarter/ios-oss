@@ -79,7 +79,7 @@ public final class DashboardFundingCellViewModel: DashboardFundingCellViewModelI
     self.backersText = statsProject.map { _, project in Format.wholeNumber(project.stats.backersCount) }
 
     self.deadlineDateText = statsProject.map { _, project in
-      Format.date(secondsInUTC: project.dates.deadline, dateStyle: .ShortStyle, timeStyle: .NoStyle)
+      Format.date(secondsInUTC: project.dates.deadline, dateStyle: .short, timeStyle: .none)
     }
 
     self.goalText = statsProject.map { _, project in
@@ -90,7 +90,7 @@ public final class DashboardFundingCellViewModel: DashboardFundingCellViewModelI
 
     self.graphData = statsProject
       .map { stats, project in
-        let maxPledged = stats.map { $0.cumulativePledged }.maxElement() ?? 0
+        let maxPledged = stats.map { $0.cumulativePledged }.max() ?? 0
         let range = Double(maxPledged > project.stats.goal ? maxPledged : project.stats.goal)
 
         return FundingGraphData(
@@ -111,7 +111,7 @@ public final class DashboardFundingCellViewModel: DashboardFundingCellViewModelI
 
     self.launchDateText = statsProject
       .map { _, project in
-        Format.date(secondsInUTC: project.dates.launchedAt, dateStyle: .ShortStyle, timeStyle: .NoStyle)
+        Format.date(secondsInUTC: project.dates.launchedAt, dateStyle: .short, timeStyle: .none)
     }
 
     self.pledgedText = statsProject

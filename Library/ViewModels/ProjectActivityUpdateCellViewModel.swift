@@ -92,7 +92,7 @@ private func updateNumber(activity: Activity) -> String {
   guard let update = activity.update else { return "" }
   return Strings.dashboard_activity_update_number_posted_time_count_days_ago(
     space: "\u{00a0}",
-    update_number: Format.wholeNumber(update.sequence ?? 0),
+    update_number: Format.wholeNumber(update.sequence),
     time_count_days_ago: update.publishedAt.map { Format.relative(secondsInUTC: $0) } ?? ""
   )
 }

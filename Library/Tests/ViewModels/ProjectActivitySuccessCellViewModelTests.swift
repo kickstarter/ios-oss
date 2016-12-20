@@ -54,7 +54,7 @@ internal final class ProjectActivitySuccessViewModelTests: TestCase {
       pledged: Format.currency(pledged, country: country).nonBreakingSpaced(),
       backers: Strings.general_backer_count_backers(backer_count: project.stats.backersCount)
         .nonBreakingSpaced(),
-      deadline: Format.date(secondsInUTC: deadline, dateStyle: .LongStyle, timeStyle: .NoStyle)
+      deadline: Format.date(secondsInUTC: deadline, dateStyle: .long, timeStyle: .none)
         .nonBreakingSpaced()
     )
 

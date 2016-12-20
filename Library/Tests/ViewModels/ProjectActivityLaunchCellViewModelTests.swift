@@ -36,7 +36,7 @@ internal final class ProjectActivityLaunchCellViewModelTests: TestCase {
 
     let expected = Strings.dashboard_activity_project_name_launched(
       project_name: projectName,
-      launch_date: Format.date(secondsInUTC: launchedAt, dateStyle: .LongStyle, timeStyle: .NoStyle)
+      launch_date: Format.date(secondsInUTC: launchedAt, dateStyle: .long, timeStyle: .none)
         .nonBreakingSpaced(),
       goal: Format.currency(goal, country: country).nonBreakingSpaced()
     )

@@ -37,8 +37,8 @@ internal final class BackingCellViewModelTests: TestCase {
     self.deliveryAccessibilityLabel.assertValues([
       Strings.backing_info_estimated_delivery_date(delivery_date: Format.date(
         secondsInUTC: estimatedDeliveryOn,
-        dateStyle: .LongStyle,
-        timeStyle: .NoStyle))], "Emits the estimated delivery date for screen reading")
+        dateStyle: .long,
+        timeStyle: .none))], "Emits the estimated delivery date for screen reading")
     self.rootStackViewAlignment.assertValues([UIStackViewAlignment.leading])
   }
 
