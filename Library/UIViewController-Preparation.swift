@@ -3,6 +3,32 @@ import UIKit
 import Prelude
 import Prelude_UIKit
 
+private func swizzle(_ vc: UIViewController.Type) {
+
+  [
+    (#selector(vc.viewDidLoad), #selector(vc.ksr_viewDidLoad)),
+    (#selector(vc.traitCollectionDidChange(_:)), #selector(vc.ksr_traitCollectionDidChange(_:))),
+    ].forEach { original, swizzled in
+
+      let originalMethod = class_getInstanceMethod(vc, original)
+      let swizzledMethod = class_getInstanceMethod(vc, swizzled)
+
+      let didAddViewDidLoadMethod = class_addMethod(vc,
+                                                    original,
+                                                    method_getImplementation(swizzledMethod),
+                                                    method_getTypeEncoding(swizzledMethod))
+
+      if didAddViewDidLoadMethod {
+        class_replaceMethod(vc,
+                            swizzled,
+                            method_getImplementation(originalMethod),
+                            method_getTypeEncoding(originalMethod))
+      } else {
+        method_exchangeImplementations(originalMethod, swizzledMethod)
+      }
+  }
+}
+
 extension UIViewController {
   open override class func initialize() {
     struct Static {
@@ -12,34 +38,11 @@ extension UIViewController {
     // make sure this isn't a subclass
     guard self === UIViewController.self else { return }
 
-    dispatch_once(&Static.token) {
-      [
-        (#selector(viewDidLoad), #selector(ksr_viewDidLoad)),
-        (#selector(traitCollectionDidChange(_:)), #selector(ksr_traitCollectionDidChange(_:))),
-        ].forEach { original, swizzled in
-
-        let originalMethod = class_getInstanceMethod(self, original)
-        let swizzledMethod = class_getInstanceMethod(self, swizzled)
-
-        let didAddViewDidLoadMethod = class_addMethod(self,
-          original,
-          method_getImplementation(swizzledMethod),
-          method_getTypeEncoding(swizzledMethod))
-
-        if didAddViewDidLoadMethod {
-          class_replaceMethod(self,
-            swizzled,
-            method_getImplementation(originalMethod),
-            method_getTypeEncoding(originalMethod))
-        } else {
-          method_exchangeImplementations(originalMethod, swizzledMethod)
-        }
-      }
-    }
+    swizzle(self)
   }
 
-  internal func ksr_viewDidLoad(_ animated: Bool) {
-    self.ksr_viewDidLoad(animated)
+  internal func ksr_viewDidLoad() {
+    self.ksr_viewDidLoad()
     self.bindViewModel()
   }
 
