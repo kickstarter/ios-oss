@@ -9,9 +9,9 @@ public enum KickstarterBundleIdentifier: String {
 public protocol NSBundleType {
   var bundleIdentifier: String? { get }
   static func create(path: String) -> NSBundleType?
-  func pathForResource(_ name: String?, ofType ext: String?) -> String?
-  func localizedStringForKey(_ key: String, value: String?, table tableName: String?) -> String
-  var infoDictionary: [String:AnyObject]? { get }
+  func path(forResource name: String?, ofType ext: String?) -> String?
+  func localizedString(forKey key: String, value: String?, table tableName: String?) -> String
+  var infoDictionary: [String : Any]? { get }
 }
 
 extension NSBundleType {
@@ -58,15 +58,15 @@ public struct LanguageDoubler: NSBundleType {
     return DoublerBundle(path: path)
   }
 
-  public func localizedStringForKey(_ key: String, value: String?, table tableName: String?) -> String {
+  public func localizedString(forKey key: String, value: String?, table tableName: String?) -> String {
     return LanguageDoubler.mainBundle.localizedString(forKey: key, value: value, table: tableName)
   }
 
-  public func pathForResource(_ name: String?, ofType ext: String?) -> String? {
+  public func path(forResource name: String?, ofType ext: String?) -> String? {
     return LanguageDoubler.mainBundle.path(forResource: name, ofType: ext)
   }
 
-  public var infoDictionary: [String : AnyObject]? {
+  public var infoDictionary: [String : Any]? {
     return [:]
   }
 }
