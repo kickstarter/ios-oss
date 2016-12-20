@@ -4,23 +4,38 @@ import Result
 import WebKit
 import XCTest
 @testable import KsApi
+@testable import KsLive
 @testable import Library
 @testable import ReactiveExtensions_TestHelpers
 
 internal final class LiveStreamCountdownViewModelTests: XCTestCase {
   private let vm: LiveStreamCountdownViewModelType = LiveStreamCountdownViewModel()
+
+  private let categoryId = TestObserver<Int, NoError>()
   private let days = TestObserver<(String, String), NoError>()
+  private let dismiss = TestObserver<(), NoError>()
   private let hours = TestObserver<(String, String), NoError>()
   private let minutes = TestObserver<(String, String), NoError>()
+  private let projectImageUrl = TestObserver<NSURL, NoError>()
+  private let pushLiveStreamViewController = TestObserver<(Project, LiveStreamEvent), NoError>()
+  private let retrieveEventInfo = TestObserver<String, NoError>()
   private let seconds = TestObserver<(String, String), NoError>()
+  private let viewControllerTitle = TestObserver<String, NoError>()
 
   override func setUp() {
     super.setUp()
 
+    self.vm.outputs.categoryId.observe(self.categoryId.observer)
     self.vm.outputs.daysString.observe(self.days.observer)
+    self.vm.outputs.dismiss.observe(self.dismiss.observer)
     self.vm.outputs.hoursString.observe(self.hours.observer)
     self.vm.outputs.minutesString.observe(self.minutes.observer)
+    self.vm.outputs.projectImageUrl.observe(self.projectImageUrl.observer)
+    self.vm.outputs.pushLiveStreamViewController.observe(self.pushLiveStreamViewController.observer)
+    self.vm.outputs.retrieveEventInfo.observe(self.retrieveEventInfo.observer)
     self.vm.outputs.secondsString.observe(self.seconds.observer)
+    self.vm.outputs.viewControllerTitle.observe(self.viewControllerTitle.observer)
+
   }
 
   func testDateComparison() {
@@ -30,6 +45,7 @@ internal final class LiveStreamCountdownViewModelTests: XCTestCase {
     let project = Project.template
       |> Project.lens.liveStreams .~ [liveStream]
 
+    // Step 1: Set project and date
     self.vm.inputs.configureWith(project: project, now: nowDate())
     self.vm.inputs.setNow(date: nowDate())
     self.vm.inputs.viewDidLoad()
@@ -38,6 +54,64 @@ internal final class LiveStreamCountdownViewModelTests: XCTestCase {
     XCTAssertTrue(self.hours.lastValue == ("19", "hours"))
     XCTAssertTrue(self.minutes.lastValue == ("53", "minutes"))
     XCTAssertTrue(self.seconds.lastValue == ("26", "seconds"))
+
+    // Step 2: Set date as if two days have passed
+    _ = NSCalendar.currentCalendar().dateByAddingUnit(.Day,
+      value: 2, toDate: nowDate(), options: []).flatMap { self.vm.inputs.setNow(date: $0) }
+
+    XCTAssertTrue(self.days.lastValue == ("08", "days"))
+    XCTAssertTrue(self.hours.lastValue == ("19", "hours"))
+    XCTAssertTrue(self.minutes.lastValue == ("53", "minutes"))
+    XCTAssertTrue(self.seconds.lastValue == ("26", "seconds"))
+
+    // Step 3: Event info will need to be retrieved
+    self.retrieveEventInfo.assertValue("123")
+
+    let event = LiveStreamEvent.template
+
+    // Step 4: Set the event
+    self.vm.inputs.setLiveStreamEvent(event: event)
+
+    // Step 5: Set now to a second past the stream's start date
+    // The live stream view controller should be pushed
+    _ = NSCalendar.currentCalendar().dateByAddingUnit(.Second,
+      value: 1, toDate: futureDate(), options: []).flatMap { self.vm.inputs.setNow(date: $0) }
+
+    XCTAssertTrue(self.pushLiveStreamViewController.lastValue == (project, event))
+  }
+
+  func testClose() {
+    self.vm.inputs.closeButtonTapped()
+
+    self.dismiss.assertValueCount(1)
+  }
+
+  func testCategoryId() {
+    let project = Project.template
+      |> Project.lens.category.id .~ 123
+
+    self.vm.inputs.configureWith(project: project, now: nowDate())
+    self.vm.inputs.viewDidLoad()
+
+    self.categoryId.assertValue(123)
+  }
+
+  func testProjectImageUrl() {
+    let project = Project.template
+
+    self.vm.inputs.configureWith(project: project, now: nowDate())
+    self.vm.inputs.viewDidLoad()
+
+    XCTAssertTrue(self.projectImageUrl.lastValue?.absoluteString == "http://www.kickstarter.com/full.jpg")
+  }
+
+  func testViewControllerTitle() {
+    let project = Project.template
+
+    self.vm.inputs.configureWith(project: project, now: nowDate())
+    self.vm.inputs.viewDidLoad()
+
+    self.viewControllerTitle.assertValue("Live stream countdown")
   }
 }
 
@@ -66,6 +140,14 @@ private func nowDate() -> NSDate {
 //swiftlint:enable force_unwrapping
 
 private func == (tuple1: (String, String)?, tuple2: (String, String)) -> Bool {
+  if let tuple1 = tuple1 {
+    return tuple1.0 == tuple2.0 && tuple1.1 == tuple2.1
+  }
+
+  return false
+}
+
+private func == (tuple1: (Project, LiveStreamEvent)?, tuple2: (Project, LiveStreamEvent)) -> Bool {
   if let tuple1 = tuple1 {
     return tuple1.0 == tuple2.0 && tuple1.1 == tuple2.1
   }
