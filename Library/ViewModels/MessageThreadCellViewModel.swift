@@ -11,7 +11,7 @@ public protocol MessageThreadCellViewModelOutputs {
   var date: Signal<String, NoError> { get }
   var dateAccessibilityLabel: Signal<String, NoError> { get }
   var messageBody: Signal<String, NoError> { get }
-  var participantAvatarURL: Signal<NSURL?, NoError> { get }
+  var participantAvatarURL: Signal<URL?, NoError> { get }
   var participantName: Signal<String, NoError> { get }
   var projectName: Signal<String, NoError> { get }
   var replyIndicatorHidden: Signal<Bool, NoError> { get }
@@ -30,18 +30,18 @@ public final class MessageThreadCellViewModel: MessageThreadCellViewModelType,
     let messageThread = self.messageThreadProperty.signal.skipNil()
 
     self.date = messageThread.map {
-      Format.date(secondsInUTC: $0.lastMessage.createdAt, dateStyle: .ShortStyle, timeStyle: .NoStyle)
+      Format.date(secondsInUTC: $0.lastMessage.createdAt, dateStyle: .short, timeStyle: .none)
     }
 
     self.dateAccessibilityLabel = messageThread.map {
-      Format.date(secondsInUTC: $0.lastMessage.createdAt, dateStyle: .LongStyle, timeStyle: .NoStyle)
+      Format.date(secondsInUTC: $0.lastMessage.createdAt, dateStyle: .long, timeStyle: .none)
     }
 
     self.messageBody = messageThread.map {
       $0.lastMessage.body.stringByReplacingOccurrencesOfString("\n", withString: " ")
     }
 
-    self.participantAvatarURL = messageThread.map { NSURL(string: $0.participant.avatar.medium) }
+    self.participantAvatarURL = messageThread.map { URL(string: $0.participant.avatar.medium) }
 
     self.participantName = messageThread
       .map { thread -> String in
@@ -68,7 +68,7 @@ public final class MessageThreadCellViewModel: MessageThreadCellViewModelType,
   public let date: Signal<String, NoError>
   public let dateAccessibilityLabel: Signal<String, NoError>
   public let messageBody: Signal<String, NoError>
-  public let participantAvatarURL: Signal<NSURL?, NoError>
+  public let participantAvatarURL: Signal<URL?, NoError>
   public let participantName: Signal<String, NoError>
   public let projectName: Signal<String, NoError>
   public let replyIndicatorHidden: Signal<Bool, NoError>

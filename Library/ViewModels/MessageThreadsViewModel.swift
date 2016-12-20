@@ -83,7 +83,7 @@ MessageThreadsViewModelOutputs {
       valuesFromEnvelope: { $0.messageThreads },
       cursorFromEnvelope: { $0.urls.api.moreMessageThreads },
       requestFromParams: { [project = projectProperty.producer] mailbox in
-        project.take(1)
+        project.take(first: 1)
           .promoteErrors(ErrorEnvelope.self)
           .flatMap { project in
             AppEnvironment.current.apiService.fetchMessageThreads(mailbox: mailbox, project: project)
@@ -110,7 +110,7 @@ MessageThreadsViewModelOutputs {
     ).skipRepeats()
 
     self.loadingFooterIsHidden = Signal.merge([
-      self.viewDidLoadProperty.signal.take(1).mapConst(false),
+      self.viewDidLoadProperty.signal.take(first: 1).mapConst(false),
       isCloseToBottom.mapConst(false),
       mailbox.mapConst(false),
       isLoading.filter(isFalse).mapConst(true),

@@ -11,7 +11,7 @@ public protocol ProfileHeaderViewModelInputs {
 
 public protocol ProfileHeaderViewModelOutputs {
   /// Emits the user avatar URL to be displayed.
-  var avatarURL: Signal<NSURL?, NoError> { get }
+  var avatarURL: Signal<URL?, NoError> { get }
 
   /// Emits the number of backed projects to be displayed.
   var backedProjectsCountLabel: Signal<String, NoError> { get }
@@ -66,7 +66,7 @@ public final class ProfileHeaderViewModel: ProfileHeaderViewModelType,
     self.userProperty.value = user
   }
 
-  public let avatarURL: Signal<NSURL?, NoError>
+  public let avatarURL: Signal<URL?, NoError>
   public let backedProjectsCountLabel: Signal<String, NoError>
   public let createdProjectsLabelHidden: Signal<Bool, NoError>
   public let createdProjectsCountLabel: Signal<String, NoError>

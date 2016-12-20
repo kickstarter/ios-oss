@@ -10,7 +10,7 @@ public protocol MostPopularSearchProjectCellViewModelInputs {
 public protocol MostPopularSearchProjectCellViewModelOutputs {
   var fundingLabelText: Signal<String, NoError> { get }
   var fundingProgress: Signal<Float, NoError> { get }
-  var projectImageUrl: Signal<NSURL?, NoError> { get }
+  var projectImageUrl: Signal<URL?, NoError> { get }
   var projectNameLabelText: Signal<String, NoError> { get }
 }
 
@@ -33,7 +33,7 @@ MostPopularSearchProjectCellViewModelInputs, MostPopularSearchProjectCellViewMod
       .map(Project.lens.stats.fundingProgress.view)
       .map(clamp(0, 1))
 
-    self.projectImageUrl = project.map { NSURL(string: $0.photo.full) }
+    self.projectImageUrl = project.map { URL(string: $0.photo.full) }
 
     self.projectNameLabelText = project.map(Project.lens.name.view)
   }
@@ -45,7 +45,7 @@ MostPopularSearchProjectCellViewModelInputs, MostPopularSearchProjectCellViewMod
 
   public let fundingLabelText: Signal<String, NoError>
   public let fundingProgress: Signal<Float, NoError>
-  public let projectImageUrl: Signal<NSURL?, NoError>
+  public let projectImageUrl: Signal<URL?, NoError>
   public let projectNameLabelText: Signal<String, NoError>
 
   public var inputs: MostPopularSearchProjectCellViewModelInputs { return self }

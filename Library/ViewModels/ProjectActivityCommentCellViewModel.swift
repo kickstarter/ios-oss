@@ -17,7 +17,7 @@ public protocol ProjectActivityCommentCellViewModelInputs {
 
 public protocol ProjectActivityCommentCellViewModelOutputs {
   /// Emits the author's image URL.
-  var authorImageURL: Signal<NSURL?, NoError> { get }
+  var authorImageURL: Signal<URL?, NoError> { get }
 
   /// Emits the body of the comment.
   var body: Signal<String, NoError> { get }
@@ -50,7 +50,7 @@ ProjectActivityCommentCellViewModelInputs, ProjectActivityCommentCellViewModelOu
     let activityAndProject = self.activityAndProjectProperty.signal.skipNil()
     let activity = activityAndProject.map(first)
 
-    self.authorImageURL = activity.map { ($0.user?.avatar.medium).flatMap(NSURL.init) }
+    self.authorImageURL = activity.map { ($0.user?.avatar.medium).flatMap(URL.init) }
 
     self.body = activity.map { $0.comment?.body ?? "" }
 
@@ -109,7 +109,7 @@ ProjectActivityCommentCellViewModelInputs, ProjectActivityCommentCellViewModelOu
     self.activityAndProjectProperty.value = (activity, project)
   }
 
-  public let authorImageURL: Signal<NSURL?, NoError>
+  public let authorImageURL: Signal<URL?, NoError>
   public let body: Signal<String, NoError>
   public let cellAccessibilityLabel: Signal<String, NoError>
   public let cellAccessibilityValue: Signal<String, NoError>

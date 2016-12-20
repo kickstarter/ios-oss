@@ -92,7 +92,7 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
     let projects = self.viewWillAppearAnimatedProperty.signal.filter(isFalse).ignoreValues()
       .switchMap {
         AppEnvironment.current.apiService.fetchProjects(member: true)
-          .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
+          .delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .demoteErrors()
           .map { $0.projects }
     }
@@ -112,7 +112,7 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
     let selectedProjectAndStatsEvent = self.project
       .switchMap { project in
         AppEnvironment.current.apiService.fetchProjectStats(projectId: project.id)
-          .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
+          .delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .map { (project, $0) }
           .materialize()
       }
@@ -163,7 +163,7 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
 
     let updateDrawerStateToOpen = self.updateTitleViewData
       .map { $0.drawerState == .open }
-      .skip(1)
+      .skip(first: 1)
 
     self.presentProjectsDrawer = drawerStateProjectsAndSelectedProject
       .filter { drawerState, _, _ in drawerState == .open }

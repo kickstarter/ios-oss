@@ -25,7 +25,7 @@ public protocol ActivityUpdateViewModelOutputs {
   var projectButtonAccessibilityLabel: Signal<String, NoError> { get }
 
   /// Emits the project image URL to be displayed.
-  var projectImageURL: Signal<NSURL?, NoError> { get }
+  var projectImageURL: Signal<URL?, NoError> { get }
 
   /// Emits the project name to be displayed.
   var projectName: Signal<String, NoError> { get }
@@ -53,7 +53,7 @@ ActivityUpdateViewModelOutputs {
     self.body = update
       .map { $0.body?.htmlStripped()?.truncated(maxLength: 300) ?? "" }
 
-    self.projectImageURL = project.map { $0.photo.med }.map(NSURL.init(string:))
+    self.projectImageURL = project.map { $0.photo.med }.map(URL.init(string:))
 
     self.projectName = project.map { $0.name }
     self.projectButtonAccessibilityLabel = self.projectName
@@ -82,7 +82,7 @@ ActivityUpdateViewModelOutputs {
   public let cellAccessibilityLabel: Signal<String, NoError>
   public let notifyDelegateTappedProjectImage: Signal<Activity, NoError>
   public let projectButtonAccessibilityLabel: Signal<String, NoError>
-  public let projectImageURL: Signal<NSURL?, NoError>
+  public let projectImageURL: Signal<URL?, NoError>
   public let projectName: Signal<String, NoError>
   public let sequenceTitle: Signal<NSAttributedString, NoError>
   public let title: Signal<String, NoError>

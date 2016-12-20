@@ -31,8 +31,8 @@ public protocol FindFriendsFriendFollowCellViewModelOutputs {
   /// Emits when to show Unfollow button
   var hideUnfollowButton: Signal<Bool, NoError> { get }
 
-  /// Emits an NSURL to friend's avatar
-  var imageURL: Signal<NSURL?, NoError> { get }
+  /// Emits an URL to friend's avatar
+  var imageURL: Signal<URL?, NoError> { get }
 
   /// Emits friend's location
   var location: Signal<String, NoError> { get }
@@ -59,7 +59,7 @@ public final class FindFriendsFriendFollowCellViewModel: FindFriendsFriendFollow
     let friend = self.configureWithFriendProperty.signal.skipNil()
       .map(cached(friend:))
 
-    self.imageURL = friend.map { NSURL.init(string: $0.avatar.medium) }
+    self.imageURL = friend.map { URL.init(string: $0.avatar.medium) }
 
     self.location = friend.map { $0.location?.displayableName ?? "" }
 
@@ -112,10 +112,10 @@ public final class FindFriendsFriendFollowCellViewModel: FindFriendsFriendFollow
     }
 
     let updatedFriendToFollowed = followFriendEvent.values()
-      .on(next: { cache(friend: $0, isFriend: true) })
+      .on(value: { cache(friend: $0, isFriend: true) })
 
     let updatedFriendToUnfollowed = unfollowFriendEvent.values()
-      .on(next: { cache(friend: $0, isFriend: false) })
+      .on(value: { cache(friend: $0, isFriend: false) })
 
     let isFollowed = Signal.merge(friend, updatedFriendToFollowed, updatedFriendToUnfollowed)
       .map { $0.isFriend ?? false }
@@ -172,7 +172,7 @@ public final class FindFriendsFriendFollowCellViewModel: FindFriendsFriendFollow
   public let enableUnfollowButton: Signal<Bool, NoError>
   public let hideFollowButton: Signal<Bool, NoError>
   public let hideUnfollowButton: Signal<Bool, NoError>
-  public let imageURL: Signal<NSURL?, NoError>
+  public let imageURL: Signal<URL?, NoError>
   public let location: Signal<String, NoError>
   public let name: Signal<String, NoError>
   public let projectsBackedText: Signal<String, NoError>

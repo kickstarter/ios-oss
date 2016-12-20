@@ -57,13 +57,13 @@ public protocol CheckoutViewModelOutputs {
   var goToPaymentAuthorization: Signal<PKPaymentRequest, NoError> { get }
 
   /// Emits when we should open a safari browser with the URL.
-  var goToSafariBrowser: Signal<NSURL, NoError> { get }
+  var goToSafariBrowser: Signal<URL, NoError> { get }
 
   /// Emits when the thanks screen should be loaded.
   var goToThanks: Signal<Project, NoError> { get }
 
   /// Emits when the web modal should be loaded.
-  var goToWebModal: Signal<NSURLRequest, NoError> { get }
+  var goToWebModal: Signal<URLRequest, NoError> { get }
 
   /// Emits when the login tout should be opened.
   var openLoginTout: Signal<Void, NoError> { get }
@@ -81,7 +81,7 @@ public protocol CheckoutViewModelOutputs {
   var showAlert: Signal<String, NoError> { get }
 
   /// Emits a request that should be loaded into the webview.
-  var webViewLoadRequest: Signal<NSURLRequest, NoError> { get }
+  var webViewLoadRequest: Signal<URLRequest, NoError> { get }
 }
 
 public protocol CheckoutViewModelType: CheckoutViewModelInputs, CheckoutViewModelOutputs {
@@ -133,7 +133,7 @@ public final class CheckoutViewModel: CheckoutViewModelType {
       .map { $0.request }
 
     self.goToPaymentAuthorization = requestData
-      .filter { $0.webViewNavigationType == .LinkClicked }
+      .filter { $0.webViewNavigationType == .linkClicked }
       .map { requestData -> String? in
         guard case let (.checkout(_, .payments(.applePay(payload))))? = requestData.navigation else {
           return nil
@@ -145,7 +145,7 @@ public final class CheckoutViewModel: CheckoutViewModelType {
 
     let modalRequestOrSafariRequest = requestData
       .filter(isModal)
-      .map { requestData -> Either<NSURLRequest, NSURLRequest> in
+      .map { requestData -> Either<URLRequest, URLRequest> in
         if let navigation = requestData.navigation,
           case .project(_, .pledge(.bigPrint), _) = navigation { return Either.left(requestData.request) }
         return Either.right(requestData.request)
@@ -157,7 +157,7 @@ public final class CheckoutViewModel: CheckoutViewModelType {
       .map { previous, _ in previous.request }
 
     let thanksRequestOrRacingRequest = requestData
-      .map { requestData -> Either<NSURLRequest, NSURLRequest>? in
+      .map { requestData -> Either<URLRequest, URLRequest>? in
         guard let navigation = requestData.navigation else { return nil }
         if case .project(_, .checkout(_, .thanks(let racing)), _) = navigation {
           guard let r = racing else { return Either.left(requestData.request) }
@@ -179,7 +179,7 @@ public final class CheckoutViewModel: CheckoutViewModelType {
     self.closeLoginTout = userSessionStarted
 
     self.goToSafariBrowser = modalRequestOrSafariRequest
-      .map { $0.right?.URL }
+      .map { $0.right?.url }
       .skipNil()
 
     let thanksRequestOrRacingSuccessful = Signal.merge(
@@ -222,7 +222,7 @@ public final class CheckoutViewModel: CheckoutViewModelType {
     self.shouldStartLoadResponseProperty <~ requestData
       .map { $0.shouldStartLoad }
 
-    self.webViewLoadRequest = combineLatest(
+    self.webViewLoadRequest = Signal.combineLatest(
       Signal.merge(initialRequest, retryAfterSessionStartedRequest, webViewRequest),
       applePayCapable
       )
@@ -231,7 +231,7 @@ public final class CheckoutViewModel: CheckoutViewModelType {
     let stripeToken = self.stripeTokenAndErrorProperty.signal.map(first).skipNil()
 
     self.paymentAuthorizationStatusProperty <~ self.stripeTokenAndErrorProperty.signal
-      .map { _, error in error == nil ? .Success : .Failure }
+      .map { _, error in error == nil ? .Success : .failure }
 
     self.evaluateJavascript = self.didAuthorizePaymentProperty.signal.skipNil()
       .takePairWhen(stripeToken)
@@ -249,7 +249,7 @@ public final class CheckoutViewModel: CheckoutViewModelType {
 
     racingRequest
       .observeValues { [weak self] request in
-        guard let url = request.URL?.URLByDeletingLastPathComponent else { return }
+        guard let url = request.url?.URLByDeletingLastPathComponent else { return }
         self?.checkoutRacingViewModel.inputs.configureWith(url: url)
     }
 
@@ -298,7 +298,7 @@ public final class CheckoutViewModel: CheckoutViewModelType {
       self.didAuthorizePaymentProperty.signal.mapConst(true)
     )
 
-    combineLatest(configData, applePaySuccessful)
+    Signal.combineLatest(configData, applePaySuccessful)
       .takeWhen(self.paymentAuthorizationFinishedProperty.signal)
       .observeValues { configData, successful in
 
@@ -371,8 +371,8 @@ public final class CheckoutViewModel: CheckoutViewModelType {
     return self.shouldStartLoadResponseProperty.value
   }
 
-  fileprivate let stripeTokenAndErrorProperty = MutableProperty(String?.None, NSError?.None)
-  fileprivate let paymentAuthorizationStatusProperty = MutableProperty(PKPaymentAuthorizationStatus.Failure)
+  fileprivate let stripeTokenAndErrorProperty = MutableProperty(String?.none, NSError?.None)
+  fileprivate let paymentAuthorizationStatusProperty = MutableProperty(PKPaymentAuthorizationStatus.failure)
   public func stripeCreatedToken(stripeToken: String?, error: NSError?)
     -> PKPaymentAuthorizationStatus {
 
@@ -392,9 +392,9 @@ public final class CheckoutViewModel: CheckoutViewModelType {
   public let dismissViewController: Signal<Void, NoError>
   public let evaluateJavascript: Signal<String, NoError>
   public let goToPaymentAuthorization: Signal<PKPaymentRequest, NoError>
-  public let goToSafariBrowser: Signal<NSURL, NoError>
+  public let goToSafariBrowser: Signal<URL, NoError>
   public let goToThanks: Signal<Project, NoError>
-  public let goToWebModal: Signal<NSURLRequest, NoError>
+  public let goToWebModal: Signal<URLRequest, NoError>
   public let openLoginTout: Signal<Void, NoError>
   public let popViewController: Signal<Void, NoError>
   public let setStripeAppleMerchantIdentifier: Signal<String, NoError>
@@ -402,7 +402,7 @@ public final class CheckoutViewModel: CheckoutViewModelType {
   public var showAlert: Signal<String, NoError> {
     return self.checkoutRacingViewModel.outputs.showAlert
   }
-  public let webViewLoadRequest: Signal<NSURLRequest, NoError>
+  public let webViewLoadRequest: Signal<URLRequest, NoError>
 
   public var inputs: CheckoutViewModelInputs { return self }
   public var outputs: CheckoutViewModelOutputs { return self }

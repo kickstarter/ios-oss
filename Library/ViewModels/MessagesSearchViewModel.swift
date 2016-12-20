@@ -73,7 +73,7 @@ MessagesSearchViewModelOutputs {
       .ksr_debounce(AppEnvironment.current.debounceInterval, onScheduler: AppEnvironment.current.scheduler)
       .skipRepeats()
       .filter { !$0.isEmpty }
-      .combineLatestWith(project)
+      .combineLatest(with: project)
       .switchMap { query, project in
         AppEnvironment.current.apiService.searchMessages(query: query, project: project)
           .on(started: { isLoading.value = true },
@@ -83,7 +83,7 @@ MessagesSearchViewModelOutputs {
     }
 
     self.messageThreads = Signal.merge(clears, searchResults.values())
-      .skipWhile { $0.isEmpty }
+      .skip(while: { $0.isEmpty })
       .skipRepeats(==)
 
     self.showKeyboard = Signal.merge(
@@ -94,7 +94,7 @@ MessagesSearchViewModelOutputs {
     self.emptyStateIsVisible = .empty
 
     self.isSearching = Signal.merge(
-      self.viewDidLoadProperty.signal.take(1).mapConst(false),
+      self.viewDidLoadProperty.signal.take(first: 1).mapConst(false),
       query.map { !$0.isEmpty },
       isLoading.signal
     ).skipRepeats()
@@ -105,7 +105,7 @@ MessagesSearchViewModelOutputs {
       .takeWhen(self.viewDidLoadProperty.signal)
       .observeValues { AppEnvironment.current.koala.trackViewedMessageSearch(project: $0) }
 
-    combineLatest(query, project.take(1), self.messageThreads.map { !$0.isEmpty })
+    combineLatest(query, project.take(first: 1), self.messageThreads.map { !$0.isEmpty })
       .takeWhen(self.isSearching.filter(isFalse))
       .filter { query, _, _ in !query.isEmpty }
       .observeValues {

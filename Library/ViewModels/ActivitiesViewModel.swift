@@ -137,7 +137,7 @@ ActivitiesViewModelOutputs {
     let activities = paginatedActivities
       .scan([Activity]()) { acc, next in
         !next.isEmpty
-          ? (acc + next).distincts().sort { $0.id > $1.id }
+          ? (acc + next).distincts().sorted { $0.id > $1.id }
           : next
     }
 
@@ -146,9 +146,9 @@ ActivitiesViewModelOutputs {
     let clearedActivitiesOnSessionEnd = self.userSessionEndedProperty.signal.mapConst([Activity]())
 
     let activityToUpdate: Signal<Activity?, NoError> = self.viewWillAppearProperty.signal.skipNil()
-      .take(1).mapConst(nil)
+      .take(first: 1).mapConst(nil)
 
-    let updatedActivities = combineLatest(activities, activityToUpdate)
+    let updatedActivities = Signal.combineLatest(activities, activityToUpdate)
       .map { currentActivities, updatedActivity in
         currentActivities
           .map { activity in

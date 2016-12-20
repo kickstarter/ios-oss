@@ -131,7 +131,7 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
       }
       .takeWhen(self.viewDidLoadProperty.signal)
       .ignoreValues()
-      .on(next: { AppEnvironment.current.userDefaults.hasSeenAppRating = true })
+      .on(value: { AppEnvironment.current.userDefaults.hasSeenAppRating = true })
 
     self.goToAppStoreRating = self.rateNowButtonTappedProperty.signal
       .map { AppEnvironment.current.config?.iTunesLink ?? "" }
@@ -146,16 +146,16 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
       .skipNil()
       .flatMap {
         return AppEnvironment.current.apiService.fetchCategory(param: .id($0))
-          .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
+          .delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .map { $0.root ?? $0 }
           .demoteErrors()
     }
 
-    let projects = combineLatest(project, rootCategory)
+    let projects = Signal.combineLatest(project, rootCategory)
       .flatMap(relatedProjects(toProject:inCategory:))
       .filter { projects in !projects.isEmpty }
 
-    self.showRecommendations = zip(projects, rootCategory)
+    self.showRecommendations = Signal.zip(projects, rootCategory)
 
     self.goToProject = self.showRecommendations
       .map(first)
@@ -167,12 +167,12 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
       .skipNil()
       .switchMap { user in
         AppEnvironment.current.apiService.updateUserSelf(user |> User.lens.newsletters.games .~ true)
-          .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
+          .delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .demoteErrors()
     }
 
     self.postUserUpdatedNotification = self.userUpdatedProperty.signal
-      .mapConst(NSNotification(name: CurrentUserNotifications.userUpdated, object: nil))
+      .mapConst(NSNotification(name: NSNotification.Name(rawValue: CurrentUserNotifications.userUpdated), object: nil))
 
     self.showGamesNewsletterAlert
       .observeValues { AppEnvironment.current.userDefaults.hasSeenGamesNewsletterPrompt = true }
@@ -345,7 +345,7 @@ private func relatedProjects(toProject project: Project, inCategory category: Ks
     return SignalProducer.concat(recommendedProjects, similarToProjects, staffPickProjects)
       .filter { $0.id != project.id }
       .uniqueValues { $0.id }
-      .take(3)
+      .take(first: 3)
       .collect()
 }
 

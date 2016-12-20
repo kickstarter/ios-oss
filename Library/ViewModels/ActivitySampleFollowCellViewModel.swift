@@ -17,7 +17,7 @@ public protocol ActivitySampleFollowCellViewModelOutputs {
   var friendFollowText: Signal<String, NoError> { get }
 
   /// Emits the friend image url to be displayed.
-  var friendImageURL: Signal<NSURL?, NoError> { get }
+  var friendImageURL: Signal<URL?, NoError> { get }
 
   /// Emits when should go to activities screen.
   var goToActivity: Signal<Void, NoError> { get }
@@ -38,7 +38,7 @@ public final class ActivitySampleFollowCellViewModel: ActivitySampleFollowCellVi
       .map { Strings.activity_user_name_is_now_following_you(user_name: $0.user?.name ?? "" ) }
 
     self.friendImageURL = activity
-      .map { ($0.user?.avatar.medium).flatMap(NSURL.init) }
+      .map { ($0.user?.avatar.medium).flatMap(URL.init) }
 
     self.goToActivity = self.seeAllActivityTappedProperty.signal
   }
@@ -54,7 +54,7 @@ public final class ActivitySampleFollowCellViewModel: ActivitySampleFollowCellVi
   }
 
   public let friendFollowText: Signal<String, NoError>
-  public let friendImageURL: Signal<NSURL?, NoError>
+  public let friendImageURL: Signal<URL?, NoError>
   public let goToActivity: Signal<Void, NoError>
 
   public var inputs: ActivitySampleFollowCellViewModelInputs { return self }

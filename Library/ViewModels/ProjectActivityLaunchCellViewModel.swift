@@ -11,7 +11,7 @@ public protocol ProjectActivityLaunchCellViewModelInputs {
 
 public protocol ProjectActivityLaunchCellViewModelOutputs {
   /// Emits the background image URL.
-  var backgroundImageURL: Signal<NSURL?, NoError> { get }
+  var backgroundImageURL: Signal<URL?, NoError> { get }
 
   /// Emits the title of the activity.
   var title: Signal<String, NoError> { get }
@@ -29,7 +29,7 @@ ProjectActivityLaunchCellViewModelInputs, ProjectActivityLaunchCellViewModelOutp
     let activityAndProject = self.activityAndProjectProperty.signal.skipNil()
     let project = activityAndProject.map(second)
 
-    self.backgroundImageURL = project.map { $0.photo.med }.map(NSURL.init(string:))
+    self.backgroundImageURL = project.map { $0.photo.med }.map(URL.init(string:))
 
     self.title = project.map { project in
       Strings.dashboard_activity_project_name_launched(
@@ -46,7 +46,7 @@ ProjectActivityLaunchCellViewModelInputs, ProjectActivityLaunchCellViewModelOutp
     self.activityAndProjectProperty.value = (activity, project)
   }
 
-  public let backgroundImageURL: Signal<NSURL?, NoError>
+  public let backgroundImageURL: Signal<URL?, NoError>
   public let title: Signal<String, NoError>
 
   public var inputs: ProjectActivityLaunchCellViewModelInputs { return self }

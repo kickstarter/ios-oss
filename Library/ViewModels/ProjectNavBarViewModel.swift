@@ -65,7 +65,7 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
 
   // swiftlint:disable function_body_length
   public init() {
-    let configuredProjectAndRefTag = combineLatest(
+    let configuredProjectAndRefTag = Signal.combineLatest(
       self.projectAndRefTagProperty.signal.skipNil(),
       self.viewDidLoadProperty.signal
       )
@@ -93,12 +93,12 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
       .ignoreValues()
 
     // Emits only when a user logs in after having tapped the star while logged out.
-    let userLoginAfterTappingStar = combineLatest(
+    let userLoginAfterTappingStar = Signal.combineLatest(
       self.userSessionStartedProperty.signal,
       loggedOutUserTappedStar
       )
       .ignoreValues()
-      .take(1)
+      .take(first: 1)
 
     let toggleStarLens = Project.lens.personalization.isStarred %~ { !($0 ?? false) }
 
@@ -110,7 +110,7 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
     let projectOnStarToggleAndSuccess = projectOnStarToggle
       .switchMap { project in
         AppEnvironment.current.apiService.toggleStar(project)
-          .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
+          .delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .map { ($0.project, success: true) }
           .flatMapError { _ in .init(value: (project, success: false)) }
     }
@@ -127,7 +127,7 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
       .merge(configuredProject, projectOnStarToggle, projectOnStarToggleSuccess, revertStarToggle)
 
     self.categoryButtonBackgroundColor = configuredProject.map {
-        discoveryGradientColors(forCategoryId: $0.category.rootId).0.colorWithAlphaComponent(0.8)
+        discoveryGradientColors(forCategoryId: $0.category.rootId).0.withAlphaComponent(0.8)
       }
       .skipRepeats()
 
@@ -171,11 +171,11 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
     self.categoryHiddenAndAnimate = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst((false, false)),
 
-      combineLatest(projectImageIsVisible, videoIsPlaying)
+      Signal.combineLatest(projectImageIsVisible, videoIsPlaying)
         .map { projectImageIsVisible, videoIsPlaying in
           (videoIsPlaying ? true : !projectImageIsVisible, true)
         }
-        .skip(1)
+        .skip(first: 1)
       )
       .skipRepeats { $0.hidden == $1.hidden }
 

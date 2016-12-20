@@ -22,7 +22,7 @@ public protocol ProfileProjectCellViewModelOutputs {
   var projectName: Signal<String, NoError> { get }
 
   /// Emits the project's photo URL to be displayed.
-  var photoURL: Signal<NSURL?, NoError> { get }
+  var photoURL: Signal<URL?, NoError> { get }
 
   /// Emits the project's funding progress amount to be displayed.
   var progress: Signal<Float, NoError> { get }
@@ -79,7 +79,7 @@ public final class ProfileProjectCellViewModel: ProfileProjectCellViewModelType,
   public let metadataIsHidden: Signal<Bool, NoError>
   public let metadataText: Signal<String, NoError>
   public let projectName: Signal<String, NoError>
-  public let photoURL: Signal<NSURL?, NoError>
+  public let photoURL: Signal<URL?, NoError>
   public let progress: Signal<Float, NoError>
   public let progressHidden: Signal<Bool, NoError>
   public let stateLabelText: Signal<String, NoError>

@@ -14,7 +14,7 @@ public protocol SurveyResponseViewModelInputs {
   func configureWith(surveyResponse: SurveyResponse)
 
   /// Call when the webview decides whether to load a request.
-  func shouldStartLoad(withRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool
+  func shouldStartLoad(withRequest request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool
 
   /// Call when the view loads.
   func viewDidLoad()
@@ -34,7 +34,7 @@ public protocol SurveyResponseViewModelOutputs {
   var title: Signal<String, NoError> { get }
 
   /// Emits a request that should be loaded by the webview.
-  var webViewLoadRequest: Signal<NSURLRequest, NoError> { get }
+  var webViewLoadRequest: Signal<URLRequest, NoError> { get }
 }
 
 public protocol SurveyResponseViewModelType: SurveyResponseViewModelInputs, SurveyResponseViewModelOutputs {
@@ -48,9 +48,9 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
   public init() {
     let initialRequest = self.surveyResponseProperty.signal.skipNil()
       .takeWhen(self.viewDidLoadProperty.signal)
-      .map { surveyResponse -> NSURLRequest? in
-        guard let url = NSURL(string: surveyResponse.urls.web.survey) else { return nil }
-        return NSURLRequest(URL: url)
+      .map { surveyResponse -> URLRequest? in
+        guard let url = URL(string: surveyResponse.urls.web.survey) else { return nil }
+        return URLRequest(URL: url)
       }
       .skipNil()
 
@@ -109,9 +109,9 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
   fileprivate let closeButtonTappedProperty = MutableProperty()
   public func closeButtonTapped() { self.closeButtonTappedProperty.value = () }
 
-  fileprivate let shouldStartLoadProperty = MutableProperty<(NSURLRequest, UIWebViewNavigationType)?>(nil)
+  fileprivate let shouldStartLoadProperty = MutableProperty<(URLRequest, UIWebViewNavigationType)?>(nil)
   fileprivate let shouldStartLoadResponseProperty = MutableProperty(false)
-  public func shouldStartLoad(withRequest request: NSURLRequest,
+  public func shouldStartLoad(withRequest request: URLRequest,
                                           navigationType: UIWebViewNavigationType) -> Bool {
     self.shouldStartLoadProperty.value = (request, navigationType)
     return self.shouldStartLoadResponseProperty.value
@@ -129,18 +129,18 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
   public let goToProject: Signal<(Param, RefTag?), NoError>
   public let showAlert: Signal<String, NoError>
   public let title: Signal<String, NoError>
-  public let webViewLoadRequest: Signal<NSURLRequest, NoError>
+  public let webViewLoadRequest: Signal<URLRequest, NoError>
 
   public var inputs: SurveyResponseViewModelInputs { return self }
   public var outputs: SurveyResponseViewModelOutputs { return self }
 }
 
-private func isUnpreparedSurvey(request: NSURLRequest) -> Bool {
+private func isUnpreparedSurvey(request: URLRequest) -> Bool {
   guard !AppEnvironment.current.apiService.isPrepared(request: request as URLRequest) else { return false }
   return isSurvey(request: request)
 }
 
-private func isSurvey(request: NSURLRequest) -> Bool {
+private func isSurvey(request: URLRequest) -> Bool {
   guard case (.project(_, .survey(_), _))? = Navigation.match(request) else { return false }
   return true
 }

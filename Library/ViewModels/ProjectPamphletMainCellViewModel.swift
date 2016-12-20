@@ -40,7 +40,7 @@ public protocol ProjectPamphletMainCellViewModelOutputs {
   var conversionLabelText: Signal<String, NoError> { get }
 
   /// Emits an image url to be loaded into the creator's image view.
-  var creatorImageUrl: Signal<NSURL?, NoError> { get }
+  var creatorImageUrl: Signal<URL?, NoError> { get }
 
   /// Emits text to be put into the creator label.
   var creatorLabelText: Signal<String, NoError> { get }
@@ -76,7 +76,7 @@ public protocol ProjectPamphletMainCellViewModelOutputs {
   var projectBlurbLabelText: Signal<String, NoError> { get }
 
   /// Emits a URL to be loaded into the project's image view.
-  var projectImageUrl: Signal<NSURL?, NoError> { get }
+  var projectImageUrl: Signal<URL?, NoError> { get }
 
   /// Emits text to be put into the project name label.
   var projectNameLabelText: Signal<String, NoError> { get }
@@ -116,7 +116,7 @@ ProjectPamphletMainCellViewModelInputs, ProjectPamphletMainCellViewModelOutputs 
       Strings.project_creator_by_creator(creator_name: $0.creator.name)
     }
 
-    self.creatorImageUrl = project.map { NSURL(string: $0.creator.avatar.small) }
+    self.creatorImageUrl = project.map { URL(string: $0.creator.avatar.small) }
 
     self.stateLabelHidden = project.map { $0.state == .live }
 
@@ -140,7 +140,7 @@ ProjectPamphletMainCellViewModelInputs, ProjectPamphletMainCellViewModelOutputs 
       .map { $0.state == .successful  || $0.state == .live ?
         UIColor.ksr_text_green_700 : UIColor.ksr_text_navy_500 }
 
-    self.projectImageUrl = project.map { NSURL(string: $0.photo.full) }
+    self.projectImageUrl = project.map { URL(string: $0.photo.full) }
 
     let videoIsPlaying = Signal.merge(
       project.take(1).mapConst(false),
@@ -261,7 +261,7 @@ ProjectPamphletMainCellViewModelInputs, ProjectPamphletMainCellViewModelOutputs 
   public let configureVideoPlayerController: Signal<Project, NoError>
   public let conversionLabelHidden: Signal<Bool, NoError>
   public let conversionLabelText: Signal<String, NoError>
-  public let creatorImageUrl: Signal<NSURL?, NoError>
+  public let creatorImageUrl: Signal<URL?, NoError>
   public let creatorLabelText: Signal<String, NoError>
   public let deadlineSubtitleLabelText: Signal<String, NoError>
   public let deadlineTitleLabelText: Signal<String, NoError>
@@ -273,7 +273,7 @@ ProjectPamphletMainCellViewModelInputs, ProjectPamphletMainCellViewModelOutputs 
   public let pledgedTitleLabelTextColor: Signal<UIColor, NoError>
   public let progressPercentage: Signal<Float, NoError>
   public let projectBlurbLabelText: Signal<String, NoError>
-  public let projectImageUrl: Signal<NSURL?, NoError>
+  public let projectImageUrl: Signal<URL?, NoError>
   public let projectNameLabelText: Signal<String, NoError>
   public let projectStateLabelText: Signal<String, NoError>
   public let projectStateLabelTextColor: Signal<UIColor, NoError>

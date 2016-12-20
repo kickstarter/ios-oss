@@ -56,7 +56,7 @@ ProjectNavigatorViewModelInputs, ProjectNavigatorViewModelOutputs {
 
   // swiftlint:disable:next function_body_length
   public init() {
-    let configData = combineLatest(
+    let configData = Signal.combineLatest(
       self.configDataProperty.signal.skipNil(),
       self.viewDidLoadProperty.signal
       )
@@ -108,7 +108,7 @@ ProjectNavigatorViewModelInputs, ProjectNavigatorViewModelOutputs {
       .filter(isTrue)
       .ignoreValues()
 
-    self.updateInteractiveTransition = zip(panningData, transitionPhase)
+    self.updateInteractiveTransition = Signal.zip(panningData, transitionPhase)
       .filter { _, phase in phase == .updating || phase == .started }
       .map { data, _ in data.translation.y }
 
@@ -128,7 +128,7 @@ ProjectNavigatorViewModelInputs, ProjectNavigatorViewModelOutputs {
         AppEnvironment.current.koala.trackSwipedProject(project, refTag: configData.refTag)
     }
 
-    combineLatest(configData, currentProject)
+    Signal.combineLatest(configData, currentProject)
       .takeWhen(self.finishInteractiveTransition)
       .observeValues { configData, project in
         AppEnvironment.current.koala.trackClosedProjectPage(

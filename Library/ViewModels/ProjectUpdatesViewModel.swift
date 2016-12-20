@@ -18,7 +18,7 @@ public protocol ProjectUpdatesViewModelInputs {
 
 public protocol ProjectUpdatesViewModelOutputs {
   /// Emits when we should open a safari browser with the URL.
-  var goToSafariBrowser: Signal<NSURL, NoError> { get }
+  var goToSafariBrowser: Signal<URL, NoError> { get }
 
   /// Emits with the project and update when we should go to the update.
   var goToUpdate: Signal<(Project, Update), NoError> { get }
@@ -27,7 +27,7 @@ public protocol ProjectUpdatesViewModelOutputs {
   var goToUpdateComments: Signal<Update, NoError> { get }
 
   /// Emits a request that should be loaded into the web view.
-  var webViewLoadRequest: Signal<NSURLRequest, NoError> { get }
+  var webViewLoadRequest: Signal<URLRequest, NoError> { get }
 }
 
 public protocol ProjectUpdatesViewModelType {
@@ -42,14 +42,14 @@ ProjectUpdatesViewModelOutputs {
   public init() {
     let navigationAction = self.navigationAction.signal.skipNil()
 
-    let project = combineLatest(self.projectProperty.signal.skipNil(), self.viewDidLoadProperty.signal)
+    let project = Signal.combineLatest(self.projectProperty.signal.skipNil(), self.viewDidLoadProperty.signal)
       .map(first)
 
     let initialUpdatesIndexLoadRequest = project.map { URL(string: $0.urls.web.updates ?? "") }.skipNil()
 
     let anotherIndexRequest = navigationAction
-      .filter { $0.navigationType == .LinkActivated && isUpdatesRequest(request: $0.request) }
-      .map { $0.request.URL }
+      .filter { $0.navigationType == .linkActivated && isUpdatesRequest(request: $0.request) }
+      .map { $0.request.url }
       .skipNil()
 
     let goToCommentsRequest = navigationAction
@@ -68,19 +68,19 @@ ProjectUpdatesViewModelOutputs {
 
     self.decidedPolicy <~ navigationAction
       .map { action in
-        action.navigationType == .Other || action.targetFrame?.mainFrame == .Some(false)
-          ? .Allow
-          : .Cancel
+        action.navigationType == .other || action.targetFrame?.mainFrame == .some(false)
+          ? .allow
+          : .cancel
     }
 
     self.goToSafariBrowser = navigationAction
       .filter {
-        $0.navigationType == .LinkActivated &&
+        $0.navigationType == .linkActivated &&
         !isGoToCommentsRequest(request: $0.request) &&
         !isGoToUpdateRequest(request: $0.request) &&
         !isUpdatesRequest(request: $0.request)
       }
-      .map { $0.request.URL }
+      .map { $0.request.url }
       .skipNil()
 
     self.goToUpdate = project.takePairWhen(goToUpdateRequest)
@@ -106,7 +106,7 @@ ProjectUpdatesViewModelOutputs {
     self.projectProperty.value = project
   }
   fileprivate let navigationAction = MutableProperty<WKNavigationActionData?>(nil)
-  fileprivate let decidedPolicy = MutableProperty(WKNavigationActionPolicy.Cancel)
+  fileprivate let decidedPolicy = MutableProperty(WKNavigationActionPolicy.cancel)
   public func decidePolicy(forNavigationAction action: WKNavigationActionData)
     -> WKNavigationActionPolicy {
       self.navigationAction.value = action
@@ -117,17 +117,17 @@ ProjectUpdatesViewModelOutputs {
     self.viewDidLoadProperty.value = ()
   }
 
-  public let goToSafariBrowser: Signal<NSURL, NoError>
+  public let goToSafariBrowser: Signal<URL, NoError>
   public var goToUpdate: Signal<(Project, Update), NoError>
   public var goToUpdateComments: Signal<Update, NoError>
-  public let webViewLoadRequest: Signal<NSURLRequest, NoError>
+  public let webViewLoadRequest: Signal<URLRequest, NoError>
 
   public var inputs: ProjectUpdatesViewModelInputs { return self }
   public var outputs: ProjectUpdatesViewModelOutputs { return self }
 }
 
 // Returns project and update params for update and comments requests.
-private func projectUpdateParams(fromRequest request: NSURLRequest) -> (projectParam: Param, updateId: Int)? {
+private func projectUpdateParams(fromRequest request: URLRequest) -> (projectParam: Param, updateId: Int)? {
   guard let nav = Navigation.match(request) else { return nil }
   switch nav {
   case .project(_, .update(_, .comments), _):

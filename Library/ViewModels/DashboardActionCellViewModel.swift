@@ -85,11 +85,11 @@ public final class DashboardActionCellViewModel: DashboardActionCellViewModelInp
       .map { project in
         if let lastUpdatePublishedAt = project.memberData.lastUpdatePublishedAt {
           return Strings.dashboard_post_update_button_subtitle_last_updated_on_date(
-            date: Format.date(secondsInUTC: lastUpdatePublishedAt, timeStyle: .NoStyle)
+            date: Format.date(secondsInUTC: lastUpdatePublishedAt, timeStyle: .none)
           )
         }
 
-        if .Some(project.creator) == AppEnvironment.current.currentUser {
+        if .some(project.creator) == AppEnvironment.current.currentUser {
           return Strings.dashboard_post_update_button_subtitle_you_have_not_posted_an_update_yet()
         } else {
           return localizedString(

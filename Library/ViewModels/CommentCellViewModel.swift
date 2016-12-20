@@ -9,7 +9,7 @@ public protocol CommentCellViewModelInputs {
 }
 
 public protocol CommentCellViewModelOutputs {
-  var avatarUrl: Signal<NSURL?, NoError> { get }
+  var avatarUrl: Signal<URL?, NoError> { get }
   var body: Signal<String, NoError> { get }
   var bodyColor: Signal<UIColor, NoError> { get }
   var bodyFont: Signal<UIFont, NoError> { get }
@@ -65,7 +65,7 @@ CommentCellViewModelOutputs {
     self.commentProjectViewer.value = (comment, project, viewer)
   }
 
-  public let avatarUrl: Signal<NSURL?, NoError>
+  public let avatarUrl: Signal<URL?, NoError>
   public let body: Signal<String, NoError>
   public let bodyColor: Signal<UIColor, NoError>
   public let bodyFont: Signal<UIFont, NoError>

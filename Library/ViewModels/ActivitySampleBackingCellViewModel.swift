@@ -14,7 +14,7 @@ public protocol ActivitySampleBackingCellViewModelInputs {
 
 public protocol ActivitySampleBackingCellViewModelOutputs {
   /// Emits the backer image url to be displayed.
-  var backerImageURL: Signal<NSURL?, NoError> { get }
+  var backerImageURL: Signal<URL?, NoError> { get }
 
   /// Emits the backing message to be displayed.
   var backingTitleText: Signal<NSAttributedString, NoError> { get }
@@ -45,7 +45,7 @@ public final class ActivitySampleBackingCellViewModel: ActivitySampleBackingCell
     }
 
     self.backerImageURL = activity
-      .map { ($0.user?.avatar.medium).flatMap(NSURL.init) }
+      .map { ($0.user?.avatar.medium).flatMap(URL.init) }
 
     self.goToActivity = self.seeAllActivityTappedProperty.signal
   }
@@ -61,7 +61,7 @@ public final class ActivitySampleBackingCellViewModel: ActivitySampleBackingCell
   }
 
   public let backingTitleText: Signal<NSAttributedString, NoError>
-  public let backerImageURL: Signal<NSURL?, NoError>
+  public let backerImageURL: Signal<URL?, NoError>
   public let goToActivity: Signal<Void, NoError>
 
   public var inputs: ActivitySampleBackingCellViewModelInputs { return self }

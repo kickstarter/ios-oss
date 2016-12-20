@@ -81,14 +81,14 @@ public final class FindFriendsFacebookConnectCellViewModel: FindFriendsFacebookC
             terminated: {
               isLoading.value = false
           })
-          .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
+          .delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
     }
 
     self.updateUserInEnvironment = facebookConnect.values()
 
     self.postUserUpdatedNotification = self.userUpdatedProperty.signal
-      .mapConst(Notification(name: CurrentUserNotifications.userUpdated, object: nil))
+      .mapConst(Notification(name: Notification.Name(rawValue: CurrentUserNotifications.userUpdated), object: nil))
 
     self.notifyDelegateUserFacebookConnected = self.userUpdatedProperty.signal
 

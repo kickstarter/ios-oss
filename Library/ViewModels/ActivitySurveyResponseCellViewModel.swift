@@ -13,7 +13,7 @@ public protocol ActivitySurveyResponseCellViewModelInputs {
 
 public protocol ActivitySurveyResponseCellViewModelOutputs {
   /// Emits image url to creator's avatar.
-  var creatorImageURL: Signal<NSURL?, NoError> { get }
+  var creatorImageURL: Signal<URL?, NoError> { get }
 
   /// Emits text for the creator name label.
   var creatorNameText: Signal<String, NoError> { get }
@@ -45,7 +45,7 @@ ActivitySurveyResponseCellViewModelInputs, ActivitySurveyResponseCellViewModelOu
       .map { surveyResponse, _, _ in surveyResponse.project }
       .skipNil()
 
-    self.creatorImageURL = project.map { NSURL.init(string: $0.creator.avatar.small) }
+    self.creatorImageURL = project.map { URL.init(string: $0.creator.avatar.small) }
 
     self.creatorNameText = project.map { $0.creator.name }
 
@@ -87,7 +87,7 @@ ActivitySurveyResponseCellViewModelInputs, ActivitySurveyResponseCellViewModelOu
     self.respondNowButtonTappedProperty.value = ()
   }
 
-  public let creatorImageURL: Signal<NSURL?, NoError>
+  public let creatorImageURL: Signal<URL?, NoError>
   public let creatorNameText: Signal<String, NoError>
   public let notifyDelegateToRespondToSurvey: Signal<SurveyResponse, NoError>
   public let rewardSurveysCountIsHidden: Signal<Bool, NoError>

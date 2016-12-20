@@ -101,7 +101,7 @@ MessagesViewModelOutputs {
 
     let participant = messageThreadEnvelope.map { $0.messageThread.participant }
 
-    self.backingAndProject = combineLatest(configBacking, self.project, participant, currentUser)
+    self.backingAndProject = Signal.combineLatest(configBacking, self.project, participant, currentUser)
       .switchMap { value -> SignalProducer<(Backing, Project), NoError> in
         let (backing, project, participant, currentUser) = value
 
@@ -109,7 +109,7 @@ MessagesViewModelOutputs {
           return SignalProducer(value: (backing, project))
         }
 
-        let request = project.personalization.isBacking == .Some(true)
+        let request = project.personalization.isBacking == .some(true)
           ? AppEnvironment.current.apiService.fetchBacking(forProject: project, forUser: currentUser)
           : AppEnvironment.current.apiService.fetchBacking(forProject: project, forUser: participant)
 
@@ -126,10 +126,10 @@ MessagesViewModelOutputs {
       .map { ($0.messageThread, .messages) }
       .takeWhen(self.replyButtonPressedProperty.signal)
 
-    self.goToBacking = combineLatest(messageThreadEnvelope, currentUser)
+    self.goToBacking = Signal.combineLatest(messageThreadEnvelope, currentUser)
       .takeWhen(self.backingInfoPressedProperty.signal)
       .map { env, currentUser in
-        env.messageThread.project.personalization.isBacking == .Some(true)
+        env.messageThread.project.personalization.isBacking == .some(true)
           ? (env.messageThread.project, currentUser)
           : (env.messageThread.project, env.messageThread.participant)
     }
@@ -144,8 +144,8 @@ MessagesViewModelOutputs {
       }
       .ignoreValues()
 
-    combineLatest(project, self.viewDidLoadProperty.signal)
-      .take(1)
+    Signal.combineLatest(project, self.viewDidLoadProperty.signal)
+      .take(first: 1)
       .observeValues { project, _ in
         AppEnvironment.current.koala.trackMessageThreadView(project: project)
     }

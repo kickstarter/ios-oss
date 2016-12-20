@@ -7,7 +7,7 @@ import Result
 internal final class MessageCellViewModelTests: TestCase {
   fileprivate let vm: MessageCellViewModelType = MessageCellViewModel()
 
-  fileprivate let avatarURL = TestObserver<NSURL?, NoError>()
+  fileprivate let avatarURL = TestObserver<URL?, NoError>()
   fileprivate let body = TestObserver<String, NoError>()
   fileprivate let _name = TestObserver<String, NoError>()
   fileprivate let timestamp = TestObserver<String, NoError>()

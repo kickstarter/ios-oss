@@ -24,7 +24,7 @@ public protocol WebModalViewModelOutputs {
   var dismissViewController: Signal<Void, NoError> { get }
 
   /// Emits a request that should be loaded into the webview.
-  var webViewLoadRequest: Signal<NSURLRequest, NoError> { get }
+  var webViewLoadRequest: Signal<URLRequest, NoError> { get }
 }
 
 public protocol WebModalViewModelType: WebModalViewModelInputs, WebModalViewModelOutputs {
@@ -68,7 +68,7 @@ public final class WebModalViewModel: WebModalViewModelType {
   public func viewDidLoad() { self.viewDidLoadProperty.value = () }
 
   public let dismissViewController: Signal<Void, NoError>
-  public let webViewLoadRequest: Signal<NSURLRequest, NoError>
+  public let webViewLoadRequest: Signal<URLRequest, NoError>
 
   public var inputs: WebModalViewModelInputs { return self }
   public var outputs: WebModalViewModelOutputs { return self }

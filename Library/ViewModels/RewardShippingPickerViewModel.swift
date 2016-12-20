@@ -51,7 +51,7 @@ public final class RewardShippingPickerViewModel: RewardShippingPickerViewModelT
 RewardShippingPickerViewModelInputs, RewardShippingPickerViewModelOutputs {
 
   public init() {
-    let projectAndShippingRulesAndSelectedShippingRule = combineLatest(
+    let projectAndShippingRulesAndSelectedShippingRule = Signal.combineLatest(
       self.projectAndShippingRulesAndSelectedShippingRuleProperty.signal.skipNil(),
       self.viewDidLoadProperty.signal
       )
@@ -61,14 +61,14 @@ RewardShippingPickerViewModelInputs, RewardShippingPickerViewModelOutputs {
       .map { project, shippingRules, selectedShippingRule in
         (
           project,
-          shippingRules.sort { $0.location.displayableName < $1.location.displayableName },
+          shippingRules.sorted { $0.location.displayableName < $1.location.displayableName },
           selectedShippingRule
         )
     }
 
     self.selectRow = projectAndSortedShippingRulesAndSelectedShippingRule
       .map { _, shippingRules, selectedShippingRule in
-        shippingRules.indexOf(selectedShippingRule) ?? 0
+        shippingRules.index(of: selectedShippingRule) ?? 0
       }
       .takeWhen(self.viewWillAppearProperty.signal)
 
@@ -79,7 +79,7 @@ RewardShippingPickerViewModelInputs, RewardShippingPickerViewModelOutputs {
 
     let selectedRow = Signal.merge(self.pickerSelectedRowProperty.signal, self.selectRow)
 
-    let currentShippingRule = combineLatest(
+    let currentShippingRule = Signal.combineLatest(
       projectAndSortedShippingRulesAndSelectedShippingRule.map(second),
       selectedRow
       )

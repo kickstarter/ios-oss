@@ -77,7 +77,7 @@ public protocol DiscoveryPostcardViewModelOutputs {
   var progressPercentage: Signal<Float, NoError> { get }
 
   /// Emits a URL to be loaded into the project's image view.
-  var projectImageURL: Signal<NSURL?, NoError> { get }
+  var projectImageURL: Signal<URL?, NoError> { get }
 
   /// Emits the text to be put into the project name and blurb label.
   var projectNameAndBlurbLabelText: Signal<NSAttributedString, NoError> { get }
@@ -101,7 +101,7 @@ public protocol DiscoveryPostcardViewModelOutputs {
   var projectStatsStackViewHidden: Signal<Bool, NoError> { get }
 
   /// Emits the URL to be loaded into the social avatar's image view.
-  var socialImageURL: Signal<NSURL?, NoError> { get }
+  var socialImageURL: Signal<URL?, NoError> { get }
 
   /// Emits the text for the social label.
   var socialLabelText: Signal<String, NoError> { get }
@@ -160,7 +160,7 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
       .map(Project.lens.stats.fundingProgress.view)
       .map(clamp(0, 1))
 
-    self.projectImageURL = project.map { $0.photo.full }.map(NSURL.init(string:))
+    self.projectImageURL = project.map { $0.photo.full }.map(URL.init(string:))
 
     self.projectNameAndBlurbLabelText = project
       .map(projectAttributedNameAndBlurb)
@@ -187,7 +187,7 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
     self.projectStatsStackViewHidden = self.projectStateStackViewHidden.map(negate)
 
     self.socialImageURL = project
-      .map { $0.personalization.friends?.first.flatMap { NSURL(string: $0.avatar.medium) } }
+      .map { $0.personalization.friends?.first.flatMap { URL(string: $0.avatar.medium) } }
 
     self.socialLabelText = project
       .map { $0.personalization.friends.flatMap(socialText(forFriends:)) ?? "" }
@@ -217,7 +217,7 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
   public let metadataViewHidden: Signal<Bool, NoError>
   public let percentFundedTitleLabelText: Signal<String, NoError>
   public let progressPercentage: Signal<Float, NoError>
-  public let projectImageURL: Signal<NSURL?, NoError>
+  public let projectImageURL: Signal<URL?, NoError>
   public let projectNameAndBlurbLabelText: Signal<NSAttributedString, NoError>
   public let projectStateIconHidden: Signal<Bool, NoError>
   public let projectStateStackViewHidden: Signal<Bool, NoError>
@@ -225,7 +225,7 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
   public let projectStateSubtitleLabelText: Signal<String, NoError>
   public let projectStateTitleLabelText: Signal<String, NoError>
   public let projectStateTitleLabelColor: Signal<UIColor, NoError>
-  public let socialImageURL: Signal<NSURL?, NoError>
+  public let socialImageURL: Signal<URL?, NoError>
   public let socialLabelText: Signal<String, NoError>
   public let socialStackViewHidden: Signal<Bool, NoError>
 

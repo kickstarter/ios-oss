@@ -132,13 +132,13 @@ CommentDialogViewModelOutputs, CommentDialogViewModelErrors {
     }
 
     self.postButtonEnabled = Signal.merge([
-      self.viewWillAppearProperty.signal.take(1).mapConst(false),
+      self.viewWillAppearProperty.signal.take(first: 1).mapConst(false),
       self.commentBodyProperty.signal.map { !$0.isEmpty },
       isLoading.signal.map(isFalse)
       ])
       .skipRepeats()
 
-    let commentPostedEvent = combineLatest(self.commentBodyProperty.signal, updateOrProject)
+    let commentPostedEvent = Signal.combineLatest(self.commentBodyProperty.signal, updateOrProject)
       .takeWhen(self.postButtonPressedProperty.signal)
       .switchMap { body, updateOrProject in
         postComment(body, toUpdateOrComment: updateOrProject)

@@ -48,11 +48,11 @@ public func baseTableViewCellStyle <TVC: UITableViewCellProtocol> () -> ((TVC) -
       }
       return .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
       }
-      <> TVC.lens.backgroundColor .~ .clearColor()
+      <> TVC.lens.backgroundColor .~ .clear
       <> (TVC.lens.contentView • UIView.lens.preservesSuperviewLayoutMargins) .~ false
       <> TVC.lens.layoutMargins .~ .init(all: 0.0)
       <> TVC.lens.preservesSuperviewLayoutMargins .~ false
-      <> TVC.lens.selectionStyle .~ .None
+      <> TVC.lens.selectionStyle .~ .none
 }
 
 /**
@@ -63,9 +63,9 @@ public func baseTableViewCellStyle <TVC: UITableViewCellProtocol> () -> ((TVC) -
 public func cardStyle <V: UIViewProtocol> (cornerRadius radius: CGFloat = Styles.cornerRadius) -> ((V) -> V) {
 
   return roundedStyle(cornerRadius: radius)
-    <> V.lens.layer.borderColor .~ UIColor.ksr_grey_500.CGColor
+    <> V.lens.layer.borderColor .~ UIColor.ksr_grey_500.cgColor
     <> V.lens.layer.borderWidth .~ 1.0
-    <> V.lens.backgroundColor .~ .whiteColor()
+    <> V.lens.backgroundColor .~ .white
 }
 
 public let containerViewBackgroundStyle =
@@ -93,11 +93,11 @@ public let feedTableViewCellStyle = baseTableViewCellStyle()
 public let formFieldStyle =
   UITextField.lens.font .~ .ksr_body()
     <> UITextField.lens.textColor .~ .ksr_text_navy_900
-    <> UITextField.lens.backgroundColor .~ .clearColor()
-    <> UITextField.lens.borderStyle .~ .None
-    <> UITextField.lens.autocapitalizationType .~ .None
-    <> UITextField.lens.autocorrectionType .~ .No
-    <> UITextField.lens.spellCheckingType .~ .No
+    <> UITextField.lens.backgroundColor .~ .clear
+    <> UITextField.lens.borderStyle .~ .none
+    <> UITextField.lens.autocapitalizationType .~ .none
+    <> UITextField.lens.autocorrectionType .~ .no
+    <> UITextField.lens.spellCheckingType .~ .no
     <> UITextField.lens.tintColor .~ .ksr_green_700
 
 public let separatorStyle =

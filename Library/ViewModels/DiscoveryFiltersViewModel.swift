@@ -56,17 +56,17 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
   public init() {
 
     let initialTopFilters = self.viewDidLoadProperty.signal
-      .take(1)
+      .take(first: 1)
       .map { topFilters(forUser: AppEnvironment.current.currentUser) }
 
-    let initialSelectedRowWithCategories = combineLatest(
+    let initialSelectedRowWithCategories = Signal.combineLatest(
       self.initialSelectedRowWithCategoriesProperty.signal.skipNil(),
       self.viewDidLoadProperty.signal
       )
-      .take(1)
+      .take(first: 1)
       .map(first)
 
-    let topRows = combineLatest(
+    let topRows = Signal.combineLatest(
       initialTopFilters,
       initialSelectedRowWithCategories.map(first)
       )
@@ -78,13 +78,13 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
       .map(first)
       .map { $0.params.category?.rootId }
 
-    self.loadTopRows = combineLatest(topRows, categoryId).map { (rows: $0, categoryId: $1) }
+    self.loadTopRows = Signal.combineLatest(topRows, categoryId).map { (rows: $0, categoryId: $1) }
 
     let favoriteRows = initialSelectedRowWithCategories
       .map(favorites(selectedRow:categories:))
       .skipNil()
 
-    self.loadFavoriteRows = combineLatest(favoriteRows, categoryId)
+    self.loadFavoriteRows = Signal.combineLatest(favoriteRows, categoryId)
       .map { (rows: $0, categoryId: $1) }
 
     let selectedRowId = Signal.merge(
@@ -95,16 +95,16 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
     let initialRows = initialSelectedRowWithCategories
       .map(expandableRows(selectedRow:categories:))
 
-    let expandingRows = combineLatest(
+    let expandingRows = Signal.combineLatest(
       self.tappedExpandableRowProperty.signal.skipNil(),
       initialRows
       )
       .map(toggleExpansion(row:in:))
 
-    let initialCatRowsAndIdAndSelectedRowId = combineLatest(categoryId, selectedRowId)
+    let initialCatRowsAndIdAndSelectedRowId = Signal.combineLatest(categoryId, selectedRowId)
       .takePairWhen(initialRows)
 
-    let expandedCatRowsAndIdAndSelectedRowId = combineLatest(categoryId, selectedRowId)
+    let expandedCatRowsAndIdAndSelectedRowId = Signal.combineLatest(categoryId, selectedRowId)
       .takePairWhen(expandingRows)
 
     self.loadCategoryRows = Signal.merge(

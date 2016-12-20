@@ -108,7 +108,7 @@ public protocol RewardPledgeViewModelOutputs {
   var fulfillmentAndShippingFooterStackViewHidden: Signal<Bool, NoError> { get }
 
   /// Emits when the checkout screen should be shown to the user.
-  var goToCheckout: Signal<(NSURLRequest, Project, Reward), NoError> { get }
+  var goToCheckout: Signal<(URLRequest, Project, Reward), NoError> { get }
 
   /// Emits when the login tout should be shown to the user.
   var goToLoginTout: Signal<(), NoError> { get }
@@ -484,7 +484,7 @@ RewardPledgeViewModelOutputs {
     let cancelPledge = projectAndReward
       .takeWhen(self.cancelPledgeButtonTappedProperty.signal)
       .map { project, reward -> (URLRequest, Project, Reward)? in
-        guard let request = NSURL(string: project.urls.web.project)
+        guard let request = URL(string: project.urls.web.project)
           .flatMap({ $0.appendingPathComponent("pledge") })
           .flatMap({ $0.appendingPathComponent("destroy") })
           .flatMap({ URLRequest(url: $0) }) else {
@@ -528,7 +528,7 @@ RewardPledgeViewModelOutputs {
       .takeWhen(completedPledge)
 
     let updatedPledgeNeedsNewCheckout = updatePledgeEvent.values()
-      .flatMap { request, project, reward -> SignalProducer<(NSURLRequest, Project, Reward), NoError> in
+      .flatMap { request, project, reward -> SignalProducer<(URLRequest, Project, Reward), NoError> in
         guard let request = request else { return .empty }
         return SignalProducer(value: (request, project, reward))
     }
@@ -830,7 +830,7 @@ RewardPledgeViewModelOutputs {
   public let estimatedDeliveryDateLabelText: Signal<String, NoError>
   public let expandRewardDescription: Signal<(), NoError>
   public let fulfillmentAndShippingFooterStackViewHidden: Signal<Bool, NoError>
-  public let goToCheckout: Signal<(NSURLRequest, Project, Reward), NoError>
+  public let goToCheckout: Signal<(URLRequest, Project, Reward), NoError>
   public let goToLoginTout: Signal<(), NoError>
   public let goToPaymentAuthorization: Signal<PKPaymentRequest, NoError>
   public let goToShippingPicker: Signal<(Project, [ShippingRule], ShippingRule), NoError>
@@ -877,7 +877,7 @@ private func paymentRequest(forProject project: Project,
                                        merchantIdentifier: String) -> PKPaymentRequest {
   let request = PKPaymentRequest()
   request.merchantIdentifier = merchantIdentifier
-  request.supportedNetworks = PKPaymentAuthorizationViewController.supportedNetworks as! [PKPaymentNetwork]
+  request.supportedNetworks = PKPaymentAuthorizationViewController.supportedNetworks
   request.merchantCapabilities = .capability3DS
   request.countryCode = project.country.countryCode
   request.currencyCode = project.country.currencyCode
@@ -901,7 +901,7 @@ private func paymentSummaryItems(forProject project: Project,
   paymentSummaryItems.append(
     PKPaymentSummaryItem(
       label: reward.title ?? project.name,
-      amount: NSDecimalNumber(long: pledgeAmount),
+      amount: NSDecimalNumber(value: pledgeAmount),
       type: .final
     )
   )
@@ -910,8 +910,8 @@ private func paymentSummaryItems(forProject project: Project,
     paymentSummaryItems.append(
       PKPaymentSummaryItem(
         label: Strings.Shipping(),
-        amount: NSDecimalNumber(double: selectedShippingRule.cost),
-        type: .Final
+        amount: NSDecimalNumber(value: selectedShippingRule.cost),
+        type: .final
       )
     )
   }
@@ -982,7 +982,7 @@ private func createPledge(
   project: Project,
           reward: Reward?,
           amount: Int,
-          shipping: ShippingRule?) -> SignalProducer<NSURLRequest, PledgeError> {
+          shipping: ShippingRule?) -> SignalProducer<URLRequest, PledgeError> {
 
   if let error = backingError(forProject: project, amount: amount, reward: reward) {
     return SignalProducer(error: error)
@@ -998,13 +998,13 @@ private func createPledge(
     tappedReward: true
     )
     .mapError { PledgeError.other($0) }
-    .flatMap { env -> SignalProducer<NSURLRequest, PledgeError> in
+    .flatMap { env -> SignalProducer<URLRequest, PledgeError> in
 
-      guard let url = AppEnvironment.current.apiService.serverConfig.webBaseUrl
-        .URLByAppendingPathComponent(env.newCheckoutUrl)
+      guard let url = env.newCheckoutUrl.map(AppEnvironment.current.apiService.serverConfig.webBaseUrl
+        .appendingPathComponent)
         else { return .empty }
 
-      let request = NSURLRequest(URL: url)
+      let request = URLRequest(url: url)
       return SignalProducer(value: request)
   }
 }
@@ -1013,7 +1013,7 @@ private func updatePledge(
   project: Project,
           reward: Reward?,
           amount: Int,
-          shipping: ShippingRule?) -> SignalProducer<NSURLRequest?, PledgeError> {
+          shipping: ShippingRule?) -> SignalProducer<URLRequest?, PledgeError> {
 
   if let error = backingError(forProject: project, amount: amount, reward: reward) {
     return SignalProducer(error: error)
@@ -1029,12 +1029,12 @@ private func updatePledge(
     tappedReward: true
     )
     .mapError { PledgeError.other($0) }
-    .flatMap { env -> SignalProducer<NSURLRequest?, PledgeError> in
+    .flatMap { env -> SignalProducer<URLRequest?, PledgeError> in
 
-      let url = AppEnvironment.current.apiService.serverConfig.webBaseUrl
-        .URLByAppendingPathComponent(env.newCheckoutUrl)
+      let request = env.newCheckoutUrl
+        .map(AppEnvironment.current.apiService.serverConfig.webBaseUrl.appendingPathComponent)
+        .map(URLRequest.init(url:))
 
-      let request = url.map(NSURLRequest.init(URL:))
       return SignalProducer(value: request)
   }
 }
@@ -1063,9 +1063,8 @@ private func createApplePayPledge(
     .mapError { PledgeError.other($0) }
     .flatMap { env -> SignalProducer<SubmitApplePayEnvelope, PledgeError> in
 
-      guard let checkoutUrl = AppEnvironment.current.apiService.serverConfig.webBaseUrl
-        .URLByAppendingPathComponent(env.checkoutUrl)?
-        .absoluteString else { return .empty }
+      guard let checkoutUrl = env.checkoutUrl.map(AppEnvironment.current.apiService.serverConfig.webBaseUrl.appendingPathComponent)?.absoluteString
+        else { return .empty }
 
       return AppEnvironment.current.apiService.submitApplePay(
         checkoutUrl: checkoutUrl,
@@ -1078,14 +1077,14 @@ private func createApplePayPledge(
   }
 }
 
-private func changePaymentMethod(project: Project) -> SignalProducer<NSURLRequest, PledgeError> {
+private func changePaymentMethod(project: Project) -> SignalProducer<URLRequest, PledgeError> {
 
     return AppEnvironment.current.apiService.changePaymentMethod(project: project)
       .mapError { PledgeError.other($0) }
       .map { env in
         env.newCheckoutUrl
-          .flatMap(NSURL.init(string:))
-          .flatMap(NSURLRequest.init(URL:))
+          .flatMap(URL.init(string:))
+          .map(URLRequest.init(url:))
       }
       .skipNil()
 }
@@ -1111,12 +1110,12 @@ private func navigationTitle(forProject project: Project, reward: Reward) -> Str
   )
 }
 
-private enum PledgeError: Error {
+fileprivate enum PledgeError: Error {
   case maximumAmount(ErrorEnvelope)
   case minimumAmount(ErrorEnvelope)
   case other(ErrorEnvelope)
 
-  private var errorEnvelope: ErrorEnvelope {
+  fileprivate var errorEnvelope: ErrorEnvelope {
     switch self {
     case let .maximumAmount(env): return env
     case let .minimumAmount(env): return env
@@ -1124,7 +1123,7 @@ private enum PledgeError: Error {
     }
   }
 
-  private var koalaErrorType: Koala.ErroredRewardPledgeButtonClickType? {
+  fileprivate var koalaErrorType: Koala.ErroredRewardPledgeButtonClickType? {
     switch self {
     case .maximumAmount:  return .maximumAmount
     case .minimumAmount:  return .minimumAmount

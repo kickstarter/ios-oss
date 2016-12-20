@@ -31,7 +31,7 @@ public func localizedString(key: String,
     .filter {
       // NB: `localizedStringForKey` has the annoying habit of returning the key when the key doesn't exist.
       // We filter those out and hope that we never use a value that is equal to its key.
-      $0.caseInsensitiveCompare(augmentedKey) != .OrderedSame
+      $0.caseInsensitiveCompare(augmentedKey) != .orderedSame
     }
     .filter { !$0.isEmpty }
     .coalesceWith(defaultValue)

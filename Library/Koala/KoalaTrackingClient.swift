@@ -8,7 +8,7 @@ private let chunkSize = 4
 public final class KoalaTrackingClient: TrackingClientType {
   fileprivate let endpoint: Endpoint
   fileprivate let URLSession: URLSession
-  fileprivate let queue = dispatch_queue_create("com.kickstarter.KoalaTrackingClient", DISPATCH_QUEUE_SERIAL)
+  fileprivate let queue = DispatchQueue(label: "com.kickstarter.KoalaTrackingClient")
   fileprivate var buffer: [[String: AnyObject]] = []
   fileprivate var timer: Timer?
   fileprivate var taskId = UIBackgroundTaskInvalid
@@ -57,7 +57,7 @@ public final class KoalaTrackingClient: TrackingClientType {
       NSLog("[Koala Track]: \(event), properties: \(properties)")
     #endif
 
-    dispatch_async(self.queue) {
+    self.queue.async {
       self.buffer.append(["event": event, "properties": properties])
     }
   }
@@ -113,26 +113,26 @@ public final class KoalaTrackingClient: TrackingClientType {
   }
 
   fileprivate static func base64Payload(_ payload: [AnyObject]) -> String? {
-    return (try? JSONSerialization.dataWithJSONObject(payload, options: []))
+    return (try? JSONSerialization.data(withJSONObject: payload, options: []))
       .map { $0.base64EncodedString(options: []) }
   }
 
-  fileprivate func koalaURL(_ dataString: String) -> NSURL? {
+  fileprivate func koalaURL(_ dataString: String) -> URL? {
     #if DEBUG
       if dataString.characters.count >= 10_000 {
         print("[Koala Error] Base64 payload is longer than 10,000 characters.")
       }
     #endif
-    return NSURL(string: "\(self.endpoint.base)?data=\(dataString)")
+    return URL(string: "\(self.endpoint.base)?data=\(dataString)")
   }
 
-  fileprivate static func koalaRequest(_ url: NSURL) -> NSURLRequest {
+  fileprivate static func koalaRequest(_ url: URL) -> URLRequest {
     let request = NSMutableURLRequest(url: url as URL)
     request.httpMethod = "POST"
     return request
   }
 
-  fileprivate func synchronousKoalaResult(_ request: NSURLRequest) -> Result<HTTPURLResponse, NSError>? {
+  fileprivate func synchronousKoalaResult(_ request: URLRequest) -> Result<HTTPURLResponse, NSError>? {
     var result: Result<HTTPURLResponse, NSError>?
     let semaphore = DispatchSemaphore(value: 0)
 
@@ -188,7 +188,7 @@ extension KoalaTrackingClient {
   }
 
   @objc fileprivate func applicationWillEnterForeground() {
-    dispatch_async(self.queue) {
+    self.queue.async {
       guard self.taskId != UIBackgroundTaskInvalid else { return }
       UIApplication.sharedApplication().endBackgroundTask(self.taskId)
       self.taskId = UIBackgroundTaskInvalid

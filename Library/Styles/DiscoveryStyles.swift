@@ -79,13 +79,13 @@ public let discoveryNavTitleStackViewStyle =
     <> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
 
 public let discoveryOnboardingSignUpButtonStyle = baseButtonStyle
-  <> UIButton.lens.titleColor(forState: .Normal) .~ .ksr_text_navy_900
-  <> UIButton.lens.backgroundColor(forState: .Normal) .~ .whiteColor()
-  <> UIButton.lens.titleColor(forState: .Highlighted) .~ .ksr_text_navy_500
-  <> UIButton.lens.backgroundColor(forState: .Highlighted) .~ .ksr_navy_200
-  <> UIButton.lens.layer.borderColor .~ UIColor.blackColor().CGColor
+  <> UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_navy_900
+  <> UIButton.lens.backgroundColor(forState: .normal) .~ .white
+  <> UIButton.lens.titleColor(forState: .highlighted) .~ .ksr_text_navy_500
+  <> UIButton.lens.backgroundColor(forState: .highlighted) .~ .ksr_navy_200
+  <> UIButton.lens.layer.borderColor .~ UIColor.black.cgColor
   <> UIButton.lens.layer.borderWidth .~ 1.0
-  <> UIButton.lens.title(forState: .Normal) %~ { _ in
+  <> UIButton.lens.title(forState: .normal) %~ { _ in
     Strings.discovery_onboarding_buttons_signup_or_login()
 }
 
@@ -100,7 +100,7 @@ public func discoveryFilterLabelFontStyle<L: UILabelProtocol> (isSelected: Bool)
 public func discoveryFilterLabelStyle<L: UILabelProtocol> (categoryId: Int?, isSelected: Bool)
   -> ((L) -> L) {
   return L.lens.textColor .~ discoveryPrimaryColor(forCategoryId: categoryId)
-      <> L.lens.alpha .~ (categoryId == nil) ? 1.0 : (isSelected ? 1.0 : 0.6)
+      <> L.lens.alpha .~ ((categoryId == nil) ? 1.0 : (isSelected ? 1.0 : 0.6))
 }
 
 public let discoveryFilterRowMarginStyle = baseTableViewCellStyle()
@@ -178,13 +178,13 @@ public let postcardMetadataLabelStyle =
     <> UILabel.lens.textColor .~ .ksr_text_navy_700
 
 public let postcardMetadataStackViewStyle =
-  UIStackView.lens.alignment .~ .Center
+  UIStackView.lens.alignment .~ .center
     <> UIStackView.lens.spacing .~ Styles.grid(1)
     <> UIStackView.lens.layoutMargins .~ .init(topBottom: Styles.grid(1), leftRight: 8.0)
     <> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
 
 public let postcardSocialStackViewStyle =
-  UIStackView.lens.alignment .~ .Center
+  UIStackView.lens.alignment .~ .center
     <> UIStackView.lens.spacing .~ Styles.grid(1)
     <> UIStackView.lens.layoutMargins .~ .init(topBottom: Styles.grid(1), leftRight: 8.0)
     <> UIStackView.lens.layoutMarginsRelativeArrangement .~ true

@@ -56,7 +56,7 @@ RewardCellViewModelOutputs {
           ?? backingReward(fromProject: project)
           ?? Reward.noReward
     }
-    let projectAndReward = zip(project, reward)
+    let projectAndReward = Signal.zip(project, reward)
 
     self.conversionLabelHidden = project.map {
       !needsConversion(projectCountry: $0.country, userCountry: AppEnvironment.current.config?.countryCode)
@@ -162,7 +162,7 @@ RewardCellViewModelOutputs {
     self.contentViewBackgroundColor = project
       .map { backgroundColor(forCategoryId: $0.category.rootId) }
 
-    let allGoneAndNotABacker = zip(reward, youreABacker)
+    let allGoneAndNotABacker = Signal.zip(reward, youreABacker)
       .map { reward, youreABacker in reward.remaining == 0 && !youreABacker }
 
     self.descriptionLabelHidden = Signal.merge(
@@ -170,20 +170,20 @@ RewardCellViewModelOutputs {
       self.tappedProperty.signal.mapConst(false)
     )
 
-    self.updateTopMarginsForIsBacking = combineLatest(youreABacker, self.boundStylesProperty.signal)
+    self.updateTopMarginsForIsBacking = Signal.combineLatest(youreABacker, self.boundStylesProperty.signal)
       .map(first)
 
-    self.manageButtonHidden = zip(project, youreABacker)
+    self.manageButtonHidden = Signal.zip(project, youreABacker)
       .map { project, youreABacker in
         project.state != .live || !youreABacker
     }
 
-    self.viewPledgeButtonHidden = zip(project, youreABacker)
+    self.viewPledgeButtonHidden = Signal.zip(project, youreABacker)
       .map { project, youreABacker in
         project.state == .live || !youreABacker
     }
 
-    self.pledgeButtonHidden = zip(project, reward, youreABacker)
+    self.pledgeButtonHidden = Signal.zip(project, reward, youreABacker)
       .map { project, reward, youreABacker in
         project.state != .live || reward.remaining == 0 || youreABacker
     }
@@ -194,29 +194,29 @@ RewardCellViewModelOutputs {
         : Strings.Select_this_reward()
     }
 
-    let tappable = zip(project, reward, youreABacker)
+    let tappable = Signal.zip(project, reward, youreABacker)
       .map { project, reward, youreABacker in
         (project.state == .live && reward.remaining != 0) || youreABacker
     }
 
-    self.footerViewHidden = zip(rewardIsCollapsed, reward)
+    self.footerViewHidden = Signal.zip(rewardIsCollapsed, reward)
       .map { rewardIsCollapsed, reward in rewardIsCollapsed || reward == .noReward }
 
-    self.cardViewDropShadowHidden = combineLatest(
+    self.cardViewDropShadowHidden = Signal.combineLatest(
       tappable.map(negate),
       self.boundStylesProperty.signal
       )
       .map(first)
 
-    self.cardViewBackgroundColor = combineLatest(allGoneAndNotABacker, self.boundStylesProperty.signal)
+    self.cardViewBackgroundColor = Signal.combineLatest(allGoneAndNotABacker, self.boundStylesProperty.signal)
       .map(first)
-      .map { $0 ? .ksr_grey_100 : .whiteColor() }
+      .map { $0 ? .ksr_grey_100 : .white }
 
     self.notifyDelegateRewardCellWantsExpansion = allGoneAndNotABacker
       .takeWhen(self.tappedProperty.signal)
       .filter(isTrue)
       .ignoreValues()
-      .take(1)
+      .take(first: 1)
 
     self.footerLabelText = projectAndReward
       .map(footerString(project:reward:))

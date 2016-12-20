@@ -287,7 +287,7 @@ final class UpdateDraftViewModelTests: TestCase {
       self.vm.inputs.addAttachmentSheetButtonTapped(.camera)
       self.showImagePicker.assertValues([.cameraRoll, .camera])
 
-      self.vm.inputs.imagePicked(url: NSURL(string: "/tmp/photo.jpg")!, fromSource: .camera)
+      self.vm.inputs.imagePicked(url: URL(string: "/tmp/photo.jpg")!, fromSource: .camera)
 
       self.attachmentAdded.assertValues([])
       self.scheduler.advance()
@@ -313,7 +313,7 @@ final class UpdateDraftViewModelTests: TestCase {
         self.vm.inputs.addAttachmentSheetButtonTapped(.cameraRoll)
         self.showImagePicker.assertValues([.cameraRoll])
 
-        self.vm.inputs.imagePicked(url: NSURL(string: "/tmp/photo.jpg")!, fromSource: .cameraRoll)
+        self.vm.inputs.imagePicked(url: URL(string: "/tmp/photo.jpg")!, fromSource: .cameraRoll)
 
         self.showAddAttachmentFailure.assertValueCount(0)
         self.scheduler.advance()
@@ -401,7 +401,7 @@ final class UpdateDraftViewModelTests: TestCase {
 
       self.vm.inputs.addAttachmentButtonTapped(availableSources: [.camera, .cameraRoll])
       self.vm.inputs.addAttachmentSheetButtonTapped(.camera)
-      self.vm.inputs.imagePicked(url: NSURL(string: "/tmp/photo.jpg")!, fromSource: .camera)
+      self.vm.inputs.imagePicked(url: URL(string: "/tmp/photo.jpg")!, fromSource: .camera)
 
       self.scheduler.advance()
 
@@ -436,7 +436,7 @@ final class UpdateDraftViewModelTests: TestCase {
 
       self.vm.inputs.addAttachmentButtonTapped(availableSources: [.camera, .cameraRoll])
       self.vm.inputs.addAttachmentSheetButtonTapped(.camera)
-      self.vm.inputs.imagePicked(url: NSURL(string: "/tmp/photo.jpg")!, fromSource: .camera)
+      self.vm.inputs.imagePicked(url: URL(string: "/tmp/photo.jpg")!, fromSource: .camera)
 
       self.scheduler.advance()
 

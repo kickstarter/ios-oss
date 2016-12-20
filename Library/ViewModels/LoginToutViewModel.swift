@@ -99,7 +99,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
             terminated: {
               isLoading.value = false
           })
-          .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
+          .delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
     }
 
@@ -134,7 +134,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
       .map { token, error in (error.facebookUser ?? nil, token) }
 
     self.postNotification = self.environmentLoggedInProperty.signal
-      .mapConst(Notification(name: CurrentUserNotifications.sessionStarted, object: nil))
+      .mapConst(Notification(name: Notification.Name(rawValue: CurrentUserNotifications.sessionStarted), object: nil))
 
     self.dismissViewController = self.viewIsPresentedProperty.signal
       .filter(isTrue)
@@ -154,7 +154,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
       .observeValues { _ in AppEnvironment.current.koala.trackLoginError(authType: Koala.AuthType.facebook) }
 
     self.loginIntentProperty.producer.skipNil()
-      .takeWhen(viewWillAppearProperty.signal.take(1))
+      .takeWhen(viewWillAppearProperty.signal.take(first: 1))
       .observeValues { AppEnvironment.current.koala.trackLoginTout(intent: $0) }
   }
   // swiftlint:enable function_body_length

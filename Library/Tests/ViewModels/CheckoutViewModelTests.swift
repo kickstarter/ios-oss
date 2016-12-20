@@ -50,7 +50,7 @@ final class CheckoutViewModelTests: TestCase {
       .map { request -> String? in
         // Trim query parameters
         guard let url = request.URL else { return nil }
-        guard let components = NSURLComponents(URL: url, resolvingAgainstBaseURL: false) else { return nil }
+        guard let components = URLComponents(URL: url, resolvingAgainstBaseURL: false) else { return nil }
         components.queryItems = components.queryItems?.filter {
           $0.name != "client_id" && $0.name != "oauth_token"
         }
@@ -1059,13 +1059,13 @@ private func applePayUrlRequest(project: Project,
   return (try? JSONSerialization.dataWithJSONObject(payload, options: []))
     .flatMap { String(data: $0.base64EncodedDataWithOptions([]), encoding: NSUTF8StringEncoding) }
     .map { "https://www.kickstarter.com/checkouts/1/payments/apple-pay?payload=\($0)" }
-    .flatMap(NSURL.init(string:))
-    .flatMap(NSURLRequest.init(URL:))
-    .coalesceWith(NSURLRequest())
+    .flatMap(URL.init(string:))
+    .flatMap(URLRequest.init(URL:))
+    .coalesceWith(URLRequest())
 }
 
 private func cancelPledgeRequest(project: Project) -> URLRequest {
-  return NSURLRequest(url: NSURL(string: cancelPledgeURL(project: project))! as URL) as URLRequest
+  return URLRequest(url: URL(string: cancelPledgeURL(project: project))! as URL) as URLRequest
 }
 
 private func cancelPledgeURL(project: Project) -> String {
@@ -1073,7 +1073,7 @@ private func cancelPledgeURL(project: Project) -> String {
 }
 
 private func changePaymentMethodRequest(project: Project) -> URLRequest {
-  return NSURLRequest(url: NSURL(string: changePaymentMethodURL(project: project))! as URL) as URLRequest
+  return URLRequest(url: URL(string: changePaymentMethodURL(project: project))! as URL) as URLRequest
 }
 
 private func changePaymentMethodURL(project: Project) -> String {
@@ -1081,7 +1081,7 @@ private func changePaymentMethodURL(project: Project) -> String {
 }
 
 private func creatorRequest(project: Project) -> URLRequest {
-  return NSURLRequest(url: NSURL(string: creatorURL(project: project))! as URL) as URLRequest
+  return URLRequest(url: URL(string: creatorURL(project: project))! as URL) as URLRequest
 }
 
 private func creatorURL(project: Project) -> String {
@@ -1089,7 +1089,7 @@ private func creatorURL(project: Project) -> String {
 }
 
 private func editPledgeRequest(project: Project) -> URLRequest {
-  return NSURLRequest(url: NSURL(string: editPledgeURL(project: project))! as URL) as URLRequest
+  return URLRequest(url: URL(string: editPledgeURL(project: project))! as URL) as URLRequest
 }
 
 private func editPledgeURL(project: Project) -> String {
@@ -1105,7 +1105,7 @@ private func newPaymentsURL() -> String {
 }
 
 private func newPledgeRequest(project: Project) -> URLRequest {
-  return NSURLRequest(url: NSURL(string: newPledgeURL(project: project))! as URL) as URLRequest
+  return URLRequest(url: URL(string: newPledgeURL(project: project))! as URL) as URLRequest
 }
 
 private func newPledgeURL(project: Project) -> String {
@@ -1133,8 +1133,8 @@ private func pledgeURL(project: Project) -> String {
 }
 
 private func privacyPolicyRequest(project: Project) -> URLRequest {
-  return NSURLRequest(url:
-    NSURL(string: privacyPolicyURL(project: project))! as URL
+  return URLRequest(url:
+    URL(string: privacyPolicyURL(project: project))! as URL
   ) as URLRequest
 }
 
@@ -1143,7 +1143,7 @@ private func privacyPolicyURL(project: Project) -> String {
 }
 
 private func projectRequest(project: Project) -> URLRequest {
-  return NSURLRequest(url: NSURL(string: project.urls.web.project)! as URL) as URLRequest
+  return URLRequest(url: URL(string: project.urls.web.project)! as URL) as URLRequest
 }
 
 private func signupRequest() -> URLRequest {
@@ -1159,7 +1159,7 @@ private func stripeURL() -> String {
 }
 
 private func thanksRequest(project: Project, racing: Bool) -> URLRequest {
-  return NSURLRequest(url: NSURL(string: thanksURL(project: project, racing: racing))! as URL) as URLRequest
+  return URLRequest(url: URL(string: thanksURL(project: project, racing: racing))! as URL) as URLRequest
 }
 
 private func thanksURL(project: Project, racing: Bool) -> String {

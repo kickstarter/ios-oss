@@ -11,7 +11,7 @@ public protocol ProjectActivitySuccessCellViewModelInputs {
 
 public protocol ProjectActivitySuccessCellViewModelOutputs {
   /// Emits the background image URL.
-  var backgroundImageURL: Signal<NSURL?, NoError> { get }
+  var backgroundImageURL: Signal<URL?, NoError> { get }
 
   /// Emits the title of the activity.
   var title: Signal<String, NoError> { get }
@@ -29,7 +29,7 @@ ProjectActivitySuccessCellViewModelInputs, ProjectActivitySuccessCellViewModelOu
     let activityAndProject = self.activityAndProjectProperty.signal.skipNil()
     let project = activityAndProject.map(second)
 
-    self.backgroundImageURL = project.map { $0.photo.med }.map(NSURL.init(string:))
+    self.backgroundImageURL = project.map { $0.photo.med }.map(URL.init(string:))
 
     self.title = project.map { project in
       Strings.dashboard_activity_successfully_raised_pledged(
@@ -47,7 +47,7 @@ ProjectActivitySuccessCellViewModelInputs, ProjectActivitySuccessCellViewModelOu
     self.activityAndProjectProperty.value = (activity, project)
   }
 
-  public let backgroundImageURL: Signal<NSURL?, NoError>
+  public let backgroundImageURL: Signal<URL?, NoError>
   public let title: Signal<String, NoError>
 
   public var inputs: ProjectActivitySuccessCellViewModelInputs { return self }

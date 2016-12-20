@@ -49,7 +49,7 @@ public final class ProjectNotificationCellViewModel: ProjectNotificationCellView
     let updateEvent = toggledNotification
       .switchMap {
         AppEnvironment.current.apiService.updateProjectNotification($0)
-          .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
+          .delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
     }
 
@@ -62,7 +62,7 @@ public final class ProjectNotificationCellViewModel: ProjectNotificationCellView
       .switchMap {
         .merge(
           SignalProducer(value: $0),
-          SignalProducer(signal: toggledNotification.skipRepeats())
+          SignalProducer(toggledNotification.skipRepeats())
         )
       }
       .combinePrevious()

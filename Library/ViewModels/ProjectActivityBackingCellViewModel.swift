@@ -17,7 +17,7 @@ public protocol ProjectActivityBackingCellViewModelInputs {
 
 public protocol ProjectActivityBackingCellViewModelOutputs {
   /// Emits a URL for the backer's avatar.
-  var backerImageURL: Signal<NSURL?, NoError> { get }
+  var backerImageURL: Signal<URL?, NoError> { get }
 
   /// Emits the cell's accessibility label.
   var cellAccessibilityLabel: Signal<String, NoError> { get }
@@ -77,7 +77,7 @@ ProjectActivityBackingCellViewModelInputs, ProjectActivityBackingCellViewModelOu
     let title = activity.map(title(activity:))
 
     self.backerImageURL = activityAndProject
-      .map { activity, _ in ( activity.user?.avatar.medium).flatMap(NSURL.init) }
+      .map { activity, _ in ( activity.user?.avatar.medium).flatMap(URL.init) }
 
     self.cellAccessibilityLabel = title.map { title in title.htmlStripped() ?? "" }
 
@@ -161,7 +161,7 @@ ProjectActivityBackingCellViewModelInputs, ProjectActivityBackingCellViewModelOu
     self.sendMessageButtonPressedProperty.value = ()
   }
 
-  public let backerImageURL: Signal<NSURL?, NoError>
+  public let backerImageURL: Signal<URL?, NoError>
   public let cellAccessibilityLabel: Signal<String, NoError>
   public let cellAccessibilityValue: Signal<String, NoError>
   public let notifyDelegateGoToBacking: Signal<(Project, User), NoError>

@@ -79,7 +79,7 @@ public final class ProfileViewModel: ProfileViewModelType, ProfileViewModelInput
     self.user = viewWillAppearProperty.signal
       .switchMap { _ in
         AppEnvironment.current.apiService.fetchUserSelf()
-          .prefix(SignalProducer(values: [AppEnvironment.current.currentUser].compact()))
+          .prefix(SignalProducer([AppEnvironment.current.currentUser].compact()))
           .demoteErrors()
     }
 

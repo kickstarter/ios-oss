@@ -26,10 +26,10 @@ public protocol ProjectDescriptionViewModelOutputs {
   var goToMessageDialog: Signal<(MessageSubject, Koala.MessageDialogContext), NoError> { get }
 
   /// Emits when we should open a safari browser with the URL.
-  var goToSafariBrowser: Signal<NSURL, NoError> { get }
+  var goToSafariBrowser: Signal<URL, NoError> { get }
 
   /// Emits a url request that should be loaded into the webview.
-  var loadWebViewRequest: Signal<NSURLRequest, NoError> { get }
+  var loadWebViewRequest: Signal<URLRequest, NoError> { get }
 }
 
 public protocol ProjectDescriptionViewModelType {
@@ -41,17 +41,17 @@ public final class ProjectDescriptionViewModel: ProjectDescriptionViewModelType,
 ProjectDescriptionViewModelInputs, ProjectDescriptionViewModelOutputs {
 
   public init() {
-    let project = combineLatest(self.projectProperty.signal.skipNil(), self.viewDidLoadProperty.signal)
+    let project = Signal.combineLatest(self.projectProperty.signal.skipNil(), self.viewDidLoadProperty.signal)
       .map(first)
     let navigationAction = self.policyForNavigationActionProperty.signal.skipNil()
     let navigationActionLink = navigationAction
-      .filter { $0.navigationType == .LinkActivated }
+      .filter { $0.navigationType == .linkActivated }
     let navigation = navigationActionLink
       .map { Navigation.match($0.request) }
 
     let projectDescriptionRequest = project
       .map {
-        URL(string: $0.urls.web.project)?.URLByAppendingPathComponent("description")
+        URL(string: $0.urls.web.project)?.appendingPathComponent("description")
       }
       .skipNil()
 
@@ -59,9 +59,9 @@ ProjectDescriptionViewModelInputs, ProjectDescriptionViewModelOutputs {
       .map { AppEnvironment.current.apiService.preparedRequest(forURL: $0) }
 
     self.policyDecisionProperty <~ navigationAction
-      .map { action in allowed(navigationAction: action) ? .Allow : .Cancel }
+      .map { action in allowed(navigationAction: action) ? .allow : .cancel }
 
-    let possiblyGoToMessageDialog = combineLatest(project, navigation)
+    let possiblyGoToMessageDialog = Signal.combineLatest(project, navigation)
       .map { (project, navigation) -> (MessageSubject, Koala.MessageDialogContext)? in
         guard navigation.map(isMessageCreator(navigation:)) == true else { return nil }
         return (MessageSubject.project(project), Koala.MessageDialogContext.projectPage)
@@ -69,7 +69,7 @@ ProjectDescriptionViewModelInputs, ProjectDescriptionViewModelOutputs {
 
     self.goToMessageDialog = possiblyGoToMessageDialog.skipNil()
 
-    let possiblyGoBackToProject = combineLatest(project, navigation)
+    let possiblyGoBackToProject = Signal.combineLatest(project, navigation)
       .map { (project, navigation) -> Project? in
         guard
           case let (.project(param, .root, _))? = navigation, String(project.id) == param.slug || project.slug == param.slug
@@ -80,10 +80,10 @@ ProjectDescriptionViewModelInputs, ProjectDescriptionViewModelOutputs {
 
     self.goBackToProject = possiblyGoBackToProject.skipNil().ignoreValues()
 
-    self.goToSafariBrowser = zip(navigationActionLink, possiblyGoToMessageDialog, possiblyGoBackToProject)
+    self.goToSafariBrowser = Signal.zip(navigationActionLink, possiblyGoToMessageDialog, possiblyGoBackToProject)
       .filter { $1 == nil && $2 == nil }
-      .filter { navigationAction, _, _ in navigationAction.navigationType == .LinkActivated }
-      .map { navigationAction, _, _ in navigationAction.request.URL }
+      .filter { navigationAction, _, _ in navigationAction.navigationType == .linkActivated }
+      .map { navigationAction, _, _ in navigationAction.request.url }
       .skipNil()
 
     project
@@ -107,14 +107,14 @@ ProjectDescriptionViewModelInputs, ProjectDescriptionViewModelOutputs {
     self.viewDidLoadProperty.value = ()
   }
 
-  fileprivate let policyDecisionProperty = MutableProperty(WKNavigationActionPolicy.Allow)
+  fileprivate let policyDecisionProperty = MutableProperty(WKNavigationActionPolicy.allow)
   public var decidedPolicyForNavigationAction: WKNavigationActionPolicy {
     return self.policyDecisionProperty.value
   }
   public let goBackToProject: Signal<(), NoError>
   public let goToMessageDialog: Signal<(MessageSubject, Koala.MessageDialogContext), NoError>
-  public let goToSafariBrowser: Signal<NSURL, NoError>
-  public let loadWebViewRequest: Signal<NSURLRequest, NoError>
+  public let goToSafariBrowser: Signal<URL, NoError>
+  public let loadWebViewRequest: Signal<URLRequest, NoError>
 
   public var inputs: ProjectDescriptionViewModelInputs { return self }
   public var outputs: ProjectDescriptionViewModelOutputs { return self }

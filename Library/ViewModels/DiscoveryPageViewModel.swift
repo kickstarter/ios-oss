@@ -95,7 +95,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       .map { AppEnvironment.current.currentUser }
       .skipRepeats(==)
 
-    let paramsChanged = combineLatest(
+    let paramsChanged = Signal.combineLatest(
       self.sortProperty.signal.skipNil(),
       self.selectedFilterProperty.signal.skipNil()
       )
@@ -112,7 +112,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       self.viewDidDisappearProperty.signal.mapConst(false)
       ).skipRepeats()
 
-    let requestFirstPageWith = combineLatest(currentUser, paramsChanged, isVisible)
+    let requestFirstPageWith = Signal.combineLatest(currentUser, paramsChanged, isVisible)
       .filter { _, _, visible in visible }
       .skipRepeats { lhs, rhs in lhs.0 == rhs.0 && lhs.1 == rhs.1 }
       .map(second)
@@ -134,10 +134,10 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       paginatedProjects,
       self.selectedFilterProperty.signal.skipNil().skipRepeats().mapConst([])
       )
-      .skipWhile { $0.isEmpty }
+      .skip { $0.isEmpty }
       .skipRepeats(==)
 
-    self.asyncReloadData = self.projects.take(1).ignoreValues()
+    self.asyncReloadData = self.projects.take(first: 1).ignoreValues()
 
     self.showEmptyState = paramsChanged
       .takeWhen(paginatedProjects.filter { $0.isEmpty })
@@ -145,15 +145,15 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       .skipNil()
 
     self.hideEmptyState = Signal.merge(
-      self.viewWillAppearProperty.signal.take(1),
-      paramsChanged.skip(1).ignoreValues()
+      self.viewWillAppearProperty.signal.take(first: 1),
+      paramsChanged.skip(first: 1).ignoreValues()
     )
 
     let fetchActivityEvent = self.viewDidAppearProperty.signal
       .filter { _ in AppEnvironment.current.currentUser != nil }
       .switchMap { _ in
         AppEnvironment.current.apiService.fetchActivities(count: 1)
-          .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
+          .delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
     }
 
@@ -187,7 +187,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       .map { $0.activities }
       .skipRepeats(==)
       .map { $0.filter { activity in hasNotSeen(activity: activity) } }
-      .on(next: { activities in saveSeen(activities: activities) })
+      .on(value: { activities in saveSeen(activities: activities) })
 
     let clearActivitySampleOnLogout = self.viewWillAppearProperty.signal
       .filter { _ in AppEnvironment.current.currentUser == nil }
@@ -209,7 +209,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       )
       .skipRepeats(==)
 
-    self.showOnboarding = combineLatest(currentUser, self.sortProperty.signal.skipNil())
+    self.showOnboarding = Signal.combineLatest(currentUser, self.sortProperty.signal.skipNil())
       .map { $0 == nil && $1 == .magic }
       .skipRepeats()
 

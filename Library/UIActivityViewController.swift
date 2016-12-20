@@ -6,7 +6,7 @@ public extension UIActivityViewController {
 //  public static func shareProject(project: Project, completionHandler: (String?, Bool) -> Void) ->
 //    UIActivityViewController {
 //    let activityItemProvider = UIActivityItemProvider(placeholderItem: project as! AnyObject)
-//    let activityItems = [activityItemProvider, NSURL(string: project.urls.web.project)]
+//    let activityItems = [activityItemProvider, URL(string: project.urls.web.project)]
 //    let vc = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
 //    vc.excludedActivityTypes = [
 //      UIActivityTypePostToWeibo,

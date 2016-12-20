@@ -16,7 +16,7 @@ extension UIDevice: UIDeviceType {
     sysctlbyname("hw.machine", nil, &size, nil, 0)
     var machine = [CChar](repeating: 0, count: Int(size))
     sysctlbyname("hw.machine", &machine, &size, nil, 0)
-    return String(cString: machine) ?? "Unknown device model"
+    return String(cString: machine)
   }
 }
 

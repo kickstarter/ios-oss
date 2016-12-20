@@ -12,8 +12,8 @@ public protocol ActivityFriendFollowCellViewModelInputs {
 }
 
 public protocol ActivityFriendFollowCellViewModelOutputs {
-  /// Emits a NSURL to the friend image.
-  var friendImageURL: Signal<NSURL?, NoError> { get }
+  /// Emits a URL to the friend image.
+  var friendImageURL: Signal<URL?, NoError> { get }
 
   /// Emits whether to hide the follow button.
   var hideFollowButton: Signal<Bool, NoError> { get }
@@ -31,7 +31,7 @@ ActivityFriendFollowCellViewModelOutputs {
       .skipNil()
       .map(cached(friend:))
 
-    self.friendImageURL = friend.map { NSURL.init(string: $0.avatar.small) }
+    self.friendImageURL = friend.map { URL.init(string: $0.avatar.small) }
 
     self.title = friend.map {
       let string = Strings.activity_user_name_is_now_following_you(user_name: "<b>\($0.name)</b>")
@@ -72,7 +72,7 @@ ActivityFriendFollowCellViewModelOutputs {
     self.followButtonTappedProperty.value = ()
   }
 
-  public let friendImageURL: Signal<NSURL?, NoError>
+  public let friendImageURL: Signal<URL?, NoError>
   public let hideFollowButton: Signal<Bool, NoError>
   public let title: Signal<NSAttributedString, NoError>
 

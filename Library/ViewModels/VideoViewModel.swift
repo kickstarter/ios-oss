@@ -42,7 +42,7 @@ public protocol VideoViewModelOutputs {
   var addCompletionObserver: Signal<CMTime, NoError> { get }
 
   /// Emits with the video url to be played.
-  var configurePlayerWithURL: Signal<NSURL, NoError> { get }
+  var configurePlayerWithURL: Signal<URL, NoError> { get }
 
   /// Emits for testing when the video complete stat is incremented.
   var incrementVideoCompletion: Signal<VoidEnvelope, NoError> { get }
@@ -66,7 +66,7 @@ public protocol VideoViewModelOutputs {
   var projectImageHidden: Signal<Bool, NoError> { get }
 
   /// Emits with the project image url to be displayed.
-  var projectImageURL: Signal<NSURL?, NoError> { get }
+  var projectImageURL: Signal<URL?, NoError> { get }
 
   /// Emits when should seek video back to beginning.
   var seekToBeginning: Signal<Void, NoError> { get }
@@ -88,7 +88,7 @@ public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, 
   // swiftlint:disable function_body_length
   public init() {
 
-    let project = combineLatest(
+    let project = Signal.combineLatest(
       self.projectProperty.signal.skipNil(),
       self.viewDidLoadProperty.signal
     )
@@ -105,22 +105,22 @@ public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, 
     let completionThreshold = duration
       .map { 0.85 * CMTimeGetSeconds($0) }
 
-    let reachedEndOfVideo = combineLatest(rateCurrentTime, duration)
+    let reachedEndOfVideo = Signal.combineLatest(rateCurrentTime, duration)
       .filter { rateCurrentTime, duration in rateCurrentTime.1 == duration }
 
-    let videoCompletedOnScrub = combineLatest(rateCurrentTime, completionThreshold)
+    let videoCompletedOnScrub = Signal.combineLatest(rateCurrentTime, completionThreshold)
       .filter { rateCurrentTime, completionThreshold in
         let currentTimeSeconds = CMTimeGetSeconds(rateCurrentTime.1)
         return currentTimeSeconds >= completionThreshold
       }
-      .take(1)
+      .take(first: 1)
       .ignoreValues()
 
     let videoCompleted = Signal.merge(videoCompletedOnScrub, self.crossedCompletionThresholdProperty.signal)
-      .take(1)
+      .take(first: 1)
 
-    let videoPaused = combineLatest(rateCurrentTime, duration)
-      .skip(1)
+    let videoPaused = Signal.combineLatest(rateCurrentTime, duration)
+      .skip(first: 1)
       .filter { rateCurrentTime, duration in rateCurrentTime.0 == pauseRate && rateCurrentTime.1 != duration }
 
     let videoResumed = rateCurrentTime
@@ -128,7 +128,7 @@ public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, 
 
     let videoStarted = rateCurrentTime
       .filter { rate, currentTime in currentTime == kCMTimeZero && rate == playRate }
-      .take(1)
+      .take(first: 1)
 
     self.addCompletionObserver = completionThreshold.map { CMTimeMakeWithSeconds($0, 1) }
 
@@ -160,14 +160,14 @@ public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, 
 
     self.seekToBeginning = reachedEndOfVideo.ignoreValues()
 
-    self.incrementVideoCompletion = combineLatest(project, videoCompleted)
+    self.incrementVideoCompletion = Signal.combineLatest(project, videoCompleted)
       .map(first)
       .switchMap {
         AppEnvironment.current.apiService.incrementVideoCompletion(forProject: $0)
           .demoteErrors()
     }
 
-    self.incrementVideoStart = combineLatest(project, videoStarted)
+    self.incrementVideoStart = Signal.combineLatest(project, videoStarted)
       .map(first)
       .switchMap {
         AppEnvironment.current.apiService.incrementVideoStart(forProject: $0)
@@ -185,7 +185,7 @@ public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, 
       .takeWhen(videoCompleted)
       .observeValues { AppEnvironment.current.koala.trackVideoCompleted(forProject: $0) }
 
-    combineLatest(project, viewIsVisible)
+    Signal.combineLatest(project, viewIsVisible)
       .takeWhen(videoPaused)
       .filter { _, isVisible in isVisible }
       .map(first)
@@ -239,7 +239,7 @@ public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, 
   }
 
   public let addCompletionObserver: Signal<CMTime, NoError>
-  public let configurePlayerWithURL: Signal<NSURL, NoError>
+  public let configurePlayerWithURL: Signal<URL, NoError>
   public let incrementVideoCompletion: Signal<VoidEnvelope, NoError>
   public let incrementVideoStart: Signal<VoidEnvelope, NoError>
   public let notifyDelegateThatVideoDidFinish: Signal<(), NoError>
@@ -248,7 +248,7 @@ public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, 
   public let playVideo: Signal<Void, NoError>
   public var playButtonHidden: Signal<Bool, NoError>
   public var projectImageHidden: Signal<Bool, NoError>
-  public let projectImageURL: Signal<NSURL?, NoError>
+  public let projectImageURL: Signal<URL?, NoError>
   public let seekToBeginning: Signal<Void, NoError>
   public var videoOverlayViewHidden: Signal<Bool, NoError>
   public var videoViewHidden: Signal<Bool, NoError>

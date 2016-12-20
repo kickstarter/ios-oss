@@ -488,11 +488,13 @@ private func userSurvey(_ params: RouteParams) -> Decoded<Navigation> {
 private func parsedParams(url: URL, fromTemplate template: String) -> RouteParams? {
 
   // early out on URL's that are not recognized as kickstarter URL's
-  let isApiURL = true == AppEnvironment.current.apiService.serverConfig.apiBaseUrl.absoluteString
-    .flatMap { url.absoluteString?.hasPrefix($0) }
+  let isApiURL = url.absoluteString.hasPrefix(
+    AppEnvironment.current.apiService.serverConfig.apiBaseUrl.absoluteString
+  )
 
-  let isWebURL = true == AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString
-    .flatMap { url.absoluteString?.hasPrefix($0) }
+  let isWebURL = url.absoluteString.hasPrefix(
+    AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString
+  )
 
   guard isApiURL || isWebURL else { return nil }
 

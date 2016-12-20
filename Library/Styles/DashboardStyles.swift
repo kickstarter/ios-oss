@@ -26,11 +26,11 @@ public let dashboardChartCardViewStyle = dashboardCardStyle
 
 public let dashboardColumnTitleButtonStyle =
   UIButton.lens.titleLabel.font .~ UIFont.ksr_caption1().bolded
-    <> UIButton.lens.titleColor(forState: .Normal) .~ .ksr_navy_700
-    <> UIButton.lens.titleColor(forState: .Highlighted) .~ .ksr_grey_100
+    <> UIButton.lens.titleColor(forState: .normal) .~ .ksr_navy_700
+    <> UIButton.lens.titleColor(forState: .highlighted) .~ .ksr_grey_100
     <> UIButton.lens.contentEdgeInsets .~
     .init(top: Styles.grid(2), left: 0, bottom: Styles.grid(1), right: 0)
-    <> UIButton.lens.contentHorizontalAlignment .~ .Left
+    <> UIButton.lens.contentHorizontalAlignment .~ .left
 
 public let dashboardColumnTextLabelStyle =
   UILabel.lens.textColor .~ .ksr_text_navy_700
@@ -75,16 +75,16 @@ public let dashboardFundingStatsStackView =
 
 public let dashboardGrayTextBorderButtonStyle = borderButtonStyle
   <> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 12)
-  <> UIButton.lens.titleColor(forState: .Normal) .~ .ksr_navy_600
-  <> UIButton.lens.titleColor(forState: .Highlighted) .~ .ksr_grey_100
-  <> UIButton.lens.backgroundColor(forState: .Highlighted) .~ .ksr_navy_600
-  <> UIButton.lens.layer.borderColor .~ UIColor.ksr_navy_300.CGColor
+  <> UIButton.lens.titleColor(forState: .normal) .~ .ksr_navy_600
+  <> UIButton.lens.titleColor(forState: .highlighted) .~ .ksr_grey_100
+  <> UIButton.lens.backgroundColor(forState: .highlighted) .~ .ksr_navy_600
+  <> UIButton.lens.layer.borderColor .~ UIColor.ksr_navy_300.cgColor
 
 public let dashboardGreenTextBorderButtonStyle = borderButtonStyle
   <> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 12)
-  <> UIButton.lens.titleColor(forState: .Normal) .~ .ksr_green_700
-  <> UIButton.lens.titleColor(forState: .Highlighted) .~ .ksr_grey_100
-  <> UIButton.lens.layer.borderColor .~ UIColor.ksr_navy_300.CGColor
+  <> UIButton.lens.titleColor(forState: .normal) .~ .ksr_green_700
+  <> UIButton.lens.titleColor(forState: .highlighted) .~ .ksr_grey_100
+  <> UIButton.lens.layer.borderColor .~ UIColor.ksr_navy_300.cgColor
 
 public let dashboardStatTitleLabelStyle =
   UILabel.lens.textColor .~ .ksr_text_navy_700
@@ -110,7 +110,7 @@ public let dashboardReferrersPledgePercentLabelStyle =
   <> UILabel.lens.font .~ .ksr_footnote()
 
 public let dashboardReferrersShowMoreButtonStyle = dashboardGreenTextBorderButtonStyle
-  <> UIButton.lens.title(forState: .Normal) %~ { _ in
+  <> UIButton.lens.title(forState: .normal) %~ { _ in
     Strings.dashboard_graphs_referrers_view_more_referrer_stats()
   }
 
@@ -122,9 +122,9 @@ public let dashboardReferrersTitleLabelStyle = dashboardCellTitleLabelStyle
   <> UILabel.lens.text %~ { _ in Strings.dashboard_graphs_referrers_title_referrers() }
 
 public let postUpdateButtonStyle = dashboardGreenTextBorderButtonStyle
-  <> UIButton.lens.titleColor(forState: .Normal) .~ .ksr_text_navy_700
-  <> UIButton.lens.titleColor(forState: .Highlighted) .~ .ksr_text_navy_500
-  <> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.dashboard_buttons_post_update() }
+  <> UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_navy_700
+  <> UIButton.lens.titleColor(forState: .highlighted) .~ .ksr_text_navy_500
+  <> UIButton.lens.title(forState: .normal) %~ { _ in Strings.dashboard_buttons_post_update() }
   <> UIButton.lens.accessibilityHint %~ { _ in Strings.accessibility_dashboard_buttons_post_update_hint() }
   <> UIButton.lens.accessibilityLabel %~ { _ in Strings.dashboard_buttons_post_update() }
 
@@ -134,15 +134,15 @@ public let dashboardRewardTitleLabelStyle = dashboardCellTitleLabelStyle
 public let dashboardRewardRowTitleButtonStyle = textOnlyButtonStyle
   <> UIButton.lens.titleLabel.font .~ UIFont.ksr_footnote().bolded
   <> UIButton.lens.contentEdgeInsets .~ .init(topBottom: 12.0, leftRight: 0.0)
-  <> UIButton.lens.contentHorizontalAlignment .~ .Left
+  <> UIButton.lens.contentHorizontalAlignment .~ .left
 
 public let dashboardRewardSeeAllButtonStyle = textOnlyButtonStyle
   <> UIButton.lens.titleLabel.font .~ .ksr_footnote()
   <> UIButton.lens.contentEdgeInsets .~ .init(topBottom: 12.0, leftRight: 0.0)
-  <> UIButton.lens.title(forState: .Normal) %~ { _ in
+  <> UIButton.lens.title(forState: .normal) %~ { _ in
     Strings.dashboard_graphs_rewards_view_more_reward_stats()
   }
-  <> UIButton.lens.titleColor(forState: .Normal) .~ .ksr_navy_700
+  <> UIButton.lens.titleColor(forState: .normal) .~ .ksr_navy_700
 
 public let dashboardReferrersCumulativeStackViewStyle =
   UIStackView.lens.layoutMargins .~ .init(topBottom: 0, leftRight: Styles.grid(4))
@@ -169,7 +169,7 @@ public let dashboardVideoExternalPlaysProgressViewStyle =
     <> UIView.lens.layer.borderWidth .~ 1
 
 public let dashboardVideoGraphPercentageLabelStyle =
-  UILabel.lens.textColor .~ .whiteColor()
+  UILabel.lens.textColor .~ .white
     <> UILabel.lens.font .~ UIFont.ksr_caption1().bolded
 
 public let dashboardVideoInternalPlaysProgressViewStyle =
@@ -181,11 +181,11 @@ public let dashboardVideoPlaysTitleLabelStyle = dashboardCellTitleLabelStyle
   <> UILabel.lens.text %~ { _ in Strings.dashboard_graphs_video_title_video_plays() }
 
 public let dashboardVideoTotalPlaysCountLabelStyle =
-  UILabel.lens.textColor .~ .blackColor()
+  UILabel.lens.textColor .~ .black
     <> UILabel.lens.font .~ UIFont.ksr_title1().bolded
 
 public let dashboardViewProjectButtonStyle = dashboardGrayTextBorderButtonStyle
-  <> UIButton.lens.backgroundColor(forState: .Normal) .~ .whiteColor()
-  <> UIButton.lens.titleColor(forState: .Normal) .~ .ksr_navy_700
+  <> UIButton.lens.backgroundColor(forState: .normal) .~ .white
+  <> UIButton.lens.titleColor(forState: .normal) .~ .ksr_navy_700
   <> UIButton.lens.contentEdgeInsets .~ .init(topBottom: 8, leftRight: 16)
-  <> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.View() }
+  <> UIButton.lens.title(forState: .normal) %~ { _ in Strings.View() }

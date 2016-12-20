@@ -20,7 +20,7 @@ public protocol ActivitySampleProjectCellViewModelOutputs {
   var goToActivity: Signal<Void, NoError> { get }
 
   /// Emits the project image url to be displayed.
-  var projectImageURL: Signal<NSURL?, NoError> { get }
+  var projectImageURL: Signal<URL?, NoError> { get }
 
   /// Emits the project subtitle message to be displayed.
   var projectSubtitleText: Signal<String, NoError> { get }
@@ -46,7 +46,7 @@ public final class ActivitySampleProjectCellViewModel: ActivitySampleProjectCell
     self.goToActivity = self.seeAllActivityTappedProperty.signal
 
     self.projectImageURL = activity
-      .map { ($0.project?.photo.med).flatMap(NSURL.init) }
+      .map { ($0.project?.photo.med).flatMap(URL.init) }
 
     self.projectTitleText = activity
       .map { $0.project?.name }.skipNil()
@@ -84,7 +84,7 @@ public final class ActivitySampleProjectCellViewModel: ActivitySampleProjectCell
 
   public let cellAccessibilityHint: Signal<String, NoError>
   public let goToActivity: Signal<Void, NoError>
-  public let projectImageURL: Signal<NSURL?, NoError>
+  public let projectImageURL: Signal<URL?, NoError>
   public let projectSubtitleText: Signal<String, NoError>
   public let projectTitleText: Signal<String, NoError>
 

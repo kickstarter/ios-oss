@@ -10,7 +10,7 @@ final class MessageThreadCellViewModelTests: TestCase {
   fileprivate let date = TestObserver<String, NoError>()
   fileprivate let dateAccessibilityLabel = TestObserver<String, NoError>()
   fileprivate let messageBody = TestObserver<String, NoError>()
-  fileprivate let participantAvatarURL = TestObserver<NSURL?, NoError>()
+  fileprivate let participantAvatarURL = TestObserver<URL?, NoError>()
   fileprivate let participantName = TestObserver<String, NoError>()
   fileprivate let projectName = TestObserver<String, NoError>()
   fileprivate let replyIndicatorHidden = TestObserver<Bool, NoError>()

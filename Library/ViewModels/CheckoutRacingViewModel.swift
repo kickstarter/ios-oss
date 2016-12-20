@@ -8,7 +8,7 @@ private struct CheckoutRetryError: Error {}
 
 public protocol CheckoutRacingViewModelInputs {
   /// Configure with the checkout URL.
-  func configureWith(url: NSURL)
+  func configureWith(url: URL)
 }
 
 public protocol CheckoutRacingViewModelOutputs {
@@ -29,11 +29,10 @@ public final class CheckoutRacingViewModel: CheckoutRacingViewModelType {
 
     let envelope = initialURLProperty.signal.skipNil()
       .map { $0.absoluteString }
-      .skipNil()
       .promoteErrors(CheckoutRetryError.self)
       .switchMap { url in
         SignalProducer<(), CheckoutRetryError>(value: ())
-          .delay(1, onScheduler: AppEnvironment.current.scheduler)
+          .delay(1, on: AppEnvironment.current.scheduler)
           .flatMap {
             AppEnvironment.current.apiService.fetchCheckout(checkoutUrl: url)
               .flatMapError { errorEnv in
@@ -49,11 +48,11 @@ public final class CheckoutRacingViewModel: CheckoutRacingViewModelType {
                 }
             }
           }
-          .retry(9)
-          .timeoutWithError(
-            CheckoutRetryError(),
-            afterInterval: 10,
-            onScheduler: AppEnvironment.current.scheduler
+          .retry(upTo: 9)
+          .timeout(
+            after: 10,
+            raising: CheckoutRetryError(),
+            on: AppEnvironment.current.scheduler
           )
       }
       .materialize()
@@ -74,8 +73,8 @@ public final class CheckoutRacingViewModel: CheckoutRacingViewModelType {
     self.showAlert = Signal.merge(failedCheckoutError, timedOutError)
   }
 
-  fileprivate let initialURLProperty = MutableProperty<NSURL?>(nil)
-  public func configureWith(url: NSURL) {
+  fileprivate let initialURLProperty = MutableProperty<URL?>(nil)
+  public func configureWith(url: URL) {
     self.initialURLProperty.value = url
   }
 

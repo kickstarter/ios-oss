@@ -20,7 +20,7 @@ public protocol BackingViewModelInputs {
 
 public protocol BackingViewModelOutputs {
   /// Emits the backer avatar to be displayed.
-  var backerAvatarURL: Signal<NSURL?, NoError> { get }
+  var backerAvatarURL: Signal<URL?, NoError> { get }
 
   /// Emits the backer name to be displayed.
   var backerName: Signal<String, NoError> { get }
@@ -123,7 +123,7 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
     self.backerName = backer.map { $0.name }
     self.backerNameAccessibilityLabel = self.backerName
 
-    self.backerAvatarURL = backer.map { NSURL(string: $0.avatar.small) }
+    self.backerAvatarURL = backer.map { URL(string: $0.avatar.small) }
 
     self.backerPledgeStatus = backing
       .map { Strings.backer_modal_status_backing_status( backing_status: statusString($0.status)) }
@@ -210,7 +210,7 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
     self.viewMessagesTappedProperty.value = ()
   }
 
-  public let backerAvatarURL: Signal<NSURL?, NoError>
+  public let backerAvatarURL: Signal<URL?, NoError>
   public let backerName: Signal<String, NoError>
   public let backerNameAccessibilityLabel: Signal<String, NoError>
   public let backerPledgeAmountAndDate: Signal<String, NoError>

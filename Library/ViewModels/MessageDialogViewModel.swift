@@ -76,11 +76,11 @@ MessageDialogViewModelOutputs {
       .skipRepeats()
 
     self.postButtonEnabled = Signal.merge(
-      self.viewDidLoadProperty.signal.take(1).mapConst(false),
+      self.viewDidLoadProperty.signal.take(first: 1).mapConst(false),
       bodyIsPresent
     )
 
-    let sendMessageResult = combineLatest(
+    let sendMessageResult = Signal.combineLatest(
       body,
       messageSubject
       )
@@ -88,7 +88,7 @@ MessageDialogViewModelOutputs {
       .switchMap { body, messageSubject in
 
         AppEnvironment.current.apiService.sendMessage(body: body, toSubject: messageSubject)
-          .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
+          .delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
     }
 
@@ -105,11 +105,11 @@ MessageDialogViewModelOutputs {
     self.loadingViewIsHidden = Signal.merge(
       self.postButtonPressedProperty.signal.mapConst(false),
       sendMessageResult.filter { $0.isTerminating }.mapConst(true),
-      self.viewDidLoadProperty.signal.take(1).mapConst(true)
+      self.viewDidLoadProperty.signal.take(first: 1).mapConst(true)
     )
 
     self.recipientName = messageSubject
-      .take(1)
+      .take(first: 1)
       .flatMap { messageSubject -> SignalProducer<String, NoError> in
         switch messageSubject {
         case let .backing(backing):
@@ -127,10 +127,10 @@ MessageDialogViewModelOutputs {
       self.notifyPresenterDialogWantsDismissal.mapConst(false)
     )
 
-    combineLatest(project, self.contextProperty.signal.skipNil())
+    Signal.combineLatest(project, self.contextProperty.signal.skipNil())
       .observeValues { AppEnvironment.current.koala.trackViewedMessageEditor(project: $0, context: $1) }
 
-    combineLatest(project, self.contextProperty.signal.skipNil())
+    Signal.combineLatest(project, self.contextProperty.signal.skipNil())
       .takeWhen(self.notifyPresenterCommentWasPostedSuccesfully)
       .observeValues { AppEnvironment.current.koala.trackMessageSent(project: $0, context: $1) }
   }
@@ -174,7 +174,7 @@ MessageDialogViewModelOutputs {
 
 func fetchBackerName(backing: Backing) -> SignalProducer<String, NoError> {
   return AppEnvironment.current.apiService.fetchUser(userId: backing.backerId)
-    .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
+    .delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
     .demoteErrors()
     .map { $0.name }
 }

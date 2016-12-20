@@ -82,7 +82,7 @@ public final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMode
   public init() {
     let isLoading = MutableProperty(false)
 
-    let loginData = combineLatest(
+    let loginData = SignalProducer.combineLatest(
       self.emailProperty.producer,
       self.passwordProperty.producer,
       self.facebookTokenProperty.producer,
@@ -132,7 +132,7 @@ public final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMode
     self.showError = Signal.merge([codeMismatch, genericFail])
 
     self.postNotification = self.environmentLoggedInProperty.signal
-      .mapConst(NSNotification(name: CurrentUserNotifications.sessionStarted, object: nil))
+      .mapConst(NSNotification(name: NSNotification.Name(rawValue: CurrentUserNotifications.sessionStarted), object: nil))
 
     self.viewWillAppearProperty.signal
       .observeValues { AppEnvironment.current.koala.trackTfa() }

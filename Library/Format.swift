@@ -17,7 +17,7 @@ public enum Format {
       forConfig: .defaultWholeNumberConfig
         |> NumberFormatterConfig.lens.locale .~ env.locale
     )
-    return formatter.stringFromNumber(x) ?? String(x)
+    return formatter.string(from: NSNumber(value: x)) ?? String(x)
   }
 
   /**
@@ -46,7 +46,7 @@ public enum Format {
         |> NumberFormatterConfig.lens.locale .~ env.locale
     )
 
-    return formatter.stringFromNumber(Float(percentage)) ?? (String(percentage) + "%")
+    return formatter.string(from: NSNumber(value: percentage)) ?? (String(percentage) + "%")
   }
 
   /**
@@ -71,7 +71,7 @@ public enum Format {
         |> NumberFormatterConfig.lens.currencySymbol .~ currencySymbol(forCountry: country)
     )
 
-    return formatter.string(from: amount)?
+    return formatter.string(from: NSNumber(value: amount))?
       .trimmed()
       .stringByReplacingOccurrencesOfString(String.nbsp + String.nbsp, withString: String.nbsp)
       ?? country.currencySymbol + String(amount)
@@ -146,10 +146,9 @@ public enum Format {
                  useToGo: Bool = false,
                  env: Environment = AppEnvironment.current) -> (time: String, unit: String) {
 
-    let components = env.calendar.components([.Day, .Hour, .Minute, .Second],
-                                             fromDate: env.dateType.init().date,
-                                             toDate: env.dateType.init(timeIntervalSince1970: seconds).date,
-                                             options: [])
+    let components = env.calendar.components([.day, .hour, .minute, .second],
+                                             from: env.dateType.init().date,
+                                             to: env.dateType.init(timeIntervalSince1970: seconds).date)
 
     let string: String
     if components.day > 1 {
@@ -167,7 +166,7 @@ public enum Format {
       string = ""
     }
 
-    let split = string.componentsSeparatedByString(" ")
+    let split = string.componentsSeparatedBy(" ")
     guard split.count >= 1 else { return ("", "") }
 
     let result = (
@@ -202,9 +201,8 @@ public enum Format {
                  env: Environment = AppEnvironment.current) -> String {
 
     let components = env.calendar.components([.day, .hour, .minute, .second],
-                                             fromDate: env.dateType.init(timeIntervalSince1970: seconds).date,
-                                             toDate: env.dateType.init().date,
-                                             options: [])
+                                             from: env.dateType.init(timeIntervalSince1970: seconds).date,
+                                             to: env.dateType.init().date)
 
     if abs(components.day) > thresholdInDays {
       return Format.date(secondsInUTC: seconds, dateStyle: .medium, timeStyle: .none)
@@ -312,25 +310,25 @@ fileprivate struct NumberFormatterConfig {
   fileprivate static var formatters: [NumberFormatterConfig:NumberFormatter] = [:]
 
   fileprivate static let defaultWholeNumberConfig = NumberFormatterConfig(numberStyle: .decimal,
-                                                                      roundingMode: .down,
-                                                                      maximumFractionDigits: 0,
-                                                                      generatesDecimalNumbers: false,
-                                                                      locale: .current,
-                                                                      currencySymbol: "$")
+                                                                          roundingMode: .down,
+                                                                          maximumFractionDigits: 0,
+                                                                          generatesDecimalNumbers: false,
+                                                                          locale: .current,
+                                                                          currencySymbol: "$")
 
   fileprivate static let defaultPercentageConfig = NumberFormatterConfig(numberStyle: .percent,
-                                                                     roundingMode: .down,
-                                                                     maximumFractionDigits: 0,
-                                                                     generatesDecimalNumbers: false,
-                                                                     locale: .current,
-                                                                     currencySymbol: "$")
+                                                                         roundingMode: .down,
+                                                                         maximumFractionDigits: 0,
+                                                                         generatesDecimalNumbers: false,
+                                                                         locale: .current,
+                                                                         currencySymbol: "$")
 
   fileprivate static let defaultCurrencyConfig = NumberFormatterConfig(numberStyle: .currency,
-                                                                   roundingMode: .down,
-                                                                   maximumFractionDigits: 0,
-                                                                   generatesDecimalNumbers: false,
-                                                                   locale: .current,
-                                                                   currencySymbol: "$")
+                                                                       roundingMode: .down,
+                                                                       maximumFractionDigits: 0,
+                                                                       generatesDecimalNumbers: false,
+                                                                       locale: .current,
+                                                                       currencySymbol: "$")
 
   fileprivate static func cachedFormatter(forConfig config: NumberFormatterConfig) -> NumberFormatter {
     let formatter = self.formatters[config] ?? config.formatter()

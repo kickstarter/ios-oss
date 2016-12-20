@@ -21,10 +21,10 @@ public protocol ProjectCreatorViewModelOutputs {
   var goToMessageDialog: Signal<(MessageSubject, Koala.MessageDialogContext), NoError> { get }
 
   /// Emits when we should open a safari browser with the URL.
-  var goToSafariBrowser: Signal<NSURL, NoError> { get }
+  var goToSafariBrowser: Signal<URL, NoError> { get }
 
   /// Emits a request that should be loaded into the web view.
-  var loadWebViewRequest: Signal<NSURLRequest, NoError> { get }
+  var loadWebViewRequest: Signal<URLRequest, NoError> { get }
 }
 
 public protocol ProjectCreatorViewModelType {
@@ -37,31 +37,31 @@ ProjectCreatorViewModelOutputs {
 
   public init() {
     let navigationAction = self.navigationAction.signal.skipNil()
-    let project = combineLatest(self.projectProperty.signal.skipNil(), self.viewDidLoadProperty.signal)
+    let project = Signal.combineLatest(self.projectProperty.signal.skipNil(), self.viewDidLoadProperty.signal)
       .map(first)
 
     let messageCreatorRequest = navigationAction
-      .filter { $0.navigationType == .LinkActivated }
+      .filter { $0.navigationType == .linkActivated }
       .filter { isMessageCreator(request: $0.request) }
       .map { $0.request }
 
     self.loadWebViewRequest = project.map {
-      URL(string: $0.urls.web.project)?.URLByAppendingPathComponent("creator_bio")
+      URL(string: $0.urls.web.project)?.appendingPathComponent("creator_bio")
       }
       .skipNil()
       .map { AppEnvironment.current.apiService.preparedRequest(forURL: $0) }
 
     self.decidedPolicy <~ navigationAction
-      .map { $0.navigationType == .Other ? .Allow : .Cancel }
+      .map { $0.navigationType == .other ? .allow : .cancel }
 
     self.goToMessageDialog = project
       .takeWhen(messageCreatorRequest)
       .map { (MessageSubject.project($0), .projectPage) }
 
     self.goToSafariBrowser = navigationAction
-      .filter { $0.navigationType == .LinkActivated }
+      .filter { $0.navigationType == .linkActivated }
       .filter { !isMessageCreator(request: $0.request) }
-      .map { $0.request.URL }
+      .map { $0.request.url }
       .skipNil()
 
     project
@@ -77,7 +77,7 @@ ProjectCreatorViewModelOutputs {
   }
 
   fileprivate let navigationAction = MutableProperty<WKNavigationActionProtocol?>(nil)
-  fileprivate let decidedPolicy = MutableProperty(WKNavigationActionPolicy.Cancel)
+  fileprivate let decidedPolicy = MutableProperty(WKNavigationActionPolicy.cancel)
   public func decidePolicy(forNavigationAction action: WKNavigationActionProtocol)
     -> WKNavigationActionPolicy {
     self.navigationAction.value = action
@@ -90,8 +90,8 @@ ProjectCreatorViewModelOutputs {
   }
 
   public let goToMessageDialog: Signal<(MessageSubject, Koala.MessageDialogContext), NoError>
-  public let goToSafariBrowser: Signal<NSURL, NoError>
-  public let loadWebViewRequest: Signal<NSURLRequest, NoError>
+  public let goToSafariBrowser: Signal<URL, NoError>
+  public let loadWebViewRequest: Signal<URLRequest, NoError>
 
   public var inputs: ProjectCreatorViewModelInputs { return self }
   public var outputs: ProjectCreatorViewModelOutputs { return self }

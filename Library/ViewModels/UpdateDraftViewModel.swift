@@ -138,12 +138,12 @@ UpdateDraftViewModelOutputs {
     // MARK: Loading
 
     let project = self.projectProperty.signal.skipNil()
-    let draftEvent = combineLatest(self.viewDidLoadProperty.signal, project)
+    let draftEvent = Signal.combineLatest(self.viewDidLoadProperty.signal, project)
       .map(second)
       .flatMap {
         AppEnvironment.current.apiService.fetchUpdateDraft(forProject: $0)
           .materialize()
-          .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
+          .delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
     }
     let draft = draftEvent.values()
 
@@ -192,7 +192,7 @@ UpdateDraftViewModelOutputs {
       .switchMap { draft, url in
         AppEnvironment.current.apiService.addImage(file: url, toDraft: draft)
           .materialize()
-          .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
+          .delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
     }
     self.showAddAttachmentFailure = addAttachmentEvent.errors().ignoreValues()
 
@@ -220,7 +220,7 @@ UpdateDraftViewModelOutputs {
         guard case let .image(image) = attachment else { fatalError("Video not supported") }
         return AppEnvironment.current.apiService.delete(image: image, fromDraft: draft)
           .materialize()
-          .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
+          .delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
     }
     self.showRemoveAttachmentFailure = removeAttachmentEvent.errors().ignoreValues()
 
@@ -251,7 +251,7 @@ UpdateDraftViewModelOutputs {
 
     // MARK: Validation
 
-    let hasContent = combineLatest(currentTitle, currentBody, self.attachments)
+    let hasContent = Signal.combineLatest(currentTitle, currentBody, self.attachments)
       .map { title, body, attachments in
         !title.trimmed().isEmpty && (!body.trimmed().isEmpty || !attachments.isEmpty)
     }
@@ -281,7 +281,7 @@ UpdateDraftViewModelOutputs {
 
     self.bodyTextViewBecomeFirstResponder = .merge(
       self.titleTextFieldDoneEditingProperty.signal,
-      combineLatest(
+      Signal.combineLatest(
         draftHasTitle.filter(isTrue),
         draftHasBody.filter(isFalse)
       )
@@ -295,7 +295,7 @@ UpdateDraftViewModelOutputs {
       self.previewButtonTappedProperty.signal.mapConst(SaveAction.preview)
     )
 
-    let currentDraftEvent = combineLatest(
+    let currentDraftEvent = Signal.combineLatest(
       draft,
       currentTitle,
       currentBody,
@@ -312,7 +312,7 @@ UpdateDraftViewModelOutputs {
         let producer: SignalProducer<Event<UpdateDraft, ErrorEnvelope>, NoError>
 
         if unchanged {
-          producer = SignalProducer(value: .Next(draft))
+          producer = SignalProducer(value: .value(draft))
         } else {
           producer = AppEnvironment.current.apiService
             .update(draft: draft, title: title, body: body, isPublic: !isBackersOnly)
@@ -320,7 +320,7 @@ UpdateDraftViewModelOutputs {
         }
 
         return producer
-          .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
+          .delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
       }
     let currentDraft = currentDraftEvent.values()
 
@@ -373,7 +373,7 @@ UpdateDraftViewModelOutputs {
       .takeWhen(currentDraft)
       .filter(isTrue)
 
-    combineLatest(project, self.isBackersOnly)
+    Signal.combineLatest(project, self.isBackersOnly)
       .takeWhen(isBackersOnlySynced)
       .observeValues {
         AppEnvironment.current.koala.trackChangedUpdateDraftVisibility(forProject: $0, isPublic: !$1)
@@ -385,7 +385,7 @@ UpdateDraftViewModelOutputs {
         AppEnvironment.current.koala.trackStartedAddUpdateDraftAttachment(forProject: $0)
     }
 
-    combineLatest(project, self.imagePickedProperty.signal.skipNil().map(second))
+    Signal.combineLatest(project, self.imagePickedProperty.signal.skipNil().map(second))
       .takeWhen(self.attachmentAdded)
       .observeValues {
         AppEnvironment.current.koala.trackCompletedAddUpdateDraftAttachment(forProject: $0, attachedFrom: $1)
@@ -594,7 +594,7 @@ private func hasChanged<T: Equatable>(_ original: Signal<T, NoError>, _ updated:
     return Signal
       .merge(
         original.mapConst(false),
-        combineLatest(original, updated)
+        Signal.combineLatest(original, updated)
           .map(!=)
       )
       .skipRepeats()
