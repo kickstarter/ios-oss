@@ -24,10 +24,14 @@ internal final class LiveStreamCountdownViewModelTests: XCTestCase {
   }
 
   func testDateComparison() {
-    let project = Project.template
+    let liveStream = Project.LiveStream.template
+      |> Project.LiveStream.lens.startDate .~ futureDate().timeIntervalSince1970
 
-    self.vm.inputs.configureWith(project: project)
-    self.vm.inputs.setNow(nowDate())
+    let project = Project.template
+      |> Project.lens.liveStreams .~ [liveStream]
+
+    self.vm.inputs.configureWith(project: project, now: nowDate())
+    self.vm.inputs.setNow(date: nowDate())
     self.vm.inputs.viewDidLoad()
 
     XCTAssertTrue(self.days.lastValue == ("10", "days"))

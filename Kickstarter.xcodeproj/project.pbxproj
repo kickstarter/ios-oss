@@ -573,6 +573,7 @@
 		D08A817C1DFAAD08000128DB /* LiveStreamCountdownViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08A81721DFAA815000128DB /* LiveStreamCountdownViewController.swift */; };
 		D08A817E1DFAAE11000128DB /* OpenTok.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D08A817D1DFAAE11000128DB /* OpenTok.framework */; };
 		D08A817F1DFAAE11000128DB /* OpenTok.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D08A817D1DFAAE11000128DB /* OpenTok.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D0A9CC321E0842B8000F099C /* ProjectPamphletSubpageCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A9CC311E0842B8000F099C /* ProjectPamphletSubpageCellViewModelTests.swift */; };
 		D70347901DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D703478F1DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift */; };
 		D7086F3C1DB7FBA40087E5EB /* BackingViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7086F3B1DB7FBA40087E5EB /* BackingViewControllerTests.swift */; };
 		D7A9BE131DC125B800422B31 /* DiscoveryExpandableRowCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A9BE121DC125B800422B31 /* DiscoveryExpandableRowCellViewModelTests.swift */; };
@@ -1706,6 +1707,7 @@
 		D08A81721DFAA815000128DB /* LiveStreamCountdownViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamCountdownViewController.swift; sourceTree = "<group>"; };
 		D08A81751DFAACAD000128DB /* LiveStream.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LiveStream.storyboard; sourceTree = "<group>"; };
 		D08A817D1DFAAE11000128DB /* OpenTok.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenTok.framework; path = Frameworks/KsLive/Frameworks/OpenTok.framework; sourceTree = "<group>"; };
+		D0A9CC311E0842B8000F099C /* ProjectPamphletSubpageCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectPamphletSubpageCellViewModelTests.swift; sourceTree = "<group>"; };
 		D703478F1DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryExpandableRowCellViewModel.swift; sourceTree = "<group>"; };
 		D7086F3B1DB7FBA40087E5EB /* BackingViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackingViewControllerTests.swift; sourceTree = "<group>"; };
 		D7A9BE121DC125B800422B31 /* DiscoveryExpandableRowCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryExpandableRowCellViewModelTests.swift; sourceTree = "<group>"; };
@@ -2269,6 +2271,7 @@
 				597073861D06169700B00444 /* ProjectNotificationsViewModelTest.swift */,
 				A76FAF261DB98AD000C6BF33 /* ProjectPamphletContentViewModelTests.swift */,
 				A7AD54471D465B370016B4C2 /* ProjectPamphletMainCellViewModelTests.swift */,
+				D0A9CC311E0842B8000F099C /* ProjectPamphletSubpageCellViewModelTests.swift */,
 				A7AD548C1D4683900016B4C2 /* ProjectPamphletViewModelTests.swift */,
 				59392C201D70A117001C99A4 /* ProjectUpdatesViewModelTests.swift */,
 				A7830CF31D005C3F00B5B6AE /* ResetPasswordViewModelTests.swift */,
@@ -3743,6 +3746,7 @@
 				A7CC14301D00E70900035C52 /* FindFriendsStatsCellViewModelTests.swift in Sources */,
 				59610A311D6B8AA800C8206A /* DiscoveryPostcardViewModelTests.swift in Sources */,
 				A75511961C8645A0005355CF /* FormatTests.swift in Sources */,
+				D0A9CC321E0842B8000F099C /* ProjectPamphletSubpageCellViewModelTests.swift in Sources */,
 				01EFBCAF1C92036E0094EEC2 /* StyledLabelTests.swift in Sources */,
 				A75511A71C86460B005355CF /* XCTestCase+AppEnvironment.swift in Sources */,
 				A75511971C8645A0005355CF /* LanguageTests.swift in Sources */,
