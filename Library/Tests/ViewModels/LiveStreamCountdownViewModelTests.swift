@@ -34,7 +34,6 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
     self.vm.outputs.retrieveEventInfo.observe(self.retrieveEventInfo.observer)
     self.vm.outputs.secondsString.observe(self.seconds.observer)
     self.vm.outputs.viewControllerTitle.observe(self.viewControllerTitle.observer)
-
   }
 
   func testDateComparison() {

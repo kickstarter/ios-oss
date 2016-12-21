@@ -7,7 +7,7 @@ import XCTest
 @testable import Library
 @testable import ReactiveExtensions_TestHelpers
 
-class LiveStreamEventDetailsViewModelTests: XCTestCase {
+class LiveStreamEventDetailsViewModelTests: TestCase {
   private let vm: LiveStreamEventDetailsViewModelType = LiveStreamEventDetailsViewModel()
 
   private let availableForText = TestObserver<String, NoError>()
