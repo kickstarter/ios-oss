@@ -1,7 +1,6 @@
 import Prelude
 import ReactiveCocoa
 import Result
-import WebKit
 import XCTest
 @testable import KsApi
 @testable import KsLive

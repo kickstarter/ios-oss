@@ -111,7 +111,7 @@ public class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewModelTyp
         )
       }
 
-      return NSAttributedString()
+      return NSAttributedString(string: "")
     }.ignoreNil()
 
     self.upcomingIntroText = event.map { event -> NSAttributedString? in
@@ -147,7 +147,7 @@ public class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewModelTyp
       self.viewDidLoadProperty.signal)
       .map(first)
       .map { event -> String? in
-        guard let availableDate = NSCalendar.currentCalendar()
+        guard let availableDate = AppEnvironment.current.calendar
           .dateByAddingUnit(.Day, value: 2, toDate: event.stream.startDate,
             options: [])?.timeIntervalSince1970
           else { return nil }

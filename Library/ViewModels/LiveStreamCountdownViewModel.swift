@@ -47,7 +47,7 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
       self.nowProperty.signal.ignoreNil()
       )
       .map {
-        NSCalendar.currentCalendar().components(
+        AppEnvironment.current.calendar.components(
           [.Day, .Hour, .Minute, .Second],
           fromDate: $1,
           toDate: $0,

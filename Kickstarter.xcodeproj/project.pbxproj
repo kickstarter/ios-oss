@@ -564,6 +564,7 @@
 		D049C8D71DFFFACE00349FE6 /* LiveStreamCountdownViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D049C8D61DFFFACD00349FE6 /* LiveStreamCountdownViewModelTests.swift */; };
 		D04F48D41E0313FB00EDC98A /* ActivityProjectStatusCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A762F01B1C8CD2B3005581A4 /* ActivityProjectStatusCell.swift */; };
 		D04F492F1E03155700EDC98A /* KsLive.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0247A701DF9EF2100D7A7C1 /* KsLive.framework */; };
+		D05AA2361E0A8BCA00D36EFC /* LiveStreamEventDetailsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05AA2351E0A8BCA00D36EFC /* LiveStreamEventDetailsViewModelTests.swift */; };
 		D05C0CB01E02E3F100914393 /* LiveStreamActivityItemProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05C0CAF1E02E3F100914393 /* LiveStreamActivityItemProvider.swift */; };
 		D08A81761DFAACAD000128DB /* LiveStream.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D08A81751DFAACAD000128DB /* LiveStream.storyboard */; };
 		D08A81771DFAACD3000128DB /* ClearNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08A816F1DFAA7EF000128DB /* ClearNavigationBar.swift */; };
@@ -1703,6 +1704,7 @@
 		D0247A911DF9F0EF00D7A7C1 /* ProjectPamphletSubpageCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectPamphletSubpageCellViewModel.swift; sourceTree = "<group>"; };
 		D033D8751E0A739D001CDA18 /* LiveStreamContainerViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamContainerViewModelTests.swift; sourceTree = "<group>"; };
 		D049C8D61DFFFACD00349FE6 /* LiveStreamCountdownViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamCountdownViewModelTests.swift; sourceTree = "<group>"; };
+		D05AA2351E0A8BCA00D36EFC /* LiveStreamEventDetailsViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamEventDetailsViewModelTests.swift; sourceTree = "<group>"; };
 		D05C0CAF1E02E3F100914393 /* LiveStreamActivityItemProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamActivityItemProvider.swift; sourceTree = "<group>"; };
 		D08A816F1DFAA7EF000128DB /* ClearNavigationBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClearNavigationBar.swift; sourceTree = "<group>"; };
 		D08A81711DFAA815000128DB /* LiveStreamContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamContainerViewController.swift; sourceTree = "<group>"; };
@@ -2248,6 +2250,7 @@
 				01940B7F1D46DCC30074FCE3 /* HelpViewModelTests.swift */,
 				D033D8751E0A739D001CDA18 /* LiveStreamContainerViewModelTests.swift */,
 				D049C8D61DFFFACD00349FE6 /* LiveStreamCountdownViewModelTests.swift */,
+				D05AA2351E0A8BCA00D36EFC /* LiveStreamEventDetailsViewModelTests.swift */,
 				A7830CE51D005C3F00B5B6AE /* LoginToutViewModelTests.swift */,
 				A7830CE61D005C3F00B5B6AE /* LoginViewModelTests.swift */,
 				A7830CE71D005C3F00B5B6AE /* MessageCellViewModelTests.swift */,
@@ -2870,6 +2873,7 @@
 				A7D1F9421C850B7C000D41D5 /* Frameworks */,
 				A7D1F9431C850B7C000D41D5 /* Resources */,
 				A7D1F9C21C850DDE000D41D5 /* Embed Frameworks */,
+				D033D8E01E0A86AD001CDA18 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -3543,6 +3547,22 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		D033D8E01E0A86AD001CDA18 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\nswiftlint\nelse\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		A75511371C8642B3005355CF /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -3799,6 +3819,7 @@
 				5970738E1D061A9900B00444 /* ProjectNotificationsViewModelTest.swift in Sources */,
 				01FD71841D36BA2900070BAC /* DashboardProjectsDrawerViewModelTests.swift in Sources */,
 				A755119E1C8645A0005355CF /* UILabel+SimpleHTMLTests.swift in Sources */,
+				D05AA2361E0A8BCA00D36EFC /* LiveStreamEventDetailsViewModelTests.swift in Sources */,
 				A7830D121D005C3F00B5B6AE /* MessagesViewModelTests.swift in Sources */,
 				9D14FFFA1D135E4F005F4ABB /* ProjectActivityUpdateCellViewModelTests.swift in Sources */,
 				A7830D061D005C3F00B5B6AE /* FacebookConfirmationViewModelTests.swift in Sources */,
