@@ -55,7 +55,7 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
     XCTAssertTrue(self.seconds.lastValue == ("26", "seconds"))
 
     // Step 2: Set date as if two days have passed
-    _ = NSCalendar.currentCalendar().dateByAddingUnit(.Day,
+    _ = AppEnvironment.current.calendar.dateByAddingUnit(.Day,
       value: 2, toDate: nowDate(), options: []).flatMap { self.vm.inputs.setNow(date: $0) }
 
     XCTAssertTrue(self.days.lastValue == ("08", "days"))
@@ -73,7 +73,7 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
 
     // Step 5: Set now to a second past the stream's start date
     // The live stream view controller should be pushed
-    _ = NSCalendar.currentCalendar().dateByAddingUnit(.Second,
+    _ = AppEnvironment.current.calendar.dateByAddingUnit(.Second,
       value: 1, toDate: futureDate(), options: []).flatMap { self.vm.inputs.setNow(date: $0) }
 
     XCTAssertTrue(self.pushLiveStreamViewController.lastValue == (project, event))
@@ -122,7 +122,7 @@ private func futureDate() -> NSDate {
   components.month = 1
   components.hour = 8
 
-  return NSCalendar.currentCalendar().dateFromComponents(components)!
+  return AppEnvironment.current.calendar.dateFromComponents(components)!
 }
 
 private func nowDate() -> NSDate {
@@ -134,7 +134,7 @@ private func nowDate() -> NSDate {
   components.minute = 6
   components.second = 34
 
-  return NSCalendar.currentCalendar().dateFromComponents(components)!
+  return AppEnvironment.current.calendar.dateFromComponents(components)!
 }
 //swiftlint:enable force_unwrapping
 
