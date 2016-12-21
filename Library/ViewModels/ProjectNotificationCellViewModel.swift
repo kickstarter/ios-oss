@@ -110,7 +110,7 @@ private func cacheKey(forNotification notification: ProjectNotification) -> Stri
 
 private func cache(notification: ProjectNotification) {
   let key = cacheKey(forNotification: notification)
-  AppEnvironment.current.cache[key] = (notification.email && notification.mobile)
+  AppEnvironment.current.cache[key] = notification.email && notification.mobile
 }
 
 private func cached(notification: ProjectNotification) -> ProjectNotification {

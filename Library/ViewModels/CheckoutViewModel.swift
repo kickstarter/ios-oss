@@ -446,22 +446,21 @@ private func isStripeRequest(request: URLRequest) -> Bool {
 private func applePayCheckoutNextJS(forPaymentData paymentData: PaymentData, stripeToken: String)
   -> String? {
 
-  let tokenData = paymentData.tokenData
+    let tokenData = paymentData.tokenData
 
-  let json: [String:[String:String]] = [
-    "apple_pay_token": [
-      "transaction_identifier": tokenData.transactionIdentifier,
-      "payment_network": tokenData.paymentMethodData.network,
-      "payment_instrument_name": tokenData.paymentMethodData.displayName
-      ].compact(),
-    "stripe_token": [
-      "id": stripeToken
-    ]
-  ]
+    var json: [String:[String:String]] = [:]
 
-  return (try? JSONSerialization.data(withJSONObject: json, options: []))
-    .flatMap { String(data: $0, encoding: String.Encoding.utf8) }
-    .map { json in "window.checkout_apple_pay_next(\(json));" }
+    json["apple_pay_token"] = [:]
+    json["apple_pay_token"]?["transaction_identifier"] = tokenData.transactionIdentifier
+    json["apple_pay_token"]?["payment_network"] = tokenData.paymentMethodData.network?.rawValue
+    json["apple_pay_token"]?["payment_instrument_name"] = tokenData.paymentMethodData.displayName
+
+    json["stripe_token"] = [:]
+    json["stripe_token"]?["id"] = stripeToken
+
+    return (try? JSONSerialization.data(withJSONObject: json, options: []))
+      .flatMap { String(data: $0, encoding: String.Encoding.utf8) }
+      .map { json in "window.checkout_apple_pay_next(\(json));" }
 }
 
 private func paymentRequest(fromBase64Payload payload: String) -> PKPaymentRequest? {

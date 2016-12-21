@@ -130,42 +130,4 @@ public struct Environment {
     self.ubiquitousStore = ubiquitousStore
     self.userDefaults = userDefaults
   }
-
-  fileprivate var allGlobals: [Any] {
-    return [
-      self.apiService,
-      self.apiDelayInterval,
-      self.assetImageGeneratorType,
-      self.cache,
-      self.calendar,
-      self.config,
-      self.cookieStorage,
-      self.countryCode,
-      self.currentUser,
-      self.dateType,
-      self.debounceInterval,
-      self.facebookAppDelegate,
-      self.isVoiceOverRunning,
-      self.koala,
-      self.language,
-      self.launchedCountries,
-      self.locale,
-      self.mainBundle,
-      self.reachability,
-      self.scheduler,
-      self.timeZone,
-      self.ubiquitousStore,
-      self.userDefaults,
-    ]
-  }
-}
-
-extension Environment: CustomStringConvertible, CustomDebugStringConvertible {
-  public var description: String {
-    return self.allGlobals.map { "\(type(of: ($0) as AnyObject))" }.reduce("", +)
-  }
-
-  public var debugDescription: String {
-    return self.description
-  }
 }

@@ -32,26 +32,26 @@ public final class ProjectPamphletContentViewModel: ProjectPamphletContentViewMo
 ProjectPamphletContentViewModelInputs, ProjectPamphletContentViewModelOutputs {
 
   public init() {
-    let project = combineLatest(
+    let project = Signal.combineLatest(
       self.projectProperty.signal.skipNil(),
       self.viewDidLoadProperty.signal
       )
       .map(first)
 
-    self.loadProjectIntoDataSource = combineLatest(
+    self.loadProjectIntoDataSource = Signal.combineLatest(
       project,
 
       Signal.merge(
         self.viewDidAppearAnimatedProperty.signal.filter(isTrue),
         self.viewWillAppearAnimatedProperty.signal.filter(isFalse)
         )
-        .take(1)
+        .take(first: 1)
       )
       .map(first)
 
     self.loadMinimalProjectIntoDataSource = project
       .takePairWhen(self.viewWillAppearAnimatedProperty.signal)
-      .take(1)
+      .take(first: 1)
       .filter(second)
       .map(first)
 

@@ -12,7 +12,7 @@ public struct PaymentTokenData {
 
 public struct PaymentMethodData {
   public let displayName: String?
-  public let network: PKPaymentNetwork
+  public let network: PKPaymentNetwork?
   public let type: PKPaymentMethodType
 }
 

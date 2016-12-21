@@ -65,7 +65,7 @@ ActivityUpdateViewModelOutputs {
     self.notifyDelegateTappedProjectImage = activity
       .takeWhen(self.tappedProjectImageProperty.signal)
 
-    self.cellAccessibilityLabel = combineLatest(project, self.sequenceTitle)
+    self.cellAccessibilityLabel = Signal.combineLatest(project, self.sequenceTitle)
       .map { project, postedText in "\(project.name) \(postedText.string)" }
   }
 
@@ -91,7 +91,7 @@ ActivityUpdateViewModelOutputs {
   public var outputs: ActivityUpdateViewModelOutputs { return self }
 }
 
-private let decimalCharacterSet = NSCharacterSet.decimalDigitCharacterSet.invertedSet
+private let decimalCharacterSet = NSCharacterSet.decimalDigits.inverted
 
 private func updatePostedString(forActivity activity: Activity) -> NSAttributedString {
   let updateNum = Format.wholeNumber(activity.update?.sequence ?? 1)
@@ -115,11 +115,12 @@ private func updatePostedString(forActivity activity: Activity) -> NSAttributedS
 
   let mutableString = NSMutableAttributedString(attributedString: attributedString)
 
-  let timeNumber = time.componentsSeparatedByCharactersInSet(decimalCharacterSet).first
+  let timeNumber = time.components(separatedBy: decimalCharacterSet).first
 
-  if let timeRange = mutableString.string.rangeOfString(time), let timeNumber = timeNumber {
-    let timeStartIndex = mutableString.string.startIndex.distanceTo(timeRange.startIndex)
-    let timeNumberStartIndex = time.startIndex.distanceTo(timeNumber.startIndex)
+  if let timeRange = mutableString.string.range(of: time), let timeNumber = timeNumber {
+
+    let timeStartIndex = mutableString.string.distance(from: mutableString.string.startIndex, to: timeRange.lowerBound)
+    let timeNumberStartIndex = mutableString.string.distance(from: time.startIndex, to: timeNumber.startIndex)
 
     mutableString.addAttributes(
       [NSFontAttributeName: UIFont.ksr_headline(size: 13.0)],

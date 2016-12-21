@@ -296,17 +296,17 @@ public struct AppEnvironment {
                                                    ubiquitousStore: KeyValueStoreType,
                                                    userDefaults: KeyValueStoreType) {
 
-    let data: [String:Any] = [
-      "apiService.oauthToken.token": env.apiService.oauthToken?.token,
-      "apiService.serverConfig.apiBaseUrl": env.apiService.serverConfig.apiBaseUrl.absoluteString,
-      "apiService.serverConfig.apiClientAuth.clientId": env.apiService.serverConfig.apiClientAuth.clientId,
-      "apiService.serverConfig.basicHTTPAuth.username": env.apiService.serverConfig.basicHTTPAuth?.username,
-      "apiService.serverConfig.basicHTTPAuth.password": env.apiService.serverConfig.basicHTTPAuth?.password,
-      "apiService.serverConfig.webBaseUrl": env.apiService.serverConfig.webBaseUrl.absoluteString,
-      "apiService.language": env.apiService.language,
-      "config": env.config?.encode(),
-      "currentUser": env.currentUser?.encode()
-    ]
+    var data: [String:Any] = [:]
+
+    data["apiService.oauthToken.token"] = env.apiService.oauthToken?.token
+    data["apiService.serverConfig.apiBaseUrl"] = env.apiService.serverConfig.apiBaseUrl.absoluteString
+    data["apiService.serverConfig.apiClientAuth.clientId"] = env.apiService.serverConfig.apiClientAuth.clientId
+    data["apiService.serverConfig.basicHTTPAuth.username"] = env.apiService.serverConfig.basicHTTPAuth?.username
+    data["apiService.serverConfig.basicHTTPAuth.password"] = env.apiService.serverConfig.basicHTTPAuth?.password
+    data["apiService.serverConfig.webBaseUrl"] = env.apiService.serverConfig.webBaseUrl.absoluteString
+    data["apiService.language"] = env.apiService.language
+    data["config"] = env.config?.encode()
+    data["currentUser"] = env.currentUser?.encode()
 
     userDefaults.set(data, forKey: environmentStorageKey)
   }

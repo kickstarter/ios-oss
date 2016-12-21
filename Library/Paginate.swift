@@ -52,47 +52,51 @@ public func paginate <Cursor, Value: Equatable, Envelope, ErrorEnvelope, Request
    isLoading: Signal<Bool, NoError>,
    pageCount: Signal<Int, NoError>) {
 
-    let cursor = MutableProperty<Cursor?>(nil)
-    let isLoading = MutableProperty<Bool>(false)
+    // FIXME
 
-    // Emits the last cursor when nextPage emits
-    let cursorOnNextPage = cursor.producer.skipNil().sample(on: requestNextPage)
+//    let cursor = MutableProperty<Cursor?>(nil)
+//    let isLoading = MutableProperty<Bool>(false)
+//
+//    // Emits the last cursor when nextPage emits
+//    let cursorOnNextPage = cursor.producer.skipNil().sample(on: requestNextPage)
+//
+//    let paginatedValues = requestFirstPage
+//      .switchMap { requestParams in
+//
+//        cursorOnNextPage.map(Either<RequestParams, Cursor>.right)
+//          .prefix(value: Either<RequestParams, Cursor>.left(requestParams))
+//          .switchMap { paramsOrCursor in
+//
+//            paramsOrCursor.ifLeft(requestFromParams, ifRight: requestFromCursor)
+//              .delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+//              .on(
+//                started: { [weak isLoading] _ in
+//                  isLoading?.value = true
+//                },
+//                terminated: { [weak isLoading] _ in
+//                  isLoading?.value = false
+//                },
+//                next: { [weak cursor] env in
+//                  cursor?.value = cursorFromEnvelope(env)
+//              })
+//              .map(valuesFromEnvelope)
+//              .demoteErrors()
+//          }
+//          .takeUntil { $0.isEmpty }
+//          .mergeWith(clearOnNewRequest ? .init(value: []) : .empty)
+//          .scan([], concater)
+//      }
+//      .skip(clearOnNewRequest ? 1 : 0)
+//
+//    let pageCount = Signal.merge(paginatedValues, requestFirstPage.mapConst([]))
+//      .scan(0) { accum, values in values.isEmpty ? 0 : accum + 1 }
+//      .filter { $0 > 0 }
+//
+//    return (
+//      (skipRepeats ? paginatedValues.skipRepeats(==) : paginatedValues),
+//      isLoading.signal,
+//      pageCount
+//    )
 
-    let paginatedValues = requestFirstPage
-      .switchMap { requestParams in
-
-        cursorOnNextPage.map(Either.right)
-          .prefix(value: .left(requestParams))
-          .switchMap { paramsOrCursor in
-
-            paramsOrCursor.ifLeft(requestFromParams, ifRight: requestFromCursor)
-              .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
-              .on(
-                started: { [weak isLoading] _ in
-                  isLoading?.value = true
-                },
-                terminated: { [weak isLoading] _ in
-                  isLoading?.value = false
-                },
-                next: { [weak cursor] env in
-                  cursor?.value = cursorFromEnvelope(env)
-              })
-              .map(valuesFromEnvelope)
-              .demoteErrors()
-          }
-          .takeUntil { $0.isEmpty }
-          .mergeWith(clearOnNewRequest ? .init(value: []) : .empty)
-          .scan([], concater)
-      }
-      .skip(clearOnNewRequest ? 1 : 0)
-
-    let pageCount = Signal.merge(paginatedValues, requestFirstPage.mapConst([]))
-      .scan(0) { accum, values in values.isEmpty ? 0 : accum + 1 }
-      .filter { $0 > 0 }
-
-    return (
-      (skipRepeats ? paginatedValues.skipRepeats(==) : paginatedValues),
-      isLoading.signal,
-      pageCount
-    )
+    return (.empty, .empty, .empty)
 }

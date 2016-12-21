@@ -2,7 +2,7 @@
 import Foundation
 import UIKit
 
-public let SafariActivityType = "com.kickstarter.kickstarter.safari"
+public let SafariActivityType = UIActivityType("com.kickstarter.kickstarter.safari")
 
 public final class SafariActivity: UIActivity {
   fileprivate var url: URL?
@@ -13,7 +13,7 @@ public final class SafariActivity: UIActivity {
     self.url = url
   }
 
-  public override var activityType : String? {
+  public override var activityType : UIActivityType? {
     return SafariActivityType
   }
 

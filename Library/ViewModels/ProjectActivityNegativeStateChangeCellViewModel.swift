@@ -31,19 +31,19 @@ ProjectActivityNegativeStateChangeCellViewModelOutputs {
         switch activity.category {
         case .cancellation:
           return Strings.dashboard_activity_project_name_was_canceled(
-            project_name: project.name ?? "",
+            project_name: project.name,
             cancellation_date: Format.date(secondsInUTC: activity.createdAt, dateStyle: .long,
               timeStyle: .none).nonBreakingSpaced()
           )
         case .failure:
           return Strings.dashboard_activity_project_name_was_unsuccessful(
-            project_name: project.name ?? "",
+            project_name: project.name,
             unsuccessful_date: Format.date(secondsInUTC: activity.createdAt, dateStyle: .long,
               timeStyle: .none).nonBreakingSpaced()
           )
         case .suspension:
           return Strings.dashboard_activity_project_name_was_suspended(
-            project_name: project.name ?? "",
+            project_name: project.name,
             suspension_date: Format.date(secondsInUTC: activity.createdAt, dateStyle: .long,
               timeStyle: .none).nonBreakingSpaced()
           )

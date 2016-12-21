@@ -145,7 +145,7 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
     )
 
     self.dismissDiscoveryFilters = dismissFiltersSignal
-      .ksr_debounce(0.4, onScheduler: AppEnvironment.current.scheduler)
+      .ksr_debounce(0.4, on: AppEnvironment.current.scheduler)
 
     self.notifyDelegateFilterSelectedParams = currentParams.skip(first: 1)
 

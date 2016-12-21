@@ -5,13 +5,15 @@ import Foundation
 import KsApi
 import PassKit
 
+extension PKPaymentNetwork: Decodable {}
+
 extension PKPaymentSummaryItem: Decodable {
 
   public static func decode(_ json: JSON) -> Decoded<PKPaymentSummaryItem> {
     return curry(PKPaymentSummaryItem.init(label:amount:type:))
       <^> json <| "label"
       <*> json <| "amount"
-      <*> json <| "type" <|> .success(.final)
+      <*> (json <| "type" <|> .success(.final))
   }
 }
 
@@ -42,7 +44,7 @@ extension PKPaymentRequest: Decodable {
       <*> (json <| "merchant_capabilities" <|> .success(.capability3DS))
       <*> json <|  "merchant_identifier"
       <*> json <|| "payment_summary_items"
-      <*> json <|  "shipping_type" <|> .success(.shipping)
+      <*> (json <|  "shipping_type" <|> .success(.shipping))
       <*> json <|| "supported_networks"
 
     let camelCase = {
@@ -52,7 +54,7 @@ extension PKPaymentRequest: Decodable {
         <*> (json <| "merchantCapabilities" <|> .success(.capability3DS))
         <*> json <|  "merchantIdentifier"
         <*> json <|| "paymentSummaryItems"
-        <*> json <|  "shippingType" <|> .success(.shipping)
+        <*> (json <|  "shippingType" <|> .success(.shipping))
         <*> json <|| "supportedNetworks"
     }
 
@@ -75,7 +77,7 @@ extension NSDecimalNumber: Decodable {
 
 extension PKPaymentRequest: EncodableType {
   public func encode() -> [String : Any] {
-    var result: [String:AnyObject] = [:]
+    var result: [String:Any] = [:]
     result["countryCode"] = self.countryCode
     result["currencyCode"] = self.currencyCode
     result["merchantCapabilities"] = self.merchantCapabilities.rawValue.bitComponents()
@@ -89,7 +91,7 @@ extension PKPaymentRequest: EncodableType {
 
 extension PKPaymentSummaryItem: EncodableType {
   public func encode() -> [String : Any] {
-    var result: [String:AnyObject] = [:]
+    var result: [String:Any] = [:]
     result["label"] = self.label
     result["amount"] = self.amount
     result["type"] = self.type.rawValue
@@ -110,8 +112,8 @@ extension PKMerchantCapability: Decodable {
       default:                  return .failure(.custom("Unrecognized merchant capability: \(string)"))
       }
 
-    case let .Number(number):
-      switch number.unsignedIntegerValue {
+    case let .number(number):
+      switch number.uintValue {
       case PKMerchantCapability.capability3DS.rawValue:
         return .success(.capability3DS)
       case PKMerchantCapability.capabilityEMV.rawValue:
@@ -157,14 +159,14 @@ extension PKShippingType: Decodable {
       }
 
     case let .number(number):
-      switch number.unsignedIntegerValue {
-      case PKShippingType.Shipping.rawValue:
+      switch number.uintValue {
+      case PKShippingType.shipping.rawValue:
         return .success(.shipping)
-      case PKShippingType.Delivery.rawValue:
+      case PKShippingType.delivery.rawValue:
         return .success(.delivery)
-      case PKShippingType.StorePickup.rawValue:
+      case PKShippingType.storePickup.rawValue:
         return .success(.storePickup)
-      case PKShippingType.ServicePickup.rawValue:
+      case PKShippingType.servicePickup.rawValue:
         return .success(.servicePickup)
       default:
         return .failure(.custom("Unrecognized shipping: \(number)"))
@@ -179,7 +181,7 @@ extension PKShippingType: Decodable {
 extension PKPaymentSummaryItemType: Decodable {
   public static func decode(_ json: JSON) -> Decoded<PKPaymentSummaryItemType> {
     switch json {
-    case let .String(string):
+    case let .string(string):
       switch string {
       case "Final":
         return .success(.final)
@@ -189,11 +191,11 @@ extension PKPaymentSummaryItemType: Decodable {
         return .failure(.custom("Unrecognized payment summary item type: \(string)"))
       }
 
-    case let .Number(number):
-      switch number.unsignedIntegerValue {
-      case PKPaymentSummaryItemType.Final.rawValue:
+    case let .number(number):
+      switch number.uintValue {
+      case PKPaymentSummaryItemType.final.rawValue:
         return .success(.final)
-      case PKPaymentSummaryItemType.Pending.rawValue:
+      case PKPaymentSummaryItemType.pending.rawValue:
         return .success(.pending)
       default:
         return .failure(.custom("Unrecognized payment summary item type: \(number)"))

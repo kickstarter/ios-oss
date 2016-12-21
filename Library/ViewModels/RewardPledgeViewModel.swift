@@ -404,7 +404,7 @@ RewardPledgeViewModelOutputs {
       .filter(isTrue)
       .ignoreValues()
       // introduce a small delay for this event since the login tout takes a moment to dismiss...
-      .ksr_debounce(1, onScheduler: AppEnvironment.current.scheduler)
+      .ksr_debounce(1, on: AppEnvironment.current.scheduler)
 
     let paymentMethodEventAfterLogin = Signal.merge(
       loggedOutUserTappedApplePayButton.mapConst(true),
@@ -1031,11 +1031,18 @@ private func updatePledge(
     .mapError { PledgeError.other($0) }
     .flatMap { env -> SignalProducer<URLRequest?, PledgeError> in
 
-      let request = env.newCheckoutUrl
-        .flatMap(AppEnvironment.current.apiService.serverConfig.webBaseUrl.appendingPathComponent)
-        .map(URLRequest.init(url:))
+      // FIXME: why doesnt this work?
+//      let request = env.newCheckoutUrl
+//        .flatMap(AppEnvironment.current.apiService.serverConfig.webBaseUrl.appendingPathComponent)
+//        .map(URLRequest.init(url:))
 
-      return SignalProducer(value: request)
+      let url = env.newCheckoutUrl
+        .flatMap(AppEnvironment.current.apiService.serverConfig.webBaseUrl.appendingPathComponent)
+      if let url = url {
+        return SignalProducer(value: URLRequest(url: url))
+      } else {
+        return SignalProducer(value: nil)
+      }
   }
 }
 
@@ -1070,7 +1077,7 @@ private func createApplePayPledge(
         checkoutUrl: checkoutUrl,
         stripeToken: stripeToken,
         paymentInstrumentName: paymentData.tokenData.paymentMethodData.displayName ?? "",
-        paymentNetwork: paymentData.tokenData.paymentMethodData.network ?? "",
+        paymentNetwork: paymentData.tokenData.paymentMethodData.network?.rawValue ?? "",
         transactionIdentifier: paymentData.tokenData.transactionIdentifier
         )
         .mapError { PledgeError.other($0) }
@@ -1081,10 +1088,16 @@ private func changePaymentMethod(project: Project) -> SignalProducer<URLRequest,
 
     return AppEnvironment.current.apiService.changePaymentMethod(project: project)
       .mapError { PledgeError.other($0) }
-      .map { env in
-        env.newCheckoutUrl
-          .flatMap(URL.init(string:))
-          .map(URLRequest.init(url:))
+      .map { env -> URLRequest? in
+        // FIXME: why doesnt this work?
+//        env.newCheckoutUrl
+//          .flatMap(URL.init(string:))
+//          .map(URLRequest.init(url:)) // "Type 'URLRequest" has no member init(url:)
+
+        guard let url = env.newCheckoutUrl.flatMap(URL.init(string:)) else {
+          return nil
+        }
+        return URLRequest(url: url)
       }
       .skipNil()
 }

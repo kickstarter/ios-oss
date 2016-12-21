@@ -143,12 +143,12 @@ ProjectPamphletMainCellViewModelInputs, ProjectPamphletMainCellViewModelOutputs 
     self.projectImageUrl = project.map { URL(string: $0.photo.full) }
 
     let videoIsPlaying = Signal.merge(
-      project.take(1).mapConst(false),
+      project.take(first: 1).mapConst(false),
       self.videoDidStartProperty.signal.mapConst(true),
       self.videoDidFinishProperty.signal.mapConst(false)
     )
 
-    self.youreABackerLabelHidden = combineLatest(project, videoIsPlaying)
+    self.youreABackerLabelHidden = Signal.combineLatest(project, videoIsPlaying)
       .map { project, videoIsPlaying in
         project.personalization.isBacking != true || videoIsPlaying
       }
@@ -156,7 +156,7 @@ ProjectPamphletMainCellViewModelInputs, ProjectPamphletMainCellViewModelOutputs 
 
     let backersTitleAndSubtitleText = project.map { project -> (String?, String?) in
       let string = Strings.Backers_count_separator_backers(backers_count: project.stats.backersCount)
-      let parts = string.characters.split("\n").map(String.init)
+      let parts = string.characters.split(separator: "\n").map(String.init)
       return (parts.first, parts.last)
     }
 
@@ -220,9 +220,9 @@ ProjectPamphletMainCellViewModelInputs, ProjectPamphletMainCellViewModelOutputs 
     self.notifyDelegateToGoToCreator = project
       .takeWhen(self.creatorButtonTappedProperty.signal)
 
-    self.configureVideoPlayerController = combineLatest(project, self.delegateDidSetProperty.signal)
+    self.configureVideoPlayerController = Signal.combineLatest(project, self.delegateDidSetProperty.signal)
       .map(first)
-      .take(1)
+      .take(first: 1)
   }
   // swiftlint:enable function_body_length
 

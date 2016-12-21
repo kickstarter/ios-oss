@@ -5,7 +5,9 @@ import UIKit
 
 public func projectAttributedNameAndBlurb(_ project: Project) -> NSAttributedString {
   let isProjectNamePunctuated = project.name.utf16.last
-    .map { CharacterSet.punctuationCharacterSet().characterIsMember($0) } ?? false
+    .flatMap(UnicodeScalar.init)
+    .map(CharacterSet.punctuationCharacters.contains)
+    .coalesceWith(false)
 
   let projectName = isProjectNamePunctuated ? project.name : "\(project.name)."
 
@@ -25,7 +27,7 @@ public func projectAttributedNameAndBlurb(_ project: Project) -> NSAttributedStr
     ]
   )
 
-  baseNameAttributedString.appendAttributedString(blurbAttributedString)
+  baseNameAttributedString.append(blurbAttributedString)
 
   return baseNameAttributedString
 }

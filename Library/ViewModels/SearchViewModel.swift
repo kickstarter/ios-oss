@@ -106,7 +106,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
         .switchMap {
           AppEnvironment.current.apiService.fetchDiscovery(params: params)
             .ksr_debounce(
-              AppEnvironment.current.debounceInterval, onScheduler: AppEnvironment.current.scheduler)
+              AppEnvironment.current.debounceInterval, on: AppEnvironment.current.scheduler)
       }
     }
 

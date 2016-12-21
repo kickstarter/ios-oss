@@ -7,11 +7,9 @@ import Social
 
 /// These share types provide us access to knowing when the user successfully shares through that method,
 /// or when the user cancels.
-private let firstPartyShareTypes = [UIActivityType.postToFacebook, UIActivityType.postToTwitter,
-                                    UIActivityType.postToWeibo, UIActivityType.message, UIActivityType.mail,
-                                    UIActivityType.copyToPasteboard, UIActivityType.addToReadingList,
-                                    UIActivityType.postToTencentWeibo, UIActivityType.airDrop,
-                                    SafariActivityType] as [Any]
+private let firstPartyShareTypes: [UIActivityType] = [.postToFacebook, .postToTwitter, .postToWeibo,
+                                                      .message, .mail, .copyToPasteboard, .addToReadingList,
+                                                      .postToTencentWeibo, .airDrop, SafariActivityType]
 
 public protocol ShareViewModelInputs {
   /// Call with the context that this sharing is taking place in.
@@ -83,9 +81,12 @@ public final class ShareViewModel: ShareViewModelType, ShareViewModelInputs, Sha
     }
 
     let shareCompletion = Signal.merge(
-      directShareCompletion,
-      self.shareActivityCompletionProperty.signal.skipNil()
+      directShareCompletion//,
+      // FIXME
+//      self.shareActivityCompletionProperty.signal.skipNil()
       )
+
+    _ = self.shareActivityCompletionProperty.signal.skipNil()
 
     let shareActivityCompletion = shareContext
       .takePairWhen(shareCompletion)
@@ -112,11 +113,11 @@ public final class ShareViewModel: ShareViewModelType, ShareViewModelInputs, Sha
 
     shareActivityCompletion
       .filter { _, completion in
-        completion.completed && firstPartyShareTypes.contains(completion.activityType ?? "")
+        completion.completed && firstPartyShareTypes.contains(completion.activityType)
       }
       .flatMap {
         SignalProducer(value: $0)
-          .delay(1.0, onScheduler: AppEnvironment.current.scheduler)
+          .delay(1.0, on: AppEnvironment.current.scheduler)
       }
       .observeValues { shareContext, completion in
         AppEnvironment.current.koala.trackShared(
@@ -125,10 +126,10 @@ public final class ShareViewModel: ShareViewModelType, ShareViewModelInputs, Sha
     }
 
     canceledShare
-      .filter { _, completion in firstPartyShareTypes.contains(completion.activityType ?? "") }
+      .filter { _, completion in firstPartyShareTypes.contains(completion.activityType) }
       .flatMap {
         SignalProducer(value: $0)
-          .delay(1.0, onScheduler: AppEnvironment.current.scheduler)
+          .delay(1.0, on: AppEnvironment.current.scheduler)
       }
       .observeValues { shareContext, completion in
         AppEnvironment.current.koala.trackCanceledShare(

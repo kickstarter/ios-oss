@@ -9,7 +9,7 @@ public final class KoalaTrackingClient: TrackingClientType {
   fileprivate let endpoint: Endpoint
   fileprivate let URLSession: URLSession
   fileprivate let queue = DispatchQueue(label: "com.kickstarter.KoalaTrackingClient")
-  fileprivate var buffer: [[String: AnyObject]] = []
+  fileprivate var buffer: [[String:Any]] = []
   fileprivate var timer: Timer?
   fileprivate var taskId = UIBackgroundTaskInvalid
 
@@ -52,7 +52,7 @@ public final class KoalaTrackingClient: TrackingClientType {
     self.startTimer()
   }
 
-  public func track(event: String, properties: [String: AnyObject]) {
+  public func track(event: String, properties: [String:Any]) {
     #if DEBUG
       NSLog("[Koala Track]: \(event), properties: \(properties)")
     #endif
@@ -73,7 +73,7 @@ public final class KoalaTrackingClient: TrackingClientType {
   }
 
   @objc fileprivate func flush() {
-    dispatch_async(self.queue) {
+    self.queue.async {
       if self.buffer.isEmpty { return }
 
       while !self.buffer.isEmpty {
@@ -82,7 +82,7 @@ public final class KoalaTrackingClient: TrackingClientType {
             .flatMap(self.koalaURL)
             .flatMap(KoalaTrackingClient.koalaRequest)
             .flatMap(self.synchronousKoalaResult),
-          case .Success = result else { break }
+          case .success = result else { break }
 
         self.buffer.removeFirst(min(chunkSize, self.buffer.count))
       }
@@ -90,7 +90,7 @@ public final class KoalaTrackingClient: TrackingClientType {
   }
 
   fileprivate func save() {
-    dispatch_async(self.queue) {
+    self.queue.async {
       guard !self.buffer.isEmpty, let file = self.fileName() else { return }
 
       NSKeyedArchiver.archiveRootObject(self.buffer, toFile: file)
@@ -100,19 +100,19 @@ public final class KoalaTrackingClient: TrackingClientType {
   }
 
   fileprivate func load() {
-    dispatch_async(self.queue) {
+    self.queue.async {
       guard
-        let file = self.fileName(), NSFileManager.defaultManager().fileExistsAtPath(file),
-        let buffer = NSKeyedUnarchiver.unarchiveObjectWithFile(file) as? [[String: AnyObject]]
+        let file = self.fileName(), FileManager.default.fileExists(atPath: file),
+        let buffer = NSKeyedUnarchiver.unarchiveObject(withFile: file) as? [[String:Any]]
         else { return }
 
       self.buffer = buffer + self.buffer
 
-      _ = try? NSFileManager.defaultManager().removeItemAtPath(file)
+      _ = try? FileManager.default.removeItem(atPath: file)
     }
   }
 
-  fileprivate static func base64Payload(_ payload: [AnyObject]) -> String? {
+  fileprivate static func base64Payload(_ payload: [Any]) -> String? {
     return (try? JSONSerialization.data(withJSONObject: payload, options: []))
       .map { $0.base64EncodedString(options: []) }
   }
@@ -127,7 +127,7 @@ public final class KoalaTrackingClient: TrackingClientType {
   }
 
   fileprivate static func koalaRequest(_ url: URL) -> URLRequest {
-    let request = NSMutableURLRequest(url: url as URL)
+    var request = URLRequest(url: url)
     request.httpMethod = "POST"
     return request
   }
@@ -180,7 +180,7 @@ extension KoalaTrackingClient {
     self.taskId = UIApplication.shared.beginBackgroundTask(expirationHandler: handler)
     self.flush()
     self.save()
-    dispatch_async(self.queue) {
+    self.queue.async {
       if self.taskId != UIBackgroundTaskInvalid {
         handler()
       }
@@ -190,7 +190,7 @@ extension KoalaTrackingClient {
   @objc fileprivate func applicationWillEnterForeground() {
     self.queue.async {
       guard self.taskId != UIBackgroundTaskInvalid else { return }
-      UIApplication.sharedApplication().endBackgroundTask(self.taskId)
+      UIApplication.shared.endBackgroundTask(self.taskId)
       self.taskId = UIBackgroundTaskInvalid
     }
   }
