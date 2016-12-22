@@ -85,9 +85,8 @@ public final class ShareViewModel: ShareViewModelType, ShareViewModelInputs, Sha
     }
 
     let shareCompletion = Signal.merge(
-      directShareCompletion//,
-      // FIXME
-//      self.shareActivityCompletionProperty.signal.skipNil()
+      directShareCompletion,
+      self.shareActivityCompletionProperty.signal.skipNil()
       )
 
     let shareActivityCompletion = shareContext

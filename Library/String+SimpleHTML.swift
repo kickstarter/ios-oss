@@ -28,9 +28,9 @@ public extension String {
 
     guard let data = self.data(using: String.Encoding.utf8) else { return nil }
 
-    let options: [String:AnyObject] = [
-      NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType as AnyObject,
-      NSCharacterEncodingDocumentAttribute: String.Encoding.utf8 as AnyObject
+    let options: [String:Any] = [
+      NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType,
+      NSCharacterEncodingDocumentAttribute: String.Encoding.utf8.rawValue
     ]
     guard let string = try? NSMutableAttributedString(data: data, options: options, documentAttributes: nil)
       else {
@@ -94,9 +94,9 @@ public extension String {
 
     guard let data = self.data(using: String.Encoding.utf8) else { return nil }
 
-    let options: [String:AnyObject] = [
-      NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType as AnyObject,
-      NSCharacterEncodingDocumentAttribute: String.Encoding.utf8 as AnyObject
+    let options: [String:Any] = [
+      NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType,
+      NSCharacterEncodingDocumentAttribute: String.Encoding.utf8.rawValue
     ]
 
     let string = try? NSAttributedString(data: data, options: options, documentAttributes: nil)
