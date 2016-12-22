@@ -44,21 +44,24 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       self.viewDidLoadProperty.signal
       ).map { a, b, _ in (a, b) }
 
-    self.liveStreamState = Signal.merge(
-      self.liveStreamViewControllerStateChangedProperty.signal.ignoreNil(),
-      project.mapConst(.loading)
-    )
+    self.liveStreamState = combineLatest(
+      Signal.merge(
+        self.liveStreamViewControllerStateChangedProperty.signal.ignoreNil(),
+        project.mapConst(.loading)
+      ),
+      self.viewDidLoadProperty.signal
+    ).map(first)
 
     self.loaderText = liveStreamState.map {
-        if case .live(playbackState: .loading, _) = $0 { return localizedString(
-          key: "The_live_stream_will_start_soon", defaultValue: "The live stream will start soon")
-        }
-        if case .greenRoom = $0 { return localizedString(
-          key: "The_live_stream_will_start_soon", defaultValue: "The live stream will start soon")
-        }
-        if case .replay(playbackState: .loading, _, _) = $0 { return localizedString(
-          key: "The_replay_will_start_soon", defaultValue: "The replay will start soon")
-        }
+      if case .live(playbackState: .loading, _) = $0 { return localizedString(
+        key: "The_live_stream_will_start_soon", defaultValue: "The live stream will start soon")
+      }
+      if case .greenRoom = $0 { return localizedString(
+        key: "The_live_stream_will_start_soon", defaultValue: "The live stream will start soon")
+      }
+      if case .replay(playbackState: .loading, _, _) = $0 { return localizedString(
+        key: "The_replay_will_start_soon", defaultValue: "The replay will start soon")
+      }
 
       return localizedString(key: "Loading", defaultValue: "Loading")
     }
@@ -77,7 +80,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     }
 
     self.showVideoView = combineLatest(
-        self.liveStreamViewControllerStateChangedProperty.signal.ignoreNil().map {
+        self.liveStreamState.map {
           if case .live(playbackState: .playing, _) = $0 { return true }
           if case .replay(playbackState: .playing, _, _) = $0 { return true }
 

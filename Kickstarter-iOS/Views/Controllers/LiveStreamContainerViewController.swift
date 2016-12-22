@@ -243,8 +243,11 @@ internal final class LiveStreamContainerViewController: UIViewController {
         _self.addChildLiveStreamViewController(LiveStreamViewController(event: event, delegate: _self))
     }
 
-    self.viewModel.outputs.showVideoView.observeNext { [weak self] in
-      self?.liveStreamViewController?.view.hidden = !$0
+    self.viewModel.outputs.showVideoView
+      .map(negate)
+      .observeForUI()
+      .observeNext { [weak self] in
+      self?.liveStreamViewController?.view.hidden = $0
     }
 
     self.viewModel.outputs.projectImageUrl
@@ -261,8 +264,6 @@ internal final class LiveStreamContainerViewController: UIViewController {
     }
 
     self.eventDetailsViewModel.outputs.retrieveEventInfo
-      .observeForUI()
-      .on(next: { [weak self] image in self?.creatorAvatarImageView.image = nil })
       .observeNext { [weak self] in
         KsLiveApp.retrieveEvent($0, uid: AppEnvironment.current.currentUser?.id).startWithResult {
           switch $0 {
@@ -404,6 +405,7 @@ internal final class LiveStreamContainerViewController: UIViewController {
 
   private func addChildLiveStreamViewController(controller: LiveStreamViewController) {
     self.liveStreamViewController = controller
+    controller.view.hidden = true
     self.addChildViewController(controller)
     controller.didMoveToParentViewController(self)
     self.view.addSubview(controller.view)

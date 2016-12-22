@@ -66,14 +66,14 @@
                                                     <constraint firstItem="ZW7-eZ-NGd" firstAttribute="leading" secondItem="jSK-4e-X7a" secondAttribute="leading" constant="-2" id="cnq-IC-bhr"/>
                                                 </constraints>
                                             </view>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hBo-a9-bYC">
-                                                <rect key="frame" x="50" y="0.0" width="504" height="50"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hBo-a9-bYC">
+                                                <rect key="frame" x="50" y="0.0" width="496" height="50"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SJN-qW-Fjy">
-                                                <rect key="frame" x="554" y="0.0" width="46" height="50"/>
+                                            <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="752" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SJN-qW-Fjy">
+                                                <rect key="frame" x="546" y="0.0" width="54" height="50"/>
                                                 <state key="normal" title="Button"/>
                                             </button>
                                         </subviews>

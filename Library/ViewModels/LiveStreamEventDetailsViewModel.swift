@@ -63,14 +63,18 @@ public class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewModelTyp
 
     self.subscribed = Signal.merge(
       self.subscribedProperty.signal,
-      event
-        .map { $0.user.isSubscribed }
+      event.map { $0.user.isSubscribed }
     )
 
     self.introText = combineLatest(
-      self.liveStreamViewControllerStateChangedProperty.signal.ignoreNil(),
+      Signal.merge(
+        self.liveStreamViewControllerStateChangedProperty.signal.ignoreNil(),
+        project.mapConst(.loading)
+      ),
       event
-    ).map { (state, event) -> NSAttributedString? in
+      )
+      .observeForUI()
+      .map { (state, event) -> NSAttributedString? in
 
       let baseAttributes = [
         NSFontAttributeName: UIFont.ksr_body(size: 13),
@@ -114,7 +118,9 @@ public class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewModelTyp
       return NSAttributedString(string: "")
     }.ignoreNil()
 
-    self.upcomingIntroText = event.map { event -> NSAttributedString? in
+    self.upcomingIntroText = event
+      .observeForUI()
+      .map { event -> NSAttributedString? in
       let paragraphStyle = NSMutableParagraphStyle()
       paragraphStyle.alignment = .Center
 
@@ -182,7 +188,7 @@ public class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewModelTyp
     }
 
     self.subscribeLabelText = self.subscribed.map {
-      $0 ? localizedString(
+      !$0 ? localizedString(
         key: "Keep_up_with_future_live_streams", defaultValue: "Keep up with future live streams"
       ) : ""
     }
