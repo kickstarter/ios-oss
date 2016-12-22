@@ -138,10 +138,9 @@ internal final class ActivitiesViewControllerTests: TestCase {
         FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
       }
     }
-
   }
 
-  func testMultipleSurveys_NotFacebookConnected_YouLaunched() {
+  /*func testMultipleSurveys_NotFacebookConnected_YouLaunched() {
     let launch = .template
       |> Activity.lens.id .~ 73
       |> Activity.lens.project .~ (.cosmicSurgery
@@ -174,6 +173,5 @@ internal final class ActivitiesViewControllerTests: TestCase {
 //        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
       }
     }
-
-  }
+  }*/
 }
