@@ -14,6 +14,7 @@ class LiveStreamEventDetailsViewModelTests: TestCase {
   private let creatorAvatarUrl = TestObserver<NSURL, NoError>()
   private let creatorName = TestObserver<String, NoError>()
   private let configureSharing = TestObserver<(Project, LiveStreamEvent), NoError>()
+  private let error = TestObserver<String, NoError>()
   private let introText = TestObserver<NSAttributedString, NoError>()
   private let liveStreamTitle = TestObserver<String, NoError>()
   private let liveStreamParagraph = TestObserver<String, NoError>()
@@ -35,6 +36,7 @@ class LiveStreamEventDetailsViewModelTests: TestCase {
     self.vm.outputs.creatorAvatarUrl.observe(self.creatorAvatarUrl.observer)
     self.vm.outputs.creatorName.observe(self.creatorName.observer)
     self.vm.outputs.configureSharing.observe(self.configureSharing.observer)
+    self.vm.outputs.error.observe(self.error.observer)
     self.vm.outputs.introText.observe(self.introText.observer)
     self.vm.outputs.liveStreamTitle.observe(self.liveStreamTitle.observer)
     self.vm.outputs.liveStreamParagraph.observe(self.liveStreamParagraph.observer)
@@ -90,6 +92,22 @@ class LiveStreamEventDetailsViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     XCTAssertTrue(self.configureSharing.lastValue == (project, event))
+  }
+
+  func testError() {
+    let project = Project.template
+    let event = LiveStreamEvent.template
+
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.configureWith(project: project, event: event)
+
+    self.vm.inputs.failedToRetrieveEvent()
+    self.vm.inputs.failedToUpdateSubscription()
+
+    self.error.assertValues([
+      "Failed to retrieve live stream event details",
+      "Failed to update subscription"
+      ])
   }
 
   func testIntroText() {
@@ -173,9 +191,27 @@ class LiveStreamEventDetailsViewModelTests: TestCase {
     self.showSubscribeButtonActivityIndicator.assertValues([false, true, false])
     self.subscribed.assertValues([false, true])
     self.subscribeButtonText.assertValues(["Subscribe", "Subscribed"])
-    self.subscribeLabelText.assertValues(["", "Keep up with future live streams"])
+    self.subscribeLabelText.assertValues(["Keep up with future live streams", ""])
 
     XCTAssertTrue(self.toggleSubscribe.values[0] == ("123", false))
+  }
+
+  func testSubscribeFailed() {
+    let project = Project.template
+    let event = LiveStreamEvent.template
+
+    self.vm.inputs.configureWith(project: project, event: event)
+    self.vm.inputs.viewDidLoad()
+
+    self.vm.inputs.subscribeButtonTapped()
+    self.vm.inputs.failedToUpdateSubscription()
+    self.showSubscribeButtonActivityIndicator.assertValues([false, true, false, false])
+    self.subscribed.assertValues([false, false])
+    self.subscribeButtonText.assertValues(["Subscribe", "Subscribe"])
+    self.subscribeLabelText.assertValues([
+      "Keep up with future live streams",
+      "Keep up with future live streams"
+    ])
   }
 
   func testUpcomingIntroText() {

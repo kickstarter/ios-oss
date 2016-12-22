@@ -270,8 +270,8 @@ internal final class LiveStreamContainerViewController: UIViewController {
           case .Success(let event):
             self?.viewModel.inputs.setLiveStreamEvent(event: event)
             self?.eventDetailsViewModel.inputs.setLiveStreamEvent(event: event)
-          case .Failure(let error):
-            print(error)
+          case .Failure:
+            self?.eventDetailsViewModel.inputs.failedToUpdateSubscription()
           }
         }
     }
@@ -345,10 +345,19 @@ internal final class LiveStreamContainerViewController: UIViewController {
           switch $0 {
           case .Success(let result):
             self?.eventDetailsViewModel.inputs.setSubcribed(subscribed: result)
-          case .Failure(let error):
-            print(error)
+          case .Failure:
+            self?.eventDetailsViewModel.inputs.failedToRetrieveEvent()
           }
         }
+    }
+
+    Signal.merge(
+      self.viewModel.outputs.error,
+      self.eventDetailsViewModel.outputs.error
+    )
+    .observeForUI()
+    .observeNext { [weak self] in
+      self?.presentViewController(UIAlertController.genericError($0), animated: true, completion: nil)
     }
 
     self.shareViewModel.outputs.showShareSheet

@@ -12,6 +12,8 @@ public protocol LiveStreamEventDetailsViewModelType {
 
 public protocol LiveStreamEventDetailsViewModelInputs {
   func configureWith(project project: Project, event: LiveStreamEvent?)
+  func failedToRetrieveEvent()
+  func failedToUpdateSubscription()
   func fetchLiveStreamEvent()
   func liveStreamViewControllerStateChanged(state state: LiveStreamViewControllerState)
   func subscribeButtonTapped()
@@ -26,6 +28,7 @@ public protocol LiveStreamEventDetailsViewModelOutputs {
   var creatorAvatarUrl: Signal<NSURL, NoError> { get }
   var creatorName: Signal<String, NoError> { get }
   var configureSharing: Signal<(Project, LiveStreamEvent), NoError> { get }
+  var error: Signal<String, NoError> { get }
   var introText: Signal<NSAttributedString, NoError> { get }
   var liveStreamTitle: Signal<String, NoError> { get }
   var liveStreamParagraph: Signal<String, NoError> { get }
@@ -63,7 +66,11 @@ public class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewModelTyp
 
     self.subscribed = Signal.merge(
       self.subscribedProperty.signal,
-      event.map { $0.user.isSubscribed }
+      event.map { $0.user.isSubscribed },
+      combineLatest(
+        event.map { $0.user.isSubscribed },
+        self.failedToUpdateSubscriptionProperty.signal)
+        .map(first)
     )
 
     self.introText = combineLatest(
@@ -205,6 +212,7 @@ public class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewModelTyp
 
     self.showSubscribeButtonActivityIndicator = Signal.merge(
       self.subscribed.mapConst(false),
+      self.failedToUpdateSubscriptionProperty.signal.mapConst(false),
       self.subscribeButtonTappedProperty.signal.mapConst(true)
     )
 
@@ -215,6 +223,19 @@ public class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewModelTyp
 
     self.numberOfPeopleWatchingText = self.numberOfPeopleWatchingProperty.signal.ignoreNil()
       .map { String($0) }
+
+    self.error = Signal.merge(
+      self.failedToRetrieveEventProperty.signal.map {
+        localizedString(
+          key: "Failed_to_retrieve_live_stream_event_details",
+          defaultValue: "Failed to retrieve live stream event details")
+      },
+      self.failedToUpdateSubscriptionProperty.signal.map {
+        localizedString(
+          key: "Failed_to_update_subscription",
+          defaultValue: "Failed to update subscription"
+        )
+      })
   }
   //swiftlint:enable function_body_length
 
@@ -227,6 +248,16 @@ public class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewModelTyp
   private let viewDidLoadProperty = MutableProperty()
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
+  }
+
+  private let failedToRetrieveEventProperty = MutableProperty()
+  public func failedToRetrieveEvent() {
+    self.failedToRetrieveEventProperty.value = ()
+  }
+
+  private let failedToUpdateSubscriptionProperty = MutableProperty()
+  public func failedToUpdateSubscription() {
+    self.failedToUpdateSubscriptionProperty.value = ()
   }
 
   private let fetchLiveStreamEventProperty = MutableProperty()
@@ -264,6 +295,7 @@ public class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewModelTyp
   public let creatorAvatarUrl: Signal<NSURL, NoError>
   public let creatorName: Signal<String, NoError>
   public let configureSharing: Signal<(Project, LiveStreamEvent), NoError>
+  public let error: Signal<String, NoError>
   public let introText: Signal<NSAttributedString, NoError>
   public let liveStreamTitle: Signal<String, NoError>
   public let liveStreamParagraph: Signal<String, NoError>

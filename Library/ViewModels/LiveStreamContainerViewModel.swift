@@ -21,6 +21,7 @@ public protocol LiveStreamContainerViewModelInputs {
 public protocol LiveStreamContainerViewModelOutputs {
   var createAndConfigureLiveStreamViewController: Signal<(Project, LiveStreamEvent), NoError> { get }
   var dismiss: Signal<(), NoError> { get }
+  var error: Signal<String, NoError> { get }
   var liveStreamState: Signal<LiveStreamViewControllerState, NoError> { get }
   var loaderText: Signal<String, NoError> { get }
   var projectImageUrl: Signal<NSURL, NoError> { get }
@@ -32,6 +33,7 @@ public final class LiveStreamContainerViewModel: LiveStreamContainerViewModelTyp
 LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
 
   //swiftlint:disable function_body_length
+  //swiftlint:disable cyclomatic_complexity
   public init() {
     let project = combineLatest(
       self.projectProperty.signal.ignoreNil(),
@@ -51,6 +53,31 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       ),
       self.viewDidLoadProperty.signal
     ).map(first)
+
+    self.error = self.liveStreamState.map { state -> LiveVideoPlaybackError? in
+      switch state {
+      case .error(let error): return error
+      case .live(let playbackState, _):
+        if case let .error(videoError) = playbackState { return videoError }
+      case .replay(let playbackState, _, _):
+        if case let .error(videoError) = playbackState { return videoError }
+      default:
+        return nil
+      }
+
+      return nil
+      }
+      .ignoreNil()
+      .map {
+        switch $0 {
+        case .sessionInterrupted:
+          return localizedString(
+            key: "The_live_stream_was_interrupted", defaultValue: "The live stream was interrupted")
+        case .failedToConnect:
+          return localizedString(
+            key: "The_live_stream_failed_to_connect", defaultValue: "The live stream failed to connect")
+        }
+      }
 
     self.loaderText = liveStreamState.map {
       if case .live(playbackState: .loading, _) = $0 { return localizedString(
@@ -91,6 +118,8 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
 
     self.dismiss = self.closeButtonTappedProperty.signal
   }
+  //swiftlint:enable function_body_length
+  //swiftlint:enable cyclomatic_complexity
 
   private let projectProperty = MutableProperty<Project?>(nil)
   public func configureWith(project project: Project, event: LiveStreamEvent?) {
@@ -121,6 +150,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
 
   public let createAndConfigureLiveStreamViewController: Signal<(Project, LiveStreamEvent), NoError>
   public let dismiss: Signal<(), NoError>
+  public let error: Signal<String, NoError>
   public let liveStreamState: Signal<LiveStreamViewControllerState, NoError>
   public let loaderText: Signal<String, NoError>
   public let projectImageUrl: Signal<NSURL, NoError>

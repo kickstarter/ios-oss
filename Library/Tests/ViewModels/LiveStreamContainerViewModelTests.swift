@@ -12,6 +12,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
 
   private let createAndConfigureLiveStreamViewController = TestObserver<(Project, LiveStreamEvent), NoError>()
   private let dismiss = TestObserver<(), NoError>()
+  private let error = TestObserver<String, NoError>()
   private let liveStreamState = TestObserver<LiveStreamViewControllerState, NoError>()
   private let loaderText = TestObserver<String, NoError>()
   private let projectImageUrl = TestObserver<NSURL, NoError>()
@@ -24,6 +25,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     self.vm.outputs.createAndConfigureLiveStreamViewController.observe(
       self.createAndConfigureLiveStreamViewController.observer)
     self.vm.outputs.dismiss.observe(self.dismiss.observer)
+    self.vm.outputs.error.observe(self.error.observer)
     self.vm.outputs.liveStreamState.observe(self.liveStreamState.observer)
     self.vm.outputs.loaderText.observe(self.loaderText.observer)
     self.vm.outputs.projectImageUrl.observe(self.projectImageUrl.observer)
@@ -45,6 +47,24 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     self.vm.inputs.closeButtonTapped()
 
     self.dismiss.assertValueCount(1)
+  }
+
+  func testError() {
+    let project = Project.template
+    let event = LiveStreamEvent.template
+
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.configureWith(project: project, event: event)
+
+    self.vm.inputs.liveStreamViewControllerStateChanged(
+      state: .live(playbackState: .error(error: .sessionInterrupted), startTime: 0))
+    self.vm.inputs.liveStreamViewControllerStateChanged(
+      state: .live(playbackState: .error(error: .failedToConnect), startTime: 0))
+
+    self.error.assertValues([
+      "The live stream was interrupted",
+      "The live stream failed to connect"
+    ])
   }
 
   func testLiveStreamStates() {
@@ -125,6 +145,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
       state: .replay(playbackState: .playing, replayAvailable: false, duration: 123))
 
     self.showVideoView.assertValues([
+      false,
       false,
       true,
       false,
