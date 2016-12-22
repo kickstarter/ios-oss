@@ -123,7 +123,7 @@ internal class MockKeyValueStore: KeyValueStoreType {
   }
 
   func set(_ value: Any?, forKey key: String) {
-    self.store[key] = object
+    self.store[key] = value
   }
 
   func boolForKey(_ key: String) -> Bool {
