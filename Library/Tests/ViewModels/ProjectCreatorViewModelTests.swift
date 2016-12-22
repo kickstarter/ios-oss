@@ -33,8 +33,8 @@ final class ProjectCreatorViewModelTests: TestCase {
 
     self.vm.inputs.decidePolicy(
       forNavigationAction: MockNavigationAction(
-        navigationType: .Other,
-        request: .init(URL: URL(string: "https://www.kickstarter.com/projects/a/b/creator_bio")!)
+        navigationType: .other,
+        request: .init(url: URL(string: "https://www.kickstarter.com/projects/a/b/creator_bio")!)
       )
     )
 
@@ -43,8 +43,8 @@ final class ProjectCreatorViewModelTests: TestCase {
 
     self.vm.inputs.decidePolicy(
       forNavigationAction: MockNavigationAction(
-        navigationType: .LinkActivated,
-        request: .init(URL: URL(string: "https://www.kickstarter.com/projects/a/b/messages/new")!)
+        navigationType: .linkActivated,
+        request: .init(url: URL(string: "https://www.kickstarter.com/projects/a/b/messages/new")!)
       )
     )
 
@@ -61,8 +61,8 @@ final class ProjectCreatorViewModelTests: TestCase {
 
     self.vm.inputs.decidePolicy(
       forNavigationAction: MockNavigationAction(
-        navigationType: .Other,
-        request: .init(URL: URL(string: "https://www.kickstarter.com/projects/a/b/creator_bio")!)
+        navigationType: .other,
+        request: .init(url: URL(string: "https://www.kickstarter.com/projects/a/b/creator_bio")!)
       )
     )
 
@@ -70,8 +70,8 @@ final class ProjectCreatorViewModelTests: TestCase {
 
     self.vm.inputs.decidePolicy(
       forNavigationAction: MockNavigationAction(
-        navigationType: .LinkActivated,
-        request: .init(URL: URL(string: "http://www.google.com")!)
+        navigationType: .linkActivated,
+        request: .init(url: URL(string: "http://www.google.com")!)
       )
     )
 
@@ -93,8 +93,8 @@ final class ProjectCreatorViewModelTests: TestCase {
 
     self.vm.inputs.decidePolicy(
       forNavigationAction: MockNavigationAction(
-        navigationType: .LinkActivated,
-        request: .init(URL: URL(string: "http://www.google.com")!)
+        navigationType: .linkActivated,
+        request: .init(url: URL(string: "http://www.google.com")!)
       )
     )
 

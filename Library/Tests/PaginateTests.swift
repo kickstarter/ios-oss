@@ -33,13 +33,13 @@ final class PaginateTests: TestCase {
     let loadingTest = TestObserver<Bool, NoError>()
     loading.observe(loadingTest.observer)
 
-    self.newRequestObserver.sendNext(1)
+    self.newRequestObserver.send(value: 1)
     self.scheduler.advance()
 
     valuesTest.assertValues([[]])
     loadingTest.assertValues([true, false])
 
-    self.newRequestObserver.sendNext(1)
+    self.newRequestObserver.send(value: 1)
     self.scheduler.advance()
 
     valuesTest.assertValues([[]])
@@ -66,13 +66,13 @@ final class PaginateTests: TestCase {
     let loadingTest = TestObserver<Bool, NoError>()
     loading.observe(loadingTest.observer)
 
-    self.newRequestObserver.sendNext(1)
+    self.newRequestObserver.send(value: 1)
     self.scheduler.advance()
 
     valuesTest.assertValues([[]])
     loadingTest.assertValues([true, false])
 
-    self.newRequestObserver.sendNext(1)
+    self.newRequestObserver.send(value: 1)
     self.scheduler.advance()
 
     valuesTest.assertValues([[], [], []])
@@ -98,13 +98,13 @@ final class PaginateTests: TestCase {
     let loadingTest = TestObserver<Bool, NoError>()
     loading.observe(loadingTest.observer)
 
-    self.newRequestObserver.sendNext(1)
+    self.newRequestObserver.send(value: 1)
     self.scheduler.advance()
 
     valuesTest.assertValues([[]])
     loadingTest.assertValues([true, false])
 
-    self.newRequestObserver.sendNext(1)
+    self.newRequestObserver.send(value: 1)
     self.scheduler.advance()
 
     valuesTest.assertValues([[]])
@@ -131,13 +131,13 @@ final class PaginateTests: TestCase {
     let loadingTest = TestObserver<Bool, NoError>()
     loading.observe(loadingTest.observer)
 
-    self.newRequestObserver.sendNext(1)
+    self.newRequestObserver.send(value: 1)
     self.scheduler.advance()
 
     valuesTest.assertValues([[]])
     loadingTest.assertValues([true, false])
 
-    self.newRequestObserver.sendNext(1)
+    self.newRequestObserver.send(value: 1)
     self.scheduler.advance()
 
     valuesTest.assertValues([[], []])
@@ -164,7 +164,7 @@ final class PaginateTests: TestCase {
     loadingTest.assertDidNotEmitValue("No loading happens immediately.")
 
     // Start request for new set of values.
-    self.newRequestObserver.sendNext(1)
+    self.newRequestObserver.send(value: 1)
 
     valuesTest.assertDidNotEmitValue("No values emit immediately.")
     loadingTest.assertValues([true], "Loading starts.")
@@ -176,7 +176,7 @@ final class PaginateTests: TestCase {
     loadingTest.assertValues([true, false], "Loading stops.")
 
     // Request next page of values.
-    self.nextPageObserver.sendNext()
+    self.nextPageObserver.send()
 
     valuesTest.assertValues([[1]], "No values emit immediately.")
     loadingTest.assertValues([true, false, true], "Loading starts.")
@@ -188,7 +188,7 @@ final class PaginateTests: TestCase {
     loadingTest.assertValues([true, false, true, false], "Loading stops.")
 
     // Request next page of results (this page is empty since the last request exhausted the results.)
-    self.nextPageObserver.sendNext(())
+    self.nextPageObserver.send(value: ())
 
     valuesTest.assertValues([[1], [1, 2]], "No values emit immediately.")
     loadingTest.assertValues([true, false, true, false, true], "Loading starts.")
@@ -200,7 +200,7 @@ final class PaginateTests: TestCase {
     loadingTest.assertValues([true, false, true, false, true, false], "Loading stops.")
 
     // Try request for yet another page of values.
-    self.nextPageObserver.sendNext(())
+    self.nextPageObserver.send(value: ())
 
     valuesTest.assertValues([[1], [1, 2]], "No values emit immediately.")
     loadingTest.assertValues([true, false, true, false, true, false], "Loading does not start again.")
@@ -212,7 +212,7 @@ final class PaginateTests: TestCase {
     loadingTest.assertValues([true, false, true, false, true, false], "Loading did not start or stop again.")
 
     // Start over with a new request
-    self.newRequestObserver.sendNext(0)
+    self.newRequestObserver.send(value: 0)
 
     valuesTest.assertValues([[1], [1, 2], []], "Values clear immediately.")
     loadingTest.assertValues([true, false, true, false, true, false, true], "Loading started.")
@@ -223,7 +223,7 @@ final class PaginateTests: TestCase {
     valuesTest.assertValues([[1], [1, 2], [], [0]], "New page of values emits.")
     loadingTest.assertValues([true, false, true, false, true, false, true, false], "Loading finishes.")
 
-    self.nextPageObserver.sendNext()
+    self.nextPageObserver.send()
 
     valuesTest.assertValues([[1], [1, 2], [], [0]], "New page of values emits.")
     loadingTest.assertValues([true, false, true, false, true, false, true, false, true], "Loading finishes.")
@@ -256,7 +256,7 @@ final class PaginateTests: TestCase {
     loadingTest.assertDidNotEmitValue("No loading happens immediately.")
 
     // Start request for new set of values.
-    self.newRequestObserver.sendNext(1)
+    self.newRequestObserver.send(value: 1)
 
     valuesTest.assertDidNotEmitValue("No values emit immediately.")
     loadingTest.assertValues([true], "Loading starts.")
@@ -268,7 +268,7 @@ final class PaginateTests: TestCase {
     loadingTest.assertValues([true, false], "Loading stops.")
 
     // Request next page of values.
-    self.nextPageObserver.sendNext()
+    self.nextPageObserver.send()
 
     valuesTest.assertValues([[1]], "No values emit immediately.")
     loadingTest.assertValues([true, false, true], "Loading starts.")
@@ -280,7 +280,7 @@ final class PaginateTests: TestCase {
     loadingTest.assertValues([true, false, true, false], "Loading stops.")
 
     // Request next page of results (this page is empty since the last request exhausted the results.)
-    self.nextPageObserver.sendNext(())
+    self.nextPageObserver.send(value: ())
 
     valuesTest.assertValues([[1], [1, 2]], "No values emit immediately.")
     loadingTest.assertValues([true, false, true, false, true], "Loading starts.")
@@ -292,7 +292,7 @@ final class PaginateTests: TestCase {
     loadingTest.assertValues([true, false, true, false, true, false], "Loading stops.")
 
     // Try request for yet another page of values.
-    self.nextPageObserver.sendNext(())
+    self.nextPageObserver.send(value: ())
 
     valuesTest.assertValues([[1], [1, 2], [1, 2]], "No values emit immediately.")
     loadingTest.assertValues([true, false, true, false, true, false], "Loading does not start again.")
@@ -304,7 +304,7 @@ final class PaginateTests: TestCase {
     loadingTest.assertValues([true, false, true, false, true, false], "Loading did not start or stop again.")
 
     // Start over with a new request
-    self.newRequestObserver.sendNext(0)
+    self.newRequestObserver.send(value: 0)
 
     valuesTest.assertValues([[1], [1, 2], [1, 2], []], "Values clear immediately.")
     loadingTest.assertValues([true, false, true, false, true, false, true], "Loading started.")
@@ -315,7 +315,7 @@ final class PaginateTests: TestCase {
     valuesTest.assertValues([[1], [1, 2], [1, 2], [], [0]], "New page of values emits.")
     loadingTest.assertValues([true, false, true, false, true, false, true, false], "Loading finishes.")
 
-    self.newRequestObserver.sendNext(0)
+    self.newRequestObserver.send(value: 0)
 
     valuesTest.assertValues([[1], [1, 2], [1, 2], [], [0], []], "Values clear immediately.")
     loadingTest.assertValues([true, false, true, false, true, false, true, false, true], "Loading starts.")
@@ -346,7 +346,7 @@ final class PaginateTests: TestCase {
     valuesTest.assertDidNotEmitValue()
     loadingTest.assertDidNotEmitValue()
 
-    self.newRequestObserver.sendNext(1)
+    self.newRequestObserver.send(value: 1)
 
     valuesTest.assertDidNotEmitValue()
     loadingTest.assertValues([true])
@@ -356,7 +356,7 @@ final class PaginateTests: TestCase {
     valuesTest.assertValues([[1]])
     loadingTest.assertValues([true, false])
 
-    self.nextPageObserver.sendNext()
+    self.nextPageObserver.send()
 
     valuesTest.assertValues([[1]])
     loadingTest.assertValues([true, false, true])
@@ -366,7 +366,7 @@ final class PaginateTests: TestCase {
     valuesTest.assertValues([[1], [1, 2]])
     loadingTest.assertValues([true, false, true, false])
 
-    self.newRequestObserver.sendNext(1)
+    self.newRequestObserver.send(value: 1)
 
     valuesTest.assertValues([[1], [1, 2]])
     loadingTest.assertValues([true, false, true, false, true])
@@ -395,24 +395,24 @@ final class PaginateTests: TestCase {
       loading.observe(loadingTest.observer)
 
       self.newRequestObserver.sendNext(1)
-      self.scheduler.advanceByInterval(TestCase.interval)
+      self.scheduler.advance(by: TestCase.interval)
 
       valuesTest.assertValues([[1]], "Values emit after waiting enough time for request to finish.")
       loadingTest.assertValues([true, false], "Loading started and stopped.")
 
       self.nextPageObserver.sendNext()
-      self.scheduler.advanceByInterval(TestCase.interval / 2.0)
+      self.scheduler.advance(by: TestCase.interval.halved())
 
       valuesTest.assertValues([[1]], "Values don't emit yet.")
       loadingTest.assertValues([true, false, true], "Still loading.")
 
       self.nextPageObserver.sendNext()
-      self.scheduler.advanceByInterval(TestCase.interval / 2.0)
+      self.scheduler.advance(by: TestCase.interval.halved())
 
       valuesTest.assertValues([[1]], "Values don't emit yet.")
       loadingTest.assertValues([true, false, true, false, true], "Still loading.")
 
-      self.scheduler.advanceByInterval(TestCase.interval / 2.0)
+      self.scheduler.advance(by: TestCase.interval.halved())
 
       valuesTest.assertValues([[1], [1, 2]], "Next page of values emit.")
       loadingTest.assertValues([true, false, true, false, true, false], "Loading stops.")
@@ -438,14 +438,14 @@ final class PaginateTests: TestCase {
 
       // Request the first page and wait enough time for request to finish.
       self.newRequestObserver.sendNext(1)
-      self.scheduler.advanceByInterval(TestCase.interval)
+      self.scheduler.advance(by: TestCase.interval)
 
       valuesTest.assertValues([[1]], "Values emit after waiting enough time for request to finish.")
       loadingTest.assertValues([true, false], "Loading started and stopped.")
 
       // Request the next page and wait only a little bit of time.
       self.nextPageObserver.sendNext()
-      self.scheduler.advanceByInterval(TestCase.interval / 2.0)
+      self.scheduler.advance(by: TestCase.interval.halved())
 
       valuesTest.assertValues([[1]], "Values don't emit yet.")
       loadingTest.assertValues([true, false, true], "Still loading.")
@@ -457,13 +457,13 @@ final class PaginateTests: TestCase {
       loadingTest.assertValues([true, false, true, false, true], "Still loading.")
 
       // Wait a little bit of time, not enough for request to finish.
-      self.scheduler.advanceByInterval(TestCase.interval / 2.0)
+      self.scheduler.advance(by: TestCase.interval.halved())
 
       valuesTest.assertValues([[1], []], "Values don't emit yet.")
       loadingTest.assertValues([true, false, true, false, true], "Still loading.")
 
       // Wait enough time for request to finish.
-      self.scheduler.advanceByInterval(TestCase.interval / 2.0)
+      self.scheduler.advance(by: TestCase.interval.halved())
 
       valuesTest.assertValues([[1], [], [0]], "Next page of values emit.")
       loadingTest.assertValues([true, false, true, false, true, false], "Loading stops.")
@@ -489,14 +489,14 @@ final class PaginateTests: TestCase {
 
       // Request the first page and wait enough time for request to finish.
       self.newRequestObserver.sendNext(1)
-      self.scheduler.advanceByInterval(TestCase.interval)
+      self.scheduler.advance(by: TestCase.interval)
 
       valuesTest.assertValues([[1]], "Values emit after waiting enough time for request to finish.")
       loadingTest.assertValues([true, false], "Loading started and stopped.")
 
       // Request the next page and wait only a little bit of time.
       self.nextPageObserver.sendNext()
-      self.scheduler.advanceByInterval(TestCase.interval / 2.0)
+      self.scheduler.advance(by: TestCase.interval.halved())
 
       valuesTest.assertValues([[1]], "Values don't emit yet.")
       loadingTest.assertValues([true, false, true], "Still loading.")
@@ -508,13 +508,13 @@ final class PaginateTests: TestCase {
       loadingTest.assertValues([true, false, true, false, true], "Still loading.")
 
       // Wait a little bit of time, not enough for request to finish.
-      self.scheduler.advanceByInterval(TestCase.interval / 2.0)
+      self.scheduler.advance(by: TestCase.interval.halved())
 
       valuesTest.assertValues([[1]], "Values don't emit yet.")
       loadingTest.assertValues([true, false, true, false, true], "Still loading.")
 
       // Wait enough time for request to finish.
-      self.scheduler.advanceByInterval(TestCase.interval / 2.0)
+      self.scheduler.advance(by: TestCase.interval.halved())
 
       valuesTest.assertValues([[1], [0]], "Next page of values emit.")
       loadingTest.assertValues([true, false, true, false, true, false], "Loading stops.")
@@ -545,13 +545,13 @@ final class PaginateTests: TestCase {
     values.observe(valuesTest.observer)
 
     // A first page request that does have values
-    self.newRequestObserver.sendNext(1)
+    self.newRequestObserver.send(value: 1)
     self.scheduler.advance()
 
     valuesTest.assertValues([[1, 2]], "Some values are emitted.")
 
     // A first page request that does not have any values
-    self.newRequestObserver.sendNext(2)
+    self.newRequestObserver.send(value: 2)
     self.scheduler.advance()
 
     valuesTest.assertValues([[1, 2], []], "An empty set of values is emitted.")
@@ -589,25 +589,25 @@ final class PaginateTests: TestCase {
     let loadingTest = TestObserver<Bool, NoError>()
     loading.observe(loadingTest.observer)
 
-    self.newRequestObserver.sendNext(1)
+    self.newRequestObserver.send(value: 1)
     self.scheduler.advance()
 
     valuesTest.assertValues([[1]], "First page of values emitted.")
     XCTAssertEqual(1, numberOfRequests, "One request is made.")
 
-    self.nextPageObserver.sendNext()
+    self.nextPageObserver.send()
     self.scheduler.advance()
 
     valuesTest.assertValues([[1], [1, 2]], "Second page of values emitted.")
     XCTAssertEqual(2, numberOfRequests, "Another request is made.")
 
-    self.nextPageObserver.sendNext()
+    self.nextPageObserver.send()
     self.scheduler.advance()
 
     valuesTest.assertValues([[1], [1, 2]], "Third page was empty so no new values are emitted.")
     XCTAssertEqual(3, numberOfRequests, "One last request is made.")
 
-    self.nextPageObserver.sendNext()
+    self.nextPageObserver.send()
     self.scheduler.advance()
 
     valuesTest.assertValues([[1], [1, 2]], "Still no values emitted.")
@@ -628,42 +628,42 @@ final class PaginateTests: TestCase {
     let pageCountLoadedTest = TestObserver<Int, NoError>()
     pageCountLoaded.observe(pageCountLoadedTest.observer)
 
-    self.newRequestObserver.sendNext(1)
+    self.newRequestObserver.send(value: 1)
     self.scheduler.advance()
 
     pageCountLoadedTest.assertValues([1])
 
-    self.nextPageObserver.sendNext()
+    self.nextPageObserver.send()
     self.scheduler.advance()
 
     pageCountLoadedTest.assertValues([1, 2])
 
-    self.nextPageObserver.sendNext()
+    self.nextPageObserver.send()
     self.scheduler.advance()
 
     pageCountLoadedTest.assertValues([1, 2, 3])
 
-    self.newRequestObserver.sendNext(0)
+    self.newRequestObserver.send(value: 0)
     self.scheduler.advance()
 
     pageCountLoadedTest.assertValues([1, 2, 3, 1])
 
-    self.nextPageObserver.sendNext()
+    self.nextPageObserver.send()
     self.scheduler.advance()
 
     pageCountLoadedTest.assertValues([1, 2, 3, 1, 2])
 
-    self.nextPageObserver.sendNext()
+    self.nextPageObserver.send()
     self.scheduler.advance()
 
     pageCountLoadedTest.assertValues([1, 2, 3, 1, 2, 3])
 
-    self.nextPageObserver.sendNext()
+    self.nextPageObserver.send()
     self.scheduler.advance()
 
     pageCountLoadedTest.assertValues([1, 2, 3, 1, 2, 3, 4])
 
-    self.newRequestObserver.sendNext(0)
+    self.newRequestObserver.send(value: 0)
     self.scheduler.advance()
 
     pageCountLoadedTest.assertValues([1, 2, 3, 1, 2, 3, 4, 1])
@@ -683,42 +683,42 @@ final class PaginateTests: TestCase {
     let pageCountLoadedTest = TestObserver<Int, NoError>()
     pageCountLoaded.observe(pageCountLoadedTest.observer)
 
-    self.newRequestObserver.sendNext(1)
+    self.newRequestObserver.send(value: 1)
     self.scheduler.advance()
 
     pageCountLoadedTest.assertValues([1])
 
-    self.nextPageObserver.sendNext()
+    self.nextPageObserver.send()
     self.scheduler.advance()
 
     pageCountLoadedTest.assertValues([1, 2])
 
-    self.nextPageObserver.sendNext()
+    self.nextPageObserver.send()
     self.scheduler.advance()
 
     pageCountLoadedTest.assertValues([1, 2, 3])
 
-    self.newRequestObserver.sendNext(0)
+    self.newRequestObserver.send(value: 0)
     self.scheduler.advance()
 
     pageCountLoadedTest.assertValues([1, 2, 3, 1])
 
-    self.nextPageObserver.sendNext()
+    self.nextPageObserver.send()
     self.scheduler.advance()
 
     pageCountLoadedTest.assertValues([1, 2, 3, 1, 2])
 
-    self.nextPageObserver.sendNext()
+    self.nextPageObserver.send()
     self.scheduler.advance()
 
     pageCountLoadedTest.assertValues([1, 2, 3, 1, 2, 3])
 
-    self.nextPageObserver.sendNext()
+    self.nextPageObserver.send()
     self.scheduler.advance()
 
     pageCountLoadedTest.assertValues([1, 2, 3, 1, 2, 3, 4])
 
-    self.newRequestObserver.sendNext(0)
+    self.newRequestObserver.send(value: 0)
     self.scheduler.advance()
 
     pageCountLoadedTest.assertValues([1, 2, 3, 1, 2, 3, 4, 1])

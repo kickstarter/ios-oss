@@ -289,7 +289,7 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     let counts = self.loadCategoryRows.values
-      .flatten()
+      .joined()
       .map { $0.params.category?.projectsCount }
 
     XCTAssertEqual([Category.art.projectsCount, Category.filmAndVideo.projectsCount],

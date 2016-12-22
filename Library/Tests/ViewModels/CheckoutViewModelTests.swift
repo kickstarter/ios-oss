@@ -694,7 +694,7 @@ final class CheckoutViewModelTests: TestCase {
       )
       self.showAlert.assertValueCount(0)
 
-      self.scheduler.advanceByInterval(1)
+      self.scheduler.advance(by: .seconds(1))
       self.goToThanks.assertValueCount(0)
       self.showAlert.assertValues([failedEnvelope.stateReason])
 
@@ -773,7 +773,7 @@ final class CheckoutViewModelTests: TestCase {
         )
       )
 
-      self.scheduler.advanceByInterval(1)
+      self.scheduler.advance(by: .seconds(1))
       self.showAlert.assertValueCount(0)
       self.goToThanks.assertValueCount(1)
     }

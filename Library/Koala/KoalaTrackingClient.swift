@@ -133,31 +133,33 @@ public final class KoalaTrackingClient: TrackingClientType {
   }
 
   fileprivate func synchronousKoalaResult(_ request: URLRequest) -> Result<HTTPURLResponse, NSError>? {
-    var result: Result<HTTPURLResponse, NSError>?
-    let semaphore = DispatchSemaphore(value: 0)
-
-    self.URLSession.dataTask(with: request as URLRequest) { _, response, err in
-      defer { semaphore.signal() }
-
-      if let httpResponse = response as? HTTPURLResponse {
-        #if DEBUG
-          NSLog("[Koala Status Code]: \(httpResponse.statusCode)")
-        #endif
-        result = Result(value: httpResponse)
-      }
-
-      if let err = err {
-        result = Result(error: err)
-      }
-    }.resume()
-    semaphore.wait(timeout: dispatch_time_t(DispatchTime.distantFuture))
-
-    if result == nil {
-      NSLog("[Koala Request] response/error result unexpectedly nil")
-      assertionFailure()
-    }
-
-    return result
+    // FIXME
+//    var result: Result<HTTPURLResponse, NSError>?
+//    let semaphore = DispatchSemaphore(value: 0)
+//
+//    self.URLSession.dataTask(with: request as URLRequest) { _, response, err in
+//      defer { semaphore.signal() }
+//
+//      if let httpResponse = response as? HTTPURLResponse {
+//        #if DEBUG
+//          NSLog("[Koala Status Code]: \(httpResponse.statusCode)")
+//        #endif
+//        result = Result(value: httpResponse)
+//      }
+//
+//      if let err = err {
+//        result = Result(error: err)
+//      }
+//    }.resume()
+//    semaphore.wait(timeout: dispatch_time_t(DispatchTime.distantFuture))
+//
+//    if result == nil {
+//      NSLog("[Koala Request] response/error result unexpectedly nil")
+//      assertionFailure()
+//    }
+//
+//    return result
+    return nil
   }
 
   fileprivate func fileName() -> String? {

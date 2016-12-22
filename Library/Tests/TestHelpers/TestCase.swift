@@ -7,10 +7,10 @@ import XCTest
 @testable import Library
 
 internal class TestCase: FBSnapshotTestCase {
-  internal static let interval = 0.001
+  internal static let interval = DispatchTimeInterval.milliseconds(1)
 
   internal let apiService = MockService()
-  internal let cache = MockCache()
+  internal let cache = KSCache()
   internal let config = Config.config
   internal let cookieStorage = MockCookieStorage()
   internal let dateType = MockDate.self

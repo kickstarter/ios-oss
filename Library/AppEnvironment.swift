@@ -78,6 +78,7 @@ public struct AppEnvironment {
   }
 
   // Pop an environment off the stack.
+  @discardableResult
   public static func popEnvironment() -> Environment? {
     let last = stack.popLast()
     let next = current ?? Environment()
@@ -96,7 +97,7 @@ public struct AppEnvironment {
   // Pushes a new environment onto the stack that changes only a subset of the current global dependencies.
   public static func pushEnvironment(
     apiService: ServiceType = AppEnvironment.current.apiService,
-               apiDelayInterval: TimeInterval = AppEnvironment.current.apiDelayInterval,
+               apiDelayInterval: DispatchTimeInterval = AppEnvironment.current.apiDelayInterval,
                // swiftlint:disable line_length
                assetImageGeneratorType: AssetImageGeneratorType.Type = AppEnvironment.current.assetImageGeneratorType,
                // swiftlint:enable line_length
@@ -107,7 +108,7 @@ public struct AppEnvironment {
                countryCode: String = AppEnvironment.current.countryCode,
                currentUser: User? = AppEnvironment.current.currentUser,
                dateType: DateProtocol.Type = AppEnvironment.current.dateType,
-               debounceInterval: TimeInterval = AppEnvironment.current.debounceInterval,
+               debounceInterval: DispatchTimeInterval = AppEnvironment.current.debounceInterval,
                facebookAppDelegate: FacebookAppDelegateProtocol = AppEnvironment.current.facebookAppDelegate,
                isVoiceOverRunning: @escaping (() -> Bool) = AppEnvironment.current.isVoiceOverRunning,
                koala: Koala = AppEnvironment.current.koala,
@@ -154,7 +155,7 @@ public struct AppEnvironment {
   // of current global dependencies.
   public static func replaceCurrentEnvironment(
     apiService: ServiceType = AppEnvironment.current.apiService,
-               apiDelayInterval: TimeInterval = AppEnvironment.current.apiDelayInterval,
+               apiDelayInterval: DispatchTimeInterval = AppEnvironment.current.apiDelayInterval,
                // swiftlint:disable line_length
                assetImageGeneratorType: AssetImageGeneratorType.Type = AppEnvironment.current.assetImageGeneratorType,
                // swiftlint:enable line_length
@@ -165,7 +166,7 @@ public struct AppEnvironment {
                countryCode: String = AppEnvironment.current.countryCode,
                currentUser: User? = AppEnvironment.current.currentUser,
                dateType: DateProtocol.Type = AppEnvironment.current.dateType,
-               debounceInterval: TimeInterval = AppEnvironment.current.debounceInterval,
+               debounceInterval: DispatchTimeInterval = AppEnvironment.current.debounceInterval,
                facebookAppDelegate: FacebookAppDelegateProtocol = AppEnvironment.current.facebookAppDelegate,
                isVoiceOverRunning: @escaping (() -> Bool) = AppEnvironment.current.isVoiceOverRunning,
                koala: Koala = AppEnvironment.current.koala,

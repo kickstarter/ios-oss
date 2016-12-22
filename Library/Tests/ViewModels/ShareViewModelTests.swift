@@ -62,10 +62,9 @@ internal final class ShareViewModelTests: TestCase {
 
     XCTAssertEqual(["Showed Share Sheet", "Project Show Share Sheet"], self.trackingClient.events)
 
-    self.vm.inputs.shareActivityCompletion(activityType: nil,
-                                           completed: false,
-                                           returnedItems: nil,
-                                           activityError: nil)
+    self.vm.inputs.shareActivityCompletion(
+      with: .init(activityType: nil, completed: false, returnedItems: nil, activityError: nil)
+    )
 
     XCTAssertEqual(
       ["Showed Share Sheet", "Project Show Share Sheet", "Canceled Share Sheet",
@@ -85,10 +84,12 @@ internal final class ShareViewModelTests: TestCase {
 
     XCTAssertEqual(["Showed Share Sheet", "Project Show Share Sheet"], self.trackingClient.events)
 
-    self.vm.inputs.shareActivityCompletion(activityType: "com.third-party.share",
-                                           completed: false,
-                                           returnedItems: nil,
-                                           activityError: nil)
+    self.vm.inputs.shareActivityCompletion(
+      with: .init(activityType: UIActivityType(rawValue: "com.third-party.share"),
+                  completed: false,
+                  returnedItems: nil,
+                  activityError: nil)
+    )
 
     XCTAssertEqual(["Showed Share Sheet", "Project Show Share Sheet", "Showed Share", "Project Show Share"],
                    self.trackingClient.events)
@@ -111,10 +112,9 @@ internal final class ShareViewModelTests: TestCase {
 
     XCTAssertEqual(["Showed Share Sheet", "Project Show Share Sheet"], self.trackingClient.events)
 
-    self.vm.inputs.shareActivityCompletion(activityType: UIActivityType.postToTwitter,
-                                           completed: false,
-                                           returnedItems: nil,
-                                           activityError: nil)
+    self.vm.inputs.shareActivityCompletion(
+      with: .init(activityType: .postToTwitter, completed: false, returnedItems: nil, activityError: nil)
+    )
 
     XCTAssertEqual(["Showed Share Sheet", "Project Show Share Sheet", "Showed Share", "Project Show Share"],
                    self.trackingClient.events)
@@ -130,8 +130,8 @@ internal final class ShareViewModelTests: TestCase {
     XCTAssertEqual(["project", "project", "project", "project", "project", "project"],
                    self.trackingClient.properties(forKey: "context", as: String.self))
     XCTAssertEqual(
-      [nil, nil, UIActivityType.postToTwitter, UIActivityType.postToTwitter, UIActivityType.postToTwitter,
-        UIActivityType.postToTwitter],
+      [nil, nil, UIActivityType.postToTwitter.rawValue, UIActivityType.postToTwitter.rawValue,
+       UIActivityType.postToTwitter.rawValue, UIActivityType.postToTwitter.rawValue],
       self.trackingClient.properties(forKey: "share_activity_type", as: String.self)
     )
   }
@@ -142,10 +142,12 @@ internal final class ShareViewModelTests: TestCase {
 
     XCTAssertEqual(["Showed Share Sheet", "Project Show Share Sheet"], self.trackingClient.events)
 
-    self.vm.inputs.shareActivityCompletion(activityType: "com.third-party.share",
-                                           completed: true,
-                                           returnedItems: nil,
-                                           activityError: nil)
+    self.vm.inputs.shareActivityCompletion(
+      with: .init(activityType: UIActivityType(rawValue: "com.third-party.share"),
+                  completed: true,
+                  returnedItems: nil,
+                  activityError: nil)
+    )
 
     XCTAssertEqual(["Showed Share Sheet", "Project Show Share Sheet", "Showed Share", "Project Show Share"],
                    self.trackingClient.events)
@@ -167,10 +169,9 @@ internal final class ShareViewModelTests: TestCase {
 
     XCTAssertEqual(["Showed Share Sheet", "Project Show Share Sheet"], self.trackingClient.events)
 
-    self.vm.inputs.shareActivityCompletion(activityType: UIActivityType.postToTwitter,
-                                           completed: true,
-                                           returnedItems: nil,
-                                           activityError: nil)
+    self.vm.inputs.shareActivityCompletion(
+      with: .init(activityType: .postToTwitter, completed: true, returnedItems: nil, activityError: nil)
+    )
 
     XCTAssertEqual(["Showed Share Sheet", "Project Show Share Sheet", "Showed Share", "Project Show Share"],
                    self.trackingClient.events)
@@ -186,8 +187,8 @@ internal final class ShareViewModelTests: TestCase {
     XCTAssertEqual(["project", "project", "project", "project", "project", "project"],
                    self.trackingClient.properties(forKey: "context", as: String.self))
     XCTAssertEqual(
-      [nil, nil, UIActivityType.postToTwitter, UIActivityType.postToTwitter, UIActivityType.postToTwitter,
-        UIActivityType.postToTwitter],
+      [nil, nil, UIActivityType.postToTwitter.rawValue, UIActivityType.postToTwitter.rawValue,
+       UIActivityType.postToTwitter.rawValue, UIActivityType.postToTwitter.rawValue],
       self.trackingClient.properties(forKey: "share_activity_type", as: String.self)
     )
   }
@@ -198,10 +199,12 @@ internal final class ShareViewModelTests: TestCase {
 
     XCTAssertEqual(["Showed Share Sheet", "Update Show Share Sheet"], self.trackingClient.events)
 
-    self.vm.inputs.shareActivityCompletion(activityType: "com.third-party.share",
-                                           completed: true,
-                                           returnedItems: nil,
-                                           activityError: nil)
+    self.vm.inputs.shareActivityCompletion(
+      with: .init(activityType: UIActivityType(rawValue: "com.third-party.share"),
+                  completed: true,
+                  returnedItems: nil,
+                  activityError: nil)
+    )
 
     XCTAssertEqual(["Showed Share Sheet", "Update Show Share Sheet", "Showed Share", "Update Show Share"],
                    self.trackingClient.events)
@@ -223,10 +226,12 @@ internal final class ShareViewModelTests: TestCase {
 
     XCTAssertEqual(["Showed Share Sheet", "Project Show Share Sheet"], self.trackingClient.events)
 
-    self.vm.inputs.shareActivityCompletion(activityType: "com.third-party.share",
-                                           completed: true,
-                                           returnedItems: nil,
-                                           activityError: nil)
+    self.vm.inputs.shareActivityCompletion(
+      with: .init(activityType: UIActivityType(rawValue: "com.third-party.share"),
+                  completed: true,
+                  returnedItems: nil,
+                  activityError: nil)
+    )
 
     XCTAssertEqual(["Showed Share Sheet", "Project Show Share Sheet", "Showed Share", "Project Show Share"],
                    self.trackingClient.events)
@@ -248,10 +253,12 @@ internal final class ShareViewModelTests: TestCase {
 
     XCTAssertEqual(["Showed Share Sheet", "Checkout Show Share Sheet"], self.trackingClient.events)
 
-    self.vm.inputs.shareActivityCompletion(activityType: "com.third-party.share",
-                                           completed: true,
-                                           returnedItems: nil,
-                                           activityError: nil)
+    self.vm.inputs.shareActivityCompletion(
+      with: .init(activityType: UIActivityType(rawValue: "com.third-party.share"),
+                  completed: true,
+                  returnedItems: nil,
+                  activityError: nil)
+    )
 
     XCTAssertEqual(["Showed Share Sheet", "Checkout Show Share Sheet", "Showed Share", "Checkout Show Share"],
                    self.trackingClient.events)
@@ -273,10 +280,9 @@ internal final class ShareViewModelTests: TestCase {
 
     XCTAssertEqual(["Showed Share Sheet", "Checkout Show Share Sheet"], self.trackingClient.events)
 
-    self.vm.inputs.shareActivityCompletion(activityType: UIActivityType.postToTwitter,
-                                           completed: true,
-                                           returnedItems: nil,
-                                           activityError: nil)
+    self.vm.inputs.shareActivityCompletion(
+      with: .init(activityType: .postToTwitter, completed: true, returnedItems: nil, activityError: nil)
+    )
 
     XCTAssertEqual(["Showed Share Sheet", "Checkout Show Share Sheet", "Showed Share", "Checkout Show Share"],
                    self.trackingClient.events)
@@ -291,8 +297,8 @@ internal final class ShareViewModelTests: TestCase {
     XCTAssertEqual(["thanks", "thanks", "thanks", "thanks", "thanks", "thanks"],
                    self.trackingClient.properties(forKey: "context", as: String.self))
     XCTAssertEqual(
-      [nil, nil, UIActivityType.postToTwitter, UIActivityType.postToTwitter,
-        UIActivityType.postToTwitter, UIActivityType.postToTwitter],
+      [nil, nil, UIActivityType.postToTwitter.rawValue, UIActivityType.postToTwitter.rawValue,
+        UIActivityType.postToTwitter.rawValue, UIActivityType.postToTwitter.rawValue],
       self.trackingClient.properties(forKey: "share_activity_type", as: String.self)
     )
   }
@@ -300,12 +306,12 @@ internal final class ShareViewModelTests: TestCase {
   func testDirectFacebookShare() {
     self.vm.inputs.configureWith(shareContext: .project(.template))
     self.vm.inputs.facebookButtonTapped()
-    self.vm.inputs.shareComposeCompletion(result: .Done)
+    self.vm.inputs.shareComposeCompletion(result: .done)
 
     self.showShareCompose.assertValueCount(1)
     XCTAssertEqual(["Showed Share", "Project Show Share"], self.trackingClient.events)
 
-    self.scheduler.advanceByInterval(1.0)
+    self.scheduler.advance(by: .seconds(1))
 
     XCTAssertEqual(["Showed Share", "Project Show Share", "Shared", "Project Share"],
                    self.trackingClient.events)
@@ -313,8 +319,8 @@ internal final class ShareViewModelTests: TestCase {
     XCTAssertEqual(["project", "project", "project", "project"],
                    self.trackingClient.properties(forKey: "context", as: String.self))
     XCTAssertEqual(
-      [UIActivityType.postToFacebook, UIActivityType.postToFacebook, UIActivityType.postToFacebook,
-        UIActivityType.postToFacebook],
+      [UIActivityType.postToFacebook.rawValue, UIActivityType.postToFacebook.rawValue,
+       UIActivityType.postToFacebook.rawValue, UIActivityType.postToFacebook.rawValue],
       self.trackingClient.properties(forKey: "share_activity_type", as: String.self)
     )
   }
@@ -322,12 +328,12 @@ internal final class ShareViewModelTests: TestCase {
   func testDirectFacebookShareCanceled() {
     self.vm.inputs.configureWith(shareContext: .project(.template))
     self.vm.inputs.facebookButtonTapped()
-    self.vm.inputs.shareComposeCompletion(result: .Cancelled)
+    self.vm.inputs.shareComposeCompletion(result: .cancelled)
 
     self.showShareCompose.assertValueCount(1)
     XCTAssertEqual(["Showed Share", "Project Show Share"], self.trackingClient.events)
 
-    self.scheduler.advanceByInterval(1.0)
+    self.scheduler.advance(by: .seconds(1))
 
     XCTAssertEqual(["Showed Share", "Project Show Share", "Canceled Share", "Project Cancel Share"],
                    self.trackingClient.events)
@@ -335,8 +341,8 @@ internal final class ShareViewModelTests: TestCase {
     XCTAssertEqual(["project", "project", "project", "project"],
                    self.trackingClient.properties(forKey: "context", as: String.self))
     XCTAssertEqual(
-      [UIActivityType.postToFacebook, UIActivityType.postToFacebook, UIActivityType.postToFacebook,
-        UIActivityType.postToFacebook],
+      [UIActivityType.postToFacebook.rawValue, UIActivityType.postToFacebook.rawValue,
+       UIActivityType.postToFacebook.rawValue, UIActivityType.postToFacebook.rawValue],
       self.trackingClient.properties(forKey: "share_activity_type", as: String.self)
     )
   }
@@ -344,12 +350,12 @@ internal final class ShareViewModelTests: TestCase {
   func testDirectTwitterShare() {
     self.vm.inputs.configureWith(shareContext: .project(.template))
     self.vm.inputs.twitterButtonTapped()
-    self.vm.inputs.shareComposeCompletion(result: .Done)
+    self.vm.inputs.shareComposeCompletion(result: .done)
 
     self.showShareCompose.assertValueCount(1)
     XCTAssertEqual(["Showed Share", "Project Show Share"], self.trackingClient.events)
 
-    self.scheduler.advanceByInterval(1.0)
+    self.scheduler.advance(by: .seconds(1))
 
     XCTAssertEqual(["Showed Share", "Project Show Share", "Shared", "Project Share"],
                    self.trackingClient.events)
@@ -357,8 +363,8 @@ internal final class ShareViewModelTests: TestCase {
     XCTAssertEqual(["project", "project", "project", "project"],
                    self.trackingClient.properties(forKey: "context", as: String.self))
     XCTAssertEqual(
-      [UIActivityType.postToTwitter, UIActivityType.postToTwitter, UIActivityType.postToTwitter,
-        UIActivityType.postToTwitter],
+      [UIActivityType.postToTwitter.rawValue, UIActivityType.postToTwitter.rawValue,
+       UIActivityType.postToTwitter.rawValue, UIActivityType.postToTwitter.rawValue],
       self.trackingClient.properties(forKey: "share_activity_type", as: String.self)
     )
   }
@@ -366,12 +372,12 @@ internal final class ShareViewModelTests: TestCase {
   func testDirectTwitterShareCanceled() {
     self.vm.inputs.configureWith(shareContext: .project(.template))
     self.vm.inputs.twitterButtonTapped()
-    self.vm.inputs.shareComposeCompletion(result: .Cancelled)
+    self.vm.inputs.shareComposeCompletion(result: .cancelled)
 
     self.showShareCompose.assertValueCount(1)
     XCTAssertEqual(["Showed Share", "Project Show Share"], self.trackingClient.events)
 
-    self.scheduler.advanceByInterval(1.0)
+    self.scheduler.advance(by: .seconds(1))
 
     XCTAssertEqual(["Showed Share", "Project Show Share", "Canceled Share", "Project Cancel Share"],
                    self.trackingClient.events)
@@ -379,8 +385,8 @@ internal final class ShareViewModelTests: TestCase {
     XCTAssertEqual(["project", "project", "project", "project"],
                    self.trackingClient.properties(forKey: "context", as: String.self))
     XCTAssertEqual(
-      [UIActivityType.postToTwitter, UIActivityType.postToTwitter, UIActivityType.postToTwitter,
-        UIActivityType.postToTwitter],
+      [UIActivityType.postToTwitter.rawValue, UIActivityType.postToTwitter.rawValue,
+       UIActivityType.postToTwitter.rawValue, UIActivityType.postToTwitter.rawValue],
       self.trackingClient.properties(forKey: "share_activity_type", as: String.self)
     )
   }

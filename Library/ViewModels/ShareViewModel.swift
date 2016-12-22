@@ -5,6 +5,13 @@ import ReactiveSwift
 import Result
 import Social
 
+public struct ShareActivityCompletionData {
+  let activityType: UIActivityType?
+  let completed: Bool
+  let returnedItems: [Any]?
+  let activityError: NSError?
+}
+
 /// These share types provide us access to knowing when the user successfully shares through that method,
 /// or when the user cancels.
 private let firstPartyShareTypes: [UIActivityType] = [.postToFacebook, .postToTwitter, .postToWeibo,
@@ -22,10 +29,7 @@ public protocol ShareViewModelInputs {
   func shareButtonTapped()
 
   /// Call from the UIActivityViewController's completion handler.
-  func shareActivityCompletion(activityType: String?,
-                                            completed: Bool,
-                                            returnedItems: [AnyObject]?,
-                                            activityError: NSError?)
+  func shareActivityCompletion(with data: ShareActivityCompletionData)
 
   /// Call from the SLComposeViewController's completion handler
   func shareComposeCompletion(result: SLComposeViewControllerResult)
@@ -72,11 +76,11 @@ public final class ShareViewModel: ShareViewModelType, ShareViewModelInputs, Sha
       )
       .takePairWhen(self.shareComposeCompletionProperty.signal.skipNil())
       .map { service, result in
-        (
-          activityType: service.rawValue,
+        ShareActivityCompletionData(
+          activityType: service,
           completed: result == .done,
-          returnedItems: [AnyObject]?.none,
-          activityError: NSError?.none
+          returnedItems: nil,
+          activityError: nil
         )
     }
 
@@ -85,8 +89,6 @@ public final class ShareViewModel: ShareViewModelType, ShareViewModelInputs, Sha
       // FIXME
 //      self.shareActivityCompletionProperty.signal.skipNil()
       )
-
-    _ = self.shareActivityCompletionProperty.signal.skipNil()
 
     let shareActivityCompletion = shareContext
       .takePairWhen(shareCompletion)
@@ -113,7 +115,7 @@ public final class ShareViewModel: ShareViewModelType, ShareViewModelInputs, Sha
 
     shareActivityCompletion
       .filter { _, completion in
-        completion.completed && firstPartyShareTypes.contains(completion.activityType)
+        completion.completed && completion.activityType.map(firstPartyShareTypes.contains) == .some(true)
       }
       .flatMap {
         SignalProducer(value: $0)
@@ -126,7 +128,7 @@ public final class ShareViewModel: ShareViewModelType, ShareViewModelInputs, Sha
     }
 
     canceledShare
-      .filter { _, completion in firstPartyShareTypes.contains(completion.activityType) }
+      .filter { _, completion in completion.activityType.map(firstPartyShareTypes.contains) == .some(true) }
       .flatMap {
         SignalProducer(value: $0)
           .delay(1.0, on: AppEnvironment.current.scheduler)
@@ -151,13 +153,9 @@ public final class ShareViewModel: ShareViewModelType, ShareViewModelInputs, Sha
   public func shareButtonTapped() {
     self.shareButtonTappedProperty.value = ()
   }
-  fileprivate let shareActivityCompletionProperty = MutableProperty
-    <(activityType: String?, completed: Bool, returnedItems: [AnyObject]?, activityError: NSError?)?>(nil)
-  public func shareActivityCompletion(activityType: String?,
-                                                   completed: Bool,
-                                                   returnedItems: [AnyObject]?,
-                                                   activityError: NSError?) {
-    self.shareActivityCompletionProperty.value = (activityType, completed, returnedItems, activityError)
+  fileprivate let shareActivityCompletionProperty = MutableProperty<ShareActivityCompletionData?>(nil)
+  public func shareActivityCompletion(with data: ShareActivityCompletionData) {
+    self.shareActivityCompletionProperty.value = data
   }
   fileprivate let shareComposeCompletionProperty = MutableProperty<SLComposeViewControllerResult?>(nil)
   public func shareComposeCompletion(result: SLComposeViewControllerResult) {

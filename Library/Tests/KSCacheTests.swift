@@ -1,22 +1,22 @@
 import XCTest
 @testable import Library
 
-final class CacheProtocolTests: XCTestCase {
+final class KSCacheTests: XCTestCase {
 
-  func testMockCache() {
-    let cache = MockCache()
+  func testCache() {
+    let cache = KSCache()
 
     cache["lucky_number"] = 14
 
-    XCTAssertEqual(14, cache["lucky_number"])
+    XCTAssertEqual(14, cache["lucky_number"] as? Int)
 
     cache["lucky_string"] = "14"
 
-    XCTAssertEqual("14", cache["lucky_string"])
+    XCTAssertEqual("14", cache["lucky_string"] as? String)
 
     cache["someBool"] = true
 
-    XCTAssertEqual(true, cache["someBool"])
+    XCTAssertEqual(true, cache["someBool"] as? Bool)
 
     cache["someBool"] = nil
 

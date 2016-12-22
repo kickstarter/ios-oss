@@ -36,7 +36,7 @@ internal final class ProfileProjectCellViewModelTests: TestCase {
 
   func testProjectProgressUI() {
     let liveProject = Project.template |> Project.lens.dates.deadline .~
-      self.dateType.init().timeIntervalSince1970 + 60 * 60 * 24 * 10
+      (self.dateType.init().timeIntervalSince1970 + 60 * 60 * 24 * 10)
 
     self.vm.inputs.project(liveProject)
 

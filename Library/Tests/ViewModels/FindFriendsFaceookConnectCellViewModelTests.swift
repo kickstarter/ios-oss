@@ -28,7 +28,7 @@ final class FindFriendsFacebookConnectCellViewModelTests: TestCase {
     vm.outputs.isLoading.observe(isLoading.observer)
     vm.outputs.notifyDelegateToDismissHeader.observe(notifyPresenterToDismissHeader.observer)
     vm.outputs.notifyDelegateUserFacebookConnected.observe(notifyPresenterUserFacebookConnected.observer)
-    vm.outputs.postUserUpdatedNotification.map { $0.name }.observe(postUserUpdatedNotification.observer)
+    vm.outputs.postUserUpdatedNotification.map { $0.name.rawValue }.observe(postUserUpdatedNotification.observer)
     vm.outputs.updateUserInEnvironment.observe(updateUserInEnvironment.observer)
     vm.outputs.showErrorAlert.observe(showErrorAlert.observer)
   }

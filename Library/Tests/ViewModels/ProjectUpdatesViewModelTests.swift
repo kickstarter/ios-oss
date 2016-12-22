@@ -34,13 +34,13 @@ final class ProjectUpdatesViewModelTests: TestCase {
 
     let request = URLRequest(url: googleURL)
     let navigationAction = WKNavigationActionData(
-      navigationType: .LinkActivated,
+      navigationType: .linkActivated,
       request: request,
       sourceFrame: WKFrameInfoData.init(mainFrame: true, request: request),
       targetFrame: WKFrameInfoData.init(mainFrame: true, request: request)
     )
 
-    XCTAssertEqual(WKNavigationActionPolicy.Cancel.rawValue,
+    XCTAssertEqual(WKNavigationActionPolicy.cancel.rawValue,
                    self.vm.inputs.decidePolicy(forNavigationAction: navigationAction).rawValue)
 
     self.goToSafariBrowser.assertValues([googleURL])
@@ -60,13 +60,13 @@ final class ProjectUpdatesViewModelTests: TestCase {
 
     let request = URLRequest(url: URL(string: "\(project.urls.web.updates!)/\(updateId)")!)
     let navigationAction = WKNavigationActionData(
-      navigationType: .LinkActivated,
+      navigationType: .linkActivated,
       request: request,
       sourceFrame: WKFrameInfoData.init(mainFrame: true, request: request),
       targetFrame: WKFrameInfoData.init(mainFrame: true, request: request)
     )
 
-    XCTAssertEqual(WKNavigationActionPolicy.Cancel.rawValue,
+    XCTAssertEqual(WKNavigationActionPolicy.cancel.rawValue,
                    self.vm.inputs.decidePolicy(forNavigationAction: navigationAction).rawValue)
 
     self.goToUpdateId.assertValues([updateId])
@@ -84,13 +84,13 @@ final class ProjectUpdatesViewModelTests: TestCase {
 
     let request = URLRequest(url: URL(string: "\(project.urls.web.updates!)/\(updateId)/comments")!)
     let navigationAction = WKNavigationActionData(
-      navigationType: .LinkActivated,
+      navigationType: .linkActivated,
       request: request,
       sourceFrame: WKFrameInfoData.init(mainFrame: true, request: request),
       targetFrame: WKFrameInfoData.init(mainFrame: true, request: request)
     )
 
-    XCTAssertEqual(WKNavigationActionPolicy.Cancel.rawValue,
+    XCTAssertEqual(WKNavigationActionPolicy.cancel.rawValue,
                    self.vm.inputs.decidePolicy(forNavigationAction: navigationAction).rawValue)
 
     self.goToUpdateCommentId.assertValues([updateId])
@@ -127,13 +127,13 @@ final class ProjectUpdatesViewModelTests: TestCase {
 
     let updateRequest = URLRequest(url: URL(string: "https://www.youtube.com/watch")!)
     let navigationAction = WKNavigationActionData(
-      navigationType: .LinkActivated,
+      navigationType: .linkActivated,
       request: updateRequest,
       sourceFrame: WKFrameInfoData.init(mainFrame: true, request: updateRequest),
       targetFrame: WKFrameInfoData.init(mainFrame: false, request: updateRequest)
     )
 
-    XCTAssertEqual(WKNavigationActionPolicy.Allow.rawValue,
+    XCTAssertEqual(WKNavigationActionPolicy.allow.rawValue,
                    self.vm.inputs.decidePolicy(forNavigationAction: navigationAction).rawValue)
 
     self.webViewLoadRequest.assertValues([updatesIndexRequest], "Update loaded in VC, not web view.")

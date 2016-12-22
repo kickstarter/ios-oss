@@ -29,30 +29,30 @@ final class StringSimpleHTMLTests: XCTestCase {
       return
     }
 
-    let extractedBold = string.attribute(NSFontAttributeName, atIndex: 1, effectiveRange: nil) as? UIFont
+    let extractedBold = string.attribute(NSFontAttributeName, at: 1, effectiveRange: nil) as? UIFont
 
     if let testBold = extractedBold {
       XCTAssertEqual(testBold.pointSize, bold.pointSize)
-      XCTAssert(testBold.fontDescriptor().symbolicTraits.contains(.TraitBold))
+      XCTAssert(testBold.fontDescriptor.symbolicTraits.contains(.traitBold))
     } else {
-      XCTAssert(false, "Couldn't find font in attributed string")
+      XCTAssertTrue(false, "Couldn't find font in attributed string")
     }
 
-    let extractedItalic = string.attribute(NSFontAttributeName, atIndex: 7, effectiveRange: nil) as? UIFont
+    let extractedItalic = string.attribute(NSFontAttributeName, at: 7, effectiveRange: nil) as? UIFont
     if let testItalic = extractedItalic {
       XCTAssertEqual(testItalic.pointSize, italic.pointSize)
-      XCTAssert(testItalic.fontDescriptor().symbolicTraits.contains(.TraitItalic))
+      XCTAssert(testItalic.fontDescriptor.symbolicTraits.contains(.traitItalic))
     } else {
-      XCTAssertEqual(false, "Couldn't find font in attributed string")
+      XCTAssertTrue(false, "Couldn't find font in attributed string")
     }
 
-    let extractedBase = string.attribute(NSFontAttributeName, atIndex: 16, effectiveRange: nil) as? UIFont
+    let extractedBase = string.attribute(NSFontAttributeName, at: 16, effectiveRange: nil) as? UIFont
     if let testBase = extractedBase {
       XCTAssertEqual(testBase.pointSize, font.pointSize)
-      XCTAssertFalse(testBase.fontDescriptor().symbolicTraits.contains(.TraitBold))
-      XCTAssertFalse(testBase.fontDescriptor().symbolicTraits.contains(.TraitItalic))
+      XCTAssertFalse(testBase.fontDescriptor.symbolicTraits.contains(.traitBold))
+      XCTAssertFalse(testBase.fontDescriptor.symbolicTraits.contains(.traitItalic))
     } else {
-      XCTAssertEqual(false, "Couldn't find font in attributed string")
+      XCTAssertTrue(false, "Couldn't find font in attributed string")
     }
   }
 
@@ -66,29 +66,29 @@ final class StringSimpleHTMLTests: XCTestCase {
       XCTAssert(false, "Couldn't parse HTML string")
     }
 
-    let extractedBold = string?.attribute(NSFontAttributeName, atIndex: 1, effectiveRange: nil) as? UIFont
+    let extractedBold = string?.attribute(NSFontAttributeName, at: 1, effectiveRange: nil) as? UIFont
     if let testBold = extractedBold {
       XCTAssertEqual(testBold.pointSize, font.pointSize)
-      XCTAssert(testBold.fontDescriptor().symbolicTraits.contains(.TraitBold))
+      XCTAssert(testBold.fontDescriptor.symbolicTraits.contains(.traitBold))
     } else {
       XCTAssert(false, "Couldn't find font in attributed string")
     }
 
-    let extractedItalic = string?.attribute(NSFontAttributeName, atIndex: 7, effectiveRange: nil) as? UIFont
+    let extractedItalic = string?.attribute(NSFontAttributeName, at: 7, effectiveRange: nil) as? UIFont
     if let testItalic = extractedItalic {
       XCTAssertEqual(testItalic.pointSize, font.pointSize)
-      XCTAssert(testItalic.fontDescriptor().symbolicTraits.contains(.TraitItalic))
+      XCTAssert(testItalic.fontDescriptor.symbolicTraits.contains(.traitItalic))
     } else {
-      XCTAssertEqual(false, "Couldn't find font in attributed string")
+      XCTAssertTrue(false, "Couldn't find font in attributed string")
     }
 
-    let extractedBase = string?.attribute(NSFontAttributeName, atIndex: 16, effectiveRange: nil) as? UIFont
+    let extractedBase = string?.attribute(NSFontAttributeName, at: 16, effectiveRange: nil) as? UIFont
     if let testBase = extractedBase {
       XCTAssertEqual(testBase.pointSize, font.pointSize)
-      XCTAssertFalse(testBase.fontDescriptor().symbolicTraits.contains(.TraitBold))
-      XCTAssertFalse(testBase.fontDescriptor().symbolicTraits.contains(.TraitItalic))
+      XCTAssertFalse(testBase.fontDescriptor.symbolicTraits.contains(.traitBold))
+      XCTAssertFalse(testBase.fontDescriptor.symbolicTraits.contains(.traitItalic))
     } else {
-      XCTAssertEqual(false, "Couldn't find font in attributed string")
+      XCTAssertTrue(false, "Couldn't find font in attributed string")
     }
   }
 

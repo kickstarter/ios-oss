@@ -147,7 +147,7 @@ internal final class SortPagerViewModelTests: TestCase {
 
     self.indicatorViewIsHidden.assertValues([true], "Indicator does not show immediately.")
 
-    self.scheduler.advanceByInterval(0.1)
+    self.scheduler.advance(by: .seconds(1))
 
     self.indicatorViewIsHidden.assertValues([true, false])
 
@@ -164,7 +164,7 @@ internal final class SortPagerViewModelTests: TestCase {
     self.pinSelectedIndicatorAnimated.assertValues([false, false])
     self.indicatorViewIsHidden.assertValues([true, false, true], "Indicator is still hidden")
 
-    self.scheduler.advanceByInterval(0.1)
+    self.scheduler.advance(by: .seconds(1))
 
     self.indicatorViewIsHidden.assertValues([true, false, true, false], "Indicator shows after delay.")
 
@@ -178,7 +178,7 @@ internal final class SortPagerViewModelTests: TestCase {
     self.pinSelectedIndicatorAnimated.assertValues([false, false, false])
     self.indicatorViewIsHidden.assertValues([true, false, true, false, true], "Indicator is still hidden")
 
-    self.scheduler.advanceByInterval(0.1)
+    self.scheduler.advance(by: .seconds(1))
 
     self.indicatorViewIsHidden.assertValues([true, false, true, false, true, false],
                                             "Indicator shows after delay.")
@@ -198,7 +198,7 @@ internal final class SortPagerViewModelTests: TestCase {
     self.pinSelectedIndicatorAnimated.assertValues([false, false, false, true, false])
     self.indicatorViewIsHidden.assertValues([true, false, true, false, true, false, true])
 
-    self.scheduler.advanceByInterval(0.1)
+    self.scheduler.advance(by: .seconds(1))
 
     self.indicatorViewIsHidden.assertValues([true, false, true, false, true, false, true, false])
   }

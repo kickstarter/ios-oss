@@ -8,8 +8,8 @@ private func KSRAssertMatch(_ expected: Navigation,
                               file: StaticString = #file,
                               line: UInt = #line) {
 
-  let match = AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString
-    .flatMap { URL(string: "\($0)\(path)") }
+  let baseUrl = AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString
+  let match = URL(string: "\(baseUrl)\(path)")
     .flatMap(Navigation.match)
 
   XCTAssertEqual(expected, match, file: file, line: line)

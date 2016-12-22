@@ -221,14 +221,14 @@ internal final class DiscoveryPageViewModelTests: TestCase {
   }
 
   func testGoToProject() {
-    let potdAt = AppEnvironment.current.calendar.startOfDayForDate(Date()).timeIntervalSince1970
+    let potdAt = AppEnvironment.current.calendar.startOfDay(for: Date()).timeIntervalSince1970
     let project = Project.template
     let potd = project
       |> Project.lens.id %~ { $0 + 1 }
       |> Project.lens.dates.potdAt .~ potdAt
     let discoveryEnvelope = .template
       |> DiscoveryEnvelope.lens.projects .~ (
-        (0...2).map { id in .template |> Project.lens.id .~ 100 + id }
+        (0...2).map { id in .template |> Project.lens.id .~ (100 + id) }
     )
 
     withEnvironment(apiService: MockService(fetchDiscoveryResponse: discoveryEnvelope)) {

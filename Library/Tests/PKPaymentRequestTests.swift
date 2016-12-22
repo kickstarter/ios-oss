@@ -7,10 +7,10 @@ import XCTest
 public final class PKPaymentRequestTests: XCTestCase {
 
   func testDecodingSnakeCase_MinimalData() {
-    let json: [String:AnyObject] = [
-      "country_code": "US" as AnyObject,
-      "currency_code": "USD" as AnyObject,
-      "merchant_identifier": "merchant.test" as AnyObject,
+    let json: [String:Any] = [
+      "country_code": "US",
+      "currency_code": "USD",
+      "merchant_identifier": "merchant.test",
       "payment_summary_items": [
         [
           "label": "The thing",
@@ -31,15 +31,15 @@ public final class PKPaymentRequestTests: XCTestCase {
     XCTAssertEqual(1, decoded.value?.paymentSummaryItems.count)
     XCTAssertEqual("The thing", decoded.value?.paymentSummaryItems.first?.label)
     XCTAssertEqual(10, decoded.value?.paymentSummaryItems.first?.amount)
-    XCTAssertEqual(["Visa", "MasterCard", "AmEx", "Discover"], decoded.value?.supportedNetworks ?? [])
+    XCTAssertEqual([.visa, .masterCard, .amex, .discover], decoded.value?.supportedNetworks ?? [])
   }
 
   func testDecodingSnakeCase_FullData() {
-    let json: [String:AnyObject] = [
-      "country_code": "US" as AnyObject,
-      "currency_code": "USD" as AnyObject,
-      "merchant_capabilities": "Capability3DS" as AnyObject,
-      "merchant_identifier": "merchant.test" as AnyObject,
+    let json: [String:Any] = [
+      "country_code": "US",
+      "currency_code": "USD",
+      "merchant_capabilities": "Capability3DS",
+      "merchant_identifier": "merchant.test",
       "payment_summary_items": [
         [
           "label": "The thing",
@@ -58,14 +58,14 @@ public final class PKPaymentRequestTests: XCTestCase {
 
     XCTAssertEqual("US", decoded.value?.countryCode)
     XCTAssertEqual("USD", decoded.value?.currencyCode)
-    XCTAssertEqual([.Capability3DS], decoded.value?.merchantCapabilities)
+    XCTAssertEqual([.capability3DS], decoded.value?.merchantCapabilities)
     XCTAssertEqual("merchant.test", decoded.value?.merchantIdentifier)
     XCTAssertEqual(1, decoded.value?.paymentSummaryItems.count)
     XCTAssertEqual("The thing", decoded.value?.paymentSummaryItems.first?.label)
     XCTAssertEqual(10, decoded.value?.paymentSummaryItems.first?.amount)
-    XCTAssertEqual(PKPaymentSummaryItemType.Pending, decoded.value?.paymentSummaryItems.first?.type)
-    XCTAssertEqual(PKShippingType.Delivery, decoded.value?.shippingType)
-    XCTAssertEqual(["Visa", "MasterCard", "AmEx", "Discover"], decoded.value?.supportedNetworks ?? [])
+    XCTAssertEqual(PKPaymentSummaryItemType.pending, decoded.value?.paymentSummaryItems.first?.type)
+    XCTAssertEqual(PKShippingType.delivery, decoded.value?.shippingType)
+    XCTAssertEqual([.visa, .masterCard, .amex, .discover], decoded.value?.supportedNetworks ?? [])
   }
 
   func testDecodingCamelCase_MinimalData() {
@@ -91,7 +91,7 @@ public final class PKPaymentRequestTests: XCTestCase {
     XCTAssertEqual(1, decoded.value?.paymentSummaryItems.count)
     XCTAssertEqual("The thing", decoded.value?.paymentSummaryItems.first?.label)
     XCTAssertEqual(10, decoded.value?.paymentSummaryItems.first?.amount)
-    XCTAssertEqual(["Visa", "MasterCard", "AmEx", "Discover"], decoded.value?.supportedNetworks ?? [])
+    XCTAssertEqual([.visa, .masterCard, .amex, .discover], decoded.value?.supportedNetworks ?? [])
   }
 
   func testDecodingCamelCase_FullData() {
@@ -116,20 +116,21 @@ public final class PKPaymentRequestTests: XCTestCase {
 
     XCTAssertEqual("US", decoded.value?.countryCode)
     XCTAssertEqual("USD", decoded.value?.currencyCode)
-    XCTAssertEqual([.Capability3DS, .CapabilityCredit], decoded.value?.merchantCapabilities)
+    XCTAssertEqual([.capability3DS, .capabilityCredit], decoded.value?.merchantCapabilities)
     XCTAssertEqual("merchant.test", decoded.value?.merchantIdentifier)
     XCTAssertEqual(1, decoded.value?.paymentSummaryItems.count)
     XCTAssertEqual("The thing", decoded.value?.paymentSummaryItems.first?.label)
     XCTAssertEqual(10, decoded.value?.paymentSummaryItems.first?.amount)
-    XCTAssertEqual(PKPaymentSummaryItemType.Pending, decoded.value?.paymentSummaryItems.first?.type)
-    XCTAssertEqual(PKShippingType.Delivery, decoded.value?.shippingType)
-    XCTAssertEqual(["Visa", "MasterCard", "AmEx", "Discover"], decoded.value?.supportedNetworks ?? [])
+    XCTAssertEqual(PKPaymentSummaryItemType.pending, decoded.value?.paymentSummaryItems.first?.type)
+    XCTAssertEqual(PKShippingType.delivery, decoded.value?.shippingType)
+    XCTAssertEqual([.visa, .masterCard, .amex, .discover], decoded.value?.supportedNetworks ?? [])
+
   }
 
   func testEncoding() {
-    let json: [String:AnyObject] = [
-      "countryCode": "US" as AnyObject,
-      "currencyCode": "USD" as AnyObject,
+    let json: [String:Any] = [
+      "countryCode": "US",
+      "currencyCode": "USD",
       "merchantCapabilities": [
         PKMerchantCapability.capability3DS.rawValue, PKMerchantCapability.capabilityCredit.rawValue
       ],

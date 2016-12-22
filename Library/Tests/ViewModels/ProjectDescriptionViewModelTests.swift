@@ -37,7 +37,7 @@ final class ProjectDescriptionViewModelTests: TestCase {
     let request = URLRequest(url: URL(string: project.urls.web.project)!)
 
     let navigationAction = WKNavigationActionData(
-      navigationType: .LinkActivated,
+      navigationType: .linkActivated,
       request: request,
       sourceFrame: WKFrameInfoData(mainFrame: true, request: request),
       targetFrame: WKFrameInfoData(mainFrame: true, request: request)
@@ -66,7 +66,7 @@ final class ProjectDescriptionViewModelTests: TestCase {
 
     let request = URLRequest(url: URL(string: project.urls.web.project + "/messages/new")!)
     let navigationAction = WKNavigationActionData(
-      navigationType: .LinkActivated,
+      navigationType: .linkActivated,
       request: request,
       sourceFrame: WKFrameInfoData(mainFrame: true, request: request),
       targetFrame: WKFrameInfoData(mainFrame: true, request: request)
@@ -95,7 +95,7 @@ final class ProjectDescriptionViewModelTests: TestCase {
 
     let request = URLRequest(url: URL(string: "https://www.somewhere.com/else")!)
     let navigationAction = WKNavigationActionData(
-      navigationType: .LinkActivated,
+      navigationType: .linkActivated,
       request: request,
       sourceFrame: WKFrameInfoData(mainFrame: true, request: request),
       targetFrame: WKFrameInfoData(mainFrame: true, request: request)
@@ -124,7 +124,7 @@ final class ProjectDescriptionViewModelTests: TestCase {
 
     let request = URLRequest(url: URL(string: project.urls.web.project + "/description")!)
     let navigationAction = WKNavigationActionData(
-      navigationType: .Other,
+      navigationType: .other,
       request: request,
       sourceFrame: WKFrameInfoData(mainFrame: true, request: request),
       targetFrame: WKFrameInfoData(mainFrame: true, request: request)
@@ -151,7 +151,7 @@ final class ProjectDescriptionViewModelTests: TestCase {
 
     let request = URLRequest(url: URL(string: "https://www.youtube.com/watch")!)
     let navigationAction = WKNavigationActionData(
-      navigationType: .Other,
+      navigationType: .other,
       request: request,
       sourceFrame: WKFrameInfoData(mainFrame: true, request: request),
       targetFrame: WKFrameInfoData(mainFrame: false, request: request)

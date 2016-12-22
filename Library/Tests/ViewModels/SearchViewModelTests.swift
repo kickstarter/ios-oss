@@ -200,7 +200,7 @@ internal final class SearchViewModelTests: TestCase {
       self.vm.outputs.projects.map { $0.map { $0.id } }.observe(projects.observer)
 
       self.vm.inputs.viewWillAppear(animated: false)
-      self.scheduler.advanceByInterval(apiDelay)
+      self.scheduler.advance(by: apiDelay)
 
       self.hasProjects.assertValues([true], "Popular projects emit immediately.")
       let popularProjects = projects.values.last!
@@ -209,7 +209,7 @@ internal final class SearchViewModelTests: TestCase {
 
       self.hasProjects.assertValues([true, false], "Clears projects immediately.")
 
-      self.scheduler.advanceByInterval(debounceDelay / 2.0)
+      self.scheduler.advance(by: debounceDelay.halved())
 
       self.hasProjects.assertValues([true, false], "Doesn't emit projects after a little time.")
 
@@ -231,15 +231,15 @@ internal final class SearchViewModelTests: TestCase {
   // Confirms that entering new search terms cancels previously in-flight API requests for projects,
   // and that ultimately only one set of projects is returned.
   func testCancelingOfSearchResultsWhenEnteringNewSearchTerms() {
-    let apiDelay = 2.0
-    let debounceDelay = 1.0
+    let apiDelay = DispatchTimeInterval.seconds(2)
+    let debounceDelay = DispatchTimeInterval.seconds(1)
 
     withEnvironment(apiDelayInterval: apiDelay, debounceInterval: debounceDelay) {
       let projects = TestObserver<[Int], NoError>()
       self.vm.outputs.projects.map { $0.map { $0.id } }.observe(projects.observer)
 
       self.vm.inputs.viewWillAppear(animated: false)
-      self.scheduler.advanceByInterval(apiDelay)
+      self.scheduler.advance(by: apiDelay)
 
       self.hasProjects.assertValues([true], "Popular projects load immediately.")
 
@@ -248,7 +248,7 @@ internal final class SearchViewModelTests: TestCase {
       self.hasProjects.assertValues([true, false], "Projects clear after entering search term.")
 
       // wait a little bit of time, but not enough to complete the debounce
-      self.scheduler.advanceByInterval(debounceDelay / 2.0)
+      self.scheduler.advance(by: debounceDelay.halved())
 
       self.hasProjects.assertValues([true, false],
                                     "No new projects load after waiting enough a little bit of time.")
@@ -258,12 +258,12 @@ internal final class SearchViewModelTests: TestCase {
       self.hasProjects.assertValues([true, false], "No new projects load after entering new search term.")
 
       // wait a little bit of time, but not enough to complete the debounce
-      self.scheduler.advanceByInterval(debounceDelay / 2.0)
+      self.scheduler.advance(by: debounceDelay.halved())
 
       self.hasProjects.assertValues([true, false], "No new projects load after entering new search term.")
 
       // Wait enough time for debounced request to be made, but not enough time for it to finish.
-      self.scheduler.advanceByInterval(debounceDelay / 2.0)
+      self.scheduler.advance(by: debounceDelay.halved())
 
       self.hasProjects.assertValues(
         [true, false], "No projects emit after waiting enough time for API to request to be made")
@@ -274,7 +274,7 @@ internal final class SearchViewModelTests: TestCase {
                                     "Still no new projects after entering another search term.")
 
       // wait enough time for API request to be fired.
-      self.scheduler.advanceByInterval(debounceDelay + apiDelay)
+      self.scheduler.advance(by: debounceDelay + apiDelay)
 
       self.hasProjects.assertValues([true, false, true], "Search projects load after waiting enough time.")
       XCTAssertEqual(["Discover Search", "Viewed Search", "Discover Search Results", "Loaded Search Results"],
@@ -318,26 +318,26 @@ internal final class SearchViewModelTests: TestCase {
   }
 
   func testSlowTyping() {
-    let apiDelay = 2.0
-    let debounceDelay = 1.0
+    let apiDelay = DispatchTimeInterval.seconds(2)
+    let debounceDelay = DispatchTimeInterval.seconds(1)
 
     withEnvironment(apiDelayInterval: apiDelay, debounceInterval: debounceDelay) {
       self.vm.inputs.viewWillAppear(animated: false)
-      self.scheduler.advanceByInterval(apiDelay)
+      self.scheduler.advance(by: apiDelay)
 
       self.vm.inputs.searchFieldDidBeginEditing()
 
       XCTAssertEqual(["Discover Search", "Viewed Search"], self.trackingClient.events)
 
       self.vm.inputs.searchTextChanged("d")
-      self.scheduler.advanceByInterval(apiDelay + debounceDelay)
+      self.scheduler.advance(by: apiDelay + debounceDelay)
 
       XCTAssertEqual(
         ["Discover Search", "Viewed Search", "Discover Search Results", "Loaded Search Results"],
         self.trackingClient.events)
 
       self.vm.inputs.searchTextChanged("do")
-      self.scheduler.advanceByInterval(apiDelay + debounceDelay)
+      self.scheduler.advance(by: apiDelay + debounceDelay)
 
       XCTAssertEqual(
         [
@@ -347,7 +347,7 @@ internal final class SearchViewModelTests: TestCase {
         self.trackingClient.events)
 
       self.vm.inputs.searchTextChanged("dog")
-      self.scheduler.advanceByInterval(apiDelay + debounceDelay)
+      self.scheduler.advance(by: apiDelay + debounceDelay)
 
       XCTAssertEqual(
         [
@@ -358,7 +358,7 @@ internal final class SearchViewModelTests: TestCase {
         self.trackingClient.events)
 
       self.vm.inputs.searchTextChanged("dogs")
-      self.scheduler.advanceByInterval(apiDelay + debounceDelay)
+      self.scheduler.advance(by: apiDelay + debounceDelay)
 
       XCTAssertEqual(
         [

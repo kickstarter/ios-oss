@@ -52,7 +52,7 @@ final class SurveyResponseViewModelTests: TestCase {
 
     XCTAssertFalse(
       self.vm.inputs.shouldStartLoad(
-        withRequest: URLRequest(URL: URL(string: project.urls.web.project)!),
+        withRequest: URLRequest(url: URL(string: project.urls.web.project)!),
         navigationType: .LinkClicked
       )
     )
@@ -76,7 +76,7 @@ final class SurveyResponseViewModelTests: TestCase {
     XCTAssertTrue(
       self.vm.inputs.shouldStartLoad(
         withRequest: surveyRequest(project: project, prepared: true, method: .GET),
-        navigationType: .Other
+        navigationType: .other
       )
     )
 
@@ -84,7 +84,7 @@ final class SurveyResponseViewModelTests: TestCase {
     XCTAssertFalse(
       self.vm.inputs.shouldStartLoad(
         withRequest: surveyRequest(project: project, prepared: false, method: .POST),
-        navigationType: .FormSubmitted
+        navigationType: .formSubmitted
       ),
       "Not prepared"
     )
@@ -95,7 +95,7 @@ final class SurveyResponseViewModelTests: TestCase {
     XCTAssertTrue(
       self.vm.inputs.shouldStartLoad(
         withRequest: surveyRequest(project: project, prepared: true, method: .POST),
-        navigationType: .Other
+        navigationType: .other
       )
     )
 
@@ -105,7 +105,7 @@ final class SurveyResponseViewModelTests: TestCase {
     XCTAssertFalse(
       self.vm.inputs.shouldStartLoad(
         withRequest: surveyRequest(project: project, prepared: false, method: .GET),
-        navigationType: .Other
+        navigationType: .other
       ),
       "Intercept redirect to survey"
     )
@@ -130,11 +130,11 @@ final class SurveyResponseViewModelTests: TestCase {
 
 private func surveyRequest(project: Project, prepared: Bool, method: KsApi.Method) -> URLRequest {
   let url = "\(project.urls.web.project)/surveys/1"
-  let request = NSMutableURLRequest(url: URL(string: url)!)
+  var request = URLRequest(url: URL(string: url)!)
   request.httpMethod = method.rawValue
   if prepared {
     return AppEnvironment.current.apiService.preparedRequest(forRequest: request)
   } else {
-    return request as URLRequest
+    return request
   }
 }

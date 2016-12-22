@@ -104,7 +104,7 @@ final class RewardCellViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(project: .template,
                                  rewardOrBacking: .left(.template |> Reward.lens.remaining .~ 0))
-    self.cardViewBackgroundColor.assertValues([UIColor.whiteColor, UIColor.ksr_grey_100])
+    self.cardViewBackgroundColor.assertValues([UIColor.white, UIColor.ksr_grey_100])
   }
 
   func testCardViewDropShadowHidden_LiveProject_NonBacker_NotAllGone() {
@@ -219,7 +219,7 @@ final class RewardCellViewModelTests: TestCase {
       rewardOrBacking: .left(.template)
     )
 
-    self.contentViewBackgroundColor.assertValues([UIColor.ksr_red_100.colorWithAlphaComponent(0.65)])
+    self.contentViewBackgroundColor.assertValues([UIColor.ksr_red_100.withAlphaComponent(0.65)])
 
     self.vm.inputs.configureWith(
       project: .template |> Project.lens.category .~ .filmAndVideo,
@@ -227,8 +227,8 @@ final class RewardCellViewModelTests: TestCase {
     )
 
     self.contentViewBackgroundColor.assertValues([
-      UIColor.ksr_red_100.colorWithAlphaComponent(0.65),
-      UIColor.ksr_beige_400.colorWithAlphaComponent(0.65),
+      UIColor.ksr_red_100.withAlphaComponent(0.65),
+      UIColor.ksr_beige_400.withAlphaComponent(0.65),
       ])
 
     self.vm.inputs.configureWith(
@@ -237,9 +237,9 @@ final class RewardCellViewModelTests: TestCase {
     )
 
     self.contentViewBackgroundColor.assertValues([
-      UIColor.ksr_red_100.colorWithAlphaComponent(0.65),
-      UIColor.ksr_beige_400.colorWithAlphaComponent(0.65),
-      UIColor.ksr_violet_200.colorWithAlphaComponent(0.65),
+      UIColor.ksr_red_100.withAlphaComponent(0.65),
+      UIColor.ksr_beige_400.withAlphaComponent(0.65),
+      UIColor.ksr_violet_200.withAlphaComponent(0.65),
       ])
   }
 
@@ -389,7 +389,7 @@ final class RewardCellViewModelTests: TestCase {
       |> Reward.lens.limit .~ 100
       |> Reward.lens.remaining .~ 20
       |> Reward.lens.endsAt
-      .~ self.dateType.init().dateByAddingTimeInterval(60 * 60 * 24 * 3).timeIntervalSince1970
+      .~ self.dateType.init().addingTimeInterval(60 * 60 * 24 * 3).timeIntervalSince1970
 
     self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(reward))
 
@@ -401,7 +401,7 @@ final class RewardCellViewModelTests: TestCase {
       |> Reward.lens.backersCount .~ 42
       |> Reward.lens.limit .~ nil
       |> Reward.lens.endsAt
-      .~ self.dateType.init().dateByAddingTimeInterval(60 * 60 * 24 * 3).timeIntervalSince1970
+      .~ self.dateType.init().addingTimeInterval(60 * 60 * 24 * 3).timeIntervalSince1970
 
     self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(reward))
 
@@ -424,7 +424,7 @@ final class RewardCellViewModelTests: TestCase {
       |> Reward.lens.backersCount .~ 42
       |> Reward.lens.limit .~ nil
       |> Reward.lens.endsAt
-        .~ self.dateType.init().dateByAddingTimeInterval(-60 * 60 * 24 * 3).timeIntervalSince1970
+        .~ self.dateType.init().addingTimeInterval(-60 * 60 * 24 * 3).timeIntervalSince1970
 
     self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(reward))
 

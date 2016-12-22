@@ -90,7 +90,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
     self.vm.outputs.expandRewardDescription.observe(self.expandRewardDescription.observer)
     self.vm.outputs.fulfillmentAndShippingFooterStackViewHidden
       .observe(self.fulfillmentAndShippingFooterStackViewHidden.observer)
-    self.vm.outputs.goToCheckout.map(first).map { $0.URL.absoluteString }
+    self.vm.outputs.goToCheckout.map(first).map { $0.url?.absoluteString }
       .skipNil()
       .observe(self.goToCheckoutRequest.observer)
     self.vm.outputs.goToCheckout.map(second).observe(self.goToCheckoutProject.observer)
@@ -401,20 +401,20 @@ internal final class RewardPledgeViewModelTests: TestCase {
       let paymentRequest: NSDictionary =  [
         "countryCode": project.country.countryCode,
         "currencyCode": project.country.currencyCode,
-        "merchantCapabilities": [PKMerchantCapability.Capability3DS.rawValue],
+        "merchantCapabilities": [PKMerchantCapability.capability3DS.rawValue],
         "merchantIdentifier": PKPaymentAuthorizationViewController.merchantIdentifier,
         "supportedNetworks": PKPaymentAuthorizationViewController.supportedNetworks,
-        "shippingType": PKShippingType.Shipping.rawValue,
+        "shippingType": PKShippingType.shipping.rawValue,
         "paymentSummaryItems": [
           [
             "label": project.name,
-            "amount": NSDecimalNumber(long: reward.minimum),
-            "type": PKPaymentSummaryItemType.Final.rawValue
+            "amount": NSDecimalNumber(value: reward.minimum),
+            "type": PKPaymentSummaryItemType.final.rawValue
           ],
           [
             "label": "Kickstarter (if funded)",
-            "amount": NSDecimalNumber(long: reward.minimum),
-            "type": PKPaymentSummaryItemType.Final.rawValue
+            "amount": NSDecimalNumber(value: reward.minimum),
+            "type": PKPaymentSummaryItemType.final.rawValue
           ]
         ]
       ]
@@ -442,20 +442,20 @@ internal final class RewardPledgeViewModelTests: TestCase {
       let paymentRequest: NSDictionary =  [
         "countryCode": project.country.countryCode,
         "currencyCode": project.country.currencyCode,
-        "merchantCapabilities": [PKMerchantCapability.Capability3DS.rawValue],
+        "merchantCapabilities": [PKMerchantCapability.capability3DS.rawValue],
         "merchantIdentifier": PKPaymentAuthorizationViewController.merchantIdentifier,
         "supportedNetworks": PKPaymentAuthorizationViewController.supportedNetworks,
-        "shippingType": PKShippingType.Shipping.rawValue,
+        "shippingType": PKShippingType.shipping.rawValue,
         "paymentSummaryItems": [
           [
             "label": reward.title!,
-            "amount": NSDecimalNumber(long: reward.minimum),
-            "type": PKPaymentSummaryItemType.Final.rawValue
+            "amount": NSDecimalNumber(value: reward.minimum),
+            "type": PKPaymentSummaryItemType.final.rawValue
           ],
           [
             "label": "Kickstarter (if funded)",
-            "amount": NSDecimalNumber(long: reward.minimum),
-            "type": PKPaymentSummaryItemType.Final.rawValue
+            "amount": NSDecimalNumber(value: reward.minimum),
+            "type": PKPaymentSummaryItemType.final.rawValue
           ]
         ]
       ]
@@ -485,20 +485,20 @@ internal final class RewardPledgeViewModelTests: TestCase {
       let paymentRequest: NSDictionary =  [
         "countryCode": project.country.countryCode,
         "currencyCode": project.country.currencyCode,
-        "merchantCapabilities": [PKMerchantCapability.Capability3DS.rawValue],
+        "merchantCapabilities": [PKMerchantCapability.capability3DS.rawValue],
         "merchantIdentifier": PKPaymentAuthorizationViewController.merchantIdentifier,
         "supportedNetworks": PKPaymentAuthorizationViewController.supportedNetworks,
-        "shippingType": PKShippingType.Shipping.rawValue,
+        "shippingType": PKShippingType.shipping.rawValue,
         "paymentSummaryItems": [
           [
             "label": project.name,
-            "amount": NSDecimalNumber(long: reward.minimum),
-            "type": PKPaymentSummaryItemType.Final.rawValue
+            "amount": NSDecimalNumber(value: reward.minimum),
+            "type": PKPaymentSummaryItemType.final.rawValue
           ],
           [
             "label": "Kickstarter (if funded)",
-            "amount": NSDecimalNumber(long: reward.minimum),
-            "type": PKPaymentSummaryItemType.Final.rawValue
+            "amount": NSDecimalNumber(value: reward.minimum),
+            "type": PKPaymentSummaryItemType.final.rawValue
           ]
         ]
       ]
@@ -532,14 +532,14 @@ internal final class RewardPledgeViewModelTests: TestCase {
         let paymentRequest: NSDictionary =  [
           "countryCode": project.country.countryCode,
           "currencyCode": project.country.currencyCode,
-          "merchantCapabilities": [PKMerchantCapability.Capability3DS.rawValue],
+          "merchantCapabilities": [PKMerchantCapability.capability3DS.rawValue],
           "merchantIdentifier": PKPaymentAuthorizationViewController.merchantIdentifier,
           "supportedNetworks": PKPaymentAuthorizationViewController.supportedNetworks,
-          "shippingType": PKShippingType.Shipping.rawValue,
+          "shippingType": PKShippingType.shipping.rawValue,
           "paymentSummaryItems": [
             [
               "label": project.name,
-              "amount": NSDecimalNumber(long: reward.minimum),
+              "amount": NSDecimalNumber(value: reward.minimum),
               "type": PKPaymentSummaryItemType.Final.rawValue
             ],
             [
@@ -549,7 +549,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
             ],
             [
               "label": "Kickstarter (if funded)",
-              "amount": NSDecimalNumber(long: Int(defaultShippingRule.cost) + reward.minimum),
+              "amount": NSDecimalNumber(value: Int(defaultShippingRule.cost) + reward.minimum),
               "type": PKPaymentSummaryItemType.Final.rawValue
             ]
           ]
@@ -585,14 +585,14 @@ internal final class RewardPledgeViewModelTests: TestCase {
         let paymentRequest: NSDictionary =  [
           "countryCode": project.country.countryCode,
           "currencyCode": project.country.currencyCode,
-          "merchantCapabilities": [PKMerchantCapability.Capability3DS.rawValue],
+          "merchantCapabilities": [PKMerchantCapability.capability3DS.rawValue],
           "merchantIdentifier": PKPaymentAuthorizationViewController.merchantIdentifier,
           "supportedNetworks": PKPaymentAuthorizationViewController.supportedNetworks,
-          "shippingType": PKShippingType.Shipping.rawValue,
+          "shippingType": PKShippingType.shipping.rawValue,
           "paymentSummaryItems": [
             [
               "label": project.name,
-              "amount": NSDecimalNumber(long: 50),
+              "amount": NSDecimalNumber(value: 50),
               "type": PKPaymentSummaryItemType.Final.rawValue
             ],
             [
@@ -602,7 +602,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
             ],
             [
               "label": "Kickstarter (if funded)",
-              "amount": NSDecimalNumber(long: Int(defaultShippingRule.cost) + 50),
+              "amount": NSDecimalNumber(value: Int(defaultShippingRule.cost) + 50),
               "type": PKPaymentSummaryItemType.Final.rawValue
             ]
           ]
@@ -640,14 +640,14 @@ internal final class RewardPledgeViewModelTests: TestCase {
         let paymentRequest: NSDictionary =  [
           "countryCode": project.country.countryCode,
           "currencyCode": project.country.currencyCode,
-          "merchantCapabilities": [PKMerchantCapability.Capability3DS.rawValue],
+          "merchantCapabilities": [PKMerchantCapability.capability3DS.rawValue],
           "merchantIdentifier": PKPaymentAuthorizationViewController.merchantIdentifier,
           "supportedNetworks": PKPaymentAuthorizationViewController.supportedNetworks,
-          "shippingType": PKShippingType.Shipping.rawValue,
+          "shippingType": PKShippingType.shipping.rawValue,
           "paymentSummaryItems": [
             [
               "label": project.name,
-              "amount": NSDecimalNumber(long: reward.minimum),
+              "amount": NSDecimalNumber(value: reward.minimum),
               "type": PKPaymentSummaryItemType.Final.rawValue
             ],
             [
@@ -657,7 +657,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
             ],
             [
               "label": "Kickstarter (if funded)",
-              "amount": NSDecimalNumber(long: Int(changedShippingRule.cost) + reward.minimum),
+              "amount": NSDecimalNumber(value: Int(changedShippingRule.cost) + reward.minimum),
               "type": PKPaymentSummaryItemType.Final.rawValue
             ]
           ]
@@ -733,7 +733,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
     self.vm.inputs.paymentAuthorization(
       didAuthorizePayment: .init(
         tokenData: .init(
-          paymentMethodData: .init(displayName: "AmEx", network: "AmEx", type: .Credit),
+          paymentMethodData: .init(displayName: "AmEx", network: PKPaymentNetwork(rawValue: "AmEx"), type: .credit),
           transactionIdentifier: "apple_pay_deadbeef"
         )
       )
@@ -768,7 +768,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
       self.trackingClient.events
     )
 
-    XCTAssertEqual(PKPaymentAuthorizationStatus.Success.rawValue, status.rawValue)
+    XCTAssertEqual(PKPaymentAuthorizationStatus.success.rawValue, status.rawValue)
 
     self.vm.inputs.paymentAuthorizationDidFinish()
 
@@ -812,7 +812,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
     self.vm.inputs.paymentAuthorization(
       didAuthorizePayment: .init(
         tokenData: .init(
-          paymentMethodData: .init(displayName: "AmEx", network: "AmEx", type: .Credit),
+          paymentMethodData: .init(displayName: "AmEx", network: PKPaymentNetwork(rawValue: "AmEx"), type: .credit),
           transactionIdentifier: "apple_pay_deadbeef"
         )
       )
@@ -835,7 +835,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
       self.trackingClient.events
     )
 
-    XCTAssertEqual(PKPaymentAuthorizationStatus.Failure.rawValue, status.rawValue)
+    XCTAssertEqual(PKPaymentAuthorizationStatus.failure.rawValue, status.rawValue)
 
     self.vm.inputs.paymentAuthorizationDidFinish()
 
@@ -878,7 +878,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
         self.goToPaymentAuthorization.assertValueCount(0, "Apple Pay flow does not start immediately.")
         self.goToLoginTout.assertValueCount(1)
 
-        self.scheduler.advanceByInterval(1)
+        self.scheduler.advance(by: .seconds(1))
 
         self.goToPaymentAuthorization.assertValueCount(1, "Apple Pay flow starts after waiting a bit.")
 
@@ -886,7 +886,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
         self.vm.inputs.paymentAuthorization(
           didAuthorizePayment: .init(
             tokenData: .init(
-              paymentMethodData: .init(displayName: "AmEx", network: "AmEx", type: .Credit),
+              paymentMethodData: .init(displayName: "AmEx", network: PKPaymentNetwork(rawValue: "AmEx"), type: .credit),
               transactionIdentifier: "apple_pay_deadbeef"
             )
           )
@@ -902,7 +902,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
 
         self.pledgeIsLoading.assertValues([true, false])
         self.loadingOverlayIsHidden.assertValues([true, false, true])
-        XCTAssertEqual(PKPaymentAuthorizationStatus.Success.rawValue, status.rawValue)
+        XCTAssertEqual(PKPaymentAuthorizationStatus.success.rawValue, status.rawValue)
 
         self.goToThanks.assertValues([project])
       }
@@ -1637,7 +1637,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
       |> Project.lens.personalization.isBacking .~ true
       |> Project.lens.personalization.backing .~ (
         .template
-          |> Backing.lens.amount .~ reward.minimum + 10
+          |> Backing.lens.amount .~ (reward.minimum + 10)
           |> Backing.lens.shippingAmount .~ nil
           |> Backing.lens.reward .~ reward
 
@@ -1655,7 +1655,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
       |> Project.lens.personalization.isBacking .~ true
       |> Project.lens.personalization.backing .~ (
         .template
-          |> Backing.lens.amount .~ reward.minimum + 10
+          |> Backing.lens.amount .~ (reward.minimum + 10)
           |> Backing.lens.shippingAmount .~ 10
           |> Backing.lens.reward .~ reward
 
@@ -1673,7 +1673,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
       |> Project.lens.personalization.isBacking .~ true
       |> Project.lens.personalization.backing .~ (
         .template
-          |> Backing.lens.amount .~ reward.minimum + 20 + 10
+          |> Backing.lens.amount .~ (reward.minimum + 20 + 10)
           |> Backing.lens.shippingAmount .~ 10
           |> Backing.lens.reward .~ reward
 

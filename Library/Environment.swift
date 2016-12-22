@@ -13,7 +13,7 @@ public struct Environment {
   public let apiService: ServiceType
 
   /// The amount of time to delay API requests by. Used primarily for testing. Default value is `0.0`.
-  public let apiDelayInterval: TimeInterval
+  public let apiDelayInterval: DispatchTimeInterval
 
   /// A type that exposes how to extract a still image from an AVAsset.
   public let assetImageGeneratorType: AssetImageGeneratorType.Type
@@ -41,7 +41,7 @@ public struct Environment {
   public let dateType: DateProtocol.Type
 
   /// The amount of time to debounce signals by. Default value is `0.3`.
-  public let debounceInterval: TimeInterval
+  public let debounceInterval: DispatchTimeInterval
 
   /// A delegate to handle Facebook initialization and incoming url requests
   public let facebookAppDelegate: FacebookAppDelegateProtocol
@@ -83,7 +83,7 @@ public struct Environment {
 
   public init(
     apiService: ServiceType = Service(),
-    apiDelayInterval: TimeInterval = 0.0,
+    apiDelayInterval: DispatchTimeInterval = .seconds(0),
     assetImageGeneratorType: AssetImageGeneratorType.Type = AVAssetImageGenerator.self,
     cache: KSCache = KSCache(),
     calendar: Calendar = Calendar.current,
@@ -92,7 +92,7 @@ public struct Environment {
     countryCode: String = "US",
     currentUser: User? = nil,
     dateType: DateProtocol.Type = Date.self,
-    debounceInterval: TimeInterval = 0.3,
+    debounceInterval: DispatchTimeInterval = .milliseconds(300),
     facebookAppDelegate: FacebookAppDelegateProtocol = FBSDKApplicationDelegate.sharedInstance(),
     isVoiceOverRunning: @escaping () -> Bool = UIAccessibilityIsVoiceOverRunning,
     koala: Koala = Koala(client: KoalaTrackingClient(endpoint: .production)),

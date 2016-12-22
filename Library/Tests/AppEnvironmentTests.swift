@@ -121,12 +121,12 @@ final class AppEnvironmentTests: XCTestCase {
 
   func testFromStorage_LegacyUserDefaults() {
     let userDefaults = MockKeyValueStore()
-    userDefaults.setObject("deadbeef", forKey: "com.kickstarter.access_token")
+    userDefaults.set("deadbeef", forKey: "com.kickstarter.access_token")
     let env = AppEnvironment.fromStorage(ubiquitousStore: MockKeyValueStore(), userDefaults: userDefaults)
 
     XCTAssertEqual("deadbeef", env.apiService.oauthToken?.token)
     XCTAssertTrue(env.apiService.isAuthenticated)
-    XCTAssertNil(userDefaults.objectForKey("com.kickstarter.access_token"))
+    XCTAssertNil(userDefaults.object(forKey: "com.kickstarter.access_token"))
   }
 
   func testSaveEnvironment() {
@@ -147,7 +147,7 @@ final class AppEnvironmentTests: XCTestCase {
                                    ubiquitousStore: ubiquitousStore,
                                    userDefaults: userDefaults)
 
-    let result = userDefaults.dictionaryForKey(AppEnvironment.environmentStorageKey)!
+    let result = userDefaults.dictionary(forKey: AppEnvironment.environmentStorageKey)!
 
     XCTAssertEqual("deadbeef", result["apiService.oauthToken.token"] as? String)
     XCTAssertEqual("http://api.ksr.com", result["apiService.serverConfig.apiBaseUrl"] as? String)
@@ -166,7 +166,7 @@ final class AppEnvironmentTests: XCTestCase {
     AppEnvironment.pushEnvironment(currentUser: User.template)
 
     var currentUserId = AppEnvironment.current.userDefaults
-      .dictionaryForKey(AppEnvironment.environmentStorageKey)
+      .dictionary(forKey: AppEnvironment.environmentStorageKey)
       .flatMap { $0["currentUser"] as? [String:AnyObject] }
       .flatMap { $0["id"] as? Int }
     XCTAssertEqual(User.template.id, currentUserId, "Current user is saved.")
@@ -174,7 +174,7 @@ final class AppEnvironmentTests: XCTestCase {
     AppEnvironment.popEnvironment()
 
     currentUserId = AppEnvironment.current.userDefaults
-      .dictionaryForKey(AppEnvironment.environmentStorageKey)
+      .dictionary(forKey: AppEnvironment.environmentStorageKey)
       .flatMap { $0["currentUser"] as? [String:AnyObject] }
       .flatMap { $0["id"] as? Int }
     XCTAssertEqual(nil, currentUserId, "Current user is cleared.")

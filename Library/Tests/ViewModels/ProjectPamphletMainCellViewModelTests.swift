@@ -62,7 +62,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
 
   func testStatsStackViewAccessibilityLabel() {
     let project = .template
-      |> Project.lens.dates.deadline .~ self.dateType.init().timeIntervalSince1970 + 60 * 60 * 24 * 10
+      |> Project.lens.dates.deadline .~ (self.dateType.init().timeIntervalSince1970 + 60 * 60 * 24 * 10)
     self.vm.inputs.configureWith(project: project)
 
     self.statsStackViewAccessibilityLabel.assertValues(
@@ -213,7 +213,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
 
   func testDeadlineLabels() {
     let project = .template
-      |> Project.lens.dates.deadline .~ self.dateType.init().timeIntervalSince1970 + 60 * 60 * 24 * 4
+      |> Project.lens.dates.deadline .~ (self.dateType.init().timeIntervalSince1970 + 60 * 60 * 24 * 4)
 
     self.vm.inputs.configureWith(project: project)
 

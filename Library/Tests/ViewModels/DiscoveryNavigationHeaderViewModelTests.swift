@@ -85,7 +85,7 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
 
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.configureWith(params: initialParams)
-      self.scheduler.advanceByInterval(AppEnvironment.current.apiDelayInterval)
+      self.scheduler.advance(by: AppEnvironment.current.apiDelayInterval)
 
       self.showDiscoveryFiltersRow.assertValueCount(0)
       self.dismissDiscoveryFilters.assertValueCount(0)
@@ -99,7 +99,7 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
 
       self.showDiscoveryFiltersRow.assertValues([initialRow], "Show Filters does not emit on selection.")
 
-      scheduler.advanceByInterval(0.4)
+      scheduler.advance(by: .milliseconds(400))
       self.dismissDiscoveryFilters.assertValueCount(1)
 
       self.vm.inputs.titleButtonTapped()
@@ -147,7 +147,7 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
 
       // Tap title before the categories are fetched
       self.vm.inputs.titleButtonTapped()
-      self.scheduler.advanceByInterval(0.4)
+      self.scheduler.advance(by: .milliseconds(400))
 
       self.showDiscoveryFiltersRow.assertValues([initialRow],
                                                 "Filters are shown even before categories are fetched.")
@@ -156,7 +156,7 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
       self.dismissDiscoveryFilters.assertValueCount(0, "Dismissing is not emitted.")
 
       // Wait enough time for categories to come back
-      self.scheduler.advanceByInterval(AppEnvironment.current.apiDelayInterval)
+      self.scheduler.advance(by: AppEnvironment.current.apiDelayInterval)
 
       self.showDiscoveryFiltersRow.assertValues([initialRow],
                                                 "Nothing new is emitted once categories are fetched.")
@@ -166,7 +166,7 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
 
       // Tap title again to dismiss
       self.vm.inputs.titleButtonTapped()
-      self.scheduler.advanceByInterval(0.4)
+      self.scheduler.advance(by: .milliseconds(400))
 
       self.showDiscoveryFiltersRow.assertValues([initialRow], "Nothing new is emitted when dismissing.")
       self.showDiscoveryFiltersCats.assertValues([[]], "Nothing new is emitted when dismissing.")
@@ -174,7 +174,7 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
 
       // Tap title again to present
       self.vm.inputs.titleButtonTapped()
-      self.scheduler.advanceByInterval(0.4)
+      self.scheduler.advance(by: .milliseconds(400))
 
       self.showDiscoveryFiltersRow.assertValues([initialRow, initialRow],
                                                 "Filters are shown again.")

@@ -49,7 +49,7 @@ internal final class BackingCellViewModelTests: TestCase {
     withEnvironment(isVoiceOverRunning: { true }) {
       self.vm.inputs.configureWith(backing: backing, project: Project.template)
 
-      self.rootStackViewAlignment.assertValues([UIStackViewAlignment.Fill])
+      self.rootStackViewAlignment.assertValues([UIStackViewAlignment.fill])
     }
   }
 }

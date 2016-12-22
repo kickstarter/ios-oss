@@ -43,12 +43,12 @@ internal final class WebModalViewModelTests: TestCase {
 
     let decision = self.vm.inputs.decidePolicyFor(
       navigationAction: MockNavigationAction(
-        navigationType: .Other,
+        navigationType: .other,
         request: request
       )
     )
 
-    XCTAssertEqual(WKNavigationActionPolicy.Allow.rawValue, decision.rawValue)
+    XCTAssertEqual(WKNavigationActionPolicy.allow.rawValue, decision.rawValue)
   }
 
   fileprivate let request = URLRequest(url: URL(string: "https://www.kickstarter.com/projects/tfw/ijc")!)

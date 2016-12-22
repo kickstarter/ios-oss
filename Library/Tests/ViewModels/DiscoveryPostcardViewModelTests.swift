@@ -64,8 +64,8 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
   }
 
   func testMetadata() {
-    let featuredAt = AppEnvironment.current.calendar.startOfDayForDate(Date()).timeIntervalSince1970
-    let potdAt = AppEnvironment.current.calendar.startOfDayForDate(Date()).timeIntervalSince1970
+    let featuredAt = AppEnvironment.current.calendar.startOfDay(for: Date()).timeIntervalSince1970
+    let potdAt = AppEnvironment.current.calendar.startOfDay(for: Date()).timeIntervalSince1970
 
     let backedProject = .template
       |> Project.lens.personalization.isBacking .~ true
@@ -221,7 +221,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: projectOneFriend)
     self.socialImageURL.assertValues([nil, nil, oneFriend[0].avatar.medium])
     self.socialLabelText.assertValues(
-      [ "", "", Strings.project_social_friend_is_backer(friend_name: oneFriend[0].name ?? "") ]
+      [ "", "", Strings.project_social_friend_is_backer(friend_name: oneFriend[0].name) ]
     )
     self.socialStackViewHidden.assertValues([true, false])
 

@@ -818,7 +818,7 @@ public final class Koala {
    - parameter shareContext:      The context in which the sharing is happening.
    - parameter shareActivityType: The type of share that was shown.
    */
-  public func trackShowedShare(shareContext: ShareContext, shareActivityType: String?) {
+  public func trackShowedShare(shareContext: ShareContext, shareActivityType: UIActivityType?) {
     let props = properties(shareContext: shareContext,
                                 loggedInUser: self.loggedInUser,
                                 shareActivityType: shareActivityType)
@@ -838,7 +838,7 @@ public final class Koala {
    - parameter shareContext:      The context in which the sharing is happening.
    - parameter shareActivityType: The type of share that was shown.
    */
-  public func trackCanceledShare(shareContext: ShareContext, shareActivityType: String?) {
+  public func trackCanceledShare(shareContext: ShareContext, shareActivityType: UIActivityType?) {
     let props = properties(shareContext: shareContext,
                            loggedInUser: self.loggedInUser,
                            shareActivityType: shareActivityType)
@@ -857,7 +857,7 @@ public final class Koala {
    - parameter shareContext:      The context in which the sharing is happening.
    - parameter shareActivityType: The type of share that was shown.
    */
-  public func trackShared(shareContext: ShareContext, shareActivityType: String?) {
+  public func trackShared(shareContext: ShareContext, shareActivityType: UIActivityType?) {
     let props = properties(shareContext: shareContext,
                            loggedInUser: self.loggedInUser,
                            shareActivityType: shareActivityType)
@@ -1770,13 +1770,13 @@ private func properties(category: KsApi.Category) -> [String:Any] {
 }
 
 private func properties(shareContext: ShareContext,
-                                     loggedInUser: User?,
-                                     shareActivityType: String? = nil) -> [String:Any] {
+                        loggedInUser: User?,
+                        shareActivityType: UIActivityType? = nil) -> [String:Any] {
 
   var result: [String:Any] = [:]
 
-  result["share_activity_type"] = shareActivityType
-  result["share_type"] = shareTypeProperty(shareActivityType)
+  result["share_activity_type"] = shareActivityType?.rawValue
+  result["share_type"] = shareActivityType.flatMap(shareTypeProperty)
 
   switch shareContext {
   case let .creatorDashboard(project):
@@ -1814,30 +1814,29 @@ private func properties(reward: Reward, prefix: String = "backer_reward_") -> [S
 }
 
 // FIXME: convert `shareType` to `UIActivityType` enum
-private func shareTypeProperty(_ shareType: String?) -> String {
+private func shareTypeProperty(_ shareType: UIActivityType?) -> String? {
   #if os(iOS)
-    guard let shareType = shareType else { return "" }
+    guard let shareType = shareType else { return nil }
 
-    switch shareType {
-    case UIActivityType.postToFacebook.rawValue:
+    if shareType == .postToFacebook {
       return "facebook"
-    case UIActivityType.message.rawValue:
+    } else if shareType == .message {
       return "message"
-    case UIActivityType.mail.rawValue:
+    } else if shareType == .mail {
       return "email"
-    case UIActivityType.copyToPasteboard.rawValue:
+    } else if shareType == .copyToPasteboard {
       return "copy link"
-    case UIActivityType.postToTwitter.rawValue:
+    } else if shareType == .postToTwitter {
       return "twitter"
-    case "com.apple.mobilenotes.SharingExtension":
+    } else if shareType == UIActivityType("com.apple.mobilenotes.SharingExtension") {
       return "notes"
-    case SafariActivityType.rawValue:
+    } else if shareType == SafariActivityType {
       return "safari"
-    default:
-      return shareType
+    } else {
+      return shareType.rawValue
     }
   #else
-    return ""
+    return nil
   #endif
 }
 
