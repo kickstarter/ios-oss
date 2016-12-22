@@ -230,7 +230,7 @@ RewardPledgeViewModelOutputs {
         return AppEnvironment.current.apiService.fetchRewardShippingRules(
           projectId: project.id, rewardId: reward.id
           )
-          .delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .map(ShippingRulesEnvelope.lens.shippingRules.view)
           .demoteErrors()
     }
@@ -404,7 +404,7 @@ RewardPledgeViewModelOutputs {
       .filter(isTrue)
       .ignoreValues()
       // introduce a small delay for this event since the login tout takes a moment to dismiss...
-      .ksr_debounce(1, on: AppEnvironment.current.scheduler)
+      .ksr_debounce(.seconds(1), on: AppEnvironment.current.scheduler)
 
     let paymentMethodEventAfterLogin = Signal.merge(
       loggedOutUserTappedApplePayButton.mapConst(true),
@@ -459,7 +459,7 @@ RewardPledgeViewModelOutputs {
           paymentData: paymentData,
           stripeToken: stripeToken
         )
-        .delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+        .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
         .on(started: { isLoading.value = true }, terminated: { isLoading.value = false })
         .materialize()
     }
@@ -475,7 +475,7 @@ RewardPledgeViewModelOutputs {
       .map { ($0.0, $0.1, $1, $2) }
       .switchMap { project, reward, amount, shipping in
         createPledge(project: project, reward: reward, amount: amount, shipping: shipping)
-          .delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .map { ($0, project, reward) }
           .on(started: { isLoading.value = true }, terminated: { isLoading.value = false })
           .materialize()
@@ -503,7 +503,7 @@ RewardPledgeViewModelOutputs {
       .map { ($0.0, $0.1, $1, $2) }
       .switchMap { project, reward, amount, shipping in
         updatePledge(project: project, reward: reward, amount: amount, shipping: shipping)
-          .delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .map { ($0, project, reward) }
           .on(started: { isLoading.value = true }, terminated: { isLoading.value = false })
           .materialize()
@@ -513,7 +513,7 @@ RewardPledgeViewModelOutputs {
       .takeWhen(self.changePaymentMethodButtonTappedProperty.signal)
       .switchMap { project, reward in
         changePaymentMethod(project: project)
-          .delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .map { ($0, project, reward) }
           .on(started: { isLoading.value = true }, terminated: { isLoading.value = false })
           .materialize()

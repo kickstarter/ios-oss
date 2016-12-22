@@ -110,7 +110,7 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
     let projectOnStarToggleAndSuccess = projectOnStarToggle
       .switchMap { project in
         AppEnvironment.current.apiService.toggleStar(project)
-          .delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .map { ($0.project, success: true) }
           .flatMapError { _ in .init(value: (project, success: false)) }
     }

@@ -300,7 +300,7 @@ internal final class ProjectNavigatorViewModelTests: TestCase {
   }
 
   func testSetNeedsStatusBarAppearanceUpdate() {
-    let playlist = (0...4).map { idx in .template |> Project.lens.id .~ idx + 42 }
+    let playlist = (0...4).map { idx in .template |> Project.lens.id .~ (idx + 42) }
     let project = playlist.first!
 
     self.vm.inputs.configureWith(project: project, refTag: .category)

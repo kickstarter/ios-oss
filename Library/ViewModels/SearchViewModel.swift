@@ -80,7 +80,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       .switchMap {
         AppEnvironment.current.apiService
           .fetchDiscovery(params: .defaults |> DiscoveryParams.lens.sort .~ .popular)
-          .delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .demoteErrors()
       }
       .map { $0.projects }

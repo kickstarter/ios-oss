@@ -119,7 +119,7 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
       self.tappedExpandableRowProperty.signal.mapConst(true),
 
       self.tappedExpandableRowProperty.signal
-        .delay(0.3, on: AppEnvironment.current.scheduler)
+        .ksr_delay(.milliseconds(300), on: AppEnvironment.current.scheduler)
         .mapConst(false)
     )
 

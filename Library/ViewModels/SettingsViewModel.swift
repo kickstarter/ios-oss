@@ -123,7 +123,7 @@ public final class SettingsViewModel: SettingsViewModelType, SettingsViewModelIn
     let updateEvent = updatedUser
       .switchMap {
         AppEnvironment.current.apiService.updateUserSelf($0)
-          .delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
     }
 

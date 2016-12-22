@@ -89,7 +89,7 @@ public final class FindFriendsViewModel: FindFriendsViewModelType, FindFriendsVi
 
     let requestFirstPageWith = Signal.merge(
       shouldShowFacebookConnect.filter(isFalse).ignoreValues(),
-      followAll.ignoreValues().ksr_debounce(2, on: AppEnvironment.current.scheduler)
+      followAll.ignoreValues().ksr_debounce(.seconds(2), on: AppEnvironment.current.scheduler)
     )
 
     let requestNextPageWhen = self.willDisplayRowProperty.signal.skipNil()
@@ -133,7 +133,7 @@ public final class FindFriendsViewModel: FindFriendsViewModelType, FindFriendsVi
       .filter(isFalse)
       .switchMap { _ in
         AppEnvironment.current.apiService.fetchFriendStats()
-        .delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+        .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
         .materialize()
     }
 

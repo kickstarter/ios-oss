@@ -96,7 +96,7 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
     let categories = self.viewDidLoadProperty.signal
       .switchMap {
         AppEnvironment.current.apiService.fetchCategories()
-          .delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .map { $0.categories }
           .prefix(value: [])
           .demoteErrors()
@@ -145,7 +145,7 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
     )
 
     self.dismissDiscoveryFilters = dismissFiltersSignal
-      .ksr_debounce(0.4, on: AppEnvironment.current.scheduler)
+      .ksr_debounce(.milliseconds(400), on: AppEnvironment.current.scheduler)
 
     self.notifyDelegateFilterSelectedParams = currentParams.skip(first: 1)
 

@@ -81,7 +81,7 @@ public final class FindFriendsFacebookConnectCellViewModel: FindFriendsFacebookC
             terminated: {
               isLoading.value = false
           })
-          .delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
     }
 

@@ -88,7 +88,7 @@ MessageDialogViewModelOutputs {
       .switchMap { body, messageSubject in
 
         AppEnvironment.current.apiService.sendMessage(body: body, toSubject: messageSubject)
-          .delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
     }
 
@@ -174,7 +174,7 @@ MessageDialogViewModelOutputs {
 
 func fetchBackerName(backing: Backing) -> SignalProducer<String, NoError> {
   return AppEnvironment.current.apiService.fetchUser(userId: backing.backerId)
-    .delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+    .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
     .demoteErrors()
     .map { $0.name }
 }

@@ -119,7 +119,7 @@ public final class ShareViewModel: ShareViewModelType, ShareViewModelInputs, Sha
       }
       .flatMap {
         SignalProducer(value: $0)
-          .delay(1.0, on: AppEnvironment.current.scheduler)
+          .ksr_delay(.seconds(1), on: AppEnvironment.current.scheduler)
       }
       .observeValues { shareContext, completion in
         AppEnvironment.current.koala.trackShared(
@@ -131,7 +131,7 @@ public final class ShareViewModel: ShareViewModelType, ShareViewModelInputs, Sha
       .filter { _, completion in completion.activityType.map(firstPartyShareTypes.contains) == .some(true) }
       .flatMap {
         SignalProducer(value: $0)
-          .delay(1.0, on: AppEnvironment.current.scheduler)
+          .ksr_delay(.seconds(1), on: AppEnvironment.current.scheduler)
       }
       .observeValues { shareContext, completion in
         AppEnvironment.current.koala.trackCanceledShare(

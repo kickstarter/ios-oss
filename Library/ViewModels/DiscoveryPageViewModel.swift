@@ -153,7 +153,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       .filter { _ in AppEnvironment.current.currentUser != nil }
       .switchMap { _ in
         AppEnvironment.current.apiService.fetchActivities(count: 1)
-          .delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
     }
 

@@ -48,7 +48,7 @@ ActivityFriendFollowCellViewModelOutputs {
     let followFriendEvent = friend.takeWhen(self.followButtonTappedProperty.signal)
       .switchMap { user in
         AppEnvironment.current.apiService.followFriend(userId: user.id)
-        .delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+        .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
         .materialize()
     }
 

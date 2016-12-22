@@ -410,7 +410,7 @@ internal final class BackingViewModelTests: TestCase {
 
       self.vm.inputs.viewDidLoad()
 
-      self.rootStackViewAxis.assertValues([UILayoutConstraintAxis.Vertical])
+      self.rootStackViewAxis.assertValues([UILayoutConstraintAxis.vertical])
     }
   }
 }

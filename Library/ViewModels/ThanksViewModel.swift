@@ -146,7 +146,7 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
       .skipNil()
       .flatMap {
         return AppEnvironment.current.apiService.fetchCategory(param: .id($0))
-          .delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .map { $0.root ?? $0 }
           .demoteErrors()
     }
@@ -167,7 +167,7 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
       .skipNil()
       .switchMap { user in
         AppEnvironment.current.apiService.updateUserSelf(user |> User.lens.newsletters.games .~ true)
-          .delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .demoteErrors()
     }
 

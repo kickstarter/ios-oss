@@ -92,7 +92,7 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
     let projects = self.viewWillAppearAnimatedProperty.signal.filter(isFalse).ignoreValues()
       .switchMap {
         AppEnvironment.current.apiService.fetchProjects(member: true)
-          .delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .demoteErrors()
           .map { $0.projects }
     }
@@ -112,7 +112,7 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
     let selectedProjectAndStatsEvent = self.project
       .switchMap { project in
         AppEnvironment.current.apiService.fetchProjectStats(projectId: project.id)
-          .delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .map { (project, $0) }
           .materialize()
       }

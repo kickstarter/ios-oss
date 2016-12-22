@@ -90,7 +90,7 @@ public final class FindFriendsFriendFollowCellViewModel: FindFriendsFriendFollow
             terminated: {
               isLoadingFollowRequest.value = false
           })
-          .delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .mapConst(user |> User.lens.isFriend .~ true)
           .materialize()
     }
@@ -106,7 +106,7 @@ public final class FindFriendsFriendFollowCellViewModel: FindFriendsFriendFollow
             terminated: {
               isLoadingUnfollowRequest.value = false
           })
-          .delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .mapConst(user |> User.lens.isFriend .~ false)
           .materialize()
     }

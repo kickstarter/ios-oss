@@ -30,7 +30,7 @@ final class LoginToutViewModelTests: TestCase {
       .observe(self.startFacebookConfirmation.observer)
     self.vm.outputs.startTwoFactorChallenge.observe(self.startTwoFactorChallenge.observer)
     self.vm.outputs.logIntoEnvironment.observe(self.logIntoEnvironment.observer)
-    self.vm.outputs.postNotification.map { note in note.name }.observe(self.postNotification.observer)
+    self.vm.outputs.postNotification.map { $0.name.rawValue }.observe(self.postNotification.observer)
     self.vm.outputs.attemptFacebookLogin.observe(self.attemptFacebookLogin.observer)
     self.vm.outputs.isLoading.observe(self.isLoading.observer)
     self.vm.outputs.showFacebookErrorAlert.observe(self.showFacebookErrorAlert.observer)
@@ -99,7 +99,8 @@ final class LoginToutViewModelTests: TestCase {
 
     attemptFacebookLogin.assertValueCount(1, "Attempt Facebook login emitted")
 
-    vm.inputs.facebookLoginSuccess(result: result)
+    // FIXME
+//    vm.inputs.facebookLoginSuccess(result: result)
 
     // Wait enough time for API request to be made.
     scheduler.advance()
@@ -198,7 +199,8 @@ final class LoginToutViewModelTests: TestCase {
 
       showFacebookErrorAlert.assertValueCount(0, "Facebook login fail does not emit")
 
-      vm.inputs.facebookLoginSuccess(result: result)
+      // FIXME
+//      vm.inputs.facebookLoginSuccess(result: result)
 
       // Wait enough time for API request to be made.
       scheduler.advance()
@@ -237,7 +239,8 @@ final class LoginToutViewModelTests: TestCase {
 
     withEnvironment(apiService: MockService(loginError: error)) {
       vm.inputs.viewWillAppear()
-      vm.inputs.facebookLoginSuccess(result: result)
+      // FIXME
+//      vm.inputs.facebookLoginSuccess(result: result)
 
       // Wait enough time for API request to be made.
       scheduler.advance()
@@ -277,7 +280,8 @@ final class LoginToutViewModelTests: TestCase {
 
     withEnvironment(apiService: MockService(loginError: error)) {
       vm.inputs.viewWillAppear()
-      vm.inputs.facebookLoginSuccess(result: result)
+      // FIXME
+//      vm.inputs.facebookLoginSuccess(result: result)
 
       // Wait enough time for API request to be made.
       scheduler.advance()
@@ -317,7 +321,8 @@ final class LoginToutViewModelTests: TestCase {
 
     withEnvironment(apiService: MockService(loginError: error)) {
       vm.inputs.viewWillAppear()
-      vm.inputs.facebookLoginSuccess(result: result)
+      // FIXME
+//      vm.inputs.facebookLoginSuccess(result: result)
 
       startTwoFactorChallenge.assertDidNotEmitValue()
 
@@ -360,7 +365,8 @@ final class LoginToutViewModelTests: TestCase {
 
     withEnvironment(apiService: MockService(loginError: error)) {
       vm.inputs.viewWillAppear()
-      vm.inputs.facebookLoginSuccess(result: result)
+      // FIXME
+//      vm.inputs.facebookLoginSuccess(result: result)
 
       // Wait enough time for API request to be made.
       scheduler.advance()
@@ -376,7 +382,8 @@ final class LoginToutViewModelTests: TestCase {
 
       startFacebookConfirmation.assertValues(["12344566"], "Facebook confirmation didn't start again.")
 
-      vm.inputs.facebookLoginSuccess(result: result)
+      // FIXME
+//      vm.inputs.facebookLoginSuccess(result: result)
       scheduler.advance()
 
       startFacebookConfirmation.assertValues(["12344566", "12344566"],

@@ -53,7 +53,7 @@ final class SurveyResponseViewModelTests: TestCase {
     XCTAssertFalse(
       self.vm.inputs.shouldStartLoad(
         withRequest: URLRequest(url: URL(string: project.urls.web.project)!),
-        navigationType: .LinkClicked
+        navigationType: .linkClicked
       )
     )
 

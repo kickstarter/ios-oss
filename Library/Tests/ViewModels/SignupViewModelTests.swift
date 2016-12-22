@@ -26,7 +26,7 @@ internal final class SignupViewModelTests: TestCase {
     self.vm.outputs.nameTextFieldBecomeFirstResponder.observe(self.nameTextFieldBecomeFirstResponder.observer)
     self.vm.outputs.passwordTextFieldBecomeFirstResponder
       .observe(self.passwordTextFieldBecomeFirstResponder.observer)
-    self.vm.outputs.postNotification.map { $0.name }.observe(self.postNotification.observer)
+    self.vm.outputs.postNotification.map { $0.name.rawValue }.observe(self.postNotification.observer)
     self.vm.outputs.setWeeklyNewsletterState.observe(self.setWeeklyNewsletterState.observer)
     self.vm.outputs.showError.observe(self.showError.observer)
   }

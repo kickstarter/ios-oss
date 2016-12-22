@@ -124,7 +124,7 @@ FacebookConfirmationViewModelErrors {
             terminated: {
               isLoading.value = false
           })
-          .delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
     }
 

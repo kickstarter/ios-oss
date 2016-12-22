@@ -32,7 +32,7 @@ public final class CheckoutRacingViewModel: CheckoutRacingViewModelType {
       .promoteErrors(CheckoutRetryError.self)
       .switchMap { url in
         SignalProducer<(), CheckoutRetryError>(value: ())
-          .delay(1, on: AppEnvironment.current.scheduler)
+          .ksr_delay(.seconds(1), on: AppEnvironment.current.scheduler)
           .flatMap {
             AppEnvironment.current.apiService.fetchCheckout(checkoutUrl: url)
               .flatMapError { errorEnv in

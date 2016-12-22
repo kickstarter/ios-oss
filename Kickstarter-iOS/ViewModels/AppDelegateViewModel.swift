@@ -311,7 +311,7 @@ AppDelegateViewModelOutputs {
           else { return .init(value: params) }
 
         return AppEnvironment.current.apiService.fetchCategory(param: categoryParam)
-          .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
           .demoteErrors()
           .map { params |> DiscoveryParams.lens.category .~ $0 }
     }

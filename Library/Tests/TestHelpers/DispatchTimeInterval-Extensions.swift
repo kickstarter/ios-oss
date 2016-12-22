@@ -5,13 +5,13 @@ extension DispatchTimeInterval {
   public func scale(by scale: Float) -> DispatchTimeInterval {
     switch self {
     case let .seconds(interval):
-      return .milliseconds(Float(interval * 1_000) * scale)
+      return .milliseconds(Int(Float(interval * 1_000) * scale))
     case let .milliseconds(interval):
-      return .microseconds(Float(interval * 1_000) * scale)
+      return .microseconds(Int(Float(interval * 1_000) * scale))
     case let .microseconds(interval):
-      return .nanoseconds(Float(interval * 1_000) * scale)
+      return .nanoseconds(Int(Float(interval * 1_000) * scale))
     case let .nanoseconds(interval):
-      return .nanoseconds(Float(interval) * scale)
+      return .nanoseconds(Int(Float(interval) * scale))
     }
   }
 
@@ -19,7 +19,7 @@ extension DispatchTimeInterval {
     return self.scale(by: 0.5)
   }
 
-  fileprivate var nanoseconds: UInt64 {
+  fileprivate var nanoseconds: Int64 {
     switch self {
     case .seconds(let s):
       return Int64(s) * Int64(NSEC_PER_SEC)
@@ -34,5 +34,5 @@ extension DispatchTimeInterval {
 }
 
 public func + (lhs: DispatchTimeInterval, rhs: DispatchTimeInterval) -> DispatchTimeInterval {
-  return .nanoseconds(lhs.nanoseconds + rhs.nanoseconds)
+  return .nanoseconds(Int(lhs.nanoseconds + rhs.nanoseconds))
 }

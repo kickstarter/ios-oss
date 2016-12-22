@@ -143,7 +143,7 @@ UpdateDraftViewModelOutputs {
       .flatMap {
         AppEnvironment.current.apiService.fetchUpdateDraft(forProject: $0)
           .materialize()
-          .delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
     }
     let draft = draftEvent.values()
 
@@ -192,7 +192,7 @@ UpdateDraftViewModelOutputs {
       .switchMap { draft, url in
         AppEnvironment.current.apiService.addImage(file: url, toDraft: draft)
           .materialize()
-          .delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
     }
     self.showAddAttachmentFailure = addAttachmentEvent.errors().ignoreValues()
 
@@ -220,7 +220,7 @@ UpdateDraftViewModelOutputs {
         guard case let .image(image) = attachment else { fatalError("Video not supported") }
         return AppEnvironment.current.apiService.delete(image: image, fromDraft: draft)
           .materialize()
-          .delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
     }
     self.showRemoveAttachmentFailure = removeAttachmentEvent.errors().ignoreValues()
 
@@ -320,7 +320,7 @@ UpdateDraftViewModelOutputs {
         }
 
         return producer
-          .delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
       }
     let currentDraft = currentDraftEvent.values()
 

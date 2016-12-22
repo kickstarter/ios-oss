@@ -114,11 +114,11 @@ SortPagerViewModelOutputs {
       self.viewDidAppearProperty.signal
         .take(first: 1)
         .mapConst(false)
-        .ksr_debounce(0.1, on: AppEnvironment.current.scheduler),
+        .ksr_debounce(.milliseconds(100), on: AppEnvironment.current.scheduler),
       self.willRotateProperty.signal.mapConst(true),
       self.didRotateProperty.signal
         .mapConst(false)
-        .ksr_debounce(0.1, on: AppEnvironment.current.scheduler)
+        .ksr_debounce(.milliseconds(100), on: AppEnvironment.current.scheduler)
     )
   }
   // swiftlint:enable function_body_length

@@ -42,7 +42,7 @@ final class ThanksViewModelTests: TestCase {
     vm.outputs.showGamesNewsletterOptInAlert.observe(showGamesNewsletterOptInAlert.observer)
     vm.outputs.showRecommendations.map { projects, _ in projects }.observe(showRecommendations.observer)
     vm.outputs.dismissToRootViewController.observe(dismissToRootViewController.observer)
-    vm.outputs.postUserUpdatedNotification.map { note in note.name }
+    vm.outputs.postUserUpdatedNotification.map { $0.name.rawValue }
       .observe(postUserUpdatedNotification.observer)
     vm.outputs.updateUserInEnvironment.observe(updateUserInEnvironment.observer)
     vm.outputs.facebookButtonIsHidden.observe(facebookButtonIsHidden.observer)

@@ -44,7 +44,7 @@ internal final class ValueCellDataSourceTests: XCTestCase {
   }
 
   func testTableViewDataSourceMethods() {
-    XCTAssertEqual(6, dataSource.numberOfSectionsInTableView(tableView))
+    XCTAssertEqual(6, dataSource.numberOfSections(in: tableView))
     XCTAssertEqual(2, dataSource.tableView(tableView, numberOfRowsInSection: 0))
     XCTAssertEqual(3, dataSource.tableView(tableView, numberOfRowsInSection: 1))
     XCTAssertEqual(0, dataSource.tableView(tableView, numberOfRowsInSection: 2))
@@ -54,7 +54,7 @@ internal final class ValueCellDataSourceTests: XCTestCase {
   }
 
   func testCollectionViewDataSourceMethods() {
-    XCTAssertEqual(6, dataSource.numberOfSectionsInCollectionView(collectionView))
+    XCTAssertEqual(6, dataSource.numberOfSections(in: collectionView))
     XCTAssertEqual(2, dataSource.collectionView(collectionView, numberOfItemsInSection: 0))
     XCTAssertEqual(3, dataSource.collectionView(collectionView, numberOfItemsInSection: 1))
     XCTAssertEqual(0, dataSource.collectionView(collectionView, numberOfItemsInSection: 2))
@@ -64,14 +64,14 @@ internal final class ValueCellDataSourceTests: XCTestCase {
   }
 
   func testSubscript_IndexPath() {
-    XCTAssertEqual(1, dataSource[IndexPath(forItem: 0, inSection: 0)] as? Int)
-    XCTAssertEqual(2, dataSource[IndexPath(forItem: 1, inSection: 0)] as? Int)
-    XCTAssertEqual(1, dataSource[IndexPath(forItem: 0, inSection: 1)] as? Int)
-    XCTAssertEqual(2, dataSource[IndexPath(forItem: 1, inSection: 1)] as? Int)
-    XCTAssertEqual(3, dataSource[IndexPath(forItem: 2, inSection: 1)] as? Int)
-    XCTAssertEqual(1, dataSource[IndexPath(forItem: 0, inSection: 5)] as? Int)
-    XCTAssertEqual(2, dataSource[IndexPath(forItem: 1, inSection: 5)] as? Int)
-    XCTAssertEqual(3, dataSource[IndexPath(forItem: 2, inSection: 5)] as? Int)
+    XCTAssertEqual(1, dataSource[IndexPath(item: 0, section: 0)] as? Int)
+    XCTAssertEqual(2, dataSource[IndexPath(item: 1, section: 0)] as? Int)
+    XCTAssertEqual(1, dataSource[IndexPath(item: 0, section: 1)] as? Int)
+    XCTAssertEqual(2, dataSource[IndexPath(item: 1, section: 1)] as? Int)
+    XCTAssertEqual(3, dataSource[IndexPath(item: 2, section: 1)] as? Int)
+    XCTAssertEqual(1, dataSource[IndexPath(item: 0, section: 5)] as? Int)
+    XCTAssertEqual(2, dataSource[IndexPath(item: 1, section: 5)] as? Int)
+    XCTAssertEqual(3, dataSource[IndexPath(item: 2, section: 5)] as? Int)
   }
 
   func testSubscript_ItemSection() {
@@ -90,14 +90,14 @@ internal final class ValueCellDataSourceTests: XCTestCase {
   }
 
   func testItemAtIndex() {
-    XCTAssertEqual(0, dataSource.itemIndexAt(IndexPath(forItem: 0, inSection: 0)))
-    XCTAssertEqual(1, dataSource.itemIndexAt(IndexPath(forItem: 1, inSection: 0)))
-    XCTAssertEqual(2, dataSource.itemIndexAt(IndexPath(forItem: 0, inSection: 1)))
-    XCTAssertEqual(3, dataSource.itemIndexAt(IndexPath(forItem: 1, inSection: 1)))
-    XCTAssertEqual(4, dataSource.itemIndexAt(IndexPath(forItem: 2, inSection: 1)))
-    XCTAssertEqual(5, dataSource.itemIndexAt(IndexPath(forItem: 0, inSection: 5)))
-    XCTAssertEqual(6, dataSource.itemIndexAt(IndexPath(forItem: 1, inSection: 5)))
-    XCTAssertEqual(7, dataSource.itemIndexAt(IndexPath(forItem: 2, inSection: 5)))
+    XCTAssertEqual(0, dataSource.itemIndexAt(IndexPath(item: 0, section: 0)))
+    XCTAssertEqual(1, dataSource.itemIndexAt(IndexPath(item: 1, section: 0)))
+    XCTAssertEqual(2, dataSource.itemIndexAt(IndexPath(item: 0, section: 1)))
+    XCTAssertEqual(3, dataSource.itemIndexAt(IndexPath(item: 1, section: 1)))
+    XCTAssertEqual(4, dataSource.itemIndexAt(IndexPath(item: 2, section: 1)))
+    XCTAssertEqual(5, dataSource.itemIndexAt(IndexPath(item: 0, section: 5)))
+    XCTAssertEqual(6, dataSource.itemIndexAt(IndexPath(item: 1, section: 5)))
+    XCTAssertEqual(7, dataSource.itemIndexAt(IndexPath(item: 2, section: 5)))
   }
 
   func testClearValues() {
@@ -107,7 +107,7 @@ internal final class ValueCellDataSourceTests: XCTestCase {
 
   func testClearValuesInSection() {
     dataSource.clearValues(section: 0)
-    XCTAssertEqual(6, dataSource.numberOfSectionsInTableView(tableView))
+    XCTAssertEqual(6, dataSource.numberOfSections(in: tableView))
     XCTAssertEqual(0, dataSource.tableView(tableView, numberOfRowsInSection: 0))
     XCTAssertEqual(3, dataSource.tableView(tableView, numberOfRowsInSection: 1))
     XCTAssertEqual(0, dataSource.tableView(tableView, numberOfRowsInSection: 2))
@@ -118,7 +118,7 @@ internal final class ValueCellDataSourceTests: XCTestCase {
 
   func testAppendStaticRow() {
     dataSource.appendStaticRow(cellIdentifier: "Test", toSection: 0)
-    XCTAssertEqual(6, dataSource.numberOfSectionsInTableView(tableView))
+    XCTAssertEqual(6, dataSource.numberOfSections(in: tableView))
 
     XCTAssertEqual(3, dataSource.tableView(tableView, numberOfRowsInSection: 0))
     XCTAssertEqual("Test", dataSource.reusableId(item: 2, section: 0))

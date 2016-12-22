@@ -49,7 +49,7 @@ public final class ProjectNotificationCellViewModel: ProjectNotificationCellView
     let updateEvent = toggledNotification
       .switchMap {
         AppEnvironment.current.apiService.updateProjectNotification($0)
-          .delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
     }
 

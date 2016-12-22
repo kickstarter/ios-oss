@@ -56,7 +56,7 @@ ProjectPamphletViewModelOutputs {
       .switchMap { project, param, idx -> SignalProducer<Project, NoError> in
 
         AppEnvironment.current.apiService.fetchProject(param: param)
-          .delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .demoteErrors()
     }
 

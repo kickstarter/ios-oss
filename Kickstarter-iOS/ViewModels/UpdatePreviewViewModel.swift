@@ -94,7 +94,7 @@ internal final class UpdatePreviewViewModel: UpdatePreviewViewModelInputs,
       .takeWhen(self.publishConfirmationButtonTappedProperty.signal)
       .switchMap {
         AppEnvironment.current.apiService.publish(draft: $0)
-          .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
           .materialize()
     }
     let update = publishEvent

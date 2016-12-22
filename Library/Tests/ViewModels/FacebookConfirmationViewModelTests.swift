@@ -22,7 +22,7 @@ final class FacebookConfirmationViewModelTests: TestCase {
     vm.outputs.sendNewsletters.observe(sendNewsletters.observer)
     vm.outputs.showLogin.observe(showLogin.observer)
     vm.outputs.logIntoEnvironment.observe(logIntoEnvironment.observer)
-    vm.outputs.postNotification.map { note in note.name }.observe(postNotification.observer)
+    vm.outputs.postNotification.map { $0.name.rawValue }.observe(postNotification.observer)
     vm.errors.showSignupError.observe(showSignupError.observer)
   }
 

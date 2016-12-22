@@ -117,7 +117,7 @@ public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, 
           password: password,
           passwordConfirmation: password,
           sendNewsletters: newsletter)
-          .delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
       }
 
