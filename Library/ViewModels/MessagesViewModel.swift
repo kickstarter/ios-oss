@@ -152,28 +152,28 @@ MessagesViewModelOutputs {
   }
   // swiftlint:enable function_body_length
 
-  fileprivate let backingInfoPressedProperty = MutableProperty()
+  private let backingInfoPressedProperty = MutableProperty()
   public func backingInfoPressed() {
     self.backingInfoPressedProperty.value = ()
   }
-  fileprivate let configData = MutableProperty<Either<MessageThread, (project: Project, backing: Backing)>?>(nil)
+  private let configData = MutableProperty<Either<MessageThread, (project: Project, backing: Backing)>?>(nil)
   public func configureWith(data: Either<MessageThread, (project: Project, backing: Backing)>) {
     self.configData.value = data
   }
 
-  fileprivate let messageSentProperty = MutableProperty<Message?>(nil)
+  private let messageSentProperty = MutableProperty<Message?>(nil)
   public func messageSent(_ message: Message) {
     self.messageSentProperty.value = message
   }
-  fileprivate let projectBannerTappedProperty = MutableProperty()
+  private let projectBannerTappedProperty = MutableProperty()
   public func projectBannerTapped() {
     self.projectBannerTappedProperty.value = ()
   }
-  fileprivate let replyButtonPressedProperty = MutableProperty()
+  private let replyButtonPressedProperty = MutableProperty()
   public func replyButtonPressed() {
     self.replyButtonPressedProperty.value = ()
   }
-  fileprivate let viewDidLoadProperty = MutableProperty()
+  private let viewDidLoadProperty = MutableProperty()
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }

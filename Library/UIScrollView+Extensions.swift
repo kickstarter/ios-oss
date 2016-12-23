@@ -7,7 +7,8 @@ extension UIScrollView {
    index path, and otherwise we just set the content offset directly.
    */
   public func scrollToTop() {
-    if let tableView = self as? UITableView, tableView.numberOfSections > 0 && tableView.numberOfRows(inSection: 0) > 0 {
+    if let tableView = self as? UITableView,
+      tableView.numberOfSections > 0 && tableView.numberOfRows(inSection: 0) > 0 {
 
       tableView.scrollToRow(at: .init(row: 0, section: 0),
                                        at: .top,

@@ -131,7 +131,7 @@ FacebookConfirmationViewModelErrors {
     self.logIntoEnvironment = signupEvent.values()
 
     self.postNotification = self.environmentLoggedInProperty.signal
-      .mapConst(Notification(name: Notification.Name(rawValue: CurrentUserNotifications.sessionStarted), object: nil))
+      .mapConst(.init(name: .init(rawValue: CurrentUserNotifications.sessionStarted), object: nil))
 
     self.showSignupError = signupEvent.errors()
       .map { error in
@@ -144,13 +144,13 @@ FacebookConfirmationViewModelErrors {
     self.viewDidLoadProperty.signal.observeValues { AppEnvironment.current.koala.trackFacebookConfirmation() }
 
     self.environmentLoggedInProperty.signal
-      .observeValues { _ in AppEnvironment.current.koala.trackLoginSuccess(authType: Koala.AuthType.facebook) }
+      .observeValues { _ in AppEnvironment.current.koala.trackLoginSuccess(authType: .facebook) }
 
     self.showSignupError
-      .observeValues { _ in AppEnvironment.current.koala.trackSignupError(authType: Koala.AuthType.facebook) }
+      .observeValues { _ in AppEnvironment.current.koala.trackSignupError(authType: .facebook) }
 
     signupEvent.values()
-      .observeValues { _ in AppEnvironment.current.koala.trackSignupSuccess(authType: Koala.AuthType.facebook) }
+      .observeValues { _ in AppEnvironment.current.koala.trackSignupSuccess(authType: .facebook) }
 
     self.sendNewslettersToggledProperty.signal
       .observeValues {

@@ -69,6 +69,7 @@ public final class ShareViewModel: ShareViewModelType, ShareViewModelInputs, Sha
 
     self.showShareCompose = Signal.combineLatest(shareContext, directShareService)
       .map(shareComposeController(forShareContext:serviceType:))
+      .skipNil()
 
     let directShareCompletion = Signal.merge(
       self.facebookButtonTappedProperty.signal.mapConst(UIActivityType.postToFacebook),
@@ -240,7 +241,7 @@ private func twitterInitialText(forShareContext shareContext: ShareContext) -> S
 }
 
 private func shareComposeController(forShareContext shareContext: ShareContext, serviceType: String)
-  -> SLComposeViewController {
+  -> SLComposeViewController? {
 
     let controller = SLComposeViewController(forServiceType: serviceType)
 
@@ -250,6 +251,6 @@ private func shareComposeController(forShareContext shareContext: ShareContext, 
       controller?.setInitialText(twitterInitialText(forShareContext: shareContext))
     }
 
-    return controller!
+    return controller
 }
 #endif

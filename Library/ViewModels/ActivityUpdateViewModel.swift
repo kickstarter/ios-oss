@@ -119,8 +119,10 @@ private func updatePostedString(forActivity activity: Activity) -> NSAttributedS
 
   if let timeRange = mutableString.string.range(of: time), let timeNumber = timeNumber {
 
-    let timeStartIndex = mutableString.string.distance(from: mutableString.string.startIndex, to: timeRange.lowerBound)
-    let timeNumberStartIndex = mutableString.string.distance(from: time.startIndex, to: timeNumber.startIndex)
+    let timeStartIndex = mutableString.string
+      .distance(from: mutableString.string.startIndex, to: timeRange.lowerBound)
+    let timeNumberStartIndex = mutableString.string
+      .distance(from: time.startIndex, to: timeNumber.startIndex)
 
     mutableString.addAttributes(
       [NSFontAttributeName: UIFont.ksr_headline(size: 13.0)],

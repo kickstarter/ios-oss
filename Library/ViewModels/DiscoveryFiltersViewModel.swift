@@ -205,18 +205,24 @@ private func expandableRows(selectedRow: SelectableRow,
           }
       )
     }
-    .sorted { lhs, rhs in lhs.params.category! < rhs.params.category! }
+    .sorted { lhs, rhs in
+      guard let lhsCategory = lhs.params.category, let rhsCategory = rhs.params.category else {
+        return lhs.params.category == nil
+      }
+      return lhsCategory < rhsCategory
+  }
 
   return expandableRows.map { expandableRow in
     return expandableRow
       |> ExpandableRow.lens.isExpanded .~
       expandableRow.selectableRows.lazy.map { $0.params }.contains(selectedRow.params)
       |> ExpandableRow.lens.selectableRows .~
-      expandableRow.selectableRows.sorted {
-        if $0.params.category?.isRoot == $1.params.category?.isRoot {
-          return ($0.params.category?.name)! < ($1.params.category?.name)!
+      expandableRow.selectableRows.sorted { lhs, rhs in
+        guard let lhsName = lhs.params.category?.name, let rhsName = rhs.params.category?.name,
+          lhs.params.category?.isRoot == rhs.params.category?.isRoot else {
+          return (lhs.params.category?.isRoot ?? false) && !(rhs.params.category?.isRoot ?? false)
         }
-        return ($0.params.category?.isRoot ?? false) && !($1.params.category?.isRoot ?? false)
+        return lhsName < rhsName
     }
   }
 }

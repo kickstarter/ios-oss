@@ -172,7 +172,7 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
     }
 
     self.postUserUpdatedNotification = self.userUpdatedProperty.signal
-      .mapConst(Notification(name: Notification.Name(rawValue: CurrentUserNotifications.userUpdated), object: nil))
+      .mapConst(.init(name: .init(rawValue: CurrentUserNotifications.userUpdated), object: nil))
 
     self.showGamesNewsletterAlert
       .observeValues { AppEnvironment.current.userDefaults.hasSeenGamesNewsletterPrompt = true }

@@ -140,7 +140,8 @@ private func percentFundedString(forActivity activity: Activity) -> NSAttributed
     ])
 
   if let percentRange = mutableString.string.range(of: percentage) {
-    let percentStartIndex = mutableString.string.distance(from: mutableString.string.startIndex, to: percentRange.lowerBound)
+    let percentStartIndex = mutableString.string
+      .distance(from: mutableString.string.startIndex, to: percentRange.lowerBound)
     mutableString.addAttributes([
       NSFontAttributeName: UIFont.ksr_headline(size: 12.0),
       NSForegroundColorAttributeName:

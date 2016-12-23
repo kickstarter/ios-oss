@@ -110,7 +110,9 @@ public final class HelpViewModel: HelpViewModelType, HelpViewModelInputs, HelpVi
     context
       .takePairWhen(self.mailComposeCompletionProperty.signal.skipNil())
       .filter { $1 == .cancelled }
-      .observeValues { context, _ in AppEnvironment.current.koala.trackCanceledContactEmail(context: context) }
+      .observeValues { context, _ in
+        AppEnvironment.current.koala.trackCanceledContactEmail(context: context)
+    }
   }
   // swiftlint:enable function_body_length
 

@@ -172,9 +172,11 @@ public extension UIAlertController {
     return alertController
   }
 
-  public static func confirmFollowAllFriends(friendsCount: Int,
-                                             yesHandler: @escaping ((UIAlertAction) -> Void),
-                                             noHandler: @escaping ((UIAlertAction) -> Void)) -> UIAlertController {
+  public static func confirmFollowAllFriends(
+    friendsCount: Int,
+    yesHandler: @escaping ((UIAlertAction) -> Void),
+    noHandler: @escaping ((UIAlertAction) -> Void)) -> UIAlertController {
+    
     let alertController = UIAlertController(
       title: Strings.social_following_stats_button_follow_all_friends(remote_friends_count: friendsCount),
       message: Strings.social_following_nice_youre_about_to_follow_all_friends(),

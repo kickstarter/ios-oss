@@ -175,30 +175,30 @@ public final class ProjectActivitiesViewModel: ProjectActivitiesViewModelType,
   }
   // swiftlint:enable function_body_length
 
-  fileprivate let activityAndProjectCellTappedProperty = MutableProperty<(Activity, Project)?>(nil)
+  private let activityAndProjectCellTappedProperty = MutableProperty<(Activity, Project)?>(nil)
   public func activityAndProjectCellTapped(activity: Activity, project: Project) {
     self.activityAndProjectCellTappedProperty.value = (activity, project)
   }
 
-  fileprivate let projectProperty = MutableProperty<Project?>(nil)
+  private let projectProperty = MutableProperty<Project?>(nil)
   public func configureWith(_ project: Project) { self.projectProperty.value = project }
 
-  fileprivate let projectActivityBackingCellGoToBackingProperty = MutableProperty<(Project, User)?>(nil)
+  private let projectActivityBackingCellGoToBackingProperty = MutableProperty<(Project, User)?>(nil)
   public func projectActivityBackingCellGoToBacking(project: Project, user: User) {
     self.projectActivityBackingCellGoToBackingProperty.value = (project, user)
   }
 
-  fileprivate let projectActivityBackingCellGoToSendMessageProperty = MutableProperty<(Project, Backing)?>(nil)
+  private let projectActivityBackingCellGoToSendMessageProperty = MutableProperty<(Project, Backing)?>(nil)
   public func projectActivityBackingCellGoToSendMessage(project: Project, backing: Backing) {
     self.projectActivityBackingCellGoToSendMessageProperty.value = (project, backing)
   }
 
-  fileprivate let projectActivityCommentCellGoToBackingProperty = MutableProperty<(Project, User)?>(nil)
+  private let projectActivityCommentCellGoToBackingProperty = MutableProperty<(Project, User)?>(nil)
   public func projectActivityCommentCellGoToBacking(project: Project, user: User) {
     self.projectActivityCommentCellGoToBackingProperty.value = (project, user)
   }
 
-  fileprivate let projectActivityCommentCellGoToSendReplyProperty
+  private let projectActivityCommentCellGoToSendReplyProperty
     = MutableProperty<(Project, Update?, Comment)?>(nil)
   public func projectActivityCommentCellGoToSendReply(project: Project,
                                                               update: Update?,
@@ -206,13 +206,13 @@ public final class ProjectActivitiesViewModel: ProjectActivitiesViewModelType,
     self.projectActivityCommentCellGoToSendReplyProperty.value = (project, update, comment)
   }
 
-  fileprivate let refreshProperty = MutableProperty()
+  private let refreshProperty = MutableProperty()
   public func refresh() { self.refreshProperty.value = () }
 
-  fileprivate let viewDidLoadProperty = MutableProperty()
+  private let viewDidLoadProperty = MutableProperty()
   public func viewDidLoad() { self.viewDidLoadProperty.value = () }
 
-  fileprivate let willDisplayRowProperty = MutableProperty<(row: Int, totalRows: Int)?>(nil)
+  private let willDisplayRowProperty = MutableProperty<(row: Int, totalRows: Int)?>(nil)
   public func willDisplayRow(_ row: Int, outOf totalRows: Int) {
     self.willDisplayRowProperty.value = (row, totalRows)
   }

@@ -144,7 +144,7 @@ public final class DashboardFundingCellViewModel: DashboardFundingCellViewModelI
     // swiftlint:enable function_body_length
   }
 
-  fileprivate let statsProjectProperty = MutableProperty<([ProjectStatsEnvelope.FundingDateStats], Project)?>(nil)
+  private let statsProjectProperty = MutableProperty<([ProjectStatsEnvelope.FundingDateStats], Project)?>(nil)
   public func configureWith(fundingDateStats stats: [ProjectStatsEnvelope.FundingDateStats],
                                              project: Project) {
     self.statsProjectProperty.value = (stats, project)

@@ -106,7 +106,10 @@ public final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, Log
     let tryLogin = Signal.merge(
       self.loginButtonPressedProperty.signal,
       self.passwordTextFieldDoneEditingProperty.signal,
-      Signal.combineLatest(self.prefillEmailProperty.signal, self.prefillPasswordProperty.signal).ignoreValues()
+      Signal.combineLatest(
+        self.prefillEmailProperty.signal,
+        self.prefillPasswordProperty.signal
+        ).ignoreValues()
     )
 
     let loginEvent = emailAndPassword
@@ -127,7 +130,7 @@ public final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, Log
       .map { (email: $0, password: $1) }
 
     self.postNotification = self.environmentLoggedInProperty.signal
-      .mapConst(Notification(name: Notification.Name(rawValue: CurrentUserNotifications.sessionStarted), object: nil))
+      .mapConst(.init(name: .init(rawValue: CurrentUserNotifications.sessionStarted), object: nil))
     self.dismissKeyboard = self.passwordTextFieldDoneEditingProperty.signal
     self.passwordTextFieldBecomeFirstResponder = self.emailTextFieldDoneEditingProperty.signal
 

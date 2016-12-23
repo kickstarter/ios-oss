@@ -733,7 +733,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
     self.vm.inputs.paymentAuthorization(
       didAuthorizePayment: .init(
         tokenData: .init(
-          paymentMethodData: .init(displayName: "AmEx", network: PKPaymentNetwork(rawValue: "AmEx"), type: .credit),
+          paymentMethodData: .init(displayName: "AmEx", network: .amex, type: .credit),
           transactionIdentifier: "apple_pay_deadbeef"
         )
       )
@@ -812,7 +812,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
     self.vm.inputs.paymentAuthorization(
       didAuthorizePayment: .init(
         tokenData: .init(
-          paymentMethodData: .init(displayName: "AmEx", network: PKPaymentNetwork(rawValue: "AmEx"), type: .credit),
+          paymentMethodData: .init(displayName: "AmEx", network: .amex, type: .credit),
           transactionIdentifier: "apple_pay_deadbeef"
         )
       )
@@ -886,7 +886,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
         self.vm.inputs.paymentAuthorization(
           didAuthorizePayment: .init(
             tokenData: .init(
-              paymentMethodData: .init(displayName: "AmEx", network: PKPaymentNetwork(rawValue: "AmEx"), type: .credit),
+              paymentMethodData: .init(displayName: "AmEx", network: .amex, type: .credit),
               transactionIdentifier: "apple_pay_deadbeef"
             )
           )

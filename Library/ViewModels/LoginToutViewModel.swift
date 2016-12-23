@@ -134,7 +134,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
       .map { token, error in (error.facebookUser ?? nil, token) }
 
     self.postNotification = self.environmentLoggedInProperty.signal
-      .mapConst(Notification(name: Notification.Name(rawValue: CurrentUserNotifications.sessionStarted), object: nil))
+      .mapConst(.init(name: .init(rawValue: CurrentUserNotifications.sessionStarted), object: nil))
 
     self.dismissViewController = self.viewIsPresentedProperty.signal
       .filter(isTrue)
@@ -142,7 +142,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
       .ignoreValues()
 
     self.logIntoEnvironment
-      .observeValues { _ in AppEnvironment.current.koala.trackLoginSuccess(authType: Koala.AuthType.facebook) }
+      .observeValues { _ in AppEnvironment.current.koala.trackLoginSuccess(authType: .facebook) }
 
     self.showFacebookErrorAlert = Signal.merge(
       facebookTokenFailAlert,
@@ -151,7 +151,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
     )
 
     self.showFacebookErrorAlert
-      .observeValues { _ in AppEnvironment.current.koala.trackLoginError(authType: Koala.AuthType.facebook) }
+      .observeValues { _ in AppEnvironment.current.koala.trackLoginError(authType: .facebook) }
 
     self.loginIntentProperty.producer.skipNil()
       .takeWhen(viewWillAppearProperty.signal.take(first: 1))

@@ -72,7 +72,8 @@ ProjectDescriptionViewModelInputs, ProjectDescriptionViewModelOutputs {
     let possiblyGoBackToProject = Signal.combineLatest(project, navigation)
       .map { (project, navigation) -> Project? in
         guard
-          case let (.project(param, .root, _))? = navigation, String(project.id) == param.slug || project.slug == param.slug
+          case let (.project(param, .root, _))? = navigation,
+          String(project.id) == param.slug || project.slug == param.slug
           else { return nil }
 
         return project
@@ -80,7 +81,9 @@ ProjectDescriptionViewModelInputs, ProjectDescriptionViewModelOutputs {
 
     self.goBackToProject = possiblyGoBackToProject.skipNil().ignoreValues()
 
-    self.goToSafariBrowser = Signal.zip(navigationActionLink, possiblyGoToMessageDialog, possiblyGoBackToProject)
+    self.goToSafariBrowser = Signal.zip(
+      navigationActionLink, possiblyGoToMessageDialog, possiblyGoBackToProject
+      )
       .filter { $1 == nil && $2 == nil }
       .filter { navigationAction, _, _ in navigationAction.navigationType == .linkActivated }
       .map { navigationAction, _, _ in navigationAction.request.url }

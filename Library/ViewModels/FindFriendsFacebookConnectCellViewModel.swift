@@ -88,7 +88,7 @@ public final class FindFriendsFacebookConnectCellViewModel: FindFriendsFacebookC
     self.updateUserInEnvironment = facebookConnect.values()
 
     self.postUserUpdatedNotification = self.userUpdatedProperty.signal
-      .mapConst(Notification(name: Notification.Name(rawValue: CurrentUserNotifications.userUpdated), object: nil))
+      .mapConst(.init(name: .init(rawValue: CurrentUserNotifications.userUpdated), object: nil))
 
     self.notifyDelegateUserFacebookConnected = self.userUpdatedProperty.signal
 

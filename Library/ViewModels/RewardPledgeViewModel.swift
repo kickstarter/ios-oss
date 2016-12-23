@@ -344,7 +344,8 @@ RewardPledgeViewModelOutputs {
 
     let initialPledgeTextFieldText = projectAndReward
       .map { project, reward -> Int in
-        guard let backing = project.personalization.backing, userIsBacking(reward: reward, inProject: project) else {
+        guard let backing = project.personalization.backing,
+          userIsBacking(reward: reward, inProject: project) else {
 
             return reward == Reward.noReward
               ? minAndMaxPledgeAmount(forProject: project, reward: reward).min
@@ -1070,7 +1071,9 @@ private func createApplePayPledge(
     .mapError { PledgeError.other($0) }
     .flatMap { env -> SignalProducer<SubmitApplePayEnvelope, PledgeError> in
 
-      guard let checkoutUrl = env.checkoutUrl.map(AppEnvironment.current.apiService.serverConfig.webBaseUrl.appendingPathComponent)?.absoluteString
+      guard let checkoutUrl = env.checkoutUrl
+        .map(AppEnvironment.current.apiService.serverConfig.webBaseUrl.appendingPathComponent)?
+        .absoluteString
         else { return .empty }
 
       return AppEnvironment.current.apiService.submitApplePay(
