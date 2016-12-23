@@ -133,39 +133,37 @@ public final class KoalaTrackingClient: TrackingClientType {
   }
 
   fileprivate func synchronousKoalaResult(_ request: URLRequest) -> Result<HTTPURLResponse, NSError>? {
-    // FIXME
-//    var result: Result<HTTPURLResponse, NSError>?
-//    let semaphore = DispatchSemaphore(value: 0)
-//
-//    self.URLSession.dataTask(with: request as URLRequest) { _, response, err in
-//      defer { semaphore.signal() }
-//
-//      if let httpResponse = response as? HTTPURLResponse {
-//        #if DEBUG
-//          NSLog("[Koala Status Code]: \(httpResponse.statusCode)")
-//        #endif
-//        result = Result(value: httpResponse)
-//      }
-//
-//      if let err = err {
-//        result = Result(error: err)
-//      }
-//    }.resume()
-//    semaphore.wait(timeout: dispatch_time_t(DispatchTime.distantFuture))
-//
-//    if result == nil {
-//      NSLog("[Koala Request] response/error result unexpectedly nil")
-//      assertionFailure()
-//    }
-//
-//    return result
-    return nil
+    var result: Result<HTTPURLResponse, NSError>?
+    let semaphore = DispatchSemaphore(value: 0)
+
+    self.URLSession.dataTask(with: request) { _, response, err in
+      defer { semaphore.signal() }
+
+      if let httpResponse = response as? HTTPURLResponse {
+        #if DEBUG
+          NSLog("[Koala Status Code]: \(httpResponse.statusCode)")
+        #endif
+        result = Result(value: httpResponse)
+      }
+
+      // FIXME: is this cast safe? is it possible to get a non-NSError here?
+      if let err = err as? NSError {
+        result = Result(error: err)
+      }
+    }.resume()
+    _ = semaphore.wait(timeout: .distantFuture)
+
+    if result == nil {
+      NSLog("[Koala Request] response/error result unexpectedly nil")
+      assertionFailure()
+    }
+
+    return result
   }
 
   fileprivate func fileName() -> String? {
     return NSSearchPathForDirectoriesInDomains(.libraryDirectory, .userDomainMask, true).first
-      .flatMap(URL.init(string:))
-      .map { $0.appendingPathComponent("koala.plist").absoluteString }
+      .flatMap { URL(string: $0)?.appendingPathComponent("koala.plist").absoluteString }
   }
 }
 

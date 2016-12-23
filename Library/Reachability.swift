@@ -17,35 +17,30 @@ public enum Reachability {
 }
 
 private let reachabilityProperty: MutableProperty<Reachability> = {
-  // FIXME
-//  guard
-//    let networkReachability = networkReachability(),
-//    let reachabilityFlags = reachabilityFlags(forNetworkReachability: networkReachability)
-//    else { return MutableProperty(.none) }
-//
-//  guard SCNetworkReachabilitySetCallback(networkReachability, callback, nil)
-//    && SCNetworkReachabilitySetDispatchQueue(networkReachability, queue)
-//    else { return MutableProperty(.none) }
-//
-//  return MutableProperty(reachability(forFlags: reachabilityFlags))
-  return MutableProperty(.none)
+  guard
+    let networkReachability = networkReachability(),
+    let reachabilityFlags = reachabilityFlags(forNetworkReachability: networkReachability)
+    else { return MutableProperty(.none) }
+
+  guard SCNetworkReachabilitySetCallback(networkReachability, callback, nil)
+    && SCNetworkReachabilitySetDispatchQueue(networkReachability, queue)
+    else { return MutableProperty(.none) }
+
+  return MutableProperty(reachability(forFlags: reachabilityFlags))
 }()
 
 private let queue = DispatchQueue(label: "com.kickstarter.reachability", attributes: [])
 
 private func networkReachability() -> SCNetworkReachability? {
-  // FIXME
-//  var zeroAddress = sockaddr_in()
-//  zeroAddress.sin_len = UInt8(MemoryLayout.size(ofValue: zeroAddress))
-//  zeroAddress.sin_family = sa_family_t(AF_INET)
-//
-//  guard let ref =
-//    withUnsafePointer(to: &zeroAddress, {
-//      SCNetworkReachabilityCreateWithAddress(nil, UnsafePointer($0))
-//    }) else { return nil }
-//
-//  return ref
-  return nil
+  var zeroAddress = sockaddr_in()
+  zeroAddress.sin_len = UInt8(MemoryLayout.size(ofValue: zeroAddress))
+  zeroAddress.sin_family = sa_family_t(AF_INET)
+
+  return withUnsafePointer(to: &zeroAddress, { ptr in
+    ptr.withMemoryRebound(to: sockaddr.self, capacity: 1) {zeroSockAddress in
+      SCNetworkReachabilityCreateWithAddress(nil, zeroSockAddress)
+    }
+  })
 }
 
 private func reachabilityFlags(forNetworkReachability networkReachability: SCNetworkReachability)
@@ -73,8 +68,9 @@ private func reachability(forFlags flags: SCNetworkReachabilityFlags) -> Reachab
   return .none
 }
 
-private func callback(_ networkReachability: SCNetworkReachability, flags: SCNetworkReachabilityFlags,
-                      info: UnsafeMutableRawPointer) {
+private func callback(networkReachability: SCNetworkReachability,
+                      flags: SCNetworkReachabilityFlags,
+                      info: UnsafeMutableRawPointer?) {
 
   reachabilityProperty.value = reachability(forFlags: flags)
 }
