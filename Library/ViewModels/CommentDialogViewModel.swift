@@ -143,7 +143,7 @@ CommentDialogViewModelOutputs, CommentDialogViewModelErrors {
       .switchMap { body, updateOrProject in
         postComment(body, toUpdateOrComment: updateOrProject)
           .on(
-            started: {
+            starting: {
               isLoading.value = true
             },
             terminated: {

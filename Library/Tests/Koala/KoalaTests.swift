@@ -29,8 +29,8 @@ final class KoalaTests: XCTestCase {
     XCTAssertNotNil(properties?["model"])
     XCTAssertEqual(device.systemName, properties?["os"] as? String)
     XCTAssertEqual(device.systemVersion, properties?["os_version"] as? String)
-    XCTAssertEqual(screen.bounds.width, properties?["screen_width"] as? CGFloat)
-    XCTAssertEqual(screen.bounds.height, properties?["screen_height"] as? CGFloat)
+    XCTAssertEqual(UInt(screen.bounds.width), properties?["screen_width"] as? UInt)
+    XCTAssertEqual(UInt(screen.bounds.height), properties?["screen_height"] as? UInt)
 
     XCTAssertEqual("kickstarter_ios", properties?["mp_lib"] as? String)
     XCTAssertEqual("native", properties?["client_type"] as? String)

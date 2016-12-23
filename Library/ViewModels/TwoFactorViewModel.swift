@@ -227,6 +227,6 @@ private func login(_ tfaData: TwoFactorViewModel.TfaData,
   }
 
   return login
-    .on(started: { isLoading.value = true },
+    .on(starting: { isLoading.value = true },
       terminated: { isLoading.value = false })
 }

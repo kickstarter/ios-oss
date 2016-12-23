@@ -934,7 +934,7 @@ final class CheckoutViewModelTests: TestCase {
 
       self.evaluateJavascript.assertValues([
         "window.checkout_apple_pay_next({\"apple_pay_token\":{\"transaction_identifier\":" +
-          "\"apple_pay_deadbeef\",\"payment_instrument_name\":\"AmEx 1111\",\"payment_network\":\"AmEx\"}," +
+          "\"apple_pay_deadbeef\",\"payment_network\":\"AmEx\",\"payment_instrument_name\":\"AmEx 1111\"}," +
         "\"stripe_token\":{\"id\":\"stripe_deadbeef\"}});"
         ])
 

@@ -93,7 +93,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
       .switchMap { token in
         AppEnvironment.current.apiService.login(facebookAccessToken: token, code: nil)
           .on(
-            started: {
+            starting: {
               isLoading.value = true
             },
             terminated: {

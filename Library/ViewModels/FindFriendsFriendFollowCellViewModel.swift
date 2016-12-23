@@ -84,7 +84,7 @@ public final class FindFriendsFriendFollowCellViewModel: FindFriendsFriendFollow
       .switchMap { user in
         AppEnvironment.current.apiService.followFriend(userId: user.id)
           .on(
-            started: {
+            starting: {
               isLoadingFollowRequest.value = true
             },
             terminated: {
@@ -100,7 +100,7 @@ public final class FindFriendsFriendFollowCellViewModel: FindFriendsFriendFollow
       .switchMap { user in
         AppEnvironment.current.apiService.unfollowFriend(userId: user.id)
           .on(
-            started: {
+            starting: {
               isLoadingUnfollowRequest.value = true
             },
             terminated: {

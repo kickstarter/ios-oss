@@ -76,7 +76,7 @@ MessagesSearchViewModelOutputs {
       .combineLatest(with: project)
       .switchMap { query, project in
         AppEnvironment.current.apiService.searchMessages(query: query, project: project)
-          .on(started: { isLoading.value = true },
+          .on(starting: { isLoading.value = true },
               terminated: { isLoading.value = false })
           .map { $0.messageThreads }
           .materialize()

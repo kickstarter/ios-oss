@@ -62,7 +62,7 @@ final class FindFriendsFacebookConnectCellViewModelTests: TestCase {
       isCancelled: false,
       grantedPermissions: nil,
       declinedPermissions: nil
-    )
+    )!
 
     withEnvironment(currentUser: User.template) {
       vm.inputs.configureWith(source: FriendsSource.activity)
@@ -75,8 +75,7 @@ final class FindFriendsFacebookConnectCellViewModelTests: TestCase {
       XCTAssertEqual(["Facebook Connect"], self.trackingClient.events)
       XCTAssertEqual(["activity"], self.trackingClient.properties.map { $0["source"] as! String? })
 
-      // FIXME
-      //vm.inputs.facebookLoginSuccess(result: result)
+      vm.inputs.facebookLoginSuccess(result: result)
 
       updateUserInEnvironment.assertValueCount(0, "Update user does not emit")
 
@@ -138,7 +137,7 @@ final class FindFriendsFacebookConnectCellViewModelTests: TestCase {
       isCancelled: false,
       grantedPermissions: nil,
       declinedPermissions: nil
-    )
+    )!
 
     let error = ErrorEnvelope(
       errorMessages: ["Couldn't log into Facebook."],
@@ -158,8 +157,7 @@ final class FindFriendsFacebookConnectCellViewModelTests: TestCase {
       XCTAssertEqual(["Facebook Connect"], self.trackingClient.events)
       XCTAssertEqual(["activity"], self.trackingClient.properties.map { $0["source"] as! String? })
 
-      // FIXME
-//      vm.inputs.facebookLoginSuccess(result: result)
+      vm.inputs.facebookLoginSuccess(result: result)
 
       self.showErrorAlert.assertValueCount(0, "Error alert does not emit")
 
@@ -190,7 +188,7 @@ final class FindFriendsFacebookConnectCellViewModelTests: TestCase {
       isCancelled: false,
       grantedPermissions: nil,
       declinedPermissions: nil
-    )
+    )!
 
     let error = ErrorEnvelope(
       errorMessages: ["This Facebook account is already linked to another Kickstarter user."],
@@ -210,8 +208,7 @@ final class FindFriendsFacebookConnectCellViewModelTests: TestCase {
       XCTAssertEqual(["Facebook Connect"], self.trackingClient.events)
       XCTAssertEqual(["activity"], self.trackingClient.properties.map { $0["source"] as! String? })
 
-      // FIXME
-//      vm.inputs.facebookLoginSuccess(result: result)
+      vm.inputs.facebookLoginSuccess(result: result)
 
       self.showErrorAlert.assertValueCount(0, "Error alert does not emit")
 
@@ -242,7 +239,7 @@ final class FindFriendsFacebookConnectCellViewModelTests: TestCase {
       isCancelled: false,
       grantedPermissions: nil,
       declinedPermissions: nil
-    )
+    )!
 
     let error = ErrorEnvelope(
       errorMessages: [
@@ -264,8 +261,7 @@ final class FindFriendsFacebookConnectCellViewModelTests: TestCase {
       XCTAssertEqual(["Facebook Connect"], self.trackingClient.events)
       XCTAssertEqual(["activity"], self.trackingClient.properties.map { $0["source"] as! String? })
 
-      // FIXME
-//      vm.inputs.facebookLoginSuccess(result: result)
+      vm.inputs.facebookLoginSuccess(result: result)
 
       self.showErrorAlert.assertValueCount(0, "Error alert does not emit")
 
@@ -296,7 +292,7 @@ final class FindFriendsFacebookConnectCellViewModelTests: TestCase {
       isCancelled: false,
       grantedPermissions: nil,
       declinedPermissions: nil
-    )
+    )!
 
     let error = ErrorEnvelope(
       errorMessages: ["Something went wrong."],
@@ -316,8 +312,7 @@ final class FindFriendsFacebookConnectCellViewModelTests: TestCase {
       XCTAssertEqual(["Facebook Connect"], self.trackingClient.events)
       XCTAssertEqual(["activity"], self.trackingClient.properties.map { $0["source"] as! String? })
 
-      // FIXME
-//      vm.inputs.facebookLoginSuccess(result: result)
+      vm.inputs.facebookLoginSuccess(result: result)
 
       self.showErrorAlert.assertValueCount(0, "Error alert does not emit")
 

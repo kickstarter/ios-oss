@@ -536,24 +536,23 @@ internal final class RewardPledgeViewModelTests: TestCase {
           "merchantIdentifier": PKPaymentAuthorizationViewController.merchantIdentifier,
           "supportedNetworks": PKPaymentAuthorizationViewController.supportedNetworks,
           "shippingType": PKShippingType.shipping.rawValue,
-          // FIXME
-//          "paymentSummaryItems": [
-//            [
-//              "label": project.name,
-//              "amount": NSDecimalNumber(value: reward.minimum),
-//              "type": PKPaymentSummaryItemType.Final.rawValue
-//            ],
-//            [
-//              "label": "Shipping",
-//              "amount": NSDecimalNumber(double: defaultShippingRule.cost),
-//              "type": PKPaymentSummaryItemType.Final.rawValue
-//            ],
-//            [
-//              "label": "Kickstarter (if funded)",
-//              "amount": NSDecimalNumber(value: Int(defaultShippingRule.cost) + reward.minimum),
-//              "type": PKPaymentSummaryItemType.Final.rawValue
-//            ]
-//          ]
+          "paymentSummaryItems": [[String:Any]].init(arrayLiteral:
+            [
+              "label": project.name,
+              "amount": NSDecimalNumber(value: reward.minimum),
+              "type": PKPaymentSummaryItemType.final.rawValue
+            ],
+            [
+              "label": "Shipping",
+              "amount": NSDecimalNumber(value: defaultShippingRule.cost),
+              "type": PKPaymentSummaryItemType.final.rawValue
+            ],
+            [
+              "label": "Kickstarter (if funded)",
+              "amount": NSDecimalNumber(value: Int(defaultShippingRule.cost) + reward.minimum),
+              "type": PKPaymentSummaryItemType.final.rawValue
+            ]
+          )
         ]
 
         self.goToPaymentAuthorization.assertValues([paymentRequest])
@@ -590,24 +589,23 @@ internal final class RewardPledgeViewModelTests: TestCase {
           "merchantIdentifier": PKPaymentAuthorizationViewController.merchantIdentifier,
           "supportedNetworks": PKPaymentAuthorizationViewController.supportedNetworks,
           "shippingType": PKShippingType.shipping.rawValue,
-          // FIXME
-//          "paymentSummaryItems": [
-//            [
-//              "label": project.name,
-//              "amount": NSDecimalNumber(value: 50),
-//              "type": PKPaymentSummaryItemType.Final.rawValue
-//            ],
-//            [
-//              "label": "Shipping",
-//              "amount": NSDecimalNumber(double: defaultShippingRule.cost),
-//              "type": PKPaymentSummaryItemType.Final.rawValue
-//            ],
-//            [
-//              "label": "Kickstarter (if funded)",
-//              "amount": NSDecimalNumber(value: Int(defaultShippingRule.cost) + 50),
-//              "type": PKPaymentSummaryItemType.Final.rawValue
-//            ]
-//          ]
+          "paymentSummaryItems": [[String:Any]].init(arrayLiteral:
+            [
+              "label": project.name,
+              "amount": NSDecimalNumber(value: 50),
+              "type": PKPaymentSummaryItemType.final.rawValue
+            ],
+            [
+              "label": "Shipping",
+              "amount": NSDecimalNumber(value: defaultShippingRule.cost),
+              "type": PKPaymentSummaryItemType.final.rawValue
+            ],
+            [
+              "label": "Kickstarter (if funded)",
+              "amount": NSDecimalNumber(value: Int(defaultShippingRule.cost) + 50),
+              "type": PKPaymentSummaryItemType.final.rawValue
+            ]
+          )
         ]
 
         self.goToPaymentAuthorization.assertValues([paymentRequest])
@@ -646,24 +644,23 @@ internal final class RewardPledgeViewModelTests: TestCase {
           "merchantIdentifier": PKPaymentAuthorizationViewController.merchantIdentifier,
           "supportedNetworks": PKPaymentAuthorizationViewController.supportedNetworks,
           "shippingType": PKShippingType.shipping.rawValue,
-          // FIXME
-//          "paymentSummaryItems": [
-//            [
-//              "label": project.name,
-//              "amount": NSDecimalNumber(value: reward.minimum),
-//              "type": PKPaymentSummaryItemType.Final.rawValue
-//            ],
-//            [
-//              "label": "Shipping",
-//              "amount": NSDecimalNumber(double: changedShippingRule.cost),
-//              "type": PKPaymentSummaryItemType.Final.rawValue
-//            ],
-//            [
-//              "label": "Kickstarter (if funded)",
-//              "amount": NSDecimalNumber(value: Int(changedShippingRule.cost) + reward.minimum),
-//              "type": PKPaymentSummaryItemType.Final.rawValue
-//            ]
-//          ]
+          "paymentSummaryItems": [[String:Any]].init(arrayLiteral:
+            [
+              "label": project.name,
+              "amount": NSDecimalNumber(value: reward.minimum),
+              "type": PKPaymentSummaryItemType.final.rawValue
+            ],
+            [
+              "label": "Shipping",
+              "amount": NSDecimalNumber(value: changedShippingRule.cost),
+              "type": PKPaymentSummaryItemType.final.rawValue
+            ],
+            [
+              "label": "Kickstarter (if funded)",
+              "amount": NSDecimalNumber(value: Int(changedShippingRule.cost) + reward.minimum),
+              "type": PKPaymentSummaryItemType.final.rawValue
+            ]
+          )
         ]
 
         self.goToPaymentAuthorization.assertValues([paymentRequest])

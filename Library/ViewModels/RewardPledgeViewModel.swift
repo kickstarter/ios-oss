@@ -460,7 +460,7 @@ RewardPledgeViewModelOutputs {
           stripeToken: stripeToken
         )
         .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-        .on(started: { isLoading.value = true }, terminated: { isLoading.value = false })
+        .on(starting: { isLoading.value = true }, terminated: { isLoading.value = false })
         .materialize()
     }
 
@@ -477,7 +477,7 @@ RewardPledgeViewModelOutputs {
         createPledge(project: project, reward: reward, amount: amount, shipping: shipping)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .map { ($0, project, reward) }
-          .on(started: { isLoading.value = true }, terminated: { isLoading.value = false })
+          .on(starting: { isLoading.value = true }, terminated: { isLoading.value = false })
           .materialize()
     }
 
@@ -505,7 +505,7 @@ RewardPledgeViewModelOutputs {
         updatePledge(project: project, reward: reward, amount: amount, shipping: shipping)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .map { ($0, project, reward) }
-          .on(started: { isLoading.value = true }, terminated: { isLoading.value = false })
+          .on(starting: { isLoading.value = true }, terminated: { isLoading.value = false })
           .materialize()
     }
 
@@ -515,7 +515,7 @@ RewardPledgeViewModelOutputs {
         changePaymentMethod(project: project)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .map { ($0, project, reward) }
-          .on(started: { isLoading.value = true }, terminated: { isLoading.value = false })
+          .on(starting: { isLoading.value = true }, terminated: { isLoading.value = false })
           .materialize()
     }
 

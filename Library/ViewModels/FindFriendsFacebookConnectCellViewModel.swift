@@ -75,7 +75,7 @@ public final class FindFriendsFacebookConnectCellViewModel: FindFriendsFacebookC
       .switchMap { token in
         AppEnvironment.current.apiService.facebookConnect(facebookAccessToken: token)
           .on(
-            started: {
+            starting: {
               isLoading.value = true
             },
             terminated: {

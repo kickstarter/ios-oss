@@ -70,7 +70,7 @@ public func paginate <Cursor, Value: Equatable, Envelope, ErrorEnvelope, Request
             paramsOrCursor.ifLeft(requestFromParams, ifRight: requestFromCursor)
               .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
               .on(
-                started: { [weak isLoading] _ in
+                starting: { [weak isLoading] _ in
                   isLoading?.value = true
                 },
                 terminated: { [weak isLoading] _ in

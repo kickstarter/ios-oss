@@ -89,7 +89,7 @@ final class LoginToutViewModelTests: TestCase {
       isCancelled: false,
       grantedPermissions: nil,
       declinedPermissions: nil
-    )
+    )!
 
     vm.inputs.viewWillAppear()
 
@@ -99,8 +99,7 @@ final class LoginToutViewModelTests: TestCase {
 
     attemptFacebookLogin.assertValueCount(1, "Attempt Facebook login emitted")
 
-    // FIXME
-//    vm.inputs.facebookLoginSuccess(result: result)
+    vm.inputs.facebookLoginSuccess(result: result)
 
     // Wait enough time for API request to be made.
     scheduler.advance()
@@ -185,7 +184,7 @@ final class LoginToutViewModelTests: TestCase {
       isCancelled: false,
       grantedPermissions: nil,
       declinedPermissions: nil
-    )
+    )!
 
     let error = ErrorEnvelope(
       errorMessages: ["Couldn't log into Facebook."],
@@ -199,8 +198,7 @@ final class LoginToutViewModelTests: TestCase {
 
       showFacebookErrorAlert.assertValueCount(0, "Facebook login fail does not emit")
 
-      // FIXME
-//      vm.inputs.facebookLoginSuccess(result: result)
+      vm.inputs.facebookLoginSuccess(result: result)
 
       // Wait enough time for API request to be made.
       scheduler.advance()
@@ -228,7 +226,7 @@ final class LoginToutViewModelTests: TestCase {
       isCancelled: false,
       grantedPermissions: nil,
       declinedPermissions: nil
-    )
+    )!
 
     let error = ErrorEnvelope(
       errorMessages: ["Something went wrong."],
@@ -239,8 +237,7 @@ final class LoginToutViewModelTests: TestCase {
 
     withEnvironment(apiService: MockService(loginError: error)) {
       vm.inputs.viewWillAppear()
-      // FIXME
-//      vm.inputs.facebookLoginSuccess(result: result)
+      vm.inputs.facebookLoginSuccess(result: result)
 
       // Wait enough time for API request to be made.
       scheduler.advance()
@@ -269,7 +266,7 @@ final class LoginToutViewModelTests: TestCase {
       isCancelled: false,
       grantedPermissions: nil,
       declinedPermissions: nil
-    )
+    )!
 
     let error = ErrorEnvelope(
       errorMessages: [],
@@ -280,8 +277,7 @@ final class LoginToutViewModelTests: TestCase {
 
     withEnvironment(apiService: MockService(loginError: error)) {
       vm.inputs.viewWillAppear()
-      // FIXME
-//      vm.inputs.facebookLoginSuccess(result: result)
+      vm.inputs.facebookLoginSuccess(result: result)
 
       // Wait enough time for API request to be made.
       scheduler.advance()
@@ -310,7 +306,7 @@ final class LoginToutViewModelTests: TestCase {
       isCancelled: false,
       grantedPermissions: nil,
       declinedPermissions: nil
-    )
+    )!
 
     let error = ErrorEnvelope(
       errorMessages: ["Two Factor Authenticaion is required."],
@@ -321,8 +317,7 @@ final class LoginToutViewModelTests: TestCase {
 
     withEnvironment(apiService: MockService(loginError: error)) {
       vm.inputs.viewWillAppear()
-      // FIXME
-//      vm.inputs.facebookLoginSuccess(result: result)
+      vm.inputs.facebookLoginSuccess(result: result)
 
       startTwoFactorChallenge.assertDidNotEmitValue()
 
@@ -354,7 +349,7 @@ final class LoginToutViewModelTests: TestCase {
       isCancelled: false,
       grantedPermissions: nil,
       declinedPermissions: nil
-    )
+    )!
 
     let error = ErrorEnvelope(
       errorMessages: ["Confirm Facebook Signup"],
@@ -365,8 +360,7 @@ final class LoginToutViewModelTests: TestCase {
 
     withEnvironment(apiService: MockService(loginError: error)) {
       vm.inputs.viewWillAppear()
-      // FIXME
-//      vm.inputs.facebookLoginSuccess(result: result)
+      vm.inputs.facebookLoginSuccess(result: result)
 
       // Wait enough time for API request to be made.
       scheduler.advance()
@@ -382,8 +376,7 @@ final class LoginToutViewModelTests: TestCase {
 
       startFacebookConfirmation.assertValues(["12344566"], "Facebook confirmation didn't start again.")
 
-      // FIXME
-//      vm.inputs.facebookLoginSuccess(result: result)
+      vm.inputs.facebookLoginSuccess(result: result)
       scheduler.advance()
 
       startFacebookConfirmation.assertValues(["12344566", "12344566"],

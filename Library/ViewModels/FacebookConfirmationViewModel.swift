@@ -118,7 +118,7 @@ FacebookConfirmationViewModelErrors {
       .switchMap { token, newsletter in
         AppEnvironment.current.apiService.signup(facebookAccessToken: token, sendNewsletters: newsletter)
           .on(
-            started: {
+            starting: {
               isLoading.value = true
             },
             terminated: {
