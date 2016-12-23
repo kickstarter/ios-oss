@@ -44,7 +44,7 @@ public protocol LiveStreamEventDetailsViewModelOutputs {
   var upcomingIntroText: Signal<NSAttributedString, NoError> { get }
 }
 
-public class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewModelType,
+public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewModelType,
   LiveStreamEventDetailsViewModelInputs, LiveStreamEventDetailsViewModelOutputs {
 
   //swiftlint:disable function_body_length
