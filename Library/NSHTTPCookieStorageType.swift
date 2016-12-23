@@ -3,16 +3,16 @@ import Foundation
 /**
  *  A type that behaves like a NSHTTPCookieStorage.
  */
-public protocol NSHTTPCookieStorageType {
+public protocol HTTPCookieStorageProtocol {
   var cookies: [HTTPCookie]? { get }
   func deleteCookie(_ cookie: HTTPCookie)
   func setCookie(_ cookie: HTTPCookie)
 }
 
-extension HTTPCookieStorage: NSHTTPCookieStorageType {
+extension HTTPCookieStorage: HTTPCookieStorageProtocol {
 }
 
-internal final class MockCookieStorage: NSHTTPCookieStorageType {
+internal final class MockCookieStorage: HTTPCookieStorageProtocol {
   fileprivate var storage: Set<HTTPCookie> = []
 
   internal var cookies: [HTTPCookie]? {

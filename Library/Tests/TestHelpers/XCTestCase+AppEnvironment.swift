@@ -25,7 +25,7 @@ extension XCTestCase {
                cache: KSCache = AppEnvironment.current.cache,
                calendar: Calendar = AppEnvironment.current.calendar,
                config: Config? = AppEnvironment.current.config,
-               cookieStorage: NSHTTPCookieStorageType = AppEnvironment.current.cookieStorage,
+               cookieStorage: HTTPCookieStorageProtocol = AppEnvironment.current.cookieStorage,
                countryCode: String = AppEnvironment.current.countryCode,
                currentUser: User? = AppEnvironment.current.currentUser,
                dateType: DateProtocol.Type = AppEnvironment.current.dateType,

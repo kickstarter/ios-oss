@@ -29,7 +29,7 @@ public struct Environment {
 
   /// A type that exposes how to interact with cookie storage. Default value is
   /// `NSHTTPCookieStorage.sharedHTTPCookieStorage()`
-  public let cookieStorage: NSHTTPCookieStorageType
+  public let cookieStorage: HTTPCookieStorageProtocol
 
   /// The user’s current country. This is valid whether the user is logged-in or not.
   public let countryCode: String
@@ -88,7 +88,7 @@ public struct Environment {
     cache: KSCache = KSCache(),
     calendar: Calendar = Calendar.current,
     config: Config? = nil,
-    cookieStorage: NSHTTPCookieStorageType = HTTPCookieStorage.shared,
+    cookieStorage: HTTPCookieStorageProtocol = HTTPCookieStorage.shared,
     countryCode: String = "US",
     currentUser: User? = nil,
     dateType: DateProtocol.Type = Date.self,
