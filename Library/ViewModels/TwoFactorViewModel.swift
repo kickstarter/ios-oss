@@ -44,7 +44,7 @@ public protocol TwoFactorViewModelOutputs {
   var logIntoEnvironment: Signal<AccessTokenEnvelope, NoError> { get }
 
   /// Emits when a login success notification should be posted.
-  var postNotification: Signal<NSNotification, NoError> { get }
+  var postNotification: Signal<Notification, NoError> { get }
 
   /// Emits when code was resent successfully
   var resendSuccess: Signal<(), NoError> { get }
@@ -132,7 +132,7 @@ public final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMode
     self.showError = Signal.merge([codeMismatch, genericFail])
 
     self.postNotification = self.environmentLoggedInProperty.signal
-      .mapConst(NSNotification(name: NSNotification.Name(rawValue: CurrentUserNotifications.sessionStarted), object: nil))
+      .mapConst(Notification(name: Notification.Name(rawValue: CurrentUserNotifications.sessionStarted), object: nil))
 
     self.viewWillAppearProperty.signal
       .observeValues { AppEnvironment.current.koala.trackTfa() }
@@ -204,7 +204,7 @@ public final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMode
   public let isFormValid: Signal<Bool, NoError>
   public let isLoading: Signal<Bool, NoError>
   public let logIntoEnvironment: Signal<AccessTokenEnvelope, NoError>
-  public let postNotification: Signal<NSNotification, NoError>
+  public let postNotification: Signal<Notification, NoError>
   public let resendSuccess: Signal<(), NoError>
   public let showError: Signal<String, NoError>
 

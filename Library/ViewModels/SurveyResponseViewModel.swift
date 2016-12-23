@@ -136,7 +136,7 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
 }
 
 private func isUnpreparedSurvey(request: URLRequest) -> Bool {
-  guard !AppEnvironment.current.apiService.isPrepared(request: request as URLRequest) else { return false }
+  guard !AppEnvironment.current.apiService.isPrepared(request: request) else { return false }
   return isSurvey(request: request)
 }
 

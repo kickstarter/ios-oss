@@ -1065,7 +1065,7 @@ private func applePayUrlRequest(project: Project,
 }
 
 private func cancelPledgeRequest(project: Project) -> URLRequest {
-  return URLRequest(url: URL(string: cancelPledgeURL(project: project))! as URL) as URLRequest
+  return URLRequest(url: URL(string: cancelPledgeURL(project: project))!)
 }
 
 private func cancelPledgeURL(project: Project) -> String {
@@ -1073,7 +1073,7 @@ private func cancelPledgeURL(project: Project) -> String {
 }
 
 private func changePaymentMethodRequest(project: Project) -> URLRequest {
-  return URLRequest(url: URL(string: changePaymentMethodURL(project: project))! as URL) as URLRequest
+  return URLRequest(url: URL(string: changePaymentMethodURL(project: project))!)
 }
 
 private func changePaymentMethodURL(project: Project) -> String {
@@ -1081,7 +1081,7 @@ private func changePaymentMethodURL(project: Project) -> String {
 }
 
 private func creatorRequest(project: Project) -> URLRequest {
-  return URLRequest(url: URL(string: creatorURL(project: project))! as URL) as URLRequest
+  return URLRequest(url: URL(string: creatorURL(project: project))!)
 }
 
 private func creatorURL(project: Project) -> String {
@@ -1089,7 +1089,7 @@ private func creatorURL(project: Project) -> String {
 }
 
 private func editPledgeRequest(project: Project) -> URLRequest {
-  return URLRequest(url: URL(string: editPledgeURL(project: project))! as URL) as URLRequest
+  return URLRequest(url: URL(string: editPledgeURL(project: project))!)
 }
 
 private func editPledgeURL(project: Project) -> String {
@@ -1105,7 +1105,7 @@ private func newPaymentsURL() -> String {
 }
 
 private func newPledgeRequest(project: Project) -> URLRequest {
-  return URLRequest(url: URL(string: newPledgeURL(project: project))! as URL) as URLRequest
+  return URLRequest(url: URL(string: newPledgeURL(project: project))!)
 }
 
 private func newPledgeURL(project: Project) -> String {
@@ -1113,9 +1113,9 @@ private func newPledgeURL(project: Project) -> String {
 }
 
 private func paymentsRequest() -> URLRequest {
-  let request = NSMutableURLRequest(url: URL(string: paymentsURL())!)
+  var request = URLRequest(url: URL(string: paymentsURL())!)
   request.httpMethod = "POST"
-  return request as URLRequest
+  return request
 }
 
 private func paymentsURL() -> String {
@@ -1123,9 +1123,9 @@ private func paymentsURL() -> String {
 }
 
 private func pledgeRequest(project: Project) -> URLRequest {
-  let request = NSMutableURLRequest(url: URL(string: pledgeURL(project: project))!)
+  var request = URLRequest(url: URL(string: pledgeURL(project: project))!)
   request.httpMethod = "POST"
-  return request as URLRequest
+  return request
 }
 
 private func pledgeURL(project: Project) -> String {
@@ -1134,8 +1134,8 @@ private func pledgeURL(project: Project) -> String {
 
 private func privacyPolicyRequest(project: Project) -> URLRequest {
   return URLRequest(url:
-    URL(string: privacyPolicyURL(project: project))! as URL
-  ) as URLRequest
+    URL(string: privacyPolicyURL(project: project))!
+  )
 }
 
 private func privacyPolicyURL(project: Project) -> String {
@@ -1143,7 +1143,7 @@ private func privacyPolicyURL(project: Project) -> String {
 }
 
 private func projectRequest(project: Project) -> URLRequest {
-  return URLRequest(url: URL(string: project.urls.web.project)! as URL) as URLRequest
+  return URLRequest(url: URL(string: project.urls.web.project)!)
 }
 
 private func signupRequest() -> URLRequest {
@@ -1159,7 +1159,7 @@ private func stripeURL() -> String {
 }
 
 private func thanksRequest(project: Project, racing: Bool) -> URLRequest {
-  return URLRequest(url: URL(string: thanksURL(project: project, racing: racing))! as URL) as URLRequest
+  return URLRequest(url: URL(string: thanksURL(project: project, racing: racing))!)
 }
 
 private func thanksURL(project: Project, racing: Bool) -> String {

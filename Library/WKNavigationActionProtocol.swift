@@ -11,7 +11,7 @@
     public init(navigationAction: WKNavigationAction) {
       self.navigationAction = navigationAction
       self.navigationType = navigationAction.navigationType
-      self.request = navigationAction.request as URLRequest
+      self.request = navigationAction.request
       self.sourceFrame = .init(frameInfo: navigationAction.sourceFrame)
       self.targetFrame = navigationAction.targetFrame.map(WKFrameInfoData.init(frameInfo:))
     }
@@ -36,7 +36,7 @@
     public init(frameInfo: WKFrameInfo) {
       self.frameInfo = frameInfo
       self.mainFrame = frameInfo.isMainFrame
-      self.request = frameInfo.request as URLRequest
+      self.request = frameInfo.request
     }
 
     public init(mainFrame: Bool, request: URLRequest) {

@@ -518,7 +518,7 @@ private func parsedParams(url: URL, fromTemplate template: String) -> RouteParam
     }
   }
 
-  URLComponents(url: url as URL, resolvingAgainstBaseURL: false)?
+  URLComponents(url: url, resolvingAgainstBaseURL: false)?
     .queryItems?
     .forEach { item in
       params[item.name] = item.value

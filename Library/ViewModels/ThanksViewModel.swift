@@ -80,7 +80,7 @@ public protocol ThanksViewModelOutputs {
   var updateUserInEnvironment: Signal<User, NoError> { get }
 
   /// Emits when a user updated notification should be posted
-  var postUserUpdatedNotification: Signal<NSNotification, NoError> { get }
+  var postUserUpdatedNotification: Signal<Notification, NoError> { get }
 
   /// Emits a bool determining whether or not the twitter button is hidden.
   var twitterButtonIsHidden: Signal<Bool, NoError> { get }
@@ -172,7 +172,7 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
     }
 
     self.postUserUpdatedNotification = self.userUpdatedProperty.signal
-      .mapConst(NSNotification(name: NSNotification.Name(rawValue: CurrentUserNotifications.userUpdated), object: nil))
+      .mapConst(Notification(name: Notification.Name(rawValue: CurrentUserNotifications.userUpdated), object: nil))
 
     self.showGamesNewsletterAlert
       .observeValues { AppEnvironment.current.userDefaults.hasSeenGamesNewsletterPrompt = true }
@@ -307,7 +307,7 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
   public let showGamesNewsletterOptInAlert: Signal<String, NoError>
   public let showRecommendations: Signal<([Project], KsApi.Category), NoError>
   public let updateUserInEnvironment: Signal<User, NoError>
-  public let postUserUpdatedNotification: Signal<NSNotification, NoError>
+  public let postUserUpdatedNotification: Signal<Notification, NoError>
   public let twitterButtonIsHidden: Signal<Bool, NoError>
 }
 

@@ -34,19 +34,19 @@ public final class KoalaTrackingClient: TrackingClientType {
     let notifications = NotificationCenter.default
     notifications.addObserver(self,
                               selector: #selector(applicationDidBecomeActive),
-                              name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
+                              name: Notification.Name.UIApplicationDidBecomeActive, object: nil)
     notifications.addObserver(self,
                               selector: #selector(applicationDidEnterBackground),
-                              name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
+                              name: Notification.Name.UIApplicationDidEnterBackground, object: nil)
     notifications.addObserver(self,
                               selector: #selector(applicationWillEnterForeground),
-                              name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
+                              name: Notification.Name.UIApplicationWillEnterForeground, object: nil)
     notifications.addObserver(self,
                               selector: #selector(applicationWillResignActive),
-                              name: NSNotification.Name.UIApplicationWillResignActive, object: nil)
+                              name: Notification.Name.UIApplicationWillResignActive, object: nil)
     notifications.addObserver(self,
                               selector: #selector(applicationWillTerminate),
-                              name: NSNotification.Name.UIApplicationWillTerminate, object: nil)
+                              name: Notification.Name.UIApplicationWillTerminate, object: nil)
 
     self.load()
     self.startTimer()
@@ -164,7 +164,8 @@ public final class KoalaTrackingClient: TrackingClientType {
 
   fileprivate func fileName() -> String? {
     return NSSearchPathForDirectoriesInDomains(.libraryDirectory, .userDomainMask, true).first
-      .map { ($0 as NSString).appendingPathComponent("koala.plist") }
+      .flatMap(URL.init(string:))
+      .map { $0.appendingPathComponent("koala.plist").absoluteString }
   }
 }
 

@@ -16,10 +16,10 @@ public final class Keyboard {
 
   fileprivate init() {
     NotificationCenter.default.addObserver(
-      self, selector: #selector(change(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+      self, selector: #selector(change(_:)), name: Notification.Name.UIKeyboardWillShow, object: nil)
 
     NotificationCenter.default.addObserver(
-      self, selector: #selector(change(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+      self, selector: #selector(change(_:)), name: Notification.Name.UIKeyboardWillHide, object: nil)
   }
 
   @objc fileprivate func change(_ notification: Notification) {

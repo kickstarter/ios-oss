@@ -50,7 +50,7 @@ public protocol SignupViewModelOutputs {
   var passwordTextFieldBecomeFirstResponder: Signal<(), NoError> { get }
 
   /// Emits when a notification should be posted.
-  var postNotification: Signal<NSNotification, NoError> { get }
+  var postNotification: Signal<Notification, NoError> { get }
 
   /// Sets whether the name text field is the first responder.
   var nameTextFieldBecomeFirstResponder: Signal<(), NoError> { get }
@@ -131,7 +131,7 @@ public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, 
     self.logIntoEnvironment = signupEvent.values()
 
     self.postNotification = self.environmentLoggedInProperty.signal
-      .mapConst(Notification(name: Notification.Name(rawValue: CurrentUserNotifications.sessionStarted), object: nil) as NSNotification)
+      .mapConst(Notification(name: Notification.Name(rawValue: CurrentUserNotifications.sessionStarted), object: nil))
 
     self.environmentLoggedInProperty.signal
       .observeValues { AppEnvironment.current.koala.trackLoginSuccess(authType: Koala.AuthType.email) }
@@ -209,7 +209,7 @@ public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, 
   public let logIntoEnvironment: Signal<AccessTokenEnvelope, NoError>
   public let nameTextFieldBecomeFirstResponder: Signal<(), NoError>
   public let passwordTextFieldBecomeFirstResponder: Signal<(), NoError>
-  public let postNotification: Signal<NSNotification, NoError>
+  public let postNotification: Signal<Notification, NoError>
   public let setWeeklyNewsletterState: Signal<Bool, NoError>
   public let showError: Signal<String, NoError>
 

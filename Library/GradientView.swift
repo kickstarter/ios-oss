@@ -52,7 +52,7 @@ public final class GradientView: UIView {
     }
 
     self.gradientLayer?.locations = points.map { point in
-      NSNumber(value: point.location as Float)
+      NSNumber(value: point.location)
     }
   }
 }

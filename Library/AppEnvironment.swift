@@ -102,7 +102,7 @@ public struct AppEnvironment {
                assetImageGeneratorType: AssetImageGeneratorType.Type = AppEnvironment.current.assetImageGeneratorType,
                // swiftlint:enable line_length
                cache: KSCache = KSCache(),
-               calendar: Calendar = AppEnvironment.current.calendar as Calendar,
+               calendar: Calendar = AppEnvironment.current.calendar,
                config: Config? = AppEnvironment.current.config,
                cookieStorage: NSHTTPCookieStorageType = AppEnvironment.current.cookieStorage,
                countryCode: String = AppEnvironment.current.countryCode,
@@ -114,11 +114,11 @@ public struct AppEnvironment {
                koala: Koala = AppEnvironment.current.koala,
                language: Language = AppEnvironment.current.language,
                launchedCountries: LaunchedCountries = AppEnvironment.current.launchedCountries,
-               locale: Locale = AppEnvironment.current.locale as Locale,
+               locale: Locale = AppEnvironment.current.locale,
                mainBundle: NSBundleType = AppEnvironment.current.mainBundle,
                reachability: SignalProducer<Reachability, NoError> = AppEnvironment.current.reachability,
                scheduler: DateSchedulerProtocol = AppEnvironment.current.scheduler,
-               timeZone: TimeZone = AppEnvironment.current.timeZone as TimeZone,
+               timeZone: TimeZone = AppEnvironment.current.timeZone,
                ubiquitousStore: KeyValueStoreType = AppEnvironment.current.ubiquitousStore,
                userDefaults: KeyValueStoreType = AppEnvironment.current.userDefaults) {
 
@@ -156,11 +156,10 @@ public struct AppEnvironment {
   public static func replaceCurrentEnvironment(
     apiService: ServiceType = AppEnvironment.current.apiService,
                apiDelayInterval: DispatchTimeInterval = AppEnvironment.current.apiDelayInterval,
-               // swiftlint:disable line_length
+               // swiftlint:disable:next line_length
                assetImageGeneratorType: AssetImageGeneratorType.Type = AppEnvironment.current.assetImageGeneratorType,
-               // swiftlint:enable line_length
                cache: KSCache = KSCache(),
-               calendar: Calendar = AppEnvironment.current.calendar as Calendar,
+               calendar: Calendar = AppEnvironment.current.calendar,
                config: Config? = AppEnvironment.current.config,
                cookieStorage: NSHTTPCookieStorageType = AppEnvironment.current.cookieStorage,
                countryCode: String = AppEnvironment.current.countryCode,
@@ -172,11 +171,11 @@ public struct AppEnvironment {
                koala: Koala = AppEnvironment.current.koala,
                language: Language = AppEnvironment.current.language,
                launchedCountries: LaunchedCountries = AppEnvironment.current.launchedCountries,
-               locale: Locale = AppEnvironment.current.locale as Locale,
+               locale: Locale = AppEnvironment.current.locale,
                mainBundle: NSBundleType = AppEnvironment.current.mainBundle,
                reachability: SignalProducer<Reachability, NoError> = AppEnvironment.current.reachability,
                scheduler: DateSchedulerProtocol = AppEnvironment.current.scheduler,
-               timeZone: TimeZone = AppEnvironment.current.timeZone as TimeZone,
+               timeZone: TimeZone = AppEnvironment.current.timeZone,
                ubiquitousStore: KeyValueStoreType = AppEnvironment.current.ubiquitousStore,
                userDefaults: KeyValueStoreType = AppEnvironment.current.userDefaults) {
 
