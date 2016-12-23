@@ -150,7 +150,10 @@ public enum Format {
                                                  from: env.dateType.init().date,
                                                  to: env.dateType.init(timeIntervalSince1970: seconds).date)
 
-    let (day, hour, minute, second) = (components.day ?? 0, components.hour ?? 0, components.minute ?? 0, components.second ?? 0)
+    let (day, hour, minute, second) = (components.day ?? 0,
+                                       components.hour ?? 0,
+                                       components.minute ?? 0,
+                                       components.second ?? 0)
 
     let string: String
     if day > 1 {
@@ -210,7 +213,10 @@ public enum Format {
                                                  from: env.dateType.init(timeIntervalSince1970: seconds).date,
                                                  to: env.dateType.init().date)
 
-    let (day, hour, minute, second) = (components.day ?? 0, components.hour ?? 0, components.minute ?? 0, components.second ?? 0)
+    let (day, hour, minute, second) = (components.day ?? 0,
+                                       components.hour ?? 0,
+                                       components.minute ?? 0,
+                                       components.second ?? 0)
 
     if abs(day) > thresholdInDays {
       return Format.date(secondsInUTC: seconds, dateStyle: .medium, timeStyle: .none)

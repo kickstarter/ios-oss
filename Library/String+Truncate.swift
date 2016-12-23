@@ -15,8 +15,11 @@ extension String {
     guard chars.count > maxLength else { return self }
 
     let advancedBy = maxLength - suffix.characters.count
-    let str = String(chars.prefix(upTo: chars.index(chars.startIndex, offsetBy: advancedBy, limitedBy: chars.endIndex)!))
+    // FIXME: is there a better way?
+    guard let index = chars.index(chars.startIndex, offsetBy: advancedBy, limitedBy: chars.endIndex) else {
+      return self
+    }
 
-    return str + suffix
+    return String(chars.prefix(upTo: index)) + suffix
   }
 }

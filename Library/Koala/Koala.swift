@@ -1528,7 +1528,9 @@ public final class Koala {
                properties: ["type": type.rawValue])
   }
 
-  public func trackExpandedRewardDescription(_ reward: Reward, project: Project, pledgeContext: PledgeContext) {
+  public func trackExpandedRewardDescription(_ reward: Reward,
+                                             project: Project,
+                                             pledgeContext: PledgeContext) {
 
     let props = properties(project: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(properties(reward: reward))
@@ -1537,7 +1539,9 @@ public final class Koala {
     self.track(event: "Expanded Reward Description", properties: props)
   }
 
-  public func trackExpandedUnavailableReward(_ reward: Reward, project: Project, pledgeContext: PledgeContext) {
+  public func trackExpandedUnavailableReward(_ reward: Reward,
+                                             project: Project,
+                                             pledgeContext: PledgeContext) {
 
     let props = properties(project: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(properties(reward: reward))
@@ -1546,7 +1550,8 @@ public final class Koala {
     self.track(event: "Expanded Unavailable Reward", properties: props)
   }
 
-  public func trackPerformedShortcutItem(_ shortcutItem: ShortcutItem, availableShortcutItems: [ShortcutItem]) {
+  public func trackPerformedShortcutItem(_ shortcutItem: ShortcutItem,
+                                         availableShortcutItems: [ShortcutItem]) {
     self.track(
       event: "Performed Shortcut",
       properties: [

@@ -29,7 +29,7 @@ internal final class IntDataSource: ValueCellDataSource {
 internal final class ValueCellDataSourceTests: XCTestCase {
   fileprivate let dataSource = IntDataSource()
   fileprivate let tableView = UITableView()
-  fileprivate let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
+  fileprivate let collectionView = UICollectionView(frame: .zero, collectionViewLayout: .init())
 
   override func setUp() {
     super.setUp()

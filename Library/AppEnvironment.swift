@@ -300,9 +300,11 @@ public struct AppEnvironment {
 
     data["apiService.oauthToken.token"] = env.apiService.oauthToken?.token
     data["apiService.serverConfig.apiBaseUrl"] = env.apiService.serverConfig.apiBaseUrl.absoluteString
+    // swiftlint:disable line_length
     data["apiService.serverConfig.apiClientAuth.clientId"] = env.apiService.serverConfig.apiClientAuth.clientId
     data["apiService.serverConfig.basicHTTPAuth.username"] = env.apiService.serverConfig.basicHTTPAuth?.username
     data["apiService.serverConfig.basicHTTPAuth.password"] = env.apiService.serverConfig.basicHTTPAuth?.password
+    // swiftlint:enable line_length
     data["apiService.serverConfig.webBaseUrl"] = env.apiService.serverConfig.webBaseUrl.absoluteString
     data["apiService.language"] = env.apiService.language
     data["config"] = env.config?.encode()

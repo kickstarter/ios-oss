@@ -902,7 +902,7 @@ final class CheckoutViewModelTests: TestCase {
       self.vm.inputs.paymentAuthorization(
         didAuthorizePayment: .init(
           tokenData: .init(
-            paymentMethodData: .init(displayName: "AmEx 1111", network: PKPaymentNetwork(rawValue: "AmEx"), type: .credit),
+            paymentMethodData: .init(displayName: "AmEx 1111", network: .amex, type: .credit),
             transactionIdentifier: "apple_pay_deadbeef"
           )
         )

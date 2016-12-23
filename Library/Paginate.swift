@@ -40,13 +40,13 @@ import ReactiveExtensions
 public func paginate <Cursor, Value: Equatable, Envelope, ErrorEnvelope, RequestParams> (
   requestFirstPageWith requestFirstPage: Signal<RequestParams, NoError>,
   requestNextPageWhen  requestNextPage: Signal<(), NoError>,
-                       clearOnNewRequest: Bool,
-                       skipRepeats: Bool = true,
-                       valuesFromEnvelope: @escaping ((Envelope) -> [Value]),
-                       cursorFromEnvelope: @escaping ((Envelope) -> Cursor),
-                       requestFromParams: @escaping ((RequestParams) -> SignalProducer<Envelope, ErrorEnvelope>),
-                       requestFromCursor: @escaping ((Cursor) -> SignalProducer<Envelope, ErrorEnvelope>),
-                       concater: @escaping (([Value], [Value]) -> [Value]) = (+))
+  clearOnNewRequest: Bool,
+  skipRepeats: Bool = true,
+  valuesFromEnvelope: @escaping ((Envelope) -> [Value]),
+  cursorFromEnvelope: @escaping ((Envelope) -> Cursor),
+  requestFromParams: @escaping ((RequestParams) -> SignalProducer<Envelope, ErrorEnvelope>),
+  requestFromCursor: @escaping ((Cursor) -> SignalProducer<Envelope, ErrorEnvelope>),
+  concater: @escaping (([Value], [Value]) -> [Value]) = (+))
   ->
   (paginatedValues: Signal<[Value], NoError>,
    isLoading: Signal<Bool, NoError>,
