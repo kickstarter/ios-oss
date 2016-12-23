@@ -23,18 +23,16 @@ public final class BorderButton: UIButton {
 
   public var titleColorNormal: Color? = .Black {
     didSet {
-      self.setTitleColor(
-        titleColorNormal?.toUIColor() ?? Color.mismatchedColor, for: UIControlState()
-      )
+      self.setTitleColor(titleColorNormal?.toUIColor() ?? Color.mismatchedColor, for: [])
     }
   }
 
   public var titleColorHighlighted: Color? = .GrayLight {
     didSet {
       if let titleColorHighlighted = titleColorHighlighted {
-        self.setTitleColor(titleColorHighlighted.toUIColor(), for: UIControlState.highlighted)
+        self.setTitleColor(titleColorHighlighted.toUIColor(), for: .highlighted)
       } else {
-        self.setTitleColor(Color.mismatchedColor, for: UIControlState())
+        self.setTitleColor(Color.mismatchedColor, for: [])
       }
     }
   }
@@ -87,7 +85,7 @@ public final class BorderButton: UIButton {
     }
   }
 
-  fileprivate var computedTitleFont: UIFont {
+  private var computedTitleFont: UIFont {
     switch (titleFontStyle, titleWeight) {
     case let (font?, .Default?):
       return font.toUIFont()
