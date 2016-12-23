@@ -52,8 +52,6 @@ public func paginate <Cursor, Value: Equatable, Envelope, ErrorEnvelope, Request
    isLoading: Signal<Bool, NoError>,
    pageCount: Signal<Int, NoError>) {
 
-    // FIXME
-
     let cursor = MutableProperty<Cursor?>(nil)
     let isLoading = MutableProperty<Bool>(false)
 

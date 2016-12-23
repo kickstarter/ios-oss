@@ -1813,7 +1813,6 @@ private func properties(reward: Reward, prefix: String = "backer_reward_") -> [S
   return result.prefixedKeys(prefix)
 }
 
-// FIXME: convert `shareType` to `UIActivityType` enum
 private func shareTypeProperty(_ shareType: UIActivityType?) -> String? {
   #if os(iOS)
     guard let shareType = shareType else { return nil }
