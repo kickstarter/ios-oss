@@ -54,13 +54,16 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
   }
 
   func testAvailableForText() {
+    let stream = LiveStreamEvent.template.stream
+      |> LiveStreamEvent.Stream.lens.startDate .~ MockDate().date
     let project = Project.template
     let event = LiveStreamEvent.template
+      |> LiveStreamEvent.lens.stream .~ stream
 
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.configureWith(project: project, event: event)
 
-    self.availableForText.assertValue("Available to watch for 47 more hours")
+    self.availableForText.assertValue("Available to watch for 2 more days")
   }
 
   func testCreatorAvatarUrl() {
@@ -111,9 +114,9 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
   }
 
   func testIntroText() {
-    let project = Project.template
     let stream = LiveStreamEvent.template.stream
-     |> LiveStreamEvent.Stream.lens.startDate .~ NSDate()
+      |> LiveStreamEvent.Stream.lens.startDate .~ MockDate().date
+    let project = Project.template
     let event = LiveStreamEvent.template
       |> LiveStreamEvent.lens.stream .~ stream
 
@@ -125,6 +128,7 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
 
     self.vm.inputs.liveStreamViewControllerStateChanged(
       state: .replay(playbackState: .playing, replayAvailable: true, duration: 0))
+
     XCTAssertTrue(self.introText.lastValue?.string == "Creator Name was live right now")
   }
 
