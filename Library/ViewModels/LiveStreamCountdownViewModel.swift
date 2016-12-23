@@ -102,6 +102,11 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
 
     self.upcomingIntroText = project
       .map { Strings.Upcoming_with_creator_name(creator_name: $0.creator.name) }
+
+    configData
+      .observeValues { project, liveStream in
+        AppEnvironment.current.koala.trackViewedLiveStreamCountdown(project: project, liveStream: liveStream)
+    }
   }
 
   private let closeButtonTappedProperty = MutableProperty()

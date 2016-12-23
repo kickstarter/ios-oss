@@ -162,6 +162,15 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
 
     self.numberOfPeopleWatchingText = self.numberOfPeopleWatchingProperty.signal.skipNil()
       .map { Format.wholeNumber($0) }
+
+    configData
+      .takePairWhen(isSubscribedEvent.values())
+      .observeValues { configData, isSubscribed in
+        let (project, liveStream, _) = configData
+        AppEnvironment.current.koala.trackLiveStreamToggleSubscription(project: project,
+                                                                       liveStream: liveStream,
+                                                                       subscribed: isSubscribed)
+    }
   }
   //swiftlint:enable function_body_length
 

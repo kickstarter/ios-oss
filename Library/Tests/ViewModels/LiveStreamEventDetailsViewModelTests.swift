@@ -222,6 +222,7 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
     self.subscribeLabelText.assertValues(["Keep up with future live streams", ""])
     self.subscribeButtonText.assertValues(["Subscribe", "Subscribed"])
     self.subscribeButtonImage.assertValues([nil, "postcard-checkmark"])
+    XCTAssertEqual(["Subscribed Live Stream"], self.trackingClient.events)
 
     self.vm.inputs.subscribeButtonTapped()
 
@@ -236,6 +237,7 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
       ])
     self.subscribeButtonText.assertValues(["Subscribe", "Subscribed", "Subscribe"])
     self.subscribeButtonImage.assertValues([nil, "postcard-checkmark", nil])
+    XCTAssertEqual(["Subscribed Live Stream", "Unsubscribed Live Stream"], self.trackingClient.events)
 
     let apiService = MockLiveStreamService(subscribeToResult: Result(error: .genericFailure))
     withEnvironment(liveStreamService: apiService) {

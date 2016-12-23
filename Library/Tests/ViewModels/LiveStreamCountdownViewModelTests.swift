@@ -53,6 +53,13 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
     self.upcomingIntroText.assertValues(["Upcoming with<br/><b>Creator Name</b>"])
   }
 
+  func testTrackingEvent() {
+    self.vm.inputs.configureWith(project: .template, liveStream: .template)
+    self.vm.inputs.viewDidLoad()
+
+    XCTAssertEqual(["Viewed Live Stream Countdown"], self.trackingClient.events)
+  }
+
   func testCountdownLabels() {
     let future: TimeInterval = TimeInterval(2*60*60*24) + TimeInterval(11*60*60) + TimeInterval(5*60) + 22
     let liveStream = .template
