@@ -147,17 +147,16 @@ final class AppEnvironmentTests: XCTestCase {
                                    ubiquitousStore: ubiquitousStore,
                                    userDefaults: userDefaults)
 
-    // FIXME: force unwrap crashes
-//    let result = userDefaults.dictionary(forKey: AppEnvironment.environmentStorageKey)!
-//
-//    XCTAssertEqual("deadbeef", result["apiService.oauthToken.token"] as? String)
-//    XCTAssertEqual("http://api.ksr.com", result["apiService.serverConfig.apiBaseUrl"] as? String)
-//    XCTAssertEqual("cafebeef", result["apiService.serverConfig.apiClientAuth.clientId"] as? String)
-//    XCTAssertEqual("http://ksr.com", result["apiService.serverConfig.webBaseUrl"] as? String)
-//    XCTAssertEqual("en", result["apiService.language"] as? String)
-//    XCTAssertEqual(User.template.id, (result["currentUser"] as? [String:AnyObject])?["id"] as? Int)
-//
-//    XCTAssertEqual(nil, ubiquitousStore.stringForKey(AppEnvironment.oauthTokenStorageKey), "No token stored.")
+    let result = userDefaults.dictionary(forKey: AppEnvironment.environmentStorageKey)!
+
+    XCTAssertEqual("deadbeef", result["apiService.oauthToken.token"] as? String)
+    XCTAssertEqual("http://api.ksr.com", result["apiService.serverConfig.apiBaseUrl"] as? String)
+    XCTAssertEqual("cafebeef", result["apiService.serverConfig.apiClientAuth.clientId"] as? String)
+    XCTAssertEqual("http://ksr.com", result["apiService.serverConfig.webBaseUrl"] as? String)
+    XCTAssertEqual("en", result["apiService.language"] as? String)
+    XCTAssertEqual(User.template.id, (result["currentUser"] as? [String:AnyObject])?["id"] as? Int)
+
+    XCTAssertEqual(nil, ubiquitousStore.stringForKey(AppEnvironment.oauthTokenStorageKey), "No token stored.")
   }
 
   func testPushPopSave() {

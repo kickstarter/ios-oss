@@ -128,7 +128,7 @@ public final class PKPaymentRequestTests: XCTestCase {
   }
 
   func testEncoding() {
-    let json: [String:Any] = [
+    let json: NSDictionary = [
       "countryCode": "US",
       "currencyCode": "USD",
       "merchantCapabilities": [
@@ -145,9 +145,9 @@ public final class PKPaymentRequestTests: XCTestCase {
       "shippingType": PKShippingType.delivery.rawValue,
       "supportedNetworks": ["Visa", "MasterCard", "AmEx", "Discover"]
     ]
-    let decoded = PKPaymentRequest.decodeJSONDictionary(json)
+    let decoded = PKPaymentRequest.decodeJSONDictionary(json as! [String:Any])
 
-    // FIXME
-//    XCTAssertEqual(json as NSDictionary, decoded.value?.encode())
+    // FIXME: cast warning...
+    XCTAssertEqual(json, decoded.value?.encode() as! NSDictionary)
   }
 }
