@@ -31,22 +31,24 @@ final class ProjectCreatorViewModelTests: TestCase {
     self.goToMessageDialogContext.assertValues([])
     self.goToMessageDialogSubject.assertValues([])
 
-    self.vm.inputs.decidePolicy(
+    var policy = self.vm.inputs.decidePolicy(
       forNavigationAction: MockNavigationAction(
         navigationType: .other,
         request: .init(url: URL(string: "https://www.kickstarter.com/projects/a/b/creator_bio")!)
       )
     )
+    XCTAssertEqual(.allow, policy)
 
     self.goToMessageDialogContext.assertValues([])
     self.goToMessageDialogSubject.assertValues([])
 
-    self.vm.inputs.decidePolicy(
+    policy = self.vm.inputs.decidePolicy(
       forNavigationAction: MockNavigationAction(
         navigationType: .linkActivated,
         request: .init(url: URL(string: "https://www.kickstarter.com/projects/a/b/messages/new")!)
       )
     )
+    XCTAssertEqual(.cancel, policy)
 
     self.goToMessageDialogContext.assertValues([.projectPage])
     self.goToMessageDialogSubject.assertValues([.project(project)])
@@ -59,21 +61,23 @@ final class ProjectCreatorViewModelTests: TestCase {
 
     self.goToSafariBrowser.assertValues([])
 
-    self.vm.inputs.decidePolicy(
+    var policy = self.vm.inputs.decidePolicy(
       forNavigationAction: MockNavigationAction(
         navigationType: .other,
         request: .init(url: URL(string: "https://www.kickstarter.com/projects/a/b/creator_bio")!)
       )
     )
+    XCTAssertEqual(.allow, policy)
 
     self.goToSafariBrowser.assertValues([])
 
-    self.vm.inputs.decidePolicy(
+    policy = self.vm.inputs.decidePolicy(
       forNavigationAction: MockNavigationAction(
         navigationType: .linkActivated,
         request: .init(url: URL(string: "http://www.google.com")!)
       )
     )
+    XCTAssertEqual(.cancel, policy)
 
     self.goToSafariBrowser.assertValues([URL(string: "http://www.google.com")!])
     XCTAssertEqual(["Opened External Link"], self.trackingClient.events)
@@ -91,12 +95,13 @@ final class ProjectCreatorViewModelTests: TestCase {
 
     self.loadWebViewRequest.assertValues([creatorBioRequest])
 
-    self.vm.inputs.decidePolicy(
+    let policy = self.vm.inputs.decidePolicy(
       forNavigationAction: MockNavigationAction(
         navigationType: .linkActivated,
         request: .init(url: URL(string: "http://www.google.com")!)
       )
     )
+    XCTAssertEqual(.cancel, policy)
 
     self.loadWebViewRequest.assertValues([creatorBioRequest])
   }

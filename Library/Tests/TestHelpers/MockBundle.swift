@@ -60,7 +60,7 @@ internal struct MockBundle: NSBundleType {
 
   internal func localizedString(forKey key: String, value: String?, table tableName: String?) -> String {
     // A real `NSBundle` will return the key if the key is missing and value is `nil`.
-    return self.store[key] ?? value ?? key ?? ""
+    return self.store[key] ?? value ?? key
   }
 
   internal  var infoDictionary: [String : Any]? {

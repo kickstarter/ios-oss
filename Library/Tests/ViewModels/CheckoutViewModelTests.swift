@@ -912,7 +912,8 @@ final class CheckoutViewModelTests: TestCase {
         ["Apple Pay Show Sheet", "Showed Apple Pay Sheet", "Apple Pay Authorized", "Authorized Apple Pay"],
         self.trackingClient.events)
 
-      self.vm.inputs.stripeCreatedToken(stripeToken: "stripe_deadbeef", error: nil)
+      let status = self.vm.inputs.stripeCreatedToken(stripeToken: "stripe_deadbeef", error: nil)
+      XCTAssertEqual(.success, status)
 
       XCTAssertEqual(
         ["Apple Pay Show Sheet", "Showed Apple Pay Sheet", "Apple Pay Authorized", "Authorized Apple Pay",
