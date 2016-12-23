@@ -35,7 +35,7 @@ public final class CheckoutRacingViewModel: CheckoutRacingViewModelType {
           .ksr_delay(.seconds(1), on: AppEnvironment.current.scheduler)
           .flatMap {
             AppEnvironment.current.apiService.fetchCheckout(checkoutUrl: url)
-              .flatMapError { errorEnv in
+              .flatMapError { _ in
                 return SignalProducer(error: CheckoutRetryError())
               }
               .flatMap { envelope -> SignalProducer<CheckoutEnvelope, CheckoutRetryError> in

@@ -53,7 +53,7 @@ ProjectPamphletViewModelOutputs {
 
     let freshProject = projectOrParamAndIndex
       .map { p, idx in (p.left, p.ifLeft({ Param.id($0.id) }, ifRight: id), idx) }
-      .switchMap { project, param, idx -> SignalProducer<Project, NoError> in
+      .switchMap { _, param, _ -> SignalProducer<Project, NoError> in
 
         AppEnvironment.current.apiService.fetchProject(param: param)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)

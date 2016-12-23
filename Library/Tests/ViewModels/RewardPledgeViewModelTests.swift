@@ -536,7 +536,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
           "merchantIdentifier": PKPaymentAuthorizationViewController.merchantIdentifier,
           "supportedNetworks": PKPaymentAuthorizationViewController.supportedNetworks,
           "shippingType": PKShippingType.shipping.rawValue,
-          "paymentSummaryItems": [[String:Any]].init(arrayLiteral:
+          "paymentSummaryItems": [[String: Any]].init(arrayLiteral:
             [
               "label": project.name,
               "amount": NSDecimalNumber(value: reward.minimum),
@@ -589,7 +589,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
           "merchantIdentifier": PKPaymentAuthorizationViewController.merchantIdentifier,
           "supportedNetworks": PKPaymentAuthorizationViewController.supportedNetworks,
           "shippingType": PKShippingType.shipping.rawValue,
-          "paymentSummaryItems": [[String:Any]].init(arrayLiteral:
+          "paymentSummaryItems": [[String: Any]].init(arrayLiteral:
             [
               "label": project.name,
               "amount": NSDecimalNumber(value: 50),
@@ -644,7 +644,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
           "merchantIdentifier": PKPaymentAuthorizationViewController.merchantIdentifier,
           "supportedNetworks": PKPaymentAuthorizationViewController.supportedNetworks,
           "shippingType": PKShippingType.shipping.rawValue,
-          "paymentSummaryItems": [[String:Any]].init(arrayLiteral:
+          "paymentSummaryItems": [[String: Any]].init(arrayLiteral:
             [
               "label": project.name,
               "amount": NSDecimalNumber(value: reward.minimum),

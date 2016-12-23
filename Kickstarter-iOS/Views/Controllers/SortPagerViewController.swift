@@ -138,7 +138,7 @@ internal final class SortPagerViewController: UIViewController {
 
   private func createSortButtons(sorts: [DiscoveryParams.Sort]) {
     self.sortsStackView
-      |> UIStackView.lens.arrangedSubviews .~ sorts.enumerate().map { idx, sort in
+      |> UIStackView.lens.arrangedSubviews .~ sorts.enumerate().map { idx, _ in
           UIButton()
             |> UIButton.lens.tag .~ idx
             |> UIButton.lens.targets .~ [

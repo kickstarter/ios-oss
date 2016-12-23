@@ -72,7 +72,7 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
     )
 
     self.goToProject = self.shouldStartLoadProperty.signal.skipNil()
-      .map { request, navigationType -> (Param, RefTag?)? in
+      .map { request, _ -> (Param, RefTag?)? in
         if case let (.project(param, .root, refTag))? = Navigation.match(request) {
           return (param, refTag)
         }
@@ -81,7 +81,7 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
       .skipNil()
 
     self.shouldStartLoadResponseProperty <~ self.shouldStartLoadProperty.signal.skipNil()
-      .map { request, navigationType in
+      .map { request, _ in
         if !AppEnvironment.current.apiService.isPrepared(request: request) {
           return false
         }

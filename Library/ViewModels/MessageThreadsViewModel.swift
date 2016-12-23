@@ -60,7 +60,7 @@ MessageThreadsViewModelOutputs {
   // swiftlint:disable function_body_length
   public init() {
     let isCloseToBottom = self.willDisplayRowProperty.signal.skipNil()
-      .filter { row, total in total > 1 }
+      .filter { _, total in total > 1 }
       .map { row, total in row >= total - 3 }
       .skipRepeats()
       .filter { isClose in isClose }

@@ -102,7 +102,7 @@ DiscoveryViewModelOutputs {
       )
       .skipRepeats(==)
       .combinePrevious((sort: .magic, ignore: true))
-      .filter { previous, next in !next.ignore }
+      .filter { _, next in !next.ignore }
       .map { previous, next in
         let lhs = sorts.index(of: next.sort) ?? -1
         let rhs = sorts.index(of: previous.sort) ?? 9999
