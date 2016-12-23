@@ -96,25 +96,25 @@ public extension FontStyle {
   public func toUIFont() -> UIFont {
     switch self {
     case .Body:
-      return .preferredFont(forTextStyle: UIFontTextStyle.body)
+      return .preferredFont(forTextStyle: .body)
     case .Callout:
-      return .preferredFont(forTextStyle: UIFontTextStyle.callout)
+      return .preferredFont(forTextStyle: .callout)
     case .Caption1:
-      return .preferredFont(forTextStyle: UIFontTextStyle.caption1)
+      return .preferredFont(forTextStyle: .caption1)
     case .Caption2:
-      return .preferredFont(forTextStyle: UIFontTextStyle.caption2)
+      return .preferredFont(forTextStyle: .caption2)
     case .Footnote:
-      return .preferredFont(forTextStyle: UIFontTextStyle.footnote)
+      return .preferredFont(forTextStyle: .footnote)
     case .Headline:
-      return .preferredFont(forTextStyle: UIFontTextStyle.headline)
+      return .preferredFont(forTextStyle: .headline)
     case .Subhead:
-      return .preferredFont(forTextStyle: UIFontTextStyle.subheadline)
+      return .preferredFont(forTextStyle: .subheadline)
     case .Title1:
-      return .preferredFont(forTextStyle: UIFontTextStyle.title1)
+      return .preferredFont(forTextStyle: .title1)
     case .Title2:
-      return .preferredFont(forTextStyle: UIFontTextStyle.title2)
+      return .preferredFont(forTextStyle: .title2)
     case .Title3:
-      return .preferredFont(forTextStyle: UIFontTextStyle.title3)
+      return .preferredFont(forTextStyle: .title3)
     }
   }
 

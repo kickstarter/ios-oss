@@ -27,8 +27,7 @@ public struct Environment {
   /// A type that holds configuration values we download from the server.
   public let config: Config?
 
-  /// A type that exposes how to interact with cookie storage. Default value is
-  /// `NSHTTPCookieStorage.sharedHTTPCookieStorage()`
+  /// A type that exposes how to interact with cookie storage. Default value is `HTTPCookieStorage.shared`.
   public let cookieStorage: HTTPCookieStorageProtocol
 
   /// The user’s current country. This is valid whether the user is logged-in or not.
@@ -59,10 +58,10 @@ public struct Environment {
   public let launchedCountries: LaunchedCountries
 
   /// The user’s current locale, which determines how numbers are formatted. Default value is
-  /// `Locale.currentLocale()`.
+  /// `Locale.current`.
   public let locale: Locale
 
-  /// A type that exposes how to interface with an NSBundle. Default value is `NSBundle.mainBundle()`.
+  /// A type that exposes how to interface with an NSBundle. Default value is `Bundle.main`.
   public let mainBundle: NSBundleType
 
   /// A reachability signal producer.
@@ -75,10 +74,10 @@ public struct Environment {
   /// The user’s timezone. Default value is `TimeZone.local`.
   public let timeZone: TimeZone
 
-  /// A ubiquitous key-value store. Default value is `NSUbiquitousKeyValueStore.defaultStore()`.
+  /// A ubiquitous key-value store. Default value is `NSUbiquitousKeyValueStore.default`.
   public let ubiquitousStore: KeyValueStoreType
 
-  /// A user defaults key-value store. Default value is `NSUserDefaults.standardUserDefaults()`.
+  /// A user defaults key-value store. Default value is `NSUserDefaults.standard`.
   public let userDefaults: KeyValueStoreType
 
   public init(
@@ -86,7 +85,7 @@ public struct Environment {
     apiDelayInterval: DispatchTimeInterval = .seconds(0),
     assetImageGeneratorType: AssetImageGeneratorType.Type = AVAssetImageGenerator.self,
     cache: KSCache = KSCache(),
-    calendar: Calendar = Calendar.current,
+    calendar: Calendar = .current,
     config: Config? = nil,
     cookieStorage: HTTPCookieStorageProtocol = HTTPCookieStorage.shared,
     countryCode: String = "US",

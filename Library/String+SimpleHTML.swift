@@ -2,7 +2,7 @@ import UIKit
 import Foundation
 
 public extension String {
-  public typealias Attributes = [String:AnyObject]
+  public typealias Attributes = [String:Any]
 
   /**
    Interprets `self` as an HTML string to produce an attributed string.
@@ -16,10 +16,10 @@ public extension String {
    - returns: The attributed string, or `nil` if something goes wrong with interpreting the string
    as html.
    */
-  public func simpleHtmlAttributedString(
-    base: Attributes,
-         bold optionalBold: Attributes? = nil,
-              italic optionalItalic: Attributes? = nil) -> NSAttributedString? {
+  public func simpleHtmlAttributedString(base: Attributes,
+                                         bold optionalBold: Attributes? = nil,
+                                         italic optionalItalic: Attributes? = nil) -> NSAttributedString? {
+
     let baseFont = (base[NSFontAttributeName] as? UIFont) ?? UIFont.systemFont(ofSize: 12.0)
 
     // If bold or italic are not specified we can derive them from `font`.
@@ -71,10 +71,9 @@ public extension String {
    - returns: The attributed string, or `nil` if something goes wrong with interpreting the string
               as html.
    */
-  public func simpleHtmlAttributedString(
-    font: UIFont,
-         bold optionalBold: UIFont? = nil,
-              italic optionalItalic: UIFont? = nil) -> NSAttributedString? {
+  public func simpleHtmlAttributedString(font: UIFont,
+                                         bold optionalBold: UIFont? = nil,
+                                         italic optionalItalic: UIFont? = nil) -> NSAttributedString? {
 
     return self.simpleHtmlAttributedString(
       base: [NSFontAttributeName: font],

@@ -39,7 +39,7 @@ public final class StyledLabel: UILabel {
   }
 
   // Computes a font from the component of font style and weight.
-  fileprivate var computedFont: UIFont {
+  private var computedFont: UIFont {
     switch (fontStyle, weight) {
     case let (font?, .Default?):
       return font.toUIFont()

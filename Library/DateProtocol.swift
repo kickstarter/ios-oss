@@ -15,7 +15,7 @@ extension Date: DateProtocol {
 }
 
 internal struct MockDate: DateProtocol {
-  fileprivate let time: TimeInterval
+  private let time: TimeInterval
 
   internal init() {
     self.time = 1475361315

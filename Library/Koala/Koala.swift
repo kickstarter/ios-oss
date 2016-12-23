@@ -1356,7 +1356,7 @@ public final class Koala {
     self.track(event: "Update Published", properties: props.withAllValuesFrom(deprecatedProps))
   }
 
-  fileprivate func updateDraftProperties(project: Project) -> [String:Any] {
+  private func updateDraftProperties(project: Project) -> [String:Any] {
     var props = properties(project: project, loggedInUser: self.loggedInUser)
     props["context"] = "update_draft"
     return props
@@ -1562,14 +1562,14 @@ public final class Koala {
   }
 
   // Private tracking method that merges in default properties.
-  fileprivate func track(event: String, properties: [String:Any] = [:]) {
+  private func track(event: String, properties: [String:Any] = [:]) {
     self.client.track(
       event: event,
       properties: self.defaultProperties().withAllValuesFrom(properties)
     )
   }
 
-  fileprivate func defaultProperties() -> [String: Any] {
+  private func defaultProperties() -> [String: Any] {
     var props: [String:Any] = [:]
 
     props["manufacturer"] = "Apple"
@@ -1609,7 +1609,7 @@ public final class Koala {
     return props
   }
 
-  fileprivate static let deviceModel: String? = {
+  private static let deviceModel: String? = {
     var size: Int = 0
     sysctlbyname("hw.machine", nil, &size, nil, 0)
     var machine = [CChar](repeating: 0, count: Int(size))
@@ -1617,7 +1617,7 @@ public final class Koala {
     return String(cString: machine)
   }()
 
-  fileprivate static var deviceOrientation: String {
+  private static var deviceOrientation: String {
     switch UIDevice.current.orientation {
     case .faceDown:
       return "Face Down"
@@ -1636,7 +1636,7 @@ public final class Koala {
     }
   }
 
-  fileprivate var deviceFormat: String {
+  private var deviceFormat: String {
     switch self.device.userInterfaceIdiom {
     case .phone: return "phone"
     case .pad:   return "tablet"
@@ -1645,7 +1645,7 @@ public final class Koala {
     }
   }
 
-  fileprivate var clientPlatform: String {
+  private var clientPlatform: String {
     switch self.device.userInterfaceIdiom {
     case .phone, .pad: return "ios"
     case .tv:          return "tvos"

@@ -8,21 +8,21 @@ public final class Keyboard {
   public typealias Change = (frame: CGRect, duration: TimeInterval, options: UIViewAnimationOptions)
 
   public static let shared = Keyboard()
-  fileprivate let (changeSignal, changeObserver) = Signal<Change, NoError>.pipe()
+  private let (changeSignal, changeObserver) = Signal<Change, NoError>.pipe()
 
   public static var change: Signal<Change, NoError> {
     return self.shared.changeSignal
   }
 
-  fileprivate init() {
+  private init() {
     NotificationCenter.default.addObserver(
-      self, selector: #selector(change(_:)), name: Notification.Name.UIKeyboardWillShow, object: nil)
+      self, selector: #selector(change(_:)), name: .UIKeyboardWillShow, object: nil)
 
     NotificationCenter.default.addObserver(
-      self, selector: #selector(change(_:)), name: Notification.Name.UIKeyboardWillHide, object: nil)
+      self, selector: #selector(change(_:)), name: .UIKeyboardWillHide, object: nil)
   }
 
-  @objc fileprivate func change(_ notification: Notification) {
+  @objc private func change(_ notification: Notification) {
     guard let userInfo = notification.userInfo,
       let frame = userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue,
       let duration = userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber,

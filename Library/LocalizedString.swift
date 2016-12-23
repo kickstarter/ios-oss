@@ -13,11 +13,11 @@ import Prelude
  and if that is not specified an empty string will be returned.
  */
 public func localizedString(key: String,
-                                defaultValue: String = "",
-                                count: Int? = nil,
-                                substitutions: [String:String] = [:],
-                                env: Environment = AppEnvironment.current,
-                                bundle: NSBundleType = stringsBundle) -> String {
+                            defaultValue: String = "",
+                            count: Int? = nil,
+                            substitutions: [String:String] = [:],
+                            env: Environment = AppEnvironment.current,
+                            bundle: NSBundleType = stringsBundle) -> String {
 
   // When a `count` is provided we need to augment the key with a pluralization suffix.
   let augmentedKey = count

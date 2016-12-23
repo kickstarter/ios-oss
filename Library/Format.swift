@@ -17,7 +17,7 @@ public enum Format {
       forConfig: .defaultWholeNumberConfig
         |> NumberFormatterConfig.lens.locale .~ env.locale
     )
-    return formatter.string(from: NSNumber(value: x)) ?? String(x)
+    return formatter.string(for: x) ?? String(x)
   }
 
   /**
@@ -46,7 +46,7 @@ public enum Format {
         |> NumberFormatterConfig.lens.locale .~ env.locale
     )
 
-    return formatter.string(from: NSNumber(value: percentage)) ?? (String(percentage) + "%")
+    return formatter.string(for: percentage) ?? (String(percentage) + "%")
   }
 
   /**
@@ -71,7 +71,7 @@ public enum Format {
         |> NumberFormatterConfig.lens.currencySymbol .~ currencySymbol(forCountry: country)
     )
 
-    return formatter.string(from: NSNumber(value: amount))?
+    return formatter.string(for: amount)?
       .trimmed()
       .replacingOccurrences(of: String.nbsp + String.nbsp, with: String.nbsp)
       ?? (country.currencySymbol + String(amount))

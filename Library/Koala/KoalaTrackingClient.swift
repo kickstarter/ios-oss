@@ -34,19 +34,19 @@ public final class KoalaTrackingClient: TrackingClientType {
     let notifications = NotificationCenter.default
     notifications.addObserver(self,
                               selector: #selector(applicationDidBecomeActive),
-                              name: Notification.Name.UIApplicationDidBecomeActive, object: nil)
+                              name: .UIApplicationDidBecomeActive, object: nil)
     notifications.addObserver(self,
                               selector: #selector(applicationDidEnterBackground),
-                              name: Notification.Name.UIApplicationDidEnterBackground, object: nil)
+                              name: .UIApplicationDidEnterBackground, object: nil)
     notifications.addObserver(self,
                               selector: #selector(applicationWillEnterForeground),
-                              name: Notification.Name.UIApplicationWillEnterForeground, object: nil)
+                              name: .UIApplicationWillEnterForeground, object: nil)
     notifications.addObserver(self,
                               selector: #selector(applicationWillResignActive),
-                              name: Notification.Name.UIApplicationWillResignActive, object: nil)
+                              name: .UIApplicationWillResignActive, object: nil)
     notifications.addObserver(self,
                               selector: #selector(applicationWillTerminate),
-                              name: Notification.Name.UIApplicationWillTerminate, object: nil)
+                              name: .UIApplicationWillTerminate, object: nil)
 
     self.load()
     self.startTimer()

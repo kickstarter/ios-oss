@@ -9,7 +9,7 @@ import UIKit
  */
 open class ValueCellDataSource: NSObject, UICollectionViewDataSource, UITableViewDataSource {
 
-  fileprivate var values: [[(value: Any, reusableId: String)]] = []
+  private var values: [[(value: Any, reusableId: String)]] = []
 
   /**
    Override this method to destructure `cell` and `value` in order to call the `configureWith(value:)` method
@@ -242,7 +242,7 @@ open class ValueCellDataSource: NSObject, UICollectionViewDataSource, UITableVie
   }
 
   public final func tableView(_ tableView: UITableView,
-                        cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+                              cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
     let (value, reusableId) = self.values[indexPath.section][indexPath.row]
 
@@ -286,7 +286,7 @@ open class ValueCellDataSource: NSObject, UICollectionViewDataSource, UITableVie
     return nil
   }
 
-  fileprivate func padValuesForSection(_ section: Int) {
+  private func padValuesForSection(_ section: Int) {
     guard self.values.count <= section else { return }
 
     (self.values.count...section).forEach { _ in

@@ -58,11 +58,11 @@ public func paginate <Cursor, Value: Equatable, Envelope, ErrorEnvelope, Request
     // Emits the last cursor when nextPage emits
     let cursorOnNextPage = cursor.producer.skipNil().sample(on: requestNextPage)
 
-    let paginatedValues: Signal<[Value], NoError> = requestFirstPage
+    let paginatedValues = requestFirstPage
       .switchMap { requestParams in
 
         cursorOnNextPage.map(Either.right)
-          .prefix(value: Either.left(requestParams))
+          .prefix(value: .left(requestParams))
           .switchMap { paramsOrCursor in
 
             paramsOrCursor.ifLeft(requestFromParams, ifRight: requestFromCursor)

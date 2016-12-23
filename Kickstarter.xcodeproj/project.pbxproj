@@ -394,8 +394,6 @@
 		A760780A1CAEE0A6001B39D0 /* IsValidEmail.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76078091CAEE0A6001B39D0 /* IsValidEmail.swift */; };
 		A76078301CAEE0DD001B39D0 /* IsValidEmailTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A760782F1CAEE0DD001B39D0 /* IsValidEmailTests.swift */; };
 		A76126AD1C90C94000EDCCB9 /* ValueCellDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A761269F1C90C94000EDCCB9 /* ValueCellDataSource.swift */; };
-		A76126B31C90C94000EDCCB9 /* SimpleDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76126A21C90C94000EDCCB9 /* SimpleDataSource.swift */; };
-		A76126B51C90C94000EDCCB9 /* SimpleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76126A31C90C94000EDCCB9 /* SimpleViewModel.swift */; };
 		A76126B71C90C94000EDCCB9 /* UICollectionView-Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76126A41C90C94000EDCCB9 /* UICollectionView-Extensions.swift */; };
 		A76126B91C90C94000EDCCB9 /* UIView-Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76126A51C90C94000EDCCB9 /* UIView-Extensions.swift */; };
 		A76126BB1C90C94000EDCCB9 /* UITableView-Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76126A61C90C94000EDCCB9 /* UITableView-Extensions.swift */; };
@@ -1474,8 +1472,6 @@
 		A76078091CAEE0A6001B39D0 /* IsValidEmail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IsValidEmail.swift; sourceTree = "<group>"; };
 		A760782F1CAEE0DD001B39D0 /* IsValidEmailTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IsValidEmailTests.swift; sourceTree = "<group>"; };
 		A761269F1C90C94000EDCCB9 /* ValueCellDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ValueCellDataSource.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		A76126A21C90C94000EDCCB9 /* SimpleDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = SimpleDataSource.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		A76126A31C90C94000EDCCB9 /* SimpleViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = SimpleViewModel.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		A76126A41C90C94000EDCCB9 /* UICollectionView-Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UICollectionView-Extensions.swift"; sourceTree = "<group>"; };
 		A76126A51C90C94000EDCCB9 /* UIView-Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView-Extensions.swift"; sourceTree = "<group>"; };
 		A76126A61C90C94000EDCCB9 /* UITableView-Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableView-Extensions.swift"; sourceTree = "<group>"; };
@@ -2475,8 +2471,6 @@
 		A7C725851C85D36D005A016B /* DataSource */ = {
 			isa = PBXGroup;
 			children = (
-				A76126A21C90C94000EDCCB9 /* SimpleDataSource.swift */,
-				A76126A31C90C94000EDCCB9 /* SimpleViewModel.swift */,
 				A75CFB071CCE7FCF004CD5FA /* StaticTableViewCell.swift */,
 				A76126A41C90C94000EDCCB9 /* UICollectionView-Extensions.swift */,
 				A76126A61C90C94000EDCCB9 /* UITableView-Extensions.swift */,
@@ -3489,7 +3483,6 @@
 				80D73AF61D50F1A60099231F /* Navigation.swift in Sources */,
 				A755115F1C8642C3005355CF /* Format.swift in Sources */,
 				598D96CB1D42AE85003F3F66 /* ActivitySampleProjectCellViewModel.swift in Sources */,
-				A76126B31C90C94000EDCCB9 /* SimpleDataSource.swift in Sources */,
 				01C7CDB31D13462A00D9E0D1 /* DashboardRewardsCellViewModel.swift in Sources */,
 				A7D121091D15B08200F364FD /* CountBadgeView.swift in Sources */,
 				A73379601D0EDFEE00C91445 /* UIViewController-Preparation.swift in Sources */,
@@ -3596,7 +3589,6 @@
 				9DD1E3881D50035E00D4829E /* ProjectActivityData.swift in Sources */,
 				01940B261D42DC1A0074FCE3 /* HelpViewModel.swift in Sources */,
 				593AC6011D33F517002613F4 /* DashboardFundingCellViewModel.swift in Sources */,
-				A76126B51C90C94000EDCCB9 /* SimpleViewModel.swift in Sources */,
 				9D2F4BE01D1AE02700B7C554 /* ProjectActivitySuccessCellViewModel.swift in Sources */,
 				A707BADA1CFFAB9400653B2F /* Notifications.swift in Sources */,
 				A721DF651C8CF5A3000CB97C /* KoalaTrackingClient.swift in Sources */,
