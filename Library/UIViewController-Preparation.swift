@@ -31,7 +31,7 @@ private func swizzle(_ vc: UIViewController.Type) {
 
 extension UIViewController {
   open override class func initialize() {
-    
+
     // make sure this isn't a subclass
     guard self === UIViewController.self else { return }
 

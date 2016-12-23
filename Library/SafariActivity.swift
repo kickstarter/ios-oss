@@ -13,15 +13,15 @@ public final class SafariActivity: UIActivity {
     self.url = url
   }
 
-  public override var activityType : UIActivityType? {
+  public override var activityType: UIActivityType? {
     return SafariActivityType
   }
 
-  public override var activityTitle : String? {
+  public override var activityTitle: String? {
     return "Safari"
   }
 
-  public override var activityImage : UIImage? {
+  public override var activityImage: UIImage? {
     return image(named: "safari-icon-full")
   }
 

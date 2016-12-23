@@ -204,7 +204,7 @@ private func excludedActivityTypes(forShareContext shareContext: ShareContext) -
 
   switch shareContext {
   case let .update(_, update) where !update.isPublic:
-    return [.mail, .message, .postToFacebook, .postToTwitter,.postToWeibo]
+    return [.mail, .message, .postToFacebook, .postToTwitter, .postToWeibo]
   default:
     return []
   }
