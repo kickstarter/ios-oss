@@ -1,13 +1,13 @@
 import KsApi
 import Library
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import UIKit
 
 internal final class WebModalViewController: WebViewController {
-  private let viewModel: WebModalViewModelType = WebModalViewModel()
+  fileprivate let viewModel: WebModalViewModelType = WebModalViewModel()
 
-  internal static func configuredWith(request request: NSURLRequest) -> WebModalViewController {
+  internal static func configuredWith(request: URLRequest) -> WebModalViewController {
     let vc = Storyboard.WebModal.instantiate(WebModalViewController)
     vc.viewModel.inputs.configureWith(request: request)
     return vc
@@ -18,7 +18,7 @@ internal final class WebModalViewController: WebViewController {
 
     self.navigationItem.leftBarButtonItem =
       UIBarButtonItem(title: Strings.general_navigation_buttons_close(),
-                      style: .Plain,
+                      style: .plain,
                       target: self,
                       action: #selector(closeButtonTapped))
 
@@ -30,22 +30,22 @@ internal final class WebModalViewController: WebViewController {
 
     self.viewModel.outputs.dismissViewController
       .observeForControllerAction()
-      .observeNext { [weak self] in
-        self?.dismissViewControllerAnimated(true, completion: nil)
+      .observeValues { [weak self] in
+        self?.dismiss(animated: true, completion: nil)
     }
 
     self.viewModel.outputs.webViewLoadRequest
       .observeForControllerAction()
-      .observeNext { [weak self] request in
-        self?.webView.loadRequest(request)
+      .observeValues { [weak self] request in
+        self?.webView.load(request)
     }
   }
 
-  @objc private func closeButtonTapped() {
+  @objc fileprivate func closeButtonTapped() {
     self.viewModel.inputs.closeButtonTapped()
   }
 
-  internal func webView(webView: WKWebView,
+  internal func webView(_ webView: WKWebView,
                         decidePolicyForNavigationAction navigationAction: WKNavigationAction,
                                                         decisionHandler: (WKNavigationActionPolicy) -> Void) {
     decisionHandler(self.viewModel.inputs.decidePolicyFor(navigationAction: navigationAction))

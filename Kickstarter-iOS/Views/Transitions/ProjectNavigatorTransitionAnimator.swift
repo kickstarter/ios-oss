@@ -6,28 +6,29 @@ private let presentedOverlayColor = UIColor(white: 0, alpha: 0.7)
 internal final class ProjectNavigatorTransitionAnimator: UIPercentDrivenInteractiveTransition,
 UIViewControllerAnimatedTransitioning {
 
-  private let darkOverlayView = UIView()
+  fileprivate let darkOverlayView = UIView()
 
   /// Determines if the transition animation is currently "in flight", i.e. the user is actively interacting
   /// with the dismissal.
   internal var isInFlight = false
 
-  internal func transitionDuration(transitionContext: UIViewControllerContextTransitioning?)
-    -> NSTimeInterval {
+  internal func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?)
+    -> TimeInterval {
 
-      return transitionContext?.isInteractive() == .Some(true) ? 0.6 : 0.4
+      return transitionContext?.isInteractive == .some(true) ? 0.6 : 0.4
   }
 
-  internal func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
+  internal func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
     guard
-      let fromVC = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey),
-      let toVC = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey),
-      let containerView = transitionContext.containerView()
+      let fromVC = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.from),
+      let toVC = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to)
       else {
         return
     }
 
-    if toVC.isBeingPresented() {
+    let containerView = transitionContext.containerView
+
+    if toVC.isBeingPresented {
       self.animatePresentation(fromViewController: fromVC,
                                toViewController: toVC,
                                containerView: containerView,
@@ -40,7 +41,7 @@ UIViewControllerAnimatedTransitioning {
     }
   }
 
-  private func animatePresentation(
+  fileprivate func animatePresentation(
     fromViewController fromVC: UIViewController,
     toViewController toVC: UIViewController,
     containerView: UIView,
@@ -57,21 +58,21 @@ UIViewControllerAnimatedTransitioning {
 
     toVC.view.frame = CGRect(origin: bottomLeftCorner, size: containerView.bounds.size)
 
-    UIView.animateWithDuration(
-      self.transitionDuration(transitionContext),
+    UIView.animate(
+      withDuration: self.transitionDuration(using: transitionContext),
       delay: 0,
-      options: [.CurveEaseOut],
+      options: [.curveEaseOut],
       animations: {
         toVC.view.frame = finalFrame
         self.darkOverlayView.backgroundColor = presentedOverlayColor
       },
       completion: { _ in
-        transitionContext.completeTransition(!transitionContext.transitionWasCancelled())
+        transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
       }
     )
   }
 
-  private func animateDismissal(fromViewController fromVC: UIViewController,
+  fileprivate func animateDismissal(fromViewController fromVC: UIViewController,
                                                    toViewController toVC: UIViewController,
                                                    containerView: UIView,
                                                    transitionContext: UIViewControllerContextTransitioning) {
@@ -86,26 +87,26 @@ UIViewControllerAnimatedTransitioning {
     let finalFrame = CGRect(origin: bottomLeftCorner, size: containerView.bounds.size)
     toVC.view.frame = containerView.bounds
 
-    let animationCurve: UIViewAnimationOptions = transitionContext.isInteractive() == .Some(true)
-      ? .CurveLinear
-      : .CurveEaseOut
+    let animationCurve: UIViewAnimationOptions = transitionContext.isInteractive == .some(true)
+      ? .curveLinear
+      : .curveEaseOut
 
-    UIView.animateWithDuration(
-      self.transitionDuration(transitionContext),
+    UIView.animate(
+      withDuration: self.transitionDuration(using: transitionContext),
       delay: 0,
       options: [animationCurve],
       animations: {
         fromVC.view.frame = finalFrame
-        if transitionContext.isInteractive() {
-          fromVC.view.transform = CGAffineTransformMakeScale(0.8, 0.8)
+        if transitionContext.isInteractive {
+          fromVC.view.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
         }
         self.darkOverlayView.backgroundColor = dismissedOverlayColor
       },
       completion: { _ in
-        self.darkOverlayView.backgroundColor = transitionContext.transitionWasCancelled()
-          ? .blackColor()
+        self.darkOverlayView.backgroundColor = transitionContext.transitionWasCancelled
+          ? .black
           : self.darkOverlayView.backgroundColor
-        transitionContext.completeTransition(!transitionContext.transitionWasCancelled())
+        transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
       }
     )
   }

@@ -3,7 +3,7 @@ import Library
 import KsApi
 
 internal final class DashboardProjectsDrawerDataSource: ValueCellDataSource {
-  internal func load(data data: [ProjectsDrawerData]) {
+  internal func load(data: [ProjectsDrawerData]) {
     self.set(values: data,
              cellClass: DashboardProjectsDrawerCell.self,
              inSection: 0)
@@ -18,8 +18,8 @@ internal final class DashboardProjectsDrawerDataSource: ValueCellDataSource {
     }
   }
 
-  internal func projectAtIndexPath(indexPath: NSIndexPath) -> Project? {
-    guard let data = self[indexPath] as? ProjectsDrawerData else { return nil }
+  internal func projectAtIndexPath(_ indexPath: NSIndexPath) -> Project? {
+    guard let data = self[indexPath as IndexPath] as? ProjectsDrawerData else { return nil }
     return data.project
   }
 }

@@ -1,33 +1,33 @@
 import FBSDKLoginKit
 import Library
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import UIKit
 
 protocol FindFriendsFacebookConnectCellDelegate: class {
   func findFriendsFacebookConnectCellDidFacebookConnectUser()
   func findFriendsFacebookConnectCellDidDismissHeader()
-  func findFriendsFacebookConnectCellShowErrorAlert(alert: AlertError)
+  func findFriendsFacebookConnectCellShowErrorAlert(_ alert: AlertError)
 }
 
 internal final class FindFriendsFacebookConnectCell: UITableViewCell, ValueCell {
 
-  @IBOutlet private weak var cardView: UIView!
-  @IBOutlet private weak var closeButton: UIButton!
-  @IBOutlet private weak var containerView: UIView!
-  @IBOutlet private weak var facebookConnectButton: UIButton!
-  @IBOutlet private weak var subtitleLabel: UILabel!
-  @IBOutlet private weak var titleLabel: UILabel!
+  @IBOutlet fileprivate weak var cardView: UIView!
+  @IBOutlet fileprivate weak var closeButton: UIButton!
+  @IBOutlet fileprivate weak var containerView: UIView!
+  @IBOutlet fileprivate weak var facebookConnectButton: UIButton!
+  @IBOutlet fileprivate weak var subtitleLabel: UILabel!
+  @IBOutlet fileprivate weak var titleLabel: UILabel!
 
   internal weak var delegate: FindFriendsFacebookConnectCellDelegate?
 
-  private let viewModel: FindFriendsFacebookConnectCellViewModelType =
+  fileprivate let viewModel: FindFriendsFacebookConnectCellViewModelType =
     FindFriendsFacebookConnectCellViewModel()
 
   internal lazy var fbLoginManager: FBSDKLoginManager = {
     let manager = FBSDKLoginManager()
-    manager.loginBehavior = .SystemAccount
-    manager.defaultAudience = .Friends
+    manager.loginBehavior = .systemAccount
+    manager.defaultAudience = .friends
     return manager
   }()
 
@@ -41,33 +41,33 @@ internal final class FindFriendsFacebookConnectCell: UITableViewCell, ValueCell 
 
     self.viewModel.outputs.attemptFacebookLogin
       .observeForUI()
-      .observeNext { [weak self] _ in
+      .observeValues { [weak self] _ in
         self?.attemptFacebookLogin()
     }
 
     self.viewModel.outputs.notifyDelegateToDismissHeader
       .observeForUI()
-      .observeNext { [weak self] in
+      .observeValues { [weak self] in
         self?.delegate?.findFriendsFacebookConnectCellDidDismissHeader()
     }
 
     self.viewModel.outputs.notifyDelegateUserFacebookConnected
       .observeForUI()
-      .observeNext { [weak self] in
+      .observeValues { [weak self] in
         self?.delegate?.findFriendsFacebookConnectCellDidFacebookConnectUser()
     }
 
     self.viewModel.outputs.postUserUpdatedNotification
-      .observeNext(NSNotificationCenter.defaultCenter().postNotification)
+      .observeValues(NotificationCenter.default.post)
 
     self.viewModel.outputs.showErrorAlert
       .observeForUI()
-      .observeNext { [weak self] alert in
+      .observeValues { [weak self] alert in
         self?.delegate?.findFriendsFacebookConnectCellShowErrorAlert(alert)
     }
 
     self.viewModel.outputs.updateUserInEnvironment
-      .observeNext { [weak self] user in
+      .observeValues { [weak self] user in
         AppEnvironment.updateCurrentUser(user)
         self?.viewModel.inputs.userUpdated()
     }
@@ -98,26 +98,26 @@ internal final class FindFriendsFacebookConnectCell: UITableViewCell, ValueCell 
 
     self.closeButton
       |> UIButton.lens.tintColor .~ .ksr_navy_700
-      |> UIButton.lens.targets .~ [(self, action: #selector(closeButtonTapped), .TouchUpInside)]
+      |> UIButton.lens.targets .~ [(self, action: #selector(closeButtonTapped), .touchUpInside)]
       |> UIButton.lens.contentEdgeInsets .~ .init(top: Styles.grid(1), left: Styles.grid(3),
                                                   bottom: Styles.grid(3), right: Styles.grid(2))
 
     self.facebookConnectButton
       |> facebookButtonStyle
       |> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 12)
-      |> UIButton.lens.targets .~ [(self, action: #selector(facebookConnectButtonTapped), .TouchUpInside)]
+      |> UIButton.lens.targets .~ [(self, action: #selector(facebookConnectButtonTapped), .touchUpInside)]
       |> UIButton.lens.contentEdgeInsets .~ .init(topBottom: 8)
       |> UIButton.lens.titleEdgeInsets .~ .init(left: Styles.grid(1))
-      |> UIButton.lens.title(forState: .Normal) %~ { _ in
+      |> UIButton.lens.title(forState: .normal) %~ { _ in
         Strings.general_social_buttons_connect_with_facebook()
     }
   }
 
   // MARK: Facebook Login
-  private func attemptFacebookLogin() {
-    self.fbLoginManager.logInWithReadPermissions(
-      ["public_profile", "email", "user_friends"],
-      fromViewController: nil) {
+  fileprivate func attemptFacebookLogin() {
+    self.fbLoginManager.logIn(
+      withReadPermissions: ["public_profile", "email", "user_friends"],
+      from: nil) {
         (result: FBSDKLoginManagerLoginResult!, error: NSError!) in
         if error != nil {
           self.viewModel.inputs.facebookLoginFail(error: error)

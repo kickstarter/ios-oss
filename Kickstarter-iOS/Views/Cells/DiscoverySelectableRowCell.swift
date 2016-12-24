@@ -3,11 +3,11 @@ import Prelude
 import UIKit
 
 internal final class DiscoverySelectableRowCell: UITableViewCell, ValueCell {
-  @IBOutlet private weak var filterTitleLabel: UILabel!
+  @IBOutlet fileprivate weak var filterTitleLabel: UILabel!
 
-  private var isSelected: Bool = false
+  internal var isSelected: Bool = false
 
-  func configureWith(value value: (row: SelectableRow, categoryId: Int?)) {
+  func configureWith(value: (row: SelectableRow, categoryId: Int?)) {
     if value.row.params.staffPicks == true {
       self.filterTitleLabel.text = Strings.Projects_We_Love()
       self.filterTitleLabel.accessibilityLabel = Strings.Filter_by_projects_we_love()

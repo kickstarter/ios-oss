@@ -4,13 +4,13 @@ import Prelude
 import UIKit
 
 internal final class ProfileHeaderView: UICollectionReusableView, ValueCell {
-  private let viewModel: ProfileHeaderViewModelType = ProfileHeaderViewModel()
+  fileprivate let viewModel: ProfileHeaderViewModelType = ProfileHeaderViewModel()
 
-  @IBOutlet private weak var avatarImageView: UIImageView!
-  @IBOutlet private weak var backedProjectsLabel: UILabel!
-  @IBOutlet private weak var createdProjectsLabel: UILabel!
-  @IBOutlet private weak var dividerView: UIView!
-  @IBOutlet private weak var nameLabel: UILabel!
+  @IBOutlet fileprivate weak var avatarImageView: UIImageView!
+  @IBOutlet fileprivate weak var backedProjectsLabel: UILabel!
+  @IBOutlet fileprivate weak var createdProjectsLabel: UILabel!
+  @IBOutlet fileprivate weak var dividerView: UIView!
+  @IBOutlet fileprivate weak var nameLabel: UILabel!
 
   internal func configureWith(value user: User) {
     self.viewModel.inputs.user(user)
@@ -19,22 +19,22 @@ internal final class ProfileHeaderView: UICollectionReusableView, ValueCell {
   internal override func bindStyles() {
     super.bindStyles()
 
-    self.backedProjectsLabel
+    _ = self.backedProjectsLabel
       |> UILabel.lens.textColor .~ .ksr_text_navy_600
       |> UILabel.lens.font .~ .ksr_subhead(size: 12)
 
-    self.createdProjectsLabel
+    _ = self.createdProjectsLabel
       |> UILabel.lens.textColor .~ .ksr_text_navy_600
       |> UILabel.lens.font .~ .ksr_subhead(size: 12)
 
-    self.dividerView
+    _ = self.dividerView
       |> UIView.lens.backgroundColor .~ .ksr_navy_400
 
-    self.nameLabel
+    _ = self.nameLabel
       |> UILabel.lens.textColor .~ .ksr_text_navy_700
       |> UILabel.lens.font .~ .ksr_headline(size: 15)
 
-    [self.backedProjectsLabel, self.createdProjectsLabel]
+    _ = [self.backedProjectsLabel, self.createdProjectsLabel]
       ||> UILabel.lens.adjustsFontSizeToFitWidth .~ true
   }
 
@@ -50,12 +50,12 @@ internal final class ProfileHeaderView: UICollectionReusableView, ValueCell {
 
     self.viewModel.outputs.avatarURL
       .observeForUI()
-      .on(next: { [weak self] _ in
+      .on(event: { [weak self] _ in
         self?.avatarImageView.af_cancelImageRequest()
         self?.avatarImageView.image = nil
         })
       .skipNil()
-      .observeNext { [weak self] url in
+      .observeValues { [weak self] url in
         self?.avatarImageView.af_setImageWithURL(url)
     }
   }

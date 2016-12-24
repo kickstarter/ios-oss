@@ -4,7 +4,7 @@
 @testable import ReactiveExtensions_TestHelpers
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 import XCTest
 

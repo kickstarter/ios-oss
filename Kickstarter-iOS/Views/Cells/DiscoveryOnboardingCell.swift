@@ -9,18 +9,18 @@ internal protocol DiscoveryOnboardingCellDelegate: class {
 internal final class DiscoveryOnboardingCell: UITableViewCell, ValueCell {
   internal weak var delegate: DiscoveryOnboardingCellDelegate?
 
-  @IBOutlet private weak var loginButton: UIButton!
-  @IBOutlet private weak var logoImageView: UIImageView!
-  @IBOutlet private weak var onboardingTitleLabel: UILabel!
-  @IBOutlet private weak var stackView: UIStackView!
+  @IBOutlet fileprivate weak var loginButton: UIButton!
+  @IBOutlet fileprivate weak var logoImageView: UIImageView!
+  @IBOutlet fileprivate weak var onboardingTitleLabel: UILabel!
+  @IBOutlet fileprivate weak var stackView: UIStackView!
 
   override func awakeFromNib() {
     super.awakeFromNib()
 
-    self.loginButton.addTarget(self, action: #selector(loginButtonTapped), forControlEvents: .TouchUpInside)
+    self.loginButton.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
   }
 
-  internal func configureWith(value value: Void) {
+  internal func configureWith(value: Void) {
   }
 
   internal override func bindStyles() {
@@ -38,7 +38,7 @@ internal final class DiscoveryOnboardingCell: UITableViewCell, ValueCell {
     self.stackView |> discoveryOnboardingStackViewStyle
   }
 
-  @objc private func loginButtonTapped() {
+  @objc fileprivate func loginButtonTapped() {
     self.delegate?.discoveryOnboardingTappedSignUpLoginButton()
   }
 }

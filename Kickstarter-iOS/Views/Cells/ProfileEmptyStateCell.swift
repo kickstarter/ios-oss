@@ -3,6 +3,6 @@ import UIKit
 
 internal final class ProfileEmptyStateCell: UICollectionViewCell, ValueCell {
 
-  func configureWith(value value: Void) {
+  func configureWith(value: Void) {
   }
 }

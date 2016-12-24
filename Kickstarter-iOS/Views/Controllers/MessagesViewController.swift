@@ -4,24 +4,24 @@ import Prelude
 import UIKit
 
 internal final class MessagesViewController: UITableViewController {
-  @IBOutlet private weak var replyBarButtonItem: UIBarButtonItem!
+  @IBOutlet fileprivate weak var replyBarButtonItem: UIBarButtonItem!
 
-  private let viewModel: MessagesViewModelType = MessagesViewModel()
-  private let dataSource = MessagesDataSource()
+  fileprivate let viewModel: MessagesViewModelType = MessagesViewModel()
+  fileprivate let dataSource = MessagesDataSource()
 
-  internal static func configuredWith(messageThread messageThread: MessageThread) -> MessagesViewController {
+  internal static func configuredWith(messageThread: MessageThread) -> MessagesViewController {
     let vc = instantiate()
     vc.viewModel.inputs.configureWith(data: .left(messageThread))
     return vc
   }
 
-  internal static func configuredWith(project project: Project, backing: Backing) -> MessagesViewController {
+  internal static func configuredWith(project: Project, backing: Backing) -> MessagesViewController {
     let vc = instantiate()
     vc.viewModel.inputs.configureWith(data: .right((project: project, backing: backing)))
     return vc
   }
 
-  private static func instantiate() -> MessagesViewController {
+  fileprivate static func instantiate() -> MessagesViewController {
     return Storyboard.Messages.instantiate(MessagesViewController)
   }
 
@@ -46,46 +46,46 @@ internal final class MessagesViewController: UITableViewController {
 
     self.viewModel.outputs.project
       .observeForControllerAction()
-      .observeNext { [weak self] in
+      .observeValues { [weak self] in
         self?.dataSource.load(project: $0)
         self?.tableView.reloadData()
     }
 
     self.viewModel.outputs.backingAndProject
       .observeForControllerAction()
-      .observeNext { [weak self] backing, project in
+      .observeValues { [weak self] backing, project in
         self?.dataSource.load(backing: backing, project: project)
         self?.tableView.reloadData()
     }
 
     self.viewModel.outputs.messages
       .observeForControllerAction()
-      .observeNext { [weak self] in
+      .observeValues { [weak self] in
         self?.dataSource.load(messages: $0)
         self?.tableView.reloadData()
     }
 
     self.viewModel.outputs.presentMessageDialog
       .observeForControllerAction()
-      .observeNext { [weak self] messageThread, context in
+      .observeValues { [weak self] messageThread, context in
         self?.presentMessageDialog(messageThread: messageThread, context: context)
     }
 
     self.viewModel.outputs.goToProject
       .observeForControllerAction()
-      .observeNext { [weak self] project, refTag in self?.goTo(project: project, refTag: refTag) }
+      .observeValues { [weak self] project, refTag in self?.goTo(project: project, refTag: refTag) }
 
     self.viewModel.outputs.goToBacking
       .observeForControllerAction()
-      .observeNext { [weak self] project, user in self?.goToBacking(project: project, user: user)}
+      .observeValues { [weak self] project, user in self?.goToBacking(project: project, user: user)}
   }
 
-  internal override func tableView(tableView: UITableView,
-                                   estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+  internal override func tableView(_ tableView: UITableView,
+                                   estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
     return UITableViewAutomaticDimension
   }
 
-  internal override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+  internal override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     if self.dataSource.isProjectBanner(indexPath: indexPath) {
       self.viewModel.inputs.projectBannerTapped()
     } else if self.dataSource.isBackingInfo(indexPath: indexPath) {
@@ -93,31 +93,31 @@ internal final class MessagesViewController: UITableViewController {
     }
   }
 
-  @IBAction private func replyButtonPressed() {
+  @IBAction fileprivate func replyButtonPressed() {
     self.viewModel.inputs.replyButtonPressed()
   }
 
-  @IBAction private func backingInfoButtonPressed() {
+  @IBAction fileprivate func backingInfoButtonPressed() {
     self.viewModel.inputs.backingInfoPressed()
   }
 
-  private func presentMessageDialog(messageThread messageThread: MessageThread,
+  fileprivate func presentMessageDialog(messageThread: MessageThread,
                                                   context: Koala.MessageDialogContext) {
     let dialog = MessageDialogViewController
       .configuredWith(messageSubject: .messageThread(messageThread), context: context)
-    dialog.modalPresentationStyle = .FormSheet
+    dialog.modalPresentationStyle = .formSheet
     dialog.delegate = self
-    self.presentViewController(UINavigationController(rootViewController: dialog),
+    self.present(UINavigationController(rootViewController: dialog),
                                animated: true,
                                completion: nil)
   }
 
-  private func goTo(project project: Project, refTag: RefTag) {
+  fileprivate func goTo(project: Project, refTag: RefTag) {
     let vc = ProjectNavigatorViewController.configuredWith(project: project, refTag: refTag)
-    self.presentViewController(vc, animated: true, completion: nil)
+    self.present(vc, animated: true, completion: nil)
   }
 
-  private func goToBacking(project project: Project, user: User) {
+  fileprivate func goToBacking(project: Project, user: User) {
     let vc = BackingViewController.configuredWith(project: project, backer: user)
     self.navigationController?.pushViewController(vc, animated: true)
   }
@@ -125,11 +125,11 @@ internal final class MessagesViewController: UITableViewController {
 
 extension MessagesViewController: MessageDialogViewControllerDelegate {
 
-  internal func messageDialogWantsDismissal(dialog: MessageDialogViewController) {
-    dialog.dismissViewControllerAnimated(true, completion: nil)
+  internal func messageDialogWantsDismissal(_ dialog: MessageDialogViewController) {
+    dialog.dismiss(animated: true, completion: nil)
   }
 
-  internal func messageDialog(dialog: MessageDialogViewController, postedMessage message: Message) {
+  internal func messageDialog(_ dialog: MessageDialogViewController, postedMessage message: Message) {
     self.viewModel.inputs.messageSent(message)
   }
 }

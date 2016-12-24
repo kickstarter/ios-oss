@@ -9,65 +9,65 @@ import UIKit
 internal final class RewardPledgeViewController: UIViewController {
   internal let viewModel: RewardPledgeViewModelType = RewardPledgeViewModel()
 
-  @IBOutlet private weak var applePayButton: UIButton!
-  @IBOutlet private weak var bottomConstraint: NSLayoutConstraint!
-  @IBOutlet private weak var cancelPledgeButton: UIButton!
-  @IBOutlet private weak var cardInnerView: UIView!
-  @IBOutlet private weak var cardPanelView: UIView!
-  @IBOutlet private weak var cardView: UIView!
-  @IBOutlet private weak var changePaymentMethodButton: UIButton!
-  @IBOutlet private weak var checkmarkBadgeView: UIView!
-  @IBOutlet private weak var checkmarkImageView: UIImageView!
-  @IBOutlet private weak var continueToPaymentButton: UIButton!
-  @IBOutlet private weak var conversionLabel: UILabel!
-  @IBOutlet private weak var countryLabel: UILabel!
-  @IBOutlet private weak var descriptionLabel: UILabel!
-  @IBOutlet private weak var disclaimerButton: UIButton!
-  @IBOutlet private weak var disclaimerContainerView: UIView!
-  @IBOutlet private weak var disclaimerPrimaryLabel: UILabel!
-  @IBOutlet private weak var disclaimerSecondaryLabel: UILabel!
-  @IBOutlet private weak var disclaimerStackView: UIStackView!
-  @IBOutlet private weak var disclaimerTertiaryLabel: UILabel!
-  @IBOutlet private weak var differentPaymentMethodButton: UIButton!
-  @IBOutlet private weak var estimatedDeliveryDateLabel: UILabel!
-  @IBOutlet private weak var estimatedFulfillmentStackView: UIStackView!
-  @IBOutlet private weak var estimatedToFulfillLabel: UILabel!
-  @IBOutlet private weak var fulfillmentAndShippingFooterStackView: UIStackView!
-  @IBOutlet private weak var itemsStackView: UIStackView!
-  @IBOutlet private weak var loadingIndicatorView: UIActivityIndicatorView!
-  @IBOutlet private weak var loadingOverlayView: UIView!
-  @IBOutlet private weak var middleStackView: UIStackView!
-  @IBOutlet private weak var minimumAndConversionStackView: UIStackView!
-  @IBOutlet private weak var minimumPledgeLabel: UILabel!
-  @IBOutlet private weak var orLabel: UILabel!
-  @IBOutlet private weak var pledgeButtonsStackView: UIStackView!
-  @IBOutlet private weak var pledgeContainerView: UIView!
-  @IBOutlet private weak var pledgeCurrencyLabel: UILabel!
-  @IBOutlet private weak var pledgeInputTitleLabel: UILabel!
-  @IBOutlet private weak var pledgeInputStackView: UIStackView!
-  @IBOutlet private weak var pledgeStackView: UIStackView!
-  @IBOutlet private weak var pledgeTextField: UITextField!
-  @IBOutlet private weak var readMoreContainerView: UIView!
-  @IBOutlet private weak var readMoreGradientView: GradientView!
-  @IBOutlet private weak var readMoreLabel: UILabel!
-  @IBOutlet private weak var rootStackView: UIStackView!
-  @IBOutlet private weak var scrollView: UIScrollView!
-  @IBOutlet private var separatorViews: [UIView]!
-  @IBOutlet private weak var shippingAmountLabel: UILabel!
-  @IBOutlet private weak var shippingContainerView: UIView!
-  @IBOutlet private weak var shippingDestinationButton: UIButton!
-  @IBOutlet private weak var shippingInputStackView: UIStackView!
-  @IBOutlet private weak var shippingInputTitleLabel: UILabel!
-  @IBOutlet private weak var shippingLocationsLabel: UILabel!
-  @IBOutlet private weak var shippingMenuStackView: UIStackView!
-  @IBOutlet private weak var shippingStackView: UIStackView!
-  @IBOutlet private weak var shipsToLabel: UILabel!
-  @IBOutlet private weak var titleLabel: UILabel!
-  @IBOutlet private weak var topStackView: UIStackView!
-  @IBOutlet private weak var updatePledgeButton: UIButton!
+  @IBOutlet fileprivate weak var applePayButton: UIButton!
+  @IBOutlet fileprivate weak var bottomConstraint: NSLayoutConstraint!
+  @IBOutlet fileprivate weak var cancelPledgeButton: UIButton!
+  @IBOutlet fileprivate weak var cardInnerView: UIView!
+  @IBOutlet fileprivate weak var cardPanelView: UIView!
+  @IBOutlet fileprivate weak var cardView: UIView!
+  @IBOutlet fileprivate weak var changePaymentMethodButton: UIButton!
+  @IBOutlet fileprivate weak var checkmarkBadgeView: UIView!
+  @IBOutlet fileprivate weak var checkmarkImageView: UIImageView!
+  @IBOutlet fileprivate weak var continueToPaymentButton: UIButton!
+  @IBOutlet fileprivate weak var conversionLabel: UILabel!
+  @IBOutlet fileprivate weak var countryLabel: UILabel!
+  @IBOutlet fileprivate weak var descriptionLabel: UILabel!
+  @IBOutlet fileprivate weak var disclaimerButton: UIButton!
+  @IBOutlet fileprivate weak var disclaimerContainerView: UIView!
+  @IBOutlet fileprivate weak var disclaimerPrimaryLabel: UILabel!
+  @IBOutlet fileprivate weak var disclaimerSecondaryLabel: UILabel!
+  @IBOutlet fileprivate weak var disclaimerStackView: UIStackView!
+  @IBOutlet fileprivate weak var disclaimerTertiaryLabel: UILabel!
+  @IBOutlet fileprivate weak var differentPaymentMethodButton: UIButton!
+  @IBOutlet fileprivate weak var estimatedDeliveryDateLabel: UILabel!
+  @IBOutlet fileprivate weak var estimatedFulfillmentStackView: UIStackView!
+  @IBOutlet fileprivate weak var estimatedToFulfillLabel: UILabel!
+  @IBOutlet fileprivate weak var fulfillmentAndShippingFooterStackView: UIStackView!
+  @IBOutlet fileprivate weak var itemsStackView: UIStackView!
+  @IBOutlet fileprivate weak var loadingIndicatorView: UIActivityIndicatorView!
+  @IBOutlet fileprivate weak var loadingOverlayView: UIView!
+  @IBOutlet fileprivate weak var middleStackView: UIStackView!
+  @IBOutlet fileprivate weak var minimumAndConversionStackView: UIStackView!
+  @IBOutlet fileprivate weak var minimumPledgeLabel: UILabel!
+  @IBOutlet fileprivate weak var orLabel: UILabel!
+  @IBOutlet fileprivate weak var pledgeButtonsStackView: UIStackView!
+  @IBOutlet fileprivate weak var pledgeContainerView: UIView!
+  @IBOutlet fileprivate weak var pledgeCurrencyLabel: UILabel!
+  @IBOutlet fileprivate weak var pledgeInputTitleLabel: UILabel!
+  @IBOutlet fileprivate weak var pledgeInputStackView: UIStackView!
+  @IBOutlet fileprivate weak var pledgeStackView: UIStackView!
+  @IBOutlet fileprivate weak var pledgeTextField: UITextField!
+  @IBOutlet fileprivate weak var readMoreContainerView: UIView!
+  @IBOutlet fileprivate weak var readMoreGradientView: GradientView!
+  @IBOutlet fileprivate weak var readMoreLabel: UILabel!
+  @IBOutlet fileprivate weak var rootStackView: UIStackView!
+  @IBOutlet fileprivate weak var scrollView: UIScrollView!
+  @IBOutlet fileprivate var separatorViews: [UIView]!
+  @IBOutlet fileprivate weak var shippingAmountLabel: UILabel!
+  @IBOutlet fileprivate weak var shippingContainerView: UIView!
+  @IBOutlet fileprivate weak var shippingDestinationButton: UIButton!
+  @IBOutlet fileprivate weak var shippingInputStackView: UIStackView!
+  @IBOutlet fileprivate weak var shippingInputTitleLabel: UILabel!
+  @IBOutlet fileprivate weak var shippingLocationsLabel: UILabel!
+  @IBOutlet fileprivate weak var shippingMenuStackView: UIStackView!
+  @IBOutlet fileprivate weak var shippingStackView: UIStackView!
+  @IBOutlet fileprivate weak var shipsToLabel: UILabel!
+  @IBOutlet fileprivate weak var titleLabel: UILabel!
+  @IBOutlet fileprivate weak var topStackView: UIStackView!
+  @IBOutlet fileprivate weak var updatePledgeButton: UIButton!
 
   internal static func configuredWith(
-    project project: Project,
+    project: Project,
             reward: Reward,
             applePayCapable: Bool = PKPaymentAuthorizationViewController.applePayCapable())
     -> RewardPledgeViewController {
@@ -77,69 +77,69 @@ internal final class RewardPledgeViewController: UIViewController {
       return vc
   }
 
-  private var statusBarHidden = true
-  override func prefersStatusBarHidden() -> Bool {
+  fileprivate var statusBarHidden = true
+  override var prefersStatusBarHidden : Bool {
     return self.statusBarHidden
   }
 
-  override func preferredStatusBarUpdateAnimation() -> UIStatusBarAnimation {
-    return .Slide
+  override var preferredStatusBarUpdateAnimation : UIStatusBarAnimation {
+    return .slide
   }
 
-  internal override func viewWillAppear(animated: Bool) {
+  internal override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     self.statusBarHidden = false
-    UIView.animateWithDuration(0.3) { self.setNeedsStatusBarAppearanceUpdate() }
+    UIView.animate(withDuration: 0.3, animations: { self.setNeedsStatusBarAppearanceUpdate() }) 
   }
 
   internal override func viewDidLoad() {
     super.viewDidLoad()
 
     self.applePayButton.addTarget(
-      self, action: #selector(applePayButtonTapped), forControlEvents: .TouchUpInside
+      self, action: #selector(applePayButtonTapped), for: .touchUpInside
     )
     self.cancelPledgeButton.addTarget(
-      self, action: #selector(cancelPledgeButtonTapped), forControlEvents: .TouchUpInside
+      self, action: #selector(cancelPledgeButtonTapped), for: .touchUpInside
     )
     self.changePaymentMethodButton.addTarget(
-      self, action: #selector(changePaymentMethodButtonTapped), forControlEvents: .TouchUpInside
+      self, action: #selector(changePaymentMethodButtonTapped), for: .touchUpInside
     )
     self.continueToPaymentButton.addTarget(
-      self, action: #selector(continueWithPaymentButtonTapped), forControlEvents: .TouchUpInside
+      self, action: #selector(continueWithPaymentButtonTapped), for: .touchUpInside
     )
     self.descriptionLabel.addGestureRecognizer(
       UITapGestureRecognizer(target: self, action: #selector(expandRewardDescriptionTapped))
     )
     self.differentPaymentMethodButton.addTarget(
-      self, action: #selector(differentPaymentMethodTapped), forControlEvents: .TouchUpInside
+      self, action: #selector(differentPaymentMethodTapped), for: .touchUpInside
     )
     self.disclaimerButton.addTarget(
-      self, action: #selector(disclaimerButtonTapped), forControlEvents: .TouchUpInside
+      self, action: #selector(disclaimerButtonTapped), for: .touchUpInside
     )
     self.pledgeTextField.addTarget(
-      self, action: #selector(pledgedTextFieldChanged), forControlEvents: .EditingChanged
+      self, action: #selector(pledgedTextFieldChanged), for: .editingChanged
     )
     self.pledgeTextField.addTarget(
       self,
       action: #selector(pledgedTextFieldDoneEditing),
-      forControlEvents: [.EditingDidEndOnExit, .EditingDidEnd]
+      for: [.editingDidEndOnExit, .editingDidEnd]
     )
     self.readMoreContainerView.addGestureRecognizer(
       UITapGestureRecognizer(target: self, action: #selector(expandRewardDescriptionTapped))
     )
     self.shippingDestinationButton.addTarget(
-      self, action: #selector(shippingButtonTapped), forControlEvents: .TouchUpInside
+      self, action: #selector(shippingButtonTapped), for: .touchUpInside
     )
     self.titleLabel.addGestureRecognizer(
       UITapGestureRecognizer(target: self, action: #selector(expandRewardDescriptionTapped))
     )
     self.updatePledgeButton.addTarget(
-      self, action: #selector(updatePledgeButtonTapped), forControlEvents: .TouchUpInside
+      self, action: #selector(updatePledgeButtonTapped), for: .touchUpInside
     )
 
-    NSNotificationCenter
-      .defaultCenter()
-      .addObserverForName(CurrentUserNotifications.sessionStarted, object: nil, queue: nil) { [weak self] _ in
+    NotificationCenter
+      .default
+      .addObserver(forName: NSNotification.Name(rawValue: CurrentUserNotifications.sessionStarted), object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()
     }
 
@@ -156,19 +156,19 @@ internal final class RewardPledgeViewController: UIViewController {
     self.applePayButton
       |> roundedStyle(cornerRadius: 4)
       |> UIButton.lens.contentEdgeInsets .~ .init(topBottom: Styles.gridHalf(3))
-      |> UIButton.lens.backgroundColor .~ .blackColor()
+      |> UIButton.lens.backgroundColor .~ .black
       |> UIButton.lens.image(forState: .Normal) %~ { _ in
-        image(named: "apple-pay-button-content", tintColor: .whiteColor())
+        image(named: "apple-pay-button-content", tintColor: .white)
       }
       |> UIButton.lens.accessibilityLabel .~ "Apple Pay"
 
     self.cancelPledgeButton
       |> borderButtonStyle
-      |> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.Cancel_your_pledge() }
+      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.Cancel_your_pledge() }
 
     self.cardInnerView
       |> cardStyle(cornerRadius: 4)
-      |> UIView.lens.layer.borderColor .~ UIColor.ksr_green_700.CGColor
+      |> UIView.lens.layer.borderColor .~ UIColor.ksr_green_700.cgColor
       |> UIView.lens.backgroundColor .~ .ksr_grey_100
 
     self.cardPanelView
@@ -180,30 +180,30 @@ internal final class RewardPledgeViewController: UIViewController {
       |> UIView.lens.layer.shouldRasterize .~ true
       |> UIView.lens.layer.shadowOffset .~ CGSize(width: 0, height: 2)
       |> UIView.lens.layer.shadowColor .~ UIColor.ksr_dropShadow.CGColor
-      |> UIView.lens.backgroundColor .~ .clearColor()
+      |> UIView.lens.backgroundColor .~ .clear
 
     self.changePaymentMethodButton
       |> borderButtonStyle
-      |> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.Change_payment_method() }
+      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.Change_payment_method() }
 
     self.checkmarkBadgeView
       |> UIView.lens.layer.cornerRadius %~~ { _, badge in badge.frame.width / 2 }
       |> UIView.lens.layer.masksToBounds .~ true
-      |> UIView.lens.layer.borderColor .~ UIColor.ksr_green_700.CGColor
+      |> UIView.lens.layer.borderColor .~ UIColor.ksr_green_700.cgColor
       |> UIView.lens.layer.borderWidth .~ 1
       |> UIView.lens.backgroundColor .~ UIColor.ksr_green_500
 
     self.checkmarkImageView
-      |> UIImageView.lens.contentMode .~ .Center
-      |> UIImageView.lens.image .~ image(named: "checkmark-icon", tintColor: .whiteColor())
+      |> UIImageView.lens.contentMode .~ .center
+      |> UIImageView.lens.image .~ image(named: "checkmark-icon", tintColor: .white)
 
     self.continueToPaymentButton
       |> greenButtonStyle
-      |> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.Continue_to_payment() }
+      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.Continue_to_payment() }
 
     self.updatePledgeButton
       |> greenButtonStyle
-      |> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.Update_pledge() }
+      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.Update_pledge() }
 
     self.conversionLabel
       |> UILabel.lens.font .~ UIFont.ksr_caption1().italicized
@@ -214,20 +214,20 @@ internal final class RewardPledgeViewController: UIViewController {
       |> UILabel.lens.textColor .~ UIColor.ksr_text_navy_700
 
     self.descriptionLabel
-      |> UILabel.lens.contentMode .~ .TopLeft
+      |> UILabel.lens.contentMode .~ .topLeft
       |> UILabel.lens.font .~ UIFont.ksr_caption1(size: 14)
       |> UILabel.lens.textColor .~ UIColor.ksr_text_navy_500
       |> UILabel.lens.numberOfLines .~ 3
-      |> UILabel.lens.lineBreakMode .~ .ByTruncatingTail
+      |> UILabel.lens.lineBreakMode .~ .byTruncatingTail
       |> UILabel.lens.userInteractionEnabled .~ true
 
     self.differentPaymentMethodButton
       |> baseButtonStyle
       |> roundedStyle(cornerRadius: 4)
       |> UIButton.lens.layer.borderWidth .~ 1
-      |> UIButton.lens.layer.borderColor .~ UIColor.ksr_grey_500.CGColor
-      |> UIButton.lens.titleColor(forState: .Normal) .~ .ksr_text_green_700
-      |> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.Other_payment_methods() }
+      |> UIButton.lens.layer.borderColor .~ UIColor.ksr_grey_500.cgColor
+      |> UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_green_700
+      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.Other_payment_methods() }
 
     self.disclaimerButton
       |> UIButton.lens.accessibilityLabel %~ { _ in
@@ -242,26 +242,26 @@ internal final class RewardPledgeViewController: UIViewController {
     self.disclaimerPrimaryLabel
       |> UILabel.lens.font .~ UIFont.ksr_caption1(size: 12).bolded
       |> UILabel.lens.textColor .~ UIColor.ksr_text_navy_500
-      |> UILabel.lens.textAlignment .~ .Center
+      |> UILabel.lens.textAlignment .~ .center
       |> UILabel.lens.numberOfLines .~ 2
       |> UILabel.lens.text %~ { _ in Strings.Kickstarter_is_not_a_store() }
 
     self.disclaimerSecondaryLabel
       |> UILabel.lens.font .~ UIFont.ksr_caption1(size: 12)
       |> UILabel.lens.textColor .~ UIColor.ksr_text_navy_500
-      |> UILabel.lens.textAlignment .~ .Center
+      |> UILabel.lens.textAlignment .~ .center
       |> UILabel.lens.numberOfLines .~ 2
       |> UILabel.lens.text %~ { _ in Strings.Its_a_way_to_bring_creative_projects_to_life() }
 
     self.disclaimerTertiaryLabel
       |> UILabel.lens.font .~ UIFont.ksr_caption1(size: 12)
       |> UILabel.lens.textColor .~ UIColor.ksr_text_navy_700
-      |> UILabel.lens.textAlignment .~ .Center
+      |> UILabel.lens.textAlignment .~ .center
       |> UILabel.lens.numberOfLines .~ 2
       |> UILabel.lens.attributedText %~ { _ in
         NSAttributedString(
           string: Strings.Learn_more_about_accountability(),
-          attributes: [NSUnderlineStyleAttributeName: NSUnderlineStyle.StyleSingle.rawValue]
+          attributes: [NSUnderlineStyleAttributeName: NSUnderlineStyle.styleSingle.rawValue]
         )
     }
 
@@ -285,7 +285,7 @@ internal final class RewardPledgeViewController: UIViewController {
 
     self.loadingIndicatorView
       |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
-      |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .White
+      |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .white
       |> UIActivityIndicatorView.lens.color .~ .ksr_navy_900
 
     self.loadingOverlayView
@@ -309,15 +309,15 @@ internal final class RewardPledgeViewController: UIViewController {
       |> UILabel.lens.textColor .~ .ksr_navy_700
 
     self.readMoreContainerView
-      |> UIView.lens.backgroundColor .~ .clearColor()
+      |> UIView.lens.backgroundColor .~ .clear
       |> UIView.lens.userInteractionEnabled .~ true
 
-    self.readMoreGradientView.backgroundColor = .clearColor()
+    self.readMoreGradientView.backgroundColor = .clear
     self.readMoreGradientView.startPoint = .zero
     self.readMoreGradientView.endPoint = CGPoint(x: 1, y: 0)
     self.readMoreGradientView.setGradient(
-      [(UIColor.ksr_grey_100.colorWithAlphaComponent(0.0), 0.0),
-        (UIColor.ksr_grey_100.colorWithAlphaComponent(1.0), 1.0)]
+      [(UIColor.ksr_grey_100.withAlphaComponent(0.0), 0.0),
+        (UIColor.ksr_grey_100.withAlphaComponent(1.0), 1.0)]
     )
 
     self.readMoreLabel
@@ -335,7 +335,7 @@ internal final class RewardPledgeViewController: UIViewController {
                                             bottom: Styles.grid(2),
                                             right: Styles.grid(4))
       |> roundedStyle(cornerRadius: 2)
-      |> UIView.lens.layer.borderColor .~ UIColor.ksr_grey_400.CGColor
+      |> UIView.lens.layer.borderColor .~ UIColor.ksr_grey_400.cgColor
       |> UIView.lens.layer.borderWidth .~ 1
 
     self.pledgeCurrencyLabel
@@ -351,14 +351,14 @@ internal final class RewardPledgeViewController: UIViewController {
       |> UILabel.lens.text %~ { _ in Strings.Your_pledge_amount() }
 
     self.pledgeStackView
-      |> UIStackView.lens.alignment .~ .FirstBaseline
+      |> UIStackView.lens.alignment .~ .firstBaseline
       |> UIStackView.lens.spacing .~ Styles.grid(1)
 
     self.pledgeTextField
-      |> UITextField.lens.borderStyle .~ .None
+      |> UITextField.lens.borderStyle .~ .none
       |> UITextField.lens.textColor .~ UIColor.ksr_text_green_700
       |> UITextField.lens.font .~ UIFont.ksr_headline(size: 14)
-      |> UITextField.lens.keyboardType .~ .NumberPad
+      |> UITextField.lens.keyboardType .~ .numberPad
 
     self.rootStackView
       |> UIStackView.lens.layoutMargins .~ .init(topBottom: Styles.grid(4) + Styles.grid(2),
@@ -369,7 +369,7 @@ internal final class RewardPledgeViewController: UIViewController {
     self.scrollView
       |> UIScrollView.lens.layoutMargins .~ .init(all: Styles.grid(2))
       |> UIScrollView.lens.delaysContentTouches .~ false
-      |> UIScrollView.lens.keyboardDismissMode .~ .Interactive
+      |> UIScrollView.lens.keyboardDismissMode .~ .interactive
 
     self.separatorViews
       ||> separatorStyle
@@ -382,7 +382,7 @@ internal final class RewardPledgeViewController: UIViewController {
     self.shippingAmountLabel
       |> UILabel.lens.font .~ .ksr_caption1(size: 12)
       |> UILabel.lens.textColor .~ .ksr_text_navy_500
-      |> UILabel.lens.contentCompressionResistancePriorityForAxis(.Horizontal) .~ UILayoutPriorityRequired
+      |> UILabel.lens.contentCompressionResistancePriorityForAxis(.horizontal) .~ UILayoutPriorityRequired
 
     self.shippingInputStackView
       |> UIStackView.lens.spacing .~ Styles.grid(2)
@@ -398,24 +398,24 @@ internal final class RewardPledgeViewController: UIViewController {
 
     self.shippingMenuStackView
       |> UIStackView.lens.spacing .~ Styles.grid(1)
-      |> UIStackView.lens.alignment .~ .Center
+      |> UIStackView.lens.alignment .~ .center
       |> UIStackView.lens.userInteractionEnabled .~ false
 
     self.shippingContainerView
       |> UIView.lens.layoutMargins .~
         .init(top: Styles.grid(2), left: Styles.grid(2), bottom: Styles.grid(2), right: Styles.grid(4))
       |> roundedStyle(cornerRadius: 2)
-      |> UIView.lens.layer.borderColor .~ UIColor.ksr_grey_400.CGColor
+      |> UIView.lens.layer.borderColor .~ UIColor.ksr_grey_400.cgColor
       |> UIView.lens.layer.borderWidth .~ 1
 
     self.shippingDestinationButton
-      |> UIButton.lens.backgroundColor(forState: .Highlighted) .~ UIColor.ksr_navy_200
+      |> UIButton.lens.backgroundColor(forState: .highlighted) .~ UIColor.ksr_navy_200
       |> UIButton.lens.isAccessibilityElement .~ true
       |> UIButton.lens.accessibilityHint %~ { _ in Strings.Opens_shipping_options() }
 
     self.shippingStackView
       |> UIStackView.lens.spacing .~ Styles.gridHalf(1)
-      |> UIStackView.lens.alignment .~ .FirstBaseline
+      |> UIStackView.lens.alignment .~ .firstBaseline
 
     self.titleLabel
       |> UILabel.lens.font .~ UIFont.ksr_title3(size: 17)
@@ -466,66 +466,66 @@ internal final class RewardPledgeViewController: UIViewController {
 
     self.viewModel.outputs.goToPaymentAuthorization
       .observeForControllerAction()
-      .observeNext { [weak self] in self?.goToPaymentAuthorization(request: $0) }
+      .observeValues { [weak self] in self?.goToPaymentAuthorization(request: $0) }
 
     self.viewModel.outputs.setStripePublishableKey
       .observeForUI()
-      .observeNext { STPPaymentConfiguration.sharedConfiguration().publishableKey = $0 }
+      .observeValues { STPPaymentConfiguration.shared().publishableKey = $0 }
 
     self.viewModel.outputs.setStripeAppleMerchantIdentifier
       .observeForUI()
-      .observeNext { STPPaymentConfiguration.sharedConfiguration().appleMerchantIdentifier = $0 }
+      .observeValues { STPPaymentConfiguration.shared().appleMerchantIdentifier = $0 }
 
     self.viewModel.outputs.goToShippingPicker
       .observeForControllerAction()
-      .observeNext { [weak self] in
+      .observeValues { [weak self] in
         self?.goToShippingPicker(project: $0, shippingRules: $1, selectedShippingRule: $2)
     }
 
     self.viewModel.outputs.items
       .observeForUI()
-      .observeNext { [weak self] in self?.load(items: $0) }
+      .observeValues { [weak self] in self?.load(items: $0) }
 
     self.viewModel.outputs.dismissViewController
       .observeForControllerAction()
-      .observeNext { [weak self] in self?.dismissViewControllerAnimated(true, completion: nil) }
+      .observeValues { [weak self] in self?.dismiss(animated: true, completion: nil) }
 
     self.viewModel.outputs.expandRewardDescription
       .observeForUI()
-      .observeNext { [weak self] in
+      .observeValues { [weak self] in
         self?.descriptionLabel.numberOfLines = 0
         self?.view.setNeedsLayout()
-        UIView.animateWithDuration(0.2) {
+        UIView.animate(withDuration: 0.2) {
           self?.view.layoutIfNeeded()
         }
     }
 
     self.viewModel.outputs.itemsContainerHidden
       .observeForUI()
-      .observeNext { [weak self] hidden in
-        UIView.animateWithDuration(0.2) {
-          self?.itemsStackView.hidden = hidden
+      .observeValues { [weak self] hidden in
+        UIView.animate(withDuration: 0.2) {
+          self?.itemsStackView.isHidden = hidden
         }
     }
 
     self.viewModel.outputs.goToCheckout
       .observeForControllerAction()
-      .observeNext { [weak self] initialRequest, project, reward in
+      .observeValues { [weak self] initialRequest, project, reward in
         self?.goToCheckout(initialRequest: initialRequest, project: project, reward: reward)
     }
 
     self.viewModel.outputs.goToLoginTout
       .observeForControllerAction()
-      .observeNext { [weak self] in self?.goToLoginTout() }
+      .observeValues { [weak self] in self?.goToLoginTout() }
 
     self.viewModel.outputs.goToThanks
       .observeForControllerAction()
-      .observeNext { [weak self] project in self?.goToThanks(project: project) }
+      .observeValues { [weak self] project in self?.goToThanks(project: project) }
 
     self.viewModel.outputs.showAlert
       .observeForControllerAction()
-      .observeNext { [weak self] in
-        self?.presentViewController(
+      .observeValues { [weak self] in
+        self?.present(
           UIAlertController.alertController(forError: .genericError(message: $0)),
           animated: true,
           completion: nil
@@ -534,14 +534,14 @@ internal final class RewardPledgeViewController: UIViewController {
 
     self.viewModel.outputs.goToTrustAndSafety
       .observeForUI()
-      .observeNext { [weak self] in self?.goToTrustAndSafety() }
+      .observeValues { [weak self] in self?.goToTrustAndSafety() }
 
     Keyboard.change.observeForUI()
-      .observeNext { [weak self] in self?.animateTextViewConstraint($0) }
+      .observeValues { [weak self] in self?.animateTextViewConstraint($0) }
   }
   // swiftlint:enable function_body_length
 
-  private func goToCheckout(initialRequest initialRequest: NSURLRequest,
+  fileprivate func goToCheckout(initialRequest: URLRequest,
                                            project: Project,
                                            reward: Reward) {
 
@@ -551,38 +551,38 @@ internal final class RewardPledgeViewController: UIViewController {
     self.navigationController?.pushViewController(vc, animated: true)
   }
 
-  private func goToLoginTout() {
+  fileprivate func goToLoginTout() {
     let vc = LoginToutViewController.configuredWith(loginIntent: .backProject)
     let nav = UINavigationController(rootViewController: vc)
-    nav.modalPresentationStyle = .FormSheet
+    nav.modalPresentationStyle = .formSheet
 
-    self.presentViewController(nav, animated: true, completion: nil)
+    self.present(nav, animated: true, completion: nil)
   }
 
-  private func goToTrustAndSafety() {
+  fileprivate func goToTrustAndSafety() {
     let vc = HelpWebViewController.configuredWith(helpType: .trust)
     let nav = UINavigationController(rootViewController: vc)
-    self.presentViewController(nav, animated: true, completion: nil)
+    self.present(nav, animated: true, completion: nil)
   }
 
-  private func goToPaymentAuthorization(request request: PKPaymentRequest) {
+  fileprivate func goToPaymentAuthorization(request: PKPaymentRequest) {
     let vc = PKPaymentAuthorizationViewController(paymentRequest: request)
     vc.delegate = self
-    self.presentViewController(vc, animated: true, completion: nil)
+    self.present(vc, animated: true, completion: nil)
   }
 
-  private func goToShippingPicker(project project: Project,
+  fileprivate func goToShippingPicker(project: Project,
                                           shippingRules: [ShippingRule],
                                           selectedShippingRule: ShippingRule) {
     let vc = RewardShippingPickerViewController.configuredWith(project: project,
                                                                shippingRules: shippingRules,
                                                                selectedShippingRule: selectedShippingRule,
                                                                delegate: self)
-    vc.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
-    self.presentViewController(vc, animated: true, completion: nil)
+    vc.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
+    self.present(vc, animated: true, completion: nil)
   }
 
-  private func goToThanks(project project: Project) {
+  fileprivate func goToThanks(project: Project) {
     let thanksVC = ThanksViewController.configuredWith(project: project)
     let stack = self.navigationController?.viewControllers
     guard let root = stack?.first else {
@@ -591,12 +591,12 @@ internal final class RewardPledgeViewController: UIViewController {
     self.navigationController?.setViewControllers([root, thanksVC], animated: true)
   }
 
-  private func load(items items: [String]) {
+  fileprivate func load(items: [String]) {
     self.itemsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
 
     let allItems = items.isEmpty ? [] : [Strings.rewards_info_includes()] + items
 
-    for (idx, item) in allItems.enumerate() {
+    for (idx, item) in allItems.enumerated() {
       let label = UILabel()
         |> UILabel.lens.font .~ (idx == 0 ? .ksr_headline(size: 13) : .ksr_body(size: 14))
         |> UILabel.lens.textColor .~ (idx == 0 ? .ksr_text_navy_700 : .ksr_text_navy_600)
@@ -605,66 +605,66 @@ internal final class RewardPledgeViewController: UIViewController {
 
       let separator = UIView()
         |> separatorStyle
-      separator.heightAnchor.constraintEqualToConstant(1).active = true
+      separator.heightAnchor.constraint(equalToConstant: 1).isActive = true
 
       self.itemsStackView.addArrangedSubview(label)
       self.itemsStackView.addArrangedSubview(separator)
     }
   }
 
-  @objc private func shippingButtonTapped() {
+  @objc fileprivate func shippingButtonTapped() {
     self.viewModel.inputs.shippingButtonTapped()
   }
 
-  @objc private func disclaimerButtonTapped() {
+  @objc fileprivate func disclaimerButtonTapped() {
     self.viewModel.inputs.disclaimerButtonTapped()
   }
 
-  @objc private func continueWithPaymentButtonTapped() {
+  @objc fileprivate func continueWithPaymentButtonTapped() {
     self.viewModel.inputs.continueToPaymentsButtonTapped()
   }
 
-  @objc private func differentPaymentMethodTapped() {
+  @objc fileprivate func differentPaymentMethodTapped() {
     self.viewModel.inputs.differentPaymentMethodButtonTapped()
   }
 
-  @objc private func applePayButtonTapped() {
+  @objc fileprivate func applePayButtonTapped() {
     self.viewModel.inputs.applePayButtonTapped()
   }
 
-  @objc private func expandRewardDescriptionTapped() {
+  @objc fileprivate func expandRewardDescriptionTapped() {
     self.viewModel.inputs.expandDescriptionTapped()
   }
 
-  @IBAction private func closeButtonTapped() {
+  @IBAction fileprivate func closeButtonTapped() {
     self.viewModel.inputs.closeButtonTapped()
   }
 
-  @objc private func pledgedTextFieldChanged() {
+  @objc fileprivate func pledgedTextFieldChanged() {
     self.viewModel.inputs.pledgeTextFieldChanged(self.pledgeTextField.text ?? "")
   }
 
-  @objc private func pledgedTextFieldDoneEditing() {
+  @objc fileprivate func pledgedTextFieldDoneEditing() {
     self.viewModel.inputs.pledgeTextFieldDidEndEditing()
     self.pledgeTextField.resignFirstResponder()
   }
 
-  @objc private func updatePledgeButtonTapped() {
+  @objc fileprivate func updatePledgeButtonTapped() {
     self.viewModel.inputs.updatePledgeButtonTapped()
   }
 
-  @objc private func changePaymentMethodButtonTapped() {
+  @objc fileprivate func changePaymentMethodButtonTapped() {
     self.viewModel.inputs.changePaymentMethodButtonTapped()
   }
 
-  @objc private func cancelPledgeButtonTapped() {
+  @objc fileprivate func cancelPledgeButtonTapped() {
     self.viewModel.inputs.cancelPledgeButtonTapped()
   }
 
-  private func animateTextViewConstraint(change: Keyboard.Change) {
+  fileprivate func animateTextViewConstraint(_ change: Keyboard.Change) {
     guard self.view.window != nil else { return }
 
-    UIView.animateWithDuration(change.duration, delay: 0.0, options: change.options, animations: {
+    UIView.animate(withDuration: change.duration, delay: 0.0, options: change.options, animations: {
       self.bottomConstraint.constant = self.view.frame.height - change.frame.minY
       self.scrollView.contentOffset.y += self.bottomConstraint.constant
     }, completion: nil)
@@ -675,44 +675,44 @@ internal final class RewardPledgeViewController: UIViewController {
 extension RewardPledgeViewController: PKPaymentAuthorizationViewControllerDelegate {
 
   internal func paymentAuthorizationViewControllerWillAuthorizePayment(
-    controller: PKPaymentAuthorizationViewController) {
+    _ controller: PKPaymentAuthorizationViewController) {
     self.viewModel.inputs.paymentAuthorizationWillAuthorizePayment()
   }
 
   internal func paymentAuthorizationViewController(
-    controller: PKPaymentAuthorizationViewController,
+    _ controller: PKPaymentAuthorizationViewController,
     didAuthorizePayment payment: PKPayment,
-    completion: (PKPaymentAuthorizationStatus) -> Void) {
+    completion: @escaping (PKPaymentAuthorizationStatus) -> Void) {
 
     self.viewModel.inputs.paymentAuthorization(didAuthorizePayment: .init(payment: payment))
 
-    STPAPIClient.sharedClient().createTokenWithPayment(payment) { [weak self] token, error in
-      if let status = self?.viewModel.inputs.stripeCreatedToken(stripeToken: token?.tokenId, error: error) {
+    STPAPIClient.shared().createToken(with: payment) { [weak self] token, error in
+      if let status = self?.viewModel.inputs.stripeCreatedToken(stripeToken: token?.tokenId, error: error as NSError?) {
         completion(status)
       } else {
-        completion(.Failure)
+        completion(.failure)
       }
     }
   }
 
   internal func paymentAuthorizationViewControllerDidFinish(
-    controller: PKPaymentAuthorizationViewController) {
+    _ controller: PKPaymentAuthorizationViewController) {
 
-    controller.dismissViewControllerAnimated(true) {
+    controller.dismiss(animated: true) {
       self.viewModel.inputs.paymentAuthorizationDidFinish()
     }
   }
 }
 
 extension RewardPledgeViewController: RewardShippingPickerViewControllerDelegate {
-  internal func rewardShippingPickerViewControllerCancelled(controller: RewardShippingPickerViewController) {
-    controller.dismissViewControllerAnimated(true, completion: nil)
+  internal func rewardShippingPickerViewControllerCancelled(_ controller: RewardShippingPickerViewController) {
+    controller.dismiss(animated: true, completion: nil)
   }
 
-  internal func rewardShippingPickerViewController(controller: RewardShippingPickerViewController,
+  internal func rewardShippingPickerViewController(_ controller: RewardShippingPickerViewController,
                                                    choseShippingRule: ShippingRule) {
 
-    controller.dismissViewControllerAnimated(true) {
+    controller.dismiss(animated: true) {
       self.viewModel.inputs.change(shippingRule: choseShippingRule)
     }
   }

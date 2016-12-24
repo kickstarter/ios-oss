@@ -5,28 +5,28 @@ import Social
 import UIKit
 
 internal protocol ProjectNavBarViewControllerDelegate: class {
-  func projectNavBarControllerDidTapTitle(controller: ProjectNavBarViewController)
+  func projectNavBarControllerDidTapTitle(_ controller: ProjectNavBarViewController)
 }
 
 internal final class ProjectNavBarViewController: UIViewController {
   internal weak var delegate: ProjectNavBarViewControllerDelegate?
-  private let viewModel: ProjectNavBarViewModelType = ProjectNavBarViewModel()
-  private let shareViewModel: ShareViewModelType = ShareViewModel()
+  fileprivate let viewModel: ProjectNavBarViewModelType = ProjectNavBarViewModel()
+  fileprivate let shareViewModel: ShareViewModelType = ShareViewModel()
 
-  @IBOutlet private weak var backgroundGradientView: GradientView!
-  @IBOutlet private weak var categoryButton: UIButton!
-  @IBOutlet private weak var closeButton: UIButton!
-  @IBOutlet private weak var navContainerView: UIView!
-  @IBOutlet private weak var projectNameLabel: UILabel!
-  @IBOutlet private weak var shareButton: UIButton!
-  @IBOutlet private weak var starButton: UIButton!
+  @IBOutlet fileprivate weak var backgroundGradientView: GradientView!
+  @IBOutlet fileprivate weak var categoryButton: UIButton!
+  @IBOutlet fileprivate weak var closeButton: UIButton!
+  @IBOutlet fileprivate weak var navContainerView: UIView!
+  @IBOutlet fileprivate weak var projectNameLabel: UILabel!
+  @IBOutlet fileprivate weak var shareButton: UIButton!
+  @IBOutlet fileprivate weak var starButton: UIButton!
 
-  internal func configureWith(project project: Project, refTag: RefTag?) {
+  internal func configureWith(project: Project, refTag: RefTag?) {
     self.viewModel.inputs.configureWith(project: project, refTag: refTag)
     self.shareViewModel.inputs.configureWith(shareContext: .project(project))
   }
 
-  internal func setProjectImageIsVisible(visible: Bool) {
+  internal func setProjectImageIsVisible(_ visible: Bool) {
     self.viewModel.inputs.projectImageIsVisible(visible)
   }
 
@@ -41,22 +41,22 @@ internal final class ProjectNavBarViewController: UIViewController {
   internal override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.closeButton.addTarget(self, action: #selector(closeButtonTapped), forControlEvents: .TouchUpInside)
-    self.shareButton.addTarget(self, action: #selector(shareButtonTapped), forControlEvents: .TouchUpInside)
-    self.starButton.addTarget(self, action: #selector(starButtonTapped), forControlEvents: .TouchUpInside)
+    self.closeButton.addTarget(self, action: #selector(closeButtonTapped), for: .touchUpInside)
+    self.shareButton.addTarget(self, action: #selector(shareButtonTapped), for: .touchUpInside)
+    self.starButton.addTarget(self, action: #selector(starButtonTapped), for: .touchUpInside)
     self.projectNameLabel.addGestureRecognizer(
       UITapGestureRecognizer(target: self, action: #selector(projectNameTapped))
     )
 
-    NSNotificationCenter
-      .defaultCenter()
-      .addObserverForName(CurrentUserNotifications.sessionStarted, object: nil, queue: nil) { [weak self] _ in
+    NotificationCenter
+      .default
+      .addObserver(forName: NSNotification.Name(rawValue: CurrentUserNotifications.sessionStarted), object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()
     }
 
-    NSNotificationCenter
-      .defaultCenter()
-      .addObserverForName(CurrentUserNotifications.sessionEnded, object: nil, queue: nil) { [weak self] _ in
+    NotificationCenter
+      .default
+      .addObserver(forName: NSNotification.Name(rawValue: CurrentUserNotifications.sessionEnded), object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionEnded()
     }
 
@@ -80,10 +80,10 @@ internal final class ProjectNavBarViewController: UIViewController {
         .~ .init(top: 0, left: Styles.grid(1), bottom: 0, right: Styles.grid(-1))
       |> UIButton.lens.contentEdgeInsets
         .~ .init(top: Styles.grid(1), left: Styles.grid(2), bottom: Styles.grid(1), right: Styles.grid(3))
-      |> UIButton.lens.image(forState: .Normal) .~ image(named: "category-icon")
+      |> UIButton.lens.image(forState: .normal) .~ image(named: "category-icon")
       |> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 12)
-      |> (UIButton.lens.titleLabel • UILabel.lens.lineBreakMode) .~ .ByTruncatingTail
-      |> UIButton.lens.backgroundColor(forState: .Highlighted) .~ .init(white: 0, alpha: 0.1)
+      |> (UIButton.lens.titleLabel • UILabel.lens.lineBreakMode) .~ .byTruncatingTail
+      |> UIButton.lens.backgroundColor(forState: .highlighted) .~ .init(white: 0, alpha: 0.1)
       |> UIButton.lens.adjustsImageWhenHighlighted .~ true
       |> UIButton.lens.adjustsImageWhenDisabled .~ true
       |> UIButton.lens.userInteractionEnabled .~ false
@@ -91,7 +91,7 @@ internal final class ProjectNavBarViewController: UIViewController {
 
     self.closeButton
       |> UIButton.lens.title(forState: .Normal) .~ nil
-      |> UIButton.lens.tintColor .~ .whiteColor()
+      |> UIButton.lens.tintColor .~ .white
       |> UIButton.lens.image(forState: .Normal) .~ image(named: "close-icon")
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.accessibility_projects_buttons_close() }
       |> UIButton.lens.accessibilityHint %~ { _ in
@@ -104,7 +104,7 @@ internal final class ProjectNavBarViewController: UIViewController {
     self.projectNameLabel
       |> UILabel.lens.font .~ .ksr_body(size: 14)
       |> UILabel.lens.textColor .~ .ksr_text_navy_700
-      |> UILabel.lens.textAlignment .~ .Center
+      |> UILabel.lens.textAlignment .~ .center
       |> UILabel.lens.numberOfLines .~ 2
       |> UILabel.lens.minimumScaleFactor .~ 0.8
       |> UILabel.lens.adjustsFontSizeToFitWidth .~ true
@@ -112,13 +112,13 @@ internal final class ProjectNavBarViewController: UIViewController {
 
     self.shareButton
       |> UIButton.lens.title(forState: .Normal) .~ nil
-      |> UIButton.lens.tintColor .~ .whiteColor()
+      |> UIButton.lens.tintColor .~ .white
       |> UIButton.lens.image(forState: .Normal) .~ image(named: "share-icon")
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.dashboard_accessibility_label_share_project() }
 
     self.starButton
       |> UIButton.lens.title(forState: .Normal) .~ nil
-      |> UIButton.lens.tintColor .~ .whiteColor()
+      |> UIButton.lens.tintColor .~ .white
       |> UIButton.lens.image(forState: .Normal) .~ image(named: "star-icon")
       |> UIButton.lens.image(forState: .Highlighted) .~ image(named: "star-filled-icon")
       |> UIButton.lens.image(forState: .Selected) .~ image(named: "star-filled-icon")
@@ -135,7 +135,7 @@ internal final class ProjectNavBarViewController: UIViewController {
     self.categoryButton.rac.tintColor = self.viewModel.outputs.categoryButtonTintColor
     self.viewModel.outputs.categoryButtonTitleColor
       .observeForUI()
-      .observeNext { [weak self] in self?.categoryButton.setTitleColor($0, forState: .Normal) }
+      .observeValues { [weak self] in self?.categoryButton.setTitleColor($0, for: .normal) }
     self.categoryButton.rac.title = self.viewModel.outputs.categoryButtonText
     self.projectNameLabel.rac.text = self.viewModel.outputs.projectName
     self.starButton.rac.accessibilityHint = self.viewModel.outputs.starButtonAccessibilityHint
@@ -143,73 +143,73 @@ internal final class ProjectNavBarViewController: UIViewController {
 
     self.viewModel.outputs.showProjectStarredPrompt
       .observeForControllerAction()
-      .observeNext { [weak self] in
+      .observeValues { [weak self] in
         self?.showProjectStarredPrompt(message: $0)
     }
 
     self.viewModel.outputs.goToLoginTout
       .observeForControllerAction()
-      .observeNext { [weak self] in
+      .observeValues { [weak self] in
         self?.goToLoginTout()
     }
 
     self.viewModel.outputs.categoryHiddenAndAnimate
       .observeForUI()
-      .observeNext { [weak self] hidden, animate in
-        UIView.animateWithDuration(animate ? 0.2 : 0) {
+      .observeValues { [weak self] hidden, animate in
+        UIView.animate(withDuration: animate ? 0.2 : 0) {
           self?.categoryButton.alpha = hidden ? 0 : 1
         }
     }
 
     self.viewModel.outputs.titleHiddenAndAnimate
       .observeForUI()
-      .observeNext { [weak self] hidden, animate in
-        UIView.animateWithDuration(animate ? 0.2 : 0) {
+      .observeValues { [weak self] hidden, animate in
+        UIView.animate(withDuration: animate ? 0.2 : 0) {
           self?.projectNameLabel.alpha = hidden ? 0 : 1
         }
     }
 
     self.viewModel.outputs.backgroundOpaqueAndAnimate
       .observeForUI()
-      .observeNext { [weak self] opaque, animate in
-        UIView.animateWithDuration(animate ? 0.2 : 0) {
-          self?.closeButton.tintColor = opaque ? .ksr_text_navy_700 : .whiteColor()
-          self?.shareButton.tintColor = opaque ? .ksr_text_navy_700 : .whiteColor()
-          self?.starButton.tintColor = opaque ? .ksr_text_navy_700 : .whiteColor()
-          self?.navContainerView.backgroundColor = opaque ? .whiteColor() : .clearColor()
+      .observeValues { [weak self] opaque, animate in
+        UIView.animate(withDuration: animate ? 0.2 : 0) {
+          self?.closeButton.tintColor = opaque ? .ksr_text_navy_700 : .white
+          self?.shareButton.tintColor = opaque ? .ksr_text_navy_700 : .white
+          self?.starButton.tintColor = opaque ? .ksr_text_navy_700 : .white
+          self?.navContainerView.backgroundColor = opaque ? .white : .clear
         }
     }
 
     self.viewModel.outputs.dismissViewController
       .observeForUI()
-      .observeNext { [weak self] in
-        self?.dismissViewControllerAnimated(true, completion: nil)
+      .observeValues { [weak self] in
+        self?.dismiss(animated: true, completion: nil)
     }
 
     self.shareViewModel.outputs.showShareSheet
       .observeForControllerAction()
-      .observeNext { [weak self] in self?.showShareSheet($0) }
+      .observeValues { [weak self] in self?.showShareSheet($0) }
 
     self.shareViewModel.outputs.showShareCompose
       .observeForControllerAction()
-      .observeNext { [weak self] in self?.showShareCompose($0) }
+      .observeValues { [weak self] in self?.showShareCompose($0) }
   }
   // swiftlint:enable function_body_length
 
-  private func showProjectStarredPrompt(message message: String) {
+  fileprivate func showProjectStarredPrompt(message: String) {
     let alert = UIAlertController.alert(nil, message: message, handler: nil)
-    self.presentViewController(alert, animated: true, completion: nil)
+    self.present(alert, animated: true, completion: nil)
   }
 
-  private func goToLoginTout() {
+  fileprivate func goToLoginTout() {
     let vc = LoginToutViewController.configuredWith(loginIntent: .starProject)
     let nav = UINavigationController(rootViewController: vc)
-    nav.modalPresentationStyle = .FormSheet
+    nav.modalPresentationStyle = .formSheet
 
-    self.presentViewController(nav, animated: true, completion: nil)
+    self.present(nav, animated: true, completion: nil)
   }
 
-  private func showShareSheet(controller: UIActivityViewController) {
+  fileprivate func showShareSheet(_ controller: UIActivityViewController) {
     controller.completionWithItemsHandler = { [weak self] in
       self?.shareViewModel.inputs.shareActivityCompletion(activityType: $0,
                                                           completed: $1,
@@ -217,35 +217,35 @@ internal final class ProjectNavBarViewController: UIViewController {
                                                           activityError: $3)
     }
 
-    if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
-      controller.modalPresentationStyle = .Popover
+    if UIDevice.current.userInterfaceIdiom == .pad {
+      controller.modalPresentationStyle = .popover
       let popover = controller.popoverPresentationController
       popover?.sourceView = self.shareButton
     }
 
-    self.presentViewController(controller, animated: true, completion: nil)
+    self.present(controller, animated: true, completion: nil)
   }
 
-  private func showShareCompose(controller: SLComposeViewController) {
+  fileprivate func showShareCompose(_ controller: SLComposeViewController) {
     controller.completionHandler = { [weak self] in
       self?.shareViewModel.inputs.shareComposeCompletion(result: $0)
     }
-    self.presentViewController(controller, animated: true, completion: nil)
+    self.present(controller, animated: true, completion: nil)
   }
 
-  @objc private func closeButtonTapped() {
+  @objc fileprivate func closeButtonTapped() {
     self.viewModel.inputs.closeButtonTapped()
   }
 
-  @objc private func shareButtonTapped() {
+  @objc fileprivate func shareButtonTapped() {
     self.shareViewModel.inputs.shareButtonTapped()
   }
 
-  @objc private func starButtonTapped() {
+  @objc fileprivate func starButtonTapped() {
     self.viewModel.inputs.starButtonTapped()
   }
 
-  @objc private func projectNameTapped() {
+  @objc fileprivate func projectNameTapped() {
     self.delegate?.projectNavBarControllerDidTapTitle(self)
   }
 }

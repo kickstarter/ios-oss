@@ -9,22 +9,22 @@ private let durationKeyPath = "currentItem.duration"
 private let rateKeyPath = "rate"
 
 internal protocol VideoViewControllerDelegate: class {
-  func videoViewControllerDidFinish(controller: VideoViewController)
-  func videoViewControllerDidStart(controller: VideoViewController)
+  func videoViewControllerDidFinish(_ controller: VideoViewController)
+  func videoViewControllerDidStart(_ controller: VideoViewController)
 }
 
 internal final class VideoViewController: UIViewController {
   internal weak var delegate: VideoViewControllerDelegate?
-  private let viewModel: VideoViewModelType = VideoViewModel()
-  private var playerController: AVPlayerViewController!
-  private var timeObserver: AnyObject?
+  fileprivate let viewModel: VideoViewModelType = VideoViewModel()
+  fileprivate var playerController: AVPlayerViewController!
+  fileprivate var timeObserver: AnyObject?
 
-  @IBOutlet private weak var playButton: UIButton!
-  @IBOutlet private weak var projectImageView: UIImageView!
-  @IBOutlet private weak var videoOverlayView: UIView!
-  @IBOutlet private weak var videoContainerView: UIView!
+  @IBOutlet fileprivate weak var playButton: UIButton!
+  @IBOutlet fileprivate weak var projectImageView: UIImageView!
+  @IBOutlet fileprivate weak var videoOverlayView: UIView!
+  @IBOutlet fileprivate weak var videoContainerView: UIView!
 
-  internal static func configuredWith(project project: Project) -> VideoViewController {
+  internal static func configuredWith(project: Project) -> VideoViewController {
     let vc = Storyboard.Video.instantiate(VideoViewController)
     vc.viewModel.inputs.configureWith(project: project)
     return vc
@@ -35,22 +35,22 @@ internal final class VideoViewController: UIViewController {
 
     self.playerController = self.childViewControllers.flatMap { $0 as? AVPlayerViewController }.first
 
-    self.playButton.addTarget(self, action: #selector(playButtonTapped), forControlEvents: .TouchUpInside)
+    self.playButton.addTarget(self, action: #selector(playButtonTapped), for: .touchUpInside)
 
     self.viewModel.inputs.viewDidLoad()
   }
 
-  internal override func viewDidAppear(animated: Bool) {
+  internal override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     self.viewModel.inputs.viewDidAppear()
   }
 
-  internal override func viewDidDisappear(animated: Bool) {
+  internal override func viewDidDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
     self.viewModel.inputs.viewDidDisappear(animated: animated)
   }
 
-  internal override func viewWillDisappear(animated: Bool) {
+  internal override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
     self.viewModel.inputs.viewWillDisappear()
   }
@@ -65,7 +65,7 @@ internal final class VideoViewController: UIViewController {
       |> UIImageView.lens.accessibilityElementsHidden .~ true
 
     self.videoOverlayView
-      |> UIView.lens.backgroundColor .~ .blackColor()
+      |> UIView.lens.backgroundColor .~ .black
       |> UIView.lens.alpha .~ 0.1
   }
 
@@ -79,65 +79,65 @@ internal final class VideoViewController: UIViewController {
 
     self.viewModel.outputs.addCompletionObserver
       .observeForControllerAction()
-      .observeNext { [weak self] time in
+      .observeValues { [weak self] time in
         self?.addCompletionObserver(atTime: time)
     }
 
     self.viewModel.outputs.configurePlayerWithURL
       .observeForControllerAction()
-      .observeNext { [weak self] url in
+      .observeValues { [weak self] url in
         self?.configurePlayer(withURL: url)
     }
 
     self.viewModel.outputs.notifyDelegateThatVideoDidFinish
       .observeForUI()
-      .observeNext { [weak self] in
+      .observeValues { [weak self] in
         guard let _self = self else { return }
         self?.delegate?.videoViewControllerDidFinish(_self)
     }
 
     self.viewModel.outputs.notifyDelegateThatVideoDidStart
       .observeForUI()
-      .observeNext { [weak self] in
+      .observeValues { [weak self] in
         guard let _self = self else { return }
         self?.delegate?.videoViewControllerDidStart(_self)
     }
 
     self.viewModel.outputs.pauseVideo
       .observeForControllerAction()
-      .observeNext { [weak self] in
+      .observeValues { [weak self] in
         self?.playerController.player?.pause()
     }
 
     self.viewModel.outputs.playVideo
       .observeForControllerAction()
-      .observeNext { [weak self] in
+      .observeValues { [weak self] in
         self?.playerController.player?.play()
     }
 
     self.viewModel.outputs.projectImageHidden
       .observeForControllerAction()
-      .observeNext { [weak self] hidden in
-        UIView.animateWithDuration(0.5) {
+      .observeValues { [weak self] hidden in
+        UIView.animate(withDuration: 0.5) {
           self?.projectImageView.alpha = hidden ? 0 : 1
         }
     }
 
     self.viewModel.outputs.projectImageURL
       .observeForControllerAction()
-      .on(next: { [weak self] _ in
+      .on(event: { [weak self] _ in
         self?.projectImageView.af_cancelImageRequest()
         self?.projectImageView.image = nil
         })
       .skipNil()
-      .observeNext { [weak self] url in
+      .observeValues { [weak self] url in
         self?.projectImageView.af_setImageWithURL(url)
     }
 
     self.viewModel.outputs.seekToBeginning
       .observeForControllerAction()
-      .observeNext { [weak self] in
-        self?.playerController.player?.seekToTime(kCMTimeZero)
+      .observeValues { [weak self] in
+        self?.playerController.player?.seek(to: kCMTimeZero)
     }
   }
   // swiftlint:enable function_body_length
@@ -145,35 +145,35 @@ internal final class VideoViewController: UIViewController {
   func addCompletionObserver(atTime time: CMTime) {
     guard let player = self.playerController.player else { return }
 
-    self.timeObserver = player.addBoundaryTimeObserverForTimes(
-      [NSValue(CMTime: time)],
-      queue: dispatch_get_main_queue()) { [weak self] _ in
+    self.timeObserver = player.addBoundaryTimeObserver(
+      forTimes: [NSValue(time: time)],
+      queue: DispatchQueue.main) { [weak self] _ in
         self?.viewModel.inputs.crossedCompletionThreshold()
-    }
+    } as AnyObject?
   }
 
-  internal func configurePlayer(withURL url: NSURL) {
+  internal func configurePlayer(withURL url: URL) {
     do {
       try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
     } catch let error as NSError {
       print("Audio playback error: \(error.localizedDescription)")
     }
 
-    self.playerController.player = AVPlayer(URL: url)
+    self.playerController.player = AVPlayer(url: url)
 
-    self.playerController.player?.addObserver(self, forKeyPath: durationKeyPath, options: .New, context: nil)
+    self.playerController.player?.addObserver(self, forKeyPath: durationKeyPath, options: .new, context: nil)
 
-    self.playerController.player?.addObserver(self, forKeyPath: rateKeyPath, options: .New, context: nil)
+    self.playerController.player?.addObserver(self, forKeyPath: rateKeyPath, options: .new, context: nil)
   }
 
-  internal override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?,
-                                                change: [String : AnyObject]?,
-                                                context: UnsafeMutablePointer<Void>) {
+  internal override func observeValue(forKeyPath keyPath: String?, of object: Any?,
+                                                change: [NSKeyValueChangeKey : Any]?,
+                                                context: UnsafeMutableRawPointer?) {
 
     guard let player = self.playerController.player else { return }
 
     if keyPath == rateKeyPath {
-      guard let rate = change?[NSKeyValueChangeNewKey] as? Double else { return }
+      guard let rate = change?[NSKeyValueChangeKey.newKey] as? Double else { return }
       guard let currentTime = player.currentItem?.currentTime() else { return }
       self.viewModel.inputs.rateChanged(toNew: rate, atTime: currentTime)
 
@@ -183,7 +183,7 @@ internal final class VideoViewController: UIViewController {
     }
   }
 
-  @objc private func playButtonTapped() {
+  @objc fileprivate func playButtonTapped() {
     self.viewModel.inputs.playButtonTapped()
   }
 

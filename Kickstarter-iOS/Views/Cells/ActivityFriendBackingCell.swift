@@ -1,24 +1,24 @@
 import KsApi
 import Library
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import UIKit
 
 internal final class ActivityFriendBackingCell: UITableViewCell, ValueCell {
-  private let viewModel: ActivityFriendBackingViewModel = ActivityFriendBackingViewModel()
+  fileprivate let viewModel: ActivityFriendBackingViewModel = ActivityFriendBackingViewModel()
 
-  @IBOutlet private weak var cardView: UIView!
-  @IBOutlet private weak var containerView: UIView!
-  @IBOutlet private weak var friendImageView: UIImageView!
-  @IBOutlet private weak var friendTitleLabel: UILabel!
-  @IBOutlet private weak var fundingProgressBarView: UIView!
-  @IBOutlet private weak var fundingProgressContainerView: UIView!
-  @IBOutlet private weak var fundingProgressLabel: UILabel!
-  @IBOutlet private weak var projectNameLabel: UILabel!
-  @IBOutlet private weak var projectImageView: UIImageView!
-  @IBOutlet private weak var projectTextContainerView: UIView!
+  @IBOutlet fileprivate weak var cardView: UIView!
+  @IBOutlet fileprivate weak var containerView: UIView!
+  @IBOutlet fileprivate weak var friendImageView: UIImageView!
+  @IBOutlet fileprivate weak var friendTitleLabel: UILabel!
+  @IBOutlet fileprivate weak var fundingProgressBarView: UIView!
+  @IBOutlet fileprivate weak var fundingProgressContainerView: UIView!
+  @IBOutlet fileprivate weak var fundingProgressLabel: UILabel!
+  @IBOutlet fileprivate weak var projectNameLabel: UILabel!
+  @IBOutlet fileprivate weak var projectImageView: UIImageView!
+  @IBOutlet fileprivate weak var projectTextContainerView: UIView!
 
-  func configureWith(value value: Activity) {
+  func configureWith(value: Activity) {
     self.viewModel.inputs.configureWith(activity: value)
   }
 
@@ -31,31 +31,31 @@ internal final class ActivityFriendBackingCell: UITableViewCell, ValueCell {
 
     self.viewModel.outputs.friendImageURL
       .observeForUI()
-      .on(next: { [weak friendImageView] _ in
+      .on(event: { [weak friendImageView] _ in
         friendImageView?.af_cancelImageRequest()
         friendImageView?.image = nil
       })
       .skipNil()
-      .observeNext { [weak friendImageView] url in
+      .observeValues { [weak friendImageView] url in
         friendImageView?.ksr_setImageWithURL(url)
     }
 
     self.viewModel.outputs.fundingProgressPercentage
       .observeForUI()
-      .observeNext { [weak self] progress in
+      .observeValues { [weak self] progress in
         let anchorX = progress == 0 ? 0 : 0.5 / progress
         self?.fundingProgressBarView.layer.anchorPoint = CGPoint(x: CGFloat(anchorX), y: 0.5)
-        self?.fundingProgressBarView.transform = CGAffineTransformMakeScale(CGFloat(progress), 1.0)
+        self?.fundingProgressBarView.transform = CGAffineTransform(scaleX: CGFloat(progress), y: 1.0)
     }
 
     self.viewModel.outputs.projectImageURL
       .observeForUI()
-      .on(next: { [weak projectImageView] _ in
+      .on(event: { [weak projectImageView] _ in
         projectImageView?.af_cancelImageRequest()
         projectImageView?.image = nil
       })
       .skipNil()
-      .observeNext { [weak projectImageView] url in
+      .observeValues { [weak projectImageView] url in
         projectImageView?.ksr_setImageWithURL(url)
     }
   }

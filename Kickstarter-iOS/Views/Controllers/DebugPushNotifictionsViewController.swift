@@ -4,9 +4,9 @@ import UIKit
 
 internal final class DebugPushNotificationsViewController: UIViewController {
 
-  @IBOutlet private weak var rootStackView: UIStackView!
-  @IBOutlet private weak var scrollView: UIScrollView!
-  @IBOutlet private var separatorViews: [UIView]!
+  @IBOutlet fileprivate weak var rootStackView: UIStackView!
+  @IBOutlet fileprivate weak var scrollView: UIScrollView!
+  @IBOutlet fileprivate var separatorViews: [UIView]!
 
   // swiftlint:disable function_body_length
   internal override func bindStyles() {
@@ -23,8 +23,8 @@ internal final class DebugPushNotificationsViewController: UIViewController {
     let titleLabels = self.rootStackView.arrangedSubviews.flatMap { $0 as? UILabel }
     let buttons = buttonStackViews
       .flatMap { stackView in stackView.arrangedSubviews.flatMap { $0 as? UIButton } }
-    let inAppButtons = buttons.enumerate().filter { idx, _ in idx % 2 == 0 }.map(second)
-    let delayedButtons = buttons.enumerate().filter { idx, _ in idx % 2 == 1 }.map(second)
+    let inAppButtons = buttons.enumerated().filter { idx, _ in idx % 2 == 0 }.map(second)
+    let delayedButtons = buttons.enumerated().filter { idx, _ in idx % 2 == 1 }.map(second)
 
     self.rootStackView
       |> UIStackView.lens.spacing .~ Styles.grid(3)
@@ -36,8 +36,8 @@ internal final class DebugPushNotificationsViewController: UIViewController {
       ||> UIStackView.lens.spacing .~ Styles.grid(2)
 
     rowStackViews
-      ||> UIStackView.lens.distribution .~ .EqualSpacing
-      ||> UIStackView.lens.alignment .~ .Center
+      ||> UIStackView.lens.distribution .~ .equalSpacing
+      ||> UIStackView.lens.alignment .~ .center
 
     buttonStackViews
       ||> UIStackView.lens.spacing .~ Styles.grid(1)
@@ -56,18 +56,18 @@ internal final class DebugPushNotificationsViewController: UIViewController {
         .init(top: $0.top/2, left: $0.left/2, bottom: $0.bottom/2, right: $0.right/2)
     }
 
-    inAppButtons.enumerate().forEach { idx, button in
+    inAppButtons.enumerated().forEach { idx, button in
       button
         |> UIButton.lens.tag .~ idx
-        |> UIButton.lens.title(forState: .Normal) .~ "In-app"
-        |> UIButton.lens.targets .~ [(self, #selector(inAppButtonTapped(_:)), .TouchUpInside)]
+        |> UIButton.lens.title(forState: .normal) .~ "In-app"
+        |> UIButton.lens.targets .~ [(self, #selector(inAppButtonTapped(_:)), .touchUpInside)]
     }
 
-    delayedButtons.enumerate().forEach { idx, button in
+    delayedButtons.enumerated().forEach { idx, button in
       button
         |> UIButton.lens.tag .~ idx
-        |> UIButton.lens.title(forState: .Normal) .~ "Delayed"
-        |> UIButton.lens.targets .~ [(self, #selector(delayedButtonTapped(_:)), .TouchUpInside)]
+        |> UIButton.lens.title(forState: .normal) .~ "Delayed"
+        |> UIButton.lens.targets .~ [(self, #selector(delayedButtonTapped(_:)), .touchUpInside)]
     }
 
     self.separatorViews
@@ -75,24 +75,24 @@ internal final class DebugPushNotificationsViewController: UIViewController {
   }
   // swiftlint:enable function_body_length
 
-  @objc private func inAppButtonTapped(button: UIButton) {
+  @objc fileprivate func inAppButtonTapped(_ button: UIButton) {
     self.scheduleNotification(forIndex: button.tag, delay: false)
   }
 
-  @objc private func delayedButtonTapped(button: UIButton) {
+  @objc fileprivate func delayedButtonTapped(_ button: UIButton) {
     self.scheduleNotification(forIndex: button.tag, delay: true)
   }
 
-  private func scheduleNotification(forIndex index: Int, delay: Bool) {
+  fileprivate func scheduleNotification(forIndex index: Int, delay: Bool) {
     guard index >= 0 && index < allPushData.count else { return }
 
     let pushData = allPushData[index]
 
     let notification = UILocalNotification()
-    notification.fireDate = NSDate(timeIntervalSinceNow: delay ? 5 : 0)
+    notification.fireDate = Date(timeIntervalSinceNow: delay ? 5 : 0)
     notification.alertBody = (pushData["aps"] as? [String:AnyObject])?["alert"] as? String
     notification.userInfo = pushData
-    UIApplication.sharedApplication().scheduleLocalNotification(notification)
+    UIApplication.shared.scheduleLocalNotification(notification)
   }
 }
 

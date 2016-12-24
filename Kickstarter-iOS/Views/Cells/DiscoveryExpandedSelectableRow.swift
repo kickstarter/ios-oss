@@ -3,15 +3,15 @@ import Prelude
 import UIKit
 
 internal final class DiscoveryExpandedSelectableRowCell: UITableViewCell, ValueCell {
-  @IBOutlet private weak var filterTitleLabel: UILabel!
-  @IBOutlet private weak var highlightView: UIView!
-  @IBOutlet private weak var circleImageView: UIImageView!
-  @IBOutlet private weak var checkImageView: UIImageView!
+  @IBOutlet fileprivate weak var filterTitleLabel: UILabel!
+  @IBOutlet fileprivate weak var highlightView: UIView!
+  @IBOutlet fileprivate weak var circleImageView: UIImageView!
+  @IBOutlet fileprivate weak var checkImageView: UIImageView!
 
-  private var isSelected: Bool = false
+  internal var isSelected: Bool = false
 
-  internal func configureWith(value value: (row: SelectableRow, categoryId: Int?)) {
-    if let category = value.row.params.category where category.isRoot {
+  internal func configureWith(value: (row: SelectableRow, categoryId: Int?)) {
+    if let category = value.row.params.category, category.isRoot {
       self.filterTitleLabel.text = RootCategory(categoryId: category.id).allProjectsString()
     } else {
       self.filterTitleLabel.text = value.row.params.category?.name
@@ -63,23 +63,23 @@ internal final class DiscoveryExpandedSelectableRowCell: UITableViewCell, ValueC
           : self.isSelected ? UIFont.ksr_subhead().bolded : .ksr_subhead() }
   }
 
-  internal func animateIn(delayOffset delayOffset: Int) {
-    self.contentView.transform = CGAffineTransformMakeTranslation(0.0, 50.0)
+  internal func animateIn(delayOffset: Int) {
+    self.contentView.transform = CGAffineTransform(translationX: 0.0, y: 50.0)
     self.alpha = 0
     let delay = 0.03 * Double(delayOffset)
 
-    UIView.animateWithDuration(0.3, delay: delay, options: .CurveEaseOut, animations: {
+    UIView.animate(withDuration: 0.3, delay: delay, options: .curveEaseOut, animations: {
         self.alpha = 1
       },
       completion: nil)
 
-    UIView.animateWithDuration(0.3,
+    UIView.animate(withDuration: 0.3,
                                delay: delay,
                                usingSpringWithDamping: 0.7,
                                initialSpringVelocity: 1.0,
-                               options: .CurveEaseOut,
+                               options: .curveEaseOut,
                                animations: {
-                                self.contentView.transform = CGAffineTransformIdentity
+                                self.contentView.transform = CGAffineTransform.identity
                                 },
                                completion: nil)
   }

@@ -5,8 +5,8 @@ import UIKit
 
 internal final class PledgeTitleCell: UITableViewCell, ValueCell {
 
-  @IBOutlet private weak var pledgeTitleLabel: UILabel!
-  @IBOutlet private weak var separatorView: UIView!
+  @IBOutlet fileprivate weak var pledgeTitleLabel: UILabel!
+  @IBOutlet fileprivate weak var separatorView: UIView!
 
   func configureWith(value project: Project) {
     self.contentView.backgroundColor = Library.backgroundColor(forCategoryId: project.category.rootId)

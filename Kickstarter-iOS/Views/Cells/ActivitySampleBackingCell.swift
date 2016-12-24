@@ -9,16 +9,16 @@ internal protocol ActivitySampleBackingCellDelegate: class {
 }
 
 internal final class ActivitySampleBackingCell: UITableViewCell, ValueCell {
-  private let viewModel: ActivitySampleBackingCellViewModelType = ActivitySampleBackingCellViewModel()
+  fileprivate let viewModel: ActivitySampleBackingCellViewModelType = ActivitySampleBackingCellViewModel()
   internal weak var delegate: ActivitySampleBackingCellDelegate?
 
-  @IBOutlet private weak var activityStackView: UIStackView!
-  @IBOutlet private weak var activityTitleLabel: UILabel!
-  @IBOutlet private weak var backerImageAndInfoStackView: UIStackView!
-  @IBOutlet private weak var backerImageView: CircleAvatarImageView!
-  @IBOutlet private weak var backingTitleLabel: UILabel!
-  @IBOutlet private weak var cardView: UIView!
-  @IBOutlet private weak var seeAllActivityButton: UIButton!
+  @IBOutlet fileprivate weak var activityStackView: UIStackView!
+  @IBOutlet fileprivate weak var activityTitleLabel: UILabel!
+  @IBOutlet fileprivate weak var backerImageAndInfoStackView: UIStackView!
+  @IBOutlet fileprivate weak var backerImageView: CircleAvatarImageView!
+  @IBOutlet fileprivate weak var backingTitleLabel: UILabel!
+  @IBOutlet fileprivate weak var cardView: UIView!
+  @IBOutlet fileprivate weak var seeAllActivityButton: UIButton!
 
   internal override func awakeFromNib() {
     super.awakeFromNib()
@@ -26,7 +26,7 @@ internal final class ActivitySampleBackingCell: UITableViewCell, ValueCell {
     self.seeAllActivityButton.addTarget(
       self,
       action: #selector(seeAllActivityButtonTapped),
-      forControlEvents: .TouchUpInside
+      for: .touchUpInside
     )
   }
 
@@ -63,33 +63,33 @@ internal final class ActivitySampleBackingCell: UITableViewCell, ValueCell {
 
     self.viewModel.outputs.backerImageURL
       .observeForUI()
-      .on(next: { [weak self] _ in
+      .on(event: { [weak self] _ in
         self?.backerImageView.af_cancelImageRequest()
         self?.backerImageView.image = nil
         })
       .skipNil()
-      .observeNext { [weak self] url in
+      .observeValues { [weak self] url in
         self?.backerImageView.af_setImageWithURL(url)
     }
 
     self.viewModel.outputs.backingTitleText
       .observeForUI()
-      .observeNext { [weak element = backingTitleLabel] attrString in
+      .observeValues { [weak element = backingTitleLabel] attrString in
         element?.attributedText = attrString
     }
 
     self.viewModel.outputs.goToActivity
       .observeForUI()
-      .observeNext { [weak self] _ in
+      .observeValues { [weak self] _ in
         self?.delegate?.goToActivity()
     }
   }
 
-  internal func configureWith(value value: Activity) {
+  internal func configureWith(value: Activity) {
     self.viewModel.inputs.configureWith(activity: value)
   }
 
-  @objc private func seeAllActivityButtonTapped() {
+  @objc fileprivate func seeAllActivityButtonTapped() {
     self.viewModel.inputs.seeAllActivityTapped()
   }
 }

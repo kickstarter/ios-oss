@@ -5,18 +5,18 @@ import ReactiveExtensions
 import UIKit
 
 internal final class MessageCell: UITableViewCell, ValueCell {
-  private let viewModel: MessageCellViewModelType = MessageCellViewModel()
+  fileprivate let viewModel: MessageCellViewModelType = MessageCellViewModel()
 
-  @IBOutlet private weak var avatarImageView: UIImageView!
-  @IBOutlet private weak var nameLabel: UILabel!
-  @IBOutlet private weak var timestampLabel: UILabel!
-  @IBOutlet private weak var bodyTextView: UITextView!
+  @IBOutlet fileprivate weak var avatarImageView: UIImageView!
+  @IBOutlet fileprivate weak var nameLabel: UILabel!
+  @IBOutlet fileprivate weak var timestampLabel: UILabel!
+  @IBOutlet fileprivate weak var bodyTextView: UITextView!
 
   override func awakeFromNib() {
     super.awakeFromNib()
 
     // NB: removes the default padding around UITextView.
-    self.bodyTextView.textContainerInset = UIEdgeInsetsZero
+    self.bodyTextView.textContainerInset = UIEdgeInsets.zero
     self.bodyTextView.textContainer.lineFragmentPadding = 0
   }
 
@@ -42,12 +42,12 @@ internal final class MessageCell: UITableViewCell, ValueCell {
 
     self.viewModel.outputs.avatarURL
       .observeForUI()
-      .on(next: { [weak self] _ in
+      .on(event: { [weak self] _ in
         self?.avatarImageView.af_cancelImageRequest()
         self?.avatarImageView.image = nil
       })
       .skipNil()
-      .observeNext { [weak self] in
+      .observeValues { [weak self] in
         self?.avatarImageView.af_setImageWithURL($0)
     }
   }

@@ -1,20 +1,20 @@
 import Library
 import Prelude
 import Prelude_UIKit
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 import UIKit
 
 internal final class ResetPasswordViewController: UIViewController {
-  @IBOutlet private weak var emailTextFieldBackgroundView: UIView!
-  @IBOutlet private weak var emailTextField: UITextField!
-  @IBOutlet private weak var resetPasswordButton: BorderButton!
-  @IBOutlet private weak var rootStackView: UIStackView!
+  @IBOutlet fileprivate weak var emailTextFieldBackgroundView: UIView!
+  @IBOutlet fileprivate weak var emailTextField: UITextField!
+  @IBOutlet fileprivate weak var resetPasswordButton: BorderButton!
+  @IBOutlet fileprivate weak var rootStackView: UIStackView!
 
-  private let viewModel: ResetPasswordViewModelType = ResetPasswordViewModel()
+  fileprivate let viewModel: ResetPasswordViewModelType = ResetPasswordViewModel()
 
-  internal static func configuredWith(email email: String?) -> ResetPasswordViewController {
-    let vc = Storyboard.Login.instantiate(ResetPasswordViewController)
+  internal static func configuredWith(email: String?) -> ResetPasswordViewController {
+    let vc = Storyboard.Login.instantiate(ResetPasswordViewController.self)
     if let email = email {
       vc.viewModel.inputs.emailChanged(email)
     }
@@ -27,11 +27,11 @@ internal final class ResetPasswordViewController: UIViewController {
   }
 
   override func bindStyles() {
-    self |> resetPasswordControllerStyle
-    self.emailTextField |> emailFieldStyle
-    self.emailTextFieldBackgroundView |> cardStyle()
-    self.resetPasswordButton |> resetPasswordButtonStyle
-    self.rootStackView |> loginRootStackViewStyle
+    _ = self |> resetPasswordControllerStyle
+    _ = self.emailTextField |> emailFieldStyle
+    _ = self.emailTextFieldBackgroundView |> cardStyle()
+    _ = self.resetPasswordButton |> resetPasswordButtonStyle
+    _ = self.rootStackView |> loginRootStackViewStyle
   }
 
   override func bindViewModel() {
@@ -41,7 +41,7 @@ internal final class ResetPasswordViewController: UIViewController {
 
     self.viewModel.outputs.setEmailInitial
       .observeForControllerAction()
-      .observeNext { [weak self] email in
+      .observeValues { [weak self] email in
         self?.emailTextField.text = email
       }
 
@@ -49,34 +49,34 @@ internal final class ResetPasswordViewController: UIViewController {
 
     self.viewModel.outputs.showResetSuccess
       .observeForControllerAction()
-      .observeNext { [weak self] message in
-        self?.presentViewController(UIAlertController.alert(
+      .observeValues { [weak self] message in
+        self?.present(UIAlertController.alert(
           message: message,
-          handler: { _ in
+          handler: { alert in
             self?.viewModel.inputs.confirmResetButtonPressed()
           }), animated: true, completion: nil)
       }
 
     self.viewModel.outputs.returnToLogin
       .observeForControllerAction()
-      .observeNext { [weak self] _ in
-        self?.navigationController?.popViewControllerAnimated(true)
+      .observeValues { [weak self] _ in
+        _ = self?.navigationController?.popViewController(animated: true)
       }
 
     self.viewModel.outputs.showError
       .observeForControllerAction()
-      .observeNext { [weak self] message in
-        self?.presentViewController(UIAlertController.genericError(message), animated: true, completion: nil)
+      .observeValues { [weak self] message in
+        self?.present(UIAlertController.genericError(message), animated: true, completion: nil)
       }
   }
 
   @IBAction
-  internal func emailTextFieldEditingChanged(textfield: UITextField) {
+  internal func emailTextFieldEditingChanged(_ textfield: UITextField) {
     self.viewModel.inputs.emailChanged(textfield.text)
   }
 
   @IBAction
-  internal func resetPasswordPressed(sender: UIButton) {
+  internal func resetPasswordPressed(_ sender: UIButton) {
     self.emailTextField.resignFirstResponder()
     self.viewModel.inputs.resetButtonPressed()
   }

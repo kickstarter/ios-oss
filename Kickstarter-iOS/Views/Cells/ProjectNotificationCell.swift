@@ -6,16 +6,16 @@ import UIKit
 
 internal protocol ProjectNotificationCellDelegate: class {
   /// Call with an error message when saving a notification fails.
-  func projectNotificationCell(cell: ProjectNotificationCell?, notificationSaveError: String)
+  func projectNotificationCell(_ cell: ProjectNotificationCell?, notificationSaveError: String)
 }
 
 internal final class ProjectNotificationCell: UITableViewCell, ValueCell {
-  private let viewModel = ProjectNotificationCellViewModel()
+  fileprivate let viewModel = ProjectNotificationCellViewModel()
   internal weak var delegate: ProjectNotificationCellDelegate?
 
-  @IBOutlet private weak var nameLabel: UILabel!
-  private let notificationSwitch: UISwitch = UISwitch()
-  @IBOutlet private weak var separatorView: UIView!
+  @IBOutlet fileprivate weak var nameLabel: UILabel!
+  fileprivate let notificationSwitch: UISwitch = UISwitch()
+  @IBOutlet fileprivate weak var separatorView: UIView!
 
  internal override func awakeFromNib() {
     super.awakeFromNib()
@@ -23,7 +23,7 @@ internal final class ProjectNotificationCell: UITableViewCell, ValueCell {
     self.notificationSwitch.addTarget(
       self,
       action: #selector(notificationTapped),
-      forControlEvents: UIControlEvents.ValueChanged
+      for: UIControlEvents.valueChanged
     )
     self.accessoryView = self.notificationSwitch
   }
@@ -46,16 +46,16 @@ internal final class ProjectNotificationCell: UITableViewCell, ValueCell {
 
     self.viewModel.outputs.notifyDelegateOfSaveError
       .observeForUI()
-      .observeNext { [weak self] message in
+      .observeValues { [weak self] message in
         self?.delegate?.projectNotificationCell(self, notificationSaveError: message)
     }
   }
 
-  internal func configureWith(value value: ProjectNotification) {
+  internal func configureWith(value: ProjectNotification) {
     self.viewModel.inputs.configureWith(notification: value)
   }
 
-  @objc private func notificationTapped(notificationSwitch: UISwitch) {
-    self.viewModel.inputs.notificationTapped(on: self.notificationSwitch.on)
+  @objc fileprivate func notificationTapped(_ notificationSwitch: UISwitch) {
+    self.viewModel.inputs.notificationTapped(on: self.notificationSwitch.isOn)
   }
 }

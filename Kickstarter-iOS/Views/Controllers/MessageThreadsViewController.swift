@@ -1,17 +1,17 @@
 import Library
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import UIKit
 
 internal final class MessageThreadsViewController: UITableViewController {
-  private let viewModel: MessageThreadsViewModelType = MessageThreadsViewModel()
-  private let dataSource = MessageThreadsDataSource()
+  fileprivate let viewModel: MessageThreadsViewModelType = MessageThreadsViewModel()
+  fileprivate let dataSource = MessageThreadsDataSource()
 
-  @IBOutlet private weak var footerView: UIView!
-  @IBOutlet private weak var mailboxLabel: UILabel!
+  @IBOutlet fileprivate weak var footerView: UIView!
+  @IBOutlet fileprivate weak var mailboxLabel: UILabel!
 
-  internal static func configuredWith(project project: Project?) -> MessageThreadsViewController {
+  internal static func configuredWith(project: Project?) -> MessageThreadsViewController {
     let vc = Storyboard.Messages.instantiate(MessageThreadsViewController)
     vc.viewModel.inputs.configureWith(project: project)
     return vc
@@ -47,37 +47,37 @@ internal final class MessageThreadsViewController: UITableViewController {
 
     self.viewModel.outputs.messageThreads
       .observeForControllerAction()
-      .observeNext { [weak self] threads in
+      .observeValues { [weak self] threads in
         self?.dataSource.load(messageThreads: threads)
         self?.tableView.reloadData()
     }
 
     self.viewModel.outputs.emptyStateIsVisible
       .observeForControllerAction()
-      .observeNext { [weak self] isVisible in
+      .observeValues { [weak self] isVisible in
         self?.dataSource.emptyState(isVisible: isVisible)
         self?.tableView.reloadData()
     }
 
     self.viewModel.outputs.showMailboxChooserActionSheet
       .observeForControllerAction()
-      .observeNext { [weak self] in self?.showMailboxChooserActionSheet() }
+      .observeValues { [weak self] in self?.showMailboxChooserActionSheet() }
 
     self.viewModel.outputs.goToSearch
       .observeForControllerAction()
-      .observeNext { [weak self] in self?.goToSearch() }
+      .observeValues { [weak self] in self?.goToSearch() }
   }
 
-  internal override func tableView(tableView: UITableView,
-                                   willDisplayCell cell: UITableViewCell,
-                                                   forRowAtIndexPath indexPath: NSIndexPath) {
+  internal override func tableView(_ tableView: UITableView,
+                                   willDisplay cell: UITableViewCell,
+                                                   forRowAt indexPath: IndexPath) {
 
     self.viewModel.inputs.willDisplayRow(self.dataSource.itemIndexAt(indexPath),
                                          outOf: self.dataSource.numberOfItems())
   }
 
-  internal override func tableView(tableView: UITableView,
-                                   didSelectRowAtIndexPath indexPath: NSIndexPath) {
+  internal override func tableView(_ tableView: UITableView,
+                                   didSelectRowAt indexPath: IndexPath) {
 
     if let messageThread = self.dataSource[indexPath] as? MessageThread {
       let vc = MessagesViewController.configuredWith(messageThread: messageThread)
@@ -85,50 +85,50 @@ internal final class MessageThreadsViewController: UITableViewController {
     }
   }
 
-  private func showMailboxChooserActionSheet() {
-    let alert = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+  fileprivate func showMailboxChooserActionSheet() {
+    let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
     alert.addAction(
-      UIAlertAction(title: Strings.messages_navigation_inbox(), style: .Default) { [weak self] _ in
+      UIAlertAction(title: Strings.messages_navigation_inbox(), style: .default) { [weak self] _ in
         self?.viewModel.inputs.switchTo(mailbox: .inbox)
       }
     )
 
     alert.addAction(
-      UIAlertAction(title: Strings.messages_navigation_sent(), style: .Default) { [weak self] _ in
+      UIAlertAction(title: Strings.messages_navigation_sent(), style: .default) { [weak self] _ in
         self?.viewModel.inputs.switchTo(mailbox: .sent)
       }
     )
 
     alert.addAction(
-      UIAlertAction(title: Strings.general_navigation_buttons_cancel(), style: .Cancel, handler: nil)
+      UIAlertAction(title: Strings.general_navigation_buttons_cancel(), style: .cancel, handler: nil)
     )
 
-    if self.traitCollection.userInterfaceIdiom == .Pad {
-      alert.modalPresentationStyle = .Popover
+    if self.traitCollection.userInterfaceIdiom == .pad {
+      alert.modalPresentationStyle = .popover
       let popover = alert.popoverPresentationController
       popover?.sourceView = self.mailboxLabel
       popover?.sourceRect = self.mailboxLabel.bounds
     }
 
-    self.presentViewController(alert, animated: true, completion: nil)
+    self.present(alert, animated: true, completion: nil)
   }
 
-  @IBAction private func mailboxButtonPressed() {
+  @IBAction fileprivate func mailboxButtonPressed() {
     self.viewModel.inputs.mailboxButtonPressed()
   }
 
-  @IBAction private func searchButtonPressed() {
+  @IBAction fileprivate func searchButtonPressed() {
     self.viewModel.inputs.searchButtonPressed()
   }
 
-  @IBAction private func refresh() {
+  @IBAction fileprivate func refresh() {
     self.viewModel.inputs.refresh()
   }
 
-  private func goToSearch() {
-    guard let vc = self.storyboard?.instantiateViewControllerWithIdentifier("SearchMessagesViewController"),
-      search = vc as? SearchMessagesViewController else {
+  fileprivate func goToSearch() {
+    guard let vc = self.storyboard?.instantiateViewController(withIdentifier: "SearchMessagesViewController"),
+      let search = vc as? SearchMessagesViewController else {
         fatalError("Could not instantiate SearchMessagesViewController.")
     }
 

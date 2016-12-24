@@ -1,27 +1,27 @@
 import KsApi
 import Library
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import UIKit
 
 protocol FindFriendsStatsCellDelegate: class {
-  func findFriendsStatsCellShowFollowAllFriendsAlert(friendCount friendCount: Int)
+  func findFriendsStatsCellShowFollowAllFriendsAlert(friendCount: Int)
 }
 
 internal final class FindFriendsStatsCell: UITableViewCell, ValueCell {
 
-  @IBOutlet private weak var backedProjectsLabel: UILabel!
-  @IBOutlet private weak var bulletSeparatorView: UIView!
-  @IBOutlet private weak var friendsLabel: UILabel!
-  @IBOutlet private weak var friendsCountLabel: UILabel!
-  @IBOutlet private weak var backedProjectsCountLabel: UILabel!
-  @IBOutlet private weak var followAllButton: UIButton!
+  @IBOutlet fileprivate weak var backedProjectsLabel: UILabel!
+  @IBOutlet fileprivate weak var bulletSeparatorView: UIView!
+  @IBOutlet fileprivate weak var friendsLabel: UILabel!
+  @IBOutlet fileprivate weak var friendsCountLabel: UILabel!
+  @IBOutlet fileprivate weak var backedProjectsCountLabel: UILabel!
+  @IBOutlet fileprivate weak var followAllButton: UIButton!
 
   internal weak var delegate: FindFriendsStatsCellDelegate?
 
-  private let viewModel: FindFriendsStatsCellViewModelType = FindFriendsStatsCellViewModel()
+  fileprivate let viewModel: FindFriendsStatsCellViewModelType = FindFriendsStatsCellViewModel()
 
-  func configureWith(value value: (stats: FriendStatsEnvelope, source: FriendsSource)) {
+  func configureWith(value: (stats: FriendStatsEnvelope, source: FriendsSource)) {
     self.viewModel.inputs.configureWith(stats: value.stats, source: value.source)
   }
 
@@ -38,7 +38,7 @@ internal final class FindFriendsStatsCell: UITableViewCell, ValueCell {
 
     self.viewModel.outputs.notifyDelegateShowFollowAllFriendsAlert
       .observeForUI()
-      .observeNext { [weak self] count in
+      .observeValues { [weak self] count in
         self?.delegate?.findFriendsStatsCellShowFollowAllFriendsAlert(friendCount: count)
     }
   }
@@ -66,7 +66,7 @@ internal final class FindFriendsStatsCell: UITableViewCell, ValueCell {
 
     self.followAllButton
       |> borderButtonStyle
-      |> UIButton.lens.targets .~ [(self, action: #selector(followAllButtonTapped), .TouchUpInside)]
+      |> UIButton.lens.targets .~ [(self, action: #selector(followAllButtonTapped), .touchUpInside)]
 
     self.bulletSeparatorView
       |> UIView.lens.backgroundColor .~ .ksr_grey_500

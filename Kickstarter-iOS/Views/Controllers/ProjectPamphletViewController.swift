@@ -4,18 +4,18 @@ import Prelude
 import UIKit
 
 internal protocol ProjectPamphletViewControllerDelegate: class {
-  func projectPamphlet(controller: ProjectPamphletViewController,
+  func projectPamphlet(_ controller: ProjectPamphletViewController,
                        panGestureRecognizerDidChange recognizer: UIPanGestureRecognizer)
 }
 
 internal final class ProjectPamphletViewController: UIViewController {
   internal weak var delegate: ProjectPamphletViewControllerDelegate?
-  private let viewModel: ProjectPamphletViewModelType = ProjectPamphletViewModel()
+  fileprivate let viewModel: ProjectPamphletViewModelType = ProjectPamphletViewModel()
 
-  private var navBarController: ProjectNavBarViewController!
-  private var contentController: ProjectPamphletContentViewController!
+  fileprivate var navBarController: ProjectNavBarViewController!
+  fileprivate var contentController: ProjectPamphletContentViewController!
 
-  internal static func configuredWith(projectOrParam projectOrParam: Either<Project, Param>, refTag: RefTag?)
+  internal static func configuredWith(projectOrParam: Either<Project, Param>, refTag: RefTag?)
     -> ProjectPamphletViewController {
 
       let vc = Storyboard.ProjectPamphlet.instantiate(ProjectPamphletViewController)
@@ -23,12 +23,12 @@ internal final class ProjectPamphletViewController: UIViewController {
       return vc
   }
 
-  internal override func prefersStatusBarHidden() -> Bool {
+  internal override var prefersStatusBarHidden : Bool {
     return self.viewModel.outputs.prefersStatusBarHidden
   }
 
-  internal override func preferredStatusBarUpdateAnimation() -> UIStatusBarAnimation {
-    return .Fade
+  internal override var preferredStatusBarUpdateAnimation : UIStatusBarAnimation {
+    return .fade
   }
 
   internal override func viewDidLoad() {
@@ -45,12 +45,12 @@ internal final class ProjectPamphletViewController: UIViewController {
     self.viewModel.inputs.viewDidLoad()
   }
 
-  internal override func viewWillAppear(animated: Bool) {
+  internal override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     self.viewModel.inputs.viewWillAppear(animated: animated)
   }
 
-  internal override func viewDidAppear(animated: Bool) {
+  internal override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     self.viewModel.inputs.viewDidAppear(animated: animated)
   }
@@ -60,31 +60,31 @@ internal final class ProjectPamphletViewController: UIViewController {
 
     self.viewModel.outputs.configureChildViewControllersWithProject
       .observeForUI()
-      .observeNext { [weak self] project, refTag in
+      .observeValues { [weak self] project, refTag in
         self?.contentController.configureWith(project: project)
         self?.navBarController.configureWith(project: project, refTag: refTag)
     }
 
     self.viewModel.outputs.setNavigationBarHiddenAnimated
       .observeForUI()
-      .observeNext { [weak self] in self?.navigationController?.setNavigationBarHidden($0, animated: $1) }
+      .observeValues { [weak self] in self?.navigationController?.setNavigationBarHidden($0, animated: $1) }
 
     self.viewModel.outputs.setNeedsStatusBarAppearanceUpdate
       .observeForUI()
-      .observeNext { [weak self] in
-        UIView.animateWithDuration(0.3) { self?.setNeedsStatusBarAppearanceUpdate() }
+      .observeValues { [weak self] in
+        UIView.animate(withDuration: 0.3) { self?.setNeedsStatusBarAppearanceUpdate() }
     }
   }
 }
 
 extension ProjectPamphletViewController: ProjectPamphletContentViewControllerDelegate {
-  internal func projectPamphletContent(controller: ProjectPamphletContentViewController,
+  internal func projectPamphletContent(_ controller: ProjectPamphletContentViewController,
                                        imageIsVisible: Bool) {
     self.navBarController.setProjectImageIsVisible(imageIsVisible)
   }
 
   internal func projectPamphletContent(
-    controller: ProjectPamphletContentViewController,
+    _ controller: ProjectPamphletContentViewController,
     scrollViewPanGestureRecognizerDidChange recognizer: UIPanGestureRecognizer) {
 
       self.delegate?.projectPamphlet(self, panGestureRecognizerDidChange: recognizer)
@@ -92,17 +92,17 @@ extension ProjectPamphletViewController: ProjectPamphletContentViewControllerDel
 }
 
 extension ProjectPamphletViewController: VideoViewControllerDelegate {
-  internal func videoViewControllerDidFinish(controller: VideoViewController) {
+  internal func videoViewControllerDidFinish(_ controller: VideoViewController) {
     self.navBarController.projectVideoDidFinish()
   }
 
-  internal func videoViewControllerDidStart(controller: VideoViewController) {
+  internal func videoViewControllerDidStart(_ controller: VideoViewController) {
     self.navBarController.projectVideoDidStart()
   }
 }
 
 extension ProjectPamphletViewController: ProjectNavBarViewControllerDelegate {
-  func projectNavBarControllerDidTapTitle(controller: ProjectNavBarViewController) {
+  func projectNavBarControllerDidTapTitle(_ controller: ProjectNavBarViewController) {
     self.contentController.tableView.scrollToTop()
   }
 }

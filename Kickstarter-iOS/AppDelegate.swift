@@ -9,7 +9,7 @@ import HockeySDK
 import Kickstarter_Framework
 import Library
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 import Result
 import UIKit
@@ -46,14 +46,14 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     self.viewModel.outputs.updateCurrentUserInEnvironment
       .observeForUI()
-      .observeNext { [weak self] user in
+      .observeValues { [weak self] user in
         AppEnvironment.updateCurrentUser(user)
         self?.viewModel.inputs.currentUserUpdatedInEnvironment()
     }
 
     self.viewModel.outputs.forceLogout
       .observeForUI()
-      .observeNext {
+      .observeValues {
         AppEnvironment.logout()
         NSNotificationCenter.defaultCenter().postNotification(
           NSNotification(name: CurrentUserNotifications.sessionEnded, object: nil)
@@ -62,42 +62,42 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     self.viewModel.outputs.updateConfigInEnvironment
       .observeForUI()
-      .observeNext { AppEnvironment.updateConfig($0) }
+      .observeValues { AppEnvironment.updateConfig($0) }
 
     self.viewModel.outputs.postNotification
       .observeForUI()
-      .observeNext(NSNotificationCenter.defaultCenter().postNotification)
+      .observeValues(NSNotificationCenter.defaultCenter().postNotification)
 
     self.viewModel.outputs.presentViewController
       .observeForUI()
-      .observeNext { [weak self] in
+      .observeValues { [weak self] in
         self?.rootTabBarController?.dismissViewControllerAnimated(true, completion: nil)
         self?.rootTabBarController?.presentViewController($0, animated: true, completion: nil)
     }
 
     self.viewModel.outputs.goToDiscovery
       .observeForUI()
-      .observeNext { [weak self] in self?.rootTabBarController?.switchToDiscovery(params: $0) }
+      .observeValues { [weak self] in self?.rootTabBarController?.switchToDiscovery(params: $0) }
 
     self.viewModel.outputs.goToActivity
       .observeForUI()
-      .observeNext { [weak self] in self?.rootTabBarController?.switchToActivities() }
+      .observeValues { [weak self] in self?.rootTabBarController?.switchToActivities() }
 
     self.viewModel.outputs.goToDashboard
       .observeForUI()
-      .observeNext { [weak self] in self?.rootTabBarController?.switchToDashboard(project: $0) }
+      .observeValues { [weak self] in self?.rootTabBarController?.switchToDashboard(project: $0) }
 
     self.viewModel.outputs.goToMessageThread
       .observeForUI()
-      .observeNext { [weak self] in self?.goToMessageThread($0) }
+      .observeValues { [weak self] in self?.goToMessageThread($0) }
 
     self.viewModel.outputs.goToSearch
       .observeForUI()
-      .observeNext { [weak self] in self?.rootTabBarController?.switchToSearch() }
+      .observeValues { [weak self] in self?.rootTabBarController?.switchToSearch() }
 
     self.viewModel.outputs.registerUserNotificationSettings
       .observeForUI()
-      .observeNext {
+      .observeValues {
         UIApplication.sharedApplication().registerUserNotificationSettings(
           UIUserNotificationSettings(forTypes: .Alert, categories: [])
         )
@@ -106,15 +106,15 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     self.viewModel.outputs.unregisterForRemoteNotifications
       .observeForUI()
-      .observeNext(UIApplication.sharedApplication().unregisterForRemoteNotifications)
+      .observeValues(UIApplication.sharedApplication().unregisterForRemoteNotifications)
 
     self.viewModel.outputs.presentRemoteNotificationAlert
       .observeForUI()
-      .observeNext { [weak self] in self?.presentRemoteNotificationAlert($0) }
+      .observeValues { [weak self] in self?.presentRemoteNotificationAlert($0) }
 
     self.viewModel.outputs.configureHockey
       .observeForUI()
-      .observeNext { [weak self] data in
+      .observeValues { [weak self] data in
         guard let _self = self else { return }
         let manager = BITHockeyManager.sharedHockeyManager()
         manager.delegate = _self
@@ -129,13 +129,13 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     self.viewModel.outputs.synchronizeUbiquitousStore
       .observeForUI()
-      .observeNext {
+      .observeValues {
         AppEnvironment.current.ubiquitousStore.synchronize()
     }
 
     self.viewModel.outputs.setApplicationShortcutItems
       .observeForUI()
-      .observeNext { shortcutItems in
+      .observeValues { shortcutItems in
         UIApplication.sharedApplication().shortcutItems = shortcutItems.map { $0.applicationShortcutItem }
     }
 

@@ -4,38 +4,38 @@ import Prelude
 
 internal protocol RewardCellDelegate: class {
   /// Called when the reward cell needs to perform an expansion animation.
-  func rewardCellWantsExpansion(cell: RewardCell)
+  func rewardCellWantsExpansion(_ cell: RewardCell)
 }
 
 internal final class RewardCell: UITableViewCell, ValueCell {
   internal var delegate: RewardCellDelegate?
-  private let viewModel: RewardCellViewModelType = RewardCellViewModel()
+  fileprivate let viewModel: RewardCellViewModelType = RewardCellViewModel()
 
-  @IBOutlet private weak var allGoneContainerView: UIView!
-  @IBOutlet private weak var allGoneLabel: UILabel!
-  @IBOutlet private weak var cardView: UIView!
-  @IBOutlet private weak var checkmarkImageView: UIImageView!
-  @IBOutlet private weak var conversionLabel: UILabel!
-  @IBOutlet private weak var descriptionLabel: UILabel!
-  @IBOutlet private weak var footerLabel: UILabel!
-  @IBOutlet private weak var footerView: UIView!
-  @IBOutlet private weak var includesTitleLabel: UILabel!
-  @IBOutlet private weak var itemsContainerStackView: UIStackView!
-  @IBOutlet private weak var itemsHeaderStackView: UIStackView!
-  @IBOutlet private weak var itemsStackView: UIStackView!
-  @IBOutlet private weak var manageRewardButton: UIButton!
-  @IBOutlet private weak var minimumLabel: UILabel!
-  @IBOutlet private weak var minimumStackView: UIStackView!
-  @IBOutlet private weak var rewardTitleLabel: UILabel!
-  @IBOutlet private weak var rootStackView: UIStackView!
-  @IBOutlet private weak var selectRewardButton: UIButton!
-  @IBOutlet private var separatorViews: [UIView]!
-  @IBOutlet private weak var titleDescriptionStackView: UIStackView!
-  @IBOutlet private weak var viewYourPledgeButton: UIButton!
-  @IBOutlet private weak var youreABackerCheckmarkImageView: UIImageView!
-  @IBOutlet private weak var youreABackerContainerView: UIView!
-  @IBOutlet private weak var youreABackerLabel: UILabel!
-  @IBOutlet private weak var youreABackerStackView: UIStackView!
+  @IBOutlet fileprivate weak var allGoneContainerView: UIView!
+  @IBOutlet fileprivate weak var allGoneLabel: UILabel!
+  @IBOutlet fileprivate weak var cardView: UIView!
+  @IBOutlet fileprivate weak var checkmarkImageView: UIImageView!
+  @IBOutlet fileprivate weak var conversionLabel: UILabel!
+  @IBOutlet fileprivate weak var descriptionLabel: UILabel!
+  @IBOutlet fileprivate weak var footerLabel: UILabel!
+  @IBOutlet fileprivate weak var footerView: UIView!
+  @IBOutlet fileprivate weak var includesTitleLabel: UILabel!
+  @IBOutlet fileprivate weak var itemsContainerStackView: UIStackView!
+  @IBOutlet fileprivate weak var itemsHeaderStackView: UIStackView!
+  @IBOutlet fileprivate weak var itemsStackView: UIStackView!
+  @IBOutlet fileprivate weak var manageRewardButton: UIButton!
+  @IBOutlet fileprivate weak var minimumLabel: UILabel!
+  @IBOutlet fileprivate weak var minimumStackView: UIStackView!
+  @IBOutlet fileprivate weak var rewardTitleLabel: UILabel!
+  @IBOutlet fileprivate weak var rootStackView: UIStackView!
+  @IBOutlet fileprivate weak var selectRewardButton: UIButton!
+  @IBOutlet fileprivate var separatorViews: [UIView]!
+  @IBOutlet fileprivate weak var titleDescriptionStackView: UIStackView!
+  @IBOutlet fileprivate weak var viewYourPledgeButton: UIButton!
+  @IBOutlet fileprivate weak var youreABackerCheckmarkImageView: UIImageView!
+  @IBOutlet fileprivate weak var youreABackerContainerView: UIView!
+  @IBOutlet fileprivate weak var youreABackerLabel: UILabel!
+  @IBOutlet fileprivate weak var youreABackerStackView: UIStackView!
 
   internal override func awakeFromNib() {
     super.awakeFromNib()
@@ -47,11 +47,11 @@ internal final class RewardCell: UITableViewCell, ValueCell {
     self.addGestureRecognizer(tapRecognizer)
   }
 
-  @objc private func tapped() {
+  @objc fileprivate func tapped() {
     self.viewModel.inputs.tapped()
   }
 
-  internal func configureWith(value value: (Project, Either<Reward, Backing>)) {
+  internal func configureWith(value: (Project, Either<Reward, Backing>)) {
     self.viewModel.inputs.configureWith(project: value.0, rewardOrBacking: value.1)
   }
 
@@ -67,7 +67,7 @@ internal final class RewardCell: UITableViewCell, ValueCell {
           ? .init(top: Styles.grid(2), left: Styles.grid(16), bottom: Styles.grid(4), right: Styles.grid(16))
           : .init(top: Styles.grid(1), left: Styles.grid(2), bottom: Styles.grid(2), right: Styles.grid(2))
       }
-      |> UIView.lens.contentMode .~ .Top
+      |> UIView.lens.contentMode .~ .top
 
     self.rootStackView
       |> UIStackView.lens.spacing .~ Styles.grid(4)
@@ -94,7 +94,7 @@ internal final class RewardCell: UITableViewCell, ValueCell {
       |> UIView.lens.layoutMargins .~ .init(topBottom: Styles.gridHalf(1), leftRight: Styles.grid(1))
 
     self.allGoneLabel
-      |> UILabel.lens.textColor .~ .whiteColor()
+      |> UILabel.lens.textColor .~ .white
       |> UILabel.lens.font .~ .ksr_headline(size: 12)
       |> UILabel.lens.text %~ { _ in Strings.All_gone() }
 
@@ -134,14 +134,14 @@ internal final class RewardCell: UITableViewCell, ValueCell {
 
     self.youreABackerLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 12)
-      |> UILabel.lens.textColor .~ .whiteColor()
+      |> UILabel.lens.textColor .~ .white
 
     self.youreABackerStackView
       |> UIStackView.lens.spacing .~ Styles.gridHalf(1)
-      |> UIStackView.lens.alignment .~ .Center
+      |> UIStackView.lens.alignment .~ .center
 
     self.checkmarkImageView
-      |> UIImageView.lens.tintColor .~ .whiteColor()
+      |> UIImageView.lens.tintColor .~ .white
 
     self.footerLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 12)
@@ -149,7 +149,7 @@ internal final class RewardCell: UITableViewCell, ValueCell {
 
     self.footerView
       |> UIView.lens.layoutMargins .~ .init(topBottom: 0, leftRight: Styles.grid(2))
-      |> UIView.lens.backgroundColor .~ .clearColor()
+      |> UIView.lens.backgroundColor .~ .clear
 
     self.separatorViews
       ||> separatorStyle
@@ -162,13 +162,13 @@ internal final class RewardCell: UITableViewCell, ValueCell {
     self.manageRewardButton
       |> greenBorderButtonStyle
       |> UIButton.lens.userInteractionEnabled .~ false
-      |> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.Manage_your_pledge() }
+      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.Manage_your_pledge() }
       |> UIButton.lens.isAccessibilityElement .~ false
 
     self.viewYourPledgeButton
       |> borderButtonStyle
       |> UIButton.lens.userInteractionEnabled .~ false
-      |> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.View_your_pledge() }
+      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.View_your_pledge() }
       |> UIButton.lens.isAccessibilityElement .~ false
 
     self.viewModel.inputs.boundStyles()
@@ -204,29 +204,29 @@ internal final class RewardCell: UITableViewCell, ValueCell {
 
     self.viewModel.outputs.cardViewDropShadowHidden
       .observeForUI()
-      .observeNext { [weak self] hidden in
+      .observeValues { [weak self] hidden in
         self?.cardView.layer.shadowOpacity = hidden ? 0 : 1
     }
 
     self.viewModel.outputs.notifyDelegateRewardCellWantsExpansion
       .observeForUI()
-      .observeNext { [weak self] in
+      .observeValues { [weak self] in
         self.doIfSome { $0.delegate?.rewardCellWantsExpansion($0) }
     }
 
     self.viewModel.outputs.updateTopMarginsForIsBacking
       .observeForUI()
-      .observeNext { [weak self] isBacking in
+      .observeValues { [weak self] isBacking in
         self?.contentView.layoutMargins.top = Styles.grid(isBacking ? 3 : 1)
     }
 
     self.viewModel.outputs.items
       .observeForUI()
-      .observeNext { [weak self] in self?.load(items: $0) }
+      .observeValues { [weak self] in self?.load(items: $0) }
   }
   // swiftlint:enable function_body_length
 
-  private func load(items items: [String]) {
+  fileprivate func load(items: [String]) {
     self.itemsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
 
     for item in items {
@@ -238,7 +238,7 @@ internal final class RewardCell: UITableViewCell, ValueCell {
 
       let separator = UIView()
         |> separatorStyle
-      separator.heightAnchor.constraintEqualToConstant(1).active = true
+      separator.heightAnchor.constraint(equalToConstant: 1).isActive = true
 
       self.itemsStackView.addArrangedSubview(label)
       self.itemsStackView.addArrangedSubview(separator)

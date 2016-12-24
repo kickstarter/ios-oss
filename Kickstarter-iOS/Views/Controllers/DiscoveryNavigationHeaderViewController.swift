@@ -6,26 +6,26 @@ import UIKit
 
 internal protocol DiscoveryNavigationHeaderViewDelegate: class {
   /// Call to update params when filter selected.
-  func discoveryNavigationHeaderFilterSelectedParams(params: DiscoveryParams)
+  func discoveryNavigationHeaderFilterSelectedParams(_ params: DiscoveryParams)
 }
 
 internal final class DiscoveryNavigationHeaderViewController: UIViewController {
-  private let viewModel: DiscoveryNavigationHeaderViewModelType = DiscoveryNavigationHeaderViewModel()
+  fileprivate let viewModel: DiscoveryNavigationHeaderViewModelType = DiscoveryNavigationHeaderViewModel()
 
-  @IBOutlet private weak var arrowImageView: UIImageView!
-  @IBOutlet private weak var borderLineView: UIView!
-  @IBOutlet private weak var borderLineHeightConstraint: NSLayoutConstraint!
-  @IBOutlet private weak var dividerLabel: UILabel!
-  @IBOutlet private weak var favoriteContainerView: UIView!
-  @IBOutlet private weak var favoriteButton: UIButton!
-  @IBOutlet private weak var gradientBackgroundView: GradientView!
-  @IBOutlet private weak var heartImageView: UIImageView!
-  @IBOutlet private weak var heartOutlineImageView: UIImageView!
-  @IBOutlet private weak var primaryLabel: UILabel!
-  @IBOutlet private weak var secondaryLabel: UILabel!
-  @IBOutlet private weak var titleButton: UIButton!
-  @IBOutlet private weak var titleStackView: UIStackView!
-  @IBOutlet private weak var outerStackViewTopConstraint: NSLayoutConstraint!
+  @IBOutlet fileprivate weak var arrowImageView: UIImageView!
+  @IBOutlet fileprivate weak var borderLineView: UIView!
+  @IBOutlet fileprivate weak var borderLineHeightConstraint: NSLayoutConstraint!
+  @IBOutlet fileprivate weak var dividerLabel: UILabel!
+  @IBOutlet fileprivate weak var favoriteContainerView: UIView!
+  @IBOutlet fileprivate weak var favoriteButton: UIButton!
+  @IBOutlet fileprivate weak var gradientBackgroundView: GradientView!
+  @IBOutlet fileprivate weak var heartImageView: UIImageView!
+  @IBOutlet fileprivate weak var heartOutlineImageView: UIImageView!
+  @IBOutlet fileprivate weak var primaryLabel: UILabel!
+  @IBOutlet fileprivate weak var secondaryLabel: UILabel!
+  @IBOutlet fileprivate weak var titleButton: UIButton!
+  @IBOutlet fileprivate weak var titleStackView: UIStackView!
+  @IBOutlet fileprivate weak var outerStackViewTopConstraint: NSLayoutConstraint!
 
   internal weak var delegate: DiscoveryNavigationHeaderViewDelegate?
 
@@ -33,7 +33,7 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
     return Storyboard.Discovery.instantiate(DiscoveryNavigationHeaderViewController)
   }
 
-  internal func configureWith(params params: DiscoveryParams) {
+  internal func configureWith(params: DiscoveryParams) {
     self.viewModel.inputs.configureWith(params: params)
   }
 
@@ -44,9 +44,9 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
     self.gradientBackgroundView.endPoint = CGPoint(x: 1.0, y: 0.0)
 
     self.favoriteButton.addTarget(self, action: #selector(favoriteButtonTapped),
-                                  forControlEvents: .TouchUpInside)
+                                  for: .touchUpInside)
 
-    self.titleButton.addTarget(self, action: #selector(titleButtonTapped), forControlEvents: .TouchUpInside)
+    self.titleButton.addTarget(self, action: #selector(titleButtonTapped), for: .touchUpInside)
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -73,8 +73,8 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
 
     self.viewModel.outputs.primaryLabelOpacityAnimated
       .observeForUI()
-      .observeNext { [weak self] (alpha, animated) in
-        UIView.animateWithDuration(animated ? 0.2 : 0.0, delay: 0.0, options: .CurveEaseOut, animations: {
+      .observeValues { [weak self] (alpha, animated) in
+        UIView.animate(withDuration: animated ? 0.2 : 0.0, delay: 0.0, options: .curveEaseOut, animations: {
           self?.primaryLabel.alpha = alpha
           },
           completion: nil)
@@ -82,8 +82,8 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
 
     self.viewModel.outputs.arrowOpacityAnimated
       .observeForUI()
-      .observeNext { [weak self] (alpha, animated) in
-        UIView.animateWithDuration(animated ? 0.2 : 0.0, delay: 0.0, options: .CurveEaseOut, animations: {
+      .observeValues { [weak self] (alpha, animated) in
+        UIView.animate(withDuration: animated ? 0.2 : 0.0, delay: 0.0, options: .curveEaseOut, animations: {
           self?.arrowImageView.alpha = alpha
           },
           completion: nil)
@@ -91,7 +91,7 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
 
     self.viewModel.outputs.primaryLabelFont
       .observeForUI()
-      .observeNext { [weak self] isBold in
+      .observeValues { [weak self] isBold in
         guard let label = self?.primaryLabel else { return }
 
         label
@@ -104,50 +104,50 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
 
     self.viewModel.outputs.animateArrowToDown
       .observeForUI()
-      .observeNext { [weak self] in
+      .observeValues { [weak self] in
         self?.animateArrow(toDown: $0)
     }
 
     self.viewModel.outputs.updateFavoriteButton
       .observeForUI()
-      .observeNext { [weak self] in
+      .observeValues { [weak self] in
         self?.updateFavoriteButton(selected: $0, animated: $1)
     }
 
     self.viewModel.outputs.gradientViewCategoryIdForColor
       .observeForUI()
-      .observeNext { [weak self] id, isFullScreen in
+      .observeValues { [weak self] id, isFullScreen in
         self?.setBackgroundGradient(categoryId: id, isFullScreen: isFullScreen)
     }
 
     self.viewModel.outputs.notifyDelegateFilterSelectedParams
       .observeForUI()
-      .observeNext { [weak self] in
+      .observeValues { [weak self] in
         self?.delegate?.discoveryNavigationHeaderFilterSelectedParams($0)
     }
 
     self.viewModel.outputs.showDiscoveryFilters
       .observeForControllerAction()
-      .observeNext { [weak self] row, cats in
+      .observeValues { [weak self] row, cats in
         self?.showDiscoveryFilters(selectedRow: row, categories: cats)
     }
 
     self.viewModel.outputs.dismissDiscoveryFilters
       .observeForControllerAction()
-      .observeNext { [weak self] in
-        self?.dismissViewControllerAnimated(false, completion: nil)
+      .observeValues { [weak self] in
+        self?.dismiss(animated: false, completion: nil)
     }
 
     self.viewModel.outputs.showFavoriteOnboardingAlert
       .observeForUI()
-      .observeNext { [weak self] in
+      .observeValues { [weak self] in
         self?.showFavoriteCategoriesAlert(categoryName: $0)
     }
 
     self.viewModel.outputs.favoriteViewIsDimmed
       .observeForUI()
-      .observeNext { [weak self] isDimmed in
-        UIView.animateWithDuration(0.2, delay: 0.0, options: .CurveEaseOut, animations: {
+      .observeValues { [weak self] isDimmed in
+        UIView.animate(withDuration: 0.2, delay: 0.0, options: .curveEaseOut, animations: {
           self?.favoriteContainerView.alpha = isDimmed ? 0.4 : 1.0
         },
         completion: nil)
@@ -161,7 +161,7 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
     self.borderLineView
       |> discoveryBorderLineStyle
 
-    self.borderLineHeightConstraint.constant = 1.0 / UIScreen.mainScreen().scale
+    self.borderLineHeightConstraint.constant = 1.0 / UIScreen.main.scale
 
     self.dividerLabel
       |> discoveryNavDividerLabelStyle
@@ -189,92 +189,92 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
     }
   }
 
-  private func showDiscoveryFilters(selectedRow selectedRow: SelectableRow, categories: [KsApi.Category]) {
+  fileprivate func showDiscoveryFilters(selectedRow: SelectableRow, categories: [KsApi.Category]) {
     let vc = DiscoveryFiltersViewController.configuredWith(selectedRow: selectedRow, categories: categories)
     vc.delegate = self
-    vc.modalPresentationStyle = .OverFullScreen
-    self.presentViewController(vc, animated: false, completion: nil)
+    vc.modalPresentationStyle = .overFullScreen
+    self.present(vc, animated: false, completion: nil)
   }
 
-  private func showFavoriteCategoriesAlert(categoryName categoryName: String) {
+  fileprivate func showFavoriteCategoriesAlert(categoryName: String) {
     let alertController = UIAlertController(
       title: categoryName,
       message: Strings.discovery_favorite_categories_alert_message(),
-      preferredStyle: .Alert
+      preferredStyle: .alert
     )
     alertController.addAction(
       UIAlertAction(
         title: Strings.discovery_favorite_categories_alert_buttons_got_it(),
-        style: .Cancel,
+        style: .cancel,
         handler: nil
       )
     )
 
-    self.presentViewController(alertController, animated: true, completion: nil)
+    self.present(alertController, animated: true, completion: nil)
   }
 
-  private func animateArrow(toDown toDown: Bool) {
+  fileprivate func animateArrow(toDown: Bool) {
     let scale: CGFloat = toDown ? 1.0 : -1.0
 
-    UIView.animateWithDuration(0.2, delay: 0.0, options: .CurveEaseOut, animations: {
-      self.arrowImageView.transform = CGAffineTransformMakeScale(1.0, scale)
+    UIView.animate(withDuration: 0.2, delay: 0.0, options: .curveEaseOut, animations: {
+      self.arrowImageView.transform = CGAffineTransform(scaleX: 1.0, y: scale)
      },
      completion: nil)
   }
 
   // swiftlint:disable function_body_length
-  private func updateFavoriteButton(selected selected: Bool, animated: Bool) {
+  fileprivate func updateFavoriteButton(selected: Bool, animated: Bool) {
     let duration = animated ? 0.4 : 0.0
 
     if selected {
-      self.heartImageView.transform = CGAffineTransformMakeScale(0.0, 0.0)
+      self.heartImageView.transform = CGAffineTransform(scaleX: 0.0, y: 0.0)
 
-      UIView.animateWithDuration(duration,
+      UIView.animate(withDuration: duration,
                                  delay: 0.0,
                                  usingSpringWithDamping: 0.6,
                                  initialSpringVelocity: 0.8,
-                                 options: .CurveEaseOut,
+                                 options: .curveEaseOut,
                                  animations: {
                                   self.heartImageView.alpha = 1.0
-                                  self.heartImageView.transform = CGAffineTransformMakeScale(1.0, 1.0)
+                                  self.heartImageView.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
                                   self.heartOutlineImageView.transform =
-                                    CGAffineTransformMakeScale(1.4, 1.4)
+                                    CGAffineTransform(scaleX: 1.4, y: 1.4)
                                   },
                                  completion: nil)
 
-      UIView.animateWithDuration(duration,
+      UIView.animate(withDuration: duration,
                                  delay: animated ? 0.1 : 0.0,
                                  usingSpringWithDamping: 0.6,
                                  initialSpringVelocity: 0.8,
-                                 options: .CurveEaseOut,
+                                 options: .curveEaseOut,
                                  animations: {
                                   self.heartOutlineImageView.transform =
-                                    CGAffineTransformMakeScale(1.0, 1.0)
+                                    CGAffineTransform(scaleX: 1.0, y: 1.0)
                                   self.heartOutlineImageView.alpha = 0.0
                                   },
                                  completion: nil)
     } else {
-      UIView.animateWithDuration(duration,
+      UIView.animate(withDuration: duration,
                                  delay: 0.0,
                                  usingSpringWithDamping: 0.6,
                                  initialSpringVelocity: 0.8,
-                                 options: .CurveEaseOut,
+                                 options: .curveEaseOut,
                                  animations: {
-                                  self.heartImageView.transform = CGAffineTransformMakeScale(0.0, 0.0)
+                                  self.heartImageView.transform = CGAffineTransform(scaleX: 0.0, y: 0.0)
                                   self.heartOutlineImageView.transform =
-                                    CGAffineTransformMakeScale(1.4, 1.4)
+                                    CGAffineTransform(scaleX: 1.4, y: 1.4)
                                   self.heartOutlineImageView.alpha = 1.0
                                   },
                                  completion: nil)
 
-      UIView.animateWithDuration(duration,
+      UIView.animate(withDuration: duration,
                                  delay: animated ? 0.1 : 0.0,
                                  usingSpringWithDamping: 0.6,
                                  initialSpringVelocity: 0.8,
-                                 options: .CurveEaseOut,
+                                 options: .curveEaseOut,
                                  animations: {
                                   self.heartOutlineImageView.transform =
-                                    CGAffineTransformMakeScale(1.0, 1.0)
+                                    CGAffineTransform(scaleX: 1.0, y: 1.0)
                                   },
                                  completion: { _ in
                                   self.heartImageView.alpha = 0.0
@@ -283,14 +283,14 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
   }
   // swiftlint:ensable function_body_length
 
-  private func setBackgroundGradient(categoryId categoryId: Int?, isFullScreen: Bool) {
+  fileprivate func setBackgroundGradient(categoryId: Int?, isFullScreen: Bool) {
 
     let (startColor, endColor) = discoveryGradientColors(forCategoryId: categoryId)
 
     if isFullScreen {
-      UIView.transitionWithView(self.gradientBackgroundView,
+      UIView.transition(with: self.gradientBackgroundView,
                                 duration: 0.2,
-                                options: [.TransitionCrossDissolve, .CurveEaseOut],
+                                options: [.transitionCrossDissolve, .curveEaseOut],
                                 animations: {
                                   self.gradientBackgroundView.setGradient([
                                     (color: startColor, location: 0.0),
@@ -298,25 +298,25 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
                                   },
                                 completion: nil)
 
-      UIView.animateWithDuration(0.2,
+      UIView.animate(withDuration: 0.2,
                                  delay: 0.1,
-                                 options: .CurveEaseIn,
+                                 options: .curveEaseIn,
                                  animations: {
-                                  self.borderLineView.transform = CGAffineTransformMakeScale(0.93, 1.0)
+                                  self.borderLineView.transform = CGAffineTransform(scaleX: 0.93, y: 1.0)
                                  },
                                  completion: nil)
     } else {
-      UIView.animateWithDuration(0.1,
+      UIView.animate(withDuration: 0.1,
                                  delay: 0.0,
-                                 options: .CurveEaseOut,
+                                 options: .curveEaseOut,
                                  animations: {
-                                  self.borderLineView.transform = CGAffineTransformMakeScale(1.0, 1.0)
+                                  self.borderLineView.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
                                  },
                                  completion: nil)
 
-      UIView.transitionWithView(self.gradientBackgroundView,
+      UIView.transition(with: self.gradientBackgroundView,
                                 duration: 0.2,
-                                options: [.TransitionCrossDissolve, .CurveEaseOut],
+                                options: [.transitionCrossDissolve, .curveEaseOut],
                                 animations: {
                                   self.gradientBackgroundView.setGradient([
                                     (color: startColor, location: 0.0),
@@ -326,21 +326,21 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
     }
   }
 
-  @objc private func titleButtonTapped() {
+  @objc fileprivate func titleButtonTapped() {
     self.viewModel.inputs.titleButtonTapped()
   }
 
-  @objc private func favoriteButtonTapped() {
+  @objc fileprivate func favoriteButtonTapped() {
     self.viewModel.inputs.favoriteButtonTapped()
   }
 }
 
 extension DiscoveryNavigationHeaderViewController: DiscoveryFiltersViewControllerDelegate {
-  internal func discoveryFiltersDidClose(viewController: DiscoveryFiltersViewController) {
+  internal func discoveryFiltersDidClose(_ viewController: DiscoveryFiltersViewController) {
     self.viewModel.inputs.titleButtonTapped()
   }
 
-  internal func discoveryFilters(viewController: DiscoveryFiltersViewController, selectedRow: SelectableRow) {
+  internal func discoveryFilters(_ viewController: DiscoveryFiltersViewController, selectedRow: SelectableRow) {
     self.viewModel.inputs.filtersSelected(row: selectedRow)
   }
 }

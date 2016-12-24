@@ -1,29 +1,29 @@
 import Library
 import Prelude
 import ReactiveExtensions
-import ReactiveCocoa
+import ReactiveSwift
 import KsApi
 import UIKit
 
 protocol ActivityUpdateCellDelegate {
   /// Call with the activity value when navigating to the activity's project.
-  func activityUpdateCellTappedProjectImage(activity activity: Activity)
+  func activityUpdateCellTappedProjectImage(activity: Activity)
 }
 
 internal final class ActivityUpdateCell: UITableViewCell, ValueCell {
-  private var viewModel: ActivityUpdateViewModelType = ActivityUpdateViewModel()
+  fileprivate var viewModel: ActivityUpdateViewModelType = ActivityUpdateViewModel()
   internal var delegate: ActivityUpdateCellDelegate?
 
-  @IBOutlet private weak var bodyLabel: UILabel!
-  @IBOutlet private weak var cardView: UIView!
-  @IBOutlet private weak var containerView: UIView!
-  @IBOutlet private weak var projectImageButton: UIButton!
-  @IBOutlet private weak var projectImageView: UIImageView!
-  @IBOutlet private weak var projectNameLabel: UILabel!
-  @IBOutlet private weak var titleLabel: UILabel!
-  @IBOutlet private weak var updateSequenceLabel: UILabel!
+  @IBOutlet fileprivate weak var bodyLabel: UILabel!
+  @IBOutlet fileprivate weak var cardView: UIView!
+  @IBOutlet fileprivate weak var containerView: UIView!
+  @IBOutlet fileprivate weak var projectImageButton: UIButton!
+  @IBOutlet fileprivate weak var projectImageView: UIImageView!
+  @IBOutlet fileprivate weak var projectNameLabel: UILabel!
+  @IBOutlet fileprivate weak var titleLabel: UILabel!
+  @IBOutlet fileprivate weak var updateSequenceLabel: UILabel!
 
-  internal func configureWith(value value: Activity) {
+  internal func configureWith(value: Activity) {
     self.viewModel.inputs.configureWith(activity: value)
   }
 
@@ -40,18 +40,18 @@ internal final class ActivityUpdateCell: UITableViewCell, ValueCell {
 
     self.viewModel.outputs.projectImageURL
       .observeForUI()
-      .on(next: { [weak projectImageView] _ in
+      .on(event: { [weak projectImageView] _ in
         projectImageView?.af_cancelImageRequest()
         projectImageView?.image = nil
       })
       .skipNil()
-      .observeNext { [weak projectImageView] url in
+      .observeValues { [weak projectImageView] url in
         projectImageView?.af_setImageWithURL(url)
     }
 
     self.viewModel.outputs.notifyDelegateTappedProjectImage
       .observeForUI()
-      .observeNext { [weak self] activity in
+      .observeValues { [weak self] activity in
         self?.delegate?.activityUpdateCellTappedProjectImage(activity: activity)
     }
   }

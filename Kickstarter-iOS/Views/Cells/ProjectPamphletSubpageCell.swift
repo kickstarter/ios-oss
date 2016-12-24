@@ -38,12 +38,12 @@ internal enum ProjectPamphletSubpage {
 
 internal final class ProjectPamphletSubpageCell: UITableViewCell, ValueCell {
 
-  @IBOutlet private weak var countContainerView: UIView!
-  @IBOutlet private weak var countLabel: UILabel!
-  @IBOutlet private weak var rootStackView: UIStackView!
-  @IBOutlet private weak var separatorView: UIView!
-  @IBOutlet private weak var subpageLabel: UILabel!
-  @IBOutlet private weak var topGradientView: GradientView!
+  @IBOutlet fileprivate weak var countContainerView: UIView!
+  @IBOutlet fileprivate weak var countLabel: UILabel!
+  @IBOutlet fileprivate weak var rootStackView: UIStackView!
+  @IBOutlet fileprivate weak var separatorView: UIView!
+  @IBOutlet fileprivate weak var subpageLabel: UILabel!
+  @IBOutlet fileprivate weak var topGradientView: GradientView!
 
   internal func configureWith(value subpage: ProjectPamphletSubpage) {
     switch subpage {
@@ -54,8 +54,8 @@ internal final class ProjectPamphletSubpageCell: UITableViewCell, ValueCell {
     }
 
     self.countLabel.text = Format.wholeNumber(subpage.count)
-    self.topGradientView.hidden = !subpage.isFirstInSection
-    self.separatorView.hidden = !subpage.isFirstInSection
+    self.topGradientView.isHidden = !subpage.isFirstInSection
+    self.separatorView.isHidden = !subpage.isFirstInSection
   }
 
   internal override func bindStyles() {
@@ -80,8 +80,8 @@ internal final class ProjectPamphletSubpageCell: UITableViewCell, ValueCell {
       |> UILabel.lens.font .~ .ksr_headline(size: 13)
 
     self.rootStackView
-      |> UIStackView.lens.alignment .~ .Center
-      |> UIStackView.lens.distribution .~ .EqualSpacing
+      |> UIStackView.lens.alignment .~ .center
+      |> UIStackView.lens.distribution .~ .equalSpacing
 
     self.separatorView
       |> separatorStyle

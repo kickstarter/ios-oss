@@ -1,27 +1,27 @@
 import KsApi
 import Library
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 import Social
 import UIKit
 
 internal final class ThanksViewController: UIViewController, UICollectionViewDelegate {
 
-  @IBOutlet private weak var facebookButton: UIButton!
-  @IBOutlet private weak var twitterButton: UIButton!
-  @IBOutlet private weak var shareMoreButton: UIButton!
-  @IBOutlet private weak var doneButton: UIBarButtonItem!
-  @IBOutlet private weak var projectsCollectionView: UICollectionView!
-  @IBOutlet private weak var backedLabel: UILabel!
-  @IBOutlet private weak var recommendationsLabel: UILabel!
-  @IBOutlet private weak var woohooLabel: UILabel!
+  @IBOutlet fileprivate weak var facebookButton: UIButton!
+  @IBOutlet fileprivate weak var twitterButton: UIButton!
+  @IBOutlet fileprivate weak var shareMoreButton: UIButton!
+  @IBOutlet fileprivate weak var doneButton: UIBarButtonItem!
+  @IBOutlet fileprivate weak var projectsCollectionView: UICollectionView!
+  @IBOutlet fileprivate weak var backedLabel: UILabel!
+  @IBOutlet fileprivate weak var recommendationsLabel: UILabel!
+  @IBOutlet fileprivate weak var woohooLabel: UILabel!
 
-  private let viewModel: ThanksViewModelType = ThanksViewModel()
-  private let shareViewModel: ShareViewModelType = ShareViewModel()
-  private let dataSource = ThanksProjectsDataSource()
+  fileprivate let viewModel: ThanksViewModelType = ThanksViewModel()
+  fileprivate let shareViewModel: ShareViewModelType = ShareViewModel()
+  fileprivate let dataSource = ThanksProjectsDataSource()
 
-  internal static func configuredWith(project project: Project) -> ThanksViewController {
+  internal static func configuredWith(project: Project) -> ThanksViewController {
     let vc = Storyboard.Thanks.instantiate(ThanksViewController)
     vc.viewModel.inputs.project(project)
     vc.shareViewModel.inputs.configureWith(shareContext: .thanks(project))
@@ -35,15 +35,15 @@ internal final class ThanksViewController: UIViewController, UICollectionViewDel
     self.projectsCollectionView.delegate = self
 
     self.viewModel.inputs.facebookIsAvailable(
-      SLComposeViewController.isAvailableForServiceType(SLServiceTypeFacebook)
+      SLComposeViewController.isAvailable(forServiceType: SLServiceTypeFacebook)
     )
     self.viewModel.inputs.twitterIsAvailable(
-      SLComposeViewController.isAvailableForServiceType(SLServiceTypeTwitter)
+      SLComposeViewController.isAvailable(forServiceType: SLServiceTypeTwitter)
     )
     self.viewModel.inputs.viewDidLoad()
   }
 
-  override func viewWillAppear(animated: Bool) {
+  override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     self.navigationItem.setHidesBackButton(true, animated: animated)
   }
@@ -54,7 +54,7 @@ internal final class ThanksViewController: UIViewController, UICollectionViewDel
     self |> baseControllerStyle()
 
     self.woohooLabel
-      |> UILabel.lens.textColor .~ .whiteColor()
+      |> UILabel.lens.textColor .~ .white
       |> UILabel.lens.font .~ UIFont.ksr_title2().bolded
       |> UILabel.lens.text %~ { _ in Strings.project_checkout_share_exclamation() }
       |> UILabel.lens.isAccessibilityElement .~ false
@@ -68,18 +68,18 @@ internal final class ThanksViewController: UIViewController, UICollectionViewDel
 
     self.facebookButton
       |> facebookThanksButtonStyle
-      |> UIButton.lens.targets .~ [(self, #selector(facebookButtonTapped), .TouchUpInside)]
+      |> UIButton.lens.targets .~ [(self, #selector(facebookButtonTapped), .touchUpInside)]
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.Share_this_project_on_Facebook() }
 
     self.twitterButton
       |> twitterButtonStyle
-      |> UIButton.lens.targets .~ [(self, #selector(twitterButtonTapped), .TouchUpInside)]
+      |> UIButton.lens.targets .~ [(self, #selector(twitterButtonTapped), .touchUpInside)]
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.Share_this_project_on_Twitter() }
 
     self.shareMoreButton
       |> borderButtonStyle
-      |> UIButton.lens.targets .~ [(self, #selector(shareMoreButtonTapped), .TouchUpInside)]
-      |> UIButton.lens.title(forState: .Normal) %~ { _ in
+      |> UIButton.lens.targets .~ [(self, #selector(shareMoreButtonTapped), .touchUpInside)]
+      |> UIButton.lens.title(forState: .normal) %~ { _ in
         Strings.project_checkout_share_buttons_more_share_options()
     }
 
@@ -98,95 +98,95 @@ internal final class ThanksViewController: UIViewController, UICollectionViewDel
 
     self.viewModel.outputs.dismissToRootViewController
     .observeForControllerAction()
-      .observeNext { [weak self] in
-        self?.view.window?.rootViewController?.dismissViewControllerAnimated(true, completion: nil)
+      .observeValues { [weak self] in
+        self?.view.window?.rootViewController?.dismiss(animated: true, completion: nil)
     }
 
     self.viewModel.outputs.goToDiscovery
       .observeForControllerAction()
-      .observeNext { [weak self] params in
+      .observeValues { [weak self] params in
         self?.goToDiscovery(params: params)
     }
 
     self.viewModel.outputs.goToAppStoreRating
       .observeForControllerAction()
-      .observeNext { [weak self] link in
+      .observeValues { [weak self] link in
         self?.goToAppStore(link: link)
     }
 
     self.viewModel.outputs.goToProject
       .observeForControllerAction()
-      .observeNext { [weak self] project, projects, refTag in
+      .observeValues { [weak self] project, projects, refTag in
         self?.goToProject(project, projects: projects, refTag: refTag)
     }
 
     self.viewModel.outputs.showRatingAlert
       .observeForControllerAction()
-      .observeNext { [weak self] in
+      .observeValues { [weak self] in
         self?.showRatingAlert()
     }
 
     self.viewModel.outputs.showGamesNewsletterAlert
       .observeForControllerAction()
-      .observeNext { [weak self] in
+      .observeValues { [weak self] in
         self?.showGamesNewsletterAlert()
     }
 
     self.viewModel.outputs.showGamesNewsletterOptInAlert
       .observeForControllerAction()
-      .observeNext { [weak self] title in
+      .observeValues { [weak self] title in
         self?.showGamesNewsletterOptInAlert(title: title)
     }
 
     self.viewModel.outputs.updateUserInEnvironment
-      .observeNext { [weak self] user in
+      .observeValues { [weak self] user in
         AppEnvironment.updateCurrentUser(user)
         self?.viewModel.inputs.userUpdated()
     }
 
     self.viewModel.outputs.postUserUpdatedNotification
-      .observeNext(NSNotificationCenter.defaultCenter().postNotification)
+      .observeValues(NotificationCenter.default.post)
 
     self.viewModel.outputs.showRecommendations
       .observeForControllerAction()
-      .observeNext { [weak self] projects, category in
+      .observeValues { [weak self] projects, category in
         self?.dataSource.loadData(projects: projects, category: category)
         self?.projectsCollectionView.reloadData()
     }
 
     self.shareViewModel.outputs.showShareSheet
       .observeForControllerAction()
-      .observeNext { [weak self] in self?.showShareSheet($0) }
+      .observeValues { [weak self] in self?.showShareSheet($0) }
 
     self.shareViewModel.outputs.showShareCompose
       .observeForControllerAction()
-      .observeNext { [weak self] in self?.showShareCompose($0) }
+      .observeValues { [weak self] in self?.showShareCompose($0) }
   }
   // swiftlint:enable function_body_length
 
-  private func goToDiscovery(params params: DiscoveryParams) {
+  fileprivate func goToDiscovery(params: DiscoveryParams) {
     self.view.window?.rootViewController
       .flatMap { $0 as? RootTabBarViewController }
       .doIfSome { $0.switchToDiscovery(params: params) }
 
-    self.view.window?.rootViewController?.dismissViewControllerAnimated(true, completion: nil)
+    self.view.window?.rootViewController?.dismiss(animated: true, completion: nil)
   }
 
-  private func goToAppStore(link link: String) {
-    guard let url = NSURL(string: link) else { return }
-    UIApplication.sharedApplication().openURL(url)
+  fileprivate func goToAppStore(link: String) {
+    guard let url = URL(string: link) else { return }
+    UIApplication.shared.openURL(url)
   }
 
-  private func goToProject(project: Project, projects: [Project], refTag: RefTag) {
+  fileprivate func goToProject(_ project: Project, projects: [Project], refTag: RefTag) {
     let vc = ProjectNavigatorViewController.configuredWith(project: project,
                                                            refTag: refTag,
                                                            initialPlaylist: projects,
                                                            navigatorDelegate: self)
-    self.presentViewController(vc, animated: true, completion: nil)
+    self.present(vc, animated: true, completion: nil)
   }
 
-  private func showRatingAlert() {
-    self.presentViewController(
+  fileprivate func showRatingAlert() {
+    self.present(
       UIAlertController.rating(
         yesHandler: { [weak self] action in
           self?.viewModel.inputs.rateNowButtonTapped()
@@ -200,10 +200,10 @@ internal final class ThanksViewController: UIViewController, UICollectionViewDel
     )
   }
 
-  private func showGamesNewsletterAlert() {
-    self.presentViewController(
+  fileprivate func showGamesNewsletterAlert() {
+    self.present(
       UIAlertController.games(
-        subscribeHandler: { [weak self] _ in
+        subscribeHandler: { [weak self] action in
           self?.viewModel.inputs.gamesNewsletterSignupButtonTapped()
       }),
       animated: true,
@@ -211,15 +211,15 @@ internal final class ThanksViewController: UIViewController, UICollectionViewDel
     )
   }
 
-  private func showGamesNewsletterOptInAlert(title title: String) {
-    self.presentViewController(
+  fileprivate func showGamesNewsletterOptInAlert(title: String) {
+    self.present(
       UIAlertController.newsletterOptIn(title),
       animated: true,
       completion: nil
     )
   }
 
-  private func showShareSheet(controller: UIActivityViewController) {
+  fileprivate func showShareSheet(_ controller: UIActivityViewController) {
     controller.completionWithItemsHandler = { [weak self] in
       self?.shareViewModel.inputs.shareActivityCompletion(activityType: $0,
                                                           completed: $1,
@@ -227,24 +227,24 @@ internal final class ThanksViewController: UIViewController, UICollectionViewDel
                                                           activityError: $3)
     }
 
-    if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
-      controller.modalPresentationStyle = .Popover
+    if UIDevice.current.userInterfaceIdiom == .pad {
+      controller.modalPresentationStyle = .popover
       let popover = controller.popoverPresentationController
       popover?.sourceView = self.shareMoreButton
     }
 
-    self.presentViewController(controller, animated: true, completion: nil)
+    self.present(controller, animated: true, completion: nil)
   }
 
-  private func showShareCompose(controller: SLComposeViewController) {
+  fileprivate func showShareCompose(_ controller: SLComposeViewController) {
     controller.completionHandler = { [weak self] in
       self?.shareViewModel.inputs.shareComposeCompletion(result: $0)
     }
-    self.presentViewController(controller, animated: true, completion: nil)
+    self.present(controller, animated: true, completion: nil)
   }
 
-  internal func collectionView(collectionView: UICollectionView,
-                               didSelectItemAtIndexPath indexPath: NSIndexPath) {
+  internal func collectionView(_ collectionView: UICollectionView,
+                               didSelectItemAt indexPath: IndexPath) {
     if let project = self.dataSource.projectAtIndexPath(indexPath) {
       self.viewModel.inputs.projectTapped(project)
     } else if let category = self.dataSource.categoryAtIndexPath(indexPath) {
@@ -252,19 +252,19 @@ internal final class ThanksViewController: UIViewController, UICollectionViewDel
     }
   }
 
-  @objc private func facebookButtonTapped() {
+  @objc fileprivate func facebookButtonTapped() {
     self.shareViewModel.inputs.facebookButtonTapped()
   }
 
-  @objc private func twitterButtonTapped() {
+  @objc fileprivate func twitterButtonTapped() {
     self.shareViewModel.inputs.twitterButtonTapped()
   }
 
-  @objc private func shareMoreButtonTapped() {
+  @objc fileprivate func shareMoreButtonTapped() {
     self.shareViewModel.inputs.shareButtonTapped()
   }
 
-  @objc private func doneButtonTapped() {
+  @objc fileprivate func doneButtonTapped() {
     self.viewModel.inputs.closeButtonTapped()
   }
 }

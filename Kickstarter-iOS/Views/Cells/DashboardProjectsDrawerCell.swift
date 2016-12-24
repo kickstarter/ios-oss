@@ -5,14 +5,14 @@ import UIKit
 
 internal final class DashboardProjectsDrawerCell: UITableViewCell, ValueCell {
 
-  @IBOutlet private weak var projectNumLabel: UILabel!
-  @IBOutlet private weak var projectNameLabel: UILabel!
-  @IBOutlet private weak var checkmarkImageView: UIImageView!
+  @IBOutlet fileprivate weak var projectNumLabel: UILabel!
+  @IBOutlet fileprivate weak var projectNameLabel: UILabel!
+  @IBOutlet fileprivate weak var checkmarkImageView: UIImageView!
 
-  private let viewModel: DashboardProjectsDrawerCellViewModelType =
+  fileprivate let viewModel: DashboardProjectsDrawerCellViewModelType =
     DashboardProjectsDrawerCellViewModel()
 
-  internal func configureWith(value value: ProjectsDrawerData) {
+  internal func configureWith(value: ProjectsDrawerData) {
     self.viewModel.inputs.configureWith(project: value.project,
                                         indexNum: value.indexNum,
                                         isChecked: value.isChecked)

@@ -4,27 +4,27 @@ import Prelude
 import UIKit
 
 internal protocol EmptyStatesViewControllerDelegate: class {
-  func emptyStatesViewController(viewController: EmptyStatesViewController,
+  func emptyStatesViewController(_ viewController: EmptyStatesViewController,
                                  goToDiscoveryWithParams params: DiscoveryParams?)
   func emptyStatesViewControllerGoToFriends()
 }
 
 internal final class EmptyStatesViewController: UIViewController {
 
-  @IBOutlet private weak var backgroundGradientView: GradientView!
-  @IBOutlet private weak var backgroundStripView: UIView!
-  @IBOutlet private weak var mainButton: UIButton!
-  @IBOutlet private weak var mainButtonBottomLayoutConstraint: NSLayoutConstraint!
-  @IBOutlet private weak var headlineStackView: UIStackView!
-  @IBOutlet private weak var stripViewTopLayoutConstraint: NSLayoutConstraint!
-  @IBOutlet private weak var subtitleLabel: UILabel!
-  @IBOutlet private weak var titleLabel: UILabel!
+  @IBOutlet fileprivate weak var backgroundGradientView: GradientView!
+  @IBOutlet fileprivate weak var backgroundStripView: UIView!
+  @IBOutlet fileprivate weak var mainButton: UIButton!
+  @IBOutlet fileprivate weak var mainButtonBottomLayoutConstraint: NSLayoutConstraint!
+  @IBOutlet fileprivate weak var headlineStackView: UIStackView!
+  @IBOutlet fileprivate weak var stripViewTopLayoutConstraint: NSLayoutConstraint!
+  @IBOutlet fileprivate weak var subtitleLabel: UILabel!
+  @IBOutlet fileprivate weak var titleLabel: UILabel!
 
   internal weak var delegate: EmptyStatesViewControllerDelegate?
 
-  private let viewModel: EmptyStatesViewModelType = EmptyStatesViewModel()
+  fileprivate let viewModel: EmptyStatesViewModelType = EmptyStatesViewModel()
 
-  internal static func configuredWith(emptyState emptyState: EmptyState?) -> EmptyStatesViewController {
+  internal static func configuredWith(emptyState: EmptyState?) -> EmptyStatesViewController {
     let vc = Storyboard.EmptyStates.instantiate(EmptyStatesViewController)
     vc.viewModel.inputs.configureWith(emptyState: emptyState)
     return vc
@@ -36,11 +36,11 @@ internal final class EmptyStatesViewController: UIViewController {
     self.mainButton.addTarget(
       self,
       action: #selector(mainButtonTapped),
-      forControlEvents: .TouchUpInside
+      for: .touchUpInside
     )
   }
 
-  override func viewWillAppear(animated: Bool) {
+  override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
 
     self.viewModel.inputs.viewWillAppear()
@@ -63,7 +63,7 @@ internal final class EmptyStatesViewController: UIViewController {
 
     self.viewModel.outputs.backgroundGradientColorId
       .observeForUI()
-      .observeNext { [weak self] in
+      .observeValues { [weak self] in
         let (endColor, startColor) = discoveryGradientColors(forCategoryId: $0)
         self?.backgroundGradientView.setGradient([(startColor, 0.0), (endColor, 1.0)])
     }
@@ -72,35 +72,35 @@ internal final class EmptyStatesViewController: UIViewController {
 
     self.viewModel.outputs.mainButtonBackgroundColor
       .observeForUI()
-      .observeNext { [weak element = mainButton] in
+      .observeValues { [weak element = mainButton] in
         element
-          ?|> UIButton.lens.backgroundColor(forState: .Normal) .~ $0
+          ?|> UIButton.lens.backgroundColor(forState: .normal) .~ $0
     }
 
     self.viewModel.outputs.mainButtonTitleColor
       .observeForUI()
-      .observeNext { [weak element = mainButton] in
+      .observeValues { [weak element = mainButton] in
         element
-          ?|> UIButton.lens.titleColor(forState: .Normal) .~ $0
-          ?|> UIButton.lens.titleColor(forState: .Highlighted) .~ $0
+          ?|> UIButton.lens.titleColor(forState: .normal) .~ $0
+          ?|> UIButton.lens.titleColor(forState: .highlighted) .~ $0
     }
 
     self.viewModel.outputs.mainButtonBorderColor
       .observeForUI()
-      .observeNext { [weak element = mainButton] in
+      .observeValues { [weak element = mainButton] in
         element ?|> UIButton.lens.layer.borderColor .~ $0
     }
 
     self.viewModel.outputs.notifyDelegateToGoToDiscovery
       .observeForControllerAction()
-      .observeNext { [weak self] params in
+      .observeValues { [weak self] params in
         guard let _self = self else { return }
         _self.delegate?.emptyStatesViewController(_self, goToDiscoveryWithParams: params)
     }
 
     self.viewModel.outputs.notifyDelegateToGoToFriends
       .observeForControllerAction()
-      .observeNext { [weak self] in
+      .observeValues { [weak self] in
         self?.delegate?.emptyStatesViewControllerGoToFriends()
     }
   }
@@ -128,11 +128,11 @@ internal final class EmptyStatesViewController: UIViewController {
     }
 
     self.titleLabel
-      |> UILabel.lens.textAlignment .~ .Left
+      |> UILabel.lens.textAlignment .~ .left
       |> UILabel.lens.numberOfLines .~ 0
 
     self.subtitleLabel
-      |> UILabel.lens.textAlignment .~ .Left
+      |> UILabel.lens.textAlignment .~ .left
       |> UILabel.lens.numberOfLines .~ 0
 
     self.headlineStackView
@@ -148,7 +148,7 @@ internal final class EmptyStatesViewController: UIViewController {
       |> UIButton.lens.layer.borderWidth .~ 1.0
   }
 
-  internal func setEmptyState(emptyState: EmptyState) {
+  internal func setEmptyState(_ emptyState: EmptyState) {
     self.viewModel.inputs.setEmptyState(emptyState)
   }
 

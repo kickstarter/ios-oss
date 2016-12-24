@@ -1,11 +1,11 @@
 import Library
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 
 internal protocol HelpWebViewModelInputs {
   /// Call to configure with HelpType.
-  func configureWith(helpType helpType: HelpType)
+  func configureWith(helpType: HelpType)
 
   /// Call when the view loads.
   func viewDidLoad()
@@ -35,17 +35,17 @@ internal final class HelpWebViewModel: HelpWebViewModelType, HelpWebViewModelInp
 
   internal let webViewLoadRequest: Signal<NSURLRequest, NoError>
 
-  private let helpTypeProperty = MutableProperty<HelpType?>(nil)
-  func configureWith(helpType helpType: HelpType) {
+  fileprivate let helpTypeProperty = MutableProperty<HelpType?>(nil)
+  func configureWith(helpType: HelpType) {
     self.helpTypeProperty.value = helpType
   }
-  private let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty()
   func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
 }
 
-private func urlForHelpType(helpType: HelpType, baseUrl: NSURL) -> NSURL? {
+private func urlForHelpType(_ helpType: HelpType, baseUrl: URL) -> URL? {
   switch helpType {
   case .cookie:
     return baseUrl.URLByAppendingPathComponent("cookies")

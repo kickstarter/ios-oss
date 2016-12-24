@@ -2,7 +2,7 @@
 @testable import Kickstarter_Framework
 @testable import ReactiveExtensions_TestHelpers
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 import XCTest
 

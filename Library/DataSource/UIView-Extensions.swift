@@ -37,10 +37,10 @@ extension UIView {
     self.bindViewModel()
   }
 
-  public func bindStyles() {
+  open func bindStyles() {
   }
 
-  public func bindViewModel() {
+  open func bindViewModel() {
   }
 
   public static var defaultReusableId: String {

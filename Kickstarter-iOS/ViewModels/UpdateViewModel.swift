@@ -2,15 +2,15 @@ import Argo
 import KsApi
 import Library
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 
 internal protocol UpdateViewModelInputs {
   /// Call with the project and update given to the controller.
-  func configureWith(project project: Project, update: Update)
+  func configureWith(project: Project, update: Update)
 
   /// Call when the webview needs to decide a policy for a navigation action. Returns the decision policy.
-  func decidePolicyFor(navigationAction navigationAction: WKNavigationActionData)
+  func decidePolicyFor(navigationAction: WKNavigationActionData)
     -> WKNavigationActionPolicy
 
   /// Call when the view loads.
@@ -47,7 +47,7 @@ internal final class UpdateViewModel: UpdateViewModelType, UpdateViewModelInputs
 
     let initialUpdateLoadRequest = initialUpdate
       .takeWhen(self.viewDidLoadProperty.signal)
-      .map { NSURL(string: $0.urls.web.update) }
+      .map { URL(string: $0.urls.web.update) }
       .skipNil()
       .map { AppEnvironment.current.apiService.preparedRequest(forURL: $0) }
 
@@ -132,28 +132,28 @@ internal final class UpdateViewModel: UpdateViewModelType, UpdateViewModelInputs
 
     self.projectProperty.signal.skipNil()
       .takeWhen(self.goToSafariBrowser)
-      .observeNext {
+      .observeValues {
         AppEnvironment.current.koala.trackOpenedExternalLink(project: $0, context: .projectUpdate)
     }
   }
   // swiftlint:enable function_body_length
 
-  private let updateProperty = MutableProperty<Update?>(nil)
-  private let projectProperty = MutableProperty<Project?>(nil)
-  internal func configureWith(project project: Project, update: Update) {
+  fileprivate let updateProperty = MutableProperty<Update?>(nil)
+  fileprivate let projectProperty = MutableProperty<Project?>(nil)
+  internal func configureWith(project: Project, update: Update) {
     self.updateProperty.value = update
     self.projectProperty.value = project
   }
 
-  private let policyForNavigationActionProperty = MutableProperty<WKNavigationActionData?>(nil)
-  private let policyDecisionProperty = MutableProperty(WKNavigationActionPolicy.Allow)
-  internal func decidePolicyFor(navigationAction navigationAction: WKNavigationActionData)
+  fileprivate let policyForNavigationActionProperty = MutableProperty<WKNavigationActionData?>(nil)
+  fileprivate let policyDecisionProperty = MutableProperty(WKNavigationActionPolicy.Allow)
+  internal func decidePolicyFor(navigationAction: WKNavigationActionData)
     -> WKNavigationActionPolicy {
       self.policyForNavigationActionProperty.value = navigationAction
       return self.policyDecisionProperty.value
   }
 
-  private let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty()
   internal func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }

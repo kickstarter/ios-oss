@@ -9,13 +9,13 @@ internal final class ProjectActivitiesDataSource: ValueCellDataSource {
     case activities
   }
 
-  internal func emptyState(visible visible: Bool) {
+  internal func emptyState(visible: Bool) {
     self.set(values: visible ? [()] : [],
              cellClass: ProjectActivityEmptyStateCell.self,
              inSection: Section.emptyState.rawValue)
   }
 
-  internal func load(projectActivityData projectActivityData: ProjectActivityData) {
+  internal func load(projectActivityData: ProjectActivityData) {
     let section = Section.activities.rawValue
 
     self.clearValues(section: section)
@@ -23,7 +23,7 @@ internal final class ProjectActivitiesDataSource: ValueCellDataSource {
     projectActivityData.activities
       .groupedBy { activity in
         return AppEnvironment.current.calendar.startOfDayForDate(
-          NSDate(timeIntervalSince1970: activity.createdAt)
+          Date(timeIntervalSince1970: activity.createdAt)
         )
       }
       .sort { $0.0.timeIntervalSince1970 > $1.0.timeIntervalSince1970 }
@@ -51,7 +51,7 @@ internal final class ProjectActivitiesDataSource: ValueCellDataSource {
       cell.configureWith(value: value)
     case let (cell as ProjectActivityCommentCell, value as (Activity, Project)):
       cell.configureWith(value: value)
-    case let (cell as ProjectActivityDateCell, value as NSDate):
+    case let (cell as ProjectActivityDateCell, value as Date):
       cell.configureWith(value: value)
     case let (cell as ProjectActivityEmptyStateCell, value as Void):
       cell.configureWith(value: value)
@@ -70,11 +70,11 @@ internal final class ProjectActivitiesDataSource: ValueCellDataSource {
     }
   }
 
-  internal func appendDateRow(date date: NSDate, section: Int) {
+  internal func appendDateRow(date: Date, section: Int) {
     self.appendRow(value: date, cellClass: ProjectActivityDateCell.self, toSection: section)
   }
 
-  internal func appendActivityRow(activity activity: Activity, project: Project, section: Int) {
+  internal func appendActivityRow(activity: Activity, project: Project, section: Int) {
     switch activity.category {
     case .backing, .backingAmount, .backingCanceled, .backingReward:
       self.appendRow(
@@ -117,8 +117,8 @@ internal final class ProjectActivitiesDataSource: ValueCellDataSource {
     }
   }
 
-  internal func activityAndProjectAtIndexPath(indexPath: NSIndexPath) -> (Activity, Project)? {
-    guard let value = self[indexPath] as? (Activity, Project) else { return nil }
+  internal func activityAndProjectAtIndexPath(_ indexPath: NSIndexPath) -> (Activity, Project)? {
+    guard let value = self[indexPath as IndexPath] as? (Activity, Project) else { return nil }
     return value
   }
 }

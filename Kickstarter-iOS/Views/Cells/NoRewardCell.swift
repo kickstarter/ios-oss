@@ -5,12 +5,12 @@ import UIKit
 
 internal final class NoRewardCell: UITableViewCell, ValueCell {
 
-  @IBOutlet private weak var cardView: UIView!
-  @IBOutlet private weak var pledgeButton: UIButton!
-  @IBOutlet private weak var pledgeTitleLabel: UILabel!
-  @IBOutlet private weak var pledgeSubtitleLabel: UILabel!
-  @IBOutlet private weak var rootStackView: UIStackView!
-  @IBOutlet private weak var copyStackView: UIStackView!
+  @IBOutlet fileprivate weak var cardView: UIView!
+  @IBOutlet fileprivate weak var pledgeButton: UIButton!
+  @IBOutlet fileprivate weak var pledgeTitleLabel: UILabel!
+  @IBOutlet fileprivate weak var pledgeSubtitleLabel: UILabel!
+  @IBOutlet fileprivate weak var rootStackView: UIStackView!
+  @IBOutlet fileprivate weak var copyStackView: UIStackView!
 
   internal func configureWith(value project: Project) {
     self.contentView.backgroundColor = Library.backgroundColor(forCategoryId: project.category.rootId)
@@ -31,12 +31,12 @@ internal final class NoRewardCell: UITableViewCell, ValueCell {
 
     self.cardView
       |> dropShadowStyle()
-      |> UIView.lens.backgroundColor .~ .whiteColor()
+      |> UIView.lens.backgroundColor .~ .white
 
     self.pledgeButton
       |> greenButtonStyle
       |> UIButton.lens.userInteractionEnabled .~ false
-      |> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.Pledge_without_a_reward() }
+      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.Pledge_without_a_reward() }
       |> UIButton.lens.isAccessibilityElement .~ false
       |> UIButton.lens.accessibilityElementsHidden .~ true
 

@@ -5,19 +5,19 @@ import Prelude
 import UIKit
 
 internal final class ProfileProjectCell: UICollectionViewCell, ValueCell {
-  private let viewModel: ProfileProjectCellViewModelType = ProfileProjectCellViewModel()
+  fileprivate let viewModel: ProfileProjectCellViewModelType = ProfileProjectCellViewModel()
 
-  @IBOutlet private weak var cardView: UIView!
-  @IBOutlet private weak var metadataBackgroundView: UIView!
-  @IBOutlet private weak var metadataLabel: UILabel!
-  @IBOutlet private weak var projectNameLabel: UILabel!
-  @IBOutlet private weak var projectImageView: UIImageView!
-  @IBOutlet private weak var progressView: UIView!
-  @IBOutlet private weak var progressBarView: UIView!
-  @IBOutlet private weak var stateBannerView: UIView!
-  @IBOutlet private weak var stateLabel: UILabel!
+  @IBOutlet fileprivate weak var cardView: UIView!
+  @IBOutlet fileprivate weak var metadataBackgroundView: UIView!
+  @IBOutlet fileprivate weak var metadataLabel: UILabel!
+  @IBOutlet fileprivate weak var projectNameLabel: UILabel!
+  @IBOutlet fileprivate weak var projectImageView: UIImageView!
+  @IBOutlet fileprivate weak var progressView: UIView!
+  @IBOutlet fileprivate weak var progressBarView: UIView!
+  @IBOutlet fileprivate weak var stateBannerView: UIView!
+  @IBOutlet fileprivate weak var stateLabel: UILabel!
 
-  internal func configureWith(value value: Project) {
+  internal func configureWith(value: Project) {
     self.viewModel.inputs.project(value)
   }
 
@@ -25,7 +25,7 @@ internal final class ProfileProjectCell: UICollectionViewCell, ValueCell {
     super.bindStyles()
 
     self
-      |> UICollectionViewCell.lens.backgroundColor .~ .clearColor()
+      |> UICollectionViewCell.lens.backgroundColor .~ .clear
       |> UICollectionViewCell.lens.isAccessibilityElement .~ true
       |> UICollectionViewCell.lens.accessibilityHint %~ { _ in Strings.Opens_project() }
       |> UICollectionViewCell.lens.accessibilityTraits .~ UIAccessibilityTraitButton
@@ -34,7 +34,7 @@ internal final class ProfileProjectCell: UICollectionViewCell, ValueCell {
       |> dropShadowStyle()
 
     self.metadataLabel
-      |> UILabel.lens.textColor .~ .whiteColor()
+      |> UILabel.lens.textColor .~ .white
       |> UILabel.lens.font .~ .ksr_headline(size: 12)
 
     self.projectNameLabel
@@ -42,7 +42,7 @@ internal final class ProfileProjectCell: UICollectionViewCell, ValueCell {
       |> UILabel.lens.font .~ .ksr_callout(size: 15)
 
     self.stateLabel
-      |> UILabel.lens.textColor .~ .whiteColor()
+      |> UILabel.lens.textColor .~ .white
       |> UILabel.lens.font .~ .ksr_headline(size: 12)
       |> UILabel.lens.numberOfLines .~ 0
   }
@@ -56,22 +56,22 @@ internal final class ProfileProjectCell: UICollectionViewCell, ValueCell {
 
     self.viewModel.outputs.photoURL
       .observeForUI()
-      .on(next: { [weak self] _ in
+      .on(event: { [weak self] _ in
         self?.projectImageView.af_cancelImageRequest()
         self?.projectImageView.image = nil
         })
       .skipNil()
-      .observeNext { [weak self] url in
+      .observeValues { [weak self] url in
         self?.projectImageView.af_setImageWithURL(url)
     }
 
     self.progressView.rac.hidden = self.viewModel.outputs.progressHidden
     self.viewModel.outputs.progress
       .observeForUI()
-      .observeNext { [weak element = progressBarView] progress in
+      .observeValues { [weak element = progressBarView] progress in
         let anchorX = progress == 0 ? 0 : 0.5 / progress
         element?.layer.anchorPoint = CGPoint(x: CGFloat(max(anchorX, 0.5)), y: 0.5)
-        element?.transform = CGAffineTransformMakeScale(CGFloat(min(progress, 1.0)), 1.0)
+        element?.transform = CGAffineTransform(scaleX: CGFloat(min(progress, 1.0)), y: 1.0)
     }
 
     self.stateBannerView.rac.hidden = self.viewModel.outputs.stateHidden

@@ -4,16 +4,16 @@ import Prelude
 import UIKit
 
 internal final class ProjectPamphletMinimalCell: UITableViewCell, ValueCell {
-  @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
-  @IBOutlet private weak var projectImageView: UIImageView!
-  @IBOutlet private weak var projectNameLabel: UILabel!
-  @IBOutlet private weak var projectNameStackView: UIStackView!
+  @IBOutlet fileprivate weak var activityIndicator: UIActivityIndicatorView!
+  @IBOutlet fileprivate weak var projectImageView: UIImageView!
+  @IBOutlet fileprivate weak var projectNameLabel: UILabel!
+  @IBOutlet fileprivate weak var projectNameStackView: UIStackView!
 
   internal func configureWith(value project: Project) {
     self.projectNameLabel.text = project.name
 
     self.projectImageView.image = nil
-    NSURL(string: project.photo.full).doIfSome(self.projectImageView.ksr_setImageWithURL)
+    URL(string: project.photo.full).doIfSome(self.projectImageView.ksr_setImageWithURL)
   }
 
   internal override func bindStyles() {
@@ -24,7 +24,7 @@ internal final class ProjectPamphletMinimalCell: UITableViewCell, ValueCell {
 
     self.projectImageView
       |> UIImageView.lens.contentMode .~ .ScaleAspectFit
-      |> UIImageView.lens.backgroundColor .~ .blackColor()
+      |> UIImageView.lens.backgroundColor .~ .black
 
     self.projectNameLabel
       |> UILabel.lens.font %~~ { _, label in

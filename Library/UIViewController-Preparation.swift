@@ -46,13 +46,13 @@ extension UIViewController {
   /**
    The entry point to bind all view model outputs. Called just before `viewDidLoad`.
    */
-  public func bindViewModel() {
+  open func bindViewModel() {
   }
 
   /**
    The entry point to bind all styles to UI elements. Called just after `viewDidLoad`.
    */
-  public func bindStyles() {
+  open func bindStyles() {
   }
 
   public func ksr_traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {

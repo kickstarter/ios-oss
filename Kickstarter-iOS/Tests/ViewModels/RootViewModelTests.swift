@@ -6,7 +6,7 @@ import UIKit
 @testable import ReactiveExtensions_TestHelpers
 import KsApi
 import Result
-import ReactiveCocoa
+import ReactiveSwift
 import Prelude
 
 final class RootViewModelTests: TestCase {

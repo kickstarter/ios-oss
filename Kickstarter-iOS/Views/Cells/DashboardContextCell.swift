@@ -5,17 +5,17 @@ import Prelude_UIKit
 import UIKit
 
 internal final class DashboardContextCell: UITableViewCell, ValueCell {
-  @IBOutlet private weak var containerView: UIView!
-  @IBOutlet private weak var projectNameLabel: UILabel!
-  @IBOutlet private weak var separatorView: UIView!
-  @IBOutlet private weak var viewProjectButton: UIButton!
+  @IBOutlet fileprivate weak var containerView: UIView!
+  @IBOutlet fileprivate weak var projectNameLabel: UILabel!
+  @IBOutlet fileprivate weak var separatorView: UIView!
+  @IBOutlet fileprivate weak var viewProjectButton: UIButton!
 
   internal override func bindStyles() {
     super.bindStyles()
 
     self
       |> dashboardContextCellStyle
-      |> UITableViewCell.lens.selectionStyle .~ .Gray
+      |> UITableViewCell.lens.selectionStyle .~ .gray
       |> UITableViewCell.lens.accessibilityTraits .~ UIAccessibilityTraitButton
       |> UITableViewCell.lens.accessibilityHint %~ { _ in
         Strings.dashboard_tout_accessibility_hint_opens_project() }
@@ -35,7 +35,7 @@ internal final class DashboardContextCell: UITableViewCell, ValueCell {
       |> UIButton.lens.accessibilityElementsHidden .~ true
   }
 
-  internal func configureWith(value value: Project) {
+  internal func configureWith(value: Project) {
     self.projectNameLabel.text = value.name
   }
 }

@@ -59,22 +59,22 @@ internal final class DiscoveryFiltersDataSource: ValueCellDataSource {
     }
   }
 
-  internal func selectableRow(indexPath indexPath: NSIndexPath) -> SelectableRow? {
-    if let (row, _) = self[indexPath] as? (SelectableRow, Int?) {
+  internal func selectableRow(indexPath: NSIndexPath) -> SelectableRow? {
+    if let (row, _) = self[indexPath as IndexPath] as? (SelectableRow, Int?) {
       return row
     }
     return nil
   }
 
-  internal func expandableRow(indexPath indexPath: NSIndexPath) -> ExpandableRow? {
-    if let (row, _) = self[indexPath] as? (ExpandableRow, Int?) {
+  internal func expandableRow(indexPath: NSIndexPath) -> ExpandableRow? {
+    if let (row, _) = self[indexPath as IndexPath] as? (ExpandableRow, Int?) {
       return row
     }
     return nil
   }
 
-  internal func indexPath(forCategoryId categoryId: Int?) -> NSIndexPath? {
-    for (idx, value) in self[section: Section.categories.rawValue].enumerate() {
+  internal func indexPath(forCategoryId categoryId: Int?) -> IndexPath? {
+    for (idx, value) in self[section: Section.categories.rawValue].enumerated() {
       guard let (row, _) = value as? (ExpandableRow, Int?) else { continue }
       if row.params.category?.id == categoryId {
         return NSIndexPath(forItem: idx, inSection: Section.categories.rawValue)
@@ -85,7 +85,7 @@ internal final class DiscoveryFiltersDataSource: ValueCellDataSource {
   }
 
   internal func expandedRow() -> Int? {
-    for (idx, value) in self[section: Section.categories.rawValue].enumerate() {
+    for (idx, value) in self[section: Section.categories.rawValue].enumerated() {
       guard let (row, _) = value as? (ExpandableRow, Int?) else { continue }
 
       if row.isExpanded {

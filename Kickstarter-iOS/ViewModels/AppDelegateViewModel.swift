@@ -3,7 +3,7 @@ import Argo
 import KsApi
 import Library
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 
 public struct HockeyConfigData {
@@ -23,11 +23,11 @@ public func == (lhs: HockeyConfigData, rhs: HockeyConfigData) -> Bool {
 
 public protocol AppDelegateViewModelInputs {
   /// Call when the application is handed off to.
-  func applicationContinueUserActivity(userActivity: NSUserActivity) -> Bool
+  func applicationContinueUserActivity(_ userActivity: NSUserActivity) -> Bool
 
   /// Call when the application finishes launching.
-  func applicationDidFinishLaunching(application application: UIApplication?,
-                                                 launchOptions: [NSObject: AnyObject]?)
+  func applicationDidFinishLaunching(application: UIApplication?,
+                                                 launchOptions: [AnyHashable: Any]?)
 
   /// Call when the application will enter foreground.
   func applicationWillEnterForeground()
@@ -39,11 +39,11 @@ public protocol AppDelegateViewModelInputs {
   func applicationDidReceiveMemoryWarning()
 
   /// Call to open a url that was sent to the app
-  func applicationOpenUrl(application application: UIApplication?, url: NSURL, sourceApplication: String?,
+  func applicationOpenUrl(application: UIApplication?, url: URL, sourceApplication: String?,
                                       annotation: AnyObject) -> Bool
 
   /// Call when the application receives a request to perform a shortcut action.
-  func applicationPerformActionForShortcutItem(item: UIApplicationShortcutItem)
+  func applicationPerformActionForShortcutItem(_ item: UIApplicationShortcutItem)
 
   /// Call after having invoked AppEnvironemt.updateCurrentUser with a fresh user.
   func currentUserUpdatedInEnvironment()
@@ -52,7 +52,7 @@ public protocol AppDelegateViewModelInputs {
   func didReceive(remoteNotification notification: AnyObject, applicationIsActive: Bool)
 
   /// Call when the app delegate gets notice of a successful notification registration.
-  func didRegisterForRemoteNotifications(withDeviceTokenData data: NSData)
+  func didRegisterForRemoteNotifications(withDeviceTokenData data: Data)
 
   /// Call when the user taps "OK" from the notification alert.
   func openRemoteNotificationTappedOk()
@@ -177,11 +177,11 @@ AppDelegateViewModelOutputs {
       .switchMap { AppEnvironment.current.apiService.fetchConfig().demoteErrors() }
 
     self.postNotification = self.currentUserUpdatedInEnvironmentProperty.signal
-      .mapConst(NSNotification(name: CurrentUserNotifications.userUpdated, object: nil))
+      .mapConst(Notification(name: CurrentUserNotifications.userUpdated, object: nil))
 
     self.applicationLaunchOptionsProperty.signal.skipNil()
       .take(1)
-      .observeNext { appOptions in
+      .observeValues { appOptions in
         AppEnvironment.current.facebookAppDelegate.application(
           appOptions.application,
           didFinishLaunchingWithOptions: appOptions.options
@@ -220,11 +220,11 @@ AppDelegateViewModelOutputs {
       .ignoreValues()
 
     let remoteNotificationFromLaunch = self.applicationLaunchOptionsProperty.signal.skipNil()
-      .map { _, options in options?[UIApplicationLaunchOptionsRemoteNotificationKey] }
+      .map { _, options in options?[UIApplicationLaunchOptionsKey.remoteNotification] }
       .skipNil()
 
     let localNotificationFromLaunch = self.applicationLaunchOptionsProperty.signal.skipNil()
-      .map { _, options in options?[UIApplicationLaunchOptionsLocalNotificationKey] as? UILocalNotification }
+      .map { _, options in options?[UIApplicationLaunchOptionsKey.localNotification] as? UILocalNotification }
       .map { $0?.userInfo as? AnyObject }
       .skipNil()
 
@@ -276,7 +276,7 @@ AppDelegateViewModelOutputs {
     let performShortcutItem = Signal.merge(
       self.performActionForShortcutItemProperty.signal.skipNil(),
       self.applicationLaunchOptionsProperty.signal
-        .map { $0?.options?[UIApplicationLaunchOptionsShortcutItemKey] as? UIApplicationShortcutItem }
+        .map { $0?.options?[UIApplicationLaunchOptionsKey.shortcutItem] as? UIApplicationShortcutItem }
         .skipNil()
       )
       .map { ShortcutItem(typeString: $0.type) }
@@ -311,7 +311,7 @@ AppDelegateViewModelOutputs {
           else { return .init(value: params) }
 
         return AppEnvironment.current.apiService.fetchCategory(param: categoryParam)
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
+          .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
           .demoteErrors()
           .map { params |> DiscoveryParams.lens.category .~ $0 }
     }
@@ -460,7 +460,7 @@ AppDelegateViewModelOutputs {
 
     self.applicationDidFinishLaunchingReturnValueProperty <~ self.applicationLaunchOptionsProperty.signal
       .skipNil()
-      .map { _, options in options?[UIApplicationLaunchOptionsShortcutItemKey] == nil }
+      .map { _, options in options?[UIApplicationLaunchOptionsKey.shortcutItem] == nil }
 
     // Koala
 
@@ -468,16 +468,16 @@ AppDelegateViewModelOutputs {
       self.applicationLaunchOptionsProperty.signal.ignoreValues(),
       self.applicationWillEnterForegroundProperty.signal
       )
-      .observeNext { AppEnvironment.current.koala.trackAppOpen() }
+      .observeValues { AppEnvironment.current.koala.trackAppOpen() }
 
     self.applicationDidEnterBackgroundProperty.signal
-      .observeNext { AppEnvironment.current.koala.trackAppClose() }
+      .observeValues { AppEnvironment.current.koala.trackAppClose() }
 
     self.applicationDidReceiveMemoryWarningProperty.signal
-      .observeNext { AppEnvironment.current.koala.trackMemoryWarning() }
+      .observeValues { AppEnvironment.current.koala.trackMemoryWarning() }
 
     self.crashManagerDidFinishSendingCrashReportProperty.signal
-      .observeNext { AppEnvironment.current.koala.trackCrashedApp() }
+      .observeValues { AppEnvironment.current.koala.trackCrashedApp() }
 
     combineLatest(
       performShortcutItem.enumerated(),
@@ -487,23 +487,23 @@ AppDelegateViewModelOutputs {
       .map { idxAndShortcutItem, availableShortcutItems in
         (idxAndShortcutItem.value, availableShortcutItems)
       }
-      .observeNext {
+      .observeValues {
         AppEnvironment.current.koala.trackPerformedShortcutItem($0, availableShortcutItems: $1)
     }
 
     openUrl
-      .map { NSURLComponents(URL: $0.url, resolvingAgainstBaseURL: false)?.queryItems }
+      .map { URLComponents(URL: $0.url, resolvingAgainstBaseURL: false)?.queryItems }
       .skipNil()
       .map { items in Dictionary.keyValuePairs(items.map { ($0.name, $0.value) }).compact() }
       .filter { $0["app_banner"] == "1" }
-      .observeNext { AppEnvironment.current.koala.trackOpenedAppBanner($0) }
+      .observeValues { AppEnvironment.current.koala.trackOpenedAppBanner($0) }
 
     continueUserActivityWithNavigation
       .map(first)
-      .observeNext { AppEnvironment.current.koala.trackUserActivity($0) }
+      .observeValues { AppEnvironment.current.koala.trackUserActivity($0) }
 
     deepLinkFromNotification
-      .observeNext { _ in AppEnvironment.current.koala.trackNotificationOpened() }
+      .observeValues { _ in AppEnvironment.current.koala.trackNotificationOpened() }
   }
   // swiftlint:enable function_body_length
   // swiftlint:enable cyclomatic_complexity
@@ -511,95 +511,95 @@ AppDelegateViewModelOutputs {
   public var inputs: AppDelegateViewModelInputs { return self }
   public var outputs: AppDelegateViewModelOutputs { return self }
 
-  private let applicationContinueUserActivityProperty = MutableProperty<NSUserActivity?>(nil)
-  public func applicationContinueUserActivity(userActivity: NSUserActivity) -> Bool {
+  fileprivate let applicationContinueUserActivityProperty = MutableProperty<NSUserActivity?>(nil)
+  public func applicationContinueUserActivity(_ userActivity: NSUserActivity) -> Bool {
     self.applicationContinueUserActivityProperty.value = userActivity
     return self.continueUserActivityReturnValue.value
   }
 
-  private typealias ApplicationWithOptions = (application: UIApplication?, options: [NSObject: AnyObject]?)
-  private let applicationLaunchOptionsProperty = MutableProperty<ApplicationWithOptions?>(nil)
-  public func applicationDidFinishLaunching(application application: UIApplication?,
-                                                        launchOptions: [NSObject: AnyObject]?) {
+  fileprivate typealias ApplicationWithOptions = (application: UIApplication?, options: [AnyHashable: Any]?)
+  fileprivate let applicationLaunchOptionsProperty = MutableProperty<ApplicationWithOptions?>(nil)
+  public func applicationDidFinishLaunching(application: UIApplication?,
+                                                        launchOptions: [AnyHashable: Any]?) {
     self.applicationLaunchOptionsProperty.value = (application, launchOptions)
   }
 
-  private let applicationWillEnterForegroundProperty = MutableProperty()
+  fileprivate let applicationWillEnterForegroundProperty = MutableProperty()
   public func applicationWillEnterForeground() {
     self.applicationWillEnterForegroundProperty.value = ()
   }
 
-  private let applicationDidEnterBackgroundProperty = MutableProperty()
+  fileprivate let applicationDidEnterBackgroundProperty = MutableProperty()
   public func applicationDidEnterBackground() {
     self.applicationDidEnterBackgroundProperty.value = ()
   }
 
-  private let applicationDidReceiveMemoryWarningProperty = MutableProperty()
+  fileprivate let applicationDidReceiveMemoryWarningProperty = MutableProperty()
   public func applicationDidReceiveMemoryWarning() {
     self.applicationDidReceiveMemoryWarningProperty.value = ()
   }
 
-  private let performActionForShortcutItemProperty = MutableProperty<UIApplicationShortcutItem?>(nil)
-  public func applicationPerformActionForShortcutItem(item: UIApplicationShortcutItem) {
+  fileprivate let performActionForShortcutItemProperty = MutableProperty<UIApplicationShortcutItem?>(nil)
+  public func applicationPerformActionForShortcutItem(_ item: UIApplicationShortcutItem) {
     self.performActionForShortcutItemProperty.value = item
   }
 
-  private let currentUserUpdatedInEnvironmentProperty = MutableProperty()
+  fileprivate let currentUserUpdatedInEnvironmentProperty = MutableProperty()
   public func currentUserUpdatedInEnvironment() {
     self.currentUserUpdatedInEnvironmentProperty.value = ()
   }
 
-  private let configUpdatedInEnvironmentProperty = MutableProperty()
+  fileprivate let configUpdatedInEnvironmentProperty = MutableProperty()
   public func configUpdatedInEnvironment() {
     self.configUpdatedInEnvironmentProperty.value = ()
   }
 
-  private let remoteNotificationAndIsActiveProperty = MutableProperty<(AnyObject, Bool)?>(nil)
+  fileprivate let remoteNotificationAndIsActiveProperty = MutableProperty<(AnyObject, Bool)?>(nil)
   public func didReceive(remoteNotification notification: AnyObject, applicationIsActive: Bool) {
     self.remoteNotificationAndIsActiveProperty.value = (notification, applicationIsActive)
   }
 
-  private let deviceTokenDataProperty = MutableProperty(NSData())
-  public func didRegisterForRemoteNotifications(withDeviceTokenData data: NSData) {
+  fileprivate let deviceTokenDataProperty = MutableProperty(Data())
+  public func didRegisterForRemoteNotifications(withDeviceTokenData data: Data) {
     self.deviceTokenDataProperty.value = data
   }
 
-  private let crashManagerDidFinishSendingCrashReportProperty = MutableProperty()
+  fileprivate let crashManagerDidFinishSendingCrashReportProperty = MutableProperty()
   public func crashManagerDidFinishSendingCrashReport() {
     self.crashManagerDidFinishSendingCrashReportProperty.value = ()
   }
 
-  private typealias ApplicationOpenUrl = (
+  fileprivate typealias ApplicationOpenUrl = (
     application: UIApplication?,
-    url: NSURL,
+    url: URL,
     sourceApplication: String?,
     annotation: AnyObject
   )
-  private let applicationOpenUrlProperty = MutableProperty<ApplicationOpenUrl?>(nil)
-  public func applicationOpenUrl(application application: UIApplication?,
-                                             url: NSURL,
+  fileprivate let applicationOpenUrlProperty = MutableProperty<ApplicationOpenUrl?>(nil)
+  public func applicationOpenUrl(application: UIApplication?,
+                                             url: URL,
                                              sourceApplication: String?,
                                              annotation: AnyObject) -> Bool {
     self.applicationOpenUrlProperty.value = (application, url, sourceApplication, annotation)
     return self.facebookOpenURLReturnValue.value
   }
 
-  private let openRemoteNotificationTappedOkProperty = MutableProperty()
+  fileprivate let openRemoteNotificationTappedOkProperty = MutableProperty()
   public func openRemoteNotificationTappedOk() {
     self.openRemoteNotificationTappedOkProperty.value = ()
   }
 
-  private let userSessionEndedProperty = MutableProperty()
+  fileprivate let userSessionEndedProperty = MutableProperty()
   public func userSessionEnded() {
     self.userSessionEndedProperty.value = ()
   }
 
-  private let userSessionStartedProperty = MutableProperty()
+  fileprivate let userSessionStartedProperty = MutableProperty()
   public func userSessionStarted() {
     self.userSessionStartedProperty.value = ()
   }
 
-  private let applicationDidFinishLaunchingReturnValueProperty = MutableProperty(true)
+  fileprivate let applicationDidFinishLaunchingReturnValueProperty = MutableProperty(true)
   public var applicationDidFinishLaunchingReturnValue: Bool {
     return applicationDidFinishLaunchingReturnValueProperty.value
   }
@@ -626,11 +626,11 @@ AppDelegateViewModelOutputs {
   public let updateConfigInEnvironment: Signal<Config, NoError>
 }
 
-private func deviceToken(fromData data: NSData) -> String {
+private func deviceToken(fromData data: Data) -> String {
 
-  return UnsafeBufferPointer<UInt8>(start: UnsafePointer(data.bytes), count: data.length)
+  return UnsafeBufferPointer<UInt8>(start: (data as NSData).bytes.bindMemory(to: UInt8.self, capacity: data.count), count: data.count)
     .map { String(format: "%02hhx", $0) }
-    .joinWithSeparator("")
+    .joined(separator: "")
 }
 
 // swiftlint:disable:next cyclomatic_complexity
@@ -712,7 +712,7 @@ private func navigation(fromShortcutItem shortcutItem: ShortcutItem) -> SignalPr
     return AppEnvironment.current.apiService.fetchDiscovery(params: params)
       .demoteErrors()
       .map { env -> Navigation? in
-        guard let project = env.projects.first where project.isPotdToday() else { return nil }
+        guard let project = env.projects.first, project.isPotdToday() else { return nil }
         return .project(.id(project.id), .root, refTag: RefTag.unrecognized("shortcut"))
     }
 
@@ -755,7 +755,7 @@ private func shortcutItems(forUser user: User?) -> SignalProducer<[ShortcutItem]
 
 // Figures out which shortcut items to show to a user based on whether they are a project member and/or
 // has recommendations.
-private func shortcutItems(isProjectMember isProjectMember: Bool, hasRecommendations: Bool)
+private func shortcutItems(isProjectMember: Bool, hasRecommendations: Bool)
   -> [ShortcutItem] {
 
     var items: [ShortcutItem] = []

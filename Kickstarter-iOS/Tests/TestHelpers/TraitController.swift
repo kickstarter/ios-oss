@@ -87,8 +87,8 @@ internal func traitControllers(device device: Device = .phone4_7inch,
 
     child.view.frame = parent.view.frame
 
-    parent.view.backgroundColor = .whiteColor()
-    child.view.backgroundColor = .whiteColor()
+    parent.view.backgroundColor = .white
+    child.view.backgroundColor = .white
 
     let allTraits = UITraitCollection.init(traitsFromCollections: [traits, additionalTraits])
     parent.setOverrideTraitCollection(allTraits, forChildViewController: child)

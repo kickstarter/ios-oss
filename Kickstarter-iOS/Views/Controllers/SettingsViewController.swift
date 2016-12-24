@@ -8,71 +8,71 @@ import UIKit
 // swiftlint:disable file_length
 // swiftlint:disable type_body_length
 internal final class SettingsViewController: UIViewController {
-  private let viewModel: SettingsViewModelType = SettingsViewModel()
-  private let helpViewModel: HelpViewModelType = HelpViewModel()
+  fileprivate let viewModel: SettingsViewModelType = SettingsViewModel()
+  fileprivate let helpViewModel: HelpViewModelType = HelpViewModel()
 
-  @IBOutlet private weak var backingsButton: UIButton!
-  @IBOutlet private weak var betaDebugPushNotificationsButton: UIButton!
-  @IBOutlet private weak var betaFeedbackButton: UIButton!
-  @IBOutlet private weak var betaTitleLabel: UILabel!
-  @IBOutlet private weak var betaToolsStackView: UIStackView!
-  @IBOutlet private weak var commentsButton: UIButton!
-  @IBOutlet private weak var contactButton: UIButton!
-  @IBOutlet private weak var contactLabel: UILabel!
-  @IBOutlet private weak var cookiePolicyButton: UIButton!
-  @IBOutlet private weak var cookiePolicyLabel: UILabel!
-  @IBOutlet private weak var creatorNotificationsTitleLabel: UILabel!
-  @IBOutlet private weak var creatorStackView: UIStackView!
-  @IBOutlet private weak var faqButton: UIButton!
-  @IBOutlet private weak var faqLabel: UILabel!
-  @IBOutlet private weak var findFriendsButton: UIButton!
-  @IBOutlet private weak var findFriendsLabel: UILabel!
-  @IBOutlet private weak var followerButton: UIButton!
-  @IBOutlet private weak var friendActivityButton: UIButton!
-  @IBOutlet private weak var friendActivityLabel: UILabel!
-  @IBOutlet private weak var gamesNewsletterSwitch: UISwitch!
-  @IBOutlet private weak var happeningNewsletterSwitch: UISwitch!
-  @IBOutlet private weak var happeningNowLabel: UILabel!
-  @IBOutlet private weak var helpTitleLabel: UILabel!
-  @IBOutlet private weak var howKsrWorksButton: UIButton!
-  @IBOutlet private weak var howKsrWorksLabel: UILabel!
-  @IBOutlet private weak var ksrLovesGamesLabel: UILabel!
-  @IBOutlet private weak var ksrNewsAndEventsLabel: UILabel!
-  @IBOutlet private weak var logoutButton: UIButton!
-  @IBOutlet private weak var manageProjectNotificationsButton: UIButton!
-  @IBOutlet private weak var manageProjectNotificationsLabel: UILabel!
-  @IBOutlet private weak var mobileBackingsButton: UIButton!
-  @IBOutlet private weak var mobileCommentsButton: UIButton!
-  @IBOutlet private weak var mobileFollowerButton: UIButton!
-  @IBOutlet private weak var mobileFriendActivityButton: UIButton!
-  @IBOutlet private weak var mobilePostLikesButton: UIButton!
-  @IBOutlet private weak var mobileUpdatesButton: UIButton!
-  @IBOutlet private weak var newCommentsLabel: UILabel!
-  @IBOutlet private weak var newFollowersLabel: UILabel!
-  @IBOutlet private weak var newLikesLabel: UILabel!
-  @IBOutlet private weak var newPledgesLabel: UILabel!
-  @IBOutlet private weak var newslettersTitleLabel: UILabel!
-  @IBOutlet private weak var postLikesButton: UIButton!
-  @IBOutlet private weak var privacyPolicyButton: UIButton!
-  @IBOutlet private weak var privacyPolicyLabel: UILabel!
-  @IBOutlet private weak var projectNotificationsCountView: CountBadgeView!
-  @IBOutlet private weak var projectUpdatesLabel: UILabel!
-  @IBOutlet private weak var projectsWeLoveLabel: UILabel!
-  @IBOutlet private weak var projectsYouBackTitleLabel: UILabel!
-  @IBOutlet private weak var promoNewsletterSwitch: UISwitch!
-  @IBOutlet private weak var rateUsButton: UIButton!
-  @IBOutlet private weak var rateUsLabel: UILabel!
-  @IBOutlet private weak var socialNotificationsTitleLabel: UILabel!
-  @IBOutlet private weak var termsOfUseButton: UIButton!
-  @IBOutlet private weak var termsOfUseLabel: UILabel!
-  @IBOutlet private weak var updatesButton: UIButton!
-  @IBOutlet private weak var weeklyNewsletterSwitch: UISwitch!
-  @IBOutlet private weak var wereAllEarsTitleLabel: UILabel!
-  @IBOutlet private weak var versionLabel: UILabel!
+  @IBOutlet fileprivate weak var backingsButton: UIButton!
+  @IBOutlet fileprivate weak var betaDebugPushNotificationsButton: UIButton!
+  @IBOutlet fileprivate weak var betaFeedbackButton: UIButton!
+  @IBOutlet fileprivate weak var betaTitleLabel: UILabel!
+  @IBOutlet fileprivate weak var betaToolsStackView: UIStackView!
+  @IBOutlet fileprivate weak var commentsButton: UIButton!
+  @IBOutlet fileprivate weak var contactButton: UIButton!
+  @IBOutlet fileprivate weak var contactLabel: UILabel!
+  @IBOutlet fileprivate weak var cookiePolicyButton: UIButton!
+  @IBOutlet fileprivate weak var cookiePolicyLabel: UILabel!
+  @IBOutlet fileprivate weak var creatorNotificationsTitleLabel: UILabel!
+  @IBOutlet fileprivate weak var creatorStackView: UIStackView!
+  @IBOutlet fileprivate weak var faqButton: UIButton!
+  @IBOutlet fileprivate weak var faqLabel: UILabel!
+  @IBOutlet fileprivate weak var findFriendsButton: UIButton!
+  @IBOutlet fileprivate weak var findFriendsLabel: UILabel!
+  @IBOutlet fileprivate weak var followerButton: UIButton!
+  @IBOutlet fileprivate weak var friendActivityButton: UIButton!
+  @IBOutlet fileprivate weak var friendActivityLabel: UILabel!
+  @IBOutlet fileprivate weak var gamesNewsletterSwitch: UISwitch!
+  @IBOutlet fileprivate weak var happeningNewsletterSwitch: UISwitch!
+  @IBOutlet fileprivate weak var happeningNowLabel: UILabel!
+  @IBOutlet fileprivate weak var helpTitleLabel: UILabel!
+  @IBOutlet fileprivate weak var howKsrWorksButton: UIButton!
+  @IBOutlet fileprivate weak var howKsrWorksLabel: UILabel!
+  @IBOutlet fileprivate weak var ksrLovesGamesLabel: UILabel!
+  @IBOutlet fileprivate weak var ksrNewsAndEventsLabel: UILabel!
+  @IBOutlet fileprivate weak var logoutButton: UIButton!
+  @IBOutlet fileprivate weak var manageProjectNotificationsButton: UIButton!
+  @IBOutlet fileprivate weak var manageProjectNotificationsLabel: UILabel!
+  @IBOutlet fileprivate weak var mobileBackingsButton: UIButton!
+  @IBOutlet fileprivate weak var mobileCommentsButton: UIButton!
+  @IBOutlet fileprivate weak var mobileFollowerButton: UIButton!
+  @IBOutlet fileprivate weak var mobileFriendActivityButton: UIButton!
+  @IBOutlet fileprivate weak var mobilePostLikesButton: UIButton!
+  @IBOutlet fileprivate weak var mobileUpdatesButton: UIButton!
+  @IBOutlet fileprivate weak var newCommentsLabel: UILabel!
+  @IBOutlet fileprivate weak var newFollowersLabel: UILabel!
+  @IBOutlet fileprivate weak var newLikesLabel: UILabel!
+  @IBOutlet fileprivate weak var newPledgesLabel: UILabel!
+  @IBOutlet fileprivate weak var newslettersTitleLabel: UILabel!
+  @IBOutlet fileprivate weak var postLikesButton: UIButton!
+  @IBOutlet fileprivate weak var privacyPolicyButton: UIButton!
+  @IBOutlet fileprivate weak var privacyPolicyLabel: UILabel!
+  @IBOutlet fileprivate weak var projectNotificationsCountView: CountBadgeView!
+  @IBOutlet fileprivate weak var projectUpdatesLabel: UILabel!
+  @IBOutlet fileprivate weak var projectsWeLoveLabel: UILabel!
+  @IBOutlet fileprivate weak var projectsYouBackTitleLabel: UILabel!
+  @IBOutlet fileprivate weak var promoNewsletterSwitch: UISwitch!
+  @IBOutlet fileprivate weak var rateUsButton: UIButton!
+  @IBOutlet fileprivate weak var rateUsLabel: UILabel!
+  @IBOutlet fileprivate weak var socialNotificationsTitleLabel: UILabel!
+  @IBOutlet fileprivate weak var termsOfUseButton: UIButton!
+  @IBOutlet fileprivate weak var termsOfUseLabel: UILabel!
+  @IBOutlet fileprivate weak var updatesButton: UIButton!
+  @IBOutlet fileprivate weak var weeklyNewsletterSwitch: UISwitch!
+  @IBOutlet fileprivate weak var wereAllEarsTitleLabel: UILabel!
+  @IBOutlet fileprivate weak var versionLabel: UILabel!
 
-  @IBOutlet private var emailNotificationButtons: [UIButton]!
-  @IBOutlet private var pushNotificationButtons: [UIButton]!
-  @IBOutlet private var separatorViews: [UIView]!
+  @IBOutlet fileprivate var emailNotificationButtons: [UIButton]!
+  @IBOutlet fileprivate var pushNotificationButtons: [UIButton]!
+  @IBOutlet fileprivate var separatorViews: [UIView]!
 
   internal static func instantiate() -> SettingsViewController {
     return Storyboard.Settings.instantiate(SettingsViewController)
@@ -90,43 +90,43 @@ internal final class SettingsViewController: UIViewController {
 
     self.betaFeedbackButton.addTarget(self,
                                       action: #selector(betaFeedbackButtonTapped),
-                                      forControlEvents: .TouchUpInside)
+                                      for: .touchUpInside)
 
     self.betaDebugPushNotificationsButton.addTarget(self,
                                                     action: #selector(betaDebugPushNotificationsButtonTapped),
-                                                    forControlEvents: .TouchUpInside)
+                                                    for: .touchUpInside)
 
-    self.contactButton.addTarget(self, action: #selector(contactTapped), forControlEvents: .TouchUpInside)
+    self.contactButton.addTarget(self, action: #selector(contactTapped), for: .touchUpInside)
 
     self.cookiePolicyButton.addTarget(self,
                                       action: #selector(cookiePolicyTapped),
-                                      forControlEvents: .TouchUpInside)
+                                      for: .touchUpInside)
 
-    self.faqButton.addTarget(self, action: #selector(faqTapped), forControlEvents: .TouchUpInside)
+    self.faqButton.addTarget(self, action: #selector(faqTapped), for: .touchUpInside)
 
     self.findFriendsButton.addTarget(self,
                                      action: #selector(findFriendsTapped),
-                                     forControlEvents: .TouchUpInside)
+                                     for: .touchUpInside)
 
     self.howKsrWorksButton.addTarget(self,
                                      action: #selector(howKickstarterWorksTapped),
-                                     forControlEvents: .TouchUpInside)
+                                     for: .touchUpInside)
 
-    self.logoutButton.addTarget(self, action: #selector(logoutTapped), forControlEvents: .TouchUpInside)
+    self.logoutButton.addTarget(self, action: #selector(logoutTapped), for: .touchUpInside)
 
     self.manageProjectNotificationsButton.addTarget(self,
                                                     action: #selector(manageProjectNotificationsTapped),
-                                                    forControlEvents: .TouchUpInside)
+                                                    for: .touchUpInside)
 
     self.termsOfUseButton.addTarget(self,
                                     action: #selector(termsOfUseTapped),
-                                    forControlEvents: .TouchUpInside)
+                                    for: .touchUpInside)
 
     self.privacyPolicyButton.addTarget(self,
                                        action: #selector(privacyPolicyTapped),
-                                       forControlEvents: .TouchUpInside)
+                                       for: .touchUpInside)
 
-    self.rateUsButton.addTarget(self, action: #selector(rateUsTapped), forControlEvents: .TouchUpInside)
+    self.rateUsButton.addTarget(self, action: #selector(rateUsTapped), for: .touchUpInside)
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -140,13 +140,13 @@ internal final class SettingsViewController: UIViewController {
       |> UIViewController.lens.title %~ { _ in Strings.profile_settings_navbar_title() }
 
     self.betaDebugPushNotificationsButton
-      |> UIButton.lens.titleColor(forState: .Normal) .~ .ksr_text_navy_700
+      |> UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_navy_700
       |> UIButton.lens.titleLabel.font .~ .ksr_body()
-      |> UIButton.lens.contentHorizontalAlignment .~ .Left
+      |> UIButton.lens.contentHorizontalAlignment .~ .left
 
     self.betaFeedbackButton
       |> greenButtonStyle
-      |> UIButton.lens.title(forState: .Normal) .~ "Submit feedback for beta"
+      |> UIButton.lens.title(forState: .normal) .~ "Submit feedback for beta"
 
     self.betaTitleLabel
       |> settingsTitleLabelStyle
@@ -178,7 +178,7 @@ internal final class SettingsViewController: UIViewController {
       ||> UIButton.lens.image(forState: .Normal)
         .~ UIImage(named: "email-icon", inBundle: .framework, compatibleWithTraitCollection: nil)
       ||> UIButton.lens.image(forState: .Selected)
-        .~ image(named: "email-icon", tintColor: .ksr_green_400, inBundle: NSBundle.framework)
+        .~ image(named: "email-icon", tintColor: .ksr_green_400, inBundle: Bundle.framework)
       ||> UIButton.lens.accessibilityLabel %~ { _ in Strings.Email_notifications() }
 
     self.faqButton
@@ -280,7 +280,7 @@ internal final class SettingsViewController: UIViewController {
       ||> UIButton.lens.image(forState: .Normal)
       .~ UIImage(named: "phone-icon", inBundle: .framework, compatibleWithTraitCollection: nil)
       ||> UIButton.lens.image(forState: .Selected)
-      .~ image(named: "phone-icon", tintColor: .ksr_green_400, inBundle: NSBundle.framework)
+      .~ image(named: "phone-icon", tintColor: .ksr_green_400, inBundle: Bundle.framework)
       ||> UIButton.lens.accessibilityLabel %~ { _ in Strings.Push_notifications() }
 
     self.rateUsButton
@@ -323,64 +323,64 @@ internal final class SettingsViewController: UIViewController {
 
     self.viewModel.outputs.goToAppStoreRating
       .observeForControllerAction()
-      .observeNext { [weak self] link in self?.goToAppStore(link: link) }
+      .observeValues { [weak self] link in self?.goToAppStore(link: link) }
 
     self.viewModel.outputs.goToManageProjectNotifications
       .observeForControllerAction()
-      .observeNext { [weak self] _ in self?.goToManageProjectNotifications() }
+      .observeValues { [weak self] _ in self?.goToManageProjectNotifications() }
 
     self.viewModel.outputs.logoutWithParams
       .observeForControllerAction()
-      .observeNext { [weak self] in self?.logout(params: $0) }
+      .observeValues { [weak self] in self?.logout(params: $0) }
 
     self.viewModel.outputs.showConfirmLogoutPrompt
       .observeForControllerAction()
-      .observeNext { [weak self] (message, cancel, confirm) in
+      .observeValues { [weak self] (message, cancel, confirm) in
         self?.showLogoutPrompt(message: message, cancel: cancel, confirm: confirm)
     }
 
     self.viewModel.outputs.showOptInPrompt
       .observeForControllerAction()
-      .observeNext { [weak self] newsletter in self?.showOptInPrompt(newsletter) }
+      .observeValues { [weak self] newsletter in self?.showOptInPrompt(newsletter) }
 
     self.viewModel.outputs.unableToSaveError
       .observeForControllerAction()
-      .observeNext { [weak self] message in
-        self?.presentViewController(UIAlertController.genericError(message), animated: true, completion: nil)
+      .observeValues { [weak self] message in
+        self?.present(UIAlertController.genericError(message), animated: true, completion: nil)
     }
 
     self.viewModel.outputs.updateCurrentUser
       .observeForUI()
-      .observeNext { user in AppEnvironment.updateCurrentUser(user) }
+      .observeValues { user in AppEnvironment.updateCurrentUser(user) }
 
     self.viewModel.outputs.goToFindFriends
       .observeForControllerAction()
-      .observeNext { [weak self] in
+      .observeValues { [weak self] in
         self?.goToFindFriends()
     }
 
     self.viewModel.outputs.goToBetaFeedback
       .observeForControllerAction()
-      .observeNext { [weak self] in self?.goToBetaFeedback() }
+      .observeValues { [weak self] in self?.goToBetaFeedback() }
 
     self.helpViewModel.outputs.showMailCompose
       .observeForControllerAction()
-      .observeNext { [weak self] in
+      .observeValues { [weak self] in
         guard let _self = self else { return }
         let controller = MFMailComposeViewController.support()
         controller.mailComposeDelegate = _self
-        _self.presentViewController(controller, animated: true, completion: nil)
+        _self.present(controller, animated: true, completion: nil)
     }
 
     self.helpViewModel.outputs.showNoEmailError
       .observeForControllerAction()
-      .observeNext { [weak self] alert in
-        self?.presentViewController(alert, animated: true, completion: nil)
+      .observeValues { [weak self] alert in
+        self?.present(alert, animated: true, completion: nil)
     }
 
     self.helpViewModel.outputs.showWebHelp
       .observeForControllerAction()
-      .observeNext { [weak self] helpType in
+      .observeValues { [weak self] helpType in
         self?.goToHelpType(helpType)
     }
 
@@ -409,19 +409,19 @@ internal final class SettingsViewController: UIViewController {
   }
   // swiftlint:enable function_body_length
 
-  private func goToAppStore(link link: String) {
-    guard let url = NSURL(string: link) else { return }
-    UIApplication.sharedApplication().openURL(url)
+  fileprivate func goToAppStore(link: String) {
+    guard let url = URL(string: link) else { return }
+    UIApplication.shared.openURL(url)
   }
 
-  private func goToBetaFeedback() {
+  fileprivate func goToBetaFeedback() {
     guard MFMailComposeViewController.canSendMail() else { return }
 
     let userName = AppEnvironment.current.currentUser?.name ?? "Logged out user"
     let userId = AppEnvironment.current.currentUser?.id ?? 0
     let version = AppEnvironment.current.mainBundle.version ?? "0"
     let shortVersion = AppEnvironment.current.mainBundle.shortVersionString ?? "0"
-    let device = UIDevice.currentDevice()
+    let device = UIDevice.current
 
     let controller = MFMailComposeViewController()
     controller.setToRecipients([Secrets.fieldReportEmail])
@@ -435,31 +435,31 @@ internal final class SettingsViewController: UIViewController {
     )
 
     controller.mailComposeDelegate = self
-    self.presentViewController(controller, animated: true, completion: nil)
+    self.present(controller, animated: true, completion: nil)
   }
 
-  private func goToFindFriends() {
+  fileprivate func goToFindFriends() {
     let vc = FindFriendsViewController.configuredWith(source: .settings)
     self.navigationController?.pushViewController(vc, animated: true)
   }
 
-  private func goToHelpType(helpType: HelpType) {
+  fileprivate func goToHelpType(_ helpType: HelpType) {
     let vc = HelpWebViewController.configuredWith(helpType: helpType)
     self.navigationController?.pushViewController(vc, animated: true)
   }
 
-  private func goToManageProjectNotifications() {
+  fileprivate func goToManageProjectNotifications() {
     let vc = ProjectNotificationsViewController.instantiate()
     self.navigationController?.pushViewController(vc, animated: true)
   }
 
-  private func showLogoutPrompt(message message: String, cancel: String, confirm: String) {
-    let logoutAlert = UIAlertController(title: nil, message: message, preferredStyle: .Alert)
+  fileprivate func showLogoutPrompt(message: String, cancel: String, confirm: String) {
+    let logoutAlert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
 
     logoutAlert.addAction(
       UIAlertAction(
         title: cancel,
-        style: .Cancel,
+        style: .cancel,
         handler: { [weak self] _ in
           self?.viewModel.inputs.logoutCanceled()
         }
@@ -469,150 +469,150 @@ internal final class SettingsViewController: UIViewController {
     logoutAlert.addAction(
       UIAlertAction(
         title: confirm,
-        style: .Default,
+        style: .default,
         handler: { [weak self] _ in
           self?.viewModel.inputs.logoutConfirmed()
         }
       )
     )
 
-    self.presentViewController(logoutAlert, animated: true, completion: nil)
+    self.present(logoutAlert, animated: true, completion: nil)
   }
 
-  private func logout(params params: DiscoveryParams) {
+  fileprivate func logout(params: DiscoveryParams) {
     AppEnvironment.logout()
 
     self.view.window?.rootViewController
       .flatMap { $0 as? RootTabBarViewController }
       .doIfSome { root in
-        UIView.transitionWithView(root.view, duration: 0.3, options: [.TransitionCrossDissolve], animations: {
+        UIView.transition(with: root.view, duration: 0.3, options: [.transitionCrossDissolve], animations: {
           root.switchToDiscovery(params: params)
           }, completion: { _ in
-            NSNotificationCenter.defaultCenter().postNotification(
-              NSNotification(name: CurrentUserNotifications.sessionEnded, object: nil)
+            NotificationCenter.default.post(
+              Notification(name: Notification.Name(rawValue: CurrentUserNotifications.sessionEnded), object: nil)
             )
         })
     }
   }
 
-  private func showOptInPrompt(newsletter: String) {
+  fileprivate func showOptInPrompt(_ newsletter: String) {
     let optInAlert = UIAlertController.newsletterOptIn(newsletter)
-    self.presentViewController(optInAlert, animated: true, completion: nil)
+    self.present(optInAlert, animated: true, completion: nil)
   }
 
-  @objc private func logoutTapped() {
+  @objc fileprivate func logoutTapped() {
     self.viewModel.inputs.logoutTapped()
   }
 
-  @IBAction private func backingsTapped(button: UIButton) {
-    self.viewModel.inputs.backingsTapped(selected: !button.selected)
+  @IBAction fileprivate func backingsTapped(_ button: UIButton) {
+    self.viewModel.inputs.backingsTapped(selected: !button.isSelected)
   }
 
-  @IBAction private func commentsTapped(button: UIButton) {
-    self.viewModel.inputs.commentsTapped(selected: !button.selected)
+  @IBAction fileprivate func commentsTapped(_ button: UIButton) {
+    self.viewModel.inputs.commentsTapped(selected: !button.isSelected)
   }
 
-  @objc private func contactTapped() {
+  @objc fileprivate func contactTapped() {
     self.helpViewModel.inputs.helpTypeButtonTapped(.contact)
   }
 
-  @objc private func cookiePolicyTapped() {
+  @objc fileprivate func cookiePolicyTapped() {
     self.helpViewModel.inputs.helpTypeButtonTapped(.cookie)
   }
 
-  @objc private func faqTapped() {
+  @objc fileprivate func faqTapped() {
     self.helpViewModel.inputs.helpTypeButtonTapped(.faq)
   }
 
-  @objc private func findFriendsTapped() {
+  @objc fileprivate func findFriendsTapped() {
     self.viewModel.inputs.findFriendsTapped()
   }
 
-  @IBAction private func followerTapped(button: UIButton) {
-    self.viewModel.inputs.followerTapped(selected: !button.selected)
+  @IBAction fileprivate func followerTapped(_ button: UIButton) {
+    self.viewModel.inputs.followerTapped(selected: !button.isSelected)
   }
 
-  @IBAction private func friendActivityTapped(button: UIButton) {
-    self.viewModel.inputs.friendActivityTapped(selected: !button.selected)
+  @IBAction fileprivate func friendActivityTapped(_ button: UIButton) {
+    self.viewModel.inputs.friendActivityTapped(selected: !button.isSelected)
   }
 
-  @IBAction private func gamesNewsletterTapped(newsletterSwitch: UISwitch) {
-    self.viewModel.inputs.gamesNewsletterTapped(on: newsletterSwitch.on)
+  @IBAction fileprivate func gamesNewsletterTapped(_ newsletterSwitch: UISwitch) {
+    self.viewModel.inputs.gamesNewsletterTapped(on: newsletterSwitch.isOn)
   }
 
-  @IBAction private func happeningNewsletterTapped(newsletterSwitch: UISwitch) {
-    self.viewModel.inputs.happeningNewsletterTapped(on: newsletterSwitch.on)
+  @IBAction fileprivate func happeningNewsletterTapped(_ newsletterSwitch: UISwitch) {
+    self.viewModel.inputs.happeningNewsletterTapped(on: newsletterSwitch.isOn)
   }
 
-  @objc private func howKickstarterWorksTapped() {
+  @objc fileprivate func howKickstarterWorksTapped() {
     self.helpViewModel.inputs.helpTypeButtonTapped(.howItWorks)
   }
 
-  @objc private func manageProjectNotificationsTapped() {
+  @objc fileprivate func manageProjectNotificationsTapped() {
     self.viewModel.inputs.manageProjectNotificationsTapped()
   }
 
-  @IBAction private func mobileBackingsTapped(button: UIButton) {
-    self.viewModel.inputs.mobileBackingsTapped(selected: !button.selected)
+  @IBAction fileprivate func mobileBackingsTapped(_ button: UIButton) {
+    self.viewModel.inputs.mobileBackingsTapped(selected: !button.isSelected)
   }
 
-  @IBAction private func mobileCommentsTapped(button: UIButton) {
-    self.viewModel.inputs.mobileCommentsTapped(selected: !button.selected)
+  @IBAction fileprivate func mobileCommentsTapped(_ button: UIButton) {
+    self.viewModel.inputs.mobileCommentsTapped(selected: !button.isSelected)
   }
 
-  @IBAction private func mobileFollowerTapped(button: UIButton) {
-    self.viewModel.inputs.mobileFollowerTapped(selected: !button.selected)
+  @IBAction fileprivate func mobileFollowerTapped(_ button: UIButton) {
+    self.viewModel.inputs.mobileFollowerTapped(selected: !button.isSelected)
   }
 
-  @IBAction private func mobileFriendActivityTapped(button: UIButton) {
-    self.viewModel.inputs.mobileFriendActivityTapped(selected: !button.selected)
+  @IBAction fileprivate func mobileFriendActivityTapped(_ button: UIButton) {
+    self.viewModel.inputs.mobileFriendActivityTapped(selected: !button.isSelected)
   }
 
-  @IBAction private func mobilePostLikesTapped(button: UIButton) {
-    self.viewModel.inputs.mobilePostLikesTapped(selected: !button.selected)
+  @IBAction fileprivate func mobilePostLikesTapped(_ button: UIButton) {
+    self.viewModel.inputs.mobilePostLikesTapped(selected: !button.isSelected)
   }
 
-  @IBAction private func mobileUpdatesTapped(button: UIButton) {
-    self.viewModel.inputs.mobileUpdatesTapped(selected: !button.selected)
+  @IBAction fileprivate func mobileUpdatesTapped(_ button: UIButton) {
+    self.viewModel.inputs.mobileUpdatesTapped(selected: !button.isSelected)
   }
 
-  @IBAction private func postLikesTapped(button: UIButton) {
-    self.viewModel.inputs.postLikesTapped(selected: !button.selected)
+  @IBAction fileprivate func postLikesTapped(_ button: UIButton) {
+    self.viewModel.inputs.postLikesTapped(selected: !button.isSelected)
   }
 
-  @objc private func privacyPolicyTapped() {
+  @objc fileprivate func privacyPolicyTapped() {
     self.helpViewModel.inputs.helpTypeButtonTapped(.privacy)
   }
 
-  @IBAction private func promoNewsletterTapped(newsletterSwitch: UISwitch) {
-    self.viewModel.inputs.promoNewsletterTapped(on: newsletterSwitch.on)
+  @IBAction fileprivate func promoNewsletterTapped(_ newsletterSwitch: UISwitch) {
+    self.viewModel.inputs.promoNewsletterTapped(on: newsletterSwitch.isOn)
   }
 
-  @objc private func rateUsTapped() {
+  @objc fileprivate func rateUsTapped() {
     self.viewModel.inputs.rateUsTapped()
   }
 
-  @objc private func termsOfUseTapped() {
+  @objc fileprivate func termsOfUseTapped() {
     self.helpViewModel.inputs.helpTypeButtonTapped(.terms)
   }
 
-  @IBAction private func updatesTapped(button: UIButton) {
-    self.viewModel.inputs.updatesTapped(selected: !button.selected)
+  @IBAction fileprivate func updatesTapped(_ button: UIButton) {
+    self.viewModel.inputs.updatesTapped(selected: !button.isSelected)
   }
 
-  @IBAction private func weeklyNewsletterTapped(newsletterSwitch: UISwitch) {
-    self.viewModel.inputs.weeklyNewsletterTapped(on: newsletterSwitch.on)
+  @IBAction fileprivate func weeklyNewsletterTapped(_ newsletterSwitch: UISwitch) {
+    self.viewModel.inputs.weeklyNewsletterTapped(on: newsletterSwitch.isOn)
   }
 
-  @objc private func betaFeedbackButtonTapped() {
+  @objc fileprivate func betaFeedbackButtonTapped() {
     self.viewModel.inputs.betaFeedbackButtonTapped()
   }
 
-  @objc private func closeButtonPressed() {
-    self.dismissViewControllerAnimated(true, completion: nil)
+  @objc fileprivate func closeButtonPressed() {
+    self.dismiss(animated: true, completion: nil)
   }
 
-  @objc private func betaDebugPushNotificationsButtonTapped() {
+  @objc fileprivate func betaDebugPushNotificationsButtonTapped() {
     self.navigationController?.pushViewController(
       Storyboard.DebugPushNotifications.instantiate(DebugPushNotificationsViewController.self),
       animated: true
@@ -621,10 +621,10 @@ internal final class SettingsViewController: UIViewController {
 }
 
 extension SettingsViewController: MFMailComposeViewControllerDelegate {
-  internal func mailComposeController(controller: MFMailComposeViewController,
-                                      didFinishWithResult result: MFMailComposeResult,
-                                      error: NSError?) {
+  internal func mailComposeController(_ controller: MFMailComposeViewController,
+                                      didFinishWith result: MFMailComposeResult,
+                                      error: Error?) {
     self.helpViewModel.inputs.mailComposeCompletion(result: result)
-    controller.dismissViewControllerAnimated(true, completion: nil)
+    controller.dismiss(animated: true, completion: nil)
   }
 }

@@ -1,7 +1,7 @@
 import Library
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 import UIKit
 
@@ -15,7 +15,7 @@ internal enum TabBarItem {
   case activity(index: Int)
   case dashboard(index: Int)
   case home(index: Int)
-  case profile(avatarUrl: NSURL?, index: Int)
+  case profile(avatarUrl: URL?, index: Int)
   case search(index: Int)
 }
 
@@ -24,7 +24,7 @@ internal protocol RootViewModelInputs {
   func currentUserUpdated()
 
   /// Call when selected tab bar index changes.
-  func didSelectIndex(index: Int)
+  func didSelectIndex(_ index: Int)
 
   /// Call when we should switch to the activities tab.
   func switchToActivities()
@@ -33,7 +33,7 @@ internal protocol RootViewModelInputs {
   func switchToDashboard(project param: Param?)
 
   /// Call when we should switch to the discovery tab.
-  func switchToDiscovery(params params: DiscoveryParams?)
+  func switchToDiscovery(params: DiscoveryParams?)
 
   /// Call when we should switch to the login tab.
   func switchToLogin()
@@ -184,48 +184,48 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
   }
   // swiftlint:enable function_body_length
 
-  private let currentUserUpdatedProperty = MutableProperty(())
+  fileprivate let currentUserUpdatedProperty = MutableProperty(())
   internal func currentUserUpdated() {
     self.currentUserUpdatedProperty.value = ()
   }
-  private let didSelectIndexProperty = MutableProperty(0)
-  internal func didSelectIndex(index: Int) {
+  fileprivate let didSelectIndexProperty = MutableProperty(0)
+  internal func didSelectIndex(_ index: Int) {
     self.didSelectIndexProperty.value = index
   }
-  private let switchToActivitiesProperty = MutableProperty()
+  fileprivate let switchToActivitiesProperty = MutableProperty()
   internal func switchToActivities() {
     self.switchToActivitiesProperty.value = ()
   }
-  private let switchToDashboardProperty = MutableProperty<Param?>(nil)
+  fileprivate let switchToDashboardProperty = MutableProperty<Param?>(nil)
   internal func switchToDashboard(project param: Param?) {
     self.switchToDashboardProperty.value = param
   }
-  private let switchToDiscoveryProperty = MutableProperty<DiscoveryParams?>(nil)
-  internal func switchToDiscovery(params params: DiscoveryParams?) {
+  fileprivate let switchToDiscoveryProperty = MutableProperty<DiscoveryParams?>(nil)
+  internal func switchToDiscovery(params: DiscoveryParams?) {
     self.switchToDiscoveryProperty.value = params
   }
-  private let switchToLoginProperty = MutableProperty()
+  fileprivate let switchToLoginProperty = MutableProperty()
   internal func switchToLogin() {
     self.switchToLoginProperty.value = ()
   }
-  private let switchToProfileProperty = MutableProperty()
+  fileprivate let switchToProfileProperty = MutableProperty()
   internal func switchToProfile() {
     self.switchToProfileProperty.value = ()
   }
-  private let switchToSearchProperty = MutableProperty()
+  fileprivate let switchToSearchProperty = MutableProperty()
   internal func switchToSearch() {
     self.switchToSearchProperty.value = ()
   }
-  private let userSessionStartedProperty = MutableProperty<()>()
+  fileprivate let userSessionStartedProperty = MutableProperty<()>()
   internal func userSessionStarted() {
     self.userSessionStartedProperty.value = ()
   }
-  private let userSessionEndedProperty = MutableProperty<()>()
+  fileprivate let userSessionEndedProperty = MutableProperty<()>()
   internal func userSessionEnded() {
     self.userSessionEndedProperty.value = ()
   }
 
-  private let viewDidLoadProperty = MutableProperty<()>()
+  fileprivate let viewDidLoadProperty = MutableProperty<()>()
   internal func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
@@ -246,9 +246,9 @@ private func tabData(forUser user: User?) -> TabBarItemsData {
 
   let items: [TabBarItem] = isMember
     ? [.home(index: 0), .activity(index: 1), .search(index: 2), .dashboard(index: 3),
-       .profile(avatarUrl: (user?.avatar.small).flatMap(NSURL.init(string:)), index: 4)]
+       .profile(avatarUrl: (user?.avatar.small).flatMap(URL.init(string:)), index: 4)]
     : [.home(index: 0), .activity(index: 1), .search(index: 2),
-       .profile(avatarUrl: (user?.avatar.small).flatMap(NSURL.init(string:)), index: 3)]
+       .profile(avatarUrl: (user?.avatar.small).flatMap(URL.init(string:)), index: 3)]
 
   return TabBarItemsData(items: items,
                          isLoggedIn: user != nil,
@@ -281,11 +281,11 @@ func == (lhs: TabBarItem, rhs: TabBarItem) -> Bool {
 }
 // swiftlint:enable cyclomatic_complexity
 
-private func first<VC: UIViewController>(viewController: VC.Type) -> ([UIViewController]) -> VC? {
+private func first<VC: UIViewController>(_ viewController: VC.Type) -> ([UIViewController]) -> VC? {
 
   return { viewControllers in
     viewControllers
-      .indexOf { $0 is VC }
+      .index { $0 is VC }
       .flatMap { viewControllers[$0] as? VC }
   }
 }

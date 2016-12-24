@@ -6,7 +6,7 @@ import UIKit
 private typealias Line = (start: CGPoint, end: CGPoint)
 
 public final class FundingGraphView: UIView {
-  private let goalLabel = UILabel()
+  fileprivate let goalLabel = UILabel()
 
   override public init(frame: CGRect) {
     super.init(frame: frame)
@@ -18,12 +18,12 @@ public final class FundingGraphView: UIView {
     self.setUp()
   }
 
-  private func setUp() {
-    self.backgroundColor = .clearColor()
+  fileprivate func setUp() {
+    self.backgroundColor = .clear
     self.addSubview(self.goalLabel)
     self.goalLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 12)
-      |> UILabel.lens.textColor .~ .whiteColor()
+      |> UILabel.lens.textColor .~ .white
       |> UILabel.lens.backgroundColor .~ .ksr_green_500
       |> UILabel.lens.textAlignment .~ .Center
   }
@@ -59,12 +59,12 @@ public final class FundingGraphView: UIView {
   }
 
   // swiftlint:disable function_body_length
-  public override func drawRect(rect: CGRect) {
-    super.drawRect(rect)
+  public override func draw(_ rect: CGRect) {
+    super.draw(rect)
 
     // Map the date and pledged amount to (dayNumber, pledgedAmount).
     let datePledgedPoints = stats
-      .enumerate()
+      .enumerated()
       .map { index, stat in CGPoint(x: index, y: stat.cumulativePledged) }
 
     let durationInDays = totalNumberOfDays(startDate: project.dates.launchedAt,
@@ -82,12 +82,12 @@ public final class FundingGraphView: UIView {
     line.lineWidth = self.lineThickness
 
     var lastPoint = CGPoint(x: self.layoutMargins.left, y: self.bounds.height)
-    line.moveToPoint(lastPoint)
+    line.move(to: lastPoint)
 
     datePledgedPoints.forEach { point in
       let x = point.x * pointsPerDay + self.layoutMargins.left
       let y = self.bounds.height - min(point.y * pointsPerDollar, self.bounds.height)
-      line.addLineToPoint(CGPoint(x: x, y: y))
+      line.addLine(to: CGPoint(x: x, y: y))
       lastPoint = CGPoint(x: x, y: y)
     }
 
@@ -95,11 +95,11 @@ public final class FundingGraphView: UIView {
     UIColor.ksr_text_navy_500.setStroke()
     line.stroke()
 
-    line.addLineToPoint(CGPoint(x: lastPoint.x, y: self.bounds.height))
-    line.closePath()
+    line.addLine(to: CGPoint(x: lastPoint.x, y: self.bounds.height))
+    line.close()
 
     UIColor.ksr_navy_400.setFill()
-    line.fillWithBlendMode(.Color, alpha: 0.4)
+    line.fill(with: .color, alpha: 0.4)
 
     let projectHasFunded = stats.last?.cumulativePledged ?? 0 >= goal
     if projectHasFunded {
@@ -146,7 +146,7 @@ public final class FundingGraphView: UIView {
       let fundedPoint = intersection(ofLine: lineA, withLine: lineB)
 
       let fundedDotOutline = UIBezierPath(
-        ovalInRect: CGRect(
+        ovalIn: CGRect(
           x: fundedPoint.x - (self.fundedPointRadius / 2),
           y: fundedPoint.y - (self.fundedPointRadius / 2),
           width: self.fundedPointRadius,
@@ -155,7 +155,7 @@ public final class FundingGraphView: UIView {
       )
 
       let fundedDotFill = UIBezierPath(
-        ovalInRect: CGRect(
+        ovalIn: CGRect(
           x: fundedPoint.x - (self.fundedPointRadius / 2 / 2),
           y: fundedPoint.y - (self.fundedPointRadius / 2 / 2),
           width: self.fundedPointRadius / 2,
@@ -168,13 +168,13 @@ public final class FundingGraphView: UIView {
       fundedProgressLine.lineWidth = self.lineThickness
 
       var lastFundedPoint = CGPoint(x: fundedPoint.x, y: fundedPoint.y)
-      fundedProgressLine.moveToPoint(lastFundedPoint)
+      fundedProgressLine.move(to: lastFundedPoint)
 
       datePledgedPoints.forEach { point in
         let x = point.x * pointsPerDay + self.layoutMargins.left
         if x >= fundedPoint.x {
           let y = self.bounds.height - point.y * pointsPerDollar
-          fundedProgressLine.addLineToPoint(CGPoint(x: x, y: y))
+          fundedProgressLine.addLine(to: CGPoint(x: x, y: y))
           lastFundedPoint = CGPoint(x: x, y: y)
         }
       }
@@ -183,12 +183,12 @@ public final class FundingGraphView: UIView {
       UIColor.ksr_green_500.setStroke()
       fundedProgressLine.stroke()
 
-      fundedProgressLine.addLineToPoint(CGPoint(x: lastFundedPoint.x, y: self.bounds.height))
-      fundedProgressLine.addLineToPoint(CGPoint(x: fundedPoint.x, y: self.bounds.height))
-      fundedProgressLine.closePath()
+      fundedProgressLine.addLine(to: CGPoint(x: lastFundedPoint.x, y: self.bounds.height))
+      fundedProgressLine.addLine(to: CGPoint(x: fundedPoint.x, y: self.bounds.height))
+      fundedProgressLine.close()
 
       UIColor.ksr_green_400.setFill()
-      fundedProgressLine.fillWithBlendMode(.Color, alpha: 0.4)
+      fundedProgressLine.fill(with: .color, alpha: 0.4)
 
       UIColor.ksr_green_500.set()
       fundedDotOutline.stroke()
@@ -200,8 +200,8 @@ public final class FundingGraphView: UIView {
                             y: self.bounds.height - CGFloat(goal) * pointsPerDollar))
       let goalPath = UIBezierPath()
       goalPath.lineWidth = self.lineThickness / 2
-      goalPath.moveToPoint(goalLine.start)
-      goalPath.addLineToPoint(goalLine.end)
+      goalPath.move(to: goalLine.start)
+      goalPath.addLine(to: goalLine.end)
 
       UIColor.ksr_green_500.setStroke()
       goalPath.stroke()
@@ -215,7 +215,7 @@ public final class FundingGraphView: UIView {
                                       y: goalLine.end.y - self.goalLabel.frame.height / 2)
     }
 
-    self.goalLabel.hidden = projectHasFunded
+    self.goalLabel.isHidden = projectHasFunded
   }
   // swiftlint:enable function_body_length
 }
@@ -252,32 +252,32 @@ private func slope(ofLine line: Line) -> CGFloat {
 }
 
 // Returns the day number, given the start and current date in seconds.
-private func dateToDayNumber(launchDate launchDate: NSTimeInterval,
-                                        currentDate: NSTimeInterval,
-                                        calendar: NSCalendar = .currentCalendar()) -> CGFloat {
+private func dateToDayNumber(launchDate: TimeInterval,
+                                        currentDate: TimeInterval,
+                                        calendar: Calendar = .current) -> CGFloat {
   let startOfCurrentDate = fabs(
-    calendar.startOfDayForDate(
-      NSDate(timeIntervalSinceReferenceDate: currentDate)).timeIntervalSince1970
+    calendar.startOfDay(
+      for: Date(timeIntervalSinceReferenceDate: currentDate)).timeIntervalSince1970
   )
 
   let startOfLaunchDate = fabs(
-    calendar.startOfDayForDate(
-      NSDate(timeIntervalSinceReferenceDate: launchDate)).timeIntervalSince1970
+    calendar.startOfDay(
+      for: Date(timeIntervalSinceReferenceDate: launchDate)).timeIntervalSince1970
   )
 
   return CGFloat((startOfCurrentDate - startOfLaunchDate) / 60.0 / 60.0 / 24.0)
 }
 
 // Returns the number of days in a given date range.
-private func totalNumberOfDays(startDate startDate: NSTimeInterval,
-                                         endDate: NSTimeInterval,
-                                         calendar: NSCalendar = .currentCalendar()) -> CGFloat {
+private func totalNumberOfDays(startDate: TimeInterval,
+                                         endDate: TimeInterval,
+                                         calendar: Calendar = .current) -> CGFloat {
   let startOfStartDate = fabs(
-    calendar.startOfDayForDate(NSDate(timeIntervalSinceReferenceDate: startDate)).timeIntervalSince1970
+    calendar.startOfDay(for: Date(timeIntervalSinceReferenceDate: startDate)).timeIntervalSince1970
   )
 
   let startOfEndDate = fabs(
-    calendar.startOfDayForDate(NSDate(timeIntervalSinceReferenceDate: endDate)).timeIntervalSince1970
+    calendar.startOfDay(for: Date(timeIntervalSinceReferenceDate: endDate)).timeIntervalSince1970
   )
 
   return CGFloat((startOfEndDate - startOfStartDate) / 60.0 / 60.0 / 24.0)

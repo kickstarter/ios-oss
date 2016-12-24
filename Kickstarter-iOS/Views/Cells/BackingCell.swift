@@ -5,14 +5,14 @@ import ReactiveExtensions
 import UIKit
 
 internal final class BackingCell: UITableViewCell, ValueCell {
-  private let viewModel: BackingCellViewModelType = BackingCellViewModel()
+  fileprivate let viewModel: BackingCellViewModelType = BackingCellViewModel()
 
-  @IBOutlet private weak var deliveryLabel: UILabel!
-  @IBOutlet private weak var pledgedLabel: UILabel!
-  @IBOutlet private weak var rewardLabel: UILabel!
-  @IBOutlet private weak var rootStackView: UIStackView!
+  @IBOutlet fileprivate weak var deliveryLabel: UILabel!
+  @IBOutlet fileprivate weak var pledgedLabel: UILabel!
+  @IBOutlet fileprivate weak var rewardLabel: UILabel!
+  @IBOutlet fileprivate weak var rootStackView: UIStackView!
 
-  internal func configureWith(value value: (Backing, Project)) {
+  internal func configureWith(value: (Backing, Project)) {
     self.viewModel.inputs.configureWith(backing: value.0, project: value.1)
   }
 

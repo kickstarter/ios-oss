@@ -5,7 +5,7 @@ import UIKit
 
 internal final class RewardsTitleCell: UITableViewCell, ValueCell {
 
-  @IBOutlet private weak var rewardsTitleLabel: UILabel!
+  @IBOutlet fileprivate weak var rewardsTitleLabel: UILabel!
 
   func configureWith(value project: Project) {
     self.contentView.backgroundColor = Library.backgroundColor(forCategoryId: project.category.rootId)

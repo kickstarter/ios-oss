@@ -3,9 +3,9 @@ import Prelude
 import UIKit
 
 internal final class HelpWebViewController: WebViewController {
-  private let viewModel: HelpWebViewModelType = HelpWebViewModel()
+  fileprivate let viewModel: HelpWebViewModelType = HelpWebViewModel()
 
-  internal static func configuredWith(helpType helpType: HelpType) -> HelpWebViewController {
+  internal static func configuredWith(helpType: HelpType) -> HelpWebViewController {
     let vc = Storyboard.Help.instantiate(HelpWebViewController)
     vc.viewModel.inputs.configureWith(helpType: helpType)
     return vc
@@ -14,10 +14,10 @@ internal final class HelpWebViewController: WebViewController {
   internal override func viewDidLoad() {
     super.viewDidLoad()
 
-    if self.navigationController?.viewControllers.count == .Some(1) {
+    if self.navigationController?.viewControllers.count == .some(1) {
       self.navigationItem.leftBarButtonItem = UIBarButtonItem(
         title: Strings.general_navigation_buttons_close(),
-        style: .Plain,
+        style: .plain,
         target: self,
         action: #selector(closeButtonTapped)
       )
@@ -29,10 +29,10 @@ internal final class HelpWebViewController: WebViewController {
   internal override func bindViewModel() {
     self.viewModel.outputs.webViewLoadRequest
       .observeForControllerAction()
-      .observeNext { [weak self] in self?.webView.loadRequest($0) }
+      .observeValues { [weak self] in self?.webView.loadRequest($0) }
   }
 
-  @objc private func closeButtonTapped() {
-    self.dismissViewControllerAnimated(true, completion: nil)
+  @objc fileprivate func closeButtonTapped() {
+    self.dismiss(animated: true, completion: nil)
   }
 }

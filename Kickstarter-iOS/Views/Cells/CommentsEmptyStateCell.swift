@@ -17,27 +17,27 @@ internal protocol CommentsEmptyStateCellDelegate: class {
 
 internal final class CommentsEmptyStateCell: UITableViewCell, ValueCell {
   internal weak var delegate: CommentsEmptyStateCellDelegate?
-  private let viewModel: CommentsEmptyStateCellViewModelType = CommentsEmptyStateCellViewModel()
+  fileprivate let viewModel: CommentsEmptyStateCellViewModelType = CommentsEmptyStateCellViewModel()
 
-  @IBOutlet private weak var backProjectButton: UIButton!
-  @IBOutlet private weak var leaveACommentButton: UIButton!
-  @IBOutlet private weak var loginButton: UIButton!
-  @IBOutlet private weak var rootStackView: UIStackView!
-  @IBOutlet private weak var subtitleLabel: UILabel!
-  @IBOutlet private weak var titleLabel: UILabel!
+  @IBOutlet fileprivate weak var backProjectButton: UIButton!
+  @IBOutlet fileprivate weak var leaveACommentButton: UIButton!
+  @IBOutlet fileprivate weak var loginButton: UIButton!
+  @IBOutlet fileprivate weak var rootStackView: UIStackView!
+  @IBOutlet fileprivate weak var subtitleLabel: UILabel!
+  @IBOutlet fileprivate weak var titleLabel: UILabel!
 
   internal override func awakeFromNib() {
     super.awakeFromNib()
 
     self.backProjectButton.addTarget(self,
                                      action: #selector(backProjectTapped),
-                                     forControlEvents: .TouchUpInside)
+                                     for: .touchUpInside)
 
     self.leaveACommentButton.addTarget(self,
                                        action: #selector(leaveACommentTapped),
-                                       forControlEvents: .TouchUpInside)
+                                       for: .touchUpInside)
 
-    self.loginButton.addTarget(self, action: #selector(loginTapped), forControlEvents: .TouchUpInside)
+    self.loginButton.addTarget(self, action: #selector(loginTapped), for: .touchUpInside)
   }
 
   internal override func bindStyles() {
@@ -50,7 +50,7 @@ internal final class CommentsEmptyStateCell: UITableViewCell, ValueCell {
 
     self.leaveACommentButton
       |> borderButtonStyle
-      |> UIButton.lens.title(forState: .Normal) %~ { _ in
+      |> UIButton.lens.title(forState: .normal) %~ { _ in
         Strings.project_comments_empty_state_backer_button()
       }
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.general_navigation_buttons_comment() }
@@ -60,20 +60,20 @@ internal final class CommentsEmptyStateCell: UITableViewCell, ValueCell {
 
     self.backProjectButton
       |> borderButtonStyle
-      |> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.project_back_button() }
+      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.project_back_button() }
 
     self.loginButton
       |> borderButtonStyle
-      |> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.login_buttons_log_in() }
+      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.login_buttons_log_in() }
 
     self.rootStackView
-      |> UIStackView.lens.alignment .~ .Center
+      |> UIStackView.lens.alignment .~ .center
       |> UIStackView.lens.spacing .~ Styles.grid(5)
 
     self.subtitleLabel
       |> UILabel.lens.font .~ .ksr_body(size: 16.0)
       |> UILabel.lens.textColor .~ .ksr_text_navy_700
-      |> UILabel.lens.textAlignment .~ .Center
+      |> UILabel.lens.textAlignment .~ .center
 
     self.titleLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 18.0)
@@ -92,30 +92,30 @@ internal final class CommentsEmptyStateCell: UITableViewCell, ValueCell {
 
     self.viewModel.outputs.goToCommentDialog
       .observeForUI()
-      .observeNext { [weak self] in self?.delegate?.commentEmptyStateCellGoToCommentDialog() }
+      .observeValues { [weak self] in self?.delegate?.commentEmptyStateCellGoToCommentDialog() }
 
     self.viewModel.outputs.goToLoginTout
       .observeForUI()
-      .observeNext { [weak self] in self?.delegate?.commentEmptyStateCellGoToLoginTout() }
+      .observeValues { [weak self] in self?.delegate?.commentEmptyStateCellGoToLoginTout() }
 
     self.viewModel.outputs.goBackToProject
       .observeForUI()
-      .observeNext { [weak self] in self?.delegate?.commentEmptyStateCellGoBackToProject() }
+      .observeValues { [weak self] in self?.delegate?.commentEmptyStateCellGoBackToProject() }
   }
 
-  internal func configureWith(value value: (Project, Update?)) {
+  internal func configureWith(value: (Project, Update?)) {
     self.viewModel.inputs.configureWith(project: value.0, update: value.1)
   }
 
-  @objc private func backProjectTapped() {
+  @objc fileprivate func backProjectTapped() {
     self.viewModel.inputs.backProjectTapped()
   }
 
-  @objc private func loginTapped() {
+  @objc fileprivate func loginTapped() {
     self.viewModel.inputs.loginTapped()
   }
 
-  @objc private func leaveACommentTapped() {
+  @objc fileprivate func leaveACommentTapped() {
     self.viewModel.inputs.leaveACommentTapped()
   }
 }

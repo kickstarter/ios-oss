@@ -10,11 +10,11 @@ internal protocol DashboardTitleViewDelegate: class {
 }
 
 internal final class DashboardTitleView: UIView {
-  private let viewModel: DashboardTitleViewViewModelType = DashboardTitleViewViewModel()
+  fileprivate let viewModel: DashboardTitleViewViewModelType = DashboardTitleViewViewModel()
 
-  @IBOutlet private weak var titleButton: UIButton!
-  @IBOutlet private weak var titleLabel: UILabel!
-  @IBOutlet private weak var arrowImageView: UIImageView!
+  @IBOutlet fileprivate weak var titleButton: UIButton!
+  @IBOutlet fileprivate weak var titleLabel: UILabel!
+  @IBOutlet fileprivate weak var arrowImageView: UIImageView!
 
   internal weak var delegate: DashboardTitleViewDelegate?
 
@@ -23,12 +23,12 @@ internal final class DashboardTitleView: UIView {
 
     self.titleButton
       |> UIButton.lens.contentEdgeInsets %~ { insets in .init(topBottom: insets.top, leftRight: 0) }
-      |> UIButton.lens.titleColor(forState: .Normal) .~ .ksr_text_navy_600
-      |> UIButton.lens.titleColor(forState: .Highlighted) .~ .ksr_text_navy_900
+      |> UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_navy_600
+      |> UIButton.lens.titleColor(forState: .highlighted) .~ .ksr_text_navy_900
       |> UIButton.lens.titleLabel.font .~ .ksr_callout()
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.tabbar_dashboard() }
       |> UIButton.lens.accessibilityTraits .~ UIAccessibilityTraitStaticText
-      |> UIButton.lens.targets .~ [(self, #selector(titleButtonTapped), .TouchUpInside)]
+      |> UIButton.lens.targets .~ [(self, #selector(titleButtonTapped), .touchUpInside)]
 
     self.titleLabel |> dashboardTitleViewTextStyle
 
@@ -43,10 +43,10 @@ internal final class DashboardTitleView: UIView {
 
     self.viewModel.outputs.hideArrow
       .observeForUI()
-      .observeNext { [weak self] hide in
+      .observeValues { [weak self] hide in
         guard let _self = self else { return }
-        UIView.animateWithDuration(0.2) {
-          _self.arrowImageView.hidden = hide
+        UIView.animate(withDuration: 0.2) {
+          _self.arrowImageView.isHidden = hide
         }
         if !hide {
           _self.titleButton |> UIView.lens.accessibilityTraits .~ UIAccessibilityTraitButton
@@ -55,19 +55,19 @@ internal final class DashboardTitleView: UIView {
 
     self.viewModel.outputs.updateArrowState
       .observeForUI()
-      .observeNext { [weak self] drawerState in
+      .observeValues { [weak self] drawerState in
         self?.animateArrow(forDrawerState: drawerState)
     }
 
     self.viewModel.outputs.notifyDelegateShowHideProjectsDrawer
       .observeForUI()
-      .observeNext { [weak self] in
+      .observeValues { [weak self] in
         self?.delegate?.dashboardTitleViewShowHideProjectsDrawer()
     }
 
     self.viewModel.outputs.titleButtonIsEnabled
       .observeForUI()
-      .observeNext { [weak self] isEnabled in
+      .observeValues { [weak self] isEnabled in
         guard let _titleLabel = self?.titleLabel else { return }
         if isEnabled {
           _titleLabel |> UILabel.lens.font .~ UIFont.ksr_footnote(size: 14.0).bolded
@@ -75,11 +75,11 @@ internal final class DashboardTitleView: UIView {
     }
   }
 
-  internal func updateData(data: DashboardTitleViewData) {
+  internal func updateData(_ data: DashboardTitleViewData) {
     self.viewModel.inputs.updateData(data)
   }
 
-  private func animateArrow(forDrawerState drawerState: DrawerState) {
+  fileprivate func animateArrow(forDrawerState drawerState: DrawerState) {
     var scale: CGFloat = 1.0
     switch drawerState {
     case .open:
@@ -88,12 +88,12 @@ internal final class DashboardTitleView: UIView {
       scale = 1.0
     }
 
-    UIView.animateWithDuration(0.2, delay: 0.0, options: .CurveEaseOut, animations: {
-      self.arrowImageView.transform = CGAffineTransformMakeScale(1.0, scale)
+    UIView.animate(withDuration: 0.2, delay: 0.0, options: .curveEaseOut, animations: {
+      self.arrowImageView.transform = CGAffineTransform(scaleX: 1.0, y: scale)
       }, completion: nil)
   }
 
-  @objc private func titleButtonTapped() {
+  @objc fileprivate func titleButtonTapped() {
     self.viewModel.inputs.titleButtonTapped()
   }
 }

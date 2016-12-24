@@ -6,22 +6,22 @@ import UIKit
 
 internal final class ProjectActivityUpdateCell: UITableViewCell, ValueCell {
 
-  private let viewModel: ProjectActivityUpdateCellViewModelType = ProjectActivityUpdateCellViewModel()
+  fileprivate let viewModel: ProjectActivityUpdateCellViewModelType = ProjectActivityUpdateCellViewModel()
 
-  @IBOutlet private weak var activityTitleLabel: UILabel!
-  @IBOutlet private weak var bodyLabel: UILabel!
-  @IBOutlet private weak var cardView: UIView!
-  @IBOutlet private weak var commentsCountImageView: UIImageView!
-  @IBOutlet private weak var commentsCountLabel: UILabel!
-  @IBOutlet private weak var commentsStackView: UIStackView!
-  @IBOutlet private weak var containerStackView: UIStackView!
-  @IBOutlet private weak var contentAndFooterStackView: UIStackView!
-  @IBOutlet private weak var footerDividerView: UIView!
-  @IBOutlet private weak var likeAndCommentsCountStackView: UIStackView!
-  @IBOutlet private weak var likesCountImageView: UIImageView!
-  @IBOutlet private weak var likesCountLabel: UILabel!
-  @IBOutlet private weak var likesStackView: UIStackView!
-  @IBOutlet private weak var updateTitleLabel: UILabel!
+  @IBOutlet fileprivate weak var activityTitleLabel: UILabel!
+  @IBOutlet fileprivate weak var bodyLabel: UILabel!
+  @IBOutlet fileprivate weak var cardView: UIView!
+  @IBOutlet fileprivate weak var commentsCountImageView: UIImageView!
+  @IBOutlet fileprivate weak var commentsCountLabel: UILabel!
+  @IBOutlet fileprivate weak var commentsStackView: UIStackView!
+  @IBOutlet fileprivate weak var containerStackView: UIStackView!
+  @IBOutlet fileprivate weak var contentAndFooterStackView: UIStackView!
+  @IBOutlet fileprivate weak var footerDividerView: UIView!
+  @IBOutlet fileprivate weak var likeAndCommentsCountStackView: UIStackView!
+  @IBOutlet fileprivate weak var likesCountImageView: UIImageView!
+  @IBOutlet fileprivate weak var likesCountLabel: UILabel!
+  @IBOutlet fileprivate weak var likesStackView: UIStackView!
+  @IBOutlet fileprivate weak var updateTitleLabel: UILabel!
 
   internal func configureWith(value activityAndProject: (Activity, Project)) {
     self.viewModel.inputs.configureWith(activity: activityAndProject.0,
@@ -32,7 +32,7 @@ internal final class ProjectActivityUpdateCell: UITableViewCell, ValueCell {
     super.bindViewModel()
 
     self.viewModel.outputs.activityTitle.observeForUI()
-      .observeNext { [weak activityTitleLabel] title in
+      .observeValues { [weak activityTitleLabel] title in
         guard let activityTitleLabel = activityTitleLabel else { return }
 
         activityTitleLabel.attributedText = title.simpleHtmlAttributedString(font: .ksr_title3(size: 14),

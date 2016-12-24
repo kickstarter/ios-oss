@@ -2,16 +2,16 @@ import KsApi
 import Library
 import PassKit
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import SafariServices
 import Stripe
 import UIKit
 
 internal final class CheckoutViewController: DeprecatedWebViewController {
-  private weak var loginToutViewController: UIViewController? = nil
-  private let viewModel: CheckoutViewModelType = CheckoutViewModel()
+  fileprivate weak var loginToutViewController: UIViewController? = nil
+  fileprivate let viewModel: CheckoutViewModelType = CheckoutViewModel()
 
-  internal static func configuredWith(initialRequest initialRequest: NSURLRequest,
+  internal static func configuredWith(initialRequest: URLRequest,
                                                      project: Project,
                                                      reward: Reward) -> CheckoutViewController {
 
@@ -30,7 +30,7 @@ internal final class CheckoutViewController: DeprecatedWebViewController {
 
     self.navigationItem.leftBarButtonItem =
       UIBarButtonItem(title: Strings.general_navigation_buttons_cancel(),
-                      style: .Plain,
+                      style: .plain,
                       target: self,
                       action: #selector(cancelButtonTapped))
 
@@ -43,96 +43,96 @@ internal final class CheckoutViewController: DeprecatedWebViewController {
 
     self.viewModel.outputs.closeLoginTout
       .observeForControllerAction()
-      .observeNext { [weak self] _ in self?.closeLoginTout() }
+      .observeValues { [weak self] _ in self?.closeLoginTout() }
 
     self.viewModel.outputs.evaluateJavascript
       .observeForControllerAction()
-      .observeNext { [weak self] js in
-        self?.webView.stringByEvaluatingJavaScriptFromString(js)
+      .observeValues { [weak self] js in
+        self?.webView.stringByEvaluatingJavaScript(from: js)
     }
 
     self.viewModel.outputs.setStripePublishableKey
       .observeForUI()
-      .observeNext { STPPaymentConfiguration.sharedConfiguration().publishableKey = $0 }
+      .observeValues { STPPaymentConfiguration.shared().publishableKey = $0 }
 
     self.viewModel.outputs.setStripeAppleMerchantIdentifier
       .observeForUI()
-      .observeNext { STPPaymentConfiguration.sharedConfiguration().appleMerchantIdentifier = $0 }
+      .observeValues { STPPaymentConfiguration.shared().appleMerchantIdentifier = $0 }
 
     self.viewModel.outputs.goToSafariBrowser
       .observeForControllerAction()
-      .observeNext { [weak self] url in self?.goToSafariBrowser(url: url) }
+      .observeValues { [weak self] url in self?.goToSafariBrowser(url: url) }
 
     self.viewModel.outputs.goToThanks
       .observeForControllerAction()
-      .observeNext { [weak self] project in self?.goToThanks(project: project) }
+      .observeValues { [weak self] project in self?.goToThanks(project: project) }
 
     self.viewModel.outputs.goToWebModal
       .observeForControllerAction()
-      .observeNext { [weak self] request in self?.goToWebModal(request: request) }
+      .observeValues { [weak self] request in self?.goToWebModal(request: request) }
 
     self.viewModel.outputs.openLoginTout
       .observeForControllerAction()
-      .observeNext { [weak self] _ in self?.openLoginTout() }
+      .observeValues { [weak self] _ in self?.openLoginTout() }
 
     self.viewModel.outputs.popViewController
       .observeForControllerAction()
-      .observeNext { [weak self] _ in self?.popViewController() }
+      .observeValues { [weak self] _ in self?.popViewController() }
 
     self.viewModel.outputs.showAlert
       .observeForControllerAction()
-      .observeNext { [weak self] message in self?.showAlert(message: message) }
+      .observeValues { [weak self] message in self?.showAlert(message: message) }
 
     self.viewModel.outputs.webViewLoadRequest
       .observeForControllerAction()
-      .observeNext { [weak self] request in
+      .observeValues { [weak self] request in
         self?.webView.loadRequest(request)
     }
 
     self.viewModel.outputs.goToPaymentAuthorization
       .observeForControllerAction()
-      .observeNext { [weak self] in self?.goToPaymentAuthorization(request: $0) }
+      .observeValues { [weak self] in self?.goToPaymentAuthorization(request: $0) }
 
     self.viewModel.outputs.dismissViewController
       .observeForControllerAction()
-      .observeNext { [weak self] in
-        self?.dismissViewControllerAnimated(true, completion: nil)
+      .observeValues { [weak self] in
+        self?.dismiss(animated: true, completion: nil)
     }
 
-    NSNotificationCenter.defaultCenter()
-      .addObserverForName(CurrentUserNotifications.sessionStarted, object: nil, queue: nil) { [weak self] _ in
+    NotificationCenter.default
+      .addObserver(forName: NSNotification.Name(rawValue: CurrentUserNotifications.sessionStarted), object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()
     }
   }
   // swiftlint:disable function_body_length
 
-  internal func webView(webView: UIWebView,
-                        shouldStartLoadWithRequest request: NSURLRequest,
+  internal func webView(_ webView: UIWebView,
+                        shouldStartLoadWithRequest request: URLRequest,
                         navigationType: UIWebViewNavigationType) -> Bool {
     return self.viewModel.inputs.shouldStartLoad(withRequest: request, navigationType: navigationType)
   }
 
-  @objc private func cancelButtonTapped() {
+  @objc fileprivate func cancelButtonTapped() {
     self.viewModel.inputs.cancelButtonTapped()
   }
 
-  private func closeLoginTout() {
-    self.loginToutViewController?.dismissViewControllerAnimated(true, completion: nil)
+  fileprivate func closeLoginTout() {
+    self.loginToutViewController?.dismiss(animated: true, completion: nil)
   }
 
-  private func goToPaymentAuthorization(request request: PKPaymentRequest) {
+  fileprivate func goToPaymentAuthorization(request: PKPaymentRequest) {
     let vc = PKPaymentAuthorizationViewController(paymentRequest: request)
     vc.delegate = self
-    self.presentViewController(vc, animated: true, completion: nil)
+    self.present(vc, animated: true, completion: nil)
   }
 
-  private func goToSafariBrowser(url url: NSURL) {
-    let controller = SFSafariViewController(URL: url)
-    controller.modalPresentationStyle = .OverFullScreen
-    self.presentViewController(controller, animated: true, completion: nil)
+  fileprivate func goToSafariBrowser(url: URL) {
+    let controller = SFSafariViewController(url: url)
+    controller.modalPresentationStyle = .overFullScreen
+    self.present(controller, animated: true, completion: nil)
   }
 
-  private func goToThanks(project project: Project) {
+  fileprivate func goToThanks(project: Project) {
     let thanksVC = ThanksViewController.configuredWith(project: project)
     let stack = self.navigationController?.viewControllers
     guard let root = stack?.first else {
@@ -142,26 +142,26 @@ internal final class CheckoutViewController: DeprecatedWebViewController {
     self.navigationController?.setViewControllers([root, thanksVC], animated: true)
   }
 
-  private func goToWebModal(request request: NSURLRequest) {
+  fileprivate func goToWebModal(request: URLRequest) {
     let vc = WebModalViewController.configuredWith(request: request)
     let nav = UINavigationController(rootViewController: vc)
-    self.presentViewController(nav, animated: true, completion: nil)
+    self.present(nav, animated: true, completion: nil)
   }
 
-  private func openLoginTout() {
+  fileprivate func openLoginTout() {
     let vc = LoginToutViewController.configuredWith(loginIntent: .backProject)
     let nav = UINavigationController(rootViewController: vc)
-    nav.modalPresentationStyle = .FormSheet
+    nav.modalPresentationStyle = .formSheet
 
-    self.presentViewController(nav, animated: true, completion: nil)
+    self.present(nav, animated: true, completion: nil)
   }
 
-  private func popViewController() {
-    self.navigationController?.popToRootViewControllerAnimated(true)
+  fileprivate func popViewController() {
+    self.navigationController?.popToRootViewController(animated: true)
   }
 
-  private func showAlert(message message: String) {
-    self.presentViewController(
+  fileprivate func showAlert(message: String) {
+    self.present(
       UIAlertController.alert(
         message: message,
         handler: { [weak self] _ in
@@ -177,30 +177,30 @@ internal final class CheckoutViewController: DeprecatedWebViewController {
 extension CheckoutViewController: PKPaymentAuthorizationViewControllerDelegate {
 
   internal func paymentAuthorizationViewControllerWillAuthorizePayment(
-    controller: PKPaymentAuthorizationViewController) {
+    _ controller: PKPaymentAuthorizationViewController) {
     self.viewModel.inputs.paymentAuthorizationWillAuthorizePayment()
   }
 
   internal func paymentAuthorizationViewController(
-    controller: PKPaymentAuthorizationViewController,
+    _ controller: PKPaymentAuthorizationViewController,
     didAuthorizePayment payment: PKPayment,
-                        completion: (PKPaymentAuthorizationStatus) -> Void) {
+                        completion: @escaping (PKPaymentAuthorizationStatus) -> Void) {
 
     self.viewModel.inputs.paymentAuthorization(didAuthorizePayment: .init(payment: payment))
 
-    STPAPIClient.sharedClient().createTokenWithPayment(payment) { [weak self] token, error in
-      if let status = self?.viewModel.inputs.stripeCreatedToken(stripeToken: token?.tokenId, error: error) {
+    STPAPIClient.shared().createToken(with: payment) { [weak self] token, error in
+      if let status = self?.viewModel.inputs.stripeCreatedToken(stripeToken: token?.tokenId, error: error as NSError?) {
         completion(status)
       } else {
-        completion(.Failure)
+        completion(.failure)
       }
     }
   }
 
   internal func paymentAuthorizationViewControllerDidFinish(
-    controller: PKPaymentAuthorizationViewController) {
+    _ controller: PKPaymentAuthorizationViewController) {
 
-    controller.dismissViewControllerAnimated(true) {
+    controller.dismiss(animated: true) {
       self.viewModel.inputs.paymentAuthorizationDidFinish()
     }
   }

@@ -12,7 +12,7 @@ internal final class SearchDataSource: ValueCellDataSource {
              inSection: Section.popularTitle.rawValue)
   }
 
-  internal func load(projects projects: [Project]) {
+  internal func load(projects: [Project]) {
     self.clearValues(section: Section.projects.rawValue)
 
     if let mostPopular = projects.first {

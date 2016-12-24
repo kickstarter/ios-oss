@@ -4,25 +4,25 @@ import Prelude
 import UIKit
 
 internal final class FindFriendsDataSource: ValueCellDataSource {
-  private enum Section: Int {
+  fileprivate enum Section: Int {
     case facebookConnect
     case stats
     case friends
   }
 
-  internal func facebookConnect(source source: FriendsSource, visible: Bool) {
+  internal func facebookConnect(source: FriendsSource, visible: Bool) {
     self.set(values: visible ? [source] : [],
              cellClass: FindFriendsFacebookConnectCell.self,
              inSection: Section.facebookConnect.rawValue)
   }
 
-  internal func stats(stats stats: FriendStatsEnvelope, source: FriendsSource) {
+  internal func stats(stats: FriendStatsEnvelope, source: FriendsSource) {
     self.set(values: [(stats, source)],
              cellClass: FindFriendsStatsCell.self,
              inSection: Section.stats.rawValue)
   }
 
-  internal func friends(friends: [User], source: FriendsSource) {
+  internal func friends(_ friends: [User], source: FriendsSource) {
     let friendAndSource = friends.map { (friend: $0, source: source) }
 
     self.set(values: friendAndSource,

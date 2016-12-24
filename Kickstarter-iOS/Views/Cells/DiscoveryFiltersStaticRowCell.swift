@@ -3,9 +3,9 @@ import Prelude
 import UIKit
 
 internal final class DiscoveryFiltersStaticRowCell: UITableViewCell, ValueCell {
-  @IBOutlet private weak var titleLabel: UILabel!
+  @IBOutlet fileprivate weak var titleLabel: UILabel!
 
-  func configureWith(value value: (title: String, categoryId: Int?)) {
+  func configureWith(value: (title: String, categoryId: Int?)) {
     self.titleLabel.text = value.title
 
     self.titleLabel

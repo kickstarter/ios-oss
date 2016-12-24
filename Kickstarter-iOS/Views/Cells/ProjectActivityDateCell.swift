@@ -5,9 +5,9 @@ import Prelude_UIKit
 import UIKit
 
 internal final class ProjectActivityDateCell: UITableViewCell, ValueCell {
-  @IBOutlet private weak var dateLabel: UILabel!
+  @IBOutlet fileprivate weak var dateLabel: UILabel!
 
-  internal func configureWith(value date: NSDate) {
+  internal func configureWith(value date: Date) {
     self.dateLabel.text = Format.date(
       secondsInUTC: date.timeIntervalSince1970,
       dateStyle: .LongStyle,

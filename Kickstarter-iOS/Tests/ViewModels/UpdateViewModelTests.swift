@@ -4,7 +4,7 @@
 @testable import ReactiveExtensions_TestHelpers
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 import XCTest
 
@@ -64,7 +64,7 @@ final class UpdateViewModelTests: TestCase {
 
     withEnvironment(apiService: MockService(fetchUpdateResponse: prevUpdate)) {
 
-      let request = NSURLRequest(URL: prevUpdateUrl!)
+      let request = NSURLRequest(URL: optionalize(prevUpdateUrl)!)
       let navigationAction = WKNavigationActionData(
         navigationType: .LinkActivated,
         request: request,
@@ -79,7 +79,7 @@ final class UpdateViewModelTests: TestCase {
       self.webViewLoadRequest.assertValues(
         [
           "\(self.update.urls.web.update)?client_id=\(self.apiService.serverConfig.apiClientAuth.clientId)",
-          "\((prevUpdateUrl?.absoluteString)!)" +
+          "\((optionalize(prevUpdateUrl)?.absoluteString)!)" +
             "?client_id=\(self.apiService.serverConfig.apiClientAuth.clientId)"
         ]
       )
@@ -104,7 +104,7 @@ final class UpdateViewModelTests: TestCase {
 
     withEnvironment(apiService: MockService(fetchProjectResponse: anotherProject)) {
 
-      let request = NSURLRequest(URL: anotherProjectUrl!)
+      let request = NSURLRequest(URL: optionalize(anotherProjectUrl)!)
       let navigationAction = WKNavigationActionData(
         navigationType: .LinkActivated,
         request: request,

@@ -1,6 +1,6 @@
 import XCTest
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 import Result
 @testable import Library
@@ -824,7 +824,7 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
                                                  launchOptions: [:])
 
-    categories.enumerate().forEach { _, state in
+    categories.enumerate().forEach { idx, state in
       var pushData = genericActivityPushData
       pushData["activity"]?["category"] = state.rawValue
 

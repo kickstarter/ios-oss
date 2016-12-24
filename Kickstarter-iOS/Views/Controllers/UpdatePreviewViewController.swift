@@ -4,11 +4,11 @@ import Prelude
 import UIKit
 
 internal final class UpdatePreviewViewController: WebViewController {
-  private let viewModel: UpdatePreviewViewModelType = UpdatePreviewViewModel()
+  fileprivate let viewModel: UpdatePreviewViewModelType = UpdatePreviewViewModel()
 
-  @IBOutlet private weak var publishBarButtonItem: UIBarButtonItem!
+  @IBOutlet fileprivate weak var publishBarButtonItem: UIBarButtonItem!
 
-  internal static func configuredWith(draft draft: UpdateDraft) -> UpdatePreviewViewController {
+  internal static func configuredWith(draft: UpdateDraft) -> UpdatePreviewViewController {
     let vc = Storyboard.UpdateDraft.instantiate(UpdatePreviewViewController)
     vc.viewModel.inputs.configureWith(draft: draft)
     return vc
@@ -33,22 +33,22 @@ internal final class UpdatePreviewViewController: WebViewController {
   internal override func bindViewModel() {
     self.viewModel.outputs.webViewLoadRequest
       .observeForControllerAction()
-      .observeNext { [weak self] in self?.webView.loadRequest($0) }
+      .observeValues { [weak self] in self?.webView.loadRequest($0) }
 
     self.viewModel.outputs.showPublishConfirmation
       .observeForControllerAction()
-      .observeNext { [weak self] in self?.showPublishConfirmation(message: $0) }
+      .observeValues { [weak self] in self?.showPublishConfirmation(message: $0) }
 
     self.viewModel.outputs.showPublishFailure
       .observeForControllerAction()
-      .observeNext { [weak self] in self?.showPublishFailure() }
+      .observeValues { [weak self] in self?.showPublishFailure() }
 
     self.viewModel.outputs.goToUpdate
       .observeForControllerAction()
-      .observeNext { [weak self] in self?.goTo(update: $1, forProject: $0) }
+      .observeValues { [weak self] in self?.goTo(update: $1, forProject: $0) }
   }
 
-  internal func webView(webView: WKWebView,
+  internal func webView(_ webView: WKWebView,
                         decidePolicyForNavigationAction navigationAction: WKNavigationAction,
                                                         decisionHandler: (WKNavigationActionPolicy) -> Void) {
 
@@ -57,40 +57,40 @@ internal final class UpdatePreviewViewController: WebViewController {
     )
   }
 
-  @objc private func publishButtonTapped() {
+  @objc fileprivate func publishButtonTapped() {
     self.viewModel.inputs.publishButtonTapped()
   }
 
-  private func showPublishConfirmation(message message: String) {
+  fileprivate func showPublishConfirmation(message: String) {
     let alert = UIAlertController(
       title: Strings.dashboard_post_update_preview_confirmation_alert_title(),
       message: message,
-      preferredStyle: .Alert
+      preferredStyle: .alert
     )
     alert.addAction(
       UIAlertAction(
         title: Strings.dashboard_post_update_preview_confirmation_alert_confirm_button(),
-        style: .Default) { _ in
+        style: .default) { _ in
           self.viewModel.inputs.publishConfirmationButtonTapped()
       }
     )
     alert.addAction(
       UIAlertAction(
         title: Strings.dashboard_post_update_preview_confirmation_alert_cancel_button(),
-        style: .Cancel) { _ in
+        style: .cancel) { _ in
           self.viewModel.inputs.publishCancelButtonTapped()
       }
     )
-    self.presentViewController(alert, animated: true, completion: nil)
+    self.present(alert, animated: true, completion: nil)
   }
 
-  private func showPublishFailure() {
+  fileprivate func showPublishFailure() {
     let alert = UIAlertController
       .genericError(Strings.dashboard_post_update_preview_confirmation_alert_error_something_wrong())
-    self.presentViewController(alert, animated: true, completion: nil)
+    self.present(alert, animated: true, completion: nil)
   }
 
-  private func goTo(update update: Update, forProject project: Project) {
+  fileprivate func goTo(update: Update, forProject project: Project) {
     let vc = UpdateViewController.configuredWith(project: project, update: update)
     self.navigationController?.setViewControllers([vc], animated: true)
   }

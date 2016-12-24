@@ -3,23 +3,23 @@ import CoreImage
 import KsApi
 import Library
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import UIKit
 
 internal final class ActivityProjectStatusCell: UITableViewCell, ValueCell {
-  private let viewModel: ActivityProjectStatusViewModelType = ActivityProjectStatusViewModel()
+  fileprivate let viewModel: ActivityProjectStatusViewModelType = ActivityProjectStatusViewModel()
 
-  @IBOutlet private weak var cardView: UIView!
-  @IBOutlet private weak var fundingProgressBarView: UIView!
-  @IBOutlet private weak var fundingProgressContainerView: UIView!
-  @IBOutlet private weak var fundingProgressLabel: UILabel!
-  @IBOutlet private weak var metadataBackgroundView: UIView!
-  @IBOutlet private weak var metadataLabel: UILabel!
-  @IBOutlet private weak var projectImageView: UIImageView!
-  @IBOutlet private weak var projectNameLabel: UILabel!
-  @IBOutlet private weak var textBackgroundView: UIView!
+  @IBOutlet fileprivate weak var cardView: UIView!
+  @IBOutlet fileprivate weak var fundingProgressBarView: UIView!
+  @IBOutlet fileprivate weak var fundingProgressContainerView: UIView!
+  @IBOutlet fileprivate weak var fundingProgressLabel: UILabel!
+  @IBOutlet fileprivate weak var metadataBackgroundView: UIView!
+  @IBOutlet fileprivate weak var metadataLabel: UILabel!
+  @IBOutlet fileprivate weak var projectImageView: UIImageView!
+  @IBOutlet fileprivate weak var projectNameLabel: UILabel!
+  @IBOutlet fileprivate weak var textBackgroundView: UIView!
 
-  internal func configureWith(value value: Activity) {
+  internal func configureWith(value: Activity) {
     self.viewModel.inputs.configureWith(activity: value)
   }
 
@@ -34,21 +34,21 @@ internal final class ActivityProjectStatusCell: UITableViewCell, ValueCell {
 
     self.viewModel.outputs.projectImageURL
       .observeForUI()
-      .on(next: { [weak projectImageView] _ in
+      .on(event: { [weak projectImageView] _ in
         projectImageView?.af_cancelImageRequest()
         projectImageView?.image = nil
       })
       .skipNil()
-      .observeNext { [weak projectImageView] url in
+      .observeValues { [weak projectImageView] url in
         projectImageView?.ksr_setImageWithURL(url)
     }
 
     self.viewModel.outputs.fundingProgressPercentage
       .observeForUI()
-      .observeNext { [weak self] progress in
+      .observeValues { [weak self] progress in
         let anchorX = progress == 0 ? 0 : 0.5 / progress
         self?.fundingProgressBarView.layer.anchorPoint = CGPoint(x: CGFloat(anchorX), y: 0.5)
-        self?.fundingProgressBarView.transform = CGAffineTransformMakeScale(CGFloat(progress), 1.0)
+        self?.fundingProgressBarView.transform = CGAffineTransform(scaleX: CGFloat(progress), y: 1.0)
     }
   }
 
@@ -77,7 +77,7 @@ internal final class ActivityProjectStatusCell: UITableViewCell, ValueCell {
 
     self.metadataLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 12)
-      |> UILabel.lens.textColor .~ .whiteColor()
+      |> UILabel.lens.textColor .~ .white
 
     self.projectNameLabel
       |> UILabel.lens.font .~ .ksr_title1(size: 18)

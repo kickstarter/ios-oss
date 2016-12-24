@@ -5,15 +5,15 @@ import UIKit
 
 internal final class ThanksCategoryCell: UICollectionViewCell, ValueCell {
 
-  @IBOutlet private weak var bgView: UIView!
-  @IBOutlet private weak var exploreLabel: UILabel!
-  @IBOutlet private weak var liveProjectCountLabel: UILabel!
+  @IBOutlet fileprivate weak var bgView: UIView!
+  @IBOutlet fileprivate weak var exploreLabel: UILabel!
+  @IBOutlet fileprivate weak var liveProjectCountLabel: UILabel!
 
   func configureWith(value category: KsApi.Category) {
     self.bgView |> UIView.lens.backgroundColor .~ UIColorFromCategoryId(category.id) ?? .ksr_text_navy_900
 
     self.exploreLabel
-      |> UILabel.lens.textColor .~ shouldOverlayBeDark(category) ? .ksr_text_navy_900 : .whiteColor()
+      |> UILabel.lens.textColor .~ shouldOverlayBeDark(category) ? .ksr_text_navy_900 : .white
       |> UILabel.lens.text %~ { _ in Strings.category_promo_explore_category(category_name: category.name) }
       |> UILabel.lens.font .~ .ksr_callout()
 
@@ -31,7 +31,7 @@ internal final class ThanksCategoryCell: UICollectionViewCell, ValueCell {
   }
 }
 
-private func shouldOverlayBeDark(category: KsApi.Category) -> Bool {
+private func shouldOverlayBeDark(_ category: KsApi.Category) -> Bool {
   switch category.root?.id ?? 0 {
   case 1, 3, 14, 15, 18:
     return true
