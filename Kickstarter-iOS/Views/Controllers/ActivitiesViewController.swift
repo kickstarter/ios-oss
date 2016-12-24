@@ -18,12 +18,12 @@ internal final class ActivitiesViewController: UITableViewController {
     super.init(coder: aDecoder)
 
     NotificationCenter.default
-      .addObserver(forName: NSNotification.Name(rawValue: CurrentUserNotifications.sessionStarted), object: nil, queue: nil) { [weak self] _ in
+      .addObserver(forName: Notification.Name(rawValue: CurrentUserNotifications.sessionStarted), object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()
     }
 
     NotificationCenter.default
-      .addObserver(forName: NSNotification.Name(rawValue: CurrentUserNotifications.sessionEnded), object: nil, queue: nil) { [weak self] _ in
+      .addObserver(forName: Notification.Name(rawValue: CurrentUserNotifications.sessionEnded), object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionEnded()
     }
   }
@@ -58,13 +58,13 @@ internal final class ActivitiesViewController: UITableViewController {
   internal override func bindStyles() {
     super.bindStyles()
 
-    self
+    _ = self
       |> baseTableControllerStyle(estimatedRowHeight: 200.0)
 
-    self.navigationItem
+    _ = self.navigationItem
       |> UINavigationItem.lens.title %~ { _ in Strings.activity_navigation_title_activity() }
 
-    self.navigationController?.navigationBar
+    _ = self.navigationController?.navigationBar
       ?|> baseNavigationBarStyle
   }
 

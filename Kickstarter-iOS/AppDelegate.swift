@@ -55,8 +55,8 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
       .observeForUI()
       .observeValues {
         AppEnvironment.logout()
-        NSNotificationCenter.defaultCenter().postNotification(
-          NSNotification(name: CurrentUserNotifications.sessionEnded, object: nil)
+        NotificationCenter.defaultCenter().postNotification(
+          Notification(name: CurrentUserNotifications.sessionEnded, object: nil)
         )
     }
 
@@ -66,7 +66,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     self.viewModel.outputs.postNotification
       .observeForUI()
-      .observeValues(NSNotificationCenter.defaultCenter().postNotification)
+      .observeValues(NotificationCenter.defaultCenter().postNotification)
 
     self.viewModel.outputs.presentViewController
       .observeForUI()
@@ -139,13 +139,13 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         UIApplication.sharedApplication().shortcutItems = shortcutItems.map { $0.applicationShortcutItem }
     }
 
-    NSNotificationCenter
+    NotificationCenter
       .defaultCenter()
       .addObserverForName(CurrentUserNotifications.sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()
     }
 
-    NSNotificationCenter
+    NotificationCenter
       .defaultCenter()
       .addObserverForName(CurrentUserNotifications.sessionEnded, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionEnded()
@@ -184,7 +184,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
   }
 
   internal func application(application: UIApplication,
-                            didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
+                            didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
     self.viewModel.inputs.didRegisterForRemoteNotifications(withDeviceTokenData: deviceToken)
   }
 
@@ -192,15 +192,15 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
                             didReceiveRemoteNotification userInfo: [NSObject: AnyObject]) {
 
     self.viewModel.inputs.didReceive(remoteNotification: userInfo,
-                                     applicationIsActive: application.applicationState == .Active)
+                                     applicationIsActive: application.applicationState == .active)
   }
 
   internal func application(application: UIApplication,
                             didReceiveLocalNotification notification: UILocalNotification) {
 
-    if let userInfo = notification.userInfo where userInfo["aps"] != nil {
+    if let userInfo = notification.userInfo, userInfo["aps"] != nil {
       self.viewModel.inputs.didReceive(remoteNotification: userInfo,
-                                       applicationIsActive: application.applicationState == .Active)
+                                       applicationIsActive: application.applicationState == .active)
     }
   }
 

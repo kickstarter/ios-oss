@@ -56,29 +56,29 @@ internal final class FindFriendsFriendFollowCell: UITableViewCell, ValueCell {
   override func bindStyles() {
     super.bindStyles()
 
-    self.friendNameLabel
+    _ = self.friendNameLabel
       |> UILabel.lens.textColor .~ .ksr_text_navy_700
       |> UILabel.lens.font .~ UIFont.ksr_headline(size: 14.0)
 
-    self.self.friendLocationLabel
+    _ = self.self.friendLocationLabel
       |> UILabel.lens.textColor .~ .ksr_text_navy_500
       |> UILabel.lens.font .~ .ksr_caption1()
 
-    self.projectsBackedLabel
+    _ = self.projectsBackedLabel
       |> UILabel.lens.textColor .~ .ksr_navy_600
       |> UILabel.lens.font .~ .ksr_footnote()
 
-    self.projectsCreatedLabel
+    _ = self.projectsCreatedLabel
       |> UILabel.lens.textColor .~ .ksr_navy_600
       |> UILabel.lens.font .~ .ksr_footnote()
 
-    self.followButton
+    _ = self.followButton
       |> navyButtonStyle
       |> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 12)
       |> UIButton.lens.targets .~ [(self, action: #selector(followButtonTapped), .touchUpInside)]
       |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.social_following_friend_buttons_follow() }
 
-    self.unfollowButton
+    _ = self.unfollowButton
       |> lightNavyButtonStyle
       |> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 12)
       |> UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_navy_600
@@ -87,7 +87,7 @@ internal final class FindFriendsFriendFollowCell: UITableViewCell, ValueCell {
         Strings.social_following_friend_buttons_following()
     }
 
-    self
+    _ = self
       |> baseTableViewCellStyle()
       |> UITableViewCell.lens.contentView.layoutMargins %~~ { _, cell in
         cell.traitCollection.isRegularRegular

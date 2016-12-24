@@ -23,7 +23,7 @@ internal final class SortPagerViewController: UIViewController {
   fileprivate var sortsStackViewCenterXConstraint: NSLayoutConstraint?
 
   internal static func instantiate() -> SortPagerViewController {
-    return Storyboard.Discovery.instantiate(SortPagerViewController)
+    return Storyboard.Discovery.instantiate(SortPagerViewController.self)
   }
 
   internal func configureWith(sorts: [DiscoveryParams.Sort]) {
@@ -95,13 +95,13 @@ internal final class SortPagerViewController: UIViewController {
   internal override func bindStyles() {
     super.bindStyles()
 
-    self.scrollView
+    _ = self.scrollView
       |> UIScrollView.lens.scrollsToTop .~ false
 
-    self.view
+    _ = self.view
       |> UIView.lens.backgroundColor .~ .white
 
-    self.borderLineView
+    _ = self.borderLineView
       |> discoveryBorderLineStyle
 
     if self.view.traitCollection.isRegularRegular {
@@ -130,14 +130,14 @@ internal final class SortPagerViewController: UIViewController {
     self.scrollView.alpha = isEnabled ? 1.0 : 0.0
 
     if isEnabled {
-      self.borderLineView |> discoveryBorderLineStyle
+      _ = self.borderLineView |> discoveryBorderLineStyle
     } else {
-      self.borderLineView |> UIView.lens.alpha .~ 0.0
+      _ = self.borderLineView |> UIView.lens.alpha .~ 0.0
     }
   }
 
   fileprivate func createSortButtons(_ sorts: [DiscoveryParams.Sort]) {
-    self.sortsStackView
+    _ = self.sortsStackView
       |> UIStackView.lens.arrangedSubviews .~ sorts.enumerated().map { idx, sort in
           UIButton()
             |> UIButton.lens.tag .~ idx
@@ -149,7 +149,7 @@ internal final class SortPagerViewController: UIViewController {
 
   fileprivate func selectButton(atIndex index: Int) {
     for (idx, button) in self.sortsStackView.arrangedSubviews.enumerated() {
-      (button as? UIButton)
+      _ = (button as? UIButton)
         ?|> UIButton.lens.selected .~ (idx == index)
     }
   }
@@ -181,13 +181,13 @@ internal final class SortPagerViewController: UIViewController {
   }
 
   fileprivate func updateSortStyle(forCategoryId categoryId: Int?,
-                                             sorts: [DiscoveryParams.Sort],
-                                             animated: Bool) {
+                                   sorts: [DiscoveryParams.Sort],
+                                   animated: Bool) {
 
     let zipped = zip(sorts, self.sortsStackView.arrangedSubviews)
     for (sort, view) in zipped {
       let index = sorts.index(of: sort)
-      (view as? UIButton)
+      _ = (view as? UIButton)
         ?|> discoverySortPagerButtonStyle(sort: sort,
                                           categoryId: categoryId,
                                           isLeftMost: index == 0,
@@ -196,15 +196,15 @@ internal final class SortPagerViewController: UIViewController {
     }
     self.scrollView.layoutIfNeeded()
 
-    UIView.transition(with: self.view,
-                              duration: animated ? 0.2 : 0.0,
-                              options: [.transitionCrossDissolve, .curveEaseOut],
-                              animations: {
-                                [self.indicatorView, self.borderLineView]
-                                  ||> UIView.lens.backgroundColor .~
-                                    discoveryPrimaryColor(forCategoryId: categoryId)
-                              },
-                              completion: nil)
+    UIView.transition(
+      with: self.view,
+      duration: animated ? 0.2 : 0.0,
+      options: [.transitionCrossDissolve, .curveEaseOut],
+      animations: {
+        _ = [self.indicatorView, self.borderLineView]
+          ||> UIView.lens.backgroundColor .~ discoveryPrimaryColor(forCategoryId: categoryId)
+      },
+      completion: nil)
   }
 
   @objc fileprivate func sortButtonTapped(_ button: UIButton) {

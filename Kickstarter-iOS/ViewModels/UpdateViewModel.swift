@@ -55,7 +55,7 @@ internal final class UpdateViewModel: UpdateViewModelType, UpdateViewModelInputs
 
     let anotherUpdateLoadRequest = navigationAction
       .filter {
-        $0.navigationType == .LinkActivated && Navigation.Project.updateWithRequest($0.request) != nil
+        $0.navigationType == .linkActivated && Navigation.Project.updateWithRequest($0.request) != nil
       }
       .map { AppEnvironment.current.apiService.preparedRequest(forRequest: $0.request) }
 
@@ -75,21 +75,21 @@ internal final class UpdateViewModel: UpdateViewModelType, UpdateViewModelInputs
 
     let currentUpdate = Signal.merge(initialUpdate, anotherUpdate)
 
-    self.title = Signal.combineLatest(currentUpdate, self.viewDidLoadProperty.signal.take(1))
+    self.title = Signal.combineLatest(currentUpdate, self.viewDidLoadProperty.signal.take(first: 1))
       .map(first)
       .map { Strings.activity_project_update_update_count(update_count: Format.wholeNumber($0.sequence)) }
 
     self.policyDecisionProperty <~ navigationAction
       .map { action in
-        action.navigationType == .Other || action.targetFrame?.mainFrame == .Some(false)
-          ? .Allow
-          : .Cancel
+        action.navigationType == .other || action.targetFrame?.mainFrame == .some(false)
+          ? .allow
+          : .cancel
     }
 
     let possiblyGoToComments = currentUpdate
       .takePairWhen(navigationAction)
       .map { update, action -> Update? in
-        if action.navigationType == .LinkActivated
+        if action.navigationType == .linkActivated
           && Navigation.Project.updateCommentsWithRequest(action.request) != nil {
           return update
         }
@@ -100,7 +100,7 @@ internal final class UpdateViewModel: UpdateViewModelType, UpdateViewModelInputs
 
     let possiblyGoToProject = navigationAction
       .map { action in
-        action.navigationType == .LinkActivated
+        action.navigationType == .linkActivated
           ? Navigation.Project.withRequest(action.request)
           : nil
     }
@@ -123,11 +123,11 @@ internal final class UpdateViewModel: UpdateViewModelType, UpdateViewModelInputs
         return producer.map { ($0, refTag ?? RefTag.update) }
       }
 
-    self.goToSafariBrowser = zip(navigationAction, possiblyGoToProject, possiblyGoToComments)
+    self.goToSafariBrowser = Signal.zip(navigationAction, possiblyGoToProject, possiblyGoToComments)
       .filter { action, goToProject, goToComments in
-        action.navigationType == .LinkActivated && goToProject == nil && goToComments == nil
+        action.navigationType == .linkActivated && goToProject == nil && goToComments == nil
       }
-      .map { action, _, _ in action.request.URL }
+      .map { action, _, _ in action.request.url }
       .skipNil()
 
     self.projectProperty.signal.skipNil()
@@ -146,7 +146,7 @@ internal final class UpdateViewModel: UpdateViewModelType, UpdateViewModelInputs
   }
 
   fileprivate let policyForNavigationActionProperty = MutableProperty<WKNavigationActionData?>(nil)
-  fileprivate let policyDecisionProperty = MutableProperty(WKNavigationActionPolicy.Allow)
+  fileprivate let policyDecisionProperty = MutableProperty(WKNavigationActionPolicy.allow)
   internal func decidePolicyFor(navigationAction: WKNavigationActionData)
     -> WKNavigationActionPolicy {
       self.policyForNavigationActionProperty.value = navigationAction

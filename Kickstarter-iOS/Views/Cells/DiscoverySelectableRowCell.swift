@@ -28,10 +28,10 @@ internal final class DiscoverySelectableRowCell: UITableViewCell, ValueCell {
     }
 
     _ = self.filterTitleLabel
-      |> discoveryFilterLabelStyle(categoryId: value.categoryId, isSelected: value.row.rowIsSelected)
+      |> discoveryFilterLabelStyle(categoryId: value.categoryId, isSelected: value.row.isSelected)
       |> UILabel.lens.numberOfLines .~ 0
 
-    self.rowIsSelected = value.row.rowIsSelected
+    self.rowIsSelected = value.row.isSelected
   }
 
   override func bindStyles() {

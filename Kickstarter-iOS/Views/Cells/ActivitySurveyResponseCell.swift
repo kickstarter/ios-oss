@@ -36,36 +36,36 @@ internal final class ActivitySurveyResponseCell: UITableViewCell, ValueCell {
   internal override func bindStyles() {
     super.bindStyles()
 
-    self
+    _ = self
       |> feedTableViewCellStyle
 
-    self.cardView
+    _ = self.cardView
       |> dropShadowStyle()
 
-    self.containerView
+    _ = self.containerView
       |> UIView.lens.layoutMargins .~ .init(all: Styles.grid(2))
 
-    self.creatorNameLabel
+    _ = self.creatorNameLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 13)
       |> UILabel.lens.textColor .~ .ksr_text_navy_700
 
-    self.respondNowButton
+    _ = self.respondNowButton
       |> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 12)
-      |> UIButton.lens.backgroundColor(forState: .Normal) .~ .clear
-      |> UIButton.lens.titleColor(forState: .Normal) .~ .ksr_green_700
-      |> UIButton.lens.titleColor(forState: .Highlighted) .~ .ksr_navy_700
-      |> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.discovery_survey_button_respond_now() }
+      |> UIButton.lens.backgroundColor(forState: .normal) .~ .clear
+      |> UIButton.lens.titleColor(forState: .normal) .~ .ksr_green_700
+      |> UIButton.lens.titleColor(forState: .highlighted) .~ .ksr_navy_700
+      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.discovery_survey_button_respond_now() }
       |> UIButton.lens.tintColor .~ .ksr_green_700
       |> UIButton.lens.imageEdgeInsets .~ .init(top: 0, left: 0, bottom: 0, right: Styles.grid(4))
-      |> UIButton.lens.image(forState: .Normal) %~ { _ in Library.image(named: "respond-icon") }
+      |> UIButton.lens.image(forState: .normal) %~ { _ in Library.image(named: "respond-icon") }
       |> UIButton.lens.contentEdgeInsets .~ .init(top: Styles.grid(3), left: 0, bottom: Styles.grid(1),
                                                   right: 0)
 
-    self.rewardSurveysCountLabel
+    _ = self.rewardSurveysCountLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 13)
       |> UILabel.lens.textColor .~ .ksr_green_700
 
-    self.topLineView
+    _ = self.topLineView
       |> UIView.lens.backgroundColor .~ .ksr_green_500
   }
 

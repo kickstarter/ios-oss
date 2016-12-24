@@ -27,16 +27,18 @@ internal final class DashboardProjectsDrawerCell: UITableViewCell, ValueCell {
 
     self.rac.accessibilityLabel = self.viewModel.outputs.cellAccessibilityLabel
     self.rac.accessibilityValue = self.viewModel.outputs.cellAccessibilityValue
-
-    self
-      |> UITableViewCell.lens.isAccessibilityElement .~ true
-      |> UITableViewCell.lens.accessibilityTraits .~ UIAccessibilityTraitButton
   }
 
   internal override func bindStyles() {
-    self.projectNumLabel |> dashboardDrawerProjectNumberTextLabelStyle
-    self.projectNameLabel |> dashboardDrawerProjectNameTextLabelStyle
+    super.bindStyles()
 
-    self.checkmarkImageView |> UIImageView.lens.tintColor .~ .ksr_navy_600
+    _ = self
+      |> UITableViewCell.lens.isAccessibilityElement .~ true
+      |> UITableViewCell.lens.accessibilityTraits .~ UIAccessibilityTraitButton
+
+    _ = self.projectNumLabel |> dashboardDrawerProjectNumberTextLabelStyle
+    _ = self.projectNameLabel |> dashboardDrawerProjectNameTextLabelStyle
+
+    _ = self.checkmarkImageView |> UIImageView.lens.tintColor .~ .ksr_navy_600
   }
 }

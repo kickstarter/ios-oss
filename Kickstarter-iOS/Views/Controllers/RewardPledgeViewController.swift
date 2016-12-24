@@ -72,7 +72,7 @@ internal final class RewardPledgeViewController: UIViewController {
             applePayCapable: Bool = PKPaymentAuthorizationViewController.applePayCapable())
     -> RewardPledgeViewController {
 
-      let vc = Storyboard.RewardPledge.instantiate(RewardPledgeViewController)
+      let vc = Storyboard.RewardPledge.instantiate(RewardPledgeViewController.self)
       vc.viewModel.inputs.configureWith(project: project, reward: reward, applePayCapable: applePayCapable)
       return vc
   }
@@ -139,7 +139,7 @@ internal final class RewardPledgeViewController: UIViewController {
 
     NotificationCenter
       .default
-      .addObserver(forName: NSNotification.Name(rawValue: CurrentUserNotifications.sessionStarted), object: nil, queue: nil) { [weak self] _ in
+      .addObserver(forName: Notification.Name(rawValue: CurrentUserNotifications.sessionStarted), object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()
     }
 
@@ -150,70 +150,70 @@ internal final class RewardPledgeViewController: UIViewController {
   internal override func bindStyles() {
     super.bindStyles()
 
-    self
+    _ = self
       |> baseControllerStyle()
 
-    self.applePayButton
+    _ = self.applePayButton
       |> roundedStyle(cornerRadius: 4)
       |> UIButton.lens.contentEdgeInsets .~ .init(topBottom: Styles.gridHalf(3))
       |> UIButton.lens.backgroundColor .~ .black
-      |> UIButton.lens.image(forState: .Normal) %~ { _ in
+      |> UIButton.lens.image(forState: .normal) %~ { _ in
         image(named: "apple-pay-button-content", tintColor: .white)
       }
       |> UIButton.lens.accessibilityLabel .~ "Apple Pay"
 
-    self.cancelPledgeButton
+    _ = self.cancelPledgeButton
       |> borderButtonStyle
       |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.Cancel_your_pledge() }
 
-    self.cardInnerView
+    _ = self.cardInnerView
       |> cardStyle(cornerRadius: 4)
       |> UIView.lens.layer.borderColor .~ UIColor.ksr_green_700.cgColor
       |> UIView.lens.backgroundColor .~ .ksr_grey_100
 
-    self.cardPanelView
+    _ = self.cardPanelView
       |> UIView.lens.backgroundColor .~ .ksr_navy_200
 
-    self.cardView
+    _ = self.cardView
       |> UIView.lens.layer.shadowOpacity .~ 1
       |> UIView.lens.layer.shadowRadius .~ 4
       |> UIView.lens.layer.shouldRasterize .~ true
       |> UIView.lens.layer.shadowOffset .~ CGSize(width: 0, height: 2)
-      |> UIView.lens.layer.shadowColor .~ UIColor.ksr_dropShadow.CGColor
+      |> UIView.lens.layer.shadowColor .~ UIColor.ksr_dropShadow.cgColor
       |> UIView.lens.backgroundColor .~ .clear
 
-    self.changePaymentMethodButton
+    _ = self.changePaymentMethodButton
       |> borderButtonStyle
       |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.Change_payment_method() }
 
-    self.checkmarkBadgeView
+    _ = self.checkmarkBadgeView
       |> UIView.lens.layer.cornerRadius %~~ { _, badge in badge.frame.width / 2 }
       |> UIView.lens.layer.masksToBounds .~ true
       |> UIView.lens.layer.borderColor .~ UIColor.ksr_green_700.cgColor
       |> UIView.lens.layer.borderWidth .~ 1
       |> UIView.lens.backgroundColor .~ UIColor.ksr_green_500
 
-    self.checkmarkImageView
+    _ = self.checkmarkImageView
       |> UIImageView.lens.contentMode .~ .center
       |> UIImageView.lens.image .~ image(named: "checkmark-icon", tintColor: .white)
 
-    self.continueToPaymentButton
+    _ = self.continueToPaymentButton
       |> greenButtonStyle
       |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.Continue_to_payment() }
 
-    self.updatePledgeButton
+    _ = self.updatePledgeButton
       |> greenButtonStyle
       |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.Update_pledge() }
 
-    self.conversionLabel
+    _ = self.conversionLabel
       |> UILabel.lens.font .~ UIFont.ksr_caption1().italicized
       |> UILabel.lens.textColor .~ UIColor.ksr_text_green_700
 
-    self.countryLabel
+    _ = self.countryLabel
       |> UILabel.lens.font .~ UIFont.ksr_headline(size: 14)
       |> UILabel.lens.textColor .~ UIColor.ksr_text_navy_700
 
-    self.descriptionLabel
+    _ = self.descriptionLabel
       |> UILabel.lens.contentMode .~ .topLeft
       |> UILabel.lens.font .~ UIFont.ksr_caption1(size: 14)
       |> UILabel.lens.textColor .~ UIColor.ksr_text_navy_500
@@ -221,7 +221,7 @@ internal final class RewardPledgeViewController: UIViewController {
       |> UILabel.lens.lineBreakMode .~ .byTruncatingTail
       |> UILabel.lens.userInteractionEnabled .~ true
 
-    self.differentPaymentMethodButton
+    _ = self.differentPaymentMethodButton
       |> baseButtonStyle
       |> roundedStyle(cornerRadius: 4)
       |> UIButton.lens.layer.borderWidth .~ 1
@@ -229,31 +229,31 @@ internal final class RewardPledgeViewController: UIViewController {
       |> UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_green_700
       |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.Other_payment_methods() }
 
-    self.disclaimerButton
+    _ = self.disclaimerButton
       |> UIButton.lens.accessibilityLabel %~ { _ in
         Strings.Kickstarter_is_not_a_store()
           + " " + Strings.Its_a_way_to_bring_creative_projects_to_life()
           + " " + Strings.Learn_more_about_accountability()
     }
 
-    self.disclaimerContainerView
+    _ = self.disclaimerContainerView
       |> UIView.lens.layoutMargins .~ .init(topBottom: 0, leftRight: Styles.grid(4))
 
-    self.disclaimerPrimaryLabel
+    _ = self.disclaimerPrimaryLabel
       |> UILabel.lens.font .~ UIFont.ksr_caption1(size: 12).bolded
       |> UILabel.lens.textColor .~ UIColor.ksr_text_navy_500
       |> UILabel.lens.textAlignment .~ .center
       |> UILabel.lens.numberOfLines .~ 2
       |> UILabel.lens.text %~ { _ in Strings.Kickstarter_is_not_a_store() }
 
-    self.disclaimerSecondaryLabel
+    _ = self.disclaimerSecondaryLabel
       |> UILabel.lens.font .~ UIFont.ksr_caption1(size: 12)
       |> UILabel.lens.textColor .~ UIColor.ksr_text_navy_500
       |> UILabel.lens.textAlignment .~ .center
       |> UILabel.lens.numberOfLines .~ 2
       |> UILabel.lens.text %~ { _ in Strings.Its_a_way_to_bring_creative_projects_to_life() }
 
-    self.disclaimerTertiaryLabel
+    _ = self.disclaimerTertiaryLabel
       |> UILabel.lens.font .~ UIFont.ksr_caption1(size: 12)
       |> UILabel.lens.textColor .~ UIColor.ksr_text_navy_700
       |> UILabel.lens.textAlignment .~ .center
@@ -265,71 +265,71 @@ internal final class RewardPledgeViewController: UIViewController {
         )
     }
 
-    self.estimatedToFulfillLabel
+    _ = self.estimatedToFulfillLabel
       |> UILabel.lens.text %~ { _ in Strings.Estimated_to_fulfill() }
       |> UILabel.lens.font .~ .ksr_caption1(size: 14)
       |> UILabel.lens.textColor .~ .ksr_text_navy_500
 
-    self.estimatedDeliveryDateLabel
+    _ = self.estimatedDeliveryDateLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 14)
       |> UILabel.lens.textColor .~ .ksr_text_navy_700
 
-    self.estimatedFulfillmentStackView
+    _ = self.estimatedFulfillmentStackView
       |> UIStackView.lens.spacing .~ Styles.gridHalf(1)
 
-    self.fulfillmentAndShippingFooterStackView
+    _ = self.fulfillmentAndShippingFooterStackView
       |> UIStackView.lens.spacing .~ Styles.gridHalf(1)
 
-    self.itemsStackView
+    _ = self.itemsStackView
       |> UIStackView.lens.spacing .~ Styles.grid(2)
 
-    self.loadingIndicatorView
+    _ = self.loadingIndicatorView
       |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
       |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .white
       |> UIActivityIndicatorView.lens.color .~ .ksr_navy_900
 
-    self.loadingOverlayView
+    _ = self.loadingOverlayView
       |> UIView.lens.backgroundColor .~ UIColor(white: 1.0, alpha: 0.99)
 
-    self.middleStackView
+    _ = self.middleStackView
       |> UIStackView.lens.spacing .~ Styles.grid(4)
       |> UIStackView.lens.layoutMargins .~ .init(topBottom: 0, leftRight: Styles.grid(4))
       |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
       |> UIStackView.lens.spacing .~ Styles.grid(3)
 
-    self.minimumAndConversionStackView
+    _ = self.minimumAndConversionStackView
       |> UIStackView.lens.spacing .~ Styles.grid(1)
 
-    self.minimumPledgeLabel
+    _ = self.minimumPledgeLabel
       |> UILabel.lens.font .~ .ksr_title2()
       |> UILabel.lens.textColor .~ UIColor.ksr_text_green_700
 
-    self.orLabel
+    _ = self.orLabel
       |> UILabel.lens.font .~ .ksr_footnote()
       |> UILabel.lens.textColor .~ .ksr_navy_700
 
-    self.readMoreContainerView
+    _ = self.readMoreContainerView
       |> UIView.lens.backgroundColor .~ .clear
       |> UIView.lens.userInteractionEnabled .~ true
 
-    self.readMoreGradientView.backgroundColor = .clear
-    self.readMoreGradientView.startPoint = .zero
-    self.readMoreGradientView.endPoint = CGPoint(x: 1, y: 0)
-    self.readMoreGradientView.setGradient(
+    _ = self.readMoreGradientView.backgroundColor = .clear
+    _ = self.readMoreGradientView.startPoint = .zero
+    _ = self.readMoreGradientView.endPoint = CGPoint(x: 1, y: 0)
+    _ = self.readMoreGradientView.setGradient(
       [(UIColor.ksr_grey_100.withAlphaComponent(0.0), 0.0),
         (UIColor.ksr_grey_100.withAlphaComponent(1.0), 1.0)]
     )
 
-    self.readMoreLabel
+    _ = self.readMoreLabel
       |> UILabel.lens.backgroundColor .~ .ksr_grey_100
       |> UILabel.lens.textColor .~ .ksr_text_navy_600
       |> UILabel.lens.font .~ .ksr_headline(size: 14)
       |> UILabel.lens.text %~ { _ in Strings.ellipsis_more() }
 
-    self.pledgeButtonsStackView
+    _ = self.pledgeButtonsStackView
       |> UIStackView.lens.spacing .~ Styles.grid(2)
 
-    self.pledgeContainerView
+    _ = self.pledgeContainerView
       |> UIView.lens.layoutMargins .~ .init(top: Styles.grid(2),
                                             left: Styles.grid(2),
                                             bottom: Styles.grid(2),
@@ -338,92 +338,92 @@ internal final class RewardPledgeViewController: UIViewController {
       |> UIView.lens.layer.borderColor .~ UIColor.ksr_grey_400.cgColor
       |> UIView.lens.layer.borderWidth .~ 1
 
-    self.pledgeCurrencyLabel
+    _ = self.pledgeCurrencyLabel
       |> UILabel.lens.font .~ UIFont.ksr_headline(size: 14)
       |> UILabel.lens.textColor .~ UIColor.ksr_text_green_700
 
-    self.pledgeInputStackView
+    _ = self.pledgeInputStackView
       |> UIStackView.lens.spacing .~ Styles.grid(2)
 
-    self.pledgeInputTitleLabel
+    _ = self.pledgeInputTitleLabel
       |> UILabel.lens.font .~ .ksr_caption1()
       |> UILabel.lens.textColor .~ UIColor.ksr_text_navy_600
       |> UILabel.lens.text %~ { _ in Strings.Your_pledge_amount() }
 
-    self.pledgeStackView
+    _ = self.pledgeStackView
       |> UIStackView.lens.alignment .~ .firstBaseline
       |> UIStackView.lens.spacing .~ Styles.grid(1)
 
-    self.pledgeTextField
+    _ = self.pledgeTextField
       |> UITextField.lens.borderStyle .~ .none
       |> UITextField.lens.textColor .~ UIColor.ksr_text_green_700
       |> UITextField.lens.font .~ UIFont.ksr_headline(size: 14)
       |> UITextField.lens.keyboardType .~ .numberPad
 
-    self.rootStackView
+    _ = self.rootStackView
       |> UIStackView.lens.layoutMargins .~ .init(topBottom: Styles.grid(4) + Styles.grid(2),
                                                  leftRight: Styles.grid(2) + 1)
       |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
       |> UIStackView.lens.spacing .~ Styles.grid(4)
 
-    self.scrollView
+    _ = self.scrollView
       |> UIScrollView.lens.layoutMargins .~ .init(all: Styles.grid(2))
       |> UIScrollView.lens.delaysContentTouches .~ false
       |> UIScrollView.lens.keyboardDismissMode .~ .interactive
 
-    self.separatorViews
+    _ = self.separatorViews
       ||> separatorStyle
 
-    self.shipsToLabel
+    _ = self.shipsToLabel
       |> UILabel.lens.text %~ { _ in Strings.Ships_to() }
       |> UILabel.lens.font .~ .ksr_caption1(size: 14)
       |> UILabel.lens.textColor .~ .ksr_text_navy_500
 
-    self.shippingAmountLabel
+    _ = self.shippingAmountLabel
       |> UILabel.lens.font .~ .ksr_caption1(size: 12)
       |> UILabel.lens.textColor .~ .ksr_text_navy_500
       |> UILabel.lens.contentCompressionResistancePriorityForAxis(.horizontal) .~ UILayoutPriorityRequired
 
-    self.shippingInputStackView
+    _ = self.shippingInputStackView
       |> UIStackView.lens.spacing .~ Styles.grid(2)
 
-    self.shippingInputTitleLabel
+    _ = self.shippingInputTitleLabel
       |> UILabel.lens.font .~ .ksr_caption1()
       |> UILabel.lens.textColor .~ UIColor.ksr_text_navy_600
       |> UILabel.lens.text %~ { _ in Strings.Your_shipping_destination() }
 
-    self.shippingLocationsLabel
+    _ = self.shippingLocationsLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 14)
       |> UILabel.lens.textColor .~ .ksr_text_navy_700
 
-    self.shippingMenuStackView
+    _ = self.shippingMenuStackView
       |> UIStackView.lens.spacing .~ Styles.grid(1)
       |> UIStackView.lens.alignment .~ .center
       |> UIStackView.lens.userInteractionEnabled .~ false
 
-    self.shippingContainerView
+    _ = self.shippingContainerView
       |> UIView.lens.layoutMargins .~
         .init(top: Styles.grid(2), left: Styles.grid(2), bottom: Styles.grid(2), right: Styles.grid(4))
       |> roundedStyle(cornerRadius: 2)
       |> UIView.lens.layer.borderColor .~ UIColor.ksr_grey_400.cgColor
       |> UIView.lens.layer.borderWidth .~ 1
 
-    self.shippingDestinationButton
+    _ = self.shippingDestinationButton
       |> UIButton.lens.backgroundColor(forState: .highlighted) .~ UIColor.ksr_navy_200
       |> UIButton.lens.isAccessibilityElement .~ true
       |> UIButton.lens.accessibilityHint %~ { _ in Strings.Opens_shipping_options() }
 
-    self.shippingStackView
+    _ = self.shippingStackView
       |> UIStackView.lens.spacing .~ Styles.gridHalf(1)
       |> UIStackView.lens.alignment .~ .firstBaseline
 
-    self.titleLabel
+    _ = self.titleLabel
       |> UILabel.lens.font .~ UIFont.ksr_title3(size: 17)
       |> UILabel.lens.textColor .~ UIColor.ksr_text_navy_900
       |> UILabel.lens.numberOfLines .~ 0
       |> UILabel.lens.userInteractionEnabled .~ true
 
-    self.topStackView
+    _ = self.topStackView
       |> UIStackView.lens.layoutMargins .~ .init(topBottom: 0, leftRight: Styles.grid(4))
       |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
       |> UIStackView.lens.spacing .~ Styles.grid(3)

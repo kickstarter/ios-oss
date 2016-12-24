@@ -17,7 +17,7 @@ internal final class CommentsViewController: UITableViewController {
   internal static func configuredWith(project: Project? = nil, update: Update? = nil)
     -> CommentsViewController {
 
-      let vc = Storyboard.Comments.instantiate(CommentsViewController)
+      let vc = Storyboard.Comments.instantiate(CommentsViewController.self)
       vc.viewModel.inputs.configureWith(project: project, update: update)
       return vc
   }
@@ -28,7 +28,7 @@ internal final class CommentsViewController: UITableViewController {
     self.tableView.dataSource = self.dataSource
 
     NotificationCenter.default
-      .addObserver(forName: NSNotification.Name(rawValue: CurrentUserNotifications.sessionStarted), object: nil, queue: nil) { [weak self] _ in
+      .addObserver(forName: Notification.Name(rawValue: CurrentUserNotifications.sessionStarted), object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()
     }
 
@@ -49,11 +49,11 @@ internal final class CommentsViewController: UITableViewController {
   internal override func bindStyles() {
     super.bindStyles()
 
-    self
+    _ = self
       |> baseTableControllerStyle(estimatedRowHeight: 200.0)
       |> CommentsViewController.lens.view.backgroundColor .~ .white
 
-    self.commentBarButton
+    _ = self.commentBarButton
       |> UIBarButtonItem.lens.title %~ { _ in Strings.general_navigation_buttons_comment() }
       |> UIBarButtonItem.lens.accessibilityHint %~ { _ in
         Strings.accessibility_dashboard_buttons_post_update_hint()
@@ -162,7 +162,7 @@ extension CommentsViewController: CommentDialogDelegate {
 
 extension CommentsViewController: CommentsEmptyStateCellDelegate {
   internal func commentEmptyStateCellGoBackToProject() {
-    self.navigationController?.popViewController(animated: true)
+    _ = self.navigationController?.popViewController(animated: true)
   }
 
   internal func commentEmptyStateCellGoToCommentDialog() {

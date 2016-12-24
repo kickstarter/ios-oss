@@ -24,24 +24,24 @@ internal final class ProfileProjectCell: UICollectionViewCell, ValueCell {
   internal override func bindStyles() {
     super.bindStyles()
 
-    self
+    _ = self
       |> UICollectionViewCell.lens.backgroundColor .~ .clear
       |> UICollectionViewCell.lens.isAccessibilityElement .~ true
       |> UICollectionViewCell.lens.accessibilityHint %~ { _ in Strings.Opens_project() }
       |> UICollectionViewCell.lens.accessibilityTraits .~ UIAccessibilityTraitButton
 
-    self.cardView
+    _ = self.cardView
       |> dropShadowStyle()
 
-    self.metadataLabel
+    _ = self.metadataLabel
       |> UILabel.lens.textColor .~ .white
       |> UILabel.lens.font .~ .ksr_headline(size: 12)
 
-    self.projectNameLabel
+    _ = self.projectNameLabel
       |> UILabel.lens.textColor .~ .ksr_text_navy_700
       |> UILabel.lens.font .~ .ksr_callout(size: 15)
 
-    self.stateLabel
+    _ = self.stateLabel
       |> UILabel.lens.textColor .~ .white
       |> UILabel.lens.font .~ .ksr_headline(size: 12)
       |> UILabel.lens.numberOfLines .~ 0

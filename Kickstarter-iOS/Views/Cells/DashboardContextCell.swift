@@ -13,23 +13,24 @@ internal final class DashboardContextCell: UITableViewCell, ValueCell {
   internal override func bindStyles() {
     super.bindStyles()
 
-    self
+    _ = self
       |> dashboardContextCellStyle
       |> UITableViewCell.lens.selectionStyle .~ .gray
       |> UITableViewCell.lens.accessibilityTraits .~ UIAccessibilityTraitButton
       |> UITableViewCell.lens.accessibilityHint %~ { _ in
-        Strings.dashboard_tout_accessibility_hint_opens_project() }
+        Strings.dashboard_tout_accessibility_hint_opens_project()
+    }
 
-    self.containerView
+    _ = self.containerView
       |> containerViewBackgroundStyle
 
-    self.projectNameLabel
+    _ = self.projectNameLabel
       |> dashboardStatTitleLabelStyle
 
-    self.separatorView
+    _ = self.separatorView
       |> separatorStyle
 
-    self.viewProjectButton
+    _ = self.viewProjectButton
       |> dashboardViewProjectButtonStyle
       |> UIButton.lens.userInteractionEnabled .~ false
       |> UIButton.lens.accessibilityElementsHidden .~ true

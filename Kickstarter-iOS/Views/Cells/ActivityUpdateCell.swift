@@ -59,25 +59,25 @@ internal final class ActivityUpdateCell: UITableViewCell, ValueCell {
   internal override func bindStyles() {
     super.bindStyles()
 
-    self
+    _ = self
       |> feedTableViewCellStyle
       |> UITableViewCell.lens.accessibilityTraits .~ UIAccessibilityTraitButton
 
-    self.cardView
+    _ = self.cardView
       |> dropShadowStyle()
 
-    self.containerView
+    _ = self.containerView
       |> UIView.lens.layoutMargins .~ .init(all: Styles.grid(2))
 
-    self.bodyLabel
+    _ = self.bodyLabel
       |> UILabel.lens.font .~ .ksr_subhead()
       |> UILabel.lens.textColor .~ .ksr_text_navy_600
 
-    self.projectNameLabel
+    _ = self.projectNameLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 14)
       |> UILabel.lens.textColor .~ .ksr_text_navy_600
 
-    self.titleLabel
+    _ = self.titleLabel
       |> UILabel.lens.font .~ .ksr_title1(size: 22)
       |> UILabel.lens.textColor .~ .ksr_text_navy_700
   }

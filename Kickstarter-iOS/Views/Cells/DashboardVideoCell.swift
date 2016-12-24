@@ -26,62 +26,64 @@ internal final class DashboardVideoCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate weak var graphStatsStackView: UIStackView!
 
   internal override func bindStyles() {
-    self
+    super.bindStyles()
+
+    _ = self
       |> baseTableViewCellStyle()
 
-    self.completionPercentageLabel
+    _ = self.completionPercentageLabel
       |> dashboardStatSubtitleLabelStyle
       |> UILabel.lens.numberOfLines .~ 2
 
-    self.externalLabel
+    _ = self.externalLabel
       |> dashboardStatSubtitleLabelStyle
       |> UILabel.lens.numberOfLines .~ 2
 
-    self.externalPlaysProgressView
+    _ = self.externalPlaysProgressView
       |> dashboardVideoExternalPlaysProgressViewStyle
 
-    self.externalPlaysCountLabel
+    _ = self.externalPlaysCountLabel
       |> dashboardStatTitleLabelStyle
 
-    self.graphStatsContainerView
+    _ = self.graphStatsContainerView
       |> UIView.lens.backgroundColor .~ .ksr_grey_200
 
-    self.graphBackgroundView
+    _ = self.graphBackgroundView
       |> containerViewBackgroundStyle
       |> UIView.lens.accessibilityElementsHidden .~ true
 
-    self.graphStatsStackView
+    _ = self.graphStatsStackView
       |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
       |> UIStackView.lens.layoutMargins .~ .init(topBottom: Styles.grid(2), leftRight: Styles.grid(1))
 
-    self.internalLabel
+    _ = self.internalLabel
       |> dashboardStatSubtitleLabelStyle
       |> UILabel.lens.numberOfLines .~ 2
 
-    self.internalPlaysProgressView
+    _ = self.internalPlaysProgressView
       |> dashboardVideoInternalPlaysProgressViewStyle
 
-    self.internalPlaysCountLabel
+    _ = self.internalPlaysCountLabel
       |> dashboardStatTitleLabelStyle
 
-    self.separatorViews
+    _ = self.separatorViews
       ||> separatorStyle
 
-    self.statsContainerView
+    _ = self.statsContainerView
       |> dashboardCardStyle
 
-    self.totalPlaysContainerView
+    _ = self.totalPlaysContainerView
       |> UIView.lens.backgroundColor .~ .ksr_grey_200
 
-    self.totalPlaysCountLabel
+    _ = self.totalPlaysCountLabel
       |> dashboardStatTitleLabelStyle
 
-    self.totalPlaysStackView
+    _ = self.totalPlaysStackView
       |> UIStackView.lens.spacing .~ Styles.grid(1)
       |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
       |> UIStackView.lens.layoutMargins .~ .init(all: Styles.grid(2))
 
-    self.videoPlaysTitleLabel |> dashboardVideoPlaysTitleLabelStyle
+    _ = self.videoPlaysTitleLabel |> dashboardVideoPlaysTitleLabelStyle
   }
 
   internal override func bindViewModel() {

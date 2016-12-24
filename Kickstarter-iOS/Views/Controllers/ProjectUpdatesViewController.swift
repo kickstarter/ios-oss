@@ -44,7 +44,7 @@ internal final class ProjectUpdatesViewController: WebViewController {
 
     self.viewModel.outputs.webViewLoadRequest
       .observeForControllerAction()
-      .observeValues { [weak self] in self?.webView.load($0) }
+      .observeValues { [weak self] in _ = self?.webView.load($0) }
   }
 
   fileprivate func goToComments(forUpdate update: Update) {

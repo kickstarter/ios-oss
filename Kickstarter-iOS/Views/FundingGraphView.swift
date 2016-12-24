@@ -21,11 +21,11 @@ public final class FundingGraphView: UIView {
   fileprivate func setUp() {
     self.backgroundColor = .clear
     self.addSubview(self.goalLabel)
-    self.goalLabel
+    _ = self.goalLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 12)
       |> UILabel.lens.textColor .~ .white
       |> UILabel.lens.backgroundColor .~ .ksr_green_500
-      |> UILabel.lens.textAlignment .~ .Center
+      |> UILabel.lens.textAlignment .~ .center
   }
 
   internal var fundedPointRadius: CGFloat = 12.0 {

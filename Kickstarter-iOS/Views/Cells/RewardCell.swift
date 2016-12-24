@@ -59,7 +59,7 @@ internal final class RewardCell: UITableViewCell, ValueCell {
   internal override func bindStyles() {
     super.bindStyles()
 
-    self
+    _ = self
       |> baseTableViewCellStyle()
       |> RewardCell.lens.accessibilityTraits .~ UIAccessibilityTraitButton
       |> (RewardCell.lens.contentView • UIView.lens.layoutMargins) %~~ { _, cell in
@@ -69,103 +69,103 @@ internal final class RewardCell: UITableViewCell, ValueCell {
       }
       |> UIView.lens.contentMode .~ .top
 
-    self.rootStackView
+    _ = self.rootStackView
       |> UIStackView.lens.spacing .~ Styles.grid(4)
       |> UIStackView.lens.layoutMargins
         .~ .init(top: Styles.grid(3), left: Styles.grid(2), bottom: Styles.grid(2), right: Styles.grid(2))
       |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
 
-    self.minimumStackView
+    _ = self.minimumStackView
       |> UIStackView.lens.spacing .~ Styles.grid(1)
 
-    self.titleDescriptionStackView
+    _ = self.titleDescriptionStackView
       |> UIStackView.lens.spacing .~ Styles.grid(2)
 
-    [self.itemsContainerStackView, self.itemsHeaderStackView, self.itemsStackView]
+    _ = [self.itemsContainerStackView, self.itemsHeaderStackView, self.itemsStackView]
       ||> UIStackView.lens.spacing .~ Styles.grid(2)
 
-    [self.minimumStackView, self.titleDescriptionStackView, self.itemsContainerStackView ]
+    _ = [self.minimumStackView, self.titleDescriptionStackView, self.itemsContainerStackView ]
       ||> UIStackView.lens.layoutMargins .~ .init(topBottom: 0, leftRight: Styles.grid(2))
       ||> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
 
-    self.allGoneContainerView
+    _ = self.allGoneContainerView
       |> roundedStyle(cornerRadius: 2)
       |> UIView.lens.backgroundColor .~ UIColor.ksr_navy_700
       |> UIView.lens.layoutMargins .~ .init(topBottom: Styles.gridHalf(1), leftRight: Styles.grid(1))
 
-    self.allGoneLabel
+    _ = self.allGoneLabel
       |> UILabel.lens.textColor .~ .white
       |> UILabel.lens.font .~ .ksr_headline(size: 12)
       |> UILabel.lens.text %~ { _ in Strings.All_gone() }
 
-    self.cardView
+    _ = self.cardView
       |> dropShadowStyle()
 
-    self.minimumLabel
+    _ = self.minimumLabel
       |> UILabel.lens.font .~ .ksr_title2(size: 24)
 
-    self.conversionLabel
+    _ = self.conversionLabel
       |> UILabel.lens.font .~ UIFont.ksr_caption1().italicized
 
-    self.rewardTitleLabel
+    _ = self.rewardTitleLabel
       |> UILabel.lens.font .~ .ksr_body(size: 18)
       |> UILabel.lens.numberOfLines .~ 0
 
-    self.descriptionLabel
+    _ = self.descriptionLabel
       |> UILabel.lens.font .~ .ksr_body(size: 16)
       |> UILabel.lens.textColor .~ .ksr_text_navy_500
       |> UILabel.lens.numberOfLines .~ 0
 
-    self.includesTitleLabel
+    _ = self.includesTitleLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 13)
       |> UILabel.lens.textColor .~ .ksr_text_navy_700
       |> UILabel.lens.text %~ { _ in Strings.rewards_info_includes() }
 
-    self.youreABackerCheckmarkImageView
+    _ = self.youreABackerCheckmarkImageView
       |> UIImageView.lens.tintColor .~ .ksr_text_navy_700
       |> UIImageView.lens.image %~ { _ in
-        UIImage(named: "checkmark-icon", inBundle: .framework, compatibleWithTraitCollection: nil)
+        UIImage(named: "checkmark-icon", in: .framework, compatibleWith: nil)
     }
 
-    self.youreABackerContainerView
+    _ = self.youreABackerContainerView
       |> roundedStyle(cornerRadius: 2)
       |> UIView.lens.backgroundColor .~ UIColor.ksr_green_500
       |> UIView.lens.layoutMargins .~ .init(topBottom: Styles.grid(1), leftRight: Styles.gridHalf(3))
 
-    self.youreABackerLabel
+    _ = self.youreABackerLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 12)
       |> UILabel.lens.textColor .~ .white
 
-    self.youreABackerStackView
+    _ = self.youreABackerStackView
       |> UIStackView.lens.spacing .~ Styles.gridHalf(1)
       |> UIStackView.lens.alignment .~ .center
 
-    self.checkmarkImageView
+    _ = self.checkmarkImageView
       |> UIImageView.lens.tintColor .~ .white
 
-    self.footerLabel
+    _ = self.footerLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 12)
       |> UILabel.lens.textColor .~ .ksr_text_navy_600
 
-    self.footerView
+    _ = self.footerView
       |> UIView.lens.layoutMargins .~ .init(topBottom: 0, leftRight: Styles.grid(2))
       |> UIView.lens.backgroundColor .~ .clear
 
-    self.separatorViews
+    _ = self.separatorViews
       ||> separatorStyle
 
-    self.selectRewardButton
+    _ = self.selectRewardButton
       |> greenButtonStyle
       |> UIButton.lens.userInteractionEnabled .~ false
       |> UIButton.lens.isAccessibilityElement .~ false
 
-    self.manageRewardButton
+    _ = self.manageRewardButton
       |> greenBorderButtonStyle
       |> UIButton.lens.userInteractionEnabled .~ false
       |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.Manage_your_pledge() }
       |> UIButton.lens.isAccessibilityElement .~ false
 
-    self.viewYourPledgeButton
+    _ = self.viewYourPledgeButton
       |> borderButtonStyle
       |> UIButton.lens.userInteractionEnabled .~ false
       |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.View_your_pledge() }

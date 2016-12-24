@@ -26,7 +26,7 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
   }()
 
   internal static func configuredWith(loginIntent intent: LoginIntent) -> LoginToutViewController {
-    let vc = Storyboard.Login.instantiate(LoginToutViewController)
+    let vc = Storyboard.Login.instantiate(LoginToutViewController.self)
     vc.viewModel.inputs.loginIntent(intent)
     vc.helpViewModel.inputs.configureWith(helpContext: .loginTout)
     vc.helpViewModel.inputs.canSendEmail(MFMailComposeViewController.canSendMail())
@@ -39,7 +39,7 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
     self.fbLoginManager.logOut()
 
     NotificationCenter.default
-      .addObserver(forName: NSNotification.Name(rawValue: CurrentUserNotifications.sessionStarted), object: nil, queue: nil) { [weak self] _ in
+      .addObserver(forName: Notification.Name(rawValue: CurrentUserNotifications.sessionStarted), object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()
     }
 
@@ -56,14 +56,14 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
   }
 
   override func bindStyles() {
-    self |> baseControllerStyle()
+    _ = self |> baseControllerStyle()
 
-    self.fbDisclaimer |> fbDisclaimerLabelStyle
-    self.fbLoginButton |> fbLoginButtonStyle
-    self.helpButton |> disclaimerButtonStyle
-    self.loginButton |> loginWithEmailButtonStyle
-    self.rootStackView |> loginRootStackViewStyle
-    self.signupButton |> signupWithEmailButtonStyle
+    _ = self.fbDisclaimer |> fbDisclaimerLabelStyle
+    _ = self.fbLoginButton |> fbLoginButtonStyle
+    _ = self.helpButton |> disclaimerButtonStyle
+    _ = self.loginButton |> loginWithEmailButtonStyle
+    _ = self.rootStackView |> loginRootStackViewStyle
+    _ = self.signupButton |> signupWithEmailButtonStyle
   }
 
   // swiftlint:disable function_body_length
@@ -160,18 +160,21 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
   fileprivate func goToHelpType(_ helpType: HelpType) {
     let vc = HelpWebViewController.configuredWith(helpType: helpType)
     self.navigationController?.pushViewController(vc, animated: true)
-    self.navigationItem.backBarButtonItem = UIBarButtonItem.back(nil, selector: nil)
+    // FIXME
+//    self.navigationItem.backBarButtonItem = UIBarButtonItem.back(nil, selector: nil)
   }
 
   fileprivate func pushLoginViewController() {
     self.navigationController?.pushViewController(LoginViewController.instantiate(), animated: true)
-    self.navigationItem.backBarButtonItem = UIBarButtonItem.back(nil, selector: nil)
+    // FIXME
+//    self.navigationItem.backBarButtonItem = UIBarButtonItem.back(nil, selector: nil)
   }
 
   fileprivate func pushTwoFactorViewController(facebookAccessToken token: String) {
     let vc = TwoFactorViewController.configuredWith(facebookAccessToken: token)
     self.navigationController?.pushViewController(vc, animated: true)
-    self.navigationItem.backBarButtonItem = UIBarButtonItem.back(nil, selector: nil)
+    // FIXME
+//    self.navigationItem.backBarButtonItem = UIBarButtonItem.back(nil, selector: nil)
   }
 
   fileprivate func pushFacebookConfirmationController(facebookUser user: ErrorEnvelope.FacebookUser?,
@@ -179,12 +182,14 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
     let vc = FacebookConfirmationViewController
       .configuredWith(facebookUserEmail: user?.email ?? "", facebookAccessToken: token)
     self.navigationController?.pushViewController(vc, animated: true)
-    self.navigationItem.backBarButtonItem = UIBarButtonItem.back(nil, selector: nil)
+    // FIXME
+//    self.navigationItem.backBarButtonItem = UIBarButtonItem.back(nil, selector: nil)
   }
 
   fileprivate func pushSignupViewController() {
     self.navigationController?.pushViewController(SignupViewController.instantiate(), animated: true)
-    self.navigationItem.backBarButtonItem = UIBarButtonItem.back(nil, selector: nil)
+    // FIXME
+//    self.navigationItem.backBarButtonItem = UIBarButtonItem.back(nil, selector: nil)
   }
 
   fileprivate func showHelpSheet(helpTypes: [HelpType]) {
@@ -211,13 +216,12 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
 
   // MARK: Facebook Login
   fileprivate func attemptFacebookLogin() {
-    self.fbLoginManager.logIn(
-      withReadPermissions: ["public_profile", "email", "user_friends"],
-      from: self) {
-        (result: FBSDKLoginManagerLoginResult!, error: NSError!) in
-        if error != nil {
-          self.viewModel.inputs.facebookLoginFail(error: error)
-        } else if !result.isCancelled {
+    self.fbLoginManager
+      .logIn(withReadPermissions: ["public_profile", "email", "user_friends"], from: nil) { result, error in
+        if let error = error {
+          // FIXME: get rid of this NSError
+          self.viewModel.inputs.facebookLoginFail(error: error as NSError?)
+        } else if let result = result, !result.isCancelled {
           self.viewModel.inputs.facebookLoginSuccess(result: result)
         }
     }

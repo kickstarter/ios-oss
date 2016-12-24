@@ -30,7 +30,7 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
   internal weak var delegate: DiscoveryNavigationHeaderViewDelegate?
 
   internal static func instantiate() -> DiscoveryNavigationHeaderViewController {
-    return Storyboard.Discovery.instantiate(DiscoveryNavigationHeaderViewController)
+    return Storyboard.Discovery.instantiate(DiscoveryNavigationHeaderViewController.self)
   }
 
   internal func configureWith(params: DiscoveryParams) {
@@ -94,7 +94,7 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
       .observeValues { [weak self] isBold in
         guard let label = self?.primaryLabel else { return }
 
-        label
+        _ = label
           |> UILabel.lens.font %~~ { _, label in
             label.traitCollection.isRegularRegular
               ? isBold ? UIFont.ksr_body(size: 18).bolded : UIFont.ksr_body(size: 18)
@@ -158,22 +158,22 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
   internal override func bindStyles() {
     super.bindStyles()
 
-    self.borderLineView
+    _ = self.borderLineView
       |> discoveryBorderLineStyle
 
     self.borderLineHeightConstraint.constant = 1.0 / UIScreen.main.scale
 
-    self.dividerLabel
+    _ = self.dividerLabel
       |> discoveryNavDividerLabelStyle
       |> UILabel.lens.isAccessibilityElement .~ false
 
-    self.favoriteContainerView
+    _ = self.favoriteContainerView
       |> UIView.lens.layoutMargins .~ .init(left: Styles.grid(2))
 
-    self.primaryLabel
+    _ = self.primaryLabel
       |> UILabel.lens.isAccessibilityElement .~ false
 
-    self.secondaryLabel
+    _ = self.secondaryLabel
       |> UILabel.lens.font %~~ { _, label in
         label.traitCollection.isRegularRegular
           ? UIFont.ksr_body(size: 18).bolded
@@ -181,7 +181,7 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
       }
       |> UILabel.lens.isAccessibilityElement .~ false
 
-    self.titleStackView
+    _ = self.titleStackView
       |> discoveryNavTitleStackViewStyle
 
     if self.view.traitCollection.isRegularRegular {

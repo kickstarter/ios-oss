@@ -55,7 +55,7 @@ internal final class ActivityProjectStatusCell: UITableViewCell, ValueCell {
   internal override func bindStyles() {
     super.bindStyles()
 
-    self
+    _ = self
       |> baseTableViewCellStyle()
       |> UITableViewCell.lens.contentView.layoutMargins %~~ { _, cell in
         cell.traitCollection.isRegularRegular
@@ -65,25 +65,25 @@ internal final class ActivityProjectStatusCell: UITableViewCell, ValueCell {
                   right: Styles.grid(2))
     }
 
-    self.cardView
+    _ = self.cardView
       |> dropShadowStyle()
 
-    self.fundingProgressContainerView
+    _ = self.fundingProgressContainerView
       |> UIView.lens.backgroundColor .~ .ksr_navy_400
 
-    self.metadataBackgroundView
+    _ = self.metadataBackgroundView
       |> UIView.lens.layer.cornerRadius .~ 2.0
       |> UIView.lens.layoutMargins .~ .init(all: Styles.grid(1))
 
-    self.metadataLabel
+    _ = self.metadataLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 12)
       |> UILabel.lens.textColor .~ .white
 
-    self.projectNameLabel
+    _ = self.projectNameLabel
       |> UILabel.lens.font .~ .ksr_title1(size: 18)
       |> UILabel.lens.textColor .~ .ksr_text_navy_700
 
-    self.textBackgroundView
+    _ = self.textBackgroundView
       |> UIView.lens.alpha .~ 0.96
       |> UIView.lens.layoutMargins .~ .init(all: Styles.grid(2))
   }

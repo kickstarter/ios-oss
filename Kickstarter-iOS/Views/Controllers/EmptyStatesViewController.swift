@@ -25,7 +25,7 @@ internal final class EmptyStatesViewController: UIViewController {
   fileprivate let viewModel: EmptyStatesViewModelType = EmptyStatesViewModel()
 
   internal static func configuredWith(emptyState: EmptyState?) -> EmptyStatesViewController {
-    let vc = Storyboard.EmptyStates.instantiate(EmptyStatesViewController)
+    let vc = Storyboard.EmptyStates.instantiate(EmptyStatesViewController.self)
     vc.viewModel.inputs.configureWith(emptyState: emptyState)
     return vc
   }
@@ -73,14 +73,14 @@ internal final class EmptyStatesViewController: UIViewController {
     self.viewModel.outputs.mainButtonBackgroundColor
       .observeForUI()
       .observeValues { [weak element = mainButton] in
-        element
+        _ = element
           ?|> UIButton.lens.backgroundColor(forState: .normal) .~ $0
     }
 
     self.viewModel.outputs.mainButtonTitleColor
       .observeForUI()
       .observeValues { [weak element = mainButton] in
-        element
+        _ = element
           ?|> UIButton.lens.titleColor(forState: .normal) .~ $0
           ?|> UIButton.lens.titleColor(forState: .highlighted) .~ $0
     }
@@ -88,7 +88,7 @@ internal final class EmptyStatesViewController: UIViewController {
     self.viewModel.outputs.mainButtonBorderColor
       .observeForUI()
       .observeValues { [weak element = mainButton] in
-        element ?|> UIButton.lens.layer.borderColor .~ $0
+        _ = element ?|> UIButton.lens.layer.borderColor .~ $0
     }
 
     self.viewModel.outputs.notifyDelegateToGoToDiscovery
@@ -111,31 +111,33 @@ internal final class EmptyStatesViewController: UIViewController {
 
     self.stripViewTopLayoutConstraint.constant = -Styles.grid(3)
 
-    self.view
-      |> UIView.lens.layoutMargins .~ self.traitCollection.isRegularRegular
-        ? .init(top: 0, left: Styles.grid(4), bottom: Styles.grid(5), right: Styles.grid(4))
-        : .init(top: 0, left: Styles.grid(2), bottom: Styles.grid(3), right: Styles.grid(2))
+    _ = self.view
+      |> UIView.lens.layoutMargins .~ (
+        self.traitCollection.isRegularRegular
+          ? .init(top: 0, left: Styles.grid(4), bottom: Styles.grid(5), right: Styles.grid(4))
+          : .init(top: 0, left: Styles.grid(2), bottom: Styles.grid(3), right: Styles.grid(2))
+    )
 
     if self.traitCollection.isRegularRegular {
-      self.titleLabel |> UILabel.lens.font .~ UIFont.ksr_headline(size: 46).bolded
-      self.subtitleLabel |> UILabel.lens.font .~ .ksr_callout(size: 22)
+      _ = self.titleLabel |> UILabel.lens.font .~ UIFont.ksr_headline(size: 46).bolded
+      _ = self.subtitleLabel |> UILabel.lens.font .~ .ksr_callout(size: 22)
     } else if self.traitCollection.isVerticallyCompact {
-      self.titleLabel |> UILabel.lens.font .~ UIFont.ksr_headline(size: 26).bolded
-      self.subtitleLabel |> UILabel.lens.font .~ .ksr_callout(size: 13)
+      _ = self.titleLabel |> UILabel.lens.font .~ UIFont.ksr_headline(size: 26).bolded
+      _ = self.subtitleLabel |> UILabel.lens.font .~ .ksr_callout(size: 13)
     } else {
-      self.titleLabel |> UILabel.lens.font .~ UIFont.ksr_headline(size: 36).bolded
-      self.subtitleLabel |> UILabel.lens.font .~ .ksr_callout()
+      _ = self.titleLabel |> UILabel.lens.font .~ UIFont.ksr_headline(size: 36).bolded
+      _ = self.subtitleLabel |> UILabel.lens.font .~ .ksr_callout()
     }
 
-    self.titleLabel
+    _ = self.titleLabel
       |> UILabel.lens.textAlignment .~ .left
       |> UILabel.lens.numberOfLines .~ 0
 
-    self.subtitleLabel
+    _ = self.subtitleLabel
       |> UILabel.lens.textAlignment .~ .left
       |> UILabel.lens.numberOfLines .~ 0
 
-    self.headlineStackView
+    _ = self.headlineStackView
       |> UIStackView.lens.spacing .~ Styles.grid(2)
       |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
       |> UIStackView.lens.layoutMargins .~ .init(top: Styles.grid(1),
@@ -143,7 +145,7 @@ internal final class EmptyStatesViewController: UIViewController {
                                                  bottom: Styles.grid(7),
                                                  right: Styles.grid(4))
 
-    self.mainButton
+    _ = self.mainButton
       |> baseButtonStyle
       |> UIButton.lens.layer.borderWidth .~ 1.0
   }

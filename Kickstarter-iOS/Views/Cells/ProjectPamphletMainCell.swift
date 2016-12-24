@@ -82,23 +82,23 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
   internal override func bindStyles() {
     super.bindStyles()
 
-    self
+    _ = self
       |> baseTableViewCellStyle()
       |> UITableViewCell.lens.clipsToBounds .~ true
       |> UITableViewCell.lens.accessibilityElements .~ self.subviews
 
-    [self.backersSubtitleLabel, self.deadlineSubtitleLabel, self.pledgeSubtitleLabel]
+    _ = [self.backersSubtitleLabel, self.deadlineSubtitleLabel, self.pledgeSubtitleLabel]
       ||> UILabel.lens.textColor .~ .ksr_text_navy_500
       ||> UILabel.lens.font .~ .ksr_caption1(size: 13)
       ||> UILabel.lens.numberOfLines .~ 2
 
-    [self.backersTitleLabel, self.deadlineTitleLabel, self.pledgedTitleLabel]
+    _ = [self.backersTitleLabel, self.deadlineTitleLabel, self.pledgedTitleLabel]
       ||> UILabel.lens.font .~ .ksr_headline(size: 13)
 
-    self.blurbAndReadMoreStackView
+    _ = self.blurbAndReadMoreStackView
       |> UIStackView.lens.spacing .~ 0
 
-    self.contentStackView
+    _ = self.contentStackView
       |> UIStackView.lens.layoutMargins %~~ { _, stackView in
         stackView.traitCollection.isRegularRegular
           ? .init(topBottom: Styles.grid(6), leftRight: Styles.grid(16))
@@ -107,32 +107,32 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
       |> UIStackView.lens.spacing .~ Styles.grid(4)
 
-    self.conversionLabel
+    _ = self.conversionLabel
       |> UILabel.lens.textColor .~ .ksr_text_navy_500
       |> UILabel.lens.font .~ UIFont.ksr_caption2().italicized
       |> UILabel.lens.numberOfLines .~ 2
 
-    self.creatorButton
+    _ = self.creatorButton
       |> UIButton.lens.accessibilityHint %~ { _ in
         localizedString(key: "Opens_creator_profile", defaultValue: "Opens creator profile.")
       }
 
-    self.creatorImageView
+    _ = self.creatorImageView
       |> UIImageView.lens.clipsToBounds .~ true
       |> UIImageView.lens.contentMode .~ .scaleAspectFill
 
-    self.creatorLabel
+    _ = self.creatorLabel
       |> UILabel.lens.textColor .~ .ksr_text_navy_700
       |> UILabel.lens.font .~ .ksr_headline(size: 13)
 
-    self.creatorStackView
+    _ = self.creatorStackView
       |> UIStackView.lens.alignment .~ .center
       |> UIStackView.lens.spacing .~ Styles.grid(1)
 
-    self.fundingProgressContainerView
+    _ = self.fundingProgressContainerView
       |> UIView.lens.backgroundColor .~ .ksr_navy_400
 
-    self.projectBlurbLabel
+    _ = self.projectBlurbLabel
       |> UILabel.lens.font %~~ { _, label in
         label.traitCollection.isRegularRegular
           ? .ksr_body(size: 18)
@@ -141,10 +141,10 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       |> UILabel.lens.textColor .~ .ksr_text_navy_500
       |> UILabel.lens.numberOfLines .~ 0
 
-    self.projectNameAndCreatorStackView
+    _ = self.projectNameAndCreatorStackView
       |> UIStackView.lens.spacing .~ Styles.grid(2)
 
-    self.projectNameLabel
+    _ = self.projectNameLabel
       |> UILabel.lens.font %~~ { _, label in
         label.traitCollection.isRegularRegular
           ? .ksr_title3(size: 28)
@@ -153,10 +153,10 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       |> UILabel.lens.textColor .~ .ksr_text_navy_700
       |> UILabel.lens.numberOfLines .~ 0
 
-    self.progressBarAndStatsStackView
+    _ = self.progressBarAndStatsStackView
       |> UIStackView.lens.spacing .~ Styles.grid(2)
 
-    self.readMoreButton
+    _ = self.readMoreButton
       |> UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_navy_700
       |> UIButton.lens.titleColor(forState: .highlighted) .~ .ksr_text_navy_500
       |> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 15)
@@ -166,19 +166,19 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
                                                   bottom: Styles.grid(4) - 1,
                                                   right: 0)
 
-    self.stateLabel
+    _ = self.stateLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 12)
       |> UILabel.lens.numberOfLines .~ 2
 
-    self.statsStackView
+    _ = self.statsStackView
       |> UIStackView.lens.isAccessibilityElement .~ true
 
-    self.youreABackerContainerView
+    _ = self.youreABackerContainerView
       |> roundedStyle(cornerRadius: 2)
       |> UIView.lens.backgroundColor .~ .ksr_green_500
       |> UIView.lens.layoutMargins .~ .init(topBottom: Styles.grid(1), leftRight: Styles.gridHalf(3))
 
-    self.youreABackerLabel
+    _ = self.youreABackerLabel
       |> UILabel.lens.textColor .~ .white
       |> UILabel.lens.font .~ .ksr_headline(size: 12)
       |> UILabel.lens.text %~ { _ in Strings.Youre_a_backer() }

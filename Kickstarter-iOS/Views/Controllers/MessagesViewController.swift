@@ -37,7 +37,7 @@ internal final class MessagesViewController: UITableViewController {
   internal override func bindStyles() {
     super.bindStyles()
 
-    self.replyBarButtonItem
+    _ = self.replyBarButtonItem
       |> UIBarButtonItem.lens.title %~ { _ in Strings.general_navigation_buttons_reply() }
   }
 

@@ -22,7 +22,7 @@ internal final class MessageThreadCell: UITableViewCell, ValueCell {
   internal override func bindStyles() {
     super.bindStyles()
 
-    self
+    _ = self
       |> baseTableViewCellStyle()
       |> MessageThreadCell.lens.backgroundColor .~ .white
       |> MessageThreadCell.lens.contentView.layoutMargins %~~ { layoutMargins, cell in

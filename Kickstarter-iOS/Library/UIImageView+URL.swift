@@ -10,7 +10,7 @@ extension UIImageView {
                      filter: nil,
                      progress: nil,
                      progressQueue: DispatchQueue.main,
-                     imageTransition: .CrossDissolve(0.3),
+                     imageTransition: .crossDissolve(0.3),
                      runImageTransitionIfCached: false,
                      completion: nil)
   }

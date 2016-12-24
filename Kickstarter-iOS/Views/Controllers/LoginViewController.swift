@@ -17,7 +17,7 @@ internal final class LoginViewController: UIViewController {
   internal let viewModel: LoginViewModelType = LoginViewModel()
 
   internal static func instantiate() -> LoginViewController {
-    return Storyboard.Login.instantiate(LoginViewController)
+    return Storyboard.Login.instantiate(LoginViewController.self)
   }
 
   override func viewDidLoad() {
@@ -56,25 +56,25 @@ internal final class LoginViewController: UIViewController {
   }
 
   override func bindStyles() {
-    self |> loginControllerStyle
+    _ = self |> loginControllerStyle
 
-    self.loginButton |> loginButtonStyle
+    _ = self.loginButton |> loginButtonStyle
 
-    self.forgotPasswordButton |> forgotPasswordButtonStyle
+    _ = self.forgotPasswordButton |> forgotPasswordButtonStyle
 
-    self.emailTextField |> emailFieldStyle
-      <> UITextField.lens.returnKeyType .~ .next
+    _ = self.emailTextField |> emailFieldStyle
+      |> UITextField.lens.returnKeyType .~ .next
 
-    self.passwordTextField |> passwordFieldStyle
-      <> UITextField.lens.returnKeyType .~ .go
+    _ = self.passwordTextField |> passwordFieldStyle
+      |> UITextField.lens.returnKeyType .~ .go
 
-    self.formDividerView |> separatorStyle
+    _ = self.formDividerView |> separatorStyle
 
-    self.formBackgroundView |> cardStyle()
+    _ = self.formBackgroundView |> cardStyle()
 
-    self.onePasswordButton |> onePasswordButtonStyle
+    _ = self.onePasswordButton |> onePasswordButtonStyle
 
-    self.rootStackView |> loginRootStackViewStyle
+    _ = self.rootStackView |> loginRootStackViewStyle
   }
 
   override func bindViewModel() {

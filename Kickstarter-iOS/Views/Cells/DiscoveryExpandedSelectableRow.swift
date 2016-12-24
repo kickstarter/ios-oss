@@ -17,19 +17,19 @@ internal final class DiscoveryExpandedSelectableRowCell: UITableViewCell, ValueC
       self.filterTitleLabel.text = value.row.params.category?.name
     }
 
-    self.highlightView
+    _ = self.highlightView
       |> UIView.lens.backgroundColor .~ discoverySecondaryColor(forCategoryId: value.categoryId)
       |> UIView.lens.alpha .~ 0.08
       |> UIView.lens.hidden .~ !value.row.isSelected
 
-    self.circleImageView
+    _ = self.circleImageView
       |> UIView.lens.tintColor .~ discoverySecondaryColor(forCategoryId: value.categoryId)
       |> UIView.lens.hidden .~ !value.row.isSelected
 
-    self.checkImageView
+    _ = self.checkImageView
       |> UIView.lens.hidden .~ !value.row.isSelected
 
-    self.filterTitleLabel
+    _ = self.filterTitleLabel
       |> UILabel.lens.textColor .~ discoverySecondaryColor(forCategoryId: value.categoryId)
       |> UILabel.lens.numberOfLines .~ 2
 
@@ -39,7 +39,7 @@ internal final class DiscoveryExpandedSelectableRowCell: UITableViewCell, ValueC
   override func bindStyles() {
     super.bindStyles()
 
-    self
+    _ = self
       |> baseTableViewCellStyle()
       |> UITableViewCell.lens.contentView.layoutMargins %~~ { _, cell in
         cell.traitCollection.isRegularRegular
@@ -56,7 +56,7 @@ internal final class DiscoveryExpandedSelectableRowCell: UITableViewCell, ValueC
   }
 
   internal func willDisplay() {
-    self.filterTitleLabel
+    _ = self.filterTitleLabel
       |> UILabel.lens.font %~~ { _, label in
         label.traitCollection.isRegularRegular
           ? self.rowIsSelected ? UIFont.ksr_subhead(size: 18).bolded : .ksr_subhead(size: 18)

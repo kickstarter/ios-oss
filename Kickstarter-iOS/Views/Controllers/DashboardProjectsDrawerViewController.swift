@@ -25,7 +25,7 @@ internal final class DashboardProjectsDrawerViewController: UITableViewControlle
   internal static func configuredWith(data: [ProjectsDrawerData])
     -> DashboardProjectsDrawerViewController {
 
-      let vc = Storyboard.DashboardProjectsDrawer.instantiate(DashboardProjectsDrawerViewController)
+      let vc = Storyboard.DashboardProjectsDrawer.instantiate(DashboardProjectsDrawerViewController.self)
       vc.viewModel.inputs.configureWith(data: data)
       return vc
   }
@@ -81,11 +81,11 @@ internal final class DashboardProjectsDrawerViewController: UITableViewControlle
   }
 
   override func bindStyles() {
-    self
+    _ = self
       |> baseTableControllerStyle(estimatedRowHeight: 44.0)
       |> UITableViewController.lens.view.backgroundColor .~ .clear
 
-    self.tableView |> UITableView.lens.backgroundView .~ (
+    _ = self.tableView |> UITableView.lens.backgroundView .~ (
       UIView()
         |> UIView.lens.backgroundColor .~ .black
         |> UIView.lens.alpha .~ 0.0

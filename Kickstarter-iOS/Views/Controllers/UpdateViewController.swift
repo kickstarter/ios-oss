@@ -38,12 +38,12 @@ internal final class UpdateViewController: WebViewController {
   }
 
   internal override func bindStyles() {
-    self |> baseControllerStyle()
+    _ = self |> baseControllerStyle()
 
-    self.closeButton |> closeBarButtonItemStyle
-      |> UIBarButtonItem.lens.targetAction .~ (self, #selector(dismiss))
+    _ = self.closeButton |> closeBarButtonItemStyle
+      |> UIBarButtonItem.lens.targetAction .~ (self, #selector(dismissSelf))
 
-    self.shareButton
+    _ = self.shareButton
       |> UIBarButtonItem.lens.accessibilityLabel %~ { _ in Strings.Share_update() }
   }
 
@@ -52,7 +52,7 @@ internal final class UpdateViewController: WebViewController {
 
     self.viewModel.outputs.webViewLoadRequest
       .observeForControllerAction()
-      .observeValues { [weak self] in self?.webView.load($0) }
+      .observeValues { [weak self] in _ = self?.webView.load($0) }
 
     self.viewModel.outputs.goToComments
       .observeForControllerAction()
@@ -105,27 +105,28 @@ internal final class UpdateViewController: WebViewController {
 
   fileprivate func showShareSheet(_ activityController: UIActivityViewController) {
 
-    activityController.completionWithItemsHandler = { [weak self] in
-      self?.shareViewModel.inputs.shareActivityCompletion(
-        with: .init(activityType: $0, completed: $1, returnedItems: $2, activityError: $3)
-      )
-    }
-
-    if UIDevice.current.userInterfaceIdiom == .pad {
-      activityController.modalPresentationStyle = .popover
-      let popover = activityController.popoverPresentationController
-      popover?.permittedArrowDirections = .any
-      popover?.barButtonItem = self.navigationItem.rightBarButtonItem
-    }
-
-    self.present(activityController, animated: true, completion: nil)
+    // FIXME
+//    activityController.completionWithItemsHandler = { [weak self] in
+//      self?.shareViewModel.inputs.shareActivityCompletion(
+//        with: .init(activityType: $0, completed: $1, returnedItems: $2, activityError: $3)
+//      )
+//    }
+//
+//    if UIDevice.current.userInterfaceIdiom == .pad {
+//      activityController.modalPresentationStyle = .popover
+//      let popover = activityController.popoverPresentationController
+//      popover?.permittedArrowDirections = .any
+//      popover?.barButtonItem = self.navigationItem.rightBarButtonItem
+//    }
+//
+//    self.present(activityController, animated: true, completion: nil)
   }
 
   @IBAction fileprivate func shareButtonTapped() {
     self.shareViewModel.inputs.shareButtonTapped()
   }
 
-  @objc fileprivate func dismiss() {
+  @objc fileprivate func dismissSelf() {
     self.presentingViewController?.dismiss(animated: true, completion: nil)
   }
 }

@@ -75,16 +75,16 @@ internal final class ProfileViewController: UICollectionViewController {
   internal override func bindStyles() {
     super.bindStyles()
 
-    self.messagesButton
+    _ = self.messagesButton
       |> UIBarButtonItem.lens.title %~ { _ in Strings.profile_buttons_messages() }
 
-    self.navigationController?.navigationBar
+    _ = self.navigationController?.navigationBar
       ?|> baseNavigationBarStyle
 
-    self.navigationItem
+    _ = self.navigationItem
       |> UINavigationItem.lens.title %~ { _ in Strings.tabbar_profile() }
 
-    self.settingsButton
+    _ = self.settingsButton
       |> UIBarButtonItem.lens.title %~ { _ in Strings.profile_settings_navbar_title() }
   }
 

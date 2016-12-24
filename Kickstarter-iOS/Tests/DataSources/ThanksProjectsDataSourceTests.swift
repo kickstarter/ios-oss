@@ -30,10 +30,10 @@ final class ThanksProjectsDataSourceTests: XCTestCase {
     ]
     dataSource.loadData(projects: projects, category: Category.art)
 
-    let indexPath0 = NSIndexPath(forItem: 0, inSection: 0)
-    let indexPath1 = NSIndexPath(forItem: 1, inSection: 0)
-    let indexPath2 = NSIndexPath(forItem: 2, inSection: 0)
-    let indexPath3 = NSIndexPath(forItem: 3, inSection: 0)
+    let indexPath0 = IndexPath(item: 0, section: 0)
+    let indexPath1 = IndexPath(item: 1, section: 0)
+    let indexPath2 = IndexPath(item: 2, section: 0)
+    let indexPath3 = IndexPath(item: 3, section: 0)
 
     XCTAssertEqual(Project.template |> Project.lens.id .~ 1, dataSource.projectAtIndexPath(indexPath0))
     XCTAssertEqual(Project.template |> Project.lens.id .~ 2, dataSource.projectAtIndexPath(indexPath1))
@@ -49,10 +49,10 @@ final class ThanksProjectsDataSourceTests: XCTestCase {
     ]
     dataSource.loadData(projects: projects, category: Category.games)
 
-    let indexPath0 = NSIndexPath(forItem: 0, inSection: 0)
-    let indexPath1 = NSIndexPath(forItem: 1, inSection: 0)
-    let indexPath2 = NSIndexPath(forItem: 2, inSection: 0)
-    let indexPath3 = NSIndexPath(forItem: 3, inSection: 0)
+    let indexPath0 = IndexPath(item: 0, section: 0)
+    let indexPath1 = IndexPath(item: 1, section: 0)
+    let indexPath2 = IndexPath(item: 2, section: 0)
+    let indexPath3 = IndexPath(item: 3, section: 0)
 
     XCTAssertNil(dataSource.categoryAtIndexPath(indexPath0), "Category is nil for non-category item")
     XCTAssertNil(dataSource.categoryAtIndexPath(indexPath1), "Category is nil for non-category item")

@@ -9,7 +9,7 @@ internal final class UpdatePreviewViewController: WebViewController {
   @IBOutlet fileprivate weak var publishBarButtonItem: UIBarButtonItem!
 
   internal static func configuredWith(draft: UpdateDraft) -> UpdatePreviewViewController {
-    let vc = Storyboard.UpdateDraft.instantiate(UpdatePreviewViewController)
+    let vc = Storyboard.UpdateDraft.instantiate(UpdatePreviewViewController.self)
     vc.viewModel.inputs.configureWith(draft: draft)
     return vc
   }
@@ -17,15 +17,15 @@ internal final class UpdatePreviewViewController: WebViewController {
   internal override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.publishBarButtonItem
+    _ = self.publishBarButtonItem
       |> UIBarButtonItem.lens.targetAction .~ (self, #selector(publishButtonTapped))
 
     self.viewModel.inputs.viewDidLoad()
   }
 
   internal override func bindStyles() {
-    self |> baseControllerStyle()
-    self.publishBarButtonItem |> updatePreviewBarButtonItemStyle
+    _ = self |> baseControllerStyle()
+    _ = self.publishBarButtonItem |> updatePreviewBarButtonItemStyle
 
     self.navigationItem.title = nil
   }
@@ -33,7 +33,7 @@ internal final class UpdatePreviewViewController: WebViewController {
   internal override func bindViewModel() {
     self.viewModel.outputs.webViewLoadRequest
       .observeForControllerAction()
-      .observeValues { [weak self] in self?.webView.loadRequest($0) }
+      .observeValues { [weak self] in _ = self?.webView.load($0) }
 
     self.viewModel.outputs.showPublishConfirmation
       .observeForControllerAction()

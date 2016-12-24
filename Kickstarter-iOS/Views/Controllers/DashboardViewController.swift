@@ -148,7 +148,9 @@ internal final class DashboardViewController: UITableViewController {
   fileprivate func goToActivity(_ project: Project) {
     let vc = ProjectActivitiesViewController.configuredWith(project: project)
     self.navigationController?.pushViewController(vc, animated: true)
-    self.navigationItem.backBarButtonItem = UIBarButtonItem.back(nil, selector: nil)
+
+    // FIXME
+//    self.navigationItem.backBarButtonItem = UIBarButtonItem.back(nil, selector: nil)
   }
 
   internal override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -189,21 +191,22 @@ internal final class DashboardViewController: UITableViewController {
   }
 
   fileprivate func showShareSheet(_ controller: UIActivityViewController) {
-    controller.completionWithItemsHandler = { [weak self] in
-      self?.shareViewModel.inputs.shareActivityCompletion(activityType: $0,
-                                                          completed: $1,
-                                                          returnedItems: $2,
-                                                          activityError: $3)
-    }
 
-    if UIDevice.current.userInterfaceIdiom == .pad {
-      controller.modalPresentationStyle = .popover
-      controller.popoverPresentationController?.barButtonItem = self.navigationItem.rightBarButtonItem
-      self.present(controller, animated: true, completion: nil)
-
-    } else {
-      self.present(controller, animated: true, completion: nil)
-    }
+    // FIXME
+//    controller.completionWithItemsHandler = { [weak self] in
+//      self?.shareViewModel.inputs.shareActivityCompletion(
+//        with: .init(activityType: $0, completed: $1, returnedItems: $2, activityError: $3)
+//      )
+//    }
+//
+//    if UIDevice.current.userInterfaceIdiom == .pad {
+//      controller.modalPresentationStyle = .popover
+//      controller.popoverPresentationController?.barButtonItem = self.navigationItem.rightBarButtonItem
+//      self.present(controller, animated: true, completion: nil)
+//
+//    } else {
+//      self.present(controller, animated: true, completion: nil)
+//    }
   }
 
   fileprivate func accessibilityFocusOnTitleView() {

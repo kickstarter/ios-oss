@@ -77,11 +77,11 @@ internal final class FindFriendsViewController: UITableViewController {
   override func bindStyles() {
     super.bindStyles()
 
-    self
+    _ = self
       |> baseTableControllerStyle()
       |> UIViewController.lens.title %~ { _ in Strings.Follow_friends() }
 
-    self.navigationController?.navigationBar
+    _ = self.navigationController?.navigationBar
       ?|> baseNavigationBarStyle
   }
 

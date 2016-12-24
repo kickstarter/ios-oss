@@ -33,31 +33,31 @@ internal final class DashboardFundingCell: UITableViewCell, ValueCell {
 
     self.accessibilityLabel = Strings.dashboard_graphs_funding_title_funding_progress()
 
-    self
+    _ = self
       |> baseTableViewCellStyle()
 
-    self.backersSubtitleLabel
+    _ = self.backersSubtitleLabel
       |> dashboardStatSubtitleLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.dashboard_tout_backers() }
-    self.backersTitleLabel |> dashboardStatTitleLabelStyle
-    self.deadlineDateLabel |> dashboardFundingGraphXAxisLabelStyle
-    self.fundingProgressTitleLabel |> dashboardFundingProgressTitleLabelStyle
-    self.graphAxisSeparatorView |> dashboardFundingGraphAxisSeparatorViewStyle
-    self.graphBackgroundView
+    _ = self.backersTitleLabel |> dashboardStatTitleLabelStyle
+    _ = self.deadlineDateLabel |> dashboardFundingGraphXAxisLabelStyle
+    _ = self.fundingProgressTitleLabel |> dashboardFundingProgressTitleLabelStyle
+    _ = self.graphAxisSeparatorView |> dashboardFundingGraphAxisSeparatorViewStyle
+    _ = self.graphBackgroundView
       |> containerViewBackgroundStyle
       |> UIView.lens.accessibilityElementsHidden .~ true
-    self.graphView |> UIView.lens.layoutMargins .~ .init(top: 0.0, left: 16.0, bottom: 0.0, right: 0.0)
-    self.graphXAxisStackView |> dashboardFundingGraphXAxisStackViewStyle
-    self.graphYAxisBottomLabel |> dashboardFundingGraphYAxisLabelStyle
-    self.graphYAxisMiddleLabel |> dashboardFundingGraphYAxisLabelStyle
-    self.graphYAxisTopLabel |> dashboardFundingGraphYAxisLabelStyle
-    self.launchDateLabel |> dashboardFundingGraphXAxisLabelStyle
-    self.pledgedSubtitleLabel |> dashboardStatSubtitleLabelStyle
-    self.pledgedTitleLabel
+    _ = self.graphView |> UIView.lens.layoutMargins .~ .init(top: 0.0, left: 16.0, bottom: 0.0, right: 0.0)
+    _ = self.graphXAxisStackView |> dashboardFundingGraphXAxisStackViewStyle
+    _ = self.graphYAxisBottomLabel |> dashboardFundingGraphYAxisLabelStyle
+    _ = self.graphYAxisMiddleLabel |> dashboardFundingGraphYAxisLabelStyle
+    _ = self.graphYAxisTopLabel |> dashboardFundingGraphYAxisLabelStyle
+    _ = self.launchDateLabel |> dashboardFundingGraphXAxisLabelStyle
+    _ = self.pledgedSubtitleLabel |> dashboardStatSubtitleLabelStyle
+    _ = self.pledgedTitleLabel
       |> dashboardStatTitleLabelStyle
       |> UILabel.lens.textColor .~ .ksr_text_green_700
 
-    self.rootStackView
+    _ = self.rootStackView
       |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
       |> UIStackView.lens.layoutMargins %~~ { _, stack in
         stack.traitCollection.isRegularRegular
@@ -65,10 +65,10 @@ internal final class DashboardFundingCell: UITableViewCell, ValueCell {
           : .init(all: 0.0)
     }
 
-    self.separatorViews ||> separatorStyle
-    self.statsStackView |> dashboardFundingStatsStackView
-    self.timeRemainingSubtitleLabel |> dashboardStatSubtitleLabelStyle
-    self.timeRemainingTitleLabel |> dashboardStatTitleLabelStyle
+    _ = self.separatorViews ||> separatorStyle
+    _ = self.statsStackView |> dashboardFundingStatsStackView
+    _ = self.timeRemainingSubtitleLabel |> dashboardStatSubtitleLabelStyle
+    _ = self.timeRemainingTitleLabel |> dashboardStatTitleLabelStyle
 
     self.graphViewHeightConstraint.constant = self.traitCollection.isRegularRegular
       ? Styles.grid(40) : Styles.grid(30)

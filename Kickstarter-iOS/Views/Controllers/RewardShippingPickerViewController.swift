@@ -30,7 +30,7 @@ internal final class RewardShippingPickerViewController: UIViewController {
                                               delegate: RewardShippingPickerViewControllerDelegate)
     -> RewardShippingPickerViewController {
 
-      let vc = Storyboard.RewardPledge.instantiate(RewardShippingPickerViewController)
+      let vc = Storyboard.RewardPledge.instantiate(RewardShippingPickerViewController.self)
       vc.viewModel.inputs.configureWith(project: project,
                                         shippingRules: shippingRules,
                                         selectedShippingRule: selectedShippingRule)
@@ -55,18 +55,18 @@ internal final class RewardShippingPickerViewController: UIViewController {
   internal override func bindStyles() {
     super.bindStyles()
 
-    self
+    _ = self
       |> baseControllerStyle()
       |> UIViewController.lens.view.backgroundColor .~ .clear
 
-    self.countryPickerView
+    _ = self.countryPickerView
       |> UIView.lens.backgroundColor .~ .white
 
-    self.cancelButton
+    _ = self.cancelButton
       |> textOnlyButtonStyle
       |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.discovery_search_cancel() }
 
-    self.doneButton
+    _ = self.doneButton
       |> textOnlyButtonStyle
       |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.Done() }
 
@@ -77,7 +77,7 @@ internal final class RewardShippingPickerViewController: UIViewController {
       (UIColor.init(white: 0.0, alpha: 0.0), 1)
     ])
 
-    self.separatorViews
+    _ = self.separatorViews
       ||> separatorStyle
   }
 

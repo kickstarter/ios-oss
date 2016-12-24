@@ -48,7 +48,7 @@ internal final class CheckoutViewController: DeprecatedWebViewController {
     self.viewModel.outputs.evaluateJavascript
       .observeForControllerAction()
       .observeValues { [weak self] js in
-        self?.webView.stringByEvaluatingJavaScript(from: js)
+        _ = self?.webView.stringByEvaluatingJavaScript(from: js)
     }
 
     self.viewModel.outputs.setStripePublishableKey
@@ -100,7 +100,7 @@ internal final class CheckoutViewController: DeprecatedWebViewController {
     }
 
     NotificationCenter.default
-      .addObserver(forName: NSNotification.Name(rawValue: CurrentUserNotifications.sessionStarted), object: nil, queue: nil) { [weak self] _ in
+      .addObserver(forName: Notification.Name(rawValue: CurrentUserNotifications.sessionStarted), object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()
     }
   }
@@ -157,7 +157,7 @@ internal final class CheckoutViewController: DeprecatedWebViewController {
   }
 
   fileprivate func popViewController() {
-    self.navigationController?.popToRootViewController(animated: true)
+    _ = self.navigationController?.popToRootViewController(animated: true)
   }
 
   fileprivate func showAlert(message: String) {

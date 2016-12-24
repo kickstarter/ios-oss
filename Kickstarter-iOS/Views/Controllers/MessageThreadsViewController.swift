@@ -12,7 +12,7 @@ internal final class MessageThreadsViewController: UITableViewController {
   @IBOutlet fileprivate weak var mailboxLabel: UILabel!
 
   internal static func configuredWith(project: Project?) -> MessageThreadsViewController {
-    let vc = Storyboard.Messages.instantiate(MessageThreadsViewController)
+    let vc = Storyboard.Messages.instantiate(MessageThreadsViewController.self)
     vc.viewModel.inputs.configureWith(project: project)
     return vc
   }
@@ -30,9 +30,9 @@ internal final class MessageThreadsViewController: UITableViewController {
   internal override func bindStyles() {
     super.bindStyles()
 
-    self |> baseTableControllerStyle()
+    _ = self |> baseTableControllerStyle()
 
-    self.mailboxLabel
+    _ = self.mailboxLabel
       |> UILabel.lens.font .~ UIFont.ksr_callout().bolded
       |> UILabel.lens.textColor .~ .ksr_navy_700
   }

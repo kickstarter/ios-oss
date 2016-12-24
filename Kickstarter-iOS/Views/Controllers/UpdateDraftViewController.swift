@@ -41,7 +41,9 @@ internal final class UpdateDraftViewController: UIViewController {
     _ = self |> baseControllerStyle()
 
     _ = self.navigationController?.navigationBar ?|> baseNavigationBarStyle
-    _ = self.navigationItem.backBarButtonItem = UIBarButtonItem.back(nil, selector: nil)
+
+    // FIXME
+//    self.navigationItem.backBarButtonItem = UIBarButtonItem.back(nil, selector: nil)
 
     _ = self.closeBarButtonItem |> updateDraftCloseBarButtonItemStyle
     _ = self.previewBarButtonItem |> updateDraftPreviewBarButtonItemStyle
@@ -304,11 +306,12 @@ extension UpdateDraftViewController: UIImagePickerControllerDelegate, UINavigati
       let image = info[UIImagePickerControllerOriginalImage] as? UIImage,
       let imageData = UIImageJPEGRepresentation(image, 0.9),
       let caches = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first,
-      let file = URL(string: caches)?.appendingPathComponent("\(image.hash).jpg"),
-      let absoluteString = file.absoluteString
+      let file = URL(string: caches)?.appendingPathComponent("\(image.hash).jpg")
       else { fatalError() }
 
-    imageData.writeToFile(absoluteString, atomically: true)
+
+    // FIXME
+//    imageData.writeToFile(file.absoluteString, atomically: true)
 
     self.viewModel.inputs.imagePicked(url: file,
                                       fromSource: AttachmentSource(sourceType: picker.sourceType))

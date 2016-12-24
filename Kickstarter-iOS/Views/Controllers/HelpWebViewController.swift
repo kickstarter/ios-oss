@@ -6,7 +6,7 @@ internal final class HelpWebViewController: WebViewController {
   fileprivate let viewModel: HelpWebViewModelType = HelpWebViewModel()
 
   internal static func configuredWith(helpType: HelpType) -> HelpWebViewController {
-    let vc = Storyboard.Help.instantiate(HelpWebViewController)
+    let vc = Storyboard.Help.instantiate(HelpWebViewController.self)
     vc.viewModel.inputs.configureWith(helpType: helpType)
     return vc
   }
@@ -29,7 +29,7 @@ internal final class HelpWebViewController: WebViewController {
   internal override func bindViewModel() {
     self.viewModel.outputs.webViewLoadRequest
       .observeForControllerAction()
-      .observeValues { [weak self] in self?.webView.loadRequest($0) }
+      .observeValues { [weak self] in _ = self?.webView.load($0) }
   }
 
   @objc fileprivate func closeButtonTapped() {

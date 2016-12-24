@@ -15,36 +15,44 @@ internal final class DashboardDataSource: ValueCellDataSource {
   internal func load(project: Project) {
     self.clearValues()
 
-    self.set(values: [project], cellClass: DashboardContextCell.self, inSection: Section.Context.rawValue)
+    // FIXME
+//    self.set(values: [project], cellClass: DashboardContextCell.self, inSection: Section.Context.rawValue)
 
-    self.set(values: [project], cellClass: DashboardActionCell.self, inSection: Section.Action.rawValue)
+    // FIXME
+//    self.set(values: [project], cellClass: DashboardActionCell.self, inSection: Section.Action.rawValue)
   }
 
   internal func load(fundingDateStats stats: [ProjectStatsEnvelope.FundingDateStats], project: Project) {
-    self.set(
-      values: [(stats, project)],
-      cellClass: DashboardFundingCell.self,
-      inSection: Section.FundingProgress.rawValue
-    )
+
+    // FIXME
+//    self.set(
+//      values: [(stats, project)],
+//      cellClass: DashboardFundingCell.self,
+//      inSection: Section.FundingProgress.rawValue
+//    )
   }
 
   internal func load(cumulative: ProjectStatsEnvelope.CumulativeStats,
                                 project: Project,
                                 referrers: [ProjectStatsEnvelope.ReferrerStats]) {
 
-    self.set(values: [(cumulative, project, referrers)], cellClass: DashboardReferrersCell.self,
-             inSection: Section.Referrers.rawValue)
+    // FIXME
+//    self.set(values: [(cumulative, project, referrers)], cellClass: DashboardReferrersCell.self,
+//             inSection: Section.Referrers.rawValue)
   }
 
   internal func load(rewardStats: [ProjectStatsEnvelope.RewardStats],
                                  project: Project) {
 
-    self.set(values: [(rewardStats: rewardStats, project: project)], cellClass: DashboardRewardsCell.self,
-             inSection: Section.Rewards.rawValue)
+    // FIXME
+//    self.set(values: [(rewardStats: rewardStats, project: project)], cellClass: DashboardRewardsCell.self,
+//             inSection: Section.Rewards.rawValue)
   }
 
   internal func load(videoStats: ProjectStatsEnvelope.VideoStats) {
-    self.set(values: [videoStats], cellClass: DashboardVideoCell.self, inSection: Section.Video.rawValue)
+
+    // FIXME
+//    self.set(values: [videoStats], cellClass: DashboardVideoCell.self, inSection: Section.Video.rawValue)
   }
 
   internal override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {

@@ -28,12 +28,12 @@ internal final class DiscoveryPageViewController: UITableViewController {
     self.tableView.dataSource = self.dataSource
 
     NotificationCenter.default
-      .addObserver(forName: NSNotification.Name(rawValue: CurrentUserNotifications.sessionStarted), object: nil, queue: nil) { [weak self] _ in
+      .addObserver(forName: Notification.Name(rawValue: CurrentUserNotifications.sessionStarted), object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()
     }
 
     NotificationCenter.default
-      .addObserver(forName: NSNotification.Name(rawValue: CurrentUserNotifications.sessionEnded), object: nil, queue: nil) { [weak self] _ in
+      .addObserver(forName: Notification.Name(rawValue: CurrentUserNotifications.sessionEnded), object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionEnded()
     }
 
@@ -137,7 +137,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
     self.viewModel.outputs.setScrollsToTop
       .observeForUI()
       .observeValues { [weak self] in
-        self?.tableView ?|> UIScrollView.lens.scrollsToTop .~ $0
+        _ = self?.tableView ?|> UIScrollView.lens.scrollsToTop .~ $0
     }
 
     self.viewModel.outputs.showEmptyState

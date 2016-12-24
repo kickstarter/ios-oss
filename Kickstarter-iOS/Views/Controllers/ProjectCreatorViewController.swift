@@ -31,7 +31,7 @@ internal final class ProjectCreatorViewController: WebViewController {
   internal override func bindStyles() {
     super.bindStyles()
 
-    self
+    _ = self
       |> baseControllerStyle()
   }
 
@@ -40,7 +40,7 @@ internal final class ProjectCreatorViewController: WebViewController {
 
     self.viewModel.outputs.loadWebViewRequest
       .observeForControllerAction()
-      .observeValues { [weak self] in self?.webView.load($0) }
+      .observeValues { [weak self] in _ = self?.webView.load($0) }
 
     self.viewModel.outputs.goToMessageDialog
       .observeForControllerAction()

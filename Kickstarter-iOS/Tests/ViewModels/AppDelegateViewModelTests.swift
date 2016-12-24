@@ -568,7 +568,7 @@ final class AppDelegateViewModelTests: TestCase {
     withEnvironment(currentUser: .template) {
       self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
                                                    launchOptions: [:])
-      self.vm.inputs.didRegisterForRemoteNotifications(withDeviceTokenData: NSData())
+      self.vm.inputs.didRegisterForRemoteNotifications(withDeviceTokenData: Data())
       self.scheduler.advanceByInterval(5.0)
 
       self.pushTokenSuccessfullyRegistered.assertValueCount(1)
@@ -966,7 +966,7 @@ final class AppDelegateViewModelTests: TestCase {
 
   func testPerformShortcutItem_ProjectOfTheDay() {
     let potd = .template
-      |> Project.lens.dates.potdAt .~ NSDate().timeIntervalSince1970
+      |> Project.lens.dates.potdAt .~ Date().timeIntervalSince1970
     let env = .template |> DiscoveryEnvelope.lens.projects .~ [potd]
 
     withEnvironment(apiService: MockService(fetchDiscoveryResponse: env)) {
@@ -985,7 +985,7 @@ final class AppDelegateViewModelTests: TestCase {
 
   func testLaunchShortcutItem_ProjectOfTheDay() {
     let potd = .template
-      |> Project.lens.dates.potdAt .~ NSDate().timeIntervalSince1970
+      |> Project.lens.dates.potdAt .~ Date().timeIntervalSince1970
     let env = .template |> DiscoveryEnvelope.lens.projects .~ [potd]
 
     withEnvironment(apiService: MockService(fetchDiscoveryResponse: env)) {

@@ -22,7 +22,7 @@ internal final class ThanksViewController: UIViewController, UICollectionViewDel
   fileprivate let dataSource = ThanksProjectsDataSource()
 
   internal static func configuredWith(project: Project) -> ThanksViewController {
-    let vc = Storyboard.Thanks.instantiate(ThanksViewController)
+    let vc = Storyboard.Thanks.instantiate(ThanksViewController.self)
     vc.viewModel.inputs.project(project)
     vc.shareViewModel.inputs.configureWith(shareContext: .thanks(project))
     return vc
@@ -51,39 +51,39 @@ internal final class ThanksViewController: UIViewController, UICollectionViewDel
   override func bindStyles() {
     super.bindStyles()
 
-    self |> baseControllerStyle()
+    _ = self |> baseControllerStyle()
 
-    self.woohooLabel
+    _ = self.woohooLabel
       |> UILabel.lens.textColor .~ .white
       |> UILabel.lens.font .~ UIFont.ksr_title2().bolded
       |> UILabel.lens.text %~ { _ in Strings.project_checkout_share_exclamation() }
       |> UILabel.lens.isAccessibilityElement .~ false
 
-    self.backedLabel |> UILabel.lens.textColor .~ .ksr_text_navy_900
+    _ = self.backedLabel |> UILabel.lens.textColor .~ .ksr_text_navy_900
 
-    self.recommendationsLabel
+    _ = self.recommendationsLabel
       |> UILabel.lens.textColor .~ .ksr_text_navy_900
       |> UILabel.lens.font .~ .ksr_subhead()
       |> UILabel.lens.text %~ { _ in Strings.project_checkout_looking_for_more_projects_check_these_out() }
 
-    self.facebookButton
+    _ = self.facebookButton
       |> facebookThanksButtonStyle
       |> UIButton.lens.targets .~ [(self, #selector(facebookButtonTapped), .touchUpInside)]
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.Share_this_project_on_Facebook() }
 
-    self.twitterButton
+    _ = self.twitterButton
       |> twitterButtonStyle
       |> UIButton.lens.targets .~ [(self, #selector(twitterButtonTapped), .touchUpInside)]
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.Share_this_project_on_Twitter() }
 
-    self.shareMoreButton
+    _ = self.shareMoreButton
       |> borderButtonStyle
       |> UIButton.lens.targets .~ [(self, #selector(shareMoreButtonTapped), .touchUpInside)]
       |> UIButton.lens.title(forState: .normal) %~ { _ in
         Strings.project_checkout_share_buttons_more_share_options()
     }
 
-    self.doneButton
+    _ = self.doneButton
       |> doneBarButtonItemStyle
       |> UIBarButtonItem.lens.targetAction .~ (self, #selector(doneButtonTapped))
   }
@@ -220,20 +220,20 @@ internal final class ThanksViewController: UIViewController, UICollectionViewDel
   }
 
   fileprivate func showShareSheet(_ controller: UIActivityViewController) {
-    controller.completionWithItemsHandler = { [weak self] in
-      self?.shareViewModel.inputs.shareActivityCompletion(activityType: $0,
-                                                          completed: $1,
-                                                          returnedItems: $2,
-                                                          activityError: $3)
-    }
-
-    if UIDevice.current.userInterfaceIdiom == .pad {
-      controller.modalPresentationStyle = .popover
-      let popover = controller.popoverPresentationController
-      popover?.sourceView = self.shareMoreButton
-    }
-
-    self.present(controller, animated: true, completion: nil)
+    // FIXME
+//    controller.completionWithItemsHandler = { [weak self] in
+//      self?.shareViewModel.inputs.shareActivityCompletion(
+//        with: .init(activityType: $0, completed: $1, returnedItems: $2, activityError: $3)
+//      )
+//    }
+//
+//    if UIDevice.current.userInterfaceIdiom == .pad {
+//      controller.modalPresentationStyle = .popover
+//      let popover = controller.popoverPresentationController
+//      popover?.sourceView = self.shareMoreButton
+//    }
+//
+//    self.present(controller, animated: true, completion: nil)
   }
 
   fileprivate func showShareCompose(_ controller: SLComposeViewController) {

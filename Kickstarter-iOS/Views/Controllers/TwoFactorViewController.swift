@@ -28,31 +28,31 @@ internal final class TwoFactorViewController: UIViewController {
   internal override func bindStyles() {
     super.bindStyles()
 
-    self
+    _ = self
       |> twoFactorControllerStyle
       |> UIViewController.lens.view.layoutMargins %~~ { _, view in
         view.traitCollection.isRegularRegular ? .init(all: Styles.grid(20)) : .init(all: Styles.grid(3))
     }
 
-    self.codeTextField
+    _ = self.codeTextField
       |> tfaCodeFieldStyle
 
-    self.formBackgroundView
+    _ = self.formBackgroundView
       |> cardStyle()
       |> UIView.lens.layoutMargins %~~ { _, view in
         view.traitCollection.isRegularRegular ? .init(all: Styles.grid(10)) : .init(all: Styles.grid(3))
     }
 
-    self.formStackView
+    _ = self.formStackView
       |> UIStackView.lens.spacing .~ Styles.grid(5)
 
-    self.resendButton
+    _ = self.resendButton
       |> borderButtonStyle
 
-    self.submitButton
+    _ = self.submitButton
       |> greenButtonStyle
 
-    self.titleLabel
+    _ = self.titleLabel
       |> UILabel.lens.textColor .~ .ksr_text_navy_700
       |> UILabel.lens.font .~ .ksr_body()
   }
@@ -93,7 +93,7 @@ internal final class TwoFactorViewController: UIViewController {
   }
 
   fileprivate static func instantiate() -> TwoFactorViewController {
-    return Storyboard.Login.instantiate(TwoFactorViewController)
+    return Storyboard.Login.instantiate(TwoFactorViewController.self)
   }
 
   fileprivate func showError(_ message: String) {

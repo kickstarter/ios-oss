@@ -77,7 +77,7 @@ internal final class DiscoveryFiltersDataSource: ValueCellDataSource {
     for (idx, value) in self[section: Section.categories.rawValue].enumerated() {
       guard let (row, _) = value as? (ExpandableRow, Int?) else { continue }
       if row.params.category?.id == categoryId {
-        return IndexPath(forItem: idx, inSection: Section.categories.rawValue)
+        return IndexPath(item: idx, section: Section.categories.rawValue)
       }
     }
 

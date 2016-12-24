@@ -27,7 +27,7 @@ internal final class BackingViewController: UIViewController {
   fileprivate let viewModel: BackingViewModelType = BackingViewModel()
 
   internal static func configuredWith(project: Project, backer: User?) -> BackingViewController {
-    let vc = Storyboard.Backing.instantiate(BackingViewController)
+    let vc = Storyboard.Backing.instantiate(BackingViewController.self)
     vc.viewModel.inputs.configureWith(project: project, backer: backer)
     return vc
   }
@@ -35,10 +35,10 @@ internal final class BackingViewController: UIViewController {
   internal override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.messageCreatorButton
+    _ = self.messageCreatorButton
       |> UIButton.lens.targets .~ [(self, #selector(messageCreatorTapped), .touchUpInside)]
 
-    self.viewMessagesButton
+    _ = self.viewMessagesButton
       |> UIButton.lens.targets .~ [(self, #selector(viewMessagesTapped), .touchUpInside)]
 
     self.viewModel.inputs.viewDidLoad()
@@ -56,43 +56,43 @@ internal final class BackingViewController: UIViewController {
   internal override func bindStyles() {
     super.bindStyles()
 
-    self
+    _ = self
       |> baseControllerStyle()
       |> UIViewController.lens.title %~ { _ in Strings.project_view_button() }
 
-    self.backerPledgeAmountAndDateLabel |> UILabel.lens.font .~ .ksr_body()
-    self.backerPledgeStatusLabel |> UILabel.lens.font .~ .ksr_body()
-    self.backerRewardDescriptionLabel |> UILabel.lens.font .~ .ksr_body()
-    self.backerSequenceLabel |> UILabel.lens.font .~ .ksr_subhead()
-    self.backerShippingAmountLabel |> UILabel.lens.font .~ .ksr_body()
-    self.backerShippingDescriptionLabel |> UILabel.lens.font .~ .ksr_body()
-    self.backerAvatarImageView |> UIImageView.lens.accessibilityElementsHidden .~ true
+    _ = self.backerPledgeAmountAndDateLabel |> UILabel.lens.font .~ .ksr_body()
+    _ = self.backerPledgeStatusLabel |> UILabel.lens.font .~ .ksr_body()
+    _ = self.backerRewardDescriptionLabel |> UILabel.lens.font .~ .ksr_body()
+    _ = self.backerSequenceLabel |> UILabel.lens.font .~ .ksr_subhead()
+    _ = self.backerShippingAmountLabel |> UILabel.lens.font .~ .ksr_body()
+    _ = self.backerShippingDescriptionLabel |> UILabel.lens.font .~ .ksr_body()
+    _ = self.backerAvatarImageView |> UIImageView.lens.accessibilityElementsHidden .~ true
 
-    self.messageCreatorButton
+    _ = self.messageCreatorButton
       |> greenButtonStyle
       |> UIButton.lens.accessibilityHint %~ {  _ in Strings.Opens_message_composer() }
 
-    self.pledgedLabel
+    _ = self.pledgedLabel
       |> UILabel.lens.font .~ .ksr_headline()
       |> UILabel.lens.text %~ { _ in Strings.backer_modal_pledged_title() }
 
-    self.rewardLabel
+    _ = self.rewardLabel
       |> UILabel.lens.font .~ .ksr_headline()
       |> UILabel.lens.text %~ { _ in Strings.backer_modal_reward_title() }
 
-    self.rewardSeperatorView |> separatorStyle
+    _ = self.rewardSeperatorView |> separatorStyle
 
-    self.rootStackView
+    _ = self.rootStackView
       |> UIStackView.lens.layoutMargins .~ UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
       |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
 
-    self.shippingLabel
+    _ = self.shippingLabel
       |> UILabel.lens.font .~ .ksr_headline()
       |> UILabel.lens.text %~ { _ in Strings.backer_modal_shipping_title() }
 
-    self.shippingSeperatorView |> separatorStyle
+    _ = self.shippingSeperatorView |> separatorStyle
 
-    self.viewMessagesButton
+    _ = self.viewMessagesButton
       |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.backer_modal_view_messages() }
       |> neutralButtonStyle
       |> UIButton.lens.accessibilityHint %~ { _ in Strings.accessibility_dashboard_buttons_messages_hint() }

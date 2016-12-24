@@ -75,7 +75,7 @@ internal final class SettingsViewController: UIViewController {
   @IBOutlet fileprivate var separatorViews: [UIView]!
 
   internal static func instantiate() -> SettingsViewController {
-    return Storyboard.Settings.instantiate(SettingsViewController)
+    return Storyboard.Settings.instantiate(SettingsViewController.self)
   }
 
   internal override func viewDidLoad() {
@@ -135,183 +135,183 @@ internal final class SettingsViewController: UIViewController {
   internal override func bindStyles() {
     super.bindStyles()
 
-    self
+    _ = self
       |> baseControllerStyle()
       |> UIViewController.lens.title %~ { _ in Strings.profile_settings_navbar_title() }
 
-    self.betaDebugPushNotificationsButton
+    _ = self.betaDebugPushNotificationsButton
       |> UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_navy_700
       |> UIButton.lens.titleLabel.font .~ .ksr_body()
       |> UIButton.lens.contentHorizontalAlignment .~ .left
 
-    self.betaFeedbackButton
+    _ = self.betaFeedbackButton
       |> greenButtonStyle
       |> UIButton.lens.title(forState: .normal) .~ "Submit feedback for beta"
 
-    self.betaTitleLabel
+    _ = self.betaTitleLabel
       |> settingsTitleLabelStyle
       |> UILabel.lens.text .~ "Beta tools"
 
-    self.contactButton
+    _ = self.contactButton
       |> settingsSectionButtonStyle
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.profile_settings_about_contact() }
       |> UIButton.lens.accessibilityHint %~ { _ in Strings.Opens_email_composer() }
 
-    self.contactLabel
+    _ = self.contactLabel
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_about_contact() }
 
-    self.cookiePolicyButton
+    _ = self.cookiePolicyButton
       |> settingsSectionButtonStyle
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.profile_settings_about_cookie() }
 
-    self.cookiePolicyLabel
+    _ = self.cookiePolicyLabel
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_about_cookie() }
 
-    self.creatorNotificationsTitleLabel
+    _ = self.creatorNotificationsTitleLabel
       |> settingsTitleLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_creator_title() }
 
-    self.emailNotificationButtons
+    _ = self.emailNotificationButtons
       ||> settingsNotificationIconButtonStyle
-      ||> UIButton.lens.image(forState: .Normal)
-        .~ UIImage(named: "email-icon", inBundle: .framework, compatibleWithTraitCollection: nil)
-      ||> UIButton.lens.image(forState: .Selected)
+      ||> UIButton.lens.image(forState: .normal)
+        .~ UIImage(named: "email-icon", in: .framework, compatibleWith: nil)
+      ||> UIButton.lens.image(forState: .selected)
         .~ image(named: "email-icon", tintColor: .ksr_green_400, inBundle: Bundle.framework)
       ||> UIButton.lens.accessibilityLabel %~ { _ in Strings.Email_notifications() }
 
-    self.faqButton
+    _ = self.faqButton
       |> settingsSectionButtonStyle
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.profile_settings_about_faq() }
 
-    self.faqLabel
+    _ = self.faqLabel
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_about_faq() }
 
-    self.findFriendsButton
+    _ = self.findFriendsButton
       |> settingsSectionButtonStyle
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.profile_settings_social_find_friends() }
 
-    self.findFriendsLabel
+    _ = self.findFriendsLabel
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_social_find_friends() }
 
-    self.friendActivityLabel
+    _ = self.friendActivityLabel
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_social_friend_backs() }
 
-    self.happeningNowLabel
+    _ = self.happeningNowLabel
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_newsletter_happening() }
 
-    self.helpTitleLabel
+    _ = self.helpTitleLabel
       |> settingsTitleLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_about_title() }
 
-    self.howKsrWorksButton
+    _ = self.howKsrWorksButton
       |> settingsSectionButtonStyle
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.profile_settings_about_how_it_works() }
 
-    self.howKsrWorksLabel
+    _ = self.howKsrWorksLabel
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_about_how_it_works() }
 
-    self.ksrLovesGamesLabel
+    _ = self.ksrLovesGamesLabel
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_newsletter_games() }
 
-    self.ksrNewsAndEventsLabel
+    _ = self.ksrNewsAndEventsLabel
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_newsletter_promo() }
 
-    self.logoutButton |> settingsLogoutButtonStyle
+    _ = self.logoutButton |> settingsLogoutButtonStyle
 
-    self.manageProjectNotificationsButton
+    _ = self.manageProjectNotificationsButton
       |> settingsSectionButtonStyle
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.profile_settings_backer_notifications() }
 
-    self.manageProjectNotificationsLabel
+    _ = self.manageProjectNotificationsLabel
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_backer_notifications() }
 
-    self.newCommentsLabel
+    _ = self.newCommentsLabel
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_creator_comments() }
 
-    self.newFollowersLabel
+    _ = self.newFollowersLabel
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_social_followers() }
 
-    self.newLikesLabel
+    _ = self.newLikesLabel
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_creator_likes() }
 
-    self.newPledgesLabel
+    _ = self.newPledgesLabel
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_creator_pledges() }
 
-    self.newslettersTitleLabel
+    _ = self.newslettersTitleLabel
       |> settingsTitleLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_newsletter_title() }
 
-    self.privacyPolicyButton
+    _ = self.privacyPolicyButton
       |> settingsSectionButtonStyle
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.profile_settings_about_privacy() }
 
-    self.privacyPolicyLabel
+    _ = self.privacyPolicyLabel
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_about_privacy() }
 
-    self.projectUpdatesLabel
+    _ = self.projectUpdatesLabel
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_backer_project_updates() }
 
-    self.projectsWeLoveLabel
+    _ = self.projectsWeLoveLabel
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_newsletter_weekly() }
 
-    self.projectsYouBackTitleLabel
+    _ = self.projectsYouBackTitleLabel
       |> settingsTitleLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_backer_title() }
 
-    self.pushNotificationButtons
+    _ = self.pushNotificationButtons
       ||> settingsNotificationIconButtonStyle
-      ||> UIButton.lens.image(forState: .Normal)
-      .~ UIImage(named: "phone-icon", inBundle: .framework, compatibleWithTraitCollection: nil)
-      ||> UIButton.lens.image(forState: .Selected)
-      .~ image(named: "phone-icon", tintColor: .ksr_green_400, inBundle: Bundle.framework)
+      ||> UIButton.lens.image(forState: .normal)
+        .~ UIImage(named: "phone-icon", in: .framework, compatibleWith: nil)
+      ||> UIButton.lens.image(forState: .selected)
+        .~ image(named: "phone-icon", tintColor: .ksr_green_400, inBundle: Bundle.framework)
       ||> UIButton.lens.accessibilityLabel %~ { _ in Strings.Push_notifications() }
 
-    self.rateUsButton
+    _ = self.rateUsButton
       |> settingsSectionButtonStyle
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.profile_settings_rating_rate_us() }
 
-    self.rateUsLabel
+    _ = self.rateUsLabel
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_rating_rate_us() }
 
-    self.separatorViews
+    _ = self.separatorViews
       ||> separatorStyle
 
-    self.socialNotificationsTitleLabel
+    _ = self.socialNotificationsTitleLabel
       |> settingsTitleLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_social_title() }
 
-    self.termsOfUseButton
+    _ = self.termsOfUseButton
       |> settingsSectionButtonStyle
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.profile_settings_about_terms() }
 
-    self.termsOfUseLabel
+    _ = self.termsOfUseLabel
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_about_terms() }
 
-    self.versionLabel
+    _ = self.versionLabel
       |> UILabel.lens.textColor .~ .ksr_navy_600
       |> UILabel.lens.font .~ .ksr_caption1()
       |> UILabel.lens.numberOfLines .~ 0
 
-    self.wereAllEarsTitleLabel
+    _ = self.wereAllEarsTitleLabel
       |> settingsTitleLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_rating_title() }
   }
@@ -419,8 +419,8 @@ internal final class SettingsViewController: UIViewController {
 
     let userName = AppEnvironment.current.currentUser?.name ?? "Logged out user"
     let userId = AppEnvironment.current.currentUser?.id ?? 0
-    let version = AppEnvironment.current.mainBundle.version ?? "0"
-    let shortVersion = AppEnvironment.current.mainBundle.shortVersionString ?? "0"
+    let version = AppEnvironment.current.mainBundle.version 
+    let shortVersion = AppEnvironment.current.mainBundle.shortVersionString 
     let device = UIDevice.current
 
     let controller = MFMailComposeViewController()

@@ -3,30 +3,6 @@ import KsApi
 import Library
 import Prelude
 import UIKit
-// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
-// Consider refactoring the code to use the non-optional operators.
-fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l < r
-  case (nil, _?):
-    return true
-  default:
-    return false
-  }
-}
-
-// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
-// Consider refactoring the code to use the non-optional operators.
-fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l > r
-  default:
-    return rhs < lhs
-  }
-}
-
 
 public final class RootTabBarViewController: UITabBarController {
   fileprivate let viewModel: RootViewModelType = RootViewModel()
@@ -37,19 +13,19 @@ public final class RootTabBarViewController: UITabBarController {
 
     NotificationCenter
       .default
-      .addObserver(forName: NSNotification.Name(rawValue: CurrentUserNotifications.sessionStarted), object: nil, queue: nil) { [weak self] _ in
+      .addObserver(forName: Notification.Name(rawValue: CurrentUserNotifications.sessionStarted), object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()
     }
 
     NotificationCenter
       .default
-      .addObserver(forName: NSNotification.Name(rawValue: CurrentUserNotifications.sessionEnded), object: nil, queue: nil) { [weak self] _ in
+      .addObserver(forName: Notification.Name(rawValue: CurrentUserNotifications.sessionEnded), object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionEnded()
     }
 
     NotificationCenter
       .default
-      .addObserver(forName: NSNotification.Name(rawValue: CurrentUserNotifications.userUpdated), object: nil, queue: nil) { [weak self] _ in
+      .addObserver(forName: Notification.Name(rawValue: CurrentUserNotifications.userUpdated), object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.currentUserUpdated()
     }
 
@@ -59,7 +35,7 @@ public final class RootTabBarViewController: UITabBarController {
   override public func bindStyles() {
     super.bindStyles()
 
-    self.tabBar
+    _ = self.tabBar
       |> UITabBar.lens.tintColor .~ tabBarSelectedColor
       |> UITabBar.lens.barTintColor .~ tabBarTintColor
   }
@@ -150,31 +126,29 @@ public final class RootTabBarViewController: UITabBarController {
         guard
           data.isLoggedIn == true,
           let avatarUrl = avatarUrl,
-          let dir = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first,
-          let hash = avatarUrl.absoluteString.hashValue
-          else {
-            return
-        }
+          let dir = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first
+          else { return }
 
+        let hash = avatarUrl.absoluteString.hashValue
         let imagePath = "\(dir)/tabbar-avatar-image-\(hash).dat"
+        let imageUrl = URL(fileURLWithPath: imagePath)
 
-        if let imageData = Data.init(contentsOfFile: imagePath) {
+        if let imageData = try? Data(contentsOf: imageUrl) {
+
           let (defaultImage, selectedImage) = tabbarAvatarImageFromData(imageData)
-          self.tabBarItem(atIndex: index)
+          _ = self.tabBarItem(atIndex: index)
             ?|> profileTabBarItemStyle(isLoggedIn: true, isMember: data.isMember)
             ?|> UITabBarItem.lens.image .~ defaultImage
             ?|> UITabBarItem.lens.selectedImage .~ selectedImage
         } else {
           let sessionConfig = URLSessionConfiguration.default
-          let session = URLSession(configuration: sessionConfig,
-            delegate: nil,
-            delegateQueue: OperationQueue.main)
-          let dataTask = session.dataTask(with: avatarUrl, completionHandler: { [weak self] (avatarData, response, error) in
+          let session = URLSession(configuration: sessionConfig, delegate: nil, delegateQueue: .main)
+          let dataTask = session.dataTask(with: avatarUrl, completionHandler: { [weak self] avatarData, response, error in
             guard let avatarData = avatarData else { return }
-            avatarData.writeToFile(imagePath, atomically: true)
+            try? avatarData.write(to: imageUrl, options: [.atomic])
 
             let (defaultImage, selectedImage) = tabbarAvatarImageFromData(avatarData)
-            self?.tabBarItem(atIndex: index)
+            _ = self?.tabBarItem(atIndex: index)
               ?|> profileTabBarItemStyle(isLoggedIn: true, isMember: data.isMember)
               ?|> UITabBarItem.lens.image .~ defaultImage
               ?|> UITabBarItem.lens.selectedImage .~ selectedImage
@@ -186,7 +160,7 @@ public final class RootTabBarViewController: UITabBarController {
   }
 
   fileprivate func tabBarItem(atIndex index: Int) -> UITabBarItem? {
-    if self.tabBar.items?.count > index {
+    if (self.tabBar.items?.count ?? 0) > index {
       if let item = self.tabBar.items?[index] {
         return item
       }

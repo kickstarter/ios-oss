@@ -26,8 +26,7 @@ public protocol AppDelegateViewModelInputs {
   func applicationContinueUserActivity(_ userActivity: NSUserActivity) -> Bool
 
   /// Call when the application finishes launching.
-  func applicationDidFinishLaunching(application: UIApplication?,
-                                                 launchOptions: [AnyHashable: Any]?)
+  func applicationDidFinishLaunching(application: UIApplication?, launchOptions: [AnyHashable: Any]?)
 
   /// Call when the application will enter foreground.
   func applicationWillEnterForeground()
@@ -104,8 +103,8 @@ public protocol AppDelegateViewModelOutputs {
   /// Emits when the root view controller should navigate to search.
   var goToSearch: Signal<(), NoError> { get }
 
-  /// Emits an NSNotification that should be immediately posted.
-  var postNotification: Signal<NSNotification, NoError> { get }
+  /// Emits an Notification that should be immediately posted.
+  var postNotification: Signal<Notification, NoError> { get }
 
   /// Emits a message when a remote notification alert should be displayed to the user.
   var presentRemoteNotificationAlert: Signal<String, NoError> { get }
@@ -154,11 +153,11 @@ AppDelegateViewModelOutputs {
         self.userSessionEndedProperty.signal,
         self.userSessionStartedProperty.signal
       )
-      .ksr_debounce(5.0, onScheduler: AppEnvironment.current.scheduler)
+      .ksr_debounce(.seconds(5), on: AppEnvironment.current.scheduler)
       .switchMap { _ -> SignalProducer<Event<User?, ErrorEnvelope>, NoError> in
         AppEnvironment.current.apiService.isAuthenticated || AppEnvironment.current.currentUser != nil
           ? AppEnvironment.current.apiService.fetchUserSelf().wrapInOptional().materialize()
-          : SignalProducer(value: .Next(nil))
+          : SignalProducer(value: .value(nil))
     }
 
     self.updateCurrentUserInEnvironment = currentUserEvent
@@ -177,12 +176,12 @@ AppDelegateViewModelOutputs {
       .switchMap { AppEnvironment.current.apiService.fetchConfig().demoteErrors() }
 
     self.postNotification = self.currentUserUpdatedInEnvironmentProperty.signal
-      .mapConst(Notification(name: CurrentUserNotifications.userUpdated, object: nil))
+      .mapConst(.init(name: .init(rawValue: CurrentUserNotifications.userUpdated), object: nil))
 
     self.applicationLaunchOptionsProperty.signal.skipNil()
-      .take(1)
+      .take(first: 1)
       .observeValues { appOptions in
-        AppEnvironment.current.facebookAppDelegate.application(
+        _ = AppEnvironment.current.facebookAppDelegate.application(
           appOptions.application,
           didFinishLaunchingWithOptions: appOptions.options
         )
@@ -192,7 +191,8 @@ AppDelegateViewModelOutputs {
 
     self.facebookOpenURLReturnValue <~ openUrl.map {
       AppEnvironment.current.facebookAppDelegate.application(
-        $0.application, openURL: $0.url, sourceApplication: $0.sourceApplication, annotation: $0.annotation)
+        $0.application, open: $0.url, sourceApplication: $0.sourceApplication, annotation: $0.annotation
+      )
     }
 
     // iCloud
@@ -212,7 +212,7 @@ AppDelegateViewModelOutputs {
 
     self.pushTokenSuccessfullyRegistered = self.deviceTokenDataProperty.signal
       .map(deviceToken(fromData:))
-      .ksr_debounce(5.0, onScheduler: AppEnvironment.current.scheduler)
+      .ksr_debounce(.seconds(5), on: AppEnvironment.current.scheduler)
       .switchMap {
         AppEnvironment.current.apiService.register(pushToken: $0)
           .demoteErrors()
@@ -225,13 +225,14 @@ AppDelegateViewModelOutputs {
 
     let localNotificationFromLaunch = self.applicationLaunchOptionsProperty.signal.skipNil()
       .map { _, options in options?[UIApplicationLaunchOptionsKey.localNotification] as? UILocalNotification }
-      .map { $0?.userInfo as? AnyObject }
+      .map { $0?.userInfo }
       .skipNil()
 
     let notificationAndIsActive = Signal.merge(
-      self.remoteNotificationAndIsActiveProperty.signal.skipNil(),
-      remoteNotificationFromLaunch.map { ($0, false) },
-      localNotificationFromLaunch.map { ($0, false) }
+      self.remoteNotificationAndIsActiveProperty.signal.skipNil()
+      // FIXME
+//      remoteNotificationFromLaunch.map { ($0, false) },
+//      localNotificationFromLaunch.map { ($0, false) }
     )
 
     let pushEnvelopeAndIsActive = notificationAndIsActive
@@ -296,7 +297,7 @@ AppDelegateViewModelOutputs {
     self.goToDiscovery = deepLink
       .map { link -> [String: String]?? in
         guard case let .tab(.discovery(rawParams)) = link else { return nil }
-        return .Some(rawParams)
+        return .some(rawParams)
       }
       .skipNil()
       .switchMap { rawParams -> SignalProducer<DiscoveryParams?, NoError> in
@@ -307,7 +308,7 @@ AppDelegateViewModelOutputs {
 
         guard
           let rawCategoryParam = rawParams["category_id"],
-          let categoryParam = Param.decode(.String(rawCategoryParam)).value
+          let categoryParam = Param.decode(.string(rawCategoryParam)).value
           else { return .init(value: params) }
 
         return AppEnvironment.current.apiService.fetchCategory(param: categoryParam)
@@ -331,7 +332,7 @@ AppDelegateViewModelOutputs {
     self.goToMessageThread = deepLink
       .map { navigation -> Int? in
         guard case let .messages(messageThreadId) = navigation else { return nil }
-        return .Some(messageThreadId)
+        return .some(messageThreadId)
       }
       .skipNil()
       .switchMap {
@@ -363,7 +364,7 @@ AppDelegateViewModelOutputs {
     self.goToDashboard = deepLink
       .map { link -> Param?? in
         guard case let .tab(.dashboard(param)) = link else { return nil }
-        return .Some(param)
+        return .some(param)
       }
       .skipNil()
 
@@ -491,12 +492,14 @@ AppDelegateViewModelOutputs {
         AppEnvironment.current.koala.trackPerformedShortcutItem($0, availableShortcutItems: $1)
     }
 
-    openUrl
-      .map { URLComponents(URL: $0.url, resolvingAgainstBaseURL: false)?.queryItems }
-      .skipNil()
-      .map { items in Dictionary.keyValuePairs(items.map { ($0.name, $0.value) }).compact() }
-      .filter { $0["app_banner"] == "1" }
-      .observeValues { AppEnvironment.current.koala.trackOpenedAppBanner($0) }
+
+    // FIXME
+//    openUrl
+//      .map { URLComponents(url: $0.url, resolvingAgainstBaseURL: false)?.queryItems }
+//      .skipNil()
+//      .map { items in Dictionary.keyValuePairs(items.map { ($0.name, $0.value) }).compact() }
+//      .filter { $0["app_banner"] == "1" }
+//      .observeValues { AppEnvironment.current.koala.trackOpenedAppBanner($0) }
 
     continueUserActivityWithNavigation
       .map(first)
@@ -614,7 +617,7 @@ AppDelegateViewModelOutputs {
   public let goToMessageThread: Signal<MessageThread, NoError>
   public let goToProfile: Signal<(), NoError>
   public let goToSearch: Signal<(), NoError>
-  public let postNotification: Signal<NSNotification, NoError>
+  public let postNotification: Signal<Notification, NoError>
   public let presentRemoteNotificationAlert: Signal<String, NoError>
   public let presentViewController: Signal<UIViewController, NoError>
   public let pushTokenSuccessfullyRegistered: Signal<(), NoError>
@@ -628,6 +631,7 @@ AppDelegateViewModelOutputs {
 
 private func deviceToken(fromData data: Data) -> String {
 
+  // FIXME
   return UnsafeBufferPointer<UInt8>(start: (data as NSData).bytes.bindMemory(to: UInt8.self, capacity: data.count), count: data.count)
     .map { String(format: "%02hhx", $0) }
     .joined(separator: "")

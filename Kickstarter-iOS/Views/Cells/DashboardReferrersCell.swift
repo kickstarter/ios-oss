@@ -70,85 +70,85 @@ internal final class DashboardReferrersCell: UITableViewCell, ValueCell {
 
   // swiftlint:disable function_body_length
   internal override func bindStyles() {
-    self |> baseTableViewCellStyle()
+    _ = self |> baseTableViewCellStyle()
 
-    self.averagePledgeAmountSubtitleLabel
+    _ = self.averagePledgeAmountSubtitleLabel
       |> dashboardStatSubtitleLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.dashboard_graphs_referrers_average_pledge_amount() }
 
-    self.averagePledgeAmountTitleLabel
+    _ = self.averagePledgeAmountTitleLabel
       |> dashboardStatTitleLabelStyle
 
-    self.backersColumnTitleButton
+    _ = self.backersColumnTitleButton
       |> dashboardColumnTitleButtonStyle
       |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.dashboard_graphs_referrers_backers() }
 
-    self.customPercentLabel
+    _ = self.customPercentLabel
       |> dashboardReferrersPledgePercentLabelStyle
 
-    self.customPercentIndicatorLabel
+    _ = self.customPercentIndicatorLabel
       |> UILabel.lens.textColor .~ .ksr_violet_500
 
-    self.customPledgedAmountTitleLabel
+    _ = self.customPledgedAmountTitleLabel
       |> dashboardStatTitleLabelStyle
 
-    self.customPledgedAmountSubtitleLabel
+    _ = self.customPledgedAmountSubtitleLabel
       |> dashboardStatSubtitleLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.dashboard_graphs_referrers_pledged_via_custom() }
 
-    self.externalPercentLabel
+    _ = self.externalPercentLabel
       |> dashboardReferrersPledgePercentLabelStyle
 
-    self.externalPercentIndicatorLabel
+    _ = self.externalPercentIndicatorLabel
       |> UILabel.lens.textColor .~ .ksr_orange_400
 
-    self.externalPledgedAmountSubtitleLabel
+    _ = self.externalPledgedAmountSubtitleLabel
       |> dashboardStatSubtitleLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.dashboard_graphs_referrers_pledged_via_external() }
 
-    self.externalPledgedAmountTitleLabel
+    _ = self.externalPledgedAmountTitleLabel
       |> dashboardStatTitleLabelStyle
 
-    self.internalPercentLabel
+    _ = self.internalPercentLabel
       |> dashboardReferrersPledgePercentLabelStyle
 
-    self.internalPercentIndicatorLabel
+    _ = self.internalPercentIndicatorLabel
       |> UILabel.lens.textColor .~ .ksr_green_700
 
-    self.internalPledgedAmountSubtitleLabel
+    _ = self.internalPledgedAmountSubtitleLabel
       |> dashboardStatSubtitleLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.dashboard_graphs_referrers_pledged_via_kickstarter() }
 
-    self.internalPledgedAmountTitleLabel
+    _ = self.internalPledgedAmountTitleLabel
       |> dashboardStatTitleLabelStyle
 
-    self.pledgedColumnTitleButton
+    _ = self.pledgedColumnTitleButton
       |> dashboardColumnTitleButtonStyle
       |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.dashboard_graphs_referrers_pledged() }
 
-    self.referrersTitleLabel
+    _ = self.referrersTitleLabel
       |> dashboardReferrersTitleLabelStyle
 
-    self.referralChartView
+    _ = self.referralChartView
       |> UIView.lens.backgroundColor .~ .clear
 
-    self.showMoreReferrersButton
+    _ = self.showMoreReferrersButton
       |> dashboardReferrersShowMoreButtonStyle
 
-    self.sourceColumnTitleButton
+    _ = self.sourceColumnTitleButton
       |> dashboardColumnTitleButtonStyle
       |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.dashboard_graphs_referrers_source() }
 
-    self.chartCardView
+    _ = self.chartCardView
       |> dashboardChartCardViewStyle
 
-    self.cumulativeStackView
+    _ = self.cumulativeStackView
       |> dashboardReferrersCumulativeStackViewStyle
 
-    self.averageStackView
+    _ = self.averageStackView
       |> dashboardReferrersCumulativeStackViewStyle
 
-    self.separatorViews.forEach { $0 |> separatorStyle }
+    self.separatorViews.forEach { _ = $0 |> separatorStyle }
   }
   // swiftlint:enable function_body_length
 

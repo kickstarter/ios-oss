@@ -9,16 +9,17 @@ internal final class CommentsDataSource: ValueCellDataSource {
   }
 
   internal func load(comments: [Comment], project: Project, loggedInUser: User?) {
-    self.set(values: comments.map { ($0, project, loggedInUser) },
-             cellClass: CommentCell.self,
-             inSection: Section.Comments.rawValue)
+    // FIXME
+//    self.set(values: comments.map { ($0, project, loggedInUser) },
+//             cellClass: CommentCell.self,
+//             inSection: Section.Comments.rawValue)
   }
 
   internal func load(project: Project, update: Update?) {
-    self.set(values: [(project, update)],
-             cellClass: CommentsEmptyStateCell.self,
-             inSection: Section.EmptyState.rawValue
-    )
+    // FIXME
+//    self.set(values: [(project, update)],
+//             cellClass: CommentsEmptyStateCell.self,
+//             inSection: Section.EmptyState.rawValue)
   }
 
   internal override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {

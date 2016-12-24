@@ -24,7 +24,7 @@ internal final class DiscoveryOnboardingCell: UITableViewCell, ValueCell {
   }
 
   internal override func bindStyles() {
-    self
+    _ = self
       |> baseTableViewCellStyle()
       |> DiscoveryOnboardingCell.lens.contentView.layoutMargins %~~ { layoutMargins, cell in
         cell.traitCollection.isRegularRegular
@@ -32,10 +32,10 @@ internal final class DiscoveryOnboardingCell: UITableViewCell, ValueCell {
           : .init(topBottom: Styles.grid(6), leftRight: layoutMargins.left)
     }
 
-    self.loginButton |> discoveryOnboardingSignUpButtonStyle
-    self.logoImageView |> discoveryOnboardingLogoStyle
-    self.onboardingTitleLabel |> discoveryOnboardingTitleStyle
-    self.stackView |> discoveryOnboardingStackViewStyle
+    _ = self.loginButton |> discoveryOnboardingSignUpButtonStyle
+    _ = self.logoImageView |> discoveryOnboardingLogoStyle
+    _ = self.onboardingTitleLabel |> discoveryOnboardingTitleStyle
+    _ = self.stackView |> discoveryOnboardingStackViewStyle
   }
 
   @objc fileprivate func loginButtonTapped() {
