@@ -56,7 +56,7 @@ internal final class CommentsViewControllerTests: TestCase {
         fetchCommentsResponse: comments
       ),
       currentUser: backer,
-      mainBundle: NSBundle.framework
+      mainBundle: Bundle.framework
     )
 
     Language.allLanguages.forEach { language in

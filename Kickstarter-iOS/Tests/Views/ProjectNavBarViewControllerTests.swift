@@ -10,7 +10,7 @@ internal final class ProjectNavBarViewControllerTests: TestCase {
   override func setUp() {
     super.setUp()
     UIView.setAnimationsEnabled(false)
-    AppEnvironment.pushEnvironment(mainBundle: NSBundle.framework)
+    AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
   }
 
   override func tearDown() {

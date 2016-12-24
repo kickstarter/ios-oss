@@ -251,16 +251,16 @@ final class RootViewModelTests: TestCase {
   }
 }
 
-private func extractRootNames(vcs: [UIViewController]) -> [String] {
+private func extractRootNames(_ vcs: [UIViewController]) -> [String] {
   return vcs.flatMap(extractRootName)
 }
 
-private func extractRootName(vc: UIViewController) -> String? {
+private func extractRootName(_ vc: UIViewController) -> String? {
   return (vc as? UINavigationController)?
     .viewControllers
     .first
     .map { root in
-      "\(root.dynamicType)"
-        .stringByReplacingOccurrencesOfString("ViewController", withString: "")
+      "\(type(of: root))"
+        .replacingOccurrences(of: "ViewController", with: "")
   }
 }

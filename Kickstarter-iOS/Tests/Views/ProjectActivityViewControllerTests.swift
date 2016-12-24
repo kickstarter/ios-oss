@@ -18,7 +18,7 @@ internal final class ProjectActivityViewControllerTests: TestCase {
           + backingActivities
       ),
       currentUser: Project.cosmicSurgery.creator,
-      mainBundle: NSBundle.framework
+      mainBundle: Bundle.framework
     )
 
     UIView.setAnimationsEnabled(false)

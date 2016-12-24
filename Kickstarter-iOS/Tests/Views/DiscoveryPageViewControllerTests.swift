@@ -9,7 +9,7 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
 
   override func setUp() {
     super.setUp()
-    AppEnvironment.pushEnvironment(mainBundle: NSBundle.framework)
+    AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
     UIView.setAnimationsEnabled(false)
   }
 
@@ -89,17 +89,17 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
     }
   }
 
-  private let anomalisaNoPhoto = .anomalisa
+  fileprivate let anomalisaNoPhoto = .anomalisa
     |> Project.lens.id .~ 1111
     |> Project.lens.photo.full .~ ""
 
-  private let brandoNoAvatar = .brando
+  fileprivate let brandoNoAvatar = .brando
     |> User.lens.avatar.medium .~ ""
 
-  private let cosmicSurgeryNoPhoto = .cosmicSurgery
+  fileprivate let cosmicSurgeryNoPhoto = .cosmicSurgery
     |> Project.lens.id .~ 2222
     |> Project.lens.photo.full .~ ""
 
-  private let magicParams = .defaults
+  fileprivate let magicParams = .defaults
     |> DiscoveryParams.lens.sort .~ .magic
 }

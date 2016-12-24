@@ -9,17 +9,17 @@ import Result
 import XCTest
 
 final class UpdateViewModelTests: TestCase {
-  private let vm: UpdateViewModelType = UpdateViewModel()
+  fileprivate let vm: UpdateViewModelType = UpdateViewModel()
 
-  private let project = .template |> Project.lens.id .~ 1
-  private let update = .template
+  fileprivate let project = .template |> Project.lens.id .~ 1
+  fileprivate let update = .template
     |> Update.lens.projectId .~ 1
 
-  private let goToComments = TestObserver<Update, NoError>()
-  private let goToProject = TestObserver<Project, NoError>()
-  private let goToSafariBrowser = TestObserver<URL, NoError>()
-  private let title = TestObserver<String, NoError>()
-  private let webViewLoadRequest = TestObserver<String?, NoError>()
+  fileprivate let goToComments = TestObserver<Update, NoError>()
+  fileprivate let goToProject = TestObserver<Project, NoError>()
+  fileprivate let goToSafariBrowser = TestObserver<URL, NoError>()
+  fileprivate let title = TestObserver<String, NoError>()
+  fileprivate let webViewLoadRequest = TestObserver<String?, NoError>()
 
   override func setUp() {
     super.setUp()
@@ -149,29 +149,29 @@ final class UpdateViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: self.project, update: self.update)
     self.vm.inputs.viewDidLoad()
 
-    let updateRequest = URLRequest(URL: URL(string: self.update.urls.web.update)!)
+    let updateRequest = URLRequest(url: URL(string: self.update.urls.web.update)!)
     var navigationAction = WKNavigationActionData(
-      navigationType: .Other,
+      navigationType: .other,
       request: updateRequest,
       sourceFrame: WKFrameInfoData(mainFrame: true, request: updateRequest),
       targetFrame: WKFrameInfoData(mainFrame: true, request: updateRequest)
     )
 
-    XCTAssertEqual(WKNavigationActionPolicy.Allow.rawValue,
+    XCTAssertEqual(WKNavigationActionPolicy.allow.rawValue,
                    self.vm.inputs.decidePolicyFor(navigationAction: navigationAction).rawValue)
     self.webViewLoadRequest.assertValueCount(1)
 
     let outsideUrl = URL(string: "http://www.wikipedia.com")!
-    let outsideRequest = URLRequest(URL: outsideUrl)
+    let outsideRequest = URLRequest(url: outsideUrl)
 
     navigationAction = WKNavigationActionData(
-      navigationType: .LinkActivated,
+      navigationType: .linkActivated,
       request: outsideRequest,
       sourceFrame: WKFrameInfoData(mainFrame: true, request: outsideRequest),
       targetFrame: WKFrameInfoData(mainFrame: true, request: outsideRequest)
     )
 
-    XCTAssertEqual(WKNavigationActionPolicy.Cancel.rawValue,
+    XCTAssertEqual(WKNavigationActionPolicy.cancel.rawValue,
                    self.vm.inputs.decidePolicyFor(navigationAction: navigationAction).rawValue)
     self.goToComments.assertValueCount(0)
     self.goToProject.assertValueCount(0)

@@ -6,39 +6,39 @@ import Result
 import XCTest
 
 internal final class DiscoveryFiltersViewControllerTests: TestCase {
-  private let selectableRowTemplate = SelectableRow(isSelected: false, params: .defaults)
+  fileprivate let selectableRowTemplate = SelectableRow(isSelected: false, params: .defaults)
 
-  private static let comics = .template
+  fileprivate static let comics = .template
     |> Category.lens.id .~ 3
     <> Category.lens.name .~ "Comics"
     <> Category.lens.slug .~ "comics"
     <> Category.lens.position .~ 2
 
-  private static let crafts = .template
+  fileprivate static let crafts = .template
     |> Category.lens.id .~ 26
     <> Category.lens.name .~ "Crafts"
     <> Category.lens.slug .~ "crafts"
     <> Category.lens.position .~ 3
 
-  private static let dance = .template
+  fileprivate static let dance = .template
     |> Category.lens.id .~ 6
     <> Category.lens.name .~ "Dance"
     <> Category.lens.slug .~ "dance"
     <> Category.lens.position .~ 4
 
-  private static let design = .template
+  fileprivate static let design = .template
     |> Category.lens.id .~ 6
     <> Category.lens.name .~ "Design"
     <> Category.lens.slug .~ "design"
     <> Category.lens.position .~ 5
 
-  private static let fashion = .template
+  fileprivate static let fashion = .template
     |> Category.lens.id .~ 9
     <> Category.lens.name .~ "Fashion"
     <> Category.lens.slug .~ "fashion"
     <> Category.lens.position .~ 6
 
-  private static let ceramics = .template
+  fileprivate static let ceramics = .template
     |> Category.lens.id .~ 19
     <> Category.lens.name .~ "Ceramics"
     <> Category.lens.slug .~ "art/ceramics"
@@ -46,7 +46,7 @@ internal final class DiscoveryFiltersViewControllerTests: TestCase {
     <> Category.lens.parentId .~ Category.art.id
     <> Category.lens.parent .~ Category.art
 
-  private static let action = .template
+  fileprivate static let action = .template
     |> Category.lens.id .~ 27
     <> Category.lens.name .~ "Action"
     <> Category.lens.slug .~ "film-and-video/action"
@@ -54,7 +54,7 @@ internal final class DiscoveryFiltersViewControllerTests: TestCase {
     <> Category.lens.parentId .~ Category.filmAndVideo.id
     <> Category.lens.parent .~ Category.filmAndVideo
 
-  private static let mobileGames = .template
+  fileprivate static let mobileGames = .template
     |> Category.lens.id .~ 31
     <> Category.lens.name .~ "Mobile Games"
     <> Category.lens.slug .~ "games/mobile-games"
@@ -62,12 +62,12 @@ internal final class DiscoveryFiltersViewControllerTests: TestCase {
     <> Category.lens.parentId .~ Category.games.id
     <> Category.lens.parent .~ Category.games
 
-  private let categories = [Category.art, ceramics, .illustration, comics, crafts, dance, design, fashion,
+  fileprivate let categories = [Category.art, ceramics, .illustration, comics, crafts, dance, design, fashion,
                             .filmAndVideo, action, .documentary, .games, mobileGames, .tabletopGames]
 
   override func setUp() {
     super.setUp()
-    AppEnvironment.pushEnvironment(mainBundle: NSBundle.framework)
+    AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
     UIView.setAnimationsEnabled(false)
   }
 

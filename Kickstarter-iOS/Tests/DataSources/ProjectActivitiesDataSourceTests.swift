@@ -10,8 +10,8 @@ internal final class ProjectActivitiesDataSourceTests: XCTestCase {
   let tableView = UITableView()
 
   func testDataSource() {
-    let timeZone = NSTimeZone(abbreviation: "UTC")!
-    let calendar = NSCalendar.init(calendarIdentifier: NSCalendarIdentifierGregorian)!
+    let timeZone = TimeZone(abbreviation: "UTC")!
+    var calendar = Calendar.init(identifier: Calendar.Identifier.gregorian)
     calendar.timeZone = timeZone
 
     withEnvironment(calendar: calendar, timeZone: timeZone) {
@@ -52,8 +52,8 @@ internal final class ProjectActivitiesDataSourceTests: XCTestCase {
   }
 
   func testGroupedDatesIsFalse() {
-    let timeZone = NSTimeZone(abbreviation: "UTC")!
-    let calendar = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)!
+    let timeZone = TimeZone(abbreviation: "UTC")!
+    var calendar = Calendar(identifier: Calendar.Identifier.gregorian)
     calendar.timeZone = timeZone
 
     withEnvironment(calendar: calendar, timeZone: timeZone) {

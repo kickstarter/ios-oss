@@ -7,8 +7,8 @@ import Prelude
 private let sorts: [DiscoveryParams.Sort] = [.magic, .popular, .newest]
 
 internal final class DiscoveryPagesDataSourceTests: XCTestCase {
-  private let dataSource = DiscoveryPagesDataSource(sorts: sorts)
-  private let pageViewController = UIPageViewController()
+  fileprivate let dataSource = DiscoveryPagesDataSource(sorts: sorts)
+  fileprivate let pageViewController = UIPageViewController()
 
   func testIndex() {
     for sort in sorts {

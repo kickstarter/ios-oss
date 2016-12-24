@@ -9,9 +9,9 @@ import XCTest
 private let tolerance: CGFloat = 0.0001
 
 internal final class RewardPledgeViewControllerTests: TestCase {
-  private let cosmicSurgery = Project.cosmicSurgery
+  fileprivate let cosmicSurgery = Project.cosmicSurgery
     |> Project.lens.state .~ .live
-  private let cosmicReward = Project.cosmicSurgery.rewards.last!
+  fileprivate let cosmicReward = Project.cosmicSurgery.rewards.last!
     |> Reward.lens.shipping.enabled .~ true
     |> Reward.lens.estimatedDeliveryOn .~ 1506031200
 
@@ -20,7 +20,6 @@ internal final class RewardPledgeViewControllerTests: TestCase {
     UIView.setAnimationsEnabled(false)
 
     AppEnvironment.pushEnvironment(
-      mainBundle: NSBundle.framework,
       apiService: MockService(
         fetchShippingRulesResponse: [
           .template |> ShippingRule.lens.location .~ .usa,
@@ -28,7 +27,8 @@ internal final class RewardPledgeViewControllerTests: TestCase {
           .template |> ShippingRule.lens.location .~ .greatBritain,
           .template |> ShippingRule.lens.location .~ .australia,
         ]
-      )
+      ),
+      mainBundle: Bundle.framework
     )
   }
 

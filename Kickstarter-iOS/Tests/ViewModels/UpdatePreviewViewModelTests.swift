@@ -9,13 +9,13 @@ import Result
 import XCTest
 
 final class UpdatePreviewViewModelTests: TestCase {
-  private let vm: UpdatePreviewViewModelType = UpdatePreviewViewModel()
+  fileprivate let vm: UpdatePreviewViewModelType = UpdatePreviewViewModel()
 
-  private let showPublishConfirmation = TestObserver<String, NoError>()
-  private let showPublishFailure = TestObserver<(), NoError>()
-  private let goToUpdate = TestObserver<Update, NoError>()
-  private let goToUpdateProject = TestObserver<Project, NoError>()
-  private let webViewLoadRequest = TestObserver<String?, NoError>()
+  fileprivate let showPublishConfirmation = TestObserver<String, NoError>()
+  fileprivate let showPublishFailure = TestObserver<(), NoError>()
+  fileprivate let goToUpdate = TestObserver<Update, NoError>()
+  fileprivate let goToUpdateProject = TestObserver<Project, NoError>()
+  fileprivate let webViewLoadRequest = TestObserver<String?, NoError>()
 
   override func setUp() {
     super.setUp()
@@ -42,9 +42,9 @@ final class UpdatePreviewViewModelTests: TestCase {
     )
 
     let redirectUrl = "https://www.kickstarter.com/projects/smashmouth/somebody-once-told-me/posts/1"
-    let request = URLRequest(URL: URL(string: redirectUrl)!)
+    let request = URLRequest(url: URL(string: redirectUrl)!)
     let navigationAction = WKNavigationActionData(
-      navigationType: .Other,
+      navigationType: .other,
       request: request,
       sourceFrame: WKFrameInfoData(mainFrame: true, request: request),
       targetFrame: WKFrameInfoData(mainFrame: true, request: request)
@@ -52,7 +52,7 @@ final class UpdatePreviewViewModelTests: TestCase {
 
     let policy = self.vm.inputs.decidePolicyFor(navigationAction: navigationAction)
 
-    XCTAssertEqual(WKNavigationActionPolicy.Allow.rawValue, policy.rawValue)
+    XCTAssertEqual(WKNavigationActionPolicy.allow.rawValue, policy.rawValue)
     self.webViewLoadRequest.assertValues(
       [
         "\(previewUrl)?\(query)",
@@ -143,7 +143,7 @@ final class UpdatePreviewViewModelTests: TestCase {
       |> UpdateDraft.lens.update.id .~ 1
       |> UpdateDraft.lens.update.projectId .~ project.id
 
-    let api = MockService(fetchProjectResponse: project, publishUpdateError: .couldNotParseJSON)
+    let api = MockService(publishUpdateError: .couldNotParseJSON, fetchProjectResponse: project)
     withEnvironment(apiService: api) {
       self.vm.inputs.configureWith(draft: draft)
       self.vm.inputs.viewDidLoad()

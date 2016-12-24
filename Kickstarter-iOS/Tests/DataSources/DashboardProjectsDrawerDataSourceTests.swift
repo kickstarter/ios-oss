@@ -25,7 +25,7 @@ internal final class DashboardProjectsDrawerDataSourceTests: XCTestCase {
     XCTAssertEqual("DashboardProjectsDrawerCell", self.dataSource.reusableId(item: 0, section: 0))
     XCTAssertEqual("DashboardProjectsDrawerCell", self.dataSource.reusableId(item: 1, section: 0))
 
-    XCTAssertEqual(project1, self.dataSource.projectAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)))
-    XCTAssertEqual(project2, self.dataSource.projectAtIndexPath(NSIndexPath(forRow: 1, inSection: 0)))
+    XCTAssertEqual(project1, self.dataSource.projectAtIndexPath(IndexPath(forRow: 0, inSection: 0)))
+    XCTAssertEqual(project2, self.dataSource.projectAtIndexPath(IndexPath(forRow: 1, inSection: 0)))
   }
 }

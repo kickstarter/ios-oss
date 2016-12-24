@@ -7,7 +7,7 @@ import XCTest
 @testable import Library
 
 internal final class ProjectPamphletContentViewControllerTests: TestCase {
-  private var cosmicSurgery: Project!
+  fileprivate var cosmicSurgery: Project!
 
   override func setUp() {
     super.setUp()
@@ -23,7 +23,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
 
     AppEnvironment.pushEnvironment(
       config: .template |> Config.lens.countryCode .~ self.cosmicSurgery.country.countryCode,
-      mainBundle: NSBundle.framework
+      mainBundle: Bundle.framework
     )
 
     UIView.setAnimationsEnabled(false)

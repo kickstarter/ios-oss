@@ -7,9 +7,9 @@ import Result
 import XCTest
 
 internal final class HelpWebViewModelTests: TestCase {
-  private let vm: HelpWebViewModelType = HelpWebViewModel()
+  fileprivate let vm: HelpWebViewModelType = HelpWebViewModel()
 
-  private let webViewLoadRequest = TestObserver<String, NoError>()
+  fileprivate let webViewLoadRequest = TestObserver<String, NoError>()
 
   override func setUp() {
     super.setUp()

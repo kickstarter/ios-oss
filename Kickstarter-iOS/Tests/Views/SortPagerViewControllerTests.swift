@@ -6,11 +6,11 @@ import Result
 import XCTest
 
 internal final class SortPagerViewControllerTests: TestCase {
-  private let sorts: [DiscoveryParams.Sort] = [.magic, .popular, .newest, .endingSoon, .mostFunded]
+  fileprivate let sorts: [DiscoveryParams.Sort] = [.magic, .popular, .newest, .endingSoon, .mostFunded]
 
   override func setUp() {
     super.setUp()
-    AppEnvironment.pushEnvironment(mainBundle: NSBundle.framework)
+    AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
     UIView.setAnimationsEnabled(false)
   }
 
@@ -29,7 +29,7 @@ internal final class SortPagerViewControllerTests: TestCase {
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
         parent.view.frame.size.height = 50
 
-        self.scheduler.advanceByInterval(0.1)
+        self.scheduler.advance(by: 0.1)
 
         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)")
       }
@@ -47,7 +47,7 @@ internal final class SortPagerViewControllerTests: TestCase {
 
         controller.updateStyle(categoryId: 1)
 
-        self.scheduler.advanceByInterval(0.1)
+        self.scheduler.advance(by: 0.1)
 
         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)")
       }
@@ -65,7 +65,7 @@ internal final class SortPagerViewControllerTests: TestCase {
 
         controller.updateStyle(categoryId: 11)
 
-        self.scheduler.advanceByInterval(0.1)
+        self.scheduler.advance(by: 0.1)
 
         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)")
       }
@@ -83,7 +83,7 @@ internal final class SortPagerViewControllerTests: TestCase {
 
         controller.updateStyle(categoryId: 12)
 
-        self.scheduler.advanceByInterval(0.1)
+        self.scheduler.advance(by: 0.1)
 
         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)")
       }
@@ -99,7 +99,7 @@ internal final class SortPagerViewControllerTests: TestCase {
         let (parent, _) = traitControllers(device: .pad, orientation: .portrait, child: controller)
         parent.view.frame.size.height = 50
 
-        self.scheduler.advanceByInterval(0.1)
+        self.scheduler.advance(by: 0.1)
 
         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)")
       }
@@ -115,7 +115,7 @@ internal final class SortPagerViewControllerTests: TestCase {
         let (parent, _) = traitControllers(device: .pad, orientation: .landscape, child: controller)
         parent.view.frame.size.height = 50
 
-        self.scheduler.advanceByInterval(0.1)
+        self.scheduler.advance(by: 0.1)
 
         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)")
       }
@@ -133,7 +133,7 @@ internal final class SortPagerViewControllerTests: TestCase {
 
         controller.updateStyle(categoryId: 1)
 
-        self.scheduler.advanceByInterval(0.1)
+        self.scheduler.advance(by: 0.1)
 
         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)")
       }
@@ -151,7 +151,7 @@ internal final class SortPagerViewControllerTests: TestCase {
 
         controller.updateStyle(categoryId: 11)
 
-        self.scheduler.advanceByInterval(0.1)
+        self.scheduler.advance(by: 0.1)
 
         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)")
       }
@@ -169,7 +169,7 @@ internal final class SortPagerViewControllerTests: TestCase {
 
         controller.updateStyle(categoryId: 12)
 
-        self.scheduler.advanceByInterval(0.1)
+        self.scheduler.advance(by: 0.1)
 
         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)")
       }

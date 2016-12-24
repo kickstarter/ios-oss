@@ -6,9 +6,9 @@ import XCTest
 @testable import Library
 
 internal final class ProfileViewControllerTests: TestCase {
-  private var project1: Project!
-  private var project2: Project!
-  private var project3: Project!
+  fileprivate var project1: Project!
+  fileprivate var project2: Project!
+  fileprivate var project3: Project!
 
   override func setUp() {
     super.setUp()
@@ -36,7 +36,7 @@ internal final class ProfileViewControllerTests: TestCase {
     self.project2 = deadProject
     self.project3 = failed
 
-    AppEnvironment.pushEnvironment(mainBundle: NSBundle.framework)
+    AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
     UIView.setAnimationsEnabled(false)
   }
 
