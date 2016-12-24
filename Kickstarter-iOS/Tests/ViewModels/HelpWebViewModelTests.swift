@@ -14,7 +14,7 @@ internal final class HelpWebViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.webViewLoadRequest.map { $0.URL?.relativePath ?? "" }
+    self.vm.outputs.webViewLoadRequest.map { $0.url?.relativePath ?? "" }
       .observe(self.webViewLoadRequest.observer)
   }
 

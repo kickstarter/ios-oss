@@ -28,7 +28,7 @@ final class UpdateViewModelTests: TestCase {
     self.vm.outputs.goToProject.map { $0.0 }.observe(self.goToProject.observer)
     self.vm.outputs.goToSafariBrowser.observe(self.goToSafariBrowser.observer)
     self.vm.outputs.title.observe(self.title.observer)
-    self.vm.outputs.webViewLoadRequest.map { $0.URL?.absoluteString }
+    self.vm.outputs.webViewLoadRequest.map { $0.url?.absoluteString }
       .observe(self.webViewLoadRequest.observer)
   }
 
@@ -56,17 +56,17 @@ final class UpdateViewModelTests: TestCase {
       |> Update.lens.sequence .~ 42
 
     let prevUpdateUrl = URL(string: prevUpdate.urls.web.update)
-      .flatMap { $0.URLByDeletingLastPathComponent }
-      .map { $0.URLByAppendingPathComponent(String(prevUpdate.id)) }!
+      .flatMap { $0.deletingLastPathComponent() }
+      .map { $0.appendingPathComponent(String(prevUpdate.id)) }!
 
     self.vm.inputs.configureWith(project: self.project, update: self.update)
     self.vm.inputs.viewDidLoad()
 
     withEnvironment(apiService: MockService(fetchUpdateResponse: prevUpdate)) {
 
-      let request = URLRequest(URL: optionalize(prevUpdateUrl)!)
+      let request = URLRequest(url: prevUpdateUrl)
       let navigationAction = WKNavigationActionData(
-        navigationType: .LinkActivated,
+        navigationType: .linkActivated,
         request: request,
         sourceFrame: WKFrameInfoData(mainFrame: true, request: request),
         targetFrame: WKFrameInfoData(mainFrame: true, request: request)
@@ -74,12 +74,12 @@ final class UpdateViewModelTests: TestCase {
 
       let policy = self.vm.inputs.decidePolicyFor(navigationAction: navigationAction)
 
-      XCTAssertEqual(WKNavigationActionPolicy.Cancel.rawValue, policy.rawValue)
+      XCTAssertEqual(WKNavigationActionPolicy.cancel.rawValue, policy.rawValue)
 
       self.webViewLoadRequest.assertValues(
         [
           "\(self.update.urls.web.update)?client_id=\(self.apiService.serverConfig.apiClientAuth.clientId)",
-          "\((optionalize(prevUpdateUrl)?.absoluteString)!)" +
+          "\(prevUpdateUrl.absoluteString))" +
             "?client_id=\(self.apiService.serverConfig.apiClientAuth.clientId)"
         ]
       )
@@ -96,17 +96,17 @@ final class UpdateViewModelTests: TestCase {
   func testGoToProject() {
     let anotherProject = .template |> Project.lens.id .~ 42
     let anotherProjectUrl = URL(string: anotherProject.urls.web.project)
-      .flatMap { $0.URLByDeletingLastPathComponent }
-      .map { $0.URLByAppendingPathComponent(String(anotherProject.id)) }!
+      .flatMap { $0.deletingLastPathComponent() }
+      .map { $0.appendingPathComponent(String(anotherProject.id)) }!
 
     self.vm.inputs.configureWith(project: self.project, update: self.update)
     self.vm.inputs.viewDidLoad()
 
     withEnvironment(apiService: MockService(fetchProjectResponse: anotherProject)) {
 
-      let request = URLRequest(URL: optionalize(anotherProjectUrl)!)
+      let request = URLRequest(url: anotherProjectUrl)
       let navigationAction = WKNavigationActionData(
-        navigationType: .LinkActivated,
+        navigationType: .linkActivated,
         request: request,
         sourceFrame: WKFrameInfoData(mainFrame: true, request: request),
         targetFrame: WKFrameInfoData(mainFrame: true, request: request)
@@ -114,7 +114,7 @@ final class UpdateViewModelTests: TestCase {
 
       let policy = self.vm.inputs.decidePolicyFor(navigationAction: navigationAction)
 
-      XCTAssertEqual(WKNavigationActionPolicy.Cancel.rawValue, policy.rawValue)
+      XCTAssertEqual(WKNavigationActionPolicy.cancel.rawValue, policy.rawValue)
 
       self.goToProject.assertValues([anotherProject])
       self.goToComments.assertValueCount(0)
@@ -130,17 +130,17 @@ final class UpdateViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     let commentsRequest = URL(string: self.update.urls.web.update)
-      .map { $0.URLByAppendingPathComponent("comments") }
-      .flatMap(URLRequest.init(URL:))!
+      .map { $0.appendingPathComponent("comments") }
+      .flatMap { URLRequest.init(url: $0) }!
 
     let navigationAction = WKNavigationActionData(
-      navigationType: .LinkActivated,
+      navigationType: .linkActivated,
       request: commentsRequest,
       sourceFrame: WKFrameInfoData(mainFrame: true, request: commentsRequest),
       targetFrame: WKFrameInfoData(mainFrame: true, request: commentsRequest)
     )
 
-    XCTAssertEqual(WKNavigationActionPolicy.Cancel.rawValue,
+    XCTAssertEqual(WKNavigationActionPolicy.cancel.rawValue,
                    self.vm.inputs.decidePolicyFor(navigationAction: navigationAction).rawValue)
     self.goToComments.assertValues([self.update])
   }

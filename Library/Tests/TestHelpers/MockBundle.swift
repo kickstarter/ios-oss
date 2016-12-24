@@ -54,7 +54,7 @@ internal struct MockBundle: NSBundleType {
     self.store = stores[lang] ?? [:]
   }
 
-  internal static func create(_ path: String) -> NSBundleType? {
+  internal static func create(path: String) -> NSBundleType? {
     return MockBundle(lang: path)
   }
 

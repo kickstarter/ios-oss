@@ -43,7 +43,7 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
 
   func testView_Card_NoMetadata() {
     let project = anomalisaNoPhoto
-      |> Project.lens.dates.deadline .~ self.dateType.init().timeIntervalSince1970 + 60 * 60 * 24 * 6
+      |> Project.lens.dates.deadline .~ (self.dateType.init().timeIntervalSince1970 + 60 * 60 * 24 * 6)
 
     let discoveryResponse = .template
       |> DiscoveryEnvelope.lens.projects .~ [project]
@@ -73,7 +73,7 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
   func testView_Onboarding() {
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
-      withEnvironment(language: language, currentUser: nil) {
+      withEnvironment(currentUser: nil, language: language) {
 
         let controller = DiscoveryPageViewController.configuredWith(sort: .magic)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)

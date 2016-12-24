@@ -173,7 +173,7 @@ internal final class RewardPledgeViewControllerTests: TestCase {
       |> Project.lens.personalization.backing .~ (
         .template
           |> Backing.lens.reward .~ reward
-          |> Backing.lens.amount .~ reward.minimum + 10
+          |> Backing.lens.amount .~ (reward.minimum + 10)
           |> Backing.lens.shippingAmount .~ 10
     )
 
@@ -248,7 +248,7 @@ internal final class RewardPledgeViewControllerTests: TestCase {
       |> Project.lens.personalization.backing .~ (
         .template
           |> Backing.lens.reward .~ oldReward
-          |> Backing.lens.amount .~ oldReward.minimum + 10
+          |> Backing.lens.amount .~ (oldReward.minimum + 10)
           |> Backing.lens.shippingAmount .~ 10
     )
 
@@ -281,7 +281,7 @@ internal final class RewardPledgeViewControllerTests: TestCase {
       |> Project.lens.personalization.backing .~ (
         .template
           |> Backing.lens.reward .~ oldReward
-          |> Backing.lens.amount .~ oldReward.minimum + 10
+          |> Backing.lens.amount .~ (oldReward.minimum + 10)
           |> Backing.lens.shippingAmount .~ 10
     )
 

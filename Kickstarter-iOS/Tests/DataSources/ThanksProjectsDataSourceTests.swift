@@ -17,7 +17,7 @@ final class ThanksProjectsDataSourceTests: XCTestCase {
     ]
     dataSource.loadData(projects: projects, category: Category.games)
 
-    XCTAssertEqual(1, self.dataSource.numberOfSectionsInCollectionView(collectionView))
+    XCTAssertEqual(1, self.dataSource.numberOfSections(in: collectionView))
     XCTAssertEqual(4, self.dataSource.collectionView(collectionView, numberOfItemsInSection: 0))
 
   }

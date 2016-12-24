@@ -33,25 +33,25 @@ internal final class ActivitySampleFollowCell: UITableViewCell, ValueCell {
   internal override func bindStyles() {
     super.bindStyles()
 
-    self
+    _ = self
       |> activitySampleCellStyle
 
-    self.activityStackView
+    _ = self.activityStackView
       |> activitySampleStackViewStyle
 
-    self.activityTitleLabel
+    _ = self.activityTitleLabel
       |> activitySampleTitleLabelStyle
 
-    self.cardView
+    _ = self.cardView
       |> dropShadowStyle()
 
-    self.friendFollowLabel
+    _ = self.friendFollowLabel
       |> activitySampleFriendFollowLabelStyle
 
-    self.friendImageAndFollowStackView
+    _ = self.friendImageAndFollowStackView
       |> UIStackView.lens.spacing .~ Styles.grid(2)
 
-    self.seeAllActivityButton
+    _ = self.seeAllActivityButton
       |> activitySampleSeeAllActivityButtonStyle
   }
 

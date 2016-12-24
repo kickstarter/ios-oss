@@ -9,22 +9,22 @@ internal final class DashboardViewControllerTests: TestCase {
     super.setUp()
 
     let project = cosmicSurgery
-      |> Project.lens.dates.launchedAt .~ self.dateType.init().timeIntervalSince1970 - 60 * 60 * 24 * 14
-      |> Project.lens.dates.deadline .~ self.dateType.init().timeIntervalSince1970 + 60 * 60 * 24 * 14
+      |> Project.lens.dates.launchedAt .~ (self.dateType.init().timeIntervalSince1970 - 60 * 60 * 24 * 14)
+      |> Project.lens.dates.deadline .~ (self.dateType.init().timeIntervalSince1970 + 60 * 60 * 24 * 14)
 
     AppEnvironment.pushEnvironment(
       apiService: MockService(
+        fetchProjectsResponse: [project],
+        
         fetchProjectStatsResponse: .template
           |> ProjectStatsEnvelope.lens.cumulativeStats .~ cumulativeStats
           |> ProjectStatsEnvelope.lens.referralDistribution .~ referrerStats
           |> ProjectStatsEnvelope.lens.rewardDistribution .~ rewardStats
           |> ProjectStatsEnvelope.lens.videoStats .~ videoStats
-          |> ProjectStatsEnvelope.lens.fundingDistribution .~ fundingStats,
-
-        fetchProjectsResponse: [project]
+          |> ProjectStatsEnvelope.lens.fundingDistribution .~ fundingStats
       ),
       currentUser: project.creator,
-      mainBundle: NSBundle.framework
+      mainBundle: Bundle.framework
     )
 
     UIView.setAnimationsEnabled(false)
@@ -55,9 +55,9 @@ internal final class DashboardViewControllerTests: TestCase {
 
 private let rewards = (1...6).map {
   .template
-    |> Reward.lens.backersCount .~ $0 * 5
+    |> Reward.lens.backersCount .~ ($0 * 5)
     |> Reward.lens.id .~ $0
-    |> Reward.lens.minimum .~ $0 * 4
+    |> Reward.lens.minimum .~ ($0 * 4)
 }
 
 private let externalReferrerStats = .template
@@ -88,9 +88,9 @@ private let referrerStats = [externalReferrerStats, internalReferrerStats, custo
 
 private let rewardStats = (1...6).map {
   .template
-    |> ProjectStatsEnvelope.RewardStats.lens.backersCount .~ $0 * 5
+    |> ProjectStatsEnvelope.RewardStats.lens.backersCount .~ ($0 * 5)
     |> ProjectStatsEnvelope.RewardStats.lens.id .~ $0
-    |> ProjectStatsEnvelope.RewardStats.lens.minimum .~ $0 * 4
+    |> ProjectStatsEnvelope.RewardStats.lens.minimum .~ ($0 * 4)
     |> ProjectStatsEnvelope.RewardStats.lens.pledged .~ ($0 * $0 * 4 * 5)
 }
 
@@ -114,9 +114,9 @@ private let cosmicSurgery = .cosmicSurgery
 
 private let stats = [3_000, 4_000, 5_000, 7_000, 8_000, 13_000, 14_000, 15_000, 17_000, 18_000]
 
-private let fundingStats = stats.enumerate().map { idx, pledged in
+private let fundingStats = stats.enumerated().map { idx, pledged in
   .template
     |> ProjectStatsEnvelope.FundingDateStats.lens.cumulativePledged .~ pledged
     |> ProjectStatsEnvelope.FundingDateStats.lens.date
-      .~ (cosmicSurgery.dates.launchedAt + NSTimeInterval(idx * 86_400))
+      .~ (cosmicSurgery.dates.launchedAt + TimeInterval(idx * 86_400))
 }

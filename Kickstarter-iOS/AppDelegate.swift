@@ -17,20 +17,20 @@ import UIKit
 @UIApplicationMain
 final class AppDelegate: UIResponder, UIApplicationDelegate {
   var window: UIWindow?
-  private let viewModel: AppDelegateViewModelType = AppDelegateViewModel()
+  fileprivate let viewModel: AppDelegateViewModelType = AppDelegateViewModel()
 
   internal var rootTabBarController: RootTabBarViewController? {
     return self.window?.rootViewController as? RootTabBarViewController
   }
 
   // swiftlint:disable function_body_length
-  func application(application: UIApplication,
-                   didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+  func application(_ application: UIApplication,
+                   didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 
     AppEnvironment.replaceCurrentEnvironment(
       AppEnvironment.fromStorage(
-        ubiquitousStore: NSUbiquitousKeyValueStore.defaultStore(),
-        userDefaults: NSUserDefaults.standardUserDefaults()
+        ubiquitousStore: NSUbiquitousKeyValueStore.default(),
+        userDefaults: UserDefaults.standard
       )
     )
 
@@ -55,8 +55,8 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
       .observeForUI()
       .observeValues {
         AppEnvironment.logout()
-        NotificationCenter.defaultCenter().postNotification(
-          Notification(name: CurrentUserNotifications.sessionEnded, object: nil)
+        NotificationCenter.default.post(
+          Notification(name: Notification.Name(rawValue: CurrentUserNotifications.sessionEnded), object: nil)
         )
     }
 
@@ -66,13 +66,13 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     self.viewModel.outputs.postNotification
       .observeForUI()
-      .observeValues(NotificationCenter.defaultCenter().postNotification)
+      .observeValues(NotificationCenter.default.post)
 
     self.viewModel.outputs.presentViewController
       .observeForUI()
       .observeValues { [weak self] in
-        self?.rootTabBarController?.dismissViewControllerAnimated(true, completion: nil)
-        self?.rootTabBarController?.presentViewController($0, animated: true, completion: nil)
+        self?.rootTabBarController?.dismiss(animated: true, completion: nil)
+        self?.rootTabBarController?.present($0, animated: true, completion: nil)
     }
 
     self.viewModel.outputs.goToDiscovery
@@ -98,15 +98,15 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     self.viewModel.outputs.registerUserNotificationSettings
       .observeForUI()
       .observeValues {
-        UIApplication.sharedApplication().registerUserNotificationSettings(
-          UIUserNotificationSettings(forTypes: .Alert, categories: [])
+        UIApplication.shared.registerUserNotificationSettings(
+          UIUserNotificationSettings(types: .alert, categories: [])
         )
-        UIApplication.sharedApplication().registerForRemoteNotifications()
+        UIApplication.shared.registerForRemoteNotifications()
     }
 
     self.viewModel.outputs.unregisterForRemoteNotifications
       .observeForUI()
-      .observeValues(UIApplication.sharedApplication().unregisterForRemoteNotifications)
+      .observeValues(UIApplication.shared.unregisterForRemoteNotifications)
 
     self.viewModel.outputs.presentRemoteNotificationAlert
       .observeForUI()
@@ -116,14 +116,14 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
       .observeForUI()
       .observeValues { [weak self] data in
         guard let _self = self else { return }
-        let manager = BITHockeyManager.sharedHockeyManager()
+        let manager = BITHockeyManager.shared()
         manager.delegate = _self
-        manager.configureWithIdentifier(data.appIdentifier)
-        manager.crashManager.crashManagerStatus = .AutoSend
-        manager.disableUpdateManager = data.disableUpdates
+        manager.configure(withIdentifier: data.appIdentifier)
+        manager.crashManager.crashManagerStatus = .autoSend
+        manager.isUpdateManagerDisabled = data.disableUpdates
         manager.userID = data.userId
         manager.userName = data.userName
-        manager.startManager()
+        manager.start()
         manager.authenticator.authenticateInstallation()
     }
 
@@ -136,18 +136,18 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     self.viewModel.outputs.setApplicationShortcutItems
       .observeForUI()
       .observeValues { shortcutItems in
-        UIApplication.sharedApplication().shortcutItems = shortcutItems.map { $0.applicationShortcutItem }
+        UIApplication.shared.shortcutItems = shortcutItems.map { $0.applicationShortcutItem }
     }
 
     NotificationCenter
-      .defaultCenter()
-      .addObserverForName(CurrentUserNotifications.sessionStarted, object: nil, queue: nil) { [weak self] _ in
+      .default
+      .addObserver(forName: NSNotification.Name(rawValue: CurrentUserNotifications.sessionStarted), object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()
     }
 
     NotificationCenter
-      .defaultCenter()
-      .addObserverForName(CurrentUserNotifications.sessionEnded, object: nil, queue: nil) { [weak self] _ in
+      .default
+      .addObserver(forName: NSNotification.Name(rawValue: CurrentUserNotifications.sessionEnded), object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionEnded()
     }
 
@@ -160,21 +160,21 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
   }
   // swiftlint:enable function_body_length
 
-  func applicationWillEnterForeground(application: UIApplication) {
+  func applicationWillEnterForeground(_ application: UIApplication) {
     self.viewModel.inputs.applicationWillEnterForeground()
   }
 
-  func applicationDidEnterBackground(application: UIApplication) {
+  func applicationDidEnterBackground(_ application: UIApplication) {
     self.viewModel.inputs.applicationDidEnterBackground()
   }
 
-  func application(application: UIApplication, continueUserActivity userActivity: NSUserActivity,
-                   restorationHandler: ([AnyObject]?) -> Void) -> Bool {
+  func application(_ application: UIApplication, continue userActivity: NSUserActivity,
+                   restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
 
     return self.viewModel.inputs.applicationContinueUserActivity(userActivity)
   }
 
-  func application(application: UIApplication, openURL url: URL, sourceApplication: String?,
+  func application(_ application: UIApplication, openURL url: URL, sourceApplication: String?,
                    annotation: AnyObject) -> Bool {
 
     return self.viewModel.inputs.applicationOpenUrl(application: application,
@@ -183,62 +183,62 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
                                                     annotation: annotation)
   }
 
-  internal func application(application: UIApplication,
+  internal func application(_ application: UIApplication,
                             didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
     self.viewModel.inputs.didRegisterForRemoteNotifications(withDeviceTokenData: deviceToken)
   }
 
-  internal func application(application: UIApplication,
-                            didReceiveRemoteNotification userInfo: [NSObject: AnyObject]) {
+  internal func application(_ application: UIApplication,
+                            didReceiveRemoteNotification userInfo: [AnyHashable: Any]) {
 
-    self.viewModel.inputs.didReceive(remoteNotification: userInfo,
+    self.viewModel.inputs.didReceive(remoteNotification: userInfo as AnyObject,
                                      applicationIsActive: application.applicationState == .active)
   }
 
-  internal func application(application: UIApplication,
-                            didReceiveLocalNotification notification: UILocalNotification) {
+  internal func application(_ application: UIApplication,
+                            didReceive notification: UILocalNotification) {
 
     if let userInfo = notification.userInfo, userInfo["aps"] != nil {
-      self.viewModel.inputs.didReceive(remoteNotification: userInfo,
+      self.viewModel.inputs.didReceive(remoteNotification: userInfo as AnyObject,
                                        applicationIsActive: application.applicationState == .active)
     }
   }
 
-  internal func applicationDidReceiveMemoryWarning(application: UIApplication) {
+  internal func applicationDidReceiveMemoryWarning(_ application: UIApplication) {
     self.viewModel.inputs.applicationDidReceiveMemoryWarning()
   }
 
-  internal func application(application: UIApplication,
-                            performActionForShortcutItem shortcutItem: UIApplicationShortcutItem,
-                                                         completionHandler: (Bool) -> Void) {
+  internal func application(_ application: UIApplication,
+                            performActionFor shortcutItem: UIApplicationShortcutItem,
+                                                         completionHandler: @escaping (Bool) -> Void) {
 
     self.viewModel.inputs.applicationPerformActionForShortcutItem(shortcutItem)
     completionHandler(true)
   }
 
-  private func presentRemoteNotificationAlert(message: String) {
-    let alert = UIAlertController(title: nil, message: message, preferredStyle: .Alert)
+  fileprivate func presentRemoteNotificationAlert(_ message: String) {
+    let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
 
     alert.addAction(
-      UIAlertAction(title: Strings.View(), style: .Default) { [weak self] _ in
+      UIAlertAction(title: Strings.View(), style: .default) { [weak self] _ in
         self?.viewModel.inputs.openRemoteNotificationTappedOk()
       }
     )
 
     alert.addAction(
-      UIAlertAction(title: Strings.Dismiss(), style: .Cancel, handler: nil)
+      UIAlertAction(title: Strings.Dismiss(), style: .cancel, handler: nil)
     )
 
-    self.rootTabBarController?.presentViewController(alert, animated: true, completion: nil)
+    self.rootTabBarController?.present(alert, animated: true, completion: nil)
   }
 
-  private func goToMessageThread(messageThread: MessageThread) {
+  fileprivate func goToMessageThread(_ messageThread: MessageThread) {
     self.rootTabBarController?.switchToMessageThread(messageThread)
   }
 }
 
 extension AppDelegate : BITHockeyManagerDelegate {
-  func crashManagerDidFinishSendingCrashReport(crashManager: BITCrashManager!) {
+  func crashManagerDidFinishSendingCrashReport(_ crashManager: BITCrashManager!) {
     self.viewModel.inputs.crashManagerDidFinishSendingCrashReport()
   }
 }

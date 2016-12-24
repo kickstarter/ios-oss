@@ -39,7 +39,7 @@ internal final class ProjectActivitiesDataSourceTests: XCTestCase {
       self.dataSource.load(projectActivityData:
         ProjectActivityData(activities: activities, project: project, groupedDates: true))
 
-      XCTAssertEqual(section + 1, self.dataSource.numberOfSectionsInTableView(tableView))
+      XCTAssertEqual(section + 1, self.dataSource.numberOfSections(in: tableView))
       XCTAssertEqual(7, self.dataSource.tableView(tableView, numberOfRowsInSection: section))
       XCTAssertEqual("ProjectActivityDateCell", self.dataSource.reusableId(item: 0, section: section))
       XCTAssertEqual("ProjectActivitySuccessCell", self.dataSource.reusableId(item: 1, section: section))

@@ -61,7 +61,7 @@ internal final class ProjectPamphletSubpageCell: UITableViewCell, ValueCell {
   internal override func bindStyles() {
     super.bindStyles()
 
-    self
+    _ = self
       |> baseTableViewCellStyle()
       |> ProjectPamphletSubpageCell.lens.accessibilityTraits .~ UIAccessibilityTraitButton
       |> ProjectPamphletSubpageCell.lens.contentView.layoutMargins %~~ { _, cell in
@@ -70,23 +70,23 @@ internal final class ProjectPamphletSubpageCell: UITableViewCell, ValueCell {
           : .init(topBottom: Styles.gridHalf(5), leftRight: Styles.gridHalf(7))
     }
 
-    self.countContainerView
+    _ = self.countContainerView
       |> UIView.lens.layoutMargins .~ .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
       |> UIView.lens.backgroundColor .~ .ksr_navy_300
       |> roundedStyle()
 
-    self.countLabel
+    _ = self.countLabel
       |> UILabel.lens.textColor .~ .ksr_text_navy_700
       |> UILabel.lens.font .~ .ksr_headline(size: 13)
 
-    self.rootStackView
+    _ = self.rootStackView
       |> UIStackView.lens.alignment .~ .center
       |> UIStackView.lens.distribution .~ .equalSpacing
 
-    self.separatorView
+    _ = self.separatorView
       |> separatorStyle
 
-    self.subpageLabel
+    _ = self.subpageLabel
       |> UILabel.lens.textColor .~ .ksr_text_navy_700
       |> UILabel.lens.font .~ .ksr_body(size: 14)
 

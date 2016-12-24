@@ -40,7 +40,7 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.outputs.goToLogin.observe(self.goToLogin.observer)
     self.vm.outputs.goToProfile.observe(self.goToProfile.observer)
     self.vm.outputs.goToSearch.observe(self.goToSearch.observer)
-    self.vm.outputs.postNotification.map { $0.name }.observe(self.postNotificationName.observer)
+    self.vm.outputs.postNotification.map { $0.name.rawValue }.observe(self.postNotificationName.observer)
     self.vm.outputs.presentRemoteNotificationAlert.observe(presentRemoteNotificationAlert.observer)
     self.vm.outputs.presentViewController.map { ($0 as! UINavigationController).viewControllers.count }
       .observe(self.presentViewController.observer)
@@ -239,7 +239,7 @@ final class AppDelegateViewModelTests: TestCase {
     vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
                                             launchOptions: [:])
 
-    self.scheduler.advance(by: 5.0)
+    self.scheduler.advance(by: .seconds(5))
 
     updateCurrentUserInEnvironment.assertValues([env.user])
     postNotificationName.assertDidNotEmitValue()
@@ -251,7 +251,7 @@ final class AppDelegateViewModelTests: TestCase {
 
     vm.inputs.applicationDidEnterBackground()
     vm.inputs.applicationWillEnterForeground()
-    self.scheduler.advance(by: 5.0)
+    self.scheduler.advance(by: .seconds(5))
 
     updateCurrentUserInEnvironment.assertValues([env.user, env.user])
     postNotificationName.assertValues([CurrentUserNotifications.userUpdated])
@@ -272,7 +272,7 @@ final class AppDelegateViewModelTests: TestCase {
       self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
                                               launchOptions: [:])
 
-      self.scheduler.advance(by: 5.0)
+      self.scheduler.advance(by: .seconds(5))
 
       self.updateCurrentUserInEnvironment.assertValues([.template])
       self.postNotificationName.assertDidNotEmitValue()
@@ -297,7 +297,7 @@ final class AppDelegateViewModelTests: TestCase {
 
       vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
                                               launchOptions: [:])
-      self.scheduler.advance(by: 5.0)
+      self.scheduler.advance(by: .seconds(5))
 
       updateCurrentUserInEnvironment.assertDidNotEmitValue()
       self.forceLogout.assertValueCount(1)
@@ -569,7 +569,7 @@ final class AppDelegateViewModelTests: TestCase {
       self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
                                                    launchOptions: [:])
       self.vm.inputs.didRegisterForRemoteNotifications(withDeviceTokenData: Data())
-      self.scheduler.advance(by: 5.0)
+      self.scheduler.advance(by: .seconds(5))
 
       self.pushTokenSuccessfullyRegistered.assertValueCount(1)
     }
@@ -803,7 +803,7 @@ final class AppDelegateViewModelTests: TestCase {
 
   func testOpenNotification_PostLike() {
 
-    let pushData: [String:AnyObject] = [
+    let pushData: [String:Any] = [
       "aps": [
         "alert": "Blob liked your update: Important message..."
       ],
@@ -885,13 +885,13 @@ final class AppDelegateViewModelTests: TestCase {
 
     self.setApplicationShortcutItems.assertValues([])
 
-    self.scheduler.advance(by: 5)
+    self.scheduler.advance(by: .seconds(5))
 
     self.setApplicationShortcutItems.assertValues([[.projectOfTheDay, .projectsWeLove, .search]])
 
     self.vm.inputs.applicationDidEnterBackground()
     self.vm.inputs.applicationWillEnterForeground()
-    self.scheduler.advance(by: 5)
+    self.scheduler.advance(by: .seconds(5))
 
     self.setApplicationShortcutItems.assertValues(
       [
@@ -912,7 +912,7 @@ final class AppDelegateViewModelTests: TestCase {
 
       self.setApplicationShortcutItems.assertValues([])
 
-      self.scheduler.advance(by: 5)
+      self.scheduler.advance(by: .seconds(5))
 
       self.setApplicationShortcutItems.assertValues([
         [.projectOfTheDay, .recommendedForYou, .projectsWeLove, .search]
@@ -931,7 +931,7 @@ final class AppDelegateViewModelTests: TestCase {
 
       self.setApplicationShortcutItems.assertValues([])
 
-      self.scheduler.advance(by: 5)
+      self.scheduler.advance(by: .seconds(5))
 
       self.setApplicationShortcutItems.assertValues([
         [.creatorDashboard, .projectOfTheDay, .recommendedForYou, .projectsWeLove]
@@ -1090,7 +1090,7 @@ final class AppDelegateViewModelTests: TestCase {
     // Launch app and wait for shortcuts to be set
     self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
                                                  launchOptions: [:])
-    self.scheduler.advance(by: 5)
+    self.scheduler.advance(by: .seconds(5))
 
     // Perform a shortcut item
     self.vm.inputs.applicationPerformActionForShortcutItem(
@@ -1106,7 +1106,7 @@ final class AppDelegateViewModelTests: TestCase {
     withEnvironment(currentUser: .template) {
       // Login with a user and wait for shortcuts to be set
       self.vm.inputs.userSessionStarted()
-      self.scheduler.advance(by: 5)
+      self.scheduler.advance(by: .seconds(5))
 
       XCTAssertEqual(["App Open", "Opened App", "Performed Shortcut"],
                      self.trackingClient.events,
@@ -1141,7 +1141,7 @@ final class AppDelegateViewModelTests: TestCase {
 
     XCTAssertEqual(["App Open", "Opened App"], self.trackingClient.events)
 
-    self.scheduler.advance(by: 5)
+    self.scheduler.advance(by: .seconds(5))
 
     XCTAssertEqual(["App Open", "Opened App", "Performed Shortcut"], self.trackingClient.events)
     XCTAssertEqual([nil, nil, "projects_we_love"],

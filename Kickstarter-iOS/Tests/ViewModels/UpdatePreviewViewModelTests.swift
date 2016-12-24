@@ -24,7 +24,7 @@ final class UpdatePreviewViewModelTests: TestCase {
     self.vm.outputs.showPublishFailure.observe(self.showPublishFailure.observer)
     self.vm.outputs.goToUpdate.map(second).observe(self.goToUpdate.observer)
     self.vm.outputs.goToUpdate.map(first).observe(self.goToUpdateProject.observer)
-    self.vm.outputs.webViewLoadRequest.map { $0.URL?.absoluteString }
+    self.vm.outputs.webViewLoadRequest.map { $0.url?.absoluteString }
       .observe(self.webViewLoadRequest.observer)
   }
 

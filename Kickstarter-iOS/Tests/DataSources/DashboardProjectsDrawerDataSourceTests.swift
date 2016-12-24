@@ -16,16 +16,16 @@ internal final class DashboardProjectsDrawerDataSourceTests: XCTestCase {
     let data2 = ProjectsDrawerData(project: project2, indexNum: 1, isChecked: false)
     let data = [data1, data2]
 
-    XCTAssertEqual(0, self.dataSource.numberOfSectionsInTableView(tableView))
+    XCTAssertEqual(0, self.dataSource.numberOfSections(in: tableView))
 
     self.dataSource.load(data: data)
 
-    XCTAssertEqual(1, self.dataSource.numberOfSectionsInTableView(tableView))
+    XCTAssertEqual(1, self.dataSource.numberOfSections(in: tableView))
     XCTAssertEqual(2, self.dataSource.tableView(tableView, numberOfRowsInSection: 0))
     XCTAssertEqual("DashboardProjectsDrawerCell", self.dataSource.reusableId(item: 0, section: 0))
     XCTAssertEqual("DashboardProjectsDrawerCell", self.dataSource.reusableId(item: 1, section: 0))
 
-    XCTAssertEqual(project1, self.dataSource.projectAtIndexPath(IndexPath(forRow: 0, inSection: 0)))
-    XCTAssertEqual(project2, self.dataSource.projectAtIndexPath(IndexPath(forRow: 1, inSection: 0)))
+    XCTAssertEqual(project1, self.dataSource.projectAtIndexPath(IndexPath(row: 0, section: 0)))
+    XCTAssertEqual(project2, self.dataSource.projectAtIndexPath(IndexPath(row: 1, section: 0)))
   }
 }
