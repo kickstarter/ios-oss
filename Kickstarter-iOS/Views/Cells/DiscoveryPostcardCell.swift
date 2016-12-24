@@ -37,7 +37,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
   internal override func bindStyles() {
     super.bindStyles()
 
-    self
+    _ = self
       |> baseTableViewCellStyle()
       |> DiscoveryPostcardCell.lens.backgroundColor .~ .clear
       // Future: the top should adjust to grid(4) when there is metadata present.
@@ -50,77 +50,77 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
         Strings.dashboard_tout_accessibility_hint_opens_project()
     }
 
-    self.backersSubtitleLabel
+    _ = self.backersSubtitleLabel
       |> postcardStatsSubtitleStyle
       |> UILabel.lens.text %~ { _ in Strings.discovery_baseball_card_stats_backers() }
       |> UILabel.lens.adjustsFontSizeToFitWidth .~ true
-    [self.backersSubtitleLabel, self.deadlineSubtitleLabel, self.fundingSubtitleLabel]
+    _ = [self.backersSubtitleLabel, self.deadlineSubtitleLabel, self.fundingSubtitleLabel]
       ||> postcardStatsSubtitleStyle
 
-    [self.backersTitleLabel, self.deadlineTitleLabel]
+    _ = [self.backersTitleLabel, self.deadlineTitleLabel]
       ||> postcardStatsTitleStyle
       ||> UILabel.lens.textColor .~ .ksr_text_navy_700
 
-    self.fundingTitleLabel
+    _ = self.fundingTitleLabel
       |> postcardStatsTitleStyle
       |> UILabel.lens.textColor .~ .ksr_text_green_700
 
-    self.cardView
+    _ = self.cardView
       |> dropShadowStyle()
 
-    self.fundingProgressContainerView
+    _ = self.fundingProgressContainerView
       |> UIView.lens.backgroundColor .~ .ksr_navy_400
 
-    self.fundingProgressBarView
+    _ = self.fundingProgressBarView
       |> UIView.lens.backgroundColor .~ .ksr_green_400
 
-    self.fundingSubtitleLabel
+    _ = self.fundingSubtitleLabel
       |> postcardStatsSubtitleStyle
       |> UILabel.lens.text %~ { _ in Strings.discovery_baseball_card_stats_funded() }
 
-    self.metadataIconImageView
+    _ = self.metadataIconImageView
       |> UIImageView.lens.tintColor .~ .ksr_navy_700
 
-    self.metadataLabel
+    _ = self.metadataLabel
       |> postcardMetadataLabelStyle
 
-    self.metadataStackView
+    _ = self.metadataStackView
       |> postcardMetadataStackViewStyle
 
-    self.metadataBackgroundView
+    _ = self.metadataBackgroundView
       |> dropShadowStyle(radius: 0.5)
 
-    self.projectInfoStackView
+    _ = self.projectInfoStackView
       |> UIStackView.lens.spacing .~ Styles.grid(4)
 
-    self.projectNameAndBlurbLabel
+    _ = self.projectNameAndBlurbLabel
       |> UILabel.lens.numberOfLines .~ 3
       |> UILabel.lens.lineBreakMode .~ .byTruncatingTail
 
-    self.projectStateIconImageView
+    _ = self.projectStateIconImageView
       |> UIImageView.lens.tintColor .~ .ksr_green_700
 
-    self.projectStateSubtitleLabel
+    _ = self.projectStateSubtitleLabel
       |> postcardStatsSubtitleStyle
 
-    self.projectStateTitleLabel
+    _ = self.projectStateTitleLabel
       |> postcardStatsTitleStyle
 
-    self.projectStateStackView
+    _ = self.projectStateStackView
       |> UIStackView.lens.spacing .~ Styles.grid(1)
 
-    self.projectStatsStackView
+    _ = self.projectStatsStackView
       |> UIStackView.lens.spacing .~ Styles.grid(4)
 
-    self.socialAvatarImageView
+    _ = self.socialAvatarImageView
       |> UIImageView.lens.layer.shouldRasterize .~ true
 
-    self.socialLabel
+    _ = self.socialLabel
       |> UILabel.lens.numberOfLines .~ 2
       |> UILabel.lens.textColor .~ .ksr_text_navy_600
       |> UILabel.lens.font .~ .ksr_headline(size: 13.0)
 
-    self.socialStackView
+    _ = self.socialStackView
       |> UIStackView.lens.alignment .~ .center
       |> UIStackView.lens.spacing .~ Styles.grid(1)
       |> UIStackView.lens.layoutMargins
@@ -176,7 +176,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
         })
       .skipNil()
       .observeValues { [weak self] url in
-        self?.projectImageView.af_setImageWithURL(url)
+        self?.projectImageView.ksr_setImageWithURL(url)
     }
 
     self.viewModel.outputs.socialImageURL
@@ -187,7 +187,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
         })
       .skipNil()
       .observeValues { [weak self] url in
-        self?.socialAvatarImageView.af_setImageWithURL(url)
+        self?.socialAvatarImageView.ksr_setImageWithURL(url)
     }
   }
   // swiftlint:enable function_body_length

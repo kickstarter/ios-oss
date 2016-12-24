@@ -16,11 +16,11 @@ internal final class DashboardReferrerRowStackView: UIStackView {
 
     super.init(frame: frame)
 
-    self |> dashboardStatsRowStackViewStyle
+    _ = self |> dashboardStatsRowStackViewStyle
 
-    self.backersLabel |> dashboardColumnTextLabelStyle
-    self.pledgedLabel |> dashboardColumnTextLabelStyle
-    self.sourceLabel |> dashboardReferrersSourceLabelStyle
+    _ = self.backersLabel |> dashboardColumnTextLabelStyle
+    _ = self.pledgedLabel |> dashboardColumnTextLabelStyle
+    _ = self.sourceLabel |> dashboardReferrersSourceLabelStyle
 
     self.addArrangedSubview(self.sourceLabel)
     self.addArrangedSubview(self.pledgedLabel)

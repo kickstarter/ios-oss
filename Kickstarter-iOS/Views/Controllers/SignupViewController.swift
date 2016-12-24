@@ -20,7 +20,7 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
   @IBOutlet fileprivate weak var signupButton: UIButton!
 
   internal static func instantiate() -> SignupViewController {
-    let vc = Storyboard.Login.instantiate(SignupViewController)
+    let vc = Storyboard.Login.instantiate(SignupViewController.self)
     vc.helpViewModel.inputs.configureWith(helpContext: .signup)
     vc.helpViewModel.inputs.canSendEmail(MFMailComposeViewController.canSendMail())
     return vc
@@ -38,31 +38,31 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
   internal override func bindStyles() {
     super.bindStyles()
 
-    self
+    _ = self
       |> signupControllerStyle
 
-    self.disclaimerButton
+    _ = self.disclaimerButton
       |> disclaimerButtonStyle
 
-    self.emailTextField
+    _ = self.emailTextField
       |> emailFieldStyle
 
-    self.formBackgroundView
+    _ = self.formBackgroundView
       |> cardStyle()
 
-    self.nameTextField
+    _ = self.nameTextField
       |> UITextField.lens.placeholder %~ { _ in Strings.signup_input_fields_full_name() }
 
-    self.newsletterLabel
+    _ = self.newsletterLabel
       |> newsletterLabelStyle
 
-    self.passwordTextField
+    _ = self.passwordTextField
       |> passwordFieldStyle
 
-    self.rootStackView
+    _ = self.rootStackView
       |> loginRootStackViewStyle
 
-    self.signupButton
+    _ = self.signupButton
       |> signupButtonStyle
   }
 

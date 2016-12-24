@@ -25,13 +25,13 @@ internal protocol UpdateViewModelOutputs {
   var goToProject: Signal<(Project, RefTag), NoError> { get }
 
   /// Emits when we should open a safari browser with the URL.
-  var goToSafariBrowser: Signal<NSURL, NoError> { get }
+  var goToSafariBrowser: Signal<URL, NoError> { get }
 
   /// Emits the title of the controller.
   var title: Signal<String, NoError> { get }
 
   /// Emits a request that should be loaded into the webview.
-  var webViewLoadRequest: Signal<NSURLRequest, NoError> { get }
+  var webViewLoadRequest: Signal<URLRequest, NoError> { get }
 }
 
 internal protocol UpdateViewModelType {
@@ -75,7 +75,7 @@ internal final class UpdateViewModel: UpdateViewModelType, UpdateViewModelInputs
 
     let currentUpdate = Signal.merge(initialUpdate, anotherUpdate)
 
-    self.title = combineLatest(currentUpdate, self.viewDidLoadProperty.signal.take(1))
+    self.title = Signal.combineLatest(currentUpdate, self.viewDidLoadProperty.signal.take(1))
       .map(first)
       .map { Strings.activity_project_update_update_count(update_count: Format.wholeNumber($0.sequence)) }
 
@@ -160,9 +160,9 @@ internal final class UpdateViewModel: UpdateViewModelType, UpdateViewModelInputs
 
   internal let goToComments: Signal<Update, NoError>
   internal let goToProject: Signal<(Project, RefTag), NoError>
-  internal let goToSafariBrowser: Signal<NSURL, NoError>
+  internal let goToSafariBrowser: Signal<URL, NoError>
   internal let title: Signal<String, NoError>
-  internal let webViewLoadRequest: Signal<NSURLRequest, NoError>
+  internal let webViewLoadRequest: Signal<URLRequest, NoError>
 
   internal var inputs: UpdateViewModelInputs { return self }
   internal var outputs: UpdateViewModelOutputs { return self }

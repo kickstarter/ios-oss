@@ -50,13 +50,13 @@ internal final class ProjectNavBarViewController: UIViewController {
 
     NotificationCenter
       .default
-      .addObserver(forName: NSNotification.Name(rawValue: CurrentUserNotifications.sessionStarted), object: nil, queue: nil) { [weak self] _ in
+      .addObserver(forName: Notification.Name(rawValue: CurrentUserNotifications.sessionStarted), object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()
     }
 
     NotificationCenter
       .default
-      .addObserver(forName: NSNotification.Name(rawValue: CurrentUserNotifications.sessionEnded), object: nil, queue: nil) { [weak self] _ in
+      .addObserver(forName: Notification.Name(rawValue: CurrentUserNotifications.sessionEnded), object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionEnded()
     }
 
@@ -74,7 +74,7 @@ internal final class ProjectNavBarViewController: UIViewController {
       (UIColor(white: 0, alpha: 0), 1)
     ])
 
-    self.categoryButton
+    _ = self.categoryButton
       |> roundedStyle(cornerRadius: 12)
       |> UIButton.lens.titleEdgeInsets
         .~ .init(top: 0, left: Styles.grid(1), bottom: 0, right: Styles.grid(-1))
@@ -89,19 +89,19 @@ internal final class ProjectNavBarViewController: UIViewController {
       |> UIButton.lens.userInteractionEnabled .~ false
       |> UIButton.lens.accessibilityTraits .~ UIAccessibilityTraitStaticText
 
-    self.closeButton
-      |> UIButton.lens.title(forState: .Normal) .~ nil
+    _ = self.closeButton
+      |> UIButton.lens.title(forState: .normal) .~ nil
       |> UIButton.lens.tintColor .~ .white
-      |> UIButton.lens.image(forState: .Normal) .~ image(named: "close-icon")
+      |> UIButton.lens.image(forState: .normal) .~ image(named: "close-icon")
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.accessibility_projects_buttons_close() }
       |> UIButton.lens.accessibilityHint %~ { _ in
         localizedString(key: "Closes_project", defaultValue: "Closes project.")
     }
 
-    self.navContainerView
+    _ = self.navContainerView
       |> UIView.lens.layoutMargins .~ .init(topBottom: 0, leftRight: Styles.gridHalf(1))
 
-    self.projectNameLabel
+    _ = self.projectNameLabel
       |> UILabel.lens.font .~ .ksr_body(size: 14)
       |> UILabel.lens.textColor .~ .ksr_text_navy_700
       |> UILabel.lens.textAlignment .~ .center
@@ -110,18 +110,18 @@ internal final class ProjectNavBarViewController: UIViewController {
       |> UILabel.lens.adjustsFontSizeToFitWidth .~ true
       |> UILabel.lens.userInteractionEnabled .~ true
 
-    self.shareButton
-      |> UIButton.lens.title(forState: .Normal) .~ nil
+    _ = self.shareButton
+      |> UIButton.lens.title(forState: .normal) .~ nil
       |> UIButton.lens.tintColor .~ .white
-      |> UIButton.lens.image(forState: .Normal) .~ image(named: "share-icon")
+      |> UIButton.lens.image(forState: .normal) .~ image(named: "share-icon")
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.dashboard_accessibility_label_share_project() }
 
-    self.starButton
-      |> UIButton.lens.title(forState: .Normal) .~ nil
+    _ = self.starButton
+      |> UIButton.lens.title(forState: .normal) .~ nil
       |> UIButton.lens.tintColor .~ .white
-      |> UIButton.lens.image(forState: .Normal) .~ image(named: "star-icon")
-      |> UIButton.lens.image(forState: .Highlighted) .~ image(named: "star-filled-icon")
-      |> UIButton.lens.image(forState: .Selected) .~ image(named: "star-filled-icon")
+      |> UIButton.lens.image(forState: .normal) .~ image(named: "star-icon")
+      |> UIButton.lens.image(forState: .highlighted) .~ image(named: "star-filled-icon")
+      |> UIButton.lens.image(forState: .selected) .~ image(named: "star-filled-icon")
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.Save_this_project()}
 
   }
@@ -211,10 +211,9 @@ internal final class ProjectNavBarViewController: UIViewController {
 
   fileprivate func showShareSheet(_ controller: UIActivityViewController) {
     controller.completionWithItemsHandler = { [weak self] in
-      self?.shareViewModel.inputs.shareActivityCompletion(activityType: $0,
-                                                          completed: $1,
-                                                          returnedItems: $2,
-                                                          activityError: $3)
+      self?.shareViewModel.inputs.shareActivityCompletion(
+        with: .init(activityType: $0, completed: $1, returnedItems: $2, activityError: $3)
+      )
     }
 
     if UIDevice.current.userInterfaceIdiom == .pad {

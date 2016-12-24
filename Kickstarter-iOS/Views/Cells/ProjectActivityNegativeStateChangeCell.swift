@@ -29,7 +29,8 @@ internal final class ProjectActivityNegativeStateChangeCell: UITableViewCell, Va
           italic: nil
         )
 
-        titleLabel |> projectActivityStateChangeLabelStyle
+        _ = titleLabel
+          |> projectActivityStateChangeLabelStyle
           |> UILabel.lens.textColor .~ .ksr_text_navy_500
     }
   }
@@ -37,7 +38,7 @@ internal final class ProjectActivityNegativeStateChangeCell: UITableViewCell, Va
   internal override func bindStyles() {
     super.bindStyles()
 
-    self
+    _ = self
       |> baseTableViewCellStyle()
       |> ProjectActivityNegativeStateChangeCell.lens.contentView.layoutMargins %~~ { layoutMargins, cell in
         cell.traitCollection.isRegularRegular
@@ -46,7 +47,7 @@ internal final class ProjectActivityNegativeStateChangeCell: UITableViewCell, Va
       }
       |> UITableViewCell.lens.accessibilityHint %~ { _ in Strings.Opens_project() }
 
-    self.cardView
+    _ = self.cardView
       |> cardStyle()
       |> dropShadowStyle()
       |> UIView.lens.layer.borderColor .~ UIColor.ksr_navy_500.cgColor

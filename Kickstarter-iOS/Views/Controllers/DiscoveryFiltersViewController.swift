@@ -91,12 +91,12 @@ internal final class DiscoveryFiltersViewController: UIViewController, UITableVi
   internal override func bindStyles() {
     super.bindStyles()
 
-    self.filtersTableView
+    _ = self.filtersTableView
       |> UITableView.lens.rowHeight .~ UITableViewAutomaticDimension
       |> UITableView.lens.estimatedRowHeight .~ 55.0
       |> UITableView.lens.backgroundColor .~ .clear
 
-    self.closeButton
+    _ = self.closeButton
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.Closes_filters() }
   }
 

@@ -11,7 +11,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
   fileprivate let viewModel: DiscoveryPageViewModelType = DiscoveryPageViewModel()
 
   internal static func configuredWith(sort: DiscoveryParams.Sort) -> DiscoveryPageViewController {
-    let vc = Storyboard.DiscoveryPage.instantiate(DiscoveryPageViewController)
+    let vc = Storyboard.DiscoveryPage.instantiate(DiscoveryPageViewController.self)
     vc.viewModel.inputs.configureWith(sort: sort)
     return vc
   }
@@ -78,10 +78,10 @@ internal final class DiscoveryPageViewController: UITableViewController {
   internal override func bindStyles() {
     super.bindStyles()
 
-    self
+    _ = self
       |> baseTableControllerStyle(estimatedRowHeight: 200.0)
 
-    self.loadingIndicatorView
+    _ = self.loadingIndicatorView
       |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
       |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .white
       |> UIActivityIndicatorView.lens.color .~ .ksr_navy_900

@@ -12,7 +12,7 @@ internal final class FindFriendsViewController: UITableViewController {
   fileprivate let dataSource = FindFriendsDataSource()
 
   internal static func configuredWith(source: FriendsSource) -> FindFriendsViewController {
-    let vc = Storyboard.Friends.instantiate(FindFriendsViewController)
+    let vc = Storyboard.Friends.instantiate(FindFriendsViewController.self)
     vc.viewModel.inputs.configureWith(source: source)
     return vc
   }

@@ -46,33 +46,33 @@ internal final class FindFriendsStatsCell: UITableViewCell, ValueCell {
   override func bindStyles() {
     super.bindStyles()
 
-    self.friendsLabel
+    _ = self.friendsLabel
       |> UILabel.lens.textColor .~ .ksr_navy_600
       |> UILabel.lens.font .~ .ksr_subhead()
       |> UILabel.lens.text %~ { _ in Strings.social_following_stats_friends() }
 
-    self.friendsCountLabel
+    _ = self.friendsCountLabel
       |> UILabel.lens.textColor .~ .ksr_navy_900
       |> UILabel.lens.font .~ .ksr_title2()
 
-    self.backedProjectsLabel
+    _ = self.backedProjectsLabel
       |> UILabel.lens.textColor .~ .ksr_text_navy_600
       |> UILabel.lens.font .~ .ksr_subhead()
       |> UILabel.lens.text %~ { _ in Strings.social_following_stats_backed_projects() }
 
-    self.self.backedProjectsCountLabel
+    _ = self.self.backedProjectsCountLabel
       |> UILabel.lens.textColor .~ .ksr_text_navy_900
       |> UILabel.lens.font .~ .ksr_title2()
 
-    self.followAllButton
+    _ = self.followAllButton
       |> borderButtonStyle
       |> UIButton.lens.targets .~ [(self, action: #selector(followAllButtonTapped), .touchUpInside)]
 
-    self.bulletSeparatorView
+    _ = self.bulletSeparatorView
       |> UIView.lens.backgroundColor .~ .ksr_grey_500
       |> UIView.lens.alpha .~ 0.7
 
-    self
+    _ = self
       |> baseTableViewCellStyle()
       |> UITableViewCell.lens.contentView.layoutMargins %~~ { _, cell in
         cell.traitCollection.isRegularRegular

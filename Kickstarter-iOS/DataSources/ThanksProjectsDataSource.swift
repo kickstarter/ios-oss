@@ -25,11 +25,11 @@ internal final class ThanksProjectsDataSource: ValueCellDataSource {
     }
   }
 
-  internal func projectAtIndexPath(_ indexPath: NSIndexPath) -> Project? {
-    return self[indexPath as IndexPath] as? Project
+  internal func projectAtIndexPath(_ indexPath: IndexPath) -> Project? {
+    return self[indexPath] as? Project
   }
 
-  internal func categoryAtIndexPath(_ indexPath: NSIndexPath) -> KsApi.Category? {
-    return self[indexPath as IndexPath] as? KsApi.Category
+  internal func categoryAtIndexPath(_ indexPath: IndexPath) -> KsApi.Category? {
+    return self[indexPath] as? KsApi.Category
   }
 }

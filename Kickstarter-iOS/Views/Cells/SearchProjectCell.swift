@@ -18,14 +18,14 @@ internal final class SearchProjectCell: UITableViewCell, ValueCell {
     self.projectImageView.image = nil
     self.projectImageView.af_cancelImageRequest()
     if let url = URL(string: project.photo.med) {
-      self.projectImageView.af_setImageWithURL(url)
+      self.projectImageView.ksr_setImageWithURL(url)
     }
   }
 
   internal override func bindStyles() {
     super.bindStyles()
 
-    self
+    _ = self
       |> baseTableViewCellStyle()
       |> SearchProjectCell.lens.backgroundColor .~ .clear
       |> SearchProjectCell.lens.contentView.layoutMargins %~~ { _, cell in
@@ -34,8 +34,8 @@ internal final class SearchProjectCell: UITableViewCell, ValueCell {
           : .init(topBottom: Styles.grid(2), leftRight: Styles.grid(2))
     }
 
-    self.columnsStackView
-      |> UIStackView.lens.alignment .~ .Top
+    _ = self.columnsStackView
+      |> UIStackView.lens.alignment .~ .top
       |> UIStackView.lens.spacing %~~ { _, stackView in
         stackView.traitCollection.isRegularRegular
           ? Styles.grid(4)
@@ -44,16 +44,16 @@ internal final class SearchProjectCell: UITableViewCell, ValueCell {
       |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
       |> UIStackView.lens.layoutMargins .~ .init(topBottom: 0, leftRight: Styles.grid(2))
 
-    self.imageShadowView
+    _ = self.imageShadowView
       |> dropShadowStyle()
 
-    self.projectImageView
+    _ = self.projectImageView
       |> UIImageView.lens.contentMode .~ .scaleAspectFill
       |> UIImageView.lens.clipsToBounds .~ true
 
     self.projectImageWidthConstraint.constant = self.traitCollection.isRegularRegular ? 140 : 80
 
-    self.projectLabel
+    _ = self.projectLabel
       |> UILabel.lens.font %~~ { _, label in
         label.traitCollection.isRegularRegular
           ? .ksr_title3()
@@ -61,11 +61,11 @@ internal final class SearchProjectCell: UITableViewCell, ValueCell {
       }
       |> UILabel.lens.textColor .~ .ksr_text_navy_600
 
-    self.projectNameContainerView
+    _ = self.projectNameContainerView
       |> UIView.lens.layoutMargins .~ .init(top: Styles.grid(1), left: 0, bottom: 0, right: 0)
       |> UIView.lens.backgroundColor .~ .clear
 
-    self.separateView
+    _ = self.separateView
       |> separatorStyle
   }
 }

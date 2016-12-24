@@ -62,7 +62,7 @@ internal final class ProfileProjectCell: UICollectionViewCell, ValueCell {
         })
       .skipNil()
       .observeValues { [weak self] url in
-        self?.projectImageView.af_setImageWithURL(url)
+        self?.projectImageView.af_setImage(withURL: url)
     }
 
     self.progressView.rac.hidden = self.viewModel.outputs.progressHidden

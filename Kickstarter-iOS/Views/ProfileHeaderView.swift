@@ -56,7 +56,7 @@ internal final class ProfileHeaderView: UICollectionReusableView, ValueCell {
         })
       .skipNil()
       .observeValues { [weak self] url in
-        self?.avatarImageView.af_setImageWithURL(url)
+        self?.avatarImageView.ksr_setImageWithURL(url)
     }
   }
 }

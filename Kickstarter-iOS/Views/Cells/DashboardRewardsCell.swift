@@ -43,29 +43,31 @@ internal final class DashboardRewardsCell: UITableViewCell, ValueCell {
   }
 
   internal override func bindStyles() {
-    self
+    super.bindStyles()
+
+    _ = self
       |> baseTableViewCellStyle()
 
-    self.containerView
+    _ = self.containerView
       |> UIView.lens.backgroundColor .~ .white
       |> dashboardCardStyle
 
-    self.rewardsTitle
+    _ = self.rewardsTitle
       |> dashboardRewardTitleLabelStyle
 
-    self.topRewardsButton
+    _ = self.topRewardsButton
       |> dashboardColumnTitleButtonStyle
       |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.dashboard_graphs_rewards_top_rewards() }
 
-    self.backersButton
+    _ = self.backersButton
       |> dashboardColumnTitleButtonStyle
       |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.dashboard_graphs_rewards_backers() }
 
-    self.pledgedButton
+    _ = self.pledgedButton
       |> dashboardColumnTitleButtonStyle
       |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.dashboard_graphs_rewards_pledged() }
 
-    self.seeAllTiersButton
+    _ = self.seeAllTiersButton
       |> dashboardGreenTextBorderButtonStyle
       |> UIButton.lens.title(forState: .normal) %~ { _ in
         Strings.dashboard_graphs_rewards_view_more_reward_stats()

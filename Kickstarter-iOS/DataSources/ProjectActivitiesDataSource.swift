@@ -22,11 +22,11 @@ internal final class ProjectActivitiesDataSource: ValueCellDataSource {
 
     projectActivityData.activities
       .groupedBy { activity in
-        return AppEnvironment.current.calendar.startOfDayForDate(
-          Date(timeIntervalSince1970: activity.createdAt)
+        return AppEnvironment.current.calendar.startOfDay(
+          for: Date(timeIntervalSince1970: activity.createdAt)
         )
       }
-      .sort { $0.0.timeIntervalSince1970 > $1.0.timeIntervalSince1970 }
+      .sorted { $0.0.timeIntervalSince1970 > $1.0.timeIntervalSince1970 }
       .forEach { date, activitiesForDate in
 
         if projectActivityData.groupedDates {
@@ -117,8 +117,8 @@ internal final class ProjectActivitiesDataSource: ValueCellDataSource {
     }
   }
 
-  internal func activityAndProjectAtIndexPath(_ indexPath: NSIndexPath) -> (Activity, Project)? {
-    guard let value = self[indexPath as IndexPath] as? (Activity, Project) else { return nil }
+  internal func activityAndProjectAtIndexPath(_ indexPath: IndexPath) -> (Activity, Project)? {
+    guard let value = self[indexPath] as? (Activity, Project) else { return nil }
     return value
   }
 }

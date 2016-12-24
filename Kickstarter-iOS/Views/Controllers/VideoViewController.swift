@@ -25,7 +25,7 @@ internal final class VideoViewController: UIViewController {
   @IBOutlet fileprivate weak var videoContainerView: UIView!
 
   internal static func configuredWith(project: Project) -> VideoViewController {
-    let vc = Storyboard.Video.instantiate(VideoViewController)
+    let vc = Storyboard.Video.instantiate(VideoViewController.self)
     vc.viewModel.inputs.configureWith(project: project)
     return vc
   }
@@ -58,13 +58,13 @@ internal final class VideoViewController: UIViewController {
   internal override func bindStyles() {
     super.bindStyles()
 
-    self.playButton
+    _ = self.playButton
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.accessibility_projects_buttons_play_video() }
 
-    self.projectImageView
+    _ = self.projectImageView
       |> UIImageView.lens.accessibilityElementsHidden .~ true
 
-    self.videoOverlayView
+    _ = self.videoOverlayView
       |> UIView.lens.backgroundColor .~ .black
       |> UIView.lens.alpha .~ 0.1
   }
@@ -131,7 +131,7 @@ internal final class VideoViewController: UIViewController {
         })
       .skipNil()
       .observeValues { [weak self] url in
-        self?.projectImageView.af_setImageWithURL(url)
+        self?.projectImageView.ksr_setImageWithURL(url)
     }
 
     self.viewModel.outputs.seekToBeginning

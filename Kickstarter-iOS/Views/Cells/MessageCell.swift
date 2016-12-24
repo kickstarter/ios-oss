@@ -48,7 +48,7 @@ internal final class MessageCell: UITableViewCell, ValueCell {
       })
       .skipNil()
       .observeValues { [weak self] in
-        self?.avatarImageView.af_setImageWithURL($0)
+        self?.avatarImageView.af_setImage(withURL: $0)
     }
   }
 }

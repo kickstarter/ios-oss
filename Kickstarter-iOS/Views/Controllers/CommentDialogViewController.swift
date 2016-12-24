@@ -35,7 +35,7 @@ internal final class CommentDialogViewController: UIViewController {
 
   internal static func configuredWith(project: Project, update: Update?, recipient: User?,
                                       context: Koala.CommentDialogContext) -> CommentDialogViewController {
-    let vc = Storyboard.Comments.instantiate(CommentDialogViewController)
+    let vc = Storyboard.Comments.instantiate(CommentDialogViewController.self)
     vc.viewModel.inputs.configureWith(project: project, update: update, recipient: recipient,
                                       context: context)
     return vc
@@ -44,13 +44,13 @@ internal final class CommentDialogViewController: UIViewController {
   internal override func bindStyles() {
     super.bindStyles()
 
-    self.postButton
+    _ = self.postButton
       |> UIBarButtonItem.lens.title %~ { _ in Strings.social_buttons_post() }
 
-    self.titleLabel
+    _ = self.titleLabel
       |> UILabel.lens.text %~ { _ in Strings.Public_comment() }
 
-    self.cancelButton
+    _ = self.cancelButton
       |> UIBarButtonItem.lens.title %~ { _ in
         Strings.dashboard_post_update_compose_attachment_buttons_cancel()
     }
@@ -67,7 +67,7 @@ internal final class CommentDialogViewController: UIViewController {
     self.viewModel.outputs.showKeyboard
       .observeForControllerAction()
       .observeValues { [weak textView = self.bodyTextView] show in
-        show ? textView?.becomeFirstResponder() : textView?.resignFirstResponder()
+        _ = show ? textView?.becomeFirstResponder() : textView?.resignFirstResponder()
     }
 
     self.viewModel.outputs.notifyPresenterDialogWantsDismissal

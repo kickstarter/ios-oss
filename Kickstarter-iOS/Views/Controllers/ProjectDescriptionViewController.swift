@@ -26,7 +26,7 @@ internal final class ProjectDescriptionViewController: WebViewController {
   override func bindStyles() {
     super.bindStyles()
 
-    self
+    _ = self
       |> baseControllerStyle()
       |> WebViewController.lens.title %~ { _ in Strings.project_menu_buttons_campaign() }
       |> (WebViewController.lens.webView.scrollView • UIScrollView.lens.delaysContentTouches) .~ false
@@ -43,7 +43,7 @@ internal final class ProjectDescriptionViewController: WebViewController {
     self.viewModel.outputs.goBackToProject
       .observeForControllerAction()
       .observeValues { [weak self] _ in
-        self?.navigationController?.popViewController(animated: true)
+        _ = self?.navigationController?.popViewController(animated: true)
     }
 
     self.viewModel.outputs.goToSafariBrowser
@@ -55,7 +55,7 @@ internal final class ProjectDescriptionViewController: WebViewController {
     self.viewModel.outputs.loadWebViewRequest
       .observeForControllerAction()
       .observeValues { [weak self] in
-        self?.webView.load($0)
+        _ = self?.webView.load($0)
     }
   }
 

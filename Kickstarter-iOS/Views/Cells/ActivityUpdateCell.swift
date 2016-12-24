@@ -46,7 +46,7 @@ internal final class ActivityUpdateCell: UITableViewCell, ValueCell {
       })
       .skipNil()
       .observeValues { [weak projectImageView] url in
-        projectImageView?.af_setImageWithURL(url)
+        projectImageView?.af_setImage(withURL: url)
     }
 
     self.viewModel.outputs.notifyDelegateTappedProjectImage

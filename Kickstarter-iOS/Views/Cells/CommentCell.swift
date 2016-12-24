@@ -84,7 +84,7 @@ internal final class CommentCell: UITableViewCell, ValueCell {
         })
       .skipNil()
       .observeValues { [weak self] url in
-        self?.avatarImageView.af_setImageWithURL(url)
+        self?.avatarImageView.af_setImage(withURL: url)
     }
 
     self.viewModel.outputs.bodyColor

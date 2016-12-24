@@ -17,7 +17,7 @@ internal final class SearchViewController: UITableViewController {
   @IBOutlet fileprivate weak var searchTextField: UITextField!
 
   internal static func instantiate() -> SearchViewController {
-    return Storyboard.Search.instantiate(SearchViewController)
+    return Storyboard.Search.instantiate(SearchViewController.self)
   }
 
   internal override func viewDidLoad() {
@@ -52,38 +52,38 @@ internal final class SearchViewController: UITableViewController {
   internal override func bindStyles() {
     super.bindStyles()
 
-    self
+    _ = self
       |> baseTableControllerStyle(estimatedRowHeight: 86)
       |> SearchViewController.lens.view.backgroundColor .~ .ksr_grey_200
 
-    self.cancelButton
+    _ = self.cancelButton
       |> UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_navy_700
       |> UIButton.lens.titleLabel.font .~ .ksr_callout(size:16)
       |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.discovery_search_cancel() }
 
-    self.searchBarContainerView
+    _ = self.searchBarContainerView
       |> roundedStyle()
       |> UIView.lens.backgroundColor .~ .ksr_grey_200
 
-    self.searchIconImageView
+    _ = self.searchIconImageView
       |> UIImageView.lens.tintColor .~ .ksr_navy_500
       |> UIImageView.lens.image .~ image(named: "search-icon")
 
-    self.searchStackView
+    _ = self.searchStackView
       |> UIStackView.lens.spacing .~ Styles.grid(1)
 
-    self.searchTextField
+    _ = self.searchTextField
       |> UITextField.lens.font .~ .ksr_body(size: 14)
       |> UITextField.lens.textColor .~ .ksr_text_navy_700
       |> UITextField.lens.placeholder %~ { _ in Strings.tabbar_search() }
 
-    self.tableView
+    _ = self.tableView
       |> UITableView.lens.keyboardDismissMode .~ .onDrag
 
-    self.navigationController
+    _ = self.navigationController
       ?|> UINavigationController.lens.navigationBar.barTintColor .~ .white
 
-    self.navigationController?.navigationBar
+    _ = self.navigationController?.navigationBar
       ?|> baseNavigationBarStyle
   }
 

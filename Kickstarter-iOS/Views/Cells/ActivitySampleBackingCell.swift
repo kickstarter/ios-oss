@@ -33,28 +33,28 @@ internal final class ActivitySampleBackingCell: UITableViewCell, ValueCell {
   internal override func bindStyles() {
     super.bindStyles()
 
-    self
+    _ = self
       |> activitySampleCellStyle
       |> UITableViewCell.lens.accessibilityHint %~ { _ in
         Strings.dashboard_tout_accessibility_hint_opens_project()
     }
 
-    self.activityStackView
+    _ = self.activityStackView
       |> activitySampleStackViewStyle
 
-    self.activityTitleLabel
+    _ = self.activityTitleLabel
       |> activitySampleTitleLabelStyle
 
-    self.backerImageAndInfoStackView
+    _ = self.backerImageAndInfoStackView
       |> UIStackView.lens.spacing .~ Styles.grid(2)
 
-    self.backingTitleLabel
+    _ = self.backingTitleLabel
       |> activitySampleBackingTitleLabelStyle
 
-    self.cardView
+    _ = self.cardView
       |> dropShadowStyle()
 
-    self.seeAllActivityButton
+    _ = self.seeAllActivityButton
       |> activitySampleSeeAllActivityButtonStyle
   }
 
@@ -69,7 +69,7 @@ internal final class ActivitySampleBackingCell: UITableViewCell, ValueCell {
         })
       .skipNil()
       .observeValues { [weak self] url in
-        self?.backerImageView.af_setImageWithURL(url)
+        self?.backerImageView.ksr_setImageWithURL(url)
     }
 
     self.viewModel.outputs.backingTitleText

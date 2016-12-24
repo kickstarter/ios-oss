@@ -84,7 +84,7 @@ internal final class ActivitySampleProjectCell: UITableViewCell, ValueCell {
         })
       .skipNil()
       .observeValues { [weak self] url in
-        self?.projectImageView.af_setImageWithURL(url)
+        self?.projectImageView.ksr_setImageWithURL(url)
     }
   }
 

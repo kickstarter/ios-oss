@@ -13,7 +13,7 @@ internal final class ProjectBannerCell: UITableViewCell, ValueCell {
     self.projectImageView.af_cancelImageRequest()
     self.projectImageView.image = nil
     if let url = URL(string: project.photo.full) {
-      self.projectImageView.af_setImageWithURL(url)
+      self.projectImageView.af_setImage(withURL: url)
     }
   }
 }

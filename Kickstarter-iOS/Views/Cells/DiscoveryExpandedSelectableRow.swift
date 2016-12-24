@@ -8,7 +8,7 @@ internal final class DiscoveryExpandedSelectableRowCell: UITableViewCell, ValueC
   @IBOutlet fileprivate weak var circleImageView: UIImageView!
   @IBOutlet fileprivate weak var checkImageView: UIImageView!
 
-  internal var isSelected: Bool = false
+  internal var rowIsSelected: Bool = false
 
   internal func configureWith(value: (row: SelectableRow, categoryId: Int?)) {
     if let category = value.row.params.category, category.isRoot {
@@ -33,7 +33,7 @@ internal final class DiscoveryExpandedSelectableRowCell: UITableViewCell, ValueC
       |> UILabel.lens.textColor .~ discoverySecondaryColor(forCategoryId: value.categoryId)
       |> UILabel.lens.numberOfLines .~ 2
 
-    self.isSelected = value.row.isSelected
+    self.rowIsSelected = value.row.isSelected
   }
 
   override func bindStyles() {
@@ -59,8 +59,8 @@ internal final class DiscoveryExpandedSelectableRowCell: UITableViewCell, ValueC
     self.filterTitleLabel
       |> UILabel.lens.font %~~ { _, label in
         label.traitCollection.isRegularRegular
-          ? self.isSelected ? UIFont.ksr_subhead(size: 18).bolded : .ksr_subhead(size: 18)
-          : self.isSelected ? UIFont.ksr_subhead().bolded : .ksr_subhead() }
+          ? self.rowIsSelected ? UIFont.ksr_subhead(size: 18).bolded : .ksr_subhead(size: 18)
+          : self.rowIsSelected ? UIFont.ksr_subhead().bolded : .ksr_subhead() }
   }
 
   internal func animateIn(delayOffset: Int) {

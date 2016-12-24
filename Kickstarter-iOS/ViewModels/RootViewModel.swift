@@ -116,7 +116,7 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
       }
       .map { $0.compact() }
 
-    let viewControllers = combineLatest(standardViewControllers, personalizedViewControllers).map(+)
+    let viewControllers = Signal.combineLatest(standardViewControllers, personalizedViewControllers).map(+)
 
     self.setViewControllers = viewControllers
       .map { $0.map(UINavigationController.init(rootViewController:)) }
@@ -124,29 +124,29 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
     let loginState = userState.map { $0.isLoggedIn }
     let vcCount = self.setViewControllers.map { $0.count }
 
-    let switchToLogin = combineLatest(vcCount, loginState)
+    let switchToLogin = Signal.combineLatest(vcCount, loginState)
       .takeWhen(self.switchToLoginProperty.signal)
       .filter { isFalse($1) }
       .map(first)
 
-    let switchToProfile = combineLatest(vcCount, loginState)
+    let switchToProfile = Signal.combineLatest(vcCount, loginState)
       .takeWhen(self.switchToProfileProperty.signal)
       .filter { isTrue($1) }
       .map(first)
 
     let discovery = viewControllers
-      .map(first(DiscoveryViewController))
+      .map(first(DiscoveryViewController.self))
       .skipNil()
 
     self.filterDiscovery =
-      combineLatest(discovery, self.switchToDiscoveryProperty.signal.skipNil())
+      Signal.combineLatest(discovery, self.switchToDiscoveryProperty.signal.skipNil())
 
     let dashboard = viewControllers
-      .map(first(DashboardViewController))
+      .map(first(DashboardViewController.self))
       .skipNil()
 
     self.switchDashboardProject =
-      combineLatest(dashboard, self.switchToDashboardProperty.signal.skipNil(),
+      Signal.combineLatest(dashboard, self.switchToDashboardProperty.signal.skipNil(),
         loginState)
         .filter { _, _, loginState in
           isTrue(loginState)
@@ -156,7 +156,7 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
     }
 
     self.selectedIndex =
-      combineLatest(
+      Signal.combineLatest(
         .merge(
           self.didSelectIndexProperty.signal,
           self.switchToActivitiesProperty.signal.mapConst(1),
@@ -178,7 +178,7 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
       .takePairWhen(selectedTabAgain)
       .map { vcs, idx in vcs[idx] }
 
-    self.tabBarItemsData = combineLatest(currentUser, self.viewDidLoadProperty.signal)
+    self.tabBarItemsData = Signal.combineLatest(currentUser, self.viewDidLoadProperty.signal)
       .map(first)
       .map(tabData(forUser:))
   }

@@ -13,7 +13,7 @@ internal protocol HelpWebViewModelInputs {
 
 internal protocol HelpWebViewModelOutputs {
   /// Emits a request that should be loaded into the webview.
-  var webViewLoadRequest: Signal<NSURLRequest, NoError> { get }
+  var webViewLoadRequest: Signal<URLRequest, NoError> { get }
 }
 
 internal protocol HelpWebViewModelType {
@@ -33,7 +33,7 @@ internal final class HelpWebViewModel: HelpWebViewModelType, HelpWebViewModelInp
   internal var inputs: HelpWebViewModelInputs { return self }
   internal var outputs: HelpWebViewModelOutputs { return self }
 
-  internal let webViewLoadRequest: Signal<NSURLRequest, NoError>
+  internal let webViewLoadRequest: Signal<URLRequest, NoError>
 
   fileprivate let helpTypeProperty = MutableProperty<HelpType?>(nil)
   func configureWith(helpType: HelpType) {
@@ -48,18 +48,18 @@ internal final class HelpWebViewModel: HelpWebViewModelType, HelpWebViewModelInp
 private func urlForHelpType(_ helpType: HelpType, baseUrl: URL) -> URL? {
   switch helpType {
   case .cookie:
-    return baseUrl.URLByAppendingPathComponent("cookies")
+    return baseUrl.appendingPathComponent("cookies")
   case .contact:
     return nil
   case .faq:
-    return baseUrl.URLByAppendingPathComponent("help/faq/kickstarter+basics")
+    return baseUrl.appendingPathComponent("help/faq/kickstarter+basics")
   case .howItWorks:
-    return baseUrl.URLByAppendingPathComponent("about")
+    return baseUrl.appendingPathComponent("about")
   case .privacy:
-    return baseUrl.URLByAppendingPathComponent("privacy")
+    return baseUrl.appendingPathComponent("privacy")
   case .terms:
-    return baseUrl.URLByAppendingPathComponent("terms-of-use")
+    return baseUrl.appendingPathComponent("terms-of-use")
   case .trust:
-    return baseUrl.URLByAppendingPathComponent("trust")
+    return baseUrl.appendingPathComponent("trust")
   }
 }

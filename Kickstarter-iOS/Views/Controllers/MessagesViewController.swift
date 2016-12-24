@@ -22,7 +22,7 @@ internal final class MessagesViewController: UITableViewController {
   }
 
   fileprivate static func instantiate() -> MessagesViewController {
-    return Storyboard.Messages.instantiate(MessagesViewController)
+    return Storyboard.Messages.instantiate(MessagesViewController.self)
   }
 
   internal override func viewDidLoad() {

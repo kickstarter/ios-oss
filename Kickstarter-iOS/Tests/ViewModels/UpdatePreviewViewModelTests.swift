@@ -42,7 +42,7 @@ final class UpdatePreviewViewModelTests: TestCase {
     )
 
     let redirectUrl = "https://www.kickstarter.com/projects/smashmouth/somebody-once-told-me/posts/1"
-    let request = NSURLRequest(URL: NSURL(string: redirectUrl)!)
+    let request = URLRequest(URL: URL(string: redirectUrl)!)
     let navigationAction = WKNavigationActionData(
       navigationType: .Other,
       request: request,

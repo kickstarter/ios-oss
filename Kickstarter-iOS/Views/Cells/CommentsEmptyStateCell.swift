@@ -43,12 +43,12 @@ internal final class CommentsEmptyStateCell: UITableViewCell, ValueCell {
   internal override func bindStyles() {
     super.bindStyles()
 
-    self
+    _ = self
       |> baseTableViewCellStyle()
       |> CommentsEmptyStateCell.lens.contentView.layoutMargins .~
       .init(topBottom: Styles.grid(9), leftRight: Styles.grid(3))
 
-    self.leaveACommentButton
+    _ = self.leaveACommentButton
       |> borderButtonStyle
       |> UIButton.lens.title(forState: .normal) %~ { _ in
         Strings.project_comments_empty_state_backer_button()
@@ -58,24 +58,24 @@ internal final class CommentsEmptyStateCell: UITableViewCell, ValueCell {
         Strings.accessibility_dashboard_buttons_post_update_hint()
     }
 
-    self.backProjectButton
+    _ = self.backProjectButton
       |> borderButtonStyle
       |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.project_back_button() }
 
-    self.loginButton
+    _ = self.loginButton
       |> borderButtonStyle
       |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.login_buttons_log_in() }
 
-    self.rootStackView
+    _ = self.rootStackView
       |> UIStackView.lens.alignment .~ .center
       |> UIStackView.lens.spacing .~ Styles.grid(5)
 
-    self.subtitleLabel
+    _ = self.subtitleLabel
       |> UILabel.lens.font .~ .ksr_body(size: 16.0)
       |> UILabel.lens.textColor .~ .ksr_text_navy_700
       |> UILabel.lens.textAlignment .~ .center
 
-    self.titleLabel
+    _ = self.titleLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 18.0)
       |> UILabel.lens.textColor .~ .ksr_text_navy_700
       |> UILabel.lens.text %~ { _ in Strings.No_comments_yet() }

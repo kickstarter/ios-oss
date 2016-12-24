@@ -8,7 +8,7 @@ internal final class ProjectActivitiesViewController: UITableViewController {
   fileprivate let dataSource = ProjectActivitiesDataSource()
 
   internal static func configuredWith(project: Project) -> ProjectActivitiesViewController {
-    let vc = Storyboard.ProjectActivity.instantiate(ProjectActivitiesViewController)
+    let vc = Storyboard.ProjectActivity.instantiate(ProjectActivitiesViewController.self)
     vc.viewModel.inputs.configureWith(project)
     return vc
   }
@@ -18,7 +18,7 @@ internal final class ProjectActivitiesViewController: UITableViewController {
 
     self.viewModel.inputs.viewDidLoad()
 
-    self.navigationController?.navigationBar
+    _ = self.navigationController?.navigationBar
       ?|> baseNavigationBarStyle
 
     self.tableView.dataSource = dataSource
@@ -64,10 +64,10 @@ internal final class ProjectActivitiesViewController: UITableViewController {
   internal override func bindStyles() {
     super.bindStyles()
 
-    self
+    _ = self
       |> baseTableControllerStyle(estimatedRowHeight: 200.0)
 
-    self.navigationController
+    _ = self.navigationController
       ?|> UINavigationController.lens.navigationBar.barTintColor .~ .white
 
     self.title = Strings.activity_navigation_title_activity()

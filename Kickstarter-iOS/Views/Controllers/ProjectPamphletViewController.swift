@@ -18,7 +18,7 @@ internal final class ProjectPamphletViewController: UIViewController {
   internal static func configuredWith(projectOrParam: Either<Project, Param>, refTag: RefTag?)
     -> ProjectPamphletViewController {
 
-      let vc = Storyboard.ProjectPamphlet.instantiate(ProjectPamphletViewController)
+      let vc = Storyboard.ProjectPamphlet.instantiate(ProjectPamphletViewController.self)
       vc.viewModel.inputs.configureWith(projectOrParam: projectOrParam, refTag: refTag)
       return vc
   }

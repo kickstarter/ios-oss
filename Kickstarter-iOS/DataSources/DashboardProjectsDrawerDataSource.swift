@@ -18,8 +18,8 @@ internal final class DashboardProjectsDrawerDataSource: ValueCellDataSource {
     }
   }
 
-  internal func projectAtIndexPath(_ indexPath: NSIndexPath) -> Project? {
-    guard let data = self[indexPath as IndexPath] as? ProjectsDrawerData else { return nil }
+  internal func projectAtIndexPath(_ indexPath: IndexPath) -> Project? {
+    guard let data = self[indexPath] as? ProjectsDrawerData else { return nil }
     return data.project
   }
 }

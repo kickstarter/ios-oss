@@ -36,19 +36,19 @@ internal final class ActivityFriendFollowCell: UITableViewCell, ValueCell {
   override func bindStyles() {
     super.bindStyles()
 
-    self
+    _ = self
       |> feedTableViewCellStyle
 
-    self.cardView
+    _ = self.cardView
       |> dropShadowStyle()
 
-    self.containerView
+    _ = self.containerView
       |> UIView.lens.layoutMargins .~ .init(topBottom: Styles.grid(3), leftRight: Styles.grid(2))
 
-    self.friendLabel
+    _ = self.friendLabel
       |> UILabel.lens.textColor .~ .ksr_text_navy_700
 
-    self.followButton
+    _ = self.followButton
       |> navyButtonStyle
       |> UIButton.lens.targets .~ [(self, action: #selector(followButtonTapped), .touchUpInside)]
       |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.social_following_friend_buttons_follow() }

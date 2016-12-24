@@ -19,14 +19,14 @@ internal final class ProjectPamphletMinimalCell: UITableViewCell, ValueCell {
   internal override func bindStyles() {
     super.bindStyles()
 
-    self.activityIndicator
+    _ = self.activityIndicator
       |> UIActivityIndicatorView.lens.tintColor .~ .ksr_navy_700
 
-    self.projectImageView
-      |> UIImageView.lens.contentMode .~ .ScaleAspectFit
+    _ = self.projectImageView
+      |> UIImageView.lens.contentMode .~ .scaleAspectFit
       |> UIImageView.lens.backgroundColor .~ .black
 
-    self.projectNameLabel
+    _ = self.projectNameLabel
       |> UILabel.lens.font %~~ { _, label in
         label.traitCollection.isRegularRegular
           ? .ksr_title3(size: 28)
@@ -35,7 +35,7 @@ internal final class ProjectPamphletMinimalCell: UITableViewCell, ValueCell {
       |> UILabel.lens.textColor .~ .ksr_text_navy_700
       |> UILabel.lens.numberOfLines .~ 0
 
-    self.projectNameStackView
+    _ = self.projectNameStackView
       |> UIStackView.lens.spacing .~ Styles.grid(6)
       |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
       |> UIStackView.lens.layoutMargins %~~ { _, view in

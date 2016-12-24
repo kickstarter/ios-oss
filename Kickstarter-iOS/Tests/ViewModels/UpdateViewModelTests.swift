@@ -17,7 +17,7 @@ final class UpdateViewModelTests: TestCase {
 
   private let goToComments = TestObserver<Update, NoError>()
   private let goToProject = TestObserver<Project, NoError>()
-  private let goToSafariBrowser = TestObserver<NSURL, NoError>()
+  private let goToSafariBrowser = TestObserver<URL, NoError>()
   private let title = TestObserver<String, NoError>()
   private let webViewLoadRequest = TestObserver<String?, NoError>()
 
@@ -55,7 +55,7 @@ final class UpdateViewModelTests: TestCase {
       |> Update.lens.id .~ 42
       |> Update.lens.sequence .~ 42
 
-    let prevUpdateUrl = NSURL(string: prevUpdate.urls.web.update)
+    let prevUpdateUrl = URL(string: prevUpdate.urls.web.update)
       .flatMap { $0.URLByDeletingLastPathComponent }
       .map { $0.URLByAppendingPathComponent(String(prevUpdate.id)) }!
 
@@ -64,7 +64,7 @@ final class UpdateViewModelTests: TestCase {
 
     withEnvironment(apiService: MockService(fetchUpdateResponse: prevUpdate)) {
 
-      let request = NSURLRequest(URL: optionalize(prevUpdateUrl)!)
+      let request = URLRequest(URL: optionalize(prevUpdateUrl)!)
       let navigationAction = WKNavigationActionData(
         navigationType: .LinkActivated,
         request: request,
@@ -95,7 +95,7 @@ final class UpdateViewModelTests: TestCase {
 
   func testGoToProject() {
     let anotherProject = .template |> Project.lens.id .~ 42
-    let anotherProjectUrl = NSURL(string: anotherProject.urls.web.project)
+    let anotherProjectUrl = URL(string: anotherProject.urls.web.project)
       .flatMap { $0.URLByDeletingLastPathComponent }
       .map { $0.URLByAppendingPathComponent(String(anotherProject.id)) }!
 
@@ -104,7 +104,7 @@ final class UpdateViewModelTests: TestCase {
 
     withEnvironment(apiService: MockService(fetchProjectResponse: anotherProject)) {
 
-      let request = NSURLRequest(URL: optionalize(anotherProjectUrl)!)
+      let request = URLRequest(URL: optionalize(anotherProjectUrl)!)
       let navigationAction = WKNavigationActionData(
         navigationType: .LinkActivated,
         request: request,
@@ -129,9 +129,9 @@ final class UpdateViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: self.project, update: self.update)
     self.vm.inputs.viewDidLoad()
 
-    let commentsRequest = NSURL(string: self.update.urls.web.update)
+    let commentsRequest = URL(string: self.update.urls.web.update)
       .map { $0.URLByAppendingPathComponent("comments") }
-      .flatMap(NSURLRequest.init(URL:))!
+      .flatMap(URLRequest.init(URL:))!
 
     let navigationAction = WKNavigationActionData(
       navigationType: .LinkActivated,
@@ -149,7 +149,7 @@ final class UpdateViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: self.project, update: self.update)
     self.vm.inputs.viewDidLoad()
 
-    let updateRequest = NSURLRequest(URL: NSURL(string: self.update.urls.web.update)!)
+    let updateRequest = URLRequest(URL: URL(string: self.update.urls.web.update)!)
     var navigationAction = WKNavigationActionData(
       navigationType: .Other,
       request: updateRequest,
@@ -161,8 +161,8 @@ final class UpdateViewModelTests: TestCase {
                    self.vm.inputs.decidePolicyFor(navigationAction: navigationAction).rawValue)
     self.webViewLoadRequest.assertValueCount(1)
 
-    let outsideUrl = NSURL(string: "http://www.wikipedia.com")!
-    let outsideRequest = NSURLRequest(URL: outsideUrl)
+    let outsideUrl = URL(string: "http://www.wikipedia.com")!
+    let outsideRequest = URLRequest(URL: outsideUrl)
 
     navigationAction = WKNavigationActionData(
       navigationType: .LinkActivated,

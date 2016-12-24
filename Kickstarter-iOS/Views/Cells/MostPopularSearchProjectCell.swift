@@ -100,7 +100,7 @@ internal final class MostPopularSearchProjectCell: UITableViewCell, ValueCell {
       })
       .skipNil()
       .observeValues { [weak self] in
-        self?.projectImageView.af_setImageWithURL($0)
+        self?.projectImageView.af_setImage(withURL: $0)
     }
 
     self.projectNameLabel.rac.text = self.viewModel.outputs.projectNameLabelText

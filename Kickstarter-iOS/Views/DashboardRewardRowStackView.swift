@@ -17,17 +17,17 @@ internal final class DashboardRewardRowStackView: UIStackView {
 
     super.init(frame: frame)
 
-    self
+    _ = self
       |> dashboardStatsRowStackViewStyle
       |> UIStackView.lens.layoutMargins .~ .init(top: 0, left: Styles.grid(1), bottom: 0, right: 0)
 
-    self.rewardsLabel
+    _ = self.rewardsLabel
       |> dashboardColumnTextLabelStyle
       |> UILabel.lens.font .~ UIFont.ksr_subhead().bolded
       |> UILabel.lens.numberOfLines .~ 0
 
-    self.pledgedLabel |> dashboardColumnTextLabelStyle
-    self.backersLabel |> dashboardColumnTextLabelStyle
+    _ = self.pledgedLabel |> dashboardColumnTextLabelStyle
+    _ = self.backersLabel |> dashboardColumnTextLabelStyle
 
     self.addArrangedSubview(self.rewardsLabel)
     self.addArrangedSubview(self.pledgedLabel)

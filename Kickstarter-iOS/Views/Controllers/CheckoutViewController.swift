@@ -15,7 +15,7 @@ internal final class CheckoutViewController: DeprecatedWebViewController {
                                                      project: Project,
                                                      reward: Reward) -> CheckoutViewController {
 
-      let vc = Storyboard.Checkout.instantiate(CheckoutViewController)
+      let vc = Storyboard.Checkout.instantiate(CheckoutViewController.self)
       vc.viewModel.inputs.configureWith(
         initialRequest: initialRequest,
         project: project,

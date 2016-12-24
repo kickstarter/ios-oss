@@ -35,7 +35,7 @@ internal protocol UpdatePreviewViewModelOutputs {
   var showPublishFailure: Signal<(), NoError> { get }
 
   /// Emits a request that should be loaded into the webview.
-  var webViewLoadRequest: Signal<NSURLRequest, NoError> { get }
+  var webViewLoadRequest: Signal<URLRequest, NoError> { get }
 }
 
 internal protocol UpdatePreviewViewModelType {
@@ -68,9 +68,9 @@ internal final class UpdatePreviewViewModel: UpdatePreviewViewModelInputs,
 
     self.policyDecisionProperty <~ self.policyForNavigationActionProperty.signal.skipNil()
       .map { action in
-        action.navigationType == .Other || action.targetFrame?.mainFrame == .Some(false)
-          ? .Allow
-          : .Cancel
+        action.navigationType == .other || action.targetFrame?.mainFrame == .some(false)
+          ? .allow
+          : .cancel
     }
 
     let projectEvent = draft
@@ -94,13 +94,13 @@ internal final class UpdatePreviewViewModel: UpdatePreviewViewModelInputs,
       .takeWhen(self.publishConfirmationButtonTappedProperty.signal)
       .switchMap {
         AppEnvironment.current.apiService.publish(draft: $0)
-          .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
     }
     let update = publishEvent
       .values()
 
-    self.goToUpdate = combineLatest(project, update)
+    self.goToUpdate = Signal.combineLatest(project, update)
     self.showPublishFailure = publishEvent
       .errors()
       .ignoreValues()
@@ -133,7 +133,7 @@ internal final class UpdatePreviewViewModel: UpdatePreviewViewModelInputs,
   // swiftlint:enable function_body_length
 
   fileprivate let policyForNavigationActionProperty = MutableProperty<WKNavigationActionData?>(nil)
-  fileprivate let policyDecisionProperty = MutableProperty(WKNavigationActionPolicy.Allow)
+  fileprivate let policyDecisionProperty = MutableProperty(WKNavigationActionPolicy.allow)
   internal func decidePolicyFor(navigationAction: WKNavigationActionData)
     -> WKNavigationActionPolicy {
       self.policyForNavigationActionProperty.value = navigationAction
@@ -168,7 +168,7 @@ internal final class UpdatePreviewViewModel: UpdatePreviewViewModelInputs,
   let goToUpdate: Signal<(Project, Update), NoError>
   let showPublishConfirmation: Signal<String, NoError>
   let showPublishFailure: Signal<(), NoError>
-  let webViewLoadRequest: Signal<NSURLRequest, NoError>
+  let webViewLoadRequest: Signal<URLRequest, NoError>
 
   internal var inputs: UpdatePreviewViewModelInputs { return self }
   internal var outputs: UpdatePreviewViewModelOutputs { return self }

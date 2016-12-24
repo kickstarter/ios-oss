@@ -13,7 +13,7 @@ internal final class DashboardViewController: UITableViewController {
   fileprivate let shareViewModel: ShareViewModelType = ShareViewModel()
 
   internal static func instantiate() -> DashboardViewController {
-    return Storyboard.Dashboard.instantiate(DashboardViewController)
+    return Storyboard.Dashboard.instantiate(DashboardViewController.self)
   }
 
   internal func `switch`(toProject param: Param) {
@@ -41,9 +41,9 @@ internal final class DashboardViewController: UITableViewController {
   }
 
   override func bindStyles() {
-    self |> baseTableControllerStyle(estimatedRowHeight: 200.0)
+    _ = self |> baseTableControllerStyle(estimatedRowHeight: 200.0)
 
-    self.navigationController?.navigationBar
+    _ = self.navigationController?.navigationBar
       ?|> baseNavigationBarStyle
   }
 

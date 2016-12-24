@@ -311,7 +311,7 @@ AppDelegateViewModelOutputs {
           else { return .init(value: params) }
 
         return AppEnvironment.current.apiService.fetchCategory(param: categoryParam)
-          .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .demoteErrors()
           .map { params |> DiscoveryParams.lens.category .~ $0 }
     }
@@ -479,7 +479,7 @@ AppDelegateViewModelOutputs {
     self.crashManagerDidFinishSendingCrashReportProperty.signal
       .observeValues { AppEnvironment.current.koala.trackCrashedApp() }
 
-    combineLatest(
+    Signal.combineLatest(
       performShortcutItem.enumerated(),
       self.setApplicationShortcutItems
       )

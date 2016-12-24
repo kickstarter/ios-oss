@@ -43,7 +43,7 @@ internal final class ProjectPamphletContentViewController: UITableViewController
   internal override func bindStyles() {
     super.bindStyles()
 
-    self
+    _ = self
       |> baseTableControllerStyle(estimatedRowHeight: 450)
       |> (UITableViewController.lens.tableView • UITableView.lens.delaysContentTouches) .~ false
       |> (UITableViewController.lens.tableView • UITableView.lens.canCancelContentTouches) .~ true

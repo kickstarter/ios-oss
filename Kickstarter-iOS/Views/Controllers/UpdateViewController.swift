@@ -13,7 +13,7 @@ internal final class UpdateViewController: WebViewController {
   @IBOutlet fileprivate weak var shareButton: UIBarButtonItem!
 
   internal static func configuredWith(project: Project, update: Update) -> UpdateViewController {
-    let vc = Storyboard.Update.instantiate(UpdateViewController)
+    let vc = Storyboard.Update.instantiate(UpdateViewController.self)
     vc.viewModel.inputs.configureWith(project: project, update: update)
     vc.shareViewModel.inputs.configureWith(shareContext: .update(project, update))
     return vc
@@ -52,7 +52,7 @@ internal final class UpdateViewController: WebViewController {
 
     self.viewModel.outputs.webViewLoadRequest
       .observeForControllerAction()
-      .observeValues { [weak self] in self?.webView.loadRequest($0) }
+      .observeValues { [weak self] in self?.webView.load($0) }
 
     self.viewModel.outputs.goToComments
       .observeForControllerAction()
@@ -106,10 +106,9 @@ internal final class UpdateViewController: WebViewController {
   fileprivate func showShareSheet(_ activityController: UIActivityViewController) {
 
     activityController.completionWithItemsHandler = { [weak self] in
-      self?.shareViewModel.inputs.shareActivityCompletion(activityType: $0,
-                                                          completed: $1,
-                                                          returnedItems: $2,
-                                                          activityError: $3)
+      self?.shareViewModel.inputs.shareActivityCompletion(
+        with: .init(activityType: $0, completed: $1, returnedItems: $2, activityError: $3)
+      )
     }
 
     if UIDevice.current.userInterfaceIdiom == .pad {

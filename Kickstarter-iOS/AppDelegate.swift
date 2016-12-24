@@ -174,7 +174,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     return self.viewModel.inputs.applicationContinueUserActivity(userActivity)
   }
 
-  func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?,
+  func application(application: UIApplication, openURL url: URL, sourceApplication: String?,
                    annotation: AnyObject) -> Bool {
 
     return self.viewModel.inputs.applicationOpenUrl(application: application,

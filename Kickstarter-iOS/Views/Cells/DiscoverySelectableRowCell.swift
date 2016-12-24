@@ -5,7 +5,7 @@ import UIKit
 internal final class DiscoverySelectableRowCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate weak var filterTitleLabel: UILabel!
 
-  internal var isSelected: Bool = false
+  internal var rowIsSelected: Bool = false
 
   func configureWith(value: (row: SelectableRow, categoryId: Int?)) {
     if value.row.params.staffPicks == true {
@@ -27,24 +27,23 @@ internal final class DiscoverySelectableRowCell: UITableViewCell, ValueCell {
       self.filterTitleLabel.accessibilityLabel = Strings.Filter_by_all_projects()
     }
 
-    self.filterTitleLabel
-      |> discoveryFilterLabelStyle(categoryId: value.categoryId,
-                                                       isSelected: value.row.isSelected)
+    _ = self.filterTitleLabel
+      |> discoveryFilterLabelStyle(categoryId: value.categoryId, isSelected: value.row.rowIsSelected)
       |> UILabel.lens.numberOfLines .~ 0
 
-    self.isSelected = value.row.isSelected
+    self.rowIsSelected = value.row.rowIsSelected
   }
 
   override func bindStyles() {
     super.bindStyles()
 
-    self
+    _ = self
       |> discoveryFilterRowMarginStyle
       |> UITableViewCell.lens.accessibilityTraits .~ UIAccessibilityTraitButton
   }
 
   internal func willDisplay() {
-    self.filterTitleLabel
-      |> discoveryFilterLabelFontStyle(isSelected: self.isSelected)
+    _ = self.filterTitleLabel
+      |> discoveryFilterLabelFontStyle(isSelected: self.rowIsSelected)
   }
 }

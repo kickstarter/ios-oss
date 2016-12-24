@@ -210,14 +210,14 @@ final class RootViewModelTests: TestCase {
       .home(index: 0),
       .activity(index: 1),
       .search(index: 2),
-      .profile(avatarUrl: NSURL(string: user.avatar.small), index: 3)
+      .profile(avatarUrl: URL(string: user.avatar.small), index: 3)
     ]
     let itemsMember: [TabBarItem] = [
       .home(index: 0),
       .activity(index: 1),
       .search(index: 2),
       .dashboard(index: 3),
-      .profile(avatarUrl: NSURL(string: creator.avatar.small), index: 4)
+      .profile(avatarUrl: URL(string: creator.avatar.small), index: 4)
     ]
 
     let tabData = TabBarItemsData(items: items, isLoggedIn: false, isMember: false)

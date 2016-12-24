@@ -136,22 +136,22 @@ public final class RootTabBarViewController: UITabBarController {
     data.items.forEach { item in
       switch item {
       case let .home(index):
-        tabBarItem(atIndex: index) ?|> homeTabBarItemStyle(isMember: data.isMember)
+        _ = tabBarItem(atIndex: index) ?|> homeTabBarItemStyle(isMember: data.isMember)
       case let .activity(index):
-        tabBarItem(atIndex: index) ?|> activityTabBarItemStyle(isMember: data.isMember)
+        _ = tabBarItem(atIndex: index) ?|> activityTabBarItemStyle(isMember: data.isMember)
       case let .search(index):
-        tabBarItem(atIndex: index) ?|> searchTabBarItemStyle
+        _ = tabBarItem(atIndex: index) ?|> searchTabBarItemStyle
       case let .dashboard(index):
-        tabBarItem(atIndex: index) ?|> dashboardTabBarItemStyle
+        _ = tabBarItem(atIndex: index) ?|> dashboardTabBarItemStyle
       case let .profile(avatarUrl, index):
-        tabBarItem(atIndex: index) ?|> profileTabBarItemStyle(isLoggedIn: data.isLoggedIn,
-          isMember: data.isMember)
+        _ = tabBarItem(atIndex: index)
+          ?|> profileTabBarItemStyle(isLoggedIn: data.isLoggedIn, isMember: data.isMember)
 
         guard
           data.isLoggedIn == true,
           let avatarUrl = avatarUrl,
           let dir = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first,
-          let hash = optionalize(avatarUrl.absoluteString)?.hashValue
+          let hash = avatarUrl.absoluteString.hashValue
           else {
             return
         }
@@ -212,9 +212,9 @@ private func scrollToTop(_ viewController: UIViewController) {
 }
 
 private func tabbarAvatarImageFromData(_ data: Data) -> (defaultImage: UIImage?, selectedImage: UIImage?) {
-  let avatar = UIImage(data: data, scale: UIScreen.mainScreen.scale)?
+  let avatar = UIImage(data: data, scale: UIScreen.main.scale)?
     .af_imageRoundedIntoCircle()
-    .af_imageAspectScaledToFitSize(tabBarAvatarSize)
+    .af_imageAspectScaled(toFit: tabBarAvatarSize)
   avatar?.af_inflate()
 
   let deselectedImage = strokedRoundImage(fromImage: avatar,
@@ -243,5 +243,5 @@ private func strokedRoundImage(fromImage image: UIImage?,
   circle.lineWidth = lineWidth
   circle.stroke()
 
-  return optionalize(UIGraphicsGetImageFromCurrentImageContext())?.imageWithRenderingMode(.AlwaysOriginal)
+  return UIGraphicsGetImageFromCurrentImageContext()?.withRenderingMode(.alwaysOriginal)
 }

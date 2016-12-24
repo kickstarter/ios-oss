@@ -132,7 +132,7 @@ internal final class BackingViewController: UIViewController {
         })
       .skipNil()
       .observeValues { [weak backerAvatarImageView] url in
-        backerAvatarImageView?.af_setImageWithURL(url)
+        backerAvatarImageView?.af_setImage(withURL: url)
     }
 
     self.viewModel.outputs.goToMessages

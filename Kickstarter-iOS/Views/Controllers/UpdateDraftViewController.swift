@@ -30,7 +30,7 @@ internal final class UpdateDraftViewController: UIViewController {
   @IBOutlet fileprivate var separatorViews: [UIView]!
 
   internal static func configuredWith(project: Project) -> UpdateDraftViewController {
-    let vc = Storyboard.UpdateDraft.instantiate(UpdateDraftViewController)
+    let vc = Storyboard.UpdateDraft.instantiate(UpdateDraftViewController.self)
     vc.viewModel.inputs.configureWith(project: project)
     return vc
   }
@@ -38,24 +38,24 @@ internal final class UpdateDraftViewController: UIViewController {
   internal override func bindStyles() {
     super.bindStyles()
 
-    self |> baseControllerStyle()
+    _ = self |> baseControllerStyle()
 
-    self.navigationController?.navigationBar ?|> baseNavigationBarStyle
-    self.navigationItem.backBarButtonItem = UIBarButtonItem.back(nil, selector: nil)
+    _ = self.navigationController?.navigationBar ?|> baseNavigationBarStyle
+    _ = self.navigationItem.backBarButtonItem = UIBarButtonItem.back(nil, selector: nil)
 
-    self.closeBarButtonItem |> updateDraftCloseBarButtonItemStyle
-    self.previewBarButtonItem |> updateDraftPreviewBarButtonItemStyle
+    _ = self.closeBarButtonItem |> updateDraftCloseBarButtonItemStyle
+    _ = self.previewBarButtonItem |> updateDraftPreviewBarButtonItemStyle
 
-    self.addAttachmentExpandedButton |> updateAddAttachmentExpandedButtonStyle
-    self.attachmentsScrollView |> updateAttachmentsScrollViewStyle
-    self.attachmentsStackView |> updateAttachmentsStackViewStyle
-    self.addAttachmentButton |> updateAddAttachmentButtonStyle
-    self.bodyPlaceholderTextView |> updateBodyPlaceholderTextViewStyle
-    self.bodyTextView |> updateBodyTextViewStyle
-    self.isBackersOnlyButton |> updateBackersOnlyButtonStyle
-    self.titleTextField |> updateTitleTextFieldStyle
+    _ = self.addAttachmentExpandedButton |> updateAddAttachmentExpandedButtonStyle
+    _ = self.attachmentsScrollView |> updateAttachmentsScrollViewStyle
+    _ = self.attachmentsStackView |> updateAttachmentsStackViewStyle
+    _ = self.addAttachmentButton |> updateAddAttachmentButtonStyle
+    _ = self.bodyPlaceholderTextView |> updateBodyPlaceholderTextViewStyle
+    _ = self.bodyTextView |> updateBodyTextViewStyle
+    _ = self.isBackersOnlyButton |> updateBackersOnlyButtonStyle
+    _ = self.titleTextField |> updateTitleTextFieldStyle
 
-    self.separatorViews ||> separatorStyle
+    _ = self.separatorViews ||> separatorStyle
   }
 
   // swiftlint:disable function_body_length
@@ -80,9 +80,8 @@ internal final class UpdateDraftViewController: UIViewController {
       .observeForControllerAction()
       .observeValues { [weak self] attachments in
         guard let attachmentsStackView = self?.attachmentsStackView else { return }
-        attachmentsStackView |>
-          UIStackView.lens.arrangedSubviews .~ attachments
-            .flatMap { self?.imageView(forAttachment: $0) }
+        _ = attachmentsStackView |>
+          UIStackView.lens.arrangedSubviews .~ attachments.flatMap { self?.imageView(forAttachment: $0) }
     }
 
     self.viewModel.outputs.notifyPresenterViewControllerWantsDismissal
@@ -250,7 +249,7 @@ internal final class UpdateDraftViewController: UIViewController {
 
     imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor).isActive = true
     if let url = URL(string: attachment.thumbUrl) {
-      imageView.af_setImageWithURL(url)
+      imageView.ksr_setImageWithURL(url)
     }
 
     let tap = UITapGestureRecognizer(target: self, action: #selector(attachmentTapped))
@@ -306,7 +305,7 @@ extension UpdateDraftViewController: UIImagePickerControllerDelegate, UINavigati
       let imageData = UIImageJPEGRepresentation(image, 0.9),
       let caches = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first,
       let file = URL(string: caches)?.appendingPathComponent("\(image.hash).jpg"),
-      let absoluteString = optionalize(file.absoluteString)
+      let absoluteString = file.absoluteString
       else { fatalError() }
 
     imageData.writeToFile(absoluteString, atomically: true)

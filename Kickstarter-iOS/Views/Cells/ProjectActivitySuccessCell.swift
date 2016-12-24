@@ -28,7 +28,7 @@ internal final class ProjectActivitySuccessCell: UITableViewCell, ValueCell {
       })
       .skipNil()
       .observeValues { [weak backgroundImageView] url in
-        backgroundImageView?.af_setImageWithURL(url)
+        backgroundImageView?.af_setImage(withURL: url)
     }
 
     self.viewModel.outputs.title.observeForUI()

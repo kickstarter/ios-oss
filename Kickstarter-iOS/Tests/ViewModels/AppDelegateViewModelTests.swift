@@ -315,7 +315,7 @@ final class AppDelegateViewModelTests: TestCase {
     XCTAssertFalse(self.facebookAppDelegate.openedUrl)
 
     self.vm.inputs.applicationOpenUrl(application: UIApplication.sharedApplication(),
-                                      url: NSURL(string: "http://www.fb.com")!,
+                                      url: URL(string: "http://www.fb.com")!,
                                       sourceApplication: nil,
                                       annotation: 1)
 
@@ -329,7 +329,7 @@ final class AppDelegateViewModelTests: TestCase {
     XCTAssertEqual(["App Open", "Opened App"], self.trackingClient.events)
 
     self.vm.inputs.applicationOpenUrl(application: UIApplication.sharedApplication(),
-                                      url: NSURL(string: "http://www.google.com/?app_banner=1&hello=world")!,
+                                      url: URL(string: "http://www.google.com/?app_banner=1&hello=world")!,
                                       sourceApplication: nil,
                                       annotation: 1)
 
@@ -369,7 +369,7 @@ final class AppDelegateViewModelTests: TestCase {
       let projectUrl =
         rootUrl + "projects/tequila/help-me-transform-this-pile-of-wood"
       self.vm.inputs.applicationOpenUrl(application: UIApplication.sharedApplication(),
-                                        url: NSURL(string: projectUrl)!,
+                                        url: URL(string: projectUrl)!,
                                         sourceApplication: nil,
                                         annotation: 1)
 
@@ -378,7 +378,7 @@ final class AppDelegateViewModelTests: TestCase {
       let commentsUrl =
         projectUrl + "/comments"
       self.vm.inputs.applicationOpenUrl(application: UIApplication.sharedApplication(),
-                                        url: NSURL(string: commentsUrl)!,
+                                        url: URL(string: commentsUrl)!,
                                         sourceApplication: nil,
                                         annotation: 1)
 
@@ -387,7 +387,7 @@ final class AppDelegateViewModelTests: TestCase {
       let updatesUrl =
         projectUrl + "/posts"
       self.vm.inputs.applicationOpenUrl(application: UIApplication.sharedApplication(),
-                                        url: NSURL(string: updatesUrl)!,
+                                        url: URL(string: updatesUrl)!,
                                         sourceApplication: nil,
                                         annotation: 1)
 
@@ -396,7 +396,7 @@ final class AppDelegateViewModelTests: TestCase {
       let updateUrl =
         projectUrl + "/posts/1399396"
       self.vm.inputs.applicationOpenUrl(application: UIApplication.sharedApplication(),
-                                        url: NSURL(string: updateUrl)!,
+                                        url: URL(string: updateUrl)!,
                                         sourceApplication: nil,
                                         annotation: 1)
 
@@ -405,7 +405,7 @@ final class AppDelegateViewModelTests: TestCase {
       let updateCommentsUrl =
         updateUrl + "/comments"
       self.vm.inputs.applicationOpenUrl(application: UIApplication.sharedApplication(),
-                                        url: NSURL(string: updateCommentsUrl)!,
+                                        url: URL(string: updateCommentsUrl)!,
                                         sourceApplication: nil,
                                         annotation: 1)
 
@@ -420,7 +420,7 @@ final class AppDelegateViewModelTests: TestCase {
     self.goToActivity.assertValueCount(0)
 
     self.vm.inputs.applicationOpenUrl(application: UIApplication.sharedApplication(),
-                                      url: NSURL(string: "https://www.kickstarter.com/activity")!,
+                                      url: URL(string: "https://www.kickstarter.com/activity")!,
                                       sourceApplication: nil,
                                       annotation: 1)
 
@@ -435,7 +435,7 @@ final class AppDelegateViewModelTests: TestCase {
 
     let url = "https://www.kickstarter.com/projects/tequila/help-me-transform-this-pile-of-wood/dashboard"
     self.vm.inputs.applicationOpenUrl(application: UIApplication.sharedApplication(),
-                                      url: NSURL(string: url)!,
+                                      url: URL(string: url)!,
                                       sourceApplication: nil,
                                       annotation: 1)
 
@@ -449,7 +449,7 @@ final class AppDelegateViewModelTests: TestCase {
     self.goToDiscovery.assertValues([])
 
     self.vm.inputs.applicationOpenUrl(application: UIApplication.sharedApplication(),
-                                      url: NSURL(string: "https://www.kickstarter.com/discover?sort=newest")!,
+                                      url: URL(string: "https://www.kickstarter.com/discover?sort=newest")!,
                                       sourceApplication: nil,
                                       annotation: 1)
 
@@ -465,7 +465,7 @@ final class AppDelegateViewModelTests: TestCase {
     self.goToDiscovery.assertValues([])
 
     self.vm.inputs.applicationOpenUrl(application: UIApplication.sharedApplication(),
-                                      url: NSURL(string: "https://www.kickstarter.com/discover")!,
+                                      url: URL(string: "https://www.kickstarter.com/discover")!,
                                       sourceApplication: nil,
                                       annotation: 1)
 
@@ -478,7 +478,7 @@ final class AppDelegateViewModelTests: TestCase {
 
     self.goToDiscovery.assertValues([])
 
-    let url = NSURL(string: "https://www.kickstarter.com/discover/categories/art")!
+    let url = URL(string: "https://www.kickstarter.com/discover/categories/art")!
     self.vm.inputs.applicationOpenUrl(application: UIApplication.sharedApplication(),
                                       url: url,
                                       sourceApplication: nil,
@@ -497,7 +497,7 @@ final class AppDelegateViewModelTests: TestCase {
     self.goToLogin.assertValueCount(0)
 
     self.vm.inputs.applicationOpenUrl(application: UIApplication.sharedApplication(),
-                                      url: NSURL(string: "https://www.kickstarter.com/authorize")!,
+                                      url: URL(string: "https://www.kickstarter.com/authorize")!,
                                       sourceApplication: nil,
                                       annotation: 1)
 
@@ -511,7 +511,7 @@ final class AppDelegateViewModelTests: TestCase {
     self.goToProfile.assertValueCount(0)
 
     self.vm.inputs.applicationOpenUrl(application: UIApplication.sharedApplication(),
-                                      url: NSURL(string: "https://www.kickstarter.com/profile/me")!,
+                                      url: URL(string: "https://www.kickstarter.com/profile/me")!,
                                       sourceApplication: nil,
                                       annotation: 1)
 
@@ -525,7 +525,7 @@ final class AppDelegateViewModelTests: TestCase {
     self.goToSearch.assertValueCount(0)
 
     self.vm.inputs.applicationOpenUrl(application: UIApplication.sharedApplication(),
-                                      url: NSURL(string: "https://www.kickstarter.com/search")!,
+                                      url: URL(string: "https://www.kickstarter.com/search")!,
                                       sourceApplication: nil,
                                       annotation: 1)
 
@@ -850,7 +850,7 @@ final class AppDelegateViewModelTests: TestCase {
 
   func testContinueUserActivity_ValidActivity() {
     let userActivity = NSUserActivity(activityType: NSUserActivityTypeBrowsingWeb)
-    userActivity.webpageURL = NSURL(string: "https://www.kickstarter.com/activity")
+    userActivity.webpageURL = URL(string: "https://www.kickstarter.com/activity")
 
     self.vm.inputs.applicationDidFinishLaunching(application: .sharedApplication(), launchOptions: [:])
 

@@ -30,10 +30,10 @@ internal final class ProjectActivityCommentCell: UITableViewCell, ValueCell {
   internal override func awakeFromNib() {
     super.awakeFromNib()
 
-    self.backingButton
+    _ = self.backingButton
       |> UIButton.lens.targets .~ [(self, #selector(backingButtonPressed), .touchUpInside)]
 
-    self.replyButton
+    _ = self.replyButton
       |> UIButton.lens.targets .~ [(self, #selector(replyButtonPressed), .touchUpInside)]
   }
 
@@ -53,7 +53,7 @@ internal final class ProjectActivityCommentCell: UITableViewCell, ValueCell {
         })
       .skipNil()
       .observeValues { [weak self] url in
-        self?.authorImageView.af_setImageWithURL(url)
+        self?.authorImageView.ksr_setImageWithURL(url)
     }
 
     self.rac.accessibilityLabel = self.viewModel.outputs.cellAccessibilityLabel
@@ -75,7 +75,8 @@ internal final class ProjectActivityCommentCell: UITableViewCell, ValueCell {
 
     self.bodyLabel.rac.text = self.viewModel.outputs.body
 
-    self.viewModel.outputs.title.observeForUI()
+    self.viewModel.outputs.title
+      .observeForUI()
       .observeValues { [weak titleLabel] title in
         guard let titleLabel = titleLabel else { return }
 
@@ -84,14 +85,14 @@ internal final class ProjectActivityCommentCell: UITableViewCell, ValueCell {
           italic: nil
         )
 
-        titleLabel |> projectActivityTitleLabelStyle
+        _ = titleLabel |> projectActivityTitleLabelStyle
     }
   }
 
   internal override func bindStyles() {
     super.bindStyles()
 
-    self
+    _ = self
       |> baseTableViewCellStyle()
       |> ProjectActivityCommentCell.lens.contentView.layoutMargins %~~ { layoutMargins, cell in
         cell.traitCollection.isRegularRegular
@@ -100,11 +101,11 @@ internal final class ProjectActivityCommentCell: UITableViewCell, ValueCell {
       }
       |> UITableViewCell.lens.accessibilityHint %~ { _ in Strings.Opens_comments() }
 
-    self.backingButton
+    _ = self.backingButton
       |> projectActivityFooterButton
       |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.dashboard_activity_pledge_info() }
 
-    self.bodyLabel
+    _ = self.bodyLabel
       |> UILabel.lens.textColor .~ .ksr_text_navy_700
       |> UILabel.lens.font %~~ { _, label in
           label.traitCollection.isRegularRegular
@@ -112,29 +113,29 @@ internal final class ProjectActivityCommentCell: UITableViewCell, ValueCell {
             : UIFont.ksr_body(size: 14)
       }
 
-    self.bodyView
+    _ = self.bodyView
       |> UIView.lens.layoutMargins .~ .init(topBottom: Styles.grid(3), leftRight: Styles.grid(2))
 
-    self.bulletSeparatorView
+    _ = self.bulletSeparatorView
       |> projectActivityBulletSeparatorViewStyle
 
-    self.cardView
+    _ = self.cardView
       |> dropShadowStyle()
 
-    self.footerDividerView
+    _ = self.footerDividerView
       |> projectActivityDividerViewStyle
 
-    self.footerStackView
+    _ = self.footerStackView
       |> projectActivityFooterStackViewStyle
       |> UIStackView.lens.layoutMargins .~ .init(all: Styles.grid(2))
 
-    self.headerDividerView
+    _ = self.headerDividerView
       |> projectActivityDividerViewStyle
 
-    self.headerStackView
+    _ = self.headerStackView
       |> projectActivityHeaderStackViewStyle
 
-    self.replyButton
+    _ = self.replyButton
       |> projectActivityFooterButton
       |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.dashboard_activity_reply() }
   }

@@ -44,12 +44,12 @@ internal final class DiscoveryProjectsDataSource: ValueCellDataSource {
              inSection: Section.onboarding.rawValue)
   }
 
-  internal func activityAtIndexPath(_ indexPath: NSIndexPath) -> Activity? {
-    return self[indexPath as IndexPath] as? Activity
+  internal func activityAtIndexPath(_ indexPath: IndexPath) -> Activity? {
+    return self[indexPath] as? Activity
   }
 
-  internal func projectAtIndexPath(_ indexPath: NSIndexPath) -> Project? {
-    return self[indexPath as IndexPath] as? Project
+  internal func projectAtIndexPath(_ indexPath: IndexPath) -> Project? {
+    return self[indexPath] as? Project
   }
 
   override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {

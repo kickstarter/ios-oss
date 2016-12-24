@@ -27,7 +27,7 @@ internal final class ThanksProjectCell: UICollectionViewCell, ValueCell {
     self.projectImageView.image = nil
 
     if let url = URL(string: project.photo.med) {
-      self.projectImageView.af_setImageWithURL(url)
+      self.projectImageView.af_setImage(withURL: url)
     }
   }
 }
