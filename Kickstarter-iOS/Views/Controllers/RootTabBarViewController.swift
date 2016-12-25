@@ -13,7 +13,7 @@ public final class RootTabBarViewController: UITabBarController {
 
     NotificationCenter
       .default
-      .addObserver(forName: Notification.Name(rawValue: CurrentUserNotifications.sessionStarted), object: nil, queue: nil) { [weak self] _ in
+      .addObserver(forName: Notification.Name.ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()
     }
 
@@ -143,7 +143,7 @@ public final class RootTabBarViewController: UITabBarController {
         } else {
           let sessionConfig = URLSessionConfiguration.default
           let session = URLSession(configuration: sessionConfig, delegate: nil, delegateQueue: .main)
-          let dataTask = session.dataTask(with: avatarUrl, completionHandler: { [weak self] avatarData, _, _ in
+          let dataTask = session.dataTask(with: avatarUrl) { [weak self] avatarData, _, _ in
             guard let avatarData = avatarData else { return }
             try? avatarData.write(to: imageUrl, options: [.atomic])
 
@@ -152,7 +152,7 @@ public final class RootTabBarViewController: UITabBarController {
               ?|> profileTabBarItemStyle(isLoggedIn: true, isMember: data.isMember)
               ?|> UITabBarItem.lens.image .~ defaultImage
               ?|> UITabBarItem.lens.selectedImage .~ selectedImage
-          })
+          }
           dataTask.resume()
         }
       }

@@ -104,15 +104,14 @@ internal final class UpdateDraftViewController: UIViewController {
     self.viewModel.outputs.attachmentAdded
       .observeForControllerAction()
       .observeValues { [weak self] attachment in
-        guard let _self = self else { return }
+        guard let _self = self, let scrollView = _self.attachmentsScrollView else { return }
         let imageView = _self.imageView(forAttachment: attachment)
         _self.attachmentsStackView.addArrangedSubview(imageView)
 
         after(0.1) {
-          let scrollView = _self.attachmentsScrollView
-          let offset = (scrollView?.contentSize.width)! - (scrollView?.bounds.size.width)!
-          guard offset >= (scrollView?.contentOffset.x)! else { return }
-          scrollView?.setContentOffset(CGPoint(x: offset, y: 0), animated: true)
+          let offset = scrollView.contentSize.width - scrollView.bounds.size.width
+          guard offset >= scrollView.contentOffset.x else { return }
+          scrollView.setContentOffset(CGPoint(x: offset, y: 0), animated: true)
         }
     }
 
@@ -327,5 +326,8 @@ private func after(_ seconds: TimeInterval,
                    queue: DispatchQueue = DispatchQueue.main,
                    body: @escaping () -> Void) {
 
-  queue.asyncAfter(deadline: DispatchTime.now() + Double(Int64(seconds * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: body)
+  queue.asyncAfter(
+    deadline: DispatchTime.now() + Double(Int64(seconds * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC),
+    execute: body
+  )
 }

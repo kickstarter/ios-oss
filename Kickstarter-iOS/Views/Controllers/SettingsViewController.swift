@@ -489,7 +489,7 @@ internal final class SettingsViewController: UIViewController {
           root.switchToDiscovery(params: params)
           }, completion: { _ in
             NotificationCenter.default.post(
-              Notification(name: Notification.Name(rawValue: CurrentUserNotifications.sessionEnded), object: nil)
+              .init(name: .init(rawValue: CurrentUserNotifications.sessionEnded), object: nil)
             )
         })
     }
