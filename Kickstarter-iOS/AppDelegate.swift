@@ -191,7 +191,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
   internal func application(_ application: UIApplication,
                             didReceiveRemoteNotification userInfo: [AnyHashable: Any]) {
 
-    self.viewModel.inputs.didReceive(remoteNotification: userInfo as AnyObject,
+    self.viewModel.inputs.didReceive(remoteNotification: userInfo,
                                      applicationIsActive: application.applicationState == .active)
   }
 
@@ -199,7 +199,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
                             didReceive notification: UILocalNotification) {
 
     if let userInfo = notification.userInfo, userInfo["aps"] != nil {
-      self.viewModel.inputs.didReceive(remoteNotification: userInfo as AnyObject,
+      self.viewModel.inputs.didReceive(remoteNotification: userInfo,
                                        applicationIsActive: application.applicationState == .active)
     }
   }

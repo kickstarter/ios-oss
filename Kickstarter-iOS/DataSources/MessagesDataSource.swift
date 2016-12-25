@@ -9,24 +9,21 @@ internal final class MessagesDataSource: ValueCellDataSource {
   }
 
   internal func load(project: Project) {
-    // FIXME
-//    self.set(values: [project],
-//             cellClass: ProjectBannerCell.self,
-//             inSection: Section.ProjectBanner.rawValue)
+    self.set(values: [project],
+             cellClass: ProjectBannerCell.self,
+             inSection: Section.projectBanner.rawValue)
   }
 
   internal func load(backing: Backing, project: Project) {
-    // FIXME
-//    self.set(values: [(backing, project)],
-//             cellClass: BackingCell.self,
-//             inSection: Section.Backing.rawValue)
+    self.set(values: [(backing, project)],
+             cellClass: BackingCell.self,
+             inSection: Section.backing.rawValue)
   }
 
   internal func load(messages: [Message]) {
-    // FIXME
-//    self.set(values: messages,
-//             cellClass: MessageCell.self,
-//             inSection: Section.Messages.rawValue)
+    self.set(values: messages,
+             cellClass: MessageCell.self,
+             inSection: Section.messages.rawValue)
   }
 
   internal func isProjectBanner(indexPath: IndexPath) -> Bool {

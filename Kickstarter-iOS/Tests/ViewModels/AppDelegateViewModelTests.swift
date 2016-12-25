@@ -581,7 +581,7 @@ final class AppDelegateViewModelTests: TestCase {
 
     self.presentViewController.assertValueCount(0)
 
-    self.vm.inputs.didReceive(remoteNotification: friendBackingPushData as AnyObject, applicationIsActive: false)
+    self.vm.inputs.didReceive(remoteNotification: friendBackingPushData, applicationIsActive: false)
 
     self.presentViewController.assertValueCount(1)
     XCTAssertEqual(["App Open", "Opened App", "Notification Opened", "Opened Notification"],
@@ -597,7 +597,7 @@ final class AppDelegateViewModelTests: TestCase {
 
     self.presentViewController.assertValueCount(0)
 
-    self.vm.inputs.didReceive(remoteNotification: friendBackingPushData as AnyObject, applicationIsActive: true)
+    self.vm.inputs.didReceive(remoteNotification: friendBackingPushData, applicationIsActive: true)
 
     self.presentViewController.assertValueCount(0)
     XCTAssertEqual(["App Open", "Opened App"], self.trackingClient.events)
@@ -631,7 +631,7 @@ final class AppDelegateViewModelTests: TestCase {
     self.presentViewController.assertValueCount(0)
     self.presentRemoteNotificationAlert.assertValueCount(0)
 
-    self.vm.inputs.didReceive(remoteNotification: pushData as AnyObject, applicationIsActive: true)
+    self.vm.inputs.didReceive(remoteNotification: pushData, applicationIsActive: true)
 
     self.presentViewController.assertValueCount(0)
     self.presentRemoteNotificationAlert.assertValueCount(1)
@@ -772,7 +772,7 @@ final class AppDelegateViewModelTests: TestCase {
       var pushData = genericActivityPushData
       pushData["activity"]?["category"] = state.rawValue
 
-      self.vm.inputs.didReceive(remoteNotification: pushData as AnyObject, applicationIsActive: false)
+      self.vm.inputs.didReceive(remoteNotification: pushData, applicationIsActive: false)
 
       self.presentViewController.assertValueCount(
         idx + 1, "Presents controller for \(state.rawValue) state change."
@@ -794,7 +794,7 @@ final class AppDelegateViewModelTests: TestCase {
       var pushData = genericActivityPushData
       pushData["activity"]?["category"] = state.rawValue
 
-      self.vm.inputs.didReceive(remoteNotification: pushData as AnyObject, applicationIsActive: false)
+      self.vm.inputs.didReceive(remoteNotification: pushData, applicationIsActive: false)
 
       self.goToDashboard.assertValueCount(idx + 1)
       self.goToDashboard.assertLastValue(param)
@@ -813,7 +813,7 @@ final class AppDelegateViewModelTests: TestCase {
       ]
     ]
 
-    self.vm.inputs.didReceive(remoteNotification: pushData as AnyObject, applicationIsActive: false)
+    self.vm.inputs.didReceive(remoteNotification: pushData, applicationIsActive: false)
 
     self.presentViewController.assertValues([2])
   }
@@ -828,7 +828,7 @@ final class AppDelegateViewModelTests: TestCase {
       var pushData = genericActivityPushData
       pushData["activity"]?["category"] = state.rawValue
 
-      self.vm.inputs.didReceive(remoteNotification: pushData as AnyObject, applicationIsActive: false)
+      self.vm.inputs.didReceive(remoteNotification: pushData, applicationIsActive: false)
 
       self.goToDashboard.assertValueCount(0)
       self.goToDiscovery.assertValueCount(0)

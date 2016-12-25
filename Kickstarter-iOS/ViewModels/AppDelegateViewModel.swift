@@ -48,7 +48,7 @@ public protocol AppDelegateViewModelInputs {
   func currentUserUpdatedInEnvironment()
 
   /// Call when the app delegate receives a remote notification.
-  func didReceive(remoteNotification notification: AnyObject, applicationIsActive: Bool)
+  func didReceive(remoteNotification notification: [AnyHashable: Any], applicationIsActive: Bool)
 
   /// Call when the app delegate gets notice of a successful notification registration.
   func didRegisterForRemoteNotifications(withDeviceTokenData data: Data)
@@ -220,7 +220,7 @@ AppDelegateViewModelOutputs {
       .ignoreValues()
 
     let remoteNotificationFromLaunch = self.applicationLaunchOptionsProperty.signal.skipNil()
-      .map { _, options in options?[UIApplicationLaunchOptionsKey.remoteNotification] }
+      .map { _, options in options?[UIApplicationLaunchOptionsKey.remoteNotification] as? [AnyHashable: Any] }
       .skipNil()
 
     let localNotificationFromLaunch = self.applicationLaunchOptionsProperty.signal.skipNil()
@@ -229,10 +229,9 @@ AppDelegateViewModelOutputs {
       .skipNil()
 
     let notificationAndIsActive = Signal.merge(
-      self.remoteNotificationAndIsActiveProperty.signal.skipNil()
-      // FIXME
-//      remoteNotificationFromLaunch.map { ($0, false) },
-//      localNotificationFromLaunch.map { ($0, false) }
+      self.remoteNotificationAndIsActiveProperty.signal.skipNil(),
+      remoteNotificationFromLaunch.map { ($0, false) },
+      localNotificationFromLaunch.map { ($0, false) }
     )
 
     let pushEnvelopeAndIsActive = notificationAndIsActive
@@ -492,14 +491,12 @@ AppDelegateViewModelOutputs {
         AppEnvironment.current.koala.trackPerformedShortcutItem($0, availableShortcutItems: $1)
     }
 
-
-    // FIXME
-//    openUrl
-//      .map { URLComponents(url: $0.url, resolvingAgainstBaseURL: false)?.queryItems }
-//      .skipNil()
-//      .map { items in Dictionary.keyValuePairs(items.map { ($0.name, $0.value) }).compact() }
-//      .filter { $0["app_banner"] == "1" }
-//      .observeValues { AppEnvironment.current.koala.trackOpenedAppBanner($0) }
+    openUrl
+      .map { URLComponents(url: $0.url, resolvingAgainstBaseURL: false) }
+      .skipNil()
+      .map(dictionary(fromUrlComponents:))
+      .filter { $0["app_banner"] == "1" }
+      .observeValues { AppEnvironment.current.koala.trackOpenedAppBanner($0) }
 
     continueUserActivityWithNavigation
       .map(first)
@@ -557,8 +554,8 @@ AppDelegateViewModelOutputs {
     self.configUpdatedInEnvironmentProperty.value = ()
   }
 
-  fileprivate let remoteNotificationAndIsActiveProperty = MutableProperty<(AnyObject, Bool)?>(nil)
-  public func didReceive(remoteNotification notification: AnyObject, applicationIsActive: Bool) {
+  fileprivate let remoteNotificationAndIsActiveProperty = MutableProperty<([AnyHashable: Any], Bool)?>(nil)
+  public func didReceive(remoteNotification notification: [AnyHashable: Any], applicationIsActive: Bool) {
     self.remoteNotificationAndIsActiveProperty.value = (notification, applicationIsActive)
   }
 
@@ -781,6 +778,12 @@ private func shortcutItems(isProjectMember: Bool, hasRecommendations: Bool)
     }
 
     return items
+}
+
+private func dictionary(fromUrlComponents urlComponents: URLComponents) -> [String:String] {
+
+  let queryItems = urlComponents.queryItems ?? []
+  return Dictionary<String, String?>.keyValuePairs(queryItems.map { ($0.name, $0.value) }).compact()
 }
 
 extension ShortcutItem {
